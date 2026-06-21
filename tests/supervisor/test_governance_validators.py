@@ -712,9 +712,9 @@ class TestV46SkillTranscriptPresent:
     """Regression tests for V46 validate_skill_transcript_present (TC-SKILL-GOV-002).
 
     V46 verifies that PRODUCT_SOURCE items have a linked skill_transcript artifact.
-    WARN-only in bootstrap phase (blocks_sprint=False).
+    Activated 2026-06-21 (TC-SKILL-GOV-005): blocks_sprint=True for violations.
 
-    NEGATIVE: PRODUCT_SOURCE with no skill_transcript artifact -> WARN.
+    NEGATIVE: PRODUCT_SOURCE with no skill_transcript artifact -> FAIL + blocks.
     POSITIVE: PRODUCT_SOURCE with skill_transcript artifact -> PASS.
     BACKFILL_EXEMPT: item with BACKFILL_PRE_GOVERNANCE note -> PASS.
     NON-PRODUCT: GOVERNANCE_TASKCARD -> PASS.
@@ -724,8 +724,8 @@ class TestV46SkillTranscriptPresent:
         from governance_validators import validate_skill_transcript_present
         return validate_skill_transcript_present
 
-    def test_missing_transcript_warns(self):
-        """NEGATIVE: PRODUCT_SOURCE item with no skill_transcript -> WARN."""
+    def test_missing_transcript_blocks(self):
+        """NEGATIVE: PRODUCT_SOURCE item with no skill_transcript -> FAIL + blocks_sprint."""
         validate = self._validator()
         decl = {
             "planned_work_items": [{
@@ -735,8 +735,8 @@ class TestV46SkillTranscriptPresent:
             "evidence_artifacts": [],
         }
         result = validate(decl)
-        assert result["result"] == "WARN"
-        assert result["blocks_sprint"] is False
+        assert result["result"] == "FAIL"
+        assert result["blocks_sprint"] is True
         assert len(result["items"]) == 1
         assert result["items"][0]["item_id"] == "TC-V46-NEG-001"
         assert "SKILL_TRANSCRIPT_MISSING" in result["items"][0]["reason"]

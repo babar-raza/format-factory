@@ -1,0 +1,69 @@
+{
+  "audit_id": "ZERO-STUB-AUDIT-20260621",
+  "validator": "V48 validate_architecture_only_stub_gate",
+  "date": "2026-06-21",
+  "negative_controls": [
+    {
+      "fixture": "RELEASE_GATE item with evidence_path=src/python/fodt/spec/table/table.py",
+      "expected": "FAIL, blocks_sprint=True",
+      "actual": "FAIL, blocks_sprint=True",
+      "result": "BLOCKED_AS_EXPECTED"
+    },
+    {
+      "fixture": "RELEASE_GATE item with evidence_path=src/python/fodt/spec/table/table_cell.py",
+      "expected": "FAIL, blocks_sprint=True",
+      "actual": "FAIL, blocks_sprint=True",
+      "result": "BLOCKED_AS_EXPECTED"
+    },
+    {
+      "fixture": "RELEASE_GATE item with evidence_path=src/python/fodt/spec/table/table_row.py",
+      "expected": "FAIL, blocks_sprint=True",
+      "actual": "FAIL, blocks_sprint=True",
+      "result": "BLOCKED_AS_EXPECTED"
+    },
+    {
+      "fixture": "RELEASE_GATE item with evidence_path=src/python/fodt/spec/text/list_.py",
+      "expected": "FAIL, blocks_sprint=True",
+      "actual": "FAIL, blocks_sprint=True",
+      "result": "BLOCKED_AS_EXPECTED"
+    },
+    {
+      "fixture": "RELEASE_GATE item with evidence_path=src/python/fodt/spec/text/list_item.py",
+      "expected": "FAIL, blocks_sprint=True",
+      "actual": "FAIL, blocks_sprint=True",
+      "result": "BLOCKED_AS_EXPECTED"
+    }
+  ],
+  "positive_controls": [
+    {
+      "fixture": "RELEASE_GATE item with evidence_path=src/python/fods/models.py",
+      "expected": "PASS",
+      "actual": "PASS",
+      "result": "PASSES_AS_EXPECTED"
+    },
+    {
+      "fixture": "RELEASE_GATE item with evidence_path=src/python/fods/parser.py",
+      "expected": "PASS",
+      "actual": "PASS",
+      "result": "PASSES_AS_EXPECTED"
+    },
+    {
+      "fixture": "RELEASE_GATE item with evidence_path=src/python/fodt/spec/text/paragraph.py (implemented spec file)",
+      "expected": "PASS",
+      "actual": "PASS",
+      "result": "PASSES_AS_EXPECTED"
+    }
+  ],
+  "summary": {
+    "negative_controls_blocked": 5,
+    "negative_controls_total": 5,
+    "positive_controls_pass": 3,
+    "positive_controls_total": 3,
+    "all_controls_correct": true,
+    "verdict": "V48_CORRECTLY_REJECTS_ARCHITECTURE_ONLY_STUBS"
+  },
+  "gate_state": {
+    "ZS-8 Negative Controls Reject Invalid Patterns": "PASS",
+    "ZS-9 Task-State and Package Gates Enforced": "PASS"
+  }
+}

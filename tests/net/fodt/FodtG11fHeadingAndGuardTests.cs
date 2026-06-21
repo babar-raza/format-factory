@@ -120,6 +120,28 @@ public class FodtG11fHeadingAndGuardTests : IDisposable
         Assert.ThrowsAny<Exception>(() => FodtDocument.Load(path, maxFileSizeBytes: 1));
     }
 
+    /// <summary>
+    /// C9-SEC-FODT-01: FodtDocument.Load rejects XML with DTD declarations (security guard).
+    /// FodtDocument.Load uses DtdProcessing.Prohibit and XmlResolver = null.
+    /// A file containing an internal DTD subset must be rejected, not processed.
+    /// </summary>
+    [Fact]
+    public void Document_Load_XmlWithDtd_ThrowsException()
+    {
+        // XML with an internal DTD subset — must be rejected by DtdProcessing.Prohibit
+        const string xmlWithDtd =
+            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+            "<!DOCTYPE fodt [<!ELEMENT fodt ANY>]>" +
+            "<office:document" +
+            " xmlns:office=\"urn:oasis:names:tc:opendocument:xmlns:office:1.0\"" +
+            " office:mimetype=\"application/vnd.oasis.opendocument.text-flat-xml\"" +
+            " office:version=\"1.3\">" +
+            "</office:document>";
+        var path = Path.Combine(_tempDir, "dtd-injection.fodt");
+        File.WriteAllText(path, xmlWithDtd);
+        Assert.ThrowsAny<Exception>(() => FodtDocument.Load(path));
+    }
+
     // -----------------------------------------------------------------------
     // R28 Lane H: C9 Malformed-Input Resilience — FodtDocument.Load
     // -----------------------------------------------------------------------

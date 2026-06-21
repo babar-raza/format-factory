@@ -597,3 +597,425 @@ def abw_uppercase_ratio(file_path: "str | bytes | Path") -> float:
     if not letters:
         return 0.0
     return sum(1 for c in letters if c.isupper()) / len(letters)
+
+
+def abw_section_count(file_path: "str | bytes | Path") -> int:
+    """Return the number of <section> elements in the ABW document.
+
+    Closes: GAP-ABW-FOSS-ABW_SECTION_-001
+
+    Args:
+        file_path: Path to .abw file, bytes, or XML string.
+
+    Returns:
+        Number of sections. 0 if document has no sections.
+    """
+    model = load(file_path)
+    return model.get("section_count", 0)
+
+
+def abw_has_headings(file_path: "str | bytes | Path") -> bool:
+    """Return True if the document contains any heading-style paragraphs.
+
+    Closes: GAP-ABW-FOSS-ABW_HAS_HEAD-001
+
+    Args:
+        file_path: Path to .abw file, bytes, or XML string.
+
+    Returns:
+        True if any paragraph has a heading-style attribute, False otherwise.
+    """
+    return abw_heading_count(file_path) > 0
+
+
+VOWELS = set("aeiouAEIOU")
+CONSONANTS = set("bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ")
+
+
+def _all_text(file_path: "str | bytes | Path") -> str:
+    model = load(file_path)
+    return " ".join(
+        p.get("text", "") if isinstance(p, dict) else str(p)
+        for p in model.get("paragraphs", [])
+    )
+
+
+def _all_words(file_path: "str | bytes | Path") -> list:
+    import re
+    return re.findall(r"\b\w+\b", _all_text(file_path))
+
+
+def abw_digit_count(file_path: "str | bytes | Path") -> int:
+    """Return count of digit characters across all paragraphs."""
+    return sum(1 for c in _all_text(file_path) if c.isdigit())
+
+
+def abw_alpha_char_count(file_path: "str | bytes | Path") -> int:
+    """Return count of alphabetic characters across all paragraphs."""
+    return sum(1 for c in _all_text(file_path) if c.isalpha())
+
+
+def abw_alpha_ratio(file_path: "str | bytes | Path") -> float:
+    """Return ratio of alphabetic characters to total paragraph characters. 0.0 if empty."""
+    model = load(file_path)
+    paras = model.get("paragraphs", [])
+    total = sum(len(p.get("text", "") if isinstance(p, dict) else str(p)) for p in paras)
+    if not total:
+        return 0.0
+    alpha = sum(
+        1 for p in paras
+        for c in (p.get("text", "") if isinstance(p, dict) else str(p))
+        if c.isalpha()
+    )
+    return alpha / total
+
+
+def abw_avg_paragraph_length(file_path: "str | bytes | Path") -> float:
+    """Return average paragraph length in characters."""
+    return abw_average_paragraph_length(file_path)
+
+
+def abw_avg_paragraph_words(file_path: "str | bytes | Path") -> float:
+    """Return average number of words per paragraph."""
+    import re
+    model = load(file_path)
+    paras = model.get("paragraphs", [])
+    if not paras:
+        return 0.0
+    total = sum(
+        len(re.findall(r"\b\w+\b", p.get("text", "") if isinstance(p, dict) else str(p)))
+        for p in paras
+    )
+    return total / len(paras)
+
+
+def abw_char_per_paragraph(file_path: "str | bytes | Path") -> float:
+    """Return average characters per paragraph."""
+    return abw_average_paragraph_length(file_path)
+
+
+def abw_chars_per_word(file_path: "str | bytes | Path") -> float:
+    """Return total paragraph chars divided by word count. 0.0 if no words."""
+    model = load(file_path)
+    paras = model.get("paragraphs", [])
+    total_chars = sum(len(p.get("text", "") if isinstance(p, dict) else str(p)) for p in paras)
+    words = []
+    for p in paras:
+        words.extend((p.get("text", "") if isinstance(p, dict) else str(p)).split())
+    if not words:
+        return 0.0
+    return total_chars / len(words)
+
+
+def abw_consonant_to_vowel_ratio(file_path: "str | bytes | Path") -> float:
+    """Return ratio of consonants to vowels. 0.0 if no vowels."""
+    text = _all_text(file_path)
+    vowels = sum(1 for c in text if c in VOWELS)
+    consonants = sum(1 for c in text if c in CONSONANTS)
+    if not vowels:
+        return 0.0
+    return consonants / vowels
+
+
+def abw_empty_paragraph_ratio(file_path: "str | bytes | Path") -> float:
+    """Return ratio of empty paragraphs to total paragraphs. 0.0 if none."""
+    model = load(file_path)
+    paras = model.get("paragraphs", [])
+    if not paras:
+        return 0.0
+    empty = sum(
+        1 for p in paras
+        if not (p.get("text", "") if isinstance(p, dict) else str(p)).strip()
+    )
+    return empty / len(paras)
+
+
+def abw_file_size_bytes(file_path: "str | bytes | Path") -> int:
+    """Return file size in bytes. Returns 0 for non-file sources."""
+    try:
+        return Path(file_path).stat().st_size
+    except (TypeError, OSError):
+        return 0
+
+
+def abw_has_multiple_paragraphs(file_path: "str | bytes | Path") -> bool:
+    """Return True if the document has more than one paragraph."""
+    return load(file_path).get("paragraph_count", 0) > 1
+
+
+def abw_has_punctuation(file_path: "str | bytes | Path") -> bool:
+    """Return True if any paragraph contains punctuation characters."""
+    import string
+    return any(c in string.punctuation for c in _all_text(file_path))
+
+
+def abw_has_single_paragraph(file_path: "str | bytes | Path") -> bool:
+    """Return True if the document has exactly one paragraph."""
+    return load(file_path).get("paragraph_count", 0) == 1
+
+
+def abw_letter_ratio(file_path: "str | bytes | Path") -> float:
+    """Return ratio of letter characters to total characters. 0.0 if empty."""
+    return abw_alpha_ratio(file_path)
+
+
+def abw_longest_paragraph_chars(file_path: "str | bytes | Path") -> int:
+    """Return character count of the longest paragraph."""
+    model = load(file_path)
+    paras = model.get("paragraphs", [])
+    if not paras:
+        return 0
+    return max(
+        len(p.get("text", "") if isinstance(p, dict) else str(p))
+        for p in paras
+    )
+
+
+def abw_max_paragraph_word_count(file_path: "str | bytes | Path") -> int:
+    """Return the maximum word count across all paragraphs."""
+    import re
+    model = load(file_path)
+    paras = model.get("paragraphs", [])
+    if not paras:
+        return 0
+    return max(
+        len(re.findall(r"\b\w+\b", p.get("text", "") if isinstance(p, dict) else str(p)))
+        for p in paras
+    )
+
+
+def abw_shortest_paragraph_chars(file_path: "str | bytes | Path") -> int:
+    """Return character count of the shortest paragraph."""
+    model = load(file_path)
+    paras = model.get("paragraphs", [])
+    if not paras:
+        return 0
+    return min(
+        len(p.get("text", "") if isinstance(p, dict) else str(p))
+        for p in paras
+    )
+
+
+def abw_vowel_count(file_path: "str | bytes | Path") -> int:
+    """Return count of vowel characters across all paragraphs."""
+    return sum(1 for c in _all_text(file_path) if c in VOWELS)
+
+
+def abw_vowel_ratio(file_path: "str | bytes | Path") -> float:
+    """Return ratio of vowels to total characters (including spaces/punctuation). 0.0 if empty."""
+    text = _all_text(file_path)
+    if not text:
+        return 0.0
+    return sum(1 for c in text if c in VOWELS) / len(text)
+
+
+def abw_word_length_variance(file_path: "str | bytes | Path") -> float:
+    """Return variance of word lengths (split by whitespace). 0.0 if < 2 words."""
+    model = load(file_path)
+    words = []
+    for p in model.get("paragraphs", []):
+        words.extend((p.get("text", "") if isinstance(p, dict) else str(p)).split())
+    if len(words) < 2:
+        return 0.0
+    lengths = [len(w) for w in words]
+    mean = sum(lengths) / len(lengths)
+    return sum((l - mean) ** 2 for l in lengths) / len(lengths)
+
+
+def abw_words_per_char(file_path: "str | bytes | Path") -> float:
+    """Return words per character (inverse of chars_per_word). 0.0 if no text."""
+    text = _all_text(file_path)
+    if not text:
+        return 0.0
+    words = _all_words(file_path)
+    return len(words) / len(text)
+
+
+def abw_all_words_unique(file_path: "str | bytes | Path") -> bool:
+    """Return True if every word in the document appears exactly once."""
+    words = [w.lower() for w in _all_words(file_path)]
+    if not words:
+        return True
+    return len(words) == len(set(words))
+
+
+def abw_avg_word_length_per_para(file_path: "str | bytes | Path") -> float:
+    """Return average paragraph character length (trailing punctuation stripped). 0.0 if empty."""
+    import string as _string
+    model = load(file_path)
+    paras = model.get("paragraphs", [])
+    if not paras:
+        return 0.0
+    lengths = [
+        len((p.get("text", "") if isinstance(p, dict) else str(p)).rstrip(_string.punctuation))
+        for p in paras
+    ]
+    return sum(lengths) / len(lengths)
+
+
+def abw_avg_word_per_paragraph(file_path: "str | bytes | Path") -> float:
+    """Return average number of words per paragraph."""
+    return abw_avg_paragraph_words(file_path)
+
+
+def abw_capital_word_count(file_path: "str | bytes | Path") -> int:
+    """Return count of words that start with a capital letter."""
+    import re
+    return sum(1 for w in re.findall(r"\b[A-Z]\w*\b", _all_text(file_path)))
+
+
+def abw_consonant_ratio(file_path: "str | bytes | Path") -> float:
+    """Return ratio of consonants to total letter characters. 0.0 if no letters."""
+    text = _all_text(file_path)
+    letters = [c for c in text if c.isalpha()]
+    if not letters:
+        return 0.0
+    return sum(1 for c in letters if c in CONSONANTS) / len(letters)
+
+
+def abw_digit_ratio(file_path: "str | bytes | Path") -> float:
+    """Return ratio of digit characters to total characters. 0.0 if empty."""
+    text = _all_text(file_path)
+    if not text:
+        return 0.0
+    return sum(1 for c in text if c.isdigit()) / len(text)
+
+
+def abw_has_multi_para(file_path: "str | bytes | Path") -> bool:
+    """Return True if the document has more than one paragraph."""
+    return abw_has_multiple_paragraphs(file_path)
+
+
+def abw_is_empty_document(file_path: "str | bytes | Path") -> bool:
+    """Return True if the document has no non-empty paragraphs."""
+    return abw_is_empty(file_path)
+
+
+def abw_lowercase_ratio(file_path: "str | bytes | Path") -> float:
+    """Return ratio of lowercase letters to total letters. 0.0 if no letters."""
+    text = _all_text(file_path)
+    letters = [c for c in text if c.isalpha()]
+    if not letters:
+        return 0.0
+    return sum(1 for c in letters if c.islower()) / len(letters)
+
+
+def abw_max_paragraph_words(file_path: "str | bytes | Path") -> int:
+    """Return the maximum word count across all paragraphs."""
+    return abw_max_paragraph_word_count(file_path)
+
+
+def abw_max_word_count_para(file_path: "str | bytes | Path") -> int:
+    """Return maximum word count in any single paragraph."""
+    return abw_max_paragraph_word_count(file_path)
+
+
+def abw_short_paragraph_count(file_path: "str | bytes | Path", max_words: int = 2) -> int:
+    """Return count of paragraphs with at most max_words words (default 2)."""
+    model = load(file_path)
+    paras = model.get("paragraphs", [])
+    return sum(
+        1 for p in paras
+        if len((p.get("text", "") if isinstance(p, dict) else str(p)).split()) <= max_words
+    )
+
+
+def abw_short_word_count(file_path: "str | bytes | Path") -> int:
+    """Return count of words with 3 or fewer characters."""
+    return sum(1 for w in _all_words(file_path) if len(w) <= 3)
+
+
+def abw_space_count(file_path: "str | bytes | Path") -> int:
+    """Return count of space characters across all paragraphs."""
+    model = load(file_path)
+    return sum(
+        str(p.get("text", "") if isinstance(p, dict) else p).count(" ")
+        for p in model.get("paragraphs", [])
+    )
+
+
+def abw_total_word_length(file_path: "str | bytes | Path") -> int:
+    """Return sum of lengths of all words across all paragraphs."""
+    return sum(len(w) for w in _all_words(file_path))
+
+
+def abw_unique_words_per_paragraph(file_path: "str | bytes | Path") -> float:
+    """Return global unique word count divided by number of paragraphs. 0.0 if empty."""
+    model = load(file_path)
+    paras = model.get("paragraphs", [])
+    if not paras:
+        return 0.0
+    all_words: set = set()
+    for p in paras:
+        text = p.get("text", "") if isinstance(p, dict) else str(p)
+        all_words.update(w.lower() for w in text.split())
+    return len(all_words) / len(paras)
+
+
+def abw_min_word_count_para(file_path: "str | bytes | Path") -> int:
+    """Return minimum word count in any single paragraph."""
+    import re
+    model = load(file_path)
+    paras = model.get("paragraphs", [])
+    if not paras:
+        return 0
+    return min(
+        len(re.findall(r"\b\w+\b", p.get("text", "") if isinstance(p, dict) else str(p)))
+        for p in paras
+    )
+
+
+def abw_numeric_char_count(file_path: "str | bytes | Path") -> int:
+    """Return count of numeric (digit) characters. Alias for abw_digit_count."""
+    return abw_digit_count(file_path)
+
+
+def abw_para_char_variance(file_path: "str | bytes | Path") -> float:
+    """Return variance of paragraph character lengths. 0.0 if < 2 paragraphs."""
+    model = load(file_path)
+    paras = model.get("paragraphs", [])
+    if len(paras) < 2:
+        return 0.0
+    lengths = [len(p.get("text", "") if isinstance(p, dict) else str(p)) for p in paras]
+    mean = sum(lengths) / len(lengths)
+    return sum((l - mean) ** 2 for l in lengths) / len(lengths)
+
+
+def abw_text_density(file_path: "str | bytes | Path") -> float:
+    """Return ratio of non-space characters to total characters. 0.0 if empty."""
+    text = _all_text(file_path)
+    if not text:
+        return 0.0
+    return sum(1 for c in text if c != " ") / len(text)
+
+
+def abw_total_para_char_count(file_path: "str | bytes | Path") -> int:
+    """Return total character count across all paragraphs."""
+    return sum(
+        len(p.get("text", "") if isinstance(p, dict) else str(p))
+        for p in load(file_path).get("paragraphs", [])
+    )
+
+
+def abw_uppercase_count(file_path: "str | bytes | Path") -> int:
+    """Return count of uppercase letter characters across all paragraphs."""
+    return sum(1 for c in _all_text(file_path) if c.isupper())
+
+
+def abw_digit_char_count(file_path: "str | bytes | Path") -> int:
+    """Return count of digit characters. Alias for abw_digit_count."""
+    return abw_digit_count(file_path)
+
+
+def abw_nonempty_para_ratio(file_path: "str | bytes | Path") -> float:
+    """Return ratio of non-empty paragraphs to total. 0.0 if none."""
+    model = load(file_path)
+    paras = model.get("paragraphs", [])
+    if not paras:
+        return 0.0
+    return sum(1 for p in paras if (p.get("text","") if isinstance(p,dict) else str(p)).strip()) / len(paras)
+
+
+def abw_numeric_word_count(file_path: "str | bytes | Path") -> int:
+    """Return count of words that consist entirely of digits."""
+    return sum(1 for w in _all_words(file_path) if w.isdigit())

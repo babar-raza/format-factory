@@ -1,0 +1,179 @@
+---
+# Zero-Stub Audit Taskcards
+# Mission ID: ZERO-STUB-AUDIT-20260621
+# Generated: 2026-06-21
+
+taskcards:
+  # ──────────────────────────────────────────────────────────────────────────
+  - task_id: TC-ZS-001
+    stable_semantic_key: validate_architecture_only_stub_gate_V48
+    mission_id: ZERO-STUB-AUDIT-20260621
+    finding_ids: [GOV-ESCAPE-NO-STUB-GATE-001]
+    root_cause_ids: [RC-GOV-NO-STUB-GATE, RC-GENERATOR-ARCH-ONLY]
+    product_ids: [fodt, fods, fodt-net, fods-net]
+    title: "Implement V48 — validate_architecture_only_stub_gate governance validator"
+    lane: Lane-3 Governance
+    owner: Agent (tools/supervisor/governance_validators.py)
+    reviewer: Supervisor
+    status: DISCOVERED
+    objective: |
+      Add a blocking governance validator that prevents RELEASE_GATE and Gate 11
+      work items from citing architecture_only stub files as behavioral evidence.
+    observed_incomplete_behavior: |
+      No validator exists. An agent could declare a RELEASE_GATE item with
+      evidence_paths=[architecture_only_stub.py] and the sprint would not be blocked.
+    expected_complete_behavior: |
+      When a RELEASE_GATE or Gate 11 item cites a file whose content contains
+      "GENERATED — architecture_only" or "architecture_only" marker, the validator
+      returns result=FAIL, blocks_sprint=True, with a descriptive error.
+      For PRODUCT_SOURCE items (non-gate), it returns WARN/blocks_sprint=False.
+    allowed_paths:
+      - tools/supervisor/governance_validators.py
+      - tests/supervisor/test_governance_validators.py
+    forbidden_paths:
+      - src/ (no product source changes)
+    dependencies: []
+    machinery_repair: |
+      Add function `validate_architecture_only_stub_gate(declaration, repo_root=None)` to
+      governance_validators.py after line 3005.
+      Register in run_all_governance_validators() as V48.
+    expected_outputs:
+      - "V48 validator function in governance_validators.py"
+      - "Tests for V48 in test_governance_validators.py (negative control + positive pass)"
+    focused_verification:
+      - "Negative control: declare RELEASE_GATE with evidence_path=architecture_only file → blocked"
+      - "Positive pass: declare RELEASE_GATE with evidence_path=real implementation file → passes"
+    negative_controls:
+      - fixture: RELEASE_GATE item with architecture_only evidence
+        expected: FAIL, blocks_sprint=True
+      - fixture: PRODUCT_SOURCE item with architecture_only evidence
+        expected: WARN, blocks_sprint=False
+    closeout_rules:
+      - "V48 blocks_sprint=True for RELEASE_GATE items citing architecture_only files"
+      - "V48 WARN (non-blocking) for PRODUCT_SOURCE items"
+      - "At least 2 tests pass in test_governance_validators.py"
+
+  # ──────────────────────────────────────────────────────────────────────────
+  - task_id: TC-ZS-002
+    stable_semantic_key: fix_v44_facade_delegates_to_spec
+    mission_id: ZERO-STUB-AUDIT-20260621
+    finding_ids: [GOV-ESCAPE-V44-ALWAYS-WARN-001]
+    root_cause_ids: [RC-GOV-WEAK-VALIDATORS]
+    product_ids: [fods, fodt]
+    title: "Fix V44 — validate_facade_delegates_to_spec to actually inspect imports"
+    lane: Lane-3 Governance
+    owner: Agent
+    reviewer: Supervisor
+    status: DISCOVERED
+    objective: |
+      Replace the constant-WARN stub body of V44 with real logic that:
+      (a) finds compat.py / Compat/ files in evidence_paths
+      (b) scans their import statements
+      (c) checks if any imported class's source file contains "architecture_only"
+      (d) FAIL (blocks_sprint=True) if found
+    observed_incomplete_behavior: |
+      V44 body at line 2907: always returns WARN with empty items. Never inspects any file.
+      This is itself a FAKE_SUCCESS validator.
+    expected_complete_behavior: |
+      V44 inspects imports. If fods/Compat/fods_cell.py imports from an architecture_only
+      spec class, V44 should WARN (until compat.py switch is authorized).
+      After compat.py switch authorization, V44 should FAIL on such imports.
+    allowed_paths:
+      - tools/supervisor/governance_validators.py
+    closeout_rules:
+      - "V44 function body contains real import inspection logic (not constant return)"
+      - "Test demonstrates V44 detects architecture_only import"
+
+  # ──────────────────────────────────────────────────────────────────────────
+  - task_id: TC-ZS-003
+    stable_semantic_key: heal_xcf_layer_name_list
+    mission_id: ZERO-STUB-AUDIT-20260621
+    finding_ids: [STUB-PY-XCF-LAYER-NAMES-001]
+    root_cause_ids: [RC-PARTIAL-IMPLEMENTATION-XCF]
+    product_ids: [xcf]
+    title: "Heal xcf_layer_name_list — implement real layer name parsing or document exclusion"
+    lane: Lane-7 Python Product Healing
+    owner: Agent (via add-python-api skill)
+    reviewer: Supervisor
+    status: DISCOVERED
+    objective: |
+      Resolve the INCOMPLETE_IMPLEMENTATION for xcf_layer_name_list.
+      The function returns synthetic ["Layer 0", "Layer 1", ...] instead of real XCF layer names.
+    preferred_healing_path: |
+      Path A: Extend XcfImage to include layer_names: list[str].
+      In _parse_layer_offsets, navigate each layer pointer, read the layer name string
+      (NUL-terminated, at fixed offset in layer record).
+      Update xcf_layer_name_list to return img.layer_names.
+    fallback_healing_path: |
+      Path B: Add GAP-ledger entry GAP-XCF-LAYER-NAMES.
+      Rename xcf_layer_name_list to xcf_layer_synthetic_names_list with explicit doc.
+      Add xcf_layer_names_parsed = None as explicit capability exclusion.
+    allowed_paths:
+      - src/python/xcf/xcf_parser.py
+      - tests/python/xcf/ (new test file)
+    required_skill: add-python-api (or add-python-object-model-feature)
+    closeout_rules:
+      - "xcf_layer_name_list returns real parsed names OR is renamed with explicit exclusion documented"
+      - "Test passes with known XCF file asserting real layer name (not 'Layer 0')"
+
+  # ──────────────────────────────────────────────────────────────────────────
+  - task_id: TC-ZS-004
+    stable_semantic_key: wire_fods_compat_facades
+    mission_id: ZERO-STUB-AUDIT-20260621
+    finding_ids: [STUB-PY-FODS-COMPAT-CELL-001, STUB-PY-FODS-COMPAT-SHEET-001, STUB-PY-FODS-COMPAT-DOC-001]
+    root_cause_ids: [RC-COMPAT-EMPTY-FACADES]
+    product_ids: [fods]
+    title: "Wire FODS Compat facades to models.py or document as architecture markers"
+    lane: Lane-7 Python Product Healing
+    owner: Agent
+    reviewer: Supervisor
+    status: DISCOVERED
+    objective: |
+      Resolve the naming collision: FodsDocument/FodsSheet/FodsCell exist in both
+      fods/models.py (real implementations) and fods/Compat/ (empty facades).
+      Either wire Compat to models or document Compat as architecture-only markers.
+    preferred_healing_path: |
+      Option A: Make Compat facades delegate to models:
+        In FodsCell, add __init__ and all properties from models.FodsCell.
+        In FodsSheet, add __init__ and all methods from models.FodsSheet.
+        In FodsDocument, add __init__ and all methods from models.FodsDocument.
+      Option B: Rename Compat classes to SpecFodsCell etc. to avoid confusion
+      Option C: Add explicit docstring "THIS IS AN ARCHITECTURE MARKER — use fods.models.FodsCell"
+    allowed_paths:
+      - src/python/fods/Compat/fods_cell.py
+      - src/python/fods/Compat/fods_sheet.py
+      - src/python/fods/Compat/fods_document.py
+    closeout_rules:
+      - "Compat facades either have working methods OR have explicit architecture-marker documentation"
+      - "No naming collision misled by identical class names with different behaviors"
+
+  # ──────────────────────────────────────────────────────────────────────────
+  - task_id: TC-ZS-005
+    stable_semantic_key: implement_fodt_spec_table_list_stubs_when_authorized
+    mission_id: ZERO-STUB-AUDIT-20260621
+    finding_ids: [
+      STUB-PY-FODT-SPEC-TABLE-CELL-001,
+      STUB-PY-FODT-SPEC-TABLE-ROW-001,
+      STUB-PY-FODT-SPEC-TABLE-TABLE-001,
+      STUB-PY-FODT-SPEC-TEXT-LIST-001,
+      STUB-PY-FODT-SPEC-TEXT-LIST-ITEM-001,
+    ]
+    root_cause_ids: [RC-GENERATOR-ARCH-ONLY]
+    product_ids: [fodt]
+    title: "Implement fodt spec table/list Python classes when compat.py switch is authorized"
+    lane: Lane-7 Python Product Healing
+    owner: Agent (gated on external authorization)
+    reviewer: Supervisor
+    status: BLOCKED_EXTERNAL  # blocked on compat.py switch authorization
+    objective: |
+      Implement Table, TableRow, TableCell, List, ListItem in fodt/spec/ following
+      the Paragraph pattern (fodt/spec/text/paragraph.py) once the compat.py switch
+      is authorized by Format Factory governance.
+    blocked_by: |
+      The files themselves say "Do not implement here until compat.py switch is ready."
+      The compat.py switch is an architecture governance decision, not an agent decision.
+    closeout_rules:
+      - "Each class has __init__, at least 3 properties, to_dict()"
+      - "No architecture_only marker in any implemented file"
+      - "Tests assert behavioral properties (not just spec_qname)"
+      - "compat.py imports from spec/ (not models.py) for these types"

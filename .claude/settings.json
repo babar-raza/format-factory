@@ -114,7 +114,10 @@
       "Bash(py -m pytest tests/python/toml_format/test_toml_gap_closure_batch.py::TestSetValue::test_sets_value -v)",
       "Bash(PYTHONIOENCODING=utf-8 .local/venv/Scripts/python tools/supervisor/check_continuation.py)",
       "Bash(where python)",
-      "Bash(echo \"EXIT:$?\")"
+      "Bash(echo \"EXIT:$?\")",
+      "Bash(echo \"EXIT: $?\")",
+      "Bash(.venv/Scripts/pytest tests/specification-authority-layer/test_gap_int_002_product_source_fact_refs.py -v --tb=short)",
+      "Bash(.venv/Scripts/pytest tests/python/fods/test_rnext_fods_numeric_cell_count_max_row.py -q --tb=short)"
     ],
     "deny": [
       "Write(.env)",

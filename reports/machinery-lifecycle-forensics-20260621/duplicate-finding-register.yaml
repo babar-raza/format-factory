@@ -1,0 +1,38 @@
+---
+# Duplicate Finding Register — Zesty Moseying Whale
+schema_version: "1.0"
+run_id: "zesty-moseying-whale"
+generated_at: "2026-06-21"
+
+# Any overlapping IDs or duplicate findings between this sprint and prior sprints.
+# Goal: avoid creating duplicate taskcards or IDs.
+
+duplicates_found:
+
+  - duplicate_id: "GOVBLOCK-VALIDATORS"
+    prior_id: "RC-006"
+    current_id: "GAP-WHALE-003"
+    resolution: >
+      RC-006 documents the root cause (GOV_BLOCK fires on infrastructure growth).
+      GAP-WHALE-003 documents the specific current risk (at exact cap).
+      These are related but distinct: RC-006 is the historical root cause;
+      GAP-WHALE-003 is the current preemptive risk state.
+      Both IDs preserved. GAP-WHALE-003 is a specialization of RC-006 for current state.
+    action: "Keep both IDs. TC-WHALE-GOVBLOCK-001 addresses GAP-WHALE-003."
+
+  - duplicate_id: "MISSION-LEDGER-ENFORCEMENT"
+    prior_id: "RC-004"
+    current_id: "GAP-WHALE-001"
+    resolution: >
+      RC-004 documents the structural root cause (no mission ledger enforcement in code).
+      GAP-WHALE-001 documents the specific missing piece (Check 1c in check_continuation.py).
+      RC-004 is REOPENED; GAP-WHALE-001 is the specific actionable item.
+      Both IDs preserved.
+    action: "TC-WHALE-LEDGER-001 closes both RC-004 and GAP-WHALE-001."
+
+no_duplicates_found_for:
+  - "TC-MACH-WF-001 (machinery_audit.py) — unique to iteration_3"
+  - "TC-SESSION-NONCE-001 (continuation_identity.py) — unique to commit 0d5b73ca"
+  - "TC-PLAN-LOCK-TRACK-TYPE-001 (write_plan_lock.py) — unique to commit f03234b0"
+  - "GAP-WF-004 — unique to machinery track plan lock gap"
+  - "GAP-WHALE-002 (Pilot H documentation gap) — new finding, no prior ID"

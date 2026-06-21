@@ -1,0 +1,113 @@
+{
+  "run_id": "spec-authority-machinery-explosion-20260621-827f5a52",
+  "generated_at": "2026-06-21",
+  "phases": [
+    {
+      "phase": "A",
+      "name": "Quick Wins",
+      "items": [
+        {
+          "id": "A1",
+          "title": "Fix CSV gap-ledger stale spec_facts",
+          "rca": "RCA-GAP-LEDGER-CSV-STALE",
+          "priority": "HIGH",
+          "status": "NOT_STARTED",
+          "file": "reports/capability-layer/gap-ledger.json",
+          "verification": "0 CSV gaps with non-empty spec_facts"
+        },
+        {
+          "id": "A2",
+          "title": "Switch SAL daily output to from_cache_only mode",
+          "rca": "RCA-SAL-DEFAULT-MODE",
+          "priority": "HIGH",
+          "status": "NOT_STARTED",
+          "file": "daily SAL generation script",
+          "verification": "0 bootstrap_only facts in sal-facts-latest.json"
+        },
+        {
+          "id": "A3",
+          "title": "Add authority_level to gap-ledger entries",
+          "rca": "RCA-GAP-LEDGER-NO-AUTH-LEVEL",
+          "priority": "MEDIUM",
+          "status": "NOT_STARTED",
+          "verification": "958/958 gap entries have authority_level field"
+        },
+        {
+          "id": "A4",
+          "title": "Add source filter to GAP-INT-002",
+          "rca": "RCA-GAP-INT-002-NO-SOURCE-CHECK",
+          "priority": "HIGH",
+          "status": "NOT_STARTED",
+          "file": "tests/specification-authority-layer/test_gap_int_002_product_source_fact_refs.py",
+          "verification": "All GAP-INT-002 tests pass with workbench_verified-only index"
+        },
+        {
+          "id": "A5",
+          "title": "Add workbench_count criterion to healing gate Lane 1",
+          "rca": "RCA-HEALING-GATE-DEPTH-001",
+          "priority": "MEDIUM",
+          "status": "NOT_STARTED",
+          "file": "tools/supervisor/check_system_healing_gate.py",
+          "verification": "fods_workbench_verified_count_positive appears in gate output"
+        }
+      ]
+    },
+    {
+      "phase": "B",
+      "name": "FODS Positive Pilot",
+      "items": [
+        {
+          "id": "B1",
+          "title": "TC-0021 FODS Req Pack Traceability Review",
+          "rca": "RCA-REQ-PACK-TC0021",
+          "priority": "MEDIUM",
+          "status": "PENDING"
+        },
+        {
+          "id": "B2",
+          "title": "FODS Proof Chain E2E Test",
+          "priority": "MEDIUM",
+          "status": "NOT_STARTED",
+          "description": "Create test_fods_proof_chain_p5.py"
+        }
+      ]
+    },
+    {
+      "phase": "C",
+      "name": "Medium-Term Enforcement",
+      "items": [
+        {
+          "id": "C1",
+          "title": "SAL → autonomous_cycle minimal integration",
+          "rca": "RCA-SUPERVISOR-GATES-001",
+          "priority": "CRITICAL",
+          "status": "NOT_STARTED"
+        },
+        {
+          "id": "C2",
+          "title": "Upgrade V46 to BLOCK mode",
+          "rca": "RCA-V46-WARN-ONLY",
+          "priority": "LOW",
+          "status": "BLOCKED_CONDITION",
+          "condition": "After 90% V46 adoption rate achieved"
+        },
+        {
+          "id": "C3",
+          "title": "Zero-fact format documentation in authority-debt-ledger.json",
+          "priority": "MEDIUM",
+          "status": "DONE_IN_PHASE_D"
+        }
+      ]
+    },
+    {
+      "phase": "D",
+      "name": "Future Gates",
+      "items": [
+        {"id": "D1", "title": "Add FODT QName registry", "priority": "MEDIUM", "status": "NOT_STARTED"},
+        {"id": "D2", "title": "Expand ZST workbench facts", "priority": "LOW", "status": "NOT_STARTED"},
+        {"id": "D3", "title": "Audit FODP/FODG/ODS/ODT fact provenance", "rca": "RCA-FODFAM-CHAIN", "priority": "MEDIUM", "status": "NOT_STARTED"}
+      ]
+    }
+  ],
+  "recommended_next_sprint": ["A1", "A2", "A4"]
+}

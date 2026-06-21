@@ -1,0 +1,126 @@
+{
+  "run_id": "spec-auth-inv-20260621-002",
+  "date": "2026-06-21",
+  "gaps": [
+    {
+      "gap_id": "GAP-SA-NEW-001",
+      "area": "SAL Output Integrity",
+      "severity": "Critical",
+      "priority": "P0",
+      "root_cause": "sal_master_runner.py single-format runs overwrite all-format sal-facts-latest.json",
+      "symptom": "test_gap_int_002 FAILS; V37 reads degraded file (94 facts); capability map degraded",
+      "broken_mechanism": "Filename collision: --format zst writes same sal-facts-latest.json as --all",
+      "repair": "Guard: only --all writes sal-facts-latest.json; single-format writes sal-facts-{format}.json only",
+      "pilot_rerun": true
+    },
+    {
+      "gap_id": "GAP-SA-NEW-002",
+      "area": "Governance Validator Consistency",
+      "severity": "High",
+      "priority": "P0",
+      "root_cause": "V37 reads .local/sal-output/sal-facts-latest.json; V47 reads .local/spec-cache/sal-facts-latest.json",
+      "symptom": "Split-brain: same declaration passes V47 but V37 sees different facts",
+      "broken_mechanism": "Dual-path SAL output with no synchronization or canonical designation",
+      "repair": "Canonicalize to one path; update both validators to use same source",
+      "pilot_rerun": true
+    },
+    {
+      "gap_id": "GAP-SA-NEW-003",
+      "area": "Anti-Bypass Protection",
+      "severity": "Medium",
+      "priority": "P1",
+      "root_cause": "spec_verifier.py not called in production SAL runner; only tested in isolation",
+      "symptom": "Corrupted workbench entry could emit verified fact without anti-bypass check",
+      "broken_mechanism": "Verification trusted at write time only; not enforced at SAL read time",
+      "repair": "Add spec_verifier call in _load_workbench_verified_facts(); reject no-source_id facts",
+      "pilot_rerun": true
+    },
+    {
+      "gap_id": "GAP-SA-NEW-004",
+      "area": "Source Acquisition Provenance",
+      "severity": "High",
+      "priority": "P1",
+      "root_cause": "No gate blocks PRODUCT_SOURCE tasks for formats with sha256_snapshot=null",
+      "symptom": "8/10 registered formats have no spec text; implementation uses zero or template facts",
+      "broken_mechanism": "T3 authorization ceremony not completed; no automated reminder/gate",
+      "repair": "Add validate_spec_source_acquired governance validator; WARN initially, BLOCK after grace",
+      "pilot_rerun": true
+    },
+    {
+      "gap_id": "GAP-SA-NEW-005",
+      "area": "End-to-End Traceability",
+      "severity": "High",
+      "priority": "P1",
+      "root_cause": "No tool harvests FACT-* source code comments and populates proof graph",
+      "symptom": "Gate 11 P1-P11 criteria verified by human code review, not machine-linkage",
+      "broken_mechanism": "graph_store.py implemented but never populated; tools/traceability/ does not exist",
+      "repair": "Write scan_fact_refs.py and populate_proof_graph.py; run in sprint closeout",
+      "pilot_rerun": true
+    },
+    {
+      "gap_id": "GAP-SA-NEW-006",
+      "area": "Autonomous Workflow Integration",
+      "severity": "Medium",
+      "priority": "P1",
+      "root_cause": "autonomous_task_generator.py uses require_spec_facts=False as permanent default",
+      "symptom": "Product tasks scheduled for formats with zero spec facts",
+      "broken_mechanism": "Gate exists but is permanently open",
+      "repair": "Tiered activation: require_spec_facts=True for formats with workbench coverage ≥50%",
+      "pilot_rerun": false
+    },
+    {
+      "gap_id": "GAP-SA-NEW-007",
+      "area": "Fact Quality / Verification Depth",
+      "severity": "Medium",
+      "priority": "P2",
+      "root_cause": "4913 auto-extracted EX facts stored in same bucket as 78 hand-curated behavioral facts",
+      "symptom": "Coverage metrics show 99.9% for FODS but most facts are structural enumeration, not behavioral requirements",
+      "broken_mechanism": "No fact_category field distinguishing behavioral from structural_enumeration",
+      "repair": "Add fact_category field; update coverage metrics; gate 11 requires behavioral coverage threshold",
+      "pilot_rerun": true
+    },
+    {
+      "gap_id": "GAP-SA-NEW-008",
+      "area": "Staleness Detection",
+      "severity": "Low",
+      "priority": "P2",
+      "root_cause": "refresh_check.py never called automatically; only a manual diagnostic tool",
+      "symptom": "Stale or hash-mismatched specs would go undetected indefinitely",
+      "broken_mechanism": "Detection mechanism exists but not wired into autonomous loop",
+      "repair": "Add refresh_check.py call to autonomous_cycle.py Step 0a",
+      "pilot_rerun": false
+    },
+    {
+      "gap_id": "GAP-SA-NEW-009",
+      "area": "Acquisition Pack Provenance",
+      "severity": "Medium",
+      "priority": "P2",
+      "root_cause": "source_hash field in acquisition pack templates never auto-populated from spec-index.yaml",
+      "symptom": "Acquisition packs cannot be traced to specific cached spec snapshot",
+      "broken_mechanism": "Missing tool to propagate sha256 from spec-index.yaml to pack files",
+      "repair": "Write propagate_source_hash.py; run as part of acquisition-pack finalization",
+      "pilot_rerun": false
+    },
+    {
+      "gap_id": "GAP-SA-NEW-010",
+      "area": "AI Governance",
+      "severity": "Low",
+      "priority": "P3",
+      "root_cause": "authority_lifecycle.py 12-state machine not wired into workbench population",
+      "symptom": "Auto-extracted facts carry 'verified' status without lifecycle provenance",
+      "broken_mechanism": "Two parallel fact-quality systems (workbench verification_status and AI lifecycle) not connected",
+      "repair": "Add lifecycle_state field to workbench schema; wire authority_lifecycle.py into build_spec_workbench.py",
+      "pilot_rerun": false
+    }
+  ],
+  "summary": {
+    "critical": 1,
+    "high": 3,
+    "medium": 4,
+    "low": 2,
+    "p0_repairs": 2,
+    "p1_repairs": 4,
+    "p2_repairs": 3,
+    "p3_repairs": 1
+  }
+}

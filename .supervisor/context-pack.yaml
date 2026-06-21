@@ -1,41 +1,33 @@
 schema_version: '1.0'
-generated_at: '2026-06-21T21:12:13.390727'
+generated_at: '2026-06-21T22:10:17.049993'
 repo_root: C:\Users\prora\OneDrive\Documents\GitHub\format-factory
 git:
-  head: 3024f68c
+  head: ed51041f
   status:
-    modified_count: 29
-    untracked_count: 4
+    modified_count: 73
+    untracked_count: 56
     staged_count: 1
-    total_changed: 34
+    total_changed: 138
     clean: false
 supervisor_mode: 4
 latest_sprint:
-  sprint_id: sal-autonomous-audit-20260621
+  sprint_id: autonomous-loop-20260621-223000-ed51041f
   run_id: unknown
-  autonomous_continue: false
-  iteration: 12
+  autonomous_continue: true
+  iteration: 6
   max_iterations: 12
-  hard_stops:
-  - critical_rework_blocks_continuation
-  - max_iterations_reached
-  rework_items:
-  - GOV_BLOCK:execution_method_required_validator
-  - GOV_BLOCK:source_diff_required_validator
-  - GOV_BLOCK:idempotency_key_required_validator
-  - GOV_BLOCK:route_decision_required_validator
-  - GOV_BLOCK:monolith_detection_validator
-  - LANE_ENFORCEMENT:1_violations
+  hard_stops: []
+  rework_items: []
 poc_matrix:
   sprint: capability-layer-closeout-rnext
   last_updated: '2026-06-18'
   commercial_net_products:
     FODS:
-      dotnet_tests: 547
+      dotnet_tests: 618
       gate_11_status: APPROVED_BY_BABAR_RAZA_2026_06_05
       commercial_ready: false
     FODT:
-      dotnet_tests: 520
+      dotnet_tests: 568
       gate_11_status: APPROVED_BY_BABAR_RAZA_2026_06_05
       commercial_ready: false
     Netpbm:
@@ -93,8 +85,8 @@ skill_registry:
   source_edits_require_handoff: true
   ledger_required: true
 product_code_ledger:
-  total_entries: 948
-  governed_changes: 782
+  total_entries: 957
+  governed_changes: 783
   backfilled: 4
   ledger_path: reports\r90\product-code-change-ledger.json
 mcp_status:

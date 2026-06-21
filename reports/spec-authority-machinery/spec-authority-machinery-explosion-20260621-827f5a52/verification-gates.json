@@ -1,0 +1,40 @@
+{
+  "run_id": "spec-authority-machinery-explosion-20260621-827f5a52",
+  "generated_at": "2026-06-21",
+  "verification_checks": [
+    {"id": "VC-SAL-001", "category": "SAL Pipeline", "description": "sal-facts-latest.json exists and fresh", "expected": "fresh", "actual": "PASS"},
+    {"id": "VC-SAL-002", "category": "SAL Pipeline", "description": "FODS workbench_verified_fact_count >= 4000", "expected": ">=4000", "actual": 4987, "status": "PASS"},
+    {"id": "VC-SAL-003", "category": "SAL Pipeline", "description": "FODT workbench_verified_fact_count >= 1000", "expected": ">=1000", "actual": 4933, "status": "PASS"},
+    {"id": "VC-SAL-004", "category": "SAL Pipeline", "description": "Gnumeric workbench_verified_fact_count == 0", "expected": 0, "actual": 0, "status": "PASS"},
+    {"id": "VC-SAL-005", "category": "SAL Pipeline", "description": "ABW workbench_verified_fact_count == 0", "expected": 0, "actual": 0, "status": "PASS"},
+    {"id": "VC-SAL-006", "category": "SAL Pipeline", "description": "SAL daily output uses from_cache_only=True (0 bootstrap_only)", "expected": 0, "actual": 22, "status": "FAIL", "rca": "RCA-SAL-DEFAULT-MODE"},
+    {"id": "VC-GAP-001", "category": "Gap-Ledger", "description": "ABW gap entries spec_facts == []", "expected": "all empty", "actual": "PASS", "status": "PASS"},
+    {"id": "VC-GAP-002", "category": "Gap-Ledger", "description": "Gnumeric gap entries spec_facts == []", "expected": "all empty", "actual": "PASS", "status": "PASS"},
+    {"id": "VC-GAP-003", "category": "Gap-Ledger", "description": "CSV gap entries spec_facts empty or all IDs in SAL", "expected": "all valid", "actual": "116 stale", "status": "FAIL", "rca": "RCA-GAP-LEDGER-CSV-STALE"},
+    {"id": "VC-GAP-004", "category": "Gap-Ledger", "description": "authority_level field on all gap entries", "expected": 958, "actual": 0, "status": "FAIL", "rca": "RCA-GAP-LEDGER-NO-AUTH-LEVEL"},
+    {"id": "VC-GATE-001", "category": "Enforcement Gates", "description": "TC-GUARD-001 BLOCK mode", "expected": "BLOCK", "actual": "BLOCK", "status": "PASS"},
+    {"id": "VC-GATE-002", "category": "Enforcement Gates", "description": "V45 BLOCK mode", "expected": "BLOCK", "actual": "BLOCK", "status": "PASS"},
+    {"id": "VC-GATE-003", "category": "Enforcement Gates", "description": "V47 BLOCK mode", "expected": "BLOCK", "actual": "BLOCK", "status": "PASS"},
+    {"id": "VC-GATE-004", "category": "Enforcement Gates", "description": "V46 BLOCK mode", "expected": "BLOCK", "actual": "WARN", "status": "FAIL", "rca": "RCA-V46-WARN-ONLY"},
+    {"id": "VC-GATE-005", "category": "Enforcement Gates", "description": "autonomous_cycle reads SAL facts", "expected": "reads SAL", "actual": "NOT CONNECTED", "status": "FAIL", "rca": "RCA-SUPERVISOR-GATES-001"},
+    {"id": "VC-INT-001", "category": "GAP-INT-002", "description": "SAL index filtered to workbench_verified only", "expected": "filter present", "actual": "no filter", "status": "FAIL", "rca": "RCA-GAP-INT-002-NO-SOURCE-CHECK"},
+    {"id": "VC-INT-002", "category": "GAP-INT-002", "description": "test asserts Gnumeric SAL count == 0", "expected": "assertion present", "actual": "absent", "status": "FAIL", "rca": "RCA-GAP-INT-002-COVERAGE"},
+    {"id": "VC-INT-003", "category": "GAP-INT-002", "description": "test asserts ABW SAL count == 0", "expected": "assertion present", "actual": "absent", "status": "FAIL", "rca": "RCA-GAP-INT-002-COVERAGE"},
+    {"id": "VC-INT-004", "category": "GAP-INT-002", "description": "FODS/FODT/ZST fact count checks pass", "expected": "PASS", "actual": "PASS", "status": "PASS"},
+    {"id": "VC-FODS-001", "category": "FODS Proof Chain", "description": "FACT-FODS-006 in SAL with source==workbench_verified", "expected": "YES", "actual": "YES", "status": "PASS"},
+    {"id": "VC-FODS-002", "category": "FODS Proof Chain", "description": "table_cell.py spec_fact_ref == FACT-FODS-006", "expected": "MATCH", "actual": "MATCH", "status": "PASS"},
+    {"id": "VC-FODS-003", "category": "FODS Proof Chain", "description": "fods.yaml maps table:table-cell to FACT-FODS-006", "expected": "MAPPED", "actual": "MAPPED", "status": "PASS"},
+    {"id": "VC-FODS-004", "category": "FODS Proof Chain", "description": "neutral_model.py cites FACT-FODS-001", "expected": "CITED", "actual": "CITED", "status": "PASS"},
+    {"id": "VC-FODS-005", "category": "FODS Proof Chain", "description": "TC-0021 req-pack traceability verified", "expected": "ALL TRACED", "actual": "PENDING", "status": "PENDING"},
+    {"id": "VC-HEAL-001", "category": "Healing Gate", "description": "Lane 1 checks workbench_verified_count > 0", "expected": "criterion present", "actual": "absent", "status": "FAIL", "rca": "RCA-HEALING-GATE-DEPTH-001"},
+    {"id": "VC-HEAL-002", "category": "Healing Gate", "description": "Healing gate passes in current state", "expected": "PASS", "actual": "PASS", "status": "PASS"},
+    {"id": "VC-HEAL-003", "category": "Healing Gate", "description": "Healing gate mode is ENFORCING", "expected": "ENFORCING", "actual": "ADVISORY", "status": "FAIL", "rca": "RCA-HEALING-GATE-ADVISORY"}
+  ],
+  "summary": {
+    "total": 27,
+    "pass": 16,
+    "fail": 10,
+    "pending": 1,
+    "pass_rate_pct": 59
+  }
+}

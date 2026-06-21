@@ -32,10 +32,10 @@ class TestAbwHasPunctuation:
     def test_consistent_across_calls(self):
         assert abw_has_punctuation(_EMPTY) == abw_has_punctuation(_EMPTY)
 
-    def test_raises_for_minimal_document(self):
-        with pytest.raises((AttributeError, Exception)):
-            abw_has_punctuation(_MINIMAL)
+    def test_false_for_minimal_document(self):
+        # minimal-document.abw has 'Hello' with no punctuation
+        assert abw_has_punctuation(_MINIMAL) is False
 
-    def test_raises_for_two_paragraphs(self):
-        with pytest.raises((AttributeError, Exception)):
-            abw_has_punctuation(_TWO)
+    def test_true_for_two_paragraphs(self):
+        # two-paragraphs.abw has 'First paragraph.' with periods
+        assert abw_has_punctuation(_TWO) is True

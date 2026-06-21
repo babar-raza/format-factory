@@ -1,0 +1,51 @@
+{
+  "pilot_id": "CAP-PILOT-A002",
+  "format": "QOI",
+  "product_type": "foss_reduced",
+  "authority_inputs": [
+    "reports/capability-layer/foss-reduced-capability-map.json (source scan discovery)",
+    "tests/python/qoi/ (545 passing tests discovered)"
+  ],
+  "source_files_inspected": [
+    "src/python/qoi/"
+  ],
+  "tests_inspected": 545,
+  "examples_inspected": "None",
+  "generated_capability_records": {
+    "count": 8,
+    "sample": "load_qoi, probe_qoi, decode_qoi, encode_qoi, get_dimensions, export_to_png"
+  },
+  "generated_gap_entries": {
+    "count": 2,
+    "summary": "2 QOI functions detected missing dedicated test functions via AST scan"
+  },
+  "taskcards_created_or_updated": [],
+  "validator_result": {
+    "exit_code": 2,
+    "summary": "PASS advisory warnings only"
+  },
+  "test_result": {
+    "pass_count": 545,
+    "fail_count": 0,
+    "log_path": "tests/python/qoi/"
+  },
+  "manual_agent_verification_result": {
+    "artifacts_opened": [
+      "src/python/qoi/"
+    ],
+    "key_checks": [
+      "545 QOI tests pass (32 collection errors in analytics stub files — suspended rotation)",
+      "QOI implemented in Python FOSS — better than NOT_ENOUGH_AUTHORITY_DATA",
+      "NOT in poc-targets.yaml foss_reduced_products (acquisition path not yet formalized)",
+      "Gates 1-7 partially satisfied by test coverage evidence"
+    ],
+    "result": "VERIFIED with limitations"
+  },
+  "contradictions_found": [
+    "LIMITATION: QOI not in poc-targets.yaml foss_reduced_products despite being implemented",
+    "LIMITATION: 32 collection errors in analytics stub files (suspended rotation)"
+  ],
+  "repairs_performed": [],
+  "final_verdict": "PASS_WITH_LIMITATIONS",
+  "verdict_reason": "QOI FOSS implemented with 545 passing tests. Not yet in poc-targets.yaml. Acquisition formalization needed. Analytics stubs from suspended rotation cause collection errors."
+}

@@ -1,16 +1,14 @@
 # Approval Gates Classification
-Sprint ID: autonomous-loop-20260621-205610-827f5a52
-Generated: 2026-06-21T21:12:13.362100
+Sprint ID: post-recon-repair-gate11-20260621
+Generated: 2026-06-21T22:11:21.344770
 Current Mode: MODE 4 (ACTIVE_MCP_ACTIVATION)
 
 ## Pending Actions
 
 | Action | Classification | Who Unblocks |
 |--------|---------------|-------------|
-| Continue to next sprint lanes | autonomous-continue | null |
-| Gate approval (if any gate pending) | stop-gate-approval-required | Babar_Raza |
-| Push/commit | stop-push-approval-required | User |
-| MCP activation (MODE 4 ACTIVE — .vscode/mcp.json verified present) | autonomous-continue | already-done |
+| Repair 1 CRITICAL contradictions | local-repair-loop | Claude_Code |
+| Continue to next sprint | stop-contradictions-present | Claude_Code (after repair) |
 
 ## Summary
 - AUTONOMOUS_CONTINUE: NO — repair required first

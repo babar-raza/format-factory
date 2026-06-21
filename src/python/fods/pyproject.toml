@@ -4,11 +4,12 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "format-factory-fods-python"
-version = "0.1.0.dev0"
+version = "0.1.0"
 description = "Format Factory FODS (Flat OpenDocument Spreadsheet) FOSS Python parser and writer"
 license = {text = "Apache-2.0"}
 requires-python = ">=3.9"
 
 [tool.setuptools.packages.find]
-where = [".."]
+where = ["."]
 include = ["fods*"]
+exclude = ["fods.build*"]

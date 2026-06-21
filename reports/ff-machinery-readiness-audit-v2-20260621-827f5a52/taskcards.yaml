@@ -1,0 +1,190 @@
+schema_version: "1.0"
+sprint_id: ff-machinery-readiness-audit-v2-20260621-827f5a52
+generated_at: "2026-06-21"
+
+taskcards:
+
+  - taskcard_id: TC-FODS-TEST-FIX-001
+    title: Delete or stub 32 FODS analytics test files that fail collection
+    lane: Product
+    status: OPEN
+    severity: Blocker
+    allowed_paths:
+      - tests/python/fods/test_r273_*.py
+      - tests/python/fods/test_r274_*.py
+      - tests/python/fods/test_r284_*.py
+      - tests/python/fods/test_r286_*.py
+      - tests/python/fods/test_r289_*.py
+      - tests/python/fods/test_r290*.py
+      - tests/python/fods/test_r299_*.py
+      - tests/python/fods/test_r300_*.py
+      - tests/python/fods/test_r305_*.py
+      - tests/python/fods/test_r307_*.py
+      - tests/python/fods/test_r314_*.py
+      - tests/python/fods/test_r319_*.py
+      - tests/python/fods/test_r337_*.py
+      - tests/python/fods/test_r355_*.py
+      - tests/python/fods/test_r373_*.py
+      - tests/python/fods/test_r374_*.py
+    forbidden_paths:
+      - tests/python/fods/test_r42_deepening.py
+      - tests/python/fods/test_r47_writer_hardening.py
+      - tests/python/fods/test_r53_formula_preservation.py
+    purpose: Unblock pytest collection for all FODS tests
+    problem: 32 test files import analytics functions (fods_cell_value_variance etc.) that do not exist
+    root_cause: SYLK analytics tests were cleaned up but FODS analytics tests were left stranded when rotation was suspended
+    required_change: Delete all 32 files OR catalog them in known-failure-ledger.yaml and skip
+    steps:
+      - 1. Confirm each failing test imports a missing analytics function
+      - 2. Check known-failure-ledger.yaml for existing entries; add if missing
+      - 3. Delete the 32 files (preferred, per SYLK precedent)
+      - 4. Run pytest tests/python/fods/ — verify 0 collection errors
+    tests: pytest tests/python/fods/ shows 0 errors, existing 44 tests still pass
+    evidence_required: test run output showing 0 errors
+    closeout_criteria: pytest tests/python/fods/ exits 0 with 0 collection errors
+    dependencies: none
+    gate_impact: FODS Python prerequisite for Gate 11 packet
+    product_impact: FODS Python test suite health
+    machinery_impact: LOW
+
+  - taskcard_id: TC-FODS-COMMIT-001
+    title: Commit FODS Compat/ facades and neutral_model.py changes
+    lane: Product
+    status: OPEN — requires explicit user authorization (git commit)
+    severity: High
+    allowed_paths:
+      - src/python/fods/Compat/
+      - src/python/fods/neutral_model.py
+      - registry/source-structure-baseline.json
+      - tools/supervisor/governance_validators.py
+      - tools/supervisor/governance_validator_runner.py
+      - tests/specification-authority-layer/test_qname_structure_validator.py
+      - tests/supervisor/test_governance_validators.py
+    purpose: Persist all uncommitted sprint work into git history
+    problem: Six modified files and one untracked directory (Compat/) are at risk of loss
+    required_change: Stage and commit files with authorized message
+    steps:
+      - 1. User authorizes commit
+      - 2. Stage specific files (do NOT use git add -A)
+      - 3. git commit with appropriate message
+      - 4. Verify git status is clean
+    closeout_criteria: git status shows working tree clean (except known untracked reports/)
+    dependencies: User authorization
+    gate_impact: Required before Gate 11 packet submission
+    product_impact: FODS Python library completeness
+
+  - taskcard_id: TC-FODS-G11-PREP-001
+    title: Complete FODS Python Gate 11 readiness packet
+    lane: Product
+    status: OPEN
+    severity: High
+    allowed_paths:
+      - reports/supervisor/fods-gate11-readiness.md
+      - .local/evidences/fods-g11-{run_id}/
+    purpose: Prepare Gate 11 commercial readiness documentation for FODS Python
+    problem: FODS .NET has G11-G approved; FODS Python Gate 11 packet not submitted
+    required_change: >
+      Read reports/supervisor/fods-gate11-readiness.md.
+      Complete each P1-P11 criterion from docs/commercial-gate11/ criteria.
+      Package evidence bundle.
+    tests: All P1-P11 criteria marked PASS or NOT_APPLICABLE with evidence
+    closeout_criteria: Gate 11 packet ready for Babar Raza review
+    dependencies: TC-FODS-TEST-FIX-001 (test suite clean)
+    gate_impact: Gate 11 G11-G EXECUTION (TRUE_EXTERNAL_GATE — requires Babar Raza)
+
+  - taskcard_id: TC-SAL-VERIFY-001
+    title: Segregate auto-seeded SAL facts from independently verified facts
+    lane: Machinery
+    status: OPEN
+    severity: High
+    allowed_paths:
+      - .local/spec-cache/fods/1.3/workbench/verified-facts-review.yaml
+      - tools/specification-authority-layer/sal_master_runner.py
+    purpose: Distinguish proven spec facts from auto-seeded claims
+    problem: 4991 FODS facts labeled verified=True by TCA-010 auto-seed downgrade pass; only 78 were independently verified
+    required_change: >
+      Add fact_type field: verified_independent | auto_seeded | template
+      Set auto-seeded facts to pending_verification
+      Add count of each type to SAL output header
+    tests: SAL output shows correct fact_type distribution
+    evidence_required: SAL test confirms fact_type field present and counts accurate
+    closeout_criteria: verified_independent count >= 78; auto_seeded count clearly labeled
+    dependencies: none
+    gate_impact: SAL quality signals for Gate 11 spec_fact_refs validation
+
+  - taskcard_id: TC-CAPABILITY-COMPILER-001
+    title: Wire capability_compiler.py to read workbench SAL facts
+    lane: Machinery
+    status: OPEN
+    severity: Medium
+    allowed_paths:
+      - tools/supervisor/capability_compiler.py
+    purpose: Connect the capability-to-feature compiler to real spec facts
+    problem: capability_compiler.py reads .local/sal-output/sal-facts-latest.json (template path); workbench facts are at .local/spec-cache/sal-facts-{format}.json
+    required_change: Update SAL_OUTPUT_PATH or add fallback to workbench cache path
+    tests: Running compiler with --format FODS loads >= 78 workbench-verified facts
+    closeout_criteria: Compiler loads FACT-FODS-NNN IDs from workbench cache
+    dependencies: none
+    gate_impact: Enables SAL-backed capability compilation
+
+  - taskcard_id: TC-SKILL-QNAME-001
+    title: Add QName requirement to product-generating skill prompts
+    lane: Machinery
+    status: OPEN
+    severity: Medium
+    allowed_paths:
+      - .claude/commands/add-python-api.md
+      - .claude/commands/add-dotnet-api.md
+      - .claude/commands/add-python-object-model-feature.md
+      - .claude/commands/add-dotnet-object-model-feature.md
+    purpose: Prevent product skills from generating non-QName-structured classes
+    problem: Product skills can generate format-prefixed class names without any enforcement
+    required_change: >
+      Add to each skill prompt:
+        "All new model/spec classes MUST have spec_qname = '<namespace:element>' attribute
+         and live under src/{format}/spec/{namespace}/{element}.py"
+      Add note: "Format-prefixed names (FodsCell) are ONLY for Compat/ facades"
+    tests: Skill dry-run output includes spec_qname in generated class
+    closeout_criteria: Skill transcript shows spec_qname in generated code
+    dependencies: none
+
+  - taskcard_id: TC-BACKFILL-001
+    title: Implement backfill inventory tool for FODS Python
+    lane: Machinery
+    status: OPEN
+    severity: Medium
+    allowed_paths:
+      - tools/backfill/
+      - tools/backfill/backfill_inventory.py
+    purpose: Mechanically map existing src/python/fods/ classes to spec qnames
+    problem: neutral_model.py and models.py use invented names not matching spec/ hierarchy
+    required_change: >
+      Create tools/backfill/backfill_inventory.py:
+        - Scans src/{format}/ for all class definitions
+        - For each class: reports current name, suggested spec_qname, suggested migration path
+        - Outputs YAML inventory
+      Pilot with FODS only
+    tests: backfill_inventory.py --format fods outputs YAML with class list and suggested qnames
+    closeout_criteria: FODS inventory YAML exists with >= 5 classes mapped
+    dependencies: none
+    can_defer: yes
+
+  - taskcard_id: TC-FODT-G11-PREP-001
+    title: Complete FODT Gate 11 readiness packet
+    lane: Product
+    status: OPEN
+    severity: Medium
+    purpose: Prepare Gate 11 commercial readiness for FODT (both .NET and Python)
+    required_change: Same as TC-FODS-G11-PREP-001 but for FODT criteria
+    closeout_criteria: Gate 11 packet ready for Babar Raza review
+    dependencies: None (can proceed in parallel with FODS)
+
+  - taskcard_id: TC-GIT-COMMIT-001
+    title: User authorization required for git commit of sprint work
+    lane: Shared
+    status: BLOCKED_EXTERNAL_GATE
+    severity: Medium
+    purpose: Persist all dirty sprint work
+    problem: git commit requires explicit user authorization
+    blocker: User must say "commit" or equivalent
+    note: This is a TRUE_EXTERNAL_GATE for git commit execution

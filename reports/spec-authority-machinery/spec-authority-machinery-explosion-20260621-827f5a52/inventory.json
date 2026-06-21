@@ -1,0 +1,80 @@
+{
+  "run_id": "spec-authority-machinery-explosion-20260621-827f5a52",
+  "generated_at": "2026-06-21",
+  "plan_target_head": "827f5a52",
+  "execution_head": "ed51041f",
+  "branch": "main",
+  "categories": {
+    "sal_pipeline_tools": {
+      "count": 20,
+      "active": true,
+      "key_file": "tools/specification-authority-layer/sal_master_runner.py",
+      "notes": "Default mode mixes template+workbench; from_cache_only=True is clean"
+    },
+    "sal_output_artifacts": {
+      "sal_facts_latest": {
+        "path": ".local/sal-output/sal-facts-latest.json",
+        "generated_at": "2026-06-21T21:28:38",
+        "mode": "DEFAULT (not from_cache_only)",
+        "total_facts": 14284,
+        "fods_total": 5009,
+        "fods_workbench_verified": 4987,
+        "fods_bootstrap_only": 22,
+        "fodt_workbench_verified": 4933,
+        "zst_workbench_verified": 94,
+        "gnumeric_workbench_verified": 0,
+        "abw_workbench_verified": 0,
+        "csv_workbench_verified": 0
+      },
+      "workbench_fods": ".local/spec-cache/fods/1.3/workbench/verified-facts-review.yaml",
+      "req_packs": [
+        ".local/spec-cache/fods/1.3/workbench/requirement-packs/parser-requirements.yaml",
+        ".local/spec-cache/fods/1.3/workbench/requirement-packs/model-requirements-draft.yaml",
+        ".local/spec-cache/fods/1.3/workbench/requirement-packs/sample-requirements.yaml"
+      ],
+      "req_pack_tc0021_review": "PENDING"
+    },
+    "gap_ledger": {
+      "path": "reports/capability-layer/gap-ledger.json",
+      "total_entries": 958,
+      "entries_with_authority_level": 0,
+      "entries_with_stale_spec_facts": 58,
+      "stale_format": "CSV",
+      "stale_fact_ids": ["FACT-CSV-001", "FACT-CSV-002"],
+      "stale_ref_count": 116,
+      "abw_entries": 50,
+      "abw_stale": 0,
+      "gnumeric_entries": 36,
+      "gnumeric_stale": 0
+    },
+    "spec_stubs": {
+      "fods_path": "src/python/fods/spec/",
+      "fods_count": 12,
+      "fods_status": "architecture_only",
+      "fodt_path": "src/python/fodt/spec/",
+      "fodt_status": "partial"
+    },
+    "qname_registry": {
+      "fods_path": "shared/qname-registry/fods.yaml",
+      "fods_qname_count": 12,
+      "fods_status": "architecture_only",
+      "fodt_path": null
+    },
+    "governance": {
+      "autonomous_cycle": "tools/supervisor/autonomous_cycle.py",
+      "governance_validators": "tools/supervisor/governance_validators.py",
+      "governance_validator_count": 38,
+      "healing_gate": "tools/supervisor/check_system_healing_gate.py",
+      "tc_guard_001_mode": "BLOCK",
+      "v45_mode": "BLOCK",
+      "v46_mode": "WARN",
+      "v47_mode": "BLOCK",
+      "healing_gate_mode": "ADVISORY"
+    },
+    "tests": {
+      "gap_int_002": "tests/specification-authority-layer/test_gap_int_002_product_source_fact_refs.py",
+      "sal_idempotency": "tests/specification-authority-layer/test_sal_runner_idempotency.py",
+      "tc_guard_001": "tests/supervisor/test_tc_guard_001_enforce.py"
+    }
+  }
+}

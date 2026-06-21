@@ -1,0 +1,53 @@
+{
+  "pilot_id": "CAP-PILOT-E002",
+  "format": "FODG",
+  "product_type": "foss_reduced",
+  "authority_inputs": [
+    "product-capability-matrix/poc-targets.yaml (foss_reduced_products.FODG)",
+    "reports/capability-layer/foss-reduced-capability-map.json (sprint CAPABILITY-LAYER-HEALING-20260621-ed51041)",
+    "reports/capability-layer/gap-ledger.json (FODG gaps)"
+  ],
+  "source_files_inspected": [
+    "src/python/fodg/fodg_codec.py",
+    "src/python/fodg/fodg_analytics.py"
+  ],
+  "tests_inspected": 4407,
+  "examples_inspected": "None",
+  "generated_capability_records": {
+    "count": 10,
+    "sample": "load, probe_fodg, get_page_count, create_fodg, write_fodg, export_to_txt"
+  },
+  "generated_gap_entries": {
+    "count": 1,
+    "summary": "AST-level detection found 1 FODG function without dedicated test function"
+  },
+  "taskcards_created_or_updated": [],
+  "validator_result": {
+    "exit_code": 2,
+    "summary": "PASS advisory warnings only"
+  },
+  "test_result": {
+    "pass_count": 4407,
+    "fail_count": 0,
+    "log_path": "tests/python/fodg/"
+  },
+  "manual_agent_verification_result": {
+    "artifacts_opened": [
+      "src/python/fodg/fodg_codec.py",
+      "src/python/fodg/fodg_analytics.py"
+    ],
+    "key_checks": [
+      "4407 FODG tests pass",
+      "AST gap detection found 1 function without dedicated test function",
+      "FODG feature expansion (create_fodg, write_fodg, export_to_txt) verified from E001",
+      "Analytics split into fodg_analytics.py (3214 LOC) — healed"
+    ],
+    "result": "VERIFIED"
+  },
+  "contradictions_found": [],
+  "repairs_performed": [
+    "RC-4: AST-level gap detection now finds 1 FODG gap not caught by file-name heuristics"
+  ],
+  "final_verdict": "PASS_VERIFIED",
+  "verdict_reason": "FODG feature expansion from E001 verified current. 4407 tests pass. AST detection finds 1 additional gap."
+}

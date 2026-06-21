@@ -1,0 +1,766 @@
+---
+# Zero-Stub Production-Readiness Audit
+# Format Factory — Stable Stub Finding Registry
+# Mission ID: ZERO-STUB-AUDIT-20260621
+# Generated: 2026-06-21
+# Scope: All production source — src/python/, src/net/, tools/, skills/, tests/
+# Protocol: Protocol v1.0 (25-section zero-stub protocol)
+
+meta:
+  run_id: zero-stub-audit-20260621
+  investigator: claude-sonnet-4-6
+  repo: c:/Users/prora/OneDrive/Documents/GitHub/format-factory
+  branch: main
+  head: ed51041f
+  date: 2026-06-21
+
+findings:
+  # ──────────────────────────────────────────────────────────────────────────
+  # FINDING GROUP 1: Python FODT spec/ architecture_only stubs
+  # Classification: SKELETON_PRESENTED_AS_COMPLETE
+  # Severity: MODERATE (not in public API; not production-runtime-reachable)
+  # ──────────────────────────────────────────────────────────────────────────
+
+  - finding_id: STUB-PY-FODT-SPEC-TABLE-CELL-001
+    path: src/python/fodt/spec/table/table_cell.py
+    line_or_symbol: "class TableCell"
+    language: python
+    product_or_component: fodt
+    layer: spec_architecture
+    matched_indicator: "GENERATED — architecture_only / TODO: implement"
+    semantic_behavior: |
+      Empty class with only class-level attributes (spec_qname, spec_fact_ref).
+      No __init__, no methods, no properties. Any caller gets an empty object.
+    runtime_reachable: false
+    public_api_reachable: false
+    packaged: false
+    capability_claim_affected: "FACT-FODT-007 (table:table-cell spec mapping)"
+    tests_covering_it:
+      - tests/python/fodt/test_spec_qname_stubs.py::test_table_cell_importable
+    current_evidence: []
+    classification: SKELETON_PRESENTED_AS_COMPLETE
+    severity: MODERATE
+    owner_lane: Lane-7 (Python product healing)
+    root_cause_id: RC-GENERATOR-ARCH-ONLY
+    required_action: |
+      Implement TableCell with at minimum: value_type, value, text, formula,
+      repeated, style_name attributes matching table:table-cell spec contract.
+      Update test to assert behavioral properties, not just importability.
+
+  - finding_id: STUB-PY-FODT-SPEC-TABLE-ROW-001
+    path: src/python/fodt/spec/table/table_row.py
+    line_or_symbol: "class TableRow"
+    language: python
+    product_or_component: fodt
+    layer: spec_architecture
+    matched_indicator: "GENERATED — architecture_only / TODO: implement"
+    semantic_behavior: |
+      Empty class — spec_qname + spec_fact_ref attributes only.
+      No behavior.
+    runtime_reachable: false
+    public_api_reachable: false
+    packaged: false
+    capability_claim_affected: "FACT-FODT-007 (table:table-row)"
+    tests_covering_it: []
+    current_evidence: []
+    classification: SKELETON_PRESENTED_AS_COMPLETE
+    severity: MODERATE
+    owner_lane: Lane-7 (Python product healing)
+    root_cause_id: RC-GENERATOR-ARCH-ONLY
+    required_action: |
+      Implement TableRow with: cells iterator, row index, style_name.
+      Add behavioral test.
+
+  - finding_id: STUB-PY-FODT-SPEC-TABLE-TABLE-001
+    path: src/python/fodt/spec/table/table.py
+    line_or_symbol: "class Table"
+    language: python
+    product_or_component: fodt
+    layer: spec_architecture
+    matched_indicator: "GENERATED — architecture_only / TODO: implement"
+    semantic_behavior: Empty class — spec_qname + spec_fact_ref only.
+    runtime_reachable: false
+    public_api_reachable: false
+    packaged: false
+    capability_claim_affected: "FACT-FODT-007 (table:table)"
+    tests_covering_it: []
+    current_evidence: []
+    classification: SKELETON_PRESENTED_AS_COMPLETE
+    severity: MODERATE
+    owner_lane: Lane-7 (Python product healing)
+    root_cause_id: RC-GENERATOR-ARCH-ONLY
+    required_action: |
+      Implement Table with: name, rows, row_count, cells iterator.
+      Add behavioral test.
+
+  - finding_id: STUB-PY-FODT-SPEC-TEXT-LIST-001
+    path: src/python/fodt/spec/text/list_.py
+    line_or_symbol: "class List"
+    language: python
+    product_or_component: fodt
+    layer: spec_architecture
+    matched_indicator: "GENERATED — architecture_only / TODO: implement"
+    semantic_behavior: Empty class — spec_qname + spec_fact_ref only.
+    runtime_reachable: false
+    public_api_reachable: false
+    packaged: false
+    capability_claim_affected: "FACT-FODT-005 (text:list)"
+    tests_covering_it: []
+    current_evidence: []
+    classification: SKELETON_PRESENTED_AS_COMPLETE
+    severity: MODERATE
+    owner_lane: Lane-7 (Python product healing)
+    root_cause_id: RC-GENERATOR-ARCH-ONLY
+    required_action: |
+      Implement List with: items, depth, list_style.
+      Add behavioral test.
+
+  - finding_id: STUB-PY-FODT-SPEC-TEXT-LIST-ITEM-001
+    path: src/python/fodt/spec/text/list_item.py
+    line_or_symbol: "class ListItem"
+    language: python
+    product_or_component: fodt
+    layer: spec_architecture
+    matched_indicator: "GENERATED — architecture_only / TODO: implement"
+    semantic_behavior: Empty class — spec_qname + spec_fact_ref only.
+    runtime_reachable: false
+    public_api_reachable: false
+    packaged: false
+    capability_claim_affected: "FACT-FODT-005 (text:list-item)"
+    tests_covering_it: []
+    current_evidence: []
+    classification: SKELETON_PRESENTED_AS_COMPLETE
+    severity: MODERATE
+    owner_lane: Lane-7 (Python product healing)
+    root_cause_id: RC-GENERATOR-ARCH-ONLY
+    required_action: |
+      Implement ListItem with: text, level, items, kind.
+      Add behavioral test.
+
+  # ──────────────────────────────────────────────────────────────────────────
+  # FINDING GROUP 2: FODS Compat/ facades inheriting from empty spec classes
+  # Classification: SKELETON_PRESENTED_AS_COMPLETE (Compat layer is empty)
+  # Severity: LOW (real implementations exist in fods/models.py; not in __all__)
+  # ──────────────────────────────────────────────────────────────────────────
+
+  - finding_id: STUB-PY-FODS-COMPAT-CELL-001
+    path: src/python/fods/Compat/fods_cell.py
+    line_or_symbol: "class FodsCell(_SpecTableCell)"
+    language: python
+    product_or_component: fods
+    layer: compat_facade
+    matched_indicator: |
+      Inherits from architecture-only spec class (TableCell from fods/spec/table/table_cell.py).
+      FodsCell has no methods; _SpecTableCell has no methods.
+    semantic_behavior: |
+      The class inherits from an empty spec class. Any method call not defined
+      in either class will raise AttributeError. The class only provides:
+      spec_qname, spec_fact_ref, namespace_uri class attributes.
+    runtime_reachable: false
+    public_api_reachable: false
+    packaged: false
+    capability_claim_affected: "FACT-FODS-006 (table:table-cell Compat facade)"
+    tests_covering_it: []
+    current_evidence: []
+    classification: SKELETON_PRESENTED_AS_COMPLETE
+    severity: LOW
+    owner_lane: Lane-7 (Python product healing)
+    root_cause_id: RC-COMPAT-EMPTY-FACADES
+    required_action: |
+      Either: (a) implement FodsCell methods delegating to fods/models.py FodsCell,
+      OR (b) remove Compat layer — the real FodsCell already exists in models.py.
+      Compat/ note: "TC-MACH-ARCH-004: facade created to satisfy Gate 11 P-ARCH-001."
+      If P-ARCH-001 requires the Compat layer to exist, implement the methods.
+      If P-ARCH-001 only requires the class to exist with spec_qname, document that.
+
+  - finding_id: STUB-PY-FODS-COMPAT-SHEET-001
+    path: src/python/fods/Compat/fods_sheet.py
+    line_or_symbol: "class FodsSheet(_SpecTable)"
+    language: python
+    product_or_component: fods
+    layer: compat_facade
+    matched_indicator: Inherits from empty spec Table class; no methods defined.
+    semantic_behavior: Class attributes only (spec_qname, spec_fact_ref, namespace_uri).
+    runtime_reachable: false
+    public_api_reachable: false
+    packaged: false
+    capability_claim_affected: "FACT-FODS-004 (table:table Compat facade)"
+    tests_covering_it: []
+    current_evidence: []
+    classification: SKELETON_PRESENTED_AS_COMPLETE
+    severity: LOW
+    owner_lane: Lane-7 (Python product healing)
+    root_cause_id: RC-COMPAT-EMPTY-FACADES
+    required_action: Same as STUB-PY-FODS-COMPAT-CELL-001.
+
+  - finding_id: STUB-PY-FODS-COMPAT-DOC-001
+    path: src/python/fods/Compat/fods_document.py
+    line_or_symbol: "class FodsDocument(_SpecDocument)"
+    language: python
+    product_or_component: fods
+    layer: compat_facade
+    matched_indicator: Inherits from empty spec Document class; no methods defined.
+    semantic_behavior: Class attributes only.
+    runtime_reachable: false
+    public_api_reachable: false
+    packaged: false
+    capability_claim_affected: "FACT-FODS-001 (office:document Compat facade)"
+    tests_covering_it: []
+    current_evidence: []
+    classification: SKELETON_PRESENTED_AS_COMPLETE
+    severity: LOW
+    owner_lane: Lane-7 (Python product healing)
+    root_cause_id: RC-COMPAT-EMPTY-FACADES
+    required_action: Same as STUB-PY-FODS-COMPAT-CELL-001.
+
+  # ──────────────────────────────────────────────────────────────────────────
+  # FINDING GROUP 3: XCF layer name partial implementation
+  # Classification: INCOMPLETE_IMPLEMENTATION
+  # Severity: LOW (documented as synthetic; GAP-ledger entry needed)
+  # ──────────────────────────────────────────────────────────────────────────
+
+  - finding_id: STUB-PY-XCF-LAYER-NAMES-001
+    path: src/python/xcf/xcf_parser.py
+    line_or_symbol: "xcf_layer_name_list (line 1114)"
+    language: python
+    product_or_component: xcf
+    layer: product_source
+    matched_indicator: |
+      Docstring says "Return list of layer placeholder names based on layer count."
+      Returns ["Layer 0", "Layer 1", ...] — synthetic names, not parsed from XCF layer records.
+    semantic_behavior: |
+      XCF format stores actual layer names in layer record structures.
+      This function generates synthetic positional names instead of reading actual names.
+      The parser struct XcfImage only tracks num_layers, not layer name strings.
+    runtime_reachable: true
+    public_api_reachable: true
+    packaged: true
+    capability_claim_affected: "xcf_layer_name_list public API contract"
+    tests_covering_it: []
+    current_evidence: []
+    classification: INCOMPLETE_IMPLEMENTATION
+    severity: LOW
+    owner_lane: Lane-7 (Python product healing)
+    root_cause_id: RC-PARTIAL-IMPLEMENTATION-XCF
+    required_action: |
+      Three options:
+      1. Parse actual layer names from XCF layer records (preferred — full implementation)
+      2. Rename to xcf_layer_synthetic_names_list and document that names are positional
+      3. Add a GAP ledger entry and explicit "NOT_YET_PARSED" capability classification
+
+  # ──────────────────────────────────────────────────────────────────────────
+  # FINDING GROUP 4: .NET FODT Spec/ architecture_only stubs
+  # Classification: SKELETON_PRESENTED_AS_COMPLETE
+  # Severity: MODERATE (part of active .NET product track)
+  # ──────────────────────────────────────────────────────────────────────────
+
+  - finding_id: STUB-DOTNET-FODT-SPEC-BODY-001
+    path: src/net/fodt/Spec/Office/Body.cs
+    line_or_symbol: "public static class Body"
+    language: csharp
+    product_or_component: fodt-net
+    layer: spec_architecture
+    matched_indicator: "GENERATED — architecture_only / TODO: implement"
+    semantic_behavior: Static class with QName and SpecFactRef constants only.
+    runtime_reachable: false
+    public_api_reachable: false
+    packaged: false
+    capability_claim_affected: "office:body spec element (FODT)"
+    classification: SKELETON_PRESENTED_AS_COMPLETE
+    severity: MODERATE
+    owner_lane: Lane-6 (.NET product healing)
+    root_cause_id: RC-GENERATOR-ARCH-ONLY
+    required_action: |
+      Implement Body with properties/methods once canonical migration plan is authorized.
+      Update TODO to blocked_by reference.
+
+  - finding_id: STUB-DOTNET-FODT-SPEC-HEADING-001
+    path: src/net/fodt/Spec/Text/Heading.cs
+    line_or_symbol: "public static class Heading"
+    language: csharp
+    product_or_component: fodt-net
+    layer: spec_architecture
+    matched_indicator: "GENERATED — architecture_only / TODO: implement"
+    semantic_behavior: Constants only, no methods.
+    runtime_reachable: false
+    public_api_reachable: false
+    packaged: false
+    capability_claim_affected: "text:h (Heading) spec element (FODT)"
+    classification: SKELETON_PRESENTED_AS_COMPLETE
+    severity: MODERATE
+    owner_lane: Lane-6 (.NET product healing)
+    root_cause_id: RC-GENERATOR-ARCH-ONLY
+    required_action: Implement analogous to Paragraph.cs (TC-QNAME-IMPL-001 model).
+
+  - finding_id: STUB-DOTNET-FODT-SPEC-SPAN-001
+    path: src/net/fodt/Spec/Text/Span.cs
+    line_or_symbol: "public static class Span"
+    language: csharp
+    product_or_component: fodt-net
+    layer: spec_architecture
+    matched_indicator: "GENERATED — architecture_only / TODO: implement"
+    semantic_behavior: Constants only.
+    runtime_reachable: false
+    public_api_reachable: false
+    packaged: false
+    capability_claim_affected: "text:span spec element (FODT)"
+    classification: SKELETON_PRESENTED_AS_COMPLETE
+    severity: MODERATE
+    owner_lane: Lane-6 (.NET product healing)
+    root_cause_id: RC-GENERATOR-ARCH-ONLY
+    required_action: Implement analogous to Paragraph.cs.
+
+  - finding_id: STUB-DOTNET-FODT-SPEC-LIST-001
+    path: src/net/fodt/Spec/Text/List.cs
+    line_or_symbol: "public static class List"
+    language: csharp
+    product_or_component: fodt-net
+    layer: spec_architecture
+    matched_indicator: "GENERATED — architecture_only / TODO: implement"
+    semantic_behavior: Constants only.
+    runtime_reachable: false
+    public_api_reachable: false
+    packaged: false
+    capability_claim_affected: "text:list spec element (FODT)"
+    classification: SKELETON_PRESENTED_AS_COMPLETE
+    severity: MODERATE
+    owner_lane: Lane-6 (.NET product healing)
+    root_cause_id: RC-GENERATOR-ARCH-ONLY
+    required_action: Implement with items, depth properties.
+
+  - finding_id: STUB-DOTNET-FODT-SPEC-LIST-ITEM-001
+    path: src/net/fodt/Spec/Text/ListItem.cs
+    line_or_symbol: "public static class ListItem"
+    language: csharp
+    product_or_component: fodt-net
+    layer: spec_architecture
+    matched_indicator: "GENERATED — architecture_only / TODO: implement"
+    semantic_behavior: Constants only.
+    runtime_reachable: false
+    public_api_reachable: false
+    packaged: false
+    capability_claim_affected: "text:list-item spec element (FODT)"
+    classification: SKELETON_PRESENTED_AS_COMPLETE
+    severity: MODERATE
+    owner_lane: Lane-6 (.NET product healing)
+    root_cause_id: RC-GENERATOR-ARCH-ONLY
+    required_action: Implement with text, level properties.
+
+  - finding_id: STUB-DOTNET-FODT-SPEC-TABLE-ROW-001
+    path: src/net/fodt/Spec/Table/TableRow.cs
+    line_or_symbol: "public static class TableRow"
+    language: csharp
+    product_or_component: fodt-net
+    layer: spec_architecture
+    matched_indicator: "GENERATED — architecture_only / TODO: implement"
+    semantic_behavior: Constants only.
+    runtime_reachable: false
+    public_api_reachable: false
+    packaged: false
+    capability_claim_affected: "table:table-row (FODT)"
+    classification: SKELETON_PRESENTED_AS_COMPLETE
+    severity: MODERATE
+    owner_lane: Lane-6 (.NET product healing)
+    root_cause_id: RC-GENERATOR-ARCH-ONLY
+    required_action: Implement with cells IReadOnlyList.
+
+  - finding_id: STUB-DOTNET-FODT-SPEC-TABLE-001
+    path: src/net/fodt/Spec/Table/Table.cs
+    line_or_symbol: "public static class Table"
+    language: csharp
+    product_or_component: fodt-net
+    layer: spec_architecture
+    matched_indicator: "GENERATED — architecture_only / TODO: implement"
+    semantic_behavior: Constants only.
+    runtime_reachable: false
+    public_api_reachable: false
+    packaged: false
+    capability_claim_affected: "table:table (FODT)"
+    classification: SKELETON_PRESENTED_AS_COMPLETE
+    severity: MODERATE
+    owner_lane: Lane-6 (.NET product healing)
+    root_cause_id: RC-GENERATOR-ARCH-ONLY
+    required_action: Implement with name, rows.
+
+  - finding_id: STUB-DOTNET-FODT-SPEC-TABLE-CELL-001
+    path: src/net/fodt/Spec/Table/TableCell.cs
+    line_or_symbol: "public static class TableCell"
+    language: csharp
+    product_or_component: fodt-net
+    layer: spec_architecture
+    matched_indicator: "GENERATED — architecture_only / TODO: implement"
+    semantic_behavior: Constants only.
+    runtime_reachable: false
+    public_api_reachable: false
+    packaged: false
+    capability_claim_affected: "table:table-cell (FODT)"
+    classification: SKELETON_PRESENTED_AS_COMPLETE
+    severity: MODERATE
+    owner_lane: Lane-6 (.NET product healing)
+    root_cause_id: RC-GENERATOR-ARCH-ONLY
+    required_action: Implement with value_type, value, text, formula.
+
+  - finding_id: STUB-DOTNET-FODS-SPEC-DOC-001
+    path: src/net/fods/Spec/Office/Document.cs
+    line_or_symbol: "public static class Document"
+    language: csharp
+    product_or_component: fods-net
+    layer: spec_architecture
+    matched_indicator: "GENERATED — architecture_only / TODO: implement"
+    semantic_behavior: Constants only.
+    runtime_reachable: false
+    public_api_reachable: false
+    packaged: false
+    capability_claim_affected: "office:document (FODS .NET)"
+    classification: SKELETON_PRESENTED_AS_COMPLETE
+    severity: MODERATE
+    owner_lane: Lane-6 (.NET product healing)
+    root_cause_id: RC-GENERATOR-ARCH-ONLY
+    required_action: Implement once migration plan authorized.
+
+  - finding_id: STUB-DOTNET-FODS-SPEC-TABLE-CELL-001
+    path: src/net/fods/Spec/Table/TableCell.cs
+    line_or_symbol: "public static class TableCell"
+    language: csharp
+    product_or_component: fods-net
+    layer: spec_architecture
+    matched_indicator: "GENERATED — architecture_only / TODO: implement"
+    semantic_behavior: Constants only.
+    runtime_reachable: false
+    public_api_reachable: false
+    packaged: false
+    capability_claim_affected: "table:table-cell (FODS .NET)"
+    classification: SKELETON_PRESENTED_AS_COMPLETE
+    severity: MODERATE
+    owner_lane: Lane-6 (.NET product healing)
+    root_cause_id: RC-GENERATOR-ARCH-ONLY
+    required_action: Implement once migration plan authorized.
+
+  - finding_id: STUB-DOTNET-FODS-SPEC-TABLE-001
+    path: src/net/fods/Spec/Table/Table.cs
+    line_or_symbol: "public static class Table"
+    language: csharp
+    product_or_component: fods-net
+    layer: spec_architecture
+    matched_indicator: "GENERATED — architecture_only / TODO: implement"
+    semantic_behavior: Constants only.
+    runtime_reachable: false
+    public_api_reachable: false
+    packaged: false
+    capability_claim_affected: "table:table (FODS .NET)"
+    classification: SKELETON_PRESENTED_AS_COMPLETE
+    severity: MODERATE
+    owner_lane: Lane-6 (.NET product healing)
+    root_cause_id: RC-GENERATOR-ARCH-ONLY
+    required_action: Implement once migration plan authorized.
+
+  - finding_id: STUB-DOTNET-FODS-SPEC-TABLE-ROW-001
+    path: src/net/fods/Spec/Table/TableRow.cs
+    line_or_symbol: "public static class TableRow"
+    language: csharp
+    product_or_component: fods-net
+    layer: spec_architecture
+    matched_indicator: "GENERATED — architecture_only / TODO: implement"
+    semantic_behavior: Constants only.
+    runtime_reachable: false
+    public_api_reachable: false
+    packaged: false
+    capability_claim_affected: "table:table-row (FODS .NET)"
+    classification: SKELETON_PRESENTED_AS_COMPLETE
+    severity: MODERATE
+    owner_lane: Lane-6 (.NET product healing)
+    root_cause_id: RC-GENERATOR-ARCH-ONLY
+    required_action: Implement once migration plan authorized.
+
+  # ──────────────────────────────────────────────────────────────────────────
+  # FINDING GROUP 5: Governance escape — weak validators
+  # ──────────────────────────────────────────────────────────────────────────
+
+  - finding_id: GOV-ESCAPE-V44-ALWAYS-WARN-001
+    path: tools/supervisor/governance_validators.py
+    line_or_symbol: "validate_facade_delegates_to_spec (line 2907)"
+    language: python
+    product_or_component: governance_machinery
+    layer: governance_validator
+    matched_indicator: |
+      V44 always returns result="WARN", blocks_sprint=False, items=[].
+      The function body is a constant return — it never inspects any evidence.
+    semantic_behavior: |
+      Supposed to validate that compat.py does not import architecture_only stubs.
+      In practice: always passes regardless of what is imported. 100% FAKE enforcement.
+    runtime_reachable: true
+    public_api_reachable: true
+    packaged: true
+    capability_claim_affected: "Governance enforcement for facade/stub boundary"
+    classification: FAKE_SUCCESS
+    severity: HIGH
+    owner_lane: Lane-3 (Governance and standards)
+    root_cause_id: RC-GOV-WEAK-VALIDATORS
+    required_action: |
+      Implement V44 to actually scan compat.py imports and check if any imported
+      class has architecture_only marker in its source. blocks_sprint=True for FAIL.
+
+  - finding_id: GOV-ESCAPE-V36-WARN-ONLY-001
+    path: tools/supervisor/governance_validators.py
+    line_or_symbol: "validate_no_stub_tests (line 2490)"
+    language: python
+    product_or_component: governance_machinery
+    layer: governance_validator
+    matched_indicator: |
+      V36 is blocks_sprint=False even on FAIL. Tests that only check existence
+      are flagged as WARN, never block a sprint.
+    semantic_behavior: |
+      test_spec_qname_stubs.py::test_table_cell_importable only asserts
+      TableCell.spec_qname == "table:table-cell" — pure existence check.
+      V36 does not catch this pattern (checks `is not None` / isinstance only).
+    runtime_reachable: true
+    public_api_reachable: true
+    packaged: true
+    capability_claim_affected: "Test quality enforcement"
+    classification: FAKE_SUCCESS
+    severity: MODERATE
+    owner_lane: Lane-5 (Test and validator)
+    root_cause_id: RC-GOV-WEAK-VALIDATORS
+    required_action: |
+      Extend V36 to detect attribute-only assertions (e.g. assert X.spec_qname == "...").
+      Set blocks_sprint=True for test files containing only attribute existence assertions
+      against architecture_only classes.
+
+  - finding_id: GOV-ESCAPE-NO-STUB-GATE-001
+    path: tools/spec/generate_canonical_stubs.py
+    line_or_symbol: "generate_canonical_stubs.py (entire file)"
+    language: python
+    product_or_component: stub_generator
+    layer: generator_machinery
+    matched_indicator: |
+      Generator produces architecture_only skeleton files with TODO comments.
+      No downstream gate requires these TODOs to be resolved before capability/Gate 11 closure.
+    semantic_behavior: |
+      The generator correctly marks outputs as architecture_only but there is no
+      enforcement preventing an architecture_only stub from:
+      (a) being declared as a completed capability
+      (b) being packaged in the FOSS or commercial distributions
+      (c) blocking a Gate 11 criterion from being marked PASS
+    runtime_reachable: false
+    public_api_reachable: false
+    packaged: false
+    capability_claim_affected: "All spec parity capability claims"
+    classification: SKELETON_PRESENTED_AS_COMPLETE
+    severity: HIGH
+    owner_lane: Lane-4 (Generator and skill healing)
+    root_cause_id: RC-GOV-NO-STUB-GATE
+    required_action: |
+      Add validator that scans evidence_paths in declarations for files
+      containing "architecture_only" marker and blocks capability closure
+      (RELEASE_GATE, Gate 11 P-* criteria) if any architecture_only stub
+      is cited as behavioral proof.
+
+# ──────────────────────────────────────────────────────────────────────────
+# LEGITIMATE EXCEPTIONS (classified, not defects)
+# ──────────────────────────────────────────────────────────────────────────
+legitimate_exceptions:
+  - pattern: "except ImportError: pass"
+    locations: [
+      "src/python/zst/__init__.py:18",
+      "src/python/xcf/__init__.py:21",
+      "src/python/fodg/__init__.py:23",
+      "src/python/fodt/neutral_model.py:1916",
+      "src/python/fods/neutral_model.py:1231",
+      "src/python/dif/dif_parser.py:661",
+      "src/python/csv/csv_parser.py:381",
+      "src/python/abw/abw_codec.py:896",
+    ]
+    classification: ABSTRACT_CONTRACT
+    reason: |
+      Standard Python pattern for optional analytics module import.
+      Analytics modules (zst_analytics.py, etc.) are separate files that may not
+      be installed. The try/except makes them optional. This is by design per
+      the analytics extraction architecture (MEMORY.md: Analytics extraction pattern).
+    non_production_boundary: "exception handler — import fallback only"
+    tests_proving_isolation: "Module still exports all core functions when analytics absent"
+    governance_evidence: "MEMORY.md analytics extraction pattern; CLAUDE.md sprint policy"
+
+  - pattern: "if TYPE_CHECKING: pass"
+    locations: ["src/python/fodt/list_traversal.py:22"]
+    classification: ABSTRACT_CONTRACT
+    reason: |
+      Standard Python typing guard. The pass is valid when no type-checking imports
+      are needed but the block structure is maintained for future use.
+    governance_evidence: "Standard Python typing.TYPE_CHECKING pattern"
+
+  - pattern: "class FooError(BaseError): pass"
+    locations: ["src/python/_shared/_shared_exceptions.py (in docstring example)"]
+    classification: FALSE_POSITIVE
+    reason: |
+      The pass appears inside a docstring example string, not in actual code.
+      The actual class definitions (ParseError, WriteError, etc.) have docstrings.
+
+  - pattern: "pass in exception handlers (parser error recovery)"
+    locations: [
+      "src/python/tsv/tsv_parser.py (multiple)",
+      "src/python/sylk/sylk_parser.py (multiple)",
+      "src/python/ods/ods_parser.py (multiple)",
+      "src/python/gnumeric/gnumeric_codec.py (multiple)",
+      "src/python/ndjson/ndjson_codec.py (multiple)",
+      "src/python/dif/dif_analytics.py (multiple)",
+      "src/python/fods/fods_analytics.py (multiple)",
+      "src/python/csv/csv_analytics.py (multiple)",
+    ]
+    classification: ABSTRACT_CONTRACT
+    reason: |
+      Parser error-recovery pattern: skip malformed input records and continue parsing.
+      This is intentional and documented. The parsers' design goal is to never raise
+      on corrupt input (parse_fods() and equivalents "never raise" per public API docs).
+    governance_evidence: "Parser contract: 'streaming parser, never raises'"
+
+# ──────────────────────────────────────────────────────────────────────────
+# ROOT CAUSES
+# ──────────────────────────────────────────────────────────────────────────
+root_causes:
+  - root_cause_id: RC-GENERATOR-ARCH-ONLY
+    affected_findings: [
+      STUB-PY-FODT-SPEC-TABLE-CELL-001,
+      STUB-PY-FODT-SPEC-TABLE-ROW-001,
+      STUB-PY-FODT-SPEC-TABLE-TABLE-001,
+      STUB-PY-FODT-SPEC-TEXT-LIST-001,
+      STUB-PY-FODT-SPEC-TEXT-LIST-ITEM-001,
+      STUB-DOTNET-FODT-SPEC-BODY-001,
+      STUB-DOTNET-FODT-SPEC-HEADING-001,
+      STUB-DOTNET-FODT-SPEC-SPAN-001,
+      STUB-DOTNET-FODT-SPEC-LIST-001,
+      STUB-DOTNET-FODT-SPEC-LIST-ITEM-001,
+      STUB-DOTNET-FODT-SPEC-TABLE-ROW-001,
+      STUB-DOTNET-FODT-SPEC-TABLE-001,
+      STUB-DOTNET-FODT-SPEC-TABLE-CELL-001,
+      STUB-DOTNET-FODS-SPEC-DOC-001,
+      STUB-DOTNET-FODS-SPEC-TABLE-CELL-001,
+      STUB-DOTNET-FODS-SPEC-TABLE-001,
+      STUB-DOTNET-FODS-SPEC-TABLE-ROW-001,
+    ]
+    first_failing_boundary: generate_canonical_stubs.py → spec/ directories
+    producer: tools/spec/generate_canonical_stubs.py
+    producer_path: tools/spec/generate_canonical_stubs.py
+    generated_pattern: |
+      Python: "# GENERATED — architecture_only. ... class X:\n    spec_qname = ...\n    # TODO:"
+      .NET: "// GENERATED — architecture_only. ... public static class X { public const string QName = ...; // TODO: }"
+    immediate_cause: Generator intentionally creates skeleton stubs as spec-parity markers.
+    structural_cause: |
+      No enforcement gate prevents architecture_only stubs from being cited as
+      behavioral proof in declarations or capability claims.
+    governance_escape: |
+      V44 is permanently WARN-only (never inspects any file).
+      No validator checks if RELEASE_GATE items cite architecture_only files as evidence.
+    validator_gap: |
+      validate_facade_delegates_to_spec (V44): always returns WARN/PASS with empty items.
+      validate_skeleton_progress: only checks LOC < 10, misses attribute-only classes.
+      validate_no_stub_tests: only checks is_not_None/isinstance, misses spec_qname assertions.
+    test_gap: |
+      test_spec_qname_stubs.py tests only assert spec_qname attribute value,
+      never test behavioral methods. No negative controls exist.
+    task_state_gap: |
+      architecture_only stubs can be marked architecture_only in qname-registry without
+      any required action plan or transition deadline.
+    why_previous_audits_missed_it: |
+      architecture_only marker is intentional — audits classified these as
+      "expected intermediate state" without checking for downstream bypass.
+    recurrence_path: |
+      Any call to generate_canonical_stubs.py will produce new architecture_only stubs.
+      Without a blocking gate, they can persist indefinitely.
+    machinery_fix: |
+      1. Implement validate_architecture_only_stub_gate validator:
+         - scan evidence_paths for files containing "architecture_only" marker
+         - FAIL (blocks_sprint=True) when RELEASE_GATE or Gate 11 items cite them
+      2. Fix V44 to actually inspect imports
+      3. Fix V36/validate_skeleton_progress to catch spec_qname-only assertions
+    product_healing_required: true
+    prevention_proof: |
+      After V48 (architecture_only_stub_gate) is implemented:
+      - Negative control: declare RELEASE_GATE with evidence_path=architecture_only stub
+      - Expected: validator blocks sprint
+      - Negative control: declare PRODUCT_SOURCE with evidence_path=architecture_only stub
+      - Expected: WARN (non-blocking) for non-gate items
+
+  - root_cause_id: RC-COMPAT-EMPTY-FACADES
+    affected_findings: [
+      STUB-PY-FODS-COMPAT-CELL-001,
+      STUB-PY-FODS-COMPAT-SHEET-001,
+      STUB-PY-FODS-COMPAT-DOC-001,
+    ]
+    first_failing_boundary: fods/Compat/ layer creation (TC-MACH-ARCH-004)
+    producer: TC-MACH-ARCH-004 sprint worker
+    immediate_cause: |
+      Facades created to satisfy Gate 11 P-ARCH-001 (architecture criterion).
+      They inherit from spec-only classes that have no behavior.
+      Real production implementations (FodsCell, FodsSheet, FodsDocument) already exist in models.py.
+    structural_cause: |
+      Compat/ layer was created as an architectural artifact for Gate 11 but
+      was not wired to the actual model implementations.
+    governance_escape: V44 always passes; no test verifies Compat/ facades actually work.
+    product_healing_required: false
+    prevention_proof: |
+      The REAL implementations exist in models.py and are fully functional.
+      The Compat facades just need to either (a) delegate to models.py or (b) be documented
+      as architecture markers only (not production facades).
+
+  - root_cause_id: RC-PARTIAL-IMPLEMENTATION-XCF
+    affected_findings: [STUB-PY-XCF-LAYER-NAMES-001]
+    first_failing_boundary: xcf_parser.py XcfImage struct definition
+    producer: xcf_parser.py implementer
+    immediate_cause: |
+      XCF layer records contain layer names, but the parser only reads
+      the layer pointer table (num_layers) from the XCF header.
+      Full layer record parsing was deferred.
+    structural_cause: |
+      No requirement trace: xcf_layer_name_list was added without a GAP-ledger entry
+      documenting that actual layer name parsing was deferred.
+    governance_escape: |
+      No validator checks that function return values match documented contracts.
+      The docstring honestly says "placeholder names" but the function name implies real names.
+    product_healing_required: true
+    prevention_proof: |
+      Test xcf_layer_name_list with a known XCF file and assert returned names
+      match actual XCF layer names (not synthetic "Layer N" values).
+
+  - root_cause_id: RC-GOV-WEAK-VALIDATORS
+    affected_findings: [GOV-ESCAPE-V44-ALWAYS-WARN-001, GOV-ESCAPE-V36-WARN-ONLY-001]
+    immediate_cause: |
+      V44 was written as a monitoring stub only — the function body is a constant return.
+      V36 catches only is_not_None/isinstance assertions, missing spec_qname-only tests.
+    structural_cause: |
+      "Monitoring mode" validators were created without a scheduled graduation to enforcement.
+      No deadline or trigger condition causes them to become blocking.
+    product_healing_required: false
+    prevention_proof: |
+      After implementing real V44: negative control with compat.py importing
+      architecture_only class should cause V44 to FAIL.
+
+  - root_cause_id: RC-GOV-NO-STUB-GATE
+    affected_findings: [GOV-ESCAPE-NO-STUB-GATE-001]
+    immediate_cause: |
+      No validator exists that specifically blocks capability/Gate 11 closure
+      when evidence cites architecture_only stub files.
+    structural_cause: |
+      The zero-stub governance standard was never codified as a blocking gate in the
+      governance validator suite.
+    product_healing_required: false
+    prevention_proof: |
+      After implementing V48 (architecture_only_stub_gate):
+      - Negative control: RELEASE_GATE item with architecture_only evidence → blocked.
+
+# ──────────────────────────────────────────────────────────────────────────
+# SUMMARY COUNTS
+# ──────────────────────────────────────────────────────────────────────────
+summary:
+  total_textual_indicators_found: 85  # grep matches across python + .net
+  total_files_with_indicators: 35
+  confirmed_production_stubs: 0  # none are runtime-reachable in production paths
+  architecture_only_stubs: 17   # Python: 5, .NET: 12
+  compat_layer_empty_facades: 3  # Python FODS Compat/ only
+  semantic_incomplete_implementations: 1  # xcf_layer_name_list
+  governance_escape_findings: 3   # V44, V36, no-stub-gate
+  legitimate_exceptions: 50+  # all except ImportError: pass patterns
+  false_positives: 3
+  test_only_doubles: 0
+  products_with_runtime_reachable_stubs: 0
+  products_with_packaged_stubs: 0
+  packages_containing_incomplete_public_behavior: 0

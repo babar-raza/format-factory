@@ -113,3 +113,439 @@ commands:
     created: "2026-06-21"
     skill_registry_ref: true
     skill_id: sal-pipeline-heal
+
+  # ============================================================
+  # COMMANDS ADDED 2026-06-21 (TC-SKILL-GOV-005, tender-dreaming-lovelace)
+  # Complete registry of all 43 command files in .claude/commands/
+  # ============================================================
+
+  # --- Product Skills (write src/) ---
+
+  - command_id: add-dotnet-api
+    file: .claude/commands/add-dotnet-api.md
+    description: Add one bounded .NET commercial product API with spec-literal requirements
+    phase: "3+"
+    status: active
+    created: "2026-06-03"
+    skill_registry_ref: true
+    skill_id: add-dotnet-api
+    master_plan_lanes: [7, 9]
+    gate_criteria: [C3, C4]
+    writes_product_source: true
+    enforcement_type: soft
+
+  - command_id: add-python-api
+    file: .claude/commands/add-python-api.md
+    description: Add one bounded Python FOSS product API with spec-literal requirements
+    phase: "3+"
+    status: active
+    created: "2026-06-03"
+    skill_registry_ref: true
+    skill_id: add-python-api
+    master_plan_lanes: [8, 11]
+    gate_criteria: [P1, P3]
+    writes_product_source: true
+    enforcement_type: soft
+
+  - command_id: add-dotnet-object-model-feature
+    file: .claude/commands/add-dotnet-object-model-feature.md
+    description: Add one object model feature to the .NET commercial product library
+    phase: "3+"
+    status: active
+    created: "2026-06-03"
+    skill_registry_ref: true
+    skill_id: add-dotnet-object-model-feature
+    master_plan_lanes: [7, 9]
+    gate_criteria: [C4]
+    writes_product_source: true
+    enforcement_type: soft
+
+  - command_id: add-python-object-model-feature
+    file: .claude/commands/add-python-object-model-feature.md
+    description: Add one object model feature to the Python FOSS product library
+    phase: "3+"
+    status: active
+    created: "2026-06-03"
+    skill_registry_ref: true
+    skill_id: add-python-object-model-feature
+    master_plan_lanes: [8, 11]
+    gate_criteria: [P1]
+    writes_product_source: true
+    enforcement_type: soft
+
+  - command_id: add-roundtrip-test
+    file: .claude/commands/add-roundtrip-test.md
+    description: Add a roundtrip parse-write-parse test with fixture and XML verification
+    phase: "3+"
+    status: active
+    created: "2026-06-02"
+    skill_registry_ref: true
+    skill_id: add-roundtrip-test
+    master_plan_lanes: [9, 10, 11]
+    gate_criteria: [C6, P3]
+    writes_product_source: false
+    enforcement_type: soft
+
+  - command_id: add-same-format-writer-feature
+    file: .claude/commands/add-same-format-writer-feature.md
+    description: Add a same-format write/export feature to an existing format library
+    phase: "3+"
+    status: active
+    created: "2026-06-03"
+    skill_registry_ref: true
+    skill_id: add-same-format-writer-feature
+    master_plan_lanes: [7, 8]
+    gate_criteria: [C3, P3]
+    writes_product_source: true
+    enforcement_type: soft
+
+  - command_id: add-analytics-function
+    file: .claude/commands/add-analytics-function.md
+    description: Add analytics/arithmetic function to <format>_analytics.py (rotation SUSPENDED by V42)
+    phase: all
+    status: suspended_by_V42
+    created: "2026-06-18"
+    skill_registry_ref: true
+    skill_id: add-analytics-function
+    master_plan_lanes: [8]
+    gate_criteria: []
+    writes_product_source: true
+    enforcement_type: hard
+    suspension_note: "Rotation suspended 2026-06-18 by keen-dancing-hopper plan. V42 blocks sprint if used."
+
+  - command_id: add-dogfood-export
+    file: .claude/commands/add-dogfood-export.md
+    description: Add a cross-format dogfood export path using an installed Format Factory library
+    phase: "3+"
+    status: active
+    created: "2026-06-03"
+    skill_registry_ref: true
+    skill_id: add-dogfood-export
+    master_plan_lanes: [12]
+    gate_criteria: []
+    writes_product_source: false
+    enforcement_type: soft
+
+  - command_id: add-installed-package-example
+    file: .claude/commands/add-installed-package-example.md
+    description: Add a working example using the installed wheel package (not dev source)
+    phase: "3+"
+    status: active
+    created: "2026-06-03"
+    skill_registry_ref: true
+    skill_id: add-installed-package-example
+    master_plan_lanes: [12]
+    gate_criteria: []
+    writes_product_source: false
+    enforcement_type: soft
+
+  - command_id: package-install-proof
+    file: .claude/commands/package-install-proof.md
+    description: Build wheel, install it, import from site-packages, run API smoke test
+    phase: "3+"
+    status: active
+    created: "2026-06-18"
+    skill_registry_ref: true
+    skill_id: package-install-proof
+    master_plan_lanes: [12]
+    gate_criteria: []
+    writes_product_source: false
+    enforcement_type: soft
+
+  # --- Spec-Literal Skills ---
+
+  - command_id: spec-literal-qname-to-code-mapping
+    file: .claude/commands/spec-literal-qname-to-code-mapping.md
+    description: Map spec QNames to canonical namespace/class structure per ODF spec
+    phase: all
+    status: active
+    created: "2026-06-12"
+    skill_registry_ref: true
+    skill_id: spec-literal-qname-to-code-mapping
+    master_plan_lanes: [6]
+    gate_criteria: [C11, P6]
+    writes_product_source: false
+    enforcement_type: soft
+
+  - command_id: spec-shaped-product-architecture-blueprint
+    file: .claude/commands/spec-shaped-product-architecture-blueprint.md
+    description: Generate spec-shaped architecture blueprint from QName-to-code ontology
+    phase: all
+    status: active
+    created: "2026-06-12"
+    skill_registry_ref: true
+    skill_id: spec-shaped-product-architecture-blueprint
+    master_plan_lanes: [7, 8]
+    gate_criteria: [C11, C12]
+    writes_product_source: false
+    enforcement_type: soft
+
+  - command_id: spec-parity-source-regeneration-and-migration
+    file: .claude/commands/spec-parity-source-regeneration-and-migration.md
+    description: Regenerate and migrate source files to canonical QName-based namespace hierarchy
+    phase: all
+    status: active
+    created: "2026-06-12"
+    skill_registry_ref: true
+    skill_id: spec-parity-source-regeneration-and-migration
+    master_plan_lanes: [7, 8, 9, 10]
+    gate_criteria: [C11, C12, P6, P7]
+    writes_product_source: true
+    enforcement_type: soft
+
+  - command_id: python-reduced-spec-parity-model
+    file: .claude/commands/python-reduced-spec-parity-model.md
+    description: Ensure Python FOSS library follows canonical concept graph with explicit reduced scope
+    phase: all
+    status: active
+    created: "2026-06-12"
+    skill_registry_ref: true
+    skill_id: python-reduced-spec-parity-model
+    master_plan_lanes: [8, 11]
+    gate_criteria: [P6, P7]
+    writes_product_source: true
+    enforcement_type: soft
+
+  - command_id: spec-parity-verification
+    file: .claude/commands/spec-parity-verification.md
+    description: Validate namespace tree, class inventory, attribute map, containment graph
+    phase: all
+    status: active
+    created: "2026-06-12"
+    skill_registry_ref: true
+    skill_id: spec-parity-verification
+    master_plan_lanes: [5, 7, 8]
+    gate_criteria: [C12, C13, P7, P8]
+    writes_product_source: false
+    enforcement_type: soft
+
+  # --- SAL / Specification Skills ---
+
+  - command_id: build-context-pack
+    file: .claude/commands/build-context-pack.md
+    description: Build or rebuild spec context pack from verified spec facts in the workbench
+    phase: all
+    status: active
+    created: "2026-06-12"
+    skill_registry_ref: true
+    skill_id: build-context-pack
+    master_plan_lanes: [1]
+    gate_criteria: [P10]
+    writes_product_source: false
+    enforcement_type: soft
+
+  # --- Capability / Gap Management ---
+
+  - command_id: select-poc-gap
+    file: .claude/commands/select-poc-gap.md
+    description: Select the next governed product gap from the gap ledger for execution
+    phase: all
+    status: active
+    created: "2026-06-03"
+    skill_registry_ref: true
+    skill_id: select-poc-gap
+    master_plan_lanes: [2, 3]
+    gate_criteria: []
+    writes_product_source: false
+    enforcement_type: soft
+
+  - command_id: promote-gap-to-taskcard
+    file: .claude/commands/promote-gap-to-taskcard.md
+    description: Promote a gap-ledger entry into an actionable governed taskcard
+    phase: all
+    status: active
+    created: "2026-06-03"
+    skill_registry_ref: true
+    skill_id: promote-gap-to-taskcard
+    master_plan_lanes: [2, 3]
+    gate_criteria: []
+    writes_product_source: false
+    enforcement_type: soft
+
+  - command_id: update-capability-matrix
+    file: .claude/commands/update-capability-matrix.md
+    description: Update the format capability matrix and gap ledger from current source state
+    phase: all
+    status: active
+    created: "2026-06-03"
+    skill_registry_ref: true
+    skill_id: update-capability-matrix
+    master_plan_lanes: [2, 3]
+    gate_criteria: []
+    writes_product_source: false
+    enforcement_type: soft
+
+  # --- Governance, Evidence, and Verification Commands ---
+
+  - command_id: validate-product-code-ledger
+    file: .claude/commands/validate-product-code-ledger.md
+    description: Validate the product-code-change-ledger against actual src/ SHA-256 hashes
+    phase: all
+    status: active
+    created: "2026-06-18"
+    skill_registry_ref: true
+    skill_id: validate-product-code-ledger
+    master_plan_lanes: [0]
+    gate_criteria: []
+    writes_product_source: false
+    enforcement_type: soft
+
+  - command_id: validate-skill-transcript
+    file: .claude/commands/validate-skill-transcript.md
+    description: Validate a skill invocation transcript against the schema and required fields
+    phase: all
+    status: active
+    created: "2026-06-21"
+    skill_registry_ref: true
+    skill_id: validate-skill-transcript
+    master_plan_lanes: [0]
+    gate_criteria: []
+    writes_product_source: false
+    enforcement_type: soft
+
+  - command_id: verify-dogfood-path
+    file: .claude/commands/verify-dogfood-path.md
+    description: Verify an end-to-end dogfood export path using an installed package
+    phase: "3+"
+    status: active
+    created: "2026-06-03"
+    skill_registry_ref: true
+    skill_id: verify-dogfood-path
+    master_plan_lanes: [12]
+    gate_criteria: []
+    writes_product_source: false
+    enforcement_type: soft
+
+  - command_id: materialize-declaration-review
+    file: .claude/commands/materialize-declaration-review.md
+    description: Materialize the evidence declaration review package and print its path+SHA256
+    phase: all
+    status: active
+    created: "2026-06-03"
+    skill_registry_ref: true
+    skill_id: materialize-declaration-review
+    master_plan_lanes: [0]
+    gate_criteria: []
+    writes_product_source: false
+    enforcement_type: soft
+
+  - command_id: evidence-review-next-prompt
+    file: .claude/commands/evidence-review-next-prompt.md
+    description: Read evidence-review.json and generate the next sprint prompt from it
+    phase: all
+    status: active
+    created: "2026-06-03"
+    skill_registry_ref: true
+    skill_id: evidence-review-next-prompt
+    master_plan_lanes: [0]
+    gate_criteria: []
+    writes_product_source: false
+    enforcement_type: soft
+
+  # --- Sprint Orchestration Commands ---
+
+  - command_id: post-sprint-audit
+    file: .claude/commands/post-sprint-audit.md
+    description: Conduct post-sprint audit classifying all work items into 6 audit categories
+    phase: all
+    status: active
+    created: "2026-06-03"
+    skill_registry_ref: true
+    skill_id: post-sprint-audit
+    master_plan_lanes: [0]
+    gate_criteria: []
+    writes_product_source: false
+    enforcement_type: soft
+
+  - command_id: post-sprint-loop
+    file: .claude/commands/post-sprint-loop.md
+    description: Run post-sprint closeout loop (audit, hardening, evidence, supervisor cycle)
+    phase: all
+    status: active
+    created: "2026-06-03"
+    skill_registry_ref: true
+    skill_id: post-sprint-loop
+    master_plan_lanes: [0]
+    gate_criteria: []
+    writes_product_source: false
+    enforcement_type: soft
+
+  - command_id: plan-hardening
+    file: .claude/commands/plan-hardening.md
+    description: Convert all partially-done and not-attempted audit findings into governed taskcards
+    phase: all
+    status: active
+    created: "2026-06-03"
+    skill_registry_ref: true
+    skill_id: plan-hardening
+    master_plan_lanes: [0]
+    gate_criteria: []
+    writes_product_source: false
+    enforcement_type: soft
+
+  - command_id: execution-handoff
+    file: .claude/commands/execution-handoff.md
+    description: Generate a structured execution handoff packet for agent-to-agent sprint transfer
+    phase: all
+    status: active
+    created: "2026-06-03"
+    skill_registry_ref: true
+    skill_id: execution-handoff
+    master_plan_lanes: [0]
+    gate_criteria: []
+    writes_product_source: false
+    enforcement_type: soft
+
+  - command_id: generate-execution-handoff
+    file: .claude/commands/generate-execution-handoff.md
+    description: Generate a detailed execution handoff document with full context for next agent
+    phase: all
+    status: active
+    created: "2026-06-03"
+    skill_registry_ref: true
+    skill_id: generate-execution-handoff
+    master_plan_lanes: [0]
+    gate_criteria: []
+    writes_product_source: false
+    enforcement_type: soft
+
+  - command_id: export-plan-context
+    file: .claude/commands/export-plan-context.md
+    description: Export the current plan context as a portable summary for cross-session continuity
+    phase: all
+    status: active
+    created: "2026-06-03"
+    skill_registry_ref: true
+    skill_id: export-plan-context
+    master_plan_lanes: [0]
+    gate_criteria: []
+    writes_product_source: false
+    enforcement_type: soft
+
+  - command_id: record-lane-execution
+    file: .claude/commands/record-lane-execution.md
+    description: Record the execution of a spec-to-feature correction plan lane with evidence
+    phase: all
+    status: active
+    created: "2026-06-12"
+    skill_registry_ref: true
+    skill_id: record-lane-execution
+    master_plan_lanes: [0]
+    gate_criteria: []
+    writes_product_source: false
+    enforcement_type: soft
+
+  # --- Memory and Reporting Commands ---
+
+  - command_id: memory-sprint
+    file: .claude/commands/memory-sprint.md
+    description: Run a memory sprint to update MEMORY.md and sync project knowledge files
+    phase: all
+    status: active
+    created: "2026-06-03"
+    skill_registry_ref: true
+    skill_id: memory-sprint
+    master_plan_lanes: [0, 15]
+    gate_criteria: []
+    writes_product_source: false
+    enforcement_type: soft

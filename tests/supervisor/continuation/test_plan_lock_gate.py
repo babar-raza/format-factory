@@ -5,12 +5,14 @@ test_plan_lock_gate.py — Formal regression tests for check_continuation.py Che
 Scenarios covered:
   T1: No lock file present                     → CONTINUE (gate transparent)
   T2: Lock file with status=IN_PROGRESS        → STOP/ACTIVE_PLAN_INCOMPLETE
-  T3: Lock file with status=COMPLETE           → CONTINUE (gate clears)
+  T3: Lock file with status=COMPLETE (shared)  → CONTINUE (no session_id → gate clears)
   T4: Lock file with corrupt JSON              → STOP/ACTIVE_PLAN_LOCK_CORRUPT
   T5: Lock file missing 'status' key           → STOP/ACTIVE_PLAN_INCOMPLETE
   T6: Lock file with unknown status value      → STOP/ACTIVE_PLAN_INCOMPLETE
   T7: STOP detail includes plan_path           → detail message contains plan_path
   T8: STOP detail includes last_taskcard       → detail message contains last_taskcard
+  T9: Session-keyed lock status=COMPLETE same session → STOP/PLAN_COMPLETED_IN_SESSION (M8)
+  T10: Session-keyed lock status=COMPLETE other session → CONTINUE (filtered at line 180)
 """
 import json
 import sys
@@ -25,12 +27,21 @@ from check_continuation import check
 
 
 def _write_lock(mock_repo, content: dict | None = None, raw: str | None = None):
-    """Write .local/supervisor/active-plan-lock.json in the mock repo."""
+    """Write .local/supervisor/active-plan-lock.json in the mock repo (shared lock)."""
     lock_path = mock_repo / ".local" / "supervisor" / "active-plan-lock.json"
     if raw is not None:
         lock_path.write_text(raw, encoding="utf-8")
     else:
         lock_path.write_text(json.dumps(content, indent=2), encoding="utf-8")
+    return lock_path
+
+
+def _write_session_lock(mock_repo, session_id: str, content: dict):
+    """Write a session-keyed lock in .local/supervisor/plan-locks/{session_id}.json."""
+    locks_dir = mock_repo / ".local" / "supervisor" / "plan-locks"
+    locks_dir.mkdir(parents=True, exist_ok=True)
+    lock_path = locks_dir / f"{session_id}.json"
+    lock_path.write_text(json.dumps(content, indent=2), encoding="utf-8")
     return lock_path
 
 
@@ -145,3 +156,52 @@ class TestT8_DetailContainsLastTaskcard:
         result = check(mock_repo, session_id="session-aaa")
         assert result["verdict"] == "STOP"
         assert "TC-PROD-007-04" in result.get("detail", "")
+
+
+class TestT9_SessionKeyedLockCompleteSameSession:
+    """T9 (M8): Session-keyed lock with status=COMPLETE and matching session_id →
+    STOP/PLAN_COMPLETED_IN_SESSION.  This is the safety net for accidental --complete
+    instead of --terminal during in-session plan completion."""
+
+    def test_session_keyed_complete_blocks_same_session(self, mock_repo, full_continue_setup):
+        full_continue_setup(session_id="session-aaa")
+        _write_session_lock(mock_repo, "session-aaa", {
+            "plan_path": "C:/Users/prora/.claude/plans/wiggly-doodling-wirth.md",
+            "status": "COMPLETE",
+            "session_id": "session-aaa",
+            "last_taskcard": "TC-FINAL-001",
+            "updated_at": "2026-06-21T10:00:00+00:00",
+        })
+        result = check(mock_repo, session_id="session-aaa")
+        assert result["verdict"] == "STOP"
+        assert result["reason"] == "PLAN_COMPLETED_IN_SESSION"
+
+    def test_plan_path_in_detail(self, mock_repo, full_continue_setup):
+        full_continue_setup(session_id="session-bbb")
+        plan_path = "C:/Users/prora/.claude/plans/my-completed-plan.md"
+        _write_session_lock(mock_repo, "session-bbb", {
+            "plan_path": plan_path,
+            "status": "COMPLETE",
+            "session_id": "session-bbb",
+            "updated_at": "2026-06-21T10:00:00+00:00",
+        })
+        result = check(mock_repo, session_id="session-bbb")
+        assert result["verdict"] == "STOP"
+        assert result["reason"] == "PLAN_COMPLETED_IN_SESSION"
+        assert plan_path in result.get("detail", "")
+
+
+class TestT10_SessionKeyedLockCompleteOtherSession:
+    """T10: Session-keyed lock with status=COMPLETE but DIFFERENT session_id → filtered
+    at line 180; should NOT trigger M8.  CONTINUE if other conditions allow."""
+
+    def test_other_session_complete_lock_does_not_block(self, mock_repo, full_continue_setup):
+        full_continue_setup(session_id="session-ccc")
+        _write_session_lock(mock_repo, "session-ddd", {
+            "plan_path": "C:/Users/prora/.claude/plans/old-plan.md",
+            "status": "COMPLETE",
+            "session_id": "session-ddd",
+            "updated_at": "2026-06-20T10:00:00+00:00",
+        })
+        result = check(mock_repo, session_id="session-ccc")
+        assert result["verdict"] == "CONTINUE"

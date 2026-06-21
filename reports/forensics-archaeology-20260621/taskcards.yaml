@@ -1,0 +1,344 @@
+---
+# Taskcards — Format Factory Generation Archaeology
+# Sprint: forensics-archaeology-20260621
+# Generated: 2026-06-21
+
+taskcards:
+
+  # ===== QNAME-BACKFILL GROUP =====
+
+  - taskcard_id: TC-QNAME-BACKFILL-001
+    title: "Add spec_qname to ODS domain classes (backfill wave 1)"
+    lane: J
+    status: OPEN
+    severity: Blocker
+    allowed_paths:
+      - src/python/ods/
+      - src/python/ods/spec/  # to be created
+    forbidden_paths:
+      - src/python/fods/
+      - src/python/fodt/
+      - tools/supervisor/
+    purpose: "Backfill ODS domain classes with spec_qname; create spec stubs reusing FODS ODF namespace"
+    problem: "OdsDocument/OdsSheet/OdsRow/OdsCell have no spec_qname; share 80% of FODS namespace"
+    evidence: "qname-schema-audit.md — ODS Classes WITHOUT spec_qname section"
+    required_change: |
+      1. Create src/python/ods/spec/ directory with office/, table/ subdirs
+      2. Add spec_qname to OdsDocument (spec_qname='office:document', fact_ref='FACT-ODS-XXX')
+      3. Add spec_qname to OdsSheet (spec_qname='table:table')
+      4. Add spec_qname to OdsRow (spec_qname='table:table-row')
+      5. Add spec_qname to OdsCell (spec_qname='table:table-cell')
+    tests:
+      - tests/specification-authority-layer/test_qname_structure_validator.py — add ODS cases
+    evidence_required:
+      - qname_structure_validator.py output showing ODS PARTIALLY_COMPLIANT → COMPLIANT
+    closeout_criteria: "ODS qname_structure_validator returns PARTIALLY_COMPLIANT or COMPLIANT; no test regressions"
+    rollback_notes: "spec_qname is additive; remove the added attributes to roll back"
+    dependencies: []
+    gate_impact: P4 (spec parity)
+    product_impact: MEDIUM
+    machinery_impact: LOW
+
+  - taskcard_id: TC-QNAME-BACKFILL-002
+    title: "Add spec_qname to ODT domain classes (backfill wave 1)"
+    lane: J
+    status: OPEN
+    severity: High
+    allowed_paths:
+      - src/python/odt/
+      - src/python/odt/spec/
+    required_change: |
+      1. Create src/python/odt/spec/ with text/ subdir
+      2. Add spec_qname to OdtParagraph (text:p), OdtHeading (text:h), OdtListItem (text:list-item), OdtDocument (office:document)
+    dependencies: [TC-QNAME-BACKFILL-001]
+
+  - taskcard_id: TC-QNAME-DEDUP-001
+    title: "Remove duplicate fods/fods/spec/ nested directory"
+    lane: C
+    status: OPEN
+    severity: High
+    allowed_paths:
+      - src/python/fods/fods/
+    problem: "Two spec stub locations with conflicting class names (Cell vs TableCell)"
+    required_change: |
+      1. Verify fods/fods/spec/ is not imported anywhere in production code
+      2. Verify fods/spec/ (canonical) covers all elements in fods/fods/spec/
+      3. Remove fods/fods/ directory entirely OR move remaining unique content to fods/spec/
+    tests:
+      - Verify fods parser tests still pass after removal
+    closeout_criteria: "No fods/fods/spec/ exists; fods/spec/ is the single canonical location"
+    dependencies: []
+
+  - taskcard_id: TC-FODT-COMPAT-001
+    title: "Add Compat/ layer to FODT Python package"
+    lane: C
+    status: OPEN
+    severity: High
+    allowed_paths:
+      - src/python/fodt/Compat/
+      - src/python/fodt/models.py
+    purpose: "Mirror the FODS Compat/ pattern for FODT; add spec_qname to models.py"
+    required_change: |
+      1. Create src/python/fodt/Compat/__init__.py
+      2. Create fodt/Compat/fodt_document.py :: FodtDocument, spec_qname='office:document'
+      3. Create fodt/Compat/fodt_paragraph.py :: FodtParagraph, spec_qname='text:p'
+      4. Create fodt/Compat/fodt_heading.py :: FodtHeading, spec_qname='text:h'
+      5. Add spec_qname to existing models.py classes (additive)
+    closeout_criteria: "FODT Compat/ mirrors FODS Compat/; qname_structure_validator PARTIALLY_COMPLIANT for fodt"
+    dependencies: [TC-QNAME-BACKFILL-002]
+
+  - taskcard_id: TC-QNAME-REGISTRY-001
+    title: "Create qname-registry YAML files for FODS and FODT"
+    lane: C
+    status: OPEN
+    severity: High
+    allowed_paths:
+      - shared/qname-registry/
+    purpose: "Create the qname-registry files referenced in Compat/ docstrings but not present"
+    required_change: |
+      1. Create shared/qname-registry/fods.yaml with all FODS qname → canonical class → facade mappings
+      2. Create shared/qname-registry/fodt.yaml
+      3. Update Compat/ docstrings to reference actual file paths
+    evidence_required: "Both YAML files exist and are parseable by qname_structure_validator"
+    dependencies: []
+
+  # ===== QNAME-VALIDATORS GROUP =====
+
+  - taskcard_id: TC-QNAME-VALIDATORS-001
+    title: "Wire qname_structure_validator into governance loop"
+    lane: C
+    status: OPEN
+    severity: Blocker
+    allowed_paths:
+      - tools/validators/qname_structure_validator.py
+      - tools/supervisor/governance_validators.py
+    purpose: "Make spec_qname compliance a governance gate, not a manual check"
+    required_change: |
+      1. Add validate_qname_compliance() wrapper to governance_validators.py
+      2. Wire it as V47 (or next available) in run_all_governance_validators()
+      3. Set blocks_sprint=True when new spec/ classes are added without spec_qname
+      4. Update registry/source-structure-baseline.json governance_validators cap
+    closeout_criteria: "V47 fires and blocks sprint when new spec/ class lacks spec_qname"
+    dependencies: [TC-QNAME-BACKFILL-001, TC-QNAME-BACKFILL-002]
+    gate_impact: P4, C14
+
+  # ===== SAL-REPAIR GROUP =====
+
+  - taskcard_id: TC-SAL-REPAIR-001
+    title: "Generate SAL facts for CSV (RFC 4180) and TOML (v1.0)"
+    lane: E
+    status: OPEN
+    severity: High
+    allowed_paths:
+      - .local/spec-cache/
+      - tools/specification-authority-layer/
+    purpose: "Extend SAL coverage to non-ODF text formats"
+    required_change: |
+      1. Create spec source entries for CSV (RFC 4180) and TOML (TOML v1.0 spec)
+      2. Run sal_master_runner.py with CSV and TOML entries
+      3. Verify sal-facts-csv.json and sal-facts-toml.json have > 0 facts
+    evidence_required: "sal-facts-csv.json with at least 10 facts; sal-facts-toml.json with at least 10 facts"
+    dependencies: []
+
+  - taskcard_id: TC-SAL-PATH-001
+    title: "Align SAL output path between spec-cache and sal-output"
+    lane: E
+    status: OPEN
+    severity: High
+    allowed_paths:
+      - tools/supervisor/capability_compiler.py
+      - tools/specification-authority-layer/sal_master_runner.py
+    problem: "capability_compiler.py reads from .local/sal-output/; SAL files are in .local/spec-cache/"
+    required_change: |
+      1. Update capability_compiler.py SAL_OUTPUT_PATH to .local/spec-cache/sal-facts-latest.json
+      2. Or: add symlink / copy step in SAL runner to populate .local/sal-output/
+      3. Add test that verifies compiler can load SAL facts for FODS
+    closeout_criteria: "capability_compiler.py can load FODS SAL facts when running from default paths"
+    dependencies: []
+
+  # ===== CAPABILITY-REPAIR GROUP =====
+
+  - taskcard_id: TC-CAP-REPAIR-001
+    title: "Backfill severity and fact_refs on gap ledger entries"
+    lane: F
+    status: OPEN
+    severity: Medium
+    allowed_paths:
+      - reports/capability-layer/gap-ledger.json
+      - tools/capability_layer/
+    required_change: |
+      1. Write gap_ledger_backfill.py that reads gaps and adds severity based on status/priority fields
+      2. For FODS/FODT gaps: cross-reference SAL facts and add fact_refs where applicable
+      3. Update gap generator to populate severity at creation time
+    dependencies: [TC-SAL-PATH-001]
+
+  # ===== SKILL-HARDENING GROUP =====
+
+  - taskcard_id: TC-SKILL-HARDEN-001
+    title: "Update add-python-object-model-feature to require spec_qname"
+    lane: H
+    status: OPEN
+    severity: Blocker
+    allowed_paths:
+      - .claude/commands/add-python-object-model-feature.md
+    purpose: "Prevent generation of new product classes without spec_qname"
+    required_change: |
+      1. Add mandatory step: "Identify spec_qname for this class from SAL facts or spec stubs"
+      2. Add mandatory step: "Add spec_qname = '<namespace>:<element>' as class attribute"
+      3. Add mandatory step: "Add spec_fact_ref = 'FACT-FORMAT-NNN' if SAL fact exists"
+      4. Add mandatory pre-check: "Does a spec stub already exist for this element?"
+    closeout_criteria: "Skill prompt includes spec_qname mandate; V47 would catch violations"
+    dependencies: [TC-QNAME-VALIDATORS-001]
+
+  - taskcard_id: TC-SKILL-HARDEN-002
+    title: "Update add-dotnet-object-model-feature to require spec references"
+    lane: H
+    status: OPEN
+    severity: High
+    allowed_paths:
+      - .claude/commands/add-dotnet-object-model-feature.md
+    required_change: |
+      1. Add mandatory step: "Add XML documentation comment referencing ODF/spec section"
+      2. Add XNamespace constant for new namespace if not already present
+      3. Reference FACT-FORMAT-NNN in XML docs
+    dependencies: []
+
+  - taskcard_id: TC-SKILL-CANONICAL-001
+    title: "Create add-canonical-name-registration skill for non-XML formats"
+    lane: H
+    status: OPEN
+    severity: Medium
+    allowed_paths:
+      - .claude/commands/add-canonical-name-registration.md
+      - registry/format-canonical-names.yaml
+    purpose: "Govern canonical naming for DIF, SYLK, CSV, ZST, XCF binary/text formats"
+    required_change: |
+      1. Create registry/format-canonical-names.yaml schema
+      2. Create .claude/commands/add-canonical-name-registration.md skill
+      3. Populate DIF and SYLK entries as pilot
+    dependencies: []
+
+  # ===== SOURCE-HYGIENE GROUP =====
+
+  - taskcard_id: TC-SOURCE-HYGIENE-001
+    title: "Fix .gitignore to exclude build artifacts from src/"
+    lane: B
+    status: OPEN
+    severity: Medium
+    allowed_paths:
+      - .gitignore
+    required_change: |
+      1. Add *.egg-info/ to .gitignore
+      2. Add src/python/*/build/ to .gitignore
+      3. Add __pycache__/ to .gitignore if not present
+      4. Add src/net/*/bin/ and src/net/*/obj/ to .gitignore
+      5. Run git rm --cached on already-tracked artifacts (careful — check .gitignore first)
+    risk: MEDIUM  # removing tracked files from git history
+    rollback_notes: "git add back specific files if needed"
+
+  - taskcard_id: TC-SOURCE-HYGIENE-002
+    title: "Remove recursive build/ nesting in fods, sylk, zst"
+    lane: B
+    status: OPEN
+    severity: Medium
+    allowed_paths:
+      - src/python/fods/build/
+      - src/python/sylk/build/
+      - src/python/zst/build/
+    required_change: |
+      1. Delete src/python/fods/build/ (safely — check nothing imports from it)
+      2. Delete src/python/sylk/build/
+      3. Delete src/python/zst/build/
+      4. Verify tests pass after removal
+    rollback_notes: "Re-run pip install -e . from each package dir to regenerate if needed"
+
+  # ===== BACKFILL-FACILITY GROUP =====
+
+  - taskcard_id: TC-BACKFILL-FACILITY-001
+    title: "Create tools/backfill/ with inventory and spec-stub generator"
+    lane: J
+    status: OPEN
+    severity: Blocker
+    allowed_paths:
+      - tools/backfill/
+    purpose: "Systematic governed backfill of existing source with spec_qname"
+    required_change: |
+      1. Create tools/backfill/inventory_source.py — scan src/python/ for classes without spec_qname
+      2. Create tools/backfill/generate_spec_stub.py — generate spec stubs from qname + SAL fact
+      3. Create tools/backfill/apply_spec_qname.py — add spec_qname attribute to existing class (AST-based)
+      4. Create registry/backfill-status.yaml — track backfill progress per format
+      5. Write tests for each tool
+    closeout_criteria: "tools/backfill/ has 3 scripts; running inventory_source.py produces valid YAML"
+    dependencies: []
+
+  # ===== SUPERVISOR-LANES GROUP =====
+
+  - taskcard_id: TC-SUPERVISOR-LANES-001
+    title: "Implement lane_ownership_validator in governance_validators.py"
+    lane: I
+    status: OPEN
+    severity: High
+    allowed_paths:
+      - tools/supervisor/governance_validators.py
+      - tools/supervisor/governance_validator_runner.py
+    purpose: "Enforce that System Healing lanes (1-6, 14, 15) cannot be skipped for Product lanes (7-13)"
+    required_change: |
+      1. Add validate_lane_ordering() function to governance_validators.py
+      2. Read lane completion status from lane-execution-ledger.json
+      3. Block product deepening if required healing lanes not marked complete
+      4. Wire as V48 in run_all_governance_validators()
+    dependencies: []
+
+  # ===== PRODUCT-PILOT GROUP =====
+
+  - taskcard_id: TC-PRODUCT-PILOT-001
+    title: "FODS spec-to-library proof: complete Compat/ → SAL → export pipeline"
+    lane: K
+    status: OPEN
+    severity: High
+    allowed_paths:
+      - src/python/fods/
+      - tests/python/fods/
+    purpose: "Prove end-to-end: SAL fact → spec stub → Compat facade → parser output → export"
+    required_change: |
+      1. Verify FODS parser returns objects that satisfy FodsDocument Compat/ facade
+      2. Add test: parse FODS file → FodsDocument.sheets → FodsSheet.cells → FodsCell values
+      3. Verify csv_exporter uses the Compat/ objects
+      4. Evidence: test passes with full trace from SAL fact to exported CSV
+    closeout_criteria: "Test proves FACT-FODS-001 → Document.spec_qname → FodsDocument → csv export"
+    gate_impact: P1, P2, P3, P4
+
+  # ===== GATE11-STOP GROUP =====
+
+  - taskcard_id: TC-GATE11-FODS-001
+    title: "Complete C1-C20 and P1-P11 gap analysis for FODS"
+    lane: K
+    status: OPEN
+    severity: High
+    allowed_paths:
+      - reports/supervisor/fods-gate11-readiness.md
+      - registry/gate11-criteria.yaml
+    purpose: "Determine exact remaining steps for FODS Gate 11 readiness (pre-approval)"
+    required_change: |
+      1. Map each C1-C20 criterion to implemented .NET capability with evidence
+      2. Map each P1-P11 criterion to implemented Python capability with evidence
+      3. Identify gaps per criterion
+      4. Produce gate-readiness packet for human review
+    closeout_criteria: "fods-gate11-readiness.md updated with C1-C20 and P1-P11 status; gap count per criterion"
+    dependencies: [TC-PRODUCT-PILOT-001]
+
+  # ===== CROSS-LANGUAGE-PARITY GROUP =====
+
+  - taskcard_id: TC-PARITY-FODS-WRITE-001
+    title: "Add Python FODS write (same-format save) to align with .NET"
+    lane: D
+    status: OPEN
+    severity: Medium
+    allowed_paths:
+      - src/python/fods/
+    purpose: "Close write capability gap between .NET (has writer) and Python (read-only)"
+    required_change: |
+      1. Review fods/writer.py if it exists for salvageable code
+      2. Implement write_fods(workbook_dict, file_path) using ElementTree
+      3. Add round-trip test: parse → write → reparse → verify
+    dependencies: [TC-PRODUCT-PILOT-001]

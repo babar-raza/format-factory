@@ -2,7 +2,7 @@
 # Prepared by: Agent (agent-owned preparation — submission requires human authorization)
 # Prepared: 2026-06-12 (Updated: 2026-06-18, Python tests 1667, .NET 567 tests verified)
 # Updated: 2026-06-20 — per-criterion C1-C20 / P1-P11 assessment added (TC-IMPL-003)
-# Updated: 2026-06-21 — test counts reconciled from poc-targets.yaml; gates_passed="1-11" confirmed (autonomous-loop sprint)
+# Updated: 2026-06-21 — test count updated to 1982 (test_r131/132/133 added); all 26 FODT missing_test_coverage gaps closed; 149 FOSS caps all implementation_verified; P4 evidence_verified (wheel install proof R131)
 # Sprint: autonomous-loop-20260621
 # Status: G11-G APPROVED BY BABAR RAZA (2026-06-05) — awaiting customer-readiness-checklist + publication sign-off
 
@@ -63,8 +63,8 @@
 
 | Metric | Value |
 |--------|-------|
-| Total Python test functions | **1879** (updated 2026-06-21 — 0 collection errors after analytics healing) |
-| Test files | 121+ files in `tests/python/fodt/` |
+| Total Python test functions | **1982** (updated 2026-06-21 — test_r131 +15, test_r132 +29, test_r133 +50 added in autonomous-loop sprint) |
+| Test files | 124+ files in `tests/python/fodt/` |
 | Coverage depth | parse, neutral model, public API, security, fuzz, spans/ordering, hyperlinks, nested lists, preservation, roundtrip |
 | Security tests | Malformed XML, DTD injection, oversized input |
 | Roundtrip/preservation tests | `test_r54_fodt_preservation.py`, `test_r84_fodt_text_export.py` |
@@ -257,10 +257,10 @@ This packet is agent-prepared. The following decisions require **human authoriza
 | P1 | Class-based model exists | partial | `src/python/fodt/neutral_model.py` — 8 entities defined. Unlike FODS, FODT neutral model uses named entities (Document, Block, List, etc.). However, entity structure is dict-based (not actual Python classes). Closer to class-based than FODS but still not canonical class instances. |
 | P2 | Parity matrix exists and is up to date | partial | Gate 11 packet serves as readiness document. No formal parity matrix artifact found. |
 | P3 | capability_coverage_percentage >= 60% | evidence_verified | poc-targets.yaml entry confirmed (POC_TARGET_CONFIRMED, gates 1-4 PASS). 1667 Python tests across 121 files demonstrate broad capability coverage. |
-| P4 | Wheel buildable from pyproject.toml | partial | `src/python/fodt/pyproject.toml` expected (Section 4C: "check if exists"). Build not verified in current sprint. |
-| P5 | 0 collection errors in test suite | partial | 121 test files, 1667 test functions. No collection error count in current sprint evidence. Assumed low based on volume of passing tests in prior sprints. |
+| P4 | Wheel buildable from pyproject.toml | evidence_verified | Wheel built 2026-06-21: `aspose_format_factory_fodt-0.1.0.dev0-py3-none-any.whl` (72,049 bytes). SHA-256: 78bac3ecdce3b52bf5b1d6f6b5b8ebf1b04125b38b519eee09fd407049d7a3d9. pip --user install OK; import fodt OK (user site-packages). Evidence: .local/evidences/g11-quick-wins/fodt-p4-wheel-proof.md |
+| P5 | 0 collection errors in test suite | evidence_verified | 1,982 tests collected, 0 collection errors. Command: .venv/Scripts/pytest tests/python/fodt/ --collect-only -q. Verified 2026-06-21. Evidence: .local/evidences/g11-quick-wins/fodt-p5-collection.txt |
 
-**P1-P5 readiness: 1 evidence_verified (P3), 4 partial**
+**P1-P5 readiness: 2 evidence_verified (P3, P4), 3 partial**
 
 #### Spec-Parity Criteria (P6-P11, System Healing Addition)
 
@@ -275,8 +275,8 @@ This packet is agent-prepared. The following decisions require **human authoriza
 
 **P6-P11 readiness: 0 evidence_verified, 1 partial (P11), 5 not_started**
 
-**P1-P11 Overall: 1/11 evidence_verified (P3), 5 partial, 5 not_started**
-**Python FOSS readiness percentage: 9.1% (1 evidence_verified / 11 applicable)**
+**P1-P11 Overall: 2/11 evidence_verified (P3, P4), 4 partial, 5 not_started**
+**Python FOSS readiness percentage: 18.2% (2 evidence_verified / 11 applicable)**
 
 ---
 
@@ -285,8 +285,8 @@ This packet is agent-prepared. The following decisions require **human authoriza
 | Track | Total Criteria | evidence_verified | partial | not_started | blocked_external | Readiness % |
 |-------|---------------|-------------------|---------|-------------|------------------|-------------|
 | .NET C1-C20 | 20 | 0 | 12 | 7 | 1 | 0% |
-| Python P1-P11 | 11 | 1 | 5 | 5 | 0 | 9.1% |
-| **Combined** | **31** | **1** | **17** | **12** | **1** | **3.2%** |
+| Python P1-P11 | 11 | 2 | 4 | 5 | 0 | 18.2% |
+| **Combined** | **31** | **2** | **16** | **12** | **1** | **6.5%** |
 
 **Gate 11 status:** NOT READY — C11-C20 spec-parity criteria require Lane 10 (FODT rebuild) which is blocked until system-healing Wave 3 gate PASSES.
 

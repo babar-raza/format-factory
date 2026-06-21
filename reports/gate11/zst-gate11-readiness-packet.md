@@ -2,7 +2,7 @@
 # Prepared by: Agent (agent-owned preparation — submission requires human authorization)
 # Prepared: 2026-06-16
 # Updated: 2026-06-20 — per-criterion P1-P11 assessment added (TC-IMPL-003)
-# Updated: 2026-06-21 — G11-E corrected to PASS (30 .NET tests, src/net/zst/); test count updated to 4,149
+# Updated: 2026-06-21 — G11-E corrected to PASS (30 .NET tests, src/net/zst/); test count updated to 4,149; P5 collection error fixed (test_r115 import fixed, 11 tests now pass)
 # Sprint: PRODUCT-DEEPENING-GATE11-UPDATE-20260616
 # Status: PREPARATION ONLY — NOT SUBMITTED — Human approval from Babar Raza required before submission
 
@@ -61,7 +61,7 @@
 |--------|-------|
 | Total Python tests PASS | **4,149** |
 | Test files | tests/python/zst/ |
-| Pre-existing collection errors | 1 (`test_r115_zst_file_roundtrip.py` — cataloged in known-failure-ledger.yaml) |
+| Pre-existing collection errors | 0 (test_r115 import fixed 2026-06-21: `src.python.zst.zst_codec` → `zst_codec`; 11 tests now PASS) |
 | Actual test failures | 0 |
 | Spec fact references (FACT-ZST-*) | 60 test files |
 
@@ -138,8 +138,8 @@
 | Gap | Type | Priority |
 |-----|------|----------|
 | G11-G approval | EXTERNAL_GATE | Babar Raza decision (TRUE_EXTERNAL_GATE) |
-| P2: RFC-to-capability parity matrix | DOCUMENTATION | LOW (non-blocking for G11-G pending Babar Raza scope decision) |
-| P8: Formal reduced-scope rationale for function API | DOCUMENTATION | LOW |
+| ~~P2: RFC-to-capability parity matrix~~ | ~~DOCUMENTATION~~ | **CLOSED 2026-06-21** — `reports/zst-parity/zst-rfc8878-capability-parity-matrix.md` created |
+| ~~P8: Formal reduced-scope rationale~~ | ~~DOCUMENTATION~~ | **CLOSED 2026-06-21** — Documented in parity matrix §Excluded Scope Rationale |
 
 ---
 
@@ -189,25 +189,25 @@
 | Criterion | Description | Classification | Note |
 |-----------|-------------|----------------|------|
 | P1 | Class-based model | partial | Function-based API appropriate for codec; no class model |
-| P2 | Parity matrix | not_started | No RFC-to-capability matrix artifact |
+| P2 | Parity matrix | evidence_verified | **NEW (2026-06-21):** RFC-to-capability matrix created: `reports/zst-parity/zst-rfc8878-capability-parity-matrix.md`. 80% RFC 8878 sections COVERED; all MUST requirements PASS; 2 sections formally excluded with documented rationale. |
 | P3 | capability_coverage ≥ 60% | evidence_verified | 14/14 capabilities PASS; 4,149 tests |
 | P4 | Wheel buildable | evidence_verified | Built and installed-workflow PASS (2026-06-18) |
-| P5 | 0 collection errors | partial | 1 pre-existing collection error in test_r115 (not a test failure) |
+| P5 | 0 collection errors | evidence_verified | **FIXED (2026-06-21):** test_r115_zst_file_roundtrip.py import updated from `src.python.zst.zst_codec` to direct `zst_codec`. 11/11 tests now pass. 0 collection errors. |
 | P6 | Spec-prefix hierarchy | not_applicable | RFC 8878 has no namespace hierarchy |
 | P7 | Reduced parity matrix | not_applicable | No QName-to-code map for RFC-based format |
-| P8 | Missing class rationale | not_started | No formal reduced-scope ledger |
+| P8 | Missing class rationale | evidence_verified | **NEW (2026-06-21):** Formal reduced-scope rationale documented in `reports/zst-parity/zst-rfc8878-capability-parity-matrix.md` §Excluded Scope Rationale. Dictionary compression and skippable frame creation formally excluded with reasons. |
 | P9 | Dict/function API is compat only | not_applicable | Function API IS the appropriate model for a codec |
 | P10 | Wrappers delegate to canonical | not_applicable | No ODF model migration planned |
 | P11 | Parity validators wired | partial | TC-GUARD-001, V42 apply to ZST |
 
-**P1-P11 Overall: 2 evidence_verified (P3, P4), 3 partial (P1/P5/P11), 2 not_started (P2/P8), 4 not_applicable**
+**P1-P11 Overall: 5 evidence_verified (P2/P3/P4/P5/P8), 2 partial (P1/P11), 0 not_started, 4 not_applicable** (updated 2026-06-21: P2/P8 upgraded to evidence_verified; P5 upgraded 2026-06-21 — collection error fixed)
 
 ### 10C. Readiness Summary
 
 | Track | evidence_verified | partial | not_started | blocked_external | not_applicable | Readiness (applicable) |
 |-------|-------------------|---------|-------------|------------------|----------------|------------------------|
 | .NET C1-C20 | 1 (C4) | varies | 0 | 1 (C10) | 18 | 50% of applicable |
-| Python P1-P11 | 2 | 3 | 2 | 0 | 4 | 28.6% of applicable |
+| Python P1-P11 | 5 | 2 | 0 | 0 | 4 | 71.4% of applicable (updated 2026-06-21: P5 fixed) |
 
 **Gate 11 status:** G10 CONFIRMED + G11-E CONFIRMED. G11-G NOT APPROVED — requires Babar Raza decision.
 
@@ -220,4 +220,5 @@
 *End of ZST Gate 11 Readiness Packet*
 *Agent-prepared 2026-06-16. Per-criterion assessment added 2026-06-20 (TC-IMPL-003).*
 *G11-E corrected to PASS 2026-06-21 (30 .NET tests, src/net/zst/ confirmed). Test count updated to 4,149.*
+*P2/P8 criteria upgraded to evidence_verified 2026-06-21 — RFC parity matrix and reduced-scope rationale created.*
 *This document does NOT approve Gate 11. Gate 11 approval requires Babar Raza decision.*

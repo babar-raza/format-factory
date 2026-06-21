@@ -1,0 +1,194 @@
+schema_version: "1.0"
+sprint_id: ff-machinery-readiness-audit-v2-20260621-827f5a52
+generated_at: "2026-06-21"
+validator_used: tools/validators/qname_structure_validator.py
+
+products:
+  # === PYTHON FOSS ===
+
+  - product: FODS Python
+    language: Python
+    format: FODS
+    current_source_root: src/python/fods/
+    expected_qname_root: src/python/fods/spec/{namespace}/{element}.py
+    spec_hierarchy_source: ODF 1.3 Part 3 (verified-facts-review.yaml)
+    class_naming_follows_qname: partial
+    namespace_module_follows_qname: partial
+    folder_structure_follows_spec_hierarchy: partial
+    product_api_maps_to_spec_facts: "no"
+    existing_tests_prove_behavior: partial
+    existing_validators_prove_qname: "yes"
+    backfill_available: "no"
+    source_quality_rating: Yellow
+    gate_status: G11-G preparation (FOSS Python package installed, not commercial)
+    evidence_paths:
+      - .local/spec-cache/sal-facts-fods.json (4987 facts)
+      - src/python/fods/spec/ (15 spec classes, COMPLIANT)
+      - src/python/fods/Compat/ (3 facades — UNTRACKED)
+      - tests/python/fods/ (44 pass, 32 collection errors)
+    required_fix: >
+      Fix 32 test collection errors (analytics ImportError).
+      Commit Compat/ facades.
+      Connect neutral_model.py to spec/ hierarchy.
+      Production parser/writer still not spec-qname structured.
+
+  - product: FODT Python
+    language: Python
+    format: FODT
+    current_source_root: src/python/fodt/
+    expected_qname_root: src/python/fodt/spec/{namespace}/{element}.py
+    spec_hierarchy_source: ODF 1.3 (shared with FODS)
+    class_naming_follows_qname: partial
+    namespace_module_follows_qname: partial
+    folder_structure_follows_spec_hierarchy: partial
+    product_api_maps_to_spec_facts: "no"
+    existing_tests_prove_behavior: partial
+    existing_validators_prove_qname: "yes"
+    backfill_available: "no"
+    source_quality_rating: Yellow
+    gate_status: install proof in reports/r129-fodt-install-proof-sprint2/
+    evidence_paths:
+      - .local/spec-cache/sal-facts-fodt.json (4933 facts)
+      - src/python/fodt/spec/ (8 spec classes, COMPLIANT)
+    required_fix: >
+      No Compat/ facades for FODT yet.
+      Create FODT Compat/ layer.
+      Production neutral_model.py not spec-shaped.
+
+  - product: ZST Python
+    language: Python
+    format: ZST (Zstandard)
+    current_source_root: src/python/zst/
+    expected_qname_root: src/python/zst/spec/ (does not exist)
+    spec_hierarchy_source: RFC 8878 (cached, not processed)
+    class_naming_follows_qname: "no"
+    namespace_module_follows_qname: "no"
+    folder_structure_follows_spec_hierarchy: "no"
+    product_api_maps_to_spec_facts: partial
+    existing_tests_prove_behavior: partial
+    existing_validators_prove_qname: "no"
+    backfill_available: "no"
+    source_quality_rating: Orange
+    gate_status: analytics suspended; no spec hierarchy
+    evidence_paths:
+      - .local/spec-cache/sal-facts-zst.json (94 facts)
+      - src/python/zst/zst_codec.py (1549 LOC)
+    required_fix: >
+      No spec/ stubs. No SAL fact IDs in product.
+      Analytics rotation suspended (cannot proceed).
+      RFC source cached but never processed into fact IDs.
+
+  - product: CSV Python
+    language: Python
+    format: CSV
+    current_source_root: src/python/csv/
+    class_naming_follows_qname: "no"
+    namespace_module_follows_qname: "no"
+    folder_structure_follows_spec_hierarchy: "no"
+    product_api_maps_to_spec_facts: "no"
+    existing_validators_prove_qname: "no"
+    backfill_available: "no"
+    source_quality_rating: Gray
+    gate_status: not assessed
+    evidence_paths: []
+    required_fix: no spec/ hierarchy exists
+
+  - product: ODS Python
+    language: Python
+    format: ODS
+    class_naming_follows_qname: "no"
+    namespace_module_follows_qname: "no"
+    folder_structure_follows_spec_hierarchy: "no"
+    product_api_maps_to_spec_facts: "no"
+    existing_validators_prove_qname: "no"
+    backfill_available: "no"
+    source_quality_rating: Gray
+    gate_status: not assessed
+    required_fix: no spec/ hierarchy exists
+
+  - product: XCF Python
+    language: Python
+    format: XCF (GIMP)
+    current_source_root: src/python/xcf/
+    class_naming_follows_qname: "no"
+    namespace_module_follows_qname: "no"
+    folder_structure_follows_spec_hierarchy: "no"
+    product_api_maps_to_spec_facts: "no"
+    existing_validators_prove_qname: "no"
+    backfill_available: "no"
+    source_quality_rating: Red
+    gate_status: monolith_detection_validator triggered; analytics suspended
+    evidence_paths:
+      - src/python/xcf/xcf_parser.py (1269 LOC, GOV_BLOCK risk)
+    required_fix: >
+      no spec/ hierarchy. Analytics file is at LOC cap.
+      Rotation suspended. Not a priority for qname.
+
+  # === .NET COMMERCIAL ===
+
+  - product: FODS .NET
+    language: C#/.NET
+    format: FODS
+    current_source_root: src/net/fods/
+    expected_qname_root: src/net/fods/Spec/{Namespace}/{Element}.cs
+    spec_hierarchy_source: ODF 1.3 Part 3
+    class_naming_follows_qname: "no"
+    namespace_module_follows_qname: partial
+    folder_structure_follows_spec_hierarchy: partial
+    product_api_maps_to_spec_facts: partial
+    existing_tests_prove_behavior: "yes"
+    existing_validators_prove_qname: "no"
+    backfill_available: "no"
+    source_quality_rating: Yellow
+    gate_status: G11-G prep (see fods-gate11-readiness.md)
+    evidence_paths:
+      - src/net/fods/FodsDocument.cs (1293 LOC, FormatFactory.Fods namespace)
+      - src/net/fods/Spec/ (architecture_only stubs — NOT production)
+      - src/net/fods/Model/ (FodsCell.cs, FodsRow.cs, FodsSheet.cs)
+      - reports/supervisor/fods-gate11-readiness.md
+    required_fix: >
+      Production FodsDocument is not spec-shaped (namespace FormatFactory.Fods, class FodsDocument).
+      Spec/ stubs are architecture_only placeholders with TODO.
+      Canonical class migration (Office.Document, Table.TableCell etc.) NOT done.
+      30 public methods, no spec_qname or QName attribute in production class.
+
+  - product: FODT .NET
+    language: C#/.NET
+    format: FODT
+    current_source_root: src/net/fodt/
+    expected_qname_root: src/net/fodt/Spec/{Namespace}/{Element}.cs
+    class_naming_follows_qname: "no"
+    namespace_module_follows_qname: partial
+    folder_structure_follows_spec_hierarchy: partial
+    product_api_maps_to_spec_facts: partial
+    existing_tests_prove_behavior: partial
+    existing_validators_prove_qname: "no"
+    backfill_available: "no"
+    source_quality_rating: Yellow
+    gate_status: Gate 11 prep in progress
+    evidence_paths:
+      - src/net/fodt/FodtDocument.cs
+      - src/net/fodt/Spec/ (architecture_only stubs)
+    required_fix: >
+      Same issues as FODS .NET — production not spec-shaped.
+      Spec/ stubs are architecture_only.
+
+  - product: ZST .NET
+    language: C#/.NET
+    format: ZST
+    class_naming_follows_qname: "no"
+    namespace_module_follows_qname: "no"
+    folder_structure_follows_spec_hierarchy: "no"
+    product_api_maps_to_spec_facts: "no"
+    existing_validators_prove_qname: "no"
+    backfill_available: "no"
+    source_quality_rating: Gray
+    gate_status: not assessed
+    required_fix: no spec/ hierarchy exists
+
+overall_summary:
+  formats_with_spec_stubs: [fods_python, fodt_python, fods_dotnet_architecture_only, fodt_dotnet_architecture_only]
+  formats_fully_qname_compliant: []
+  formats_partially_compliant: [fods_python, fodt_python]
+  formats_no_qname: [zst, csv, ods, odt, abw, dif, fodg, fodp, gnumeric, xcf, sylk, qoi, pbm, pgm, ppm, toml, ndjson, tsv]
+  formats_dotnet_architecture_stubs_only: [fods_net, fodt_net]

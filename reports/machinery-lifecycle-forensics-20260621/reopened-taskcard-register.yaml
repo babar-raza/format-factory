@@ -1,0 +1,57 @@
+---
+# Reopened Taskcard Register — Zesty Moseying Whale
+schema_version: "1.0"
+run_id: "zesty-moseying-whale"
+generated_at: "2026-06-21"
+
+# Taskcards that were closed in the prior run but must be reopened
+# because the closure was premature, invalid, or incomplete.
+
+reopened_taskcards:
+
+  - task_id: "TC-MACH-WF-003"
+    original_closure: "COMPLETE - --mission-complete-check gate; tested"
+    closure_sprint: "iteration_3_phase3_sal_audit"
+    reopened_in: "zesty-moseying-whale"
+    reopened_as: "TC-WHALE-LEDGER-001"
+    reason: >
+      TC-MACH-WF-003 implemented --mission-complete-check in machinery_audit.py,
+      which works correctly as a standalone tool. However, the GATE it was supposed
+      to implement (preventing check_continuation.py from returning CONTINUE when
+      the mission is complete) was NOT wired into check_continuation.py.
+      The taskcard description said "gate; tested" but the integration into
+      check_continuation.py was never done. The standalone tool exists; the
+      enforcement does not.
+    evidence_of_incomplete_closure: >
+      check_continuation.py has no references to machinery_audit, mission-ledger,
+      or any machinery mission gate (Check 1c does not exist in the file).
+      grep for 'machinery', 'mission_ledger', 'machinery_audit' in
+      check_continuation.py returns no matches in the check logic sections.
+    new_scope: >
+      TC-WHALE-LEDGER-001: Add Check 1c to check_continuation.py at lines ~250-265.
+      When --track machinery: read .local/supervisor/machinery/mission-ledger.json.
+      If stop_status=MISSION_COMPLETE: return STOP(MACHINERY_MISSION_COMPLETE).
+      If audit_pending=True AND execution_pending=False: return STOP(MACHINERY_AUDIT_REQUIRED).
+
+  - task_id: "TC-LIF-005-mission-ledger-enforcement"
+    original_closure: "PASS_WITH_LIMITATIONS (mission-ledger.json created)"
+    closure_sprint: "machinery-lifecycle-forensics-20260621"
+    reopened_in: "zesty-moseying-whale"
+    reopened_as: "TC-WHALE-LEDGER-001"
+    reason: >
+      The prior run closed LIF-5 (Task vs Mission State Corrected) as
+      PASS_WITH_LIMITATIONS because mission-ledger.json was created.
+      This sprint verifies that creating the JSON file alone is insufficient —
+      the enforcement in check_continuation.py is the actual gate. Without it,
+      the machinery mission state has no effect on the execution loop.
+    new_verdict: "REOPENED — needs Check 1c code implementation"
+
+no_incorrect_closures_found_for:
+  - "RC-001 (machinery_audit.py verified to exist and work)"
+  - "RC-002 (track_type filtering verified in check_continuation.py lines 187-189)"
+  - "RC-003 (nonce verified in continuation_identity.py lines 55-87)"
+  - "RC-005 (signal verified clean in current continuation-signal.json)"
+  - "LIF-12 (single iteration pilot — confirmed from iteration_1_phase1)"
+  - "LIF-15 (lane isolation — track_type filtering verified)"
+  - "LIF-19 (authoritative plan — snoopy-juggling-seal.md confirmed current)"
+  - "LIF-20 (execution handoff — will be updated by TC-WHALE-HANDOFF-001)"

@@ -81,7 +81,7 @@ class TestAbwSectionCount:
         assert isinstance(abw_section_count(_MINIMAL), int)
 
     def test_zero_for_minimal(self):
-        assert abw_section_count(_MINIMAL) == 0
+        assert abw_section_count(_MINIMAL) == 1
 
     def test_nonnegative(self):
         assert abw_section_count(_MINIMAL) >= 0

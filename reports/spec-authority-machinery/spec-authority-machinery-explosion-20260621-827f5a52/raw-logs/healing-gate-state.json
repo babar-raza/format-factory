@@ -1,0 +1,102 @@
+{
+  "verdict": "PASSED",
+  "exit_code": 0,
+  "all_passed": true,
+  "critical_passed": true,
+  "failed_lanes": [],
+  "lane_results": [
+    {
+      "lane": 1,
+      "name": "SAL Pipeline",
+      "passed": true,
+      "checks": {
+        "sal_runner_exists": true,
+        "sal_runner_lines_gte_500": true,
+        "sal_module_count": 20,
+        "fods_format_specific_facts": 14,
+        "fodt_format_specific_facts": 16,
+        "fods_facts_gte_10": true,
+        "fodt_facts_gte_10": true
+      }
+    },
+    {
+      "lane": 2,
+      "name": "Capability Reintegration",
+      "passed": true,
+      "checks": {
+        "gap_ledger_exists": true,
+        "unified_cap_map_exists": true,
+        "action_queue_exists": true,
+        "capability_verifier_exists": true,
+        "cap_map_record_count": 3214,
+        "cap_map_has_records": true,
+        "action_queue_not_advisory": false,
+        "consumer_wired_in_autonomous_cycle": true,
+        "consumer_output_dir_exists": true
+      }
+    },
+    {
+      "lane": 3,
+      "name": "Compiler",
+      "passed": true,
+      "checks": {
+        "compiler_exists": true,
+        "compiler_lines_gte_300": true,
+        "compiler_lines": 513,
+        "compiler_tests_exist": true
+      }
+    },
+    {
+      "lane": 4,
+      "name": "Skills/Prompts",
+      "passed": true,
+      "checks": {
+        "commands_dir_exists": true,
+        "skill_count": 44,
+        "skill_count_gte_3": true
+      }
+    },
+    {
+      "lane": 5,
+      "name": "Validators",
+      "passed": true,
+      "checks": {
+        "governance_validators_exists": true,
+        "governance_validators_lines": 3077,
+        "governance_validators_lines_gte_1000": true,
+        "depth_validator_tests_exist": true,
+        "depth_validator_test_lines": 344
+      }
+    },
+    {
+      "lane": 6,
+      "name": "QName Ontology",
+      "passed": true,
+      "checks": {
+        "ontology_yamls_found": 10,
+        "format_registry_exists": true
+      }
+    },
+    {
+      "lane": 14,
+      "name": "Supervision Audit",
+      "passed": true,
+      "checks": {
+        "supervisor_loop_exists": true,
+        "autonomous_cycle_exists": true,
+        "governance_validators_exists": true,
+        "lane_enforcement_exists": true
+      }
+    },
+    {
+      "lane": 15,
+      "name": "Healing/Learning",
+      "passed": true,
+      "checks": {
+        "ai_learning_loop_exists": true,
+        "bounded_repair_exists": true,
+        "anti_skip_checker_exists": true
+      }
+    }
+  ]
+}

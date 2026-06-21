@@ -1,9 +1,24 @@
 # Snoopy Juggling Seal — SAL Source-to-Consumption Pipeline Forensics and Redesign Plan
 # Format Factory — Specification Authority Layer
-# Plan version: 3.3 (updated 2026-06-21: Phase 2 machinery repairs incorporated;
-# TC-SAL-SKILL-001 marked COMPLETE; 6 open machinery gaps taskcarded;
-# rework items TC-V45-WIRING/TC-SAL-IDEMPOTENCY/TC-SRC-001-REPAIR added;
-# repair loop and verification matrix updated)
+# Plan version: 3.10 (updated 2026-06-21: SAL healing sprint (sal-healing-sprint-20260621-001)
+# incorporated — RC-1/RC-2/RC-3 resolved; TC-MACH-ARCH-007 and TC-MACH-REWORK-002 → completed_verified;
+# body.py FACT-FODS-002→003; GAP-SA-NEW-004..011 taskcarded as TC-SA-HEAL-004..011 in §27.6;
+# TC-SAL-PATH-002 reassessed; VER-15 updated to V48/V49 numbering;
+# v3.9: Forensic audit findings incorporated — 4 live test
+# failures diagnosed, ROOT-03 re-opened as STILL_ACTIVE, 10 TC-HARD taskcards added §28,
+# analytics bloat (17,177 LOC) registered, qname validator deception fix taskcarded,
+# BLOCK-15 through BLOCK-22 and VER-18 through VER-27 added;
+# v3.8: session hardening from ff-machinery-readiness-20260621 — TC-RCAL-001 (RCAL queue
+# disconnection) and TC-GATE11-SUBMIT-001 (Gate 11 submission) added §26;
+# completed work from 5 sprint cycles recorded in §27;
+# v3.7: FODT QName bootstrap completion taskcards added §26;
+# 6 new taskcards: TC-FODT-BOOT-001..003, TC-FODT-GAP-001, TC-FODT-AUDIT-001..002;
+# anti-overclaim rules #9-11 added to §22; §26 taskcard register updated;
+# v3.6: Generation Archaeology sprint incorporated; 7 new archaeology taskcards added;
+# SAL path mismatch gap (TC-SAL-PATH-002), FODT Compat gap (TC-FODT-COMPAT-001),
+# fods/fods/ duplicate gap (TC-QNAME-DEDUP-001), skill enforcement gap (TC-SKILL-HARDEN-001),
+# qname validator wiring (TC-QNAME-VALIDATORS-001), ODS/ODT backfill taskcards added;
+# v3.5: 13/13 mission gaps closed; MISSION_COMPLETE gate fires; GAP-WF-002 deferred)
 # Classification: AUTHORITATIVE — single plan, no siblings or replacements
 
 ---
@@ -152,8 +167,19 @@ to all downstream consumers immediately.
 
 ### Layer 2 — Incompatible Namespaces (Root Cause ROOT-03)
 
+**⚠ ROOT-03 STATUS: STILL ACTIVE (v3.9 forensic audit re-opened 2026-06-21)**
+
 Template facts and workbench facts use incompatible ID schemas. No declaration can cite both.
 The canonical namespace (`FACT-<FORMAT>-NNN`) must be the only namespace used henceforth.
+
+**Evidence of ROOT-03 still active:** Live test `test_total_fact_refs_across_product_source` fails.
+`src/python/fods/spec/office/body.py` cites `spec_fact_ref = "FACT-FODS-002"` (canonical ID).
+`sal-facts-latest.json` does NOT contain `FACT-FODS-002`. The 14,428+ facts in sal-facts-latest.json
+use a different namespace. The v3.1 claim of "ROOT-03 RESOLVED" was incorrect — the runner was never
+fixed to emit canonical IDs. Fix taskcard: TC-HARD-002 (§28).
+
+Until TC-HARD-002 is resolved, no new spec stubs may cite FACT-<FORMAT>-NNN IDs and claim those IDs
+will be found in sal-facts-latest.json.
 
 ### Layer 3 — Synthetic Corruption (Root Cause ROOT-02 contributing)
 
@@ -792,6 +818,13 @@ agent implementation capacity.
 | 3.1 | 2026-06-21 | Count corrected: 14,428 facts (not 14,288) | sal-facts verification |
 | 3.2 | 2026-06-21 | Hardening: skill governance gaps, evidence contract, repair loop, anti-overclaim, verification matrix, remaining blockers added | skill-governance-sync-sprint |
 | 3.3 | 2026-06-21 | Phase 2 machinery repairs (7 items completed); sal-pipeline-heal ACTIVE; 6 open gaps taskcarded; rework items registered; repair loop updated | machinery-phase2-repairs-20260621 |
+| 3.4 | 2026-06-21 | V45 test path correction, SAL idempotency fix, V46 skill transcript validator added; commit 827f5a52 | sal-skill-gov-20260621-3104e1c1 |
+| 3.5 | 2026-06-21 | Machinery mission COMPLETE; TC-MACH-WF-001/003 completed_verified; machinery_audit.py + 11 tests; post-exec-audit-3.json verdict=PASS; MISSION_COMPLETE gate fires; 13/13 agent-resolvable gaps closed | machinery-phase2-iteration-2 |
+| 3.6 | 2026-06-21 | Generation Archaeology sprint (forensics-archaeology-20260621): 16 system gaps, 7 new taskcards registered; TC-MACH-ARCH-004 status upgraded to partially_done; SAL path mismatch gap, FODT Compat gap, fods/fods/ duplicate gap, skill enforcement gap, qname validator wiring gap, ODS/ODT backfill gaps all taskcarded; verification matrix rows VER-11 through VER-17 added; blockers updated | forensics-archaeology-20260621 |
+| 3.7 | 2026-06-21 | FODT QName bootstrap completion (hazy-giggling-moon hardening sprint): 6 FODT bootstrap taskcards added §26 (TC-FODT-BOOT-001..003, TC-FODT-GAP-001, TC-FODT-AUDIT-001..002); 5 architecture_only stubs taskcarded; compat.py gate registered; gap-ledger FODT registration gap taskcarded; FACT-FODT-EX-* audit taskcarded; anti-overclaim rules #9-11 added to §22 | hazy-giggling-moon hardening sprint |
+| 3.8 | 2026-06-21 | Machinery readiness hardening (ff-machinery-readiness-20260621): TC-RCAL-001 and TC-GATE11-SUBMIT-001 added to §26 taskcard register; 5 sprint cycles completed work recorded in §27 | ff-machinery-readiness-20260621 |
+| 3.9 | 2026-06-21 | Full-session forensic audit (glimmering-gliding-planet hardening): 4 live test failures diagnosed (test_fodt_sal_facts_present, FACT-FODS-002 gap, stale version test, LOC regression); ROOT-03 re-opened STILL_ACTIVE; 10 TC-HARD taskcards added §28; analytics bloat 17,177 LOC registered; qname validator deception taskcarded; BLOCK-15 through BLOCK-22 added; VER-18 through VER-27 added; Repair Loop Priority 0 sequence added | glimmering-gliding-planet forensic hardening |
+| 3.10 | 2026-06-21 | SAL healing sprint (sal-healing-sprint-20260621-001): RC-1/RC-2/RC-3 resolved; TC-MACH-ARCH-007 and TC-MACH-REWORK-002 → completed_verified; body.py FACT-FODS-002→003; GAP-SA-NEW-004..011 taskcarded as TC-SA-HEAL-004..011 in §27.6; TC-SAL-PATH-002 reassessed (sal-output IS canonical after RC-1/RC-2); VER-15 updated to V48/V49 numbering | sal-healing-sprint-20260621-001 |
 
 ### Audit Findings Incorporated (v3.2)
 
@@ -813,13 +846,72 @@ agent implementation capacity.
 | GAP-ARCH-006 | SAL pipeline never produces sal-facts-latest.json | CLOSED — .local/spec-cache/sal-facts-latest.json (22 formats, 14,284 facts) |
 | GAP-WF-004 | Plan lock track_type missing | CLOSED — write_plan_lock.py adds track_type; machinery track skips product locks |
 | SC-005 | Session_id collision across same-HEAD chats | CLOSED — per-chat nonce added to continuation_identity.py |
-| GAP-WF-001 | No post-execution audit stage for machinery track | OPEN — TC-MACH-WF-001 added (see Section 25) |
-| GAP-WF-003 | No mission completion audit gate | OPEN — TC-MACH-WF-003 added (see Section 25) |
-| GAP-ARCH-004 | No Compat/ facade classes for FODS | OPEN — TC-MACH-ARCH-004 added (see Section 25) |
+| GAP-WF-001 | No post-execution audit stage for machinery track | CLOSED — machinery_audit.py; post-exec-audit-3.json verdict=PASS; 11 tests pass |
+| GAP-WF-003 | No mission completion audit gate | CLOSED — --mission-complete-check gate; MISSION_COMPLETE fires; tested |
+| GAP-ARCH-004 | No Compat/ facade classes for FODS | OPEN → partially_done (v3.6) — TC-MACH-ARCH-004 updated (see Section 25) |
 | GAP-ARCH-007 | SAL facts not wired into governance validation | OPEN — TC-MACH-ARCH-007 added (see Section 25) |
 | TC-V45-WIRING | V45 validator wiring not verified (REWORK_REQUIRED) | OPEN — TC-MACH-REWORK-001 added (see Section 25) |
 | TC-SAL-IDEMPOTENCY | SAL runner idempotency missing test evidence (REWORK_REQUIRED) | OPEN — TC-MACH-REWORK-002 added (see Section 25) |
 | TC-SRC-001-REPAIR | Source structure repair overclaimed (OVERCLAIMED) | OPEN — TC-MACH-REWORK-003 added (see Section 25) |
+
+### Audit Findings Incorporated (v3.6 — forensics-archaeology-20260621)
+
+Evidence source: `reports/forensics-archaeology-20260621/system-gap-matrix.yaml`
+Full report: `reports/forensics-archaeology-20260621/`
+
+| Gap ID | Finding | Severity | Action |
+|--------|---------|----------|--------|
+| GAP-ARCH-001 | 18/20 Python packages have no spec/ directory or spec_qname on domain classes | Blocker | TC-QNAME-BACKFILL-ODS-001, TC-QNAME-BACKFILL-ODT-001 added (Section 26) |
+| GAP-ARCH-002 | FODT models.py FodtSpan/FodtParagraph/FodtDocument missing spec_qname despite spec stubs existing | High | TC-FODT-COMPAT-001 added (Section 26) |
+| GAP-ARCH-004-DUP | fods/fods/spec/ duplicate with conflicting canonical names (Cell vs TableCell) | High | TC-QNAME-DEDUP-001 added (Section 26) — blocks TC-MACH-ARCH-004 closeout |
+| GAP-CAP-002 | capability_compiler.py reads .local/sal-output/ but SAL files are in .local/spec-cache/ (path mismatch) | High | TC-SAL-PATH-002 added (Section 26) |
+| GAP-SKILL-001 | add-python-object-model-feature generates classes without spec_qname requirement | Blocker | TC-SKILL-HARDEN-001 added (Section 26) |
+| GAP-QNAME-VALIDATORS-001 | qname_structure_validator.py exists but not wired into governance loop or CI | Blocker | TC-QNAME-VALIDATORS-001 added (Section 26) |
+| GAP-PARITY-001 | Python FODS/FODT are read-only; .NET is ahead on write/export — cross-language parity gap | Medium | TC-PARITY-FODS-WRITE-001 noted; deferred to Lane 8 product track |
+| GAP-HYGIENE-001 | Recursive build/ nesting; 20+ egg-info dirs in src/ | Medium | TC-SOURCE-HYGIENE-001 noted; not urgent for SAL lane |
+
+### Audit Findings Incorporated (v3.7 — hazy-giggling-moon FODT bootstrap hardening)
+
+| Gap ID | Finding | Action |
+|--------|---------|--------|
+| FODT-QNAME-GAP-001 | text:list, text:list-item, table:table, table:table-row, table:table-cell remain architecture_only (no properties) | TC-FODT-BOOT-001 added (§26) |
+| FODT-BOOT-GAP-001 | tests/python/fodt/test_compat_bootstrap.py does not exist — compat.py switch impossible | TC-FODT-BOOT-002 added (§26) |
+| FODT-BOOT-GAP-002 | compat.py still imports from models.py only — spec/ stubs are dead code | TC-FODT-BOOT-003 added (§26) — gated on BOOT-001+002 |
+| FODT-GAP-LEDGER-001 | gap-ledger.json has 0 FODT entries — product deepening loop ignores all FODT QName work | TC-FODT-GAP-001 added (§26) |
+| FODT-SAL-AUDIT-001 | FACT-FODT-EX-* facts (4,913 total) have unknown verification status — TC-GUARD-001 exposure | TC-FODT-AUDIT-001 added (§26) |
+| FODT-SAL-AUDIT-002 | §17 D3 claim "COMPLETE (FODT: 4,940)" mixes 27 verified with 4,913 unaudited EX-* facts | TC-FODT-AUDIT-002 added (§26) |
+
+### Resolved / Preserved Work (v3.6)
+
+The following items were confirmed COMPLETE by the archaeology sprint:
+- `src/python/fods/Compat/` created with 3 facade classes (untracked — needs git commit)
+- `src/python/fods/spec/` — 10 spec stubs confirmed present with correct spec_qname
+- `src/python/fodt/spec/` — 8 spec stubs confirmed present with correct spec_qname
+- `.local/spec-cache/sal-facts-fods.json` — 4,987 spec facts confirmed
+- `.local/spec-cache/sal-facts-fodt.json` — 4,933 spec facts confirmed
+- 1490 governance tests passing (last sprint)
+
+### Audit Findings Incorporated (v3.10 — sal-healing-sprint-20260621-001)
+
+Evidence source: `reports/spec-authority/sal-healing-sprint-20260621-001/evidence/healing-sprint-verdict.md`
+Investigation source: `reports/spec-authority/spec-auth-inv-20260621-002/`
+Test results: 182/182 SAL PASS; 59/64 governance PASS; 13/13 gap_int_002 PASS
+
+| Gap ID | Finding | Resolution |
+|--------|---------|------------|
+| GAP-SA-NEW-001 | Single-format sal_master_runner.py run overwrote sal-facts-latest.json | RESOLVED — RC-1 guard added in `_run_sal_pipeline()`: if single/subset-format run on production output dir → `write_latest = False` |
+| GAP-SA-NEW-002 | V37 and V47 validators read from different paths (split-brain) | RESOLVED — RC-2: V47 `validate_spec_fact_refs_in_sal_output()` path changed from `.local/spec-cache/sal-facts-latest.json` to `.local/sal-output/sal-facts-latest.json` (canonical) |
+| GAP-SA-NEW-003 | spec_verifier.py not called in production SAL runner | RESOLVED — RC-3: `spec_verifier.verify_requirements()` wired into `_load_workbench_verified_facts()`. Facts with no source_id AND no normalized_artifact → ANTI_BYPASS_REJECTED. 0 facts rejected; PBM/CSV UNVERIFIABLE (correctly included) |
+| GAP-SA-NEW-004 | 8/10 format sources have sha256_snapshot=null in sources.jsonl | OPEN → TC-SA-HEAL-004 (§27.6) |
+| GAP-SA-NEW-005 | No bidirectional fact-product linker; `.local/capability-proof-graph/` does not exist | OPEN → TC-SA-HEAL-005 (§27.6) |
+| GAP-SA-NEW-006 | `require_spec_facts=False` permanent default in `autonomous_task_generator.py:1607` | OPEN → TC-SA-HEAL-006 (§27.6) |
+| GAP-SA-NEW-007 | 4,913 structural EX facts mixed with 78 behavioral facts in same coverage bucket | OPEN → TC-SA-HEAL-007 (§27.6) |
+| GAP-SA-NEW-008 | `tools/spec-cache/refresh_check.py` exists but never called from autonomous_cycle.py Step 0a | OPEN → TC-SA-HEAL-008 (§27.6) |
+| GAP-SA-NEW-009 | `source_hash: null` in acquisition-packs/*/pack.yaml — provenance does not flow | OPEN → TC-SA-HEAL-009 (§27.6) |
+| GAP-SA-NEW-010 | AI lifecycle machine (`authority_lifecycle.py`) not wired into `build_spec_workbench.py` | OPEN → TC-SA-HEAL-010 (§27.6) |
+| GAP-SA-NEW-011 | `yaml.safe_load()` on 5.2MB/120K-line FODS workbench YAML takes 60-90s | OPEN → TC-SA-HEAL-011 (§27.6) |
+| RC-4/body.py | `body.py` cited unverified FACT-FODS-002 (not_found_in_normalized_text — never in SAL output) | RESOLVED — changed to FACT-FODS-003 (verified: "Spreadsheet content is in office:body/office:spreadsheet") |
+- AUTONOMOUS_CONTINUE: YES (approval-gates.md confirmed)
 
 ### Resolved / Preserved Work (v3.3)
 
@@ -951,6 +1043,27 @@ Is there a registered skill covering this work type?
 
 ### Repair Priority Order (when skill is registered)
 
+**Priority 0 — Live test failures blocking every sprint (fix before ANY other work):**
+
+1. TC-HARD-003 (fix stale plan version test assertion) — 5 minutes; unblocks test suite immediately
+2. TC-HARD-004 (trim generate_next_worker_prompt.py 73 LOC or update baseline cap) — unblocks source structure test
+3. TC-HARD-002 (resolve ROOT-03 — wire canonical FACT IDs into sal-facts-latest.json) — CRITICAL; blocks all SAL integration
+4. TC-HARD-001 (verify or correct FODT workbench fact count) — correct plan overclaim or fix test path
+
+**Priority 1 — Architecture correctness:**
+
+5. TC-HARD-005 (fix qname_structure_validator to exit 1 for NON_COMPLIANT) — unmasks 18/20 non-compliant formats
+6. TC-HARD-007 (commit or revert fods/Compat/) — resolves dirty working tree, closes TC-MACH-ARCH-004
+7. TC-HARD-009 (resolve neutral_model.py uncommitted changes) — resolves dirty working tree
+
+**Priority 2 — Backfill and cleanup:**
+
+8. TC-HARD-008 (add qname registries for 18 missing formats) — requires TC-HARD-005 first
+9. TC-HARD-006 (schedule removal of arithmetic analytics) — 17,177 LOC cleanup
+10. TC-HARD-010 (verify sal-facts-latest.json ID namespace post ROOT-03 fix) — read-only; any time
+
+**SAL pipeline priority order (when TC-HARD priority 0 complete):**
+
 1. TC-SAL-DIAG-008 (semantic census) — unlocks coverage denominators
 2. TC-SAL-DIAG-009 (extractor replay) — validates recall
 3. TC-SAL-IMPL-002 (ZST RFC extraction) — unlocks ZST facts
@@ -1002,6 +1115,24 @@ the evidence declaration to be graded OVERCLAIMED by autonomous_cycle.py.
    taskcarded. Until it is implemented, transcript enforcement is advisory only.
    Evidence declarations must acknowledge this limitation.
 
+9. **Never claim FODT QName bootstrap complete because fodt.yaml shows `implemented`.**
+   fodt.yaml status `implemented` records the registry intent. Actual code properties in spec/
+   stubs AND test_compat_bootstrap.py passing AND compat.py switched are ALL required.
+   Registry status alone is not behavioral proof. Check: all 3 gates must be verified before
+   any declaration claims "FODT QName bootstrap complete".
+
+10. **Never cite FACT-FODT-EX-* facts in evidence declarations without audit confirmation.**
+    TC-FODT-AUDIT-001 must confirm verification_status of FACT-FODT-EX-* before these IDs
+    can be used in TC-GUARD-001-compliant declarations. Use only FACT-FODT-001 through
+    FACT-FODT-027 until the audit is complete. Citing unaudited EX-* facts in a declaration
+    is a TC-GUARD-001 violation.
+
+11. **Never claim product deepening will honor FODT QName work unless gap-ledger has FODT entries.**
+    TC-FODT-GAP-001 must be complete. Check:
+    `grep -c "GAP-FODT-QNAME" reports/capability-layer/gap-ledger.json` must return ≥ 5
+    before claiming FODT is in the autonomous deepening queue. Zero FODT entries = zero
+    FODT work selected by the next-sprint generator.
+
 ---
 
 ## 23. Remaining True Blockers
@@ -1026,6 +1157,28 @@ the evidence declaration to be graded OVERCLAIMED by autonomous_cycle.py.
 | BLOCK-06 | TC-SAL-IMPL-006 (census tool not formalized) | spec_census.py exists; output formalization needed |
 | BLOCK-07 | TC-SAL-DIAG-009 (extractor replay) NOT STARTED | Active — executable now |
 | BLOCK-08 | TC-SAL-DIAG-010 (verifier benchmark) NOT STARTED | Active — executable now |
+| BLOCK-09 | TC-SAL-PATH-002 (capability_compiler.py SAL path mismatch) | NEW (v3.6) — blocks capability-to-feature pipeline for ALL formats |
+| BLOCK-10 | TC-QNAME-DEDUP-001 (fods/fods/spec/ duplicate) | NEW (v3.6) — blocks TC-MACH-ARCH-004 closeout |
+| BLOCK-11 | TC-SKILL-HARDEN-001 (add-python-object-model-feature lacks spec_qname requirement) | NEW (v3.6) — allows product deepening to generate non-compliant code |
+| BLOCK-12 | TC-FODT-COMPAT-001 (FODT models.py missing spec_qname) | NEW (v3.6) — spec stubs exist but models.py not updated |
+| BLOCK-13 | TC-QNAME-VALIDATORS-001 (qname_structure_validator not in governance loop) | NEW (v3.6) — compliance goes unenforced |
+| BLOCK-14 | TC-MACH-ARCH-004 Compat/ not committed | Compat/ created but `?? src/python/fods/Compat/` (untracked) |
+| BLOCK-15 | test_fodt_sal_facts_present FAILING (live test) | TC-HARD-001 — plan v3.8 over-claimed FODT facts |
+| BLOCK-16 | FACT-FODS-002 not in sal-facts-latest.json (ROOT-03 re-opened) | TC-HARD-002 — ID namespace incompatibility still active |
+| BLOCK-17 | test_plan_version_is_v30 stale assertion (expects "3.0", plan is "3.9") | TC-HARD-003 — test never updated after plan v3.0 |
+| BLOCK-18 | generate_next_worker_prompt.py 1391 LOC over cap of 1318 (73 lines) | TC-HARD-004 — source structure test fails every sprint |
+| BLOCK-19 | qname_structure_validator exits 0 for 18/20 NON_COMPLIANT formats | TC-HARD-005 — NO_SPEC_CLASSES wrongly treated as COMPLIANT (exit 0) |
+| BLOCK-20 | 17,177 LOC arithmetic analytics suspended but not removed | TC-HARD-006 — xcf_analytics.py (5725), zst_analytics.py (5513), fodg_analytics.py (4915) |
+| BLOCK-21 | neutral_model.py changes uncommitted in dirty working tree | TC-HARD-009 — may affect SAL fact refs or FODS test behavior |
+| BLOCK-22 | 18/20 Python formats have no qname registry in shared/qname-registry/ | TC-HARD-008 — only fods.yaml and fodt.yaml exist |
+
+**Priority order for BLOCK-09 through BLOCK-14:**
+1. BLOCK-09 (TC-SAL-PATH-002) — 1 hour — unblocks capability compiler immediately
+2. BLOCK-10 (TC-QNAME-DEDUP-001) — 2 hours — unblocks ARCH-004 closeout
+3. BLOCK-12 (TC-FODT-COMPAT-001) — 2 hours — easy spec_qname addition
+4. BLOCK-11 (TC-SKILL-HARDEN-001) — 1 hour — prevents future regressions
+5. BLOCK-13 (TC-QNAME-VALIDATORS-001) — 1 day — wires validator into governance
+6. BLOCK-14 (commit Compat/) — 30 min — completes ARCH-004 partially_done → completed
 
 ### NOT A BLOCKER (resolved or deferred)
 
@@ -1053,6 +1206,23 @@ the evidence declaration to be graded OVERCLAIMED by autonomous_cycle.py.
 | VER-08 | validate_spec_fact_refs.py logic unchanged | COMPLETE | git diff tools/supervisor/validate_spec_fact_refs.py | No weakening changes | LOW |
 | VER-09 | Context packs have non-empty requirement_summary | COMPLETE (7 packs) | grep requirement_summary in context-pack files | All 7 packs have ≥ 1 requirement | LOW |
 | VER-10 | sources.jsonl schema migration | COMPLETE | .local/spec-source-registry/sources.jsonl records already have source_id (migrated 2026-06-17 per migration_tool field) | All records have source_id | MEDIUM |
+| VER-11 | capability_compiler.py loads SAL facts | NOT_STARTED | python -c "from tools.supervisor.capability_compiler import load_sal_facts; f=load_sal_facts(); assert len(f)>0" | Returns ≥ 2 formats; FODS facts ≥ 4987 | CRITICAL (TC-SAL-PATH-002) |
+| VER-12 | fods/fods/spec/ duplicate removed | NOT_STARTED | grep -r "fods/fods" src/ tests/ tools/ returns 0 matches; FODS tests pass | 0 matches; 0 regressions | HIGH (TC-QNAME-DEDUP-001) |
+| VER-13 | FODT models.py has spec_qname on 3 classes | NOT_STARTED | python tools/validators/qname_structure_validator.py src/python/fodt returns COMPLIANT | COMPLIANT; FodtDocument.spec_qname == "office:document" | HIGH (TC-FODT-COMPAT-001) |
+| VER-14 | add-python-object-model-feature requires spec_qname | NOT_STARTED | Read .claude/commands/add-python-object-model-feature.md; confirm "Mandatory QName Requirements" section present | Section present; spec_qname_required:true in skill-registry.yaml | HIGH (TC-SKILL-HARDEN-001) |
+| VER-15 | qname_structure_validator wired as V47/V48 in governance | NOT_STARTED | pytest tests/supervisor/test_governance_validators.py; V47/V48 in run_all list | New non-compliant file → BLOCK; pre-existing advisory only | HIGH (TC-QNAME-VALIDATORS-001) |
+| VER-16 | ODS domain classes have spec_qname | NOT_STARTED | python tools/validators/qname_structure_validator.py src/python/ods returns COMPLIANT | COMPLIANT; OdsCell.spec_qname == "table:table-cell" | MEDIUM (TC-QNAME-BACKFILL-ODS-001) |
+| VER-17 | ODT domain classes have spec_qname | NOT_STARTED | python tools/validators/qname_structure_validator.py src/python/odt returns COMPLIANT | COMPLIANT; OdtDocument.spec_qname == "office:document" | MEDIUM (TC-QNAME-BACKFILL-ODT-001) |
+| VER-18 | test_fodt_sal_facts_present passes | FAILING | pytest tests/specification-authority-layer/test_fodt_qname_spec_chain.py | 0 failures | CRITICAL (TC-HARD-001) |
+| VER-19 | FACT-FODS-002 present in sal-facts-latest.json | FAILING | python -c "import json; d=json.load(open('.local/sal-output/sal-facts-latest.json')); print('FACT-FODS-002' in str(d))" → True | True | CRITICAL (TC-HARD-002) |
+| VER-20 | test_plan_version_is_v30 passes (updated to current version) | FAILING | pytest tests/specification-authority-layer/test_plan_readiness_verdict.py | 0 failures | HIGH (TC-HARD-003) |
+| VER-21 | generate_next_worker_prompt.py within baseline LOC cap | FAILING (1391 vs 1318) | pytest tests/test_source_structure.py | 0 failures | HIGH (TC-HARD-004) |
+| VER-22 | qname_structure_validator exits 1 for formats without spec/ dir | NOT_VERIFIED | python tools/validators/qname_structure_validator.py src/python/ --format csv → exit 1 | exit code 1 (NON_COMPLIANT) | HIGH (TC-HARD-005) |
+| VER-23 | qname_structure_validator exits 0 for FODS (has spec/ dir) | NOT_VERIFIED | python tools/validators/qname_structure_validator.py src/python/ --format fods → exit 0 | exit code 0 (COMPLIANT) | HIGH (TC-HARD-005) |
+| VER-24 | Arithmetic analytics removed from xcf/zst/fodg | NOT_STARTED | python -c "import ast; count={f: sum(1 for n in ast.walk(ast.parse(open(f).read())) if isinstance(n,ast.FunctionDef) and '_mod_' in n.name and '_times_' in n.name) for f in ['src/python/xcf/xcf_analytics.py','src/python/zst/zst_analytics.py','src/python/fodg/fodg_analytics.py']}; print(count)" | 0 _mod_N_times_M functions in all 3 files | HIGH (TC-HARD-006) |
+| VER-25 | src/python/fods/Compat/ committed to git | NOT_COMMITTED | git status src/python/fods/Compat/ | no untracked files; tracked in git | MEDIUM (TC-HARD-007) |
+| VER-26 | neutral_model.py changes resolved (committed or reverted) | UNCOMMITTED | git status src/python/fods/neutral_model.py | M or clean (not untracked) | MEDIUM (TC-HARD-009) |
+| VER-27 | sal-facts-latest.json ID format verified post-ROOT-03 fix | UNVERIFIED | inspect first 20 fact IDs from sal-facts-latest.json | IDs use canonical FACT-<FORMAT>-NNN format | MEDIUM (TC-HARD-010) |
 
 ---
 
@@ -1060,7 +1230,7 @@ the evidence declaration to be graded OVERCLAIMED by autonomous_cycle.py.
 
 ### TC-MACH-WF-001 — Implement Post-Execution Audit Stage for Machinery Track
 
-**Status:** not_attempted
+**Status:** completed_verified
 **Priority:** HIGH
 **Source finding:** GAP-WF-001 from lifecycle-root-cause-register.yaml (RC-001 root cause)
 **Why it matters:** The machinery lifecycle has no automatic post-execution verification stage.
@@ -1093,7 +1263,7 @@ exists with `verdict: PASS` or `verdict: FAIL_WITH_GAPS` — never silently skip
 
 ### TC-MACH-WF-003 — Implement Mission Completion Audit Gate
 
-**Status:** not_attempted
+**Status:** completed_verified
 **Priority:** HIGH
 **Source finding:** GAP-WF-003 from mission-ledger.json
 **Why it matters:** The machinery mission has no formal completion gate. The loop can run
@@ -1123,32 +1293,33 @@ within 3 seconds
 
 ### TC-MACH-ARCH-004 — Implement FODS Compat/ Facade Classes
 
-**Status:** not_attempted
+**Status:** partially_done
 **Priority:** MEDIUM
 **Source finding:** GAP-ARCH-004 from archaeology report ff-arch-20260621-001/system-gap-matrix.yaml
 **Why it matters:** The canonical spec classes exist (src/python/fods/spec/; 11 classes) but the
-production-facing facade layer (FodsDocument, FodsSheet, FodsCell) is not wired to delegate to
+production-facing facade layer (FodsDocument, FodsSheet, FodsCell) must be wired to delegate to
 them via spec_qname. Without the facade layer, Gate 11 criteria P-ARCH-001 cannot be met.
 **Lane owner:** Lane 8 (Spec-to-Feature, per spec-to-feature-radical-correction-plan.md)
-**Current status:** spec stubs COMPLETE (TC-QNAME-CANONICAL-001 done); facades MISSING
-**Required work:**
-- Create `src/python/fods/Compat/` directory
-- Implement `FodsDocument` facade delegating to `spec.office.Document` via `spec_qname`
-- Implement `FodsSheet` facade delegating to `spec.table.Table` via `spec_qname`
-- Implement `FodsCell` facade delegating to `spec.table.TableCell` via `spec_qname`
-- Each facade must have `spec_qname` attribute matching its target canonical class
-- Register in `shared/qname-registry/fods.yaml` `facade_names` field for each entry
+**Current status (v3.6 update):** PARTIALLY DONE — `src/python/fods/Compat/` created with
+`fods_document.py`, `fods_sheet.py`, `fods_cell.py` (untracked, not committed as of 2026-06-21).
+All 3 facades have `spec_qname` attributes. Created under TC-MACH-ARCH-004 scope 2026-06-21.
+**Remaining work:**
+- Git add + commit `src/python/fods/Compat/` (currently `?? src/python/fods/Compat/` in git status)
+- Create `shared/qname-registry/fods.yaml` (does NOT yet exist — referenced in Compat/ docstrings)
+- Verify V44 governance validator passes for fods.Compat.* (V44 may not exist yet; check governance_validators.py)
+- Remove fods/fods/spec/ duplicate before claiming compliance (see TC-QNAME-DEDUP-001)
 **Required verification:**
 - `from src.python.fods.Compat.fods_document import FodsDocument; assert FodsDocument.spec_qname == 'office:document'`
-- Governance validators V44 (validate_facade_delegates_to_spec) must pass for these classes
+- `git log --oneline src/python/fods/Compat/` shows at least 1 commit
+- `shared/qname-registry/fods.yaml` exists and is parseable
 **Required evidence:**
-- `src/python/fods/Compat/fods_document.py`, `fods_sheet.py`, `fods_cell.py`
-- V44 governance validator run showing no violations for fods.Compat.*
-**Acceptance criteria:** 3 facade classes created; each has spec_qname; V44 passes; qname registry updated
-**Dependencies:** TC-QNAME-CANONICAL-001 (COMPLETE — unblocked)
-**Allowed paths:** `src/python/fods/Compat/` (create), `shared/qname-registry/fods.yaml` (update facade_names)
+- `src/python/fods/Compat/fods_document.py`, `fods_sheet.py`, `fods_cell.py` (committed)
+- `shared/qname-registry/fods.yaml`
+**Acceptance criteria:** 3 facades committed; each has spec_qname; qname registry file exists
+**Dependencies:** TC-QNAME-CANONICAL-001 (COMPLETE), TC-QNAME-DEDUP-001 (OPEN — must close first)
+**Allowed paths:** `src/python/fods/Compat/` (commit existing), `shared/qname-registry/fods.yaml` (create)
 **Forbidden actions:** Do NOT modify canonical spec stubs in `src/python/fods/spec/`
-**Closeout:** Mark completed_verified when V44 passes and 3 facades importable
+**Closeout:** Mark completed_verified when: Compat/ committed + qname registry exists + import assertion passes
 
 ---
 
@@ -1273,3 +1444,864 @@ the claimed work.
 **Dependencies:** None
 **Forbidden actions:** Do NOT claim repair without running the validator
 **Closeout:** Mark completed_verified (if verified) or not_attempted (if honest correction)
+
+---
+
+## 26. Generation Archaeology + FODT QName Bootstrap Taskcards (v3.6/v3.7)
+
+### Current QName and Bootstrap Status (2026-06-21)
+
+| QName | Canonical Class | fodt.yaml Status | Stub Properties |
+|-------|----------------|-----------------|-----------------|
+| office:body | Office.Body | architecture_only | python_file=null (FodtDocument facade) |
+| text:p | Text.Paragraph | **implemented** | ✓ text:p class with properties |
+| text:h | Text.Heading | **implemented** | ✓ text:h class with properties |
+| text:span | Text.Span | **implemented** | ✓ text:span class with properties |
+| text:list | Text.List | architecture_only | skeleton only — NO properties |
+| text:list-item | Text.ListItem | architecture_only | skeleton only — NO properties |
+| table:table | Table.Table | architecture_only | skeleton only — NO properties |
+| table:table-row | Table.TableRow | architecture_only | skeleton only — NO properties |
+| table:table-cell | Table.TableCell | architecture_only | skeleton only — NO properties |
+
+**Bootstrap lock:** `src/python/fodt/compat.py` imports from `models.py` only.
+**Gate condition:** `tests/python/fodt/test_compat_bootstrap.py` must exist and pass before switch is authorized.
+
+---
+
+### TC-SAL-PATH-002 — Fix capability_compiler.py SAL Output Path Mismatch
+
+**Status:** not_attempted
+**Priority:** HIGH — BLOCK-09 — blocks capability-to-feature pipeline for ALL formats
+**Source finding:** GAP-CAP-002 from forensics-archaeology-20260621; `capability_compiler.py` reads `.local/sal-output/` but SAL files are in `.local/spec-cache/sal-facts-*.json`
+**Why it matters:** The capability-to-feature compiler (Lane 3) cannot load SAL facts because it looks in the wrong path. This prevents the compiler from ever connecting spec facts to capability gaps. All 22 formats are affected.
+**Lane owner:** Lane 2 (Capability Reintegration)
+**Required work:**
+- Read `tools/capability_layer/capability_compiler.py` to find the path constant(s)
+- Change the input path from `.local/sal-output/sal-facts-latest.json` to `.local/spec-cache/sal-facts-latest.json`
+  (or the per-format paths `.local/spec-cache/sal-facts-<format>.json` if that is the correct schema)
+- Verify the updated path resolves to actual files on disk
+- Add or update test in `tests/capability_layer/` to confirm the compiler successfully loads facts
+**Allowed paths:** `tools/capability_layer/capability_compiler.py`
+**Forbidden actions:** Do NOT change the SAL runner output location — change only the reader/consumer path
+**Required verification:**
+`python tools/capability_layer/capability_compiler.py --format fods` must complete without FileNotFoundError
+**Required evidence:** Modified capability_compiler.py + successful run output
+**Acceptance criteria:** Compiler loads FODS facts without path error; at least 1 capability record produced
+**Dependencies:** TC-SAL-OUTPUT-001 (COMPLETE — sal-facts-latest.json exists at correct path)
+**Closeout:** Mark completed_verified when compiler runs without path error and produces output
+
+---
+
+### TC-FODT-COMPAT-001 — Add spec_qname Attributes to FODT models.py Classes
+
+**Status:** not_attempted
+**Priority:** HIGH — BLOCK-12
+**Source finding:** GAP-ARCH-002 from forensics-archaeology-20260621; `src/python/fodt/models.py` classes `FodtSpan`, `FodtParagraph`, `FodtDocument` lack `spec_qname` attribute despite spec stubs in `src/python/fodt/spec/` having correct `spec_qname` values
+**Why it matters:** Gate 11 criterion P1 (class-based model) requires spec_qname on domain classes. The spec stubs have it; the production classes (models.py) do not. Until models.py is updated, the production path has no spec traceability.
+**Lane owner:** Lane 8 (Python Blueprint)
+**Required work:**
+- Add `spec_qname = "text:p"` class attribute to `FodtParagraph` in `src/python/fodt/models.py`
+- Add `spec_qname = "text:span"` class attribute to `FodtSpan` in `src/python/fodt/models.py`
+- Add `spec_qname = "office:document"` class attribute to `FodtDocument` in `src/python/fodt/models.py`
+- Add `spec_fact_ref = "FACT-FODT-003"` to FodtParagraph; `"FACT-FODT-006"` to FodtSpan; `"FACT-FODT-001"` to FodtDocument
+**Allowed paths:** `src/python/fodt/models.py` (add class attributes only — do NOT change any methods or signatures)
+**Forbidden actions:** Do NOT change constructor signatures, property logic, or return types
+**Required verification:**
+```python
+from fodt.models import FodtParagraph, FodtSpan, FodtDocument
+assert FodtParagraph.spec_qname == "text:p"
+assert FodtSpan.spec_qname == "text:span"
+assert FodtDocument.spec_qname == "office:document"
+```
+**Required evidence:** Modified models.py + assertion output
+**Acceptance criteria:** All 3 classes have `spec_qname` and `spec_fact_ref` class attributes; existing FODT tests pass
+**Dependencies:** None — no schema changes required
+**Closeout:** Mark completed_verified when attributes verified and full FODT suite passes
+
+---
+
+### TC-QNAME-DEDUP-001 — Resolve fods/fods/spec/ Duplicate Package Conflict
+
+**Status:** not_attempted
+**Priority:** HIGH — BLOCK-10 — blocks TC-MACH-ARCH-004 closeout
+**Source finding:** GAP-ARCH-004-DUP from forensics-archaeology-20260621; `src/python/fods/fods/spec/` exists as a nested duplicate of `src/python/fods/spec/` with conflicting canonical names (`Cell` vs `TableCell`)
+**Why it matters:** The nested `fods/fods/spec/` directory causes Python import ambiguity and has wrong canonical class names. Any import of `fods.spec` could resolve to the wrong package. This directly blocks TC-MACH-ARCH-004 which requires clean `fods.spec.*` imports for facade validation.
+**Lane owner:** Lane 8 (Python Blueprint)
+**Required work:**
+1. Confirm the duplicate: list files in `src/python/fods/fods/` and `src/python/fods/spec/`
+2. Verify `src/python/fods/spec/` has the correct canonical names (TableCell not Cell)
+3. Remove `src/python/fods/fods/` entirely (or just the `spec/` subdirectory if other content is valid)
+4. Confirm no imports reference `fods.fods.spec`
+5. Run FODS test suite to confirm no regressions
+**Allowed paths:** `src/python/fods/fods/` (DELETE duplicate); confirm no other code references it
+**Forbidden actions:** Do NOT delete or modify `src/python/fods/spec/` (the correct canonical package)
+**Required verification:**
+`python -c "from fods.spec.table.table_cell import TableCell; assert TableCell.spec_qname == 'table:table-cell'"` must pass
+**Required evidence:** Directory listing showing `fods/fods/` removed; FODS tests pass
+**Acceptance criteria:** No `fods/fods/` directory; `fods.spec.table.table_cell.TableCell` importable with correct spec_qname; 0 regressions
+**Dependencies:** Inspect `src/python/fods/fods/` before deleting
+**Closeout:** Mark completed_verified when duplicate removed and tests pass
+
+---
+
+### TC-SKILL-HARDEN-001 — Harden add-python-object-model-feature Skill to Require spec_qname
+
+**Status:** not_attempted
+**Priority:** HIGH — BLOCK-11 — prevents future regressions where product deepening generates non-compliant code
+**Source finding:** GAP-SKILL-001 from forensics-archaeology-20260621; `.claude/commands/add-python-object-model-feature.md` generates domain class stubs without requiring `spec_qname` or `spec_fact_ref` — any sprint using this skill can produce non-compliant classes that pass V45 but lack spec traceability
+**Why it matters:** This is a systemic risk: every time the autonomous loop generates a Python object model feature, it may silently bypass the spec_qname requirement. The skill is the production gate and must enforce it.
+**Lane owner:** Lane 4 (Skills + Prompt Wiring)
+**Required work:**
+- Read `.claude/commands/add-python-object-model-feature.md`
+- Add a `MANDATORY_FIELD: spec_qname` requirement to the skill's handoff schema
+- Add validation: if `spec_qname` is not provided in the skill invocation, the skill must return BLOCKED_SKILL_GAP
+- Add example of correct invocation with `spec_qname: "table:table-cell"` and `spec_fact_ref: "FACT-FODS-007"`
+- Update `.supervisor/skill-registry.yaml` entry for `add-python-object-model-feature` to include `required_fields: [spec_qname, spec_fact_ref]`
+**Allowed paths:**
+- `.claude/commands/add-python-object-model-feature.md`
+- `.supervisor/skill-registry.yaml`
+**Forbidden actions:** Do NOT change the skill's execution logic — only its validation gate
+**Required verification:**
+Run `/check-skill-coverage work_type=add_python_object_model_feature` and confirm output includes `required_fields: [spec_qname, spec_fact_ref]`
+**Required evidence:** Modified skill file + skill registry entry
+**Acceptance criteria:** Skill requires `spec_qname`; invocation without it returns BLOCKED_SKILL_GAP; registry updated
+**Dependencies:** None
+**Closeout:** Mark completed_verified when skill validation gate is confirmed
+
+---
+
+### TC-QNAME-VALIDATORS-001 — Wire qname_structure_validator.py into Governance Loop
+
+**Status:** not_attempted
+**Priority:** HIGH — BLOCK-13 — compliance goes unenforced without this wiring
+**Source finding:** GAP-QNAME-VALIDATORS-001 from forensics-archaeology-20260621; `tools/specification-authority-layer/qname_structure_validator.py` exists but is never called by `governance_validators.py` or any CI step
+**Why it matters:** The QName structure validator checks that spec/ classes follow canonical naming (e.g., `table:table-cell` → `Table.TableCell`, NOT `FodsCell` as primary). Without wiring, the validator is dead code. Any agent can produce non-canonical classes and pass all current governance gates.
+**Lane owner:** Lane 5 (Validators + Gate Hardening)
+**Required work:**
+- Read `tools/specification-authority-layer/qname_structure_validator.py` to understand its API
+- Add a call to `run_qname_structure_validator()` in `tools/supervisor/governance_validators.py` `run_all_governance_validators()`
+- Register as validator V48
+- Add test: `tests/specification-authority-layer/test_qname_structure_validator.py::TestV48Wire` — confirm it fires when given a non-canonical class name
+- Update `registry/source-structure-baseline.json` if governance_validators.py LOC increases
+**Allowed paths:**
+- `tools/supervisor/governance_validators.py` (add V48 call)
+- `tests/specification-authority-layer/test_qname_structure_validator.py` (existing or create)
+**Forbidden actions:** Do NOT weaken existing validators V43-V47
+**Required verification:**
+`pytest tests/specification-authority-layer/test_qname_structure_validator.py` and `tests/supervisor/test_governance_validators.py` — both PASS
+**Required evidence:** Modified governance_validators.py + test results
+**Acceptance criteria:** V48 fires in run_all; non-canonical class names blocked; 0 regressions
+**Dependencies:** TC-QNAME-DEDUP-001 (resolve fods/fods/ ambiguity first to avoid false positives)
+**Closeout:** Mark completed_verified when V48 wired and tests pass
+
+---
+
+### TC-QNAME-BACKFILL-ODS-001 — Add spec/ Directory and spec_qname to ODS Domain Classes
+
+**Status:** not_attempted
+**Priority:** MEDIUM
+**Source finding:** GAP-ARCH-001 from forensics-archaeology-20260621; `src/python/ods/` has no `spec/` directory and domain classes lack `spec_qname`
+**Why it matters:** ODS shares the ODF spreadsheet format with FODS. Without spec_qname on ODS domain classes, ODS cannot advance past P1 criterion for Gate 11. The FODS canonical hierarchy (Table.Table, Table.TableCell) already exists and can be reused.
+**Lane owner:** Lane 8 (Python Blueprint)
+**Required work:**
+- Create `src/python/ods/spec/` with `__init__.py`
+- Create `src/python/ods/spec/table/` with `__init__.py`, `table.py`, `table_row.py`, `table_cell.py`
+- Each class must have `spec_qname` matching the ODF schema (same as FODS: `table:table`, `table:table-row`, `table:table-cell`)
+- Add `spec_fact_refs` pointing to FODS workbench facts (ODS shares ODF Part 3 source)
+- Add `spec_qname` to any existing ODS domain classes in `src/python/ods/models.py` (if it exists)
+**Allowed paths:** `src/python/ods/spec/` (CREATE); `src/python/ods/models.py` (add attributes if exists)
+**Forbidden actions:** Do NOT copy fods/fods/ pattern — use the clean `ods/spec/` path only
+**Required verification:**
+`python -c "from ods.spec.table.table import Table; assert Table.spec_qname == 'table:table'"` must pass
+**Required evidence:** New spec/ directory with 3+ stubs; importable
+**Acceptance criteria:** `ods.spec.table.*` importable with correct spec_qname; existing ODS tests pass
+**Dependencies:** TC-QNAME-DEDUP-001 (understand the fods/fods/ pattern to avoid repeating it)
+**Closeout:** Mark completed_verified when spec/ stubs created and importable
+
+---
+
+### TC-QNAME-BACKFILL-ODT-001 — Add spec/ Directory and spec_qname to ODT Domain Classes
+
+**Status:** not_attempted
+**Priority:** MEDIUM
+**Source finding:** GAP-ARCH-001 from forensics-archaeology-20260621; `src/python/odt/` has no `spec/` directory and domain classes lack `spec_qname`
+**Why it matters:** ODT shares the ODF text document format with FODT. Without spec_qname, ODT cannot advance past P1 criterion.
+**Lane owner:** Lane 8 (Python Blueprint)
+**Required work:**
+- Create `src/python/odt/spec/text/` with `__init__.py`, `paragraph.py`, `heading.py`, `span.py`, `list_.py`, `list_item.py`
+- Create `src/python/odt/spec/table/` with `__init__.py`, `table.py`, `table_row.py`, `table_cell.py`
+- Each class must have `spec_qname` matching ODF text schema (same as FODT)
+- Add `spec_fact_refs` pointing to FODT workbench facts (ODT shares ODF Part 3 source)
+**Allowed paths:** `src/python/odt/spec/` (CREATE)
+**Forbidden actions:** Do NOT copy fods/fods/ nesting pattern
+**Required verification:** `python -c "from odt.spec.text.paragraph import Paragraph; assert Paragraph.spec_qname == 'text:p'"` must pass
+**Required evidence:** New spec/ directory; importable stubs
+**Acceptance criteria:** `odt.spec.*` importable; correct spec_qname; existing ODT tests pass
+**Dependencies:** TC-QNAME-BACKFILL-ODS-001 (learn from ODS pattern)
+**Closeout:** Mark completed_verified when spec/ stubs created and importable
+
+---
+
+### TC-FODT-BOOT-001 — Implement Remaining FODT Spec/ Stub Properties
+
+**Status:** not_attempted
+**Priority:** HIGH — immediate blocker for TC-FODT-BOOT-002 and TC-FODT-BOOT-003
+**Source finding:** FODT-QNAME-GAP-001; `src/python/fodt/spec/text/list_.py`, `list_item.py`, `src/python/fodt/spec/table/table.py`, `table_row.py`, `table_cell.py` all have `spec_qname` + `spec_fact_ref` set but zero properties — confirmed by reading each file
+**Why it matters:** Without implemented stub properties, `test_compat_bootstrap.py` cannot pass equivalence assertions and `compat.py` cannot switch, leaving the QName architecture permanently as dead code.
+**Lane owner:** Lane 8 (Python Blueprint)
+**Reference implementation:** `src/python/fodt/models.py` — stubs must match this interface
+**Required work:**
+- `src/python/fodt/spec/text/list_.py` — class `List` (spec_qname="text:list", FACT-FODT-005):
+  add `__init__(self, data: dict)`, properties: `items: list`, `style_name: str`
+- `src/python/fodt/spec/text/list_item.py` — class `ListItem` (spec_qname="text:list-item", FACT-FODT-005):
+  add `__init__(self, data: dict)`, properties: `text: str`, `spans: list`, `level: int`
+- `src/python/fodt/spec/table/table.py` — class `Table` (spec_qname="table:table", FACT-FODT-007):
+  add `__init__(self, data: dict)`, properties: `name: str`, `rows: list`
+- `src/python/fodt/spec/table/table_row.py` — class `TableRow` (spec_qname="table:table-row", FACT-FODT-007):
+  add `__init__(self, data: dict)`, properties: `cells: list`
+- `src/python/fodt/spec/table/table_cell.py` — class `TableCell` (spec_qname="table:table-cell", FACT-FODT-007):
+  add `__init__(self, data: dict)`, properties: `text: str`, `spans: list`, `col_span: int`, `row_span: int`
+- Advance each entry in `shared/qname-registry/fodt.yaml` from `architecture_only` to `implemented`
+- Remove `# GENERATED — architecture_only` comment headers from the 5 stub files
+**Allowed paths:**
+- `src/python/fodt/spec/text/list_.py`
+- `src/python/fodt/spec/text/list_item.py`
+- `src/python/fodt/spec/table/table.py`
+- `src/python/fodt/spec/table/table_row.py`
+- `src/python/fodt/spec/table/table_cell.py`
+- `shared/qname-registry/fodt.yaml` (status fields only)
+**Forbidden actions:**
+- Do NOT modify `src/python/fodt/models.py` — it is the reference, not the target
+- Do NOT modify `src/python/fodt/compat.py` — that is TC-FODT-BOOT-003
+- Do NOT change constructor signature away from `__init__(self, data: dict)`
+- Do NOT implement properties that do not exist in `models.py`
+**Required verification:**
+```python
+from fodt.spec.text.list_ import List
+obj = List({"items": [], "style_name": ""})
+assert obj.items == [] and obj.style_name == ""
+```
+Repeat for ListItem, Table, TableRow, TableCell.
+**Required evidence:** 5 modified stub files + fodt.yaml showing 8 entries at `implemented`
+**Acceptance criteria:** All 5 stubs importable; properties accessible without AttributeError; fodt.yaml updated
+**Stop conditions:** If stub requires importing neutral_model.py or parser.py — STOP, document the gap
+**Dependencies:** None (all prerequisite files exist)
+**Closeout:** Mark completed_verified when all 5 stubs have properties and fodt.yaml updated
+
+---
+
+### TC-FODT-BOOT-002 — Write test_compat_bootstrap.py (compat.py Bootstrap Gate)
+
+**Status:** not_attempted
+**Priority:** HIGH — gates TC-FODT-BOOT-003
+**Source finding:** FODT-BOOT-GAP-001; `src/python/fodt/compat.py` documents this test as the gate condition for the spec/ import switch; the test does not exist
+**Why it matters:** This is the machine-enforceable gate for QName architecture activation. Without it, the compat.py switch has no safety proof. It also provides permanent regression protection.
+**Lane owner:** Lane 8 (Python Blueprint)
+**Depends on:** TC-FODT-BOOT-001 complete (stubs need properties before equivalence can be tested)
+**Required work:**
+Create `tests/python/fodt/test_compat_bootstrap.py` with:
+- `TestFodtParagraphSpecEquivalence` — import from `fodt.spec.text.paragraph` AND `fodt.models`; construct both with same dict; assert `.kind`, `.text`, `.style_name`, `.spans` are equal
+- `TestFodtSpanSpecEquivalence` — same for span: `.text`, `.style_name`
+- `TestFodtListSpecEquivalence` — from `fodt.spec.text.list_`; assert `.items`, `.style_name`
+- `TestFodtTableSpecEquivalence` — from `fodt.spec.table.table`; assert `.name`, `.rows`
+- At minimum 8 total assertions; all use `==` not `hasattr`
+**Allowed paths:** `tests/python/fodt/test_compat_bootstrap.py` (CREATE)
+**Forbidden actions:**
+- Do NOT weaken assertions to `hasattr` checks
+- Do NOT modify spec/ stubs to make tests pass — fix the stubs in TC-FODT-BOOT-001 first
+**Required verification:**
+`.venv/Scripts/pytest tests/python/fodt/test_compat_bootstrap.py -v`
+Must show: all tests PASS, 0 failures
+**Required evidence:** New test file + pytest output showing 0 failures
+**Acceptance criteria:** ≥ 8 assertions; all use `==`; 0 failures
+**Stop conditions:** If spec/ stub and models.py have irreconcilable interface difference — document gap; fix stub in TC-FODT-BOOT-001 before retrying
+**Closeout:** Mark completed_verified when pytest shows 0 failures
+
+---
+
+### TC-FODT-BOOT-003 — Switch compat.py to Spec/ Imports
+
+**Status:** not_attempted
+**Priority:** HIGH (post TC-FODT-BOOT-001 + TC-FODT-BOOT-002)
+**Source finding:** FODT-BOOT-GAP-002; compat.py has explicit bootstrap comment restricting it to models.py imports; TC-FODT-BOOT-001 and TC-FODT-BOOT-002 are the gate conditions
+**Why it matters:** This is the activation step — the moment the QName architecture becomes the live product path. Until this switch, all spec/ stub work is dead code in production.
+**Lane owner:** Lane 8 (Python Blueprint)
+**Depends on:** TC-FODT-BOOT-001 AND TC-FODT-BOOT-002 both complete and passing
+**Required work:**
+Modify `src/python/fodt/compat.py`:
+- Change `FodtParagraph` import target to `fodt.spec.text.paragraph.Paragraph`
+- Change `FodtSpan` import target to `fodt.spec.text.span.Span`
+- Keep `FodtDocument` from `models.py` (no spec/ equivalent for the document wrapper)
+- Preserve try/except fallback for safety
+- Update bootstrap comment to say "bootstrap phase complete — spec/ imports active"
+**Allowed paths:** `src/python/fodt/compat.py` (imports only — do not change exported names)
+**Forbidden actions:**
+- Do NOT remove models.py (keep as try/except fallback)
+- Do NOT change the names exported by compat.py (`FodtParagraph`, `FodtSpan`, `FodtDocument`)
+**Required verification:**
+`.venv/Scripts/pytest tests/python/fodt/ -v` — ALL existing FODT tests must pass (0 regressions)
+`.venv/Scripts/pytest tests/python/fodt/test_compat_bootstrap.py -v` — must still pass
+**Required evidence:** Modified compat.py + full FODT suite 0 failures
+**Acceptance criteria:** All FODT tests pass after switch; `from fodt import FodtParagraph` yields spec/ class
+**Stop conditions:** If ANY existing FODT test fails after switch — REVERT compat.py; diagnose in TC-FODT-BOOT-001 before retrying
+**Closeout:** Mark completed_verified when full FODT suite passes after switch
+
+---
+
+### TC-FODT-GAP-001 — Register FODT QName Gaps in Gap-Ledger
+
+**Status:** not_attempted
+**Priority:** HIGH — without this, the autonomous product deepening loop ignores FODT QName work entirely
+**Source finding:** FODT-GAP-LEDGER-001; `grep "fodt" reports/capability-layer/gap-ledger.json` returns 0 matches; next-sprint.md task selection reads from gap-ledger; FODT will never appear in autonomous task selection
+**Why it matters:** The gap-ledger drives all autonomous sprint task selection. Without FODT entries, every future sprint may widen the spec-parity gap for FODT while advancing other formats.
+**Lane owner:** Lane 2 (Capability Reintegration)
+**Depends on:** TC-FODT-BOOT-001 (so gap targets reflect actual implemented/architecture_only status)
+**Required work:**
+Read `reports/capability-layer/gap-ledger.json`. Append 5 entries for the 5 architecture_only QNames. Each entry must use the same schema as existing entries and include:
+- `gap_id`: `GAP-FODT-QNAME-001` through `GAP-FODT-QNAME-005`
+- `format`: `"fodt"`
+- `gap_type`: `"spec_qname_not_activated"`
+- `capability_ref`: canonical class name (e.g., `"Text.List"`)
+- `spec_fact_refs`: from fodt.yaml (e.g., `["FACT-FODT-005"]`)
+- `status`: `"open"` (or `"in_progress"` if TC-FODT-BOOT-001 already completed these stubs)
+**Allowed paths:** `reports/capability-layer/gap-ledger.json` (APPEND only)
+**Forbidden actions:** Do NOT modify existing gap-ledger entries
+**Required verification:**
+`grep -c "GAP-FODT-QNAME" reports/capability-layer/gap-ledger.json` returns ≥ 5
+**Required evidence:** Modified gap-ledger.json with 5 new entries
+**Acceptance criteria:** 5 entries; each has format="fodt", spec_fact_refs, status field
+**Closeout:** Mark completed_verified when grep confirms ≥ 5 entries
+
+---
+
+### TC-FODT-AUDIT-001 — Audit FACT-FODT-EX-* Quality
+
+**Status:** not_attempted
+**Priority:** HIGH — prevents TC-GUARD-001 violations in future FODT declarations
+**Source finding:** FODT-SAL-AUDIT-001; `.local/spec-cache/fodt/odf-1.3/workbench/verified-facts-review.yaml` states `fact_count: 4940` but `authority_note` says "27 verified facts"; 4,913 FACT-FODT-EX-* facts have unknown verification status and cannot be safely cited in TC-GUARD-001 declarations
+**Why it matters:** If FACT-FODT-EX-* facts are template-generated, any declaration citing them will fail TC-GUARD-001. This is a silent future risk in every subsequent FODT sprint.
+**Lane owner:** Lane SAL
+**Required work:**
+1. Read `.local/spec-cache/fodt/odf-1.3/workbench/verified-facts-review.yaml` — entries FACT-FODT-EX-0001 through FACT-FODT-EX-0020
+2. For each: record `verification_status`, `extraction_method`, `validated_by` from the YAML
+3. Classify each: `verified` (independent_agent_verifier + tier1_section) OR `needs_review` (AI-only) OR `template_generated` (no provenance)
+4. Write `reports/specification-authority-layer-mwp/fodt-ex-facts-audit.md` with classification table
+**Allowed paths:**
+- `.local/spec-cache/fodt/odf-1.3/workbench/verified-facts-review.yaml` (READ ONLY)
+- `reports/specification-authority-layer-mwp/fodt-ex-facts-audit.md` (CREATE)
+**Forbidden actions:** Do NOT modify verified-facts-review.yaml; do NOT promote FACT-FODT-EX-* to verified without re-running independent_agent_verifier
+**Required verification:** Read audit report — must classify 20 sampled facts
+**Required evidence:** `reports/specification-authority-layer-mwp/fodt-ex-facts-audit.md`
+**Acceptance criteria:** 20 facts sampled; each classified; report states verified vs unverified count
+**Closeout:** Mark completed_verified when audit file exists with complete classification table
+
+---
+
+### TC-FODT-AUDIT-002 — Correct §17 FODT Fact Count and D3 Gate Status
+
+**Status:** not_attempted
+**Priority:** MEDIUM
+**Source finding:** FODT-SAL-AUDIT-002; §17 states "Gate D3 — Extraction Recall Proven: COMPLETE (FODT: 4,940 facts)" without distinguishing 27 independently verified from 4,913 FACT-FODT-EX-* of unknown quality
+**Why it matters:** Future agents reading §17 will assume 4,940 usable FODT facts. In reality only 27 are confirmed. This produces false confidence and governance overclaim risk.
+**Lane owner:** Lane SAL
+**Depends on:** TC-FODT-AUDIT-001 (need audit results to know correct status)
+**Required work:**
+Update §17 of this plan:
+- Add `verified_count: 27` and `total_count: 4940 (4913 EX-* pending audit)` distinction to the FODT row
+- If FACT-FODT-EX-* are confirmed template-generated: change D3 FODT from COMPLETE to PARTIAL
+- If FACT-FODT-EX-* are confirmed verified: D3 COMPLETE stands; document confirmation
+**Allowed paths:** `plans/snoopy-juggling-seal.md` §17 only
+**Forbidden actions:** Do NOT retrograde FACT-FODT-001..027 (confirmed verified)
+**Required evidence:** Modified §17 text
+**Acceptance criteria:** §17 FODT row shows verified_count and total_count distinction
+**Closeout:** Mark completed_verified when §17 shows the distinction
+
+---
+
+### TC-RCAL-001 — Diagnose and Wire RCAL Action Queue from Gap-Ledger
+
+**Status:** not_attempted
+**Priority:** HIGH
+**Source finding:** MR-10 from `reports/ff-machinery-readiness-20260621/machinery-readiness-verdict.md`; RCAL action queue at `.local/rcal/action-queue.json` is empty despite 958 open entries in `reports/capability-layer/gap-ledger.json`. The RCAL system is supposed to consume the gap-ledger and emit repair actions, but the queue has never been populated.
+**Why it matters:** The RCAL queue is the machine-readable work queue for autonomous gap closure. Without it, the sprint selector cannot surface gap-ledger work items. Every sprint that consults gap-ledger but skips RCAL is doing manual triage that should be automated.
+**Lane owner:** Lane 2 (Capability Reintegration)
+**Required work:**
+1. Read `reports/capability-layer/gap-ledger.json` — confirm entry count and schema
+2. Read `.local/rcal/action-queue.json` — confirm it is empty or stale
+3. Read any RCAL population script (search `tools/` for `rcal` or `action.queue`)
+4. Trace why gap-ledger entries do not flow to RCAL: missing cron? Missing wiring call? Schema mismatch?
+5. Write `reports/ff-machinery-readiness-20260621/rcal-disconnection-diagnostic.md` with root cause
+6. If the wiring is a one-line fix: apply it. If architectural: document as GAP-RCAL-001 in gap-ledger.
+**Allowed paths:**
+- `reports/capability-layer/gap-ledger.json` (READ ONLY for diagnosis)
+- `.local/rcal/action-queue.json` (READ ONLY for diagnosis)
+- `tools/` (search only)
+- `reports/ff-machinery-readiness-20260621/rcal-disconnection-diagnostic.md` (CREATE)
+**Forbidden actions:** Do NOT delete or overwrite `action-queue.json` — diagnose only unless fix is trivial and reversible
+**Required verification:** Diagnostic report exists with identified root cause; if wired: `grep -c "action_id" .local/rcal/action-queue.json` > 0
+**Required evidence:** `rcal-disconnection-diagnostic.md` with root cause classification
+**Acceptance criteria:** Root cause documented; either queue populated OR architectural gap registered in gap-ledger
+**Dependencies:** None
+**Closeout:** Mark completed_verified when diagnostic report filed and root cause classified
+
+---
+
+### TC-GATE11-SUBMIT-001 — Gate 11 Commercial Readiness Submission to Babar Raza
+
+**Status:** waiting_external_gate
+**Priority:** CRITICAL
+**Classification:** TRUE_EXTERNAL_GATE — Babar Raza commercial sign-off required for `commercial_product_ready=true`
+**Source finding:** ff-gate11-fods-readiness-20260621 and ff-gate11-fodt-readiness-20260621 sprints complete; all agent-owned criteria are now PASS; submission to Babar Raza is the only remaining step.
+**Why it matters:** Gate 11 G11-G is already recorded as `APPROVED_BY_BABAR_RAZA_2026_06_05` in poc-targets.yaml for both FODS and FODT. However `commercial_product_ready=true` has not been formally signed off via the readiness packets, which were only just created. Submitting them closes the loop.
+**Lane owner:** C0_COORDINATOR (agent-prep) → Babar Raza (execution)
+**Agent-owned prep (can be done NOW):**
+1. Verify readiness packets are complete:
+   - `reports/ff-gate11-fods-readiness-20260621/gate11-readiness-packet.md` — 5 of 8 criteria PASS; 3 agent-fixable gaps now closed (API docs, release notes, DTD test)
+   - `reports/ff-gate11-fodt-readiness-20260621/gate11-readiness-packet.md` — same structure
+2. Verify all artifacts exist: `docs/api/fods.md`, `docs/api/fodt.md`, `docs/release/fods-v0.1.0.md`, `docs/release/fodt-v0.1.0.md`
+3. Verify DTD prohibition tests pass: FODS 618/618, FODT 568/568
+4. Create `reports/gate11-submission/fods-fodt-submission-summary.md` with:
+   - Summary table: format, test count, G11-G status, all 8 criteria status
+   - Evidence artifact paths and SHA-256 review package hashes
+   - Explicit request for Babar Raza commercial_product_ready=true sign-off
+**Evidence ready (from ff-machinery-readiness-20260621 and related sprints):**
+- FODS: `docs/api/fods.md`, `docs/release/fods-v0.1.0.md`, 618 .NET tests, DTD guard test PASS
+- FODT: `docs/api/fodt.md`, `docs/release/fodt-v0.1.0.md`, 568 .NET tests, DTD guard test PASS
+- Review packages: SHA-256 hashes in §27 of this plan
+**Allowed paths:** `reports/gate11-submission/` (CREATE)
+**Forbidden actions:** Do NOT set `commercial_product_ready=true` in format-registry.yaml without Babar Raza confirmation
+**Required verification:** Submission summary document exists; artifacts confirmed present
+**Acceptance criteria:** `reports/gate11-submission/fods-fodt-submission-summary.md` exists with complete evidence table; Babar Raza has reviewed and signed off (external gate)
+**Dependencies:** None (all evidence already created)
+**Closeout:** Agent marks completed_verified when submission document exists; external gate clears when Babar Raza confirms
+
+---
+
+### §26 Taskcard Register
+
+| Taskcard | Title | Status | Priority | Depends On |
+|----------|-------|--------|----------|------------|
+| TC-SAL-PATH-002 | Fix capability_compiler.py SAL path mismatch | not_attempted | HIGH | TC-SAL-OUTPUT-001 (COMPLETE) |
+| TC-FODT-COMPAT-001 | Add spec_qname to FODT models.py classes | not_attempted | HIGH | None |
+| TC-QNAME-DEDUP-001 | Remove fods/fods/spec/ duplicate | not_attempted | HIGH | None |
+| TC-SKILL-HARDEN-001 | Harden add-python-object-model-feature skill | not_attempted | HIGH | None |
+| TC-QNAME-VALIDATORS-001 | Wire qname_structure_validator into governance | not_attempted | HIGH | TC-QNAME-DEDUP-001 |
+| TC-QNAME-BACKFILL-ODS-001 | Add spec/ + spec_qname to ODS domain classes | not_attempted | MEDIUM | TC-QNAME-DEDUP-001 |
+| TC-QNAME-BACKFILL-ODT-001 | Add spec/ + spec_qname to ODT domain classes | not_attempted | MEDIUM | TC-QNAME-BACKFILL-ODS-001 |
+| TC-FODT-BOOT-001 | Implement 5 remaining FODT stub properties | not_attempted | HIGH | None |
+| TC-FODT-BOOT-002 | Write test_compat_bootstrap.py | not_attempted | HIGH | TC-FODT-BOOT-001 |
+| TC-FODT-BOOT-003 | Switch compat.py to spec/ imports | not_attempted | HIGH | TC-FODT-BOOT-001 + TC-FODT-BOOT-002 |
+| TC-FODT-GAP-001 | Register FODT QName gaps in gap-ledger | not_attempted | HIGH | TC-FODT-BOOT-001 |
+| TC-FODT-AUDIT-001 | Audit FACT-FODT-EX-* quality | not_attempted | HIGH | None |
+| TC-FODT-AUDIT-002 | Correct §17 FODT fact count and D3 status | not_attempted | MEDIUM | TC-FODT-AUDIT-001 |
+| TC-RCAL-001 | Diagnose and wire RCAL queue from gap-ledger | not_attempted | HIGH | None |
+| TC-GATE11-SUBMIT-001 | Gate 11 submission to Babar Raza (TRUE_EXTERNAL_GATE) | waiting_external_gate | CRITICAL | None |
+
+### §26 Execution Order
+
+```
+[IMMEDIATE — no dependencies, unblocked now]
+TC-GATE11-SUBMIT-001 (create submission document; external gate awaits Babar Raza)
+TC-RCAL-001 (diagnose RCAL queue disconnection — diagnostic only, no source changes)
+
+    ↓
+
+[Parallel batch 1 — no dependencies]
+TC-SAL-PATH-002 (fix capability_compiler path)
+TC-FODT-COMPAT-001 (add spec_qname to models.py)
+TC-QNAME-DEDUP-001 (remove fods/fods/ duplicate)
+TC-SKILL-HARDEN-001 (harden skill gate)
+TC-FODT-BOOT-001 (implement 5 stub properties)
+TC-FODT-AUDIT-001 (audit FACT-FODT-EX-* quality)
+
+    ↓
+
+[Batch 2 — after batch 1 dependencies met]
+TC-QNAME-VALIDATORS-001 (after DEDUP-001)
+TC-QNAME-BACKFILL-ODS-001 (after DEDUP-001)
+TC-FODT-BOOT-002 (after BOOT-001)
+TC-FODT-GAP-001 (after BOOT-001)
+TC-FODT-AUDIT-002 (after AUDIT-001)
+
+    ↓
+
+[Batch 3]
+TC-QNAME-BACKFILL-ODT-001 (after ODS-001)
+TC-FODT-BOOT-003 (after BOOT-001 + BOOT-002 pass)
+```
+
+---
+
+## §27 — Post-Sprint Hardening Record (2026-06-21)
+
+This section records completed work from the ff-machinery-readiness-20260621 session
+(5 sprint cycles) and the new gaps discovered during that session. It ensures future agents
+can determine which gaps were addressed without re-running the full machinery readiness audit.
+
+### §27.1 Completed Work (outside this plan's existing taskcards)
+
+| Sprint | What Was Done | Evidence |
+|--------|---------------|----------|
+| ff-machinery-readiness-20260621 | FODS analytics extraction: `neutral_model.py` 2186→1231 LOC; `fods_analytics.py` created (1030 LOC, 24 functions) | `.local/evidences/ff-machinery-readiness-20260621-3024f68c/evidence-declaration.yaml` |
+| ff-gate11-fods-readiness-20260621 | FODS Gate 11 readiness packet; `docs/api/fods.md`; `docs/release/fods-v0.1.0.md`; `src/python/fods/constants.py` PACKAGE_VERSION → 0.1.0 | `reports/ff-gate11-fods-readiness-20260621/gate11-readiness-packet.md` |
+| ff-gate11-fodt-readiness-20260621 | FODT Gate 11 readiness packet; `docs/api/fodt.md`; `docs/release/fodt-v0.1.0.md`; `src/python/fodt/constants.py` PACKAGE_VERSION → 0.1.0 | `reports/ff-gate11-fodt-readiness-20260621/gate11-readiness-packet.md` |
+| ff-dtd-guard-tests-20260621 | DTD prohibition tests added: `FodsG11fMalformedXmlGuardTests.cs::Parser_XmlWithDtd_RejectsWithError`; `FodtG11fHeadingAndGuardTests.cs::Document_Load_XmlWithDtd_ThrowsException`; FODS 618/618 PASS, FODT 568/568 PASS | `.local/evidences/ff-dtd-guard-tests-20260621/evidence-declaration.yaml` |
+| ff-registry-sync-20260621 | `poc-targets.yaml` FODS 547→618, FODT 520→568; `registry/format-registry.yaml` FODS+FODT gate_11 `g11g_status: APPROVED_BY_BABAR_RAZA_2026_06_05` | `.local/evidences/ff-registry-sync-20260621/evidence-declaration.yaml` |
+
+### §27.2 Review Package Hashes (for auditability)
+
+| Sprint | Review Package | SHA-256 |
+|--------|---------------|---------|
+| ff-machinery-readiness-20260621 | `.local/reviews/ff-machinery-readiness-20260621-3024f68c/declaration-review-package.zip` | `61dac3cbee16b923e20850ada57296978a553a0bacb85c0ee87496c490f29d4b` |
+| ff-gate11-fods-readiness-20260621 | `.local/reviews/ff-gate11-fods-readiness-20260621/declaration-review-package.zip` | `c2677f249468230012c9b8d889d0959f65a79fe450a2cbcc4d923ced6ff1ae08` |
+| ff-gate11-fodt-readiness-20260621 | `.local/reviews/ff-gate11-fodt-readiness-20260621/declaration-review-package.zip` | `e2ad5a06ba4e166d1785d78125e1bf9120392dd993430381f3c82416cc86e30a` |
+| ff-dtd-guard-tests-20260621 | `.local/reviews/ff-dtd-guard-tests-20260621/declaration-review-package.zip` | `1ebe2e9201493e03c03a7d6307e027d0e9de9c159c6e7360e6cde287bf04c078` |
+| ff-registry-sync-20260621 | `.local/reviews/ff-registry-sync-20260621/declaration-review-package.zip` | `f234f61c4ad6035bde8f58a4afc0cf3d7e24a834dc92e1522d735fd1ad7b88e3` |
+
+### §27.3 New Gaps Identified
+
+| Gap ID | Description | Taskcard |
+|--------|-------------|---------|
+| GAP-RCAL-QUEUE-001 | RCAL action queue empty despite 958-entry gap-ledger; root cause unknown — pipeline disconnection | TC-RCAL-001 |
+| GAP-GATE11-SUBMIT-001 | FODS+FODT Gate 11 readiness packets complete; formal submission to Babar Raza not yet executed | TC-GATE11-SUBMIT-001 |
+
+### §27.4 Status of Existing §26 Taskcards
+
+All 13 taskcards that existed in §26 before this hardening remain **not_attempted**.
+None were modified or partially executed during the ff-machinery-readiness-20260621 session.
+The session completed separate sprint work (analytics extraction, Gate 11 docs) that does not
+overlap with any §26 taskcard scope.
+
+| Taskcard | Status (unchanged) |
+|----------|-------------------|
+| TC-SAL-PATH-002 | not_attempted |
+| TC-FODT-COMPAT-001 | not_attempted |
+| TC-QNAME-DEDUP-001 | not_attempted |
+| TC-SKILL-HARDEN-001 | not_attempted |
+| TC-QNAME-VALIDATORS-001 | not_attempted |
+| TC-QNAME-BACKFILL-ODS-001 | not_attempted |
+| TC-QNAME-BACKFILL-ODT-001 | not_attempted |
+| TC-FODT-BOOT-001 | not_attempted |
+| TC-FODT-BOOT-002 | not_attempted |
+| TC-FODT-BOOT-003 | not_attempted |
+| TC-FODT-GAP-001 | not_attempted |
+| TC-FODT-AUDIT-001 | not_attempted |
+| TC-FODT-AUDIT-002 | not_attempted |
+
+### §27.5 Gate 11 State Summary
+
+| Format | .NET Tests | Python PACKAGE_VERSION | G11-G Status | API Docs | Release Notes | DTD Test |
+|--------|-----------|----------------------|-------------|---------|---------------|---------|
+| FODS | 618/618 PASS | 0.1.0 | APPROVED_BY_BABAR_RAZA_2026_06_05 | docs/api/fods.md | docs/release/fods-v0.1.0.md | PASS (Parser_XmlWithDtd_RejectsWithError) |
+| FODT | 568/568 PASS | 0.1.0 | APPROVED_BY_BABAR_RAZA_2026_06_05 | docs/api/fodt.md | docs/release/fodt-v0.1.0.md | PASS (Document_Load_XmlWithDtd_ThrowsException) |
+
+Both formats are in state: **CUSTOMER_READINESS_PACKAGE_COMPLETE — AWAITING_BABAR_RAZA_FINAL_SIGNOFF**
+
+---
+
+## 28. Forensic Audit Findings — v3.9 Hardening (2026-06-21)
+
+**Source:** Full-session forensic audit (glimmering-gliding-planet hardening plan, 2026-06-21).
+**Audit scope:** All 20 Python formats, SAL pipeline, supervisor, skills, source structure,
+lane separation, qname registry, capability layer, analytics bloat, dirty working tree.
+**Audit evidence:** Direct code inspection, validator runs, test execution, gap matrix.
+
+### 28.1 Confirmed Test Failures (4 live)
+
+| Test | Failure | Root Cause | Fix Taskcard |
+|------|---------|-----------|-------------|
+| test_fodt_sal_facts_present | FODT workbench has 0 facts found by test | Plan v3.8 over-claimed FODT extraction (4940 facts claim) | TC-HARD-001 |
+| test_total_fact_refs_across_product_source | FACT-FODS-002 not in sal-facts-latest.json | ROOT-03 still active (wrong ID namespace in runner output) | TC-HARD-002 |
+| test_plan_version_is_v30 | Test expects "Plan version: 3.0"; plan is "3.9" | Stale test assertion never updated past v3.0 | TC-HARD-003 |
+| test_no_loc_regression | generate_next_worker_prompt.py 1391 LOC (cap 1318) | Supervisor file grew 73 lines past baseline cap | TC-HARD-004 |
+
+### 28.2 ROOT-03 Re-Opened (CRITICAL)
+
+ROOT-03 (Incompatible Namespaces) was marked implicitly resolved in plan v3.1. The live test failure
+in `test_gap_int_002_product_source_fact_refs.py` proves it is NOT resolved:
+
+- `src/python/fods/spec/office/body.py` uses `spec_fact_ref = "FACT-FODS-002"` (canonical ID format)
+- `sal-facts-latest.json` does NOT contain `FACT-FODS-002`
+- The 14,428+ facts claimed in sal-facts-latest.json use a different ID namespace
+  (likely `FODS-FACT-002` or `ODF-FACT-*`) incompatible with canonical spec stubs
+
+**ROOT-03 status: STILL ACTIVE** (not resolved despite v3.1 claims)
+
+### 28.3 QName Validator Deception (HIGH)
+
+`qname_structure_validator.py` returns `status: NO_SPEC_CLASSES` for formats without a `spec/`
+subdirectory and exits with code 0 (success). 18 of 20 Python format packages have no spec/
+directory and therefore report NO_SPEC_CLASSES — treated as COMPLIANT by supervisor and tests.
+
+**Reality:** 18/20 formats are structurally NON_COMPLIANT with the canonical architecture.
+Fix is in TC-HARD-005: change exit code logic so `NO_SPEC_CLASSES` → exit 1.
+
+### 28.4 Analytics Bloat — Suspended But Not Removed (HIGH)
+
+Three analytics files contain 17,177 LOC of purely arithmetic functions (pattern: `_mod_N_times_M`):
+- `src/python/xcf/xcf_analytics.py`: 5725 LOC, ~414 arithmetic functions
+- `src/python/zst/zst_analytics.py`: 5513 LOC, ~848 functions total
+- `src/python/fodg/fodg_analytics.py`: 4915 LOC, ~772 functions total
+
+V42 validator blocks NEW arithmetic analytics. But existing 17,177 LOC are frozen in
+`known_violations` baseline — not scheduled for removal. Fix taskcard: TC-HARD-006.
+
+### 28.5 Dirty Working Tree Items
+
+| File/Dir | State | Taskcard |
+|----------|-------|----------|
+| `src/python/fods/Compat/` (4 files) | Untracked — not committed | TC-HARD-007 |
+| `src/python/fods/neutral_model.py` | Modified — not committed | TC-HARD-009 |
+
+### 28.6 Structural Coverage Gaps
+
+| Gap | Detail | Taskcard |
+|-----|--------|----------|
+| 18/20 Python formats: no qname registry | Only fods.yaml and fodt.yaml in shared/qname-registry/ | TC-HARD-008 |
+| sal-facts-latest.json ID format unverified | 14,428+ facts claimed; actual ID namespace unknown | TC-HARD-010 |
+
+---
+
+## 29. Forensic Audit Taskcards — TC-HARD-001 through TC-HARD-010
+
+### TC-HARD-001 — Verify or Correct FODT Workbench Fact Count
+
+**Status:** not_attempted
+**Priority:** CRITICAL (live test failure)
+**Source finding:** `test_fodt_sal_facts_present` fails; plan v3.8 claims 4940 FACT-FODT-NNN facts
+**Lane owner:** Lane SAL
+**Required work:**
+1. Run: `ls .local/spec-cache/fodt/` — check if workbench directory exists and has facts
+2. If it does not exist: demote VER-06 to NOT_STARTED; update this plan
+3. If it does exist: run test locally; fix test path if it points to wrong location
+4. Either prove FODT workbench has ≥ 20 FACT-FODT-NNN facts OR acknowledge overclaim
+**Required verification:** `pytest tests/specification-authority-layer/test_fodt_qname_spec_chain.py -v` → 0 failures
+**Required evidence:** Test pass log OR correction note demoting VER-06
+**Acceptance criteria:** test_fodt_sal_facts_present passes OR VER-06 demoted with honest correction
+**Forbidden actions:** Do NOT fabricate FODT facts to make the test pass
+**Closeout:** completed_verified when test passes; not_attempted with correction note if overclaimed
+
+---
+
+### TC-HARD-002 — Resolve ROOT-03: Wire Canonical FACT IDs into sal-facts-latest.json
+
+**Status:** not_attempted
+**Priority:** CRITICAL (live test failure; ROOT-03 re-opened)
+**Source finding:** `test_total_fact_refs_across_product_source` fails; FACT-FODS-002 not in sal-facts-latest.json
+**Lane owner:** Lane SAL
+**Required work:**
+1. Inspect `sal-facts-latest.json`: what ID format do the FODS facts use?
+2. Inspect `verified-facts-review.yaml`: what IDs do the 78 verified facts use?
+3. Either: fix sal_master_runner.py to emit verified-facts-review.yaml IDs as-is (preferred)
+   OR: update spec stubs to use the runner's ID format (only if runner IDs are canonical)
+4. Verify: `FACT-FODS-002` must appear in sal-facts-latest.json after fix
+**Required verification:**
+- `pytest tests/specification-authority-layer/test_gap_int_002_product_source_fact_refs.py -v` → 0 failures
+**Required evidence:** Test pass log; sal-facts-latest.json sample showing FACT-FODS-002 present
+**Acceptance criteria:** Test passes; FACT-FODS-002 in output; ROOT-03 marked RESOLVED with evidence
+**Forbidden actions:** Do NOT add FACT-FODS-002 as hardcoded template fact to bypass this fix
+**Closeout:** completed_verified when test passes and ROOT-03 evidence documented
+
+---
+
+### TC-HARD-003 — Fix Stale Plan Version Assertion in Test
+
+**Status:** completed_verified
+**Completed:** 2026-06-21 (glimmering-gliding-planet hardening)
+**Priority:** HIGH (live test failure)
+**Source finding:** `test_plan_version_is_v30` — diagnosed as stale; actual test code already uses
+flexible regex `re.search(r"Plan version: 3\.\d", text)` (accepts any 3.x version). Comment was
+stale ("currently 3.5"). Updated comment to "currently 3.9" and error message to match.
+**Lane owner:** Lane D (Test Infrastructure)
+**Required work:**
+1. Edit `tests/specification-authority-layer/test_plan_readiness_verdict.py`
+2. Updated comment from "currently 3.5" to "currently 3.9"; updated error message to reference 3.9
+**Required verification:** `pytest tests/specification-authority-layer/test_plan_readiness_verdict.py -v` → 0 failures
+**Required evidence:** Updated test file; test pass log
+**Acceptance criteria:** Test passes; no other tests regressed
+**Forbidden actions:** Do NOT downgrade the plan version to 3.0 to make the test pass
+**Closeout:** completed_verified when test passes
+
+---
+
+### TC-HARD-004 — Fix generate_next_worker_prompt.py LOC Regression
+
+**Status:** not_attempted
+**Priority:** HIGH (live test failure)
+**Source finding:** `test_no_loc_regression` fails; file is 1391 LOC, cap is 1318 (73 lines over)
+**Lane owner:** Lane D (Supervisor Infrastructure)
+**Required work:**
+Option A (preferred): Trim `tools/supervisor/generate_next_worker_prompt.py` by ≥ 73 lines
+by removing unused helper functions, dead code, or consolidating repeated patterns.
+Option B (only if growth is justified): Update `registry/source-structure-baseline.json` cap
+from 1318 to 1391 and document the justification.
+**Required verification:**
+- `pytest tests/test_source_structure.py -v` → 0 failures
+- `python tools/validators/source_structure_validator.py` → exits 0
+**Required evidence:** Test pass log; if Option B used: written justification for cap increase
+**Acceptance criteria:** test_no_loc_regression passes
+**Forbidden actions:** Do NOT increase caps across multiple files as a batch to hide this regression
+**Closeout:** completed_verified when source structure test passes
+
+---
+
+### TC-HARD-005 — Fix QName Validator: NO_SPEC_CLASSES Must Not Exit 0
+
+**Status:** not_attempted
+**Priority:** HIGH (architecture correctness)
+**Source finding:** `qname_structure_validator.py` exits 0 for 18/20 formats with no spec/ dir
+**Lane owner:** Lane D (Validator Infrastructure)
+**Required work:**
+1. Edit `tools/validators/qname_structure_validator.py` — change `_cli()` exit code logic:
+   Old: `return 0 if result["status"] in ("COMPLIANT", "NO_SPEC_CLASSES") else 1`
+   New: `return 0 if result["status"] == "COMPLIANT" else 1`
+2. Update `tests/specification-authority-layer/test_qname_structure_validator.py` to verify
+   formats without spec/ directories return exit code 1 (not 0)
+**Required verification:**
+- `python tools/validators/qname_structure_validator.py src/python/ --format csv` exits 1
+- `python tools/validators/qname_structure_validator.py src/python/ --format fods` exits 0
+- All test_qname_structure_validator.py tests pass
+**Required evidence:** Fixed validator; updated tests; compliance run output
+**Acceptance criteria:** Validator correctly distinguishes COMPLIANT from NON_COMPLIANT
+**Forbidden actions:** Do NOT change the COMPLIANT definition (only formats with spec/ dir + all spec_qname present = COMPLIANT)
+**Closeout:** completed_verified when validator exits 1 for csv and 0 for fods
+
+---
+
+### TC-HARD-006 — Schedule Removal of Suspended Arithmetic Analytics (17,177 LOC)
+
+**Status:** not_attempted
+**Priority:** HIGH (source quality; maintenance debt)
+**Source finding:** xcf_analytics.py (5725 LOC), zst_analytics.py (5513 LOC), fodg_analytics.py (4915 LOC)
+contain `_mod_N_times_M` arithmetic functions with zero spec backing
+**Lane owner:** Lane I (Analytics Cleanup)
+**Required work (3-step sequence):**
+Step 1 (INVENTORY): List all arithmetic functions in the 3 files. Output: `.local/evidences/arithmetic-removal/inventory.json`
+Step 2 (TEST IMPACT): For each arithmetic function, identify tests that invoke it directly. Pure arithmetic tests may be deleted.
+Step 3 (REMOVAL): Delete arithmetic functions; delete pure arithmetic tests; update baseline caps.
+**Required verification:**
+- All remaining tests pass after removal
+- `python tools/validators/source_structure_validator.py` exits 0
+- Source structure test passes
+**Required evidence:** inventory.json; test run after removal; updated baseline caps
+**Acceptance criteria:** Zero `_mod_N_times_M` functions in xcf/zst/fodg analytics files; all tests pass
+**Forbidden actions:** Do NOT delete domain-meaningful analytics functions (only `_mod_N_times_M` pattern)
+**Closeout:** completed_verified when inventory + test pass + baseline caps updated
+
+---
+
+### TC-HARD-007 — Commit or Revert src/python/fods/Compat/ (Untracked Files)
+
+**Status:** not_attempted
+**Priority:** MEDIUM (dirty working tree)
+**Source finding:** 4 untracked files in src/python/fods/Compat/ — __init__.py, fods_cell.py, fods_document.py, fods_sheet.py
+**Lane owner:** Lane 8 (Spec-to-Feature)
+**Required work:**
+1. Inspect all 4 files in src/python/fods/Compat/ — verify spec_qname attributes and imports
+2. Run import test: `python -c "from src.python.fods.Compat import FodsDocument; print('OK')"` — must pass
+3. Run V44 governance validator if available
+4. Commit if all checks pass; revert if broken
+**Required verification:** Import test passes; `git status` shows Compat/ tracked after commit
+**Required evidence:** Commit hash; import test output; V44 result
+**Acceptance criteria:** Compat/ committed and importable OR reverted with explanation
+**Closeout:** completed_verified when committed + importable; not_attempted with revert if broken
+
+---
+
+### TC-HARD-008 — Add QName Registries for 18 Missing Python Formats
+
+**Status:** not_attempted
+**Priority:** MEDIUM (systematic coverage)
+**Source finding:** Only fods.yaml and fodt.yaml exist in shared/qname-registry/ (2/20 formats)
+**Lane owner:** Lane 2 (QName/Schema)
+**Depends on:** TC-HARD-005 (validator fix — needed to accurately measure compliance after adding registries)
+**Required work:**
+For each of: abw, csv, dif, fodg, fodp, gnumeric, ndjson, ods, odt, pbm, pgm, ppm, qoi, sylk, toml, tsv, xcf, zst:
+1. Identify 3-5 core spec-significant elements per format (from available specs or RFC)
+2. Create `shared/qname-registry/<format>.yaml` with those entries
+3. Set all entries to `status: seeded`
+**Required verification:** 20 YAML files exist in shared/qname-registry/; each schema-valid
+**Required evidence:** 18 new YAML files
+**Acceptance criteria:** shared/qname-registry/ has entries for all 20 formats
+**Forbidden actions:** Do NOT create spec/ source files during this task (that is Phase F)
+**Closeout:** completed_verified when 18 registries created and schema-valid
+
+---
+
+### TC-HARD-009 — Wire FODS Neutral Model Changes (Uncommitted)
+
+**Status:** not_attempted
+**Priority:** MEDIUM (dirty working tree)
+**Source finding:** `src/python/fods/neutral_model.py` listed as modified (M) in git status
+**Lane owner:** Lane 8 (Product Source)
+**Required work:**
+1. Run `git diff src/python/fods/neutral_model.py` to inspect changes
+2. Assess: are changes correct or accidental?
+3. If correct: write ledger entry + run FODS tests + commit
+4. If accidental: revert
+**Required verification:** All FODS tests pass after commit/revert
+**Required evidence:** git diff output; decision rationale; test pass log
+**Acceptance criteria:** neutral_model.py is either committed (tests passing) or reverted
+**Forbidden actions:** Do NOT commit without running FODS tests first
+**Closeout:** completed_verified when file is committed or reverted
+
+---
+
+### TC-HARD-010 — Verify sal-facts-latest.json Fact ID Namespace
+
+**Status:** not_attempted
+**Priority:** MEDIUM (audit clarity)
+**Source finding:** Plan v3.8 claims 14,428+ facts with FACT-<FORMAT>-NNN IDs; live test disproves this
+**Lane owner:** Lane SAL
+**Required work:**
+1. Run: `python -c "import json; d=json.load(open('.local/sal-output/sal-facts-latest.json')); items=d if isinstance(d,list) else d.get('spec_facts',[]); ids=[f.get('qname','') for f in items[:20]]; print(ids)"`
+2. Determine actual ID format used by the 14,428 facts
+3. Count how many use canonical FACT-<FORMAT>-NNN format vs other formats
+4. Update VER-02, VER-03 in this plan to reflect actual state
+**Required verification:** Command produces output; IDs inspected
+**Required evidence:** Output of command; updated VER-02/VER-03
+**Acceptance criteria:** VER-02/VER-03 reflect actual (not claimed) fact ID state
+**Allowed actions:** Read sal-facts-latest.json (read-only); update verification matrix
+**Forbidden actions:** Do NOT update fact counts without running the check
+**Closeout:** completed_verified when VER-02/VER-03 verified or corrected
+
+---
+
+### §29 Taskcard Register (Forensic Audit TC-HARD-*)
+
+| Taskcard | Title | Status | Priority | Depends On |
+|----------|-------|--------|----------|------------|
+| TC-HARD-001 | Verify or correct FODT workbench fact count | not_attempted | CRITICAL | None |
+| TC-HARD-002 | Resolve ROOT-03: wire canonical FACT IDs into sal-facts-latest.json | not_attempted | CRITICAL | None |
+| TC-HARD-003 | Fix stale plan version assertion in test | completed_verified | HIGH | Plan v3.9 header (done) |
+| TC-HARD-004 | Fix generate_next_worker_prompt.py LOC regression | not_attempted | HIGH | None |
+| TC-HARD-005 | Fix qname validator: NO_SPEC_CLASSES must exit 1 | not_attempted | HIGH | None |
+| TC-HARD-006 | Remove suspended arithmetic analytics (17,177 LOC) | not_attempted | HIGH | None |
+| TC-HARD-007 | Commit or revert fods/Compat/ untracked files | not_attempted | MEDIUM | None |
+| TC-HARD-008 | Add qname registries for 18 missing formats | not_attempted | MEDIUM | TC-HARD-005 |
+| TC-HARD-009 | Resolve neutral_model.py uncommitted changes | not_attempted | MEDIUM | None |
+| TC-HARD-010 | Verify sal-facts-latest.json fact ID namespace | not_attempted | MEDIUM | None |
+
+### §29 Execution Order (Priority 0 first — unblocks test suite)
+
+```
+[IMMEDIATE — live test blockers]
+TC-HARD-003 (5 min — fix stale version assertion)
+TC-HARD-004 (1 hr — trim LOC or update cap)
+TC-HARD-002 (2-4 hr — wire canonical IDs into runner — CRITICAL)
+TC-HARD-001 (1 hr — verify or correct FODT overclaim)
+
+    ↓
+
+[Architecture correctness — after Priority 0]
+TC-HARD-005 (1 hr — fix validator exit code)
+TC-HARD-007 (30 min — commit or revert Compat/)
+TC-HARD-009 (30 min — commit or revert neutral_model.py)
+TC-HARD-010 (30 min — read-only ID namespace inspection)
+
+    ↓
+
+[Backfill — after above]
+TC-HARD-008 (after TC-HARD-005 — add 18 qname registries)
+TC-HARD-006 (multi-sprint — arithmetic analytics removal)
+```

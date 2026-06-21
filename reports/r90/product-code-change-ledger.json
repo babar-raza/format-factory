@@ -17391,7 +17391,175 @@
         }
       ],
       "rollback": "Remove test_r131_fodt_text_char_analytics.py and this entry"
+    },
+    {
+      "entry_id": "R90-FODT-STRUCTURE-ANALYTICS-TEST-001",
+      "sprint_id": "autonomous-loop-20260621-212651",
+      "change_type": "PRODUCT_TEST",
+      "gap_ledger_ref": "GAP-FODT-FOSS-FODT_MAX_RUN-001",
+      "file_path": "tests/python/fodt/test_r132_fodt_structure_analytics.py",
+      "description": "29 tests for 6 FODT structure analytics gaps: max_run_count, max_words_in_heading, short_paragraph_count, space_count, punctuation_count, list_block_count",
+      "validation_result": "29/29 PASS",
+      "closed_gaps": [
+        "GAP-FODT-FOSS-FODT_MAX_RUN-001",
+        "GAP-FODT-FOSS-FODT_MAX_WOR-001",
+        "GAP-FODT-FOSS-FODT_SHORT_P-001",
+        "GAP-FODT-FOSS-FODT_SPACE_C-001",
+        "GAP-FODT-FOSS-FODT_PUNCTUA-001",
+        "GAP-FODT-FOSS-FODT_LIST_BL-001"
+      ]
+    },
+    {
+      "entry_id": "R90-FODT-REMAINING-ANALYTICS-TEST-001",
+      "sprint_id": "autonomous-loop-20260621-213156",
+      "change_type": "PRODUCT_TEST",
+      "gap_ledger_ref": "GAP-FODT-FOSS-FODT_FILE_SI-001",
+      "file_path": "tests/python/fodt/test_r133_fodt_remaining_analytics.py",
+      "description": "50 tests for 17 remaining FODT analytics gaps: file_size_bytes, has_more_words_than_unique, uppercase_char_count, min_heading_length, char_per_word, avg_block_length, max/min_block_text_length, word_per_heading, block_text_sum, consonant_ratio, avg_run_count, empty_block_count, word_density, avg_paragraph_length, section_depth_max, text_block_ratio",
+      "validation_result": "50/50 PASS",
+      "closed_gaps": [
+        "GAP-FODT-FOSS-FODT_UPPERCA-001",
+        "GAP-FODT-FOSS-FODT_AVG_PAR-001",
+        "GAP-FODT-FOSS-FODT_MIN_BLO-001",
+        "GAP-FODT-FOSS-FODT_MIN_HEA-001",
+        "GAP-FODT-FOSS-FODT_FILE_SI-001",
+        "GAP-FODT-FOSS-FODT_HAS_MOR-001",
+        "GAP-FODT-FOSS-FODT_BLOCK_T-001",
+        "GAP-FODT-FOSS-FODT_AVG_RUN-001",
+        "GAP-FODT-FOSS-FODT_CONSONA-001",
+        "GAP-FODT-FOSS-FODT_WORD_DE-001",
+        "GAP-FODT-FOSS-FODT_EMPTY_B-001",
+        "GAP-FODT-FOSS-FODT_TEXT_BL-001",
+        "GAP-FODT-FOSS-FODT_MAX_BLO-001",
+        "GAP-FODT-FOSS-FODT_AVG_BLO-001",
+        "GAP-FODT-FOSS-FODT_WORD_PE-001",
+        "GAP-FODT-FOSS-FODT_CHAR_PE-001",
+        "GAP-FODT-FOSS-FODT_SECTION-001"
+      ]
+    },
+    {
+      "entry_id": "TCL-FODS-VERSION-20260621",
+      "file": "src/python/fods/constants.py",
+      "change_type": "version_bump",
+      "description": "Update PACKAGE_VERSION from 0.1.0.dev0 to 0.1.0 (pre-release finalization for Gate 11 customer readiness packet)",
+      "sprint_id": "ff-gate11-fods-readiness-20260621",
+      "changed_at": "2026-06-21T21:30:00Z",
+      "gap_ledger_ref": null,
+      "spec_fact_refs": [],
+      "test_references": []
+    },
+    {
+      "entry_id": "TCL-FODT-VERSION-20260621",
+      "file": "src/python/fodt/constants.py",
+      "change_type": "version_bump",
+      "description": "Update FODT PACKAGE_VERSION from 0.1.0.dev0 to 0.1.0 (pre-release finalization for Gate 11 customer readiness packet)",
+      "sprint_id": "ff-gate11-fodt-readiness-20260621",
+      "changed_at": "2026-06-21T22:00:00Z",
+      "gap_ledger_ref": null,
+      "spec_fact_refs": [],
+      "test_references": []
+    },
+    {
+      "entry_id": "R90-FODT-CAP-MATRIX-UPGRADE-001",
+      "classification": "PRODUCT_CAPABILITY_UPGRADE",
+      "sprint_id": "autonomous-loop-20260621-214403",
+      "created_at": "2026-06-21T16:56:18Z",
+      "gap_ledger_ref": null,
+      "capability_ref": "FODT-FOSS-*",
+      "description": "Upgraded 19 FODT FOSS capabilities from test_verified to implementation_verified in foss-reduced-capability-map.json. All 149 FODT FOSS capabilities now implementation_verified. Evidence: 142 dedicated function tests pass (test_r257/258/259/279/283/286/294/300/306/315/183). Proof: 1982 total FODT tests, 0 failures.",
+      "changed_files": [
+        "reports/capability-layer/foss-reduced-capability-map.json"
+      ],
+      "tests_added": 0,
+      "test_results": {
+        "passed": 142,
+        "failed": 0
+      },
+      "worker_verdict": "PASS"
+    },
+    {
+      "entry_id": "R90-FODT-INSTALL-PROOF-001",
+      "classification": "PACKAGE_INSTALL_PROOF",
+      "sprint_id": "autonomous-loop-20260621-214403",
+      "created_at": "2026-06-21T16:56:18Z",
+      "gap_ledger_ref": null,
+      "capability_ref": "FODT-FOSS-WRITE_FODT-001",
+      "description": "FODT Python FOSS package install proof: fodt 0.1.0.dev0 installed, 150 symbols exported, 92 analytics functions, parse_fodt + document_stats + fodt_word_count/char_count/heading_count/paragraph_count all PASS. Proof: reports/r131-fodt-install-proof-sprint3/package-install-proof.md",
+      "changed_files": [
+        "reports/r131-fodt-install-proof-sprint3/package-install-proof.md"
+      ],
+      "tests_added": 0,
+      "test_results": {
+        "passed": 4,
+        "failed": 0
+      },
+      "worker_verdict": "PASS"
+    },
+    {
+      "entry_id": "R90-FODT-TO-NDJSON-DOGFOOD-001",
+      "classification": "DOGFOOD_EXPORT",
+      "sprint_id": "autonomous-loop-20260621-220000",
+      "created_at": "2026-06-21T22:00:00Z",
+      "gap_ledger_ref": null,
+      "capability_ref": "FODT-FOSS-WRITE_FODT-001",
+      "description": "FODT \u2192 NDJSON dogfood export. Source: Format Factory fodt library (parse_fodt). Target writer: Format Factory ndjson library (write_ndjson). Each FODT block exported as NDJSON record with block_type, text, block_index, heading_level. 18/18 tests pass. Forbidden third-party deps absent.",
+      "changed_files": [
+        "src/python/fodt/fodt_to_ndjson.py",
+        "tests/python/fodt/test_r134_fodt_to_ndjson_dogfood.py"
+      ],
+      "dogfood_status": "IMPLEMENTED",
+      "source_format": "fodt",
+      "target_format": "ndjson",
+      "target_ff_library": "ndjson.ndjson_codec.write_ndjson",
+      "tests_added": 18,
+      "test_results": {
+        "passed": 18,
+        "failed": 0
+      },
+      "worker_verdict": "PASS"
+    },
+    {
+      "entry_id": "R90-ZST-P5-COLLECTION-FIX-001",
+      "classification": "BUG_FIX",
+      "sprint_id": "autonomous-loop-20260621-223000",
+      "created_at": "2026-06-21T22:30:00Z",
+      "gap_ledger_ref": null,
+      "capability_ref": "ZST-FOSS-COMPRESS_BYTES-001",
+      "description": "Fixed test_r115_zst_file_roundtrip.py collection error: changed import from src.python.zst.zst_codec to direct zst_codec (consistent with other ZST tests). 11/11 tests now PASS. ZST Gate 11 P5 upgraded from partial to evidence_verified. Python P1-P11 readiness: 71.4% (5/7 applicable).",
+      "changed_files": [
+        "tests/python/zst/test_r115_zst_file_roundtrip.py"
+      ],
+      "tests_added": 0,
+      "tests_fixed": 11,
+      "test_results": {
+        "passed": 11,
+        "failed": 0
+      },
+      "worker_verdict": "PASS"
+    },
+    {
+      "entry_id": "R90-FODS-TO-TSV-DOGFOOD-001",
+      "classification": "DOGFOOD_EXPORT",
+      "sprint_id": "autonomous-loop-20260621-230000",
+      "created_at": "2026-06-21T23:00:00Z",
+      "gap_ledger_ref": null,
+      "capability_ref": "FODS-FOSS-PARSE_FODS-001",
+      "description": "FODS \u2192 TSV dogfood export. Source: Format Factory fods library (parse_fods). Target writer: Format Factory tsv library (write_tsv from tsv.tsv_parser). Each FODS sheet row exported as TSV row; first row optionally used as headers. 16/16 tests pass. Forbidden third-party deps absent.",
+      "changed_files": [
+        "src/python/fods/fods_to_tsv.py",
+        "tests/python/fods/test_r134_fods_to_tsv_dogfood.py"
+      ],
+      "dogfood_status": "IMPLEMENTED",
+      "source_format": "fods",
+      "target_format": "tsv",
+      "target_ff_library": "tsv.tsv_parser.write_tsv",
+      "tests_added": 16,
+      "test_results": {
+        "passed": 16,
+        "failed": 0
+      },
+      "worker_verdict": "PASS"
     }
   ],
-  "total_entries": 949
+  "total_entries": 958
 }

@@ -1,0 +1,47 @@
+=== TEST: test_gap_int_002 ===
+============================= test session starts =============================
+platform win32 -- Python 3.13.2, pytest-8.4.2, pluggy-1.6.0 -- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\prora\OneDrive\Documents\GitHub\format-factory
+configfile: pyproject.toml
+plugins: anyio-4.13.0, cov-7.1.0, timeout-2.4.0
+timeout: 30.0s
+timeout method: thread
+timeout func_only: False
+collecting ... collected 33 items
+
+tests/specification-authority-layer/test_gap_int_002_product_source_fact_refs.py::TestProductSourceFactRefs::test_sal_facts_file_exists PASSED [  3%]
+tests/specification-authority-layer/test_gap_int_002_product_source_fact_refs.py::TestProductSourceFactRefs::test_sal_facts_has_fods_facts PASSED [  6%]
+tests/specification-authority-layer/test_gap_int_002_product_source_fact_refs.py::TestProductSourceFactRefs::test_sal_facts_has_fodt_facts PASSED [  9%]
+tests/specification-authority-layer/test_gap_int_002_product_source_fact_refs.py::TestProductSourceFactRefs::test_sal_facts_has_zst_facts PASSED [ 12%]
+tests/specification-authority-layer/test_gap_int_002_product_source_fact_refs.py::TestProductSourceFactRefs::test_fods_neutral_model_cites_fact_refs PASSED [ 15%]
+tests/specification-authority-layer/test_gap_int_002_product_source_fact_refs.py::TestProductSourceFactRefs::test_fods_cited_facts_exist_in_sal PASSED [ 18%]
+tests/specification-authority-layer/test_gap_int_002_product_source_fact_refs.py::TestProductSourceFactRefs::test_fodt_neutral_model_cites_fact_refs PASSED [ 21%]
+tests/specification-authority-layer/test_gap_int_002_product_source_fact_refs.py::TestProductSourceFactRefs::test_fodt_cited_facts_exist_in_sal PASSED [ 24%]
+tests/specification-authority-layer/test_gap_int_002_product_source_fact_refs.py::TestProductSourceFactRefs::test_zst_source_cites_fact_refs PASSED [ 27%]
+tests/specification-authority-layer/test_gap_int_002_product_source_fact_refs.py::TestProductSourceFactRefs::test_zst_cited_facts_exist_in_sal PASSED [ 30%]
+tests/specification-authority-layer/test_gap_int_002_product_source_fact_refs.py::TestProductSourceFactRefs::test_fods_constants_cites_fact_refs PASSED [ 33%]
+tests/specification-authority-layer/test_gap_int_002_product_source_fact_refs.py::TestProductSourceFactRefs::test_fods_constants_cited_facts_exist_in_sal PASSED [ 36%]
+tests/specification-authority-layer/test_gap_int_002_product_source_fact_refs.py::TestProductSourceFactRefs::test_total_fact_refs_across_product_source PASSED [ 39%]
+tests/specification-authority-layer/test_sal_verifier_adversarial.py::TestVerifierAdversarial::test_exact_text_verified PASSED [ 42%]
+tests/specification-authority-layer/test_sal_verifier_adversarial.py::TestVerifierAdversarial::test_paraphrase_unverifiable PASSED [ 45%]
+tests/specification-authority-layer/test_sal_verifier_adversarial.py::TestVerifierAdversarial::test_negation_mismatch_unverifiable PASSED [ 48%]
+tests/specification-authority-layer/test_sal_verifier_adversarial.py::TestVerifierAdversarial::test_wrong_section_still_verified PASSED [ 51%]
+tests/specification-authority-layer/test_sal_verifier_adversarial.py::TestVerifierAdversarial::test_cardinality_error_unverifiable PASSED [ 54%]
+tests/specification-authority-layer/test_sal_verifier_adversarial.py::TestVerifierAdversarial::test_stale_version_rejected PASSED [ 57%]
+tests/specification-authority-layer/test_sal_verifier_adversarial.py::TestVerifierAdversarial::test_ai_summary_rejected PASSED [ 60%]
+tests/specification-authority-layer/test_sal_verifier_adversarial.py::TestVerifierAdversarial::test_duplicate_verified PASSED [ 63%]
+tests/specification-authority-layer/test_sal_verifier_adversarial.py::TestVerifierAdversarial::test_no_source_id_rejected PASSED [ 66%]
+tests/specification-authority-layer/test_sal_verifier_adversarial.py::TestVerifierAdversarial::test_empty_fragment_unverifiable PASSED [ 69%]
+tests/specification-authority-layer/test_sal_verifier_adversarial.py::TestAntiBypassEdgeCases::test_valid_claim_passes PASSED [ 72%]
+tests/specification-authority-layer/test_sal_verifier_adversarial.py::TestAntiBypassEdgeCases::test_unregistered_source_ref_fails PASSED [ 75%]
+tests/specification-authority-layer/test_sal_verifier_adversarial.py::TestAntiBypassEdgeCases::test_missing_context_pack_sha PASSED [ 78%]
+tests/specification-authority-layer/test_sal_verifier_adversarial.py::TestAntiBypassEdgeCases::test_no_registered_sources_skips_check PASSED [ 81%]
+tests/specification-authority-layer/test_qname_structure_validator.py::TestFodtSpecStubsPassSpecQnameCheck::test_fodt_spec_stubs_pass_spec_qname_check PASSED [ 84%]
+tests/specification-authority-layer/test_qname_structure_validator.py::TestFodsSpecQnameState::test_fods_spec_classes_state PASSED [ 87%]
+tests/specification-authority-layer/test_qname_structure_validator.py::TestNonClassFileIgnored::test_scan_does_not_fail_on_init_files PASSED [ 90%]
+tests/specification-authority-layer/test_qname_structure_validator.py::TestNonClassFileIgnored::test_non_class_py_files_ignored PASSED [ 93%]
+tests/specification-authority-layer/test_qname_structure_validator.py::TestReportFormatIsValidYaml::test_report_produces_expected_keys PASSED [ 96%]
+tests/specification-authority-layer/test_qname_structure_validator.py::TestReportFormatIsValidYaml::test_report_status_is_valid_value PASSED [100%]
+
+============================= 33 passed in 4.66s ==============================

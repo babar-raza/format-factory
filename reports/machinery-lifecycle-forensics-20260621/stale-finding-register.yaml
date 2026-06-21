@@ -1,0 +1,71 @@
+---
+# Stale Finding Register — Zesty Moseying Whale
+schema_version: "1.0"
+run_id: "zesty-moseying-whale"
+generated_at: "2026-06-21"
+
+# Findings from the prior run that are now INVALID due to code changes since June 21.
+
+stale_findings:
+
+  - finding_id: "EXEC-HANDOFF-PILOT-H"
+    prior_run: "machinery-lifecycle-forensics-20260621"
+    prior_finding: "Pilot H (multi-iteration): NOT_RUN"
+    current_finding: "Pilot H: COMPLETE — 3 iterations proven"
+    invalidating_evidence: >
+      mission-ledger.json notes section shows three complete iteration records:
+      iteration_1_phase1, iteration_2_phase2, iteration_3_phase3_sal_audit.
+      Each iteration covers multiple taskcards and evidence paths.
+    invalidated_by_commit: "Multiple commits: 0d5b73ca, f03234b0, 3104e1c1, 827f5a52"
+    action_required: "Update execution-handoff.yaml Pilot H status to COMPLETE"
+
+  - finding_id: "EXEC-HANDOFF-LIF-8"
+    prior_run: "machinery-lifecycle-forensics-20260621"
+    prior_finding: "LIF-8 (Audit Consumer Implemented): NOT_RUN — needs TC-LIF-POST-EXEC-AUDIT-001"
+    current_finding: "LIF-8: PASS — machinery_audit.py exists with 11 tests (TC-MACH-WF-001)"
+    invalidating_evidence: >
+      tools/supervisor/machinery_audit.py exists.
+      tests/supervisor/test_machinery_audit.py has 11 test functions.
+      78 machinery tests pass (as of 2026-06-21 17:05).
+    invalidated_by_commit: "Prior forensics sprint iteration_3 commits"
+    action_required: "Update execution-handoff.yaml LIF-8 status to PASS"
+
+  - finding_id: "EXEC-HANDOFF-LIF-13"
+    prior_run: "machinery-lifecycle-forensics-20260621"
+    prior_finding: "LIF-13 (Multi-Iteration Pilot): NOT_RUN — needs next session"
+    current_finding: "LIF-13: PASS — 3 iterations completed per mission-ledger.json"
+    invalidating_evidence: >
+      mission-ledger.json notes show 3 completed iterations with distinct
+      sprint IDs and taskcard sets. post-sprint-loop-state.json shows
+      ACCEPTED_ALL_GREEN at iteration 1 (most recent loop run).
+    invalidated_by_commit: "Iteration 3 sprint commits"
+    action_required: "Update execution-handoff.yaml LIF-13 status to PASS"
+
+  - finding_id: "PRODUCT-SIGNAL-STALE"
+    prior_run: "machinery-lifecycle-forensics-20260621 (initial state snapshot)"
+    prior_finding: >
+      continuation-signal.json had 9 rework items, hard_stops_detected=[critical_rework_blocks],
+      safe_lanes_available=False
+    current_finding: >
+      continuation-signal.json: autonomous_continue=True, rework_items=[],
+      hard_stops_detected=[], safe_lanes_available=True
+    invalidating_evidence: >
+      Subsequent sprints resolved all 9 rework items. Current signal is clean.
+      approval-gates.md shows AUTONOMOUS_CONTINUE: YES.
+    invalidated_by_commit: "827f5a52 (most recent — V45/V46 governance fixes)"
+    action_required: "No action needed — resolved by subsequent sprints"
+
+  - finding_id: "POST-SPRINT-LOOP-REROUTE-REWORK"
+    prior_run: "Session investigation artifacts"
+    prior_finding: >
+      post-sprint-loop-state.json state=REROUTE_REWORK at iteration=2
+    current_finding: >
+      post-sprint-loop-state.json state=ACCEPTED_ALL_GREEN at iteration=1
+      (run_id: autonomous-loop-20260621-220000-ed51041f-ed51041)
+    invalidating_evidence: >
+      New run superseded the REROUTE_REWORK state. Decision history shows
+      clean progression: INITIAL → AUDIT_RUNNING → AUDIT_COMPLETE →
+      HARDENING_RUNNING → HARDENING_COMPLETE → EXECUTION_RUNNING →
+      EXECUTION_COMPLETE → CLASSIFYING(STRUCTURED_ALL_GREEN) → ACCEPTED_ALL_GREEN.
+    invalidated_by_commit: "Subsequent sprint executions"
+    action_required: "TC-WHALE-AUDIT-001 is MOOT — state already advanced"

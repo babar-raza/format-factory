@@ -1,0 +1,367 @@
+---
+# Per-Product Capability Matrix
+# Sprint: forensics-archaeology-20260621
+# Generated: 2026-06-21
+
+products:
+
+  - product: FODS-Python
+    format: fods
+    language: Python
+    runtime: Python 3.13
+    source_root: src/python/fods/
+    current_package: format-factory-fods
+    expected_qname_root: "office:document > table:table > table:table-row > table:table-cell"
+    generation_wave: 3  # spec stubs + partial Compat/ layer
+    status: active
+    parser_load: true
+    object_model: partial  # models.py + spec stubs but not fully wired
+    edit_mutation: false
+    same_format_save: false
+    export_csv: true  # csv_exporter.py exists
+    validation: partial  # neutral model validator exists
+    error_handling: good  # structured exception hierarchy
+    spec_qname_compliance: PARTIAL  # spec stubs exist, models.py has spec_qname, Compat/ started
+    namespace_compliance: PARTIAL
+    folder_hierarchy_compliance: PARTIAL  # spec/ dirs by namespace
+    class_naming_compliance: PARTIAL  # canonical names in spec/, format-prefixed in Compat/
+    test_coverage: 211 tests
+    fixture_coverage: good
+    documentation_quality: good
+    source_quality_rating: Yellow  # working but needs spec-wiring completion
+    cross_language_parity: FODS-.NET is ahead on write/export
+    recommendation: DEEPEN  # continue spec stub expansion and Compat/ completion
+    required_machinery_fix: Wire spec stubs to production parser output
+    required_skill_fix: add-python-object-model-feature must enforce spec_qname
+    migration_risk: low
+    evidence_paths:
+      - src/python/fods/spec/
+      - src/python/fods/Compat/
+      - src/python/fods/neutral_model.py
+      - src/python/fods/models.py
+      - .local/spec-cache/sal-facts-fods.json
+
+  - product: FODS-DotNet
+    format: fods
+    language: C#
+    runtime: .NET 8+
+    source_root: src/net/fods/
+    current_package: FormatFactory.Fods
+    expected_qname_root: "office:document > table:table > ..."
+    generation_wave: 4  # DOM-backed + Spec/ directory
+    status: active
+    parser_load: true  # FodsParser.cs streaming parser
+    object_model: true  # FodsDocument, FodsSheet, FodsRow, FodsCell
+    edit_mutation: true  # DOM-backed editing
+    same_format_save: true  # FodsWriter.cs
+    export_csv: true
+    export_html: true
+    export_json: true
+    export_pdf: true
+    export_ods: true
+    export_png: true
+    validation: true
+    error_handling: good
+    spec_qname_compliance: PARTIAL  # Spec/ directory exists but no spec_qname attr pattern
+    namespace_compliance: good  # XNamespace constants
+    folder_hierarchy_compliance: good  # Spec/Office/, Spec/Table/, Model/
+    class_naming_compliance: PARTIAL  # FodsDocument pattern (format-prefixed, not canonical)
+    test_coverage: 611 tests
+    fixture_coverage: good
+    documentation_quality: good
+    source_quality_rating: Yellow  # load/edit/save/export works; qname not formalized
+    cross_language_parity: ahead of Python FODS on write/export
+    recommendation: FORMALIZE  # add spec_qname metadata to .NET Spec/ classes
+    required_machinery_fix: Create .NET qname registry analog; add spec_qname XML docs
+    required_skill_fix: add-dotnet-object-model-feature must reference spec facts
+    migration_risk: low
+    gate_status: G11-E (prototype, NOT approved)
+
+  - product: FODT-Python
+    format: fodt
+    language: Python
+    runtime: Python 3.13
+    source_root: src/python/fodt/
+    current_package: format-factory-fodt
+    generation_wave: 3
+    status: active
+    parser_load: true
+    object_model: partial  # models.py exists, spec stubs exist, NOT linked
+    edit_mutation: false
+    same_format_save: false
+    export: false
+    validation: partial
+    spec_qname_compliance: PARTIAL  # spec stubs in spec/, models.py MISSING spec_qname
+    source_quality_rating: Yellow
+    test_coverage: 248 tests
+    recommendation: DEEPEN  # add Compat/, wire models.py to spec stubs
+    required_machinery_fix: Add Compat/ layer (same as FODS), add spec_qname to models.py
+
+  - product: FODT-DotNet
+    format: fodt
+    language: C#
+    runtime: .NET 8+
+    source_root: src/net/fodt/
+    generation_wave: 4
+    status: active
+    parser_load: true
+    object_model: true
+    edit_mutation: true
+    same_format_save: true
+    export_html: true
+    export_txt: true
+    export_markdown: true
+    export_pdf: true
+    export_png: true
+    spec_qname_compliance: PARTIAL
+    source_quality_rating: Yellow
+    test_coverage: 567 tests
+    recommendation: FORMALIZE  # same as FODS .NET
+
+  - product: ODS-Python
+    format: ods
+    language: Python
+    runtime: Python 3.13
+    source_root: src/python/ods/
+    generation_wave: 1
+    status: active
+    parser_load: true
+    object_model: partial  # OdsDocument/OdsSheet/OdsRow/OdsCell but no spec_qname
+    edit_mutation: false
+    same_format_save: true  # ods_writer.py exists
+    export_csv: true
+    spec_qname_compliance: NO
+    source_quality_rating: Orange
+    recommendation: BACKFILL  # add spec_qname to OdsCell/OdsSheet/OdsRow/OdsDocument
+
+  - product: ODT-Python
+    format: odt
+    language: Python
+    runtime: Python 3.13
+    source_root: src/python/odt/
+    generation_wave: 1
+    status: active
+    parser_load: true
+    object_model: partial  # OdtDocument/OdtParagraph/OdtHeading no spec_qname
+    spec_qname_compliance: NO
+    source_quality_rating: Orange
+    recommendation: BACKFILL
+
+  - product: CSV-Python
+    format: csv
+    language: Python
+    runtime: Python 3.13
+    source_root: src/python/csv/
+    generation_wave: 1-2
+    status: active
+    parser_load: true
+    same_format_save: true
+    spec_qname_compliance: NO  # no domain document class
+    sal_facts: 0
+    source_quality_rating: Orange
+    recommendation: GOVERNED_CANONICAL_NAME  # create canonical names; no XML namespace
+
+  - product: DIF-Python
+    format: dif
+    language: Python
+    runtime: Python 3.13
+    source_root: src/python/dif/
+    generation_wave: 1-2
+    status: active
+    parser_load: true
+    object_model: partial  # DifDocument dataclass (no spec_qname)
+    spec_qname_compliance: NO
+    source_quality_rating: Orange
+    recommendation: GOVERNED_CANONICAL_NAME
+
+  - product: XCF-Python
+    format: xcf
+    language: Python
+    runtime: Python 3.13
+    source_root: src/python/xcf/
+    generation_wave: 1-2
+    status: active
+    parser_load: true
+    object_model: partial  # XcfImage class (no spec_qname)
+    spec_qname_compliance: NO
+    sal_facts: 0
+    source_quality_rating: Orange
+    loc: 7022  # monolith risk
+    recommendation: GOVERNED_CANONICAL_NAME + ANALYTICS_SEPARATION_VERIFIED
+
+  - product: ZST-Python
+    format: zst
+    language: Python
+    runtime: Python 3.13
+    source_root: src/python/zst/
+    generation_wave: 1-2
+    status: active
+    parser_load: true
+    spec_qname_compliance: NO
+    sal_facts: 94
+    source_quality_rating: Orange
+    loc: 7130  # monolith risk
+    recommendation: GOVERNED_CANONICAL_NAME
+
+  - product: ZST-DotNet
+    format: zst
+    language: C#
+    runtime: .NET 8+
+    source_root: src/net/zst/
+    generation_wave: 1
+    status: active
+    parser_load: true
+    object_model: partial
+    spec_qname_compliance: NO
+    source_quality_rating: Orange
+
+  - product: CSV-DotNet
+    format: csv
+    language: C#
+    runtime: .NET 8+
+    source_root: src/net/csv/
+    generation_wave: 1
+    status: active
+    parser_load: true
+    same_format_save: true
+    spec_qname_compliance: NO
+    source_quality_rating: Orange
+
+  - product: NDJSON-DotNet
+    format: ndjson
+    language: C#
+    runtime: .NET 8+
+    source_root: src/net/ndjson/
+    generation_wave: 1
+    status: active
+    parser_load: true
+    same_format_save: true
+    export_csv: true
+    spec_qname_compliance: NO
+    source_quality_rating: Orange
+
+  - product: TSV-DotNet
+    format: tsv
+    language: C#
+    runtime: .NET 8+
+    source_root: src/net/tsv/
+    generation_wave: 1
+    status: active
+    parser_load: true
+    same_format_save: true
+    export_csv: true
+    spec_qname_compliance: NO
+    source_quality_rating: Orange
+
+  - product: FODG-Python
+    format: fodg
+    language: Python
+    runtime: Python 3.13
+    source_root: src/python/fodg/
+    generation_wave: 1-2
+    status: active
+    parser_load: true
+    spec_qname_compliance: NO
+    sal_facts: 0
+    source_quality_rating: Red  # 6421 LOC monolith
+    recommendation: ANALYTICS_SEPARATION_FIRST
+
+  - product: SYLK-Python
+    format: sylk
+    language: Python
+    runtime: Python 3.13
+    source_root: src/python/sylk/
+    generation_wave: 1
+    status: active
+    parser_load: true
+    object_model: partial  # SylkDocument/SylkCell no spec_qname
+    spec_qname_compliance: NO
+    source_quality_rating: Orange
+    test_coverage: 893 tests
+
+  - product: Netpbm-Group
+    format: pbm+pgm+ppm
+    language: Python
+    runtime: Python 3.13
+    source_root: src/python/pbm/, src/python/pgm/, src/python/ppm/
+    generation_wave: 1
+    status: active
+    parser_load: true
+    spec_qname_compliance: NO
+    source_quality_rating: Orange
+    recommendation: GOVERNED_CANONICAL_NAME (binary format, no XML namespace)
+
+  - product: QOI-Python
+    format: qoi
+    language: Python
+    runtime: Python 3.13
+    source_root: src/python/qoi/
+    generation_wave: 1
+    status: active
+    parser_load: true
+    encoder: true
+    spec_qname_compliance: NO
+    source_quality_rating: Orange
+
+  - product: TOML-Python
+    format: toml
+    language: Python
+    runtime: Python 3.13
+    source_root: src/python/toml/
+    generation_wave: 1
+    status: active
+    spec_qname_compliance: NO
+    sal_facts: 0
+    source_quality_rating: Orange
+
+  - product: NDJSON-Python
+    format: ndjson
+    language: Python
+    runtime: Python 3.13
+    source_root: src/python/ndjson/
+    generation_wave: 1
+    status: active
+    spec_qname_compliance: NO
+    source_quality_rating: Orange
+
+  - product: TSV-Python
+    format: tsv
+    language: Python
+    runtime: Python 3.13
+    source_root: src/python/tsv/
+    generation_wave: 1
+    status: active
+    spec_qname_compliance: NO
+    source_quality_rating: Orange
+
+  - product: ABW-Python
+    format: abw
+    language: Python
+    runtime: Python 3.13
+    source_root: src/python/abw/
+    generation_wave: 1-2
+    status: active
+    spec_qname_compliance: NO
+    source_quality_rating: Orange
+    recommendation: GOVERNED_CANONICAL_NAME (XML-based but no standard namespace)
+
+  - product: Gnumeric-Python
+    format: gnumeric
+    language: Python
+    runtime: Python 3.13
+    source_root: src/python/gnumeric/
+    generation_wave: 1
+    status: active
+    spec_qname_compliance: NO
+    source_quality_rating: Orange
+
+  - product: FODP-Python
+    format: fodp
+    language: Python
+    runtime: Python 3.13
+    source_root: src/python/fodp/
+    generation_wave: 1
+    status: active
+    parser_load: true
+    spec_qname_compliance: NO
+    source_quality_rating: Orange

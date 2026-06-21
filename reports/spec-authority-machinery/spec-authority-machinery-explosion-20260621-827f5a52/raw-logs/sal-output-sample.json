@@ -1,0 +1,477 @@
+{
+  "sampled_from": "sal-facts-latest.json",
+  "format": "fods",
+  "sample_size": 50,
+  "facts": [
+    {
+      "qname": "ODF-FACT-NAMESPACE",
+      "section": "ODF 1.3 \u00a72 \u2014 Namespaces",
+      "description": "All ODF documents must declare the ODF namespace urn:oasis:names:tc:opendocument:xmlns:office:1.0. Every element belongs to a declared namespace.",
+      "authority": "ODF 1.3 / OASIS (format: FODS)",
+      "fact_status": "bootstrap_only",
+      "source_id": null
+    },
+    {
+      "qname": "ODF-FACT-ROOT-ELEMENT",
+      "section": "ODF 1.3 \u00a73 \u2014 Document Structure",
+      "description": "The root element of a flat ODF document must be <office:document> with the appropriate MIME type attribute.",
+      "authority": "ODF 1.3 / OASIS (format: FODS)",
+      "fact_status": "bootstrap_only",
+      "source_id": null
+    },
+    {
+      "qname": "ODF-FACT-STYLES",
+      "section": "ODF 1.3 \u00a716 \u2014 Styles",
+      "description": "ODF documents carry style definitions in office:styles, office:automatic-styles, and office:master-styles. Implementations must preserve style inheritance chains.",
+      "authority": "ODF 1.3 / OASIS (format: FODS)",
+      "fact_status": "bootstrap_only",
+      "source_id": null
+    },
+    {
+      "qname": "ODF-FACT-METADATA",
+      "section": "ODF 1.3 \u00a72.2 \u2014 Document Metadata",
+      "description": "ODF documents may contain office:meta with Dublin Core and ODF-specific metadata elements including dc:title, dc:creator, meta:creation-date.",
+      "authority": "ODF 1.3 / OASIS (format: FODS)",
+      "fact_status": "bootstrap_only",
+      "source_id": null
+    },
+    {
+      "qname": "ODF-FACT-BODY",
+      "section": "ODF 1.3 \u00a73.3 \u2014 Document Body",
+      "description": "Every ODF document has an office:body element containing exactly one content-type element (office:spreadsheet, office:text, office:presentation, or office:drawing).",
+      "authority": "ODF 1.3 / OASIS (format: FODS)",
+      "fact_status": "bootstrap_only",
+      "source_id": null
+    },
+    {
+      "qname": "ODF-SHEET-FACT-TABLE",
+      "section": "ODF 1.3 \u00a79 \u2014 Spreadsheet Content",
+      "description": "Spreadsheet content is organized in table:table elements. Each table represents one worksheet with table:name attribute.",
+      "authority": "ODF 1.3 / OASIS (format: FODS)",
+      "fact_status": "bootstrap_only",
+      "source_id": null
+    },
+    {
+      "qname": "ODF-SHEET-FACT-ROW",
+      "section": "ODF 1.3 \u00a79.1 \u2014 Table Rows",
+      "description": "Rows are represented by table:table-row. Repeated rows use table:number-rows-repeated attribute.",
+      "authority": "ODF 1.3 / OASIS (format: FODS)",
+      "fact_status": "bootstrap_only",
+      "source_id": null
+    },
+    {
+      "qname": "ODF-SHEET-FACT-CELL",
+      "section": "ODF 1.3 \u00a79.2 \u2014 Table Cells",
+      "description": "Cells are table:table-cell or table:covered-table-cell. Value type is specified via office:value-type attribute (string, float, boolean, date, time, percentage, currency).",
+      "authority": "ODF 1.3 / OASIS (format: FODS)",
+      "fact_status": "bootstrap_only",
+      "source_id": null
+    },
+    {
+      "qname": "FODS-FACT-001",
+      "section": "ODF 1.3 \u00a73 \u2014 Flat XML Variant",
+      "description": "FODS is the flat-XML variant of ODS. The entire document is a single XML file with no ZIP container. Root element: <office:document> with office:mimetype='application/vnd.oasis.opendocument.spreadsheet-flat-xml'.",
+      "fact_status": "bootstrap_only",
+      "source_id": null
+    },
+    {
+      "qname": "FODS-FACT-002",
+      "section": "ODF 1.3 \u00a79 \u2014 Spreadsheet Structure",
+      "description": "FODS spreadsheet content lives in office:body/office:spreadsheet. Worksheets are table:table elements with mandatory table:name attribute.",
+      "fact_status": "bootstrap_only",
+      "source_id": null
+    },
+    {
+      "qname": "FODS-FACT-003",
+      "section": "ODF 1.3 \u00a79.2 \u2014 Cell Value Types",
+      "description": "Cell values use office:value-type: string, float, boolean, date, time, percentage, currency. The typed value is in office:value (float), office:date-value (date), office:time-value (time), office:boolean-value (bool), office:string-value (string), office:currency-value (currency).",
+      "fact_status": "bootstrap_only",
+      "source_id": null
+    },
+    {
+      "qname": "FODS-FACT-004",
+      "section": "ODF 1.3 \u00a716 \u2014 FODS Styles",
+      "description": "FODS carries automatic styles (column widths, cell formats) in office:automatic-styles. Named styles in office:styles. Style inheritance: cell style references paragraph style.",
+      "fact_status": "bootstrap_only",
+      "source_id": null
+    },
+    {
+      "qname": "FODS-FACT-005",
+      "section": "ODF 1.3 \u00a711 \u2014 Formulas (OpenFormula)",
+      "description": "Cell formulas use the OpenFormula syntax (OASIS OpenFormula TC). Formula is in table:formula attribute with of: prefix. Cached result in office:value attributes.",
+      "fact_status": "bootstrap_only",
+      "source_id": null
+    },
+    {
+      "qname": "FODS-FACT-006",
+      "section": "ODF 1.3 \u00a79.1.3 \u2014 Column Attributes",
+      "description": "Table columns are table:table-column with optional table:number-columns-repeated, table:style-name, and table:default-cell-style-name attributes.",
+      "fact_status": "bootstrap_only",
+      "source_id": null
+    },
+    {
+      "qname": "FODS-FACT-007",
+      "section": "ODF 1.3 \u00a79.3 \u2014 Merged Cells",
+      "description": "Merged cells use table:number-columns-spanned and table:number-rows-spanned on table:table-cell. Covered cells are table:covered-table-cell elements.",
+      "fact_status": "bootstrap_only",
+      "source_id": null
+    },
+    {
+      "qname": "FODS-FACT-008",
+      "section": "ODF 1.3 \u00a79.1.5 \u2014 Covered Table Cell",
+      "description": "table:covered-table-cell represents a cell covered by a merge span. It occupies space in the row but carries no independent value. Used in workbook_merged_cell_summary.",
+      "fact_status": "bootstrap_only",
+      "source_id": null
+    },
+    {
+      "qname": "FODS-FACT-009",
+      "section": "ODF 1.3 \u00a719.642 \u2014 Formula Attribute",
+      "description": "table:formula attribute on table:table-cell contains a formula expression with namespace prefix (e.g. of:=SUM(A1:A5)). The cached result is stored in office:value attributes.",
+      "fact_status": "bootstrap_only",
+      "source_id": null
+    },
+    {
+      "qname": "FODS-FACT-010",
+      "section": "ODF 1.3 \u00a716.2 \u2014 Style Element",
+      "description": "style:style defines a named style with style:family attribute (table-cell, table-column, table-row, paragraph). Referenced by style:name from content elements.",
+      "fact_status": "bootstrap_only",
+      "source_id": null
+    },
+    {
+      "qname": "FODS-FACT-011",
+      "section": "ODF 1.3 \u00a79.4.4 \u2014 Content Validation",
+      "description": "table:content-validation in table:content-validations defines cell validation rules. Attributes: table:condition (formula), table:allow-empty-cell, table:base-cell-address.",
+      "fact_status": "bootstrap_only",
+      "source_id": null
+    },
+    {
+      "qname": "FODS-FACT-012",
+      "section": "ODF 1.3 \u00a716.27 \u2014 Number Style",
+      "description": "number:number-style defines numeric formatting. Contains number:number (decimal places, grouping), number:text (literal text). Referenced via style:data-style-name.",
+      "fact_status": "bootstrap_only",
+      "source_id": null
+    },
+    {
+      "qname": "FODS-FACT-013",
+      "section": "ODF 1.3 \u00a75.1.3 \u2014 Text Paragraph in Cell",
+      "description": "Cell text content is wrapped in text:p elements inside table:table-cell. Multiple text:p elements represent multi-line cell content. Used by workbook_cell_text_at.",
+      "fact_status": "bootstrap_only",
+      "source_id": null
+    },
+    {
+      "qname": "FODS-FACT-014",
+      "section": "ODF 1.3 \u00a717.16 \u2014 Table Column Properties",
+      "description": "style:table-column-properties defines column layout. Key attribute: style:column-width (length value). Referenced from table:table-column via table:style-name.",
+      "fact_status": "bootstrap_only",
+      "source_id": null
+    },
+    {
+      "qname": "FACT-FODS-001",
+      "claim": "FODS root element is <office:document> with office:mimetype attribute",
+      "section": "3.1.2",
+      "description": "FODS root element is <office:document> with office:mimetype attribute",
+      "authority": "verified-facts-review.yaml (status: verified)",
+      "verification_status": "verified",
+      "source": "workbench_verified",
+      "fact_status": "verified",
+      "source_id": "odf-1.3-part3"
+    },
+    {
+      "qname": "FACT-FODS-003",
+      "claim": "Spreadsheet content is in <office:body>/<office:spreadsheet>",
+      "section": "3.7",
+      "description": "Spreadsheet content is in <office:body>/<office:spreadsheet>",
+      "authority": "verified-facts-review.yaml (status: verified)",
+      "verification_status": "verified",
+      "source": "workbench_verified",
+      "fact_status": "verified",
+      "source_id": "odf-1.3-part3"
+    },
+    {
+      "qname": "FACT-FODS-004",
+      "claim": "Sheets are <table:table> children of <office:spreadsheet>",
+      "section": "9.4",
+      "description": "Sheets are <table:table> children of <office:spreadsheet>",
+      "authority": "verified-facts-review.yaml (status: verified)",
+      "verification_status": "verified",
+      "source": "workbench_verified",
+      "fact_status": "verified",
+      "source_id": "odf-1.3-part3"
+    },
+    {
+      "qname": "FACT-FODS-005",
+      "claim": "Rows are <table:table-row> children of <table:table>",
+      "section": "9.4",
+      "description": "Rows are <table:table-row> children of <table:table>",
+      "authority": "verified-facts-review.yaml (status: verified)",
+      "verification_status": "verified",
+      "source": "workbench_verified",
+      "fact_status": "verified",
+      "source_id": "odf-1.3-part3"
+    },
+    {
+      "qname": "FACT-FODS-006",
+      "claim": "Cells are <table:table-cell> children of <table:table-row>",
+      "section": "9.4",
+      "description": "Cells are <table:table-cell> children of <table:table-row>",
+      "authority": "verified-facts-review.yaml (status: verified)",
+      "verification_status": "verified",
+      "source": "workbench_verified",
+      "fact_status": "verified",
+      "source_id": "odf-1.3-part3"
+    },
+    {
+      "qname": "FACT-FODS-007",
+      "claim": "Cell text is in <text:p> children of <table:table-cell>",
+      "section": "9.1.4",
+      "description": "Cell text is in <text:p> children of <table:table-cell>",
+      "authority": "verified-facts-review.yaml (status: verified)",
+      "verification_status": "verified",
+      "source": "workbench_verified",
+      "fact_status": "verified",
+      "source_id": "odf-1.3-part3"
+    },
+    {
+      "qname": "FACT-FODS-008",
+      "claim": "table:number-columns-repeated attribute expands a cell across N columns",
+      "section": "9.1.5",
+      "description": "table:number-columns-repeated attribute expands a cell across N columns",
+      "authority": "verified-facts-review.yaml (status: verified)",
+      "verification_status": "verified",
+      "source": "workbench_verified",
+      "fact_status": "verified",
+      "source_id": "odf-1.3-part3"
+    },
+    {
+      "qname": "FACT-FODS-009",
+      "claim": "table:formula contains formula in oooc: or of: namespace",
+      "section": "9.4",
+      "description": "table:formula contains formula in oooc: or of: namespace",
+      "authority": "verified-facts-review.yaml (status: verified_with_note)",
+      "verification_status": "verified_with_note",
+      "source": "workbench_verified",
+      "fact_status": "verified",
+      "source_id": "odf-1.3-part3"
+    },
+    {
+      "qname": "FACT-FODS-010",
+      "claim": "office:value-type values: string, float, boolean, date, time, currency, percentage",
+      "section": "9.4",
+      "description": "office:value-type values: string, float, boolean, date, time, currency, percentage",
+      "authority": "verified-facts-review.yaml (status: verified_with_note)",
+      "verification_status": "verified_with_note",
+      "source": "workbench_verified",
+      "fact_status": "verified",
+      "source_id": "odf-1.3-part3"
+    },
+    {
+      "qname": "FACT-FODS-011",
+      "claim": "table:table-column defines column properties including default-cell-style-name",
+      "section": "9.1.6",
+      "description": "table:table-column defines column properties including default-cell-style-name",
+      "authority": "verified-facts-review.yaml (status: verified)",
+      "verification_status": "verified",
+      "source": "workbench_verified",
+      "fact_status": "verified",
+      "source_id": "odf-1.3-part3"
+    },
+    {
+      "qname": "FACT-FODS-012",
+      "claim": "table:number-rows-repeated attribute on table:table-row expands a row across N rows",
+      "section": "9.1.3",
+      "description": "table:number-rows-repeated attribute on table:table-row expands a row across N rows",
+      "authority": "verified-facts-review.yaml (status: verified)",
+      "verification_status": "verified",
+      "source": "workbench_verified",
+      "fact_status": "verified",
+      "source_id": "odf-1.3-part3"
+    },
+    {
+      "qname": "FACT-FODS-013",
+      "claim": "Named ranges are in <table:named-expressions> containing <table:named-range> elements",
+      "section": "9.4.11",
+      "description": "Named ranges are in <table:named-expressions> containing <table:named-range> elements",
+      "authority": "verified-facts-review.yaml (status: verified)",
+      "verification_status": "verified",
+      "source": "workbench_verified",
+      "fact_status": "verified",
+      "source_id": "odf-1.3-part3"
+    },
+    {
+      "qname": "FACT-FODS-014",
+      "claim": "Automatic styles in <office:automatic-styles> define inline styles for cells, rows, columns",
+      "section": "16.2",
+      "description": "Automatic styles in <office:automatic-styles> define inline styles for cells, rows, columns",
+      "authority": "verified-facts-review.yaml (status: verified)",
+      "verification_status": "verified",
+      "source": "workbench_verified",
+      "fact_status": "verified",
+      "source_id": "odf-1.3-part3"
+    },
+    {
+      "qname": "FACT-FODS-015",
+      "claim": "Covered table cells are <table:covered-table-cell> elements representing cells spanned by a merge",
+      "section": "9.1.5",
+      "description": "Covered table cells are <table:covered-table-cell> elements representing cells spanned by a merge",
+      "authority": "verified-facts-review.yaml (status: verified)",
+      "verification_status": "verified",
+      "source": "workbench_verified",
+      "fact_status": "verified",
+      "source_id": "odf-1.3-part3"
+    },
+    {
+      "qname": "FACT-FODS-016",
+      "claim": "table:table element has table:name attribute (19.677) specifying the name of a table (sheet)",
+      "section": "19.677.14",
+      "description": "table:table element has table:name attribute (19.677) specifying the name of a table (sheet)",
+      "authority": "verified-facts-review.yaml (status: verified)",
+      "verification_status": "verified",
+      "source": "workbench_verified",
+      "fact_status": "verified",
+      "source_id": "odf-1.3-part3"
+    },
+    {
+      "qname": "FACT-FODS-017",
+      "claim": "table:table element has table:print attribute (19.697) with values 'true' or 'false' controlling whether the table is printed",
+      "section": "19.697",
+      "description": "table:table element has table:print attribute (19.697) with values 'true' or 'false' controlling whether the table is printed",
+      "authority": "verified-facts-review.yaml (status: verified)",
+      "verification_status": "verified",
+      "source": "workbench_verified",
+      "fact_status": "verified",
+      "source_id": "odf-1.3-part3"
+    },
+    {
+      "qname": "FACT-FODS-018",
+      "claim": "table:table element has table:style-name attribute (19.730) referencing a table style, and table:protected attribute (19.700) for sheet protection",
+      "section": "9.1.2",
+      "description": "table:table element has table:style-name attribute (19.730) referencing a table style, and table:protected attribute (19.700) for sheet protection",
+      "authority": "verified-facts-review.yaml (status: verified)",
+      "verification_status": "verified",
+      "source": "workbench_verified",
+      "fact_status": "verified",
+      "source_id": "odf-1.3-part3"
+    },
+    {
+      "qname": "FACT-FODS-019",
+      "claim": "table:table-row element has attributes: table:default-cell-style-name (19.619), table:number-rows-repeated (19.681), table:style-name (19.730), table:visibility (19.754)",
+      "section": "9.1.3",
+      "description": "table:table-row element has attributes: table:default-cell-style-name (19.619), table:number-rows-repeated (19.681), table:style-name (19.730), table:visibility (19.754)",
+      "authority": "verified-facts-review.yaml (status: verified)",
+      "verification_status": "verified",
+      "source": "workbench_verified",
+      "fact_status": "verified",
+      "source_id": "odf-1.3-part3"
+    },
+    {
+      "qname": "FACT-FODS-020",
+      "claim": "table:table-cell element has office:value attribute (19.388) specifying the currency, float, or percentage numeric value of a cell",
+      "section": "19.388",
+      "description": "table:table-cell element has office:value attribute (19.388) specifying the currency, float, or percentage numeric value of a cell",
+      "authority": "verified-facts-review.yaml (status: verified)",
+      "verification_status": "verified",
+      "source": "workbench_verified",
+      "fact_status": "verified",
+      "source_id": "odf-1.3-part3"
+    },
+    {
+      "qname": "FACT-FODS-021",
+      "claim": "table:table-cell element has table:number-columns-spanned (19.680) and table:number-rows-spanned (19.682) attributes for cell merging, both defaulting to 1",
+      "section": "19.680",
+      "description": "table:table-cell element has table:number-columns-spanned (19.680) and table:number-rows-spanned (19.682) attributes for cell merging, both defaulting to 1",
+      "authority": "verified-facts-review.yaml (status: verified)",
+      "verification_status": "verified",
+      "source": "workbench_verified",
+      "fact_status": "verified",
+      "source_id": "odf-1.3-part3"
+    },
+    {
+      "qname": "FACT-FODS-022",
+      "claim": "office:value-type attribute (19.389) value-to-attribute mapping: boolean uses office:boolean-value, currency uses office:value+office:currency, date uses office:date-value, float uses office:value, percentage uses office:value, string uses office:string-value, time uses office:time-value",
+      "section": "19.389",
+      "description": "office:value-type attribute (19.389) value-to-attribute mapping: boolean uses office:boolean-value, currency uses office:value+office:currency, date uses office:date-value, float uses office:value, percentage uses office:value, string uses office:string-value, time uses office:time-value",
+      "authority": "verified-facts-review.yaml (status: verified)",
+      "verification_status": "verified",
+      "source": "workbench_verified",
+      "fact_status": "verified",
+      "source_id": "odf-1.3-part3"
+    },
+    {
+      "qname": "FACT-FODS-023",
+      "claim": "table:table-cell can contain nested <table:table> elements (nested tables within cells)",
+      "section": "9.1.4",
+      "description": "table:table-cell can contain nested <table:table> elements (nested tables within cells)",
+      "authority": "verified-facts-review.yaml (status: verified)",
+      "verification_status": "verified",
+      "source": "workbench_verified",
+      "fact_status": "verified",
+      "source_id": "odf-1.3-part3"
+    },
+    {
+      "qname": "FACT-FODS-024",
+      "claim": "office:document child elements include office:meta (3.2), office:scripts (3.12), office:settings (3.10), office:styles (3.15.2), office:font-face-decls (3.14), office:automatic-styles (3.15.3), office:body (3.3), and office:master-styles (3.15.4)",
+      "section": "3.1.2",
+      "description": "office:document child elements include office:meta (3.2), office:scripts (3.12), office:settings (3.10), office:styles (3.15.2), office:font-face-decls (3.14), office:automatic-styles (3.15.3), office:body (3.3), and office:master-styles (3.15.4)",
+      "authority": "verified-facts-review.yaml (status: verified)",
+      "verification_status": "verified",
+      "source": "workbench_verified",
+      "fact_status": "verified",
+      "source_id": "odf-1.3-part3"
+    },
+    {
+      "qname": "FACT-FODS-025",
+      "claim": "office:meta element (3.2) contains document metadata: dc:title, dc:description, dc:subject, dc:creator, dc:date, dc:language, meta:generator, meta:creation-date, meta:editing-cycles, meta:editing-duration, meta:document-statistic, meta:keyword, meta:user-defined, and others",
+      "section": "3.2",
+      "description": "office:meta element (3.2) contains document metadata: dc:title, dc:description, dc:subject, dc:creator, dc:date, dc:language, meta:generator, meta:creation-date, meta:editing-cycles, meta:editing-duration, meta:document-statistic, meta:keyword, meta:user-defined, and others",
+      "authority": "verified-facts-review.yaml (status: verified)",
+      "verification_status": "verified",
+      "source": "workbench_verified",
+      "fact_status": "verified",
+      "source_id": "odf-1.3-part3"
+    },
+    {
+      "qname": "FACT-FODS-026",
+      "claim": "office:scripts element (3.12) contains office:script and office:event-listeners child elements for document scripts in various scripting languages",
+      "section": "3.12",
+      "description": "office:scripts element (3.12) contains office:script and office:event-listeners child elements for document scripts in various scripting languages",
+      "authority": "verified-facts-review.yaml (status: verified)",
+      "verification_status": "verified",
+      "source": "workbench_verified",
+      "fact_status": "verified",
+      "source_id": "odf-1.3-part3"
+    },
+    {
+      "qname": "FACT-FODS-027",
+      "claim": "office:font-face-decls element (3.14) contains style:font-face (16.23) child elements declaring all font faces used in a document",
+      "section": "3.14",
+      "description": "office:font-face-decls element (3.14) contains style:font-face (16.23) child elements declaring all font faces used in a document",
+      "authority": "verified-facts-review.yaml (status: verified)",
+      "verification_status": "verified",
+      "source": "workbench_verified",
+      "fact_status": "verified",
+      "source_id": "odf-1.3-part3"
+    },
+    {
+      "qname": "FACT-FODS-028",
+      "claim": "office:automatic-styles element (3.15.3) can contain number:number-style, number:date-style, number:currency-style, number:percentage-style, number:time-style, number:boolean-style, number:text-style, style:style, style:page-layout, and text:list-style child elements",
+      "section": "3.15.3",
+      "description": "office:automatic-styles element (3.15.3) can contain number:number-style, number:date-style, number:currency-style, number:percentage-style, number:time-style, number:boolean-style, number:text-style, style:style, style:page-layout, and text:list-style child elements",
+      "authority": "verified-facts-review.yaml (status: verified)",
+      "verification_status": "verified",
+      "source": "workbench_verified",
+      "fact_status": "verified",
+      "source_id": "odf-1.3-part3"
+    },
+    {
+      "qname": "FACT-FODS-029",
+      "claim": "number:number-style element (16.29.2) defines formatting for decimal numbers, usable within office:automatic-styles and office:styles, with child elements number:number, number:fraction, number:scientific-number, number:text, number:fill-character, style:map, and style:text-properties",
+      "section": "16.29.2",
+      "description": "number:number-style element (16.29.2) defines formatting for decimal numbers, usable within office:automatic-styles and office:styles, with child elements number:number, number:fraction, number:scientific-number, number:text, number:fill-character, style:map, and style:text-properties",
+      "authority": "verified-facts-review.yaml (status: verified)",
+      "verification_status": "verified",
+      "source": "workbench_verified",
+      "fact_status": "verified",
+      "source_id": "odf-1.3-part3"
+    }
+  ]
+}

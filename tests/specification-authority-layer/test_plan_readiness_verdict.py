@@ -36,9 +36,11 @@ class TestPlanReadinessVerdict:
 
     def test_plan_version_is_v30(self):
         text = _PLAN.read_text(encoding="utf-8")
-        assert "Plan version: 3.0" in text, (
-            "snoopy-juggling-seal.md plan version is not 3.0 — expected upgrade from v2.2 "
-            "to v3.0 after all agent-executable tasks completed."
+        # Plan has progressed beyond 3.0 (currently 3.9); accept any 3.x version
+        import re
+        assert re.search(r"Plan version: 3\.\d", text), (
+            "snoopy-juggling-seal.md plan version is not 3.x — expected 3.0 or higher "
+            "(plan is at 3.9 after forensic audit hardening 2026-06-21)."
         )
 
     def test_plan_all_diag_gates_complete(self):

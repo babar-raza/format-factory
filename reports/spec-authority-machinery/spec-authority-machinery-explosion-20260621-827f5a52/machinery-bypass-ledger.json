@@ -1,0 +1,78 @@
+{
+  "run_id": "spec-authority-machinery-explosion-20260621-827f5a52",
+  "generated_at": "2026-06-21",
+  "description": "Machine-readable ledger of all identified spec authority bypass paths — ways a PRODUCT_SOURCE item can pass all gates with zero real spec authority",
+  "bypass_paths": [
+    {
+      "bypass_id": "BYP-001",
+      "title": "Zero-fact format gap reference satisfies TC-GUARD-001",
+      "severity": "HIGH",
+      "active": true,
+      "formats_affected": ["gnumeric", "abw", "csv", "tsv", "sylk", "dif", "ndjson", "toml", "qoi", "xcf", "ora", "zpaq", "xpm", "pam"],
+      "mechanism": "TC-GUARD-001 checks gap_ledger_ref PRESENCE only. A PRODUCT_SOURCE item citing a Gnumeric/ABW gap satisfies the gate despite 0 workbench SAL facts.",
+      "evidence": "autonomous_cycle.py Step 2d3: checks 'if not (has_gap_ref or has_cap_ref or has_spec_fact_refs)' — no authority depth check",
+      "gates_bypassed": ["TC-GUARD-001"],
+      "gates_not_bypassed": ["V45", "V47"],
+      "repair": "Add advisory depth check to TC-GUARD-001 when format has 0 workbench facts",
+      "rca": "RCA-TC-GUARD-AUTHORITY-QUALITY"
+    },
+    {
+      "bypass_id": "BYP-002",
+      "title": "CSV stale spec_facts create false appearance of spec backing in gap-ledger",
+      "severity": "MEDIUM",
+      "active": true,
+      "formats_affected": ["csv"],
+      "mechanism": "58 CSV gap entries have spec_facts: ['FACT-CSV-001', 'FACT-CSV-002']. These IDs are not in sal-facts-latest.json (CSV has 0 workbench facts). A system reading gap.spec_facts to verify authority would find apparent references that lead nowhere.",
+      "stale_ref_count": 116,
+      "evidence": "python -c \"import json; g=json.load(open('reports/capability-layer/gap-ledger.json')); csv=[x for x in g['gaps'] if x.get('format')=='CSV' and x.get('spec_facts')]; print(len(csv))\" → 58",
+      "gates_bypassed": ["informal spec_facts review"],
+      "repair": "Clear spec_facts for all CSV gap entries",
+      "rca": "RCA-GAP-LEDGER-CSV-STALE"
+    },
+    {
+      "bypass_id": "BYP-003",
+      "title": "Bootstrap template facts in GAP-INT-002 fact index",
+      "severity": "MEDIUM",
+      "active": true,
+      "formats_affected": ["fods"],
+      "mechanism": "GAP-INT-002 builds its fact index from sal-facts-latest.json in DEFAULT mode. Index includes bootstrap-only template facts (e.g., ODF-FACT-NAMESPACE). A product source citing a template fact ID would pass test_total_fact_refs_across_product_source.",
+      "bootstrap_fact_count_in_fods": 22,
+      "evidence": "sal-facts-latest.json: FODS has 22 bootstrap_only facts alongside 4987 workbench_verified",
+      "gates_bypassed": ["GAP-INT-002 test_total_fact_refs_across_product_source"],
+      "repair": "Switch SAL daily output to from_cache_only=True; add source filter to _load_sal_facts()",
+      "rca": "RCA-SAL-DEFAULT-MODE"
+    },
+    {
+      "bypass_id": "BYP-004",
+      "title": "Healing gate passes despite zero workbench facts for any format",
+      "severity": "MEDIUM",
+      "active": true,
+      "formats_affected": ["all formats with 0 workbench facts"],
+      "mechanism": "check_system_healing_gate.py Lane 1 checks fods_facts_gte_10 and fodt_facts_gte_10 only. Gate passes even if Gnumeric, ABW, CSV have 0 workbench facts. Since gate is also ADVISORY (Step 1b), even if Lane 1 failed it would not block the sprint.",
+      "evidence": "healing gate output: lane_results[0].checks.fods_facts_gte_10: true — passes trivially",
+      "gates_bypassed": ["healing gate Lane 1"],
+      "repair": "Add workbench_verified_count_positive criterion to Lane 1; upgrade gate to ENFORCING",
+      "rca": "RCA-HEALING-GATE-DEPTH-001"
+    },
+    {
+      "bypass_id": "BYP-005",
+      "title": "SAL pipeline is advisory — autonomous_cycle never reads spec facts",
+      "severity": "CRITICAL",
+      "active": true,
+      "formats_affected": ["all formats"],
+      "mechanism": "The entire SAL pipeline output (sal-facts-latest.json) is not read by autonomous_cycle.py. TC-GUARD-001 requires gap_ledger_ref but does not verify the gap has spec-backed facts. Even if every format had 0 workbench facts, all sprints would proceed.",
+      "evidence": "grep -n 'sal-facts-latest' tools/supervisor/autonomous_cycle.py → 0 results",
+      "gates_bypassed": ["all autonomous_cycle spec authority gates"],
+      "repair": "Minimal integration: read sal-facts-latest.json in Step 1c; emit advisory per-format warnings",
+      "rca": "RCA-SUPERVISOR-GATES-001"
+    }
+  ],
+  "summary": {
+    "total_bypass_paths": 5,
+    "critical": 1,
+    "high": 1,
+    "medium": 3,
+    "actively_exploitable": 5,
+    "repaired": 0
+  }
+}

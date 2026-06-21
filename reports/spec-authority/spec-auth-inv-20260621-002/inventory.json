@@ -1,0 +1,62 @@
+{
+  "run_id": "spec-auth-inv-20260621-002",
+  "date": "2026-06-21",
+  "branch": "main",
+  "head": "827f5a52915f1ee3b285bf13965b5f65f3532a69",
+  "summary": {
+    "total_files_discovered": 68,
+    "layers": 8,
+    "authoritative_and_active": 14,
+    "authoritative_but_partial": 22,
+    "authoritative_not_wired": 18,
+    "advisory_or_stale": 8,
+    "missing_expected": 6
+  },
+  "spec_cache_coverage": {
+    "formats_with_sha256": ["fods", "zst"],
+    "formats_registered_no_sha256": ["csv", "dif", "gnumeric", "abw", "pbm", "pgm", "ppm", "tsv"],
+    "formats_with_workbench": ["fods", "fodt", "zst", "pbm", "pgm", "ppm"],
+    "total_sources_in_registry": 10
+  },
+  "sal_facts": {
+    "authoritative_file": ".local/spec-cache/sal-facts-latest.json",
+    "authoritative_format_count": 22,
+    "authoritative_fact_count": 14284,
+    "degraded_file": ".local/sal-output/sal-facts-latest.json",
+    "degraded_fact_count": 94,
+    "degraded_reason": "test run with --format zst overwrote all-format file"
+  },
+  "governance_validators_wired": [
+    {"id": "V13", "name": "validate_spec_fact_refs_wired", "blocks_sprint": true},
+    {"id": "V14", "name": "validate_spec_fact_count", "blocks_sprint": false},
+    {"id": "V19", "name": "validate_min_spec_facts_per_format", "blocks_sprint": true},
+    {"id": "V26", "name": "validate_spec_qname_refs", "blocks_sprint": false},
+    {"id": "V28", "name": "validate_spec_parity_gate", "blocks_sprint": true},
+    {"id": "V37", "name": "validate_spec_fact_authority_chain", "blocks_sprint": false},
+    {"id": "V47", "name": "validate_spec_fact_refs_in_sal_output", "blocks_sprint": true}
+  ],
+  "ai_status": {
+    "embeddings_active": false,
+    "vector_store_instantiated": false,
+    "lexical_retrieval_implemented": true,
+    "authority_lifecycle_implemented": true,
+    "authority_lifecycle_wired_to_product": false,
+    "llm_calls_active": false
+  },
+  "test_results": {
+    "tests_collected": 191,
+    "tests_run": 56,
+    "tests_passed": 55,
+    "tests_failed": 1,
+    "failing_test": "test_total_fact_refs_across_product_source",
+    "failure_reason": "PBM source cites FACT-PBM-001/002 not in degraded sal-output/sal-facts-latest.json"
+  },
+  "missing_expected_files": [
+    ".local/capability-proof-graph/",
+    ".local/ai/",
+    "tools/traceability/fact_product_linker.py",
+    "automated staleness gate in supervisor loop",
+    "cross-format contamination test",
+    "run_extraction_pipeline.py wired to sal_master_runner"
+  ]
+}

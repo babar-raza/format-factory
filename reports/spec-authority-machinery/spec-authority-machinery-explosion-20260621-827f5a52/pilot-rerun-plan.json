@@ -1,0 +1,56 @@
+{
+  "run_id": "spec-authority-machinery-explosion-20260621-827f5a52",
+  "generated_at": "2026-06-21",
+  "pilots": [
+    {
+      "id": "PILOT-1",
+      "name": "FODS P5 Chain Verification",
+      "objective": "Prove full FODS spec authority chain end-to-end",
+      "entry_points": [
+        "sal_master_runner.run_sal_pipeline(['fods'], from_cache_only=True)",
+        "tests/specification-authority-layer/test_gap_int_002_product_source_fact_refs.py",
+        "tests/specification-authority-layer/test_sal_runner_idempotency.py::test_fods_idempotent_fact_count"
+      ],
+      "primary_chain": {
+        "spec_source": ".local/spec-cache/fods/1.3/normalized/text.txt",
+        "workbench": ".local/spec-cache/fods/1.3/workbench/verified-facts-review.yaml",
+        "sal_fact": "FACT-FODS-006 (source: workbench_verified)",
+        "spec_stub": "src/python/fods/spec/table/table_cell.py (spec_fact_ref: FACT-FODS-006)",
+        "qname_registry": "shared/qname-registry/fods.yaml (table:table-cell -> FACT-FODS-006)",
+        "product_source": "src/python/fods/neutral_model.py (FACT-FODS-001 cited)"
+      },
+      "negative_controls": [
+        "Verify Gnumeric has 0 SAL workbench facts",
+        "Verify FACT-CSV-001 not in SAL output",
+        "Verify bootstrap_only facts do not have source: workbench_verified"
+      ],
+      "expected_outcome": "PASS",
+      "blocking_issues": ["VC-FODS-005 (TC-0021 pending)", "VC-SAL-006 (daily SAL in default mode)"]
+    },
+    {
+      "id": "PILOT-2",
+      "name": "CSV Bypass Detection",
+      "objective": "Demonstrate that TC-GUARD-001 accepts CSV gap references despite stale fact IDs",
+      "stale_ref_detection": "58 CSV gaps with FACT-CSV-001/002 not in SAL",
+      "tc_guard_bypass": "A PRODUCT_SOURCE citing GAP-CSV-FOSS-PROBE_CSV-001 satisfies TC-GUARD-001",
+      "expected_finding": "TC-GUARD-001 PASSES for zero-fact-format citations",
+      "blocking_issues": []
+    },
+    {
+      "id": "PILOT-3",
+      "name": "SAL Idempotency (Existing Tests)",
+      "objective": "Verify SAL pipeline produces consistent output on consecutive runs",
+      "command": ".venv/Scripts/pytest tests/specification-authority-layer/test_sal_runner_idempotency.py -v",
+      "gap": "No test for Gnumeric/ABW/CSV zero idempotency",
+      "expected_outcome": "PASS (existing tests)"
+    },
+    {
+      "id": "PILOT-4",
+      "name": "Authority Regression (To Be Created)",
+      "objective": "Detect regressions where template facts are re-added to zero-fact formats",
+      "test_to_create": "test_no_template_fact_regression_for_zero_formats",
+      "zero_fact_formats": ["gnumeric", "abw", "csv", "tsv", "sylk", "dif"],
+      "status": "NOT_CREATED"
+    }
+  ]
+}

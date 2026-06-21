@@ -1,0 +1,217 @@
+---
+# System Gap Matrix
+# Sprint: forensics-archaeology-20260621
+# Generated: 2026-06-21
+
+gaps:
+
+  - gap_id: GAP-ARCH-001
+    layer: QName
+    lane: C
+    severity: Blocker
+    current_behavior: "18/20 Python packages have no spec/ directory; domain classes lack spec_qname"
+    expected_behavior: "All domain classes have spec_qname attribute; spec stubs exist per format"
+    root_cause: "Product deepening added classes without spec_qname enforcement; no QName validator in CI"
+    product_impact: HIGH
+    machinery_impact: HIGH
+    repeatability_impact: HIGH
+    autonomy_impact: HIGH
+    qname_impact: CRITICAL
+    required_fix: "Add spec/ stubs and spec_qname to all 18 remaining Python packages; wire qname_structure_validator into CI"
+    tests_required: "test_qname_compliance_per_format.py"
+    evidence_required: "qname_structure_validator.py output showing 100% compliance"
+    must_fix_before_product_deepening: yes
+    can_defer: no
+    suggested_taskcard: TC-QNAME-BACKFILL-001
+
+  - gap_id: GAP-ARCH-002
+    layer: QName
+    lane: C
+    severity: High
+    current_behavior: "FODT models.py has FodtSpan, FodtParagraph, FodtDocument without spec_qname despite spec stubs existing"
+    expected_behavior: "models.py classes link to spec stubs via spec_qname or inherit from them"
+    root_cause: "Spec stubs were created (commit 8ca43a12) but models.py was not updated"
+    product_impact: MEDIUM
+    qname_impact: HIGH
+    required_fix: "Add spec_qname to FodtSpan, FodtParagraph, FodtDocument; create FODT Compat/ layer"
+    must_fix_before_product_deepening: yes
+    can_defer: no
+    suggested_taskcard: TC-FODT-COMPAT-001
+
+  - gap_id: GAP-ARCH-003
+    layer: QName
+    lane: C
+    severity: High
+    current_behavior: "No qname-registry YAML files (referenced in code but not present)"
+    expected_behavior: "shared/qname-registry/{format}.yaml exists per format with canonical mappings"
+    root_cause: "Registry was planned (referenced in Compat/ docstrings) but never created"
+    qname_impact: HIGH
+    required_fix: "Create qname-registry.yaml for FODS and FODT first; extend to other formats"
+    must_fix_before_product_deepening: no
+    can_defer: yes
+    suggested_taskcard: TC-QNAME-REGISTRY-001
+
+  - gap_id: GAP-ARCH-004
+    layer: QName
+    lane: C
+    severity: High
+    current_behavior: "fods/fods/spec/ (nested duplicate) has different class names (Cell, Row, Sheet, Workbook) vs canonical (TableCell, TableRow, Table, Document)"
+    expected_behavior: "Single canonical spec stub per element; no duplicate nested package"
+    root_cause: "Earlier attempt at spec stubs used different naming; new attempt created in fods/spec/ but old not cleaned up"
+    qname_impact: HIGH
+    required_fix: "Remove fods/fods/spec/ or merge into fods/spec/ with correct canonical names"
+    must_fix_before_product_deepening: yes
+    can_defer: no
+    suggested_taskcard: TC-QNAME-DEDUP-001
+
+  - gap_id: GAP-SAL-001
+    layer: SAL
+    lane: E
+    severity: High
+    current_behavior: "CSV has 0 SAL facts; XCF has 0 SAL facts; TOML missing file"
+    expected_behavior: "All 20 Python format packages have minimum viable SAL fact set"
+    root_cause: "SAL pipeline only ran for ODF family and selected other formats; non-ODF excluded"
+    product_impact: HIGH
+    required_fix: "Run sal_master_runner.py for CSV (RFC 4180), XCF (GIMP spec), TOML (v1.0 spec), etc."
+    must_fix_before_product_deepening: no
+    can_defer: yes  # can defer for non-ODF formats
+    suggested_taskcard: TC-SAL-REPAIR-001
+
+  - gap_id: GAP-SAL-002
+    layer: SAL
+    lane: E
+    severity: Medium
+    current_behavior: "workbench_verified_fact_total = spec_facts_total = 14284 (100% auto-verified)"
+    expected_behavior: "Adversarial verification rejects false/invented facts; confidence level tracked"
+    root_cause: "Verification status appears to be set during ingestion, not through adversarial testing"
+    machinery_impact: HIGH
+    required_fix: "Run sal_verifier.py adversarial tests; separate auto-ingested from human-verified facts"
+    must_fix_before_product_deepening: no
+    can_defer: yes
+    suggested_taskcard: TC-SAL-VERIFY-001
+
+  - gap_id: GAP-CAP-001
+    layer: Capability
+    lane: F
+    severity: High
+    current_behavior: "958 gap ledger entries all have severity='unknown'; no FACT-FORMAT-NNN references on gaps"
+    expected_behavior: "Gaps have severity, fact_refs, and traceability to SAL facts"
+    root_cause: "Gap ledger was populated from capability map generator that did not populate these fields"
+    machinery_impact: HIGH
+    required_fix: "Backfill severity and fact_refs on gap ledger entries; update gap generator to populate these"
+    must_fix_before_product_deepening: no
+    can_defer: yes
+    suggested_taskcard: TC-CAP-REPAIR-001
+
+  - gap_id: GAP-CAP-002
+    layer: Capability
+    lane: F
+    severity: Medium
+    current_behavior: "Capability compiler reads SAL from .local/sal-output/sal-facts-latest.json; SAL files are in .local/spec-cache/"
+    expected_behavior: "Capability compiler and SAL tools use same canonical path"
+    root_cause: "Path mismatch between capability_compiler.py SAL_OUTPUT_PATH and actual SAL cache location"
+    required_fix: "Align paths; either copy to sal-output or update capability_compiler.py"
+    must_fix_before_product_deepening: yes
+    can_defer: no
+    suggested_taskcard: TC-CAP-PATH-001
+
+  - gap_id: GAP-SKILL-001
+    layer: Skills
+    lane: H
+    severity: High
+    current_behavior: "add-python-object-model-feature does not require spec_qname in generated classes"
+    expected_behavior: "All product-generating skills require spec_qname before writing code"
+    root_cause: "Skills were created before spec_qname enforcement was designed"
+    repeatability_impact: CRITICAL
+    qname_impact: HIGH
+    required_fix: "Update skill prompts to include spec_qname requirement and SAL fact reference requirement"
+    must_fix_before_product_deepening: yes
+    can_defer: no
+    suggested_taskcard: TC-SKILL-HARDEN-001
+
+  - gap_id: GAP-SKILL-002
+    layer: Skills
+    lane: H
+    severity: Medium
+    current_behavior: "No skill creates non-XML canonical names for binary/text formats"
+    expected_behavior: "Skill exists to govern DIF, SYLK, CSV, ZST, XCF canonical naming"
+    root_cause: "Focus has been on ODF formats with XML namespaces"
+    required_fix: "Create add-canonical-name-registration skill; create registry/format-canonical-names.yaml"
+    must_fix_before_product_deepening: no
+    can_defer: yes
+    suggested_taskcard: TC-SKILL-CANONICAL-001
+
+  - gap_id: GAP-SUP-001
+    layer: Supervisor
+    lane: I
+    severity: High
+    current_behavior: "Lane ownership not enforced by code; prompt-only"
+    expected_behavior: "Code checks which lane is active before allowing sprint execution"
+    root_cause: "Lane enforcement infrastructure not built (SUP-GAP-001 from correction plan)"
+    autonomy_impact: HIGH
+    required_fix: "Implement lane_ownership_validator in governance_validators.py"
+    must_fix_before_product_deepening: no
+    can_defer: yes
+    suggested_taskcard: TC-SUPERVISOR-LANES-001
+
+  - gap_id: GAP-SUP-002
+    layer: Supervisor
+    lane: I
+    severity: High
+    current_behavior: "Overclaim detector (10 patterns) never called in any sprint cycle"
+    expected_behavior: "Overclaim detector runs on every declaration before grading"
+    root_cause: "SUP-GAP-003 from correction plan — never implemented"
+    autonomy_impact: HIGH
+    required_fix: "Wire overclaim_detector.py into autonomous_cycle.py pre-grade step"
+    must_fix_before_product_deepening: no
+    can_defer: yes
+    suggested_taskcard: TC-SUPERVISOR-OVERCLAIM-001
+
+  - gap_id: GAP-HYGIENE-001
+    layer: Source
+    lane: B
+    severity: Medium
+    current_behavior: "Recursive build/ nesting in fods/build/lib/fods/build/...; 20+ egg-info dirs in src/"
+    expected_behavior: "Clean src/ with no build artifacts; .gitignore covers all build outputs"
+    root_cause: "Missing or incomplete .gitignore; build from within package directory creates recursive nesting"
+    required_fix: "Add comprehensive .gitignore entries; run clean script; consider adding to .dockerignore"
+    must_fix_before_product_deepening: no
+    can_defer: yes
+    suggested_taskcard: TC-SOURCE-HYGIENE-001
+
+  - gap_id: GAP-BACKFILL-001
+    layer: Source
+    lane: J
+    severity: Blocker
+    current_behavior: "No systematic backfill facility exists; 18/20 packages not spec-aligned"
+    expected_behavior: "tools/backfill/ exists with inventory + generator + applicator scripts"
+    root_cause: "Backfill was not designed; ad-hoc backfill done for FODS only"
+    repeatability_impact: CRITICAL
+    required_fix: "Design and implement tools/backfill/ subsystem per backfill-facility-design.md"
+    must_fix_before_product_deepening: yes
+    can_defer: no
+    suggested_taskcard: TC-BACKFILL-FACILITY-001
+
+  - gap_id: GAP-PARITY-001
+    layer: Cross-Language
+    lane: D
+    severity: Medium
+    current_behavior: ".NET FODS/FODT ahead on write/export; Python FODS/FODT read-only"
+    expected_behavior: "Python and .NET implement same conceptual model from same spec facts"
+    root_cause: ".NET was developed with commercial priorities (write/export); Python with FOSS parsing"
+    required_fix: "Add Python write capability for FODS (start with same-format save); align object models"
+    must_fix_before_product_deepening: no
+    can_defer: yes
+    suggested_taskcard: TC-PARITY-FODS-WRITE-001
+
+  - gap_id: GAP-GATE11-001
+    layer: Gate
+    lane: K
+    severity: Advisory
+    current_behavior: "Gate 11 not approved for any format; G11-G requires Babar Raza's commercial sign-off"
+    expected_behavior: "All C1-C20 (.NET) and P1-P11 (Python) criteria met BEFORE requesting G11-G"
+    root_cause: "Criteria not fully mapped to implemented capabilities; some criteria partially met"
+    required_fix: "Complete C1-C20 and P1-P11 gap analysis for FODS; produce gate-readiness packet"
+    must_fix_before_product_deepening: no
+    can_defer: yes
+    suggested_taskcard: TC-GATE11-FODS-001

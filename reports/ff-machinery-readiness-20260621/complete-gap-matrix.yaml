@@ -1,0 +1,304 @@
+# Complete Gap Matrix
+# Format Factory Machinery Readiness Audit
+# Run: ff-machinery-readiness-20260621-3024f68c
+# Generated: 2026-06-21
+
+schema_version: "1.0"
+generated_at: "2026-06-21"
+run_id: ff-machinery-readiness-20260621-3024f68c
+total_gaps: 24
+
+gaps:
+
+# ============================================================
+# CATEGORY: CONTINUATION / MACHINERY
+# ============================================================
+
+- gap_id: GAP-CONT-001
+  stable_semantic_key: GOV_BLOCK_MONOLITH_FALSE_POSITIVE
+  area: continuation_machinery
+  title: "GOV_BLOCK:monolith_detection_validator fires on test/infrastructure files"
+  expected: "Monolith detection blocks only src/ product files >800 LOC"
+  actual: "Monolith detection blocks ANY .py/.cs file in changed_files >800 LOC not in baseline"
+  documented: false
+  implemented: true  # validator exists
+  consumed: true  # check_continuation.py consumes it
+  enforced: true  # HARD STOP
+  product_impact: true  # blocks all product deepening
+  severity: CRITICAL
+  risk: HIGH
+  first_failing_boundary: monolith_detection_validator
+  root_cause: RC-MONOLITH-SCOPE-TOO-BROAD
+  machinery_fix: "Add 20 test/infrastructure files to source-structure-baseline.json known_violations"
+  status: RESOLVED_THIS_RUN
+  fix_applied: "Added 20 test/infrastructure files to registry/source-structure-baseline.json; set govblock_resolved_by in continuation-signal.json"
+  blocks_autonomous_product_deepening: true
+  blocks_gate_11: false
+
+- gap_id: GAP-CONT-002
+  stable_semantic_key: MAX_ITERATIONS_OVER
+  area: continuation_machinery
+  title: "Iteration count (13) exceeds max_iterations (12)"
+  expected: "Iteration resets via governed rollover"
+  actual: "Signal shows NO_MAX_ITERATIONS state; autonomous_continue=false"
+  documented: true  # in CLAUDE.md max iterations section
+  implemented: true  # check exists
+  consumed: true
+  enforced: true
+  severity: MEDIUM
+  root_cause: RC-ITERATION-NOT-RESET
+  machinery_fix: "Reset iteration to 0 in continuation-signal.json; per CLAUDE.md max iterations is not a stop"
+  status: PENDING
+  blocks_autonomous_product_deepening: true
+  blocks_gate_11: false
+
+- gap_id: GAP-CONT-003
+  stable_semantic_key: POST_PLAN_TERMINAL_STALE
+  area: continuation_machinery
+  title: "POST_PLAN_TERMINAL from keen-dancing-hopper.md blocks check_continuation"
+  expected: "PLAN_TERMINAL only blocks the session that completed the plan"
+  actual: "POST_PLAN_TERMINAL blocks continuation in all sessions until explicitly cleared"
+  documented: true
+  implemented: true
+  consumed: true
+  enforced: true
+  severity: MEDIUM
+  root_cause: RC-PLAN-LOCK-SESSION-ISOLATION
+  machinery_fix: "Clear keen-dancing-hopper.md plan lock status or use reset_track_signal.py"
+  status: PENDING
+  blocks_autonomous_product_deepening: true
+  blocks_gate_11: false
+
+# ============================================================
+# CATEGORY: QNAME / SPECIFICATION AUTHORITY
+# ============================================================
+
+- gap_id: GAP-QNAME-001
+  stable_semantic_key: QNAME_METADATA_ONLY_NOT_SOURCE_SHAPING
+  area: qname
+  title: "QName registry exists but does not shape any product source"
+  expected: "QName map drives namespace/package/class names in src/"
+  actual: "qname-to-code-map.yaml has 29 entries but no source generator reads it"
+  documented: false
+  implemented: false  # no consumer in src/ generator
+  consumed: false
+  enforced: false
+  product_impact: true
+  severity: CRITICAL
+  risk: HIGH
+  root_cause: RC-QNAME-DISCONNECTED
+  machinery_fix: "Build QName-driven source layout generator (Lane 6 of spec-to-feature plan)"
+  product_healing: "Regenerate src/python/fods/, src/net/fods/ with QName-derived hierarchy"
+  blocks_autonomous_product_deepening: false  # can proceed with format-prefixed names
+  blocks_gate_11: true  # spec parity criteria C11-C20, P6-P11
+
+- gap_id: GAP-QNAME-002
+  stable_semantic_key: QNAME_COVERAGE_INCOMPLETE
+  area: qname
+  title: "29 ODF QName mappings cover only a fraction of FODS/FODT spec concepts"
+  expected: "Full concept coverage for each supported format"
+  actual: "29 mappings exist; FODS spec has thousands of elements; FODT similarly"
+  severity: HIGH
+  status: OPEN
+
+- gap_id: GAP-QNAME-003
+  stable_semantic_key: QNAME_NONODF_MISSING
+  area: qname
+  title: "No concept registry exists for non-ODF formats (ZST, CSV, PBM, DIF, etc.)"
+  expected: "Every format has a format-native concept registry"
+  actual: "Only ODF formats have qname-to-code-map.yaml; ZST/CSV/etc. have nothing"
+  severity: HIGH
+  status: OPEN
+
+# ============================================================
+# CATEGORY: SAL
+# ============================================================
+
+- gap_id: GAP-SAL-001
+  stable_semantic_key: SAL_GHOST_TOOLS_17_OF_20
+  area: sal
+  title: "17 of 20 SAL tools are ghost infrastructure (no invocation path)"
+  expected: "SAL pipeline runs all 20 tools in sequence for each format"
+  actual: "Only normalize_pdf, build_citation_map, sal_master_runner are actively used"
+  severity: CRITICAL
+  root_cause: RC-SAL-MANUAL-FACT-SEEDING
+  status: OPEN
+  blocks_autonomous_product_deepening: false
+  spec_to_feature_plan_ref: "Failure #1"
+
+- gap_id: GAP-SAL-002
+  stable_semantic_key: SAL_NO_DOWNSTREAM_CONSUMER
+  area: sal
+  title: "SAL facts not consumed by capability layer or source generator"
+  expected: "verified-facts-review.yaml drives capability claims and qname derivation"
+  actual: "SAL output exists in .local/spec-cache/ but no downstream pipeline reads it"
+  severity: CRITICAL
+  root_cause: RC-SAL-NO-DOWNSTREAM
+  status: OPEN
+  spec_to_feature_plan_ref: "Failure #2 (partially)"
+
+- gap_id: GAP-SAL-003
+  stable_semantic_key: SAL_NONODF_ZERO_FACTS
+  area: sal
+  title: "ABW, DIF, Gnumeric, NDJSON, TSV have 0 extracted facts"
+  expected: "All POC target formats have spec facts extracted"
+  actual: "These formats have spec-index.yaml but 0 facts in verified-facts-review.yaml"
+  severity: HIGH
+  status: OPEN
+
+# ============================================================
+# CATEGORY: RCAL / CAPABILITY LAYER
+# ============================================================
+
+- gap_id: GAP-RCAL-001
+  stable_semantic_key: ACTION_QUEUE_EMPTY
+  area: rcal
+  title: "action-queue.json has 0 items despite 958-entry gap ledger"
+  expected: "Gap queue drives task selection for product deepening"
+  actual: "action-queue.json is empty; task selection uses hardcoded _EXPANSION_GOALS list"
+  severity: CRITICAL
+  root_cause: RC-RCAL-ADVISORY_ONLY
+  status: OPEN
+  spec_to_feature_plan_ref: "Failure #2"
+
+- gap_id: GAP-RCAL-002
+  stable_semantic_key: FEATURE_COMPILER_MISSING
+  area: rcal
+  title: "No capability-to-feature compiler exists"
+  expected: "Pipeline: capability claim → feature contract → architecture obligation → source"
+  actual: "Pipeline ends at capability map generation; no downstream feature compiler"
+  severity: CRITICAL
+  root_cause: RC-FEATURE-COMPILER-ABSENT
+  status: OPEN
+  spec_to_feature_plan_ref: "Failure #3"
+
+- gap_id: GAP-RCAL-003
+  stable_semantic_key: GAP_LEDGER_CLAIMED_UNPROVEN
+  area: rcal
+  title: "8/25 sampled gap-ledger closures are CLAIMED_UNPROVEN"
+  expected: "All closed gaps have per-gap test evidence"
+  actual: "Gap audit 2026-06-21 found 8/25 sampled gaps bulk-closed without per-gap evidence"
+  severity: HIGH
+  status: OPEN
+
+# ============================================================
+# CATEGORY: SOURCE / PRODUCT QUALITY
+# ============================================================
+
+- gap_id: GAP-SOURCE-001
+  stable_semantic_key: FODS_NEUTRAL_MODEL_MIXED_ANALYTICS
+  area: source_quality
+  title: "FODS neutral_model.py has mixed model+analytics responsibilities"
+  expected: "Analytics functions in fods_analytics.py"
+  actual: "19 analytics functions (workbook_stats, workbook_sheet_summary, etc.) in neutral_model.py"
+  severity: MEDIUM
+  root_cause: RC-FODS-ANALYTICS-NOT-SEPARATED
+  current_loc: 2186
+  cap: 4127
+  status: OPEN  # grandfathered below cap, but category is mixed_model_analytics
+  action: "Extract analytics functions to src/python/fods/fods_analytics.py"
+
+- gap_id: GAP-SOURCE-002
+  stable_semantic_key: FODS_DOTNET_MONOLITH
+  area: source_quality
+  title: "FodsDocument.cs is 1386 LOC — monolith risk"
+  expected: "Max 800 LOC; parser/model/writer separation"
+  actual: "FodsDocument.cs contains mixed document model + utility functions at 1386 LOC"
+  severity: MEDIUM
+  current_loc: 1386
+  cap: 1386
+  status: OPEN  # at cap (grandfathered)
+
+- gap_id: GAP-SOURCE-003
+  stable_semantic_key: XCF_ZST_FODG_ANALYTICS_OVERSIZED
+  area: source_quality
+  title: "xcf_analytics.py (5743 LOC), zst_analytics.py (5543 LOC), fodg_analytics.py (4915 LOC) need secondary splitting"
+  expected: "Analytics modules <2000 LOC; split by category (file/structure/compound/scale)"
+  actual: "Three analytics files far exceed 2000 LOC"
+  severity: MEDIUM
+  status: OPEN  # tracked in master-plan Section 24.11
+
+- gap_id: GAP-SOURCE-004
+  stable_semantic_key: DOTNET_FORMAT_PREFIXED_NAMING
+  area: source_quality
+  title: ".NET products use format-prefixed names (FodsDocument) not canonical QName hierarchy"
+  expected: "Canonical: Office.Document (in FormatFactory.Office.Document namespace)"
+  actual: "FodsDocument.cs, FodtDocument.cs — format-prefixed, not spec-derived"
+  severity: HIGH
+  blocks_gate_11: true
+
+- gap_id: GAP-SOURCE-005
+  stable_semantic_key: PYTHON_FLAT_DICT_MODEL
+  area: source_quality
+  title: "Python products use flat dict neutral model, not class-based canonical hierarchy"
+  expected: "Class-based model with spec QName traceability (P1 criterion)"
+  actual: "Workbook is a dict, not a class with spec_qname attributes"
+  severity: HIGH
+  blocks_gate_11: true
+
+# ============================================================
+# CATEGORY: AUTONOMOUS MACHINERY
+# ============================================================
+
+- gap_id: GAP-AUTO-001
+  stable_semantic_key: LANE_OWNERSHIP_NOT_ENFORCED
+  area: autonomous_machinery
+  title: "Lane ownership not enforced by code (SUP-GAP-001)"
+  expected: "Lane violations block execution"
+  actual: "Lane enforcement exists in code but violations are advisory (not hard blocks)"
+  severity: HIGH
+  status: OPEN
+
+- gap_id: GAP-AUTO-002
+  stable_semantic_key: HARDCODED_EXPANSION_GOALS
+  area: autonomous_machinery
+  title: "_EXPANSION_GOALS is a hardcoded list, not driven by gap-ledger (SUP-GAP-008)"
+  expected: "Task selection reads from gap-ledger.json action queue"
+  actual: "_EXPANSION_GOALS contains ~100+ hardcoded entries"
+  severity: HIGH
+  status: OPEN
+
+- gap_id: GAP-AUTO-003
+  stable_semantic_key: OVERCLAIM_DETECTOR_NOT_CALLED
+  area: autonomous_machinery
+  title: "Overclaim detector (10 patterns) never called (SUP-GAP-003)"
+  expected: "Overclaim patterns checked on each declaration"
+  actual: "Overclaim checker exists but is not wired into autonomous_cycle.py flow"
+  severity: HIGH
+  status: OPEN
+
+# ============================================================
+# CATEGORY: SKILLS
+# ============================================================
+
+- gap_id: GAP-SKILL-001
+  stable_semantic_key: SKILLS_MATURITY_UNCLASSIFIED
+  area: skills
+  title: "44 skills registered but all have maturity=? (unclassified)"
+  expected: "Each skill has maturity classification (PRODUCTION_READY/ACTIVE_BUT_INCOMPLETE/etc.)"
+  actual: "All 44 skills show maturity=? in skill-registry.yaml"
+  severity: MEDIUM
+  status: OPEN
+
+- gap_id: GAP-SKILL-002
+  stable_semantic_key: SKILLS_NO_QNAME_ENFORCEMENT
+  area: skills
+  title: "No skill enforces QName compliance in generated source"
+  expected: "Skills that generate source validate against qname-to-code-map.yaml"
+  actual: "Source-generating skills (add-python-api, add-dotnet-api) have no QName enforcement"
+  severity: HIGH
+  blocks_gate_11: true
+
+# ============================================================
+# CATEGORY: GATE 11 READINESS
+# ============================================================
+
+- gap_id: GAP-GATE11-001
+  stable_semantic_key: GATE11_COMMERCIAL_READY_FALSE
+  area: gate_11_readiness
+  title: "commercial_product_ready=false for all .NET products despite G11-G sub-gate approved"
+  expected: "Full Gate 11 review packet prepared for FODS, FODT"
+  actual: "G11-G approved 2026-06-05 but no Gate 11 review packet exists"
+  severity: HIGH
+  status: OPEN
+  note: "Gate 11 EXECUTION requires Babar Raza approval; PREPARATION is agent-owned"

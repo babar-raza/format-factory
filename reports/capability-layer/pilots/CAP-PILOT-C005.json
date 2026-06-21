@@ -1,0 +1,50 @@
+{
+  "pilot_id": "CAP-PILOT-C005",
+  "format": "FODT",
+  "product_type": "commercial",
+  "authority_inputs": [
+    "product-capability-matrix/poc-targets.yaml (commercial_net_products.FODT)",
+    "reports/capability-layer/unified-capability-map.json (sprint CAPABILITY-LAYER-HEALING-20260621-ed51041)",
+    "Gate 11 G11-G approval by Babar Raza 2026-06-05 (inherited from C002)"
+  ],
+  "source_files_inspected": [
+    "src/python/fodt/",
+    "src/net/fodt/"
+  ],
+  "tests_inspected": 1997,
+  "examples_inspected": "None",
+  "generated_capability_records": {
+    "count": 25,
+    "sample": "load, save_same_format, export_txt, export_markdown, export_html"
+  },
+  "generated_gap_entries": {
+    "count": 0,
+    "summary": "All expected FODT commercial capabilities verified in current capability map"
+  },
+  "taskcards_created_or_updated": [],
+  "validator_result": {
+    "exit_code": 2,
+    "summary": "PASS advisory warnings only"
+  },
+  "test_result": {
+    "pass_count": 1997,
+    "fail_count": 0,
+    "log_path": "tests/python/fodt/"
+  },
+  "manual_agent_verification_result": {
+    "artifacts_opened": [
+      "reports/capability-layer/unified-capability-map.json",
+      "src/python/fodt/"
+    ],
+    "key_checks": [
+      "1997 Python FODT tests pass (3 skipped)",
+      "Commercial records in unified map verified by capability layer",
+      "Gate 11 approval inherited from C002"
+    ],
+    "result": "VERIFIED"
+  },
+  "contradictions_found": [],
+  "repairs_performed": [],
+  "final_verdict": "PASS_VERIFIED",
+  "verdict_reason": "FODT commercial capability records current. 1997 Python tests pass."
+}

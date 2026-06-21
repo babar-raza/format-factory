@@ -1,0 +1,177 @@
+---
+# Prior-Run Reconciliation — Zesty Moseying Whale (Second-Pass Rerun)
+schema_version: "1.0"
+run_id: "zesty-moseying-whale"
+date: "2026-06-21"
+prior_run_id: "machinery-lifecycle-forensics-20260621"
+generated_at: "2026-06-21"
+
+summary: >
+  Second-pass idempotent rerun of machinery lifecycle forensics.
+  Prior run verdict was LIFECYCLE_PARTIALLY_HEALED_SINGLE_ITERATION_ONLY.
+  This rerun verifies which root causes were actually fixed, reopens
+  the RC-004 code-enforcement gap (partial fix), and discovers that
+  the multi-iteration proof (Pilot H) was completed in iteration 3
+  but not reflected in execution-handoff.yaml.
+
+items:
+
+  - id: "RC-001"
+    title: "No machine consumer for audit output"
+    prior_status: "OPEN"
+    current_status: "FIXED"
+    fix_commit: "fed7b6b3 (Phase 1) + prior forensics sprint iteration_3"
+    evidence: >
+      tools/supervisor/machinery_audit.py EXISTS (TC-MACH-WF-001 implemented).
+      11 regression tests pass in tests/supervisor/test_machinery_audit.py.
+      machinery_audit.py run_audit() reads mission-ledger.json, verifies
+      evidence paths for all 13 closed gaps, and writes post-exec-audit-N.json.
+      audit_verdict: PASS (all 13 gaps verified 2026-06-21T17:05:09).
+    notes: >
+      The audit CONSUMER exists. The remaining gap is that check_continuation.py
+      does NOT automatically invoke machinery_audit.py. This is tracked as RC-004
+      (partial fix). RC-001 itself (audit consumer code exists) = FIXED.
+
+  - id: "RC-002"
+    title: "PLAN_TERMINAL_CLOSED over-broad for machinery track"
+    prior_status: "PARTIAL_FIX"
+    current_status: "FIXED"
+    fix_commit: "f03234b0 — track_type in plan locks (GAP-WF-004)"
+    evidence: >
+      write_plan_lock.py line 78: writes track_type field to lock files.
+      check_continuation.py lines 187-189: reads lock_track = plan_lock.get('track_type');
+      if lock_track and track and lock_track != track: continue (skips this lock).
+      When checking --track machinery, locks with track_type='product' are skipped.
+      test_plan_lock_machinery.py has regression tests covering this behavior.
+    notes: >
+      GAP-WF-004 fully closed. TERMINAL_CLOSED and PLAN_COMPLETED_IN_SESSION
+      correctly skip machinery track when lock has track_type='product'.
+
+  - id: "RC-003"
+    title: "Machinery track continuation signal stale/session-mismatched"
+    prior_status: "PARTIAL_FIX"
+    current_status: "FIXED"
+    fix_commit: "0d5b73ca — per-chat nonce in session_id derivation (SC-005)"
+    evidence: >
+      continuation_identity.py lines 55-87: TC-SESSION-NONCE-001 implemented.
+      chat_nonce = str(uuid.uuid4()).replace('-', '')[:8] per session.
+      Session file written to .local/supervisor/session-{track}.id with 4h TTL.
+      Each new chat session gets unique session_id even on same git HEAD.
+    notes: >
+      SC-005 fully closed. New chat sessions no longer inherit previous session's
+      plan locks via shared git HEAD hash.
+
+  - id: "RC-004"
+    title: "No mission ledger enforcement in code"
+    prior_status: "OPEN"
+    current_status: "REOPENED_PARTIAL_FIX"
+    fix_commit: "Prior forensics sprint iteration_3 — TC-MACH-WF-001/003"
+    evidence: >
+      .local/supervisor/machinery/mission-ledger.json EXISTS (stop_status=MISSION_COMPLETE).
+      tools/supervisor/machinery_audit.py EXISTS with run_audit() and check_mission_complete().
+      python machinery_audit.py --mission-complete-check returns MISSION_COMPLETE.
+      MISSING: check_continuation.py --track machinery does NOT call machinery_audit.py
+      or read mission-ledger.json. An agent running check_continuation.py --track machinery
+      will receive CONTINUE regardless of mission-ledger.json stop_status.
+    gap_remaining: >
+      TC-WHALE-LEDGER-001 must add Check 1c to check_continuation.py.
+      When --track machinery AND mission-ledger.json has stop_status=MISSION_COMPLETE,
+      check_continuation.py must return STOP(MACHINERY_MISSION_COMPLETE).
+      When audit_pending=True AND execution_pending=False, return STOP(MACHINERY_AUDIT_REQUIRED).
+    notes: >
+      Reopened because the code enforcement path is still missing. The standalone
+      audit tool (machinery_audit.py) exists and works correctly. The integration
+      into check_continuation.py is the remaining gap.
+
+  - id: "RC-005"
+    title: "Continuation-signal contradiction (session-resume says True, signal says False)"
+    prior_status: "PARTIAL_FIX"
+    current_status: "FIXED"
+    fix_commit: "0d5b73ca (nonce) + prior forensics sprint signal cleanup"
+    evidence: >
+      Current continuation-signal.json: autonomous_continue=True, rework_items=[],
+      hard_stops_detected=[], safe_lanes_available=True.
+      No divergence between session-resume and continuation-signal.
+      Session nonce prevents new sessions from inheriting stale signals.
+    notes: "Fully resolved. No contradiction detected in current state."
+
+  - id: "RC-006"
+    title: "GOV_BLOCK fires on infrastructure file growth"
+    prior_status: "OPEN"
+    current_status: "NOT_CURRENTLY_FIRING_BUT_AT_RISK"
+    fix_commit: "None — not fixed, but not currently triggered"
+    evidence: >
+      governance_validators.py: LOC=3181, baseline_loc_cap=3181 (AT EXACT CAP).
+      neutral_model.py: LOC=1231, baseline_loc_cap=4127 (well under cap).
+      GOV_BLOCK:monolith_detection_validator is NOT in current rework_items.
+      BUT: governance_validators.py has uncommitted modifications (git status M).
+      If those modifications add any new lines, the file will exceed its cap and
+      GOV_BLOCK will fire again on the next sprint.
+    risk: "HIGH — any future governance validator addition will immediately trigger GOV_BLOCK"
+    remediation: >
+      Pre-emptive extraction required: identify extractable validators in
+      governance_validators.py and move them to governance_validators_ext.py
+      BEFORE the next addition is needed. This is a preventive action, not
+      currently blocking.
+    notes: >
+      This RC is not a current blocker but is a near-term recurrence risk.
+      The current uncommitted changes to governance_validators.py need verification
+      that they do not push LOC over 3181.
+
+new_gaps_found:
+  - id: "GAP-WHALE-001"
+    title: "check_continuation.py --track machinery has no mission ledger integration"
+    type: "CODE_ENFORCEMENT_GAP"
+    severity: "HIGH"
+    description: >
+      machinery_audit.py and mission-ledger.json exist but check_continuation.py
+      never reads them. This means the machinery mission can be declared CONTINUE
+      indefinitely even after MISSION_COMPLETE, and even if audit_pending=True.
+    taskcard: "TC-WHALE-LEDGER-001"
+    fix: "Add Check 1c to check_continuation.py (lines ~250-265)"
+
+  - id: "GAP-WHALE-002"
+    title: "execution-handoff.yaml incorrectly states Pilot H (multi-iteration) NOT_RUN"
+    type: "DOCUMENTATION_INCONSISTENCY"
+    severity: "MEDIUM"
+    description: >
+      The execution-handoff.yaml says Pilot H (multi-iteration): NOT_RUN.
+      However, mission-ledger.json notes show 3 complete iterations:
+      iteration_1_phase1, iteration_2_phase2, iteration_3_phase3_sal_audit.
+      The multi-iteration proof WAS demonstrated across these 3 iterations.
+    taskcard: "TC-WHALE-HANDOFF-001"
+    fix: "Update execution-handoff.yaml Pilot H status to COMPLETE with evidence"
+
+  - id: "GAP-WHALE-003"
+    title: "governance_validators.py at exact LOC cap — next addition will fire GOV_BLOCK"
+    type: "PREEMPTIVE_RISK"
+    severity: "MEDIUM"
+    description: >
+      governance_validators.py LOC=3181=baseline_loc_cap. There are uncommitted
+      modifications pending. Any net addition in the next sprint will cause
+      GOV_BLOCK:monolith_detection_validator to fire as a structural blocker.
+    taskcard: "TC-WHALE-GOVBLOCK-001"
+    fix: "Pre-extract extractable validators into governance_validators_ext.py"
+
+prior_closures_invalid:
+  - id: "RC-004"
+    prior_verdict: "PASS_WITH_LIMITATIONS (mission ledger created)"
+    reopened_reason: >
+      The prior run wrote mission-ledger.json and called this PASS_WITH_LIMITATIONS.
+      This sprint verifies that NO code in check_continuation.py reads or enforces
+      the mission ledger. The data artifact exists; the enforcement code does not.
+      The closure was premature — PASS_WITH_LIMITATIONS should have been PARTIAL_FIX.
+    new_verdict: "REOPENED_PARTIAL_FIX"
+    evidence: >
+      check_continuation.py grep for 'machinery', 'mission', 'audit' in check logic
+      returns no matches. Only the --track parameter and track_type filtering exist.
+
+  - id: "execution-handoff.yaml Pilot H"
+    prior_verdict: "NOT_RUN"
+    reopened_reason: >
+      The execution-handoff.yaml from the prior run states Pilot H (multi-iteration) NOT_RUN.
+      This sprint verifies that mission-ledger.json notes show 3 complete iterations
+      with different sprint IDs: iteration_1_phase1, iteration_2_phase2,
+      iteration_3_phase3_sal_audit. The multi-iteration pilot WAS executed.
+    new_verdict: "COMPLETE — 3 iterations proven via mission-ledger.json"
+    evidence: ".local/supervisor/machinery/mission-ledger.json notes section"

@@ -1,0 +1,51 @@
+{
+  "pilot_id": "CAP-PILOT-C006",
+  "format": "Netpbm",
+  "product_type": "commercial",
+  "authority_inputs": [
+    "product-capability-matrix/poc-targets.yaml (commercial_net_products.Netpbm)",
+    "reports/capability-layer/unified-capability-map.json (sprint CAPABILITY-LAYER-HEALING-20260621-ed51041)",
+    "Gate 11 G11-G approval by Babar Raza 2026-06-05 (inherited from C003)"
+  ],
+  "source_files_inspected": [
+    "src/python/netpbm/",
+    "src/net/netpbm/"
+  ],
+  "tests_inspected": 90,
+  "examples_inspected": "None",
+  "generated_capability_records": {
+    "count": 25,
+    "sample": "load, probe_netpbm, parse_pbm, parse_pgm, parse_ppm, write_netpbm"
+  },
+  "generated_gap_entries": {
+    "count": 0,
+    "summary": "Netpbm commercial records present in unified map"
+  },
+  "taskcards_created_or_updated": [],
+  "validator_result": {
+    "exit_code": 2,
+    "summary": "PASS advisory warnings only"
+  },
+  "test_result": {
+    "pass_count": 90,
+    "fail_count": 0,
+    "log_path": "tests/python/netpbm/"
+  },
+  "manual_agent_verification_result": {
+    "artifacts_opened": [
+      "reports/capability-layer/unified-capability-map.json"
+    ],
+    "key_checks": [
+      "90 Python Netpbm tests pass",
+      "LIMITATION: Python split across pbm/pgm/ppm sub-packages (inherited from C003)",
+      "Commercial .NET tests not run in this sprint (Python proxy used)"
+    ],
+    "result": "VERIFIED with limitations"
+  },
+  "contradictions_found": [
+    "LIMITATION: Python Netpbm split into pbm/pgm/ppm packages — naming mismatch with commercial unified format ID"
+  ],
+  "repairs_performed": [],
+  "final_verdict": "PASS_WITH_LIMITATIONS",
+  "verdict_reason": "Netpbm commercial records current. 90 Python tests pass. Python sub-package split limitation inherited from C003."
+}

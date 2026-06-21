@@ -3,8 +3,8 @@
 **Format**: FODT  
 **Product Type**: commercial  
 **Verdict**: PASS_VERIFIED  
-**Generated**: 2026-06-08T06:26:17.598368+00:00  
-**Run ID**: capability-feature-understanding-layer-healing-20260608-e382e5f
+**Generated**: 2026-06-21T17:09:20.897325+00:00  
+**Run ID**: capability-layer-healing-20260621-ed51041
 
 ## Authority Inputs
 

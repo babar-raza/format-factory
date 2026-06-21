@@ -1,0 +1,75 @@
+{
+  "skill_id": "sal-pipeline-heal",
+  "sprint_id": "sal-autonomous-audit-20260621",
+  "taskcard_ids": [
+    "TC-SAL-DIAG-009",
+    "TC-MACH-REWORK-001",
+    "TC-MACH-REWORK-002",
+    "TC-MACH-REWORK-003",
+    "TC-MACH-ARCH-004",
+    "TC-MACH-ARCH-007"
+  ],
+  "format_id": "fods",
+  "root_cause_id": "ROOT-08",
+  "target_stage": "multi-task-repair",
+  "spec_cache_verified": true,
+  "tool_invoked": true,
+  "output_artifact_produced": true,
+  "fact_ids_in_correct_namespace": true,
+  "skill_transcript_written": true,
+
+  "changed_files": [
+    "plans/snoopy-juggling-seal.md",
+    "tools/supervisor/governance_validators.py",
+    "tools/supervisor/governance_validator_runner.py",
+    "registry/source-structure-baseline.json",
+    "tests/supervisor/test_governance_validators.py",
+    "tests/specification-authority-layer/test_sal_runner_idempotency.py",
+    "src/python/fods/Compat/__init__.py",
+    "src/python/fods/Compat/fods_document.py",
+    "src/python/fods/Compat/fods_sheet.py",
+    "src/python/fods/Compat/fods_cell.py"
+  ],
+
+  "output_artifacts": [
+    ".local/evidences/sal-autonomous-audit-20260621/tc-sal-diag-009-extractor-replay.json",
+    ".local/evidences/tc-src-001-repair-verification/validator-output.txt",
+    "src/python/fods/Compat/fods_document.py",
+    "src/python/fods/Compat/fods_sheet.py",
+    "src/python/fods/Compat/fods_cell.py"
+  ],
+
+  "test_results": {
+    "total_passed": 14,
+    "total_failed": 0,
+    "test_files": [
+      "tests/supervisor/test_governance_validators.py::TestV45QNameClassNames (4 pass)",
+      "tests/supervisor/test_governance_validators.py::TestV47SpecFactRefsInSalOutput (5 pass)",
+      "tests/specification-authority-layer/test_sal_runner_idempotency.py (5 pass)"
+    ]
+  },
+
+  "fact_count_produced": 0,
+  "fact_id_namespace_valid": true,
+
+  "work_summary": {
+    "TC-SAL-DIAG-009": "Extractor replay executed: requirement_extractor.py recall=0% against FODS schema spec (expected — ODF Part 3 is not RFC-style). Extraction routing documented: ODF=spec_parser.py, RFC=requirement_extractor.py.",
+    "TC-MACH-REWORK-001": "V45 (validate_qname_class_names) confirmed wired at position 45/47 in run_all_governance_validators. 4 tests pass.",
+    "TC-MACH-REWORK-002": "SAL runner idempotency test created and verified: 5/5 pass (2 FODS, 2 ZST, 1 all-formats).",
+    "TC-MACH-REWORK-003": "source_structure_validator.py run: 0 new violations, 0 worsened. Evidence at .local/evidences/tc-src-001-repair-verification/validator-output.txt.",
+    "TC-MACH-ARCH-004": "3 FODS Compat/ facades created: FodsDocument (office:document), FodsSheet (table:table), FodsCell (table:table-cell). All have spec_qname. V45 exempt.",
+    "TC-MACH-ARCH-007": "V47 validate_spec_fact_refs_in_sal_output added to governance_validators.py and wired into run_all_governance_validators (position 47/47). 5 tests pass. Baseline updated."
+  },
+
+  "baseline_corrections": {
+    "TC-SAL-IMPL-002": "ALREADY COMPLETE — 96 FACT-ZST-NNN facts in ZST workbench. Plan updated.",
+    "TC-SAL-IMPL-003": "ALREADY COMPLETE — 4940 FACT-FODT-NNN facts in FODT workbench. Plan updated.",
+    "TC-SAL-IMPL-004": "ALREADY COMPLETE — sources.jsonl has source_id (migrated 2026-06-17). Plan updated.",
+    "VER-05": "COMPLETE — 96 ZST facts ≥ 15 required.",
+    "VER-06": "COMPLETE — 4940 FODT facts ≥ 20 required.",
+    "VER-10": "COMPLETE — sources.jsonl has source_id in all records."
+  },
+
+  "verdict": "PROCEED",
+  "timestamp": "2026-06-21T23:30:00Z"
+}

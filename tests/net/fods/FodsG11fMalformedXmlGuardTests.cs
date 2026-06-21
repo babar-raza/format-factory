@@ -218,7 +218,30 @@ public class FodsG11fMalformedXmlGuardTests : IDisposable
     }
 
     /// <summary>
-    /// C9-MAL-FODS-05: CSV exporter handles FODS with no sheets (exports empty CSV).
+    /// C9-SEC-FODS-01: Parser rejects XML with DTD declarations (security guard — FACT-FODS-009).
+    /// FodsParser uses DtdProcessing.Prohibit and XmlResolver = null.
+    /// A file with an internal DTD subset must be rejected rather than processed.
+    /// </summary>
+    [Fact]
+    public void Parser_XmlWithDtd_RejectsWithError()
+    {
+        // XML with an internal DTD subset — must be rejected by DtdProcessing.Prohibit
+        const string xmlWithDtd =
+            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+            "<!DOCTYPE fods [<!ELEMENT fods ANY>]>" +
+            "<office:document" +
+            " xmlns:office=\"urn:oasis:names:tc:opendocument:xmlns:office:1.0\"" +
+            " office:mimetype=\"application/vnd.oasis.opendocument.spreadsheet-flat-xml\"" +
+            " office:version=\"1.3\">" +
+            "</office:document>";
+        var path = WriteTemp("dtd-injection.fods", xmlWithDtd);
+        var result = _parser.Parse(path);
+        Assert.False(result.IsSuccess);
+        Assert.NotEmpty(result.Errors);
+    }
+
+    /// <summary>
+    /// C9-SEC-FODS-02: CSV exporter handles FODS with no sheets (exports empty CSV).
     /// </summary>
     [Fact]
     public void CsvExporter_NoSheets_ExportsEmptyCsv()

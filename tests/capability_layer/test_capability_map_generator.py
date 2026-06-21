@@ -17,6 +17,7 @@ from capability_map_generator import (
     _determine_state,
     _build_gap_ledger,
     _scan_python_functions,
+    _scan_test_function_names,
 )
 
 
@@ -186,3 +187,72 @@ class TestScanPythonFunctions:
         b.write_text("def load(): pass\n")
         fns = _scan_python_functions(tmp_path)
         assert fns.count("load") == 1
+
+
+# ---------------------------------------------------------------------------
+# _scan_test_function_names tests (TASK-4 regression guard)
+# ---------------------------------------------------------------------------
+
+class TestScanTestFunctionNames:
+    """Tests for the AST-level test function scanner added in TASK-4."""
+
+    def _make_test_file(self, tmp_path, filename: str, content: str):
+        f = tmp_path / filename
+        f.write_text(content, encoding="utf-8")
+        return f
+
+    def test_returns_false_for_nonexistent_dir(self, tmp_path):
+        assert _scan_test_function_names(tmp_path / "nonexistent", "load") is False
+
+    def test_returns_false_for_empty_dir(self, tmp_path):
+        assert _scan_test_function_names(tmp_path, "load") is False
+
+    def test_finds_exact_function_name_match(self, tmp_path):
+        self._make_test_file(tmp_path, "test_fods_load.py",
+                             "def test_fods_load_roundtrip(): pass\n")
+        assert _scan_test_function_names(tmp_path, "load") is True
+
+    def test_no_match_for_unrelated_function(self, tmp_path):
+        self._make_test_file(tmp_path, "test_fods_load.py",
+                             "def test_fods_load_roundtrip(): pass\n")
+        assert _scan_test_function_names(tmp_path, "save_same_format") is False
+
+    def test_case_insensitive_match(self, tmp_path):
+        self._make_test_file(tmp_path, "test_gnumeric_ops.py",
+                             "def test_GNUMERIC_GET_CELL_VALUE(): pass\n")
+        assert _scan_test_function_names(tmp_path, "get_cell_value") is True
+
+    def test_only_test_prefixed_functions_match(self, tmp_path):
+        self._make_test_file(tmp_path, "test_helper.py",
+                             "def helper_load(): pass\ndef test_actual_load(): pass\n")
+        assert _scan_test_function_names(tmp_path, "load") is True
+
+    def test_non_test_functions_ignored(self, tmp_path):
+        """A function named 'load_fixture' should not match fn_name='load' as a test."""
+        self._make_test_file(tmp_path, "test_fods.py",
+                             "def load_fixture(): pass\ndef helper_load(): pass\n")
+        # Only functions starting with 'test' should match
+        assert _scan_test_function_names(tmp_path, "load") is False
+
+    def test_determines_state_uses_ast_when_test_dir_given(self, tmp_path):
+        """_determine_state uses AST scanner when test_dir is provided."""
+        self._make_test_file(tmp_path, "test_fods_load.py",
+                             "def test_fods_load_basic(): pass\n")
+        state, _, _ = _determine_state("load", True, [], 0, "gate_evidence",
+                                       test_dir=tmp_path)
+        assert state == "test_verified"
+
+    def test_determines_state_fallback_without_test_dir(self):
+        """_determine_state uses file-name fallback when test_dir=None (backward compat)."""
+        test_files = ["test_r122_tsv_load.py"]
+        state, _, _ = _determine_state("load", True, test_files, 0, "gate_evidence",
+                                       test_dir=None)
+        assert state == "test_verified"
+
+    def test_determines_state_ast_conservative_on_parse_error(self, tmp_path):
+        """_scan_test_function_names returns False (not True) on parse error."""
+        bad_file = tmp_path / "test_broken.py"
+        bad_file.write_text("def test_load(: broken syntax\n", encoding="utf-8")
+        # Should return False, not raise
+        result = _scan_test_function_names(tmp_path, "load")
+        assert result is False

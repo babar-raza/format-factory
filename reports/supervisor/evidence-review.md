@@ -1,17 +1,17 @@
 # Evidence Review — Supervisor
-Sprint ID: sal-skill-gov-20260621-3104e1c1
-Timestamp: 2026-06-21T20:29:12.210974
-Verdict: ACCEPTED
-Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\sal-skill-gov-20260621-3104e1c1\declaration-review-package.zip
+Sprint ID: post-recon-repair-gate11-20260621
+Timestamp: 2026-06-21T22:11:18.205217
+Verdict: ACCEPTED_WITH_WARNINGS
+Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\post-recon-repair-gate11-20260621\declaration-review-package.zip
 
 ## Facts
-- Tests: 0 passed, 0 failed, 0 skipped
+- Tests: 65 passed, 5 failed, 0 skipped
 - Git HEAD: see-declaration
-- Bundle entries: 42
+- Bundle entries: 82
 - PENDING markers: 0
 
 ## Gate States
 (none extracted)
 
 ## Limitation Notes
-- No cycle-manifest found in declaration-review package
+None

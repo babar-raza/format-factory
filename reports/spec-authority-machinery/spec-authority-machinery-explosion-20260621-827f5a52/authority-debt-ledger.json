@@ -1,0 +1,138 @@
+{
+  "run_id": "spec-authority-machinery-explosion-20260621-827f5a52",
+  "generated_at": "2026-06-21",
+  "execution_head": "ed51041f",
+  "total_formats_assessed": 25,
+  "formats_with_workbench_facts": 10,
+  "formats_with_zero_sal_facts": 15,
+  "formats_with_stale_gap_ledger_facts": 1,
+  "formats_with_stale_gap_ledger_facts_list": ["csv"],
+  "debt_by_format": {
+    "abw": {
+      "proof_level": "P1",
+      "sal_workbench_fact_count": 0,
+      "sal_total_fact_count": 0,
+      "gap_ledger_entry_count": 50,
+      "gap_ledger_stale_fact_refs": [],
+      "gap_ledger_spec_facts_status": "CLEAN",
+      "spec_acquisition_status": "BLOCKED_EXTERNAL",
+      "spec_acquisition_blocker": "DTD unreachable (ECONNREFUSED)",
+      "has_product_code": true,
+      "has_tests": true,
+      "has_spec_stubs": false,
+      "has_qname_registry": false,
+      "debt_level": "CRITICAL",
+      "recommended_action": "Find alternative ABW spec source or classify as permanently BLOCKED_EXTERNAL",
+      "analytics_functions_without_spec": "~250 (estimated)"
+    },
+    "gnumeric": {
+      "proof_level": "P2",
+      "sal_workbench_fact_count": 0,
+      "sal_total_fact_count": 0,
+      "gap_ledger_entry_count": 36,
+      "gap_ledger_stale_fact_refs": [],
+      "gap_ledger_spec_facts_status": "CLEAN",
+      "spec_acquisition_status": "NOT_ATTEMPTED",
+      "spec_acquisition_blocker": "normalized_text_cached: false; XML schema known but not normalized",
+      "has_product_code": true,
+      "has_tests": true,
+      "has_spec_stubs": false,
+      "has_qname_registry": false,
+      "debt_level": "HIGH",
+      "recommended_action": "Run normalization pipeline for Gnumeric XML schema; build workbench YAML"
+    },
+    "csv": {
+      "proof_level": "P2",
+      "sal_workbench_fact_count": 0,
+      "sal_total_fact_count": 0,
+      "gap_ledger_entry_count": 58,
+      "gap_ledger_stale_fact_refs": ["FACT-CSV-001", "FACT-CSV-002"],
+      "gap_ledger_stale_ref_count": 116,
+      "gap_ledger_spec_facts_status": "STALE",
+      "spec_acquisition_status": "NOT_ATTEMPTED",
+      "has_product_code": true,
+      "has_tests": true,
+      "has_spec_stubs": false,
+      "has_qname_registry": false,
+      "debt_level": "HIGH",
+      "recommended_action": "IMMEDIATE: Clear stale spec_facts for all CSV gap entries. Then: acquire CSV spec (RFC 4180 available)."
+    },
+    "tsv": {
+      "proof_level": "P2",
+      "sal_workbench_fact_count": 0,
+      "sal_total_fact_count": 0,
+      "gap_ledger_entry_count": 0,
+      "gap_ledger_spec_facts_status": "N/A",
+      "spec_acquisition_status": "NOT_ATTEMPTED",
+      "has_product_code": true,
+      "has_tests": true,
+      "debt_level": "MEDIUM",
+      "recommended_action": "Informal spec only; document as LOW_PRIORITY in debt ledger"
+    },
+    "sylk": {
+      "proof_level": "P2",
+      "sal_workbench_fact_count": 0,
+      "sal_total_fact_count": 0,
+      "spec_acquisition_status": "NOT_ATTEMPTED",
+      "has_product_code": true,
+      "has_tests": true,
+      "tests_count": 893,
+      "debt_level": "MEDIUM"
+    },
+    "dif": {
+      "proof_level": "P2",
+      "sal_workbench_fact_count": 0,
+      "sal_total_fact_count": 0,
+      "spec_acquisition_status": "NOT_ATTEMPTED",
+      "has_product_code": true,
+      "has_tests": true,
+      "debt_level": "MEDIUM",
+      "recommended_action": "Spec artifacts normalized per original plan; acquire candidate reqs"
+    },
+    "ndjson": {
+      "proof_level": "P2",
+      "sal_workbench_fact_count": 0,
+      "sal_total_fact_count": 0,
+      "spec_acquisition_status": "NOT_ATTEMPTED",
+      "spec_note": "Informal spec; jsonlines.org",
+      "debt_level": "LOW"
+    },
+    "toml": {
+      "proof_level": "P2",
+      "sal_workbench_fact_count": 0,
+      "sal_total_fact_count": 0,
+      "spec_acquisition_status": "NOT_ATTEMPTED",
+      "spec_note": "Formal spec at toml.io; available for acquisition",
+      "debt_level": "MEDIUM",
+      "recommended_action": "Acquire TOML spec; normalize; build workbench YAML"
+    },
+    "qoi": {"proof_level": "P2", "sal_workbench_fact_count": 0, "debt_level": "LOW"},
+    "xcf": {"proof_level": "P2", "sal_workbench_fact_count": 0, "debt_level": "LOW"},
+    "ora": {"proof_level": "P2", "sal_workbench_fact_count": 0, "debt_level": "LOW"},
+    "zpaq": {"proof_level": "P2", "sal_workbench_fact_count": 0, "debt_level": "LOW"},
+    "xpm": {"proof_level": "P2", "sal_workbench_fact_count": 0, "debt_level": "LOW"},
+    "pam": {"proof_level": "P2", "sal_workbench_fact_count": 0, "debt_level": "LOW"}
+  },
+  "systemic_issues": [
+    {
+      "issue_id": "SI-001",
+      "title": "SAL daily output in default mode — template facts present",
+      "rca": "RCA-SAL-DEFAULT-MODE",
+      "affects_all_formats": true,
+      "recommended_action": "Switch daily SAL generation to from_cache_only=True"
+    },
+    {
+      "issue_id": "SI-002",
+      "title": "No authority_level field in gap-ledger",
+      "rca": "RCA-GAP-LEDGER-NO-AUTH-LEVEL",
+      "affects_entries": 958,
+      "recommended_action": "Add authority_level derived from SAL workbench_verified_fact_count per format"
+    },
+    {
+      "issue_id": "SI-003",
+      "title": "FODP/FODG/ODS/ODT identical workbench fact counts (1,066 each) — provenance unverified",
+      "rca": "RCA-FODFAM-CHAIN",
+      "recommended_action": "Audit workbench YAMLs for each format to confirm format-specific facts"
+    }
+  ]
+}

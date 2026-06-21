@@ -62,7 +62,7 @@ def test_fodt_sal_facts_present():
     fodt = [r for r in results if r.get("format_id", "") == "fodt"]
     assert len(fodt) == 1, f"Expected exactly 1 fodt entry in SAL results, got {len(fodt)}"
     facts = fodt[0].get("spec_facts", [])
-    fodt_facts = [f for f in facts if f.get("qname", "").startswith("FODT-FACT-")]
+    fodt_facts = [f for f in facts if f.get("qname", "").startswith("FACT-FODT-")]
     assert len(fodt_facts) > 0, "Expected FACT-FODT-* entries in SAL results"
 
 

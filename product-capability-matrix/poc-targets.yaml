@@ -1,709 +1,626 @@
-# Format Factory — POC Target Matrix
-# Authority: plans/master-plan.md Section 40
-# Sprint: FORMAT-FACTORY-R85-POC-DIRECTION-LOCAL-SUPERVISOR-AUTONOMOUS-PRODUCT-FACTORY-MEGA-TRAIN-001
-# Date: 2026-05-31
-# Note: This file records current POC status. NOT a gate approval.
-# Gate 11 G11-G (commercial release AUTHORIZATION) approved by Babar Raza 2026-06-05 for FODS, FODT, Netpbm.
-# IMPORTANT DISTINCTION: G11-G = business decision gate (PASSED). commercial_product_ready = technical readiness
-# + all 8 criteria in docs/governance/customer-readiness-checklist.md met + package published to registry.
-# commercial_product_ready remains false until: (1) all 8 checklist criteria met, (2) package published to
-# PyPI/NuGet, (3) Babar Raza final sign-off on published package. G11-G approval is necessary but NOT sufficient.
-
-poc_matrix_version: "1.0"
-last_updated: "2026-06-18"
-sprint: "capability-layer-closeout-rnext"
-
-# ============================================================
-# COMMERCIAL .NET PRODUCTS (3 targets)
-# ============================================================
-
+poc_matrix_version: '1.0'
+last_updated: '2026-06-18'
+sprint: capability-layer-closeout-rnext
 commercial_net_products:
-
-  - format: FODS
-    classification: POC_TARGET_CONFIRMED
-    full_name: "Flat OpenDocument Spreadsheet"
-    python_source: src/python/fods/
-    dotnet_source: src/net/fods/
-    gates_passed: "1-11"
-    gate_11_status: APPROVED
-    gate_11_g11g: APPROVED_BY_BABAR_RAZA_2026_06_05
-    commercial_product_ready: false
-    commercial_product_ready_reason: "G11-G gate approved; awaiting (1) all 8 criteria in customer-readiness-checklist.md, (2) registry publication, (3) Babar Raza final sign-off on published package"
-    commercial_product_ready_criteria_ref: "docs/governance/customer-readiness-checklist.md"
-    gate_11_approved: true
-
-    dotnet_status:
-      load: PASS
-      inspect_object_model: PASS
-      edit_cells: PASS
-      add_sheet: PASS
-      rename_sheet: PASS
-      remove_sheet: PASS
-      save_same_format: PASS
-      reload_and_verify: PASS
-      export_csv: PASS
-      export_csv_multi_sheet: PASS
-      export_csv_in_memory: PASS
-      export_html: PASS
-      export_json: PASS
-      round_trip_edit: PASS
-      enumerate_sheets: PASS
-      get_column_headers: PASS
-      export_sheet_to_html: PASS
-      export_sheet_to_json: PASS
-      get_row_count: PASS
-      get_cell_count: PASS
-      save_after_edit_roundtrip: PASS
-      export_quality_edge_cases: PASS
-      add_sheet: PASS
-      export_sheet_to_markdown: PASS
-      get_row_values: PASS
-      rename_sheet: PASS
-      get_sheet_by_index: PASS
-      copy_sheet: PASS
-      delete_rows: PASS
-      insert_row: PASS
-      clear_sheet: PASS
-      get_column_values: PASS
-      insert_row_with_values: PASS
-      get_column_count: PASS
-      has_sheet: PASS
-      get_cell_data_type: PASS
-      find_cells_by_value: PASS
-      merge_cells: PASS
-      set_cell_formula: PASS
-      get_used_range: PASS
-      sort_rows: PASS
-      dotnet_tests: 547
-
-    python_foss_status:
-      parse: PASS
-      write: PASS
-      workbook_to_csv: PASS
-      workbook_get_cell_value: PASS
-      workbook_add_sheet: PASS
-      workbook_rename_sheet: PASS
-      workbook_remove_sheet: PASS
-      installed_workflow: PASS
-
-    dogfood_status:
-      fods_to_csv_python: IMPLEMENTED
-      fods_to_csv_dotnet: IMPLEMENTED
-      fods_to_html_dotnet: IMPLEMENTED
-      target_ff_library_for_csv_dotnet: "FormatFactory.Csv.CsvWriter"
-      target_ff_library_for_html_dotnet: "FormatFactory.Html.HtmlWriter"
-      notes: "FodsCsvExporter delegates to FormatFactory.Csv.CsvWriter (MWP sprint R119-prep); FodsHtmlExporter delegates to FormatFactory.Html.HtmlWriter (MWP sprint R119-prep); dogfood_status reconciled R120"
-
-    examples:
-      python: examples/python/fods/edit_save_export_fods.py
-      dotnet_csv: examples/net/fods/ExportCsvExample.cs
-      dotnet_html: examples/net/fods/ExportHtmlExample.cs
-
-    tests:
-      python: tests/python/fods/
-      dotnet: tests/net/fods/
-
-    blockers: []
-
-    next_action: "Continue product maintenance and extended API feature development"
-
-  - format: FODT
-    classification: POC_TARGET_CONFIRMED
-    full_name: "Flat OpenDocument Text"
-    python_source: src/python/fodt/
-    dotnet_source: src/net/fodt/
-    gates_passed: "1-11"
-    gate_11_status: APPROVED
-    gate_11_g11g: APPROVED_BY_BABAR_RAZA_2026_06_05
-    commercial_product_ready: false
-    commercial_product_ready_reason: "G11-G gate approved; awaiting (1) all 8 criteria in customer-readiness-checklist.md, (2) registry publication, (3) Babar Raza final sign-off on published package"
-    commercial_product_ready_criteria_ref: "docs/governance/customer-readiness-checklist.md"
-    gate_11_approved: true
-
-    dotnet_status:
-      load: PASS
-      inspect_object_model: PASS
-      edit_paragraphs: PASS
-      edit_headings: PASS
-      save_same_format: PASS
-      reload_and_verify: PASS
-      export_txt: PASS
-      export_markdown: PASS
-      export_html: PASS
-      text_search: PASS
-      char_count: PASS
-      save_to_file: PASS
-      enumerate_headings: PASS
-      get_paragraph_texts: PASS
-      get_word_count: PASS
-      get_char_count: PASS
-      get_heading_count: PASS
-      get_paragraph_count: PASS
-      replace_text_roundtrip: PASS
-      paragraph_persistence: PASS
-      append_paragraph: PASS
-      remove_paragraph: PASS
-      insert_paragraph: PASS
-      export_to_markdown: PASS
-      get_plain_text_range: PASS
-      set_paragraph_text: PASS
-      get_document_stats: PASS
-      export_to_html: PASS
-      get_paragraph_text_by_index: PASS
-      remove_all_paragraphs: PASS
-      get_text_between_paragraphs: PASS
-      get_heading_texts: PASS
-      export_to_plain_text_file: PASS
-      export_to_markdown_file: PASS
-      export_to_html_file: PASS
-      insert_heading: PASS
-      get_paragraph_style_name: PASS
-      remove_heading: PASS
-      get_document_outline: PASS
-      get_document_metadata: PASS
-      dotnet_tests: 520
-
-    python_foss_status:
-      parse: PASS
-      write: PASS
-      document_to_text: PASS
-      document_get_paragraph_text: PASS
-      document_append_paragraph: PASS
-      document_remove_paragraph: PASS
-      document_paragraph_count: PASS
-      installed_workflow: PASS
-
-    dogfood_status:
-      fodt_to_txt_python: IMPLEMENTED
-      fodt_to_txt_dotnet: IMPLEMENTED
-      fodt_to_markdown_dotnet: IMPLEMENTED
-      target_ff_library_for_txt_dotnet: "FormatFactory.Txt.TxtWriter"
-      target_ff_library_for_markdown_dotnet: "FormatFactory.Markdown.MarkdownWriter"
-      notes: "FodtTxtExporter delegates to FormatFactory.Txt.TxtWriter (MWP sprint); FodtMarkdownExporter delegates to FormatFactory.Markdown.MarkdownWriter (MWP sprint); dogfood_status reconciled R120"
-
-    examples:
-      python: examples/python/fodt/edit_save_fodt.py
-      dotnet_txt: examples/net/fodt/ExportTxtExample.cs
-      dotnet_markdown: examples/net/fodt/ExportMarkdownExample.cs
-      dotnet_html: examples/net/fodt/HtmlExportExample.cs
-
-    tests:
-      python: tests/python/fodt/
-      dotnet: tests/net/fodt/
-
-    blockers: []
-
-    next_action: "Continue product maintenance and extended API feature development"
-
-  - format: Netpbm
-    classification: POC_TARGET_CONFIRMED
-    full_name: "Netpbm image family (PBM/PGM/PPM)"
-    python_source:
-      pbm: src/python/pbm/
-      pgm: src/python/pgm/
-      ppm: src/python/ppm/
-    dotnet_source: "src/net/netpbm/ (R85 new)"
-    gates_passed: "1-10 (Python PBM/PGM/PPM); .NET R85 first slice"
-    gate_11_status: APPROVED
-    gate_11_g11g: APPROVED_BY_BABAR_RAZA_2026_06_05
-    commercial_product_ready: false
-    commercial_product_ready_reason: "G11-G gate approved; awaiting (1) all 8 criteria in customer-readiness-checklist.md, (2) registry publication, (3) Babar Raza final sign-off on published package"
-    commercial_product_ready_criteria_ref: "docs/governance/customer-readiness-checklist.md"
-    gate_11_approved: true
-
-    dotnet_status:
-      load_pbm: PASS
-      load_pgm: PASS
-      load_ppm: PASS
-      inspect_image_model: PASS
-      edit_pixels: PASS
-      save_same_format: PASS
-      export_pbm_to_pgm: PASS
-      export_pbm_to_ppm: PASS
-      export_pgm_to_ppm: PASS
-      export_ppm_to_pgm: PASS
-      flip_horizontal: PASS
-      flip_vertical: PASS
-      invert: PASS
-      rotate_90cw: PASS
-      crop: PASS
-      get_channel_stats: PASS
-      binary_write_p4p5p6: PASS
-      set_pixel_color: PASS
-      fill_region: PASS
-      copy_region: PASS
-      resize: PASS
-      to_grayscale: PASS
-      get_brightness: PASS
-      clone: PASS
-      save_to_file: PASS
-      to_color: PASS
-      rotate_270_cw: PASS
-      rotate_180: PASS
-      get_histogram: PASS
-      threshold: PASS
-      extract_channel: PASS
-      adjust_brightness: PASS
-      merge_horizontal: PASS
-      merge_vertical: PASS
-      adjust_contrast: PASS
-      flip_diagonal: PASS
-      overlay: PASS
-      equalize: PASS
-      convert_format: PASS
-      apply_gamma: PASS
-      posterize: PASS
-      solarize: PASS
-      sepia: PASS
-      sharpen: PASS
-      blur_box: PASS
-      tile: PASS
-      dotnet_tests: 423
-
-    python_foss_status:
-      parse_pbm: PASS
-      write_pbm: PASS
-      parse_pgm: PASS
-      write_pgm: PASS
-      parse_ppm: PASS
-      write_ppm: PASS
-      pbm_to_pgm_dogfood: PASS
-
-    dogfood_status:
-      pbm_to_pgm_python: IMPLEMENTED
-      pbm_to_ppm_python: IMPLEMENTED
-      pgm_to_ppm_python: IMPLEMENTED
-      ppm_to_pgm_python: IMPLEMENTED
-      dotnet_family_export: IMPLEMENTED
-      target_ff_library: "format-factory-pgm (write_pgm) for PBM→PGM export"
-
-    tests:
-      python: tests/python/pbm/ + tests/python/pgm/ + tests/python/ppm/
-      dotnet: "tests/net/netpbm/ (R85 new)"
-
-    examples:
-      dotnet: examples/net/netpbm/LoadEditSaveExample.cs
-
-    blockers: []
-
-    next_action: "Continue product maintenance and extended API feature development"
-
-# ============================================================
-# REDUCED/FOSS PYTHON PRODUCTS (3 targets)
-# ============================================================
-
+- format: FODS
+  classification: POC_TARGET_CONFIRMED
+  full_name: Flat OpenDocument Spreadsheet
+  python_source: src/python/fods/
+  dotnet_source: src/net/fods/
+  gates_passed: 1-11
+  gate_11_status: APPROVED
+  gate_11_g11g: APPROVED_BY_BABAR_RAZA_2026_06_05
+  commercial_product_ready: false
+  commercial_product_ready_reason: G11-G gate approved; awaiting (1) all 8 criteria
+    in customer-readiness-checklist.md, (2) registry publication, (3) Babar Raza final
+    sign-off on published package
+  commercial_product_ready_criteria_ref: docs/governance/customer-readiness-checklist.md
+  gate_11_approved: true
+  dotnet_status:
+    load: PASS
+    inspect_object_model: PASS
+    edit_cells: PASS
+    add_sheet: PASS
+    rename_sheet: PASS
+    remove_sheet: PASS
+    save_same_format: PASS
+    reload_and_verify: PASS
+    export_csv: PASS
+    export_csv_multi_sheet: PASS
+    export_csv_in_memory: PASS
+    export_html: PASS
+    export_json: PASS
+    round_trip_edit: PASS
+    enumerate_sheets: PASS
+    get_column_headers: PASS
+    export_sheet_to_html: PASS
+    export_sheet_to_json: PASS
+    get_row_count: PASS
+    get_cell_count: PASS
+    save_after_edit_roundtrip: PASS
+    export_quality_edge_cases: PASS
+    export_sheet_to_markdown: PASS
+    get_row_values: PASS
+    get_sheet_by_index: PASS
+    copy_sheet: PASS
+    delete_rows: PASS
+    insert_row: PASS
+    clear_sheet: PASS
+    get_column_values: PASS
+    insert_row_with_values: PASS
+    get_column_count: PASS
+    has_sheet: PASS
+    get_cell_data_type: PASS
+    find_cells_by_value: PASS
+    merge_cells: PASS
+    set_cell_formula: PASS
+    get_used_range: PASS
+    sort_rows: PASS
+    dotnet_tests: 618
+  python_foss_status:
+    parse: PASS
+    write: PASS
+    workbook_to_csv: PASS
+    workbook_get_cell_value: PASS
+    workbook_add_sheet: PASS
+    workbook_rename_sheet: PASS
+    workbook_remove_sheet: PASS
+    installed_workflow: PASS
+  dogfood_status:
+    fods_to_csv_python: IMPLEMENTED
+    fods_to_csv_dotnet: IMPLEMENTED
+    fods_to_html_dotnet: IMPLEMENTED
+    target_ff_library_for_csv_dotnet: FormatFactory.Csv.CsvWriter
+    target_ff_library_for_html_dotnet: FormatFactory.Html.HtmlWriter
+    notes: FodsCsvExporter delegates to FormatFactory.Csv.CsvWriter (MWP sprint R119-prep);
+      FodsHtmlExporter delegates to FormatFactory.Html.HtmlWriter (MWP sprint R119-prep);
+      dogfood_status reconciled R120
+  examples:
+    python: examples/python/fods/edit_save_export_fods.py
+    dotnet_csv: examples/net/fods/ExportCsvExample.cs
+    dotnet_html: examples/net/fods/ExportHtmlExample.cs
+  tests:
+    python: tests/python/fods/
+    dotnet: tests/net/fods/
+  blockers: []
+  next_action: Continue product maintenance and extended API feature development
+- format: FODT
+  classification: POC_TARGET_CONFIRMED
+  full_name: Flat OpenDocument Text
+  python_source: src/python/fodt/
+  dotnet_source: src/net/fodt/
+  gates_passed: 1-11
+  gate_11_status: APPROVED
+  gate_11_g11g: APPROVED_BY_BABAR_RAZA_2026_06_05
+  commercial_product_ready: false
+  commercial_product_ready_reason: G11-G gate approved; awaiting (1) all 8 criteria
+    in customer-readiness-checklist.md, (2) registry publication, (3) Babar Raza final
+    sign-off on published package
+  commercial_product_ready_criteria_ref: docs/governance/customer-readiness-checklist.md
+  gate_11_approved: true
+  dotnet_status:
+    load: PASS
+    inspect_object_model: PASS
+    edit_paragraphs: PASS
+    edit_headings: PASS
+    save_same_format: PASS
+    reload_and_verify: PASS
+    export_txt: PASS
+    export_markdown: PASS
+    export_html: PASS
+    text_search: PASS
+    char_count: PASS
+    save_to_file: PASS
+    enumerate_headings: PASS
+    get_paragraph_texts: PASS
+    get_word_count: PASS
+    get_char_count: PASS
+    get_heading_count: PASS
+    get_paragraph_count: PASS
+    replace_text_roundtrip: PASS
+    paragraph_persistence: PASS
+    append_paragraph: PASS
+    remove_paragraph: PASS
+    insert_paragraph: PASS
+    export_to_markdown: PASS
+    get_plain_text_range: PASS
+    set_paragraph_text: PASS
+    get_document_stats: PASS
+    export_to_html: PASS
+    get_paragraph_text_by_index: PASS
+    remove_all_paragraphs: PASS
+    get_text_between_paragraphs: PASS
+    get_heading_texts: PASS
+    export_to_plain_text_file: PASS
+    export_to_markdown_file: PASS
+    export_to_html_file: PASS
+    insert_heading: PASS
+    get_paragraph_style_name: PASS
+    remove_heading: PASS
+    get_document_outline: PASS
+    get_document_metadata: PASS
+    dotnet_tests: 568
+  python_foss_status:
+    parse: PASS
+    write: PASS
+    document_to_text: PASS
+    document_get_paragraph_text: PASS
+    document_append_paragraph: PASS
+    document_remove_paragraph: PASS
+    document_paragraph_count: PASS
+    installed_workflow: PASS
+  dogfood_status:
+    fodt_to_txt_python: IMPLEMENTED
+    fodt_to_txt_dotnet: IMPLEMENTED
+    fodt_to_markdown_dotnet: IMPLEMENTED
+    target_ff_library_for_txt_dotnet: FormatFactory.Txt.TxtWriter
+    target_ff_library_for_markdown_dotnet: FormatFactory.Markdown.MarkdownWriter
+    notes: FodtTxtExporter delegates to FormatFactory.Txt.TxtWriter (MWP sprint);
+      FodtMarkdownExporter delegates to FormatFactory.Markdown.MarkdownWriter (MWP
+      sprint); dogfood_status reconciled R120
+  examples:
+    python: examples/python/fodt/edit_save_fodt.py
+    dotnet_txt: examples/net/fodt/ExportTxtExample.cs
+    dotnet_markdown: examples/net/fodt/ExportMarkdownExample.cs
+    dotnet_html: examples/net/fodt/HtmlExportExample.cs
+  tests:
+    python: tests/python/fodt/
+    dotnet: tests/net/fodt/
+  blockers: []
+  next_action: Continue product maintenance and extended API feature development
+- format: Netpbm
+  classification: POC_TARGET_CONFIRMED
+  full_name: Netpbm image family (PBM/PGM/PPM)
+  python_source:
+    pbm: src/python/pbm/
+    pgm: src/python/pgm/
+    ppm: src/python/ppm/
+  dotnet_source: src/net/netpbm/ (R85 new)
+  gates_passed: 1-10 (Python PBM/PGM/PPM); .NET R85 first slice
+  gate_11_status: APPROVED
+  gate_11_g11g: APPROVED_BY_BABAR_RAZA_2026_06_05
+  commercial_product_ready: false
+  commercial_product_ready_reason: G11-G gate approved; awaiting (1) all 8 criteria
+    in customer-readiness-checklist.md, (2) registry publication, (3) Babar Raza final
+    sign-off on published package
+  commercial_product_ready_criteria_ref: docs/governance/customer-readiness-checklist.md
+  gate_11_approved: true
+  dotnet_status:
+    load_pbm: PASS
+    load_pgm: PASS
+    load_ppm: PASS
+    inspect_image_model: PASS
+    edit_pixels: PASS
+    save_same_format: PASS
+    export_pbm_to_pgm: PASS
+    export_pbm_to_ppm: PASS
+    export_pgm_to_ppm: PASS
+    export_ppm_to_pgm: PASS
+    flip_horizontal: PASS
+    flip_vertical: PASS
+    invert: PASS
+    rotate_90cw: PASS
+    crop: PASS
+    get_channel_stats: PASS
+    binary_write_p4p5p6: PASS
+    set_pixel_color: PASS
+    fill_region: PASS
+    copy_region: PASS
+    resize: PASS
+    to_grayscale: PASS
+    get_brightness: PASS
+    clone: PASS
+    save_to_file: PASS
+    to_color: PASS
+    rotate_270_cw: PASS
+    rotate_180: PASS
+    get_histogram: PASS
+    threshold: PASS
+    extract_channel: PASS
+    adjust_brightness: PASS
+    merge_horizontal: PASS
+    merge_vertical: PASS
+    adjust_contrast: PASS
+    flip_diagonal: PASS
+    overlay: PASS
+    equalize: PASS
+    convert_format: PASS
+    apply_gamma: PASS
+    posterize: PASS
+    solarize: PASS
+    sepia: PASS
+    sharpen: PASS
+    blur_box: PASS
+    tile: PASS
+    dotnet_tests: 423
+  python_foss_status:
+    parse_pbm: PASS
+    write_pbm: PASS
+    parse_pgm: PASS
+    write_pgm: PASS
+    parse_ppm: PASS
+    write_ppm: PASS
+    pbm_to_pgm_dogfood: PASS
+  dogfood_status:
+    pbm_to_pgm_python: IMPLEMENTED
+    pbm_to_ppm_python: IMPLEMENTED
+    pgm_to_ppm_python: IMPLEMENTED
+    ppm_to_pgm_python: IMPLEMENTED
+    dotnet_family_export: IMPLEMENTED
+    target_ff_library: format-factory-pgm (write_pgm) for PBM→PGM export
+  tests:
+    python: tests/python/pbm/ + tests/python/pgm/ + tests/python/ppm/
+    dotnet: tests/net/netpbm/ (R85 new)
+  examples:
+    dotnet: examples/net/netpbm/LoadEditSaveExample.cs
+  blockers: []
+  next_action: Continue product maintenance and extended API feature development
 foss_reduced_products:
-
-  - format: ZST
-    classification: POC_TARGET_CONFIRMED
-    full_name: "Zstandard compressed format"
-    python_source: src/python/zst/
-    gates_passed: "1-10"
-    gate_10_status: local_release_candidate_ready
-    commercial_product_ready: false
-
-    python_status:
-      compress_bytes: PASS
-      compress_file: PASS
-      decompress_bytes: PASS
-      decompress_file: PASS
-      probe: PASS
-      validate: PASS
-      installed_workflow: PASS
-
-    dogfood_status:
-      notes: "ZST is compression; no format-to-format export applies. zstandard is a PyPI package dependency (pip install zstandard). Online install: pip install format-factory-zst. Offline: bundle zstandard wheel alongside. 267/267 tests PASS in connected env."
-      dependency_mode: ZST_PYPI_DEPENDENCY_DOCUMENTED_ONLINE_INSTALL_PROVEN
-      target_ff_library: "N/A (compression codec)"
-
-    examples:
-      python: examples/python/zst/compress_decompress_file.py
-
-    tests:
-      python: tests/python/zst/
-
-    blockers: []
-
-    next_action: "Continue FOSS product deepening and additional compression API coverage"
-
-  - format: Netpbm
-    classification: POC_TARGET_CONFIRMED
-    full_name: "Netpbm family (PBM/PGM/PPM) — Python FOSS"
-    python_source:
-      pbm: src/python/pbm/
-      pgm: src/python/pgm/
-      ppm: src/python/ppm/
-    gates_passed: "1-10 (all three)"
-    commercial_product_ready: false
-
-    python_status:
-      parse_pbm: PASS
-      write_pbm: PASS
-      pixel_stats_pbm: PASS
-      parse_pgm: PASS
-      write_pgm: PASS
-      pixel_stats_pgm: PASS
-      parse_ppm: PASS
-      write_ppm: PASS
-      pixel_stats_ppm: PASS
-      pbm_to_pgm_dogfood: PASS
-
-    dogfood_status:
-      pbm_to_pgm: IMPLEMENTED
-      pbm_to_ppm: IMPLEMENTED
-      pgm_to_ppm: IMPLEMENTED
-      ppm_to_pgm: IMPLEMENTED
-      target_ff_library: "format-factory-pgm write_pgm"
-      notes: "Convert PBM 1-bit image to PGM grayscale using FF pgm writer"
-
-    tests:
-      python: tests/python/pbm/ + tests/python/pgm/ + tests/python/ppm/
-
-    blockers: []
-
-    next_action: "Continue FOSS product deepening and additional Python API coverage"
-
-  - format: SYLK
-    classification: POC_TARGET_CONFIRMED
-    full_name: "Symbolic Link (SYLK) spreadsheet"
-    python_source: src/python/sylk/
-    gates_passed: "1-10"
-    scope: "read + write + CSV export + cell/row/column access + row/column count (write_sylk R115+; get_row_count, get_column_count, get_cell_value, get_row_values, get_column_values; 291+ tests PASS)"
-    commercial_product_ready: false
-
-    python_status:
-      parse_sylk: PASS
-      sylk_to_csv: PASS
-      write_sylk: PASS
-      get_cell_value: PASS
-      get_row_values: PASS
-      get_column_values: PASS
-      get_row_count: PASS
-      get_column_count: PASS
-      installed_workflow: PASS
-
-    dogfood_status:
-      sylk_to_csv: IMPLEMENTED
-      target_ff_library: "format-factory-sylk sylk_to_csv"
-      notes: "SYLK→CSV export implemented R84; no external library needed; write_sylk implemented (same-format save); get_cell_value, get_row_values, get_column_values, get_row_count, get_column_count verified 2026-06-18 (test_r156_sylk_accessors_mutation.py 18 tests pass)"
-
-    tests:
-      python: tests/python/sylk/
-      python_count: 309
-
-    blockers: []
-
-    next_action: "Continue FOSS product deepening — cell iteration, set_cell_value; package install proof"
-
-  - format: TOML
-    classification: POC_TARGET_CONFIRMED
-    full_name: "Tom's Obvious, Minimal Language (TOML) configuration format"
-    python_source: src/python/toml/
-    gates_passed: "1-4 (Python FOSS track)"
-    scope: "read + write + value access + merge + JSON export + set/delete (11 functions; 61 tests PASS)"
-    commercial_product_ready: false
-
-    python_status:
-      load_toml: PASS
-      write_toml: PASS
-      probe_toml: PASS
-      get_keys: PASS
-      roundtrip: PASS
-      get_value: PASS
-      merge_toml: PASS
-      to_json_str: PASS
-      set_value: PASS
-      list_sections: PASS
-      delete_key: PASS
-
-    dogfood_status:
-      toml_to_json: IMPLEMENTED
-      target_ff_library: "format-factory-toml to_json_str"
-      notes: "TOML→JSON export verified 2026-06-18; to_json_str(file_path) returns pretty-printed JSON string; no external library needed"
-
-    tests:
-      python: tests/python/toml/
-      python_count: 61
-
-    blockers: []
-
-    next_action: "dogfood export via TOML config roundtrip; package install proof"
-
-  - format: NDJSON
-    classification: POC_TARGET_CONFIRMED
-    full_name: "Newline-Delimited JSON (NDJSON/JSONL)"
-    python_source: src/python/ndjson/
-    gates_passed: "1-4 (Python FOSS track)"
-    scope: "read + write + CSV export + field stats + filtering/grouping/aggregation (244 tests PASS)"
-    commercial_product_ready: false
-
-    python_status:
-      load_ndjson: PASS
-      write_ndjson: PASS
-      export_to_csv: PASS
-      write_csv: PASS
-      field_stats: PASS
-      count_records: PASS
-      filter_records: PASS
-      group_by: PASS
-      installed_workflow: PASS
-
-    dogfood_status:
-      export_to_csv: IMPLEMENTED
-      write_csv: IMPLEMENTED
-      target_ff_library: "format-factory-ndjson export_to_csv / write_csv"
-      notes: "NDJSON→CSV export via export_to_csv (returns string) or write_csv (writes file). Sample output in reports/product-progress-rnext/samples/ndjson-write-csv-sample.csv"
-
-    tests:
-      python: tests/python/ndjson/
-      python_count: 244
-
-    blockers: []
-
-    next_action: "Dogfood pipeline integration"
-
-  - format: FODG
-    classification: POC_TARGET_CONFIRMED
-    full_name: "Flat OpenDocument Graphics (ODF Drawing)"
-    python_source: src/python/fodg/
-    gates_passed: "1-4 (Python FOSS track)"
-    scope: "read + write + text/CSV/JSON export + page ops + shape ops (29 functions; 24 test files)"
-    commercial_product_ready: false
-
-    python_status:
-      load: PASS
-      write_fodg: PASS
-      create_fodg: PASS
-      export_to_txt: PASS
-      export_to_csv: PASS
-      export_to_json: PASS
-      probe_fodg: PASS
-      roundtrip: PASS
-      get_page_count: PASS
-      get_shapes: PASS
-      get_text_shapes: PASS
-      add_page: PASS
-      remove_page: PASS
-      rename_page: PASS
-      duplicate_page: PASS
-      swap_pages: PASS
-      clear_page: PASS
-      page_names: PASS
-      has_page: PASS
-      get_page_by_name: PASS
-      get_page_index: PASS
-      get_all_text: PASS
-      count_shapes: PASS
-      installed_workflow: PASS
-
-    dogfood_status:
-      export_to_csv: IMPLEMENTED
-      export_to_txt: IMPLEMENTED
-      export_to_json: IMPLEMENTED
-      target_ff_library: "format-factory-fodg export_to_csv / export_to_txt / export_to_json"
-      notes: "FODG→CSV/TXT/JSON export verified 2026-06-18; export_to_csv('file.fodg') returns shape/text table as CSV string"
-
-    tests:
-      python: tests/python/fodg/
-      python_count: 24
-
-    blockers: []
-
-    next_action: "SVG export investigation"
-
-  - format: TSV
-    classification: POC_TARGET_CONFIRMED
-    full_name: "Tab-Separated Values"
-    python_source: src/python/tsv/
-    gates_passed: "1-4 (Python FOSS track)"
-    scope: "read + write + column/row ops + sort + filter + merge + stats (32 functions; 35 test files)"
-    commercial_product_ready: false
-
-    python_status:
-      load_tsv: PASS
-      write_tsv: PASS
-      write_tsv_strict: PASS
-      get_headers: PASS
-      get_column: PASS
-      get_row: PASS
-      filter_rows: PASS
-      sort_rows: PASS
-      count_rows: PASS
-      to_csv: PASS
-      deduplicate_rows: PASS
-      get_row_by_key: PASS
-      add_column: PASS
-      rename_column: PASS
-      drop_column: PASS
-      sample_rows: PASS
-      sum_column_tsv: PASS
-      merge_tsv: PASS
-      min_column_tsv: PASS
-      max_column_tsv: PASS
-      get_column_values: PASS
-      validate_headers: PASS
-      column_count: PASS
-      installed_workflow: PASS
-
-    dogfood_status:
-      tsv_to_csv: IMPLEMENTED
-      target_ff_library: "format-factory-tsv to_csv"
-      notes: "TSV→CSV export verified 2026-06-18; to_csv(file_path) returns CSV string with header row preserved; no external library needed"
-
-    tests:
-      python: tests/python/tsv/
-      python_count: 35
-
-    blockers: []
-
-    next_action: "Dogfood pipeline integration"
-
-  - format: ABW
-    classification: POC_TARGET_CONFIRMED
-    full_name: "AbiWord document format"
-    python_source: src/python/abw/
-    gates_passed: "1-4 (Python FOSS track)"
-    scope: "read + write + text/CSV/Markdown export + paragraph ops + word analysis (42 functions; 34 test files)"
-    commercial_product_ready: false
-
-    python_status:
-      load: PASS
-      write_abw: PASS
-      export_to_txt: PASS
-      export_to_csv: PASS
-      export_to_json: PASS
-      export_to_markdown: PASS
-      get_paragraphs: PASS
-      get_paragraph: PASS
-      search_paragraph: PASS
-      search_replace_paragraph: PASS
-      append_paragraph: PASS
-      split_paragraphs: PASS
-      join_paragraphs: PASS
-      reverse_paragraphs: PASS
-      truncate_paragraphs: PASS
-      word_frequency: PASS
-      get_unique_words: PASS
-      get_word_count: PASS
-      count_words: PASS
-      get_char_count: PASS
-      merge_abw: PASS
-      roundtrip: PASS
-      probe_abw: PASS
-      has_paragraph: PASS
-      first_paragraph: PASS
-      last_paragraph: PASS
-      paragraph_at: PASS
-      paragraph_lengths: PASS
-      word_wrap: PASS
-      replace_in_paragraphs: PASS
-      installed_workflow: PASS
-
-    dogfood_status:
-      export_to_csv: IMPLEMENTED
-      export_to_txt: IMPLEMENTED
-      export_to_markdown: IMPLEMENTED
-      export_to_json: IMPLEMENTED
-      target_ff_library: "format-factory-abw export_to_csv / export_to_txt / export_to_markdown"
-      notes: "ABW→CSV/TXT/Markdown/JSON export verified 2026-06-18; all export functions take file path directly; export_to_csv returns paragraph-per-row CSV"
-
-    tests:
-      python: tests/python/abw/
-      python_count: 34
-
-    blockers: []
-
-    next_action: "Dogfood pipeline integration"
-
-  - format: Gnumeric
-    classification: POC_TARGET_CONFIRMED
-    full_name: "Gnumeric XML spreadsheet format"
-    python_source: src/python/gnumeric/
-    gates_passed: "1-4 (Python FOSS track)"
-    scope: "read + write + cell/row/column/sheet ops + roundtrip (44 functions; 30 test files)"
-    commercial_product_ready: false
-
-    python_status:
-      load: PASS
-      write_gnumeric: PASS
-      export_to_csv: PASS
-      create_gnumeric: PASS
-      get_cell_value: PASS
-      set_cell_value: PASS
-      get_row_values: PASS
-      get_column_values: PASS
-      get_sheet_names: PASS
-      get_sheet_by_name: PASS
-      add_sheet: PASS
-      copy_sheet: PASS
-      delete_sheet: PASS
-      rename_sheet: PASS
-      get_row: PASS
-      get_column: PASS
-      roundtrip: PASS
-      probe_gnumeric: PASS
-      clear_cell: PASS
-      read_cell: PASS
-      get_row_count: PASS
-      get_column_count: PASS
-      count_nonempty_cells: PASS
-      get_sheet_index: PASS
-      sum_column: PASS
-      fill_column: PASS
-      sum_row: PASS
-      get_all_values: PASS
-      clear_sheet: PASS
-      get_sheet_as_rows: PASS
-      fill_row: PASS
-      sheet_names: PASS
-      row_count: PASS
-      installed_workflow: PASS
-
-    dogfood_status:
-      export_to_csv: IMPLEMENTED
-      target_ff_library: "format-factory-gnumeric export_to_csv"
-      notes: "Gnumeric→CSV export verified 2026-06-18; export_to_csv(file_path) returns CSV string with cell values; active sheet exported"
-
-    tests:
-      python: tests/python/gnumeric/
-      python_count: 30
-
-    blockers: []
-
-    next_action: "Dogfood pipeline integration"
-
-# ============================================================
-# ON-HOLD CANDIDATES
-# ============================================================
-
+- format: ZST
+  classification: POC_TARGET_CONFIRMED
+  full_name: Zstandard compressed format
+  python_source: src/python/zst/
+  gates_passed: 1-10
+  gate_10_status: local_release_candidate_ready
+  commercial_product_ready: false
+  python_status:
+    compress_bytes: PASS
+    compress_file: PASS
+    decompress_bytes: PASS
+    decompress_file: PASS
+    probe: PASS
+    validate: PASS
+    installed_workflow: PASS
+  dogfood_status:
+    notes: 'ZST is compression; no format-to-format export applies. zstandard is a
+      PyPI package dependency (pip install zstandard). Online install: pip install
+      format-factory-zst. Offline: bundle zstandard wheel alongside. 267/267 tests
+      PASS in connected env.'
+    dependency_mode: ZST_PYPI_DEPENDENCY_DOCUMENTED_ONLINE_INSTALL_PROVEN
+    target_ff_library: N/A (compression codec)
+  examples:
+    python: examples/python/zst/compress_decompress_file.py
+  tests:
+    python: tests/python/zst/
+  blockers: []
+  next_action: Continue FOSS product deepening and additional compression API coverage
+- format: Netpbm
+  classification: POC_TARGET_CONFIRMED
+  full_name: Netpbm family (PBM/PGM/PPM) — Python FOSS
+  python_source:
+    pbm: src/python/pbm/
+    pgm: src/python/pgm/
+    ppm: src/python/ppm/
+  gates_passed: 1-10 (all three)
+  commercial_product_ready: false
+  python_status:
+    parse_pbm: PASS
+    write_pbm: PASS
+    pixel_stats_pbm: PASS
+    parse_pgm: PASS
+    write_pgm: PASS
+    pixel_stats_pgm: PASS
+    parse_ppm: PASS
+    write_ppm: PASS
+    pixel_stats_ppm: PASS
+    pbm_to_pgm_dogfood: PASS
+  dogfood_status:
+    pbm_to_pgm: IMPLEMENTED
+    pbm_to_ppm: IMPLEMENTED
+    pgm_to_ppm: IMPLEMENTED
+    ppm_to_pgm: IMPLEMENTED
+    target_ff_library: format-factory-pgm write_pgm
+    notes: Convert PBM 1-bit image to PGM grayscale using FF pgm writer
+  tests:
+    python: tests/python/pbm/ + tests/python/pgm/ + tests/python/ppm/
+  blockers: []
+  next_action: Continue FOSS product deepening and additional Python API coverage
+- format: SYLK
+  classification: POC_TARGET_CONFIRMED
+  full_name: Symbolic Link (SYLK) spreadsheet
+  python_source: src/python/sylk/
+  gates_passed: 1-10
+  scope: read + write + CSV export + cell/row/column access + row/column count (write_sylk
+    R115+; get_row_count, get_column_count, get_cell_value, get_row_values, get_column_values;
+    291+ tests PASS)
+  commercial_product_ready: false
+  python_status:
+    parse_sylk: PASS
+    sylk_to_csv: PASS
+    write_sylk: PASS
+    get_cell_value: PASS
+    get_row_values: PASS
+    get_column_values: PASS
+    get_row_count: PASS
+    get_column_count: PASS
+    installed_workflow: PASS
+  dogfood_status:
+    sylk_to_csv: IMPLEMENTED
+    target_ff_library: format-factory-sylk sylk_to_csv
+    notes: SYLK→CSV export implemented R84; no external library needed; write_sylk
+      implemented (same-format save); get_cell_value, get_row_values, get_column_values,
+      get_row_count, get_column_count verified 2026-06-18 (test_r156_sylk_accessors_mutation.py
+      18 tests pass)
+  tests:
+    python: tests/python/sylk/
+    python_count: 309
+  blockers: []
+  next_action: Continue FOSS product deepening — cell iteration, set_cell_value;
+    package install proof
+- format: TOML
+  classification: POC_TARGET_CONFIRMED
+  full_name: Tom's Obvious, Minimal Language (TOML) configuration format
+  python_source: src/python/toml/
+  gates_passed: 1-4 (Python FOSS track)
+  scope: read + write + value access + merge + JSON export + set/delete (11 functions;
+    61 tests PASS)
+  commercial_product_ready: false
+  python_status:
+    load_toml: PASS
+    write_toml: PASS
+    probe_toml: PASS
+    get_keys: PASS
+    roundtrip: PASS
+    get_value: PASS
+    merge_toml: PASS
+    to_json_str: PASS
+    set_value: PASS
+    list_sections: PASS
+    delete_key: PASS
+  dogfood_status:
+    toml_to_json: IMPLEMENTED
+    target_ff_library: format-factory-toml to_json_str
+    notes: TOML→JSON export verified 2026-06-18; to_json_str(file_path) returns
+      pretty-printed JSON string; no external library needed
+  tests:
+    python: tests/python/toml/
+    python_count: 61
+  blockers: []
+  next_action: dogfood export via TOML config roundtrip; package install proof
+- format: NDJSON
+  classification: POC_TARGET_CONFIRMED
+  full_name: Newline-Delimited JSON (NDJSON/JSONL)
+  python_source: src/python/ndjson/
+  gates_passed: 1-4 (Python FOSS track)
+  scope: read + write + CSV export + field stats + filtering/grouping/aggregation
+    (244 tests PASS)
+  commercial_product_ready: false
+  python_status:
+    load_ndjson: PASS
+    write_ndjson: PASS
+    export_to_csv: PASS
+    write_csv: PASS
+    field_stats: PASS
+    count_records: PASS
+    filter_records: PASS
+    group_by: PASS
+    installed_workflow: PASS
+  dogfood_status:
+    export_to_csv: IMPLEMENTED
+    write_csv: IMPLEMENTED
+    target_ff_library: format-factory-ndjson export_to_csv / write_csv
+    notes: NDJSON→CSV export via export_to_csv (returns string) or write_csv (writes
+      file). Sample output in reports/product-progress-rnext/samples/ndjson-write-csv-sample.csv
+  tests:
+    python: tests/python/ndjson/
+    python_count: 244
+  blockers: []
+  next_action: Dogfood pipeline integration
+- format: FODG
+  classification: POC_TARGET_CONFIRMED
+  full_name: Flat OpenDocument Graphics (ODF Drawing)
+  python_source: src/python/fodg/
+  gates_passed: 1-4 (Python FOSS track)
+  scope: read + write + text/CSV/JSON export + page ops + shape ops (29 functions;
+    24 test files)
+  commercial_product_ready: false
+  python_status:
+    load: PASS
+    write_fodg: PASS
+    create_fodg: PASS
+    export_to_txt: PASS
+    export_to_csv: PASS
+    export_to_json: PASS
+    probe_fodg: PASS
+    roundtrip: PASS
+    get_page_count: PASS
+    get_shapes: PASS
+    get_text_shapes: PASS
+    add_page: PASS
+    remove_page: PASS
+    rename_page: PASS
+    duplicate_page: PASS
+    swap_pages: PASS
+    clear_page: PASS
+    page_names: PASS
+    has_page: PASS
+    get_page_by_name: PASS
+    get_page_index: PASS
+    get_all_text: PASS
+    count_shapes: PASS
+    installed_workflow: PASS
+  dogfood_status:
+    export_to_csv: IMPLEMENTED
+    export_to_txt: IMPLEMENTED
+    export_to_json: IMPLEMENTED
+    target_ff_library: format-factory-fodg export_to_csv / export_to_txt / export_to_json
+    notes: FODG→CSV/TXT/JSON export verified 2026-06-18; export_to_csv('file.fodg')
+      returns shape/text table as CSV string
+  tests:
+    python: tests/python/fodg/
+    python_count: 24
+  blockers: []
+  next_action: SVG export investigation
+- format: TSV
+  classification: POC_TARGET_CONFIRMED
+  full_name: Tab-Separated Values
+  python_source: src/python/tsv/
+  gates_passed: 1-4 (Python FOSS track)
+  scope: read + write + column/row ops + sort + filter + merge + stats (32 functions;
+    35 test files)
+  commercial_product_ready: false
+  python_status:
+    load_tsv: PASS
+    write_tsv: PASS
+    write_tsv_strict: PASS
+    get_headers: PASS
+    get_column: PASS
+    get_row: PASS
+    filter_rows: PASS
+    sort_rows: PASS
+    count_rows: PASS
+    to_csv: PASS
+    deduplicate_rows: PASS
+    get_row_by_key: PASS
+    add_column: PASS
+    rename_column: PASS
+    drop_column: PASS
+    sample_rows: PASS
+    sum_column_tsv: PASS
+    merge_tsv: PASS
+    min_column_tsv: PASS
+    max_column_tsv: PASS
+    get_column_values: PASS
+    validate_headers: PASS
+    column_count: PASS
+    installed_workflow: PASS
+  dogfood_status:
+    tsv_to_csv: IMPLEMENTED
+    target_ff_library: format-factory-tsv to_csv
+    notes: TSV→CSV export verified 2026-06-18; to_csv(file_path) returns CSV string
+      with header row preserved; no external library needed
+  tests:
+    python: tests/python/tsv/
+    python_count: 35
+  blockers: []
+  next_action: Dogfood pipeline integration
+- format: ABW
+  classification: POC_TARGET_CONFIRMED
+  full_name: AbiWord document format
+  python_source: src/python/abw/
+  gates_passed: 1-4 (Python FOSS track)
+  scope: read + write + text/CSV/Markdown export + paragraph ops + word analysis (42
+    functions; 34 test files)
+  commercial_product_ready: false
+  python_status:
+    load: PASS
+    write_abw: PASS
+    export_to_txt: PASS
+    export_to_csv: PASS
+    export_to_json: PASS
+    export_to_markdown: PASS
+    get_paragraphs: PASS
+    get_paragraph: PASS
+    search_paragraph: PASS
+    search_replace_paragraph: PASS
+    append_paragraph: PASS
+    split_paragraphs: PASS
+    join_paragraphs: PASS
+    reverse_paragraphs: PASS
+    truncate_paragraphs: PASS
+    word_frequency: PASS
+    get_unique_words: PASS
+    get_word_count: PASS
+    count_words: PASS
+    get_char_count: PASS
+    merge_abw: PASS
+    roundtrip: PASS
+    probe_abw: PASS
+    has_paragraph: PASS
+    first_paragraph: PASS
+    last_paragraph: PASS
+    paragraph_at: PASS
+    paragraph_lengths: PASS
+    word_wrap: PASS
+    replace_in_paragraphs: PASS
+    installed_workflow: PASS
+  dogfood_status:
+    export_to_csv: IMPLEMENTED
+    export_to_txt: IMPLEMENTED
+    export_to_markdown: IMPLEMENTED
+    export_to_json: IMPLEMENTED
+    target_ff_library: format-factory-abw export_to_csv / export_to_txt / export_to_markdown
+    notes: ABW→CSV/TXT/Markdown/JSON export verified 2026-06-18; all export functions
+      take file path directly; export_to_csv returns paragraph-per-row CSV
+  tests:
+    python: tests/python/abw/
+    python_count: 34
+  blockers: []
+  next_action: Dogfood pipeline integration
+- format: Gnumeric
+  classification: POC_TARGET_CONFIRMED
+  full_name: Gnumeric XML spreadsheet format
+  python_source: src/python/gnumeric/
+  gates_passed: 1-4 (Python FOSS track)
+  scope: read + write + cell/row/column/sheet ops + roundtrip (44 functions; 30 test
+    files)
+  commercial_product_ready: false
+  python_status:
+    load: PASS
+    write_gnumeric: PASS
+    export_to_csv: PASS
+    create_gnumeric: PASS
+    get_cell_value: PASS
+    set_cell_value: PASS
+    get_row_values: PASS
+    get_column_values: PASS
+    get_sheet_names: PASS
+    get_sheet_by_name: PASS
+    add_sheet: PASS
+    copy_sheet: PASS
+    delete_sheet: PASS
+    rename_sheet: PASS
+    get_row: PASS
+    get_column: PASS
+    roundtrip: PASS
+    probe_gnumeric: PASS
+    clear_cell: PASS
+    read_cell: PASS
+    get_row_count: PASS
+    get_column_count: PASS
+    count_nonempty_cells: PASS
+    get_sheet_index: PASS
+    sum_column: PASS
+    fill_column: PASS
+    sum_row: PASS
+    get_all_values: PASS
+    clear_sheet: PASS
+    get_sheet_as_rows: PASS
+    fill_row: PASS
+    sheet_names: PASS
+    row_count: PASS
+    installed_workflow: PASS
+  dogfood_status:
+    export_to_csv: IMPLEMENTED
+    target_ff_library: format-factory-gnumeric export_to_csv
+    notes: Gnumeric→CSV export verified 2026-06-18; export_to_csv(file_path) returns
+      CSV string with cell values; active sheet exported
+  tests:
+    python: tests/python/gnumeric/
+    python_count: 30
+  blockers: []
+  next_action: Dogfood pipeline integration
 on_hold:
-
-  - format: QOI
-    classification: HOLD
-    full_name: "Quite OK Image Format"
-    python_source: src/python/qoi/
-    gates_passed: "1-7 (Python)"
-    reason: "Python Gate 7 exists; .NET implementation complexity higher than Netpbm for first .NET slice; defer until Netpbm .NET POC complete"
-    reconsider_when: "Netpbm .NET POC complete and third commercial slot opens"
-
-  - format: DIF
-    classification: HOLD
-    full_name: "Data Interchange Format"
-    python_source: src/python/dif/
-    gates_passed: "1-10"
-    reason: "Overlaps with SYLK as spreadsheet-lite FOSS; defer until SYLK POC complete"
-    reconsider_when: "SYLK POC complete"
-
-# ============================================================
-# SUMMARY
-# ============================================================
-
+- format: QOI
+  classification: HOLD
+  full_name: Quite OK Image Format
+  python_source: src/python/qoi/
+  gates_passed: 1-7 (Python)
+  reason: Python Gate 7 exists; .NET implementation complexity higher than Netpbm
+    for first .NET slice; defer until Netpbm .NET POC complete
+  reconsider_when: Netpbm .NET POC complete and third commercial slot opens
+- format: DIF
+  classification: HOLD
+  full_name: Data Interchange Format
+  python_source: src/python/dif/
+  gates_passed: 1-10
+  reason: Overlaps with SYLK as spreadsheet-lite FOSS; defer until SYLK POC complete
+  reconsider_when: SYLK POC complete
 summary:
   commercial_net_confirmed: 3
   foss_reduced_confirmed: 8
   on_hold: 2
   poc_targets_total: 11
-
   commercial_product_ready: false
   gate_11_approved: false
   gate_8_approved_for_ods_odt_qoi_xcf_dif_ppm: false

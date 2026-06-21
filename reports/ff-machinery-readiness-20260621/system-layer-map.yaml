@@ -1,0 +1,357 @@
+# Format Factory — System Layer Map
+# Run: ff-machinery-readiness-20260621-3024f68c
+# Generated: 2026-06-21
+# Mission: FF-MACHINERY-READINESS-AUDIT-001
+
+---
+layer_map_version: "1.0"
+generated_at: "2026-06-21"
+run_id: ff-machinery-readiness-20260621-3024f68c
+
+layers:
+
+- layer_id: L01
+  name: Specification Acquisition
+  paths:
+    - acquisition-packs/{format}/
+    - docs/specification-normalization.md
+    - tools/spec-normalize/normalize_pdf.py
+    - tools/spec-normalize/build_citation_map.py
+    - tools/spec-normalize/validate_normalized_spec.py
+  authority: TC-0012 (COMPLETED 2026-06-18)
+  inputs: [raw PDF/HTML specifications]
+  producers: [normalize_pdf.py, build_citation_map.py]
+  outputs:
+    - .local/spec-cache/{format}/{version}/normalized/text.txt
+    - .local/spec-cache/{format}/{version}/normalized/pages.jsonl
+    - .local/spec-cache/{format}/{version}/normalized/citations.yaml
+  consumers: [spec_digestor.py, sal_master_runner.py]
+  tests:
+    - No dedicated spec-acquisition tests found
+  validators:
+    - tools/spec-normalize/validate_normalized_spec.py
+  active_status: PARTIAL — PDF extraction works for FODS; other formats need spec acquisition
+  enforcement_status: ADVISORY — no CI gate on spec freshness
+  maturity: PILOT_READY
+  current_verdict: ACTIVE_BUT_INCOMPLETE
+  gaps:
+    - No automated spec version tracking
+    - No acquisition for non-ODF formats (ABW, DIF, gnumeric, etc.)
+    - Normalized spec exists only for FODS (fods/1.3/normalized)
+
+- layer_id: L02
+  name: SAL Fact Extraction
+  paths:
+    - tools/specification-authority-layer/
+    - .local/spec-cache/{format}/{version}/workbench/
+    - .local/spec-cache/{format}/{version}/spec-index.yaml
+  authority: spec-to-feature-radical-correction-plan.md Lane 1
+  inputs: [normalized specs, citation maps]
+  producers:
+    - sal_master_runner.py
+    - spec_digestor.py
+    - spec_indexer.py
+    - spec_parser.py
+    - requirement_extractor.py
+  outputs:
+    - .local/spec-cache/{format}/workbench/verified-facts-review.yaml
+    - .local/spec-cache/fods/1.3/normalized/chunks.jsonl
+  consumers: [qname derivation, capability derivation]
+  active_status: PARTIALLY_ACTIVE
+  enforcement_status: NONE — no validator enforces fact freshness
+  maturity: PILOT_ONLY
+  current_verdict: ACTIVE_BUT_INCOMPLETE
+  evidence:
+    - FODS has 4991 verified facts
+    - FODT has 4936 verified facts
+    - FODG/ODS/ODT/FODP each have 1083 facts (likely shared ODF extraction)
+    - ZST has 96 facts
+    - ABW/DIF/gnumeric/ndjson/tsv have 0 facts
+  gaps:
+    - SAL master runner chains only 3 of 20 tools actively (per spec-to-feature plan Failure 1)
+    - Facts extracted once (run030), never regenerated automatically
+    - No fact version/freshness tracking
+    - No invalidation when spec changes
+    - No pipeline triggering new fact extraction
+
+- layer_id: L03
+  name: QName Registry
+  paths:
+    - registry/odf-ontology/qname-to-code-map.yaml
+    - registry/odf-ontology/namespace-tree.yaml
+    - registry/odf-ontology/canonical-class-inventory.yaml
+    - registry/odf-ontology/containment-graph.yaml
+    - registry/odf-ontology/attribute-property-map.yaml
+    - registry/odf-ontology/prefix-namespace-registry.yaml
+    - registry/odf-ontology/naming-exceptions.yaml
+    - registry/odf-ontology/legacy-alias-map.yaml
+    - registry/odf-ontology/migration-plan.yaml
+  authority: spec-to-feature-radical-correction-plan.md Lane 6
+  inputs: [SAL facts, spec QNames]
+  producers: [qname-to-code mapping skill, spec-literal-qname-to-code-mapping skill]
+  outputs:
+    - registry/odf-ontology/qname-to-code-map.yaml (29 mappings)
+    - registry/odf-ontology/canonical-class-inventory.yaml (28 classes)
+  consumers: []
+  active_status: METADATA_ONLY
+  enforcement_status: NONE — qname map does not shape src/ generation
+  maturity: DOCUMENTATION_ONLY
+  current_verdict: METADATA_ONLY
+  gaps:
+    - 29 QName mappings cover only a fraction of ODF spec concepts
+    - QName map is NOT read by any source generator
+    - QName map is NOT enforced by any source validator
+    - No non-ODF format has a qname/concept registry
+    - src/python/fods/ does not use canonical class hierarchy from qname map
+    - src/net/fods/ does not use canonical class hierarchy from qname map
+
+- layer_id: L04
+  name: Capability / RCAL Layer
+  paths:
+    - reports/capability-layer/gap-ledger.json
+    - reports/capability-layer/action-queue.json
+    - reports/capability-layer/commercial-capability-map.json
+    - reports/capability-layer/foss-reduced-capability-map.json
+    - product-capability-matrix/poc-targets.yaml
+  authority: spec-to-feature-radical-correction-plan.md Lane 2 & 3
+  inputs: [SAL facts, QNames]
+  producers: [capability map generator, gap-ledger generator]
+  outputs:
+    - 958-entry gap-ledger.json (25MB)
+    - 0-item action-queue.json (EMPTY)
+    - commercial-capability-map.json (23MB)
+    - foss-reduced-capability-map.json (42MB)
+  consumers: []
+  active_status: DISCONNECTED
+  enforcement_status: NONE
+  maturity: DOCUMENTATION_ONLY
+  current_verdict: BYPASSED
+  evidence:
+    - action-queue.json has 0 items — gap queue is empty
+    - task selection uses hardcoded _EXPANSION_GOALS not gap-ledger.json
+    - Gap audit 2026-06-21: 8/25 sampled gaps are CLAIMED_UNPROVEN
+  gaps:
+    - "Failure #2 from spec-to-feature plan: capability layer generates output nobody consumes"
+    - action-queue has advisory_only: true on ALL items (per spec-to-feature plan)
+    - No capability-to-feature compiler exists (Failure #3)
+    - poc-targets.yaml has no capability counts (capabilities=0 for all FOSS targets)
+
+- layer_id: L05
+  name: Feature Compiler
+  paths: []
+  authority: spec-to-feature-radical-correction-plan.md Lane 3
+  inputs: [capability claims, QNames, proof graph]
+  producers: []
+  outputs: []
+  consumers: []
+  active_status: NOT_IMPLEMENTED
+  enforcement_status: NONE
+  maturity: PLANNED_ONLY
+  current_verdict: MISSING
+  gaps:
+    - No capability-to-feature compiler exists
+    - Pipeline from spec → capability ends at capability map with no downstream consumer
+    - 9-phase compiler described in Lane 3 has not been built
+
+- layer_id: L06
+  name: Architecture Mapper
+  paths:
+    - registry/odf-ontology/qname-to-code-map.yaml (partial)
+    - src/python/fods/Compat/ (new, untracked)
+    - src/python/fods/fods/ (nested package, untracked?)
+  authority: spec-to-feature-radical-correction-plan.md Lanes 7 & 8
+  inputs: [QName registry, feature contracts]
+  producers: [spec-shaped-product-architecture-blueprint skill]
+  outputs: []
+  consumers: [source generators]
+  active_status: PILOT_ONLY
+  enforcement_status: NONE
+  maturity: PILOT_ONLY
+  current_verdict: PILOT_ONLY
+  gaps:
+    - Architecture profiles not generated from QName map
+    - No governed architecture template for format types (spreadsheet vs document vs codec)
+    - src/python/fods/Compat/ directory exists but is untracked
+
+- layer_id: L07
+  name: Python Source Generation / Product
+  paths:
+    - src/python/{format}/
+  authority: master-plan.md Section 15 (Phase 4+ rules)
+  inputs: [architecture profile, QName map, feature contracts]
+  producers: [add-python-api skill, add-python-object-model-feature skill]
+  outputs:
+    - 20 Python format packages (see product census)
+  consumers: [tests, packaging, consumer programs]
+  active_status: ACTIVE
+  enforcement_status: PARTIAL (governance_validators.py, source_structure_validator.py)
+  maturity: PRODUCTION_READY_WITH_LIMITATIONS
+  current_verdict: ACTIVE_BUT_INCOMPLETE
+  evidence:
+    python_products:
+      fods: "35 py files, 3914 total LOC — most complex Python product"
+      fodt: "21 py files, 4525 total LOC"
+      xcf: "3 py files, 7022 LOC (analytics-heavy)"
+      zst: "3 py files, 7130 LOC (analytics-heavy)"
+      fodg: "3 py files, 6421 LOC (analytics-heavy)"
+      csv: "5 py files, 1843 LOC"
+      dif: "4 py files, 2122 LOC"
+      sylk: "2 py files, 1808 LOC"
+      tsv: "2 py files, 1814 LOC"
+  gaps:
+    - FODS neutral_model.py has mixed_model_analytics category (analytics not separated)
+    - No FODS fods_analytics.py exists
+    - QName-derived canonical class hierarchy not implemented in any Python product
+    - All Python products use flat or format-prefixed class names, not canonical spec names
+    - Compat/ facades exist for FODS (new, untracked) but canonical classes not implemented first
+
+- layer_id: L08
+  name: .NET Source Generation / Product
+  paths:
+    - src/net/{format}/
+  authority: master-plan.md Section 15 (Phase 4+ rules)
+  inputs: [architecture profile, QName map, feature contracts]
+  producers: [add-dotnet-api skill, add-dotnet-object-model-feature skill]
+  outputs:
+    - 10 .NET format implementations (see product census)
+  consumers: [tests, packaging, consumer programs]
+  active_status: ACTIVE
+  enforcement_status: PARTIAL
+  maturity: ACTIVE_BUT_INCOMPLETE
+  current_verdict: ACTIVE_BUT_INCOMPLETE
+  evidence:
+    dotnet_products:
+      fods: "18 cs files, 3704 LOC — FodsDocument.cs, FodsParser.cs, FodsWriter.cs + exporters"
+      fodt: "19 cs files, 2791 LOC — FodtDocument.cs, FodtParser.cs, FodtWriter.cs + exporters"
+      netpbm: "5 cs files, 2653 LOC"
+      fods_FodsDocument.cs: "1386 LOC — MONOLITH risk (but grandfathered)"
+  gaps:
+    - FodsDocument.cs at 1386 LOC is grandfathered monolith
+    - .NET products use format-prefixed names (FodsDocument, FodtDocument) not canonical QName hierarchy
+    - No canonical .NET class hierarchy implements spec QNames (e.g., Office.Document, Table.Table)
+    - G11 commercial readiness: false for all .NET products despite G11-G sub-gate approved
+
+- layer_id: L09
+  name: Skill System
+  paths:
+    - .supervisor/skill-registry.yaml
+    - .claude/commands/*.md
+  authority: spec-to-feature-radical-correction-plan.md Lane 4
+  inputs: [taskcard, gap selection]
+  producers: [skill command files]
+  outputs: [source changes, test changes, evidence]
+  consumers: [autonomous cycle, claude code executor]
+  active_status: REGISTERED_BUT_UNCLASSIFIED
+  enforcement_status: PARTIAL (V41 deepening_suspension_validator, V46 skill_transcript_validator)
+  maturity: UNKNOWN
+  current_verdict: ACTIVE_BUT_INCOMPLETE
+  evidence:
+    total_skills_registered: 44
+    skills_with_maturity_classified: 0  # all show maturity=?
+    command_files_in_dotclaude: "verified present"
+  gaps:
+    - All 44 skills show maturity=? (no production-readiness classification)
+    - No skill maturity gate — unclassified skills can be invoked without quality check
+    - Skills bypass QName enforcement (no validator checks that source matches QName map)
+    - Skill transcripts exist (V46) but effectiveness unproven
+
+- layer_id: L10
+  name: Autonomous Supervisor / Continuation
+  paths:
+    - tools/supervisor/autonomous_cycle.py
+    - tools/supervisor/check_continuation.py
+    - tools/supervisor/governance_validators.py
+    - .local/supervisor/continuation-signal.json
+    - reports/supervisor/
+  authority: master-plan.md Section 10
+  inputs: [evidence-declaration.yaml]
+  producers: [autonomous_cycle.py]
+  outputs:
+    - session-resume.md
+    - approval-gates.md
+    - next-sprint.md
+    - next-work-items.json
+    - continuation-signal.json
+  consumers: [check_continuation.py, claude session start]
+  active_status: ACTIVE
+  enforcement_status: STRONG (38 governance validators, GOV_BLOCK enforcement)
+  maturity: PRODUCTION_READY_WITH_LIMITATIONS
+  current_verdict: PRODUCTION_READY_WITH_LIMITATIONS
+  evidence:
+    check_continuation_verdict: STOP (structural_govblock_must_be_resolved_first)
+    rework_items_count: 9
+    structural_govblock_items: [GOV_BLOCK:monolith_detection_validator]
+    iteration: 10/12
+    last_sprint_verdict: ACCEPTED
+    tests_passing: 1490
+  gaps:
+    - Stale GOV_BLOCK:monolith_detection_validator in rework_items blocking product deepening
+    - _EXPANSION_GOALS is hardcoded list, not driven by gap-ledger
+    - Lane ownership enforcement is prompt-only, not code-enforced (SUP-GAP-001)
+    - Overclaim detector (10 patterns) never called (SUP-GAP-003)
+    - No circuit breaker for zero-task loops (SUP-GAP-007)
+
+- layer_id: L11
+  name: Testing
+  paths:
+    - tests/
+  authority: master-plan.md Sections 24.x
+  inputs: [product source, evidence]
+  producers: [various add-*-test skills, direct implementation]
+  outputs: [pytest results, coverage reports]
+  consumers: [governance validators, autonomous cycle]
+  active_status: ACTIVE
+  enforcement_status: STRONG
+  maturity: PRODUCTION_READY_WITH_LIMITATIONS
+  current_verdict: PRODUCTION_READY_WITH_LIMITATIONS
+  evidence:
+    total_test_files: 4522
+    test_files_by_area:
+      python: 3928
+      supervisor: 285
+      evidence: 155
+      skills: 34
+      specification_authority_layer: 13
+    last_run: 1490 passing, 0 failing
+  gaps:
+    - Layer 0 tests use marker-based collection (slow — 7+ min for 46k tests)
+    - 8/25 sampled gaps from gap-audit are CLAIMED_UNPROVEN (no per-gap test evidence)
+
+- layer_id: L12
+  name: Packaging
+  paths:
+    - src/python/{format}/pyproject.toml
+    - src/net/{format}/FormatFactory.{Format}.csproj
+    - packaging/python/
+    - .local/package-builds/
+  authority: master-plan.md Sections 4-5
+  inputs: [product source, tests]
+  producers: [package-install-proof skill]
+  outputs: [.whl files, NuGet packages]
+  consumers: [install proof tests, dogfood programs]
+  active_status: PARTIALLY_ACTIVE
+  enforcement_status: PARTIAL
+  maturity: PILOT_READY
+  current_verdict: ACTIVE_BUT_INCOMPLETE
+  gaps:
+    - Not all Python packages have been built/installed
+    - No .NET NuGet packages built yet
+    - Dogfood export paths only partially implemented
+
+- layer_id: L13
+  name: Evidence and Ledger
+  paths:
+    - .local/evidences/{run_id}/
+    - .local/supervisor/reviews/{run_id}/
+    - reports/r90/product-code-change-ledger.json
+  authority: master-plan.md Section 13
+  inputs: [sprint work, test results]
+  producers: [autonomous_cycle.py, evidence-declaration writer]
+  outputs: [evidence-declaration.yaml, declaration-review-package.zip]
+  consumers: [governance validators, audit tools]
+  active_status: ACTIVE
+  enforcement_status: STRONG
+  maturity: PRODUCTION_READY
+  current_verdict: PRODUCTION_READY
+  gaps:
+    - Product-code-change-ledger.json compliance is spot-checked, not continuously enforced

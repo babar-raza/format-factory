@@ -1,0 +1,120 @@
+---
+# Stable ID Registry — Machinery Lifecycle Forensics
+schema_version: "1.0"
+run_id: "zesty-moseying-whale"
+prior_run_id: "machinery-lifecycle-forensics-20260621"
+generated_at: "2026-06-21"
+
+# All stable semantic IDs from prior and current runs.
+# These IDs must be reused in all future reruns of this prompt.
+
+root_causes:
+  RC-001:
+    title: "No machine consumer for audit output"
+    source_run: "machinery-lifecycle-forensics-20260621"
+    current_status: "FIXED"
+    last_verified: "zesty-moseying-whale"
+  RC-002:
+    title: "PLAN_TERMINAL_CLOSED over-broad for machinery track"
+    source_run: "machinery-lifecycle-forensics-20260621"
+    current_status: "FIXED"
+    last_verified: "zesty-moseying-whale"
+  RC-003:
+    title: "Machinery track continuation signal stale/session-mismatched"
+    source_run: "machinery-lifecycle-forensics-20260621"
+    current_status: "FIXED"
+    last_verified: "zesty-moseying-whale"
+  RC-004:
+    title: "No mission ledger enforcement in code"
+    source_run: "machinery-lifecycle-forensics-20260621"
+    current_status: "REOPENED_PARTIAL_FIX"
+    last_verified: "zesty-moseying-whale"
+    notes: "machinery_audit.py exists; check_continuation.py lacks Check 1c"
+  RC-005:
+    title: "Continuation-signal contradiction"
+    source_run: "machinery-lifecycle-forensics-20260621"
+    current_status: "FIXED"
+    last_verified: "zesty-moseying-whale"
+  RC-006:
+    title: "GOV_BLOCK fires on infrastructure file growth"
+    source_run: "machinery-lifecycle-forensics-20260621"
+    current_status: "NOT_CURRENTLY_FIRING_BUT_AT_RISK"
+    last_verified: "zesty-moseying-whale"
+
+stop_conditions:
+  SC-001:
+    title: "TERMINAL_CLOSED blocks all continuation"
+    source_run: "machinery-lifecycle-forensics-20260621"
+    current_status: "RESOLVED_BY_TRACK_TYPE_FILTERING"
+    last_verified: "zesty-moseying-whale"
+  SC-002:
+    title: "PLAN_COMPLETED_IN_SESSION secondary stop"
+    source_run: "machinery-lifecycle-forensics-20260621"
+    current_status: "RESOLVED_BY_TRACK_TYPE_FILTERING"
+    last_verified: "zesty-moseying-whale"
+  SC-003:
+    title: "Legacy hard_stops_detected in continuation signal"
+    source_run: "machinery-lifecycle-forensics-20260621"
+    current_status: "RESOLVED (signal cleaned by subsequent sprints)"
+    last_verified: "zesty-moseying-whale"
+  SC-004:
+    title: "Iteration counter approaching max"
+    source_run: "machinery-lifecycle-forensics-20260621"
+    current_status: "RECOVERABLE (governed rollover per CLAUDE.md)"
+    last_verified: "zesty-moseying-whale"
+  SC-005:
+    title: "Session identity collision on same git HEAD"
+    source_run: "machinery-lifecycle-forensics-20260621"
+    current_status: "FIXED (TC-SESSION-NONCE-001 in continuation_identity.py)"
+    last_verified: "zesty-moseying-whale"
+
+lifecycle_gates:
+  LIF-0: { title: "Failed Run Reconstructed", prior_status: "PASS", current_status: "PASS" }
+  LIF-1: { title: "Expected Workflow Identified", prior_status: "PASS_WITH_LIMITATIONS", current_status: "PASS" }
+  LIF-2: { title: "Producer-Consumer Map Complete", prior_status: "PASS", current_status: "PASS" }
+  LIF-3: { title: "First Failing Boundary Proven", prior_status: "PASS", current_status: "PASS" }
+  LIF-4: { title: "Stop-Condition Defects Proven", prior_status: "PASS", current_status: "PASS" }
+  LIF-5: { title: "Task vs Mission State Corrected", prior_status: "PASS_WITH_LIMITATIONS", current_status: "PASS_WITH_LIMITATIONS", notes: "machinery_audit.py exists; check_continuation.py Check 1c still missing" }
+  LIF-6: { title: "Target Lifecycle Designed", prior_status: "PASS", current_status: "PASS" }
+  LIF-7: { title: "Mission Ledger Implemented", prior_status: "PASS", current_status: "PASS" }
+  LIF-8: { title: "Audit Consumer Implemented", prior_status: "NOT_RUN", current_status: "PASS", notes: "machinery_audit.py implemented by TC-MACH-WF-001 in iteration 3" }
+  LIF-9: { title: "Continuation Consumer Implemented", prior_status: "PASS_WITH_LIMITATIONS", current_status: "PASS" }
+  LIF-10: { title: "Plan Reopening Proven", prior_status: "NOT_RUN", current_status: "PASS_WITH_LIMITATIONS", notes: "Mission ledger updated across 3 iterations; formal plan-reopen mechanism deferred (GAP-WF-002)" }
+  LIF-11: { title: "Closeout/Iteration Stop Defects", prior_status: "PASS", current_status: "PASS" }
+  LIF-12: { title: "Single Iteration Pilot", prior_status: "PASS", current_status: "PASS" }
+  LIF-13: { title: "Multi-Iteration Pilot", prior_status: "NOT_RUN", current_status: "PASS", notes: "3 iterations logged in mission-ledger.json notes (iterations 1, 2, 3)" }
+  LIF-14: { title: "Interrupted Run Recovery", prior_status: "NOT_RUN", current_status: "NOT_RUN" }
+  LIF-15: { title: "Lane Isolation Proven", prior_status: "PASS_WITH_LIMITATIONS", current_status: "PASS", notes: "track_type filtering in check_continuation.py and write_plan_lock.py" }
+  LIF-16: { title: "Idempotent Rerun", prior_status: "NOT_RUN", current_status: "PASS", notes: "This sprint = the idempotent rerun" }
+  LIF-17: { title: "Autonomous Unattended Loop", prior_status: "NOT_RUN (blocked by PLAN_TERMINAL)", current_status: "PASS_WITH_LIMITATIONS", notes: "3 unattended iterations ran; Check 1c still needed for full enforcement" }
+  LIF-18: { title: "Mission-Aware Stop", prior_status: "PASS_WITH_LIMITATIONS", current_status: "PASS_WITH_LIMITATIONS", notes: "machinery_audit.py --mission-complete-check works; check_continuation.py Check 1c missing" }
+  LIF-19: { title: "Authoritative Plan Ready", prior_status: "PASS", current_status: "PASS" }
+  LIF-20: { title: "Execution Handoff Ready", prior_status: "PASS", current_status: "PASS_WITH_LIMITATIONS", notes: "Pilot H status incorrect; being updated by TC-WHALE-HANDOFF-001" }
+
+pilots:
+  A: { title: "Single iteration", prior_status: "COMPLETE", current_status: "CONFIRMED_COMPLETE" }
+  B: { title: "Re-audit finds new gap", prior_status: "PENDING", current_status: "PARTIALLY_DEMONSTRATED", notes: "RC-004 reopened by this rerun" }
+  C: { title: "Verification failure", prior_status: "NOT_RUN", current_status: "NOT_RUN" }
+  D: { title: "Empty batch", prior_status: "NOT_RUN", current_status: "NOT_RUN" }
+  E: { title: "Iteration limit", prior_status: "NOT_RUN", current_status: "NOT_RUN" }
+  F: { title: "Closeout safety", prior_status: "DOCUMENTED", current_status: "DOCUMENTED" }
+  G: { title: "Interrupted run", prior_status: "NOT_RUN", current_status: "NOT_RUN" }
+  H: { title: "Multi-iteration (2+ cycles)", prior_status: "NOT_RUN", current_status: "COMPLETE", notes: "3 iterations proven: iteration_1_phase1, iteration_2_phase2, iteration_3_phase3_sal_audit in mission-ledger.json" }
+  I: { title: "Stable no-gap rerun", prior_status: "PARTIALLY", current_status: "PASS", notes: "This sprint = stable rerun; found RC-004 partial fix but no regression" }
+
+new_gaps:
+  GAP-WHALE-001:
+    title: "check_continuation.py --track machinery has no mission ledger integration"
+    source_run: "zesty-moseying-whale"
+    status: "OPEN"
+    taskcard: "TC-WHALE-LEDGER-001"
+  GAP-WHALE-002:
+    title: "execution-handoff.yaml incorrectly states Pilot H NOT_RUN"
+    source_run: "zesty-moseying-whale"
+    status: "OPEN"
+    taskcard: "TC-WHALE-HANDOFF-001"
+  GAP-WHALE-003:
+    title: "governance_validators.py at exact LOC cap — next addition will trigger GOV_BLOCK"
+    source_run: "zesty-moseying-whale"
+    status: "OPEN (PREEMPTIVE)"
+    taskcard: "TC-WHALE-GOVBLOCK-001"

@@ -1,0 +1,181 @@
+schema_version: "1.0"
+sprint_id: ff-machinery-readiness-audit-v2-20260621-827f5a52
+generated_at: "2026-06-21"
+
+gaps:
+  - gap_id: GAP-AUDIT-001
+    layer: Source
+    area: FODS Python test suite
+    severity: Blocker
+    evidence: ".venv/Scripts/pytest tests/python/fods/ — 32 collection errors (ImportError)"
+    current_behavior: "32 test files import fods_cell_value_variance and similar analytics functions that do not exist in src/python/fods/__init__.py"
+    expected_behavior: "All test files collect successfully. 0 errors."
+    root_cause: "Analytics rotation was suspended (keen-dancing-hopper plan) but test files referencing suspended analytics functions were not cleaned up for FODS (SYLK tests were cleaned, FODS tests were not)"
+    product_impact: HIGH
+    machinery_impact: MEDIUM
+    repeatability_impact: HIGH
+    autonomy_impact: MEDIUM
+    qname_impact: LOW
+    required_fix: "Delete or stub the 32 FODS analytics test files that import missing functions. Pattern: tests/python/fods/test_r273_*, test_r274_*, test_r284_*, test_r286_*, test_r289_*, test_r290*, test_r299_*, test_r300_*, test_r305_*, test_r307_*, test_r314_*, test_r319_*, test_r337_*, test_r355_*, test_r373_*, test_r374_*"
+    tests_required: "pytest tests/python/fods/ returns 0 collection errors"
+    evidence_required: "Test run output showing 0 errors"
+    must_fix_before_product_deepening: "yes"
+    can_defer: "no"
+    suggested_taskcard: TC-FODS-TEST-FIX-001
+
+  - gap_id: GAP-AUDIT-002
+    layer: Product Source
+    area: FODS Python Compat/ facades uncommitted
+    severity: High
+    evidence: "git status shows src/python/fods/Compat/ as untracked"
+    current_behavior: "FODS Compat/ facades (FodsDocument, FodsSheet, FodsCell) exist but are untracked — will be lost by git clean"
+    expected_behavior: "Compat/ facades committed and part of the product package"
+    root_cause: "Created during a prior sprint but never committed (likely pending decision)"
+    product_impact: HIGH
+    machinery_impact: LOW
+    required_fix: "Commit src/python/fods/Compat/ to git (along with neutral_model.py changes)"
+    must_fix_before_product_deepening: "yes"
+    can_defer: "no"
+    suggested_taskcard: TC-FODS-COMMIT-001
+
+  - gap_id: GAP-AUDIT-003
+    layer: SAL
+    area: SAL facts are auto-seeded, not independently verified
+    severity: High
+    evidence: "verified-facts-review.yaml generated_by=TCA-010 downgrade pass; seeding_note says must be verified by reading spec text"
+    current_behavior: "4991 FODS facts marked verified=True but status was set by auto-seed downgrade pass, not by agent reading spec PDF"
+    expected_behavior: "Facts independently verified against .local/spec-cache/fods/1.3/normalized/text.txt or spec PDF"
+    root_cause: "TCA-010 downgrade pass ran run030 auto-seed and labeled all as verified to prevent rejection"
+    product_impact: MEDIUM
+    machinery_impact: HIGH
+    repeatability_impact: HIGH
+    autonomy_impact: MEDIUM
+    qname_impact: MEDIUM
+    required_fix: "Run independent fact verification against normalized spec text for at least the 78 original seed facts. Mark auto-seeded facts as pending_verification. Create separate verified vs unverified counts."
+    must_fix_before_product_deepening: "no"
+    can_defer: "yes"
+    suggested_taskcard: TC-SAL-VERIFY-001
+
+  - gap_id: GAP-AUDIT-004
+    layer: Capability
+    area: Capability-to-feature compiler reads wrong SAL path
+    severity: High
+    evidence: "capability_compiler.py reads .local/sal-output/sal-facts-latest.json (template path); workbench facts are at .local/spec-cache/sal-facts-fods.json"
+    current_behavior: "Compiler loads template facts (or empty) rather than workbench-verified facts"
+    expected_behavior: "Compiler loads from workbench cache at .local/spec-cache/sal-facts-{format}.json"
+    root_cause: "SAL output path changed in pipeline repairs but compiler was not updated"
+    product_impact: LOW
+    machinery_impact: HIGH
+    required_fix: "Update capability_compiler.py SAL_OUTPUT_PATH to read from .local/spec-cache/sal-facts-{format}.json"
+    must_fix_before_product_deepening: "no"
+    can_defer: "yes"
+    suggested_taskcard: TC-CAPABILITY-COMPILER-001
+
+  - gap_id: GAP-AUDIT-005
+    layer: QName
+    area: No spec/ hierarchy for 18+ non-ODF formats
+    severity: High
+    evidence: "qname_structure_validator.py returns NO_SPEC_CLASSES for zst, csv, ods, odt, abw, dif, fodg, fodp, gnumeric, xcf, sylk, qoi, pbm, pgm, ppm, toml, ndjson, tsv"
+    current_behavior: "Only FODS and FODT Python have spec/ hierarchies. All other formats have zero QName structure."
+    expected_behavior: "Each format has spec/{namespace}/{element}.py hierarchy for spec elements"
+    root_cause: "QName scaffolding only applied to ODF formats (FODS/FODT). Non-ODF formats have no equivalent spec source in the workbench."
+    product_impact: HIGH
+    machinery_impact: MEDIUM
+    qname_impact: CRITICAL
+    required_fix: "For each format with a spec source (ZST=RFC, DIF, SYLK, etc.), create minimal spec/ stubs with spec_qname attributes. ABW, CSV etc. have no formal qname hierarchy — use document-level descriptors."
+    must_fix_before_product_deepening: "no — only for spec-backed deepening of those formats"
+    can_defer: "yes"
+    suggested_taskcard: TC-QNAME-NONODS-001
+
+  - gap_id: GAP-AUDIT-006
+    layer: QName
+    area: .NET production code not spec-shaped
+    severity: High
+    evidence: "FodsDocument.cs namespace=FormatFactory.Fods, class=FodsDocument — NOT Office.Document. Spec/ stubs are architecture_only TODOs."
+    current_behavior: ".NET FODS/FODT production classes use format-prefixed names; Spec/ stubs exist but have TODO implement later markers"
+    expected_behavior: "FodsDocument.cs inherits from Spec/Office/Document.cs canonical class; production namespace matches spec hierarchy"
+    root_cause: "Architecture migration authorized but not executed. Spec/ stubs created as architecture_only placeholders per authorized migration plan."
+    product_impact: HIGH
+    machinery_impact: LOW
+    qname_impact: HIGH
+    required_fix: "Implement canonical migration for .NET FODS: FodsDocument → Office.Document subtype in FormatFactory.Fods.Office namespace; remove architecture_only markers when migrated"
+    must_fix_before_product_deepening: "no — current class names work, this is professional polish"
+    can_defer: "yes — schedule for after Gate 11 packet"
+    suggested_taskcard: TC-DOTNET-CANONICAL-001
+
+  - gap_id: GAP-AUDIT-007
+    layer: Skills
+    area: Product-generating skills do not enforce QName
+    severity: High
+    evidence: "add-python-api.md, add-dotnet-api.md inspected — no QName requirement in prompts"
+    current_behavior: "Skills can generate format-prefixed class names without any validator blocking them"
+    expected_behavior: "Skills require spec_qname attribute on all new classes; governance validator blocks non-qname commits"
+    root_cause: "QName enforcement was planned in Lane 4/5 but not yet wired into skill prompts"
+    product_impact: HIGH
+    machinery_impact: LOW
+    repeatability_impact: HIGH
+    qname_impact: CRITICAL
+    required_fix: "Add spec_qname requirement to add-python-api.md and add-dotnet-api.md prompts. Add governance validator V47 that checks new classes in src/ have spec_qname if in spec/ directory."
+    must_fix_before_product_deepening: "no — FODS/FODT can proceed; new classes already have spec_qname"
+    can_defer: "yes"
+    suggested_taskcard: TC-SKILL-QNAME-001
+
+  - gap_id: GAP-AUDIT-008
+    layer: Backfill
+    area: No backfill tooling built
+    severity: Medium
+    evidence: "reports/ff-machinery-readiness-audit-20260621-23d1333/backfill-facility-design.md — all phases not_started"
+    current_behavior: "Backfill facility is design-only. No tool to inventory current src/, map to spec qnames, or migrate"
+    expected_behavior: "backfill_inventory.py and backfill_migrator.py tools exist and can migrate format-prefixed code to spec hierarchy"
+    root_cause: "Backfill design was produced in prior audit but implementation was not taskcarded into next sprint"
+    product_impact: MEDIUM
+    machinery_impact: MEDIUM
+    required_fix: "Create TC-BACKFILL-001 and add to machinery lane plan. Implement per the backfill-facility-design.md document."
+    must_fix_before_product_deepening: "no — not needed for FODS/FODT current sprint"
+    can_defer: "yes"
+    suggested_taskcard: TC-BACKFILL-001
+
+  - gap_id: GAP-AUDIT-009
+    layer: Supervisor
+    area: Lane separation absent for machinery vs. product
+    severity: Medium
+    evidence: "session-machinery.id and session-product.id exist as identity files only; no separate work queues or file ownership"
+    current_behavior: "Both lanes share one continuation signal, one action queue, one gap ledger; no collision prevention"
+    expected_behavior: "Machinery lane has separate signal, queue, owned files; product lane likewise"
+    root_cause: "CCI hardening created session identity files per track but did not implement full state isolation"
+    product_impact: LOW (sequential execution is safe)
+    machinery_impact: HIGH (concurrent access would be unsafe)
+    required_fix: "Create machinery-signal.json and product-signal.json; separate gap queues; add file ownership manifest"
+    must_fix_before_product_deepening: "no — current sequential operation is safe"
+    can_defer: "yes"
+    suggested_taskcard: TC-SUPERVISOR-LANES-001
+
+  - gap_id: GAP-AUDIT-010
+    layer: Product
+    area: FODS Python neutral_model.py modified but uncommitted
+    severity: Medium
+    evidence: "git status shows src/python/fods/neutral_model.py as modified (2186 LOC)"
+    current_behavior: "neutral_model.py has uncommitted changes; if lost, work is gone"
+    expected_behavior: "All working product changes committed or staged with clear commit message"
+    root_cause: "Sprint work completed but git commit requires explicit user authorization (TRUE_EXTERNAL_GATE)"
+    product_impact: MEDIUM (risk of loss)
+    machinery_impact: LOW
+    required_fix: "User authorizes git commit of: registry/source-structure-baseline.json, src/python/fods/neutral_model.py, src/python/fods/Compat/, and governance test/validator files"
+    must_fix_before_product_deepening: "no — but recommended before further source edits"
+    can_defer: "yes"
+    suggested_taskcard: TC-GIT-COMMIT-001
+
+  - gap_id: GAP-AUDIT-011
+    layer: Source
+    area: XCF/ZST/FODG analytics monoliths
+    severity: Medium
+    evidence: "xcf_analytics.py=4773 LOC, zst_analytics.py=4604 LOC, fodg_analytics.py=3214 LOC"
+    current_behavior: "Three analytics files at extreme LOC counts, rotation suspended"
+    expected_behavior: "Analytics files at LOC caps; unused functions removed or split"
+    root_cause: "Analytics rotation added thousands of functions before suspension was enacted"
+    product_impact: MEDIUM (GOV_BLOCK risk)
+    machinery_impact: LOW
+    required_fix: "Remove unused analytics functions (those not referenced by any test) from XCF/ZST/FODG files"
+    must_fix_before_product_deepening: "no — blocked from being added to, not from being used"
+    can_defer: "yes"
+    suggested_taskcard: TC-ANALYTICS-TRIM-001

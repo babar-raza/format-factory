@@ -1,0 +1,194 @@
+{
+  "run_id": "spec-authority-machinery-explosion-20260621-827f5a52",
+  "generated_at": "2026-06-21",
+  "root_causes": [
+    {
+      "rca_id": "RCA-SUPERVISOR-GATES-001",
+      "title": "autonomous_cycle.py does not read SAL output",
+      "severity": "CRITICAL",
+      "status": "OPEN",
+      "symptom": "Sprint passes all gates with 0 workbench SAL facts for cited format",
+      "root_cause": "SAL pipeline is parallel/advisory; no integration with autonomous_cycle",
+      "impact": "Spec authority is advisory only; any gap_ledger_ref satisfies TC-GUARD-001 regardless of fact depth",
+      "repair": "At minimum: read sal-facts-latest.json in Step 1c; emit advisory per-format workbench_count warning"
+    },
+    {
+      "rca_id": "RCA-SAL-DEFAULT-MODE",
+      "title": "SAL daily output generated in default mode — mixes template + workbench facts",
+      "severity": "CRITICAL",
+      "status": "OPEN",
+      "symptom": "FODS daily SAL output has ~22 bootstrap_only template facts; GAP-INT-002 index includes them",
+      "root_cause": "Daily sal-facts-latest.json invocation uses from_cache_only=False (default)",
+      "impact": "GAP-INT-002 authority check weaker than intended; product sources can cite template-only fact IDs and pass",
+      "repair": "Switch daily SAL generation to from_cache_only=True"
+    },
+    {
+      "rca_id": "RCA-GAP-INT-002-NO-SOURCE-CHECK",
+      "title": "GAP-INT-002 has no source==workbench_verified filter",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "symptom": "Template facts appear in SAL index; product source citations not filtered by authority",
+      "root_cause": "_load_sal_facts() does not filter on source field",
+      "impact": "Non-deterministic authority; if template facts change, product citations could break silently",
+      "repair": "Add filter: only include facts where fact.get('source') == 'workbench_verified'"
+    },
+    {
+      "rca_id": "RCA-SPEC-ACQ-GNUMERIC",
+      "title": "Gnumeric spec not acquired; no normalized text",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "root_cause": "Normalization pipeline never run for Gnumeric",
+      "impact": "0 SAL workbench facts for Gnumeric; 36 gap entries cite no spec facts",
+      "repair": "Run normalization pipeline for Gnumeric XML schema"
+    },
+    {
+      "rca_id": "RCA-SPEC-ACQ-ABW",
+      "title": "ABW spec (DTD) unreachable",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "root_cause": "DTD URL returns ECONNREFUSED",
+      "impact": "0 SAL workbench facts for ABW; proof level P1",
+      "repair": "Identify alternative spec source or classify as BLOCKED_EXTERNAL"
+    },
+    {
+      "rca_id": "RCA-HEALING-GATE-DEPTH-001",
+      "title": "Healing gate Lane 1 checks fods_facts_gte_10 not workbench_verified_fact_count > 0",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "root_cause": "Criterion was set when FODS had only 14 format-specific facts; now obsolete",
+      "impact": "Gate passes trivially; does not verify workbench authority depth",
+      "repair": "Add workbench_verified_fact_count_positive criterion to Lane 1"
+    },
+    {
+      "rca_id": "RCA-SKILLS-REPEATABILITY-001",
+      "title": "No governed skills for spec acquisition chain for most formats",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "root_cause": "sal-pipeline-heal skill covers repair, not initial acquisition from external sources",
+      "impact": "Gnumeric/ABW/CSV spec acquisition cannot be governed or tracked repeatably",
+      "repair": "TC-0021: design spec acquisition skill"
+    },
+    {
+      "rca_id": "RCA-PROOF-GRAPH-001",
+      "title": "No machine-generated proof graph",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "root_cause": "Spec stubs and QName registry are separate artifacts; no automated chain validation",
+      "impact": "P5 proof chain for FODS is assembled manually from separate artifacts; no single verifiable graph",
+      "repair": "Create generate_proof_graph.py"
+    },
+    {
+      "rca_id": "RCA-GAP-LEDGER-CSV-STALE",
+      "title": "Gap-ledger CSV entries reference FACT-CSV-001/002 not in SAL output",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "root_cause": "CSV gaps populated with spec_facts from prior join; CSV has 0 workbench facts; IDs are dead",
+      "impact": "58 CSV gaps appear spec-backed; TC-GUARD-001 accepts items citing these gaps",
+      "repair": "Clear spec_facts for all CSV gaps; or properly acquire CSV spec"
+    },
+    {
+      "rca_id": "RCA-GAP-LEDGER-NO-AUTH-LEVEL",
+      "title": "Gap-ledger has no authority_level field on any of 958 entries",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "root_cause": "Field was never added; spec-to-feature plan required it",
+      "impact": "TC-GUARD-001 cannot distinguish gap authority quality",
+      "repair": "Add authority_level derived from format workbench_verified_fact_count"
+    },
+    {
+      "rca_id": "RCA-TC-GUARD-AUTHORITY-QUALITY",
+      "title": "TC-GUARD-001 checks gap reference PRESENCE not AUTHORITY QUALITY",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "root_cause": "Step 2d3 checks presence only; no authority depth check",
+      "impact": "Gnumeric/ABW/CSV gaps satisfy guard identically to FODS gaps with 4987 facts",
+      "repair": "Add advisory depth check after presence check"
+    },
+    {
+      "rca_id": "RCA-V46-WARN-ONLY",
+      "title": "V46 skill_transcript requirement is WARN-only",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "root_cause": "Implemented as advisory during bootstrap phase",
+      "impact": "Legacy items and new items without skills can pass without audit trail",
+      "repair": "Upgrade to BLOCK after adoption threshold reached"
+    },
+    {
+      "rca_id": "RCA-REQ-PACK-TC0021",
+      "title": "FODS requirement packs TC-0021 traceability review pending",
+      "severity": "MEDIUM",
+      "status": "PENDING",
+      "root_cause": "TC-0021 review not yet executed",
+      "impact": "Req-packs may not trace to specific FACT-FODS-NNN IDs; P5 claim partially unverified",
+      "repair": "Execute TC-0021 review of parser-requirements.yaml"
+    },
+    {
+      "rca_id": "RCA-EVIDENCE-SCHEMA-001",
+      "title": "Evidence declaration schema lacks authority_level or workbench_fact_count field",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "root_cause": "Schema designed before authority_level requirement",
+      "impact": "Declarations do not capture spec authority depth",
+      "repair": "Add optional spec_authority_depth field to declaration schema"
+    },
+    {
+      "rca_id": "RCA-GAP-INT-002-COVERAGE",
+      "title": "GAP-INT-002 has no assertions that zero-fact formats remain at zero",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "root_cause": "Tests only cover FODS/FODT/ZST positive counts",
+      "impact": "Regression risk if template facts re-added for zero-fact formats",
+      "repair": "Add test_gnumeric_zero_sal_facts() and test_abw_zero_sal_facts()"
+    },
+    {
+      "rca_id": "RCA-ACTION-QUEUE-ADVISORY",
+      "title": "Action queue still advisory",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "root_cause": "action_queue_not_advisory: false in healing gate",
+      "impact": "Action queue recommendations not binding",
+      "repair": "Upgrade action queue to enforce mode"
+    },
+    {
+      "rca_id": "RCA-FODFAM-CHAIN",
+      "title": "FODP/FODG/ODS/ODT have 1,066 workbench facts each — acquisition chain undocumented",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "root_cause": "Identical count across 4 formats is suspicious; may be cross-pollinated from FODS",
+      "impact": "Cannot verify format-specific provenance; proof levels may be inflated",
+      "repair": "Audit workbench YAMLs for each format"
+    },
+    {
+      "rca_id": "RCA-HEALING-GATE-ADVISORY",
+      "title": "Healing gate is ADVISORY — non-blocking",
+      "severity": "LOW",
+      "status": "OPEN",
+      "root_cause": "Designed as advisory in Step 1b",
+      "impact": "Gate failure does not block product work",
+      "repair": "Future: upgrade to enforcing mode"
+    },
+    {
+      "rca_id": "RCA-AUTH-LEVEL-NAMING",
+      "title": "Per-fact field is source not authority_level",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "root_cause": "Implementation used source field; plan expected authority_level",
+      "impact": "Naming mismatch only; functionally equivalent",
+      "repair": "Documentation update only"
+    },
+    {
+      "rca_id": "RCA-TC-GUARD-DELAYED",
+      "title": "TC-GUARD-001 promotion to BLOCK mode was delayed",
+      "severity": "NONE",
+      "status": "RESOLVED",
+      "repair": "Resolved by commit 83f062cf — BLOCK mode active"
+    },
+    {
+      "rca_id": "RCA-SAL-TEMPLATE-FACTS-001",
+      "title": "Template facts contaminated SAL output for all formats",
+      "severity": "NONE",
+      "status": "PARTIALLY_RESOLVED",
+      "repair": "from_cache_only=True path is clean; default mode still has template facts in daily output — see RCA-SAL-DEFAULT-MODE"
+    }
+  ]
+}

@@ -1,8 +1,8 @@
 # Evidence Bundle Discovery Summary
-Timestamp: 2026-06-21T20:29:11.892788
+Timestamp: 2026-06-21T22:11:17.699251
 Status: found
-Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\sal-skill-gov-20260621-3104e1c1\declaration-review-package.zip
+Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\post-recon-repair-gate11-20260621\declaration-review-package.zip
 Sprint ID: unknown
-Entry count: 42
-Bundle mtime: 2026-06-21T20:28:38.957958
-Bundle size: 225160 bytes
+Entry count: 82
+Bundle mtime: 2026-06-21T22:10:33.627914
+Bundle size: 322727 bytes
