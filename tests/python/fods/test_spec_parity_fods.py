@@ -126,3 +126,20 @@ class TestNeutralModelHasExpectedEntities:
         sheet = raw["sheets"][0]
         assert "rows" in sheet, "Sheet must have 'rows' key (maps to table:table-row)"
         assert isinstance(sheet["rows"], list)
+
+
+class TestFodsSheetCellsIterator:
+    """TC-POST-005: FodsSheet.cells() returns FodsCell objects (not dict keys)."""
+
+    def test_fods_sheet_cells_returns_cell_objects(self):
+        """cells() iterator yields FodsCell instances with .value attribute."""
+        doc = FodsDocument.from_file(str(_MINIMAL))
+        sheets = list(doc.sheets())
+        assert len(sheets) >= 1, "Expected at least 1 sheet"
+        cells = list(sheets[0].cells())
+        assert len(cells) >= 1, "Expected at least 1 cell"
+        for cell in cells:
+            assert isinstance(cell, FodsCell), (
+                f"cells() must yield FodsCell objects, got {type(cell).__name__}: {cell!r}"
+            )
+            assert hasattr(cell, "value"), "FodsCell must have .value attribute"

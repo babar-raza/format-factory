@@ -187,3 +187,33 @@ class TestCompatSwitchGuard:
         assert p.kind == "paragraph"
         assert p.text == "test"
         assert p.spans == []
+
+
+class TestCompatRoundtrip:
+    """TC-POST-003: End-to-end FODT file load → parsed objects through compat/ API."""
+
+    _FIXTURE = _REPO / "samples" / "by-format" / "fodt" / "headings-and-paragraphs.fodt"
+
+    def test_real_fodt_loads_via_compat_document(self):
+        """Load real FODT fixture via FodtDocument.from_file(); get paragraphs — no crash."""
+        from fodt.compat import FodtDocument
+        assert self._FIXTURE.exists(), f"FODT fixture missing: {self._FIXTURE}"
+        doc = FodtDocument.from_file(str(self._FIXTURE))
+        assert doc is not None, "FodtDocument.from_file returned None"
+        paragraphs = list(doc.paragraphs())
+        assert len(paragraphs) >= 1, "Expected at least 1 paragraph in parsed document"
+        p0 = paragraphs[0]
+        assert hasattr(p0, "kind"), "Paragraph missing .kind"
+        assert hasattr(p0, "text"), "Paragraph missing .text"
+        assert isinstance(p0.text, str), f"paragraph.text should be str, got {type(p0.text)}"
+
+    def test_compat_paragraph_class_is_from_spec(self):
+        """The FodtParagraph class imported from compat comes from spec/ (post-switch verification)."""
+        from fodt.compat import FodtParagraph
+        assert FodtParagraph is not None, "FodtParagraph is None"
+        assert "spec" in FodtParagraph.__module__, (
+            f"FodtParagraph class __module__ should contain 'spec', got: {FodtParagraph.__module__}"
+        )
+        # Verify spec class can construct a synthetic paragraph without crashing
+        p = FodtParagraph({"kind": "paragraph", "text": "roundtrip test", "spans": []})
+        assert p.text == "roundtrip test"
