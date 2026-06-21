@@ -74,7 +74,7 @@ def _load_manifest_change_impact() -> list[dict]:
         import yaml
         from fnmatch import fnmatch as _fnmatch
 
-        with open(_MANIFEST_PATH) as f:
+        with open(_MANIFEST_PATH, encoding="utf-8") as f:
             data = yaml.safe_load(f) or {}
         return data.get("change_impact", [])
     except Exception:

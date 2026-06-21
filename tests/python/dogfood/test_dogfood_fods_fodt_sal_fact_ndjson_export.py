@@ -20,10 +20,14 @@ from ndjson.ndjson_codec import write_ndjson, load_ndjson
 
 def _load_fods_facts() -> list[dict]:
     """Load FODS verified facts from spec-cache."""
+    try:
+        import yaml
+    except ImportError:
+        pytest.skip("PyYAML not available")
     path = _REPO / ".local" / "spec-cache" / "fods" / "1.3" / "workbench" / "verified-facts-review.yaml"
     if not path.exists():
         pytest.skip("FODS facts not available")
-    data = json.loads(path.read_text(encoding="utf-8"))
+    data = yaml.safe_load(path.read_text(encoding="utf-8"))
     return data.get("facts", [])
 
 
