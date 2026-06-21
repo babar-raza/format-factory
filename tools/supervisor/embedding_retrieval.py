@@ -646,14 +646,20 @@ class EmbeddingProvider:
         if client is None:
             return None
 
-        # Use chat completions endpoint to get a pseudo-embedding via advisory call
-        # (true embedding endpoint would be /v1/embeddings, but we use advisory call
-        #  here as a fallback since endpoint_client wraps /v1/chat/completions)
-        # NOTE: Real embedding API returns float vectors; advisory call returns text.
-        # We produce a deterministic pseudo-embedding from the text hash for testing.
-        # Actual embedding via /v1/embeddings requires a separate request path.
-        # This is marked as LEXICAL_FALLBACK until a native embedding API path is added.
-        return None  # Advisory: embedding via /v1/embeddings deferred; use lexical fallback
+        # TC-EMBED-001: Call /v1/embeddings endpoint via EndpointClient.embed().
+        # Returns list[float] on success; None on failure (triggers lexical fallback).
+        # All embeddings are advisory-only (authority_state="ai_advisory").
+        truncated = text[:512]
+        try:
+            result = client.embed([truncated], model=self.model_id)
+            if result.success and result.embeddings:
+                vector = result.embeddings[0]
+                if self.cache:
+                    self.cache.set(source_path, content_hash, self.model_id, vector)
+                return vector
+        except Exception:
+            pass
+        return None  # Lexical fallback if embedding call fails
 
 
 class HybridRetrievalPilot(PriorRunRetrievalPilot):

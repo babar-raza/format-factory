@@ -1,0 +1,59 @@
+# Full Suite Shard Ledger — Format Factory
+# Created: 2026-06-18
+# Plan: optimized-sauteeing-hellman (supplemental infrastructure)
+#
+# When the full test suite (layer 6) is run in CI or locally across multiple
+# sessions/shards, this ledger tracks shard boundaries and resume state.
+# This allows interrupted full-suite runs to resume from the last completed shard.
+#
+# Usage:
+#   python tools/test_runner.py --layer 6 --shard N --total-shards M
+#   Writes shard completion state here after each shard completes.
+#
+# Policy: Only layer 6 (full suite) uses sharding. Layers 0-5 are always single-shard.
+
+version: 1
+created_at: "2026-06-18"
+last_updated: "2026-06-18"
+
+shard_config:
+  total_shards: 4
+  shard_strategy: "by_test_path"
+  full_suite_count: 46505
+  arithmetic_excluded_count: 10917
+  clean_count: 35588
+  shards:
+    - id: 1
+      path_prefix: "tests/python/abw tests/python/csv tests/python/deepening tests/python/dif"
+      estimated_tests: 11600
+    - id: 2
+      path_prefix: "tests/python/dogfood tests/python/fods tests/python/fodg tests/python/fodp"
+      estimated_tests: 11600
+    - id: 3
+      path_prefix: "tests/python/fodt tests/python/gnumeric tests/python/ndjson tests/python/ods"
+      estimated_tests: 11600
+    - id: 4
+      path_prefix: "tests/python/odt tests/python/pbm tests/python/pgm tests/python/ppm tests/python/qoi tests/python/sylk tests/python/toml tests/python/tsv tests/python/xcf tests/python/zst tests/supervisor tests/evidence tests/capability_layer tests/specification-authority-layer"
+      estimated_tests: 11705
+
+resume_state:
+  last_completed_shard: null
+  last_run_date: null
+  last_run_id: null
+  shards_completed: []
+  shards_pending: [1, 2, 3, 4]
+  resume_from_shard: 1
+
+history: []
+
+# Template for shard completion entry:
+# history:
+#   - run_id: "run-2026-06-18-001"
+#     date: "2026-06-18"
+#     shard_id: 1
+#     tests_run: 11600
+#     passed: 11598
+#     failed: 2
+#     duration_seconds: 420
+#     failures:
+#       - "tests/python/csv/test_xxx.py::test_y"

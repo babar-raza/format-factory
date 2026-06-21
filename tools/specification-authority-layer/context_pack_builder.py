@@ -266,6 +266,118 @@ def get_sal_coverage_summary(format_id: Optional[str] = None) -> Optional[Dict[s
     }
 
 
+def rebuild_all_from_workbench(
+    repo_root: Any,
+    output_dir: Optional[str] = None,
+) -> List["ContextPack"]:
+    """Rebuild context packs for ODF-family formats and ZST from workbench facts.
+
+    Reads verified-facts-review.yaml files from .local/spec-cache/ and builds
+    context packs with real requirement_summary populated from workbench facts.
+    All ODF-family packs share the canonical ODF 1.3 Part 3 SHA.
+
+    Args:
+        repo_root: Path to repository root (str or Path).
+        output_dir: Where to write the packs. Defaults to the standard sample dir.
+
+    Returns:
+        List of ContextPack objects (one per format).
+    """
+    try:
+        import yaml  # type: ignore
+    except ImportError:
+        raise RuntimeError("PyYAML required for rebuild_all_from_workbench")
+
+    root = Path(repo_root)
+    spec_cache = root / ".local" / "spec-cache"
+    out_root = Path(output_dir) if output_dir else root / "reports" / "specification-authority-layer-mwp" / "context-pack-sample"
+    out_root.mkdir(parents=True, exist_ok=True)
+
+    _ODF_SHA = "92cfe64ee30a8cca1be19a76d38628fdc8ef9153eb59547f6c96fe7b9b81b066"
+
+    _FORMAT_CONFIGS = {
+        "fods": {"source_id": "FODS-SPEC-001", "title": "ODF 1.3 Part 3 Schema", "source_type": "public_spec", "sha": _ODF_SHA, "wb": spec_cache / "fods" / "1.3" / "workbench" / "verified-facts-review.yaml"},
+        "fodt": {"source_id": "FODT-SPEC-001", "title": "ODF 1.3 Part 3 Text Elements", "source_type": "public_spec", "sha": _ODF_SHA, "wb": spec_cache / "fodt" / "odf-1.3" / "workbench" / "verified-facts-review.yaml"},
+        "fodp": {"source_id": "FODP-SPEC-001", "title": "ODF 1.3 Part 3 Presentation", "source_type": "public_spec", "sha": _ODF_SHA, "wb": spec_cache / "fodp" / "extracted" / "workbench" / "verified-facts-review.yaml"},
+        "fodg": {"source_id": "FODG-SPEC-001", "title": "ODF 1.3 Part 3 Drawing", "source_type": "public_spec", "sha": _ODF_SHA, "wb": spec_cache / "fodg" / "extracted" / "workbench" / "verified-facts-review.yaml"},
+        "ods": {"source_id": "ODS-SPEC-001", "title": "ODF 1.3 Part 3 Spreadsheet", "source_type": "public_spec", "sha": _ODF_SHA, "wb": spec_cache / "ods" / "extracted" / "workbench" / "verified-facts-review.yaml"},
+        "odt": {"source_id": "ODT-SPEC-001", "title": "ODF 1.3 Part 3 Text Document", "source_type": "public_spec", "sha": _ODF_SHA, "wb": spec_cache / "odt" / "extracted" / "workbench" / "verified-facts-review.yaml"},
+        "zst": {"source_id": "ZST-SPEC-001", "title": "RFC 8878 Zstandard Compression", "source_type": "rfc", "sha": "", "wb": spec_cache / "zst" / "rfc8878" / "workbench" / "verified-facts-review.yaml"},
+    }
+
+    packs = []
+    for fmt_id, cfg in _FORMAT_CONFIGS.items():
+        wb_path: Path = cfg["wb"]
+        facts: List[Dict[str, Any]] = []
+        if wb_path.is_file():
+            try:
+                data = yaml.safe_load(wb_path.read_text(encoding="utf-8")) or {}
+                facts = data.get("facts", [])
+            except Exception:
+                facts = []
+
+        # Build source record with verified SHA
+        sha = cfg["sha"]
+        if not sha and facts:
+            sha = facts[0].get("source_sha256", "") or ""
+
+        source_records: List[Dict[str, Any]] = [{
+            "source_id": cfg["source_id"],
+            "title": cfg["title"],
+            "sha256": sha,
+            "sections_count": len(facts),
+            "source_type": cfg["source_type"],
+        }]
+
+        # Build requirement_summary from first 100 facts (no per-source cap)
+        req_summary: List[Dict[str, Any]] = []
+        for f in facts[:100]:
+            claim_id = f.get("claim_id") or f.get("fact_id", "")
+            claim_text = str(f.get("claim", ""))
+            kw = "MUST" if "must" in claim_text.lower() else "SHALL"
+            req_summary.append({
+                "req_id": claim_id,
+                "source_id": cfg["source_id"],
+                "heading": str(f.get("section_id", "")),
+                "keyword": kw,
+                "text_fragment": claim_text[:150],
+            })
+
+        manifest_sha = _compute_manifest_sha256(source_records)
+        context_pack_id = f"CP-{fmt_id.upper()}-{manifest_sha[:12]}"
+
+        pack = ContextPack(
+            context_pack_id=context_pack_id,
+            format_id=fmt_id,
+            manifest_sha256=manifest_sha,
+            included_sources=source_records,
+            requirement_summary=req_summary,
+            index_terms=[],
+            created_at=_now_iso(),
+        )
+
+        pack_path = out_root / f"{fmt_id}-context-pack.json"
+        pack_dict = pack.to_dict()
+        with open(pack_path, "w", encoding="utf-8") as fp:
+            json.dump(pack_dict, fp, indent=2)
+        pack.output_path = str(pack_path)
+
+        manifest_path = out_root / f"{fmt_id}-manifest.json"
+        manifest = {
+            "context_pack_id": context_pack_id,
+            "format_id": fmt_id,
+            "sha256": manifest_sha,
+            "sources": [s["source_id"] for s in source_records],
+            "created_at": pack.created_at,
+        }
+        with open(manifest_path, "w", encoding="utf-8") as fp:
+            json.dump(manifest, fp, indent=2)
+
+        packs.append(pack)
+
+    return packs
+
+
 def format_sal_coverage_for_context_pack(format_id: Optional[str] = None) -> str:
     """Return a human-readable SAL coverage string for supervisor context packs.
 

@@ -11,7 +11,7 @@
 
 version: 1
 created_at: "2026-06-18"
-last_updated: "2026-06-18"
+last_updated: "2026-06-21"
 source: "docs/test-layering.md §Known Environment-Dependent Test Failures"
 
 known_failures:
@@ -81,10 +81,270 @@ known_failures:
     first_documented: "2026-06-18"
     category: "import_error"
 
-  # Fods source gap collection errors (not test failures — these are collection ImportErrors)
-  # Tests for fods functions not yet implemented in src/python/fods/
-  # 32 collection errors observed in tests/python/fods/ during Pilot A run
-  # These are tracked here for completeness but are collection errors, not test failures.
+  # -----------------------------------------------------------------------
+  # FODS gap-closure collection errors (TC-HYGIENE-FODS-001-A, 2026-06-21)
+  # 32 test files in tests/python/fods/ import functions that are planned
+  # in the FODS gap ledger but not yet implemented in src/python/fods/.
+  # These cause ImportError at pytest collection time (ERROR, not FAIL).
+  # Root cause: tests were written against capability gap IDs before the
+  # matching implementation was added to fods/__init__.py or fods/neutral_model.py.
+  # Mitigation: use `pytest --continue-on-collection-errors` or tools/test_runner.py
+  # -----------------------------------------------------------------------
+  - test_id: "tests/python/fods/test_r258_fods_total_text_length_col_count_variance.py"
+    reason: "ImportError: fods_total_text_length, fods_col_count_variance not implemented. Closes GAP-FODS-FOSS-FODS_TOTAL_T-001, GAP-FODS-FOSS-FODS_COLUMN_-001."
+    condition: "always"
+    mitigation: "Implement fods_total_text_length and fods_col_count_variance in src/python/fods/"
+    layer: 1
+    first_documented: "2026-06-21"
+    category: "missing_implementation"
+
+  - test_id: "tests/python/fods/test_r259_fods_empty_row_ratio_avg_row_count_total_col.py"
+    reason: "ImportError: fods_empty_row_ratio, fods_avg_row_count, fods_total_col not implemented. Closes GAP-FODS-FOSS-FODS_EMPTY_R-001, GAP-FODS-FOSS-FODS_AVG_ROW-001."
+    condition: "always"
+    mitigation: "Implement missing functions in src/python/fods/"
+    layer: 1
+    first_documented: "2026-06-21"
+    category: "missing_implementation"
+
+  - test_id: "tests/python/fods/test_r260_fods_sprint41_gaps.py"
+    reason: "ImportError: fods_has_numeric_cells, fods_max_row_cell_count, fods_min_cell_length not implemented. Closes GAP-FODS-FOSS-FODS_MAX_RO-001, GAP-FODS-FOSS-FODS_MIN_CE-001."
+    condition: "always"
+    mitigation: "Implement missing functions in src/python/fods/"
+    layer: 1
+    first_documented: "2026-06-21"
+    category: "missing_implementation"
+
+  - test_id: "tests/python/fods/test_r261_fods_sprint42_gaps.py"
+    reason: "ImportError: fods_distinct_value_count, fods_empty_row_count not implemented. Closes GAP-FODS-FOSS-FODS_EMPTY_R-001, GAP-FODS-FOSS-FODS_DISTINC-001."
+    condition: "always"
+    mitigation: "Implement missing functions in src/python/fods/"
+    layer: 1
+    first_documented: "2026-06-21"
+    category: "missing_implementation"
+
+  - test_id: "tests/python/fods/test_r263_fods_sprint45_gaps.py"
+    reason: "ImportError: fods_max_numeric_value, fods_min_numeric_value not implemented. Closes GAP-FODS-FOSS-FODS_MAX_NUM-001, GAP-FODS-FOSS-FODS_MIN_NUM-001."
+    condition: "always"
+    mitigation: "Implement missing functions in src/python/fods/"
+    layer: 1
+    first_documented: "2026-06-21"
+    category: "missing_implementation"
+
+  - test_id: "tests/python/fods/test_r264_fods_sprint45_batch2.py"
+    reason: "ImportError: fods_max_cell_length not implemented. Closes GAP-FODS-FOSS-FODS_MAX_CEL-001."
+    condition: "always"
+    mitigation: "Implement fods_max_cell_length in src/python/fods/"
+    layer: 1
+    first_documented: "2026-06-21"
+    category: "missing_implementation"
+
+  - test_id: "tests/python/fods/test_r265_fods_sprint50_gaps.py"
+    reason: "ImportError: fods_cell_count_variance, fods_row_width_variance not implemented. Closes GAP-FODS-FOSS-FODS_ROW_WID-001, GAP-FODS-FOSS-FODS_CELL_CO-001."
+    condition: "always"
+    mitigation: "Implement missing functions in src/python/fods/"
+    layer: 1
+    first_documented: "2026-06-21"
+    category: "missing_implementation"
+
+  - test_id: "tests/python/fods/test_r266_fods_sprint52_gaps.py"
+    reason: "ImportError: fods_total_string_cells, fods_max_column_index not implemented. Closes GAP-FODS-FOSS-FODS_TOTAL_S-001, GAP-FODS-FOSS-FODS_MAX_COL-001."
+    condition: "always"
+    mitigation: "Implement missing functions in src/python/fods/"
+    layer: 1
+    first_documented: "2026-06-21"
+    category: "missing_implementation"
+
+  - test_id: "tests/python/fods/test_r267_fods_sprint53_gaps.py"
+    reason: "ImportError: fods_cells_per_sheet_avg, fods_is_fully_numeric not implemented. Closes GAP-FODS-FOSS-FODS_IS_FULL-001, GAP-FODS-FOSS-FODS_CELLS_P-001."
+    condition: "always"
+    mitigation: "Implement missing functions in src/python/fods/"
+    layer: 1
+    first_documented: "2026-06-21"
+    category: "missing_implementation"
+
+  - test_id: "tests/python/fods/test_r268_fods_sprint57_gaps.py"
+    reason: "ImportError: fods_row_to_sheet_ratio not implemented. Closes GAP-FODS-FOSS-FODS_ROW_TO_-001."
+    condition: "always"
+    mitigation: "Implement fods_row_to_sheet_ratio in src/python/fods/"
+    layer: 1
+    first_documented: "2026-06-21"
+    category: "missing_implementation"
+
+  - test_id: "tests/python/fods/test_r269_fods_sprint57_gaps.py"
+    reason: "ImportError: fods_file_size_bytes, fods_max_sheet_row_count not implemented. Closes GAP-FODS-FOSS-FODS_MAX_SHE-001, GAP-FODS-FOSS-FODS_FILE_SI-001."
+    condition: "always"
+    mitigation: "Implement missing functions in src/python/fods/"
+    layer: 1
+    first_documented: "2026-06-21"
+    category: "missing_implementation"
+
+  - test_id: "tests/python/fods/test_r270_fods_sprint59_gaps.py"
+    reason: "ImportError: fods_cell_type_variety not implemented. Closes GAP-FODS-FOSS-FODS_CELL_TY-001."
+    condition: "always"
+    mitigation: "Implement fods_cell_type_variety in src/python/fods/"
+    layer: 1
+    first_documented: "2026-06-21"
+    category: "missing_implementation"
+
+  - test_id: "tests/python/fods/test_r271_fods_sprint61_gaps.py"
+    reason: "ImportError: fods_sheet_cell_variance not implemented. Closes GAP-FODS-FOSS-FODS_SHEET_C-001."
+    condition: "always"
+    mitigation: "Implement fods_sheet_cell_variance in src/python/fods/"
+    layer: 1
+    first_documented: "2026-06-21"
+    category: "missing_implementation"
+
+  - test_id: "tests/python/fods/test_r272_fods_sprint65_gaps.py"
+    reason: "ImportError: fods_row_density_avg not implemented. Closes GAP-FODS-FOSS-FODS_ROW_DEN-001."
+    condition: "always"
+    mitigation: "Implement fods_row_density_avg in src/python/fods/"
+    layer: 1
+    first_documented: "2026-06-21"
+    category: "missing_implementation"
+
+  - test_id: "tests/python/fods/test_r273_fods_sprint70_gaps.py"
+    reason: "ImportError: fods_cell_value_variance not implemented. Closes GAP-FODS-FOSS-FODS_CELL_VA-001."
+    condition: "always"
+    mitigation: "Implement fods_cell_value_variance in src/python/fods/"
+    layer: 1
+    first_documented: "2026-06-21"
+    category: "missing_implementation"
+
+  - test_id: "tests/python/fods/test_r274_fods_sprint135_gaps.py"
+    reason: "ImportError: fods_cell_entropy, fods_value_variance not implemented. Closes GAP-FODS-FOSS-FODS_CELL_EN-001, GAP-FODS-FOSS-FODS_VALUE_V-001."
+    condition: "always"
+    mitigation: "Implement missing functions in src/python/fods/"
+    layer: 1
+    first_documented: "2026-06-21"
+    category: "missing_implementation"
+
+  - test_id: "tests/python/fods/test_r284_fods_additional_gaps.py"
+    reason: "ImportError: fods_avg_numeric_value, fods_longest_row_index, fods_numeric_sum_all, fods_cell_to_sheet_ratio, fods_formula_cell_count, fods_sheet_row_variance, fods_total_text_length, fods_col_count_variance not implemented in fods package."
+    condition: "always"
+    mitigation: "Implement missing analytics functions in src/python/fods/"
+    layer: 1
+    first_documented: "2026-06-21"
+    category: "missing_implementation"
+
+  - test_id: "tests/python/fods/test_r284_fods_is_all_string_has_numeric_cells.py"
+    reason: "ImportError: fods_is_all_string, fods_has_numeric_cells not in fods.neutral_model."
+    condition: "always"
+    mitigation: "Implement fods_is_all_string, fods_has_numeric_cells in src/python/fods/neutral_model.py"
+    layer: 1
+    first_documented: "2026-06-21"
+    category: "missing_implementation"
+
+  - test_id: "tests/python/fods/test_r286_fods_gap_closure.py"
+    reason: "ImportError: fods_has_numeric_cells not in fods.neutral_model. Closes GAP-FODS-FOSS-FODS_HAS_NUM-001."
+    condition: "always"
+    mitigation: "Implement fods_has_numeric_cells in src/python/fods/neutral_model.py"
+    layer: 1
+    first_documented: "2026-06-21"
+    category: "missing_implementation"
+
+  - test_id: "tests/python/fods/test_r289_fods_has_only_one_column_formula_density.py"
+    reason: "ImportError: fods_has_only_one_column, fods_formula_density not in fods.neutral_model."
+    condition: "always"
+    mitigation: "Implement missing functions in src/python/fods/neutral_model.py"
+    layer: 1
+    first_documented: "2026-06-21"
+    category: "missing_implementation"
+
+  - test_id: "tests/python/fods/test_r290f_fods_analytics_deepening.py"
+    reason: "ImportError: fods_total_string_cells, fods_avg_cell_value_length, fods_max_column_index not in fods.neutral_model."
+    condition: "always"
+    mitigation: "Implement missing functions in src/python/fods/neutral_model.py"
+    layer: 1
+    first_documented: "2026-06-21"
+    category: "missing_implementation"
+
+  - test_id: "tests/python/fods/test_r290l_fods_analytics_deepening.py"
+    reason: "ImportError: analytics deepening functions not in fods.neutral_model."
+    condition: "always"
+    mitigation: "Implement missing functions in src/python/fods/neutral_model.py"
+    layer: 1
+    first_documented: "2026-06-21"
+    category: "missing_implementation"
+
+  - test_id: "tests/python/fods/test_r299_fods_cells_per_sheet_avg_is_fully_numeric.py"
+    reason: "ImportError: fods_cells_per_sheet_avg, fods_is_fully_numeric not in fods.neutral_model."
+    condition: "always"
+    mitigation: "Implement missing functions in src/python/fods/neutral_model.py"
+    layer: 1
+    first_documented: "2026-06-21"
+    category: "missing_implementation"
+
+  - test_id: "tests/python/fods/test_r300_fods_new_analytics.py"
+    reason: "ImportError: analytics functions planned for Sprint R300 not yet implemented."
+    condition: "always"
+    mitigation: "Implement missing FODS analytics functions in src/python/fods/"
+    layer: 1
+    first_documented: "2026-06-21"
+    category: "missing_implementation"
+
+  - test_id: "tests/python/fods/test_r305_fods_ratio_formula.py"
+    reason: "ImportError: fods ratio/formula analytics functions not yet implemented."
+    condition: "always"
+    mitigation: "Implement missing FODS analytics functions in src/python/fods/"
+    layer: 1
+    first_documented: "2026-06-21"
+    category: "missing_implementation"
+
+  - test_id: "tests/python/fods/test_r307_fods_total_numeric_cell_count_avg_string_per_sheet.py"
+    reason: "ImportError: fods_total_numeric_cell_count, fods_avg_string_per_sheet not implemented."
+    condition: "always"
+    mitigation: "Implement missing functions in src/python/fods/"
+    layer: 1
+    first_documented: "2026-06-21"
+    category: "missing_implementation"
+
+  - test_id: "tests/python/fods/test_r314_fods_numeric_cell_percentage_avg_rows_per_sheet.py"
+    reason: "ImportError: fods_numeric_cell_percentage, fods_avg_rows_per_sheet not implemented."
+    condition: "always"
+    mitigation: "Implement missing functions in src/python/fods/"
+    layer: 1
+    first_documented: "2026-06-21"
+    category: "missing_implementation"
+
+  - test_id: "tests/python/fods/test_r319_fods_new_analytics.py"
+    reason: "ImportError: FODS analytics functions planned for Sprint R319 not yet implemented."
+    condition: "always"
+    mitigation: "Implement missing FODS analytics functions in src/python/fods/"
+    layer: 1
+    first_documented: "2026-06-21"
+    category: "missing_implementation"
+
+  - test_id: "tests/python/fods/test_r337_fods_new_analytics.py"
+    reason: "ImportError: FODS analytics functions planned for Sprint R337 not yet implemented."
+    condition: "always"
+    mitigation: "Implement missing FODS analytics functions in src/python/fods/"
+    layer: 1
+    first_documented: "2026-06-21"
+    category: "missing_implementation"
+
+  - test_id: "tests/python/fods/test_r355_fods_new_analytics.py"
+    reason: "ImportError: FODS analytics functions planned for Sprint R355 not yet implemented."
+    condition: "always"
+    mitigation: "Implement missing FODS analytics functions in src/python/fods/"
+    layer: 1
+    first_documented: "2026-06-21"
+    category: "missing_implementation"
+
+  - test_id: "tests/python/fods/test_r373_fods_new_analytics.py"
+    reason: "ImportError: FODS analytics functions planned for Sprint R373 not yet implemented."
+    condition: "always"
+    mitigation: "Implement missing FODS analytics functions in src/python/fods/"
+    layer: 1
+    first_documented: "2026-06-21"
+    category: "missing_implementation"
+
+  - test_id: "tests/python/fods/test_r374_fods_new_analytics.py"
+    reason: "ImportError: FODS analytics functions planned for Sprint R374 not yet implemented."
+    condition: "always"
+    mitigation: "Implement missing FODS analytics functions in src/python/fods/"
+    layer: 1
+    first_documented: "2026-06-21"
+    category: "missing_implementation"
 
 # Gap tests (collection errors, not test failures)
 # These are NOT failures — they are ImportErrors at collection time for
@@ -96,6 +356,7 @@ gap_test_notes:
     time (ERROR, not FAIL). After HEAL-003 adds --continue-on-collection-errors,
     remaining tests in the directory still execute.
   affected_formats:
+    - fods  # 32 collection errors (catalogued in known_failures above, 2026-06-21)
     - csv   # ~32 collection errors
     - tsv   # ~31 collection errors
     - (all other formats have similar patterns)

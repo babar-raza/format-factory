@@ -1,0 +1,70 @@
+taskcard_id: FODS-PYWRITE-001
+title: "FODS Python write capability deepening"
+status: PROPOSED
+owner: execution-agent
+supervisor: coordinator-lane
+source:
+  plan_section: "TC-READINESS-001"
+  plan_file: "plans/fluffy-yawning-jellyfish.md"
+  gate11_reference: "reports/gate11/fods-gate11-readiness-packet.md Section 3D"
+  gap_description: >
+    Gate 11 packet states: "Python FOSS has read and basic write via writer.py,
+    but full write capability (write→reload→verify round-trip) is currently only
+    demonstrated for .NET. Python write capability deepening is deferred pending
+    PYWRITE-001 taskcard."
+  root_cause: "Taskcard referenced in Gate 11 packet but never created"
+scope:
+  allowed_paths:
+    - src/python/fods/writer.py
+    - tests/python/fods/test_fods_pywrite_deepening.py
+  forbidden_paths:
+    - src/net/**
+    - registry/**
+    - tools/supervisor/**
+    - reports/gate11/**
+  allowed_folders:
+    - tests/python/fods/
+  forbidden_folders:
+    - src/net/
+    - .local/supervisor/
+problem: >
+  The existing FODS round-trip test (test_rnext_fods_workbook_to_xml.py:76-87)
+  is smoke-level only: it writes XML, parses it back, and checks sheet_count >= 1.
+  It does NOT verify cell values, types, formulas, or multi-sheet structure survive
+  the round-trip. The Gate 11 packet explicitly defers Python write deepening to
+  this taskcard.
+required_change: >
+  Write tests/python/fods/test_fods_pywrite_deepening.py with semantic round-trip
+  tests that verify field-level preservation through write→reload cycles.
+min_new_tests: 8
+acceptance_criteria:
+  - "Parse a real multi-sheet FODS sample → write → reload → verify all sheet names match"
+  - "Verify cell values (string, numeric, boolean) survive round-trip"
+  - "Verify typed values (office:value-type) are preserved"
+  - "Verify empty cells and merged cells survive round-trip"
+  - "Verify formula text is preserved (passthrough, not evaluation)"
+  - "Verify row/column counts match original after round-trip"
+  - "At least 8 test functions pass"
+  - "No modifications to writer.py required (test existing capability)"
+execution_steps:
+  - "Step 1: Read src/python/fods/writer.py to understand current write API"
+  - "Step 2: Read src/python/fods/parser.py to understand parse output format"
+  - "Step 3: Read existing round-trip test for fixture patterns"
+  - "Step 4: Identify a multi-sheet FODS sample in samples/by-format/fods/"
+  - "Step 5: Write test_fods_pywrite_deepening.py with 8+ semantic round-trip tests"
+  - "Step 6: Run pytest on new test file"
+  - "Step 7: Fix any failures in test expectations (not in writer.py)"
+stop_conditions:
+  - "If writer.py cannot produce valid FODS XML that parses back, mark BLOCKED and report"
+  - "If no FODS sample files exist in samples/, mark BLOCKED"
+rollback_plan: "Delete tests/python/fods/test_fods_pywrite_deepening.py"
+quality_gates:
+  requirement_correctness: "Tests verify semantic field preservation, not just structure"
+  implementation_correctness: "Tests use real parse_fods_strict, not mocks"
+  regression_safety: "No existing tests modified"
+  evidence_completeness: "pytest output showing 8+ passes"
+closeout_criteria:
+  - "8+ tests pass"
+  - "Tests verify cell values, types, and multi-sheet structure"
+  - "No writer.py modifications needed"
+dependencies: []

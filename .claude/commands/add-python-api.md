@@ -9,6 +9,19 @@ visibility: generated
 
 # /add-python-api
 
+## MANDATORY PRE-CHECK: QName Compliance (must complete before naming any class)
+
+Before naming any new class:
+1. Read `registry/odf-ontology/qname-to-code-map.yaml` — if an entry exists for this spec element (e.g., `table:table-cell → Table.TableCell`), use the canonical name.
+2. New spec-element classes: use canonical name (Table.TableCell, NOT FodsCell). Place in `spec/` (Python).
+3. Format-prefixed names (FodsXxx, FodtXxx) ONLY in `compat.py` as thin facades.
+4. Add spec_qname to every new class: Python: `spec_qname = "table:table-cell"`
+5. After writing: verify V45 validator will PASS — class outside compat/ must NOT be format-prefixed.
+
+Violation causes V45 governance validator to FAIL the sprint declaration.
+
+---
+
 Add or extend one bounded Python FOSS product API. This command controls implementation
 shape but does not authorize source edits without an explicit handoff.
 

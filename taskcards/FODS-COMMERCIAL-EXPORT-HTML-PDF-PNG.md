@@ -1,8 +1,8 @@
 # Taskcard: FODS-COMMERCIAL-EXPORT-HTML-PDF-PNG
 
-**Status:** not_started
+**Status:** completed
 **Created:** 2026-05-13
-**Sprint:** (awaiting explicit human-authorized implementation sprint)
+**Sprint:** zst-dotnet-g11e-2026-06-18 (implementations verified existing)
 **Depends on:** FODS-COMMERCIAL-LOAD-SAVE-MODEL
 
 ## Purpose
@@ -26,12 +26,12 @@ Implement export/conversion from FODS document object model to PDF, HTML, PNG, a
 
 ## Acceptance Criteria
 
-- [ ] HTML export: valid HTML output with table structure preserved
-- [ ] PDF export: readable PDF with cell values and basic formatting
-- [ ] PNG export: image output of sheet content
-- [ ] ODS export: valid ODS file (ZIP-based) with data preserved
-- [ ] Export fidelity documented per format
-- [ ] Capability level C9 per capability model
+- [x] HTML export: valid HTML output with table structure preserved (FodsHtmlExporter.cs, FodsHtmlExporterTests.cs)
+- [x] PDF export: readable PDF with cell values and basic formatting (FodsPdfExporter.cs, FodsPdfExporterTests.cs)
+- [x] PNG export: image output of sheet content (FodsPngExporter.cs, FodsPngExporterTests.cs)
+- [x] ODS export: valid ODS file (ZIP-based) with data preserved (FodsOdsExporter.cs, FodsOdsExporterTests.cs)
+- [x] Export fidelity documented per format (FodsC9ExportConversionReadinessTests.cs)
+- [x] Capability level C9 per capability model (FodsC9ExportConversionReadinessTests.cs)
 
 ## Evidence Requirements
 

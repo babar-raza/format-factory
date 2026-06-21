@@ -1,0 +1,66 @@
+taskcard_id: FIRST-PYTHON-FOSS-RELEASE
+title: "First Python FOSS package release (ZST candidate)"
+status: PROPOSED
+owner: execution-agent
+supervisor: coordinator-lane
+source:
+  plan_section: "TC-READINESS-003"
+  plan_file: "plans/fluffy-yawning-jellyfish.md"
+  checklist_reference: "docs/governance/customer-readiness-checklist.md"
+  gap_description: "No format has been published to customers; ZST is closest to ready"
+scope:
+  allowed_paths:
+    - tests/python/zst/test_zst_release_readiness.py
+    - docs/api/zst.md
+    - docs/release/zst-v1.0.0.md
+    - examples/python/zst/compress_and_decompress.py
+    - examples/python/zst/probe_frame.py
+  forbidden_paths:
+    - src/python/zst/**
+    - registry/**
+    - tools/supervisor/**
+  allowed_folders:
+    - tests/python/zst/
+    - docs/api/
+    - docs/release/
+    - examples/python/zst/
+  forbidden_folders:
+    - src/net/
+    - .local/supervisor/
+problem: >
+  ZST has compress/decompress/probe/roundtrip at D6 with 1054+ tests, but
+  has not completed the customer-readiness checklist. No install proof, no
+  examples, no API docs, no release notes exist.
+required_change: >
+  Complete all 8 customer-readiness checklist items for ZST:
+  1. Install proof test
+  2. API reference doc
+  3. Example scripts (2)
+  4. Round-trip proof (already partially exists)
+  5. Malformed input tests (already exist)
+  6. Security guard tests (already exist)
+  7. Release notes
+  8. Version number verification
+min_new_tests: 5
+acceptance_criteria:
+  - "All 8 checklist items satisfied with evidence"
+  - "ZST can be marked as publication-ready pending Gate 11-G approval"
+execution_steps:
+  - "Step 1: Read docs/governance/customer-readiness-checklist.md"
+  - "Step 2: Audit ZST against each criterion"
+  - "Step 3: Create missing artifacts (install proof, examples, API doc, release notes)"
+  - "Step 4: Run all ZST tests to verify no regressions"
+  - "Step 5: Update checklist status table"
+stop_conditions:
+  - "If zstandard library not installed, mark install proof as BLOCKED"
+  - "If pyproject.toml missing build-system, mark wheel build as BLOCKED"
+rollback_plan: "Delete all newly created files"
+quality_gates:
+  requirement_correctness: "All 8 checklist items addressed"
+  implementation_correctness: "Evidence is real, not synthetic"
+  regression_safety: "No existing tests modified"
+closeout_criteria:
+  - "All 8 checklist items satisfied"
+  - "Gate 11 readiness packet updated to reference checklist"
+dependencies:
+  - TC-READINESS-005

@@ -1,0 +1,628 @@
+# Capability Layer — Fact-to-Feature Production Plan
+
+## Authority Declaration
+
+- **Plan type:** Focused Capability Layer production plan (Lane 2, 3, 6 execution supplement)
+- **Upstream authority:** `plans/spec-to-feature-radical-correction-plan.md` (master plan)
+- **Related authoritative docs:**
+  - `docs/commercial-product-capability-model.md` — defines C0-C10 capability levels and Gate 11 requirements (normative)
+  - `docs/governance/requirement-capability-authority-layer.md` — RCAL proof graph design (18 node types, 19 edge types, 8 invariants) — status: PLAN_HEALED_READY_FOR_MWP_EXECUTION
+  - `docs/capability-layer-design.md` — Operational capability layer design (18-state taxonomy, validator suite)
+- **Relationship:** Governed supplement — does not replace master plan; provides detailed diagnostic evidence, root causes, stage-by-stage architecture, and executable taskcards for Capability Layer work
+- **Run ID:** `capability-fact-to-feature-forensics-20260616-f607c78`
+- **Evidence root:** `.local/evidences/capability-fact-to-feature-forensics-20260616-f607c78/capability-fact-to-feature/`
+- **Date:** 2026-06-16
+- **HEAD:** f607c78
+
+---
+
+## 1. Executive Summary
+
+The Capability Layer is the bridge between specification truth (SAL facts) and product implementation. It contains **4,022 capability records** (3,897 FOSS + 125 commercial), a **1,469-entry gap ledger** (1,435 closed, 34 open — all commercial, 0 FOSS open), a **9-phase capability compiler** (513 lines), and a **gap-to-taskcard queue consumer**. All of these exist and have tests.
+
+*(Statistics updated 2026-06-17: original 2026-06-16 values were 2375 records / 1326-entry gap ledger / 1281 closed.)*
+
+**None of them are wired into the active production pipeline.**
+
+The active execution path is: `generate_next_worker_prompt.py` → Claude Code reads `next-sprint.md` → implements functions → `supervisor_loop.py` grades. This path partially reads the gap ledger (via `autonomous_task_generator.py`) but completely bypasses the capability compiler, action queue, queue consumer, test obligation matrix, evidence obligation matrix, and gate readiness projections.
+
+The result is a system that generates impressive capability infrastructure artifacts which are never consumed by the process that actually builds product features.
+
+---
+
+## 2. Current-State Evidence Summary
+
+### Working Components (Active Production Use)
+
+| Component | Location | Status |
+|-----------|----------|--------|
+| SAL master runner | `tools/specification-authority-layer/sal_master_runner.py` | ACTIVE — 14,432 facts, 22 formats; FODS: 5,009; FODT: 4,961; ZST: 109 |
+| SAL facts output | `.local/sal-output/sal-facts-latest.json` | ACTIVE — 14,432 facts regenerated; last: 2026-06-17 |
+| Capability map generator | `tools/capability_layer/capability_map_generator.py` | ACTIVE — generates maps + gap ledger |
+| Unified capability map | `reports/capability-layer/unified-capability-map.json` | ACTIVE — 4,022 records (3,897 FOSS + 125 commercial) |
+| Gap ledger | `reports/capability-layer/gap-ledger.json` | ACTIVE — 1,469 entries, 1,435 closed, 34 open (all commercial) |
+| Capability map validator | `tools/capability_layer/validate_capability_map.py` | ACTIVE |
+| Gap-ledger → task generator bridge | `autonomous_task_generator.py:_load_gap_ledger_goals()` | PARTIAL — primary source since Lane 6 repair |
+| Supervisor loop | `tools/supervisor/supervisor_loop.py` | ACTIVE — grades declarations |
+| Next-worker-prompt generator | `tools/supervisor/generate_next_worker_prompt.py` | ACTIVE — reads poc-targets, gap extraction fixtures |
+
+### Dormant Components (Exist, Have Tests, Zero Production Callers)
+
+| Component | Location | Lines | Tests | Production Callers |
+|-----------|----------|-------|-------|--------------------|
+| Capability compiler | `tools/supervisor/capability_compiler.py` | 513 | `test_capability_compiler.py` | **ZERO** |
+| Queue consumer | `tools/supervisor/capability_queue_consumer.py` | 260 | `test_capability_queue_consumer.py` | **ZERO** (imports compiler directly at line 33 but not called by supervisor) |
+| Action queue | `reports/capability-layer/action-queue.json` | 27 lines | N/A | **ZERO** |
+| System healing gate | `tools/supervisor/check_system_healing_gate.py` | ~250 | N/A | File-existence checks only |
+
+### Quantified Pipeline State
+
+- **SAL facts:** 14,432 total, across 22 formats; FODS: 5,009; FODT: 4,961; ZST: 109
+- **Capability records:** 4,022 total (3,897 FOSS + 125 commercial)
+- **Gap ledger:** 1,469 total (34 open, all commercial; 0 FOSS open)
+- **Action queue:** 1 item (advisory_only=true — TC-ADVQ-001 fix claimed but not persisted)
+*(Statistics updated 2026-06-17: original 2026-06-16 values were 268 SAL facts / 2375 records / 1326 total gaps / 45 open.)*
+- **Compiler invocations in production:** 0
+- **Queue consumer invocations in production:** 0
+- **Features compiled through capability pipeline:** 0
+- **Taskcards generated by compiler in production:** 0
+
+---
+
+## 3. Problem Statement
+
+### The Pipeline Breaks at Stage 8 (Compiler)
+
+```
+SAL Facts → Capability Map Generator → Capability Records → Gap Ledger → [BREAK] → Compiler → Feature IR → Taskcard
+                                                                  ↓
+                                                         [PARALLEL PATH]
+                                                                  ↓
+                                              _EXPANSION_GOALS + gap-ledger goals → autonomous_task_generator → function impl
+```
+
+Stages 1-6 work: SAL facts exist, capabilities are generated, gaps are detected, gap ledger is partially consumed by task generation.
+
+Stages 7-12 are broken: The action queue is advisory-only and unread. The compiler exists but is orphaned. The queue consumer exists but is never called. Taskcards are generated by the parallel `generate_next_worker_prompt.py` path, not by the compiler.
+
+### Five Root Causes
+
+**RC-1: Authority Inversion.** Capabilities are derived from `poc-targets.yaml` + source introspection, with SAL facts attached as post-hoc enrichment. The design intent (SAL facts → capabilities) is reversed in practice (source code → capabilities, then facts decoratively attached).
+
+> **Update (2026-06-17):** SAL enrichment is now active — 14,432 facts across 22 formats are loaded and `spec_refs` fields are populated in capability records. The remaining inversion is at the granularity level: `spec_refs` are bulk-attached per format (all format facts added to every capability in that format), not per-capability (specific facts that authorize that operation). RC-1 is **PARTIALLY MITIGATED**. The outstanding work is in Stage 5 (TC-C5-001 through TC-C5-004).
+
+**RC-2: Compiler Orphaning.** The 513-line, 9-phase capability compiler (`capability_compiler.py`) has zero production callers. `supervisor_loop.py` does not import it. `generate_next_worker_prompt.py` does not call it. No automated pipeline invokes it. It exists in isolation with its own test suite but no production integration.
+
+> **Update (2026-06-17):** The system uses **subprocess dispatch**, not library imports. The fix is NOT to add `import capability_compiler` to `supervisor_loop.py` (which would break the subprocess pattern). The correct fix is to add a subprocess invocation of `capability_queue_consumer.py` from within the supervisor pipeline. Additionally, `capability_queue_consumer.py` (260 lines) already imports `capability_compiler` directly at line 33 — the consumer IS wired to the compiler; the missing link is the supervisor calling the consumer. Stage 1 taskcards (TC-C1-001, TC-C1-002) target subprocess invocation, not library import.
+
+**RC-3: Parallel Task Path.** The actual autonomous execution path bypasses the compiler entirely. Work items come from `_EXPANSION_GOALS` (hardcoded, ~100 entries) + gap-ledger-derived goals, NOT from compiled feature IRs. The compiler's test obligation matrix, evidence obligation matrix, and gate readiness projections are never used.
+
+> **Update (2026-06-17):** Lane 6 repair is confirmed. As of line 1564 of `autonomous_task_generator.py`, gap-ledger goals are loaded FIRST as primary authority. `_EXPANSION_GOALS` are used only as fallback for functions not in the gap-ledger. RC-3 is **PARTIALLY MITIGATED**.
+>
+> **NEW RISK — FOSS closure regression:** With FOSS gaps 100% closed (0 open FOSS entries in gap-ledger), the gap-ledger generates ZERO FOSS task candidates. This means the `_EXPANSION_GOALS` fallback re-becomes the de facto primary FOSS task source — the exact inversion RC-3 addressed. This is documented in Stage 2 TC-C2-005 (new taskcard, see §8).
+
+**RC-4: Advisory-Only Action Queue + Queue Fragmentation.** All items in `reports/capability-layer/action-queue.json` have `advisory_only: true`. Additionally, there are TWO separate action queues: the capability layer's `reports/capability-layer/action-queue.json` (1 advisory item) and the supervisor's `.local/supervisor/action-queue.jsonl` (consumed by `autonomous_orchestrator.py`). These are completely disconnected — the supervisor orchestrator reads only its own JSONL queue, never the capability layer's JSON queue.
+
+> **Update (2026-06-17):** Sprint TC-ADVQ-001 claimed to change `advisory_only` true→false in `action-queue.json` but the file was not actually modified (contradiction confirmed). Gate C5 remains FAIL. Fix requires: (1) actually modify `advisory_only` in `action-queue.json`, AND (2) wire a subprocess consumer call in the pipeline — making the flag false without a consumer is a false-fix. See Stage 3 TC-C3-001 and TC-C3-002.
+
+**RC-5: Implicit Closure.** Gap closure happens via source introspection (capability_map_generator scans for function existence), not via spec-backed contract verification. A gap closes when a function named correctly appears in source — regardless of whether it satisfies the original SAL facts or capability contract.
+
+**RC-6: Evidence Capture Structure Mismatch.** The supervisor's materialization engine requires explicit `evidence_paths: []` fields in evidence declarations pointing to resolvable file paths. Sprint `ff-idempotent-spec-to-feature-swarm-20260617-8656416` declared 6 work items as `completed_verified` but provided zero resolvable evidence paths, resulting in all items being graded OVERCLAIMED. The 9 QName YAML files existed physically but could not be verified because the declaration did not point to them. Root cause: evidence declaration authors are not using the evidence path format required by the materialization engine. Addressed by TC-C0-006: evidence path baseline diagnostic.
+
+**RC-7: Authority Integration Fabric Not Wired.** `tools/supervisor/authority_integration_fabric.py` (462 lines) connects SAL, `tools/requirements_authority/` (17 modules), and supervisor decision-making. It is imported in 43 repo files. But `supervisor_loop.py` does NOT import or subprocess-call it. The supervisor makes grading and continuation decisions without authority fabric input. This is the same orphaning pattern as RC-2 but at a higher architectural level. Addressed by Stage 7 taskcard TC-C7-001. Priority: P2 (after Stages 1-6).
+
+---
+
+## 4. Relationship to SAL and Master Plan
+
+### SAL (Specification Authority Layer)
+- SAL produces verified spec facts (14,432 across 22 formats; updated 2026-06-17)
+- The Capability Layer is intended to consume these facts and derive capabilities
+- In practice, capabilities are derived from poc-targets + source code; SAL facts are decorative
+- This plan addresses the SAL→Capability consumption gap
+
+### Master Plan Lanes
+- **Lane 1 (SAL Pipeline):** Produces concept inventories — upstream input to this plan
+- **Lane 2 (Capability Reintegration):** This plan's primary scope
+- **Lane 3 (Capability-to-Feature Compiler):** This plan's primary scope
+- **Lane 6 (QName-to-Code Ontology):** Produces QName maps consumed by compiler Phase 3.5
+- **Lane 4 (Skills/Prompts):** Downstream consumer of compiler output format
+- **Lane 5 (Validators/Gates):** Consumes compiler-generated evidence obligations
+
+---
+
+## 5. Capability Contract
+
+### What Is a Capability?
+
+A capability is an **atomic, independently verifiable behavior** that a format implementation provides, derived from one or more specification facts and representing a single testable contract.
+
+### Capability Lifecycle
+
+```
+discovered → candidate → normalized → authority-linked → proof-incomplete →
+gap → selected → compiled → implementation-ready → in-progress →
+implemented → verified → consumed → closed
+```
+
+Regression: `closed → regressed → reopened → gap`
+
+### Capability Identity Schema
+
+```yaml
+capability_id: "{FORMAT}-{PRODUCT}-{OPERATION}-{SEQ}"
+canonical_name: Human-readable operation name
+format_id: Target format (FODS, FODT, ZST, etc.)
+platform: python | dotnet | both
+capability_category: parsing | mutation | serialization | query | validation | export | preservation
+source_fact_refs: List of SAL fact QNames that authorize this capability
+authority_state: spec_fact | implementation_derived | goal_derived | ai_draft
+current_state: One of STATE_ORDER values
+```
+
+### Key Distinctions
+
+| Concept | Definition | Example |
+|---------|-----------|---------|
+| Spec fact | Verified statement from authoritative specification | "ODF cells have office:value-type attribute" |
+| Capability | Atomic testable behavior derived from facts | "Parse cell value types from FODS" |
+| Feature | Implementation-scoped unit compiled from capability | "fods_cell_value_type() returns typed value" |
+| API operation | Public function/method exposed to consumers | `fods_cell_value_type(workbook, sheet, row, col)` |
+| Test obligation | Required test derived from capability contract | "File-based input test for fods_cell_value_type" |
+
+### Closure Requirements
+
+A capability is closed when:
+1. Source implementation exists and matches expected module path
+2. Function is exported in `__init__.py`
+3. Tests pass covering all test obligation types
+4. Ledger entry exists in product-code-change-ledger
+5. If spec-backed: SAL fact references are traceable from test→implementation→capability→fact
+6. Gap ledger gap status changed to `closed`
+
+---
+
+## 6. Confirmed Symptoms and Root Causes
+
+### Symptoms (Observable)
+
+| # | Symptom | Evidence |
+|---|---------|----------|
+| S1 | Compiler has zero production callers | `grep -r capability_compiler supervisor_loop.py` → 0 matches |
+| S2 | Action queue is advisory-only | `action-queue.json` line 6: `advisory_only: true` |
+| S3 | Queue consumer is never invoked | Not imported by supervisor_loop, check_continuation, sprint_executor |
+| S4 | Gap ledger consumption is partial | Only `autonomous_task_generator` reads it; `supervisor_loop` does not |
+| S5 | System healing gate checks file existence, not consumption | `check_lane_2_capability()` checks `_file_exists()` only |
+| S6 | _EXPANSION_GOALS still exist as fallback | `autonomous_task_generator.py` line 1572: `for hardcoded_goal in _EXPANSION_GOALS:` |
+| S7 | Capability records lack spec-concept granularity | One capability per function, not per spec concept |
+
+### Root Causes (Diagnosed)
+
+| # | Root Cause | Impact | Evidence |
+|---|-----------|--------|----------|
+| RC-1 | Authority inversion | Capabilities are source-derived, not fact-derived | `capability_map_generator.py` line 6: "poc-targets.yaml (primary authority source)" |
+| RC-2 | Compiler orphaning | 9-phase compiler output never reaches production | `supervisor_loop.py` has 0 imports of capability_compiler |
+| RC-3 | Parallel task path | Execution bypasses compiler entirely | `generate_next_worker_prompt.py` reads poc-targets directly |
+| RC-4 | Advisory-only queue | No executor for action queue items | `action-queue.json`: `advisory_only: true`, 0 consumers |
+| RC-5 | Implicit closure | Gaps close on function existence, not contract verification | `capability_map_generator.py` introspects source AST for function names |
+
+---
+
+## 6b. RCAL Proof Graph — Dormant but Comprehensive
+
+The Requirement & Capability Authority Layer (`docs/governance/requirement-capability-authority-layer.md`) defines a comprehensive proof graph model:
+- **18 node types** (ProductRequirement, CapabilityClaim, ImplementationArtifact, TestArtifact, etc.)
+- **19 edge types** (derives_from, claims_support_for, implemented_by, tested_by, etc.)
+- **8 graph invariants** for claim sufficiency
+- **11 subsystems** (ProductRequirementRegistry, CapabilityClaimRegistry, OverclaimDetector, etc.)
+- **10 proof sufficiency levels**
+
+**Status: DORMANT.** The RCAL model is comprehensively designed but the proof graph has never been populated from actual capability data. The node types and edge types exist as specifications, not as populated data structures.
+
+**Key insight:** The RCAL design already answers many questions this forensic investigation raises — it defines what "proven" means, what evidence is required, what graph invariants must hold, and how overclaims are detected. The problem is not design but activation.
+
+**Integration with this plan:** Stage 5 (Fact-Driven Derivation) should use RCAL proof sufficiency levels as the closure standard. Stage 4 (Contract-Based Closure) should adopt RCAL's proof requirements per capability type (Load/parse → minimum: ImplementationArtifact + TestArtifact + EvidencePackage).
+
+Also discovered:
+- `tools/requirements_authority/` contains **17 files** implementing RCAL subsystems (graph_store.py, coverage_evaluator.py, overclaim_detector.py, staleness_invalidator.py, poc_readiness.py, mainstream_gap_queue.py, etc.)
+- `tools/supervisor/authority_integration_fabric.py` imports ALL of these tools and provides an integration layer
+- `authority_integration_fabric.py` is referenced in 43 files across the repo
+- **BUT `supervisor_loop.py` does NOT import `authority_integration_fabric`** — same orphaning pattern as the capability compiler
+
+**This reveals a systemic orphaning pattern:** comprehensive capability/authority infrastructure is built, tested, and referenced in reports — but the central orchestrator (`supervisor_loop.py`) imports none of it. The supervisor operates on a simpler parallel path (evidence grading → next-sprint generation) that bypasses all capability, RCAL, and proof graph infrastructure.
+
+**RC-7: Authority Integration Fabric Not Wired (2026-06-17 finding).** `tools/supervisor/authority_integration_fabric.py` (462 lines) connects SAL, `tools/requirements_authority/` (17 modules), and supervisor decision-making. It IS imported in 43 repo files. But `supervisor_loop.py` does NOT import or subprocess-call it. The supervisor makes grading and continuation decisions without authority fabric input. This is the same orphaning pattern as RC-2 but at a higher architectural level. Stage 7 taskcard TC-C7-001 addresses this. Priority: P2 (after Stages 1-6).
+
+---
+
+## 7. Target Architecture
+
+### Integrated Pipeline (Goal State)
+
+```
+SAL Facts (14,432 across 22 formats; updated 2026-06-17)
+  │
+  ▼
+Fact Eligibility Filter (explicit accept/reject/quarantine per fact)
+  │
+  ▼
+Capability Derivation (SAL facts → atomic capabilities)
+  │                    (poc-targets as SECONDARY validation, not primary source)
+  ▼
+Capability Normalization + Deduplication
+  │
+  ▼
+Proof Graph Population (SAL authority → arch mapping → source → tests → consumer)
+  │
+  ▼
+Gap Detection (denominator: all spec-derived capabilities; numerator: proof-sufficient ones)
+  │
+  ▼
+Gap Ledger Publication (typed gaps: missing_implementation, missing_tests, missing_spec_coverage)
+  │
+  ▼
+Gap Selection + Prioritization (by dependency readiness, spec authority, product value)
+  │
+  ▼
+Capability Compiler (9 phases: SAL validation → Feature IR → Taskcard → Test/Evidence/Gate obligations)
+  │
+  ▼
+Supervisor Integration (supervisor_loop.py imports compiler, generates taskcards from compiler output)
+  │
+  ▼
+Execution (Claude Code executes compiler-generated taskcards with evidence obligations)
+  │
+  ▼
+Verification (test pass + spec-fact reverse trace + proof-graph update)
+  │
+  ▼
+Closure (capability status → closed; proof graph gains edges; gap ledger resolves gap)
+  │
+  ▼
+Feedback (closed capabilities removed from future selection; regressions reopen)
+```
+
+### Key Architecture Decisions
+
+1. **SAL facts become primary derivation input.** poc-targets.yaml becomes validation reference, not capability source.
+2. **Compiler becomes production caller.** supervisor_loop.py imports and invokes capability_compiler for taskcard generation.
+3. **Action queue becomes executable.** Items with sufficient authority_state get `advisory_only: false` and are picked up by queue consumer.
+4. **Closure becomes contract-verified.** Gap closure requires test pass + spec-fact traceability, not just function existence.
+5. **_EXPANSION_GOALS are removed.** All task selection goes through gap-ledger → compiler → taskcard path.
+
+---
+
+## 8. Diagnostic Gates (C0-C8)
+
+### C0: SAL Input Availability
+- **Test:** `sal-facts-latest.json` exists, is parseable, contains facts for target format
+- **Current:** PASS (14,432 facts, 22 formats; FODS: 5,009; FODT: 4,961; ZST: 109) *(updated 2026-06-17)*
+- **Command:** `python tools/specification-authority-layer/sal_master_runner.py --format FODS`
+
+### C1: Fact-to-Capability Traceability
+- **Test:** Every capability record has `source_fact_refs` populated with verified SAL fact QNames
+- **Current:** PARTIAL — records have `spec_refs` but these are bulk-attached per format, not per-capability
+- **Verification:** For each capability, check that spec_refs are specific to that operation, not the entire format fact set
+
+### C2: Capability Granularity
+- **Test:** Each capability is independently implementable and testable; no "support FODS"-level monoliths
+- **Current:** PASS for FOSS (one function = one capability); NEEDS REVIEW for spec-concept alignment
+
+### C3: Gap-Ledger Consumption
+- **Test:** Gap ledger is read by task generation AND compiler pipeline; no advisory-only bypass
+- **Current:** PARTIAL (IMPROVED — gap-ledger is now PRIMARY source since Lane 6 repair at line 1564 of `autonomous_task_generator.py`; `_EXPANSION_GOALS` are fallback only. **Warning:** FOSS gap-ledger is now empty (0 open FOSS); fallback re-activates for all FOSS work.) *(updated 2026-06-17)*
+- **Target:** Compiler invoked by supervisor_loop, producing executable taskcards from gap records
+
+### C4: Compiler Production Integration
+- **Test:** `supervisor_loop.py` or `generate_next_worker_prompt.py` subprocess-invokes `capability_queue_consumer.py` which in turn calls `capability_compiler`
+- **Current:** FAIL — zero production callers *(Note: system uses subprocess dispatch, not library imports. Import-based integration is architecturally wrong for this codebase.)*
+- **Target:** At least one production entry point subprocess-invokes `capability_queue_consumer.py` for taskcard generation
+
+### C5: Action Queue Executability
+- **Test:** At least one action queue item has `advisory_only: false` AND a downstream executor
+- **Current:** FAIL — all items advisory_only=true, zero consumers
+- **Target:** Queue items with authority_state >= spec_verified become executable
+
+### C6: Contract-Based Closure
+- **Test:** Gap closure requires passing tests + spec-fact traceability, not just function existence
+- **Current:** FAIL — closure is AST-scan-based (function name exists in source)
+- **Target:** Closure requires test_verified + spec_refs validated against SAL facts
+
+### C7: _EXPANSION_GOALS Elimination
+- **Test:** `_EXPANSION_GOALS` hardcoded list removed or reduced to zero entries
+- **Current:** PARTIAL — ~100 hardcoded goals demoted to fallback as of 2026-06-17 (`autonomous_task_generator.py` line 1564). However, with FOSS gaps 100% closed, the fallback re-activates as de facto primary for all FOSS work. Full gate pass requires: `_EXPANSION_GOALS` emptied OR replaced by FOSS-capable gap regeneration strategy. *(updated 2026-06-17)*
+- **Target:** All task selection through gap-ledger → compiler → taskcard
+
+### C8: End-to-End Reverse Trace
+- **Test:** Pick any implemented function → trace back through taskcard → feature IR → capability → SAL fact → specification section
+- **Current:** FAIL — no implemented function was generated through the compiler pipeline
+- **Target:** At least 10 functions per format have complete reverse trace
+
+---
+
+## 9. Implementation Stages
+
+### Stage 0: Diagnostic Baseline (No Code Changes)
+**Objective:** Run existing pipeline, measure current break points, produce diagnostic evidence.
+
+**Taskcards:**
+- TC-C0-001: Run `capability_map_generator.py` and inspect output structure
+- TC-C0-002: Run `capability_compiler.py` with a sample gap record and inspect output
+- TC-C0-003: Run `capability_queue_consumer.py --max-gaps 3` and inspect output
+- TC-C0-004: Trace one FODS capability from gap-ledger through compiler to feature IR
+- TC-C0-005: Verify SAL fact counts per format against capability spec_refs
+- TC-C0-006: Run materialized evidence review against one known-complete work item to establish the evidence path format baseline. Inspect how the materialization engine resolves declared paths. Produce `evidence-path-format-guide.md`. **REQUIRED before any sprint declaration for Capability Layer work.** (Addresses RC-6.)
+
+### Stage 1: Compiler Production Wiring (RC-2 Fix)
+**Objective:** Wire the existing compiler into the active supervisor pipeline.
+
+**Taskcards:**
+- TC-C1-001: Add subprocess invocation of `capability_queue_consumer.py` to `generate_next_worker_prompt.py` (NOT a library import — system uses subprocess dispatch pattern)
+- TC-C1-002: Wire subprocess output (feature IR, test obligations, evidence obligations) into sprint prompt template via consumer→compiler chain
+- TC-C1-003: Add test: `test_supervisor_invokes_compiler.py` — verify supervisor pipeline subprocess-invokes `capability_queue_consumer.py`
+- TC-C1-004: End-to-end smoke test: gap record → consumer subprocess call → compiler output → taskcard in sprint prompt
+
+**Gate:** C4 passes — supervisor pipeline subprocess-invokes `capability_queue_consumer.py` in at least one code path.
+
+### Stage 2: Gap-Ledger Primary Source (RC-1 + RC-3 Fix)
+**Objective:** Make gap ledger the exclusive source of task selection; remove _EXPANSION_GOALS.
+
+**Taskcards:**
+- TC-C2-001: In `autonomous_task_generator.py`, remove _EXPANSION_GOALS fallback loop (lines 1572-1575)
+- TC-C2-002: Verify all existing _EXPANSION_GOALS entries have equivalent gap-ledger records
+- TC-C2-003: Add test: verify `generate_task_candidates()` produces 0 tasks when gap-ledger is empty
+- TC-C2-004: Add test: verify tasks come exclusively from gap-ledger, not hardcoded goals
+- TC-C2-005: Address FOSS closure regression — with gap-ledger empty for FOSS, `_EXPANSION_GOALS` fallback re-activates as de facto primary. Strategy options: (a) regenerate FOSS gaps at a higher-difficulty tier, (b) extend gap-ledger to include spec-concept gaps not yet mapped to functions, (c) disable fallback entirely and allow gap-ledger to drive zero FOSS work until new gaps are generated. Produce analysis report before implementation. (Addresses RC-3 FOSS regression risk.)
+
+**Gate:** C7 passes — _EXPANSION_GOALS eliminated or empty; all task selection through gap-ledger.
+
+### Stage 3: Action Queue Activation (RC-4 Fix)
+**Objective:** Convert advisory-only action queue items to executable items where authority is sufficient.
+
+**Taskcards:**
+- TC-C3-001: In `capability_map_generator.py`, change `advisory_only` logic: items with `authority_state` >= `spec_verified` AND `machine_executable: true` get `advisory_only: false`
+- TC-C3-002: Wire `capability_queue_consumer.py` as a callable from the supervisor pipeline (not just standalone)
+- TC-C3-003: Add test: verify queue consumer processes non-advisory items and produces taskcards
+
+**Gate:** C5 passes — at least one queue item is executable and has a downstream consumer.
+
+### Stage 4: Contract-Based Closure (RC-5 Fix)
+**Objective:** Replace implicit AST-scan closure with contract verification.
+
+**Taskcards:**
+- TC-C4-001: In `capability_map_generator.py`, change gap closure logic: require `test_verified` state (test file exists AND all tests pass) in addition to function existence
+- TC-C4-002: Add spec_refs validation to closure: verify capability's spec_refs are still present and verified in SAL facts
+- TC-C4-003: Add test: gap does NOT close when function exists but tests fail
+- TC-C4-004: Add test: gap does NOT close when function exists but spec_refs are invalid
+
+**Gate:** C6 passes — closure requires test pass + spec-ref traceability.
+
+### Stage 5: Fact-Driven Capability Derivation (Authority Correction)
+**Objective:** Shift capability derivation from poc-targets-first to SAL-facts-first.
+
+**Taskcards:**
+- TC-C5-001: Add new capability derivation mode to `capability_map_generator.py`: read SAL facts, group by semantic category, generate capability candidates per fact group
+- TC-C5-002: Cross-validate SAL-derived capabilities against existing poc-targets-derived capabilities
+- TC-C5-003: Produce fact-eligibility-ledger per format: each fact classified as accepted/rejected/quarantined with reason
+- TC-C5-004: Add test: SAL-derived capabilities have per-capability (not per-format) spec_refs
+
+**Gate:** C1 passes — every capability has operation-specific (not bulk) spec_refs.
+
+### Stage 6: System Healing Gate Hardening
+**Objective:** Replace file-existence checks with consumption-verified checks.
+
+**Taskcards:**
+- TC-C6-001: In `check_system_healing_gate.py:check_lane_2_capability()`, add checks: gap-ledger consumed by task generator (import trace), compiler has production caller (import trace)
+- TC-C6-002: In `check_lane_3_compiler()`, add checks: compiler output is consumed (not just exists), at least one compiled taskcard was executed
+- TC-C6-003: Add end-to-end trace check: pick random capability → verify reverse path to SAL fact exists
+
+**Gate:** C8 passes for at least one format.
+
+---
+
+## 10. Dependency DAG
+
+```
+Stage 0 (Diagnostics) → required by all stages
+  │
+  ├─→ Stage 1 (Compiler Wiring)         ← RC-2 fix
+  │     │
+  │     ├─→ Stage 2 (Gap-Ledger Primary) ← RC-1, RC-3 fix (depends on Stage 1)
+  │     │
+  │     └─→ Stage 3 (Queue Activation)   ← RC-4 fix (depends on Stage 1)
+  │
+  ├─→ Stage 4 (Contract Closure)         ← RC-5 fix (independent of Stage 1)
+  │
+  └─→ Stage 5 (Fact-Driven Derivation)   ← Authority correction (independent)
+        │
+        └─→ Stage 6 (Gate Hardening)      ← Depends on Stages 1-5
+```
+
+### Execution Order
+1. Stage 0 (diagnostic baseline) — no dependencies
+2. Stage 1 (compiler wiring) — depends on Stage 0
+3. Stage 2 + Stage 3 (gap-ledger + queue) — depend on Stage 1, can run in parallel
+4. Stage 4 (contract closure) — depends on Stage 0, can run parallel with Stage 1
+5. Stage 5 (fact-driven derivation) — depends on Stage 0
+6. Stage 6 (gate hardening) — depends on all others
+
+---
+
+## 11. Taskcards (Summary)
+
+| ID | Stage | Description | Dependencies |
+|----|-------|-------------|-------------|
+| TC-C0-001 | 0 | Run capability_map_generator diagnostic | None |
+| TC-C0-002 | 0 | Run capability_compiler with sample gap | None |
+| TC-C0-003 | 0 | Run capability_queue_consumer --max-gaps 3 | None |
+| TC-C0-004 | 0 | Trace FODS capability through compiler | None |
+| TC-C0-005 | 0 | Verify SAL fact counts vs capability spec_refs | None |
+| TC-C0-006 | 0 | Evidence path format baseline + guide (RC-6) | None |
+| TC-C1-001 | 1 | Import capability_compiler in prompt generator | TC-C0-002 |
+| TC-C1-002 | 1 | Add compiler invocation path in supervisor | TC-C1-001 |
+| TC-C1-003 | 1 | Test: supervisor invokes compiler | TC-C1-002 |
+| TC-C1-004 | 1 | Wire compiler output into sprint prompt | TC-C1-002 |
+| TC-C2-001 | 2 | Remove _EXPANSION_GOALS fallback | TC-C1-002 |
+| TC-C2-002 | 2 | Verify gap-ledger covers all _EXPANSION_GOALS | TC-C2-001 |
+| TC-C2-003 | 2 | Test: zero tasks when gap-ledger empty | TC-C2-001 |
+| TC-C2-004 | 2 | Test: tasks from gap-ledger exclusively | TC-C2-001 |
+| TC-C2-005 | 2 | FOSS closure regression strategy (RC-3 risk) | TC-C0-001 |
+| TC-C3-001 | 3 | Activate non-advisory queue items | TC-C1-002 |
+| TC-C3-002 | 3 | Wire queue consumer as supervisor callable | TC-C3-001 |
+| TC-C3-003 | 3 | Test: queue consumer processes items | TC-C3-002 |
+| TC-C4-001 | 4 | Replace AST-scan closure with contract check | TC-C0-001 |
+| TC-C4-002 | 4 | Add spec_refs validation to closure | TC-C4-001 |
+| TC-C4-003 | 4 | Test: gap stays open when tests fail | TC-C4-001 |
+| TC-C4-004 | 4 | Test: gap stays open when spec_refs invalid | TC-C4-002 |
+| TC-C5-001 | 5 | SAL-fact-first capability derivation mode | TC-C0-005 |
+| TC-C5-002 | 5 | Cross-validate SAL vs poc-targets capabilities | TC-C5-001 |
+| TC-C5-003 | 5 | Produce fact-eligibility-ledger per format | TC-C5-001 |
+| TC-C5-004 | 5 | Test: per-capability (not per-format) spec_refs | TC-C5-001 |
+| TC-C6-001 | 6 | Harden Lane 2 gate: consumption checks | TC-C1-003, TC-C2-004 |
+| TC-C6-002 | 6 | Harden Lane 3 gate: compiler output consumed | TC-C1-003 |
+| TC-C6-003 | 6 | End-to-end reverse trace check | TC-C5-004 |
+
+---
+
+## 12. Evidence Contract
+
+Every taskcard completion must produce:
+
+1. **Source diff** — git diff showing exact changes
+2. **Test results** — pytest output with pass/fail counts
+3. **Gate status** — which diagnostic gate (C0-C8) advances
+4. **Reverse trace** — for stages 1+: trace from changed artifact back to capability → SAL fact
+5. **Consumer proof** — evidence that the output is consumed by the next pipeline stage
+
+---
+
+## 13. Anti-Patterns (Prohibited)
+
+1. **Do not add more capability records to prove progress.** Record count is not the metric; consumption is.
+2. **Do not mark compiler as "active" because it has tests.** Active means production callers invoke it.
+3. **Do not close gaps by scanning for function names.** Closure requires contract verification.
+4. **Do not create a new parallel pipeline.** Wire the existing compiler into the existing supervisor.
+5. **Do not attach all format facts to every capability.** Per-capability spec_refs must be operation-specific.
+6. **Do not make advisory_only=false without consumption verification.** Executable items need executors.
+
+---
+
+## 14. Critical File Map
+
+| File | Role | Modification Scope |
+|------|------|-------------------|
+| `tools/capability_layer/capability_map_generator.py` | Capability generation + gap detection | Stages 4, 5 |
+| `tools/supervisor/capability_compiler.py` | 9-phase compiler | Stage 0 (diagnostic), Stage 1 (wiring) |
+| `tools/supervisor/capability_queue_consumer.py` | Gap→taskcard bridge | Stage 3 |
+| `tools/supervisor/autonomous_task_generator.py` | Task selection | Stage 2 (_EXPANSION_GOALS removal) |
+| `tools/supervisor/generate_next_worker_prompt.py` | Sprint prompt generation | Stage 1 (compiler integration) |
+| `tools/supervisor/supervisor_loop.py` | Main orchestrator | Stage 1 (compiler import) |
+| `tools/supervisor/check_system_healing_gate.py` | Gate checks | Stage 6 |
+| `reports/capability-layer/gap-ledger.json` | Gap state | Read by Stages 2-6 |
+| `reports/capability-layer/action-queue.json` | Action items | Stage 3 |
+| `.local/sal-output/sal-facts-latest.json` | SAL facts | Read by Stages 0, 5 |
+
+---
+
+## 15. Execution-Readiness Criteria
+
+This plan is ready for execution when:
+
+1. Evidence root directory exists
+2. Stage 0 diagnostic taskcards can be run without error
+3. All critical files listed in Section 14 exist and are readable
+4. SAL facts file is present and parseable
+5. No blocking contradictions in `reports/supervisor/contradictions.md`
+
+**Current assessment:** READY FOR STAGE 0.
+
+Stage 0 requires only read operations and diagnostic command runs. No source mutation.
+Stages 1-6 require source modification and are gated by Stage 0 completion.
+
+---
+
+## 16. Tradeoffs and Risks
+
+| Risk | Mitigation |
+|------|-----------|
+| Compiler wiring may break existing sprint flow | Stage 1 adds compiler as ADDITIONAL path, not replacement; existing path remains until verified |
+| _EXPANSION_GOALS removal may leave format gaps | TC-C2-002 verifies all goals have gap-ledger equivalents before removal |
+| SAL fact quality varies by format | Stage 5 produces fact-eligibility-ledger with explicit accept/reject/quarantine per fact |
+| Contract-based closure may reopen thousands of gaps | Stage 4 is phased: first add tests, then retroactively verify existing closures |
+
+---
+
+## 17. Pilot Selection
+
+### Primary Deep Pilot: FODS
+- 98 SAL facts (FODS-specific + ODF base)
+- Existing implementation with analytics functions
+- Capability records exist with spec_refs
+- Best candidate for end-to-end reverse trace
+
+### Shared-Spec Pilot: FODT
+- Tests format-specific fact filtering (ODF spreadsheet facts should not become FODT capabilities)
+- Validates shared vs format-specific capability handling
+
+### Non-XML Pilot: ZST
+- RFC-based spec facts (algorithmic, not document object model)
+- Tests compiler with non-ODF capability types
+- Compression/decompression capabilities
+
+### Negative Pilot: A format with insufficient SAL facts
+- Must refuse to fabricate capabilities
+- Must produce a governed gap indicating missing authority
+- Must not silently fall back to hardcoded expectations
+
+---
+
+## Appendix A: Existing Assumption Register
+
+| ID | Claim | Evidence | Result | Consequence if False |
+|----|-------|----------|--------|---------------------|
+| A-01 | Gap ledger is consumed by task generation | `autonomous_task_generator.py` line 1564 | CONFIRMED PRIMARY (2026-06-17) — gap-ledger goals load first; `_EXPANSION_GOALS` are fallback only. **NEW RISK:** FOSS gap-ledger now empty (0 open FOSS gaps), so fallback re-activates for all FOSS work. | Tasks for FOSS formats revert to hardcoded goals despite Lane 6 repair. |
+| A-02 | Compiler is functional | `test_capability_compiler.py` passes | CONFIRMED — works in isolation | Compiler produces valid output but nobody reads it |
+| A-03 | SAL facts drive capabilities | `capability_map_generator.py` line 6: "poc-targets.yaml (primary)" | PARTIALLY MITIGATED (2026-06-17) — SAL enrichment now active (14,432 facts; `spec_refs` populated). But derivation still source-first: poc-targets → capabilities, then SAL facts bulk-attached per format. Per-capability fact authorization is the remaining gap. | Capabilities have spec_refs but at wrong granularity; not per-operation authorized. |
+| A-04 | Action queue drives execution | `action-queue.json` line 6: `advisory_only: true` | CONTRADICTED — all items advisory, zero consumers | Queue is decorative |
+| A-05 | System healing gate verifies consumption | `check_lane_2_capability()` | CONTRADICTED — checks file existence only | Gate passes when files exist even if nobody reads them |
+| A-06 | Gap closure is contract-based | `capability_map_generator.py` source introspection | CONTRADICTED — still function-name AST scan (2026-06-17). TC-ADVQ-001 claimed fix not persisted. 1,435 already-closed gaps were closed by implicit scan. | Gaps close when function name appears, regardless of spec correctness or test pass. |
+| A-07 | Capabilities are atomic and testable | Record structure | CONFIRMED — one function = one capability | Granularity is acceptable for current FOSS work |
+| A-08 | 4,022 capability records (3,897 FOSS + 125 commercial) represent real capabilities | Source introspection + poc-targets (updated 2026-06-17) | CONFIRMED for existence | But authority is source-derived, not fact-derived. |
+| A-09 | Evidence declarations correctly reference materialization-engine-resolvable paths | Sprint `ff-idempotent-spec-to-feature-swarm-20260617-8656416` review | CONTRADICTED — 6 items OVERCLAIMED because evidence_paths field was absent or unresolvable, even though work was done. | Future capability layer sprint declarations will also be OVERCLAIMED unless RC-6 (TC-C0-006 evidence path guide) is resolved. |
+| A-10 | `authority_integration_fabric.py` is wired into supervisor decision-making | `tools/supervisor/authority_integration_fabric.py` (462 lines) | CONTRADICTED — supervisor_loop.py does NOT import or subprocess-call it (RC-7). It is imported in 43 other repo files but the central orchestrator bypasses it. | Supervisor makes grading decisions without authority fabric; RCAL proof graph is never consulted. |
+
+---
+
+## Appendix B: FOSS Closure Regression Risk Analysis (Added 2026-06-17)
+
+### Context
+
+All FOSS gaps are 100% closed as of 2026-06-17 (0 open FOSS entries in `gap-ledger.json`). This is a product milestone but creates a structural regression risk for the Capability Layer.
+
+### The Regression Mechanism
+
+Lane 6 repair demoted `_EXPANSION_GOALS` to fallback in `autonomous_task_generator.py` (line 1564). The intent was: gap-ledger drives tasks, hardcoded goals are backup. However:
+
+1. Gap-ledger FOSS items = 0 (all closed)
+2. Gap-ledger commercial items = 34 (agent cannot execute commercial work autonomously)
+3. Therefore, `autonomous_task_generator.py` finds 0 actionable gap-ledger items for FOSS
+4. Fallback activates: `_EXPANSION_GOALS` (~100 hardcoded entries) re-become the de facto FOSS task source
+5. Lane 6 repair is logically undone at runtime despite the code change being correct
+
+### Risk Classification
+
+- **Type:** Structural / architectural regression
+- **Severity:** HIGH — undermines the core fix that RC-3 was meant to address
+- **Detectability:** LOW — the code change is correct; regression is only visible at runtime when gap-ledger is empty
+- **Current status:** ACTIVE — regression is occurring in every FOSS sprint
+
+### Mitigation Options (see TC-C2-005 for implementation)
+
+| Option | Description | Trade-offs |
+|--------|-------------|-----------|
+| A | Regenerate FOSS gaps at higher-difficulty tier (spec-concept not yet mapped) | Requires new SAL fact analysis; may produce weak gaps |
+| B | Extend gap-ledger to include spec-concept coverage gaps (not function-level) | Correct approach; requires gap-ledger schema extension |
+| C | Disable fallback entirely when gap-ledger is authoritative | Zero FOSS work until new gaps generated; honest but disruptive |
+| D | Add "gap regeneration sprint" trigger when FOSS gap count hits zero | Automated; requires supervisor trigger logic |
+
+**Recommended:** Option B + D in combination. Short-term: Option C (honest) until Option B is ready.

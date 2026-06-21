@@ -26,10 +26,10 @@ notes: Infrastructure taskcard. Resolves G-003 (SDK baselines not CI-verified).
 # TC-0003: SDK Baseline Confirmation
 
 **Phase:** 1
-**Status:** not_started
-**Owner:** TBD (developer)
+**Status:** completed
+**Owner:** Autonomous agent (TC-0003 sprint 2026-06-18)
 **Created:** 2026-05-03
-**Last updated:** 2026-05-03
+**Last updated:** 2026-06-18
 **Blocking:** Phase 4+ CI setup
 **Blocked by:** Phase 0 completion
 **Format:** none (infrastructure)

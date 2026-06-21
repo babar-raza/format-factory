@@ -1,0 +1,60 @@
+taskcard_id: FODS-SEMANTIC-ROUNDTRIP
+title: "FODS semantic round-trip verification"
+status: PROPOSED
+owner: execution-agent
+supervisor: coordinator-lane
+source:
+  plan_section: "TC-READINESS-001"
+  plan_file: "plans/fluffy-yawning-jellyfish.md"
+  gate11_reference: "reports/gate11/fods-gate11-readiness-packet.md Section 3D"
+  gap_description: >
+    Existing round-trip test is smoke-level (checks sheet_count >= 1 only).
+    Semantic verification requires deep field comparison across all sheets,
+    rows, cells, formulas, and typed values.
+scope:
+  allowed_paths:
+    - tests/python/fods/test_fods_semantic_roundtrip.py
+  forbidden_paths:
+    - src/python/fods/**
+    - registry/**
+    - tools/supervisor/**
+  allowed_folders:
+    - tests/python/fods/
+  forbidden_folders:
+    - src/net/
+    - .local/supervisor/
+problem: >
+  The existing FODS round-trip test verifies only that sheet_count >= 1 after
+  write→reload. It does not compare individual cell values, types, sheet names,
+  or formulas. A semantic round-trip test must parse a real multi-sheet sample,
+  write it, reload it, and compare every field.
+required_change: >
+  Write tests/python/fods/test_fods_semantic_roundtrip.py that parses a real
+  FODS sample, writes it to a temp file, reloads it, and performs deep comparison
+  of all sheets, rows, cells, and metadata.
+min_new_tests: 6
+acceptance_criteria:
+  - "Parse real FODS sample → write → reload → sheet names match exactly"
+  - "Cell values match across all sheets after round-trip"
+  - "Cell types (string/float/currency/date/boolean) match after round-trip"
+  - "Row counts per sheet match after round-trip"
+  - "Column counts per sheet match after round-trip"
+  - "Empty document round-trip produces valid FODS XML"
+execution_steps:
+  - "Step 1: Read src/python/fods/parser.py output format"
+  - "Step 2: Read src/python/fods/writer.py to understand what is preserved"
+  - "Step 3: Identify multi-sheet FODS sample"
+  - "Step 4: Write test file with 6+ deep comparison tests"
+  - "Step 5: Run pytest"
+stop_conditions:
+  - "If writer cannot produce valid XML from parsed input, mark BLOCKED"
+  - "If no multi-sheet sample exists, create synthetic multi-sheet workbook in test"
+rollback_plan: "Delete tests/python/fods/test_fods_semantic_roundtrip.py"
+quality_gates:
+  requirement_correctness: "Tests compare individual field values, not just counts"
+  implementation_correctness: "Tests use real parse→write→parse cycle"
+  regression_safety: "No existing tests modified"
+closeout_criteria:
+  - "6+ tests pass with deep field comparison"
+dependencies:
+  - FODS-PYWRITE-001

@@ -1,0 +1,135 @@
+# FODS QName Registry — seeded from SAL context pack and ODF 1.3 specification.
+# FACT-FODS-001 through FACT-FODS-012 mapped from verified workbench facts.
+# Status: architecture_only (awaiting canonical migration authorization).
+
+- qname: "office:document"
+  namespace_uri: "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+  local_name: "document"
+  canonical_class: "Office.Document"
+  spec_fact_ref: "FACT-FODS-001"
+  status: "architecture_only"
+  source_layer: "Spec"
+  facade_names: ["FodsDocument"]
+  python_file: null
+  dotnet_file: "src/net/fods/Spec/Office/Document.cs"
+
+- qname: "office:body"
+  namespace_uri: "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+  local_name: "body"
+  canonical_class: "Office.Body"
+  spec_fact_ref: "FACT-FODS-002"
+  status: "architecture_only"
+  source_layer: "Spec"
+  facade_names: []
+  python_file: null
+  dotnet_file: null
+
+- qname: "office:spreadsheet"
+  namespace_uri: "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+  local_name: "spreadsheet"
+  canonical_class: "Office.Spreadsheet"
+  spec_fact_ref: "FACT-FODS-003"
+  status: "architecture_only"
+  source_layer: "Spec"
+  facade_names: []
+  python_file: null
+  dotnet_file: null
+
+- qname: "table:table"
+  namespace_uri: "urn:oasis:names:tc:opendocument:xmlns:table:1.0"
+  local_name: "table"
+  canonical_class: "Table.Table"
+  spec_fact_ref: "FACT-FODS-004"
+  status: "architecture_only"
+  source_layer: "Spec"
+  facade_names: ["FodsSheet"]
+  python_file: null
+  dotnet_file: "src/net/fods/Spec/Table/Table.cs"
+
+- qname: "table:table-row"
+  namespace_uri: "urn:oasis:names:tc:opendocument:xmlns:table:1.0"
+  local_name: "table-row"
+  canonical_class: "Table.TableRow"
+  spec_fact_ref: "FACT-FODS-005"
+  status: "architecture_only"
+  source_layer: "Spec"
+  facade_names: []
+  python_file: null
+  dotnet_file: "src/net/fods/Spec/Table/TableRow.cs"
+
+- qname: "table:table-cell"
+  namespace_uri: "urn:oasis:names:tc:opendocument:xmlns:table:1.0"
+  local_name: "table-cell"
+  canonical_class: "Table.TableCell"
+  spec_fact_ref: "FACT-FODS-006"
+  status: "architecture_only"
+  source_layer: "Spec"
+  facade_names: ["FodsCell"]
+  python_file: null
+  dotnet_file: "src/net/fods/Spec/Table/TableCell.cs"
+
+- qname: "table:covered-table-cell"
+  namespace_uri: "urn:oasis:names:tc:opendocument:xmlns:table:1.0"
+  local_name: "covered-table-cell"
+  canonical_class: "Table.CoveredTableCell"
+  spec_fact_ref: "FACT-FODS-006"
+  status: "architecture_only"
+  source_layer: "Spec"
+  facade_names: []
+  python_file: null
+  dotnet_file: null
+
+- qname: "text:p"
+  namespace_uri: "urn:oasis:names:tc:opendocument:xmlns:text:1.0"
+  local_name: "p"
+  canonical_class: "Text.Paragraph"
+  spec_fact_ref: "FACT-FODS-007"
+  status: "architecture_only"
+  source_layer: "Spec"
+  facade_names: []
+  python_file: null
+  dotnet_file: null
+
+- qname: "text:span"
+  namespace_uri: "urn:oasis:names:tc:opendocument:xmlns:text:1.0"
+  local_name: "span"
+  canonical_class: "Text.Span"
+  spec_fact_ref: "FACT-FODS-007"
+  status: "architecture_only"
+  source_layer: "Spec"
+  facade_names: []
+  python_file: null
+  dotnet_file: null
+
+- qname: "office:automatic-styles"
+  namespace_uri: "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+  local_name: "automatic-styles"
+  canonical_class: "Office.AutomaticStyles"
+  spec_fact_ref: "FACT-FODS-008"
+  status: "architecture_only"
+  source_layer: "Spec"
+  facade_names: []
+  python_file: null
+  dotnet_file: null
+
+- qname: "style:style"
+  namespace_uri: "urn:oasis:names:tc:opendocument:xmlns:style:1.0"
+  local_name: "style"
+  canonical_class: "Style.Style"
+  spec_fact_ref: "FACT-FODS-009"
+  status: "architecture_only"
+  source_layer: "Spec"
+  facade_names: []
+  python_file: null
+  dotnet_file: null
+
+- qname: "number:date-style"
+  namespace_uri: "urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0"
+  local_name: "date-style"
+  canonical_class: "Number.DateStyle"
+  spec_fact_ref: "FACT-FODS-010"
+  status: "architecture_only"
+  source_layer: "Spec"
+  facade_names: []
+  python_file: null
+  dotnet_file: null

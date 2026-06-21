@@ -1,0 +1,51 @@
+taskcard_id: FODS-EXAMPLES
+title: "FODS Python runnable example scripts"
+status: PROPOSED
+owner: execution-agent
+supervisor: coordinator-lane
+source:
+  plan_section: "TC-READINESS-001"
+  plan_file: "plans/fluffy-yawning-jellyfish.md"
+  gap_description: "No runnable example scripts exist for FODS"
+scope:
+  allowed_paths:
+    - examples/python/fods/read_and_inspect.py
+    - examples/python/fods/edit_and_export.py
+  forbidden_paths:
+    - src/python/fods/**
+    - registry/**
+    - tools/supervisor/**
+  allowed_folders:
+    - examples/python/fods/
+  forbidden_folders:
+    - src/
+    - .local/supervisor/
+problem: >
+  No examples/python/fods/ directory exists. Customer-facing packages need
+  runnable example scripts demonstrating core workflows.
+required_change: >
+  Create 2 runnable example scripts in examples/python/fods/:
+  1. read_and_inspect.py — load a FODS file, print sheet names, row counts, cell values
+  2. edit_and_export.py — load a FODS file, modify a cell, export to CSV, save as FODS
+min_new_tests: 0
+acceptance_criteria:
+  - "examples/python/fods/read_and_inspect.py runs without error"
+  - "examples/python/fods/edit_and_export.py runs without error"
+  - "Both scripts use only the public API from src/python/fods/__init__.py"
+  - "Both scripts include comments explaining each step"
+  - "Both scripts handle missing sample file gracefully"
+execution_steps:
+  - "Step 1: Read src/python/fods/__init__.py for public API"
+  - "Step 2: Create examples/python/fods/ directory"
+  - "Step 3: Write read_and_inspect.py"
+  - "Step 4: Write edit_and_export.py"
+  - "Step 5: Run both scripts to verify they work"
+stop_conditions:
+  - "If no FODS sample exists, create a minimal one inline in the script"
+rollback_plan: "Delete examples/python/fods/ directory"
+quality_gates:
+  requirement_correctness: "Scripts demonstrate real workflows"
+  implementation_correctness: "Scripts use public API only"
+closeout_criteria:
+  - "Both scripts exist and run without error"
+dependencies: []

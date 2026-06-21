@@ -1,0 +1,65 @@
+taskcard_id: FODT-PYWRITE-001
+title: "FODT Python write capability deepening"
+status: PROPOSED
+owner: execution-agent
+supervisor: coordinator-lane
+source:
+  plan_section: "TC-READINESS-002"
+  plan_file: "plans/fluffy-yawning-jellyfish.md"
+  gate11_reference: "reports/gate11/fodt-gate11-readiness-packet.md Section 3D"
+  gap_description: >
+    Gate 11 packet states: "Python FOSS has read capability and basic write via
+    writer.py, but full write→reload→verify round-trip is demonstrated for .NET
+    track. Python write capability deepening is deferred pending PYWRITE-001 taskcard."
+  root_cause: "Taskcard referenced in Gate 11 packet but never created"
+scope:
+  allowed_paths:
+    - src/python/fodt/writer.py
+    - tests/python/fodt/test_fodt_pywrite_deepening.py
+  forbidden_paths:
+    - src/net/**
+    - registry/**
+    - tools/supervisor/**
+    - reports/gate11/**
+  allowed_folders:
+    - tests/python/fodt/
+  forbidden_folders:
+    - src/net/
+    - .local/supervisor/
+problem: >
+  The existing FODT round-trip tests (test_rnext_fodt_write_fodt.py:63-97) are
+  smoke-level: they verify block count >= 2, heading survival, and empty document.
+  They do NOT verify text content, inline spans (bold/italic), list structure,
+  table content, or footnotes survive the round-trip.
+required_change: >
+  Write tests/python/fodt/test_fodt_pywrite_deepening.py with semantic round-trip
+  tests that verify text, structure, and formatting preservation.
+min_new_tests: 8
+acceptance_criteria:
+  - "Parse a FODT document with paragraphs → write → reload → verify paragraph text matches"
+  - "Verify heading level and text survive round-trip"
+  - "Verify list items survive round-trip (ordered and unordered)"
+  - "Verify table rows and cell text survive round-trip"
+  - "Verify inline spans (bold/italic) are preserved in output XML"
+  - "Verify empty document produces valid FODT XML"
+  - "Verify multi-block document preserves block ordering"
+  - "At least 8 test functions pass"
+execution_steps:
+  - "Step 1: Read src/python/fodt/writer.py to understand document_to_xml and write_fodt"
+  - "Step 2: Read src/python/fodt/parser.py to understand parse output format"
+  - "Step 3: Read existing round-trip tests for fixture patterns"
+  - "Step 4: Write test_fodt_pywrite_deepening.py with 8+ semantic tests"
+  - "Step 5: Run pytest on new test file"
+stop_conditions:
+  - "If writer.py cannot produce valid FODT XML that parses back, mark BLOCKED"
+rollback_plan: "Delete tests/python/fodt/test_fodt_pywrite_deepening.py"
+quality_gates:
+  requirement_correctness: "Tests verify text content and structure, not just counts"
+  implementation_correctness: "Tests use real parse_fodt_strict, not mocks"
+  regression_safety: "No existing tests modified"
+  evidence_completeness: "pytest output showing 8+ passes"
+closeout_criteria:
+  - "8+ tests pass"
+  - "Tests verify text content, list structure, and table content"
+  - "No writer.py modifications needed"
+dependencies: []

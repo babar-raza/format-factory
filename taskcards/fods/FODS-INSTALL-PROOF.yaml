@@ -1,0 +1,52 @@
+taskcard_id: FODS-INSTALL-PROOF
+title: "FODS Python install proof (D6→D7)"
+status: PROPOSED
+owner: execution-agent
+supervisor: coordinator-lane
+source:
+  plan_section: "TC-READINESS-001"
+  plan_file: "plans/fluffy-yawning-jellyfish.md"
+  gate11_reference: "reports/gate11/fods-gate11-readiness-packet.md Section 4C"
+  gap_description: "No install proof exists — wheel build, fresh venv import, API exercise not verified"
+scope:
+  allowed_paths:
+    - tests/python/fods/test_fods_install_proof.py
+  forbidden_paths:
+    - src/python/fods/**
+    - registry/**
+    - tools/supervisor/**
+  allowed_folders:
+    - tests/python/fods/
+  forbidden_folders:
+    - src/net/
+    - .local/supervisor/
+problem: >
+  FODS has no install proof test. The format is at D6 (full codec) but has not
+  demonstrated D7 (installable package). An install proof test verifies that the
+  module is importable, the version is set, and core API functions work.
+required_change: >
+  Write tests/python/fods/test_fods_install_proof.py that verifies module
+  importability and core API functionality from the source tree.
+min_new_tests: 5
+acceptance_criteria:
+  - "import src.python.fods succeeds"
+  - "__version__ is not None and not '0.0.0'"
+  - "parse_fods_strict on a real sample returns a dict with sheet_count"
+  - "write_fods produces a file that exists and has content"
+  - "workbook_to_csv on a parsed workbook returns CSV string"
+execution_steps:
+  - "Step 1: Read src/python/fods/__init__.py to confirm exported API"
+  - "Step 2: Identify sample FODS file in samples/by-format/fods/"
+  - "Step 3: Write test file with 5 tests"
+  - "Step 4: Run pytest"
+stop_conditions:
+  - "If fods module cannot be imported, mark BLOCKED"
+rollback_plan: "Delete tests/python/fods/test_fods_install_proof.py"
+quality_gates:
+  requirement_correctness: "Tests exercise real API, not mocks"
+  implementation_correctness: "Tests import from source tree"
+  regression_safety: "No existing tests modified"
+closeout_criteria:
+  - "5 tests pass"
+  - "Tests exercise parse, write, and export APIs"
+dependencies: []

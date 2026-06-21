@@ -26,7 +26,7 @@ notes: Builds release manifest generator. Resolves G-008, G-009, DEC-023.
 # TC-0006: Release Manifest Generator
 
 **Phase:** 3+
-**Status:** not_started
+**Status:** completed
 **Owner:** TBD (developer)
 **Created:** 2026-05-03
 **Last updated:** 2026-05-03
@@ -114,8 +114,12 @@ Gap G-008 requires front matter validation to be available at Gate 3 at the late
 
 ## Completion Record
 
-**Completed by:** (to be filled)
-**Completion date:** (to be filled)
-**Artifacts produced:** (to be filled)
-**Gaps discovered:** (to be filled)
-**Notes:** (to be filled)
+**Completed by:** claude-sonnet-4-6 (agent-owned, 2026-06-18)
+**Completion date:** 2026-06-18
+**Artifacts produced:**
+  - `tools/validation/validate_frontmatter.py` — scans repo artifacts for YAML front matter violations
+  - `tools/validation/generate_manifest.py` — generates OSS/commercial release manifests
+  - `tools/validation/check_boundary.py` — verifies commercial exclusion boundary in FOSS source
+  - `reports/boundary-check-20260618.json` — initial boundary check (0 Python violations, 54 expected .NET commercial)
+**Gaps discovered:** None — 2 OSS-eligible artifacts found (src/python/fods/README.md, src/python/fodt/README.md)
+**Notes:** G-008 and G-009 satisfied by validate_frontmatter.py and generate_manifest.py respectively. DEC-023 unblocked.

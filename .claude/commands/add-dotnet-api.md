@@ -9,6 +9,19 @@ visibility: generated
 
 # /add-dotnet-api
 
+## MANDATORY PRE-CHECK: QName Compliance (must complete before naming any class)
+
+Before naming any new class:
+1. Read `registry/odf-ontology/qname-to-code-map.yaml` — if an entry exists for this spec element (e.g., `table:table-cell → Table.TableCell`), use the canonical name.
+2. New spec-element classes: use canonical name (Table.TableCell, NOT FodsCell). Place in `Spec/` (C#).
+3. Format-prefixed names (FodsXxx, FodtXxx) ONLY in `Compat/` as thin facades.
+4. Add spec_qname to every new class: C#: `public const string QName = "table:table-cell";` | also: `public const string SpecFactRef = "FACT-FODS-NNN";`
+5. After writing: verify V45 validator will PASS — class outside Compat/ must NOT be format-prefixed.
+
+Violation causes V45 governance validator to FAIL the sprint declaration.
+
+---
+
 Add or extend one bounded commercial .NET API. This command is a governed execution
 contract, not standing authorization to edit `src/`.
 

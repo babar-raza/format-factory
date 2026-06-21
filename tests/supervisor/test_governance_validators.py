@@ -542,3 +542,167 @@ class TestSpecFactRefStatusDebt:
         assert result["grade_impact"] == "reject", (
             f"Expected grade_impact='reject', got: {result['grade_impact']}"
         )
+
+
+# ---------------------------------------------------------------------------
+# V42: validate_deepening_suspension (SUSP-001)
+# ---------------------------------------------------------------------------
+
+class TestV42DeepeningSuspension:
+    """Regression tests for V42 validate_deepening_suspension.
+
+    Negative control: suspended function name -> FAIL, blocks_sprint=True.
+    Positive control: spec-grounded function name -> PASS, blocks_sprint=False.
+    Non-product item with suspended name -> PASS (only PRODUCT_SOURCE checked).
+    """
+
+    def _validator(self):
+        from governance_validators import validate_deepening_suspension
+        return validate_deepening_suspension
+
+    def test_suspended_pattern_fails(self):
+        """NEGATIVE CONTROL: PRODUCT_SOURCE with _mod_N_times_M path -> FAIL."""
+        validate = self._validator()
+        decl = {
+            "planned_work_items": [{
+                "item_id": "TC-SUSP-NEG-001",
+                "item_type": "PRODUCT_SOURCE",
+                "evidence_paths": [
+                    "tests/python/zst/test_zst_counts_mod_1069_times_1087.py"
+                ],
+            }]
+        }
+        result = validate(decl)
+        assert result["result"] == "FAIL", (
+            f"Expected FAIL for suspended deepening path, got {result['result']}"
+        )
+        assert result["blocks_sprint"] is True
+        assert len(result["items"]) == 1
+        assert result["items"][0]["item_id"] == "TC-SUSP-NEG-001"
+
+    def test_spec_grounded_passes(self):
+        """POSITIVE CONTROL: PRODUCT_SOURCE with spec-grounded path -> PASS."""
+        validate = self._validator()
+        decl = {
+            "planned_work_items": [{
+                "item_id": "TC-SUSP-POS-001",
+                "item_type": "PRODUCT_SOURCE",
+                "evidence_paths": [
+                    "tests/python/fods/test_table_cell_qname.py"
+                ],
+            }]
+        }
+        result = validate(decl)
+        assert result["result"] == "PASS", (
+            f"Expected PASS for spec-grounded path, got {result['result']}"
+        )
+        assert result["blocks_sprint"] is False
+        assert len(result["items"]) == 0
+
+    def test_non_product_source_ignored(self):
+        """TEST item with suspended pattern is not blocked (only PRODUCT_SOURCE checked)."""
+        validate = self._validator()
+        decl = {
+            "planned_work_items": [{
+                "item_id": "TC-SUSP-TYPE-001",
+                "item_type": "TEST",
+                "evidence_paths": [
+                    "tests/python/zst/test_zst_counts_mod_1069_times_1087.py"
+                ],
+            }]
+        }
+        result = validate(decl)
+        assert result["result"] == "PASS", (
+            f"Expected PASS for non-PRODUCT_SOURCE item, got {result['result']}"
+        )
+        assert result["blocks_sprint"] is False
+
+    def test_multiple_violations_all_reported(self):
+        """Multiple suspended paths in one declaration -> all violations reported."""
+        validate = self._validator()
+        decl = {
+            "planned_work_items": [
+                {
+                    "item_id": "TC-SUSP-MULTI-001",
+                    "item_type": "PRODUCT_SOURCE",
+                    "evidence_paths": [
+                        "tests/python/zst/test_zst_counts_mod_1069_times_1087.py",
+                        "tests/python/xcf/test_xcf_ratio_mod_1069_times_1087.py",
+                    ],
+                },
+                {
+                    "item_id": "TC-SUSP-MULTI-002",
+                    "item_type": "PRODUCT_SOURCE",
+                    "evidence_paths": [
+                        "tests/python/fodg/test_fodg_area_mod_997_times_1009.py"
+                    ],
+                },
+            ]
+        }
+        result = validate(decl)
+        assert result["result"] == "FAIL"
+        assert result["blocks_sprint"] is True
+        assert len(result["items"]) == 3
+
+
+class TestV45QNameClassNames:
+    """Regression tests for V45 validate_qname_class_names.
+
+    NEGATIVE: FodsCell in models.py (non-compat path) -> FAIL.
+    POSITIVE: canonical Paragraph in spec/text/paragraph.py -> PASS.
+    COMPAT EXEMPT: compat.py path contains '/compat.' -> PASS.
+    NON-PRODUCT: GOVERNANCE_TASKCARD type -> PASS.
+    """
+
+    def _validator(self):
+        from governance_validators import validate_qname_class_names
+        return validate_qname_class_names
+
+    def test_format_prefixed_model_fails(self):
+        """NEGATIVE: PRODUCT_SOURCE with FodsCell in models.py -> FAIL."""
+        validate = self._validator()
+        decl = {"planned_work_items": [{
+            "item_id": "TC-V45-NEG-001",
+            "item_type": "PRODUCT_SOURCE",
+            "evidence_paths": ["src/python/fods/fods/models.py"],
+        }]}
+        result = validate(decl, repo_root=REPO_ROOT)
+        assert result["result"] == "FAIL"
+        assert result["blocks_sprint"] is True
+        assert len(result["items"]) >= 1
+
+    def test_canonical_spec_name_passes(self):
+        """POSITIVE: canonical Paragraph class in spec/text/paragraph.py -> PASS."""
+        validate = self._validator()
+        decl = {"planned_work_items": [{
+            "item_id": "TC-V45-POS-001",
+            "item_type": "PRODUCT_SOURCE",
+            "evidence_paths": ["src/python/fodt/spec/text/paragraph.py"],
+        }]}
+        result = validate(decl, repo_root=REPO_ROOT)
+        assert result["result"] == "PASS"
+        assert result["blocks_sprint"] is False
+
+    def test_compat_path_exempt(self):
+        """compat.py path is exempt even if it has format-prefixed names."""
+        validate = self._validator()
+        decl = {"planned_work_items": [{
+            "item_id": "TC-V45-COMPAT-001",
+            "item_type": "PRODUCT_SOURCE",
+            "evidence_paths": ["src/python/fodt/compat.py"],
+        }]}
+        result = validate(decl, repo_root=REPO_ROOT)
+        assert result["result"] == "PASS"
+        assert result["blocks_sprint"] is False
+
+    def test_non_product_item_exempt(self):
+        """GOVERNANCE_TASKCARD item type is not checked."""
+        validate = self._validator()
+        decl = {"planned_work_items": [{
+            "item_id": "TC-V45-GOV-001",
+            "item_type": "GOVERNANCE_TASKCARD",
+            "evidence_paths": ["src/python/fods/fods/models.py"],
+        }]}
+        result = validate(decl, repo_root=REPO_ROOT)
+        assert result["result"] == "PASS"
+        assert result["blocks_sprint"] is False

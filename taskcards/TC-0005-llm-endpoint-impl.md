@@ -26,10 +26,10 @@ notes: Implements LLM endpoint client. Resolves G-005, G-006, G-007, G-010, DEC-
 # TC-0005: LLM Endpoint Client Implementation
 
 **Phase:** 1
-**Status:** not_started
-**Owner:** TBD (developer)
+**Status:** completed
+**Owner:** Autonomous agent (TC-0005 sprint 2026-06-18)
 **Created:** 2026-05-03
-**Last updated:** 2026-05-03
+**Last updated:** 2026-06-18
 **Blocking:** All LLM-assisted evidence work (Phase 2+). Artifact index reuse. Run record persistence.
 **Blocked by:** Phase 0 completion; TC-0004 (commands must exist to record their use in run records)
 **Format:** none (infrastructure)

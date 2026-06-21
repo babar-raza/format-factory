@@ -97,8 +97,12 @@ def test_full_pipeline_produces_no_cross_contaminated_qnames():
             # a standards-body prefix (IETF-, W3C-, ISO-) for formats
             # governed by those bodies (e.g. ZST is RFC 8478).
             _STANDARDS_PREFIXES = ("ODF-", "IETF-", "W3C-", "ISO-")
-            assert qname.startswith(fid + "-") or any(
-                qname.startswith(p) for p in _STANDARDS_PREFIXES
+            # from_cache mode produces canonical FACT-{FORMAT}-NNN qnames
+            _FACT_PREFIX = "FACT-" + fid + "-"
+            assert (
+                qname.startswith(fid + "-")
+                or qname.startswith(_FACT_PREFIX)
+                or any(qname.startswith(p) for p in _STANDARDS_PREFIXES)
             ), (
                 f"Format {fid} has cross-contaminated qname: {qname}"
             )
@@ -107,6 +111,6 @@ def test_full_pipeline_produces_no_cross_contaminated_qnames():
                 if other != fid and not any(
                     qname.startswith(p) for p in _STANDARDS_PREFIXES
                 ):
-                    assert not qname.startswith(other + "-"), (
+                    assert not qname.startswith(other + "-") and not qname.startswith("FACT-" + other + "-"), (
                         f"Format {fid} has qname with {other} prefix: {qname}"
                     )

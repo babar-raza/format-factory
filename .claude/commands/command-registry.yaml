@@ -1,0 +1,53 @@
+schema_version: "1.0"
+generated_at: "2026-06-18"
+generated_by: TC-0004
+
+commands:
+  - command_id: score-format
+    file: .claude/commands/score-format.md
+    description: Apply scoring model to a format candidate; produce a scoring sheet
+    phase: 1
+    status: active
+    created: "2026-06-18"
+
+  - command_id: create-acquisition-pack
+    file: .claude/commands/create-acquisition-pack.md
+    description: Initialize a format acquisition pack from the template
+    phase: 1
+    status: active
+    created: "2026-06-18"
+
+  - command_id: check-gate
+    file: .claude/commands/check-gate.md
+    description: Verify whether a format has met the criteria for a given gate
+    phase: 1
+    status: active
+    created: "2026-06-18"
+
+  - command_id: create-taskcard
+    file: .claude/commands/create-taskcard.md
+    description: Create a new taskcard from the template with all required fields
+    phase: 1
+    status: active
+    created: "2026-06-18"
+
+  - command_id: reproduce-master-plan
+    file: .claude/commands/reproduce-master-plan.md
+    description: Generate a current-state summary from repo artifacts (read-only)
+    phase: 1
+    status: active
+    created: "2026-06-18"
+
+  - command_id: build-evidence-bundle
+    file: .claude/commands/build-evidence-bundle.md
+    description: Build and validate an evidence bundle for the current phase/sprint
+    phase: 1
+    status: active
+    created: "2026-06-18"
+
+  - command_id: check-release-boundary
+    file: .claude/commands/check-release-boundary.md
+    description: Verify no commercial artifacts are in OSS release scope (Phase 3+)
+    phase: 3
+    status: active
+    created: "2026-06-18"

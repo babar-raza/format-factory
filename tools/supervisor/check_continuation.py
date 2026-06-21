@@ -207,6 +207,27 @@ def check(repo_root: Path, *, session_id: str | None = None,
                 active_plan_path=plan_lock.get("plan_path"),
             )
 
+        # --- M8: PLAN_COMPLETED_IN_SESSION safety net ---
+        # If this session-keyed lock has status==COMPLETE and belongs to the CURRENT session,
+        # block product deepening. This prevents silent fallthrough when --complete is used
+        # instead of --terminal. Non-overridable: same class as POST_PLAN_TERMINAL.
+        # NOTE: The shared lock (active-plan-lock.json) has no session_id, so this branch
+        # never fires for the shared lock — it only fires for session-keyed locks.
+        if plan_lock.get("status") == "COMPLETE" and lock_session_id and session_id and lock_session_id == session_id:
+            return _stop(
+                "PLAN_COMPLETED_IN_SESSION",
+                (
+                    f"Per-chat plan was completed in this session: "
+                    f"plan={plan_lock.get('plan_path', 'unknown')!r}. "
+                    "Report plan completion to user and stop. "
+                    "Do NOT auto-continue to product deepening. "
+                    "A new session or explicit user authorization is required for ledger work."
+                ),
+                iteration=signal.get("iteration", 0),
+                max_iterations=signal.get("max_iterations", 5),
+                active_plan_path=plan_lock.get("plan_path"),
+            )
+
         if plan_lock.get("status") != "COMPLETE":
             return _stop(
                 "ACTIVE_PLAN_INCOMPLETE",
@@ -229,15 +250,38 @@ def check(repo_root: Path, *, session_id: str | None = None,
             )
 
     # --- Check 2: autonomous_continue is truthy ---
+    # B4: When signal is false due to a non-TRUE_EXTERNAL_GATE reason, cross-check
+    # approval-gates.md before stopping. Stale signal + live YES gate = allow continuation.
+    # TRUE_EXTERNAL_GATEs always stop regardless of gates.md.
+    _TRUE_EXTERNAL_GATE_REASONS = {
+        "git_push_credentials_unavailable",
+        "Gate_11_approval_required",
+        "gate_11_execution_required",
+        "publication_credentials_unavailable",
+        "nuget_publication_unavailable",
+        "pypi_publication_unavailable",
+    }
     auto_continue = signal.get("autonomous_continue", False)
+    _gates_override = False  # set True when gates.md overrides a stale/false signal
     if not auto_continue:
         reason = signal.get("stop_reason") or "autonomous_continue is false"
-        return _stop("AUTONOMOUS_CONTINUE_FALSE", reason,
-                      iteration=iteration, max_iterations=max_iterations)
+        # If the stop reason is a TRUE_EXTERNAL_GATE, respect it unconditionally
+        if reason in _TRUE_EXTERNAL_GATE_REASONS:
+            return _stop("AUTONOMOUS_CONTINUE_FALSE", reason,
+                          iteration=iteration, max_iterations=max_iterations)
+        # Otherwise: cross-check approval-gates.md. If gates say YES, the stale signal
+        # is a false stop (e.g. evidence_quality_zero, NO_EXTERNAL_GATE). Allow continuation.
+        gates_path = repo_root / "reports" / "supervisor" / "approval-gates.md"
+        if gates_path.exists() and "AUTONOMOUS_CONTINUE: YES" in gates_path.read_text(encoding="utf-8"):
+            _gates_override = True  # signal is stale; skip signal-derived checks below
+        else:
+            return _stop("AUTONOMOUS_CONTINUE_FALSE", reason,
+                          iteration=iteration, max_iterations=max_iterations)
 
     # --- Check 3: continuation_state starts with YES ---
+    # Skip if gates.md already overrode the stale signal (continuation_state is also stale).
     cont_state = signal.get("continuation_state", "")
-    if isinstance(cont_state, str) and cont_state.startswith("NO_"):
+    if not _gates_override and isinstance(cont_state, str) and cont_state.startswith("NO_"):
         return _stop(cont_state, f"continuation_state={cont_state}",
                       iteration=iteration, max_iterations=max_iterations)
 
@@ -358,6 +402,96 @@ def _stop(reason: str, detail: str, *, iteration: int = 0,
         "resume_command": None,
         **extras,
     }
+
+
+def validate_continuation_coherence(repo_root: Path | None = None) -> list[dict]:
+    """B7: Cross-validate continuation signal vs approval-gates.md and lock file coherence.
+
+    Returns a list of contradiction dicts (empty = coherent).
+    Each dict has: severity, code, message.
+    Also appends CONTRADICTION entries to reports/supervisor/contradictions.md.
+    """
+    _TRUE_GATE_REASONS = {
+        "git_push_credentials_unavailable", "Gate_11_approval_required",
+        "gate_11_execution_required", "publication_credentials_unavailable",
+        "nuget_publication_unavailable", "pypi_publication_unavailable",
+    }
+    if repo_root is None:
+        repo_root = _default_repo
+    contradictions: list[dict] = []
+
+    # Check 1: signal vs gates.md alignment
+    signal_path = repo_root / ".local" / "supervisor" / "product" / "continuation-signal.json"
+    gates_path = repo_root / "reports" / "supervisor" / "approval-gates.md"
+    if signal_path.exists() and gates_path.exists():
+        try:
+            signal = json.loads(signal_path.read_text(encoding="utf-8"))
+            gates_text = gates_path.read_text(encoding="utf-8")
+            auto_continue = signal.get("autonomous_continue", True)
+            stop_reason = signal.get("stop_reason") or ""
+            gates_yes = "AUTONOMOUS_CONTINUE: YES" in gates_text
+            if not auto_continue and gates_yes and stop_reason not in _TRUE_GATE_REASONS:
+                contradictions.append({
+                    "severity": "HIGH",
+                    "code": "SIGNAL_GATES_MISMATCH",
+                    "message": (
+                        f"continuation-signal.json has autonomous_continue=false "
+                        f"(stop_reason={stop_reason!r}) but approval-gates.md says YES. "
+                        "Signal is stale — gates.md should take precedence."
+                    ),
+                })
+        except Exception as exc:
+            contradictions.append({
+                "severity": "LOW", "code": "COHERENCE_CHECK_ERROR",
+                "message": f"signal/gates check failed: {exc}",
+            })
+
+    # Check 2: shared lock vs session lock consistency
+    shared_lock_path = repo_root / ".local" / "supervisor" / "active-plan-lock.json"
+    session_locks_dir = repo_root / ".local" / "supervisor" / "plan-locks"
+    if shared_lock_path.exists() and session_locks_dir.exists():
+        try:
+            shared = json.loads(shared_lock_path.read_text(encoding="utf-8"))
+            shared_plan = str(shared.get("plan_path", "")).replace("\\", "/")
+            shared_status = shared.get("status", "")
+            shared_sid = shared.get("session_id", "")
+            if shared_sid:
+                keyed = session_locks_dir / f"{shared_sid}.json"
+                if keyed.exists():
+                    keyed_data = json.loads(keyed.read_text(encoding="utf-8"))
+                    keyed_status = keyed_data.get("status", "")
+                    if shared_status != keyed_status:
+                        contradictions.append({
+                            "severity": "CRITICAL",
+                            "code": "LOCK_STATUS_MISMATCH",
+                            "message": (
+                                f"active-plan-lock.json status={shared_status!r} but "
+                                f"session lock {shared_sid}.json status={keyed_status!r} "
+                                f"for plan {shared_plan!r}. write_plan_lock.py --terminal "
+                                "may have only updated the session lock."
+                            ),
+                        })
+        except Exception as exc:
+            contradictions.append({
+                "severity": "LOW", "code": "LOCK_COHERENCE_CHECK_ERROR",
+                "message": f"lock coherence check failed: {exc}",
+            })
+
+    # Append findings to contradictions.md
+    if contradictions:
+        contradictions_path = repo_root / "reports" / "supervisor" / "contradictions.md"
+        try:
+            from datetime import datetime, timezone
+            ts = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+            lines = [f"\n## Coherence Contradictions detected at {ts}\n"]
+            for c in contradictions:
+                lines.append(f"- **{c['severity']}** `{c['code']}`: {c['message']}\n")
+            with contradictions_path.open("a", encoding="utf-8") as fh:
+                fh.writelines(lines)
+        except Exception:
+            pass
+
+    return contradictions
 
 
 def main(argv: list[str] | None = None) -> int:

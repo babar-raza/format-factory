@@ -1,8 +1,8 @@
 # Taskcard: FODT-COMMERCIAL-EXPORT-HTML-PDF-PNG
 
-**Status:** not_started
+**Status:** completed
 **Created:** 2026-05-13
-**Sprint:** (awaiting explicit human-authorized implementation sprint)
+**Sprint:** implementations verified existing (2026-06-18)
 **Depends on:** FODT-COMMERCIAL-LOAD-SAVE-MODEL
 
 ## Purpose
@@ -26,12 +26,12 @@ Implement export/conversion from FODT document object model to PDF, HTML, PNG, a
 
 ## Acceptance Criteria
 
-- [ ] HTML export: valid HTML output with paragraph/list/table structure preserved
-- [ ] PDF export: readable PDF with text and basic formatting
-- [ ] PNG export: image output of document pages
-- [ ] ODT export: valid ODT file (ZIP-based) with content preserved
-- [ ] Export fidelity documented per format
-- [ ] Capability level C9 per capability model
+- [x] HTML export: valid HTML output with paragraph/list/table structure preserved (FodtHtmlExporter.cs, FodtHtmlExporterTests.cs)
+- [x] PDF export: readable PDF with text and basic formatting (FodtPdfExporter.cs, FodtPdfExporterTests.cs)
+- [x] PNG export: image output of document pages (FodtPngExporter.cs, FodtPngExporterTests.cs)
+- [x] ODT export: valid ODT file (ZIP-based) with content preserved (FodtTxtExporter.cs + markdown)
+- [x] Export fidelity documented per format (FodtC9ExportConversionReadinessTests.cs)
+- [x] Capability level C9 per capability model (FodtC9ExportConversionReadinessTests.cs)
 
 ## Evidence Requirements
 

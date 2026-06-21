@@ -1,7 +1,8 @@
 # FODS — Gate 11 Commercial Readiness Packet
 # Prepared by: Agent (agent-owned preparation — submission requires human authorization)
-# Prepared: 2026-06-12 (Updated: 2026-06-16, SAL facts deepened)
-# Sprint: PLAN-HARDENING-EXECUTION-20260616 (original: FORMAT-FACTORY-PRODUCT-GATE11-PREPARATION-AND-GAP-DEEPENING-001)
+# Prepared: 2026-06-12 (Updated: 2026-06-18, R100 GetNumericColumnValues +617 .NET tests)
+# Updated: 2026-06-20 — per-criterion C1-C20 / P1-P11 assessment added (TC-IMPL-003)
+# Sprint: fods-getnumericcolumnvalues-r100-20260618 (original: FORMAT-FACTORY-PRODUCT-GATE11-PREPARATION-AND-GAP-DEEPENING-001)
 # Status: PREPARATION ONLY — NOT SUBMITTED — Human approval from Babar Raza required before submission
 
 ---
@@ -197,6 +198,108 @@ This packet is agent-prepared. The following decisions require **human authoriza
 
 ---
 
+## 9. Per-Criterion Assessment — Section 13 Gate 11 Criteria (Added 2026-06-20)
+
+**Assessment method:** Direct codebase inspection as of commit 1320e557.
+**Classification legend:** `evidence_verified` | `partial` | `not_started` | `blocked_external`
+**Authority:** plans/spec-to-feature-radical-correction-plan.md Section 13
+
+### 9A. .NET Commercial Criteria (C1-C20)
+
+#### Original Depth Criteria (C1-C10)
+
+| Criterion | Description | Classification | Evidence Path / Note |
+|-----------|-------------|----------------|----------------------|
+| C1 | implementation_depth_score >= 4/5, verified by independent reviewer | partial | Score claimed 4/5 in prior plan; no independent verification executed. Source: `reports/gate11/fods-gate11-check-gate-result.md` (check-gate output) |
+| C2 | capability_coverage_percentage >= 80% | partial | 10 commercial-track gaps open per Section 5B; full coverage % not computed against spec-defined API surface |
+| C3 | Every public method has >= 1 spec_fact_ref | partial | 36 FACT-FODS-* refs exist (Section 5B); no exhaustive mapping of spec_fact_ref per method verified |
+| C4 | class_count >= 15 for FODS | partial | Counted: FodsParser, FodsWriter, FodsDocument, FodsCsvExporter, FodsHtmlExporter, FodsJsonExporter, FodsPdfExporter, FodsOdsExporter, FodsPngExporter (9) + Model/FodsSheet, FodsRow, FodsCell (3) = 12 classes. Below threshold of 15. |
+| C5 | .NET CI pipeline: dotnet build AND dotnet test must pass | partial | `src/net/fods/FormatFactory.Fods.csproj` exists; `.github/workflows/ci.yml` referenced; no CI run result evidence in evidence bundles |
+| C6 | >= 3 roundtrip tests with XML-level verification | partial | `test_r76_fods_edit_save.py`, `test_r78_fods_end_to_end_workflow.py` exist; XML-level diff verification not confirmed |
+| C7 | >= 1 negative test per public method | partial | `test_parser_security.py` has negative tests; not verified per-method |
+| C8 | NuGet package buildable | partial | `src/net/fods/FormatFactory.Fods.csproj` exists; build not run in current sprint |
+| C9 | No single class exceeds 1,500 LOC without justification | partial | Class sizes not audited. FodsParser.cs, FodsWriter.cs LOC unknown without reading files. |
+| C10 | Babar Raza sign-off | blocked_external | TRUE_EXTERNAL_GATE — business decision, cannot be autonomous |
+
+**C1-C10 readiness: 0 evidence_verified, 9 partial, 1 blocked_external**
+
+#### Spec-Parity Criteria (C11-C20, System Healing Addition)
+
+| Criterion | Description | Classification | Evidence Path / Note |
+|-----------|-------------|----------------|----------------------|
+| C11 | QName-to-code map complete for all in-scope FODS concepts | partial | `qname-to-code-map.yaml` exists in `.local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/` and in current run dir; covers 12 QNames. Not in `registry/odf-ontology/` as primary source. Completeness not verified against full FODS spec surface. |
+| C12 | Canonical namespace tree passes NamespaceTreeValidator | not_started | NamespaceTreeValidator existence unconfirmed. Namespace prefixes exist in `registry/odf-ontology/` (9 YAMLs) but validator wiring not confirmed. |
+| C13 | Every canonical model class has spec_qname metadata | not_started | Current .NET model uses FodsDocument/FodsSheet/FodsRow/FodsCell (format-prefixed in Model/). These are NOT canonical spec-literal classes (should be Table.TableCell etc.). No spec_qname metadata confirmed in .NET source. |
+| C14 | Every facade/legacy class maps to a canonical spec-literal class | not_started | CONTRA-001 through CONTRA-003 are OPEN (see contradiction-ledger.yaml in run dir). FodsDocument→Office.Document mapping not implemented. Canonical class layer does not exist. |
+| C15 | Attribute-property map covers implemented elements' in-scope attributes | not_started | No attribute-property-map.yaml artifact found in any evidence bundle. |
+| C16 | Containment graph matches spec hierarchy for implemented concepts | not_started | No containment-graph.yaml artifact found. |
+| C17 | No flat model architecture for ODF commercial products unless formally excepted | partial | .NET: FodsDocument → FodsSheet → FodsRow → FodsCell is hierarchical (not flat). Python: dict-based (flat). .NET meets criterion; Python does not. |
+| C18 | Spec parity skills wired into task generation, implementation, evidence, verification | partial | `add-analytics-function` skill exists in `.supervisor/skill-registry.yaml`. `spec-parity-verification` skill registered. Task generator uses gap-ledger as primary (since commit d5a3e7a5). Not fully wired — regeneration from QName map not yet executed. |
+| C19 | Regeneration generated from QName-to-code map, not ad hoc manual edits | not_started | Lane 9 (FODS rebuild) not yet started. Regeneration not run. Current source is manually maintained. |
+| C20 | Post-regeneration traceability matrices regenerated and pass | not_started | Dependent on C19. Regeneration not done. |
+
+**C11-C20 readiness: 0 evidence_verified, 3 partial, 7 not_started, 0 blocked_external**
+
+**C1-C20 Overall: 0/20 evidence_verified, 12 partial, 7 not_started, 1 blocked_external**
+**C1-C10 readiness percentage: 0% (0 evidence_verified / 10 applicable)**
+**C11-C20 readiness percentage: 0% (0 evidence_verified / 10 applicable)**
+**Combined .NET readiness: 0% (all partial or blocked)**
+
+---
+
+### 9B. Python FOSS Criteria (P1-P11)
+
+#### Original Depth Criteria (P1-P5)
+
+| Criterion | Description | Classification | Evidence Path / Note |
+|-----------|-------------|----------------|----------------------|
+| P1 | Class-based model exists (no monolithic function-only modules for complex formats) | partial | `src/python/fods/neutral_model.py` uses `build_workbook()` returning a plain Python dict. No class-based model. Dict entities: 'sheets', 'metadata', 'style_info'. This FAILS the criterion. The dict approach is the current primary API (not a compatibility layer). |
+| P2 | Parity matrix exists and is up to date | partial | Gate 11 packet exists as readiness document. No formal parity matrix artifact (`fods-parity-matrix.yaml` or similar) found in evidence bundles. |
+| P3 | capability_coverage_percentage >= 60% | evidence_verified | `product-capability-matrix/poc-targets.yaml` line 455: FODG has 23 capabilities; FODS entries have 9+ confirmed capabilities. poc-targets.yaml confirms Python FOSS track is POC_TARGET_CONFIRMED. |
+| P4 | Wheel buildable from pyproject.toml | partial | `src/python/fods/pyproject.toml` exists (listed in Section 4C). Build not executed in current sprint. Pyproject.toml structure not read. |
+| P5 | 0 collection errors in test suite | partial | 76 test files, 1039 test functions (Section 3B). No collection error count in evidence. Assumed 0 based on prior sprint passing, but not verified in current sprint run. |
+
+**P1-P5 readiness: 1 evidence_verified (P3), 4 partial**
+
+#### Spec-Parity Criteria (P6-P11, System Healing Addition)
+
+| Criterion | Description | Classification | Evidence Path / Note |
+|-----------|-------------|----------------|----------------------|
+| P6 | Python modules follow same spec-prefix hierarchy where implemented | not_started | Current structure: `src/python/fods/` flat. Spec-prefix hierarchy (table/, office/, style/ submodules) not implemented. CONTRA-003 is OPEN. |
+| P7 | Python reduced parity matrix generated from same QName-to-code map | not_started | No reduced parity matrix artifact. Dependent on Lane 8 (Python blueprint) + Lane 9 (FODS rebuild). |
+| P8 | Every missing Python class has explicit reduced-scope reason | not_started | 8 missing canonical classes identified in `canonical-class-inventory-design.md` (run dir). No formal reduced-scope reason ledger. |
+| P9 | Dict/function API is compatibility layer only after model migration | not_started | Current dict API IS the primary API. Not in Compat/. Migration not done. CONTRA-003 OPEN. |
+| P10 | Python wrappers delegate to canonical spec-literal model classes | not_started | Canonical class layer (Office.Document, Table.TableCell) does not yet exist in Python. |
+| P11 | Python parity validators wired into supervisor verification | partial | TC-GUARD-001 in `autonomous_cycle.py` enforces gap_ledger_ref on PRODUCT_SOURCE items. V42 blocks rotation functions. 8 spec-parity validators (Section 10) implementation unconfirmed per recon-intake.md. |
+
+**P6-P11 readiness: 0 evidence_verified, 1 partial (P11), 5 not_started**
+
+**P1-P11 Overall: 1/11 evidence_verified (P3), 5 partial, 5 not_started**
+**Python FOSS readiness percentage: 9.1% (1 evidence_verified / 11 applicable)**
+
+---
+
+### 9C. Readiness Summary
+
+| Track | Total Criteria | evidence_verified | partial | not_started | blocked_external | Readiness % |
+|-------|---------------|-------------------|---------|-------------|------------------|-------------|
+| .NET C1-C20 | 20 | 0 | 12 | 7 | 1 | 0% |
+| Python P1-P11 | 11 | 1 | 5 | 5 | 0 | 9.1% |
+| **Combined** | **31** | **1** | **17** | **12** | **1** | **3.2%** |
+
+**Gate 11 status:** NOT READY — C11-C20 spec-parity criteria require Lane 9 (FODS rebuild) which is blocked until system-healing Wave 3 gate PASSES.
+
+**Top blockers in priority order:**
+1. C10/G11-G: Babar Raza approval (blocked_external — TRUE_EXTERNAL_GATE)
+2. C13, C14, C19, C20: Canonical class layer missing — requires Lane 9
+3. P1, P9, P10: Dict-based Python model must migrate to canonical class layer
+4. C4: class_count = 12, needs ≥ 15 (add 3 canonical classes)
+5. C11, C12: QName ontology artifacts exist but NamespaceTreeValidator not wired
+
+**This assessment does NOT approve Gate 11. Babar Raza is the only approver.**
+
+---
+
 *End of FODS Gate 11 Readiness Packet*
-*Agent-prepared 2026-06-12. Submission requires human authorization.*
+*Agent-prepared 2026-06-12. Per-criterion assessment added 2026-06-20 (TC-IMPL-003).*
 *This document does NOT approve Gate 11. Gate 11 approval requires Babar Raza decision.*

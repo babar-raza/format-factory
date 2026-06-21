@@ -1,0 +1,42 @@
+# Flaky Test Ledger — Format Factory
+# Created: 2026-06-18
+# Plan: optimized-sauteeing-hellman (supplemental infrastructure)
+#
+# Tracks tests that are non-deterministically failing — i.e., tests that
+# sometimes pass and sometimes fail without code changes. Distinguish from:
+# - Pre-existing known failures (registry/known-failures.yaml): always fail
+# - Collection errors: fail because source function not yet implemented
+#
+# Policy: A test is "flaky" when it fails in >=2 of 10 runs with NO code changes.
+# Investigation is required before a test can be classified as flaky.
+#
+# Severity levels:
+#   critical: Blocks sprint closes. Must be quarantined immediately.
+#   high:     Reduces grade confidence. Should be investigated next sprint.
+#   medium:   Monitor for repeat occurrences.
+#   low:      Track for now; no immediate action.
+
+version: 1
+created_at: "2026-06-18"
+last_updated: "2026-06-18"
+
+flaky_tests: []
+
+# No flaky tests identified as of 2026-06-18.
+# The following categories of intermittent behavior are tracked as known_failures
+# (not flaky) because they have known environmental causes:
+#   - tests/evidence/test_auto_proof_bundle.py  (OneDrive stat latency — environment_specific)
+#   - tests/supervisor/test_r113_ai_learning_loop.py  (network_dependent)
+#   - tests/test_layer_assignment.py::test_layer0_contains_health_check  (state_dependent, timeout)
+# These are documented in registry/known-failures.yaml, NOT here.
+
+# Template for adding a flaky test:
+# - test_id: "tests/python/fods/test_xxx.py::test_function_name"
+#   severity: "high"
+#   first_observed: "YYYY-MM-DD"
+#   fail_rate: "2/10"
+#   root_cause: "suspected: race condition in resource pool"
+#   investigation_status: "open"
+#   quarantine: false
+#   owner_lane: "python-fods"
+#   notes: "Only fails on Windows, always passes on CI"

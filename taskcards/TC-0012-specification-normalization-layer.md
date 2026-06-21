@@ -3,7 +3,7 @@
 **Taskcard ID:** TC-0012
 **Phase:** 2+ (Foundation Layer — supports all phases)
 **Gate:** Supports Gates 3–8 (required before Gate 4)
-**Status:** in_progress (Phase 2 complete — full extraction done; parser-requirements.yaml pending)
+**Status:** completed (2026-06-18 — all Phase 1/2 artifacts verified; master-plan.md updated)
 **Created:** 2026-05-05 (run024)
 **Last updated:** 2026-05-05 (run025)
 **Created by:** claude-sonnet-4-6 (run024)
@@ -84,19 +84,19 @@ The normalization layer adds a derived working material layer:
 
 ## Acceptance Criteria
 
-- [ ] `docs/specification-normalization.md` exists with full 15-section policy
-- [ ] `tools/spec-normalize/_readme.md` exists with tool orientation
-- [ ] `tools/spec-normalize/normalize_pdf.py` exists — graceful fallback to metadata-only
-- [ ] `tools/spec-normalize/build_citation_map.py` exists
-- [ ] `tools/spec-normalize/validate_normalized_spec.py` exists
-- [ ] AGENTS.md Section W exists with 10 normalization rules
-- [ ] GOVERNANCE.md Section 16 exists with 6 normalization governance rules
-- [ ] `docs/gates.md` Gate 3 and Gate 4 updated with normalization dependencies
-- [ ] `docs/specification-cache.md` references normalization layer
+- [x] `docs/specification-normalization.md` exists with full 15-section policy
+- [x] `tools/spec-normalize/_readme.md` exists with tool orientation
+- [x] `tools/spec-normalize/normalize_pdf.py` exists — graceful fallback to metadata-only
+- [x] `tools/spec-normalize/build_citation_map.py` exists
+- [x] `tools/spec-normalize/validate_normalized_spec.py` exists
+- [x] AGENTS.md Section W exists with 10 normalization rules
+- [x] GOVERNANCE.md Section 16 exists with 6 normalization governance rules
+- [x] `docs/gates.md` Gate 3 and Gate 4 updated with normalization dependencies
+- [x] `docs/specification-cache.md` references normalization layer
 - [x] Local normalization run completed on `.local/spec-cache/fods/1.3/` — full extraction with pdfminer.six (run025)
 - [x] `source-manifest.yaml` present under `.local/spec-cache/fods/1.3/normalized/` showing SHA-256 MATCH
 - [x] `extraction-report.md` present in normalized directory
-- [ ] `master-plan.md` updated with TC-0012 record
+- [x] `master-plan.md` updated with TC-0012 record (Section 25, 2026-06-18)
 
 ---
 

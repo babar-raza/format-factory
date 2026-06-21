@@ -59,7 +59,7 @@ def load_manifest(path: Path | None = None) -> dict:
     path = path or MANIFEST_PATH
     try:
         import yaml
-        with open(path) as f:
+        with open(path, encoding="utf-8") as f:
             return yaml.safe_load(f)
     except ImportError:
         # Fallback: parse just enough YAML for change_impact rules
@@ -643,7 +643,7 @@ def main():
                     old_layer = layer
                     layer = escalation_layer
                     reason = (
-                        f"{reason} [escalated L{old_layer}→L{layer}: "
+                        f"{reason} [escalated L{old_layer}->L{layer}: "
                         f"{len(cross_format_paths)} cross-format test(s) detected]"
                     )
 

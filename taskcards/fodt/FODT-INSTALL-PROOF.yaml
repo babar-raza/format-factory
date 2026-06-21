@@ -1,0 +1,50 @@
+taskcard_id: FODT-INSTALL-PROOF
+title: "FODT Python install proof (D6→D7)"
+status: PROPOSED
+owner: execution-agent
+supervisor: coordinator-lane
+source:
+  plan_section: "TC-READINESS-002"
+  plan_file: "plans/fluffy-yawning-jellyfish.md"
+  gate11_reference: "reports/gate11/fodt-gate11-readiness-packet.md Section 4C"
+  gap_description: "No install proof exists for FODT"
+scope:
+  allowed_paths:
+    - tests/python/fodt/test_fodt_install_proof.py
+  forbidden_paths:
+    - src/python/fodt/**
+    - registry/**
+    - tools/supervisor/**
+  allowed_folders:
+    - tests/python/fodt/
+  forbidden_folders:
+    - src/net/
+    - .local/supervisor/
+problem: >
+  FODT has no install proof test. The format is at D6 (full codec) but has not
+  demonstrated D7 (installable package).
+required_change: >
+  Write tests/python/fodt/test_fodt_install_proof.py verifying module importability
+  and core API functionality.
+min_new_tests: 5
+acceptance_criteria:
+  - "import src.python.fodt succeeds"
+  - "__version__ is not None and not '0.0.0'"
+  - "parse_fodt_strict on a real sample returns a dict with blocks"
+  - "write_fodt produces a file that exists and has content"
+  - "document_to_text on a parsed document returns a string"
+execution_steps:
+  - "Step 1: Read src/python/fodt/__init__.py for public API"
+  - "Step 2: Identify sample FODT file"
+  - "Step 3: Write test file with 5 tests"
+  - "Step 4: Run pytest"
+stop_conditions:
+  - "If fodt module cannot be imported, mark BLOCKED"
+rollback_plan: "Delete tests/python/fodt/test_fodt_install_proof.py"
+quality_gates:
+  requirement_correctness: "Tests exercise real API"
+  implementation_correctness: "Tests import from source tree"
+  regression_safety: "No existing tests modified"
+closeout_criteria:
+  - "5 tests pass"
+dependencies: []

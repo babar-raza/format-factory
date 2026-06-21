@@ -1,0 +1,57 @@
+taskcard_id: FODT-SEMANTIC-ROUNDTRIP
+title: "FODT semantic round-trip verification"
+status: PROPOSED
+owner: execution-agent
+supervisor: coordinator-lane
+source:
+  plan_section: "TC-READINESS-002"
+  plan_file: "plans/fluffy-yawning-jellyfish.md"
+  gate11_reference: "reports/gate11/fodt-gate11-readiness-packet.md Section 3D"
+  gap_description: >
+    Existing round-trip tests verify block count and heading survival only.
+    Semantic verification requires text content, inline formatting, list structure,
+    table content, and footnote preservation.
+scope:
+  allowed_paths:
+    - tests/python/fodt/test_fodt_semantic_roundtrip.py
+  forbidden_paths:
+    - src/python/fodt/**
+    - registry/**
+    - tools/supervisor/**
+  allowed_folders:
+    - tests/python/fodt/
+  forbidden_folders:
+    - src/net/
+    - .local/supervisor/
+problem: >
+  Existing FODT round-trip tests are smoke-level (block count, heading survival,
+  empty document). They do not verify text content, inline spans, list items,
+  table cells, or footnotes.
+required_change: >
+  Write tests/python/fodt/test_fodt_semantic_roundtrip.py with deep comparison
+  tests that parse a complex FODT document, write it, reload it, and compare
+  every structural element.
+min_new_tests: 6
+acceptance_criteria:
+  - "Parse FODT with paragraphs → write → reload → paragraph text matches exactly"
+  - "Heading text and implied level survive round-trip"
+  - "List items text survives round-trip"
+  - "Table cell text survives round-trip"
+  - "Block ordering preserved after round-trip"
+  - "Empty document round-trip produces valid FODT"
+execution_steps:
+  - "Step 1: Read src/python/fodt/writer.py output format"
+  - "Step 2: Read src/python/fodt/parser.py parse output format"
+  - "Step 3: Write test file with 6+ deep comparison tests"
+  - "Step 4: Run pytest"
+stop_conditions:
+  - "If writer cannot produce valid FODT XML, mark BLOCKED"
+rollback_plan: "Delete tests/python/fodt/test_fodt_semantic_roundtrip.py"
+quality_gates:
+  requirement_correctness: "Tests compare text content, not just structure counts"
+  implementation_correctness: "Tests use real parse→write→parse cycle"
+  regression_safety: "No existing tests modified"
+closeout_criteria:
+  - "6+ tests pass with deep field comparison"
+dependencies:
+  - FODT-PYWRITE-001

@@ -1,0 +1,338 @@
+{
+  "audit_id": "gap-audit-2026-06-21",
+  "generated_at": "2026-06-21T00:00:00Z",
+  "auditor": "bright-frolicking-turtle TC-BFT-006",
+  "methodology": "Sample 5 gaps per format (FODT, XCF, FODS, DIF, FODG). For each gap, grep tests/python/{format}/ for the capability name. VERIFIED = at least 1 test file matches. CLAIMED_UNPROVEN = no test file found.",
+  "total_sampled": 25,
+  "verdict_summary": {
+    "VERIFIED": 17,
+    "CLAIMED_UNPROVEN": 8,
+    "RE_OPENED": 0
+  },
+  "finding": "Gaps are bulk-closed. 17/25 sampled gaps have indirect test evidence (function name match), 8/25 have no identifiable test. The bulk-closure methodology cannot be considered per-gap verified evidence. TC-GUARD-001 gap_ledger_ref citations to these gaps should be treated as CLAIMED_UNPROVEN until per-gap test names are explicitly linked.",
+  "gap_audits": [
+    {
+      "gap_id": "GAP-FODT-COMM-LOAD-001",
+      "format": "FODT",
+      "capability_name": "Load",
+      "status_in_ledger": "closed",
+      "test_dir_exists": true,
+      "matching_test_files": [
+        "tests/python/fodt/test_compat_bootstrap.py",
+        "tests/python/fodt/test_fodt_pywrite_deepening.py"
+      ],
+      "audit_verdict": "VERIFIED",
+      "audit_rationale": "Matching test file found by function name grep",
+      "ledger_notes": "Generated from poc-targets.yaml dotnet_status. authority_state=gate_evidence."
+    },
+    {
+      "gap_id": "GAP-FODT-COMM-SAVE_SAME_FO-001",
+      "format": "FODT",
+      "capability_name": "Save Same Format",
+      "status_in_ledger": "closed",
+      "test_dir_exists": true,
+      "matching_test_files": [],
+      "audit_verdict": "CLAIMED_UNPROVEN",
+      "audit_rationale": "No test file found containing capability function name \u2014 bulk-closed without per-gap test evidence",
+      "ledger_notes": "Generated from poc-targets.yaml dotnet_status. authority_state=gate_evidence."
+    },
+    {
+      "gap_id": "GAP-FODT-COMM-RELOAD_AND_V-001",
+      "format": "FODT",
+      "capability_name": "Reload And Verify",
+      "status_in_ledger": "closed",
+      "test_dir_exists": true,
+      "matching_test_files": [],
+      "audit_verdict": "CLAIMED_UNPROVEN",
+      "audit_rationale": "No test file found containing capability function name \u2014 bulk-closed without per-gap test evidence",
+      "ledger_notes": "Generated from poc-targets.yaml dotnet_status. authority_state=gate_evidence."
+    },
+    {
+      "gap_id": "GAP-FODT-COMM-INSPECT_OBJE-001",
+      "format": "FODT",
+      "capability_name": "Inspect Object Model",
+      "status_in_ledger": "closed",
+      "test_dir_exists": true,
+      "matching_test_files": [],
+      "audit_verdict": "CLAIMED_UNPROVEN",
+      "audit_rationale": "No test file found containing capability function name \u2014 bulk-closed without per-gap test evidence",
+      "ledger_notes": "Generated from poc-targets.yaml dotnet_status. authority_state=gate_evidence."
+    },
+    {
+      "gap_id": "GAP-FODT-COMM-EDIT_PARAGRA-001",
+      "format": "FODT",
+      "capability_name": "Edit Paragraphs",
+      "status_in_ledger": "closed",
+      "test_dir_exists": true,
+      "matching_test_files": [],
+      "audit_verdict": "CLAIMED_UNPROVEN",
+      "audit_rationale": "No test file found containing capability function name \u2014 bulk-closed without per-gap test evidence",
+      "ledger_notes": "Generated from poc-targets.yaml dotnet_status. authority_state=gate_evidence."
+    },
+    {
+      "gap_id": "GAP-XCF-FOSS-PROBE_XCF-001",
+      "format": "XCF",
+      "capability_name": "Probe Xcf",
+      "status_in_ledger": "closed",
+      "test_dir_exists": true,
+      "matching_test_files": [
+        "tests/python/xcf/test_mdr11_xcf_exports.py",
+        "tests/python/xcf/test_r165_xcf_probe_layer_dims.py"
+      ],
+      "audit_verdict": "VERIFIED",
+      "audit_rationale": "Matching test file found by function name grep",
+      "ledger_notes": "Discovered via source scan \u00e2\u20ac\u201d NOT in poc-targets.yaml. Add to foss_reduced_products."
+    },
+    {
+      "gap_id": "GAP-XCF-FOSS-XCF_FILE_SIZ-001",
+      "format": "XCF",
+      "capability_name": "Xcf File Size Plus Image Type Id",
+      "status_in_ledger": "closed",
+      "test_dir_exists": true,
+      "matching_test_files": [
+        "tests/python/xcf/test_r387_xcf_deepening.py"
+      ],
+      "audit_verdict": "VERIFIED",
+      "audit_rationale": "Matching test file found by function name grep",
+      "ledger_notes": "Discovered via source scan \u00e2\u20ac\u201d NOT in poc-targets.yaml. Add to foss_reduced_products."
+    },
+    {
+      "gap_id": "GAP-XCF-FOSS-XCF_WIDTH_TI-001",
+      "format": "XCF",
+      "capability_name": "Xcf Width Times File Size",
+      "status_in_ledger": "closed",
+      "test_dir_exists": true,
+      "matching_test_files": [
+        "tests/python/xcf/test_r387_xcf_deepening.py",
+        "tests/python/xcf/test_xcf_gap_closure_foss.py"
+      ],
+      "audit_verdict": "VERIFIED",
+      "audit_rationale": "Matching test file found by function name grep",
+      "ledger_notes": "Discovered via source scan \u00e2\u20ac\u201d NOT in poc-targets.yaml. Add to foss_reduced_products."
+    },
+    {
+      "gap_id": "GAP-XCF-FOSS-XCF_HEIGHT_T-001",
+      "format": "XCF",
+      "capability_name": "Xcf Height Times File Size",
+      "status_in_ledger": "closed",
+      "test_dir_exists": true,
+      "matching_test_files": [
+        "tests/python/xcf/test_r397_xcf_deepening.py"
+      ],
+      "audit_verdict": "VERIFIED",
+      "audit_rationale": "Matching test file found by function name grep",
+      "ledger_notes": "Discovered via source scan \u00e2\u20ac\u201d NOT in poc-targets.yaml. Add to foss_reduced_products."
+    },
+    {
+      "gap_id": "GAP-XCF-FOSS-XCF_WIDTH_SQ-001",
+      "format": "XCF",
+      "capability_name": "Xcf Width Squared Plus File Size",
+      "status_in_ledger": "closed",
+      "test_dir_exists": true,
+      "matching_test_files": [
+        "tests/python/xcf/test_r409_xcf_deepening.py"
+      ],
+      "audit_verdict": "VERIFIED",
+      "audit_rationale": "Matching test file found by function name grep",
+      "ledger_notes": "Discovered via source scan \u00e2\u20ac\u201d NOT in poc-targets.yaml. Add to foss_reduced_products."
+    },
+    {
+      "gap_id": "GAP-FODS-COMM-LOAD-001",
+      "format": "FODS",
+      "capability_name": "Load",
+      "status_in_ledger": "closed",
+      "test_dir_exists": true,
+      "matching_test_files": [
+        "tests/python/fods/test_fods_pywrite_deepening.py",
+        "tests/python/fods/test_fods_semantic_roundtrip.py"
+      ],
+      "audit_verdict": "VERIFIED",
+      "audit_rationale": "Matching test file found by function name grep",
+      "ledger_notes": "Generated from poc-targets.yaml dotnet_status. authority_state=gate_evidence."
+    },
+    {
+      "gap_id": "GAP-FODS-COMM-SAVE_SAME_FO-001",
+      "format": "FODS",
+      "capability_name": "Save Same Format",
+      "status_in_ledger": "closed",
+      "test_dir_exists": true,
+      "matching_test_files": [],
+      "audit_verdict": "CLAIMED_UNPROVEN",
+      "audit_rationale": "No test file found containing capability function name \u2014 bulk-closed without per-gap test evidence",
+      "ledger_notes": "Generated from poc-targets.yaml dotnet_status. authority_state=gate_evidence."
+    },
+    {
+      "gap_id": "GAP-FODS-COMM-RELOAD_AND_V-001",
+      "format": "FODS",
+      "capability_name": "Reload And Verify",
+      "status_in_ledger": "closed",
+      "test_dir_exists": true,
+      "matching_test_files": [],
+      "audit_verdict": "CLAIMED_UNPROVEN",
+      "audit_rationale": "No test file found containing capability function name \u2014 bulk-closed without per-gap test evidence",
+      "ledger_notes": "Generated from poc-targets.yaml dotnet_status. authority_state=gate_evidence."
+    },
+    {
+      "gap_id": "GAP-FODS-COMM-INSPECT_OBJE-001",
+      "format": "FODS",
+      "capability_name": "Inspect Object Model",
+      "status_in_ledger": "closed",
+      "test_dir_exists": true,
+      "matching_test_files": [],
+      "audit_verdict": "CLAIMED_UNPROVEN",
+      "audit_rationale": "No test file found containing capability function name \u2014 bulk-closed without per-gap test evidence",
+      "ledger_notes": "Generated from poc-targets.yaml dotnet_status. authority_state=gate_evidence."
+    },
+    {
+      "gap_id": "GAP-FODS-COMM-EDIT_CELLS-001",
+      "format": "FODS",
+      "capability_name": "Edit Cells",
+      "status_in_ledger": "closed",
+      "test_dir_exists": true,
+      "matching_test_files": [],
+      "audit_verdict": "CLAIMED_UNPROVEN",
+      "audit_rationale": "No test file found containing capability function name \u2014 bulk-closed without per-gap test evidence",
+      "ledger_notes": "Generated from poc-targets.yaml dotnet_status. authority_state=gate_evidence."
+    },
+    {
+      "gap_id": "GAP-DIF-FOSS-PROBE_DIF-001",
+      "format": "DIF",
+      "capability_name": "Probe Dif",
+      "status_in_ledger": "closed",
+      "test_dir_exists": true,
+      "matching_test_files": [
+        "tests/python/dif/test_dif_parser.py",
+        "tests/python/dif/test_dif_probe_gap_closure.py"
+      ],
+      "audit_verdict": "VERIFIED",
+      "audit_rationale": "Matching test file found by function name grep",
+      "ledger_notes": "Discovered via source scan \u00e2\u20ac\u201d NOT in poc-targets.yaml. Add to foss_reduced_products."
+    },
+    {
+      "gap_id": "GAP-DIF-FOSS-PARSE_DIF-001",
+      "format": "DIF",
+      "capability_name": "Parse Dif",
+      "status_in_ledger": "closed",
+      "test_dir_exists": true,
+      "matching_test_files": [
+        "tests/python/dif/test_dif_conveyor_deepening.py",
+        "tests/python/dif/test_dif_gap_closure_batch.py"
+      ],
+      "audit_verdict": "VERIFIED",
+      "audit_rationale": "Matching test file found by function name grep",
+      "ledger_notes": "Discovered via source scan \u00e2\u20ac\u201d NOT in poc-targets.yaml. Add to foss_reduced_products."
+    },
+    {
+      "gap_id": "GAP-DIF-FOSS-PARSE_DIF_ST-001",
+      "format": "DIF",
+      "capability_name": "Parse Dif Strict",
+      "status_in_ledger": "closed",
+      "test_dir_exists": true,
+      "matching_test_files": [
+        "tests/python/dif/test_dif_conveyor_deepening.py",
+        "tests/python/dif/test_dif_gap_closure_batch.py"
+      ],
+      "audit_verdict": "VERIFIED",
+      "audit_rationale": "Matching test file found by function name grep",
+      "ledger_notes": "Discovered via source scan \u00e2\u20ac\u201d NOT in poc-targets.yaml. Add to foss_reduced_products."
+    },
+    {
+      "gap_id": "GAP-DIF-FOSS-GET_CAPABILI-001",
+      "format": "DIF",
+      "capability_name": "Get Capabilities",
+      "status_in_ledger": "closed",
+      "test_dir_exists": true,
+      "matching_test_files": [
+        "tests/python/dif/test_dif_gate5_neutral_model.py",
+        "tests/python/dif/test_dif_probe_gap_closure.py"
+      ],
+      "audit_verdict": "VERIFIED",
+      "audit_rationale": "Matching test file found by function name grep",
+      "ledger_notes": "Discovered via source scan \u00e2\u20ac\u201d NOT in poc-targets.yaml. Add to foss_reduced_products."
+    },
+    {
+      "gap_id": "GAP-DIF-FOSS-WRITE_DIF-001",
+      "format": "DIF",
+      "capability_name": "Write Dif",
+      "status_in_ledger": "closed",
+      "test_dir_exists": true,
+      "matching_test_files": [
+        "tests/python/dif/test_dif_conveyor_deepening.py",
+        "tests/python/dif/test_dif_gate7_fuzz_guard.py"
+      ],
+      "audit_verdict": "VERIFIED",
+      "audit_rationale": "Matching test file found by function name grep",
+      "ledger_notes": "Discovered via source scan \u00e2\u20ac\u201d NOT in poc-targets.yaml. Add to foss_reduced_products."
+    },
+    {
+      "gap_id": "GAP-FODG-FOSS-PROBE_FODG-001",
+      "format": "FODG",
+      "capability_name": "Probe Fodg",
+      "status_in_ledger": "closed",
+      "test_dir_exists": true,
+      "matching_test_files": [
+        "tests/python/fodg/test_cap_fodg_write_export.py",
+        "tests/python/fodg/test_fodg_all_text_probe_pipeline.py"
+      ],
+      "audit_verdict": "VERIFIED",
+      "audit_rationale": "Matching test file found by function name grep",
+      "ledger_notes": "Generated from poc-targets.yaml python_status + source introspection. op_status=PASS"
+    },
+    {
+      "gap_id": "GAP-FODG-FOSS-WRITE_FODG-001",
+      "format": "FODG",
+      "capability_name": "Write Fodg",
+      "status_in_ledger": "closed",
+      "test_dir_exists": true,
+      "matching_test_files": [
+        "tests/python/fodg/test_cap_fodg_export_csv.py",
+        "tests/python/fodg/test_cap_fodg_write_export.py"
+      ],
+      "audit_verdict": "VERIFIED",
+      "audit_rationale": "Matching test file found by function name grep",
+      "ledger_notes": "Generated from poc-targets.yaml python_status + source introspection. op_status=PASS"
+    },
+    {
+      "gap_id": "GAP-FODG-FOSS-CREATE_FODG-001",
+      "format": "FODG",
+      "capability_name": "Create Fodg",
+      "status_in_ledger": "closed",
+      "test_dir_exists": true,
+      "matching_test_files": [
+        "tests/python/fodg/test_cap_fodg_export_csv.py",
+        "tests/python/fodg/test_cap_fodg_write_export.py"
+      ],
+      "audit_verdict": "VERIFIED",
+      "audit_rationale": "Matching test file found by function name grep",
+      "ledger_notes": "Generated from poc-targets.yaml python_status + source introspection. op_status=PASS"
+    },
+    {
+      "gap_id": "GAP-FODG-FOSS-EXPORT_TO_TX-001",
+      "format": "FODG",
+      "capability_name": "Export To Txt",
+      "status_in_ledger": "closed",
+      "test_dir_exists": true,
+      "matching_test_files": [
+        "tests/python/fodg/test_cap_fodg_write_export.py",
+        "tests/python/fodg/test_fodg_clear_roundtrip.py"
+      ],
+      "audit_verdict": "VERIFIED",
+      "audit_rationale": "Matching test file found by function name grep",
+      "ledger_notes": "Generated from poc-targets.yaml python_status + source introspection. op_status=PASS"
+    },
+    {
+      "gap_id": "GAP-FODG-FOSS-EXPORT_TO_CS-001",
+      "format": "FODG",
+      "capability_name": "Export To Csv",
+      "status_in_ledger": "closed",
+      "test_dir_exists": true,
+      "matching_test_files": [
+        "tests/python/fodg/test_cap_fodg_export_csv.py",
+        "tests/python/fodg/test_fodg_export_csv_pipeline.py"
+      ],
+      "audit_verdict": "VERIFIED",
+      "audit_rationale": "Matching test file found by function name grep",
+      "ledger_notes": "Generated from poc-targets.yaml python_status + source introspection. op_status=PASS"
+    }
+  ]
+}

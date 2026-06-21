@@ -473,34 +473,42 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
         print(f"  No REQUIREMENT/READINESS/RELEASE_GATE items in declaration — "
               f"requirements authority step skipped")
 
-    # Step 2d3: TC-GUARD-001 — Gap ledger trace check (WARN mode until 2026-07-18)
-    # Warns when PRODUCT_SOURCE items lack gap_ledger_ref or capability_ref.
-    # Escalates to a hard block after 2026-07-18. Non-blocking until then.
-    print("\n=== STEP 2d3: TC-GUARD-001 GAP LEDGER TRACE CHECK ===")
-    _guard001_date = datetime.strptime("2026-07-18", "%Y-%m-%d").date()
-    _guard001_today = datetime.now().date()
-    _guard001_blocking = _guard001_today >= _guard001_date
-    _guard001_items = [
-        item for item in decl.get("planned_work_items", [])
-        if item.get("item_type", "") in ("PRODUCT_SOURCE", "PRODUCT_TEST")
-    ]
-    _guard001_ungapped = [
-        item["item_id"] for item in _guard001_items
-        if not (
-            item.get("gap_ledger_ref")
-            or item.get("capability_ref")
-            or item.get("spec_fact_refs")
-        )
-    ]
-    if _guard001_ungapped:
-        _guard001_mode = "BLOCK" if _guard001_blocking else "WARN"
+    # Step 2d3: TC-GUARD-001 — Gap ledger trace check — BLOCK mode (enforced 2026-06-18).
+    # GOVERNANCE_ASSET items are exempt (they create the registry that gap-ledger entries reference).
+    # Violations stored in _guard001_violations; added to review["rework_items"] after grading.
+    print("\n=== STEP 2d3: TC-GUARD-001 GAP LEDGER TRACE CHECK (BLOCK MODE) ===")
+    from guard_001_checker import check_guard_001_all as _check_guard001  # GOVERNANCE_ASSET exempt
+    _guard001_violations = _check_guard001(decl.get("planned_work_items", []))
+    if _guard001_violations:
         print(
-            f"  [{_guard001_mode}] TC-GUARD-001: {len(_guard001_ungapped)} PRODUCT_SOURCE/TEST "
-            f"item(s) have no gap_ledger_ref or capability_ref: {_guard001_ungapped}. "
-            f"{'Blocking continuation (escalation date passed).' if _guard001_blocking else 'WARN only until 2026-07-18. See plan keen-dancing-hopper.'}"
+            f"  [BLOCK] TC-GUARD-001: {len(_guard001_violations)} PRODUCT_SOURCE/TEST "
+            f"item(s) have no gap_ledger_ref, capability_ref, or spec_fact_refs: "
+            f"{_guard001_violations}. These items will be added to rework_items after grading."
         )
     else:
-        print(f"  PASS: TC-GUARD-001 — all {len(_guard001_items)} PRODUCT_SOURCE/TEST items have gap tracing (or no such items)")
+        _checked = [i for i in decl.get("planned_work_items", []) if i.get("item_type") in ("PRODUCT_SOURCE", "PRODUCT_TEST")]
+        print(f"  PASS: TC-GUARD-001 — all {len(_checked)} PRODUCT_SOURCE/TEST items have gap tracing (or no such items)")
+
+    # Step 2d4: TC-SAL-IMPL-001 — AI fact guard (advisory — warns on AI self-certification)
+    # validate_ai_fact_guard() checks that no AI-suggested fact carries verification_status=verified.
+    # This is advisory only: violations are printed but do NOT block grading or continuation.
+    print("\n=== STEP 2d4: AI FACT GUARD (ADVISORY) ===")
+    try:
+        import sys as _sys_aig
+        _sal_tools = repo_root / "tools" / "supervisor"
+        if str(_sal_tools) not in _sys_aig.path:
+            _sys_aig.path.insert(0, str(_sal_tools))
+        from validate_spec_fact_refs import validate_spec_cache_ai_guard
+        _ai_result = validate_spec_cache_ai_guard()
+        _violations = _ai_result.get("violations", [])
+        if _violations:
+            print(f"  WARN[ai_fact_guard]: {len(_violations)} AI self-certification violation(s) found.")
+            for _v in _violations[:5]:
+                print(f"    {_v}")
+        else:
+            print(f"  PASS: AI fact guard — 0 violations (AI-suggested facts not self-certified as verified)")
+    except Exception as _aig_e:
+        print(f"  WARNING: AI fact guard skipped: {_aig_e}")
 
     # Step 2e: Governance validators (GRE-TC-002: wired into pipeline)
     print("\n=== STEP 2e: GOVERNANCE VALIDATORS ===")
@@ -643,6 +651,29 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
             " Requirements authority validation FAIL for REQUIREMENT/READINESS items."
         ).strip()
         print("  [Step 2d2] Requirements authority failure promoted to CRITICAL REWORK.")
+
+    # Step 2d3 post-grading: TC-GUARD-001 violations added to rework_items (BLOCK mode).
+    # _guard001_violations was populated before grading; applied here after review is available.
+    if _guard001_violations:
+        review.setdefault("rework_items", [])
+        for _gv_id in _guard001_violations:
+            _rw_entry = (
+                f"TC-GUARD-001:gap_ledger_ref_missing:{_gv_id} — "
+                f"Add gap_ledger_ref or spec_fact_refs from reports/capability-layer/gap-ledger.json"
+            )
+            if _rw_entry not in review["rework_items"]:
+                review["rework_items"].append(_rw_entry)
+        review["critical_rework_count"] = max(
+            review.get("critical_rework_count", 0) + len(_guard001_violations), 1
+        )
+        if review.get("overall_verdict") in ("ACCEPTED", "ACCEPTED_WITH_LIMITATIONS"):
+            review["overall_verdict"] = "ACCEPTED_WITH_REWORK"
+        if "autonomous_continue" in review:
+            review["autonomous_continue"] = False
+        print(
+            f"  [TC-GUARD-001 POST-GRADE] {len(_guard001_violations)} violation(s) added to "
+            f"rework_items — continuation blocked until gap references are added."
+        )
 
     print(f"  Verdict: {review['overall_verdict']}")
     print(f"  Accepted: {len(review['accepted_items'])}")
@@ -1601,7 +1632,10 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
         sqs = eqb.get("semantic_quality_score")
         eqs = review.get("evidence_quality_score", 1.0)
         if sqs is None and eqs == 0.0 and len(review.get("accepted_items", [])) > 0:
-            hard_stops.append("evidence_quality_zero")
+            # B5: evidence_quality_zero is LOCAL_REPAIR_CONTINUE per CLAUDE.md/MEMORY.md —
+            # LLM grader unavailable with accepted items is NOT a hard stop.
+            # Move to continuation_warnings so autonomous_continue is not forced false.
+            review.setdefault("continuation_warnings", []).append("evidence_quality_zero")
 
         # R107 Lane G: Check anti-skip critical blocks
         if anti_skip_impact and anti_skip_impact.get("block"):
@@ -1656,6 +1690,29 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
             anti_skip_result=anti_skip_result,
             # New params use default True — backward compatible (R113 product-first)
         )
+
+        # C5 (SIGNAL-UNIFY-001): Patch work-item-grades.md and latest-cycle-summary.md to
+        # use auto_continue_value so all three outputs (grades, summary, signal) are
+        # consistent.  review["autonomous_continue"] was written before hard_stops were
+        # evaluated; auto_continue_value incorporates hard_stops, overclaimed, and
+        # rework_items — it is the authoritative value.
+        try:
+            _wg_path = latest_dir / "work-item-grades.md"
+            if _wg_path.exists():
+                _wg_text = _wg_path.read_text(encoding="utf-8")
+                _old_ac = f"- Autonomous Continue: {review['autonomous_continue']}"
+                _new_ac = f"- Autonomous Continue: {auto_continue_value}"
+                if _old_ac != _new_ac and _old_ac in _wg_text:
+                    _wg_path.write_text(_wg_text.replace(_old_ac, _new_ac, 1), encoding="utf-8")
+            _cs_path = latest_dir / "latest-cycle-summary.md"
+            if _cs_path.exists():
+                _cs_text = _cs_path.read_text(encoding="utf-8")
+                _old_cs = f"Autonomous Continue: {review['autonomous_continue']}"
+                _new_cs = f"Autonomous Continue: {auto_continue_value}"
+                if _old_cs != _new_cs and _old_cs in _cs_text:
+                    _cs_path.write_text(_cs_text.replace(_old_cs, _new_cs, 1), encoding="utf-8")
+        except Exception as _unify_err:
+            print(f"  WARNING: Signal unification patch failed (non-blocking): {_unify_err}")
 
         # CCI-MVP: Stable session_id for cross-chat isolation (TC-CCI-200)
         try:

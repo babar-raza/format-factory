@@ -26,10 +26,10 @@ notes: Creates the project slash commands in .claude/commands/. Resolves G-004 a
 # TC-0004: Project Commands and Skills Design
 
 **Phase:** 1
-**Status:** not_started
-**Owner:** TBD (developer with Claude)
+**Status:** completed
+**Owner:** Autonomous agent (TC-0004 sprint 2026-06-18)
 **Created:** 2026-05-03
-**Last updated:** 2026-05-03
+**Last updated:** 2026-06-18
 **Blocking:** Consistent agent invocation of recurring tasks (all Phase 1+ work benefits from commands)
 **Blocked by:** Phase 0 completion
 **Format:** none (infrastructure)

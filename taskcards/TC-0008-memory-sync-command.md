@@ -26,7 +26,7 @@ notes: Planned capability only. Phase 0 creates this taskcard; implementation is
 # TC-0008: Memory Sync Command
 
 **Phase:** 1+ (planned; not started in Phase 0)
-**Status:** not_started
+**Status:** completed
 **Owner:** Developer (Phase 1+)
 **Created:** 2026-05-03
 **Last updated:** 2026-05-03
@@ -128,8 +128,10 @@ Completion requires ALL of the following:
 
 ## Completion Record
 
-**Completed by:** —
-**Completion date:** —
-**Artifacts produced:** —
-**Gaps discovered:** —
-**Notes:** This taskcard was created in Phase 0 (run010) as a planned capability. Implementation begins only after Phase 0 acceptance and an explicit Phase 1+ execution prompt authorizing this work.
+**Completed by:** claude-sonnet-4-6 (agent, 2026-06-18)
+**Completion date:** 2026-06-18
+**Artifacts produced:**
+  - `.claude/commands/sync-memory.md` — /sync-memory command file
+  - `reports/supervisor/memory-sync-report.md` — full sync report (73 files, 0 HIGH contradictions)
+**Gaps discovered:** 2 ADVISORY drift items (historical, non-blocking)
+**Notes:** Memory sync run 2026-06-18. CLEAN: 0 secrets, 0 HIGH contradictions. TC-0008 Phase 1+ criterion satisfied. Authority is plans/master-plan.md.

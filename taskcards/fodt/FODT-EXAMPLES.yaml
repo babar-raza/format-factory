@@ -1,0 +1,49 @@
+taskcard_id: FODT-EXAMPLES
+title: "FODT Python runnable example scripts"
+status: PROPOSED
+owner: execution-agent
+supervisor: coordinator-lane
+source:
+  plan_section: "TC-READINESS-002"
+  plan_file: "plans/fluffy-yawning-jellyfish.md"
+  gap_description: "No runnable example scripts exist for FODT"
+scope:
+  allowed_paths:
+    - examples/python/fodt/read_and_inspect.py
+    - examples/python/fodt/edit_and_export.py
+  forbidden_paths:
+    - src/python/fodt/**
+    - registry/**
+    - tools/supervisor/**
+  allowed_folders:
+    - examples/python/fodt/
+  forbidden_folders:
+    - src/
+    - .local/supervisor/
+problem: >
+  No examples/python/fodt/ directory exists. Customer-facing packages need
+  runnable example scripts.
+required_change: >
+  Create 2 runnable example scripts:
+  1. read_and_inspect.py — load a FODT file, print block types, text content, list structure
+  2. edit_and_export.py — load a FODT file, export to TXT and HTML
+min_new_tests: 0
+acceptance_criteria:
+  - "examples/python/fodt/read_and_inspect.py runs without error"
+  - "examples/python/fodt/edit_and_export.py runs without error"
+  - "Both scripts use only the public API"
+  - "Both scripts include explanatory comments"
+execution_steps:
+  - "Step 1: Read src/python/fodt/__init__.py for public API"
+  - "Step 2: Create examples/python/fodt/ directory"
+  - "Step 3: Write both scripts"
+  - "Step 4: Run both scripts"
+stop_conditions:
+  - "If no FODT sample exists, create minimal one inline"
+rollback_plan: "Delete examples/python/fodt/ directory"
+quality_gates:
+  requirement_correctness: "Scripts demonstrate real workflows"
+  implementation_correctness: "Scripts use public API only"
+closeout_criteria:
+  - "Both scripts exist and run without error"
+dependencies: []

@@ -323,6 +323,7 @@ See `registry/format-registry.yaml` for per-format gate status.
 | DEC-032 | .NET track is the commercial/full-feature path | Decided |
 | DEC-033 | .NET FOSS packaging: Option B — .NET Commercial Only | **Resolved** |
 | DEC-034 | Independent agent verification before human review | Decided |
+| DEC-035 | Neutral model schema language: JSON Schema (Draft 7) — tooling parity Python+.NET, machine-validatable, human-readable | Decided |
 
 **Risk summary:** Top risks tracked in historical risk register (see backup). Active mitigations: phase rules, evidence inspection, bundle validation, visibility classification, reuse-before-regenerate, no-premature-product-code, commercial isolation, no-self-approval.
 
@@ -563,6 +564,36 @@ for that format must be a secondary split, not new analytics additions. Growth b
 - Baseline: `registry/source-structure-baseline.json`
 - Checklist: `docs/code-quality/production-library-checklist.md`
 - Correction plan: `plans/spec-to-feature-radical-correction-plan.md`
+
+---
+
+## Section 25 — Completed Infrastructure Taskcards
+
+### TC-0012 — Specification Normalization Layer (COMPLETED 2026-06-18)
+
+**Status:** COMPLETED (Phase 1: run024; Phase 2: run025; Phase 3: 2026-06-18)
+
+**What was built:**
+- `docs/specification-normalization.md` — 15-section governing policy
+- `tools/spec-normalize/normalize_pdf.py` — PDF → text.txt + pages.jsonl extraction
+- `tools/spec-normalize/build_citation_map.py` — citations.yaml from pages.jsonl
+- `tools/spec-normalize/validate_normalized_spec.py` — gate readiness validation
+- `tools/spec-normalize/_readme.md` — tool orientation
+- AGENTS.md Section W — 10 normalization rules
+- GOVERNANCE.md Section 16 — 6 normalization governance rules
+- `docs/gates.md` Gate 3/4 normalization dependency notes
+- `docs/specification-cache.md` Normalization Layer section
+
+**Local artifacts produced (non-committed):**
+- `.local/spec-cache/fods/1.3/normalized/text.txt` — 2,160,370 chars (782 pages)
+- `.local/spec-cache/fods/1.3/normalized/pages.jsonl` — 782 pages
+- `.local/spec-cache/fods/1.3/normalized/citations.yaml` — 194 section refs, 35 external refs
+- `.local/spec-cache/fods/1.3/normalized/source-manifest.yaml` — SHA-256 MATCH verified
+- `.local/spec-cache/fods/1.3/normalized/extraction-report.md`
+
+**Gap resolved:** G-NORM-001 (PDF extraction library unavailable) — pdfminer.six 20260107 installed run025.
+
+**Remaining deferred (not blocking):** `parser-requirements.yaml` — Gate 4 prerequisite; deferred to Gate 4 execution or manual production.
 
 ---
 

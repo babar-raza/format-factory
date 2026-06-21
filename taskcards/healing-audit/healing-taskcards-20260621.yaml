@@ -1,0 +1,128 @@
+---
+# Healing Audit Taskcards — promoted from FF-HEAL-QNAME-20260621-114042
+# Source: .local/evidences/FF-HEAL-QNAME-20260621-114042/17-taskcards.yaml
+# Promoted: 2026-06-21
+# Status: pending execution (not yet scheduled in active sprint)
+schema_version: "1.0"
+source_sprint: FF-HEAL-QNAME-20260621-114042
+promotion_date: "2026-06-21"
+
+taskcards:
+
+  - taskcard_id: TC-SAL-ODF-001
+    title: Run SAL pipeline for FODT to promote facts to sal-facts-latest.json
+    lane: Machinery
+    status: open
+    severity: High
+    group: SAL-REPAIR
+    allowed_paths:
+      - .local/sal-output/
+      - tools/specification-authority-layer/
+    forbidden_paths:
+      - src/
+      - reports/capability-layer/gap-ledger.json
+    purpose: Promote FODT spec facts from .local/spec-artifacts/FODT-SPEC-001-requirements.json to sal-facts pipeline
+    required_change: |
+      Run sal_master_runner.py (or equivalent) for FODT format with spec artifacts as input.
+      Verify output facts have FACT-FODT-* qnames.
+      Append FODT to sal-facts-latest.json.
+    closeout_criteria: sal-facts-latest.json has formats_processed >= 2 including FODT
+    dependencies: []
+    idempotency_behavior: Append-only; safe to repeat
+
+  - taskcard_id: TC-SAL-FODS-REPAIR-001
+    title: Derive FODS SAL facts from ODF 1.3 spec (shared with FODT)
+    lane: Machinery
+    status: open
+    severity: Blocker
+    group: SAL-REPAIR
+    purpose: FODS and FODT both use ODF 1.3. FODT requirements exist and can be reused for FODS-specific elements.
+    required_change: |
+      1. Use FODT-SPEC-001-requirements.json as base for ODF-shared elements
+      2. Add FODS-specific facts (spreadsheet elements: table:table, table:table-row, table:table-cell)
+      3. Generate FACT-FODS-* entries grounded in actual ODF 1.3 text
+      4. DO NOT reuse quarantined synthetic file
+    closeout_criteria: sal-facts-latest.json includes FODS with non-synthetic FACT-FODS-* entries
+    dependencies:
+      - TC-SAL-ODF-001
+
+  - taskcard_id: TC-CAP-HONEST-001
+    title: Add sal_grounded field to capability map entries; mark ODF capabilities unverified
+    lane: Machinery
+    status: open
+    severity: High
+    group: CAPABILITY-REPAIR
+    allowed_paths:
+      - reports/capability-layer/
+    purpose: Fix overclaiming in capability map by adding honest grounding status
+    required_change: |
+      1. Add sal_grounded: false to all capabilities except ZST ones
+      2. Add sal_grounded: true to ZST capabilities (94 facts grounded)
+      3. Add note that implementation_verified means "code exists that reads this format" not "spec-verified"
+    closeout_criteria: unified-capability-map.json has sal_grounded field on all entries
+    idempotency_behavior: Safe to repeat
+
+  - taskcard_id: TC-SKILL-SAL-001
+    title: Add sal_aware field to product skills in skill registry
+    lane: Machinery
+    status: open
+    severity: Medium
+    group: SKILL-HARDENING
+    allowed_paths:
+      - .supervisor/skill-registry.yaml
+    purpose: Document which skills require SAL fact grounding so governance can enforce it
+    required_change: |
+      Add sal_aware: true to:
+        - add-dotnet-api (requires FACT-{FORMAT}-* in handoff)
+        - add-python-api (requires FACT-{FORMAT}-* in handoff)
+        - add-dotnet-object-model-feature (requires spec_qname + FACT-*)
+        - add-python-object-model-feature (requires spec_qname + FACT-*)
+        - spec-literal-qname-to-code-mapping (SAL-driven)
+      Add sal_required_in_handoff: true for above skills
+    closeout_criteria: skill-registry.yaml has sal_aware field on 5 core product skills
+    idempotency_behavior: Safe to repeat
+
+  - taskcard_id: TC-QNAME-IMPL-001
+    title: Begin canonical class implementation for FODT (pilot)
+    lane: Product
+    status: open
+    severity: High
+    group: QNAME-BACKFILL
+    allowed_paths:
+      - src/net/fodt/Spec/Text/Paragraph.cs
+      - src/net/fodt/Spec/Table/TableCell.cs
+      - src/net/fodt/Compat/
+    forbidden_paths:
+      - src/FormatFactory/
+    purpose: Pilot implementing one canonical class (Text.Paragraph) from architecture_only stub to real implementation
+    required_change: |
+      Convert src/net/fodt/Spec/Text/Paragraph.cs from static-class-with-constants to a real model class:
+      - Add properties: StyleName, Content, Spans
+      - Add spec_qname constant: "text:p"
+      - Add spec_fact_ref: "FACT-FODT-003"
+      - Keep in src/net/fodt/Spec/ (not src/FormatFactory/ yet)
+      - Update FodtParagraph.cs in Model/ to reference or delegate to Spec/Text/Paragraph.cs
+    note: PARTIAL IMPLEMENTATION ACCEPTABLE for pilot proof
+    gate_impact: HIGH — advances C13 criterion
+    dependencies:
+      - TC-SAL-ODF-001
+
+  - taskcard_id: TC-CHAIN-ODF-001
+    title: Document and repair the SPEC to SAL to QNAME chain for FODT as pilot
+    lane: Machinery
+    status: open
+    severity: Blocker
+    group: QNAME-AUTH
+    purpose: Establish end-to-end chain for FODT - spec artifact to SAL facts to qname class to src stub to test
+    required_change: |
+      Chain repair steps:
+      1. SPEC: Verify FODT-SPEC-001-requirements.json is real (not synthetic)
+      2. SAL: Run sal_master_runner.py for FODT to generate FACT-FODT-* entries
+      3. QNAME: canonical-class-inventory.yaml already has Text.Paragraph and Table.TableRow for FODT
+      4. SRC: Convert FODT Spec/Text/Paragraph.cs stub to real model class
+      5. TEST: Add test verifying spec_qname constant matches "text:p"
+      6. EVIDENCE: emit chain proof document
+    closeout_criteria: FODT chain from spec artifact to source model class to passing test verified
+    dependencies:
+      - TC-SAL-ODF-001
+      - TC-QNAME-IMPL-001

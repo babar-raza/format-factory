@@ -55,6 +55,38 @@ _VERIFIED_THRESHOLD = 3       # ≥N key terms → verified
 _PARTIAL_THRESHOLD = 1        # 1-2 key terms → verified_with_note
 
 
+def _normalize_section_id(section_id: str) -> str:
+    """Normalize a section_id to a dotted numeric form.
+
+    Handles plain numeric IDs ("3.1.1" → "3.1.1") and RFC/HTML slug-style IDs
+    ("section-3.1.1.1.--frame-header" → "3.1.1.1").
+    Returns empty string if no numeric part found.
+    """
+    if not section_id:
+        return ""
+    s = section_id
+    if s.startswith("section-"):
+        s = s[len("section-"):]
+    m = re.match(r"^(\d+(?:\.\d+)*)\.?", s)
+    if m:
+        return m.group(1)
+    return ""
+
+
+def _score_claim_fulltext(lines: list[str], terms: list[str]) -> tuple[str, list[str]]:
+    """Score a claim against the full document text (no section window).
+
+    Used as fallback when no section header is found. Because the search is
+    unscoped, a match is only "verified_with_note" at most — never "verified".
+    Returns (status_string, matched_terms).
+    """
+    full_text = " ".join(line.strip() for line in lines).lower()
+    matched = [t for t in terms if t in full_text]
+    if len(matched) >= _PARTIAL_THRESHOLD:
+        return "verified_with_note", matched
+    return "not_found_in_normalized_text", matched
+
+
 def _tokenize_claim(claim: str) -> list[str]:
     """Extract key terms from a claim string."""
     raw = re.split(r"[\s\(\),;:./\\]", claim)

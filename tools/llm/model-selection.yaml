@@ -1,0 +1,66 @@
+# tools/llm/model-selection.yaml
+# LLM model selection rules by task type — TC-0005 (Phase 1, 2026-06-18)
+# Agents must read this file before any LLM API call.
+# See docs/llm-endpoint-strategy.md Section D4 for policy context.
+
+# Format:
+#   task_type:
+#     priority: [model_ids in decreasing preference order]
+#     fallback: best-effort | skip | fail
+#     advisory_only: true  # All LLM output is advisory; never directly mutates product source
+
+spec_analysis:
+  description: "Reading and extracting facts from format specification documents"
+  priority:
+    - claude-opus-4-6
+    - claude-sonnet-4-6
+    - claude-haiku-4-5-20251001
+  fallback: skip
+  advisory_only: true
+
+evidence_grading:
+  description: "Grading sprint evidence declarations — comparing claims against proof"
+  priority:
+    - claude-sonnet-4-6
+    - claude-haiku-4-5-20251001
+  fallback: skip
+  advisory_only: true
+
+format_understanding:
+  description: "Understanding format structure, producing format understanding packets"
+  priority:
+    - claude-sonnet-4-6
+    - claude-opus-4-6
+  fallback: skip
+  advisory_only: true
+
+next_sprint_generation:
+  description: "Generating the next sprint prompt from evidence and gap state"
+  priority:
+    - claude-sonnet-4-6
+    - claude-haiku-4-5-20251001
+  fallback: skip
+  advisory_only: true
+
+gap_ledger_maintenance:
+  description: "Classifying gaps and updating gap ledger entries"
+  priority:
+    - claude-sonnet-4-6
+    - claude-haiku-4-5-20251001
+  fallback: skip
+  advisory_only: true
+
+professionalization:
+  description: "Improving code quality, documentation, or test descriptions"
+  priority:
+    - claude-sonnet-4-6
+    - claude-haiku-4-5-20251001
+  fallback: best-effort
+  advisory_only: true
+
+# Default fallback when task_type is not specified
+default:
+  priority:
+    - claude-sonnet-4-6
+  fallback: skip
+  advisory_only: true

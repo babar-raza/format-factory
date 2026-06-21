@@ -590,7 +590,28 @@ def grade_all(inspection: dict, declaration: dict,
                                    cache_path=grade_cache_path)
         g["semantic_verification"] = sv
         if not sv.get("llm_used"):
-            continue  # LLM unavailable, keep deterministic grade
+            # C3 (TC-C3-001): spec-parity claims cannot benefit from LLM timeout fallback.
+            # When confidence == 0.0 (LLM unavailable) for PRODUCT_SOURCE items that claim
+            # spec-parity, downgrade to DEFERRED_WITH_REASON instead of keeping the grade.
+            # Non-spec-parity items keep their deterministic grade (existing behaviour).
+            _spec_parity_kws = ("spec_qname", "spec_parity", "canonical_class")
+            _ac = str(decl_item.get("acceptance_criteria", ""))
+            if (decl_item.get("item_type") == "PRODUCT_SOURCE"
+                    and any(kw in _ac for kw in _spec_parity_kws)
+                    and g["supervisor_grade"] in _downgrade_map):
+                g["supervisor_grade"] = "DEFERRED_WITH_REASON"
+                g["required_rework"] = (
+                    "grading_timeout_on_spec_claim — LLM verification unavailable for "
+                    "spec-parity claim. Resubmit with concrete evidence: direct spec QName "
+                    "mapping, test output showing canonical class attribute, or explicit "
+                    "FACT-* citation in acceptance_criteria."
+                )
+                g["next_prompt_instruction"] = (
+                    f"DEFERRED: {g['item_id']} — spec-parity claim requires stronger evidence. "
+                    "Add spec_qname attribute to implementation class and a test that asserts "
+                    "the attribute value matches the ODF spec QName."
+                )
+            continue  # LLM unavailable, keep deterministic grade for non-spec-parity items
         if sv.get("stub_detected"):
             old_grade = g["supervisor_grade"]
             g["supervisor_grade"] = "REWORK_REQUIRED"
@@ -614,6 +635,9 @@ def grade_all(inspection: dict, declaration: dict,
     rejected = [g["item_id"] for g in grades if g["supervisor_grade"] == "REJECTED"]
     overclaimed = [g["item_id"] for g in grades if g["supervisor_grade"] == "OVERCLAIMED"]
     blocked = [g["item_id"] for g in grades if g["supervisor_grade"] == "BLOCKED_EXTERNAL_GATE"]
+    # C3 (TC-C3-001): DEFERRED_WITH_REASON items — not accepted, not rework, not rejected.
+    # They require stronger evidence on resubmission. Autonomous continuation is not blocked.
+    deferred = [g["item_id"] for g in grades if g["supervisor_grade"] == "DEFERRED_WITH_REASON"]
 
     critical_rework = len([g for g in grades if g["supervisor_grade"] in ("REJECTED", "OVERCLAIMED")])
     has_critical = critical_rework > 0 or test_results.get("failed", 0) > 0
@@ -701,6 +725,7 @@ def grade_all(inspection: dict, declaration: dict,
         "evidence_quality_score": evidence_quality_score,
         "verified_item_count": verified_count,
         "evidence_quality_breakdown": evidence_quality_breakdown,
+        "deferred_items": deferred,  # C3 (TC-C3-001): spec-parity claims deferred for stronger evidence
     }
 
 

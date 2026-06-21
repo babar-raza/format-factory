@@ -2,7 +2,7 @@
 
 **Document type:** Configuration Reference — Phase 0 Foundation
 **Last reviewed:** 2026-05-15
-**Status:** Directory created in Phase 0. Actual command files are implemented in Phase 1 via TC-0004.
+**Status:** Phase 1 commands implemented (TC-0004 complete 2026-06-18). All 7 planned commands are now active.
 
 ---
 
@@ -43,21 +43,21 @@ See [docs/agent-methodology-index.md](../docs/agent-methodology-index.md) for th
 
 ---
 
-## Planned Commands (Phase 1 -- TC-0004)
+## Phase 1 Acquisition Pipeline Commands (TC-0004 — completed 2026-06-18)
 
-The following commands are designed but not yet implemented. They will be created in Phase 1 as part of taskcard TC-0004.
+The following commands were implemented via TC-0004. They are now active and available.
 
-| Command | File | Purpose | Phase Available | Gate Required |
+| Command | File | Purpose | Phase | Gate Required |
 |---|---|---|---|---|
-| `/score-format` | `score-format.md` | Apply scoring model to a format candidate | 1 | None |
-| `/create-acquisition-pack` | `create-acquisition-pack.md` | Initialize a format acquisition pack from template | 1 | Gate 1 passed |
-| `/check-gate` | `check-gate.md` | Verify whether a format has met criteria for a given gate | 1 | None |
-| `/create-taskcard` | `create-taskcard.md` | Create a new taskcard from the template | 1 | None |
-| `/reproduce-master-plan` | `reproduce-master-plan.md` | Generate a current-state summary from repo artifacts | 1 | None |
-| `/build-evidence-bundle` | `build-evidence-bundle.md` | Build and validate an evidence bundle for the current phase/gate | 1 | None |
-| `/check-release-boundary` | `check-release-boundary.md` | Verify no commercial artifacts are in OSS release scope | 3+ | Gate 9 passed |
+| `/score-format` | [score-format.md](score-format.md) | Apply scoring model to a format candidate | 1 | None |
+| `/create-acquisition-pack` | [create-acquisition-pack.md](create-acquisition-pack.md) | Initialize a format acquisition pack from template | 1 | Gate 1 passed |
+| `/check-gate` | [check-gate.md](check-gate.md) | Verify whether a format has met criteria for a given gate | 1 | None |
+| `/create-taskcard` | [create-taskcard.md](create-taskcard.md) | Create a new taskcard from the template | 1 | None |
+| `/reproduce-master-plan` | [reproduce-master-plan.md](reproduce-master-plan.md) | Generate a current-state summary from repo artifacts | 1 | None |
+| `/build-evidence-bundle` | [build-evidence-bundle.md](build-evidence-bundle.md) | Build and validate an evidence bundle for the current phase/sprint | 1 | None |
+| `/check-release-boundary` | [check-release-boundary.md](check-release-boundary.md) | Verify no commercial artifacts are in OSS release scope | 3+ | Gate 9 passed |
 
-> **NOTE:** Implementing any planned command requires first removing its `Write(...)` deny entry from `.claude/settings.json`. Deny entries exist for all 7 planned commands (lines 105–111). This settings update must occur in an authorized sprint before TC-0004 execution. See TC-0004 PREREQUISITES section.
+See [command-registry.yaml](command-registry.yaml) for the machine-readable command registry.
 
 ---
 

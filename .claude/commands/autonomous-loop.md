@@ -96,6 +96,13 @@ python tools/supervisor/check_continuation.py --repo-root . --track product
 - verdict=STOP, reason=ACTIVE_PLAN_LOCK_CORRUPT → **HARD STOP.**
   Plan lock file is malformed. Inspect and repair manually. Do NOT proceed.
 
+- verdict=STOP, reason=PLAN_COMPLETED_IN_SESSION → **HARD STOP (non-overridable).**
+  The current session's plan was completed (status=COMPLETE, session_id matches).
+  Report plan completion to the user and STOP. Do NOT auto-continue to product deepening.
+  Ledger work requires explicit user authorization in a new or the same session.
+  This stop is a safety net for cases where --complete was used instead of --terminal.
+  The Supreme Directive "never stop" does NOT override PLAN_COMPLETED_IN_SESSION.
+
 - verdict=STOP, reason=EXTERNAL_GATE or GIT_PUSH or GATE_11 → Report to user, stop.
 
 **OVERRIDABLE STOPS (Supreme Directive applies — read next-sprint.md and continue):**

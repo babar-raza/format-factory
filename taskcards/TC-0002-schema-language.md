@@ -26,10 +26,10 @@ notes: Infrastructure taskcard. Resolves DEC-008 (schema language decision).
 # TC-0002: Neutral Model Schema Language Selection
 
 **Phase:** 1
-**Status:** not_started
-**Owner:** TBD (project lead)
+**Status:** completed
+**Owner:** Autonomous agent (TC-0002 sprint 2026-06-18)
 **Created:** 2026-05-03
-**Last updated:** 2026-05-03
+**Last updated:** 2026-06-18
 **Blocking:** Phase 3 Gate 5 (neutral model design requires language to be selected)
 **Blocked by:** TC-0001 (FODS must be confirmed pilot before schema work begins)
 **Format:** none (infrastructure)

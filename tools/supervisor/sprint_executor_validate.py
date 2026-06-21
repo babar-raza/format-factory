@@ -33,6 +33,10 @@ import yaml
 _HERE = Path(__file__).resolve().parent
 _REPO = _HERE.parent.parent
 _SCHEMA_PATH = _REPO / ".supervisor" / "schemas" / "evidence-declaration.schema.json"
+_MANIFEST_PATH = _REPO / "registry" / "test-layer-manifest.yaml"
+
+# Date after which test_layer adequacy warnings escalate to errors
+_ADEQUACY_ESCALATION_DATE = "2026-07-18"
 
 # Required top-level fields from schema
 _REQUIRED_FIELDS = [
@@ -58,6 +62,106 @@ _VALID_GRADES = {"PASS", "PARTIAL", "FAIL", "BLOCKED"}
 
 # Valid planned_work_items status values
 _VALID_ITEM_STATUSES = {"completed", "partial", "not_started", "blocked_external_gate"}
+
+
+# ---------------------------------------------------------------------------
+# Test-layer adequacy checking
+# ---------------------------------------------------------------------------
+
+def _load_manifest_change_impact() -> list[dict]:
+    """Load change_impact rules from registry/test-layer-manifest.yaml."""
+    try:
+        import yaml
+        from fnmatch import fnmatch as _fnmatch
+
+        with open(_MANIFEST_PATH) as f:
+            data = yaml.safe_load(f) or {}
+        return data.get("change_impact", [])
+    except Exception:
+        return []
+
+
+def _compute_required_layer(changed_files: list[str], rules: list[dict]) -> tuple[int, str]:
+    """Walk change-impact rules, return (max_min_layer, reason)."""
+    from fnmatch import fnmatch
+
+    max_layer = 0
+    reason = "no change_impact rules matched"
+
+    for f in changed_files:
+        f_norm = f.replace("\\", "/")
+        matched = False
+        for rule in rules:
+            pat = rule.get("pattern", "")
+            if pat == "_default":
+                if not matched:
+                    layer = rule.get("min_layer", 6)
+                    if layer > max_layer:
+                        max_layer = layer
+                        reason = f"{f_norm} matched default rule"
+                break
+            if fnmatch(f_norm, pat):
+                layer = rule.get("min_layer", 0)
+                if layer > max_layer:
+                    max_layer = layer
+                    reason = f"{f_norm} matched '{pat}' -> min_layer={layer}"
+                matched = True
+                break
+
+    return max_layer, reason
+
+
+def _check_test_layer_adequacy(doc: dict) -> list[str]:
+    """Check whether declared test_layer is adequate for changed_files.
+
+    Returns list of warning strings. Empty = no issues.
+    Issues are WARN-only until 2026-07-18, then escalate to errors.
+
+    This check only runs when BOTH test_layer and changed_files are present.
+    Declarations that omit test_layer are not penalized (advisory field).
+    """
+    warnings = []
+
+    declared_layer = doc.get("test_layer")
+    if declared_layer is None:
+        # test_layer not declared — cannot check adequacy; add advisory note
+        warnings.append(
+            "ADVISORY: test_layer not declared in evidence. "
+            "Include test_layer (int 0-6) for layer adequacy checking. "
+            "See docs/test-layering.md."
+        )
+        return warnings
+
+    if not isinstance(declared_layer, int) or declared_layer < 0 or declared_layer > 6:
+        warnings.append(
+            f"WARN: test_layer value '{declared_layer}' is invalid (must be int 0-6). "
+            "Adequacy check skipped."
+        )
+        return warnings
+
+    changed_files = doc.get("changed_files", [])
+    if not changed_files:
+        return warnings  # Cannot check without changed_files
+
+    rules = _load_manifest_change_impact()
+    if not rules:
+        warnings.append(
+            "ADVISORY: registry/test-layer-manifest.yaml not found or empty. "
+            "Cannot verify test_layer adequacy."
+        )
+        return warnings
+
+    required_layer, match_reason = _compute_required_layer(changed_files, rules)
+
+    if declared_layer < required_layer:
+        warnings.append(
+            f"WARN[adequacy]: test_layer={declared_layer} but changed_files require "
+            f"min_layer={required_layer} ({match_reason}). "
+            f"Escalates to ERROR after {_ADEQUACY_ESCALATION_DATE}. "
+            "This sprint may have inadequate test coverage for the declared changes."
+        )
+
+    return warnings
 
 
 # ---------------------------------------------------------------------------
@@ -337,10 +441,14 @@ def validate_file(
     # --- Phase 5: Validate ---
     errors = _validate(doc)
 
+    # --- Phase 6: Test-layer adequacy check (warnings only until 2026-07-18) ---
+    adequacy_warnings = _check_test_layer_adequacy(doc)
+
     return {
         "passed": len(errors) == 0,
         "errors": errors,
         "repairs": repairs_applied,
+        "adequacy_warnings": adequacy_warnings,
     }
 
 
@@ -373,6 +481,12 @@ def main(argv: list[str] | None = None) -> int:
         print(f"\nRepairs applied ({len(result['repairs'])}):")
         for r in result["repairs"]:
             print(f"  - {r}")
+
+    adequacy = result.get("adequacy_warnings", [])
+    if adequacy:
+        print(f"\nTest-layer adequacy ({len(adequacy)} note(s)):")
+        for w in adequacy:
+            print(f"  - {w}")
 
     if result["passed"]:
         print("\nVALIDATION: PASS")

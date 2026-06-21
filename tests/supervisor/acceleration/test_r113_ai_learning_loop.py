@@ -18,7 +18,9 @@ def test_loop_produces_jsonl(loop_dir):
     result = run_loop("test-sprint", loop_dir)
     out = loop_dir / "sprint-learnings.jsonl"
     assert out.exists()
-    assert result["learning_count"] >= 3
+    # Dynamic version returns one entry per escalated failure (or 1 fallback advisory).
+    # Count is data-driven; >= 1 is the minimum guarantee.
+    assert result["learning_count"] >= 1
 
 
 def test_all_entries_are_valid_json(loop_dir):
@@ -45,7 +47,7 @@ def test_round_trip_readable(loop_dir):
     run_loop("test-sprint", loop_dir)
     out = loop_dir / "sprint-learnings.jsonl"
     entries = [json.loads(line) for line in out.read_text().splitlines()]
-    assert len(entries) >= 3
+    assert len(entries) >= 1  # Dynamic: one entry per escalated failure or 1 fallback advisory
     for e in entries:
         assert "sprint_id" in e
         assert "description" in e

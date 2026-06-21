@@ -756,13 +756,20 @@ def _spec_facts_for_format(fmt: Dict[str, Any]) -> List[Dict[str, str]]:
             f["qname"] = f["qname"].replace("FORMAT", fid.upper())
             f["authority"] = spec_body or "Unknown spec body"
 
+    # Tag all base template facts as bootstrap_only
+    for f in base:
+        f["fact_status"] = "bootstrap_only"
+        f["source_id"] = None
+
     # Step 2: Merge format-specific facts (override takes priority, appended after base)
     specific = _FORMAT_SPECIFIC_FACTS.get(fid, [])
     if specific:
         specific_qnames = {f["qname"] for f in specific}
         # Keep base facts whose qnames don't collide with specific ones
         merged = [f for f in base if f["qname"] not in specific_qnames]
-        merged += [dict(f) for f in specific]
+        specific_tagged = [dict(f, fact_status="bootstrap_only", source_id=None)
+                           for f in specific]
+        merged += specific_tagged
         return merged
 
     return base
@@ -808,6 +815,12 @@ def _load_workbench_verified_facts(format_id: str) -> List[Dict[str, str]]:
                     "authority": f"verified-facts-review.yaml (status: {status})",
                     "verification_status": status,
                     "source": "workbench_verified",
+                    "fact_status": "verified",
+                    "source_id": (
+                        prov.get("spec_id")
+                        or prov.get("normalized_artifact")
+                        or f"workbench-{format_id.lower()}"
+                    ),
                 })
         except Exception:
             pass
@@ -887,14 +900,29 @@ def run_sal_pipeline(
         "results": results,
     }
 
+    # Write per-format output files (sal-facts-<format_id>.json)
+    for entry in results:
+        fid = entry["format_id"].lower()
+        per_format_output = {
+            "generated_at": output["generated_at"],
+            "generator": output["generator"],
+            "format_id": entry["format_id"],
+            "spec_facts": entry["spec_facts"],
+        }
+        per_format_path = output_dir / f"sal-facts-{fid}.json"
+        per_format_path.write_text(json.dumps(per_format_output, indent=2), encoding="utf-8")
+
     # Write timestamped + latest
     ts = datetime.now(timezone.utc).strftime("%Y%m%d")
     dated_path = output_dir / f"sal-facts-{ts}.json"
-    latest_path = output_dir / "sal-facts-latest.json"
+    latest_path = output_dir / "sal-output-latest.json"
+    # Keep backward compat: also write sal-facts-latest.json
+    sal_latest_path = output_dir / "sal-facts-latest.json"
 
     payload = json.dumps(output, indent=2)
     dated_path.write_text(payload, encoding="utf-8")
     latest_path.write_text(payload, encoding="utf-8")
+    sal_latest_path.write_text(payload, encoding="utf-8")
 
     output["output_path"] = str(latest_path)
     return output

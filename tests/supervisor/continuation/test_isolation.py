@@ -108,7 +108,7 @@ class TestScenario7_SignalFromStoppedSession:
     def test_stopped_signal_with_matching_session(self, mock_repo, write_signal,
                                                    write_approval_gates, write_work_items):
         write_signal(session_id="session-aaa", autonomous_continue=False)
-        write_approval_gates()
+        write_approval_gates(autonomous_continue=False)  # B4: gates must also say NO to stop
         write_work_items()
         result = check(mock_repo, session_id="session-aaa")
         assert result["verdict"] == "STOP"

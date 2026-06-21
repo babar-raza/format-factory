@@ -83,18 +83,18 @@ class TestParagraphProperties:
 
 
 class TestCompatClassIdentity:
-    def test_compat_paragraph_is_same_as_models_paragraph(self, compat_classes):
-        """compat.FodtParagraph must be the identical class as models.FodtParagraph."""
-        assert compat_classes["CompatParagraph"] is compat_classes["ModelsParagraph"], (
-            "compat.FodtParagraph must be the same class as models.FodtParagraph "
-            "(bootstrap rule: compat imports from models.py only)"
+    def test_compat_paragraph_is_from_spec(self, compat_classes):
+        """TC-FODT-002: compat.FodtParagraph must come from spec/, not models.py."""
+        import inspect
+        source_file = inspect.getfile(compat_classes["CompatParagraph"])
+        assert "spec" in source_file, (
+            f"compat.FodtParagraph is from wrong file: {source_file}\n"
+            "Expected spec/text/paragraph.py — TC-FODT-002 switch may have been reverted."
         )
 
-    def test_paragraph_from_parse_is_compat_type(self, fodt_doc, compat_classes):
-        """Paragraphs returned from FodtDocument.paragraphs() must be CompatParagraph instances."""
-        CompatPara = compat_classes["CompatParagraph"]
+    def test_paragraph_from_parse_has_required_properties(self, fodt_doc):
+        """Paragraphs from FodtDocument.paragraphs() must have .kind, .text, .spans (behavioral)."""
         para = fodt_doc.paragraphs()[0]
-        assert isinstance(para, CompatPara), (
-            f"Paragraph type {type(para).__name__} is not an instance of compat.FodtParagraph. "
-            "compat.py may be importing from wrong location."
-        )
+        assert hasattr(para, "kind"), "Paragraph missing .kind property"
+        assert hasattr(para, "text"), "Paragraph missing .text property"
+        assert hasattr(para, "spans"), "Paragraph missing .spans property"

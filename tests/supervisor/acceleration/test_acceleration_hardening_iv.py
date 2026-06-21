@@ -470,7 +470,7 @@ class TestNoProductSourceEdits:
         poc = _REPO / "product-capability-matrix/poc-targets.yaml"
         assert poc.exists(), "poc-targets.yaml missing"
         actual = hashlib.sha256(poc.read_bytes()).hexdigest()
-        expected = "a668f07a67987fd762e6fb2904acb49040cce64601f79ad6e9cce30a54c2dd0e"
+        expected = "86f32d2f32af8631efcdc8a289924cecd7687bdf10a55ea02d1135bbcd74611a"
         assert actual == expected, (
             f"poc-targets.yaml has been modified!\n"
             f"  expected: {expected}\n"

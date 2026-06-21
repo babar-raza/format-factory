@@ -108,9 +108,16 @@ FODS workbench artifacts (local-only) also seeded in run030 — see TC-0021.
 
 ## Status
 
-**Current status:** not_started
+**Current status:** in_progress (items 2 and 3 completed 2026-06-18; items 1 and 4 blocked)
 
-The generic tooling was created in run030 as part of the FODS Gate 4 sprint. TC-0020 will be activated when a second format is added or when the remaining work items above are prioritized.
+### Completed Items
+- Item 2: `refresh_workbench.py` implemented (TC0020-REFRESH-COVERAGE-TOOLS-20260618)
+- Item 3: `detect_coverage_gaps.py` implemented (TC0020-REFRESH-COVERAGE-TOOLS-20260618)
+- Item 5: AGENTS.md Section AH added (workbench consumption rules — TC-0020-AGENTS-AH-NDJSON-PROOF-20260618)
+
+### Blocked Items
+- Item 1: Multi-format validation — blocked by lack of normalized spec PDF for a second format
+- Item 4: Tier 3 retrieval integration — blocked by TC-0016 (vector index, awaiting TC-0015)
 
 ---
 
@@ -119,3 +126,4 @@ The generic tooling was created in run030 as part of the FODS Gate 4 sprint. TC-
 | Run | Change |
 |---|---|
 | run030 | Taskcard created; generic workbench tooling and docs created as part of FODS Gate 4 sprint |
+| 2026-06-18 | Items 2+3 completed: refresh_workbench.py + detect_coverage_gaps.py; Item 5 completed: AGENTS.md Section AH |

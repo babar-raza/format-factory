@@ -1,10 +1,10 @@
-"""Tests for FODT spec/ stub files (Phase 4 — TC-SRC-REVIEW-006).
+"""Tests for FODT spec/ stub files (Phase 4 — TC-SRC-REVIEW-006, TC-FODT-001).
 
 Verifies:
-- All 8 Python stub files exist with correct spec_qname values
+- All 8 Python spec files exist with correct spec_qname values
 - All required __init__.py files exist in spec/ subdirectories
 - Stubs are importable and spec_qname is accessible as a class attribute
-- architecture_only comment is present in all stubs
+- architecture_only comment present in unimplemented stubs (TC-FODT-001: paragraph/heading/span are now implemented)
 """
 import sys
 from pathlib import Path
@@ -14,11 +14,20 @@ import pytest
 _REPO = Path(__file__).parent.parent.parent.parent
 _SPEC_ROOT = _REPO / "src" / "python" / "fodt" / "spec"
 
-# Expected Python spec stubs: (relative_path, expected_spec_qname)
+# Expected Python spec files: (relative_path, expected_spec_qname)
 EXPECTED_STUBS = [
     ("text/paragraph.py", "text:p"),
     ("text/heading.py", "text:h"),
     ("text/span.py", "text:span"),
+    ("text/list_.py", "text:list"),
+    ("text/list_item.py", "text:list-item"),
+    ("table/table.py", "table:table"),
+    ("table/table_row.py", "table:table-row"),
+    ("table/table_cell.py", "table:table-cell"),
+]
+
+# TC-FODT-001: paragraph/heading/span are now fully implemented — no longer architecture_only stubs
+ARCHITECTURE_ONLY_STUBS = [
     ("text/list_.py", "text:list"),
     ("text/list_item.py", "text:list-item"),
     ("table/table.py", "table:table"),
@@ -58,9 +67,11 @@ class TestStubContent:
             f"{rel_path}: expected spec_qname = \"{expected_qname}\", not found in file"
         )
 
-    @pytest.mark.parametrize("rel_path,_qname", EXPECTED_STUBS)
+    @pytest.mark.parametrize("rel_path,_qname", ARCHITECTURE_ONLY_STUBS)
     def test_stub_has_architecture_only_marker(self, rel_path, _qname):
-        """Each spec stub must have the architecture_only marker comment."""
+        """Unimplemented spec stubs must still have the architecture_only marker comment.
+        (TC-FODT-001: paragraph/heading/span are now implemented and no longer architecture_only)
+        """
         stub_path = _SPEC_ROOT / rel_path
         content = stub_path.read_text(encoding="utf-8")
         assert "architecture_only" in content, (

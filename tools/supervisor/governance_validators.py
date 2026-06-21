@@ -2921,6 +2921,31 @@ def validate_facade_delegates_to_spec(
     }
 
 
+def validate_qname_class_names(declaration: dict, repo_root: Path | None = None) -> dict:
+    """V45: Format-prefixed class names (FodsXxx/FodtXxx) outside Compat/ blocks sprint."""
+    import re
+    _PAT = re.compile(r'\bclass\s+(Fods\w+|Fodt\w+|Fodg\w+|Fodp\w+|Ods\w+|Odt\w+)')
+    repo = repo_root or REPO_ROOT
+    violations = []
+    for item in declaration.get("planned_work_items", []):
+        if item.get("item_type") not in ("PRODUCT_SOURCE", "PRODUCT_TEST"):
+            continue
+        for path in item.get("evidence_paths", []):
+            if not (path.endswith(".cs") or path.endswith(".py")):
+                continue
+            if any(s in path for s in ("Compat/", "compat/", "/compat.")):
+                continue
+            p = (repo / path) if not Path(path).is_absolute() else Path(path)
+            classes = _PAT.findall(p.read_text(errors="replace") if p.exists() else "")
+            if classes:
+                violations.append({"path": path, "classes": classes,
+                    "reason": f"Format-prefixed names outside Compat/: {classes}"})
+    return {"validator": "validate_qname_class_names",
+            "result": "FAIL" if violations else "PASS",
+            "items": violations, "summary": f"{len(violations)} violation(s)",
+            "blocks_sprint": bool(violations)}
+
+
 # Re-export run_all_governance_validators from the runner module.
 # The runner is defined in governance_validator_runner.py to keep this file within LOC cap.
 # IMPORTANT: this import is at module bottom (after all validate_* functions are defined)
