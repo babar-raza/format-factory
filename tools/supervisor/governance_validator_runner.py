@@ -1,4 +1,4 @@
-"""governance_validator_runner.py — Runs all governance validators (V1-V46).
+"""governance_validator_runner.py — Runs all governance validators (V1-V47).
 
 Extracted from governance_validators.py to keep that file within its LOC cap.
 This module imports validators from governance_validators LAZILY (inside the function
@@ -9,6 +9,7 @@ V43: validate_canonical_registry_entry_exists — registry entry enforcement
 V44: validate_facade_delegates_to_spec — compat.py bootstrap monitoring (WARN-only)
 V45: validate_qname_class_names — format-prefixed class name enforcement
 V46: validate_skill_transcript_present — skill transcript presence (TC-SKILL-GOV-002, WARN-only)
+V47: validate_spec_fact_refs_in_sal_output — spec_fact_refs verified in sal-facts-latest.json (TC-MACH-ARCH-007)
 """
 from __future__ import annotations
 
@@ -19,7 +20,7 @@ def run_all_governance_validators(
     declaration: dict,
     repo_root: Path | None = None,
 ) -> dict:
-    """Run all governance validators (V1-V46) against a declaration.
+    """Run all governance validators (V1-V47) against a declaration.
 
     Returns a composite result dict:
       {
@@ -83,6 +84,7 @@ def run_all_governance_validators(
         validate_execution_method_required,
         validate_qname_class_names,
         validate_skill_transcript_present,
+        validate_spec_fact_refs_in_sal_output,
     )
     results = [
         validate_execution_method_required(declaration),
@@ -148,6 +150,8 @@ def run_all_governance_validators(
         validate_qname_class_names(declaration, repo_root),
         # V46 (TC-SKILL-GOV-002): PRODUCT_SOURCE items must have linked skill_transcript (WARN-only)
         validate_skill_transcript_present(declaration),
+        # V47 (TC-MACH-ARCH-007): spec_fact_refs must resolve to entries in sal-facts-latest.json
+        validate_spec_fact_refs_in_sal_output(declaration, repo_root),
     ]
 
     fail_count = sum(1 for r in results if r["result"] == "FAIL")

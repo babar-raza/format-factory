@@ -3003,6 +3003,73 @@ def validate_skill_transcript_present(declaration: dict) -> dict:
     }
 
 
+def validate_spec_fact_refs_in_sal_output(
+    declaration: dict, repo_root: Path | None = None
+) -> dict:
+    """V47 (TC-MACH-ARCH-007): PRODUCT_SOURCE spec_fact_refs must exist in sal-facts-latest.json.
+
+    Loads .local/spec-cache/sal-facts-latest.json (built by TC-SAL-OUTPUT-001).
+    For each PRODUCT_SOURCE work item with spec_fact_refs declared, verifies that
+    each referenced fact ID (FACT-<FORMAT>-NNN) exists in the SAL output.
+
+    BLOCKS sprint if any declared spec_fact_ref is not found in SAL output.
+    PASS (non-blocking) if sal-facts-latest.json is absent (bootstrap tolerance).
+    """
+    import json as _json
+    repo = repo_root or REPO_ROOT
+    sal_output = repo / ".local" / "spec-cache" / "sal-facts-latest.json"
+
+    if not sal_output.exists():
+        return {
+            "validator": "validate_spec_fact_refs_in_sal_output",
+            "result": "PASS",
+            "items": [],
+            "summary": "sal-facts-latest.json absent — bootstrap tolerance (PASS)",
+            "blocks_sprint": False,
+        }
+
+    try:
+        data = _json.loads(sal_output.read_text(encoding="utf-8"))
+        known_ids: set = set()
+        for fmt_result in data.get("results", []):
+            for fact in fmt_result.get("spec_facts", []):
+                qname = fact.get("qname") or fact.get("claim_id")
+                if qname:
+                    known_ids.add(qname)
+    except Exception as exc:
+        return {
+            "validator": "validate_spec_fact_refs_in_sal_output",
+            "result": "WARN",
+            "items": [],
+            "summary": f"Could not load sal-facts-latest.json: {exc}",
+            "blocks_sprint": False,
+        }
+
+    violations = []
+    for item in declaration.get("planned_work_items", []):
+        if item.get("item_type") not in ("PRODUCT_SOURCE", "PRODUCT_TEST"):
+            continue
+        refs = item.get("spec_fact_refs", [])
+        if not refs:
+            continue
+        item_id = item.get("item_id", "UNKNOWN")
+        missing = [r for r in refs if r not in known_ids]
+        if missing:
+            violations.append({
+                "item_id": item_id,
+                "missing_refs": missing,
+                "reason": f"spec_fact_refs not found in sal-facts-latest.json: {missing}",
+            })
+
+    return {
+        "validator": "validate_spec_fact_refs_in_sal_output",
+        "result": "FAIL" if violations else "PASS",
+        "items": violations,
+        "summary": f"{len(violations)} item(s) with unresolvable spec_fact_refs",
+        "blocks_sprint": bool(violations),
+    }
+
+
 # Re-export run_all_governance_validators from the runner module.
 # The runner is defined in governance_validator_runner.py to keep this file within LOC cap.
 # IMPORTANT: this import is at module bottom (after all validate_* functions are defined)

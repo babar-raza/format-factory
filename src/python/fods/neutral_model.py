@@ -2032,14 +2032,6 @@ def fods_col_count_variance(workbook: dict[str, Any]) -> float:
     return sum((c - mean) ** 2 for c in counts) / len(counts)
 
 
-def fods_max_row_count(workbook: dict[str, Any]) -> int:
-    """Return the maximum row count across all sheets. 0 if no sheets."""
-    sheets = workbook.get("sheets", [])
-    if not sheets:
-        return 0
-    return max(sheet.get("row_count", 0) for sheet in sheets)
-
-
 def fods_cell_to_sheet_ratio(workbook: dict[str, Any]) -> float:
     """Return total cell count divided by sheet count. 0.0 if no sheets."""
     sheets = workbook.get("sheets", [])

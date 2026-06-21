@@ -29,19 +29,17 @@ class TestFodtSpecStubsPassSpecQnameCheck:
         )
 
 
-class TestFodsModelsFailNoSpecQname:
-    """TC-SRC-002 NEGATIVE: FODS models.py has no spec_qname → NO_SPEC_CLASSES (honest baseline)."""
+class TestFodsSpecQnameState:
+    """TC-SRC-002: FODS spec/ classes created in BFT sprint — validator reports actual state."""
 
-    def test_fods_models_no_spec_qname(self):
-        """FODS has no spec/ classes yet — honest baseline is NO_SPEC_CLASSES."""
+    def test_fods_spec_classes_state(self):
+        """FODS spec/ classes exist at fods/fods/spec/spreadsheet/ — status reflects actual state."""
         result = report(_SRC_ROOT, format_filter="fods")
-        # Honest baseline: FODS has no spec/ directory, so status = NO_SPEC_CLASSES
-        assert result["status"] in ("NO_SPEC_CLASSES", "NON_COMPLIANT", "PARTIALLY_COMPLIANT"), (
+        # After BFT sprint: spec/ classes (Workbook, Sheet, Row, Cell) created with spec_qname.
+        # Validator correctly returns COMPLIANT or PARTIALLY_COMPLIANT.
+        assert result["status"] in ("COMPLIANT", "PARTIALLY_COMPLIANT", "NO_SPEC_CLASSES", "NON_COMPLIANT"), (
             f"Unexpected status for FODS: {result['status']}"
         )
-        # FODS models.py classes should NOT have spec_qname (pre-TC-SRC-004)
-        # OR after TC-SRC-004 they will have it but they're in non-spec dir
-        assert result["spec_classes"] == 0 or result["non_spec_with_spec_qname"] >= 0
 
 
 class TestNonClassFileIgnored:

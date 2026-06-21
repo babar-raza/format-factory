@@ -798,3 +798,83 @@ class TestV46SkillTranscriptPresent:
         assert result["result"] == "PASS"
         assert result["blocks_sprint"] is False
         assert len(result["items"]) == 0
+
+
+class TestV47SpecFactRefsInSalOutput:
+    """Regression tests for V47 validate_spec_fact_refs_in_sal_output (TC-MACH-ARCH-007).
+
+    V47 verifies that PRODUCT_SOURCE spec_fact_refs exist in sal-facts-latest.json.
+    BLOCKS sprint if any declared ref is missing from SAL output.
+
+    POSITIVE: real FACT-FODS-001 in spec_fact_refs -> PASS.
+    NEGATIVE: fake FACT-FODS-999 in spec_fact_refs -> FAIL + blocks.
+    NO-REFS: PRODUCT_SOURCE item without spec_fact_refs -> PASS (not checked).
+    NON-PRODUCT: GOVERNANCE_TASKCARD type -> PASS (not checked).
+    """
+
+    def _validator(self):
+        from governance_validators import validate_spec_fact_refs_in_sal_output
+        return validate_spec_fact_refs_in_sal_output
+
+    def test_real_fods_fact_passes(self):
+        """POSITIVE: FACT-FODS-001 exists in SAL output -> PASS."""
+        validate = self._validator()
+        decl = {
+            "planned_work_items": [{
+                "item_id": "TC-V47-POS-001",
+                "item_type": "PRODUCT_SOURCE",
+                "spec_fact_refs": ["FACT-FODS-001"],
+            }],
+        }
+        result = validate(decl, repo_root=REPO_ROOT)
+        assert result["result"] == "PASS", f"Expected PASS, got {result}"
+        assert result["blocks_sprint"] is False
+
+    def test_fake_fact_blocks(self):
+        """NEGATIVE: FACT-FODS-999 does not exist in SAL output -> FAIL + blocks."""
+        validate = self._validator()
+        decl = {
+            "planned_work_items": [{
+                "item_id": "TC-V47-NEG-001",
+                "item_type": "PRODUCT_SOURCE",
+                "spec_fact_refs": ["FACT-FODS-999"],
+            }],
+        }
+        result = validate(decl, repo_root=REPO_ROOT)
+        assert result["result"] == "FAIL", f"Expected FAIL, got {result}"
+        assert result["blocks_sprint"] is True
+        assert any("FACT-FODS-999" in str(v) for v in result["items"])
+
+    def test_no_spec_fact_refs_passes(self):
+        """PRODUCT_SOURCE without spec_fact_refs is not checked -> PASS."""
+        validate = self._validator()
+        decl = {
+            "planned_work_items": [{
+                "item_id": "TC-V47-NOREFS-001",
+                "item_type": "PRODUCT_SOURCE",
+            }],
+        }
+        result = validate(decl, repo_root=REPO_ROOT)
+        assert result["result"] == "PASS"
+        assert result["blocks_sprint"] is False
+
+    def test_governance_taskcard_exempt(self):
+        """GOVERNANCE_TASKCARD item type is not checked even with spec_fact_refs -> PASS."""
+        validate = self._validator()
+        decl = {
+            "planned_work_items": [{
+                "item_id": "TC-V47-GOV-001",
+                "item_type": "GOVERNANCE_TASKCARD",
+                "spec_fact_refs": ["FACT-FODS-999"],
+            }],
+        }
+        result = validate(decl, repo_root=REPO_ROOT)
+        assert result["result"] == "PASS"
+        assert result["blocks_sprint"] is False
+
+    def test_empty_declaration_passes(self):
+        """Empty declaration -> PASS."""
+        validate = self._validator()
+        result = validate({}, repo_root=REPO_ROOT)
+        assert result["result"] == "PASS"
+        assert result["blocks_sprint"] is False
