@@ -1,76 +1,23 @@
 {
-  "generated_at": "2026-06-13T14:29:08.930360+00:00",
-  "generator_version": "1.2",
-  "total_candidates": 20,
-  "gap_ledger_goals_available": 359,
-  "source": "capability_expansion_goals+gap_ledger",
+  "generated_at": "2026-06-18T17:02:37.820294+00:00",
+  "generator_version": "1.3",
+  "total_candidates": 5,
+  "gap_ledger_goals_available": 932,
+  "hardcoded_fallback_goals_used": 77,
+  "advisory_only_skipped": 0,
+  "source": "gap_ledger_primary+expansion_goals_fallback",
+  "expansion_goal_fallback": false,
+  "excluded_gap_ids_count": 0,
   "zero_task_circuit_breaker": false,
   "tasks": [
     {
-      "action_id": "atg-abw-get-paragraphs-001",
+      "action_id": "atg-abw-installed-workflow-001",
       "action_type": "IMPLEMENT_SMALL_PRODUCT_FEATURE",
       "stream": "product",
       "lane": "product_feature",
       "priority": 1,
-      "source": "capability_expansion:abw-get_paragraphs",
-      "reason": "Close gap GAP-ABW-FOSS-GET_PARAGRAP-001: add test coverage for Get Paragraphs",
-      "objective": "Implement get_paragraphs() for ABW format: Close gap GAP-ABW-FOSS-GET_PARAGRAP-001: add test coverage for Get Paragraphs",
-      "autonomy_value": 3,
-      "product_value": 3,
-      "risk_level": "LOW",
-      "gate_classification": "LOCAL_AUTONOMOUS",
-      "human_approval_required": false,
-      "allowed_paths": [
-        "src/python/abw/",
-        "tests/python/abw/"
-      ],
-      "forbidden_paths": [
-        "src/net/",
-        "registry/",
-        "product-capability-matrix/poc-targets.yaml",
-        ".supervisor/",
-        "AGENTS.md",
-        "GOVERNANCE.md"
-      ],
-      "expected_files_to_change": [
-        "src/python/abw/abw_codec.py"
-      ],
-      "target_path": "src/python/abw/abw_codec.py",
-      "expected_tests": [
-        "tests/python/abw/test_gap_get_paragraphs.py"
-      ],
-      "expected_ledgers": [
-        "reports/r90/product-code-change-ledger.json"
-      ],
-      "expected_capability_updates": [
-        "ABW-get_paragraphs -> test_verified"
-      ],
-      "expected_spec_refs": [],
-      "rollback_strategy": "git checkout src/python/abw/abw_codec.py",
-      "max_attempts": 3,
-      "repair_allowed": true,
-      "evidence_required": true,
-      "done_criteria": "pytest tests/python/abw/test_gap_get_paragraphs.py passes; get_paragraphs() defined in src/python/abw/abw_codec.py; ledger entry added",
-      "status": "pending",
-      "external_gate": false,
-      "queued_at": null,
-      "started_at": null,
-      "completed_at": null,
-      "result_path": null,
-      "error": null,
-      "sprint_id": null,
-      "pattern": "test_coverage",
-      "spec_authority": "Generated from poc-targets.yaml python_status + source introspection. op_status=PASS",
-      "format": "abw",
-      "function_name": "get_paragraphs"
-    },
-    {
-      "action_id": "atg-abw-installed-workflow-002",
-      "action_type": "IMPLEMENT_SMALL_PRODUCT_FEATURE",
-      "stream": "product",
-      "lane": "product_feature",
-      "priority": 2,
       "source": "capability_expansion:abw-installed_workflow",
+      "gap_ledger_ref": "GAP-ABW-FOSS-INSTALLED_WO-001",
       "reason": "Close gap GAP-ABW-FOSS-INSTALLED_WO-001: add test coverage for Installed Workflow",
       "objective": "Implement installed_workflow() for ABW format: Close gap GAP-ABW-FOSS-INSTALLED_WO-001: add test coverage for Installed Workflow",
       "autonomy_value": 3,
@@ -120,15 +67,17 @@
       "pattern": "test_coverage",
       "spec_authority": "Generated from poc-targets.yaml python_status + source introspection. op_status=PASS",
       "format": "abw",
-      "function_name": "installed_workflow"
+      "function_name": "installed_workflow",
+      "advisory_only": false
     },
     {
-      "action_id": "atg-abw-abwerror-003",
+      "action_id": "atg-abw-abwerror-002",
       "action_type": "IMPLEMENT_SMALL_PRODUCT_FEATURE",
       "stream": "product",
       "lane": "product_feature",
-      "priority": 3,
+      "priority": 2,
       "source": "capability_expansion:abw-abwerror",
+      "gap_ledger_ref": "GAP-ABW-FOSS-ABWERROR-001",
       "reason": "Close gap GAP-ABW-FOSS-ABWERROR-001: add test coverage for Abwerror",
       "objective": "Implement abwerror() for ABW format: Close gap GAP-ABW-FOSS-ABWERROR-001: add test coverage for Abwerror",
       "autonomy_value": 3,
@@ -178,15 +127,17 @@
       "pattern": "test_coverage",
       "spec_authority": "Discovered via source introspection \u2014 not in poc-targets.yaml",
       "format": "abw",
-      "function_name": "abwerror"
+      "function_name": "abwerror",
+      "advisory_only": false
     },
     {
-      "action_id": "atg-abw-abwparseerror-004",
+      "action_id": "atg-abw-abwparseerror-003",
       "action_type": "IMPLEMENT_SMALL_PRODUCT_FEATURE",
       "stream": "product",
       "lane": "product_feature",
-      "priority": 4,
+      "priority": 3,
       "source": "capability_expansion:abw-abwparseerror",
+      "gap_ledger_ref": "GAP-ABW-FOSS-ABWPARSEERRO-001",
       "reason": "Close gap GAP-ABW-FOSS-ABWPARSEERRO-001: add test coverage for Abwparseerror",
       "objective": "Implement abwparseerror() for ABW format: Close gap GAP-ABW-FOSS-ABWPARSEERRO-001: add test coverage for Abwparseerror",
       "autonomy_value": 3,
@@ -236,15 +187,17 @@
       "pattern": "test_coverage",
       "spec_authority": "Discovered via source introspection \u2014 not in poc-targets.yaml",
       "format": "abw",
-      "function_name": "abwparseerror"
+      "function_name": "abwparseerror",
+      "advisory_only": false
     },
     {
-      "action_id": "atg-csv-csverror-005",
+      "action_id": "atg-csv-csverror-004",
       "action_type": "IMPLEMENT_SMALL_PRODUCT_FEATURE",
       "stream": "product",
       "lane": "product_feature",
-      "priority": 5,
+      "priority": 4,
       "source": "capability_expansion:csv-csverror",
+      "gap_ledger_ref": "GAP-CSV-FOSS-CSVERROR-001",
       "reason": "Close gap GAP-CSV-FOSS-CSVERROR-001: add test coverage for Csverror",
       "objective": "Implement csverror() for CSV format: Close gap GAP-CSV-FOSS-CSVERROR-001: add test coverage for Csverror",
       "autonomy_value": 3,
@@ -294,15 +247,17 @@
       "pattern": "test_coverage",
       "spec_authority": "Discovered via source scan \u2014 NOT in poc-targets.yaml. Add to foss_reduced_products.",
       "format": "csv",
-      "function_name": "csverror"
+      "function_name": "csverror",
+      "advisory_only": false
     },
     {
-      "action_id": "atg-csv-csvinputerror-006",
+      "action_id": "atg-csv-csvinputerror-005",
       "action_type": "IMPLEMENT_SMALL_PRODUCT_FEATURE",
       "stream": "product",
       "lane": "product_feature",
-      "priority": 6,
+      "priority": 5,
       "source": "capability_expansion:csv-csvinputerror",
+      "gap_ledger_ref": "GAP-CSV-FOSS-CSVINPUTERRO-001",
       "reason": "Close gap GAP-CSV-FOSS-CSVINPUTERRO-001: add test coverage for Csvinputerror",
       "objective": "Implement csvinputerror() for CSV format: Close gap GAP-CSV-FOSS-CSVINPUTERRO-001: add test coverage for Csvinputerror",
       "autonomy_value": 3,
@@ -352,819 +307,8 @@
       "pattern": "test_coverage",
       "spec_authority": "Discovered via source scan \u2014 NOT in poc-targets.yaml. Add to foss_reduced_products.",
       "format": "csv",
-      "function_name": "csvinputerror"
-    },
-    {
-      "action_id": "atg-csv-csvsizeerror-007",
-      "action_type": "IMPLEMENT_SMALL_PRODUCT_FEATURE",
-      "stream": "product",
-      "lane": "product_feature",
-      "priority": 7,
-      "source": "capability_expansion:csv-csvsizeerror",
-      "reason": "Close gap GAP-CSV-FOSS-CSVSIZEERROR-001: add test coverage for Csvsizeerror",
-      "objective": "Implement csvsizeerror() for CSV format: Close gap GAP-CSV-FOSS-CSVSIZEERROR-001: add test coverage for Csvsizeerror",
-      "autonomy_value": 3,
-      "product_value": 3,
-      "risk_level": "LOW",
-      "gate_classification": "LOCAL_AUTONOMOUS",
-      "human_approval_required": false,
-      "allowed_paths": [
-        "src/python/csv/",
-        "tests/python/csv/"
-      ],
-      "forbidden_paths": [
-        "src/net/",
-        "registry/",
-        "product-capability-matrix/poc-targets.yaml",
-        ".supervisor/",
-        "AGENTS.md",
-        "GOVERNANCE.md"
-      ],
-      "expected_files_to_change": [
-        "src/python/csv/csv_parser.py"
-      ],
-      "target_path": "src/python/csv/csv_parser.py",
-      "expected_tests": [
-        "tests/python/csv/test_gap_csvsizeerror.py"
-      ],
-      "expected_ledgers": [
-        "reports/r90/product-code-change-ledger.json"
-      ],
-      "expected_capability_updates": [
-        "CSV-csvsizeerror -> test_verified"
-      ],
-      "expected_spec_refs": [],
-      "rollback_strategy": "git checkout src/python/csv/csv_parser.py",
-      "max_attempts": 3,
-      "repair_allowed": true,
-      "evidence_required": true,
-      "done_criteria": "pytest tests/python/csv/test_gap_csvsizeerror.py passes; csvsizeerror() defined in src/python/csv/csv_parser.py; ledger entry added",
-      "status": "pending",
-      "external_gate": false,
-      "queued_at": null,
-      "started_at": null,
-      "completed_at": null,
-      "result_path": null,
-      "error": null,
-      "sprint_id": null,
-      "pattern": "test_coverage",
-      "spec_authority": "Discovered via source scan \u2014 NOT in poc-targets.yaml. Add to foss_reduced_products.",
-      "format": "csv",
-      "function_name": "csvsizeerror"
-    },
-    {
-      "action_id": "atg-csv-csvparseerror-008",
-      "action_type": "IMPLEMENT_SMALL_PRODUCT_FEATURE",
-      "stream": "product",
-      "lane": "product_feature",
-      "priority": 8,
-      "source": "capability_expansion:csv-csvparseerror",
-      "reason": "Close gap GAP-CSV-FOSS-CSVPARSEERRO-001: add test coverage for Csvparseerror",
-      "objective": "Implement csvparseerror() for CSV format: Close gap GAP-CSV-FOSS-CSVPARSEERRO-001: add test coverage for Csvparseerror",
-      "autonomy_value": 3,
-      "product_value": 3,
-      "risk_level": "LOW",
-      "gate_classification": "LOCAL_AUTONOMOUS",
-      "human_approval_required": false,
-      "allowed_paths": [
-        "src/python/csv/",
-        "tests/python/csv/"
-      ],
-      "forbidden_paths": [
-        "src/net/",
-        "registry/",
-        "product-capability-matrix/poc-targets.yaml",
-        ".supervisor/",
-        "AGENTS.md",
-        "GOVERNANCE.md"
-      ],
-      "expected_files_to_change": [
-        "src/python/csv/csv_parser.py"
-      ],
-      "target_path": "src/python/csv/csv_parser.py",
-      "expected_tests": [
-        "tests/python/csv/test_gap_csvparseerror.py"
-      ],
-      "expected_ledgers": [
-        "reports/r90/product-code-change-ledger.json"
-      ],
-      "expected_capability_updates": [
-        "CSV-csvparseerror -> test_verified"
-      ],
-      "expected_spec_refs": [],
-      "rollback_strategy": "git checkout src/python/csv/csv_parser.py",
-      "max_attempts": 3,
-      "repair_allowed": true,
-      "evidence_required": true,
-      "done_criteria": "pytest tests/python/csv/test_gap_csvparseerror.py passes; csvparseerror() defined in src/python/csv/csv_parser.py; ledger entry added",
-      "status": "pending",
-      "external_gate": false,
-      "queued_at": null,
-      "started_at": null,
-      "completed_at": null,
-      "result_path": null,
-      "error": null,
-      "sprint_id": null,
-      "pattern": "test_coverage",
-      "spec_authority": "Discovered via source scan \u2014 NOT in poc-targets.yaml. Add to foss_reduced_products.",
-      "format": "csv",
-      "function_name": "csvparseerror"
-    },
-    {
-      "action_id": "atg-csv-table-stats-009",
-      "action_type": "IMPLEMENT_SMALL_PRODUCT_FEATURE",
-      "stream": "product",
-      "lane": "product_feature",
-      "priority": 9,
-      "source": "capability_expansion:csv-table_stats",
-      "reason": "Close gap GAP-CSV-FOSS-TABLE_STATS-001: add test coverage for Table Stats",
-      "objective": "Implement table_stats() for CSV format: Close gap GAP-CSV-FOSS-TABLE_STATS-001: add test coverage for Table Stats",
-      "autonomy_value": 3,
-      "product_value": 3,
-      "risk_level": "LOW",
-      "gate_classification": "LOCAL_AUTONOMOUS",
-      "human_approval_required": false,
-      "allowed_paths": [
-        "src/python/csv/",
-        "tests/python/csv/"
-      ],
-      "forbidden_paths": [
-        "src/net/",
-        "registry/",
-        "product-capability-matrix/poc-targets.yaml",
-        ".supervisor/",
-        "AGENTS.md",
-        "GOVERNANCE.md"
-      ],
-      "expected_files_to_change": [
-        "src/python/csv/csv_parser.py"
-      ],
-      "target_path": "src/python/csv/csv_parser.py",
-      "expected_tests": [
-        "tests/python/csv/test_gap_table_stats.py"
-      ],
-      "expected_ledgers": [
-        "reports/r90/product-code-change-ledger.json"
-      ],
-      "expected_capability_updates": [
-        "CSV-table_stats -> test_verified"
-      ],
-      "expected_spec_refs": [],
-      "rollback_strategy": "git checkout src/python/csv/csv_parser.py",
-      "max_attempts": 3,
-      "repair_allowed": true,
-      "evidence_required": true,
-      "done_criteria": "pytest tests/python/csv/test_gap_table_stats.py passes; table_stats() defined in src/python/csv/csv_parser.py; ledger entry added",
-      "status": "pending",
-      "external_gate": false,
-      "queued_at": null,
-      "started_at": null,
-      "completed_at": null,
-      "result_path": null,
-      "error": null,
-      "sprint_id": null,
-      "pattern": "test_coverage",
-      "spec_authority": "Discovered via source scan \u2014 NOT in poc-targets.yaml. Add to foss_reduced_products.",
-      "format": "csv",
-      "function_name": "table_stats"
-    },
-    {
-      "action_id": "atg-csv-column-value-counts-010",
-      "action_type": "IMPLEMENT_SMALL_PRODUCT_FEATURE",
-      "stream": "product",
-      "lane": "product_feature",
-      "priority": 10,
-      "source": "capability_expansion:csv-column_value_counts",
-      "reason": "Close gap GAP-CSV-FOSS-COLUMN_VALUE-001: add test coverage for Column Value Counts",
-      "objective": "Implement column_value_counts() for CSV format: Close gap GAP-CSV-FOSS-COLUMN_VALUE-001: add test coverage for Column Value Counts",
-      "autonomy_value": 3,
-      "product_value": 3,
-      "risk_level": "LOW",
-      "gate_classification": "LOCAL_AUTONOMOUS",
-      "human_approval_required": false,
-      "allowed_paths": [
-        "src/python/csv/",
-        "tests/python/csv/"
-      ],
-      "forbidden_paths": [
-        "src/net/",
-        "registry/",
-        "product-capability-matrix/poc-targets.yaml",
-        ".supervisor/",
-        "AGENTS.md",
-        "GOVERNANCE.md"
-      ],
-      "expected_files_to_change": [
-        "src/python/csv/csv_parser.py"
-      ],
-      "target_path": "src/python/csv/csv_parser.py",
-      "expected_tests": [
-        "tests/python/csv/test_gap_column_value_counts.py"
-      ],
-      "expected_ledgers": [
-        "reports/r90/product-code-change-ledger.json"
-      ],
-      "expected_capability_updates": [
-        "CSV-column_value_counts -> test_verified"
-      ],
-      "expected_spec_refs": [],
-      "rollback_strategy": "git checkout src/python/csv/csv_parser.py",
-      "max_attempts": 3,
-      "repair_allowed": true,
-      "evidence_required": true,
-      "done_criteria": "pytest tests/python/csv/test_gap_column_value_counts.py passes; column_value_counts() defined in src/python/csv/csv_parser.py; ledger entry added",
-      "status": "pending",
-      "external_gate": false,
-      "queued_at": null,
-      "started_at": null,
-      "completed_at": null,
-      "result_path": null,
-      "error": null,
-      "sprint_id": null,
-      "pattern": "test_coverage",
-      "spec_authority": "Discovered via source scan \u2014 NOT in poc-targets.yaml. Add to foss_reduced_products.",
-      "format": "csv",
-      "function_name": "column_value_counts"
-    },
-    {
-      "action_id": "atg-csv-csv-row-length-distribution-011",
-      "action_type": "IMPLEMENT_SMALL_PRODUCT_FEATURE",
-      "stream": "product",
-      "lane": "product_feature",
-      "priority": 11,
-      "source": "capability_expansion:csv-csv_row_length_distribution",
-      "reason": "Close gap GAP-CSV-FOSS-CSV_ROW_LENG-001: add test coverage for Csv Row Length Distribution",
-      "objective": "Implement csv_row_length_distribution() for CSV format: Close gap GAP-CSV-FOSS-CSV_ROW_LENG-001: add test coverage for Csv Row Length Distribution",
-      "autonomy_value": 3,
-      "product_value": 3,
-      "risk_level": "LOW",
-      "gate_classification": "LOCAL_AUTONOMOUS",
-      "human_approval_required": false,
-      "allowed_paths": [
-        "src/python/csv/",
-        "tests/python/csv/"
-      ],
-      "forbidden_paths": [
-        "src/net/",
-        "registry/",
-        "product-capability-matrix/poc-targets.yaml",
-        ".supervisor/",
-        "AGENTS.md",
-        "GOVERNANCE.md"
-      ],
-      "expected_files_to_change": [
-        "src/python/csv/csv_parser.py"
-      ],
-      "target_path": "src/python/csv/csv_parser.py",
-      "expected_tests": [
-        "tests/python/csv/test_gap_csv_row_length_distribution.py"
-      ],
-      "expected_ledgers": [
-        "reports/r90/product-code-change-ledger.json"
-      ],
-      "expected_capability_updates": [
-        "CSV-csv_row_length_distribution -> test_verified"
-      ],
-      "expected_spec_refs": [],
-      "rollback_strategy": "git checkout src/python/csv/csv_parser.py",
-      "max_attempts": 3,
-      "repair_allowed": true,
-      "evidence_required": true,
-      "done_criteria": "pytest tests/python/csv/test_gap_csv_row_length_distribution.py passes; csv_row_length_distribution() defined in src/python/csv/csv_parser.py; ledger entry added",
-      "status": "pending",
-      "external_gate": false,
-      "queued_at": null,
-      "started_at": null,
-      "completed_at": null,
-      "result_path": null,
-      "error": null,
-      "sprint_id": null,
-      "pattern": "test_coverage",
-      "spec_authority": "Discovered via source scan \u2014 NOT in poc-targets.yaml. Add to foss_reduced_products.",
-      "format": "csv",
-      "function_name": "csv_row_length_distribution"
-    },
-    {
-      "action_id": "atg-csv-csv-field-type-summary-012",
-      "action_type": "IMPLEMENT_SMALL_PRODUCT_FEATURE",
-      "stream": "product",
-      "lane": "product_feature",
-      "priority": 12,
-      "source": "capability_expansion:csv-csv_field_type_summary",
-      "reason": "Close gap GAP-CSV-FOSS-CSV_FIELD_TY-001: add test coverage for Csv Field Type Summary",
-      "objective": "Implement csv_field_type_summary() for CSV format: Close gap GAP-CSV-FOSS-CSV_FIELD_TY-001: add test coverage for Csv Field Type Summary",
-      "autonomy_value": 3,
-      "product_value": 3,
-      "risk_level": "LOW",
-      "gate_classification": "LOCAL_AUTONOMOUS",
-      "human_approval_required": false,
-      "allowed_paths": [
-        "src/python/csv/",
-        "tests/python/csv/"
-      ],
-      "forbidden_paths": [
-        "src/net/",
-        "registry/",
-        "product-capability-matrix/poc-targets.yaml",
-        ".supervisor/",
-        "AGENTS.md",
-        "GOVERNANCE.md"
-      ],
-      "expected_files_to_change": [
-        "src/python/csv/csv_parser.py"
-      ],
-      "target_path": "src/python/csv/csv_parser.py",
-      "expected_tests": [
-        "tests/python/csv/test_gap_csv_field_type_summary.py"
-      ],
-      "expected_ledgers": [
-        "reports/r90/product-code-change-ledger.json"
-      ],
-      "expected_capability_updates": [
-        "CSV-csv_field_type_summary -> test_verified"
-      ],
-      "expected_spec_refs": [],
-      "rollback_strategy": "git checkout src/python/csv/csv_parser.py",
-      "max_attempts": 3,
-      "repair_allowed": true,
-      "evidence_required": true,
-      "done_criteria": "pytest tests/python/csv/test_gap_csv_field_type_summary.py passes; csv_field_type_summary() defined in src/python/csv/csv_parser.py; ledger entry added",
-      "status": "pending",
-      "external_gate": false,
-      "queued_at": null,
-      "started_at": null,
-      "completed_at": null,
-      "result_path": null,
-      "error": null,
-      "sprint_id": null,
-      "pattern": "test_coverage",
-      "spec_authority": "Discovered via source scan \u2014 NOT in poc-targets.yaml. Add to foss_reduced_products.",
-      "format": "csv",
-      "function_name": "csv_field_type_summary"
-    },
-    {
-      "action_id": "atg-csv-csv-empty-row-count-013",
-      "action_type": "IMPLEMENT_SMALL_PRODUCT_FEATURE",
-      "stream": "product",
-      "lane": "product_feature",
-      "priority": 13,
-      "source": "capability_expansion:csv-csv_empty_row_count",
-      "reason": "Close gap GAP-CSV-FOSS-CSV_EMPTY_RO-001: add test coverage for Csv Empty Row Count",
-      "objective": "Implement csv_empty_row_count() for CSV format: Close gap GAP-CSV-FOSS-CSV_EMPTY_RO-001: add test coverage for Csv Empty Row Count",
-      "autonomy_value": 3,
-      "product_value": 3,
-      "risk_level": "LOW",
-      "gate_classification": "LOCAL_AUTONOMOUS",
-      "human_approval_required": false,
-      "allowed_paths": [
-        "src/python/csv/",
-        "tests/python/csv/"
-      ],
-      "forbidden_paths": [
-        "src/net/",
-        "registry/",
-        "product-capability-matrix/poc-targets.yaml",
-        ".supervisor/",
-        "AGENTS.md",
-        "GOVERNANCE.md"
-      ],
-      "expected_files_to_change": [
-        "src/python/csv/csv_parser.py"
-      ],
-      "target_path": "src/python/csv/csv_parser.py",
-      "expected_tests": [
-        "tests/python/csv/test_gap_csv_empty_row_count.py"
-      ],
-      "expected_ledgers": [
-        "reports/r90/product-code-change-ledger.json"
-      ],
-      "expected_capability_updates": [
-        "CSV-csv_empty_row_count -> test_verified"
-      ],
-      "expected_spec_refs": [],
-      "rollback_strategy": "git checkout src/python/csv/csv_parser.py",
-      "max_attempts": 3,
-      "repair_allowed": true,
-      "evidence_required": true,
-      "done_criteria": "pytest tests/python/csv/test_gap_csv_empty_row_count.py passes; csv_empty_row_count() defined in src/python/csv/csv_parser.py; ledger entry added",
-      "status": "pending",
-      "external_gate": false,
-      "queued_at": null,
-      "started_at": null,
-      "completed_at": null,
-      "result_path": null,
-      "error": null,
-      "sprint_id": null,
-      "pattern": "test_coverage",
-      "spec_authority": "Discovered via source scan \u2014 NOT in poc-targets.yaml. Add to foss_reduced_products.",
-      "format": "csv",
-      "function_name": "csv_empty_row_count"
-    },
-    {
-      "action_id": "atg-csv-csv-max-field-length-014",
-      "action_type": "IMPLEMENT_SMALL_PRODUCT_FEATURE",
-      "stream": "product",
-      "lane": "product_feature",
-      "priority": 14,
-      "source": "capability_expansion:csv-csv_max_field_length",
-      "reason": "Close gap GAP-CSV-FOSS-CSV_MAX_FIEL-001: add test coverage for Csv Max Field Length",
-      "objective": "Implement csv_max_field_length() for CSV format: Close gap GAP-CSV-FOSS-CSV_MAX_FIEL-001: add test coverage for Csv Max Field Length",
-      "autonomy_value": 3,
-      "product_value": 3,
-      "risk_level": "LOW",
-      "gate_classification": "LOCAL_AUTONOMOUS",
-      "human_approval_required": false,
-      "allowed_paths": [
-        "src/python/csv/",
-        "tests/python/csv/"
-      ],
-      "forbidden_paths": [
-        "src/net/",
-        "registry/",
-        "product-capability-matrix/poc-targets.yaml",
-        ".supervisor/",
-        "AGENTS.md",
-        "GOVERNANCE.md"
-      ],
-      "expected_files_to_change": [
-        "src/python/csv/csv_parser.py"
-      ],
-      "target_path": "src/python/csv/csv_parser.py",
-      "expected_tests": [
-        "tests/python/csv/test_gap_csv_max_field_length.py"
-      ],
-      "expected_ledgers": [
-        "reports/r90/product-code-change-ledger.json"
-      ],
-      "expected_capability_updates": [
-        "CSV-csv_max_field_length -> test_verified"
-      ],
-      "expected_spec_refs": [],
-      "rollback_strategy": "git checkout src/python/csv/csv_parser.py",
-      "max_attempts": 3,
-      "repair_allowed": true,
-      "evidence_required": true,
-      "done_criteria": "pytest tests/python/csv/test_gap_csv_max_field_length.py passes; csv_max_field_length() defined in src/python/csv/csv_parser.py; ledger entry added",
-      "status": "pending",
-      "external_gate": false,
-      "queued_at": null,
-      "started_at": null,
-      "completed_at": null,
-      "result_path": null,
-      "error": null,
-      "sprint_id": null,
-      "pattern": "test_coverage",
-      "spec_authority": "Discovered via source scan \u2014 NOT in poc-targets.yaml. Add to foss_reduced_products.",
-      "format": "csv",
-      "function_name": "csv_max_field_length"
-    },
-    {
-      "action_id": "atg-csv-write-csv-015",
-      "action_type": "IMPLEMENT_SMALL_PRODUCT_FEATURE",
-      "stream": "product",
-      "lane": "product_feature",
-      "priority": 15,
-      "source": "capability_expansion:csv-write_csv",
-      "reason": "Close gap GAP-CSV-FOSS-WRITE_CSV-001: add test coverage for Write Csv",
-      "objective": "Implement write_csv() for CSV format: Close gap GAP-CSV-FOSS-WRITE_CSV-001: add test coverage for Write Csv",
-      "autonomy_value": 3,
-      "product_value": 3,
-      "risk_level": "LOW",
-      "gate_classification": "LOCAL_AUTONOMOUS",
-      "human_approval_required": false,
-      "allowed_paths": [
-        "src/python/csv/",
-        "tests/python/csv/"
-      ],
-      "forbidden_paths": [
-        "src/net/",
-        "registry/",
-        "product-capability-matrix/poc-targets.yaml",
-        ".supervisor/",
-        "AGENTS.md",
-        "GOVERNANCE.md"
-      ],
-      "expected_files_to_change": [
-        "src/python/csv/csv_parser.py"
-      ],
-      "target_path": "src/python/csv/csv_parser.py",
-      "expected_tests": [
-        "tests/python/csv/test_gap_write_csv.py"
-      ],
-      "expected_ledgers": [
-        "reports/r90/product-code-change-ledger.json"
-      ],
-      "expected_capability_updates": [
-        "CSV-write_csv -> test_verified"
-      ],
-      "expected_spec_refs": [],
-      "rollback_strategy": "git checkout src/python/csv/csv_parser.py",
-      "max_attempts": 3,
-      "repair_allowed": true,
-      "evidence_required": true,
-      "done_criteria": "pytest tests/python/csv/test_gap_write_csv.py passes; write_csv() defined in src/python/csv/csv_parser.py; ledger entry added",
-      "status": "pending",
-      "external_gate": false,
-      "queued_at": null,
-      "started_at": null,
-      "completed_at": null,
-      "result_path": null,
-      "error": null,
-      "sprint_id": null,
-      "pattern": "test_coverage",
-      "spec_authority": "Discovered via source scan \u2014 NOT in poc-targets.yaml. Add to foss_reduced_products.",
-      "format": "csv",
-      "function_name": "write_csv"
-    },
-    {
-      "action_id": "atg-csv-write-csv-to-file-016",
-      "action_type": "IMPLEMENT_SMALL_PRODUCT_FEATURE",
-      "stream": "product",
-      "lane": "product_feature",
-      "priority": 16,
-      "source": "capability_expansion:csv-write_csv_to_file",
-      "reason": "Close gap GAP-CSV-FOSS-WRITE_CSV_TO-001: add test coverage for Write Csv To File",
-      "objective": "Implement write_csv_to_file() for CSV format: Close gap GAP-CSV-FOSS-WRITE_CSV_TO-001: add test coverage for Write Csv To File",
-      "autonomy_value": 3,
-      "product_value": 3,
-      "risk_level": "LOW",
-      "gate_classification": "LOCAL_AUTONOMOUS",
-      "human_approval_required": false,
-      "allowed_paths": [
-        "src/python/csv/",
-        "tests/python/csv/"
-      ],
-      "forbidden_paths": [
-        "src/net/",
-        "registry/",
-        "product-capability-matrix/poc-targets.yaml",
-        ".supervisor/",
-        "AGENTS.md",
-        "GOVERNANCE.md"
-      ],
-      "expected_files_to_change": [
-        "src/python/csv/csv_parser.py"
-      ],
-      "target_path": "src/python/csv/csv_parser.py",
-      "expected_tests": [
-        "tests/python/csv/test_gap_write_csv_to_file.py"
-      ],
-      "expected_ledgers": [
-        "reports/r90/product-code-change-ledger.json"
-      ],
-      "expected_capability_updates": [
-        "CSV-write_csv_to_file -> test_verified"
-      ],
-      "expected_spec_refs": [],
-      "rollback_strategy": "git checkout src/python/csv/csv_parser.py",
-      "max_attempts": 3,
-      "repair_allowed": true,
-      "evidence_required": true,
-      "done_criteria": "pytest tests/python/csv/test_gap_write_csv_to_file.py passes; write_csv_to_file() defined in src/python/csv/csv_parser.py; ledger entry added",
-      "status": "pending",
-      "external_gate": false,
-      "queued_at": null,
-      "started_at": null,
-      "completed_at": null,
-      "result_path": null,
-      "error": null,
-      "sprint_id": null,
-      "pattern": "test_coverage",
-      "spec_authority": "Discovered via source scan \u2014 NOT in poc-targets.yaml. Add to foss_reduced_products.",
-      "format": "csv",
-      "function_name": "write_csv_to_file"
-    },
-    {
-      "action_id": "atg-csv-parse-and-rewrite-017",
-      "action_type": "IMPLEMENT_SMALL_PRODUCT_FEATURE",
-      "stream": "product",
-      "lane": "product_feature",
-      "priority": 17,
-      "source": "capability_expansion:csv-parse_and_rewrite",
-      "reason": "Close gap GAP-CSV-FOSS-PARSE_AND_RE-001: add test coverage for Parse And Rewrite",
-      "objective": "Implement parse_and_rewrite() for CSV format: Close gap GAP-CSV-FOSS-PARSE_AND_RE-001: add test coverage for Parse And Rewrite",
-      "autonomy_value": 3,
-      "product_value": 3,
-      "risk_level": "LOW",
-      "gate_classification": "LOCAL_AUTONOMOUS",
-      "human_approval_required": false,
-      "allowed_paths": [
-        "src/python/csv/",
-        "tests/python/csv/"
-      ],
-      "forbidden_paths": [
-        "src/net/",
-        "registry/",
-        "product-capability-matrix/poc-targets.yaml",
-        ".supervisor/",
-        "AGENTS.md",
-        "GOVERNANCE.md"
-      ],
-      "expected_files_to_change": [
-        "src/python/csv/csv_parser.py"
-      ],
-      "target_path": "src/python/csv/csv_parser.py",
-      "expected_tests": [
-        "tests/python/csv/test_gap_parse_and_rewrite.py"
-      ],
-      "expected_ledgers": [
-        "reports/r90/product-code-change-ledger.json"
-      ],
-      "expected_capability_updates": [
-        "CSV-parse_and_rewrite -> test_verified"
-      ],
-      "expected_spec_refs": [],
-      "rollback_strategy": "git checkout src/python/csv/csv_parser.py",
-      "max_attempts": 3,
-      "repair_allowed": true,
-      "evidence_required": true,
-      "done_criteria": "pytest tests/python/csv/test_gap_parse_and_rewrite.py passes; parse_and_rewrite() defined in src/python/csv/csv_parser.py; ledger entry added",
-      "status": "pending",
-      "external_gate": false,
-      "queued_at": null,
-      "started_at": null,
-      "completed_at": null,
-      "result_path": null,
-      "error": null,
-      "sprint_id": null,
-      "pattern": "test_coverage",
-      "spec_authority": "Discovered via source scan \u2014 NOT in poc-targets.yaml. Add to foss_reduced_products.",
-      "format": "csv",
-      "function_name": "parse_and_rewrite"
-    },
-    {
-      "action_id": "atg-csv-csvwriteerror-018",
-      "action_type": "IMPLEMENT_SMALL_PRODUCT_FEATURE",
-      "stream": "product",
-      "lane": "product_feature",
-      "priority": 18,
-      "source": "capability_expansion:csv-csvwriteerror",
-      "reason": "Close gap GAP-CSV-FOSS-CSVWRITEERRO-001: add test coverage for Csvwriteerror",
-      "objective": "Implement csvwriteerror() for CSV format: Close gap GAP-CSV-FOSS-CSVWRITEERRO-001: add test coverage for Csvwriteerror",
-      "autonomy_value": 3,
-      "product_value": 3,
-      "risk_level": "LOW",
-      "gate_classification": "LOCAL_AUTONOMOUS",
-      "human_approval_required": false,
-      "allowed_paths": [
-        "src/python/csv/",
-        "tests/python/csv/"
-      ],
-      "forbidden_paths": [
-        "src/net/",
-        "registry/",
-        "product-capability-matrix/poc-targets.yaml",
-        ".supervisor/",
-        "AGENTS.md",
-        "GOVERNANCE.md"
-      ],
-      "expected_files_to_change": [
-        "src/python/csv/csv_parser.py"
-      ],
-      "target_path": "src/python/csv/csv_parser.py",
-      "expected_tests": [
-        "tests/python/csv/test_gap_csvwriteerror.py"
-      ],
-      "expected_ledgers": [
-        "reports/r90/product-code-change-ledger.json"
-      ],
-      "expected_capability_updates": [
-        "CSV-csvwriteerror -> test_verified"
-      ],
-      "expected_spec_refs": [],
-      "rollback_strategy": "git checkout src/python/csv/csv_parser.py",
-      "max_attempts": 3,
-      "repair_allowed": true,
-      "evidence_required": true,
-      "done_criteria": "pytest tests/python/csv/test_gap_csvwriteerror.py passes; csvwriteerror() defined in src/python/csv/csv_parser.py; ledger entry added",
-      "status": "pending",
-      "external_gate": false,
-      "queued_at": null,
-      "started_at": null,
-      "completed_at": null,
-      "result_path": null,
-      "error": null,
-      "sprint_id": null,
-      "pattern": "test_coverage",
-      "spec_authority": "Discovered via source scan \u2014 NOT in poc-targets.yaml. Add to foss_reduced_products.",
-      "format": "csv",
-      "function_name": "csvwriteerror"
-    },
-    {
-      "action_id": "atg-dif-diferror-019",
-      "action_type": "IMPLEMENT_SMALL_PRODUCT_FEATURE",
-      "stream": "product",
-      "lane": "product_feature",
-      "priority": 19,
-      "source": "capability_expansion:dif-diferror",
-      "reason": "Close gap GAP-DIF-FOSS-DIFERROR-001: add test coverage for Diferror",
-      "objective": "Implement diferror() for DIF format: Close gap GAP-DIF-FOSS-DIFERROR-001: add test coverage for Diferror",
-      "autonomy_value": 3,
-      "product_value": 3,
-      "risk_level": "LOW",
-      "gate_classification": "LOCAL_AUTONOMOUS",
-      "human_approval_required": false,
-      "allowed_paths": [
-        "src/python/dif/",
-        "tests/python/dif/"
-      ],
-      "forbidden_paths": [
-        "src/net/",
-        "registry/",
-        "product-capability-matrix/poc-targets.yaml",
-        ".supervisor/",
-        "AGENTS.md",
-        "GOVERNANCE.md"
-      ],
-      "expected_files_to_change": [
-        "src/python/dif/dif_parser.py"
-      ],
-      "target_path": "src/python/dif/dif_parser.py",
-      "expected_tests": [
-        "tests/python/dif/test_gap_diferror.py"
-      ],
-      "expected_ledgers": [
-        "reports/r90/product-code-change-ledger.json"
-      ],
-      "expected_capability_updates": [
-        "DIF-diferror -> test_verified"
-      ],
-      "expected_spec_refs": [],
-      "rollback_strategy": "git checkout src/python/dif/dif_parser.py",
-      "max_attempts": 3,
-      "repair_allowed": true,
-      "evidence_required": true,
-      "done_criteria": "pytest tests/python/dif/test_gap_diferror.py passes; diferror() defined in src/python/dif/dif_parser.py; ledger entry added",
-      "status": "pending",
-      "external_gate": false,
-      "queued_at": null,
-      "started_at": null,
-      "completed_at": null,
-      "result_path": null,
-      "error": null,
-      "sprint_id": null,
-      "pattern": "test_coverage",
-      "spec_authority": "Discovered via source scan \u2014 NOT in poc-targets.yaml. Add to foss_reduced_products.",
-      "format": "dif",
-      "function_name": "diferror"
-    },
-    {
-      "action_id": "atg-dif-difinvalidformaterror-020",
-      "action_type": "IMPLEMENT_SMALL_PRODUCT_FEATURE",
-      "stream": "product",
-      "lane": "product_feature",
-      "priority": 20,
-      "source": "capability_expansion:dif-difinvalidformaterror",
-      "reason": "Close gap GAP-DIF-FOSS-DIFINVALIDFO-001: add test coverage for Difinvalidformaterror",
-      "objective": "Implement difinvalidformaterror() for DIF format: Close gap GAP-DIF-FOSS-DIFINVALIDFO-001: add test coverage for Difinvalidformaterror",
-      "autonomy_value": 3,
-      "product_value": 3,
-      "risk_level": "LOW",
-      "gate_classification": "LOCAL_AUTONOMOUS",
-      "human_approval_required": false,
-      "allowed_paths": [
-        "src/python/dif/",
-        "tests/python/dif/"
-      ],
-      "forbidden_paths": [
-        "src/net/",
-        "registry/",
-        "product-capability-matrix/poc-targets.yaml",
-        ".supervisor/",
-        "AGENTS.md",
-        "GOVERNANCE.md"
-      ],
-      "expected_files_to_change": [
-        "src/python/dif/dif_parser.py"
-      ],
-      "target_path": "src/python/dif/dif_parser.py",
-      "expected_tests": [
-        "tests/python/dif/test_gap_difinvalidformaterror.py"
-      ],
-      "expected_ledgers": [
-        "reports/r90/product-code-change-ledger.json"
-      ],
-      "expected_capability_updates": [
-        "DIF-difinvalidformaterror -> test_verified"
-      ],
-      "expected_spec_refs": [],
-      "rollback_strategy": "git checkout src/python/dif/dif_parser.py",
-      "max_attempts": 3,
-      "repair_allowed": true,
-      "evidence_required": true,
-      "done_criteria": "pytest tests/python/dif/test_gap_difinvalidformaterror.py passes; difinvalidformaterror() defined in src/python/dif/dif_parser.py; ledger entry added",
-      "status": "pending",
-      "external_gate": false,
-      "queued_at": null,
-      "started_at": null,
-      "completed_at": null,
-      "result_path": null,
-      "error": null,
-      "sprint_id": null,
-      "pattern": "test_coverage",
-      "spec_authority": "Discovered via source scan \u2014 NOT in poc-targets.yaml. Add to foss_reduced_products.",
-      "format": "dif",
-      "function_name": "difinvalidformaterror"
+      "function_name": "csvinputerror",
+      "advisory_only": false
     }
   ]
 }

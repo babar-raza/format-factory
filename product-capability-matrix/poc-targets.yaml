@@ -3,10 +3,14 @@
 # Sprint: FORMAT-FACTORY-R85-POC-DIRECTION-LOCAL-SUPERVISOR-AUTONOMOUS-PRODUCT-FACTORY-MEGA-TRAIN-001
 # Date: 2026-05-31
 # Note: This file records current POC status. NOT a gate approval.
-# Gate 11 G11-G approved by Babar Raza 2026-06-05. commercial_product_ready: true for FODS, FODT, Netpbm.
+# Gate 11 G11-G (commercial release AUTHORIZATION) approved by Babar Raza 2026-06-05 for FODS, FODT, Netpbm.
+# IMPORTANT DISTINCTION: G11-G = business decision gate (PASSED). commercial_product_ready = technical readiness
+# + all 8 criteria in docs/governance/customer-readiness-checklist.md met + package published to registry.
+# commercial_product_ready remains false until: (1) all 8 checklist criteria met, (2) package published to
+# PyPI/NuGet, (3) Babar Raza final sign-off on published package. G11-G approval is necessary but NOT sufficient.
 
 poc_matrix_version: "1.0"
-last_updated: "2026-06-09"
+last_updated: "2026-06-18"
 sprint: "capability-layer-closeout-rnext"
 
 # ============================================================
@@ -24,6 +28,8 @@ commercial_net_products:
     gate_11_status: APPROVED
     gate_11_g11g: APPROVED_BY_BABAR_RAZA_2026_06_05
     commercial_product_ready: false
+    commercial_product_ready_reason: "G11-G gate approved; awaiting (1) all 8 criteria in customer-readiness-checklist.md, (2) registry publication, (3) Babar Raza final sign-off on published package"
+    commercial_product_ready_criteria_ref: "docs/governance/customer-readiness-checklist.md"
     gate_11_approved: true
 
     dotnet_status:
@@ -110,6 +116,8 @@ commercial_net_products:
     gate_11_status: APPROVED
     gate_11_g11g: APPROVED_BY_BABAR_RAZA_2026_06_05
     commercial_product_ready: false
+    commercial_product_ready_reason: "G11-G gate approved; awaiting (1) all 8 criteria in customer-readiness-checklist.md, (2) registry publication, (3) Babar Raza final sign-off on published package"
+    commercial_product_ready_criteria_ref: "docs/governance/customer-readiness-checklist.md"
     gate_11_approved: true
 
     dotnet_status:
@@ -199,6 +207,8 @@ commercial_net_products:
     gate_11_status: APPROVED
     gate_11_g11g: APPROVED_BY_BABAR_RAZA_2026_06_05
     commercial_product_ready: false
+    commercial_product_ready_reason: "G11-G gate approved; awaiting (1) all 8 criteria in customer-readiness-checklist.md, (2) registry publication, (3) Babar Raza final sign-off on published package"
+    commercial_product_ready_criteria_ref: "docs/governance/customer-readiness-checklist.md"
     gate_11_approved: true
 
     dotnet_status:
@@ -358,7 +368,7 @@ foss_reduced_products:
     full_name: "Symbolic Link (SYLK) spreadsheet"
     python_source: src/python/sylk/
     gates_passed: "1-10"
-    scope: "read + write + CSV export + cell/row/column access (write_sylk R115+; get_cell_value, get_row_values, get_column_values added; 291 tests PASS)"
+    scope: "read + write + CSV export + cell/row/column access + row/column count (write_sylk R115+; get_row_count, get_column_count, get_cell_value, get_row_values, get_column_values; 291+ tests PASS)"
     commercial_product_ready: false
 
     python_status:
@@ -368,20 +378,22 @@ foss_reduced_products:
       get_cell_value: PASS
       get_row_values: PASS
       get_column_values: PASS
+      get_row_count: PASS
+      get_column_count: PASS
       installed_workflow: PASS
 
     dogfood_status:
       sylk_to_csv: IMPLEMENTED
       target_ff_library: "format-factory-sylk sylk_to_csv"
-      notes: "SYLK→CSV export implemented R84; no external library needed; write_sylk implemented (same-format save); get_cell_value, get_row_values, get_column_values added in product-progress-rnext and mainstream-product-deepening-rnext2"
+      notes: "SYLK→CSV export implemented R84; no external library needed; write_sylk implemented (same-format save); get_cell_value, get_row_values, get_column_values, get_row_count, get_column_count verified 2026-06-18 (test_r156_sylk_accessors_mutation.py 18 tests pass)"
 
     tests:
       python: tests/python/sylk/
-      python_count: 291
+      python_count: 309
 
     blockers: []
 
-    next_action: "Continue FOSS product deepening — get_row_count, get_column_count, cell iteration"
+    next_action: "Continue FOSS product deepening — cell iteration, set_cell_value; package install proof"
 
   - format: TOML
     classification: POC_TARGET_CONFIRMED
@@ -403,6 +415,11 @@ foss_reduced_products:
       set_value: PASS
       list_sections: PASS
       delete_key: PASS
+
+    dogfood_status:
+      toml_to_json: IMPLEMENTED
+      target_ff_library: "format-factory-toml to_json_str"
+      notes: "TOML→JSON export verified 2026-06-18; to_json_str(file_path) returns pretty-printed JSON string; no external library needed"
 
     tests:
       python: tests/python/toml/
@@ -429,6 +446,7 @@ foss_reduced_products:
       count_records: PASS
       filter_records: PASS
       group_by: PASS
+      installed_workflow: PASS
 
     dogfood_status:
       export_to_csv: IMPLEMENTED
@@ -442,7 +460,7 @@ foss_reduced_products:
 
     blockers: []
 
-    next_action: "Package install proof; dogfood pipeline integration"
+    next_action: "Dogfood pipeline integration"
 
   - format: FODG
     classification: POC_TARGET_CONFIRMED
@@ -476,6 +494,14 @@ foss_reduced_products:
       get_page_index: PASS
       get_all_text: PASS
       count_shapes: PASS
+      installed_workflow: PASS
+
+    dogfood_status:
+      export_to_csv: IMPLEMENTED
+      export_to_txt: IMPLEMENTED
+      export_to_json: IMPLEMENTED
+      target_ff_library: "format-factory-fodg export_to_csv / export_to_txt / export_to_json"
+      notes: "FODG→CSV/TXT/JSON export verified 2026-06-18; export_to_csv('file.fodg') returns shape/text table as CSV string"
 
     tests:
       python: tests/python/fodg/
@@ -483,7 +509,7 @@ foss_reduced_products:
 
     blockers: []
 
-    next_action: "Package install proof; SVG export investigation"
+    next_action: "SVG export investigation"
 
   - format: TSV
     classification: POC_TARGET_CONFIRMED
@@ -517,6 +543,12 @@ foss_reduced_products:
       get_column_values: PASS
       validate_headers: PASS
       column_count: PASS
+      installed_workflow: PASS
+
+    dogfood_status:
+      tsv_to_csv: IMPLEMENTED
+      target_ff_library: "format-factory-tsv to_csv"
+      notes: "TSV→CSV export verified 2026-06-18; to_csv(file_path) returns CSV string with header row preserved; no external library needed"
 
     tests:
       python: tests/python/tsv/
@@ -524,7 +556,7 @@ foss_reduced_products:
 
     blockers: []
 
-    next_action: "Package install proof; dogfood pipeline integration"
+    next_action: "Dogfood pipeline integration"
 
   - format: ABW
     classification: POC_TARGET_CONFIRMED
@@ -566,6 +598,14 @@ foss_reduced_products:
       word_wrap: PASS
       replace_in_paragraphs: PASS
       installed_workflow: PASS
+
+    dogfood_status:
+      export_to_csv: IMPLEMENTED
+      export_to_txt: IMPLEMENTED
+      export_to_markdown: IMPLEMENTED
+      export_to_json: IMPLEMENTED
+      target_ff_library: "format-factory-abw export_to_csv / export_to_txt / export_to_markdown"
+      notes: "ABW→CSV/TXT/Markdown/JSON export verified 2026-06-18; all export functions take file path directly; export_to_csv returns paragraph-per-row CSV"
 
     tests:
       python: tests/python/abw/
@@ -618,6 +658,11 @@ foss_reduced_products:
       sheet_names: PASS
       row_count: PASS
       installed_workflow: PASS
+
+    dogfood_status:
+      export_to_csv: IMPLEMENTED
+      target_ff_library: "format-factory-gnumeric export_to_csv"
+      notes: "Gnumeric→CSV export verified 2026-06-18; export_to_csv(file_path) returns CSV string with cell values; active sheet exported"
 
     tests:
       python: tests/python/gnumeric/

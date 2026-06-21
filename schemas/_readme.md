@@ -33,7 +33,29 @@ The `neutral-model/` subdirectory and its family directories are created in Phas
 
 ## Schema Language
 
-The schema language for neutral-model schemas is decided in Phase 1 via TC-0002. The decision will be recorded in this file and in `plans/master-plan.md` (Decision DEC-008). Until TC-0002 is complete, "YAML or JSON Schema" is the placeholder. Do not create schema files until DEC-008 is resolved.
+**Decision (DEC-035, resolved via TC-0002, 2026-06-18):** JSON Schema Draft 7.
+
+### Rationale
+
+Two options were evaluated:
+
+| Option | Pros | Cons |
+|--------|------|------|
+| **JSON Schema Draft 7** | Native tooling in Python (`jsonschema` library) and .NET (`JsonSchema.Net`); machine-validatable; widely understood; `$ref` for composition | More verbose than custom YAML |
+| **YAML Schema (custom)** | Human-readable; less tooling overhead | No standard validation library; requires custom validator; inconsistent Python/.NET |
+
+**Selected: JSON Schema Draft 7.** Primary driver: tooling parity between Python and .NET tracks — both have mature validation libraries consuming the same schema files. JSON Schema can be authored as YAML (YAML is a superset of JSON), preserving readability while gaining machine-validation.
+
+### Validation Libraries
+
+- **Python:** `jsonschema` (>=4.0) — already in project dependencies
+- **.NET:** `JsonSchema.Net` (NuGet) — added when Gate 5 work begins
+
+### File Convention
+
+- Schema files use `.json` extension and JSON Schema Draft 7 (`"$schema": "http://json-schema.org/draft-07/schema"`)
+- One schema file per neutral model family (e.g., `neutral-model/cells/cells-schema.json`)
+- Sample instance documents use `.yaml` for human readability (validated against JSON Schema at CI time)
 
 ---
 

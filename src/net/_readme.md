@@ -61,7 +61,10 @@ TC-0003 (Phase 1) verifies:
 - net10.0 SDK availability is confirmed or documented.
 - `System.Xml.XmlReaderSettings` with `DtdProcessing.Prohibit` is available in net8.0 target.
 
-SDK confirmation status: **Pending (TC-0003 not started).**
+SDK confirmation status: **Confirmed (TC-0003 completed 2026-06-18).**
+- Developer machine: .NET SDK 10.0.204 (also has 9.0.200)
+- net8.0 and net10.0 targets compile and test successfully (617 FODS tests pass)
+- `dotnet --list-sdks` confirms: 9.0.200 and 10.0.204 both available
 
 ---
 

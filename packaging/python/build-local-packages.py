@@ -40,6 +40,8 @@ PACKAGE_DESCRIPTIONS = {
     "pbm": "Minimal FOSS Portable Bitmap (.pbm) parser",
     "ppm": "Minimal FOSS Portable Pixmap (.ppm) parser",
     "sylk": "Minimal FOSS Symbolic Link (.sylk) parser",
+    "ndjson": "Minimal FOSS Newline-Delimited JSON (.ndjson/.jsonl) codec",
+    "tsv": "Minimal FOSS Tab-Separated Values (.tsv) parser",
 }
 
 PACKAGE_DEPS = {
@@ -54,6 +56,8 @@ PACKAGE_DEPS = {
     "pbm": "[]",
     "ppm": "[]",
     "sylk": "[]",
+    "ndjson": "[]",
+    "tsv": "[]",
 }
 
 

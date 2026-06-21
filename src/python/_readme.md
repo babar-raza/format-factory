@@ -63,7 +63,10 @@ TC-0003 (Phase 1) verifies:
 - `defusedxml` is pip-installable.
 - Core XML library (`xml.etree.ElementTree`) behaves as expected on the target Python version.
 
-SDK confirmation status: **Pending (TC-0003 not started).**
+SDK confirmation status: **Confirmed (TC-0003 completed 2026-06-18).**
+- Developer machine: Python 3.13.2; project minimum: 3.11+
+- `import xml.etree.ElementTree` — PASS on 3.13.2
+- `defusedxml` 0.7.1 installed — PASS
 
 ---
 
