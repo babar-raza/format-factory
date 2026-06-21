@@ -1,0 +1,193 @@
+---
+# Canonical Class Inventory — Format Factory
+# Lists all canonical classes needed per QName ontology
+schema_version: "1.0"
+generated_at: "2026-06-15"
+
+classes:
+  # Office namespace
+  - canonical: "Office.Document"
+    qname: "office:document"
+    spec_section: "3.1.2"
+    properties: [mimetype, version, body, automatic_styles, master_styles, font_face_decls, scripts, settings, meta]
+    status: "not_implemented"
+
+  - canonical: "Office.Body"
+    qname: "office:body"
+    spec_section: "3.3"
+    properties: [spreadsheet, text]
+    status: "not_implemented"
+
+  - canonical: "Office.Spreadsheet"
+    qname: "office:spreadsheet"
+    spec_section: "3.7"
+    properties: [tables]
+    status: "not_implemented"
+
+  - canonical: "Office.Text"
+    qname: "office:text"
+    spec_section: "3.4"
+    properties: [paragraphs, headings, lists, sections]
+    status: "not_implemented"
+
+  - canonical: "Office.AutomaticStyles"
+    qname: "office:automatic-styles"
+    spec_section: "3.15.3"
+    properties: [styles]
+    status: "not_implemented"
+
+  # Table namespace
+  - canonical: "Table.Table"
+    qname: "table:table"
+    spec_section: "9.1.2"
+    properties: [name, style_name, columns, rows, print_ranges]
+    existing_facade: "FodsSheet"
+    facade_path: "src/net/fods/Model/FodsSheet.cs"
+    status: "facade_exists_no_canonical"
+
+  - canonical: "Table.TableRow"
+    qname: "table:table-row"
+    spec_section: "9.1.3"
+    properties: [style_name, cells, repeated]
+    existing_facade: "FodsRow"
+    facade_path: "src/net/fods/Model/FodsRow.cs"
+    status: "facade_exists_no_canonical"
+
+  - canonical: "Table.TableCell"
+    qname: "table:table-cell"
+    spec_section: "9.1.4"
+    properties: [value_type, value, formula, style_name, content, columns_spanned, rows_spanned]
+    existing_facade: "FodsCell"
+    facade_path: "src/net/fods/Model/FodsCell.cs"
+    status: "facade_exists_no_canonical"
+
+  - canonical: "Table.TableColumn"
+    qname: "table:table-column"
+    spec_section: "9.1.6"
+    properties: [style_name, default_cell_style_name, repeated]
+    status: "not_implemented"
+
+  - canonical: "Table.CoveredTableCell"
+    qname: "table:covered-table-cell"
+    spec_section: "9.1.5"
+    properties: [style_name]
+    status: "not_implemented"
+
+  - canonical: "Table.TypedValue"
+    qname: "office:value-type"
+    spec_section: "19.389"
+    properties: [value_type, value, date_value, boolean_value, string_value, currency_value, currency_symbol]
+    status: "not_implemented"
+
+  - canonical: "Table.Formula"
+    qname: "table:formula"
+    spec_section: "19.641"
+    properties: [expression, namespace_prefix]
+    status: "not_implemented"
+
+  - canonical: "Table.NamedRange"
+    qname: "table:named-range"
+    spec_section: "9.4.12"
+    properties: [name, cell_range_address, base_cell_address]
+    status: "not_implemented"
+
+  - canonical: "Table.ContentValidation"
+    qname: "table:content-validation"
+    spec_section: "9.4.4"
+    properties: [name, condition, allow_empty_cell, base_cell_address]
+    status: "not_implemented"
+
+  # Text namespace
+  - canonical: "Text.Paragraph"
+    qname: "text:p"
+    spec_section: "5.1.3"
+    properties: [style_name, content, spans]
+    existing_facade: "FodtParagraph"
+    facade_path: "src/net/fodt/Model/FodtParagraph.cs"
+    status: "facade_exists_no_canonical"
+
+  - canonical: "Text.Heading"
+    qname: "text:h"
+    spec_section: "5.1.2"
+    properties: [style_name, outline_level, content, spans]
+    status: "not_implemented"
+
+  - canonical: "Text.Span"
+    qname: "text:span"
+    spec_section: "6.1.7"
+    properties: [style_name, content]
+    status: "not_implemented"
+
+  - canonical: "Text.List"
+    qname: "text:list"
+    spec_section: "5.3.1"
+    properties: [style_name, items]
+    status: "not_implemented"
+
+  - canonical: "Text.ListItem"
+    qname: "text:list-item"
+    spec_section: "5.3.3"
+    properties: [content]
+    status: "not_implemented"
+
+  - canonical: "Text.Section"
+    qname: "text:section"
+    spec_section: "5.4"
+    properties: [name, style_name, content]
+    status: "not_implemented"
+
+  - canonical: "Text.Note"
+    qname: "text:note"
+    spec_section: "6.3.2"
+    properties: [note_class, note_citation, note_body]
+    status: "not_implemented"
+
+  - canonical: "Text.Anchor"
+    qname: "text:a"
+    spec_section: "6.1.8"
+    properties: [href, target_frame_name, content]
+    status: "not_implemented"
+
+  # Style namespace
+  - canonical: "Style.Style"
+    qname: "style:style"
+    spec_section: "16.2"
+    properties: [name, family, parent_style_name, text_properties, paragraph_properties, table_cell_properties]
+    status: "not_implemented"
+
+  - canonical: "Style.TextProperties"
+    qname: "style:text-properties"
+    spec_section: "17.7"
+    properties: [font_name, font_size, font_weight, font_style, color, text_decoration]
+    status: "not_implemented"
+
+  - canonical: "Style.ParagraphProperties"
+    qname: "style:paragraph-properties"
+    spec_section: "17.6"
+    properties: [text_align, margin_top, margin_bottom, line_height]
+    status: "not_implemented"
+
+  - canonical: "Style.TableCellProperties"
+    qname: "style:table-cell-properties"
+    spec_section: "17.18"
+    properties: [background_color, border, padding, vertical_align]
+    status: "not_implemented"
+
+  # Draw namespace
+  - canonical: "Draw.Frame"
+    qname: "draw:frame"
+    spec_section: "10.4.2"
+    properties: [name, style_name, width, height, x, y, anchor_type]
+    status: "not_implemented"
+
+  - canonical: "Draw.Image"
+    qname: "draw:image"
+    spec_section: "10.4.4"
+    properties: [href]
+    status: "not_implemented"
+
+summary:
+  total_canonical_classes: 27
+  implemented: 0
+  facade_exists_no_canonical: 4
+  not_implemented: 23

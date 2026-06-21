@@ -1,0 +1,265 @@
+---
+# Taskcards — ff-arch-20260621-001
+# Generated from system-gap-matrix.yaml findings
+# 2026-06-21
+
+schema_version: "1.0"
+
+taskcards:
+
+  # =============================================
+  # SOURCE-HYGIENE group
+  # =============================================
+
+  - taskcard_id: "TC-HYGIENE-FODS-001"
+    title: "Fix FODS Python triple package nesting"
+    lane: "SOURCE-HYGIENE"
+    status: "pending"
+    severity: "BLOCKER"
+    allowed_paths: ["src/python/fods/"]
+    forbidden_paths: ["src/net/", "tests/", "tools/"]
+    purpose: "Eliminate src/python/fods/fods/fods/ triple nesting structural defect"
+    problem: |
+      src/python/fods/ has three nested package levels with identical content.
+      Import resolution is ambiguous. Source audits are unreliable.
+    evidence: "src/python/fods/fods/fods/__init__.py identical to src/python/fods/__init__.py"
+    required_change: |
+      1. Identify canonical package level (egg-info resolves to which level?)
+      2. Remove duplicate intermediate nesting
+      3. Update pyproject.toml / setup.cfg package discovery if needed
+      4. Verify `import format_factory_fods` resolves correctly after change
+    steps:
+      - "Run: python -c 'import format_factory_fods; print(format_factory_fods.__file__)' to identify current resolution"
+      - "Remove duplicate fods/fods/ level (keep deepest canonical level)"
+      - "Update any pyproject.toml package discovery settings"
+      - "Run: python -m pytest tests/python/fods/ -x to verify no regressions"
+    tests: ["tests/python/fods/ must all pass after change"]
+    evidence_required: ["import_resolution.log", "pytest_fods_after.log"]
+    closeout_criteria: "src/python/fods/ has single flat package; all FODS tests pass"
+    rollback_notes: "Keep backup of original structure until tests pass"
+    dependencies: []
+    gate_impact: "Unblocks FODS Python Gate 11 readiness"
+    product_impact: "FOSS Python FODS"
+    machinery_impact: "None"
+
+  - taskcard_id: "TC-HYGIENE-GITIGNORE-001"
+    title: "Remove committed build artifacts from git"
+    lane: "SOURCE-HYGIENE"
+    status: "pending"
+    severity: "HIGH"
+    purpose: "Remove 21 .egg-info directories and src.zip from git tracking"
+    required_change: |
+      1. Update .gitignore to exclude *.egg-info/, src.zip
+      2. git rm --cached all tracked egg-info directories
+      3. Verify pyproject.toml build settings still correct
+    closeout_criteria: "git status shows no egg-info directories; .gitignore updated"
+    dependencies: ["TC-HYGIENE-FODS-001 should run first to clarify canonical package roots"]
+
+  # =============================================
+  # QNAME-AUTH group
+  # =============================================
+
+  - taskcard_id: "TC-QNAME-CANONICAL-001"
+    title: "Create canonical spec class files per qname-to-code-map.yaml"
+    lane: "QNAME-AUTH"
+    status: "pending"
+    severity: "BLOCKER"
+    allowed_paths: ["src/net/fods/Spec/", "src/net/fodt/Spec/", "src/python/fods/", "src/python/fodt/spec/"]
+    forbidden_paths: ["src/net/fods/Model/", "src/FormatFactory/"]  # FormatFactory/ needs separate taskcard
+    purpose: "Create the canonical class files that the qname-to-code-map.yaml maps to"
+    problem: |
+      qname-to-code-map.yaml defines Table.TableCell at src/FormatFactory/Table/TableCell.cs.
+      This file does not exist. All canonical targets are missing.
+    required_change: |
+      Phase 1: Create canonical stub classes for FODS:
+        - src/net/fods/Spec/Table/TableCell.cs — canonical, implemented
+        - src/net/fods/Spec/Table/TableRow.cs
+        - src/net/fods/Spec/Table/Table.cs (table:table)
+        - src/net/fods/Spec/Office/Document.cs
+      These match the FODT pattern already started.
+    steps:
+      - "Read registry/odf-ontology/qname-to-code-map.yaml for spec mappings"
+      - "Read src/net/fodt/Spec/Table/TableCell.cs as template (architecture_only stub)"
+      - "Create src/net/fods/Spec/ mirroring FODT Spec/ structure"
+      - "Create stub classes with spec_qname, SpecFactRef constants"
+      - "Add to shared/qname-registry/ (create fods.yaml matching fodt.yaml pattern)"
+    tests: ["Tests import from Spec/ namespace; QName constants match spec"]
+    closeout_criteria: "FODS Spec/ directory created; fods.yaml registry entry added"
+    dependencies: ["TC-HYGIENE-FODS-001"]
+    gate_impact: "Prerequisite for Gate 11 QName compliance (C12)"
+
+  # =============================================
+  # QNAME-BACKFILL group
+  # =============================================
+
+  - taskcard_id: "TC-QNAME-BACKFILL-FODS-001"
+    title: "Move FodsCell to Compat/ and create canonical Table.TableCell"
+    lane: "QNAME-BACKFILL"
+    status: "pending"
+    severity: "HIGH"
+    allowed_paths: ["src/net/fods/"]
+    purpose: "Make FodsCell a facade; create canonical Table.TableCell as primary implementation"
+    required_change: |
+      1. Create src/net/fods/Spec/Table/TableCell.cs (canonical, implemented)
+      2. Move implementation from FodsCell.cs → TableCell.cs
+      3. Create src/net/fods/Compat/Fods/FodsCell.cs (thin facade delegating to TableCell)
+      4. Keep all existing tests passing through facade
+    closeout_criteria: "FodsCell is a facade; TableCell is canonical; all tests pass"
+    dependencies: ["TC-QNAME-CANONICAL-001"]
+
+  - taskcard_id: "TC-QNAME-FODT-SPEC-IMPL-001"
+    title: "Implement FODT spec/ stubs and switch compat.py"
+    lane: "QNAME-BACKFILL"
+    status: "pending"
+    severity: "HIGH"
+    allowed_paths: ["src/python/fodt/spec/", "src/python/fodt/compat.py"]
+    purpose: "Implement architecture_only spec/ stubs; activate compat.py spec/ import path"
+    required_change: |
+      1. Implement src/python/fodt/spec/text/paragraph.py — full Paragraph class
+         matching FodtParagraph API (.kind, .text, .spans, .style_name, .outline_level)
+      2. Implement remaining stubs (heading.py, span.py, list_.py, list_item.py)
+      3. Update tests/python/fodt/test_compat_bootstrap.py to verify behavioral equivalence
+      4. When all tests pass: switch compat.py to import from spec/
+      5. Update shared/qname-registry/fodt.yaml: status -> "implemented"
+    tests: ["test_compat_bootstrap.py proves spec/ = models.py behavior"]
+    closeout_criteria: "compat.py imports from spec/; fodt.yaml status = implemented; all FODT tests pass"
+    dependencies: []
+
+  # =============================================
+  # QNAME-VALIDATORS group
+  # =============================================
+
+  - taskcard_id: "TC-GOV-QNAME-VALIDATOR-001"
+    title: "Add V43 QName class name validator to governance_validators.py"
+    lane: "QNAME-VALIDATORS"
+    status: "pending"
+    severity: "HIGH"
+    allowed_paths: ["tools/supervisor/governance_validators.py"]
+    purpose: "Prevent future product source from using non-canonical class names"
+    required_change: |
+      Add validate_qname_class_names() validator:
+      1. For PRODUCT_SOURCE evidence items declaring new .cs/.py files
+      2. Check if file contains class definitions with format-prefixed names (FodsXxx, FodtXxx)
+      3. If found AND not in Compat/ path → rework_item with instruction to use canonical name
+      Exempt: Compat/ directories are allowed to have format-prefixed facade names
+    tests: ["tests/supervisor/test_governance_validators.py — V43 test cases"]
+    closeout_criteria: "Validator added; passes when canonical names used; blocks when format-prefixed"
+    dependencies: []
+
+  # =============================================
+  # SAL-REPAIR group
+  # =============================================
+
+  - taskcard_id: "TC-SAL-OUTPUT-001"
+    title: "Run SAL pipeline and produce sal-facts-latest.json"
+    lane: "SAL-REPAIR"
+    status: "pending"
+    severity: "HIGH"
+    purpose: "Connect SAL pipeline output to capability compiler input"
+    required_change: |
+      1. Run tools/specification-authority-layer/run_extraction_pipeline.py for FODS and FODT
+      2. Output to .local/sal-output/sal-facts-latest.json
+      3. Verify capability_compiler.py can load and use the output
+      4. Add sal-facts-latest.json to .gitignore (generated artifact)
+    closeout_criteria: "sal-facts-latest.json exists; capability_compiler loads it successfully"
+    dependencies: []
+
+  # =============================================
+  # FEATURE-COMPILER group
+  # =============================================
+
+  - taskcard_id: "TC-FEATURE-COMPILER-CODEGEN-001"
+    title: "Add source code generation step to capability compiler"
+    lane: "FEATURE-COMPILER"
+    status: "pending"
+    severity: "HIGH"
+    purpose: "Make the spec-to-source pipeline fully automated (not just taskcard generation)"
+    required_change: |
+      Add generate_source_stub(feature_ir, qname_map) to capability_compiler.py:
+      1. Reads canonical class name and path from qname-to-code-map.yaml
+      2. Generates .cs stub with spec_qname and SpecFactRef constants
+      3. Generates .py stub with spec_qname and spec_fact_ref attributes
+      4. Does NOT implement — generates architecture_only stubs for human/agent completion
+    closeout_criteria: "Compiler generates valid .cs and .py stubs from feature IR + qname map"
+    dependencies: ["TC-SAL-OUTPUT-001", "TC-QNAME-CANONICAL-001"]
+
+  # =============================================
+  # SKILL-HARDENING group
+  # =============================================
+
+  - taskcard_id: "TC-SKILL-QNAME-ENFORCE-001"
+    title: "Add QName validation requirement to /add-python-api and /add-dotnet-api"
+    lane: "SKILL-HARDENING"
+    status: "pending"
+    severity: "HIGH"
+    allowed_paths: [".claude/commands/add-python-api.md", ".claude/commands/add-dotnet-api.md"]
+    purpose: "Prevent skills from creating non-canonical class names"
+    required_change: |
+      Update both skill prompts to include:
+      1. "Before naming any new class, check registry/odf-ontology/qname-to-code-map.yaml"
+      2. "New classes for spec elements must use canonical name (e.g., Table.TableCell, not FodsCell)"
+      3. "Format-prefixed names (FodsXxx) only allowed in Compat/ directories"
+      4. "Add spec_qname attribute to all new model classes"
+    closeout_criteria: "Both skill prompts updated; V43 validator test passes with skill output"
+    dependencies: ["TC-GOV-QNAME-VALIDATOR-001"]
+
+  - taskcard_id: "TC-SKILL-SPEC-STUB-IMPL-001"
+    title: "Create /implement-spec-stub skill"
+    lane: "SKILL-HARDENING"
+    status: "pending"
+    severity: "MEDIUM"
+    allowed_paths: [".claude/commands/"]
+    purpose: "Guided skill for implementing architecture_only spec/ stubs"
+    required_change: |
+      New skill at .claude/commands/implement-spec-stub.md:
+      1. Input: qname-registry entry path, format
+      2. Reads current stub file (architecture_only)
+      3. Reads compat.py for expected API surface
+      4. Generates full implementation matching legacy models.py behavior
+      5. Updates qname-registry status to implemented
+      6. Runs test_compat_bootstrap.py to verify equivalence
+    closeout_criteria: "Skill file created; successfully tested on FODT text:p stub"
+    dependencies: ["TC-QNAME-FODT-SPEC-IMPL-001"]
+
+  # =============================================
+  # SUPERVISOR-LANES group
+  # =============================================
+
+  - taskcard_id: "TC-SUPERVISOR-LANE-GATE-001"
+    title: "Add healing lane completion check to check_continuation.py"
+    lane: "SUPERVISOR-LANES"
+    status: "pending"
+    severity: "MEDIUM"
+    allowed_paths: ["tools/supervisor/check_continuation.py", "tools/supervisor/check_system_healing_gate.py"]
+    purpose: "Mechanically prevent product deepening before system healing is complete"
+    required_change: |
+      In check_continuation.py before returning CONTINUE for product deepening:
+      1. Call check_system_healing_gate.py
+      2. If healing gate = INCOMPLETE: return STOP with reason=healing_lanes_not_complete
+      3. Document: the 6 healing criteria that must be met
+    closeout_criteria: "STOP returned when healing lanes incomplete; CONTINUE when complete"
+    dependencies: []
+
+  # =============================================
+  # PRODUCT-PILOT group
+  # =============================================
+
+  - taskcard_id: "TC-PILOT-FODT-SPEC-TO-LIBRARY-001"
+    title: "FODT: prove spec-to-library-to-export path end-to-end"
+    lane: "PRODUCT-PILOT"
+    status: "pending"
+    severity: "HIGH"
+    purpose: "Demonstrate that a specification can produce a professional, spec-aligned library"
+    problem: |
+      Current FODT source uses FodtDocument/FodtParagraph (Gen 2 names).
+      Target: Text.Paragraph, Office.Document (Gen 4 canonical) with FodtDocument facade.
+    required_change: |
+      1. Complete TC-QNAME-FODT-SPEC-IMPL-001 (spec/ stubs implemented)
+      2. Wire compat.py to spec/ imports
+      3. Demonstrate: parse FODT → get Text.Paragraph instances → edit → save
+      4. Demonstrate: load FODT → export HTML (headings become <h1-6>, paragraphs become <p>)
+      5. Write integration test proving spec-hierarchy object model in use
+    evidence_required: ["fodt-spec-to-export.log", "integration-test-results.log"]
+    closeout_criteria: "FODT uses canonical spec object model end-to-end; pilot report created"
+    dependencies: ["TC-QNAME-FODT-SPEC-IMPL-001", "TC-QNAME-BACKFILL-FODS-001"]
+    gate_impact: "Demonstrates format-factory CAN produce spec-to-library path"

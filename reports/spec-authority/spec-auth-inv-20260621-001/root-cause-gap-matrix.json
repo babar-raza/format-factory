@@ -1,0 +1,126 @@
+{
+  "run_id": "spec-auth-inv-20260621-001",
+  "date": "2026-06-21",
+  "gaps": [
+    {
+      "gap_id": "GAP-SA-001",
+      "area": "SAL Fact Generation",
+      "severity": "CRITICAL",
+      "priority": "P0",
+      "symptom": "Facts emitted with verification_status=verified but no source_id",
+      "root_cause": "sal_master_runner.py uses hardcoded _SPEC_FACT_TEMPLATES dict bypassing spec_parser/verifier/extractor pipeline",
+      "impact": "All SAL facts for all formats are unverified against actual spec text",
+      "pilot_rerun_needed": true,
+      "owner": "tools/specification-authority-layer/sal_master_runner.py",
+      "repair": "Wire run_extraction_pipeline.py into sal_master_runner.py for formats with workbench; mark bootstrap facts status=bootstrap_only"
+    },
+    {
+      "gap_id": "GAP-SA-002",
+      "area": "Source Acquisition Provenance",
+      "severity": "HIGH",
+      "priority": "P1",
+      "symptom": "run_fact_verification.py reports 81/96 facts not_found for ZST (no spec text)",
+      "root_cause": "T3 authorization ceremony not completed for 9/10 registered formats; specs registered but not fetched",
+      "impact": "Fact verification cannot run for ~75% of registered formats",
+      "pilot_rerun_needed": true,
+      "owner": "tools/spec-cache/acquire_spec.py",
+      "repair": "Complete T3 authorization for ZST (RFC8878 public domain), FODT, CSV RFC4180"
+    },
+    {
+      "gap_id": "GAP-SA-003",
+      "area": "End-to-End Traceability",
+      "severity": "CRITICAL",
+      "priority": "P1",
+      "symptom": "spec_fact_refs in source comments have no mechanical validation",
+      "root_cause": "No bidirectional traceability index: FACT-ID to product_files to tests",
+      "impact": "Gate 11 spec parity claims are unauditable",
+      "pilot_rerun_needed": true,
+      "owner": "NEW: tools/traceability/fact_product_linker.py",
+      "repair": "Build fact_product_linker.py parsing source comments and mapping to verified-facts + tests"
+    },
+    {
+      "gap_id": "GAP-SA-004",
+      "area": "Normalization and Indexing",
+      "severity": "HIGH",
+      "priority": "P1",
+      "symptom": "FODS 27.3% coverage, most formats 0%",
+      "root_cause": "Spec text not fetched (GAP-SA-002) + no automated workbench build + FODS fact set too large",
+      "impact": "73% of FODS facts pending verification used in Gate 11 prep",
+      "pilot_rerun_needed": true,
+      "owner": "tools/specification-authority-layer/run_fact_verification.py",
+      "repair": "Batch process FODS pending facts; trim to core set; auto-trigger workbench build after spec acquisition"
+    },
+    {
+      "gap_id": "GAP-SA-005",
+      "area": "Integration Tests",
+      "severity": "HIGH",
+      "priority": "P1",
+      "symptom": "6 dogfood tests fail with JSONDecodeError on empty format-specific sal-facts files",
+      "root_cause": "sal_master_runner produces combined file not per-format files; tests expect per-format",
+      "impact": "SAL dogfood proof is broken",
+      "pilot_rerun_needed": false,
+      "owner": "tools/specification-authority-layer/sal_master_runner.py",
+      "repair": "Add --output-format per-format mode or update tests to load from combined file"
+    },
+    {
+      "gap_id": "GAP-SA-006",
+      "area": "Source Provenance / Invalidation",
+      "severity": "HIGH",
+      "priority": "P2",
+      "symptom": "No signal when spec changes; workbench facts silently stale",
+      "root_cause": "refresh_check.py and refresh_workbench.py exist but not wired to automated trigger",
+      "impact": "Updated spec version would not invalidate old facts",
+      "pilot_rerun_needed": true,
+      "owner": "tools/spec-cache/refresh_check.py",
+      "repair": "Add hash check in autonomous_cycle.py step 0a; wire stale signal to workbench refresh"
+    },
+    {
+      "gap_id": "GAP-SA-007",
+      "area": "Supervisor Enforcement",
+      "severity": "HIGH",
+      "priority": "P2",
+      "symptom": "TC-GUARD-001 accepts any FACT-ID string without verifying it resolves to verified fact",
+      "root_cause": "Second-order check (fact must exist + be verified) not implemented in autonomous_cycle.py step 2d2",
+      "impact": "FAKE-001 spec_fact_refs passes TC-GUARD-001",
+      "pilot_rerun_needed": false,
+      "owner": "tools/supervisor/autonomous_cycle.py step 2d2",
+      "repair": "Add fact_id lookup against sal-facts-latest.json; block if not found or not verified"
+    },
+    {
+      "gap_id": "GAP-SA-008",
+      "area": "Acquisition Integration",
+      "severity": "MEDIUM",
+      "priority": "P3",
+      "symptom": "Format implementations proceed without spec fact backing",
+      "root_cause": "add-python-api.md spec_fact_refs requirement is prompt-level only, not runtime-enforced",
+      "impact": "13+ formats lack spec-backed implementations",
+      "pilot_rerun_needed": false,
+      "owner": ".claude/commands/add-python-api.md",
+      "repair": "Add pre-flight check: target format must have >=1 verified fact in workbench before product sprint"
+    },
+    {
+      "gap_id": "GAP-SA-009",
+      "area": "AI/LLM Integration",
+      "severity": "MEDIUM",
+      "priority": "P2",
+      "symptom": "authority_lifecycle.py tested but never called on actual spec facts",
+      "root_cause": "AI governance infrastructure and SAL pipeline built in separate sprints; integration not implemented",
+      "impact": "Authority lifecycle protection exists only on paper",
+      "pilot_rerun_needed": true,
+      "owner": "tools/ai/validators/authority_lifecycle.py",
+      "repair": "Wire can_transition() into run_extraction_pipeline.py and spec_verifier.py; emit authority_state field"
+    },
+    {
+      "gap_id": "GAP-SA-010",
+      "area": "Governance / Policy",
+      "severity": "LOW",
+      "priority": "P4",
+      "symptom": "spec-retrieval-strategy.md status Proposed but operationally active",
+      "root_cause": "TC-0015 never formally closed with human approval decision",
+      "impact": "Audit trail integrity — operational behavior correct",
+      "pilot_rerun_needed": false,
+      "owner": "docs/spec-retrieval-strategy.md",
+      "repair": "Close TC-0015 or update document status"
+    }
+  ]
+}

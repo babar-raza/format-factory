@@ -5,7 +5,7 @@ generated_by: codex
 
 # Product Gap Selection
 
-Source matrix: `./product-capability-matrix/poc-targets.yaml`
+Source matrix: `C:/Users/prora/OneDrive/Documents/GitHub/format-factory/product-capability-matrix/poc-targets.yaml`
 Selected gaps: 0
 
 | Rank | Track | Format | Capability | Status | POC impact | Decision | Skill |

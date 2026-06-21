@@ -1,0 +1,304 @@
+---
+# System Gap Matrix — ff-arch-20260621-001
+# Generated: 2026-06-21
+
+schema_version: "1.0"
+run_id: "ff-arch-20260621-001"
+total_gaps: 22
+
+gaps:
+
+  - gap_id: "GAP-ARCH-001"
+    layer: "Source"
+    lane: "SOURCE-HYGIENE"
+    severity: "BLOCKER"
+    evidence: "src/python/fods/fods/fods/ — triple nested package directories, each with identical __init__.py"
+    current_behavior: "FODS Python package exists at three nesting levels: fods/, fods/fods/, fods/fods/fods/"
+    expected_behavior: "Single package root: src/python/fods/{module}.py (or fods/fods/{module}.py for installable)"
+    root_cause: "Accidental directory copy/creation committed without cleanup"
+    product_impact: "Import resolution ambiguity; source audits unreliable; LOC calculations triple-counted"
+    machinery_impact: "Package install may resolve to wrong module level"
+    repeatability_impact: "HIGH — regenerating from specs is impossible when canonical source path is unknown"
+    autonomy_impact: "MEDIUM — agents may write to wrong directory level"
+    qname_impact: "HIGH — cannot add spec-hierarchy subdirs until nesting is fixed"
+    required_fix: "Flatten to single canonical level; remove duplicate fods/fods/ nesting"
+    tests_required: ["Import test confirming parse_fods resolves correctly after fix"]
+    must_fix_before_product_deepening: true
+    can_defer: false
+    suggested_taskcard: "TC-HYGIENE-FODS-001"
+
+  - gap_id: "GAP-ARCH-002"
+    layer: "Source"
+    lane: "SOURCE-HYGIENE"
+    severity: "HIGH"
+    evidence: "21 .egg-info directories tracked in git; src/src.zip committed"
+    current_behavior: "Build artifacts committed alongside source"
+    expected_behavior: "Only source files tracked; .egg-info in .gitignore"
+    root_cause: "Missing or incomplete .gitignore entries"
+    product_impact: "Git status noise; risk of stale metadata"
+    must_fix_before_product_deepening: false
+    can_defer: true
+    suggested_taskcard: "TC-HYGIENE-GITIGNORE-001"
+
+  - gap_id: "GAP-ARCH-003"
+    layer: "QName"
+    lane: "QNAME-REGISTRY"
+    severity: "BLOCKER"
+    evidence: "registry/odf-ontology/qname-to-code-map.yaml defines Table.TableCell at src/FormatFactory/Table/TableCell.cs — file does not exist"
+    current_behavior: "Canonical class targets defined in qname-to-code-map.yaml but not implemented in src/"
+    expected_behavior: "src/FormatFactory/Table/TableCell.cs (and Text/Paragraph.cs, Office/Document.cs etc.) exist"
+    root_cause: "QName map was designed without a code generator to create the canonical files"
+    product_impact: "CRITICAL — Generation 4 never starts; FodsCell remains primary implementation"
+    machinery_impact: "CRITICAL — no spec-to-source pipeline can complete without canonical targets"
+    repeatability_impact: "CRITICAL"
+    qname_impact: "CRITICAL"
+    required_fix: "Create canonical class files per qname-to-code-map.yaml; start with Table.TableCell, Text.Paragraph, Office.Document"
+    must_fix_before_product_deepening: true
+    can_defer: false
+    suggested_taskcard: "TC-QNAME-CANONICAL-001"
+
+  - gap_id: "GAP-ARCH-004"
+    layer: "QName"
+    lane: "QNAME-BACKFILL"
+    severity: "BLOCKER"
+    evidence: "src/net/fods/Model/FodsCell.cs is the primary implementation; qname-to-code-map.yaml requires it to be a facade in Compat/Fods/"
+    current_behavior: "FodsCell IS the implementation. No canonical Table.TableCell exists."
+    expected_behavior: "Table.TableCell is canonical; FodsCell in Compat/Fods/ delegates to it"
+    root_cause: "Source was written before canonical hierarchy was designed"
+    product_impact: "HIGH — cannot claim QName compliance; C12 Gate 11 criterion fails"
+    required_fix: "Create Table.TableCell; refactor FodsCell to delegate; move to Compat/Fods/"
+    must_fix_before_product_deepening: false
+    can_defer: true  # current code works; naming is the issue
+    suggested_taskcard: "TC-QNAME-BACKFILL-FODS-001"
+
+  - gap_id: "GAP-ARCH-005"
+    layer: "QName"
+    lane: "QNAME-BACKFILL"
+    severity: "HIGH"
+    evidence: "shared/qname-registry/fodt.yaml: all 9 QName entries have status: architecture_only"
+    current_behavior: "FODT spec/ stubs are empty architecture skeletons"
+    expected_behavior: "spec/ stubs are implemented; compat.py switches to import from spec/"
+    root_cause: "Stubs generated in 2026-06-20 sprint; implementation not yet started"
+    product_impact: "HIGH — Python FODT has no spec-aligned object model in production"
+    required_fix: "Implement spec/text/paragraph.py (full Paragraph class); switch compat.py"
+    must_fix_before_product_deepening: false  # existing models.py still works
+    can_defer: true
+    suggested_taskcard: "TC-QNAME-FODT-SPEC-IMPL-001"
+
+  - gap_id: "GAP-ARCH-006"
+    layer: "SAL"
+    lane: "SAL-REPAIR"
+    severity: "HIGH"
+    evidence: "tools/supervisor/capability_compiler.py expects .local/sal-output/sal-facts-latest.json; file does not exist"
+    current_behavior: "Capability compiler has no SAL facts input; returns empty facts dict"
+    expected_behavior: "SAL pipeline produces sal-facts-latest.json consumed by compiler"
+    root_cause: "SAL pipeline (run_extraction_pipeline.py) not run or output to wrong location"
+    product_impact: "MEDIUM — compiler still produces taskcards from gap records without spec enrichment"
+    machinery_impact: "HIGH — spec-backed feature generation impossible without SAL output"
+    required_fix: "Run SAL pipeline; configure output to .local/sal-output/sal-facts-latest.json"
+    must_fix_before_product_deepening: false
+    can_defer: true
+    suggested_taskcard: "TC-SAL-OUTPUT-001"
+
+  - gap_id: "GAP-ARCH-007"
+    layer: "Generation"
+    lane: "FEATURE-COMPILER"
+    severity: "BLOCKER"
+    evidence: "capability_compiler.py produces taskcards (YAML); no source generator converts taskcards to .cs/.py files"
+    current_behavior: "Compilation ends at taskcard generation; source is handwritten by agents"
+    expected_behavior: "Capability compiler generates source file skeletons with spec annotations"
+    root_cause: "Source generator step never built"
+    repeatability_impact: "CRITICAL — without source generation, spec-to-library is not repeatable"
+    required_fix: "Build source generator: reads feature IR + qname map → generates canonical .cs/.py"
+    tests_required: ["Source generator produces Table/TableCell.cs for table:table-cell spec entry"]
+    must_fix_before_product_deepening: false  # existing source works
+    can_defer: true  # but blocks repeatability
+    suggested_taskcard: "TC-FEATURE-COMPILER-CODEGEN-001"
+
+  - gap_id: "GAP-ARCH-008"
+    layer: "Skills"
+    lane: "SKILL-HARDENING"
+    severity: "HIGH"
+    evidence: "/add-python-api and /add-dotnet-api skills have no QName enforcement"
+    current_behavior: "Skills let agents write FodsCell, FodsDocument etc. without canonical name check"
+    expected_behavior: "Skills require spec_qname ref; validate class name against qname-to-code-map.yaml"
+    root_cause: "Skills predate the QName compliance requirement"
+    product_impact: "HIGH — every product sprint risks adding non-canonical names"
+    required_fix: "Add QName validation step to add-python-api and add-dotnet-api skill prompts"
+    must_fix_before_product_deepening: true
+    can_defer: false
+    suggested_taskcard: "TC-SKILL-QNAME-ENFORCE-001"
+
+  - gap_id: "GAP-ARCH-009"
+    layer: "Source"
+    lane: "QNAME-VALIDATORS"
+    severity: "HIGH"
+    evidence: "No governance validator checks class names in new source against qname-to-code-map.yaml"
+    current_behavior: "Governance validators (38 total) do not check source naming conventions"
+    expected_behavior: "V43 validator: new .cs/.py classes in PRODUCT_SOURCE must match canonical name or be declared as facade"
+    root_cause: "QName compliance validator never built"
+    required_fix: "Add V43 QName class name validator to governance_validators.py"
+    must_fix_before_product_deepening: true
+    can_defer: false
+    suggested_taskcard: "TC-GOV-QNAME-VALIDATOR-001"
+
+  - gap_id: "GAP-ARCH-010"
+    layer: "Python"
+    lane: "SRC-STANDARDIZATION"
+    severity: "HIGH"
+    evidence: "Python FODS has neutral model (dict) only; no object model classes"
+    current_behavior: "parse_fods() returns dict; no FodsCell/FodsSheet class at any level"
+    expected_behavior: "Python FODS has object model at spec/ layer (Table.TableCell etc.)"
+    root_cause: "FOSS Python track prioritized streaming parser and analytics over object model"
+    product_impact: "HIGH — no cross-language parity with .NET; cannot demonstrate consistent API"
+    required_fix: "Add Python object model classes matching .NET canonical classes"
+    must_fix_before_product_deepening: false
+    can_defer: true
+    suggested_taskcard: "TC-FODS-PYTHON-OBJECT-MODEL-001"
+
+  - gap_id: "GAP-ARCH-011"
+    layer: "SAL"
+    lane: "SAL-REPAIR"
+    severity: "MEDIUM"
+    evidence: "SAL spec fact IDs (FACT-FODS-001 etc.) assigned sequentially; no stability guarantee"
+    current_behavior: "Fact IDs are sequential integers; re-running extraction may change assignments"
+    expected_behavior: "Fact IDs are content-hashed or spec-section-derived; stable across runs"
+    root_cause: "SAL was built for exploration, not for production stability"
+    required_fix: "Implement stable fact ID policy: hash(spec_source_id + section_id + concept_name)"
+    must_fix_before_product_deepening: false
+    can_defer: true
+    suggested_taskcard: "TC-SAL-STABLE-FACT-IDS-001"
+
+  - gap_id: "GAP-ARCH-012"
+    layer: "Skills"
+    lane: "SKILL-HARDENING"
+    severity: "MEDIUM"
+    evidence: "No skill for implementing spec/ stubs from architecture_only to implemented"
+    current_behavior: "FODT spec/ stubs exist; no skill to fill them and switch compat.py"
+    expected_behavior: "Skill: /implement-spec-stub reads qname-registry entry, fills stub, switches compat.py"
+    root_cause: "Spec stub pattern is new (2026-06-20); skills haven't been updated"
+    required_fix: "Create /implement-spec-stub skill"
+    must_fix_before_product_deepening: false
+    can_defer: true
+    suggested_taskcard: "TC-SKILL-SPEC-STUB-IMPL-001"
+
+  - gap_id: "GAP-ARCH-013"
+    layer: "Supervisor"
+    lane: "SUPERVISOR-LANES"
+    severity: "HIGH"
+    evidence: "Lane separation defined in plans/spec-to-feature-radical-correction-plan.md; not enforced in check_continuation.py"
+    current_behavior: "check_continuation.py does not verify healing lanes are complete before allowing product deepening"
+    expected_behavior: "check_continuation.py checks system healing gate before routing to product deepening"
+    root_cause: "Lane enforcement is prompt-based only; code doesn't enforce order"
+    product_impact: "HIGH — product deepening can run when healing should block it"
+    required_fix: "Add lane order check to check_continuation.py; call check_system_healing_gate.py"
+    must_fix_before_product_deepening: false  # TC-GUARD-001 provides some protection
+    can_defer: true
+    suggested_taskcard: "TC-SUPERVISOR-LANE-GATE-001"
+
+  - gap_id: "GAP-ARCH-014"
+    layer: "Source"
+    lane: "CROSS-LANGUAGE-PARITY"
+    severity: "MEDIUM"
+    evidence: ".NET FODS uses DOM-backed object model (FodsDocument); Python FODS uses streaming parser with dict output"
+    current_behavior: "No cross-language parity — different tiers, different models, different APIs"
+    expected_behavior: "Both produce the same canonical object model (Table.TableCell etc.)"
+    root_cause: "Two tracks (FOSS streaming vs commercial DOM) developed independently"
+    required_fix: "Define parity model; Python FOSS gets neutral model + spec layer; .NET gets canonical spec classes"
+    can_defer: true
+    suggested_taskcard: "TC-CROSS-LANG-PARITY-FODS-001"
+
+  - gap_id: "GAP-ARCH-015"
+    layer: "SAL"
+    lane: "SAL-REPAIR"
+    severity: "MEDIUM"
+    evidence: "No negative tests in SAL — authority rejection not verified"
+    current_behavior: "SAL extracts facts; unclear if it rejects non-spec authority (e.g., Wikipedia, AI-generated content)"
+    expected_behavior: "SAL validates source authority; rejects non-spec inputs with documented reason"
+    root_cause: "SAL focused on extraction; rejection not yet tested"
+    required_fix: "Add negative test suite for SAL authority rejection"
+    can_defer: true
+    suggested_taskcard: "TC-SAL-NEGATIVE-TESTS-001"
+
+  - gap_id: "GAP-ARCH-016"
+    layer: "Supervisor"
+    lane: "GATE11-STOP"
+    severity: "MEDIUM"
+    evidence: "Gate 11 stop relies on task classification in sprint prompt; no hard mechanical gate"
+    current_behavior: "Gate 11 is classified as external-gate in sprint prompts; stop_reason_adjudicator enforces"
+    expected_behavior: "Gate 11 stop is enforced in check_continuation.py directly; cannot be bypassed by sprint prompt omission"
+    root_cause: "Gate 11 stop was retrofit into classification system; not first-class in continuation logic"
+    required_fix: "Add Gate 11 detection to check_continuation.py; if gate_readiness=commercial_readiness_in_progress and no human approval, return STOP"
+    can_defer: true
+    suggested_taskcard: "TC-SUPERVISOR-GATE11-STOP-001"
+
+  - gap_id: "GAP-ARCH-017"
+    layer: "Skills"
+    lane: "SKILL-HARDENING"
+    severity: "MEDIUM"
+    evidence: "/add-dotnet-object-model-feature skill not audited; may not know about Compat/ pattern"
+    current_behavior: "Object model features may be placed at wrong path"
+    expected_behavior: "Skill knows: canonical → Spec/; facade → Compat/"
+    required_fix: "Audit and update /add-dotnet-object-model-feature with Compat/ pattern"
+    can_defer: true
+    suggested_taskcard: "TC-SKILL-DOTNET-COMPAT-001"
+
+  - gap_id: "GAP-ARCH-018"
+    layer: "Source"
+    lane: "SRC-STANDARDIZATION"
+    severity: "LOW"
+    evidence: "FodtDocument.cs has duplicate methods: GetWordCount() and WordCount property both exist"
+    current_behavior: "Two paths to the same capability; API confusion"
+    expected_behavior: "Canonical API; one way to do each thing"
+    root_cause: "Incremental API additions without design review"
+    required_fix: "Deprecate redundant APIs; keep most general form"
+    can_defer: true
+    suggested_taskcard: "TC-FODT-API-DEDUP-001"
+
+  - gap_id: "GAP-ARCH-019"
+    layer: "Evidence"
+    lane: "EVIDENCE-LEDGER"
+    severity: "LOW"
+    evidence: "evidence_quality_zero false stop when LLM grader unavailable (MEMORY.md)"
+    current_behavior: "autonomous_cycle.py reports autonomous_continue=False when EQS=0.0 even though work was done"
+    expected_behavior: "evidence_quality_zero is classified LOCAL_REPAIR_CONTINUE; not a hard stop"
+    root_cause: "False stop detection not hooked into check_continuation.py signal override"
+    required_fix: "After autonomous_cycle: if hard_stops_detected=['evidence_quality_zero'] → override signal to YES"
+    can_defer: true
+    suggested_taskcard: "TC-EVIDENCE-QUALITY-ZERO-FIX-001"
+
+  - gap_id: "GAP-ARCH-020"
+    layer: "Source"
+    lane: "SOURCE-HYGIENE"
+    severity: "LOW"
+    evidence: "FodtDocument.cs is 978 LOC; all logic in one file"
+    current_behavior: "Single large file handles load, parse, edit, save, export, search"
+    expected_behavior: "Parser, model, writer, exporters in separate files"
+    root_cause: "DOM-backed model was built monolithically"
+    required_fix: "Extract exporter methods to FodtDocumentExporter.cs (similar to FODS pattern)"
+    can_defer: true
+    suggested_taskcard: "TC-FODT-SPLIT-EXPORTER-001"
+
+  - gap_id: "GAP-ARCH-021"
+    layer: "QName"
+    lane: "QNAME-AUTH"
+    severity: "MEDIUM"
+    evidence: "No shared canonical FormatFactory/ namespace used across FODS, FODT; each format has separate namespace"
+    current_behavior: "FormatFactory.Fods.FodsCell and FormatFactory.Fodt.FodtParagraph in separate namespaces"
+    expected_behavior: "FormatFactory.Table.TableCell shared canonical class; format namespaces only for facades"
+    root_cause: "Format-first layout designed before cross-format canonical hierarchy"
+    required_fix: "Create FormatFactory.Table, FormatFactory.Text, FormatFactory.Office namespaces at shared level"
+    can_defer: true
+    suggested_taskcard: "TC-QNAME-SHARED-NAMESPACE-001"
+
+  - gap_id: "GAP-ARCH-022"
+    layer: "SAL"
+    lane: "SAL-REPAIR"
+    severity: "LOW"
+    evidence: "SAL facts manually referenced in .NET comments (e.g., 'ODF 1.3 §9.4.5'); not using FACT-FODS-XXX IDs"
+    current_behavior: "Spec references in source are human-written section numbers"
+    expected_behavior: "Spec references use governed FACT-FODS-XXX IDs that trace to SAL output"
+    root_cause: "Source written before SAL IDs were established"
+    required_fix: "Migrate .NET spec comments to use FACT-FODS-XXX references"
+    can_defer: true
+    suggested_taskcard: "TC-SAL-FACT-REFS-IN-SOURCE-001"

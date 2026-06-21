@@ -1,21 +1,694 @@
 {
-  "context_pack_id": "CP-ZST-9084f28d0d55",
+  "context_pack_id": "CP-ZST-c2990d46ad3e",
   "format_id": "zst",
   "manifest": {
-    "sha256": "9084f28d0d5569ff58e2ccdc9bd895ae1b4358dcc3dbc2cd40508ffd663b52cb",
+    "sha256": "c2990d46ad3ea67fb3c78d13d5a16ce7c51b72afe8e2d6a13e8e2067bb203c1b",
     "sources_count": 1
   },
   "included_sources": [
     {
       "source_id": "ZST-SPEC-001",
-      "title": "zst spec",
-      "sha256": "cc6b67c347ded1f544ed20465612126eb3aebf83c10bca5ab70e40afe30f8086",
-      "sections_count": 4,
-      "source_type": "public_spec"
+      "title": "RFC 8878 Zstandard Compression",
+      "sha256": "",
+      "sections_count": 96,
+      "source_type": "rfc"
     }
   ],
-  "requirement_summary": [],
+  "requirement_summary": [
+    {
+      "req_id": "FACT-ZST-001",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "Zstandard frame starts with 4-byte magic number 0xFD2FB528 in little-endian format"
+    },
+    {
+      "req_id": "FACT-ZST-002",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "Skippable frames start with 4-byte magic number in range 0x184D2A50 to 0x184D2A5F (16 valid values)"
+    },
+    {
+      "req_id": "FACT-ZST-003",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "Zstandard compressed data is made of one or more frames; each frame is independent and can be decompressed independently"
+    },
+    {
+      "req_id": "FACT-ZST-004",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "Two frame formats: Zstandard frames (compressed data) and skippable frames (custom user metadata)"
+    },
+    {
+      "req_id": "FACT-ZST-005",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "Frame header is variable size: minimum 2 bytes, maximum 14 bytes, consisting of Frame_Header_Descriptor, optional Window_Descriptor, optional Dictiona"
+    },
+    {
+      "req_id": "FACT-ZST-006",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "Frame_Header_Descriptor is 1 byte with 6 bit fields: Frame_Content_Size_Flag (bits 7-6), Single_Segment_Flag (bit 5), unused (bit 4), reserved (bit 3)"
+    },
+    {
+      "req_id": "FACT-ZST-007",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "MUST",
+      "text_fragment": "Each frame must have at least 1 block; there is no upper limit on the number of blocks per frame"
+    },
+    {
+      "req_id": "FACT-ZST-008",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "Block_Header is 3 bytes, little-endian, with Last_Block (bit 0), Block_Type (bits 1-2), Block_Size (bits 3-23)"
+    },
+    {
+      "req_id": "FACT-ZST-009",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "Four block types: Raw_Block (0, uncompressed), RLE_Block (1, single byte repeated), Compressed_Block (2), Reserved (3, invalid)"
+    },
+    {
+      "req_id": "FACT-ZST-010",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "Block_Maximum_Size is the smallest of Window_Size and 128 KB; constant for a given frame"
+    },
+    {
+      "req_id": "FACT-ZST-011",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "Content_Checksum is optional 32-bit value using XXH64 hash with seed zero, low 4 bytes stored little-endian"
+    },
+    {
+      "req_id": "FACT-ZST-012",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "Compressed block consists of Literals_Section and Sequences_Section, combined via Sequence Execution"
+    },
+    {
+      "req_id": "FACT-ZST-013",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "Two entropy encoding methods: Huffman coding for literals, FSE (Finite State Entropy) for all other symbols"
+    },
+    {
+      "req_id": "FACT-ZST-014",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "MUST",
+      "text_fragment": "Dictionary magic number is 0xEC30A437; dictionaries must be at least 8 bytes; Dictionary_ID cannot be 0"
+    },
+    {
+      "req_id": "FACT-ZST-015",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "IANA media type is application/zstd; file extension is .zst; encoding is binary"
+    },
+    {
+      "req_id": "FACT-ZST-EX-0001",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "Information about the current status of this document, any errata, and how to provide feedback on it may be obtained at https://www.rfc-editor.org/inf"
+    },
+    {
+      "req_id": "FACT-ZST-EX-0002",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "MUST",
+      "text_fragment": "carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Sim"
+    },
+    {
+      "req_id": "FACT-ZST-EX-0003",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "encode:  The process of translating data from one form to another; this may include compression, or it may refer to other translations done as part of"
+    },
+    {
+      "req_id": "FACT-ZST-EX-0004",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "Mixed_Case_With_Underscores.  Identifiers inside square brackets indicate that the identifier is optional in the presented context."
+    },
+    {
+      "req_id": "FACT-ZST-EX-0005",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "communications.  The format uses the Zstandard compression method, and an optional xxHash-64 checksum method [XXHASH], for detection of data corruptio"
+    },
+    {
+      "req_id": "FACT-ZST-EX-0006",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "MUST",
+      "text_fragment": "Unless otherwise indicated below, a compliant compressor must produce data sets that conform to the specifications presented here."
+    },
+    {
+      "req_id": "FACT-ZST-EX-0007",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "MUST",
+      "text_fragment": "A compliant decompressor must be able to decompress at least one working set of parameters that conforms to the specifications"
+    },
+    {
+      "req_id": "FACT-ZST-EX-0008",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "working set of parameters that conforms to the specifications presented here.  It may also ignore informative fields, such as the checksum.  Whenever "
+    },
+    {
+      "req_id": "FACT-ZST-EX-0009",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "MUST",
+      "text_fragment": "checksum.  Whenever it does not support a parameter defined in the compressed stream, it must produce an unambiguous error code and associated error m"
+    },
+    {
+      "req_id": "FACT-ZST-EX-0010",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "Content_Checksum:  An optional 32-bit checksum, only present if Content_Checksum_Flag is set.  The content checksum is the result"
+    },
+    {
+      "req_id": "FACT-ZST-EX-0011",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "The frame header has a variable size, with a minimum of 2 bytes up to a maximum of 14 bytes depending on optional parameters.  The structure of Frame_"
+    },
+    {
+      "req_id": "FACT-ZST-EX-0012",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "MUST",
+      "text_fragment": "If this flag is set, data must be regenerated within a single continuous memory segment."
+    },
+    {
+      "req_id": "FACT-ZST-EX-0013",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "MUST",
+      "text_fragment": "Frame_Content_Size is necessarily present.  As a consequence, the decoder must allocate a memory segment of a size equal to or larger than Frame_Conte"
+    },
+    {
+      "req_id": "FACT-ZST-EX-0014",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "A decoder compliant with this specification version shall not interpret this bit.  It might be used in a future version to signal a"
+    },
+    {
+      "req_id": "FACT-ZST-EX-0015",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "MUST",
+      "text_fragment": "property that is not mandatory to properly decode the frame.  An encoder compliant with this specification must set this bit to zero."
+    },
+    {
+      "req_id": "FACT-ZST-EX-0016",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "MUST",
+      "text_fragment": "This bit is reserved for some future feature.  Its value must be zero.  A decoder compliant with this specification version must"
+    },
+    {
+      "req_id": "FACT-ZST-EX-0017",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "MUST",
+      "text_fragment": "zero.  A decoder compliant with this specification version must ensure it is not set.  This bit may be used in a future revision to signal a feature t"
+    },
+    {
+      "req_id": "FACT-ZST-EX-0018",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "MUST",
+      "text_fragment": "ensure it is not set.  This bit may be used in a future revision to signal a feature that must be interpreted to decode the frame correctly."
+    },
+    {
+      "req_id": "FACT-ZST-EX-0019",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "This provides guarantees about the minimum memory buffer required to decompress a frame.  This information is important for decoders to"
+    },
+    {
+      "req_id": "FACT-ZST-EX-0020",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "The Window_Descriptor byte is optional.  When Single_Segment_Flag is set, Window_Descriptor is not present.  In this case, Window_Size is"
+    },
+    {
+      "req_id": "FACT-ZST-EX-0021",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "This is a field of variable size, which contains the ID of the dictionary required to properly decode the frame.  This field is optional.  When it's n"
+    },
+    {
+      "req_id": "FACT-ZST-EX-0022",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "dictionary required to properly decode the frame.  This field is optional.  When it's not present, it's up to the decoder to know which dictionary to "
+    },
+    {
+      "req_id": "FACT-ZST-EX-0023",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "MUST",
+      "text_fragment": "for frames and dictionaries distributed in public space, Dictionary_ID must be attributed carefully.  The following ranges are reserved for use only w"
+    },
+    {
+      "req_id": "FACT-ZST-EX-0024",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "This is the original (uncompressed) size.  This information is optional.  Frame_Content_Size uses a variable number of bytes, provided by FCS_Field_Si"
+    },
+    {
+      "req_id": "FACT-ZST-EX-0025",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "MUST",
+      "text_fragment": "After Magic_Number and Frame_Header, there are some number of blocks. Each frame must have at least 1 block, but there is no upper limit on the number"
+    },
+    {
+      "req_id": "FACT-ZST-EX-0026",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "The lowest bit (Last_Block) signals whether this block is the last one.  The frame will end after this last block.  It may be followed by an optional "
+    },
+    {
+      "req_id": "FACT-ZST-EX-0027",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "one.  The frame will end after this last block.  It may be followed by an optional Content_Checksum (see Section 3.1.1)."
+    },
+    {
+      "req_id": "FACT-ZST-EX-0028",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "MUST",
+      "text_fragment": "Block_Content consists of a single byte.  On the decompression side, this byte must be repeated Block_Size times."
+    },
+    {
+      "req_id": "FACT-ZST-EX-0029",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "MUST",
+      "text_fragment": "current specification.  If such a value is present, it is considered to be corrupt data, and a compliant decoder must reject it."
+    },
+    {
+      "req_id": "FACT-ZST-EX-0030",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "MUST",
+      "text_fragment": "When Block_Type is RLE_Block, since Block_Content's size is always 1, Block_Size represents the number of times this byte must be repeated."
+    },
+    {
+      "req_id": "FACT-ZST-EX-0031",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "MUST",
+      "text_fragment": "To decompress a compressed block, the compressed size must be provided from the Block_Size field within Block_Header."
+    },
+    {
+      "req_id": "FACT-ZST-EX-0032",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "*  The previous Huffman tree, required by Treeless_Literals_Block type."
+    },
+    {
+      "req_id": "FACT-ZST-EX-0033",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "*  Previous Finite State Entropy (FSE) decoding tables, required by Repeat_Mode, for each symbol type (literals length codes, match"
+    },
+    {
+      "req_id": "FACT-ZST-EX-0034",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "Literals can be stored uncompressed or compressed using Huffman prefix codes.  When compressed, an optional tree description can be present, followed "
+    },
+    {
+      "req_id": "FACT-ZST-EX-0035",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "this mode is triggered without any previous Huffman table in the frame (or dictionary, per Section 5), it should be treated as data corruption.  Liter"
+    },
+    {
+      "req_id": "FACT-ZST-EX-0036",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "*  For Compressed_Block and Treeless_Literals_Block, it's required to decode both Compressed_Size and Regenerated_Size (the decompressed"
+    },
+    {
+      "req_id": "FACT-ZST-EX-0037",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "Stream_1 consists of a single byte that should be repeated Regenerated_Size times to generate the decoded literals."
+    },
+    {
+      "req_id": "FACT-ZST-EX-0038",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "MUST",
+      "text_fragment": "Huffman_Tree_Description is determined during the decoding process. It must be used to determine where streams begin."
+    },
+    {
+      "req_id": "FACT-ZST-EX-0039",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "streams combined.  The decompressed size of each stream is equal to (Regenerated_Size+3)/4, except for the last stream, which may be up to 3 bytes sma"
+    },
+    {
+      "req_id": "FACT-ZST-EX-0040",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "The Sequences_Section regroups all symbols required to decode commands.  There are three symbol types: literals length codes,"
+    },
+    {
+      "req_id": "FACT-ZST-EX-0041",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "The Sequences_Section starts by a header, followed by optional probability tables for each symbol type, followed by the bitstream."
+    },
+    {
+      "req_id": "FACT-ZST-EX-0042",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "MUST",
+      "text_fragment": "The last field, Reserved, must be all zeroes."
+    },
+    {
+      "req_id": "FACT-ZST-EX-0043",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "MUST",
+      "text_fragment": "is 9, and the maximum accuracy log for the offset code table is 8. This mode must not be used when only one symbol is present; RLE_Mode should be used"
+    },
+    {
+      "req_id": "FACT-ZST-EX-0044",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "MUST",
+      "text_fragment": "This mode must not be used when only one symbol is present; RLE_Mode should be used instead (although any other mode will work)."
+    },
+    {
+      "req_id": "FACT-ZST-EX-0045",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "mode is used without any previous sequence table in the frame (or dictionary; see Section 5) to repeat, this should be treated as corruption."
+    },
+    {
+      "req_id": "FACT-ZST-EX-0046",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "MUST",
+      "text_fragment": "In zstd, the compressor writes bits forward into a block, and the decompressor must read the bitstream backwards."
+    },
+    {
+      "req_id": "FACT-ZST-EX-0047",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "The bitstream starts with initial FSE state values, each using the required number of bits in their respective accuracy, decoded previously from their"
+    },
+    {
+      "req_id": "FACT-ZST-EX-0048",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "MUST",
+      "text_fragment": "first to last.  Since the compressor writes the bitstream in the forward direction, this means the compressor must encode the sequences starting with "
+    },
+    {
+      "req_id": "FACT-ZST-EX-0049",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "Decoding starts by reading the Number_of_Bits required to decode offset.  It does the same for Match_Length and then for"
+    },
+    {
+      "req_id": "FACT-ZST-EX-0050",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "This operation will be repeated Number_of_Sequences times.  At the end, the bitstream shall be entirely consumed; otherwise, the bitstream is consider"
+    },
+    {
+      "req_id": "FACT-ZST-EX-0051",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "MUST",
+      "text_fragment": "literals), so an offset of 6 and a match length of 3 means that 3 bytes should be copied from 6 bytes back.  Note that all offsets leading to previous"
+    },
+    {
+      "req_id": "FACT-ZST-EX-0052",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "MUST",
+      "text_fragment": "bytes should be copied from 6 bytes back.  Note that all offsets leading to previously decoded data must be smaller than Window_Size defined in Frame_"
+    },
+    {
+      "req_id": "FACT-ZST-EX-0053",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "It should be noted that a skippable frame can be used to watermark a stream of concatenated frames embedding any kind of tracking"
+    },
+    {
+      "req_id": "FACT-ZST-EX-0054",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "information (even just a Universally Unique Identifier (UUID)). Users wary of such possibility should scan the stream of concatenated frames in an att"
+    },
+    {
+      "req_id": "FACT-ZST-EX-0055",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "MUST",
+      "text_fragment": "[ANS].  FSE encoding/decoding involves a state that is carried over between symbols, so decoding must be done in the opposite direction as encoding.  "
+    },
+    {
+      "req_id": "FACT-ZST-EX-0056",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "the Symbol indicated in the table for that state.  To obtain the next state value, the decoder should consume Num_Bits bits from the stream as a littl"
+    },
+    {
+      "req_id": "FACT-ZST-EX-0057",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "MUST",
+      "text_fragment": "from 0 to the last present one (included) on a normalized scale of (1 << Accuracy_Log).  Note that there must be two or more symbols with nonzero prob"
+    },
+    {
+      "req_id": "FACT-ZST-EX-0058",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "MUST",
+      "text_fragment": "of 8, and presuming 100 probabilities points have already been distributed, the decoder may read any value from 0 to (256 - 100 + 1) == 157, inclusive"
+    },
+    {
+      "req_id": "FACT-ZST-EX-0059",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "MUST",
+      "text_fragment": "distributed, the decoder may read any value from 0 to (256 - 100 + 1) == 157, inclusive.  Therefore, it must read log_(2)sup(157) == 8 bits."
+    },
+    {
+      "req_id": "FACT-ZST-EX-0060",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "256.  If the number of symbols decoded is not equal to the expected, the header should be considered corrupt."
+    },
+    {
+      "req_id": "FACT-ZST-EX-0061",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "To get the Number_of_Bits and Baseline required for the next state, it is first necessary to sort all states in their natural order.  The"
+    },
+    {
+      "req_id": "FACT-ZST-EX-0062",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "The next state is determined from the current state by reading the required Number_of_Bits and adding the specified Baseline."
+    },
+    {
+      "req_id": "FACT-ZST-EX-0063",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "bit sequences (codewords), one codeword for each symbol, in a manner such that different symbols may be represented by bit sequences of different leng"
+    },
+    {
+      "req_id": "FACT-ZST-EX-0064",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "MUST",
+      "text_fragment": "The prefix code must not exceed a maximum code length.  More bits improve accuracy but yield a larger header size and require more"
+    },
+    {
+      "req_id": "FACT-ZST-EX-0065",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "MUST",
+      "text_fragment": "For example, presume the following Huffman tree must be described:"
+    },
+    {
+      "req_id": "FACT-ZST-EX-0066",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "MUST",
+      "text_fragment": "Each bitstream must be read backward, starting from the end and going up to the beginning.  Therefore, it is necessary to know the size of"
+    },
+    {
+      "req_id": "FACT-ZST-EX-0067",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "The process continues reading up to the required number of symbols per stream.  If a bitstream is not entirely and exactly consumed,"
+    },
+    {
+      "req_id": "FACT-ZST-EX-0068",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "MUST",
+      "text_fragment": "Zstandard is compatible with \"raw content\" dictionaries, free of any format restriction, except that they must be at least 8 bytes.  These dictionarie"
+    },
+    {
+      "req_id": "FACT-ZST-EX-0069",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "are provided out of band.  That is, the Dictionary_ID identifies which should be used, but this specification does not describe the mechanism by which"
+    },
+    {
+      "req_id": "FACT-ZST-EX-0070",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "public distribution of compressed frames, the following ranges are reserved and shall not be used:"
+    },
+    {
+      "req_id": "FACT-ZST-EX-0071",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "MUST",
+      "text_fragment": "stored in order, 4 bytes little-endian each, for a total of 12 bytes.  Each repeat offset must have a value less than the dictionary size."
+    },
+    {
+      "req_id": "FACT-ZST-EX-0072",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "long as the amount of data decoded from this frame is less than or equal to Window_Size, sequence commands may specify offsets longer than the total l"
+    },
+    {
+      "req_id": "FACT-ZST-EX-0073",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "dictionaries with zstd payloads, especially with MIME, content encoded with the media type registered here should not use a dictionary.  The exception"
+    },
+    {
+      "req_id": "FACT-ZST-EX-0074",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "Required parameters:  N/A"
+    },
+    {
+      "req_id": "FACT-ZST-EX-0075",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "Optional parameters:  N/A"
+    },
+    {
+      "req_id": "FACT-ZST-EX-0076",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "Fragment Identifier Considerations:  The syntax and semantics of fragment identifiers specified for +zstd should be as specified for 'application/zstd"
+    },
+    {
+      "req_id": "FACT-ZST-EX-0077",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "MUST",
+      "text_fragment": "One should never compress a message whose content must remain secret with a message generated by a third party.  Such a compression can be"
+    },
+    {
+      "req_id": "FACT-ZST-EX-0078",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "MUST",
+      "text_fragment": "An attacker may provide correctly formed compressed frames with unreasonable memory requirements.  A decoder must always control"
+    },
+    {
+      "req_id": "FACT-ZST-EX-0079",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "MUST",
+      "text_fragment": "Compression can be optimized by training a dictionary on a variety of related content payloads.  This dictionary must then be available at the decoder"
+    },
+    {
+      "req_id": "FACT-ZST-EX-0080",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "given compressed payload, it is worth noting that third-party dictionaries may interact unexpectedly with a decoder, leading to possible memory or oth"
+    },
+    {
+      "req_id": "FACT-ZST-EX-0081",
+      "source_id": "ZST-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "[RFC1952]  Deutsch, P., \"GZIP file format specification version 4.3\", RFC 1952, DOI 10.17487/RFC1952, May 1996, <https://www.rfc-editor.org/info/rfc19"
+    }
+  ],
   "index_terms": [],
-  "created_at": "2026-06-04T14:41:43.986265+00:00",
+  "created_at": "2026-06-18T15:42:51.015685+00:00",
   "output_path": null
 }

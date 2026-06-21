@@ -1,11 +1,10 @@
-- item_id: TSV-ANALYTICS-GAPS-DOGFOOD-001
-  item_title: "TSV analytics gap functions dogfood \u2192 NDJSON (12 tests)"
+- item_id: TC-FORENSICS-001
+  item_title: Repository orientation and state snapshot
   declared_status: completed
   supervisor_grade: ACCEPTED_WITH_LIMITATIONS
   evidence_found: true
   evidence_paths:
-  - .local/evidences/product-deepening-dogfood-tsv-sylk-20260617/focused-proof-tsv-sylk-dogfood.md
-  - .local/evidences/product-deepening-dogfood-tsv-sylk-20260617/raw-logs/tsv-sylk-dogfood.log
+  - reports/machinery-lifecycle-forensics-20260621/repository-binding.yaml
   tests_supporting: []
   tests_missing: []
   acceptance_criteria_met:
@@ -17,21 +16,28 @@
   required_rework: ''
   can_autonomously_repair: false
   next_prompt_instruction: 'Item accepted with limitations: path-only evidence for
-    TSV-ANALYTICS-GAPS-DOGFOOD-001'
+    TC-FORENSICS-001'
+  purpose_check:
+    item_type: MACHINERY_FORENSICS
+    has_gap_ref: null
+    verdict: NOT_APPLICABLE
+    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
   semantic_verification:
-    adequate: true
-    confidence: 0.96
+    adequate: false
+    confidence: 0.0
     stub_detected: false
-    deficiencies: []
-    llm_used: true
-- item_id: SYLK-ANALYTICS-GAPS-DOGFOOD-001
-  item_title: "SYLK analytics gap functions dogfood \u2192 NDJSON (12 tests)"
+    deficiencies:
+    - llm_verification_unavailable
+    llm_used: false
+    source: fallback_llm_unavailable
+    note: LLM unavailable or malformed response; evidence needs manual review
+- item_id: TC-FORENSICS-002
+  item_title: Reconstruct failed execution timeline
   declared_status: completed
   supervisor_grade: ACCEPTED_WITH_LIMITATIONS
   evidence_found: true
   evidence_paths:
-  - .local/evidences/product-deepening-dogfood-tsv-sylk-20260617/focused-proof-tsv-sylk-dogfood.md
-  - .local/evidences/product-deepening-dogfood-tsv-sylk-20260617/raw-logs/tsv-sylk-dogfood.log
+  - reports/machinery-lifecycle-forensics-20260621/failed-run-timeline.yaml
   tests_supporting: []
   tests_missing: []
   acceptance_criteria_met:
@@ -43,10 +49,250 @@
   required_rework: ''
   can_autonomously_repair: false
   next_prompt_instruction: 'Item accepted with limitations: path-only evidence for
-    SYLK-ANALYTICS-GAPS-DOGFOOD-001'
+    TC-FORENSICS-002'
+  purpose_check:
+    item_type: MACHINERY_FORENSICS
+    has_gap_ref: null
+    verdict: NOT_APPLICABLE
+    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
   semantic_verification:
-    adequate: true
-    confidence: 0.96
+    adequate: false
+    confidence: 0.0
     stub_detected: false
-    deficiencies: []
-    llm_used: true
+    deficiencies:
+    - llm_verification_unavailable
+    llm_used: false
+    source: fallback_llm_unavailable
+    note: LLM unavailable or malformed response; evidence needs manual review
+- item_id: TC-FORENSICS-003
+  item_title: Lifecycle truth table and producer-consumer analysis
+  declared_status: completed
+  supervisor_grade: ACCEPTED_WITH_LIMITATIONS
+  evidence_found: true
+  evidence_paths:
+  - reports/machinery-lifecycle-forensics-20260621/lifecycle-truth-table.md
+  tests_supporting: []
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  - No concrete test/criteria proof (path-only acceptance)
+  acceptance_criteria_failed:
+  - No raw proof, test content, or acceptance criteria verified
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: 'Item accepted with limitations: path-only evidence for
+    TC-FORENSICS-003'
+  purpose_check:
+    item_type: MACHINERY_FORENSICS
+    has_gap_ref: null
+    verdict: NOT_APPLICABLE
+    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
+  semantic_verification:
+    adequate: false
+    confidence: 0.0
+    stub_detected: false
+    deficiencies:
+    - llm_verification_unavailable
+    llm_used: false
+    source: fallback_llm_unavailable
+    note: LLM unavailable or malformed response; evidence needs manual review
+- item_id: TC-FORENSICS-004
+  item_title: Stop-condition forensics
+  declared_status: completed
+  supervisor_grade: ACCEPTED_WITH_LIMITATIONS
+  evidence_found: true
+  evidence_paths:
+  - reports/machinery-lifecycle-forensics-20260621/stop-condition-forensics.yaml
+  tests_supporting: []
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  - No concrete test/criteria proof (path-only acceptance)
+  acceptance_criteria_failed:
+  - No raw proof, test content, or acceptance criteria verified
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: 'Item accepted with limitations: path-only evidence for
+    TC-FORENSICS-004'
+  purpose_check:
+    item_type: MACHINERY_FORENSICS
+    has_gap_ref: null
+    verdict: NOT_APPLICABLE
+    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
+  semantic_verification:
+    adequate: false
+    confidence: 0.0
+    stub_detected: false
+    deficiencies:
+    - llm_verification_unavailable
+    llm_used: false
+    source: fallback_llm_unavailable
+    note: LLM unavailable or malformed response; evidence needs manual review
+- item_id: TC-FORENSICS-005
+  item_title: Root-cause register with 6 root causes identified
+  declared_status: completed
+  supervisor_grade: ACCEPTED_WITH_LIMITATIONS
+  evidence_found: true
+  evidence_paths:
+  - reports/machinery-lifecycle-forensics-20260621/lifecycle-root-cause-register.yaml
+  tests_supporting: []
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  - No concrete test/criteria proof (path-only acceptance)
+  acceptance_criteria_failed:
+  - No raw proof, test content, or acceptance criteria verified
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: 'Item accepted with limitations: path-only evidence for
+    TC-FORENSICS-005'
+  purpose_check:
+    item_type: MACHINERY_FORENSICS
+    has_gap_ref: null
+    verdict: NOT_APPLICABLE
+    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
+  semantic_verification:
+    adequate: false
+    confidence: 0.0
+    stub_detected: false
+    deficiencies:
+    - llm_verification_unavailable
+    llm_used: false
+    source: fallback_llm_unavailable
+    note: LLM unavailable or malformed response; evidence needs manual review
+- item_id: TC-HYGIENE-FODS-001
+  item_title: "Fix FODS Python triple nesting \u2014 stage deleted files and update\
+    \ baseline"
+  declared_status: completed
+  supervisor_grade: ACCEPTED_WITH_LIMITATIONS
+  evidence_found: true
+  evidence_paths:
+  - registry/source-structure-baseline.json
+  tests_supporting: []
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  - No concrete test/criteria proof (path-only acceptance)
+  acceptance_criteria_failed:
+  - No raw proof, test content, or acceptance criteria verified
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: 'Item accepted with limitations: path-only evidence for
+    TC-HYGIENE-FODS-001'
+  purpose_check:
+    item_type: MACHINERY_REPAIR
+    has_gap_ref: null
+    verdict: NOT_APPLICABLE
+    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
+  semantic_verification:
+    adequate: false
+    confidence: 0.0
+    stub_detected: false
+    deficiencies:
+    - llm_verification_unavailable
+    llm_used: false
+    source: fallback_llm_unavailable
+    note: LLM unavailable or malformed response; evidence needs manual review
+- item_id: TC-BASELINE-UPDATE-001
+  item_title: Update source structure baseline for legitimately grown files
+  declared_status: completed
+  supervisor_grade: ACCEPTED_WITH_LIMITATIONS
+  evidence_found: true
+  evidence_paths:
+  - registry/source-structure-baseline.json
+  tests_supporting: []
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  - No concrete test/criteria proof (path-only acceptance)
+  acceptance_criteria_failed:
+  - No raw proof, test content, or acceptance criteria verified
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: 'Item accepted with limitations: path-only evidence for
+    TC-BASELINE-UPDATE-001'
+  purpose_check:
+    item_type: MACHINERY_REPAIR
+    has_gap_ref: null
+    verdict: NOT_APPLICABLE
+    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
+  semantic_verification:
+    adequate: false
+    confidence: 0.0
+    stub_detected: false
+    deficiencies:
+    - llm_verification_unavailable
+    llm_used: false
+    source: fallback_llm_unavailable
+    note: LLM unavailable or malformed response; evidence needs manual review
+- item_id: TC-LIF-MISSION-LEDGER-001
+  item_title: Create machinery mission ledger
+  declared_status: completed
+  supervisor_grade: ACCEPTED_WITH_LIMITATIONS
+  evidence_found: true
+  evidence_paths:
+  - .local/supervisor/machinery/mission-ledger.json
+  tests_supporting: []
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  - No concrete test/criteria proof (path-only acceptance)
+  acceptance_criteria_failed:
+  - No raw proof, test content, or acceptance criteria verified
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: 'Item accepted with limitations: path-only evidence for
+    TC-LIF-MISSION-LEDGER-001'
+  purpose_check:
+    item_type: MACHINERY_REPAIR
+    has_gap_ref: null
+    verdict: NOT_APPLICABLE
+    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
+  semantic_verification:
+    adequate: false
+    confidence: 0.0
+    stub_detected: false
+    deficiencies:
+    - llm_verification_unavailable
+    llm_used: false
+    source: fallback_llm_unavailable
+    note: LLM unavailable or malformed response; evidence needs manual review
+- item_id: TC-LIF-CONTINUATION-RESET-001
+  item_title: Reset machinery track continuation signal to CONTINUE
+  declared_status: completed
+  supervisor_grade: ACCEPTED_WITH_LIMITATIONS
+  evidence_found: true
+  evidence_paths:
+  - .local/supervisor/machinery/continuation-signal.json
+  tests_supporting: []
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  - No concrete test/criteria proof (path-only acceptance)
+  acceptance_criteria_failed:
+  - No raw proof, test content, or acceptance criteria verified
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: 'Item accepted with limitations: path-only evidence for
+    TC-LIF-CONTINUATION-RESET-001'
+  purpose_check:
+    item_type: MACHINERY_REPAIR
+    has_gap_ref: null
+    verdict: NOT_APPLICABLE
+    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
+  semantic_verification:
+    adequate: false
+    confidence: 0.0
+    stub_detected: false
+    deficiencies:
+    - llm_verification_unavailable
+    llm_used: false
+    source: fallback_llm_unavailable
+    note: LLM unavailable or malformed response; evidence needs manual review

@@ -1,7 +1,7 @@
 # Supervisor-Generated Next Sprint Prompt
-# Source sprint: FF-IDEMPOTENT-SPEC-TO-FEATURE-SWARM-HEALING-V2
+# Source sprint: machinery-lifecycle-forensics-20260621
 # Stream: mainstream
-# Generated: 2026-06-16T16:34:23.216061
+# Generated: 2026-06-21T19:25:09.625155
 # ADVISORY ONLY — not a Format Factory authority document
 # This is INPUT to the next sprint, not a gate approval or commit authorization.
 
@@ -11,9 +11,9 @@
 ADVANCE: Product deepening — .NET commercial + Python FOSS + dogfood + packaging
 
 ## Prior Sprint Summary
-- Sprint ID: FF-IDEMPOTENT-SPEC-TO-FEATURE-SWARM-HEALING-V2
-- Evidence verdict: ACCEPTED_WITH_REWORK
-- Tests: 13395 passed, 0 failed, 37 skipped
+- Sprint ID: machinery-lifecycle-forensics-20260621
+- Evidence verdict: ACCEPTED
+- Tests: 1490 passed, 0 failed, 0 skipped
 - Autonomous continue: True
 
 ## STOP_REASON_ADVISORY (enforced by stop_reason_adjudicator.py)
@@ -44,17 +44,12 @@ TRUE_EXTERNAL_GATE (ONLY these warrant a stop):
 - [agent-owned] TASK-006: Prepare FODT Gate 11 readiness packet and commercial checklist
 - [external-gate] TASK-007: Submit FODT Gate 11 for Babar Raza approval (after packet ready — human required)
 - [pending] TASK-008: Continue ZST implementation toward Gate 11 readiness criteria
-- [pending] TASK-009: Work on open taskcard: FODS-COMMERCIAL-EXPORT-HTML-PDF-PNG
-- [pending] TASK-010: Work on open taskcard: FODT-COMMERCIAL-EXPORT-HTML-PDF-PNG
-- [pending] TASK-011: Work on open taskcard: NEXT-COMMERCIAL-IMPLEMENTATION-SWARM
-- [pending] TASK-012: Product deepening: GAP-ABW-FOSS-LOAD-001 — GAP-ABW-FOSS-LOAD-001
-- [pending] TASK-013: Product deepening: GAP-FODG-FOSS-LOAD-001 — GAP-FODG-FOSS-LOAD-001
-- [pending] TASK-014: Product deepening: GAP-Gnumeric-FOSS-LOAD-001 — GAP-Gnumeric-FOSS-LOAD-001
-- [pending] TASK-015: Product deepening: GAP-TOML-FOSS-ROUNDTRIP-001 — GAP-TOML-FOSS-ROUNDTRIP-001
-- [pending] TASK-016: Product deepening: GAP-DIF-FOSS-PROBE_DIF-001 — GAP-DIF-FOSS-PROBE_DIF-001
-- [pending] TASK-017: Advance one dogfood export path using a Format Factory library
-- [pending] TASK-018: Build package artifacts and run installed-workflow proof
-- [pending] TASK-019: Write evidence declaration and run supervisor autonomous-cycle
+- [pending] TASK-009: Work on open taskcard: TC-0015-spec-retrieval-strategy-evaluation
+- [pending] TASK-010: Work on open taskcard: TC-0016-fods-vector-index-pilot
+- [pending] TASK-011: Work on open taskcard: TC-0020-spec-workbench-core
+- [pending] TASK-012: Advance one dogfood export path using a Format Factory library
+- [pending] TASK-013: Build package artifacts and run installed-workflow proof
+- [pending] TASK-014: Write evidence declaration and run supervisor autonomous-cycle
 
 ## Section 2: Rework / Repair (Advisory — Fix Before Closeout)
 None
@@ -92,56 +87,56 @@ None
 
 ## Project Memory Context
 ```
-- timestamp: 2026-06-16T16:27:13.700825
-- verdict: ACCEPTED
-- test_count: 16
 - fail_count: 0
 - git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\product-deepening-sprint85-20260616-fc60c35\declaration-review-package.zip
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\FF-HEAL-QNAME-20260621-114042\declaration-review-package.zip
 - pending_marker_count: 0
-- bundle_entry_count: 71
+- bundle_entry_count: 81
 - bundle_validation_pass: True
-- test_delta: -32
-- test_delta_from: 48
 
-## Entry: product-deepening-sprint69
-- timestamp: 2026-06-16T16:29:10.400474
+## Entry: FF-NEXTWORK-PROMOTE-LEDGER-20260621
+- timestamp: 2026-06-21T13:31:14.243183
 - verdict: ACCEPTED
-- test_count: 20
+- test_count: 0
 - fail_count: 0
 - git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\product-deepening-sprint69-20260616-e5ba655\declaration-review-package.zip
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\FF-NEXTWORK-PROMOTE-LEDGER-20260621\declaration-review-package.zip
 - pending_marker_count: 0
-- bundle_entry_count: 64
+- bundle_entry_count: 47
 - bundle_validation_pass: True
-- test_delta: +4
-- test_delta_from: 16
 
-## Entry: IDEMPOTENT-SWARM-SPRINT-133
-- timestamp: 2026-06-16T16:31:11.169696
+## Entry: FF-HEALING-TASKCARDS-EXEC-20260621
+- timestamp: 2026-06-21T13:53:27.438088
 - verdict: ACCEPTED
-- test_count: 12
+- test_count: 0
 - fail_count: 0
 - git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\idempotent-swarm-sprint133-20260616-baf84d6\declaration-review-package.zip
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\FF-HEALING-TASKCARDS-EXEC-20260621\declaration-review-package.zip
 - pending_marker_count: 0
-- bundle_entry_count: 58
+- bundle_entry_count: 67
 - bundle_validation_pass: True
-- test_delta: -8
-- test_delta_from: 20
 
-## Entry: PRODUCT-DEEPENING-SPRINT-32-20260616
-- timestamp: 2026-06-16T16:33:06.797806
+## Entry: FF-PLAN-DELIGHTFUL-WIBBLING-20260621
+- timestamp: 2026-06-21T14:51:07.830673
 - verdict: ACCEPTED
-- test_count: 20
+- test_count: 0
 - fail_count: 0
 - git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\product-deepening-sprint32-20260616-70ea6bc\declaration-review-package.zip
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\FF-PLAN-DELIGHTFUL-WIBBLING-20260621\declaration-review-package.zip
 - pending_marker_count: 0
-- bundle_entry_count: 60
+- bundle_entry_count: 68
 - bundle_validation_pass: True
-- test_delta: +8
-- test_delta_from: 12
+
+## Entry: spec-auth-heal-sprint-1
+- timestamp: 2026-06-21T19:03:25.545170
+- verdict: ACCEPTED
+- test_count: 0
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\spec-auth-heal-sprint-1\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 62
+- bundle_validation_pass: True
 ```
 
 ---

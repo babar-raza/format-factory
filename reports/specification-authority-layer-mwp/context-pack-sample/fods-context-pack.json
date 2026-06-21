@@ -1,21 +1,722 @@
 {
-  "context_pack_id": "CP-FODS-b539f51ffad4",
+  "context_pack_id": "CP-FODS-271e2eec4bf2",
   "format_id": "fods",
   "manifest": {
-    "sha256": "b539f51ffad4fd751d6cb2b11ab7aa59ac85bbedfe84891d48530d08bea47a1a",
+    "sha256": "271e2eec4bf22591013bc4be71fb6cd47300cf03d8ca7e195af9fa261acea529",
     "sources_count": 1
   },
   "included_sources": [
     {
       "source_id": "FODS-SPEC-001",
-      "title": "fods spec",
-      "sha256": "3a2264283fded9fccc0346ceca037b9e97efa949b4af81b61e9e060d7ffe221a",
-      "sections_count": 4,
+      "title": "ODF 1.3 Part 3 Schema",
+      "sha256": "92cfe64ee30a8cca1be19a76d38628fdc8ef9153eb59547f6c96fe7b9b81b066",
+      "sections_count": 4991,
       "source_type": "public_spec"
     }
   ],
-  "requirement_summary": [],
+  "requirement_summary": [
+    {
+      "req_id": "FACT-FODS-001",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "FODS root element is <office:document> with office:mimetype attribute"
+    },
+    {
+      "req_id": "FACT-FODS-002",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "FODS mimetype is application/vnd.oasis.opendocument.spreadsheet-flat-xml"
+    },
+    {
+      "req_id": "FACT-FODS-003",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "Spreadsheet content is in <office:body>/<office:spreadsheet>"
+    },
+    {
+      "req_id": "FACT-FODS-004",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "Sheets are <table:table> children of <office:spreadsheet>"
+    },
+    {
+      "req_id": "FACT-FODS-005",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "Rows are <table:table-row> children of <table:table>"
+    },
+    {
+      "req_id": "FACT-FODS-006",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "Cells are <table:table-cell> children of <table:table-row>"
+    },
+    {
+      "req_id": "FACT-FODS-007",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "Cell text is in <text:p> children of <table:table-cell>"
+    },
+    {
+      "req_id": "FACT-FODS-008",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "table:number-columns-repeated attribute expands a cell across N columns"
+    },
+    {
+      "req_id": "FACT-FODS-009",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "table:formula contains formula in oooc: or of: namespace"
+    },
+    {
+      "req_id": "FACT-FODS-010",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "office:value-type values: string, float, boolean, date, time, currency, percentage"
+    },
+    {
+      "req_id": "FACT-FODS-011",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "table:table-column defines column properties including default-cell-style-name"
+    },
+    {
+      "req_id": "FACT-FODS-012",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "table:number-rows-repeated attribute on table:table-row expands a row across N rows"
+    },
+    {
+      "req_id": "FACT-FODS-013",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "Named ranges are in <table:named-expressions> containing <table:named-range> elements"
+    },
+    {
+      "req_id": "FACT-FODS-014",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "Automatic styles in <office:automatic-styles> define inline styles for cells, rows, columns"
+    },
+    {
+      "req_id": "FACT-FODS-015",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "Covered table cells are <table:covered-table-cell> elements representing cells spanned by a merge"
+    },
+    {
+      "req_id": "FACT-FODS-016",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "table:table element has table:name attribute (19.677) specifying the name of a table (sheet)"
+    },
+    {
+      "req_id": "FACT-FODS-017",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "table:table element has table:print attribute (19.697) with values 'true' or 'false' controlling whether the table is printed"
+    },
+    {
+      "req_id": "FACT-FODS-018",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "table:table element has table:style-name attribute (19.730) referencing a table style, and table:protected attribute (19.700) for sheet protection"
+    },
+    {
+      "req_id": "FACT-FODS-019",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "table:table-row element has attributes: table:default-cell-style-name (19.619), table:number-rows-repeated (19.681), table:style-name (19.730), table:"
+    },
+    {
+      "req_id": "FACT-FODS-020",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "table:table-cell element has office:value attribute (19.388) specifying the currency, float, or percentage numeric value of a cell"
+    },
+    {
+      "req_id": "FACT-FODS-021",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "table:table-cell element has table:number-columns-spanned (19.680) and table:number-rows-spanned (19.682) attributes for cell merging, both defaulting"
+    },
+    {
+      "req_id": "FACT-FODS-022",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "office:value-type attribute (19.389) value-to-attribute mapping: boolean uses office:boolean-value, currency uses office:value+office:currency, date u"
+    },
+    {
+      "req_id": "FACT-FODS-023",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "table:table-cell can contain nested <table:table> elements (nested tables within cells)"
+    },
+    {
+      "req_id": "FACT-FODS-024",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "office:document child elements include office:meta (3.2), office:scripts (3.12), office:settings (3.10), office:styles (3.15.2), office:font-face-decl"
+    },
+    {
+      "req_id": "FACT-FODS-025",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "office:meta element (3.2) contains document metadata: dc:title, dc:description, dc:subject, dc:creator, dc:date, dc:language, meta:generator, meta:cre"
+    },
+    {
+      "req_id": "FACT-FODS-026",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "office:scripts element (3.12) contains office:script and office:event-listeners child elements for document scripts in various scripting languages"
+    },
+    {
+      "req_id": "FACT-FODS-027",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "office:font-face-decls element (3.14) contains style:font-face (16.23) child elements declaring all font faces used in a document"
+    },
+    {
+      "req_id": "FACT-FODS-028",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "office:automatic-styles element (3.15.3) can contain number:number-style, number:date-style, number:currency-style, number:percentage-style, number:ti"
+    },
+    {
+      "req_id": "FACT-FODS-029",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "number:number-style element (16.29.2) defines formatting for decimal numbers, usable within office:automatic-styles and office:styles, with child elem"
+    },
+    {
+      "req_id": "FACT-FODS-030",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "number:date-style element (16.29.11) defines formatting for date values, with child elements number:day, number:month, number:year, number:era, number"
+    },
+    {
+      "req_id": "FACT-FODS-031",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "table:table-column element (9.1.6) has attributes table:default-cell-style-name (19.619), table:number-columns-repeated (19.679), table:style-name (19"
+    },
+    {
+      "req_id": "FACT-FODS-032",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "office:spreadsheet element (3.7) has attributes table:protection-key (19.701), table:protection-key-digest-algorithm (19.702), and table:structure-pro"
+    },
+    {
+      "req_id": "FACT-FODS-033",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "office:spreadsheet element (3.7) child elements include table:calculation-settings, table:content-validations, table:data-pilot-tables, table:database"
+    },
+    {
+      "req_id": "FACT-FODS-034",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "office:document element has office:version attribute (19.390) specifying the ODF version, and grddl:transformation attribute (19.320)"
+    },
+    {
+      "req_id": "FACT-FODS-035",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "table:table-header-rows element (9.1.7) contains table:table-row elements that are automatically repeated on every page when a table does not fit on a"
+    },
+    {
+      "req_id": "FACT-FODS-036",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "table:table-cell element may be empty, and table cells may span multiple columns and rows as stated in section 9.1.4"
+    },
+    {
+      "req_id": "FACT-FODS-037",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "table:table-cell element has office:date-value attribute (19.376) specifying the date value of a cell when office:value-type is date, in XML Schema da"
+    },
+    {
+      "req_id": "FACT-FODS-038",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "table:table-cell element has office:time-value attribute (19.387) specifying the time duration value of a cell when office:value-type is time, in XML "
+    },
+    {
+      "req_id": "FACT-FODS-039",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "table:table-cell element has office:boolean-value attribute (19.374) specifying the boolean value of a cell when office:value-type is boolean, with va"
+    },
+    {
+      "req_id": "FACT-FODS-040",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "table:table-cell element has office:currency attribute (19.375) specifying the currency code (e.g. USD, EUR) when office:value-type is currency"
+    },
+    {
+      "req_id": "FACT-FODS-041",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "table:table-cell element has office:string-value attribute (19.386) specifying the string value of a cell when office:value-type is string"
+    },
+    {
+      "req_id": "FACT-FODS-042",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "table:table-cell element has table:style-name attribute (19.730) referencing a cell style defined in office:automatic-styles or office:styles"
+    },
+    {
+      "req_id": "FACT-FODS-043",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "table:table-cell element has table:protect attribute (19.698) with values true or false controlling whether the cell content is protected from editing"
+    },
+    {
+      "req_id": "FACT-FODS-044",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "table:table-cell element has table:content-validation-name attribute (19.611) referencing a content validation rule defined in table:content-validatio"
+    },
+    {
+      "req_id": "FACT-FODS-045",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "table:table-cell element has table:number-columns-repeated attribute (19.679) specifying the number of consecutive empty or identical cells to repeat "
+    },
+    {
+      "req_id": "FACT-FODS-046",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "table:table-cell has table:formula attribute (19.642) containing cell formulas; the namespace prefix (e.g. oooc: or of:) identifies the formula syntax"
+    },
+    {
+      "req_id": "FACT-FODS-047",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "table:table-column element has table:number-columns-repeated attribute (19.679) specifying how many consecutive columns share the same properties"
+    },
+    {
+      "req_id": "FACT-FODS-048",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "table:table-column element has table:visibility attribute (19.749) with values visible, collapse, or filter controlling column visibility"
+    },
+    {
+      "req_id": "FACT-FODS-049",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "table:table-row element has table:visibility attribute (19.749) with values visible, collapse, or filter controlling row visibility"
+    },
+    {
+      "req_id": "FACT-FODS-050",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "table:table element has table:protected attribute (19.699) with values true or false controlling whether the sheet is protected, and table:protection-"
+    },
+    {
+      "req_id": "FACT-FODS-051",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "table:table element has table:print-ranges attribute (19.697) specifying which cell ranges to print, as a space-separated list of cell range addresses"
+    },
+    {
+      "req_id": "FACT-FODS-052",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "table:table-header-columns element (9.1.5) contains table:table-column elements that represent header columns which are repeated on every printed page"
+    },
+    {
+      "req_id": "FACT-FODS-053",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "table:table-columns element (9.1.4) groups table:table-column elements and may be used instead of listing columns directly under table:table"
+    },
+    {
+      "req_id": "FACT-FODS-054",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "table:table-rows element (9.1.8) groups table:table-row elements and may appear as a child of table:table alongside table:table-header-rows"
+    },
+    {
+      "req_id": "FACT-FODS-055",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "table:content-validations element (9.4.4) is a child of office:spreadsheet and contains table:content-validation child elements defining cell validati"
+    },
+    {
+      "req_id": "FACT-FODS-056",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "table:content-validation element (9.4.5) has attributes table:name (19.677), table:condition (19.612), table:allow-empty-cell (19.603), table:base-cel"
+    },
+    {
+      "req_id": "FACT-FODS-057",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "table:database-ranges element (9.4.14) is a child of office:spreadsheet and contains table:database-range child elements defining named database range"
+    },
+    {
+      "req_id": "FACT-FODS-058",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "table:database-range element (9.4.15) has attributes table:name (19.677), table:target-range-address (19.740), table:display-filter-buttons (19.622), "
+    },
+    {
+      "req_id": "FACT-FODS-059",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "table:named-expressions element (9.4.11) is a child of office:spreadsheet or table:table and contains table:named-range and table:named-expression chi"
+    },
+    {
+      "req_id": "FACT-FODS-060",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "table:named-expression element (9.4.13) has attributes table:name (19.677) and table:expression (19.639) defining a named formula expression rather th"
+    },
+    {
+      "req_id": "FACT-FODS-061",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "table:named-range element (9.4.12) has attributes table:name (19.677), table:cell-range-address (19.609), and table:base-cell-address (19.604) definin"
+    },
+    {
+      "req_id": "FACT-FODS-062",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "MUST",
+      "text_fragment": "table:calculation-settings element (9.4.1) is a child of office:spreadsheet and configures calculation behavior including table:case-sensitive (19.608"
+    },
+    {
+      "req_id": "FACT-FODS-063",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "style:table-cell-properties element (17.18) defines cell-level formatting properties including fo:background-color, fo:border, fo:padding, style:verti"
+    },
+    {
+      "req_id": "FACT-FODS-064",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "style:table-column-properties element (17.16) defines column-level formatting properties including style:column-width (17.16.8) and fo:break-before/fo"
+    },
+    {
+      "req_id": "FACT-FODS-065",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "style:table-row-properties element (17.17) defines row-level formatting properties including style:row-height (17.17.19), style:min-row-height (17.17."
+    },
+    {
+      "req_id": "FACT-FODS-066",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "style:table-properties element (17.15) defines table-level formatting properties including table:display (17.15.5) controlling whether the sheet is vi"
+    },
+    {
+      "req_id": "FACT-FODS-067",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "number:currency-style element (16.29.8) defines formatting for currency values, with child elements number:currency-symbol, number:number, number:text"
+    },
+    {
+      "req_id": "FACT-FODS-068",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "number:percentage-style element (16.29.10) defines formatting for percentage values, with child elements number:number and number:text within office:a"
+    },
+    {
+      "req_id": "FACT-FODS-069",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "number:time-style element (16.29.18) defines formatting for time values, with child elements number:hours, number:minutes, number:seconds, and number:"
+    },
+    {
+      "req_id": "FACT-FODS-070",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "number:boolean-style element (16.29.24) defines formatting for boolean values, with child element number:boolean that renders the boolean as text"
+    },
+    {
+      "req_id": "FACT-FODS-071",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "office:styles element (3.15.1) contains default and named styles used across the document, including style:default-style for default formatting of eac"
+    },
+    {
+      "req_id": "FACT-FODS-072",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "style:style element (16.2) has attributes style:name, style:family (table, table-row, table-column, table-cell, text, paragraph, graphic), and style:p"
+    },
+    {
+      "req_id": "FACT-FODS-073",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "table:table-cell can contain text:p (5.1.3), text:list (5.3.1), table:table (nested), draw:* graphic elements, and other child content elements"
+    },
+    {
+      "req_id": "FACT-FODS-074",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "table:table element may contain table:conditional-formats element which holds table:conditional-format children defining conditional formatting rules "
+    },
+    {
+      "req_id": "FACT-FODS-075",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "table:tracked-changes element (9.9.1) is a child of office:spreadsheet containing table:cell-content-change, table:insertion, and table:deletion child"
+    },
+    {
+      "req_id": "FACT-FODS-076",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "table:data-pilot-tables element (9.6.1) is a child of office:spreadsheet containing table:data-pilot-table elements defining pivot table configuration"
+    },
+    {
+      "req_id": "FACT-FODS-077",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "table:table-source element (9.3.1) is a child of table:table with attributes xlink:href, table:filter-name, and table:mode defining an external data s"
+    },
+    {
+      "req_id": "FACT-FODS-078",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "table:consolidation element (9.8.1) is a child of office:spreadsheet defining consolidation ranges with attributes table:function, table:source-cell-r"
+    },
+    {
+      "req_id": "FACT-FODS-EX-0001",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "or text:formula attribute value begins with a namespace prefix bound to namespace \"urn:oasis:names:tc:opendocument:xmlns:of:1.3,\" the syntax and seman"
+    },
+    {
+      "req_id": "FACT-FODS-EX-0002",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "table:formula or text:formula attribute value has no namespace prefix, the attribute value portions that are expressions determined by a prefix shall "
+    },
+    {
+      "req_id": "FACT-FODS-EX-0003",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "C) The <office:body> 3.3 element shall have the child element <office:text> 3.4. 2.2.4  OpenDocument Spreadsheet Document"
+    },
+    {
+      "req_id": "FACT-FODS-EX-0004",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "C) The <office:body> 3.3 element shall have the child element <office:spreadsheet> 3.7."
+    },
+    {
+      "req_id": "FACT-FODS-EX-0005",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "D) All namespace prefixes used in the values of table:formula attributes values shall be bound to the \"urn:oasis:names:tc:opendocument:xmlns:of:1.2 \" "
+    },
+    {
+      "req_id": "FACT-FODS-EX-0006",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "E) All table:formula attribute values shall be a conforming OpenDocument Formula expression [ODF1.3-Part-4:OpenFormula] 2.2 OpenDocument Formula Expre"
+    },
+    {
+      "req_id": "FACT-FODS-EX-0007",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "C) The <office:body> 3.3 element shall have the child element <office:drawing> 3.5. 2.2.6  OpenDocument Presentation Document"
+    },
+    {
+      "req_id": "FACT-FODS-EX-0008",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "C) The <office:body> 3.3 element shall have the child element <office:chart> 19.379. OpenDocument-v1.3-os-part3-schema"
+    },
+    {
+      "req_id": "FACT-FODS-EX-0009",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "C) The <office:body> 3.3 element shall have the child element <office:image> 3.9. 2.2.9  OpenDocument Formula Document"
+    },
+    {
+      "req_id": "FACT-FODS-EX-0010",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "C) The <office:body> 3.3 element shall have the child element <office:database> 12.1. 2.3  Producers"
+    },
+    {
+      "req_id": "FACT-FODS-EX-0011",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "create a document. The IRI is specified using the xlink:href attribute. See [XLink]. The <meta:template> element is usable within the following elemen"
+    },
+    {
+      "req_id": "FACT-FODS-EX-0012",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "the meta:value-type attribute content of type double 18.2, date 18.2, dateTime 18.2, duration 18.2, boolean 18.3.3 or string 18.2."
+    },
+    {
+      "req_id": "FACT-FODS-EX-0013",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "more than one <text:page> element, the text:master-page-name attribute of the first <text:page> element specifies the default master style for a docum"
+    },
+    {
+      "req_id": "FACT-FODS-EX-0014",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "If a list does not have a style:name attribute and therefore no list style is specified, one of the following actions is taken:"
+    },
+    {
+      "req_id": "FACT-FODS-EX-0015",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "or text:id attribute, the value of which binds that parent element to the text:change-id attribute on the <text:change-start> and <text:change-end> el"
+    },
+    {
+      "req_id": "FACT-FODS-EX-0016",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "These elements use the text:change-id attribute to link to <text:changed-region> elements that contain the change information."
+    },
+    {
+      "req_id": "FACT-FODS-EX-0017",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "Every reference is identified by the value of its text:name attribute, which shall be unique. In a bookmark reference, the start and end elements shal"
+    },
+    {
+      "req_id": "FACT-FODS-EX-0018",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "Every reference is identified by the value of its text:name attribute, which shall be unique. In a range reference, the start and end elements shall u"
+    },
+    {
+      "req_id": "FACT-FODS-EX-0019",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "paragraph element content, such as text spans. The element's text:style-name attribute references a ruby style that specifies formatting attributes of"
+    },
+    {
+      "req_id": "FACT-FODS-EX-0020",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "element's text:style-name attribute references a text style that specifies further formatting attributes used for the annotation text."
+    },
+    {
+      "req_id": "FACT-FODS-EX-0021",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "identical value for its text:name attribute. If there is no preceding <text:variable-set> element with an identical value for its"
+    },
+    {
+      "req_id": "FACT-FODS-EX-0022",
+      "source_id": "FODS-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "text:name attribute the value of a <text:variable-get> field is undefined. The <text:variable-get> element is usable within the following elements: <t"
+    }
+  ],
   "index_terms": [],
-  "created_at": "2026-06-04T14:41:44.102696+00:00",
+  "created_at": "2026-06-18T15:42:30.738900+00:00",
   "output_path": null
 }

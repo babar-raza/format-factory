@@ -1,0 +1,33 @@
+{
+  "skill_id": "add-dogfood-export",
+  "invocation_args": "fodt text-analytics to ndjson",
+  "source_format_id": "fodt",
+  "target_format_id": "ndjson",
+  "target_ff_library": "ndjson.ndjson_codec.write_ndjson",
+  "dogfood_status": "IMPLEMENTED",
+  "changed_files": [
+    "tests/python/dogfood/test_dogfood_fodt_text_analytics_ndjson_export.py"
+  ],
+  "test_results": {
+    "command": ".venv/Scripts/pytest tests/python/dogfood/test_dogfood_fodt_text_analytics_ndjson_export.py -v",
+    "passed": 12,
+    "failed": 0,
+    "total": 12,
+    "result": "PASS"
+  },
+  "ledger_entry_id": "R90-FODT-TEXT-ANALYTICS-NDJSON-DOGFOOD-001",
+  "gap_ledger_ref": "GAP-FODT-FOSS-FODT_AVG_PAR-001",
+  "analytics_exported": [
+    "fodt_unique_word_count",
+    "fodt_longest_word",
+    "fodt_sentence_count",
+    "fodt_whitespace_ratio",
+    "fodt_avg_heading_length",
+    "fodt_is_multi_paragraph"
+  ],
+  "source_module": "src.python.fodt.neutral_model",
+  "ff_writer_invoked": "ndjson.ndjson_codec.write_ndjson",
+  "reload_proof": "test_ndjson_export_two_files reads output lines and json.loads each — PASS",
+  "dependency_scan": "No external format libraries used; only FF write_ndjson",
+  "verdict": "IMPLEMENTED"
+}

@@ -2,8 +2,9 @@
 # Prepared by: Agent (agent-owned preparation — submission requires human authorization)
 # Prepared: 2026-06-12 (Updated: 2026-06-18, Python tests 1667, .NET 567 tests verified)
 # Updated: 2026-06-20 — per-criterion C1-C20 / P1-P11 assessment added (TC-IMPL-003)
-# Sprint: tc-0005-llm-endpoint-20260618 (original: FORMAT-FACTORY-PRODUCT-GATE11-PREPARATION-AND-GAP-DEEPENING-001)
-# Status: PREPARATION ONLY — NOT SUBMITTED — Human approval from Babar Raza required before submission
+# Updated: 2026-06-21 — test counts reconciled from poc-targets.yaml; gates_passed="1-11" confirmed (autonomous-loop sprint)
+# Sprint: autonomous-loop-20260621
+# Status: G11-G APPROVED BY BABAR RAZA (2026-06-05) — awaiting customer-readiness-checklist + publication sign-off
 
 ---
 
@@ -34,11 +35,12 @@
 | G8 (Security Review) | PASSED | defusedxml, DTD prohibited, bounds checking |
 | G9 (Dogfood) | PASSED | FODT→TXT/HTML export chain verified |
 | G10 (FOSS POC Complete) | PASSED (Python) | 1667 Python test functions; parse→inspect→export verified |
-| G11-E (.NET prototype) | VERIFIED | .NET: FodtParser.cs + FodtWriter.cs + FodtPdfExporter.cs + FodtPngExporter.cs + 567 .NET tests |
-| G11-G (Commercial readiness) | APPROVED | Approved by Babar Raza 2026-06-05 (FODS, FODT, Netpbm batch) |
+| G11-E (.NET prototype) | VERIFIED | .NET: FodtParser.cs + FodtWriter.cs + FodtPdfExporter.cs + FodtPngExporter.cs + 520 .NET tests |
+| G11-G (Commercial readiness) | **APPROVED** | APPROVED_BY_BABAR_RAZA_2026_06_05 (source: poc-targets.yaml) |
 
-**Claimed gate:** G11 (commercial_readiness_in_progress)
-**Evidence-backed gate:** G10 (Python FOSS); G11-E (.NET prototype)
+**Claimed gate:** G11 — gates_passed: "1-11" (source: poc-targets.yaml)
+**Evidence-backed gate:** G10 (Python FOSS); G11-E (.NET prototype - VERIFIED); G11-G (APPROVED)
+**Remaining for commercial_product_ready:** (1) all 8 criteria in customer-readiness-checklist.md; (2) registry publication; (3) Babar Raza final sign-off on published package
 
 ---
 

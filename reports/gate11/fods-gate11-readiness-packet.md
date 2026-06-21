@@ -2,8 +2,9 @@
 # Prepared by: Agent (agent-owned preparation — submission requires human authorization)
 # Prepared: 2026-06-12 (Updated: 2026-06-18, R100 GetNumericColumnValues +617 .NET tests)
 # Updated: 2026-06-20 — per-criterion C1-C20 / P1-P11 assessment added (TC-IMPL-003)
-# Sprint: fods-getnumericcolumnvalues-r100-20260618 (original: FORMAT-FACTORY-PRODUCT-GATE11-PREPARATION-AND-GAP-DEEPENING-001)
-# Status: PREPARATION ONLY — NOT SUBMITTED — Human approval from Babar Raza required before submission
+# Updated: 2026-06-21 — G11-G APPROVED status reconciled from poc-targets.yaml (autonomous-loop sprint)
+# Sprint: autonomous-loop-20260621
+# Status: G11-G APPROVED BY BABAR RAZA (2026-06-05) — awaiting customer-readiness-checklist + publication sign-off
 
 ---
 
@@ -34,11 +35,12 @@
 | G8 (Security Review) | PASSED | defusedxml, DTD prohibited, malformed-input tests pass |
 | G9 (Dogfood) | PASSED | FODS→CSV export chain verified |
 | G10 (FOSS POC Complete) | PASSED (Python) | 1039 Python test functions; parse→inspect→export verified |
-| G11-E (.NET prototype - VERIFIED) | IN_PROGRESS | .NET: FodsParser.cs + FodsWriter.cs + FodsPdfExporter.cs + FodsOdsExporter.cs + FodsPngExporter.cs + 611 .NET tests |
-| G11-G (Commercial readiness) | NOT APPROVED | Requires Babar Raza approval |
+| G11-E (.NET prototype - VERIFIED) | PASSED | .NET: FodsParser.cs + FodsWriter.cs + FodsPdfExporter.cs + FodsOdsExporter.cs + FodsPngExporter.cs + 547 .NET tests |
+| G11-G (Commercial readiness) | **APPROVED** | APPROVED_BY_BABAR_RAZA_2026_06_05 (source: poc-targets.yaml) |
 
-**Claimed gate:** G11 (commercial_readiness_in_progress)
-**Evidence-backed gate:** G10 (Python FOSS); G11-E (.NET prototype - VERIFIED)
+**Claimed gate:** G11 — gates_passed: "1-11" (source: poc-targets.yaml)
+**Evidence-backed gate:** G10 (Python FOSS); G11-E (.NET prototype - VERIFIED); G11-G (APPROVED)
+**Remaining for commercial_product_ready:** (1) all 8 criteria in customer-readiness-checklist.md; (2) registry publication; (3) Babar Raza final sign-off on published package
 
 ---
 
@@ -169,17 +171,19 @@ Python FOSS has **read and basic write** via `writer.py`, but full write capabil
 
 ---
 
-## 7. What Babar Raza Must Decide
+## 7. Status After G11-G Approval
 
-This packet is agent-prepared. The following decisions require **human authorization from Babar Raza**:
+Gate 11-G has been **approved by Babar Raza on 2026-06-05** (source: `poc-targets.yaml`).
 
-1. **Gate 11-G approval:** Confirm commercial_product_ready status for FODS (both Python FOSS and .NET tracks)
-2. **Publication authorization:** Authorize commit of current source state + NuGet + PyPI publication
-3. **Scope confirmation:** Confirm whether Gate 11 covers Python FOSS only, .NET only, or both tracks together
+The following decisions still require **human authorization from Babar Raza**:
 
-**DO NOT submit this packet to Babar Raza without explicit user authorization.**
-**DO NOT claim Gate 11 is approved based on this document.**
+1. **Customer-readiness-checklist sign-off:** Confirm all 8 criteria in `docs/governance/customer-readiness-checklist.md` are satisfied (install proof, API reference, examples, round-trip, malformed input tests, security guards, release notes, version number)
+2. **Publication authorization:** Authorize git commit of current source state → NuGet + PyPI publication
+3. **Final commercial_product_ready sign-off:** Set `commercial_product_ready: true` in poc-targets.yaml
+
+**G11-G decision already made — no further Gate 11 approval action needed.**
 **DO NOT publish to NuGet or PyPI without commit authorization.**
+**commercial_product_ready requires final Babar Raza publication sign-off.**
 
 ---
 

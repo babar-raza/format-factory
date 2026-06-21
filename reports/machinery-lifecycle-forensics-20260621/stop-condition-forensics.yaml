@@ -1,0 +1,110 @@
+---
+# Phase 4: Stop-Condition Forensics
+schema_version: "1.0"
+run_id: "machinery-lifecycle-forensics-20260621"
+
+stop_conditions:
+
+  - stop_id: "SC-001"
+    component: "check_continuation.py (Check 1b — M6)"
+    condition: "active-plan-lock.json has status=TERMINAL_CLOSED AND session_id matches current session"
+    intended_meaning: "Per-chat plan was completed with --terminal; product deepening must not start automatically"
+    actual_effect: >
+      Blocks ALL continuation including machinery track.
+      Fires for bright-frolicking-turtle.md (TERMINAL_CLOSED at 14:09:31 in session 7c0655b93790).
+    mission_aware: false
+    can_stop_with_gaps_remaining: true
+    evidence: "check_continuation.py --track machinery returns POST_PLAN_TERMINAL"
+    risk: HIGH
+    required_change: >
+      The TERMINAL_CLOSED check is CORRECT and NECESSARY for product deepening isolation.
+      However, it should NOT block machinery track work that has explicit user authorization.
+      Two-track approach: TERMINAL_CLOSED blocks product track; machinery track uses separate
+      enforcement. This requires adding track_type to active-plan-lock.json.
+    verdict: LEGITIMATE_FOR_PRODUCT_TRACK_BUT_OVER_BROAD_FOR_MACHINERY_TRACK
+
+  - stop_id: "SC-002"
+    component: "check_continuation.py (Check 1b — M8)"
+    condition: "session-keyed lock 7c0655b93790.json has status=COMPLETE AND session matches"
+    intended_meaning: "Plan was completed in this session; block auto-continuation to ledger work"
+    actual_effect: >
+      Would fire for fuzzy-conjuring-papert.md (COMPLETE at 14:06:17) after bright-frolicking-turtle.md
+      is cleared. Since bright-frolicking-turtle.md (TERMINAL_CLOSED) fires first (SC-001),
+      this is a secondary stop.
+    mission_aware: false
+    can_stop_with_gaps_remaining: true
+    evidence: "check_continuation.py returns PLAN_COMPLETED_IN_SESSION when active-plan-lock not present"
+    risk: MEDIUM
+    required_change: >
+      Same as SC-001: session-keyed locks should also carry track_type to allow machinery
+      track to proceed while blocking product track.
+
+  - stop_id: "SC-003"
+    component: "continuation-signal.json (legacy)"
+    condition: "autonomous_continue=false AND hard_stops_detected: [critical_rework_blocks_continuation]"
+    intended_meaning: "Sprint had rework items blocking next sprint"
+    actual_effect: >
+      Would block Check 2/4 in check_continuation.py. However, approval-gates.md has
+      AUTONOMOUS_CONTINUE=YES which triggers B4 override for Check 2. But Check 4 (hard_stops)
+      would still block because hard_stops_detected is non-empty and is NOT gated by gates.md.
+    mission_aware: false
+    can_stop_with_gaps_remaining: true
+    evidence: ".local/supervisor/continuation-signal.json hard_stops_detected field"
+    risk: MEDIUM
+    required_change: >
+      After resolving rework items, autonomous_cycle must be re-run to produce a clean
+      continuation-signal.json. Alternatively: after governance_validators.py baseline update,
+      the GOV_BLOCK:validate_source_architecture should not fire on next sprint.
+
+  - stop_id: "SC-004"
+    component: "continuation-signal.json (legacy)"
+    condition: "iteration=11, max_iterations=12 → one iteration remaining"
+    intended_meaning: "Protect against runaway loops"
+    actual_effect: >
+      At iteration 12, check_continuation.py returns MAX_ITERATIONS. Per CLAUDE.md:
+      'MAX_ITERATIONS is NOT a TRUE_EXTERNAL_GATE — apply governed rollover: reset iteration to 0.'
+      So this is a recoverable stop, not a true blocker.
+    mission_aware: false
+    can_stop_with_gaps_remaining: true
+    evidence: "continuation-signal.json iteration=11"
+    risk: LOW
+    required_change: "Governed rollover applies; not a true stop condition"
+
+  - stop_id: "SC-005"
+    component: "session identity collision"
+    condition: "New chat sessions on same git HEAD get same session_id as previous sessions"
+    intended_meaning: >
+      Session IDs derived from git HEAD are stable within a single git checkout state.
+      This is correct for CCI (continuation isolation) purposes.
+    actual_effect: >
+      When no new commits are made between sessions, a new user chat session inherits
+      the same session_id as the previous session. Plan locks from the previous session
+      apply to the new session, preventing unintended continuation. But this also prevents
+      INTENTIONAL new-session work on the same HEAD.
+    mission_aware: false
+    can_stop_with_gaps_remaining: true
+    evidence: "session_id 7c0655b93790 derived from HEAD 23d1333f across multiple chat sessions"
+    risk: HIGH
+    required_change: >
+      session_id should include a random nonce or process ID component to ensure uniqueness
+      per chat session even when git HEAD hasn't changed. The 4h TTL on session files
+      partially mitigates this, but if sessions run within 4h, the collision persists.
+      RECOMMENDED: Add UUID component to session file when first created in a new chat.
+
+prohibited_stops:
+  - "Iteration counter alone (SC-004 recoverable via rollover)"
+  - "Empty current sprint batch while mission has open gaps"
+  - "Evidence bundle created (closeout artifacts not terminal)"
+  - "User-facing reply emitted (reply does not equal workflow completion)"
+  - "Zero exit code from sprint (task-complete ≠ mission-complete)"
+
+legitimate_stops:
+  - "POST_PLAN_TERMINAL: plan was explicitly closed with --terminal in this session (SC-001) — CORRECT and NON-OVERRIDABLE"
+  - "PLAN_COMPLETED_IN_SESSION: plan was closed with --complete in same session (SC-002) — NON-OVERRIDABLE per CLAUDE.md"
+  - "TRUE_EXTERNAL_GATE: git push credentials, Gate 11 Babar Raza approval, PyPI credentials"
+
+machinery_track_stop_rule: >
+  For the machinery track, TERMINAL_CLOSED and PLAN_COMPLETED_IN_SESSION are OVER-BROAD
+  when the user has provided explicit authorization for machinery work. The correct fix is
+  to add track_type filtering to plan lock evaluation so that product-track plan closures
+  do not block machinery-track continuation. This is GAP-WF-004.

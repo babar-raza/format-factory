@@ -1,0 +1,220 @@
+---
+# Per-Product Capability Matrix — ff-arch-20260621-001
+# Generated: 2026-06-21
+# Scale: Green (professional) / Yellow (working/needs cleanup) / Orange (prototype)
+#        Red (malformed/non-aligned) / Gray (insufficient evidence)
+
+schema_version: "1.0"
+run_id: "ff-arch-20260621-001"
+
+products:
+
+  # =====================================
+  # .NET PRODUCTS
+  # =====================================
+
+  - product: "FODS"
+    format: "fods"
+    language: "C#/.NET"
+    current_source_root: "src/net/fods/"
+    current_package: "FormatFactory.Fods"
+    expected_qname_root: "src/FormatFactory/Table/ + src/FormatFactory/Office/"
+    generation_wave: 2
+    status: "active"
+    parser_load: "Green"        # FodsDocument.Load() — DOM-backed, secure, verified
+    object_model: "Orange"      # FodsCell/FodsRow/FodsSheet — working but format-prefixed names
+    edit_mutation: "Green"      # SetText, cell mutation through live DOM
+    same_format_save: "Green"   # FodsDocument.Save() — round-trip tested
+    export_conversion: "Green"  # CSV, HTML, JSON, ODS, PDF, PNG exporters
+    validation: "Yellow"        # Size guard, DTD prohibition; no schema validation
+    error_handling: "Green"     # FodsDocumentException hierarchy, never-throw parse_fods() pattern
+    spec_qname_compliance: "Orange"  # Spec refs in comments; class names NOT canonical
+    namespace_compliance: "Orange"   # FormatFactory.Fods namespace (ok); model not in spec namespace
+    folder_hierarchy: "Red"     # FodsDocument.cs at root, Model/ for cells — NOT spec-hierarchy
+    class_naming: "Red"         # FodsCell, FodsSheet — format-prefixed, NOT Table.TableCell, Table.Table
+    test_coverage: "Yellow"     # 617 FODS tests passing; analytics-heavy; integration coverage exists
+    fixture_coverage: "Yellow"  # Sample files exist; fixture library not formalized
+    documentation: "Yellow"     # XML docs on all public members; no API reference docs
+    source_quality: "Yellow"    # Well-structured, secure, maintainable; naming non-canonical
+    cross_language_parity: "Orange"  # Python FODS is streaming parser (Gen 1); .NET is DOM (Gen 2)
+    recommendation: "keep-rename-migrate"
+    migration_risk: "medium"    # Rename classes + move to Compat/; canonical targets need creation
+    required_machinery_fix: ["QNAME-BACKFILL: create canonical Table.TableCell etc.", "SKILL-HARDENING: enforce naming in add-dotnet-api skill"]
+    required_skill_fix: ["add-dotnet-api must require spec_qname in output class"]
+    gate_readiness: "Gate 11 preparation in progress (NOT approved)"
+
+  - product: "FODT"
+    format: "fodt"
+    language: "C#/.NET"
+    current_source_root: "src/net/fodt/"
+    current_package: "FormatFactory.Fodt"
+    expected_qname_root: "src/FormatFactory/Text/ + src/net/fodt/Spec/"
+    generation_wave: "2+3-skeleton"
+    status: "active+skeleton"
+    parser_load: "Green"        # FodtDocument.Load() — DOM-backed, secure
+    object_model: "Orange"      # FodtParagraph, FodtBody — working; Spec/ stubs are architecture_only
+    edit_mutation: "Green"      # AppendParagraph, InsertParagraph, SetParagraphText, ReplaceText
+    same_format_save: "Green"   # FodtDocument.Save() — tested
+    export_conversion: "Green"  # HTML, Markdown, TXT, PDF, PNG exporters
+    validation: "Yellow"        # DTD prohibition, size guard; no full schema validation
+    error_handling: "Green"     # FodtDocumentException; safe Load pattern
+    spec_qname_compliance: "Orange"  # Spec/ stubs have QName constants; FodtDocument is still Gen 2
+    namespace_compliance: "Orange"   # Spec/ namespace correct; Model/ classes not spec-hierarchy
+    folder_hierarchy: "Yellow"  # Spec/ subdirectory exists; Model/ at wrong level
+    class_naming: "Orange"      # Spec/Text/Paragraph.cs correct name; FodtParagraph still used
+    test_coverage: "Yellow"     # Good FODT test suite; compat_bootstrap tests added recently
+    fixture_coverage: "Yellow"  # Fixtures exist; not formalized
+    documentation: "Yellow"     # XML docs on public API; Spec/ stubs have TODO comments
+    source_quality: "Yellow"    # Two generations mixed; compat.py transition strategy is sound
+    cross_language_parity: "Orange"  # Python FODT has model.py + spec stubs; .NET has same structure
+    recommendation: "keep-complete-spec-migration"
+    migration_risk: "low-medium"  # compat.py bridge already in place; need to fill spec/ stubs
+    required_machinery_fix: ["QNAME-BACKFILL: implement spec/ stubs", "SKILL-HARDENING: add-dotnet-object-model-feature must use Spec/ path"]
+    required_skill_fix: ["add-dotnet-object-model-feature must know about compat.py pattern"]
+    gate_readiness: "Gate 11 preparation in progress (NOT approved)"
+
+  - product: "CSV"
+    format: "csv"
+    language: "C#/.NET"
+    current_source_root: "src/net/csv/"
+    current_package: "FormatFactory.Csv"
+    generation_wave: 1
+    status: "active"
+    parser_load: "Yellow"
+    object_model: "Yellow"      # CsvDocument with rows/headers
+    edit_mutation: "Gray"
+    same_format_save: "Yellow"
+    export_conversion: "Yellow"
+    spec_qname_compliance: "Gray"  # CSV has no formal XML QNames; custom spec
+    recommendation: "keep"
+    migration_risk: "low"
+
+  - product: "NDJSON"
+    format: "ndjson"
+    language: "C#/.NET"
+    current_source_root: "src/net/ndjson/"
+    generation_wave: 1
+    status: "active"
+    spec_qname_compliance: "Gray"  # JSON format; no QNames
+    recommendation: "keep"
+
+  - product: "TSV"
+    format: "tsv"
+    language: "C#/.NET"
+    current_source_root: "src/net/tsv/"
+    generation_wave: 1
+    status: "active"
+    recommendation: "keep"
+
+  - product: "NetPBM"
+    format: "netpbm"
+    language: "C#/.NET"
+    current_source_root: "src/net/netpbm/"
+    generation_wave: 2
+    status: "active"
+    recommendation: "keep"
+
+  - product: "ZST"
+    format: "zst"
+    language: "C#/.NET"
+    current_source_root: "src/net/zst/"
+    generation_wave: 1
+    status: "active"
+    recommendation: "keep"
+
+  # =====================================
+  # Python PRODUCTS
+  # =====================================
+
+  - product: "FODS (Python)"
+    format: "fods"
+    language: "Python"
+    current_source_root: "src/python/fods/fods/fods/"  # canonical level (triple nesting)
+    current_package: "format-factory-fods"
+    expected_qname_root: "src/python/fods/{namespace}/{element}.py"
+    generation_wave: 1
+    status: "active-but-structurally-broken"
+    parser_load: "Green"        # parse_fods() — streaming, secure (defusedxml), validated
+    object_model: "Red"         # No object model — returns dict only
+    edit_mutation: "Yellow"     # workbook_set_cell_value() — dict mutation, not object mutation
+    same_format_save: "Green"   # write_fods() / workbook_to_xml() — round-trip tested
+    export_conversion: "Yellow" # workbook_to_csv(), workbook_to_html() — limited
+    validation: "Green"         # Neutral model validation, schema-based
+    error_handling: "Green"     # FodsInputError/FodsSizeError/FodsParseError hierarchy
+    spec_qname_compliance: "Yellow"  # QName strings in constants.py; no QName classes
+    class_naming: "Red"         # No classes named after spec elements
+    test_coverage: "Green"      # Extensive analytics test suite; core tests pass
+    source_quality: "Orange"    # Good code quality BUT triple nesting is structural defect
+    cross_language_parity: "Red"  # .NET has DOM object model; Python has dict-only model
+    recommendation: "restructure-and-add-object-model"
+    migration_risk: "high"      # Triple nesting must be fixed first; object model is missing
+    required_machinery_fix: ["SOURCE-HYGIENE: fix triple nesting", "QNAME-BACKFILL: add object model classes"]
+    gate_readiness: "Gates 1-10 passed; object model not started"
+
+  - product: "FODT (Python)"
+    format: "fodt"
+    language: "Python"
+    current_source_root: "src/python/fodt/"
+    current_package: "format-factory-fodt"
+    expected_qname_root: "src/python/fodt/spec/{namespace}/{element}.py"
+    generation_wave: "1+2+3-skeleton"
+    status: "active-with-spec-layer-started"
+    parser_load: "Green"
+    object_model: "Yellow"      # FodtDocument/FodtParagraph in models.py; spec/ stubs not wired
+    edit_mutation: "Yellow"     # Through neutral model dict; not through spec object model
+    same_format_save: "Yellow"
+    export_conversion: "Yellow"
+    spec_qname_compliance: "Orange"  # spec/ layer has architecture_only stubs; compat.py not switched
+    class_naming: "Orange"      # FodtDocument/FodtParagraph in use; spec/ names correct but unused
+    test_coverage: "Yellow"     # compat_bootstrap tests added; spec stub tests exist
+    source_quality: "Yellow"    # Best-structured Python product; compat.py transition plan is sound
+    cross_language_parity: "Yellow"  # Both .NET and Python have similar generation structure
+    recommendation: "complete-spec-migration"
+    migration_risk: "low-medium"  # compat.py bridge ready; need to implement spec/ stubs
+    required_machinery_fix: ["QNAME-BACKFILL: implement spec/text/paragraph.py etc."]
+    gate_readiness: "Gates 1-10 passed; spec migration not complete"
+
+  - product: "ZST (Python)"
+    format: "zst"
+    language: "Python"
+    current_source_root: "src/python/zst/"
+    generation_wave: 1
+    status: "active"
+    parser_load: "Green"
+    object_model: "Red"
+    spec_qname_compliance: "Gray"  # Binary format; no XML QNames; custom canonical names needed
+    source_quality: "Yellow"    # Analytics extracted to zst_analytics.py; good separation
+    recommendation: "keep-add-canonical-spec"
+    gate_readiness: "Product deepening active"
+
+  - product: "XCF (Python)"
+    format: "xcf"
+    language: "Python"
+    current_source_root: "src/python/xcf/"
+    generation_wave: 1
+    status: "active"
+    spec_qname_compliance: "Gray"  # Binary format
+    source_quality: "Yellow"
+    recommendation: "keep"
+
+  - product: "FODG (Python)"
+    format: "fodg"
+    language: "Python"
+    current_source_root: "src/python/fodg/"
+    generation_wave: 1
+    status: "active"
+    spec_qname_compliance: "Gray"
+    source_quality: "Yellow"
+    recommendation: "keep"
+
+  - product: "ABW (Python)"
+    format: "abw"
+    language: "Python"
+    current_source_root: "src/python/abw/"
+    generation_wave: 1
+    status: "active"
+    source_quality: "Yellow"
+    recommendation: "keep"
+
+  # NOTE: ODS, ODT, DIF, PBM, PGM, PPM, QOI, SYLK, TOML, TSV, NDJSON, GNUMERIC, FODP
+  # All Generation 1. All active. All need spec-canonical mapping for non-trivial formats.

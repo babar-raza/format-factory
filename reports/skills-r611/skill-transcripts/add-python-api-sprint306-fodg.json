@@ -1,0 +1,39 @@
+{
+  "skill_id": "add-python-api",
+  "format_id": "fodg",
+  "sprint_id": "sprint306-fodg-deepening-20260617",
+  "apis_added": [
+    {
+      "api_name": "fodg_file_size_mod_61_times_20_plus_shape_count_times_1800_plus_text_count_times_1300",
+      "spec_fact_refs": ["FACT-FODG-EX-0001"],
+      "behavior": "Return (file_size % 61) * 20 + shape_count * 1800 + text_count * 1300",
+      "source_file": "src/python/fodg/fodg_codec.py",
+      "test_file": "tests/python/fodg/test_r611_fodg_sprint306_deepening.py",
+      "tests_count": 10
+    },
+    {
+      "api_name": "fodg_file_size_times_17_plus_shape_count_times_40_plus_text_count_times_25_plus_page_count_times_12",
+      "spec_fact_refs": ["FACT-FODG-EX-0002"],
+      "behavior": "Return file_size * 17 + shape_count * 40 + text_count * 25 + page_count * 12",
+      "source_file": "src/python/fodg/fodg_codec.py",
+      "test_file": "tests/python/fodg/test_r611_fodg_sprint306_deepening.py",
+      "tests_count": 10
+    }
+  ],
+  "changed_files": [
+    "src/python/fodg/fodg_codec.py",
+    "src/python/fodg/__init__.py",
+    "tests/python/fodg/test_r611_fodg_sprint306_deepening.py",
+    "reports/r90/product-code-change-ledger.json"
+  ],
+  "test_results": {
+    "total": 20,
+    "passed": 20,
+    "failed": 0,
+    "command": "python -m pytest tests/python/fodg/test_r611_fodg_sprint306_deepening.py -v"
+  },
+  "ledger_entries_added": 2,
+  "ledger_total_entries": 1965,
+  "verdict": "PASS",
+  "timestamp": "2026-06-17T21:30:00Z"
+}

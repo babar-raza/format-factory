@@ -1,0 +1,27 @@
+{
+  "skill_id": "add-python-api",
+  "format_id": "zst",
+  "sprint_id": "sprint329-zst-deepening-20260617",
+  "api_functions": [
+    {
+      "name": "zst_compressed_size_mod_557_times_31_plus_decompressed_size_mod_8200_times_5_plus_max_byte_value_times_225",
+      "behavior": "Returns (compressed_size % 557) * 31 + (decompressed_size % 8200) * 5 + max_byte_value * 225"
+    },
+    {
+      "name": "zst_compressed_size_times_39_plus_decompressed_size_times_9_plus_max_byte_value_times_17",
+      "behavior": "Returns compressed_size * 39 + decompressed_size * 9 + max_byte_value * 17"
+    }
+  ],
+  "changed_files": [
+    "src/python/zst/zst_codec.py",
+    "src/python/zst/__init__.py",
+    "tests/python/zst/test_r634_zst_sprint329_deepening.py"
+  ],
+  "test_results": {
+    "total": 20,
+    "passed": 20,
+    "failed": 0
+  },
+  "ledger_entry_id": "sprint329-zst-deepening-20260617",
+  "verdict": "PASS"
+}

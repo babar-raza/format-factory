@@ -1,0 +1,36 @@
+{
+  "skill_id": "/add-analytics-function",
+  "sprint": 523,
+  "format_id": "zst",
+  "functions": [
+    {
+      "function_name": "zst_compressed_mod_829_times_5000_plus_decompressed_times_203_plus_file_size_times_206",
+      "prime_used": 829,
+      "target_file": "src/python/zst/zst_analytics.py",
+      "expected_values": [
+        {"sample_file": "samples/by-format/zst/valid/text-compressed.zst", "expected": 1495202, "got": 1495202},
+        {"sample_file": "samples/by-format/zst/valid/minimal-synthetic.zst", "expected": 52263, "got": 52263},
+        {"sample_file": "samples/by-format/zst/valid/random-data.zst", "expected": 1644728, "got": 1644728}
+      ]
+    },
+    {
+      "function_name": "zst_compressed_mod_853_times_5100_plus_decompressed_times_207_plus_file_size_times_210",
+      "prime_used": 853,
+      "target_file": "src/python/zst/zst_analytics.py",
+      "expected_values": [
+        {"sample_file": "samples/by-format/zst/valid/text-compressed.zst", "expected": 1525050, "got": 1525050},
+        {"sample_file": "samples/by-format/zst/valid/minimal-synthetic.zst", "expected": 53307, "got": 53307},
+        {"sample_file": "samples/by-format/zst/valid/random-data.zst", "expected": 1677528, "got": 1677528}
+      ]
+    }
+  ],
+  "changed_files": [
+    "src/python/zst/zst_analytics.py",
+    "src/python/zst/__init__.py"
+  ],
+  "test_file": "tests/python/deepening/test_r1077_zst_deepening.py",
+  "test_results": {"passed": 14, "failed": 0},
+  "expected_values_verified": true,
+  "ledger_entry_id": "r1077-zst-829-853",
+  "verdict": "PASSED"
+}

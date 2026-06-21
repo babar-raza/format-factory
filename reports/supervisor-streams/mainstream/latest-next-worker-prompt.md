@@ -1,6 +1,6 @@
 # FORMAT-FACTORY-RNEXT-MEGA-TRAIN-001
-# Generated: 2026-06-16T16:32:54.090606
-# Source: Supervisor autonomous-cycle review of PRODUCT-DEEPENING-DOGFOOD-TSV-SYLK-20260617
+# Generated: 2026-06-21T19:24:13.005196
+# Source: Supervisor autonomous-cycle review of machinery-lifecycle-forensics-20260621
 # Stream: mainstream
 # ADVISORY ONLY -- not a Format Factory authority document
 
@@ -27,7 +27,7 @@ Read these files before writing any code:
 ## Sprint Identity
 
 - Sprint ID: FORMAT-FACTORY-RNEXT-MEGA-TRAIN-001
-- Prior sprint: PRODUCT-DEEPENING-DOGFOOD-TSV-SYLK-20260617
+- Prior sprint: machinery-lifecycle-forensics-20260621
 - Prior verdict: ACCEPTED_WITH_REWORK
 - Prior tests: 0 passed, 0 failed, 0 skipped
 - Autonomous continue: True
@@ -202,7 +202,7 @@ python -m pytest tests/python/pbm/ tests/python/pgm/ tests/python/ppm/ -x -q
 
 ### Train G: SYLK Python Improvement
 
-Continue SYLK FOSS product. Continue FOSS product deepening — get_row_count, get_column_count, cell iteration
+Continue SYLK FOSS product. Continue FOSS product deepening — cell iteration, set_cell_value; package install proof
 
 **Acceptance Criteria:**
 - SYLK Python test count maintained or increased
@@ -236,7 +236,7 @@ python -m pytest tests/python/toml/ -x -q
 
 ### Train I: NDJSON Python Improvement
 
-Continue NDJSON FOSS product. Package install proof; dogfood pipeline integration
+Continue NDJSON FOSS product. Dogfood pipeline integration
 
 **Acceptance Criteria:**
 - NDJSON Python test count maintained or increased
@@ -253,7 +253,7 @@ python -m pytest tests/python/ndjson/ -x -q
 
 ### Train J: FODG Python Improvement
 
-Continue FODG FOSS product. Package install proof; SVG export investigation
+Continue FODG FOSS product. SVG export investigation
 
 **Acceptance Criteria:**
 - FODG Python test count maintained or increased
@@ -270,7 +270,7 @@ python -m pytest tests/python/fodg/ -x -q
 
 ### Train K: TSV Python Improvement
 
-Continue TSV FOSS product. Package install proof; dogfood pipeline integration
+Continue TSV FOSS product. Dogfood pipeline integration
 
 **Acceptance Criteria:**
 - TSV Python test count maintained or increased
@@ -473,12 +473,16 @@ END OF SUPERVISOR-GENERATED MEGA-TRAIN EXECUTION PROMPT
 The following failures have been recorded in durable failure memory.
 Address escalated failures with priority.
 
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_execution_method_required_validator_failed (seen 21x, last: HARDENED-GOV-PRODUCT-SPRINT-20260615)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_source_diff_required_validator_failed (seen 26x, last: GAP-CLOSURE-SPRINT-R282-20260616)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_idempotency_key_required_validator_failed (seen 6x, last: GAP-CLOSURE-SPRINT-R282-20260616)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_execution_method_required_validator_failed (seen 130x, last: spec-auth-heal-sprint-1)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_source_diff_required_validator_failed (seen 99x, last: spec-auth-heal-sprint-1)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_idempotency_key_required_validator_failed (seen 64x, last: spec-auth-heal-sprint-1)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_claim_classification_validator_failed (seen 7x, last: IDEMPOTENT-SWARM-EXECUTION-20260615-E31FA98)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_route_decision_required_validator_failed (seen 24x, last: GAP-CLOSURE-SPRINT-R282-20260616)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_spec_fact_refs_validator_failed (seen 43x, last: GAP-CLOSURE-SPRINT-R282-20260616)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_route_decision_required_validator_failed (seen 98x, last: spec-auth-heal-sprint-1)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_spec_fact_refs_validator_failed (seen 183x, last: spec-auth-heal-sprint-1)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_monolith_detection_validator_failed (seen 265x, last: spec-auth-heal-sprint-1)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): exit_code_3_rework_required (seen 148x, last: spec-auth-heal-sprint-1)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_source_architecture_failed (seen 4x, last: spec-auth-heal-sprint-1)
+- WARNING: 8 unresolved failures in failure memory
 
 
 ## Spec-Parity Requirements (from skill registry)

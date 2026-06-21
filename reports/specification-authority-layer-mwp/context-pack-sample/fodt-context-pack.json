@@ -1,21 +1,722 @@
 {
-  "context_pack_id": "CP-FODT-1f37dcaa0f4e",
+  "context_pack_id": "CP-FODT-3b15eb256e37",
   "format_id": "fodt",
   "manifest": {
-    "sha256": "1f37dcaa0f4e9206cdbc5fffcdd290362db57db7ad7559235bb0ecaa0fac1337",
+    "sha256": "3b15eb256e3793147759434caf50af7ccca2ce10833b6823ef9736e2bca1f42f",
     "sources_count": 1
   },
   "included_sources": [
     {
       "source_id": "FODT-SPEC-001",
-      "title": "fodt spec",
-      "sha256": "ea94292e692fcd69038549e5f4dc26b7d739bccbd9316c43e973defcce996427",
-      "sections_count": 4,
+      "title": "ODF 1.3 Part 3 Text Elements",
+      "sha256": "92cfe64ee30a8cca1be19a76d38628fdc8ef9153eb59547f6c96fe7b9b81b066",
+      "sections_count": 4940,
       "source_type": "public_spec"
     }
   ],
-  "requirement_summary": [],
+  "requirement_summary": [
+    {
+      "req_id": "FACT-FODT-001",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "FODT root element is <office:document> with office:mimetype='application/vnd.oasis.opendocument.text'"
+    },
+    {
+      "req_id": "FACT-FODT-002",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "FODT document body is contained in <office:body>/<office:text>"
+    },
+    {
+      "req_id": "FACT-FODT-003",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "Paragraphs are <text:p> elements within <office:text>"
+    },
+    {
+      "req_id": "FACT-FODT-004",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "Headings are <text:h> elements with text:outline-level attribute"
+    },
+    {
+      "req_id": "FACT-FODT-005",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "Lists are <text:list> elements containing <text:list-item> children"
+    },
+    {
+      "req_id": "FACT-FODT-006",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "Text spans are <text:span> elements with text:style-name attribute for inline styling"
+    },
+    {
+      "req_id": "FACT-FODT-007",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "Hyperlinks are <text:a> elements with xlink:href attribute"
+    },
+    {
+      "req_id": "FACT-FODT-008",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "Tables in text are <table:table> elements within <office:text>"
+    },
+    {
+      "req_id": "FACT-FODT-009",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "Sections are <text:section> elements that can contain paragraphs, headings, lists, and nested sections"
+    },
+    {
+      "req_id": "FACT-FODT-010",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "Notes (footnotes/endnotes) are <text:note> elements with text:note-class attribute"
+    },
+    {
+      "req_id": "FACT-FODT-011",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "Automatic styles are in <office:automatic-styles> element within <office:document>"
+    },
+    {
+      "req_id": "FACT-FODT-012",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "Bookmarks are <text:bookmark> or <text:bookmark-start>/<text:bookmark-end> pairs with text:name"
+    },
+    {
+      "req_id": "FACT-FODT-013",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "Font declarations are in <office:font-face-decls> containing <style:font-face> elements"
+    },
+    {
+      "req_id": "FACT-FODT-014",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "Text style properties are in <style:text-properties> with attributes for font, size, weight"
+    },
+    {
+      "req_id": "FACT-FODT-015",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "Paragraph style properties are in <style:paragraph-properties> with alignment, margin, line-height"
+    },
+    {
+      "req_id": "FACT-FODT-016",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "The <text:h> element's text:outline-level attribute is an integer from 1 to 10 with a default value of 1"
+    },
+    {
+      "req_id": "FACT-FODT-017",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "The <text:list-item> element can contain <text:h>, <text:list>, <text:number>, <text:p>, and <text:soft-page-break> child elements"
+    },
+    {
+      "req_id": "FACT-FODT-018",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "The <text:tracked-changes> element contains <text:changed-region> children and has the text:track-changes attribute"
+    },
+    {
+      "req_id": "FACT-FODT-019",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "The <text:changed-region> element contains exactly one of <text:insertion>, <text:deletion>, or <text:format-change>"
+    },
+    {
+      "req_id": "FACT-FODT-020",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "The <text:table-of-content> element represents a table of contents and contains <text:index-body> and <text:table-of-content-source>"
+    },
+    {
+      "req_id": "FACT-FODT-021",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "The <draw:frame> element is a container for embedded objects (images, text boxes, OLE objects) and is usable within <text:p>, <text:h>, <text:span>, <"
+    },
+    {
+      "req_id": "FACT-FODT-022",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "The <draw:frame> element can contain <draw:image>, <draw:text-box>, <draw:object>, <draw:object-ole>, <draw:applet>, <draw:floating-frame>, and <draw:"
+    },
+    {
+      "req_id": "FACT-FODT-023",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "The <table:table-row> element represents a row in a table and contains <table:table-cell> and <table:covered-table-cell> elements"
+    },
+    {
+      "req_id": "FACT-FODT-024",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "The <table:table-cell> element can contain paragraphs and nested tables, and has value-type attributes (office:value-type, office:value, office:string"
+    },
+    {
+      "req_id": "FACT-FODT-025",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "The <text:note-body> element contains the content of a note (footnote or endnote) and has no attributes"
+    },
+    {
+      "req_id": "FACT-FODT-026",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "The <text:list> element within <text:list-item> enables nested lists, creating arbitrarily deep list hierarchies"
+    },
+    {
+      "req_id": "FACT-FODT-027",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "The <text:table-of-content-source> element specifies how a table of contents is generated, with child elements <text:index-source-styles>, <text:index"
+    },
+    {
+      "req_id": "FACT-FODT-EX-0001",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "or text:formula attribute value begins with a namespace prefix bound to namespace \"urn:oasis:names:tc:opendocument:xmlns:of:1.3,\" the syntax and seman"
+    },
+    {
+      "req_id": "FACT-FODT-EX-0002",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "table:formula or text:formula attribute value has no namespace prefix, the attribute value portions that are expressions determined by a prefix shall "
+    },
+    {
+      "req_id": "FACT-FODT-EX-0003",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "C) The <office:body> 3.3 element shall have the child element <office:text> 3.4. 2.2.4  OpenDocument Spreadsheet Document"
+    },
+    {
+      "req_id": "FACT-FODT-EX-0004",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "C) The <office:body> 3.3 element shall have the child element <office:spreadsheet> 3.7."
+    },
+    {
+      "req_id": "FACT-FODT-EX-0005",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "D) All namespace prefixes used in the values of table:formula attributes values shall be bound to the \"urn:oasis:names:tc:opendocument:xmlns:of:1.2 \" "
+    },
+    {
+      "req_id": "FACT-FODT-EX-0006",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "E) All table:formula attribute values shall be a conforming OpenDocument Formula expression [ODF1.3-Part-4:OpenFormula] 2.2 OpenDocument Formula Expre"
+    },
+    {
+      "req_id": "FACT-FODT-EX-0007",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "C) The <office:body> 3.3 element shall have the child element <office:drawing> 3.5. 2.2.6  OpenDocument Presentation Document"
+    },
+    {
+      "req_id": "FACT-FODT-EX-0008",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "C) The <office:body> 3.3 element shall have the child element <office:chart> 19.379. OpenDocument-v1.3-os-part3-schema"
+    },
+    {
+      "req_id": "FACT-FODT-EX-0009",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "C) The <office:body> 3.3 element shall have the child element <office:image> 3.9. 2.2.9  OpenDocument Formula Document"
+    },
+    {
+      "req_id": "FACT-FODT-EX-0010",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "C) The <office:body> 3.3 element shall have the child element <office:database> 12.1. 2.3  Producers"
+    },
+    {
+      "req_id": "FACT-FODT-EX-0011",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "create a document. The IRI is specified using the xlink:href attribute. See [XLink]. The <meta:template> element is usable within the following elemen"
+    },
+    {
+      "req_id": "FACT-FODT-EX-0012",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "the meta:value-type attribute content of type double 18.2, date 18.2, dateTime 18.2, duration 18.2, boolean 18.3.3 or string 18.2."
+    },
+    {
+      "req_id": "FACT-FODT-EX-0013",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "more than one <text:page> element, the text:master-page-name attribute of the first <text:page> element specifies the default master style for a docum"
+    },
+    {
+      "req_id": "FACT-FODT-EX-0014",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "If a list does not have a style:name attribute and therefore no list style is specified, one of the following actions is taken:"
+    },
+    {
+      "req_id": "FACT-FODT-EX-0015",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "or text:id attribute, the value of which binds that parent element to the text:change-id attribute on the <text:change-start> and <text:change-end> el"
+    },
+    {
+      "req_id": "FACT-FODT-EX-0016",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "These elements use the text:change-id attribute to link to <text:changed-region> elements that contain the change information."
+    },
+    {
+      "req_id": "FACT-FODT-EX-0017",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "Every reference is identified by the value of its text:name attribute, which shall be unique. In a bookmark reference, the start and end elements shal"
+    },
+    {
+      "req_id": "FACT-FODT-EX-0018",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "Every reference is identified by the value of its text:name attribute, which shall be unique. In a range reference, the start and end elements shall u"
+    },
+    {
+      "req_id": "FACT-FODT-EX-0019",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "paragraph element content, such as text spans. The element's text:style-name attribute references a ruby style that specifies formatting attributes of"
+    },
+    {
+      "req_id": "FACT-FODT-EX-0020",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "element's text:style-name attribute references a text style that specifies further formatting attributes used for the annotation text."
+    },
+    {
+      "req_id": "FACT-FODT-EX-0021",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "identical value for its text:name attribute. If there is no preceding <text:variable-set> element with an identical value for its"
+    },
+    {
+      "req_id": "FACT-FODT-EX-0022",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "text:name attribute the value of a <text:variable-get> field is undefined. The <text:variable-get> element is usable within the following elements: <t"
+    },
+    {
+      "req_id": "FACT-FODT-EX-0023",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "can be empty if its text:display attribute is set to none. The <text:variable-input> element is usable within the following elements: <text:a>"
+    },
+    {
+      "req_id": "FACT-FODT-EX-0024",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "element is the value of a <text:user-field-decl> element with a text:name attribute value that matches the text:name attribute of this element."
+    },
+    {
+      "req_id": "FACT-FODT-EX-0025",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "that matches the text:name attribute of this element. The <text:user-field-get> element is usable within the following elements: <text:a>"
+    },
+    {
+      "req_id": "FACT-FODT-EX-0026",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "text:name attribute value that matches the text:name attribute of this element. This element can be empty if the text:display attribute is set to none"
+    },
+    {
+      "req_id": "FACT-FODT-EX-0027",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "This element can be empty if the text:display attribute is set to none. The <text:user-field-input> element is usable within the following elements: <"
+    },
+    {
+      "req_id": "FACT-FODT-EX-0028",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "All metadata field elements can be marked as fixed using the text:fixed attribute. 19.809 7.5.2  <text:initial-creator>"
+    },
+    {
+      "req_id": "FACT-FODT-EX-0029",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "element is established by the text:name and meta:name attributes, respectively, containing the same value."
+    },
+    {
+      "req_id": "FACT-FODT-EX-0030",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "The <text:page-count> element displays the value of the meta:page-count attribute of the <meta:document-statistic> element of a document. 19.332"
+    },
+    {
+      "req_id": "FACT-FODT-EX-0031",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "The <text:word-count> element displays the value of the meta:word-count attribute of the <meta:document-statistic> element of a document. 19.339"
+    },
+    {
+      "req_id": "FACT-FODT-EX-0032",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "The <text:table-count> element displays the value of the meta:table-count attribute of the <meta:document-statistic> element of a document. 19.337"
+    },
+    {
+      "req_id": "FACT-FODT-EX-0033",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "The <text:image-count> element displays the value of the meta:image-count attribute of the <meta:document-statistic> element of a document. 19.327"
+    },
+    {
+      "req_id": "FACT-FODT-EX-0034",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "The <text:object-count> element displays the value of the meta:object-count attribute of the <meta:document-statistic> element of a document. 19.330"
+    },
+    {
+      "req_id": "FACT-FODT-EX-0035",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "text:active attribute 7.7.1.2  <text:page-variable-set>"
+    },
+    {
+      "req_id": "FACT-FODT-EX-0036",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "If the text:active attribute 19.755, has the value of false, the <text:page-variable- get> element will have no display for that page."
+    },
+    {
+      "req_id": "FACT-FODT-EX-0037",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "type as specified in the mandatory text:placeholder-type attribute. OpenDocument consumers that support the <text:placeholder> element shall use the"
+    },
+    {
+      "req_id": "FACT-FODT-EX-0038",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "text:description attribute value as the placeholder text, and shall ensure that this text clearly indicates that it is a placeholder for content of th"
+    },
+    {
+      "req_id": "FACT-FODT-EX-0039",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "The <text:hidden-text> element hides the text it contains when its text:condition attribute evaluates to true."
+    },
+    {
+      "req_id": "FACT-FODT-EX-0040",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "If its text:condition attribute is missing or evaluates to false, the text content is displayed. The <text:hidden-text> element is usable within the f"
+    },
+    {
+      "req_id": "FACT-FODT-EX-0041",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "The source code is stored in an external file. The xlink:href attribute specifies the location of the source file."
+    },
+    {
+      "req_id": "FACT-FODT-EX-0042",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "The element shall have either an xlink:href attribute or content, but not both. The <text:script> element is usable within the following elements: <te"
+    },
+    {
+      "req_id": "FACT-FODT-EX-0043",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "permitted if a xlink:href attribute is not present. 7.7.10  <text:execute-macro>"
+    },
+    {
+      "req_id": "FACT-FODT-EX-0044",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "The name of the macro to be executed is specified by the text:name attribute. The <text:execute-macro> element is usable within the following elements"
+    },
+    {
+      "req_id": "FACT-FODT-EX-0045",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "Start and end index elements use the text:id attribute to match start and end elements for an index mark."
+    },
+    {
+      "req_id": "FACT-FODT-EX-0046",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "when the text:use-index-source-styles attribute of the child <text:index-source-styles> element has the value true."
+    },
+    {
+      "req_id": "FACT-FODT-EX-0047",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "Display of the border of a scenario table is controlled by its table:display-border attribute. 19.622"
+    },
+    {
+      "req_id": "FACT-FODT-EX-0048",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "null date is specified in the element's table:date-value attribute. Note: Commonly used values are 1899-12-30, 1900-01-01, and 1904-01-"
+    },
+    {
+      "req_id": "FACT-FODT-EX-0049",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "If the table:status attribute has the value enable and iterating through the cyclic dependencies does not deliver a result that satisfies the conditio"
+    },
+    {
+      "req_id": "FACT-FODT-EX-0050",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "table:maximum-difference attribute within a number of iterations specified by the table:steps attribute for all cells in the cyclic dependencies, an e"
+    },
+    {
+      "req_id": "FACT-FODT-EX-0051",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "table:steps attribute for all cells in the cyclic dependencies, an error is returned. The <table:iteration> element is usable within the following ele"
+    },
+    {
+      "req_id": "FACT-FODT-EX-0052",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "The name of a validation rule is stored in the table:name attribute of a <table:content- validation> element."
+    },
+    {
+      "req_id": "FACT-FODT-EX-0053",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "The <table:sort> element <table:sort> specifies the sort keys to be applied to a database range."
+    },
+    {
+      "req_id": "FACT-FODT-EX-0054",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "table:data-type attributes are ignored. Note: To improve backward compatibility with OpenDocument 1.1 documents, if"
+    },
+    {
+      "req_id": "FACT-FODT-EX-0055",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "where the table:operator attribute is set to \"=\", and the table:data-type attribute to text. The filter sub-condition in which the element is included"
+    },
+    {
+      "req_id": "FACT-FODT-EX-0056",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "depends is referenced by its table:id attribute The <table:dependency> element is usable within the following element:"
+    },
+    {
+      "req_id": "FACT-FODT-EX-0057",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "deleted. It contains the address of the effected cell and its former content. If a table:id attribute is present, it specifies the id of a previously "
+    },
+    {
+      "req_id": "FACT-FODT-EX-0058",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "current change. If a table:id attribute is present, it specifies the id of a previously tracked change for the cell that is changed again by the curre"
+    },
+    {
+      "req_id": "FACT-FODT-EX-0059",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "as defined by its draw:z-index attribute. 19.231 The <draw:layer-set> element is usable within the following elements: <draw:page>"
+    },
+    {
+      "req_id": "FACT-FODT-EX-0060",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "Consumers may ignore svg:height and svg:width attributes, and determine the size of a shape from the polygon vertices."
+    },
+    {
+      "req_id": "FACT-FODT-EX-0061",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "The draw:line-distance attribute defines the distance between the (virtual) line between the reference points, called reference line, and the dimensio"
+    },
+    {
+      "req_id": "FACT-FODT-EX-0062",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "reference points, called reference line, and the dimension line. The draw:placing attribute defines if the measure shape is placed above or below the "
+    },
+    {
+      "req_id": "FACT-FODT-EX-0063",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "from the start reference point that is defined by the draw:guide-distance attribute minus the value of the draw:start-guide attribute."
+    },
+    {
+      "req_id": "FACT-FODT-EX-0064",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "value of the draw:start-guide attribute. The end reference point is defined by the attributes svg:x2, and svg:y2."
+    },
+    {
+      "req_id": "FACT-FODT-EX-0065",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "from the end reference point that is defined by the draw:guide-distance attribute minus the value of draw:end-guide attribute."
+    },
+    {
+      "req_id": "FACT-FODT-EX-0066",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "value of draw:end-guide attribute. The end points of the extension lines are at the distance defined by the draw:guide-overhang"
+    },
+    {
+      "req_id": "FACT-FODT-EX-0067",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "then the xlink:href attributes of those <draw:a> elements act as the hyperlink information for the shapes they contain."
+    },
+    {
+      "req_id": "FACT-FODT-EX-0068",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "within the package. The xlink:href attribute of this element references that folder. 1.3 Contained in a separate OpenDocument document instance. The x"
+    },
+    {
+      "req_id": "FACT-FODT-EX-0069",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "Contained in a separate OpenDocument document instance. The xlink:href attribute of this element references that document's package."
+    },
+    {
+      "req_id": "FACT-FODT-EX-0070",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "the package. The xlink:href attribute of this element references that file. Contained in a separate file. The xlink:href attribute of this element ref"
+    },
+    {
+      "req_id": "FACT-FODT-EX-0071",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "Contained in a separate file. The xlink:href attribute of this element references that file. Contained in a child <office:binary-data> element of this"
+    },
+    {
+      "req_id": "FACT-FODT-EX-0072",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "shall have either a draw:code or draw:object attribute. The applet name, width, height, margins, title and description are specified by the"
+    },
+    {
+      "req_id": "FACT-FODT-EX-0073",
+      "source_id": "FODT-SPEC-001",
+      "heading": "",
+      "keyword": "SHALL",
+      "text_fragment": "Consumers should support pixel lengths for the svg:width and svg:height attributes of the <draw:contour-polygon> and <draw:contour-path> elements."
+    }
+  ],
   "index_terms": [],
-  "created_at": "2026-06-04T14:41:44.140029+00:00",
+  "created_at": "2026-06-18T15:42:42.013127+00:00",
   "output_path": null
 }

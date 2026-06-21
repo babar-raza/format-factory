@@ -1,0 +1,270 @@
+---
+# QName-to-Code Map — Format Factory
+# Maps ODF spec QNames to canonical code targets
+# Source: ODF 1.3 spec + verified facts (FODS 10, FODT 1)
+schema_version: "1.0"
+generated_at: "2026-06-15"
+run_id: "ff-idempotent-spec-to-feature-swarm-20260615-e31fa98"
+
+# Rule: Spec QName -> Canonical Class -> Facade (Compat/ only)
+# NEVER use format-prefixed names as primary implementation targets
+
+mappings:
+  # === OFFICE namespace ===
+  "office:document":
+    canonical_class: "Office.Document"
+    dotnet_path: "src/FormatFactory/Office/Document.cs"
+    python_path: "src/python/{format}/office/document.py"
+    spec_section: "3.1.2"
+    spec_facts: ["FACT-FODS-001", "FACT-FODT-001"]
+    facades:
+      - name: "FodsWorkbook"
+        location: "Compat/Fods/"
+        delegates_to: "Office.Document"
+      - name: "FodtDocument"
+        location: "Compat/Fodt/"
+        delegates_to: "Office.Document"
+
+  "office:body":
+    canonical_class: "Office.Body"
+    dotnet_path: "src/FormatFactory/Office/Body.cs"
+    python_path: "src/python/{format}/office/body.py"
+    spec_section: "3.3"
+    spec_facts: ["FACT-FODS-003"]
+
+  "office:spreadsheet":
+    canonical_class: "Office.Spreadsheet"
+    dotnet_path: "src/FormatFactory/Office/Spreadsheet.cs"
+    python_path: "src/python/{format}/office/spreadsheet.py"
+    spec_section: "3.7"
+    spec_facts: ["FACT-FODS-003"]
+
+  "office:text":
+    canonical_class: "Office.Text"
+    dotnet_path: "src/FormatFactory/Office/Text.cs"
+    python_path: "src/python/{format}/office/text.py"
+    spec_section: "3.4"
+    spec_facts: ["FACT-FODT-001"]
+
+  "office:automatic-styles":
+    canonical_class: "Office.AutomaticStyles"
+    dotnet_path: "src/FormatFactory/Office/AutomaticStyles.cs"
+    spec_section: "3.15.3"
+
+  # === TABLE namespace ===
+  "table:table":
+    canonical_class: "Table.Table"
+    dotnet_path: "src/FormatFactory/Table/Table.cs"
+    python_path: "src/python/{format}/table/table.py"
+    spec_section: "9.1.2"
+    spec_facts: ["FACT-FODS-004"]
+    facades:
+      - name: "FodsSheet"
+        location: "Compat/Fods/"
+        delegates_to: "Table.Table"
+
+  "table:table-row":
+    canonical_class: "Table.TableRow"
+    dotnet_path: "src/FormatFactory/Table/TableRow.cs"
+    python_path: "src/python/{format}/table/table_row.py"
+    spec_section: "9.1.3"
+    spec_facts: ["FACT-FODS-005"]
+
+  "table:table-cell":
+    canonical_class: "Table.TableCell"
+    dotnet_path: "src/FormatFactory/Table/TableCell.cs"
+    python_path: "src/python/{format}/table/table_cell.py"
+    spec_section: "9.1.4"
+    spec_facts: ["FACT-FODS-006"]
+    facades:
+      - name: "FodsCell"
+        location: "Compat/Fods/"
+        delegates_to: "Table.TableCell"
+
+  "table:table-column":
+    canonical_class: "Table.TableColumn"
+    dotnet_path: "src/FormatFactory/Table/TableColumn.cs"
+    spec_section: "9.1.6"
+
+  "table:covered-table-cell":
+    canonical_class: "Table.CoveredTableCell"
+    dotnet_path: "src/FormatFactory/Table/CoveredTableCell.cs"
+    spec_section: "9.1.5"
+
+  "table:named-range":
+    canonical_class: "Table.NamedRange"
+    dotnet_path: "src/FormatFactory/Table/NamedRange.cs"
+    spec_section: "9.4.12"
+
+  "table:content-validation":
+    canonical_class: "Table.ContentValidation"
+    dotnet_path: "src/FormatFactory/Table/ContentValidation.cs"
+    spec_section: "9.4.4"
+
+  # === TEXT namespace ===
+  "text:p":
+    canonical_class: "Text.Paragraph"
+    dotnet_path: "src/FormatFactory/Text/Paragraph.cs"
+    python_path: "src/python/{format}/text/paragraph.py"
+    spec_section: "5.1.3"
+
+  "text:h":
+    canonical_class: "Text.Heading"
+    dotnet_path: "src/FormatFactory/Text/Heading.cs"
+    spec_section: "5.1.2"
+    facades:
+      - name: "FodtHeading"
+        location: "Compat/Fodt/"
+        delegates_to: "Text.Heading"
+
+  "text:span":
+    canonical_class: "Text.Span"
+    dotnet_path: "src/FormatFactory/Text/Span.cs"
+    spec_section: "6.1.7"
+    facades:
+      - name: "FodtTextSpan"
+        location: "Compat/Fodt/"
+        delegates_to: "Text.Span"
+
+  "text:list":
+    canonical_class: "Text.List"
+    dotnet_path: "src/FormatFactory/Text/List.cs"
+    spec_section: "5.3.1"
+    facades:
+      - name: "FodtList"
+        location: "Compat/Fodt/"
+        delegates_to: "Text.List"
+
+  "text:list-item":
+    canonical_class: "Text.ListItem"
+    dotnet_path: "src/FormatFactory/Text/ListItem.cs"
+    spec_section: "5.3.3"
+
+  "text:section":
+    canonical_class: "Text.Section"
+    dotnet_path: "src/FormatFactory/Text/Section.cs"
+    spec_section: "5.4"
+    facades:
+      - name: "FodtSection"
+        location: "Compat/Fodt/"
+        delegates_to: "Text.Section"
+
+  "text:note":
+    canonical_class: "Text.Note"
+    dotnet_path: "src/FormatFactory/Text/Note.cs"
+    spec_section: "6.3.2"
+    facades:
+      - name: "FodtFootnote"
+        location: "Compat/Fodt/"
+        delegates_to: "Text.Note"
+
+  "text:a":
+    canonical_class: "Text.Anchor"
+    dotnet_path: "src/FormatFactory/Text/Anchor.cs"
+    spec_section: "6.1.8"
+
+  # === STYLE namespace ===
+  "style:style":
+    canonical_class: "Style.Style"
+    dotnet_path: "src/FormatFactory/Style/Style.cs"
+    python_path: "src/python/{format}/style/style.py"
+    spec_section: "16.2"
+    spec_facts: ["FACT-FODS-008"]
+    facades:
+      - name: "FodsStyle"
+        location: "Compat/Fods/"
+        delegates_to: "Style.Style"
+
+  "style:default-style":
+    canonical_class: "Style.DefaultStyle"
+    dotnet_path: "src/FormatFactory/Style/DefaultStyle.cs"
+    spec_section: "16.4"
+
+  "style:text-properties":
+    canonical_class: "Style.TextProperties"
+    dotnet_path: "src/FormatFactory/Style/TextProperties.cs"
+    spec_section: "17.7"
+
+  "style:paragraph-properties":
+    canonical_class: "Style.ParagraphProperties"
+    dotnet_path: "src/FormatFactory/Style/ParagraphProperties.cs"
+    spec_section: "17.6"
+
+  "style:table-cell-properties":
+    canonical_class: "Style.TableCellProperties"
+    dotnet_path: "src/FormatFactory/Style/TableCellProperties.cs"
+    spec_section: "17.18"
+
+  # === DRAW namespace ===
+  "draw:frame":
+    canonical_class: "Draw.Frame"
+    dotnet_path: "src/FormatFactory/Draw/Frame.cs"
+    spec_section: "10.4.2"
+    facades:
+      - name: "FodtFrame"
+        location: "Compat/Fodt/"
+        delegates_to: "Draw.Frame"
+
+  "draw:image":
+    canonical_class: "Draw.Image"
+    dotnet_path: "src/FormatFactory/Draw/Image.cs"
+    spec_section: "10.4.4"
+
+  # === NUMBER namespace ===
+  "number:number-style":
+    canonical_class: "Number.NumberStyle"
+    dotnet_path: "src/FormatFactory/Number/NumberStyle.cs"
+    spec_section: "16.27.2"
+
+  "number:date-style":
+    canonical_class: "Number.DateStyle"
+    dotnet_path: "src/FormatFactory/Number/DateStyle.cs"
+    spec_section: "16.27.10"
+
+# Value type mappings (office:value-type attribute)
+value_types:
+  "float":
+    canonical_class: "Table.TypedValue"
+    dotnet_type: "double"
+    python_type: "float"
+    spec_facts: ["FACT-FODS-007"]
+    facades:
+      - name: "FodsTypedValue"
+        location: "Compat/Fods/"
+        delegates_to: "Table.TypedValue"
+
+  "string":
+    canonical_class: "Table.TypedValue"
+    dotnet_type: "string"
+    python_type: "str"
+
+  "date":
+    canonical_class: "Table.TypedValue"
+    dotnet_type: "DateTime"
+    python_type: "datetime.date"
+
+  "boolean":
+    canonical_class: "Table.TypedValue"
+    dotnet_type: "bool"
+    python_type: "bool"
+
+  "percentage":
+    canonical_class: "Table.TypedValue"
+    dotnet_type: "double"
+    python_type: "float"
+
+  "currency":
+    canonical_class: "Table.TypedValue"
+    dotnet_type: "decimal"
+    python_type: "decimal.Decimal"
+
+# Formula mapping
+formula:
+  "table:formula":
+    canonical_class: "Table.Formula"
+    spec_section: "9.1.4"
+    spec_facts: ["FACT-FODS-009"]
+    facades:
+      - name: "FodsFormula"
+        location: "Compat/Fods/"
+        delegates_to: "Table.Formula"

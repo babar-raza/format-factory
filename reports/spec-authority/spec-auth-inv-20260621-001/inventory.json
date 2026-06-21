@@ -1,0 +1,57 @@
+{
+  "run_id": "spec-auth-inv-20260621-001",
+  "date": "2026-06-21",
+  "branch": "main",
+  "head": "23d1333fdb51b8f07d517a29af311d46ffdd3eb9",
+  "layers": {
+    "spec_cache": {
+      "status": "PARTIAL",
+      "files": ["tools/spec-cache/acquire_spec.py", "tools/spec-cache/spec_index.py", "tools/spec-cache/refresh_check.py"],
+      "data": [".local/spec-cache/"],
+      "notes": "T3 authorization model implemented. Only FODS has confirmed sha256_snapshot. Most formats not fetched."
+    },
+    "spec_normalize": {
+      "status": "PARTIAL",
+      "files": ["tools/spec-normalize/normalize_pdf.py", "tools/spec-normalize/build_section_index.py", "tools/spec-normalize/build_chunk_index.py", "tools/spec-normalize/build_citation_map.py", "tools/spec-normalize/build_spec_workbench.py", "tools/spec-normalize/query_normalized_spec.py", "tools/spec-normalize/validate_normalized_spec.py", "tools/spec-normalize/refresh_workbench.py", "tools/spec-normalize/detect_coverage_gaps.py", "tools/spec-normalize/export_sample_requirements.py", "tools/spec-normalize/build_requirement_pack.py", "tools/spec-normalize/export_task_packet.py"],
+      "notes": "Full pipeline implemented. Manual-use only. No automated trigger. Refresh not wired to hash change detection."
+    },
+    "sal": {
+      "status": "DEGRADED",
+      "files": ["tools/specification-authority-layer/sal_master_runner.py", "tools/specification-authority-layer/spec_source_registry.py", "tools/specification-authority-layer/spec_verifier.py", "tools/specification-authority-layer/run_fact_verification.py", "tools/specification-authority-layer/context_pack_builder.py"],
+      "critical_gaps": [
+        "sal_master_runner.py uses HARDCODED fact templates not parsed from spec",
+        "Facts emitted have NO source_id field",
+        "spec_verifier.py is NOT called by master runner",
+        "spec_parser/indexer/normalizer/digestor NOT used in main pipeline",
+        "Only 1 of 10 registered sources has sha256_snapshot"
+      ],
+      "data": [".local/sal-output/sal-facts-latest.json", ".local/spec-source-registry/sources.jsonl"],
+      "notes": "94 facts emitted for ZST today, all 'verified' but without source_id. FODS 27.3% workbench coverage. FODT 100% (27 facts)."
+    },
+    "ai_embeddings": {
+      "status": "SCAFFOLDED_NOT_IMPLEMENTED",
+      "files": ["tools/ai/validators/authority_lifecycle.py", "tools/ai/retrieval/namespace_manager.py", "tools/ai/retrieval/lexical_retriever.py", "tools/ai/schemas/models.py", "tools/supervisor/embedding_retrieval.py"],
+      "notes": "Authority lifecycle state machine implemented and tested. Vector store is a STUB requiring LanceDB which is not authorized. Lexical retrieval available. AI governance policy comprehensive."
+    },
+    "governance_docs": {
+      "status": "ADVISORY",
+      "files": ["AGENTS.md", "GOVERNANCE.md", "docs/specification-cache.md", "docs/spec-retrieval-strategy.md", "docs/spec-consumption-workbench.md"],
+      "notes": "Well-documented policies. None enforced by automated code checks."
+    },
+    "tests": {
+      "status": "WEAK",
+      "passing": 13,
+      "failing": 6,
+      "missing_critical": ["test_source_id_required.py", "test_stale_hash_detection.py", "test_spec_to_product_traceability.py", "test_cross_format_contamination.py"],
+      "notes": "Authority lifecycle and SAL wiring tests pass. Dogfood tests fail. No end-to-end provenance tests."
+    }
+  },
+  "formats_with_workbench": ["fods", "fodt", "zst", "pbm", "pgm", "ppm", "csv"],
+  "formats_with_zero_coverage": ["csv", "dif", "abw", "gnumeric", "fodg", "fodp", "ods", "odt", "tsv", "ndjson", "sylk", "xcf", "toml"],
+  "spec_sources_registered": 10,
+  "spec_sources_with_sha256": 1,
+  "total_facts_generated_today": 94,
+  "total_facts_with_source_id": 0,
+  "overall_strength": "WEAK",
+  "overall_integration": "PARTIAL"
+}

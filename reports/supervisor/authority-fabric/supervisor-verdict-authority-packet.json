@@ -1,0 +1,70 @@
+{
+  "packet_id": "svp:e3b0c44298fc1c14:2026-06-18T12:05:06.386587+00:00",
+  "generated_at": "2026-06-18T12:05:06.386597+00:00",
+  "source_graph_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "claims_checked": 0,
+  "coverage_records": [],
+  "overclaim_risks": [],
+  "stale_claims": [],
+  "unsupported_features": [],
+  "poc_readiness_verdict": "PARTIAL_POC_READINESS",
+  "mainstream_gap_queue_ref": "reports/requirement-capability-authority-layer-mwp/mainstream-gap-queue.json",
+  "recommended_supervisor_decision": "CONTINUE_MAINSTREAM_WITH_GAP_QUEUE",
+  "false_pass_risks": [
+    {
+      "risk_id": "FPR-001",
+      "description": "evidence_package_present_but_claim_not_graph_linked",
+      "detail": "An EvidencePackage exists but the CapabilityClaim has no evidenced_by edge. The package proves its artifacts, not the claim."
+    },
+    {
+      "risk_id": "FPR-002",
+      "description": "test_passes_but_not_linked_to_claim",
+      "detail": "Test files pass in CI but are not linked to a CapabilityClaim via tested_by. Tests that are not graph-linked do not count as TestProof."
+    },
+    {
+      "risk_id": "FPR-003",
+      "description": "poc_targets_shows_pass_but_requirement_stale",
+      "detail": "poc-targets.yaml shows a format as PASS/ready but the backing ProductRequirement is stale. poc-targets is a dashboard, not authority."
+    },
+    {
+      "risk_id": "FPR-004",
+      "description": "dogfood_output_exists_but_not_validated",
+      "detail": "A dogfood output file exists on disk but is not validated (no path+checksum+validation record in graph). Presence alone does not satisfy DogfoodProof."
+    }
+  ],
+  "false_stop_risks": [
+    {
+      "risk_id": "FSR-001",
+      "description": "overclaim_detection_flagging_valid_partial_claim",
+      "detail": "OverclaimDetector may flag a valid partial claim as overclaim if the claim dimensions are not narrowed yet. Remediation: narrow_claim or split_claim, then re-evaluate."
+    },
+    {
+      "risk_id": "FSR-002",
+      "description": "staleness_flagging_already_recomputed_records",
+      "detail": "StalenessInvalidationEngine may flag records as stale if they were not updated in the graph after recomputation. Verify: recompute and re-import before blocking on staleness."
+    },
+    {
+      "risk_id": "FSR-003",
+      "description": "empirical_only_requirement_blocking_acceptable_poc_claim",
+      "detail": "An empirical_only ProductRequirement may trigger a strict validator block when the claim is actually acceptable for POC with caveat. Remediation: reclassify requirement as empirical_only and allow accepted_with_limitations claim status."
+    }
+  ],
+  "stream_consumption_status": {
+    "mainstream": "consuming_gap_queue",
+    "skills": "consuming_requirement_and_claim_ids",
+    "acceleration": "consuming_proof_graph_summaries",
+    "supervisor": "consuming_verdict_packet",
+    "specification_authority": "providing_spec_requirements",
+    "evidence": "materializing_artifacts"
+  },
+  "external_tool_boundary": {
+    "mcp_tools": "DISABLED_BY_DEFAULT \u2014 requires explicit human approval",
+    "ghidra_mcp": "DISABLED_BY_DEFAULT",
+    "ruflo": "ABSENT \u2014 fallback to local coordinator",
+    "superpowers": "normalized_skills_only"
+  },
+  "evidence_package_refs": [],
+  "authority_integration_version": "1.0",
+  "spec_authority_present": true,
+  "tri_lane_status": "UNKNOWN"
+}

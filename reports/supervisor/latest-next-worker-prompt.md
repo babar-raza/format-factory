@@ -1,7 +1,7 @@
 # FORMAT-FACTORY-RNEXT-MEGA-TRAIN-001
-# Generated: 2026-06-16T16:33:26.582445
-# Source: Supervisor autonomous-cycle review of FF-IDEMPOTENT-SPEC-TO-FEATURE-SWARM-HEALING-V2
-# Stream: supervisor
+# Generated: 2026-06-21T19:24:13.005196
+# Source: Supervisor autonomous-cycle review of machinery-lifecycle-forensics-20260621
+# Stream: mainstream
 # ADVISORY ONLY -- not a Format Factory authority document
 
 ---
@@ -27,7 +27,7 @@ Read these files before writing any code:
 ## Sprint Identity
 
 - Sprint ID: FORMAT-FACTORY-RNEXT-MEGA-TRAIN-001
-- Prior sprint: FF-IDEMPOTENT-SPEC-TO-FEATURE-SWARM-HEALING-V2
+- Prior sprint: machinery-lifecycle-forensics-20260621
 - Prior verdict: ACCEPTED_WITH_REWORK
 - Prior tests: 0 passed, 0 failed, 0 skipped
 - Autonomous continue: True
@@ -36,7 +36,7 @@ Read these files before writing any code:
 
 ## Sprint Goal
 
-**Goal:** Repair 7 item(s) flagged by supervisor review. Advance Supervisor tooling: Improve supervisor pipeline components; Strengthen evidence model or declaration schema. Build evidence declaration and run supervisor autonomous-cycle.
+**Goal:** Advance product POC: FODS .NET Product Deepening; FODT .NET Product Deepening; Netpbm .NET Product Deepening; ZST Python Improvement. Build evidence declaration and run supervisor autonomous-cycle.
 
 ---
 
@@ -70,17 +70,23 @@ Read these files before writing any code:
 | Train | Group | Title |
 |-------|-------|-------|
 | A | G1 | Governance Preflight |
-| B | G2 | Rework: Lane-by-lane implementation classification and verdict |
-| C | G2 | Rework: Lane 6 QName ontology — all 9 YAML artifacts |
-| D | G2 | Rework: Lane 5 — Add depth validators V34-V37 |
-| E | G2 | Rework: Lane 15 — Healing/learning executable audit artifacts |
-| F | G2 | Rework: Produce concept inventories with exclusion reasons (FODS, FODT, ZST) |
-| G | G2 | Rework: Validate existing compiler end-to-end |
-| H | G2 | Rework: Create V37 validate_spec_fact_authority_chain |
-| I | G2 | Improve supervisor pipeline components |
-| J | G2 | Strengthen evidence model or declaration schema |
-| K | G7 | State + Memory + POC Matrix Sync |
-| L | G8 | Evidence Declaration + Supervisor Autonomous-Cycle |
+| B | G3 | FODS .NET Product Deepening |
+| C | G3 | FODT .NET Product Deepening |
+| D | G3 | Netpbm .NET Product Deepening |
+| E | G4 | ZST Python Improvement |
+| F | G4 | Netpbm Python Improvement |
+| G | G4 | SYLK Python Improvement |
+| H | G4 | TOML Python Improvement |
+| I | G4 | NDJSON Python Improvement |
+| J | G4 | FODG Python Improvement |
+| K | G4 | TSV Python Improvement |
+| L | G4 | ABW Python Improvement |
+| M | G4 | Gnumeric Python Improvement |
+| N | G5 | Dogfood: fodt -> txt |
+| O | G5 | Dogfood: fodt -> html |
+| P | G6 | Package Build + Install Proof |
+| Q | G7 | State + Memory + POC Matrix Sync |
+| R | G8 | Evidence Declaration + Supervisor Autonomous-Cycle |
 
 ---
 
@@ -98,127 +104,261 @@ Read all governance files. Verify no policy violations from prior sprint. Confir
 **Files:**
 - `reports/<run_id>/00-preflight.md`
 
-## Group G2: Rework / Repair
+## Group G3: Commercial .NET Product
 
-### Train B: Rework: Lane-by-lane implementation classification and verdict
+### Train B: FODS .NET Product Deepening
 
-
-
-**Acceptance Criteria:**
-- Evidence for LANE-CLASSIFICATION passes supervisor inspection
-- Tests pass for affected code
-
-**Files:**
-- `.local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/lane-implementation-classification.yaml`
-- `.local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/final-verdict.md`
-
-### Train C: Rework: Lane 6 QName ontology — all 9 YAML artifacts
-
-
+Continue FODS commercial .NET product advancement. Continue product maintenance and extended API feature development
 
 **Acceptance Criteria:**
-- Evidence for LANE6-QNAME-ONTOLOGY passes supervisor inspection
-- Tests pass for affected code
+- FODS .NET test count increased or new API proven
+- dotnet_status in poc-targets.yaml updated
 
 **Files:**
-- `.local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/prefix-namespace-registry.yaml`
-- `.local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/qname-to-code-map.yaml`
-- `.local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/namespace-tree.yaml`
-- `.local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/canonical-class-inventory.yaml`
-- `.local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/attribute-property-map.yaml`
-- `.local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/containment-graph.yaml`
-- `.local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/naming-exceptions.yaml`
-- `.local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/legacy-alias-map.yaml`
-- `.local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/migration-plan.yaml`
+- `src/net/fods/`
+- `tests/net/fods/`
+- `reports/r90/product-code-change-ledger.json`
 
-### Train D: Rework: Lane 5 — Add depth validators V34-V37
+**Verification:**
+```bash
+dotnet test tests/net/fods/ --verbosity quiet
+```
 
+### Train C: FODT .NET Product Deepening
 
+Continue FODT commercial .NET product advancement. Continue product maintenance and extended API feature development
 
 **Acceptance Criteria:**
-- Evidence for LANE5-DEPTH-VALIDATORS passes supervisor inspection
-- Tests pass for affected code
+- FODT .NET test count increased or new API proven
+- dotnet_status in poc-targets.yaml updated
 
 **Files:**
-- `tools/supervisor/governance_validators.py`
-- `tests/supervisor/test_depth_validators.py`
+- `src/net/fodt/`
+- `tests/net/fodt/`
+- `reports/r90/product-code-change-ledger.json`
 
-### Train E: Rework: Lane 15 — Healing/learning executable audit artifacts
+**Verification:**
+```bash
+dotnet test tests/net/fodt/ --verbosity quiet
+```
 
+### Train D: Netpbm .NET Product Deepening
 
+Continue Netpbm commercial .NET product advancement. Continue product maintenance and extended API feature development
 
 **Acceptance Criteria:**
-- Evidence for LANE15-HEALING-LEARNING passes supervisor inspection
-- Tests pass for affected code
+- Netpbm .NET test count increased or new API proven
+- dotnet_status in poc-targets.yaml updated
 
 **Files:**
-- `.local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/failure-taxonomy-v2.yaml`
-- `.local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/healing-learning-state-machine.yaml`
-- `.local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/healing-learning-bypass-analysis.md`
+- `src/net/netpbm/`
+- `tests/net/netpbm/`
+- `reports/r90/product-code-change-ledger.json`
 
-### Train F: Rework: Produce concept inventories with exclusion reasons (FODS, FODT, ZST)
+**Verification:**
+```bash
+dotnet test tests/net/netpbm/ --verbosity quiet
+```
 
+## Group G4: FOSS / Reduced Product
 
+### Train E: ZST Python Improvement
+
+Continue ZST FOSS product. Continue FOSS product deepening and additional compression API coverage
 
 **Acceptance Criteria:**
-- Evidence for TC-SAL-001 passes supervisor inspection
-- Tests pass for affected code
+- ZST Python test count maintained or increased
 
 **Files:**
-- `.local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/concept-inventory-fods.yaml`
-- `.local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/concept-inventory-fodt.yaml`
-- `.local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/concept-inventory-zst.yaml`
+- `src/python/zst/`
+- `tests/python/zst/`
+- `reports/r90/product-code-change-ledger.json`
 
-### Train G: Rework: Validate existing compiler end-to-end
+**Verification:**
+```bash
+python -m pytest tests/python/zst/ -x -q
+```
 
+### Train F: Netpbm Python Improvement
 
+Continue Netpbm FOSS product. Continue FOSS product deepening and additional Python API coverage
 
 **Acceptance Criteria:**
-- Evidence for TC-COMP-002 passes supervisor inspection
-- Tests pass for affected code
+- Netpbm Python test count maintained or increased
 
 **Files:**
-- `.local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/compiler-phase-assessment.md`
+- `src/python/pbm/`
+- `src/python/pgm/`
+- `src/python/ppm/`
+- `tests/python/pbm/`
+- `tests/python/pgm/`
+- `tests/python/ppm/`
+- `reports/r90/product-code-change-ledger.json`
 
-### Train H: Rework: Create V37 validate_spec_fact_authority_chain
+**Verification:**
+```bash
+python -m pytest tests/python/pbm/ tests/python/pgm/ tests/python/ppm/ -x -q
+```
 
+### Train G: SYLK Python Improvement
 
+Continue SYLK FOSS product. Continue FOSS product deepening — cell iteration, set_cell_value; package install proof
 
 **Acceptance Criteria:**
-- Evidence for TC-VAL-001 passes supervisor inspection
-- Tests pass for affected code
+- SYLK Python test count maintained or increased
 
 **Files:**
-- `tools/supervisor/governance_validators.py`
-- `tests/supervisor/test_depth_validators.py`
+- `src/python/sylk/`
+- `tests/python/sylk/`
+- `reports/r90/product-code-change-ledger.json`
 
-### Train I: Improve supervisor pipeline components
+**Verification:**
+```bash
+python -m pytest tests/python/sylk/ -x -q
+```
 
-Enhance inspection, grading, prompt generation, or context-pack building.
+### Train H: TOML Python Improvement
+
+Continue TOML FOSS product. dogfood export via TOML config roundtrip; package install proof
 
 **Acceptance Criteria:**
-- Tests pass for affected tools
-- Evidence declared
+- TOML Python test count maintained or increased
 
 **Files:**
-- `tools/supervisor/`
-- `tests/supervisor/`
+- `src/python/toml/`
+- `tests/python/toml/`
+- `reports/r90/product-code-change-ledger.json`
 
-### Train J: Strengthen evidence model or declaration schema
+**Verification:**
+```bash
+python -m pytest tests/python/toml/ -x -q
+```
 
-Improve declaration validation, manifest generation, or materialization.
+### Train I: NDJSON Python Improvement
+
+Continue NDJSON FOSS product. Dogfood pipeline integration
 
 **Acceptance Criteria:**
-- Tests pass for affected tools
-- Evidence declared
+- NDJSON Python test count maintained or increased
 
 **Files:**
-- `tools/supervisor/`
-- `tests/supervisor/`
+- `src/python/ndjson/`
+- `tests/python/ndjson/`
+- `reports/r90/product-code-change-ledger.json`
+
+**Verification:**
+```bash
+python -m pytest tests/python/ndjson/ -x -q
+```
+
+### Train J: FODG Python Improvement
+
+Continue FODG FOSS product. SVG export investigation
+
+**Acceptance Criteria:**
+- FODG Python test count maintained or increased
+
+**Files:**
+- `src/python/fodg/`
+- `tests/python/fodg/`
+- `reports/r90/product-code-change-ledger.json`
+
+**Verification:**
+```bash
+python -m pytest tests/python/fodg/ -x -q
+```
+
+### Train K: TSV Python Improvement
+
+Continue TSV FOSS product. Dogfood pipeline integration
+
+**Acceptance Criteria:**
+- TSV Python test count maintained or increased
+
+**Files:**
+- `src/python/tsv/`
+- `tests/python/tsv/`
+- `reports/r90/product-code-change-ledger.json`
+
+**Verification:**
+```bash
+python -m pytest tests/python/tsv/ -x -q
+```
+
+### Train L: ABW Python Improvement
+
+Continue ABW FOSS product. Dogfood pipeline integration
+
+**Acceptance Criteria:**
+- ABW Python test count maintained or increased
+
+**Files:**
+- `src/python/abw/`
+- `tests/python/abw/`
+- `reports/r90/product-code-change-ledger.json`
+
+**Verification:**
+```bash
+python -m pytest tests/python/abw/ -x -q
+```
+
+### Train M: Gnumeric Python Improvement
+
+Continue Gnumeric FOSS product. Dogfood pipeline integration
+
+**Acceptance Criteria:**
+- Gnumeric Python test count maintained or increased
+
+**Files:**
+- `src/python/gnumeric/`
+- `tests/python/gnumeric/`
+- `reports/r90/product-code-change-ledger.json`
+
+**Verification:**
+```bash
+python -m pytest tests/python/gnumeric/ -x -q
+```
+
+## Group G5: Dogfood Exports
+
+### Train N: Dogfood: fodt -> txt
+
+No FF .NET text write library. Prerequisite: Build FormatFactory.Text .NET library with write_text().
+
+**Acceptance Criteria:**
+- Export test passes using FF library
+- Dogfood status updated in poc-targets.yaml
+
+### Train O: Dogfood: fodt -> html
+
+No FF .NET HTML write library. Prerequisite: Build FormatFactory.Html .NET library.
+
+**Acceptance Criteria:**
+- Export test passes using FF library
+- Dogfood status updated in poc-targets.yaml
+
+## Group G6: Package / Install Proof
+
+### Train P: Package Build + Install Proof
+
+Rebuild wheels/sdists for any changed packages. Run installed-workflow smoke test from extracted wheel. Treat missing artifacts as failures, not skips.
+
+**Acceptance Criteria:**
+- All changed packages rebuilt
+- Installed import test passes
+- Package artifacts present in evidence directory
+
+**Files:**
+- `packaging/`
+
+**Verification:**
+```bash
+python -m pytest tests/evidence/ -x -q
+```
 
 ## Group G7: State / Memory / POC Matrix
 
-### Train K: State + Memory + POC Matrix Sync
+### Train Q: State + Memory + POC Matrix Sync
 
 Update state/current-state.md, .supervisor/project-memory.md, and product-capability-matrix/poc-targets.yaml with sprint results.
 
@@ -234,7 +374,7 @@ Update state/current-state.md, .supervisor/project-memory.md, and product-capabi
 
 ## Group G8: Evidence + Supervisor Loop
 
-### Train L: Evidence Declaration + Supervisor Autonomous-Cycle
+### Train R: Evidence Declaration + Supervisor Autonomous-Cycle
 
 Write evidence-declaration.yaml listing ALL work items. Run autonomous-cycle. Verify session-resume.md is regenerated. Validate `reports/r90/product-code-change-ledger.json` for any governed product source edit.
 
@@ -288,7 +428,7 @@ After all trains complete, run this exact sequence:
 .local/venv/Scripts/python -m py_compile tools/supervisor/generate_supervisor_packet.py
 
 # 3. .NET tests (if .NET work was done)
-# (no .NET work this sprint)
+dotnet test tests/net/ --verbosity quiet
 
 # 4. Write evidence declaration
 # (create .local/evidences/<run_id>/evidence-declaration.yaml)
@@ -333,12 +473,16 @@ END OF SUPERVISOR-GENERATED MEGA-TRAIN EXECUTION PROMPT
 The following failures have been recorded in durable failure memory.
 Address escalated failures with priority.
 
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_execution_method_required_validator_failed (seen 21x, last: HARDENED-GOV-PRODUCT-SPRINT-20260615)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_source_diff_required_validator_failed (seen 26x, last: GAP-CLOSURE-SPRINT-R282-20260616)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_idempotency_key_required_validator_failed (seen 6x, last: GAP-CLOSURE-SPRINT-R282-20260616)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_execution_method_required_validator_failed (seen 130x, last: spec-auth-heal-sprint-1)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_source_diff_required_validator_failed (seen 99x, last: spec-auth-heal-sprint-1)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_idempotency_key_required_validator_failed (seen 64x, last: spec-auth-heal-sprint-1)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_claim_classification_validator_failed (seen 7x, last: IDEMPOTENT-SWARM-EXECUTION-20260615-E31FA98)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_route_decision_required_validator_failed (seen 24x, last: GAP-CLOSURE-SPRINT-R282-20260616)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_spec_fact_refs_validator_failed (seen 43x, last: GAP-CLOSURE-SPRINT-R282-20260616)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_route_decision_required_validator_failed (seen 98x, last: spec-auth-heal-sprint-1)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_spec_fact_refs_validator_failed (seen 183x, last: spec-auth-heal-sprint-1)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_monolith_detection_validator_failed (seen 265x, last: spec-auth-heal-sprint-1)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): exit_code_3_rework_required (seen 148x, last: spec-auth-heal-sprint-1)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_source_architecture_failed (seen 4x, last: spec-auth-heal-sprint-1)
+- WARNING: 8 unresolved failures in failure memory
 
 
 ## Spec-Parity Requirements (from skill registry)

@@ -1,0 +1,105 @@
+---
+# Execution Handoff — Machinery Lifecycle Healing
+schema_version: "1.0"
+generated_at: "2026-06-21"
+run_id: "machinery-lifecycle-forensics-20260621"
+
+execution_handoff:
+  mission_id: "machinery-lifecycle-healing-20260621"
+  authoritative_plan_path: "plans/snoopy-juggling-seal.md"
+  plan_revision: "3.1"
+  plan_hash: "see plans/snoopy-juggling-seal.md git log"
+  repository: "C:/Users/prora/OneDrive/Documents/GitHub/format-factory"
+  branch: "main"
+
+  selected_controller: "tools/supervisor/check_continuation.py --track machinery"
+  lifecycle_entry_point: "python tools/supervisor/check_continuation.py --track machinery"
+  sprint_audit_entry_point: "python tools/supervisor/supervisor_loop.py autonomous-cycle --declaration <declaration.yaml>"
+  plan_reconciliation_entry_point: "read plans/snoopy-juggling-seal.md and update taskcards"
+  plan_hardening_entry_point: "update plans/snoopy-juggling-seal.md Section 4+ with new taskcards"
+  taskcard_generation_entry_point: "write taskcards to plans/snoopy-juggling-seal.md"
+  execution_entry_point: "execute sprint based on next-sprint.md or mission-ledger.json"
+  verification_entry_point: ".venv/Scripts/pytest tests/ -x --tb=short -q"
+  post_execution_audit_entry_point: "re-run forensics prompt or read archaeology reports"
+  mission_completion_audit_entry_point: "verify .local/supervisor/machinery/mission-ledger.json stop_status=MISSION_COMPLETE"
+
+  taskcard_root: ".local/supervisor/machinery/mission-ledger.json"
+  mission_state_root: ".local/supervisor/machinery/"
+  event_ledger: ".local/supervisor/machinery/mission-ledger.json (continuation_event field)"
+  evidence_root: ".local/evidences/machinery-lifecycle-forensics-20260621/"
+
+  required_gates:
+    - "LIF-0: Failed Run Reconstructed — PASS (failed-run-timeline.yaml)"
+    - "LIF-1: Expected Workflow Identified — PASS_WITH_LIMITATIONS (lifecycle-truth-table.md)"
+    - "LIF-2: Producer-Consumer Map Complete — PASS (lifecycle-truth-table.md)"
+    - "LIF-3: First Failing Boundary Proven — PASS (RC-001: archaeology → execution consumer gap)"
+    - "LIF-4: Stop-Condition Defects Proven — PASS (stop-condition-forensics.yaml)"
+    - "LIF-5: Task vs Mission State Corrected — PASS_WITH_LIMITATIONS (mission-ledger.json created)"
+    - "LIF-6: Target Lifecycle Designed — PASS (lifecycle-truth-table.md)"
+    - "LIF-7: Mission Ledger Implemented — PASS (.local/supervisor/machinery/mission-ledger.json)"
+    - "LIF-8: Audit Consumer Implemented — NOT_RUN (needs TC-LIF-POST-EXEC-AUDIT-001)"
+    - "LIF-9: Continuation Consumer Implemented — PASS_WITH_LIMITATIONS (machinery track signal reset)"
+    - "LIF-10: Plan Reopening Proven — NOT_RUN (needs TC-LIF-PLAN-REOPEN-001)"
+    - "LIF-11: Closeout/Iteration Stop Defects — PASS (documented in stop-condition-forensics.yaml)"
+    - "LIF-12: Single Iteration Pilot — PASS (this sprint = one complete iteration)"
+    - "LIF-13: Multi-Iteration Pilot — NOT_RUN (needs next session to confirm)"
+    - "LIF-14: Interrupted Run Recovery — NOT_RUN"
+    - "LIF-15: Lane Isolation Proven — PASS_WITH_LIMITATIONS (PLAN_TERMINAL blocks machinery; fix documented)"
+    - "LIF-16: Idempotent Rerun — NOT_RUN"
+    - "LIF-17: Autonomous Unattended Loop — NOT_RUN (blocked by PLAN_TERMINAL)"
+    - "LIF-18: Mission-Aware Stop — PASS_WITH_LIMITATIONS (mission-ledger stop_status implemented)"
+    - "LIF-19: Authoritative Plan Ready — PASS (plans/snoopy-juggling-seal.md)"
+    - "LIF-20: Execution Handoff Ready — PASS (this file)"
+
+  required_pilots:
+    - "Pilot A (single iteration): COMPLETE — this sprint"
+    - "Pilot B (re-audit finds new gap): PENDING — next session"
+    - "Pilot C (verification failure): NOT_RUN"
+    - "Pilot D (empty batch): NOT_RUN"
+    - "Pilot E (iteration limit): NOT_RUN"
+    - "Pilot F (closeout safety): DOCUMENTED — stop-condition-forensics.yaml"
+    - "Pilot G (interrupted run): NOT_RUN"
+    - "Pilot H (multi-iteration): NOT_RUN"
+    - "Pilot I (stable rerun): PARTIALLY — baseline update is idempotent"
+
+  retry_policy: "Best-effort: if autonomous-cycle fails, log and continue with next sprint"
+  rework_policy: "Address rework_items from continuation-signal.json before next sprint"
+  iteration_checkpoint_policy: "Max 12 iterations; governed rollover resets to 0"
+
+  allowed_stop_conditions:
+    - "MISSION_COMPLETE: all repairs verified, no open mandatory gaps, completion audit passed"
+    - "TRUE_EXTERNAL_GATE: git push credentials, Gate 11 approval, PyPI publication"
+    - "POST_PLAN_TERMINAL: per-chat plan completed with --terminal (new session required)"
+    - "CONTEXT_EXHAUSTION: token limit reached — state persists in mission-ledger.json"
+
+  prohibited_stop_conditions:
+    - "Task batch empty while mission has open gaps"
+    - "Iteration counter at max (governed rollover)"
+    - "Evidence bundle created"
+    - "Sprint closeout completed"
+    - "User-facing reply emitted"
+    - "Zero exit code from single sprint"
+
+  final_evidence_bundle_required: true
+  absolute_evidence_path_required: true
+
+next_session_instructions: |
+  1. Read reports/machinery-lifecycle-forensics-20260621/machinery-lifecycle-healing-report.md (final report)
+  2. Read .local/supervisor/machinery/mission-ledger.json for current mission state
+  3. Verify machinery continuation: python tools/supervisor/check_continuation.py --track machinery
+     - If still STOP(POST_PLAN_TERMINAL): new git commit will clear the plan lock session_id mismatch
+     - After user authorizes a commit, the plan locks from session 7c0655b93790 won't match the new session
+  4. Execute Phase 2 machinery repairs:
+     a. GAP-ARCH-003: Create canonical spec class files (TC-QNAME-CANONICAL-001)
+     b. GAP-ARCH-005: Implement FODT spec/ stubs (TC-QNAME-FODT-SPEC-IMPL-001)
+     c. GAP-ARCH-006: Run SAL pipeline to produce sal-facts-latest.json (TC-SAL-OUTPUT-001)
+  5. After each repair, write evidence declaration and run autonomous-cycle
+  6. After Phase 2, run post-execution audit to check progress
+  7. Continue until mission-ledger.json shows stop_status=MISSION_COMPLETE
+
+unblocking_the_plan_lock: |
+  The PLAN_TERMINAL/COMPLETED_IN_SESSION stop will clear when:
+  Option A: A new git commit is authorized and made — new HEAD → new session_id → old plan locks don't match
+  Option B: New chat session starts > 4 hours after session file created — TTL expires → new session_id from new HEAD
+  Option C: User explicitly authorizes machinery work in chat (current situation) — work proceeds manually
+  For fully autonomous continuation: Option A is most reliable.

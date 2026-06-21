@@ -1,0 +1,167 @@
+---
+# Per-Product QName Compliance Matrix
+# Sprint ID: ff-machinery-readiness-audit-20260621-23d1333
+# Generated: 2026-06-21
+
+schema_version: "1.0"
+
+products:
+  - product: FODS
+    language: dotnet
+    format: fods
+    source_root: src/net/fods/
+    expected_qname_root: src/net/FormatFactory/ (canonical) + src/net/fods/Compat/ (facade)
+    spec_hierarchy_source: ODF 1.3 (OASIS)
+    class_naming_follows_qname: "no"
+    class_naming_notes: "FodsDocument, FodsSheet, FodsRow, FodsCell — format-prefixed, not Office.Document, Table.Table, etc."
+    namespace_follows_qname: "no"
+    namespace_notes: "namespace FormatFactory.Fods — not FormatFactory.Office or FormatFactory.Table"
+    folder_follows_spec: "no"
+    folder_notes: "Flat layout in src/net/fods/ — no office/, table/, text/ subfolders"
+    api_maps_to_spec_facts: "partial"
+    api_notes: "Spec section references appear in XML comments but API names are not spec-literal"
+    tests_prove_behavior: "yes"
+    tests_notes: "547 .NET test functions documented in poc-targets.yaml"
+    validators_prove_qname: "no"
+    backfill_available: "design_only"
+    backfill_notes: "migration-plan.yaml defines phases but all are not_started"
+    source_quality_rating: "yellow"
+    gate_status: "G11-G APPROVED by Babar Raza; commercial_product_ready: false"
+    evidence_paths:
+      - src/net/fods/FodsDocument.cs
+      - src/net/fods/Model/FodsSheet.cs
+      - reports/specification-authority-layer-mwp/qname-ontology/canonical-class-inventory.yaml
+      - reports/gate11/fods-gate11-readiness-packet.md
+    required_fix: "Phase 1-2 of migration-plan.yaml: create canonical classes, move to Compat/"
+
+  - product: FODT
+    language: dotnet
+    format: fodt
+    source_root: src/net/fodt/
+    expected_qname_root: src/net/FormatFactory/ (canonical) + src/net/fodt/Compat/ (facade)
+    spec_hierarchy_source: ODF 1.3 (OASIS)
+    class_naming_follows_qname: "no"
+    namespace_follows_qname: "no"
+    folder_follows_spec: "no"
+    api_maps_to_spec_facts: "partial"
+    tests_prove_behavior: "partial"
+    tests_notes: "Tests added recently (compat_bootstrap, compat_e2e, spec_qname_stubs)"
+    validators_prove_qname: "no"
+    backfill_available: "design_only"
+    source_quality_rating: "yellow"
+    gate_status: "G11-G not approved"
+    evidence_paths:
+      - src/net/fodt/FodtDocument.cs
+      - src/net/fodt/Model/
+    required_fix: "Same as FODS .NET — after FODS pilot succeeds"
+
+  - product: FODS
+    language: python
+    format: fods
+    source_root: src/python/fods/fods/
+    expected_qname_root: src/python/fods/fods/office/, src/python/fods/fods/table/
+    spec_hierarchy_source: ODF 1.3 (OASIS)
+    class_naming_follows_qname: "no"
+    class_naming_notes: "Functions: parse_fods, workbook_*, find_sheet_by_name — not spec-literal"
+    namespace_follows_qname: "no"
+    namespace_notes: "Flat fods.fods package — no office., table. submodules"
+    folder_follows_spec: "no"
+    api_maps_to_spec_facts: "partial"
+    tests_prove_behavior: "partial"
+    tests_notes: "31+ ImportError collection failures in 121-file test suite"
+    validators_prove_qname: "no"
+    backfill_available: "no"
+    source_quality_rating: "yellow"
+    gate_status: "G10 PASSED; G11-G APPROVED; commercial_product_ready: false"
+    evidence_paths:
+      - src/python/fods/fods/parser.py
+      - src/python/fods/fods/neutral_model.py
+      - tests/python/fods/ (31 ImportError failures)
+    required_fix: "Fix broken tests first; then Phase 4 of migration-plan.yaml (Python model layer)"
+    critical_bug: "31 test files import functions that don't exist (fods_value_variance, etc.)"
+
+  - product: FODT
+    language: python
+    format: fodt
+    source_root: src/python/fodt/
+    expected_qname_root: src/python/fodt/office/, src/python/fodt/text/
+    class_naming_follows_qname: "no"
+    namespace_follows_qname: "no"
+    folder_follows_spec: "no"
+    api_maps_to_spec_facts: "partial"
+    tests_prove_behavior: "partial"
+    tests_notes: "Small new test suite (compat_bootstrap, compat_e2e, fodt_domain_models, spec_qname_stubs)"
+    validators_prove_qname: "no"
+    backfill_available: "no"
+    source_quality_rating: "yellow"
+    gate_status: "G10 PASSED; G11-G not approved"
+    required_fix: "Phase 4 of migration-plan.yaml after FODS Python pilot"
+
+  - product: XCF
+    language: python
+    format: xcf
+    source_root: src/python/xcf/
+    expected_qname_root: N/A (no formal spec hierarchy for XCF)
+    class_naming_follows_qname: "not_proven"
+    namespace_follows_qname: "not_proven"
+    folder_follows_spec: "no"
+    api_maps_to_spec_facts: "no"
+    tests_prove_behavior: "partial"
+    validators_prove_qname: "no"
+    backfill_available: "no"
+    source_quality_rating: "red"
+    gate_status: "FOSS only; analytics suspension in effect"
+    evidence_paths:
+      - src/python/xcf/xcf_analytics.py (5725 LOC monolith)
+    required_fix: "Analytics file must be decomposed; spec backing required before new functions"
+
+  - product: ZST
+    language: python
+    format: zst
+    source_root: src/python/zst/
+    expected_qname_root: N/A (RFC 8878 — no XML hierarchy)
+    class_naming_follows_qname: "not_applicable"
+    namespace_follows_qname: "not_applicable"
+    folder_follows_spec: "no"
+    api_maps_to_spec_facts: "partial"
+    tests_prove_behavior: "partial"
+    validators_prove_qname: "not_applicable"
+    backfill_available: "no"
+    source_quality_rating: "orange"
+    gate_status: "FOSS; Gate 11 prep in progress for .NET side"
+    required_fix: "Analytics functions require spec backing (RFC 8878 sections)"
+
+  - product: ABW
+    language: python
+    format: abw
+    source_root: src/python/abw/
+    class_naming_follows_qname: "not_proven"
+    namespace_follows_qname: "no"
+    folder_follows_spec: "no"
+    api_maps_to_spec_facts: "partial"
+    source_quality_rating: "orange"
+    gate_status: "FOSS"
+    required_fix: "Spec backing for all functions; monolith decomposition"
+
+  - product: FODG
+    language: python
+    format: fodg
+    source_root: src/python/fodg/
+    class_naming_follows_qname: "no"
+    namespace_follows_qname: "no"
+    folder_follows_spec: "no"
+    source_quality_rating: "orange"
+    gate_status: "FOSS"
+    required_fix: "Spec backing; analytics decomposition"
+
+compliance_summary:
+  total_products_audited: 8
+  green: 0
+  yellow: 4
+  orange: 3
+  red: 1
+  gray: 0
+  qname_implemented: 0
+  qname_planned_only: 4
+  qname_not_applicable: 2
+  qname_not_started: 2

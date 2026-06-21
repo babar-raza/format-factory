@@ -1,0 +1,80 @@
+---
+# Legacy Alias Map — Format Factory
+# Maps existing format-prefixed class names to their canonical targets
+# These are facades that should delegate to canonical implementations
+schema_version: "1.0"
+generated_at: "2026-06-15"
+
+# Rule: Existing format-prefixed classes become facades in Compat/
+# They MUST delegate to canonical classes, not contain independent logic
+
+aliases:
+  # FODS .NET facades
+  - legacy_name: "FodsDocument"
+    legacy_path: "src/net/fods/FodsDocument.cs"
+    canonical_class: "Office.Document"
+    canonical_path: "src/net/FormatFactory/Office/Document.cs"
+    facade_location: "src/net/fods/Compat/FodsDocument.cs"
+    migration_status: "not_migrated"
+    note: "Currently the primary class, needs to become a facade delegating to Office.Document"
+
+  - legacy_name: "FodsSheet"
+    legacy_path: "src/net/fods/Model/FodsSheet.cs"
+    canonical_class: "Table.Table"
+    canonical_path: "src/net/FormatFactory/Table/Table.cs"
+    facade_location: "src/net/fods/Compat/FodsSheet.cs"
+    migration_status: "not_migrated"
+
+  - legacy_name: "FodsRow"
+    legacy_path: "src/net/fods/Model/FodsRow.cs"
+    canonical_class: "Table.TableRow"
+    canonical_path: "src/net/FormatFactory/Table/TableRow.cs"
+    facade_location: "src/net/fods/Compat/FodsRow.cs"
+    migration_status: "not_migrated"
+
+  - legacy_name: "FodsCell"
+    legacy_path: "src/net/fods/Model/FodsCell.cs"
+    canonical_class: "Table.TableCell"
+    canonical_path: "src/net/FormatFactory/Table/TableCell.cs"
+    facade_location: "src/net/fods/Compat/FodsCell.cs"
+    migration_status: "not_migrated"
+
+  # FODT .NET facades
+  - legacy_name: "FodtDocument"
+    legacy_path: "src/net/fodt/FodtDocument.cs"
+    canonical_class: "Office.Document"
+    canonical_path: "src/net/FormatFactory/Office/Document.cs"
+    facade_location: "src/net/fodt/Compat/FodtDocument.cs"
+    migration_status: "not_migrated"
+
+  - legacy_name: "FodtParagraph"
+    legacy_path: "src/net/fodt/Model/FodtParagraph.cs"
+    canonical_class: "Text.Paragraph"
+    canonical_path: "src/net/FormatFactory/Text/Paragraph.cs"
+    facade_location: "src/net/fodt/Compat/FodtParagraph.cs"
+    migration_status: "not_migrated"
+
+  - legacy_name: "FodtBody"
+    legacy_path: "src/net/fodt/Model/FodtBody.cs"
+    canonical_class: "Office.Body"
+    canonical_path: "src/net/FormatFactory/Office/Body.cs"
+    facade_location: "src/net/fodt/Compat/FodtBody.cs"
+    migration_status: "not_migrated"
+
+  # Python module-level facades (functional API wraps dict model)
+  - legacy_name: "fods neutral_model (dict-based)"
+    legacy_path: "src/python/fods/neutral_model.py"
+    canonical_class: "Office.Document + Table.Table + Table.TableCell"
+    note: "Python uses dict-based neutral model. Migration adds class layer on top."
+    migration_status: "not_migrated"
+
+  - legacy_name: "fodt neutral_model (dict-based)"
+    legacy_path: "src/python/fodt/neutral_model.py"
+    canonical_class: "Office.Document + Text.Paragraph + Text.Heading"
+    note: "Python uses dict-based neutral model. Migration adds class layer on top."
+    migration_status: "not_migrated"
+
+summary:
+  total_legacy_aliases: 9
+  migrated: 0
+  not_migrated: 9

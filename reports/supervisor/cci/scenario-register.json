@@ -1,0 +1,52 @@
+{
+  "audit_id": "TC-CCI-211",
+  "audit_title": "CCI Scenario Completeness Audit",
+  "source_spec": "continuation-regression-test-plan.md (CCI-RTP-001)",
+  "audit_date": "2026-06-17",
+  "total_scenarios": 30,
+  "summary": {
+    "implemented": 14,
+    "out_of_scope": 8,
+    "pending": 4,
+    "not_applicable": 4
+  },
+  "scenarios": [
+    {"id": 1, "title": "Basic Two-Chat Isolation", "status": "IMPLEMENTED", "test_class": "TestScenario1_SameSessionContinues", "validates": ["RC-001", "RC-002"]},
+    {"id": 2, "title": "Same Repository, Different Missions", "status": "OUT_OF_SCOPE", "rationale": "Current design uses session_id not mission_id; subsumed by Scenario 4"},
+    {"id": 3, "title": "Same Project/Plan, Different Taskcards", "status": "OUT_OF_SCOPE", "rationale": "session_id isolation is more granular; run_ids within same session not a CCI concern"},
+    {"id": 4, "title": "Newer Artifact from Wrong Chat", "status": "IMPLEMENTED", "test_class": "TestScenario4_DifferentSessionRejected", "validates": ["RC-001", "selection_algorithm_step_6"]},
+    {"id": 5, "title": "Global Latest Belongs to Another Chat", "status": "IMPLEMENTED", "test_class": "TestScenario5_LegacySignalNoSessionId", "validates": ["RC-005", "selection_algorithm_step_10"]},
+    {"id": 6, "title": "Missing Chat ID", "status": "IMPLEMENTED", "test_class": "TestScenario5+TestScenario21", "validates": ["RC-001", "migration_plan"]},
+    {"id": 7, "title": "Mismatched Mission ID", "status": "IMPLEMENTED", "test_class": "TestScenario6_NoCallerSessionId+TestScenario4", "validates": ["RC-001", "validator:identity-match"]},
+    {"id": 8, "title": "Matching Chat, Wrong Repository", "status": "OUT_OF_SCOPE", "rationale": "Repository validation not in current design scope"},
+    {"id": 9, "title": "Matching Chat, Wrong Branch", "status": "OUT_OF_SCOPE", "rationale": "Branch validation not in current design scope"},
+    {"id": 10, "title": "Two Active Continuations for Same Chat", "status": "PARTIALLY", "test_class": "TestScenario19_ConflictDetection", "notes": "detect_conflicts() covered; specific tiebreaker test missing"},
+    {"id": 11, "title": "Consumed Continuation Encountered", "status": "IMPLEMENTED", "test_class": "TestScenario11_LedgerTracksCreation", "validates": ["RC-004", "validator:consumed-reuse"]},
+    {"id": 12, "title": "Superseded Continuation", "status": "PENDING", "notes": "Ledger supports superseded status; no test covers selector behavior on superseded entry"},
+    {"id": 13, "title": "Quarantined Continuation", "status": "PENDING", "notes": "TC-CCI-015 added migration; quarantine selector test to be added as Scenario 29"},
+    {"id": 14, "title": "Evidence Root Points to Another Chat", "status": "OUT_OF_SCOPE", "rationale": "evidence-root-match validator not in current design"},
+    {"id": 15, "title": "Queue Root Points to Another Mission", "status": "OUT_OF_SCOPE", "rationale": "Queue isolation not in current design"},
+    {"id": 16, "title": "Controller State from Another Instance", "status": "OUT_OF_SCOPE", "rationale": "controller_instance_id not in current design"},
+    {"id": 17, "title": "Summary vs Durable State Conflict", "status": "IMPLEMENTED", "test_class": "TestScenario17_IdentityCreation", "validates": ["RC-006"]},
+    {"id": 18, "title": "Durable State Missing, Summary Exists", "status": "IMPLEMENTED", "test_class": "TestScenario18_IdentityStaleness", "validates": ["fail_closed_behavior"]},
+    {"id": 19, "title": "Interrupted Run Resumes", "status": "IMPLEMENTED", "test_class": "TestScenario19_ConflictDetection", "validates": ["cross_window_recovery"]},
+    {"id": 20, "title": "Multiple Reruns, Stable Path", "status": "PENDING", "notes": "No regression test for ledger append-only stability across 3+ cycles"},
+    {"id": 21, "title": "Legacy Unscoped Artifact", "status": "IMPLEMENTED", "test_class": "TestScenario21_SelectorFailClosed", "validates": ["migration_plan"]},
+    {"id": 22, "title": "Intentional Chat Handoff", "status": "OUT_OF_SCOPE", "rationale": "Handoff mechanism not implemented"},
+    {"id": 23, "title": "Supervisor and Cycle See Same Artifact", "status": "OUT_OF_SCOPE", "rationale": "controller ownership not in current design"},
+    {"id": 24, "title": "User Starts New Mission in Same Chat", "status": "OUT_OF_SCOPE", "rationale": "Mission lifecycle not in current design"},
+    {"id": 25, "title": "User Returns to Old Mission", "status": "IMPLEMENTED", "test_class": "TestScenario25_SessionIdStability", "validates": ["mission_selection"]},
+    {"id": 26, "title": "State Module session_id (TC-CCI-204)", "status": "IMPLEMENTED", "test_class": "TestScenario26_StateModuleSessionId", "test_count": 7},
+    {"id": 27, "title": "Router Session Mismatch (TC-CCI-205)", "status": "IMPLEMENTED", "test_class": "TestScenario27_RouterSessionMismatch", "test_count": 2},
+    {"id": 28, "title": "Orchestrator Default CCI (TC-CCI-ORCH)", "status": "IMPLEMENTED", "test_class": "TestScenario28_OrchestratorDefaultCCI", "test_count": 5},
+    {"id": 29, "title": "Legacy State Migration (TC-CCI-015)", "status": "IMPLEMENTED", "test_class": "TestScenario29_LegacyMigration", "test_count": 3},
+    {"id": 30, "title": "Router Durable Log (TC-CCI-210)", "status": "IMPLEMENTED", "test_class": "TestScenario30_RouterDurableLog", "test_count": 1}
+  ],
+  "pending_sub_taskcards": [
+    {"scenario": 12, "action": "Add test: continuation_ledger.mark_consumed() then verify continuation_selector skips superseded entry"},
+    {"scenario": 20, "action": "Add Scenario 30 test: call check_continuation.check() 3 times, verify ledger grows correctly (append-only)"},
+    {"scenario": 13, "action": "Add quarantine selector test after TC-CCI-015 migration confirmed stable"}
+  ],
+  "test_suite_count": 42,
+  "test_suite_path": "tests/supervisor/continuation/test_isolation.py"
+}

@@ -1,11 +1,11 @@
 # Latest Supervisor Cycle Summary
-Run: ff-idempotent-spec-to-feature-swarm-20260615-e31fa98
-Sprint: FF-IDEMPOTENT-SPEC-TO-FEATURE-SWARM-HEALING-V2
-Timestamp: 2026-06-16T16:27:55.729834
+Run: machinery-lifecycle-forensics-20260621
+Sprint: machinery-lifecycle-forensics-20260621
+Timestamp: 2026-06-21T19:21:26.872442
 Verdict: ACCEPTED_WITH_REWORK
-Autonomous Continue: True
-Accepted: 8
-Rework: 7
+Autonomous Continue: true_with_rework
+Accepted: 9
+Rework: 1
 Overclaimed: 0
-Review: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\ff-idempotent-spec-to-feature-swarm-20260615-e31fa98\supervisor-review.md
-Next Prompt: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\ff-idempotent-spec-to-feature-swarm-20260615-e31fa98\combined-next-worker-prompt.md
+Review: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\machinery-lifecycle-forensics-20260621\supervisor-review.md
+Next Prompt: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\machinery-lifecycle-forensics-20260621\combined-next-worker-prompt.md

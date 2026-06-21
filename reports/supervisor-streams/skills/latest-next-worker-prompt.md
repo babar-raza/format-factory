@@ -1,6 +1,6 @@
 # FORMAT-FACTORY-RNEXT-MEGA-TRAIN-001
-# Generated: 2026-06-04T13:47:27.448301
-# Source: Supervisor autonomous-cycle review of FORMAT-FACTORY-SKILLS-PRODUCT-BREADTH-HANDOFF-FINALIZATION-001
+# Generated: 2026-06-18T20:45:29.502076
+# Source: Supervisor autonomous-cycle review of tc-0004-commands-skills-20260618
 # Stream: skills
 # ADVISORY ONLY -- not a Format Factory authority document
 
@@ -27,8 +27,8 @@ Read these files before writing any code:
 ## Sprint Identity
 
 - Sprint ID: FORMAT-FACTORY-RNEXT-MEGA-TRAIN-001
-- Prior sprint: FORMAT-FACTORY-SKILLS-PRODUCT-BREADTH-HANDOFF-FINALIZATION-001
-- Prior verdict: ACCEPTED_WITH_REWORK
+- Prior sprint: tc-0004-commands-skills-20260618
+- Prior verdict: ACCEPTED
 - Prior tests: 0 passed, 0 failed, 0 skipped
 - Autonomous continue: True
 
@@ -227,3 +227,40 @@ At sprint end, these files MUST exist:
 ---
 
 END OF SUPERVISOR-GENERATED MEGA-TRAIN EXECUTION PROMPT
+
+
+## Durable Failure Memory Warnings
+
+The following failures have been recorded in durable failure memory.
+Address escalated failures with priority.
+
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_execution_method_required_validator_failed (seen 122x, last: sprint279-xcf-deepening-20260617)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_source_diff_required_validator_failed (seen 89x, last: sprint559-561-deepening-20260618)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_idempotency_key_required_validator_failed (seen 54x, last: sprint279-xcf-deepening-20260617)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_claim_classification_validator_failed (seen 7x, last: IDEMPOTENT-SWARM-EXECUTION-20260615-E31FA98)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_route_decision_required_validator_failed (seen 88x, last: sprint559-561-deepening-20260618)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_spec_fact_refs_validator_failed (seen 176x, last: sprint559-561-deepening-20260618)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_monolith_detection_validator_failed (seen 254x, last: keen-dancing-hopper-governance-repair-20260618)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): exit_code_3_rework_required (seen 124x, last: keen-dancing-hopper-20260618)
+- WARNING: 6 unresolved failures in failure memory
+
+
+## Spec-Parity Requirements (from skill registry)
+
+The following skills require `spec_qname` mapping when invoked for product model work.
+Any product model task using these skills MUST declare which spec QNames are addressed
+and MUST NOT invent arbitrary flat class names without spec authority.
+
+- **add-dotnet-api**: spec_qname_required=true
+- **add-python-api**: spec_qname_required=true
+- **add-dotnet-object-model-feature**: spec_qname_required=true
+- **add-python-object-model-feature**: spec_qname_required=true
+- **add-same-format-writer-feature**: spec_qname_required=true
+- **spec-literal-qname-to-code-mapping**: spec_qname_required=true
+- **spec-shaped-product-architecture-blueprint**: spec_qname_required=true
+- **spec-parity-source-regeneration-and-migration**: spec_qname_required=true
+- **python-reduced-spec-parity-model**: spec_qname_required=true
+
+**Enforcement:** If a product model change is made without citing spec_fact_refs,
+governance validator V8 (spec_fact_references) will FAIL the item.
+Use SAL output at `.local/sal-output/sal-facts-latest.json` for valid FACT-* refs.

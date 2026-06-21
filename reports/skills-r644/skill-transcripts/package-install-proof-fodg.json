@@ -1,0 +1,24 @@
+{
+  "skill_id": "package-install-proof",
+  "skill_version": "1.2",
+  "run_date": "2026-06-18",
+  "format_id": "fodg",
+  "package_name": "aspose-format-factory-fodg",
+  "wheel_path": ".local/package-builds/python-foss/aspose-format-factory-fodg/dist/aspose_format_factory_fodg-0.1.0.dev0-py3-none-any.whl",
+  "wheel_version": "0.1.0.dev0",
+  "install_result": "OK",
+  "install_command": "python -m pip install --user --force-reinstall <wheel>",
+  "import_result": "OK",
+  "import_path": "C:\\Users\\prora\\AppData\\Roaming\\Python\\Python313\\site-packages\\fodg\\__init__.py",
+  "smoke_result": "PASS",
+  "smoke_tests": [
+    {"api": "load(path)", "result": "OK", "output": "dict with 5 keys"},
+    {"api": "probe_fodg(path)", "result": "OK", "output": "True"},
+    {"api": "get_page_count(model)", "result": "OK", "output": "1"},
+    {"api": "get_shapes(model)", "result": "OK", "output": "list len=0"},
+    {"api": "get_all_text(model)", "result": "OK", "output": "['Rectangle']"}
+  ],
+  "ndjson_status": "WHEEL_MISSING",
+  "verdict": "PASS",
+  "proof_report": "reports/skills-r644/package-install-proof-fodg.md"
+}

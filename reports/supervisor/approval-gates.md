@@ -1,6 +1,6 @@
 # Approval Gates Classification
-Sprint ID: FF-IDEMPOTENT-SPEC-TO-FEATURE-SWARM-HEALING-V2
-Generated: 2026-06-16T16:34:23.440258
+Sprint ID: machinery-lifecycle-forensics-20260621
+Generated: 2026-06-21T19:25:09.647123
 Current Mode: MODE 4 (ACTIVE_MCP_ACTIVATION)
 
 ## Pending Actions

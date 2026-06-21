@@ -1,8 +1,8 @@
 {
-  "sprint_id": "supervisor-export-20260616-163423",
-  "timestamp": "2026-06-16T16:34:23.222295",
-  "verdict": "ACCEPTED_WITH_REWORK",
-  "source_bundle": ".local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98",
+  "sprint_id": "supervisor-export-20260621-192509",
+  "timestamp": "2026-06-21T19:25:09.632125",
+  "verdict": "ACCEPTED",
+  "source_bundle": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\supervisor\\reviews\\machinery-lifecycle-forensics-20260621\\declaration-review-package.zip",
   "tasks": [
     {
       "task_id": "TASK-001",
@@ -19,7 +19,7 @@
     {
       "task_id": "TASK-002",
       "title": "Prepare commit candidate summary and changed-file manifest",
-      "description": "Modified tracked files detected: 17 file(s) (e.g. .supervisor/state/current-run.json). Build evidence bundle and write commit candidate manifest. Agent-owned preparation \u2014 do NOT self-commit.",
+      "description": "Modified tracked files detected: 23 file(s) (e.g. .supervisor/state/current-run.json). Build evidence bundle and write commit candidate manifest. Agent-owned preparation \u2014 do NOT self-commit.",
       "status": "agent-owned",
       "ff_doc_ref": "plans/master-plan.md",
       "supervisor_task_ref": "TC-R79-CLOSURE-001",
@@ -105,102 +105,42 @@
     },
     {
       "task_id": "TASK-009",
-      "title": "Work on open taskcard: FODS-COMMERCIAL-EXPORT-HTML-PDF-PNG",
-      "description": "Taskcard: FODS-COMMERCIAL-EXPORT-HTML-PDF-PNG",
+      "title": "Work on open taskcard: TC-0015-spec-retrieval-strategy-evaluation",
+      "description": "TC-0015: Hybrid Spec Retrieval Strategy Evaluation",
       "status": "pending",
-      "ff_taskcard_ref": "FODS-COMMERCIAL-EXPORT-HTML-PDF-PNG",
-      "ff_doc_ref": "taskcards/FODS-COMMERCIAL-EXPORT-HTML-PDF-PNG.md",
-      "acceptance_evidence": "taskcards/FODS-COMMERCIAL-EXPORT-HTML-PDF-PNG.md shows Status: closed or verified",
-      "validation_command": "grep 'Status:' taskcards/FODS-COMMERCIAL-EXPORT-HTML-PDF-PNG.md",
+      "ff_taskcard_ref": "TC-0015-spec-retrieval-strategy-evaluation",
+      "ff_doc_ref": "taskcards/TC-0015-spec-retrieval-strategy-evaluation.md",
+      "acceptance_evidence": "taskcards/TC-0015-spec-retrieval-strategy-evaluation.md shows Status: closed or verified",
+      "validation_command": "grep 'Status:' taskcards/TC-0015-spec-retrieval-strategy-evaluation.md",
       "non_authoritative": true,
       "lane": "C3"
     },
     {
       "task_id": "TASK-010",
-      "title": "Work on open taskcard: FODT-COMMERCIAL-EXPORT-HTML-PDF-PNG",
-      "description": "Taskcard: FODT-COMMERCIAL-EXPORT-HTML-PDF-PNG",
+      "title": "Work on open taskcard: TC-0016-fods-vector-index-pilot",
+      "description": "TC-0016: FODS Vector Index Pilot",
       "status": "pending",
-      "ff_taskcard_ref": "FODT-COMMERCIAL-EXPORT-HTML-PDF-PNG",
-      "ff_doc_ref": "taskcards/FODT-COMMERCIAL-EXPORT-HTML-PDF-PNG.md",
-      "acceptance_evidence": "taskcards/FODT-COMMERCIAL-EXPORT-HTML-PDF-PNG.md shows Status: closed or verified",
-      "validation_command": "grep 'Status:' taskcards/FODT-COMMERCIAL-EXPORT-HTML-PDF-PNG.md",
+      "ff_taskcard_ref": "TC-0016-fods-vector-index-pilot",
+      "ff_doc_ref": "taskcards/TC-0016-fods-vector-index-pilot.md",
+      "acceptance_evidence": "taskcards/TC-0016-fods-vector-index-pilot.md shows Status: closed or verified",
+      "validation_command": "grep 'Status:' taskcards/TC-0016-fods-vector-index-pilot.md",
       "non_authoritative": true,
       "lane": "C3"
     },
     {
       "task_id": "TASK-011",
-      "title": "Work on open taskcard: NEXT-COMMERCIAL-IMPLEMENTATION-SWARM",
-      "description": "Taskcard: NEXT-COMMERCIAL-IMPLEMENTATION-SWARM",
+      "title": "Work on open taskcard: TC-0020-spec-workbench-core",
+      "description": "TC-0020: Spec Workbench Core (All Formats)",
       "status": "pending",
-      "ff_taskcard_ref": "NEXT-COMMERCIAL-IMPLEMENTATION-SWARM",
-      "ff_doc_ref": "taskcards/NEXT-COMMERCIAL-IMPLEMENTATION-SWARM.md",
-      "acceptance_evidence": "taskcards/NEXT-COMMERCIAL-IMPLEMENTATION-SWARM.md shows Status: closed or verified",
-      "validation_command": "grep 'Status:' taskcards/NEXT-COMMERCIAL-IMPLEMENTATION-SWARM.md",
+      "ff_taskcard_ref": "TC-0020-spec-workbench-core",
+      "ff_doc_ref": "taskcards/TC-0020-spec-workbench-core.md",
+      "acceptance_evidence": "taskcards/TC-0020-spec-workbench-core.md shows Status: closed or verified",
+      "validation_command": "grep 'Status:' taskcards/TC-0020-spec-workbench-core.md",
       "non_authoritative": true,
       "lane": "C3"
     },
     {
       "task_id": "TASK-012",
-      "title": "Product deepening: GAP-ABW-FOSS-LOAD-001 \u2014 GAP-ABW-FOSS-LOAD-001",
-      "description": "Product target: ABW. Product objective: GAP-ABW-FOSS-LOAD-001. Use generated execution handoff from .supervisor/skill-registry.yaml; ledger any src edit in reports/r90/product-code-change-ledger.json.",
-      "status": "pending",
-      "ff_doc_ref": ".local/supervisor/selected-product-gaps.json",
-      "supervisor_task_ref": "GAP-ABW-FOSS-LOAD-001",
-      "acceptance_evidence": "New tests pass for GAP-ABW-FOSS-LOAD-001; capability implemented or documented",
-      "validation_command": "pytest tests/ -x -q",
-      "non_authoritative": true,
-      "lane": "C3"
-    },
-    {
-      "task_id": "TASK-013",
-      "title": "Product deepening: GAP-FODG-FOSS-LOAD-001 \u2014 GAP-FODG-FOSS-LOAD-001",
-      "description": "Product target: FODG. Product objective: GAP-FODG-FOSS-LOAD-001. Use generated execution handoff from .supervisor/skill-registry.yaml; ledger any src edit in reports/r90/product-code-change-ledger.json.",
-      "status": "pending",
-      "ff_doc_ref": ".local/supervisor/selected-product-gaps.json",
-      "supervisor_task_ref": "GAP-FODG-FOSS-LOAD-001",
-      "acceptance_evidence": "New tests pass for GAP-FODG-FOSS-LOAD-001; capability implemented or documented",
-      "validation_command": "pytest tests/ -x -q",
-      "non_authoritative": true,
-      "lane": "C3"
-    },
-    {
-      "task_id": "TASK-014",
-      "title": "Product deepening: GAP-Gnumeric-FOSS-LOAD-001 \u2014 GAP-Gnumeric-FOSS-LOAD-001",
-      "description": "Product target: Gnumeric. Product objective: GAP-Gnumeric-FOSS-LOAD-001. Use generated execution handoff from .supervisor/skill-registry.yaml; ledger any src edit in reports/r90/product-code-change-ledger.json.",
-      "status": "pending",
-      "ff_doc_ref": ".local/supervisor/selected-product-gaps.json",
-      "supervisor_task_ref": "GAP-Gnumeric-FOSS-LOAD-001",
-      "acceptance_evidence": "New tests pass for GAP-Gnumeric-FOSS-LOAD-001; capability implemented or documented",
-      "validation_command": "pytest tests/ -x -q",
-      "non_authoritative": true,
-      "lane": "C3"
-    },
-    {
-      "task_id": "TASK-015",
-      "title": "Product deepening: GAP-TOML-FOSS-ROUNDTRIP-001 \u2014 GAP-TOML-FOSS-ROUNDTRIP-001",
-      "description": "Product target: TOML. Product objective: GAP-TOML-FOSS-ROUNDTRIP-001. Use generated execution handoff from .supervisor/skill-registry.yaml; ledger any src edit in reports/r90/product-code-change-ledger.json.",
-      "status": "pending",
-      "ff_doc_ref": ".local/supervisor/selected-product-gaps.json",
-      "supervisor_task_ref": "GAP-TOML-FOSS-ROUNDTRIP-001",
-      "acceptance_evidence": "New tests pass for GAP-TOML-FOSS-ROUNDTRIP-001; capability implemented or documented",
-      "validation_command": "pytest tests/ -x -q",
-      "non_authoritative": true,
-      "lane": "C3"
-    },
-    {
-      "task_id": "TASK-016",
-      "title": "Product deepening: GAP-DIF-FOSS-PROBE_DIF-001 \u2014 GAP-DIF-FOSS-PROBE_DIF-001",
-      "description": "Product target: DIF. Product objective: GAP-DIF-FOSS-PROBE_DIF-001. Use generated execution handoff from .supervisor/skill-registry.yaml; ledger any src edit in reports/r90/product-code-change-ledger.json.",
-      "status": "pending",
-      "ff_doc_ref": ".local/supervisor/selected-product-gaps.json",
-      "supervisor_task_ref": "GAP-DIF-FOSS-PROBE_DIF-001",
-      "acceptance_evidence": "New tests pass for GAP-DIF-FOSS-PROBE_DIF-001; capability implemented or documented",
-      "validation_command": "pytest tests/ -x -q",
-      "non_authoritative": true,
-      "lane": "C3"
-    },
-    {
-      "task_id": "TASK-017",
       "title": "Advance one dogfood export path using a Format Factory library",
       "description": "Product objective: close or verify a selected dogfood export from .local/supervisor/selected-product-gaps.json. Use a Format Factory-produced library and record truthful status.",
       "status": "pending",
@@ -212,7 +152,7 @@
       "lane": "C4"
     },
     {
-      "task_id": "TASK-018",
+      "task_id": "TASK-013",
       "title": "Build package artifacts and run installed-workflow proof",
       "description": "Product objective: prove changed product packages from physical artifacts. A missing artifact is a failure, not a skipped package test.",
       "status": "pending",
@@ -224,7 +164,7 @@
       "lane": "C5"
     },
     {
-      "task_id": "TASK-019",
+      "task_id": "TASK-014",
       "title": "Write evidence declaration and run supervisor autonomous-cycle",
       "description": "Write .local/evidences/<run_id>/evidence-declaration.yaml for all work items, then run the declaration-driven supervisor autonomous-cycle. ZIP export is optional.",
       "status": "pending",
@@ -236,5 +176,5 @@
       "lane": "C6"
     }
   ],
-  "notes": "Generated from evidence review of sprint FF-IDEMPOTENT-SPEC-TO-FEATURE-SWARM-HEALING-V2"
+  "notes": "Generated from evidence review of sprint machinery-lifecycle-forensics-20260621"
 }

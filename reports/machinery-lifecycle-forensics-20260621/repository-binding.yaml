@@ -1,0 +1,83 @@
+---
+# PHASE 0: Repository Binding
+schema_version: "1.0"
+run_id: "machinery-lifecycle-forensics-20260621"
+generated_at: "2026-06-21T19:30:00Z"
+investigator: "Claude Sonnet 4.6 — forensic-sprint"
+
+repository:
+  root: "C:/Users/prora/OneDrive/Documents/GitHub/format-factory"
+  branch: main
+  head: "23d1333fdb51b8f07d517a29af311d46ffdd3eb9"
+  working_tree_state: dirty_uncommitted_changes
+
+active_worktrees: []
+
+repository_instructions:
+  - "CLAUDE.md (project root)"
+  - "AGENTS.md"
+  - "plans/master-plan.md"
+  - "plans/spec-to-feature-radical-correction-plan.md"
+  - "plans/snoopy-juggling-seal.md"
+
+governance_files:
+  master_plan: "plans/master-plan.md"
+  spec_correction_plan: "plans/spec-to-feature-radical-correction-plan.md"
+  agent_rules: "AGENTS.md"
+  format_registry: "registry/format-registry.yaml"
+  gap_ledger: "reports/capability-layer/gap-ledger.json"
+
+plan_files_in_plans_dir:
+  - "plans/master-plan.md"
+  - "plans/snoopy-juggling-seal.md"
+  - "plans/spec-to-feature-radical-correction-plan.md"
+
+sprint_audit_prompts:
+  - "# Machinery Iteration Failure and Lifecycle Healing Report (this document)"
+
+state_ledgers:
+  session_resume: "reports/supervisor/session-resume.md"
+  approval_gates: "reports/supervisor/approval-gates.md"
+  next_sprint: "reports/supervisor/next-sprint.md"
+  continuation_signal_legacy: ".local/supervisor/continuation-signal.json"
+  continuation_signal_machinery: ".local/supervisor/machinery/continuation-signal.json"
+  active_plan_lock: ".local/supervisor/active-plan-lock.json"
+  plan_locks_dir: ".local/supervisor/plan-locks/"
+
+controller_state:
+  active_plan_lock_status: "TERMINAL_CLOSED"
+  plan_lock_session_keyed_status: "COMPLETE"
+  plan_lock_plan_path: "C:/Users/prora/.claude/plans/fuzzy-conjuring-papert.md"
+  plan_lock_session_id: "7c0655b93790"
+  legacy_continuation_signal: "autonomous_continue=false, stop_reason=critical_rework_blocks_continuation, iteration=11/12"
+  machinery_continuation_signal: "autonomous_continue=false, stop_reason=critical_rework_blocks_continuation, iteration=1/12 (June 18 — stale)"
+
+evidence_roots:
+  - ".local/evidences/"
+  - ".local/supervisor/reviews/"
+
+prior_run_evidence:
+  - id: "ff-arch-20260621-001"
+    path: "reports/archaeology/ff-arch-20260621-001/"
+    type: "investigation_only"
+    verdict: "NOT_READY_REPAIR_MACHINERY_FIRST"
+    next_action_file: "reports/archaeology/ff-arch-20260621-001/next-agent-execution-prompt.md"
+    consumed: false
+    reason_not_consumed: "Investigation-mode sprint; no controller wired to consume next-prompt file"
+
+  - id: "spec-auth-heal-sprint-1"
+    path: ".local/supervisor/reviews/spec-auth-heal-sprint-1/"
+    type: "product_sprint"
+    verdict: "ACCEPTED"
+    tests: "1490 passed / 0 failed"
+    autonomous_continue_from_session_resume: true
+    autonomous_continue_from_signal: false
+    contradiction: "session-resume says True (19:03:25) but signal says False (18:57:04)"
+
+generated_next_run_artifacts:
+  - path: "reports/archaeology/ff-arch-20260621-001/next-agent-execution-prompt.md"
+    type: "file"
+    consumer: "NONE — file has no controller consumer"
+  - path: "reports/supervisor/next-sprint.md"
+    type: "file"
+    consumer: "check_continuation.py → sprint executor (blocked by PLAN_COMPLETED_IN_SESSION)"

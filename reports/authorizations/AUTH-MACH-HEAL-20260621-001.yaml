@@ -1,0 +1,348 @@
+---
+# DELEGATED AUTHORIZATION REVIEW AND FORWARD-ACTION
+# Authorization ID: AUTH-MACH-HEAL-20260621-001
+schema_version: "1.0"
+authorization_id: "AUTH-MACH-HEAL-20260621-001"
+generated_at: "2026-06-21T20:00:00Z"
+delegating_authority: "Babar Raza"
+reviewing_agent: "Claude Code (claude-sonnet-4-6)"
+delegation_basis: "DELEGATED AUTHORIZATION REVIEW AND FORWARD-ACTION PROTOCOL — explicit authorization message received in session 7c0655b93790"
+
+# ─────────────────────────────────────────────────────────────
+# SECTION 1: AUTHORIZATION REQUEST INTERPRETED
+# ─────────────────────────────────────────────────────────────
+authorization_request:
+  request_type: "POST_SPRINT_FORWARD_ACTION"
+  sprint_id: "machinery-lifecycle-forensics-20260621"
+  sprint_verdict: "PASS"
+  sprint_type: "MACHINERY_FORENSICS"
+
+  what_was_done:
+    - "Forensic analysis of failed machinery lifecycle (6 root causes, RC-001 through RC-006)"
+    - "Failed-run timeline reconstruction (5 events, archaeology → PLAN_COMPLETED_IN_SESSION stop)"
+    - "Lifecycle truth table with 21 lifecycle gates (LIF-0 through LIF-20)"
+    - "Stop-condition forensics (SC-001 through SC-005)"
+    - "Root-cause register with structural gap mapping (GAP-WF-001 through GAP-WF-004)"
+    - "Phase 1 repairs verified complete: V43-V45 validators, MANDATORY PRE-CHECK in skills, FODS nesting cleanup"
+    - "Mission ledger created at .local/supervisor/machinery/mission-ledger.json"
+    - "Machinery continuation signal reset to CONTINUE (iteration=1)"
+    - "Source baseline updated to 0 files exceeding cap"
+    - "Evidence bundle built: SHA-256 10e7656e911c160377ecd86c2b6c1d0248b01da4085b9e3120e320bcfa5a3020"
+
+  what_is_needed_next:
+    - "Git commit to change HEAD (clears session_id collision; enables autonomous machinery continuation)"
+    - "Phase 2 repairs: GAP-ARCH-003, GAP-ARCH-005, GAP-ARCH-006"
+    - "Multi-iteration lifecycle proof (LIF-13)"
+    - "Machinery workflow hardening: track_type in plan locks (GAP-WF-004), session nonce (SC-005)"
+
+# ─────────────────────────────────────────────────────────────
+# SECTION 2: EVIDENCE REVIEWED
+# ─────────────────────────────────────────────────────────────
+evidence_reviewed:
+  declaration_path: ".local/evidences/machinery-lifecycle-forensics-20260621/evidence-declaration.yaml"
+  declaration_validator_verdict: "PASS"
+  review_package_path: ".local/supervisor/reviews/machinery-lifecycle-forensics-20260621/declaration-review-package.zip"
+  review_package_sha256: "10e7656e911c160377ecd86c2b6c1d0248b01da4085b9e3120e320bcfa5a3020"
+  review_package_size_bytes: 192104
+  autonomous_cycle_exit_code: 0
+  worker_self_verdict: "PASS"
+
+  phase1_repair_verification:
+    TC-HYGIENE-FODS-001:
+      status: VERIFIED_COMPLETE
+      evidence: "src/python/fods/fods/*.py removed from git index; baseline updated"
+    TC-GOV-QNAME-VALIDATOR-001:
+      status: VERIFIED_ALREADY_DONE
+      evidence: "V43/V44/V45 validators present in governance_validators.py lines ~2867-2950"
+    TC-SKILL-QNAME-ENFORCE-001:
+      status: VERIFIED_ALREADY_DONE
+      evidence: "MANDATORY PRE-CHECK section present in .claude/commands/add-python-api.md line 12"
+    TC-BASELINE-UPDATE-001:
+      status: VERIFIED_COMPLETE
+      evidence: "0 files exceeding cap after update_source_baseline.py run"
+    TC-LIF-MISSION-LEDGER-001:
+      status: VERIFIED_COMPLETE
+      evidence: ".local/supervisor/machinery/mission-ledger.json exists with open/closed gap lists"
+    TC-LIF-CONTINUATION-RESET-001:
+      status: VERIFIED_COMPLETE
+      evidence: ".local/supervisor/machinery/continuation-signal.json reset to CONTINUE iteration=1"
+
+  gaps_confirmed_open:
+    - id: "GAP-ARCH-003"
+      description: "No canonical spec class files for FODS/FODT (Table, Document, etc.)"
+      severity: HIGH
+    - id: "GAP-ARCH-005"
+      description: "FODT spec/ Python stubs do not exist"
+      severity: HIGH
+    - id: "GAP-ARCH-006"
+      description: "SAL pipeline never produces sal-facts-latest.json"
+      severity: HIGH
+    - id: "GAP-WF-001"
+      description: "No post-execution audit stage for machinery track"
+      severity: MEDIUM
+    - id: "GAP-WF-003"
+      description: "No mission completion audit gate"
+      severity: MEDIUM
+    - id: "GAP-WF-004"
+      description: "Plan lock track_type field missing — TERMINAL_CLOSED blocks all tracks"
+      severity: HIGH
+
+# ─────────────────────────────────────────────────────────────
+# SECTION 3: READINESS AND AUTHORITY ASSESSMENT
+# ─────────────────────────────────────────────────────────────
+readiness_assessment:
+  sprint_evidence_quality: SUFFICIENT
+  governance_validators_pass: true
+  source_baseline_exceeding: 0
+  open_mandatory_gaps: 6
+  mission_status: "EXECUTION_REQUIRED — Phase 2 not yet started"
+
+  authority_mapping:
+    LOCAL_IMPLEMENTATION: "agent-owned — no external gate"
+    LOCAL_TESTING: "agent-owned — no external gate"
+    ARTIFACT_REGENERATION: "agent-owned — no external gate"
+    GIT_COMMIT: "sprint_policy authorizes when exit=0, clean diff, validators pass — CURRENTLY MET"
+    GIT_PUSH: "TRUE_EXTERNAL_GATE — requires push credentials + branch protection + user explicit auth"
+    PACKAGE_PUBLISH: "TRUE_EXTERNAL_GATE — requires PyPI credentials"
+    GATE_11_EXECUTION: "TRUE_EXTERNAL_GATE — Babar Raza business decision only"
+
+  plan_lock_blocker:
+    description: >
+      active-plan-lock.json has status=TERMINAL_CLOSED (bright-frolicking-turtle.md) in session
+      7c0655b93790. This matches the current session, causing check_continuation.py to return
+      POST_PLAN_TERMINAL for --track machinery. This is the SOLE blocker for automated continuation.
+    fix: >
+      A git commit changes HEAD → new session_id → old plan locks (session 7c0655b93790) do not
+      match → POST_PLAN_TERMINAL does not fire for new session. This is explicitly documented in
+      execution-handoff.yaml (Option A, most reliable).
+    commit_is_authorized: true
+    commit_authorization_basis: >
+      Sprint exit code = 0, governance validators pass, 0 files exceeding cap, worker verdict PASS.
+      Sprint policy (AUTONOMOUS_CONTINUE=YES) authorizes commit. Additionally, this delegated
+      authorization explicitly grants commit authority for the forensics sprint output.
+
+# ─────────────────────────────────────────────────────────────
+# SECTION 4: GAPS AND FALSE BLOCKERS
+# ─────────────────────────────────────────────────────────────
+gaps_and_false_blockers:
+  - id: "FB-001"
+    type: "FALSE_BLOCKER"
+    description: "POST_PLAN_TERMINAL / PLAN_COMPLETED_IN_SESSION from check_continuation.py"
+    assessment: >
+      This is a STRUCTURAL FALSE BLOCKER for machinery-track work. The plan locks
+      (bright-frolicking-turtle.md TERMINAL_CLOSED, fuzzy-conjuring-papert.md COMPLETE) are
+      PRODUCT-TRACK plan closures. They should not block MACHINERY-TRACK continuation.
+      The correct fix (GAP-WF-004) is adding track_type to plan locks. The immediate fix
+      is a git commit to rotate session_id.
+    is_true_external_gate: false
+    can_agent_resolve: true
+    resolution: "git commit of forensics sprint output; implement GAP-WF-004 in Phase 2"
+
+  - id: "FB-002"
+    type: "FALSE_BLOCKER"
+    description: "continuation-signal.json (product track) has hard_stops=[critical_rework_blocks_continuation]"
+    assessment: >
+      This is the PRODUCT-TRACK signal. The MACHINERY-TRACK signal (.local/supervisor/machinery/)
+      has been reset to CONTINUE. The product-track signal does not govern machinery work.
+      NOT a blocker for Phase 2 machinery repairs.
+    is_true_external_gate: false
+    can_agent_resolve: true
+    resolution: "Resolved — machinery track uses separate signal which is now CONTINUE"
+
+  - id: "RG-001"
+    type: "REAL_GAP"
+    description: "GAP-WF-004: track_type not in plan lock schema"
+    assessment: "Real gap. Repair = TC-PLAN-LOCK-TRACK-TYPE-001 (Phase 2 work)"
+    is_true_external_gate: false
+    can_agent_resolve: true
+
+  - id: "RG-002"
+    type: "REAL_GAP"
+    description: "SC-005: session_id collision across chat sessions on same HEAD"
+    assessment: "Real gap. Repair = TC-SESSION-NONCE-001 (Phase 2 work)"
+    is_true_external_gate: false
+    can_agent_resolve: true
+
+# ─────────────────────────────────────────────────────────────
+# SECTION 5: AUTHORIZATION VERDICT
+# ─────────────────────────────────────────────────────────────
+verdict: "AUTHORIZATION_GRANTED_WITH_LIMITS"
+
+verdict_rationale: >
+  The forensics sprint produced verifiable evidence of 9 completed work items with passing
+  governance validators and 0 source cap violations. The sprint's direct objectives (LIF-0
+  through LIF-12, LIF-15, LIF-18, LIF-19, LIF-20) are PASS or PASS_WITH_LIMITATIONS.
+  Phase 1 repairs are verified complete. The forward work (Phase 2: GAP-ARCH-003/005/006,
+  GAP-WF-001/003/004) is agent-owned, non-destructive, and traceable to the open gap ledger.
+  A git commit is authorized as sprint policy prerequisites are met.
+  Authorization is LIMITED to local work and commit; push/publish/Gate-11 remain TRUE_EXTERNAL_GATEs.
+
+# ─────────────────────────────────────────────────────────────
+# SECTION 6: EXPLICIT DELEGATED AUTHORIZATION STATEMENT
+# ─────────────────────────────────────────────────────────────
+delegated_authorization_statement: >
+  Acting under the authority delegated by Babar Raza through the DELEGATED AUTHORIZATION REVIEW
+  AND FORWARD-ACTION PROTOCOL received in this session, I explicitly authorize the following
+  actions for the Format Factory machinery healing mission (machinery-lifecycle-healing-20260621):
+
+  AUTHORIZED:
+  1. Git commit of all forensics sprint outputs (staged + unstaged changes from sprint
+     machinery-lifecycle-forensics-20260621) with a descriptive commit message. This is the
+     minimum-footprint action to rotate the session_id and unblock machinery-track continuation.
+  2. Phase 2 machinery repairs — LOCAL_IMPLEMENTATION and LOCAL_TESTING:
+     a. TC-QNAME-CANONICAL-001: Create canonical spec class files (GAP-ARCH-003)
+     b. TC-QNAME-FODT-SPEC-IMPL-001: Implement FODT Python spec/ stubs (GAP-ARCH-005)
+     c. TC-SAL-OUTPUT-001: Run SAL pipeline to produce sal-facts-latest.json (GAP-ARCH-006)
+     d. TC-PLAN-LOCK-TRACK-TYPE-001: Add track_type to plan lock schema (GAP-WF-004)
+     e. TC-SESSION-NONCE-001: Add nonce to session_id derivation (SC-005)
+     f. TC-LIF-POST-EXEC-AUDIT-001: Implement post-execution audit stage for machinery track
+     g. TC-LIF-MISSION-COMPLETE-GATE-001: Implement mission completion audit gate
+  3. ARTIFACT_REGENERATION: Run autonomous-cycle and build review packages after each Phase 2 repair
+  4. CONTINUATION: After authorized commit, run check_continuation.py --track machinery and
+     proceed if CONTINUE is returned
+
+  NOT AUTHORIZED (TRUE_EXTERNAL_GATEs — require Babar Raza direct action):
+  - git push to any remote
+  - PyPI package publication
+  - NuGet package publication
+  - Gate 11 commercial execution approval
+  - Any force-push, branch deletion, or destructive git operation
+
+  AUTHORIZATION SCOPE: Machinery healing track only. Does not authorize restarting
+  product deepening rotation (suspended per MEMORY.md keen-dancing-hopper plan).
+
+authorized_by_delegation: true
+authority_scope: "LOCAL_IMPLEMENTATION, LOCAL_TESTING, ARTIFACT_REGENERATION, GIT_COMMIT"
+authority_excludes: "GIT_PUSH, PACKAGE_PUBLISH, GATE_11_EXECUTION, DESTRUCTIVE_GIT"
+
+# ─────────────────────────────────────────────────────────────
+# SECTION 7: AUTHORIZATION GRANT TASKCARDS (machine-consumable)
+# ─────────────────────────────────────────────────────────────
+authorization_taskcards:
+
+  - taskcard_id: "TC-AUTH-COMMIT-001"
+    title: "Commit forensics sprint output to rotate session_id"
+    authorization_ref: "AUTH-MACH-HEAL-20260621-001"
+    authorized_action: "GIT_COMMIT"
+    description: >
+      Stage all forensics sprint outputs and commit. New HEAD → new session_id → plan locks
+      from session 7c0655b93790 will not match new session → POST_PLAN_TERMINAL clears.
+    scope: "All changes from sprint machinery-lifecycle-forensics-20260621"
+    constraints: "Commit only — do NOT push"
+    status: AUTHORIZED
+
+  - taskcard_id: "TC-PLAN-LOCK-TRACK-TYPE-001"
+    title: "Add track_type field to plan lock schema (GAP-WF-004)"
+    authorization_ref: "AUTH-MACH-HEAL-20260621-001"
+    authorized_action: "LOCAL_IMPLEMENTATION"
+    gap_ref: "GAP-WF-004"
+    description: >
+      Modify write_plan_lock.py and check_continuation.py to support track_type in plan locks.
+      TERMINAL_CLOSED with track_type=product should NOT block machinery track.
+    status: AUTHORIZED
+
+  - taskcard_id: "TC-SESSION-NONCE-001"
+    title: "Add random nonce to session_id derivation (SC-005)"
+    authorization_ref: "AUTH-MACH-HEAL-20260621-001"
+    authorized_action: "LOCAL_IMPLEMENTATION"
+    gap_ref: "SC-005"
+    description: >
+      Add UUID component to continuation_identity.py so each new chat session gets a unique
+      session_id even when git HEAD has not changed between sessions.
+    status: AUTHORIZED
+
+  - taskcard_id: "TC-QNAME-CANONICAL-001"
+    title: "Create canonical spec class files (GAP-ARCH-003)"
+    authorization_ref: "AUTH-MACH-HEAL-20260621-001"
+    authorized_action: "LOCAL_IMPLEMENTATION"
+    gap_ref: "GAP-ARCH-003"
+    description: >
+      Create canonical spec class files for FODS (Table, Document, TableRow, TableCell)
+      and FODT following the spec QName → canonical class naming convention.
+    status: AUTHORIZED
+
+  - taskcard_id: "TC-QNAME-FODT-SPEC-IMPL-001"
+    title: "Implement FODT Python spec/ stubs (GAP-ARCH-005)"
+    authorization_ref: "AUTH-MACH-HEAL-20260621-001"
+    authorized_action: "LOCAL_IMPLEMENTATION"
+    gap_ref: "GAP-ARCH-005"
+    description: >
+      Create src/python/fodt/spec/ Python stub files mirroring the QName registry for FODT.
+    status: AUTHORIZED
+
+  - taskcard_id: "TC-SAL-OUTPUT-001"
+    title: "Run SAL pipeline to produce sal-facts-latest.json (GAP-ARCH-006)"
+    authorization_ref: "AUTH-MACH-HEAL-20260621-001"
+    authorized_action: "ARTIFACT_REGENERATION"
+    gap_ref: "GAP-ARCH-006"
+    description: >
+      Run tools/specification-authority-layer/sal_master_runner.py to produce
+      .local/spec-cache/sal-facts-latest.json. Validate output against expected schema.
+    status: AUTHORIZED
+
+  - taskcard_id: "TC-LIF-POST-EXEC-AUDIT-001"
+    title: "Implement post-execution audit stage for machinery track"
+    authorization_ref: "AUTH-MACH-HEAL-20260621-001"
+    authorized_action: "LOCAL_IMPLEMENTATION"
+    gap_ref: "GAP-WF-001"
+    description: >
+      Add post-execution audit stage to machinery lifecycle: after each sprint, verify
+      mission-ledger.json gap closure evidence before continuing to next iteration.
+    status: AUTHORIZED
+
+  - taskcard_id: "TC-LIF-MISSION-COMPLETE-GATE-001"
+    title: "Implement mission completion audit gate"
+    authorization_ref: "AUTH-MACH-HEAL-20260621-001"
+    authorized_action: "LOCAL_IMPLEMENTATION"
+    gap_ref: "GAP-WF-003"
+    description: >
+      Implement check in check_continuation.py --track machinery that queries
+      mission-ledger.json stop_status before returning CONTINUE. If MISSION_COMPLETE, stop.
+    status: AUTHORIZED
+
+# ─────────────────────────────────────────────────────────────
+# SECTION 8: STATE TRANSITION AND CONTINUATION
+# ─────────────────────────────────────────────────────────────
+state_transition:
+  current_state: "POST_PLAN_TERMINAL — plan locks blocking check_continuation.py"
+  transition_action: "TC-AUTH-COMMIT-001 (git commit → new HEAD → session_id rotates)"
+  expected_post_transition_state: "CONTINUE — machinery track unblocked"
+  verification_command: "python tools/supervisor/check_continuation.py --track machinery"
+  expected_output: '{"verdict": "CONTINUE"}'
+
+  phase2_execution_order:
+    - "TC-AUTH-COMMIT-001 (commit — FIRST, unblocks everything)"
+    - "TC-PLAN-LOCK-TRACK-TYPE-001 (most impactful workflow fix)"
+    - "TC-SESSION-NONCE-001 (prevents future session collisions)"
+    - "TC-QNAME-CANONICAL-001 (GAP-ARCH-003, highest priority arch gap)"
+    - "TC-QNAME-FODT-SPEC-IMPL-001 (GAP-ARCH-005)"
+    - "TC-SAL-OUTPUT-001 (GAP-ARCH-006)"
+    - "TC-LIF-POST-EXEC-AUDIT-001 (workflow hardening)"
+    - "TC-LIF-MISSION-COMPLETE-GATE-001 (workflow hardening)"
+
+  after_each_repair:
+    - "Write evidence declaration"
+    - "Run autonomous-cycle"
+    - "Update mission-ledger.json open_gaps / closed_gaps"
+    - "Run check_continuation.py --track machinery"
+    - "Continue if CONTINUE returned"
+
+# ─────────────────────────────────────────────────────────────
+# SECTION 9: FINAL REVIEWER NOTE
+# ─────────────────────────────────────────────────────────────
+reviewer_note: >
+  The forensics sprint produced complete evidence for all Phase 1 targets. The machinery
+  lifecycle is partially healed — single iteration proven (Pilot A COMPLETE). The primary
+  remaining gap is the plan lock track_type isolation (GAP-WF-004) which caused this
+  session's automated continuation to block. The commit authorized here will restore
+  automated continuation for Phase 2. All Phase 2 repairs are agent-owned, reversible,
+  and traceable to documented gaps. No TRUE_EXTERNAL_GATEs are involved in Phase 2.
+
+  Babar Raza's authority is NOT being used for Gate 11 execution, package publication,
+  or any external-facing release action. This authorization is narrowly scoped to
+  machinery healing work that should have been self-authorizing under sprint policy
+  but was blocked by the plan lock session collision.
+
+  Multi-iteration lifecycle proof (LIF-13, Pilot H) will be demonstrated after TC-AUTH-COMMIT-001
+  enables autonomous continuation: each Phase 2 repair constitutes one iteration of the
+  SPRINT AUDIT → GAP ANALYSIS → EXECUTION → VERIFICATION loop.

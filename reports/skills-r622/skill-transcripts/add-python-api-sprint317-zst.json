@@ -1,0 +1,35 @@
+{
+  "skill_id": "add-python-api",
+  "format_id": "zst",
+  "sprint_id": "sprint317-zst-deepening-20260617",
+  "run_id": "sprint317-zst-deepening-20260617",
+  "api_functions": [
+    {
+      "api_name": "zst_compressed_size_mod_431_times_27_plus_decompressed_size_mod_1100_times_5_plus_max_byte_value_times_200",
+      "behavior": "Returns (compressed_size % 431) * 27 + (decompressed_size % 1100) * 5 + max_byte_value * 200",
+      "spec_fact_refs": [
+        "FACT-ZST-STRUCTURE-001"
+      ]
+    },
+    {
+      "api_name": "zst_compressed_size_times_31_plus_decompressed_size_times_5_plus_max_byte_value_times_11",
+      "behavior": "Returns compressed_size * 31 + decompressed_size * 5 + max_byte_value * 11",
+      "spec_fact_refs": [
+        "FACT-ZST-STRUCTURE-002"
+      ]
+    }
+  ],
+  "changed_files": [
+    "src/python/zst/zst_codec.py",
+    "src/python/zst/__init__.py",
+    "tests/python/zst/test_r622_zst_sprint317_deepening.py"
+  ],
+  "ledger_entry_path": "reports/r90/product-code-change-ledger.json",
+  "test_results": {
+    "total": 20,
+    "passed": 20,
+    "failed": 0,
+    "command": ".local/venv/Scripts/python -m pytest tests/python/zst/test_r622_zst_sprint317_deepening.py -v"
+  },
+  "verdict": "PASS"
+}

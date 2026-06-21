@@ -1,0 +1,63 @@
+---
+# Per-Product QName Compliance — ff-arch-20260621-001
+
+products:
+
+  - product: "FODS (.NET)"
+    has_qname_map_entry: true
+    map_source: "registry/odf-ontology/qname-to-code-map.yaml"
+    canonical_classes_exist: false
+    canonical_target: "src/FormatFactory/Table/TableCell.cs (DOES NOT EXIST)"
+    facade_exists: false
+    facade_at_wrong_location: true
+    notes: "FodsCell.cs is at src/net/fods/Model/FodsCell.cs; should be Compat/Fods/"
+    spec_refs_in_source: true  # ODF spec section refs in XML comments
+    spec_refs_use_sal_ids: false  # Uses section numbers, not FACT-FODS-XXX
+    compliance_score: "Orange"
+    blockers: ["No canonical Table.TableCell class", "FodsCell in wrong location"]
+
+  - product: "FODT (.NET)"
+    has_qname_map_entry: true
+    map_source: "shared/qname-registry/fodt.yaml"
+    canonical_classes_exist: false  # Stubs exist but architecture_only
+    canonical_target: "src/net/fodt/Spec/Table/TableCell.cs (EXISTS but architecture_only)"
+    facade_exists: false
+    notes: "Spec/ stubs have QName constants but are empty shells; FodtParagraph/FodtBody are Gen 2 implementations"
+    spec_refs_in_source: true
+    spec_refs_use_sal_ids: true  # Uses FACT-FODT-XXX in stub files
+    compliance_score: "Orange"
+    blockers: ["Spec/ stubs architecture_only", "No facade pattern implemented"]
+
+  - product: "FODS (Python)"
+    has_qname_map_entry: true
+    map_source: "registry/odf-ontology/qname-to-code-map.yaml"
+    canonical_classes_exist: false
+    canonical_target: "src/python/fods/table/table_cell.py (DOES NOT EXIST)"
+    facade_exists: false
+    notes: "FODS Python has no object model at all — only dict-based neutral model"
+    spec_refs_in_source: true  # QName strings in constants.py
+    spec_refs_use_sal_ids: false
+    compliance_score: "Red"
+    blockers: ["Triple nesting structural defect", "No object model classes", "No canonical path"]
+
+  - product: "FODT (Python)"
+    has_qname_map_entry: true
+    map_source: "shared/qname-registry/fodt.yaml"
+    canonical_classes_exist: false  # spec/ stubs architecture_only
+    canonical_target: "src/python/fodt/spec/text/paragraph.py (EXISTS but architecture_only)"
+    facade_exists: "partial"  # compat.py pattern in place; imports from models.py not spec/
+    notes: "Best positioned for spec migration; compat.py bridge ready; stubs need implementation"
+    spec_refs_in_source: true
+    spec_refs_use_sal_ids: true
+    compliance_score: "Orange"
+    blockers: ["spec/ stubs architecture_only", "compat.py not switched to spec/"]
+
+  - product: "CSV (.NET)"
+    has_qname_map_entry: false  # CSV has no XML spec QNames
+    compliance_score: "Gray"
+    notes: "CSV has no formal spec QNames; canonical names needed from format spec"
+
+  - product: "All other formats"
+    has_qname_map_entry: false
+    compliance_score: "Gray"
+    notes: "Formats without ODF XML QNames need custom canonical name registry"

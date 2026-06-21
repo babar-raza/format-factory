@@ -1,0 +1,166 @@
+---
+# System Gap Matrix
+# Sprint ID: ff-machinery-readiness-audit-20260621-23d1333
+# Generated: 2026-06-21
+
+schema_version: "1.0"
+
+gaps:
+  - gap_id: MACH-GAP-001
+    layer: SAL
+    area: Pipeline Integration
+    severity: Blocker
+    evidence: "plans/snoopy-juggling-seal.md; SAL test failure: 'No FODS facts in sal-facts-latest.json'"
+    current_behavior: "sal_master_runner.py emits 128 hardcoded template facts, never reads spec files"
+    expected_behavior: "sal_master_runner.py loads verified-facts-review.yaml and emits FACT-FORMAT-NNN IDs"
+    root_cause: "sal_master_runner.py was built with placeholder templates; real pipeline was never connected"
+    product_impact: "Product code cannot claim spec_fact_refs because SAL doesn't produce real facts"
+    machinery_impact: "All SAL-claiming capability and declaration validation is fake"
+    repeatability_impact: HIGH
+    autonomy_impact: HIGH
+    qname_impact: HIGH
+    required_fix: "Wire sal_master_runner.py to load from .local/spec-cache/{format}/workbench/verified-facts-review.yaml"
+    tests_required: "test_sal_facts_has_fods_facts must pass"
+    evidence_required: "sal-facts-latest.json contains FACT-FODS-* entries"
+    must_fix_before_product_deepening: yes
+    can_defer: no
+    suggested_taskcard_id: TC-SAL-FIX-001
+
+  - gap_id: MACH-GAP-002
+    layer: QName
+    area: Generator Tooling
+    severity: Blocker
+    evidence: "skill spec-literal-qname-to-code-mapping references qname_ontology_generator.py; tool not found in tools/supervisor/"
+    current_behavior: "QName mapping exists as design YAML only; no runtime generator exists"
+    expected_behavior: "python tools/supervisor/qname_ontology_generator.py --format FODS runs successfully"
+    root_cause: "Tool was referenced in skill design but never implemented"
+    product_impact: "No format can have its QName compliance validated or generated"
+    machinery_impact: "spec-literal-qname-to-code-mapping skill cannot execute"
+    qname_impact: CRITICAL
+    must_fix_before_product_deepening: yes
+    can_defer: no
+    suggested_taskcard_id: TC-QNAME-GEN-001
+
+  - gap_id: MACH-GAP-003
+    layer: QName
+    area: Canonical Classes
+    severity: Blocker
+    evidence: "canonical-class-inventory.yaml shows all classes not_implemented or facade_exists_no_canonical; src/net/FormatFactory/ does not exist"
+    current_behavior: "Format-prefixed flat classes (FodsDocument, FodsSheet) are primary implementations"
+    expected_behavior: "Canonical classes (Office.Document, Table.Table) exist; format classes are facades in Compat/"
+    root_cause: "Migration was designed but all phases are not_started; blocked on system healing"
+    qname_impact: CRITICAL
+    must_fix_before_product_deepening: yes
+    can_defer: "can defer if product deepening is scoped to improving existing features only (not new format structures)"
+    suggested_taskcard_id: TC-QNAME-CANONICAL-001
+
+  - gap_id: MACH-GAP-004
+    layer: QName
+    area: Validator
+    severity: High
+    evidence: "governance_validators.py has 38 validators; none enforce qname compliance in product source"
+    current_behavior: "Skills say spec_qname_required: true but this is not machine-checked at closeout"
+    expected_behavior: "validate_qname_compliance validator rejects product source without canonical namespace"
+    root_cause: "Validator was not added when QName schema was designed"
+    qname_impact: HIGH
+    must_fix_before_product_deepening: "no — can add incrementally"
+    can_defer: "yes for initial machinery lane"
+    suggested_taskcard_id: TC-QNAME-VALIDATOR-001
+
+  - gap_id: MACH-GAP-005
+    layer: Product Source
+    area: Broken Tests
+    severity: High
+    evidence: "31 ImportError collection failures in tests/python/fods/; cannot import fods_value_variance etc."
+    current_behavior: "31 test files fail at collection with ImportError"
+    expected_behavior: "All FODS test files collect without error"
+    root_cause: "Tests were written for functions that were planned but never implemented in FODS Python"
+    product_impact: "Test suite is unreliable; cannot trust test count for Gate 11 evidence"
+    must_fix_before_product_deepening: yes
+    can_defer: no
+    suggested_taskcard_id: TC-FODS-TEST-FIX-001
+
+  - gap_id: MACH-GAP-006
+    layer: Supervisor
+    area: Lane Separation
+    severity: High
+    evidence: "continuation-signal.json has single 'product' track; no separate machinery track"
+    current_behavior: "Machinery and product work share one continuation signal"
+    expected_behavior: "Separate tracks with independent gates for machinery vs product"
+    root_cause: "Multi-lane design was not implemented in supervisor tooling"
+    autonomy_impact: HIGH
+    must_fix_before_product_deepening: "yes — prevents machinery sprint failures from blocking product deepening"
+    can_defer: no
+    suggested_taskcard_id: TC-SUPERVISOR-LANES-001
+
+  - gap_id: MACH-GAP-007
+    layer: Supervisor
+    area: Plan Lock Stale State
+    severity: High
+    evidence: ".local/supervisor/active-plan-lock.json shows polished-hopping-glacier.md IN_PROGRESS TC-HARD-011 from session 45da76b0e59c"
+    current_behavior: "Plan lock blocks autonomous continuation (per CLAUDE.md)"
+    expected_behavior: "Lock is either resolved COMPLETE or confirmed as stale and cleared"
+    root_cause: "Prior chat session left lock in IN_PROGRESS state"
+    autonomy_impact: CRITICAL
+    must_fix_before_product_deepening: yes
+    can_defer: no
+    suggested_taskcard_id: TC-SUPERVISOR-LOCK-001
+
+  - gap_id: MACH-GAP-008
+    layer: Capability Layer
+    area: Gap Severity
+    severity: Medium
+    evidence: "gap-ledger.json has 932 entries; all severity fields show '?'"
+    current_behavior: "932 gaps with no severity — cannot prioritize product work"
+    expected_behavior: "All gaps have severity (Blocker/High/Medium/Low) for sprint selection"
+    root_cause: "Gap ledger was generated without severity classification pass"
+    product_impact: "Sprint selection cannot be data-driven without severity"
+    must_fix_before_product_deepening: "no — advisory"
+    can_defer: yes
+    suggested_taskcard_id: TC-CAPABILITY-SEVERITY-001
+
+  - gap_id: MACH-GAP-009
+    layer: Capability Layer
+    area: Feature Compiler
+    severity: High
+    evidence: "spec-to-feature-radical-correction-plan.md describes capability-to-feature compiler; tool not found"
+    current_behavior: "No deterministic compiler from capability entry to implementation plan"
+    expected_behavior: "Capability entry → feature spec → code template, deterministically"
+    root_cause: "Compiler was described but never built; ai_implementation_designer.py is AI-driven not deterministic"
+    repeatability_impact: HIGH
+    must_fix_before_product_deepening: "no — product deepening can proceed without compiler but is less governed"
+    can_defer: yes
+    suggested_taskcard_id: TC-CAPABILITY-COMPILER-001
+
+  - gap_id: MACH-GAP-010
+    layer: Backfill
+    area: Migration Tooling
+    severity: High
+    evidence: "migration-plan.yaml phases all not_started; no backfill scripts exist in tools/"
+    current_behavior: "Backfill is a design document only; no executable migration steps"
+    expected_behavior: "tools/backfill/ directory with inventory, gap analysis, and migration scripts"
+    root_cause: "Plan was documented before system-healing prerequisites were met"
+    qname_impact: HIGH
+    must_fix_before_product_deepening: "no — can defer but blocks qname compliance long-term"
+    can_defer: yes
+    suggested_taskcard_id: TC-BACKFILL-TOOLING-001
+
+  - gap_id: MACH-GAP-011
+    layer: SAL
+    area: Multi-Format Coverage
+    severity: Blocker
+    evidence: ".local/spec-cache/ has dirs for 15+ formats but only FODS has verified-facts-review.yaml"
+    current_behavior: "Only 78 FODS facts are verified; all other formats have zero verified facts"
+    expected_behavior: "Each format has at least 10 verified spec facts before product deepening"
+    root_cause: "Spec workbench pipeline was only run for FODS"
+    product_impact: "Product code for ZST, ABW, XCF, CSV etc. has no spec backing"
+    must_fix_before_product_deepening: "yes for ZST, ABW; no for FODS-only work"
+    can_defer: "yes if scoping product deepening to FODS/FODT only"
+    suggested_taskcard_id: TC-SAL-MULTIFORMAT-001
+
+total_gaps: 11
+blocker_count: 3
+high_count: 6
+medium_count: 1
+must_fix_before_product_deepening: 5
+can_defer: 6

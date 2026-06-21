@@ -1,0 +1,39 @@
+{
+  "skill_id": "add-python-api",
+  "format_id": "xcf",
+  "sprint_id": "sprint307-xcf-deepening-20260617",
+  "apis_added": [
+    {
+      "api_name": "xcf_file_size_times_19_plus_image_type_times_600_plus_width_times_130_plus_height_times_110_plus_layer_count_times_1200",
+      "spec_fact_refs": ["FACT-XCF-EX-0001"],
+      "behavior": "Return file_size * 19 + image_type * 600 + width * 130 + height * 110 + layer_count * 1200",
+      "source_file": "src/python/xcf/xcf_parser.py",
+      "test_file": "tests/python/xcf/test_r612_xcf_sprint307_deepening.py",
+      "tests_count": 10
+    },
+    {
+      "api_name": "xcf_file_size_mod_19_times_200_plus_image_type_times_800_plus_width_times_height_times_300_plus_layer_count_times_1500",
+      "spec_fact_refs": ["FACT-XCF-EX-0002"],
+      "behavior": "Return (file_size % 19) * 200 + image_type * 800 + width * height * 300 + layer_count * 1500",
+      "source_file": "src/python/xcf/xcf_parser.py",
+      "test_file": "tests/python/xcf/test_r612_xcf_sprint307_deepening.py",
+      "tests_count": 10
+    }
+  ],
+  "changed_files": [
+    "src/python/xcf/xcf_parser.py",
+    "src/python/xcf/__init__.py",
+    "tests/python/xcf/test_r612_xcf_sprint307_deepening.py",
+    "reports/r90/product-code-change-ledger.json"
+  ],
+  "test_results": {
+    "total": 20,
+    "passed": 20,
+    "failed": 0,
+    "command": "python -m pytest tests/python/xcf/test_r612_xcf_sprint307_deepening.py -v"
+  },
+  "ledger_entries_added": 2,
+  "ledger_total_entries": 1972,
+  "verdict": "PASS",
+  "timestamp": "2026-06-17T22:00:00Z"
+}

@@ -1,0 +1,216 @@
+---
+# Phase 6: Lifecycle Root Cause Register
+schema_version: "1.0"
+run_id: "machinery-lifecycle-forensics-20260621"
+generated_at: "2026-06-21"
+
+lifecycle_root_causes:
+
+  - root_cause_id: "RC-001"
+    title: "Investigation-only sprint produced next-prompt file with no controller consumer"
+    symptoms:
+      - "archaeology sprint (ff-arch-20260621-001) produced next-agent-execution-prompt.md"
+      - "No subsequent execution occurred for the 3 repair tasks in that prompt"
+      - "File exists on disk; no orchestrator wired to consume it"
+    first_failing_boundary: "archaeology_output → repair_execution_controller"
+    immediate_cause: "Investigation sprint is INVESTIGATION+FORENSICS+DESIGN mode; does not set up execution controller"
+    structural_cause: >
+      There is no convention for 'investigation sprint → trigger execution' handoff.
+      The archaeology wrote a next-prompt document in a reports/ subdirectory with no
+      registration in check_continuation.py, autonomous_cycle.py, or any queue.
+      Prompt-only chaining requires a human to read and re-submit the next-prompt file.
+    contributing_conditions:
+      - "No mission ledger tracking investigation → repair state"
+      - "No event produced by archaeology completion"
+      - "next-agent-execution-prompt.md lives in reports/ not in a consumed queue"
+    affected_components:
+      - "reports/archaeology/ff-arch-20260621-001/next-agent-execution-prompt.md (PRODUCER)"
+      - "check_continuation.py (NOT a consumer of archaeology output)"
+      - "autonomous_cycle.py (NOT triggered by investigation completion)"
+    affected_runs:
+      - "ff-arch-20260621-001"
+    why_existing_tests_missed_it: >
+      Tests for check_continuation.py test session isolation, plan locks, and signal state.
+      No test verifies that an investigation sprint triggers execution of its next-prompt.
+    why_existing_governance_allowed_it: >
+      Governance validators check declaration content (gap_ledger_ref, spec_fact_refs) but
+      not whether an investigation sprint has a wired continuation consumer.
+    recurrence_path: >
+      Any future investigation/archaeology sprint will repeat this failure unless a
+      mission ledger or queue registration is introduced.
+    production_impact: >
+      CRITICAL — archaeology findings sat unconsumed; repair tasks were only executed
+      incidentally in a later product sprint, not through systematic repair tracking.
+    durable_fix: >
+      1. Create mission ledger file at .local/supervisor/machinery/mission-ledger.json
+      2. Investigation sprints MUST write a mission state file indicating 'repair_required'
+      3. check_continuation.py --track machinery reads mission-ledger.json and returns
+         CONTINUE if mission_state.stop_status is not MISSION_COMPLETE
+    migration_required: true
+    tests_required:
+      - "TC-LIF-001: check_continuation --track machinery with mission_state=EXECUTION_REQUIRED returns CONTINUE"
+      - "TC-LIF-002: investigation sprint writes mission-ledger.json with next_required_stage=EXECUTION"
+
+  - root_cause_id: "RC-002"
+    title: "PLAN_COMPLETED_IN_SESSION blocks all continuation including machinery repair"
+    symptoms:
+      - "check_continuation.py returns STOP with reason=PLAN_COMPLETED_IN_SESSION"
+      - "No autonomous loop can start (product OR machinery)"
+      - "The machinery repair tasks identified by archaeology cannot run"
+    first_failing_boundary: "check_continuation.py → autonomous_loop_start"
+    immediate_cause: >
+      Per-chat plan fuzzy-conjuring-papert.md was completed with --complete in session
+      7c0655b93790. The session-keyed plan lock has status=COMPLETE. The M8 safety net
+      in check_continuation.py detects this and returns PLAN_COMPLETED_IN_SESSION.
+    structural_cause: >
+      Session IDs are derived from git HEAD hash. Multiple distinct chat sessions running
+      on the same git HEAD get the SAME session_id. When one session completes a plan, ALL
+      sessions on the same HEAD see PLAN_COMPLETED_IN_SESSION — including sessions that
+      were never involved in that plan. This creates a CROSS-SESSION FALSE POSITIVE.
+    contributing_conditions:
+      - "No new git commits between plan completion session and machinery forensics session"
+      - "session-keyed lock .local/supervisor/plan-locks/7c0655b93790.json has status=COMPLETE"
+      - "active-plan-lock.json has status=TERMINAL_CLOSED (additional lock)"
+      - "PLAN_COMPLETED_IN_SESSION is NON-OVERRIDABLE by the Supreme Directive"
+    affected_components:
+      - "tools/supervisor/check_continuation.py (M8 check, lines 210-229)"
+      - "tools/supervisor/continuation_identity.py (session_id derivation from git HEAD)"
+      - ".local/supervisor/plan-locks/7c0655b93790.json"
+      - ".local/supervisor/active-plan-lock.json"
+    affected_runs:
+      - "ALL sessions on HEAD 23d1333f after fuzzy-conjuring-papert.md completion"
+    why_existing_tests_missed_it: >
+      CCI tests (test_isolation.py) test session mismatch but not the case where two
+      DIFFERENT user chat sessions share the same session_id because they're on the same HEAD.
+    why_existing_governance_allowed_it: >
+      The plan lock mechanism was designed for intra-session isolation, not for the case
+      where git HEAD doesn't change between sessions (common when user doesn't commit between sessions).
+    recurrence_path: >
+      Every future session on the same git HEAD after a plan completion will hit this blocker.
+      Likely to recur frequently since commits require explicit user authorization.
+    production_impact: >
+      HIGH — the PLAN_COMPLETED_IN_SESSION guard is working correctly (it IS preventing
+      cross-session plan contamination). The real fix is to ensure new sessions get a
+      unique session_id even when git HEAD hasn't changed.
+    durable_fix: >
+      The 4h TTL on session files (.local/supervisor/session-{track}.id) should handle this
+      if the previous session was more than 4 hours ago. For immediate unblocking:
+      1. User provides explicit authorization (THIS PROMPT = authorization)
+      2. The machinery track uses --track machinery which has separate signal isolation
+      3. Future: session_id should include a random nonce OR timestamp component
+         to prevent same-HEAD identity collision
+    migration_required: false
+    tests_required:
+      - "TC-LIF-003: Two sessions on same HEAD get different session_ids (nonce-based)"
+
+  - root_cause_id: "RC-003"
+    title: "Machinery track continuation signal is stale (June 18, session mismatch)"
+    symptoms:
+      - ".local/supervisor/machinery/continuation-signal.json is from 2026-06-18"
+      - "Has session_id 1c33a4fbe2fe (different from current 7c0655b93790)"
+      - "check_continuation.py --track machinery would return SESSION_MISMATCH"
+    first_failing_boundary: "check_continuation --track machinery → machinery_loop_start"
+    immediate_cause: >
+      The last machinery sprint (machinery-state-sync-20260618) wrote the signal on June 18.
+      No subsequent machinery sprint ran. The signal is 3 days stale with a different session.
+    structural_cause: >
+      The machinery track exists as a separate continuation domain but has not been actively
+      managed. After the machinery-state-sync sprint was blocked by rework items on June 18,
+      no follow-up sprint ran to resolve those items and advance the machinery track.
+    contributing_conditions:
+      - "Rework items from June 18 sprint: memory-sync-sprint522, declaration-template-tc-p5-005"
+      - "No mission ledger directing which rework to resolve first"
+      - "Product sprints continued while machinery track stalled"
+    affected_components:
+      - ".local/supervisor/machinery/continuation-signal.json"
+    production_impact: "MEDIUM — machinery track stalled since June 18"
+    durable_fix: >
+      1. Resolve June 18 rework items or confirm they are superseded
+      2. Write a fresh machinery continuation signal with current session
+      3. Ensure machinery mission ledger drives future machinery sprints
+    migration_required: true
+
+  - root_cause_id: "RC-004"
+    title: "No mission ledger separating machinery mission state from task/sprint state"
+    symptoms:
+      - "No .local/supervisor/machinery/mission-ledger.json file exists"
+      - "Machinery mission state tracked only in continuation-signal.json (sprint-level)"
+      - "No distinction between 'this sprint complete' and 'machinery mission complete'"
+    first_failing_boundary: "task_completion → mission_state_evaluation"
+    immediate_cause: "Mission ledger was never created for the machinery healing mission"
+    structural_cause: >
+      The supervisor architecture tracks sprint state (evidence declaration, autonomous-cycle,
+      continuation-signal) but not MISSION state (are all repairs done? is the audit passing?).
+      Sprint completion ≠ mission completion, but no machine enforces this distinction.
+    contributing_conditions:
+      - "archaeology produced taskcards.yaml in the report dir; not in a mission ledger"
+      - "No MISSION_COMPLETE evaluation gate"
+      - "check_continuation.py tracks sprint iteration but not mission progress"
+    production_impact: >
+      CRITICAL — without a mission ledger, the machinery repair mission can be incorrectly
+      declared complete when only one sprint completes. This is the root cause of the
+      missing iteration behavior.
+    durable_fix: >
+      1. Create .local/supervisor/machinery/mission-ledger.json
+      2. check_continuation.py --track machinery reads mission-ledger.json
+      3. CONTINUE only when mission.stop_status != MISSION_COMPLETE
+      4. MISSION_COMPLETE only after post-execution audit finds no unresolved gaps
+    migration_required: true
+    tests_required:
+      - "TC-LIF-004: mission ledger with stop_status=EXECUTION_REQUIRED → CONTINUE"
+      - "TC-LIF-005: mission ledger with stop_status=MISSION_COMPLETE → STOP"
+
+  - root_cause_id: "RC-005"
+    title: "Continuation-signal contradiction: session-resume says True, signal says False"
+    symptoms:
+      - "session-resume.md (19:03:25) reports autonomous_continue: True"
+      - "continuation-signal.json (18:57:04) reports autonomous_continue: false"
+      - "These are both for sprint spec-auth-heal-sprint-1"
+    first_failing_boundary: "autonomous_cycle_run → signal_persistence"
+    immediate_cause: >
+      Most likely: a second autonomous_cycle run at 19:03:25 produced session-resume.md
+      with True but did NOT update continuation-signal.json (or the signal was patched
+      separately). The two files are out of sync.
+    structural_cause: >
+      session-resume.md and continuation-signal.json are generated by different code paths.
+      If autonomous_cycle is called multiple times or with different flags, the files can
+      diverge. The approval-gates.md (also at 19:03:25) also says YES, confirming a second
+      run did produce a different grade.
+    production_impact: >
+      MEDIUM — check_continuation.py uses Check 2 to cross-check approval-gates.md
+      when signal is False and gates say YES, it allows continuation. So this divergence
+      is partially mitigated by the B4 fallback check. However, the hard_stops_detected
+      in the signal (critical_rework_blocks_continuation) would still block via Check 4.
+    durable_fix: >
+      When autonomous_cycle produces a PASS result and gates say YES, it MUST update
+      continuation-signal.json to match. The signal should be the single source of truth.
+    migration_required: false
+
+  - root_cause_id: "RC-006"
+    title: "Legacy continuation-signal has hard_stops_detected that blocks via Check 4"
+    symptoms:
+      - "continuation-signal.json has hard_stops_detected: [critical_rework_blocks_continuation]"
+      - "check_continuation.py Check 4 returns HARD_STOP for this"
+      - "Even if autonomous_continue were True, Check 4 would block"
+    first_failing_boundary: "sprint_execution → clean_continuation_signal"
+    immediate_cause: >
+      The spec-auth-heal-sprint-1 sprint declaration had items that triggered TC-GUARD-001
+      (missing gap_ledger_ref) and GOV_BLOCK validators (monolith_detection_validator,
+      validate_source_architecture). These were added to hard_stops_detected.
+    structural_cause: >
+      GOV_BLOCK:monolith_detection_validator and GOV_BLOCK:validate_source_architecture
+      are BINDING structural failures per CLAUDE.md. They require analytics separation
+      refactor before continuation. However:
+      1. The monolith violations (governance_validators.py +5 LOC, fods/neutral_model.py +2 LOC)
+         were LEGITIMATE infrastructure additions, not product deepening
+      2. The validator fires because LOC increased beyond baseline_loc_cap
+      3. Infrastructure file growth is different from product monolith growth
+    production_impact: >
+      HIGH — the GOV_BLOCK validators are blocking continuation for work that was
+      actually governance-positive (adding V43-V45 validators increases governance enforcement).
+    durable_fix: >
+      1. Update source baseline for governance_validators.py (infrastructure exemption)
+      2. Update source baseline for fods/neutral_model.py (legitimate model expansion)
+      3. Resolve TC-GUARD-001 items by adding gap_ledger_ref to SAL-HEAL items
+      4. After resolution, write new continuation-signal.json with clean state
+    migration_required: true

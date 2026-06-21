@@ -1,0 +1,101 @@
+---
+# Namespace Tree — Format Factory
+# Hierarchical tree of ODF spec namespaces and their elements
+schema_version: "1.0"
+generated_at: "2026-06-15"
+
+tree:
+  office:
+    elements:
+      - document
+      - body
+      - spreadsheet
+      - text
+      - automatic-styles
+      - master-styles
+      - font-face-decls
+      - scripts
+      - settings
+      - meta
+    children_of:
+      document: [body, automatic-styles, master-styles, font-face-decls, scripts, settings, meta]
+      body: [spreadsheet, text]
+      spreadsheet: ["table:table"]
+      text: ["text:p", "text:h", "text:list", "text:section"]
+
+  table:
+    elements:
+      - table
+      - table-row
+      - table-cell
+      - table-column
+      - covered-table-cell
+      - named-range
+      - named-expressions
+      - content-validations
+      - content-validation
+    children_of:
+      table: [table-column, table-row]
+      table-row: [table-cell, covered-table-cell]
+      table-cell: ["text:p"]
+      content-validations: [content-validation]
+
+  text:
+    elements:
+      - p
+      - h
+      - span
+      - list
+      - list-item
+      - section
+      - note
+      - note-body
+      - a
+      - bookmark
+      - sequence-decls
+    children_of:
+      list: [list-item]
+      list-item: ["text:p", "text:list"]
+      section: ["text:p", "text:h", "text:list", "text:section"]
+      note: [note-body]
+      p: ["text:span", "text:a", "text:note"]
+      h: ["text:span", "text:a"]
+
+  style:
+    elements:
+      - style
+      - default-style
+      - font-face
+      - text-properties
+      - paragraph-properties
+      - table-properties
+      - table-row-properties
+      - table-cell-properties
+      - table-column-properties
+      - page-layout
+      - master-page
+    children_of:
+      style: [text-properties, paragraph-properties, table-properties, table-row-properties, table-cell-properties, table-column-properties]
+      default-style: [text-properties, paragraph-properties]
+
+  draw:
+    elements:
+      - frame
+      - image
+      - text-box
+      - page
+      - custom-shape
+      - ellipse
+      - rect
+    children_of:
+      frame: [image, text-box]
+      page: [frame, custom-shape, ellipse, rect]
+
+  number:
+    elements:
+      - number-style
+      - date-style
+      - time-style
+      - percentage-style
+      - currency-style
+      - text-style

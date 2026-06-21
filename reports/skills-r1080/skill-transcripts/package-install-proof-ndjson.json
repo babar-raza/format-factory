@@ -1,0 +1,20 @@
+{
+  "skill_id": "package-install-proof",
+  "skill_version": "1.2",
+  "format_id": "ndjson",
+  "package_name": "aspose-format-factory-ndjson",
+  "package_version": "0.1.0.dev0",
+  "wheel_path": ".local/package-builds/python-foss/aspose-format-factory-ndjson/dist/aspose_format_factory_ndjson-0.1.0.dev0-py3-none-any.whl",
+  "install_method": "pip install --user",
+  "install_result": "SUCCESS",
+  "import_result": "OK",
+  "import_statement": "import ndjson; print(ndjson.__version__)",
+  "import_output": "0.1.0.dev0",
+  "smoke_result": "PASS",
+  "smoke_test": "load_ndjson(tmp_path) -> 2 records; ndjson_record_count -> 2; to_jsonl_str roundtrip OK",
+  "verdict": "PASS",
+  "proof_report": "reports/r126-ndjson-install-proof/package-install-proof.md",
+  "notes": "System-level install denied (WinError 5); --user flag used. load_ndjson requires file path not StringIO.",
+  "generated_at": "2026-06-18T23:30:00Z",
+  "worker_agent": "claude-sonnet-4-6"
+}

@@ -1,0 +1,39 @@
+{
+  "skill_id": "add-python-api",
+  "format_id": "zst",
+  "sprint_id": "sprint308-zst-deepening-20260617",
+  "apis_added": [
+    {
+      "api_name": "zst_compressed_size_mod_29_times_400_plus_decompressed_size_times_4_plus_max_byte_value_times_60",
+      "spec_fact_refs": ["FACT-ZST-EX-0001"],
+      "behavior": "Return (compressed_size % 29) * 400 + decompressed_size * 4 + max_byte_value * 60",
+      "source_file": "src/python/zst/zst_codec.py",
+      "test_file": "tests/python/zst/test_r613_zst_sprint308_deepening.py",
+      "tests_count": 10
+    },
+    {
+      "api_name": "zst_file_size_times_13_plus_decompressed_size_mod_300_times_8_plus_max_byte_value_times_90",
+      "spec_fact_refs": ["FACT-ZST-EX-0002"],
+      "behavior": "Return file_size * 13 + (decompressed_size % 300) * 8 + max_byte_value * 90",
+      "source_file": "src/python/zst/zst_codec.py",
+      "test_file": "tests/python/zst/test_r613_zst_sprint308_deepening.py",
+      "tests_count": 10
+    }
+  ],
+  "changed_files": [
+    "src/python/zst/zst_codec.py",
+    "src/python/zst/__init__.py",
+    "tests/python/zst/test_r613_zst_sprint308_deepening.py",
+    "reports/r90/product-code-change-ledger.json"
+  ],
+  "test_results": {
+    "total": 20,
+    "passed": 20,
+    "failed": 0,
+    "command": "python -m pytest tests/python/zst/test_r613_zst_sprint308_deepening.py -v"
+  },
+  "ledger_entries_added": 2,
+  "ledger_total_entries": 1977,
+  "verdict": "PASS",
+  "timestamp": "2026-06-17T22:30:00Z"
+}

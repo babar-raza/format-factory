@@ -1,0 +1,31 @@
+{
+  "skill_id": "add-python-api-sprint305-zst",
+  "skill_name": "add-python-api",
+  "format_id": "zst",
+  "sprint_id": "sprint305-zst-20260617",
+  "invoked_at": "2026-06-17T21:15:00Z",
+  "spec_fact_refs": ["ZST-FACT-001", "ZST-FACT-002"],
+  "apis_added": [
+    {
+      "function_name": "zst_compressed_size_mod_23_times_300_plus_decompressed_size_times_3_plus_max_byte_value_times_50",
+      "spec_fact_ref": "ZST-FACT-001",
+      "behavior": "(compressed_size % 23) * 300 + decompressed_size * 3 + max_byte_value * 50",
+      "sample_values": {"minimal-synthetic.zst": 3003, "text-compressed.zst": 12920, "rle-first-block.zst": 3152328}
+    },
+    {
+      "function_name": "zst_file_size_times_11_plus_decompressed_size_mod_200_times_7_plus_max_byte_value_times_80",
+      "spec_fact_ref": "ZST-FACT-002",
+      "behavior": "file_size * 11 + (decompressed_size % 200) * 7 + max_byte_value * 80",
+      "sample_values": {"minimal-synthetic.zst": 117, "text-compressed.zst": 14002, "rle-first-block.zst": 1727}
+    }
+  ],
+  "changed_files": [
+    "src/python/zst/zst_codec.py",
+    "src/python/zst/__init__.py",
+    "tests/python/zst/test_r610_zst_sprint305_deepening.py"
+  ],
+  "test_results": {"total": 20, "passed": 20, "failed": 0},
+  "ledger_entry_ids": ["sprint305-zst-20260617-f1", "sprint305-zst-20260617-f2"],
+  "verdict": "PASS",
+  "notes": "ZST FOSS track. Gates 1-10 passed. 2 analytics functions added with ZST-FACT spec refs."
+}

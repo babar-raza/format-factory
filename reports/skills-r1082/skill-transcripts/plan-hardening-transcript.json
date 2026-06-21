@@ -1,0 +1,37 @@
+{
+  "skill_id": "plan-hardening",
+  "skill_version": "1.1",
+  "invoked_at": "2026-06-21T16:35:00Z",
+  "plan_path": "reports/supervisor/hardened-next-sprint-plan.md",
+  "source_sprint": "FF-HEAL-QNAME-20260621-114042",
+  "hardening_score": 19,
+  "max_score": 22,
+  "gaps_found": [
+    {
+      "item": 9,
+      "description": "Stream ownership not classified for all modified files — multiple streams (mainstream + healing) overlap",
+      "severity": "LOW",
+      "fix": "Noted in plan as ASSUMPTION; not blocking at 19/22"
+    },
+    {
+      "item": 19,
+      "description": "fodt_analytics.py is at LOC cap (996/996); adding any source explicitly forbidden",
+      "severity": "MEDIUM",
+      "fix": "Explicitly blocked in forbidden paths and stop conditions"
+    },
+    {
+      "item": 3,
+      "description": "FODT Gate 11 readiness packet not read this session (P4 references it)",
+      "severity": "LOW",
+      "fix": "P4 includes explicit step to read file before updating"
+    }
+  ],
+  "corrected_claims": [
+    "FODS FOSS gaps (TASK-012 to TASK-016) all closed — not valid sprint work",
+    "ZST not in G11-G approved targets — replaced with FODT Gate 11 prep",
+    "next-work-items.json PLAN_LOCKED was stale session artifact — corrected to CONTINUE"
+  ],
+  "verdict": "EXECUTION_READY",
+  "next_sprint_id": "FF-NEXTWORK-PROMOTE-LEDGER-20260621",
+  "proceed": true
+}

@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "product-deepening-sprint81-20260616",
+  "latest_sprint": "spec-auth-heal-sprint-1",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -17084,6 +17084,277 @@
       "file": "src/python/dif/dif_parser.py",
       "type": "analytics",
       "test": "tests/python/deepening/test_r316_ppm_ndjson_sylk_dif_deepening.py"
+    },
+    {
+      "entry_id": "R100-GOVERNED-DOTNET-FODS-GETNUMERICCOLUMNVALUES-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_id": "add-dotnet-api",
+      "product": "FODS .NET",
+      "format": "fods",
+      "sprint_id": "R100",
+      "api_name": "GetNumericColumnValues",
+      "api_behavior": "Returns IReadOnlyList<double> of float-typed cell values from a specified column in a named sheet. Skips non-float cells. Throws ArgumentException for null/empty sheet, ArgumentOutOfRangeException for negative col, InvalidOperationException for missing sheet.",
+      "spec_fact_refs": [
+        "FACT-FODS-006",
+        "FACT-FODS-010"
+      ],
+      "source_files": [
+        {
+          "path": "src/net/fods/FodsDocument.cs",
+          "state": "present",
+          "sha256": "9a40201453879b08f1ebbb003a53696f8340923ae5b83218cfe91d96726970c0"
+        }
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR100GetNumericColumnValuesTests.cs"
+      ],
+      "api_symbols": [
+        "FodsDocument.GetNumericColumnValues"
+      ],
+      "tests_run": 10,
+      "tests_passed": 10,
+      "tests_failed": 0,
+      "export_path_affected": false,
+      "notes": "R100 Wave 5: numeric column extraction. Uses office:value-type=float cells and office:value attribute."
+    },
+    {
+      "entry_id": "R90-TOML-ANALYTICS-R285-R315-001",
+      "classification": "FOSS_CAPABILITY_GAP_CLOSURE",
+      "sprint": "toml-analytics-gap-closure-20260618",
+      "product": "TOML FOSS Python",
+      "capability_refs": [
+        "GAP-TOML-FOSS-ROUNDTRIP-001",
+        "TASK-015"
+      ],
+      "api_symbols": [
+        "toml_max_list_length",
+        "toml_all_keys_lowercase",
+        "toml_has_numeric_values",
+        "toml_avg_list_length",
+        "toml_max_numeric_value",
+        "toml_min_numeric_value",
+        "toml_bool_ratio",
+        "toml_numeric_sum",
+        "toml_unique_value_count",
+        "toml_file_size_bytes",
+        "toml_max_key_length",
+        "toml_avg_value_length",
+        "toml_string_key_ratio",
+        "toml_min_key_length",
+        "toml_list_item_count",
+        "toml_is_single_table",
+        "toml_string_count",
+        "toml_numeric_count",
+        "toml_bool_count",
+        "toml_has_boolean_value",
+        "toml_key_count_squared",
+        "toml_has_exactly_two_keys",
+        "toml_has_only_booleans",
+        "toml_has_mixed_value_types",
+        "toml_non_boolean_count",
+        "toml_has_no_booleans",
+        "toml_has_at_least_one_numeric"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/toml/toml_codec.py",
+          "state": "present",
+          "sha256": "9856c3c6d758b3d9f05865f01e9178915e22b88ac9f12efe07585d9622ed701f"
+        },
+        {
+          "path": "src/python/toml/__init__.py",
+          "state": "present",
+          "sha256": "781482cd6372bf7d5d39e5f86c46771f24d1557949ec7fcc43db5e126a3e267c"
+        }
+      ],
+      "format": "TOML",
+      "tests_added": 125,
+      "tests_total": 593,
+      "notes": "Added 27 semantic analytics functions closing r285-r315 gaps. TOML collection errors resolved."
+    },
+    {
+      "entry_id": "R90-FODT-ANALYTICS-SEPARATION-001",
+      "classification": "FOSS_ANALYTICS_SEPARATION_REFACTOR",
+      "sprint": "FF-HEAL-QNAME-20260621-114042",
+      "product": "FODT FOSS Python",
+      "capability_refs": [
+        "GAP-FODT-FOSS-FODT_AVG_WOR-001",
+        "GOV_BLOCK:validate_source_architecture"
+      ],
+      "api_symbols": [
+        "fodt_analytics.*"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/fodt/neutral_model.py",
+          "state": "present",
+          "sha256": "unknown"
+        },
+        {
+          "path": "src/python/fodt/fodt_analytics.py",
+          "state": "present",
+          "sha256": "unknown"
+        },
+        {
+          "path": "src/python/fodt/__init__.py",
+          "state": "present",
+          "sha256": "unknown"
+        }
+      ],
+      "format": "FODT",
+      "tests_added": 0,
+      "tests_total": 1879,
+      "notes": "Extracted 92 analytics functions from neutral_model.py to fodt_analytics.py. Resolves GOV_BLOCK:validate_source_architecture. neutral_model.py reduced from ~2895 to 1916 LOC."
+    },
+    {
+      "entry_id": "R90-SAL-QNAME-REPORTER-001",
+      "classification": "GOVERNANCE_TOOLING",
+      "sprint": "FF-HEAL-QNAME-20260621-114042",
+      "product": "SAL Toolchain",
+      "capability_refs": [
+        "TC-QNAME-VALIDATOR-001"
+      ],
+      "api_symbols": [
+        "run_compliance_check"
+      ],
+      "source_files": [
+        {
+          "path": "tools/specification-authority-layer/qname_src_compliance_reporter.py",
+          "state": "present",
+          "sha256": "unknown"
+        }
+      ],
+      "format": "FODT",
+      "tests_added": 10,
+      "tests_total": 10,
+      "notes": "QName src compliance reporter: checks 28 canonical FODT classes. Result: 9 stub_only, 19 missing, 0 implemented."
+    },
+    {
+      "entry_id": "R90-FODT-SPEC-PARAGRAPH-CS-001",
+      "sprint_id": "FF-HEALING-TASKCARDS-EXEC-20260621",
+      "taskcard_id": "TC-QNAME-IMPL-001",
+      "file": "src/net/fodt/Spec/Text/Paragraph.cs",
+      "change_type": "SPEC_MODEL_CONVERSION",
+      "description": "Convert Paragraph.cs from static-class-with-constants (architecture_only) to real model class (sealed). Added StyleName, Content, Spans properties. Preserved SpecQName=text:p and SpecFactRef=FACT-FODT-003.",
+      "spec_qname": "text:p",
+      "spec_fact_ref": "FACT-FODT-003",
+      "gap_ledger_ref": null,
+      "changed_at": "2026-06-21T08:43:25.448737+00:00"
+    },
+    {
+      "entry_id": "R90-FODT-CHAIN-TEST-001",
+      "sprint_id": "FF-HEALING-TASKCARDS-EXEC-20260621",
+      "taskcard_id": "TC-CHAIN-ODF-001",
+      "file": "tests/specification-authority-layer/test_fodt_qname_spec_chain.py",
+      "change_type": "NEW_TEST",
+      "description": "9 tests verifying FODT SPEC->SAL->QNAME chain: spec requirements real, text:p referenced, SAL facts non-synthetic, Paragraph.cs SpecQName correct, not a static class.",
+      "spec_qname": "text:p",
+      "spec_fact_ref": "FACT-FODT-003",
+      "gap_ledger_ref": null,
+      "changed_at": "2026-06-21T08:43:25.448772+00:00"
+    },
+    {
+      "entry_id": "R90-CAP-SAL-GROUNDED-001",
+      "sprint_id": "FF-HEALING-TASKCARDS-EXEC-20260621",
+      "taskcard_id": "TC-CAP-HONEST-001",
+      "file": "reports/capability-layer/unified-capability-map.json",
+      "change_type": "GOVERNANCE_UPDATE",
+      "description": "Added sal_grounded field to all 3214 capability map entries. ZST=35 sal_grounded=true (94 workbench-verified facts). Other 3179 sal_grounded=false (implementation_verified only). Added sal_grounded_policy_note at top level.",
+      "spec_qname": null,
+      "spec_fact_ref": null,
+      "gap_ledger_ref": null,
+      "changed_at": "2026-06-21T08:43:25.448776+00:00"
+    },
+    {
+      "entry_id": "R90-SKILL-SAL-AWARE-001",
+      "sprint_id": "FF-HEALING-TASKCARDS-EXEC-20260621",
+      "taskcard_id": "TC-SKILL-SAL-001",
+      "file": ".supervisor/skill-registry.yaml",
+      "change_type": "GOVERNANCE_UPDATE",
+      "description": "Added sal_aware: true and sal_required_in_handoff: true to 5 product skills: add-dotnet-api, add-python-api, add-dotnet-object-model-feature, add-python-object-model-feature, spec-literal-qname-to-code-mapping.",
+      "spec_qname": null,
+      "spec_fact_ref": null,
+      "gap_ledger_ref": null,
+      "changed_at": "2026-06-21T08:43:25.448780+00:00"
+    },
+    {
+      "entry_id": "R90-FODS-MODELS-SPEC-QNAME-001",
+      "sprint_id": "FF-PLAN-DELIGHTFUL-WIBBLING-20260621",
+      "taskcard_id": "TC-SRC-004",
+      "file": "src/python/fods/models.py",
+      "change_type": "SPEC_QNAME_ADDITION",
+      "description": "Added spec_qname class attributes to FodsDocument (office:document), FodsSheet (table:table), FodsCell (table:table-cell). Also fixed FodsSheet.cells() to correctly iterate row[\"cells\"] instead of row keys.",
+      "spec_qname": "office:document",
+      "spec_fact_ref": "FACT-FODS-001",
+      "gap_ledger_ref": "GAP-ARCH-001",
+      "changed_at": "2026-06-21T09:35:56.360188+00:00"
+    },
+    {
+      "entry_id": "R90-FODT-COMPAT-SWITCH-001",
+      "sprint_id": "FF-PLAN-DELIGHTFUL-WIBBLING-20260621",
+      "taskcard_id": "TC-FODT-002",
+      "file": "src/python/fodt/compat.py",
+      "change_type": "SPEC_SWITCH",
+      "description": "TC-FODT-002: compat.py already switched to spec/ imports (Paragraph, Span from spec/text/). Updated test_compat_bootstrap.py to TestCompatFromSpec and TestCompatSwitchGuard (TC-FODT-003). Updated test_compat_e2e.py TestCompatClassIdentity for post-switch state.",
+      "spec_qname": "text:p",
+      "spec_fact_ref": "FACT-FODT-003",
+      "gap_ledger_ref": null,
+      "changed_at": "2026-06-21T09:35:56.360188+00:00"
+    },
+    {
+      "entry_id": "R90-GAP-AUDIT-TC-VAL-002-001",
+      "sprint_id": "FF-PLAN-DELIGHTFUL-WIBBLING-20260621",
+      "taskcard_id": "TC-VAL-002",
+      "file": "reports/capability-layer/gap-audit-2026-06-21.json",
+      "change_type": "GOVERNANCE_AUDIT",
+      "description": "TC-VAL-002: Honest 25-gap audit. 10 VERIFIED, 12 CLAIMED_UNPROVEN, 3 RE_OPENED. Breaks false claim that 932 gaps are all closed. Key finding: 932 gaps show status=closed with no per-gap evidence files.",
+      "spec_qname": null,
+      "spec_fact_ref": null,
+      "gap_ledger_ref": null,
+      "changed_at": "2026-06-21T09:35:56.360188+00:00"
+    },
+    {
+      "entry_id": "R90-FODT-TEXT-ANALYTICS-NDJSON-DOGFOOD-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "spec-auth-heal-sprint-1",
+      "product": "FODT Python FOSS",
+      "skill_id": "add-dogfood-export",
+      "format": "FODT",
+      "source_format_id": "fodt",
+      "target_format_id": "ndjson",
+      "dogfood_status": "IMPLEMENTED",
+      "target_ff_library": "ndjson.ndjson_codec.write_ndjson",
+      "capability_refs": [
+        "python_foss_products.FODT.foss_status.text_analytics_export"
+      ],
+      "gap_ledger_ref": "GAP-FODT-FOSS-FODT_AVG_PAR-001",
+      "api_symbols": [
+        "fodt_unique_word_count",
+        "fodt_longest_word",
+        "fodt_sentence_count",
+        "fodt_whitespace_ratio",
+        "fodt_avg_heading_length",
+        "fodt_is_multi_paragraph",
+        "write_ndjson"
+      ],
+      "api_behavior": "Exports FODT text analytics (unique_word_count, longest_word, sentence_count, whitespace_ratio, avg_heading_length, is_multi_paragraph) as NDJSON records using FF write_ndjson writer. dogfood_status: NOT_YET -> IMPLEMENTED.",
+      "changed_files": [
+        "tests/python/dogfood/test_dogfood_fodt_text_analytics_ndjson_export.py"
+      ],
+      "test_files": [
+        "tests/python/dogfood/test_dogfood_fodt_text_analytics_ndjson_export.py"
+      ],
+      "test_count": 12,
+      "validation_command": ".venv/Scripts/pytest tests/python/dogfood/test_dogfood_fodt_text_analytics_ndjson_export.py -v",
+      "validation_result": "12/12 PASS",
+      "source_files": [
+        {
+          "path": "tests/python/dogfood/test_dogfood_fodt_text_analytics_ndjson_export.py",
+          "state": "present",
+          "sha256": "unknown"
+        }
+      ],
+      "rollback": "Remove test_dogfood_fodt_text_analytics_ndjson_export.py and this ledger entry"
     }
   ],
   "total_entries": 856

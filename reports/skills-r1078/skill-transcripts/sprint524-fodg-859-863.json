@@ -1,0 +1,33 @@
+{
+  "skill_id": "/add-analytics-function",
+  "sprint": 524,
+  "format_id": "fodg",
+  "functions": [
+    {
+      "function_name": "fodg_file_size_mod_859_times_5200_plus_shape_times_211_plus_text_times_208_plus_page_times_214",
+      "prime_used": 859,
+      "target_file": "src/python/fodg/fodg_analytics.py",
+      "expected_values": [
+        {"sample_file": "samples/by-format/fodg/empty-page.fodg", "expected": 1009014, "got": 1009014},
+        {"sample_file": "samples/by-format/fodg/minimal-drawing.fodg", "expected": 3193433, "got": 3193433},
+        {"sample_file": "samples/by-format/fodg/shapes-basic.fodg", "expected": 4000063, "got": 4000063}
+      ]
+    },
+    {
+      "function_name": "fodg_file_size_mod_863_times_5300_plus_shape_times_213_plus_text_times_210_plus_page_times_216",
+      "prime_used": 863,
+      "target_file": "src/python/fodg/fodg_analytics.py",
+      "expected_values": [
+        {"sample_file": "samples/by-format/fodg/empty-page.fodg", "expected": 1007216, "got": 1007216},
+        {"sample_file": "samples/by-format/fodg/minimal-drawing.fodg", "expected": 3233639, "got": 3233639},
+        {"sample_file": "samples/by-format/fodg/shapes-basic.fodg", "expected": 4055775, "got": 4055775}
+      ]
+    }
+  ],
+  "changed_files": ["src/python/fodg/fodg_analytics.py"],
+  "test_file": "tests/python/deepening/test_r1078_fodg_deepening.py",
+  "test_results": {"passed": 14, "failed": 0},
+  "expected_values_verified": true,
+  "ledger_entry_id": "r1078-fodg-859-863",
+  "verdict": "PASSED"
+}

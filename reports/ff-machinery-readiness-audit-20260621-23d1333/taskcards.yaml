@@ -1,0 +1,210 @@
+---
+# Taskcards — Format Factory Machinery Readiness Audit
+# Sprint ID: ff-machinery-readiness-audit-20260621-23d1333
+
+schema_version: "1.0"
+
+# ============================================================
+# SUPERVISOR-LANES
+# ============================================================
+
+taskcards:
+  - taskcard_id: TC-SUPERVISOR-LOCK-001
+    title: Resolve Stale Plan Lock from Prior Session
+    lane: SUPERVISOR-CONTINUATION
+    status: OPEN
+    severity: Blocker
+    allowed_paths:
+      - .local/supervisor/active-plan-lock.json
+      - C:/Users/prora/.claude/plans/polished-hopping-glacier.md
+    forbidden_paths:
+      - src/
+    purpose: Unblock autonomous continuation by resolving stale IN_PROGRESS plan lock
+    problem: ".local/supervisor/active-plan-lock.json shows polished-hopping-glacier.md TC-HARD-011 IN_PROGRESS from session 45da76b0e59c. Per CLAUDE.md this BLOCKS autonomous continuation."
+    evidence: ".local/supervisor/active-plan-lock.json, .local/supervisor/continuation-signal.json"
+    required_change: "Verify TC-HARD-011 status in polished-hopping-glacier.md. If complete: run write_plan_lock.py --complete. If not complete: execute the remaining taskcards then mark complete."
+    steps:
+      - "Read C:/Users/prora/.claude/plans/polished-hopping-glacier.md"
+      - "Find status of TC-HARD-011"
+      - "If all taskcards complete: python tools/supervisor/write_plan_lock.py --plan-path C:/Users/prora/.claude/plans/polished-hopping-glacier.md --complete"
+      - "If incomplete: execute remaining taskcards first"
+    tests: []
+    evidence_required: "Plan lock status = COMPLETE"
+    closeout_criteria: "active-plan-lock.json shows status: COMPLETE OR status: TERMINAL_CLOSED"
+    dependencies: []
+    gate_impact: "Unblocks all autonomous continuation"
+    product_impact: LOW
+    machinery_impact: HIGH
+
+  - taskcard_id: TC-SUPERVISOR-LANES-001
+    title: Add Separate Machinery Continuation Track
+    lane: SUPERVISOR-LANES
+    status: OPEN
+    severity: High
+    allowed_paths:
+      - tools/supervisor/check_continuation.py
+      - tools/supervisor/autonomous_cycle.py
+      - .local/supervisor/
+    purpose: Separate machinery and product lanes with independent continuation signals
+    problem: "Both machinery and product use single 'product' continuation track. Machinery failures block product and vice versa."
+    required_change: "Add --track machinery support to check_continuation.py; create .local/supervisor/continuation-signal-machinery.json; add machinery_readiness_confirmed field to approval-gates.md"
+    steps:
+      - "Design the two-track continuation model"
+      - "Modify check_continuation.py to accept --track machinery|product"
+      - "Create machinery signal file parallel to product signal file"
+      - "Add machinery_readiness_confirmed gate check"
+    tests:
+      - "test that check_continuation.py --track machinery returns CONTINUE independently of product track"
+    closeout_criteria: "Two independent track signals exist; tests pass"
+    dependencies: [TC-SUPERVISOR-LOCK-001]
+
+  - taskcard_id: TC-SAL-FIX-001
+    title: Wire Real FODS Spec Facts into SAL Master Runner
+    lane: SAL-REPAIR
+    status: OPEN
+    severity: Blocker
+    allowed_paths:
+      - tools/specification-authority-layer/sal_master_runner.py
+      - .local/spec-cache/fods/1.3/workbench/verified-facts-review.yaml
+      - .local/spec-cache/
+    forbidden_paths:
+      - src/
+    purpose: Fix broken SAL pipeline so FODS verified facts reach sal-facts-latest.json
+    problem: "sal_master_runner.py never reads spec files. 78 verified FODS facts are stranded in spec-cache. SAL test fails: 'No FODS facts in sal-facts-latest.json'"
+    required_change: "Modify sal_master_runner.py to read verified-facts-review.yaml from spec-cache and emit FACT-FODS-NNN IDs"
+    steps:
+      - "Read sal_master_runner.py (existing template approach)"
+      - "Add loader for .local/spec-cache/{format}/workbench/verified-facts-review.yaml"
+      - "Ensure emitted fact IDs use FACT-{FORMAT}-NNN format"
+      - "Run tests: .venv/Scripts/pytest tests/specification-authority-layer/ -q"
+    tests:
+      - "test_sal_facts_has_fods_facts must PASS"
+      - "test_sal_qname_prefix_correctness must PASS"
+    closeout_criteria: "All SAL tests pass; FODS facts present in sal-facts-latest.json"
+    dependencies: []
+    gate_impact: "Enables spec_fact_refs in product declarations"
+
+  - taskcard_id: TC-FODS-TEST-FIX-001
+    title: Fix 31 ImportError Failures in FODS Python Test Suite
+    lane: PRODUCT-PILOT
+    status: OPEN
+    severity: High
+    allowed_paths:
+      - tests/python/fods/
+      - src/python/fods/fods/__init__.py
+      - src/python/fods/fods/
+    purpose: Make FODS test suite collectable (no ImportError)
+    problem: "31 test files import functions (e.g. fods_value_variance) that don't exist in src/python/fods/__init__.py"
+    required_change: "Either implement missing functions OR delete test files for unimplemented functions"
+    steps:
+      - "Run: .venv/Scripts/pytest tests/python/fods/ --collect-only 2>&1 | grep 'ImportError'"
+      - "For each: decide implement-function or delete-test-file"
+      - "If implementing: add to fods/__init__.py and neutral_model.py"
+      - "If deleting: remove file and add to known-failures.yaml with reason"
+      - "Run full test suite: .venv/Scripts/pytest tests/python/fods/ -q"
+    tests:
+      - "All tests/python/fods/ files must collect without ImportError"
+      - "Passing test count must be >= 1000"
+    closeout_criteria: "Zero collection errors in tests/python/fods/"
+    evidence_required:
+      - "pytest --collect-only showing zero errors"
+      - "product-code-change-ledger.json entry"
+
+  - taskcard_id: TC-QNAME-GEN-001
+    title: Implement qname_ontology_generator.py Tool
+    lane: QNAME-VALIDATORS
+    status: OPEN
+    severity: Blocker
+    allowed_paths:
+      - tools/supervisor/qname_ontology_generator.py
+      - reports/specification-authority-layer-mwp/qname-ontology/
+    purpose: Build the missing QName generator tool referenced in spec-literal-qname-to-code-mapping skill
+    problem: "Skill references qname_ontology_generator.py which does not exist. QName mapping cannot be generated for any format."
+    required_change: "Create tools/supervisor/qname_ontology_generator.py that reads spec-cache and outputs qname-to-code-map-{format}.json"
+    steps:
+      - "Design tool interface matching the skill invocation pattern"
+      - "Implement: read .local/spec-cache/{format}/, extract XML element names"
+      - "Output qname-to-code-map-{format}.json (per existing schema)"
+      - "Output namespace-tree-{format}.json"
+      - "Test with --format FODS"
+    closeout_criteria: "Tool exits 0 for FODS; output JSON valid per existing schema"
+    dependencies: [TC-SAL-FIX-001]
+
+  - taskcard_id: TC-QNAME-CANONICAL-001
+    title: Create Canonical Class Library (Phase 1 of Migration Plan)
+    lane: QNAME-BACKFILL
+    status: OPEN
+    severity: High
+    allowed_paths:
+      - src/net/FormatFactory/
+    forbidden_paths:
+      - src/net/fods/
+      - src/net/fodt/
+      - src/python/
+    purpose: Create the canonical namespace library that all format facades will delegate to
+    problem: "src/net/FormatFactory/ does not exist. All canonical classes are not_implemented."
+    required_change: "Create Office/, Table/, Text/ namespaces with canonical classes per canonical-class-inventory.yaml"
+    steps:
+      - "Create src/net/FormatFactory/Office/Document.cs (canonical class)"
+      - "Create src/net/FormatFactory/Table/Table.cs, TableRow.cs, TableCell.cs"
+      - "Create src/net/FormatFactory/Text/Paragraph.cs, Heading.cs"
+      - "Add spec_qname attribute to each canonical class"
+      - "Add unit tests for canonical classes"
+    tests:
+      - "tests/net/spec/ unit tests for canonical classes"
+    closeout_criteria: "src/net/FormatFactory/ exists; all canonical classes have spec_qname; tests pass"
+    dependencies: [TC-QNAME-GEN-001]
+
+  - taskcard_id: TC-BACKFILL-TOOLING-001
+    title: Build Backfill Migration Tooling
+    lane: QNAME-BACKFILL
+    status: OPEN
+    severity: High
+    allowed_paths:
+      - tools/backfill/
+    purpose: Build the tooling described in backfill-facility-design.md
+    problem: "Migration plan phases are all not_started. No backfill scripts exist."
+    required_change: "Create tools/backfill/ with inventory_current_source.py and analyze_qname_gaps.py"
+    steps:
+      - "Create tools/backfill/inventory_current_source.py"
+      - "Create tools/backfill/analyze_qname_gaps.py"
+      - "Run on FODS as pilot"
+      - "Produce reports/backfill/fods-qname-gap-analysis.yaml"
+    dependencies: [TC-QNAME-GEN-001]
+
+  - taskcard_id: TC-PRODUCT-GATE11-FODS-001
+    title: Submit FODS Gate 11 G11-G to Babar Raza
+    lane: GATE11-STOP
+    status: OPEN
+    severity: High
+    allowed_paths:
+      - reports/gate11/fods-gate11-readiness-packet.md
+    purpose: Advance FODS to final Gate 11 commercial sign-off
+    problem: "G11-G approved 2026-06-05 but commercial_product_ready is still false. Final submission packet needs to go to Babar Raza."
+    required_change: "Prepare final submission packet; submit for Babar Raza review"
+    steps:
+      - "Update reports/gate11/fods-gate11-readiness-packet.md with latest test counts"
+      - "Prepare submission summary for Babar Raza"
+      - "STOP — wait for human gate approval"
+    closeout_criteria: "Babar Raza provides final commercial sign-off (TRUE_EXTERNAL_GATE)"
+    gate_impact: "FODS commercial release"
+    dependencies: []
+
+taskcard_groups:
+  QNAME-AUTH:
+    - TC-QNAME-GEN-001
+  QNAME-VALIDATORS:
+    - TC-QNAME-VALIDATOR-001  # (to be created)
+  QNAME-BACKFILL:
+    - TC-QNAME-CANONICAL-001
+    - TC-BACKFILL-TOOLING-001
+  SAL-REPAIR:
+    - TC-SAL-FIX-001
+  SUPERVISOR-LANES:
+    - TC-SUPERVISOR-LANES-001
+  SUPERVISOR-CONTINUATION:
+    - TC-SUPERVISOR-LOCK-001
+  GATE11-STOP:
+    - TC-PRODUCT-GATE11-FODS-001
+  PRODUCT-PILOT:
+    - TC-FODS-TEST-FIX-001
