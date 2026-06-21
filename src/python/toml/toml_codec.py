@@ -934,3 +934,203 @@ def toml_total_value_count(source: "str | bytes | Path") -> int:
         return total
 
     return _count(data)
+
+
+# ---------------------------------------------------------------------------
+# Additional semantic analytics (r285–r315 gap closures)
+# ---------------------------------------------------------------------------
+
+def toml_max_list_length(source: "str | bytes | Path") -> int:
+    """Return the length of the longest top-level list value. 0 if none."""
+    model = load_toml(source)
+    data = model.get("data", model)
+    lists = [v for v in data.values() if isinstance(v, list)]
+    return max((len(lst) for lst in lists), default=0)
+
+
+def toml_all_keys_lowercase(source: "str | bytes | Path") -> bool:
+    """Return True if all top-level key names are lowercase (no uppercase chars)."""
+    model = load_toml(source)
+    data = model.get("data", model)
+    return all(k == k.lower() for k in data.keys())
+
+
+def toml_has_numeric_values(source: "str | bytes | Path") -> bool:
+    """Return True if at least one top-level value is numeric (int or float, not bool)."""
+    model = load_toml(source)
+    data = model.get("data", model)
+    return any(isinstance(v, (int, float)) and not isinstance(v, bool) for v in data.values())
+
+
+def toml_avg_list_length(source: "str | bytes | Path") -> float:
+    """Return the average length of top-level list values. 0.0 if no lists."""
+    model = load_toml(source)
+    data = model.get("data", model)
+    lists = [v for v in data.values() if isinstance(v, list)]
+    if not lists:
+        return 0.0
+    return sum(len(lst) for lst in lists) / len(lists)
+
+
+def toml_max_numeric_value(source: "str | bytes | Path") -> float:
+    """Return the maximum numeric value at top level. 0.0 if no numeric values."""
+    model = load_toml(source)
+    data = model.get("data", model)
+    nums = [v for v in data.values() if isinstance(v, (int, float)) and not isinstance(v, bool)]
+    return float(max(nums)) if nums else 0.0
+
+
+def toml_min_numeric_value(source: "str | bytes | Path") -> float:
+    """Return the minimum numeric value at top level. 0.0 if no numeric values."""
+    model = load_toml(source)
+    data = model.get("data", model)
+    nums = [v for v in data.values() if isinstance(v, (int, float)) and not isinstance(v, bool)]
+    return float(min(nums)) if nums else 0.0
+
+
+def toml_bool_ratio(source: "str | bytes | Path") -> float:
+    """Return ratio of boolean values to total top-level value count. 0.0 if no values."""
+    model = load_toml(source)
+    data = model.get("data", model)
+    total = len(data)
+    if total == 0:
+        return 0.0
+    bools = sum(1 for v in data.values() if isinstance(v, bool))
+    return bools / total
+
+
+def toml_numeric_sum(source: "str | bytes | Path") -> float:
+    """Return sum of all top-level numeric values (int and float, not bool). 0.0 if none."""
+    model = load_toml(source)
+    data = model.get("data", model)
+    return float(sum(v for v in data.values() if isinstance(v, (int, float)) and not isinstance(v, bool)))
+
+
+def toml_unique_value_count(source: "str | bytes | Path") -> int:
+    """Return the count of unique scalar values at top level (excluding tables and lists)."""
+    model = load_toml(source)
+    data = model.get("data", model)
+    scalars = [v for v in data.values() if not isinstance(v, (dict, list))]
+    return len(set(str(v) for v in scalars))
+
+
+def toml_file_size_bytes(source: "str | bytes | Path") -> int:
+    """Return the file size in bytes. 0 if source is bytes/str (not a path)."""
+    if isinstance(source, (str, Path)):
+        p = Path(source)
+        if p.is_file():
+            return p.stat().st_size
+    return 0
+
+
+def toml_max_key_length(source: "str | bytes | Path") -> int:
+    """Return the length of the longest top-level key name. 0 if no keys."""
+    model = load_toml(source)
+    data = model.get("data", model)
+    keys = list(data.keys())
+    return max((len(k) for k in keys), default=0)
+
+
+def toml_avg_value_length(source: "str | bytes | Path") -> float:
+    """Return the average string-representation length of top-level values. 0.0 if no keys."""
+    model = load_toml(source)
+    data = model.get("data", model)
+    if not data:
+        return 0.0
+    return sum(len(str(v)) for v in data.values()) / len(data)
+
+
+def toml_string_key_ratio(source: "str | bytes | Path") -> float:
+    """Return ratio of keys whose top-level values are strings. 0.0 if no keys."""
+    model = load_toml(source)
+    data = model.get("data", model)
+    total = len(data)
+    if total == 0:
+        return 0.0
+    strings = sum(1 for v in data.values() if isinstance(v, str))
+    return strings / total
+
+
+def toml_min_key_length(source: "str | bytes | Path") -> int:
+    """Return the length of the shortest top-level key name. 0 if no keys."""
+    model = load_toml(source)
+    data = model.get("data", model)
+    keys = list(data.keys())
+    return min((len(k) for k in keys), default=0)
+
+
+def toml_list_item_count(source: "str | bytes | Path") -> int:
+    """Return total number of items across all top-level list values."""
+    model = load_toml(source)
+    data = model.get("data", model)
+    return sum(len(v) for v in data.values() if isinstance(v, list))
+
+
+def toml_is_single_table(source: "str | bytes | Path") -> bool:
+    """Return True if the document is a flat single table (no nested table sections)."""
+    return toml_table_count(source) == 0
+
+
+def toml_string_count(source: "str | bytes | Path") -> int:
+    """Return count of top-level string values (alias for toml_string_value_count)."""
+    return toml_string_value_count(source)
+
+
+def toml_numeric_count(source: "str | bytes | Path") -> int:
+    """Return count of top-level numeric values (alias for toml_numeric_value_count)."""
+    return toml_numeric_value_count(source)
+
+
+def toml_bool_count(source: "str | bytes | Path") -> int:
+    """Return count of top-level boolean values (alias for toml_boolean_value_count)."""
+    return toml_boolean_value_count(source)
+
+
+def toml_has_boolean_value(source: "str | bytes | Path") -> bool:
+    """Return True if any top-level value is a boolean (alias for toml_has_booleans)."""
+    return toml_has_booleans(source)
+
+
+def toml_key_count_squared(source: "str | bytes | Path") -> int:
+    """Return the square of the total top-level key count."""
+    n = toml_total_keys(source)
+    return n * n
+
+
+def toml_has_exactly_two_keys(source: "str | bytes | Path") -> bool:
+    """Return True if the document has exactly two top-level keys."""
+    return toml_total_keys(source) == 2
+
+
+def toml_has_only_booleans(source: "str | bytes | Path") -> bool:
+    """Return True if every top-level value is a boolean."""
+    model = load_toml(source)
+    data = model.get("data", model)
+    if not data:
+        return False
+    return all(isinstance(v, bool) for v in data.values())
+
+
+def toml_has_mixed_value_types(source: "str | bytes | Path") -> bool:
+    """Return True if top-level values include more than one distinct Python type."""
+    model = load_toml(source)
+    data = model.get("data", model)
+    types = set(type(v) for v in data.values())
+    return len(types) > 1
+
+
+def toml_non_boolean_count(source: "str | bytes | Path") -> int:
+    """Return count of top-level values that are NOT booleans."""
+    model = load_toml(source)
+    data = model.get("data", model)
+    return sum(1 for v in data.values() if not isinstance(v, bool))
+
+
+def toml_has_no_booleans(source: "str | bytes | Path") -> bool:
+    """Return True if no top-level value is a boolean."""
+    return not toml_has_booleans(source)
+
+
+def toml_has_at_least_one_numeric(source: "str | bytes | Path") -> bool:
+    """Return True if at least one top-level value is numeric (int or float, not bool)."""
+    return toml_has_numeric_values(source)

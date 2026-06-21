@@ -1,20 +1,17 @@
-# src/python/fodt/compat.py — BOOTSTRAP PHASE
+# src/python/fodt/compat.py — TC-FODT-002: SWITCHED to spec/ imports
 #
-# CRITICAL BOOTSTRAP RULE:
-# During bootstrap (spec/ stubs at status: seeded / architecture_only), this file
-# MUST import from models.py ONLY. The spec/ stubs are architecture_only skeletons —
-# they have no properties (.kind, .text, .spans etc.) and importing from them would
-# silently break all existing FODT tests.
+# Switched from models.py to spec/ stubs after TC-FODT-001 confirmed
+# behavioral equivalence (test_compat_bootstrap.py::TestSpecStubBehavioralEquivalence).
 #
-# This file switches to spec/ imports ONLY after:
-#   1. spec/ stubs reach status: implemented (in shared/qname-registry/fodt.yaml)
-#   2. tests/python/fodt/test_compat_bootstrap.py proves behavioral equivalence
-#      (FodtParagraph from spec/ has same .kind, .text, .spans as from models.py)
+# text:p (Paragraph), text:h (Heading), text:span (Span) are now implemented in spec/.
+# FodtDocument remains in models.py — no spec equivalent yet.
 #
-# DO NOT import from .spec.* until both conditions above are met.
+# Facade aliases (FodtParagraph, FodtSpan) are preserved for backward compatibility.
 
 try:
-    from .models import FodtDocument, FodtParagraph, FodtSpan
+    from .spec.text.paragraph import Paragraph as FodtParagraph
+    from .spec.text.span import Span as FodtSpan
+    from .models import FodtDocument
 except ImportError:
     FodtDocument = None  # type: ignore[assignment]
     FodtParagraph = None  # type: ignore[assignment]

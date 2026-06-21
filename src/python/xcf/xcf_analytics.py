@@ -5079,24 +5079,6 @@ def xcf_file_size_mod_1087_times_11400_plus_image_type_times_13300_plus_width_ti
     return (fs % 1087) * 11400 + it * 13300 + w * 1320 + h * 1290
 
 
-def xcf_file_size_mod_1069_times_11300_plus_image_type_times_13200_plus_width_times_1310_plus_height_times_1280(file_path: "str | Path") -> int:
-    """Return (file_size % 1069) * 11300 + image_type * 13200 + width * 1310 + height * 1280."""
-    fs = xcf_file_size_bytes(file_path)
-    it = xcf_image_type_id(file_path)
-    w = xcf_width(file_path)
-    h = xcf_height(file_path)
-    return (fs % 1069) * 11300 + it * 13200 + w * 1310 + h * 1280
-
-
-def xcf_file_size_mod_1087_times_11400_plus_image_type_times_13300_plus_width_times_1320_plus_height_times_1290(file_path: "str | Path") -> int:
-    """Return (file_size % 1087) * 11400 + image_type * 13300 + width * 1320 + height * 1290."""
-    fs = xcf_file_size_bytes(file_path)
-    it = xcf_image_type_id(file_path)
-    w = xcf_width(file_path)
-    h = xcf_height(file_path)
-    return (fs % 1087) * 11400 + it * 13300 + w * 1320 + h * 1290
-
-
 def xcf_file_size_mod_1091_times_11500_plus_image_type_times_13400_plus_width_times_1330_plus_height_times_1300(file_path: "str | Path") -> int:
     """Return (file_size % 1091) * 11500 + image_type * 13400 + width * 1330 + height * 1300."""
     fs = xcf_file_size_bytes(file_path)

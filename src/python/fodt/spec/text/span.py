@@ -1,6 +1,31 @@
-# GENERATED — architecture_only. Do not implement here until compat.py switch is ready.
-# spec_fact_ref: FACT-FODT-006
+"""FODT spec Span — canonical implementation of text:span.
+
+spec_qname: text:span
+spec_fact_ref: FACT-FODT-006
+"""
+from __future__ import annotations
+from typing import Any
+
+
 class Span:
+    """Canonical implementation of ODF text:span element."""
+
     spec_qname = "text:span"
     spec_fact_ref = "FACT-FODT-006"
-    # TODO: implement to match legacy model class once compat.py switch is authorized
+
+    def __init__(self, data: dict[str, Any]):
+        self._data = data
+
+    @property
+    def text(self) -> str:
+        return self._data.get("text", "")
+
+    @property
+    def style_name(self) -> str:
+        return self._data.get("style_name", "")
+
+    def to_dict(self) -> dict[str, Any]:
+        return dict(self._data)
+
+    def __repr__(self) -> str:
+        return f"Span(text={self.text!r})"

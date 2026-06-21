@@ -16,6 +16,8 @@ from typing import Any, Iterator
 class FodsCell:
     """Wraps a cell dict from the FODS neutral model."""
 
+    spec_qname = "table:table-cell"
+
     def __init__(self, data: dict[str, Any]):
         self._data = data
 
@@ -49,6 +51,8 @@ class FodsCell:
 class FodsSheet:
     """Wraps a sheet dict from the FODS neutral model."""
 
+    spec_qname = "table:table"
+
     def __init__(self, data: dict[str, Any]):
         self._data = data
 
@@ -67,7 +71,8 @@ class FodsSheet:
     def cells(self) -> Iterator[FodsCell]:
         """Iterate all cells in the sheet."""
         for row in self.rows:
-            for cell_data in row:
+            row_cells = row.get("cells", []) if isinstance(row, dict) else row
+            for cell_data in row_cells:
                 yield FodsCell(cell_data)
 
     def cell_at(self, row: int, col: int) -> FodsCell | None:
@@ -85,6 +90,8 @@ class FodsSheet:
 
 class FodsDocument:
     """Wraps a workbook dict from parse_fods() with a class-based interface."""
+
+    spec_qname = "office:document"
 
     def __init__(self, data: dict[str, Any]):
         self._data = data
