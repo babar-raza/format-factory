@@ -1,14 +1,14 @@
 # Session Resume Briefing
 # Format Factory — Supervisor-Generated
-# Generated: 2026-06-21T20:29:16.582142
+# Generated: 2026-06-21T21:12:13.367464
 
 ## Quick State
-- Last sprint: sal-skill-gov-20260621-3104e1c1
-- Evidence verdict: ACCEPTED
-- Tests: 1490 passed / 0 failed
+- Last sprint: autonomous-loop-20260621-205610-827f5a52
+- Evidence verdict: ACCEPTED_WITH_REWORK
+- Tests: 37 passed / 0 failed
 - PENDING markers: 0
 - CRITICAL contradictions: 0
-- Autonomous continue: True
+- Autonomous continue: False
 - Current supervisor mode: MODE 4
 - MCP status: ACTIVE (.vscode/mcp.json present)
 
@@ -23,23 +23,12 @@
 5. Prose context: `reports/supervisor/next-sprint.md`
 
 ## Where To Find Evidence
-- Last evidence bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\sal-skill-gov-20260621-3104e1c1\declaration-review-package.zip
+- Last evidence bundle: .local/evidences/autonomous-loop-20260621-205610-827f5a52-827f5a5/
 - Supervisor outputs: reports/supervisor/
 - Project memory: .supervisor/project-memory.md
 
 ## Project Memory (recent)
 ```
-- bundle_entry_count: 72
-- bundle_validation_pass: True
-
-## Entry: skill-governance-sync-20260621
-- timestamp: 2026-06-21T19:43:15.280672
-- verdict: ACCEPTED
-- test_count: 0
-- fail_count: 0
-- git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\skill-governance-sync-20260621-f03234b\declaration-review-package.zip
-- pending_marker_count: 0
 - bundle_entry_count: 80
 - bundle_validation_pass: True
 
@@ -79,6 +68,17 @@
 - bundle_validation_pass: True
 - test_delta: +63
 - test_delta_from: 0
+
+## Entry: sal-skill-gov-20260621-3104e1c1
+- timestamp: 2026-06-21T20:29:16.867570
+- verdict: ACCEPTED
+- test_count: 0
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\sal-skill-gov-20260621-3104e1c1\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 42
+- bundle_validation_pass: True
 ```
 
 ## IMPORTANT REMINDERS

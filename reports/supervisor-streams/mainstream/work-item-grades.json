@@ -1,12 +1,93 @@
 [
   {
-    "item_id": "TC-V45-WIRING",
-    "item_title": "Confirm V45 validator is called in run_all_governance_validators()",
+    "item_id": "AUTH-LIFT-001",
+    "item_title": "Lift POST_PLAN_TERMINAL block via delegated authorization",
     "declared_status": "completed",
     "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
     "evidence_found": true,
     "evidence_paths": [
-      ".local/evidences/spec-auth-heal-sprint-fuzzy-20260621-3104e1c/tc-v45-wiring-proof.md",
+      "reports/authorizations/AUTH-SPEC-HEAL-20260621-002.yaml"
+    ],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "No concrete test/criteria proof (path-only acceptance)"
+    ],
+    "acceptance_criteria_failed": [
+      "No raw proof, test content, or acceptance criteria verified"
+    ],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for AUTH-LIFT-001",
+    "purpose_check": {
+      "item_type": "GOVERNANCE_TASKCARD",
+      "has_gap_ref": null,
+      "verdict": "NOT_APPLICABLE",
+      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
+    },
+    "semantic_verification": {
+      "adequate": false,
+      "confidence": 0.0,
+      "stub_detected": false,
+      "deficiencies": [
+        "llm_verification_unavailable"
+      ],
+      "llm_used": false,
+      "source": "fallback_llm_unavailable",
+      "note": "LLM unavailable or malformed response; evidence needs manual review"
+    }
+  },
+  {
+    "item_id": "COMMIT-DURABILITY-001",
+    "item_title": "Commit all sprint work to git (2 commits: 827f5a52, 3024f68c)",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "evidence_found": true,
+    "evidence_paths": [
+      "reports/authorizations/AUTH-SPEC-HEAL-20260621-002.yaml"
+    ],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "No concrete test/criteria proof (path-only acceptance)"
+    ],
+    "acceptance_criteria_failed": [
+      "No raw proof, test content, or acceptance criteria verified"
+    ],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for COMMIT-DURABILITY-001",
+    "purpose_check": {
+      "item_type": "GOVERNANCE_TASKCARD",
+      "has_gap_ref": null,
+      "verdict": "NOT_APPLICABLE",
+      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
+    },
+    "semantic_verification": {
+      "adequate": false,
+      "confidence": 0.0,
+      "stub_detected": false,
+      "deficiencies": [
+        "llm_verification_unavailable"
+      ],
+      "llm_used": false,
+      "source": "fallback_llm_unavailable",
+      "note": "LLM unavailable or malformed response; evidence needs manual review"
+    }
+  },
+  {
+    "item_id": "GOV-V47-001",
+    "item_title": "Add V47 validate_spec_fact_refs_in_sal_output governance validator",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_VERIFIED",
+    "evidence_found": true,
+    "evidence_paths": [
+      "tools/supervisor/governance_validators.py",
+      "tools/supervisor/governance_validator_runner.py",
       "tests/supervisor/test_governance_validators.py"
     ],
     "tests_supporting": [
@@ -15,15 +96,12 @@
     "tests_missing": [],
     "acceptance_criteria_met": [
       "Evidence found",
-      "No missing paths",
-      "Test content verified (1 files)"
+      "No missing paths"
     ],
-    "acceptance_criteria_failed": [
-      "Acceptance criteria pattern not found: The function validate_qname_class_names is present in the bo"
-    ],
+    "acceptance_criteria_failed": [],
     "required_rework": "",
     "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: Acceptance criteria pattern not found: The function validate_qname_class_names is present in the bo",
+    "next_prompt_instruction": "",
     "tests_evidence_verified": [
       "tests/supervisor/test_governance_validators.py"
     ],
@@ -34,198 +112,40 @@
       "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
     },
     "semantic_verification": {
-      "adequate": true,
-      "confidence": 0.85,
-      "stub_detected": false,
-      "deficiencies": [],
-      "llm_used": true
-    }
-  },
-  {
-    "item_id": "TC-SAL-IDEMPOTENCY",
-    "item_title": "Fix SAL runner overwrite behavior on single-format runs",
-    "declared_status": "completed",
-    "supervisor_grade": "REWORK_REQUIRED",
-    "evidence_found": true,
-    "evidence_paths": [
-      ".local/evidences/spec-auth-heal-sprint-fuzzy-20260621-3104e1c/tc-sal-idempotency-proof.md",
-      "tools/specification-authority-layer/sal_master_runner.py"
-    ],
-    "tests_supporting": [],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths"
-    ],
-    "acceptance_criteria_failed": [
-      "Acceptance criteria pattern not found: A single-format run does NOT reduce the format count in sal-"
-    ],
-    "required_rework": "Stub evidence detected (was ACCEPTED_WITH_LIMITATIONS): ['Evidence consists only of a markdown description with a manual \"PASS\" statement, no automated test code or assertions.', 'No actual verification of sal-facts-latest.json format count before and after the run (e.g., file inspection, JSON parsing, or count assertions).', 'Missing test for the --all flag to confirm it still writes all formats.', 'No logs, output captures, or CI artifacts demonstrating the behavior.', 'The provided source file shows code changes but does not include unit or integration tests exercising the new write_latest flag.']",
-    "can_autonomously_repair": true,
-    "next_prompt_instruction": "REWORK: Evidence contains stub code. Provide real tests/evidence for TC-SAL-IDEMPOTENCY.",
-    "product_source_check": {
-      "source_exists": true,
-      "test_content_valid": true,
-      "details": []
-    },
-    "purpose_check": {
-      "item_type": "PRODUCT_SOURCE",
-      "has_gap_ref": true,
-      "gap_ref": "GAP-SAL-IDEMPOTENCY-001",
-      "spec_fact_count": 0,
-      "verdict": "PURPOSEFUL",
-      "note": ""
-    },
-    "semantic_verification": {
       "adequate": false,
-      "confidence": 0.85,
-      "stub_detected": true,
-      "deficiencies": [
-        "Evidence consists only of a markdown description with a manual \"PASS\" statement, no automated test code or assertions.",
-        "No actual verification of sal-facts-latest.json format count before and after the run (e.g., file inspection, JSON parsing, or count assertions).",
-        "Missing test for the --all flag to confirm it still writes all formats.",
-        "No logs, output captures, or CI artifacts demonstrating the behavior.",
-        "The provided source file shows code changes but does not include unit or integration tests exercising the new write_latest flag."
-      ],
-      "llm_used": true
-    }
-  },
-  {
-    "item_id": "TC-SRC-001-REPAIR",
-    "item_title": "Verify FODS triple nesting removed",
-    "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
-    "evidence_found": true,
-    "evidence_paths": [
-      ".local/evidences/spec-auth-heal-sprint-fuzzy-20260621-3104e1c/tc-src-001-repair-proof.md"
-    ],
-    "tests_supporting": [],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths"
-    ],
-    "acceptance_criteria_failed": [
-      "Acceptance criteria pattern not found: The directory src/python/fods/fods/fods/ is not present as a"
-    ],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: Acceptance criteria pattern not found: The directory src/python/fods/fods/fods/ is not present as a",
-    "purpose_check": {
-      "item_type": "GOVERNANCE_TASKCARD",
-      "has_gap_ref": null,
-      "verdict": "NOT_APPLICABLE",
-      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
-    },
-    "semantic_verification": {
-      "adequate": true,
-      "confidence": 0.95,
-      "stub_detected": false,
-      "deficiencies": [],
-      "llm_used": true
-    }
-  },
-  {
-    "item_id": "TC-FODS-CELLS-BUG",
-    "item_title": "Verify FodsSheet.cells() works on real FODS files",
-    "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
-    "evidence_found": true,
-    "evidence_paths": [
-      ".local/evidences/spec-auth-heal-sprint-fuzzy-20260621-3104e1c/tc-fods-cells-bug-proof.md",
-      "src/python/fods/models.py"
-    ],
-    "tests_supporting": [],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths"
-    ],
-    "acceptance_criteria_failed": [
-      "Acceptance criteria pattern not found: cells() returns cell objects, not strings, when processing a"
-    ],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: Acceptance criteria pattern not found: cells() returns cell objects, not strings, when processing a",
-    "purpose_check": {
-      "item_type": "GOVERNANCE_TASKCARD",
-      "has_gap_ref": null,
-      "verdict": "NOT_APPLICABLE",
-      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
-    },
-    "semantic_verification": {
-      "adequate": true,
-      "confidence": 0.85,
+      "confidence": 0.0,
       "stub_detected": false,
       "deficiencies": [
-        "Test only verifies the first cell is a FodsCell; does not check all cells in the sheet"
+        "llm_verification_unavailable"
       ],
-      "llm_used": true
+      "llm_used": false,
+      "source": "fallback_llm_unavailable",
+      "note": "LLM unavailable or malformed response; evidence needs manual review"
     }
   },
   {
-    "item_id": "TC-NET-BUILD",
-    "item_title": "Verify FODS .NET Spec/ stubs build clean",
+    "item_id": "FODS-COMPAT-001",
+    "item_title": "Create FODS Compat facade layer (TC-MACH-ARCH-004)",
     "declared_status": "completed",
     "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
     "evidence_found": true,
     "evidence_paths": [
-      ".local/evidences/spec-auth-heal-sprint-fuzzy-20260621-3104e1c/tc-net-build-proof.md"
+      "src/python/fods/Compat/__init__.py",
+      "src/python/fods/Compat/fods_document.py"
     ],
     "tests_supporting": [],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths"
-    ],
-    "acceptance_criteria_failed": [
-      "Acceptance criteria pattern not found: dotnet build exits with status code 0"
-    ],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: Acceptance criteria pattern not found: dotnet build exits with status code 0",
-    "purpose_check": {
-      "item_type": "GOVERNANCE_TASKCARD",
-      "has_gap_ref": null,
-      "verdict": "NOT_APPLICABLE",
-      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
-    },
-    "semantic_verification": {
-      "adequate": true,
-      "confidence": 0.95,
-      "stub_detected": false,
-      "deficiencies": [],
-      "llm_used": true
-    }
-  },
-  {
-    "item_id": "TC-SAL-HEAL-001",
-    "item_title": "Verify fact_status and source_id fields in SAL output",
-    "declared_status": "completed",
-    "supervisor_grade": "REWORK_REQUIRED",
-    "evidence_found": true,
-    "evidence_paths": [
-      ".local/evidences/spec-auth-heal-sprint-fuzzy-20260621-3104e1c/tc-sal-heal-001-proof.md"
-    ],
-    "tests_supporting": [
-      "tests/specification-authority-layer/test_sal_bootstrap_vs_verified.py"
-    ],
     "tests_missing": [],
     "acceptance_criteria_met": [
       "Evidence found",
       "No missing paths",
-      "Test content verified (1 files)"
+      "No concrete test/criteria proof (path-only acceptance)"
     ],
     "acceptance_criteria_failed": [
-      "Acceptance criteria pattern not found: Every fact object includes a fact_status field",
-      "No verification that each fact includes a source_id field",
-      "Verification only performed on the 'fods' format, not on all formats in the SAL output",
-      "Evidence does not confirm that every fact across the entire dataset has a fact_status (only checks for MISSING in one subset)",
-      "Scope does not fully match acceptance criteria which require both fact_status and source_id validation"
+      "No raw proof, test content, or acceptance criteria verified"
     ],
     "required_rework": "",
     "can_autonomously_repair": false,
-    "next_prompt_instruction": "Semantic verification downgraded ACCEPTED_WITH_LIMITATIONS -> REWORK_REQUIRED: No verification that each fact includes a source_id field; Verification only performed on the 'fods' format, not on all formats in the SAL output; Evidence does not confirm that every fact across the entire dataset has a fact_status (only checks for MISSING in one subset); Scope does not fully match acceptance criteria which require both fact_status and source_id validation",
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for FODS-COMPAT-001",
     "purpose_check": {
       "item_type": "GOVERNANCE_TASKCARD",
       "has_gap_ref": null,
@@ -234,94 +154,36 @@
     },
     "semantic_verification": {
       "adequate": false,
-      "confidence": 0.9,
+      "confidence": 0.0,
       "stub_detected": false,
       "deficiencies": [
-        "No verification that each fact includes a source_id field",
-        "Verification only performed on the 'fods' format, not on all formats in the SAL output",
-        "Evidence does not confirm that every fact across the entire dataset has a fact_status (only checks for MISSING in one subset)",
-        "Scope does not fully match acceptance criteria which require both fact_status and source_id validation"
+        "llm_verification_unavailable"
       ],
-      "llm_used": true
+      "llm_used": false,
+      "source": "fallback_llm_unavailable",
+      "note": "LLM unavailable or malformed response; evidence needs manual review"
     }
   },
   {
-    "item_id": "TC-SAL-HEAL-002",
-    "item_title": "Verify test_sal_bootstrap_vs_verified.py exists and passes",
+    "item_id": "FODS-INSTALL-PROOF-001",
+    "item_title": "FODS package install proof from wheel",
     "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "supervisor_grade": "ACCEPTED_VERIFIED",
     "evidence_found": true,
     "evidence_paths": [
-      "tests/specification-authority-layer/test_sal_bootstrap_vs_verified.py"
-    ],
-    "tests_supporting": [
-      "tests/specification-authority-layer/test_sal_bootstrap_vs_verified.py"
-    ],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths",
-      "Test content verified (1 files)"
-    ],
-    "acceptance_criteria_failed": [
-      "Acceptance criteria pattern not found: 4 tests pass"
-    ],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: Acceptance criteria pattern not found: 4 tests pass",
-    "tests_evidence_verified": [
-      "tests/specification-authority-layer/test_sal_bootstrap_vs_verified.py"
-    ],
-    "product_source_check": {
-      "source_exists": false,
-      "test_content_valid": true,
-      "details": [
-        "test content valid: tests/specification-authority-layer/test_sal_bootstrap_vs_verified.py"
-      ]
-    },
-    "purpose_check": {
-      "item_type": "PRODUCT_TEST",
-      "has_gap_ref": true,
-      "gap_ref": "GAP-SA-001",
-      "spec_fact_count": 0,
-      "verdict": "PURPOSEFUL",
-      "note": ""
-    },
-    "semantic_verification": {
-      "adequate": false,
-      "confidence": 0.85,
-      "stub_detected": false,
-      "deficiencies": [
-        "Evidence only includes the test source code, not any test execution results or reports showing that the four tests actually passed.",
-        "No CI/CD logs, pytest output, or coverage reports are provided to confirm successful execution.",
-        "Without pass/fail evidence, the acceptance criterion \"4 tests pass\" is not demonstrated."
-      ],
-      "llm_used": true,
-      "_cached_at": "2026-06-21T15:17:57.164408+00:00",
-      "_from_cache": true
-    }
-  },
-  {
-    "item_id": "TC-SNOOPY-COUNT",
-    "item_title": "Verify snoopy plan fact count matches actual",
-    "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
-    "evidence_found": true,
-    "evidence_paths": [
-      ".local/evidences/spec-auth-heal-sprint-fuzzy-20260621-3104e1c/tc-snoopy-count-proof.md"
+      "reports/r130-fods-install-proof-sprint3/package-install-proof.md"
     ],
     "tests_supporting": [],
     "tests_missing": [],
     "acceptance_criteria_met": [
       "Evidence found",
-      "No missing paths"
+      "No missing paths",
+      "Acceptance criteria verified: PASS"
     ],
-    "acceptance_criteria_failed": [
-      "Acceptance criteria pattern not found: The header count must equal the count produced by the Python"
-    ],
+    "acceptance_criteria_failed": [],
     "required_rework": "",
     "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: Acceptance criteria pattern not found: The header count must equal the count produced by the Python",
+    "next_prompt_instruction": "",
     "purpose_check": {
       "item_type": "GOVERNANCE_TASKCARD",
       "has_gap_ref": null,
@@ -329,76 +191,15 @@
       "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
     },
     "semantic_verification": {
-      "adequate": true,
-      "confidence": 0.95,
-      "stub_detected": false,
-      "deficiencies": [],
-      "llm_used": true
-    }
-  },
-  {
-    "item_id": "TC-SAL-HEAL-005",
-    "item_title": "Run regression suite \u2014 SAL cache tests, dogfood tests",
-    "declared_status": "completed",
-    "supervisor_grade": "REWORK_REQUIRED",
-    "evidence_found": true,
-    "evidence_paths": [
-      "tests/specification-authority-layer/test_sal_from_cache_only.py",
-      "tests/python/dogfood/test_dogfood_fods_fodt_sal_fact_ndjson_export.py"
-    ],
-    "tests_supporting": [
-      "tests/specification-authority-layer/test_sal_from_cache_only.py",
-      "tests/python/dogfood/test_dogfood_fods_fodt_sal_fact_ndjson_export.py"
-    ],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths",
-      "Test content verified (3 files)"
-    ],
-    "acceptance_criteria_failed": [
-      "Acceptance criteria pattern not found: 50 out of 50 SAL cache tests pass",
-      "Evidence only includes SAL cache integration tests; no dogfood test files or results are provided.",
-      "No test execution reports or summary showing that the required 50/50 SAL cache PASS and 9/9 dogfood PASS criteria were met.",
-      "Missing verification that the SAL cache suite actually achieved the expected pass/fail distribution (e.g., 50/50 pass count).",
-      "Absence of any build or CI logs confirming that the regression suite was run and all tests passed."
-    ],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": "Semantic verification downgraded ACCEPTED_WITH_LIMITATIONS -> REWORK_REQUIRED: Evidence only includes SAL cache integration tests; no dogfood test files or results are provided.; No test execution reports or summary showing that the required 50/50 SAL cache PASS and 9/9 dogfood PASS criteria were met.; Missing verification that the SAL cache suite actually achieved the expected pass/fail distribution (e.g., 50/50 pass count).; Absence of any build or CI logs confirming that the regression suite was run and all tests passed.",
-    "tests_evidence_verified": [
-      "tests/specification-authority-layer/test_sal_from_cache_only.py",
-      "tests/python/dogfood/test_dogfood_fods_fodt_sal_fact_ndjson_export.py"
-    ],
-    "product_source_check": {
-      "source_exists": false,
-      "test_content_valid": true,
-      "details": [
-        "test content valid: tests/specification-authority-layer/test_sal_from_cache_only.py",
-        "test content valid: tests/python/dogfood/test_dogfood_fods_fodt_sal_fact_ndjson_export.py"
-      ]
-    },
-    "purpose_check": {
-      "item_type": "PRODUCT_TEST",
-      "has_gap_ref": true,
-      "gap_ref": "GAP-SA-001",
-      "spec_fact_count": 0,
-      "verdict": "PURPOSEFUL",
-      "note": ""
-    },
-    "semantic_verification": {
       "adequate": false,
-      "confidence": 0.97,
+      "confidence": 0.0,
       "stub_detected": false,
       "deficiencies": [
-        "Evidence only includes SAL cache integration tests; no dogfood test files or results are provided.",
-        "No test execution reports or summary showing that the required 50/50 SAL cache PASS and 9/9 dogfood PASS criteria were met.",
-        "Missing verification that the SAL cache suite actually achieved the expected pass/fail distribution (e.g., 50/50 pass count).",
-        "Absence of any build or CI logs confirming that the regression suite was run and all tests passed."
+        "llm_verification_unavailable"
       ],
-      "llm_used": true,
-      "_cached_at": "2026-06-21T15:18:00.648041+00:00",
-      "_from_cache": true
+      "llm_used": false,
+      "source": "fallback_llm_unavailable",
+      "note": "LLM unavailable or malformed response; evidence needs manual review"
     }
   }
 ]

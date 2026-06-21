@@ -1,30 +1,26 @@
 # Materialized Evidence Review
-# Run ID: spec-auth-heal-sprint-fuzzy-20260621-3104e1c
-# Sprint: spec-auth-heal-sprint-fuzzy-20260621
-# Generated: 2026-06-21T20:21:46.202028
+# Run ID: autonomous-loop-20260621-205610-827f5a52-827f5a5
+# Sprint: autonomous-loop-20260621-205610-827f5a52
+# Generated: 2026-06-21T21:08:57.348656
 
 ## Materialization Summary
 
-- Artifacts verified: 13
+- Artifacts verified: 14
 - Artifacts missing: 0
-- Source changes captured: 2
+- Source changes captured: 14
 
 ## Work Item Grades
 
 | Item | Grade | Note |
 |------|-------|------|
-| TC-V45-WIRING | ACCEPTED | All 2 evidence path(s) verified |
-| TC-SAL-IDEMPOTENCY | ACCEPTED | All 2 evidence path(s) verified |
-| TC-SRC-001-REPAIR | ACCEPTED | All 1 evidence path(s) verified |
-| TC-FODS-CELLS-BUG | ACCEPTED | All 2 evidence path(s) verified |
-| TC-NET-BUILD | ACCEPTED | All 1 evidence path(s) verified |
-| TC-SAL-HEAL-001 | ACCEPTED | All 1 evidence path(s) verified |
-| TC-SAL-HEAL-002 | ACCEPTED | All 1 evidence path(s) verified |
-| TC-SNOOPY-COUNT | ACCEPTED | All 1 evidence path(s) verified |
-| TC-SAL-HEAL-005 | ACCEPTED | All 2 evidence path(s) verified |
+| AUTH-LIFT-001 | ACCEPTED | All 1 evidence path(s) verified |
+| COMMIT-DURABILITY-001 | ACCEPTED | All 1 evidence path(s) verified |
+| GOV-V47-001 | ACCEPTED | All 3 evidence path(s) verified |
+| FODS-COMPAT-001 | ACCEPTED | All 2 evidence path(s) verified |
+| FODS-INSTALL-PROOF-001 | ACCEPTED | All 1 evidence path(s) verified |
 
 ## Manifest Location
-- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\materialized\spec-auth-heal-sprint-fuzzy-20260621-3104e1c\materialized-evidence-manifest.yaml
+- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\materialized\autonomous-loop-20260621-205610-827f5a52-827f5a5\materialized-evidence-manifest.yaml
 
 ## Patch Location
-- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\materialized\spec-auth-heal-sprint-fuzzy-20260621-3104e1c\source-change-diffs.patch
+- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\materialized\autonomous-loop-20260621-205610-827f5a52-827f5a5\source-change-diffs.patch

@@ -1,7 +1,21 @@
+## ACTIVE PER-CHAT PLAN — SYSTEM LEDGER SUPPRESSED
+
+A per-chat plan is active. Complete ALL plan taskcards before any ledger/product work.
+
+- **Plan:** `C:/Users/prora/.claude/plans/keen-dancing-hopper.md`
+- **Last completed taskcard:** `None`
+- **Action:** Read the plan file. Find the next open taskcard after `None`. Execute it.
+  After each: `python tools/supervisor/write_plan_lock.py --plan-path "C:/Users/prora/.claude/plans/keen-dancing-hopper.md" --last-taskcard <TC_ID>`
+  When ALL done: `python tools/supervisor/write_plan_lock.py --plan-path "C:/Users/prora/.claude/plans/keen-dancing-hopper.md" --complete`
+
+**Do NOT start system ledger / product hardening work until plan status = COMPLETE.**
+
+---
+
 # Supervisor-Generated Next Sprint Prompt
-# Source sprint: sal-skill-gov-20260621-3104e1c1
+# Source sprint: autonomous-loop-20260621-205610-827f5a52
 # Stream: mainstream
-# Generated: 2026-06-21T20:29:16.526124
+# Generated: 2026-06-21T21:12:13.349127
 # ADVISORY ONLY — not a Format Factory authority document
 # This is INPUT to the next sprint, not a gate approval or commit authorization.
 
@@ -11,10 +25,10 @@
 ADVANCE: Product deepening — .NET commercial + Python FOSS + dogfood + packaging
 
 ## Prior Sprint Summary
-- Sprint ID: sal-skill-gov-20260621-3104e1c1
-- Evidence verdict: ACCEPTED
-- Tests: 1490 passed, 0 failed, 0 skipped
-- Autonomous continue: True
+- Sprint ID: autonomous-loop-20260621-205610-827f5a52
+- Evidence verdict: ACCEPTED_WITH_REWORK
+- Tests: 37 passed, 0 failed, 0 skipped
+- Autonomous continue: False
 
 ## STOP_REASON_ADVISORY (enforced by stop_reason_adjudicator.py)
 
@@ -37,19 +51,17 @@ TRUE_EXTERNAL_GATE (ONLY these warrant a stop):
 
 ## Section 1: New Product Work (Advisory — Always Execute)
 - [pending] TASK-001: Select governed product gaps and validate the product-code ledger
-- [agent-owned] TASK-002: Prepare commit candidate summary and changed-file manifest
-- [external-gate] TASK-003: Execute git commit (requires explicit user authorization — do NOT self-execute)
-- [agent-owned] TASK-004: Prepare FODS Gate 11 readiness packet and commercial checklist
-- [external-gate] TASK-005: Submit FODS Gate 11 for Babar Raza approval (after packet ready — human required)
-- [agent-owned] TASK-006: Prepare FODT Gate 11 readiness packet and commercial checklist
-- [external-gate] TASK-007: Submit FODT Gate 11 for Babar Raza approval (after packet ready — human required)
-- [pending] TASK-008: Continue ZST implementation toward Gate 11 readiness criteria
-- [pending] TASK-009: Work on open taskcard: TC-0015-spec-retrieval-strategy-evaluation
-- [pending] TASK-010: Work on open taskcard: TC-0016-fods-vector-index-pilot
-- [pending] TASK-011: Work on open taskcard: TC-0020-spec-workbench-core
-- [pending] TASK-012: Advance one dogfood export path using a Format Factory library
-- [pending] TASK-013: Build package artifacts and run installed-workflow proof
-- [pending] TASK-014: Write evidence declaration and run supervisor autonomous-cycle
+- [agent-owned] TASK-002: Prepare FODS Gate 11 readiness packet and commercial checklist
+- [external-gate] TASK-003: Submit FODS Gate 11 for Babar Raza approval (after packet ready — human required)
+- [agent-owned] TASK-004: Prepare FODT Gate 11 readiness packet and commercial checklist
+- [external-gate] TASK-005: Submit FODT Gate 11 for Babar Raza approval (after packet ready — human required)
+- [pending] TASK-006: Continue ZST implementation toward Gate 11 readiness criteria
+- [pending] TASK-007: Work on open taskcard: TC-0015-spec-retrieval-strategy-evaluation
+- [pending] TASK-008: Work on open taskcard: TC-0016-fods-vector-index-pilot
+- [pending] TASK-009: Work on open taskcard: TC-0020-spec-workbench-core
+- [pending] TASK-010: Advance one dogfood export path using a Format Factory library
+- [pending] TASK-011: Build package artifacts and run installed-workflow proof
+- [pending] TASK-012: Write evidence declaration and run supervisor autonomous-cycle
 
 ## Section 2: Rework / Repair (Advisory — Fix Before Closeout)
 None
@@ -87,17 +99,6 @@ None
 
 ## Project Memory Context
 ```
-- bundle_entry_count: 72
-- bundle_validation_pass: True
-
-## Entry: skill-governance-sync-20260621
-- timestamp: 2026-06-21T19:43:15.280672
-- verdict: ACCEPTED
-- test_count: 0
-- fail_count: 0
-- git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\skill-governance-sync-20260621-f03234b\declaration-review-package.zip
-- pending_marker_count: 0
 - bundle_entry_count: 80
 - bundle_validation_pass: True
 
@@ -137,6 +138,17 @@ None
 - bundle_validation_pass: True
 - test_delta: +63
 - test_delta_from: 0
+
+## Entry: sal-skill-gov-20260621-3104e1c1
+- timestamp: 2026-06-21T20:29:16.867570
+- verdict: ACCEPTED
+- test_count: 0
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\sal-skill-gov-20260621-3104e1c1\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 42
+- bundle_validation_pass: True
 ```
 
 ---

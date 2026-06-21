@@ -1,19 +1,19 @@
 # Supervisor Context Pack
 # Format Factory — Machine-Readable State Snapshot
-# Generated: 2026-06-21T20:23:12.358529
+# Generated: 2026-06-21T21:12:13.390727
 # ADVISORY ONLY — not a gate approval or authority document
 
 ## Current State
 
 | Item | Value |
 |------|-------|
-| Git HEAD | 3104e1c1 |
+| Git HEAD | 3024f68c |
 | Working tree clean | False |
 | Supervisor mode | MODE 4 |
 | Latest sprint | unknown |
-| Sprint ID | spec-auth-heal-sprint-fuzzy-20260621... |
+| Sprint ID | sal-autonomous-audit-20260621... |
 | Autonomous continue | False |
-| Iteration | 9/12 |
+| Iteration | 12/12 |
 | MCP status | MCP_CONFIG_PRESENT_MODE4_ACTIVE |
 | Active skills | 43 |
 | Ledger entries | 948 total (782 governed) |
