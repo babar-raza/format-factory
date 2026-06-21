@@ -51,7 +51,12 @@ def _derive_stable_session_id(track_type: str = "product") -> str:
         except Exception:
             pass  # fall through to create new session file
 
-    # Priority 3/4: git HEAD or UUID fallback — write to session file
+    # Priority 3/4: git HEAD or UUID fallback — write to session file.
+    # TC-SESSION-NONCE-001 (SC-005): add a per-chat nonce to the hash input so that
+    # distinct chat sessions on the same git HEAD produce different session_ids.
+    # Without this, sha256(track:branch:HEAD) is identical across all sessions until
+    # a new commit is made, causing plan locks from session A to fire in session B.
+    chat_nonce = str(uuid.uuid4()).replace("-", "")[:8]
     try:
         head = subprocess.check_output(
             ["git", "rev-parse", "HEAD"], stderr=subprocess.DEVNULL,
@@ -61,12 +66,15 @@ def _derive_stable_session_id(track_type: str = "product") -> str:
             ["git", "rev-parse", "--abbrev-ref", "HEAD"], stderr=subprocess.DEVNULL,
             cwd=str(_REPO_ROOT), timeout=5
         ).decode().strip()
-        new_id = hashlib.sha256(f"{track_type}:{branch}:{head}".encode()).hexdigest()[:12]
-        source = "git"
+        new_id = hashlib.sha256(
+            f"{track_type}:{branch}:{head}:{chat_nonce}".encode()
+        ).hexdigest()[:12]
+        source = "git_nonce"
     except Exception:
         # UUID4 without hyphens — pure hex, no hyphen ambiguity with UUID fallback detection
         new_id = str(uuid.uuid4()).replace("-", "")[:12]
         source = "uuid_fallback"
+        chat_nonce = "n/a"
 
     # Write session file so this ID is stable for the rest of this chat
     try:
@@ -76,6 +84,7 @@ def _derive_stable_session_id(track_type: str = "product") -> str:
             "track_type": track_type,
             "created_at": datetime.now(timezone.utc).isoformat(),
             "source": source,
+            "chat_nonce": chat_nonce,  # stored for provenance; not re-used
         }), encoding="utf-8")
     except Exception:
         pass  # non-fatal — ID still returned
