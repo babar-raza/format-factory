@@ -1,33 +1,27 @@
 schema_version: '1.0'
-generated_at: '2026-06-16T16:34:22.675262'
+generated_at: '2026-06-21T19:24:15.621792'
 repo_root: C:\Users\prora\OneDrive\Documents\GitHub\format-factory
 git:
-  head: b2ed09e
+  head: b3be88bf
   status:
-    modified_count: 59
-    untracked_count: 13
+    modified_count: 97
+    untracked_count: 1102
     staged_count: 1
-    total_changed: 73
+    total_changed: 1208
     clean: false
 supervisor_mode: 4
 latest_sprint:
-  sprint_id: FF-IDEMPOTENT-SPEC-TO-FEATURE-SWARM-HEALING-V2
+  sprint_id: machinery-lifecycle-forensics-20260621
   run_id: unknown
   autonomous_continue: true_with_rework
-  iteration: 10
+  iteration: 0
   max_iterations: 12
   hard_stops: []
   rework_items:
-  - LANE-CLASSIFICATION
-  - LANE6-QNAME-ONTOLOGY
-  - LANE5-DEPTH-VALIDATORS
-  - LANE15-HEALING-LEARNING
-  - TC-SAL-001
-  - TC-COMP-002
-  - TC-VAL-001
+  - LANE_ENFORCEMENT:1_violations
 poc_matrix:
   sprint: capability-layer-closeout-rnext
-  last_updated: '2026-06-09'
+  last_updated: '2026-06-18'
   commercial_net_products:
     FODS:
       dotnet_tests: 547
@@ -43,8 +37,8 @@ poc_matrix:
       commercial_ready: false
   foss_python_products: {}
 skill_registry:
-  total_skills: 32
-  active_skills: 31
+  total_skills: 33
+  active_skills: 32
   skill_ids:
   - add-dotnet-api
   - add-python-api
@@ -77,11 +71,12 @@ skill_registry:
   - spec-parity-verification
   - post-sprint-audit
   - post-sprint-loop
+  - add-analytics-function
   source_edits_require_handoff: true
   ledger_required: true
 product_code_ledger:
-  total_entries: 936
-  governed_changes: 780
+  total_entries: 948
+  governed_changes: 782
   backfilled: 4
   ledger_path: reports\r90\product-code-change-ledger.json
 mcp_status:

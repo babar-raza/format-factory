@@ -49,6 +49,9 @@ skills:
     command_file: .claude/commands/add-dotnet-api.md
     status: active
     spec_qname_required: true
+    sal_aware: true
+    sal_required_in_handoff: true
+    sal_note: "Handoff must include FACT-{FORMAT}-* spec_fact_refs from sal-facts-latest.json before execution"
     purpose: Add or extend one bounded commercial .NET product API with focused tests and evidence.
     product_track: commercial_dotnet
     required_handoff_fields:
@@ -68,6 +71,9 @@ skills:
     command_file: .claude/commands/add-python-api.md
     status: active
     spec_qname_required: true
+    sal_aware: true
+    sal_required_in_handoff: true
+    sal_note: "Handoff must include FACT-{FORMAT}-* spec_fact_refs from sal-facts-latest.json before execution"
     purpose: Add or extend one bounded Python FOSS product API with focused tests and evidence.
     product_track: foss_python
     required_handoff_fields:
@@ -131,6 +137,9 @@ skills:
     command_file: .claude/commands/add-dotnet-object-model-feature.md
     status: active
     spec_qname_required: true
+    sal_aware: true
+    sal_required_in_handoff: true
+    sal_note: "Handoff must include spec_qname + FACT-{FORMAT}-* from sal-facts-latest.json"
     purpose: Add a feature to a .NET object model (property, method, conversion).
     product_track: commercial_dotnet
     required_handoff_fields:
@@ -148,6 +157,9 @@ skills:
     command_file: .claude/commands/add-python-object-model-feature.md
     status: active
     spec_qname_required: true
+    sal_aware: true
+    sal_required_in_handoff: true
+    sal_note: "Handoff must include spec_qname + FACT-{FORMAT}-* from sal-facts-latest.json"
     purpose: Add a feature to a Python object model (method, conversion, property).
     product_track: foss_python
     required_handoff_fields:
@@ -438,6 +450,9 @@ skills:
     command_file: .claude/commands/spec-literal-qname-to-code-mapping.md
     status: active
     spec_qname_required: true
+    sal_aware: true
+    sal_required_in_handoff: true
+    sal_note: "SAL-driven skill: spec_qname must trace to a FACT-{FORMAT}-* entry. Handoff requires sal_facts_path."
     purpose: >
       Generate or validate a QName-to-code mapping for a format. Produces
       qname-to-code-map-<format>.yaml, namespace-tree-<format>.yaml, and
@@ -568,3 +583,27 @@ skills:
       - summary_classification_valid
       - quality_scores_above_threshold
       - evidence_bundle_present
+
+  # ============================================================
+  # ANALYTICS FUNCTION SKILL (registered 2026-06-18, TC-SKILL-002)
+  # ============================================================
+
+  - skill_id: add-analytics-function
+    command: /add-analytics-function
+    command_file: .claude/commands/add-analytics-function.md
+    status: active
+    spec_qname_required: false
+    purpose: "Add one formula-based analytics function to src/python/<format_id>/analytics.py (§24.7 compliant). BLOCKED by V35 if target file is at LOC cap."
+    product_track: foss_python_analytics
+    required_handoff_fields:
+      - format_id
+      - function_name
+      - formula
+      - prime_used
+      - expected_values
+    mandatory_validations:
+      - loc_cap_not_exceeded
+      - prime_not_collision
+      - sample_files_exist
+      - analytics_skill_required_v41
+    notes: "Analytics rotation SUSPENDED 2026-06-18 per plan keen-dancing-hopper. ZST/XCF/FODG analytics.py files are at cap. Do NOT reactivate without a spec fact reference (FACT-<FORMAT>-*) and a gap-ledger entry."

@@ -106,7 +106,13 @@
     "memory_files_updated": { "type": "array", "items": { "type": "string" } },
     "known_limitations": { "type": "array", "items": { "type": "string" } },
     "external_gates": { "type": "array", "items": { "type": "string" } },
-    "dirty_state_classification": { "type": "string", "description": "Classification of dirty git state (e.g. DIRTY_SUPERVISOR_WORK_IN_PROGRESS)" }
+    "dirty_state_classification": { "type": "string", "description": "Classification of dirty git state (e.g. DIRTY_SUPERVISOR_WORK_IN_PROGRESS)" },
+    "test_layer": { "type": "integer", "minimum": 0, "maximum": 6, "description": "Test layer used for this sprint (0-6). See docs/test-layering.md." },
+    "test_layer_name": { "type": "string", "description": "Human-readable layer name (structural, focused, family, integration, golden, broad, full)" },
+    "test_layer_reason": { "type": "string", "description": "Why this layer was selected for this sprint" },
+    "full_suite_required": { "type": "boolean", "description": "Whether the full test suite (layer6) was required for this sprint" },
+    "full_suite_run": { "type": "boolean", "description": "Whether the full test suite was actually run" },
+    "full_suite_reason": { "type": "string", "description": "Reason full suite was or was not run" }
   },
   "additionalProperties": false
 }

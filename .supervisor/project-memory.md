@@ -12958,7 +12958,7 @@ Contract: C:\Users\prora\OneDrive\Documents\
 - test_delta: 0
 - test_delta_from: 12
 
-## Entry: sal-advancement-iter25-20260617-154500-8656416
+## Entry: sal-advancement-iter25-20260617-154500-8656416 [STALE]
 - timestamp: 2026-06-17T18:35:14.797528
 - verdict: ACCEPTED
 - test_count: 12
@@ -12971,7 +12971,7 @@ Contract: C:\Users\prora\OneDrive\Documents\
 - test_delta: 0
 - test_delta_from: 12
 
-## Entry: sal-advancement-iter26-20260617-160000-8656416
+## Entry: sal-advancement-iter26-20260617-160000-8656416 [STALE]
 - timestamp: 2026-06-17T18:37:12.291124
 - verdict: ACCEPTED
 - test_count: 12
@@ -12984,7 +12984,7 @@ Contract: C:\Users\prora\OneDrive\Documents\
 - test_delta: 0
 - test_delta_from: 12
 
-## Entry: sal-advancement-iter28-20260617-163000-8656416
+## Entry: sal-advancement-iter28-20260617-163000-8656416 [STALE]
 - timestamp: 2026-06-17T18:39:11.416828
 - verdict: ACCEPTED
 - test_count: 12
@@ -13944,3 +13944,488 @@ Contract: C:\Users\prora\OneDrive\Documents\
 - machinery_signal: still contains synthetic sprint_id from TC-P4-003; TC-P5-003 will replace via real machinery cycle run
 - tc_p5_004: non_rgb_xcf_coverage_added (2x2-gray.xcf image_type_id=1 confirms non-zero it-term path)
 - tc_p5_005: track_p_declaration_template_created (docs/automation/track-p-declaration-template.yaml, 0 validator fails)
+
+## Entry: abstract-finding-hummingbird-phase-ef
+- timestamp: 2026-06-18T17:21:24.878771
+- verdict: ACCEPTED
+- test_count: 34
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\abstract-finding-hummingbird-phase-ef-20260618\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 64
+- bundle_validation_pass: True
+- test_delta: +24
+- test_delta_from: 10
+
+## Entry: tc-fodg-complete-2026-06-18
+- timestamp: 2026-06-18T17:55:11.657960
+- verdict: ACCEPTED
+- test_count: 96
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\tc-fodg-complete-2026-06-18\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 72
+- bundle_validation_pass: True
+- test_delta: +62
+- test_delta_from: 34
+
+## Entry: abw-foss-gap-closure-2026-06-18
+- timestamp: 2026-06-18T18:18:23.422085
+- verdict: ACCEPTED
+- test_count: 45
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\abw-foss-gap-closure-2026-06-18\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 60
+- bundle_validation_pass: True
+- test_delta: -51
+- test_delta_from: 96
+
+## Entry: gap-closure-fodg-gnumeric-dif-2026-06-18
+- timestamp: 2026-06-18T18:34:02.450827
+- verdict: ACCEPTED
+- test_count: 123
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\gap-closure-fodg-gnumeric-dif-2026-06-18\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 64
+- bundle_validation_pass: True
+- test_delta: +78
+- test_delta_from: 45
+
+## Entry: gap-closure-sylk-pbm-ndjson-2026-06-18
+- timestamp: 2026-06-18T18:43:40.409194
+- verdict: ACCEPTED
+- test_count: 76
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\gap-closure-sylk-pbm-ndjson-2026-06-18\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 63
+- bundle_validation_pass: True
+- test_delta: -47
+- test_delta_from: 123
+
+## Entry: gap-closure-csv-qoi-pgm-tsv-2026-06-18
+- timestamp: 2026-06-18T18:53:15.266309
+- verdict: ACCEPTED
+- test_count: 141
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\gap-closure-csv-qoi-pgm-tsv-2026-06-18\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 66
+- bundle_validation_pass: True
+- test_delta: +65
+- test_delta_from: 76
+
+## Entry: gap-closure-xcf-zst-2026-06-18
+- timestamp: 2026-06-18T19:05:08.086679
+- verdict: ACCEPTED
+- test_count: 171
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\gap-closure-xcf-zst-2026-06-18\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 62
+- bundle_validation_pass: True
+- test_delta: +30
+- test_delta_from: 141
+
+## Entry: gap-closure-fods-fodt-ppm-2026-06-18
+- timestamp: 2026-06-18T19:19:13.708323
+- verdict: ACCEPTED
+- test_count: 89
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\gap-closure-fods-fodt-ppm-2026-06-18\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 65
+- bundle_validation_pass: True
+- test_delta: -82
+- test_delta_from: 171
+
+## Entry: keen-dancing-hopper-governance-repair-20260618
+- timestamp: 2026-06-18T19:23:10.778829
+- verdict: ACCEPTED
+- test_count: 5
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\keen-dancing-hopper-20260618\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 71
+- bundle_validation_pass: True
+- test_delta: -84
+- test_delta_from: 89
+
+## Entry: gap-closure-comm-fods-fodt-netpbm-2026-06-18
+- timestamp: 2026-06-18T19:25:06.964242
+- verdict: ACCEPTED
+- test_count: 1643
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\gap-closure-comm-fods-fodt-netpbm-2026-06-18\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 65
+- bundle_validation_pass: True
+- test_delta: +1638
+- test_delta_from: 5
+
+## Entry: skill-registry-repair-20260618
+- timestamp: 2026-06-18T19:55:13.088350
+- verdict: ACCEPTED
+- test_count: 0
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\skill-registry-repair-20260618\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 60
+- bundle_validation_pass: True
+
+## Entry: gap-taskcard-closeout-2026-06-18
+- timestamp: 2026-06-18T20:05:06.959932
+- verdict: ACCEPTED
+- test_count: 2
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\gap-taskcard-closeout-2026-06-18\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 66
+- bundle_validation_pass: True
+- test_delta: +2
+- test_delta_from: 0
+
+## Entry: fodg-install-proof-20260618
+- timestamp: 2026-06-18T20:13:06.882075
+- verdict: ACCEPTED
+- test_count: 4407
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\fodg-install-proof-20260618\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 62
+- bundle_validation_pass: True
+- test_delta: +4405
+- test_delta_from: 2
+
+## Entry: ndjson-tsv-install-proof-20260618
+- timestamp: 2026-06-18T20:17:09.297639
+- verdict: ACCEPTED
+- test_count: 0
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\ndjson-tsv-install-proof-20260618\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 62
+- bundle_validation_pass: True
+
+## Entry: format-factory-fullsuite-layering-20260618-001
+- timestamp: 2026-06-18T20:23:11.105522
+- verdict: ACCEPTED_WITH_WARNINGS
+- test_count: 5200
+- fail_count: 106
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\format-factory-fullsuite-layering-20260618-001\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 128
+- bundle_validation_pass: True
+- test_delta: +5200
+- test_delta_from: 0
+
+## Entry: examples-ndjson-tsv-20260618
+- timestamp: 2026-06-18T20:38:54.904397
+- verdict: ACCEPTED
+- test_count: 0
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\examples-ndjson-tsv-20260618\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 60
+- bundle_validation_pass: True
+
+## Entry: fods-getnumericcolumnvalues-r100-20260618
+- timestamp: 2026-06-18T20:41:28.864526
+- verdict: ACCEPTED
+- test_count: 617
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\fods-getnumericcolumnvalues-r100-20260618\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 64
+- bundle_validation_pass: True
+- test_delta: +617
+- test_delta_from: 0
+
+## Entry: foss-installed-workflow-gaps-20260618
+- timestamp: 2026-06-18T20:47:20.657385
+- verdict: ACCEPTED
+- test_count: 12
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\foss-installed-workflow-gaps-20260618\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 60
+- bundle_validation_pass: True
+- test_delta: -605
+- test_delta_from: 617
+
+## Entry: tc-0005-llm-endpoint-20260618
+- timestamp: 2026-06-18T20:59:28.399780
+- verdict: ACCEPTED
+- test_count: 3
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\tc-0005-llm-endpoint-20260618\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 66
+- bundle_validation_pass: True
+- test_delta: -9
+- test_delta_from: 12
+
+## Entry: toml-analytics-gap-closure-20260618
+- timestamp: 2026-06-18T21:07:18.376531
+- verdict: ACCEPTED
+- test_count: 593
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\toml-analytics-gap-closure-20260618\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 64
+- bundle_validation_pass: True
+- test_delta: +590
+- test_delta_from: 3
+
+## Entry: fodt-gate11-packet-update-20260618
+- timestamp: 2026-06-18T21:09:22.158312
+- verdict: ACCEPTED
+- test_count: 0
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\fodt-gate11-packet-update-20260618\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 60
+- bundle_validation_pass: True
+
+## Entry: format-factory-fullsuite-layering-20260618-fslay01
+- timestamp: 2026-06-18T21:57:47.201641
+- verdict: ACCEPTED
+- test_count: 158
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\format-factory-fullsuite-layering-20260618-fslay01\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 70
+- bundle_validation_pass: True
+- test_delta: +158
+- test_delta_from: 0
+
+## Entry: self-healing-autonomy-20260618
+- timestamp: 2026-06-18T22:21:37.359537
+- verdict: ACCEPTED_WITH_REWORK
+- test_count: 16
+- fail_count: 0
+- git_head: 1f9614a
+- bundle_path: .local/evidences/self-healing-autonomy-20260618
+- pending_marker_count: 0
+- bundle_entry_count: 6
+- bundle_validation_pass: True
+- test_delta: -142
+- test_delta_from: 158
+
+## Entry: fods-workbook-analytics-20260618-001
+- timestamp: 2026-06-18T22:31:31.720511
+- verdict: ACCEPTED
+- test_count: 90
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\fods-workbook-analytics-20260618-001\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 58
+- bundle_validation_pass: True
+- test_delta: +74
+- test_delta_from: 16
+
+## Entry: fodt-document-analytics-20260618-001
+- timestamp: 2026-06-18T22:37:52.663974
+- verdict: ACCEPTED
+- test_count: 125
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\fodt-document-analytics-20260618-001\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 58
+- bundle_validation_pass: True
+- test_delta: +35
+- test_delta_from: 90
+
+## Entry: pre-product-acquisition-item-recon-20260618-1f9614a
+- timestamp: 2026-06-18T22:45:39.970938
+- verdict: ACCEPTED
+- test_count: 17
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\pre-product-acquisition-item-recon-20260618-1f9614a\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 70
+- bundle_validation_pass: True
+- test_delta: -108
+- test_delta_from: 125
+
+## Entry: autonomous-loop-20260618-174017-0cddac9
+- timestamp: 2026-06-18T22:47:28.569362
+- verdict: ACCEPTED
+- test_count: 15
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\autonomous-loop-20260618-174017-0cddac9-4998619\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 58
+- bundle_validation_pass: True
+- test_delta: -2
+- test_delta_from: 17
+
+## Entry: sal-impl-001b-20260618
+- timestamp: 2026-06-18T22:53:33.622993
+- verdict: ACCEPTED
+- test_count: 157
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\sal-impl-001b-20260618\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 68
+- bundle_validation_pass: True
+- test_delta: +142
+- test_delta_from: 15
+
+## Entry: DOGFOOD-POC-TARGETS-UPDATE-20260618
+- timestamp: 2026-06-18T22:55:26.377025
+- verdict: ACCEPTED
+- test_count: 5
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\dogfood-poc-targets-update-20260618\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 58
+- bundle_validation_pass: True
+- test_delta: -152
+- test_delta_from: 157
+
+## Entry: netpbm-analytics-20260618-001
+- timestamp: 2026-06-18T22:59:18.556520
+- verdict: ACCEPTED
+- test_count: 296
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\netpbm-analytics-20260618-001\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 62
+- bundle_validation_pass: True
+- test_delta: +291
+- test_delta_from: 5
+
+## Entry: ABW-GNUMERIC-INSTALLED-WORKFLOW-20260618
+- timestamp: 2026-06-18T23:01:17.634148
+- verdict: ACCEPTED
+- test_count: 8
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\abw-gnumeric-installed-workflow-20260618\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 58
+- bundle_validation_pass: True
+- test_delta: -288
+- test_delta_from: 296
+
+## Entry: TC0020-REFRESH-COVERAGE-TOOLS-20260618
+- timestamp: 2026-06-18T23:05:13.917764
+- verdict: ACCEPTED
+- test_count: 4
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\tc0020-refresh-coverage-tools-20260618\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 60
+- bundle_validation_pass: True
+- test_delta: -4
+- test_delta_from: 8
+
+## Entry: ff-idempotent-recon-20260618-1320e557
+- timestamp: 2026-06-20T09:25:13.962271
+- verdict: ACCEPTED
+- test_count: 0
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\ff-idempotent-recon-20260618-1320e557\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 110
+- bundle_validation_pass: True
+
+## Entry: FF-HEAL-QNAME-20260621-114042
+- timestamp: 2026-06-21T12:57:09.271536
+- verdict: ACCEPTED
+- test_count: 0
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\FF-HEAL-QNAME-20260621-114042\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 81
+- bundle_validation_pass: True
+
+## Entry: FF-NEXTWORK-PROMOTE-LEDGER-20260621
+- timestamp: 2026-06-21T13:31:14.243183
+- verdict: ACCEPTED
+- test_count: 0
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\FF-NEXTWORK-PROMOTE-LEDGER-20260621\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 47
+- bundle_validation_pass: True
+
+## Entry: FF-HEALING-TASKCARDS-EXEC-20260621
+- timestamp: 2026-06-21T13:53:27.438088
+- verdict: ACCEPTED
+- test_count: 0
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\FF-HEALING-TASKCARDS-EXEC-20260621\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 67
+- bundle_validation_pass: True
+
+## Entry: FF-PLAN-DELIGHTFUL-WIBBLING-20260621
+- timestamp: 2026-06-21T14:51:07.830673
+- verdict: ACCEPTED
+- test_count: 0
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\FF-PLAN-DELIGHTFUL-WIBBLING-20260621\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 68
+- bundle_validation_pass: True
+
+## Entry: spec-auth-heal-sprint-1
+- timestamp: 2026-06-21T19:03:25.545170
+- verdict: ACCEPTED
+- test_count: 0
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\spec-auth-heal-sprint-1\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 62
+- bundle_validation_pass: True
+
+## Entry: machinery-lifecycle-forensics-20260621
+- timestamp: 2026-06-21T19:25:09.897675
+- verdict: ACCEPTED
+- test_count: 0
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\machinery-lifecycle-forensics-20260621\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 72
+- bundle_validation_pass: True
