@@ -61,7 +61,8 @@ def _get_session_id() -> str:
 
 
 def write_lock(plan_path: str, last_taskcard: str | None = None, complete: bool = False,
-               terminal: bool = False, session_id: str | None = None) -> None:
+               terminal: bool = False, session_id: str | None = None,
+               track_type: str | None = "product") -> None:
     # B3: normalize path separators so Windows backslashes don't prevent matching
     plan_path = str(plan_path).replace("\\", "/")
     status = "TERMINAL_CLOSED" if terminal else ("COMPLETE" if complete else "IN_PROGRESS")
@@ -74,6 +75,7 @@ def write_lock(plan_path: str, last_taskcard: str | None = None, complete: bool 
         "last_taskcard": last_taskcard,
         "updated_at": datetime.now(timezone.utc).isoformat(),
         "session_id": sid,
+        "track_type": track_type,  # GAP-WF-004: machinery track skips product-track locks
     }
 
     # 1. Write shared fallback lock (backwards compatibility) — now includes session_id
@@ -145,6 +147,10 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--terminal", action="store_true",
                         help="Mark the plan as TERMINAL_CLOSED: done this session; "
                              "blocks ledger work in this session (POST_PLAN_TERMINAL stop)")
+    parser.add_argument("--track-type", type=str, default="product",
+                        help="Track type for this plan lock (default: product). "
+                             "Machinery-track checks skip product-track locks. "
+                             "Set to 'machinery' for machinery-track plans.")
     parser.add_argument("--clear", action="store_true",
                         help="Delete the lock file entirely (emergency reset)")
     parser.add_argument("--cleanup-completed", action="store_true",
@@ -167,7 +173,8 @@ def main(argv: list[str] | None = None) -> int:
         return 1
 
     write_lock(args.plan_path, last_taskcard=args.last_taskcard,
-               complete=args.complete, terminal=args.terminal)
+               complete=args.complete, terminal=args.terminal,
+               track_type=args.track_type)
     return 0
 
 
