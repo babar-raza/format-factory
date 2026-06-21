@@ -1,6 +1,6 @@
 ---
-version: "2.0"
-last-updated: "2026-06-18"
+version: "2.1"
+last-updated: "2026-06-21"
 phase-available: "all"
 gate-required: null
 created-by: autonomous-loop activation sprint
@@ -125,11 +125,42 @@ python tools/supervisor/sprint_executor.py inject-declaration <run_id>
 
 Note the declaration path printed: `.local/evidences/<run_id>/evidence-declaration.yaml`
 
+### Step 2a — Skill Coverage Pre-Check (MANDATORY for product work)
+
+Before executing the sprint, scan the tasks in `next-sprint.md` for any that
+involve modifying files under `src/python/` or `src/net/`.
+
+For EACH such task:
+1. Identify the `work_type` (python_api, dotnet_api, dogfood_export, etc.)
+2. Run `/check-skill-coverage` with the work_type and format_id
+3. If result is `PROCEED_WITH_SKILL`: record the `skill_id` and proceed with skill invocation
+4. If result is `BLOCKED_SKILL_GAP`: execute skill-gap workflow first:
+   a. The taskcard has been created by `/check-skill-coverage`
+   b. Design and register the missing skill (or escalate to planning)
+   c. Only after skill is registered: proceed with product work using the skill
+   d. Do NOT skip this step — skill-first is non-negotiable
+
+This check is NOT required for non-product tasks (governance, reporting, docs, tools).
+
+**SKILL-FIRST NON-NEGOTIABLE RULE:**
+No sprint may modify `src/python/` or `src/net/` without first:
+- Identifying the covering skill from `.supervisor/skill-registry.yaml`
+- Invoking that skill explicitly (not just mentioning it in prose)
+- Recording the `skill_id` in the evidence declaration's evidence_artifacts
+
+If a task in `next-sprint.md` says "edit src/..." without naming a skill,
+treat this as a missing skill signal — run `/check-skill-coverage` before proceeding.
+
 ### Step 3 — Execute the sprint
 
 Read `reports/supervisor/next-sprint.md` (the current sprint prompt).
 Also read `.local/supervisor/next-work-items.json` for structured work items.
 If rework_items were in the continuation signal output, address them FIRST.
+
+For ALL product source work (src/ modifications):
+- Use the skill identified in Step 2a
+- Name the skill_id in every evidence_artifact entry for product work
+- Emit a skill invocation transcript to `reports/skills-r<N>/skill-transcripts/`
 
 Execute all tasks. Do not summarize. Do not ask the user. Work continuously.
 
