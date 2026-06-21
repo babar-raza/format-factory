@@ -664,7 +664,7 @@ class TestV45QNameClassNames:
         decl = {"planned_work_items": [{
             "item_id": "TC-V45-NEG-001",
             "item_type": "PRODUCT_SOURCE",
-            "evidence_paths": ["src/python/fods/fods/models.py"],
+            "evidence_paths": ["src/python/fods/models.py"],
         }]}
         result = validate(decl, repo_root=REPO_ROOT)
         assert result["result"] == "FAIL"
@@ -706,3 +706,95 @@ class TestV45QNameClassNames:
         result = validate(decl, repo_root=REPO_ROOT)
         assert result["result"] == "PASS"
         assert result["blocks_sprint"] is False
+
+
+class TestV46SkillTranscriptPresent:
+    """Regression tests for V46 validate_skill_transcript_present (TC-SKILL-GOV-002).
+
+    V46 verifies that PRODUCT_SOURCE items have a linked skill_transcript artifact.
+    WARN-only in bootstrap phase (blocks_sprint=False).
+
+    NEGATIVE: PRODUCT_SOURCE with no skill_transcript artifact -> WARN.
+    POSITIVE: PRODUCT_SOURCE with skill_transcript artifact -> PASS.
+    BACKFILL_EXEMPT: item with BACKFILL_PRE_GOVERNANCE note -> PASS.
+    NON-PRODUCT: GOVERNANCE_TASKCARD -> PASS.
+    """
+
+    def _validator(self):
+        from governance_validators import validate_skill_transcript_present
+        return validate_skill_transcript_present
+
+    def test_missing_transcript_warns(self):
+        """NEGATIVE: PRODUCT_SOURCE item with no skill_transcript -> WARN."""
+        validate = self._validator()
+        decl = {
+            "planned_work_items": [{
+                "item_id": "TC-V46-NEG-001",
+                "item_type": "PRODUCT_SOURCE",
+            }],
+            "evidence_artifacts": [],
+        }
+        result = validate(decl)
+        assert result["result"] == "WARN"
+        assert result["blocks_sprint"] is False
+        assert len(result["items"]) == 1
+        assert result["items"][0]["item_id"] == "TC-V46-NEG-001"
+        assert "SKILL_TRANSCRIPT_MISSING" in result["items"][0]["reason"]
+
+    def test_valid_transcript_passes(self):
+        """POSITIVE: PRODUCT_SOURCE item with linked skill_transcript artifact -> PASS."""
+        validate = self._validator()
+        decl = {
+            "planned_work_items": [{
+                "item_id": "TC-V46-POS-001",
+                "item_type": "PRODUCT_SOURCE",
+            }],
+            "evidence_artifacts": [{
+                "path": "reports/skills-r123/skill-transcripts/sal-pipeline-heal-TC-SAL-IMPL-002.json",
+                "type": "skill_transcript",
+                "description": "Skill invocation transcript",
+                "related_work_items": ["TC-V46-POS-001"],
+            }],
+        }
+        result = validate(decl)
+        assert result["result"] == "PASS"
+        assert result["blocks_sprint"] is False
+        assert len(result["items"]) == 0
+
+    def test_backfill_pre_governance_exempt(self):
+        """BACKFILL_PRE_GOVERNANCE items are exempt from transcript requirement."""
+        validate = self._validator()
+        decl = {
+            "planned_work_items": [{
+                "item_id": "TC-V46-BACKFILL-001",
+                "item_type": "PRODUCT_SOURCE",
+                "notes": "BACKFILL_PRE_GOVERNANCE — completed before sal-pipeline-heal skill existed",
+            }],
+            "evidence_artifacts": [],
+        }
+        result = validate(decl)
+        assert result["result"] == "PASS"
+        assert result["blocks_sprint"] is False
+        assert len(result["items"]) == 0
+
+    def test_non_product_item_exempt(self):
+        """GOVERNANCE_TASKCARD items are not checked for transcripts."""
+        validate = self._validator()
+        decl = {
+            "planned_work_items": [{
+                "item_id": "TC-V46-GOV-001",
+                "item_type": "GOVERNANCE_TASKCARD",
+            }],
+            "evidence_artifacts": [],
+        }
+        result = validate(decl)
+        assert result["result"] == "PASS"
+        assert result["blocks_sprint"] is False
+
+    def test_empty_declaration_passes(self):
+        """Empty declaration has no PRODUCT_SOURCE items -> PASS."""
+        validate = self._validator()
+        result = validate({})
+        assert result["result"] == "PASS"
+        assert result["blocks_sprint"] is False
+        assert len(result["items"]) == 0

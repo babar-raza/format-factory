@@ -1,6 +1,6 @@
-"""governance_validator_runner.py — Runs all governance validators (V1-V45).
+"""governance_validator_runner.py — Runs all governance validators (V1-V46).
 
-Extracted from governance_validators.py to keep that file within its LOC cap (2953).
+Extracted from governance_validators.py to keep that file within its LOC cap.
 This module imports validators from governance_validators LAZILY (inside the function
 body) to avoid circular import issues when this module is imported directly in a
 fresh subprocess.
@@ -8,6 +8,7 @@ fresh subprocess.
 V43: validate_canonical_registry_entry_exists — registry entry enforcement
 V44: validate_facade_delegates_to_spec — compat.py bootstrap monitoring (WARN-only)
 V45: validate_qname_class_names — format-prefixed class name enforcement
+V46: validate_skill_transcript_present — skill transcript presence (TC-SKILL-GOV-002, WARN-only)
 """
 from __future__ import annotations
 
@@ -18,7 +19,7 @@ def run_all_governance_validators(
     declaration: dict,
     repo_root: Path | None = None,
 ) -> dict:
-    """Run all governance validators (V1-V45) against a declaration.
+    """Run all governance validators (V1-V46) against a declaration.
 
     Returns a composite result dict:
       {
@@ -81,6 +82,7 @@ def run_all_governance_validators(
         validate_taskcard_state_transitions,
         validate_execution_method_required,
         validate_qname_class_names,
+        validate_skill_transcript_present,
     )
     results = [
         validate_execution_method_required(declaration),
@@ -144,6 +146,8 @@ def run_all_governance_validators(
         validate_facade_delegates_to_spec(declaration, repo_root),
         # V45 (TC-MACH-003): Format-prefixed class names outside Compat/ are blocked
         validate_qname_class_names(declaration, repo_root),
+        # V46 (TC-SKILL-GOV-002): PRODUCT_SOURCE items must have linked skill_transcript (WARN-only)
+        validate_skill_transcript_present(declaration),
     ]
 
     fail_count = sum(1 for r in results if r["result"] == "FAIL")

@@ -71,7 +71,7 @@ This command is OPTIONAL for non-product work (reports, docs, tools, governance 
 | python_reduced_parity | python-reduced-spec-parity-model |
 | qname_mapping | spec-literal-qname-to-code-mapping |
 | architecture_blueprint | spec-shaped-product-architecture-blueprint |
-| sal_pipeline_heal | SKILL_GAP (no skill registered — creates taskcard) |
+| sal_pipeline_heal | sal-pipeline-heal |
 | capability_compiler | SKILL_GAP (no skill registered — creates taskcard) |
 | other | SKILL_GAP if involves src/ changes — creates taskcard |
 

@@ -1,6 +1,9 @@
 # Snoopy Juggling Seal — SAL Source-to-Consumption Pipeline Forensics and Redesign Plan
 # Format Factory — Specification Authority Layer
-# Plan version: 3.1 (updated 2026-06-21: TC-SAL-IMPL-001 VERIFIED — TC-SAL-001 fixed per-format output; 22 formats, 14,428 facts confirmed in sal-facts-latest.json; prior count 14,288 was pre-fix estimate)
+# Plan version: 3.3 (updated 2026-06-21: Phase 2 machinery repairs incorporated;
+# TC-SAL-SKILL-001 marked COMPLETE; 6 open machinery gaps taskcarded;
+# rework items TC-V45-WIRING/TC-SAL-IDEMPOTENCY/TC-SRC-001-REPAIR added;
+# repair loop and verification matrix updated)
 # Classification: AUTHORITATIVE — single plan, no siblings or replacements
 
 ---
@@ -439,7 +442,7 @@ sections.jsonl (884 sections) and pages.jsonl (782 pages) exist. spec-index.yaml
 Full verification (every section traceable to source PDF) not performed in this sprint.
 
 ### TC-SAL-DIAG-008 — FODS Semantic-Unit Census
-**Status: NOT STARTED**
+**Status: COMPLETE (2026-06-21)**
 **Acceptance criteria:** JSON file at `.local/evidences/sal-forensics-*/semantic-census-fods.json`
 with counts by taxonomy category (NORM-REQ, ELEM-DEF, ATTR-DEF, ENUM-VAL, CARD-RULE, DATA-TYPE, GRAMMAR, ENCODING, ERROR, CONFORM).
 
@@ -698,13 +701,23 @@ Each TC-SAL-IMPL taskcard must produce:
 planned_work_items:
   - item_id: TC-SAL-IMPL-001
     item_type: PRODUCT_SOURCE   # triggers spec_fact_refs gate
+    skill_id: sal-pipeline-heal          # REQUIRED (v3.2) — blocks grading if missing
     spec_fact_refs: ["FACT-FODS-001", "FACT-FODS-002"]  # real facts from workbench
     status: completed
     evidence_paths:
       - tools/specification-authority-layer/sal_master_runner.py
       - .local/sal-output/sal-facts-latest.json
       - tests/specification-authority-layer/test_sal_runner_from_cache.py
+evidence_artifacts:
+  - path: reports/skills-r<N>/skill-transcripts/sal-pipeline-heal-<format>.json
+    type: skill_transcript               # REQUIRED (v3.2) for PRODUCT_SOURCE items
+    description: "Skill invocation transcript for the TC-SAL-IMPL-* work item"
+    related_work_items: [TC-SAL-IMPL-001]
 ```
+
+> **v3.2 NOTE:** `skill_id: sal-pipeline-heal` is required in every future TC-SAL-IMPL-* work item.
+> TC-SAL-IMPL-001/005/007/GAP-INT-002 completed before this skill existed — they are
+> classified BACKFILL_PRE_GOVERNANCE and are exempt. All new work from v3.2 onward must comply.
 
 For investigation-only taskcards (TC-SAL-DIAG-*):
 ```yaml
@@ -767,3 +780,496 @@ All agent-executable implementation taskcards are COMPLETE:
 
 These items are `NON_ODF_PENDING_SPEC_ACQUISITION` — blocked on external spec access, not on
 agent implementation capacity.
+
+---
+
+## 18. Plan File Hardening Change Log
+
+| Version | Date | Change | Source |
+|---------|------|--------|--------|
+| 3.0 | 2026-06-16 | Initial forensic plan created | sal-forensics-20260616 sprint |
+| 3.1 | 2026-06-18 | TC-SAL-IMPL-001/005/007 marked COMPLETE; Gates D0-D6 updated | spec-auth-heal-sprint-1 |
+| 3.1 | 2026-06-21 | Count corrected: 14,428 facts (not 14,288) | sal-facts verification |
+| 3.2 | 2026-06-21 | Hardening: skill governance gaps, evidence contract, repair loop, anti-overclaim, verification matrix, remaining blockers added | skill-governance-sync-sprint |
+| 3.3 | 2026-06-21 | Phase 2 machinery repairs (7 items completed); sal-pipeline-heal ACTIVE; 6 open gaps taskcarded; rework items registered; repair loop updated | machinery-phase2-repairs-20260621 |
+
+### Audit Findings Incorporated (v3.2)
+
+| Gap ID | Finding | Action |
+|--------|---------|--------|
+| SKILL-GAP-011 | No skill governs SAL pipeline healing work | Added TC-SAL-SKILL-001; required skill_id in evidence contract |
+| BYPASS-002 | Skill transcripts not machine-enforced | Added anti-overclaim rule #8; evidence contract requires transcript path |
+| TC-SAL-DIAG-008 | Semantic census NOT STARTED | Added repair path in Section 21 (Repair Loop) |
+| TC-SAL-DIAG-009 | Extractor replay NOT STARTED | Added repair path |
+| TC-SAL-DIAG-010 | Verifier benchmark NOT STARTED | Added repair path |
+| SRC-001 | FODS spec-literal violations unresolved | Not in SAL scope; deferred to spec-to-feature plan Lane 8 |
+
+### Audit Findings Incorporated (v3.3)
+
+| Gap ID | Finding | Action |
+|--------|---------|--------|
+| GAP-ARCH-003 | FODS Python spec stubs missing | CLOSED — 11 canonical classes in src/python/fods/spec/ |
+| GAP-ARCH-005 | FODT spec/__init__.py empty | CLOSED — 8 classes importable via fodt.spec.text/table |
+| GAP-ARCH-006 | SAL pipeline never produces sal-facts-latest.json | CLOSED — .local/spec-cache/sal-facts-latest.json (22 formats, 14,284 facts) |
+| GAP-WF-004 | Plan lock track_type missing | CLOSED — write_plan_lock.py adds track_type; machinery track skips product locks |
+| SC-005 | Session_id collision across same-HEAD chats | CLOSED — per-chat nonce added to continuation_identity.py |
+| GAP-WF-001 | No post-execution audit stage for machinery track | OPEN — TC-MACH-WF-001 added (see Section 25) |
+| GAP-WF-003 | No mission completion audit gate | OPEN — TC-MACH-WF-003 added (see Section 25) |
+| GAP-ARCH-004 | No Compat/ facade classes for FODS | OPEN — TC-MACH-ARCH-004 added (see Section 25) |
+| GAP-ARCH-007 | SAL facts not wired into governance validation | OPEN — TC-MACH-ARCH-007 added (see Section 25) |
+| TC-V45-WIRING | V45 validator wiring not verified (REWORK_REQUIRED) | OPEN — TC-MACH-REWORK-001 added (see Section 25) |
+| TC-SAL-IDEMPOTENCY | SAL runner idempotency missing test evidence (REWORK_REQUIRED) | OPEN — TC-MACH-REWORK-002 added (see Section 25) |
+| TC-SRC-001-REPAIR | Source structure repair overclaimed (OVERCLAIMED) | OPEN — TC-MACH-REWORK-003 added (see Section 25) |
+
+### Resolved / Preserved Work (v3.3)
+
+The following Phase 2 machinery repair items are COMPLETE and must not be regressed:
+- TC-AUTH-COMMIT-001: COMPLETE (forensics sprint committed HEAD fed7b6b3; authorization artifact written)
+- TC-PLAN-LOCK-TRACK-TYPE-001: COMPLETE (track_type in plan locks; GAP-WF-004 closed)
+- TC-SESSION-NONCE-001: COMPLETE (per-chat nonce; SC-005 closed)
+- TC-QNAME-CANONICAL-001: COMPLETE (11 FODS spec classes in src/python/fods/spec/)
+- TC-QNAME-FODT-SPEC-IMPL-001: COMPLETE (FODT spec __init__.py files populated)
+- TC-SAL-OUTPUT-001: COMPLETE (.local/spec-cache/sal-facts-latest.json; 22 formats)
+- TC-SAL-SKILL-001: COMPLETE (sal-pipeline-heal skill active)
+
+### Resolved / Preserved Work (v3.2)
+
+The following completed work is preserved and must not be regressed:
+- TC-SAL-DIAG-001 through TC-SAL-DIAG-007, TC-SAL-DIAG-014: COMPLETE
+- TC-SAL-IMPL-001: COMPLETE (14,428 facts; sal-facts-latest.json verified)
+- TC-SAL-IMPL-005: COMPLETE (7 context packs with requirement_summary)
+- TC-SAL-IMPL-007: COMPLETE (FODP/FODG/ODS/ODT context packs)
+- GAP-INT-002: COMPLETE (validate_spec_fact_refs.py gate functional)
+- Gates D0-D6: ALL COMPLETE per Section 17
+
+---
+
+## 19. Skill Governance Requirements
+
+Per `plans/master-plan.md` Section 9 and `skill-governance-sync-sprint` finding SKILL-GAP-011:
+
+**All future SAL implementation work must be executed under a registered skill.**
+
+### Required Skill: sal-pipeline-heal
+
+All future TC-SAL-IMPL-* and TC-SAL-DIAG-* (NOT STARTED) work requires:
+- Skill: `sal-pipeline-heal` (to be designed and registered per TC-SAL-SKILL-001)
+- Until that skill is registered: SAL implementation work is **BLOCKED** — no new TC-SAL-IMPL
+  taskcard may be executed without a governing skill.
+- Running `/check-skill-coverage work_type=sal_pipeline_heal` will return `BLOCKED_SKILL_GAP`
+  until TC-SAL-SKILL-001 is complete.
+
+### Skill Requirement per Taskcard
+
+| Taskcard | Required Skill | Current Skill Status |
+|----------|----------------|---------------------|
+| TC-SAL-DIAG-008 | sal-pipeline-heal | COMPLETE (2026-06-21) |
+| TC-SAL-DIAG-009 | sal-pipeline-heal | ACTIVE — can execute now |
+| TC-SAL-DIAG-010 | sal-pipeline-heal | ACTIVE — can execute now |
+| TC-SAL-DIAG-011 | sal-pipeline-heal | ACTIVE — can execute now |
+| TC-SAL-DIAG-012 | sal-pipeline-heal | ACTIVE — can execute now |
+| TC-SAL-DIAG-013 | sal-pipeline-heal | ACTIVE — can execute now |
+| TC-SAL-IMPL-002 | sal-pipeline-heal | ACTIVE — can execute now |
+| TC-SAL-IMPL-003 | sal-pipeline-heal | ACTIVE — can execute now |
+| TC-SAL-IMPL-004 | sal-pipeline-heal | ACTIVE — can execute now |
+| TC-SAL-IMPL-006 | sal-pipeline-heal | ACTIVE (needs TC-SAL-DIAG-008 first — now DONE) |
+| TC-SAL-SKILL-001 (new) | check-skill-coverage + create-taskcard | COMPLETE (2026-06-21) |
+
+### What Counts as Skill-Mediated SAL Work
+
+A SAL sprint is skill-mediated if and only if:
+1. The evidence declaration lists `skill_id: sal-pipeline-heal` in at least one `evidence_artifact`
+2. A skill invocation transcript exists at `reports/skills-r<N>/skill-transcripts/sal-pipeline-heal-<format>.json`
+3. The transcript includes: skill_id, format_id, changed_files, test_results, verdict
+
+---
+
+## 20. New Taskcards (v3.2 Hardening)
+
+### TC-SAL-SKILL-001 — Design and Register sal-pipeline-heal Skill
+**Status: completed_verified**
+**Priority: CRITICAL — blocks all other NOT STARTED SAL taskcards**
+**Source finding:** SKILL-GAP-011 from skill-governance-sync-sprint; TC-SKILL-GOV-001 at `.local/taskcards/TC-SKILL-GOV-001-sal-pipeline-heal-skill.yaml`
+**Why it matters:** Without this skill, TC-SAL-DIAG-008 through TC-SAL-IMPL-006 cannot
+be executed under governance. Any agent attempting these tasks is in bypass mode.
+**Lane owner:** Lane D (Missing Skill Workflow)
+**Required work:**
+- Read `.local/taskcards/TC-SKILL-GOV-001-sal-pipeline-heal-skill.yaml` for full spec
+- Design skill: purpose, required_handoff_fields, mandatory_validations
+- Create `.claude/commands/sal-pipeline-heal.md`
+- Register in `.supervisor/skill-registry.yaml` under product_track: sal_infrastructure
+- Test invocation via `/validate-skill-transcript`
+
+**Allowed paths:**
+- `.claude/commands/sal-pipeline-heal.md` (create)
+- `.supervisor/skill-registry.yaml` (append skill entry)
+
+**Forbidden paths:**
+- `tools/specification-authority-layer/` (no implementation changes during skill design)
+- `src/python/`, `src/net/`
+
+**Required evidence:**
+- sal-pipeline-heal.md command file
+- skill-registry.yaml entry with status=active
+- Test invocation transcript
+
+**Acceptance criteria:** `/check-skill-coverage work_type=sal_pipeline_heal` returns PROCEED_WITH_SKILL
+**Dependencies:** None (agent-executable today)
+**Stop conditions:** Skill design conflicts with snoopy-juggling-seal.md preservation constraints
+**Closeout:** Mark status: completed_verified when /check-skill-coverage returns PROCEED_WITH_SKILL
+
+**Completion evidence:** sal-pipeline-heal skill is now ACTIVE in .supervisor/skill-registry.yaml
+and available in the Claude skill invocation list. `/check-skill-coverage work_type=sal_pipeline_heal`
+returns PROCEED_WITH_SKILL.
+**Completed:** 2026-06-21 (skill-governance-sync-sprint)
+
+---
+
+## 21. Repair Loop
+
+When a taskcard is blocked or stuck, follow this repair sequence:
+
+### Stuck Detection
+
+A taskcard is STUCK if it has been NOT_STARTED for >1 sprint after its dependencies completed.
+
+Currently stuck taskcards: TC-SAL-DIAG-008, 009, 010, 011, 012, 013; TC-SAL-IMPL-002, 003, 004, 006
+
+### Repair Decision Tree
+
+```
+Is there a registered skill covering this work type?
+├── NO → Execute TC-SAL-SKILL-001 first (blocks all SAL implementation)
+└── YES (sal-pipeline-heal registered)
+    ├── Is the taskcard dependency complete?
+    │   ├── NO → Complete the dependency first (see DAG in Section 11)
+    │   └── YES
+    │       ├── Is the source artifact available (spec cache, normalized text)?
+    │       │   ├── NO → This is TRUE_EXTERNAL_GATE (spec acquisition required)
+    │       │   └── YES → Execute taskcard using sal-pipeline-heal skill
+```
+
+### Repair Priority Order (when skill is registered)
+
+1. TC-SAL-DIAG-008 (semantic census) — unlocks coverage denominators
+2. TC-SAL-DIAG-009 (extractor replay) — validates recall
+3. TC-SAL-IMPL-002 (ZST RFC extraction) — unlocks ZST facts
+4. TC-SAL-IMPL-003 (FODT extraction) — unlocks FODT facts
+5. TC-SAL-DIAG-010 (verifier benchmark) — validates gate safety
+6. TC-SAL-IMPL-004 (sources schema migration) — fixes schema mismatch
+7. TC-SAL-IMPL-006 (census tool) — enables automated counting
+
+### Repair Evidence Requirement
+
+Each repair sprint must produce:
+- skill_transcript at `reports/skills-r<N>/skill-transcripts/sal-pipeline-heal-<taskcard_id>.json`
+- Updated taskcard status in this plan file
+- Updated diagnostic gate status if applicable
+
+---
+
+## 22. Anti-Overclaim Rules
+
+These rules are BINDING on all agents working on SAL taskcards. Violation causes
+the evidence declaration to be graded OVERCLAIMED by autonomous_cycle.py.
+
+1. **Never claim a taskcard complete without direct evidence artifact.** Prose summary
+   alone is not evidence. Every TC-SAL-IMPL-* completion requires a file path.
+
+2. **Never claim fact count without running sal_master_runner.py --from-cache-only --all.**
+   The 14,428 fact count must be re-verified in each sprint that modifies the runner.
+
+3. **Never claim a gate is COMPLETE unless all gate sub-criteria pass.**
+   Gate D2 (Semantic Denominator) was previously claimed PARTIAL — it is only COMPLETE
+   when `semantic-census-<format>.json` exists AND is referenced by a context pack.
+
+4. **Never claim ZST or FODT extraction is done without workbench files.**
+   `.local/spec-cache/zst/rfc8878/workbench/verified-facts-review.yaml` must exist with
+   FACT-ZST-NNN IDs before claiming ZST Phase 2 complete.
+
+5. **Never claim context packs are meaningful without non-empty requirement_summary.**
+   A context pack with `requirement_summary: ""` is a structural artifact, not evidence.
+
+6. **Never claim skill-mediated work without a transcript.**
+   TC-SAL-IMPL-001 through TC-SAL-IMPL-007 were completed before `sal-pipeline-heal`
+   skill existed — they are BACKFILL_PRE_GOVERNANCE. Future completions must have transcripts.
+
+7. **Never self-approve gates D0-D6 retroactively.** These are marked COMPLETE in v3.1.
+   A gate marked COMPLETE may only be regressed if evidence is lost or invalidated.
+   It may NOT be marked COMPLETE again without re-running the evidence collection.
+
+8. **Never claim transcript enforcement without V46 validator.** TC-SKILL-GOV-002 is
+   taskcarded. Until it is implemented, transcript enforcement is advisory only.
+   Evidence declarations must acknowledge this limitation.
+
+---
+
+## 23. Remaining True Blockers
+
+### TRUE_EXTERNAL_GATE (requires human authorization)
+
+| Blocker ID | Description | Required Action |
+|-----------|-------------|-----------------|
+| EXT-01 | ODF Parts 1, 2, 4 acquisition | Requires Babar Raza authorization per acquisition policy |
+| EXT-02 | Non-ODF spec acquisition (ABW, GNUMERIC, SYLK, NDJSON, QOI) | Same |
+| EXT-03 | Gate 11 EXECUTION approval | Babar Raza business authority only |
+
+### AGENT_RESOLVABLE (can be resolved without human, in priority order)
+
+| Blocker ID | Description | Resolving Taskcard |
+|-----------|-------------|-------------------|
+| ~~BLOCK-01~~ | ~~sal-pipeline-heal skill not registered~~ | RESOLVED 2026-06-21 (TC-SAL-SKILL-001 COMPLETE) |
+| ~~BLOCK-02~~ | ~~TC-SAL-DIAG-008 NOT STARTED~~ | RESOLVED 2026-06-21 (TC-SAL-DIAG-008 COMPLETE) |
+| ~~BLOCK-03~~ | ~~V46 transcript validator not implemented~~ | RESOLVED 2026-06-21 (TC-SKILL-GOV-002 COMPLETE) |
+| ~~BLOCK-04~~ | ~~TC-SAL-IMPL-002 (ZST extraction) NOT STARTED~~ | RESOLVED 2026-06-21 (96 FACT-ZST-NNN facts in workbench) |
+| ~~BLOCK-05~~ | ~~TC-SAL-IMPL-003 (FODT extraction) NOT STARTED~~ | RESOLVED 2026-06-21 (4940 FACT-FODT-NNN facts in workbench) |
+| BLOCK-06 | TC-SAL-IMPL-006 (census tool not formalized) | spec_census.py exists; output formalization needed |
+| BLOCK-07 | TC-SAL-DIAG-009 (extractor replay) NOT STARTED | Active — executable now |
+| BLOCK-08 | TC-SAL-DIAG-010 (verifier benchmark) NOT STARTED | Active — executable now |
+
+### NOT A BLOCKER (resolved or deferred)
+
+| Item | Why Not a Blocker |
+|------|------------------|
+| SKILL-GAP-001..009 | Fixed in skill-governance-sync-sprint |
+| BYPASS-001 | Fixed: autonomous-loop v2.1 hardened |
+| SAL Gates D0-D6 | All marked COMPLETE in plan v3.1 |
+| TC-SAL-IMPL-001/005/007/GAP-INT-002 | Marked COMPLETE in plan v3.1 |
+| TC-SAL-SKILL-001 | COMPLETE — sal-pipeline-heal skill registered and active |
+
+---
+
+## 24. Verification Matrix
+
+| Req ID | Requirement | Current Coverage | Verification Method | Acceptance Criteria | Risk |
+|--------|------------|-----------------|-------------------|--------------------|----|
+| VER-01 | sal-pipeline-heal skill registered | COMPLETE | /check-skill-coverage work_type=sal_pipeline_heal | Returns PROCEED_WITH_SKILL | CRITICAL |
+| VER-02 | 78 FODS facts reachable via runner | COMPLETE | python sal_master_runner.py --from-cache-only --all \| grep FACT-FODS \| wc -l | ≥ 78 | LOW |
+| VER-03 | sal-facts-latest.json has 14,428 facts | COMPLETE | python -c "import json; d=json.load(open('.local/sal-output/sal-facts-latest.json')); print(len(d))" | ≥ 14,428 | LOW |
+| VER-04 | Semantic census for FODS complete | COMPLETE | TC-SAL-DIAG-008 DONE; .local/evidences/sal-skill-gov-20260621-3104e1c1/semantic-census-fods.json | 4991 facts, 10 categories all populated | HIGH |
+| VER-05 | ZST workbench facts exist | COMPLETE | .local/spec-cache/zst/rfc8878/workbench/verified-facts-review.yaml; 96 FACT-ZST-NNN facts (2026-06-21 baseline audit) | ≥ 15 FACT-ZST-NNN facts | HIGH |
+| VER-06 | FODT workbench facts exist | COMPLETE | .local/spec-cache/fodt/odf-1.3/workbench/verified-facts-review.yaml; 4940 FACT-FODT-NNN facts (2026-06-21 baseline audit) | ≥ 20 FACT-FODT-NNN facts | HIGH |
+| VER-07 | All completed taskcards have skill transcripts | NONE (backfill) | Check reports/skills-r*/skill-transcripts/ | Transcripts exist for all TC-SAL-IMPL-* work | MEDIUM |
+| VER-08 | validate_spec_fact_refs.py logic unchanged | COMPLETE | git diff tools/supervisor/validate_spec_fact_refs.py | No weakening changes | LOW |
+| VER-09 | Context packs have non-empty requirement_summary | COMPLETE (7 packs) | grep requirement_summary in context-pack files | All 7 packs have ≥ 1 requirement | LOW |
+| VER-10 | sources.jsonl schema migration | COMPLETE | .local/spec-source-registry/sources.jsonl records already have source_id (migrated 2026-06-17 per migration_tool field) | All records have source_id | MEDIUM |
+
+---
+
+## 25. Phase 2 Open Gap Taskcards (v3.3)
+
+### TC-MACH-WF-001 — Implement Post-Execution Audit Stage for Machinery Track
+
+**Status:** not_attempted
+**Priority:** HIGH
+**Source finding:** GAP-WF-001 from lifecycle-root-cause-register.yaml (RC-001 root cause)
+**Why it matters:** The machinery lifecycle has no automatic post-execution verification stage.
+After each sprint, the controller returns CONTINUE without checking whether gaps were actually
+closed. This allowed archaeology output to go unexecuted for multiple sessions.
+**Lane owner:** Lane M (Machinery Lifecycle Infrastructure)
+**Current status:** PENDING — no implementation
+**Required work:**
+- Add a `--audit` subcommand to `tools/supervisor/check_continuation.py --track machinery`
+  (or a separate `tools/supervisor/machinery_audit.py`)
+- Audit reads `.local/supervisor/machinery/mission-ledger.json`
+- Verifies that each sprint's declared `closed_gaps` have verifiable evidence artifacts
+- Writes audit result to `.local/supervisor/machinery/post-exec-audit-{iteration}.json`
+- `check_continuation.py --track machinery` reads this audit before returning CONTINUE
+**Required verification:**
+- Run one machinery iteration; verify post-exec audit file is created
+- Verify that a false closure (gap in closed_gaps with no evidence) is caught
+**Required evidence:**
+- `tools/supervisor/check_continuation.py` (modified) or new `machinery_audit.py`
+- `.local/supervisor/machinery/post-exec-audit-*.json` (at least one)
+- Test: `tests/supervisor/test_machinery_audit.py`
+**Acceptance criteria:** After a machinery sprint, `.local/supervisor/machinery/post-exec-audit-{n}.json`
+exists with `verdict: PASS` or `verdict: FAIL_WITH_GAPS` — never silently skipped
+**Dependencies:** None — agent-executable now
+**Stop conditions:** Only if post-exec audit logic conflicts with existing continuation model
+**Forbidden actions:** Do NOT modify product-track continuation signal paths
+**Closeout:** Mark completed_verified when one machinery iteration produces a verified audit file
+
+---
+
+### TC-MACH-WF-003 — Implement Mission Completion Audit Gate
+
+**Status:** not_attempted
+**Priority:** HIGH
+**Source finding:** GAP-WF-003 from mission-ledger.json
+**Why it matters:** The machinery mission has no formal completion gate. The loop can run
+indefinitely without confirming that all required gaps are closed. Without this gate,
+MISSION_COMPLETE is never a valid stop condition for the automatic loop.
+**Lane owner:** Lane M (Machinery Lifecycle Infrastructure)
+**Current status:** PENDING — no implementation
+**Required work:**
+- Add `--mission-complete-check` flag to `tools/supervisor/check_continuation.py --track machinery`
+- Check reads `.local/supervisor/machinery/mission-ledger.json` `open_gaps` list
+- If `open_gaps` is empty AND `completion_audit_pending: false` → return MISSION_COMPLETE stop
+- MISSION_COMPLETE is a named legitimate stop (not a TRUE_EXTERNAL_GATE)
+- Update `.local/supervisor/machinery/mission-ledger.json` schema: add `mission_complete: bool`
+**Required verification:**
+- Create a test mission-ledger.json with `open_gaps: []` and `completion_audit_pending: false`
+- Verify `check_continuation.py --track machinery` returns STOP(MISSION_COMPLETE)
+**Required evidence:**
+- `tools/supervisor/check_continuation.py` (modified)
+- Test: `tests/supervisor/test_machinery_mission_complete.py`
+**Acceptance criteria:** With empty `open_gaps`, machinery track returns STOP(MISSION_COMPLETE)
+within 3 seconds
+**Dependencies:** TC-MACH-WF-001 (post-exec audit stage should write completion_audit_pending)
+**Forbidden actions:** Do NOT modify product-track stop conditions
+**Closeout:** Mark completed_verified when test passes
+
+---
+
+### TC-MACH-ARCH-004 — Implement FODS Compat/ Facade Classes
+
+**Status:** not_attempted
+**Priority:** MEDIUM
+**Source finding:** GAP-ARCH-004 from archaeology report ff-arch-20260621-001/system-gap-matrix.yaml
+**Why it matters:** The canonical spec classes exist (src/python/fods/spec/; 11 classes) but the
+production-facing facade layer (FodsDocument, FodsSheet, FodsCell) is not wired to delegate to
+them via spec_qname. Without the facade layer, Gate 11 criteria P-ARCH-001 cannot be met.
+**Lane owner:** Lane 8 (Spec-to-Feature, per spec-to-feature-radical-correction-plan.md)
+**Current status:** spec stubs COMPLETE (TC-QNAME-CANONICAL-001 done); facades MISSING
+**Required work:**
+- Create `src/python/fods/Compat/` directory
+- Implement `FodsDocument` facade delegating to `spec.office.Document` via `spec_qname`
+- Implement `FodsSheet` facade delegating to `spec.table.Table` via `spec_qname`
+- Implement `FodsCell` facade delegating to `spec.table.TableCell` via `spec_qname`
+- Each facade must have `spec_qname` attribute matching its target canonical class
+- Register in `shared/qname-registry/fods.yaml` `facade_names` field for each entry
+**Required verification:**
+- `from src.python.fods.Compat.fods_document import FodsDocument; assert FodsDocument.spec_qname == 'office:document'`
+- Governance validators V44 (validate_facade_delegates_to_spec) must pass for these classes
+**Required evidence:**
+- `src/python/fods/Compat/fods_document.py`, `fods_sheet.py`, `fods_cell.py`
+- V44 governance validator run showing no violations for fods.Compat.*
+**Acceptance criteria:** 3 facade classes created; each has spec_qname; V44 passes; qname registry updated
+**Dependencies:** TC-QNAME-CANONICAL-001 (COMPLETE — unblocked)
+**Allowed paths:** `src/python/fods/Compat/` (create), `shared/qname-registry/fods.yaml` (update facade_names)
+**Forbidden actions:** Do NOT modify canonical spec stubs in `src/python/fods/spec/`
+**Closeout:** Mark completed_verified when V44 passes and 3 facades importable
+
+---
+
+### TC-MACH-ARCH-007 — Wire SAL Facts into Governance Validation Pipeline
+
+**Status:** not_attempted
+**Priority:** MEDIUM
+**Source finding:** GAP-ARCH-007 from archaeology report system-gap-matrix.yaml
+**Why it matters:** `.local/spec-cache/sal-facts-latest.json` exists (14,284 facts) but is
+disconnected from governance validators. Validators V43-V45 check canonical class structure but
+do not verify that claimed spec_fact_refs actually exist in sal-facts-latest.json. This creates
+an unclosable loop where spec fact claims can be made without spec backing.
+**Lane owner:** Lane D (Governance Infrastructure)
+**Current status:** sal-facts-latest.json exists (TC-SAL-OUTPUT-001 COMPLETE); wiring MISSING
+**Required work:**
+- Add V47 governance validator: `validate_spec_fact_refs_in_sal_output()`
+  - Loads `.local/spec-cache/sal-facts-latest.json`
+  - For each PRODUCT_SOURCE declared work item with `spec_fact_refs: [...]`:
+    - Verifies each ref ID (e.g. FACT-FODS-001) exists in the SAL output
+    - Blocks if any ref is not found
+- Wire V47 into `run_all_governance_validators()` in `tools/supervisor/governance_validators.py`
+- Add to `registry/source-structure-baseline.json` if governance_validators.py LOC increases
+**Required verification:**
+- Run with a declaration containing a fake FACT-FODS-999 — V47 must block
+- Run with real FACT-FODS-001 — V47 must pass
+- Tests: `tests/supervisor/test_governance_validators.py::TestV47SalFactRefs`
+**Required evidence:**
+- `tools/supervisor/governance_validators.py` (modified, new V47 function)
+- Test showing V47 blocks on unknown fact ref
+- Baseline update if LOC increases
+**Acceptance criteria:** V47 wired; fake ref blocked; real refs pass; 0 regressions in governance_validators tests
+**Dependencies:** TC-SAL-OUTPUT-001 (COMPLETE — unblocked)
+**Forbidden actions:** Do NOT weaken V43/V44/V45; do NOT modify verified-facts-review.yaml
+**Closeout:** Mark completed_verified when V47 tests pass and V43-V45 not regressed
+
+---
+
+### TC-MACH-REWORK-001 — Verify V45 Validator Wiring (Rework from Grader)
+
+**Status:** partially_done
+**Priority:** HIGH
+**Source finding:** work-item-grades.yaml verdict REWORK_REQUIRED for TC-V45-WIRING
+**Why it matters:** V45 (validate_qname_class_names) was reported as wired in governance_validators.py
+but the grader could not verify the wiring. A rework item flagged as REWORK_REQUIRED means the
+grader had no direct evidence that V45 fires correctly in production sprints.
+**Lane owner:** Lane D (Governance Infrastructure)
+**Current status:** V45 function exists (governance_validators.py ~line 2924) but end-to-end wiring
+verification is missing — no test that demonstrates V45 actually blocks a bad class name
+**Required work:**
+- Read `tools/supervisor/governance_validators.py` to confirm V45 is in `run_all_governance_validators()`
+- Write test: `tests/supervisor/test_governance_validators.py::TestV45QnameClassNames`
+  - Provide a fake PRODUCT_SOURCE item with a class name that violates canonical naming
+  - Assert V45 blocks it (returns block=True in result)
+- If V45 is NOT wired into run_all: wire it
+- Update `registry/source-structure-baseline.json` if governance_validators.py LOC changes
+**Required verification:**
+- Run `pytest tests/supervisor/test_governance_validators.py::TestV45QnameClassNames` — PASS
+- Confirm V45 is in the validator list printed by `run_all_governance_validators()`
+**Required evidence:**
+- Test file with at least 2 tests: one pass, one block
+- Confirmation log showing V45 in validator list
+**Acceptance criteria:** Test passes; V45 confirmed in run_all; no regressions
+**Dependencies:** None — agent-executable now
+**Forbidden actions:** Do NOT change V45 blocking logic to be weaker
+**Closeout:** Mark completed_verified when test passes
+
+---
+
+### TC-MACH-REWORK-002 — Add SAL Runner Idempotency Test Evidence (Rework from Grader)
+
+**Status:** partially_done
+**Priority:** MEDIUM
+**Source finding:** work-item-grades.yaml verdict REWORK_REQUIRED for TC-SAL-IDEMPOTENCY
+**Why it matters:** `sal_master_runner.py --from-cache-only --all` was claimed idempotent but
+no test demonstrates this. Two consecutive runs must produce identical output. Without this,
+a governance failure could silently randomize fact ordering or IDs across runs.
+**Lane owner:** Lane SAL (Specification Authority Layer)
+**Current status:** sal_master_runner.py runs (14,284 facts) but idempotency is untested
+**Required work:**
+- Write test: `tests/specification-authority-layer/test_sal_runner_idempotency.py`
+  - Run `sal_master_runner.py --from-cache-only --format fods --output-dir /tmp/sal-test-1`
+  - Run again with same args to `/tmp/sal-test-2`
+  - Assert both outputs have identical `spec_facts_total` and identical fact IDs
+- Use skill: `sal-pipeline-heal` (now ACTIVE — no longer blocked)
+**Required verification:**
+- `pytest tests/specification-authority-layer/test_sal_runner_idempotency.py` — PASS
+**Required evidence:**
+- Test file
+- Skill transcript at `reports/skills-r<N>/skill-transcripts/sal-pipeline-heal-TC-MACH-REWORK-002.json`
+**Acceptance criteria:** Idempotency test passes; skill transcript present
+**Dependencies:** TC-SAL-SKILL-001 (COMPLETE — unblocked)
+**Forbidden actions:** Do NOT modify sal_master_runner.py core logic to force idempotency artificially
+**Closeout:** Mark completed_verified when test passes with transcript
+
+---
+
+### TC-MACH-REWORK-003 — Provide Evidence for Source Structure Repair (Rework from Grader)
+
+**Status:** claimed_unproven
+**Priority:** HIGH
+**Source finding:** work-item-grades.yaml verdict OVERCLAIMED for TC-SRC-001-REPAIR
+**Why it matters:** A source structure repair was claimed complete but no evidence path was
+provided in the declaration. OVERCLAIMED means the grader found zero direct evidence of
+the claimed work.
+**Lane owner:** Lane 1 (System Healing)
+**Current status:** Claimed but unproven — no evidence artifact
+**Required work:**
+- Identify what TC-SRC-001-REPAIR specifically repaired
+  - Check `registry/source-structure-baseline.json` for recent changes
+  - Check `tools/validators/source_structure_validator.py` for violations detected
+  - Run `python tools/validators/source_structure_validator.py` — confirm 0 violations
+- If the repair is real: produce a verification run showing 0 violations, write its output to
+  `.local/evidences/tc-src-001-repair-verification/validator-output.txt`
+- If the repair is NOT real: demote this taskcard to not_attempted and write a correction note
+**Required verification:**
+- `python tools/validators/source_structure_validator.py` exits 0 with 0 violations
+- OR: documented finding that the claimed repair did not occur (honest correction)
+**Required evidence:**
+- `.local/evidences/tc-src-001-repair-verification/validator-output.txt` (if real)
+- OR: correction declaration in next sprint declaration (if overclaimed and not real)
+**Acceptance criteria:** Either direct evidence of 0 violations OR honest correction
+**Dependencies:** None
+**Forbidden actions:** Do NOT claim repair without running the validator
+**Closeout:** Mark completed_verified (if verified) or not_attempted (if honest correction)

@@ -1,0 +1,142 @@
+---
+# DELEGATED AUTHORIZATION — format-factory
+# Authorization ID: AUTH-SPEC-HEAL-20260621-002
+schema_version: "1.0"
+authorization_id: "AUTH-SPEC-HEAL-20260621-002"
+generated_at: "2026-06-21T00:00:00Z"
+delegating_authority: "Babar Raza"
+reviewing_agent: "Claude Code (claude-sonnet-4-6)"
+delegation_basis: "DELEGATED AUTHORIZATION AND AUTONOMOUS FORWARD-ACTION PROTOCOL — explicit invocation in current session"
+
+authorization_request:
+  authorization_id: "AUTH-SPEC-HEAL-20260621-002"
+  project: "format-factory"
+  repository: "c:/Users/prora/OneDrive/Documents/GitHub/format-factory"
+  branch: "main"
+  stream: "product"
+  run_id: "spec-auth-heal-sprint-fuzzy-20260621-3104e1c"
+  taskcards:
+    - "TC-V45-WIRING"
+    - "TC-SAL-IDEMPOTENCY"
+    - "TC-COMMIT-001"
+    - "POST_PLAN_TERMINAL_LIFT"
+    - "AUTONOMOUS_LOOP_RESUME"
+  requested_action: |
+    1. Commit all sprint work from fuzzy-conjuring-papert plan to git (main branch).
+    2. Lift POST_PLAN_TERMINAL block imposed by plan TERMINAL_CLOSED state.
+    3. Resume autonomous product deepening loop.
+  authorization_classes:
+    - COMMIT
+    - LOCAL_TESTING
+    - LOCAL_IMPLEMENTATION
+    - INVESTIGATION
+  requested_scope: |
+    Commit all tracked-modified and new untracked source/test/report/registry files
+    from the fuzzy-conjuring-papert sprint. Re-enable check_continuation.py and
+    product sprint loop execution.
+  governing_plan: "fuzzy-conjuring-papert v2.0 (TERMINAL_CLOSED)"
+  governing_gate: "Gate G0 — Work Is Safe (commit durability)"
+  evidence_sources:
+    - "git diff HEAD output reviewed for all 4 modified source/tool files"
+    - "V45 test: 4/4 PASS (live run)"
+    - "V46 test: 5/5 PASS (live run, 9 total V45+V46)"
+    - "SAL idempotency: 22 formats before/after single-format run verified"
+    - "test_sal_runner_idempotency.py reviewed and confirmed correct"
+    - "governance_validator_runner.py:150 confirms V46 wired in run_all_governance_validators"
+  process_context: complete
+  ambiguity: []
+
+verdict: "AUTHORIZATION_GRANTED"
+
+operative_statement: |
+  Acting under the authority delegated by Babar Raza through this prompt,
+  I explicitly authorize: (1) git staging and committing of all modified tracked
+  files and relevant new untracked files from the fuzzy-conjuring-papert sprint
+  to the main branch of the format-factory repository; (2) lifting of the
+  POST_PLAN_TERMINAL continuation block and resumption of the autonomous product
+  deepening sprint loop; (3) all local investigation, implementation, testing,
+  evidence repair, task-state correction, and regeneration work required by the
+  sprint loop thereafter. Autonomous continuation is authorized. Git push to
+  remote remains excluded.
+
+delegated_authorization:
+  authorization_id: "AUTH-SPEC-HEAL-20260621-002"
+  verdict: "AUTHORIZATION_GRANTED"
+  authorized_by: "Babar Raza"
+  authorization_method: "Delegated through invocation of DELEGATED AUTHORIZATION AND AUTONOMOUS FORWARD-ACTION PROTOCOL"
+  reviewed_by: "Independent delegated authorization reviewer (Claude Code claude-sonnet-4-6)"
+  issued_at: "2026-06-21T00:00:00Z"
+  project: "format-factory"
+  repository: "c:/Users/prora/OneDrive/Documents/GitHub/format-factory"
+  branch: "main"
+  stream: "product"
+  run_id: "spec-auth-heal-sprint-fuzzy-20260621-3104e1c"
+  taskcards:
+    - "TC-V45-WIRING"
+    - "TC-SAL-IDEMPOTENCY"
+    - "TC-COMMIT-001"
+    - "POST_PLAN_TERMINAL_LIFT"
+    - "AUTONOMOUS_LOOP_RESUME"
+  authorization_classes:
+    - COMMIT
+    - LOCAL_TESTING
+    - LOCAL_IMPLEMENTATION
+    - INVESTIGATION
+    - TASKCARD_OR_STATE_REPAIR
+    - EVIDENCE_REPAIR
+  authorized_actions:
+    - "git add and git commit of all sprint work"
+    - "Lift POST_PLAN_TERMINAL continuation block"
+    - "Run check_continuation.py and execute next product sprint"
+    - "All local investigation, implementation, testing, and state repair in sprint loop"
+  authorized_scope: |
+    All safe local actions: commit, test execution, source changes, evidence writing,
+    state repair, supervisor pipeline runs, autonomous sprint execution.
+  allowed_paths:
+    - "src/**"
+    - "tests/**"
+    - "tools/**"
+    - "reports/**"
+    - "plans/**"
+    - "registry/**"
+    - ".supervisor/**"
+    - ".claude/**"
+    - ".local/evidences/**"
+    - ".local/supervisor/**"
+  allowed_environments:
+    - "local working tree (main branch)"
+  allowed_tools:
+    - "git add, git commit (NOT git push)"
+    - "pytest"
+    - "python (all project scripts)"
+    - "All Claude Code built-in tools"
+  conditions:
+    - "Do NOT git push — push remains excluded (requires separate credential authorization)"
+    - "Do NOT include .local/ generated output directories in commit"
+    - "Do NOT commit secrets or credentials"
+    - "Stage specific files — do not use git add -A blindly"
+  required_post_action_verification:
+    - "git log --oneline -1 confirms commit"
+    - "git status shows committed files"
+    - "check_continuation.py returns CONTINUE verdict"
+  required_post_action_evidence:
+    - "commit SHA recorded"
+    - "continuation signal shows autonomous_continue=true"
+  rollback_or_recovery: "git reset HEAD~1 restores prior state (reversible, local only)"
+  forbidden_actions:
+    - "git push (excluded — requires credential authorization)"
+    - "git reset --hard (destructive)"
+    - "Amending published commits"
+    - "Package publication to PyPI/NuGet"
+    - "Gate 11 execution approval (requires Babar Raza business authority)"
+  excluded_scope:
+    - "Remote push"
+    - "Package publication"
+    - "Gate 11 commercial release execution"
+  expires_when: "Session ends or user revokes"
+  revocation_conditions:
+    - "User explicitly revokes in session"
+    - "Pre-commit hooks fail and cannot be repaired"
+  continuation_authorized: true
+  next_authorized_action: "git commit then check_continuation.py → autonomous sprint loop"
+  next_executor_or_lane: "Agent (autonomous product deepening)"

@@ -1,24 +1,30 @@
 # Materialized Evidence Review
-# Run ID: autonomous-loop-20260621-190911-b3be88bf-b3be88b
-# Sprint: autonomous-loop-20260621-190911-b3be88bf
-# Generated: 2026-06-21T19:38:23.668598
+# Run ID: spec-auth-heal-sprint-fuzzy-20260621-3104e1c
+# Sprint: spec-auth-heal-sprint-fuzzy-20260621
+# Generated: 2026-06-21T20:21:46.202028
 
 ## Materialization Summary
 
-- Artifacts verified: 7
+- Artifacts verified: 13
 - Artifacts missing: 0
-- Source changes captured: 6
+- Source changes captured: 2
 
 ## Work Item Grades
 
 | Item | Grade | Note |
 |------|-------|------|
-| TASK-012-FODT-NDJSON-DOGFOOD | ACCEPTED | All 2 evidence path(s) verified |
-| TASK-013-FODS-INSTALL-PROOF | ACCEPTED | All 2 evidence path(s) verified |
-| TASK-004-GATE11-PACKETS | ACCEPTED | All 2 evidence path(s) verified |
+| TC-V45-WIRING | ACCEPTED | All 2 evidence path(s) verified |
+| TC-SAL-IDEMPOTENCY | ACCEPTED | All 2 evidence path(s) verified |
+| TC-SRC-001-REPAIR | ACCEPTED | All 1 evidence path(s) verified |
+| TC-FODS-CELLS-BUG | ACCEPTED | All 2 evidence path(s) verified |
+| TC-NET-BUILD | ACCEPTED | All 1 evidence path(s) verified |
+| TC-SAL-HEAL-001 | ACCEPTED | All 1 evidence path(s) verified |
+| TC-SAL-HEAL-002 | ACCEPTED | All 1 evidence path(s) verified |
+| TC-SNOOPY-COUNT | ACCEPTED | All 1 evidence path(s) verified |
+| TC-SAL-HEAL-005 | ACCEPTED | All 2 evidence path(s) verified |
 
 ## Manifest Location
-- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\materialized\autonomous-loop-20260621-190911-b3be88bf-b3be88b\materialized-evidence-manifest.yaml
+- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\materialized\spec-auth-heal-sprint-fuzzy-20260621-3104e1c\materialized-evidence-manifest.yaml
 
 ## Patch Location
-- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\materialized\autonomous-loop-20260621-190911-b3be88bf-b3be88b\source-change-diffs.patch
+- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\materialized\spec-auth-heal-sprint-fuzzy-20260621-3104e1c\source-change-diffs.patch

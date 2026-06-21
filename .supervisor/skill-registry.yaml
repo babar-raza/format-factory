@@ -765,3 +765,34 @@ skills:
       - verdict_emitted
       - taskcard_created_if_gap
     notes: "MANDATORY PRE-GATE for all product work. Added 2026-06-21 (SKILL-GAP-010)."
+
+  # ============================================================
+  # SAL INFRASTRUCTURE SKILL (TC-SAL-SKILL-001, 2026-06-21)
+  # Governs all SAL pipeline healing work (ROOT-01..ROOT-08).
+  # Required for all TC-SAL-IMPL-* and TC-SAL-DIAG-* (NOT STARTED).
+  # ============================================================
+
+  - skill_id: sal-pipeline-heal
+    command: /sal-pipeline-heal
+    command_file: .claude/commands/sal-pipeline-heal.md
+    status: active
+    spec_qname_required: false
+    purpose: >
+      Govern execution of one SAL pipeline healing sprint. Covers all root causes
+      (ROOT-01..ROOT-08) in plans/snoopy-juggling-seal.md. Produces a skill transcript
+      proving governed invocation. Required for all TC-SAL-IMPL-* and TC-SAL-DIAG-*
+      taskcards that are NOT STARTED.
+    product_track: sal_infrastructure
+    required_handoff_fields:
+      - taskcard_id
+      - format_id
+      - root_cause_id
+      - spec_cache_path
+      - target_stage
+    mandatory_validations:
+      - spec_cache_verified
+      - tool_invoked
+      - output_artifact_produced
+      - fact_ids_in_correct_namespace
+      - skill_transcript_written
+    notes: "SAL infrastructure skill. Blocks all NOT STARTED SAL taskcards until registered. Added 2026-06-21 (SKILL-GAP-011, TC-SAL-SKILL-001)."

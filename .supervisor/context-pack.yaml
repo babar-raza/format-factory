@@ -1,24 +1,39 @@
 schema_version: '1.0'
-generated_at: '2026-06-21T19:24:15.621792'
+generated_at: '2026-06-21T20:23:12.358529'
 repo_root: C:\Users\prora\OneDrive\Documents\GitHub\format-factory
 git:
-  head: b3be88bf
+  head: 3104e1c1
   status:
-    modified_count: 97
-    untracked_count: 1102
+    modified_count: 42
+    untracked_count: 4
     staged_count: 1
-    total_changed: 1208
+    total_changed: 47
     clean: false
 supervisor_mode: 4
 latest_sprint:
-  sprint_id: machinery-lifecycle-forensics-20260621
+  sprint_id: spec-auth-heal-sprint-fuzzy-20260621
   run_id: unknown
-  autonomous_continue: true_with_rework
-  iteration: 0
+  autonomous_continue: false
+  iteration: 9
   max_iterations: 12
-  hard_stops: []
+  hard_stops:
+  - critical_rework_blocks_continuation
   rework_items:
-  - LANE_ENFORCEMENT:1_violations
+  - TC-V45-WIRING
+  - TC-SAL-IDEMPOTENCY
+  - TC-SRC-001-REPAIR
+  - TC-FODS-CELLS-BUG
+  - TC-NET-BUILD
+  - TC-SAL-HEAL-001
+  - TC-SNOOPY-COUNT
+  - TC-SAL-HEAL-005
+  - GOV_BLOCK:execution_method_required_validator
+  - GOV_BLOCK:source_diff_required_validator
+  - GOV_BLOCK:idempotency_key_required_validator
+  - GOV_BLOCK:route_decision_required_validator
+  - GOV_BLOCK:spec_fact_refs_validator
+  - GOV_BLOCK:monolith_detection_validator
+  - PROMPT_QUALITY_REWORK:no_wrong_stream
 poc_matrix:
   sprint: capability-layer-closeout-rnext
   last_updated: '2026-06-18'
@@ -37,8 +52,8 @@ poc_matrix:
       commercial_ready: false
   foss_python_products: {}
 skill_registry:
-  total_skills: 33
-  active_skills: 32
+  total_skills: 44
+  active_skills: 43
   skill_ids:
   - add-dotnet-api
   - add-python-api
@@ -72,6 +87,17 @@ skill_registry:
   - post-sprint-audit
   - post-sprint-loop
   - add-analytics-function
+  - autonomous-loop
+  - sync-memory
+  - score-format
+  - create-acquisition-pack
+  - check-gate
+  - create-taskcard
+  - reproduce-master-plan
+  - build-evidence-bundle
+  - check-release-boundary
+  - check-skill-coverage
+  - sal-pipeline-heal
   source_edits_require_handoff: true
   ledger_required: true
 product_code_ledger:

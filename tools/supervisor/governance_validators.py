@@ -2946,6 +2946,63 @@ def validate_qname_class_names(declaration: dict, repo_root: Path | None = None)
             "blocks_sprint": bool(violations)}
 
 
+def validate_skill_transcript_present(declaration: dict) -> dict:
+    """V46 (TC-SKILL-GOV-002): PRODUCT_SOURCE items should have a linked skill_transcript.
+
+    skill-registry.yaml global_controls.skill_invocation_transcript_required = true.
+    This validator enforces that requirement: each PRODUCT_SOURCE work item should be
+    backed by at least one evidence_artifact of type 'skill_transcript'.
+
+    Transcript path pattern: reports/skills-r<N>/skill-transcripts/*.json
+
+    If a PRODUCT_SOURCE item has no linked transcript, it is flagged as
+    SKILL_TRANSCRIPT_MISSING. Items with BACKFILL_PRE_GOVERNANCE classification are
+    exempt from this requirement.
+
+    Currently WARN-only (bootstrap phase): prior TC-SAL-IMPL-001..007 completions
+    predate the sal-pipeline-heal skill registration. Once all new sprints use
+    sal-pipeline-heal, this can be upgraded to blocks_sprint=True.
+    """
+    import re
+    TRANSCRIPT_PAT = re.compile(r"reports/skills-r\d+/skill-transcripts/.*\.json")
+
+    # Collect all evidence artifact paths keyed by related_work_items
+    artifacts_by_item: dict = {}
+    for artifact in declaration.get("evidence_artifacts", []):
+        for related in artifact.get("related_work_items", []):
+            artifacts_by_item.setdefault(related, []).append(artifact)
+
+    violations = []
+    for item in declaration.get("planned_work_items", []):
+        if item.get("item_type") != "PRODUCT_SOURCE":
+            continue
+        # Exempt items classified as BACKFILL_PRE_GOVERNANCE
+        if "BACKFILL_PRE_GOVERNANCE" in str(item.get("notes", "")):
+            continue
+        item_id = item.get("item_id", "UNKNOWN")
+        related_artifacts = artifacts_by_item.get(item_id, [])
+        transcript_artifacts = [
+            a for a in related_artifacts
+            if a.get("type") == "skill_transcript"
+            or TRANSCRIPT_PAT.search(str(a.get("path", "")))
+        ]
+        if not transcript_artifacts:
+            violations.append({
+                "item_id": item_id,
+                "skill_id": item.get("skill_id"),
+                "reason": "SKILL_TRANSCRIPT_MISSING — no skill_transcript evidence_artifact linked",
+                "note": "Required per skill-registry.yaml global_controls.skill_invocation_transcript_required=true",
+            })
+
+    return {
+        "validator": "validate_skill_transcript_present",
+        "result": "WARN" if violations else "PASS",
+        "items": violations,
+        "summary": f"{len(violations)} PRODUCT_SOURCE item(s) missing skill transcript (WARN-only: bootstrap phase)",
+        "blocks_sprint": False,  # WARN-only: upgraded to True once bootstrap phase complete
+    }
+
+
 # Re-export run_all_governance_validators from the runner module.
 # The runner is defined in governance_validator_runner.py to keep this file within LOC cap.
 # IMPORTANT: this import is at module bottom (after all validate_* functions are defined)

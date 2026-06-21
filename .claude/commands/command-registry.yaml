@@ -1,6 +1,13 @@
-schema_version: "1.0"
+schema_version: "1.1"
 generated_at: "2026-06-18"
+updated_at: "2026-06-21"
 generated_by: TC-0004
+updated_by: TC-SKILL-GOV-004 (skill-governance-sync-sprint)
+notes: >
+  v1.1 (2026-06-21): Added skill_registry_ref cross-references for commands now registered
+  in skill-registry.yaml. Added check-skill-coverage, autonomous-loop, sync-memory, and
+  sal-pipeline-heal entries. Every command file in .claude/commands/ now appears in at
+  least one registry.
 
 commands:
   - command_id: score-format
@@ -9,6 +16,8 @@ commands:
     phase: 1
     status: active
     created: "2026-06-18"
+    skill_registry_ref: true
+    skill_id: score-format
 
   - command_id: create-acquisition-pack
     file: .claude/commands/create-acquisition-pack.md
@@ -16,6 +25,8 @@ commands:
     phase: 1
     status: active
     created: "2026-06-18"
+    skill_registry_ref: true
+    skill_id: create-acquisition-pack
 
   - command_id: check-gate
     file: .claude/commands/check-gate.md
@@ -23,6 +34,8 @@ commands:
     phase: 1
     status: active
     created: "2026-06-18"
+    skill_registry_ref: true
+    skill_id: check-gate
 
   - command_id: create-taskcard
     file: .claude/commands/create-taskcard.md
@@ -30,6 +43,8 @@ commands:
     phase: 1
     status: active
     created: "2026-06-18"
+    skill_registry_ref: true
+    skill_id: create-taskcard
 
   - command_id: reproduce-master-plan
     file: .claude/commands/reproduce-master-plan.md
@@ -37,6 +52,8 @@ commands:
     phase: 1
     status: active
     created: "2026-06-18"
+    skill_registry_ref: true
+    skill_id: reproduce-master-plan
 
   - command_id: build-evidence-bundle
     file: .claude/commands/build-evidence-bundle.md
@@ -44,6 +61,8 @@ commands:
     phase: 1
     status: active
     created: "2026-06-18"
+    skill_registry_ref: true
+    skill_id: build-evidence-bundle
 
   - command_id: check-release-boundary
     file: .claude/commands/check-release-boundary.md
@@ -51,3 +70,46 @@ commands:
     phase: 3
     status: active
     created: "2026-06-18"
+    skill_registry_ref: true
+    skill_id: check-release-boundary
+
+  # ============================================================
+  # COMMANDS ADDED 2026-06-21 (TC-SKILL-GOV-004)
+  # Previously in skill-registry.yaml only; now dual-registered.
+  # ============================================================
+
+  - command_id: check-skill-coverage
+    file: .claude/commands/check-skill-coverage.md
+    description: Pre-gate check for skill coverage before product source changes
+    phase: all
+    status: active
+    created: "2026-06-21"
+    skill_registry_ref: true
+    skill_id: check-skill-coverage
+
+  - command_id: autonomous-loop
+    file: .claude/commands/autonomous-loop.md
+    description: Execute the autonomous sprint loop with skill coverage pre-check
+    phase: all
+    status: active
+    created: "2026-06-21"
+    skill_registry_ref: true
+    skill_id: autonomous-loop
+
+  - command_id: sync-memory
+    file: .claude/commands/sync-memory.md
+    description: Sync memory files against master-plan.md; detect contradictions
+    phase: all
+    status: active
+    created: "2026-06-21"
+    skill_registry_ref: true
+    skill_id: sync-memory
+
+  - command_id: sal-pipeline-heal
+    file: .claude/commands/sal-pipeline-heal.md
+    description: Execute one governed sprint of SAL pipeline healing (ROOT-01..ROOT-08)
+    phase: all
+    status: active
+    created: "2026-06-21"
+    skill_registry_ref: true
+    skill_id: sal-pipeline-heal

@@ -1,0 +1,26 @@
+{
+  "skill_id": "check-gate",
+  "invocation_args": "zst 11",
+  "format_id": "zst",
+  "gate_number": 11,
+  "overall_status": "CONDITIONALLY_READY",
+  "score": "6/7 agent-owned criteria PASS",
+  "criteria_results": {
+    "min_spec_facts_cited": "PASS (60 test files, 94 RFC 8878 verified facts)",
+    "min_api_coverage": "PASS (7/7 = 100%)",
+    "foss_test_count_min": "PASS (4,149 Python tests)",
+    "commercial_test_count_min": "PASS (30/30 .NET tests)",
+    "parity_matrix_required": "PASS (test_spec_parity_zst_proof.py + 94 spec facts)",
+    "dogfood_proof_required": "CONDITIONALLY_PASS (codec special case; installed_workflow=PASS)",
+    "g11_execution_approval": "NOT APPROVED (TRUE_EXTERNAL_GATE — Babar Raza)"
+  },
+  "corrections_made": [
+    "G11-E was previously marked NOT_STARTED; corrected to PASS (src/net/zst/ exists; 30 .NET tests pass)",
+    "Python test count updated from 625 to 4,149 (post-healing sprint growth)"
+  ],
+  "output_packet": "reports/gate11/zst-gate11-readiness-packet.md",
+  "blocking_items": [
+    "G11-G Gate 11 Execution Approval — TRUE_EXTERNAL_GATE — Babar Raza authority only"
+  ],
+  "verdict": "CONDITIONALLY_READY"
+}

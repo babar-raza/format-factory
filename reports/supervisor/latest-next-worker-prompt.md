@@ -1,6 +1,6 @@
 # FORMAT-FACTORY-RNEXT-MEGA-TRAIN-001
-# Generated: 2026-06-21T19:24:13.005196
-# Source: Supervisor autonomous-cycle review of machinery-lifecycle-forensics-20260621
+# Generated: 2026-06-21T20:22:50.711191
+# Source: Supervisor autonomous-cycle review of spec-auth-heal-sprint-fuzzy-20260621
 # Stream: mainstream
 # ADVISORY ONLY -- not a Format Factory authority document
 
@@ -27,16 +27,16 @@ Read these files before writing any code:
 ## Sprint Identity
 
 - Sprint ID: FORMAT-FACTORY-RNEXT-MEGA-TRAIN-001
-- Prior sprint: machinery-lifecycle-forensics-20260621
+- Prior sprint: spec-auth-heal-sprint-fuzzy-20260621
 - Prior verdict: ACCEPTED_WITH_REWORK
 - Prior tests: 0 passed, 0 failed, 0 skipped
-- Autonomous continue: True
+- Autonomous continue: False
 
 ---
 
 ## Sprint Goal
 
-**Goal:** Advance product POC: FODS .NET Product Deepening; FODT .NET Product Deepening; Netpbm .NET Product Deepening; ZST Python Improvement. Build evidence declaration and run supervisor autonomous-cycle.
+**Goal:** Repair 3 item(s) flagged by supervisor review. Advance product POC: FODS .NET Product Deepening; FODT .NET Product Deepening; Netpbm .NET Product Deepening; ZST Python Improvement. Build evidence declaration and run supervisor autonomous-cycle.
 
 ---
 
@@ -70,23 +70,26 @@ Read these files before writing any code:
 | Train | Group | Title |
 |-------|-------|-------|
 | A | G1 | Governance Preflight |
-| B | G3 | FODS .NET Product Deepening |
-| C | G3 | FODT .NET Product Deepening |
-| D | G3 | Netpbm .NET Product Deepening |
-| E | G4 | ZST Python Improvement |
-| F | G4 | Netpbm Python Improvement |
-| G | G4 | SYLK Python Improvement |
-| H | G4 | TOML Python Improvement |
-| I | G4 | NDJSON Python Improvement |
-| J | G4 | FODG Python Improvement |
-| K | G4 | TSV Python Improvement |
-| L | G4 | ABW Python Improvement |
-| M | G4 | Gnumeric Python Improvement |
-| N | G5 | Dogfood: fodt -> txt |
-| O | G5 | Dogfood: fodt -> html |
-| P | G6 | Package Build + Install Proof |
-| Q | G7 | State + Memory + POC Matrix Sync |
-| R | G8 | Evidence Declaration + Supervisor Autonomous-Cycle |
+| B | G2 | Rework: Fix SAL runner overwrite behavior on single-format runs |
+| C | G2 | Rework: Verify fact_status and source_id fields in SAL output |
+| D | G2 | Rework: Run regression suite — SAL cache tests, dogfood tests |
+| E | G3 | FODS .NET Product Deepening |
+| F | G3 | FODT .NET Product Deepening |
+| G | G3 | Netpbm .NET Product Deepening |
+| H | G4 | ZST Python Improvement |
+| I | G4 | Netpbm Python Improvement |
+| J | G4 | SYLK Python Improvement |
+| K | G4 | TOML Python Improvement |
+| L | G4 | NDJSON Python Improvement |
+| M | G4 | FODG Python Improvement |
+| N | G4 | TSV Python Improvement |
+| O | G4 | ABW Python Improvement |
+| P | G4 | Gnumeric Python Improvement |
+| Q | G5 | Dogfood: fodt -> txt |
+| R | G5 | Dogfood: fodt -> html |
+| S | G6 | Package Build + Install Proof |
+| T | G7 | State + Memory + POC Matrix Sync |
+| U | G8 | Evidence Declaration + Supervisor Autonomous-Cycle |
 
 ---
 
@@ -104,9 +107,46 @@ Read all governance files. Verify no policy violations from prior sprint. Confir
 **Files:**
 - `reports/<run_id>/00-preflight.md`
 
+## Group G2: Rework / Repair
+
+### Train B: Rework: Fix SAL runner overwrite behavior on single-format runs
+
+Stub evidence detected (was ACCEPTED_WITH_LIMITATIONS): ['Evidence consists only of a markdown description with a manual "PASS" statement, no automated test code or assertions.', 'No actual verification of sal-facts-latest.json format count before and after the run (e.g., file inspection, JSON parsing, or count assertions).', 'Missing test for the --all flag to confirm it still writes all formats.', 'No logs, output captures, or CI artifacts demonstrating the behavior.', 'The provided source file shows code changes but does not include unit or integration tests exercising the new write_latest flag.']
+
+**Acceptance Criteria:**
+- Evidence for TC-SAL-IDEMPOTENCY passes supervisor inspection
+- Tests pass for affected code
+
+**Files:**
+- `.local/evidences/spec-auth-heal-sprint-fuzzy-20260621-3104e1c/tc-sal-idempotency-proof.md`
+- `tools/specification-authority-layer/sal_master_runner.py`
+
+### Train C: Rework: Verify fact_status and source_id fields in SAL output
+
+
+
+**Acceptance Criteria:**
+- Evidence for TC-SAL-HEAL-001 passes supervisor inspection
+- Tests pass for affected code
+
+**Files:**
+- `.local/evidences/spec-auth-heal-sprint-fuzzy-20260621-3104e1c/tc-sal-heal-001-proof.md`
+
+### Train D: Rework: Run regression suite — SAL cache tests, dogfood tests
+
+
+
+**Acceptance Criteria:**
+- Evidence for TC-SAL-HEAL-005 passes supervisor inspection
+- Tests pass for affected code
+
+**Files:**
+- `tests/specification-authority-layer/test_sal_from_cache_only.py`
+- `tests/python/dogfood/test_dogfood_fods_fodt_sal_fact_ndjson_export.py`
+
 ## Group G3: Commercial .NET Product
 
-### Train B: FODS .NET Product Deepening
+### Train E: FODS .NET Product Deepening
 
 Continue FODS commercial .NET product advancement. Continue product maintenance and extended API feature development
 
@@ -124,7 +164,7 @@ Continue FODS commercial .NET product advancement. Continue product maintenance 
 dotnet test tests/net/fods/ --verbosity quiet
 ```
 
-### Train C: FODT .NET Product Deepening
+### Train F: FODT .NET Product Deepening
 
 Continue FODT commercial .NET product advancement. Continue product maintenance and extended API feature development
 
@@ -142,7 +182,7 @@ Continue FODT commercial .NET product advancement. Continue product maintenance 
 dotnet test tests/net/fodt/ --verbosity quiet
 ```
 
-### Train D: Netpbm .NET Product Deepening
+### Train G: Netpbm .NET Product Deepening
 
 Continue Netpbm commercial .NET product advancement. Continue product maintenance and extended API feature development
 
@@ -162,7 +202,7 @@ dotnet test tests/net/netpbm/ --verbosity quiet
 
 ## Group G4: FOSS / Reduced Product
 
-### Train E: ZST Python Improvement
+### Train H: ZST Python Improvement
 
 Continue ZST FOSS product. Continue FOSS product deepening and additional compression API coverage
 
@@ -179,7 +219,7 @@ Continue ZST FOSS product. Continue FOSS product deepening and additional compre
 python -m pytest tests/python/zst/ -x -q
 ```
 
-### Train F: Netpbm Python Improvement
+### Train I: Netpbm Python Improvement
 
 Continue Netpbm FOSS product. Continue FOSS product deepening and additional Python API coverage
 
@@ -200,7 +240,7 @@ Continue Netpbm FOSS product. Continue FOSS product deepening and additional Pyt
 python -m pytest tests/python/pbm/ tests/python/pgm/ tests/python/ppm/ -x -q
 ```
 
-### Train G: SYLK Python Improvement
+### Train J: SYLK Python Improvement
 
 Continue SYLK FOSS product. Continue FOSS product deepening — cell iteration, set_cell_value; package install proof
 
@@ -217,7 +257,7 @@ Continue SYLK FOSS product. Continue FOSS product deepening — cell iteration, 
 python -m pytest tests/python/sylk/ -x -q
 ```
 
-### Train H: TOML Python Improvement
+### Train K: TOML Python Improvement
 
 Continue TOML FOSS product. dogfood export via TOML config roundtrip; package install proof
 
@@ -234,7 +274,7 @@ Continue TOML FOSS product. dogfood export via TOML config roundtrip; package in
 python -m pytest tests/python/toml/ -x -q
 ```
 
-### Train I: NDJSON Python Improvement
+### Train L: NDJSON Python Improvement
 
 Continue NDJSON FOSS product. Dogfood pipeline integration
 
@@ -251,7 +291,7 @@ Continue NDJSON FOSS product. Dogfood pipeline integration
 python -m pytest tests/python/ndjson/ -x -q
 ```
 
-### Train J: FODG Python Improvement
+### Train M: FODG Python Improvement
 
 Continue FODG FOSS product. SVG export investigation
 
@@ -268,7 +308,7 @@ Continue FODG FOSS product. SVG export investigation
 python -m pytest tests/python/fodg/ -x -q
 ```
 
-### Train K: TSV Python Improvement
+### Train N: TSV Python Improvement
 
 Continue TSV FOSS product. Dogfood pipeline integration
 
@@ -285,7 +325,7 @@ Continue TSV FOSS product. Dogfood pipeline integration
 python -m pytest tests/python/tsv/ -x -q
 ```
 
-### Train L: ABW Python Improvement
+### Train O: ABW Python Improvement
 
 Continue ABW FOSS product. Dogfood pipeline integration
 
@@ -302,7 +342,7 @@ Continue ABW FOSS product. Dogfood pipeline integration
 python -m pytest tests/python/abw/ -x -q
 ```
 
-### Train M: Gnumeric Python Improvement
+### Train P: Gnumeric Python Improvement
 
 Continue Gnumeric FOSS product. Dogfood pipeline integration
 
@@ -321,7 +361,7 @@ python -m pytest tests/python/gnumeric/ -x -q
 
 ## Group G5: Dogfood Exports
 
-### Train N: Dogfood: fodt -> txt
+### Train Q: Dogfood: fodt -> txt
 
 No FF .NET text write library. Prerequisite: Build FormatFactory.Text .NET library with write_text().
 
@@ -329,7 +369,7 @@ No FF .NET text write library. Prerequisite: Build FormatFactory.Text .NET libra
 - Export test passes using FF library
 - Dogfood status updated in poc-targets.yaml
 
-### Train O: Dogfood: fodt -> html
+### Train R: Dogfood: fodt -> html
 
 No FF .NET HTML write library. Prerequisite: Build FormatFactory.Html .NET library.
 
@@ -339,7 +379,7 @@ No FF .NET HTML write library. Prerequisite: Build FormatFactory.Html .NET libra
 
 ## Group G6: Package / Install Proof
 
-### Train P: Package Build + Install Proof
+### Train S: Package Build + Install Proof
 
 Rebuild wheels/sdists for any changed packages. Run installed-workflow smoke test from extracted wheel. Treat missing artifacts as failures, not skips.
 
@@ -358,7 +398,7 @@ python -m pytest tests/evidence/ -x -q
 
 ## Group G7: State / Memory / POC Matrix
 
-### Train Q: State + Memory + POC Matrix Sync
+### Train T: State + Memory + POC Matrix Sync
 
 Update state/current-state.md, .supervisor/project-memory.md, and product-capability-matrix/poc-targets.yaml with sprint results.
 
@@ -374,7 +414,7 @@ Update state/current-state.md, .supervisor/project-memory.md, and product-capabi
 
 ## Group G8: Evidence + Supervisor Loop
 
-### Train R: Evidence Declaration + Supervisor Autonomous-Cycle
+### Train U: Evidence Declaration + Supervisor Autonomous-Cycle
 
 Write evidence-declaration.yaml listing ALL work items. Run autonomous-cycle. Verify session-resume.md is regenerated. Validate `reports/r90/product-code-change-ledger.json` for any governed product source edit.
 
@@ -473,14 +513,14 @@ END OF SUPERVISOR-GENERATED MEGA-TRAIN EXECUTION PROMPT
 The following failures have been recorded in durable failure memory.
 Address escalated failures with priority.
 
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_execution_method_required_validator_failed (seen 130x, last: spec-auth-heal-sprint-1)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_source_diff_required_validator_failed (seen 99x, last: spec-auth-heal-sprint-1)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_idempotency_key_required_validator_failed (seen 64x, last: spec-auth-heal-sprint-1)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_execution_method_required_validator_failed (seen 132x, last: spec-auth-heal-sprint-fuzzy-20260621)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_source_diff_required_validator_failed (seen 101x, last: spec-auth-heal-sprint-fuzzy-20260621)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_idempotency_key_required_validator_failed (seen 66x, last: spec-auth-heal-sprint-fuzzy-20260621)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_claim_classification_validator_failed (seen 7x, last: IDEMPOTENT-SWARM-EXECUTION-20260615-E31FA98)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_route_decision_required_validator_failed (seen 98x, last: spec-auth-heal-sprint-1)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_spec_fact_refs_validator_failed (seen 183x, last: spec-auth-heal-sprint-1)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_monolith_detection_validator_failed (seen 265x, last: spec-auth-heal-sprint-1)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): exit_code_3_rework_required (seen 148x, last: spec-auth-heal-sprint-1)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_route_decision_required_validator_failed (seen 100x, last: spec-auth-heal-sprint-fuzzy-20260621)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_spec_fact_refs_validator_failed (seen 185x, last: spec-auth-heal-sprint-fuzzy-20260621)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_monolith_detection_validator_failed (seen 267x, last: spec-auth-heal-sprint-fuzzy-20260621)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): exit_code_3_rework_required (seen 149x, last: spec-auth-heal-sprint-fuzzy-20260621-3104e1c)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_source_architecture_failed (seen 4x, last: spec-auth-heal-sprint-1)
 - WARNING: 8 unresolved failures in failure memory
 

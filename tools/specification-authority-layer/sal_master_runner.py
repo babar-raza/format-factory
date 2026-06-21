@@ -832,6 +832,7 @@ def run_sal_pipeline(
     formats: Optional[List[str]] = None,
     output_dir: Optional[Path] = None,
     from_cache_only: bool = False,
+    write_latest: bool = True,
 ) -> Dict[str, Any]:
     """
     Run the SAL pipeline for one or more formats.
@@ -912,7 +913,7 @@ def run_sal_pipeline(
         per_format_path = output_dir / f"sal-facts-{fid}.json"
         per_format_path.write_text(json.dumps(per_format_output, indent=2), encoding="utf-8")
 
-    # Write timestamped + latest
+    # Write timestamped + latest (only when processing all formats — TC-SAL-IDEMPOTENCY)
     ts = datetime.now(timezone.utc).strftime("%Y%m%d")
     dated_path = output_dir / f"sal-facts-{ts}.json"
     latest_path = output_dir / "sal-output-latest.json"
@@ -920,9 +921,10 @@ def run_sal_pipeline(
     sal_latest_path = output_dir / "sal-facts-latest.json"
 
     payload = json.dumps(output, indent=2)
-    dated_path.write_text(payload, encoding="utf-8")
-    latest_path.write_text(payload, encoding="utf-8")
-    sal_latest_path.write_text(payload, encoding="utf-8")
+    if write_latest:
+        dated_path.write_text(payload, encoding="utf-8")
+        latest_path.write_text(payload, encoding="utf-8")
+        sal_latest_path.write_text(payload, encoding="utf-8")
 
     output["output_path"] = str(latest_path)
     return output
@@ -954,8 +956,10 @@ def _cli() -> int:
         return 0
 
     formats = None
+    write_latest = True
     if args.format:
         formats = [args.format]
+        write_latest = False  # TC-SAL-IDEMPOTENCY: single-format run must not overwrite combined output
     elif not args.all:
         # Default: process all
         formats = None
@@ -964,6 +968,7 @@ def _cli() -> int:
         formats=formats,
         output_dir=Path(args.output_dir),
         from_cache_only=args.from_cache_only,
+        write_latest=write_latest,
     )
 
     print(f"[sal_master_runner] Processed {result['formats_processed']} formats")
