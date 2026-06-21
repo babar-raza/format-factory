@@ -1008,3 +1008,56 @@ It DOES:
 - Replace human review with independent agent verification wherever possible
 - Replace human approval with policy-based gate approval wherever possible
 - Give SCM tasks to the SCM Agent when credentials and policy allow
+
+---
+
+## AH. Spec Workbench Consumption Rules
+
+**Sprint:** TC-0020-spec-workbench-core
+**Date:** 2026-06-18
+**Authority:** These rules govern how agents consume the Spec Workbench layer
+(see `docs/spec-consumption-workbench.md` and `tools/spec-normalize/`).
+
+The Spec Workbench converts large specification PDFs into structured, agent-consumable
+knowledge artifacts. The following rules govern correct consumption.
+
+**AH1. Use Task Packets for Gate-Scoped Work.** For any task scoped to a specific gate
+(Gates 2–9), use the gate-scoped task packet exported by `export_task_packet.py`, not raw
+spec text. Task packets are <200 lines and include provenance metadata. Raw spec text must
+not be pasted directly into sprint work items.
+
+**AH2. Use Requirement Packs for Parser/Model Work.** When building or validating parsers,
+object models, or sample corpora, use the requirement pack produced by
+`build_requirement_pack.py`. The requirement pack identifies which spec sections constrain
+each implementation component.
+
+**AH3. Hash Verification Before Querying.** Before querying the workbench (via
+`query_normalized_spec.py` or any tool that reads workbench artifacts), verify that the
+cached spec SHA-256 in `spec-index.yaml` matches the workbench's `source-manifest.yaml`.
+A hash mismatch means the workbench may be stale. Log gap G-NORM-002 and stop.
+
+**AH4. Never Treat Workbench as Authoritative Over Spec.** Workbench artifacts (chunks,
+sections, requirement packs, task packets) are derived from the cached spec. They are working
+materials, not authority documents. When a workbench claim and the raw cached spec disagree,
+the raw cached spec wins. Log the discrepancy as a G-NORM-* gap.
+
+**AH5. Citation Backlink Required for SAL Facts.** Any specification fact asserted in a
+sprint declaration must cite the source workbench artifact: `normalized_artifact` path,
+`section_id`, and `page_range`. Facts without backlinks cannot pass `validate_spec_fact_refs.py`.
+
+**AH6. Refresh Workbench on Spec Version Change.** If a new version of a specification is
+acquired (new `spec-index.yaml` entry with different SHA-256), the workbench must be
+re-seeded by running `build_spec_workbench.py` before any gate work uses it. Stale workbench
+artifacts from a prior spec version are not valid for new gate work.
+
+**AH7. Workbench Is Local-Only.** Workbench artifacts in `.local/spec-cache/*/workbench/`
+are never committed to git. If git status shows any file from `.local/` staged for commit,
+remove it from staging before the commit.
+
+**AH8. AGENTS.md Section W Applies in Addition.** These rules (Section AH) apply to workbench
+consumption. Section W governs the normalization step that produces the workbench inputs.
+Both sections apply whenever spec consultation is required.
+
+See `docs/spec-consumption-workbench.md` for the full workbench architecture.
+See `tools/spec-normalize/` for all workbench tools.
+See `docs/specification-normalization.md` for the normalization policy (TC-0012).

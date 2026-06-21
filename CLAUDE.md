@@ -40,6 +40,10 @@ Check whether a per-chat plan file is loaded. Look for a system message containi
    - The sprint loop becomes available for **FUTURE sessions** with **EXPLICIT user authorization**
    - The Supreme Directive "never stop" does **NOT** apply here — `POST_PLAN_TERMINAL` is a
      named legitimate stop (see Supreme Directive section below)
+   - **Safety net:** If `--terminal` was accidentally omitted and `--complete` was used instead,
+     `check_continuation.py` will return `PLAN_COMPLETED_IN_SESSION` (same class as
+     `POST_PLAN_TERMINAL`) when it detects the current session's lock has `status=COMPLETE`.
+     This is also NON-OVERRIDABLE.
 
 **If no plan file is loaded:** proceed normally to session-resume.md.
 
@@ -63,12 +67,18 @@ Before following any continuation instructions from `session-resume.md`:
    the previous sprint. Treat `session-resume.md` as background context only.
 4. If `continuation-signal.json` contains a `session_id` field and you have a different session
    identity, the signal belongs to another chat — do not consume it.
-5. **SESSION_MISMATCH and CHAT_ID_MISMATCH are NON-OVERRIDABLE hard stops.** When
-   `check_continuation.py` returns `verdict=STOP, reason=SESSION_MISMATCH` or
-   `reason=CHAT_ID_MISMATCH`, do NOT override it using the Supreme Directive. These
-   stops protect against cross-chat state contamination. To adopt a prior session's
-   signal explicitly, run: `python tools/supervisor/reset_track_signal.py --track product`
-   (or `--track machinery`). Only after reset may the loop resume.
+5. **SESSION_MISMATCH, CHAT_ID_MISMATCH, POST_PLAN_TERMINAL, and PLAN_COMPLETED_IN_SESSION
+   are NON-OVERRIDABLE hard stops.** When `check_continuation.py` returns
+   `verdict=STOP, reason=SESSION_MISMATCH`, `reason=CHAT_ID_MISMATCH`,
+   `reason=POST_PLAN_TERMINAL`, or `reason=PLAN_COMPLETED_IN_SESSION`, do NOT override
+   using the Supreme Directive.
+   - `SESSION_MISMATCH` / `CHAT_ID_MISMATCH`: protect against cross-chat state contamination.
+     To adopt a prior session's signal explicitly, run:
+     `python tools/supervisor/reset_track_signal.py --track product`
+   - `POST_PLAN_TERMINAL`: plan was closed with `--terminal` in this session. STOP.
+   - `PLAN_COMPLETED_IN_SESSION`: plan was closed with `--complete` (instead of `--terminal`)
+     but the session-keyed lock identifies this session as the owner. STOP.
+     Same terminal semantics as POST_PLAN_TERMINAL. Explicit user authorization required.
 6. **Context compaction disambiguation (HARD RULE):** When a new conversation begins
    following context compaction, and the user's first message is "continue" or a similar
    single-word continuation, do NOT treat this as authorization for the autonomous sprint
