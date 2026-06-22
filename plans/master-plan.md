@@ -971,6 +971,39 @@ TC-FODT-GAP-001, TC-FODT-AUDIT-001, TC-FODT-AUDIT-002, TC-RCAL-001
 
 ---
 
+### Session: Gap Closure + Compat Layer Expansion (CLOSED 2026-06-22)
+
+**Status:** CLOSED (task complete; all commits made; tests verified)
+
+**What was accomplished:**
+
+*Gap closure — 20 gaps closed (open count: 64 → 46):*
+- **ZST (2):** `GAP-ZST-FOSS-ZST_FRAME_CO-001`, `GAP-ZST-FOSS-ZST_FRAME_SI-001` — Added 4 new tests to `test_r204_zst_frame_count.py` (multi-frame count==2, empty file, string path, single-frame). All 10 tests pass.
+- **TSV (6):** `GAP-TSV-FOSS-TSV_MAX_FIEL-001` + 5 others — Fixed `test_header_excluded_from_max` (was wrongly asserting 14, fixed to 1). Fixed `tsv_analytics.py` missing `parse_tsv_strict` import. 59 tests pass.
+- **TOML (4):** 40 tests pass across `toml_table_count`, `toml_has_tables`, `toml_is_empty`, `toml_depth`.
+- **SYLK (5):** 36 tests pass across `sylk_average_column`, `sylk_cell_type_distribution`, `sylk_has_header`, `sylk_value_length_sum`, `installed_workflow`.
+- **FODG (1), NDJSON (1), Netpbm (1):** 33 tests pass.
+- Remaining open: 46 (38 ABW + 3 Gnumeric + 5 FODT — deferred, no spec authority)
+
+*Compat layer + spec stubs — 18 Python formats added:*
+- ABW, CSV, DIF, FODG, FODP, Gnumeric, NDJSON, ODS, ODT, PBM, PGM, PPM, QOI, SYLK, TOML, TSV, XCF, ZST
+- 21 `test_spec_compat_layer.py` files created (88+ tests pass). FODT `models.py` wired to Compat `FodtParagraph`.
+
+*Arithmetic rotation suspension cleanup:*
+- Removed 5700+ arithmetic functions from `xcf_analytics.py` and `zst_analytics.py`
+- Deleted 786 total deepening test files (rotation suspended per keen-dancing-hopper plan)
+
+*DIF dogfood export:* `dif_to_csv` uses FF `csv_writer.write_csv`; `test_r90_dif_to_csv_dogfood.py` (30 pass).
+
+**Bug fix:** `tsv_analytics.py` was missing `parse_tsv_strict` import — NameError on 20+ analytics functions. Fixed.
+
+**Files committed:**
+- Commit `3622b1da`: 588 files — analytics cleanup, 582 deleted deepening tests
+- Commit `bb072c5f`: 163 files — Compat/ and spec/ stubs for 18 formats + 21 compat tests
+- Commit `c29a2a23`: 500 files — FODG/XCF/ZST test removal, gap-ledger closures, DIF dogfood
+
+---
+
 ## ARCHIVE-PTR — Historical Content Archive
 
 The following sections were archived during the healing sprint of 2026-06-10.
@@ -984,5 +1017,5 @@ No content has been deleted — only moved to archive files with pointers.
 
 ---
 
-*End of plans/master-plan.md — version 3.3 — 2026-06-22 (Analytics separation complete: silly-rolling-stroustrup CLOSED TERMINAL; 19/19 Python formats have analytics.py or spec-shaped equivalent; FODG restructured to drawing_document.py; PGM/PPM/PBM/TOML/QOI/ODT analytics extracted; TC-MACH-001 --check-evidence-paths wired)*
+*End of plans/master-plan.md — version 3.4 — 2026-06-22 (Gap closure: 20 gaps closed (64→46 open); Compat+spec stubs for 18 Python formats; rotation suspension cleanup (786 tests deleted); tsv_analytics.py parse_tsv_strict bug fixed; DIF dogfood export; silly-rolling-stroustrup CLOSED TERMINAL)*
 *This document is the single operational authority for format-factory. All other documents are subordinate to it for operational decisions.*
