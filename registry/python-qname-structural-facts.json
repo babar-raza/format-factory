@@ -1,0 +1,267 @@
+{
+  "version": "1.0",
+  "description": "Approved structural facts for non-ODF Python format packages. These facts authorize the use of author-defined structural QNames where no formal namespace specification exists.",
+  "approved_structural_facts": [
+    {
+      "fact_id": "FACT-CSV-001",
+      "qname": "csv:record",
+      "format": "csv",
+      "authority": "RFC 4180 §2.1",
+      "claim": "A record consists of one or more fields, separated by commas (RFC 4180 §2.1)",
+      "approved_date": "2026-06-22",
+      "approved_by": "indexed-crafting-peacock-plan"
+    },
+    {
+      "fact_id": "FACT-CSV-002",
+      "qname": "csv:field",
+      "format": "csv",
+      "authority": "RFC 4180 §2.4",
+      "claim": "Each record contains the same number of fields; fields may or may not be contained within double quotes (RFC 4180 §2.4)",
+      "approved_date": "2026-06-22",
+      "approved_by": "indexed-crafting-peacock-plan"
+    },
+    {
+      "fact_id": "FACT-TSV-001",
+      "qname": "tsv:record",
+      "format": "tsv",
+      "authority": "IANA text/tab-separated-values media type (RFC 4180 variant)",
+      "claim": "A TSV record is a sequence of tab-delimited fields terminated by CRLF or LF",
+      "approved_date": "2026-06-22",
+      "approved_by": "indexed-crafting-peacock-plan"
+    },
+    {
+      "fact_id": "FACT-TSV-002",
+      "qname": "tsv:field",
+      "format": "tsv",
+      "authority": "IANA text/tab-separated-values media type",
+      "claim": "A TSV field is a sequence of characters not containing a tab, CR, or LF",
+      "approved_date": "2026-06-22",
+      "approved_by": "indexed-crafting-peacock-plan"
+    },
+    {
+      "fact_id": "FACT-DIF-001",
+      "qname": "dif:header",
+      "format": "dif",
+      "authority": "Lotus DIF format specification (informal)",
+      "claim": "The DIF file header section defines tuple metadata including file version, rows, and columns",
+      "approved_date": "2026-06-22",
+      "approved_by": "indexed-crafting-peacock-plan"
+    },
+    {
+      "fact_id": "FACT-DIF-002",
+      "qname": "dif:vector",
+      "format": "dif",
+      "authority": "Lotus DIF format specification (informal)",
+      "claim": "A DIF vector represents a row or column of data values",
+      "approved_date": "2026-06-22",
+      "approved_by": "indexed-crafting-peacock-plan"
+    },
+    {
+      "fact_id": "FACT-DIF-003",
+      "qname": "dif:datum",
+      "format": "dif",
+      "authority": "Lotus DIF format specification (informal)",
+      "claim": "A DIF datum is a single cell value with type indicator (V=numeric, NA=not available, ERROR=error)",
+      "approved_date": "2026-06-22",
+      "approved_by": "indexed-crafting-peacock-plan"
+    },
+    {
+      "fact_id": "FACT-SYLK-001",
+      "qname": "sylk:header",
+      "format": "sylk",
+      "authority": "Microsoft SYLK format specification",
+      "claim": "The SYLK header record identifies the file as SYLK format (ID;P record)",
+      "approved_date": "2026-06-22",
+      "approved_by": "indexed-crafting-peacock-plan"
+    },
+    {
+      "fact_id": "FACT-SYLK-002",
+      "qname": "sylk:row",
+      "format": "sylk",
+      "authority": "Microsoft SYLK format specification",
+      "claim": "A SYLK row is identified by a C record with row coordinate",
+      "approved_date": "2026-06-22",
+      "approved_by": "indexed-crafting-peacock-plan"
+    },
+    {
+      "fact_id": "FACT-SYLK-003",
+      "qname": "sylk:cell",
+      "format": "sylk",
+      "authority": "Microsoft SYLK format specification",
+      "claim": "A SYLK cell carries column/row coordinates and an optional value field",
+      "approved_date": "2026-06-22",
+      "approved_by": "indexed-crafting-peacock-plan"
+    },
+    {
+      "fact_id": "FACT-NDJSON-001",
+      "qname": "ndjson:record",
+      "format": "ndjson",
+      "authority": "Newline Delimited JSON specification (ndjson.org)",
+      "claim": "Each line in an NDJSON file is a valid JSON value, typically an object",
+      "approved_date": "2026-06-22",
+      "approved_by": "indexed-crafting-peacock-plan"
+    },
+    {
+      "fact_id": "FACT-NDJSON-002",
+      "qname": "ndjson:field",
+      "format": "ndjson",
+      "authority": "Newline Delimited JSON specification (ndjson.org)",
+      "claim": "An NDJSON field is a key-value pair within a JSON object record",
+      "approved_date": "2026-06-22",
+      "approved_by": "indexed-crafting-peacock-plan"
+    },
+    {
+      "fact_id": "FACT-TOML-001",
+      "qname": "toml:table",
+      "format": "toml",
+      "authority": "TOML specification v1.0 (toml.io)",
+      "claim": "A TOML table is a collection of key-value pairs under a [table-name] header",
+      "approved_date": "2026-06-22",
+      "approved_by": "indexed-crafting-peacock-plan"
+    },
+    {
+      "fact_id": "FACT-TOML-002",
+      "qname": "toml:key",
+      "format": "toml",
+      "authority": "TOML specification v1.0 (toml.io)",
+      "claim": "A TOML key identifies a value; keys are either bare keys, quoted keys, or dotted keys",
+      "approved_date": "2026-06-22",
+      "approved_by": "indexed-crafting-peacock-plan"
+    },
+    {
+      "fact_id": "FACT-PBM-001",
+      "qname": "pbm:header",
+      "format": "pbm",
+      "authority": "Netpbm PBM format specification",
+      "claim": "The PBM header contains magic number (P1/P4), width, and height fields",
+      "approved_date": "2026-06-22",
+      "approved_by": "indexed-crafting-peacock-plan"
+    },
+    {
+      "fact_id": "FACT-PBM-002",
+      "qname": "pbm:bitmap",
+      "format": "pbm",
+      "authority": "Netpbm PBM format specification",
+      "claim": "A PBM bitmap is a 2D array of 1-bit pixels (0=white, 1=black)",
+      "approved_date": "2026-06-22",
+      "approved_by": "indexed-crafting-peacock-plan"
+    },
+    {
+      "fact_id": "FACT-PGM-001",
+      "qname": "pgm:header",
+      "format": "pgm",
+      "authority": "Netpbm PGM format specification",
+      "claim": "The PGM header contains magic number (P2/P5), width, height, and maxval fields",
+      "approved_date": "2026-06-22",
+      "approved_by": "indexed-crafting-peacock-plan"
+    },
+    {
+      "fact_id": "FACT-PGM-002",
+      "qname": "pgm:graymap",
+      "format": "pgm",
+      "authority": "Netpbm PGM format specification",
+      "claim": "A PGM graymap is a 2D array of grayscale pixels with values 0 to maxval",
+      "approved_date": "2026-06-22",
+      "approved_by": "indexed-crafting-peacock-plan"
+    },
+    {
+      "fact_id": "FACT-PPM-001",
+      "qname": "ppm:header",
+      "format": "ppm",
+      "authority": "Netpbm PPM format specification",
+      "claim": "The PPM header contains magic number (P3/P6), width, height, and maxval fields",
+      "approved_date": "2026-06-22",
+      "approved_by": "indexed-crafting-peacock-plan"
+    },
+    {
+      "fact_id": "FACT-PPM-002",
+      "qname": "ppm:pixmap",
+      "format": "ppm",
+      "authority": "Netpbm PPM format specification",
+      "claim": "A PPM pixmap is a 2D array of RGB pixel triplets with values 0 to maxval",
+      "approved_date": "2026-06-22",
+      "approved_by": "indexed-crafting-peacock-plan"
+    },
+    {
+      "fact_id": "FACT-QOI-001",
+      "qname": "qoi:header",
+      "format": "qoi",
+      "authority": "QOI format specification (qoiformat.org)",
+      "claim": "The QOI header is a 14-byte structure containing magic, width, height, channels, and colorspace",
+      "approved_date": "2026-06-22",
+      "approved_by": "indexed-crafting-peacock-plan"
+    },
+    {
+      "fact_id": "FACT-QOI-002",
+      "qname": "qoi:chunk",
+      "format": "qoi",
+      "authority": "QOI format specification (qoiformat.org)",
+      "claim": "A QOI chunk encodes one or more pixels using one of 6 operations (RGB, RGBA, INDEX, DIFF, LUMA, RUN)",
+      "approved_date": "2026-06-22",
+      "approved_by": "indexed-crafting-peacock-plan"
+    },
+    {
+      "fact_id": "FACT-XCF-001",
+      "qname": "xcf:header",
+      "format": "xcf",
+      "authority": "GIMP XCF file format specification",
+      "claim": "The XCF header contains the magic string 'gimp xcf', version string, image width, height, and base type",
+      "approved_date": "2026-06-22",
+      "approved_by": "indexed-crafting-peacock-plan"
+    },
+    {
+      "fact_id": "FACT-XCF-002",
+      "qname": "xcf:layer",
+      "format": "xcf",
+      "authority": "GIMP XCF file format specification",
+      "claim": "An XCF layer contains a name, type, offset, width, height, and optional mode attributes",
+      "approved_date": "2026-06-22",
+      "approved_by": "indexed-crafting-peacock-plan"
+    },
+    {
+      "fact_id": "FACT-ZST-001",
+      "qname": "zst:frame",
+      "format": "zst",
+      "authority": "Zstandard frame format specification (RFC 8878)",
+      "claim": "A Zstandard frame begins with the magic number 0xFD2FB528 and contains frame header and one or more blocks",
+      "approved_date": "2026-06-22",
+      "approved_by": "indexed-crafting-peacock-plan"
+    },
+    {
+      "fact_id": "FACT-ZST-002",
+      "qname": "zst:block",
+      "format": "zst",
+      "authority": "Zstandard frame format specification (RFC 8878 §3.1.1.2)",
+      "claim": "A Zstandard block has a 3-byte header encoding Last_Block, Block_Type, and Block_Size",
+      "approved_date": "2026-06-22",
+      "approved_by": "indexed-crafting-peacock-plan"
+    },
+    {
+      "fact_id": "FACT-GNUMERIC-001",
+      "qname": "gnm:Workbook",
+      "format": "gnumeric",
+      "authority": "Gnumeric XML file format (gnumeric.org)",
+      "claim": "The gnm:Workbook element is the root element of a Gnumeric XML spreadsheet file",
+      "approved_date": "2026-06-22",
+      "approved_by": "indexed-crafting-peacock-plan"
+    },
+    {
+      "fact_id": "FACT-GNUMERIC-002",
+      "qname": "gnm:Sheet",
+      "format": "gnumeric",
+      "authority": "Gnumeric XML file format (gnumeric.org)",
+      "claim": "A gnm:Sheet element represents a single worksheet within a Gnumeric workbook",
+      "approved_date": "2026-06-22",
+      "approved_by": "indexed-crafting-peacock-plan"
+    },
+    {
+      "fact_id": "FACT-GNUMERIC-003",
+      "qname": "gnm:Cell",
+      "format": "gnumeric",
+      "authority": "Gnumeric XML file format (gnumeric.org)",
+      "claim": "A gnm:Cell element represents a single cell with row, column, and optional type/value attributes",
+      "approved_date": "2026-06-22",
+      "approved_by": "indexed-crafting-peacock-plan"
+    }
+  ]
+}
