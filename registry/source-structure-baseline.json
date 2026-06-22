@@ -364,32 +364,6 @@
       "baseline_functions_cap": 0,
       "category": "oversized_init_py"
     },
-    "src/python/xcf/xcf_analytics.py": {
-      "loc": 35,
-      "baseline_loc_cap": 35,
-      "functions": 1,
-      "baseline_functions_cap": 820,
-      "category": "analytics_separation_result",
-      "last_healed_check": "2026-06-18T09:07:02.837968+00:00",
-      "last_healed_by": "sprint559-561-deepening-20260618",
-      "cap_tightened_date": "2026-06-18",
-      "cap_tightened_reason": "TC-HEAL-LOOP-003: incorrect inflated cap corrected to actual LOC; rotation blocked",
-      "fn_cap_tightened_date": "2026-06-18",
-      "fn_cap_tightened_reason": "TC-CLEANUP-002: Function cap frozen at actual count after rotation suspension. Prior cap 698 set at extraction time; actual grew to 820 via rotation sprints. Cap updated 2026-06-18 to block further growth. LOC cap unchanged."
-    },
-    "src/python/zst/zst_analytics.py": {
-      "loc": 77,
-      "baseline_loc_cap": 77,
-      "functions": 9,
-      "baseline_functions_cap": 848,
-      "category": "analytics_separation_result",
-      "last_healed_check": "2026-06-18T09:07:02.717531+00:00",
-      "last_healed_by": "sprint559-561-deepening-20260618",
-      "cap_tightened_date": "2026-06-18",
-      "cap_tightened_reason": "TC-HEAL-LOOP-003: incorrect inflated cap corrected to actual LOC; rotation blocked",
-      "fn_cap_tightened_date": "2026-06-18",
-      "fn_cap_tightened_reason": "TC-CLEANUP-002: Function cap frozen at actual count after rotation suspension. Prior cap 743 set at extraction time; actual grew to 848 via rotation sprints. Cap updated 2026-06-18 to block further growth. LOC cap unchanged."
-    },
     "tools/supervisor/autonomous_cycle.py": {
       "loc": 2135,
       "baseline_loc_cap": 2135,
@@ -1924,14 +1898,34 @@
       "category": "new_violation_detected"
     },
     "src/python/fodg/drawing_document.py": {
-      "loc": 741,
-      "baseline_loc_cap": 741,
+      "loc": 1003,
+      "baseline_loc_cap": 1003,
       "functions": 93,
       "baseline_functions_cap": 100,
       "category": "spec_level_domain_module",
       "spec_qname": "office:document",
       "spec_fact_ref": "FACT-FODG-001",
       "note": "Pre-registered before creation per PF-4 (TC-ANAL-SEG-HEAL-001, 2026-06-22). Contains all domain analytics from fodg_analytics_extra.py + unique survivors from fodg_analytics.py. baseline_loc_cap update required after actual file is created."
+    },
+    "src/python/xcf/image_document.py": {
+      "loc": 36,
+      "baseline_loc_cap": 50,
+      "functions": 1,
+      "baseline_functions_cap": 10,
+      "category": "spec_level_domain_module",
+      "spec_qname": "xcf:image",
+      "spec_fact_ref": "FACT-XCF-001",
+      "note": "Created TC-XCF-SPEC-SEG-001 (2026-06-22). Behavioral module for XCF image-level predicates. Replaces xcf_analytics.py."
+    },
+    "src/python/zst/compressed_stream.py": {
+      "loc": 120,
+      "baseline_loc_cap": 150,
+      "functions": 9,
+      "baseline_functions_cap": 15,
+      "category": "spec_level_domain_module",
+      "spec_qname": "zst:frame",
+      "spec_fact_ref": "FACT-ZST-001",
+      "note": "Created TC-ZST-SPEC-SEG-001 (2026-06-22). Behavioral module for ZST frame-level predicates. Replaces zst_analytics.py."
     }
   },
   "qname_ownership_baseline": {

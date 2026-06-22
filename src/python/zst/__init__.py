@@ -11,11 +11,9 @@ See: acquisition-packs/zst/ for gate evidence.
 # Import all core codec functions and exception classes
 from .zst_codec import *  # noqa: F401, F403
 
-# Analytics functions available for backwards compatibility
-try:
-    from .zst_analytics import *  # noqa: F401, F403
-except ImportError:
-    pass
+# Import spec-level domain module (compressed stream metrics)
+# This import makes frame-level predicates available as first-class exports.
+from .compressed_stream import *  # noqa: F401, F403
 
 # Explicit public API — 32 core functions + exceptions for Gate 11
 __all__ = [
@@ -60,6 +58,16 @@ __all__ = [
     "zst_compression_ratio",
     "zst_max_frame_size",
     "zst_is_single_frame",
+    # Spec-level domain functions (compressed_stream module, FACT-ZST-001)
+    "zst_size_exceeds_50",
+    "zst_frame_count_exceeds_one",
+    "zst_max_byte_value",
+    "zst_min_byte_value",
+    "zst_min_byte_exceeds_zero",
+    "zst_is_empty_decompressed",
+    "zst_is_trivial_compression",
+    "zst_byte_range",
+    "zst_is_single_byte",
 ]
 
 __version__ = "0.1.0.dev0"

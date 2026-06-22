@@ -49,6 +49,11 @@ class TestZstApiCompleteness:
             "zst_frame_count", "zst_frame_sizes",
             "zst_avg_frame_size", "zst_compression_ratio",
             "zst_max_frame_size", "zst_is_single_frame",
+            # Spec-level domain functions (compressed_stream module, TC-ZST-SPEC-SEG-001)
+            "zst_size_exceeds_50", "zst_frame_count_exceeds_one",
+            "zst_max_byte_value", "zst_min_byte_value", "zst_min_byte_exceeds_zero",
+            "zst_is_empty_decompressed", "zst_is_trivial_compression",
+            "zst_byte_range", "zst_is_single_byte",
         }
         actual = set(zst.__all__)
         assert expected == actual, f"API mismatch. Missing: {expected - actual}. Extra: {actual - expected}"
