@@ -1,12 +1,12 @@
 [
   {
-    "item_id": "R1-TASKCARD-REGISTER",
-    "item_title": "Create .local/recon/taskcard-register.yaml",
+    "item_id": "TC-BYP001-LANE7-HEALING-GATE",
+    "item_title": "BYP-001: Lane 7 advisory authority depth check in healing gate",
     "declared_status": "completed",
     "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
     "evidence_found": true,
     "evidence_paths": [
-      ".local/recon/taskcard-register.yaml"
+      "tools/supervisor/check_system_healing_gate.py"
     ],
     "tests_supporting": [],
     "tests_missing": [],
@@ -20,157 +20,7 @@
     ],
     "required_rework": "",
     "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for R1-TASKCARD-REGISTER",
-    "purpose_check": {
-      "item_type": "GOVERNANCE_TASKCARD",
-      "has_gap_ref": null,
-      "verdict": "NOT_APPLICABLE",
-      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
-    },
-    "semantic_verification": {
-      "adequate": false,
-      "confidence": 0.0,
-      "stub_detected": false,
-      "deficiencies": [
-        "few key fields found: [] (expected >=3)"
-      ],
-      "llm_used": false,
-      "intermediate_verified": true,
-      "source": "intermediate_content_check",
-      "checks": [
-        {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\recon\\taskcard-register.yaml",
-          "exists": true,
-          "content_ok": false,
-          "detail": "few key fields found: [] (expected >=3)",
-          "check_type": "yaml_content"
-        }
-      ],
-      "summary": "0/1 evidence files passed content check"
-    }
-  },
-  {
-    "item_id": "R2-SKILL-GAP-TEMPLATE",
-    "item_title": "Create .local/recon/skill-gap-taskcard-template.yaml",
-    "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
-    "evidence_found": true,
-    "evidence_paths": [
-      ".local/recon/skill-gap-taskcard-template.yaml"
-    ],
-    "tests_supporting": [],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths",
-      "No concrete test/criteria proof (path-only acceptance)"
-    ],
-    "acceptance_criteria_failed": [
-      "No raw proof, test content, or acceptance criteria verified"
-    ],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for R2-SKILL-GAP-TEMPLATE",
-    "purpose_check": {
-      "item_type": "GOVERNANCE_TASKCARD",
-      "has_gap_ref": null,
-      "verdict": "NOT_APPLICABLE",
-      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
-    },
-    "semantic_verification": {
-      "adequate": false,
-      "confidence": 0.0,
-      "stub_detected": false,
-      "deficiencies": [
-        "few key fields found: ['sprint_id'] (expected >=3)"
-      ],
-      "llm_used": false,
-      "intermediate_verified": true,
-      "source": "intermediate_content_check",
-      "checks": [
-        {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\recon\\skill-gap-taskcard-template.yaml",
-          "exists": true,
-          "content_ok": false,
-          "detail": "few key fields found: ['sprint_id'] (expected >=3)",
-          "check_type": "yaml_content"
-        }
-      ],
-      "summary": "0/1 evidence files passed content check"
-    }
-  },
-  {
-    "item_id": "R3-GAP-REGISTER-VERIFIED",
-    "item_title": "Verify gap-register.yaml SKILL-GAP-010/011/BYPASS-001 resolved",
-    "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
-    "evidence_found": true,
-    "evidence_paths": [
-      ".local/recon/gap-register.yaml"
-    ],
-    "tests_supporting": [],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths",
-      "No concrete test/criteria proof (path-only acceptance)"
-    ],
-    "acceptance_criteria_failed": [
-      "No raw proof, test content, or acceptance criteria verified"
-    ],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for R3-GAP-REGISTER-VERIFIED",
-    "purpose_check": {
-      "item_type": "GOVERNANCE_TASKCARD",
-      "has_gap_ref": null,
-      "verdict": "NOT_APPLICABLE",
-      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
-    },
-    "semantic_verification": {
-      "adequate": false,
-      "confidence": 0.0,
-      "stub_detected": false,
-      "deficiencies": [
-        "few key fields found: [] (expected >=3)"
-      ],
-      "llm_used": false,
-      "intermediate_verified": true,
-      "source": "intermediate_content_check",
-      "checks": [
-        {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\recon\\gap-register.yaml",
-          "exists": true,
-          "content_ok": false,
-          "detail": "few key fields found: [] (expected >=3)",
-          "check_type": "yaml_content"
-        }
-      ],
-      "summary": "0/1 evidence files passed content check"
-    }
-  },
-  {
-    "item_id": "R4-PILOT-POSITIVE",
-    "item_title": "Pilot positive test: check-skill-coverage python_api/fods",
-    "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
-    "evidence_found": true,
-    "evidence_paths": [
-      ".supervisor/skill-registry.yaml"
-    ],
-    "tests_supporting": [],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths",
-      "No concrete test/criteria proof (path-only acceptance)"
-    ],
-    "acceptance_criteria_failed": [
-      "No raw proof, test content, or acceptance criteria verified"
-    ],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for R4-PILOT-POSITIVE",
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for TC-BYP001-LANE7-HEALING-GATE",
     "purpose_check": {
       "item_type": "GOVERNANCE_TASKCARD",
       "has_gap_ref": null,
@@ -187,73 +37,14 @@
       "source": "intermediate_content_check",
       "checks": [
         {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.supervisor\\skill-registry.yaml",
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tools\\supervisor\\check_system_healing_gate.py",
           "exists": true,
           "content_ok": true,
-          "detail": "YAML has 3/6 expected fields",
-          "check_type": "yaml_content"
+          "detail": "non-empty (18365 bytes): C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tools\\supervisor\\check_system_healing_gate.py",
+          "check_type": "nonzero_existence"
         }
       ],
       "summary": "1/1 evidence files passed content check"
-    }
-  },
-  {
-    "item_id": "R4-PILOT-NEGATIVE",
-    "item_title": "Pilot negative test: check-skill-coverage capability_compiler/fods",
-    "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
-    "evidence_found": true,
-    "evidence_paths": [
-      ".local/taskcards/SKILL-GAP-20260622-080747.yaml",
-      ".local/taskcards/SKILL-GAP-20260622-074502.yaml"
-    ],
-    "tests_supporting": [],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths",
-      "No concrete test/criteria proof (path-only acceptance)"
-    ],
-    "acceptance_criteria_failed": [
-      "No raw proof, test content, or acceptance criteria verified"
-    ],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for R4-PILOT-NEGATIVE",
-    "purpose_check": {
-      "item_type": "GOVERNANCE_TASKCARD",
-      "has_gap_ref": null,
-      "verdict": "NOT_APPLICABLE",
-      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
-    },
-    "semantic_verification": {
-      "adequate": false,
-      "confidence": 0.0,
-      "stub_detected": false,
-      "deficiencies": [
-        "few key fields found: [] (expected >=3)",
-        "few key fields found: [] (expected >=3)"
-      ],
-      "llm_used": false,
-      "intermediate_verified": true,
-      "source": "intermediate_content_check",
-      "checks": [
-        {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\taskcards\\SKILL-GAP-20260622-080747.yaml",
-          "exists": true,
-          "content_ok": false,
-          "detail": "few key fields found: [] (expected >=3)",
-          "check_type": "yaml_content"
-        },
-        {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\taskcards\\SKILL-GAP-20260622-074502.yaml",
-          "exists": true,
-          "content_ok": false,
-          "detail": "few key fields found: [] (expected >=3)",
-          "check_type": "yaml_content"
-        }
-      ],
-      "summary": "0/2 evidence files passed content check"
     }
   }
 ]

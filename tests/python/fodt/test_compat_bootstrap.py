@@ -46,23 +46,37 @@ class TestCompatBootstrapImports:
 
 
 class TestCompatFromSpec:
-    """Verify the imports come from spec/ stubs (TC-FODT-002 post-switch guard)."""
+    """Verify the imports come from spec/ or Compat/ (TC-FODT-002 + TC-PH-005 guard).
+
+    TC-PH-005: compat.py re-exports from Compat/ facades which inherit from spec/.
+    Both old (spec/ direct) and new (Compat/ facade) paths are acceptable.
+    The only forbidden source is the plain models.py filename.
+    """
 
     def test_fodtparagraph_is_from_spec(self):
-        """FodtParagraph from compat must be the spec/text/paragraph.py class."""
+        """FodtParagraph from compat must be spec-backed (spec/ or Compat/), not models.py."""
         from fodt.compat import FodtParagraph
         source_file = inspect.getfile(FodtParagraph)
-        assert "spec" in source_file, (
-            f"FodtParagraph imported from wrong file: {source_file}\n"
-            "Expected spec/text/paragraph.py — compat.py switch may not have completed"
+        filename = source_file.replace("\\", "/").split("/")[-1]
+        assert filename != "models.py", (
+            f"FodtParagraph imported from models.py: {source_file}\n"
+            "compat.py must not import from models.py"
+        )
+        assert ("spec" in source_file or "Compat" in source_file), (
+            f"FodtParagraph imported from unexpected file: {source_file}\n"
+            "Expected spec/ or Compat/ path"
         )
 
     def test_fodtspan_is_from_spec(self):
-        """FodtSpan from compat must be the spec/text/span.py class."""
+        """FodtSpan from compat must be spec-backed (spec/ or Compat/), not models.py."""
         from fodt.compat import FodtSpan
         source_file = inspect.getfile(FodtSpan)
-        assert "spec" in source_file, (
-            f"FodtSpan imported from wrong file: {source_file}"
+        filename = source_file.replace("\\", "/").split("/")[-1]
+        assert filename != "models.py", (
+            f"FodtSpan imported from models.py: {source_file}"
+        )
+        assert ("spec" in source_file or "Compat" in source_file), (
+            f"FodtSpan imported from unexpected file: {source_file}"
         )
 
 
@@ -153,14 +167,15 @@ class TestCompatSwitchGuard:
     """TC-FODT-003: Guard tests that prevent future regression back to models.py imports."""
 
     def test_compat_imports_from_spec(self):
-        """FodtParagraph.__module__ must contain 'spec' — not 'models'."""
+        """FodtParagraph.__module__ must be spec-backed (spec/ or Compat/), not models.py."""
         from fodt.compat import FodtParagraph
-        assert "spec" in FodtParagraph.__module__, (
-            f"FodtParagraph module is {FodtParagraph.__module__!r} — expected spec/. "
-            "compat.py may have been reverted to models.py imports."
+        module = FodtParagraph.__module__
+        assert "models" not in module, (
+            f"FodtParagraph still from models.py: {module!r}"
         )
-        assert "models" not in FodtParagraph.__module__, (
-            f"FodtParagraph still from models.py: {FodtParagraph.__module__!r}"
+        assert ("spec" in module or "Compat" in module), (
+            f"FodtParagraph module {module!r} — expected 'spec' or 'Compat' in module path. "
+            "compat.py may have been reverted to models.py imports."
         )
 
     def test_spec_stub_status_in_registry(self):
@@ -208,11 +223,15 @@ class TestCompatRoundtrip:
         assert isinstance(p0.text, str), f"paragraph.text should be str, got {type(p0.text)}"
 
     def test_compat_paragraph_class_is_from_spec(self):
-        """The FodtParagraph class imported from compat comes from spec/ (post-switch verification)."""
+        """The FodtParagraph class imported from compat is spec-backed (TC-PH-005 verification)."""
         from fodt.compat import FodtParagraph
         assert FodtParagraph is not None, "FodtParagraph is None"
-        assert "spec" in FodtParagraph.__module__, (
-            f"FodtParagraph class __module__ should contain 'spec', got: {FodtParagraph.__module__}"
+        module = FodtParagraph.__module__
+        assert "models" not in module, (
+            f"FodtParagraph class __module__ is from models.py: {module!r}"
+        )
+        assert ("spec" in module or "Compat" in module), (
+            f"FodtParagraph class __module__ unexpected: {module!r} — expected spec/ or Compat/"
         )
         # Verify spec class can construct a synthetic paragraph without crashing
         p = FodtParagraph({"kind": "paragraph", "text": "roundtrip test", "spans": []})

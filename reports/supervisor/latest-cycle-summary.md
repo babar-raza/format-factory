@@ -1,11 +1,11 @@
 # Latest Supervisor Cycle Summary
-Run: floating-stargazing-globe-20260622-080956
-Sprint: floating-stargazing-globe-20260622-080956
-Timestamp: 2026-06-22T13:13:50.438613
-Verdict: ACCEPTED_WITH_REWORK
-Autonomous Continue: False
-Accepted: 5
-Rework: 1
+Run: sal-authority-sprint-D-20260622
+Sprint: sal-authority-sprint-D-20260622
+Timestamp: 2026-06-22T13:18:23.217824
+Verdict: ACCEPTED
+Autonomous Continue: True
+Accepted: 1
+Rework: 0
 Overclaimed: 0
-Review: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\floating-stargazing-globe-20260622-080956\supervisor-review.md
-Next Prompt: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\floating-stargazing-globe-20260622-080956\combined-next-worker-prompt.md
+Review: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\sal-authority-sprint-D-20260622\supervisor-review.md
+Next Prompt: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\sal-authority-sprint-D-20260622\combined-next-worker-prompt.md

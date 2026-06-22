@@ -128,6 +128,19 @@ class TestNeutralModelHasExpectedEntities:
         assert isinstance(sheet["rows"], list)
 
 
+class TestCanonicalSpecClassImportable:
+    """TC-BFT-014: Canonical spec/ class is importable and distinct from production model."""
+
+    def test_canonical_spec_document_class_importable(self):
+        """The canonical spec class for office:document is importable and has correct spec_qname."""
+        from fods.spec.office.document import Document  # canonical tree
+        assert Document.spec_qname == "office:document"
+        assert Document.spec_fact_ref == "FACT-FODS-001"
+        # Confirm it is NOT the same object as FodsDocument (they are separate layers)
+        from fods.models import FodsDocument
+        assert Document is not FodsDocument
+
+
 class TestFodsSheetCellsIterator:
     """TC-POST-005: FodsSheet.cells() returns FodsCell objects (not dict keys)."""
 

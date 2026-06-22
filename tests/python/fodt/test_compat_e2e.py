@@ -84,12 +84,17 @@ class TestParagraphProperties:
 
 class TestCompatClassIdentity:
     def test_compat_paragraph_is_from_spec(self, compat_classes):
-        """TC-FODT-002: compat.FodtParagraph must come from spec/, not models.py."""
+        """TC-FODT-002 + TC-PH-005: compat.FodtParagraph must be spec-backed, not models.py."""
         import inspect
         source_file = inspect.getfile(compat_classes["CompatParagraph"])
-        assert "spec" in source_file, (
-            f"compat.FodtParagraph is from wrong file: {source_file}\n"
-            "Expected spec/text/paragraph.py — TC-FODT-002 switch may have been reverted."
+        filename = source_file.replace("\\", "/").split("/")[-1]
+        assert filename != "models.py", (
+            f"compat.FodtParagraph is from models.py: {source_file}\n"
+            "TC-FODT-002 switch may have been reverted."
+        )
+        assert ("spec" in source_file or "Compat" in source_file), (
+            f"compat.FodtParagraph is from unexpected file: {source_file}\n"
+            "Expected spec/ or Compat/ path — TC-FODT-002 switch may have been reverted."
         )
 
     def test_paragraph_from_parse_has_required_properties(self, fodt_doc):

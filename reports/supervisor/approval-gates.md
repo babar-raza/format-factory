@@ -1,6 +1,6 @@
 # Approval Gates Classification
-Sprint ID: floating-stargazing-globe-20260622-080956
-Generated: 2026-06-22T13:15:15.348008
+Sprint ID: sal-authority-sprint-D-20260622
+Generated: 2026-06-22T13:18:49.090311
 Current Mode: MODE 4 (ACTIVE_MCP_ACTIVATION)
 
 ## Pending Actions

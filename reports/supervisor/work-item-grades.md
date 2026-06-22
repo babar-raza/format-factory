@@ -1,18 +1,14 @@
 # Work Item Grades
-Sprint: floating-stargazing-globe-20260622-080956
-Generated: 2026-06-22T13:13:50.438613
-Global Status: ACCEPTED_WITH_REWORK
+Sprint: sal-authority-sprint-D-20260622
+Generated: 2026-06-22T13:18:23.217824
+Global Status: ACCEPTED
 
 | Item ID | Grade | Rework Required |
 |---------|-------|-----------------|
-| R1-TASKCARD-REGISTER | ACCEPTED_WITH_LIMITATIONS |  |
-| R2-SKILL-GAP-TEMPLATE | ACCEPTED_WITH_LIMITATIONS |  |
-| R3-GAP-REGISTER-VERIFIED | ACCEPTED_WITH_LIMITATIONS |  |
-| R4-PILOT-POSITIVE | ACCEPTED_WITH_LIMITATIONS |  |
-| R4-PILOT-NEGATIVE | ACCEPTED_WITH_LIMITATIONS |  |
+| TC-BYP001-LANE7-HEALING-GATE | ACCEPTED_WITH_LIMITATIONS |  |
 
 ## Summary
-- Accepted: 5
-- Rework: 1
+- Accepted: 1
+- Rework: 0
 - Overclaimed: 0
-- Autonomous Continue: False
+- Autonomous Continue: True

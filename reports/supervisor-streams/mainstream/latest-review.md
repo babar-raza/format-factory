@@ -1,19 +1,15 @@
-# Supervisor Review: floating-stargazing-globe-20260622-080956
-Sprint: floating-stargazing-globe-20260622-080956
-Timestamp: 2026-06-22T13:14:21.125816
-Overall Verdict: ACCEPTED_WITH_REWORK
-Autonomous Continue: False
+# Supervisor Review: sal-authority-sprint-D-20260622
+Sprint: sal-authority-sprint-D-20260622
+Timestamp: 2026-06-22T13:18:46.171070
+Overall Verdict: ACCEPTED
+Autonomous Continue: True
 
 ## Summary
-- Accepted: 5
-- Rework: 1
+- Accepted: 1
+- Rework: 0
 - Rejected: 0
 - Overclaimed: 0
-- Critical Rework: 1
+- Critical Rework: 0
 
 ## Item Grades
-- **R1-TASKCARD-REGISTER** (Create .local/recon/taskcard-register.yaml): ACCEPTED_WITH_LIMITATIONS
-- **R2-SKILL-GAP-TEMPLATE** (Create .local/recon/skill-gap-taskcard-template.yaml): ACCEPTED_WITH_LIMITATIONS
-- **R3-GAP-REGISTER-VERIFIED** (Verify gap-register.yaml SKILL-GAP-010/011/BYPASS-001 resolved): ACCEPTED_WITH_LIMITATIONS
-- **R4-PILOT-POSITIVE** (Pilot positive test: check-skill-coverage python_api/fods): ACCEPTED_WITH_LIMITATIONS
-- **R4-PILOT-NEGATIVE** (Pilot negative test: check-skill-coverage capability_compiler/fods): ACCEPTED_WITH_LIMITATIONS
+- **TC-BYP001-LANE7-HEALING-GATE** (BYP-001: Lane 7 advisory authority depth check in healing gate): ACCEPTED_WITH_LIMITATIONS
