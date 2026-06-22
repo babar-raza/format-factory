@@ -439,13 +439,6 @@ def odt_shortest_paragraph_length(file_path: str | Path) -> int:
     return min(lengths)
 
 
-def odt_max_paragraph_length(file_path: str | Path) -> int:
-    """Return the character length of the longest paragraph. 0 if none."""
-    doc = parse_odt_strict(file_path)
-    lengths = [len(p.text) for p in doc.paragraphs if p.text.strip()]
-    if not lengths:
-        return 0
-    return max(lengths)
 
 
 def odt_avg_chars_per_paragraph(file_path: str | Path) -> float:

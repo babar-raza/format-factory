@@ -304,19 +304,6 @@ def ppm_blue_channel_sum(file_path: str | Path) -> int:
     return sum(p[2] for p in img.pixels)
 
 
-def ppm_unique_color_count(file_path: str | Path) -> int:
-    """Return the number of distinct colors (R,G,B tuples) in the image.
-
-    Args:
-        file_path: Path to a PPM file.
-
-    Returns:
-        Integer count of unique color tuples. 0 for empty images.
-    """
-    img = parse_ppm_strict(file_path)
-    if not img.pixels:
-        return 0
-    return len(set(tuple(p) for p in img.pixels))
 
 
 def ppm_perimeter(file_path: str | Path) -> int:
@@ -485,12 +472,6 @@ def ppm_distinct_pixel_count(file_path: str | Path) -> int:
     return len(set(img.pixels))
 
 
-def ppm_is_grayscale(file_path: str | Path) -> bool:
-    """Return True if all pixels have equal R, G, and B channel values."""
-    img = parse_ppm_strict(file_path)
-    if not img.pixels:
-        return True
-    return all(p[0] == p[1] == p[2] for p in img.pixels)
 
 
 def ppm_red_ratio(file_path: str | Path) -> float:

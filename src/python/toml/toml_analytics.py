@@ -159,11 +159,6 @@ def toml_depth(source: "str | bytes | Path") -> int:
     return _depth(data)
 
 
-def toml_list_count(source: "str | bytes | Path") -> int:
-    """Return the count of top-level keys whose values are lists."""
-    model = load_toml(source)
-    data = model.get("data", model)
-    return sum(1 for v in data.values() if isinstance(v, list))
 
 
 def toml_avg_key_length(source: "str | bytes | Path") -> float:

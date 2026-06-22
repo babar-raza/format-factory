@@ -246,6 +246,8 @@ class TestNoOrphanSourceFiles:
         "__init__", "parser", "writer", "codec", "stats", "constants",
         "exceptions", "models", "neutral_model", "list_traversal",
         "csv_exporter", "conftest", "compat",
+        # Spec-derived domain module names (ODF canonical element names)
+        "drawing_document",
     }
     _CONVERTER_PATTERNS = {"_to_", "_exporter", "_encoder"}
 

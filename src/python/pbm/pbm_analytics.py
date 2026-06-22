@@ -244,10 +244,6 @@ def pbm_is_uniform(file_path: "str | Path") -> bool:
     return all(p == first for p in img.pixels)
 
 
-def pbm_white_pixel_count(file_path: "str | Path") -> int:
-    """Return the count of white pixels (value 0) in a PBM image."""
-    img = parse_pbm_strict(file_path)
-    return sum(1 for p in img.pixels if p == 0)
 
 
 def pbm_perimeter(file_path: "str | Path") -> int:
@@ -324,14 +320,6 @@ def pbm_area(file_path: "str | Path") -> int:
     return img.width * img.height
 
 
-def pbm_white_density(file_path: "str | Path") -> float:
-    """Return the ratio of white pixels to total pixels. 0.0 if no pixels."""
-    img = parse_pbm_strict(file_path)
-    total = len(img.pixels)
-    if total == 0:
-        return 0.0
-    white = sum(1 for p in img.pixels if p == 0)
-    return white / total
 
 
 def pbm_column_count(file_path: "str | Path") -> int:
@@ -390,10 +378,6 @@ def pbm_pixel_density(file_path: "str | Path") -> float:
     return (img.width * img.height) / fsize
 
 
-def pbm_row_count(file_path: "str | Path") -> int:
-    """Return the number of rows (height) in the image."""
-    img = parse_pbm_strict(file_path)
-    return img.height
 
 
 def pbm_is_binary_balanced(file_path: "str | Path") -> bool:
@@ -487,26 +471,10 @@ def pbm_total_pixels(file_path: "str | Path") -> int:
     return img.width * img.height
 
 
-def pbm_aspect_ratio(file_path: "str | Path") -> float:
-    """Return width/height ratio. 0.0 if height is 0."""
-    img = parse_pbm_strict(file_path)
-    return img.width / img.height if img.height > 0 else 0.0
 
 
-def pbm_is_square(file_path: "str | Path") -> bool:
-    """Return True if width equals height."""
-    img = parse_pbm_strict(file_path)
-    return img.width == img.height
 
 
-def pbm_white_density(file_path: "str | Path") -> float:
-    """Return ratio of white pixels (0) to total pixels. 0.0 if no pixels."""
-    img = parse_pbm_strict(file_path)
-    total = img.width * img.height
-    if total == 0:
-        return 0.0
-    white = sum(1 for p in img.pixels if p == 0)
-    return white / total
 
 
 def pbm_is_all_black(file_path: "str | Path") -> bool:

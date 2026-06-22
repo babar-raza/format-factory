@@ -436,9 +436,6 @@ def pgm_column_count(file_path: str | Path) -> int:
     return img.width
 
 
-def pgm_is_uniform(file_path: str | Path) -> bool:
-    """Return True if all pixels have the same brightness value (range == 0)."""
-    return pgm_brightness_range(file_path) == 0
 
 
 def pgm_is_wide(file_path: str | Path) -> bool:
