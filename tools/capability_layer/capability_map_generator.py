@@ -70,11 +70,35 @@ STATE_ORDER = [
     "blocked", "unsupported", "out_of_scope", "future",
 ]
 
-_DEFAULT_SPRINT_ID = "FORMAT-FACTORY-CAPABILITY-FEATURE-UNDERSTANDING-LAYER-INVESTIGATIVE-HEALING-001"
-_DEFAULT_RUN_ID = "capability-feature-understanding-layer-healing-20260608-e382e5f"
-# These are overridden at runtime via CLI --sprint-id / --run-id
-SPRINT_ID = _DEFAULT_SPRINT_ID
-RUN_ID = _DEFAULT_RUN_ID
+def _derive_sprint_id() -> str:
+    import datetime
+    import subprocess
+    try:
+        sha = subprocess.check_output(
+            ["git", "rev-parse", "--short=7", "HEAD"],
+            cwd=str(_REPO_ROOT), text=True, stderr=subprocess.DEVNULL
+        ).strip()
+    except Exception:
+        sha = "unknown"
+    return f"CAPABILITY-LAYER-HEALING-{datetime.date.today().strftime('%Y%m%d')}-{sha}"
+
+
+def _derive_run_id() -> str:
+    import datetime
+    import subprocess
+    try:
+        sha = subprocess.check_output(
+            ["git", "rev-parse", "--short=7", "HEAD"],
+            cwd=str(_REPO_ROOT), text=True, stderr=subprocess.DEVNULL
+        ).strip()
+    except Exception:
+        sha = "unknown"
+    return f"capability-layer-healing-{datetime.date.today().strftime('%Y%m%d')}-{sha}"
+
+
+# Module-level defaults — overridden by CLI --sprint-id / --run-id arguments
+SPRINT_ID = _derive_sprint_id()
+RUN_ID = _derive_run_id()
 
 
 # ---------------------------------------------------------------------------
@@ -444,30 +468,80 @@ def _get_pack_authority(format_id: str) -> str:
     return "product_goal"
 
 
+_test_fn_name_cache: dict[str, frozenset[str]] = {}
+
+
+def _get_cached_test_functions(test_dir: Path) -> frozenset[str]:
+    """Return all test function names from test_dir as lowercase strings.
+
+    Results are cached per directory so the AST parse only runs once per
+    format per generator invocation.
+    """
+    key = str(test_dir)
+    if key in _test_fn_name_cache:
+        return _test_fn_name_cache[key]
+    if not test_dir.is_dir():
+        _test_fn_name_cache[key] = frozenset()
+        return frozenset()
+    names: set[str] = set()
+    for test_file in sorted(test_dir.glob("test_*.py")):
+        try:
+            source = test_file.read_text(encoding="utf-8", errors="replace")
+            tree = ast.parse(source)
+        except Exception:
+            continue  # conservative: skip unparseable files
+        for node in ast.walk(tree):
+            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                if node.name.startswith("test"):
+                    names.add(node.name.lower())
+    result = frozenset(names)
+    _test_fn_name_cache[key] = result
+    return result
+
+
+def _scan_test_function_names(test_dir: Path, fn_name: str) -> bool:
+    """Return True if any test function in test_dir covers fn_name.
+
+    Uses cached AST parsing — the directory is only scanned once per generator
+    run regardless of how many functions are checked against it.
+    Falls back to False (conservative) on any parse error.
+    """
+    all_names = _get_cached_test_functions(test_dir)
+    if not all_names:
+        return False
+    fn_lower = fn_name.lower().replace(" ", "_")
+    return any(fn_lower in name for name in all_names)
+
+
 def _determine_state(
     fn_name: str,
     implemented: bool,
     test_files: list[str],
     example_count: int,
     authority_state: str,
+    test_dir: "Path | None" = None,
 ) -> tuple[str, str, float]:
     """Determine current_state, confidence_reason, and confidence float.
 
-    Uses per-function test matching: a function is only test_verified if at least
-    one test file name contains the function name (case-insensitive substring).
+    When test_dir is provided, uses AST-level function-name scanning for
+    precision. Falls back to file-name substring matching when test_dir is None
+    (backward-compatible for unit tests that don't have a real directory).
     """
     if not implemented:
         return "missing", "Function not found in source", 0.9
-    # Per-function test matching — not just directory-level count
     fn_lower = fn_name.lower()
-    has_matching_test = any(fn_lower in tf.lower() for tf in test_files)
+    if test_dir is not None:
+        has_matching_test = _scan_test_function_names(test_dir, fn_name)
+    else:
+        # Legacy file-name substring fallback (used in unit tests)
+        has_matching_test = any(fn_lower in tf.lower() for tf in test_files)
     confidence_boost = 0.05 if authority_state == "spec_fact" else 0.0
     if has_matching_test:
         if example_count > 0:
-            return "example_verified", f"test match: {fn_name} in test files + examples", min(0.9 + confidence_boost, 1.0)
-        return "test_verified", f"test match: {fn_name} in test files", min(0.8 + confidence_boost, 1.0)
-    if test_files:
-        return "implementation_verified", f"Implemented but no test file matches '{fn_name}'", 0.5
+            return "example_verified", f"test match: {fn_name} in test functions + examples", min(0.9 + confidence_boost, 1.0)
+        return "test_verified", f"test match: {fn_name} in test functions", min(0.8 + confidence_boost, 1.0)
+    if test_files or (test_dir is not None and test_dir.is_dir()):
+        return "implementation_verified", f"Implemented but no test function matches '{fn_name}'", 0.5
     return "implementation_verified", "Implemented; no tests in directory", 0.4
 
 
@@ -487,6 +561,7 @@ def _build_foss_records(
     spec_facts: list[str] | None = None,
     verified_spec_facts: list[str] | None = None,
     sal_fact_objects: list[dict] | None = None,
+    test_dir: "Path | None" = None,
 ) -> list[dict]:
     """Build FOSS/reduced capability records for one format."""
     records: list[dict] = []
@@ -506,7 +581,8 @@ def _build_foss_records(
         actually_implemented = is_implemented or source_fn_check
 
         state, reason, confidence = _determine_state(
-            op_key, actually_implemented, test_files, example_count, effective_authority
+            op_key, actually_implemented, test_files, example_count, effective_authority,
+            test_dir=test_dir,
         )
 
         # Per-operation spec_refs: use SAL fact matching when sal_fact_objects available
@@ -563,7 +639,9 @@ def _build_foss_records(
     for fn in implemented_fns:
         fn_lower = fn.lower()
         if fn_lower not in status_keys and not any(fn_lower in k for k in status_keys):
-            state2, reason2, conf2 = _determine_state(fn, True, test_files, example_count, authority_state)
+            state2, reason2, conf2 = _determine_state(
+                fn, True, test_files, example_count, authority_state, test_dir=test_dir
+            )
             record2: dict[str, Any] = {
                 "capability_id": f"{format_id}-FOSS-{fn.upper()}-SRC-001",
                 "format": format_id,
@@ -860,7 +938,50 @@ def _build_gap_ledger(all_records: list[dict]) -> list[dict]:
 # Action queue builder
 # ---------------------------------------------------------------------------
 
-def _build_action_queue(gaps: list[dict], commercial_records: list[dict], foss_records: list[dict]) -> list[dict]:
+def _eval_action_conditions(poc_data: dict) -> list[dict]:
+    """Return only actions whose preconditions are currently unresolved.
+
+    Add future conditional actions here instead of hard-coding them in
+    _build_action_queue. This function is the single source of truth for
+    what work is actually needed.
+    """
+    actions: list[dict] = []
+
+    # ACT-UPDATE-POC-TARGETS: only emit if FODG, TSV, or NDJSON missing
+    foss = poc_data.get("foss_reduced_products", [])
+    if isinstance(foss, list):
+        foss_keys = {str(item.get("format_id", item.get("format", ""))).upper() for item in foss}
+    else:
+        foss_keys = {k.upper() for k in foss.keys()}
+    missing_foss = {"FODG", "TSV", "NDJSON"} - foss_keys
+    if missing_foss:
+        actions.append({
+            "action_id": "ACT-UPDATE-POC-TARGETS",
+            "action_type": "UPDATE_MATRIX",
+            "format": "ALL",
+            "product_type": "both",
+            "capability": "poc-targets.yaml staleness healing",
+            "gap_id": "GAP-POC-TARGETS-STALE",
+            "priority": "P1",
+            "lane": 4,
+            "description": f"Add missing FOSS formats to poc-targets.yaml: {sorted(missing_foss)}",
+            "taskcard": "CAP-PROD-005",
+            "verification": "python tools/capability_layer/capability_map_generator.py",
+            "advisory_only": False,
+            "machine_executable": True,
+            "external_gate": False,
+            "safe_for_autonomous": True,
+        })
+
+    return actions
+
+
+def _build_action_queue(
+    gaps: list[dict],
+    commercial_records: list[dict],
+    foss_records: list[dict],
+    poc_data: dict | None = None,
+) -> list[dict]:
     """Build machine-readable action queue from gap ledger."""
     actions: list[dict] = []
 
@@ -868,6 +989,12 @@ def _build_action_queue(gaps: list[dict], commercial_records: list[dict], foss_r
     for gap in gaps[:20]:  # top 20 gaps
         if not gap.get("suggested_taskcard"):
             continue
+        is_machine_executable = (
+            gap["product_type"] == "foss_reduced"
+            and gap["priority"] in ("P0", "P1")
+            and not gap.get("blocks_poc", False)
+            and gap.get("commercial_impact", "NONE") == "NONE"
+        )
         actions.append({
             "action_id": f"ACT-{gap['gap_id']}",
             "action_type": "IMPLEMENT_CAPABILITY",
@@ -880,35 +1007,15 @@ def _build_action_queue(gaps: list[dict], commercial_records: list[dict], foss_r
             "description": f"Implement {gap['capability_name']} for {gap['format']} ({gap['product_type']})",
             "taskcard": gap["suggested_taskcard"],
             "verification": gap["suggested_verification"],
-            "advisory_only": True,
-            "machine_executable": (
-                gap["product_type"] == "foss_reduced"
-                and gap["priority"] in ("P0", "P1")
-                and not gap.get("blocks_poc", False)
-                and gap.get("commercial_impact", "NONE") == "NONE"
-            ),
+            "advisory_only": not is_machine_executable,
+            "machine_executable": is_machine_executable,
             "external_gate": False,
             "safe_for_autonomous": gap["priority"] in ("P0", "P1", "P2") and not gap["blocks_poc"],
         })
 
-    # Update poc-targets action
-    actions.append({
-        "action_id": "ACT-UPDATE-POC-TARGETS",
-        "action_type": "UPDATE_MATRIX",
-        "format": "ALL",
-        "product_type": "both",
-        "capability": "poc-targets.yaml staleness healing",
-        "gap_id": "GAP-POC-TARGETS-STALE",
-        "priority": "P1",
-        "lane": 4,
-        "description": "Update poc-targets.yaml with FODG, TSV, NDJSON FOSS entries and missing capabilities",
-        "taskcard": "CAP-PROD-005",
-        "verification": "python tools/capability_layer/capability_map_generator.py",
-        "advisory_only": True,
-        "machine_executable": True,
-        "external_gate": False,
-        "safe_for_autonomous": True,
-    })
+    # Conditional actions evaluated against current system state
+    if poc_data is not None:
+        actions.extend(_eval_action_conditions(poc_data))
 
     return actions
 
@@ -1064,6 +1171,7 @@ def generate(
             spec_facts=facts,
             verified_spec_facts=verified_facts,
             sal_fact_objects=sal_format_facts if sal_format_facts else None,
+            test_dir=test_dir,
         )
         foss_records.extend(recs)
 
@@ -1133,6 +1241,28 @@ def generate(
     )
     print(f"[OK] unified-capability-map.json — {len(all_records)} total records", file=sys.stderr)
 
+    # --- Write compact capability summary (< 2MB for fast downstream use) ---
+    _SUMMARY_FIELDS = [
+        "capability_id", "format", "product_type", "capability_name",
+        "capability_category", "current_state", "blocks_readiness", "priority",
+    ]
+    summary_records = []
+    for rec in all_records:
+        summary_rec = {f: rec.get(f) for f in _SUMMARY_FIELDS}
+        summary_rec["spec_refs_count"] = len(rec.get("spec_refs", []))
+        summary_records.append(summary_rec)
+    capability_summary = {
+        "schema_version": "1.0",
+        "generated_at": sprint_now,
+        "sprint_id": SPRINT_ID,
+        "total_records": len(summary_records),
+        "capabilities": summary_records,
+    }
+    (output_dir / "capability_summary.json").write_text(
+        json.dumps(capability_summary, indent=2, ensure_ascii=False), encoding="utf-8"
+    )
+    print(f"[OK] capability_summary.json — {len(summary_records)} records", file=sys.stderr)
+
     # --- Write gap ledger ---
     gaps = _build_gap_ledger(all_records)
     # Merge status from existing gap-ledger to preserve closed statuses
@@ -1165,23 +1295,30 @@ def generate(
     print(f"[OK] gap-ledger.json — {len(gaps)} gaps", file=sys.stderr)
 
     # --- Write action queue (merge with existing user-populated actions) ---
-    actions = _build_action_queue(gaps, commercial_records, foss_records)
+    actions = _build_action_queue(gaps, commercial_records, foss_records, poc_data=poc_data)
     generated_ids = {a["action_id"] for a in actions}
+    # Actions managed by _eval_action_conditions are re-evaluated every run.
+    # Do NOT re-merge stale versions of them from the previous file — if they
+    # were not emitted this run, the condition is resolved and they should be absent.
+    _CONDITION_MANAGED_IDS = {"ACT-UPDATE-POC-TARGETS"}
     queue_path = output_dir / "action-queue.json"
     if queue_path.exists():
         try:
             existing = json.loads(queue_path.read_text(encoding="utf-8"))
             for existing_action in existing.get("actions", []):
-                if existing_action.get("action_id") not in generated_ids:
+                eid = existing_action.get("action_id")
+                if eid not in generated_ids and eid not in _CONDITION_MANAGED_IDS:
                     actions.append(existing_action)
         except (json.JSONDecodeError, KeyError):
             pass  # corrupt file — regenerate from scratch
+    # Top-level advisory_only=False when any action is machine_executable
+    any_machine_executable = any(a.get("machine_executable") for a in actions)
     action_queue = {
         "schema_version": "1.0",
         "generated_at": sprint_now,
         "sprint_id": SPRINT_ID,
         "run_id": RUN_ID,
-        "advisory_only": True,
+        "advisory_only": not any_machine_executable,
         "note": "machine_executable=True actions are safe for autonomous agent execution. No action authorizes push/commit/gate approval.",
         "total_actions": len(actions),
         "actions": actions,
