@@ -1,19 +1,19 @@
 # Supervisor Context Pack
 # Format Factory — Machine-Readable State Snapshot
-# Generated: 2026-06-22T18:13:05.484441
+# Generated: 2026-06-22T19:26:13.380343
 # ADVISORY ONLY — not a gate approval or authority document
 
 ## Current State
 
 | Item | Value |
 |------|-------|
-| Git HEAD | 1cc30a4b |
+| Git HEAD | 2f835029 |
 | Working tree clean | False |
 | Supervisor mode | MODE 4 |
 | Latest sprint | unknown |
-| Sprint ID | product-deepening-session-2026-06-22... |
-| Autonomous continue | True |
-| Iteration | 7/12 |
+| Sprint ID | FF-PLAN-ADAPTIVE-SPLASHING-FROG-20260622... |
+| Autonomous continue | False |
+| Iteration | 8/12 |
 | MCP status | MCP_CONFIG_PRESENT_MODE4_ACTIVE |
 | Active skills | 44 |
 | Ledger entries | 960 total (783 governed) |

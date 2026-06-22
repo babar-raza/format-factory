@@ -1,7 +1,21 @@
+## ACTIVE PER-CHAT PLAN — SYSTEM LEDGER SUPPRESSED
+
+A per-chat plan is active. Complete ALL plan taskcards before any ledger/product work.
+
+- **Plan:** `C:/Users/prora/.claude/plans/floating-stargazing-globe.md`
+- **Last completed taskcard:** `None`
+- **Action:** Read the plan file. Find the next open taskcard after `None`. Execute it.
+  After each: `python tools/supervisor/write_plan_lock.py --plan-path "C:/Users/prora/.claude/plans/floating-stargazing-globe.md" --last-taskcard <TC_ID>`
+  When ALL done: `python tools/supervisor/write_plan_lock.py --plan-path "C:/Users/prora/.claude/plans/floating-stargazing-globe.md" --complete`
+
+**Do NOT start system ledger / product hardening work until plan status = COMPLETE.**
+
+---
+
 # Supervisor-Generated Next Sprint Prompt
-# Source sprint: FF-PLAN-ADAPTIVE-SPLASHING-FROG-20260622
+# Source sprint: snoopy-juggling-seal-section-32-execution
 # Stream: mainstream
-# Generated: 2026-06-22T18:13:05.454391
+# Generated: 2026-06-22T19:26:13.357708
 # ADVISORY ONLY — not a Format Factory authority document
 # This is INPUT to the next sprint, not a gate approval or commit authorization.
 
@@ -11,9 +25,9 @@
 PRODUCT + REPAIR: Advance product POC AND address CRITICAL contradictions
 
 ## Prior Sprint Summary
-- Sprint ID: FF-PLAN-ADAPTIVE-SPLASHING-FROG-20260622
+- Sprint ID: snoopy-juggling-seal-section-32-execution
 - Evidence verdict: ACCEPTED_WITH_REWORK
-- Tests: 43 passed, 0 failed, 0 skipped
+- Tests: 15 passed, 0 failed, 0 skipped
 - Autonomous continue: False
 
 ## STOP_REASON_ADVISORY (enforced by stop_reason_adjudicator.py)
@@ -36,27 +50,23 @@ TRUE_EXTERNAL_GATE (ONLY these warrant a stop):
 - Credentials unavailable with no fallback
 
 ## Section 1: New Product Work (Advisory — Always Execute)
-- [pending] TASK-006: Select governed product gaps and validate the product-code ledger
-- [pending] TASK-007: Work on open taskcard: TC-0015-spec-retrieval-strategy-evaluation
-- [pending] TASK-008: Work on open taskcard: TC-0016-fods-vector-index-pilot
-- [pending] TASK-009: Work on open taskcard: TC-0020-spec-workbench-core
-- [pending] TASK-010: Advance one dogfood export path using a Format Factory library
-- [pending] TASK-011: Build package artifacts and run installed-workflow proof
-- [pending] TASK-012: Write evidence declaration and run supervisor autonomous-cycle
+- [pending] TASK-003: Select governed product gaps and validate the product-code ledger
+- [agent-owned] TASK-004: Prepare commit candidate summary and changed-file manifest
+- [external-gate] TASK-005: Execute git commit (requires explicit user authorization — do NOT self-execute)
+- [pending] TASK-006: Work on open taskcard: TC-0015-spec-retrieval-strategy-evaluation
+- [pending] TASK-007: Work on open taskcard: TC-0016-fods-vector-index-pilot
+- [pending] TASK-008: Work on open taskcard: TC-0020-spec-workbench-core
+- [pending] TASK-009: Advance one dogfood export path using a Format Factory library
+- [pending] TASK-010: Build package artifacts and run installed-workflow proof
+- [pending] TASK-011: Write evidence declaration and run supervisor autonomous-cycle
 
 ## Section 2: Rework / Repair (Advisory — Fix Before Closeout)
-- [pending] REPAIR-001: Repair: OVERCLAIMED: Fix FODT parse chain routing
-- [pending] REPAIR-002: Repair: OVERCLAIMED: Add parse-chain isinstance guard test
-- [pending] REPAIR-003: Repair: OVERCLAIMED: Populate gap audit verdicts and reclassify gap ledger
-- [pending] REPAIR-004: Repair: OVERCLAIMED: Reopen 4 XCF arithmetic-deepening gaps
-- [pending] REPAIR-005: Repair: OVERCLAIMED: Add minimal spec_qname functional consumer
+- [pending] REPAIR-001: Repair: OVERCLAIMED: Fix DIF->CSV Dogfood Import Path for Installed-Package Context
+- [pending] REPAIR-002: Repair: OVERCLAIMED: Fix DIF->CSV Reload Test (CSV Module Name Conflict)
 
 ## Contradictions Context
-- [CRITICAL] OVERCLAIMED: Fix FODT parse chain routing
-- [CRITICAL] OVERCLAIMED: Add parse-chain isinstance guard test
-- [CRITICAL] OVERCLAIMED: Populate gap audit verdicts and reclassify gap ledger
-- [CRITICAL] OVERCLAIMED: Reopen 4 XCF arithmetic-deepening gaps
-- [CRITICAL] OVERCLAIMED: Add minimal spec_qname functional consumer
+- [CRITICAL] OVERCLAIMED: Fix DIF->CSV Dogfood Import Path for Installed-Package Context
+- [CRITICAL] OVERCLAIMED: Fix DIF->CSV Reload Test (CSV Module Name Conflict)
 
 ## Non-Negotiable Rules (always apply)
 1. No push without explicit user authorization.

@@ -1,13 +1,13 @@
 # Approval Gates Classification
-Sprint ID: FF-PLAN-ADAPTIVE-SPLASHING-FROG-20260622
-Generated: 2026-06-22T18:13:05.462532
+Sprint ID: snoopy-juggling-seal-section-32-execution
+Generated: 2026-06-22T19:26:13.363944
 Current Mode: MODE 4 (ACTIVE_MCP_ACTIVATION)
 
 ## Pending Actions
 
 | Action | Classification | Who Unblocks |
 |--------|---------------|-------------|
-| Repair 5 CRITICAL contradictions | local-repair-loop | Claude_Code |
+| Repair 2 CRITICAL contradictions | local-repair-loop | Claude_Code |
 | Continue to next sprint | stop-contradictions-present | Claude_Code (after repair) |
 
 ## Summary

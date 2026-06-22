@@ -1,13 +1,13 @@
 # Session Resume Briefing
 # Format Factory — Supervisor-Generated
-# Generated: 2026-06-22T18:13:05.467625
+# Generated: 2026-06-22T19:26:13.367969
 
 ## Quick State
-- Last sprint: FF-PLAN-ADAPTIVE-SPLASHING-FROG-20260622
+- Last sprint: snoopy-juggling-seal-section-32-execution
 - Evidence verdict: ACCEPTED_WITH_REWORK
-- Tests: 43 passed / 0 failed
+- Tests: 15 passed / 0 failed
 - PENDING markers: 0
-- CRITICAL contradictions: 5
+- CRITICAL contradictions: 2
 - Autonomous continue: False
 - Current supervisor mode: MODE 4
 - MCP status: ACTIVE (.vscode/mcp.json present)
@@ -23,7 +23,7 @@
 5. Prose context: `reports/supervisor/next-sprint.md`
 
 ## Where To Find Evidence
-- Last evidence bundle: .local/evidences/FF-PLAN-ADAPTIVE-SPLASHING-FROG-20260622
+- Last evidence bundle: .local/evidences/tc-dif-002-003-2026-06-22/
 - Supervisor outputs: reports/supervisor/
 - Project memory: .supervisor/project-memory.md
 
