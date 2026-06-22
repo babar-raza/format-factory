@@ -1217,6 +1217,71 @@ TC-FODT-GAP-001, TC-FODT-AUDIT-001, TC-FODT-AUDIT-002, TC-RCAL-001
 
 ---
 
+### zesty-moseying-whale — Machinery Lifecycle Forensics Healing (CLOSED 2026-06-22)
+
+**Status:** CLOSED — machinery mission MISSION_COMPLETE; all 5 executed taskcards verified; 2 skipped taskcards OBSOLETE; 1 documentation correction applied
+
+**Plan file:** `C:\Users\prora\.claude\plans\zesty-moseying-whale.md` (hardened with §14–§22 current-state reassessment)
+
+**What was completed:**
+
+*TC-WHALE-DELTA-001 — Prior-Run Delta Reconciliation:*
+- `prior-run-reconciliation.yaml`, `stable-id-registry.yaml`, `stale-finding-register.yaml`, `reopened-taskcard-register.yaml`, `duplicate-finding-register.yaml` — all present in `reports/machinery-lifecycle-forensics-20260621/`
+- All RC-001..RC-006 root causes verified with current_status
+
+*TC-WHALE-GOVBLOCK-001 — GOV_BLOCK:monolith_detection_validator pre-empted:*
+- `tools/supervisor/governance_validators_ext.py` created; V48 (`validate_architecture_only_stub_gate`) extracted from `governance_validators.py`
+- V50 (`validate_forbidden_module_names`) subsequently added to ext.py by later session
+- Current state: governance_validators.py LOC=3179, cap=3179 (0 headroom — post-plan additions eroded the margin; product track risk, not this plan's issue)
+
+*TC-WHALE-LEDGER-001 — Check 1c wired into check_continuation.py:*
+- Check 1c block added at lines 260-290: fires `STOP(MACHINERY_MISSION_COMPLETE)` when `stop_status=MISSION_COMPLETE`; fires `STOP(MACHINERY_AUDIT_REQUIRED)` when `audit_pending=True AND execution_pending=False`
+- `tests/supervisor/test_machinery_mission_ledger.py`: 6 regression tests, all pass
+
+*TC-WHALE-IDEMPOTENCY-001 — All 7 idempotency artifacts:*
+- `iteration-record.yaml`, `lifecycle-hardening-delta.md`, `rerun-idempotency-verdict.md` + 4 prerequisite files
+- Verdict: `IDEMPOTENT_NEW_GAPS_FOUND_AND_TASKCARDED` (GAP-WHALE-001/002/003 found and resolved)
+
+*TC-WHALE-HANDOFF-001 — Authoritative plan + final report:*
+- `plans/snoopy-juggling-seal.md`: Lifecycle Stage Contracts added (Stages 0–5 with stop rule)
+- `reports/machinery-lifecycle-forensics-20260621/machinery-lifecycle-healing-report.md`: verdict = `LIFECYCLE_HEALED_AND_MULTI_ITERATION_PROVEN`
+- `reports/machinery-lifecycle-forensics-20260621/execution-handoff.yaml`: Pilot H=COMPLETE, LIF-8/13/16=PASS
+
+*TC-WHALE-AUDIT-001 / TC-WHALE-PILOT-H-001 — OBSOLETE:*
+- Both taskcards were designed for a REROUTE_REWORK state machine scenario that no longer exists
+- `mission-ledger.json` confirms `stop_status: MISSION_COMPLETE` with all agent-resolvable gaps closed
+- `iteration-record.yaml` documents 3 iterations from mission-ledger.json sprint IDs (Level 2 — sufficient given machine state confirmation)
+
+*TC-WHALE-DELTA-CORRECT-001 — False claim corrected:*
+- `reports/machinery-lifecycle-forensics-20260621/lifecycle-hardening-delta.md`: Prior claim "autonomous-loop.md Step 4 already explicitly lists required declaration fields" corrected to INCORRECT; Grep confirms the 5 fields are not present
+
+**Verification performed:**
+- Check 1c: Grep confirmed at lines 260-290 of `check_continuation.py`
+- governance_validators_ext.py: File exists, LOC=160 in baseline (cap=165)
+- mission-ledger.json: `stop_status: MISSION_COMPLETE`, all 13 gaps in closed_gaps
+- All 7 idempotency artifacts: present in `reports/machinery-lifecycle-forensics-20260621/`
+- 6 regression tests for Check 1c: `tests/supervisor/test_machinery_mission_ledger.py` (all pass per original sprint run)
+
+**Commits (all machinery work committed by prior sessions):**
+- `329b9101`: Primary sprint deliverables (FODT/FODS/ZST dogfood exports, Gate 11 readiness)
+- `6254120c`: TC-HARD-003 — autonomous-loop.md DONE_STATUSES + forensics report correction (lifecycle-hardening-delta.md)
+- All Check 1c, governance_validators_ext.py, test_machinery_mission_ledger.py changes committed by `ed51041f`, `cae082c9` (earlier sprint)
+
+**Gate contract final state (6/6 PASS):**
+- G1: GOV_BLOCK:monolith_detection_validator absent — PASS (risk: 0 headroom, product track issue)
+- G2: Check 1c in check_continuation.py — PASS
+- G3: All 7 idempotency artifacts — PASS
+- G4: ≥2 audit-execute iterations documented — PASS (Level 2)
+- G5: Healing report verdict ≠ SINGLE_ITERATION_ONLY — PASS
+- G6: Mission machine state = COMPLETE — PASS
+
+**Follow-ups (non-blocking):**
+1. governance_validators.py at 0 headroom (loc=cap=3179) — next addition will re-fire GOV_BLOCK; product track must extract more validators before adding new ones
+2. post-exec-audit-1.json and -2.json missing — iteration 1/2 proofs are Level 2 (from mission-ledger.json), not Level 1 file evidence
+3. autonomous-loop.md Step 4 still lacks explicit field list for required declaration fields — separate governance sprint
+
+---
+
 ## ARCHIVE-PTR — Historical Content Archive
 
 The following sections were archived during the healing sprint of 2026-06-10.
@@ -1230,5 +1295,5 @@ No content has been deleted — only moved to archive files with pointers.
 
 ---
 
-*End of plans/master-plan.md — version 3.8 — 2026-06-22 (tender-dreaming-lovelace: skill governance sync hardening closed; V46 committed+verified, implement-spec-stub+decompose-monolithic-codec skills registered, transcript v2 migration done, V46 governed-skill path proven)*
+*End of plans/master-plan.md — version 3.9 — 2026-06-22 (zesty-moseying-whale: machinery lifecycle forensics healing CLOSED; Check 1c wired; mission-ledger.json MISSION_COMPLETE; 6/6 gates PASS; lifecycle-hardening-delta.md false claim corrected)*
 *This document is the single operational authority for format-factory. All other documents are subordinate to it for operational decisions.*
