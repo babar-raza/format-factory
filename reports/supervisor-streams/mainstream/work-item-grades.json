@@ -1,29 +1,28 @@
 [
   {
-    "item_id": "TC-COMMIT-001",
-    "item_title": "Commit all sprint work to git",
+    "item_id": "CONTINUATION-REPAIR-001",
+    "item_title": "Resolve GOV_BLOCK:validate_source_architecture false positive from prior sprint",
     "declared_status": "completed",
-    "supervisor_grade": "REWORK_REQUIRED",
+    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
     "evidence_found": true,
     "evidence_paths": [
-      "reports/r90/product-code-change-ledger.json"
+      "registry/source-structure-baseline.json",
+      ".local/supervisor/continuation-signal.json",
+      "reports/supervisor/approval-gates.md"
     ],
     "tests_supporting": [],
     "tests_missing": [],
     "acceptance_criteria_met": [
       "Evidence found",
-      "No missing paths"
+      "No missing paths",
+      "No concrete test/criteria proof (path-only acceptance)"
     ],
     "acceptance_criteria_failed": [
-      "Acceptance criteria pattern not found: Git commit with hash 329b9101 exists in the repository.",
-      "No evidence of git commit 329b9101 (e.g., git log output, commit hash verification).",
-      "File count of 237 files not demonstrated (no git ls-files or diff count).",
-      "No proof that all sprint 5\u20118 work is included in the commit (no mapping of sprint work to files in the commit).",
-      "Ledger JSON describes changes but does not directly tie them to the specific commit or verify inclusion in git."
+      "No raw proof, test content, or acceptance criteria verified"
     ],
     "required_rework": "",
     "can_autonomously_repair": false,
-    "next_prompt_instruction": "Semantic verification downgraded ACCEPTED_WITH_LIMITATIONS -> REWORK_REQUIRED: No evidence of git commit 329b9101 (e.g., git log output, commit hash verification).; File count of 237 files not demonstrated (no git ls-files or diff count).; No proof that all sprint 5\u20118 work is included in the commit (no mapping of sprint work to files in the commit).; Ledger JSON describes changes but does not directly tie them to the specific commit or verify inclusion in git.",
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for CONTINUATION-REPAIR-001",
     "purpose_check": {
       "item_type": "GOVERNANCE_TASKCARD",
       "has_gap_ref": null,
@@ -31,331 +30,136 @@
       "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
     },
     "semantic_verification": {
-      "adequate": false,
-      "confidence": 0.92,
+      "adequate": true,
+      "confidence": 0.7,
       "stub_detected": false,
-      "deficiencies": [
-        "No evidence of git commit 329b9101 (e.g., git log output, commit hash verification).",
-        "File count of 237 files not demonstrated (no git ls-files or diff count).",
-        "No proof that all sprint 5\u20118 work is included in the commit (no mapping of sprint work to files in the commit).",
-        "Ledger JSON describes changes but does not directly tie them to the specific commit or verify inclusion in git."
+      "deficiencies": [],
+      "llm_used": false,
+      "intermediate_verified": true,
+      "source": "intermediate_content_check",
+      "checks": [
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\registry\\source-structure-baseline.json",
+          "exists": true,
+          "content_ok": true,
+          "detail": "JSON object with 5 keys",
+          "check_type": "json_content"
+        },
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\supervisor\\continuation-signal.json",
+          "exists": true,
+          "content_ok": true,
+          "detail": "JSON object with 22 keys",
+          "check_type": "json_content"
+        },
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\reports\\supervisor\\approval-gates.md",
+          "exists": true,
+          "content_ok": true,
+          "detail": "markdown with 16 lines, header=yes",
+          "check_type": "markdown_content"
+        }
       ],
-      "llm_used": true,
-      "_cached_at": "2026-06-22T08:38:06.307561+00:00",
-      "_from_cache": true
+      "summary": "3/3 evidence files passed content check"
     }
   },
   {
-    "item_id": "TC-SAL-HEAL-001",
-    "item_title": "Add fact_status and source_id to sal_master_runner.py output",
+    "item_id": "DOGFOOD-DIF-CSV-001",
+    "item_title": "Upgrade dif_to_csv to FF csv_writer.write_csv (dogfood export IMPLEMENTED)",
     "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "supervisor_grade": "ACCEPTED_VERIFIED",
     "evidence_found": true,
     "evidence_paths": [
-      ".local/sal-output/sal-facts-latest.json"
+      "src/python/dif/dif_analytics.py",
+      "tests/python/dif/test_r90_dif_to_csv_dogfood.py",
+      "reports/r90/product-code-change-ledger.json"
     ],
-    "tests_supporting": [],
+    "tests_supporting": [
+      "tests/python/dif/test_r90_dif_to_csv_dogfood.py"
+    ],
     "tests_missing": [],
     "acceptance_criteria_met": [
       "Evidence found",
       "No missing paths"
     ],
-    "acceptance_criteria_failed": [
-      "Acceptance criteria pattern not found: All fact records contain a fact_status field"
-    ],
+    "acceptance_criteria_failed": [],
     "required_rework": "",
     "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: Acceptance criteria pattern not found: All fact records contain a fact_status field",
+    "next_prompt_instruction": "",
+    "tests_evidence_verified": [
+      "tests/python/dif/test_r90_dif_to_csv_dogfood.py"
+    ],
     "product_source_check": {
-      "source_exists": false,
+      "source_exists": true,
       "test_content_valid": true,
-      "details": []
+      "details": [
+        "test content valid: tests/python/dif/test_r90_dif_to_csv_dogfood.py"
+      ]
     },
     "purpose_check": {
       "item_type": "PRODUCT_SOURCE",
       "has_gap_ref": true,
-      "gap_ref": "GAP-SA-001",
+      "gap_ref": "GAP-DOGFOOD-DIF-CSV-001",
       "spec_fact_count": 0,
       "verdict": "PURPOSEFUL",
       "note": ""
     },
     "semantic_verification": {
       "adequate": true,
-      "confidence": 0.22,
-      "stub_detected": false,
-      "deficiencies": [
-        "Evidence only shows a partial excerpt of the JSON output; the full file is not provided.",
-        "No summary or verification of the required counts (bootstrap_only=150, verified=14313, MISSING=0) is present.",
-        "The ZST format section, required for acceptance criteria, is missing from the evidence.",
-        "There is no explicit evidence that *all* facts contain the fact_status and source_id fields; only a subset is shown.",
-        "No automated test or script is provided to validate the counts or field presence across the entire output."
-      ],
-      "llm_used": true,
-      "low_confidence_override": true,
-      "_cached_at": "2026-06-22T08:38:09.480690+00:00",
-      "_from_cache": true
-    }
-  },
-  {
-    "item_id": "TC-SAL-HEAL-002",
-    "item_title": "test_sal_bootstrap_vs_verified.py \u2014 4 tests pass",
-    "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
-    "evidence_found": true,
-    "evidence_paths": [
-      "tests/specification-authority-layer/test_sal_bootstrap_vs_verified.py"
-    ],
-    "tests_supporting": [
-      "tests/specification-authority-layer/test_sal_bootstrap_vs_verified.py"
-    ],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths"
-    ],
-    "acceptance_criteria_failed": [
-      "Acceptance criteria pattern not found: All four tests pass (4/4 tests pass)."
-    ],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: Acceptance criteria pattern not found: All four tests pass (4/4 tests pass).",
-    "tests_evidence_verified": [
-      "tests/specification-authority-layer/test_sal_bootstrap_vs_verified.py"
-    ],
-    "product_source_check": {
-      "source_exists": false,
-      "test_content_valid": true,
-      "details": [
-        "test content valid: tests/specification-authority-layer/test_sal_bootstrap_vs_verified.py"
-      ]
-    },
-    "purpose_check": {
-      "item_type": "PRODUCT_TEST",
-      "has_gap_ref": true,
-      "gap_ref": "GAP-SA-001",
-      "spec_fact_count": 0,
-      "verdict": "PURPOSEFUL",
-      "note": ""
-    },
-    "semantic_verification": {
-      "adequate": true,
-      "confidence": 0.9,
+      "confidence": 0.7,
       "stub_detected": false,
       "deficiencies": [],
-      "llm_used": true,
-      "_cached_at": "2026-06-22T08:38:12.305923+00:00",
-      "_from_cache": true
-    }
-  },
-  {
-    "item_id": "TC-SRC-001-REPAIR",
-    "item_title": "FODS Python triple package nesting removed",
-    "declared_status": "completed",
-    "supervisor_grade": "REWORK_REQUIRED",
-    "evidence_found": true,
-    "evidence_paths": [
-      "src/python/fods/models.py"
-    ],
-    "tests_supporting": [],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths"
-    ],
-    "acceptance_criteria_failed": [
-      "Acceptance criteria pattern not found: The directory src/python/fods/fods/ has been removed from th",
-      "No evidence that src/python/fods/fods/ directory was removed (no file list or diff).",
-      "No proof that FodsDocument is imported from fods.models elsewhere in the codebase.",
-      "No tests verifying that FodsDocument.spec_qname equals \"office:document\".",
-      "No tests confirming that FodsSheet.cells() yields FodsCell objects.",
-      "Only source code is provided; lacking test or build artifacts to demonstrate correct behavior."
-    ],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": "Semantic verification downgraded ACCEPTED_WITH_LIMITATIONS -> REWORK_REQUIRED: No evidence that src/python/fods/fods/ directory was removed (no file list or diff).; No proof that FodsDocument is imported from fods.models elsewhere in the codebase.; No tests verifying that FodsDocument.spec_qname equals \"office:document\".; No tests confirming that FodsSheet.cells() yields FodsCell objects.; Only source code is provided; lacking test or build artifacts to demonstrate correct behavior.",
-    "purpose_check": {
-      "item_type": "GOVERNANCE_TASKCARD",
-      "has_gap_ref": null,
-      "verdict": "NOT_APPLICABLE",
-      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
-    },
-    "semantic_verification": {
-      "adequate": false,
-      "confidence": 0.86,
-      "stub_detected": false,
-      "deficiencies": [
-        "No evidence that src/python/fods/fods/ directory was removed (no file list or diff).",
-        "No proof that FodsDocument is imported from fods.models elsewhere in the codebase.",
-        "No tests verifying that FodsDocument.spec_qname equals \"office:document\".",
-        "No tests confirming that FodsSheet.cells() yields FodsCell objects.",
-        "Only source code is provided; lacking test or build artifacts to demonstrate correct behavior."
+      "llm_used": false,
+      "intermediate_verified": true,
+      "source": "intermediate_content_check",
+      "checks": [
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\python\\dif\\dif_analytics.py",
+          "exists": true,
+          "content_ok": true,
+          "detail": "non-empty (32417 bytes): C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\python\\dif\\dif_analytics.py",
+          "check_type": "nonzero_existence"
+        },
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tests\\python\\dif\\test_r90_dif_to_csv_dogfood.py",
+          "exists": true,
+          "content_ok": true,
+          "detail": "valid (7 test functions with assertions)",
+          "check_type": "python_test_content"
+        },
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\reports\\r90\\product-code-change-ledger.json",
+          "exists": true,
+          "content_ok": true,
+          "detail": "JSON object with 7 keys",
+          "check_type": "json_content"
+        }
       ],
-      "llm_used": true,
-      "_cached_at": "2026-06-22T08:38:15.844501+00:00",
-      "_from_cache": true
+      "summary": "3/3 evidence files passed content check"
     }
   },
   {
-    "item_id": "TC-SAL-IDEMPOTENCY",
-    "item_title": "SAL runner single-format run does not overwrite combined output",
-    "declared_status": "completed",
-    "supervisor_grade": "REWORK_REQUIRED",
-    "evidence_found": true,
-    "evidence_paths": [
-      "tools/specification-authority-layer/sal_master_runner.py"
-    ],
-    "tests_supporting": [],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths"
-    ],
-    "acceptance_criteria_failed": [
-      "Acceptance criteria pattern not found: Running with --format zst reports 24 formats before executio",
-      "No test code or execution evidence provided; only implementation file is shown.",
-      "Missing verification that running with '--format zst' leaves the number of formats unchanged (24 before and after).",
-      "Missing verification that the combined 'sal-facts-latest.json' file remains unchanged after a single-format run.",
-      "No evidence of counting formats or comparing file hashes/timestamps to prove non\u2011overwrite behavior.",
-      "Evidence does not address the acceptance criteria at all; it appears unrelated to the specific feature under test."
-    ],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": "Semantic verification downgraded ACCEPTED_WITH_LIMITATIONS -> REWORK_REQUIRED: No test code or execution evidence provided; only implementation file is shown.; Missing verification that running with '--format zst' leaves the number of formats unchanged (24 before and after).; Missing verification that the combined 'sal-facts-latest.json' file remains unchanged after a single-format run.; No evidence of counting formats or comparing file hashes/timestamps to prove non\u2011overwrite behavior.; Evidence does not address the acceptance criteria at all; it appears unrelated to the specific feature under test.",
-    "purpose_check": {
-      "item_type": "GOVERNANCE_TASKCARD",
-      "has_gap_ref": null,
-      "verdict": "NOT_APPLICABLE",
-      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
-    },
-    "semantic_verification": {
-      "adequate": false,
-      "confidence": 0.96,
-      "stub_detected": false,
-      "deficiencies": [
-        "No test code or execution evidence provided; only implementation file is shown.",
-        "Missing verification that running with '--format zst' leaves the number of formats unchanged (24 before and after).",
-        "Missing verification that the combined 'sal-facts-latest.json' file remains unchanged after a single-format run.",
-        "No evidence of counting formats or comparing file hashes/timestamps to prove non\u2011overwrite behavior.",
-        "Evidence does not address the acceptance criteria at all; it appears unrelated to the specific feature under test."
-      ],
-      "llm_used": true,
-      "_cached_at": "2026-06-22T08:38:18.376491+00:00",
-      "_from_cache": true
-    }
-  },
-  {
-    "item_id": "TC-FODS-CELLS-BUG",
-    "item_title": "FodsSheet.cells() returns cell objects for real FODS files",
-    "declared_status": "completed",
-    "supervisor_grade": "REWORK_REQUIRED",
-    "evidence_found": true,
-    "evidence_paths": [
-      "src/python/fods/models.py"
-    ],
-    "tests_supporting": [],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths"
-    ],
-    "acceptance_criteria_failed": [
-      "Acceptance criteria pattern not found: cells() returns 8 items for typed-values-basic.fods",
-      "No test or runtime evidence showing cells() returns exactly 8 cells for typed-values-basic.fods",
-      "No verification that each yielded object is an instance of FodsCell",
-      "No check that isinstance(cell, str) is False for the returned cells",
-      "Evidence consists only of implementation code, lacking execution results or test assertions"
-    ],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": "Semantic verification downgraded ACCEPTED_WITH_LIMITATIONS -> REWORK_REQUIRED: No test or runtime evidence showing cells() returns exactly 8 cells for typed-values-basic.fods; No verification that each yielded object is an instance of FodsCell; No check that isinstance(cell, str) is False for the returned cells; Evidence consists only of implementation code, lacking execution results or test assertions",
-    "purpose_check": {
-      "item_type": "GOVERNANCE_TASKCARD",
-      "has_gap_ref": null,
-      "verdict": "NOT_APPLICABLE",
-      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
-    },
-    "semantic_verification": {
-      "adequate": false,
-      "confidence": 0.92,
-      "stub_detected": false,
-      "deficiencies": [
-        "No test or runtime evidence showing cells() returns exactly 8 cells for typed-values-basic.fods",
-        "No verification that each yielded object is an instance of FodsCell",
-        "No check that isinstance(cell, str) is False for the returned cells",
-        "Evidence consists only of implementation code, lacking execution results or test assertions"
-      ],
-      "llm_used": true,
-      "_cached_at": "2026-06-22T08:38:20.650764+00:00",
-      "_from_cache": true
-    }
-  },
-  {
-    "item_id": "TC-NET-BUILD",
-    "item_title": "FODS .NET Spec/ stubs build cleanly",
-    "declared_status": "completed",
-    "supervisor_grade": "REWORK_REQUIRED",
-    "evidence_found": true,
-    "evidence_paths": [
-      "src/net/fods/Spec/Table/TableCell.cs",
-      "src/net/fods/Spec/Table/TableRow.cs",
-      "src/net/fods/Spec/Table/Table.cs",
-      "src/net/fods/Spec/Office/Document.cs"
-    ],
-    "tests_supporting": [],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths"
-    ],
-    "acceptance_criteria_failed": [
-      "Acceptance criteria pattern not found: Running `dotnet build src/net/fods/` exits with code 0"
-    ],
-    "required_rework": "Stub evidence detected (was ACCEPTED_WITH_LIMITATIONS): [\"No build logs or output provided to confirm that 'dotnet build src/net/fods/' exits with code 0\", 'Missing evidence that the build produced exactly 0 errors and 39 warnings as required', 'Evidence consists only of stub source files with TODO comments, lacking any compilation verification', 'No test or verification steps showing that the stubs compile without issues']",
-    "can_autonomously_repair": true,
-    "next_prompt_instruction": "REWORK: Evidence contains stub code. Provide real tests/evidence for TC-NET-BUILD.",
-    "purpose_check": {
-      "item_type": "GOVERNANCE_TASKCARD",
-      "has_gap_ref": null,
-      "verdict": "NOT_APPLICABLE",
-      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
-    },
-    "semantic_verification": {
-      "adequate": true,
-      "confidence": 0.78,
-      "stub_detected": true,
-      "deficiencies": [
-        "No build logs or output provided to confirm that 'dotnet build src/net/fods/' exits with code 0",
-        "Missing evidence that the build produced exactly 0 errors and 39 warnings as required",
-        "Evidence consists only of stub source files with TODO comments, lacking any compilation verification",
-        "No test or verification steps showing that the stubs compile without issues"
-      ],
-      "llm_used": true,
-      "low_confidence_override": true,
-      "_cached_at": "2026-06-22T08:42:46.465284+00:00",
-      "_from_cache": true
-    }
-  },
-  {
-    "item_id": "TC-V45-WIRING",
-    "item_title": "V45 validate_qname_class_names wired in run_all_governance_validators()",
+    "item_id": "TASK-008-FODS-PROOF",
+    "item_title": "FODS installed-workflow proof: parse_fods + fods_sheet_count from venv package",
     "declared_status": "completed",
     "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
     "evidence_found": true,
     "evidence_paths": [
-      "tools/supervisor/governance_validator_runner.py"
+      ".local/package-builds/python-foss/aspose-format-factory-fods/dist/aspose_format_factory_fods-0.1.0.dev0-py3-none-any.whl"
     ],
     "tests_supporting": [],
     "tests_missing": [],
     "acceptance_criteria_met": [
       "Evidence found",
-      "No missing paths"
+      "No missing paths",
+      "No concrete test/criteria proof (path-only acceptance)"
     ],
     "acceptance_criteria_failed": [
-      "Acceptance criteria pattern not found: The function or definition validate_qname_class_names is pre"
+      "No raw proof, test content, or acceptance criteria verified"
     ],
     "required_rework": "",
     "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: Acceptance criteria pattern not found: The function or definition validate_qname_class_names is pre",
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for TASK-008-FODS-PROOF",
     "purpose_check": {
       "item_type": "GOVERNANCE_TASKCARD",
       "has_gap_ref": null,
@@ -364,123 +168,22 @@
     },
     "semantic_verification": {
       "adequate": true,
-      "confidence": 0.22,
-      "stub_detected": false,
-      "deficiencies": [
-        "The provided file truncates before the end of the results list, so it does not show whether validate_qname_class_names is actually invoked in run_all_governance_validators().",
-        "No line numbers are shown, making it impossible to verify the validator appears at the claimed line 154.",
-        "No accompanying test code or execution report is provided to demonstrate that the wiring works as intended.",
-        "The evidence consists only of a partial source snippet, which is insufficient to confirm compliance with the acceptance criteria."
-      ],
-      "llm_used": true,
-      "low_confidence_override": true,
-      "_cached_at": "2026-06-22T08:38:26.822554+00:00",
-      "_from_cache": true
-    }
-  },
-  {
-    "item_id": "TC-SNOOPY-COUNT",
-    "item_title": "snoopy-juggling-seal.md fact count corrected to 14,284",
-    "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
-    "evidence_found": true,
-    "evidence_paths": [
-      "plans/snoopy-juggling-seal.md"
-    ],
-    "tests_supporting": [],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths"
-    ],
-    "acceptance_criteria_failed": [
-      "Acceptance criteria pattern not found: Running grep '14,428' on snoopy-juggling-seal.md returns 0 m"
-    ],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: Acceptance criteria pattern not found: Running grep '14,428' on snoopy-juggling-seal.md returns 0 m",
-    "purpose_check": {
-      "item_type": "GOVERNANCE_TASKCARD",
-      "has_gap_ref": null,
-      "verdict": "NOT_APPLICABLE",
-      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
-    },
-    "semantic_verification": {
-      "adequate": true,
-      "confidence": 0.95,
+      "confidence": 0.7,
       "stub_detected": false,
       "deficiencies": [],
-      "llm_used": true,
-      "_cached_at": "2026-06-22T08:38:29.088365+00:00",
-      "_from_cache": true
-    }
-  },
-  {
-    "item_id": "TC-SAL-HEAL-005",
-    "item_title": "Full regression suite 4+9+50=63 tests pass",
-    "declared_status": "completed",
-    "supervisor_grade": "REWORK_REQUIRED",
-    "evidence_found": true,
-    "evidence_paths": [
-      "tests/specification-authority-layer/test_sal_bootstrap_vs_verified.py",
-      "tests/python/dogfood/test_dogfood_fods_fodt_sal_fact_ndjson_export.py",
-      "tests/specification-authority-layer/test_sal_from_cache_only.py"
-    ],
-    "tests_supporting": [
-      "tests/specification-authority-layer/test_sal_bootstrap_vs_verified.py",
-      "tests/python/dogfood/test_dogfood_fods_fodt_sal_fact_ndjson_export.py",
-      "tests/specification-authority-layer/test_sal_from_cache_only.py"
-    ],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths"
-    ],
-    "acceptance_criteria_failed": [
-      "Acceptance criteria pattern not found: test_sal_bootstrap_vs_verified passes with 4 out of 4 tests",
-      "Evidence does not include any test file for the \"test_sal_from_cache_only\" suite (expected 50 passing tests).",
-      "Dogfood suite evidence is incomplete: only a single test file fragment is shown and it is unclear whether it contains the required 9 passing tests.",
-      "No summary or report confirming that the full regression suite totals 63 passing tests (4 + 9 + 50).",
-      "Absence of a test runner output or CI report that explicitly lists the pass counts for each suite."
-    ],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": "Semantic verification downgraded ACCEPTED_WITH_LIMITATIONS -> REWORK_REQUIRED: Evidence does not include any test file for the \"test_sal_from_cache_only\" suite (expected 50 passing tests).; Dogfood suite evidence is incomplete: only a single test file fragment is shown and it is unclear whether it contains the required 9 passing tests.; No summary or report confirming that the full regression suite totals 63 passing tests (4 + 9 + 50).; Absence of a test runner output or CI report that explicitly lists the pass counts for each suite.",
-    "tests_evidence_verified": [
-      "tests/specification-authority-layer/test_sal_bootstrap_vs_verified.py",
-      "tests/python/dogfood/test_dogfood_fods_fodt_sal_fact_ndjson_export.py",
-      "tests/specification-authority-layer/test_sal_from_cache_only.py"
-    ],
-    "product_source_check": {
-      "source_exists": false,
-      "test_content_valid": true,
-      "details": [
-        "test content valid: tests/specification-authority-layer/test_sal_bootstrap_vs_verified.py",
-        "test content valid: tests/python/dogfood/test_dogfood_fods_fodt_sal_fact_ndjson_export.py",
-        "test content valid: tests/specification-authority-layer/test_sal_from_cache_only.py"
-      ]
-    },
-    "purpose_check": {
-      "item_type": "PRODUCT_TEST",
-      "has_gap_ref": true,
-      "gap_ref": "GAP-SA-001",
-      "spec_fact_count": 0,
-      "verdict": "PURPOSEFUL",
-      "note": ""
-    },
-    "semantic_verification": {
-      "adequate": false,
-      "confidence": 0.92,
-      "stub_detected": false,
-      "deficiencies": [
-        "Evidence does not include any test file for the \"test_sal_from_cache_only\" suite (expected 50 passing tests).",
-        "Dogfood suite evidence is incomplete: only a single test file fragment is shown and it is unclear whether it contains the required 9 passing tests.",
-        "No summary or report confirming that the full regression suite totals 63 passing tests (4 + 9 + 50).",
-        "Absence of a test runner output or CI report that explicitly lists the pass counts for each suite."
+      "llm_used": false,
+      "intermediate_verified": true,
+      "source": "intermediate_content_check",
+      "checks": [
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\package-builds\\python-foss\\aspose-format-factory-fods\\dist\\aspose_format_factory_fods-0.1.0.dev0-py3-none-any.whl",
+          "exists": true,
+          "content_ok": true,
+          "detail": "non-empty (149028 bytes): C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\package-builds\\python-foss\\aspose-format-factory-fods\\dist\\aspose_format_factory_fods-0.1.0.dev0-py3-none-any.whl",
+          "check_type": "nonzero_existence"
+        }
       ],
-      "llm_used": true,
-      "_cached_at": "2026-06-22T08:38:32.178031+00:00",
-      "_from_cache": true
+      "summary": "1/1 evidence files passed content check"
     }
   }
 ]

@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "snoopy-juggling-seal-26-30",
+  "latest_sprint": "product-deepening-session-2026-06-22",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -17574,6 +17574,26 @@
       "rationale": "ARCHITECTURE MARKER pattern \u2014 FodsDocument/FodsSheet/FodsCell inherit canonical spec classes. Real production implementations are in fods/models.py. Files committed with PATH B doc-only disposition.",
       "test_impact": "No behavioral changes. FODS test suite: 1335 passed, 8 skipped.",
       "gate_11_criterion": "P-ARCH-001 satisfied by spec_qname attribution"
+    },
+    {
+      "sprint": "product-deepening-session-2026-06-22",
+      "task": "DOGFOOD-DIF-CSV-001",
+      "date": "2026-06-22",
+      "skill_id": "add-dogfood-export",
+      "source_format_id": "dif",
+      "target_format_id": "csv",
+      "export_name": "dif_to_csv",
+      "target_ff_library": "src/python/csv/csv_writer.py::write_csv",
+      "dogfood_status": "IMPLEMENTED",
+      "disposition": "DOGFOOD_UPGRADE_FF_WRITER",
+      "changed_files": [
+        "src/python/dif/dif_analytics.py",
+        "tests/python/dif/test_r84_dif_to_csv.py",
+        "tests/python/dif/test_r90_dif_to_csv_dogfood.py"
+      ],
+      "rationale": "Replaced stdlib csv.writer in dif_to_csv with FF csv_writer.write_csv. DIF->CSV is now a proper dogfood export (source_library(FF) -> export_function -> target_library(FF)). dogfood_status upgraded from GAP_DOGFOOD_EXTERNAL to IMPLEMENTED.",
+      "test_impact": "14 passed, 1 skipped. All dogfood proof tests pass.",
+      "gate_11_criterion": "P6 dogfood export coverage"
     }
   ],
   "total_entries": 959

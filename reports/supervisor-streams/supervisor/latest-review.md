@@ -1,18 +1,17 @@
-# Supervisor Review: spec-authority-healing-sprint-A-20260622
-Sprint: spec-authority-healing-sprint-A-20260622
-Timestamp: 2026-06-22T12:52:16.685673
-Overall Verdict: ACCEPTED
+# Supervisor Review: forensics-healing-sprint-20260622
+Sprint: forensics-healing-sprint-20260622
+Timestamp: 2026-06-22T14:20:27.157060
+Overall Verdict: ACCEPTED_WITH_REWORK
 Autonomous Continue: True
 
 ## Summary
-- Accepted: 4
-- Rework: 0
+- Accepted: 3
+- Rework: 1
 - Rejected: 0
 - Overclaimed: 0
 - Critical Rework: 0
 
 ## Item Grades
-- **TC-HEAL-A1-CSV-REFS** (CSV gap-ledger spec_facts investigation — false positive confirmed): ACCEPTED_WITH_LIMITATIONS
-- **TC-HEAL-A2-SAL-CLEAN-MODE** (Switch SAL daily output to from_cache_only=True mode): ACCEPTED_WITH_LIMITATIONS
-- **TC-HEAL-A4-GAP-INT-002-SOURCE-FILTER** (Add source==workbench_verified filter to GAP-INT-002 and 3 new positive tests): ACCEPTED_WITH_LIMITATIONS
-- **TC-HEAL-A5-HEALING-GATE-DEPTH** (Add workbench_verified_count_positive criteria to healing gate Lane 1): ACCEPTED_WITH_LIMITATIONS
+- **TC-HEAL-FORMATS-BATCH2** (Analytics separation for Batch 2 formats): ACCEPTED_WITH_LIMITATIONS
+- **TC-MACH-001** (Add evidence path check to sprint_executor_validate.py): ACCEPTED_WITH_LIMITATIONS
+- **TC-FODG-COMPLETE-001** (Move FODG analytics to fodg_analytics_extra.py): ACCEPTED_WITH_LIMITATIONS

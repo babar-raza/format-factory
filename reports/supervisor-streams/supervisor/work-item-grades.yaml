@@ -1,11 +1,11 @@
-- item_id: TC-HEAL-A1-CSV-REFS
-  item_title: "CSV gap-ledger spec_facts investigation \u2014 false positive confirmed"
+- item_id: TC-HEAL-FORMATS-BATCH2
+  item_title: Analytics separation for Batch 2 formats
   declared_status: completed
   supervisor_grade: ACCEPTED_WITH_LIMITATIONS
   evidence_found: true
   evidence_paths:
-  - .local/spec-cache/csv/structural/workbench/verified-facts-review.yaml
-  - reports/capability-layer/gap-ledger.json
+  - .local/evidences/batch2-separation/per-format-test-results.txt
+  - .local/evidences/batch2-separation/baseline-update.txt
   tests_supporting: []
   tests_missing: []
   acceptance_criteria_met:
@@ -17,55 +17,9 @@
   required_rework: ''
   can_autonomously_repair: false
   next_prompt_instruction: 'Item accepted with limitations: path-only evidence for
-    TC-HEAL-A1-CSV-REFS'
+    TC-HEAL-FORMATS-BATCH2'
   purpose_check:
-    item_type: GOVERNANCE_TASKCARD
-    has_gap_ref: null
-    verdict: NOT_APPLICABLE
-    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
-  semantic_verification:
-    adequate: false
-    confidence: 0.35
-    stub_detected: false
-    deficiencies:
-    - 'few key fields found: [] (expected >=3)'
-    llm_used: false
-    intermediate_verified: true
-    source: intermediate_content_check
-    checks:
-    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\spec-cache\csv\structural\workbench\verified-facts-review.yaml
-      exists: true
-      content_ok: false
-      detail: 'few key fields found: [] (expected >=3)'
-      check_type: yaml_content
-    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\reports\capability-layer\gap-ledger.json
-      exists: true
-      content_ok: true
-      detail: JSON object with 6 keys
-      check_type: json_content
-    summary: 1/2 evidence files passed content check
-- item_id: TC-HEAL-A2-SAL-CLEAN-MODE
-  item_title: Switch SAL daily output to from_cache_only=True mode
-  declared_status: completed
-  supervisor_grade: ACCEPTED_WITH_LIMITATIONS
-  evidence_found: true
-  evidence_paths:
-  - tools/supervisor/autonomous_cycle.py
-  - .local/sal-output/sal-facts-latest.json
-  tests_supporting: []
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  - No concrete test/criteria proof (path-only acceptance)
-  acceptance_criteria_failed:
-  - No raw proof, test content, or acceptance criteria verified
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: 'Item accepted with limitations: path-only evidence for
-    TC-HEAL-A2-SAL-CLEAN-MODE'
-  purpose_check:
-    item_type: GOVERNANCE_TASKCARD
+    item_type: ''
     has_gap_ref: null
     verdict: NOT_APPLICABLE
     note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
@@ -78,25 +32,25 @@
     intermediate_verified: true
     source: intermediate_content_check
     checks:
-    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\tools\supervisor\autonomous_cycle.py
+    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\evidences\batch2-separation\per-format-test-results.txt
       exists: true
       content_ok: true
-      detail: 'non-empty (110228 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\tools\supervisor\autonomous_cycle.py'
+      detail: 'non-empty (19670 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\evidences\batch2-separation\per-format-test-results.txt'
       check_type: nonzero_existence
-    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\sal-output\sal-facts-latest.json
+    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\evidences\batch2-separation\baseline-update.txt
       exists: true
       content_ok: true
-      detail: JSON object with 6 keys
-      check_type: json_content
+      detail: 'non-empty (920 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\evidences\batch2-separation\baseline-update.txt'
+      check_type: nonzero_existence
     summary: 2/2 evidence files passed content check
-- item_id: TC-HEAL-A4-GAP-INT-002-SOURCE-FILTER
-  item_title: Add source==workbench_verified filter to GAP-INT-002 and 3 new positive
-    tests
+- item_id: TC-MACH-001
+  item_title: Add evidence path check to sprint_executor_validate.py
   declared_status: completed
   supervisor_grade: ACCEPTED_WITH_LIMITATIONS
   evidence_found: true
   evidence_paths:
-  - tests/specification-authority-layer/test_gap_int_002_product_source_fact_refs.py
+  - .local/evidences/mach-001/test-results.txt
+  - tools/supervisor/sprint_executor_validate.py
   tests_supporting: []
   tests_missing: []
   acceptance_criteria_met:
@@ -108,9 +62,9 @@
   required_rework: ''
   can_autonomously_repair: false
   next_prompt_instruction: 'Item accepted with limitations: path-only evidence for
-    TC-HEAL-A4-GAP-INT-002-SOURCE-FILTER'
+    TC-MACH-001'
   purpose_check:
-    item_type: GOVERNANCE_TASKCARD
+    item_type: ''
     has_gap_ref: null
     verdict: NOT_APPLICABLE
     note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
@@ -123,49 +77,65 @@
     intermediate_verified: true
     source: intermediate_content_check
     checks:
-    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\tests\specification-authority-layer\test_gap_int_002_product_source_fact_refs.py
+    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\evidences\mach-001\test-results.txt
       exists: true
       content_ok: true
-      detail: valid (16 test functions with assertions)
-      check_type: python_test_content
-    summary: 1/1 evidence files passed content check
-- item_id: TC-HEAL-A5-HEALING-GATE-DEPTH
-  item_title: Add workbench_verified_count_positive criteria to healing gate Lane
-    1
-  declared_status: completed
-  supervisor_grade: ACCEPTED_WITH_LIMITATIONS
-  evidence_found: true
-  evidence_paths:
-  - tools/supervisor/check_system_healing_gate.py
-  tests_supporting: []
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  - No concrete test/criteria proof (path-only acceptance)
-  acceptance_criteria_failed:
-  - No raw proof, test content, or acceptance criteria verified
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: 'Item accepted with limitations: path-only evidence for
-    TC-HEAL-A5-HEALING-GATE-DEPTH'
-  purpose_check:
-    item_type: GOVERNANCE_TASKCARD
-    has_gap_ref: null
-    verdict: NOT_APPLICABLE
-    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
-  semantic_verification:
-    adequate: true
-    confidence: 0.7
-    stub_detected: false
-    deficiencies: []
-    llm_used: false
-    intermediate_verified: true
-    source: intermediate_content_check
-    checks:
-    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\tools\supervisor\check_system_healing_gate.py
-      exists: true
-      content_ok: true
-      detail: 'non-empty (15579 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\tools\supervisor\check_system_healing_gate.py'
+      detail: 'non-empty (347 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\evidences\mach-001\test-results.txt'
       check_type: nonzero_existence
-    summary: 1/1 evidence files passed content check
+    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\tools\supervisor\sprint_executor_validate.py
+      exists: true
+      content_ok: true
+      detail: 'non-empty (20172 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\tools\supervisor\sprint_executor_validate.py'
+      check_type: nonzero_existence
+    summary: 2/2 evidence files passed content check
+- item_id: TC-FODG-COMPLETE-001
+  item_title: Move FODG analytics to fodg_analytics_extra.py
+  declared_status: completed
+  supervisor_grade: ACCEPTED_WITH_LIMITATIONS
+  evidence_found: true
+  evidence_paths:
+  - .local/evidences/fodg-complete-001/test-results.txt
+  - .local/evidences/fodg-complete-001/function-count-before-after.txt
+  - src/python/fodg/fodg_analytics_extra.py
+  tests_supporting: []
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  - No concrete test/criteria proof (path-only acceptance)
+  acceptance_criteria_failed:
+  - No raw proof, test content, or acceptance criteria verified
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: 'Item accepted with limitations: path-only evidence for
+    TC-FODG-COMPLETE-001'
+  purpose_check:
+    item_type: ''
+    has_gap_ref: null
+    verdict: NOT_APPLICABLE
+    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
+  semantic_verification:
+    adequate: true
+    confidence: 0.7
+    stub_detected: false
+    deficiencies: []
+    llm_used: false
+    intermediate_verified: true
+    source: intermediate_content_check
+    checks:
+    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\evidences\fodg-complete-001\test-results.txt
+      exists: true
+      content_ok: true
+      detail: 'non-empty (185 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\evidences\fodg-complete-001\test-results.txt'
+      check_type: nonzero_existence
+    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\evidences\fodg-complete-001\function-count-before-after.txt
+      exists: true
+      content_ok: true
+      detail: 'non-empty (168 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\evidences\fodg-complete-001\function-count-before-after.txt'
+      check_type: nonzero_existence
+    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\fodg\fodg_analytics_extra.py
+      exists: true
+      content_ok: true
+      detail: 'non-empty (22023 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\fodg\fodg_analytics_extra.py'
+      check_type: nonzero_existence
+    summary: 3/3 evidence files passed content check

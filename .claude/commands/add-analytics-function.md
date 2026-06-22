@@ -1,27 +1,64 @@
 ---
-version: "1.0"
-last-updated: "2026-06-18"
+version: "1.1"
+last-updated: "2026-06-22"
 phase-available: "all"
 gate-required: null
 created-by: skill-governance-sync-plan
-spec_qname_required: "false"
+spec_qname_required: "true"
+overflow_split_allowed: "false"
 product_track: "foss_python_analytics"
 ---
 
 # /add-analytics-function
 
-Add one formula-based analytics function to `src/python/<format_id>/analytics.py`.
+## STATUS: SUSPENDED (2026-06-18)
+
+The arithmetic analytics rotation (mod/times functions) is **SUSPENDED**.
+Do NOT add new `{format}_*_mod_*_times_*` functions.
+
+This skill may ONLY be used for **spec-backed domain analytics** — functions computing
+meaningful document metrics grounded in a spec element (page count, shape density, etc.).
+Arithmetic-only formulas are permanently prohibited.
+
+---
+
+Add one spec-backed analytics function to a spec-owned domain module
+at `src/python/<format_id>/<spec_domain_module>.py`.
 Per master plan §24.7 (BINDING), all analytics functions MUST reside in a dedicated
 `analytics.py` module and MUST NOT be added to codec files, parser files, or
 `neutral_model.py`. RULE-AM-001 in `validate_source_architecture.py` blocks any sprint
 that places analytics functions outside `analytics.py`.
 
+## Prerequisites (ALL required before any work)
+
+1. **Gap-ledger entry MUST exist** — `reports/capability-layer/gap-ledger.json` must have a
+   `GAP-*` entry for this capability. No gap entry = no analytics function.
+2. **Spec fact reference MUST exist** — function must trace to a `FACT-<FORMAT>-*` entry
+   in `.local/sal-output/sal-facts-latest.json`. Declare `spec_fact_ref` in function docstring.
+3. **Target module must be spec-owned** — target file is NOT `_analytics.py`, NOT
+   `_analytics_extra.py`. Target must have a `spec_qname` module-level attribute.
+4. **LOC cap must not be exceeded** — RULE-AM-003 blocks if target file is at `baseline_loc_cap`.
+
+## Forbidden Target Files (MODULE-NAME-001 — HARD BLOCK)
+
+The following file patterns are PERMANENTLY FORBIDDEN as targets:
+
+- `*_analytics_extra.py` — overflow bucket (V50 blocks)
+- `*_extra.py` — generic bucket (V50 blocks)
+- `*_misc.py` — convenience grouping (V50 blocks)
+
+**When `{format}_analytics.py` reaches `baseline_loc_cap`: STOP.**
+Do NOT create an overflow file. Create a spec-level segregation taskcard instead.
+Overflow splits are FORBIDDEN. `overflow_split_allowed: false`.
+
 ## Required Inputs
 
 - `format_id` — target format (e.g., `toml`, `abw`, `csv`)
 - `function_name` — exact Python function name following naming convention
-- `formula` — arithmetic expression (used for docstring and test generation)
-- `prime_used` — the prime number in the formula (must NOT already appear in `analytics.py`)
+- `target_module` — path to spec-owned domain module (NOT `_analytics.py` or `_analytics_extra.py`)
+- `spec_fact_ref` — FACT-* reference from sal-facts-latest.json (REQUIRED)
+- `gap_ledger_ref` — GAP-* reference from gap-ledger.json (REQUIRED)
+- `formula` — computation description (used for docstring and test generation)
 - `expected_values` — list of 3 `{sample_file, expected}` pairs referencing files in `samples/by-format/<format_id>/`
 
 ## Steps

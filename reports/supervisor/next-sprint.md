@@ -1,7 +1,7 @@
 # Supervisor-Generated Next Sprint Prompt
-# Source sprint: fuzzy-conjuring-papert
+# Source sprint: product-deepening-session-2026-06-22
 # Stream: mainstream
-# Generated: 2026-06-22T13:45:19.804281
+# Generated: 2026-06-22T14:59:14.073151
 # ADVISORY ONLY — not a Format Factory authority document
 # This is INPUT to the next sprint, not a gate approval or commit authorization.
 
@@ -11,10 +11,10 @@
 ADVANCE: Product deepening — .NET commercial + Python FOSS + dogfood + packaging
 
 ## Prior Sprint Summary
-- Sprint ID: fuzzy-conjuring-papert
-- Evidence verdict: ACCEPTED_WITH_REWORK
-- Tests: 63 passed, 0 failed, 0 skipped
-- Autonomous continue: False
+- Sprint ID: product-deepening-session-2026-06-22
+- Evidence verdict: ACCEPTED
+- Tests: 22 passed, 0 failed, 1 skipped
+- Autonomous continue: True
 
 ## STOP_REASON_ADVISORY (enforced by stop_reason_adjudicator.py)
 
@@ -82,30 +82,6 @@ None
 
 ## Project Memory Context
 ```
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\wave3-advance-cond2-cond6-20260622\declaration-review-package.zip
-- pending_marker_count: 0
-- bundle_entry_count: 62
-- bundle_validation_pass: True
-- test_delta: +6
-- test_delta_from: 8
-
-## Entry: floating-stargazing-globe-20260622-080956
-- timestamp: 2026-06-22T13:15:15.497132
-- verdict: ACCEPTED
-- test_count: 0
-- fail_count: 0
-- git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\floating-stargazing-globe-20260622-080956\declaration-review-package.zip
-- pending_marker_count: 0
-- bundle_entry_count: 68
-- bundle_validation_pass: True
-
-## Entry: zst-frame-count-coverage-20260622
-- timestamp: 2026-06-22T13:33:12.640855
-- verdict: ACCEPTED
-- test_count: 0
-- fail_count: 0
-- git_head: see-declaration
 - bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\zst-frame-count-coverage-20260622\declaration-review-package.zip
 - pending_marker_count: 0
 - bundle_entry_count: 61
@@ -131,6 +107,30 @@ None
 - bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\product-gap-closure-batch-20260622\declaration-review-package.zip
 - pending_marker_count: 0
 - bundle_entry_count: 80
+- bundle_validation_pass: True
+
+## Entry: odf-parts-acquisition-20260622
+- timestamp: 2026-06-22T13:51:09.833356
+- verdict: ACCEPTED
+- test_count: 16
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\odf-parts-acquisition-20260622\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 64
+- bundle_validation_pass: True
+- test_delta: +16
+- test_delta_from: 0
+
+## Entry: forensics-healing-sprint-20260622
+- timestamp: 2026-06-22T14:23:06.944637
+- verdict: ACCEPTED
+- test_count: 0
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\forensics-healing-sprint-20260622\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 82
 - bundle_validation_pass: True
 ```
 
