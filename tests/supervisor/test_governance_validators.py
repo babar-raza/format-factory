@@ -878,3 +878,54 @@ class TestV47SpecFactRefsInSalOutput:
         result = validate({}, repo_root=REPO_ROOT)
         assert result["result"] == "PASS"
         assert result["blocks_sprint"] is False
+
+
+class TestV36SpecQnameOnlyDetection:
+    """TC-ZS-006: V36 must detect spec_qname-only assertion patterns."""
+
+    def _validator(self):
+        from governance_validators import validate_no_stub_tests
+        return validate_no_stub_tests
+
+    def test_spec_qname_only_assertions_trigger_warn(self, tmp_path):
+        """Test file with >80% spec_qname == assertions → WARN."""
+        test_file = tmp_path / "test_qname_only.py"
+        test_file.write_text(
+            "def test_a():\n"
+            "    assert Foo.spec_qname == 'table:table'\n"
+            "    assert Bar.spec_qname == 'text:p'\n"
+            "    assert Baz.spec_qname == 'office:document'\n"
+            "    assert Qux.spec_qname == 'text:span'\n"
+        )
+        validate = self._validator()
+        decl = {
+            "planned_work_items": [{
+                "item_id": "TC-ZS-006-NEG-001",
+                "item_type": "PRODUCT_SOURCE",
+                "test_references": [str(test_file)],
+            }],
+        }
+        result = validate(decl)
+        assert result["result"] == "WARN", f"Expected WARN for spec_qname-only file, got {result}"
+        assert result["blocks_sprint"] is False
+
+    def test_behavioral_assertions_pass(self, tmp_path):
+        """Test file with behavioral assertions (== values, not spec_qname) → PASS."""
+        test_file = tmp_path / "test_behavioral.py"
+        test_file.write_text(
+            "def test_a():\n"
+            "    obj = MyClass({'name': 'Sheet1'})\n"
+            "    assert obj.name == 'Sheet1'\n"
+            "    assert obj.row_count == 0\n"
+            "    assert obj.to_dict() == {'name': 'Sheet1'}\n"
+        )
+        validate = self._validator()
+        decl = {
+            "planned_work_items": [{
+                "item_id": "TC-ZS-006-POS-001",
+                "item_type": "PRODUCT_SOURCE",
+                "test_references": [str(test_file)],
+            }],
+        }
+        result = validate(decl)
+        assert result["result"] == "PASS", f"Expected PASS for behavioral test, got {result}"

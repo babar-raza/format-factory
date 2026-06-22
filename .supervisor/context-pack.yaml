@@ -1,30 +1,37 @@
 schema_version: '1.0'
-generated_at: '2026-06-22T13:39:30.980858'
+generated_at: '2026-06-22T13:43:43.877335'
 repo_root: C:\Users\prora\OneDrive\Documents\GitHub\format-factory
 git:
-  head: 8f72ca5b
+  head: 586d18b5
   status:
-    modified_count: 45
+    modified_count: 31
     untracked_count: 69
     staged_count: 1
-    total_changed: 124
+    total_changed: 101
     clean: false
 supervisor_mode: 4
 latest_sprint:
-  sprint_id: indexed-crafting-peacock-plan-execution
+  sprint_id: fuzzy-conjuring-papert
   run_id: unknown
   autonomous_continue: false
-  iteration: 8
+  iteration: 10
   max_iterations: 12
   hard_stops:
   - critical_rework_blocks_continuation
   rework_items:
-  - SPEC-COMPAT-ALL-20-FORMATS
-  - REVIEWER-CHECK7-WIRE
-  - SAL-FACTS-10-FORMATS
-  - SOURCE-BASELINE-186-FILES
-  - TESTS-345-PASS
-  - FODT-DUAL-PATH-FIX
+  - TC-COMMIT-001
+  - TC-SRC-001-REPAIR
+  - TC-SAL-IDEMPOTENCY
+  - TC-FODS-CELLS-BUG
+  - TC-NET-BUILD
+  - TC-SAL-HEAL-005
+  - GOV_BLOCK:execution_method_required_validator
+  - GOV_BLOCK:source_diff_required_validator
+  - GOV_BLOCK:idempotency_key_required_validator
+  - GOV_BLOCK:route_decision_required_validator
+  - GOV_BLOCK:spec_fact_refs_validator
+  - GOV_BLOCK:validate_source_architecture
+  - GOV_BLOCK:validate_skill_transcript_present
 poc_matrix:
   sprint: capability-layer-closeout-rnext
   last_updated: '2026-06-18'

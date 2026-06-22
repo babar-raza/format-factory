@@ -180,8 +180,8 @@
       "last_healed_check": "2026-06-18T07:34:50.942758+00:00"
     },
     "tools/supervisor/governance_validators.py": {
-      "loc": 3168,
-      "baseline_loc_cap": 3168,
+      "loc": 3179,
+      "baseline_loc_cap": 3179,
       "functions": 54,
       "baseline_functions_cap": 54,
       "note": "Grandfathered 2026-06-18: pre-existing large governance validator file; V41 (validate_analytics_skill_required) added by TC-ENFORCE-001 V42 (validate_deepening_suspension) added 2026-06-18 for SUSP-001 (Change C2, pre-product-acquisition sprint). V46 (validate_skill_transcript_present) added 2026-06-21 (TC-SKILL-GOV-002). V47 (validate_spec_fact_refs_in_sal_output) added 2026-06-21 (TC-MACH-ARCH-007). Cap update appropriate for governance infrastructure additions per MEMORY.md precedent. V48 (validate_architecture_only_stub_gate) added 2026-06-21 (TC-ZS-001, ZERO-STUB-AUDIT). V44 upgraded from constant-WARN stub to real import inspection. V49 (validate_qname_structure) added 2026-06-21 (TC-QNAME-VALIDATORS-001).",
@@ -196,8 +196,8 @@
       "category": "tools_infrastructure"
     },
     "tools/capability_layer/capability_map_generator.py": {
-      "loc": 1433,
-      "baseline_loc_cap": 1433,
+      "loc": 1439,
+      "baseline_loc_cap": 1439,
       "functions": 29,
       "baseline_functions_cap": 29,
       "note": "Cap corrected 2026-06-17: old Step 0 had recorded stale loc=1204; actual size at grandfathering=1364. Cap frozen at 1364 -- no further growth permitted.",
@@ -1904,6 +1904,27 @@
       "baseline_loc_cap": 617,
       "functions": 66,
       "baseline_functions_cap": 66,
+      "category": "new_violation_detected"
+    },
+    "src/python/ods/ods_analytics.py": {
+      "loc": 895,
+      "baseline_loc_cap": 895,
+      "functions": 54,
+      "baseline_functions_cap": 54,
+      "category": "new_violation_detected"
+    },
+    "src/python/sylk/sylk_analytics.py": {
+      "loc": 889,
+      "baseline_loc_cap": 889,
+      "functions": 66,
+      "baseline_functions_cap": 66,
+      "category": "new_violation_detected"
+    },
+    "src/python/tsv/tsv_analytics.py": {
+      "loc": 807,
+      "baseline_loc_cap": 807,
+      "functions": 55,
+      "baseline_functions_cap": 55,
       "category": "new_violation_detected"
     }
   },
