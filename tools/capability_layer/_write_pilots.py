@@ -6,7 +6,7 @@ from pathlib import Path
 PILOTS_DIR = Path("reports/capability-layer/pilots")
 PILOTS_DIR.mkdir(parents=True, exist_ok=True)
 NOW = datetime.now(timezone.utc).isoformat()
-RUN_ID = "capability-layer-healing-20260621-ed51041"
+RUN_ID = "capability-layer-healing-20260621-329b910"
 
 
 def write_pilot(pilot_id, data):

@@ -3,8 +3,8 @@
 **Format**: FODG  
 **Product Type**: foss_reduced  
 **Verdict**: PASS_VERIFIED  
-**Generated**: 2026-06-21T17:09:20.897325+00:00  
-**Run ID**: capability-layer-healing-20260621-ed51041
+**Generated**: 2026-06-22T08:06:54.560239+00:00  
+**Run ID**: capability-layer-healing-20260621-329b910
 
 ## Authority Inputs
 
