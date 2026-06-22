@@ -996,7 +996,7 @@ def _build_action_queue(
     for gap in open_gaps[:20]:  # top 20 open gaps
         is_machine_executable = (
             gap["product_type"] == "foss_reduced"
-            and gap["priority"] in ("P0", "P1")
+            and gap["priority"] in ("P0", "P1", "P2")
             and not gap.get("blocks_poc", False)
             and gap.get("commercial_impact", "NONE") == "NONE"
         )
