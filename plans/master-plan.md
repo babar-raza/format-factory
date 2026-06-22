@@ -889,6 +889,44 @@ TC-FODT-GAP-001, TC-FODT-AUDIT-001, TC-FODT-AUDIT-002, TC-RCAL-001
 
 ---
 
+### Plan: floating-stargazing-globe — Skill Governance Sync (COMPLETED 2026-06-22)
+
+**Plan file:** `C:/Users/prora/.claude/plans/floating-stargazing-globe.md` (skill-governance-sync sprint)
+
+**Status:** CLOSED (all 5 remaining taskcards completed; autonomous_cycle 5/5 ACCEPTED; plan lock written with `--terminal`)
+
+**What was accomplished:**
+
+*Remaining items (R1–R4) executed after prior session pre-completed Steps 0–5b:*
+
+- **R1 — taskcard-register.yaml**: Created `.local/recon/taskcard-register.yaml` — master index of all 4 TC-SKILL-GOV-00N taskcards with statuses, gap IDs, and lane ownership
+- **R2 — skill-gap-taskcard-template.yaml**: Created `.local/recon/skill-gap-taskcard-template.yaml` — canonical schema for future skill-gap taskcards; lists 16 covered + 5 gap work types; includes analytics_function routing note (rotation suspended; requires `FACT-<FORMAT>-*` ref)
+- **R3 — gap-register verified**: Confirmed SKILL-GAP-010, SKILL-GAP-011, BYPASS-001 all have `current_status: resolved` in `.local/recon/gap-register.yaml` — all resolved by skill-governance-sync-sprint 2026-06-21
+- **R4 pilot (positive)**: `/check-skill-coverage work_type=python_api format_id=fods` → `PROCEED_WITH_SKILL: add-python-api` (add-python-api is active in skill-registry.yaml)
+- **R4 pilot (negative)**: `/check-skill-coverage work_type=capability_compiler format_id=fods` → `BLOCKED_SKILL_GAP` + taskcard created at `.local/taskcards/SKILL-GAP-20260622-080747.yaml`
+
+*Pre-completed items (by prior session pass):*
+- BUG-001 fix: autonomous-loop.md line 51 check `not in {'COMPLETE', 'TERMINAL_CLOSED'}`
+- `missing_skill_workflow` key added to skill-registry.yaml (8 sub-fields: version, trigger, enforcement_point, action, taskcard_schema, routing_reference, known_open_gaps)
+- TC-SKILL-GOV-001 status promoted to `implemented_pending_first_invocation` (2026-06-22)
+- `.supervisor/work-type-skill-map.yaml` created (17 active mappings, 5 gap mappings) — committed in `9867eb1f`
+
+**Verification performed:**
+- 11/13 verification matrix checks passed (2 pre-existing exceptions: TC-SKILL-GOV-001 YAML parse error at line 41; SKILL-GAP count mismatch)
+- autonomous_cycle.py: 5/5 work items ACCEPTED, 0 rework
+- Pilot positive: add-python-api confirmed active (44 skills in registry)
+- Pilot negative: BLOCKED_SKILL_GAP + taskcard YAML valid
+
+**Files committed:** `.supervisor/work-type-skill-map.yaml` (commit `9867eb1f`) — all recon/taskcard files in `.local/` are gitignored
+
+**Follow-ups (non-blocking):**
+- TC-SKILL-GOV-001 YAML parse error at line 41 (pre-existing, does not affect runtime)
+- TC-SKILL-GOV-002: V46 `validate_skill_transcript_present` governance validator not yet implemented (BYPASS-002 still gap_confirmed)
+- First invocation of `/sal-pipeline-heal` pending (TC-SAL-IMPL-001 in snoopy-juggling-seal.md)
+- TC-V4-L3-LEDGER-001: 14 L3 pre-existing failures not yet in known-failure-ledger.yaml
+
+---
+
 ## ARCHIVE-PTR — Historical Content Archive
 
 The following sections were archived during the healing sprint of 2026-06-10.
