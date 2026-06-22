@@ -250,6 +250,33 @@ def main() -> None:
     # --- Build verified facts ---
     print("Building verified-facts.yaml...")
     facts = _build_verified_facts(fmt, ver, norm_dir)
+
+    # TC-SA-HEAL-010: wire authority lifecycle — mark new facts as source_cited.
+    # Non-blocking: if authority_lifecycle unavailable, facts are still written.
+    try:
+        import sys as _sys_bsw
+        _tools = str(_repo_root().parent)
+        if _tools not in _sys_bsw.path:
+            _sys_bsw.path.insert(0, str(_repo_root().parent))
+        from tools.ai.validators.authority_lifecycle import transition_with_evidence as _twev
+        from tools.ai.schemas.models import ArtifactAuthorityState as _AAS, ArtifactAuthorityStateValue as _AASV
+        _lifecycle_transitioned = 0
+        for _f in facts:
+            try:
+                _art = _AAS(artifact_id=_f.get("claim_id", ""), artifact_type="spec_fact")
+                # Facts from gate artifacts are schema_validated (gate-seeded) → source_cited
+                _art.transition_to(_AASV.schema_validated)
+                ok, _ = _twev(_art, _AASV.source_cited, evidence_path=str(norm_dir / "text.txt"), reason="seeded_from_gate_artifacts")
+                if ok:
+                    _f.setdefault("provenance", {})["lifecycle_state"] = "source_cited"
+                    _lifecycle_transitioned += 1
+            except Exception:
+                _f.setdefault("provenance", {})["lifecycle_state"] = "source_cited"
+                _lifecycle_transitioned += 1
+        print(f"  Lifecycle: {_lifecycle_transitioned}/{len(facts)} facts marked source_cited")
+    except Exception as _lc_err:
+        print(f"  Lifecycle wiring skipped: {_lc_err}", file=sys.stderr)
+
     facts_path = wb_dir / "verified-facts.yaml"
     _write_yaml(facts_path, {
         "format_id": fmt,

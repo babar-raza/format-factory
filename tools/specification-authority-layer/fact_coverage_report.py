@@ -27,6 +27,36 @@ _SAL_OUTPUT = _REPO_ROOT / ".local" / "sal-output"
 _VERIFIED_STATUSES = frozenset(["verified", "verified_with_note"])
 _PENDING_STATUSES = frozenset(["pending_verification", "needs_review"])
 
+# TC-SA-HEAL-007: Infer fact_category from claim_id naming convention.
+# FACT-{FORMAT}-EX-* = structural_enumeration (auto-extracted xml element scan)
+# All others = behavioral (hand-curated spec requirements)
+import re as _re
+_EX_PATTERN = _re.compile(r"^FACT-[A-Z]+-EX-", _re.IGNORECASE)
+
+
+def _infer_fact_category(claim_id: str) -> str:
+    """Return 'structural_enumeration' for FACT-*-EX-* ids; else 'behavioral'."""
+    if _EX_PATTERN.match(claim_id):
+        return "structural_enumeration"
+    return "behavioral"
+
+
+def _count_by_category(facts: list[dict]) -> dict[str, int]:
+    """Count verified facts split by behavioral vs structural_enumeration."""
+    counts: dict[str, int] = {"behavioral": 0, "structural_enumeration": 0}
+    _VERIFIED = frozenset(["verified", "verified_with_note"])
+    for fact in facts:
+        prov = fact.get("provenance", {}) or {}
+        status = prov.get("verification_status") or fact.get("verification_status", "unknown")
+        if status not in _VERIFIED:
+            continue
+        explicit = fact.get("fact_category") or ""
+        cat = explicit if explicit in counts else _infer_fact_category(
+            fact.get("claim_id") or fact.get("fact_id") or ""
+        )
+        counts[cat] = counts.get(cat, 0) + 1
+    return counts
+
 
 def _load_review_yaml(path: Path) -> dict:
     text = path.read_text(encoding="utf-8")
@@ -62,6 +92,9 @@ def _build_format_report(review_file: Path, format_id: str) -> dict:
 
     effective_verified = verified + verified_with_note
     coverage_pct = round(100.0 * effective_verified / total, 1) if total > 0 else 0.0
+    cat_counts = _count_by_category(facts)
+    behavioral_count = cat_counts["behavioral"]
+    structural_count = cat_counts["structural_enumeration"]
 
     return {
         "format_id": format_id,
@@ -75,6 +108,8 @@ def _build_format_report(review_file: Path, format_id: str) -> dict:
         "other": other,
         "coverage_percent": coverage_pct,
         "status_breakdown": counts,
+        "behavioral_count": behavioral_count,
+        "structural_enumeration_count": structural_count,
     }
 
 
@@ -97,6 +132,8 @@ def generate_report(format_id: str | None = None) -> dict:
     total_registered = sum(f["total_registered"] for f in formats)
     total_verified = sum(f["effective_verified"] for f in formats)
     total_pending = sum(f["pending"] for f in formats)
+    total_behavioral = sum(f["behavioral_count"] for f in formats)
+    total_structural = sum(f["structural_enumeration_count"] for f in formats)
     formats_with_coverage = sum(1 for f in formats if f["effective_verified"] > 0)
     formats_no_coverage = len(formats) - formats_with_coverage
 
@@ -114,6 +151,8 @@ def generate_report(format_id: str | None = None) -> dict:
                 round(100.0 * total_verified / total_registered, 1)
                 if total_registered > 0 else 0.0
             ),
+            "behavioral_coverage": total_behavioral,
+            "structural_enumeration_coverage": total_structural,
         },
     }
 
@@ -144,6 +183,8 @@ def _write_markdown_summary(report: dict, out_path: Path) -> None:
         f"- Total pending: {s['total_pending']}",
         f"- Total registered: {s['total_registered']}",
         f"- Overall coverage: {s['overall_coverage_percent']}%",
+        f"- Behavioral coverage: {s['behavioral_coverage']} (hand-curated spec requirements)",
+        f"- Structural enumeration coverage: {s['structural_enumeration_coverage']} (auto-extracted FACT-*-EX-* ids)",
     ]
     out_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 

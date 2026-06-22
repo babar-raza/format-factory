@@ -1599,12 +1599,12 @@ def generate_task_candidates(
     except Exception:
         pass
 
-    # Lane 6 repair: gap-ledger is now PRIMARY source of truth for task selection.
-    # Hardcoded _EXPANSION_GOALS are demoted to fallback — only used when gap-ledger
-    # does not cover a function. This prevents hardcoded goals from overriding the
-    # current capability gap state.
+    # Lane 6: gap-ledger is PRIMARY; hardcoded goals demoted to fallback (missing fns only).
+    # TC-SA-HEAL-006: require spec_facts for formats with ≥15 SAL facts (MIN_FACTS_T=15).
+    _sal_p = _REPO_ROOT / ".local" / "sal-output" / "sal-facts-latest.json"
+    _req_sf = _sal_p.exists() and any(len(e.get("spec_facts", [])) >= 15 for e in json.loads(_sal_p.read_text()).get("results", []))
     gap_ledger_goals, _spec_grounded_available = _load_gap_ledger_goals(
-        require_spec_facts=False,
+        require_spec_facts=_req_sf,
         exclude_gap_ids=_excluded_gap_ids,
     )
     _expansion_goal_fallback = len(gap_ledger_goals) == 0

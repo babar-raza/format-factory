@@ -789,21 +789,30 @@ def _load_workbench_verified_facts(format_id: str) -> List[Dict[str, str]]:
 
     for rf in spec_cache.glob(pattern):
         try:
-            text = rf.read_text(encoding="utf-8")
-            if text.lstrip().startswith("{"):
-                data = json.loads(text)
+            # TC-SA-HEAL-011: JSON cache with mtime invalidation (avoids 60s+ YAML parse)
+            _cp = rf.with_suffix(".json")
+            if _cp.exists() and _cp.stat().st_mtime >= rf.stat().st_mtime:
+                data = json.loads(_cp.read_text(encoding="utf-8"))
             else:
+                text = rf.read_text(encoding="utf-8")
+                if text.lstrip().startswith("{"):
+                    data = json.loads(text)
+                else:
+                    try:
+                        import yaml  # type: ignore
+                        data = yaml.safe_load(text) or {}
+                    except ImportError:
+                        continue
                 try:
-                    import yaml  # type: ignore
-                    data = yaml.safe_load(text) or {}
-                except ImportError:
-                    continue
+                    _cp.write_text(
+                        json.dumps(data, separators=(",", ":")), encoding="utf-8"
+                    )
+                except Exception:
+                    pass
 
             raw_facts = data.get("facts", [])
 
-            # RC-3 (GAP-SA-NEW-003): run anti-bypass check on raw provenance source_id
-            # (before the fallback is applied). Facts with no spec_id AND no
-            # normalized_artifact in provenance are ANTI_BYPASS_REJECTED and excluded.
+            # RC-3: anti-bypass — reject facts with no source_id (GAP-SA-NEW-003)
             rejected_ids: set = set()
             try:
                 from spec_verifier import verify_requirements  # lazy import — same dir
@@ -812,28 +821,14 @@ def _load_workbench_verified_facts(format_id: str) -> List[Dict[str, str]]:
                     prov = fact.get("provenance", {}) or {}
                     claim_id = fact.get("claim_id") or fact.get("fact_id") or ""
                     raw_source_id = prov.get("spec_id") or prov.get("normalized_artifact")
-                    verify_input.append({
-                        "req_id": claim_id,
-                        "source_id": raw_source_id,
-                        "text_fragment": fact.get("claim", ""),
-                    })
+                    verify_input.append({"req_id": claim_id, "source_id": raw_source_id, "text_fragment": fact.get("claim", "")})
                 verify_results = verify_requirements(verify_input)
                 rejected_ids = {r.req_id for r in verify_results
                                 if r.status == "ANTI_BYPASS_REJECTED"}
                 unverifiable_count = sum(1 for r in verify_results
                                          if r.status == "UNVERIFIABLE")
-                if rejected_ids:
-                    print(
-                        f"[sal_master_runner] WARN: {len(rejected_ids)} facts "
-                        f"ANTI_BYPASS_REJECTED for {format_id} (no source_id) — excluded",
-                        file=sys.stderr,
-                    )
-                if unverifiable_count:
-                    print(
-                        f"[sal_master_runner] WARN: {unverifiable_count} facts "
-                        f"UNVERIFIABLE for {format_id} — included (workbench-curated)",
-                        file=sys.stderr,
-                    )
+                if rejected_ids: print(f"[sal_master_runner] WARN: {len(rejected_ids)} ANTI_BYPASS_REJECTED for {format_id} — excluded", file=sys.stderr)
+                if unverifiable_count: print(f"[sal_master_runner] WARN: {unverifiable_count} UNVERIFIABLE for {format_id} — included", file=sys.stderr)
             except ImportError:
                 pass  # spec_verifier unavailable — proceed without anti-bypass check
 
