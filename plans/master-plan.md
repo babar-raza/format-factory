@@ -630,7 +630,7 @@ for that format must be a secondary split, not new analytics additions. Growth b
 - 47 working-tree deletions: 15 inner fods/fods/ duplicate files + 32 broken FODS test stubs
 
 **Follow-ups (non-blocking):**
-1. TC-MACH-001: Mark `fuzzy-conjuring-papert.md` lock COMPLETE before next autonomous sprint
+1. ~~TC-MACH-001: Mark `fuzzy-conjuring-papert.md` lock COMPLETE before next autonomous sprint~~ — RESOLVED: TERMINAL_CLOSED via fuzzy-conjuring-papert PSTR session (2026-06-22)
 2. TC-SRC-001: Inner fods/fods/ structural cleanup — deferred
 
 ---
@@ -1072,6 +1072,46 @@ TC-FODT-GAP-001, TC-FODT-AUDIT-001, TC-FODT-AUDIT-002, TC-RCAL-001
 
 ---
 
+### Plan: fuzzy-conjuring-papert — SAL Bootstrap Separation + PSTR Verification (CLOSED 2026-06-22)
+
+**Status:** CLOSED — 10/10 taskcards verified; TERMINAL_CLOSED
+
+**Plan file:** `C:/Users/prora/.claude/plans/fuzzy-conjuring-papert.md` (v2.1)
+
+**Context:** A PSTR (Plan Status Truth Review) revealed the plan was NOT actually closed despite a prior session's claims. The active-plan-lock.json pointed to `floating-stargazing-globe.md` instead, and the SAL bootstrap test had a wrong-format assumption (CSV instead of ORA).
+
+**What was completed:**
+
+*Pre-verified taskcards (confirmed by PSTR — already done in prior sessions):*
+- TC-COMMIT-001: git commit `329b9101` — all sprint work committed (237 files)
+- TC-SRC-001-REPAIR: `src/python/fods/fods/fods/` triple nesting removed
+- TC-NET-BUILD: `dotnet build src/net/fods/` exit 0, 0 errors, 39 warnings
+- TC-V45-WIRING: `validate_qname_class_names` at line 154 of `governance_validator_runner.py`
+- TC-SNOOPY-COUNT: "14,428" reference removed from `plans/snoopy-juggling-seal.md`
+
+*Fixed in this session:*
+- TC-SAL-HEAL-001: `bootstrap_only`/`verified` fact_status separation — code was already in `sal_master_runner.py` (lines 759-762); regenerated `sal-facts-latest.json`: 24 formats, 14,463 facts (150 `bootstrap_only` + 14,313 `verified`)
+- TC-SAL-HEAL-002: `test_sal_bootstrap_vs_verified.py` — changed CSV→ORA for bootstrap_only test (CSV has structural workbench with FACT-CSV-001/FACT-CSV-002 at `verified_with_note`); 4/4 PASS — commit `8f72ca5b`
+- `test_sal_from_cache_only.py`: same CSV→ORA fix; 50/50 PASS — commit `a700c95c`
+- TC-SAL-IDEMPOTENCY: verified — `--format zst` run leaves 24-format combined output unchanged
+- TC-FODS-CELLS-BUG: `FodsSheet.cells()` returns 8 `FodsCell` objects (not strings) on `typed-values-basic.fods`
+
+**Full regression:** 4 + 9 + 50 = **63/63 PASS**
+
+**Verification performed:**
+- SAL bootstrap Counter: `{'verified': 14313, 'bootstrap_only': 150}` — zero MISSING
+- Idempotency: before=24 formats, after=24 formats (single-format `--format zst` run)
+- `cells()` test: `isinstance(cells[0], str)` = False; count = 8; type = FodsCell
+- `test_sal_bootstrap_vs_verified.py`: 4/4 PASS
+- `test_dogfood_fods_fodt_sal_fact_ndjson_export.py`: 9/9 PASS
+- `test_sal_from_cache_only.py`: 50/50 PASS
+
+**Root cause of PSTR failure:** CSV format acquired a structural workbench (`FACT-CSV-001`, `FACT-CSV-002`) making it no longer a "no-workbench" test case. ORA has no spec-cache directory at all — correct substitute.
+
+**Commits containing this work:** `8f72ca5b`, `a700c95c`
+
+---
+
 ## ARCHIVE-PTR — Historical Content Archive
 
 The following sections were archived during the healing sprint of 2026-06-10.
@@ -1085,5 +1125,5 @@ No content has been deleted — only moved to archive files with pointers.
 
 ---
 
-*End of plans/master-plan.md — version 3.6 — 2026-06-22 (Adaptive splashing frog: 5 TC-H taskcards closed; FODT parse chain verified; gap audit reclassified 12 gaps; 4 XCF arithmetic gaps reopened; get_spec_qname consumer added; adaptive-splashing-frog CLOSED TERMINAL)*
+*End of plans/master-plan.md — version 3.7 — 2026-06-22 (fuzzy-conjuring-papert: PSTR-verified closure; SAL bootstrap/verified separation confirmed; test CSV→ORA fix; 63/63 tests pass; TERMINAL_CLOSED)*
 *This document is the single operational authority for format-factory. All other documents are subordinate to it for operational decisions.*
