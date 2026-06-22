@@ -27,8 +27,8 @@ class Document:
     local_name = "document"
     facade_names = ["FodsDocument"]
 
-    def __init__(self, data: dict[str, Any]):
-        self._data = data
+    def __init__(self, data: dict[str, Any] | None = None):
+        self._data = data or {}
 
     @property
     def sheet_count(self) -> int:

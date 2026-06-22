@@ -685,8 +685,22 @@ def grade_all(inspection: dict, declaration: dict,
     # If all items are ACCEPTED_WITH_LIMITATIONS (score = 0.0) and there are items,
     # the overall verdict cannot be ACCEPTED — it stays ACCEPTED but with a quality caveat
     # GRH-TC-003 fix: governance-only sprints are exempt from this penalty.
-    # Governance docs (GOVERNANCE_DOC, GOVERNANCE_SCHEMA, LEGACY_BACKFILL_METADATA)
-    # have no test content to verify — their acceptance is based on file existence.
+    # TC-HARD-007 (2026-06-22): Formalize governance sprint grader calibration.
+    #
+    # Governance sprint calibration rules:
+    #   - Governance items (GOVERNANCE_TASKCARD, GOVERNANCE_DOC, etc.) do not produce
+    #     pytest test files by default. Their test_coverage score (1/5 from LLM grader)
+    #     reflects absence of pytest files, not quality failure.
+    #   - Governance sprints are therefore EXEMPT from the evidence_quality_score=0
+    #     downgrade to ACCEPTED_WITH_REWORK (handled below).
+    #   - Governance sprints that DO include a tests/ evidence_path (e.g.
+    #     tests/supervisor/test_governance_infrastructure.py) will receive >=3/5
+    #     test_coverage automatically — no special handling needed.
+    #   - The _is_governance_sprint flag is True when ALL planned_work_items have
+    #     item_type in _governance_types or exception_classification in _governance_exc.
+    #   - This detection is CONSERVATIVE: a single PRODUCT_SOURCE item forces standard
+    #     scoring. Mixed sprints are NOT exempt.
+    #   - Documented: docs/automation/supervisor-worker-contract.md §Governance Calibration
     _governance_types = {
         "GOVERNANCE_DOC", "GOVERNANCE_SCHEMA", "GOVERNANCE_POLICY",
         "GOVERNANCE_TASKCARD", "LEGACY_BACKFILL_METADATA",

@@ -147,7 +147,9 @@ class TestV43V44InRunAll:
         )
 
     def test_total_validator_count_is_44_in_runner_source(self):
-        """governance_validator_runner.py must list exactly 49 validator calls in results list."""
+        """governance_validator_runner.py must list exactly 50 validator calls in results list.
+        Updated 2026-06-22: V50 (validate_forbidden_module_names) added; count is now 50.
+        """
         runner_path = _REPO / "tools" / "supervisor" / "governance_validator_runner.py"
         source = runner_path.read_text(encoding="utf-8")
         # Count call lines: contain "(declaration" (actual calls, not import lines)
@@ -157,8 +159,8 @@ class TestV43V44InRunAll:
                 line.strip().startswith("validate_") or line.strip().startswith("_validate_")
             )
         ]
-        assert len(call_lines) == 49, (
-            f"Expected 49 validator calls in runner, got {len(call_lines)}"
+        assert len(call_lines) == 50, (
+            f"Expected 50 validator calls in runner, got {len(call_lines)}"
         )
 
     def test_v43_v44_defined_in_governance_validators(self):
