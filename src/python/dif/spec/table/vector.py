@@ -1,0 +1,38 @@
+"""
+DIF structural element: dif:vector
+
+Spec ref: DIF specification — data vector
+Fact ref: FACT-DIF-002
+QName: dif:vector
+Canonical class: Vector
+Facade: DifVector
+"""
+from __future__ import annotations
+from typing import Any
+
+
+class Vector:
+    """Canonical spec-shaped class for dif:vector (row or column vector)."""
+
+    spec_qname = "dif:vector"
+    spec_fact_ref = "FACT-DIF-002"
+    namespace_uri = "urn:format:dif:1.0"
+    local_name = "vector"
+    facade_names = ["DifVector"]
+
+    def __init__(self, data: list[Any]) -> None:
+        self._data = list(data)
+
+    @property
+    def items(self) -> list:
+        return list(self._data)
+
+    @property
+    def length(self) -> int:
+        return len(self._data)
+
+    def to_list(self) -> list:
+        return list(self._data)
+
+    def __repr__(self) -> str:
+        return f"Vector(length={self.length})"
