@@ -1,8 +1,9 @@
 # Snoopy Juggling Seal — SAL Source-to-Consumption Pipeline Forensics and Redesign Plan
 # Format Factory — Specification Authority Layer
-# Plan version: 3.15 (updated 2026-06-22: §31 status corrections — TC-HARD-001/002/004/006
-# and TC-SA-HEAL-004 → completed_verified; VER-18/19/21/24 → VERIFIED; §31.4/7/10/12/13
-# updated; 3 new SAL pipeline blockers registered (TC-SA-HEAL-005/007/011);
+# Plan version: 3.16 (updated 2026-06-22: all agent-resolvable SA-HEAL items complete;
+# TC-SA-HEAL-005/006/007/009/010/011 completed_verified; VER-SA-005/007/011 VERIFIED;
+# remaining: EXT-03 (Gate 11 Babar Raza) + TC-ZS-005 (blocked_external);
+# v3.15: §31 status corrections — TC-HARD-001/002/004/006 + SA-HEAL-004 verified;
 # v3.14: §32 added — product-deepening audit hardening;
 # TC-DIF-001/002/003 taskcards added; TC-ZS-003/006 body status corrected;
 # anti-overclaim rule #16 added (dogfood import path);
@@ -2222,13 +2223,13 @@ These 8 taskcards correspond to GAP-SA-NEW-004 through GAP-SA-NEW-011 identified
 | Taskcard | Title | Status | Priority | Gap |
 |----------|-------|--------|----------|-----|
 | TC-SA-HEAL-004 | Acquire spec text for 8 formats (sha256=null) | completed_verified | HIGH / P1 | GAP-SA-NEW-004 |
-| TC-SA-HEAL-005 | Implement bidirectional fact-product-test linker | not_attempted | HIGH / P1 | GAP-SA-NEW-005 |
-| TC-SA-HEAL-006 | Enforce require_spec_facts in task generator | not_attempted | MEDIUM / P1 | GAP-SA-NEW-006 |
-| TC-SA-HEAL-007 | Distinguish behavioral vs structural facts | not_attempted | MEDIUM / P2 | GAP-SA-NEW-007 |
+| TC-SA-HEAL-005 | Implement bidirectional fact-product-test linker | completed_verified | HIGH / P1 | GAP-SA-NEW-005 |
+| TC-SA-HEAL-006 | Enforce require_spec_facts in task generator | completed_verified | MEDIUM / P1 | GAP-SA-NEW-006 |
+| TC-SA-HEAL-007 | Distinguish behavioral vs structural facts | completed_verified | MEDIUM / P2 | GAP-SA-NEW-007 |
 | TC-SA-HEAL-008 | Wire refresh_check.py into autonomous cycle Step 0a | completed_verified | LOW / P2 | GAP-SA-NEW-008 |
-| TC-SA-HEAL-009 | Propagate source_hash to acquisition packs | not_attempted | MEDIUM / P2 | GAP-SA-NEW-009 |
-| TC-SA-HEAL-010 | Wire AI lifecycle machine into workbench population | not_attempted | LOW / P3 | GAP-SA-NEW-010 |
-| TC-SA-HEAL-011 | Fix PyYAML performance: 5.2MB FODS workbench >60s | not_attempted | HIGH / P1 | GAP-SA-NEW-011 |
+| TC-SA-HEAL-009 | Propagate source_hash to acquisition packs | completed_verified | MEDIUM / P2 | GAP-SA-NEW-009 |
+| TC-SA-HEAL-010 | Wire AI lifecycle machine into workbench population | completed_verified | LOW / P3 | GAP-SA-NEW-010 |
+| TC-SA-HEAL-011 | Fix PyYAML performance: 5.2MB FODS workbench >60s | completed_verified | HIGH / P1 | GAP-SA-NEW-011 |
 
 **Execution order:**
 - Immediate (no dependencies): TC-SA-HEAL-011, TC-SA-HEAL-005, TC-SA-HEAL-008
@@ -3014,12 +3015,12 @@ TC-ZS-001, TC-ZS-002, TC-ZS-003, TC-ZS-004, TC-ZS-006
 | BLOCK-07: TC-SAL-DIAG-009 extractor replay NOT STARTED | None | MEDIUM | agent-resolvable | executable now |
 | BLOCK-08: TC-SAL-DIAG-010 verifier benchmark NOT STARTED | None | MEDIUM | agent-resolvable | executable now |
 | GAP-SA-NEW-004: spec text for 8 formats (sha256=null) | TC-SA-HEAL-004 | HIGH | TRUE_EXTERNAL_GATE (partially) | T3 auth required; public-domain specs can start now |
-| GAP-SA-NEW-005: no bidirectional fact-product-test linker | TC-SA-HEAL-005 | HIGH | agent-resolvable | tools/requirements_authority/graph_store.py exists |
-| GAP-SA-NEW-006: require_spec_facts=False permanent default | TC-SA-HEAL-006 | MEDIUM | agent-resolvable | needs TC-SA-HEAL-004 first |
-| GAP-SA-NEW-007: behavioral vs structural facts not separated | TC-SA-HEAL-007 | MEDIUM | agent-resolvable | TC-FODT-AUDIT-001 done; can proceed |
-| GAP-SA-NEW-009: source_hash=null in acquisition packs | TC-SA-HEAL-009 | MEDIUM | agent-resolvable | FODS+ZST sha256 exist; can start |
-| GAP-SA-NEW-010: AI lifecycle machine not wired | TC-SA-HEAL-010 | LOW | agent-resolvable | authority_lifecycle.py exists |
-| GAP-SA-NEW-011: PyYAML 60s+ parse of 5.2MB FODS workbench | TC-SA-HEAL-011 | HIGH | agent-resolvable | JSON cache option documented; no dependencies |
+| ~~GAP-SA-NEW-005: no bidirectional fact-product-test linker~~ | ~~TC-SA-HEAL-005~~ | **RESOLVED 2026-06-22** | tools/traceability/ created; fods-traceability.json: FACT-FODS-001 5 prod/12 tests |
+| ~~GAP-SA-NEW-006: require_spec_facts=False permanent default~~ | ~~TC-SA-HEAL-006~~ | **RESOLVED 2026-06-22** | require_sf conditional on ≥15 SAL facts; autonomous_task_generator.py line 1607 |
+| ~~GAP-SA-NEW-007: behavioral vs structural facts not separated~~ | ~~TC-SA-HEAL-007~~ | **RESOLVED 2026-06-22** | fact_coverage_report.py: 77 behavioral / 4910 structural_enumeration for FODS |
+| ~~GAP-SA-NEW-009: source_hash=null in acquisition packs~~ | ~~TC-SA-HEAL-009~~ | **RESOLVED 2026-06-22** | fods: sha256:92cfe64...; zst: sha256:8ee6be0... |
+| ~~GAP-SA-NEW-010: AI lifecycle machine not wired~~ | ~~TC-SA-HEAL-010~~ | **RESOLVED 2026-06-22** | build_spec_workbench.py wired; lifecycle_state: source_cited set on all new facts |
+| ~~GAP-SA-NEW-011: PyYAML 60s+ parse of 5.2MB FODS workbench~~ | ~~TC-SA-HEAL-011~~ | **RESOLVED 2026-06-22** | verified-facts-review.json cache; second call 0.1s; VER-SA-011 PASS |
 | TC-ZS-005: FODT spec table/list Python classes | TC-ZS-005 | MODERATE | blocked_external | needs compat.py authorization |
 | ~~EXT-02: Non-ODF spec acquisition (ABW, GNUMERIC, SYLK etc.)~~ | ~~TC-SA-HEAL-004~~ | ~~HIGH~~ | **RESOLVED 2026-06-22** | Public-domain formats (ABW, GNUMERIC, SYLK, NDJSON, QOI, ORA, PAM, XPM, ZPAQ) acquired; FACT-* IDs in sal-facts |
 | EXT-03: Gate 11 EXECUTION approval | TC-GATE11-SUBMIT-001 | CRITICAL | TRUE_EXTERNAL_GATE | Babar Raza business authority only |
@@ -3035,12 +3036,12 @@ TC-ZS-001, TC-ZS-002, TC-ZS-003, TC-ZS-004, TC-ZS-006
 | TC-HARD-004 | Fix generate_next_worker_prompt.py LOC regression | completed_verified | HIGH | None |
 | TC-HARD-006 | Remove 17,177 LOC arithmetic analytics | completed_verified | HIGH | None |
 | TC-SA-HEAL-004 | Acquire spec text for 9 public-domain formats (ABW, GNUMERIC, SYLK, NDJSON, QOI, ORA, PAM, XPM, ZPAQ) | completed_verified | HIGH | None |
-| TC-SA-HEAL-005 | Implement bidirectional fact-product-test linker | not_attempted | HIGH | None |
-| TC-SA-HEAL-006 | Enforce require_spec_facts in task generator | not_attempted | MEDIUM | TC-SA-HEAL-004 |
-| TC-SA-HEAL-007 | Behavioral vs structural fact classification | not_attempted | MEDIUM | TC-FODT-AUDIT-001 (done) |
-| TC-SA-HEAL-009 | Propagate source_hash to acquisition packs | not_attempted | MEDIUM | None (FODS/ZST can start) |
-| TC-SA-HEAL-010 | Wire AI lifecycle machine into workbench population | not_attempted | LOW | TC-SA-HEAL-005 |
-| TC-SA-HEAL-011 | Fix PyYAML 60s+ FODS workbench parse | not_attempted | HIGH | None |
+| TC-SA-HEAL-005 | Implement bidirectional fact-product-test linker | completed_verified | HIGH | None |
+| TC-SA-HEAL-006 | Enforce require_spec_facts in task generator | completed_verified | MEDIUM | TC-SA-HEAL-004 |
+| TC-SA-HEAL-007 | Behavioral vs structural fact classification | completed_verified | MEDIUM | TC-FODT-AUDIT-001 (done) |
+| TC-SA-HEAL-009 | Propagate source_hash to acquisition packs | completed_verified | MEDIUM | None |
+| TC-SA-HEAL-010 | Wire AI lifecycle machine into workbench population | completed_verified | LOW | TC-SA-HEAL-005 |
+| TC-SA-HEAL-011 | Fix PyYAML 60s+ FODS workbench parse | completed_verified | HIGH | None |
 
 ---
 
@@ -3086,30 +3087,22 @@ For every §31 taskcard:
 | VER-19 | FACT-FODS-002 in sal-facts-latest.json | VERIFIED 2026-06-22 | python -c "import json; d=json.load(open('.local/sal-output/sal-facts-latest.json')); print('FACT-FODS-002' in str(d))" | True — FACT-FODS-002 patched via patch_sal_facts.py | TC-HARD-002 |
 | VER-21 | generate_next_worker_prompt.py within LOC cap | VERIFIED 2026-06-22 | .venv/Scripts/pytest tests/test_source_structure.py | baseline_loc_cap=1391=actual LOC; source structure tests pass | TC-HARD-004 |
 | VER-24 | Arithmetic analytics removed from xcf/zst/fodg | VERIFIED 2026-06-22 | commits 3622b1da (xcf/zst) + ca1e1336 (fodg) | 0 _mod_*_times_* functions; fodg_analytics.py spec-grounded | TC-HARD-006 |
-| VER-SA-011 | FODS workbench parse < 5s on second call | NOT_STARTED | time second call to _load_workbench_verified_facts() | < 5s elapsed | TC-SA-HEAL-011 |
-| VER-SA-005 | FACT-FODS-001 traceable to product file + test | NOT_STARTED | .local/capability-proof-graph/fods-traceability.json with FACT-FODS-001 entry | >=1 product_file, >=1 test_file | TC-SA-HEAL-005 |
-| VER-SA-007 | Coverage report shows behavioral_count separate from structural_count | NOT_STARTED | Run fact_coverage_report.py | behavioral_coverage: 78/N shown | TC-SA-HEAL-007 |
+| VER-SA-011 | FODS workbench parse < 5s on second call | VERIFIED 2026-06-22 | second call to _load_workbench_verified_facts('fods') = 0.1s | 0.1s < 5s; 4987 facts | TC-SA-HEAL-011 |
+| VER-SA-005 | FACT-FODS-001 traceable to product file + test | VERIFIED 2026-06-22 | .local/capability-proof-graph/fods-traceability.json | FACT-FODS-001: 5 product_files, 12 test_files | TC-SA-HEAL-005 |
+| VER-SA-007 | Coverage report shows behavioral_count separate from structural_count | VERIFIED 2026-06-22 | python fact_coverage_report.py --json --format fods | behavioral_coverage: 77; structural_enumeration: 4910 | TC-SA-HEAL-007 |
 
 ---
 
 ### §31.10 Repair Loop
 
-**[COMPLETED — no action needed]:**
-~~TC-HARD-001~~ completed_verified 2026-06-22 | ~~TC-HARD-002~~ completed_verified 2026-06-22 | ~~TC-HARD-004~~ completed_verified 2026-06-22 | ~~TC-HARD-006~~ completed_verified 2026-06-22 | ~~TC-SA-HEAL-004~~ completed_verified 2026-06-22
+**[ALL AGENT-RESOLVABLE ITEMS COMPLETE:]**
+~~TC-HARD-001~~ ✓ | ~~TC-HARD-002~~ ✓ | ~~TC-HARD-004~~ ✓ | ~~TC-HARD-006~~ ✓
+~~TC-SA-HEAL-004~~ ✓ | ~~TC-SA-HEAL-005~~ ✓ | ~~TC-SA-HEAL-006~~ ✓ | ~~TC-SA-HEAL-007~~ ✓
+~~TC-SA-HEAL-009~~ ✓ | ~~TC-SA-HEAL-010~~ ✓ | ~~TC-SA-HEAL-011~~ ✓
 
-**Priority 0 (SAL pipeline unblocking — execute first):**
-1. TC-SA-HEAL-011 — PyYAML cache (HIGH; no dependencies; unblocks CI iteration speed — 60s parse)
-2. TC-SA-HEAL-007 — behavioral vs structural classification (MEDIUM; TC-FODT-AUDIT-001 done ✓)
-3. TC-SA-HEAL-005 — bidirectional linker (HIGH; needed for Gate 11 proof graph; VER-SA-005)
-4. TC-SA-HEAL-009 — source_hash propagation (MEDIUM; FODS/ZST can start now)
-
-**Priority 1 (Governance + lifecycle):**
-5. TC-SA-HEAL-006 — require_spec_facts enforcement (MEDIUM; TC-SA-HEAL-004 done ✓)
-6. TC-SA-HEAL-010 — AI lifecycle machine (LOW; after TC-SA-HEAL-005/007)
-
-**External gates (unblockable by agent):**
-- EXT-03: Gate 11 EXECUTION approval — Babar Raza sign-off only
-- TC-ZS-005: FODT spec table/list Python classes — needs compat.py authorization
+**Remaining: External gates only (unblockable by agent):**
+1. EXT-03: Gate 11 EXECUTION approval — Babar Raza business sign-off
+2. TC-ZS-005: FODT spec table/list Python classes — needs compat.py authorization from Babar Raza
 
 ---
 
@@ -3146,9 +3139,9 @@ This plan section (§31) is complete when:
 1. ~~TC-HARD-001~~ → **completed_verified 2026-06-22** (VER-18 PASS ✓)
 2. ~~TC-HARD-002~~ → **completed_verified 2026-06-22** (VER-19 PASS ✓; ROOT-03 closed)
 3. ~~TC-HARD-004~~ → **completed_verified 2026-06-22** (VER-21 PASS ✓)
-4. TC-SA-HEAL-011 to completed_verified (VER-SA-011 PASS)
-5. TC-SA-HEAL-005 to completed_verified (VER-SA-005 PASS)
-6. TC-SA-HEAL-007 to completed_verified (VER-SA-007 PASS)
+4. ~~TC-SA-HEAL-011~~ → **completed_verified 2026-06-22** (VER-SA-011 PASS ✓; 0.1s cache hit)
+5. ~~TC-SA-HEAL-005~~ → **completed_verified 2026-06-22** (VER-SA-005 PASS ✓; FACT-FODS-001 5 prod/12 tests)
+6. ~~TC-SA-HEAL-007~~ → **completed_verified 2026-06-22** (VER-SA-007 PASS ✓; 77 behavioral/4910 structural)
 7. ~~TC-HARD-006~~ → **completed_verified 2026-06-22** (VER-24 PASS ✓; commits 3622b1da + ca1e1336)
 8. TC-GATE11-SUBMIT-001 to external gate cleared by Babar Raza
 
@@ -3164,12 +3157,15 @@ The plan reaches MISSION_COMPLETE when all 8 above conditions are met.
 | ~~FODT workbench fact count overclaim~~ | **RESOLVED 2026-06-22** | TC-HARD-001 completed_verified; VER-18 PASS |
 | ~~LOC regression generate_next_worker_prompt.py~~ | **RESOLVED 2026-06-22** | TC-HARD-004 completed_verified; baseline_loc_cap=1391 |
 | ~~Non-ODF spec acquisition (ABW, GNUMERIC, SYLK, NDJSON, QOI)~~ | **RESOLVED 2026-06-22** | TC-SA-HEAL-004 completed_verified; 9 public-domain formats acquired; FACT-* IDs in sal-facts |
+| ~~Arithmetic analytics 17,177 LOC removal~~ | **RESOLVED 2026-06-22** | TC-HARD-006 completed_verified; commits 3622b1da + ca1e1336; 0 mod_*_times_* functions |
+| ~~SAL pipeline: no bidirectional fact-product-test linker~~ | **RESOLVED 2026-06-22** | TC-SA-HEAL-005 completed_verified; fods/zst-traceability.json; FACT-FODS-001 5/12 |
+| ~~SAL pipeline: behavioral vs structural facts not classified~~ | **RESOLVED 2026-06-22** | TC-SA-HEAL-007 completed_verified; 77 behavioral / 4910 structural for FODS |
+| ~~SAL pipeline: 60s+ FODS workbench parse (PyYAML no-cache)~~ | **RESOLVED 2026-06-22** | TC-SA-HEAL-011 completed_verified; JSON cache; second call 0.1s |
+| ~~source_hash=null in acquisition packs~~ | **RESOLVED 2026-06-22** | TC-SA-HEAL-009 completed_verified; FODS+ZST sha256 propagated |
+| ~~require_spec_facts=False permanent default~~ | **RESOLVED 2026-06-22** | TC-SA-HEAL-006 completed_verified; conditional ≥15 SAL facts threshold |
+| ~~AI lifecycle machine not wired~~ | **RESOLVED 2026-06-22** | TC-SA-HEAL-010 completed_verified; build_spec_workbench.py; lifecycle_state: source_cited |
 | Gate 11 EXECUTION approval | TRUE_EXTERNAL_GATE | Babar Raza; EXT-03 |
 | TC-ZS-005 FODT spec table/list implementation | blocked_external | needs compat.py authorization |
-| ~~Arithmetic analytics 17,177 LOC removal~~ | **RESOLVED 2026-06-22** | TC-HARD-006 completed_verified; commits 3622b1da + ca1e1336; 0 mod_*_times_* functions |
-| SAL pipeline: no bidirectional fact-product-test linker | AGENT_RESOLVABLE | TC-SA-HEAL-005; VER-SA-005 |
-| SAL pipeline: behavioral vs structural facts not classified | AGENT_RESOLVABLE | TC-SA-HEAL-007; VER-SA-007 |
-| SAL pipeline: 60s+ FODS workbench parse (PyYAML no-cache) | AGENT_RESOLVABLE | TC-SA-HEAL-011; VER-SA-011 |
 
 ---
 
@@ -3425,3 +3421,4 @@ TC-DIF-003 (fix reload test or document gap — ~30 min)
 |---------|------|--------|--------|
 | 3.14 | 2026-06-22 | §32 added: product-deepening-session-2026-06-22 audit hardening; TC-DIF-001/002/003 with full ownership/verification/closeout; Gates DIF-1/2/3; TC-ZS-003/006 body status corrected; anti-overclaim rule #16 added | PLAN-HARDENING-DOGFOOD-2026-06-22 |
 | 3.15 | 2026-06-22 | §31 status corrections: TC-HARD-001/002/004/006 and TC-SA-HEAL-004 → completed_verified; VER-18/19/21/24 → VERIFIED; §31.4 resolved rows struck through; §31.7 gates G-ROOT03/FODT-FACTS/LOC-CLEAN → VERIFIED; §31.10 repair loop updated; §31.12 closeout items 1/2/3/7 marked done; §31.13 blockers updated with 3 new SAL pipeline entries | snoopy-juggling-seal-plan-hardening-2026-06-22 |
+| 3.16 | 2026-06-22 | All agent-resolvable SA-HEAL taskcards completed: TC-SA-HEAL-005/006/007/009/010/011 → completed_verified; VER-SA-005/007/011 → VERIFIED; §31.4/§27.6 registers updated; §31.10 repair loop shows all agent work complete; §31.12 items 4/5/6 marked done; §31.13 blockers 3 new SAL entries resolved; commit 7f225a47 | sal-pipeline-heal-2026-06-22 |
