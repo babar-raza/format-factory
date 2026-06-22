@@ -726,6 +726,55 @@ for that format must be a secondary split, not new analytics additions. Growth b
 
 ---
 
+### snoopy-juggling-seal §26 QName Architecture Taskcards — Session Completion (COMPLETED 2026-06-22)
+
+**Status:** COMPLETED — 14/14 §26 taskcards completed_verified; TC-GATE11-SUBMIT-001 remains waiting_external_gate
+
+**Plan file:** `plans/snoopy-juggling-seal.md` v3.12 (§26 register table updated)
+
+**Commits:** `495c4bb4` (governance), `c8f01b38` (plan+capability), `890dbeb7` (supervisor state)
+
+**What was completed:**
+
+*TC-FODT-GAP-001 — FODT QNAME gaps persistent in gap-ledger:*
+- Root cause diagnosed: `capability_map_generator.py _build_action_queue` iterated `gaps[:20]` (all closed); fix: pre-filter open gaps sorted by priority
+- Supplemental gap preservation fix: merge block now re-appends gaps whose gap_id is not in generated set → gaps survive regeneration
+- 5 FODT QNAME gaps (GAP-FODT-QNAME-001..005) confirmed stable across 3 consecutive regen cycles
+- GAP-XCF-LAYER-NAMES product_type fixed: foss → foss_reduced; total gaps: 897
+- `reports/capability-layer/action-queue.json`: fixed 0 → 20 actions (top 5 are FODT QNAME work)
+
+*TC-RCAL-001 — RCAL action queue diagnostic:*
+- Root cause confirmed: `_build_action_queue` only saw `status=closed` gaps (first 20 in file)
+- After fix: 20 actions generated; 5 target FODT spec-stub activation (suggested_taskcard=TC-FODT-BOOT-001)
+
+*Governance infrastructure (V49 + V50):*
+- `tools/supervisor/governance_validator_runner.py`: V49 (validate_qname_structure, WARN-only) wired; V50 (validate_forbidden_module_names) wired from governance_validators_ext.py
+- `.supervisor/skill-registry.yaml`: add-analytics-function skill hardened — spec_qname_required true, overflow_split_allowed false; MODULE-NAME-001 forbiddance documented
+- `registry/source-structure-baseline.json`: governance_validators_ext.py cap updated (loc=160, cap=165)
+
+*§26 register table — all 14 taskcards updated to completed_verified (2026-06-22):*
+TC-SAL-PATH-002, TC-FODT-COMPAT-001, TC-QNAME-DEDUP-001, TC-SKILL-HARDEN-001,
+TC-QNAME-VALIDATORS-001, TC-QNAME-BACKFILL-ODS-001, TC-QNAME-BACKFILL-ODT-001,
+TC-FODT-BOOT-001, TC-FODT-BOOT-002, TC-FODT-BOOT-003,
+TC-FODT-GAP-001, TC-FODT-AUDIT-001, TC-FODT-AUDIT-002, TC-RCAL-001
+
+**Verification performed:**
+- VER-11: SAL facts — 25 formats in sal-facts-latest.json
+- VER-12: fods/fods/ nested duplicate directory — absent (deleted in commit 9a9ff060)
+- VER-13: FODT models.py spec_qname on FodtTable, FodtRow, FodtCell — PRESENT
+- VER-14: skill-registry spec_qname_required: true for add-analytics-function — CONFIRMED
+- VER-15: V49 validate_qname_structure callable from runner — CONFIRMED
+- VER-16: ODS spec stubs (table:table, table:table-row, table:table-cell) — COMPLIANT
+- VER-17: ODT spec stubs — COMPLIANT
+- Pre-existing test failures confirmed pre-existing: 4 test_capability_fact_linkage.py (ABW/DIF) unchanged vs clean HEAD
+
+**Follow-ups (non-blocking):**
+1. TC-GATE11-SUBMIT-001: Babar Raza commercial sign-off (TRUE_EXTERNAL_GATE — awaiting)
+2. BLOCK-20: 17,177 LOC arithmetic analytics suspended but not removed (TC-HARD-006)
+3. TC-HARD-009: neutral_model.py dirty working tree changes — deferred
+
+---
+
 ### TC-0012 — Specification Normalization Layer (COMPLETED 2026-06-18)
 
 **Status:** COMPLETED (Phase 1: run024; Phase 2: run025; Phase 3: 2026-06-18)
