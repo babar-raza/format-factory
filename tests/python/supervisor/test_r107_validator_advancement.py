@@ -8,6 +8,8 @@ import json
 import sys
 import tempfile
 import unittest
+
+import pytest
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent.parent
@@ -125,6 +127,7 @@ class TestEnrichmentPipelineEndToEnd(unittest.TestCase):
         full.write_text(content, encoding="utf-8")
         return relpath
 
+    @pytest.mark.slow
     def test_full_pipeline_with_valid_transcript(self):
         """Transcript found in evidence → inspector enriches → grader grades."""
         md = self._write("reports/test/evidence.md", "# Evidence\nPASS\n19 tests pass")

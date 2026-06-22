@@ -3,8 +3,8 @@
 **Document type:** Living Master Plan
 **Authority level:** Single Operational Authority
 **Project:** format-factory
-**Version:** 3.1
-**Last updated:** 2026-06-22 (Forensic healing complete — 6 TC-FH taskcards closed; FODS hygiene; XCF/ZST gap test cleanup (99 files); 1769 XCF+ZST tests pass)
+**Version:** 3.2
+**Last updated:** 2026-06-22 (ODF Parts 1/2/4 acquired + normalized; 25 FACT-ODF-PKG-* facts injected; TC-HARD-003 plan-lock hardening; analytics baseline cap corrections)
 **Last verified:** 2026-06-22
 
 **Current phase:** Multi-format POC — 11 targets (3 commercial .NET, 8 FOSS Python). Gate 11 G11-G sub-gate approved by Babar Raza 2026-06-05 (FODS, FODT, Netpbm). Registry gate_11.status: commercial_readiness_in_progress (registry not yet updated after G11-G). commercial_product_ready: false (all entries).
@@ -1150,6 +1150,70 @@ TC-FODT-GAP-001, TC-FODT-AUDIT-001, TC-FODT-AUDIT-002, TC-RCAL-001
 **Root cause of PSTR failure:** CSV format acquired a structural workbench (`FACT-CSV-001`, `FACT-CSV-002`) making it no longer a "no-workbench" test case. ORA has no spec-cache directory at all — correct substitute.
 
 **Commits containing this work:** `8f72ca5b`, `a700c95c`
+
+---
+
+### Plan: snappy-wobbling-gadget — ODF Parts 1/2/4 Acquisition (CLOSED 2026-06-22)
+
+**Status:** CLOSED — 5/5 taskcards completed; plan lock written with `--terminal`
+
+**Plan file:** `C:/Users/prora/.claude/plans/snappy-wobbling-gadget.md` (authorization gate: Babar Raza plan-mode approval)
+
+**Authorization:** `reports/authorizations/AUT-20260622-0001.yaml` excluded spec acquisition from autonomous scope; plan-mode approval by Babar Raza constitutes explicit execution-prompt authorization per `docs/specification-cache.md` §Authorization Model condition 5.
+
+**What was completed:**
+
+*TC-SPEC-ACQ-001 — ODF 1.3 Part 1 (Introduction):*
+- Cached at `.local/spec-cache/odf-shared/1.3/part1/OpenDocument-v1.3-os-part1-introduction.pdf`
+- SHA-256: `d27dae85980c6b2c0c6d2a9a55338244c52e4f416c3573394311d3252916cafe`, 156,786 bytes (8 pages)
+- `spec-index.yaml`: `format_id: odf-shared`, `part: 1`, `applies_to_formats: [fods, fodt, ods, odt, fodp, fodg]`, `coverage_purpose: conformance_level_facts`
+
+*TC-SPEC-ACQ-002 — ODF 1.3 Part 2 (Packages):*
+- Cached at `.local/spec-cache/odf-shared/1.3/part2/OpenDocument-v1.3-os-part2-packages.pdf`
+- SHA-256: `12d1c74d4eccb683ce1f174101741f065add2567b1a477b2c3f8735e09f9179e`, 731,131 bytes (36 pages)
+- `spec-index.yaml`: `applies_to_formats: [fods, fodt, ods, odt, fodg, fodp]`, `coverage_purpose: package_format_validation_facts`
+- Normalized with pdfminer.six: text.txt + pages.jsonl produced
+
+*TC-SPEC-ACQ-003 — ODF 1.3 Part 4 (OpenFormula):*
+- Cached at `.local/spec-cache/odf-shared/1.3/part4/OpenDocument-v1.3-os-part4-formula.pdf`
+- SHA-256: `576d3ae4a0c0a13688f3a23576d16d458c52f715325cce89f0a1f37e3212061d`, 6,026,479 bytes (215 pages)
+- `spec-index.yaml`: `applies_to_formats: [fods, ods]`, `coverage_purpose: formula_cell_facts`
+- Normalized: 540,694 chars / 215 pages
+
+*TC-SPEC-ACQ-004 — ODF Family Spec-Index Cross-References:*
+- All 6 ODF format spec-index files updated with `odf_parts_acquired` block:
+  - `fods/1.3/spec-index.yaml` — parts 1, 2, 3 (self), 4
+  - `fodt/odf-1.3/spec-index.yaml` — parts 1, 2, 3
+  - `ods/odf-1.3/spec-index.yaml` — parts 1, 2, 3, 4
+  - `odt/odf-1.3/spec-index.yaml` — parts 1, 2, 3
+  - `fodg/odf-1.3/spec-index.yaml` — parts 1, 2, 3
+  - `fodp/odf-1.3/spec-index.yaml` — parts 1, 2, 3
+
+*TC-SPEC-ACQ-005 — SAL Wiring + Part 2 Facts:*
+- 25 `FACT-ODF-PKG-*` facts extracted (ZIP container §2.2.1, manifest:manifest §4.2, manifest:file-entry §4.3, namespace URIs §1.5, conformance classes §2.2, encryption §4.4-4.8, digital signatures §5.2, flat-XML distinctness §3.1, metadata ontology §6.2/6.6)
+- Injected into `.local/spec-cache/sal-facts-latest.json` as `odf-shared-part2` entry: 23 formats, 14,309 total facts
+
+**Shared cache location:** `.local/spec-cache/odf-shared/1.3/` (gitignored) — Parts 1/2/4 stored here (not format-specific) because they are normative for all 6 ODF family formats simultaneously.
+
+**Verification performed:**
+- All 3 PDF files present at target paths with SHA-256 verified
+- Part 2 (text.txt: non-empty) + Part 4 (540,694 chars / 215 pages) normalized successfully
+- 25 `FACT-ODF-PKG-*` facts confirmed in `sal-facts-latest.json` by Python dict count
+- All 6 ODF format spec-index files contain valid `odf_parts_acquired` block
+
+**Files changed (committed):**
+- No spec-cache files committed (all in `.local/`, gitignored per spec cache policy)
+- Plan lock at `.local/supervisor/active-plan-lock.json` (status: TERMINAL_CLOSED, gitignored)
+
+**Session side-work committed** (3 commits from pre-existing tracked modifications):
+- `b9bc1a83`: analytics trim + baseline cap corrections (odt/pbm/pgm/ppm/toml)
+- `6254120c`: TC-HARD-003 — autonomous-loop.md DONE_STATUSES extended (DEFERRED + session-scoped lock filtering); test_governance_infrastructure.py added
+- `c90b9326`: `fods/spec/office/document.py` partial implementation (__init__, sheet_count, to_dict)
+
+**Follow-ups (non-blocking):**
+1. Part 1 normalization — not run (8-page doc; manual extraction sufficient when needed)
+2. `run_spec_pipeline.py` `odf-shared` multi-part recognition — facts injected manually this session; pipeline wiring deferred
+3. `FACT-ODF-FORMULA-*` facts from Part 4 — not yet extracted; separate future sprint
 
 ---
 

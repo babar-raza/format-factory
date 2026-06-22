@@ -32,6 +32,7 @@ markers = [
     "state_dependent: Test reads live repo state files (may skip when dirty)",
     "network: Test makes real network calls (LLM, HTTP endpoints)",
     "arithmetic_deepening: Arithmetic-formula deepening test with no spec backing (generated, suspended)",
+    "slow: Test consistently exceeds 5s measured duration (from registry/slow-test-ledger.yaml)",
 ]
 filterwarnings = [
     "ignore::DeprecationWarning",

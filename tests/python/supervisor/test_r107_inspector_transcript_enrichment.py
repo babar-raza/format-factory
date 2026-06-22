@@ -8,6 +8,8 @@ import json
 import sys
 import tempfile
 import unittest
+
+import pytest
 from pathlib import Path
 
 # Ensure tools/supervisor is importable
@@ -174,6 +176,7 @@ class TestInspectItemTranscriptEnrichment(unittest.TestCase):
         self.assertIn("transcript_validation", result)
         self.assertIsNone(result["transcript_validation"])
 
+    @pytest.mark.slow
     def test_item_with_valid_transcript(self):
         transcript = _make_valid_transcript()
         json_path = self._write_file(
@@ -191,6 +194,7 @@ class TestInspectItemTranscriptEnrichment(unittest.TestCase):
         self.assertTrue(result["transcript_validation"]["all_valid"])
         self.assertEqual(result["transcript_validation"]["transcripts_found"], 1)
 
+    @pytest.mark.slow
     def test_item_with_invalid_transcript(self):
         transcript = _make_invalid_transcript()
         json_path = self._write_file(
