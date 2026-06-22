@@ -1,8 +1,13 @@
 # Snoopy Juggling Seal — SAL Source-to-Consumption Pipeline Forensics and Redesign Plan
 # Format Factory — Specification Authority Layer
-# Plan version: 3.12 (updated 2026-06-22: §26-30 session execution — TC-ZS-003/004/006 completed_verified;
+# Plan version: 3.13 (updated 2026-06-22: Plan hardening (ancient-knitting-puzzle) —
+# BLOCK-09..14, BLOCK-17, BLOCK-19, BLOCK-21 marked RESOLVED; TC-HARD-007 → completed_verified
+# (Compat/ confirmed committed); TC-HARD-009 → completed_verified (neutral_model.py confirmed
+# clean); VER-11..17, VER-25, VER-26 updated; TC-RCAL-001/TC-SA-HEAL-008 body text corrected;
+# §29 execution order updated; §31 hardening addendum added;
+# v3.12: §26-30 session execution — TC-ZS-003/004/006 completed_verified;
 # TC-RCAL-001/SA-HEAL-008/HARD-005/008/010 completed_verified; 18 qname registries created;
-# BLOCK-22 resolved; VER-22/23/27 verified; plan taskcard statuses updated;
+# BLOCK-22 resolved; VER-22/23/27 verified;
 # v3.11: Zero-Stub Audit ZERO-STUB-AUDIT-20260621 incorporated —
 # V44 upgraded + V48 added; TC-ZS-001..006 taskcards added §30;
 # TC-HARD-007 updated to reflect zero-stub audit disposition;
@@ -841,6 +846,7 @@ agent implementation capacity.
 | 3.10 | 2026-06-21 | SAL healing sprint (sal-healing-sprint-20260621-001): RC-1/RC-2/RC-3 resolved; TC-MACH-ARCH-007 and TC-MACH-REWORK-002 → completed_verified; body.py FACT-FODS-002→003; GAP-SA-NEW-004..011 taskcarded as TC-SA-HEAL-004..011 in §27.6; TC-SAL-PATH-002 reassessed (sal-output IS canonical after RC-1/RC-2); VER-15 updated to V48/V49 numbering |
 | 3.11 | 2026-06-22 | Plan reassessment (binary-prancing-flamingo): confirmed SOLVED — TC-SAL-PATH-002, TC-SKILL-HARDEN-001, TC-MACH-REWORK-001/002, TC-FODT-BOOT-001/002/003, TC-MACH-ARCH-004, TC-QNAME-DEDUP-001, TC-FODT-COMPAT-001, TC-QNAME-BACKFILL-ODS-001/ODT-001, TC-QNAME-VALIDATORS-001(V49); COMPLETED this session — TC-FODT-GAP-001 (5 FODT QNAME gaps added to gap-ledger, total 896), TC-FODT-AUDIT-001 (audit report written: reports/forensics-archaeology-20260621/fodt-ex-facts-audit.md — 27 manually verified, 4,909 AUTO_ONLY), TC-FODT-AUDIT-002 (Gate D3 §17 updated to show verified_count:27 vs auto_extracted:4,909) | sal-healing-sprint-20260621-001 |
 | 3.12 | 2026-06-22 | §26-30 session execution (snoopy-juggling-seal §26-30 continuation): TC-ZS-003 PATH B (xcf_layer_name_list docstring + GAP-XCF-LAYER-NAMES added), TC-ZS-004 PATH B (FODS Compat/ facades documented as architecture markers; ledger entry added), TC-ZS-006 (V36 extended for spec_qname-only assertions; 2 new tests pass), TC-RCAL-001 (RCAL queue diagnostic report filed), TC-SA-HEAL-008 (refresh_check.py wired into autonomous_cycle.py Step 0a-refresh), TC-HARD-005 (qname_structure_validator NO_SPEC_CLASSES exits 1), TC-HARD-008 (18 qname registries created in shared/qname-registry/; BLOCK-22 resolved), TC-HARD-010 (sal-facts 'qname' field verified: FACT-FORMAT-NNN IDs); VER-22/23/27 updated to VERIFIED; 128 tests pass | snoopy-juggling-seal-§26-30-session |
+| 3.13 | 2026-06-22 | Plan hardening (ancient-knitting-puzzle): BLOCK-09..14/17/19/21 resolved; TC-HARD-007 → completed_verified (git confirms Compat/ committed); TC-HARD-009 → completed_verified (neutral_model.py git-clean); VER-11..17 updated to link completed tasks; VER-25/26 marked VERIFIED; TC-RCAL-001 and TC-SA-HEAL-008 body text corrected; §29 execution order pruned of completed items; §31 hardening addendum added with remaining active work priorities | ancient-knitting-puzzle hardening |
 
 ### Audit Findings Incorporated (v3.2)
 
@@ -1180,19 +1186,19 @@ the evidence declaration to be graded OVERCLAIMED by autonomous_cycle.py.
 | BLOCK-06 | TC-SAL-IMPL-006 (census tool not formalized) | spec_census.py exists; output formalization needed |
 | BLOCK-07 | TC-SAL-DIAG-009 (extractor replay) NOT STARTED | Active — executable now |
 | BLOCK-08 | TC-SAL-DIAG-010 (verifier benchmark) NOT STARTED | Active — executable now |
-| BLOCK-09 | TC-SAL-PATH-002 (capability_compiler.py SAL path mismatch) | NEW (v3.6) — blocks capability-to-feature pipeline for ALL formats |
-| BLOCK-10 | TC-QNAME-DEDUP-001 (fods/fods/spec/ duplicate) | NEW (v3.6) — blocks TC-MACH-ARCH-004 closeout |
-| BLOCK-11 | TC-SKILL-HARDEN-001 (add-python-object-model-feature lacks spec_qname requirement) | NEW (v3.6) — allows product deepening to generate non-compliant code |
-| BLOCK-12 | TC-FODT-COMPAT-001 (FODT models.py missing spec_qname) | NEW (v3.6) — spec stubs exist but models.py not updated |
-| BLOCK-13 | TC-QNAME-VALIDATORS-001 (qname_structure_validator not in governance loop) | NEW (v3.6) — compliance goes unenforced |
-| BLOCK-14 | TC-MACH-ARCH-004 Compat/ not committed | Compat/ created but `?? src/python/fods/Compat/` (untracked) |
+| ~~BLOCK-09~~ | ~~TC-SAL-PATH-002 (capability_compiler.py SAL path mismatch)~~ | **RESOLVED 2026-06-22** — TC-SAL-PATH-002 completed_verified |
+| ~~BLOCK-10~~ | ~~TC-QNAME-DEDUP-001 (fods/fods/spec/ duplicate)~~ | **RESOLVED 2026-06-22** — TC-QNAME-DEDUP-001 completed_verified |
+| ~~BLOCK-11~~ | ~~TC-SKILL-HARDEN-001 (add-python-object-model-feature lacks spec_qname requirement)~~ | **RESOLVED 2026-06-22** — TC-SKILL-HARDEN-001 completed_verified |
+| ~~BLOCK-12~~ | ~~TC-FODT-COMPAT-001 (FODT models.py missing spec_qname)~~ | **RESOLVED 2026-06-22** — TC-FODT-COMPAT-001 completed_verified |
+| ~~BLOCK-13~~ | ~~TC-QNAME-VALIDATORS-001 (qname_structure_validator not in governance loop)~~ | **RESOLVED 2026-06-22** — TC-QNAME-VALIDATORS-001 completed_verified |
+| ~~BLOCK-14~~ | ~~TC-MACH-ARCH-004 Compat/ not committed~~ | **RESOLVED 2026-06-22** — git status confirms src/python/fods/Compat/ is tracked and committed |
 | BLOCK-15 | test_fodt_sal_facts_present FAILING (live test) | TC-HARD-001 — plan v3.8 over-claimed FODT facts |
 | BLOCK-16 | FACT-FODS-002 not in sal-facts-latest.json (ROOT-03 re-opened) | TC-HARD-002 — ID namespace incompatibility still active |
-| BLOCK-17 | test_plan_version_is_v30 stale assertion (expects "3.0", plan is "3.9") | TC-HARD-003 — test never updated after plan v3.0 |
+| ~~BLOCK-17~~ | ~~test_plan_version_is_v30 stale assertion (expects "3.0", plan is "3.9")~~ | **RESOLVED 2026-06-22** — TC-HARD-003 completed_verified |
 | BLOCK-18 | generate_next_worker_prompt.py 1391 LOC over cap of 1318 (73 lines) | TC-HARD-004 — source structure test fails every sprint |
-| BLOCK-19 | qname_structure_validator exits 0 for 18/20 NON_COMPLIANT formats | TC-HARD-005 — NO_SPEC_CLASSES wrongly treated as COMPLIANT (exit 0) |
+| ~~BLOCK-19~~ | ~~qname_structure_validator exits 0 for 18/20 NON_COMPLIANT formats~~ | **RESOLVED 2026-06-22** — TC-HARD-005 completed_verified; all formats with spec/ return COMPLIANT |
 | BLOCK-20 | 17,177 LOC arithmetic analytics suspended but not removed | TC-HARD-006 — xcf_analytics.py (5725), zst_analytics.py (5513), fodg_analytics.py (4915) |
-| BLOCK-21 | neutral_model.py changes uncommitted in dirty working tree | TC-HARD-009 — may affect SAL fact refs or FODS test behavior |
+| ~~BLOCK-21~~ | ~~neutral_model.py changes uncommitted in dirty working tree~~ | **RESOLVED 2026-06-22** — git status confirms neutral_model.py is clean; TC-HARD-009 → completed_verified |
 | BLOCK-22 | ~~18/20 Python formats have no qname registry in shared/qname-registry/~~ | TC-HARD-008 — RESOLVED 2026-06-22: 18 registries created; 20/20 formats now have YAML entries (+ schema.yaml = 21 files) |
 
 **Priority order for BLOCK-09 through BLOCK-14:**
@@ -2413,7 +2419,7 @@ Step 3 (REMOVAL): Delete arithmetic functions; delete pure arithmetic tests; upd
 
 ### TC-HARD-007 — Commit or Revert src/python/fods/Compat/ (Untracked Files)
 
-**Status:** partially_done
+**Status:** completed_verified (2026-06-22) — git confirms Compat/ tracked and committed; TC-ZS-004 PATH B disposition applied
 **Priority:** MEDIUM (dirty working tree)
 **Source finding:** 4 untracked files in src/python/fods/Compat/ — __init__.py, fods_cell.py, fods_document.py, fods_sheet.py
 **Lane owner:** Lane 8 (Spec-to-Feature)
@@ -2458,7 +2464,7 @@ For each of: abw, csv, dif, fodg, fodp, gnumeric, ndjson, ods, odt, pbm, pgm, pp
 
 ### TC-HARD-009 — Wire FODS Neutral Model Changes (Uncommitted)
 
-**Status:** not_attempted
+**Status:** completed_verified (2026-06-22) — git status confirms neutral_model.py is clean; no uncommitted changes; BLOCK-21 resolved
 **Priority:** MEDIUM (dirty working tree)
 **Source finding:** `src/python/fods/neutral_model.py` listed as modified (M) in git status
 **Lane owner:** Lane 8 (Product Source)
