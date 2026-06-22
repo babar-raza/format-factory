@@ -74,7 +74,15 @@ The prior sprint's continuation signal had 5 GOV_BLOCK validators firing:
 and NOT current blockers.
 
 **Resolution path**: The NEXT product sprint's declaration must include all required fields.
-`autonomous-loop.md` Step 4 already explicitly lists these fields.
+The fields should be explicitly added to `autonomous-loop.md` Step 4 in a future governance sprint.
+
+**Correction (2026-06-22 reassessment — TC-WHALE-DELTA-CORRECT-001)**:
+The prior statement "autonomous-loop.md Step 4 already explicitly lists these fields" was
+INCORRECT. Grep against `.claude/commands/autonomous-loop.md` confirms none of the 5 fields
+(`execution_method`, `source_diff_summary`, `idempotency_key`, `route_decision`,
+`spec_fact_refs`) appear in that file. The claim was asserted based on intent rather than
+verification. These fields are not currently documented in the loop command — they should be
+added in a future governance sprint.
 
 **Current signal state** (verified 2026-06-21):
 - `autonomous_continue: True`

@@ -43,17 +43,46 @@ python -c "
 import json, sys
 from pathlib import Path
 
+# TC-HARD-003 (2026-06-22): DONE_STATUSES extended to include DEFERRED and
+# TERMINAL_CLOSED_AUTHORIZED_OVERRIDE so foreign-session deferred plans and
+# authorized-override closures do not falsely block the sprint loop.
+DONE_STATUSES = {'COMPLETE', 'TERMINAL_CLOSED', 'DEFERRED'}
+
+def _is_done(d):
+    s = d.get('status')
+    if s in DONE_STATUSES:
+        return True
+    # TERMINAL_CLOSED_AUTHORIZED_OVERRIDE is done only if it has a valid authorization_id
+    if s == 'TERMINAL_CLOSED_AUTHORIZED_OVERRIDE' and d.get('authorization_id'):
+        return True
+    return False
+
+def _get_session_id():
+    try:
+        sys.path.insert(0, 'tools/supervisor')
+        from continuation_identity import get_or_create_session_identity
+        return get_or_create_session_identity().session_id
+    except Exception:
+        return None
+
 lock_path = Path('.local/supervisor/active-plan-lock.json')
 locks_dir = Path('.local/supervisor/plan-locks')
+current_sid = _get_session_id()
 found = None
+
 if lock_path.exists():
     d = json.loads(lock_path.read_text(encoding='utf-8'))
-    if d.get('status') not in {'COMPLETE', 'TERMINAL_CLOSED'}:
+    if not _is_done(d):
         found = d
+
 if not found and locks_dir.is_dir():
     for f in sorted(locks_dir.glob('*.json')):
         d = json.loads(f.read_text(encoding='utf-8'))
-        if d.get('status') not in {'COMPLETE', 'TERMINAL_CLOSED'}:
+        # Skip locks from other sessions (TC-HARD-003: session-scoped filtering)
+        lock_sid = d.get('session_id')
+        if lock_sid and current_sid and lock_sid != current_sid:
+            continue
+        if not _is_done(d):
             found = d
             break
 print(json.dumps(found))
@@ -227,7 +256,7 @@ Read the updated continuation-signal.json and repeat from Step 1.
 
 | Condition | Action |
 |-----------|--------|
-| Step 0: active plan found, status not in {COMPLETE, TERMINAL_CLOSED} | **HARD STOP** — execute plan taskcard, not sprint |
+| Step 0: active plan found, status not in {COMPLETE, TERMINAL_CLOSED, DEFERRED, TERMINAL_CLOSED_AUTHORIZED_OVERRIDE+auth_id} | **HARD STOP** — execute plan taskcard, not sprint |
 | verdict=CONTINUE | Execute sprint normally |
 | verdict=STOP, reason=SESSION_MISMATCH | **HARD STOP** — run reset_track_signal.py first |
 | verdict=STOP, reason=ACTIVE_PLAN_INCOMPLETE | **HARD STOP** — execute plan taskcard |
