@@ -376,11 +376,6 @@ def toml_has_boolean_value(source: "str | bytes | Path") -> bool:
     return toml_has_booleans(source)
 
 
-def toml_key_count_squared(source: "str | bytes | Path") -> int:
-    """Return the square of the total top-level key count."""
-    n = toml_total_keys(source)
-    return n * n
-
 
 def toml_has_exactly_two_keys(source: "str | bytes | Path") -> bool:
     """Return True if the document has exactly two top-level keys."""

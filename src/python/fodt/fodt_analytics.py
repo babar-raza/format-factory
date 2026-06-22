@@ -634,15 +634,6 @@ def fodt_short_paragraph_count(file_path: "str | os.PathLike[str]", max_words: i
     return count
 
 
-def fodt_paragraph_count_times_eighty_nine(file_path: "str | os.PathLike[str]") -> int:
-    """Return paragraph count multiplied by 89."""
-    return fodt_paragraph_count(file_path) * 89
-
-
-def fodt_word_count_times_eighty_nine(file_path: "str | os.PathLike[str]") -> int:
-    """Return word count multiplied by 89."""
-    return fodt_word_count(file_path) * 89
-
 
 # ---------------------------------------------------------------------------
 # Batch analytics functions -- FF-HEAL-QNAME-20260621-114042 (34 functions)

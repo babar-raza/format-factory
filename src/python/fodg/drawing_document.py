@@ -7,7 +7,7 @@ All functions are grounded in ODF 1.3 Part 1 specification elements.
 Spec authority : ODF 1.3 Part 1
 QName          : office:document
 Namespace URI  : urn:oasis:names:tc:opendocument:xmlns:office:1.0
-Spec fact ref  : FACT-FODG-001
+Spec fact ref  : FACT-FODG-EX-0028
 
 This module is a behavioral implementation module, NOT an architecture_only spec stub.
 The corresponding spec stub is at src/python/fodg/spec/office/document.py.
@@ -23,7 +23,7 @@ from typing import Any
 from .fodg_codec import load, get_shape_count, get_text_shapes
 
 spec_qname = "office:document"
-spec_fact_ref = "FACT-FODG-001"
+spec_fact_ref = "FACT-FODG-EX-0028"
 namespace_uri = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
 
 def fodg_total_shape_count(file_path: "str | bytes | Path") -> int:
