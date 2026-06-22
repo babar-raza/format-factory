@@ -55,25 +55,32 @@ class TestDogfoodLibraryUsage:
         assert any(c.isdigit() for c in result), "No numeric data survived DIF→CSV export"
 
     def test_csv_output_reloads_via_ff_csv_parser(self):
-        """Exported CSV must be parseable by the FF CSV parser (reload proof)."""
-        import tempfile
+        """Exported CSV must be parseable by the FF CSV parser (reload proof).
+
+        Uses subprocess isolation to avoid sys.modules['csv'] cache from stdlib csv
+        which would shadow the FF csv package in the same process (TC-DIF-003 PATH A).
+        """
+        import subprocess
         from pathlib import Path
 
-        result = dif_analytics.dif_to_csv(os.path.join(SAMPLES, "valid", "minimal-2x2.dif"))
-
-        with tempfile.NamedTemporaryFile(mode="w", suffix=".csv", delete=False, encoding="utf-8") as f:
-            f.write(result)
-            tmp_path = f.name
-
-        try:
-            sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "..", "src", "python"))
-            from csv.csv_parser import parse_csv_strict  # noqa: F401 (checks importability)
-            parsed = parse_csv_strict(tmp_path)
-            assert parsed.get("row_count", 0) >= 1, "CSV reload produced 0 rows"
-        except ImportError:
-            pytest.skip("FF csv_parser not importable in this test path; skipping reload proof")
-        finally:
-            Path(tmp_path).unlink(missing_ok=True)
+        src_python = str(Path(__file__).resolve().parent.parent.parent.parent / "src" / "python")
+        sample = str(Path(SAMPLES) / "valid" / "minimal-2x2.dif")
+        script = (
+            f"import sys; sys.path.insert(0, {src_python!r}); "
+            "from dif.dif_analytics import dif_to_csv; "
+            "from csv.csv_parser import parse_csv_strict; "
+            f"result = dif_to_csv({sample!r}); "
+            "import tempfile, pathlib; "
+            "tmp = tempfile.NamedTemporaryFile(mode='w', suffix='.csv', delete=False, encoding='utf-8'); "
+            "tmp.write(result); tmp_path = tmp.name; tmp.close(); "
+            "parsed = parse_csv_strict(tmp_path); "
+            "pathlib.Path(tmp_path).unlink(missing_ok=True); "
+            "assert parsed.get('row_count', 0) >= 1; "
+            "print('RELOAD_OK')"
+        )
+        r = subprocess.run([sys.executable, "-c", script], capture_output=True, text=True)
+        assert r.returncode == 0, f"Reload proof failed:\n{r.stderr}"
+        assert "RELOAD_OK" in r.stdout, f"Expected RELOAD_OK in output, got: {r.stdout!r}"
 
     def test_single_cell_export_nonempty(self):
         result = dif_analytics.dif_to_csv(os.path.join(SAMPLES, "valid", "single-cell.dif"))

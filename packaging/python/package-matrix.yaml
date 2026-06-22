@@ -214,3 +214,39 @@ packages:
     publication_authorized: false
     commercial_ready: false
     acquisition_gates_passed: [1, 2, 3, 4]
+
+  - package_name: aspose-format-factory-dif
+    module_path: src/python/dif/
+    module_import: dif
+    format_id: dif
+    license: Apache-2.0
+    python_version: ">=3.9"
+    dependencies: []
+    capability_level: alpha-foss-preview
+    source_path: src/python/dif/
+    tests_path: tests/python/dif/
+    examples_path: examples/python/dif/
+    publish_status: local_only_not_published
+    publication_authorized: false
+    commercial_ready: false
+    acquisition_gates_passed: [1, 2, 3, 4]
+    dogfood_exports:
+      - dif_to_csv: csv_writer.write_csv
+    dogfood_note: "TC-DIF-002 (2026-06-22): import path fixed for installed-package context"
+
+  - package_name: aspose-format-factory-csv
+    module_path: src/python/csv/
+    module_import: csv
+    format_id: csv
+    license: Apache-2.0
+    python_version: ">=3.9"
+    dependencies: []
+    capability_level: alpha-foss-preview
+    source_path: src/python/csv/
+    tests_path: tests/python/csv/
+    examples_path: examples/python/csv/
+    publish_status: local_only_not_published
+    publication_authorized: false
+    commercial_ready: false
+    acquisition_gates_passed: [1, 2, 3, 4]
+    note: "Required as dependency for dif dogfood export (dif_to_csv uses csv.csv_writer.write_csv)"

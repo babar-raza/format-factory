@@ -14,13 +14,14 @@ from typing import Any
 from .dif_parser import DifCell, DifDocument, get_column_values, parse_dif, parse_dif_strict, total_cell_count
 
 # dogfood_status: IMPLEMENTED — DIF→CSV uses FF csv_writer.write_csv (add-dogfood-export 2026-06-22)
+# TC-DIF-002 (2026-06-22): installed-package path first; sys.path-injected fallback for source-tree
 try:
-    from src.python.csv.csv_writer import write_csv as _ff_write_csv
-except ImportError:
+    from csv.csv_writer import write_csv as _ff_write_csv  # installed-package context
+except (ImportError, AttributeError):
     try:
         import sys as _sys
         _sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent.parent))
-        from src.python.csv.csv_writer import write_csv as _ff_write_csv
+        from src.python.csv.csv_writer import write_csv as _ff_write_csv  # source-tree context
     except ImportError:
         _ff_write_csv = None
 
