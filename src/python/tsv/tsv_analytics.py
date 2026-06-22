@@ -12,7 +12,6 @@ from .tsv_parser import (
     write_tsv,
 )
 
-
 def tsv_numeric_cell_count(file_path: "str | Path") -> int:
     """Return the count of cells that contain a numeric value across all rows.
 
