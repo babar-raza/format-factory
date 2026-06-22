@@ -132,8 +132,12 @@ class TestCanonicalSpecClassImportable:
     """TC-BFT-014: Canonical spec/ class is importable and distinct from production model."""
 
     def test_canonical_spec_document_class_importable(self):
-        """The canonical spec class for office:document is importable and has correct spec_qname."""
-        from fods.spec.office.document import Document  # canonical tree
+        """The canonical spec class for office:document is importable and has correct spec_qname.
+
+        Import path: spec.office.document (relative to src/python/fods which is in sys.path).
+        The installed fods package does not include spec/ — must use sys.path-inserted path.
+        """
+        from spec.office.document import Document  # canonical tree via sys.path insertion
         assert Document.spec_qname == "office:document"
         assert Document.spec_fact_ref == "FACT-FODS-001"
         # Confirm it is NOT the same object as FodsDocument (they are separate layers)
