@@ -1,19 +1,19 @@
 # Supervisor Context Pack
 # Format Factory — Machine-Readable State Snapshot
-# Generated: 2026-06-22T13:39:30.980858
+# Generated: 2026-06-22T13:43:43.877335
 # ADVISORY ONLY — not a gate approval or authority document
 
 ## Current State
 
 | Item | Value |
 |------|-------|
-| Git HEAD | 8f72ca5b |
+| Git HEAD | 586d18b5 |
 | Working tree clean | False |
 | Supervisor mode | MODE 4 |
 | Latest sprint | unknown |
-| Sprint ID | indexed-crafting-peacock-plan-execution... |
+| Sprint ID | fuzzy-conjuring-papert... |
 | Autonomous continue | False |
-| Iteration | 8/12 |
+| Iteration | 10/12 |
 | MCP status | MCP_CONFIG_PRESENT_MODE4_ACTIVE |
 | Active skills | 43 |
 | Ledger entries | 959 total (783 governed) |

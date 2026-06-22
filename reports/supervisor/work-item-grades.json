@@ -1,7 +1,7 @@
 [
   {
-    "item_id": "TC-ZST-FRAME-CLOSURE-001",
-    "item_title": "Close ZST frame_count and frame_sizes gaps with test coverage",
+    "item_id": "TC-ZST-FRAME-BATCH-001",
+    "item_title": "Close ZST frame_count and frame_sizes gaps",
     "declared_status": "completed",
     "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
     "evidence_found": true,
@@ -21,7 +21,7 @@
     ],
     "required_rework": "",
     "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for TC-ZST-FRAME-CLOSURE-001",
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for TC-ZST-FRAME-BATCH-001",
     "product_source_check": {
       "source_exists": false,
       "test_content_valid": true,
@@ -66,7 +66,7 @@
     }
   },
   {
-    "item_id": "TC-TSV-GAP-CLOSURE-001",
+    "item_id": "TC-TSV-BATCH-001",
     "item_title": "Close 6 TSV missing_test_coverage gaps",
     "declared_status": "completed",
     "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
@@ -91,7 +91,7 @@
     ],
     "required_rework": "",
     "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for TC-TSV-GAP-CLOSURE-001",
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for TC-TSV-BATCH-001",
     "product_source_check": {
       "source_exists": false,
       "test_content_valid": true,
@@ -168,7 +168,7 @@
     }
   },
   {
-    "item_id": "TC-TOML-GAP-CLOSURE-001",
+    "item_id": "TC-TOML-BATCH-001",
     "item_title": "Close 4 TOML missing_test_coverage gaps",
     "declared_status": "completed",
     "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
@@ -191,7 +191,7 @@
     ],
     "required_rework": "",
     "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for TC-TOML-GAP-CLOSURE-001",
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for TC-TOML-BATCH-001",
     "product_source_check": {
       "source_exists": false,
       "test_content_valid": true,
@@ -252,7 +252,7 @@
     }
   },
   {
-    "item_id": "TC-SYLK-GAP-CLOSURE-001",
+    "item_id": "TC-SYLK-BATCH-001",
     "item_title": "Close 5 SYLK missing_test_coverage gaps",
     "declared_status": "completed",
     "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
@@ -276,7 +276,7 @@
     ],
     "required_rework": "",
     "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for TC-SYLK-GAP-CLOSURE-001",
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for TC-SYLK-BATCH-001",
     "product_source_check": {
       "source_exists": false,
       "test_content_valid": true,
@@ -342,6 +342,72 @@
         }
       ],
       "summary": "5/5 evidence files passed content check"
+    }
+  },
+  {
+    "item_id": "TC-FODG-NDJSON-BATCH-001",
+    "item_title": "Close FODG has_non_text_shapes and NDJSON batch_update gaps",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "evidence_found": true,
+    "evidence_paths": [
+      "tests/python/fodg/test_r284_fodg_has_non_text_shapes_has_no_shapes.py",
+      "tests/python/ndjson/test_r162_ndjson_batch_update.py"
+    ],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "No concrete test/criteria proof (path-only acceptance)"
+    ],
+    "acceptance_criteria_failed": [
+      "No raw proof, test content, or acceptance criteria verified"
+    ],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for TC-FODG-NDJSON-BATCH-001",
+    "product_source_check": {
+      "source_exists": false,
+      "test_content_valid": true,
+      "details": [
+        "test content valid: tests/python/fodg/test_r284_fodg_has_non_text_shapes_has_no_shapes.py",
+        "test content valid: tests/python/ndjson/test_r162_ndjson_batch_update.py"
+      ]
+    },
+    "purpose_check": {
+      "item_type": "PRODUCT_TEST",
+      "has_gap_ref": true,
+      "gap_ref": "GAP-FODG-FOSS-FODG_HAS_NON-001",
+      "spec_fact_count": 0,
+      "verdict": "PURPOSEFUL",
+      "note": ""
+    },
+    "semantic_verification": {
+      "adequate": true,
+      "confidence": 0.7,
+      "stub_detected": false,
+      "deficiencies": [],
+      "llm_used": false,
+      "intermediate_verified": true,
+      "source": "intermediate_content_check",
+      "checks": [
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tests\\python\\fodg\\test_r284_fodg_has_non_text_shapes_has_no_shapes.py",
+          "exists": true,
+          "content_ok": true,
+          "detail": "valid (10 test functions with assertions)",
+          "check_type": "python_test_content"
+        },
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tests\\python\\ndjson\\test_r162_ndjson_batch_update.py",
+          "exists": true,
+          "content_ok": true,
+          "detail": "valid (6 test functions with assertions)",
+          "check_type": "python_test_content"
+        }
+      ],
+      "summary": "2/2 evidence files passed content check"
     }
   }
 ]
