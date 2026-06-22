@@ -618,22 +618,26 @@ skills:
   - skill_id: add-analytics-function
     command: /add-analytics-function
     command_file: .claude/commands/add-analytics-function.md
-    status: active
-    spec_qname_required: false
-    purpose: "Add one formula-based analytics function to src/python/<format_id>/analytics.py (§24.7 compliant). BLOCKED by V35 if target file is at LOC cap."
+    status: suspended
+    spec_qname_required: true
+    overflow_split_allowed: false
+    purpose: "Add one spec-backed domain analytics function to a spec-owned module. BLOCKED by V35 if target file is at LOC cap. BLOCKED by V50 if target is *_analytics_extra.py, *_extra.py, or *_misc.py. Overflow to *_analytics_extra.py is FORBIDDEN — spec-level module split required when analytics.py hits cap."
     product_track: foss_python_analytics
     required_handoff_fields:
       - format_id
       - function_name
+      - target_module
+      - spec_fact_ref
+      - gap_ledger_ref
       - formula
-      - prime_used
       - expected_values
     mandatory_validations:
       - loc_cap_not_exceeded
-      - prime_not_collision
-      - sample_files_exist
+      - spec_fact_ref_in_sal_output
+      - gap_ledger_ref_exists
+      - no_forbidden_module_target
       - analytics_skill_required_v41
-    notes: "Analytics rotation SUSPENDED 2026-06-18 per plan keen-dancing-hopper. ZST/XCF/FODG analytics.py files are at cap. Do NOT reactivate without a spec fact reference (FACT-<FORMAT>-*) and a gap-ledger entry."
+    notes: "Analytics rotation SUSPENDED 2026-06-18 per plan keen-dancing-hopper. ZST/XCF/FODG analytics.py files are at cap. Overflow splits (*_analytics_extra.py) are PERMANENTLY FORBIDDEN per MODULE-NAME-001 (TC-ANAL-SEG-HEAL-001, 2026-06-22). When analytics.py hits cap, create spec-level domain modules with spec_qname declarations."
 
   # ============================================================
   # INFRASTRUCTURE SKILLS (skill-governance-sync-sprint 2026-06-21)

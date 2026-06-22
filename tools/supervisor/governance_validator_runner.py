@@ -1,4 +1,4 @@
-"""governance_validator_runner.py — Runs all governance validators (V1-V49).
+"""governance_validator_runner.py — Runs all governance validators (V1-V50).
 
 Extracted from governance_validators.py to keep that file within its LOC cap.
 This module imports validators from governance_validators LAZILY (inside the function
@@ -12,6 +12,7 @@ V46: validate_skill_transcript_present — skill transcript presence (TC-SKILL-G
 V47: validate_spec_fact_refs_in_sal_output — spec_fact_refs verified in sal-facts-latest.json (TC-MACH-ARCH-007)
 V48: validate_architecture_only_stub_gate — blocks RELEASE_GATE items citing architecture_only stubs (TC-ZS-001, 2026-06-21)
 V49: validate_qname_structure — spec/ class files in changed_files must have spec_qname (TC-QNAME-VALIDATORS-001, WARN-only)
+V50: validate_forbidden_module_names — blocks *_analytics_extra.py, *_extra.py, *_misc.py creation (MODULE-NAME-001, 2026-06-22)
 """
 from __future__ import annotations
 
@@ -90,6 +91,10 @@ def run_all_governance_validators(
         validate_architecture_only_stub_gate,
         validate_qname_structure,
     )
+    # V50 imported directly from ext module (governance_validators.py is at LOC cap)
+    from governance_validators_ext import (  # noqa: PLC0415
+        validate_forbidden_module_names as _validate_forbidden_module_names,
+    )
     results = [
         validate_execution_method_required(declaration),
         validate_source_diff_required(declaration),
@@ -160,6 +165,8 @@ def run_all_governance_validators(
         validate_architecture_only_stub_gate(declaration, repo_root),
         # V49 (TC-QNAME-VALIDATORS-001): spec/ class files in changed_files must have spec_qname (WARN-only)
         validate_qname_structure(declaration, repo_root),
+        # V50 (MODULE-NAME-001): Forbid analytics-bucket module names (*_analytics_extra, *_extra, *_misc)
+        _validate_forbidden_module_names(declaration, repo_root),
     ]
 
     fail_count = sum(1 for r in results if r["result"] == "FAIL")
