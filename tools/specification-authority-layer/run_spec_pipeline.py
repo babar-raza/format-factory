@@ -85,8 +85,11 @@ def run_pipeline_for_format(format_id: str, dry_run: bool = False) -> dict:
         log["steps"].append({"step": "build_section_index", "result": "SKIPPED_NO_NORMALIZED"})
 
     # Step 3: build_spec_workbench.py
-    rc = _run([sys.executable, NORMALIZE_DIR / "build_spec_workbench.py",
-               "--format-id", fmt, "--version", "1.3", "--dry-run" if dry_run else ""], dry_run=False)
+    _workbench_cmd = [sys.executable, NORMALIZE_DIR / "build_spec_workbench.py",
+                      "--format-id", fmt, "--version", "1.3"]
+    if dry_run:
+        _workbench_cmd.append("--dry-run")
+    rc = _run(_workbench_cmd, dry_run=False)
     log["steps"].append({"step": "build_spec_workbench", "result": "PASS" if rc == 0 else "WARN", "exit_code": rc})
 
     # Step 4: sal_master_runner.py (generate facts)
