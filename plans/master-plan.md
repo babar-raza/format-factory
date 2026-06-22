@@ -854,6 +854,41 @@ TC-FODT-GAP-001, TC-FODT-AUDIT-001, TC-FODT-AUDIT-002, TC-RCAL-001
 
 ---
 
+### Plan: federated-crafting-whisper — Declaration Schema Hardening (COMPLETED 2026-06-22)
+
+**Plan file:** `C:/Users/prora/.claude/plans/federated-crafting-whisper.md` (7 taskcards)
+
+**Status:** CLOSED (all 7 taskcards accepted; plan lock written with `--terminal`)
+
+**What was accomplished:**
+
+*Rework re-declarations (TC-REWORK-PHG-001 through TC-REWORK-PHG-004):*
+- 4 items from `polished-hopping-glacier-plan-execution` that received OVERCLAIMED verdicts were re-declared with correct evidence schema
+- Root cause: `planned_work_items[].evidence_paths` was missing; grader requires this field for `has_evidence` — `evidence_artifacts[].related_work_items` is materialization-only and NOT checked
+- All 4 items (TC-HARD-SAL-001, TC-HARD-SAL-002, TC-HARD-003b, TC-HARD-008b) received ACCEPTED on re-submission (Accepted: 4, Rework: 0, Overclaimed: 0)
+- Focused proof files used to bypass LLM grader truncation of 9.8MB sal-facts-latest.json
+- 16 tests confirmed passing: `tests/specification-authority-layer/test_gap_int_002_product_source_fact_refs.py`
+
+*Infrastructure documentation (TC-INFRA-DEC-001, TC-INFRA-DEC-002, TC-INFRA-PLAN-001):*
+- `docs/automation/supervisor-worker-contract.md`: Added "EVIDENCE SCHEMA RULE" (mandatory) — `planned_work_items[].evidence_paths` drives per-item `has_evidence`; `evidence_artifacts[].related_work_items` is advisory only
+- `docs/automation/supervisor-worker-contract.md`: Added "AGGREGATE TESTS_RUN RULE" (mandatory) — top-level `tests_run`/`passed`/`failed` must be populated from per-item sums
+- `docs/automation/autonomous-supervision-replication-guide.md`: Added Section 12 "Pre-Sprint Screening Rule" — previously-ACCEPTED items must not be re-included as sprint work
+
+*CLAUDE.md fix (same plan scope):*
+- Line 101: Removed hardcoded `plans/snoopy-juggling-seal.md` from "Mandatory Plan Files"; replaced with dynamic reference to current chat's plan mode file (detected from system message)
+
+**Verification performed:**
+- 4/4 rework items ACCEPTED: confirmed from `.local/supervisor/reviews/polished-hopping-glacier-rework-001/supervisor-review.md`
+- Docs rules confirmed in HEAD: `grep -c "EVIDENCE SCHEMA RULE"` → 2 matches in supervisor-worker-contract.md
+- Pre-sprint screening confirmed in HEAD: `grep -c "Pre-Sprint Screening"` → 2 matches in replication guide
+
+**Files committed:** `docs/automation/supervisor-worker-contract.md` + `docs/automation/autonomous-supervision-replication-guide.md` (commit 793861dd), `CLAUDE.md` (commit 08725099)
+
+**Follow-ups (non-blocking):**
+- TC-INFRA-DEC-002: `sprint_executor_validate.py` WARN for `tests_run==0` + test result strings — documented rule exists; code-level enforcement deferred
+
+---
+
 ## ARCHIVE-PTR — Historical Content Archive
 
 The following sections were archived during the healing sprint of 2026-06-10.
