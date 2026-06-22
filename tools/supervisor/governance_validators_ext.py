@@ -8,6 +8,7 @@ Pattern mirrors analytics extraction pattern used for format codecs:
   governance_validator_runner.py registers both sets of validators in run_all_governance_validators().
 
 TC-WHALE-GOVBLOCK-001 (2026-06-21): V48 extracted here per source baseline LOC cap policy.
+TC-ANAL-SEG-HEAL-001 (2026-06-22): V50 added here — MODULE-NAME-001 forbidden module names.
 """
 
 from __future__ import annotations
@@ -79,4 +80,81 @@ def validate_architecture_only_stub_gate(
             if all_issues else "V48: No architecture_only stubs cited as evidence"
         ),
         "blocks_sprint": bool(gate_violations),
+    }
+
+
+def validate_forbidden_module_names(
+    declaration: dict, repo_root: Path | None = None
+) -> dict:
+    """V50 — MODULE-NAME-001: Forbid generic analytics-bucket module names.
+
+    Blocks creation of NEW files matching:
+      *_analytics_extra.py, *_extra.py, *_misc.py
+      *_helpers.py / *_utils.py containing format-prefixed spec behavior
+
+    Deletion of these files (where file does NOT exist on disk) is ALWAYS allowed.
+    The validator checks Path(repo / path).exists() before flagging — so deleting
+    a forbidden-named file in a sprint does NOT cause this validator to self-block.
+
+    These names indicate code grouped by convenience, not spec hierarchy.
+    Every product module must map to a spec section, element, or domain concept.
+
+    Added 2026-06-22 (TC-ANAL-SEG-HEAL-001) as part of spec-level segregation healing.
+    """
+    import re
+
+    repo = repo_root or _REPO_ROOT
+    FORBIDDEN = re.compile(
+        r"src/python/[^/]+/[^/]+_(analytics_extra|extra|misc)\.py$"
+    )
+    CONDITIONAL = re.compile(
+        r"src/python/[^/]+/[^/]+_(helpers|utils)\.py$"
+    )
+    FORMAT_FN = re.compile(
+        r"def (?:abw|csv|dif|fodg|fods|fodt|fodp|gnumeric|ndjson|"
+        r"ods|odt|pbm|pgm|ppm|qoi|sylk|toml|tsv|xcf|zst)_"
+    )
+
+    violations = []
+    changed = declaration.get("changed_files", [])
+    for path in changed:
+        # CRITICAL: skip files being DELETED (they don't exist on disk).
+        # Allows deletion sprints to remove forbidden-named files without self-blocking.
+        full_path = repo / path
+        if not full_path.exists():
+            continue
+        if FORBIDDEN.search(path):
+            violations.append({
+                "path": path,
+                "rule": "MODULE-NAME-001",
+                "type": "forbidden_suffix",
+                "message": f"Forbidden analytics-bucket module suffix in {path!r}",
+            })
+        elif CONDITIONAL.search(path):
+            try:
+                content = full_path.read_text(encoding="utf-8", errors="replace")
+                if FORMAT_FN.search(content):
+                    violations.append({
+                        "path": path,
+                        "rule": "MODULE-NAME-001",
+                        "type": "conditional_forbidden",
+                        "message": (
+                            f"Format-prefixed spec behavior found in conditionally-forbidden "
+                            f"module {path!r}"
+                        ),
+                    })
+            except OSError:
+                pass
+
+    blocks = len(violations) > 0
+    return {
+        "validator": "validate_forbidden_module_names",
+        "rule_id": "MODULE-NAME-001",
+        "result": "FAIL" if blocks else "PASS",
+        "blocks_sprint": blocks,
+        "items": violations,
+        "summary": (
+            f"V50: {len(violations)} forbidden module name(s) found"
+            if blocks else "V50: No forbidden module names"
+        ),
     }

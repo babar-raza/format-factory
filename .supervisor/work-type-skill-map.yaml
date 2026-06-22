@@ -1,0 +1,53 @@
+version: "1.0"
+generated_at: "2026-06-22"
+authority: ".claude/commands/check-skill-coverage.md"
+note: >
+  Canonical mapping of work types to registered skills. Consolidated from the
+  embedded routing table in check-skill-coverage.md. Updated whenever a new skill
+  is registered or a gap is resolved. Machine-readable authority for Step 2a lookups
+  in autonomous-loop.md.
+
+active_mappings:
+  python_api: add-python-api
+  dotnet_api: add-dotnet-api
+  python_object_model: add-python-object-model-feature
+  dotnet_object_model: add-dotnet-object-model-feature
+  dogfood_export: add-dogfood-export
+  writer_feature: add-same-format-writer-feature
+  roundtrip_test: add-roundtrip-test
+  installed_example: add-installed-package-example
+  analytics_function: add-analytics-function  # NOTE: rotation suspended; requires FACT-<FORMAT>-* ref
+  spec_literal_migration: spec-parity-source-regeneration-and-migration
+  python_reduced_parity: python-reduced-spec-parity-model
+  qname_mapping: spec-literal-qname-to-code-mapping
+  architecture_blueprint: spec-shaped-product-architecture-blueprint
+  sal_pipeline_heal: sal-pipeline-heal
+  governance_skill_check: check-skill-coverage
+  sprint_loop: autonomous-loop
+
+gap_mappings:
+  capability_compiler:
+    status: gap
+    verdict: BLOCKED_SKILL_GAP
+    master_plan_clause: "spec-to-feature plan Lane 3, ROOT-08"
+    gap_register_id: SKILL-GAP-003
+  extract_analytics_from_monolith:
+    status: gap
+    verdict: BLOCKED_SKILL_GAP
+    master_plan_clause: "section 24.7 analytics separation RULE-AM-001"
+    gap_register_id: SKILL-GAP-005
+  pre_sprint_governance_hook:
+    status: gap
+    verdict: BLOCKED_SKILL_GAP
+    master_plan_clause: "CLAUDE.md GOV_BLOCK exception"
+    gap_register_id: SKILL-GAP-008
+  ci_transcript_verification:
+    status: gap
+    verdict: BLOCKED_SKILL_GAP
+    master_plan_clause: "skill_invocation_transcript_required global_control"
+    gap_register_id: SKILL-GAP-009
+  supervision_audit:
+    status: gap
+    verdict: BLOCKED_SKILL_GAP
+    master_plan_clause: "spec-to-feature plan Lane 14"
+    gap_register_id: SKILL-GAP-010

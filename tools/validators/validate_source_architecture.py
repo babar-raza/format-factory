@@ -9,6 +9,7 @@ Rules enforced:
   RULE-AM-002: __init__.py must not exceed 100 LOC (new files)
   RULE-AM-003: No new file may exceed 800 LOC
   RULE-AM-004: No new file may have > 60 functions
+  MODULE-NAME-001: No file may use forbidden analytics-bucket suffixes (_analytics_extra, _extra, _misc)
 
 Severity:
   - New file violation (not in baseline known_violations): FAIL (blocks sprint)
@@ -48,6 +49,15 @@ _MAX_INIT_LOC_NEW = 100
 
 # Files that are exempt from analytics-in-non-analytics check
 _ANALYTICS_OK_NAMES = {"analytics.py", "__init__.py"}
+
+# MODULE-NAME-001 (TC-ANAL-SEG-HEAL-001, 2026-06-22): Forbidden analytics-bucket module suffixes.
+# These names indicate code grouped by convenience, not spec hierarchy.
+# Files with these suffixes in src/python/ are FAIL for new files (not in known_violations).
+_FORBIDDEN_MODULE_SUFFIXES = frozenset([
+    "_analytics_extra",
+    "_extra",
+    "_misc",
+])
 
 # Recognized purposes for files (orphan check uses separate validator)
 _RECOGNIZED_SUFFIXES = {
@@ -215,6 +225,26 @@ def scan(src_root: Path, baseline: dict, repo_root: Path) -> dict:
                         "is_known_violation": True,
                     })
 
+        # --- MODULE-NAME-001: Forbidden analytics-bucket module suffixes ---
+        stem = fpath.stem
+        for suffix in _FORBIDDEN_MODULE_SUFFIXES:
+            if stem.endswith(suffix):
+                status = "WARN" if is_known else "FAIL"
+                if status == "FAIL":
+                    fail_count += 1
+                else:
+                    warn_count += 1
+                items.append({
+                    "file": rel_posix,
+                    "rule": "MODULE-NAME-001",
+                    "description": f"Forbidden analytics-bucket module suffix '{suffix}'",
+                    "current": 1,
+                    "cap": 0,
+                    "status": status,
+                    "is_known_violation": is_known,
+                })
+                break
+
     result = "PASS"
     if fail_count > 0:
         result = "FAIL"
@@ -268,13 +298,18 @@ def _run_self_test() -> bool:
         init = src / "__init__.py"
         init.write_text("\n".join(f"# line {i}" for i in range(150)) + "\n")
 
+        # Forbidden module suffix — should FAIL MODULE-NAME-001 (not in known_violations)
+        extra = src / "csv_analytics_extra.py"
+        extra.write_text("def csv_extra_helper():\n    return 1\n")
+
         baseline = {"known_violations": {}}
         result = scan(src, baseline, tmproot)
 
         fails = [i for i in result["items"] if i["status"] == "FAIL"]
-        # Expect: bad_codec.py RULE-AM-001 FAIL, __init__.py RULE-AM-002 FAIL
+        # Expect: bad_codec.py RULE-AM-001 FAIL, __init__.py RULE-AM-002 FAIL,
+        #         csv_analytics_extra.py MODULE-NAME-001 FAIL
         # clean_module.py should not appear
-        # csv_analytics.py should not appear (exempt)
+        # csv_analytics.py should not appear (exempt from RULE-AM-001)
         bad_codec_fail = any(
             i["file"].endswith("bad_codec.py") and i["rule"] == "RULE-AM-001"
             for i in fails
@@ -290,13 +325,18 @@ def _run_self_test() -> bool:
             i["file"].endswith("csv_analytics.py") and i["rule"] == "RULE-AM-001"
             for i in result["items"]
         )
+        extra_fail = any(
+            i["file"].endswith("csv_analytics_extra.py") and i["rule"] == "MODULE-NAME-001"
+            for i in fails
+        )
 
-        if bad_codec_fail and init_fail and clean_absent and analytics_absent:
+        if bad_codec_fail and init_fail and clean_absent and analytics_absent and extra_fail:
             print("SELF-TEST PASS", file=sys.stderr)
             return True
         else:
             print(f"SELF-TEST FAIL: bad_codec={bad_codec_fail} init={init_fail} "
-                  f"clean_absent={clean_absent} analytics_absent={analytics_absent}",
+                  f"clean_absent={clean_absent} analytics_absent={analytics_absent} "
+                  f"extra_fail={extra_fail}",
                   file=sys.stderr)
             print(json.dumps(result["items"], indent=2), file=sys.stderr)
             return False
