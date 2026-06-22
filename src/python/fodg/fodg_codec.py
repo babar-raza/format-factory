@@ -827,27 +827,5 @@ def export_page_to_json(model: dict[str, Any], page_idx: int) -> str:
     return json.dumps(page, ensure_ascii=False)
 
 
-# ---------------------------------------------------------------------------
-# Analytics functions were moved to fodg_analytics_extra.py (TC-FODG-COMPLETE-001).
-# The __getattr__ shim below keeps backward-compat imports working.
-# ---------------------------------------------------------------------------
-
-
-
-# ---------------------------------------------------------------------------
-# Backward-compat: analytics functions moved to fodg_analytics.py (TC-HEAL-PY-FODG-001)
-# Code that imports analytics functions directly from this module still works.
-# ---------------------------------------------------------------------------
-def __getattr__(name: str):
-    """Lazy backward-compat re-export for analytics functions in fodg_analytics.py."""
-    if name.startswith("fodg_"):
-        try:
-            from . import fodg_analytics as _analytics
-            val = getattr(_analytics, name, None)
-            if val is not None:
-                globals()[name] = val  # cache to avoid repeated __getattr__ calls
-                return val
-        except ImportError:
-            pass
-    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+# Analytics domain functions are in drawing_document.py (TC-ANAL-SEG-HEAL-001, 2026-06-22).
 
