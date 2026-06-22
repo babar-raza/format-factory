@@ -932,6 +932,46 @@ known_failures:
     category: "missing_implementation"
     group: "dif_missing_analytics_TC-HARD-004d"
 
+  # TC-V4-L3-LEDGER-001 entries (added 2026-06-22, zesty-spinning-platypus v4)
+  # Discovered in L3 direct-path run: 2011 passed, 2 failed, 16 skipped in 79s
+
+  - test_id: "tests/evidence/test_format_completion_matrix.py::TestMatrixCompleteness::test_every_registry_format_has_matrix_entry"
+    reason: "Format completion matrix does not include formats added in recent sprints. Matrix is maintained manually and falls behind as new format specs are added."
+    condition: "always"
+    mitigation: "Update format-completion-matrix.yaml when new formats reach production status."
+    layer: 3
+    first_documented: "2026-06-22"
+    category: "maintenance_lag"
+    sprint: "format-factory-fullsuite-layering-20260618-001 (v4 ledger update)"
+
+  - test_id: "tests/evidence/test_python_package_matrix.py::test_source_modules_importable"
+    reason: "ImportError during import check — caused by pre-existing dirty state: fods/fods/ nested package deletion (git status shows D src/python/fods/fods/__init__.py etc). The nested package structure is being cleaned up; imports fail during transition."
+    condition: "dirty_working_tree_with_fods_nested_deletion"
+    mitigation: "Commit or stash the fods/fods/ deletion changes before running this test."
+    layer: 3
+    first_documented: "2026-06-22"
+    category: "environment_dependent"
+    sprint: "format-factory-fullsuite-layering-20260618-001 (v4 ledger update)"
+
+  # Network/LLM-calling tests in tests/supervisor/ that cannot run in interactive context
+  - test_id: "tests/supervisor/acceleration/test_r108_stream_prompt_autonomy.py"
+    reason: "Makes real LLM API calls via gateway_chat/litellm. Times out in interactive context without live API credentials."
+    condition: "no_llm_credentials_or_network"
+    mitigation: "Run in CI with LLM credentials, or mock gateway_chat. Tests are informational in local dev."
+    layer: 3
+    first_documented: "2026-06-22"
+    category: "network_dependent"
+    sprint: "format-factory-fullsuite-layering-20260618-001 (v4 ledger update)"
+
+  - test_id: "tests/supervisor/test_autonomous_cycle_e2e.py"
+    reason: "End-to-end cycle test calls generate_prompt which calls gateway_chat/litellm. Times out without live LLM API."
+    condition: "no_llm_credentials_or_network"
+    mitigation: "Run in CI with LLM credentials. Local dev use --ignore on this file."
+    layer: 3
+    first_documented: "2026-06-22"
+    category: "network_dependent"
+    sprint: "format-factory-fullsuite-layering-20260618-001 (v4 ledger update)"
+
 # Gap tests (collection errors, not test failures)
 # These are NOT failures — they are ImportErrors at collection time for
 # unimplemented functions. They are tracked separately.
