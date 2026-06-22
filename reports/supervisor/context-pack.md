@@ -1,19 +1,19 @@
 # Supervisor Context Pack
 # Format Factory — Machine-Readable State Snapshot
-# Generated: 2026-06-22T19:26:13.380343
+# Generated: 2026-06-22T19:27:47.654316
 # ADVISORY ONLY — not a gate approval or authority document
 
 ## Current State
 
 | Item | Value |
 |------|-------|
-| Git HEAD | 2f835029 |
+| Git HEAD | 4d26e215 |
 | Working tree clean | False |
 | Supervisor mode | MODE 4 |
 | Latest sprint | unknown |
-| Sprint ID | FF-PLAN-ADAPTIVE-SPLASHING-FROG-20260622... |
+| Sprint ID | snoopy-juggling-seal-section-32-execution... |
 | Autonomous continue | False |
-| Iteration | 8/12 |
+| Iteration | 9/12 |
 | MCP status | MCP_CONFIG_PRESENT_MODE4_ACTIVE |
 | Active skills | 44 |
 | Ledger entries | 960 total (783 governed) |

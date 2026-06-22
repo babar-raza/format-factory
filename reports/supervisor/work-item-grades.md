@@ -1,15 +1,20 @@
 # Work Item Grades
-Sprint: snoopy-juggling-seal-section-32-execution
-Generated: 2026-06-22T19:23:53.140707
-Global Status: ACCEPTED_WITH_REWORK
+Sprint: floating-stargazing-globe-hardening
+Generated: 2026-06-22T19:27:13.165495
+Global Status: ACCEPTED
 
 | Item ID | Grade | Rework Required |
 |---------|-------|-----------------|
-| TC-DIF-002 | OVERCLAIMED | Item declared completed but no evidence found. Provide evidence at declared path |
-| TC-DIF-003 | OVERCLAIMED | Item declared completed but no evidence found. Provide evidence at declared path |
+| TC-HARD-003 | ACCEPTED_VERIFIED |  |
+| TC-HARD-001 | ACCEPTED_VERIFIED |  |
+| TC-HARD-007 | ACCEPTED_VERIFIED |  |
+| TC-HARD-RECON-002 | ACCEPTED_WITH_LIMITATIONS |  |
+| TC-HARD-RECON-005 | ACCEPTED_VERIFIED |  |
+| TC-HARD-006-GATE | ACCEPTED_VERIFIED |  |
+| TC-HARD-COUNT-FIX | ACCEPTED_VERIFIED |  |
 
 ## Summary
-- Accepted: 0
-- Rework: 10
-- Overclaimed: 2
-- Autonomous Continue: False
+- Accepted: 7
+- Rework: 0
+- Overclaimed: 0
+- Autonomous Continue: True

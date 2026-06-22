@@ -1,29 +1,36 @@
 schema_version: '1.0'
-generated_at: '2026-06-22T19:26:13.380343'
+generated_at: '2026-06-22T19:27:47.654316'
 repo_root: C:\Users\prora\OneDrive\Documents\GitHub\format-factory
 git:
-  head: 2f835029
+  head: 4d26e215
   status:
-    modified_count: 32
+    modified_count: 20
     untracked_count: 0
     staged_count: 1
-    total_changed: 33
+    total_changed: 21
     clean: false
 supervisor_mode: 4
 latest_sprint:
-  sprint_id: FF-PLAN-ADAPTIVE-SPLASHING-FROG-20260622
+  sprint_id: snoopy-juggling-seal-section-32-execution
   run_id: unknown
   autonomous_continue: false
-  iteration: 8
+  iteration: 9
   max_iterations: 12
   hard_stops:
   - critical_rework_blocks_continuation
   rework_items:
-  - TC-H2
-  - TC-H3
-  - TC-H4
-  - TC-H6
-  - TC-H8
+  - TC-DIF-002
+  - TC-DIF-003
+  - "TC-GUARD-001:gap_ledger_ref_missing:TC-DIF-002 \u2014 Add gap_ledger_ref or spec_fact_refs\
+    \ from reports/capability-layer/gap-ledger.json"
+  - "TC-GUARD-001:gap_ledger_ref_missing:TC-DIF-003 \u2014 Add gap_ledger_ref or spec_fact_refs\
+    \ from reports/capability-layer/gap-ledger.json"
+  - GOV_BLOCK:execution_method_required_validator
+  - GOV_BLOCK:source_diff_required_validator
+  - GOV_BLOCK:idempotency_key_required_validator
+  - GOV_BLOCK:route_decision_required_validator
+  - GOV_BLOCK:spec_fact_refs_validator
+  - GOV_BLOCK:validate_skill_transcript_present
 poc_matrix:
   sprint: capability-layer-closeout-rnext
   last_updated: '2026-06-18'
