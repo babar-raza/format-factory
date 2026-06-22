@@ -1270,20 +1270,26 @@ def generate(
 
     # --- Write gap ledger ---
     gaps = _build_gap_ledger(all_records)
-    # Merge status from existing gap-ledger to preserve closed statuses
+    # Merge status from existing gap-ledger to preserve closed statuses and supplemental gaps
     existing_gap_path = output_dir / "gap-ledger.json"
     if existing_gap_path.exists():
         try:
             old = json.loads(existing_gap_path.read_text(encoding="utf-8"))
-            old_status = {g["gap_id"]: g for g in old.get("gaps", []) if g.get("status") == "closed"}
+            old_by_id = {g["gap_id"]: g for g in old.get("gaps", [])}
+            generated_ids = {g["gap_id"] for g in gaps}
+            # Preserve closed status and close metadata for regenerated gaps
             for g in gaps:
-                if g["gap_id"] in old_status:
-                    prev = old_status[g["gap_id"]]
+                if g["gap_id"] in old_by_id and old_by_id[g["gap_id"]].get("status") == "closed":
+                    prev = old_by_id[g["gap_id"]]
                     g["status"] = "closed"
                     if "closed_by_sprint" in prev:
                         g["closed_by_sprint"] = prev["closed_by_sprint"]
                     if "closed_at" in prev:
                         g["closed_at"] = prev["closed_at"]
+            # Re-append supplemental gaps (manually added, not generated from poc-targets.yaml)
+            for old_gap in old.get("gaps", []):
+                if old_gap["gap_id"] not in generated_ids:
+                    gaps.append(old_gap)
         except (json.JSONDecodeError, KeyError):
             pass  # If old file is corrupt, start fresh
     gap_ledger = {

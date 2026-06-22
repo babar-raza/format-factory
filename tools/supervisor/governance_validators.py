@@ -2489,7 +2489,12 @@ def validate_monolith_detection(declaration: dict,
 
 def validate_no_stub_tests(declaration: dict,
                             repo_root: Path | None = None) -> dict:
-    """V36: Reject test files that only assert `is not None` or `isinstance`."""
+    """V36: Reject test files that only assert `is not None`, `isinstance`, or spec_qname ==.
+
+    Extended (TC-ZS-006, 2026-06-22) to also detect spec_qname-only assertion patterns.
+    Tests that assert only attribute existence (spec_qname ==, SpecQName ==) against
+    architecture_only classes prove nothing about behavioral implementation.
+    """
     if repo_root is None:
         repo_root = Path(".")
     items = declaration.get("planned_work_items", [])
@@ -2510,11 +2515,17 @@ def validate_no_stub_tests(declaration: dict,
                 + content.count("assert isinstance(")
                 + content.count("is not None")
             )
-            # If > 80% of assertions are weak, flag it
-            if total_asserts > 0 and weak_asserts / total_asserts > 0.8:
+            # TC-ZS-006: Also count spec_qname-only assertions (attribute existence, not behavior)
+            import re as _re
+            spec_qname_asserts = len(_re.findall(
+                r"assert\s+\w+\.(?:spec_qname|SpecQName)\s*==", content
+            ))
+            total_weak = weak_asserts + spec_qname_asserts
+            # If > 80% of assertions are weak or spec_qname-only, flag it
+            if total_asserts > 0 and total_weak / total_asserts > 0.8:
                 violations.append(
-                    f"{ref}: {weak_asserts}/{total_asserts} assertions are weak "
-                    f"(is not None / isinstance)"
+                    f"{ref}: {total_weak}/{total_asserts} assertions are weak "
+                    f"(is not None / isinstance / spec_qname-only)"
                 )
     if violations:
         return {
