@@ -927,6 +927,47 @@ TC-FODT-GAP-001, TC-FODT-AUDIT-001, TC-FODT-AUDIT-002, TC-RCAL-001
 
 ---
 
+### Plan: tender-dreaming-lovelace — Skill Governance Sync Hardening (CLOSED 2026-06-22)
+
+**Plan file:** `C:/Users/prora/.claude/plans/tender-dreaming-lovelace.md` (skill-governance-sync hardening; Section D = original sprint; Section E = audit taskcards TC-AUDIT-001..007)
+
+**Status:** TERMINAL_CLOSED (all hardened taskcards resolved; plan lock written with `--terminal`)
+
+**What was accomplished:**
+
+*Original sprint (Section D, committed in 329b9101 by prior session):*
+- V46 (`validate_skill_transcript_present`) activated from WARN to BLOCK (`blocks_sprint=bool(violations)`)
+- command-registry.yaml expanded from 11 to 43 entries (all command files on disk covered)
+- TC-SKILL-003 taskcard created (`taskcards/skill-gaps/TC-SKILL-003-implement-spec-stub.md`)
+- TC-SKILL-004 taskcard created (`taskcards/skill-gaps/TC-SKILL-004-decompose-monolithic-codec.md`)
+- 6 `.local/recon/` artifacts created (gitignored): command-inventory, master-plan-sync-analysis, src-healing-skill-plan, pilot artifacts
+- Pilot: `GOVERNED_HANDOFF_REQUIRED` for ABW gap (no matching skill) — proves missing-skill detection path
+
+*Hardening session (TC-AUDIT-001..007, committed in c29a2a23 and this session):*
+- **TC-AUDIT-001/002** (V46 committed + LOC cap): Pre-resolved. V46 source committed at HEAD (5/5 V46 tests pass); baseline_loc_cap updated to 3179 by subsequent sessions.
+- **TC-AUDIT-003**: `.local/recon/undeclared-changes-inventory.yaml` produced — 886 items (14 tracked + 72 untracked from snappy-wobbling-gadget sprint) all dispositioned as `HOLD_FOR_ACTIVE_SPRINT`.
+- **TC-AUDIT-004**: `sal-pipeline-heal-TC-SAL-DIAG-008.json` migrated from v1 to v2 schema; `validate_skill_transcript.py` returns PASS.
+- **TC-AUDIT-005**: V46 governed-skill-execution path proven — PRODUCT_SOURCE item + v2 transcript artifact → V46 PASS; `.local/recon/pilot-evidence-v2.json` written.
+- **TC-AUDIT-006**: `.claude/commands/implement-spec-stub.md` created and registered in skill-registry.yaml + command-registry.yaml.
+- **TC-AUDIT-007**: `.claude/commands/decompose-monolithic-codec.md` created and registered in both registries.
+
+**Verification performed:**
+- V46: 5/5 tests PASS against committed HEAD source
+- Governance test suite: 61 pass / 5 pre-existing failures (net: +2 tests vs prior baseline)
+- command-registry.yaml: 45 entries, YAML valid
+- skill-registry.yaml: `implement-spec-stub` + `decompose-monolithic-codec` entries added
+- Transcript migration: `validate_skill_transcript.py` PASS for sal-pipeline-heal-TC-SAL-DIAG-008.json
+- V46 pilot proof: `validate_skill_transcript_present` returns PASS for correctly-wired declaration
+
+**Files committed:** `.claude/commands/implement-spec-stub.md`, `.claude/commands/decompose-monolithic-codec.md`, `.supervisor/skill-registry.yaml`, `.claude/commands/command-registry.yaml` (commit `c29a2a23`); transcript v2 migration in same commit. Recon artifacts in gitignored `.local/`.
+
+**Follow-ups (non-blocking):**
+- `choose_skill_or_handoff.py` always returns `GOVERNED_HANDOFF_REQUIRED` because no skills have `work_types` defined — classifier work_type matching is not wired (advisory only)
+- FODT spec/ stubs (11 files) remain `architecture_only` — TC-SKILL-003 governs execution path when ready
+- FODG at LOC cap (3176/3176) — TC-SKILL-004 governs decomposition when cap is lifted
+
+---
+
 ### Plan: silly-rolling-stroustrup — Forensics + Surgical Healing Sprint (CLOSED 2026-06-22)
 
 **Plan file:** `C:/Users/prora/.claude/plans/silly-rolling-stroustrup.md` (repurposed from v1–v3 governance healing)
@@ -1125,5 +1166,5 @@ No content has been deleted — only moved to archive files with pointers.
 
 ---
 
-*End of plans/master-plan.md — version 3.7 — 2026-06-22 (fuzzy-conjuring-papert: PSTR-verified closure; SAL bootstrap/verified separation confirmed; test CSV→ORA fix; 63/63 tests pass; TERMINAL_CLOSED)*
+*End of plans/master-plan.md — version 3.8 — 2026-06-22 (tender-dreaming-lovelace: skill governance sync hardening closed; V46 committed+verified, implement-spec-stub+decompose-monolithic-codec skills registered, transcript v2 migration done, V46 governed-skill path proven)*
 *This document is the single operational authority for format-factory. All other documents are subordinate to it for operational decisions.*
