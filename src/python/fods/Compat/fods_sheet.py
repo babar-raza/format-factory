@@ -12,10 +12,12 @@ from src.python.fods.spec.table.table import Table as _SpecTable
 
 
 class FodsSheet(_SpecTable):
-    """Production facade for table:table (a single sheet in a FODS document).
+    """ARCHITECTURE MARKER — spec_qname attribution for table:table (Gate 11 P-ARCH-001).
 
-    Inherits all behavior from the canonical spec authority class. Represents a worksheet
-    within the FODS spreadsheet container (office:spreadsheet).
+    Use fods.models.FodsSheet for production (full data-handling behavior).
+    This class exists to satisfy Gate 11 P-ARCH-001 spec_qname traceability only.
+    It inherits the canonical spec class but adds no behavioral implementation.
+    TC-ZS-004 disposition: PATH B (document-only architecture marker, 2026-06-22).
     """
 
     spec_qname = "table:table"

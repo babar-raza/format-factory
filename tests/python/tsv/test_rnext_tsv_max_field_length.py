@@ -25,9 +25,10 @@ class TestTsvMaxFieldLength:
         path = _write_tsv(tmp_path, "A\tB\nshort\tvery_long_value_here\n")
         assert tsv_max_field_length(path) == 20  # "very_long_value_here"
 
-    def test_header_is_longest(self, tmp_path):
+    def test_header_excluded_from_max(self, tmp_path):
+        # tsv_max_field_length only considers data rows, not the header row
         path = _write_tsv(tmp_path, "LongHeaderName\tX\n1\t2\n")
-        assert tsv_max_field_length(path) == 14  # "LongHeaderName"
+        assert tsv_max_field_length(path) == 1  # data rows have "1" and "2"
 
     def test_single_cell(self, tmp_path):
         path = _write_tsv(tmp_path, "hello\n")

@@ -985,10 +985,15 @@ def _build_action_queue(
     """Build machine-readable action queue from gap ledger."""
     actions: list[dict] = []
 
-    # High-priority gaps first
-    for gap in gaps[:20]:  # top 20 gaps
-        if not gap.get("suggested_taskcard"):
-            continue
+    # High-priority open gaps first (TC-RCAL-001: filter open gaps so closed gaps
+    # don't crowd out actionable work; sort by priority then by suggested_taskcard presence)
+    _PRIORITY_ORDER = {"P0": 0, "P1": 1, "P2": 2, "P3": 3, "P4": 4}
+    open_gaps = [g for g in gaps if g.get("status", "open") != "closed"]
+    open_gaps.sort(key=lambda g: (
+        _PRIORITY_ORDER.get(g.get("priority", "P4"), 4),
+        0 if g.get("suggested_taskcard") else 1,
+    ))
+    for gap in open_gaps[:20]:  # top 20 open gaps
         is_machine_executable = (
             gap["product_type"] == "foss_reduced"
             and gap["priority"] in ("P0", "P1")

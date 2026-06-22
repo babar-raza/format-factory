@@ -1112,7 +1112,15 @@ def xcf_total_pixel_count(file_path: str | Path) -> int:
 
 
 def xcf_layer_name_list(file_path: str | Path) -> list:
-    """Return list of layer placeholder names based on layer count. Empty list if no layers."""
+    """Return SYNTHETIC positional layer names ('Layer 0', 'Layer 1', ...) based on count.
+
+    WARNING: These are NOT actual XCF layer names from the file. Real layer names
+    require XCF layer record parsing (see GAP-XCF-LAYER-NAMES in gap-ledger.json).
+    This function returns positional placeholders only. Returns empty list if no layers.
+
+    TC-ZS-003 disposition: PATH B (2026-06-22) — semantic mismatch resolved via docstring.
+    Rename to xcf_layer_synthetic_names_list deferred (20+ test callers; see gap-ledger).
+    """
     img = parse_xcf_strict(file_path)
     if img.num_layers == 0:
         return []

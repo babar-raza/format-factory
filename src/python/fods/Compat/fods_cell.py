@@ -12,10 +12,12 @@ from src.python.fods.spec.table.table_cell import TableCell as _SpecTableCell
 
 
 class FodsCell(_SpecTableCell):
-    """Production facade for table:table-cell (a single cell in a FODS sheet).
+    """ARCHITECTURE MARKER — spec_qname attribution for table:table-cell (Gate 11 P-ARCH-001).
 
-    Inherits all behavior from the canonical spec authority class. Represents a cell
-    within table:table-row with office:value-type and office:value attributes.
+    Use fods.models.FodsCell for production (full data-handling behavior).
+    This class exists to satisfy Gate 11 P-ARCH-001 spec_qname traceability only.
+    It inherits the canonical spec class but adds no behavioral implementation.
+    TC-ZS-004 disposition: PATH B (document-only architecture marker, 2026-06-22).
     """
 
     spec_qname = "table:table-cell"

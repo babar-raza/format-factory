@@ -12,10 +12,12 @@ from src.python.fods.spec.office.document import Document as _SpecDocument
 
 
 class FodsDocument(_SpecDocument):
-    """Production facade for office:document (FODS root element).
+    """ARCHITECTURE MARKER — spec_qname attribution for office:document (Gate 11 P-ARCH-001).
 
-    Inherits all behavior from the canonical spec authority class. Adds production
-    convenience methods for interacting with FODS data structures.
+    Use fods.models.FodsDocument for production (full data-handling behavior).
+    This class exists to satisfy Gate 11 P-ARCH-001 spec_qname traceability only.
+    It inherits the canonical spec class but adds no behavioral implementation.
+    TC-ZS-004 disposition: PATH B (document-only architecture marker, 2026-06-22).
     """
 
     spec_qname = "office:document"

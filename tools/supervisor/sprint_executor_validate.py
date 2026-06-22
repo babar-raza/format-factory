@@ -373,11 +373,27 @@ def _validate(doc: dict) -> list[str]:
 # Main entry
 # ---------------------------------------------------------------------------
 
+def _check_evidence_paths_exist(doc: dict, repo_root: Path) -> list[str]:
+    """Return WARN messages for declared evidence_artifacts paths that don't exist on disk."""
+    warnings = []
+    for art in doc.get("evidence_artifacts", []):
+        if not isinstance(art, dict):
+            continue
+        p = art.get("path", "")
+        if not p:
+            continue
+        full = repo_root / p
+        if not full.exists():
+            warnings.append(f"WARN: evidence_path not found: {p}")
+    return warnings
+
+
 def validate_file(
     declaration_path: Path,
     *,
     repair: bool = False,
     repo_root: Path = _REPO,
+    check_evidence_paths: bool = False,
 ) -> dict:
     """
     Validate (and optionally repair) a declaration file.
@@ -444,11 +460,17 @@ def validate_file(
     # --- Phase 6: Test-layer adequacy check (warnings only until 2026-07-18) ---
     adequacy_warnings = _check_test_layer_adequacy(doc)
 
+    # --- Phase 7: Evidence path existence check (WARN only, never blocks) ---
+    evidence_path_warnings: list[str] = []
+    if check_evidence_paths:
+        evidence_path_warnings = _check_evidence_paths_exist(doc, repo_root)
+
     return {
         "passed": len(errors) == 0,
         "errors": errors,
         "repairs": repairs_applied,
         "adequacy_warnings": adequacy_warnings,
+        "evidence_path_warnings": evidence_path_warnings,
     }
 
 
@@ -466,13 +488,23 @@ def main(argv: list[str] | None = None) -> int:
         "--repo-root", type=Path, default=_REPO,
         help="Repository root (default: auto-detected)",
     )
+    parser.add_argument(
+        "--check-evidence-paths",
+        action="store_true",
+        help="WARN (not FAIL) when declared evidence_artifacts paths do not exist on disk",
+    )
     args = parser.parse_args(argv)
 
     decl_path = args.declaration
     if not decl_path.is_absolute():
         decl_path = Path.cwd() / decl_path
 
-    result = validate_file(decl_path, repair=args.repair, repo_root=args.repo_root)
+    result = validate_file(
+        decl_path,
+        repair=args.repair,
+        repo_root=args.repo_root,
+        check_evidence_paths=getattr(args, "check_evidence_paths", False),
+    )
 
     # Output
     print(json.dumps(result, indent=2))
@@ -486,6 +518,12 @@ def main(argv: list[str] | None = None) -> int:
     if adequacy:
         print(f"\nTest-layer adequacy ({len(adequacy)} note(s)):")
         for w in adequacy:
+            print(f"  - {w}")
+
+    ev_warns = result.get("evidence_path_warnings", [])
+    if ev_warns:
+        print(f"\nEvidence path warnings ({len(ev_warns)}):")
+        for w in ev_warns:
             print(f"  - {w}")
 
     if result["passed"]:
