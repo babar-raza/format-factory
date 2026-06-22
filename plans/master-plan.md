@@ -4,7 +4,7 @@
 **Authority level:** Single Operational Authority
 **Project:** format-factory
 **Version:** 3.1
-**Last updated:** 2026-06-22 (Analytics separation complete — silly-rolling-stroustrup plan closed TERMINAL; 19/19 Python formats have analytics.py)
+**Last updated:** 2026-06-22 (Forensic healing complete — 6 TC-FH taskcards closed; FODS hygiene; XCF/ZST gap test cleanup (99 files); 1769 XCF+ZST tests pass)
 **Last verified:** 2026-06-22
 
 **Current phase:** Multi-format POC — 11 targets (3 commercial .NET, 8 FOSS Python). Gate 11 G11-G sub-gate approved by Babar Raza 2026-06-05 (FODS, FODT, Netpbm). Registry gate_11.status: commercial_readiness_in_progress (registry not yet updated after G11-G). commercial_product_ready: false (all entries).
@@ -1004,6 +1004,42 @@ TC-FODT-GAP-001, TC-FODT-AUDIT-001, TC-FODT-AUDIT-002, TC-RCAL-001
 
 ---
 
+### Session: Forensic Healing + FODS Hygiene (CLOSED 2026-06-22)
+
+**Status:** CLOSED (all taskcards complete; commits made; tests verified)
+
+**Plan:** `flickering-imagining-crystal.md` (ff-forensic-healing-20260622) — TERMINAL_CLOSED
+
+**What was accomplished:**
+
+*Forensic healing — 6 taskcards closed (TC-FH-001 through TC-FH-006):*
+- **TC-FH-001:** Closed stale `floating-stargazing-globe` plan lock (IN_PROGRESS → TERMINAL_CLOSED). Unblocks `check_continuation.py` for future sprints.
+- **TC-FH-002:** Diagnosed `GOV_BLOCK:validate_source_architecture` — confirmed FALSE POSITIVE from stale `context-pack.yaml`. Validator returns `blocks_sprint: False`. No source changes needed.
+- **TC-FH-003:** Re-executed SAL runner for FODT. Confirmed `sal-facts-fodt.json` (3.1 MB, format_id: fodt, 4957 spec_facts) already existed and is valid. TC-HARD-SAL-002 rework resolved.
+- **TC-FH-004:** Confirmed `grade_intermediate_verify.py` (297 LOC) is imported at `grade_declared_work.py:294` and called at line 295. Execution proof: returns `adequate: True`. TC-HARD-008b rework resolved.
+- **TC-FH-005:** Classified ODF spec acquisition as UNBLOCKED. ODF 1.3 PDFs present at `.local/spec-cache/fods/1.3/`. Prior `acquisition_not_authorized` was stale. Written: `.local/sal-output/odf-spec-acquisition-classification.json`.
+- **TC-FH-006:** `indexed-crafting-peacock.md` was already TERMINAL_CLOSED (§14: 20/20 ACCEPTED_VERIFIED). Added §7.4 (ODF spec acquisition classification) instead of Sprint 1 decomposition.
+
+*FODS hygiene (from prior session, committed in 9a9ff060):*
+- Fixed `fods_max_row_count` duplicate definition bug in `neutral_model.py` (second def used `row_count` key that doesn't exist; deleted lines 2035-2040). 16/16 tests pass.
+- Removed triple-nested `src/python/fods/fods/` package (32 broken import stubs deleted).
+- `registry/known-failure-ledger.yaml`: 32 FODS collection-error entries added.
+
+*XCF/ZST gap test cleanup (this session, commit `0cade475`):*
+- Deleted 99 `*_gaps.py` and remaining `*_deepening.py` tests for XCF (sprint r551-r660) and ZST (sprint r552-r658) that referenced removed arithmetic functions.
+- 1769 XCF+ZST tests now pass cleanly.
+
+**Verification:**
+- Health check: 6/6 pass
+- FODS max_row_count: 16/16 pass
+- XCF+ZST: 1769/1769 pass
+
+**Files committed (this session):**
+- Commit `0cade475`: 99 files — XCF/ZST arithmetic gap+deepening test removal
+- Commit `126f12a0`: 30 files — supervisor pipeline state after gap-closure session
+
+---
+
 ## ARCHIVE-PTR — Historical Content Archive
 
 The following sections were archived during the healing sprint of 2026-06-10.
@@ -1017,5 +1053,5 @@ No content has been deleted — only moved to archive files with pointers.
 
 ---
 
-*End of plans/master-plan.md — version 3.4 — 2026-06-22 (Gap closure: 20 gaps closed (64→46 open); Compat+spec stubs for 18 Python formats; rotation suspension cleanup (786 tests deleted); tsv_analytics.py parse_tsv_strict bug fixed; DIF dogfood export; silly-rolling-stroustrup CLOSED TERMINAL)*
+*End of plans/master-plan.md — version 3.5 — 2026-06-22 (Forensic healing: 6 TC-FH taskcards closed; FODS fods_max_row_count bug fixed; fods/fods/ triple-nest removed; XCF/ZST 99 gap tests deleted; 1769 tests pass; flickering-imagining-crystal CLOSED TERMINAL)*
 *This document is the single operational authority for format-factory. All other documents are subordinate to it for operational decisions.*
