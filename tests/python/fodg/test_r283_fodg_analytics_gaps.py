@@ -10,7 +10,7 @@ import pytest
 _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO / "src" / "python"))
 
-from fodg.fodg_codec import fodg_min_text_per_page
+from fodg import fodg_min_text_per_page
 
 _FODG_MINIMAL = _REPO / "samples/by-format/fodg/minimal-drawing.fodg"
 _FODG_SHAPES = _REPO / "samples/by-format/fodg/shapes-basic.fodg"

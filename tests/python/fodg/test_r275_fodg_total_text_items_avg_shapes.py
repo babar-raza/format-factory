@@ -5,7 +5,7 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[3] / "src" / "python"))
 
-from fodg.fodg_codec import fodg_total_text_items, fodg_avg_shapes_per_page
+from fodg import fodg_total_text_items, fodg_avg_shapes_per_page
 
 FODG = Path(__file__).resolve().parents[3] / "samples" / "by-format" / "fodg"
 

@@ -5,7 +5,7 @@ from pathlib import Path
 _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO))
 
-from src.python.fodg.fodg_codec import fodg_has_multiple_shapes, fodg_shapes_exceed_pages
+from src.python.fodg import fodg_has_multiple_shapes, fodg_shapes_exceed_pages
 
 _FODG = _REPO / "samples" / "by-format" / "fodg"
 

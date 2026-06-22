@@ -203,6 +203,33 @@ class TestCompatSwitchGuard:
         assert p.text == "test"
         assert p.spans == []
 
+    def test_parse_chain_returns_compat_paragraph(self):
+        """TC-H3: FodtDocument.paragraphs() must return compat.FodtParagraph instances.
+
+        This test catches two regressions:
+        - FodtDocument.paragraphs() reverts to returning models.FodtParagraph
+        - compat.py reverts to importing from models.py instead of Compat/
+
+        Both regressions cause isinstance to return False, failing this test.
+        """
+        from fodt.parser import parse_fodt
+        from fodt.models import FodtDocument
+        from fodt.compat import FodtParagraph
+        _FIXTURE = _REPO / "samples" / "by-format" / "fodt" / "headings-and-paragraphs.fodt"
+        assert _FIXTURE.exists(), f"FODT fixture missing: {_FIXTURE}"
+        neutral = parse_fodt(str(_FIXTURE))
+        doc = FodtDocument(neutral)
+        paras = doc.paragraphs()
+        assert len(paras) >= 1, "Expected at least 1 paragraph"
+        para = paras[0]
+        assert isinstance(para, FodtParagraph), (
+            f"doc.paragraphs()[0] is {type(para).__module__}.{type(para).__name__}, "
+            "expected fodt.compat.FodtParagraph (Compat.fodt_paragraph.FodtParagraph). "
+            "Check FodtDocument.paragraphs() uses _CompatParagraph, not models.FodtParagraph."
+        )
+        assert para.kind in ("paragraph", "heading"), f"Unexpected kind: {para.kind!r}"
+        assert isinstance(para.text, str), f"para.text should be str, got {type(para.text)}"
+
 
 class TestCompatRoundtrip:
     """TC-POST-003: End-to-end FODT file load → parsed objects through compat/ API."""

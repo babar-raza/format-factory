@@ -549,3 +549,31 @@ commands:
     gate_criteria: []
     writes_product_source: false
     enforcement_type: soft
+
+  # --- Spec-Literal Healing Skills (TC-AUDIT-006, TC-AUDIT-007, 2026-06-22) ---
+
+  - command_id: implement-spec-stub
+    file: .claude/commands/implement-spec-stub.md
+    description: Fill one architecture_only spec/ stub with behavioral implementation and equivalence proof
+    phase: 3
+    status: active
+    created: "2026-06-22"
+    skill_registry_ref: true
+    skill_id: implement-spec-stub
+    master_plan_lanes: [8, 11]
+    gate_criteria: []
+    writes_product_source: true
+    enforcement_type: hard
+
+  - command_id: decompose-monolithic-codec
+    file: .claude/commands/decompose-monolithic-codec.md
+    description: Move arithmetic functions from monolithic codec to analytics file to reduce LOC
+    phase: 3
+    status: active
+    created: "2026-06-22"
+    skill_registry_ref: true
+    skill_id: decompose-monolithic-codec
+    master_plan_lanes: [8]
+    gate_criteria: []
+    writes_product_source: true
+    enforcement_type: hard

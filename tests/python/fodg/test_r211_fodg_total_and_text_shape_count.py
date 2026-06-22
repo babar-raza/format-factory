@@ -13,7 +13,7 @@ FODG_SAMPLES = REPO / "samples" / "by-format" / "fodg"
 
 sys.path.insert(0, str(REPO / "src" / "python"))
 
-from fodg.fodg_codec import fodg_total_shape_count, fodg_text_shape_count
+from fodg import fodg_total_shape_count, fodg_text_shape_count
 
 
 def test_import_total():

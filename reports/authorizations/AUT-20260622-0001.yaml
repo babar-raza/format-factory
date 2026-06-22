@@ -1,0 +1,137 @@
+delegated_authorization:
+  authorization_id: "AUT-20260622-0001"
+  verdict: "AUTHORIZATION_GRANTED_WITH_LIMITS"
+  authorized_by: "Babar Raza"
+  authorization_method: "Delegated through invocation of the DELEGATED AUTHORIZATION REVIEW AND FORWARD-ACTION PROTOCOL prompt"
+  reviewed_by: "Independent delegated authorization reviewer (claude-sonnet-4-6)"
+  issued_at: "2026-06-22T00:00:00Z"
+  project: "format-factory"
+  repository: "c:/Users/prora/OneDrive/Documents/GitHub/format-factory"
+  stream: "product"
+  branch: "main"
+  run_id: "session-59511d3f9256"
+  taskcards:
+    - "TASK-001: Select governed product gaps and validate product-code ledger"
+    - "TASK-002: Prepare commit candidate summary and changed-file manifest"
+    - "TASK-004: TC-0015-spec-retrieval-strategy-evaluation"
+    - "TASK-005: TC-0016-fods-vector-index-pilot"
+    - "TASK-006: TC-0020-spec-workbench-core"
+    - "TASK-007: Advance one dogfood export path"
+    - "TASK-008: Build package artifacts and run installed-workflow proof"
+    - "TASK-009: Write evidence declaration and run supervisor autonomous-cycle"
+  authorization_classes:
+    - "INVESTIGATION"
+    - "PLANNING"
+    - "LOCAL_IMPLEMENTATION"
+    - "LOCAL_REFACTOR"
+    - "LOCAL_TESTING"
+    - "ARTIFACT_REGENERATION"
+    - "EVIDENCE_REPAIR"
+    - "TASKCARD_OR_STATE_REPAIR"
+  authorized_actions:
+    - "Resume autonomous product deepening sprint loop after POST_PLAN_TERMINAL stop"
+    - "Execute TASK-001 through TASK-009 (excluding TASK-003) from next-sprint.md"
+    - "Select and execute governed product gaps from selected-product-gaps.json"
+    - "Run local tests, validators, and governance checks"
+    - "Build package artifacts locally"
+    - "Write evidence declarations and run autonomous-cycle"
+  authorized_scope: >
+    Autonomous product deepening for Python FOSS, .NET commercial, dogfood, and packaging
+    tracks. All investigation, local implementation, local testing, evidence, and taskcard
+    repair work. Continuation of the sprint loop after POST_PLAN_TERMINAL stop, which was
+    triggered by the completion of floating-stargazing-globe.md and sunny-crunching-cherny.md
+    per-chat plans in session 59511d3f9256.
+  allowed_paths:
+    - "src/python/**"
+    - "src/net/**"
+    - "tests/**"
+    - "reports/**"
+    - ".local/evidences/**"
+    - ".local/supervisor/**"
+    - "registry/**"
+    - "tools/**"
+    - "plans/**"
+  allowed_environments:
+    - "local development environment"
+    - ".venv (Python FOSS)"
+    - "local .NET SDK"
+  allowed_tools:
+    - "all repository CLI tools"
+    - "pytest, dotnet test"
+    - "supervisor_loop.py autonomous-cycle"
+    - "check_continuation.py"
+    - "governance_validator_runner.py"
+  conditions:
+    - "TASK-003 (git commit) remains an external gate — NOT authorized by this grant"
+    - "All src/ edits require entry in reports/r90/product-code-change-ledger.json"
+    - "No direct ad-hoc src/ edits — use governed skill or generated execution handoff"
+    - "No gate self-approval — all gates 1-11 require Babar Raza business authority"
+    - "No push without separate explicit user authorization"
+    - "Load .local/supervisor/selected-product-gaps.json before product work"
+    - "Load .supervisor/skill-registry.yaml before product work"
+  required_post_action_verification:
+    - "Evidence declaration filed at .local/evidences/<run_id>/evidence-declaration.yaml"
+    - "autonomous-cycle exits 0 or rework items addressed"
+    - "0 test failures"
+    - "No governance validator GOV_BLOCK violations"
+  required_post_action_evidence:
+    - "evidence-declaration.yaml with worker_self_verdict: PASS"
+    - "Test pass log showing 0 failures"
+    - "declaration-review-package.zip"
+  rollback_or_recovery: >
+    All changes are local and committed only with separate explicit user authorization.
+    Git history provides full rollback capability. No production or remote state affected.
+  forbidden_actions:
+    - "git commit (TASK-003) — requires separate explicit user authorization"
+    - "git push — requires separate explicit user authorization"
+    - "git merge — requires separate explicit user authorization"
+    - "PyPI/NuGet package publication — requires credentials and explicit policy"
+    - "Gate 8 or Gate 11 EXECUTION approval — Babar Raza business authority only"
+    - "Modifying check_continuation.py session enforcement mechanisms"
+    - "Claiming gate closure without Babar Raza approval"
+    - "Weakening governance validators, test gates, or evidence contracts"
+  excluded_scope:
+    - "COMMIT, PUSH, MERGE"
+    - "PACKAGE_PUBLISH, RELEASE, DEPLOY"
+    - "Gate 8/11 EXECUTION"
+    - "Spec acquisition (EXT-01, EXT-02) without Babar Raza authorization"
+    - "External account actions"
+    - "Paid service actions"
+  expires_when: "Next POST_PLAN_TERMINAL stop from a new per-chat plan in a new session"
+  revocation_conditions:
+    - "Babar Raza explicitly revokes in a subsequent message"
+    - "Governance validator GOV_BLOCK fires and is not resolved by agent within same sprint"
+    - "Evidence quality drops below FOCUSED_VALIDATION for mandatory plan requirements"
+  continuation_authorized: true
+  next_authorized_action: "Execute glistening-puzzling-blossom.md remaining taskcards: TC-BASELINE-CAP-001, TC-ANALYTICS-ROADMAP-001, TC-PILOT-POSITIVE-001, TC-PILOT-PRESERVE-001, TC-EVIDENCE-001"
+  next_executor_or_lane: "Autonomous sprint executor — per-chat plan glistening-puzzling-blossom"
+
+additional_plan_scope:
+  plan: "C:/Users/prora/.claude/plans/glistening-puzzling-blossom.md"
+  status: "ACTIVE_PLAN_INCOMPLETE — must execute before product deepening"
+  authorized_taskcards:
+    - "TC-BASELINE-CAP-001: Update 46 stale baseline_loc_cap values in registry/source-structure-baseline.json"
+    - "TC-ANALYTICS-ROADMAP-001: Update stale P0 table in plans/product-code-healing-plan.md"
+    - "TC-PILOT-POSITIVE-001: Run source_structure_validator.py --check-baseline-growth"
+    - "TC-PILOT-PRESERVE-001: Run full test suite, verify >= 1609 tests, 0 failures"
+    - "TC-EVIDENCE-001: Write evidence declaration and run autonomous-cycle closeout"
+  authorization_note: "All five taskcards are LOCAL_IMPLEMENTATION / LOCAL_TESTING / ARTIFACT_REGENERATION — within authorized scope of AUT-20260622-0001"
+
+authorization_operative_statement: >
+  Acting under the authority delegated by Babar Raza through this prompt, I explicitly
+  authorize the actions listed in this grant, within its stated scope, conditions, and
+  exclusions.
+
+authorization_state_transition:
+  authorization_artifact: "reports/authorizations/AUT-20260622-0001.yaml"
+  gate_before: "POST_PLAN_TERMINAL (STOP)"
+  gate_after: "AUTONOMOUS_CONTINUE (authorized)"
+  taskcards_updated:
+    - "plan-locks/59511d3f9256.json: status updated to TERMINAL_CLOSED_AUTHORIZED_OVERRIDE"
+    - "continuation-signal.json: reset and stamped with current session"
+  queue_updates:
+    - "Product track: CONTINUE authorized for TASK-001 through TASK-009 (excl. TASK-003)"
+  continuation_before: "STOP (POST_PLAN_TERMINAL)"
+  continuation_after: "CONTINUE (AUT-20260622-0001 grant active)"
+  next_consumable_task: "TASK-001: Select governed product gaps and validate product-code ledger"
+  state_validation: "check_continuation.py must return CONTINUE after state transition"

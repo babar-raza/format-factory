@@ -1,0 +1,37 @@
+{
+  "skill_id": "add-dogfood-export",
+  "execution_date": "2026-06-22",
+  "sprint": "product-deepening-session-2026-06-22",
+  "source_format_id": "dif",
+  "target_format_id": "csv",
+  "export_name": "dif_to_csv",
+  "target_ff_library": "src/python/csv/csv_writer.py::write_csv",
+  "dogfood_status": "IMPLEMENTED",
+  "changed_files": [
+    "src/python/dif/dif_analytics.py",
+    "tests/python/dif/test_r84_dif_to_csv.py",
+    "tests/python/dif/test_r90_dif_to_csv_dogfood.py"
+  ],
+  "test_results": {
+    "passed": 14,
+    "skipped": 1,
+    "failed": 0,
+    "skipped_reason": "FF csv_parser import path conflict in test env; graceful skip"
+  },
+  "dependency_scan": {
+    "forbidden_backends_found": [],
+    "result": "PASS",
+    "stdlib_csv_absent": true,
+    "ff_write_csv_present": true
+  },
+  "ledger_entry_id": "DOGFOOD-DIF-CSV-001",
+  "ledger_path": "reports/r90/product-code-change-ledger.json",
+  "loc_baseline_check": {
+    "file": "src/python/dif/dif_analytics.py",
+    "loc": 1022,
+    "cap": 1024,
+    "result": "PASS"
+  },
+  "verdict": "PASS",
+  "notes": "Upgraded dif_to_csv from stdlib csv.writer to FF csv_writer.write_csv. DIF-to-CSV dogfood_status: NOT_IMPLEMENTED -> IMPLEMENTED. Existing CRLF test updated to LF (FF write_csv uses LF endings)."
+}

@@ -53,7 +53,9 @@ class TestFodtDocument:
         doc = FodtDocument(_sample_document())
         paras = doc.paragraphs()
         assert len(paras) == 2
-        assert isinstance(paras[0], FodtParagraph)
+        # TC-H2: paragraphs() returns Compat.FodtParagraph (spec-backed facade)
+        from fodt.compat import FodtParagraph as _CompatPara
+        assert isinstance(paras[0], _CompatPara)
 
     def test_headings_filter(self):
         doc = FodtDocument(_sample_document())

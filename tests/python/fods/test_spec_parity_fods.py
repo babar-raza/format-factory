@@ -13,6 +13,10 @@ import pytest
 
 _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO / "src" / "python" / "fods"))
+sys.path.insert(0, str(_REPO / "src" / "python"))
+# Required for Compat facades that use src.python.* absolute imports
+if str(_REPO) not in sys.path:
+    sys.path.insert(0, str(_REPO))
 
 from fods.parser import parse_fods
 from fods.models import FodsDocument, FodsSheet, FodsCell
@@ -160,3 +164,40 @@ class TestFodsSheetCellsIterator:
                 f"cells() must yield FodsCell objects, got {type(cell).__name__}: {cell!r}"
             )
             assert hasattr(cell, "value"), "FodsCell must have .value attribute"
+
+
+class TestGetSpecQname:
+    """TC-H8: get_spec_qname() reads spec_qname from FODS model objects (minimal consumer proof)."""
+
+    def test_get_spec_qname_document(self):
+        """get_spec_qname(doc) returns 'office:document' for FodsDocument."""
+        from fods.Compat import get_spec_qname
+        from fods.models import FodsDocument
+        doc = FodsDocument({"sheets": []})
+        assert get_spec_qname(doc) == "office:document", (
+            f"Expected 'office:document', got {get_spec_qname(doc)!r}"
+        )
+
+    def test_get_spec_qname_sheet(self):
+        """get_spec_qname(sheet) returns 'table:table' for FodsSheet."""
+        from fods.Compat import get_spec_qname
+        from fods.models import FodsSheet
+        sheet = FodsSheet({"name": "Sheet1", "rows": []})
+        assert get_spec_qname(sheet) == "table:table", (
+            f"Expected 'table:table', got {get_spec_qname(sheet)!r}"
+        )
+
+    def test_get_spec_qname_cell(self):
+        """get_spec_qname(cell) returns 'table:table-cell' for FodsCell."""
+        from fods.Compat import get_spec_qname
+        from fods.models import FodsCell
+        cell = FodsCell({"value": "42", "value_type": "string"})
+        assert get_spec_qname(cell) == "table:table-cell", (
+            f"Expected 'table:table-cell', got {get_spec_qname(cell)!r}"
+        )
+
+    def test_get_spec_qname_unknown_returns_none(self):
+        """get_spec_qname() returns None for objects without spec_qname attribute."""
+        from fods.Compat import get_spec_qname
+        assert get_spec_qname(object()) is None
+        assert get_spec_qname("a string") is None

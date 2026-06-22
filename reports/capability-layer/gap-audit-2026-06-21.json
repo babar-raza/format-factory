@@ -5,8 +5,8 @@
   "methodology": "Sample 5 gaps per format (FODT, XCF, FODS, DIF, FODG). For each gap, grep tests/python/{format}/ for the capability name. VERIFIED = at least 1 test file matches. CLAIMED_UNPROVEN = no test file found.",
   "total_sampled": 25,
   "verdict_summary": {
-    "VERIFIED": 17,
-    "CLAIMED_UNPROVEN": 8,
+    "VERIFIED": 13,
+    "CLAIMED_UNPROVEN": 12,
     "RE_OPENED": 0
   },
   "finding": "Gaps are bulk-closed. 17/25 sampled gaps have indirect test evidence (function name match), 8/25 have no identifiable test. The bulk-closure methodology cannot be considered per-gap verified evidence. TC-GUARD-001 gap_ledger_ref citations to these gaps should be treated as CLAIMED_UNPROVEN until per-gap test names are explicitly linked.",
@@ -33,7 +33,7 @@
       "test_dir_exists": true,
       "matching_test_files": [],
       "audit_verdict": "CLAIMED_UNPROVEN",
-      "audit_rationale": "No test file found containing capability function name \u2014 bulk-closed without per-gap test evidence",
+      "audit_rationale": "No test file found containing capability function name — bulk-closed without per-gap test evidence",
       "ledger_notes": "Generated from poc-targets.yaml dotnet_status. authority_state=gate_evidence."
     },
     {
@@ -44,7 +44,7 @@
       "test_dir_exists": true,
       "matching_test_files": [],
       "audit_verdict": "CLAIMED_UNPROVEN",
-      "audit_rationale": "No test file found containing capability function name \u2014 bulk-closed without per-gap test evidence",
+      "audit_rationale": "No test file found containing capability function name — bulk-closed without per-gap test evidence",
       "ledger_notes": "Generated from poc-targets.yaml dotnet_status. authority_state=gate_evidence."
     },
     {
@@ -55,7 +55,7 @@
       "test_dir_exists": true,
       "matching_test_files": [],
       "audit_verdict": "CLAIMED_UNPROVEN",
-      "audit_rationale": "No test file found containing capability function name \u2014 bulk-closed without per-gap test evidence",
+      "audit_rationale": "No test file found containing capability function name — bulk-closed without per-gap test evidence",
       "ledger_notes": "Generated from poc-targets.yaml dotnet_status. authority_state=gate_evidence."
     },
     {
@@ -66,7 +66,7 @@
       "test_dir_exists": true,
       "matching_test_files": [],
       "audit_verdict": "CLAIMED_UNPROVEN",
-      "audit_rationale": "No test file found containing capability function name \u2014 bulk-closed without per-gap test evidence",
+      "audit_rationale": "No test file found containing capability function name — bulk-closed without per-gap test evidence",
       "ledger_notes": "Generated from poc-targets.yaml dotnet_status. authority_state=gate_evidence."
     },
     {
@@ -81,7 +81,7 @@
       ],
       "audit_verdict": "VERIFIED",
       "audit_rationale": "Matching test file found by function name grep",
-      "ledger_notes": "Discovered via source scan \u00e2\u20ac\u201d NOT in poc-targets.yaml. Add to foss_reduced_products."
+      "ledger_notes": "Discovered via source scan â€” NOT in poc-targets.yaml. Add to foss_reduced_products."
     },
     {
       "gap_id": "GAP-XCF-FOSS-XCF_FILE_SIZ-001",
@@ -92,9 +92,9 @@
       "matching_test_files": [
         "tests/python/xcf/test_r387_xcf_deepening.py"
       ],
-      "audit_verdict": "VERIFIED",
-      "audit_rationale": "Matching test file found by function name grep",
-      "ledger_notes": "Discovered via source scan \u00e2\u20ac\u201d NOT in poc-targets.yaml. Add to foss_reduced_products."
+      "audit_verdict": "CLAIMED_UNPROVEN",
+      "audit_rationale": "arithmetic_deepening_suspended per keen-dancing-hopper; test file exists but function has no spec fact backing and rotation is suspended — overrides function-name match heuristic",
+      "ledger_notes": "Discovered via source scan â€” NOT in poc-targets.yaml. Add to foss_reduced_products."
     },
     {
       "gap_id": "GAP-XCF-FOSS-XCF_WIDTH_TI-001",
@@ -106,9 +106,9 @@
         "tests/python/xcf/test_r387_xcf_deepening.py",
         "tests/python/xcf/test_xcf_gap_closure_foss.py"
       ],
-      "audit_verdict": "VERIFIED",
-      "audit_rationale": "Matching test file found by function name grep",
-      "ledger_notes": "Discovered via source scan \u00e2\u20ac\u201d NOT in poc-targets.yaml. Add to foss_reduced_products."
+      "audit_verdict": "CLAIMED_UNPROVEN",
+      "audit_rationale": "arithmetic_deepening_suspended per keen-dancing-hopper; test file exists but function has no spec fact backing and rotation is suspended — overrides function-name match heuristic",
+      "ledger_notes": "Discovered via source scan â€” NOT in poc-targets.yaml. Add to foss_reduced_products."
     },
     {
       "gap_id": "GAP-XCF-FOSS-XCF_HEIGHT_T-001",
@@ -119,9 +119,9 @@
       "matching_test_files": [
         "tests/python/xcf/test_r397_xcf_deepening.py"
       ],
-      "audit_verdict": "VERIFIED",
-      "audit_rationale": "Matching test file found by function name grep",
-      "ledger_notes": "Discovered via source scan \u00e2\u20ac\u201d NOT in poc-targets.yaml. Add to foss_reduced_products."
+      "audit_verdict": "CLAIMED_UNPROVEN",
+      "audit_rationale": "arithmetic_deepening_suspended per keen-dancing-hopper; test file exists but function has no spec fact backing and rotation is suspended — overrides function-name match heuristic",
+      "ledger_notes": "Discovered via source scan â€” NOT in poc-targets.yaml. Add to foss_reduced_products."
     },
     {
       "gap_id": "GAP-XCF-FOSS-XCF_WIDTH_SQ-001",
@@ -132,9 +132,9 @@
       "matching_test_files": [
         "tests/python/xcf/test_r409_xcf_deepening.py"
       ],
-      "audit_verdict": "VERIFIED",
-      "audit_rationale": "Matching test file found by function name grep",
-      "ledger_notes": "Discovered via source scan \u00e2\u20ac\u201d NOT in poc-targets.yaml. Add to foss_reduced_products."
+      "audit_verdict": "CLAIMED_UNPROVEN",
+      "audit_rationale": "arithmetic_deepening_suspended per keen-dancing-hopper; test file exists but function has no spec fact backing and rotation is suspended — overrides function-name match heuristic",
+      "ledger_notes": "Discovered via source scan â€” NOT in poc-targets.yaml. Add to foss_reduced_products."
     },
     {
       "gap_id": "GAP-FODS-COMM-LOAD-001",
@@ -158,7 +158,7 @@
       "test_dir_exists": true,
       "matching_test_files": [],
       "audit_verdict": "CLAIMED_UNPROVEN",
-      "audit_rationale": "No test file found containing capability function name \u2014 bulk-closed without per-gap test evidence",
+      "audit_rationale": "No test file found containing capability function name — bulk-closed without per-gap test evidence",
       "ledger_notes": "Generated from poc-targets.yaml dotnet_status. authority_state=gate_evidence."
     },
     {
@@ -169,7 +169,7 @@
       "test_dir_exists": true,
       "matching_test_files": [],
       "audit_verdict": "CLAIMED_UNPROVEN",
-      "audit_rationale": "No test file found containing capability function name \u2014 bulk-closed without per-gap test evidence",
+      "audit_rationale": "No test file found containing capability function name — bulk-closed without per-gap test evidence",
       "ledger_notes": "Generated from poc-targets.yaml dotnet_status. authority_state=gate_evidence."
     },
     {
@@ -180,7 +180,7 @@
       "test_dir_exists": true,
       "matching_test_files": [],
       "audit_verdict": "CLAIMED_UNPROVEN",
-      "audit_rationale": "No test file found containing capability function name \u2014 bulk-closed without per-gap test evidence",
+      "audit_rationale": "No test file found containing capability function name — bulk-closed without per-gap test evidence",
       "ledger_notes": "Generated from poc-targets.yaml dotnet_status. authority_state=gate_evidence."
     },
     {
@@ -191,7 +191,7 @@
       "test_dir_exists": true,
       "matching_test_files": [],
       "audit_verdict": "CLAIMED_UNPROVEN",
-      "audit_rationale": "No test file found containing capability function name \u2014 bulk-closed without per-gap test evidence",
+      "audit_rationale": "No test file found containing capability function name — bulk-closed without per-gap test evidence",
       "ledger_notes": "Generated from poc-targets.yaml dotnet_status. authority_state=gate_evidence."
     },
     {
@@ -206,7 +206,7 @@
       ],
       "audit_verdict": "VERIFIED",
       "audit_rationale": "Matching test file found by function name grep",
-      "ledger_notes": "Discovered via source scan \u00e2\u20ac\u201d NOT in poc-targets.yaml. Add to foss_reduced_products."
+      "ledger_notes": "Discovered via source scan â€” NOT in poc-targets.yaml. Add to foss_reduced_products."
     },
     {
       "gap_id": "GAP-DIF-FOSS-PARSE_DIF-001",
@@ -220,7 +220,7 @@
       ],
       "audit_verdict": "VERIFIED",
       "audit_rationale": "Matching test file found by function name grep",
-      "ledger_notes": "Discovered via source scan \u00e2\u20ac\u201d NOT in poc-targets.yaml. Add to foss_reduced_products."
+      "ledger_notes": "Discovered via source scan â€” NOT in poc-targets.yaml. Add to foss_reduced_products."
     },
     {
       "gap_id": "GAP-DIF-FOSS-PARSE_DIF_ST-001",
@@ -234,7 +234,7 @@
       ],
       "audit_verdict": "VERIFIED",
       "audit_rationale": "Matching test file found by function name grep",
-      "ledger_notes": "Discovered via source scan \u00e2\u20ac\u201d NOT in poc-targets.yaml. Add to foss_reduced_products."
+      "ledger_notes": "Discovered via source scan â€” NOT in poc-targets.yaml. Add to foss_reduced_products."
     },
     {
       "gap_id": "GAP-DIF-FOSS-GET_CAPABILI-001",
@@ -248,7 +248,7 @@
       ],
       "audit_verdict": "VERIFIED",
       "audit_rationale": "Matching test file found by function name grep",
-      "ledger_notes": "Discovered via source scan \u00e2\u20ac\u201d NOT in poc-targets.yaml. Add to foss_reduced_products."
+      "ledger_notes": "Discovered via source scan â€” NOT in poc-targets.yaml. Add to foss_reduced_products."
     },
     {
       "gap_id": "GAP-DIF-FOSS-WRITE_DIF-001",
@@ -262,7 +262,7 @@
       ],
       "audit_verdict": "VERIFIED",
       "audit_rationale": "Matching test file found by function name grep",
-      "ledger_notes": "Discovered via source scan \u00e2\u20ac\u201d NOT in poc-targets.yaml. Add to foss_reduced_products."
+      "ledger_notes": "Discovered via source scan â€” NOT in poc-targets.yaml. Add to foss_reduced_products."
     },
     {
       "gap_id": "GAP-FODG-FOSS-PROBE_FODG-001",

@@ -827,3 +827,66 @@ skills:
       - fact_ids_in_correct_namespace
       - skill_transcript_written
     notes: "SAL infrastructure skill. Blocks all NOT STARTED SAL taskcards until registered. Added 2026-06-21 (SKILL-GAP-011, TC-SAL-SKILL-001)."
+
+  # ============================================================
+  # SPEC-LITERAL HEALING SKILLS (TC-SKILL-003, TC-SKILL-004, 2026-06-22)
+  # Created by tender-dreaming-lovelace plan hardening (TC-AUDIT-006, TC-AUDIT-007).
+  # ============================================================
+
+  - skill_id: implement-spec-stub
+    command: /implement-spec-stub
+    command_file: .claude/commands/implement-spec-stub.md
+    status: active
+    spec_qname_required: true
+    purpose: >
+      Fill ONE architecture_only spec/ stub file with behavioral implementation,
+      proving equivalence to models.py via tests. One stub per invocation.
+      Required for FODT spec/ bootstrap path (11 stubs in src/python/fodt/spec/).
+    product_track: spec_literal_healing
+    required_handoff_fields:
+      - format_id
+      - stub_path
+      - spec_qname
+      - behavioral_equivalence_test_path
+    mandatory_validations:
+      - stub_has_architecture_only_marker
+      - spec_qname_in_qname_registry
+      - baseline_tests_pass_before_changes
+      - equivalence_tests_pass_after_changes
+      - behavioral_regression_count_zero
+      - skill_transcript_written
+    stop_conditions:
+      - BLOCKED_NOT_A_STUB
+      - BLOCKED_NO_QNAME_RECORD
+      - BLOCKED_BASELINE_FAILING
+      - BLOCKED_EQUIVALENCE_FAILURE
+    notes: "Created 2026-06-22 by TC-AUDIT-006 (tender-dreaming-lovelace hardening). Governs FODT spec/ bootstrap path."
+
+  - skill_id: decompose-monolithic-codec
+    command: /decompose-monolithic-codec
+    command_file: .claude/commands/decompose-monolithic-codec.md
+    status: active
+    spec_qname_required: false
+    purpose: >
+      Move arithmetic/analytical functions from a format's main codec/parser into
+      <format>_analytics.py, reducing main file LOC below its baseline_loc_cap.
+      Required for FODG/XCF/ZST GOV_BLOCK:monolith_detection_validator rework items.
+    product_track: src_healing
+    required_handoff_fields:
+      - format_id
+      - source_file
+      - analytics_target_file
+      - functions_to_move
+    mandatory_validations:
+      - analytics_target_below_loc_cap
+      - baseline_tests_pass_before_extraction
+      - backward_compat_tests_pass_after_extraction
+      - loc_reduction_positive
+      - baseline_json_updated
+      - skill_transcript_written
+    stop_conditions:
+      - BLOCKED_CAP_REACHED
+      - BLOCKED_BASELINE_FAILING
+      - BLOCKED_NO_BACKWARD_COMPAT
+      - BLOCKED_NO_LOC_REDUCTION
+    notes: "Created 2026-06-22 by TC-AUDIT-007 (tender-dreaming-lovelace hardening). Governs FODG/XCF/ZST monolith decomposition."

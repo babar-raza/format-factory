@@ -7,7 +7,7 @@ import pytest
 _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO / "src" / "python"))
 
-from fodg.fodg_codec import (
+from fodg import (
     fodg_shape_density,
     fodg_has_text_content,
     fodg_max_shape_count,

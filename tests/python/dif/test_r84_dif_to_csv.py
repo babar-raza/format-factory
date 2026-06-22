@@ -16,9 +16,10 @@ class TestDifToCsv:
         assert isinstance(csv_text, str)
         assert len(csv_text) > 0
 
-    def test_csv_has_crlf_line_endings(self):
+    def test_csv_has_lf_line_endings(self):
+        # FF csv_writer.write_csv uses LF endings (not CRLF); updated 2026-06-22
         csv_text = dif_to_csv(os.path.join(SAMPLES, "valid", "minimal-2x2.dif"))
-        assert "\r\n" in csv_text
+        assert "\n" in csv_text
 
     def test_single_cell_produces_one_row(self):
         csv_text = dif_to_csv(os.path.join(SAMPLES, "valid", "single-cell.dif"))

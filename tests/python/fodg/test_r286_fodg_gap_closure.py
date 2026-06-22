@@ -13,7 +13,7 @@ from pathlib import Path
 _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO / "src" / "python"))
 
-from fodg.fodg_codec import fodg_has_no_shapes
+from fodg import fodg_has_no_shapes
 
 _FODG = _REPO / "samples" / "by-format" / "fodg"
 _EMPTY = _FODG / "empty-page.fodg"
