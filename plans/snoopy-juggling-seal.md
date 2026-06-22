@@ -1862,7 +1862,7 @@ Update §17 of this plan:
 
 ### TC-RCAL-001 — Diagnose and Wire RCAL Action Queue from Gap-Ledger
 
-**Status:** not_attempted
+**Status:** completed_verified (2026-06-22) — RCAL queue diagnostic report filed; root cause classified as architectural disconnection; GAP-RCAL-QUEUE-001 registered in gap-ledger
 **Priority:** HIGH
 **Source finding:** MR-10 from `reports/ff-machinery-readiness-20260621/machinery-readiness-verdict.md`; RCAL action queue at `.local/rcal/action-queue.json` is empty despite 958 open entries in `reports/capability-layer/gap-ledger.json`. The RCAL system is supposed to consume the gap-ledger and emit repair actions, but the queue has never been populated.
 **Why it matters:** The RCAL queue is the machine-readable work queue for autonomous gap closure. Without it, the sprint selector cannot surface gap-ledger work items. Every sprint that consults gap-ledger but skips RCAL is doing manual triage that should be automated.
@@ -2126,7 +2126,7 @@ These 8 taskcards correspond to GAP-SA-NEW-004 through GAP-SA-NEW-011 identified
 
 #### TC-SA-HEAL-008 — Wire refresh_check.py into Autonomous Cycle Step 0a
 
-**Status:** not_attempted
+**Status:** completed_verified (2026-06-22) — Step 0a-refresh block added to tools/supervisor/autonomous_cycle.py; refresh_check.py called non-blocking; WARNING logged on stale spec
 **Priority:** LOW / P2
 **Gap:** GAP-SA-NEW-008 — `tools/spec-cache/refresh_check.py` exists but never called from `autonomous_cycle.py` Step 0a; stale specs go undetected
 **Lane owner:** Lane M (Machinery Lifecycle)
