@@ -428,7 +428,49 @@ This system was proven in the autonomy acceleration series (June 2026):
 
 ---
 
-## 12. Related Documents
+## 12. Pre-Sprint Screening Rule (TC-INFRA-PLAN-001)
+
+Before including any taskcard in a sprint plan, verify it was not already accepted by the supervisor in a prior sprint. Re-declaring an already-accepted item causes an OVERCLAIMED grade for that item.
+
+### Pre-Sprint Screening Checklist
+
+For each planned taskcard:
+
+1. Check `reports/supervisor/grading-history.jsonl` for the item_id:
+   ```bash
+   python -c "
+   import json
+   from pathlib import Path
+   item_id = 'TC-MY-001'  # replace with your item_id
+   ledger = Path('reports/supervisor/grading-history.jsonl')
+   if ledger.is_file():
+       for line in ledger.read_text().splitlines():
+           entry = json.loads(line)
+           for item in entry.get('work_items', []):
+               if item.get('item_id') == item_id and item.get('grade') == 'ACCEPTED':
+                   print(f'PREVIOUSLY_ACCEPTED in sprint {entry[\"sprint_id\"]}')
+   "
+   ```
+2. If the output shows `PREVIOUSLY_ACCEPTED`: **exclude the item from the sprint plan**. At most, add a one-line note in the declaration: `"Verified existing: <item_id> was ACCEPTED in <prior_sprint_id> — no new work performed."`
+3. If no output or output shows non-ACCEPTED grades: the item is available to include in the sprint.
+
+### Why This Rule Matters
+
+- 75% of capacity in `polished-hopping-glacier-plan-execution` was spent confirming prior completions (2026-06-22 post-sprint audit finding AF-007).
+- Re-declaring an ACCEPTED item as `status: completed` without new work produces OVERCLAIMED — not ACCEPTED — because the item's "completed by prior sprint" work is already in the grading record.
+- The correct form for state verification is a lightweight evidence declaration with `description: "Verified existing — confirmed present in <prior_sprint>"` and one evidence file path.
+
+### When to Include "Already-Done" Items
+
+Include a previously accepted item ONLY when:
+- The acceptance criteria have changed and new work is genuinely needed, OR
+- The acceptance was conditional and a follow-up condition must now be verified
+
+In both cases: clearly state in `declared_scope` that this is a re-verification or extension, not a new completion.
+
+---
+
+## 13. Related Documents
 
 - [Autonomous Continuation Policy](autonomous-continuation-policy.md) — decision rules for autonomous continue
 - [Supervisor-Worker Contract](supervisor-worker-contract.md) — evidence declaration schema and obligations

@@ -117,7 +117,10 @@
       "Bash(echo \"EXIT:$?\")",
       "Bash(echo \"EXIT: $?\")",
       "Bash(.venv/Scripts/pytest tests/specification-authority-layer/test_gap_int_002_product_source_fact_refs.py -v --tb=short)",
-      "Bash(.venv/Scripts/pytest tests/python/fods/test_rnext_fods_numeric_cell_count_max_row.py -q --tb=short)"
+      "Bash(.venv/Scripts/pytest tests/python/fods/test_rnext_fods_numeric_cell_count_max_row.py -q --tb=short)",
+      "Bash(for f in src/python/fodt/spec/text/list_item.py src/python/fodt/spec/table/table.py src/python/fodt/spec/table/table_row.py src/python/fodt/spec/table/table_cell.py)",
+      "Bash(do echo \"=== $f ===\")",
+      "Bash(done)"
     ],
     "deny": [
       "Write(.env)",

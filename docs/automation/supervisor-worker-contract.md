@@ -168,6 +168,101 @@ python tools/supervisor/autonomous_task_generator.py --verify
 
 ---
 
+---
+
+## EVIDENCE SCHEMA RULE (mandatory — TC-INFRA-DEC-001)
+
+**The grader computes `has_evidence` per work item by reading `planned_work_items[].evidence_paths`.
+It does NOT read `evidence_artifacts[].related_work_items` for this computation.**
+
+For each work item:
+- `planned_work_items[].evidence_paths` → list of file paths the grader checks for existence on disk → drives `has_evidence`
+- `evidence_artifacts[].related_work_items` → manifest materialization only (human-readable, LLM context) → does NOT affect `has_evidence`
+
+**If a work item's `evidence_paths` list is absent or empty AND status is `completed`, the grader returns OVERCLAIMED.**
+
+### Required pattern (correct):
+
+```yaml
+planned_work_items:
+  - item_id: TC-MY-001
+    title: "My task"
+    status: completed
+    evidence_paths:                         # ← grader reads THIS for has_evidence
+      - path/to/evidence-file.md
+      - path/to/source-file.py
+    tests_supporting:
+      - tests/python/myformat/test_feature.py
+
+evidence_artifacts:                         # ← supplemental; LLM context only
+  - path: path/to/evidence-file.md
+    type: proof_document
+    description: "Describes what the file proves"
+    related_work_items:
+      - TC-MY-001
+```
+
+### Anti-pattern (causes OVERCLAIMED):
+
+```yaml
+planned_work_items:
+  - item_id: TC-MY-001
+    status: completed
+    # NO evidence_paths here ← grader sees has_evidence=false → OVERCLAIMED
+
+evidence_artifacts:
+  - path: path/to/evidence-file.md
+    related_work_items:
+      - TC-MY-001           # ← this field is NOT checked by has_evidence logic
+```
+
+**Root cause of OVERCLAIMED verdicts (documented 2026-06-22):** Workers historically used
+`evidence_artifacts[].related_work_items` as the sole evidence linkage, believing it was
+equivalent to per-item `evidence_paths`. It is NOT. The grader's `inspect_item()` function
+(in `inspect_declared_evidence.py`) reads `item.get("evidence_paths", [])` from the
+`planned_work_items` dict entry. The `evidence_artifacts` array is populated in the manifest
+for human review but is not traversed for per-item `has_evidence`.
+
+---
+
+## AGGREGATE TESTS_RUN RULE (mandatory — TC-INFRA-DEC-002)
+
+**The grader and `session-resume.md` read the top-level aggregate fields ONLY.**
+Per-item narrative strings (e.g., "13 passed in 1.72s") are for human context only and
+are ignored by all automated consumers.
+
+### Required: populate the top-level aggregate before submitting
+
+```yaml
+tests_run: 16          # sum of ALL test counts from ALL work items in this sprint
+test_results:
+  passed: 16           # sum of all per-item pass counts
+  failed: 0            # sum of all per-item fail counts
+  skipped: 0
+  errors: 0
+```
+
+### Anti-pattern (causes misreported results):
+
+```yaml
+tests_run: 0           # ← grader and session-resume.md see "0 tests run"
+test_results:
+  passed: 0            # ← even if per-item tests actually ran and passed
+planned_work_items:
+  - item_id: TC-MY-001
+    # per-item test note here is IGNORED by all automated consumers
+```
+
+**Rule:** Before submitting a declaration, sum all per-item test counts into the top-level
+aggregate. A sprint that runs 13 tests but declares `tests_run: 0` will appear as having
+run no tests in grading history and `session-resume.md`.
+
+**Validation:** Run `python tools/supervisor/sprint_executor_validate.py <declaration> --repair`
+which emits a WARNING when `tests_run == 0` but per-item `evidence_paths` or inline test
+result strings are present, suggesting a forgotten aggregate population.
+
+---
+
 ## Lane Execution Ledger
 
 The pipeline anti-skip checker requires `lane-execution-ledger.json` in `evidence_root` to confirm which lanes were executed. Running `evidence_auto_packager.py` automatically generates this file from your declared work items.
