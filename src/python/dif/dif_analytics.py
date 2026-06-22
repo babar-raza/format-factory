@@ -7,50 +7,48 @@ Core functions imported from dif_parser.
 
 from __future__ import annotations
 
-import csv
 import html as _html_module
-import io
 from pathlib import Path
 from typing import Any
 
 from .dif_parser import DifCell, DifDocument, get_column_values, parse_dif, parse_dif_strict, total_cell_count
 
+# dogfood_status: IMPLEMENTED — DIF→CSV uses FF csv_writer.write_csv (add-dogfood-export 2026-06-22)
+try:
+    from src.python.csv.csv_writer import write_csv as _ff_write_csv
+except ImportError:
+    try:
+        import sys as _sys
+        _sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent.parent))
+        from src.python.csv.csv_writer import write_csv as _ff_write_csv
+    except ImportError:
+        _ff_write_csv = None
+
+
 def dif_to_csv(file_path: str | Path) -> str:
-    """Export a DIF file as CSV text (RFC 4180 CRLF line endings).
+    """Export a DIF file as CSV using FF csv_writer.write_csv (dogfood export).
 
-    Each DIF tuple (row) becomes one CSV row. Cell values are serialized
-    as strings; None becomes an empty field.
-
-    Returns:
-        CSV string with CRLF line endings (RFC 4180).
-
-    Raises:
-        DifError subclasses on parse failure.
-
-    Added in R84 Train N.
+    dogfood_backend: src/python/csv/csv_writer.py::write_csv
+    dogfood_status: IMPLEMENTED
     """
+    if _ff_write_csv is None:
+        raise ImportError("dif_to_csv: FF csv_writer.write_csv unavailable")
     doc = parse_dif_strict(file_path)
     if not doc.rows:
         return ""
-
-    buf = io.StringIO()
-    writer = csv.writer(buf, lineterminator="\r\n")
+    output_rows: list[list[str | None]] = []
     for row in doc.rows:
-        csv_row = []
+        csv_row: list[str | None] = []
         for cell in row:
             if cell.value is None:
-                csv_row.append("")
+                csv_row.append(None)
             elif cell.value_type == "numeric":
-                # Format integers without trailing .0 when possible
                 val = cell.value
-                if isinstance(val, float) and val == int(val):
-                    csv_row.append(str(int(val)))
-                else:
-                    csv_row.append(str(val))
+                csv_row.append(str(int(val)) if isinstance(val, float) and val == int(val) else str(val))
             else:
                 csv_row.append(str(cell.value))
-        writer.writerow(csv_row)
-    return buf.getvalue()
+        output_rows.append(csv_row)
+    return _ff_write_csv(output_rows)
 
 def add_row(doc: DifDocument, values: list[Any]) -> dict[str, Any]:
     """Append a row of values to a DifDocument (in-memory).

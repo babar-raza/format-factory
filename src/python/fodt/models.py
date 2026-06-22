@@ -12,6 +12,8 @@ from __future__ import annotations
 
 from typing import Any, Iterator
 
+from .Compat.fodt_paragraph import FodtParagraph as _CompatParagraph
+
 
 class FodtSpan:
     """Wraps an inline text span from a paragraph."""
@@ -100,14 +102,14 @@ class FodtDocument:
     def warnings(self) -> list[dict[str, Any]]:
         return self._data.get("warnings", [])
 
-    def paragraphs(self) -> list[FodtParagraph]:
-        """Return all blocks (paragraphs/headings) as FodtParagraph objects."""
-        return [FodtParagraph(b) for b in self._data.get("blocks", [])]
+    def paragraphs(self) -> list[_CompatParagraph]:
+        """Return all blocks as Compat.FodtParagraph instances (spec-backed facade)."""
+        return [_CompatParagraph(b) for b in self._data.get("blocks", [])]
 
-    def headings(self) -> list[FodtParagraph]:
-        """Return only heading blocks."""
+    def headings(self) -> list[_CompatParagraph]:
+        """Return only heading blocks as Compat.FodtParagraph instances."""
         return [
-            FodtParagraph(b) for b in self._data.get("blocks", [])
+            _CompatParagraph(b) for b in self._data.get("blocks", [])
             if b.get("kind") == "heading"
         ]
 
