@@ -56,6 +56,9 @@ format_facts = {
         {"qname": "FACT-TOML-001", "claim": "TOML table structure", "section": "4", "description": "TOML table: [table] header with key-value pairs", "authority": "toml-v1.0", "verification_status": "structural", "source": "spec_cache"},
         {"qname": "FACT-TOML-002", "claim": "TOML key-value pair", "section": "2", "description": "TOML key: bare key or quoted key", "authority": "toml-v1.0", "verification_status": "structural", "source": "spec_cache"},
     ],
+    "fods": [
+        {"qname": "FACT-FODS-002", "claim": "FODS mimetype is application/vnd.oasis.opendocument.spreadsheet-flat-xml", "section": "3.1.2", "description": "FODS MIME type (IANA-registered ODF flat-XML spreadsheet MIME type)", "authority": "iana-odf-registration", "verification_status": "structural", "source": "spec_cache"},
+    ],
 }
 
 for entry in data["results"]:

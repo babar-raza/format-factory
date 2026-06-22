@@ -67,13 +67,23 @@ class TestLoadSpecFactsFiltering:
         assert "FACT-PPM-001" in verified
         assert "FACT-PPM-002" in verified
 
-    def test_abw_has_no_facts(self):
+    def test_abw_has_structural_facts(self):
+        # ABW spec-cache was populated with structural workbench facts (FACT-ABW-001..005)
+        # via create_structural_workbench_facts.py. These are verified_with_note: structural.
         facts = _load_spec_facts("abw")
-        assert facts == [], f"ABW should have no spec facts (no public spec), got: {facts}"
+        assert len(facts) >= 1, f"ABW should have at least 1 structural spec fact, got: {facts}"
+        assert all(f.startswith("FACT-ABW-") for f in facts), (
+            f"All ABW facts must use FACT-ABW-* canonical IDs, got: {facts}"
+        )
 
-    def test_dif_has_no_facts(self):
+    def test_dif_has_structural_facts(self):
+        # DIF spec-cache was populated with structural workbench facts (FACT-DIF-001..003)
+        # via create_structural_workbench_facts.py. These are verified_with_note: structural.
         facts = _load_spec_facts("dif")
-        assert facts == [], f"DIF should have no spec facts (historical ref), got: {facts}"
+        assert len(facts) >= 1, f"DIF should have at least 1 structural spec fact, got: {facts}"
+        assert all(f.startswith("FACT-DIF-") for f in facts), (
+            f"All DIF facts must use FACT-DIF-* canonical IDs, got: {facts}"
+        )
 
 
 class TestCapabilityMapSpecFactRefs:
@@ -130,23 +140,33 @@ class TestCapabilityMapSpecFactRefs:
             sfr = entry.get("spec_fact_refs", [])
             assert sfr, f"PBM entry {entry.get('capability_id')} has empty spec_fact_refs"
 
-    def test_abw_entries_have_no_fake_spec_fact_refs(self):
+    def test_abw_entries_have_canonical_spec_fact_refs(self):
+        # ABW spec-cache structural facts now populate capability map refs.
+        # Verify refs use canonical FACT-ABW-* IDs, not synthetic or wrong-format IDs.
         caps = self._load_map()
         if caps is None:
             return
         abw = [c for c in caps if c.get("format") == "ABW"]
         for entry in abw[:5]:
             sfr = entry.get("spec_fact_refs", [])
-            assert not sfr, f"ABW must not have fake spec_fact_refs, got: {sfr}"
+            for ref in sfr:
+                assert ref.startswith("FACT-ABW-"), (
+                    f"ABW spec_fact_ref {ref!r} must use FACT-ABW-* canonical ID"
+                )
 
-    def test_dif_entries_have_no_fake_spec_fact_refs(self):
+    def test_dif_entries_have_canonical_spec_fact_refs(self):
+        # DIF spec-cache structural facts now populate capability map refs.
+        # Verify refs use canonical FACT-DIF-* IDs, not synthetic or wrong-format IDs.
         caps = self._load_map()
         if caps is None:
             return
         dif = [c for c in caps if c.get("format") == "DIF"]
         for entry in dif[:5]:
             sfr = entry.get("spec_fact_refs", [])
-            assert not sfr, f"DIF must not have fake spec_fact_refs, got: {sfr}"
+            for ref in sfr:
+                assert ref.startswith("FACT-DIF-"), (
+                    f"DIF spec_fact_ref {ref!r} must use FACT-DIF-* canonical ID"
+                )
 
     def test_spec_fact_refs_field_exists_in_entries(self):
         caps = self._load_map()
