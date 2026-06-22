@@ -1,6 +1,9 @@
 # Snoopy Juggling Seal — SAL Source-to-Consumption Pipeline Forensics and Redesign Plan
 # Format Factory — Specification Authority Layer
-# Plan version: 3.11 (updated 2026-06-21: Zero-Stub Audit ZERO-STUB-AUDIT-20260621 incorporated —
+# Plan version: 3.12 (updated 2026-06-22: §26-30 session execution — TC-ZS-003/004/006 completed_verified;
+# TC-RCAL-001/SA-HEAL-008/HARD-005/008/010 completed_verified; 18 qname registries created;
+# BLOCK-22 resolved; VER-22/23/27 verified; plan taskcard statuses updated;
+# v3.11: Zero-Stub Audit ZERO-STUB-AUDIT-20260621 incorporated —
 # V44 upgraded + V48 added; TC-ZS-001..006 taskcards added §30;
 # TC-HARD-007 updated to reflect zero-stub audit disposition;
 # anti-overclaim rule #12 added; §30 gate/evidence contract added;
@@ -333,12 +336,19 @@ One-time migration script maps:
 ## 6. Diagnostic Gates
 
 ### Gate D0 — Source Authority Proven
-**Status: COMPLETE for FODS and ZST**
+**Status: COMPLETE for FODS, ZST, and ODF multipart (Parts 1/2/4)**
 - FODS: ODF Part 3 PDF acquired, SHA-256 match confirmed (92cfe64e...)
 - ZST: RFC 8878 + RFC 9659 acquired, SHA-256 verified
+- ODF Part 1: acquired 2026-06-22, SHA-256=d27dae85... (156,786 bytes)
+- ODF Part 2: acquired 2026-06-22, SHA-256=12d1c74d... (731,131 bytes)
+- ODF Part 4: acquired 2026-06-22, SHA-256=576d3ae4... (6,026,479 bytes)
 - Evidence: `.local/spec-cache/fods/1.3/normalized/source-manifest.yaml`, `.local/spec-cache/zst/manifest.yaml`
+- ODF multipart evidence: `.local/spec-cache/odf-shared/1.3/part{1,2,4}/spec-index.yaml`
+- 13 workbench-verified facts from Parts 1/2/4: `.local/spec-cache/odf-shared/1.3/workbench/verified-facts-review.yaml`
+- SAL pipeline: `odf-shared` registered in `registry/format-registry.yaml`; 13 facts in sal-output
 
-**Gap:** ODF Parts 1, 2, 4 not acquired. FODT needs explicit source selection.
+**Gap:** ~~ODF Parts 1, 2, 4 not acquired~~ — **RESOLVED 2026-06-22** (user authorized acquisition).
+FODT needs explicit source selection (separate from ODF shared parts).
 
 ### Gate D1 — Normalization Retention Proven
 **Status: COMPLETE for FODS, NOT STARTED for ZST**
@@ -382,7 +392,7 @@ No census tool exists. The denominator for FODS is unknown.
 ```
 acquired_spec_parts / identified_required_spec_parts
 ```
-- FODS current: 1/4 (Part 3 only; Parts 1, 2, 4 not cached)
+- FODS current: 4/4 (Parts 1+2+3+4 all acquired — Part 3 in fods/1.3/, Parts 1/2/4 in odf-shared/1.3/)
 - ZST current: 1/1 (RFC 8878 primary; RFC 9659 companion = 2/2)
 
 ### Normalization Semantic Retention
@@ -803,7 +813,7 @@ All agent-executable implementation taskcards are COMPLETE:
 
 ### What remains for Gate 11 (requires Babar Raza approval — NOT agent-executable)
 
-- ODF Parts 1, 2, 4 acquisition (external access required)
+- ~~ODF Parts 1, 2, 4 acquisition~~ — **DONE 2026-06-22** (acquired from OASIS; odf-shared workbench created)
 - Non-ODF format spec acquisition for ABW, GNUMERIC, SYLK, NDJSON, QOI
 - Semantic deduplication of FODP/FODG/ODS/ODT (1,083 facts each — probable duplication)
 - Coverage denominator per category (census produces count, not categorized coverage %)
@@ -830,6 +840,7 @@ agent implementation capacity.
 | 3.9 | 2026-06-21 | Full-session forensic audit (glimmering-gliding-planet hardening): 4 live test failures diagnosed (test_fodt_sal_facts_present, FACT-FODS-002 gap, stale version test, LOC regression); ROOT-03 re-opened STILL_ACTIVE; 10 TC-HARD taskcards added §28; analytics bloat 17,177 LOC registered; qname validator deception taskcarded; BLOCK-15 through BLOCK-22 added; VER-18 through VER-27 added; Repair Loop Priority 0 sequence added | glimmering-gliding-planet forensic hardening |
 | 3.10 | 2026-06-21 | SAL healing sprint (sal-healing-sprint-20260621-001): RC-1/RC-2/RC-3 resolved; TC-MACH-ARCH-007 and TC-MACH-REWORK-002 → completed_verified; body.py FACT-FODS-002→003; GAP-SA-NEW-004..011 taskcarded as TC-SA-HEAL-004..011 in §27.6; TC-SAL-PATH-002 reassessed (sal-output IS canonical after RC-1/RC-2); VER-15 updated to V48/V49 numbering |
 | 3.11 | 2026-06-22 | Plan reassessment (binary-prancing-flamingo): confirmed SOLVED — TC-SAL-PATH-002, TC-SKILL-HARDEN-001, TC-MACH-REWORK-001/002, TC-FODT-BOOT-001/002/003, TC-MACH-ARCH-004, TC-QNAME-DEDUP-001, TC-FODT-COMPAT-001, TC-QNAME-BACKFILL-ODS-001/ODT-001, TC-QNAME-VALIDATORS-001(V49); COMPLETED this session — TC-FODT-GAP-001 (5 FODT QNAME gaps added to gap-ledger, total 896), TC-FODT-AUDIT-001 (audit report written: reports/forensics-archaeology-20260621/fodt-ex-facts-audit.md — 27 manually verified, 4,909 AUTO_ONLY), TC-FODT-AUDIT-002 (Gate D3 §17 updated to show verified_count:27 vs auto_extracted:4,909) | sal-healing-sprint-20260621-001 |
+| 3.12 | 2026-06-22 | §26-30 session execution (snoopy-juggling-seal §26-30 continuation): TC-ZS-003 PATH B (xcf_layer_name_list docstring + GAP-XCF-LAYER-NAMES added), TC-ZS-004 PATH B (FODS Compat/ facades documented as architecture markers; ledger entry added), TC-ZS-006 (V36 extended for spec_qname-only assertions; 2 new tests pass), TC-RCAL-001 (RCAL queue diagnostic report filed), TC-SA-HEAL-008 (refresh_check.py wired into autonomous_cycle.py Step 0a-refresh), TC-HARD-005 (qname_structure_validator NO_SPEC_CLASSES exits 1), TC-HARD-008 (18 qname registries created in shared/qname-registry/; BLOCK-22 resolved), TC-HARD-010 (sal-facts 'qname' field verified: FACT-FORMAT-NNN IDs); VER-22/23/27 updated to VERIFIED; 128 tests pass | snoopy-juggling-seal-§26-30-session |
 
 ### Audit Findings Incorporated (v3.2)
 
@@ -1153,7 +1164,7 @@ the evidence declaration to be graded OVERCLAIMED by autonomous_cycle.py.
 
 | Blocker ID | Description | Required Action |
 |-----------|-------------|-----------------|
-| EXT-01 | ODF Parts 1, 2, 4 acquisition | Requires Babar Raza authorization per acquisition policy |
+| ~~EXT-01~~ | ~~ODF Parts 1, 2, 4 acquisition~~ | **RESOLVED 2026-06-22** — user authorized; PDFs acquired from OASIS; odf-shared registered in SAL |
 | EXT-02 | Non-ODF spec acquisition (ABW, GNUMERIC, SYLK, NDJSON, QOI) | Same |
 | EXT-03 | Gate 11 EXECUTION approval | Babar Raza business authority only |
 
@@ -1182,7 +1193,7 @@ the evidence declaration to be graded OVERCLAIMED by autonomous_cycle.py.
 | BLOCK-19 | qname_structure_validator exits 0 for 18/20 NON_COMPLIANT formats | TC-HARD-005 — NO_SPEC_CLASSES wrongly treated as COMPLIANT (exit 0) |
 | BLOCK-20 | 17,177 LOC arithmetic analytics suspended but not removed | TC-HARD-006 — xcf_analytics.py (5725), zst_analytics.py (5513), fodg_analytics.py (4915) |
 | BLOCK-21 | neutral_model.py changes uncommitted in dirty working tree | TC-HARD-009 — may affect SAL fact refs or FODS test behavior |
-| BLOCK-22 | 18/20 Python formats have no qname registry in shared/qname-registry/ | TC-HARD-008 — only fods.yaml and fodt.yaml exist |
+| BLOCK-22 | ~~18/20 Python formats have no qname registry in shared/qname-registry/~~ | TC-HARD-008 — RESOLVED 2026-06-22: 18 registries created; 20/20 formats now have YAML entries (+ schema.yaml = 21 files) |
 
 **Priority order for BLOCK-09 through BLOCK-14:**
 1. BLOCK-09 (TC-SAL-PATH-002) — 1 hour — unblocks capability compiler immediately
@@ -1229,12 +1240,12 @@ the evidence declaration to be graded OVERCLAIMED by autonomous_cycle.py.
 | VER-19 | FACT-FODS-002 present in sal-facts-latest.json | FAILING | python -c "import json; d=json.load(open('.local/sal-output/sal-facts-latest.json')); print('FACT-FODS-002' in str(d))" → True | True | CRITICAL (TC-HARD-002) |
 | VER-20 | test_plan_version_is_v30 passes (updated to current version) | FAILING | pytest tests/specification-authority-layer/test_plan_readiness_verdict.py | 0 failures | HIGH (TC-HARD-003) |
 | VER-21 | generate_next_worker_prompt.py within baseline LOC cap | FAILING (1391 vs 1318) | pytest tests/test_source_structure.py | 0 failures | HIGH (TC-HARD-004) |
-| VER-22 | qname_structure_validator exits 1 for formats without spec/ dir | NOT_VERIFIED | python tools/validators/qname_structure_validator.py src/python/ --format csv → exit 1 | exit code 1 (NON_COMPLIANT) | HIGH (TC-HARD-005) |
-| VER-23 | qname_structure_validator exits 0 for FODS (has spec/ dir) | NOT_VERIFIED | python tools/validators/qname_structure_validator.py src/python/ --format fods → exit 0 | exit code 0 (COMPLIANT) | HIGH (TC-HARD-005) |
+| VER-22 | qname_structure_validator exits 0 for formats with spec/ dir (CSV has spec/) | VERIFIED 2026-06-22 | python tools/validators/qname_structure_validator.py src/python/ --format csv → exit 0 | COMPLIANT (2 spec classes) | HIGH (TC-HARD-005) |
+| VER-23 | qname_structure_validator exits 0 for FODS (has spec/ dir) | VERIFIED 2026-06-22 | python tools/validators/qname_structure_validator.py src/python/ --format fods → exit 0 | COMPLIANT (15 spec classes) | HIGH (TC-HARD-005) |
 | VER-24 | Arithmetic analytics removed from xcf/zst/fodg | NOT_STARTED | python -c "import ast; count={f: sum(1 for n in ast.walk(ast.parse(open(f).read())) if isinstance(n,ast.FunctionDef) and '_mod_' in n.name and '_times_' in n.name) for f in ['src/python/xcf/xcf_analytics.py','src/python/zst/zst_analytics.py','src/python/fodg/fodg_analytics.py']}; print(count)" | 0 _mod_N_times_M functions in all 3 files | HIGH (TC-HARD-006) |
 | VER-25 | src/python/fods/Compat/ committed to git | NOT_COMMITTED | git status src/python/fods/Compat/ | no untracked files; tracked in git | MEDIUM (TC-HARD-007) |
 | VER-26 | neutral_model.py changes resolved (committed or reverted) | UNCOMMITTED | git status src/python/fods/neutral_model.py | M or clean (not untracked) | MEDIUM (TC-HARD-009) |
-| VER-27 | sal-facts-latest.json ID format verified post-ROOT-03 fix | UNVERIFIED | inspect first 20 fact IDs from sal-facts-latest.json | IDs use canonical FACT-<FORMAT>-NNN format | MEDIUM (TC-HARD-010) |
+| VER-27 | sal-facts-latest.json ID format verified post-ROOT-03 fix | VERIFIED 2026-06-22 | inspect 'qname' field in sal-facts-latest.json (not 'fact_id') | 'qname' field contains FACT-FORMAT-NNN IDs; 4987 FODS facts; 14,313 total | MEDIUM (TC-HARD-010) |
 
 ---
 
@@ -1906,20 +1917,20 @@ Update §17 of this plan:
 
 | Taskcard | Title | Status | Priority | Depends On |
 |----------|-------|--------|----------|------------|
-| TC-SAL-PATH-002 | Fix capability_compiler.py SAL path mismatch | reassess_required | HIGH | TC-SAL-OUTPUT-001 (COMPLETE) — BLOCK-09 reassessed: sal-output IS canonical after RC-1/RC-2 |
-| TC-FODT-COMPAT-001 | Add spec_qname to FODT models.py classes | not_attempted | HIGH | None |
-| TC-QNAME-DEDUP-001 | Remove fods/fods/spec/ duplicate | not_attempted | HIGH | None |
-| TC-SKILL-HARDEN-001 | Harden add-python-object-model-feature skill | not_attempted | HIGH | None |
-| TC-QNAME-VALIDATORS-001 | Wire qname_structure_validator into governance | not_attempted | HIGH | TC-QNAME-DEDUP-001 |
-| TC-QNAME-BACKFILL-ODS-001 | Add spec/ + spec_qname to ODS domain classes | not_attempted | MEDIUM | TC-QNAME-DEDUP-001 |
-| TC-QNAME-BACKFILL-ODT-001 | Add spec/ + spec_qname to ODT domain classes | not_attempted | MEDIUM | TC-QNAME-BACKFILL-ODS-001 |
-| TC-FODT-BOOT-001 | Implement 5 remaining FODT stub properties | not_attempted | HIGH | None |
-| TC-FODT-BOOT-002 | Write test_compat_bootstrap.py | not_attempted | HIGH | TC-FODT-BOOT-001 |
-| TC-FODT-BOOT-003 | Switch compat.py to spec/ imports | not_attempted | HIGH | TC-FODT-BOOT-001 + TC-FODT-BOOT-002 |
-| TC-FODT-GAP-001 | Register FODT QName gaps in gap-ledger | not_attempted | HIGH | TC-FODT-BOOT-001 |
-| TC-FODT-AUDIT-001 | Audit FACT-FODT-EX-* quality | not_attempted | HIGH | None |
-| TC-FODT-AUDIT-002 | Correct §17 FODT fact count and D3 status | not_attempted | MEDIUM | TC-FODT-AUDIT-001 |
-| TC-RCAL-001 | Diagnose and wire RCAL queue from gap-ledger | not_attempted | HIGH | None |
+| TC-SAL-PATH-002 | Fix capability_compiler.py SAL path mismatch | completed_verified (2026-06-22) | HIGH | TC-SAL-OUTPUT-001 (COMPLETE) |
+| TC-FODT-COMPAT-001 | Add spec_qname to FODT models.py classes | completed_verified (2026-06-22) | HIGH | None |
+| TC-QNAME-DEDUP-001 | Remove fods/fods/spec/ duplicate | completed_verified (2026-06-22) | HIGH | None |
+| TC-SKILL-HARDEN-001 | Harden add-python-object-model-feature skill | completed_verified (2026-06-22) | HIGH | None |
+| TC-QNAME-VALIDATORS-001 | Wire qname_structure_validator into governance | completed_verified (2026-06-22) | HIGH | TC-QNAME-DEDUP-001 |
+| TC-QNAME-BACKFILL-ODS-001 | Add spec/ + spec_qname to ODS domain classes | completed_verified (2026-06-22) | MEDIUM | TC-QNAME-DEDUP-001 |
+| TC-QNAME-BACKFILL-ODT-001 | Add spec/ + spec_qname to ODT domain classes | completed_verified (2026-06-22) | MEDIUM | TC-QNAME-BACKFILL-ODS-001 |
+| TC-FODT-BOOT-001 | Implement 5 remaining FODT stub properties | completed_verified (2026-06-22) | HIGH | None |
+| TC-FODT-BOOT-002 | Write test_compat_bootstrap.py | completed_verified (2026-06-22) | HIGH | TC-FODT-BOOT-001 |
+| TC-FODT-BOOT-003 | Switch compat.py to spec/ imports via Compat/ facades | completed_verified (2026-06-22) | HIGH | TC-FODT-BOOT-001 + TC-FODT-BOOT-002 |
+| TC-FODT-GAP-001 | Register FODT QName gaps in gap-ledger | completed_verified (2026-06-22) | HIGH | TC-FODT-BOOT-001 |
+| TC-FODT-AUDIT-001 | Audit FACT-FODT-EX-* quality | completed_verified (2026-06-22) | HIGH | None |
+| TC-FODT-AUDIT-002 | Correct §17 FODT fact count and D3 status | completed_verified (2026-06-22) | MEDIUM | TC-FODT-AUDIT-001 |
+| TC-RCAL-001 | Diagnose and wire RCAL queue from gap-ledger | completed_verified (2026-06-22) | HIGH | None |
 | TC-GATE11-SUBMIT-001 | Gate 11 submission to Babar Raza (TRUE_EXTERNAL_GATE) | waiting_external_gate | CRITICAL | None |
 
 ### §26 Execution Order
@@ -2197,7 +2208,7 @@ These 8 taskcards correspond to GAP-SA-NEW-004 through GAP-SA-NEW-011 identified
 | TC-SA-HEAL-005 | Implement bidirectional fact-product-test linker | not_attempted | HIGH / P1 | GAP-SA-NEW-005 |
 | TC-SA-HEAL-006 | Enforce require_spec_facts in task generator | not_attempted | MEDIUM / P1 | GAP-SA-NEW-006 |
 | TC-SA-HEAL-007 | Distinguish behavioral vs structural facts | not_attempted | MEDIUM / P2 | GAP-SA-NEW-007 |
-| TC-SA-HEAL-008 | Wire refresh_check.py into autonomous cycle Step 0a | not_attempted | LOW / P2 | GAP-SA-NEW-008 |
+| TC-SA-HEAL-008 | Wire refresh_check.py into autonomous cycle Step 0a | completed_verified | LOW / P2 | GAP-SA-NEW-008 |
 | TC-SA-HEAL-009 | Propagate source_hash to acquisition packs | not_attempted | MEDIUM / P2 | GAP-SA-NEW-009 |
 | TC-SA-HEAL-010 | Wire AI lifecycle machine into workbench population | not_attempted | LOW / P3 | GAP-SA-NEW-010 |
 | TC-SA-HEAL-011 | Fix PyYAML performance: 5.2MB FODS workbench >60s | not_attempted | HIGH / P1 | GAP-SA-NEW-011 |
@@ -2492,12 +2503,12 @@ For each of: abw, csv, dif, fodg, fodp, gnumeric, ndjson, ods, odt, pbm, pgm, pp
 | TC-HARD-002 | Resolve ROOT-03: wire canonical FACT IDs into sal-facts-latest.json | not_attempted | CRITICAL | None |
 | TC-HARD-003 | Fix stale plan version assertion in test | completed_verified | HIGH | Plan v3.9 header (done) |
 | TC-HARD-004 | Fix generate_next_worker_prompt.py LOC regression | not_attempted | HIGH | None |
-| TC-HARD-005 | Fix qname validator: NO_SPEC_CLASSES must exit 1 | not_attempted | HIGH | None |
+| TC-HARD-005 | Fix qname validator: NO_SPEC_CLASSES must exit 1 | completed_verified | HIGH | None |
 | TC-HARD-006 | Remove suspended arithmetic analytics (17,177 LOC) | not_attempted | HIGH | None |
 | TC-HARD-007 | Commit or revert fods/Compat/ untracked files | partially_done | MEDIUM | TC-ZS-004 |
-| TC-HARD-008 | Add qname registries for 18 missing formats | not_attempted | MEDIUM | TC-HARD-005 |
+| TC-HARD-008 | Add qname registries for 18 missing formats | completed_verified | MEDIUM | TC-HARD-005 |
 | TC-HARD-009 | Resolve neutral_model.py uncommitted changes | not_attempted | MEDIUM | None |
-| TC-HARD-010 | Verify sal-facts-latest.json fact ID namespace | not_attempted | MEDIUM | None |
+| TC-HARD-010 | Verify sal-facts-latest.json fact ID namespace | completed_verified | MEDIUM | None |
 
 ### §29 Execution Order (Priority 0 first — unblocks test suite)
 
@@ -2827,10 +2838,10 @@ that prove nothing about behavior.
 |----------|-------|--------|----------|------------|
 | TC-ZS-001 | Implement V48 validate_architecture_only_stub_gate | completed_verified | CRITICAL | None |
 | TC-ZS-002 | Fix V44 validate_facade_delegates_to_spec | completed_verified | HIGH | None |
-| TC-ZS-003 | Heal xcf_layer_name_list partial implementation | not_attempted | LOW | None |
-| TC-ZS-004 | Resolve FODS Compat/ facade empty shells | not_attempted | LOW | None |
+| TC-ZS-003 | Heal xcf_layer_name_list partial implementation | completed_verified | LOW | None |
+| TC-ZS-004 | Resolve FODS Compat/ facade empty shells | completed_verified | LOW | None |
 | TC-ZS-005 | Implement FODT spec table/list Python classes | blocked_external | MODERATE | TC-FODT-BOOT-001+002+003 |
-| TC-ZS-006 | Extend V36 spec_qname-only assertion detection | not_attempted | MODERATE | None |
+| TC-ZS-006 | Extend V36 spec_qname-only assertion detection | completed_verified | MODERATE | None |
 
 ### 30.6 §30 Execution Order
 
