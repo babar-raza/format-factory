@@ -86,16 +86,17 @@ class TestFromCacheOnlyMode:
 
     def test_from_cache_only_format_without_workbench_emits_zero(self, tmp_path):
         """A format with no workbench should emit 0 facts in cache-only mode."""
-        # ORA has no spec-cache workbench directory — from_cache_only emits 0 facts.
-        # CSV was previously used but its structural workbench has verified_with_note facts.
+        # XPM workbench YAML exists but has 0 verified facts — from_cache_only emits 0 facts.
+        # ORA was previously used but a sprint added 3 workbench-curated facts for ORA.
+        # XPM has a workbench dir with an empty facts list, so cache-only mode returns 0.
         result = run_sal_pipeline(
-            formats=["ora"], output_dir=tmp_path, from_cache_only=True,
+            formats=["xpm"], output_dir=tmp_path, from_cache_only=True,
         )
         latest = tmp_path / "sal-facts-latest.json"
         data = json.loads(latest.read_text(encoding="utf-8"))
-        ora_result = next(r for r in data["results"] if r["format_id"] == "ora")
-        assert len(ora_result["spec_facts"]) == 0, (
-            "ORA has no workbench — from_cache_only should emit 0 facts"
+        xpm_result = next(r for r in data["results"] if r["format_id"] == "xpm")
+        assert len(xpm_result["spec_facts"]) == 0, (
+            "XPM workbench has no verified facts — from_cache_only should emit 0 facts"
         )
 
     def test_from_cache_only_all_three_formats_combined(self, tmp_path):

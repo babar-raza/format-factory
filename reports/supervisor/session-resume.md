@@ -1,6 +1,6 @@
 # Session Resume Briefing
 # Format Factory — Supervisor-Generated
-# Generated: 2026-06-22T19:27:47.639678
+# Generated: 2026-06-22T19:29:07.682050
 
 ## Quick State
 - Last sprint: floating-stargazing-globe-hardening
@@ -23,7 +23,7 @@
 5. Prose context: `reports/supervisor/next-sprint.md`
 
 ## Where To Find Evidence
-- Last evidence bundle: .local/evidences/floating-stargazing-globe-hardening-20260622-142602
+- Last evidence bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\floating-stargazing-globe-hardening-20260622-142602\declaration-review-package.zip
 - Supervisor outputs: reports/supervisor/
 - Project memory: .supervisor/project-memory.md
 

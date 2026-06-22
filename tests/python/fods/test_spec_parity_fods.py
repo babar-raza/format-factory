@@ -140,8 +140,16 @@ class TestCanonicalSpecClassImportable:
 
         Import path: spec.office.document (relative to src/python/fods which is in sys.path).
         The installed fods package does not include spec/ — must use sys.path-inserted path.
+
+        Note: uses importlib to load from an explicit file path, bypassing any stale 'spec'
+        module cache that fodt tests may have registered (fodt/spec/ != fods/spec/office/).
         """
-        from spec.office.document import Document  # canonical tree via sys.path insertion
+        import importlib.util as _ilu
+        _doc_file = _REPO / "src" / "python" / "fods" / "spec" / "office" / "document.py"
+        _spec = _ilu.spec_from_file_location("fods_spec_office_document", _doc_file)
+        _mod = _ilu.module_from_spec(_spec)
+        _spec.loader.exec_module(_mod)
+        Document = _mod.Document
         assert Document.spec_qname == "office:document"
         assert Document.spec_fact_ref == "FACT-FODS-001"
         # Confirm it is NOT the same object as FodsDocument (they are separate layers)

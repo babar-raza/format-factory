@@ -1,7 +1,7 @@
 # Supervisor-Generated Next Sprint Prompt
 # Source sprint: floating-stargazing-globe-hardening
 # Stream: mainstream
-# Generated: 2026-06-22T19:27:47.631406
+# Generated: 2026-06-22T19:29:07.652503
 # ADVISORY ONLY — not a Format Factory authority document
 # This is INPUT to the next sprint, not a gate approval or commit authorization.
 
@@ -37,12 +37,14 @@ TRUE_EXTERNAL_GATE (ONLY these warrant a stop):
 
 ## Section 1: New Product Work (Advisory — Always Execute)
 - [pending] TASK-001: Select governed product gaps and validate the product-code ledger
-- [pending] TASK-002: Work on open taskcard: TC-0015-spec-retrieval-strategy-evaluation
-- [pending] TASK-003: Work on open taskcard: TC-0016-fods-vector-index-pilot
-- [pending] TASK-004: Work on open taskcard: TC-0020-spec-workbench-core
-- [pending] TASK-005: Advance one dogfood export path using a Format Factory library
-- [pending] TASK-006: Build package artifacts and run installed-workflow proof
-- [pending] TASK-007: Write evidence declaration and run supervisor autonomous-cycle
+- [agent-owned] TASK-002: Prepare commit candidate summary and changed-file manifest
+- [external-gate] TASK-003: Execute git commit (requires explicit user authorization — do NOT self-execute)
+- [pending] TASK-004: Work on open taskcard: TC-0015-spec-retrieval-strategy-evaluation
+- [pending] TASK-005: Work on open taskcard: TC-0016-fods-vector-index-pilot
+- [pending] TASK-006: Work on open taskcard: TC-0020-spec-workbench-core
+- [pending] TASK-007: Advance one dogfood export path using a Format Factory library
+- [pending] TASK-008: Build package artifacts and run installed-workflow proof
+- [pending] TASK-009: Write evidence declaration and run supervisor autonomous-cycle
 
 ## Section 2: Rework / Repair (Advisory — Fix Before Closeout)
 None

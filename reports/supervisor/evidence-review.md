@@ -1,13 +1,13 @@
 # Evidence Review — Supervisor
-Sprint ID: forensics-healing-sprint-20260622
-Timestamp: 2026-06-22T14:23:06.123781
+Sprint ID: floating-stargazing-globe-hardening
+Timestamp: 2026-06-22T19:29:06.442135
 Verdict: ACCEPTED
-Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\forensics-healing-sprint-20260622\declaration-review-package.zip
+Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\floating-stargazing-globe-hardening-20260622-142602\declaration-review-package.zip
 
 ## Facts
-- Tests: 0 passed, 0 failed, 0 skipped
+- Tests: 68 passed, 0 failed, 0 skipped
 - Git HEAD: see-declaration
-- Bundle entries: 82
+- Bundle entries: 70
 - PENDING markers: 0
 
 ## Gate States
