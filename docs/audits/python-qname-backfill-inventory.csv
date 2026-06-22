@@ -154,8 +154,8 @@ abw,src/python/abw/abw_codec.py,count_paragraphs_matching,function,src/python/ab
 abw,src/python/abw/Compat/__init__.py,,,src/python/abw/Compat/__init__.py,facade_behavior,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
 abw,src/python/abw/Compat/abw_document.py,AbwDocument,class,src/python/abw/Compat/abw_document.py,facade_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
 abw,src/python/abw/Compat/abw_paragraph.py,AbwParagraph,class,src/python/abw/Compat/abw_paragraph.py,facade_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
-abw,src/python/abw/spec/__init__.py,,,src/python/abw/spec/__init__.py,spec_element_behavior,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
-abw,src/python/abw/spec/document/__init__.py,,,src/python/abw/spec/document/__init__.py,spec_element_behavior,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
+abw,src/python/abw/spec/__init__.py,,,src/python/abw/spec/__init__.py,spec_element_behavior,,,,low,unknown,no,complete,ACCEPTED_VERIFIED,TC-PH-012: spec class has behavioral methods (migrated 2026-06-22)
+abw,src/python/abw/spec/document/__init__.py,,,src/python/abw/spec/document/__init__.py,spec_element_behavior,,,,low,unknown,no,complete,ACCEPTED_VERIFIED,TC-PH-012: spec class has behavioral methods (migrated 2026-06-22)
 abw,src/python/abw/spec/document/char_run.py,CharRun,class,src/python/abw/spec/document/char_run.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
 abw,src/python/abw/spec/document/document.py,Document,class,src/python/abw/spec/document/document.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
 abw,src/python/abw/spec/document/field.py,Field,class,src/python/abw/spec/document/field.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
@@ -257,8 +257,8 @@ csv,src/python/csv/csv_writer.py,_escape_field,function,src/python/csv/csv_write
 csv,src/python/csv/csv_writer.py,write_csv,function,src/python/csv/csv_writer.py,codec_io,,,,medium,partial,verify,not_started,ACCEPTED_VERIFIED,
 csv,src/python/csv/csv_writer.py,write_csv_to_file,function,src/python/csv/csv_writer.py,codec_io,,,,medium,partial,verify,not_started,ACCEPTED_VERIFIED,
 csv,src/python/csv/csv_writer.py,parse_and_rewrite,function,src/python/csv/csv_writer.py,codec_io,,,,medium,partial,verify,not_started,ACCEPTED_VERIFIED,
-csv,src/python/csv/spec/__init__.py,,,src/python/csv/spec/__init__.py,spec_element_behavior,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
-csv,src/python/csv/spec/record/__init__.py,,,src/python/csv/spec/record/__init__.py,spec_element_behavior,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
+csv,src/python/csv/spec/__init__.py,,,src/python/csv/spec/__init__.py,spec_element_behavior,,,,low,unknown,no,complete,ACCEPTED_VERIFIED,TC-PH-012: spec class has behavioral methods (migrated 2026-06-22)
+csv,src/python/csv/spec/record/__init__.py,,,src/python/csv/spec/record/__init__.py,spec_element_behavior,,,,low,unknown,no,complete,ACCEPTED_VERIFIED,TC-PH-012: spec class has behavioral methods (migrated 2026-06-22)
 csv,src/python/csv/spec/record/field.py,Field,class,src/python/csv/spec/record/field.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
 csv,src/python/csv/spec/record/record.py,Record,class,src/python/csv/spec/record/record.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
 dif,src/python/dif/__init__.py,,,src/python/dif/__init__.py,codec_io,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
@@ -366,8 +366,8 @@ dif,src/python/dif/dif_stats.py,dif_string_value_list,function,src/python/dif/di
 dif,src/python/dif/dif_stats.py,dif_empty_row_count,function,src/python/dif/dif_stats.py,codec_io,,,,medium,partial,verify,not_started,ACCEPTED_VERIFIED,
 dif,src/python/dif/dif_stats.py,dif_string_cell_count,function,src/python/dif/dif_stats.py,codec_io,,,,medium,partial,verify,not_started,ACCEPTED_VERIFIED,
 dif,src/python/dif/dif_stats.py,dif_total_numeric_count,function,src/python/dif/dif_stats.py,codec_io,,,,medium,partial,verify,not_started,ACCEPTED_VERIFIED,
-dif,src/python/dif/spec/__init__.py,,,src/python/dif/spec/__init__.py,spec_element_behavior,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
-dif,src/python/dif/spec/table/__init__.py,,,src/python/dif/spec/table/__init__.py,spec_element_behavior,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
+dif,src/python/dif/spec/__init__.py,,,src/python/dif/spec/__init__.py,spec_element_behavior,,,,low,unknown,no,complete,ACCEPTED_VERIFIED,TC-PH-012: spec class has behavioral methods (migrated 2026-06-22)
+dif,src/python/dif/spec/table/__init__.py,,,src/python/dif/spec/table/__init__.py,spec_element_behavior,,,,low,unknown,no,complete,ACCEPTED_VERIFIED,TC-PH-012: spec class has behavioral methods (migrated 2026-06-22)
 dif,src/python/dif/spec/table/datum.py,Datum,class,src/python/dif/spec/table/datum.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
 dif,src/python/dif/spec/table/header.py,Header,class,src/python/dif/spec/table/header.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
 dif,src/python/dif/spec/table/vector.py,Vector,class,src/python/dif/spec/table/vector.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
@@ -1252,10 +1252,10 @@ fodg,src/python/fodg/fodg_codec.py,total_text_length,function,src/python/fodg/fo
 fodg,src/python/fodg/fodg_codec.py,find_shapes_by_text_pattern,function,src/python/fodg/fodg_codec.py,codec_io,,,,medium,partial,verify,not_started,ACCEPTED_VERIFIED,
 fodg,src/python/fodg/fodg_codec.py,export_page_to_json,function,src/python/fodg/fodg_codec.py,codec_io,,,,medium,partial,verify,not_started,ACCEPTED_VERIFIED,
 fodg,src/python/fodg/fodg_codec.py,__getattr__,function,src/python/fodg/fodg_codec.py,codec_io,,,,medium,partial,verify,not_started,ACCEPTED_VERIFIED,
-fodg,src/python/fodg/spec/__init__.py,,,src/python/fodg/spec/__init__.py,spec_element_behavior,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
-fodg,src/python/fodg/spec/draw/__init__.py,,,src/python/fodg/spec/draw/__init__.py,spec_element_behavior,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
+fodg,src/python/fodg/spec/__init__.py,,,src/python/fodg/spec/__init__.py,spec_element_behavior,,,,low,unknown,no,complete,ACCEPTED_VERIFIED,TC-PH-012: spec class has behavioral methods (migrated 2026-06-22)
+fodg,src/python/fodg/spec/draw/__init__.py,,,src/python/fodg/spec/draw/__init__.py,spec_element_behavior,,,,low,unknown,no,complete,ACCEPTED_VERIFIED,TC-PH-012: spec class has behavioral methods (migrated 2026-06-22)
 fodg,src/python/fodg/spec/draw/page.py,Page,class,src/python/fodg/spec/draw/page.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
-fodg,src/python/fodg/spec/office/__init__.py,,,src/python/fodg/spec/office/__init__.py,spec_element_behavior,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
+fodg,src/python/fodg/spec/office/__init__.py,,,src/python/fodg/spec/office/__init__.py,spec_element_behavior,,,,low,unknown,no,complete,ACCEPTED_VERIFIED,TC-PH-012: spec class has behavioral methods (migrated 2026-06-22)
 fodg,src/python/fodg/spec/office/document.py,Document,class,src/python/fodg/spec/office/document.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
 fodp,src/python/fodp/__init__.py,,,src/python/fodp/__init__.py,codec_io,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
 fodp,src/python/fodp/Compat/__init__.py,,,src/python/fodp/Compat/__init__.py,facade_behavior,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
@@ -1334,10 +1334,10 @@ fodp,src/python/fodp/fodp_codec.py,fodp_slide_text_variance,function,src/python/
 fodp,src/python/fodp/fodp_codec.py,fodp_total_images,function,src/python/fodp/fodp_codec.py,codec_io,,,,medium,partial,verify,not_started,ACCEPTED_VERIFIED,
 fodp,src/python/fodp/fodp_codec.py,fodp_shortest_slide_index,function,src/python/fodp/fodp_codec.py,codec_io,,,,medium,partial,verify,not_started,ACCEPTED_VERIFIED,
 fodp,src/python/fodp/fodp_codec.py,fodp_shape_count_variance,function,src/python/fodp/fodp_codec.py,codec_io,,,,medium,partial,verify,not_started,ACCEPTED_VERIFIED,
-fodp,src/python/fodp/spec/__init__.py,,,src/python/fodp/spec/__init__.py,spec_element_behavior,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
-fodp,src/python/fodp/spec/draw/__init__.py,,,src/python/fodp/spec/draw/__init__.py,spec_element_behavior,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
+fodp,src/python/fodp/spec/__init__.py,,,src/python/fodp/spec/__init__.py,spec_element_behavior,,,,low,unknown,no,complete,ACCEPTED_VERIFIED,TC-PH-012: spec class has behavioral methods (migrated 2026-06-22)
+fodp,src/python/fodp/spec/draw/__init__.py,,,src/python/fodp/spec/draw/__init__.py,spec_element_behavior,,,,low,unknown,no,complete,ACCEPTED_VERIFIED,TC-PH-012: spec class has behavioral methods (migrated 2026-06-22)
 fodp,src/python/fodp/spec/draw/page.py,Page,class,src/python/fodp/spec/draw/page.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
-fodp,src/python/fodp/spec/office/__init__.py,,,src/python/fodp/spec/office/__init__.py,spec_element_behavior,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
+fodp,src/python/fodp/spec/office/__init__.py,,,src/python/fodp/spec/office/__init__.py,spec_element_behavior,,,,low,unknown,no,complete,ACCEPTED_VERIFIED,TC-PH-012: spec class has behavioral methods (migrated 2026-06-22)
 fodp,src/python/fodp/spec/office/document.py,Document,class,src/python/fodp/spec/office/document.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
 fods,src/python/fods/__init__.py,,,src/python/fods/__init__.py,codec_io,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
 fods,src/python/fods/Compat/__init__.py,,,src/python/fods/Compat/__init__.py,facade_behavior,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
@@ -1447,25 +1447,25 @@ fods,src/python/fods/parser.py,_extract_string_value,function,src/python/fods/pa
 fods,src/python/fods/parser.py,_extract_text,function,src/python/fods/parser.py,codec_io,,,,low,partial,verify,not_started,ACCEPTED_VERIFIED,
 fods,src/python/fods/parser.py,_collect_text,function,src/python/fods/parser.py,codec_io,,,,low,partial,verify,not_started,ACCEPTED_VERIFIED,
 fods,src/python/fods/parser.py,_safe_int,function,src/python/fods/parser.py,codec_io,,,,low,partial,verify,not_started,ACCEPTED_VERIFIED,
-fods,src/python/fods/spec/__init__.py,,,src/python/fods/spec/__init__.py,spec_element_behavior,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
-fods,src/python/fods/spec/number/__init__.py,,,src/python/fods/spec/number/__init__.py,spec_element_behavior,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
+fods,src/python/fods/spec/__init__.py,,,src/python/fods/spec/__init__.py,spec_element_behavior,,,,low,unknown,no,complete,ACCEPTED_VERIFIED,TC-PH-012: spec class has behavioral methods (migrated 2026-06-22)
+fods,src/python/fods/spec/number/__init__.py,,,src/python/fods/spec/number/__init__.py,spec_element_behavior,,,,low,unknown,no,complete,ACCEPTED_VERIFIED,TC-PH-012: spec class has behavioral methods (migrated 2026-06-22)
 fods,src/python/fods/spec/number/date_style.py,DateStyle,class,src/python/fods/spec/number/date_style.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
-fods,src/python/fods/spec/office/__init__.py,,,src/python/fods/spec/office/__init__.py,spec_element_behavior,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
+fods,src/python/fods/spec/office/__init__.py,,,src/python/fods/spec/office/__init__.py,spec_element_behavior,,,,low,unknown,no,complete,ACCEPTED_VERIFIED,TC-PH-012: spec class has behavioral methods (migrated 2026-06-22)
 fods,src/python/fods/spec/office/annotation.py,Annotation,class,src/python/fods/spec/office/annotation.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
 fods,src/python/fods/spec/office/automatic_styles.py,AutomaticStyles,class,src/python/fods/spec/office/automatic_styles.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
 fods,src/python/fods/spec/office/body.py,Body,class,src/python/fods/spec/office/body.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
 fods,src/python/fods/spec/office/document.py,Document,class,src/python/fods/spec/office/document.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
 fods,src/python/fods/spec/office/spreadsheet.py,Spreadsheet,class,src/python/fods/spec/office/spreadsheet.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
-fods,src/python/fods/spec/style/__init__.py,,,src/python/fods/spec/style/__init__.py,spec_element_behavior,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
+fods,src/python/fods/spec/style/__init__.py,,,src/python/fods/spec/style/__init__.py,spec_element_behavior,,,,low,unknown,no,complete,ACCEPTED_VERIFIED,TC-PH-012: spec class has behavioral methods (migrated 2026-06-22)
 fods,src/python/fods/spec/style/style.py,Style,class,src/python/fods/spec/style/style.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
-fods,src/python/fods/spec/table/__init__.py,,,src/python/fods/spec/table/__init__.py,spec_element_behavior,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
+fods,src/python/fods/spec/table/__init__.py,,,src/python/fods/spec/table/__init__.py,spec_element_behavior,,,,low,unknown,no,complete,ACCEPTED_VERIFIED,TC-PH-012: spec class has behavioral methods (migrated 2026-06-22)
 fods,src/python/fods/spec/table/covered_table_cell.py,CoveredTableCell,class,src/python/fods/spec/table/covered_table_cell.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
 fods,src/python/fods/spec/table/table.py,Table,class,src/python/fods/spec/table/table.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
 fods,src/python/fods/spec/table/table_cell.py,TableCell,class,src/python/fods/spec/table/table_cell.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
 fods,src/python/fods/spec/table/table_column.py,TableColumn,class,src/python/fods/spec/table/table_column.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
 fods,src/python/fods/spec/table/table_header_rows.py,TableHeaderRows,class,src/python/fods/spec/table/table_header_rows.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
 fods,src/python/fods/spec/table/table_row.py,TableRow,class,src/python/fods/spec/table/table_row.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
-fods,src/python/fods/spec/text/__init__.py,,,src/python/fods/spec/text/__init__.py,spec_element_behavior,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
+fods,src/python/fods/spec/text/__init__.py,,,src/python/fods/spec/text/__init__.py,spec_element_behavior,,,,low,unknown,no,complete,ACCEPTED_VERIFIED,TC-PH-012: spec class has behavioral methods (migrated 2026-06-22)
 fods,src/python/fods/spec/text/paragraph.py,Paragraph,class,src/python/fods/spec/text/paragraph.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
 fods,src/python/fods/spec/text/span.py,Span,class,src/python/fods/spec/text/span.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
 fods,src/python/fods/writer.py,_qn,function,src/python/fods/writer.py,codec_io,,,,low,partial,verify,not_started,ACCEPTED_VERIFIED,
@@ -1641,14 +1641,14 @@ fodt,src/python/fodt/parser.py,_handle_text_child,function,src/python/fodt/parse
 fodt,src/python/fodt/parser.py,_extract_table,function,src/python/fodt/parser.py,codec_io,,,,low,partial,verify,not_started,ACCEPTED_VERIFIED,
 fodt,src/python/fodt/parser.py,_get_local_name,function,src/python/fodt/parser.py,codec_io,,,,low,partial,verify,not_started,ACCEPTED_VERIFIED,
 fodt,src/python/fodt/parser.py,_safe_int_fodt,function,src/python/fodt/parser.py,codec_io,,,,low,partial,verify,not_started,ACCEPTED_VERIFIED,
-fodt,src/python/fodt/spec/__init__.py,,,src/python/fodt/spec/__init__.py,spec_element_behavior,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
-fodt,src/python/fodt/spec/office/__init__.py,,,src/python/fodt/spec/office/__init__.py,spec_element_behavior,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
+fodt,src/python/fodt/spec/__init__.py,,,src/python/fodt/spec/__init__.py,spec_element_behavior,,,,low,unknown,no,complete,ACCEPTED_VERIFIED,TC-PH-012: spec class has behavioral methods (migrated 2026-06-22)
+fodt,src/python/fodt/spec/office/__init__.py,,,src/python/fodt/spec/office/__init__.py,spec_element_behavior,,,,low,unknown,no,complete,ACCEPTED_VERIFIED,TC-PH-012: spec class has behavioral methods (migrated 2026-06-22)
 fodt,src/python/fodt/spec/office/document.py,Document,class,src/python/fodt/spec/office/document.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
-fodt,src/python/fodt/spec/table/__init__.py,,,src/python/fodt/spec/table/__init__.py,spec_element_behavior,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
+fodt,src/python/fodt/spec/table/__init__.py,,,src/python/fodt/spec/table/__init__.py,spec_element_behavior,,,,low,unknown,no,complete,ACCEPTED_VERIFIED,TC-PH-012: spec class has behavioral methods (migrated 2026-06-22)
 fodt,src/python/fodt/spec/table/table.py,Table,class,src/python/fodt/spec/table/table.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
 fodt,src/python/fodt/spec/table/table_cell.py,TableCell,class,src/python/fodt/spec/table/table_cell.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
 fodt,src/python/fodt/spec/table/table_row.py,TableRow,class,src/python/fodt/spec/table/table_row.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
-fodt,src/python/fodt/spec/text/__init__.py,,,src/python/fodt/spec/text/__init__.py,spec_element_behavior,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
+fodt,src/python/fodt/spec/text/__init__.py,,,src/python/fodt/spec/text/__init__.py,spec_element_behavior,,,,low,unknown,no,complete,ACCEPTED_VERIFIED,TC-PH-012: spec class has behavioral methods (migrated 2026-06-22)
 fodt,src/python/fodt/spec/text/heading.py,Heading,class,src/python/fodt/spec/text/heading.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
 fodt,src/python/fodt/spec/text/list_.py,List,class,src/python/fodt/spec/text/list_.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
 fodt,src/python/fodt/spec/text/list_item.py,ListItem,class,src/python/fodt/spec/text/list_item.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
@@ -1769,8 +1769,8 @@ gnumeric,src/python/gnumeric/gnumeric_codec.py,gnumeric_cell_count_variance,func
 gnumeric,src/python/gnumeric/gnumeric_codec.py,gnumeric_max_row_length,function,src/python/gnumeric/gnumeric_codec.py,codec_io,,,,medium,partial,verify,not_started,ACCEPTED_VERIFIED,
 gnumeric,src/python/gnumeric/gnumeric_codec.py,gnumeric_cell_to_row_ratio,function,src/python/gnumeric/gnumeric_codec.py,codec_io,,,,medium,partial,verify,not_started,ACCEPTED_VERIFIED,
 gnumeric,src/python/gnumeric/gnumeric_codec.py,gnumeric_total_string_length,function,src/python/gnumeric/gnumeric_codec.py,codec_io,,,,medium,partial,verify,not_started,ACCEPTED_VERIFIED,
-gnumeric,src/python/gnumeric/spec/__init__.py,,,src/python/gnumeric/spec/__init__.py,spec_element_behavior,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
-gnumeric,src/python/gnumeric/spec/workbook/__init__.py,,,src/python/gnumeric/spec/workbook/__init__.py,spec_element_behavior,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
+gnumeric,src/python/gnumeric/spec/__init__.py,,,src/python/gnumeric/spec/__init__.py,spec_element_behavior,,,,low,unknown,no,complete,ACCEPTED_VERIFIED,TC-PH-012: spec class has behavioral methods (migrated 2026-06-22)
+gnumeric,src/python/gnumeric/spec/workbook/__init__.py,,,src/python/gnumeric/spec/workbook/__init__.py,spec_element_behavior,,,,low,unknown,no,complete,ACCEPTED_VERIFIED,TC-PH-012: spec class has behavioral methods (migrated 2026-06-22)
 gnumeric,src/python/gnumeric/spec/workbook/sheet.py,Sheet,class,src/python/gnumeric/spec/workbook/sheet.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
 gnumeric,src/python/gnumeric/spec/workbook/workbook.py,Workbook,class,src/python/gnumeric/spec/workbook/workbook.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
 ndjson,src/python/ndjson/__init__.py,,,src/python/ndjson/__init__.py,codec_io,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
@@ -1871,8 +1871,8 @@ ndjson,src/python/ndjson/ndjson_codec.py,ndjson_string_density,function,src/pyth
 ndjson,src/python/ndjson/ndjson_codec.py,ndjson_avg_list_length,function,src/python/ndjson/ndjson_codec.py,codec_io,,,,medium,partial,verify,not_started,ACCEPTED_VERIFIED,
 ndjson,src/python/ndjson/ndjson_codec.py,ndjson_nested_count,function,src/python/ndjson/ndjson_codec.py,codec_io,,,,medium,partial,verify,not_started,ACCEPTED_VERIFIED,
 ndjson,src/python/ndjson/ndjson_codec.py,ndjson_min_record_fields,function,src/python/ndjson/ndjson_codec.py,codec_io,,,,medium,partial,verify,not_started,ACCEPTED_VERIFIED,
-ndjson,src/python/ndjson/spec/__init__.py,,,src/python/ndjson/spec/__init__.py,spec_element_behavior,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
-ndjson,src/python/ndjson/spec/record/__init__.py,,,src/python/ndjson/spec/record/__init__.py,spec_element_behavior,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
+ndjson,src/python/ndjson/spec/__init__.py,,,src/python/ndjson/spec/__init__.py,spec_element_behavior,,,,low,unknown,no,complete,ACCEPTED_VERIFIED,TC-PH-012: spec class has behavioral methods (migrated 2026-06-22)
+ndjson,src/python/ndjson/spec/record/__init__.py,,,src/python/ndjson/spec/record/__init__.py,spec_element_behavior,,,,low,unknown,no,complete,ACCEPTED_VERIFIED,TC-PH-012: spec class has behavioral methods (migrated 2026-06-22)
 ndjson,src/python/ndjson/spec/record/field.py,Field,class,src/python/ndjson/spec/record/field.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
 ndjson,src/python/ndjson/spec/record/record.py,Record,class,src/python/ndjson/spec/record/record.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
 ods,src/python/ods/__init__.py,,,src/python/ods/__init__.py,codec_io,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
@@ -1994,10 +1994,10 @@ ods,src/python/ods/ods_writer.py,remove_sheet,function,src/python/ods/ods_writer
 ods,src/python/ods/ods_writer.py,rename_sheet,function,src/python/ods/ods_writer.py,codec_io,,,,medium,partial,verify,not_started,ACCEPTED_VERIFIED,
 ods,src/python/ods/ods_writer.py,add_row,function,src/python/ods/ods_writer.py,codec_io,,,,medium,partial,verify,not_started,ACCEPTED_VERIFIED,
 ods,src/python/ods/ods_writer.py,delete_row,function,src/python/ods/ods_writer.py,codec_io,,,,medium,partial,verify,not_started,ACCEPTED_VERIFIED,
-ods,src/python/ods/spec/__init__.py,,,src/python/ods/spec/__init__.py,spec_element_behavior,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
-ods,src/python/ods/spec/office/__init__.py,,,src/python/ods/spec/office/__init__.py,spec_element_behavior,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
+ods,src/python/ods/spec/__init__.py,,,src/python/ods/spec/__init__.py,spec_element_behavior,,,,low,unknown,no,complete,ACCEPTED_VERIFIED,TC-PH-012: spec class has behavioral methods (migrated 2026-06-22)
+ods,src/python/ods/spec/office/__init__.py,,,src/python/ods/spec/office/__init__.py,spec_element_behavior,,,,low,unknown,no,complete,ACCEPTED_VERIFIED,TC-PH-012: spec class has behavioral methods (migrated 2026-06-22)
 ods,src/python/ods/spec/office/document.py,Document,class,src/python/ods/spec/office/document.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
-ods,src/python/ods/spec/table/__init__.py,,,src/python/ods/spec/table/__init__.py,spec_element_behavior,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
+ods,src/python/ods/spec/table/__init__.py,,,src/python/ods/spec/table/__init__.py,spec_element_behavior,,,,low,unknown,no,complete,ACCEPTED_VERIFIED,TC-PH-012: spec class has behavioral methods (migrated 2026-06-22)
 ods,src/python/ods/spec/table/table.py,Table,class,src/python/ods/spec/table/table.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
 ods,src/python/ods/spec/table/table_cell.py,TableCell,class,src/python/ods/spec/table/table_cell.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
 ods,src/python/ods/spec/table/table_row.py,TableRow,class,src/python/ods/spec/table/table_row.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
@@ -2077,10 +2077,10 @@ odt,src/python/odt/odt_parser.py,odt_has_numeric_content,function,src/python/odt
 odt,src/python/odt/odt_parser.py,odt_numeric_value_sum,function,src/python/odt/odt_parser.py,codec_io,,,,medium,partial,verify,not_started,ACCEPTED_VERIFIED,
 odt,src/python/odt/odt_parser.py,odt_unique_char_count,function,src/python/odt/odt_parser.py,codec_io,,,,medium,partial,verify,not_started,ACCEPTED_VERIFIED,
 odt,src/python/odt/odt_parser.py,odt_nonspace_char_count,function,src/python/odt/odt_parser.py,codec_io,,,,medium,partial,verify,not_started,ACCEPTED_VERIFIED,
-odt,src/python/odt/spec/__init__.py,,,src/python/odt/spec/__init__.py,spec_element_behavior,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
-odt,src/python/odt/spec/office/__init__.py,,,src/python/odt/spec/office/__init__.py,spec_element_behavior,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
+odt,src/python/odt/spec/__init__.py,,,src/python/odt/spec/__init__.py,spec_element_behavior,,,,low,unknown,no,complete,ACCEPTED_VERIFIED,TC-PH-012: spec class has behavioral methods (migrated 2026-06-22)
+odt,src/python/odt/spec/office/__init__.py,,,src/python/odt/spec/office/__init__.py,spec_element_behavior,,,,low,unknown,no,complete,ACCEPTED_VERIFIED,TC-PH-012: spec class has behavioral methods (migrated 2026-06-22)
 odt,src/python/odt/spec/office/document.py,Document,class,src/python/odt/spec/office/document.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
-odt,src/python/odt/spec/text/__init__.py,,,src/python/odt/spec/text/__init__.py,spec_element_behavior,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
+odt,src/python/odt/spec/text/__init__.py,,,src/python/odt/spec/text/__init__.py,spec_element_behavior,,,,low,unknown,no,complete,ACCEPTED_VERIFIED,TC-PH-012: spec class has behavioral methods (migrated 2026-06-22)
 odt,src/python/odt/spec/text/heading.py,Heading,class,src/python/odt/spec/text/heading.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
 odt,src/python/odt/spec/text/paragraph.py,Paragraph,class,src/python/odt/spec/text/paragraph.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
 pbm,src/python/pbm/__init__.py,,,src/python/pbm/__init__.py,codec_io,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
@@ -2168,8 +2168,8 @@ pbm,src/python/pbm/pbm_to_pgm.py,pbm_pixels_to_pgm_pixels,function,src/python/pb
 pbm,src/python/pbm/pbm_to_pgm.py,convert_pbm_to_pgm,function,src/python/pbm/pbm_to_pgm.py,codec_io,,,,medium,partial,verify,not_started,ACCEPTED_VERIFIED,
 pbm,src/python/pbm/pbm_to_ppm.py,pbm_pixels_to_ppm_pixels,function,src/python/pbm/pbm_to_ppm.py,codec_io,,,,medium,partial,verify,not_started,ACCEPTED_VERIFIED,
 pbm,src/python/pbm/pbm_to_ppm.py,convert_pbm_to_ppm,function,src/python/pbm/pbm_to_ppm.py,codec_io,,,,medium,partial,verify,not_started,ACCEPTED_VERIFIED,
-pbm,src/python/pbm/spec/__init__.py,,,src/python/pbm/spec/__init__.py,spec_element_behavior,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
-pbm,src/python/pbm/spec/bitmap/__init__.py,,,src/python/pbm/spec/bitmap/__init__.py,spec_element_behavior,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
+pbm,src/python/pbm/spec/__init__.py,,,src/python/pbm/spec/__init__.py,spec_element_behavior,,,,low,unknown,no,complete,ACCEPTED_VERIFIED,TC-PH-012: spec class has behavioral methods (migrated 2026-06-22)
+pbm,src/python/pbm/spec/bitmap/__init__.py,,,src/python/pbm/spec/bitmap/__init__.py,spec_element_behavior,,,,low,unknown,no,complete,ACCEPTED_VERIFIED,TC-PH-012: spec class has behavioral methods (migrated 2026-06-22)
 pbm,src/python/pbm/spec/bitmap/bitmap.py,Bitmap,class,src/python/pbm/spec/bitmap/bitmap.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
 pbm,src/python/pbm/spec/bitmap/header.py,Header,class,src/python/pbm/spec/bitmap/header.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
 pgm,src/python/pgm/__init__.py,,,src/python/pgm/__init__.py,codec_io,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
@@ -2260,8 +2260,8 @@ pgm,src/python/pgm/pgm_parser.py,pgm_median_brightness,function,src/python/pgm/p
 pgm,src/python/pgm/pgm_parser.py,pgm_pixel_value_range,function,src/python/pgm/pgm_parser.py,codec_io,,,,medium,partial,verify,not_started,ACCEPTED_VERIFIED,
 pgm,src/python/pgm/pgm_to_ppm.py,pgm_pixels_to_ppm_pixels,function,src/python/pgm/pgm_to_ppm.py,codec_io,,,,medium,partial,verify,not_started,ACCEPTED_VERIFIED,
 pgm,src/python/pgm/pgm_to_ppm.py,convert_pgm_to_ppm,function,src/python/pgm/pgm_to_ppm.py,codec_io,,,,medium,partial,verify,not_started,ACCEPTED_VERIFIED,
-pgm,src/python/pgm/spec/__init__.py,,,src/python/pgm/spec/__init__.py,spec_element_behavior,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
-pgm,src/python/pgm/spec/graymap/__init__.py,,,src/python/pgm/spec/graymap/__init__.py,spec_element_behavior,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
+pgm,src/python/pgm/spec/__init__.py,,,src/python/pgm/spec/__init__.py,spec_element_behavior,,,,low,unknown,no,complete,ACCEPTED_VERIFIED,TC-PH-012: spec class has behavioral methods (migrated 2026-06-22)
+pgm,src/python/pgm/spec/graymap/__init__.py,,,src/python/pgm/spec/graymap/__init__.py,spec_element_behavior,,,,low,unknown,no,complete,ACCEPTED_VERIFIED,TC-PH-012: spec class has behavioral methods (migrated 2026-06-22)
 pgm,src/python/pgm/spec/graymap/graymap.py,Graymap,class,src/python/pgm/spec/graymap/graymap.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
 pgm,src/python/pgm/spec/graymap/header.py,Header,class,src/python/pgm/spec/graymap/header.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
 ppm,src/python/ppm/__init__.py,,,src/python/ppm/__init__.py,codec_io,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
@@ -2355,8 +2355,8 @@ ppm,src/python/ppm/ppm_stats.py,ppm_pixel_count,function,src/python/ppm/ppm_stat
 ppm,src/python/ppm/ppm_stats.py,ppm_channel_histogram,function,src/python/ppm/ppm_stats.py,codec_io,,,,medium,partial,verify,not_started,ACCEPTED_VERIFIED,
 ppm,src/python/ppm/ppm_to_pgm.py,ppm_pixels_to_pgm_pixels,function,src/python/ppm/ppm_to_pgm.py,codec_io,,,,medium,partial,verify,not_started,ACCEPTED_VERIFIED,
 ppm,src/python/ppm/ppm_to_pgm.py,convert_ppm_to_pgm,function,src/python/ppm/ppm_to_pgm.py,codec_io,,,,medium,partial,verify,not_started,ACCEPTED_VERIFIED,
-ppm,src/python/ppm/spec/__init__.py,,,src/python/ppm/spec/__init__.py,spec_element_behavior,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
-ppm,src/python/ppm/spec/pixmap/__init__.py,,,src/python/ppm/spec/pixmap/__init__.py,spec_element_behavior,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
+ppm,src/python/ppm/spec/__init__.py,,,src/python/ppm/spec/__init__.py,spec_element_behavior,,,,low,unknown,no,complete,ACCEPTED_VERIFIED,TC-PH-012: spec class has behavioral methods (migrated 2026-06-22)
+ppm,src/python/ppm/spec/pixmap/__init__.py,,,src/python/ppm/spec/pixmap/__init__.py,spec_element_behavior,,,,low,unknown,no,complete,ACCEPTED_VERIFIED,TC-PH-012: spec class has behavioral methods (migrated 2026-06-22)
 ppm,src/python/ppm/spec/pixmap/header.py,Header,class,src/python/ppm/spec/pixmap/header.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
 ppm,src/python/ppm/spec/pixmap/pixmap.py,Pixmap,class,src/python/ppm/spec/pixmap/pixmap.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
 qoi,src/python/qoi/__init__.py,,,src/python/qoi/__init__.py,codec_io,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
@@ -2445,8 +2445,8 @@ qoi,src/python/qoi/qoi_parser.py,qoi_min_brightness,function,src/python/qoi/qoi_
 qoi,src/python/qoi/qoi_parser.py,qoi_above_mean_ratio,function,src/python/qoi/qoi_parser.py,codec_io,,,,medium,partial,verify,not_started,ACCEPTED_VERIFIED,
 qoi,src/python/qoi/qoi_parser.py,qoi_green_blue_ratio,function,src/python/qoi/qoi_parser.py,codec_io,,,,medium,partial,verify,not_started,ACCEPTED_VERIFIED,
 qoi,src/python/qoi/qoi_parser.py,qoi_is_wide,function,src/python/qoi/qoi_parser.py,codec_io,,,,medium,partial,verify,not_started,ACCEPTED_VERIFIED,
-qoi,src/python/qoi/spec/__init__.py,,,src/python/qoi/spec/__init__.py,spec_element_behavior,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
-qoi,src/python/qoi/spec/chunk/__init__.py,,,src/python/qoi/spec/chunk/__init__.py,spec_element_behavior,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
+qoi,src/python/qoi/spec/__init__.py,,,src/python/qoi/spec/__init__.py,spec_element_behavior,,,,low,unknown,no,complete,ACCEPTED_VERIFIED,TC-PH-012: spec class has behavioral methods (migrated 2026-06-22)
+qoi,src/python/qoi/spec/chunk/__init__.py,,,src/python/qoi/spec/chunk/__init__.py,spec_element_behavior,,,,low,unknown,no,complete,ACCEPTED_VERIFIED,TC-PH-012: spec class has behavioral methods (migrated 2026-06-22)
 qoi,src/python/qoi/spec/chunk/chunk.py,Chunk,class,src/python/qoi/spec/chunk/chunk.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
 qoi,src/python/qoi/spec/chunk/header.py,Header,class,src/python/qoi/spec/chunk/header.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
 sylk,src/python/sylk/__init__.py,,,src/python/sylk/__init__.py,codec_io,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
@@ -2454,8 +2454,8 @@ sylk,src/python/sylk/Compat/__init__.py,,,src/python/sylk/Compat/__init__.py,fac
 sylk,src/python/sylk/Compat/sylk_cell.py,SylkCell,class,src/python/sylk/Compat/sylk_cell.py,facade_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
 sylk,src/python/sylk/Compat/sylk_header.py,SylkHeader,class,src/python/sylk/Compat/sylk_header.py,facade_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
 sylk,src/python/sylk/Compat/sylk_row.py,SylkRow,class,src/python/sylk/Compat/sylk_row.py,facade_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
-sylk,src/python/sylk/spec/__init__.py,,,src/python/sylk/spec/__init__.py,spec_element_behavior,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
-sylk,src/python/sylk/spec/row/__init__.py,,,src/python/sylk/spec/row/__init__.py,spec_element_behavior,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
+sylk,src/python/sylk/spec/__init__.py,,,src/python/sylk/spec/__init__.py,spec_element_behavior,,,,low,unknown,no,complete,ACCEPTED_VERIFIED,TC-PH-012: spec class has behavioral methods (migrated 2026-06-22)
+sylk,src/python/sylk/spec/row/__init__.py,,,src/python/sylk/spec/row/__init__.py,spec_element_behavior,,,,low,unknown,no,complete,ACCEPTED_VERIFIED,TC-PH-012: spec class has behavioral methods (migrated 2026-06-22)
 sylk,src/python/sylk/spec/row/cell.py,Cell,class,src/python/sylk/spec/row/cell.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
 sylk,src/python/sylk/spec/row/header.py,Header,class,src/python/sylk/spec/row/header.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
 sylk,src/python/sylk/spec/row/row.py,Row,class,src/python/sylk/spec/row/row.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
@@ -2560,8 +2560,8 @@ toml,src/python/toml/__init__.py,,,src/python/toml/__init__.py,codec_io,,,,low,u
 toml,src/python/toml/Compat/__init__.py,,,src/python/toml/Compat/__init__.py,facade_behavior,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
 toml,src/python/toml/Compat/toml_key.py,TomlKey,class,src/python/toml/Compat/toml_key.py,facade_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
 toml,src/python/toml/Compat/toml_table.py,TomlTable,class,src/python/toml/Compat/toml_table.py,facade_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
-toml,src/python/toml/spec/__init__.py,,,src/python/toml/spec/__init__.py,spec_element_behavior,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
-toml,src/python/toml/spec/table/__init__.py,,,src/python/toml/spec/table/__init__.py,spec_element_behavior,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
+toml,src/python/toml/spec/__init__.py,,,src/python/toml/spec/__init__.py,spec_element_behavior,,,,low,unknown,no,complete,ACCEPTED_VERIFIED,TC-PH-012: spec class has behavioral methods (migrated 2026-06-22)
+toml,src/python/toml/spec/table/__init__.py,,,src/python/toml/spec/table/__init__.py,spec_element_behavior,,,,low,unknown,no,complete,ACCEPTED_VERIFIED,TC-PH-012: spec class has behavioral methods (migrated 2026-06-22)
 toml,src/python/toml/spec/table/key.py,Key,class,src/python/toml/spec/table/key.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
 toml,src/python/toml/spec/table/table.py,Table,class,src/python/toml/spec/table/table.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
 toml,src/python/toml/toml_codec.py,TomlError,class,src/python/toml/toml_codec.py,codec_io,,,,high,partial,verify,not_started,ACCEPTED_VERIFIED,
@@ -2646,8 +2646,8 @@ tsv,src/python/tsv/__init__.py,,,src/python/tsv/__init__.py,codec_io,,,,low,unkn
 tsv,src/python/tsv/Compat/__init__.py,,,src/python/tsv/Compat/__init__.py,facade_behavior,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
 tsv,src/python/tsv/Compat/tsv_field.py,TsvField,class,src/python/tsv/Compat/tsv_field.py,facade_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
 tsv,src/python/tsv/Compat/tsv_record.py,TsvRecord,class,src/python/tsv/Compat/tsv_record.py,facade_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
-tsv,src/python/tsv/spec/__init__.py,,,src/python/tsv/spec/__init__.py,spec_element_behavior,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
-tsv,src/python/tsv/spec/record/__init__.py,,,src/python/tsv/spec/record/__init__.py,spec_element_behavior,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
+tsv,src/python/tsv/spec/__init__.py,,,src/python/tsv/spec/__init__.py,spec_element_behavior,,,,low,unknown,no,complete,ACCEPTED_VERIFIED,TC-PH-012: spec class has behavioral methods (migrated 2026-06-22)
+tsv,src/python/tsv/spec/record/__init__.py,,,src/python/tsv/spec/record/__init__.py,spec_element_behavior,,,,low,unknown,no,complete,ACCEPTED_VERIFIED,TC-PH-012: spec class has behavioral methods (migrated 2026-06-22)
 tsv,src/python/tsv/spec/record/field.py,Field,class,src/python/tsv/spec/record/field.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
 tsv,src/python/tsv/spec/record/record.py,Record,class,src/python/tsv/spec/record/record.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
 tsv,src/python/tsv/tsv_parser.py,TsvError,class,src/python/tsv/tsv_parser.py,codec_io,,,,high,partial,verify,not_started,ACCEPTED_VERIFIED,
@@ -2751,8 +2751,8 @@ xcf,src/python/xcf/__init__.py,,,src/python/xcf/__init__.py,codec_io,,,,low,unkn
 xcf,src/python/xcf/Compat/__init__.py,,,src/python/xcf/Compat/__init__.py,facade_behavior,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
 xcf,src/python/xcf/Compat/xcf_header.py,XcfHeader,class,src/python/xcf/Compat/xcf_header.py,facade_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
 xcf,src/python/xcf/Compat/xcf_layer.py,XcfLayer,class,src/python/xcf/Compat/xcf_layer.py,facade_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
-xcf,src/python/xcf/spec/__init__.py,,,src/python/xcf/spec/__init__.py,spec_element_behavior,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
-xcf,src/python/xcf/spec/layer/__init__.py,,,src/python/xcf/spec/layer/__init__.py,spec_element_behavior,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
+xcf,src/python/xcf/spec/__init__.py,,,src/python/xcf/spec/__init__.py,spec_element_behavior,,,,low,unknown,no,complete,ACCEPTED_VERIFIED,TC-PH-012: spec class has behavioral methods (migrated 2026-06-22)
+xcf,src/python/xcf/spec/layer/__init__.py,,,src/python/xcf/spec/layer/__init__.py,spec_element_behavior,,,,low,unknown,no,complete,ACCEPTED_VERIFIED,TC-PH-012: spec class has behavioral methods (migrated 2026-06-22)
 xcf,src/python/xcf/spec/layer/header.py,Header,class,src/python/xcf/spec/layer/header.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
 xcf,src/python/xcf/spec/layer/layer.py,Layer,class,src/python/xcf/spec/layer/layer.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
 xcf,src/python/xcf/xcf_analytics.py,xcf_file_size_plus_image_type_id,function,src/python/xcf/xcf_analytics.py,utility_private,,,,medium,partial,verify,not_started,ACCEPTED_VERIFIED,
@@ -3709,8 +3709,8 @@ zst,src/python/zst/__init__.py,,,src/python/zst/__init__.py,codec_io,,,,low,unkn
 zst,src/python/zst/Compat/__init__.py,,,src/python/zst/Compat/__init__.py,facade_behavior,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
 zst,src/python/zst/Compat/zst_block.py,ZstBlock,class,src/python/zst/Compat/zst_block.py,facade_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
 zst,src/python/zst/Compat/zst_frame.py,ZstFrame,class,src/python/zst/Compat/zst_frame.py,facade_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
-zst,src/python/zst/spec/__init__.py,,,src/python/zst/spec/__init__.py,spec_element_behavior,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
-zst,src/python/zst/spec/frame/__init__.py,,,src/python/zst/spec/frame/__init__.py,spec_element_behavior,,,,low,unknown,no,not_needed,ACCEPTED_VERIFIED,
+zst,src/python/zst/spec/__init__.py,,,src/python/zst/spec/__init__.py,spec_element_behavior,,,,low,unknown,no,complete,ACCEPTED_VERIFIED,TC-PH-012: spec class has behavioral methods (migrated 2026-06-22)
+zst,src/python/zst/spec/frame/__init__.py,,,src/python/zst/spec/frame/__init__.py,spec_element_behavior,,,,low,unknown,no,complete,ACCEPTED_VERIFIED,TC-PH-012: spec class has behavioral methods (migrated 2026-06-22)
 zst,src/python/zst/spec/frame/block.py,Block,class,src/python/zst/spec/frame/block.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
 zst,src/python/zst/spec/frame/frame.py,Frame,class,src/python/zst/spec/frame/frame.py,spec_element_behavior,,,,high,yes,no,complete,ACCEPTED_VERIFIED,
 zst,src/python/zst/zst_analytics.py,zst_compressed_size_minus_frame_count,function,src/python/zst/zst_analytics.py,utility_private,,,,medium,partial,verify,not_started,ACCEPTED_VERIFIED,
