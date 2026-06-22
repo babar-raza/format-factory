@@ -1040,6 +1040,38 @@ TC-FODT-GAP-001, TC-FODT-AUDIT-001, TC-FODT-AUDIT-002, TC-RCAL-001
 
 ---
 
+### Session: Adaptive Splashing Frog — Post-Sprint Hardening (CLOSED 2026-06-22)
+
+**Status:** CLOSED (all 5 taskcards complete; committed in `c29a2a23`; gates verified)
+
+**Plan:** `C:/Users/prora/.claude/plans/adaptive-splashing-frog.md` v2.0 — TERMINAL_CLOSED
+
+**What was accomplished:**
+
+*TC-H2 — FODT parse chain routing (VERIFIED):*
+- `FodtDocument.paragraphs()` confirmed routing through `_CompatParagraph` (from `Compat.fodt_paragraph`). `isinstance(doc.paragraphs()[0], compat.FodtParagraph)` == `True` at runtime.
+
+*TC-H3 — Parse-chain isinstance guard test (VERIFIED):*
+- `test_parse_chain_returns_compat_paragraph` added to `TestCompatSwitchGuard` in `tests/python/fodt/test_compat_bootstrap.py`. All 26 FODT compat tests pass.
+
+*TC-H4 — Gap audit verdict correction (VERIFIED):*
+- `gap-audit-2026-06-21.json`: 4 XCF arithmetic gaps reclassified `VERIFIED` → `CLAIMED_UNPROVEN` per keen-dancing-hopper suspension policy. Verdict summary: 13 VERIFIED / 12 CLAIMED_UNPROVEN.
+- `gap-ledger.json`: 8 CLAIMED_UNPROVEN gaps → `needs_verification` with `audit_note`. 12 total gaps reclassified with durable records.
+
+*TC-H6 — XCF arithmetic gap reopening (VERIFIED):*
+- `GAP-XCF-FOSS-XCF_FILE_SIZ-001`, `XCF_WIDTH_TI-001`, `XCF_HEIGHT_T-001`, `XCF_WIDTH_SQ-001` changed from `closed` → `open` with audit_note citing suspension policy.
+
+*TC-H8 — spec_qname functional consumer (VERIFIED):*
+- `get_spec_qname(obj)` added to `src/python/fods/Compat/__init__.py`, exported in `__all__`. `TestGetSpecQname` (4 tests) added to `tests/python/fods/test_spec_parity_fods.py` — 17/17 pass.
+
+**Gate results:** G-H2 ✓ G-H3 ✓ G-H4a ✓ G-H4b ✓ G-H6 ✓ G-H8 ✓
+
+**Committed in `c29a2a23`:** `src/python/fods/Compat/__init__.py`, `tests/python/fods/test_spec_parity_fods.py`, `tests/python/fodt/test_compat_bootstrap.py`, `tests/python/fodt/test_fodt_domain_models.py`, `reports/capability-layer/gap-audit-2026-06-21.json`, `reports/capability-layer/gap-ledger.json`
+
+**Follow-ups (non-blocking):** 8 FODT/FODS gaps at `needs_verification` — closing requires implementing Save Same Format, Reload And Verify, Inspect Object Model, Edit Paragraphs/Cells capabilities.
+
+---
+
 ## ARCHIVE-PTR — Historical Content Archive
 
 The following sections were archived during the healing sprint of 2026-06-10.
@@ -1053,5 +1085,5 @@ No content has been deleted — only moved to archive files with pointers.
 
 ---
 
-*End of plans/master-plan.md — version 3.5 — 2026-06-22 (Forensic healing: 6 TC-FH taskcards closed; FODS fods_max_row_count bug fixed; fods/fods/ triple-nest removed; XCF/ZST 99 gap tests deleted; 1769 tests pass; flickering-imagining-crystal CLOSED TERMINAL)*
+*End of plans/master-plan.md — version 3.6 — 2026-06-22 (Adaptive splashing frog: 5 TC-H taskcards closed; FODT parse chain verified; gap audit reclassified 12 gaps; 4 XCF arithmetic gaps reopened; get_spec_qname consumer added; adaptive-splashing-frog CLOSED TERMINAL)*
 *This document is the single operational authority for format-factory. All other documents are subordinate to it for operational decisions.*
