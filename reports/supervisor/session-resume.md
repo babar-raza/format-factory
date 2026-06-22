@@ -1,14 +1,14 @@
 # Session Resume Briefing
 # Format Factory — Supervisor-Generated
-# Generated: 2026-06-21T22:11:21.355330
+# Generated: 2026-06-22T13:15:15.355676
 
 ## Quick State
-- Last sprint: post-recon-repair-gate11-20260621
-- Evidence verdict: ACCEPTED_WITH_WARNINGS
-- Tests: 65 passed / 5 failed
+- Last sprint: floating-stargazing-globe-20260622-080956
+- Evidence verdict: ACCEPTED
+- Tests: 1609 passed / 0 failed
 - PENDING markers: 0
-- CRITICAL contradictions: 1
-- Autonomous continue: False
+- CRITICAL contradictions: 0
+- Autonomous continue: True
 - Current supervisor mode: MODE 4
 - MCP status: ACTIVE (.vscode/mcp.json present)
 
@@ -23,62 +23,62 @@
 5. Prose context: `reports/supervisor/next-sprint.md`
 
 ## Where To Find Evidence
-- Last evidence bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\post-recon-repair-gate11-20260621\declaration-review-package.zip
+- Last evidence bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\floating-stargazing-globe-20260622-080956\declaration-review-package.zip
 - Supervisor outputs: reports/supervisor/
 - Project memory: .supervisor/project-memory.md
 
 ## Project Memory (recent)
 ```
 
-## Entry: ff-gate11-fodt-readiness-20260621
-- timestamp: 2026-06-21T21:53:20.833985
-- verdict: ACCEPTED
-- test_count: 567
-- fail_count: 0
-- git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\ff-gate11-fodt-readiness-20260621\declaration-review-package.zip
-- pending_marker_count: 0
-- bundle_entry_count: 66
-- bundle_validation_pass: True
-- test_delta: -50
-- test_delta_from: 617
-
-## Entry: ff-dtd-guard-tests-20260621
-- timestamp: 2026-06-21T21:59:23.603593
-- verdict: ACCEPTED
-- test_count: 1186
-- fail_count: 0
-- git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\ff-dtd-guard-tests-20260621\declaration-review-package.zip
-- pending_marker_count: 0
-- bundle_entry_count: 60
-- bundle_validation_pass: True
-- test_delta: +619
-- test_delta_from: 567
-
-## Entry: ff-registry-sync-20260621
-- timestamp: 2026-06-21T22:01:21.582379
-- verdict: ACCEPTED
-- test_count: 1186
-- fail_count: 0
-- git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\ff-registry-sync-20260621\declaration-review-package.zip
-- pending_marker_count: 0
-- bundle_entry_count: 60
-- bundle_validation_pass: True
-- test_delta: 0
-- test_delta_from: 1186
-
-## Entry: skill-gov-sync-final-20260621
-- timestamp: 2026-06-21T22:05:27.705424
+## Entry: polished-hopping-glacier-plan-execution
+- timestamp: 2026-06-21T23:35:15.299283
 - verdict: ACCEPTED
 - test_count: 0
 - fail_count: 0
 - git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\skill-gov-sync-final-20260621\declaration-review-package.zip
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\polished-hopping-glacier-closeout\declaration-review-package.zip
 - pending_marker_count: 0
-- bundle_entry_count: 80
+- bundle_entry_count: 68
 - bundle_validation_pass: True
+
+## Entry: wave3-advance-lane15-fods-cleanup-20260622
+- timestamp: 2026-06-22T12:49:08.045537
+- verdict: ACCEPTED
+- test_count: 1316
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\wave3-advance-lane15-fods-cleanup-20260622\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 70
+- bundle_validation_pass: True
+- test_delta: +1316
+- test_delta_from: 0
+
+## Entry: floating-stargazing-globe
+- timestamp: 2026-06-22T12:53:08.655731
+- verdict: ACCEPTED
+- test_count: 8
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\floating-stargazing-globe-20260622-074927\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 75
+- bundle_validation_pass: True
+- test_delta: -1308
+- test_delta_from: 1316
+
+## Entry: wave3-advance-cond2-cond6-20260622
+- timestamp: 2026-06-22T13:07:13.379763
+- verdict: ACCEPTED
+- test_count: 14
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\wave3-advance-cond2-cond6-20260622\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 62
+- bundle_validation_pass: True
+- test_delta: +6
+- test_delta_from: 8
 ```
 
 ## IMPORTANT REMINDERS

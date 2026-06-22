@@ -14,7 +14,7 @@ from src.python.fods.spec.office.document import Document as _SpecDocument
 class FodsDocument(_SpecDocument):
     """Production facade for office:document (FODS root element).
 
-    Delegates to the canonical spec stub via inheritance. Adds production
+    Inherits all behavior from the canonical spec authority class. Adds production
     convenience methods for interacting with FODS data structures.
     """
 

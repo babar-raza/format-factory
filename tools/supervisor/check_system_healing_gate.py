@@ -72,6 +72,26 @@ def _sal_fact_count(format_id: str) -> int:
         return 0
 
 
+def _sal_workbench_verified_count(format_id: str) -> int:
+    """Return the workbench_verified_fact_count for a format from sal-facts-latest.json.
+
+    Added by A5 (spec-authority-healing sprint, 2026-06-22) to check that workbench-
+    reviewed facts exist per format, not just template/bootstrap facts.
+    Returns 0 if the file is missing or the format is not found.
+    """
+    sal_latest = REPO_ROOT / ".local" / "sal-output" / "sal-facts-latest.json"
+    if not sal_latest.is_file():
+        return 0
+    try:
+        data = json.loads(sal_latest.read_text(encoding="utf-8"))
+        for result in data.get("results", []):
+            if result.get("format_id", "").lower() == format_id.lower():
+                return result.get("workbench_verified_fact_count", 0)
+    except Exception:
+        pass
+    return 0
+
+
 # ── Lane check functions ─────────────────────────────────────────────────────
 
 def check_lane_1_sal() -> dict:
@@ -81,6 +101,8 @@ def check_lane_1_sal() -> dict:
     sal_modules = _dir_file_count("tools/specification-authority-layer")
     fods_facts = _sal_fact_count("fods")
     fodt_facts = _sal_fact_count("fodt")
+    fods_wb_count = _sal_workbench_verified_count("fods")
+    fodt_wb_count = _sal_workbench_verified_count("fodt")
 
     checks = {
         "sal_runner_exists": _file_exists(sal_runner),
@@ -90,12 +112,21 @@ def check_lane_1_sal() -> dict:
         "fodt_format_specific_facts": fodt_facts,
         "fods_facts_gte_10": fods_facts >= 10,
         "fodt_facts_gte_10": fodt_facts >= 10,
+        # A5 (spec-authority-healing, 2026-06-22): workbench-verified depth checks
+        # These ensure sal-facts-latest.json contains real workbench evidence, not
+        # just bootstrap template facts that exist without spec text verification.
+        "fods_workbench_verified_count": fods_wb_count,
+        "fodt_workbench_verified_count": fodt_wb_count,
+        "fods_workbench_verified_count_positive": fods_wb_count > 0,
+        "fodt_workbench_verified_count_positive": fodt_wb_count > 0,
     }
     passed = all([
         checks["sal_runner_exists"],
         checks["sal_runner_lines_gte_500"],
         checks["fods_facts_gte_10"],
         checks["fodt_facts_gte_10"],
+        checks["fods_workbench_verified_count_positive"],
+        checks["fodt_workbench_verified_count_positive"],
     ])
     return {"lane": 1, "name": "SAL Pipeline", "passed": passed, "checks": checks}
 
@@ -266,6 +297,72 @@ def check_lane_15_healing() -> dict:
 
 # ── Gate evaluation ──────────────────────────────────────────────────────────
 
+def check_lane_7_byp001_authority_depth() -> dict:
+    """Lane 7: BYP-001 Advisory — formats with gap-ledger refs but 0 workbench facts.
+
+    TC-GUARD-001 checks gap_ledger_ref PRESENCE only. A PRODUCT_SOURCE item citing
+    a gap for a format with 0 workbench SAL facts satisfies the gate despite having
+    no real spec authority. This lane identifies such formats as an advisory signal.
+
+    Added by spec-authority-healing sprint (BYP-001 repair, 2026-06-22).
+    Advisory-only: always passes (does not block sprint) but surfaces authority gaps.
+    """
+    gap_ledger_path = REPO_ROOT / "reports" / "capability-layer" / "gap-ledger.json"
+    sal_latest = REPO_ROOT / ".local" / "sal-output" / "sal-facts-latest.json"
+
+    if not gap_ledger_path.is_file() or not sal_latest.is_file():
+        return {
+            "lane": 7,
+            "name": "BYP-001 Authority Depth",
+            "passed": True,
+            "checks": {"advisory": True, "error": "gap-ledger or sal-facts not found"},
+        }
+
+    try:
+        gaps = json.loads(gap_ledger_path.read_text(encoding="utf-8")).get("gaps", [])
+        sal_data = json.loads(sal_latest.read_text(encoding="utf-8"))
+    except Exception as exc:
+        return {
+            "lane": 7,
+            "name": "BYP-001 Authority Depth",
+            "passed": True,
+            "checks": {"advisory": True, "error": str(exc)},
+        }
+
+    # Build workbench count index from SAL output
+    wb_counts: dict[str, int] = {}
+    for result in sal_data.get("results", []):
+        fmt = result.get("format_id", "").lower()
+        wb_counts[fmt] = result.get("workbench_verified_fact_count", 0)
+
+    # Find formats that have gap-ledger entries but 0 workbench facts
+    gap_formats: set[str] = set()
+    for g in gaps:
+        fmt = g.get("format", "").lower()
+        if fmt:
+            gap_formats.add(fmt)
+
+    zero_wb_formats = sorted(
+        f for f in gap_formats if wb_counts.get(f, 0) == 0
+    )
+    positive_wb_formats = sorted(
+        f for f in gap_formats if wb_counts.get(f, 0) > 0
+    )
+
+    checks = {
+        "advisory": True,
+        "gap_ledger_formats_total": len(gap_formats),
+        "formats_with_gap_and_zero_wb_facts": len(zero_wb_formats),
+        "formats_with_gap_and_positive_wb_facts": len(positive_wb_formats),
+        "zero_wb_format_list": zero_wb_formats,
+        # BYP-001 is resolved when all gap-referenced formats have workbench facts
+        "byp001_zero_wb_format_count": len(zero_wb_formats),
+    }
+    # Advisory lane: always passes (non-critical), surfaces info only
+    passed = True
+    return {"lane": 7, "name": "BYP-001 Authority Depth", "passed": passed, "checks": checks}
+
+
 CRITICAL_LANES = {1, 3, 5}  # SAL, Compiler, Validators must pass
 
 
@@ -278,6 +375,7 @@ def evaluate_gate() -> dict:
         check_lane_4_skills(),
         check_lane_5_validators(),
         check_lane_6_ontology(),
+        check_lane_7_byp001_authority_depth(),
         check_lane_14_supervision(),
         check_lane_15_healing(),
     ]

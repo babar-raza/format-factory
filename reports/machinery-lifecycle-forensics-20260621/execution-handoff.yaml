@@ -3,6 +3,8 @@
 schema_version: "1.0"
 generated_at: "2026-06-21"
 run_id: "machinery-lifecycle-forensics-20260621"
+updated_by_run_id: "zesty-moseying-whale"
+updated_at: "2026-06-21"
 
 execution_handoff:
   mission_id: "machinery-lifecycle-healing-20260621"
@@ -37,15 +39,15 @@ execution_handoff:
     - "LIF-5: Task vs Mission State Corrected — PASS_WITH_LIMITATIONS (mission-ledger.json created)"
     - "LIF-6: Target Lifecycle Designed — PASS (lifecycle-truth-table.md)"
     - "LIF-7: Mission Ledger Implemented — PASS (.local/supervisor/machinery/mission-ledger.json)"
-    - "LIF-8: Audit Consumer Implemented — NOT_RUN (needs TC-LIF-POST-EXEC-AUDIT-001)"
+    - "LIF-8: Audit Consumer Implemented — PASS (machinery_audit.py; 11 tests; post-exec-audit-3.json)"
     - "LIF-9: Continuation Consumer Implemented — PASS_WITH_LIMITATIONS (machinery track signal reset)"
     - "LIF-10: Plan Reopening Proven — NOT_RUN (needs TC-LIF-PLAN-REOPEN-001)"
     - "LIF-11: Closeout/Iteration Stop Defects — PASS (documented in stop-condition-forensics.yaml)"
     - "LIF-12: Single Iteration Pilot — PASS (this sprint = one complete iteration)"
-    - "LIF-13: Multi-Iteration Pilot — NOT_RUN (needs next session to confirm)"
+    - "LIF-13: Multi-Iteration Pilot — PASS (3 iterations proven; see iteration-record.yaml)"
     - "LIF-14: Interrupted Run Recovery — NOT_RUN"
     - "LIF-15: Lane Isolation Proven — PASS_WITH_LIMITATIONS (PLAN_TERMINAL blocks machinery; fix documented)"
-    - "LIF-16: Idempotent Rerun — NOT_RUN"
+    - "LIF-16: Idempotent Rerun — PASS (zesty-moseying-whale sprint; 3 new gaps found and resolved)"
     - "LIF-17: Autonomous Unattended Loop — NOT_RUN (blocked by PLAN_TERMINAL)"
     - "LIF-18: Mission-Aware Stop — PASS_WITH_LIMITATIONS (mission-ledger stop_status implemented)"
     - "LIF-19: Authoritative Plan Ready — PASS (plans/snoopy-juggling-seal.md)"
@@ -59,7 +61,7 @@ execution_handoff:
     - "Pilot E (iteration limit): NOT_RUN"
     - "Pilot F (closeout safety): DOCUMENTED — stop-condition-forensics.yaml"
     - "Pilot G (interrupted run): NOT_RUN"
-    - "Pilot H (multi-iteration): NOT_RUN"
+    - "Pilot H (multi-iteration): COMPLETE — 3 iterations proven (iteration-record.yaml)"
     - "Pilot I (stable rerun): PARTIALLY — baseline update is idempotent"
 
   retry_policy: "Best-effort: if autonomous-cycle fails, log and continue with next sprint"
@@ -68,6 +70,8 @@ execution_handoff:
 
   allowed_stop_conditions:
     - "MISSION_COMPLETE: all repairs verified, no open mandatory gaps, completion audit passed"
+    - "MACHINERY_MISSION_COMPLETE: check_continuation.py Check 1c fires when mission-ledger.json stop_status=MISSION_COMPLETE"
+    - "MACHINERY_AUDIT_REQUIRED: check_continuation.py Check 1c fires when audit_pending=True AND execution_pending=False"
     - "TRUE_EXTERNAL_GATE: git push credentials, Gate 11 approval, PyPI publication"
     - "POST_PLAN_TERMINAL: per-chat plan completed with --terminal (new session required)"
     - "CONTEXT_EXHAUSTION: token limit reached — state persists in mission-ledger.json"

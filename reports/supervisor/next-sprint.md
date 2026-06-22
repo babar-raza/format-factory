@@ -1,20 +1,20 @@
 # Supervisor-Generated Next Sprint Prompt
-# Source sprint: post-recon-repair-gate11-20260621
+# Source sprint: floating-stargazing-globe-20260622-080956
 # Stream: mainstream
-# Generated: 2026-06-21T22:11:21.274265
+# Generated: 2026-06-22T13:15:15.283156
 # ADVISORY ONLY — not a Format Factory authority document
 # This is INPUT to the next sprint, not a gate approval or commit authorization.
 
 ---
 
 ## Sprint Focus
-PRODUCT + REPAIR: Advance product POC AND address CRITICAL contradictions
+ADVANCE: Product deepening — .NET commercial + Python FOSS + dogfood + packaging
 
 ## Prior Sprint Summary
-- Sprint ID: post-recon-repair-gate11-20260621
-- Evidence verdict: ACCEPTED_WITH_WARNINGS
-- Tests: 65 passed, 5 failed, 0 skipped
-- Autonomous continue: False
+- Sprint ID: floating-stargazing-globe-20260622-080956
+- Evidence verdict: ACCEPTED
+- Tests: 1609 passed, 0 failed, 0 skipped
+- Autonomous continue: True
 
 ## STOP_REASON_ADVISORY (enforced by stop_reason_adjudicator.py)
 
@@ -36,21 +36,21 @@ TRUE_EXTERNAL_GATE (ONLY these warrant a stop):
 - Credentials unavailable with no fallback
 
 ## Section 1: New Product Work (Advisory — Always Execute)
-- [pending] TASK-002: Select governed product gaps and validate the product-code ledger
-- [agent-owned] TASK-003: Prepare commit candidate summary and changed-file manifest
-- [external-gate] TASK-004: Execute git commit (requires explicit user authorization — do NOT self-execute)
-- [pending] TASK-005: Work on open taskcard: TC-0015-spec-retrieval-strategy-evaluation
-- [pending] TASK-006: Work on open taskcard: TC-0016-fods-vector-index-pilot
-- [pending] TASK-007: Work on open taskcard: TC-0020-spec-workbench-core
-- [pending] TASK-008: Advance one dogfood export path using a Format Factory library
-- [pending] TASK-009: Build package artifacts and run installed-workflow proof
-- [pending] TASK-010: Write evidence declaration and run supervisor autonomous-cycle
+- [pending] TASK-001: Select governed product gaps and validate the product-code ledger
+- [agent-owned] TASK-002: Prepare commit candidate summary and changed-file manifest
+- [external-gate] TASK-003: Execute git commit (requires explicit user authorization — do NOT self-execute)
+- [pending] TASK-004: Work on open taskcard: TC-0015-spec-retrieval-strategy-evaluation
+- [pending] TASK-005: Work on open taskcard: TC-0016-fods-vector-index-pilot
+- [pending] TASK-006: Work on open taskcard: TC-0020-spec-workbench-core
+- [pending] TASK-007: Advance one dogfood export path using a Format Factory library
+- [pending] TASK-008: Build package artifacts and run installed-workflow proof
+- [pending] TASK-009: Write evidence declaration and run supervisor autonomous-cycle
 
 ## Section 2: Rework / Repair (Advisory — Fix Before Closeout)
-- [pending] REPAIR-001: Repair: Tests failed: 5 failures detected in evidence bundle
+None
 
 ## Contradictions Context
-- [CRITICAL] Tests failed: 5 failures detected in evidence bundle
+None
 
 ## Non-Negotiable Rules (always apply)
 1. No push without explicit user authorization.
@@ -83,55 +83,55 @@ TRUE_EXTERNAL_GATE (ONLY these warrant a stop):
 ## Project Memory Context
 ```
 
-## Entry: ff-gate11-fodt-readiness-20260621
-- timestamp: 2026-06-21T21:53:20.833985
-- verdict: ACCEPTED
-- test_count: 567
-- fail_count: 0
-- git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\ff-gate11-fodt-readiness-20260621\declaration-review-package.zip
-- pending_marker_count: 0
-- bundle_entry_count: 66
-- bundle_validation_pass: True
-- test_delta: -50
-- test_delta_from: 617
-
-## Entry: ff-dtd-guard-tests-20260621
-- timestamp: 2026-06-21T21:59:23.603593
-- verdict: ACCEPTED
-- test_count: 1186
-- fail_count: 0
-- git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\ff-dtd-guard-tests-20260621\declaration-review-package.zip
-- pending_marker_count: 0
-- bundle_entry_count: 60
-- bundle_validation_pass: True
-- test_delta: +619
-- test_delta_from: 567
-
-## Entry: ff-registry-sync-20260621
-- timestamp: 2026-06-21T22:01:21.582379
-- verdict: ACCEPTED
-- test_count: 1186
-- fail_count: 0
-- git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\ff-registry-sync-20260621\declaration-review-package.zip
-- pending_marker_count: 0
-- bundle_entry_count: 60
-- bundle_validation_pass: True
-- test_delta: 0
-- test_delta_from: 1186
-
-## Entry: skill-gov-sync-final-20260621
-- timestamp: 2026-06-21T22:05:27.705424
+## Entry: polished-hopping-glacier-plan-execution
+- timestamp: 2026-06-21T23:35:15.299283
 - verdict: ACCEPTED
 - test_count: 0
 - fail_count: 0
 - git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\skill-gov-sync-final-20260621\declaration-review-package.zip
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\polished-hopping-glacier-closeout\declaration-review-package.zip
 - pending_marker_count: 0
-- bundle_entry_count: 80
+- bundle_entry_count: 68
 - bundle_validation_pass: True
+
+## Entry: wave3-advance-lane15-fods-cleanup-20260622
+- timestamp: 2026-06-22T12:49:08.045537
+- verdict: ACCEPTED
+- test_count: 1316
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\wave3-advance-lane15-fods-cleanup-20260622\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 70
+- bundle_validation_pass: True
+- test_delta: +1316
+- test_delta_from: 0
+
+## Entry: floating-stargazing-globe
+- timestamp: 2026-06-22T12:53:08.655731
+- verdict: ACCEPTED
+- test_count: 8
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\floating-stargazing-globe-20260622-074927\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 75
+- bundle_validation_pass: True
+- test_delta: -1308
+- test_delta_from: 1316
+
+## Entry: wave3-advance-cond2-cond6-20260622
+- timestamp: 2026-06-22T13:07:13.379763
+- verdict: ACCEPTED
+- test_count: 14
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\wave3-advance-cond2-cond6-20260622\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 62
+- bundle_validation_pass: True
+- test_delta: +6
+- test_delta_from: 8
 ```
 
 ---

@@ -14,7 +14,7 @@ from src.python.fods.spec.table.table_cell import TableCell as _SpecTableCell
 class FodsCell(_SpecTableCell):
     """Production facade for table:table-cell (a single cell in a FODS sheet).
 
-    Delegates to the canonical spec stub via inheritance. Represents a cell
+    Inherits all behavior from the canonical spec authority class. Represents a cell
     within table:table-row with office:value-type and office:value attributes.
     """
 

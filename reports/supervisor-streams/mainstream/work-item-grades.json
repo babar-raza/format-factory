@@ -1,12 +1,12 @@
 [
   {
-    "item_id": "TC-REPAIR-L15-001",
-    "item_title": "Correct Lane 15 Wrong Premise",
+    "item_id": "R1-TASKCARD-REGISTER",
+    "item_title": "Create .local/recon/taskcard-register.yaml",
     "declared_status": "completed",
     "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
     "evidence_found": true,
     "evidence_paths": [
-      ".local/evidences/ff-idempotent-recon-20260618-1320e557/lane-15-premise-correction.md"
+      ".local/recon/taskcard-register.yaml"
     ],
     "tests_supporting": [],
     "tests_missing": [],
@@ -20,7 +20,7 @@
     ],
     "required_rework": "",
     "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for TC-REPAIR-L15-001",
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for R1-TASKCARD-REGISTER",
     "purpose_check": {
       "item_type": "GOVERNANCE_TASKCARD",
       "has_gap_ref": null,
@@ -32,21 +32,31 @@
       "confidence": 0.0,
       "stub_detected": false,
       "deficiencies": [
-        "llm_verification_unavailable"
+        "few key fields found: [] (expected >=3)"
       ],
       "llm_used": false,
-      "source": "fallback_llm_unavailable",
-      "note": "LLM unavailable or malformed response; evidence needs manual review"
+      "intermediate_verified": true,
+      "source": "intermediate_content_check",
+      "checks": [
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\recon\\taskcard-register.yaml",
+          "exists": true,
+          "content_ok": false,
+          "detail": "few key fields found: [] (expected >=3)",
+          "check_type": "yaml_content"
+        }
+      ],
+      "summary": "0/1 evidence files passed content check"
     }
   },
   {
-    "item_id": "TC-REPAIR-YAML-001",
-    "item_title": "Fix plan-section-inventory.yaml YAML syntax",
+    "item_id": "R2-SKILL-GAP-TEMPLATE",
+    "item_title": "Create .local/recon/skill-gap-taskcard-template.yaml",
     "declared_status": "completed",
     "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
     "evidence_found": true,
     "evidence_paths": [
-      ".local/evidences/ff-idempotent-recon-20260618-1320e557/plan-section-inventory.yaml"
+      ".local/recon/skill-gap-taskcard-template.yaml"
     ],
     "tests_supporting": [],
     "tests_missing": [],
@@ -60,7 +70,7 @@
     ],
     "required_rework": "",
     "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for TC-REPAIR-YAML-001",
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for R2-SKILL-GAP-TEMPLATE",
     "purpose_check": {
       "item_type": "GOVERNANCE_TASKCARD",
       "has_gap_ref": null,
@@ -72,21 +82,31 @@
       "confidence": 0.0,
       "stub_detected": false,
       "deficiencies": [
-        "llm_verification_unavailable"
+        "few key fields found: ['sprint_id'] (expected >=3)"
       ],
       "llm_used": false,
-      "source": "fallback_llm_unavailable",
-      "note": "LLM unavailable or malformed response; evidence needs manual review"
+      "intermediate_verified": true,
+      "source": "intermediate_content_check",
+      "checks": [
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\recon\\skill-gap-taskcard-template.yaml",
+          "exists": true,
+          "content_ok": false,
+          "detail": "few key fields found: ['sprint_id'] (expected >=3)",
+          "check_type": "yaml_content"
+        }
+      ],
+      "summary": "0/1 evidence files passed content check"
     }
   },
   {
-    "item_id": "TC-REPAIR-COUNT-001",
-    "item_title": "Document qname-to-code-map.yaml count discrepancy",
+    "item_id": "R3-GAP-REGISTER-VERIFIED",
+    "item_title": "Verify gap-register.yaml SKILL-GAP-010/011/BYPASS-001 resolved",
     "declared_status": "completed",
     "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
     "evidence_found": true,
     "evidence_paths": [
-      ".local/evidences/ff-idempotent-recon-20260618-1320e557/qname-count-correction.md"
+      ".local/recon/gap-register.yaml"
     ],
     "tests_supporting": [],
     "tests_missing": [],
@@ -100,7 +120,7 @@
     ],
     "required_rework": "",
     "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for TC-REPAIR-COUNT-001",
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for R3-GAP-REGISTER-VERIFIED",
     "purpose_check": {
       "item_type": "GOVERNANCE_TASKCARD",
       "has_gap_ref": null,
@@ -112,21 +132,31 @@
       "confidence": 0.0,
       "stub_detected": false,
       "deficiencies": [
-        "llm_verification_unavailable"
+        "few key fields found: [] (expected >=3)"
       ],
       "llm_used": false,
-      "source": "fallback_llm_unavailable",
-      "note": "LLM unavailable or malformed response; evidence needs manual review"
+      "intermediate_verified": true,
+      "source": "intermediate_content_check",
+      "checks": [
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\recon\\gap-register.yaml",
+          "exists": true,
+          "content_ok": false,
+          "detail": "few key fields found: [] (expected >=3)",
+          "check_type": "yaml_content"
+        }
+      ],
+      "summary": "0/1 evidence files passed content check"
     }
   },
   {
-    "item_id": "TC-REPAIR-GATE-VER-001",
-    "item_title": "Update stale Condition 7 in system-healing-gate-verdict.md",
+    "item_id": "R4-PILOT-POSITIVE",
+    "item_title": "Pilot positive test: check-skill-coverage python_api/fods",
     "declared_status": "completed",
     "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
     "evidence_found": true,
     "evidence_paths": [
-      ".local/evidences/ff-idempotent-recon-20260618-1320e557/system-healing-gate-verdict.md"
+      ".supervisor/skill-registry.yaml"
     ],
     "tests_supporting": [],
     "tests_missing": [],
@@ -140,7 +170,7 @@
     ],
     "required_rework": "",
     "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for TC-REPAIR-GATE-VER-001",
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for R4-PILOT-POSITIVE",
     "purpose_check": {
       "item_type": "GOVERNANCE_TASKCARD",
       "has_gap_ref": null,
@@ -148,25 +178,34 @@
       "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
     },
     "semantic_verification": {
-      "adequate": false,
-      "confidence": 0.0,
+      "adequate": true,
+      "confidence": 0.7,
       "stub_detected": false,
-      "deficiencies": [
-        "llm_verification_unavailable"
-      ],
+      "deficiencies": [],
       "llm_used": false,
-      "source": "fallback_llm_unavailable",
-      "note": "LLM unavailable or malformed response; evidence needs manual review"
+      "intermediate_verified": true,
+      "source": "intermediate_content_check",
+      "checks": [
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.supervisor\\skill-registry.yaml",
+          "exists": true,
+          "content_ok": true,
+          "detail": "YAML has 3/6 expected fields",
+          "check_type": "yaml_content"
+        }
+      ],
+      "summary": "1/1 evidence files passed content check"
     }
   },
   {
-    "item_id": "TC-REPAIR-POC-ADV-001",
-    "item_title": "Correct advisory_only=False references",
+    "item_id": "R4-PILOT-NEGATIVE",
+    "item_title": "Pilot negative test: check-skill-coverage capability_compiler/fods",
     "declared_status": "completed",
     "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
     "evidence_found": true,
     "evidence_paths": [
-      ".local/evidences/ff-idempotent-recon-20260618-1320e557/poc-advisory-correction.md"
+      ".local/taskcards/SKILL-GAP-20260622-080747.yaml",
+      ".local/taskcards/SKILL-GAP-20260622-074502.yaml"
     ],
     "tests_supporting": [],
     "tests_missing": [],
@@ -180,7 +219,7 @@
     ],
     "required_rework": "",
     "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for TC-REPAIR-POC-ADV-001",
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for R4-PILOT-NEGATIVE",
     "purpose_check": {
       "item_type": "GOVERNANCE_TASKCARD",
       "has_gap_ref": null,
@@ -192,300 +231,29 @@
       "confidence": 0.0,
       "stub_detected": false,
       "deficiencies": [
-        "llm_verification_unavailable"
+        "few key fields found: [] (expected >=3)",
+        "few key fields found: [] (expected >=3)"
       ],
       "llm_used": false,
-      "source": "fallback_llm_unavailable",
-      "note": "LLM unavailable or malformed response; evidence needs manual review"
-    }
-  },
-  {
-    "item_id": "TC-LEARNING-DIAG-001",
-    "item_title": "Diagnose learning_consumer.py 0 entries scanned",
-    "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
-    "evidence_found": true,
-    "evidence_paths": [
-      ".local/evidences/ff-idempotent-recon-20260618-1320e557/learning-consumer-diagnosis.md"
-    ],
-    "tests_supporting": [],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths",
-      "No concrete test/criteria proof (path-only acceptance)"
-    ],
-    "acceptance_criteria_failed": [
-      "No raw proof, test content, or acceptance criteria verified"
-    ],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for TC-LEARNING-DIAG-001",
-    "purpose_check": {
-      "item_type": "GOVERNANCE_TASKCARD",
-      "has_gap_ref": null,
-      "verdict": "NOT_APPLICABLE",
-      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
-    },
-    "semantic_verification": {
-      "adequate": false,
-      "confidence": 0.0,
-      "stub_detected": false,
-      "deficiencies": [
-        "llm_verification_unavailable"
+      "intermediate_verified": true,
+      "source": "intermediate_content_check",
+      "checks": [
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\taskcards\\SKILL-GAP-20260622-080747.yaml",
+          "exists": true,
+          "content_ok": false,
+          "detail": "few key fields found: [] (expected >=3)",
+          "check_type": "yaml_content"
+        },
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\taskcards\\SKILL-GAP-20260622-074502.yaml",
+          "exists": true,
+          "content_ok": false,
+          "detail": "few key fields found: [] (expected >=3)",
+          "check_type": "yaml_content"
+        }
       ],
-      "llm_used": false,
-      "source": "fallback_llm_unavailable",
-      "note": "LLM unavailable or malformed response; evidence needs manual review"
-    }
-  },
-  {
-    "item_id": "TC-COMPILER-DESIGN-001",
-    "item_title": "Clarify compiler existence and produce design specification",
-    "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
-    "evidence_found": true,
-    "evidence_paths": [
-      ".local/evidences/compiler-design/capability-to-feature-compiler-spec.md"
-    ],
-    "tests_supporting": [],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths",
-      "No concrete test/criteria proof (path-only acceptance)"
-    ],
-    "acceptance_criteria_failed": [
-      "No raw proof, test content, or acceptance criteria verified"
-    ],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for TC-COMPILER-DESIGN-001",
-    "purpose_check": {
-      "item_type": "GOVERNANCE_TASKCARD",
-      "has_gap_ref": null,
-      "verdict": "NOT_APPLICABLE",
-      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
-    },
-    "semantic_verification": {
-      "adequate": false,
-      "confidence": 0.0,
-      "stub_detected": false,
-      "deficiencies": [
-        "llm_verification_unavailable"
-      ],
-      "llm_used": false,
-      "source": "fallback_llm_unavailable",
-      "note": "LLM unavailable or malformed response; evidence needs manual review"
-    }
-  },
-  {
-    "item_id": "TC-G11-P4-001",
-    "item_title": "Run FODS and FODT Wheel Builds",
-    "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
-    "evidence_found": true,
-    "evidence_paths": [
-      ".local/evidences/g11-quick-wins/fods-p4-wheel-proof.md",
-      ".local/evidences/g11-quick-wins/fodt-p4-wheel-proof.md",
-      ".local/package-builds/python-foss/aspose-format-factory-fods/dist-rebuild/aspose_format_factory_fods-0.1.0.dev0-py3-none-any.whl",
-      ".local/package-builds/python-foss/aspose-format-factory-fodt/dist/aspose_format_factory_fodt-0.1.0.dev0-py3-none-any.whl"
-    ],
-    "tests_supporting": [],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths",
-      "No concrete test/criteria proof (path-only acceptance)"
-    ],
-    "acceptance_criteria_failed": [
-      "No raw proof, test content, or acceptance criteria verified"
-    ],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for TC-G11-P4-001",
-    "purpose_check": {
-      "item_type": "GOVERNANCE_TASKCARD",
-      "has_gap_ref": null,
-      "verdict": "NOT_APPLICABLE",
-      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
-    },
-    "semantic_verification": {
-      "adequate": false,
-      "confidence": 0.0,
-      "stub_detected": false,
-      "deficiencies": [
-        "llm_verification_unavailable"
-      ],
-      "llm_used": false,
-      "source": "fallback_llm_unavailable",
-      "note": "LLM unavailable or malformed response; evidence needs manual review"
-    }
-  },
-  {
-    "item_id": "TC-G11-P5-001",
-    "item_title": "Measure FODS/FODT Pytest Collection Error Count",
-    "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
-    "evidence_found": true,
-    "evidence_paths": [
-      ".local/evidences/g11-quick-wins/fods-p5-collection.txt",
-      ".local/evidences/g11-quick-wins/fodt-p5-collection.txt"
-    ],
-    "tests_supporting": [],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths",
-      "No concrete test/criteria proof (path-only acceptance)"
-    ],
-    "acceptance_criteria_failed": [
-      "No raw proof, test content, or acceptance criteria verified"
-    ],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for TC-G11-P5-001",
-    "purpose_check": {
-      "item_type": "GOVERNANCE_TASKCARD",
-      "has_gap_ref": null,
-      "verdict": "NOT_APPLICABLE",
-      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
-    },
-    "semantic_verification": {
-      "adequate": false,
-      "confidence": 0.0,
-      "stub_detected": false,
-      "deficiencies": [
-        "llm_verification_unavailable"
-      ],
-      "llm_used": false,
-      "source": "fallback_llm_unavailable",
-      "note": "LLM unavailable or malformed response; evidence needs manual review"
-    }
-  },
-  {
-    "item_id": "TC-G11-C4-001",
-    "item_title": "Add 3 Canonical Classes to FODS (C4: 12 to 15)",
-    "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
-    "evidence_found": true,
-    "evidence_paths": [
-      "src/python/fods/spec/table/table_column.py",
-      "src/python/fods/spec/table/table_header_rows.py",
-      "src/python/fods/spec/table/covered_table_cell.py",
-      "src/python/fods/spec/office/annotation.py"
-    ],
-    "tests_supporting": [],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths",
-      "No concrete test/criteria proof (path-only acceptance)"
-    ],
-    "acceptance_criteria_failed": [
-      "No raw proof, test content, or acceptance criteria verified"
-    ],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for TC-G11-C4-001",
-    "purpose_check": {
-      "item_type": "GOVERNANCE_TASKCARD",
-      "has_gap_ref": null,
-      "verdict": "NOT_APPLICABLE",
-      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
-    },
-    "semantic_verification": {
-      "adequate": false,
-      "confidence": 0.0,
-      "stub_detected": false,
-      "deficiencies": [
-        "llm_verification_unavailable"
-      ],
-      "llm_used": false,
-      "source": "fallback_llm_unavailable",
-      "note": "LLM unavailable or malformed response; evidence needs manual review"
-    }
-  },
-  {
-    "item_id": "TC-G11-C3-VERIFY-001",
-    "item_title": "Re-verify FODS spec_fact_refs count",
-    "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
-    "evidence_found": true,
-    "evidence_paths": [
-      ".local/evidences/g11-quick-wins/fods-c3-verify.md"
-    ],
-    "tests_supporting": [],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths",
-      "No concrete test/criteria proof (path-only acceptance)"
-    ],
-    "acceptance_criteria_failed": [
-      "No raw proof, test content, or acceptance criteria verified"
-    ],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for TC-G11-C3-VERIFY-001",
-    "purpose_check": {
-      "item_type": "GOVERNANCE_TASKCARD",
-      "has_gap_ref": null,
-      "verdict": "NOT_APPLICABLE",
-      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
-    },
-    "semantic_verification": {
-      "adequate": false,
-      "confidence": 0.0,
-      "stub_detected": false,
-      "deficiencies": [
-        "llm_verification_unavailable"
-      ],
-      "llm_used": false,
-      "source": "fallback_llm_unavailable",
-      "note": "LLM unavailable or malformed response; evidence needs manual review"
-    }
-  },
-  {
-    "item_id": "TC-L14-CODE-001",
-    "item_title": "Lane 14 Code Implementation (blocked stub)",
-    "declared_status": "not_started",
-    "supervisor_grade": "NOT_ATTEMPTED",
-    "evidence_found": false,
-    "evidence_paths": [],
-    "tests_supporting": [],
-    "tests_missing": [],
-    "acceptance_criteria_met": [],
-    "acceptance_criteria_failed": [],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": "This item was not attempted. Include in next sprint if still needed.",
-    "purpose_check": {
-      "item_type": "GOVERNANCE_TASKCARD",
-      "has_gap_ref": null,
-      "verdict": "NOT_APPLICABLE",
-      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
-    }
-  },
-  {
-    "item_id": "TC-L15-MVP-001",
-    "item_title": "Lane 15 Durable Learning MVP (stub)",
-    "declared_status": "not_started",
-    "supervisor_grade": "NOT_ATTEMPTED",
-    "evidence_found": false,
-    "evidence_paths": [],
-    "tests_supporting": [],
-    "tests_missing": [],
-    "acceptance_criteria_met": [],
-    "acceptance_criteria_failed": [],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": "This item was not attempted. Include in next sprint if still needed.",
-    "purpose_check": {
-      "item_type": "GOVERNANCE_TASKCARD",
-      "has_gap_ref": null,
-      "verdict": "NOT_APPLICABLE",
-      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
+      "summary": "0/2 evidence files passed content check"
     }
   }
 ]

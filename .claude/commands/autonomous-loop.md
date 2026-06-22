@@ -48,12 +48,12 @@ locks_dir = Path('.local/supervisor/plan-locks')
 found = None
 if lock_path.exists():
     d = json.loads(lock_path.read_text(encoding='utf-8'))
-    if d.get('status') != 'COMPLETE':
+    if d.get('status') not in {'COMPLETE', 'TERMINAL_CLOSED'}:
         found = d
 if not found and locks_dir.is_dir():
     for f in sorted(locks_dir.glob('*.json')):
         d = json.loads(f.read_text(encoding='utf-8'))
-        if d.get('status') != 'COMPLETE':
+        if d.get('status') not in {'COMPLETE', 'TERMINAL_CLOSED'}:
             found = d
             break
 print(json.dumps(found))
@@ -227,7 +227,7 @@ Read the updated continuation-signal.json and repeat from Step 1.
 
 | Condition | Action |
 |-----------|--------|
-| Step 0: active plan found, status != COMPLETE | **HARD STOP** — execute plan taskcard, not sprint |
+| Step 0: active plan found, status not in {COMPLETE, TERMINAL_CLOSED} | **HARD STOP** — execute plan taskcard, not sprint |
 | verdict=CONTINUE | Execute sprint normally |
 | verdict=STOP, reason=SESSION_MISMATCH | **HARD STOP** — run reset_track_signal.py first |
 | verdict=STOP, reason=ACTIVE_PLAN_INCOMPLETE | **HARD STOP** — execute plan taskcard |

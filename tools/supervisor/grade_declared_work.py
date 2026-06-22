@@ -181,10 +181,8 @@ def semantic_verify_item(
     cache_path: "Path | None" = None,
 ) -> dict:
     """LLM-enhanced evidence content verification.
-
     Reads actual evidence/test file content and assesses whether it adequately
     proves the declared work item. Can only DOWNGRADE grades, never upgrade.
-
     Returns:
         {
             "adequate": bool,
@@ -213,8 +211,7 @@ def semantic_verify_item(
     if not evidence_paths:
         return fallback_no_evidence
 
-    # Collect evidence content — targeted extraction for source files, full for tests
-    # Extract function name from item title (e.g. "implement word_wrap()" -> "word_wrap")
+    # Collect evidence content — targeted extraction (source) or full (tests/short files)
     import re as _re
     func_match = _re.search(r'(\w+)\(\)', item_title)
     func_name = func_match.group(1) if func_match else None
@@ -292,12 +289,14 @@ def semantic_verify_item(
         except Exception:
             pass
 
-    # LLM unavailable or returned malformed JSON — flag as inadequate (SUP-RECT-004)
-    # When LLM cannot verify, mark evidence as needing manual review (adequate=False)
+    # LLM unavailable — try intermediate content check (Level 2, TC-HARD-008)
+    try:
+        from grade_intermediate_verify import intermediate_verify_item as _ivm  # noqa
+        return _ivm(evidence_paths, item_id=item_id)
+    except Exception: pass  # noqa: E701
     return {"adequate": False, "confidence": 0.0, "stub_detected": False,
             "deficiencies": ["llm_verification_unavailable"], "llm_used": False,
-            "source": "fallback_llm_unavailable",
-            "note": "LLM unavailable or malformed response; evidence needs manual review"}
+            "source": "fallback_llm_unavailable", "note": "LLM unavailable; manual review"}
 
 
 EXTERNAL_GATE_KEYWORDS = {

@@ -260,7 +260,7 @@ This packet is agent-prepared. The following decisions require **human authoriza
 | P4 | Wheel buildable from pyproject.toml | evidence_verified | Wheel built 2026-06-21: `aspose_format_factory_fodt-0.1.0.dev0-py3-none-any.whl` (72,049 bytes). SHA-256: 78bac3ecdce3b52bf5b1d6f6b5b8ebf1b04125b38b519eee09fd407049d7a3d9. pip --user install OK; import fodt OK (user site-packages). Evidence: .local/evidences/g11-quick-wins/fodt-p4-wheel-proof.md |
 | P5 | 0 collection errors in test suite | evidence_verified | 1,982 tests collected, 0 collection errors. Command: .venv/Scripts/pytest tests/python/fodt/ --collect-only -q. Verified 2026-06-21. Evidence: .local/evidences/g11-quick-wins/fodt-p5-collection.txt |
 
-**P1-P5 readiness: 2 evidence_verified (P3, P4), 3 partial**
+**P1-P5 readiness: 3 evidence_verified (P3, P4, P5), 2 partial (P1, P2) — updated 2026-06-22**
 
 #### Spec-Parity Criteria (P6-P11, System Healing Addition)
 

@@ -2907,17 +2907,57 @@ def validate_canonical_registry_entry_exists(
 def validate_facade_delegates_to_spec(
     declaration: dict, repo_root: Path | None = None
 ) -> dict:
-    """V44: compat.py files must not import architecture_only stubs as if implemented.
+    """V44: compat.py / Compat/ files must not import architecture_only stubs as production facades.
 
-    During bootstrap, compat.py MUST import from models.py (not spec/ stubs).
-    WARN only until stubs are implemented. Non-blocking in current phase.
+    Scans evidence_paths for files in compat.py or Compat/ directories.
+    For each such file, checks if any imported module's source contains the
+    "architecture_only" or "GENERATED — architecture_only" marker.
+    WARN-only (blocks_sprint=False) during compat.py bootstrap phase.
+    TC-ZS-002: Upgraded from constant-WARN stub to real inspection (2026-06-21).
     """
+    import re as _re
+    repo = repo_root or REPO_ROOT
+    _IMPORT_PAT = _re.compile(r'from\s+([\w.]+)\s+import|import\s+([\w.]+)')
+    _ARCH_MARKER = "architecture_only"
+    warn_items = []
+
+    for item in declaration.get("planned_work_items", []):
+        for path_str in item.get("evidence_paths", []):
+            if "compat" not in path_str.lower():
+                continue
+            p = (repo / path_str) if not Path(path_str).is_absolute() else Path(path_str)
+            if not p.exists() or not p.suffix == ".py":
+                continue
+            try:
+                content = p.read_text(encoding="utf-8", errors="replace")
+            except OSError:
+                continue
+            for m in _IMPORT_PAT.finditer(content):
+                mod = (m.group(1) or m.group(2) or "").replace(".", "/")
+                for candidate in [repo / (mod + ".py"), repo / "src" / "python" / (mod + ".py")]:
+                    if candidate.exists():
+                        try:
+                            src = candidate.read_text(encoding="utf-8", errors="replace")
+                            if _ARCH_MARKER in src:
+                                warn_items.append({
+                                    "compat_file": path_str,
+                                    "imported_module": mod,
+                                    "issue": f"imports from architecture_only stub: {candidate.as_posix()}",
+                                })
+                        except OSError:
+                            pass
+                        break
+
+    result = "WARN" if warn_items else "PASS"
     return {
         "validator": "facade_delegates_to_spec",
-        "result": "WARN",
-        "items": [],
-        "summary": "V44 monitoring mode — compat.py bootstrap phase, switch not yet required",
-        "blocks_sprint": False,
+        "result": result,
+        "items": warn_items,
+        "summary": (
+            f"V44: {len(warn_items)} compat file(s) import architecture_only stubs"
+            if warn_items else "V44: No compat files import architecture_only stubs"
+        ),
+        "blocks_sprint": False,  # WARN-only during bootstrap phase
     }
 
 
@@ -2959,9 +2999,9 @@ def validate_skill_transcript_present(declaration: dict) -> dict:
     SKILL_TRANSCRIPT_MISSING. Items with BACKFILL_PRE_GOVERNANCE classification are
     exempt from this requirement.
 
-    Currently WARN-only (bootstrap phase): prior TC-SAL-IMPL-001..007 completions
-    predate the sal-pipeline-heal skill registration. Once all new sprints use
-    sal-pipeline-heal, this can be upgraded to blocks_sprint=True.
+    Activated 2026-06-21 (TC-SKILL-GOV-005): blocks_sprint upgraded from False to True.
+    PRODUCT_SOURCE items without linked skill_transcript FAIL the sprint.
+    Exempt: BACKFILL_PRE_GOVERNANCE items (predated sal-pipeline-heal skill registration).
     """
     import re
     TRANSCRIPT_PAT = re.compile(r"reports/skills-r\d+/skill-transcripts/.*\.json")
@@ -2996,10 +3036,10 @@ def validate_skill_transcript_present(declaration: dict) -> dict:
 
     return {
         "validator": "validate_skill_transcript_present",
-        "result": "WARN" if violations else "PASS",
+        "result": "FAIL" if violations else "PASS",
         "items": violations,
-        "summary": f"{len(violations)} PRODUCT_SOURCE item(s) missing skill transcript (WARN-only: bootstrap phase)",
-        "blocks_sprint": False,  # WARN-only: upgraded to True once bootstrap phase complete
+        "summary": f"{len(violations)} PRODUCT_SOURCE item(s) missing skill transcript",
+        "blocks_sprint": bool(violations),  # Activated 2026-06-21 (TC-SKILL-GOV-005)
     }
 
 
@@ -3008,7 +3048,7 @@ def validate_spec_fact_refs_in_sal_output(
 ) -> dict:
     """V47 (TC-MACH-ARCH-007): PRODUCT_SOURCE spec_fact_refs must exist in sal-facts-latest.json.
 
-    Loads .local/spec-cache/sal-facts-latest.json (built by TC-SAL-OUTPUT-001).
+    Loads .local/sal-output/sal-facts-latest.json (canonical output dir — RC-2/GAP-SA-NEW-002).
     For each PRODUCT_SOURCE work item with spec_fact_refs declared, verifies that
     each referenced fact ID (FACT-<FORMAT>-NNN) exists in the SAL output.
 
@@ -3017,7 +3057,7 @@ def validate_spec_fact_refs_in_sal_output(
     """
     import json as _json
     repo = repo_root or REPO_ROOT
-    sal_output = repo / ".local" / "spec-cache" / "sal-facts-latest.json"
+    sal_output = repo / ".local" / "sal-output" / "sal-facts-latest.json"
 
     if not sal_output.exists():
         return {
@@ -3068,6 +3108,57 @@ def validate_spec_fact_refs_in_sal_output(
         "summary": f"{len(violations)} item(s) with unresolvable spec_fact_refs",
         "blocks_sprint": bool(violations),
     }
+
+
+def validate_qname_structure(declaration: dict, repo_root: Path | None = None) -> dict:
+    """V49 (TC-QNAME-VALIDATORS-001): spec/ class files in changed_files must have spec_qname.
+
+    Uses tools/validators/qname_structure_validator.py (standalone AST scanner).
+    WARN-only — existing files without spec_qname are advisory (not blocking) until
+    backfill taskcards (TC-QNAME-BACKFILL-ODS-001, TC-QNAME-BACKFILL-ODT-001) complete.
+    """
+    import sys as _sys
+    repo = repo_root or REPO_ROOT
+    validators_dir = str(repo / "tools" / "validators")
+    if validators_dir not in _sys.path:
+        _sys.path.insert(0, validators_dir)
+    try:
+        from qname_structure_validator import scan_src_for_classes  # type: ignore
+    except ImportError:
+        return {
+            "validator": "validate_qname_structure", "result": "PASS", "items": [],
+            "summary": "V49: qname_structure_validator unavailable (skipped)", "blocks_sprint": False,
+        }
+    src_root = repo / "src" / "python"
+    changed = declaration.get("changed_files", [])
+    violations = []
+    for cf in changed:
+        p = Path(cf) if Path(cf).is_absolute() else repo / cf
+        if "spec" not in p.parts:
+            continue
+        try:
+            rel = p.relative_to(src_root)
+        except ValueError:
+            continue
+        fmt = rel.parts[0]
+        for cls in scan_src_for_classes(src_root, format_filter=fmt):
+            if cls["file"] == str(rel) and cls["in_spec_dir"] and not cls["has_spec_qname"]:
+                violations.append({"file": cls["file"], "class": cls["class_name"]})
+    if violations:
+        return {
+            "validator": "validate_qname_structure", "result": "WARN", "items": violations,
+            "summary": f"V49: {len(violations)} spec/ class(es) in changed files missing spec_qname (WARN-only)",
+            "blocks_sprint": False,
+        }
+    return {
+        "validator": "validate_qname_structure", "result": "PASS", "items": [],
+        "summary": "V49: All spec/ classes in changed files have spec_qname", "blocks_sprint": False,
+    }
+
+
+# V48 (TC-ZS-001): Extracted to governance_validators_ext.py (TC-WHALE-GOVBLOCK-001)
+# to keep this file within baseline_loc_cap. Imported here for backward compatibility.
+from governance_validators_ext import validate_architecture_only_stub_gate  # noqa: E402
 
 
 # Re-export run_all_governance_validators from the runner module.

@@ -1,8 +1,8 @@
 # Evidence Bundle Discovery Summary
-Timestamp: 2026-06-21T22:11:17.699251
+Timestamp: 2026-06-22T13:15:13.717774
 Status: found
-Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\post-recon-repair-gate11-20260621\declaration-review-package.zip
+Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\floating-stargazing-globe-20260622-080956\declaration-review-package.zip
 Sprint ID: unknown
-Entry count: 82
-Bundle mtime: 2026-06-21T22:10:33.627914
-Bundle size: 322727 bytes
+Entry count: 68
+Bundle mtime: 2026-06-22T13:14:55.682881
+Bundle size: 174560 bytes

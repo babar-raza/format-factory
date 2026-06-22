@@ -261,9 +261,9 @@ The following decisions still require **human authorization from Babar Raza**:
 | P2 | Parity matrix exists and is up to date | partial | Gate 11 packet exists as readiness document. No formal parity matrix artifact (`fods-parity-matrix.yaml` or similar) found in evidence bundles. |
 | P3 | capability_coverage_percentage >= 60% | evidence_verified | `product-capability-matrix/poc-targets.yaml` line 455: FODG has 23 capabilities; FODS entries have 9+ confirmed capabilities. poc-targets.yaml confirms Python FOSS track is POC_TARGET_CONFIRMED. |
 | P4 | Wheel buildable from pyproject.toml | evidence_verified | Wheel built 2026-06-21: `aspose_format_factory_fods-0.1.0.dev0-py3-none-any.whl` (135,637 bytes). SHA-256: 264a66398e1f252ae01b87ead979e804fa2bc003b2190bc5938a69ed75dc55e1. pip --user install OK; import fods OK (user site-packages). Evidence: .local/evidences/g11-quick-wins/fods-p4-wheel-proof.md |
-| P5 | 0 collection errors in test suite | partial | 32 collection errors (analytics deepening test files importing unimplemented functions); 1308 tests collected successfully. FODS analytics test files need cleanup similar to SYLK cleanup (2026-06-18). Evidence: .local/evidences/g11-quick-wins/fods-p5-collection.txt |
+| P5 | 0 collection errors in test suite | evidence_verified | 0 collection errors after FODS analytics stub cleanup (2026-06-22): 32 ImportError stub test files deleted (same pattern as SYLK cleanup 2026-06-18); 1324 collected, 1316 passed, 8 skipped, 0 failed. Evidence: .local/evidences/g11-p5-cleanup/fods-p5-cleanup-proof.md |
 
-**P1-P5 readiness: 3 evidence_verified (P3, P4, C3), 2 partial (P1, P2, P5) — updated 2026-06-21**
+**P1-P5 readiness: 4 evidence_verified (P3, P4, P5, C3), 1 partial (P1, P2) — updated 2026-06-22**
 
 #### Spec-Parity Criteria (P6-P11, System Healing Addition)
 

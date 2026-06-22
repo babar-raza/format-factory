@@ -1,6 +1,6 @@
 # FORMAT-FACTORY-RNEXT-MEGA-TRAIN-001
-# Generated: 2026-06-21T22:10:15.061124
-# Source: Supervisor autonomous-cycle review of post-recon-repair-gate11-20260621
+# Generated: 2026-06-22T13:14:23.523154
+# Source: Supervisor autonomous-cycle review of floating-stargazing-globe-20260622-080956
 # Stream: mainstream
 # ADVISORY ONLY -- not a Format Factory authority document
 
@@ -27,7 +27,7 @@ Read these files before writing any code:
 ## Sprint Identity
 
 - Sprint ID: FORMAT-FACTORY-RNEXT-MEGA-TRAIN-001
-- Prior sprint: post-recon-repair-gate11-20260621
+- Prior sprint: floating-stargazing-globe-20260622-080956
 - Prior verdict: ACCEPTED_WITH_REWORK
 - Prior tests: 0 passed, 0 failed, 0 skipped
 - Autonomous continue: False
@@ -479,11 +479,16 @@ Address escalated failures with priority.
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_claim_classification_validator_failed (seen 7x, last: IDEMPOTENT-SWARM-EXECUTION-20260615-E31FA98)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_route_decision_required_validator_failed (seen 103x, last: autonomous-loop-20260621-220000-ed51041f)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_spec_fact_refs_validator_failed (seen 186x, last: autonomous-loop-20260621-220000-ed51041f)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_monolith_detection_validator_failed (seen 270x, last: autonomous-loop-20260621-205610-827f5a52)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): exit_code_3_rework_required (seen 156x, last: post-recon-repair-gate11-20260621)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_source_architecture_failed (seen 7x, last: post-recon-repair-gate11-20260621)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_monolith_detection_validator_failed (seen 271x, last: CAPABILITY-LAYER-HEALING-20260621-ed51041)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): exit_code_3_rework_required (seen 165x, last: sal-authority-sprint-D-20260622)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_source_architecture_failed (seen 13x, last: floating-stargazing-globe-20260622-080956)
 - WARNING: 9 unresolved failures in failure memory
 
+
+
+## Learning-Based Governance Advisories
+
+- **SPRINT_CLOSEOUT_PATTERN** (seen 7x): Sprint declaration validated PASS with sprint_executor_validate.py — *Action:* Continue using sprint_executor_validate.py --repair before closeout
 
 ## Spec-Parity Requirements (from skill registry)
 

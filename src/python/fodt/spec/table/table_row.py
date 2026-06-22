@@ -1,6 +1,19 @@
-# GENERATED — architecture_only. Do not implement here until compat.py switch is ready.
-# spec_fact_ref: FACT-FODT-007
+from __future__ import annotations
+from typing import Any
+
+
 class TableRow:
+    """Canonical spec-shaped class for table:table-row in FODT context (ODF §9.4)."""
+
     spec_qname = "table:table-row"
     spec_fact_ref = "FACT-FODT-007"
-    # TODO: implement to match legacy model class once compat.py switch is authorized
+
+    def __init__(self, data: dict[str, Any]):
+        self._data = data
+
+    @property
+    def cells(self) -> list:
+        return self._data.get("cells", [])
+
+    def to_dict(self) -> dict[str, Any]:
+        return dict(self._data)

@@ -1,0 +1,165 @@
+---
+# Iteration Record — Machinery Lifecycle Healing Mission
+# TC-WHALE-PILOT-H-001 (2026-06-21): Multi-iteration proof artifact.
+# Source of truth: .local/supervisor/machinery/mission-ledger.json (stop_status=MISSION_COMPLETE)
+schema_version: "1.0"
+mission_id: "machinery-lifecycle-healing-20260621"
+run_id: "zesty-moseying-whale"
+generated_at: "2026-06-21"
+
+# FINDING: Pilot H (multi-iteration) was INCORRECTLY marked NOT_RUN in execution-handoff.yaml.
+# This file proves 3 complete audit-execute iterations using mission-ledger.json evidence.
+# See stale-finding-register.yaml entry EXEC-HANDOFF-PILOT-H for invalidation record.
+
+multi_iteration_verdict: "PROVEN — 3 distinct sprint IDs with independent taskcard sets"
+
+iterations:
+  - iteration: 1
+    sprint_id: "iteration_1_phase1"
+    sprint_label: "Phase 1 — Architecture hygiene and governance"
+    audit_input: "reports/machinery-lifecycle-forensics-20260621/lifecycle-root-cause-register.yaml"
+    audit_findings: >
+      Root causes RC-001..RC-006 enumerated.
+      Open gaps: GAP-ARCH-001..013, GAP-WF-001..004, SC-005.
+      GOVBLOCK fired on governance_validators.py (LOC > cap).
+    plan_changes:
+      - "Added validators for QNAME canonical naming (TC-GOV-QNAME-VALIDATOR-001)"
+      - "Added FODS neutral model hygiene taskcards (TC-HYGIENE-FODS-001)"
+    taskcards_created:
+      - TC-HYGIENE-FODS-001
+      - TC-GOV-QNAME-VALIDATOR-001
+      - TC-SKILL-QNAME-ENFORCE-001
+    execution_tasks:
+      - TC-HYGIENE-FODS-001: "COMPLETE"
+      - TC-GOV-QNAME-VALIDATOR-001: "COMPLETE"
+      - TC-SKILL-QNAME-ENFORCE-001: "COMPLETE"
+    verification_results: >
+      All 3 Phase 1 taskcards closed. FODS neutral model hygiene applied.
+      QNAME validator (V45) implemented and passing.
+    post_execution_audit: true
+    post_execution_audit_path: ".local/supervisor/machinery/post-exec-audit-1.json"
+    continuation_decision: "CONTINUE — open gaps remain"
+    next_stage: "Iteration 2 (Phase 2 — plan locks, session nonce, SAL output)"
+    stop_trigger_free: true
+    stop_trigger_notes: >
+      Stop did NOT come from iteration counter, task batch empty, closeout artifact,
+      or user prompt end. Continued because open gaps > 0.
+
+  - iteration: 2
+    sprint_id: "iteration_2_phase2"
+    sprint_label: "Phase 2 — Session isolation, plan lock track-type, SAL output"
+    audit_input: ".local/supervisor/machinery/post-exec-audit-1.json"
+    audit_findings: >
+      RC-002 (PLAN_TERMINAL_CLOSED over-broad) still unverified at code level.
+      RC-003 (session mismatch) still open — nonce not yet implemented.
+      SAL output pipeline missing spec_fact_refs enforcement.
+    plan_changes:
+      - "Added TC-PLAN-LOCK-TRACK-TYPE-001 (GAP-WF-004)"
+      - "Added TC-SESSION-NONCE-001 (SC-005)"
+      - "Added TC-SAL-OUTPUT-001 for spec_fact_refs SAL pipeline"
+    taskcards_created:
+      - TC-AUTH-COMMIT-001
+      - TC-PLAN-LOCK-TRACK-TYPE-001
+      - TC-SESSION-NONCE-001
+      - TC-QNAME-CANONICAL-001
+      - TC-QNAME-FODT-SPEC-IMPL-001
+      - TC-SAL-OUTPUT-001
+    execution_tasks:
+      - TC-AUTH-COMMIT-001: "COMPLETE"
+      - TC-PLAN-LOCK-TRACK-TYPE-001: "COMPLETE"
+      - TC-SESSION-NONCE-001: "COMPLETE"
+      - TC-QNAME-CANONICAL-001: "COMPLETE"
+      - TC-QNAME-FODT-SPEC-IMPL-001: "COMPLETE"
+      - TC-SAL-OUTPUT-001: "COMPLETE"
+    verification_results: >
+      RC-002 fixed (commit f03234b0 — track_type field in plan locks).
+      RC-003 fixed (commit 0d5b73ca — per-chat nonce in session_id derivation).
+      SC-005 closed. GAP-WF-004 closed.
+    post_execution_audit: true
+    post_execution_audit_path: ".local/supervisor/machinery/post-exec-audit-2.json"
+    continuation_decision: "CONTINUE — audit consumer (RC-001) and mission ledger enforcement (RC-004) still open"
+    next_stage: "Iteration 3 (Phase 3 — SAL audit, machinery_audit.py consumer)"
+    stop_trigger_free: true
+    stop_trigger_notes: >
+      Stop did NOT come from iteration counter, task batch empty, closeout artifact,
+      or user prompt end. Continued because RC-001 and RC-004 unresolved.
+
+  - iteration: 3
+    sprint_id: "iteration_3_phase3_sal_audit"
+    sprint_label: "Phase 3 — Machinery audit consumer, SAL diagnostics, mission completion"
+    audit_input: ".local/supervisor/machinery/post-exec-audit-2.json"
+    audit_findings: >
+      RC-001 (no machine consumer for audit output): machinery_audit.py absent.
+      RC-004 (no mission ledger enforcement): mission-ledger.json not yet created.
+      SAL diagnostic gaps (TC-SAL-DIAG-009) identified.
+    plan_changes:
+      - "Added TC-MACH-WF-001 (implement machinery_audit.py with run_audit)"
+      - "Added TC-MACH-WF-003 (--mission-complete-check gate)"
+      - "Added TC-MACH-ARCH-007 (spec_fact_refs SAL output validator V47)"
+    taskcards_created:
+      - TC-SAL-DIAG-009
+      - TC-MACH-REWORK-001
+      - TC-MACH-REWORK-002
+      - TC-MACH-REWORK-003
+      - TC-MACH-ARCH-004
+      - TC-MACH-ARCH-007
+      - TC-MACH-WF-001
+      - TC-MACH-WF-003
+    execution_tasks:
+      - TC-MACH-WF-001: "COMPLETE — machinery_audit.py; 11 tests pass; post-exec-audit-3.json written"
+      - TC-MACH-WF-003: "COMPLETE — --mission-complete-check gate; tested"
+      - TC-MACH-ARCH-007: "COMPLETE"
+      - TC-SAL-DIAG-009: "COMPLETE"
+      - TC-MACH-REWORK-001: "COMPLETE"
+      - TC-MACH-REWORK-002: "COMPLETE"
+      - TC-MACH-REWORK-003: "COMPLETE"
+      - TC-MACH-ARCH-004: "COMPLETE"
+    verification_results: >
+      machinery_audit.py implemented. run_audit() returns PASS (13/13 gaps verified).
+      mission-ledger.json created with stop_status=MISSION_COMPLETE.
+      post-exec-audit-3.json written (audit_verdict=PASS).
+      All 13 closed gaps have verifiable evidence paths.
+    post_execution_audit: true
+    post_execution_audit_path: ".local/supervisor/machinery/post-exec-audit-3.json"
+    continuation_decision: "ACCEPT — all agent-resolvable gaps closed; GAP-WF-002 deferred by design"
+    next_stage: "MISSION_COMPLETE (mission completion audit passed; stop_status=MISSION_COMPLETE)"
+    stop_trigger_free: true
+    stop_trigger_notes: >
+      Stop came from MISSION_COMPLETE (legitimate completion audit), NOT from:
+      - Iteration counter (would be prohibited)
+      - Task batch empty (prohibited)
+      - Closeout artifact creation (prohibited)
+      - User prompt end (prohibited)
+
+# --- Post-iteration: Zesty Moseying Whale (this sprint) ---
+rerun_iteration:
+  sprint_id: "zesty-moseying-whale"
+  sprint_label: "Second-pass idempotent rerun — GAP-WHALE gaps discovered and addressed"
+  iteration_type: "IDEMPOTENT_RERUN"
+  new_gaps_found:
+    - id: "GAP-WHALE-001"
+      description: "check_continuation.py --track machinery has no mission ledger integration"
+      resolved_by: "TC-WHALE-LEDGER-001 — Check 1c added to check_continuation.py"
+      status: "CLOSED"
+    - id: "GAP-WHALE-002"
+      description: "execution-handoff.yaml incorrectly states Pilot H NOT_RUN"
+      resolved_by: "TC-WHALE-HANDOFF-001 — execution-handoff.yaml corrected"
+      status: "CLOSED_BY_THIS_SPRINT"
+    - id: "GAP-WHALE-003"
+      description: "governance_validators.py at exact LOC cap — next addition would fire GOV_BLOCK"
+      resolved_by: "TC-WHALE-GOVBLOCK-001 — V48 extracted to governance_validators_ext.py"
+      status: "CLOSED"
+  stop_trigger_free: true
+  stop_trigger_notes: >
+    This sprint stopped because all per-chat plan taskcards are COMPLETE
+    (POST_PLAN_TERMINAL — a named legitimate stop per CLAUDE.md). NOT because
+    of iteration counter, task batch empty, or user prompt end.
+
+# Proof summary
+multi_iteration_proof_summary:
+  iterations_completed: 3
+  distinct_sprint_ids: ["iteration_1_phase1", "iteration_2_phase2", "iteration_3_phase3_sal_audit"]
+  each_iteration_has_post_execution_audit: true
+  stop_reason_at_completion: "MISSION_COMPLETE"
+  prohibited_stop_triggers_used: false
+  verdict: "LIFECYCLE_HEALED_AND_MULTI_ITERATION_PROVEN"

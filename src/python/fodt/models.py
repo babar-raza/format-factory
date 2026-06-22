@@ -16,6 +16,9 @@ from typing import Any, Iterator
 class FodtSpan:
     """Wraps an inline text span from a paragraph."""
 
+    spec_qname = "text:span"
+    spec_fact_ref = "FACT-FODT-006"
+
     def __init__(self, data: dict[str, Any]):
         self._data = data
 
@@ -36,6 +39,9 @@ class FodtSpan:
 
 class FodtParagraph:
     """Wraps a block dict (paragraph or heading) from the FODT neutral model."""
+
+    spec_qname = "text:p"
+    spec_fact_ref = "FACT-FODT-003"
 
     def __init__(self, data: dict[str, Any]):
         self._data = data
@@ -69,6 +75,9 @@ class FodtParagraph:
 
 class FodtDocument:
     """Wraps a document dict from parse_fodt() with a class-based interface."""
+
+    spec_qname = "office:document"
+    spec_fact_ref = "FACT-FODT-001"
 
     def __init__(self, data: dict[str, Any]):
         self._data = data

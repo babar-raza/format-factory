@@ -569,6 +569,62 @@ for that format must be a secondary split, not new analytics additions. Growth b
 
 ## Section 25 — Completed Infrastructure Taskcards
 
+### delightful-wibbling-sonnet sprint — FODS/FODT Spec-Parity + Governance Hardening (COMPLETED 2026-06-22)
+
+**Status:** COMPLETED — 21/22 taskcards verified (1 DEFERRED: TC-SRC-001 inner package nesting)
+
+**Plan file:** `C:/Users/prora/.claude/plans/delightful-wibbling-sonnet.md` (v3.0, 5 phases, 22 taskcards)
+
+**What was completed:**
+
+*Phase 0 — Machine Integrity:*
+- TC-MACH-002: evidence_quality_zero false stop fixed (moved to continuation_warnings) ✓
+- TC-MACH-003: V45 QName class name validator added (governance_validators.py) — 14/14 tests pass ✓
+- TC-MACH-004: MANDATORY PRE-CHECK added to add-python-api.md and add-dotnet-api.md ✓
+
+*Phase 1 — SAL Foundation:*
+- TC-SAL-001: SAL output stable — 22 formats, 14,428 total facts (FODS: 5,009; FODT: 4,957) ✓
+- TC-SAL-002: Dogfood SAL tests — 9/9 PASS (test_dogfood_fods_fodt_sal_fact_ndjson_export.py) ✓
+- TC-SAL-002b: SAL idempotency suite — 5/5 PASS (test_sal_runner_idempotency.py) ✓
+- TC-SAL-003: FODS 99.9% SAL coverage (4987/4991 verified facts) ✓
+
+*Phase 2 — Source Structure:*
+- TC-SRC-002: QName structure validator built — 6/6 tests pass ✓
+- TC-SRC-003: FODS .NET spec stubs + fods.yaml qname registry ✓
+- TC-SRC-004: FodsDocument.spec_qname = "office:document" at runtime ✓
+- TC-SRC-005: FODT spec/ import chain — 36/36 test_spec_qname_stubs.py pass ✓
+- TC-SRC-001: DEFERRED (inner fods/fods/ nesting; editable install unaffected)
+
+*Phase 3 — FODT Activation:*
+- TC-FODT-001/002/003: FODT compat switch — FodtParagraph from spec/, 19/19 compat tests ✓
+
+*Phase 4 — Validation:*
+- TC-VAL-001/002/003: FODS spec parity 12/12 PASS; gap audit confirmed ✓
+
+*Phase 5 — Audit Gap Closure:*
+- TC-POST-001: fods.spec.table.table_cell.TableCell.spec_qname = "table:table-cell" ✓
+- TC-POST-002: 30 tracked files committed ✓
+- TC-POST-003: FodtDocument.from_file() roundtrip — 2/2 PASS ✓
+- TC-POST-004: V45/V46/V47 re-run — 14/14 PASS ✓
+- TC-POST-005: FodsSheet.cells() iterator verified ✓
+
+**New governance validators (V45–V47):**
+- V45: validate_qname_class_names — blocks format-prefixed names outside Compat/
+- V46: validate_skill_transcript_validator — requires skill attribution for analytics.py changes
+- V47: validate_spec_fact_refs — requires spec_fact_refs for RELEASE_GATE items
+
+**Key architectural advances:**
+- FODS Compat facades: FodsCell, FodsSheet, FodsDocument in src/python/fods/Compat/
+- FODS spec/ canonical: fods.spec.table.table_cell.TableCell, fods.spec.office.document.Document
+- FODT compat switch: fodt.compat.FodtParagraph → fodt.spec.text.paragraph.Paragraph
+- 47 working-tree deletions: 15 inner fods/fods/ duplicate files + 32 broken FODS test stubs
+
+**Follow-ups (non-blocking):**
+1. TC-MACH-001: Mark `fuzzy-conjuring-papert.md` lock COMPLETE before next autonomous sprint
+2. TC-SRC-001: Inner fods/fods/ structural cleanup — deferred
+
+---
+
 ### TC-0012 — Specification Normalization Layer (COMPLETED 2026-06-18)
 
 **Status:** COMPLETED (Phase 1: run024; Phase 2: run025; Phase 3: 2026-06-18)

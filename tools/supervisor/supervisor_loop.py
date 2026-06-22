@@ -417,6 +417,24 @@ def cmd_autonomous_cycle(args) -> int:
     extra = ["--declaration", str(args.declaration), "--repo-root", str(REPO_ROOT)]
     rc = run_script("autonomous_cycle.py", extra, REPO_ROOT).returncode
 
+    # TC-HEAL-008b: Intermediate evidence content verification (non-blocking companion).
+    # grade_intermediate_verify.py is a standalone module; grade_declared_work.py and
+    # autonomous_cycle.py are at LOC cap. This is the wiring point (supervisor_loop.py).
+    if args.declaration and args.declaration.exists():
+        print("\n=== SUPERVISOR: INTERMEDIATE EVIDENCE VERIFY (TC-HEAL-008b) ===")
+        iv_script = SCRIPT_DIR / "grade_intermediate_verify.py"
+        if iv_script.exists():
+            iv_extra = ["--declaration", str(args.declaration)]
+            iv_result = run_script("grade_intermediate_verify.py", iv_extra, REPO_ROOT)
+            if iv_result.returncode not in (0, 1):
+                print(f"  INFO: Intermediate verify skipped (exit {iv_result.returncode})")
+            elif iv_result.returncode == 1:
+                print("  INFO: Intermediate verify found inadequate evidence items")
+            else:
+                print("  INFO: Intermediate verify: all evidence items adequate")
+        else:
+            print("  INFO: grade_intermediate_verify.py not found — skipping")
+
     # D92-01 fix: Rebuild context-pack BEFORE generating packet so enrichment is current
     print("\n=== SUPERVISOR: REBUILDING CONTEXT-PACK ===")
     cp_script = SCRIPT_DIR / "build_context_pack.py"

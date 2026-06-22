@@ -5,8 +5,10 @@ V43 behavior:
   - PASS when registry exists and all spec/ files have spec_qname attribute
   - FAIL when registry exists but a spec/ file lacks spec_qname attribute
 
-V44 behavior:
-  - Always WARN (monitoring mode, non-blocking during bootstrap)
+V44 behavior (upgraded from monitoring stub in TC-ZS-002):
+  - PASS when no Compat files import architecture_only stubs
+  - WARN when compat files import architecture_only stubs
+  - Never blocks sprint
 """
 import sys
 import tempfile
@@ -98,9 +100,9 @@ class TestV43CanonicalRegistryEntryExists:
 
 class TestV44FacadeDelegatesToSpec:
     def test_always_warn(self):
-        """V44 must always return WARN (monitoring mode, non-blocking in bootstrap)."""
+        """V44 returns PASS when no compat files import architecture_only stubs (real inspection mode)."""
         result = validate_facade_delegates_to_spec(_EMPTY_DECL)
-        assert result["result"] == "WARN"
+        assert result["result"] == "PASS"
 
     def test_never_blocks_sprint(self):
         """V44 must never set blocks_sprint=True."""
@@ -108,7 +110,7 @@ class TestV44FacadeDelegatesToSpec:
         assert result["blocks_sprint"] is False
 
     def test_no_items(self):
-        """V44 must return empty items list (monitoring mode)."""
+        """V44 must return empty items list when no violations exist."""
         result = validate_facade_delegates_to_spec(_EMPTY_DECL)
         assert result["items"] == []
 
@@ -118,14 +120,14 @@ class TestV44FacadeDelegatesToSpec:
         assert result["validator"] == "facade_delegates_to_spec"
 
     def test_warn_with_any_declaration(self):
-        """V44 returns WARN regardless of declaration contents."""
+        """V44 returns PASS when no compat violations exist, regardless of declaration contents."""
         for decl in [
             {},
             {"planned_work_items": [{"item_type": "GOVERNANCE_ASSET"}]},
             {"planned_work_items": [{"item_type": "PRODUCT_SOURCE", "gap_ledger_ref": "GAP-001"}]},
         ]:
             result = validate_facade_delegates_to_spec(decl)
-            assert result["result"] == "WARN"
+            assert result["result"] == "PASS"
 
 
 class TestV43V44InRunAll:
@@ -145,7 +147,7 @@ class TestV43V44InRunAll:
         )
 
     def test_total_validator_count_is_44_in_runner_source(self):
-        """governance_validator_runner.py must list exactly 44 validator calls in results list."""
+        """governance_validator_runner.py must list exactly 49 validator calls in results list."""
         runner_path = _REPO / "tools" / "supervisor" / "governance_validator_runner.py"
         source = runner_path.read_text(encoding="utf-8")
         # Count call lines: contain "(declaration" (actual calls, not import lines)
@@ -155,8 +157,8 @@ class TestV43V44InRunAll:
                 line.strip().startswith("validate_") or line.strip().startswith("_validate_")
             )
         ]
-        assert len(call_lines) == 44, (
-            f"Expected 44 validator calls in runner, got {len(call_lines)}"
+        assert len(call_lines) == 49, (
+            f"Expected 49 validator calls in runner, got {len(call_lines)}"
         )
 
     def test_v43_v44_defined_in_governance_validators(self):

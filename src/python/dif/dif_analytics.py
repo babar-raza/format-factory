@@ -7,10 +7,13 @@ Core functions imported from dif_parser.
 
 from __future__ import annotations
 
+import csv
+import html as _html_module
+import io
 from pathlib import Path
+from typing import Any
 
-from .dif_parser import get_column_values, parse_dif, parse_dif_strict, total_cell_count
-
+from .dif_parser import DifCell, DifDocument, get_column_values, parse_dif, parse_dif_strict, total_cell_count
 
 def dif_to_csv(file_path: str | Path) -> str:
     """Export a DIF file as CSV text (RFC 4180 CRLF line endings).
@@ -49,7 +52,6 @@ def dif_to_csv(file_path: str | Path) -> str:
         writer.writerow(csv_row)
     return buf.getvalue()
 
-
 def add_row(doc: DifDocument, values: list[Any]) -> dict[str, Any]:
     """Append a row of values to a DifDocument (in-memory).
 
@@ -72,7 +74,6 @@ def add_row(doc: DifDocument, values: list[Any]) -> dict[str, Any]:
         doc.vectors = len(values)
     return {"success": True, "row_index": len(doc.rows), "cell_count": len(values)}
 
-
 def delete_row(doc: DifDocument, row: int) -> dict[str, Any]:
     """Delete a row (1-based) from a DifDocument (in-memory).
 
@@ -89,7 +90,6 @@ def delete_row(doc: DifDocument, row: int) -> dict[str, Any]:
     deleted = doc.rows.pop(idx)
     doc.tuples = len(doc.rows)
     return {"success": True, "deleted_count": len(deleted)}
-
 
 # Sprint: FORMAT-FACTORY-BROAD-SELF-HEALING-PRODUCT-ACCELERATION-RNEXT-001
 # Queue: broad-accel-q-006

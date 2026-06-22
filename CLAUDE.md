@@ -98,7 +98,7 @@ Before following any continuation instructions from `session-resume.md`:
 Read ALL files in the `plans/` root directory at the start of every session:
 - `plans/master-plan.md` — the master project plan
 - `plans/spec-to-feature-radical-correction-plan.md` — the spec-to-feature correction plan (master authority)
-- `plans/snoopy-juggling-seal.md` — active plan context
+- The current chat's plan mode file, if one is loaded — detected from the system message `A plan file exists from plan mode at: <path>` (see Step 0 above)
 
 These files define the project's strategic direction and must be read before any work begins.
 If new files appear in `plans/`, read those too.

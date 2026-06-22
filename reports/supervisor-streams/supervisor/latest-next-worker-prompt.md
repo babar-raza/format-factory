@@ -1,6 +1,6 @@
 # FORMAT-FACTORY-RNEXT-MEGA-TRAIN-001
-# Generated: 2026-06-21T13:51:25.099708
-# Source: Supervisor autonomous-cycle review of FF-HEALING-TASKCARDS-EXEC-20260621
+# Generated: 2026-06-22T12:52:18.954516
+# Source: Supervisor autonomous-cycle review of spec-authority-healing-sprint-A-20260622
 # Stream: supervisor
 # ADVISORY ONLY -- not a Format Factory authority document
 
@@ -27,7 +27,7 @@ Read these files before writing any code:
 ## Sprint Identity
 
 - Sprint ID: FORMAT-FACTORY-RNEXT-MEGA-TRAIN-001
-- Prior sprint: FF-HEALING-TASKCARDS-EXEC-20260621
+- Prior sprint: spec-authority-healing-sprint-A-20260622
 - Prior verdict: ACCEPTED
 - Prior tests: 0 passed, 0 failed, 0 skipped
 - Autonomous continue: True
@@ -234,16 +234,16 @@ END OF SUPERVISOR-GENERATED MEGA-TRAIN EXECUTION PROMPT
 The following failures have been recorded in durable failure memory.
 Address escalated failures with priority.
 
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_execution_method_required_validator_failed (seen 128x, last: tc-harden-003-test)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_source_diff_required_validator_failed (seen 97x, last: tc-harden-003-test)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_idempotency_key_required_validator_failed (seen 62x, last: tc-harden-003-test)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_execution_method_required_validator_failed (seen 135x, last: autonomous-loop-20260621-220000-ed51041f)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_source_diff_required_validator_failed (seen 104x, last: autonomous-loop-20260621-220000-ed51041f)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_idempotency_key_required_validator_failed (seen 69x, last: autonomous-loop-20260621-220000-ed51041f)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_claim_classification_validator_failed (seen 7x, last: IDEMPOTENT-SWARM-EXECUTION-20260615-E31FA98)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_route_decision_required_validator_failed (seen 96x, last: tc-harden-003-test)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_spec_fact_refs_validator_failed (seen 181x, last: tc-harden-003-test)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_monolith_detection_validator_failed (seen 263x, last: tc-c3-001-grade-timeout-fix-20260619)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): exit_code_3_rework_required (seen 146x, last: FF-NEXTWORK-PROMOTE-LEDGER-20260621)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_source_architecture_failed (seen 3x, last: FF-HEAL-QNAME-20260621-114042)
-- WARNING: 8 unresolved failures in failure memory
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_route_decision_required_validator_failed (seen 103x, last: autonomous-loop-20260621-220000-ed51041f)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_spec_fact_refs_validator_failed (seen 186x, last: autonomous-loop-20260621-220000-ed51041f)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_monolith_detection_validator_failed (seen 271x, last: CAPABILITY-LAYER-HEALING-20260621-ed51041)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): exit_code_3_rework_required (seen 160x, last: polished-hopping-glacier-closeout)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_source_architecture_failed (seen 7x, last: post-recon-repair-gate11-20260621)
+- WARNING: 9 unresolved failures in failure memory
 
 
 ## Spec-Parity Requirements (from skill registry)

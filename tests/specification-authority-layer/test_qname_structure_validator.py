@@ -1,13 +1,15 @@
-"""Tests for tools/validators/qname_structure_validator.py (TC-SRC-002).
+"""Tests for tools/validators/qname_structure_validator.py (TC-SRC-002, TC-QNAME-VALIDATORS-001).
 
 Verifies the standalone QName structure compliance validator produces honest
 baseline reports and correctly identifies spec_qname compliance.
+Also tests V49 governance wiring (TestV49Wire).
 """
 import sys
 from pathlib import Path
 
 _REPO = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(_REPO / "tools" / "validators"))
+sys.path.insert(0, str(_REPO / "tools" / "supervisor"))
 
 from qname_structure_validator import report, scan_src_for_classes
 
@@ -80,4 +82,71 @@ class TestReportFormatIsValidYaml:
         result = report(_SRC_ROOT)
         assert result["status"] in valid_statuses, (
             f"Unknown status: {result['status']}"
+        )
+
+
+class TestV49Wire:
+    """TC-QNAME-VALIDATORS-001: V49 validate_qname_structure wired in governance loop."""
+
+    def test_v49_fires_for_spec_file_without_spec_qname(self, tmp_path):
+        """V49 returns WARN when a spec/ class in changed_files lacks spec_qname."""
+        from governance_validators import validate_qname_structure
+
+        # Create a fake spec/ file with a class missing spec_qname
+        fake_src = tmp_path / "src" / "python" / "testfmt" / "spec"
+        fake_src.mkdir(parents=True)
+        (fake_src / "__init__.py").write_text("")
+        (fake_src / "thing.py").write_text("class Thing:\n    pass\n")
+
+        decl = {
+            "changed_files": ["src/python/testfmt/spec/thing.py"],
+        }
+        result = validate_qname_structure(decl, repo_root=tmp_path)
+        assert result["result"] == "WARN", f"Expected WARN, got {result['result']}"
+        assert any("thing.py" in v.get("file", "") for v in result["items"])
+
+    def test_v49_passes_for_spec_file_with_spec_qname(self, tmp_path):
+        """V49 returns PASS when spec/ classes have spec_qname."""
+        from governance_validators import validate_qname_structure
+
+        fake_src = tmp_path / "src" / "python" / "testfmt" / "spec"
+        fake_src.mkdir(parents=True)
+        (fake_src / "__init__.py").write_text("")
+        (fake_src / "thing.py").write_text(
+            'class Thing:\n    spec_qname = "test:thing"\n'
+        )
+        decl = {
+            "changed_files": ["src/python/testfmt/spec/thing.py"],
+        }
+        result = validate_qname_structure(decl, repo_root=tmp_path)
+        assert result["result"] == "PASS", f"Expected PASS, got {result['result']}"
+
+    def test_v49_passes_for_non_spec_files(self):
+        """V49 ignores files not under a spec/ directory."""
+        from governance_validators import validate_qname_structure
+
+        decl = {
+            "changed_files": ["src/python/fodt/models.py"],
+        }
+        result = validate_qname_structure(decl, repo_root=_REPO)
+        assert result["result"] == "PASS"
+
+    def test_v49_present_in_run_all_validators(self):
+        """V49 validate_qname_structure is called by run_all_governance_validators."""
+        import sys as _sys
+        # Ensure repo root on path for absolute imports in governance_validators.py
+        repo_str = str(_REPO)
+        if repo_str not in _sys.path:
+            _sys.path.insert(0, repo_str)
+        from governance_validator_runner import run_all_governance_validators
+
+        decl = {
+            "declared_scope": "test",
+            "planned_work_items": [],
+            "changed_files": [],
+        }
+        composite = run_all_governance_validators(decl, repo_root=_REPO)
+        validator_names = [v.get("validator") for v in composite["validators"]]
+        assert "validate_qname_structure" in validator_names, (
+            "V49 validate_qname_structure missing from run_all_governance_validators output"
         )

@@ -12,7 +12,7 @@ Canonical class: Table.CoveredTableCell
 class CoveredTableCell:
     """Canonical spec-shaped class for table:covered-table-cell in FODS context.
 
-    A placeholder element for cells that are covered by a spanning table cell
+    A marker element for cells that are covered by a spanning table cell
     (table:table-cell with table:number-columns-spanned or table:number-rows-spanned).
     Has the same attributes as table:table-cell but no content is rendered.
 

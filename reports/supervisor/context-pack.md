@@ -1,22 +1,22 @@
 # Supervisor Context Pack
 # Format Factory — Machine-Readable State Snapshot
-# Generated: 2026-06-21T22:10:17.049993
+# Generated: 2026-06-22T13:14:24.888654
 # ADVISORY ONLY — not a gate approval or authority document
 
 ## Current State
 
 | Item | Value |
 |------|-------|
-| Git HEAD | ed51041f |
+| Git HEAD | c224cd91 |
 | Working tree clean | False |
 | Supervisor mode | MODE 4 |
 | Latest sprint | unknown |
-| Sprint ID | autonomous-loop-20260621-223000-ed51041f... |
-| Autonomous continue | True |
-| Iteration | 6/12 |
+| Sprint ID | sal-authority-sprint-D-20260622... |
+| Autonomous continue | False |
+| Iteration | 4/12 |
 | MCP status | MCP_CONFIG_PRESENT_MODE4_ACTIVE |
 | Active skills | 43 |
-| Ledger entries | 957 total (783 governed) |
+| Ledger entries | 958 total (783 governed) |
 
 ## .NET Test Counts (POC Matrix)
 

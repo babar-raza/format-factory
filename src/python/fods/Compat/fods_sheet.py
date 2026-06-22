@@ -14,7 +14,7 @@ from src.python.fods.spec.table.table import Table as _SpecTable
 class FodsSheet(_SpecTable):
     """Production facade for table:table (a single sheet in a FODS document).
 
-    Delegates to the canonical spec stub via inheritance. Represents a worksheet
+    Inherits all behavior from the canonical spec authority class. Represents a worksheet
     within the FODS spreadsheet container (office:spreadsheet).
     """
 

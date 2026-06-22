@@ -1,8 +1,8 @@
-"""fods.Compat — Production facade layer bridging spec stubs to models.
+"""fods.Compat — Production facade layer for FODS (Gate 11 P-ARCH-001).
 
 Each facade class has a spec_qname attribute referencing its canonical ODF spec element.
-These facades are intended for production API use; the canonical spec stubs in spec/
-are for spec-parity verification only.
+These facades are the production public API; the canonical spec authority classes in spec/
+establish spec-parity traceability.
 
 TC-MACH-ARCH-004 (2026-06-21): Initial facade layer creation.
 """

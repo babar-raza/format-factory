@@ -1,20 +1,22 @@
-# src/python/fodt/compat.py — TC-FODT-002: SWITCHED to spec/ imports
+# src/python/fodt/compat.py — TC-PH-005: unified re-exports from Compat/ layer
 #
-# Switched from models.py to spec/ stubs after TC-FODT-001 confirmed
-# behavioral equivalence (test_compat_bootstrap.py::TestSpecStubBehavioralEquivalence).
-#
-# text:p (Paragraph), text:h (Heading), text:span (Span) are now implemented in spec/.
-# FodtDocument remains in models.py — no spec equivalent yet.
-#
-# Facade aliases (FodtParagraph, FodtSpan) are preserved for backward compatibility.
+# This module is the backward-compat shim. All names now resolve to the
+# spec-backed production facades in fodt/Compat/. Do NOT add new names here —
+# use fodt.Compat directly for new code.
 
 try:
-    from .spec.text.paragraph import Paragraph as FodtParagraph
-    from .spec.text.span import Span as FodtSpan
-    from .models import FodtDocument
+    from .Compat import (
+        FodtDocument,
+        FodtParagraph,
+        FodtHeading,
+        FodtSpan,
+        FodtTableCell,
+    )
 except ImportError:
     FodtDocument = None  # type: ignore[assignment]
     FodtParagraph = None  # type: ignore[assignment]
+    FodtHeading = None  # type: ignore[assignment]
     FodtSpan = None  # type: ignore[assignment]
+    FodtTableCell = None  # type: ignore[assignment]
 
-__all__ = ["FodtDocument", "FodtParagraph", "FodtSpan"]
+__all__ = ["FodtDocument", "FodtParagraph", "FodtHeading", "FodtSpan", "FodtTableCell"]

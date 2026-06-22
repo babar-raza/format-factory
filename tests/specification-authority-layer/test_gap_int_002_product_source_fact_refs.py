@@ -25,7 +25,11 @@ _FACT_PATTERN = re.compile(r"FACT-([A-Z0-9]+)-(\d+)")
 
 
 def _load_sal_facts() -> dict[str, set[str]]:
-    """Load sal-facts-latest.json and index fact IDs by format_id."""
+    """Load sal-facts-latest.json and index only workbench-verified fact IDs by format_id.
+
+    Only includes facts with source='workbench_verified' to ensure citations in product
+    source are traceable to reviewed workbench evidence, not bootstrap template facts.
+    """
     if not _SAL_FACTS.is_file():
         return {}
     data = json.loads(_SAL_FACTS.read_text(encoding="utf-8"))
@@ -33,6 +37,8 @@ def _load_sal_facts() -> dict[str, set[str]]:
     for result in data.get("results", []):
         fmt = result.get("format_id", "").lower()
         for fact in result.get("spec_facts", []):
+            if fact.get("source") != "workbench_verified":
+                continue  # skip bootstrap template facts
             qname = fact.get("qname", "")
             if qname:
                 index.setdefault(fmt, set()).add(qname)
@@ -154,4 +160,45 @@ class TestProductSourceFactRefs:
         assert not missing, (
             f"Product source cites {len(missing)} fact IDs not in sal-facts-latest.json: "
             f"{missing[:5]}"
+        )
+
+    def test_gnumeric_has_workbench_verified_sal_facts(self, sal_index):
+        """Gnumeric now has workbench-verified facts (FACT-GNUMERIC-001/002/003).
+
+        Regression guard: if workbench YAML is removed or corrupted, this test catches it.
+        """
+        gnumeric_facts = sal_index.get("gnumeric", set())
+        assert len(gnumeric_facts) >= 3, (
+            f"Expected >= 3 Gnumeric workbench-verified facts, got {len(gnumeric_facts)}. "
+            "Check .local/spec-cache/gnumeric/v10/workbench/verified-facts-review.yaml"
+        )
+        assert "FACT-GNUMERIC-001" in gnumeric_facts, "FACT-GNUMERIC-001 missing from SAL"
+
+    def test_abw_has_workbench_verified_sal_facts(self, sal_index):
+        """ABW now has workbench-verified facts (FACT-ABW-001 through FACT-ABW-005).
+
+        Regression guard: if workbench YAML is removed or corrupted, this test catches it.
+        """
+        abw_facts = sal_index.get("abw", set())
+        assert len(abw_facts) >= 5, (
+            f"Expected >= 5 ABW workbench-verified facts, got {len(abw_facts)}. "
+            "Check .local/spec-cache/abw/awml-1.0/workbench/verified-facts-review.yaml"
+        )
+        assert "FACT-ABW-001" in abw_facts, "FACT-ABW-001 missing from SAL"
+
+    def test_csv_has_workbench_verified_sal_facts(self, sal_index):
+        """CSV has workbench-verified facts (FACT-CSV-001 and FACT-CSV-002) from the
+        structural workbench YAML. These are the same IDs cited in the gap-ledger.
+
+        Regression guard: if the structural workbench YAML is removed or status degrades,
+        this test catches it and prevents the gap-ledger refs from becoming stale.
+        """
+        csv_facts = sal_index.get("csv", set())
+        assert "FACT-CSV-001" in csv_facts, (
+            "FACT-CSV-001 missing from SAL workbench-verified index. "
+            "Check .local/spec-cache/csv/structural/workbench/verified-facts-review.yaml"
+        )
+        assert "FACT-CSV-002" in csv_facts, (
+            "FACT-CSV-002 missing from SAL workbench-verified index. "
+            "Check .local/spec-cache/csv/structural/workbench/verified-facts-review.yaml"
         )

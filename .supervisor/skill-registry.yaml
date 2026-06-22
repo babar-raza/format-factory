@@ -39,6 +39,31 @@ global_controls:
     - undocumented_dogfood_external_write
     - required_validation_fails
 
+missing_skill_workflow:
+  version: "1.0"
+  added: "2026-06-22"
+  trigger: product_source_work_without_registered_skill
+  enforcement_point: "autonomous-loop.md Step 2a -> /check-skill-coverage"
+  action: "BLOCKED_SKILL_GAP verdict + create taskcard at .local/taskcards/SKILL-GAP-<timestamp>.yaml"
+  taskcard_schema: ".claude/commands/check-skill-coverage.md (Skill-Gap Taskcard Schema section)"
+  routing_reference: ".supervisor/work-type-skill-map.yaml"
+  known_open_gaps:
+    - work_type: capability_compiler
+      status: backlog
+      master_plan_clause: "spec-to-feature plan Lane 3, ROOT-08"
+    - work_type: extract_analytics_from_monolith
+      status: backlog
+      master_plan_clause: "section 24.7 analytics separation RULE-AM-001"
+    - work_type: pre_sprint_governance_hook
+      status: backlog
+      master_plan_clause: "CLAUDE.md GOV_BLOCK exception"
+    - work_type: ci_transcript_verification
+      status: backlog
+      master_plan_clause: "skill_invocation_transcript_required global_control"
+    - work_type: supervision_audit
+      status: backlog
+      master_plan_clause: "spec-to-feature plan Lane 14"
+
 skills:
   # ============================================================
   # CORE PRODUCT SKILLS (R90 original)
@@ -165,6 +190,8 @@ skills:
     required_handoff_fields:
       - format_id
       - feature_name
+      - spec_qname
+      - spec_fact_ref
       - exact_source_paths
       - exact_test_paths
       - ledger_entry_path

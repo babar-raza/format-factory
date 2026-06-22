@@ -799,13 +799,54 @@ def _load_workbench_verified_facts(format_id: str) -> List[Dict[str, str]]:
                 except ImportError:
                     continue
 
-            for fact in data.get("facts", []):
+            raw_facts = data.get("facts", [])
+
+            # RC-3 (GAP-SA-NEW-003): run anti-bypass check on raw provenance source_id
+            # (before the fallback is applied). Facts with no spec_id AND no
+            # normalized_artifact in provenance are ANTI_BYPASS_REJECTED and excluded.
+            rejected_ids: set = set()
+            try:
+                from spec_verifier import verify_requirements  # lazy import — same dir
+                verify_input = []
+                for fact in raw_facts:
+                    prov = fact.get("provenance", {}) or {}
+                    claim_id = fact.get("claim_id") or fact.get("fact_id") or ""
+                    raw_source_id = prov.get("spec_id") or prov.get("normalized_artifact")
+                    verify_input.append({
+                        "req_id": claim_id,
+                        "source_id": raw_source_id,
+                        "text_fragment": fact.get("claim", ""),
+                    })
+                verify_results = verify_requirements(verify_input)
+                rejected_ids = {r.req_id for r in verify_results
+                                if r.status == "ANTI_BYPASS_REJECTED"}
+                unverifiable_count = sum(1 for r in verify_results
+                                         if r.status == "UNVERIFIABLE")
+                if rejected_ids:
+                    print(
+                        f"[sal_master_runner] WARN: {len(rejected_ids)} facts "
+                        f"ANTI_BYPASS_REJECTED for {format_id} (no source_id) — excluded",
+                        file=sys.stderr,
+                    )
+                if unverifiable_count:
+                    print(
+                        f"[sal_master_runner] WARN: {unverifiable_count} facts "
+                        f"UNVERIFIABLE for {format_id} — included (workbench-curated)",
+                        file=sys.stderr,
+                    )
+            except ImportError:
+                pass  # spec_verifier unavailable — proceed without anti-bypass check
+
+            for fact in raw_facts:
                 prov = fact.get("provenance", {}) or {}
                 status = prov.get("verification_status") or fact.get("verification_status", "")
                 if status not in _VERIFIED:
                     continue
                 claim_id = fact.get("claim_id") or fact.get("fact_id") or ""
                 if not claim_id:
+                    continue
+                # RC-3: skip facts that failed the anti-bypass check
+                if claim_id in rejected_ids:
                     continue
                 workbench_facts.append({
                     "qname": claim_id,
@@ -855,6 +896,11 @@ def run_sal_pipeline(
         formats_lower = {f.lower() for f in formats}
         all_formats = [f for f in all_formats if f.get("format_id", "").lower()
                        in formats_lower]
+        # RC-1 (GAP-SA-NEW-001): single/subset-format run on the production output dir
+        # must NOT overwrite the all-format sal-facts-latest.json.
+        # Tests using a custom output_dir (e.g. tmp_path) are unaffected.
+        if write_latest and output_dir.resolve() == _DEFAULT_OUTPUT_DIR.resolve():
+            write_latest = False
 
     if not all_formats:
         print("[sal_master_runner] WARNING: no formats matched", file=sys.stderr)

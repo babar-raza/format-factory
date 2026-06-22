@@ -4,7 +4,8 @@ Verifies:
 - All 8 Python spec files exist with correct spec_qname values
 - All required __init__.py files exist in spec/ subdirectories
 - Stubs are importable and spec_qname is accessible as a class attribute
-- architecture_only comment present in unimplemented stubs (TC-FODT-001: paragraph/heading/span are now implemented)
+- TC-FODT-001: paragraph/heading/span implemented
+- TC-FODT-BOOT-001: list_/list_item/table/table_row/table_cell now implemented
 """
 import sys
 from pathlib import Path
@@ -26,14 +27,10 @@ EXPECTED_STUBS = [
     ("table/table_cell.py", "table:table-cell"),
 ]
 
-# TC-FODT-001: paragraph/heading/span are now fully implemented — no longer architecture_only stubs
-ARCHITECTURE_ONLY_STUBS = [
-    ("text/list_.py", "text:list"),
-    ("text/list_item.py", "text:list-item"),
-    ("table/table.py", "table:table"),
-    ("table/table_row.py", "table:table-row"),
-    ("table/table_cell.py", "table:table-cell"),
-]
+# TC-FODT-001: paragraph/heading/span implemented
+# TC-FODT-BOOT-001: list_/list_item/table/table_row/table_cell implemented
+# All 8 spec stubs are now fully implemented — no architecture_only stubs remain
+ARCHITECTURE_ONLY_STUBS: list = []
 
 # Required __init__.py files
 REQUIRED_INIT_FILES = [

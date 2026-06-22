@@ -26,10 +26,12 @@ Add a new object-model feature to a Python FOSS product (fods, fodt, pbm, pgm, p
 5. **Ledger**: Adds a `GOVERNED_PRODUCT_CHANGE` entry to `reports/r90/product-code-change-ledger.json`
 6. **Verify**: Runs `python -m pytest tests/python/<format>/test_r<run>_<feature>.py -v`
 
-## Spec-Literal Requirements
+## Mandatory QName Requirements
 
-Because `spec_qname_required: true` for this skill, the execution handoff MUST include at least one
-`spec_fact_refs` entry linking the feature to a format specification fact. Example:
+Because `spec_qname_required: true` for this skill, the execution handoff MUST include:
+- `spec_qname`: the ODF/format QName of the element being modeled (e.g. `"table:table-cell"`)
+- `spec_fact_ref`: the FACT-{FORMAT}-* identifier from `.local/sal-output/sal-facts-latest.json`
+- At least one `spec_fact_refs` entry linking the feature to a format specification fact. Example:
 
 ```yaml
 spec_fact_refs:
@@ -117,3 +119,4 @@ with: skill_id, format_id, feature_name, changed_files, test_results, ledger_ent
 - 1.0 (2026-06-02): Initial version
 - 1.1 (2026-06-03): Added frontmatter, allowed/forbidden paths, rollback, changelog (Skills R99)
 - 1.2 (2026-06-03): Added validation, transcript requirement, sample invocation (Skills R101).
+- 1.3 (2026-06-21): Renamed "Spec-Literal Requirements" → "Mandatory QName Requirements"; added spec_qname and spec_fact_ref as explicit required handoff fields (TC-SKILL-HARDEN-001).

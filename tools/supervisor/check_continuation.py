@@ -249,6 +249,43 @@ def check(repo_root: Path, *, session_id: str | None = None,
                 ),
             )
 
+    # --- Check 1c: Machinery mission ledger gate (only for --track machinery) ---
+    # GAP-WHALE-001 (TC-WHALE-LEDGER-001, 2026-06-21): wire mission-ledger.json enforcement
+    # into check_continuation.py so the machinery mission stop_status is machine-enforced.
+    # Without this check, machinery continuation signals CONTINUE even after MISSION_COMPLETE.
+    if track == "machinery":
+        _machinery_ledger = (
+            repo_root / ".local" / "supervisor" / "machinery" / "mission-ledger.json"
+        )
+        if _machinery_ledger.exists():
+            try:
+                _ml = json.loads(_machinery_ledger.read_text(encoding="utf-8"))
+            except Exception:
+                _ml = {}
+            if _ml.get("stop_status") == "MISSION_COMPLETE":
+                return _stop(
+                    "MACHINERY_MISSION_COMPLETE",
+                    (
+                        "Machinery mission declared complete in mission-ledger.json "
+                        f"(mission_id={_ml.get('mission_id', 'unknown')!r}). "
+                        "No further machinery continuation is authorized. "
+                        "To start a new machinery mission, initialize a new mission-ledger.json."
+                    ),
+                    iteration=signal.get("iteration", 0),
+                    max_iterations=signal.get("max_iterations", 5),
+                )
+            if _ml.get("audit_pending") is True and not _ml.get("execution_pending", True):
+                return _stop(
+                    "MACHINERY_AUDIT_REQUIRED",
+                    (
+                        "Machinery mission has audit_pending=True and execution_pending=False. "
+                        "A post-execution audit must run before machinery continuation. "
+                        "Run: python tools/supervisor/machinery_audit.py --write-output"
+                    ),
+                    iteration=signal.get("iteration", 0),
+                    max_iterations=signal.get("max_iterations", 5),
+                )
+
     # --- Check 2: autonomous_continue is truthy ---
     # B4: When signal is false due to a non-TRUE_EXTERNAL_GATE reason, cross-check
     # approval-gates.md before stopping. Stale signal + live YES gate = allow continuation.

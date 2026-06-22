@@ -266,7 +266,7 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
             _sal_runner = repo_root / "tools" / "specification-authority-layer" / "sal_master_runner.py"
             if _sal_runner.exists():
                 _sal_result = _sal_subprocess.run(
-                    ["python", str(_sal_runner), "--all"],
+                    ["python", str(_sal_runner), "--all", "--from-cache-only"],
                     cwd=str(repo_root),
                     timeout=300,
                     capture_output=True,
@@ -309,7 +309,8 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
     for _lp in _plan_lock_candidates:
         try:
             _ld = json.loads(_lp.read_text(encoding="utf-8"))
-            if _ld.get("status") != "COMPLETE":
+            # Only treat IN_PROGRESS locks as active. COMPLETE and TERMINAL_CLOSED are done.
+            if _ld.get("status") == "IN_PROGRESS":
                 plan_lock = _ld
                 print(f"  [PLAN_LOCK] Active plan: {plan_lock.get('plan_path')}")
                 print(f"  [PLAN_LOCK] Last taskcard: {plan_lock.get('last_taskcard')}")
@@ -767,6 +768,14 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
             fm.save()
         except Exception as fm_err:
             print(f"  [WARN] Failure memory recording failed: {fm_err}")
+
+    # TC-L15-WRITER-001: Write sprint-learnings.jsonl before consumer scan
+    try:
+        from write_sprint_learnings import write_sprint_learnings as _wsl
+        _lp = _wsl(sprint_id, repo_root / ".local" / "evidences" / sprint_id, declaration_path)
+        print(f"  [Step 2f2] Sprint learnings written: {_lp.name}")
+    except Exception as _wsl_e:
+        print(f"  [WARN] write_sprint_learnings skipped: {_wsl_e}")
 
     # HEAL-RECT-002: Run learning consumer — scan learnings, generate rule proposals
     print("\n=== STEP 2g: LEARNING CONSUMER ===")
