@@ -7,6 +7,9 @@ QName: office:document
 Namespace: urn:oasis:names:tc:opendocument:xmlns:office:1.0
 Canonical class: Office.Document
 """
+from __future__ import annotations
+
+from typing import Any
 
 
 class Document:
@@ -15,7 +18,6 @@ class Document:
     Root element of a flat ODS document. Contains office:body, office:automatic-styles,
     and office:scripts. Attributes include office:version and xmlns declarations.
 
-    This is NOT the production model (use models.FodsDocument for production).
     Facades in Compat/ should delegate to this class via spec_qname.
     """
 
@@ -24,3 +26,19 @@ class Document:
     namespace_uri = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
     local_name = "document"
     facade_names = ["FodsDocument"]
+
+    def __init__(self, data: dict[str, Any]):
+        self._data = data
+
+    @property
+    def sheet_count(self) -> int:
+        return len(self._data.get("sheets", []))
+
+    def has_sheets(self) -> bool:
+        return self.sheet_count > 0
+
+    def to_dict(self) -> dict[str, Any]:
+        return dict(self._data)
+
+    def __repr__(self) -> str:
+        return f"Document(sheets={self.sheet_count})"
