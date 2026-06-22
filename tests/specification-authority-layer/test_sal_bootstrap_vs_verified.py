@@ -31,19 +31,20 @@ class TestBootstrapVsVerified:
     """Verify fact_status / source_id distinction between template and workbench facts."""
 
     def test_no_workbench_format_facts_are_bootstrap_only(self, tmp_path):
-        """A format with no verified workbench facts → all emitted facts are bootstrap_only."""
-        # CSV workbench has only 2 facts with pending_verification status — none verified.
-        # In default mode (not from_cache_only), only template facts are emitted for CSV.
-        result = run_sal_pipeline(formats=["csv"], output_dir=tmp_path)
+        """A format with no spec-cache workbench → all emitted facts are bootstrap_only."""
+        # ORA has no spec-cache workbench directory; only template facts are emitted.
+        # CSV was previously used here but its structural workbench has verified_with_note
+        # facts (FACT-CSV-001, FACT-CSV-002) which are included as `verified`.
+        result = run_sal_pipeline(formats=["ora"], output_dir=tmp_path)
         assert result["formats_processed"] == 1
         fmts = result.get("results", [])
-        csv_result = next((r for r in fmts if r["format_id"] == "csv"), None)
-        assert csv_result is not None, "CSV must be in results"
-        facts = csv_result["spec_facts"]
-        assert len(facts) > 0, "CSV should have at least template facts"
+        ora_result = next((r for r in fmts if r["format_id"] == "ora"), None)
+        assert ora_result is not None, "ORA must be in results"
+        facts = ora_result["spec_facts"]
+        assert len(facts) > 0, "ORA should have at least template facts"
         for f in facts:
             assert f.get("fact_status") == "bootstrap_only", (
-                f"CSV template fact must have fact_status='bootstrap_only', got: "
+                f"ORA template fact must have fact_status='bootstrap_only', got: "
                 f"{f.get('fact_status')} for qname={f.get('qname')}"
             )
 
