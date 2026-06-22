@@ -111,6 +111,39 @@ FORMAT_STRUCTURAL_FACTS: dict[str, list[dict]] = {
             {"claim_id": "FACT-SYLK-003", "claim": "SYLK cell: C;X;Y;K record with column, row, and value", "section": "3"},
         ],
     },
+    "ora": {
+        "version_dir": "openraster-0.0.3",
+        "spec_body": "OpenRaster 0.0.3 (freedesktop.org)",
+        "facts": [
+            {"claim_id": "FACT-ORA-001", "claim": "ORA is a ZIP container with a 'mimetype' file (first entry, uncompressed) containing 'image/openraster'", "section": "2.1"},
+            {"claim_id": "FACT-ORA-002", "claim": "ORA stack.xml root element is <image> with width and height attributes describing canvas dimensions", "section": "2.2"},
+            {"claim_id": "FACT-ORA-003", "claim": "ORA layers are <layer> elements inside <stack> with src (PNG tile path), x, y, opacity, visibility", "section": "2.3"},
+        ],
+    },
+    "pam": {
+        "version_dir": "netpbm-pam",
+        "spec_body": "Netpbm PAM specification (netpbm.sourceforge.net)",
+        "facts": [
+            {"claim_id": "FACT-PAM-001", "claim": "PAM file begins with ASCII header: magic 'P7', WIDTH, HEIGHT, DEPTH, MAXVAL, TUPLTYPE, ENDHDR (each on own line)", "section": "1"},
+            {"claim_id": "FACT-PAM-002", "claim": "PAM pixel data follows ENDHDR as raw binary: DEPTH samples per pixel, MAXVAL+1 possible values per sample", "section": "2"},
+        ],
+    },
+    "xpm": {
+        "version_dir": "xpm3",
+        "spec_body": "X PixMap XPM3 (X Consortium / Arnaud Le Hors, 1991)",
+        "facts": [
+            {"claim_id": "FACT-XPM-001", "claim": "XPM3 file begins with C comment '/* XPM */' followed by a static char* array declaration", "section": "1"},
+            {"claim_id": "FACT-XPM-002", "claim": "XPM3 values string: 'width height ncolors chars_per_pixel' followed by color table and pixel rows", "section": "2"},
+        ],
+    },
+    "zpaq": {
+        "version_dir": "zpaq-level2",
+        "spec_body": "ZPAQ Level 2 (Matt Mahoney, v2.06, 2013)",
+        "facts": [
+            {"claim_id": "FACT-ZPAQ-001", "claim": "ZPAQ archive consists of blocks; each block begins with 7-byte marker '7kSt\\x01' + 2 checksum bytes", "section": "2"},
+            {"claim_id": "FACT-ZPAQ-002", "claim": "ZPAQ block contains segments; each segment has a locator, filename, comment, data, and SHA-1 checksum", "section": "3"},
+        ],
+    },
 }
 
 NOW = datetime.utcnow().strftime("%Y-%m-%d")

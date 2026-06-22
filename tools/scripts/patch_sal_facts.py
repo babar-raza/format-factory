@@ -59,6 +59,23 @@ format_facts = {
     "fods": [
         {"qname": "FACT-FODS-002", "claim": "FODS mimetype is application/vnd.oasis.opendocument.spreadsheet-flat-xml", "section": "3.1.2", "description": "FODS MIME type (IANA-registered ODF flat-XML spreadsheet MIME type)", "authority": "iana-odf-registration", "verification_status": "structural", "source": "spec_cache"},
     ],
+    "ora": [
+        {"qname": "FACT-ORA-001", "claim": "ORA is a ZIP container with 'mimetype' file containing 'image/openraster'", "section": "2.1", "description": "ORA container structure (OpenRaster 0.0.3)", "authority": "freedesktop-openraster-0.0.3", "verification_status": "structural", "source": "spec_cache"},
+        {"qname": "FACT-ORA-002", "claim": "ORA stack.xml root element is <image> with width and height attributes", "section": "2.2", "description": "ORA stack.xml image element", "authority": "freedesktop-openraster-0.0.3", "verification_status": "structural", "source": "spec_cache"},
+        {"qname": "FACT-ORA-003", "claim": "ORA layers are <layer> elements inside <stack> with src, x, y, opacity, visibility", "section": "2.3", "description": "ORA layer element structure", "authority": "freedesktop-openraster-0.0.3", "verification_status": "structural", "source": "spec_cache"},
+    ],
+    "pam": [
+        {"qname": "FACT-PAM-001", "claim": "PAM file begins with ASCII header: magic 'P7', WIDTH, HEIGHT, DEPTH, MAXVAL, TUPLTYPE, ENDHDR", "section": "1", "description": "PAM header structure (Netpbm)", "authority": "netpbm-pam-spec", "verification_status": "structural", "source": "spec_cache"},
+        {"qname": "FACT-PAM-002", "claim": "PAM pixel data follows ENDHDR as raw binary: DEPTH samples per pixel", "section": "2", "description": "PAM binary pixel data", "authority": "netpbm-pam-spec", "verification_status": "structural", "source": "spec_cache"},
+    ],
+    "xpm": [
+        {"qname": "FACT-XPM-001", "claim": "XPM3 file begins with C comment '/* XPM */' followed by static char* array", "section": "1", "description": "XPM3 file structure (X Consortium)", "authority": "xpm3-spec-1991", "verification_status": "structural", "source": "spec_cache"},
+        {"qname": "FACT-XPM-002", "claim": "XPM3 values string: 'width height ncolors chars_per_pixel' + color table + pixel rows", "section": "2", "description": "XPM3 values format", "authority": "xpm3-spec-1991", "verification_status": "structural", "source": "spec_cache"},
+    ],
+    "zpaq": [
+        {"qname": "FACT-ZPAQ-001", "claim": "ZPAQ block begins with 7-byte marker '7kSt\\x01' plus 2 checksum bytes", "section": "2", "description": "ZPAQ block marker (Level 2)", "authority": "zpaq-level2-mahoney", "verification_status": "structural", "source": "spec_cache"},
+        {"qname": "FACT-ZPAQ-002", "claim": "ZPAQ segment has locator, filename, comment, data, and SHA-1 checksum", "section": "3", "description": "ZPAQ segment structure", "authority": "zpaq-level2-mahoney", "verification_status": "structural", "source": "spec_cache"},
+    ],
 }
 
 for entry in data["results"]:
