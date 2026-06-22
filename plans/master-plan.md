@@ -726,6 +726,57 @@ for that format must be a secondary split, not new analytics additions. Growth b
 
 ---
 
+### Machinery Lifecycle Healing Mission — MISSION_COMPLETE (2026-06-22)
+
+**Status:** MISSION_COMPLETE — all 13 agent-resolvable gaps closed; TC-MACH-WF-001/003 completed_verified; MISSION_COMPLETE gate fires
+
+**Plan file:** `plans/snoopy-juggling-seal.md` v3.5 (TC-MACH-WF-001/003 completed_verified, GAP table updated, §18 change log v3.5 entry added)
+
+**Mission ledger:** `.local/supervisor/machinery/mission-ledger.json` — `stage: MISSION_COMPLETE`, `open_gaps: []`, `completion_audit_pending: false`, `closed_gaps: 13`
+
+**Commits:** `3024f68c` (V47 + FODS Compat facades), `329b9101` (machinery_audit.py + test_machinery_audit.py), `9867eb1f` (V50 + Check 1c + skill-gov), `43a9e9b5` (qname registries)
+
+**What was completed:**
+
+*TC-MACH-WF-001 — Post-Execution Audit Stage:*
+- `tools/supervisor/machinery_audit.py`: `run_audit()` verifies closed gaps have evidence; writes `post-exec-audit-{n}.json`
+- `tests/supervisor/test_machinery_audit.py`: 11 tests (PASS/FAIL_WITH_GAPS/ERROR/MISSION_COMPLETE/INCOMPLETE) — all pass
+- `.local/supervisor/machinery/post-exec-audit-3.json`: verdict=PASS, 13/13 gaps verified, 0 unverified
+
+*TC-MACH-WF-003 — Mission Completion Audit Gate:*
+- `machinery_audit.py --mission-complete-check`: returns `MISSION_COMPLETE` when `open_gaps=[]` and `completion_audit_pending=False`
+- Test `test_no_open_gaps_and_no_pending_returns_complete`: PASS
+
+*TC-MACH-ARCH-004 — FODS Compat/ Facades:*
+- `src/python/fods/Compat/fods_document.py`, `fods_sheet.py`, `fods_cell.py` with `spec_qname` + `spec_fact_ref`
+- All 3 importable; `spec_qname`: office:document, table:table, table:table-cell
+
+*TC-MACH-ARCH-007 — V47 Governance Validator:*
+- `validate_spec_fact_refs_in_sal_output` wired at position 47 in `governance_validator_runner.py`
+- 5 regression tests pass: real FODS fact PASS, fake fact FAIL+blocks, exempt types pass
+
+*Additional governance (V50, Check 1c, skill-gov):*
+- V50 `validate_forbidden_module_names` in `governance_validators_ext.py` — 12 tests pass
+- Check 1c machinery mission ledger gate in `check_continuation.py` — 6 tests pass
+- M5b AUTHORIZED_OVERRIDE bypass in `check_continuation.py` (AUT-20260622-0001)
+- `.supervisor/work-type-skill-map.yaml`: 17 active + 5 gap skill mappings
+
+**Verification performed:**
+- `machinery_audit.py --mission-complete-check` → `MISSION_COMPLETE` (direct runtime proof)
+- `post-exec-audit-3.json`: `verified_count=13, unverified_count=0` (Level 1 artifact)
+- 11/11 `test_machinery_audit.py` — PASS
+- 5/5 SAL runner idempotency tests — PASS
+- 5/5 V47 governance validator tests — PASS
+- All 4 required gaps (GAP-ARCH-004/007/WF-001/WF-003) confirmed in `closed_gaps`
+- FODS Compat facades importable with correct `spec_qname` values
+
+**Follow-ups (non-blocking):**
+1. GAP-WF-002 (plan-reopening mechanism): explicitly deferred — no agent-resolvable path; recorded in `deferred_gaps` in mission-ledger
+2. `test_sal_runner_idempotency.py` is slow (104s) — acceptable; no optimization needed now
+3. `snoopy-juggling-seal.md` §§26–30 remain with open taskcards — separate future sprint scope
+
+---
+
 ### snoopy-juggling-seal §26 QName Architecture Taskcards — Session Completion (COMPLETED 2026-06-22)
 
 **Status:** COMPLETED — 14/14 §26 taskcards completed_verified; TC-GATE11-SUBMIT-001 remains waiting_external_gate
