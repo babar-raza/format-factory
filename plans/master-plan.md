@@ -687,6 +687,45 @@ for that format must be a secondary split, not new analytics additions. Growth b
 
 ---
 
+### enumerated-wibbling-torvalds — Plan File Governance + Locking + Ledger (COMPLETED 2026-06-22)
+
+**Status:** COMPLETED — 9/9 parent taskcards closed (TC-PLAND-000 through TC-PLAND-008)
+
+**Plan file:** `C:/Users/prora/.claude/plans/enumerated-wibbling-torvalds.md` (v2.0, micro-taskcardized)
+
+**Evidence root:** `.local/evidences/pgov-20260622-085859/`
+
+**Commit:** `08725099`
+
+**What was completed:**
+
+- TC-PLAND-000: Baseline captured — evidence dir, git state, lock state, run-record.yaml
+- TC-PLAND-001: All 5 snoopy edits from `sunny-crunching-cherny.md` — VERIFIED_PRESENT in snoopy v3.12
+- TC-PLAND-002: `test_plan_readiness_verdict.py` — 10/10 PASS (no repairs needed)
+- TC-PLAND-003: Terminal lock written for `sunny-crunching-cherny.md` (TERMINAL_CLOSED)
+- TC-PLAND-004: `plans/master-plan-memory.md` created — durable plan lineage ledger, 6 entries (LEDGER-001..006), FORBIDDEN section prevents use as execution plan
+- TC-PLAND-005: `tools/supervisor/write_plan_lock.py` extended:
+  - `FORBIDDEN_AS_ACTIVE_PLAN` guard (ValueError if ledger used as active plan)
+  - `validate_plan_binding()` function (checks `forbidden_mutation_paths` in binding_contract)
+  - `binding_contract` dict support via `--binding` flag
+- TC-PLAND-006: `CLAUDE.md` updated: "Plan file identity rule (HARD)" in Plan Hardening section + WARNING in Sprint Closeout step 1 (19 lines added, 0 deleted)
+- TC-PLAND-007: `tests/supervisor/test_plan_governance.py` created — 7 tests covering validate_plan_binding, forbidden_mutation_paths, snoopy-not-fallback, TERMINAL_CLOSED enforcement, FORBIDDEN_AS_ACTIVE_PLAN; self-audit 10/10 answered NO
+- TC-PLAND-008: Evidence declaration written, LEDGER-006 locked_at stamped, terminal lock written for this plan
+
+**Verification performed:**
+- 7 new governance tests: ALL PASS
+- 13 test_plan_lock_machinery.py tests (3 new binding tests): ALL PASS
+- 20 combined governance + machinery tests: ALL PASS
+- 5 snoopy edits: ALL VERIFIED_PRESENT (edit-verification.json: `"overall": "ALL_VERIFIED"`)
+- test_plan_readiness_verdict.py: 10/10 PASS
+- CLAUDE.md diff: 19 lines added, 0 deleted (within ≤20 budget)
+- Terminal locks confirmed: sunny-crunching-cherny.md (TERMINAL_CLOSED), enumerated-wibbling-torvalds (TERMINAL_CLOSED)
+
+**Follow-ups (non-blocking):**
+- None. All governance machinery is fully operational.
+
+---
+
 ### TC-0012 — Specification Normalization Layer (COMPLETED 2026-06-18)
 
 **Status:** COMPLETED (Phase 1: run024; Phase 2: run025; Phase 3: 2026-06-18)
