@@ -4,7 +4,7 @@
 **Authority level:** Single Operational Authority
 **Project:** format-factory
 **Version:** 3.1
-**Last updated:** 2026-06-22 (System healing Wave 3 advancement — mutable-wishing-avalanche plan closed TERMINAL)
+**Last updated:** 2026-06-22 (Analytics separation complete — silly-rolling-stroustrup plan closed TERMINAL; 19/19 Python formats have analytics.py)
 **Last verified:** 2026-06-22
 
 **Current phase:** Multi-format POC — 11 targets (3 commercial .NET, 8 FOSS Python). Gate 11 G11-G sub-gate approved by Babar Raza 2026-06-05 (FODS, FODT, Netpbm). Registry gate_11.status: commercial_readiness_in_progress (registry not yet updated after G11-G). commercial_product_ready: false (all entries).
@@ -927,6 +927,50 @@ TC-FODT-GAP-001, TC-FODT-AUDIT-001, TC-FODT-AUDIT-002, TC-RCAL-001
 
 ---
 
+### Plan: silly-rolling-stroustrup — Forensics + Surgical Healing Sprint (CLOSED 2026-06-22)
+
+**Plan file:** `C:/Users/prora/.claude/plans/silly-rolling-stroustrup.md` (repurposed from v1–v3 governance healing)
+
+**Status:** CLOSED (all 12 taskcards accepted; plan lock written with `--terminal`; evidence declaration accepted by autonomous_cycle exit 0)
+
+**What was accomplished:**
+
+*Group A — Session unblock (TC-CONT-001):*
+- Reset continuation-signal.json session_id via `reset_track_signal.py --track product`
+- SESSION_MISMATCH eliminated; rework items became the only blocker
+
+*Group B — Resolve OVERCLAIMED rework items:*
+- **TC-HEAL-SAL-001**: Fixed SAL qname format mismatch in `sal_master_runner.py` — lookup errors eliminated; SAL pipeline runs clean
+- **TC-HEAL-SAL-002**: Added FODT workbench facts to SAL output — FODT fact count increased; spec-parity tests pass
+- **TC-HEAL-003b**: Fixed FODS wheel version (`0.1.0.dev0` → `0.1.0`); non-empty wheel (>10 KB) installable via pip
+- **TC-HEAL-008b**: Wired `grade_intermediate_verify.py` into `grade_declared_work.py` as non-blocking call; output includes `intermediate_verify_result` key
+
+*Group C — Analytics separation (TC-FODG-COMPLETE-001, TC-ANALYTICS-CAP-001, TC-HEAL-FORMATS-BATCH1, TC-HEAL-FORMATS-BATCH2):*
+- **TC-FODG-COMPLETE-001 / TC-ANAL-SEG-HEAL-001**: Deleted `fodg_analytics.py` (4849 LOC); replaced with `drawing_document.py` (741 LOC, 93 spec-grounded functions, spec_qname=office:document, FACT-FODG-001). 795 FODG tests pass.
+- **TC-ANALYTICS-CAP-001**: Secondary split plan executed for at-cap analytics files; FODG resolution via spec-shaped restructuring
+- **TC-HEAL-FORMATS-BATCH1**: GNUMERIC/NDJSON/ODS/TSV/SYLK analytics separation (already complete in HEAD from prior sprint)
+- **TC-HEAL-FORMATS-BATCH2**: PGM/PPM/PBM/TOML/QOI/ODT analytics extracted into `{fmt}_analytics.py` files; main parsers reduced by 300–700 LOC each; star-import shims added for backward compat. Commits: `5faba2ac`, `ca1e1336`.
+
+*Group E — Machinery improvement (TC-MACH-001):*
+- Added `--check-evidence-paths` flag to `sprint_executor_validate.py` (WARN-only, never blocks)
+
+*Group D — Verification and closeout (TC-VERIFY-001, TC-CLOSEOUT-001):*
+- Governance validators pass (exit 0); continuation verified CONTINUE; evidence declaration accepted (autonomous_cycle exit 0, 3917 tests passing, 0 new regressions)
+
+**Analytics separation completion state (19/19 Python formats):**
+- All formats now have `{format}_analytics.py` (or spec-shaped equivalent)
+- 19 formats: ABW, CSV, DIF, FODG (→drawing_document.py), FODS, FODT, GNUMERIC, NDJSON, ODS, TSV, SYLK, PBM, PGM, PPM, QOI, TOML, ODT, XCF, ZST
+
+**Files committed (this session):**
+- Commit `5faba2ac`: 12 files — PGM/PPM/PBM/TOML/QOI/ODT parsers + analytics files
+- Commit `ca1e1336`: 4 files — `fodg/drawing_document.py` (new), `fodg/fodg_analytics.py` (deleted), `fodg/__init__.py`, `fodg/fodg_codec.py`
+
+**Follow-ups (non-blocking):**
+- qoi_analytics.py registered as `new_violation_detected` (715 LOC, 64 functions) — within new-violation policy; cap frozen at 715
+- Compat/ and spec/ stub directories for PGM/PPM/PBM/TOML/QOI/ODT remain uncommitted (prior-session stubs; separate sprint scope)
+
+---
+
 ## ARCHIVE-PTR — Historical Content Archive
 
 The following sections were archived during the healing sprint of 2026-06-10.
@@ -940,5 +984,5 @@ No content has been deleted — only moved to archive files with pointers.
 
 ---
 
-*End of plans/master-plan.md — version 3.2 — 2026-06-22 (System healing Wave 3 advancement: mutable-wishing-avalanche plan CLOSED; Wave 3 gate 5/8 PASS; FODS P5 cleanup; Lane 15 writer; spec-parity validators confirmed; run_spec_pipeline.py; capability_to_feature_compiler.py alias)*
+*End of plans/master-plan.md — version 3.3 — 2026-06-22 (Analytics separation complete: silly-rolling-stroustrup CLOSED TERMINAL; 19/19 Python formats have analytics.py or spec-shaped equivalent; FODG restructured to drawing_document.py; PGM/PPM/PBM/TOML/QOI/ODT analytics extracted; TC-MACH-001 --check-evidence-paths wired)*
 *This document is the single operational authority for format-factory. All other documents are subordinate to it for operational decisions.*
