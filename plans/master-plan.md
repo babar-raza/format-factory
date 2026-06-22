@@ -4,8 +4,8 @@
 **Authority level:** Single Operational Authority
 **Project:** format-factory
 **Version:** 3.1
-**Last updated:** 2026-06-11 (Authority healing — Gate 11 wording fixed, gate sequential typo fixed, 5 durable authority sections restored)
-**Last verified:** 2026-06-11
+**Last updated:** 2026-06-22 (System healing Wave 3 advancement — mutable-wishing-avalanche plan closed TERMINAL)
+**Last verified:** 2026-06-22
 
 **Current phase:** Multi-format POC — 11 targets (3 commercial .NET, 8 FOSS Python). Gate 11 G11-G sub-gate approved by Babar Raza 2026-06-05 (FODS, FODT, Netpbm). Registry gate_11.status: commercial_readiness_in_progress (registry not yet updated after G11-G). commercial_product_ready: false (all entries).
 
@@ -337,8 +337,18 @@ See `registry/format-registry.yaml` for per-format gate status.
 - **Format status:** `registry/format-registry.yaml`
 - **Gate approvals:** `reports/supervisor/approval-gates.md`
 
-**Gate 11 status:** G11-G sub-gate approved by Babar Raza 2026-06-05 (FODS, FODT, Netpbm). Registry gate_11.status: commercial_readiness_in_progress (registry not yet updated — see `reports/master-plan-authority-healing-20260610/gate11_commercial_readiness_reconciliation.md`).
+**Gate 11 status:** G11-G sub-gate approved by Babar Raza 2026-06-05 (FODS, FODT, Netpbm). Gate 11 readiness (Python): FODS P3/P4/P5/C3/C4 = evidence_verified; FODT P3/P4/P5 = evidence_verified. C10 (commercial release) requires Babar Raza business approval — TRUE_EXTERNAL_GATE.
 **commercial_product_ready:** false (all entries — requires full implementation + final human approval).
+
+**System Healing Gate (mutable-wishing-avalanche plan — CLOSED 2026-06-22):**
+Wave 3 gate: 5 PASS / 3 PARTIAL (0 FAIL)
+- PASS: Condition 1 (SAL pipeline — run_spec_pipeline.py), Condition 3 (compiler alias), Condition 4 (QName ontology artifacts), Condition 5 (skill/prompt wiring), Condition 6 (8 spec-parity validators)
+- PARTIAL: Condition 2 (action queue — data gap: all 891 gaps have suggested_taskcard=""), Condition 7 (Lane 14 code — deferred pending Wave 3 full PASS), Condition 8 (Lane 15 — temporal threshold: sprint-learnings.jsonl writer done, propagation pending 3-sprint accumulation)
+- Next unblock: populate suggested_taskcard for top-priority FOSS gaps (human data input required for Condition 2)
+- Evidence: `.local/evidences/ff-idempotent-recon-20260618-1320e557/system-healing-gate-verdict.md`
+
+**FODS P5 cleanup (2026-06-22):** 32 analytics stub test files deleted; 0 collection errors; 1324 collected / 1316 pass.
+**Lane 15 (2026-06-22):** write_sprint_learnings.py implemented; wired in autonomous_cycle.py Step 2f2; learning_consumer.scan_all_learnings() returns >0.
 
 ---
 
@@ -666,5 +676,5 @@ No content has been deleted — only moved to archive files with pointers.
 
 ---
 
-*End of plans/master-plan.md — version 3.1 — 2026-06-11 (Authority healing: Gate 11 wording fixed, gate sequence typo fixed, 5 durable authority sections restored: §5 Living Master Plan Policy, §23 Persistence/Reuse/Visibility, §24 Format Expansion Guardrails)*
+*End of plans/master-plan.md — version 3.2 — 2026-06-22 (System healing Wave 3 advancement: mutable-wishing-avalanche plan CLOSED; Wave 3 gate 5/8 PASS; FODS P5 cleanup; Lane 15 writer; spec-parity validators confirmed; run_spec_pipeline.py; capability_to_feature_compiler.py alias)*
 *This document is the single operational authority for format-factory. All other documents are subordinate to it for operational decisions.*
