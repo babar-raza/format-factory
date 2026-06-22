@@ -1,189 +1,107 @@
 [
   {
-    "item_id": "CONTINUATION-REPAIR-001",
-    "item_title": "Resolve GOV_BLOCK:validate_source_architecture false positive from prior sprint",
+    "item_id": "TC-H2",
+    "item_title": "Fix FODT parse chain routing",
     "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
-    "evidence_found": true,
-    "evidence_paths": [
-      "registry/source-structure-baseline.json",
-      ".local/supervisor/continuation-signal.json",
-      "reports/supervisor/approval-gates.md"
-    ],
+    "supervisor_grade": "OVERCLAIMED",
+    "evidence_found": false,
+    "evidence_paths": [],
     "tests_supporting": [],
     "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths",
-      "No concrete test/criteria proof (path-only acceptance)"
-    ],
-    "acceptance_criteria_failed": [
-      "No raw proof, test content, or acceptance criteria verified"
-    ],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for CONTINUATION-REPAIR-001",
-    "purpose_check": {
-      "item_type": "GOVERNANCE_TASKCARD",
-      "has_gap_ref": null,
-      "verdict": "NOT_APPLICABLE",
-      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
-    },
-    "semantic_verification": {
-      "adequate": true,
-      "confidence": 0.7,
-      "stub_detected": false,
-      "deficiencies": [],
-      "llm_used": false,
-      "intermediate_verified": true,
-      "source": "intermediate_content_check",
-      "checks": [
-        {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\registry\\source-structure-baseline.json",
-          "exists": true,
-          "content_ok": true,
-          "detail": "JSON object with 5 keys",
-          "check_type": "json_content"
-        },
-        {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\supervisor\\continuation-signal.json",
-          "exists": true,
-          "content_ok": true,
-          "detail": "JSON object with 22 keys",
-          "check_type": "json_content"
-        },
-        {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\reports\\supervisor\\approval-gates.md",
-          "exists": true,
-          "content_ok": true,
-          "detail": "markdown with 16 lines, header=yes",
-          "check_type": "markdown_content"
-        }
-      ],
-      "summary": "3/3 evidence files passed content check"
-    }
-  },
-  {
-    "item_id": "DOGFOOD-DIF-CSV-001",
-    "item_title": "Upgrade dif_to_csv to FF csv_writer.write_csv (dogfood export IMPLEMENTED)",
-    "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_VERIFIED",
-    "evidence_found": true,
-    "evidence_paths": [
-      "src/python/dif/dif_analytics.py",
-      "tests/python/dif/test_r90_dif_to_csv_dogfood.py",
-      "reports/r90/product-code-change-ledger.json"
-    ],
-    "tests_supporting": [
-      "tests/python/dif/test_r90_dif_to_csv_dogfood.py"
-    ],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths"
-    ],
+    "acceptance_criteria_met": [],
     "acceptance_criteria_failed": [],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": "",
-    "tests_evidence_verified": [
-      "tests/python/dif/test_r90_dif_to_csv_dogfood.py"
-    ],
-    "product_source_check": {
-      "source_exists": true,
-      "test_content_valid": true,
-      "details": [
-        "test content valid: tests/python/dif/test_r90_dif_to_csv_dogfood.py"
-      ]
-    },
+    "required_rework": "Item declared completed but no evidence found. Provide evidence at declared paths.",
+    "can_autonomously_repair": true,
+    "next_prompt_instruction": "REWORK: Provide actual evidence for TC-H2. Status-only claims are not accepted.",
     "purpose_check": {
-      "item_type": "PRODUCT_SOURCE",
-      "has_gap_ref": true,
-      "gap_ref": "GAP-DOGFOOD-DIF-CSV-001",
-      "spec_fact_count": 0,
-      "verdict": "PURPOSEFUL",
-      "note": ""
-    },
-    "semantic_verification": {
-      "adequate": true,
-      "confidence": 0.7,
-      "stub_detected": false,
-      "deficiencies": [],
-      "llm_used": false,
-      "intermediate_verified": true,
-      "source": "intermediate_content_check",
-      "checks": [
-        {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\python\\dif\\dif_analytics.py",
-          "exists": true,
-          "content_ok": true,
-          "detail": "non-empty (32417 bytes): C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\python\\dif\\dif_analytics.py",
-          "check_type": "nonzero_existence"
-        },
-        {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tests\\python\\dif\\test_r90_dif_to_csv_dogfood.py",
-          "exists": true,
-          "content_ok": true,
-          "detail": "valid (7 test functions with assertions)",
-          "check_type": "python_test_content"
-        },
-        {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\reports\\r90\\product-code-change-ledger.json",
-          "exists": true,
-          "content_ok": true,
-          "detail": "JSON object with 7 keys",
-          "check_type": "json_content"
-        }
-      ],
-      "summary": "3/3 evidence files passed content check"
-    }
-  },
-  {
-    "item_id": "TASK-008-FODS-PROOF",
-    "item_title": "FODS installed-workflow proof: parse_fods + fods_sheet_count from venv package",
-    "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
-    "evidence_found": true,
-    "evidence_paths": [
-      ".local/package-builds/python-foss/aspose-format-factory-fods/dist/aspose_format_factory_fods-0.1.0.dev0-py3-none-any.whl"
-    ],
-    "tests_supporting": [],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths",
-      "No concrete test/criteria proof (path-only acceptance)"
-    ],
-    "acceptance_criteria_failed": [
-      "No raw proof, test content, or acceptance criteria verified"
-    ],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for TASK-008-FODS-PROOF",
-    "purpose_check": {
-      "item_type": "GOVERNANCE_TASKCARD",
+      "item_type": "",
       "has_gap_ref": null,
       "verdict": "NOT_APPLICABLE",
       "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
-    },
-    "semantic_verification": {
-      "adequate": true,
-      "confidence": 0.7,
-      "stub_detected": false,
-      "deficiencies": [],
-      "llm_used": false,
-      "intermediate_verified": true,
-      "source": "intermediate_content_check",
-      "checks": [
-        {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\package-builds\\python-foss\\aspose-format-factory-fods\\dist\\aspose_format_factory_fods-0.1.0.dev0-py3-none-any.whl",
-          "exists": true,
-          "content_ok": true,
-          "detail": "non-empty (149028 bytes): C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\package-builds\\python-foss\\aspose-format-factory-fods\\dist\\aspose_format_factory_fods-0.1.0.dev0-py3-none-any.whl",
-          "check_type": "nonzero_existence"
-        }
-      ],
-      "summary": "1/1 evidence files passed content check"
+    }
+  },
+  {
+    "item_id": "TC-H3",
+    "item_title": "Add parse-chain isinstance guard test",
+    "declared_status": "completed",
+    "supervisor_grade": "OVERCLAIMED",
+    "evidence_found": false,
+    "evidence_paths": [],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [],
+    "acceptance_criteria_failed": [],
+    "required_rework": "Item declared completed but no evidence found. Provide evidence at declared paths.",
+    "can_autonomously_repair": true,
+    "next_prompt_instruction": "REWORK: Provide actual evidence for TC-H3. Status-only claims are not accepted.",
+    "purpose_check": {
+      "item_type": "",
+      "has_gap_ref": null,
+      "verdict": "NOT_APPLICABLE",
+      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
+    }
+  },
+  {
+    "item_id": "TC-H4",
+    "item_title": "Populate gap audit verdicts and reclassify gap ledger",
+    "declared_status": "completed",
+    "supervisor_grade": "OVERCLAIMED",
+    "evidence_found": false,
+    "evidence_paths": [],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [],
+    "acceptance_criteria_failed": [],
+    "required_rework": "Item declared completed but no evidence found. Provide evidence at declared paths.",
+    "can_autonomously_repair": true,
+    "next_prompt_instruction": "REWORK: Provide actual evidence for TC-H4. Status-only claims are not accepted.",
+    "purpose_check": {
+      "item_type": "",
+      "has_gap_ref": null,
+      "verdict": "NOT_APPLICABLE",
+      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
+    }
+  },
+  {
+    "item_id": "TC-H6",
+    "item_title": "Reopen 4 XCF arithmetic-deepening gaps",
+    "declared_status": "completed",
+    "supervisor_grade": "OVERCLAIMED",
+    "evidence_found": false,
+    "evidence_paths": [],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [],
+    "acceptance_criteria_failed": [],
+    "required_rework": "Item declared completed but no evidence found. Provide evidence at declared paths.",
+    "can_autonomously_repair": true,
+    "next_prompt_instruction": "REWORK: Provide actual evidence for TC-H6. Status-only claims are not accepted.",
+    "purpose_check": {
+      "item_type": "",
+      "has_gap_ref": null,
+      "verdict": "NOT_APPLICABLE",
+      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
+    }
+  },
+  {
+    "item_id": "TC-H8",
+    "item_title": "Add minimal spec_qname functional consumer",
+    "declared_status": "completed",
+    "supervisor_grade": "OVERCLAIMED",
+    "evidence_found": false,
+    "evidence_paths": [],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [],
+    "acceptance_criteria_failed": [],
+    "required_rework": "Item declared completed but no evidence found. Provide evidence at declared paths.",
+    "can_autonomously_repair": true,
+    "next_prompt_instruction": "REWORK: Provide actual evidence for TC-H8. Status-only claims are not accepted.",
+    "purpose_check": {
+      "item_type": "",
+      "has_gap_ref": null,
+      "verdict": "NOT_APPLICABLE",
+      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
     }
   }
 ]

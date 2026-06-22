@@ -1,20 +1,20 @@
 # Supervisor-Generated Next Sprint Prompt
-# Source sprint: product-deepening-session-2026-06-22
+# Source sprint: FF-PLAN-ADAPTIVE-SPLASHING-FROG-20260622
 # Stream: mainstream
-# Generated: 2026-06-22T14:59:14.073151
+# Generated: 2026-06-22T18:13:05.454391
 # ADVISORY ONLY — not a Format Factory authority document
 # This is INPUT to the next sprint, not a gate approval or commit authorization.
 
 ---
 
 ## Sprint Focus
-ADVANCE: Product deepening — .NET commercial + Python FOSS + dogfood + packaging
+PRODUCT + REPAIR: Advance product POC AND address CRITICAL contradictions
 
 ## Prior Sprint Summary
-- Sprint ID: product-deepening-session-2026-06-22
-- Evidence verdict: ACCEPTED
-- Tests: 22 passed, 0 failed, 1 skipped
-- Autonomous continue: True
+- Sprint ID: FF-PLAN-ADAPTIVE-SPLASHING-FROG-20260622
+- Evidence verdict: ACCEPTED_WITH_REWORK
+- Tests: 43 passed, 0 failed, 0 skipped
+- Autonomous continue: False
 
 ## STOP_REASON_ADVISORY (enforced by stop_reason_adjudicator.py)
 
@@ -36,21 +36,27 @@ TRUE_EXTERNAL_GATE (ONLY these warrant a stop):
 - Credentials unavailable with no fallback
 
 ## Section 1: New Product Work (Advisory — Always Execute)
-- [pending] TASK-001: Select governed product gaps and validate the product-code ledger
-- [agent-owned] TASK-002: Prepare commit candidate summary and changed-file manifest
-- [external-gate] TASK-003: Execute git commit (requires explicit user authorization — do NOT self-execute)
-- [pending] TASK-004: Work on open taskcard: TC-0015-spec-retrieval-strategy-evaluation
-- [pending] TASK-005: Work on open taskcard: TC-0016-fods-vector-index-pilot
-- [pending] TASK-006: Work on open taskcard: TC-0020-spec-workbench-core
-- [pending] TASK-007: Advance one dogfood export path using a Format Factory library
-- [pending] TASK-008: Build package artifacts and run installed-workflow proof
-- [pending] TASK-009: Write evidence declaration and run supervisor autonomous-cycle
+- [pending] TASK-006: Select governed product gaps and validate the product-code ledger
+- [pending] TASK-007: Work on open taskcard: TC-0015-spec-retrieval-strategy-evaluation
+- [pending] TASK-008: Work on open taskcard: TC-0016-fods-vector-index-pilot
+- [pending] TASK-009: Work on open taskcard: TC-0020-spec-workbench-core
+- [pending] TASK-010: Advance one dogfood export path using a Format Factory library
+- [pending] TASK-011: Build package artifacts and run installed-workflow proof
+- [pending] TASK-012: Write evidence declaration and run supervisor autonomous-cycle
 
 ## Section 2: Rework / Repair (Advisory — Fix Before Closeout)
-None
+- [pending] REPAIR-001: Repair: OVERCLAIMED: Fix FODT parse chain routing
+- [pending] REPAIR-002: Repair: OVERCLAIMED: Add parse-chain isinstance guard test
+- [pending] REPAIR-003: Repair: OVERCLAIMED: Populate gap audit verdicts and reclassify gap ledger
+- [pending] REPAIR-004: Repair: OVERCLAIMED: Reopen 4 XCF arithmetic-deepening gaps
+- [pending] REPAIR-005: Repair: OVERCLAIMED: Add minimal spec_qname functional consumer
 
 ## Contradictions Context
-None
+- [CRITICAL] OVERCLAIMED: Fix FODT parse chain routing
+- [CRITICAL] OVERCLAIMED: Add parse-chain isinstance guard test
+- [CRITICAL] OVERCLAIMED: Populate gap audit verdicts and reclassify gap ledger
+- [CRITICAL] OVERCLAIMED: Reopen 4 XCF arithmetic-deepening gaps
+- [CRITICAL] OVERCLAIMED: Add minimal spec_qname functional consumer
 
 ## Non-Negotiable Rules (always apply)
 1. No push without explicit user authorization.

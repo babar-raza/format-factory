@@ -1,16 +1,18 @@
 # Work Item Grades
-Sprint: product-deepening-session-2026-06-22
-Generated: 2026-06-22T14:57:30.050752
-Global Status: ACCEPTED
+Sprint: FF-PLAN-ADAPTIVE-SPLASHING-FROG-20260622
+Generated: 2026-06-22T18:11:06.672179
+Global Status: ACCEPTED_WITH_REWORK
 
 | Item ID | Grade | Rework Required |
 |---------|-------|-----------------|
-| CONTINUATION-REPAIR-001 | ACCEPTED_WITH_LIMITATIONS |  |
-| DOGFOOD-DIF-CSV-001 | ACCEPTED_VERIFIED |  |
-| TASK-008-FODS-PROOF | ACCEPTED_WITH_LIMITATIONS |  |
+| TC-H2 | OVERCLAIMED | Item declared completed but no evidence found. Provide evidence at declared path |
+| TC-H3 | OVERCLAIMED | Item declared completed but no evidence found. Provide evidence at declared path |
+| TC-H4 | OVERCLAIMED | Item declared completed but no evidence found. Provide evidence at declared path |
+| TC-H6 | OVERCLAIMED | Item declared completed but no evidence found. Provide evidence at declared path |
+| TC-H8 | OVERCLAIMED | Item declared completed but no evidence found. Provide evidence at declared path |
 
 ## Summary
-- Accepted: 3
-- Rework: 0
-- Overclaimed: 0
-- Autonomous Continue: True
+- Accepted: 0
+- Rework: 5
+- Overclaimed: 5
+- Autonomous Continue: False

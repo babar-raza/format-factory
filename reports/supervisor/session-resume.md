@@ -1,14 +1,14 @@
 # Session Resume Briefing
 # Format Factory — Supervisor-Generated
-# Generated: 2026-06-22T14:59:14.081745
+# Generated: 2026-06-22T18:13:05.467625
 
 ## Quick State
-- Last sprint: product-deepening-session-2026-06-22
-- Evidence verdict: ACCEPTED
-- Tests: 22 passed / 0 failed
+- Last sprint: FF-PLAN-ADAPTIVE-SPLASHING-FROG-20260622
+- Evidence verdict: ACCEPTED_WITH_REWORK
+- Tests: 43 passed / 0 failed
 - PENDING markers: 0
-- CRITICAL contradictions: 0
-- Autonomous continue: True
+- CRITICAL contradictions: 5
+- Autonomous continue: False
 - Current supervisor mode: MODE 4
 - MCP status: ACTIVE (.vscode/mcp.json present)
 
@@ -23,7 +23,7 @@
 5. Prose context: `reports/supervisor/next-sprint.md`
 
 ## Where To Find Evidence
-- Last evidence bundle: .local/evidences/product-deepening-session-2026-06-22
+- Last evidence bundle: .local/evidences/FF-PLAN-ADAPTIVE-SPLASHING-FROG-20260622
 - Supervisor outputs: reports/supervisor/
 - Project memory: .supervisor/project-memory.md
 

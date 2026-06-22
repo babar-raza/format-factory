@@ -1,24 +1,26 @@
 # Materialized Evidence Review
-# Run ID: product-deepening-session-2026-06-22
-# Sprint: product-deepening-session-2026-06-22
-# Generated: 2026-06-22T14:57:31.058307
+# Run ID: FF-PLAN-ADAPTIVE-SPLASHING-FROG-20260622
+# Sprint: FF-PLAN-ADAPTIVE-SPLASHING-FROG-20260622
+# Generated: 2026-06-22T18:11:06.722014
 
 ## Materialization Summary
 
-- Artifacts verified: 9
+- Artifacts verified: 6
 - Artifacts missing: 0
-- Source changes captured: 5
+- Source changes captured: 6
 
 ## Work Item Grades
 
 | Item | Grade | Note |
 |------|-------|------|
-| CONTINUATION-REPAIR-001 | ACCEPTED | All 3 evidence path(s) verified |
-| DOGFOOD-DIF-CSV-001 | ACCEPTED | All 3 evidence path(s) verified |
-| TASK-008-FODS-PROOF | ACCEPTED | All 1 evidence path(s) verified |
+| TC-H2 | ACCEPTED | All 0 evidence path(s) verified |
+| TC-H3 | ACCEPTED | All 0 evidence path(s) verified |
+| TC-H4 | ACCEPTED | All 0 evidence path(s) verified |
+| TC-H6 | ACCEPTED | All 0 evidence path(s) verified |
+| TC-H8 | ACCEPTED | All 0 evidence path(s) verified |
 
 ## Manifest Location
-- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\materialized\product-deepening-session-2026-06-22\materialized-evidence-manifest.yaml
+- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\materialized\FF-PLAN-ADAPTIVE-SPLASHING-FROG-20260622\materialized-evidence-manifest.yaml
 
 ## Patch Location
-- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\materialized\product-deepening-session-2026-06-22\source-change-diffs.patch
+- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\materialized\FF-PLAN-ADAPTIVE-SPLASHING-FROG-20260622\source-change-diffs.patch
