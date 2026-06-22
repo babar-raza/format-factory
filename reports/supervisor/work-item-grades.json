@@ -1,12 +1,13 @@
 [
   {
-    "item_id": "TC-BYP001-LANE7-HEALING-GATE",
-    "item_title": "BYP-001: Lane 7 advisory authority depth check in healing gate",
+    "item_id": "TC-ZST-FRAME-CLOSURE-001",
+    "item_title": "Close ZST frame_count and frame_sizes gaps with test coverage",
     "declared_status": "completed",
     "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
     "evidence_found": true,
     "evidence_paths": [
-      "tools/supervisor/check_system_healing_gate.py"
+      "tests/python/zst/test_r204_zst_frame_count.py",
+      "tests/python/zst/test_rnext_zst_frame_sizes.py"
     ],
     "tests_supporting": [],
     "tests_missing": [],
@@ -20,12 +21,22 @@
     ],
     "required_rework": "",
     "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for TC-BYP001-LANE7-HEALING-GATE",
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for TC-ZST-FRAME-CLOSURE-001",
+    "product_source_check": {
+      "source_exists": false,
+      "test_content_valid": true,
+      "details": [
+        "test content valid: tests/python/zst/test_r204_zst_frame_count.py",
+        "test content valid: tests/python/zst/test_rnext_zst_frame_sizes.py"
+      ]
+    },
     "purpose_check": {
-      "item_type": "GOVERNANCE_TASKCARD",
-      "has_gap_ref": null,
-      "verdict": "NOT_APPLICABLE",
-      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
+      "item_type": "PRODUCT_TEST",
+      "has_gap_ref": true,
+      "gap_ref": "GAP-ZST-FOSS-ZST_FRAME_CO-001",
+      "spec_fact_count": 0,
+      "verdict": "PURPOSEFUL",
+      "note": ""
     },
     "semantic_verification": {
       "adequate": true,
@@ -37,14 +48,300 @@
       "source": "intermediate_content_check",
       "checks": [
         {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tools\\supervisor\\check_system_healing_gate.py",
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tests\\python\\zst\\test_r204_zst_frame_count.py",
           "exists": true,
           "content_ok": true,
-          "detail": "non-empty (18365 bytes): C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tools\\supervisor\\check_system_healing_gate.py",
-          "check_type": "nonzero_existence"
+          "detail": "valid (10 test functions with assertions)",
+          "check_type": "python_test_content"
+        },
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tests\\python\\zst\\test_rnext_zst_frame_sizes.py",
+          "exists": true,
+          "content_ok": true,
+          "detail": "valid (11 test functions with assertions)",
+          "check_type": "python_test_content"
         }
       ],
-      "summary": "1/1 evidence files passed content check"
+      "summary": "2/2 evidence files passed content check"
+    }
+  },
+  {
+    "item_id": "TC-TSV-GAP-CLOSURE-001",
+    "item_title": "Close 6 TSV missing_test_coverage gaps",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "evidence_found": true,
+    "evidence_paths": [
+      "tests/python/tsv/test_rnext_tsv_max_field_length.py",
+      "tests/python/tsv/test_rnext_tsv_duplicate_row_count.py",
+      "tests/python/tsv/test_r231_tsv_total_cell_count.py",
+      "tests/python/tsv/test_r232_tsv_header_count.py",
+      "tests/python/tsv/test_r278_tsv_is_square_cell_to_row_ratio.py",
+      "tests/python/tsv/test_r258_tsv_string_cell_count_total_string_avg_fields.py"
+    ],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "No concrete test/criteria proof (path-only acceptance)"
+    ],
+    "acceptance_criteria_failed": [
+      "No raw proof, test content, or acceptance criteria verified"
+    ],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for TC-TSV-GAP-CLOSURE-001",
+    "product_source_check": {
+      "source_exists": false,
+      "test_content_valid": true,
+      "details": [
+        "test content valid: tests/python/tsv/test_rnext_tsv_max_field_length.py",
+        "test content valid: tests/python/tsv/test_rnext_tsv_duplicate_row_count.py",
+        "test content valid: tests/python/tsv/test_r231_tsv_total_cell_count.py",
+        "test content valid: tests/python/tsv/test_r232_tsv_header_count.py",
+        "test content valid: tests/python/tsv/test_r278_tsv_is_square_cell_to_row_ratio.py",
+        "test content valid: tests/python/tsv/test_r258_tsv_string_cell_count_total_string_avg_fields.py"
+      ]
+    },
+    "purpose_check": {
+      "item_type": "PRODUCT_TEST",
+      "has_gap_ref": true,
+      "gap_ref": "GAP-TSV-FOSS-TSV_MAX_FIEL-001",
+      "spec_fact_count": 0,
+      "verdict": "PURPOSEFUL",
+      "note": ""
+    },
+    "semantic_verification": {
+      "adequate": true,
+      "confidence": 0.7,
+      "stub_detected": false,
+      "deficiencies": [],
+      "llm_used": false,
+      "intermediate_verified": true,
+      "source": "intermediate_content_check",
+      "checks": [
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tests\\python\\tsv\\test_rnext_tsv_max_field_length.py",
+          "exists": true,
+          "content_ok": true,
+          "detail": "valid (8 test functions with assertions)",
+          "check_type": "python_test_content"
+        },
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tests\\python\\tsv\\test_rnext_tsv_duplicate_row_count.py",
+          "exists": true,
+          "content_ok": true,
+          "detail": "valid (9 test functions with assertions)",
+          "check_type": "python_test_content"
+        },
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tests\\python\\tsv\\test_r231_tsv_total_cell_count.py",
+          "exists": true,
+          "content_ok": true,
+          "detail": "valid (12 test functions with assertions)",
+          "check_type": "python_test_content"
+        },
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tests\\python\\tsv\\test_r232_tsv_header_count.py",
+          "exists": true,
+          "content_ok": true,
+          "detail": "valid (5 test functions with assertions)",
+          "check_type": "python_test_content"
+        },
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tests\\python\\tsv\\test_r278_tsv_is_square_cell_to_row_ratio.py",
+          "exists": true,
+          "content_ok": true,
+          "detail": "valid (10 test functions with assertions)",
+          "check_type": "python_test_content"
+        },
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tests\\python\\tsv\\test_r258_tsv_string_cell_count_total_string_avg_fields.py",
+          "exists": true,
+          "content_ok": true,
+          "detail": "valid (15 test functions with assertions)",
+          "check_type": "python_test_content"
+        }
+      ],
+      "summary": "6/6 evidence files passed content check"
+    }
+  },
+  {
+    "item_id": "TC-TOML-GAP-CLOSURE-001",
+    "item_title": "Close 4 TOML missing_test_coverage gaps",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "evidence_found": true,
+    "evidence_paths": [
+      "tests/python/toml/test_r275_toml_table_count_total_keys.py",
+      "tests/python/toml/test_r276_toml_has_tables_has_lists.py",
+      "tests/python/toml/test_r277_toml_is_empty_string_density.py",
+      "tests/python/toml/test_r278_toml_depth_avg_key_length.py"
+    ],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "No concrete test/criteria proof (path-only acceptance)"
+    ],
+    "acceptance_criteria_failed": [
+      "No raw proof, test content, or acceptance criteria verified"
+    ],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for TC-TOML-GAP-CLOSURE-001",
+    "product_source_check": {
+      "source_exists": false,
+      "test_content_valid": true,
+      "details": [
+        "test content valid: tests/python/toml/test_r275_toml_table_count_total_keys.py",
+        "test content valid: tests/python/toml/test_r276_toml_has_tables_has_lists.py",
+        "test content valid: tests/python/toml/test_r277_toml_is_empty_string_density.py",
+        "test content valid: tests/python/toml/test_r278_toml_depth_avg_key_length.py"
+      ]
+    },
+    "purpose_check": {
+      "item_type": "PRODUCT_TEST",
+      "has_gap_ref": true,
+      "gap_ref": "GAP-TOML-FOSS-TOML_TABLE_C-001",
+      "spec_fact_count": 0,
+      "verdict": "PURPOSEFUL",
+      "note": ""
+    },
+    "semantic_verification": {
+      "adequate": true,
+      "confidence": 0.7,
+      "stub_detected": false,
+      "deficiencies": [],
+      "llm_used": false,
+      "intermediate_verified": true,
+      "source": "intermediate_content_check",
+      "checks": [
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tests\\python\\toml\\test_r275_toml_table_count_total_keys.py",
+          "exists": true,
+          "content_ok": true,
+          "detail": "valid (10 test functions with assertions)",
+          "check_type": "python_test_content"
+        },
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tests\\python\\toml\\test_r276_toml_has_tables_has_lists.py",
+          "exists": true,
+          "content_ok": true,
+          "detail": "valid (10 test functions with assertions)",
+          "check_type": "python_test_content"
+        },
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tests\\python\\toml\\test_r277_toml_is_empty_string_density.py",
+          "exists": true,
+          "content_ok": true,
+          "detail": "valid (10 test functions with assertions)",
+          "check_type": "python_test_content"
+        },
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tests\\python\\toml\\test_r278_toml_depth_avg_key_length.py",
+          "exists": true,
+          "content_ok": true,
+          "detail": "valid (10 test functions with assertions)",
+          "check_type": "python_test_content"
+        }
+      ],
+      "summary": "4/4 evidence files passed content check"
+    }
+  },
+  {
+    "item_id": "TC-SYLK-GAP-CLOSURE-001",
+    "item_title": "Close 5 SYLK missing_test_coverage gaps",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "evidence_found": true,
+    "evidence_paths": [
+      "tests/python/sylk/test_r108_sylk_installed_workflow.py",
+      "tests/python/sylk/test_r173_sylk_average_column.py",
+      "tests/python/sylk/test_r297_sylk_value_length_sum.py",
+      "tests/python/sylk/test_rnext_sylk_cell_type_distribution.py",
+      "tests/python/sylk/test_rnext_sylk_has_header.py"
+    ],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "No concrete test/criteria proof (path-only acceptance)"
+    ],
+    "acceptance_criteria_failed": [
+      "No raw proof, test content, or acceptance criteria verified"
+    ],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for TC-SYLK-GAP-CLOSURE-001",
+    "product_source_check": {
+      "source_exists": false,
+      "test_content_valid": true,
+      "details": [
+        "test content valid: tests/python/sylk/test_r108_sylk_installed_workflow.py",
+        "test content valid: tests/python/sylk/test_r173_sylk_average_column.py",
+        "test content valid: tests/python/sylk/test_r297_sylk_value_length_sum.py",
+        "test content valid: tests/python/sylk/test_rnext_sylk_cell_type_distribution.py",
+        "test content valid: tests/python/sylk/test_rnext_sylk_has_header.py"
+      ]
+    },
+    "purpose_check": {
+      "item_type": "PRODUCT_TEST",
+      "has_gap_ref": true,
+      "gap_ref": "GAP-SYLK-FOSS-AVERAGE_COLU-001",
+      "spec_fact_count": 0,
+      "verdict": "PURPOSEFUL",
+      "note": ""
+    },
+    "semantic_verification": {
+      "adequate": true,
+      "confidence": 0.7,
+      "stub_detected": false,
+      "deficiencies": [],
+      "llm_used": false,
+      "intermediate_verified": true,
+      "source": "intermediate_content_check",
+      "checks": [
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tests\\python\\sylk\\test_r108_sylk_installed_workflow.py",
+          "exists": true,
+          "content_ok": true,
+          "detail": "valid (8 test functions with assertions)",
+          "check_type": "python_test_content"
+        },
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tests\\python\\sylk\\test_r173_sylk_average_column.py",
+          "exists": true,
+          "content_ok": true,
+          "detail": "valid (5 test functions with assertions)",
+          "check_type": "python_test_content"
+        },
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tests\\python\\sylk\\test_r297_sylk_value_length_sum.py",
+          "exists": true,
+          "content_ok": true,
+          "detail": "valid (6 test functions with assertions)",
+          "check_type": "python_test_content"
+        },
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tests\\python\\sylk\\test_rnext_sylk_cell_type_distribution.py",
+          "exists": true,
+          "content_ok": true,
+          "detail": "valid (9 test functions with assertions)",
+          "check_type": "python_test_content"
+        },
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tests\\python\\sylk\\test_rnext_sylk_has_header.py",
+          "exists": true,
+          "content_ok": true,
+          "detail": "valid (8 test functions with assertions)",
+          "check_type": "python_test_content"
+        }
+      ],
+      "summary": "5/5 evidence files passed content check"
     }
   }
 ]

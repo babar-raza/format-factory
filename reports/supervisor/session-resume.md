@@ -1,10 +1,10 @@
 # Session Resume Briefing
 # Format Factory — Supervisor-Generated
-# Generated: 2026-06-22T13:18:49.095324
+# Generated: 2026-06-22T13:39:30.962877
 
 ## Quick State
-- Last sprint: sal-authority-sprint-D-20260622
-- Evidence verdict: ACCEPTED
+- Last sprint: product-gap-closure-20260622
+- Evidence verdict: ACCEPTED_WITH_REWORK
 - Tests: 1609 passed / 0 failed
 - PENDING markers: 0
 - CRITICAL contradictions: 0
@@ -23,23 +23,12 @@
 5. Prose context: `reports/supervisor/next-sprint.md`
 
 ## Where To Find Evidence
-- Last evidence bundle: .local/evidences/sal-authority-sprint-D-20260622
+- Last evidence bundle: .local/evidences/product-gap-closure-20260622
 - Supervisor outputs: reports/supervisor/
 - Project memory: .supervisor/project-memory.md
 
 ## Project Memory (recent)
 ```
-
-## Entry: wave3-advance-lane15-fods-cleanup-20260622
-- timestamp: 2026-06-22T12:49:08.045537
-- verdict: ACCEPTED
-- test_count: 1316
-- fail_count: 0
-- git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\wave3-advance-lane15-fods-cleanup-20260622\declaration-review-package.zip
-- pending_marker_count: 0
-- bundle_entry_count: 70
-- bundle_validation_pass: True
 - test_delta: +1316
 - test_delta_from: 0
 
@@ -78,6 +67,17 @@
 - bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\floating-stargazing-globe-20260622-080956\declaration-review-package.zip
 - pending_marker_count: 0
 - bundle_entry_count: 68
+- bundle_validation_pass: True
+
+## Entry: zst-frame-count-coverage-20260622
+- timestamp: 2026-06-22T13:33:12.640855
+- verdict: ACCEPTED
+- test_count: 0
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\zst-frame-count-coverage-20260622\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 61
 - bundle_validation_pass: True
 ```
 

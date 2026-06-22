@@ -1,14 +1,17 @@
 # Work Item Grades
-Sprint: sal-authority-sprint-D-20260622
-Generated: 2026-06-22T13:18:23.217824
-Global Status: ACCEPTED
+Sprint: product-gap-closure-20260622
+Generated: 2026-06-22T13:38:50.248408
+Global Status: ACCEPTED_WITH_REWORK
 
 | Item ID | Grade | Rework Required |
 |---------|-------|-----------------|
-| TC-BYP001-LANE7-HEALING-GATE | ACCEPTED_WITH_LIMITATIONS |  |
+| TC-ZST-FRAME-CLOSURE-001 | ACCEPTED_WITH_LIMITATIONS |  |
+| TC-TSV-GAP-CLOSURE-001 | ACCEPTED_WITH_LIMITATIONS |  |
+| TC-TOML-GAP-CLOSURE-001 | ACCEPTED_WITH_LIMITATIONS |  |
+| TC-SYLK-GAP-CLOSURE-001 | ACCEPTED_WITH_LIMITATIONS |  |
 
 ## Summary
-- Accepted: 1
+- Accepted: 4
 - Rework: 0
 - Overclaimed: 0
 - Autonomous Continue: True

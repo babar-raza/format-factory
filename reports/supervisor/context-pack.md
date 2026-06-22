@@ -1,22 +1,22 @@
 # Supervisor Context Pack
 # Format Factory — Machine-Readable State Snapshot
-# Generated: 2026-06-22T13:18:49.113781
+# Generated: 2026-06-22T13:39:30.980858
 # ADVISORY ONLY — not a gate approval or authority document
 
 ## Current State
 
 | Item | Value |
 |------|-------|
-| Git HEAD | 4f66d304 |
+| Git HEAD | 8f72ca5b |
 | Working tree clean | False |
 | Supervisor mode | MODE 4 |
 | Latest sprint | unknown |
-| Sprint ID | floating-stargazing-globe-20260622-080956... |
+| Sprint ID | indexed-crafting-peacock-plan-execution... |
 | Autonomous continue | False |
-| Iteration | 5/12 |
+| Iteration | 8/12 |
 | MCP status | MCP_CONFIG_PRESENT_MODE4_ACTIVE |
 | Active skills | 43 |
-| Ledger entries | 958 total (783 governed) |
+| Ledger entries | 959 total (783 governed) |
 
 ## .NET Test Counts (POC Matrix)
 

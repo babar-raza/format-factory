@@ -1,7 +1,7 @@
 # Supervisor-Generated Next Sprint Prompt
-# Source sprint: sal-authority-sprint-D-20260622
+# Source sprint: product-gap-closure-20260622
 # Stream: mainstream
-# Generated: 2026-06-22T13:18:49.081676
+# Generated: 2026-06-22T13:39:30.954189
 # ADVISORY ONLY — not a Format Factory authority document
 # This is INPUT to the next sprint, not a gate approval or commit authorization.
 
@@ -11,8 +11,8 @@
 ADVANCE: Product deepening — .NET commercial + Python FOSS + dogfood + packaging
 
 ## Prior Sprint Summary
-- Sprint ID: sal-authority-sprint-D-20260622
-- Evidence verdict: ACCEPTED
+- Sprint ID: product-gap-closure-20260622
+- Evidence verdict: ACCEPTED_WITH_REWORK
 - Tests: 1609 passed, 0 failed, 0 skipped
 - Autonomous continue: True
 
@@ -82,17 +82,6 @@ None
 
 ## Project Memory Context
 ```
-
-## Entry: wave3-advance-lane15-fods-cleanup-20260622
-- timestamp: 2026-06-22T12:49:08.045537
-- verdict: ACCEPTED
-- test_count: 1316
-- fail_count: 0
-- git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\wave3-advance-lane15-fods-cleanup-20260622\declaration-review-package.zip
-- pending_marker_count: 0
-- bundle_entry_count: 70
-- bundle_validation_pass: True
 - test_delta: +1316
 - test_delta_from: 0
 
@@ -131,6 +120,17 @@ None
 - bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\floating-stargazing-globe-20260622-080956\declaration-review-package.zip
 - pending_marker_count: 0
 - bundle_entry_count: 68
+- bundle_validation_pass: True
+
+## Entry: zst-frame-count-coverage-20260622
+- timestamp: 2026-06-22T13:33:12.640855
+- verdict: ACCEPTED
+- test_count: 0
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\zst-frame-count-coverage-20260622\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 61
 - bundle_validation_pass: True
 ```
 
