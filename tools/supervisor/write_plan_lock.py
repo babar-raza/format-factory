@@ -46,6 +46,12 @@ _repo_root = _here.parent.parent
 _shared_lock_path = _repo_root / ".local" / "supervisor" / "active-plan-lock.json"
 _plan_locks_dir = _repo_root / ".local" / "supervisor" / "plan-locks"
 
+# Files that must NEVER be used as active_plan_path.
+# These are governance-protected files that cannot serve as execution plans.
+FORBIDDEN_AS_ACTIVE_PLAN = [
+    "plans/master-plan-memory.md",
+]
+
 
 def _get_session_id() -> str:
     """Get or create a session ID for the current process."""
@@ -60,11 +66,52 @@ def _get_session_id() -> str:
     return f"pid-{os.getpid()}"
 
 
+def validate_plan_binding(target_path: str, intent: str = "harden") -> tuple[bool, str]:
+    """Return (allowed: bool, reason: str).
+
+    Reads all active (non-expired) session-keyed lock files and checks:
+    1. If target_path is in forbidden_mutation_paths of any active lock → blocked.
+    2. If any lock is TERMINAL_CLOSED and its binding_contract.active_plan_path ==
+       target_path → blocked.
+    3. If no matching lock exists or all locks are cleared → allowed.
+
+    This provides a callable enforcement API for hardening scripts and execution
+    scripts to verify they are writing to the correct plan file.
+    """
+    norm_target = str(target_path).replace("\\", "/")
+    if not _plan_locks_dir.exists():
+        return True, "no_lock_dir"
+    for lf in sorted(_plan_locks_dir.glob("*.json")):
+        try:
+            lock = json.loads(lf.read_text(encoding="utf-8"))
+        except Exception:
+            continue
+        bc = lock.get("binding_contract", {})
+        forbidden = bc.get("forbidden_mutation_paths", [])
+        for fp in forbidden:
+            if norm_target.endswith(str(fp).replace("\\", "/")):
+                return False, f"forbidden_mutation_path:{fp}"
+        if lock.get("status") == "TERMINAL_CLOSED":
+            active = bc.get("active_plan_path", "")
+            if active and norm_target.endswith(str(active).replace("\\", "/")):
+                return False, "terminal_closed_plan"
+    return True, "allowed"
+
+
 def write_lock(plan_path: str, last_taskcard: str | None = None, complete: bool = False,
                terminal: bool = False, session_id: str | None = None,
-               track_type: str | None = "product") -> None:
+               track_type: str | None = "product", binding: bool = False) -> None:
     # B3: normalize path separators so Windows backslashes don't prevent matching
     plan_path = str(plan_path).replace("\\", "/")
+
+    # Guard: block governance-protected files from being used as active plans
+    for forbidden in FORBIDDEN_AS_ACTIVE_PLAN:
+        if plan_path.endswith(forbidden.replace("\\", "/")):
+            raise ValueError(
+                f"Cannot register '{plan_path}' as active_plan_path — "
+                f"'{forbidden}' is a protected ledger file and cannot be an execution plan."
+            )
+
     status = "TERMINAL_CLOSED" if terminal else ("COMPLETE" if complete else "IN_PROGRESS")
 
     # B2: get session_id BEFORE writing either file so both files have it
@@ -77,6 +124,19 @@ def write_lock(plan_path: str, last_taskcard: str | None = None, complete: bool 
         "session_id": sid,
         "track_type": track_type,  # GAP-WF-004: machinery track skips product-track locks
     }
+    if binding:
+        lock["binding_contract"] = {
+            "native_plan_path": plan_path,
+            "active_plan_path": plan_path,
+            "global_fallback_allowed": False,
+            "ledger_path": "plans/master-plan-memory.md",
+            "execution_may_create_plan": False,
+            "hardening_may_change_plan_path": False,
+            "forbidden_mutation_paths": [
+                "plans/master-plan-memory.md",
+                "plans/snoopy-juggling-seal.md",
+            ],
+        }
 
     # 1. Write shared fallback lock (backwards compatibility) — now includes session_id
     _shared_lock_path.parent.mkdir(parents=True, exist_ok=True)
@@ -157,6 +217,9 @@ def main(argv: list[str] | None = None) -> int:
                         help="Remove COMPLETE/TERMINAL_CLOSED lock files older than --older-than hours")
     parser.add_argument("--older-than", type=float, default=24.0,
                         help="Age threshold in hours for --cleanup-completed (default: 24)")
+    parser.add_argument("--binding", action="store_true",
+                        help="Include binding_contract in lock file to enforce plan path ownership "
+                             "and block wrong-plan writes via validate_plan_binding()")
     args = parser.parse_args(argv)
 
     if args.clear:
@@ -174,7 +237,7 @@ def main(argv: list[str] | None = None) -> int:
 
     write_lock(args.plan_path, last_taskcard=args.last_taskcard,
                complete=args.complete, terminal=args.terminal,
-               track_type=args.track_type)
+               track_type=args.track_type, binding=args.binding)
     return 0
 
 

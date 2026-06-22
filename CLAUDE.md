@@ -242,6 +242,10 @@ and proceed to the next sprint immediately.
    - Declare all work items with status, evidence paths, and test references
    - Include test results, changed files, and worker self-verdict
    - See `docs/automation/supervisor-worker-contract.md` for the full field list
+   > **WARNING:** Do NOT write sprint-closeout evidence or plan amendments to
+   > `plans/snoopy-juggling-seal.md`. That file is the SAL forensics plan.
+   > Sprint closeout writes ONLY to `.local/evidences/<run_id>/` and to the
+   > active per-chat plan file (if amending plan content).
 
 1b. **Validate the declaration before submitting** (best-effort — log and proceed if tool unavailable):
    ```
@@ -351,6 +355,15 @@ Immediately after the sprint audit, before executing the next sprint:
 `PLAN HARDENED` is NOT a valid stopping point — proceed immediately to sprint execution.
 The audit and plan-hardening steps form the transition gate between sprints. Together
 they must complete within the same autonomous session as the sprint they follow.
+
+**Plan file identity rule (HARD):** When hardening, write ONLY to the active
+per-chat plan file loaded in the current conversation (detected from the
+`A plan file exists from plan mode at:` system message, OR from
+`.local/supervisor/plan-locks/<session_id>.json`).
+Do NOT write plan amendments to `plans/snoopy-juggling-seal.md` unless that
+file is explicitly the active per-chat plan. `snoopy-juggling-seal.md` is the
+SAL forensics plan — it is NOT a global fallback for plan amendments.
+Do NOT write plan amendments to `plans/master-plan-memory.md` (ledger-only).
 
 ### Cross-Window Recovery
 If this window is new (context was exhausted, window crashed, or user opened a fresh session):

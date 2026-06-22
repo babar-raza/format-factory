@@ -386,3 +386,68 @@ def test_coherence_validator_passes_when_coherent(tmp_path):
 
     contradictions = validate_continuation_coherence(tmp_path)
     assert contradictions == [], f"Expected no contradictions, got: {contradictions}"
+
+
+# ---------------------------------------------------------------------------
+# Binding contract tests (TC-PLAND-005)
+# ---------------------------------------------------------------------------
+
+def test_binding_contract_stored_in_lock_file(tmp_path):
+    """--binding flag produces lock file with binding_contract field."""
+    import write_plan_lock as wpl
+    orig_shared = wpl._shared_lock_path
+    orig_dir = wpl._plan_locks_dir
+    shared = tmp_path / "active-plan-lock.json"
+    keyed_dir = tmp_path / "plan-locks"
+    keyed_dir.mkdir()
+    wpl._shared_lock_path = shared
+    wpl._plan_locks_dir = keyed_dir
+    try:
+        write_lock("C:/plans/test-plan.md", session_id="test-bind-001", binding=True)
+        data = json.loads(shared.read_text())
+        assert "binding_contract" in data, "binding_contract must be in lock when --binding used"
+        bc = data["binding_contract"]
+        assert "forbidden_mutation_paths" in bc, "binding_contract must include forbidden_mutation_paths"
+        assert isinstance(bc["forbidden_mutation_paths"], list)
+        assert bc["global_fallback_allowed"] is False
+    finally:
+        wpl._shared_lock_path = orig_shared
+        wpl._plan_locks_dir = orig_dir
+
+
+def test_master_plan_memory_blocked_as_active_plan():
+    """write_lock must raise ValueError if plan_path is a forbidden ledger file."""
+    from write_plan_lock import write_lock, FORBIDDEN_AS_ACTIVE_PLAN
+    assert "plans/master-plan-memory.md" in FORBIDDEN_AS_ACTIVE_PLAN, \
+        "plans/master-plan-memory.md must be in FORBIDDEN_AS_ACTIVE_PLAN"
+    with pytest.raises(ValueError, match="protected ledger file"):
+        write_lock("plans/master-plan-memory.md", session_id="test-forbidden")
+
+
+def test_validate_plan_binding_blocks_forbidden_path(tmp_path):
+    """validate_plan_binding returns (False, reason) when target is in forbidden_mutation_paths."""
+    import write_plan_lock as wpl
+    from write_plan_lock import validate_plan_binding
+    orig_dir = wpl._plan_locks_dir
+    keyed_dir = tmp_path / "plan-locks"
+    keyed_dir.mkdir()
+    # Create a mock lock with binding_contract containing forbidden_mutation_paths
+    lock_data = {
+        "plan_path": "C:/plans/my-active-plan.md",
+        "status": "IN_PROGRESS",
+        "session_id": "test-validate-001",
+        "binding_contract": {
+            "active_plan_path": "C:/plans/my-active-plan.md",
+            "forbidden_mutation_paths": ["plans/snoopy-juggling-seal.md"],
+        },
+    }
+    (keyed_dir / "test-validate-001.json").write_text(
+        json.dumps(lock_data), encoding="utf-8"
+    )
+    wpl._plan_locks_dir = keyed_dir
+    try:
+        allowed, reason = validate_plan_binding("plans/snoopy-juggling-seal.md")
+        assert allowed is False, f"Expected blocked, got allowed=True reason={reason}"
+        assert "forbidden_mutation_path" in reason, f"Expected reason to mention forbidden, got: {reason}"
+    finally:
+        wpl._plan_locks_dir = orig_dir
