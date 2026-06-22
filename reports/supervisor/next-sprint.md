@@ -1,7 +1,7 @@
 # Supervisor-Generated Next Sprint Prompt
-# Source sprint: product-gap-closure-batch-20260622
+# Source sprint: fuzzy-conjuring-papert
 # Stream: mainstream
-# Generated: 2026-06-22T13:43:43.852457
+# Generated: 2026-06-22T13:45:19.804281
 # ADVISORY ONLY — not a Format Factory authority document
 # This is INPUT to the next sprint, not a gate approval or commit authorization.
 
@@ -11,10 +11,10 @@
 ADVANCE: Product deepening — .NET commercial + Python FOSS + dogfood + packaging
 
 ## Prior Sprint Summary
-- Sprint ID: product-gap-closure-batch-20260622
+- Sprint ID: fuzzy-conjuring-papert
 - Evidence verdict: ACCEPTED_WITH_REWORK
-- Tests: 1609 passed, 0 failed, 0 skipped
-- Autonomous continue: True
+- Tests: 63 passed, 0 failed, 0 skipped
+- Autonomous continue: False
 
 ## STOP_REASON_ADVISORY (enforced by stop_reason_adjudicator.py)
 
@@ -82,17 +82,6 @@ None
 
 ## Project Memory Context
 ```
-- bundle_entry_count: 75
-- bundle_validation_pass: True
-- test_delta: -1308
-- test_delta_from: 1316
-
-## Entry: wave3-advance-cond2-cond6-20260622
-- timestamp: 2026-06-22T13:07:13.379763
-- verdict: ACCEPTED
-- test_count: 14
-- fail_count: 0
-- git_head: see-declaration
 - bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\wave3-advance-cond2-cond6-20260622\declaration-review-package.zip
 - pending_marker_count: 0
 - bundle_entry_count: 62
@@ -131,6 +120,17 @@ None
 - bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\product-gap-closure-20260622\declaration-review-package.zip
 - pending_marker_count: 0
 - bundle_entry_count: 78
+- bundle_validation_pass: True
+
+## Entry: product-gap-closure-batch-20260622
+- timestamp: 2026-06-22T13:45:10.827669
+- verdict: ACCEPTED
+- test_count: 0
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\product-gap-closure-batch-20260622\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 80
 - bundle_validation_pass: True
 ```
 

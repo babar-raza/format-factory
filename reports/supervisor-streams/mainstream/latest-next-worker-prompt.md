@@ -1,6 +1,6 @@
 # FORMAT-FACTORY-RNEXT-MEGA-TRAIN-001
-# Generated: 2026-06-22T13:43:42.195352
-# Source: Supervisor autonomous-cycle review of product-gap-closure-batch-20260622
+# Generated: 2026-06-22T13:44:53.138942
+# Source: Supervisor autonomous-cycle review of fuzzy-conjuring-papert
 # Stream: mainstream
 # ADVISORY ONLY -- not a Format Factory authority document
 
@@ -27,16 +27,16 @@ Read these files before writing any code:
 ## Sprint Identity
 
 - Sprint ID: FORMAT-FACTORY-RNEXT-MEGA-TRAIN-001
-- Prior sprint: product-gap-closure-batch-20260622
+- Prior sprint: fuzzy-conjuring-papert
 - Prior verdict: ACCEPTED_WITH_REWORK
 - Prior tests: 0 passed, 0 failed, 0 skipped
-- Autonomous continue: True
+- Autonomous continue: False
 
 ---
 
 ## Sprint Goal
 
-**Goal:** Advance product POC: FODS .NET Product Deepening; FODT .NET Product Deepening; Netpbm .NET Product Deepening; ZST Python Improvement. Build evidence declaration and run supervisor autonomous-cycle.
+**Goal:** Repair 6 item(s) flagged by supervisor review. Advance product POC: FODS .NET Product Deepening; FODT .NET Product Deepening; Netpbm .NET Product Deepening; ZST Python Improvement. Build evidence declaration and run supervisor autonomous-cycle.
 
 ---
 
@@ -70,23 +70,29 @@ Read these files before writing any code:
 | Train | Group | Title |
 |-------|-------|-------|
 | A | G1 | Governance Preflight |
-| B | G3 | FODS .NET Product Deepening |
-| C | G3 | FODT .NET Product Deepening |
-| D | G3 | Netpbm .NET Product Deepening |
-| E | G4 | ZST Python Improvement |
-| F | G4 | Netpbm Python Improvement |
-| G | G4 | SYLK Python Improvement |
-| H | G4 | TOML Python Improvement |
-| I | G4 | NDJSON Python Improvement |
-| J | G4 | FODG Python Improvement |
-| K | G4 | TSV Python Improvement |
-| L | G4 | ABW Python Improvement |
-| M | G4 | Gnumeric Python Improvement |
-| N | G5 | Dogfood: fodt -> txt |
-| O | G5 | Dogfood: fodt -> html |
-| P | G6 | Package Build + Install Proof |
-| Q | G7 | State + Memory + POC Matrix Sync |
-| R | G8 | Evidence Declaration + Supervisor Autonomous-Cycle |
+| B | G2 | Rework: Commit all sprint work to git |
+| C | G2 | Rework: FODS Python triple package nesting removed |
+| D | G2 | Rework: SAL runner single-format run does not overwrite combined output |
+| E | G2 | Rework: FodsSheet.cells() returns cell objects for real FODS files |
+| F | G2 | Rework: FODS .NET Spec/ stubs build cleanly |
+| G | G2 | Rework: Full regression suite 4+9+50=63 tests pass |
+| H | G3 | FODS .NET Product Deepening |
+| I | G3 | FODT .NET Product Deepening |
+| J | G3 | Netpbm .NET Product Deepening |
+| K | G4 | ZST Python Improvement |
+| L | G4 | Netpbm Python Improvement |
+| M | G4 | SYLK Python Improvement |
+| N | G4 | TOML Python Improvement |
+| O | G4 | NDJSON Python Improvement |
+| P | G4 | FODG Python Improvement |
+| Q | G4 | TSV Python Improvement |
+| R | G4 | ABW Python Improvement |
+| S | G4 | Gnumeric Python Improvement |
+| T | G5 | Dogfood: fodt -> txt |
+| U | G5 | Dogfood: fodt -> html |
+| V | G6 | Package Build + Install Proof |
+| W | G7 | State + Memory + POC Matrix Sync |
+| X | G8 | Evidence Declaration + Supervisor Autonomous-Cycle |
 
 ---
 
@@ -104,9 +110,82 @@ Read all governance files. Verify no policy violations from prior sprint. Confir
 **Files:**
 - `reports/<run_id>/00-preflight.md`
 
+## Group G2: Rework / Repair
+
+### Train B: Rework: Commit all sprint work to git
+
+
+
+**Acceptance Criteria:**
+- Evidence for TC-COMMIT-001 passes supervisor inspection
+- Tests pass for affected code
+
+**Files:**
+- `reports/r90/product-code-change-ledger.json`
+
+### Train C: Rework: FODS Python triple package nesting removed
+
+
+
+**Acceptance Criteria:**
+- Evidence for TC-SRC-001-REPAIR passes supervisor inspection
+- Tests pass for affected code
+
+**Files:**
+- `src/python/fods/models.py`
+
+### Train D: Rework: SAL runner single-format run does not overwrite combined output
+
+
+
+**Acceptance Criteria:**
+- Evidence for TC-SAL-IDEMPOTENCY passes supervisor inspection
+- Tests pass for affected code
+
+**Files:**
+- `tools/specification-authority-layer/sal_master_runner.py`
+
+### Train E: Rework: FodsSheet.cells() returns cell objects for real FODS files
+
+
+
+**Acceptance Criteria:**
+- Evidence for TC-FODS-CELLS-BUG passes supervisor inspection
+- Tests pass for affected code
+
+**Files:**
+- `src/python/fods/models.py`
+
+### Train F: Rework: FODS .NET Spec/ stubs build cleanly
+
+Stub evidence detected (was ACCEPTED_WITH_LIMITATIONS): ["No build logs or output provided to confirm that 'dotnet build src/net/fods/' exits with code 0", 'Missing evidence that the build produced exactly 0 errors and 39 warnings as required', 'Evidence consists only of stub source files with TODO comments, lacking any compilation verification', 'No test or verification steps showing that the stubs compile without issues']
+
+**Acceptance Criteria:**
+- Evidence for TC-NET-BUILD passes supervisor inspection
+- Tests pass for affected code
+
+**Files:**
+- `src/net/fods/Spec/Table/TableCell.cs`
+- `src/net/fods/Spec/Table/TableRow.cs`
+- `src/net/fods/Spec/Table/Table.cs`
+- `src/net/fods/Spec/Office/Document.cs`
+
+### Train G: Rework: Full regression suite 4+9+50=63 tests pass
+
+
+
+**Acceptance Criteria:**
+- Evidence for TC-SAL-HEAL-005 passes supervisor inspection
+- Tests pass for affected code
+
+**Files:**
+- `tests/specification-authority-layer/test_sal_bootstrap_vs_verified.py`
+- `tests/python/dogfood/test_dogfood_fods_fodt_sal_fact_ndjson_export.py`
+- `tests/specification-authority-layer/test_sal_from_cache_only.py`
+
 ## Group G3: Commercial .NET Product
 
-### Train B: FODS .NET Product Deepening
+### Train H: FODS .NET Product Deepening
 
 Continue FODS commercial .NET product advancement. Continue product maintenance and extended API feature development
 
@@ -124,7 +203,7 @@ Continue FODS commercial .NET product advancement. Continue product maintenance 
 dotnet test tests/net/fods/ --verbosity quiet
 ```
 
-### Train C: FODT .NET Product Deepening
+### Train I: FODT .NET Product Deepening
 
 Continue FODT commercial .NET product advancement. Continue product maintenance and extended API feature development
 
@@ -142,7 +221,7 @@ Continue FODT commercial .NET product advancement. Continue product maintenance 
 dotnet test tests/net/fodt/ --verbosity quiet
 ```
 
-### Train D: Netpbm .NET Product Deepening
+### Train J: Netpbm .NET Product Deepening
 
 Continue Netpbm commercial .NET product advancement. Continue product maintenance and extended API feature development
 
@@ -162,7 +241,7 @@ dotnet test tests/net/netpbm/ --verbosity quiet
 
 ## Group G4: FOSS / Reduced Product
 
-### Train E: ZST Python Improvement
+### Train K: ZST Python Improvement
 
 Continue ZST FOSS product. Continue FOSS product deepening and additional compression API coverage
 
@@ -179,7 +258,7 @@ Continue ZST FOSS product. Continue FOSS product deepening and additional compre
 python -m pytest tests/python/zst/ -x -q
 ```
 
-### Train F: Netpbm Python Improvement
+### Train L: Netpbm Python Improvement
 
 Continue Netpbm FOSS product. Continue FOSS product deepening and additional Python API coverage
 
@@ -200,7 +279,7 @@ Continue Netpbm FOSS product. Continue FOSS product deepening and additional Pyt
 python -m pytest tests/python/pbm/ tests/python/pgm/ tests/python/ppm/ -x -q
 ```
 
-### Train G: SYLK Python Improvement
+### Train M: SYLK Python Improvement
 
 Continue SYLK FOSS product. Continue FOSS product deepening — cell iteration, set_cell_value; package install proof
 
@@ -217,7 +296,7 @@ Continue SYLK FOSS product. Continue FOSS product deepening — cell iteration, 
 python -m pytest tests/python/sylk/ -x -q
 ```
 
-### Train H: TOML Python Improvement
+### Train N: TOML Python Improvement
 
 Continue TOML FOSS product. dogfood export via TOML config roundtrip; package install proof
 
@@ -234,7 +313,7 @@ Continue TOML FOSS product. dogfood export via TOML config roundtrip; package in
 python -m pytest tests/python/toml/ -x -q
 ```
 
-### Train I: NDJSON Python Improvement
+### Train O: NDJSON Python Improvement
 
 Continue NDJSON FOSS product. Dogfood pipeline integration
 
@@ -251,7 +330,7 @@ Continue NDJSON FOSS product. Dogfood pipeline integration
 python -m pytest tests/python/ndjson/ -x -q
 ```
 
-### Train J: FODG Python Improvement
+### Train P: FODG Python Improvement
 
 Continue FODG FOSS product. SVG export investigation
 
@@ -268,7 +347,7 @@ Continue FODG FOSS product. SVG export investigation
 python -m pytest tests/python/fodg/ -x -q
 ```
 
-### Train K: TSV Python Improvement
+### Train Q: TSV Python Improvement
 
 Continue TSV FOSS product. Dogfood pipeline integration
 
@@ -285,7 +364,7 @@ Continue TSV FOSS product. Dogfood pipeline integration
 python -m pytest tests/python/tsv/ -x -q
 ```
 
-### Train L: ABW Python Improvement
+### Train R: ABW Python Improvement
 
 Continue ABW FOSS product. Dogfood pipeline integration
 
@@ -302,7 +381,7 @@ Continue ABW FOSS product. Dogfood pipeline integration
 python -m pytest tests/python/abw/ -x -q
 ```
 
-### Train M: Gnumeric Python Improvement
+### Train S: Gnumeric Python Improvement
 
 Continue Gnumeric FOSS product. Dogfood pipeline integration
 
@@ -321,7 +400,7 @@ python -m pytest tests/python/gnumeric/ -x -q
 
 ## Group G5: Dogfood Exports
 
-### Train N: Dogfood: fodt -> txt
+### Train T: Dogfood: fodt -> txt
 
 No FF .NET text write library. Prerequisite: Build FormatFactory.Text .NET library with write_text().
 
@@ -329,7 +408,7 @@ No FF .NET text write library. Prerequisite: Build FormatFactory.Text .NET libra
 - Export test passes using FF library
 - Dogfood status updated in poc-targets.yaml
 
-### Train O: Dogfood: fodt -> html
+### Train U: Dogfood: fodt -> html
 
 No FF .NET HTML write library. Prerequisite: Build FormatFactory.Html .NET library.
 
@@ -339,7 +418,7 @@ No FF .NET HTML write library. Prerequisite: Build FormatFactory.Html .NET libra
 
 ## Group G6: Package / Install Proof
 
-### Train P: Package Build + Install Proof
+### Train V: Package Build + Install Proof
 
 Rebuild wheels/sdists for any changed packages. Run installed-workflow smoke test from extracted wheel. Treat missing artifacts as failures, not skips.
 
@@ -358,7 +437,7 @@ python -m pytest tests/evidence/ -x -q
 
 ## Group G7: State / Memory / POC Matrix
 
-### Train Q: State + Memory + POC Matrix Sync
+### Train W: State + Memory + POC Matrix Sync
 
 Update state/current-state.md, .supervisor/project-memory.md, and product-capability-matrix/poc-targets.yaml with sprint results.
 
@@ -374,7 +453,7 @@ Update state/current-state.md, .supervisor/project-memory.md, and product-capabi
 
 ## Group G8: Evidence + Supervisor Loop
 
-### Train R: Evidence Declaration + Supervisor Autonomous-Cycle
+### Train X: Evidence Declaration + Supervisor Autonomous-Cycle
 
 Write evidence-declaration.yaml listing ALL work items. Run autonomous-cycle. Verify session-resume.md is regenerated. Validate `reports/r90/product-code-change-ledger.json` for any governed product source edit.
 
@@ -473,16 +552,16 @@ END OF SUPERVISOR-GENERATED MEGA-TRAIN EXECUTION PROMPT
 The following failures have been recorded in durable failure memory.
 Address escalated failures with priority.
 
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_execution_method_required_validator_failed (seen 137x, last: fuzzy-conjuring-papert)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_source_diff_required_validator_failed (seen 106x, last: fuzzy-conjuring-papert)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_idempotency_key_required_validator_failed (seen 71x, last: fuzzy-conjuring-papert)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_execution_method_required_validator_failed (seen 138x, last: fuzzy-conjuring-papert)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_source_diff_required_validator_failed (seen 107x, last: fuzzy-conjuring-papert)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_idempotency_key_required_validator_failed (seen 72x, last: fuzzy-conjuring-papert)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_claim_classification_validator_failed (seen 7x, last: IDEMPOTENT-SWARM-EXECUTION-20260615-E31FA98)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_route_decision_required_validator_failed (seen 105x, last: fuzzy-conjuring-papert)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_spec_fact_refs_validator_failed (seen 188x, last: fuzzy-conjuring-papert)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_route_decision_required_validator_failed (seen 106x, last: fuzzy-conjuring-papert)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_spec_fact_refs_validator_failed (seen 189x, last: fuzzy-conjuring-papert)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_monolith_detection_validator_failed (seen 271x, last: CAPABILITY-LAYER-HEALING-20260621-ed51041)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): exit_code_3_rework_required (seen 169x, last: fuzzy-conjuring-papert-sprint1-20260622)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_source_architecture_failed (seen 14x, last: fuzzy-conjuring-papert)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_skill_transcript_present_failed (seen 3x, last: fuzzy-conjuring-papert)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_skill_transcript_present_failed (seen 4x, last: fuzzy-conjuring-papert)
 - WARNING: 10 unresolved failures in failure memory
 
 

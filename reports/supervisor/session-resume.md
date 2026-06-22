@@ -1,14 +1,14 @@
 # Session Resume Briefing
 # Format Factory — Supervisor-Generated
-# Generated: 2026-06-22T13:43:43.860902
+# Generated: 2026-06-22T13:45:19.812583
 
 ## Quick State
-- Last sprint: product-gap-closure-batch-20260622
+- Last sprint: fuzzy-conjuring-papert
 - Evidence verdict: ACCEPTED_WITH_REWORK
-- Tests: 1609 passed / 0 failed
+- Tests: 63 passed / 0 failed
 - PENDING markers: 0
 - CRITICAL contradictions: 0
-- Autonomous continue: True
+- Autonomous continue: False
 - Current supervisor mode: MODE 4
 - MCP status: ACTIVE (.vscode/mcp.json present)
 
@@ -23,23 +23,12 @@
 5. Prose context: `reports/supervisor/next-sprint.md`
 
 ## Where To Find Evidence
-- Last evidence bundle: .local/evidences/product-gap-closure-batch-20260622
+- Last evidence bundle: .local/evidences/spec-auth-heal-sprint-1/
 - Supervisor outputs: reports/supervisor/
 - Project memory: .supervisor/project-memory.md
 
 ## Project Memory (recent)
 ```
-- bundle_entry_count: 75
-- bundle_validation_pass: True
-- test_delta: -1308
-- test_delta_from: 1316
-
-## Entry: wave3-advance-cond2-cond6-20260622
-- timestamp: 2026-06-22T13:07:13.379763
-- verdict: ACCEPTED
-- test_count: 14
-- fail_count: 0
-- git_head: see-declaration
 - bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\wave3-advance-cond2-cond6-20260622\declaration-review-package.zip
 - pending_marker_count: 0
 - bundle_entry_count: 62
@@ -78,6 +67,17 @@
 - bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\product-gap-closure-20260622\declaration-review-package.zip
 - pending_marker_count: 0
 - bundle_entry_count: 78
+- bundle_validation_pass: True
+
+## Entry: product-gap-closure-batch-20260622
+- timestamp: 2026-06-22T13:45:10.827669
+- verdict: ACCEPTED
+- test_count: 0
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\product-gap-closure-batch-20260622\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 80
 - bundle_validation_pass: True
 ```
 
