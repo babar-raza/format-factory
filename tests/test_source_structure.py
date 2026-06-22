@@ -257,6 +257,9 @@ class TestNoOrphanSourceFiles:
             suffix = stem[len(format_id) + 1:]
             if suffix in ("parser", "writer", "codec", "stats", "encoder", "analytics"):
                 return True
+            # Secondary analytics split: {format}_analytics_{category}.py (master-plan.md §24.11)
+            if suffix.startswith("analytics_"):
+                return True
         for pat in self._CONVERTER_PATTERNS:
             if pat in stem:
                 return True

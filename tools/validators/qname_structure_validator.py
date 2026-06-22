@@ -118,7 +118,7 @@ def _cli() -> int:
         import json
         print(json.dumps(result, indent=2))
 
-    return 0 if result["status"] in ("COMPLIANT", "NO_SPEC_CLASSES") else 1
+    return 0 if result["status"] == "COMPLIANT" else 1
 
 
 if __name__ == "__main__":

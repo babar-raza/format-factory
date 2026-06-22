@@ -635,6 +635,58 @@ for that format must be a secondary split, not new analytics additions. Growth b
 
 ---
 
+### binary-prancing-flamingo sprint — FODT Compat Layer + SAL Fact Audit (COMPLETED 2026-06-22)
+
+**Status:** COMPLETED — 9/9 taskcards closed (7 confirmed pre-solved; 2 new deliverables)
+
+**Plan file:** `C:/Users/prora/.claude/plans/binary-prancing-flamingo.md` (reassessment + gap closure)
+
+**What was completed:**
+
+*New deliverables (produced in this session):*
+- TC-FODT-GAP-001: 5 FODT QName gaps registered in `reports/capability-layer/gap-ledger.json`
+  — GAP-FODT-QNAME-001..005 (text:list, text:list-item, table:table, table:table-row, table:table-cell)
+  — total_gaps: 891 → 896; autonomous loop can now select FODT spec-stub activation work
+- TC-FODT-AUDIT-001: `reports/forensics-archaeology-20260621/fodt-ex-facts-audit.md` created
+  — 4,936 FODT facts classified: 27 tier1_section MANUALLY_VERIFIED; 4,271 AUTO_ONLY; 635 NEEDS_REVIEW; 3 PENDING
+  — Confirmed: only FACT-FODT-001..027 qualify for Gate 11 declarations; EX facts are product-level only
+- TC-FODT-AUDIT-002: §17 Gate D3 corrected in `plans/snoopy-juggling-seal.md` v3.11
+  — Previous overclaim "D3 COMPLETE (4,940 facts)" → "PARTIAL — 27 verified + 4,909 automated extraction"
+- FODT Compat/ layer: `src/python/fodt/Compat/` committed (5 production facades + `__init__.py`)
+  — FodtDocument, FodtParagraph, FodtHeading, FodtSpan, FodtTableCell all inherit from spec/
+- FODT spec/office/: `src/python/fodt/spec/office/document.py` — canonical Document class
+  — spec_qname = "office:document", spec_fact_ref = "FACT-FODT-001"
+- Test/validator improvements: zst multi-frame tests (+44 lines), sal cache test csv→ora fix,
+  source structure analytics_ secondary split pattern, qname_structure_validator stricter exit code
+
+*Pre-solved items confirmed (no new work needed):*
+- TC-FODT-COMPAT-001: models.py spec_qname — already present on all 3 classes since prior session
+- TC-FODT-BOOT-001: 5 FODT spec stubs — already implemented (list_.py had full properties)
+- TC-QNAME-DEDUP-001: fods/fods/spec/ removal — already done in commit 9a9ff060
+- TC-QNAME-VALIDATORS-001: V49 wiring — already wired in governance_validator_runner.py
+- P1 abw_analytics.py LOC false alarm — actual LOC = 1021 = cap; source_structure_validator: blocks_sprint: False
+
+**Verification performed:**
+- E2E assertions: ALL PASS (fodt stubs, Compat spec_qname, SAL 24 formats, gap-ledger 5 FODT entries, audit report)
+- qname_structure_validator: fodt=COMPLIANT, fods=COMPLIANT, ods=COMPLIANT, odt=COMPLIANT
+- source_structure_validator: blocks_sprint: False, 0 new/worsened violations
+- FODT+FODS tests: 3,346 passed, 12 skipped
+- test_compat_bootstrap.py: 19/19 PASS
+- governance validators: 59/64 pass (5 pre-existing ModuleNotFoundError, catalogued)
+
+**Key architectural advances:**
+- FODT Compat/ layer now committed — production facades inherit from spec/ stubs
+- FODT spec/office/ Document class closes the office:document → FodtDocument chain
+- Gap-ledger FODT QName entries enable future sprint selection of spec-stub activation work
+- FACT-FODT-EX-* provenance distinction documented: automated_extraction ≠ independently verified
+
+**Follow-ups (non-blocking):**
+1. ODS/ODT spec_qname backfill — currently NO_SPEC_CLASSES; deferred (no blocking dependency)
+2. FODT QName gap closure (GAP-FODT-QNAME-001..005) — now ledger-drivable in future sprints
+3. 635 FACT-FODT-EX-* with verified_with_note status — flagged for review before Gate 11 citation
+
+---
+
 ### TC-0012 — Specification Normalization Layer (COMPLETED 2026-06-18)
 
 **Status:** COMPLETED (Phase 1: run024; Phase 2: run025; Phase 3: 2026-06-18)
