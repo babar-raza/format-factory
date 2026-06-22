@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "spec-auth-heal-sprint-1",
+  "latest_sprint": "snoopy-juggling-seal-26-30",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -17559,7 +17559,22 @@
         "failed": 0
       },
       "worker_verdict": "PASS"
+    },
+    {
+      "sprint": "snoopy-juggling-seal-26-30",
+      "task": "TC-ZS-004",
+      "date": "2026-06-22",
+      "disposition": "PATH_B_ARCHITECTURE_MARKER",
+      "changed_files": [
+        "src/python/fods/Compat/__init__.py",
+        "src/python/fods/Compat/fods_document.py",
+        "src/python/fods/Compat/fods_sheet.py",
+        "src/python/fods/Compat/fods_cell.py"
+      ],
+      "rationale": "ARCHITECTURE MARKER pattern \u2014 FodsDocument/FodsSheet/FodsCell inherit canonical spec classes. Real production implementations are in fods/models.py. Files committed with PATH B doc-only disposition.",
+      "test_impact": "No behavioral changes. FODS test suite: 1335 passed, 8 skipped.",
+      "gate_11_criterion": "P-ARCH-001 satisfied by spec_qname attribution"
     }
   ],
-  "total_entries": 958
+  "total_entries": 959
 }

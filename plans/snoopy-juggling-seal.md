@@ -1209,8 +1209,8 @@ the evidence declaration to be graded OVERCLAIMED by autonomous_cycle.py.
 | Req ID | Requirement | Current Coverage | Verification Method | Acceptance Criteria | Risk |
 |--------|------------|-----------------|-------------------|--------------------|----|
 | VER-01 | sal-pipeline-heal skill registered | COMPLETE | /check-skill-coverage work_type=sal_pipeline_heal | Returns PROCEED_WITH_SKILL | CRITICAL |
-| VER-02 | 78 FODS facts reachable via runner | COMPLETE | python sal_master_runner.py --from-cache-only --all \| grep FACT-FODS \| wc -l | ≥ 78 | LOW |
-| VER-03 | sal-facts-latest.json has 14,284 facts | COMPLETE | python -c "import json; d=json.load(open('.local/sal-output/sal-facts-latest.json')); print(len(d))" | ≥ 14,284 | LOW |
+| VER-02 | FODS facts reachable via runner (4987 total) | COMPLETE | TC-HARD-010 (2026-06-22): sal-facts-latest.json FODS results[].spec_facts has 4987 entries. ID field is named 'qname' but holds FACT-FODS-NNN format IDs (e.g. FACT-FODS-001, FACT-FODS-003). ROOT-03 resolved: canonical IDs present. | ≥ 78 | LOW |
+| VER-03 | sal-facts-latest.json has 14,313 facts (updated from claimed 14,284) | COMPLETE | TC-HARD-010 (2026-06-22): d['spec_facts_total']=14313; fact objects use 'qname' key containing FACT-FORMAT-NNN IDs (canonical). No 'fact_id' field exists. Verified 2026-06-22 via direct JSON inspection. | ≥ 14,284 | LOW |
 | VER-04 | Semantic census for FODS complete | COMPLETE | TC-SAL-DIAG-008 DONE; .local/evidences/sal-skill-gov-20260621-3104e1c1/semantic-census-fods.json | 4991 facts, 10 categories all populated | HIGH |
 | VER-05 | ZST workbench facts exist | COMPLETE | .local/spec-cache/zst/rfc8878/workbench/verified-facts-review.yaml; 96 FACT-ZST-NNN facts (2026-06-21 baseline audit) | ≥ 15 FACT-ZST-NNN facts | HIGH |
 | VER-06 | FODT workbench facts exist | COMPLETE | .local/spec-cache/fodt/odf-1.3/workbench/verified-facts-review.yaml; 4940 FACT-FODT-NNN facts (2026-06-21 baseline audit) | ≥ 20 FACT-FODT-NNN facts | HIGH |
