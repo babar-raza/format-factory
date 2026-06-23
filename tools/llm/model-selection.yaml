@@ -15,6 +15,7 @@ spec_analysis:
     - claude-opus-4-6
     - claude-sonnet-4-6
     - claude-haiku-4-5-20251001
+    - gpt-oss
   fallback: skip
   advisory_only: true
 
@@ -55,6 +56,22 @@ professionalization:
   priority:
     - claude-sonnet-4-6
     - claude-haiku-4-5-20251001
+  fallback: best-effort
+  advisory_only: true
+
+# Embedding task type — uses professionalize qwen3-embedding-8b
+embedding:
+  description: "Generating text embeddings for spec retrieval and similarity search"
+  priority:
+    - qwen3-embedding-8b
+  fallback: skip
+  advisory_only: true
+
+# Professionalize spec-analysis — dedicated route for gpt-oss endpoint
+spec_analysis_professionalize:
+  description: "Spec analysis routed specifically to professionalize gpt-oss endpoint"
+  priority:
+    - gpt-oss
   fallback: best-effort
   advisory_only: true
 

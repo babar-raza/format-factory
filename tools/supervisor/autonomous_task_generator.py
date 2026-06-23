@@ -1564,9 +1564,9 @@ def _goal_to_queue_item(goal: Dict[str, Any], run_number: int) -> Dict[str, Any]
         "spec_authority": goal.get("spec_authority"),
         "format": fmt,
         "function_name": fn,
-        # Lane 6: advisory_only guard — prevent advisory queue items from
-        # being treated as executable product work
         "advisory_only": goal.get("advisory_only", False),
+        "compiled_taskcard_id": goal.get("compiled_taskcard_id"),
+        "compiled_taskcard_path": goal.get("compiled_taskcard_path"),
     }
 
 
@@ -1599,6 +1599,14 @@ def generate_task_candidates(
     except Exception:
         pass
 
+    # TC-MACH-CAP-002: Load selected gap IDs for priority boosting (extracted to extensions)
+    _selected_gap_ids: "set" = set()
+    try:
+        from autonomous_cycle_extensions import load_selected_gap_ids
+        _selected_gap_ids = load_selected_gap_ids(_REPO_ROOT)
+    except Exception:
+        pass
+
     # Lane 6: gap-ledger is PRIMARY; hardcoded goals demoted to fallback (missing fns only).
     # TC-SA-HEAL-006: require spec_facts for formats with ≥15 SAL facts (MIN_FACTS_T=15).
     _sal_p = _REPO_ROOT / ".local" / "sal-output" / "sal-facts-latest.json"
@@ -1610,6 +1618,14 @@ def generate_task_candidates(
     _expansion_goal_fallback = len(gap_ledger_goals) == 0
     all_goals = list(gap_ledger_goals)  # gap-ledger goals first (primary)
     existing_fns = {g["function_name"] for g in all_goals}
+
+    # TC-SH-003: Enrich goals with compiled gap taskcard metadata (extracted to extensions)
+    try:
+        from autonomous_cycle_extensions import enrich_goals_with_compiled_taskcards
+        enrich_goals_with_compiled_taskcards(all_goals, _REPO_ROOT)
+    except Exception:
+        pass  # Compiled gap enrichment is best-effort
+
     # Fallback: add hardcoded goals only for functions NOT in gap-ledger
     for hardcoded_goal in _EXPANSION_GOALS:
         if hardcoded_goal["function_name"] not in existing_fns:
@@ -1678,6 +1694,10 @@ def generate_task_candidates(
             penalty = _fm_escalations[fn_key]["penalty"]
         elif fmt_key in _fm_escalations:
             penalty = _fm_escalations[fmt_key]["penalty"]
+        # TC-MACH-CAP-002: Boost priority for gaps selected by capability compiler
+        _gid = goal.get("gap_id", "")
+        if _gid and _gid in _selected_gap_ids:
+            penalty -= 3.0  # Significant boost (lower score = higher priority)
         return base + penalty  # Higher score = lower priority (deprioritize failed items)
 
     _sort_key = _score_task_with_memory if _fm_escalations else _score_task

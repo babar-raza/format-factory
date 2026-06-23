@@ -68,8 +68,44 @@ def _log(msg: str) -> None:
     print(f"[{ts}] {msg}", flush=True)
 
 
+_PRIORITY_ORDER = {"P0": 0, "P1": 1, "P2": 2, "P3": 3, "P4": 4, "P5": 5}
+_ASSIGNED_GAPS_PATH = REPO_ROOT / ".local" / "supervisor" / "assigned-gaps.json"
+
+
+def _priority_sort_key(gap: dict) -> tuple:
+    """Sort key: priority (P0 first), then gap_id alphabetically for determinism."""
+    p = _PRIORITY_ORDER.get(gap.get("priority", "P4"), 4)
+    return (p, gap.get("gap_id", ""))
+
+
+def _load_assigned_gaps() -> dict:
+    """Load previously assigned gaps from tracking file."""
+    if _ASSIGNED_GAPS_PATH.exists():
+        try:
+            return json.loads(_ASSIGNED_GAPS_PATH.read_text(encoding="utf-8"))
+        except Exception:
+            pass
+    return {}
+
+
+def _record_assigned_gaps(gaps: list[dict], sprint_id: str = "") -> None:
+    """Record which gaps were assigned in this sprint."""
+    assigned = _load_assigned_gaps()
+    for g in gaps:
+        gid = g.get("gap_id", "")
+        if gid:
+            assigned[gid] = {"sprint_id": sprint_id, "assigned_at": _now_iso()}
+    _ASSIGNED_GAPS_PATH.parent.mkdir(parents=True, exist_ok=True)
+    _write_json(_ASSIGNED_GAPS_PATH, assigned)
+
+
 def load_foss_gaps(max_gaps: int = 5) -> list[dict]:
-    """Load FOSS-eligible gaps from the gap ledger, skipping already-implemented."""
+    """Load FOSS-eligible gaps from the gap ledger, sorted by priority.
+
+    Deterministic selection: gaps are sorted by priority (P0 first), then
+    alphabetically by gap_id. Previously-assigned gaps that haven't been
+    completed are skipped to avoid re-assigning the same work.
+    """
     if not _GAP_LEDGER_PATH.exists():
         _log(f"Gap ledger not found: {_GAP_LEDGER_PATH}")
         return []
@@ -82,26 +118,34 @@ def load_foss_gaps(max_gaps: int = 5) -> list[dict]:
     all_gaps = data["gaps"]
     _log(f"Gap ledger: {len(all_gaps)} total gaps")
 
-    selected: list[dict] = []
+    # Filter eligible gaps
+    eligible: list[dict] = []
     for gap in all_gaps:
-        if len(selected) >= max_gaps:
-            break
-        # Only FOSS gaps
         ptype = gap.get("product_type", "").lower()
         if ptype not in _ELIGIBLE_PRODUCT_TYPES:
             continue
-        # Skip gaps explicitly marked as closed
         if gap.get("status", "").lower() == "closed":
             continue
-        # Skip already-closed gaps by gap_type
         if gap.get("gap_type", "").lower() in _SKIP_GAP_TYPES:
             continue
-        # Must have a format and function hint
         if not gap.get("format") and not gap.get("capability_name"):
             continue
-        selected.append(gap)
+        eligible.append(gap)
 
-    _log(f"Selected {len(selected)} FOSS gaps for compilation")
+    # Sort deterministically by priority then gap_id
+    eligible.sort(key=_priority_sort_key)
+
+    # Skip previously-assigned gaps (unless they were marked complete)
+    assigned = _load_assigned_gaps()
+    unassigned = [g for g in eligible if g.get("gap_id", "") not in assigned]
+
+    # If all eligible gaps have been assigned, reset and select from full list
+    if not unassigned and eligible:
+        _log("All eligible gaps previously assigned — resetting assignment tracking")
+        unassigned = eligible
+
+    selected = unassigned[:max_gaps]
+    _log(f"Selected {len(selected)} FOSS gaps for compilation (priority-ordered, deterministic)")
     return selected
 
 
@@ -152,6 +196,18 @@ def compile_gaps_to_taskcards(
             taskcard["gap_priority"] = compiler_input.get("priority", "P2")
             taskcard["compiled_at"] = _now_iso()
             taskcard["compiled_by"] = "capability_queue_consumer"
+
+            # TC-SH-004: Set advisory_only based on priority + spec_facts.
+            # FOSS P0-P1 with spec_facts -> advisory_only=false (executable).
+            # Everything else -> advisory_only=true (advisory only).
+            gap_priority = compiler_input.get("priority", "P2")
+            has_spec_facts = bool(gap.get("spec_facts"))
+            is_foss = gap.get("product_type", "").lower() in _ELIGIBLE_PRODUCT_TYPES
+            is_commercial = gap.get("product_type", "").lower() == "commercial"
+            if is_foss and gap_priority in ("P0", "P1") and has_spec_facts and not is_commercial:
+                taskcard["advisory_only"] = False
+            else:
+                taskcard["advisory_only"] = True
 
             # Write taskcard to disk
             tc_path = output_dir / f"{taskcard['taskcard_id']}.json"
@@ -208,6 +264,9 @@ def run_consumer(
             "output_dir": str(output_dir),
         }
 
+    # Record assigned gaps for deterministic tracking (Lane D)
+    _record_assigned_gaps(gaps, sprint_id=_now_iso())
+
     results = compile_gaps_to_taskcards(gaps, output_dir)
 
     compiled = [r for r in results if r["status"] == "compiled"]
@@ -227,6 +286,24 @@ def run_consumer(
     }
     summary_path = output_dir / "consumer-summary.json"
     _write_json(summary_path, summary)
+
+    # TC-SH-003: Write compiled gap taskcards to persistent path for
+    # autonomous_task_generator.py to read and incorporate into next-work-items.
+    persistent_path = REPO_ROOT / ".local" / "supervisor" / "compiled-gap-taskcards.json"
+    try:
+        existing = _load_json(persistent_path)
+        if not isinstance(existing, dict):
+            existing = {"compiled": [], "last_updated": None}
+        existing_ids = {c.get("gap_id") for c in existing.get("compiled", [])}
+        new_entries = [c for c in compiled if c.get("gap_id") not in existing_ids]
+        existing["compiled"] = existing.get("compiled", []) + new_entries
+        existing["last_updated"] = _now_iso()
+        existing["total_compiled"] = len(existing["compiled"])
+        _write_json(persistent_path, existing)
+        if new_entries:
+            _log(f"Persisted {len(new_entries)} new compiled taskcards -> {persistent_path}")
+    except Exception as exc:
+        _log(f"WARNING: failed to persist compiled taskcards: {exc}")
 
     _log(f"Summary: {len(compiled)} compiled, {len(failed)} failed -> {summary_path}")
     return summary
