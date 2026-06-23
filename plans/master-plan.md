@@ -3,8 +3,8 @@
 **Document type:** Living Master Plan
 **Authority level:** Single Operational Authority
 **Project:** format-factory
-**Version:** 3.4
-**Last updated:** 2026-06-23 (imperative-drifting-lecun plan CLOSED — QName hardening all 6 phases complete; .NET spec authority classes implemented for FODS/FODT/CSV/NDJSON/TSV/Netpbm; fods.yaml 11/12 entries implemented; 53 governance validators all wired; reviewer skill registered)
+**Version:** 3.5
+**Last updated:** 2026-06-23 (noble-doodling-pony CLOSED — Pass 4+5 all 9 taskcards complete; SAL regression tests, 15 spec-parity validator tests, V53/V51 backfill XcfImage+NdjsonRecord, .NET 0-error build verified, gap-audit 25 honest entries, Rework counter fix, ontology sync, compile_gap E2E proven)
 **Last verified:** 2026-06-23
 
 **Current phase:** Multi-format POC — 11 targets (3 commercial .NET, 8 FOSS Python). Gate 11 G11-G sub-gate approved by Babar Raza 2026-06-05 (FODS, FODT, Netpbm). Registry gate_11.status: commercial_readiness_in_progress (registry not yet updated after G11-G). commercial_product_ready: false (all entries).
@@ -360,7 +360,19 @@ Wave 3 gate: 5 PASS / 3 PARTIAL (0 FAIL)
 - .NET spec stubs annotated with SpecQName/SpecFactRef/NamespaceUri. New stub files: csv/Spec/CsvRecord.cs, ndjson/Spec/NdjsonRecord.cs, netpbm/Spec/NetpbmImage.cs, tsv/Spec/TsvRecord.cs.
 - python-qname-code-reviewer slash command registered.
 
-**Plan hardening (2026-06-23):** noble-doodling-pony.md POST-EXECUTION HARDENING PASS 4 added. 6 evidence-review gaps converted to governed taskcards: TC-SAL-PIPE-REGR-001 (SAL pipeline regression test), TC-VALIDATOR-REMAINING-001 (6 spec-parity validators untested), TC-SAL-PIPELINE-002 (FODS SAL facts), TC-GAP-AUDIT-002 (gap-audit JSON repair), TC-ONTOLOGY-CONTENT-001 (ontology divergence), TC-COMPILE-GAP-E2E-001 (compile_gap end-to-end). Anti-overclaim rules 13-15 added. Plan file is not in git repo.
+**noble-doodling-pony plan — CLOSED 2026-06-23 (Pass 4 + Pass 5 — all 9 taskcards complete):**
+Pass 4 (6 taskcards) and Pass 5 (3 taskcards) fully executed. All verified by committed tests.
+- TC-SAL-PIPE-REGR-001: 3 regression tests for run_spec_pipeline.py empty-string fix — CLOSED (commit 80401200)
+- TC-VALIDATOR-REMAINING-001: 15 integration tests for V13/V14/V37/V47/V51/V53 — CLOSED (commit b8bfde79)
+- TC-V53-BACKFILL-001: XcfImage.spec_qname + NdjsonRecord class added; V53/V51 PASS — CLOSED (commit 30b694b3)
+- TC-DOTNET-BUILD-VERIFY-001: All 6 .NET projects build 0 errors after spec annotation changes — CLOSED (evidence: .local/evidences/dotnet-build-verify/build-results.md)
+- TC-SAL-PIPELINE-002: test_sal_facts_has_fods_facts PASSES — CLOSED (verified in-session)
+- TC-GAP-AUDIT-002: gap-audit-2026-06-21.json populated with 25 honest verdicts (19 VERIFIED, 6 CLAIMED_UNPROVEN) — CLOSED (commit 90c1f983)
+- TC-REVIEW-COUNTER-FIX-001: write_outputs() Rework/Critical Rework computed from item_grades (not GOV_BLOCK-polluted rework_items); 5 regression tests pass — CLOSED (commit 90c1f983)
+- TC-ONTOLOGY-CONTENT-001: .local/spec-cache/ontology/ (2026-06-22) synced to registry/odf-ontology/; no divergent untracked copies remain — CLOSED (commit dff6cc32)
+- TC-COMPILE-GAP-E2E-001: compile_gap('GAP-FODS-COMM-SAVE_SAME_FO-001') returns all 6 expected keys — CLOSED (evidence: .local/evidences/compile-gap-e2e/result.json)
+- Anti-overclaim rules 13-15 (Pass 4) and 16-18 (Pass 5) remain active in plan file.
+- Plan locked TERMINAL_CLOSED via write_plan_lock.py --terminal.
 
 **QName hardening plan (imperative-drifting-lecun) — CLOSED 2026-06-23:**
 All 6 phases complete. Key outcomes:

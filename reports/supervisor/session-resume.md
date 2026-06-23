@@ -27,6 +27,21 @@
 - Supervisor outputs: reports/supervisor/
 - Project memory: .supervisor/project-memory.md
 
+## Cold-Cache Transition Note (TC-HARDEN-002 — 2026-06-23)
+TC-GRADE-001 changed the _evidence_hash() format to include file content fingerprints
+(_ev_content). All 246 existing grade-cache.json entries were written with path-only hashes.
+On the next autonomous cycle, every item will produce a cache miss and be re-graded.
+ASSESSMENT (Option B chosen): LLM IS available (GPT_OSS_ENDPOINT set in environment).
+Re-grading will use LLM and produce correct grades. Risk is extra LLM API calls only
+(no DEFERRED_WITH_REASON degradation expected). No manual intervention required.
+Evidence: validate_monolith_detection returns WARN (non-blocking) for both
+autonomous_cycle.py (cap=2163) and grade_declared_work.py (cap=883) after cap updates.
+
+## TC-SIGNAL-002 Formal Closure (TC-HARDEN-006 — 2026-06-23)
+TC-SIGNAL-002 (stale signal reset) was formally closed as OUT_OF_SCOPE.
+The live signal already showed hard_stops_detected=[], autonomous_continue=true at session
+start. No reset was required or executed. TC-SIGNAL-001 is the durable preventive fix.
+
 ## Project Memory (recent)
 ```
 - bundle_entry_count: 82
