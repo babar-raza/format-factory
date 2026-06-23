@@ -8,7 +8,9 @@ Pattern mirrors analytics extraction pattern used for format codecs:
   governance_validator_runner.py registers both sets of validators in run_all_governance_validators().
 
 TC-WHALE-GOVBLOCK-001 (2026-06-21): V48 extracted here per source baseline LOC cap policy.
+TC-PG-006 (2026-06-23): V56 validate_hardening_target_identity — plan hardening must write to native plan.
 TC-ANAL-SEG-HEAL-001 (2026-06-22): V50 added here — MODULE-NAME-001 forbidden module names.
+zesty-conjuring-peacock (2026-06-23): V50 extended — *_analytics.py + bare analytics.py added to FORBIDDEN.
 TC-QHARD-001 (2026-06-22): V51 validate_spec_qname_coverage — exported classes must have spec_qname.
 TC-QHARD-002 (2026-06-22): V52 validate_compat_import_integrity — Compat/ facades import from real spec/ classes.
 TC-QHARD-003 (2026-06-22): V53 validate_spec_authority_class_completeness — registry python_file entries exist.
@@ -88,13 +90,153 @@ def validate_architecture_only_stub_gate(
     }
 
 
+def validate_hardening_target_identity(
+    declaration: dict | None = None,
+    repo_root: Path | None = None,
+) -> dict:
+    """V56 (TC-PG-006): Verify plan hardening writes to the native plan, not a fallback.
+
+    Scans evidence_paths in all work items for .md files under plans/ or .claude/plans/.
+    If any cited plan file is:
+      - plans/snoopy-juggling-seal.md AND snoopy is NOT the active plan → FAIL
+      - any plan file other than the active plan → WARN
+
+    Active plan is resolved from .local/supervisor/plan-locks/ (IN_PROGRESS locks).
+    Falls back to no-op PASS if no plan lock exists (no per-chat plan active).
+
+    Severity: FAIL for snoopy as wrong-target; WARN for other wrong-target plans.
+    blocks_sprint: True only on FAIL.
+
+    Added 2026-06-23 (TC-PG-006, keen-snacking-quiche plan governance healing).
+    """
+    import json
+
+    repo = repo_root or _REPO_ROOT
+
+    # Resolve active plan path from IN_PROGRESS lock files
+    active_plan_path: str | None = None
+    locks_dir = repo / ".local" / "supervisor" / "plan-locks"
+    if locks_dir.is_dir():
+        for lf in sorted(locks_dir.glob("*.json")):
+            try:
+                lock = json.loads(lf.read_text(encoding="utf-8"))
+                if lock.get("status") == "IN_PROGRESS":
+                    active_plan_path = str(lock.get("plan_path", "")).replace("\\", "/")
+                    break
+            except Exception:
+                continue
+
+    # Also try shared lock
+    if not active_plan_path:
+        shared = repo / ".local" / "supervisor" / "active-plan-lock.json"
+        if shared.exists():
+            try:
+                lock = json.loads(shared.read_text(encoding="utf-8"))
+                if lock.get("status") == "IN_PROGRESS":
+                    active_plan_path = str(lock.get("plan_path", "")).replace("\\", "/")
+            except Exception:
+                pass
+
+    if not active_plan_path:
+        # No active plan — nothing to enforce
+        return {
+            "validator": "validate_hardening_target_identity",
+            "result": "PASS",
+            "blocks_sprint": False,
+            "items": [],
+            "summary": "V49: No active per-chat plan lock — hardening target check skipped",
+        }
+
+    # Normalise the active plan path for comparison
+    active_norm = active_plan_path.rstrip("/")
+
+    # Scan all work item evidence_paths for .md files in plans/ or .claude/plans/
+    _PLAN_PATTERNS = _re.compile(
+        r"((?:plans/|\.claude/plans/|C:[/\\]Users[/\\][^/\\]+[/\\]\.claude[/\\]plans[/\\])[^/\s]+\.md)"
+    )
+    fail_items = []
+    warn_items = []
+
+    all_items = []
+    if declaration:
+        all_items = (
+            declaration.get("completed_work_items", [])
+            + declaration.get("planned_work_items", [])
+        )
+        # Scan global evidence_paths (hardening sprint evidence)
+        for ep in declaration.get("evidence_paths", []):
+            all_items.append({"item_id": "DECLARATION_LEVEL", "evidence_paths": [ep]})
+        # evidence_artifacts are modified-file records, not hardening targets.
+        # Skip plan_file type entries — those are governance corrections (e.g. adding
+        # plan_identity front-matter to a plan, which is not a hardening-target mismatch).
+        for ea in declaration.get("evidence_artifacts", []):
+            if isinstance(ea, dict) and ea.get("type") not in ("plan_file", "governance_ledger"):
+                all_items.append({
+                    "item_id": "DECLARATION_LEVEL",
+                    "evidence_paths": [ea.get("path", "")],
+                })
+
+    for item in all_items:
+        if not isinstance(item, dict):
+            continue
+        item_id = item.get("item_id", "<unknown>")
+        for path_str in item.get("evidence_paths", []):
+            path_norm = str(path_str).replace("\\", "/")
+            # Only check plan-like paths
+            if not _PLAN_PATTERNS.search(path_norm):
+                continue
+            # Normalise
+            if path_norm == active_norm or path_norm.endswith("/" + active_norm.split("/")[-1]):
+                continue  # This IS the active plan — correct
+            if "master-plan-memory.md" in path_norm:
+                continue  # Ledger — not a hardening target mismatch
+            # snoopy specifically cited while NOT being the active plan → FAIL
+            if "snoopy-juggling-seal.md" in path_norm:
+                fail_items.append({
+                    "item_id": item_id,
+                    "evidence_path": path_str,
+                    "active_plan": active_plan_path,
+                    "issue": (
+                        "snoopy-juggling-seal.md cited as hardening target "
+                        "but it is NOT the active per-chat plan"
+                    ),
+                    "severity": "FAIL",
+                })
+            else:
+                warn_items.append({
+                    "item_id": item_id,
+                    "evidence_path": path_str,
+                    "active_plan": active_plan_path,
+                    "issue": (
+                        f"Plan file {path_str!r} cited as hardening evidence "
+                        f"but active plan is {active_plan_path!r}"
+                    ),
+                    "severity": "WARN",
+                })
+
+    all_issues = fail_items + warn_items
+    result = "FAIL" if fail_items else ("WARN" if warn_items else "PASS")
+    return {
+        "validator": "validate_hardening_target_identity",
+        "result": result,
+        "blocks_sprint": bool(fail_items),
+        "items": all_issues,
+        "summary": (
+            f"V56: {len(fail_items)} FAIL item(s) (wrong plan cited as hardening target); "
+            f"{len(warn_items)} WARN item(s)"
+            if all_issues
+            else f"V56: Hardening evidence targets active plan ({active_plan_path})"
+        ),
+    }
+
+
 def validate_forbidden_module_names(
     declaration: dict, repo_root: Path | None = None
 ) -> dict:
     """V50 — MODULE-NAME-001: Forbid generic analytics-bucket module names.
 
-    Blocks creation of NEW files matching:
-      *_analytics_extra.py, *_extra.py, *_misc.py
+    Blocks creation of or modification of files matching:
+      *_analytics.py, *_analytics_extra.py, *_extra.py, *_misc.py, bare analytics.py
       *_helpers.py / *_utils.py containing format-prefixed spec behavior
 
     Deletion of these files (where file does NOT exist on disk) is ALWAYS allowed.
@@ -105,12 +247,15 @@ def validate_forbidden_module_names(
     Every product module must map to a spec section, element, or domain concept.
 
     Added 2026-06-22 (TC-ANAL-SEG-HEAL-001) as part of spec-level segregation healing.
+    Extended 2026-06-23 (zesty-conjuring-peacock): *_analytics.py and bare analytics.py
+    added to FORBIDDEN — all analytics-bucket patterns now blocked, not just overflow files.
     """
     import re
 
     repo = repo_root or _REPO_ROOT
     FORBIDDEN = re.compile(
-        r"src/python/[^/]+/[^/]+_(analytics_extra|extra|misc)\.py$"
+        r"src/python/[^/]+/"
+        r"(?:[^/]+_(?:analytics_extra|analytics|extra|misc)|analytics)\.py$"
     )
     CONDITIONAL = re.compile(
         r"src/python/[^/]+/[^/]+_(helpers|utils)\.py$"
@@ -500,5 +645,735 @@ def validate_spec_authority_class_completeness(
         "summary": (
             f"V53: {len(warnings)} registry entry(ies) missing spec authority class"
             if warnings else "V53: All registry python_file entries have valid spec authority classes"
+        ),
+    }
+
+
+# ---------------------------------------------------------------------------
+# V54 — Cross-lane: product item mutating supervisor machinery files
+# ---------------------------------------------------------------------------
+
+_PRODUCT_SOURCE_ITEM_TYPES = frozenset({
+    "PRODUCT_SOURCE", "TEST", "REQUIREMENT", "READINESS", "RELEASE_GATE",
+    "PRODUCT_IMPLEMENTATION", "PRODUCT_TESTING",
+    "PRODUCT_CAPABILITY_EXPANSION", "PRODUCT_EXPORT_OR_DOGFOOD",
+})
+
+_MACHINERY_SUPERVISOR_PREFIXES = (
+    "tools/supervisor/",
+    "tools/validators/",
+    "tools/requirements_authority/",
+)
+
+
+def validate_cross_lane_product_touching_machinery(
+    declaration: dict | None = None,
+    repo_root: Path | None = None,
+) -> dict:
+    """V54: WARN if a product-track item declares changed_files under tools/supervisor/.
+
+    Product sprints should not mutate supervisor machinery files. Cross-lane mutations
+    indicate architectural drift — work that belongs to the MACHINERY track is being
+    bundled with PRODUCT_SOURCE items.
+
+    Severity: WARN-only (blocks_sprint=False). Promotes to blocking after 3 clean sprints
+    with no false positives. Exception: items with lane_exception='MACHINERY_HEALING' bypass.
+
+    Added 2026-06-23 (FF-FORENSIC-AUDIT-20260623 / A4) as part of lane boundary hardening.
+    """
+    if declaration is None:
+        return {
+            "validator": "validate_cross_lane_product_touching_machinery",
+            "result": "PASS",
+            "blocks_sprint": False,
+            "items": [],
+            "summary": "V54: No declaration provided — skipped",
+        }
+
+    warnings = []
+    all_items = (
+        declaration.get("completed_work_items", [])
+        + declaration.get("planned_work_items", [])
+    )
+
+    # Also check at declaration level (some declarations list changed_files globally)
+    global_changed = declaration.get("changed_files", [])
+
+    for item in all_items:
+        if not isinstance(item, dict):
+            continue
+        itype = item.get("item_type", "")
+        if itype not in _PRODUCT_SOURCE_ITEM_TYPES:
+            continue
+        # Exception: MACHINERY_HEALING hybrid items are legitimately cross-lane
+        if item.get("lane_exception") == "MACHINERY_HEALING":
+            continue
+
+        changed = item.get("changed_files", []) or global_changed
+        for path in changed:
+            path_str = str(path).replace("\\", "/")
+            if any(path_str.startswith(pfx) for pfx in _MACHINERY_SUPERVISOR_PREFIXES):
+                warnings.append({
+                    "item_id": item.get("item_id", "<unknown>"),
+                    "item_type": itype,
+                    "changed_file": path_str,
+                    "issue": (
+                        f"Product-track item ({itype}) declares change to machinery file "
+                        f"{path_str!r} — potential cross-lane contamination"
+                    ),
+                    "severity": "WARN",
+                })
+
+    result = "WARN" if warnings else "PASS"
+    return {
+        "validator": "validate_cross_lane_product_touching_machinery",
+        "result": result,
+        "blocks_sprint": False,
+        "items": warnings,
+        "summary": (
+            f"V54: {len(warnings)} product item(s) mutating machinery files"
+            if warnings else "V54: No cross-lane product→machinery contamination detected"
+        ),
+    }
+
+
+# ---------------------------------------------------------------------------
+# V55 — Cross-lane: machinery item mutating product src/ files
+# ---------------------------------------------------------------------------
+
+_MACHINERY_ITEM_TYPES = frozenset({
+    "GOVERNANCE_TASKCARD", "GOVERNANCE_DOC", "GOVERNANCE_REVIEW",
+    "SPEC_AUTHORITY_MACHINERY", "REQUIREMENT_CAPABILITY_MACHINERY",
+    "ACTION_QUEUE_MACHINERY", "AUTONOMY_ORCHESTRATOR_MACHINERY",
+    "SUPERVISOR_VERDICT_MACHINERY", "VALIDATOR_OR_EVIDENCE_MACHINERY",
+    "PROMPT_GENERATION_MACHINERY", "GOVERNED_SKILL_OR_GENERATOR_MACHINERY",
+})
+
+_PRODUCT_SRC_PREFIXES = (
+    "src/python/",
+    "src/net/",
+)
+
+
+def validate_cross_lane_machinery_touching_product(
+    declaration: dict | None = None,
+    repo_root: Path | None = None,
+) -> dict:
+    """V55: WARN if a machinery-track item declares changed_files under src/.
+
+    Machinery sprints should not mutate product source files. Cross-lane mutations
+    risk destabilizing product behavior during infrastructure work.
+
+    Severity: WARN-only (blocks_sprint=False). Exception: items with
+    lane_exception='MACHINERY_HEALING' bypass (analytics separation sprints that
+    necessarily extract src/ code to analytics files are legitimately cross-lane).
+
+    Added 2026-06-23 (FF-FORENSIC-AUDIT-20260623 / A4) as part of lane boundary hardening.
+    """
+    if declaration is None:
+        return {
+            "validator": "validate_cross_lane_machinery_touching_product",
+            "result": "PASS",
+            "blocks_sprint": False,
+            "items": [],
+            "summary": "V55: No declaration provided — skipped",
+        }
+
+    warnings = []
+    all_items = (
+        declaration.get("completed_work_items", [])
+        + declaration.get("planned_work_items", [])
+    )
+    global_changed = declaration.get("changed_files", [])
+
+    for item in all_items:
+        if not isinstance(item, dict):
+            continue
+        itype = item.get("item_type", "")
+        if itype not in _MACHINERY_ITEM_TYPES:
+            continue
+        # Exception: MACHINERY_HEALING items are legitimately cross-lane
+        if item.get("lane_exception") == "MACHINERY_HEALING":
+            continue
+
+        changed = item.get("changed_files", []) or global_changed
+        for path in changed:
+            path_str = str(path).replace("\\", "/")
+            if any(path_str.startswith(pfx) for pfx in _PRODUCT_SRC_PREFIXES):
+                warnings.append({
+                    "item_id": item.get("item_id", "<unknown>"),
+                    "item_type": itype,
+                    "changed_file": path_str,
+                    "issue": (
+                        f"Machinery-track item ({itype}) declares change to product source "
+                        f"{path_str!r} — potential cross-lane contamination"
+                    ),
+                    "severity": "WARN",
+                })
+
+    result = "WARN" if warnings else "PASS"
+    return {
+        "validator": "validate_cross_lane_machinery_touching_product",
+        "result": result,
+        "blocks_sprint": False,
+        "items": warnings,
+        "summary": (
+            f"V55: {len(warnings)} machinery item(s) mutating product src/ files"
+            if warnings else "V55: No cross-lane machinery→product contamination detected"
+        ),
+    }
+
+
+_LEDGER_SRC_PREFIXES = ("src/python/", "src/net/")
+
+
+def validate_changed_files_in_ledger(
+    declaration: dict | None = None,
+    repo_root: Path | None = None,
+) -> dict:
+    """V57: WARN if src/python/ or src/net/ changed files have no product-code-change-ledger entry.
+
+    Cross-validates declaration changed_files against reports/r90/product-code-change-ledger.json.
+    Every src/ file modified after governance tracking began should have a ledger entry.
+
+    Severity: WARN-only (blocks_sprint=False) until ledger is fully backfilled.
+    Activation cutoff: sprint where 90% of src/ entries have ledger coverage.
+
+    Added 2026-06-23 (TC-VNK-003) as V57.
+    """
+    import json as _json
+
+    if declaration is None:
+        return {
+            "validator": "validate_changed_files_in_ledger",
+            "result": "PASS",
+            "blocks_sprint": False,
+            "items": [],
+            "summary": "V57: No declaration provided — skipped",
+        }
+
+    _root = repo_root or Path(__file__).resolve().parents[2]
+    ledger_path = _root / "reports" / "r90" / "product-code-change-ledger.json"
+
+    # Build set of ledger-tracked paths
+    ledger_paths: set[str] = set()
+    if ledger_path.exists():
+        try:
+            ledger_data = _json.loads(ledger_path.read_text(encoding="utf-8"))
+            entries = ledger_data if isinstance(ledger_data, list) else ledger_data.get("entries", [])
+            for entry in entries:
+                for sf in entry.get("source_files", []):
+                    raw = str(sf.get("path", "")).replace("\\", "/")
+                    if raw:
+                        ledger_paths.add(raw)
+        except Exception:
+            pass  # If ledger is unreadable, skip — WARN-only validator
+
+    # Collect declaration changed_files
+    changed_files = declaration.get("changed_files", [])
+    warnings = []
+    for path in changed_files:
+        path_str = str(path).replace("\\", "/")
+        if not any(path_str.startswith(pfx) for pfx in _LEDGER_SRC_PREFIXES):
+            continue
+        if path_str not in ledger_paths:
+            warnings.append({
+                "path": path_str,
+                "issue": f"src/ file {path_str!r} has no product-code-change-ledger entry",
+                "severity": "WARN",
+            })
+
+    result = "WARN" if warnings else "PASS"
+    return {
+        "validator": "validate_changed_files_in_ledger",
+        "result": result,
+        "blocks_sprint": False,
+        "items": warnings,
+        "summary": (
+            f"V57: {len(warnings)} src/ file(s) missing ledger entry"
+            if warnings else "V57: All src/ changed files have ledger entries (or no src/ files changed)"
+        ),
+    }
+
+
+def validate_expansion_fallback_refs(declaration: dict) -> dict:
+    """V58 (FALLBACK-REF-001): Detect EXPANSION-FALLBACK-* synthetic gap references.
+
+    autonomous_task_generator.py injects gap_ledger_ref="EXPANSION-FALLBACK-{FORMAT}-{fn}"
+    for functions not in the real gap-ledger. These pass TC-GUARD-001's non-empty check but
+    are NOT real GAP-* entries. This validator surfaces them for review.
+
+    WARN-only (blocks_sprint=False) to allow transitional use without hard-blocking existing
+    deepening work. Classifies as LEDGER_ENTRY_CLAIMED_UNPROVEN.
+    """
+    _FALLBACK_PREFIX = "EXPANSION-FALLBACK-"
+    _CHECKED = {"PRODUCT_SOURCE", "PRODUCT_TEST"}
+    violations = []
+    total_checked = 0
+    for item in declaration.get("planned_work_items", []):
+        if item.get("item_type") not in _CHECKED:
+            continue
+        total_checked += 1
+        ref = item.get("gap_ledger_ref", "")
+        if isinstance(ref, str) and ref.startswith(_FALLBACK_PREFIX):
+            violations.append({
+                "item_id": item.get("item_id", "UNKNOWN"),
+                "gap_ledger_ref": ref,
+                "classification": "LEDGER_ENTRY_CLAIMED_UNPROVEN",
+            })
+    pct = (len(violations) / total_checked * 100) if total_checked > 0 else 0.0
+    result = "WARN" if violations else "PASS"
+    return {
+        "validator": "validate_expansion_fallback_refs",
+        "result": result,
+        "blocks_sprint": False,
+        "violations": violations,
+        "total_checked": total_checked,
+        "fallback_count": len(violations),
+        "fallback_pct": round(pct, 1),
+        "detail": (
+            f"{len(violations)}/{total_checked} PRODUCT_SOURCE/TEST items use "
+            f"EXPANSION-FALLBACK synthetic gap refs ({pct:.0f}%). "
+            "These are not real gap-ledger entries. "
+            "Replace with real GAP-{FORMAT}-* IDs from gap-ledger.json when available."
+        ) if violations else "No EXPANSION-FALLBACK refs detected.",
+    }
+
+
+def validate_cross_language_parity(
+    declaration: dict,
+    repo_root: "Path | None" = None,
+) -> dict:
+    """V59 (TC-MGHEAL-005): Cross-language parity awareness for dual-language formats.
+
+    For PRODUCT_SOURCE items targeting a format with both .NET and Python implementations,
+    WARN if no cross-language parity evidence or acknowledgment is present.
+
+    WARN-only (blocks_sprint=False) to allow transitional use while parity matrices are built.
+    """
+    import json as _json
+
+    if repo_root is None:
+        repo_root = Path(__file__).resolve().parent.parent.parent
+    else:
+        repo_root = Path(repo_root)
+
+    # Formats with both .NET and Python implementations
+    _DUAL_FORMATS = {
+        "fods", "fodt", "csv", "tsv", "ndjson", "zst",
+        "pbm", "pgm", "ppm",  # NetPBM family
+    }
+
+    violations = []
+    total_checked = 0
+
+    for item in declaration.get("planned_work_items", []):
+        if item.get("item_type") != "PRODUCT_SOURCE":
+            continue
+
+        # Try to determine format from item metadata
+        item_id = item.get("item_id", "UNKNOWN")
+        fmt = item.get("format", "").lower()
+        if not fmt:
+            # Try to infer format from evidence_paths or changed_files
+            for path_field in ("evidence_paths", "changed_files"):
+                for p in item.get(path_field, []):
+                    p_str = str(p).replace("\\", "/").lower()
+                    for f in _DUAL_FORMATS:
+                        if f"/python/{f}/" in p_str or f"/net/{f}/" in p_str:
+                            fmt = f
+                            break
+                    if fmt:
+                        break
+                if fmt:
+                    break
+
+        if fmt not in _DUAL_FORMATS:
+            continue
+
+        total_checked += 1
+
+        # Check if parity is acknowledged in item metadata
+        has_parity = (
+            item.get("cross_language_parity_checked")
+            or item.get("parity_deferred")
+            or any("parity" in str(v).lower() for v in item.get("notes", []))
+        )
+        if not has_parity:
+            violations.append({
+                "item_id": item_id,
+                "format": fmt,
+                "issue": "PRODUCT_SOURCE for dual-language format without parity acknowledgment",
+            })
+
+    result = "WARN" if violations else "PASS"
+    return {
+        "validator": "validate_cross_language_parity",
+        "result": result,
+        "blocks_sprint": False,
+        "violations": violations,
+        "total_dual_format_items": total_checked,
+        "detail": (
+            f"V59: {len(violations)}/{total_checked} dual-format PRODUCT_SOURCE items "
+            f"lack cross-language parity acknowledgment. "
+            "Add cross_language_parity_checked or parity_deferred to item metadata."
+        ) if violations else f"V59: {total_checked} dual-format items checked, all have parity awareness.",
+    }
+
+
+# ---------------------------------------------------------------------------
+# V60 — TC-TCF-010: validate_terminal_closure_completeness
+# ---------------------------------------------------------------------------
+
+
+def validate_terminal_closure_completeness(
+    declaration: dict | None = None,
+    repo_root: Path | None = None,
+) -> dict:
+    """V60 (TC-TCF-010): WARN if RELEASE_GATE/READINESS items cite a plan with open taskcards.
+
+    Scans evidence_paths for plan files (.md in plans/ or .claude/plans/). If any
+    cited plan has open taskcards (not CLOSED/SUPERSEDED/EXCLUDED), produces WARN.
+
+    This prevents declaring release readiness when underlying plans still have
+    incomplete work.
+
+    Severity: WARN-only (blocks_sprint=False). Advisory at gate level.
+    Added 2026-06-23 (TC-FORENSICS-TERMINAL-20260623, TC-TCF-010).
+    """
+    if declaration is None:
+        return {
+            "validator": "validate_terminal_closure_completeness",
+            "result": "PASS",
+            "blocks_sprint": False,
+            "items": [],
+            "summary": "V60: No declaration provided -- skipped",
+        }
+
+    repo = repo_root or _REPO_ROOT
+    _GATE_TYPES = {"RELEASE_GATE", "READINESS"}
+    _PLAN_RE = _re.compile(
+        r"((?:plans/|\.claude/plans/)[^\s]+\.md)"
+    )
+    warnings = []
+
+    for item in declaration.get("planned_work_items", []):
+        if item.get("item_type") not in _GATE_TYPES:
+            continue
+        item_id = item.get("item_id", "UNKNOWN")
+        for path_str in item.get("evidence_paths", []):
+            if not _PLAN_RE.search(str(path_str)):
+                continue
+            p = (repo / path_str) if not Path(path_str).is_absolute() else Path(path_str)
+            if not p.exists():
+                continue
+            try:
+                text = p.read_text(encoding="utf-8", errors="replace")
+            except OSError:
+                continue
+            # Use the same taskcard regex patterns as lifecycle_audit.py
+            tc_table = _re.findall(
+                r"\|\s*(TC-[A-Z0-9]+-[A-Z0-9-]+)\s*\|\s*"
+                r"(CLOSED|OPEN|IN_PROGRESS|PENDING|SUPERSEDED|EXCLUDED)\s*\|",
+                text, _re.IGNORECASE,
+            )
+            tc_block = _re.findall(
+                r"^#{1,4}\s+(TC-[A-Z0-9]+-[A-Z0-9-]+)\b[^\n]*\n"
+                r"(?:[^\n]*\n){0,4}?"
+                r"[^\n]*\*{0,2}Status:?\*{0,2}\s*(CLOSED|OPEN|IN_PROGRESS|PENDING|SUPERSEDED|EXCLUDED)",
+                text, _re.IGNORECASE | _re.MULTILINE,
+            )
+            all_tcs = {}
+            for tc_id, status in tc_table + tc_block:
+                all_tcs.setdefault(tc_id.upper(), status.upper())
+            open_tcs = [
+                tc for tc, st in all_tcs.items()
+                if st not in ("CLOSED", "SUPERSEDED", "EXCLUDED")
+            ]
+            if open_tcs:
+                warnings.append({
+                    "item_id": item_id,
+                    "plan_path": str(path_str),
+                    "open_taskcards": open_tcs,
+                    "issue": (
+                        f"RELEASE_GATE/READINESS item cites plan with "
+                        f"{len(open_tcs)} open taskcard(s): {', '.join(open_tcs[:5])}"
+                    ),
+                })
+
+    result = "WARN" if warnings else "PASS"
+    return {
+        "validator": "validate_terminal_closure_completeness",
+        "result": result,
+        "blocks_sprint": False,
+        "items": warnings,
+        "summary": (
+            f"V60: {len(warnings)} gate item(s) cite plans with open taskcards"
+            if warnings else "V60: No gate items cite plans with open taskcards"
+        ),
+    }
+
+
+# ---------------------------------------------------------------------------
+# V61 — TC-TCF-010: validate_error_fallback_safety
+# ---------------------------------------------------------------------------
+
+
+def validate_error_fallback_safety(
+    declaration: dict | None = None,
+    repo_root: Path | None = None,
+) -> dict:
+    """V61 (TC-TCF-010): Verify write_plan_lock.py error fallback writes ITERATION_REQUIRED.
+
+    Structural smoke test: reads write_plan_lock.py and verifies that error fallback
+    paths (except ImportError / except Exception blocks) write ITERATION_REQUIRED,
+    not TERMINAL_CLOSED. This prevents regression of defect D6.
+
+    Severity: FAIL if TERMINAL_CLOSED found in error fallback. blocks_sprint=True.
+    Added 2026-06-23 (TC-FORENSICS-TERMINAL-20260623, TC-TCF-010).
+    """
+    repo = repo_root or _REPO_ROOT
+    target = repo / "tools" / "supervisor" / "write_plan_lock.py"
+
+    if not target.exists():
+        return {
+            "validator": "validate_error_fallback_safety",
+            "result": "PASS",
+            "blocks_sprint": False,
+            "items": [],
+            "summary": "V61: write_plan_lock.py not found -- skipped",
+        }
+
+    try:
+        text = target.read_text(encoding="utf-8", errors="replace")
+    except OSError:
+        return {
+            "validator": "validate_error_fallback_safety",
+            "result": "PASS",
+            "blocks_sprint": False,
+            "items": [],
+            "summary": "V61: Could not read write_plan_lock.py -- skipped",
+        }
+
+    # Look for except blocks that ASSIGN status = "TERMINAL_CLOSED"
+    # Only flag direct assignments like: status = "TERMINAL_CLOSED"
+    # Do NOT flag comparisons, conditionals, or string mentions
+    _ASSIGN_RE = _re.compile(r'^\s*status\s*=\s*["\']TERMINAL_CLOSED["\']')
+    violations = []
+    lines = text.splitlines()
+    in_except = False
+    except_line = 0
+    except_indent = 0
+    for i, line in enumerate(lines, 1):
+        stripped = line.strip()
+        indent = len(line) - len(line.lstrip())
+        if stripped.startswith("except ") or stripped.startswith("except:"):
+            in_except = True
+            except_line = i
+            except_indent = indent
+        elif in_except and indent <= except_indent and stripped and not stripped.startswith("#"):
+            # Dedented past except block
+            if not stripped.startswith("except"):
+                in_except = False
+        if in_except and _ASSIGN_RE.match(line):
+            violations.append({
+                "line": i,
+                "except_start": except_line,
+                "content": stripped,
+                "issue": (
+                    f"Error fallback at line {i} assigns status='TERMINAL_CLOSED' "
+                    f"(D6 regression) -- should be ITERATION_REQUIRED"
+                ),
+            })
+
+    result = "FAIL" if violations else "PASS"
+    return {
+        "validator": "validate_error_fallback_safety",
+        "result": result,
+        "blocks_sprint": bool(violations),
+        "items": violations,
+        "summary": (
+            f"V61: {len(violations)} error fallback path(s) still write TERMINAL_CLOSED (D6 regression!)"
+            if violations else "V61: Error fallback paths correctly write ITERATION_REQUIRED"
+        ),
+    }
+
+
+# ---------------------------------------------------------------------------
+# V62 — TC-MACH-VAL-001: spec_fact_refs density validator
+# ---------------------------------------------------------------------------
+
+
+def validate_spec_fact_refs_density(
+    declaration: dict, repo_root: Path | None = None
+) -> dict:
+    """V62 (TC-MACH-VAL-001): Require >=1 spec_fact_ref per new non-Compat class in PRODUCT_SOURCE items.
+
+    REWORK_REQUIRED mode (not hard block) — ramp to BLOCK after 3 sprints.
+    Compat/ classes are facades — excluded from this check.
+    spec/ classes are architecture markers — excluded from this check.
+    """
+    root = repo_root or _REPO_ROOT
+    items = declaration.get("completed_work_items", [])
+    if isinstance(items, list) and items and isinstance(items[0], str):
+        items = declaration.get("planned_work_items", [])
+    if not items:
+        return {
+            "validator": "validate_spec_fact_refs_density",
+            "result": "PASS",
+            "blocks_sprint": False,
+            "items": [],
+            "summary": "V62: No work items to check",
+        }
+
+    warnings = []
+    for item in items:
+        if not isinstance(item, dict):
+            continue
+        item_type = item.get("item_type", "")
+        if item_type != "PRODUCT_SOURCE":
+            continue
+
+        # Check evidence for spec_fact_refs
+        evidence = item.get("evidence_artifacts", [])
+        spec_refs = item.get("spec_fact_refs", [])
+
+        # Also check in evidence_artifacts for spec_fact_ref fields
+        if not spec_refs:
+            for ev in evidence:
+                if isinstance(ev, dict) and ev.get("spec_fact_refs"):
+                    spec_refs = ev["spec_fact_refs"]
+                    break
+
+        # Check changed files for new classes under src/python/ or src/net/
+        # excluding Compat/ and spec/ directories
+        changed = item.get("changed_files", [])
+        has_new_class_file = False
+        for f in changed:
+            if isinstance(f, str) and (f.startswith("src/python/") or f.startswith("src/net/")):
+                parts = f.replace("\\", "/").split("/")
+                if "Compat" in parts or "spec" in parts:
+                    continue
+                if f.endswith(".py") or f.endswith(".cs"):
+                    has_new_class_file = True
+                    break
+
+        if has_new_class_file and not spec_refs:
+            item_id = item.get("item_id", item.get("id", "unknown"))
+            warnings.append({
+                "item_id": item_id,
+                "issue": "PRODUCT_SOURCE item modifies non-Compat/non-spec source without spec_fact_refs",
+                "severity": "REWORK_REQUIRED",
+            })
+
+    result = "WARN" if warnings else "PASS"
+    return {
+        "validator": "validate_spec_fact_refs_density",
+        "result": result,
+        "blocks_sprint": False,  # REWORK_REQUIRED mode, not hard block
+        "items": warnings,
+        "summary": (
+            f"V62: {len(warnings)} PRODUCT_SOURCE item(s) lack spec_fact_refs (REWORK_REQUIRED)"
+            if warnings else "V62: All PRODUCT_SOURCE items have spec_fact_refs"
+        ),
+    }
+
+
+# ---------------------------------------------------------------------------
+# V63 — TC-MACH-SRC-001: public API surface ratio validator
+# ---------------------------------------------------------------------------
+
+
+def validate_public_api_surface_ratio(
+    declaration: dict, repo_root: Path | None = None
+) -> dict:
+    """V63 (TC-MACH-SRC-001): WARN when __init__.py has >50 exports with <20% tested.
+
+    Forward governance only — does not retroactively clean up existing exports.
+    WARN-only mode (not BLOCK).
+    """
+    root = repo_root or _REPO_ROOT
+    items = declaration.get("completed_work_items", [])
+    if isinstance(items, list) and items and isinstance(items[0], str):
+        items = declaration.get("planned_work_items", [])
+    if not items:
+        return {
+            "validator": "validate_public_api_surface_ratio",
+            "result": "PASS",
+            "blocks_sprint": False,
+            "items": [],
+            "summary": "V63: No work items to check",
+        }
+
+    warnings = []
+    for item in items:
+        if not isinstance(item, dict):
+            continue
+        item_type = item.get("item_type", "")
+        if item_type != "PRODUCT_SOURCE":
+            continue
+
+        changed = item.get("changed_files", [])
+        for f in changed:
+            if not isinstance(f, str):
+                continue
+            if not f.endswith("__init__.py"):
+                continue
+            if not (f.startswith("src/python/") or f.startswith("src/net/")):
+                continue
+
+            init_path = root / f.replace("/", "\\") if "\\" in str(root) else root / f
+            if not init_path.exists():
+                continue
+
+            try:
+                content = init_path.read_text(encoding="utf-8", errors="replace")
+                tree = ast.parse(content)
+            except Exception:
+                continue
+
+            # Count exports: look for __all__ or top-level names
+            export_count = 0
+            for node in ast.iter_child_nodes(tree):
+                if isinstance(node, ast.Assign):
+                    for target in node.targets:
+                        if isinstance(target, ast.Name) and target.id == "__all__":
+                            if isinstance(node.value, (ast.List, ast.Tuple)):
+                                export_count = len(node.value.elts)
+                elif isinstance(node, (ast.FunctionDef, ast.ClassDef)):
+                    if not node.name.startswith("_"):
+                        export_count += 1
+
+            if export_count > 50:
+                # Check test coverage ratio (best-effort)
+                fmt_parts = f.replace("\\", "/").split("/")
+                if len(fmt_parts) >= 3:
+                    fmt_name = fmt_parts[2]  # e.g., "ndjson" from "src/python/ndjson/__init__.py"
+                    test_dir = root / "tests" / "python" / fmt_name
+                    test_count = 0
+                    if test_dir.exists():
+                        test_count = sum(1 for p in test_dir.rglob("test_*.py") if "analytics" not in p.name)
+                    coverage_ratio = test_count / export_count if export_count else 1.0
+                    if coverage_ratio < 0.2:
+                        item_id = item.get("item_id", item.get("id", "unknown"))
+                        warnings.append({
+                            "item_id": item_id,
+                            "file": f,
+                            "export_count": export_count,
+                            "test_count": test_count,
+                            "coverage_ratio": round(coverage_ratio, 2),
+                            "issue": f"__init__.py has {export_count} exports but only {test_count} non-analytics test files ({coverage_ratio:.0%})",
+                            "severity": "WARN",
+                        })
+
+    result = "WARN" if warnings else "PASS"
+    return {
+        "validator": "validate_public_api_surface_ratio",
+        "result": result,
+        "blocks_sprint": False,  # WARN-only mode
+        "items": warnings,
+        "summary": (
+            f"V63: {len(warnings)} __init__.py file(s) have low test coverage ratio"
+            if warnings else "V63: All modified __init__.py files have acceptable test coverage"
         ),
     }

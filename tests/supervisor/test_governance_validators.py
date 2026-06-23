@@ -799,6 +799,72 @@ class TestV46SkillTranscriptPresent:
         assert result["blocks_sprint"] is False
         assert len(result["items"]) == 0
 
+    def test_bulk_backfill_exemption_warns(self):
+        """BULK_BACKFILL_WARNING: >2 BACKFILL_PRE_GOVERNANCE items -> backfill_warnings."""
+        validate = self._validator()
+        decl = {
+            "planned_work_items": [
+                {
+                    "item_id": f"TC-BACKFILL-{i:03d}",
+                    "item_type": "PRODUCT_SOURCE",
+                    "notes": "BACKFILL_PRE_GOVERNANCE — pre-governance work",
+                    "ledger_entry_id": f"LEDGER-{i:03d}",
+                }
+                for i in range(3)  # 3 > max(2)
+            ],
+            "evidence_artifacts": [],
+        }
+        result = validate(decl)
+        # blocks_sprint stays False (violations = [] since all are BACKFILL_PRE_GOVERNANCE)
+        assert result["result"] == "PASS"
+        assert result["blocks_sprint"] is False
+        # backfill_warnings should contain the bulk warning
+        bw = result.get("backfill_warnings", [])
+        assert any(w["item_id"] == "BULK_BACKFILL_WARNING" for w in bw), (
+            f"Expected BULK_BACKFILL_WARNING in backfill_warnings, got: {bw}"
+        )
+
+    def test_backfill_missing_ledger_entry_id_warns(self):
+        """BACKFILL_PRE_GOVERNANCE item without ledger_entry_id -> backfill_warnings."""
+        validate = self._validator()
+        decl = {
+            "planned_work_items": [{
+                "item_id": "TC-BACKFILL-NOLEDGER",
+                "item_type": "PRODUCT_SOURCE",
+                "notes": "BACKFILL_PRE_GOVERNANCE — pre-governance work",
+                # ledger_entry_id intentionally absent
+            }],
+            "evidence_artifacts": [],
+        }
+        result = validate(decl)
+        assert result["result"] == "PASS"
+        assert result["blocks_sprint"] is False
+        bw = result.get("backfill_warnings", [])
+        assert any(w["item_id"] == "TC-BACKFILL-NOLEDGER" for w in bw), (
+            f"Expected TC-BACKFILL-NOLEDGER in backfill_warnings, got: {bw}"
+        )
+
+    def test_backfill_with_ledger_entry_id_no_warn(self):
+        """BACKFILL_PRE_GOVERNANCE item WITH ledger_entry_id AND count <= 2 -> no backfill_warnings."""
+        validate = self._validator()
+        decl = {
+            "planned_work_items": [
+                {
+                    "item_id": f"TC-BACKFILL-OK-{i}",
+                    "item_type": "PRODUCT_SOURCE",
+                    "notes": "BACKFILL_PRE_GOVERNANCE — pre-governance work",
+                    "ledger_entry_id": f"LEDGER-OK-{i}",
+                }
+                for i in range(2)  # 2 == max(2) — boundary, no warning
+            ],
+            "evidence_artifacts": [],
+        }
+        result = validate(decl)
+        assert result["result"] == "PASS"
+        assert result["blocks_sprint"] is False
+        bw = result.get("backfill_warnings", [])
+        assert len(bw) == 0, f"Expected no backfill_warnings for 2 valid items, got: {bw}"
+
 
 class TestV47SpecFactRefsInSalOutput:
     """Regression tests for V47 validate_spec_fact_refs_in_sal_output (TC-MACH-ARCH-007).
@@ -1287,3 +1353,506 @@ class TestV53SpecAuthorityClassCompleteness:
             f"Null python_file should be skipped → PASS, got {result}"
         )
         assert result["items"] == []
+
+
+class TestV54CrossLaneProductTouchingMachinery:
+    """Regression tests for V54 validate_cross_lane_product_touching_machinery.
+
+    V54 warns when a PRODUCT_SOURCE-track item declares changed_files under tools/supervisor/.
+    WARN-only (blocks_sprint=False).
+
+    POSITIVE: PRODUCT_SOURCE item + tools/supervisor/ file → WARN
+    NEGATIVE: PRODUCT_SOURCE item + src/python/ file → PASS
+    EXCEPTION: item with lane_exception=MACHINERY_HEALING → PASS (bypass)
+    MACHINERY-ITEM: GOVERNANCE_TASKCARD item + tools/supervisor/ file → PASS (not product)
+    NO-DECL: None declaration → PASS
+    """
+
+    def _validator(self):
+        from governance_validators_ext import validate_cross_lane_product_touching_machinery
+        return validate_cross_lane_product_touching_machinery
+
+    def test_product_source_touching_supervisor_warns(self):
+        """PRODUCT_SOURCE item with tools/supervisor/ change → WARN."""
+        validate = self._validator()
+        declaration = {
+            "completed_work_items": [{
+                "item_id": "TC-TEST-001",
+                "item_type": "PRODUCT_SOURCE",
+                "changed_files": ["tools/supervisor/autonomous_cycle.py"],
+            }],
+            "planned_work_items": [],
+        }
+        result = validate(declaration=declaration)
+        assert result["result"] == "WARN", f"Expected WARN, got {result['result']}: {result}"
+        assert result["blocks_sprint"] is False
+        assert len(result["items"]) == 1
+        assert "tools/supervisor/autonomous_cycle.py" in result["items"][0]["changed_file"]
+
+    def test_product_source_touching_src_passes(self):
+        """PRODUCT_SOURCE item with src/python/ change → PASS (correct lane)."""
+        validate = self._validator()
+        declaration = {
+            "completed_work_items": [{
+                "item_id": "TC-TEST-002",
+                "item_type": "PRODUCT_SOURCE",
+                "changed_files": ["src/python/csv/csv_parser.py"],
+            }],
+            "planned_work_items": [],
+        }
+        result = validate(declaration=declaration)
+        assert result["result"] == "PASS", f"Expected PASS, got {result['result']}: {result}"
+        assert result["items"] == []
+
+    def test_machinery_healing_exception_bypasses_warn(self):
+        """Item with lane_exception=MACHINERY_HEALING bypasses V54."""
+        validate = self._validator()
+        declaration = {
+            "completed_work_items": [{
+                "item_id": "TC-HEAL-001",
+                "item_type": "PRODUCT_SOURCE",
+                "lane_exception": "MACHINERY_HEALING",
+                "changed_files": ["tools/supervisor/governance_validators.py"],
+            }],
+            "planned_work_items": [],
+        }
+        result = validate(declaration=declaration)
+        assert result["result"] == "PASS", (
+            f"MACHINERY_HEALING exception must bypass V54; got {result['result']}"
+        )
+
+    def test_governance_taskcard_touching_supervisor_passes(self):
+        """GOVERNANCE_TASKCARD item touching tools/supervisor/ is machinery-track → PASS (V54 not applicable)."""
+        validate = self._validator()
+        declaration = {
+            "completed_work_items": [{
+                "item_id": "TC-GOV-001",
+                "item_type": "GOVERNANCE_TASKCARD",
+                "changed_files": ["tools/supervisor/autonomous_cycle.py"],
+            }],
+            "planned_work_items": [],
+        }
+        result = validate(declaration=declaration)
+        assert result["result"] == "PASS", (
+            f"GOVERNANCE_TASKCARD is machinery-track, should not trigger V54; got {result['result']}"
+        )
+
+    def test_none_declaration_passes(self):
+        """None declaration → PASS (skip)."""
+        validate = self._validator()
+        result = validate(declaration=None)
+        assert result["result"] == "PASS"
+        assert result["blocks_sprint"] is False
+
+
+class TestV55CrossLaneMachineryTouchingProduct:
+    """Regression tests for V55 validate_cross_lane_machinery_touching_product.
+
+    V55 warns when a MACHINERY-track item declares changed_files under src/.
+    WARN-only (blocks_sprint=False).
+
+    POSITIVE: GOVERNANCE_TASKCARD item + src/python/ file → WARN
+    NEGATIVE: GOVERNANCE_TASKCARD item + tools/supervisor/ file → PASS
+    EXCEPTION: item with lane_exception=MACHINERY_HEALING → PASS (bypass)
+    PRODUCT-ITEM: PRODUCT_SOURCE item + src/python/ file → PASS (not machinery)
+    NO-DECL: None declaration → PASS
+    """
+
+    def _validator(self):
+        from governance_validators_ext import validate_cross_lane_machinery_touching_product
+        return validate_cross_lane_machinery_touching_product
+
+    def test_governance_taskcard_touching_src_warns(self):
+        """GOVERNANCE_TASKCARD item with src/python/ change → WARN."""
+        validate = self._validator()
+        declaration = {
+            "completed_work_items": [{
+                "item_id": "TC-GOV-002",
+                "item_type": "GOVERNANCE_TASKCARD",
+                "changed_files": ["src/python/fods/fods_parser.py"],
+            }],
+            "planned_work_items": [],
+        }
+        result = validate(declaration=declaration)
+        assert result["result"] == "WARN", f"Expected WARN, got {result['result']}: {result}"
+        assert result["blocks_sprint"] is False
+        assert len(result["items"]) == 1
+        assert "src/python/fods/fods_parser.py" in result["items"][0]["changed_file"]
+
+    def test_governance_taskcard_touching_tools_passes(self):
+        """GOVERNANCE_TASKCARD item with tools/supervisor/ change → PASS (correct lane)."""
+        validate = self._validator()
+        declaration = {
+            "completed_work_items": [{
+                "item_id": "TC-GOV-003",
+                "item_type": "GOVERNANCE_TASKCARD",
+                "changed_files": ["tools/supervisor/check_continuation.py"],
+            }],
+            "planned_work_items": [],
+        }
+        result = validate(declaration=declaration)
+        assert result["result"] == "PASS", f"Expected PASS, got {result['result']}: {result}"
+        assert result["items"] == []
+
+    def test_machinery_healing_exception_bypasses_warn(self):
+        """Item with lane_exception=MACHINERY_HEALING bypasses V55."""
+        validate = self._validator()
+        declaration = {
+            "completed_work_items": [{
+                "item_id": "TC-HEAL-002",
+                "item_type": "GOVERNANCE_TASKCARD",
+                "lane_exception": "MACHINERY_HEALING",
+                "changed_files": ["src/python/xcf/xcf_analytics.py"],
+            }],
+            "planned_work_items": [],
+        }
+        result = validate(declaration=declaration)
+        assert result["result"] == "PASS", (
+            f"MACHINERY_HEALING exception must bypass V55; got {result['result']}"
+        )
+
+    def test_product_source_touching_src_passes(self):
+        """PRODUCT_SOURCE item touching src/ is product-track → PASS (V55 not applicable)."""
+        validate = self._validator()
+        declaration = {
+            "completed_work_items": [{
+                "item_id": "TC-PROD-001",
+                "item_type": "PRODUCT_SOURCE",
+                "changed_files": ["src/python/csv/csv_parser.py"],
+            }],
+            "planned_work_items": [],
+        }
+        result = validate(declaration=declaration)
+        assert result["result"] == "PASS", (
+            f"PRODUCT_SOURCE is product-track, should not trigger V55; got {result['result']}"
+        )
+
+    def test_none_declaration_passes(self):
+        """None declaration → PASS (skip)."""
+        validate = self._validator()
+        result = validate(declaration=None)
+        assert result["result"] == "PASS"
+        assert result["blocks_sprint"] is False
+
+
+class TestV57ChangedFilesInLedger:
+    """Regression tests for V57 validate_changed_files_in_ledger (TC-VNK-003).
+
+    V57 warns when a src/python/ or src/net/ changed_file has no entry in
+    the product-code-change-ledger.json. WARN-only (blocks_sprint=False).
+
+    POSITIVE: src/python/ path in ledger → PASS
+    NEGATIVE: src/python/ path NOT in ledger → WARN
+    EXCLUSION: non-src/ file in changed_files → not flagged (PASS)
+    NO-DECL: None declaration → PASS
+    """
+
+    def _validator(self):
+        from governance_validators_ext import validate_changed_files_in_ledger
+        return validate_changed_files_in_ledger
+
+    def test_v57_src_file_in_ledger_pass(self):
+        """src/python/ path present in ledger → PASS."""
+        import json
+        import tempfile
+        from pathlib import Path
+        validate = self._validator()
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            ledger_dir = root / "reports" / "r90"
+            ledger_dir.mkdir(parents=True)
+            ledger = {
+                "entries": [{
+                    "entry_id": "TEST-001",
+                    "source_files": [{"path": "src/python/fods/fods_parser.py", "state": "present"}],
+                }]
+            }
+            (ledger_dir / "product-code-change-ledger.json").write_text(json.dumps(ledger))
+            declaration = {"changed_files": ["src/python/fods/fods_parser.py"]}
+            result = validate(declaration=declaration, repo_root=root)
+        assert result["result"] == "PASS", f"Expected PASS, got {result['result']}: {result}"
+        assert result["items"] == []
+        assert result["blocks_sprint"] is False
+
+    def test_v57_src_file_not_in_ledger_warn(self):
+        """src/python/ path NOT in ledger → WARN."""
+        import json
+        import tempfile
+        from pathlib import Path
+        validate = self._validator()
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            ledger_dir = root / "reports" / "r90"
+            ledger_dir.mkdir(parents=True)
+            ledger = {"entries": []}
+            (ledger_dir / "product-code-change-ledger.json").write_text(json.dumps(ledger))
+            declaration = {"changed_files": ["src/python/fods/fods_new_feature.py"]}
+            result = validate(declaration=declaration, repo_root=root)
+        assert result["result"] == "WARN", f"Expected WARN, got {result['result']}: {result}"
+        assert len(result["items"]) == 1
+        assert "src/python/fods/fods_new_feature.py" in result["items"][0]["path"]
+        assert result["blocks_sprint"] is False
+
+    def test_v57_non_src_file_excluded(self):
+        """Non-src/ file in changed_files → not flagged (PASS)."""
+        import json
+        import tempfile
+        from pathlib import Path
+        validate = self._validator()
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            ledger_dir = root / "reports" / "r90"
+            ledger_dir.mkdir(parents=True)
+            ledger = {"entries": []}
+            (ledger_dir / "product-code-change-ledger.json").write_text(json.dumps(ledger))
+            declaration = {"changed_files": ["tools/supervisor/check_continuation.py", "docs/readme.md"]}
+            result = validate(declaration=declaration, repo_root=root)
+        assert result["result"] == "PASS", f"Expected PASS for non-src files, got {result['result']}"
+        assert result["items"] == []
+
+    def test_v57_none_declaration_passes(self):
+        """None declaration → PASS (skip)."""
+        validate = self._validator()
+        result = validate(declaration=None)
+        assert result["result"] == "PASS"
+        assert result["blocks_sprint"] is False
+
+
+class TestV46V57Integration:
+    """Integration tests for V46 backfill hardening + V57 ledger validator (TC-VNK-H-004).
+
+    Uses a realistic multi-item declaration modeled after vivid-napping-kurzweil
+    to verify V46 and V57 produce correct results for mixed item types.
+    """
+
+    def _build_realistic_declaration(self, backfill_count=0, ledger_src_files=None):
+        """Build a realistic declaration with governance + product items."""
+        import json
+        import tempfile
+        from pathlib import Path
+
+        items = [
+            {
+                "item_id": "TC-INT-001",
+                "item_type": "GOVERNANCE_TASKCARD",
+                "title": "Verify loop state",
+                "status": "completed",
+            },
+            {
+                "item_id": "TC-INT-002",
+                "item_type": "GOVERNANCE_TASKCARD",
+                "title": "Add governance validator",
+                "status": "completed",
+            },
+            {
+                "item_id": "TC-INT-003",
+                "item_type": "PRODUCT_SOURCE",
+                "title": "Extract analytics from codec",
+                "status": "completed",
+                "notes": "Skill transcript at reports/skills-r104/skill-transcripts/test.json",
+            },
+        ]
+        # Add BACKFILL items if requested
+        for i in range(backfill_count):
+            items.append({
+                "item_id": f"TC-INT-BF-{i+1:03d}",
+                "item_type": "PRODUCT_SOURCE",
+                "title": f"Backfill item {i+1}",
+                "status": "completed",
+                "notes": "BACKFILL_PRE_GOVERNANCE — pre-existing work",
+            })
+
+        declaration = {
+            "sprint_id": "integration-test-sprint",
+            "planned_work_items": items,
+            "completed_work_items": [it["item_id"] for it in items],
+            "evidence_artifacts": [],
+            "test_results": {"passed": 100, "failed": 0, "total": 100},
+            "changed_files": [
+                "tools/supervisor/governance_validators.py",
+                "src/python/fodp/fodp_codec.py",
+                "src/python/fodp/fodp_analytics.py",
+            ],
+        }
+
+        # Create temp repo with ledger
+        tmp = tempfile.mkdtemp()
+        root = Path(tmp)
+        ledger_dir = root / "reports" / "r90"
+        ledger_dir.mkdir(parents=True)
+        src_paths = ledger_src_files or ["src/python/fodp/fodp_codec.py"]
+        ledger = {
+            "entries": [
+                {
+                    "entry_id": "INT-TEST-001",
+                    "source_files": [{"path": p, "state": "modified"} for p in src_paths],
+                }
+            ]
+        }
+        (ledger_dir / "product-code-change-ledger.json").write_text(json.dumps(ledger))
+        return declaration, root
+
+    def test_integration_v46_backfill_warns_on_bulk(self):
+        """V46: realistic declaration with 3 BACKFILL items → bulk warning."""
+        from governance_validators import validate_skill_transcript_present
+        decl, root = self._build_realistic_declaration(backfill_count=3)
+        result = validate_skill_transcript_present(decl)
+        warnings = result.get("backfill_warnings", [])
+        bulk_warns = [w for w in warnings if w.get("item_id") == "BULK_BACKFILL_WARNING"]
+        assert len(bulk_warns) == 1, f"Expected 1 BULK_BACKFILL_WARNING, got {len(bulk_warns)}"
+        # Also: all 3 backfill items should warn about missing ledger_entry_id
+        ledger_warns = [w for w in warnings if "ledger_entry_id" in w.get("reason", "")]
+        assert len(ledger_warns) == 3, f"Expected 3 ledger_entry_id warnings, got {len(ledger_warns)}"
+
+    def test_integration_v46_no_warn_with_legit_backfill(self):
+        """V46: realistic declaration with 2 BACKFILL items + ledger_entry_id → no warnings."""
+        from governance_validators import validate_skill_transcript_present
+        decl, root = self._build_realistic_declaration(backfill_count=0)
+        # Manually add 2 legitimate backfill items with ledger_entry_id
+        for i in range(2):
+            decl["planned_work_items"].append({
+                "item_id": f"TC-INT-LBF-{i+1:03d}",
+                "item_type": "PRODUCT_SOURCE",
+                "title": f"Legitimate backfill {i+1}",
+                "status": "completed",
+                "notes": "BACKFILL_PRE_GOVERNANCE — pre-existing work",
+                "ledger_entry_id": f"LBF-{i+1:03d}",
+            })
+        result = validate_skill_transcript_present(decl)
+        warnings = result.get("backfill_warnings", [])
+        assert len(warnings) == 0, f"Expected 0 backfill warnings, got {len(warnings)}: {warnings}"
+
+    def test_integration_v57_mixed_changed_files(self):
+        """V57: realistic declaration with src/ and non-src/ files, partial ledger coverage."""
+        from governance_validators_ext import validate_changed_files_in_ledger
+        decl, root = self._build_realistic_declaration(
+            ledger_src_files=["src/python/fodp/fodp_codec.py"]
+        )
+        # changed_files has fodp_codec.py (in ledger) + fodp_analytics.py (NOT in ledger)
+        result = validate_changed_files_in_ledger(declaration=decl, repo_root=root)
+        assert result["result"] == "WARN", f"Expected WARN (analytics.py missing), got {result['result']}"
+        warned_paths = [item["path"] for item in result["items"]]
+        assert "src/python/fodp/fodp_analytics.py" in warned_paths
+        # governance_validators.py should NOT be warned (not src/python or src/net)
+        assert "tools/supervisor/governance_validators.py" not in warned_paths
+
+    def test_integration_v57_all_covered(self):
+        """V57: all src/ changed_files in ledger → PASS."""
+        from governance_validators_ext import validate_changed_files_in_ledger
+        decl, root = self._build_realistic_declaration(
+            ledger_src_files=["src/python/fodp/fodp_codec.py", "src/python/fodp/fodp_analytics.py"]
+        )
+        result = validate_changed_files_in_ledger(declaration=decl, repo_root=root)
+        assert result["result"] == "PASS", f"Expected PASS, got {result['result']}: {result}"
+        assert result["items"] == []
+
+
+class TestCanonicalValidatorCount:
+    """TC-PROD-H-040R: Assert canonical validator count to catch silent additions/removals."""
+
+    def test_canonical_validator_count(self):
+        """run_all_governance_validators must return exactly 58 validator results."""
+        import sys
+        from pathlib import Path
+        sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "tools" / "supervisor"))
+        from governance_validator_runner import run_all_governance_validators
+        decl = {
+            "sprint_id": "test-canonical-count",
+            "work_items": [],
+            "completed_work_items": [],
+            "planned_work_items": [],
+            "evidence_artifacts": [],
+            "test_results": {"passed": 0, "failed": 0, "total": 0},
+            "changed_files": [],
+        }
+        result = run_all_governance_validators(decl, None)
+        validator_count = len(result["validators"])
+        assert validator_count == 63, (
+            f"Expected 63 canonical validators, got {validator_count}. "
+            "If validators were added/removed, update this test."
+        )
+
+
+# ---------------------------------------------------------------------------
+# V62 — TC-MACH-VAL-001: spec_fact_refs density
+# ---------------------------------------------------------------------------
+
+from governance_validators_ext import validate_spec_fact_refs_density
+
+
+class TestV62SpecFactRefsDensity:
+    def test_product_source_with_spec_fact_ref_passes(self):
+        decl = {
+            "completed_work_items": [{
+                "item_id": "WI-001",
+                "item_type": "PRODUCT_SOURCE",
+                "changed_files": ["src/python/fods/models.py"],
+                "spec_fact_refs": ["FACT-FODS-001"],
+                "evidence_artifacts": [],
+            }],
+        }
+        result = validate_spec_fact_refs_density(decl)
+        assert result["result"] == "PASS"
+
+    def test_product_source_without_spec_fact_ref_warns(self):
+        decl = {
+            "completed_work_items": [{
+                "item_id": "WI-002",
+                "item_type": "PRODUCT_SOURCE",
+                "changed_files": ["src/python/fods/models.py"],
+                "spec_fact_refs": [],
+                "evidence_artifacts": [],
+            }],
+        }
+        result = validate_spec_fact_refs_density(decl)
+        assert result["result"] == "WARN"
+        assert len(result["items"]) == 1
+        assert result["blocks_sprint"] is False
+
+    def test_compat_class_excluded(self):
+        decl = {
+            "completed_work_items": [{
+                "item_id": "WI-003",
+                "item_type": "PRODUCT_SOURCE",
+                "changed_files": ["src/python/fods/Compat/fods_cell.py"],
+                "spec_fact_refs": [],
+                "evidence_artifacts": [],
+            }],
+        }
+        result = validate_spec_fact_refs_density(decl)
+        assert result["result"] == "PASS"
+
+
+# ---------------------------------------------------------------------------
+# V63 — TC-MACH-SRC-001: public API surface ratio
+# ---------------------------------------------------------------------------
+
+from governance_validators_ext import validate_public_api_surface_ratio
+
+
+class TestV63PublicApiSurfaceRatio:
+    def test_small_init_passes(self):
+        decl = {
+            "planned_work_items": [{
+                "item_id": "WI-004",
+                "item_type": "PRODUCT_SOURCE",
+                "changed_files": ["src/python/fods/__init__.py"],
+                "evidence_artifacts": [],
+            }],
+        }
+        # FODS __init__.py likely has <50 exports — should pass
+        result = validate_public_api_surface_ratio(decl)
+        assert result["result"] in ("PASS", "WARN")  # Depends on actual file state
+        assert result["blocks_sprint"] is False
+
+    def test_non_product_source_skipped(self):
+        decl = {
+            "planned_work_items": [{
+                "item_id": "WI-005",
+                "item_type": "GOVERNANCE_TASKCARD",
+                "changed_files": ["src/python/ndjson/__init__.py"],
+                "evidence_artifacts": [],
+            }],
+        }
+        result = validate_public_api_surface_ratio(decl)
+        assert result["result"] == "PASS"

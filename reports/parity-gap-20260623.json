@@ -1,0 +1,731 @@
+{
+  "audit_type": "cross_language_parity_compliance",
+  "generated_at": "2026-06-23T15:53:31.538054+00:00",
+  "parity_matrix_path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\registry\\parity-matrix.yaml",
+  "summary": {
+    "total_formats": 24,
+    "both_python_and_dotnet": 6,
+    "python_only": 12,
+    "dotnet_only": 3,
+    "python_only_formats": [
+      "abw",
+      "dif",
+      "fodg",
+      "fodp",
+      "gnumeric",
+      "ods",
+      "odt",
+      "qoi",
+      "sylk",
+      "toml",
+      "xcf",
+      "zst"
+    ],
+    "dotnet_only_formats": [
+      "html",
+      "markdown",
+      "txt"
+    ],
+    "both_formats": [
+      "csv",
+      "fods",
+      "fodt",
+      "ndjson",
+      "tsv",
+      "netpbm"
+    ]
+  },
+  "per_format": [
+    {
+      "format": "csv",
+      "parity": "both",
+      "parity_verdict": "BOTH_PRESENT",
+      "has_python": true,
+      "has_dotnet": true,
+      "python_info": {
+        "exists": true,
+        "export_count": 86,
+        "exports_sample": [
+          "parse_csv",
+          "parse_csv_strict",
+          "probe_csv",
+          "get_capabilities",
+          "get_row_count",
+          "get_column_names",
+          "get_cell_value",
+          "csv_column_count",
+          "csv_has_header",
+          "csv_numeric_row_count"
+        ]
+      },
+      "dotnet_info": {
+        "exists": true,
+        "public_method_count": 2,
+        "methods_sample": [
+          "ToCsv",
+          "SaveToFile"
+        ]
+      },
+      "parity_note": "Python exports 86, .NET has 2 public methods",
+      "parity_count_gap": 84,
+      "open_gaps": 1,
+      "decision": ""
+    },
+    {
+      "format": "fods",
+      "parity": "both",
+      "parity_verdict": "BOTH_PRESENT",
+      "has_python": true,
+      "has_dotnet": true,
+      "python_info": {
+        "exists": true,
+        "export_count": 85,
+        "exports_sample": [
+          "parse_fods",
+          "parse_fods_strict",
+          "write_fods",
+          "workbook_to_xml",
+          "workbook_stats",
+          "workbook_type_distribution",
+          "find_sheet_by_name",
+          "workbook_sheet_summary",
+          "workbook_empty_rows",
+          "workbook_formula_list"
+        ]
+      },
+      "dotnet_info": {
+        "exists": true,
+        "public_method_count": 34,
+        "methods_sample": [
+          "Save",
+          "AddSheet",
+          "RemoveSheet",
+          "RenameSheet",
+          "CopySheet",
+          "DeleteRows",
+          "InsertRow",
+          "SetCellValue",
+          "ExportSheetToHtml",
+          "ExportSheetToHtml"
+        ]
+      },
+      "parity_note": "Python exports 85, .NET has 34 public methods",
+      "parity_count_gap": 51,
+      "open_gaps": 4,
+      "decision": ""
+    },
+    {
+      "format": "fodt",
+      "parity": "both",
+      "parity_verdict": "BOTH_PRESENT",
+      "has_python": true,
+      "has_dotnet": true,
+      "python_info": {
+        "exists": true,
+        "export_count": 139,
+        "exports_sample": [
+          "parse_fodt",
+          "parse_fodt_strict",
+          "write_fodt",
+          "document_to_xml",
+          "document_stats",
+          "document_heading_outline",
+          "document_text_content",
+          "document_word_count",
+          "document_table_summary",
+          "document_list_stats"
+        ]
+      },
+      "dotnet_info": {
+        "exists": true,
+        "public_method_count": 28,
+        "methods_sample": [
+          "Save",
+          "SaveToFile",
+          "GetPlainText",
+          "GetPlainTextRange",
+          "ReplaceText",
+          "GetWordCount",
+          "GetCharCount",
+          "GetHeadingCount",
+          "GetParagraphCount",
+          "AppendParagraph"
+        ]
+      },
+      "parity_note": "Python exports 139, .NET has 28 public methods",
+      "parity_count_gap": 111,
+      "open_gaps": 9,
+      "decision": ""
+    },
+    {
+      "format": "ndjson",
+      "parity": "both",
+      "parity_verdict": "BOTH_PRESENT",
+      "has_python": true,
+      "has_dotnet": true,
+      "python_info": {
+        "exists": true,
+        "export_count": 119,
+        "exports_sample": [
+          "NdjsonError",
+          "NdjsonParseError",
+          "NdjsonRecord",
+          "probe_ndjson",
+          "load_ndjson",
+          "write_ndjson",
+          "append_record",
+          "filter_records",
+          "get_field_names",
+          "export_to_csv"
+        ]
+      },
+      "dotnet_info": {
+        "exists": true,
+        "public_method_count": 2,
+        "methods_sample": [
+          "ToNdjson",
+          "SaveToFile"
+        ]
+      },
+      "parity_note": "Python exports 119, .NET has 2 public methods",
+      "parity_count_gap": 117,
+      "open_gaps": 19,
+      "decision": ""
+    },
+    {
+      "format": "tsv",
+      "parity": "both",
+      "parity_verdict": "BOTH_PRESENT",
+      "has_python": true,
+      "has_dotnet": true,
+      "python_info": {
+        "exists": true,
+        "export_count": 94,
+        "exports_sample": [
+          "parse_tsv",
+          "parse_tsv_strict",
+          "probe_tsv",
+          "get_capabilities",
+          "write_tsv",
+          "load_tsv",
+          "get_headers",
+          "get_column",
+          "write_tsv_strict",
+          "get_row"
+        ]
+      },
+      "dotnet_info": {
+        "exists": true,
+        "public_method_count": 2,
+        "methods_sample": [
+          "ToTsv",
+          "SaveToFile"
+        ]
+      },
+      "parity_note": "Python exports 94, .NET has 2 public methods",
+      "parity_count_gap": 92,
+      "open_gaps": 1,
+      "decision": ""
+    },
+    {
+      "format": "html",
+      "parity": "dotnet_only",
+      "parity_verdict": "DOTNET_ONLY",
+      "has_python": false,
+      "has_dotnet": true,
+      "python_info": {},
+      "dotnet_info": {
+        "exists": true,
+        "public_method_count": 0,
+        "methods_sample": []
+      },
+      "parity_note": "No Python counterpart",
+      "parity_count_gap": null,
+      "open_gaps": 0,
+      "decision": ""
+    },
+    {
+      "format": "markdown",
+      "parity": "dotnet_only",
+      "parity_verdict": "DOTNET_ONLY",
+      "has_python": false,
+      "has_dotnet": true,
+      "python_info": {},
+      "dotnet_info": {
+        "exists": true,
+        "public_method_count": 0,
+        "methods_sample": []
+      },
+      "parity_note": "No Python counterpart",
+      "parity_count_gap": null,
+      "open_gaps": 0,
+      "decision": ""
+    },
+    {
+      "format": "txt",
+      "parity": "dotnet_only",
+      "parity_verdict": "DOTNET_ONLY",
+      "has_python": false,
+      "has_dotnet": true,
+      "python_info": {},
+      "dotnet_info": {
+        "exists": true,
+        "public_method_count": 0,
+        "methods_sample": []
+      },
+      "parity_note": "No Python counterpart",
+      "parity_count_gap": null,
+      "open_gaps": 0,
+      "decision": ""
+    },
+    {
+      "format": "netpbm",
+      "parity": "both_different_structure",
+      "parity_verdict": "BOTH_DIFFERENT_STRUCTURE",
+      "has_python": true,
+      "has_dotnet": true,
+      "python_info": {
+        "exists": true,
+        "export_count": 75,
+        "exports_sample": [
+          "parse_pbm",
+          "parse_pbm_strict",
+          "probe_pbm",
+          "get_capabilities",
+          "image_pixel_stats",
+          "write_pbm",
+          "get_dimensions",
+          "pixel_count",
+          "count_black",
+          "flip_horizontal"
+        ]
+      },
+      "dotnet_info": {
+        "exists": true,
+        "public_method_count": 39,
+        "methods_sample": [
+          "GetPixel",
+          "SetPixel",
+          "SetPixelColor",
+          "FlipHorizontal",
+          "FlipVertical",
+          "Invert",
+          "Rotate90Cw",
+          "Rotate270Cw",
+          "Rotate180",
+          "AdjustBrightness"
+        ]
+      },
+      "parity_note": "Split into PBM/PGM/PPM",
+      "parity_count_gap": null,
+      "open_gaps": 0,
+      "decision": ""
+    },
+    {
+      "format": "abw",
+      "parity": "python_only",
+      "parity_verdict": "PYTHON_ONLY",
+      "has_python": true,
+      "has_dotnet": false,
+      "python_info": {
+        "exists": true,
+        "export_count": 144,
+        "exports_sample": [
+          "AbwError",
+          "AbwParseError",
+          "load",
+          "get_section_count",
+          "abw_section_count",
+          "abw_has_headings",
+          "abw_digit_count",
+          "abw_alpha_char_count",
+          "abw_alpha_ratio",
+          "abw_avg_paragraph_length"
+        ]
+      },
+      "dotnet_info": {},
+      "parity_note": "No .NET counterpart",
+      "parity_count_gap": null,
+      "open_gaps": 39,
+      "decision": "FOSS Python only"
+    },
+    {
+      "format": "dif",
+      "parity": "python_only",
+      "parity_verdict": "PYTHON_ONLY",
+      "has_python": true,
+      "has_dotnet": false,
+      "python_info": {
+        "exists": true,
+        "export_count": 95,
+        "exports_sample": [
+          "parse_dif",
+          "parse_dif_strict",
+          "probe_dif",
+          "get_capabilities",
+          "dif_to_csv",
+          "write_dif",
+          "get_cell_value",
+          "set_cell_value",
+          "get_row_values",
+          "get_column_values"
+        ]
+      },
+      "dotnet_info": {},
+      "parity_note": "No .NET counterpart",
+      "parity_count_gap": null,
+      "open_gaps": 1,
+      "decision": "FOSS Python only"
+    },
+    {
+      "format": "fodg",
+      "parity": "python_only",
+      "parity_verdict": "PYTHON_ONLY",
+      "has_python": true,
+      "has_dotnet": false,
+      "python_info": {
+        "exists": true,
+        "export_count": 3,
+        "exports_sample": [
+          "_",
+          "0.1.0.dev0",
+          "python-foss"
+        ]
+      },
+      "dotnet_info": {},
+      "parity_note": "No .NET counterpart",
+      "parity_count_gap": null,
+      "open_gaps": 5,
+      "decision": ""
+    },
+    {
+      "format": "fodp",
+      "parity": "python_only",
+      "parity_verdict": "PYTHON_ONLY",
+      "has_python": true,
+      "has_dotnet": false,
+      "python_info": {
+        "exists": true,
+        "export_count": 68,
+        "exports_sample": [
+          "FodpError",
+          "FodpParseError",
+          "load",
+          "get_page_count",
+          "extract_text",
+          "get_page_metadata",
+          "fodp_total_text_length",
+          "fodp_slide_count",
+          "fodp_slide_shape_counts",
+          "fodp_total_shape_count"
+        ]
+      },
+      "dotnet_info": {},
+      "parity_note": "No .NET counterpart",
+      "parity_count_gap": null,
+      "open_gaps": 0,
+      "decision": ""
+    },
+    {
+      "format": "gnumeric",
+      "parity": "python_only",
+      "parity_verdict": "PYTHON_ONLY",
+      "has_python": true,
+      "has_dotnet": false,
+      "python_info": {
+        "exists": true,
+        "export_count": 97,
+        "exports_sample": [
+          "GnumericError",
+          "GnumericParseError",
+          "load",
+          "get_sheet_count",
+          "get_cell_count",
+          "extract_values",
+          "get_sheet_metadata",
+          "export_to_csv",
+          "export_to_json",
+          "probe_gnumeric"
+        ]
+      },
+      "dotnet_info": {},
+      "parity_note": "No .NET counterpart",
+      "parity_count_gap": null,
+      "open_gaps": 4,
+      "decision": "FOSS Python only"
+    },
+    {
+      "format": "ods",
+      "parity": "python_only",
+      "parity_verdict": "PYTHON_ONLY",
+      "has_python": true,
+      "has_dotnet": false,
+      "python_info": {
+        "exists": true,
+        "export_count": 99,
+        "exports_sample": [
+          "parse_ods",
+          "parse_ods_strict",
+          "probe_ods",
+          "get_capabilities",
+          "OdsError",
+          "OdsInvalidContainerError",
+          "OdsSizeError",
+          "get_cell_value",
+          "get_sheet_names",
+          "get_row_count"
+        ]
+      },
+      "dotnet_info": {},
+      "parity_note": "No .NET counterpart",
+      "parity_count_gap": null,
+      "open_gaps": 0,
+      "decision": ""
+    },
+    {
+      "format": "odt",
+      "parity": "python_only",
+      "parity_verdict": "PYTHON_ONLY",
+      "has_python": true,
+      "has_dotnet": false,
+      "python_info": {
+        "exists": true,
+        "export_count": 68,
+        "exports_sample": [
+          "parse_odt",
+          "parse_odt_strict",
+          "probe_odt",
+          "get_capabilities",
+          "odt_word_count",
+          "odt_heading_count",
+          "odt_paragraph_count",
+          "odt_char_count",
+          "odt_list_count",
+          "odt_table_count"
+        ]
+      },
+      "dotnet_info": {},
+      "parity_note": "No .NET counterpart",
+      "parity_count_gap": null,
+      "open_gaps": 0,
+      "decision": ""
+    },
+    {
+      "format": "qoi",
+      "parity": "python_only",
+      "parity_verdict": "PYTHON_ONLY",
+      "has_python": true,
+      "has_dotnet": false,
+      "python_info": {
+        "exists": true,
+        "export_count": 72,
+        "exports_sample": [
+          "parse_qoi",
+          "parse_qoi_strict",
+          "probe_qoi",
+          "get_capabilities",
+          "qoi_dimensions",
+          "qoi_pixel_count",
+          "qoi_unique_color_count",
+          "qoi_channel_count",
+          "qoi_is_opaque",
+          "qoi_has_alpha"
+        ]
+      },
+      "dotnet_info": {},
+      "parity_note": "No .NET counterpart",
+      "parity_count_gap": null,
+      "open_gaps": 1,
+      "decision": "FOSS Python only"
+    },
+    {
+      "format": "sylk",
+      "parity": "python_only",
+      "parity_verdict": "PYTHON_ONLY",
+      "has_python": true,
+      "has_dotnet": false,
+      "python_info": {
+        "exists": true,
+        "export_count": 96,
+        "exports_sample": [
+          "parse_sylk",
+          "parse_sylk_strict",
+          "probe_sylk",
+          "get_capabilities",
+          "sylk_to_csv",
+          "get_cell_value",
+          "get_row_values",
+          "get_column_values",
+          "get_row_count",
+          "get_column_count"
+        ]
+      },
+      "dotnet_info": {},
+      "parity_note": "No .NET counterpart",
+      "parity_count_gap": null,
+      "open_gaps": 1,
+      "decision": "FOSS Python only"
+    },
+    {
+      "format": "toml",
+      "parity": "python_only",
+      "parity_verdict": "PYTHON_ONLY",
+      "has_python": true,
+      "has_dotnet": false,
+      "python_info": {
+        "exists": true,
+        "export_count": 74,
+        "exports_sample": [
+          "TomlError",
+          "TomlInputError",
+          "TomlParseError",
+          "TomlWriteError",
+          "probe_toml",
+          "load_toml",
+          "write_toml",
+          "get_keys",
+          "roundtrip",
+          "get_value"
+        ]
+      },
+      "dotnet_info": {},
+      "parity_note": "No .NET counterpart",
+      "parity_count_gap": null,
+      "open_gaps": 1,
+      "decision": ""
+    },
+    {
+      "format": "xcf",
+      "parity": "python_only",
+      "parity_verdict": "PYTHON_ONLY",
+      "has_python": true,
+      "has_dotnet": false,
+      "python_info": {
+        "exists": true,
+        "export_count": 3,
+        "exports_sample": [
+          "_",
+          "0.1.0.dev0",
+          "python-foss"
+        ]
+      },
+      "dotnet_info": {},
+      "parity_note": "No .NET counterpart",
+      "parity_count_gap": null,
+      "open_gaps": 5,
+      "decision": "FOSS Python only"
+    },
+    {
+      "format": "zst",
+      "parity": "python_only",
+      "parity_verdict": "PYTHON_ONLY",
+      "has_python": true,
+      "has_dotnet": false,
+      "python_info": {
+        "exists": true,
+        "export_count": 41,
+        "exports_sample": [
+          "ZstError",
+          "ZstDecompressionError",
+          "ZstInvalidFrameError",
+          "ZstOutputLimitExceeded",
+          "compress_bytes",
+          "decompress_bytes",
+          "compress_file",
+          "decompress_file",
+          "validate_roundtrip",
+          "probe_frame"
+        ]
+      },
+      "dotnet_info": {},
+      "parity_note": "No .NET counterpart",
+      "parity_count_gap": null,
+      "open_gaps": 6,
+      "decision": "Python-only FOSS \u2014 .NET intentionally absent"
+    },
+    {
+      "format": "pbm",
+      "parity": "python_only_dotnet_grouped",
+      "parity_verdict": "UNKNOWN",
+      "has_python": true,
+      "has_dotnet": false,
+      "python_info": {
+        "exists": true,
+        "export_count": 75,
+        "exports_sample": [
+          "parse_pbm",
+          "parse_pbm_strict",
+          "probe_pbm",
+          "get_capabilities",
+          "image_pixel_stats",
+          "write_pbm",
+          "get_dimensions",
+          "pixel_count",
+          "count_black",
+          "flip_horizontal"
+        ]
+      },
+      "dotnet_info": {},
+      "parity_note": "python_only_dotnet_grouped",
+      "parity_count_gap": null,
+      "open_gaps": 1,
+      "decision": ""
+    },
+    {
+      "format": "pgm",
+      "parity": "python_only_dotnet_grouped",
+      "parity_verdict": "UNKNOWN",
+      "has_python": true,
+      "has_dotnet": false,
+      "python_info": {
+        "exists": true,
+        "export_count": 77,
+        "exports_sample": [
+          "parse_pgm",
+          "parse_pgm_strict",
+          "probe_pgm",
+          "get_capabilities",
+          "image_pixel_stats",
+          "write_pgm",
+          "get_dimensions",
+          "pixel_count",
+          "average_gray",
+          "count_above_threshold"
+        ]
+      },
+      "dotnet_info": {},
+      "parity_note": "python_only_dotnet_grouped",
+      "parity_count_gap": null,
+      "open_gaps": 0,
+      "decision": ""
+    },
+    {
+      "format": "ppm",
+      "parity": "python_only_dotnet_grouped",
+      "parity_verdict": "UNKNOWN",
+      "has_python": true,
+      "has_dotnet": false,
+      "python_info": {
+        "exists": true,
+        "export_count": 75,
+        "exports_sample": [
+          "parse_ppm",
+          "parse_ppm_strict",
+          "probe_ppm",
+          "get_capabilities",
+          "write_ppm",
+          "get_dimensions",
+          "to_grayscale",
+          "brightness",
+          "pixel_count",
+          "average_color"
+        ]
+      },
+      "dotnet_info": {},
+      "parity_note": "python_only_dotnet_grouped",
+      "parity_count_gap": null,
+      "open_gaps": 0,
+      "decision": ""
+    }
+  ]
+}

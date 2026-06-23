@@ -32,143 +32,15 @@ REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 # Constants
 # ---------------------------------------------------------------------------
 
-VALID_EXECUTION_METHODS = frozenset({
-    "MANUAL_UNGOVERNED",
-    "MANUAL_GOVERNED_BY_SKILL",
-    "LOCAL_GOVERNED_DIRECT_EXECUTION",
-    "AGENT_GOVERNED_DIRECT_EXECUTION",
-    "SKILL_GUIDED_AGENT_EXECUTION",
-    "QUEUE_DECLARED_EXECUTION",
-    "QUEUE_DISPATCHED_EXECUTION",
-    "GENERATED_PATCH_EXECUTION",
-    "REPLAYED_PATCH_EXECUTION",
-    "BACKFILLED_LEGACY_EXECUTION",
-    "UNKNOWN_EXECUTION_METHOD",
-})
-
-FORBIDDEN_METHODS_FOR_CLOSING = frozenset({
-    "MANUAL_UNGOVERNED",
-    "UNKNOWN_EXECUTION_METHOD",
-    "QUEUE_DECLARED_EXECUTION",
-})
-
-DEPRECATED_METHODS = frozenset({
-    "QUEUE_DECLARED_EXECUTION",
-    "UNKNOWN_EXECUTION_METHOD",
-})
-
-VALID_CLAIM_CLASSIFICATIONS = frozenset({
-    "WORKS_BUT_NOT_REPEATABLE",
-    "GOVERNED_BUT_NOT_REPLAYED",
-    "REPLAYABLE_NOT_YET_REPLAYED",
-    "REPLAYED_AND_PROVEN",
-    "LEGACY_BACKFILLED",
-    "INVALID_CLAIM",
-})
-
-REPLAYABLE_CLAIMS = frozenset({
-    "REPLAYABLE_NOT_YET_REPLAYED",
-    "REPLAYED_AND_PROVEN",
-})
-
-PRODUCT_SOURCE_ITEM_TYPES = frozenset({
-    "PRODUCT_SOURCE", "TEST", "REQUIREMENT", "READINESS", "RELEASE_GATE",
-})
-
-GOVERNANCE_ITEM_TYPES = frozenset({
-    "GOVERNANCE_DOC", "GOVERNANCE_SCHEMA", "GOVERNANCE_POLICY",
-    "GOVERNANCE_TASKCARD", "LEGACY_BACKFILL_METADATA",
-})
-
-GRACE_EXCEPTION_CLASSES = frozenset({
-    "pre_taxonomy_backfill", "investigation_only", "legacy_backfill",
-    "legacy_pre_taxonomy",
-})
-
-# 15-state machine — allowed transitions
-ALLOWED_TRANSITIONS: dict[str, frozenset[str]] = {
-    "DISCOVERED": frozenset({
-        "EVIDENCE_LOCATED", "BLOCKED_INSUFFICIENT_EVIDENCE",
-    }),
-    "EVIDENCE_LOCATED": frozenset({
-        "EXECUTION_CLASSIFIED", "DISCOVERED",
-    }),
-    "EXECUTION_CLASSIFIED": frozenset({
-        "CONTRACT_REQUIRED", "BACKFILLED_LEGACY_ACCEPTED",
-        "REJECTED_UNGOVERNED", "IDEMPOTENCY_KEY_ASSIGNED",
-    }),
-    "CONTRACT_REQUIRED": frozenset({"CONTRACTED"}),
-    "CONTRACTED": frozenset({"IDEMPOTENCY_KEY_ASSIGNED"}),
-    "IDEMPOTENCY_KEY_ASSIGNED": frozenset({"MUTATION_BOUNDED"}),
-    "MUTATION_BOUNDED": frozenset({"MUTATION_EXECUTED"}),
-    "MUTATION_EXECUTED": frozenset({
-        "DIFF_CAPTURED", "BLOCKED_INSUFFICIENT_EVIDENCE",
-    }),
-    "DIFF_CAPTURED": frozenset({"VALIDATED"}),
-    "VALIDATED": frozenset({
-        "REPLAY_RECIPE_RECORDED", "GOVERNANCE_ACCEPTED",
-    }),
-    "REPLAY_RECIPE_RECORDED": frozenset({
-        "GOVERNANCE_ACCEPTED", "REPLAY_TESTED",
-    }),
-    "REPLAY_TESTED": frozenset({"GOVERNANCE_ACCEPTED"}),
-    "GOVERNANCE_ACCEPTED": frozenset(),
-    "BACKFILLED_LEGACY_ACCEPTED": frozenset(),
-    "REJECTED_UNGOVERNED": frozenset({"EXECUTION_CLASSIFIED"}),
-    "BLOCKED_INSUFFICIENT_EVIDENCE": frozenset({
-        "EXECUTION_CLASSIFIED", "DISCOVERED",
-    }),
-}
-
-CLOSE_ELIGIBLE_STATES = frozenset({
-    "VALIDATED", "REPLAY_RECIPE_RECORDED", "REPLAY_TESTED",
-    "GOVERNANCE_ACCEPTED", "BACKFILLED_LEGACY_ACCEPTED",
-})
-
-# Forbidden jumps for PRODUCT_SOURCE items only.
-# Governance docs (GOVERNANCE_DOC, GOVERNANCE_SCHEMA, etc.) legitimately go
-# DISCOVERED → GOVERNANCE_ACCEPTED as a short-circuit path for documentation work.
-FORBIDDEN_JUMPS_PRODUCT_ONLY = [
-    ("DISCOVERED", "GOVERNANCE_ACCEPTED"),
-    ("DISCOVERED", "BACKFILLED_LEGACY_ACCEPTED"),
-    ("DISCOVERED", "VALIDATED"),
-    ("EXECUTION_CLASSIFIED", "GOVERNANCE_ACCEPTED"),
-]
-
-FORBIDDEN_JUMPS = FORBIDDEN_JUMPS_PRODUCT_ONLY  # alias kept for compatibility
-
-
-# ---------------------------------------------------------------------------
-# Helpers
-# ---------------------------------------------------------------------------
-
-def _is_product_source_item(item: dict) -> bool:
-    return item.get("item_type", "") in PRODUCT_SOURCE_ITEM_TYPES
-
-
-def _has_grace_exemption(item: dict) -> bool:
-    return (
-        item.get("exception_classification", "") in GRACE_EXCEPTION_CLASSES
-        or item.get("legacy_backfill_status") in {"BACKFILLED", "PENDING_BACKFILL"}
-        or item.get("backfill_pending") is True
-    )
-
-
-def _is_test_item(item: dict) -> bool:
-    """TEST items add tests, not product source mutations.
-    They should WARN (not FAIL) when governance metadata is absent."""
-    return item.get("item_type") == "TEST"
-
-
-def _make_result(validator: str, result: str, items: list, summary: str,
-                 blocks_sprint: bool = False) -> dict:
-    return {
-        "validator": validator,
-        "result": result,
-        "items": items,
-        "summary": summary,
-        "blocks_sprint": blocks_sprint,
-    }
+# TC-MRH-002: Constants and helpers extracted to governance_validator_utils.py
+# to restore LOC headroom. Re-exported here for full backward compatibility.
+from governance_validator_utils import (  # noqa: E402
+    VALID_EXECUTION_METHODS, FORBIDDEN_METHODS_FOR_CLOSING, DEPRECATED_METHODS,
+    VALID_CLAIM_CLASSIFICATIONS, REPLAYABLE_CLAIMS, PRODUCT_SOURCE_ITEM_TYPES,
+    GOVERNANCE_ITEM_TYPES, GRACE_EXCEPTION_CLASSES, ALLOWED_TRANSITIONS,
+    CLOSE_ELIGIBLE_STATES, FORBIDDEN_JUMPS_PRODUCT_ONLY, FORBIDDEN_JUMPS,
+    _is_product_source_item, _has_grace_exemption, _is_test_item, _make_result,
+)
 
 
 # ---------------------------------------------------------------------------
@@ -3024,6 +2896,30 @@ def validate_skill_transcript_present(declaration: dict) -> dict:
             artifacts_by_item.setdefault(related, []).append(artifact)
 
     violations = []
+    # BACKFILL_PRE_GOVERNANCE count guard and ledger_entry_id check (TC-VNK-002)
+    # Prevents bulk misuse of the exemption (max 2 per sprint) and requires ledger traceability.
+    backfill_items = [
+        item for item in declaration.get("planned_work_items", [])
+        if item.get("item_type") == "PRODUCT_SOURCE"
+        and "BACKFILL_PRE_GOVERNANCE" in str(item.get("notes", ""))
+    ]
+    backfill_warnings: list = []
+    if len(backfill_items) > 2:
+        backfill_warnings.append({
+            "item_id": "BULK_BACKFILL_WARNING",
+            "reason": (
+                f"BACKFILL_PRE_GOVERNANCE used on {len(backfill_items)} items "
+                "(max 2 per sprint); verify these predate skill governance"
+            ),
+            "severity": "WARN",
+        })
+    for _bi in backfill_items:
+        if not _bi.get("ledger_entry_id"):
+            backfill_warnings.append({
+                "item_id": _bi.get("item_id", "UNKNOWN"),
+                "reason": "BACKFILL_PRE_GOVERNANCE item missing ledger_entry_id",
+                "severity": "WARN",
+            })
     for item in declaration.get("planned_work_items", []):
         if item.get("item_type") != "PRODUCT_SOURCE":
             continue
@@ -3049,7 +2945,15 @@ def validate_skill_transcript_present(declaration: dict) -> dict:
         "validator": "validate_skill_transcript_present",
         "result": "FAIL" if violations else "PASS",
         "items": violations,
-        "summary": f"{len(violations)} PRODUCT_SOURCE item(s) missing skill transcript",
+        "backfill_warnings": backfill_warnings,
+        "summary": (
+            f"{len(violations)} PRODUCT_SOURCE item(s) missing skill transcript"
+            + (
+                f"; {len(backfill_warnings)} backfill warning(s)"
+                if backfill_warnings
+                else ""
+            )
+        ),
         "blocks_sprint": bool(violations),  # Activated 2026-06-21 (TC-SKILL-GOV-005)
     }
 
@@ -3057,66 +2961,64 @@ def validate_skill_transcript_present(declaration: dict) -> dict:
 def validate_spec_fact_refs_in_sal_output(
     declaration: dict, repo_root: Path | None = None
 ) -> dict:
-    """V47 (TC-MACH-ARCH-007): PRODUCT_SOURCE spec_fact_refs must exist in sal-facts-latest.json.
+    """V47 (TC-MACH-ARCH-007): spec_fact_refs must exist in sal-facts-latest.json
+    AND meet quality thresholds per item_type.
 
-    Loads .local/sal-output/sal-facts-latest.json (canonical output dir — RC-2/GAP-SA-NEW-002).
-    For each PRODUCT_SOURCE work item with spec_fact_refs declared, verifies that
-    each referenced fact ID (FACT-<FORMAT>-NNN) exists in the SAL output.
+    Quality enforcement (velvet-tickling-codd Lane A):
+      PRODUCT_SOURCE/PRODUCT_TEST: Level 0 OK (bootstrap_only accepted)
+      READINESS: Level 1+ required (source_id must be registered)
+      RELEASE_GATE: Level 2+ required (text must be verified against spec)
 
-    BLOCKS sprint if any declared spec_fact_ref is not found in SAL output.
+    BLOCKS sprint if any fact ref is missing or below quality threshold.
     PASS (non-blocking) if sal-facts-latest.json is absent (bootstrap tolerance).
     """
-    import json as _json
+    import sys as _sys
+    _sal_dir = Path(__file__).resolve().parent.parent / "specification-authority-layer"
+    if str(_sal_dir) not in _sys.path:
+        _sys.path.insert(0, str(_sal_dir))
+    from fact_quality import build_fact_quality_index, ITEM_TYPE_THRESHOLDS, check_fact_quality_for_item
+
     repo = repo_root or REPO_ROOT
     sal_output = repo / ".local" / "sal-output" / "sal-facts-latest.json"
-
     if not sal_output.exists():
         return {
             "validator": "validate_spec_fact_refs_in_sal_output",
-            "result": "PASS",
-            "items": [],
+            "result": "PASS", "items": [],
             "summary": "sal-facts-latest.json absent — bootstrap tolerance (PASS)",
             "blocks_sprint": False,
         }
 
-    try:
-        data = _json.loads(sal_output.read_text(encoding="utf-8"))
-        known_ids: set = set()
-        for fmt_result in data.get("results", []):
-            for fact in fmt_result.get("spec_facts", []):
-                qname = fact.get("qname") or fact.get("claim_id")
-                if qname:
-                    known_ids.add(qname)
-    except Exception as exc:
+    fact_index = build_fact_quality_index(sal_facts_path=sal_output, repo_root=repo)
+    if not fact_index:
         return {
             "validator": "validate_spec_fact_refs_in_sal_output",
-            "result": "WARN",
-            "items": [],
-            "summary": f"Could not load sal-facts-latest.json: {exc}",
+            "result": "WARN", "items": [],
+            "summary": "sal-facts-latest.json empty or unreadable",
             "blocks_sprint": False,
         }
 
+    # Check item types that need quality enforcement.
+    # GOVERNANCE_TASKCARD is exempt from V47 (infrastructure items, threshold=0).
+    _v47_exempt = frozenset({"GOVERNANCE_TASKCARD"})
+    check_types = (frozenset(ITEM_TYPE_THRESHOLDS.keys()) | {"PRODUCT_SOURCE", "PRODUCT_TEST"}) - _v47_exempt
     violations = []
     for item in declaration.get("planned_work_items", []):
-        if item.get("item_type") not in ("PRODUCT_SOURCE", "PRODUCT_TEST"):
+        item_type = item.get("item_type", "")
+        if item_type not in check_types:
             continue
         refs = item.get("spec_fact_refs", [])
         if not refs:
             continue
         item_id = item.get("item_id", "UNKNOWN")
-        missing = [r for r in refs if r not in known_ids]
-        if missing:
-            violations.append({
-                "item_id": item_id,
-                "missing_refs": missing,
-                "reason": f"spec_fact_refs not found in sal-facts-latest.json: {missing}",
-            })
+        quality_violations = check_fact_quality_for_item(refs, item_type, fact_index)
+        for v in quality_violations:
+            violations.append({"item_id": item_id, "item_type": item_type, "reason": v})
 
     return {
         "validator": "validate_spec_fact_refs_in_sal_output",
         "result": "FAIL" if violations else "PASS",
         "items": violations,
-        "summary": f"{len(violations)} item(s) with unresolvable spec_fact_refs",
+        "summary": f"{len(violations)} fact quality violation(s)" if violations else "All spec_fact_refs pass quality thresholds",
         "blocks_sprint": bool(violations),
     }
 

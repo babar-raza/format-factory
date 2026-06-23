@@ -1,4 +1,4 @@
-"""governance_validator_runner.py — Runs all governance validators (V1-V53).
+"""governance_validator_runner.py — Runs all governance validators (V1-V59).
 
 Extracted from governance_validators.py to keep that file within its LOC cap.
 This module imports validators from governance_validators LAZILY (inside the function
@@ -16,6 +16,9 @@ V50: validate_forbidden_module_names — blocks *_analytics_extra.py, *_extra.py
 V51: validate_spec_qname_coverage — repo scan: exported classes must have spec_qname (TC-QHARD-001, WARN-only)
 V52: validate_compat_import_integrity — Compat/ facades can resolve spec/ imports (TC-QHARD-002, WARN-only)
 V53: validate_spec_authority_class_completeness — registry python_file entries exist on disk (TC-QHARD-003, WARN-only)
+V54: validate_cross_lane_product_touching_machinery — product items must not mutate tools/supervisor/ (FF-FORENSIC-A4, WARN-only)
+V55: validate_cross_lane_machinery_touching_product — machinery items must not mutate src/ (FF-FORENSIC-A4, WARN-only)
+V56: validate_hardening_target_identity — plan hardening must target active native plan (TC-PG-006, FAIL for snoopy fallback; WARN for other wrong targets)
 """
 from __future__ import annotations
 
@@ -94,12 +97,22 @@ def run_all_governance_validators(
         validate_architecture_only_stub_gate,
         validate_qname_structure,
     )
-    # V50-V53 imported directly from ext module (governance_validators.py is at LOC cap)
+    # V50-V56 imported directly from ext module (governance_validators.py is at LOC cap)
     from governance_validators_ext import (  # noqa: PLC0415
         validate_forbidden_module_names as _validate_forbidden_module_names,
         validate_spec_qname_coverage as _validate_spec_qname_coverage,
         validate_compat_import_integrity as _validate_compat_import_integrity,
         validate_spec_authority_class_completeness as _validate_spec_authority_class_completeness,
+        validate_cross_lane_product_touching_machinery as _validate_cross_lane_product_touching_machinery,
+        validate_cross_lane_machinery_touching_product as _validate_cross_lane_machinery_touching_product,
+        validate_hardening_target_identity as _validate_hardening_target_identity,
+        validate_changed_files_in_ledger as _validate_changed_files_in_ledger,
+        validate_expansion_fallback_refs as _validate_expansion_fallback_refs,
+        validate_cross_language_parity as _validate_cross_language_parity,
+        validate_terminal_closure_completeness as _validate_terminal_closure_completeness,
+        validate_error_fallback_safety as _validate_error_fallback_safety,
+        validate_spec_fact_refs_density as _validate_spec_fact_refs_density,
+        validate_public_api_surface_ratio as _validate_public_api_surface_ratio,
     )
     results = [
         validate_execution_method_required(declaration),
@@ -179,7 +192,45 @@ def run_all_governance_validators(
         _validate_compat_import_integrity(declaration, repo_root),
         # V53 (TC-QHARD-003): Registry python_file entries must exist on disk (WARN-only, repo scan)
         _validate_spec_authority_class_completeness(declaration, repo_root),
+        # V54 (FF-FORENSIC-A4): Product-track items must not mutate tools/supervisor/ (WARN-only)
+        _validate_cross_lane_product_touching_machinery(declaration, repo_root),
+        # V55 (FF-FORENSIC-A4): Machinery-track items must not mutate src/ (WARN-only)
+        _validate_cross_lane_machinery_touching_product(declaration, repo_root),
+        # V56 (TC-PG-006): Plan hardening must target the active native plan, not a fallback (FAIL for snoopy; WARN for others)
+        _validate_hardening_target_identity(declaration, repo_root),
+        # V57 (TC-VNK-003): src/ changed files must have product-code-change-ledger entries (WARN-only)
+        _validate_changed_files_in_ledger(declaration, repo_root),
+        # V58 (FALLBACK-REF-001): Detect EXPANSION-FALLBACK-* synthetic gap refs (WARN-only)
+        _validate_expansion_fallback_refs(declaration),
+        # V59 (TC-MGHEAL-005): Cross-language parity awareness for dual-language formats (WARN-only)
+        _validate_cross_language_parity(declaration, repo_root),
+        # V60 (TC-TCF-010): RELEASE_GATE items citing plans with open taskcards (WARN-only)
+        _validate_terminal_closure_completeness(declaration, repo_root),
+        # V61 (TC-TCF-010): Error fallback in write_plan_lock.py must write ITERATION_REQUIRED (FAIL if D6 regression)
+        _validate_error_fallback_safety(declaration, repo_root),
+        # V62 (TC-MACH-VAL-001): spec_fact_refs density — PRODUCT_SOURCE items need >=1 spec_fact_ref (REWORK_REQUIRED)
+        _validate_spec_fact_refs_density(declaration, repo_root),
+        # V63 (TC-MACH-SRC-001): Public API surface ratio — WARN when __init__.py has >50 exports with <20% tested
+        _validate_public_api_surface_ratio(declaration, repo_root),
     ]
+
+    # SAL format advisory (non-blocking, Lane E integration)
+    try:
+        from sal_format_advisory import build_advisory, _load_sal_facts
+        sal_results = _load_sal_facts()
+        if sal_results:
+            advisory = build_advisory(sal_results)
+            warnings = advisory.get("warnings", [])
+            if warnings:
+                results.append({
+                    "validator": "sal_format_advisory",
+                    "result": "WARN",
+                    "items": warnings[:10],
+                    "summary": f"SAL advisory: {len(warnings)} format coverage warning(s)",
+                    "blocks_sprint": False,
+                })
+    except Exception:
+        pass  # Advisory is non-blocking; silently skip on failure
 
     fail_count = sum(1 for r in results if r["result"] == "FAIL")
     warn_count = sum(1 for r in results if r["result"] == "WARN")
