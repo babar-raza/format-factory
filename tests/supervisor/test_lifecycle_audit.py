@@ -221,6 +221,34 @@ class TestAdversarialLifecycleControls:
         assert "next_iteration_required" in data
 
 
+class TestAdvisoryReworkPending:
+    def test_advisory_rework_does_not_block_mission_complete(self, tmp_path):
+        """Non-GOV_BLOCK rework items with truthy autonomous_continue must NOT block AUDIT_PASS."""
+        repo = _make_repo(
+            tmp_path,
+            signal={
+                "autonomous_continue": "true_with_rework",
+                "rework_items": ["LANE_ENFORCEMENT:1_violations"],
+            },
+        )
+        result = run_lifecycle_audit(repo_root=repo, mission_id="TEST")
+        assert result["verdict"] == "AUDIT_PASS"
+        assert result["mission_complete"] is True
+        assert result["next_iteration_required"] is False
+
+    def test_advisory_rework_appears_in_findings(self, tmp_path):
+        """ADVISORY_REWORK_PENDING finding must be present when non-GOV_BLOCK rework items exist."""
+        repo = _make_repo(
+            tmp_path,
+            signal={
+                "autonomous_continue": "true_with_rework",
+                "rework_items": ["LANE_ENFORCEMENT:1_violations"],
+            },
+        )
+        result = run_lifecycle_audit(repo_root=repo, mission_id="TEST")
+        assert any(f["type"] == "ADVISORY_REWORK_PENDING" for f in result["findings"])
+
+
 class TestLifecycleAuditCLI:
     def test_cli_exit_code_0_on_pass(self, tmp_path):
         repo = _make_repo(tmp_path, signal={"autonomous_continue": True, "rework_items": []})

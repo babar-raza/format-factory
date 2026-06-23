@@ -117,6 +117,26 @@ def run_lifecycle_audit(
         })
 
     # ------------------------------------------------------------------
+    # 2b. Check for advisory (non-GOV_BLOCK) rework items
+    # ------------------------------------------------------------------
+    non_govblock_rework = [item for item in raw_rework if item not in govblock_items]
+    if non_govblock_rework:
+        findings.append({
+            "finding_id": "FIND-REWORK-001",
+            "type": "ADVISORY_REWORK_PENDING",
+            "severity": "LOW",
+            "description": (
+                f"Non-blocking rework items present: {non_govblock_rework}. "
+                "Mission may be complete, but advisory items should be noted."
+            ),
+            "source_file": str(signal_path),
+            "recommended_action": (
+                "Note advisory rework in evidence declaration incomplete_work_items. "
+                "Does not block mission_complete if all other checks pass."
+            ),
+        })
+
+    # ------------------------------------------------------------------
     # 3. Check autonomous_continue flag
     # ------------------------------------------------------------------
     if not autonomous_continue:
