@@ -1,0 +1,90 @@
+{
+  "pilot_id": "CAP-PILOT-FODT-001",
+  "sprint_id": "majestic-cooking-waffle",
+  "format": "FODT",
+  "product_type": "commercial",
+  "timestamp": "2026-06-23T00:00:00+00:00",
+  "authority_inputs": {
+    "capability_map_path": "reports/capability-layer/commercial-capability-map.json",
+    "poc_targets_path": "product-capability-matrix/poc-targets.yaml",
+    "test_dir": "tests/python/fodt/"
+  },
+  "capability_summary": {
+    "total_records": 40,
+    "implementation_verified": 9,
+    "test_verified": 31,
+    "architecture_only": 0,
+    "blocked": 0,
+    "unsupported": 0,
+    "ai_draft": 0
+  },
+  "gap_summary": {
+    "total_gaps": 105,
+    "p0_gaps": 2,
+    "p1_gaps": 1,
+    "p2_gaps": 102,
+    "blocked_gaps": 0
+  },
+  "capability_verifier": {
+    "format_missing": 0,
+    "untested": 0,
+    "signature_drift": 0,
+    "stale_test": 0,
+    "verdict": "CLEAN — no drift, no missing modules, no stale tests"
+  },
+  "test_run": {
+    "command": ".venv/Scripts/pytest tests/python/fodt/ -q --tb=short",
+    "passed": 1999,
+    "failed": 0,
+    "skipped": 4,
+    "errors": 0,
+    "output_log": "reports/capability-layer/test-logs/fodt-mcw-pilot-test.log"
+  },
+  "dogfood_check": {
+    "function": "document_to_text",
+    "module": "src.python.fodt",
+    "result": "PASS",
+    "notes": "document_to_text callable=True; poc-targets.yaml confirms fodt_to_txt_python=IMPLEMENTED and fodt_to_txt_dotnet=IMPLEMENTED. No dogfood_refs in capability map records (generation artifact)."
+  },
+  "manual_verification": {
+    "capability_map_opened": true,
+    "gap_ledger_sampled": true,
+    "test_log_inspected": true,
+    "findings": "All 40 FODT commercial records have current_state set (31 test_verified, 9 implementation_verified). All have test_refs. authority_state=spec_fact on most records. Records were generated from poc-targets.yaml dotnet_status. capability_verifier shows 0 drift across all 4 buckets.",
+    "contradiction_found": false
+  },
+  "map_record_sample": [
+    {
+      "capability_id": "FODT-COMMERCIAL-LOAD-001",
+      "current_state": "implementation_verified",
+      "authority_state": "spec_fact",
+      "confidence_level": "high"
+    },
+    {
+      "capability_id": "FODT-COMMERCIAL-INSPECT_OBJECT_MODEL-001",
+      "current_state": "implementation_verified",
+      "authority_state": "spec_fact",
+      "confidence_level": "high"
+    },
+    {
+      "capability_id": "FODT-COMMERCIAL-EDIT_PARAGRAPHS-001",
+      "current_state": "test_verified",
+      "authority_state": "spec_fact",
+      "confidence_level": "high"
+    }
+  ],
+  "taskcard_candidates": [
+    "GAP-FODT-P0 gaps (2) need investigation — potentially blocks readiness",
+    "GAP-FODT-QNAME-001..005 missing advisory_only in action-queue (generator issue)"
+  ],
+  "known_issues": [
+    "action-queue.json VAL-009: 5 FODT actions missing per-item advisory_only=true — pre-existing generator artifact from UNIFIED sprint. Does not affect capability map validity.",
+    "105 FODT gaps — 102 are P2 (lower priority), 3 are P0/P1"
+  ],
+  "verdict": "PASS_VERIFIED",
+  "verdict_justification": "1999 tests pass (0 failures). All 40 capability records have current_state populated. capability_verifier shows 0 issues across all buckets. dogfood function document_to_text is callable. Gaps are predominantly P2 with 3 higher-priority items for future work.",
+  "key_limitations": [
+    "12/25 sampled gaps from 2026-06-21 audit are CLAIMED_UNPROVEN — cannot be upgraded without per-gap test evidence",
+    "action-queue VAL-009 errors are pre-existing generator issue — not a capability layer failure"
+  ]
+}

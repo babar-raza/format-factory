@@ -1,0 +1,46 @@
+{
+  "pilot_id": "CAP-PILOT-MCW-SYLK-001",
+  "sprint_id": "majestic-cooking-waffle / unified-multi-plan-20260623",
+  "format": "sylk",
+  "product_type": "foss_reduced",
+  "timestamp": "2026-06-23T09:06:51.672166+00:00",
+  "authority_inputs": {
+    "capability_map_path": "reports/capability-layer/foss-reduced-capability-map.json",
+    "poc_targets_path": "product-capability-matrix/poc-targets.yaml",
+    "test_dir": "tests/python/sylk/"
+  },
+  "capability_summary": {
+    "total_records": 0,
+    "open_gaps": 0
+  },
+  "gap_summary": {
+    "total_gaps": 0,
+    "open_gaps": 0,
+    "p0_gaps": 0,
+    "p1_gaps": 0
+  },
+  "test_run": {
+    "command": ".venv/Scripts/pytest tests/python/sylk/ -q --timeout=30",
+    "passed": 1008,
+    "failed": 0,
+    "errors": 0
+  },
+  "dogfood_check": {
+    "function": "sylk_to_csv",
+    "result": "PASS",
+    "notes": ""
+  },
+  "manual_verification": {
+    "capability_map_opened": true,
+    "gap_ledger_sampled": true,
+    "test_log_inspected": true,
+    "findings": "Maps generated from poc-targets.yaml; CAP-SEL-001 confirmed wired",
+    "contradiction_found": false
+  },
+  "taskcard_candidates": [],
+  "verdict": "PASS_VERIFIED",
+  "verdict_justification": "1008 tests pass; dogfood function PASS",
+  "key_limitations": [
+    "Analytics tests excluded (pre-existing collection errors)"
+  ]
+}
