@@ -3,9 +3,9 @@
 **Document type:** Living Master Plan
 **Authority level:** Single Operational Authority
 **Project:** format-factory
-**Version:** 3.2
-**Last updated:** 2026-06-22 (ODF Parts 1/2/4 acquired + normalized; 25 FACT-ODF-PKG-* facts injected; TC-HARD-003 plan-lock hardening; analytics baseline cap corrections)
-**Last verified:** 2026-06-22
+**Version:** 3.3
+**Last updated:** 2026-06-23 (TC-HARD-002/007 supervisor fixes; V51/V52/V53 QName validators; spec_qname backfill across 9 Python domain classes + .NET spec stubs; plan-file hardening pass 4 on noble-doodling-pony.md)
+**Last verified:** 2026-06-23
 
 **Current phase:** Multi-format POC — 11 targets (3 commercial .NET, 8 FOSS Python). Gate 11 G11-G sub-gate approved by Babar Raza 2026-06-05 (FODS, FODT, Netpbm). Registry gate_11.status: commercial_readiness_in_progress (registry not yet updated after G11-G). commercial_product_ready: false (all entries).
 
@@ -349,6 +349,18 @@ Wave 3 gate: 5 PASS / 3 PARTIAL (0 FAIL)
 
 **FODS P5 cleanup (2026-06-22):** 32 analytics stub test files deleted; 0 collection errors; 1324 collected / 1316 pass.
 **Lane 15 (2026-06-22):** write_sprint_learnings.py implemented; wired in autonomous_cycle.py Step 2f2; learning_consumer.scan_all_learnings() returns >0.
+
+**QName enforcement (2026-06-23 — commits 9e0087a8, 2c522c52, a13e2552):**
+- TC-HARD-002: PLAN_LOCKED return dict missing "stream" field → stream_field_match=False → false stop. Fixed in generate_next_work_items(). 6 regression tests pass.
+- TC-HARD-007 Option A: GOVERNANCE_TASKCARD/DOC/POLICY/SCHEMA items without pytest output were receiving ACCEPTED_WITH_LIMITATIONS. Fixed by governance calibration block in grade_item(). 9 regression tests pass.
+- V51 (TC-QHARD-001): repo-wide scan for exported classes missing spec_qname. After spec_qname backfill to 9 classes (DifCell, DifDocument, OdsRow, OdtListItem, PbmImage, PgmImage, PpmImage, QoiImage, SylkDocument), V51 returns PASS.
+- V52 (TC-QHARD-002): Compat/ facade import chain integrity validator. WARN-only.
+- V53 (TC-QHARD-003): registry python_file path existence validator. WARN-only.
+- Total governance validators: 53 (V1-V53). 84 tests pass (5 pre-existing known failures unchanged).
+- .NET spec stubs annotated with SpecQName/SpecFactRef/NamespaceUri. New stub files: csv/Spec/CsvRecord.cs, ndjson/Spec/NdjsonRecord.cs, netpbm/Spec/NetpbmImage.cs, tsv/Spec/TsvRecord.cs.
+- python-qname-code-reviewer slash command registered.
+
+**Plan hardening (2026-06-23):** noble-doodling-pony.md POST-EXECUTION HARDENING PASS 4 added. 6 evidence-review gaps converted to governed taskcards: TC-SAL-PIPE-REGR-001 (SAL pipeline regression test), TC-VALIDATOR-REMAINING-001 (6 spec-parity validators untested), TC-SAL-PIPELINE-002 (FODS SAL facts), TC-GAP-AUDIT-002 (gap-audit JSON repair), TC-ONTOLOGY-CONTENT-001 (ontology divergence), TC-COMPILE-GAP-E2E-001 (compile_gap end-to-end). Anti-overclaim rules 13-15 added. Plan file is not in git repo.
 
 ---
 
