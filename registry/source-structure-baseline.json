@@ -67,12 +67,12 @@
       "loc": 831,
       "baseline_loc_cap": 831,
       "functions": 38,
-      "baseline_functions_cap": 384,
+      "baseline_functions_cap": 38,
       "category": "mixed_model_analytics",
-      "note": "Cap corrected 2026-06-17: old Step 0 had recorded stale loc=3920; actual size at grandfathering=4334. Cap frozen at 4334 -- no further growth permitted."
+      "note": "LOC history: old Step 0 recorded stale loc=3920; actual at grandfathering was 4334 per 2026-06-17 correction. Current file is 831 LOC. Cap frozen at 831. baseline_functions_cap corrected 2026-06-23 (TC-VNK-005): was stale at 384, actual functions=38. Frozen at 38."
     },
     "src/python/fodp/fodp_codec.py": {
-      "loc": 812,
+      "loc": 748,
       "baseline_loc_cap": 812,
       "functions": 327,
       "baseline_functions_cap": 327,
@@ -190,7 +190,7 @@
       "last_healed_check": "2026-06-18T07:34:50.942758+00:00"
     },
     "tools/supervisor/governance_validators.py": {
-      "loc": 3179,
+      "loc": 3051,
       "baseline_loc_cap": 3179,
       "functions": 54,
       "baseline_functions_cap": 54,
@@ -366,23 +366,23 @@
       "category": "oversized_init_py"
     },
     "tools/supervisor/autonomous_cycle.py": {
-      "loc": 2163,
-      "baseline_loc_cap": 2163,
+      "loc": 2234,
+      "baseline_loc_cap": 2234,
       "functions": 7,
       "baseline_functions_cap": 7,
       "category": "supervisor_infrastructure",
       "registered": "2026-06-18",
-      "note": "Supervisor infrastructure file; cap updated 2026-06-18 for TC-REPAIR-VERIFY-001 governance code. Cap is write-once after this update. Cap updated 2026-06-18 for TC-GUARD-001 BLOCK mode + SIGNAL-UNIFY-001 (Changes C1+C5, pre-product-acquisition sprint). Cap updated 2026-06-23 for TC-SIGNAL-001 _sync_hard_stops_after_repair() addition (supervisor infrastructure, 28 LOC, 1 function).",
+      "note": "Supervisor infrastructure file; cap updated 2026-06-18 for TC-REPAIR-VERIFY-001 governance code. Cap is write-once after this update. Cap updated 2026-06-18 for TC-GUARD-001 BLOCK mode + SIGNAL-UNIFY-001 (Changes C1+C5, pre-product-acquisition sprint). Cap updated 2026-06-23 for TC-SIGNAL-001 _sync_hard_stops_after_repair() addition (supervisor infrastructure, 28 LOC, 1 function). Cap updated 2026-06-23 for TC-PG-005 Step 0b-validate block (plan readiness check wiring, supervisor infrastructure). Cap updated 2026-06-23 for TC-HARD-013 (+1 LOC: git_head_at_review in manifest dict).",
       "last_healed_check": "2026-06-23T04:45:47.996447+00:00"
     },
     "tools/supervisor/grade_declared_work.py": {
-      "loc": 883,
-      "baseline_loc_cap": 883,
+      "loc": 889,
+      "baseline_loc_cap": 889,
       "functions": 12,
       "baseline_functions_cap": 12,
       "category": "supervisor_infrastructure",
       "registered": "2026-06-19",
-      "note": "Supervisor infrastructure file; cap registered 2026-06-19. TC-C3-001 (Change C3, Sprint 2) added DEFERRED_WITH_REASON logic for spec-parity grading timeout fix (+25 LOC). Cap is write-once after this registration. Cap updated 2026-06-23 for TC-GRADE-001/002/003 additions (+50 LOC: content-hash, TTL, iv-cache, timeout)."
+      "note": "Supervisor infrastructure file; cap registered 2026-06-19. TC-C3-001 (Change C3, Sprint 2) added DEFERRED_WITH_REASON logic for spec-parity grading timeout fix (+25 LOC). Cap is write-once after this registration. Cap updated 2026-06-23 for TC-GRADE-001/002/003 additions (+50 LOC: content-hash, TTL, iv-cache, timeout). Cap updated 2026-06-23 for TC-HARD-011 comment (+6 LOC: _is_governance_sprint redundancy documentation per TC-HARD-007 Option A)."
     },
     "src/python/csv/csv_analytics.py": {
       "loc": 968,
@@ -562,12 +562,12 @@
       "last_healed_check": "2026-06-21T17:16:45.414069+00:00"
     },
     "tools/supervisor/governance_validators_ext.py": {
-      "loc": 504,
-      "baseline_loc_cap": 504,
-      "functions": 2,
-      "baseline_functions_cap": 2,
+      "loc": 820,
+      "baseline_loc_cap": 820,
+      "functions": 3,
+      "baseline_functions_cap": 3,
       "category": "governance_infrastructure",
-      "note": "TC-WHALE-GOVBLOCK-001 (2026-06-21): Extension validators extracted from governance_validators.py to keep it under baseline_loc_cap. Contains V48 (validate_architecture_only_stub_gate, TC-ZS-001) and V50 (validate_forbidden_module_names, MODULE-NAME-001, TC-ANAL-SEG-HEAL-001, 2026-06-22)."
+      "note": "TC-WHALE-GOVBLOCK-001 (2026-06-21): Extension validators extracted from governance_validators.py to keep it under baseline_loc_cap. Contains V48 (validate_architecture_only_stub_gate, TC-ZS-001) and V50 (validate_forbidden_module_names, MODULE-NAME-001, TC-ANAL-SEG-HEAL-001, 2026-06-22). Cap updated 2026-06-23 for TC-PG-006 V56 validate_hardening_target_identity (governance infrastructure)."
     },
     "src/python/abw/Compat/__init__.py": {
       "loc": 10,
@@ -1936,6 +1936,15 @@
       "functions": 67,
       "baseline_functions_cap": 67,
       "category": "analytics_extraction"
+    },
+    "src/python/fodp/fodp_analytics.py": {
+      "loc": 96,
+      "baseline_loc_cap": 96,
+      "functions": 4,
+      "baseline_functions_cap": 4,
+      "category": "analytics_only",
+      "last_healed_check": "2026-06-23",
+      "last_healed_by": "decompose-monolithic-codec skill (TC-VNK-008)"
     }
   },
   "qname_ownership_baseline": {

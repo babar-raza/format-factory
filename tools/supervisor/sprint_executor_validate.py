@@ -205,14 +205,21 @@ def _repair_document(doc: dict) -> tuple[dict, list[str]]:
             del doc[field]
             repairs.append(f"Removed banned field: {field}")
 
-    # Ensure tests_run is int
+    # Ensure tests_run is int (TC-HARD-010, 2026-06-23)
     if "tests_run" in doc and not isinstance(doc["tests_run"], int):
-        try:
-            doc["tests_run"] = int(doc["tests_run"])
-            repairs.append("Converted tests_run to int")
-        except (TypeError, ValueError):
-            doc["tests_run"] = 0
-            repairs.append("Reset tests_run to 0 (unconvertible)")
+        val = doc["tests_run"]
+        if isinstance(val, list):
+            # List of test file names or test count entries — use len() as the count.
+            # This preserves the semantic "N test files were run" rather than resetting to 0.
+            doc["tests_run"] = len(val)
+            repairs.append(f"Converted tests_run list ({len(val)} items) to int count")
+        else:
+            try:
+                doc["tests_run"] = int(val)
+                repairs.append("Converted tests_run to int")
+            except (TypeError, ValueError):
+                doc["tests_run"] = 0
+                repairs.append("Reset tests_run to 0 (unconvertible)")
 
     # Ensure test_results is dict
     if "test_results" in doc and not isinstance(doc["test_results"], dict):

@@ -762,6 +762,12 @@ def grade_all(inspection: dict, declaration: dict,
         or item.get("exception_classification", "") in _governance_exc
         for item in _decl_items
     )
+    # TC-HARD-011 (2026-06-23): _is_governance_sprint guard is now redundant for normal
+    # governance sprints. TC-HARD-007 Option A (grade_item lines 528-541) causes governance
+    # items with evidence to reach ACCEPTED_VERIFIED → verified_count > 0 → the outer
+    # "verified_count == 0" condition never fires for well-formed governance sprints.
+    # Preserved as a safety net only for the degenerate case where every governance item
+    # lacks evidence (all OVERCLAIMED). Regression: test_evidence_quality_governance_exempt.py.
     if evidence_quality_score == 0.0 and accepted_count > 0 and verified_count == 0:
         if not _is_governance_sprint and overall_verdict == "ACCEPTED":
             overall_verdict = "ACCEPTED_WITH_REWORK"

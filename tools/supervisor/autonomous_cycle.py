@@ -343,6 +343,32 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
         except Exception as _pe:
             print(f"  [PLAN_LOCK] Warning: could not read {_lp.name}: {_pe}")
 
+    # Step 0b-validate: Pre-execution plan readiness check (TC-PG-005)
+    # Non-blocking: log CRITICAL and return exit 3 if plan is invalid (Supreme Directive applies).
+    if plan_lock and plan_lock.get("plan_path"):
+        try:
+            import sys as _sys
+            _sup_dir = str(Path(__file__).resolve().parent)
+            if _sup_dir not in _sys.path:
+                _sys.path.insert(0, _sup_dir)
+            from validate_plan_readiness import validate_plan_readiness as _vpr  # type: ignore[import]
+            _active_plan_path = Path(plan_lock["plan_path"])
+            _readiness = _vpr(_active_plan_path)
+            _pev = _readiness.get("pre_execution_plan_validation", {})
+            if _pev.get("execution_may_start", True):
+                for _w in _pev.get("warnings", []):
+                    print(f"  [PLAN_READINESS] WARN: {_w}")
+                print(f"  [PLAN_READINESS] PASS — {_active_plan_path.name}")
+            else:
+                for _f in _pev.get("failures", []):
+                    print(f"  [PLAN_READINESS] CRITICAL: {_f}")
+                print(f"  [PLAN_READINESS] FAIL — plan not ready for execution. "
+                      "Logging and continuing per Supreme Directive (exit 3 non-blocking).")
+        except ImportError:
+            print("  [PLAN_READINESS] validate_plan_readiness not available — skipping (non-blocking)")
+        except Exception as _vpr_exc:
+            print(f"  [PLAN_READINESS] WARNING: readiness check failed ({_vpr_exc}) — skipping (non-blocking)")
+
     # Step 1: Validate declaration
     _logger.info("Step 1: Validate declaration", extra={"sprint_id": "pending"})
     print("=== STEP 1: VALIDATE DECLARATION ===")
@@ -360,6 +386,26 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
     sprint_id = decl.get("sprint_id", "unknown")
     _logger.info("Declaration validated", extra={"sprint_id": run_id})
     print(f"  VALID: run_id={run_id}, sprint_id={sprint_id}")
+
+    # TC-HARD-010 (2026-06-23): Capture actual HEAD at review time.
+    # The declaration's git_head_end may be stale (written before the final commit).
+    # git_head_at_review is injected into the review manifest for accurate provenance.
+    _git_head_at_review = "unknown"
+    try:
+        import subprocess as _gh_sp
+        _gh_result = _gh_sp.run(
+            ["git", "rev-parse", "HEAD"],
+            capture_output=True, text=True, timeout=10, cwd=repo_root
+        )
+        if _gh_result.returncode == 0:
+            _git_head_at_review = _gh_result.stdout.strip()[:12]
+    except Exception:
+        pass
+    _git_head_declared = decl.get("git_head_end", "unknown")
+    if _git_head_at_review != "unknown" and _git_head_declared not in ("unknown", _git_head_at_review):
+        print(f"  [TC-HARD-010] git_head_end in declaration ({_git_head_declared}) differs "
+              f"from actual HEAD ({_git_head_at_review}). Declaration was written pre-commit. "
+              f"Review manifest will include git_head_at_review for accurate provenance.")
 
     # TC-H2-002: Anti-inflation check — tests_run vs tests_created
     _tests_run = decl.get("tests_run", 0)
@@ -664,6 +710,7 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
         _grade_cache_path = None  # Use default (legacy path)
     review = grade_all(inspection, decl, grade_cache_path=_grade_cache_path)
     review["declaration_path"] = str(declaration_path)
+    review["git_head_at_review"] = _git_head_at_review  # TC-HARD-010: accurate HEAD at review time
     review["dag_validation"] = dag_validation_result
 
     # Step 2d2 post-grading: promote requirements authority failure to critical rework
@@ -947,16 +994,39 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
         from overclaim_detector import OverclaimDetector, OverclaimReport
         from graph_store import GraphStore
 
-        graph_path = repo_root / "reports" / "capability-layer" / "proof-graph.json"
-        if graph_path.exists():
-            store = GraphStore.load(graph_path)
+        # Support both directory format (nodes.jsonl + edges.jsonl) and legacy JSON.
+        # Prefer directory; fall back to JSON file for backwards compatibility.
+        graph_dir = repo_root / "reports" / "capability-layer" / "proof-graph"
+        graph_path_json = repo_root / "reports" / "capability-layer" / "proof-graph.json"
+        if graph_dir.is_dir():
+            store = GraphStore.load_from_dir(graph_dir)
+            _graph_source = str(graph_dir)
+        elif graph_path_json.exists():
+            # Legacy JSON path — attempt directory-compatible JSON load
+            try:
+                _pg_data = json.loads(graph_path_json.read_text(encoding="utf-8"))
+                store = GraphStore()
+                for n in _pg_data.get("nodes", []):
+                    from models import GraphNode as _GN  # type: ignore
+                    store.add_node(_GN.from_dict(n))
+                for e in _pg_data.get("edges", []):
+                    from models import GraphEdge as _GE  # type: ignore
+                    store.add_edge(_GE.from_dict(e))
+            except Exception:
+                store = GraphStore()
+            _graph_source = str(graph_path_json)
+        else:
+            store = None
+            _graph_source = None
+
+        if store is not None:
             detector = OverclaimDetector(store)
             oc_report: OverclaimReport = detector.detect_all()
             oc_dict = oc_report.to_dict()
             (review_dir / "overclaim-detector-result.json").write_text(
                 json.dumps(oc_dict, indent=2), encoding="utf-8"
             )
-            print(f"  Overclaim detector: {oc_report.error_count} ERROR, "
+            print(f"  Overclaim detector ({_graph_source}): {oc_report.error_count} ERROR, "
                   f"{oc_report.warning_count} WARNING findings")
             if oc_report.error_count > 0:
                 review["overclaim_detector_errors"] = oc_report.error_count
@@ -966,7 +1036,7 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
                         review.setdefault("overclaim_findings", []).append(finding.to_dict())
                 print(f"  >>> {oc_report.error_count} ERROR overclaim findings recorded")
         else:
-            print("  Overclaim detector: proof-graph.json not found — skipped")
+            print("  Overclaim detector: proof-graph dir/file not found — skipped")
     except ImportError:
         print("  Overclaim detector: import failed — skipped (non-blocking)")
     except Exception as e:
@@ -1290,6 +1360,7 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
         "rejected_count": len(review["rejected_items"]),
         "overclaimed_count": len(review["overclaimed_items"]),
         "blocked_count": len([g for g in review["item_grades"] if g["supervisor_grade"] == "BLOCKED_EXTERNAL_GATE"]),
+        "git_head_at_review": review.get("git_head_at_review", "unknown"),  # TC-HARD-013
     }
     manifest_path = review_dir / "supervisor-cycle-manifest.yaml"
     manifest_path.write_text(
