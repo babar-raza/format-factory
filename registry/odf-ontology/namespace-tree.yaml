@@ -1,101 +1,149 @@
----
-# Namespace Tree — Format Factory
-# Hierarchical tree of ODF spec namespaces and their elements
-schema_version: "1.0"
-generated_at: "2026-06-15"
-
-tree:
+schema_version: '1.0'
+generated_at: '2026-06-22T07:53:11.494325+00:00'
+source: prefix-namespace-registry.yaml + qname-to-code-map.yaml
+description: Hierarchical namespace structure for ODF elements used in Format Factory
+namespaces:
   office:
+    uri: urn:oasis:names:tc:opendocument:xmlns:office:1.0
+    spec: ODF 1.3
+    dotnet_namespace: FormatFactory.Office
+    python_module_pattern: src.python.{format}.office
     elements:
-      - document
-      - body
-      - spreadsheet
-      - text
-      - automatic-styles
-      - master-styles
-      - font-face-decls
-      - scripts
-      - settings
-      - meta
-    children_of:
-      document: [body, automatic-styles, master-styles, font-face-decls, scripts, settings, meta]
-      body: [spreadsheet, text]
-      spreadsheet: ["table:table"]
-      text: ["text:p", "text:h", "text:list", "text:section"]
-
+    - office:document
+    - office:body
+    - office:spreadsheet
+    - office:text
+    - office:automatic-styles
+    - office:master-styles
+    - office:font-face-decls
+    - office:scripts
+    - office:settings
+    - office:meta
+    element_count: 10
   table:
+    uri: urn:oasis:names:tc:opendocument:xmlns:table:1.0
+    spec: ODF 1.3
+    dotnet_namespace: FormatFactory.Table
+    python_module_pattern: src.python.{format}.table
     elements:
-      - table
-      - table-row
-      - table-cell
-      - table-column
-      - covered-table-cell
-      - named-range
-      - named-expressions
-      - content-validations
-      - content-validation
-    children_of:
-      table: [table-column, table-row]
-      table-row: [table-cell, covered-table-cell]
-      table-cell: ["text:p"]
-      content-validations: [content-validation]
-
+    - table:table
+    - table:table-row
+    - table:table-cell
+    - table:table-column
+    - table:covered-table-cell
+    - table:named-range
+    - table:named-expressions
+    - table:data-pilot-tables
+    - table:content-validations
+    - table:content-validation
+    element_count: 10
   text:
+    uri: urn:oasis:names:tc:opendocument:xmlns:text:1.0
+    spec: ODF 1.3
+    dotnet_namespace: FormatFactory.Text
+    python_module_pattern: src.python.{format}.text
     elements:
-      - p
-      - h
-      - span
-      - list
-      - list-item
-      - section
-      - note
-      - note-body
-      - a
-      - bookmark
-      - sequence-decls
-    children_of:
-      list: [list-item]
-      list-item: ["text:p", "text:list"]
-      section: ["text:p", "text:h", "text:list", "text:section"]
-      note: [note-body]
-      p: ["text:span", "text:a", "text:note"]
-      h: ["text:span", "text:a"]
-
+    - text:p
+    - text:h
+    - text:span
+    - text:list
+    - text:list-item
+    - text:section
+    - text:note
+    - text:note-body
+    - text:a
+    - text:bookmark
+    - text:sequence-decls
+    element_count: 11
   style:
+    uri: urn:oasis:names:tc:opendocument:xmlns:style:1.0
+    spec: ODF 1.3
+    dotnet_namespace: FormatFactory.Style
+    python_module_pattern: src.python.{format}.style
     elements:
-      - style
-      - default-style
-      - font-face
-      - text-properties
-      - paragraph-properties
-      - table-properties
-      - table-row-properties
-      - table-cell-properties
-      - table-column-properties
-      - page-layout
-      - master-page
-    children_of:
-      style: [text-properties, paragraph-properties, table-properties, table-row-properties, table-cell-properties, table-column-properties]
-      default-style: [text-properties, paragraph-properties]
-
+    - style:style
+    - style:default-style
+    - style:font-face
+    - style:text-properties
+    - style:paragraph-properties
+    - style:table-properties
+    - style:table-row-properties
+    - style:table-cell-properties
+    - style:table-column-properties
+    - style:page-layout
+    - style:master-page
+    element_count: 11
+  fo:
+    uri: urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0
+    spec: ODF 1.3 (XSL-FO)
+    dotnet_namespace: FormatFactory.Fo
+    python_module_pattern: src.python.{format}.fo
+    elements:
+    - fo:font-size
+    - fo:font-weight
+    - fo:color
+    - fo:background-color
+    - fo:text-align
+    - fo:margin
+    - fo:padding
+    - fo:border
+    element_count: 8
   draw:
+    uri: urn:oasis:names:tc:opendocument:xmlns:drawing:1.0
+    spec: ODF 1.3
+    dotnet_namespace: FormatFactory.Draw
+    python_module_pattern: src.python.{format}.draw
     elements:
-      - frame
-      - image
-      - text-box
-      - page
-      - custom-shape
-      - ellipse
-      - rect
-    children_of:
-      frame: [image, text-box]
-      page: [frame, custom-shape, ellipse, rect]
-
+    - draw:frame
+    - draw:image
+    - draw:text-box
+    - draw:page
+    - draw:custom-shape
+    - draw:ellipse
+    - draw:rect
+    element_count: 7
   number:
+    uri: urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0
+    spec: ODF 1.3
+    dotnet_namespace: FormatFactory.Number
+    python_module_pattern: src.python.{format}.number
     elements:
-      - number-style
-      - date-style
-      - time-style
-      - percentage-style
-      - currency-style
-      - text-style
+    - number:number-style
+    - number:date-style
+    - number:time-style
+    - number:percentage-style
+    - number:currency-style
+    - number:text-style
+    element_count: 6
+  svg:
+    uri: urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0
+    spec: ODF 1.3 (SVG)
+    dotnet_namespace: FormatFactory.Svg
+    python_module_pattern: src.python.{format}.svg
+    elements:
+    - svg:width
+    - svg:height
+    - svg:x
+    - svg:y
+    element_count: 4
+  zst:
+    uri: urn:ietf:rfc:8878
+    spec: RFC 8878
+    dotnet_namespace: FormatFactory.Zst
+    python_module_pattern: src.python.zst
+    elements:
+    - zst:frame
+    - zst:magic-number
+    - zst:frame-header
+    - zst:block
+    element_count: 4
+  csv:
+    uri: urn:ietf:rfc:4180
+    spec: RFC 4180
+    dotnet_namespace: FormatFactory.Csv
+    python_module_pattern: src.python.csv
+    elements:
+    - csv:record
+    - csv:field
+    - csv:header
+    element_count: 3
