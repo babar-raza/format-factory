@@ -842,10 +842,10 @@ def write_outputs(review: dict, output_dir: Path) -> None:
         "",
         "## Summary",
         f"- Accepted: {len(review['accepted_items'])}",
-        f"- Rework: {len(review['rework_items'])}",
+        f"- Rework: {sum(1 for g in review.get('item_grades', []) if g.get('supervisor_grade') in ('REWORK_REQUIRED', 'OVERCLAIMED'))}",
         f"- Rejected: {len(review['rejected_items'])}",
         f"- Overclaimed: {len(review['overclaimed_items'])}",
-        f"- Critical Rework: {review['critical_rework_count']}",
+        f"- Critical Rework: {sum(1 for g in review.get('item_grades', []) if g.get('supervisor_grade') in ('REJECTED', 'OVERCLAIMED'))}",
         "",
         "## Item Grades",
     ]
