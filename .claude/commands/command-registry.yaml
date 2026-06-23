@@ -577,3 +577,16 @@ commands:
     gate_criteria: []
     writes_product_source: true
     enforcement_type: hard
+
+  - command_id: python-qname-code-reviewer
+    file: .claude/commands/python-qname-code-reviewer.md
+    description: Review Python format package against QName architecture standard (13 checks, 4 verdicts, 9 evidence artifacts)
+    phase: 0
+    status: active
+    created: "2026-06-23"
+    skill_registry_ref: true
+    skill_id: python-qname-code-reviewer
+    master_plan_lanes: [1, 2, 3, 11]
+    gate_criteria: []
+    writes_product_source: false
+    enforcement_type: hard

@@ -1,36 +1,30 @@
 schema_version: '1.0'
-generated_at: '2026-06-22T19:27:47.654316'
+generated_at: '2026-06-23T09:22:58.781858'
 repo_root: C:\Users\prora\OneDrive\Documents\GitHub\format-factory
 git:
-  head: 4d26e215
+  head: de3a00a7
   status:
-    modified_count: 20
-    untracked_count: 0
+    modified_count: 60
+    untracked_count: 3
     staged_count: 1
-    total_changed: 21
+    total_changed: 64
     clean: false
 supervisor_mode: 4
 latest_sprint:
-  sprint_id: snoopy-juggling-seal-section-32-execution
+  sprint_id: frolicking-squishing-shannon-rework-clearance
   run_id: unknown
   autonomous_continue: false
-  iteration: 9
+  iteration: 7
   max_iterations: 12
   hard_stops:
   - critical_rework_blocks_continuation
   rework_items:
-  - TC-DIF-002
-  - TC-DIF-003
-  - "TC-GUARD-001:gap_ledger_ref_missing:TC-DIF-002 \u2014 Add gap_ledger_ref or spec_fact_refs\
-    \ from reports/capability-layer/gap-ledger.json"
-  - "TC-GUARD-001:gap_ledger_ref_missing:TC-DIF-003 \u2014 Add gap_ledger_ref or spec_fact_refs\
-    \ from reports/capability-layer/gap-ledger.json"
-  - GOV_BLOCK:execution_method_required_validator
-  - GOV_BLOCK:source_diff_required_validator
-  - GOV_BLOCK:idempotency_key_required_validator
-  - GOV_BLOCK:route_decision_required_validator
-  - GOV_BLOCK:spec_fact_refs_validator
-  - GOV_BLOCK:validate_skill_transcript_present
+  - TC-V50-RUNNER-FSS-001
+  - TC-COMMIT-FSS-001
+  - TC-FODG-ANNOT-MISSING-001
+  - TC-FODS-CONSTANTS-COMMIT-001
+  - TC-FODG-SAL-FACTS-001
+  - TC-ZST-WHEEL-REBUILD-001
 poc_matrix:
   sprint: capability-layer-closeout-rnext
   last_updated: '2026-06-18'
@@ -49,8 +43,8 @@ poc_matrix:
       commercial_ready: false
   foss_python_products: {}
 skill_registry:
-  total_skills: 46
-  active_skills: 44
+  total_skills: 47
+  active_skills: 45
   skill_ids:
   - add-dotnet-api
   - add-python-api
@@ -96,6 +90,7 @@ skill_registry:
   - sal-pipeline-heal
   - implement-spec-stub
   - decompose-monolithic-codec
+  - python-qname-code-reviewer
   source_edits_require_handoff: true
   ledger_required: true
 product_code_ledger:

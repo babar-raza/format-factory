@@ -1,11 +1,83 @@
 {
-  "sprint_id": "supervisor-export-20260622-192907",
-  "timestamp": "2026-06-22T19:29:07.660042",
-  "verdict": "ACCEPTED",
-  "source_bundle": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\supervisor\\reviews\\floating-stargazing-globe-hardening-20260622-142602\\declaration-review-package.zip",
+  "sprint_id": "supervisor-export-20260623-092258",
+  "timestamp": "2026-06-23T09:22:58.765855",
+  "verdict": "ACCEPTED_WITH_REWORK",
+  "source_bundle": ".local/evidences/fss-rework-clearance-20260623",
   "tasks": [
     {
-      "task_id": "TASK-001",
+      "task_id": "REPAIR-001",
+      "title": "Repair: OVERCLAIMED: V50 in governance runner returns PASS",
+      "description": "Item declared completed but no evidence found. Provide evidence at declared paths.",
+      "status": "pending",
+      "ff_taskcard_ref": "repair-required",
+      "supervisor_task_ref": "TC-SUP-009",
+      "acceptance_evidence": "contradictions.md shows 0 CRITICAL contradictions",
+      "validation_command": "python tools/supervisor/compare_goal_to_evidence.py --review reports/supervisor/evidence-review.json",
+      "non_authoritative": true,
+      "lane": "C2"
+    },
+    {
+      "task_id": "REPAIR-002",
+      "title": "Repair: OVERCLAIMED: Sprint commits verified in git log",
+      "description": "Item declared completed but no evidence found. Provide evidence at declared paths.",
+      "status": "pending",
+      "ff_taskcard_ref": "repair-required",
+      "supervisor_task_ref": "TC-SUP-009",
+      "acceptance_evidence": "contradictions.md shows 0 CRITICAL contradictions",
+      "validation_command": "python tools/supervisor/compare_goal_to_evidence.py --review reports/supervisor/evidence-review.json",
+      "non_authoritative": true,
+      "lane": "C2"
+    },
+    {
+      "task_id": "REPAIR-003",
+      "title": "Repair: OVERCLAIMED: 93/93 FODG functions annotated",
+      "description": "Item declared completed but no evidence found. Provide evidence at declared paths.",
+      "status": "pending",
+      "ff_taskcard_ref": "repair-required",
+      "supervisor_task_ref": "TC-SUP-009",
+      "acceptance_evidence": "contradictions.md shows 0 CRITICAL contradictions",
+      "validation_command": "python tools/supervisor/compare_goal_to_evidence.py --review reports/supervisor/evidence-review.json",
+      "non_authoritative": true,
+      "lane": "C2"
+    },
+    {
+      "task_id": "REPAIR-004",
+      "title": "Repair: OVERCLAIMED: fods constants spec facts committed",
+      "description": "Item declared completed but no evidence found. Provide evidence at declared paths.",
+      "status": "pending",
+      "ff_taskcard_ref": "repair-required",
+      "supervisor_task_ref": "TC-SUP-009",
+      "acceptance_evidence": "contradictions.md shows 0 CRITICAL contradictions",
+      "validation_command": "python tools/supervisor/compare_goal_to_evidence.py --review reports/supervisor/evidence-review.json",
+      "non_authoritative": true,
+      "lane": "C2"
+    },
+    {
+      "task_id": "REPAIR-005",
+      "title": "Repair: OVERCLAIMED: FACT-FODG-001 and FACT-FODG-002 in SAL",
+      "description": "Item declared completed but no evidence found. Provide evidence at declared paths.",
+      "status": "pending",
+      "ff_taskcard_ref": "repair-required",
+      "supervisor_task_ref": "TC-SUP-009",
+      "acceptance_evidence": "contradictions.md shows 0 CRITICAL contradictions",
+      "validation_command": "python tools/supervisor/compare_goal_to_evidence.py --review reports/supervisor/evidence-review.json",
+      "non_authoritative": true,
+      "lane": "C2"
+    },
+    {
+      "task_id": "REPAIR-006",
+      "title": "Repair: OVERCLAIMED: ZST wheel rebuilt with compressed_stream",
+      "description": "Item declared completed but no evidence found. Provide evidence at declared paths.",
+      "status": "pending",
+      "ff_taskcard_ref": "repair-required",
+      "supervisor_task_ref": "TC-SUP-009",
+      "acceptance_evidence": "contradictions.md shows 0 CRITICAL contradictions",
+      "validation_command": "python tools/supervisor/compare_goal_to_evidence.py --review reports/supervisor/evidence-review.json",
+      "non_authoritative": true,
+      "lane": "C2"
+    },
+    {
+      "task_id": "TASK-007",
       "title": "Select governed product gaps and validate the product-code ledger",
       "description": "Load .local/supervisor/selected-product-gaps.json and .supervisor/skill-registry.yaml. No direct ad-hoc src edits are permitted. Any generated execution handoff that edits src must update reports/r90/product-code-change-ledger.json.",
       "status": "pending",
@@ -17,9 +89,9 @@
       "lane": "C3"
     },
     {
-      "task_id": "TASK-002",
+      "task_id": "TASK-008",
       "title": "Prepare commit candidate summary and changed-file manifest",
-      "description": "Modified tracked files detected: 2 file(s) (e.g. .supervisor/state/current-run.json). Build evidence bundle and write commit candidate manifest. Agent-owned preparation \u2014 do NOT self-commit.",
+      "description": "Modified tracked files detected: 14 file(s) (e.g. .supervisor/state/current-run.json). Build evidence bundle and write commit candidate manifest. Agent-owned preparation \u2014 do NOT self-commit.",
       "status": "agent-owned",
       "ff_doc_ref": "plans/master-plan.md",
       "supervisor_task_ref": "TC-R79-CLOSURE-001",
@@ -29,7 +101,7 @@
       "lane": "C3"
     },
     {
-      "task_id": "TASK-003",
+      "task_id": "TASK-009",
       "title": "Execute git commit (requires explicit user authorization \u2014 do NOT self-execute)",
       "description": "Commit execution requires explicit user authorization. Do not commit without the user saying so. This is a TRUE_EXTERNAL_GATE per stop_reason_adjudicator.",
       "status": "external-gate",
@@ -42,7 +114,7 @@
       "lane": "C3"
     },
     {
-      "task_id": "TASK-004",
+      "task_id": "TASK-010",
       "title": "Work on open taskcard: TC-0015-spec-retrieval-strategy-evaluation",
       "description": "TC-0015: Hybrid Spec Retrieval Strategy Evaluation",
       "status": "pending",
@@ -54,7 +126,7 @@
       "lane": "C3"
     },
     {
-      "task_id": "TASK-005",
+      "task_id": "TASK-011",
       "title": "Work on open taskcard: TC-0016-fods-vector-index-pilot",
       "description": "TC-0016: FODS Vector Index Pilot",
       "status": "pending",
@@ -66,7 +138,7 @@
       "lane": "C3"
     },
     {
-      "task_id": "TASK-006",
+      "task_id": "TASK-012",
       "title": "Work on open taskcard: TC-0020-spec-workbench-core",
       "description": "TC-0020: Spec Workbench Core (All Formats)",
       "status": "pending",
@@ -78,7 +150,7 @@
       "lane": "C3"
     },
     {
-      "task_id": "TASK-007",
+      "task_id": "TASK-013",
       "title": "Advance one dogfood export path using a Format Factory library",
       "description": "Product objective: close or verify a selected dogfood export from .local/supervisor/selected-product-gaps.json. Use a Format Factory-produced library and record truthful status.",
       "status": "pending",
@@ -90,7 +162,7 @@
       "lane": "C4"
     },
     {
-      "task_id": "TASK-008",
+      "task_id": "TASK-014",
       "title": "Build package artifacts and run installed-workflow proof",
       "description": "Product objective: prove changed product packages from physical artifacts. A missing artifact is a failure, not a skipped package test.",
       "status": "pending",
@@ -102,7 +174,7 @@
       "lane": "C5"
     },
     {
-      "task_id": "TASK-009",
+      "task_id": "TASK-015",
       "title": "Write evidence declaration and run supervisor autonomous-cycle",
       "description": "Write .local/evidences/<run_id>/evidence-declaration.yaml for all work items, then run the declaration-driven supervisor autonomous-cycle. ZIP export is optional.",
       "status": "pending",
@@ -114,5 +186,5 @@
       "lane": "C6"
     }
   ],
-  "notes": "Generated from evidence review of sprint floating-stargazing-globe-hardening"
+  "notes": "Generated from evidence review of sprint frolicking-squishing-shannon-rework-clearance"
 }

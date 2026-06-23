@@ -1,20 +1,20 @@
 # Supervisor-Generated Next Sprint Prompt
-# Source sprint: floating-stargazing-globe-hardening
+# Source sprint: frolicking-squishing-shannon-rework-clearance
 # Stream: mainstream
-# Generated: 2026-06-22T19:29:07.652503
+# Generated: 2026-06-23T09:22:58.748275
 # ADVISORY ONLY — not a Format Factory authority document
 # This is INPUT to the next sprint, not a gate approval or commit authorization.
 
 ---
 
 ## Sprint Focus
-ADVANCE: Product deepening — .NET commercial + Python FOSS + dogfood + packaging
+PRODUCT + REPAIR: Advance product POC AND address CRITICAL contradictions
 
 ## Prior Sprint Summary
-- Sprint ID: floating-stargazing-globe-hardening
-- Evidence verdict: ACCEPTED
-- Tests: 68 passed, 0 failed, 0 skipped
-- Autonomous continue: True
+- Sprint ID: frolicking-squishing-shannon-rework-clearance
+- Evidence verdict: ACCEPTED_WITH_REWORK
+- Tests: 1609 passed, 0 failed, 0 skipped
+- Autonomous continue: False
 
 ## STOP_REASON_ADVISORY (enforced by stop_reason_adjudicator.py)
 
@@ -36,21 +36,31 @@ TRUE_EXTERNAL_GATE (ONLY these warrant a stop):
 - Credentials unavailable with no fallback
 
 ## Section 1: New Product Work (Advisory — Always Execute)
-- [pending] TASK-001: Select governed product gaps and validate the product-code ledger
-- [agent-owned] TASK-002: Prepare commit candidate summary and changed-file manifest
-- [external-gate] TASK-003: Execute git commit (requires explicit user authorization — do NOT self-execute)
-- [pending] TASK-004: Work on open taskcard: TC-0015-spec-retrieval-strategy-evaluation
-- [pending] TASK-005: Work on open taskcard: TC-0016-fods-vector-index-pilot
-- [pending] TASK-006: Work on open taskcard: TC-0020-spec-workbench-core
-- [pending] TASK-007: Advance one dogfood export path using a Format Factory library
-- [pending] TASK-008: Build package artifacts and run installed-workflow proof
-- [pending] TASK-009: Write evidence declaration and run supervisor autonomous-cycle
+- [pending] TASK-007: Select governed product gaps and validate the product-code ledger
+- [agent-owned] TASK-008: Prepare commit candidate summary and changed-file manifest
+- [external-gate] TASK-009: Execute git commit (requires explicit user authorization — do NOT self-execute)
+- [pending] TASK-010: Work on open taskcard: TC-0015-spec-retrieval-strategy-evaluation
+- [pending] TASK-011: Work on open taskcard: TC-0016-fods-vector-index-pilot
+- [pending] TASK-012: Work on open taskcard: TC-0020-spec-workbench-core
+- [pending] TASK-013: Advance one dogfood export path using a Format Factory library
+- [pending] TASK-014: Build package artifacts and run installed-workflow proof
+- [pending] TASK-015: Write evidence declaration and run supervisor autonomous-cycle
 
 ## Section 2: Rework / Repair (Advisory — Fix Before Closeout)
-None
+- [pending] REPAIR-001: Repair: OVERCLAIMED: V50 in governance runner returns PASS
+- [pending] REPAIR-002: Repair: OVERCLAIMED: Sprint commits verified in git log
+- [pending] REPAIR-003: Repair: OVERCLAIMED: 93/93 FODG functions annotated
+- [pending] REPAIR-004: Repair: OVERCLAIMED: fods constants spec facts committed
+- [pending] REPAIR-005: Repair: OVERCLAIMED: FACT-FODG-001 and FACT-FODG-002 in SAL
+- [pending] REPAIR-006: Repair: OVERCLAIMED: ZST wheel rebuilt with compressed_stream
 
 ## Contradictions Context
-None
+- [CRITICAL] OVERCLAIMED: V50 in governance runner returns PASS
+- [CRITICAL] OVERCLAIMED: Sprint commits verified in git log
+- [CRITICAL] OVERCLAIMED: 93/93 FODG functions annotated
+- [CRITICAL] OVERCLAIMED: fods constants spec facts committed
+- [CRITICAL] OVERCLAIMED: FACT-FODG-001 and FACT-FODG-002 in SAL
+- [CRITICAL] OVERCLAIMED: ZST wheel rebuilt with compressed_stream
 
 ## Non-Negotiable Rules (always apply)
 1. No push without explicit user authorization.
@@ -82,56 +92,56 @@ None
 
 ## Project Memory Context
 ```
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\zst-frame-count-coverage-20260622\declaration-review-package.zip
-- pending_marker_count: 0
-- bundle_entry_count: 61
-- bundle_validation_pass: True
-
-## Entry: product-gap-closure-20260622
-- timestamp: 2026-06-22T13:41:09.393555
-- verdict: ACCEPTED
-- test_count: 0
-- fail_count: 0
-- git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\product-gap-closure-20260622\declaration-review-package.zip
-- pending_marker_count: 0
-- bundle_entry_count: 78
-- bundle_validation_pass: True
-
-## Entry: product-gap-closure-batch-20260622
-- timestamp: 2026-06-22T13:45:10.827669
-- verdict: ACCEPTED
-- test_count: 0
-- fail_count: 0
-- git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\product-gap-closure-batch-20260622\declaration-review-package.zip
-- pending_marker_count: 0
-- bundle_entry_count: 80
-- bundle_validation_pass: True
-
-## Entry: odf-parts-acquisition-20260622
-- timestamp: 2026-06-22T13:51:09.833356
-- verdict: ACCEPTED
-- test_count: 16
-- fail_count: 0
-- git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\odf-parts-acquisition-20260622\declaration-review-package.zip
-- pending_marker_count: 0
-- bundle_entry_count: 64
-- bundle_validation_pass: True
-- test_delta: +16
-- test_delta_from: 0
-
-## Entry: forensics-healing-sprint-20260622
-- timestamp: 2026-06-22T14:23:06.944637
-- verdict: ACCEPTED
-- test_count: 0
-- fail_count: 0
-- git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\forensics-healing-sprint-20260622\declaration-review-package.zip
-- pending_marker_count: 0
 - bundle_entry_count: 82
 - bundle_validation_pass: True
+
+## Entry: floating-stargazing-globe-hardening
+- timestamp: 2026-06-22T19:29:07.780588
+- verdict: ACCEPTED
+- test_count: 68
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\floating-stargazing-globe-hardening-20260622-142602\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 70
+- bundle_validation_pass: True
+- test_delta: +68
+- test_delta_from: 0
+
+## Entry: frolicking-squishing-shannon-closeout-20260622
+- timestamp: 2026-06-22T21:17:06.089854
+- verdict: ACCEPTED
+- test_count: 0
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\frolicking-squishing-shannon-closeout-20260622\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 63
+- bundle_validation_pass: True
+
+## Entry: qhard-phase0-phase1-20260623
+- timestamp: 2026-06-23T08:49:07.665583
+- verdict: ACCEPTED
+- test_count: 0
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\qhard-phase0-phase1-20260623\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 89
+- bundle_validation_pass: True
+
+## Entry: FORMAT-FACTORY-FLOATING-STARGAZING-GLOBE-HARDENING-20260623-034629
+- timestamp: 2026-06-23T08:55:08.128595
+- verdict: ACCEPTED
+- test_count: 22
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\floating-stargazing-globe-hardening-20260623-034629\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 69
+- bundle_validation_pass: True
+- test_delta: +22
+- test_delta_from: 0
 ```
 
 ---

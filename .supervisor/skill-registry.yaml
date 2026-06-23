@@ -890,3 +890,28 @@ skills:
       - BLOCKED_NO_BACKWARD_COMPAT
       - BLOCKED_NO_LOC_REDUCTION
     notes: "Created 2026-06-22 by TC-AUDIT-007 (tender-dreaming-lovelace hardening). Governs FODG/XCF/ZST monolith decomposition."
+
+  - skill_id: python-qname-code-reviewer
+    command: /python-qname-code-reviewer
+    command_file: .claude/commands/python-qname-code-reviewer.md
+    status: active
+    spec_qname_required: true
+    purpose: >
+      Review a Python format package against the QName architecture standard.
+      Runs 13 structural checks (directory layout, codec purity, spec_qname coverage,
+      SAL fact traceability, Compat facade inheritance, API stability, LOC caps,
+      test coverage, no stubs, backfill CSV, state transition evidence).
+      Produces verdict.json + 8 evidence artifacts.
+      Required before declaring any TC-QHARD-* taskcard complete.
+    product_track: spec_literal_healing
+    required_handoff_fields:
+      - format_id
+    mandatory_validations:
+      - all_13_checks_run
+      - verdict_json_written
+      - evidence_root_populated
+    stop_conditions:
+      - BLOCKED_SAL_CACHE_UNAVAILABLE
+      - BLOCKED_NO_REGISTRY_ENTRY
+      - BLOCKED_BREAKING_API_CHANGE
+    notes: "Created 2026-06-23 by TC-QHARD-004 (imperative-drifting-lecun plan). 13 checks, 4 verdicts, 9 evidence artifacts."

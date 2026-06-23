@@ -1,171 +1,12 @@
 [
   {
-    "item_id": "TC-HARD-003",
-    "item_title": "Fix autonomous-loop.md Step 0 to accept DEFERRED + session filtering + TCLAO",
-    "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_VERIFIED",
-    "evidence_found": true,
-    "evidence_paths": [
-      ".claude/commands/autonomous-loop.md",
-      "tests/supervisor/test_governance_infrastructure.py"
-    ],
-    "tests_supporting": [
-      "tests/supervisor/test_governance_infrastructure.py"
-    ],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths",
-      "Test content verified (1 files)"
-    ],
-    "acceptance_criteria_failed": [],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": "",
-    "tests_evidence_verified": [
-      "tests/supervisor/test_governance_infrastructure.py"
-    ],
-    "purpose_check": {
-      "item_type": "GOVERNANCE_TASKCARD",
-      "has_gap_ref": null,
-      "verdict": "NOT_APPLICABLE",
-      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
-    },
-    "semantic_verification": {
-      "adequate": true,
-      "confidence": 0.7,
-      "stub_detected": false,
-      "deficiencies": [],
-      "llm_used": false,
-      "intermediate_verified": true,
-      "source": "intermediate_content_check",
-      "checks": [
-        {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.claude\\commands\\autonomous-loop.md",
-          "exists": true,
-          "content_ok": true,
-          "detail": "markdown with 230 lines, header=yes",
-          "check_type": "markdown_content"
-        },
-        {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tests\\supervisor\\test_governance_infrastructure.py",
-          "exists": true,
-          "content_ok": true,
-          "detail": "valid (26 test functions with assertions)",
-          "check_type": "python_test_content"
-        }
-      ],
-      "summary": "2/2 evidence files passed content check"
-    }
-  },
-  {
-    "item_id": "TC-HARD-001",
-    "item_title": "Add governance pytest file (26 tests for governance infrastructure)",
-    "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_VERIFIED",
-    "evidence_found": true,
-    "evidence_paths": [
-      "tests/supervisor/test_governance_infrastructure.py"
-    ],
-    "tests_supporting": [
-      "tests/supervisor/test_governance_infrastructure.py"
-    ],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths",
-      "Test content verified (1 files)"
-    ],
-    "acceptance_criteria_failed": [],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": "",
-    "tests_evidence_verified": [
-      "tests/supervisor/test_governance_infrastructure.py"
-    ],
-    "purpose_check": {
-      "item_type": "GOVERNANCE_TASKCARD",
-      "has_gap_ref": null,
-      "verdict": "NOT_APPLICABLE",
-      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
-    },
-    "semantic_verification": {
-      "adequate": true,
-      "confidence": 0.7,
-      "stub_detected": false,
-      "deficiencies": [],
-      "llm_used": false,
-      "intermediate_verified": true,
-      "source": "intermediate_content_check",
-      "checks": [
-        {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tests\\supervisor\\test_governance_infrastructure.py",
-          "exists": true,
-          "content_ok": true,
-          "detail": "valid (26 test functions with assertions)",
-          "check_type": "python_test_content"
-        }
-      ],
-      "summary": "1/1 evidence files passed content check"
-    }
-  },
-  {
-    "item_id": "TC-HARD-007",
-    "item_title": "Formalize governance sprint grader calibration in grade_declared_work.py",
-    "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_VERIFIED",
-    "evidence_found": true,
-    "evidence_paths": [
-      "tools/supervisor/grade_declared_work.py"
-    ],
-    "tests_supporting": [
-      "tests/supervisor/test_governance_validators_v43_v44.py"
-    ],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths",
-      "Test content verified (1 files)"
-    ],
-    "acceptance_criteria_failed": [],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": "",
-    "purpose_check": {
-      "item_type": "GOVERNANCE_TASKCARD",
-      "has_gap_ref": null,
-      "verdict": "NOT_APPLICABLE",
-      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
-    },
-    "semantic_verification": {
-      "adequate": true,
-      "confidence": 0.7,
-      "stub_detected": false,
-      "deficiencies": [],
-      "llm_used": false,
-      "intermediate_verified": true,
-      "source": "intermediate_content_check",
-      "checks": [
-        {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tools\\supervisor\\grade_declared_work.py",
-          "exists": true,
-          "content_ok": true,
-          "detail": "non-empty (40455 bytes): C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tools\\supervisor\\grade_declared_work.py",
-          "check_type": "nonzero_existence"
-        }
-      ],
-      "summary": "1/1 evidence files passed content check"
-    }
-  },
-  {
-    "item_id": "TC-HARD-RECON-002",
-    "item_title": "Verify stale lock handling (TC-HARD-002 recon)",
+    "item_id": "TC-XCF-REGR-FSS-001",
+    "item_title": "XCF regression suite pass",
     "declared_status": "completed",
     "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
     "evidence_found": true,
     "evidence_paths": [
-      "tools/supervisor/check_continuation.py",
-      "tools/supervisor/autonomous_cycle.py"
+      ".local/evidences/fss-rework-clearance-20260623/xcf-regression.txt"
     ],
     "tests_supporting": [],
     "tests_missing": [],
@@ -179,204 +20,223 @@
     ],
     "required_rework": "",
     "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for TC-HARD-RECON-002",
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for TC-XCF-REGR-FSS-001",
     "purpose_check": {
-      "item_type": "GOVERNANCE_TASKCARD",
+      "item_type": "",
       "has_gap_ref": null,
       "verdict": "NOT_APPLICABLE",
       "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
     },
     "semantic_verification": {
       "adequate": true,
-      "confidence": 0.7,
+      "confidence": 0.85,
       "stub_detected": false,
       "deficiencies": [],
-      "llm_used": false,
-      "intermediate_verified": true,
-      "source": "intermediate_content_check",
-      "checks": [
-        {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tools\\supervisor\\check_continuation.py",
-          "exists": true,
-          "content_ok": true,
-          "detail": "non-empty (29175 bytes): C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tools\\supervisor\\check_continuation.py",
-          "check_type": "nonzero_existence"
-        },
-        {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tools\\supervisor\\autonomous_cycle.py",
-          "exists": true,
-          "content_ok": true,
-          "detail": "non-empty (110228 bytes): C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tools\\supervisor\\autonomous_cycle.py",
-          "check_type": "nonzero_existence"
-        }
-      ],
-      "summary": "2/2 evidence files passed content check"
+      "llm_used": true,
+      "_cached_at": "2026-06-23T04:19:25.120548+00:00",
+      "_from_cache": true
     }
   },
   {
-    "item_id": "TC-HARD-RECON-005",
-    "item_title": "Verify V46 skill transcript validator (TC-HARD-005 recon)",
+    "item_id": "TC-ZST-REGR-FSS-001",
+    "item_title": "ZST regression suite pass from wheel",
     "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_VERIFIED",
+    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
     "evidence_found": true,
     "evidence_paths": [
-      "tools/supervisor/governance_validators.py",
-      "tools/supervisor/governance_validator_runner.py"
+      ".local/evidences/fss-rework-clearance-20260623/zst-regression.txt"
     ],
-    "tests_supporting": [
-      "tests/supervisor/test_governance_validators_v43_v44.py"
-    ],
+    "tests_supporting": [],
     "tests_missing": [],
     "acceptance_criteria_met": [
       "Evidence found",
       "No missing paths",
-      "Test content verified (1 files)"
+      "No concrete test/criteria proof (path-only acceptance)"
     ],
-    "acceptance_criteria_failed": [],
+    "acceptance_criteria_failed": [
+      "No raw proof, test content, or acceptance criteria verified"
+    ],
     "required_rework": "",
     "can_autonomously_repair": false,
-    "next_prompt_instruction": "",
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for TC-ZST-REGR-FSS-001",
     "purpose_check": {
-      "item_type": "GOVERNANCE_TASKCARD",
+      "item_type": "",
       "has_gap_ref": null,
       "verdict": "NOT_APPLICABLE",
       "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
     },
     "semantic_verification": {
       "adequate": true,
-      "confidence": 0.7,
+      "confidence": 0.95,
       "stub_detected": false,
       "deficiencies": [],
-      "llm_used": false,
-      "intermediate_verified": true,
-      "source": "intermediate_content_check",
-      "checks": [
-        {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tools\\supervisor\\governance_validators.py",
-          "exists": true,
-          "content_ok": true,
-          "detail": "non-empty (126938 bytes): C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tools\\supervisor\\governance_validators.py",
-          "check_type": "nonzero_existence"
-        },
-        {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tools\\supervisor\\governance_validator_runner.py",
-          "exists": true,
-          "content_ok": true,
-          "detail": "non-empty (9887 bytes): C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tools\\supervisor\\governance_validator_runner.py",
-          "check_type": "nonzero_existence"
-        }
-      ],
-      "summary": "2/2 evidence files passed content check"
+      "llm_used": true,
+      "_cached_at": "2026-06-23T04:19:27.913111+00:00",
+      "_from_cache": true
     }
   },
   {
-    "item_id": "TC-HARD-006-GATE",
-    "item_title": "/check-skill-coverage scope gate for FODS Lane 8 (TC-HARD-006)",
+    "item_id": "TC-BASELINE-VALID-FSS-001",
+    "item_title": "Source structure validator blocks_sprint=False",
     "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_VERIFIED",
+    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
     "evidence_found": true,
     "evidence_paths": [
-      ".supervisor/skill-registry.yaml",
-      ".supervisor/work-type-skill-map.yaml"
+      ".local/evidences/fss-rework-clearance-20260623/source-validator.txt"
     ],
-    "tests_supporting": [
-      "tests/supervisor/test_governance_infrastructure.py"
-    ],
+    "tests_supporting": [],
     "tests_missing": [],
     "acceptance_criteria_met": [
       "Evidence found",
       "No missing paths",
-      "Test content verified (1 files)",
-      "Acceptance criteria verified: PASS"
+      "No concrete test/criteria proof (path-only acceptance)"
     ],
-    "acceptance_criteria_failed": [],
+    "acceptance_criteria_failed": [
+      "No raw proof, test content, or acceptance criteria verified"
+    ],
     "required_rework": "",
     "can_autonomously_repair": false,
-    "next_prompt_instruction": "",
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for TC-BASELINE-VALID-FSS-001",
     "purpose_check": {
-      "item_type": "GOVERNANCE_TASKCARD",
-      "has_gap_ref": null,
-      "verdict": "NOT_APPLICABLE",
-      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
-    },
-    "semantic_verification": {
-      "adequate": false,
-      "confidence": 0.35,
-      "stub_detected": false,
-      "deficiencies": [
-        "few key fields found: [] (expected >=3)"
-      ],
-      "llm_used": false,
-      "intermediate_verified": true,
-      "source": "intermediate_content_check",
-      "checks": [
-        {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.supervisor\\skill-registry.yaml",
-          "exists": true,
-          "content_ok": true,
-          "detail": "YAML has 3/6 expected fields",
-          "check_type": "yaml_content"
-        },
-        {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.supervisor\\work-type-skill-map.yaml",
-          "exists": true,
-          "content_ok": false,
-          "detail": "few key fields found: [] (expected >=3)",
-          "check_type": "yaml_content"
-        }
-      ],
-      "summary": "1/2 evidence files passed content check"
-    }
-  },
-  {
-    "item_id": "TC-HARD-COUNT-FIX",
-    "item_title": "Fix test_governance_validators_v43_v44 validator count (49->50, V50 added)",
-    "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_VERIFIED",
-    "evidence_found": true,
-    "evidence_paths": [
-      "tests/supervisor/test_governance_validators_v43_v44.py"
-    ],
-    "tests_supporting": [
-      "tests/supervisor/test_governance_validators_v43_v44.py"
-    ],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths",
-      "Test content verified (1 files)"
-    ],
-    "acceptance_criteria_failed": [],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": "",
-    "tests_evidence_verified": [
-      "tests/supervisor/test_governance_validators_v43_v44.py"
-    ],
-    "purpose_check": {
-      "item_type": "GOVERNANCE_TASKCARD",
+      "item_type": "",
       "has_gap_ref": null,
       "verdict": "NOT_APPLICABLE",
       "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
     },
     "semantic_verification": {
       "adequate": true,
-      "confidence": 0.7,
+      "confidence": 0.95,
       "stub_detected": false,
       "deficiencies": [],
-      "llm_used": false,
-      "intermediate_verified": true,
-      "source": "intermediate_content_check",
-      "checks": [
-        {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tests\\supervisor\\test_governance_validators_v43_v44.py",
-          "exists": true,
-          "content_ok": true,
-          "detail": "valid (16 test functions with assertions)",
-          "check_type": "python_test_content"
-        }
-      ],
-      "summary": "1/1 evidence files passed content check"
+      "llm_used": true,
+      "_cached_at": "2026-06-23T04:19:31.522051+00:00",
+      "_from_cache": true
+    }
+  },
+  {
+    "item_id": "TC-V50-RUNNER-FSS-001",
+    "item_title": "V50 in governance runner returns PASS",
+    "declared_status": "completed",
+    "supervisor_grade": "OVERCLAIMED",
+    "evidence_found": false,
+    "evidence_paths": [],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [],
+    "acceptance_criteria_failed": [],
+    "required_rework": "Item declared completed but no evidence found. Provide evidence at declared paths.",
+    "can_autonomously_repair": true,
+    "next_prompt_instruction": "REWORK: Provide actual evidence for TC-V50-RUNNER-FSS-001. Status-only claims are not accepted.",
+    "purpose_check": {
+      "item_type": "",
+      "has_gap_ref": null,
+      "verdict": "NOT_APPLICABLE",
+      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
+    }
+  },
+  {
+    "item_id": "TC-COMMIT-FSS-001",
+    "item_title": "Sprint commits verified in git log",
+    "declared_status": "completed",
+    "supervisor_grade": "OVERCLAIMED",
+    "evidence_found": false,
+    "evidence_paths": [],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [],
+    "acceptance_criteria_failed": [],
+    "required_rework": "Item declared completed but no evidence found. Provide evidence at declared paths.",
+    "can_autonomously_repair": true,
+    "next_prompt_instruction": "REWORK: Provide actual evidence for TC-COMMIT-FSS-001. Status-only claims are not accepted.",
+    "purpose_check": {
+      "item_type": "",
+      "has_gap_ref": null,
+      "verdict": "NOT_APPLICABLE",
+      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
+    }
+  },
+  {
+    "item_id": "TC-FODG-ANNOT-MISSING-001",
+    "item_title": "93/93 FODG functions annotated",
+    "declared_status": "completed",
+    "supervisor_grade": "OVERCLAIMED",
+    "evidence_found": false,
+    "evidence_paths": [],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [],
+    "acceptance_criteria_failed": [],
+    "required_rework": "Item declared completed but no evidence found. Provide evidence at declared paths.",
+    "can_autonomously_repair": true,
+    "next_prompt_instruction": "REWORK: Provide actual evidence for TC-FODG-ANNOT-MISSING-001. Status-only claims are not accepted.",
+    "purpose_check": {
+      "item_type": "",
+      "has_gap_ref": null,
+      "verdict": "NOT_APPLICABLE",
+      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
+    }
+  },
+  {
+    "item_id": "TC-FODS-CONSTANTS-COMMIT-001",
+    "item_title": "fods constants spec facts committed",
+    "declared_status": "completed",
+    "supervisor_grade": "OVERCLAIMED",
+    "evidence_found": false,
+    "evidence_paths": [],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [],
+    "acceptance_criteria_failed": [],
+    "required_rework": "Item declared completed but no evidence found. Provide evidence at declared paths.",
+    "can_autonomously_repair": true,
+    "next_prompt_instruction": "REWORK: Provide actual evidence for TC-FODS-CONSTANTS-COMMIT-001. Status-only claims are not accepted.",
+    "purpose_check": {
+      "item_type": "",
+      "has_gap_ref": null,
+      "verdict": "NOT_APPLICABLE",
+      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
+    }
+  },
+  {
+    "item_id": "TC-FODG-SAL-FACTS-001",
+    "item_title": "FACT-FODG-001 and FACT-FODG-002 in SAL",
+    "declared_status": "completed",
+    "supervisor_grade": "OVERCLAIMED",
+    "evidence_found": false,
+    "evidence_paths": [],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [],
+    "acceptance_criteria_failed": [],
+    "required_rework": "Item declared completed but no evidence found. Provide evidence at declared paths.",
+    "can_autonomously_repair": true,
+    "next_prompt_instruction": "REWORK: Provide actual evidence for TC-FODG-SAL-FACTS-001. Status-only claims are not accepted.",
+    "purpose_check": {
+      "item_type": "",
+      "has_gap_ref": null,
+      "verdict": "NOT_APPLICABLE",
+      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
+    }
+  },
+  {
+    "item_id": "TC-ZST-WHEEL-REBUILD-001",
+    "item_title": "ZST wheel rebuilt with compressed_stream",
+    "declared_status": "completed",
+    "supervisor_grade": "OVERCLAIMED",
+    "evidence_found": false,
+    "evidence_paths": [],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [],
+    "acceptance_criteria_failed": [],
+    "required_rework": "Item declared completed but no evidence found. Provide evidence at declared paths.",
+    "can_autonomously_repair": true,
+    "next_prompt_instruction": "REWORK: Provide actual evidence for TC-ZST-WHEEL-REBUILD-001. Status-only claims are not accepted.",
+    "purpose_check": {
+      "item_type": "",
+      "has_gap_ref": null,
+      "verdict": "NOT_APPLICABLE",
+      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
     }
   }
 ]

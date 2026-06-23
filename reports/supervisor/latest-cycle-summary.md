@@ -1,11 +1,11 @@
 # Latest Supervisor Cycle Summary
-Run: floating-stargazing-globe-hardening-20260622-142602
-Sprint: floating-stargazing-globe-hardening
-Timestamp: 2026-06-22T19:27:13.165495
-Verdict: ACCEPTED
-Autonomous Continue: True
-Accepted: 7
-Rework: 0
-Overclaimed: 0
-Review: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\floating-stargazing-globe-hardening-20260622-142602\supervisor-review.md
-Next Prompt: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\floating-stargazing-globe-hardening-20260622-142602\combined-next-worker-prompt.md
+Run: fss-rework-clearance-20260623
+Sprint: frolicking-squishing-shannon-rework-clearance
+Timestamp: 2026-06-23T09:20:10.522273
+Verdict: ACCEPTED_WITH_REWORK
+Autonomous Continue: False
+Accepted: 3
+Rework: 6
+Overclaimed: 6
+Review: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\fss-rework-clearance-20260623\supervisor-review.md
+Next Prompt: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\fss-rework-clearance-20260623\combined-next-worker-prompt.md

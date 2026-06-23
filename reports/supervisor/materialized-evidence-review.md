@@ -1,28 +1,30 @@
 # Materialized Evidence Review
-# Run ID: floating-stargazing-globe-hardening-20260622-142602
-# Sprint: floating-stargazing-globe-hardening
-# Generated: 2026-06-22T19:27:13.247713
+# Run ID: fss-rework-clearance-20260623
+# Sprint: frolicking-squishing-shannon-rework-clearance
+# Generated: 2026-06-23T09:23:10.210921
 
 ## Materialization Summary
 
-- Artifacts verified: 10
-- Artifacts missing: 0
-- Source changes captured: 4
+- Artifacts verified: 8
+- Artifacts missing: 5
+- Source changes captured: 5
 
 ## Work Item Grades
 
 | Item | Grade | Note |
 |------|-------|------|
-| TC-HARD-003 | ACCEPTED | All 2 evidence path(s) verified |
-| TC-HARD-001 | ACCEPTED | All 1 evidence path(s) verified |
-| TC-HARD-007 | ACCEPTED | All 1 evidence path(s) verified |
-| TC-HARD-RECON-002 | ACCEPTED | All 2 evidence path(s) verified |
-| TC-HARD-RECON-005 | ACCEPTED | All 2 evidence path(s) verified |
-| TC-HARD-006-GATE | ACCEPTED | All 2 evidence path(s) verified |
-| TC-HARD-COUNT-FIX | ACCEPTED | All 1 evidence path(s) verified |
+| TC-XCF-REGR-FSS-001 | ACCEPTED | All 1 evidence path(s) verified |
+| TC-ZST-REGR-FSS-001 | ACCEPTED | All 1 evidence path(s) verified |
+| TC-BASELINE-VALID-FSS-001 | ACCEPTED | All 1 evidence path(s) verified |
+| TC-V50-RUNNER-FSS-001 | INSUFFICIENT_EVIDENCE | Declared completed but all evidence paths missing: ['.local/evidences/fss-rework |
+| TC-COMMIT-FSS-001 | INSUFFICIENT_EVIDENCE | Declared completed but all evidence paths missing: ['.local/evidences/fss-rework |
+| TC-FODG-ANNOT-MISSING-001 | INSUFFICIENT_EVIDENCE | Declared completed but all evidence paths missing: ['.local/evidences/fss-rework |
+| TC-FODS-CONSTANTS-COMMIT-001 | ACCEPTED | All 0 evidence path(s) verified |
+| TC-FODG-SAL-FACTS-001 | INSUFFICIENT_EVIDENCE | Declared completed but all evidence paths missing: ['.local/evidences/fss-rework |
+| TC-ZST-WHEEL-REBUILD-001 | INSUFFICIENT_EVIDENCE | Declared completed but all evidence paths missing: ['.local/evidences/fss-rework |
 
 ## Manifest Location
-- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\materialized\floating-stargazing-globe-hardening-20260622-142602\materialized-evidence-manifest.yaml
+- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\materialized\fss-rework-clearance-20260623\materialized-evidence-manifest.yaml
 
 ## Patch Location
-- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\materialized\floating-stargazing-globe-hardening-20260622-142602\source-change-diffs.patch
+- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\materialized\fss-rework-clearance-20260623\source-change-diffs.patch
