@@ -100,7 +100,8 @@ def validate_plan_binding(target_path: str, intent: str = "harden") -> tuple[boo
 
 def write_lock(plan_path: str, last_taskcard: str | None = None, complete: bool = False,
                terminal: bool = False, session_id: str | None = None,
-               track_type: str | None = "product", binding: bool = False) -> None:
+               track_type: str | None = "product", binding: bool = False,
+               audit_gate: bool = False) -> None:
     # B3: normalize path separators so Windows backslashes don't prevent matching
     plan_path = str(plan_path).replace("\\", "/")
 
@@ -112,7 +113,39 @@ def write_lock(plan_path: str, last_taskcard: str | None = None, complete: bool 
                 f"'{forbidden}' is a protected ledger file and cannot be an execution plan."
             )
 
-    status = "TERMINAL_CLOSED" if terminal else ("COMPLETE" if complete else "IN_PROGRESS")
+    # --audit-gate: call lifecycle_audit before writing TERMINAL_CLOSED.
+    # If audit requires iteration → write ITERATION_REQUIRED instead of TERMINAL_CLOSED.
+    # Only applies when --terminal is set. Backward compat: --terminal without --audit-gate unchanged.
+    if terminal and audit_gate:
+        try:
+            from lifecycle_audit import run_lifecycle_audit  # type: ignore[import]
+            audit_result = run_lifecycle_audit(repo_root=_repo_root)
+            audit_verdict = audit_result.get("verdict", "AUDIT_PASS")
+            if audit_verdict == "AUDIT_REQUIRES_ITERATION":
+                status = "ITERATION_REQUIRED"
+                print(
+                    "[write_plan_lock] --audit-gate: lifecycle audit verdict=AUDIT_REQUIRES_ITERATION "
+                    "→ writing ITERATION_REQUIRED (plan will iterate)"
+                )
+            else:
+                status = "TERMINAL_CLOSED"
+                print("[write_plan_lock] --audit-gate: lifecycle audit verdict=AUDIT_PASS → TERMINAL_CLOSED")
+        except ImportError:
+            # lifecycle_audit not installed yet — fall back to TERMINAL_CLOSED safely
+            print(
+                "[write_plan_lock] WARNING: --audit-gate requested but lifecycle_audit not importable; "
+                "falling back to TERMINAL_CLOSED",
+                file=sys.stderr,
+            )
+            status = "TERMINAL_CLOSED"
+        except Exception as exc:
+            print(
+                f"[write_plan_lock] WARNING: lifecycle_audit raised {exc}; falling back to TERMINAL_CLOSED",
+                file=sys.stderr,
+            )
+            status = "TERMINAL_CLOSED"
+    else:
+        status = "TERMINAL_CLOSED" if terminal else ("COMPLETE" if complete else "IN_PROGRESS")
 
     # B2: get session_id BEFORE writing either file so both files have it
     sid = session_id or _get_session_id()
@@ -220,6 +253,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--binding", action="store_true",
                         help="Include binding_contract in lock file to enforce plan path ownership "
                              "and block wrong-plan writes via validate_plan_binding()")
+    parser.add_argument("--audit-gate", action="store_true",
+                        help="When used with --terminal: call lifecycle_audit before closing. "
+                             "If audit requires iteration, writes ITERATION_REQUIRED instead of "
+                             "TERMINAL_CLOSED so check_continuation.py returns CONTINUE. "
+                             "Backward compat: --terminal without --audit-gate is unchanged.")
     args = parser.parse_args(argv)
 
     if args.clear:
@@ -237,7 +275,8 @@ def main(argv: list[str] | None = None) -> int:
 
     write_lock(args.plan_path, last_taskcard=args.last_taskcard,
                complete=args.complete, terminal=args.terminal,
-               track_type=args.track_type, binding=args.binding)
+               track_type=args.track_type, binding=args.binding,
+               audit_gate=getattr(args, "audit_gate", False))
     return 0
 
 

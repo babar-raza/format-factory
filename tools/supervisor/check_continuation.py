@@ -236,6 +236,39 @@ def check(repo_root: Path, *, session_id: str | None = None,
                 active_plan_path=plan_lock.get("plan_path"),
             )
 
+        # --- M6b: ITERATION_REQUIRED — audit-gate found unresolved work ---
+        # Written by write_plan_lock.py --terminal --audit-gate when lifecycle_audit
+        # returns AUDIT_REQUIRES_ITERATION. Same-session ITERATION_REQUIRED → CONTINUE
+        # so the plan can iterate. Cross-session → treat as TERMINAL_CLOSED (CCI safety).
+        if plan_lock.get("status") == "ITERATION_REQUIRED":
+            lock_iter_session = plan_lock.get("session_id")
+            if lock_iter_session and session_id and lock_iter_session == session_id:
+                # Same session — audit says iterate; return CONTINUE
+                return {
+                    "verdict": "CONTINUE",
+                    "reason": "plan_iteration_required",
+                    "detail": (
+                        "Lifecycle audit found unresolved work; plan is iterating. "
+                        f"plan={plan_lock.get('plan_path', 'unknown')!r}"
+                    ),
+                    "iteration": signal.get("iteration", 0),
+                    "max_iterations": signal.get("max_iterations", 5),
+                    "active_plan_path": plan_lock.get("plan_path"),
+                }
+            else:
+                # Cross-session — treat as TERMINAL_CLOSED for CCI safety
+                return _stop(
+                    "POST_PLAN_TERMINAL",
+                    (
+                        f"Plan ITERATION_REQUIRED lock from a different session "
+                        f"(lock_session={lock_iter_session!r}, current={session_id!r}). "
+                        "Treating as terminal for CCI safety."
+                    ),
+                    iteration=signal.get("iteration", 0),
+                    max_iterations=signal.get("max_iterations", 5),
+                    active_plan_path=plan_lock.get("plan_path"),
+                )
+
         if plan_lock.get("status") != "COMPLETE":
             return _stop(
                 "ACTIVE_PLAN_INCOMPLETE",

@@ -28,6 +28,27 @@ Check whether a per-chat plan file is loaded. Look for a system message containi
    ledger should become available in future sessions; it does NOT block the current session.
    The two flags are NOT interchangeable for in-session plan completion.
 
+   **For MACHINERY or LIFECYCLE_HARDENING plans (plan type: machinery_hardening):**
+   Before writing `--terminal`, run the post-completion audit:
+   ```
+   python tools/supervisor/lifecycle_audit.py \
+     --mission-id <mission-id-from-plan-header> \
+     --sprint-id <last-taskcard-id>
+   ```
+   Then close with:
+   ```
+   python tools/supervisor/write_plan_lock.py \
+     --plan-path <plan-file-path> --terminal --audit-gate
+   ```
+   If the lock is written as `ITERATION_REQUIRED` (audit found unresolved work):
+   - Do NOT stop. `check_continuation.py` will return CONTINUE for this session.
+   - Read `.local/supervisor/lifecycle-audit-results.json` for next action.
+   - Use the Edit tool to add any new taskcards identified by the audit to this plan.
+   - Execute the next pending taskcard immediately.
+
+   If the lock is written as `TERMINAL_CLOSED` (audit passed):
+   - The POST_PLAN_TERMINAL rules below apply. STOP and report to user.
+
    Then **IMMEDIATELY STOP**. Report plan completion to the user:
    "Plan [name] complete. All [N] taskcards closed. Awaiting your next instruction."
 
@@ -44,6 +65,12 @@ Check whether a per-chat plan file is loaded. Look for a system message containi
      `check_continuation.py` will return `PLAN_COMPLETED_IN_SESSION` (same class as
      `POST_PLAN_TERMINAL`) when it detects the current session's lock has `status=COMPLETE`.
      This is also NON-OVERRIDABLE.
+
+   **Exception for `ITERATION_REQUIRED` status (machinery plans only):**
+   If `write_plan_lock.py` wrote `ITERATION_REQUIRED` (not `TERMINAL_CLOSED`),
+   `check_continuation.py` will return CONTINUE (not STOP).
+   This is the correct behavior — continue executing pending taskcards.
+   The POST_PLAN_TERMINAL hard stop ONLY applies when `status=TERMINAL_CLOSED`.
 
 **If no plan file is loaded:** proceed normally to session-resume.md.
 
