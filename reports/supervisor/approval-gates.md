@@ -1,16 +1,14 @@
 # Approval Gates Classification
-Sprint ID: TC-HARDEN-005-SMOKE
-Generated: 2026-06-23T11:26:56.642001
+Sprint ID: FF-HEAL-QNAME-20260623-131042
+Generated: 2026-06-23T13:49:11.925265
 Current Mode: MODE 4 (ACTIVE_MCP_ACTIVATION)
 
 ## Pending Actions
 
 | Action | Classification | Who Unblocks |
 |--------|---------------|-------------|
-| Continue to next sprint lanes | autonomous-continue | null |
-| Gate approval (if any gate pending) | stop-gate-approval-required | Babar_Raza |
-| Push/commit | stop-push-approval-required | User |
-| MCP activation (MODE 4 ACTIVE — .vscode/mcp.json verified present) | autonomous-continue | already-done |
+| Repair 4 CRITICAL contradictions | local-repair-loop | Claude_Code |
+| Continue to next sprint | stop-contradictions-present | Claude_Code (after repair) |
 
 ## Summary
 - AUTONOMOUS_CONTINUE: NO — repair required first

@@ -1,9 +1,30 @@
 {
-  "sprint_id": "TC-HARDEN-005-SMOKE",
-  "timestamp": "2026-06-23T11:25:44.064465",
-  "overall": "CLEAN",
-  "critical_count": 0,
+  "sprint_id": "FF-HEAL-QNAME-20260623-131042",
+  "timestamp": "2026-06-23T13:47:07.412233",
+  "overall": "CRITICAL_CONTRADICTIONS",
+  "critical_count": 4,
   "warning_count": 0,
   "autonomous_continue": false,
-  "contradictions": []
+  "contradictions": [
+    {
+      "severity": "CRITICAL",
+      "description": "OVERCLAIMED: Remove NdjsonRecord class from ndjson_codec.py",
+      "detail": "Item declared completed but no evidence found. Provide evidence at declared paths."
+    },
+    {
+      "severity": "CRITICAL",
+      "description": "OVERCLAIMED: Remove spec_qname ClassVar fields from XcfImage dataclass",
+      "detail": "Item declared completed but no evidence found. Provide evidence at declared paths."
+    },
+    {
+      "severity": "CRITICAL",
+      "description": "OVERCLAIMED: Update ndjson:record qname registry python_file to Compat/ndjson_record.py",
+      "detail": "Item declared completed but no evidence found. Provide evidence at declared paths."
+    },
+    {
+      "severity": "CRITICAL",
+      "description": "OVERCLAIMED: Update xcf:image qname registry python_file to image_document.py",
+      "detail": "Item declared completed but no evidence found. Provide evidence at declared paths."
+    }
+  ]
 }

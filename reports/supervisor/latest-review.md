@@ -1,17 +1,22 @@
-# Supervisor Review: TC-HARDEN-005-SMOKE
-Sprint: TC-HARDEN-005-SMOKE
-Timestamp: 2026-06-23T11:26:54.198244
+# Supervisor Review: FF-HEAL-QNAME-20260623-131042
+Sprint: FF-HEAL-QNAME-20260623-131042
+Timestamp: 2026-06-23T13:48:10.533544
 Overall Verdict: ACCEPTED_WITH_REWORK
 Autonomous Continue: False
 
 ## Summary
-- Accepted: 3
-- Rework: 1
+- Accepted: 0
+- Rework: 4
 - Rejected: 0
-- Overclaimed: 0
-- Critical Rework: 1
+- Overclaimed: 4
+- Critical Rework: 4
 
 ## Item Grades
-- **TC-HARDEN-005-GOV-001** (Verify hard_stops sync helper committed and importable): ACCEPTED_VERIFIED
-- **TC-HARDEN-005-GOV-002** (Verify grade cache content-hash and TTL committed): ACCEPTED_VERIFIED
-- **TC-HARDEN-005-GOV-003** (Verify iv cache committed and tests pass): ACCEPTED_VERIFIED
+- **TC-HEAL-PY-NDJSON-001** (Remove NdjsonRecord class from ndjson_codec.py): OVERCLAIMED
+  - Rework: Item declared completed but no evidence found. Provide evidence at declared paths.
+- **TC-HEAL-PY-XCF-001** (Remove spec_qname ClassVar fields from XcfImage dataclass): OVERCLAIMED
+  - Rework: Item declared completed but no evidence found. Provide evidence at declared paths.
+- **TC-QNAME-BACKFILL-NDJSON-RECORD-001** (Update ndjson:record qname registry python_file to Compat/ndjson_record.py): OVERCLAIMED
+  - Rework: Item declared completed but no evidence found. Provide evidence at declared paths.
+- **TC-QNAME-BACKFILL-XCF-IMAGE-001** (Update xcf:image qname registry python_file to image_document.py): OVERCLAIMED
+  - Rework: Item declared completed but no evidence found. Provide evidence at declared paths.

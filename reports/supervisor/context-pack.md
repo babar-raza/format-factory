@@ -1,19 +1,19 @@
 # Supervisor Context Pack
 # Format Factory — Machine-Readable State Snapshot
-# Generated: 2026-06-23T11:26:56.667993
+# Generated: 2026-06-23T13:49:10.883068
 # ADVISORY ONLY — not a gate approval or authority document
 
 ## Current State
 
 | Item | Value |
 |------|-------|
-| Git HEAD | ff7c662b |
+| Git HEAD | d146d3a3 |
 | Working tree clean | False |
 | Supervisor mode | MODE 4 |
 | Latest sprint | unknown |
-| Sprint ID | frolicking-squishing-shannon-rework-clearance... |
-| Autonomous continue | True |
-| Iteration | 8/12 |
+| Sprint ID | FF-HEAL-QNAME-20260623-131042... |
+| Autonomous continue | False |
+| Iteration | 10/12 |
 | MCP status | MCP_CONFIG_PRESENT_MODE4_ACTIVE |
 | Active skills | 45 |
 | Ledger entries | 960 total (783 governed) |

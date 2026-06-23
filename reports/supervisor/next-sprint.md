@@ -1,17 +1,17 @@
 # Supervisor-Generated Next Sprint Prompt
-# Source sprint: TC-HARDEN-005-SMOKE
+# Source sprint: FF-HEAL-QNAME-20260623-131042
 # Stream: mainstream
-# Generated: 2026-06-23T11:26:56.633492
+# Generated: 2026-06-23T13:49:11.899895
 # ADVISORY ONLY — not a Format Factory authority document
 # This is INPUT to the next sprint, not a gate approval or commit authorization.
 
 ---
 
 ## Sprint Focus
-ADVANCE: Product deepening — .NET commercial + Python FOSS + dogfood + packaging
+PRODUCT + REPAIR: Advance product POC AND address CRITICAL contradictions
 
 ## Prior Sprint Summary
-- Sprint ID: TC-HARDEN-005-SMOKE
+- Sprint ID: FF-HEAL-QNAME-20260623-131042
 - Evidence verdict: ACCEPTED_WITH_REWORK
 - Tests: 1609 passed, 0 failed, 0 skipped
 - Autonomous continue: False
@@ -36,19 +36,27 @@ TRUE_EXTERNAL_GATE (ONLY these warrant a stop):
 - Credentials unavailable with no fallback
 
 ## Section 1: New Product Work (Advisory — Always Execute)
-- [pending] TASK-001: Select governed product gaps and validate the product-code ledger
-- [pending] TASK-002: Work on open taskcard: TC-0015-spec-retrieval-strategy-evaluation
-- [pending] TASK-003: Work on open taskcard: TC-0016-fods-vector-index-pilot
-- [pending] TASK-004: Work on open taskcard: TC-0020-spec-workbench-core
-- [pending] TASK-005: Advance one dogfood export path using a Format Factory library
-- [pending] TASK-006: Build package artifacts and run installed-workflow proof
-- [pending] TASK-007: Write evidence declaration and run supervisor autonomous-cycle
+- [pending] TASK-005: Select governed product gaps and validate the product-code ledger
+- [agent-owned] TASK-006: Prepare commit candidate summary and changed-file manifest
+- [external-gate] TASK-007: Execute git commit (requires explicit user authorization — do NOT self-execute)
+- [pending] TASK-008: Work on open taskcard: TC-0015-spec-retrieval-strategy-evaluation
+- [pending] TASK-009: Work on open taskcard: TC-0016-fods-vector-index-pilot
+- [pending] TASK-010: Work on open taskcard: TC-0020-spec-workbench-core
+- [pending] TASK-011: Advance one dogfood export path using a Format Factory library
+- [pending] TASK-012: Build package artifacts and run installed-workflow proof
+- [pending] TASK-013: Write evidence declaration and run supervisor autonomous-cycle
 
 ## Section 2: Rework / Repair (Advisory — Fix Before Closeout)
-None
+- [pending] REPAIR-001: Repair: OVERCLAIMED: Remove NdjsonRecord class from ndjson_codec.py
+- [pending] REPAIR-002: Repair: OVERCLAIMED: Remove spec_qname ClassVar fields from XcfImage dataclass
+- [pending] REPAIR-003: Repair: OVERCLAIMED: Update ndjson:record qname registry python_file to Compat/ndjson_re
+- [pending] REPAIR-004: Repair: OVERCLAIMED: Update xcf:image qname registry python_file to image_document.py
 
 ## Contradictions Context
-None
+- [CRITICAL] OVERCLAIMED: Remove NdjsonRecord class from ndjson_codec.py
+- [CRITICAL] OVERCLAIMED: Remove spec_qname ClassVar fields from XcfImage dataclass
+- [CRITICAL] OVERCLAIMED: Update ndjson:record qname registry python_file to Compat/ndjson_record.py
+- [CRITICAL] OVERCLAIMED: Update xcf:image qname registry python_file to image_document.py
 
 ## Non-Negotiable Rules (always apply)
 1. No push without explicit user authorization.

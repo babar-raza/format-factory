@@ -1,8 +1,8 @@
 {
-  "sprint_id": "supervisor-export-20260623-112656",
-  "timestamp": "2026-06-23T11:26:56.661562",
+  "sprint_id": "supervisor-export-20260623-134911",
+  "timestamp": "2026-06-23T13:49:11.918799",
   "verdict": "ACCEPTED_WITH_REWORK",
-  "source_bundle": ".local/evidences/TC-HARDEN-005-SMOKE",
+  "source_bundle": ".local/evidences/FF-HEAL-QNAME-20260623-131042",
   "coordinator_lane": "C0",
   "lanes": [
     {
@@ -62,7 +62,12 @@
       "dependencies": [
         "C0"
       ],
-      "tasks": [],
+      "tasks": [
+        "REPAIR-001",
+        "REPAIR-002",
+        "REPAIR-003",
+        "REPAIR-004"
+      ],
       "status": "pending",
       "non_authoritative": true
     },
@@ -89,10 +94,12 @@
         "C1"
       ],
       "tasks": [
-        "TASK-001",
-        "TASK-002",
-        "TASK-003",
-        "TASK-004"
+        "TASK-005",
+        "TASK-006",
+        "TASK-007",
+        "TASK-008",
+        "TASK-009",
+        "TASK-010"
       ],
       "status": "pending",
       "non_authoritative": true
@@ -120,7 +127,7 @@
         "C3"
       ],
       "tasks": [
-        "TASK-005"
+        "TASK-011"
       ],
       "status": "pending",
       "non_authoritative": true
@@ -148,7 +155,7 @@
         "C4"
       ],
       "tasks": [
-        "TASK-006"
+        "TASK-012"
       ],
       "status": "pending",
       "non_authoritative": true
@@ -176,12 +183,12 @@
         "C5"
       ],
       "tasks": [
-        "TASK-007"
+        "TASK-013"
       ],
       "status": "pending",
       "non_authoritative": true
     }
   ],
   "overlap_check_passed": true,
-  "notes": "Generated from evidence review of sprint TC-HARDEN-005-SMOKE"
+  "notes": "Generated from evidence review of sprint FF-HEAL-QNAME-20260623-131042"
 }

@@ -22,7 +22,6 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-
 # XCF constants
 XCF_MAGIC = b"gimp xcf "  # 9 bytes including trailing space
 XCF_MAGIC_SIZE = 9
@@ -36,22 +35,17 @@ IMAGE_TYPE_NAMES = {0: "RGB", 1: "Grayscale", 2: "Indexed"}
 # Property constants
 PROP_END = 0
 
-
 class XcfError(Exception):
     """Base exception for XCF parser errors."""
-
 
 class XcfInvalidMagicError(XcfError):
     """Raised when the file magic is not 'gimp xcf '."""
 
-
 class XcfInvalidHeaderError(XcfError):
     """Raised when header fields are invalid."""
 
-
 class XcfSizeError(XcfError):
     """Raised when file or image dimensions exceed limits."""
-
 
 class XcfParseError(XcfError):
     """Raised when structural parsing fails."""

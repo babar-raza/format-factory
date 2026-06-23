@@ -1,29 +1,29 @@
 schema_version: '1.0'
-generated_at: '2026-06-23T11:26:56.667993'
+generated_at: '2026-06-23T13:49:10.883068'
 repo_root: C:\Users\prora\OneDrive\Documents\GitHub\format-factory
 git:
-  head: ff7c662b
+  head: d146d3a3
   status:
-    modified_count: 21
-    untracked_count: 0
+    modified_count: 37
+    untracked_count: 3
     staged_count: 1
-    total_changed: 22
+    total_changed: 41
     clean: false
 supervisor_mode: 4
 latest_sprint:
-  sprint_id: frolicking-squishing-shannon-rework-clearance
+  sprint_id: FF-HEAL-QNAME-20260623-131042
   run_id: unknown
-  autonomous_continue: true
-  iteration: 8
+  autonomous_continue: false
+  iteration: 10
   max_iterations: 12
-  hard_stops: []
+  hard_stops:
+  - critical_rework_blocks_continuation
   rework_items:
-  - TC-V50-RUNNER-FSS-001
-  - TC-COMMIT-FSS-001
-  - TC-FODG-ANNOT-MISSING-001
-  - TC-FODS-CONSTANTS-COMMIT-001
-  - TC-FODG-SAL-FACTS-001
-  - TC-ZST-WHEEL-REBUILD-001
+  - TC-HEAL-PY-NDJSON-001
+  - TC-HEAL-PY-XCF-001
+  - TC-QNAME-BACKFILL-NDJSON-RECORD-001
+  - TC-QNAME-BACKFILL-XCF-IMAGE-001
+  - GOV_BLOCK:monolith_detection_validator
 poc_matrix:
   sprint: capability-layer-closeout-rnext
   last_updated: '2026-06-18'
