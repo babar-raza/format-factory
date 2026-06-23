@@ -20,7 +20,7 @@ import os
 import struct
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
+from typing import Any, ClassVar
 
 
 # XCF constants
@@ -59,6 +59,7 @@ class XcfParseError(XcfError):
 
 @dataclass
 class XcfImage:
+    spec_qname: ClassVar[str] = "xcf:image"
     width: int = 0
     height: int = 0
     image_type: int = 0

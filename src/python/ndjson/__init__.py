@@ -12,6 +12,7 @@ FOSS track only — no commercial readiness implied.
 from .ndjson_codec import (
     NdjsonError,
     NdjsonParseError,
+    NdjsonRecord,
     probe_ndjson,
     load_ndjson,
     write_ndjson,
@@ -105,6 +106,7 @@ from .ndjson_codec import (
 __all__ = [
     "NdjsonError",
     "NdjsonParseError",
+    "NdjsonRecord",
     "probe_ndjson",
     "load_ndjson",
     "write_ndjson",

@@ -28,6 +28,21 @@ class NdjsonParseError(NdjsonError):
     """Raised when NDJSON content cannot be parsed."""
 
 
+class NdjsonRecord:
+    """Spec-shaped model class for a single NDJSON record (one JSON object line).
+
+    spec_qname: ndjson:record
+    A record is one JSON value (typically an object) on a single line of an NDJSON file.
+    Spec reference: https://ndjson.org/ — each line is an independent JSON value.
+    TC-V53-BACKFILL-001 (2026-06-23): spec authority class for ndjson:record entry in registry.
+    """
+
+    spec_qname = "ndjson:record"
+
+    def __init__(self, data: "dict | list | Any | None" = None) -> None:
+        self.data = data
+
+
 def probe_ndjson(source) -> bool:
     """Probe whether source looks like a valid NDJSON file.
 
