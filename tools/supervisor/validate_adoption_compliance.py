@@ -258,3 +258,36 @@ def validate_adoption(declaration: dict) -> dict:
             f"{with_exemption} with explicit exemption."
         ),
     }
+
+
+def check_work_type_skill_gate(declaration: dict, repo_root: Path | None = None) -> list:
+    """Fix 2: Read work-type-skill-map.yaml and check PRODUCT items against it.
+
+    Returns list of (item_id, work_type, reason) for violations.
+    Empty list = all clear.
+    """
+    root = repo_root or REPO_ROOT
+    map_path = root / ".supervisor" / "work-type-skill-map.yaml"
+    if not map_path.exists():
+        return [("SYSTEM", None, "SKILL_MAP_MISSING")]
+
+    if yaml is None:
+        return []  # yaml not available — skip silently
+
+    skill_map = yaml.safe_load(map_path.read_text(encoding="utf-8"))
+    gap_mappings = skill_map.get("gap_mappings", {})
+
+    violations = []
+    for item in declaration.get("planned_work_items", []):
+        if item.get("item_type") not in ("PRODUCT_SOURCE", "PRODUCT_TEST"):
+            continue
+        work_type = item.get("work_type")
+        item_id = item.get("item_id", "UNKNOWN")
+
+        if not work_type:
+            continue  # MISSING_WORK_TYPE is advisory — many items omit this field
+        if work_type in gap_mappings:
+            clause = gap_mappings[work_type].get("master_plan_clause", "")
+            violations.append((item_id, work_type, f"BLOCKED_SKILL_GAP:{clause}"))
+
+    return violations

@@ -33,10 +33,31 @@ import yaml
 _HERE = Path(__file__).resolve().parent
 _REPO = _HERE.parent.parent
 _SCHEMA_PATH = _REPO / ".supervisor" / "schemas" / "evidence-declaration.schema.json"
+
+# Shared test-layer utilities (TC-FSLAY02-SHARED-001)
+try:
+    from test_layer_utils import (
+        ADEQUACY_ESCALATION_DATE as _ESCALATION_DATE_OBJ,
+        PRODUCT_ITEM_TYPES as _PRODUCT_ITEM_TYPES,
+        compute_required_layer as _shared_compute_required_layer,
+        is_escalation_active as _is_escalation_active,
+        load_change_impact_rules as _shared_load_rules,
+    )
+    _HAS_SHARED_UTILS = True
+except ImportError:
+    _HAS_SHARED_UTILS = False
+    import datetime as _datetime
+    _ESCALATION_DATE_OBJ = _datetime.date(2026, 7, 18)
+    _PRODUCT_ITEM_TYPES = frozenset({"PRODUCT_SOURCE", "PRODUCT_TEST"})
+    def _is_escalation_active():
+        return _datetime.date.today() >= _ESCALATION_DATE_OBJ
+    _shared_load_rules = None
+    _shared_compute_required_layer = None
+
 _MANIFEST_PATH = _REPO / "registry" / "test-layer-manifest.yaml"
 
 # Date after which test_layer adequacy warnings escalate to errors
-_ADEQUACY_ESCALATION_DATE = "2026-07-18"
+_ADEQUACY_ESCALATION_DATE = str(_ESCALATION_DATE_OBJ)
 
 # Required top-level fields from schema
 _REQUIRED_FIELDS = [
@@ -111,37 +132,40 @@ def _compute_required_layer(changed_files: list[str], rules: list[dict]) -> tupl
     return max_layer, reason
 
 
-def _check_test_layer_adequacy(doc: dict) -> list[str]:
+def _check_test_layer_adequacy(doc: dict) -> tuple[list[str], list[str]]:
     """Check whether declared test_layer is adequate for changed_files.
 
-    Returns list of warning strings. Empty = no issues.
-    Issues are WARN-only until 2026-07-18, then escalate to errors.
+    Returns (adequacy_errors, adequacy_warnings) tuple.
+    - adequacy_errors: ERROR strings that block validation (exit 1)
+    - adequacy_warnings: WARN/ADVISORY strings (informational)
 
-    This check only runs when BOTH test_layer and changed_files are present.
-    Declarations that omit test_layer are not penalized (advisory field).
+    Enforcement policy (TC-FSLAY02-ENF-001):
+    - PRODUCT_SOURCE/PRODUCT_TEST items: ERROR immediately when layer < required
+    - All other item types: WARN until 2026-07-18, then ERROR
+    - Declarations without test_layer: ADVISORY note (never ERROR)
     """
-    warnings = []
+    adequacy_errors: list[str] = []
+    warnings: list[str] = []
 
     declared_layer = doc.get("test_layer")
     if declared_layer is None:
-        # test_layer not declared — cannot check adequacy; add advisory note
         warnings.append(
             "ADVISORY: test_layer not declared in evidence. "
             "Include test_layer (int 0-6) for layer adequacy checking. "
             "See docs/test-layering.md."
         )
-        return warnings
+        return adequacy_errors, warnings
 
     if not isinstance(declared_layer, int) or declared_layer < 0 or declared_layer > 6:
         warnings.append(
             f"WARN: test_layer value '{declared_layer}' is invalid (must be int 0-6). "
             "Adequacy check skipped."
         )
-        return warnings
+        return adequacy_errors, warnings
 
     changed_files = doc.get("changed_files", [])
     if not changed_files:
-        return warnings  # Cannot check without changed_files
+        return adequacy_errors, warnings
 
     rules = _load_manifest_change_impact()
     if not rules:
@@ -149,19 +173,35 @@ def _check_test_layer_adequacy(doc: dict) -> list[str]:
             "ADVISORY: registry/test-layer-manifest.yaml not found or empty. "
             "Cannot verify test_layer adequacy."
         )
-        return warnings
+        return adequacy_errors, warnings
 
     required_layer, match_reason = _compute_required_layer(changed_files, rules)
 
     if declared_layer < required_layer:
-        warnings.append(
-            f"WARN[adequacy]: test_layer={declared_layer} but changed_files require "
-            f"min_layer={required_layer} ({match_reason}). "
-            f"Escalates to ERROR after {_ADEQUACY_ESCALATION_DATE}. "
-            "This sprint may have inadequate test coverage for the declared changes."
-        )
+        # Check whether any planned_work_items are product items
+        item_types = {
+            item.get("item_type", "")
+            for item in (doc.get("planned_work_items") or [])
+            if isinstance(item, dict)
+        }
+        has_product_items = bool(item_types & _PRODUCT_ITEM_TYPES)
 
-    return warnings
+        if has_product_items or _is_escalation_active():
+            adequacy_errors.append(
+                f"ERROR[adequacy]: test_layer={declared_layer} but changed_files require "
+                f"min_layer={required_layer} ({match_reason}). "
+                f"{'PRODUCT item enforcement active.' if has_product_items else 'Post-escalation enforcement active.'} "
+                "Run tests at the required layer before declaring evidence."
+            )
+        else:
+            warnings.append(
+                f"WARN[adequacy]: test_layer={declared_layer} but changed_files require "
+                f"min_layer={required_layer} ({match_reason}). "
+                f"Escalates to ERROR after {_ADEQUACY_ESCALATION_DATE}. "
+                "This sprint may have inadequate test coverage for the declared changes."
+            )
+
+    return adequacy_errors, warnings
 
 
 # ---------------------------------------------------------------------------
@@ -395,6 +435,76 @@ def _check_evidence_paths_exist(doc: dict, repo_root: Path) -> list[str]:
     return warnings
 
 
+def _check_skill_transcript_existence(doc: dict, repo_root: Path) -> list[str]:
+    """Fix 3: Always-on check — skill_transcript artifacts must exist on disk.
+
+    Returns WARN messages (not errors) for missing transcript files.
+    This runs regardless of --check-evidence-paths flag.
+    """
+    warnings = []
+    for i, art in enumerate(doc.get("evidence_artifacts", [])):
+        if not isinstance(art, dict):
+            continue
+        if art.get("type") != "skill_transcript":
+            continue
+        p = art.get("path", "")
+        if not p:
+            warnings.append(f"WARN: evidence_artifacts[{i}] skill_transcript has empty path")
+            continue
+        full = repo_root / p
+        if not full.exists():
+            warnings.append(f"WARN: skill_transcript file missing on disk: {p}")
+    return warnings
+
+
+def _check_fix_sprint_evidence(doc: dict) -> list[str]:
+    """FSE-001: Warn when test files are in changed_files but not in any item's evidence_paths.
+
+    When a sprint changes test files AND code files, the test files should appear
+    in evidence_paths for the relevant work item. Otherwise the LLM semantic
+    verifier may downgrade the item to ACCEPTED_WITH_LIMITATIONS.
+    """
+    warnings = []
+    changed = set(doc.get("changed_files", []) or [])
+    changed_tests = {f for f in changed if "/test_" in f or f.startswith("tests/")}
+    if not changed_tests:
+        return warnings
+
+    # Collect all evidence_paths across all planned_work_items
+    all_item_evidence = set()
+    for item in doc.get("planned_work_items", []):
+        for ep in item.get("evidence_paths", []) or []:
+            all_item_evidence.add(ep)
+
+    missing_in_items = changed_tests - all_item_evidence
+    for f in sorted(missing_in_items):
+        warnings.append(
+            f"WARN(FSE-001): test file '{f}' is in changed_files but not in any "
+            f"planned_work_items[].evidence_paths — LLM verifier may downgrade"
+        )
+    return warnings
+
+
+def _check_parent_id_evidence_tagging(doc: dict) -> list[str]:
+    """TC-VHL-REWORK-004: Warn when planned_work_items have no evidence_paths.
+
+    Every planned_work_item with status=completed should have at least one
+    evidence_path. This catches the parent-ID tagging gap where sub-items
+    have evidence but the parent item does not.
+    """
+    warnings = []
+    for item in doc.get("planned_work_items", []):
+        item_id = item.get("item_id", "?")
+        status = item.get("status", "")
+        paths = item.get("evidence_paths", []) or []
+        if status == "completed" and not paths:
+            warnings.append(
+                f"WARN(PARENT-ID): planned_work_item '{item_id}' has status=completed "
+                f"but no evidence_paths — grader will return OVERCLAIMED"
+            )
+    return warnings
+
+
 def validate_file(
     declaration_path: Path,
     *,
@@ -464,13 +574,24 @@ def validate_file(
     # --- Phase 5: Validate ---
     errors = _validate(doc)
 
-    # --- Phase 6: Test-layer adequacy check (warnings only until 2026-07-18) ---
-    adequacy_warnings = _check_test_layer_adequacy(doc)
+    # --- Phase 6: Test-layer adequacy check (TC-FSLAY02-ENF-001) ---
+    # Now returns (errors, warnings) tuple. Errors block validation for product items.
+    adequacy_errors, adequacy_warnings = _check_test_layer_adequacy(doc)
+    errors.extend(adequacy_errors)
 
     # --- Phase 7: Evidence path existence check (WARN only, never blocks) ---
     evidence_path_warnings: list[str] = []
     if check_evidence_paths:
         evidence_path_warnings = _check_evidence_paths_exist(doc, repo_root)
+
+    # --- Phase 8 (Fix 3): Skill transcript existence (always-on, WARN only) ---
+    transcript_warnings = _check_skill_transcript_existence(doc, repo_root)
+
+    # --- Phase 9 (FSE-001): Fix sprint evidence completeness (WARN only) ---
+    fse_warnings = _check_fix_sprint_evidence(doc)
+
+    # --- Phase 10 (TC-VHL-REWORK-004): Parent-ID evidence tagging (WARN only) ---
+    parent_id_warnings = _check_parent_id_evidence_tagging(doc)
 
     return {
         "passed": len(errors) == 0,
@@ -478,6 +599,9 @@ def validate_file(
         "repairs": repairs_applied,
         "adequacy_warnings": adequacy_warnings,
         "evidence_path_warnings": evidence_path_warnings,
+        "transcript_warnings": transcript_warnings,
+        "fse_warnings": fse_warnings,
+        "parent_id_warnings": parent_id_warnings,
     }
 
 
@@ -531,6 +655,24 @@ def main(argv: list[str] | None = None) -> int:
     if ev_warns:
         print(f"\nEvidence path warnings ({len(ev_warns)}):")
         for w in ev_warns:
+            print(f"  - {w}")
+
+    tx_warns = result.get("transcript_warnings", [])
+    if tx_warns:
+        print(f"\nSkill transcript warnings ({len(tx_warns)}):")
+        for w in tx_warns:
+            print(f"  - {w}")
+
+    fse_warns = result.get("fse_warnings", [])
+    if fse_warns:
+        print(f"\nFix-sprint evidence warnings ({len(fse_warns)}):")
+        for w in fse_warns:
+            print(f"  - {w}")
+
+    pid_warns = result.get("parent_id_warnings", [])
+    if pid_warns:
+        print(f"\nParent-ID evidence tagging warnings ({len(pid_warns)}):")
+        for w in pid_warns:
             print(f"  - {w}")
 
     if result["passed"]:
