@@ -1,7 +1,6 @@
 // FormatFactory.Fodt — Spec.Text.ListItem — Canonical spec-shaped model class
 // spec_qname: text:list-item
 // spec_fact_ref: FACT-FODT-005
-// TC-QHARD-051: converted from architecture_only stub to real model class
 namespace FormatFactory.Fodt.Spec.Text;
 
 /// <summary>

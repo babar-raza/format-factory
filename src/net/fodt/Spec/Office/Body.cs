@@ -1,7 +1,6 @@
 // FormatFactory.Fodt — Spec.Office.Body — Canonical spec-shaped model class
 // spec_qname: office:body
 // spec_fact_ref: FACT-FODT-002
-// TC-QHARD-051: converted from architecture_only stub to real model class
 namespace FormatFactory.Fodt.Spec.Office;
 
 /// <summary>

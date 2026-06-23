@@ -1,7 +1,6 @@
 // FormatFactory.Fodt — Spec.Text.Paragraph — Canonical spec-shaped model class (pilot)
 // spec_qname: text:p
 // spec_fact_ref: FACT-FODT-003 (ODF 1.3 §5.1.3)
-// TC-QNAME-IMPL-001: converted from architecture_only stub to real model class (partial)
 namespace FormatFactory.Fodt.Spec.Text;
 
 /// <summary>

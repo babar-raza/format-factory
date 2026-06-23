@@ -1,7 +1,6 @@
 // FormatFactory.Fodt — Spec.Table.TableRow — Canonical spec-shaped model class
 // spec_qname: table:table-row
 // spec_fact_ref: FACT-FODT-007
-// TC-QHARD-051: converted from architecture_only stub to real model class
 namespace FormatFactory.Fodt.Spec.Table;
 
 /// <summary>
