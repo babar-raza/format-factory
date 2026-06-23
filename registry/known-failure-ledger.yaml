@@ -39,48 +39,6 @@ known_failures:
     first_documented: "2026-06-18 (observed in Pilot A L1-TSV run; pilot-a-l1-tsv.json)"
     category: "pre_existing_gap_test"
 
-  # Governance validator failures — ModuleNotFoundError in validate_route_decision_required
-  # Root cause: governance_validators.py:914 uses absolute import that fails outside repo-root sys.path
-  - test_id: "tests/supervisor/test_governance_validators.py::TestRunAllValidators::test_governance_declaration_passes_all"
-    reason: "ModuleNotFoundError: No module named 'tools' — governance_validators.py:914 uses 'from tools.supervisor.autonomy_route_models import TASK_CATEGORIES_MACHINERY' which fails when sys.path doesn't include repo root"
-    condition: "always"
-    mitigation: "Known pre-existing import issue in validate_route_decision_required. 41/46 tests in this file pass."
-    layer: 3
-    first_documented: "2026-06-18"
-    category: "import_error"
-
-  - test_id: "tests/supervisor/test_governance_validators.py::TestRunAllValidators::test_ungoverned_product_fails_multiple_validators"
-    reason: "Same ModuleNotFoundError as test_governance_declaration_passes_all — shared root cause"
-    condition: "always"
-    mitigation: "See test_governance_declaration_passes_all entry above"
-    layer: 3
-    first_documented: "2026-06-18"
-    category: "import_error"
-
-  - test_id: "tests/supervisor/test_governance_validators.py::TestRunAllValidators::test_result_has_12_validators"
-    reason: "Same ModuleNotFoundError as test_governance_declaration_passes_all — shared root cause"
-    condition: "always"
-    mitigation: "See test_governance_declaration_passes_all entry above"
-    layer: 3
-    first_documented: "2026-06-18"
-    category: "import_error"
-
-  - test_id: "tests/supervisor/test_governance_validators.py::TestRunAllValidators::test_deprecated_queue_declared_fails_ungoverned"
-    reason: "Same ModuleNotFoundError as test_governance_declaration_passes_all — shared root cause"
-    condition: "always"
-    mitigation: "See test_governance_declaration_passes_all entry above"
-    layer: 3
-    first_documented: "2026-06-18"
-    category: "import_error"
-
-  - test_id: "tests/supervisor/test_governance_validators.py::TestRunAllValidators::test_real_governance_sprint_passes"
-    reason: "Same ModuleNotFoundError as test_governance_declaration_passes_all — shared root cause"
-    condition: "always"
-    mitigation: "See test_governance_declaration_passes_all entry above"
-    layer: 3
-    first_documented: "2026-06-18"
-    category: "import_error"
-
   # -----------------------------------------------------------------------
   # FODS gap-closure collection errors (TC-HYGIENE-FODS-001-A, 2026-06-21)
   # 32 test files in tests/python/fods/ import functions that are planned
@@ -993,7 +951,7 @@ gap_test_notes:
 # -----------------------------------------------------------------------
 # Supervisor grader failures — environment-dependent (added 2026-06-23)
 # -----------------------------------------------------------------------
-
+supervisor_grader_failures:
   # TC-HARDEN-004: test_fallback_never_downgrades pre-existing failure
   # Confirmed pre-existing via git stash test against commit f92d73c4
   # (one commit before TC-GRADE-001). Not introduced by any 2026-06-23 sprint.
