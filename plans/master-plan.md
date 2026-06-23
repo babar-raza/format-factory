@@ -3,8 +3,8 @@
 **Document type:** Living Master Plan
 **Authority level:** Single Operational Authority
 **Project:** format-factory
-**Version:** 3.5
-**Last updated:** 2026-06-23 (noble-doodling-pony CLOSED — Pass 4+5 all 9 taskcards complete; SAL regression tests, 15 spec-parity validator tests, V53/V51 backfill XcfImage+NdjsonRecord, .NET 0-error build verified, gap-audit 25 honest entries, Rework counter fix, ontology sync, compile_gap E2E proven)
+**Version:** 3.6
+**Last updated:** 2026-06-23 (v3.6: plan-hardening pass — post-audit corrections for imperative-drifting-lecun; Section 18 overclaims corrected; Section 24 Unresolved Gap Register added with TC-QHARD-POST-001 through TC-QHARD-POST-006; 6 gaps: V53 xcf/ndjson violations, .NET spec class isolation, reviewer skill unexecuted, TC-QHARD-063 definitional closure, TestRunAllValidators import bug)
 **Last verified:** 2026-06-23
 
 **Current phase:** Multi-format POC — 11 targets (3 commercial .NET, 8 FOSS Python). Gate 11 G11-G sub-gate approved by Babar Raza 2026-06-05 (FODS, FODT, Netpbm). Registry gate_11.status: commercial_readiness_in_progress (registry not yet updated after G11-G). commercial_product_ready: false (all entries).
@@ -356,9 +356,9 @@ Wave 3 gate: 5 PASS / 3 PARTIAL (0 FAIL)
 - V51 (TC-QHARD-001): repo-wide scan for exported classes missing spec_qname. After spec_qname backfill to 9 classes (DifCell, DifDocument, OdsRow, OdtListItem, PbmImage, PgmImage, PpmImage, QoiImage, SylkDocument), V51 returns PASS.
 - V52 (TC-QHARD-002): Compat/ facade import chain integrity validator. WARN-only.
 - V53 (TC-QHARD-003): registry python_file path existence validator. WARN-only.
-- Total governance validators: 53 (V1-V53). 84 tests pass (5 pre-existing known failures unchanged).
-- .NET spec stubs annotated with SpecQName/SpecFactRef/NamespaceUri. New stub files: csv/Spec/CsvRecord.cs, ndjson/Spec/NdjsonRecord.cs, netpbm/Spec/NetpbmImage.cs, tsv/Spec/TsvRecord.cs.
-- python-qname-code-reviewer slash command registered.
+- Total governance validators: 53 (V1-V53). 77 tests pass, 5 fail (see TC-QHARD-POST-006 below — these tests cannot run due to import bug in governance_validators.py:914, not purely pre-existing).
+- .NET spec stubs converted from static stubs to sealed classes with SpecQName constants. New files: csv/Spec/CsvRecord.cs, ndjson/Spec/NdjsonRecord.cs, netpbm/Spec/NetpbmImage.cs, tsv/Spec/TsvRecord.cs. Build succeeds 0 errors. CORRECTION: these classes are not referenced by any behavioral .NET code and are not covered by any test.
+- python-qname-code-reviewer slash command registered. CORRECTION: the skill has not been executed against any format; no verdict.json evidence artifact exists.
 
 **noble-doodling-pony plan — CLOSED 2026-06-23 (Pass 4 + Pass 5 — all 9 taskcards complete):**
 Pass 4 (6 taskcards) and Pass 5 (3 taskcards) fully executed. All verified by committed tests.
@@ -374,14 +374,14 @@ Pass 4 (6 taskcards) and Pass 5 (3 taskcards) fully executed. All verified by co
 - Anti-overclaim rules 13-15 (Pass 4) and 16-18 (Pass 5) remain active in plan file.
 - Plan locked TERMINAL_CLOSED via write_plan_lock.py --terminal.
 
-**QName hardening plan (imperative-drifting-lecun) — CLOSED 2026-06-23:**
-All 6 phases complete. Key outcomes:
-- Phase 0: V51/V52/V53 validators wired (53 total); backfill inventory CSV (docs/audits/python-qname-backfill-inventory.csv); python-qname-code-reviewer skill registered.
-- Phase 1-2: FODS/FODT Python spec/ authority classes fully wired (office/, table/, text/, style/, number/ namespaces). Compat/ facades inherit from spec authority classes. 1339 FODS tests pass / 1999 FODT tests pass. Reviewer verdict ACCEPTED_VERIFIED.
-- Phase 3-4: spec_qname backfill to 9 Python domain classes (DifCell, DifDocument, OdsRow, OdtListItem, PbmImage, PgmImage, PpmImage, QoiImage, SylkDocument). V51 returns PASS on live repo.
-- Phase 5: .NET spec authority classes implemented (not architecture_only stubs) for FODS (Document, Table, TableRow, TableCell), FODT (Body, Heading, Span, List, ListItem, Table, TableRow, TableCell), plus new Spec/ classes for CSV/NDJSON/TSV/Netpbm. All 6 .NET projects build 0 errors.
-- Phase 6: fods.yaml 11/12 entries → implemented (covered-table-cell authority_only by design). Registry YAML updated for xcf, ndjson, zst, csv, dif. 77/82 governance tests pass (5 pre-existing failures unchanged).
-- Commits: 2c522c52 (V51/V52/V53), a13e2552 (spec_qname backfill + .NET stubs + registry), dca8e00b (pipeline closeout).
+**QName hardening plan (imperative-drifting-lecun) — CLOSED 2026-06-23 — POST-AUDIT CORRECTIONS APPLIED 2026-06-23:**
+Phases 0–6 executed. Post-audit evidence review identified 6 unresolved gaps — taskcards TC-QHARD-POST-001 through TC-QHARD-POST-006 created in Section 24.
+- Phase 0: V51/V52/V53 validators wired (53 total); backfill inventory CSV created; python-qname-code-reviewer skill file created (not yet run against any format — see TC-QHARD-POST-004).
+- Phase 1-2: FODS/FODT Python spec/ authority classes created and Compat/ facades inherit from them at runtime. 1339 FODS + 1999 FODT tests pass (zero regressions). NOTE: Compat/ facades are not exported from fods/__init__.py; parse_fods returns a plain dict. The class hierarchy is navigable but not on the production code path.
+- Phase 3-4: spec_qname backfill to 9 Python domain classes verified via _has_spec_qname() and V51 live PASS.
+- Phase 5: .NET Spec/ classes compile with 0 errors. These classes are structurally isolated — not referenced by FodsDocument.cs or any .NET behavioral code; no .NET tests exist (see TC-QHARD-POST-003).
+- Phase 6: fods.yaml 11/12 → implemented. V53 WARNS on 2 live registry inconsistencies: xcf:image (XcfImage has no spec_qname) and ndjson:record (NdjsonRecord class absent from ndjson_codec.py) — see TC-QHARD-POST-001 and TC-QHARD-POST-002. 77/82 governance tests pass; 5 fail due to import bug in governance_validators.py:914 (see TC-QHARD-POST-006).
+- Commits: 2c522c52 (V51/V52/V53), a13e2552 (spec_qname backfill + .NET stubs + registry), dca8e00b (pipeline closeout), 3eaf46ef (master-plan v3.4).
 
 ---
 
@@ -1312,6 +1312,178 @@ TC-FODT-GAP-001, TC-FODT-AUDIT-001, TC-FODT-AUDIT-002, TC-RCAL-001
 1. governance_validators.py at 0 headroom (loc=cap=3179) — next addition will re-fire GOV_BLOCK; product track must extract more validators before adding new ones
 2. post-exec-audit-1.json and -2.json missing — iteration 1/2 proofs are Level 2 (from mission-ledger.json), not Level 1 file evidence
 3. autonomous-loop.md Step 4 still lacks explicit field list for required declaration fields — separate governance sprint
+
+---
+
+## Section 26 — Unresolved Gap Register (Post-Audit Taskcards)
+
+**Source:** Independent post-sprint evidence review of imperative-drifting-lecun (2026-06-23).
+**Authority:** This section is the governing taskcard register for the 6 gaps identified.
+**Anti-overclaim rule:** No gap may be marked CLOSED without direct evidence (test output, file inspection, or runtime proof). Status claims without evidence are CLAIMED_UNPROVEN.
+
+### Plan File Hardening Change Log
+
+| Date | Change | Reason |
+|------|--------|--------|
+| 2026-06-23 | Section 18 QName enforcement text corrected (test count, .NET wiring, skill execution) | Post-audit review revealed overclaims |
+| 2026-06-23 | Section 18 imperative-drifting-lecun summary corrected with per-phase caveats | Same review |
+| 2026-06-23 | Section 26 added with TC-QHARD-POST-001 through TC-QHARD-POST-006 | 6 unresolved audit gaps require governed taskcards |
+
+### Audit Findings Incorporated
+
+| Finding | Description | Severity |
+|---------|-------------|---------|
+| AF-001 | V53 WARN: xcf:image registry points to xcf_parser.py but XcfImage has no spec_qname | WARN |
+| AF-002 | V53 WARN: ndjson:record registry points to ndjson_codec.py but no NdjsonRecord class exists | WARN |
+| AF-003 | .NET Spec/ classes not referenced by any behavioral code; no .NET tests exist | GAP |
+| AF-004 | python-qname-code-reviewer never executed; no verdict.json artifact | GAP |
+| AF-005 | TC-QHARD-063 closed "at annotation level" without SAL run | CLAIMED_UNPROVEN |
+| AF-006 | governance_validators.py:914 `from tools.supervisor.*` fails in test context; blocks 5 TestRunAllValidators tests | BUG |
+
+### Taskcard Register
+
+**TC-QHARD-POST-001**
+Title: Fix XcfImage spec_qname — resolve V53 xcf:image violation
+Status: not_attempted | Priority: HIGH | Lane: Mainstream Product
+Source: AF-001
+Why it matters: `XcfImage` at xcf_parser.py:61 is a plain `@dataclass` with no `spec_qname`. Registry says status `implementing` with this file as `python_file` — V53 fires a live WARN.
+Required work: Add `spec_qname: str = "xcf:image"` and `spec_fact_ref: str = "FACT-XCF-001"` to `XcfImage` dataclass body.
+Verification: `python -c "from src.python.xcf.xcf_parser import XcfImage; assert XcfImage.spec_qname == 'xcf:image'; print('PASS')"` + V53 live run showing 0 xcf violations + XCF test suite passes.
+Allowed: Edit xcf_parser.py (2 attribute lines). Update registry status to implementing/implemented.
+Forbidden: No behavioral changes. No codec/analytics edits.
+Dependencies: None.
+Closeout: CLOSED only after V53 confirms 0 xcf violations AND XCF tests pass.
+
+**TC-QHARD-POST-002**
+Title: Fix ndjson:record V53 violation — add NdjsonRecord class or correct registry python_file
+Status: not_attempted | Priority: HIGH | Lane: Mainstream Product
+Source: AF-002
+Why it matters: ndjson_codec.py has only `NdjsonError` and `NdjsonParseError`. No `NdjsonRecord` class exists in the package. Registry entry points there with `implementing` status.
+Required work (Path A): Add authority-only `NdjsonRecord` class to ndjson_codec.py with `spec_qname: str = "ndjson:record"` and `authority_only: bool = True` — no behavioral methods.
+Verification: `python -c "from src.python.ndjson.ndjson_codec import NdjsonRecord; assert NdjsonRecord.spec_qname == 'ndjson:record'; print('PASS')"` + V53 0 ndjson violations + NDJSON tests pass.
+Allowed: Edit ndjson_codec.py (add class). Update registry YAML.
+Forbidden: No functional parsing logic changes. No __init__.py exports unless explicitly intended.
+Dependencies: None.
+Closeout: CLOSED only after V53 0 ndjson violations AND NDJSON tests pass.
+
+**TC-QHARD-POST-003**
+Title: Add .NET integration tests for Spec/ authority classes (FODS minimum)
+Status: not_attempted | Priority: MEDIUM | Lane: Mainstream Product (.NET)
+Source: AF-003
+Why it matters: All 6 .NET projects compile but no test exercises any Spec/ class. `FormatFactory.Fods.Spec.Office.Document` is never instantiated in any code. Spec/ classes cannot be cited as behavioral evidence.
+Required work: Create a .NET test project (or test file) with at minimum: (1) `Document.SpecQName == "office:document"`, (2) `TableCell.SpecQName == "table:table-cell"`, (3) Construct a `Document` instance and read its properties back, (4) Confirm `Document` is a separate type from `FodsDocument`. Run `dotnet test`.
+Verification: `dotnet test` exits 0 with >=4 assertions passing.
+Required evidence: dotnet test stdout with all assertions PASSED; test file path.
+Allowed: Create test project/file. Edit .csproj to add test framework.
+Forbidden: Do not wire Document into FodsDocument.cs behavioral code as part of this taskcard.
+Dependencies: None.
+Closeout: CLOSED only after dotnet test passes >=4 assertions.
+
+**TC-QHARD-POST-004**
+Title: Execute python-qname-code-reviewer against FODS and produce verdict.json
+Status: not_attempted | Priority: MEDIUM | Lane: Skills / Governed Execution
+Source: AF-004
+Why it matters: Sprint claimed "Reviewer verdict ACCEPTED_VERIFIED" for FODS. No verdict.json exists. Claim is CLAIMED_UNPROVEN.
+Required work: (1) Run `/python-qname-code-reviewer --format fods`. (2) Capture produced `verdict.json`. (3) If REWORK_REQUIRED, address findings, re-run. (4) Save evidence at `.local/evidences/qname-hardening/fods-reviewer-post-001/verdict.json`.
+Verification: `cat .local/evidences/qname-hardening/fods-reviewer-post-001/verdict.json` shows `"verdict": "ACCEPTED_VERIFIED"` with all 13 checks present.
+Allowed: Invoke the skill. Make targeted repairs if REWORK_REQUIRED. Update registry YAML.
+Forbidden: Do not fabricate or manually write verdict.json. Do not mark CLOSED from a claim.
+Dependencies: TC-QHARD-POST-001 and TC-QHARD-POST-002 should be resolved first.
+Closeout: CLOSED only after verdict.json exists with ACCEPTED_VERIFIED and all 13 checks documented.
+
+**TC-QHARD-POST-005**
+Title: Execute spec-parity-verification for FODS/FODT or document external blocker (TC-QHARD-063 reopen)
+Status: partially_done | Priority: LOW | Lane: Mainstream Product
+Source: AF-005
+Why it matters: TC-QHARD-063 was closed "structurally." No SAL run was performed. parity-matrix.yaml has no honest entry.
+Required work: (1) Run `python tools/spec-cache/refresh_check.py --all`. (2) If SAL cache available: run `/spec-parity-verification --format fods`. (3) If not available: add parity-matrix.yaml entry with `status: BLOCKED` and `unblock_condition: "SAL cache must contain ODF 1.3 facts"`.
+Verification: `grep -A3 "fods" registry/parity-matrix.yaml` shows a non-definitional status.
+Allowed: Run refresh_check.py and spec-parity-verification. Update parity-matrix.yaml.
+Forbidden: Do not mark CLOSED from a definitional claim. Do not write "verified" without running verification.
+Dependencies: SAL cache (external data — may be BLOCKED_EXTERNAL_AUTHORITY).
+Closeout: CLOSED only after parity-matrix.yaml has an honest (non-definitional) status entry for FODS and FODT.
+
+**TC-QHARD-POST-006**
+Title: Fix governance_validators.py:914 import bug — restore TestRunAllValidators to passing
+Status: not_attempted | Priority: HIGH | Lane: Acceleration-A (Governance)
+Source: AF-006
+Why it matters: All 5 TestRunAllValidators tests fail: `from tools.supervisor.autonomy_route_models` raises `ModuleNotFoundError` because test conftest adds `tools/supervisor` to sys.path but the function uses an absolute `tools.supervisor.*` path. `run_all_governance_validators()` — which wires all 53 validators — cannot be tested at all. This is not harmless.
+Root cause: governance_validators.py:914 lazy import uses `from tools.supervisor.X` (absolute) instead of `from X` (relative, works with both test and production sys.path contexts).
+Required fix (Option A, preferred): Change line 914 from `from tools.supervisor.autonomy_route_models import TASK_CATEGORIES_MACHINERY` to `from autonomy_route_models import TASK_CATEGORIES_MACHINERY`.
+Additional: Update `test_result_has_12_validators` assertion from `>= 38` to `>= 53` to match actual validator count.
+Verification: `.venv/Scripts/pytest tests/supervisor/test_governance_validators.py::TestRunAllValidators -v` → 5 passed, 0 failed.
+Required evidence: pytest stdout with 5 PASSED. Total governance test count >=82.
+Allowed: Edit governance_validators.py line 914 (import change only — no logic). Update test assertion. Update source-structure-baseline.json LOC cap by 0 lines (1-line change replaces 1 line, net 0).
+Forbidden: No validator logic changes. No file moves.
+Dependencies: None.
+Closeout: CLOSED only after pytest shows all 5 TestRunAllValidators PASSED.
+
+### Gate Contract
+
+| Gate | Condition | Taskcards |
+|------|-----------|-----------|
+| V53-CLEAN | V53 returns 0 violations for all 20 formats | TC-QHARD-POST-001 + -002 |
+| TEST-ALL-VALIDATORS | All 5 TestRunAllValidators pass | TC-QHARD-POST-006 |
+| REVIEWER-EXECUTED | verdict.json exists for FODS with ACCEPTED_VERIFIED | TC-QHARD-POST-004 |
+| NET-SPEC-TESTED | >=4 .NET Spec/ assertions pass in dotnet test | TC-QHARD-POST-003 |
+| PARITY-HONEST | parity-matrix.yaml has non-definitional FODS/FODT entry | TC-QHARD-POST-005 |
+
+### Evidence Contract
+
+Each taskcard must produce at `.local/evidences/qname-hardening-post/<taskcard-id>/`:
+- `command-output.log` — raw stdout + stderr of the verification command
+- `status.json` — `{"taskcard": "TC-QHARD-POST-NNN", "status": "CLOSED", "timestamp": "<ISO>"}`
+
+Synthetic evidence (manually written files, copied outputs) is forbidden.
+
+### Verification Matrix
+
+| Taskcard | Verification command | Expected output |
+|----------|---------------------|----------------|
+| TC-QHARD-POST-001 | `python -c "from src.python.xcf.xcf_parser import XcfImage; print(XcfImage.spec_qname)"` | `xcf:image` |
+| TC-QHARD-POST-002 | `python -c "from src.python.ndjson.ndjson_codec import NdjsonRecord; print(NdjsonRecord.spec_qname)"` | `ndjson:record` |
+| TC-QHARD-POST-003 | `dotnet test <test-project-path>` | >=4 assertions pass, 0 fail |
+| TC-QHARD-POST-004 | `cat .local/evidences/qname-hardening/fods-reviewer-post-001/verdict.json \| python -c "import json,sys; d=json.load(sys.stdin); print(d['verdict'])"` | `ACCEPTED_VERIFIED` |
+| TC-QHARD-POST-005 | `grep -A3 "fods" registry/parity-matrix.yaml` | Non-definitional entry |
+| TC-QHARD-POST-006 | `.venv/Scripts/pytest tests/supervisor/test_governance_validators.py::TestRunAllValidators -v \| tail -3` | 5 passed, 0 failed |
+
+### Repair Loop
+
+If any taskcard's verification command fails:
+1. Re-read the failing source file
+2. Apply the minimum targeted fix from "Required work"
+3. Re-run the verification command
+4. Capture both failing and passing run outputs
+5. Update status.json only after the passing run is captured
+6. Do not mark CLOSED from a projected outcome
+
+### Anti-Overclaim Rules (Section 24)
+
+1. "V53 returns PASS" requires a live call showing 0 violations, not a test assertion.
+2. ".NET Spec/ classes work" requires dotnet test output, not build success alone.
+3. "Reviewer ACCEPTED_VERIFIED" requires a verdict.json file produced by running the skill.
+4. "Spec-parity verified" requires running the verification tool or documenting BLOCKED_EXTERNAL_AUTHORITY with a specific unblock condition.
+5. "Import bug is pre-existing and harmless" is incorrect — it prevents 5 tests from running, masking validator regressions. Must be fixed before claiming TestRunAllValidators green.
+6. No taskcard may be marked CLOSED by updating status alone without evidence.
+
+### Closeout Criteria (Section 24)
+
+Section 24 may be declared complete when all 6 TC-QHARD-POST taskcards are CLOSED with direct evidence:
+- POST-001: xcf:image V53 clean + XCF tests pass
+- POST-002: ndjson:record V53 clean + NDJSON tests pass
+- POST-003: dotnet test passes >=4 .NET Spec/ assertions
+- POST-004: verdict.json ACCEPTED_VERIFIED produced by skill execution
+- POST-005: parity-matrix.yaml has honest FODS/FODT entry or BLOCKED documented
+- POST-006: All 5 TestRunAllValidators pass in pytest; total governance tests >=82
+
+### Remaining True Blockers
+
+| Blocker | Type | Unblock condition |
+|---------|------|-------------------|
+| SAL cache (TC-QHARD-POST-005) | EXTERNAL_DATA | ODF 1.3 facts must be in `.local/spec-cache/` via refresh_check.py |
+| .NET test infrastructure (TC-QHARD-POST-003) | MISSING_INFRASTRUCTURE | Agent-resolvable: create .Tests.csproj project |
+
+All other gaps are agent-resolvable with no external approval required.
 
 ---
 
