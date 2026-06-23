@@ -1,86 +1,314 @@
 [
   {
-    "item_id": "TC-HEAL-PY-NDJSON-001",
-    "item_title": "Remove NdjsonRecord class from ndjson_codec.py",
+    "item_id": "TC-QNAME-AUTH-001",
+    "item_title": "Create NdjsonField spec authority class",
     "declared_status": "completed",
-    "supervisor_grade": "OVERCLAIMED",
-    "evidence_found": false,
-    "evidence_paths": [],
+    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "evidence_found": true,
+    "evidence_paths": [
+      "src/python/ndjson/Compat/ndjson_field.py",
+      "src/python/ndjson/spec/record/field.py",
+      "shared/qname-registry/ndjson.yaml"
+    ],
     "tests_supporting": [],
     "tests_missing": [],
-    "acceptance_criteria_met": [],
-    "acceptance_criteria_failed": [],
-    "required_rework": "Item declared completed but no evidence found. Provide evidence at declared paths.",
-    "can_autonomously_repair": true,
-    "next_prompt_instruction": "REWORK: Provide actual evidence for TC-HEAL-PY-NDJSON-001. Status-only claims are not accepted.",
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "No concrete test/criteria proof (path-only acceptance)"
+    ],
+    "acceptance_criteria_failed": [
+      "No raw proof, test content, or acceptance criteria verified"
+    ],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for TC-QNAME-AUTH-001",
     "purpose_check": {
       "item_type": "",
       "has_gap_ref": null,
       "verdict": "NOT_APPLICABLE",
       "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
+    },
+    "semantic_verification": {
+      "adequate": true,
+      "confidence": 0.4666666666666666,
+      "stub_detected": false,
+      "deficiencies": [
+        "few key fields found: [] (expected >=3)"
+      ],
+      "llm_used": false,
+      "intermediate_verified": true,
+      "source": "intermediate_verify",
+      "checks": [
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\python\\ndjson\\Compat\\ndjson_field.py",
+          "exists": true,
+          "content_ok": true,
+          "detail": "non-empty (338 bytes): C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\python\\ndjson\\Compat\\ndjson_field.py",
+          "check_type": "nonzero_existence"
+        },
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\python\\ndjson\\spec\\record\\field.py",
+          "exists": true,
+          "content_ok": true,
+          "detail": "non-empty (1001 bytes): C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\python\\ndjson\\spec\\record\\field.py",
+          "check_type": "nonzero_existence"
+        },
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\shared\\qname-registry\\ndjson.yaml",
+          "exists": true,
+          "content_ok": false,
+          "detail": "few key fields found: [] (expected >=3)",
+          "check_type": "yaml_content"
+        }
+      ],
+      "summary": "2/3 evidence files passed content check",
+      "_cached_at": "2026-06-23T09:23:21.123168+00:00",
+      "_from_cache": true
     }
   },
   {
-    "item_id": "TC-HEAL-PY-XCF-001",
-    "item_title": "Remove spec_qname ClassVar fields from XcfImage dataclass",
+    "item_id": "TC-QNAME-AUTH-002",
+    "item_title": "Create XcfLayer spec authority class",
     "declared_status": "completed",
-    "supervisor_grade": "OVERCLAIMED",
-    "evidence_found": false,
-    "evidence_paths": [],
+    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "evidence_found": true,
+    "evidence_paths": [
+      "src/python/xcf/Compat/xcf_layer.py",
+      "src/python/xcf/spec/layer/layer.py",
+      "shared/qname-registry/xcf.yaml"
+    ],
     "tests_supporting": [],
     "tests_missing": [],
-    "acceptance_criteria_met": [],
-    "acceptance_criteria_failed": [],
-    "required_rework": "Item declared completed but no evidence found. Provide evidence at declared paths.",
-    "can_autonomously_repair": true,
-    "next_prompt_instruction": "REWORK: Provide actual evidence for TC-HEAL-PY-XCF-001. Status-only claims are not accepted.",
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "No concrete test/criteria proof (path-only acceptance)"
+    ],
+    "acceptance_criteria_failed": [
+      "No raw proof, test content, or acceptance criteria verified"
+    ],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for TC-QNAME-AUTH-002",
     "purpose_check": {
       "item_type": "",
       "has_gap_ref": null,
       "verdict": "NOT_APPLICABLE",
       "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
+    },
+    "semantic_verification": {
+      "adequate": true,
+      "confidence": 0.4666666666666666,
+      "stub_detected": false,
+      "deficiencies": [
+        "few key fields found: [] (expected >=3)"
+      ],
+      "llm_used": false,
+      "intermediate_verified": true,
+      "source": "intermediate_verify",
+      "checks": [
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\python\\xcf\\Compat\\xcf_layer.py",
+          "exists": true,
+          "content_ok": true,
+          "detail": "non-empty (321 bytes): C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\python\\xcf\\Compat\\xcf_layer.py",
+          "check_type": "nonzero_existence"
+        },
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\python\\xcf\\spec\\layer\\layer.py",
+          "exists": true,
+          "content_ok": true,
+          "detail": "non-empty (1196 bytes): C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\python\\xcf\\spec\\layer\\layer.py",
+          "check_type": "nonzero_existence"
+        },
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\shared\\qname-registry\\xcf.yaml",
+          "exists": true,
+          "content_ok": false,
+          "detail": "few key fields found: [] (expected >=3)",
+          "check_type": "yaml_content"
+        }
+      ],
+      "summary": "2/3 evidence files passed content check",
+      "_cached_at": "2026-06-23T09:23:21.160780+00:00",
+      "_from_cache": true
     }
   },
   {
-    "item_id": "TC-QNAME-BACKFILL-NDJSON-RECORD-001",
-    "item_title": "Update ndjson:record qname registry python_file to Compat/ndjson_record.py",
+    "item_id": "TC-QNAME-AUTH-003",
+    "item_title": "Create XcfChannel spec authority class",
     "declared_status": "completed",
-    "supervisor_grade": "OVERCLAIMED",
-    "evidence_found": false,
-    "evidence_paths": [],
+    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "evidence_found": true,
+    "evidence_paths": [
+      "src/python/xcf/Compat/xcf_channel.py",
+      "src/python/xcf/spec/layer/channel.py",
+      "shared/qname-registry/xcf.yaml"
+    ],
     "tests_supporting": [],
     "tests_missing": [],
-    "acceptance_criteria_met": [],
-    "acceptance_criteria_failed": [],
-    "required_rework": "Item declared completed but no evidence found. Provide evidence at declared paths.",
-    "can_autonomously_repair": true,
-    "next_prompt_instruction": "REWORK: Provide actual evidence for TC-QNAME-BACKFILL-NDJSON-RECORD-001. Status-only claims are not accepted.",
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "No concrete test/criteria proof (path-only acceptance)"
+    ],
+    "acceptance_criteria_failed": [
+      "No raw proof, test content, or acceptance criteria verified"
+    ],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for TC-QNAME-AUTH-003",
     "purpose_check": {
       "item_type": "",
       "has_gap_ref": null,
       "verdict": "NOT_APPLICABLE",
       "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
+    },
+    "semantic_verification": {
+      "adequate": true,
+      "confidence": 0.4666666666666666,
+      "stub_detected": false,
+      "deficiencies": [
+        "few key fields found: [] (expected >=3)"
+      ],
+      "llm_used": false,
+      "intermediate_verified": true,
+      "source": "intermediate_verify",
+      "checks": [
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\python\\xcf\\Compat\\xcf_channel.py",
+          "exists": true,
+          "content_ok": true,
+          "detail": "non-empty (349 bytes): C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\python\\xcf\\Compat\\xcf_channel.py",
+          "check_type": "nonzero_existence"
+        },
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\python\\xcf\\spec\\layer\\channel.py",
+          "exists": true,
+          "content_ok": true,
+          "detail": "non-empty (1276 bytes): C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\python\\xcf\\spec\\layer\\channel.py",
+          "check_type": "nonzero_existence"
+        },
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\shared\\qname-registry\\xcf.yaml",
+          "exists": true,
+          "content_ok": false,
+          "detail": "few key fields found: [] (expected >=3)",
+          "check_type": "yaml_content"
+        }
+      ],
+      "summary": "2/3 evidence files passed content check",
+      "_cached_at": "2026-06-23T09:23:21.189937+00:00",
+      "_from_cache": true
     }
   },
   {
-    "item_id": "TC-QNAME-BACKFILL-XCF-IMAGE-001",
-    "item_title": "Update xcf:image qname registry python_file to image_document.py",
+    "item_id": "TC-PRODUCT-PILOT-NDJSON-001",
+    "item_title": "Close 24 NDJSON test collection errors",
     "declared_status": "completed",
-    "supervisor_grade": "OVERCLAIMED",
-    "evidence_found": false,
-    "evidence_paths": [],
+    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "evidence_found": true,
+    "evidence_paths": [
+      "src/python/ndjson/ndjson_analytics.py",
+      "src/python/ndjson/__init__.py"
+    ],
     "tests_supporting": [],
     "tests_missing": [],
-    "acceptance_criteria_met": [],
-    "acceptance_criteria_failed": [],
-    "required_rework": "Item declared completed but no evidence found. Provide evidence at declared paths.",
-    "can_autonomously_repair": true,
-    "next_prompt_instruction": "REWORK: Provide actual evidence for TC-QNAME-BACKFILL-XCF-IMAGE-001. Status-only claims are not accepted.",
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "No concrete test/criteria proof (path-only acceptance)"
+    ],
+    "acceptance_criteria_failed": [
+      "No raw proof, test content, or acceptance criteria verified"
+    ],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for TC-PRODUCT-PILOT-NDJSON-001",
     "purpose_check": {
       "item_type": "",
       "has_gap_ref": null,
       "verdict": "NOT_APPLICABLE",
       "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
+    },
+    "semantic_verification": {
+      "adequate": true,
+      "confidence": 0.7,
+      "stub_detected": false,
+      "deficiencies": [],
+      "llm_used": false,
+      "intermediate_verified": true,
+      "source": "intermediate_verify",
+      "checks": [
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\python\\ndjson\\ndjson_analytics.py",
+          "exists": true,
+          "content_ok": true,
+          "detail": "non-empty (31605 bytes): C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\python\\ndjson\\ndjson_analytics.py",
+          "check_type": "nonzero_existence"
+        },
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\python\\ndjson\\__init__.py",
+          "exists": true,
+          "content_ok": true,
+          "detail": "non-empty (7105 bytes): C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\python\\ndjson\\__init__.py",
+          "check_type": "nonzero_existence"
+        }
+      ],
+      "summary": "2/2 evidence files passed content check",
+      "_cached_at": "2026-06-23T09:23:21.222333+00:00",
+      "_from_cache": true
+    }
+  },
+  {
+    "item_id": "TC-CAPABILITY-REPAIR-001",
+    "item_title": "Design capability-to-feature compiler specification",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "evidence_found": true,
+    "evidence_paths": [
+      "docs/capability-feature-compiler-spec.md"
+    ],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "No concrete test/criteria proof (path-only acceptance)"
+    ],
+    "acceptance_criteria_failed": [
+      "No raw proof, test content, or acceptance criteria verified"
+    ],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for TC-CAPABILITY-REPAIR-001",
+    "purpose_check": {
+      "item_type": "",
+      "has_gap_ref": null,
+      "verdict": "NOT_APPLICABLE",
+      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
+    },
+    "semantic_verification": {
+      "adequate": true,
+      "confidence": 0.7,
+      "stub_detected": false,
+      "deficiencies": [],
+      "llm_used": false,
+      "intermediate_verified": true,
+      "source": "intermediate_verify",
+      "checks": [
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\docs\\capability-feature-compiler-spec.md",
+          "exists": true,
+          "content_ok": true,
+          "detail": "markdown with 201 lines, header=yes",
+          "check_type": "markdown_content"
+        }
+      ],
+      "summary": "1/1 evidence files passed content check",
+      "_cached_at": "2026-06-23T09:23:21.257080+00:00",
+      "_from_cache": true
     }
   }
 ]

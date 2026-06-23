@@ -1,8 +1,8 @@
 # Evidence Bundle Discovery Summary
-Timestamp: 2026-06-23T08:55:07.045461
+Timestamp: 2026-06-23T14:27:08.268009
 Status: found
-Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\floating-stargazing-globe-hardening-20260623-034629\declaration-review-package.zip
+Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\FF-TASKCARDS-20260623-092039\declaration-review-package.zip
 Sprint ID: unknown
-Entry count: 69
-Bundle mtime: 2026-06-23T08:53:30.150807
-Bundle size: 233899 bytes
+Entry count: 75
+Bundle mtime: 2026-06-23T14:26:30.218223
+Bundle size: 185002 bytes

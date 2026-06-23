@@ -1,17 +1,18 @@
 # Work Item Grades
-Sprint: FF-HEAL-QNAME-20260623-131042
-Generated: 2026-06-23T13:47:07.412233
+Sprint: FF-TASKCARDS-20260623-092039
+Generated: 2026-06-23T14:24:09.459289
 Global Status: ACCEPTED_WITH_REWORK
 
 | Item ID | Grade | Rework Required |
 |---------|-------|-----------------|
-| TC-HEAL-PY-NDJSON-001 | OVERCLAIMED | Item declared completed but no evidence found. Provide evidence at declared path |
-| TC-HEAL-PY-XCF-001 | OVERCLAIMED | Item declared completed but no evidence found. Provide evidence at declared path |
-| TC-QNAME-BACKFILL-NDJSON-RECORD-001 | OVERCLAIMED | Item declared completed but no evidence found. Provide evidence at declared path |
-| TC-QNAME-BACKFILL-XCF-IMAGE-001 | OVERCLAIMED | Item declared completed but no evidence found. Provide evidence at declared path |
+| TC-QNAME-AUTH-001 | ACCEPTED_WITH_LIMITATIONS |  |
+| TC-QNAME-AUTH-002 | ACCEPTED_WITH_LIMITATIONS |  |
+| TC-QNAME-AUTH-003 | ACCEPTED_WITH_LIMITATIONS |  |
+| TC-PRODUCT-PILOT-NDJSON-001 | ACCEPTED_WITH_LIMITATIONS |  |
+| TC-CAPABILITY-REPAIR-001 | ACCEPTED_WITH_LIMITATIONS |  |
 
 ## Summary
-- Accepted: 0
-- Rework: 5
-- Overclaimed: 4
-- Autonomous Continue: False
+- Accepted: 5
+- Rework: 0
+- Overclaimed: 0
+- Autonomous Continue: True

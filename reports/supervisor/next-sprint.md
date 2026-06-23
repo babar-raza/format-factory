@@ -1,20 +1,20 @@
 # Supervisor-Generated Next Sprint Prompt
-# Source sprint: FF-HEAL-QNAME-20260623-131042
+# Source sprint: FF-TASKCARDS-20260623-092039
 # Stream: mainstream
-# Generated: 2026-06-23T13:49:11.899895
+# Generated: 2026-06-23T14:27:10.113025
 # ADVISORY ONLY — not a Format Factory authority document
 # This is INPUT to the next sprint, not a gate approval or commit authorization.
 
 ---
 
 ## Sprint Focus
-PRODUCT + REPAIR: Advance product POC AND address CRITICAL contradictions
+ADVANCE: Product deepening — .NET commercial + Python FOSS + dogfood + packaging
 
 ## Prior Sprint Summary
-- Sprint ID: FF-HEAL-QNAME-20260623-131042
-- Evidence verdict: ACCEPTED_WITH_REWORK
+- Sprint ID: FF-TASKCARDS-20260623-092039
+- Evidence verdict: ACCEPTED
 - Tests: 1609 passed, 0 failed, 0 skipped
-- Autonomous continue: False
+- Autonomous continue: True
 
 ## STOP_REASON_ADVISORY (enforced by stop_reason_adjudicator.py)
 
@@ -36,27 +36,21 @@ TRUE_EXTERNAL_GATE (ONLY these warrant a stop):
 - Credentials unavailable with no fallback
 
 ## Section 1: New Product Work (Advisory — Always Execute)
-- [pending] TASK-005: Select governed product gaps and validate the product-code ledger
-- [agent-owned] TASK-006: Prepare commit candidate summary and changed-file manifest
-- [external-gate] TASK-007: Execute git commit (requires explicit user authorization — do NOT self-execute)
-- [pending] TASK-008: Work on open taskcard: TC-0015-spec-retrieval-strategy-evaluation
-- [pending] TASK-009: Work on open taskcard: TC-0016-fods-vector-index-pilot
-- [pending] TASK-010: Work on open taskcard: TC-0020-spec-workbench-core
-- [pending] TASK-011: Advance one dogfood export path using a Format Factory library
-- [pending] TASK-012: Build package artifacts and run installed-workflow proof
-- [pending] TASK-013: Write evidence declaration and run supervisor autonomous-cycle
+- [pending] TASK-001: Select governed product gaps and validate the product-code ledger
+- [agent-owned] TASK-002: Prepare commit candidate summary and changed-file manifest
+- [external-gate] TASK-003: Execute git commit (requires explicit user authorization — do NOT self-execute)
+- [pending] TASK-004: Work on open taskcard: TC-0015-spec-retrieval-strategy-evaluation
+- [pending] TASK-005: Work on open taskcard: TC-0016-fods-vector-index-pilot
+- [pending] TASK-006: Work on open taskcard: TC-0020-spec-workbench-core
+- [pending] TASK-007: Advance one dogfood export path using a Format Factory library
+- [pending] TASK-008: Build package artifacts and run installed-workflow proof
+- [pending] TASK-009: Write evidence declaration and run supervisor autonomous-cycle
 
 ## Section 2: Rework / Repair (Advisory — Fix Before Closeout)
-- [pending] REPAIR-001: Repair: OVERCLAIMED: Remove NdjsonRecord class from ndjson_codec.py
-- [pending] REPAIR-002: Repair: OVERCLAIMED: Remove spec_qname ClassVar fields from XcfImage dataclass
-- [pending] REPAIR-003: Repair: OVERCLAIMED: Update ndjson:record qname registry python_file to Compat/ndjson_re
-- [pending] REPAIR-004: Repair: OVERCLAIMED: Update xcf:image qname registry python_file to image_document.py
+None
 
 ## Contradictions Context
-- [CRITICAL] OVERCLAIMED: Remove NdjsonRecord class from ndjson_codec.py
-- [CRITICAL] OVERCLAIMED: Remove spec_qname ClassVar fields from XcfImage dataclass
-- [CRITICAL] OVERCLAIMED: Update ndjson:record qname registry python_file to Compat/ndjson_record.py
-- [CRITICAL] OVERCLAIMED: Update xcf:image qname registry python_file to image_document.py
+None
 
 ## Non-Negotiable Rules (always apply)
 1. No push without explicit user authorization.
@@ -88,28 +82,6 @@ TRUE_EXTERNAL_GATE (ONLY these warrant a stop):
 
 ## Project Memory Context
 ```
-- bundle_entry_count: 82
-- bundle_validation_pass: True
-
-## Entry: floating-stargazing-globe-hardening
-- timestamp: 2026-06-22T19:29:07.780588
-- verdict: ACCEPTED
-- test_count: 68
-- fail_count: 0
-- git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\floating-stargazing-globe-hardening-20260622-142602\declaration-review-package.zip
-- pending_marker_count: 0
-- bundle_entry_count: 70
-- bundle_validation_pass: True
-- test_delta: +68
-- test_delta_from: 0
-
-## Entry: frolicking-squishing-shannon-closeout-20260622
-- timestamp: 2026-06-22T21:17:06.089854
-- verdict: ACCEPTED
-- test_count: 0
-- fail_count: 0
-- git_head: see-declaration
 - bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\frolicking-squishing-shannon-closeout-20260622\declaration-review-package.zip
 - pending_marker_count: 0
 - bundle_entry_count: 63
@@ -138,6 +110,28 @@ TRUE_EXTERNAL_GATE (ONLY these warrant a stop):
 - bundle_validation_pass: True
 - test_delta: +22
 - test_delta_from: 0
+
+## Entry: FF-HEAL-QNAME-20260623-131042
+- timestamp: 2026-06-23T13:57:09.418027
+- verdict: ACCEPTED
+- test_count: 0
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\FF-HEAL-QNAME-20260623-131042\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 95
+- bundle_validation_pass: True
+
+## Entry: UNIFIED-FF-FINAL-20260623
+- timestamp: 2026-06-23T14:13:06.637291
+- verdict: ACCEPTED
+- test_count: 0
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\UNIFIED-FF-FINAL-20260623\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 85
+- bundle_validation_pass: True
 ```
 
 ---

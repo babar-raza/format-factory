@@ -1,6 +1,6 @@
 # FORMAT-FACTORY-RNEXT-MEGA-TRAIN-001
-# Generated: 2026-06-23T13:49:09.083321
-# Source: Supervisor autonomous-cycle review of FF-HEAL-QNAME-20260623-131042
+# Generated: 2026-06-23T14:26:15.753779
+# Source: Supervisor autonomous-cycle review of FF-TASKCARDS-20260623-092039
 # Stream: mainstream
 # ADVISORY ONLY -- not a Format Factory authority document
 
@@ -27,16 +27,16 @@ Read these files before writing any code:
 ## Sprint Identity
 
 - Sprint ID: FORMAT-FACTORY-RNEXT-MEGA-TRAIN-001
-- Prior sprint: FF-HEAL-QNAME-20260623-131042
+- Prior sprint: FF-TASKCARDS-20260623-092039
 - Prior verdict: ACCEPTED_WITH_REWORK
 - Prior tests: 0 passed, 0 failed, 0 skipped
-- Autonomous continue: False
+- Autonomous continue: True
 
 ---
 
 ## Sprint Goal
 
-**Goal:** Repair 4 item(s) flagged by supervisor review. Advance product POC: FODS .NET Product Deepening; FODT .NET Product Deepening; Netpbm .NET Product Deepening; ZST Python Improvement. Build evidence declaration and run supervisor autonomous-cycle.
+**Goal:** Advance product POC: FODS .NET Product Deepening; FODT .NET Product Deepening; Netpbm .NET Product Deepening; ZST Python Improvement. Build evidence declaration and run supervisor autonomous-cycle.
 
 ---
 
@@ -70,27 +70,23 @@ Read these files before writing any code:
 | Train | Group | Title |
 |-------|-------|-------|
 | A | G1 | Governance Preflight |
-| B | G2 | Rework: Remove NdjsonRecord class from ndjson_codec.py |
-| C | G2 | Rework: Remove spec_qname ClassVar fields from XcfImage dataclass |
-| D | G2 | Rework: Update ndjson:record qname registry python_file to Compat/ndjson_record.py |
-| E | G2 | Rework: Update xcf:image qname registry python_file to image_document.py |
-| F | G3 | FODS .NET Product Deepening |
-| G | G3 | FODT .NET Product Deepening |
-| H | G3 | Netpbm .NET Product Deepening |
-| I | G4 | ZST Python Improvement |
-| J | G4 | Netpbm Python Improvement |
-| K | G4 | SYLK Python Improvement |
-| L | G4 | TOML Python Improvement |
-| M | G4 | NDJSON Python Improvement |
-| N | G4 | FODG Python Improvement |
-| O | G4 | TSV Python Improvement |
-| P | G4 | ABW Python Improvement |
-| Q | G4 | Gnumeric Python Improvement |
-| R | G5 | Dogfood: fodt -> txt |
-| S | G5 | Dogfood: fodt -> html |
-| T | G6 | Package Build + Install Proof |
-| U | G7 | State + Memory + POC Matrix Sync |
-| V | G8 | Evidence Declaration + Supervisor Autonomous-Cycle |
+| B | G3 | FODS .NET Product Deepening |
+| C | G3 | FODT .NET Product Deepening |
+| D | G3 | Netpbm .NET Product Deepening |
+| E | G4 | ZST Python Improvement |
+| F | G4 | Netpbm Python Improvement |
+| G | G4 | SYLK Python Improvement |
+| H | G4 | TOML Python Improvement |
+| I | G4 | NDJSON Python Improvement |
+| J | G4 | FODG Python Improvement |
+| K | G4 | TSV Python Improvement |
+| L | G4 | ABW Python Improvement |
+| M | G4 | Gnumeric Python Improvement |
+| N | G5 | Dogfood: fodt -> txt |
+| O | G5 | Dogfood: fodt -> html |
+| P | G6 | Package Build + Install Proof |
+| Q | G7 | State + Memory + POC Matrix Sync |
+| R | G8 | Evidence Declaration + Supervisor Autonomous-Cycle |
 
 ---
 
@@ -108,43 +104,9 @@ Read all governance files. Verify no policy violations from prior sprint. Confir
 **Files:**
 - `reports/<run_id>/00-preflight.md`
 
-## Group G2: Rework / Repair
-
-### Train B: Rework: Remove NdjsonRecord class from ndjson_codec.py
-
-Item declared completed but no evidence found. Provide evidence at declared paths.
-
-**Acceptance Criteria:**
-- Evidence for TC-HEAL-PY-NDJSON-001 passes supervisor inspection
-- Tests pass for affected code
-
-### Train C: Rework: Remove spec_qname ClassVar fields from XcfImage dataclass
-
-Item declared completed but no evidence found. Provide evidence at declared paths.
-
-**Acceptance Criteria:**
-- Evidence for TC-HEAL-PY-XCF-001 passes supervisor inspection
-- Tests pass for affected code
-
-### Train D: Rework: Update ndjson:record qname registry python_file to Compat/ndjson_record.py
-
-Item declared completed but no evidence found. Provide evidence at declared paths.
-
-**Acceptance Criteria:**
-- Evidence for TC-QNAME-BACKFILL-NDJSON-RECORD-001 passes supervisor inspection
-- Tests pass for affected code
-
-### Train E: Rework: Update xcf:image qname registry python_file to image_document.py
-
-Item declared completed but no evidence found. Provide evidence at declared paths.
-
-**Acceptance Criteria:**
-- Evidence for TC-QNAME-BACKFILL-XCF-IMAGE-001 passes supervisor inspection
-- Tests pass for affected code
-
 ## Group G3: Commercial .NET Product
 
-### Train F: FODS .NET Product Deepening
+### Train B: FODS .NET Product Deepening
 
 Continue FODS commercial .NET product advancement. Continue product maintenance and extended API feature development
 
@@ -162,7 +124,7 @@ Continue FODS commercial .NET product advancement. Continue product maintenance 
 dotnet test tests/net/fods/ --verbosity quiet
 ```
 
-### Train G: FODT .NET Product Deepening
+### Train C: FODT .NET Product Deepening
 
 Continue FODT commercial .NET product advancement. Continue product maintenance and extended API feature development
 
@@ -180,7 +142,7 @@ Continue FODT commercial .NET product advancement. Continue product maintenance 
 dotnet test tests/net/fodt/ --verbosity quiet
 ```
 
-### Train H: Netpbm .NET Product Deepening
+### Train D: Netpbm .NET Product Deepening
 
 Continue Netpbm commercial .NET product advancement. Continue product maintenance and extended API feature development
 
@@ -200,7 +162,7 @@ dotnet test tests/net/netpbm/ --verbosity quiet
 
 ## Group G4: FOSS / Reduced Product
 
-### Train I: ZST Python Improvement
+### Train E: ZST Python Improvement
 
 Continue ZST FOSS product. Continue FOSS product deepening and additional compression API coverage
 
@@ -217,7 +179,7 @@ Continue ZST FOSS product. Continue FOSS product deepening and additional compre
 python -m pytest tests/python/zst/ -x -q
 ```
 
-### Train J: Netpbm Python Improvement
+### Train F: Netpbm Python Improvement
 
 Continue Netpbm FOSS product. Continue FOSS product deepening and additional Python API coverage
 
@@ -238,7 +200,7 @@ Continue Netpbm FOSS product. Continue FOSS product deepening and additional Pyt
 python -m pytest tests/python/pbm/ tests/python/pgm/ tests/python/ppm/ -x -q
 ```
 
-### Train K: SYLK Python Improvement
+### Train G: SYLK Python Improvement
 
 Continue SYLK FOSS product. Continue FOSS product deepening — cell iteration, set_cell_value; package install proof
 
@@ -255,7 +217,7 @@ Continue SYLK FOSS product. Continue FOSS product deepening — cell iteration, 
 python -m pytest tests/python/sylk/ -x -q
 ```
 
-### Train L: TOML Python Improvement
+### Train H: TOML Python Improvement
 
 Continue TOML FOSS product. dogfood export via TOML config roundtrip; package install proof
 
@@ -272,7 +234,7 @@ Continue TOML FOSS product. dogfood export via TOML config roundtrip; package in
 python -m pytest tests/python/toml/ -x -q
 ```
 
-### Train M: NDJSON Python Improvement
+### Train I: NDJSON Python Improvement
 
 Continue NDJSON FOSS product. Dogfood pipeline integration
 
@@ -289,7 +251,7 @@ Continue NDJSON FOSS product. Dogfood pipeline integration
 python -m pytest tests/python/ndjson/ -x -q
 ```
 
-### Train N: FODG Python Improvement
+### Train J: FODG Python Improvement
 
 Continue FODG FOSS product. SVG export investigation
 
@@ -306,7 +268,7 @@ Continue FODG FOSS product. SVG export investigation
 python -m pytest tests/python/fodg/ -x -q
 ```
 
-### Train O: TSV Python Improvement
+### Train K: TSV Python Improvement
 
 Continue TSV FOSS product. Dogfood pipeline integration
 
@@ -323,7 +285,7 @@ Continue TSV FOSS product. Dogfood pipeline integration
 python -m pytest tests/python/tsv/ -x -q
 ```
 
-### Train P: ABW Python Improvement
+### Train L: ABW Python Improvement
 
 Continue ABW FOSS product. Dogfood pipeline integration
 
@@ -340,7 +302,7 @@ Continue ABW FOSS product. Dogfood pipeline integration
 python -m pytest tests/python/abw/ -x -q
 ```
 
-### Train Q: Gnumeric Python Improvement
+### Train M: Gnumeric Python Improvement
 
 Continue Gnumeric FOSS product. Dogfood pipeline integration
 
@@ -359,7 +321,7 @@ python -m pytest tests/python/gnumeric/ -x -q
 
 ## Group G5: Dogfood Exports
 
-### Train R: Dogfood: fodt -> txt
+### Train N: Dogfood: fodt -> txt
 
 No FF .NET text write library. Prerequisite: Build FormatFactory.Text .NET library with write_text().
 
@@ -367,7 +329,7 @@ No FF .NET text write library. Prerequisite: Build FormatFactory.Text .NET libra
 - Export test passes using FF library
 - Dogfood status updated in poc-targets.yaml
 
-### Train S: Dogfood: fodt -> html
+### Train O: Dogfood: fodt -> html
 
 No FF .NET HTML write library. Prerequisite: Build FormatFactory.Html .NET library.
 
@@ -377,7 +339,7 @@ No FF .NET HTML write library. Prerequisite: Build FormatFactory.Html .NET libra
 
 ## Group G6: Package / Install Proof
 
-### Train T: Package Build + Install Proof
+### Train P: Package Build + Install Proof
 
 Rebuild wheels/sdists for any changed packages. Run installed-workflow smoke test from extracted wheel. Treat missing artifacts as failures, not skips.
 
@@ -396,7 +358,7 @@ python -m pytest tests/evidence/ -x -q
 
 ## Group G7: State / Memory / POC Matrix
 
-### Train U: State + Memory + POC Matrix Sync
+### Train Q: State + Memory + POC Matrix Sync
 
 Update state/current-state.md, .supervisor/project-memory.md, and product-capability-matrix/poc-targets.yaml with sprint results.
 
@@ -412,7 +374,7 @@ Update state/current-state.md, .supervisor/project-memory.md, and product-capabi
 
 ## Group G8: Evidence + Supervisor Loop
 
-### Train V: Evidence Declaration + Supervisor Autonomous-Cycle
+### Train R: Evidence Declaration + Supervisor Autonomous-Cycle
 
 Write evidence-declaration.yaml listing ALL work items. Run autonomous-cycle. Verify session-resume.md is regenerated. Validate `reports/r90/product-code-change-ledger.json` for any governed product source edit.
 
@@ -519,7 +481,7 @@ Address escalated failures with priority.
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_spec_fact_refs_validator_failed (seen 192x, last: snoopy-juggling-seal-section-32-execution)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_governed_direct_execution_validator_failed (seen 3x, last: product-deepening-session-2026-06-22)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_monolith_detection_validator_failed (seen 277x, last: FF-HEAL-QNAME-20260623-131042)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): exit_code_3_rework_required (seen 188x, last: TC-HARDEN-005-SMOKE)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): exit_code_3_rework_required (seen 190x, last: FF-HEAL-QNAME-20260623-131042)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_source_architecture_failed (seen 15x, last: governance-healing-final-2026-06-22)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_skill_transcript_present_failed (seen 5x, last: snoopy-juggling-seal-section-32-execution)
 - WARNING: 10 unresolved failures in failure memory
@@ -528,7 +490,7 @@ Address escalated failures with priority.
 
 ## Learning-Based Governance Advisories
 
-- **SPRINT_CLOSEOUT_PATTERN** (seen 26x): Sprint declaration validated PASS with sprint_executor_validate.py — *Action:* Continue using sprint_executor_validate.py --repair before closeout
+- **SPRINT_CLOSEOUT_PATTERN** (seen 29x): Sprint declaration validated PASS with sprint_executor_validate.py — *Action:* Continue using sprint_executor_validate.py --repair before closeout
 
 ## Spec-Parity Requirements (from skill registry)
 

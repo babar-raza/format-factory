@@ -1,13 +1,13 @@
 # Evidence Review — Supervisor
-Sprint ID: FORMAT-FACTORY-FLOATING-STARGAZING-GLOBE-HARDENING-20260623-034629
-Timestamp: 2026-06-23T08:55:07.184600
+Sprint ID: FF-TASKCARDS-20260623-092039
+Timestamp: 2026-06-23T14:27:08.436571
 Verdict: ACCEPTED
-Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\floating-stargazing-globe-hardening-20260623-034629\declaration-review-package.zip
+Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\FF-TASKCARDS-20260623-092039\declaration-review-package.zip
 
 ## Facts
-- Tests: 22 passed, 0 failed, 0 skipped
+- Tests: 0 passed, 0 failed, 0 skipped
 - Git HEAD: see-declaration
-- Bundle entries: 69
+- Bundle entries: 75
 - PENDING markers: 0
 
 ## Gate States
