@@ -128,13 +128,22 @@ class TestGovernanceQualityExemption:
         )
 
     def test_governance_sprint_quality_score_still_computed(self):
-        """Quality score is still computed (0.0) but exempt from penalty."""
+        """Quality score is computed correctly for governance items.
+
+        TC-HARD-007 Option A (2026-06-22): GOVERNANCE_DOC items with evidence now reach
+        ACCEPTED_VERIFIED (not ACCEPTED_WITH_LIMITATIONS), so quality score is 1.0, not 0.0.
+        The sprint-level exemption from ACCEPTED_WITH_REWORK downgrade still applies but is
+        now moot — the quality score is already positive.
+        """
         from grade_declared_work import grade_all
         inspection = _make_governance_inspection(3)
         declaration = _make_governance_declaration(3)
         result = grade_all(inspection, declaration)
-        # Score should still be computed as 0.0 (no ACCEPTED_VERIFIED)
-        assert result["evidence_quality_score"] == 0.0
+        # TC-HARD-007: governance items are ACCEPTED_VERIFIED → score > 0.0
+        assert result["evidence_quality_score"] > 0.0, (
+            f"Expected quality score > 0.0 for governance sprint after TC-HARD-007, "
+            f"got {result['evidence_quality_score']}"
+        )
 
     def test_legacy_backfill_sprint_not_downgraded(self):
         """LEGACY_BACKFILL_METADATA items are also exempt from quality penalty."""
@@ -165,7 +174,14 @@ class TestGovernanceQualityExemption:
         )
 
     def test_mixed_sprint_not_exempt(self):
-        """A sprint with mix of governance and product items is NOT exempt."""
+        """A sprint with mix of governance and product items is NOT exempt.
+
+        TC-HARD-007 Option A (2026-06-22): governance items in a mixed sprint now get
+        ACCEPTED_VERIFIED, so the quality score is > 0.0 (2 out of 3 items verified).
+        The _is_governance_sprint detection correctly returns False for mixed sprints,
+        but the sprint-level quality penalty check only fires when verified_count == 0,
+        which is now False. This is the correct behavior post-TC-HARD-007.
+        """
         from grade_declared_work import grade_all
         inspection = _make_governance_inspection(2)
         declaration = _make_governance_declaration(2)
@@ -192,9 +208,13 @@ class TestGovernanceQualityExemption:
             },
         })
         result = grade_all(inspection, declaration)
-        # Mixed sprint: governance exemption should NOT apply
-        # Score is still 0.0, and the penalty should fire
-        assert result["evidence_quality_score"] == 0.0
+        # TC-HARD-007: 2 governance items are ACCEPTED_VERIFIED, 1 product item is
+        # ACCEPTED_WITH_LIMITATIONS → quality score is 2/3 ≈ 0.67 (not 0.0)
+        # The mixed sprint exemption is NOT needed because score is already > 0
+        assert result["evidence_quality_score"] > 0.0, (
+            f"Mixed sprint should have quality score > 0.0 after TC-HARD-007 "
+            f"(governance items are now ACCEPTED_VERIFIED). Got {result['evidence_quality_score']}"
+        )
 
 
 class TestGovernanceSprint001QualityFixed:

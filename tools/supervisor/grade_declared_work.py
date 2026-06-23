@@ -166,6 +166,7 @@ def _sv_sdk_fallback(messages: list[dict], cfg) -> str | None:
                 messages=messages,
                 max_tokens=500,
                 temperature=0,
+                timeout=30,  # 30s per attempt; 3 attempts = 90s max (TC-GRADE-002)
             )
             return resp.choices[0].message.content or None
         except Exception as exc:
@@ -490,6 +491,22 @@ def grade_item(item_inspection: dict, test_results: dict,
             has_concrete_proof = bool(tests_with_content) or criteria_verified or has_valid_transcript or bool(grade.get("tests_evidence_verified"))
             if has_valid_transcript and not bool(tests_with_content) and not criteria_verified:
                 criteria_met.append("Transcript validation: all transcripts valid")
+
+            # TC-HARD-007 Option A (2026-06-22): Governance item calibration.
+            # For governance types (GOVERNANCE_TASKCARD, GOVERNANCE_DOC, etc.), file content
+            # IS the proof — no pytest output is expected. Treat verified file existence as
+            # concrete proof so these items reach ACCEPTED_VERIFIED, not ACCEPTED_WITH_LIMITATIONS.
+            # This is max-expected-coverage calibration: governance items target 2/5 test coverage
+            # (file-content validation) rather than 5/5 (pytest output). When evidence paths exist
+            # and no criteria have failed, accept the item as concretely proved.
+            _gov_types = {
+                "GOVERNANCE_DOC", "GOVERNANCE_SCHEMA", "GOVERNANCE_POLICY",
+                "GOVERNANCE_TASKCARD", "LEGACY_BACKFILL_METADATA",
+            }
+            if item_type in _gov_types and has_evidence and not criteria_failed and not has_concrete_proof:
+                has_concrete_proof = True
+                criteria_met.append("Governance item: file-content validated (test coverage N/A by design)")
+
             if not has_concrete_proof and not criteria_failed:
                 # No failures but also no concrete proof — document as limitation
                 criteria_met.append("No concrete test/criteria proof (path-only acceptance)")

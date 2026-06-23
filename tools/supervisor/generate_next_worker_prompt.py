@@ -991,6 +991,7 @@ def generate_next_work_items(review: dict, stream: str = None, plan_lock: dict |
                 }
             ],
             "work_selection_mode": "PLAN_LOCKED",
+            "stream": stream or "mainstream",
             "active_plan": _plan_path,
             "last_taskcard": _last_tc,
             "ledger_items_suppressed": True,
