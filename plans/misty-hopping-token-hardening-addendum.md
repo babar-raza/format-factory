@@ -416,21 +416,61 @@ H5-V54V55-PROMOTE ──────────── (LONG-RUNNING, tracked ac
 
 ---
 
-## Current State Snapshot (2026-06-23)
+## Execution Results (2026-06-23)
+
+```yaml
+execution_summary:
+  executed_by: Claude Opus 4.6
+  execution_date: 2026-06-23
+  taskcards_completed: 8/9 (H5 is long-running tracker)
+  commits:
+    - sha: 39a995cb
+      taskcard: H1-COMMIT
+      description: "feat(audit,registry): forensic audit artifacts — 46 files, 17767 insertions"
+    - sha: fcc14b19
+      taskcard: H2-COMMIT-STATE
+      description: "chore(reports): supervisor state refresh — 52 files"
+    - sha: 79966684
+      taskcard: H3-REGISTRY-POPULATE + H4-REGISTRY-FIX
+      description: "feat(registry): populate 26 null python_file + promote seeded->implementing"
+    - sha: 41a5481a
+      taskcard: H6-FODT-MARKERS
+      description: "fix(fodt): remove architecture_only markers from 9 .NET Spec classes"
+    - sha: b2f0081b
+      taskcard: H7-WIRE-AUDIT-TOOLS
+      description: "feat(supervisor): wire qname coverage regression check — Step 0a-qname"
+    - sha: 9936936c
+      taskcard: H8-SKILL-AUDIT
+      description: "fix(skill): qname-backfill python_file must point to spec/ not Compat/"
+
+  results:
+    H1: CLOSED — commit 39a995cb (46 files)
+    H2: CLOSED — commit fcc14b19 (52 files)
+    H3: CLOSED — 26/40 null entries populated, 14 genuinely missing (no file on disk)
+    H4: CLOSED — 2 non-canonical entries documented with comments
+    H5: OPEN — Sprint 1 tracked (2026-06-23, false positives: N/A, first sprint)
+    H6: CLOSED — 9 markers removed, grep confirms 0 remain
+    H7: CLOSED — Step 0a-qname hook wired, baseline 96.9%, dry-run passes
+    H8: CLOSED — PASS verdict, 1 fix applied (python_file path correction)
+    H9: CLOSED — 1 stale IN_PROGRESS lock fixed (unified-multi-plan)
+
+  final_registry_state:
+    total_entries: 70
+    python_file_spec: 54 (77%)
+    python_file_compat: 0 (0%)
+    python_file_non_canonical: 2 (3%)
+    python_file_null: 14 (20%)
+    status_seeded: 13
+    status_implementing: 37
+    status_implemented: 19
+    qname_coverage_score: 96.9%
+```
+
+## H5 Sprint Tracking (Long-Running)
 
 ```
-QName Registry:
-  Total entries: 70
-  python_file -> spec/: 28 (40.0%) ← CORRECT
-  python_file -> Compat/: 0 (0.0%) ← ALL CORRECTED (was 9)
-  python_file -> non-canonical: 2 (2.9%) ← NEEDS H4
-  python_file -> null: 40 (57.1%) ← NEEDS H3 (audit + populate or defer)
-
-Audit Tools Created: 6 (uncommitted)
-Migration Maps: 20 formats + summary (uncommitted)
-Governance Validators: V54, V55, V56 added (uncommitted)
-Tests Added: 10 V54/V55 tests (uncommitted)
-Evidence Declarations: 2 (uncommitted)
-
-Git State: 858 modified + 41 untracked = 899 uncommitted changes
+Sprint 1: 2026-06-23 — V54/V55 first deployment, no production sprints yet (N/A)
+Sprint 2: ___ (date, false positives: Y/N)
+Sprint 3: ___ (date, false positives: Y/N)
+Promotion: ___ (after 3 clean sprints, change severity WARN -> conditional-blocking)
 ```
