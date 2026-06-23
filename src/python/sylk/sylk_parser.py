@@ -54,6 +54,7 @@ class SylkCell:
 
 @dataclass
 class SylkDocument:
+    spec_qname: str = "sylk:document"
     cells: list[SylkCell] = field(default_factory=list)
     rows: int = 0
     cols: int = 0

@@ -112,6 +112,7 @@ class OdtHeading:
 
 @dataclass
 class OdtListItem:
+    spec_qname: str = "text:list-item"
     text: str = ""
 
 

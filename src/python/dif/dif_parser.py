@@ -43,12 +43,14 @@ class DifSizeError(DifError):
 
 @dataclass
 class DifCell:
+    spec_qname: str = "dif:cell"
     value: Any = None
     value_type: str = "string"  # "numeric", "string", "special"
 
 
 @dataclass
 class DifDocument:
+    spec_qname: str = "dif:document"
     title: str = ""
     vectors: int = 0  # columns
     tuples: int = 0   # rows

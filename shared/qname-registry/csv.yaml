@@ -6,21 +6,21 @@
   local_name: "record"
   canonical_class: "Csv.Record"
   spec_fact_ref: "FACT-CSV-001"
-  status: "seeded"
+  status: "implementing"
   source_layer: "Spec"
-  facade_names: []
-  python_file: null
-  dotnet_file: null
+  facade_names: ["CsvRecord"]
+  python_file: "src/python/csv/Compat/csv_record.py"
+  dotnet_file: "src/net/csv/Spec/CsvRecord.cs"
 
 - qname: "csv:field"
   namespace_uri: "urn:ietf:rfc:4180:csv"
   local_name: "field"
   canonical_class: "Csv.Field"
   spec_fact_ref: "FACT-CSV-001"
-  status: "seeded"
+  status: "implementing"
   source_layer: "Spec"
-  facade_names: []
-  python_file: null
+  facade_names: ["CsvField"]
+  python_file: "src/python/csv/Compat/csv_field.py"
   dotnet_file: null
 
 - qname: "csv:header"

@@ -56,6 +56,7 @@ class PgmDecodeError(PgmError):
 
 @dataclass
 class PgmImage:
+    spec_qname: str = "pgm:image"
     width: int = 0
     height: int = 0
     maxval: int = 255

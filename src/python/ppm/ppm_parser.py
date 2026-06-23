@@ -56,6 +56,7 @@ class PpmDecodeError(PpmError):
 
 @dataclass
 class PpmImage:
+    spec_qname: str = "ppm:image"
     width: int = 0
     height: int = 0
     maxval: int = 255

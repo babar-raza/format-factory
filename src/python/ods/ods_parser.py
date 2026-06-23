@@ -109,6 +109,7 @@ class OdsCell:
 
 @dataclass
 class OdsRow:
+    spec_qname: str = "table:table-row"
     cells: list[OdsCell] = field(default_factory=list)
 
 

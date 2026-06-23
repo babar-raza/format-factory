@@ -6,10 +6,10 @@
   local_name: "frame"
   canonical_class: "Zst.Frame"
   spec_fact_ref: "FACT-ZST-001"
-  status: "seeded"
+  status: "implementing"
   source_layer: "Spec"
-  facade_names: []
-  python_file: null
+  facade_names: ["ZstFrame"]
+  python_file: "src/python/zst/Compat/zst_frame.py"
   dotnet_file: null
 
 - qname: "zst:block"
@@ -17,10 +17,10 @@
   local_name: "block"
   canonical_class: "Zst.Block"
   spec_fact_ref: "FACT-ZST-002"
-  status: "seeded"
+  status: "implementing"
   source_layer: "Spec"
-  facade_names: []
-  python_file: null
+  facade_names: ["ZstBlock"]
+  python_file: "src/python/zst/Compat/zst_block.py"
   dotnet_file: null
 
 - qname: "zst:magic-number"

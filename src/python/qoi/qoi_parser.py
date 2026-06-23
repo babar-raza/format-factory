@@ -107,6 +107,7 @@ class QoiDecodeError(QoiError):
 
 @dataclass
 class QoiImage:
+    spec_qname: str = "qoi:image"
     width: int = 0
     height: int = 0
     channels: int = 4

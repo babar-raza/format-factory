@@ -55,6 +55,7 @@ class PbmDecodeError(PbmError):
 
 @dataclass
 class PbmImage:
+    spec_qname: str = "pbm:image"
     width: int = 0
     height: int = 0
     magic: str = "P1"
