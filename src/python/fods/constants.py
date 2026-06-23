@@ -7,6 +7,10 @@ format identity constants used across the FODS Python FOSS package.
 ODF 1.3 spec citation:
   source: ODF 1.3 Part 3 (schema spec)
   source_hash: sha256:92cfe64ee30a8cca1be19a76d38628fdc8ef9153eb59547f6c96fe7b9b81b066
+  shared_spec_facts:
+    FACT-ODF-SHARED-001: ODF 1.3 is an OASIS Standard published 27 April 2021
+    FACT-ODF-SHARED-005: ODF package is a ZIP file using STORED or DEFLATED compression
+    FACT-ODF-SHARED-010: OpenFormula is defined in ODF 1.3 Part 4 for spreadsheet formula cells
 
 License: Apache-2.0
 Package: format-factory-fods v0.1.0

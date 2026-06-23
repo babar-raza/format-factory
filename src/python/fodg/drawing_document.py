@@ -990,6 +990,10 @@ def fodg_text_count_not_equal_shape_count(file_path: "str | bytes | Path") -> bo
     return fodg_text_item_count(file_path) != fodg_total_shape_count(file_path)
 
 def fodg_shape_count_not_equal_text_count(file_path):
+    """Return True if total shape count does not equal text item count.
+
+    Spec: ODF 1.3 draw:custom-shape and draw:text-box counts compared (FACT-FODG-002)
+    """
     return fodg_total_shape_count(file_path) != fodg_text_item_count(file_path)
 
 def fodg_is_text_heavy(file_path: "str | Path") -> bool:
