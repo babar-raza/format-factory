@@ -125,11 +125,11 @@ def write_lock(plan_path: str, last_taskcard: str | None = None, complete: bool 
                 status = "ITERATION_REQUIRED"
                 print(
                     "[write_plan_lock] --audit-gate: lifecycle audit verdict=AUDIT_REQUIRES_ITERATION "
-                    "→ writing ITERATION_REQUIRED (plan will iterate)"
+                    "-> writing ITERATION_REQUIRED (plan will iterate)"
                 )
             else:
                 status = "TERMINAL_CLOSED"
-                print("[write_plan_lock] --audit-gate: lifecycle audit verdict=AUDIT_PASS → TERMINAL_CLOSED")
+                print("[write_plan_lock] --audit-gate: lifecycle audit verdict=AUDIT_PASS -> TERMINAL_CLOSED")
         except ImportError:
             # lifecycle_audit not installed yet — fall back to TERMINAL_CLOSED safely
             print(
