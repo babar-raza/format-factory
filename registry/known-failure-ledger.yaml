@@ -11,7 +11,7 @@
 
 version: 1
 created_at: "2026-06-18"
-last_updated: "2026-06-21"
+last_updated: "2026-06-23"
 source: "docs/test-layering.md §Known Environment-Dependent Test Failures"
 
 known_failures:
@@ -989,3 +989,32 @@ gap_test_notes:
     - (all other formats have similar patterns)
   mitigation: "--continue-on-collection-errors flag (now default in test_runner.py after HEAL-003)"
   not_failures: true
+
+# -----------------------------------------------------------------------
+# Supervisor grader failures — environment-dependent (added 2026-06-23)
+# -----------------------------------------------------------------------
+
+  # TC-HARDEN-004: test_fallback_never_downgrades pre-existing failure
+  # Confirmed pre-existing via git stash test against commit f92d73c4
+  # (one commit before TC-GRADE-001). Not introduced by any 2026-06-23 sprint.
+  - test_id: "tests/supervisor/test_llm_semantic_verification.py::TestSemanticVerifyItem::test_fallback_never_downgrades"
+    reason: >
+      Test asserts result['adequate'] is False when the LLM semantic_verify_item
+      is called with a declaration that should be downgraded by the LLM fallback.
+      However, when GPT_OSS_ENDPOINT / GPT_OSS_API_KEY / PROFESSIONALIZE_* are NOT
+      set, _get_sv_gateway() returns (None, None) and the function prints
+      '[LLM] No gateway available for semantic_verify_item, skipping semantic verification'
+      and returns adequate=True (from intermediate verify or path-only fallback).
+      Test assertion adequate=False fails because the semantic downgrade path is
+      not reachable without a real or mocked LLM gateway.
+    condition: "llm_gateway_unavailable_in_test_environment"
+    mitigation: >
+      To fix properly: mock _get_sv_gateway() to return a (gateway, config) pair
+      in the test so the downgrade assertion is reachable. Alternatively, update
+      test assertion to match actual behavior when gateway is absent.
+      Do NOT disable this test — it documents a real gap in LLM-free downgrade coverage.
+    layer: 2
+    first_documented: "2026-06-23 (confirmed pre-existing against f92d73c4)"
+    category: "environment_dependent"
+    blocks_regression: false
+    sprint_confirmed: "reactive-exploring-ullman (TC-HARDEN-004)"
