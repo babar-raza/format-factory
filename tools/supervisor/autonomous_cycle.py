@@ -19,7 +19,7 @@ import sys
 
 from atomic_io import atomic_write_json, atomic_write_text  # noqa: E402
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 import yaml
@@ -322,6 +322,73 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
     except Exception as _sal_exc:
         print(f"  WARNING: SAL regeneration check skipped (non-blocking): {_sal_exc}")
 
+    # Step 0a-staleness (TC-MACH-SAL-001): Escalate SAL staleness to sprint-blocking
+    # for PRODUCT sprints when >7 days old. MACHINERY:sal_repair sprints are exempt.
+    try:
+        if _sal_is_stale:
+            _sprint_type = decl.get("declared_scope", {}).get("sprint_type", "").upper()
+            if "SAL_REPAIR" not in _sprint_type and "MACHINERY" not in _sprint_type:
+                hard_stops.append(
+                    "SAL_STALE: sal-facts-latest.json is >7 days old. "
+                    "Run SAL refresh before product sprints. "
+                    "Override: set sprint_type to MACHINERY:sal_repair"
+                )
+                print("  [SAL_STALENESS] BLOCKING: SAL facts >7 days old for product sprint")
+            else:
+                print("  [SAL_STALENESS] WARNING: SAL stale but machinery/sal_repair sprint — not blocking")
+    except Exception as _sal_stale_err:
+        print(f"  [SAL_STALENESS] Error: {_sal_stale_err}")
+
+    # Step 0a-prepass (TC-SH-005) + Step 0a3 (TC-SH-011): extracted to extensions
+    try:
+        from autonomous_cycle_extensions import run_sprint_learnings_prepass, run_stale_lock_reaper
+        run_sprint_learnings_prepass(repo_root)
+        run_stale_lock_reaper(repo_root, timestamp)
+    except Exception as _ext_err:
+        print(f"  WARNING: Pre-pass extensions skipped (non-blocking): {_ext_err}")
+
+    # Step 0a-qname (FF-FORENSIC-AUDIT-20260623-H7): QName coverage regression check.
+    # Runs audit_qname_coverage.py and warns if coverage dropped below baseline.
+    # Completely non-blocking: error or timeout logs and skips.
+    print("=== STEP 0a-qname: QNAME COVERAGE CHECK ===")
+    try:
+        import subprocess as _qn_subprocess
+        _qn_baseline_path = repo_root / "reports" / "qname-coverage-baseline.json"
+        _qn_tool = repo_root / "tools" / "audit_qname_coverage.py"
+        if _qn_tool.exists():
+            _qn_result = _qn_subprocess.run(
+                [sys.executable, str(_qn_tool)],
+                capture_output=True, text=True, timeout=60,
+                cwd=str(repo_root),
+            )
+            if _qn_result.returncode == 0:
+                # Extract coverage % from output
+                import re as _qn_re
+                _qn_match = _qn_re.search(r"Overall coverage score:\s+([\d.]+)%", _qn_result.stdout)
+                if _qn_match:
+                    _qn_current = float(_qn_match.group(1))
+                    _qn_baseline = 96.9  # baseline from 2026-06-23 audit
+                    if _qn_baseline_path.exists():
+                        try:
+                            import json as _qn_json
+                            _qn_bl_data = _qn_json.loads(_qn_baseline_path.read_text())
+                            _qn_baseline = float(_qn_bl_data.get("overall_coverage_pct", 96.9))
+                        except Exception:
+                            pass
+                    if _qn_current < _qn_baseline - 1.0:
+                        continuation_warnings.append(
+                            f"QNAME_COVERAGE_REGRESSION: {_qn_current:.1f}% < baseline {_qn_baseline:.1f}%"
+                        )
+                        print(f"  WARNING: QName coverage regression: {_qn_current:.1f}% < {_qn_baseline:.1f}%")
+                    else:
+                        print(f"  QName coverage: {_qn_current:.1f}% (baseline: {_qn_baseline:.1f}%) — OK")
+            else:
+                print(f"  WARNING: audit_qname_coverage.py exited {_qn_result.returncode} (non-blocking)")
+        else:
+            print("  SKIP: tools/audit_qname_coverage.py not found")
+    except Exception as _qn_err:
+        print(f"  WARNING: QName coverage check skipped (non-blocking): {_qn_err}")
+
     # Step 0b: Detect active per-chat plan lock
     plan_lock = None
     _plan_locks_dir = repo_root / ".local" / "supervisor" / "plan-locks"
@@ -340,8 +407,61 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
                 print(f"  [PLAN_LOCK] Active plan: {plan_lock.get('plan_path')}")
                 print(f"  [PLAN_LOCK] Last taskcard: {plan_lock.get('last_taskcard')}")
                 break
+            # TC-TCF-008: COMPLETION_CANDIDATE is also an active plan (non-blocking)
+            if _ld.get("status") == "COMPLETION_CANDIDATE":
+                plan_lock = _ld
+                print(f"  [PLAN_LOCK] COMPLETION_CANDIDATE detected: {plan_lock.get('plan_path')}")
+                print(f"  [PLAN_LOCK] Running completion audit before proceeding...")
+                break
         except Exception as _pe:
             print(f"  [PLAN_LOCK] Warning: could not read {_lp.name}: {_pe}")
+
+    # Step 0b-reopen-check: Autonomous reopening of prematurely closed plans (TC-TCF-008)
+    # If we find a TERMINAL_CLOSED lock for the current session AND the plan has open taskcards,
+    # reopen the plan automatically.
+    if plan_lock is None:
+        for _lp in _plan_lock_candidates:
+            try:
+                _ld = json.loads(_lp.read_text(encoding="utf-8"))
+                if _ld.get("status") != "TERMINAL_CLOSED":
+                    continue
+                _plan_path = _ld.get("plan_path")
+                if not _plan_path:
+                    continue
+                # Check if plan file has open taskcards
+                try:
+                    import sys as _sys_reopen
+                    _sup_dir_reopen = str(Path(__file__).resolve().parent)
+                    if _sup_dir_reopen not in _sys_reopen.path:
+                        _sys_reopen.path.insert(0, _sup_dir_reopen)
+                    from lifecycle_audit import parse_plan_taskcards  # type: ignore[import]
+                    _tcs = parse_plan_taskcards(_plan_path)
+                    _open_tcs = [tc for tc in _tcs if tc["status"] not in ("CLOSED", "SUPERSEDED", "EXCLUDED")]
+                    if _open_tcs:
+                        print(f"  [AUTONOMOUS REOPEN] {len(_open_tcs)} open taskcards found in "
+                              f"TERMINAL_CLOSED plan {_plan_path}")
+                        try:
+                            from reopen_plan_lock import reopen_plan  # type: ignore[import]
+                            reopen_plan(
+                                plan_path=_plan_path,
+                                reason=f"Autonomous detection: {len(_open_tcs)} open taskcards in closed plan",
+                                trigger="AUTONOMOUS_OPEN_TASKCARD_DETECTION",
+                            )
+                            # Re-read the lock file which is now IN_PROGRESS
+                            _ld_reopened = json.loads(_lp.read_text(encoding="utf-8"))
+                            plan_lock = _ld_reopened
+                            print(f"  [AUTONOMOUS REOPEN] Plan reopened. Continuing execution.")
+                        except Exception as _reopen_exc:
+                            print(f"  [AUTONOMOUS REOPEN] WARNING: reopen failed ({_reopen_exc}). "
+                                  "Plan remains TERMINAL_CLOSED.")
+                except ImportError:
+                    pass  # lifecycle_audit or reopen_plan_lock not available
+                except Exception:
+                    pass  # Non-blocking
+                if plan_lock is not None:
+                    break  # Found and reopened a plan
+            except Exception:
+                continue
 
     # Step 0b-validate: Pre-execution plan readiness check (TC-PG-005)
     # Non-blocking: log CRITICAL and return exit 3 if plan is invalid (Supreme Directive applies).
@@ -446,6 +566,49 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
             print(f"  [SYSTEM_HEALING_GATE] Could not check: {_ghg_err}")
             _healing_gate_failed = False
 
+    # Step 1c (TC-MACH-LANE-001): Preventive lane conflict guard
+    # Checks declared_scope.lane against changed_files BEFORE grading.
+    _lane_conflict_detected = False
+    try:
+        _declared_lane = decl.get("declared_scope", {}).get("lane", "").upper()
+        _changed = decl.get("changed_files", [])
+        _lane_violations = []
+        if _declared_lane == "MACHINERY":
+            for _cf in _changed:
+                if isinstance(_cf, str) and (_cf.startswith("src/python/") or _cf.startswith("src/net/")):
+                    _lane_violations.append(f"MACHINERY sprint touched product source: {_cf}")
+        elif _declared_lane == "PRODUCT":
+            for _cf in _changed:
+                if isinstance(_cf, str) and _cf.startswith("tools/supervisor/") and not _cf.endswith("_test.py"):
+                    _lane_violations.append(f"PRODUCT sprint touched machinery: {_cf}")
+        if _lane_violations:
+            # Check grace period
+            _grace_active = False
+            try:
+                _policies_path = repo_root / ".supervisor" / "policies.yaml"
+                if _policies_path.exists():
+                    import yaml as _yaml_lc
+                    _pol = _yaml_lc.safe_load(_policies_path.read_text(encoding="utf-8"))
+                    _grace_until = (_pol or {}).get("lanes_grace_period_until", "")
+                    if _grace_until:
+                        from datetime import datetime as _dt_lc
+                        if _dt_lc.now().isoformat() < str(_grace_until):
+                            _grace_active = True
+            except Exception:
+                pass
+            if _grace_active:
+                print(f"  [LANE_GUARD] WARNING (grace period active): {len(_lane_violations)} violation(s)")
+                for _lv in _lane_violations[:3]:
+                    print(f"    - {_lv}")
+            else:
+                print(f"  [LANE_GUARD] CONFLICT DETECTED: {len(_lane_violations)} violation(s)")
+                for _lv in _lane_violations[:3]:
+                    print(f"    - {_lv}")
+                hard_stops.append(f"LANE_CONFLICT: {_declared_lane} sprint has cross-lane file changes")
+                _lane_conflict_detected = True
+    except Exception as _lc_err:
+        print(f"  [LANE_GUARD] Error: {_lc_err}")
+
     # Step 2: Inspect declared evidence
     print("\n=== STEP 2: INSPECT DECLARED EVIDENCE ===")
     inspection = inspect_declaration(decl, repo_root)
@@ -498,6 +661,20 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
               f"{adoption_result['items_with_skill_id']} with skill_id)")
     except Exception as e:
         print(f"  WARNING: Adoption compliance check skipped: {e}")
+
+    # Step 2a (Fix 2): Work-type-to-skill gate — check gap_mappings at runtime
+    skill_gate_violations = []
+    try:
+        from validate_adoption_compliance import check_work_type_skill_gate
+        skill_gate_violations = check_work_type_skill_gate(decl, repo_root)
+        if skill_gate_violations:
+            print(f"\n  SKILL GATE: {len(skill_gate_violations)} BLOCKED_SKILL_GAP violation(s):")
+            for _sid, _wt, _reason in skill_gate_violations:
+                print(f"    [{_sid}] work_type={_wt}: {_reason}")
+        else:
+            print("  SKILL GATE: All work types have active skills (or no PRODUCT items).")
+    except Exception as e:
+        print(f"  WARNING: Skill gate check skipped: {e}")
 
     # Step 2d2: Requirements authority validation (SAL-I-004, Sprint 2 advisory / Sprint 3 hard-block)
     # REQUIREMENT and READINESS items must pass requirements authority validation.
@@ -768,17 +945,51 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
             safe_deficiencies = [d.encode("ascii", "replace").decode() for d in deficiencies[:2]]
             print(f"    [{g['item_id']}] {'; '.join(safe_deficiencies)}")
 
-    # R111: Attach adoption compliance result to review for downstream consumption
+    # R111+Fix1: Adoption compliance — BLOCKING for PRODUCT_SOURCE/PRODUCT_TEST items
     if adoption_result is not None:
         review["adoption_compliance"] = adoption_result
         if not adoption_result["compliant"]:
-            # Adoption non-compliance downgrades clean ACCEPTED to ACCEPTED_WITH_REWORK
-            if review["overall_verdict"] == "ACCEPTED":
-                review["overall_verdict"] = "ACCEPTED_WITH_REWORK"
-                review["stop_reason"] = (
-                    review.get("stop_reason", "") +
-                    f" Adoption compliance FAIL: {adoption_result['summary']}"
-                ).strip()
+            # Build item_type lookup from declaration
+            _item_types = {
+                wi.get("item_id", ""): wi.get("item_type", "")
+                for wi in decl.get("planned_work_items", [])
+            }
+            # Check if any non-compliant, non-exempt item is product work
+            _product_non_compliant = [
+                r["item_id"] for r in adoption_result.get("items", [])
+                if not r.get("exempt") and not r.get("compliant")
+                and _item_types.get(r["item_id"], "") in ("PRODUCT_SOURCE", "PRODUCT_TEST")
+            ]
+            if _product_non_compliant:
+                # BLOCKING: product items without skill provenance
+                review["critical_rework_count"] = review.get("critical_rework_count", 0) + 1
+                review.setdefault("rework_items", [])
+                review["rework_items"].append(
+                    f"ADOPTION_NON_COMPLIANCE:product_items={','.join(_product_non_compliant[:5])}"
+                )
+                if review["overall_verdict"] in ("ACCEPTED", "ACCEPTED_WITH_REWORK"):
+                    review["overall_verdict"] = "REWORK_REQUIRED"
+            else:
+                # Non-product items: advisory only (preserve existing behavior)
+                if review["overall_verdict"] == "ACCEPTED":
+                    review["overall_verdict"] = "ACCEPTED_WITH_REWORK"
+            review["stop_reason"] = (
+                review.get("stop_reason", "") +
+                f" Adoption compliance FAIL: {adoption_result['summary']}"
+            ).strip()
+
+    # Fix 2 verdict: skill gate violations are BLOCKING for PRODUCT items
+    if skill_gate_violations:
+        review["skill_gate_violations"] = [
+            {"item_id": sid, "work_type": wt, "reason": reason}
+            for sid, wt, reason in skill_gate_violations
+        ]
+        review["critical_rework_count"] = review.get("critical_rework_count", 0) + len(skill_gate_violations)
+        review.setdefault("rework_items", [])
+        for sid, wt, reason in skill_gate_violations:
+            review["rework_items"].append(f"SKILL_GATE:{sid}:{reason}")
+        if review["overall_verdict"] in ("ACCEPTED", "ACCEPTED_WITH_REWORK"):
+            review["overall_verdict"] = "REWORK_REQUIRED"
 
     # GRE-TC-002: Attach governance validation result to review
     if governance_validation_result is not None:
@@ -1042,6 +1253,14 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
     except Exception as e:
         print(f"  WARNING: Overclaim detector failed: {e}")
 
+    # Step 3c2 (TC-SH-007): Rework classification — extracted to extensions
+    _rework_items_pre = review.get("rework_items", [])
+    try:
+        from autonomous_cycle_extensions import classify_rework_items
+        classify_rework_items(_rework_items_pre, sprint_id, timestamp, review_dir, repo_root)
+    except Exception as _rw_err:
+        print(f"  WARNING: Rework classification skipped (non-blocking): {_rw_err}")
+
     # Step 3d: SAL + Capability Map Recompute (R1/R2 — recon sprint repair)
     # Triggers SAL pipeline refresh and capability map regeneration after grading.
     # Non-blocking: failures are logged but do not stop the cycle.
@@ -1210,6 +1429,25 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
     work_path.write_text(
         yaml.dump(next_work, default_flow_style=False, sort_keys=False), encoding="utf-8"
     )
+    # Step 4a-compiler (TC-PROD-H-010): Merge gap-ledger-sourced items via capability compiler.
+    try:
+        from capability_feature_compiler import compile_gaps as _compile_gaps
+        _gl_path = repo_root / "reports" / "capability-layer" / "gap-ledger.json"
+        if _gl_path.exists():
+            _gl = json.loads(_gl_path.read_text(encoding="utf-8"))
+            _open = [g for g in _gl.get("gaps", []) if g.get("status") != "closed"]
+            _comp_items, _ = _compile_gaps(_open, max_items=10)
+            if _comp_items:
+                next_work["gap_sourced_items"] = _comp_items
+                next_work["work_selection_mode"] = "CAPABILITY_COMPILER_MERGED"
+                print(f"  Capability compiler: {len(_comp_items)} gap-sourced items merged")
+            else:
+                print("  Capability compiler: 0 open gaps matched")
+        else:
+            print("  Capability compiler: gap-ledger.json not found -- skipped")
+    except Exception as _ce:
+        print(f"  WARNING: Capability compiler skipped: {_ce}")
+
     (review_dir / "next-work-items.json").write_text(
         json.dumps(next_work, indent=2), encoding="utf-8"
     )
@@ -1543,6 +1781,13 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
     except Exception as e:
         print(f"  WARNING: Context pack rebuild failed: {e}")
 
+    # Step 7d (TC-SH-012): Maturity trend — extracted to extensions
+    try:
+        from autonomous_cycle_extensions import append_maturity_trend
+        append_maturity_trend(repo_root)
+    except Exception as _mt_err:
+        print(f"  WARNING: Maturity trend skipped (non-blocking): {_mt_err}")
+
     # Step 7b: Track P Ledger Enforcement (TC-P2-008 — REQ-LED-001/LED-002/LED-003)
     # For Track P sprints, validate that at least one ledger entry exists in
     # product-code-change-ledger.json for this sprint_id before writing signal.
@@ -1799,6 +2044,29 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
             # New params use default True — backward compatible (R113 product-first)
         )
 
+        # Emit per-format product deepening gate results (TC-HEAL-PD-004)
+        try:
+            import sys as _sys_pd
+            _pd_gate_dir = Path(__file__).resolve().parent
+            if str(_pd_gate_dir) not in _sys_pd.path:
+                _sys_pd.path.insert(0, str(_pd_gate_dir))
+            from product_deepening_gate import emit_continuation_signal_gates as _emit_pd_gates
+            _pd_gaps_path = repo_root / ".local" / "supervisor" / "selected-product-gaps.json"
+            _pd_selected = []
+            if _pd_gaps_path.exists():
+                try:
+                    _pd_selected = json.loads(_pd_gaps_path.read_text(encoding="utf-8")).get("selected_gaps", [])
+                except Exception:
+                    pass
+            review["product_deepening_gate_results"] = _emit_pd_gates(_pd_selected)
+        except Exception as _pd_gate_err:
+            review["product_deepening_gate_results"] = {
+                "error": str(_pd_gate_err),
+                "evaluated_formats": [],
+                "all_allowed": False,
+                "blocked_formats": [],
+            }
+
         # C5 (SIGNAL-UNIFY-001): Patch work-item-grades.md and latest-cycle-summary.md to
         # use auto_continue_value so all three outputs (grades, summary, signal) are
         # consistent.  review["autonomous_continue"] was written before hard_stops were
@@ -1914,6 +2182,14 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
         stream_signal_path = stream_signal_dir / "continuation-signal.json"
         atomic_write_json(stream_signal_path, stream_signal)
         print(f"  Stream signal: {stream_signal_path}")
+
+        # TC-SH-006: GOV_BLOCK auto-repair directive — extracted to extensions
+        if _current_structural_blocks:
+            try:
+                from autonomous_cycle_extensions import write_govblock_directive
+                write_govblock_directive(_current_structural_blocks, sprint_id, timestamp, signal_dir)
+            except Exception as _dir_err:
+                print(f"  WARNING: TC-SH-006 directive skipped (non-blocking): {_dir_err}")
 
         # HEAL-RECT-005: Archive rework items for cross-sprint persistence
         if rework_items:
