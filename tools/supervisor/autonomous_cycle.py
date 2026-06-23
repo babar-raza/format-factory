@@ -199,6 +199,31 @@ _PRODUCT_SOURCE_TYPES = frozenset({
 })
 
 
+def _sync_hard_stops_after_repair(
+    hard_stops: list,
+    rework_items: list,
+    prior_structural_blocks: list,
+) -> list:
+    """Sync hard_stops after TC-REPAIR-VERIFY-001 resolves GOV_BLOCK items (TC-SIGNAL-001).
+
+    Only clears 'critical_rework_blocks_continuation' when:
+    1. prior_structural_blocks was non-empty (GOV_BLOCK items existed before repair)
+    2. rework_items is now empty (ALL GOV_BLOCK items resolved)
+    3. 'critical_rework_blocks_continuation' is in hard_stops
+
+    Safety: if REJECTED/OVERCLAIMED items also caused exit_code==3, they remain in
+    rework_items → condition 2 fails → hard_stop is preserved.
+    """
+    if (prior_structural_blocks
+            and not rework_items
+            and "critical_rework_blocks_continuation" in hard_stops):
+        updated = [h for h in hard_stops if h != "critical_rework_blocks_continuation"]
+        print("  [SIGNAL-SYNC] critical_rework_blocks_continuation cleared: "
+              "all GOV_BLOCK items resolved by TC-REPAIR-VERIFY-001")
+        return updated
+    return hard_stops
+
+
 def _compute_exit_code(review: dict, decl: dict, gov_result: dict | None) -> int:
     """Compute exit code for the cycle manifest.
 
@@ -1577,6 +1602,9 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
                             it for it in rework_items
                             if not any(it.startswith(p) or it == p for p in _GOVBLOCK_PREFIXES)
                         ]
+                        hard_stops = _sync_hard_stops_after_repair(
+                            hard_stops, rework_items, _prior_structural_blocks
+                        )
                         review["post_repair_rescan"] = {
                             "status": "RESOLVED",
                             "sprint_id": sprint_id,

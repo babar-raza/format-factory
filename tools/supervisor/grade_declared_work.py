@@ -317,9 +317,16 @@ def semantic_verify_item(
             pass
 
     # LLM unavailable — try intermediate content check (Level 2, TC-HARD-008)
+    # Check iv cache for deterministic reruns when LLM unavailable (TC-GRADE-003)
+    _iv_cached = _get_cached_grade(f"iv:{item_id}", ev_hash, cache_path=cache_path)
+    if _iv_cached is not None:
+        return {**_iv_cached, "_from_cache": True}
     try:
         from grade_intermediate_verify import intermediate_verify_item as _ivm  # noqa
-        return _ivm(evidence_paths, item_id=item_id)
+        iv_result = _ivm(evidence_paths, item_id=item_id)
+        _cache_grade(f"iv:{item_id}", ev_hash, {**iv_result, "source": "intermediate_verify"},
+                     cache_path=cache_path)
+        return iv_result
     except Exception: pass  # noqa: E701
     return {"adequate": False, "confidence": 0.0, "stub_detected": False,
             "deficiencies": ["llm_verification_unavailable"], "llm_used": False,
