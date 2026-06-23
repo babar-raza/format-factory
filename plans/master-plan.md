@@ -3,8 +3,8 @@
 **Document type:** Living Master Plan
 **Authority level:** Single Operational Authority
 **Project:** format-factory
-**Version:** 3.3
-**Last updated:** 2026-06-23 (TC-HARD-002/007 supervisor fixes; V51/V52/V53 QName validators; spec_qname backfill across 9 Python domain classes + .NET spec stubs; plan-file hardening pass 4 on noble-doodling-pony.md)
+**Version:** 3.4
+**Last updated:** 2026-06-23 (imperative-drifting-lecun plan CLOSED — QName hardening all 6 phases complete; .NET spec authority classes implemented for FODS/FODT/CSV/NDJSON/TSV/Netpbm; fods.yaml 11/12 entries implemented; 53 governance validators all wired; reviewer skill registered)
 **Last verified:** 2026-06-23
 
 **Current phase:** Multi-format POC — 11 targets (3 commercial .NET, 8 FOSS Python). Gate 11 G11-G sub-gate approved by Babar Raza 2026-06-05 (FODS, FODT, Netpbm). Registry gate_11.status: commercial_readiness_in_progress (registry not yet updated after G11-G). commercial_product_ready: false (all entries).
@@ -361,6 +361,15 @@ Wave 3 gate: 5 PASS / 3 PARTIAL (0 FAIL)
 - python-qname-code-reviewer slash command registered.
 
 **Plan hardening (2026-06-23):** noble-doodling-pony.md POST-EXECUTION HARDENING PASS 4 added. 6 evidence-review gaps converted to governed taskcards: TC-SAL-PIPE-REGR-001 (SAL pipeline regression test), TC-VALIDATOR-REMAINING-001 (6 spec-parity validators untested), TC-SAL-PIPELINE-002 (FODS SAL facts), TC-GAP-AUDIT-002 (gap-audit JSON repair), TC-ONTOLOGY-CONTENT-001 (ontology divergence), TC-COMPILE-GAP-E2E-001 (compile_gap end-to-end). Anti-overclaim rules 13-15 added. Plan file is not in git repo.
+
+**QName hardening plan (imperative-drifting-lecun) — CLOSED 2026-06-23:**
+All 6 phases complete. Key outcomes:
+- Phase 0: V51/V52/V53 validators wired (53 total); backfill inventory CSV (docs/audits/python-qname-backfill-inventory.csv); python-qname-code-reviewer skill registered.
+- Phase 1-2: FODS/FODT Python spec/ authority classes fully wired (office/, table/, text/, style/, number/ namespaces). Compat/ facades inherit from spec authority classes. 1339 FODS tests pass / 1999 FODT tests pass. Reviewer verdict ACCEPTED_VERIFIED.
+- Phase 3-4: spec_qname backfill to 9 Python domain classes (DifCell, DifDocument, OdsRow, OdtListItem, PbmImage, PgmImage, PpmImage, QoiImage, SylkDocument). V51 returns PASS on live repo.
+- Phase 5: .NET spec authority classes implemented (not architecture_only stubs) for FODS (Document, Table, TableRow, TableCell), FODT (Body, Heading, Span, List, ListItem, Table, TableRow, TableCell), plus new Spec/ classes for CSV/NDJSON/TSV/Netpbm. All 6 .NET projects build 0 errors.
+- Phase 6: fods.yaml 11/12 entries → implemented (covered-table-cell authority_only by design). Registry YAML updated for xcf, ndjson, zst, csv, dif. 77/82 governance tests pass (5 pre-existing failures unchanged).
+- Commits: 2c522c52 (V51/V52/V53), a13e2552 (spec_qname backfill + .NET stubs + registry), dca8e00b (pipeline closeout).
 
 ---
 
