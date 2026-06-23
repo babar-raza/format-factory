@@ -1,9 +1,9 @@
 # Session Resume Briefing
 # Format Factory — Supervisor-Generated
-# Generated: 2026-06-23T14:27:10.148128
+# Generated: 2026-06-23T17:35:31.095521
 
 ## Quick State
-- Last sprint: FF-TASKCARDS-20260623-092039
+- Last sprint: FF-MR-PILOT-H-20260623
 - Evidence verdict: ACCEPTED
 - Tests: 1609 passed / 0 failed
 - PENDING markers: 0
@@ -23,23 +23,12 @@
 5. Prose context: `reports/supervisor/next-sprint.md`
 
 ## Where To Find Evidence
-- Last evidence bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\FF-TASKCARDS-20260623-092039\declaration-review-package.zip
+- Last evidence bundle: .local/evidences/ff-machinery-readiness-20260623/pilot-h/
 - Supervisor outputs: reports/supervisor/
 - Project memory: .supervisor/project-memory.md
 
 ## Project Memory (recent)
 ```
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\frolicking-squishing-shannon-closeout-20260622\declaration-review-package.zip
-- pending_marker_count: 0
-- bundle_entry_count: 63
-- bundle_validation_pass: True
-
-## Entry: qhard-phase0-phase1-20260623
-- timestamp: 2026-06-23T08:49:07.665583
-- verdict: ACCEPTED
-- test_count: 0
-- fail_count: 0
-- git_head: see-declaration
 - bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\qhard-phase0-phase1-20260623\declaration-review-package.zip
 - pending_marker_count: 0
 - bundle_entry_count: 89
@@ -78,6 +67,17 @@
 - bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\UNIFIED-FF-FINAL-20260623\declaration-review-package.zip
 - pending_marker_count: 0
 - bundle_entry_count: 85
+- bundle_validation_pass: True
+
+## Entry: FF-TASKCARDS-20260623-092039
+- timestamp: 2026-06-23T14:27:10.251684
+- verdict: ACCEPTED
+- test_count: 0
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\FF-TASKCARDS-20260623-092039\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 75
 - bundle_validation_pass: True
 ```
 

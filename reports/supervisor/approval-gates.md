@@ -1,6 +1,6 @@
 # Approval Gates Classification
-Sprint ID: FF-TASKCARDS-20260623-092039
-Generated: 2026-06-23T14:27:10.141641
+Sprint ID: FF-MR-PILOT-H-20260623
+Generated: 2026-06-23T17:35:31.090832
 Current Mode: MODE 4 (ACTIVE_MCP_ACTIVATION)
 
 ## Pending Actions

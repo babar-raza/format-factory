@@ -1,6 +1,6 @@
 # FORMAT-FACTORY-RNEXT-MEGA-TRAIN-001
-# Generated: 2026-06-23T14:26:15.753779
-# Source: Supervisor autonomous-cycle review of FF-TASKCARDS-20260623-092039
+# Generated: 2026-06-23T17:35:29.818030
+# Source: Supervisor autonomous-cycle review of FF-MR-PILOT-H-20260623
 # Stream: mainstream
 # ADVISORY ONLY -- not a Format Factory authority document
 
@@ -27,8 +27,8 @@ Read these files before writing any code:
 ## Sprint Identity
 
 - Sprint ID: FORMAT-FACTORY-RNEXT-MEGA-TRAIN-001
-- Prior sprint: FF-TASKCARDS-20260623-092039
-- Prior verdict: ACCEPTED_WITH_REWORK
+- Prior sprint: FF-MR-PILOT-H-20260623
+- Prior verdict: ACCEPTED
 - Prior tests: 0 passed, 0 failed, 0 skipped
 - Autonomous continue: True
 
@@ -69,7 +69,6 @@ Read these files before writing any code:
 
 | Train | Group | Title |
 |-------|-------|-------|
-| A | G1 | Governance Preflight |
 | B | G3 | FODS .NET Product Deepening |
 | C | G3 | FODT .NET Product Deepening |
 | D | G3 | Netpbm .NET Product Deepening |
@@ -84,25 +83,8 @@ Read these files before writing any code:
 | M | G4 | Gnumeric Python Improvement |
 | N | G5 | Dogfood: fodt -> txt |
 | O | G5 | Dogfood: fodt -> html |
-| P | G6 | Package Build + Install Proof |
-| Q | G7 | State + Memory + POC Matrix Sync |
-| R | G8 | Evidence Declaration + Supervisor Autonomous-Cycle |
 
 ---
-
-## Group G1: Governance + Preflight
-
-### Train A: Governance Preflight
-
-Read all governance files. Verify no policy violations from prior sprint. Confirm MCP status, supervisor mode, and gate states. Load `.local/supervisor/selected-product-gaps.json` and `.supervisor/skill-registry.yaml` before selecting product work.
-
-**Acceptance Criteria:**
-- All preflight files read
-- No policy violations detected
-- Gate states documented
-
-**Files:**
-- `reports/<run_id>/00-preflight.md`
 
 ## Group G3: Commercial .NET Product
 
@@ -337,62 +319,6 @@ No FF .NET HTML write library. Prerequisite: Build FormatFactory.Html .NET libra
 - Export test passes using FF library
 - Dogfood status updated in poc-targets.yaml
 
-## Group G6: Package / Install Proof
-
-### Train P: Package Build + Install Proof
-
-Rebuild wheels/sdists for any changed packages. Run installed-workflow smoke test from extracted wheel. Treat missing artifacts as failures, not skips.
-
-**Acceptance Criteria:**
-- All changed packages rebuilt
-- Installed import test passes
-- Package artifacts present in evidence directory
-
-**Files:**
-- `packaging/`
-
-**Verification:**
-```bash
-python -m pytest tests/evidence/ -x -q
-```
-
-## Group G7: State / Memory / POC Matrix
-
-### Train Q: State + Memory + POC Matrix Sync
-
-Update state/current-state.md, .supervisor/project-memory.md, and product-capability-matrix/poc-targets.yaml with sprint results.
-
-**Acceptance Criteria:**
-- poc-targets.yaml reflects actual status (no overclaiming)
-- state/current-state.md updated
-- project-memory.md entry appended
-
-**Files:**
-- `state/current-state.md`
-- `.supervisor/project-memory.md`
-- `product-capability-matrix/poc-targets.yaml`
-
-## Group G8: Evidence + Supervisor Loop
-
-### Train R: Evidence Declaration + Supervisor Autonomous-Cycle
-
-Write evidence-declaration.yaml listing ALL work items. Run autonomous-cycle. Verify session-resume.md is regenerated. Validate `reports/r90/product-code-change-ledger.json` for any governed product source edit.
-
-**Acceptance Criteria:**
-- evidence-declaration.yaml written with all work items
-- autonomous-cycle exits 0 or 3
-- session-resume.md regenerated with current data
-- approval-gates.md shows correct AUTONOMOUS_CONTINUE
-
-**Files:**
-- `.local/evidences/<run_id>/evidence-declaration.yaml`
-- `reports/supervisor/session-resume.md`
-
-**Verification:**
-```bash
-python tools/supervisor/supervisor_loop.py autonomous-cycle --declaration .local/evidences/<run_id>/evidence-declaration.yaml
-```
-
 
 ---
 
@@ -490,7 +416,7 @@ Address escalated failures with priority.
 
 ## Learning-Based Governance Advisories
 
-- **SPRINT_CLOSEOUT_PATTERN** (seen 29x): Sprint declaration validated PASS with sprint_executor_validate.py — *Action:* Continue using sprint_executor_validate.py --repair before closeout
+- **SPRINT_CLOSEOUT_PATTERN** (seen 30x): Sprint declaration validated PASS with sprint_executor_validate.py — *Action:* Continue using sprint_executor_validate.py --repair before closeout
 
 ## Spec-Parity Requirements (from skill registry)
 

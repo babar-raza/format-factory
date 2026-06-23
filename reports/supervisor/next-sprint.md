@@ -1,7 +1,21 @@
+## ACTIVE PER-CHAT PLAN — SYSTEM LEDGER SUPPRESSED
+
+A per-chat plan is active. Complete ALL plan taskcards before any ledger/product work.
+
+- **Plan:** `C:/Users/prora/.claude/plans/squishy-chasing-marshmallow.md`
+- **Last completed taskcard:** `TC-SMM-041`
+- **Action:** Read the plan file. Find the next open taskcard after `TC-SMM-041`. Execute it.
+  After each: `python tools/supervisor/write_plan_lock.py --plan-path "C:/Users/prora/.claude/plans/squishy-chasing-marshmallow.md" --last-taskcard <TC_ID>`
+  When ALL done: `python tools/supervisor/write_plan_lock.py --plan-path "C:/Users/prora/.claude/plans/squishy-chasing-marshmallow.md" --complete`
+
+**Do NOT start system ledger / product hardening work until plan status = COMPLETE.**
+
+---
+
 # Supervisor-Generated Next Sprint Prompt
-# Source sprint: FF-TASKCARDS-20260623-092039
+# Source sprint: FF-MR-PILOT-H-20260623
 # Stream: mainstream
-# Generated: 2026-06-23T14:27:10.113025
+# Generated: 2026-06-23T17:35:31.085653
 # ADVISORY ONLY — not a Format Factory authority document
 # This is INPUT to the next sprint, not a gate approval or commit authorization.
 
@@ -11,7 +25,7 @@
 ADVANCE: Product deepening — .NET commercial + Python FOSS + dogfood + packaging
 
 ## Prior Sprint Summary
-- Sprint ID: FF-TASKCARDS-20260623-092039
+- Sprint ID: FF-MR-PILOT-H-20260623
 - Evidence verdict: ACCEPTED
 - Tests: 1609 passed, 0 failed, 0 skipped
 - Autonomous continue: True
@@ -37,14 +51,12 @@ TRUE_EXTERNAL_GATE (ONLY these warrant a stop):
 
 ## Section 1: New Product Work (Advisory — Always Execute)
 - [pending] TASK-001: Select governed product gaps and validate the product-code ledger
-- [agent-owned] TASK-002: Prepare commit candidate summary and changed-file manifest
-- [external-gate] TASK-003: Execute git commit (requires explicit user authorization — do NOT self-execute)
-- [pending] TASK-004: Work on open taskcard: TC-0015-spec-retrieval-strategy-evaluation
-- [pending] TASK-005: Work on open taskcard: TC-0016-fods-vector-index-pilot
-- [pending] TASK-006: Work on open taskcard: TC-0020-spec-workbench-core
-- [pending] TASK-007: Advance one dogfood export path using a Format Factory library
-- [pending] TASK-008: Build package artifacts and run installed-workflow proof
-- [pending] TASK-009: Write evidence declaration and run supervisor autonomous-cycle
+- [pending] TASK-002: Work on open taskcard: TC-0015-spec-retrieval-strategy-evaluation
+- [pending] TASK-003: Work on open taskcard: TC-0016-fods-vector-index-pilot
+- [pending] TASK-004: Work on open taskcard: TC-0020-spec-workbench-core
+- [pending] TASK-005: Advance one dogfood export path using a Format Factory library
+- [pending] TASK-006: Build package artifacts and run installed-workflow proof
+- [pending] TASK-007: Write evidence declaration and run supervisor autonomous-cycle
 
 ## Section 2: Rework / Repair (Advisory — Fix Before Closeout)
 None
@@ -82,17 +94,6 @@ None
 
 ## Project Memory Context
 ```
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\frolicking-squishing-shannon-closeout-20260622\declaration-review-package.zip
-- pending_marker_count: 0
-- bundle_entry_count: 63
-- bundle_validation_pass: True
-
-## Entry: qhard-phase0-phase1-20260623
-- timestamp: 2026-06-23T08:49:07.665583
-- verdict: ACCEPTED
-- test_count: 0
-- fail_count: 0
-- git_head: see-declaration
 - bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\qhard-phase0-phase1-20260623\declaration-review-package.zip
 - pending_marker_count: 0
 - bundle_entry_count: 89
@@ -131,6 +132,17 @@ None
 - bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\UNIFIED-FF-FINAL-20260623\declaration-review-package.zip
 - pending_marker_count: 0
 - bundle_entry_count: 85
+- bundle_validation_pass: True
+
+## Entry: FF-TASKCARDS-20260623-092039
+- timestamp: 2026-06-23T14:27:10.251684
+- verdict: ACCEPTED
+- test_count: 0
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\FF-TASKCARDS-20260623-092039\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 75
 - bundle_validation_pass: True
 ```
 

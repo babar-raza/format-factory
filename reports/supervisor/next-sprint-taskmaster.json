@@ -1,8 +1,8 @@
 {
-  "sprint_id": "supervisor-export-20260623-142710",
-  "timestamp": "2026-06-23T14:27:10.119843",
+  "sprint_id": "supervisor-export-20260623-173531",
+  "timestamp": "2026-06-23T17:35:31.102746",
   "verdict": "ACCEPTED",
-  "source_bundle": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\supervisor\\reviews\\FF-TASKCARDS-20260623-092039\\declaration-review-package.zip",
+  "source_bundle": ".local/evidences/ff-machinery-readiness-20260623/pilot-h/",
   "tasks": [
     {
       "task_id": "TASK-001",
@@ -18,31 +18,6 @@
     },
     {
       "task_id": "TASK-002",
-      "title": "Prepare commit candidate summary and changed-file manifest",
-      "description": "Modified tracked files detected: 4 file(s) (e.g. .supervisor/state/current-run.json). Build evidence bundle and write commit candidate manifest. Agent-owned preparation \u2014 do NOT self-commit.",
-      "status": "agent-owned",
-      "ff_doc_ref": "plans/master-plan.md",
-      "supervisor_task_ref": "TC-R79-CLOSURE-001",
-      "acceptance_evidence": "Commit candidate manifest written; BUNDLE_VALIDATION: PASS",
-      "validation_command": ".local/venv/Scripts/python tools/evidence/validate_evidence_bundle.py --contract <contract> --bundle <bundle>",
-      "non_authoritative": true,
-      "lane": "C3"
-    },
-    {
-      "task_id": "TASK-003",
-      "title": "Execute git commit (requires explicit user authorization \u2014 do NOT self-execute)",
-      "description": "Commit execution requires explicit user authorization. Do not commit without the user saying so. This is a TRUE_EXTERNAL_GATE per stop_reason_adjudicator.",
-      "status": "external-gate",
-      "ff_doc_ref": "plans/master-plan.md",
-      "supervisor_task_ref": "TC-R79-CLOSURE-001-EXEC",
-      "acceptance_evidence": "User confirms commit executed",
-      "validation_command": "git log --oneline -1",
-      "blocker_type": "human_approval",
-      "non_authoritative": true,
-      "lane": "C3"
-    },
-    {
-      "task_id": "TASK-004",
       "title": "Work on open taskcard: TC-0015-spec-retrieval-strategy-evaluation",
       "description": "TC-0015: Hybrid Spec Retrieval Strategy Evaluation",
       "status": "pending",
@@ -54,7 +29,7 @@
       "lane": "C3"
     },
     {
-      "task_id": "TASK-005",
+      "task_id": "TASK-003",
       "title": "Work on open taskcard: TC-0016-fods-vector-index-pilot",
       "description": "TC-0016: FODS Vector Index Pilot",
       "status": "pending",
@@ -66,7 +41,7 @@
       "lane": "C3"
     },
     {
-      "task_id": "TASK-006",
+      "task_id": "TASK-004",
       "title": "Work on open taskcard: TC-0020-spec-workbench-core",
       "description": "TC-0020: Spec Workbench Core (All Formats)",
       "status": "pending",
@@ -78,7 +53,7 @@
       "lane": "C3"
     },
     {
-      "task_id": "TASK-007",
+      "task_id": "TASK-005",
       "title": "Advance one dogfood export path using a Format Factory library",
       "description": "Product objective: close or verify a selected dogfood export from .local/supervisor/selected-product-gaps.json. Use a Format Factory-produced library and record truthful status.",
       "status": "pending",
@@ -90,7 +65,7 @@
       "lane": "C4"
     },
     {
-      "task_id": "TASK-008",
+      "task_id": "TASK-006",
       "title": "Build package artifacts and run installed-workflow proof",
       "description": "Product objective: prove changed product packages from physical artifacts. A missing artifact is a failure, not a skipped package test.",
       "status": "pending",
@@ -102,7 +77,7 @@
       "lane": "C5"
     },
     {
-      "task_id": "TASK-009",
+      "task_id": "TASK-007",
       "title": "Write evidence declaration and run supervisor autonomous-cycle",
       "description": "Write .local/evidences/<run_id>/evidence-declaration.yaml for all work items, then run the declaration-driven supervisor autonomous-cycle. ZIP export is optional.",
       "status": "pending",
@@ -114,5 +89,5 @@
       "lane": "C6"
     }
   ],
-  "notes": "Generated from evidence review of sprint FF-TASKCARDS-20260623-092039"
+  "notes": "Generated from evidence review of sprint FF-MR-PILOT-H-20260623"
 }

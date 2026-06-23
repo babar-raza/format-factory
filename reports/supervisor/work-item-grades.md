@@ -1,18 +1,14 @@
 # Work Item Grades
-Sprint: FF-TASKCARDS-20260623-092039
-Generated: 2026-06-23T14:24:09.459289
-Global Status: ACCEPTED_WITH_REWORK
+Sprint: FF-MR-PILOT-H-20260623
+Generated: 2026-06-23T17:33:56.654093
+Global Status: ACCEPTED
 
 | Item ID | Grade | Rework Required |
 |---------|-------|-----------------|
-| TC-QNAME-AUTH-001 | ACCEPTED_WITH_LIMITATIONS |  |
-| TC-QNAME-AUTH-002 | ACCEPTED_WITH_LIMITATIONS |  |
-| TC-QNAME-AUTH-003 | ACCEPTED_WITH_LIMITATIONS |  |
-| TC-PRODUCT-PILOT-NDJSON-001 | ACCEPTED_WITH_LIMITATIONS |  |
-| TC-CAPABILITY-REPAIR-001 | ACCEPTED_WITH_LIMITATIONS |  |
+| TC-SMM-052 | ACCEPTED_VERIFIED |  |
 
 ## Summary
-- Accepted: 5
+- Accepted: 1
 - Rework: 0
 - Overclaimed: 0
 - Autonomous Continue: True
