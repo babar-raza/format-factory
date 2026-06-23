@@ -1,4 +1,4 @@
-"""governance_validator_runner.py — Runs all governance validators (V1-V50).
+"""governance_validator_runner.py — Runs all governance validators (V1-V53).
 
 Extracted from governance_validators.py to keep that file within its LOC cap.
 This module imports validators from governance_validators LAZILY (inside the function
@@ -13,6 +13,9 @@ V47: validate_spec_fact_refs_in_sal_output — spec_fact_refs verified in sal-fa
 V48: validate_architecture_only_stub_gate — blocks RELEASE_GATE items citing architecture_only stubs (TC-ZS-001, 2026-06-21)
 V49: validate_qname_structure — spec/ class files in changed_files must have spec_qname (TC-QNAME-VALIDATORS-001, WARN-only)
 V50: validate_forbidden_module_names — blocks *_analytics_extra.py, *_extra.py, *_misc.py creation (MODULE-NAME-001, 2026-06-22)
+V51: validate_spec_qname_coverage — repo scan: exported classes must have spec_qname (TC-QHARD-001, WARN-only)
+V52: validate_compat_import_integrity — Compat/ facades can resolve spec/ imports (TC-QHARD-002, WARN-only)
+V53: validate_spec_authority_class_completeness — registry python_file entries exist on disk (TC-QHARD-003, WARN-only)
 """
 from __future__ import annotations
 
@@ -91,9 +94,12 @@ def run_all_governance_validators(
         validate_architecture_only_stub_gate,
         validate_qname_structure,
     )
-    # V50 imported directly from ext module (governance_validators.py is at LOC cap)
+    # V50-V53 imported directly from ext module (governance_validators.py is at LOC cap)
     from governance_validators_ext import (  # noqa: PLC0415
         validate_forbidden_module_names as _validate_forbidden_module_names,
+        validate_spec_qname_coverage as _validate_spec_qname_coverage,
+        validate_compat_import_integrity as _validate_compat_import_integrity,
+        validate_spec_authority_class_completeness as _validate_spec_authority_class_completeness,
     )
     results = [
         validate_execution_method_required(declaration),
@@ -167,6 +173,12 @@ def run_all_governance_validators(
         validate_qname_structure(declaration, repo_root),
         # V50 (MODULE-NAME-001): Forbid analytics-bucket module names (*_analytics_extra, *_extra, *_misc)
         _validate_forbidden_module_names(declaration, repo_root),
+        # V51 (TC-QHARD-001): Exported classes must have spec_qname attribute (WARN-only, repo scan)
+        _validate_spec_qname_coverage(declaration, repo_root),
+        # V52 (TC-QHARD-002): Compat/ facades must resolve spec/ imports (WARN-only, repo scan)
+        _validate_compat_import_integrity(declaration, repo_root),
+        # V53 (TC-QHARD-003): Registry python_file entries must exist on disk (WARN-only, repo scan)
+        _validate_spec_authority_class_completeness(declaration, repo_root),
     ]
 
     fail_count = sum(1 for r in results if r["result"] == "FAIL")
