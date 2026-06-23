@@ -1,22 +1,22 @@
 # Supervisor Context Pack
 # Format Factory — Machine-Readable State Snapshot
-# Generated: 2026-06-23T17:35:31.114558
+# Generated: 2026-06-23T22:40:36.632826
 # ADVISORY ONLY — not a gate approval or authority document
 
 ## Current State
 
 | Item | Value |
 |------|-------|
-| Git HEAD | f0a9a3fc |
+| Git HEAD | 4a35f9ab |
 | Working tree clean | False |
 | Supervisor mode | MODE 4 |
 | Latest sprint | unknown |
-| Sprint ID | FF-TASKCARDS-20260623-092039... |
-| Autonomous continue | True |
-| Iteration | 5/12 |
+| Sprint ID | sal-authority-repair-20260623... |
+| Autonomous continue | False |
+| Iteration | 3/12 |
 | MCP status | MCP_CONFIG_PRESENT_MODE4_ACTIVE |
-| Active skills | 45 |
-| Ledger entries | 960 total (783 governed) |
+| Active skills | 47 |
+| Ledger entries | 961 total (783 governed) |
 
 ## .NET Test Counts (POC Matrix)
 
@@ -29,7 +29,7 @@
 
 ## Skill Registry
 
-Skills: add-dotnet-api, add-python-api, add-dogfood-export, update-capability-matrix, add-dotnet-object-model-feature, add-python-object-model-feature, add-same-format-writer-feature, add-roundtrip-test, add-installed-package-example, promote-gap-to-taskcard, generate-execution-handoff, verify-dogfood-path, package-install-proof, materialize-declaration-review, record-lane-execution, build-context-pack, select-poc-gap, validate-product-code-ledger, validate-skill-transcript, evidence-review-next-prompt, execution-handoff, export-plan-context, memory-sprint, plan-hardening, spec-literal-qname-to-code-mapping, spec-shaped-product-architecture-blueprint, spec-parity-source-regeneration-and-migration, python-reduced-spec-parity-model, spec-parity-verification, post-sprint-audit, post-sprint-loop, autonomous-loop, sync-memory, score-format, create-acquisition-pack, check-gate, create-taskcard, reproduce-master-plan, build-evidence-bundle, check-release-boundary, check-skill-coverage, sal-pipeline-heal, implement-spec-stub, decompose-monolithic-codec, python-qname-code-reviewer
+Skills: add-dotnet-api, add-python-api, add-dogfood-export, update-capability-matrix, add-dotnet-object-model-feature, add-python-object-model-feature, add-same-format-writer-feature, add-roundtrip-test, add-installed-package-example, promote-gap-to-taskcard, generate-execution-handoff, verify-dogfood-path, package-install-proof, materialize-declaration-review, record-lane-execution, build-context-pack, check-mcp-status, select-poc-gap, validate-product-code-ledger, validate-skill-transcript, evidence-review-next-prompt, execution-handoff, export-plan-context, memory-sprint, plan-hardening, spec-literal-qname-to-code-mapping, spec-shaped-product-architecture-blueprint, spec-parity-source-regeneration-and-migration, python-reduced-spec-parity-model, spec-parity-verification, post-sprint-audit, post-sprint-loop, autonomous-loop, sync-memory, score-format, create-acquisition-pack, check-gate, create-taskcard, reproduce-master-plan, build-evidence-bundle, check-release-boundary, check-skill-coverage, sal-pipeline-heal, implement-spec-stub, decompose-monolithic-codec, extract-analytics-from-monolith, python-qname-code-reviewer
 
 ## Governance
 

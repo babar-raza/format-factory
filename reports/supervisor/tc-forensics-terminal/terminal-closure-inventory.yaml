@@ -1,0 +1,136 @@
+# Terminal Closure Inventory
+# Mission: TC-FORENSICS-TERMINAL-20260623
+# Generated: 2026-06-23T16:47Z
+# Total TERMINAL_CLOSED events: 9
+
+closures:
+
+  - closure_id: TCE-001
+    session_id: 11ac813874c3
+    plan_path: C:/Users/prora/.claude/plans/agile-munching-quasar.md
+    plan_type: machinery_hardening
+    mission_id: MACH-LIF-FORENSICS-20260623
+    timestamp: "2026-06-23T12:59:39Z"
+    last_taskcard: null
+    audit_gate_used: true
+    audit_verdict: AUDIT_PASS
+    audit_mission_complete: true
+    classification: VALID_TERMINAL_CLOSURE
+    evidence: lifecycle-audit-results.json shows AUDIT_PASS with mission_complete=true
+    reopening_required: false
+
+  - closure_id: TCE-002
+    session_id: 6d7dc7a6df36
+    plan_path: C:/Users/prora/.claude/plans/cheerful-floating-glade.md
+    plan_type: non-machinery
+    mission_id: FF-HEAL-QNAME-20260623
+    timestamp: "2026-06-23T13:40:02Z"
+    last_taskcard: null
+    audit_gate_used: false
+    audit_verdict: null
+    classification: CLOSURE_VALIDITY_UNKNOWN
+    evidence: No audit gate invoked; --terminal used alone
+    reopening_required: unknown
+
+  - closure_id: TCE-003
+    session_id: b96c911623e7
+    plan_path: C:/Users/prora/.claude/plans/squishy-tumbling-wind.md
+    plan_type: non-machinery
+    mission_id: unknown
+    timestamp: "2026-06-23T13:48:10Z"
+    last_taskcard: null
+    audit_gate_used: false
+    audit_verdict: null
+    classification: CLOSURE_VALIDITY_UNKNOWN
+    evidence: No audit gate invoked; --terminal used alone
+    reopening_required: unknown
+
+  - closure_id: TCE-004
+    session_id: 9d0b1029992e
+    plan_path: plans/unified-multi-plan-execution.md
+    plan_type: non-machinery
+    mission_id: UNIFIED-FF-EXECUTION-20260623
+    timestamp: "2026-06-23T09:11:08Z"
+    last_taskcard: TC-UNIFIED-090
+    audit_gate_used: false
+    audit_verdict: null
+    classification: CLOSURE_VALIDITY_UNKNOWN
+    evidence: last_taskcard=TC-UNIFIED-090 (closeout taskcard tracked); no audit gate
+    reopening_required: unknown
+
+  - closure_id: TCE-005
+    session_id: c878b5607d1b
+    plan_path: C:/Users/prora/.claude/plans/reactive-exploring-ullman.md
+    plan_type: non-machinery
+    mission_id: unknown
+    timestamp: "2026-06-23T06:52:45Z"
+    last_taskcard: null
+    audit_gate_used: false
+    audit_verdict: null
+    classification: CLOSURE_VALIDITY_UNKNOWN
+    evidence: No audit gate invoked; --terminal used alone
+    reopening_required: unknown
+
+  - closure_id: TCE-006
+    session_id: 9f5b253e3441
+    plan_path: C:/Users/prora/.claude/plans/frolicking-squishing-shannon.md
+    plan_type: non-machinery
+    mission_id: unknown
+    timestamp: "2026-06-22T18:05:04Z"
+    last_taskcard: null
+    audit_gate_used: false
+    audit_verdict: null
+    classification: CLOSURE_VALIDITY_UNKNOWN
+    evidence: Same plan also closed by session 59511d3f9256 6.5h earlier
+    reopening_required: unknown
+
+  - closure_id: TCE-007
+    session_id: 59511d3f9256
+    plan_path: C:/Users/prora/.claude/plans/frolicking-squishing-shannon.md
+    plan_type: non-machinery
+    mission_id: unknown
+    timestamp: "2026-06-22T11:34:02Z"
+    last_taskcard: null
+    audit_gate_used: false
+    audit_verdict: null
+    classification: CLOSURE_VALIDITY_UNKNOWN
+    evidence: Same plan also closed by session 9f5b253e3441 6.5h later
+    reopening_required: unknown
+
+  - closure_id: TCE-008
+    session_id: de3686a9ef78
+    plan_path: C:/Users/prora/.claude/plans/mutable-wishing-avalanche.md
+    plan_type: non-machinery
+    mission_id: unknown
+    timestamp: "2026-06-22T16:32:22Z"
+    last_taskcard: null
+    audit_gate_used: false
+    audit_verdict: null
+    classification: CLOSURE_VALIDITY_UNKNOWN
+    evidence: No audit gate invoked; --terminal used alone
+    reopening_required: unknown
+
+  - closure_id: TCE-009
+    session_id: 24bf75a51998
+    plan_path: C:/Users/prora/.claude/plans/polished-hopping-glacier.md
+    plan_type: non-machinery
+    mission_id: unknown
+    timestamp: "2026-06-21T18:34:45Z"
+    last_taskcard: null
+    audit_gate_used: false
+    audit_verdict: null
+    classification: CLOSURE_VALIDITY_UNKNOWN
+    evidence: Same plan had earlier COMPLETE lock from session 45da76b0e59c
+    reopening_required: unknown
+
+summary:
+  total_terminal_closed: 9
+  valid_terminal_closure: 1
+  closure_validity_unknown: 8
+  premature_closure_confirmed: 0
+  audit_gate_used_count: 1
+  audit_gate_not_used_count: 8
+  last_taskcard_tracked: 1
+  last_taskcard_null: 8
+  distinct_plans: 8
+  plans_closed_twice: 2

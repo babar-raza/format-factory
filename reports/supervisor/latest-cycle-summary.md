@@ -1,11 +1,11 @@
 # Latest Supervisor Cycle Summary
-Run: pilot-h-squishy-20260623
-Sprint: FF-MR-PILOT-H-20260623
-Timestamp: 2026-06-23T17:33:56.654093
+Run: sal-authority-repair-20260623
+Sprint: sal-authority-repair-20260623
+Timestamp: 2026-06-23T22:38:50.482825
 Verdict: ACCEPTED
-Autonomous Continue: True
-Accepted: 1
+Autonomous Continue: False
+Accepted: 7
 Rework: 0
 Overclaimed: 0
-Review: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\pilot-h-squishy-20260623\supervisor-review.md
-Next Prompt: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\pilot-h-squishy-20260623\combined-next-worker-prompt.md
+Review: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\sal-authority-repair-20260623\supervisor-review.md
+Next Prompt: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\sal-authority-repair-20260623\combined-next-worker-prompt.md

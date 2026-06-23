@@ -1,0 +1,101 @@
+# Premature Closure Register — Structural Defects
+# Mission: TC-FORENSICS-TERMINAL-20260623
+# Generated: 2026-06-23T16:47Z
+
+defects:
+
+  - defect_id: D1
+    component: tools/supervisor/lifecycle_audit.py
+    issue: Never reads plan file — cannot verify taskcards are CLOSED
+    severity: CRITICAL
+    first_failing_boundary: lifecycle_audit.run_lifecycle_audit() has no plan_path parameter
+    recurrence_path: Any --terminal --audit-gate call passes audit without checking plan content
+    permanent_fix: TC-TCF-003 — add plan_path param + parse_plan_taskcards()
+
+  - defect_id: D2
+    component: tools/supervisor/lifecycle_audit.py
+    issue: No taskcard status parser — markdown prose is not machine-readable
+    severity: CRITICAL
+    first_failing_boundary: No function to extract taskcard IDs and statuses from .md files
+    recurrence_path: Even with plan_path, no parsing logic exists
+    permanent_fix: TC-TCF-003 — add parse_plan_taskcards() regex-based parser
+
+  - defect_id: D3
+    component: tools/supervisor/lifecycle_audit.py
+    issue: Rework findings are ADVISORY (LOW severity) — non-blocking
+    severity: MEDIUM
+    first_failing_boundary: ADVISORY_REWORK_PENDING severity=LOW, does not trigger AUDIT_REQUIRES_ITERATION
+    recurrence_path: Rework items present but closure proceeds
+    permanent_fix: TC-TCF-006 — closure contract validation overrides verdict
+
+  - defect_id: D4
+    component: tools/supervisor/write_plan_lock.py
+    issue: --audit-gate is optional — --terminal alone bypasses all checks
+    severity: CRITICAL
+    first_failing_boundary: write_lock() terminal=True, audit_gate=False writes TERMINAL_CLOSED directly
+    recurrence_path: 8 of 9 closures used this path
+    permanent_fix: TC-TCF-004 — add warning + --force-without-audit requirement
+
+  - defect_id: D5
+    component: tools/supervisor/write_plan_lock.py
+    issue: No plan file pre-check before writing lock
+    severity: HIGH
+    first_failing_boundary: write_lock() never opens or validates plan file content
+    recurrence_path: Plan file could be deleted, empty, or malformed
+    permanent_fix: TC-TCF-004 — pass plan_path to lifecycle_audit
+
+  - defect_id: D6
+    component: tools/supervisor/write_plan_lock.py
+    issue: Error fallback writes TERMINAL_CLOSED (should be ITERATION_REQUIRED)
+    severity: CRITICAL
+    first_failing_boundary: "except (ImportError, Exception)" blocks at lines ~133-146 fall through to TERMINAL_CLOSED
+    recurrence_path: Any lifecycle_audit crash causes silent premature closure
+    permanent_fix: TC-TCF-004 — change fallback to ITERATION_REQUIRED
+
+  - defect_id: D7
+    component: tools/supervisor/check_continuation.py
+    issue: No re-validation — treats lock status field as final truth
+    severity: MEDIUM
+    first_failing_boundary: M6 check only reads status string, never re-runs audit
+    recurrence_path: Wrong status written persists until 7-day expiry
+    permanent_fix: TC-TCF-008 — autonomous reopen detection
+
+  - defect_id: D8
+    component: tools/supervisor/check_continuation.py
+    issue: No stale audit check — audit result could be hours old
+    severity: MEDIUM
+    first_failing_boundary: Lock timestamp vs audit timestamp not compared
+    recurrence_path: Conditions may change between audit and lock consumption
+    permanent_fix: TC-TCF-006 — closure contract includes plan_hash for integrity
+
+  - defect_id: D9
+    component: Plan files (.md)
+    issue: No machine-readable taskcard format — inconsistent status markers
+    severity: HIGH
+    first_failing_boundary: No standard for taskcard blocks in markdown plans
+    recurrence_path: Different plans use different status patterns
+    permanent_fix: TC-TCF-003 — multi-pattern parser handles common formats
+
+  - defect_id: D10
+    component: Plan files (.md)
+    issue: Inconsistent status marker patterns across plans
+    severity: HIGH
+    first_failing_boundary: Some use tables, some use headers, some use bold markers
+    recurrence_path: New plans may use unsupported patterns
+    permanent_fix: TC-TCF-003 — parser supports table + block + inline patterns
+
+  - defect_id: D11
+    component: tests/supervisor/
+    issue: No premature closure validation tests
+    severity: HIGH
+    first_failing_boundary: Tests verify behavior but not correctness of closure
+    recurrence_path: Premature closure bugs not caught by test suite
+    permanent_fix: TC-TCF-009 — comprehensive prevention test suite
+
+  - defect_id: D12
+    component: System (no component)
+    issue: No reopening capability — manual recovery only
+    severity: HIGH
+    first_failing_boundary: No code transitions TERMINAL_CLOSED back to IN_PROGRESS
+    recurrence_path: Premature closure requires manual lock file deletion
+    permanent_fix: TC-TCF-007 — reopen_plan_lock.py + TC-TCF-008 autonomous detection

@@ -1,0 +1,23 @@
+# Closure Invalidation Register
+# Mission: TC-FORENSICS-TERMINAL-20260623
+# Schema: seeded empty -- entries appended when a closure is invalidated
+# Generated: 2026-06-23
+
+schema_version: "1.0"
+description: >
+  Records all closure invalidation events. When a TERMINAL_CLOSED plan is found
+  to have been closed prematurely (open taskcards, missing evidence, failed audit),
+  the invalidation is recorded here before reopening.
+
+entry_schema:
+  invalidation_id: "INV-{plan_name}-{timestamp}"
+  plan_path: "string"
+  original_closure_session: "string"
+  original_closure_timestamp: "ISO-8601 datetime"
+  invalidation_reason: "OPEN_TASKCARDS|MISSING_EVIDENCE|AUDIT_FAILURE|REGRESSION|MANUAL"
+  open_taskcards_at_invalidation: []
+  closure_contract_at_invalidation: {}
+  invalidated_by: "autonomous_cycle|reopen_plan_lock|manual"
+  invalidated_at: "ISO-8601 datetime"
+
+entries: []

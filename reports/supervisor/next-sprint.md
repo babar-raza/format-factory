@@ -2,33 +2,33 @@
 
 A per-chat plan is active. Complete ALL plan taskcards before any ledger/product work.
 
-- **Plan:** `C:/Users/prora/.claude/plans/squishy-chasing-marshmallow.md`
-- **Last completed taskcard:** `TC-SMM-041`
-- **Action:** Read the plan file. Find the next open taskcard after `TC-SMM-041`. Execute it.
-  After each: `python tools/supervisor/write_plan_lock.py --plan-path "C:/Users/prora/.claude/plans/squishy-chasing-marshmallow.md" --last-taskcard <TC_ID>`
-  When ALL done: `python tools/supervisor/write_plan_lock.py --plan-path "C:/Users/prora/.claude/plans/squishy-chasing-marshmallow.md" --complete`
+- **Plan:** `plans/unified-multi-plan-execution.md`
+- **Last completed taskcard:** `TC-UNIFIED-090`
+- **Action:** Read the plan file. Find the next open taskcard after `TC-UNIFIED-090`. Execute it.
+  After each: `python tools/supervisor/write_plan_lock.py --plan-path "plans/unified-multi-plan-execution.md" --last-taskcard <TC_ID>`
+  When ALL done: `python tools/supervisor/write_plan_lock.py --plan-path "plans/unified-multi-plan-execution.md" --complete`
 
 **Do NOT start system ledger / product hardening work until plan status = COMPLETE.**
 
 ---
 
 # Supervisor-Generated Next Sprint Prompt
-# Source sprint: FF-MR-PILOT-H-20260623
+# Source sprint: sal-authority-repair-20260623
 # Stream: mainstream
-# Generated: 2026-06-23T17:35:31.085653
+# Generated: 2026-06-23T22:40:36.609182
 # ADVISORY ONLY — not a Format Factory authority document
 # This is INPUT to the next sprint, not a gate approval or commit authorization.
 
 ---
 
 ## Sprint Focus
-ADVANCE: Product deepening — .NET commercial + Python FOSS + dogfood + packaging
+PRODUCT + REPAIR: Advance product POC AND address CRITICAL contradictions
 
 ## Prior Sprint Summary
-- Sprint ID: FF-MR-PILOT-H-20260623
+- Sprint ID: sal-authority-repair-20260623
 - Evidence verdict: ACCEPTED
-- Tests: 1609 passed, 0 failed, 0 skipped
-- Autonomous continue: True
+- Tests: 256 passed, 1 failed, 0 skipped
+- Autonomous continue: False
 
 ## STOP_REASON_ADVISORY (enforced by stop_reason_adjudicator.py)
 
@@ -50,19 +50,26 @@ TRUE_EXTERNAL_GATE (ONLY these warrant a stop):
 - Credentials unavailable with no fallback
 
 ## Section 1: New Product Work (Advisory — Always Execute)
-- [pending] TASK-001: Select governed product gaps and validate the product-code ledger
-- [pending] TASK-002: Work on open taskcard: TC-0015-spec-retrieval-strategy-evaluation
-- [pending] TASK-003: Work on open taskcard: TC-0016-fods-vector-index-pilot
-- [pending] TASK-004: Work on open taskcard: TC-0020-spec-workbench-core
-- [pending] TASK-005: Advance one dogfood export path using a Format Factory library
-- [pending] TASK-006: Build package artifacts and run installed-workflow proof
-- [pending] TASK-007: Write evidence declaration and run supervisor autonomous-cycle
+- [pending] TASK-002: Select governed product gaps and validate the product-code ledger
+- [agent-owned] TASK-003: Prepare commit candidate summary and changed-file manifest
+- [external-gate] TASK-004: Execute git commit (requires explicit user authorization — do NOT self-execute)
+- [pending] TASK-005: Work on open taskcard: TC-0020-spec-workbench-core
+- [pending] TASK-006: Work on open taskcard: TC-0033-fods-gate7-malformed-fuzz-testing
+- [pending] TASK-007: Work on open taskcard: ZST-IMPL-001-python-source-scaffold
+- [pending] TASK-008: Product deepening: GAP-FODS-COMM-SAVE_SAME_FO-001 — GAP-FODS-COMM-SAVE_SAME_FO-001
+- [pending] TASK-009: Product deepening: GAP-FODT-COMM-SAVE_SAME_FO-001 — GAP-FODT-COMM-SAVE_SAME_FO-001
+- [pending] TASK-010: Product deepening: GAP-FODS-COMM-RELOAD_AND_V-001 — GAP-FODS-COMM-RELOAD_AND_V-001
+- [pending] TASK-011: Product deepening: GAP-FODT-COMM-RELOAD_AND_V-001 — GAP-FODT-COMM-RELOAD_AND_V-001
+- [pending] TASK-012: Product deepening: GAP-ABW-FOSS-ABW_SECTION_-001 — GAP-ABW-FOSS-ABW_SECTION_-001
+- [pending] TASK-013: Advance one dogfood export path using a Format Factory library
+- [pending] TASK-014: Build package artifacts and run installed-workflow proof
+- [pending] TASK-015: Write evidence declaration and run supervisor autonomous-cycle
 
 ## Section 2: Rework / Repair (Advisory — Fix Before Closeout)
-None
+- [pending] REPAIR-001: Repair: Tests failed: 1 failures detected
 
 ## Contradictions Context
-None
+- [CRITICAL] Tests failed: 1 failures detected
 
 ## Non-Negotiable Rules (always apply)
 1. No push without explicit user authorization.
@@ -94,56 +101,56 @@ None
 
 ## Project Memory Context
 ```
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\qhard-phase0-phase1-20260623\declaration-review-package.zip
-- pending_marker_count: 0
-- bundle_entry_count: 89
-- bundle_validation_pass: True
 
-## Entry: FORMAT-FACTORY-FLOATING-STARGAZING-GLOBE-HARDENING-20260623-034629
-- timestamp: 2026-06-23T08:55:08.128595
+## Entry: vivid-napping-kurzweil
+- timestamp: 2026-06-23T21:07:08.489776
 - verdict: ACCEPTED
-- test_count: 22
+- test_count: 0
 - fail_count: 0
 - git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\floating-stargazing-globe-hardening-20260623-034629\declaration-review-package.zip
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\vivid-napping-kurzweil\declaration-review-package.zip
 - pending_marker_count: 0
-- bundle_entry_count: 69
+- bundle_entry_count: 72
 - bundle_validation_pass: True
-- test_delta: +22
+
+## Entry: format-factory-fullsuite-layering-20260623-fslay02
+- timestamp: 2026-06-23T22:09:12.632442
+- verdict: ACCEPTED
+- test_count: 20
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\format-factory-fullsuite-layering-20260623-fslay02\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 79
+- bundle_validation_pass: True
+- test_delta: +20
 - test_delta_from: 0
 
-## Entry: FF-HEAL-QNAME-20260623-131042
-- timestamp: 2026-06-23T13:57:09.418027
+## Entry: squishy-tumbling-wind-selfhealing-20260623
+- timestamp: 2026-06-23T22:17:12.176231
 - verdict: ACCEPTED
-- test_count: 0
+- test_count: 114
 - fail_count: 0
 - git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\FF-HEAL-QNAME-20260623-131042\declaration-review-package.zip
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\squishy-tumbling-wind-20260623\declaration-review-package.zip
 - pending_marker_count: 0
-- bundle_entry_count: 95
+- bundle_entry_count: 82
 - bundle_validation_pass: True
+- test_delta: +94
+- test_delta_from: 20
 
-## Entry: UNIFIED-FF-FINAL-20260623
-- timestamp: 2026-06-23T14:13:06.637291
+## Entry: effervescent-wandering-blossom
+- timestamp: 2026-06-23T22:23:15.111701
 - verdict: ACCEPTED
-- test_count: 0
+- test_count: 33747
 - fail_count: 0
 - git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\UNIFIED-FF-FINAL-20260623\declaration-review-package.zip
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\MGHEAL-20260623\declaration-review-package.zip
 - pending_marker_count: 0
-- bundle_entry_count: 85
+- bundle_entry_count: 67
 - bundle_validation_pass: True
-
-## Entry: FF-TASKCARDS-20260623-092039
-- timestamp: 2026-06-23T14:27:10.251684
-- verdict: ACCEPTED
-- test_count: 0
-- fail_count: 0
-- git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\FF-TASKCARDS-20260623-092039\declaration-review-package.zip
-- pending_marker_count: 0
-- bundle_entry_count: 75
-- bundle_validation_pass: True
+- test_delta: +33633
+- test_delta_from: 114
 ```
 
 ---

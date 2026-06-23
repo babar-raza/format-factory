@@ -1,0 +1,53 @@
+# Root Cause Register
+# Mission: TC-FORENSICS-TERMINAL-20260623
+# Generated: 2026-06-23T16:48Z
+
+root_causes:
+
+  - root_cause_id: RC-001
+    affected_defects: [D1, D2, D9, D10]
+    symptom: lifecycle_audit.py cannot verify whether plan taskcards are all CLOSED
+    first_failing_boundary: run_lifecycle_audit() has no plan_path parameter and no taskcard parser
+    structural_cause: Original design assumed agent self-reports completion honestly; no independent verification
+    stop_evaluator_cause: audit verdict based on continuation-signal state, not plan content
+    governance_escape: --audit-gate passes even when plan has open taskcards
+    why_tests_missed_it: Tests verify audit outputs, not audit input completeness
+    recurrence_path: Any future plan where agent claims completion without finishing all taskcards
+    permanent_fix: Add plan_path parameter + parse_plan_taskcards() to lifecycle_audit.py
+    prevention_tests: [test_open_taskcard_blocks_lifecycle_audit_pass, test_all_taskcards_closed_allows_audit_pass]
+
+  - root_cause_id: RC-002
+    affected_defects: [D4]
+    symptom: 8 of 9 closures used --terminal without --audit-gate
+    first_failing_boundary: write_plan_lock.py --terminal does not require --audit-gate
+    structural_cause: --audit-gate was added later as opt-in for machinery plans; non-machinery plans have no audit path
+    stop_evaluator_cause: write_lock() treats terminal=True as unconditional closure unless audit_gate=True
+    governance_escape: CLAUDE.md only mandates --audit-gate for machinery_hardening plans
+    why_tests_missed_it: Tests verify both paths work correctly; no test checks that the no-audit path is dangerous
+    recurrence_path: Every non-machinery plan closure
+    permanent_fix: Add warning when --terminal used without --audit-gate; require --force-without-audit
+    prevention_tests: [test_negative_terminal_without_audit_gate_warns_user]
+
+  - root_cause_id: RC-003
+    affected_defects: [D6]
+    symptom: Audit crash causes silent premature closure
+    first_failing_boundary: except (ImportError, Exception) blocks in write_plan_lock.py fall through to TERMINAL_CLOSED
+    structural_cause: Error recovery designed for "graceful degradation" but degrades into the worst case (premature closure)
+    stop_evaluator_cause: Fallback status assignment chose TERMINAL_CLOSED over safe ITERATION_REQUIRED
+    governance_escape: No test simulates audit failure + verifies lock status
+    why_tests_missed_it: No mock/fault-injection tests for audit error paths
+    recurrence_path: Any lifecycle_audit.py import error, crash, or environment issue
+    permanent_fix: Change fallback from TERMINAL_CLOSED to ITERATION_REQUIRED
+    prevention_tests: [test_error_fallback_writes_iteration_required, test_exception_fallback_writes_iteration_required]
+
+  - root_cause_id: RC-004
+    affected_defects: [D12, D7]
+    symptom: No mechanism to detect or correct premature closure
+    first_failing_boundary: No code transitions TERMINAL_CLOSED back to IN_PROGRESS
+    structural_cause: Closure was designed as one-way terminal state; no recovery path planned
+    stop_evaluator_cause: check_continuation.py M6 check is absolute — TERMINAL_CLOSED always returns STOP
+    governance_escape: Only recovery is manual lock file deletion + session restart
+    why_tests_missed_it: No test scenario covers "closure was wrong, now what?"
+    recurrence_path: Any premature closure requires human intervention to fix
+    permanent_fix: reopen_plan_lock.py tool + autonomous reopening detection in autonomous_cycle.py
+    prevention_tests: [test_pilot_g_regression_triggers_reopen, test_pilot_h_missed_work_reopens_same_plan]

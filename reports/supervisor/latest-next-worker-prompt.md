@@ -1,6 +1,6 @@
 # FORMAT-FACTORY-RNEXT-MEGA-TRAIN-001
-# Generated: 2026-06-23T17:35:29.818030
-# Source: Supervisor autonomous-cycle review of FF-MR-PILOT-H-20260623
+# Generated: 2026-06-23T22:40:34.796246
+# Source: Supervisor autonomous-cycle review of sal-authority-repair-20260623
 # Stream: mainstream
 # ADVISORY ONLY -- not a Format Factory authority document
 
@@ -27,10 +27,10 @@ Read these files before writing any code:
 ## Sprint Identity
 
 - Sprint ID: FORMAT-FACTORY-RNEXT-MEGA-TRAIN-001
-- Prior sprint: FF-MR-PILOT-H-20260623
+- Prior sprint: sal-authority-repair-20260623
 - Prior verdict: ACCEPTED
 - Prior tests: 0 passed, 0 failed, 0 skipped
-- Autonomous continue: True
+- Autonomous continue: False
 
 ---
 
@@ -69,6 +69,7 @@ Read these files before writing any code:
 
 | Train | Group | Title |
 |-------|-------|-------|
+| A | G1 | Governance Preflight |
 | B | G3 | FODS .NET Product Deepening |
 | C | G3 | FODT .NET Product Deepening |
 | D | G3 | Netpbm .NET Product Deepening |
@@ -83,8 +84,25 @@ Read these files before writing any code:
 | M | G4 | Gnumeric Python Improvement |
 | N | G5 | Dogfood: fodt -> txt |
 | O | G5 | Dogfood: fodt -> html |
+| P | G6 | Package Build + Install Proof |
+| Q | G7 | State + Memory + POC Matrix Sync |
+| R | G8 | Evidence Declaration + Supervisor Autonomous-Cycle |
 
 ---
+
+## Group G1: Governance + Preflight
+
+### Train A: Governance Preflight
+
+Read all governance files. Verify no policy violations from prior sprint. Confirm MCP status, supervisor mode, and gate states. Load `.local/supervisor/selected-product-gaps.json` and `.supervisor/skill-registry.yaml` before selecting product work.
+
+**Acceptance Criteria:**
+- All preflight files read
+- No policy violations detected
+- Gate states documented
+
+**Files:**
+- `reports/<run_id>/00-preflight.md`
 
 ## Group G3: Commercial .NET Product
 
@@ -319,6 +337,62 @@ No FF .NET HTML write library. Prerequisite: Build FormatFactory.Html .NET libra
 - Export test passes using FF library
 - Dogfood status updated in poc-targets.yaml
 
+## Group G6: Package / Install Proof
+
+### Train P: Package Build + Install Proof
+
+Rebuild wheels/sdists for any changed packages. Run installed-workflow smoke test from extracted wheel. Treat missing artifacts as failures, not skips.
+
+**Acceptance Criteria:**
+- All changed packages rebuilt
+- Installed import test passes
+- Package artifacts present in evidence directory
+
+**Files:**
+- `packaging/`
+
+**Verification:**
+```bash
+python -m pytest tests/evidence/ -x -q
+```
+
+## Group G7: State / Memory / POC Matrix
+
+### Train Q: State + Memory + POC Matrix Sync
+
+Update state/current-state.md, .supervisor/project-memory.md, and product-capability-matrix/poc-targets.yaml with sprint results.
+
+**Acceptance Criteria:**
+- poc-targets.yaml reflects actual status (no overclaiming)
+- state/current-state.md updated
+- project-memory.md entry appended
+
+**Files:**
+- `state/current-state.md`
+- `.supervisor/project-memory.md`
+- `product-capability-matrix/poc-targets.yaml`
+
+## Group G8: Evidence + Supervisor Loop
+
+### Train R: Evidence Declaration + Supervisor Autonomous-Cycle
+
+Write evidence-declaration.yaml listing ALL work items. Run autonomous-cycle. Verify session-resume.md is regenerated. Validate `reports/r90/product-code-change-ledger.json` for any governed product source edit.
+
+**Acceptance Criteria:**
+- evidence-declaration.yaml written with all work items
+- autonomous-cycle exits 0 or 3
+- session-resume.md regenerated with current data
+- approval-gates.md shows correct AUTONOMOUS_CONTINUE
+
+**Files:**
+- `.local/evidences/<run_id>/evidence-declaration.yaml`
+- `reports/supervisor/session-resume.md`
+
+**Verification:**
+```bash
+python tools/supervisor/supervisor_loop.py autonomous-cycle --declaration .local/evidences/<run_id>/evidence-declaration.yaml
+```
+
 
 ---
 
@@ -399,24 +473,25 @@ END OF SUPERVISOR-GENERATED MEGA-TRAIN EXECUTION PROMPT
 The following failures have been recorded in durable failure memory.
 Address escalated failures with priority.
 
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_execution_method_required_validator_failed (seen 141x, last: snoopy-juggling-seal-section-32-execution)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_source_diff_required_validator_failed (seen 110x, last: snoopy-juggling-seal-section-32-execution)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_idempotency_key_required_validator_failed (seen 75x, last: snoopy-juggling-seal-section-32-execution)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_execution_method_required_validator_failed (seen 142x, last: effervescent-wandering-blossom)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_source_diff_required_validator_failed (seen 112x, last: effervescent-wandering-blossom)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_idempotency_key_required_validator_failed (seen 77x, last: effervescent-wandering-blossom)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_claim_classification_validator_failed (seen 7x, last: IDEMPOTENT-SWARM-EXECUTION-20260615-E31FA98)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_route_decision_required_validator_failed (seen 109x, last: snoopy-juggling-seal-section-32-execution)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_spec_fact_refs_validator_failed (seen 192x, last: snoopy-juggling-seal-section-32-execution)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_route_decision_required_validator_failed (seen 111x, last: effervescent-wandering-blossom)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_spec_fact_refs_validator_failed (seen 194x, last: effervescent-wandering-blossom)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_governed_direct_execution_validator_failed (seen 3x, last: product-deepening-session-2026-06-22)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_monolith_detection_validator_failed (seen 277x, last: FF-HEAL-QNAME-20260623-131042)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): exit_code_3_rework_required (seen 190x, last: FF-HEAL-QNAME-20260623-131042)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_source_architecture_failed (seen 15x, last: governance-healing-final-2026-06-22)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_skill_transcript_present_failed (seen 5x, last: snoopy-juggling-seal-section-32-execution)
-- WARNING: 10 unresolved failures in failure memory
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_monolith_detection_validator_failed (seen 290x, last: sal-authority-repair-20260623)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): exit_code_3_rework_required (seen 214x, last: sal-authority-repair-20260623)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_source_architecture_failed (seen 17x, last: joyful-painting-iverson-reconciliation-20260623)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_skill_transcript_present_failed (seen 7x, last: effervescent-wandering-blossom)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_error_fallback_safety_failed (seen 5x, last: effervescent-wandering-blossom)
+- WARNING: 12 unresolved failures in failure memory
 
 
 
 ## Learning-Based Governance Advisories
 
-- **SPRINT_CLOSEOUT_PATTERN** (seen 30x): Sprint declaration validated PASS with sprint_executor_validate.py — *Action:* Continue using sprint_executor_validate.py --repair before closeout
+- **SPRINT_CLOSEOUT_PATTERN** (seen 40x): Sprint declaration validated PASS with sprint_executor_validate.py — *Action:* Continue using sprint_executor_validate.py --repair before closeout
 
 ## Spec-Parity Requirements (from skill registry)
 

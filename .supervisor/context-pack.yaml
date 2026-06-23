@@ -1,26 +1,28 @@
 schema_version: '1.0'
-generated_at: '2026-06-23T17:35:31.114558'
+generated_at: '2026-06-23T22:40:36.632826'
 repo_root: C:\Users\prora\OneDrive\Documents\GitHub\format-factory
 git:
-  head: f0a9a3fc
+  head: 4a35f9ab
   status:
-    modified_count: 27
-    untracked_count: 1
+    modified_count: 136
+    untracked_count: 96
     staged_count: 1
-    total_changed: 29
+    total_changed: 1028
     clean: false
 supervisor_mode: 4
 latest_sprint:
-  sprint_id: FF-TASKCARDS-20260623-092039
+  sprint_id: sal-authority-repair-20260623
   run_id: unknown
-  autonomous_continue: true
-  iteration: 5
+  autonomous_continue: false
+  iteration: 3
   max_iterations: 12
-  hard_stops: []
-  rework_items: []
+  hard_stops:
+  - critical_rework_blocks_continuation
+  rework_items:
+  - GOV_BLOCK:monolith_detection_validator
 poc_matrix:
   sprint: capability-layer-closeout-rnext
-  last_updated: '2026-06-18'
+  last_updated: '2026-06-23'
   commercial_net_products:
     FODS:
       dotnet_tests: 618
@@ -36,8 +38,8 @@ poc_matrix:
       commercial_ready: false
   foss_python_products: {}
 skill_registry:
-  total_skills: 47
-  active_skills: 45
+  total_skills: 48
+  active_skills: 47
   skill_ids:
   - add-dotnet-api
   - add-python-api
@@ -55,6 +57,7 @@ skill_registry:
   - materialize-declaration-review
   - record-lane-execution
   - build-context-pack
+  - check-mcp-status
   - select-poc-gap
   - validate-product-code-ledger
   - validate-skill-transcript
@@ -83,11 +86,12 @@ skill_registry:
   - sal-pipeline-heal
   - implement-spec-stub
   - decompose-monolithic-codec
+  - extract-analytics-from-monolith
   - python-qname-code-reviewer
   source_edits_require_handoff: true
   ledger_required: true
 product_code_ledger:
-  total_entries: 960
+  total_entries: 961
   governed_changes: 783
   backfilled: 4
   ledger_path: reports\r90\product-code-change-ledger.json

@@ -1,0 +1,21 @@
+{
+  "mission_id": "TC-FORENSICS-TERMINAL-20260623",
+  "generated_at": "2026-06-23T16:47:00Z",
+  "total_closures": 9,
+  "classifications": {
+    "VALID_TERMINAL_CLOSURE": ["TCE-001"],
+    "CLOSURE_VALIDITY_UNKNOWN": ["TCE-002", "TCE-003", "TCE-004", "TCE-005", "TCE-006", "TCE-007", "TCE-008", "TCE-009"],
+    "PREMATURE_TASK_BASED_CLOSURE": [],
+    "PREMATURE_QUEUE_BASED_CLOSURE": [],
+    "PREMATURE_ITERATION_BASED_CLOSURE": [],
+    "PREMATURE_CLOSEOUT_TASK_CLOSURE": [],
+    "PREMATURE_EVIDENCE_ONLY_CLOSURE": [],
+    "WRONG_PLAN_CLOSURE": [],
+    "WRONG_MISSION_CLOSURE": [],
+    "STALE_EVIDENCE_CLOSURE": [],
+    "CLOSURE_WITH_UNCONSUMED_AUDIT": [],
+    "CLOSURE_WITH_UNVERIFIED_WORK": []
+  },
+  "key_finding": "8 of 9 closures used --terminal without --audit-gate, so their validity cannot be verified. No confirmed premature closures found, but the system cannot distinguish legitimate closures from premature ones when the audit gate is bypassed.",
+  "structural_risk": "The optional audit-gate means 89% of closures lack machine verification of plan completeness."
+}

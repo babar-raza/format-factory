@@ -1,0 +1,142 @@
+# State Machine Map — Plan Lock Lifecycle
+# Mission: TC-FORENSICS-TERMINAL-20260623
+# Generated: 2026-06-23T16:48Z
+
+# Current states (implemented)
+current_states:
+  IN_PROGRESS:
+    written_by: write_plan_lock.py (default)
+    effect_on_continuation: STOP(ACTIVE_PLAN_INCOMPLETE)
+    continuation_disabled: true
+    description: Plan is active; work continues under plan authority
+
+  COMPLETE:
+    written_by: write_plan_lock.py --complete
+    effect_on_continuation: STOP(PLAN_COMPLETED_IN_SESSION) for same session; CONTINUE for future
+    continuation_disabled: same_session_only
+    description: Plan done; future sessions may access product ledger
+
+  TERMINAL_CLOSED:
+    written_by: write_plan_lock.py --terminal
+    effect_on_continuation: STOP(POST_PLAN_TERMINAL) — non-overridable
+    continuation_disabled: true
+    description: Plan done this session; ledger blocked this session
+
+  ITERATION_REQUIRED:
+    written_by: write_plan_lock.py --terminal --audit-gate (when audit returns AUDIT_REQUIRES_ITERATION)
+    effect_on_continuation: CONTINUE for same session; STOP for different session
+    continuation_disabled: false_same_session
+    description: Audit found unresolved work; plan iterates in same session
+
+  DEFERRED:
+    written_by: External tool (TC-STREAM-HEAL-001)
+    effect_on_continuation: not_checked
+    description: Plan has incomplete work, marked stale
+
+  TERMINAL_CLOSED_AUTHORIZED_OVERRIDE:
+    written_by: External authorization (Babar Raza)
+    effect_on_continuation: CONTINUE (M5b bypass)
+    continuation_disabled: false
+    description: Delegated override of terminal closure
+
+# New states (to be implemented by this plan)
+new_states:
+  COMPLETION_CANDIDATE:
+    written_by: write_plan_lock.py --completion-candidate (TC-TCF-005)
+    effect_on_continuation: CONTINUE (does NOT block)
+    continuation_disabled: false
+    description: Plan is a candidate for closure; completion audit must run first
+
+  REOPENED:
+    written_by: reopen_plan_lock.py (TC-TCF-007)
+    effect_on_continuation: CONTINUE
+    continuation_disabled: false
+    description: Previously TERMINAL_CLOSED plan reopened due to new in-scope work
+
+  SUPERSEDED_BY_SUCCESSOR:
+    written_by: reopen_plan_lock.py --successor (TC-TCF-007)
+    effect_on_continuation: N/A (original plan immutable)
+    continuation_disabled: true
+    description: Original closure valid; new out-of-scope work goes to successor plan
+
+# Transitions
+transitions:
+  - from: null
+    to: IN_PROGRESS
+    trigger: write_plan_lock.py --plan-path <path>
+    guard: none
+
+  - from: IN_PROGRESS
+    to: TERMINAL_CLOSED
+    trigger: write_plan_lock.py --terminal
+    guard: none (DEFECT D4 — should require audit)
+
+  - from: IN_PROGRESS
+    to: TERMINAL_CLOSED
+    trigger: write_plan_lock.py --terminal --audit-gate (audit passes)
+    guard: lifecycle_audit.py verdict == AUDIT_PASS
+
+  - from: IN_PROGRESS
+    to: ITERATION_REQUIRED
+    trigger: write_plan_lock.py --terminal --audit-gate (audit fails)
+    guard: lifecycle_audit.py verdict == AUDIT_REQUIRES_ITERATION
+
+  - from: ITERATION_REQUIRED
+    to: TERMINAL_CLOSED
+    trigger: write_plan_lock.py --terminal --audit-gate (subsequent audit passes)
+    guard: lifecycle_audit.py verdict == AUDIT_PASS (after fixing issues)
+
+  - from: IN_PROGRESS
+    to: COMPLETE
+    trigger: write_plan_lock.py --complete
+    guard: none
+
+  - from: IN_PROGRESS
+    to: COMPLETION_CANDIDATE
+    trigger: write_plan_lock.py --completion-candidate (NEW — TC-TCF-005)
+    guard: none
+
+  - from: COMPLETION_CANDIDATE
+    to: TERMINAL_CLOSED
+    trigger: write_plan_lock.py --terminal --audit-gate (audit passes)
+    guard: lifecycle_audit.py with plan_path validates all taskcards CLOSED
+
+  - from: COMPLETION_CANDIDATE
+    to: ITERATION_REQUIRED
+    trigger: write_plan_lock.py --terminal --audit-gate (audit finds open tasks)
+    guard: lifecycle_audit.py detects open taskcards
+
+  - from: TERMINAL_CLOSED
+    to: REOPENED
+    trigger: reopen_plan_lock.py --plan-path --reason (NEW — TC-TCF-007)
+    guard: new in-scope work discovered; closure invalidated
+
+  - from: TERMINAL_CLOSED
+    to: SUPERSEDED_BY_SUCCESSOR
+    trigger: reopen_plan_lock.py --successor (NEW — TC-TCF-007)
+    guard: new work is out of original scope
+
+  - from: REOPENED
+    to: IN_PROGRESS
+    trigger: autonomous_cycle.py Step 0b-reopen-check (NEW — TC-TCF-008)
+    guard: task queue restored
+
+  - from: IN_PROGRESS
+    to: DEFERRED
+    trigger: external tool
+    guard: session stale + plan has incomplete work
+
+# Error/fallback transitions (DEFECTS)
+error_transitions:
+  - from: IN_PROGRESS
+    to: TERMINAL_CLOSED
+    trigger: write_plan_lock.py --terminal --audit-gate (audit ImportError/Exception)
+    guard: "DEFECT D6 — fallback writes TERMINAL_CLOSED on error"
+    fix: "TC-TCF-004 — change fallback to ITERATION_REQUIRED"
+
+# Non-overridable stops
+non_overridable_stops:
+  - POST_PLAN_TERMINAL
+  - PLAN_COMPLETED_IN_SESSION
+  - SESSION_MISMATCH
+  - CHAT_ID_MISMATCH

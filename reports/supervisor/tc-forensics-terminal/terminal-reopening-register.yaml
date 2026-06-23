@@ -1,0 +1,23 @@
+# Terminal Reopening Register
+# Mission: TC-FORENSICS-TERMINAL-20260623
+# Schema: seeded empty -- entries appended by reopen_plan_lock.py
+# Generated: 2026-06-23
+
+schema_version: "1.0"
+description: >
+  Records all governed plan reopenings. Each entry captures the original closure,
+  the reopening trigger, and the invalidation evidence. Entries are appended by
+  tools/supervisor/reopen_plan_lock.py.
+
+entry_schema:
+  reopening_id: "REOPEN-{plan_name}-{timestamp}"
+  original_closure_id: "{session_id}-{plan_name}"
+  mission_id: "string or null"
+  plan_path: "string"
+  reopened_at: "ISO-8601 datetime"
+  trigger: "MISSED_REQUIREMENT|REGRESSION|AUDIT_FINDING|WRONG_MISSION|EVIDENCE_INVALIDATION|AUTONOMOUS_OPEN_TASKCARD_DETECTION"
+  evidence: "path or null"
+  invalidated_closure_conditions: []
+  prior_closure_preserved: true
+
+entries: []
