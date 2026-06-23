@@ -37,26 +37,52 @@ _GRADE_CACHE_PATH = Path(__file__).resolve().parent.parent.parent / ".local" / "
 
 
 def _evidence_hash(item: dict, item_inspection: "dict | None" = None) -> str:
-    """Stable hash of evidence paths + status + criteria. Changes when evidence changes."""
+    """Stable hash of evidence paths + status + criteria + content fingerprints.
+
+    Content fingerprints invalidate cache when evidence file content changes (TC-GRADE-001).
+    Files >500KB or unreadable are silently skipped.
+    """
+    _ev_content: dict = {}
+    for ep in sorted((item_inspection or {}).get("evidence_paths_found", [])):
+        try:
+            _fp = REPO_ROOT / ep
+            if _fp.is_file() and _fp.stat().st_size < 500_000:
+                _ev_content[ep] = hashlib.sha256(_fp.read_bytes()).hexdigest()[:16]
+        except Exception:
+            pass  # skip unreadable or missing files
     key = json.dumps({
         "evidence_paths": sorted(item.get("evidence_paths", [])),
         "evidence_paths_found": sorted((item_inspection or {}).get("evidence_paths_found", [])),
         "status": item.get("status", ""),
         "acceptance_criteria": item.get("acceptance_criteria", ""),
+        "_ev_content": _ev_content,
     }, sort_keys=True)
     return hashlib.sha256(key.encode()).hexdigest()[:16]
 
 
 def _get_cached_grade(item_id: str, ev_hash: str,
                       cache_path: "Path | None" = None) -> "dict | None":
-    """Return cached verification result or None on miss/error.
+    """Return cached verification result or None on miss/error/TTL expiry.
 
     cache_path: override default cache path (for track-scoped caches, REQ-TRK-008).
+    Entries older than 7 days are treated as cache misses (TC-GRADE-001).
     """
     _path = cache_path if cache_path is not None else _GRADE_CACHE_PATH
+    _MAX_CACHE_AGE_DAYS = 7
     try:
         cache = json.loads(_path.read_text(encoding="utf-8"))
-        return cache.get(f"{item_id}:{ev_hash}")
+        result = cache.get(f"{item_id}:{ev_hash}")
+        if result is None:
+            return None
+        cached_at = result.get("_cached_at", "")
+        if cached_at:
+            try:
+                age = (datetime.now(timezone.utc) - datetime.fromisoformat(cached_at)).days
+                if age > _MAX_CACHE_AGE_DAYS:
+                    return None  # TTL expired — treat as cache miss
+            except Exception:
+                pass  # Malformed _cached_at — skip TTL check, return result
+        return result
     except Exception:
         return None
 
