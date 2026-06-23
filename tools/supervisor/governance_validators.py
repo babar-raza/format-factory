@@ -911,7 +911,7 @@ def validate_route_decision_required(declaration: dict) -> dict:
     Current-run PRODUCT_SOURCE without route_decision_id: FAIL + blocks_sprint.
     Current-run MACHINERY without route_decision_id: FAIL + blocks_sprint.
     """
-    from tools.supervisor.autonomy_route_models import TASK_CATEGORIES_MACHINERY
+    from autonomy_route_models import TASK_CATEGORIES_MACHINERY
 
     items = declaration.get("planned_work_items", [])
     warns: list = []
