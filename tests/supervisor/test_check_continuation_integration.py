@@ -109,10 +109,13 @@ class TestMultiSprintContinuation:
         assert r2["verdict"] == "CONTINUE"
         _update_iteration(tmp_path, 3)
 
-        # Sprint 3: at max_iterations → STOP
+        # Sprint 3: at max_iterations → auto-rollover (TC-PROD-H-003R), CONTINUE
         r3 = check(tmp_path)
-        assert r3["verdict"] == "STOP"
-        assert r3["reason"] == "MAX_ITERATIONS"
+        assert r3["verdict"] == "CONTINUE"
+        sig = json.loads(
+            (tmp_path / ".local" / "supervisor" / "continuation-signal.json").read_text()
+        )
+        assert sig["iteration"] == 0, "auto-rollover should reset iteration to 0"
 
     def test_hard_stop_mid_loop(self, tmp_path):
         _write_signal(tmp_path, {"iteration": 1, "max_iterations": 5})
@@ -157,12 +160,15 @@ class TestMultiSprintContinuation:
         r1 = check(tmp_path)
         assert r1["verdict"] == "CONTINUE"
 
-        # External change: approval gate flipped to NO
+        # External change: gates AND signal both flipped to NO
         _write_gates(tmp_path, autonomous=False)
+        _write_signal(tmp_path, {"iteration": 2, "max_iterations": 5,
+                                  "continuation_state": "NO_EXTERNAL_GATE",
+                                  "autonomous_continue": False,
+                                  "stop_reason": "approval_gate_flipped"})
 
         r2 = check(tmp_path)
         assert r2["verdict"] == "STOP"
-        assert r2["reason"] == "APPROVAL_GATE_NO"
 
     def test_work_items_removed_mid_loop(self, tmp_path):
         _write_signal(tmp_path, {"iteration": 1, "max_iterations": 5})

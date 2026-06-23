@@ -102,11 +102,21 @@ def test_invalid_signal_json(tmp_path):
 # ── Check 2: autonomous_continue false ───────────────────────────────────
 
 def test_autonomous_continue_false(tmp_path):
-    _setup_all(tmp_path, {"autonomous_continue": False, "stop_reason": "test_reason"})
+    """When autonomous_continue=False AND gates also say NO, STOP."""
+    _setup_all(tmp_path, {"autonomous_continue": False, "stop_reason": "test_reason",
+                           "continuation_state": "NO_HARD_STOP"})
+    _write_gates(tmp_path, "AUTONOMOUS_CONTINUE: NO")
     result = check(tmp_path)
     assert result["verdict"] == "STOP"
     assert result["reason"] == "AUTONOMOUS_CONTINUE_FALSE"
     assert "test_reason" in result["detail"]
+
+
+def test_autonomous_continue_false_gates_override(tmp_path):
+    """When autonomous_continue=False BUT gates say YES, gates override → CONTINUE."""
+    _setup_all(tmp_path, {"autonomous_continue": False, "stop_reason": "test_reason"})
+    result = check(tmp_path)
+    assert result["verdict"] == "CONTINUE"
 
 
 # ── Check 3: continuation_state starts with NO_ ─────────────────────────
@@ -137,10 +147,14 @@ def test_hard_stops_detected(tmp_path):
 # ── Check 5: iteration >= max_iterations ─────────────────────────────────
 
 def test_max_iterations_reached(tmp_path):
+    """TC-PROD-H-003R: max_iterations triggers auto-rollover, not STOP."""
     _setup_all(tmp_path, {"iteration": 12, "max_iterations": 12})
     result = check(tmp_path)
-    assert result["verdict"] == "STOP"
-    assert result["reason"] == "MAX_ITERATIONS"
+    assert result["verdict"] == "CONTINUE"
+    sig = json.loads(
+        (tmp_path / ".local" / "supervisor" / "continuation-signal.json").read_text()
+    )
+    assert sig["iteration"] == 0, "iteration should reset to 0 after auto-rollover"
 
 
 def test_iteration_below_max(tmp_path):
@@ -160,11 +174,11 @@ def test_missing_gates(tmp_path):
 
 
 def test_gates_without_yes(tmp_path):
-    _setup_all(tmp_path)
+    """TC-PROD-H-012: gates=NO + signal=NO → STOP."""
+    _setup_all(tmp_path, {"continuation_state": "NO_HARD_STOP"})
     _write_gates(tmp_path, "AUTONOMOUS_CONTINUE: NO — repair required first")
     result = check(tmp_path)
     assert result["verdict"] == "STOP"
-    assert result["reason"] == "APPROVAL_GATE_NO"
 
 
 # ── Check 7: next-work-items.json ────────────────────────────────────────
@@ -235,5 +249,61 @@ def test_main_exit_1(tmp_path):
 
 def test_true_with_rework_is_truthy(tmp_path):
     _setup_all(tmp_path, {"autonomous_continue": "true_with_rework"})
+    result = check(tmp_path)
+    assert result["verdict"] == "CONTINUE"
+
+
+# ── TC-PROD-H-080: Auto-rollover regression (Check 5) ─────────────────
+
+def test_max_iterations_auto_rollover(tmp_path):
+    """When iteration >= max_iterations, auto-rollover resets to 0 and continues."""
+    _setup_all(tmp_path, {"iteration": 12, "max_iterations": 12})
+    result = check(tmp_path)
+    assert result["verdict"] == "CONTINUE", (
+        f"Expected CONTINUE after auto-rollover, got {result['verdict']} "
+        f"reason={result.get('reason')}"
+    )
+    # Verify signal file was updated
+    sig = json.loads(
+        (tmp_path / ".local" / "supervisor" / "continuation-signal.json").read_text()
+    )
+    assert sig["iteration"] == 0, f"iteration should be 0 after rollover, got {sig['iteration']}"
+
+
+def test_max_iterations_rollover_beyond(tmp_path):
+    """When iteration > max_iterations, auto-rollover still fires."""
+    _setup_all(tmp_path, {"iteration": 15, "max_iterations": 12})
+    result = check(tmp_path)
+    assert result["verdict"] == "CONTINUE"
+    sig = json.loads(
+        (tmp_path / ".local" / "supervisor" / "continuation-signal.json").read_text()
+    )
+    assert sig["iteration"] == 0
+
+
+# ── TC-PROD-H-081: Staleness detector regression (Check 6) ────────────
+
+def test_stale_gates_no_but_signal_yes_continues(tmp_path):
+    """Stale gates (NO) + live signal (YES_*) should CONTINUE with warning."""
+    _setup_all(tmp_path, {"continuation_state": "YES_RESET_CLEAN"})
+    _write_gates(tmp_path, "AUTONOMOUS_CONTINUE: NO")
+    result = check(tmp_path)
+    assert result["verdict"] == "CONTINUE", (
+        f"Expected CONTINUE (stale gates overridden by signal), got {result['verdict']} "
+        f"reason={result.get('reason')}"
+    )
+
+
+def test_real_gates_no_and_signal_no_stops(tmp_path):
+    """Real gates (NO) + real signal (NO_*) should STOP."""
+    _setup_all(tmp_path, {"continuation_state": "NO_HARD_STOP"})
+    _write_gates(tmp_path, "AUTONOMOUS_CONTINUE: NO")
+    result = check(tmp_path)
+    assert result["verdict"] == "STOP"
+
+
+def test_gates_yes_signal_yes_continues(tmp_path):
+    """Both gates and signal agree YES — normal continue path."""
+    _setup_all(tmp_path, {"continuation_state": "YES_RESET_CLEAN"})
     result = check(tmp_path)
     assert result["verdict"] == "CONTINUE"

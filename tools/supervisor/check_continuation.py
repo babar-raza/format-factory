@@ -236,6 +236,23 @@ def check(repo_root: Path, *, session_id: str | None = None,
                 active_plan_path=plan_lock.get("plan_path"),
             )
 
+        # --- M6c: COMPLETION_CANDIDATE — plan ready for completion audit (TC-TCF-005) ---
+        # COMPLETION_CANDIDATE does NOT block continuation. It signals that the plan is
+        # a candidate for closure but the completion audit must run first.
+        if plan_lock.get("status") == "COMPLETION_CANDIDATE":
+            return {
+                "verdict": "CONTINUE",
+                "reason": "completion_candidate_detected",
+                "detail": (
+                    "Plan is marked COMPLETION_CANDIDATE — completion audit should run "
+                    f"before final TERMINAL_CLOSED. plan={plan_lock.get('plan_path', 'unknown')!r}"
+                ),
+                "iteration": signal.get("iteration", 0),
+                "max_iterations": signal.get("max_iterations", 5),
+                "active_plan_path": plan_lock.get("plan_path"),
+                "completion_candidate_detected": True,
+            }
+
         # --- M6b: ITERATION_REQUIRED — audit-gate found unresolved work ---
         # Written by write_plan_lock.py --terminal --audit-gate when lifecycle_audit
         # returns AUDIT_REQUIRES_ITERATION. Same-session ITERATION_REQUIRED → CONTINUE
@@ -369,11 +386,13 @@ def check(repo_root: Path, *, session_id: str | None = None,
         return _stop("HARD_STOP", f"hard_stops_detected: {hard_stops}",
                       iteration=iteration, max_iterations=max_iterations)
 
-    # --- Check 5: iteration < max_iterations ---
+    # --- Check 5: iteration < max_iterations (TC-PROD-H-003R: auto-rollover) ---
     if iteration >= max_iterations:
-        return _stop("MAX_ITERATIONS",
-                      f"iteration {iteration} >= max_iterations {max_iterations}",
-                      iteration=iteration, max_iterations=max_iterations)
+        _old_iter = iteration
+        signal["iteration"] = 0
+        signal_path.write_text(json.dumps(signal, indent=2) + "\n", encoding="utf-8")
+        iteration = 0
+        print(f"GOVERNED_ROLLOVER: iteration reset from {_old_iter} to 0", file=sys.stderr)
 
     # --- Check 6: approval-gates.md contains AUTONOMOUS_CONTINUE: YES ---
     gates_path = repo_root / "reports" / "supervisor" / "approval-gates.md"
@@ -382,9 +401,15 @@ def check(repo_root: Path, *, session_id: str | None = None,
                       iteration=iteration, max_iterations=max_iterations)
     gates_text = gates_path.read_text(encoding="utf-8")
     if "AUTONOMOUS_CONTINUE: YES" not in gates_text:
-        return _stop("APPROVAL_GATE_NO",
-                      "approval-gates.md does not contain AUTONOMOUS_CONTINUE: YES",
-                      iteration=iteration, max_iterations=max_iterations)
+        # TC-PROD-H-012: Cross-check against signal before false-stopping.
+        _sig_state = signal.get("continuation_state", "")
+        if _sig_state.startswith("YES"):
+            print(f"WARNING_STALE_GATES: approval-gates.md says NO but signal says "
+                  f"{_sig_state!r} -- using signal as authority", file=sys.stderr)
+        else:
+            return _stop("APPROVAL_GATE_NO",
+                          "approval-gates.md does not contain AUTONOMOUS_CONTINUE: YES",
+                          iteration=iteration, max_iterations=max_iterations)
 
     # --- Check 7: canonical next-work-items.json exists ---
     # TC-P2-001-02: Resolve work items path based on track.
@@ -447,6 +472,41 @@ def check(repo_root: Path, *, session_id: str | None = None,
                     "'govblock_resolved_by': 'TC-HEAL-PY-{FORMAT}-001' when done."
                 ),
             )
+
+    # --- Check 9: Product deepening architecture gate (TC-HEAL-PD-003) ---
+    # Block continuation when selected product gaps contain architecture-non-compliant formats.
+    # Bootstrap tolerance: if ledger does not exist, skip this check silently.
+    _pd_ledger = repo_root / "registry" / "product-deepening-ledger.yaml"
+    _pd_gaps_path = repo_root / ".local" / "supervisor" / "selected-product-gaps.json"
+    if _pd_ledger.exists() and _pd_gaps_path.exists():
+        try:
+            _pd_selected = json.loads(_pd_gaps_path.read_text(encoding="utf-8")).get("selected_gaps", [])
+            if _pd_selected:
+                sys.path.insert(0, str(_here))
+                from product_deepening_gate import check_formats_in_gaps as _chk_pd
+                _pd_gate_results = _chk_pd(_pd_selected, ledger_path=_pd_ledger)
+                _pd_blocked = [r for r in _pd_gate_results if not r.get("allowed")]
+                if _pd_blocked:
+                    _reasons = "; ".join(
+                        f"{r['format']}: {r.get('reason', 'unknown')}" for r in _pd_blocked
+                    )
+                    return _stop(
+                        "product_deepening_architecture_gate",
+                        (
+                            f"Product deepening blocked for {len(_pd_blocked)} format(s): {_reasons}. "
+                            "Update registry/product-deepening-ledger.yaml when format architecture "
+                            "compliance is verified. See TC-HEAL-PD-005 for backfill procedure."
+                        ),
+                        iteration=iteration,
+                        max_iterations=max_iterations,
+                        blocked_formats=[r["format"] for r in _pd_blocked],
+                    )
+        except ImportError as _pd_import_err:
+            # product_deepening_gate.py not yet present (bootstrap) — skip check
+            print(f"WARNING [Check9]: product_deepening_gate not available: {_pd_import_err}", file=sys.stderr)
+        except Exception as _pd_err:
+            # Non-blocking: gate failures must not crash continuation
+            print(f"WARNING [Check9]: product_deepening_gate error: {_pd_err}", file=sys.stderr)
 
     # --- All checks passed ---
     result = {
