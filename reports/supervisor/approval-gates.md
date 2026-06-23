@@ -1,14 +1,16 @@
 # Approval Gates Classification
-Sprint ID: frolicking-squishing-shannon-rework-clearance
-Generated: 2026-06-23T09:22:58.754237
+Sprint ID: TC-HARDEN-005-SMOKE
+Generated: 2026-06-23T11:26:56.642001
 Current Mode: MODE 4 (ACTIVE_MCP_ACTIVATION)
 
 ## Pending Actions
 
 | Action | Classification | Who Unblocks |
 |--------|---------------|-------------|
-| Repair 6 CRITICAL contradictions | local-repair-loop | Claude_Code |
-| Continue to next sprint | stop-contradictions-present | Claude_Code (after repair) |
+| Continue to next sprint lanes | autonomous-continue | null |
+| Gate approval (if any gate pending) | stop-gate-approval-required | Babar_Raza |
+| Push/commit | stop-push-approval-required | User |
+| MCP activation (MODE 4 ACTIVE — .vscode/mcp.json verified present) | autonomous-continue | already-done |
 
 ## Summary
 - AUTONOMOUS_CONTINUE: NO — repair required first

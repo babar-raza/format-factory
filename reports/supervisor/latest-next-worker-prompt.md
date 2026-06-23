@@ -1,6 +1,6 @@
 # FORMAT-FACTORY-RNEXT-MEGA-TRAIN-001
-# Generated: 2026-06-23T09:22:27.742491
-# Source: Supervisor autonomous-cycle review of frolicking-squishing-shannon-rework-clearance
+# Generated: 2026-06-23T11:26:55.814950
+# Source: Supervisor autonomous-cycle review of TC-HARDEN-005-SMOKE
 # Stream: mainstream
 # ADVISORY ONLY -- not a Format Factory authority document
 
@@ -27,7 +27,7 @@ Read these files before writing any code:
 ## Sprint Identity
 
 - Sprint ID: FORMAT-FACTORY-RNEXT-MEGA-TRAIN-001
-- Prior sprint: frolicking-squishing-shannon-rework-clearance
+- Prior sprint: TC-HARDEN-005-SMOKE
 - Prior verdict: ACCEPTED_WITH_REWORK
 - Prior tests: 0 passed, 0 failed, 0 skipped
 - Autonomous continue: False
@@ -36,7 +36,7 @@ Read these files before writing any code:
 
 ## Sprint Goal
 
-**Goal:** Repair 6 item(s) flagged by supervisor review. Advance product POC: FODS .NET Product Deepening; FODT .NET Product Deepening; Netpbm .NET Product Deepening; ZST Python Improvement. Build evidence declaration and run supervisor autonomous-cycle.
+**Goal:** Advance product POC: FODS .NET Product Deepening; FODT .NET Product Deepening; Netpbm .NET Product Deepening; ZST Python Improvement. Build evidence declaration and run supervisor autonomous-cycle.
 
 ---
 
@@ -70,29 +70,23 @@ Read these files before writing any code:
 | Train | Group | Title |
 |-------|-------|-------|
 | A | G1 | Governance Preflight |
-| B | G2 | Rework: V50 in governance runner returns PASS |
-| C | G2 | Rework: Sprint commits verified in git log |
-| D | G2 | Rework: 93/93 FODG functions annotated |
-| E | G2 | Rework: fods constants spec facts committed |
-| F | G2 | Rework: FACT-FODG-001 and FACT-FODG-002 in SAL |
-| G | G2 | Rework: ZST wheel rebuilt with compressed_stream |
-| H | G3 | FODS .NET Product Deepening |
-| I | G3 | FODT .NET Product Deepening |
-| J | G3 | Netpbm .NET Product Deepening |
-| K | G4 | ZST Python Improvement |
-| L | G4 | Netpbm Python Improvement |
-| M | G4 | SYLK Python Improvement |
-| N | G4 | TOML Python Improvement |
-| O | G4 | NDJSON Python Improvement |
-| P | G4 | FODG Python Improvement |
-| Q | G4 | TSV Python Improvement |
-| R | G4 | ABW Python Improvement |
-| S | G4 | Gnumeric Python Improvement |
-| T | G5 | Dogfood: fodt -> txt |
-| U | G5 | Dogfood: fodt -> html |
-| V | G6 | Package Build + Install Proof |
-| W | G7 | State + Memory + POC Matrix Sync |
-| X | G8 | Evidence Declaration + Supervisor Autonomous-Cycle |
+| B | G3 | FODS .NET Product Deepening |
+| C | G3 | FODT .NET Product Deepening |
+| D | G3 | Netpbm .NET Product Deepening |
+| E | G4 | ZST Python Improvement |
+| F | G4 | Netpbm Python Improvement |
+| G | G4 | SYLK Python Improvement |
+| H | G4 | TOML Python Improvement |
+| I | G4 | NDJSON Python Improvement |
+| J | G4 | FODG Python Improvement |
+| K | G4 | TSV Python Improvement |
+| L | G4 | ABW Python Improvement |
+| M | G4 | Gnumeric Python Improvement |
+| N | G5 | Dogfood: fodt -> txt |
+| O | G5 | Dogfood: fodt -> html |
+| P | G6 | Package Build + Install Proof |
+| Q | G7 | State + Memory + POC Matrix Sync |
+| R | G8 | Evidence Declaration + Supervisor Autonomous-Cycle |
 
 ---
 
@@ -110,59 +104,9 @@ Read all governance files. Verify no policy violations from prior sprint. Confir
 **Files:**
 - `reports/<run_id>/00-preflight.md`
 
-## Group G2: Rework / Repair
-
-### Train B: Rework: V50 in governance runner returns PASS
-
-Item declared completed but no evidence found. Provide evidence at declared paths.
-
-**Acceptance Criteria:**
-- Evidence for TC-V50-RUNNER-FSS-001 passes supervisor inspection
-- Tests pass for affected code
-
-### Train C: Rework: Sprint commits verified in git log
-
-Item declared completed but no evidence found. Provide evidence at declared paths.
-
-**Acceptance Criteria:**
-- Evidence for TC-COMMIT-FSS-001 passes supervisor inspection
-- Tests pass for affected code
-
-### Train D: Rework: 93/93 FODG functions annotated
-
-Item declared completed but no evidence found. Provide evidence at declared paths.
-
-**Acceptance Criteria:**
-- Evidence for TC-FODG-ANNOT-MISSING-001 passes supervisor inspection
-- Tests pass for affected code
-
-### Train E: Rework: fods constants spec facts committed
-
-Item declared completed but no evidence found. Provide evidence at declared paths.
-
-**Acceptance Criteria:**
-- Evidence for TC-FODS-CONSTANTS-COMMIT-001 passes supervisor inspection
-- Tests pass for affected code
-
-### Train F: Rework: FACT-FODG-001 and FACT-FODG-002 in SAL
-
-Item declared completed but no evidence found. Provide evidence at declared paths.
-
-**Acceptance Criteria:**
-- Evidence for TC-FODG-SAL-FACTS-001 passes supervisor inspection
-- Tests pass for affected code
-
-### Train G: Rework: ZST wheel rebuilt with compressed_stream
-
-Item declared completed but no evidence found. Provide evidence at declared paths.
-
-**Acceptance Criteria:**
-- Evidence for TC-ZST-WHEEL-REBUILD-001 passes supervisor inspection
-- Tests pass for affected code
-
 ## Group G3: Commercial .NET Product
 
-### Train H: FODS .NET Product Deepening
+### Train B: FODS .NET Product Deepening
 
 Continue FODS commercial .NET product advancement. Continue product maintenance and extended API feature development
 
@@ -180,7 +124,7 @@ Continue FODS commercial .NET product advancement. Continue product maintenance 
 dotnet test tests/net/fods/ --verbosity quiet
 ```
 
-### Train I: FODT .NET Product Deepening
+### Train C: FODT .NET Product Deepening
 
 Continue FODT commercial .NET product advancement. Continue product maintenance and extended API feature development
 
@@ -198,7 +142,7 @@ Continue FODT commercial .NET product advancement. Continue product maintenance 
 dotnet test tests/net/fodt/ --verbosity quiet
 ```
 
-### Train J: Netpbm .NET Product Deepening
+### Train D: Netpbm .NET Product Deepening
 
 Continue Netpbm commercial .NET product advancement. Continue product maintenance and extended API feature development
 
@@ -218,7 +162,7 @@ dotnet test tests/net/netpbm/ --verbosity quiet
 
 ## Group G4: FOSS / Reduced Product
 
-### Train K: ZST Python Improvement
+### Train E: ZST Python Improvement
 
 Continue ZST FOSS product. Continue FOSS product deepening and additional compression API coverage
 
@@ -235,7 +179,7 @@ Continue ZST FOSS product. Continue FOSS product deepening and additional compre
 python -m pytest tests/python/zst/ -x -q
 ```
 
-### Train L: Netpbm Python Improvement
+### Train F: Netpbm Python Improvement
 
 Continue Netpbm FOSS product. Continue FOSS product deepening and additional Python API coverage
 
@@ -256,7 +200,7 @@ Continue Netpbm FOSS product. Continue FOSS product deepening and additional Pyt
 python -m pytest tests/python/pbm/ tests/python/pgm/ tests/python/ppm/ -x -q
 ```
 
-### Train M: SYLK Python Improvement
+### Train G: SYLK Python Improvement
 
 Continue SYLK FOSS product. Continue FOSS product deepening — cell iteration, set_cell_value; package install proof
 
@@ -273,7 +217,7 @@ Continue SYLK FOSS product. Continue FOSS product deepening — cell iteration, 
 python -m pytest tests/python/sylk/ -x -q
 ```
 
-### Train N: TOML Python Improvement
+### Train H: TOML Python Improvement
 
 Continue TOML FOSS product. dogfood export via TOML config roundtrip; package install proof
 
@@ -290,7 +234,7 @@ Continue TOML FOSS product. dogfood export via TOML config roundtrip; package in
 python -m pytest tests/python/toml/ -x -q
 ```
 
-### Train O: NDJSON Python Improvement
+### Train I: NDJSON Python Improvement
 
 Continue NDJSON FOSS product. Dogfood pipeline integration
 
@@ -307,7 +251,7 @@ Continue NDJSON FOSS product. Dogfood pipeline integration
 python -m pytest tests/python/ndjson/ -x -q
 ```
 
-### Train P: FODG Python Improvement
+### Train J: FODG Python Improvement
 
 Continue FODG FOSS product. SVG export investigation
 
@@ -324,7 +268,7 @@ Continue FODG FOSS product. SVG export investigation
 python -m pytest tests/python/fodg/ -x -q
 ```
 
-### Train Q: TSV Python Improvement
+### Train K: TSV Python Improvement
 
 Continue TSV FOSS product. Dogfood pipeline integration
 
@@ -341,7 +285,7 @@ Continue TSV FOSS product. Dogfood pipeline integration
 python -m pytest tests/python/tsv/ -x -q
 ```
 
-### Train R: ABW Python Improvement
+### Train L: ABW Python Improvement
 
 Continue ABW FOSS product. Dogfood pipeline integration
 
@@ -358,7 +302,7 @@ Continue ABW FOSS product. Dogfood pipeline integration
 python -m pytest tests/python/abw/ -x -q
 ```
 
-### Train S: Gnumeric Python Improvement
+### Train M: Gnumeric Python Improvement
 
 Continue Gnumeric FOSS product. Dogfood pipeline integration
 
@@ -377,7 +321,7 @@ python -m pytest tests/python/gnumeric/ -x -q
 
 ## Group G5: Dogfood Exports
 
-### Train T: Dogfood: fodt -> txt
+### Train N: Dogfood: fodt -> txt
 
 No FF .NET text write library. Prerequisite: Build FormatFactory.Text .NET library with write_text().
 
@@ -385,7 +329,7 @@ No FF .NET text write library. Prerequisite: Build FormatFactory.Text .NET libra
 - Export test passes using FF library
 - Dogfood status updated in poc-targets.yaml
 
-### Train U: Dogfood: fodt -> html
+### Train O: Dogfood: fodt -> html
 
 No FF .NET HTML write library. Prerequisite: Build FormatFactory.Html .NET library.
 
@@ -395,7 +339,7 @@ No FF .NET HTML write library. Prerequisite: Build FormatFactory.Html .NET libra
 
 ## Group G6: Package / Install Proof
 
-### Train V: Package Build + Install Proof
+### Train P: Package Build + Install Proof
 
 Rebuild wheels/sdists for any changed packages. Run installed-workflow smoke test from extracted wheel. Treat missing artifacts as failures, not skips.
 
@@ -414,7 +358,7 @@ python -m pytest tests/evidence/ -x -q
 
 ## Group G7: State / Memory / POC Matrix
 
-### Train W: State + Memory + POC Matrix Sync
+### Train Q: State + Memory + POC Matrix Sync
 
 Update state/current-state.md, .supervisor/project-memory.md, and product-capability-matrix/poc-targets.yaml with sprint results.
 
@@ -430,7 +374,7 @@ Update state/current-state.md, .supervisor/project-memory.md, and product-capabi
 
 ## Group G8: Evidence + Supervisor Loop
 
-### Train X: Evidence Declaration + Supervisor Autonomous-Cycle
+### Train R: Evidence Declaration + Supervisor Autonomous-Cycle
 
 Write evidence-declaration.yaml listing ALL work items. Run autonomous-cycle. Verify session-resume.md is regenerated. Validate `reports/r90/product-code-change-ledger.json` for any governed product source edit.
 
@@ -536,8 +480,8 @@ Address escalated failures with priority.
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_route_decision_required_validator_failed (seen 109x, last: snoopy-juggling-seal-section-32-execution)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_spec_fact_refs_validator_failed (seen 192x, last: snoopy-juggling-seal-section-32-execution)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_governed_direct_execution_validator_failed (seen 3x, last: product-deepening-session-2026-06-22)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_monolith_detection_validator_failed (seen 275x, last: FORMAT-FACTORY-FLOATING-STARGAZING-GLOBE-HARDENING-20260623-034629)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): exit_code_3_rework_required (seen 186x, last: fss-rework-clearance-20260623)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_monolith_detection_validator_failed (seen 276x, last: TC-HARDEN-005-SMOKE)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): exit_code_3_rework_required (seen 187x, last: fss-rework-clearance-20260623)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_source_architecture_failed (seen 15x, last: governance-healing-final-2026-06-22)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_skill_transcript_present_failed (seen 5x, last: snoopy-juggling-seal-section-32-execution)
 - WARNING: 10 unresolved failures in failure memory
@@ -546,7 +490,7 @@ Address escalated failures with priority.
 
 ## Learning-Based Governance Advisories
 
-- **SPRINT_CLOSEOUT_PATTERN** (seen 24x): Sprint declaration validated PASS with sprint_executor_validate.py — *Action:* Continue using sprint_executor_validate.py --repair before closeout
+- **SPRINT_CLOSEOUT_PATTERN** (seen 25x): Sprint declaration validated PASS with sprint_executor_validate.py — *Action:* Continue using sprint_executor_validate.py --repair before closeout
 
 ## Spec-Parity Requirements (from skill registry)
 

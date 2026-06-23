@@ -1,216 +1,129 @@
-- item_id: TC-XCF-REGR-FSS-001
-  item_title: XCF regression suite pass
+- item_id: TC-HARDEN-005-GOV-001
+  item_title: Verify hard_stops sync helper committed and importable
   declared_status: completed
-  supervisor_grade: ACCEPTED_WITH_LIMITATIONS
+  supervisor_grade: ACCEPTED_VERIFIED
   evidence_found: true
   evidence_paths:
-  - .local/evidences/fss-rework-clearance-20260623/xcf-regression.txt
+  - tests/supervisor/test_govblock_hardstop_sync.py
+  - tools/supervisor/autonomous_cycle.py
   tests_supporting: []
   tests_missing: []
   acceptance_criteria_met:
   - Evidence found
   - No missing paths
-  - No concrete test/criteria proof (path-only acceptance)
-  acceptance_criteria_failed:
-  - No raw proof, test content, or acceptance criteria verified
+  - 'Governance item: file-content validated (test coverage N/A by design)'
+  acceptance_criteria_failed: []
   required_rework: ''
   can_autonomously_repair: false
-  next_prompt_instruction: 'Item accepted with limitations: path-only evidence for
-    TC-XCF-REGR-FSS-001'
+  next_prompt_instruction: ''
   purpose_check:
-    item_type: ''
+    item_type: GOVERNANCE_TASKCARD
     has_gap_ref: null
     verdict: NOT_APPLICABLE
     note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
   semantic_verification:
     adequate: true
-    confidence: 0.85
+    confidence: 0.7
     stub_detected: false
     deficiencies: []
-    llm_used: true
-    _cached_at: '2026-06-23T04:19:25.120548+00:00'
-    _from_cache: true
-- item_id: TC-ZST-REGR-FSS-001
-  item_title: ZST regression suite pass from wheel
+    llm_used: false
+    intermediate_verified: true
+    source: intermediate_content_check
+    checks:
+    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\tests\supervisor\test_govblock_hardstop_sync.py
+      exists: true
+      content_ok: true
+      detail: valid (4 test functions with assertions)
+      check_type: python_test_content
+    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\tools\supervisor\autonomous_cycle.py
+      exists: true
+      content_ok: true
+      detail: 'non-empty (111497 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\tools\supervisor\autonomous_cycle.py'
+      check_type: nonzero_existence
+    summary: 2/2 evidence files passed content check
+- item_id: TC-HARDEN-005-GOV-002
+  item_title: Verify grade cache content-hash and TTL committed
   declared_status: completed
-  supervisor_grade: ACCEPTED_WITH_LIMITATIONS
+  supervisor_grade: ACCEPTED_VERIFIED
   evidence_found: true
   evidence_paths:
-  - .local/evidences/fss-rework-clearance-20260623/zst-regression.txt
+  - tests/supervisor/test_grade_cache_invalidation.py
+  - tools/supervisor/grade_declared_work.py
   tests_supporting: []
   tests_missing: []
   acceptance_criteria_met:
   - Evidence found
   - No missing paths
-  - No concrete test/criteria proof (path-only acceptance)
-  acceptance_criteria_failed:
-  - No raw proof, test content, or acceptance criteria verified
+  - 'Governance item: file-content validated (test coverage N/A by design)'
+  acceptance_criteria_failed: []
   required_rework: ''
   can_autonomously_repair: false
-  next_prompt_instruction: 'Item accepted with limitations: path-only evidence for
-    TC-ZST-REGR-FSS-001'
+  next_prompt_instruction: ''
   purpose_check:
-    item_type: ''
+    item_type: GOVERNANCE_TASKCARD
     has_gap_ref: null
     verdict: NOT_APPLICABLE
     note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
   semantic_verification:
     adequate: true
-    confidence: 0.95
+    confidence: 0.7
     stub_detected: false
     deficiencies: []
-    llm_used: true
-    _cached_at: '2026-06-23T04:19:27.913111+00:00'
-    _from_cache: true
-- item_id: TC-BASELINE-VALID-FSS-001
-  item_title: Source structure validator blocks_sprint=False
+    llm_used: false
+    intermediate_verified: true
+    source: intermediate_content_check
+    checks:
+    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\tests\supervisor\test_grade_cache_invalidation.py
+      exists: true
+      content_ok: true
+      detail: valid (4 test functions with assertions)
+      check_type: python_test_content
+    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\tools\supervisor\grade_declared_work.py
+      exists: true
+      content_ok: true
+      detail: 'non-empty (43247 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\tools\supervisor\grade_declared_work.py'
+      check_type: nonzero_existence
+    summary: 2/2 evidence files passed content check
+- item_id: TC-HARDEN-005-GOV-003
+  item_title: Verify iv cache committed and tests pass
   declared_status: completed
-  supervisor_grade: ACCEPTED_WITH_LIMITATIONS
+  supervisor_grade: ACCEPTED_VERIFIED
   evidence_found: true
   evidence_paths:
-  - .local/evidences/fss-rework-clearance-20260623/source-validator.txt
+  - tests/supervisor/test_grade_iv_cache.py
+  - tools/supervisor/grade_declared_work.py
   tests_supporting: []
   tests_missing: []
   acceptance_criteria_met:
   - Evidence found
   - No missing paths
-  - No concrete test/criteria proof (path-only acceptance)
-  acceptance_criteria_failed:
-  - No raw proof, test content, or acceptance criteria verified
+  - 'Governance item: file-content validated (test coverage N/A by design)'
+  acceptance_criteria_failed: []
   required_rework: ''
   can_autonomously_repair: false
-  next_prompt_instruction: 'Item accepted with limitations: path-only evidence for
-    TC-BASELINE-VALID-FSS-001'
+  next_prompt_instruction: ''
   purpose_check:
-    item_type: ''
+    item_type: GOVERNANCE_TASKCARD
     has_gap_ref: null
     verdict: NOT_APPLICABLE
     note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
   semantic_verification:
     adequate: true
-    confidence: 0.95
+    confidence: 0.7
     stub_detected: false
     deficiencies: []
-    llm_used: true
-    _cached_at: '2026-06-23T04:19:31.522051+00:00'
-    _from_cache: true
-- item_id: TC-V50-RUNNER-FSS-001
-  item_title: V50 in governance runner returns PASS
-  declared_status: completed
-  supervisor_grade: OVERCLAIMED
-  evidence_found: false
-  evidence_paths: []
-  tests_supporting: []
-  tests_missing: []
-  acceptance_criteria_met: []
-  acceptance_criteria_failed: []
-  required_rework: Item declared completed but no evidence found. Provide evidence
-    at declared paths.
-  can_autonomously_repair: true
-  next_prompt_instruction: 'REWORK: Provide actual evidence for TC-V50-RUNNER-FSS-001.
-    Status-only claims are not accepted.'
-  purpose_check:
-    item_type: ''
-    has_gap_ref: null
-    verdict: NOT_APPLICABLE
-    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
-- item_id: TC-COMMIT-FSS-001
-  item_title: Sprint commits verified in git log
-  declared_status: completed
-  supervisor_grade: OVERCLAIMED
-  evidence_found: false
-  evidence_paths: []
-  tests_supporting: []
-  tests_missing: []
-  acceptance_criteria_met: []
-  acceptance_criteria_failed: []
-  required_rework: Item declared completed but no evidence found. Provide evidence
-    at declared paths.
-  can_autonomously_repair: true
-  next_prompt_instruction: 'REWORK: Provide actual evidence for TC-COMMIT-FSS-001.
-    Status-only claims are not accepted.'
-  purpose_check:
-    item_type: ''
-    has_gap_ref: null
-    verdict: NOT_APPLICABLE
-    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
-- item_id: TC-FODG-ANNOT-MISSING-001
-  item_title: 93/93 FODG functions annotated
-  declared_status: completed
-  supervisor_grade: OVERCLAIMED
-  evidence_found: false
-  evidence_paths: []
-  tests_supporting: []
-  tests_missing: []
-  acceptance_criteria_met: []
-  acceptance_criteria_failed: []
-  required_rework: Item declared completed but no evidence found. Provide evidence
-    at declared paths.
-  can_autonomously_repair: true
-  next_prompt_instruction: 'REWORK: Provide actual evidence for TC-FODG-ANNOT-MISSING-001.
-    Status-only claims are not accepted.'
-  purpose_check:
-    item_type: ''
-    has_gap_ref: null
-    verdict: NOT_APPLICABLE
-    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
-- item_id: TC-FODS-CONSTANTS-COMMIT-001
-  item_title: fods constants spec facts committed
-  declared_status: completed
-  supervisor_grade: OVERCLAIMED
-  evidence_found: false
-  evidence_paths: []
-  tests_supporting: []
-  tests_missing: []
-  acceptance_criteria_met: []
-  acceptance_criteria_failed: []
-  required_rework: Item declared completed but no evidence found. Provide evidence
-    at declared paths.
-  can_autonomously_repair: true
-  next_prompt_instruction: 'REWORK: Provide actual evidence for TC-FODS-CONSTANTS-COMMIT-001.
-    Status-only claims are not accepted.'
-  purpose_check:
-    item_type: ''
-    has_gap_ref: null
-    verdict: NOT_APPLICABLE
-    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
-- item_id: TC-FODG-SAL-FACTS-001
-  item_title: FACT-FODG-001 and FACT-FODG-002 in SAL
-  declared_status: completed
-  supervisor_grade: OVERCLAIMED
-  evidence_found: false
-  evidence_paths: []
-  tests_supporting: []
-  tests_missing: []
-  acceptance_criteria_met: []
-  acceptance_criteria_failed: []
-  required_rework: Item declared completed but no evidence found. Provide evidence
-    at declared paths.
-  can_autonomously_repair: true
-  next_prompt_instruction: 'REWORK: Provide actual evidence for TC-FODG-SAL-FACTS-001.
-    Status-only claims are not accepted.'
-  purpose_check:
-    item_type: ''
-    has_gap_ref: null
-    verdict: NOT_APPLICABLE
-    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
-- item_id: TC-ZST-WHEEL-REBUILD-001
-  item_title: ZST wheel rebuilt with compressed_stream
-  declared_status: completed
-  supervisor_grade: OVERCLAIMED
-  evidence_found: false
-  evidence_paths: []
-  tests_supporting: []
-  tests_missing: []
-  acceptance_criteria_met: []
-  acceptance_criteria_failed: []
-  required_rework: Item declared completed but no evidence found. Provide evidence
-    at declared paths.
-  can_autonomously_repair: true
-  next_prompt_instruction: 'REWORK: Provide actual evidence for TC-ZST-WHEEL-REBUILD-001.
-    Status-only claims are not accepted.'
-  purpose_check:
-    item_type: ''
-    has_gap_ref: null
-    verdict: NOT_APPLICABLE
-    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
+    llm_used: false
+    intermediate_verified: true
+    source: intermediate_content_check
+    checks:
+    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\tests\supervisor\test_grade_iv_cache.py
+      exists: true
+      content_ok: true
+      detail: valid (3 test functions with assertions)
+      check_type: python_test_content
+    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\tools\supervisor\grade_declared_work.py
+      exists: true
+      content_ok: true
+      detail: 'non-empty (43247 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\tools\supervisor\grade_declared_work.py'
+      check_type: nonzero_existence
+    summary: 2/2 evidence files passed content check

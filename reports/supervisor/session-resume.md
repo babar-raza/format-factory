@@ -1,13 +1,13 @@
 # Session Resume Briefing
 # Format Factory — Supervisor-Generated
-# Generated: 2026-06-23T09:22:58.760960
+# Generated: 2026-06-23T11:26:56.648731
 
 ## Quick State
-- Last sprint: frolicking-squishing-shannon-rework-clearance
+- Last sprint: TC-HARDEN-005-SMOKE
 - Evidence verdict: ACCEPTED_WITH_REWORK
 - Tests: 1609 passed / 0 failed
 - PENDING markers: 0
-- CRITICAL contradictions: 6
+- CRITICAL contradictions: 0
 - Autonomous continue: False
 - Current supervisor mode: MODE 4
 - MCP status: ACTIVE (.vscode/mcp.json present)
@@ -23,7 +23,7 @@
 5. Prose context: `reports/supervisor/next-sprint.md`
 
 ## Where To Find Evidence
-- Last evidence bundle: .local/evidences/fss-rework-clearance-20260623
+- Last evidence bundle: .local/evidences/TC-HARDEN-005-SMOKE
 - Supervisor outputs: reports/supervisor/
 - Project memory: .supervisor/project-memory.md
 

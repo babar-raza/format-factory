@@ -1,17 +1,17 @@
 # Supervisor-Generated Next Sprint Prompt
-# Source sprint: frolicking-squishing-shannon-rework-clearance
+# Source sprint: TC-HARDEN-005-SMOKE
 # Stream: mainstream
-# Generated: 2026-06-23T09:22:58.748275
+# Generated: 2026-06-23T11:26:56.633492
 # ADVISORY ONLY — not a Format Factory authority document
 # This is INPUT to the next sprint, not a gate approval or commit authorization.
 
 ---
 
 ## Sprint Focus
-PRODUCT + REPAIR: Advance product POC AND address CRITICAL contradictions
+ADVANCE: Product deepening — .NET commercial + Python FOSS + dogfood + packaging
 
 ## Prior Sprint Summary
-- Sprint ID: frolicking-squishing-shannon-rework-clearance
+- Sprint ID: TC-HARDEN-005-SMOKE
 - Evidence verdict: ACCEPTED_WITH_REWORK
 - Tests: 1609 passed, 0 failed, 0 skipped
 - Autonomous continue: False
@@ -36,31 +36,19 @@ TRUE_EXTERNAL_GATE (ONLY these warrant a stop):
 - Credentials unavailable with no fallback
 
 ## Section 1: New Product Work (Advisory — Always Execute)
-- [pending] TASK-007: Select governed product gaps and validate the product-code ledger
-- [agent-owned] TASK-008: Prepare commit candidate summary and changed-file manifest
-- [external-gate] TASK-009: Execute git commit (requires explicit user authorization — do NOT self-execute)
-- [pending] TASK-010: Work on open taskcard: TC-0015-spec-retrieval-strategy-evaluation
-- [pending] TASK-011: Work on open taskcard: TC-0016-fods-vector-index-pilot
-- [pending] TASK-012: Work on open taskcard: TC-0020-spec-workbench-core
-- [pending] TASK-013: Advance one dogfood export path using a Format Factory library
-- [pending] TASK-014: Build package artifacts and run installed-workflow proof
-- [pending] TASK-015: Write evidence declaration and run supervisor autonomous-cycle
+- [pending] TASK-001: Select governed product gaps and validate the product-code ledger
+- [pending] TASK-002: Work on open taskcard: TC-0015-spec-retrieval-strategy-evaluation
+- [pending] TASK-003: Work on open taskcard: TC-0016-fods-vector-index-pilot
+- [pending] TASK-004: Work on open taskcard: TC-0020-spec-workbench-core
+- [pending] TASK-005: Advance one dogfood export path using a Format Factory library
+- [pending] TASK-006: Build package artifacts and run installed-workflow proof
+- [pending] TASK-007: Write evidence declaration and run supervisor autonomous-cycle
 
 ## Section 2: Rework / Repair (Advisory — Fix Before Closeout)
-- [pending] REPAIR-001: Repair: OVERCLAIMED: V50 in governance runner returns PASS
-- [pending] REPAIR-002: Repair: OVERCLAIMED: Sprint commits verified in git log
-- [pending] REPAIR-003: Repair: OVERCLAIMED: 93/93 FODG functions annotated
-- [pending] REPAIR-004: Repair: OVERCLAIMED: fods constants spec facts committed
-- [pending] REPAIR-005: Repair: OVERCLAIMED: FACT-FODG-001 and FACT-FODG-002 in SAL
-- [pending] REPAIR-006: Repair: OVERCLAIMED: ZST wheel rebuilt with compressed_stream
+None
 
 ## Contradictions Context
-- [CRITICAL] OVERCLAIMED: V50 in governance runner returns PASS
-- [CRITICAL] OVERCLAIMED: Sprint commits verified in git log
-- [CRITICAL] OVERCLAIMED: 93/93 FODG functions annotated
-- [CRITICAL] OVERCLAIMED: fods constants spec facts committed
-- [CRITICAL] OVERCLAIMED: FACT-FODG-001 and FACT-FODG-002 in SAL
-- [CRITICAL] OVERCLAIMED: ZST wheel rebuilt with compressed_stream
+None
 
 ## Non-Negotiable Rules (always apply)
 1. No push without explicit user authorization.

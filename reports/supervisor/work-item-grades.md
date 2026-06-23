@@ -1,22 +1,16 @@
 # Work Item Grades
-Sprint: frolicking-squishing-shannon-rework-clearance
-Generated: 2026-06-23T09:20:10.522273
+Sprint: TC-HARDEN-005-SMOKE
+Generated: 2026-06-23T11:25:44.064465
 Global Status: ACCEPTED_WITH_REWORK
 
 | Item ID | Grade | Rework Required |
 |---------|-------|-----------------|
-| TC-XCF-REGR-FSS-001 | ACCEPTED_WITH_LIMITATIONS |  |
-| TC-ZST-REGR-FSS-001 | ACCEPTED_WITH_LIMITATIONS |  |
-| TC-BASELINE-VALID-FSS-001 | ACCEPTED_WITH_LIMITATIONS |  |
-| TC-V50-RUNNER-FSS-001 | OVERCLAIMED | Item declared completed but no evidence found. Provide evidence at declared path |
-| TC-COMMIT-FSS-001 | OVERCLAIMED | Item declared completed but no evidence found. Provide evidence at declared path |
-| TC-FODG-ANNOT-MISSING-001 | OVERCLAIMED | Item declared completed but no evidence found. Provide evidence at declared path |
-| TC-FODS-CONSTANTS-COMMIT-001 | OVERCLAIMED | Item declared completed but no evidence found. Provide evidence at declared path |
-| TC-FODG-SAL-FACTS-001 | OVERCLAIMED | Item declared completed but no evidence found. Provide evidence at declared path |
-| TC-ZST-WHEEL-REBUILD-001 | OVERCLAIMED | Item declared completed but no evidence found. Provide evidence at declared path |
+| TC-HARDEN-005-GOV-001 | ACCEPTED_VERIFIED |  |
+| TC-HARDEN-005-GOV-002 | ACCEPTED_VERIFIED |  |
+| TC-HARDEN-005-GOV-003 | ACCEPTED_VERIFIED |  |
 
 ## Summary
 - Accepted: 3
-- Rework: 6
-- Overclaimed: 6
+- Rework: 1
+- Overclaimed: 0
 - Autonomous Continue: False
