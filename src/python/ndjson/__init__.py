@@ -9,10 +9,10 @@ Acquisition Gates 1-4 initiated.
 FOSS track only — no commercial readiness implied.
 """
 
+from .Compat.ndjson_record import NdjsonRecord
 from .ndjson_codec import (
     NdjsonError,
     NdjsonParseError,
-    NdjsonRecord,
     probe_ndjson,
     load_ndjson,
     write_ndjson,

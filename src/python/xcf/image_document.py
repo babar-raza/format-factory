@@ -26,6 +26,20 @@ spec_fact_ref = "FACT-XCF-001"
 namespace_uri = "urn:format:xcf:2.10"
 
 
+class XcfImageSpec:
+    """Spec authority class for xcf:image.
+
+    spec_qname: xcf:image
+    Spec fact ref: FACT-XCF-001
+    Namespace URI: urn:format:xcf:2.10
+    Source layer: Spec
+    """
+
+    spec_qname = "xcf:image"
+    spec_fact_ref = "FACT-XCF-001"
+    namespace_uri = "urn:format:xcf:2.10"
+
+
 def xcf_is_landscape(file_path: "str | Path") -> bool:
     """Return True if the image width is strictly greater than its height.
 
