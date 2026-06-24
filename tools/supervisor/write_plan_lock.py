@@ -240,6 +240,19 @@ def write_lock(plan_path: str, last_taskcard: str | None = None, complete: bool 
     os.replace(str(_keyed_tmp), str(keyed_path))
     print(f"[write_plan_lock] {keyed_path} written \u2014 session={sid!r}")
 
+    # TC-AMD-CONV-002: Post-write verification — read both locks and warn on mismatch
+    try:
+        _shared_readback = json.loads(_shared_lock_path.read_text(encoding="utf-8"))
+        _keyed_readback = json.loads(keyed_path.read_text(encoding="utf-8"))
+        if _shared_readback.get("status") != _keyed_readback.get("status"):
+            print(
+                f"[write_plan_lock] WARNING: lock mismatch after write — "
+                f"shared={_shared_readback.get('status')}, keyed={_keyed_readback.get('status')}",
+                file=sys.stderr,
+            )
+    except Exception:
+        pass  # Verification is best-effort
+
     # TC-PG-007: When terminal-closing a plan, append plan_terminal_lock block to the
     # plan file itself for durable lock detection beyond session-keyed lock expiry.
     if terminal and status in ("TERMINAL_CLOSED", "ITERATION_REQUIRED"):
