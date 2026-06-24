@@ -1,180 +1,20 @@
+"""format-factory: PGM (Portable Graymap) FOSS Python track.
+
+Minimal FOSS implementation for .pgm format support.
+Acquisition Gates 1-7 PASSED.
+
+FOSS track only — no commercial readiness implied.
 """
-format-factory-pgm — Python FOSS parser for PGM (Portable Graymap) format.
+from .pgm_parser import *  # noqa: F401, F403
+from .grayscale_image import *  # noqa: F401, F403
+from .pgm_to_ppm import *  # noqa: F401, F403
+from .exceptions import *  # noqa: F401, F403
 
-Public API:
-    parse_pgm(file_path)        — returns result dict (never raises)
-    parse_pgm_strict(file_path) — raises PgmError subclasses on failure
-    probe_pgm(file_path)        — returns header metadata without full decode
-    get_capabilities()          — returns capability dict
+import sys as _sys
+__all__ = [k for k in vars(_sys.modules[__name__]) if not k.startswith("_")]
+del _sys
 
-License: Apache-2.0
-Package: format-factory-pgm v0.1.0
-Gate history: Gates 1-9 PASSED; Gate 10 R59
-"""
-
-from .pgm_parser import (
-    parse_pgm,
-    parse_pgm_strict,
-    probe_pgm,
-    get_capabilities,
-    image_pixel_stats,
-    write_pgm,
-    get_dimensions,
-    pixel_count,
-    average_gray,
-    count_above_threshold,
-    min_max_gray,
-    flip_horizontal,
-    normalize,
-    histogram,
-    threshold,
-    rotate_90,
-    grayscale_variance,
-    pgm_bright_pixel_ratio,
-    pgm_dark_pixel_count,
-    pgm_average_brightness,
-    pgm_max_pixel_value,
-    pgm_min_pixel_value,
-    pgm_contrast_range,
-    pgm_median_pixel_value,
-    pgm_total_pixel_count,
-    pgm_brightness_quartiles,
-    pgm_is_uniform,
-    pgm_nonzero_pixel_ratio,
-    pgm_dynamic_range,
-    pgm_pixel_sum,
-    pgm_zero_pixel_count,
-    pgm_saturated_pixel_count,
-    pgm_standard_deviation,
-    pgm_brightness_ratio,
-    pgm_has_any_saturated,
-    pgm_is_all_dark,
-    pgm_perimeter,
-    pgm_unique_value_count,
-    pgm_dimension_ratio,
-    pgm_is_square,
-    pgm_is_landscape,
-    pgm_max_dimension,
-    pgm_has_any_zero,
-    pgm_is_all_bright,
-    pgm_diagonal,
-    pgm_aspect_ratio,
-    pgm_min_dimension,
-    pgm_brightness_range,
-    pgm_area,
-    pgm_mean_brightness,
-    pgm_megapixels,
-    pgm_is_tall,
-    pgm_column_count,
-    pgm_is_uniform,
-    pgm_is_wide,
-    pgm_pixel_density,
-    pgm_row_count,
-    pgm_is_portrait,
-    pgm_is_high_contrast,
-    pgm_avg_row_brightness,
-    pgm_min_brightness,
-    pgm_is_bright,
-    pgm_dark_pixel_ratio,
-    pgm_row_brightness_variance,
-    pgm_brightness_histogram,
-    pgm_contrast_ratio,
-    pgm_saturated_pixel_ratio,
-    pgm_normalized_mean,
-    pgm_above_mean_ratio,
-    pgm_maxval,
-    pgm_midpoint_gray,
-    pgm_median_brightness,
-    pgm_pixel_value_range,
-    PgmError,
-    PgmInvalidMagicError,
-    PgmInvalidHeaderError,
-    PgmSizeError,
-    PgmDecodeError,
-    PgmImage,
-)
-
-__version__ = "0.1.0"
+__version__ = "0.1.0.dev0"
 __track__ = "python-foss"
 __commercial_ready__ = False
 __capability_level__ = "alpha-foss-preview"
-
-__all__ = [
-    "parse_pgm",
-    "parse_pgm_strict",
-    "probe_pgm",
-    "get_capabilities",
-    "image_pixel_stats",
-    "write_pgm",
-    "get_dimensions",
-    "pixel_count",
-    "average_gray",
-    "count_above_threshold",
-    "min_max_gray",
-    "flip_horizontal",
-    "normalize",
-    "histogram",
-    "threshold",
-    "rotate_90",
-    "grayscale_variance",
-    "pgm_bright_pixel_ratio",
-    "pgm_dark_pixel_count",
-    "pgm_average_brightness",
-    "pgm_max_pixel_value",
-    "pgm_min_pixel_value",
-    "pgm_contrast_range",
-    "pgm_median_pixel_value",
-    "pgm_total_pixel_count",
-    "pgm_brightness_quartiles",
-    "pgm_is_uniform",
-    "pgm_nonzero_pixel_ratio",
-    "pgm_dynamic_range",
-    "pgm_pixel_sum",
-    "pgm_zero_pixel_count",
-    "pgm_saturated_pixel_count",
-    "pgm_has_any_saturated",
-    "pgm_is_all_dark",
-    "pgm_perimeter",
-    "pgm_unique_value_count",
-    "pgm_dimension_ratio",
-    "pgm_is_square",
-    "pgm_is_landscape",
-    "pgm_max_dimension",
-    "pgm_has_any_zero",
-    "pgm_is_all_bright",
-    "pgm_diagonal",
-    "pgm_aspect_ratio",
-    "pgm_min_dimension",
-    "pgm_brightness_range",
-    "pgm_area",
-    "pgm_mean_brightness",
-    "pgm_megapixels",
-    "pgm_is_tall",
-    "pgm_column_count",
-    "pgm_is_uniform",
-    "pgm_is_wide",
-    "pgm_pixel_density",
-    "pgm_row_count",
-    "pgm_is_portrait",
-    "pgm_is_high_contrast",
-    "pgm_avg_row_brightness",
-    "pgm_min_brightness",
-    "pgm_is_bright",
-    "pgm_dark_pixel_ratio",
-    "pgm_row_brightness_variance",
-    "pgm_brightness_histogram",
-    "pgm_contrast_ratio",
-    "pgm_saturated_pixel_ratio",
-    "pgm_normalized_mean",
-    "pgm_above_mean_ratio",
-    "pgm_maxval",
-    "pgm_midpoint_gray",
-    "pgm_median_brightness",
-    "pgm_pixel_value_range",
-    "PgmError",
-    "PgmInvalidMagicError",
-    "PgmInvalidHeaderError",
-    "PgmSizeError",
-    "PgmDecodeError",
-    "PgmImage",
-]

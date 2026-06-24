@@ -1,176 +1,21 @@
+"""format-factory: PBM (Portable Bitmap) FOSS Python track.
+
+Minimal FOSS implementation for .pbm format support.
+Acquisition Gates 1-7 PASSED.
+
+FOSS track only — no commercial readiness implied.
 """
-format-factory-pbm — Python FOSS parser for PBM (Portable Bitmap) format.
+from .pbm_parser import *  # noqa: F401, F403
+from .bitmap_image import *  # noqa: F401, F403
+from .pbm_to_pgm import *  # noqa: F401, F403
+from .pbm_to_ppm import *  # noqa: F401, F403
+from .exceptions import *  # noqa: F401, F403
 
-Public API:
-    parse_pbm(file_path)        — returns result dict (never raises)
-    parse_pbm_strict(file_path) — raises PbmError subclasses on failure
-    probe_pbm(file_path)        — returns header metadata without full decode
-    get_capabilities()          — returns capability dict
+import sys as _sys
+__all__ = [k for k in vars(_sys.modules[__name__]) if not k.startswith("_")]
+del _sys
 
-License: Apache-2.0
-Package: format-factory-pbm v0.1.0
-Gate history: Gates 1-9 PASSED; Gate 10 R59
-"""
-
-from .pbm_parser import (
-    parse_pbm,
-    parse_pbm_strict,
-    probe_pbm,
-    get_capabilities,
-    image_pixel_stats,
-    write_pbm,
-    get_dimensions,
-    pixel_count,
-    count_black,
-    flip_horizontal,
-    invert,
-    crop,
-    count_white,
-    rotate_90,
-    black_pixel_ratio,
-    pbm_white_pixel_ratio,
-    pbm_aspect_ratio,
-    pbm_white_pixel_count,
-    scale_nearest,
-    pbm_row_black_counts,
-    pbm_total_pixel_count,
-    pbm_is_binary,
-    pbm_black_pixel_ratio,
-    pbm_dimensions,
-    pbm_column_black_counts,
-    pbm_white_density,
-    pbm_all_white,
-    pbm_all_black,
-    pbm_row_count,
-    pbm_has_any_black,
-    pbm_black_pixel_count,
-    pbm_is_uniform,
-    pbm_white_pixel_count,
-    pbm_perimeter,
-    pbm_is_square,
-    pbm_is_landscape,
-    pbm_has_any_white,
-    pbm_max_row_black_count,
-    pbm_max_dimension,
-    pbm_diagonal,
-    pbm_min_dimension,
-    pbm_black_density,
-    pbm_area,
-    pbm_white_density,
-    pbm_column_count,
-    pbm_min_row_black_count,
-    pbm_dimension_ratio,
-    pbm_megapixels,
-    pbm_is_tall,
-    pbm_is_wide,
-    pbm_is_portrait,
-    pbm_pixel_density,
-    pbm_row_count,
-    pbm_is_binary_balanced,
-    pbm_avg_row_density,
-    pbm_border_black_count,
-    pbm_row_density_variance,
-    pbm_is_checkerboard,
-    pbm_column_density_variance,
-    pbm_diagonal_pixel_count,
-    pbm_total_pixels,
-    pbm_aspect_ratio,
-    pbm_is_square,
-    pbm_white_density,
-    pbm_is_all_black,
-    pbm_total_black_in_border,
-    pbm_center_black_ratio,
-    PbmError,
-    PbmInvalidMagicError,
-    PbmInvalidHeaderError,
-    PbmSizeError,
-    PbmDecodeError,
-    PbmImage,
-)
-from .pbm_to_pgm import (
-    convert_pbm_to_pgm,
-    pbm_pixels_to_pgm_pixels,
-)
-
-__version__ = "0.1.0"
+__version__ = "0.1.0.dev0"
 __track__ = "python-foss"
 __commercial_ready__ = False
 __capability_level__ = "alpha-foss-preview"
-
-__all__ = [
-    "parse_pbm",
-    "parse_pbm_strict",
-    "probe_pbm",
-    "get_capabilities",
-    "image_pixel_stats",
-    "write_pbm",
-    "get_dimensions",
-    "pixel_count",
-    "count_black",
-    "flip_horizontal",
-    "invert",
-    "crop",
-    "count_white",
-    "rotate_90",
-    "black_pixel_ratio",
-    "pbm_white_pixel_ratio",
-    "pbm_aspect_ratio",
-    "pbm_white_pixel_count",
-    "scale_nearest",
-    "pbm_row_black_counts",
-    "pbm_total_pixel_count",
-    "pbm_is_binary",
-    "pbm_black_pixel_ratio",
-    "pbm_dimensions",
-    "pbm_column_black_counts",
-    "pbm_white_density",
-    "pbm_all_white",
-    "pbm_all_black",
-    "pbm_row_count",
-    "pbm_has_any_black",
-    "pbm_black_pixel_count",
-    "pbm_is_uniform",
-    "pbm_white_pixel_count",
-    "pbm_perimeter",
-    "pbm_is_square",
-    "pbm_is_landscape",
-    "pbm_has_any_white",
-    "pbm_max_row_black_count",
-    "pbm_max_dimension",
-    "pbm_diagonal",
-    "pbm_min_dimension",
-    "pbm_black_density",
-    "pbm_area",
-    "pbm_white_density",
-    "pbm_column_count",
-    "pbm_min_row_black_count",
-    "pbm_dimension_ratio",
-    "pbm_megapixels",
-    "pbm_is_tall",
-    "pbm_is_wide",
-    "pbm_is_portrait",
-    "pbm_pixel_density",
-    "pbm_row_count",
-    "pbm_is_binary_balanced",
-    "pbm_avg_row_density",
-    "pbm_border_black_count",
-    "pbm_row_density_variance",
-    "pbm_is_checkerboard",
-    "pbm_column_density_variance",
-    "pbm_diagonal_pixel_count",
-    "pbm_total_pixels",
-    "pbm_aspect_ratio",
-    "pbm_is_square",
-    "pbm_white_density",
-    "pbm_is_all_black",
-    "pbm_total_black_in_border",
-    "pbm_center_black_ratio",
-    "PbmError",
-    "PbmInvalidMagicError",
-    "PbmInvalidHeaderError",
-    "PbmSizeError",
-    "PbmDecodeError",
-    "PbmImage",
-    "convert_pbm_to_pgm",
-    "pbm_pixels_to_pgm_pixels",
-]

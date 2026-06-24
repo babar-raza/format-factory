@@ -1,199 +1,21 @@
+"""format-factory: CSV (RFC 4180 comma-separated values) FOSS Python track.
+
+Minimal FOSS implementation for .csv format support.
+Acquisition Gates 1-7 PASSED.
+
+FOSS track only — no commercial readiness implied.
 """
-format-factory-csv — Minimal FOSS CSV parser (Gate 4 prototype).
+from .csv_parser import *  # noqa: F401, F403
+from .csv_stats import *  # noqa: F401, F403
+from .csv_writer import *  # noqa: F401, F403
+from .tabular_document import *  # noqa: F401, F403
+from .exceptions import *  # noqa: F401, F403
 
-RFC 4180 comma-separated values parser using Python stdlib csv module.
+import sys as _sys
+__all__ = [k for k in vars(_sys.modules[__name__]) if not k.startswith("_")]
+del _sys
 
-publication_authorized: false
-commercial_product_ready: false
-capability_level: alpha-foss-preview
-track: python-foss
-
-Sprint: FORMAT-FACTORY-R55-MULTI-MEGA-TRAIN-PRODUCT-RC-PHASE6-ACQUISITION-AI-VALIDATOR-001
-"""
-
-from .csv_parser import (
-    parse_csv,
-    parse_csv_strict,
-    probe_csv,
-    get_capabilities,
-    get_row_count,
-    get_column_names,
-    get_cell_value,
-    csv_column_count,
-    csv_has_header,
-    csv_numeric_row_count,
-    csv_total_cell_count,
-    count_distinct_values,
-    csv_duplicate_row_count,
-    csv_empty_cell_count,
-    csv_row_count,
-    csv_average_field_length,
-    csv_numeric_density,
-    csv_unique_row_count,
-    csv_min_field_length,
-    csv_has_duplicates,
-    csv_unique_row_count,
-    csv_all_rows_same_length,
-    csv_max_row_length,
-    csv_field_type_ratio,
-    csv_all_rows,
-    csv_distinct_value_count,
-    csv_empty_cell_ratio,
-    csv_total_cell_count,
-    csv_min_row_length,
-    csv_max_numeric_value,
-    csv_has_empty_rows,
-    csv_header_count,
-    csv_is_rectangular,
-    csv_nonempty_cell_count,
-    csv_string_density,
-    csv_min_numeric_value,
-    csv_data_density,
-    csv_avg_row_length,
-    csv_numeric_column_count,
-    csv_is_single_column,
-    csv_is_all_numeric,
-    csv_max_field_value_length,
-    csv_unique_value_count,
-    csv_column_type_counts,
-    csv_row_length_variance,
-    csv_is_empty,
-    csv_column_name_lengths,
-    csv_max_field_count,
-    csv_is_multi_row,
-    csv_column_count_variance,
-    csv_has_numeric_header,
-    csv_nonempty_row_ratio,
-    csv_avg_cell_length,
-    csv_numeric_sum,
-    csv_avg_numeric_value,
-    csv_is_single_row,
-    csv_empty_column_count,
-    csv_longest_row_index,
-    csv_total_string_length,
-    csv_min_row_field_count,
-    csv_is_square,
-    csv_column_value_variance,
-    csv_is_multi_column,
-    csv_field_type_variance,
-    csv_header_length_sum,
-    csv_row_length_sum,
-    csv_empty_field_ratio,
-    csv_string_cell_count,
-    csv_nonempty_row_count,
-    csv_avg_fields_per_row,
-    csv_nonempty_cell_ratio,
-    csv_numeric_cell_ratio,
-    CsvError,
-    CsvInputError,
-    CsvSizeError,
-    CsvParseError,
-)
-from .csv_writer import (
-    write_csv,
-    write_csv_to_file,
-    parse_and_rewrite,
-    CsvWriteError,
-)
-from .csv_stats import (
-    table_stats,
-    column_value_counts,
-    csv_row_length_distribution,
-    csv_field_type_summary,
-    csv_empty_row_count,
-    csv_max_field_length,
-)
-
-__version__ = "0.1.0"
+__version__ = "0.1.0.dev0"
 __track__ = "python-foss"
 __commercial_ready__ = False
 __capability_level__ = "alpha-foss-preview"
-
-__all__ = [
-    "parse_csv",
-    "parse_csv_strict",
-    "probe_csv",
-    "get_capabilities",
-    "get_row_count",
-    "get_column_names",
-    "get_cell_value",
-    "csv_column_count",
-    "csv_has_header",
-    "csv_numeric_row_count",
-    "csv_total_cell_count",
-    "count_distinct_values",
-    "csv_duplicate_row_count",
-    "csv_empty_cell_count",
-    "csv_row_count",
-    "csv_average_field_length",
-    "csv_numeric_density",
-    "csv_unique_row_count",
-    "CsvError",
-    "CsvInputError",
-    "CsvSizeError",
-    "CsvParseError",
-    "table_stats",
-    "column_value_counts",
-    "csv_row_length_distribution",
-    "csv_field_type_summary",
-    "csv_empty_row_count",
-    "csv_max_field_length",
-    "write_csv",
-    "write_csv_to_file",
-    "parse_and_rewrite",
-    "csv_min_field_length",
-    "csv_has_duplicates",
-    "csv_unique_row_count",
-    "csv_all_rows_same_length",
-    "csv_max_row_length",
-    "csv_field_type_ratio",
-    "csv_all_rows",
-    "csv_distinct_value_count",
-    "csv_empty_cell_ratio",
-    "csv_total_cell_count",
-    "csv_min_row_length",
-    "csv_max_numeric_value",
-    "csv_has_empty_rows",
-    "csv_header_count",
-    "csv_is_rectangular",
-    "csv_nonempty_cell_count",
-    "csv_string_density",
-    "csv_min_numeric_value",
-    "csv_data_density",
-    "csv_avg_row_length",
-    "csv_numeric_column_count",
-    "csv_is_single_column",
-    "csv_is_all_numeric",
-    "csv_max_field_value_length",
-    "csv_unique_value_count",
-    "csv_column_type_counts",
-    "csv_row_length_variance",
-    "csv_is_empty",
-    "csv_column_name_lengths",
-    "csv_max_field_count",
-    "csv_is_multi_row",
-    "csv_column_count_variance",
-    "csv_has_numeric_header",
-    "csv_nonempty_row_ratio",
-    "csv_avg_cell_length",
-    "csv_numeric_sum",
-    "csv_avg_numeric_value",
-    "csv_is_single_row",
-    "csv_empty_column_count",
-    "csv_longest_row_index",
-    "csv_total_string_length",
-    "csv_min_row_field_count",
-    "csv_is_square",
-    "csv_column_value_variance",
-    "csv_is_multi_column",
-    "csv_field_type_variance",
-    "csv_header_length_sum",
-    "csv_row_length_sum",
-    "csv_empty_field_ratio",
-    "csv_string_cell_count",
-    "csv_nonempty_row_count",
-    "csv_avg_fields_per_row",
-    "csv_nonempty_cell_ratio",
-    "csv_numeric_cell_ratio",
-    "CsvWriteError",
-]
