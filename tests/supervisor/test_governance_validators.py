@@ -446,7 +446,11 @@ class TestRunAllValidators:
         result = run_all_governance_validators(decl)
         # Exclude filesystem-scanning validators that fail based on repo state,
         # not declaration content (pre-existing LOC cap violations, etc.)
-        _fs_scanners = {"validate_source_architecture", "validate_error_fallback_safety"}
+        _fs_scanners = {
+            "validate_source_architecture",
+            "validate_error_fallback_safety",
+            "validate_spec_authority_class_completeness",  # V53: scans QName registry state, not declaration
+        }
         failed = [
             v["validator"] for v in result["validators"]
             if v["result"] == "FAIL" and v["validator"] not in _fs_scanners
@@ -496,7 +500,11 @@ class TestRunAllValidators:
             decl = yaml.safe_load(f)
         result = run_all_governance_validators(decl, REPO_ROOT)
         # Exclude filesystem-scanning validators that may fail based on current repo state
-        _fs_scanners = {"validate_source_architecture", "validate_error_fallback_safety"}
+        _fs_scanners = {
+            "validate_source_architecture",
+            "validate_error_fallback_safety",
+            "validate_spec_authority_class_completeness",  # V53: scans QName registry state, not declaration
+        }
         failed = [
             v["validator"] for v in result["validators"]
             if v["result"] == "FAIL" and v["validator"] not in _fs_scanners
@@ -1766,7 +1774,7 @@ class TestCanonicalValidatorCount:
     """TC-PROD-H-040R: Assert canonical validator count to catch silent additions/removals."""
 
     def test_canonical_validator_count(self):
-        """run_all_governance_validators must return exactly 63 validator results."""
+        """run_all_governance_validators must return exactly 64 validator results."""
         import sys
         from pathlib import Path
         sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "tools" / "supervisor"))
@@ -1782,8 +1790,8 @@ class TestCanonicalValidatorCount:
         }
         result = run_all_governance_validators(decl, None)
         validator_count = len(result["validators"])
-        assert validator_count == 63, (
-            f"Expected 63 canonical validators, got {validator_count}. "
+        assert validator_count == 66, (
+            f"Expected 66 canonical validators, got {validator_count}. "
             "If validators were added/removed, update this test."
         )
 

@@ -262,3 +262,267 @@ notes: >
   Terminal lock written at TC-PLAND-008-03. This file (master-plan-memory.md)
   created as TC-PLAND-004 deliverable. Evidence root: .local/evidences/pgov-20260622-085859/
 ```
+
+---
+
+### LEDGER-007 — reactive-exploring-ullman
+
+```yaml
+ledger_entry_id: LEDGER-007
+mission_id: reactive-exploring-ullman
+repository: format-factory
+branch: main
+plan_path: C:/Users/prora/.claude/plans/reactive-exploring-ullman.md
+plan_hash: unknown
+plan_status: TERMINAL_CLOSED
+created_at: "2026-06-21 (approximate)"
+created_by: autonomous-agent
+plan_description: >
+  Per-chat plan. Terminal closed by session c878b5607d1b.
+terminal_lock:
+  locked_at: "2026-06-21T05:51:50.009261+00:00"
+  locked_by: "c878b5607d1b"
+  lock_state: TERMINAL_CLOSED
+final_verdict: null
+notes: >
+  Lock file c878b5607d1b.json exists with TERMINAL_CLOSED status.
+  Added by TC-PG-001 ledger reconciliation (FF-PLAN-GOV-001).
+```
+
+---
+
+### LEDGER-008 — mutable-wishing-avalanche
+
+```yaml
+ledger_entry_id: LEDGER-008
+mission_id: mutable-wishing-avalanche
+repository: format-factory
+branch: main
+plan_path: C:/Users/prora/.claude/plans/mutable-wishing-avalanche.md
+plan_hash: unknown
+plan_status: TERMINAL_CLOSED
+created_at: "2026-06-21 (approximate)"
+created_by: autonomous-agent
+plan_description: >
+  Per-chat plan. Terminal closed by session de3686a9ef78.
+terminal_lock:
+  locked_at: "2026-06-21T08:44:55.862001+00:00"
+  locked_by: "de3686a9ef78"
+  lock_state: TERMINAL_CLOSED
+final_verdict: null
+notes: >
+  Lock file de3686a9ef78.json exists with TERMINAL_CLOSED status.
+  Added by TC-PG-001 ledger reconciliation (FF-PLAN-GOV-001).
+```
+
+---
+
+### LEDGER-009 — cheerful-floating-glade
+
+```yaml
+ledger_entry_id: LEDGER-009
+mission_id: cheerful-floating-glade
+repository: format-factory
+branch: main
+plan_path: C:/Users/prora/.claude/plans/cheerful-floating-glade.md
+plan_hash: unknown
+plan_status: TERMINAL_CLOSED
+created_at: "2026-06-22 (approximate)"
+created_by: autonomous-agent
+plan_description: >
+  Per-chat plan. Terminal closed by session 6d7dc7a6df36.
+terminal_lock:
+  locked_at: "2026-06-22T22:06:02.483279+00:00"
+  locked_by: "6d7dc7a6df36"
+  lock_state: TERMINAL_CLOSED
+final_verdict: null
+notes: >
+  Lock file 6d7dc7a6df36.json exists with TERMINAL_CLOSED status.
+  Added by TC-PG-001 ledger reconciliation (FF-PLAN-GOV-001).
+```
+
+---
+
+### LEDGER-010 — squishy-tumbling-wind
+
+```yaml
+ledger_entry_id: LEDGER-010
+mission_id: squishy-tumbling-wind
+repository: format-factory
+branch: main
+plan_path: C:/Users/prora/.claude/plans/squishy-tumbling-wind.md
+plan_hash: unknown
+plan_status: TERMINAL_CLOSED
+created_at: "2026-06-23 (approximate)"
+created_by: autonomous-agent
+plan_description: >
+  Per-chat plan. Terminal closed by session b96c911623e7.
+terminal_lock:
+  locked_at: "2026-06-23T07:36:48.310850+00:00"
+  locked_by: "b96c911623e7"
+  lock_state: TERMINAL_CLOSED
+final_verdict: null
+notes: >
+  Lock file b96c911623e7.json exists with TERMINAL_CLOSED status.
+  Added by TC-PG-001 ledger reconciliation (FF-PLAN-GOV-001).
+```
+
+---
+
+### LEDGER-011 — keen-snacking-quiche
+
+```yaml
+ledger_entry_id: LEDGER-011
+mission_id: FF-PLAN-GOV-001
+repository: format-factory
+branch: main
+plan_path: C:/Users/prora/.claude/plans/keen-snacking-quiche.md
+plan_hash: unknown
+plan_status: IN_PROGRESS
+created_at: "2026-06-23"
+created_by: claude-sonnet-4-6
+plan_description: >
+  Plan-identity governance, native plan ownership, ledgering, terminal locking,
+  and autonomous audit-harden-reexecute healing. 9 taskcards (TC-PG-001 through
+  TC-PG-009). Mission FF-PLAN-GOV-001.
+plan_type: machinery_hardening
+evidence_roots:
+  - .local/evidences/pgov-FF-PLAN-GOV-001-20260623/
+terminal_lock: null
+final_verdict: null
+notes: >
+  Plan governance healing sprint. Currently in convergence loop iteration 1.
+  Added by TC-PG-001 ledger reconciliation (FF-PLAN-GOV-001).
+```
+
+---
+
+### LEDGER-012 — frolicking-squishing-shannon
+
+```yaml
+ledger_entry_id: LEDGER-012
+mission_id: frolicking-squishing-shannon
+repository: format-factory
+branch: main
+plan_path: C:/Users/prora/.claude/plans/frolicking-squishing-shannon.md
+plan_hash: unknown
+plan_status: TERMINAL_CLOSED
+created_at: "2026-06-22 (approximate)"
+created_by: autonomous-agent
+plan_description: >
+  Per-chat plan. Two TERMINAL_CLOSED locks from different sessions.
+terminal_lock:
+  - locked_at: "2026-06-22T08:15:33.516095+00:00"
+    locked_by: "59511d3f9256"
+    lock_state: TERMINAL_CLOSED
+  - locked_at: "2026-06-22T09:56:50.826267+00:00"
+    locked_by: "9f5b253e3441"
+    lock_state: TERMINAL_CLOSED
+final_verdict: null
+notes: >
+  Two sessions terminally locked this plan (59511d3f9256, 9f5b253e3441).
+  Added by TC-PG-001 ledger reconciliation (FF-PLAN-GOV-001).
+```
+
+---
+
+### LEDGER-013 — tender-finding-wave
+
+```yaml
+ledger_entry_id: LEDGER-013
+mission_id: tender-finding-wave
+repository: format-factory
+branch: main
+plan_path: C:/Users/prora/.claude/plans/tender-finding-wave.md
+plan_hash: unknown
+plan_status: DEFERRED
+created_at: "2026-06-23 (approximate)"
+created_by: autonomous-agent
+plan_description: >
+  Per-chat plan. Deferred by cap-fact-forensics-repair sprint.
+deferred_at: "2026-06-23T17:11:12.918362+00:00"
+deferred_by: "60766799b1eb"
+deferred_reason: >
+  Old session no longer active. Plan tender-finding-wave.md deferred
+  by cap-fact-forensics-repair sprint.
+final_verdict: null
+notes: >
+  Lock file 60766799b1eb.json with DEFERRED status.
+  Added by TC-PG-001 ledger reconciliation (FF-PLAN-GOV-001).
+```
+
+---
+
+### LEDGER-014 — soft-stargazing-hearth
+
+```yaml
+ledger_entry_id: LEDGER-014
+mission_id: soft-stargazing-hearth
+repository: format-factory
+branch: main
+plan_path: C:/Users/prora/.claude/plans/soft-stargazing-hearth.md
+plan_hash: unknown
+plan_status: COMPLETE
+created_at: "2026-06-24 (approximate)"
+created_by: autonomous-agent
+plan_description: >
+  Per-chat plan. COMPLETE lock from session b0e5b8b263a5.
+terminal_lock:
+  locked_at: "2026-06-24T08:09:07.437476+00:00"
+  locked_by: "b0e5b8b263a5"
+  lock_state: COMPLETE
+final_verdict: null
+notes: >
+  Lock file b0e5b8b263a5.json with COMPLETE status.
+  Added by TC-PG-001 ledger reconciliation (FF-PLAN-GOV-001).
+```
+
+---
+
+### LEDGER-015 — eager-snuggling-sifakis
+
+```yaml
+ledger_entry_id: LEDGER-015
+mission_id: eager-snuggling-sifakis
+repository: format-factory
+branch: main
+plan_path: C:/Users/prora/.claude/plans/eager-snuggling-sifakis.md
+plan_hash: unknown
+plan_status: IN_PROGRESS
+created_at: "2026-06-24 (approximate)"
+created_by: autonomous-agent
+plan_description: >
+  Per-chat plan. IN_PROGRESS locks from two sessions.
+terminal_lock: null
+final_verdict: null
+notes: >
+  Two lock files reference this plan: 22ef9c645992.json (IN_PROGRESS)
+  and 13a7302fc4c5-099c30e0.json (IN_PROGRESS, new hash-keyed format).
+  Added by TC-PG-001 ledger reconciliation (FF-PLAN-GOV-001).
+```
+
+---
+
+### LEDGER-016 — dynamic-hugging-breeze
+
+```yaml
+ledger_entry_id: LEDGER-016
+mission_id: dynamic-hugging-breeze
+repository: format-factory
+branch: main
+plan_path: C:/Users/prora/.claude/plans/dynamic-hugging-breeze.md
+plan_hash: unknown
+plan_status: TERMINAL_CLOSED
+created_at: "2026-06-24 (approximate)"
+created_by: autonomous-agent
+plan_description: >
+  Per-chat plan. Terminal closed by session 13a7302fc4c5.
+terminal_lock:
+  locked_at: "2026-06-24T06:24:41.531491+00:00"
+  locked_by: "13a7302fc4c5"
+  lock_state: TERMINAL_CLOSED
+final_verdict: null
+notes: >
+  Lock file 13a7302fc4c5-d5f45c35.json (hash-keyed format).
+  Added by TC-PG-001 ledger reconciliation iteration 2 (FF-PLAN-GOV-001).
+```

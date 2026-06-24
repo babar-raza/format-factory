@@ -7,7 +7,7 @@
 **Last updated:** 2026-06-24 (v4.8: Section 29 re-created — FF-Machinery-Readiness CLOSED; Section 28 follow-ups CLOSED)
 **Last verified:** 2026-06-24
 
-**Current phase:** Multi-format POC — 11 targets (3 commercial .NET, 8 FOSS Python). Gate 11 G11-G sub-gate approved by Babar Raza 2026-06-05 (FODS, FODT, Netpbm). Registry gate_11.status: commercial_readiness_in_progress (registry not yet updated after G11-G). commercial_product_ready: false (all entries).
+**Current phase:** Multi-format POC — 11 targets (3 commercial .NET, 8 FOSS Python). Gate 11 G11-G sub-gate approved by Babar Raza 2026-06-05 (FODS, FODT, Netpbm). Registry gate_11.status: commercial_readiness_in_progress; g11g_status: APPROVED_BY_BABAR_RAZA_2026_06_05 (G11-G sub-gate approved). commercial_product_ready: false (all entries). Full Gate 11 requires Babar Raza final commercial authorization.
 
 **Canonical sources (do not duplicate — pointer only):**
 - Product targets: `product-capability-matrix/poc-targets.yaml`
@@ -356,7 +356,7 @@ Wave 3 gate: 5 PASS / 3 PARTIAL (0 FAIL)
 - V51 (TC-QHARD-001): repo-wide scan for exported classes missing spec_qname. After spec_qname backfill to 9 classes (DifCell, DifDocument, OdsRow, OdtListItem, PbmImage, PgmImage, PpmImage, QoiImage, SylkDocument), V51 returns PASS.
 - V52 (TC-QHARD-002): Compat/ facade import chain integrity validator. WARN-only.
 - V53 (TC-QHARD-003): registry python_file path existence validator. WARN-only.
-- Total governance validators: 53 (V1-V53). 77 tests pass, 5 fail (see TC-QHARD-POST-006 below — these tests cannot run due to import bug in governance_validators.py:914, not purely pre-existing).
+- Total governance validators: 53 (V1-V53). 82 tests pass, 0 fail (TC-QHARD-POST-006 fixed: governance_validators.py:786 bare import).
 - .NET spec stubs converted from static stubs to sealed classes with SpecQName constants. New files: csv/Spec/CsvRecord.cs, ndjson/Spec/NdjsonRecord.cs, netpbm/Spec/NetpbmImage.cs, tsv/Spec/TsvRecord.cs. Build succeeds 0 errors. CORRECTION: these classes are not referenced by any behavioral .NET code and are not covered by any test.
 - python-qname-code-reviewer slash command registered. CORRECTION: the skill has not been executed against any format; no verdict.json evidence artifact exists.
 
@@ -380,7 +380,7 @@ Phases 0–6 executed. Post-audit evidence review identified 6 unresolved gaps �
 - Phase 1-2: FODS/FODT Python spec/ authority classes created and Compat/ facades inherit from them at runtime. 1339 FODS + 1999 FODT tests pass (zero regressions). NOTE: Compat/ facades are not exported from fods/__init__.py; parse_fods returns a plain dict. The class hierarchy is navigable but not on the production code path.
 - Phase 3-4: spec_qname backfill to 9 Python domain classes verified via _has_spec_qname() and V51 live PASS.
 - Phase 5: .NET Spec/ classes compile with 0 errors. These classes are structurally isolated — not referenced by FodsDocument.cs or any .NET behavioral code; no .NET tests exist (see TC-QHARD-POST-003).
-- Phase 6: fods.yaml 11/12 → implemented. V53 WARNS on 2 live registry inconsistencies: xcf:image (XcfImage has no spec_qname) and ndjson:record (NdjsonRecord class absent from ndjson_codec.py) — see TC-QHARD-POST-001 and TC-QHARD-POST-002. 77/82 governance tests pass; 5 fail due to import bug in governance_validators.py:914 (see TC-QHARD-POST-006).
+- Phase 6: fods.yaml 11/12 → implemented. V53 WARNS on 2 live registry inconsistencies: xcf:image (XcfImage has no spec_qname) and ndjson:record (NdjsonRecord class absent from ndjson_codec.py) — see TC-QHARD-POST-001 and TC-QHARD-POST-002. 82/82 governance tests pass (TC-QHARD-POST-006 fixed).
 - Commits: 2c522c52 (V51/V52/V53), a13e2552 (spec_qname backfill + .NET stubs + registry), dca8e00b (pipeline closeout), 3eaf46ef (master-plan v3.4).
 
 ---
@@ -1405,7 +1405,8 @@ Closeout: CLOSED only after parity-matrix.yaml has an honest (non-definitional) 
 
 **TC-QHARD-POST-006**
 Title: Fix governance_validators.py:914 import bug — restore TestRunAllValidators to passing
-Status: not_attempted | Priority: HIGH | Lane: Acceleration-A (Governance)
+Status: completed | Priority: HIGH | Lane: Acceleration-A (Governance)
+Evidence: governance_validators.py:786 changed to bare import; all 82 governance tests pass. See .local/evidences/jpi-reconciliation/tc-jpi-003/governance_validators-line914.log
 Source: AF-006
 Why it matters: All 5 TestRunAllValidators tests fail: `from tools.supervisor.autonomy_route_models` raises `ModuleNotFoundError` because test conftest adds `tools/supervisor` to sys.path but the function uses an absolute `tools.supervisor.*` path. `run_all_governance_validators()` — which wires all 53 validators — cannot be tested at all. This is not harmless.
 Root cause: governance_validators.py:914 lazy import uses `from tools.supervisor.X` (absolute) instead of `from X` (relative, works with both test and production sys.path contexts).
@@ -2170,5 +2171,46 @@ Three deferred items from the parent skill-governance-sync mission:
 
 ---
 
-*End of plans/master-plan.md — version 4.10 — 2026-06-24 (Section 39: dynamic-hugging-breeze CLOSED — lock system healing, 6 taskcards, multi-plan session support)*
+## Section 40 — misty-hopping-token-hardening-addendum: H1-H9 Convergence Audit (CLOSED)
+
+**Mission ID:** FF-FORENSIC-AUDIT-20260623-HARDEN
+**Parent:** Section 35 (misty-hopping-token)
+**Plan file:** `plans/misty-hopping-token-hardening-addendum.md`
+**Status:** CLOSED — CONVERGENCE_COMPLETE_ALL_GREEN (2 iterations, 12 taskcards)
+
+### What was completed
+
+Original sprint (H1-H9, 6 commits 39a995cb..9936936c):
+1. **H1/H2:** Committed forensic audit artifacts (46 files) and supervisor state refresh (52 files)
+2. **H3/H4:** Registry python_file population 40% → 84.3% (59/70 entries), 2 non-canonical paths documented
+3. **H5:** V54/V55 promotion tracker — 3 clean sprints, severity promoted to conditional-blocking
+4. **H6:** Removed architecture_only markers from 9 FODT .NET Spec classes
+5. **H7:** Wired qname coverage regression check into autonomous cycle Step 0a-qname, baseline 96.9%
+6. **H8:** Skill audit of /qname-backfill — PASS verdict, 1 fix applied
+7. **H9:** Cleaned 1 stale IN_PROGRESS plan lock
+
+Convergence iteration (H10-H12):
+8. **H10:** Fixed declaration schema — added evidence_paths, item_type, dirty_state_classification, raw-test-log.txt
+9. **H11:** Updated plan execution results to reflect current registry state (84.3%)
+10. **H12:** Confirmed V54/V55 already promoted (blocks_sprint=True in code)
+
+### Verification performed
+
+- Declaration validation: PASS (sprint_executor_validate.py --repair)
+- Adoption compliance: PASS_WITH_EXEMPTIONS (9/9 items compliant)
+- Anti-skip checks: all 3 pass (reports, dirty state, raw logs)
+- Architecture_only markers: 0 matches in src/net/fodt/Spec/
+- QName hook: 7 references in autonomous_cycle.py
+- Registry coverage: 59/70 = 84.3%
+- V54/V55: blocks_sprint=True confirmed in governance_validators_ext.py
+- Governance validator tests: all pass (exit code 0)
+
+### Remaining follow-ups (non-blockers)
+
+- 11 QName registry entries with null python_file — no spec class exists on disk
+- Declaration evidence files are gitignored — grading improvement is local-only
+
+---
+
+*End of plans/master-plan.md — version 5.0 — 2026-06-24 (Section 40: misty-hopping-token-hardening-addendum CLOSED — convergence audit, 12 taskcards, 2 iterations)*
 *This document is the single operational authority for format-factory. All other documents are subordinate to it for operational decisions.*

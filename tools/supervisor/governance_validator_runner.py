@@ -1,4 +1,4 @@
-"""governance_validator_runner.py — Runs all governance validators (V1-V59).
+"""governance_validator_runner.py — Runs all governance validators (V1-V66).
 
 Extracted from governance_validators.py to keep that file within its LOC cap.
 This module imports validators from governance_validators LAZILY (inside the function
@@ -29,7 +29,7 @@ def run_all_governance_validators(
     declaration: dict,
     repo_root: Path | None = None,
 ) -> dict:
-    """Run all governance validators (V1-V49) against a declaration.
+    """Run all governance validators (V1-V66) against a declaration.
 
     Returns a composite result dict:
       {
@@ -96,6 +96,9 @@ def run_all_governance_validators(
         validate_spec_fact_refs_in_sal_output,
         validate_architecture_only_stub_gate,
         validate_qname_structure,
+        validate_py_typed_marker,
+        validate_all_exports_declared,
+        validate_multi_responsibility_file,
     )
     # V50-V56 imported directly from ext module (governance_validators.py is at LOC cap)
     from governance_validators_ext import (  # noqa: PLC0415
@@ -212,6 +215,12 @@ def run_all_governance_validators(
         _validate_spec_fact_refs_density(declaration, repo_root),
         # V63 (TC-MACH-SRC-001): Public API surface ratio — WARN when __init__.py has >50 exports with <20% tested
         _validate_public_api_surface_ratio(declaration, repo_root),
+        # V64 (TC-GOV-MACH-002): Python packages in changed_files must have py.typed marker (WARN-only)
+        validate_py_typed_marker(declaration, repo_root),
+        # V65 (TC-GOV-MACH-002): Python packages in changed_files must declare __all__ (WARN-only)
+        validate_all_exports_declared(declaration, repo_root),
+        # V66 (TC-GOV-MACH-002): Single file mixes parser+model+serializer responsibilities (WARN-only)
+        validate_multi_responsibility_file(declaration, repo_root),
     ]
 
     # SAL format advisory (non-blocking, Lane E integration)

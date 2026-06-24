@@ -1,3 +1,22 @@
+<!--plan_identity:
+  schema_version: "1.0"
+  plan_id: "snoopy-juggling-seal"
+  mission_id: "FF-SAL-FORENSICS-001"
+  native_plan_path: "plans/snoopy-juggling-seal.md"
+  native_plan_filename: "snoopy-juggling-seal.md"
+  created_by_agent: "autonomous-agent"
+  created_during_plan_mode: false
+  created_at: "2026-06-16"
+  repository: "format-factory"
+  branch: "main"
+  parent_plan_id: null
+  successor_plan_id: null
+  ownership_status: "ACTIVE"
+  plan_type: "sal_forensics"
+  first_execution_run: null
+  current_revision: "3.16"
+  terminal_lock: false
+-->
 # Snoopy Juggling Seal — SAL Source-to-Consumption Pipeline Forensics and Redesign Plan
 # Format Factory — Specification Authority Layer
 # Plan version: 3.16 (updated 2026-06-22: all agent-resolvable SA-HEAL items complete;
