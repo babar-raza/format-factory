@@ -14,9 +14,9 @@ import sys
 
 import pytest
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "..", "src", "python"))
-from dif import dif_analytics
-from dif.dif_parser import parse_dif_strict
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", ".."))
+from src.python.dif import interchange_document as dif_analytics
+from src.python.dif.dif_parser import parse_dif_strict
 
 SAMPLES = os.path.join(os.path.dirname(__file__), "..", "..", "..", "samples", "by-format", "dif")
 
@@ -63,12 +63,12 @@ class TestDogfoodLibraryUsage:
         import subprocess
         from pathlib import Path
 
-        src_python = str(Path(__file__).resolve().parent.parent.parent.parent / "src" / "python")
+        repo_root = str(Path(__file__).resolve().parent.parent.parent.parent)
         sample = str(Path(SAMPLES) / "valid" / "minimal-2x2.dif")
         script = (
-            f"import sys; sys.path.insert(0, {src_python!r}); "
-            "from dif.dif_analytics import dif_to_csv; "
-            "from csv.csv_parser import parse_csv_strict; "
+            f"import sys; sys.path.insert(0, {repo_root!r}); "
+            "from src.python.dif.interchange_document import dif_to_csv; "
+            "from src.python.csv.csv_parser import parse_csv_strict; "
             f"result = dif_to_csv({sample!r}); "
             "import tempfile, pathlib; "
             "tmp = tempfile.NamedTemporaryFile(mode='w', suffix='.csv', delete=False, encoding='utf-8'); "

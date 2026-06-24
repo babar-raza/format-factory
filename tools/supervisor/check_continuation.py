@@ -150,6 +150,16 @@ def check(repo_root: Path, *, session_id: str | None = None,
     if _shared_lock.exists():
         _lock_candidates.append(_shared_lock)
 
+    # --- TC-LOCK-001 (FF-LOCK-HEAL-20260624): Collect-then-decide lock evaluation ---
+    # Previous design: single-pass alphabetical loop with early-return.
+    # Problem: in multi-plan sessions, an older TERMINAL_CLOSED lock could shadow a newer
+    # IN_PROGRESS lock because alphabetical order has no temporal meaning.
+    # Fix: collect all session-relevant locks, sort by updated_at, decide on newest only.
+
+    from datetime import datetime as _dt, timezone as _tz
+
+    # Phase 1: Collect all session-relevant locks
+    _session_locks: list[tuple[Path, dict, str]] = []  # (path, data, updated_at)
     for _lock_path in _lock_candidates:
         try:
             plan_lock = json.loads(_lock_path.read_text(encoding="utf-8"))
@@ -164,7 +174,6 @@ def check(repo_root: Path, *, session_id: str | None = None,
 
         # --- Stale lock expiry (M7): skip locks older than 7 days ---
         try:
-            from datetime import datetime as _dt, timezone as _tz
             _updated_at = plan_lock.get("updated_at", "")
             if _updated_at:
                 _lock_age_hours = (
@@ -180,31 +189,38 @@ def check(repo_root: Path, *, session_id: str | None = None,
         if lock_session_id and session_id and lock_session_id != session_id:
             continue  # This lock belongs to a different session — skip it
 
-        # For legacy active-plan-lock.json (no session_id field): apply existing block logic
-        # For session-keyed locks with matching session_id: apply block logic below
-
         # --- Track-type filtering (TC-P1-005 / REQ-PLK-003) ---
         lock_track = plan_lock.get("track_type")
         if lock_track and track and lock_track != track:
             continue  # This lock belongs to a different track — skip it
 
         # --- M5b: AUTHORIZED_OVERRIDE bypass (AUT-20260622-0001) ---
-        # When Babar Raza explicitly delegates authorization via the DELEGATED AUTHORIZATION
-        # REVIEW AND FORWARD-ACTION PROTOCOL, the lock status is set to
-        # TERMINAL_CLOSED_AUTHORIZED_OVERRIDE with a valid authorization_id.
-        # This bypasses M6/M7/M8 and allows continuation without removing the audit trail.
         if plan_lock.get("status") == "TERMINAL_CLOSED_AUTHORIZED_OVERRIDE" and plan_lock.get("authorization_id"):
-            continue  # Authorized override — skip this lock and continue to product deepening
+            continue  # Authorized override — skip this lock
+
+        # --- TC-LOCK-006: Skip SUPERSEDED and DEFERRED locks ---
+        if plan_lock.get("status") in ("SUPERSEDED", "DEFERRED"):
+            continue  # Historical/deferred — not part of active decision set
+
+        _session_locks.append((_lock_path, plan_lock, plan_lock.get("updated_at", "")))
+
+    # Phase 2: Sort by updated_at descending (newest first) and decide on newest lock
+    _session_locks.sort(key=lambda x: x[2], reverse=True)
+
+    if _session_locks:
+        _newest_path, _newest_lock, _ = _session_locks[0]
+        _newest_status = _newest_lock.get("status", "")
+        _newest_session_id = _newest_lock.get("session_id")
 
         # --- M6: TERMINAL_CLOSED detection (POST_PLAN_TERMINAL) ---
-        # TERMINAL_CLOSED = plan completed in this session; ledger must NOT start.
-        # This is a NON-OVERRIDABLE stop — same class as SESSION_MISMATCH and CHAT_ID_MISMATCH.
-        if plan_lock.get("status") == "TERMINAL_CLOSED":
+        # Only fires on the NEWEST lock. Older TERMINAL_CLOSED locks from prior plans
+        # in the same session are superseded by the newest lock's state.
+        if _newest_status == "TERMINAL_CLOSED":
             return _stop(
                 "POST_PLAN_TERMINAL",
                 (
                     f"Per-chat plan was marked TERMINAL_CLOSED in this session: "
-                    f"plan={plan_lock.get('plan_path', 'unknown')!r}. "
+                    f"plan={_newest_lock.get('plan_path', 'unknown')!r}. "
                     "Plan completion is a terminal event for the current session. "
                     "No ledger or product deepening work may start automatically. "
                     "Start a new conversation or provide explicit user authorization "
@@ -212,68 +228,56 @@ def check(repo_root: Path, *, session_id: str | None = None,
                 ),
                 iteration=signal.get("iteration", 0),
                 max_iterations=signal.get("max_iterations", 5),
-                active_plan_path=plan_lock.get("plan_path"),
+                active_plan_path=_newest_lock.get("plan_path"),
             )
 
         # --- M8: PLAN_COMPLETED_IN_SESSION safety net ---
-        # If this session-keyed lock has status==COMPLETE and belongs to the CURRENT session,
-        # block product deepening. This prevents silent fallthrough when --complete is used
-        # instead of --terminal. Non-overridable: same class as POST_PLAN_TERMINAL.
-        # NOTE: The shared lock (active-plan-lock.json) has no session_id, so this branch
-        # never fires for the shared lock — it only fires for session-keyed locks.
-        if plan_lock.get("status") == "COMPLETE" and lock_session_id and session_id and lock_session_id == session_id:
+        if _newest_status == "COMPLETE" and _newest_session_id and session_id and _newest_session_id == session_id:
             return _stop(
                 "PLAN_COMPLETED_IN_SESSION",
                 (
                     f"Per-chat plan was completed in this session: "
-                    f"plan={plan_lock.get('plan_path', 'unknown')!r}. "
+                    f"plan={_newest_lock.get('plan_path', 'unknown')!r}. "
                     "Report plan completion to user and stop. "
                     "Do NOT auto-continue to product deepening. "
                     "A new session or explicit user authorization is required for ledger work."
                 ),
                 iteration=signal.get("iteration", 0),
                 max_iterations=signal.get("max_iterations", 5),
-                active_plan_path=plan_lock.get("plan_path"),
+                active_plan_path=_newest_lock.get("plan_path"),
             )
 
         # --- M6c: COMPLETION_CANDIDATE — plan ready for completion audit (TC-TCF-005) ---
-        # COMPLETION_CANDIDATE does NOT block continuation. It signals that the plan is
-        # a candidate for closure but the completion audit must run first.
-        if plan_lock.get("status") == "COMPLETION_CANDIDATE":
+        if _newest_status == "COMPLETION_CANDIDATE":
             return {
                 "verdict": "CONTINUE",
                 "reason": "completion_candidate_detected",
                 "detail": (
                     "Plan is marked COMPLETION_CANDIDATE — completion audit should run "
-                    f"before final TERMINAL_CLOSED. plan={plan_lock.get('plan_path', 'unknown')!r}"
+                    f"before final TERMINAL_CLOSED. plan={_newest_lock.get('plan_path', 'unknown')!r}"
                 ),
                 "iteration": signal.get("iteration", 0),
                 "max_iterations": signal.get("max_iterations", 5),
-                "active_plan_path": plan_lock.get("plan_path"),
+                "active_plan_path": _newest_lock.get("plan_path"),
                 "completion_candidate_detected": True,
             }
 
         # --- M6b: ITERATION_REQUIRED — audit-gate found unresolved work ---
-        # Written by write_plan_lock.py --terminal --audit-gate when lifecycle_audit
-        # returns AUDIT_REQUIRES_ITERATION. Same-session ITERATION_REQUIRED → CONTINUE
-        # so the plan can iterate. Cross-session → treat as TERMINAL_CLOSED (CCI safety).
-        if plan_lock.get("status") == "ITERATION_REQUIRED":
-            lock_iter_session = plan_lock.get("session_id")
+        if _newest_status == "ITERATION_REQUIRED":
+            lock_iter_session = _newest_lock.get("session_id")
             if lock_iter_session and session_id and lock_iter_session == session_id:
-                # Same session — audit says iterate; return CONTINUE
                 return {
                     "verdict": "CONTINUE",
                     "reason": "plan_iteration_required",
                     "detail": (
                         "Lifecycle audit found unresolved work; plan is iterating. "
-                        f"plan={plan_lock.get('plan_path', 'unknown')!r}"
+                        f"plan={_newest_lock.get('plan_path', 'unknown')!r}"
                     ),
                     "iteration": signal.get("iteration", 0),
                     "max_iterations": signal.get("max_iterations", 5),
-                    "active_plan_path": plan_lock.get("plan_path"),
+                    "active_plan_path": _newest_lock.get("plan_path"),
                 }
             else:
-                # Cross-session — treat as TERMINAL_CLOSED for CCI safety
                 return _stop(
                     "POST_PLAN_TERMINAL",
                     (
@@ -283,26 +287,27 @@ def check(repo_root: Path, *, session_id: str | None = None,
                     ),
                     iteration=signal.get("iteration", 0),
                     max_iterations=signal.get("max_iterations", 5),
-                    active_plan_path=plan_lock.get("plan_path"),
+                    active_plan_path=_newest_lock.get("plan_path"),
                 )
 
-        if plan_lock.get("status") != "COMPLETE":
+        # --- IN_PROGRESS or unknown status → ACTIVE_PLAN_INCOMPLETE ---
+        if _newest_status != "COMPLETE":
             return _stop(
                 "ACTIVE_PLAN_INCOMPLETE",
                 (
                     f"Per-chat plan is active and not yet 100%% complete: "
-                    f"plan={plan_lock.get('plan_path', 'unknown')!r}, "
-                    f"last_taskcard={plan_lock.get('last_taskcard', 'unknown')!r}. "
+                    f"plan={_newest_lock.get('plan_path', 'unknown')!r}, "
+                    f"last_taskcard={_newest_lock.get('last_taskcard', 'unknown')!r}. "
                     "Complete ALL taskcards in the loaded plan before resuming "
                     "product deepening or general ledger work."
                 ),
                 iteration=signal.get("iteration", 0),
                 max_iterations=signal.get("max_iterations", 5),
-                active_plan_path=plan_lock.get("plan_path"),
-                last_taskcard=plan_lock.get("last_taskcard"),
+                active_plan_path=_newest_lock.get("plan_path"),
+                last_taskcard=_newest_lock.get("last_taskcard"),
                 next_action=(
                     "Read the active plan file. Find the next open taskcard after "
-                    f"{plan_lock.get('last_taskcard', 'unknown')!r}. Execute it. "
+                    f"{_newest_lock.get('last_taskcard', 'unknown')!r}. Execute it. "
                     "Run write_plan_lock.py to update last_taskcard and mark COMPLETE when done."
                 ),
             )

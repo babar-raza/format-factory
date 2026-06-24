@@ -1,11 +1,11 @@
 # Session Resume Briefing
 # Format Factory — Supervisor-Generated
-# Generated: 2026-06-24T07:53:07.533049
+# Generated: 2026-06-24T10:50:14.288901
 
 ## Quick State
-- Last sprint: effervescent-wandering-blossom
+- Last sprint: convergence-sprint13-20260624-9660f4
 - Evidence verdict: ACCEPTED
-- Tests: 33957 passed / 0 failed
+- Tests: 1609 passed / 0 failed
 - PENDING markers: 0
 - CRITICAL contradictions: 0
 - Autonomous continue: True
@@ -23,62 +23,62 @@
 5. Prose context: `reports/supervisor/next-sprint.md`
 
 ## Where To Find Evidence
-- Last evidence bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\MGHEAL-20260623\declaration-review-package.zip
+- Last evidence bundle: .local/evidences/convergence-sprint13-20260624-9660f4/
 - Supervisor outputs: reports/supervisor/
 - Project memory: .supervisor/project-memory.md
 
 ## Project Memory (recent)
 ```
 
-## Entry: vivid-napping-kurzweil
-- timestamp: 2026-06-23T21:07:08.489776
+## Entry: convergence-sprint9-20260624-9660f4
+- timestamp: 2026-06-24T10:09:07.415970
 - verdict: ACCEPTED
 - test_count: 0
 - fail_count: 0
 - git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\vivid-napping-kurzweil\declaration-review-package.zip
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\convergence-sprint9-20260624-9660f4\declaration-review-package.zip
 - pending_marker_count: 0
-- bundle_entry_count: 72
+- bundle_entry_count: 58
 - bundle_validation_pass: True
 
-## Entry: format-factory-fullsuite-layering-20260623-fslay02
-- timestamp: 2026-06-23T22:09:12.632442
+## Entry: convergence-sprint10-20260624-9660f4
+- timestamp: 2026-06-24T10:35:06.913808
 - verdict: ACCEPTED
-- test_count: 20
+- test_count: 3279
 - fail_count: 0
 - git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\format-factory-fullsuite-layering-20260623-fslay02\declaration-review-package.zip
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\convergence-sprint10-20260624-9660f4\declaration-review-package.zip
 - pending_marker_count: 0
-- bundle_entry_count: 79
+- bundle_entry_count: 70
 - bundle_validation_pass: True
-- test_delta: +20
+- test_delta: +3279
 - test_delta_from: 0
 
-## Entry: squishy-tumbling-wind-selfhealing-20260623
-- timestamp: 2026-06-23T22:17:12.176231
+## Entry: convergence-sprint11-20260624-9660f4
+- timestamp: 2026-06-24T10:39:05.943805
 - verdict: ACCEPTED
-- test_count: 114
+- test_count: 1347
 - fail_count: 0
 - git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\squishy-tumbling-wind-20260623\declaration-review-package.zip
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\convergence-sprint11-20260624-9660f4\declaration-review-package.zip
 - pending_marker_count: 0
-- bundle_entry_count: 82
+- bundle_entry_count: 71
 - bundle_validation_pass: True
-- test_delta: +94
-- test_delta_from: 20
+- test_delta: -1932
+- test_delta_from: 3279
 
-## Entry: effervescent-wandering-blossom
-- timestamp: 2026-06-23T22:23:15.111701
+## Entry: convergence-sprint12-20260624-9660f4
+- timestamp: 2026-06-24T10:45:06.878454
 - verdict: ACCEPTED
-- test_count: 33747
+- test_count: 101
 - fail_count: 0
 - git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\MGHEAL-20260623\declaration-review-package.zip
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\convergence-sprint12-20260624-9660f4\declaration-review-package.zip
 - pending_marker_count: 0
-- bundle_entry_count: 67
+- bundle_entry_count: 64
 - bundle_validation_pass: True
-- test_delta: +33633
-- test_delta_from: 114
+- test_delta: -1246
+- test_delta_from: 1347
 ```
 
 ## IMPORTANT REMINDERS
@@ -86,3 +86,9 @@
 - No push without explicit user authorization.
 - No gate self-approval. All gates 1-11 require human approval.
 - MCP activation (MODE 4): COMPLETE.
+
+
+## Maturity Trend
+
+Maturity trend written: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\reports\supervisor\maturity-trend.json
+  Sprints: 540, avg quality: 0.734, trend: improving

@@ -171,6 +171,16 @@ from .text_document import (
     fodt_section_depth_max,
     fodt_text_block_ratio,
 )
+from .models import (
+    from_file,
+    odf_version,
+    paragraphs,
+    to_dict,
+    kind,
+    style_name,
+    outline_level,
+    collect_list_items,
+)
 from .exceptions import FodtError, FodtInputError, FodtSizeError, FodtParseError
 from .constants import FORMAT_ID, SPEC_VERSION, PACKAGE_VERSION, MAX_FILE_BYTES
 
@@ -311,6 +321,14 @@ __all__ = [
     "fodt_unique_block_type_count",
     "fodt_section_depth_max",
     "fodt_text_block_ratio",
+    "from_file",
+    "odf_version",
+    "paragraphs",
+    "to_dict",
+    "kind",
+    "style_name",
+    "outline_level",
+    "collect_list_items",
     "FodtError",
     "FodtInputError",
     "FodtSizeError",

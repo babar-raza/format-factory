@@ -131,19 +131,19 @@ def write_lock(plan_path: str, last_taskcard: str | None = None, complete: bool 
                 status = "TERMINAL_CLOSED"
                 print("[write_plan_lock] --audit-gate: lifecycle audit verdict=AUDIT_PASS -> TERMINAL_CLOSED")
         except ImportError:
-            # lifecycle_audit not installed yet — fall back to TERMINAL_CLOSED safely
+            # lifecycle_audit not installed yet — fall back to ITERATION_REQUIRED (D6 safety)
             print(
                 "[write_plan_lock] WARNING: --audit-gate requested but lifecycle_audit not importable; "
-                "falling back to TERMINAL_CLOSED",
+                "falling back to ITERATION_REQUIRED",
                 file=sys.stderr,
             )
-            status = "TERMINAL_CLOSED"
+            status = "ITERATION_REQUIRED"
         except Exception as exc:
             print(
-                f"[write_plan_lock] WARNING: lifecycle_audit raised {exc}; falling back to TERMINAL_CLOSED",
+                f"[write_plan_lock] WARNING: lifecycle_audit raised {exc}; falling back to ITERATION_REQUIRED",
                 file=sys.stderr,
             )
-            status = "TERMINAL_CLOSED"
+            status = "ITERATION_REQUIRED"
     else:
         status = "TERMINAL_CLOSED" if terminal else ("COMPLETE" if complete else "IN_PROGRESS")
 
@@ -176,9 +176,14 @@ def write_lock(plan_path: str, last_taskcard: str | None = None, complete: bool 
     _shared_lock_path.write_text(json.dumps(lock, indent=2) + "\n", encoding="utf-8")
     print(f"[write_plan_lock] {_shared_lock_path} written \u2014 status={status}, plan={plan_path!r}")
 
-    # 2. Write session-keyed lock (race-safe; one file per session)
+    # 2. Write session-keyed lock (race-safe; one file per (session, plan) pair)
+    # TC-LOCK-002 (FF-LOCK-HEAL-20260624): Use plan_path hash in filename to support
+    # multi-plan sessions. Old {sid}.json files remain readable by check_continuation
+    # (it globs *.json). Plan A's TERMINAL_CLOSED persists when Plan B starts.
+    import hashlib
+    _plan_hash = hashlib.sha256(plan_path.encode()).hexdigest()[:8]
     _plan_locks_dir.mkdir(parents=True, exist_ok=True)
-    keyed_path = _plan_locks_dir / f"{sid}.json"
+    keyed_path = _plan_locks_dir / f"{sid}-{_plan_hash}.json"
     keyed_path.write_text(json.dumps(lock, indent=2) + "\n", encoding="utf-8")
     print(f"[write_plan_lock] {keyed_path} written \u2014 session={sid!r}")
 
@@ -189,10 +194,11 @@ def clear_lock(session_id: str | None = None) -> None:
         _shared_lock_path.unlink()
         removed.append(str(_shared_lock_path))
     sid = session_id or _get_session_id()
-    keyed_path = _plan_locks_dir / f"{sid}.json"
-    if keyed_path.exists():
-        keyed_path.unlink()
-        removed.append(str(keyed_path))
+    # TC-LOCK-002: Clear both old {sid}.json and new {sid}-{hash}.json patterns
+    if _plan_locks_dir.is_dir():
+        for keyed_path in _plan_locks_dir.glob(f"{sid}*.json"):
+            keyed_path.unlink()
+            removed.append(str(keyed_path))
     if removed:
         for p in removed:
             print(f"[write_plan_lock] cleared: {p}")

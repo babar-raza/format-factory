@@ -135,3 +135,101 @@ class FodsDocument:
 
     def __repr__(self) -> str:
         return f"FodsDocument(sheets={self.sheet_count})"
+
+
+# ---------------------------------------------------------------------------
+# Cell-level accessor functions (gap-ledger closure)
+# ---------------------------------------------------------------------------
+
+def value_type(cell: dict[str, Any]) -> str:
+    """Return the value type of a cell dict ('string', 'float', etc.)."""
+    return cell.get("value_type", "")
+
+
+def text(cell: dict[str, Any]) -> str:
+    """Return the text/value content of a cell dict."""
+    v = cell.get("value", cell.get("text", ""))
+    return str(v) if v is not None else ""
+
+
+def repeated(cell: dict[str, Any]) -> int:
+    """Return the repeat count of a cell (default 1)."""
+    return cell.get("repeated", cell.get("number_columns_repeated", 1))
+
+
+# ---------------------------------------------------------------------------
+# Workbook-level convenience functions (gap-ledger closure)
+# ---------------------------------------------------------------------------
+
+def from_file(file_path: "str | Any") -> dict[str, Any]:
+    """Parse a FODS file and return the neutral model workbook dict."""
+    from pathlib import Path as _P
+    from .parser import parse_fods_strict
+    return parse_fods_strict(_P(file_path))
+
+
+def odf_version(workbook: dict[str, Any]) -> str:
+    """Return the ODF version string from a parsed workbook."""
+    return workbook.get("odf_version_attr", "")
+
+
+def cell_at(workbook: dict[str, Any], sheet: "int | str", row: int, col: int) -> "dict[str, Any] | None":
+    """Return the cell dict at (sheet, row, col), or None if not found."""
+    sheets = workbook.get("sheets", [])
+    target = None
+    if isinstance(sheet, int):
+        if 0 <= sheet < len(sheets):
+            target = sheets[sheet]
+    else:
+        for s in sheets:
+            if s.get("name") == sheet:
+                target = s
+                break
+    if target is None:
+        return None
+    rows = target.get("rows", [])
+    if row < 0 or row >= len(rows):
+        return None
+    cells = rows[row].get("cells", [])
+    if col < 0 or col >= len(cells):
+        return None
+    return cells[col]
+
+
+def to_dict(workbook: dict[str, Any]) -> dict[str, Any]:
+    """Return a JSON-safe copy of the workbook dict (strips non-serializable fields)."""
+    import copy
+    result = copy.deepcopy(workbook)
+    for key in list(result.keys()):
+        if key.startswith("_"):
+            del result[key]
+    return result
+
+
+def export_fods_to_csv(workbook: dict[str, Any], sheet: "int | str" = 0) -> str:
+    """Export a single sheet from a parsed FODS workbook to CSV text."""
+    import csv
+    import io
+
+    sheets = workbook.get("sheets", [])
+    target = None
+    if isinstance(sheet, int):
+        if 0 <= sheet < len(sheets):
+            target = sheets[sheet]
+    else:
+        for s in sheets:
+            if s.get("name") == sheet:
+                target = s
+                break
+    if target is None:
+        return ""
+
+    buf = io.StringIO()
+    writer = csv.writer(buf)
+    for row_data in target.get("rows", []):
+        vals = []
+        for cell in row_data.get("cells", []):
+            v = cell.get("value")
+            vals.append(str(v) if v is not None else "")
+        writer.writerow(vals)
+    return buf.getvalue()

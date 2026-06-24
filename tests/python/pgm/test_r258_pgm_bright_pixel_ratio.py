@@ -25,9 +25,9 @@ class TestPgmBrightPixelRatio:
         # single white pixel = ratio 1.0
         assert pgm_bright_pixel_ratio(_1X1_WHITE) == 1.0
 
-    def test_exact_0_25_for_2x2_gradient(self):
-        # threshold=192; only pixel 255 is bright → 1/4 = 0.25
-        assert pgm_bright_pixel_ratio(_2X2_GRADIENT) == 0.25
+    def test_exact_0_5_for_2x2_gradient(self):
+        # threshold=128; pixels 170,255 are >128 -> 2/4 = 0.5
+        assert pgm_bright_pixel_ratio(_2X2_GRADIENT) == 0.5
 
     def test_between_0_and_1(self):
         r = pgm_bright_pixel_ratio(_3X1_RAMP)

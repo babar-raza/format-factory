@@ -31,22 +31,22 @@ def _make_dif_file(tmp_path, title, rows):
 
 class TestDifColumnTypesSynthetic:
     def test_all_numeric(self, tmp_path):
-        rows = [[DifCell(1.0, "numeric"), DifCell(2.0, "numeric")],
-                [DifCell(3.0, "numeric"), DifCell(4.0, "numeric")]]
+        rows = [[DifCell(value=1.0, value_type="numeric"), DifCell(value=2.0, value_type="numeric")],
+                [DifCell(value=3.0, value_type="numeric"), DifCell(value=4.0, value_type="numeric")]]
         f = _make_dif_file(tmp_path, "allnum", rows)
         result = dif_column_types(f)
         assert result == ["numeric", "numeric"]
 
     def test_all_string(self, tmp_path):
-        rows = [[DifCell("a", "string"), DifCell("b", "string")],
-                [DifCell("c", "string"), DifCell("d", "string")]]
+        rows = [[DifCell(value="a", value_type="string"), DifCell(value="b", value_type="string")],
+                [DifCell(value="c", value_type="string"), DifCell(value="d", value_type="string")]]
         f = _make_dif_file(tmp_path, "allstr", rows)
         result = dif_column_types(f)
         assert result == ["string", "string"]
 
     def test_mixed_columns(self, tmp_path):
-        rows = [[DifCell(1.0, "numeric"), DifCell("a", "string")],
-                [DifCell(2.0, "numeric"), DifCell("b", "string")]]
+        rows = [[DifCell(value=1.0, value_type="numeric"), DifCell(value="a", value_type="string")],
+                [DifCell(value=2.0, value_type="numeric"), DifCell(value="b", value_type="string")]]
         f = _make_dif_file(tmp_path, "mixed", rows)
         result = dif_column_types(f)
         assert result == ["numeric", "string"]
@@ -59,14 +59,14 @@ class TestDifColumnTypesSynthetic:
         assert result == []
 
     def test_returns_list_of_strings(self, tmp_path):
-        rows = [[DifCell(1.0, "numeric")]]
+        rows = [[DifCell(value=1.0, value_type="numeric")]]
         f = _make_dif_file(tmp_path, "types", rows)
         result = dif_column_types(f)
         assert isinstance(result, list)
         assert all(isinstance(t, str) for t in result)
 
     def test_numeric_tie_with_string(self, tmp_path):
-        rows = [[DifCell(1.0, "numeric")], [DifCell("x", "string")]]
+        rows = [[DifCell(value=1.0, value_type="numeric")], [DifCell(value="x", value_type="string")]]
         f = _make_dif_file(tmp_path, "tie", rows)
         result = dif_column_types(f)
         assert result[0] in ("numeric", "string")
@@ -90,16 +90,16 @@ class TestDifColumnTypesFromSamples:
 
 class TestDifRowValueCountsSynthetic:
     def test_all_filled(self, tmp_path):
-        rows = [[DifCell(1.0, "numeric"), DifCell("a", "string")],
-                [DifCell(2.0, "numeric"), DifCell("b", "string")]]
+        rows = [[DifCell(value=1.0, value_type="numeric"), DifCell(value="a", value_type="string")],
+                [DifCell(value=2.0, value_type="numeric"), DifCell(value="b", value_type="string")]]
         f = _make_dif_file(tmp_path, "filled", rows)
         result = dif_row_value_counts(f)
         assert result == [2, 2]
 
     def test_with_none_values(self, tmp_path):
         """DIF write/parse round-trip converts None to non-None; count reflects parsed state."""
-        rows = [[DifCell(1.0, "numeric"), DifCell(None, "string")],
-                [DifCell(None, "string"), DifCell("b", "string")]]
+        rows = [[DifCell(value=1.0, value_type="numeric"), DifCell(value=None, value_type="string")],
+                [DifCell(value=None, value_type="string"), DifCell(value="b", value_type="string")]]
         f = _make_dif_file(tmp_path, "nones", rows)
         result = dif_row_value_counts(f)
         assert result == [2, 2]
@@ -112,7 +112,7 @@ class TestDifRowValueCountsSynthetic:
         assert result == []
 
     def test_returns_list_of_ints(self, tmp_path):
-        rows = [[DifCell(1.0, "numeric")]]
+        rows = [[DifCell(value=1.0, value_type="numeric")]]
         f = _make_dif_file(tmp_path, "ints", rows)
         result = dif_row_value_counts(f)
         assert isinstance(result, list)

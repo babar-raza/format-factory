@@ -103,9 +103,9 @@ class TestPgmDarkPixelRatio:
     def test_zero_for_1x1_white(self):
         assert pgm_dark_pixel_ratio(_1X1_WHITE) == 0.0
 
-    def test_exact_0_25_for_2x2_gradient(self):
-        # threshold=64; only pixel 0 is dark → 1/4 = 0.25
-        assert pgm_dark_pixel_ratio(_2X2_GRAD) == 0.25
+    def test_exact_0_5_for_2x2_gradient(self):
+        # threshold=maxval*0.5=127.5; pixels 0,85 are dark -> 2/4 = 0.5
+        assert pgm_dark_pixel_ratio(_2X2_GRAD) == 0.5
 
     def test_between_0_and_1(self):
         ratio = pgm_dark_pixel_ratio(_1X1_WHITE)

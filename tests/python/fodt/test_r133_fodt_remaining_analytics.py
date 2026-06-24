@@ -26,9 +26,9 @@ from pathlib import Path
 
 _REPO = Path(__file__).resolve().parents[3]
 _SAMPLES = _REPO / "samples" / "by-format" / "fodt"
-sys.path.insert(0, str(_REPO / "src" / "python"))
+sys.path.insert(0, str(_REPO))
 
-from fodt.fodt_analytics import (
+from src.python.fodt import (
     fodt_file_size_bytes,
     fodt_has_more_words_than_unique,
     fodt_uppercase_char_count,

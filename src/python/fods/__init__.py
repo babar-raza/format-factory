@@ -115,6 +115,16 @@ from .neutral_model import (
     workbook_row_count,
     workbook_cell_text_at,
 )
+from .models import (
+    value_type,
+    text,
+    repeated,
+    from_file,
+    odf_version,
+    cell_at,
+    to_dict,
+    export_fods_to_csv,
+)
 from .exceptions import FodsError, FodsInputError, FodsSizeError, FodsParseError
 from .constants import FORMAT_ID, SPEC_VERSION, PACKAGE_VERSION, MAX_FILE_BYTES
 
@@ -201,6 +211,14 @@ __all__ = [
     "fods_sheet_row_variance",
     "workbook_row_count",
     "workbook_cell_text_at",
+    "from_file",
+    "odf_version",
+    "cell_at",
+    "to_dict",
+    "export_fods_to_csv",
+    "value_type",
+    "text",
+    "repeated",
     "FodsError",
     "FodsInputError",
     "FodsSizeError",

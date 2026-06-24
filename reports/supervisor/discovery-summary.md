@@ -1,8 +1,8 @@
 # Evidence Bundle Discovery Summary
-Timestamp: 2026-06-24T07:53:06.412871
+Timestamp: 2026-06-24T10:45:05.684414
 Status: found
-Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\MGHEAL-20260623\declaration-review-package.zip
+Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\convergence-sprint12-20260624-9660f4\declaration-review-package.zip
 Sprint ID: unknown
-Entry count: 78
-Bundle mtime: 2026-06-24T00:07:44.180017
-Bundle size: 416855 bytes
+Entry count: 64
+Bundle mtime: 2026-06-24T10:44:39.241491
+Bundle size: 153312 bytes

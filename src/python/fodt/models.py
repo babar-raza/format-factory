@@ -131,3 +131,55 @@ class FodtDocument:
 
     def __repr__(self) -> str:
         return f"FodtDocument(blocks={self.block_count}, tables={self.table_count})"
+
+
+# ---------------------------------------------------------------------------
+# Module-level convenience functions (gap-ledger closure)
+# ---------------------------------------------------------------------------
+
+def from_file(file_path: "str | Any") -> dict[str, Any]:
+    """Parse a FODT file and return the neutral model document dict."""
+    from pathlib import Path as _P
+    from .parser import parse_fodt_strict
+    return parse_fodt_strict(_P(file_path))
+
+
+def odf_version(document: dict[str, Any]) -> str:
+    """Return the ODF version string from a parsed document."""
+    return document.get("odf_version", "")
+
+
+def paragraphs(document: dict[str, Any]) -> list[dict[str, Any]]:
+    """Return all paragraph/heading blocks from a parsed document."""
+    return list(document.get("blocks", []))
+
+
+def to_dict(document: dict[str, Any]) -> dict[str, Any]:
+    """Return a JSON-safe copy of the document dict."""
+    import copy
+    result = copy.deepcopy(document)
+    return {k: v for k, v in result.items() if not k.startswith("_")}
+
+
+def kind(block: dict[str, Any]) -> str:
+    """Return the kind of a block ('paragraph', 'heading', etc.)."""
+    return block.get("kind", "paragraph")
+
+
+def style_name(block: dict[str, Any]) -> str:
+    """Return the style name of a block."""
+    return block.get("style_name", "")
+
+
+def outline_level(block: dict[str, Any]) -> "int | None":
+    """Return the outline level of a heading block, or None."""
+    return block.get("outline_level")
+
+
+def collect_list_items(document: dict[str, Any]) -> list[dict[str, Any]]:
+    """Return all list items from a parsed document."""
+    items: list[dict[str, Any]] = []
+    for lst in document.get("lists", []):
+        for item in lst.get("items", []):
+            items.append(item)
+    return items

@@ -60,12 +60,13 @@ class TestT2_LockInProgress:
     """T2: Lock file with status=IN_PROGRESS → STOP with ACTIVE_PLAN_INCOMPLETE."""
 
     def test_in_progress_lock_blocks_continuation(self, mock_repo, full_continue_setup):
+        from datetime import datetime, timezone
         full_continue_setup(session_id="session-aaa")
         _write_lock(mock_repo, {
             "plan_path": "C:/Users/prora/.claude/plans/my-plan.md",
             "status": "IN_PROGRESS",
             "last_taskcard": "TC-001",
-            "updated_at": "2026-06-17T00:00:00+00:00",
+            "updated_at": datetime.now(timezone.utc).isoformat(),
         })
         result = check(mock_repo, session_id="session-aaa")
         assert result["verdict"] == "STOP"
@@ -205,3 +206,162 @@ class TestT10_SessionKeyedLockCompleteOtherSession:
         })
         result = check(mock_repo, session_id="session-ccc")
         assert result["verdict"] == "CONTINUE"
+
+
+# --- TC-LOCK-004 (FF-LOCK-HEAL-20260624): Multi-plan session tests ---
+
+
+class TestT11_TerminalSupersededByNewerInProgress:
+    """T11: Two locks for same session — TERMINAL_CLOSED (older) + IN_PROGRESS (newer).
+    The newer IN_PROGRESS should win → ACTIVE_PLAN_INCOMPLETE, not POST_PLAN_TERMINAL."""
+
+    def test_terminal_superseded_by_newer_in_progress(self, mock_repo, full_continue_setup):
+        from datetime import datetime, timezone
+        full_continue_setup(session_id="session-multi")
+        now = datetime.now(timezone.utc)
+        # Older: TERMINAL_CLOSED (plan A completed earlier)
+        _write_session_lock(mock_repo, "session-multi-planA", {
+            "plan_path": "plans/plan-a.md",
+            "status": "TERMINAL_CLOSED",
+            "session_id": "session-multi",
+            "updated_at": "2026-06-24T01:00:00+00:00",
+        })
+        # Newer: IN_PROGRESS (plan B started after)
+        _write_session_lock(mock_repo, "session-multi-planB", {
+            "plan_path": "plans/plan-b.md",
+            "status": "IN_PROGRESS",
+            "session_id": "session-multi",
+            "last_taskcard": "TC-B-001",
+            "updated_at": now.isoformat(),
+        })
+        result = check(mock_repo, session_id="session-multi")
+        assert result["verdict"] == "STOP"
+        assert result["reason"] == "ACTIVE_PLAN_INCOMPLETE"
+        assert "plan-b.md" in result.get("detail", "")
+
+
+class TestT12_TerminalOnlyNewestFires:
+    """T12: Single TERMINAL_CLOSED lock for session → POST_PLAN_TERMINAL still fires."""
+
+    def test_single_terminal_still_blocks(self, mock_repo, full_continue_setup):
+        full_continue_setup(session_id="session-single")
+        _write_session_lock(mock_repo, "session-single", {
+            "plan_path": "plans/only-plan.md",
+            "status": "TERMINAL_CLOSED",
+            "session_id": "session-single",
+            "updated_at": "2026-06-24T01:00:00+00:00",
+        })
+        result = check(mock_repo, session_id="session-single")
+        assert result["verdict"] == "STOP"
+        assert result["reason"] == "POST_PLAN_TERMINAL"
+
+
+class TestT13_AlphabeticalOrderIrrelevant:
+    """T13: TERMINAL_CLOSED sorts first alphabetically but IN_PROGRESS has newer timestamp.
+    Must return ACTIVE_PLAN_INCOMPLETE (not POST_PLAN_TERMINAL)."""
+
+    def test_alphabetical_order_does_not_matter(self, mock_repo, full_continue_setup):
+        from datetime import datetime, timezone
+        full_continue_setup(session_id="session-alpha")
+        # "aaa-lock" sorts before "zzz-lock" but is OLDER
+        _write_session_lock(mock_repo, "aaa-lock", {
+            "plan_path": "plans/old-plan.md",
+            "status": "TERMINAL_CLOSED",
+            "session_id": "session-alpha",
+            "updated_at": "2026-06-24T01:00:00+00:00",
+        })
+        _write_session_lock(mock_repo, "zzz-lock", {
+            "plan_path": "plans/new-plan.md",
+            "status": "IN_PROGRESS",
+            "session_id": "session-alpha",
+            "last_taskcard": "TC-001",
+            "updated_at": datetime.now(timezone.utc).isoformat(),
+        })
+        result = check(mock_repo, session_id="session-alpha")
+        assert result["verdict"] == "STOP"
+        assert result["reason"] == "ACTIVE_PLAN_INCOMPLETE"
+        assert "new-plan.md" in result.get("detail", "")
+
+
+class TestT14_SupersededLockSkipped:
+    """T14: Lock with status=SUPERSEDED for current session is skipped entirely."""
+
+    def test_superseded_lock_skipped(self, mock_repo, full_continue_setup):
+        full_continue_setup(session_id="session-sup")
+        _write_session_lock(mock_repo, "session-sup", {
+            "plan_path": "plans/superseded-plan.md",
+            "status": "SUPERSEDED",
+            "session_id": "session-sup",
+            "updated_at": "2026-06-24T01:00:00+00:00",
+        })
+        result = check(mock_repo, session_id="session-sup")
+        assert result["verdict"] == "CONTINUE"
+
+
+class TestT15_TwoTerminalsNewestWins:
+    """T15: Two TERMINAL_CLOSED locks for same session → POST_PLAN_TERMINAL with NEWEST plan."""
+
+    def test_two_terminals_newest_plan_reported(self, mock_repo, full_continue_setup):
+        full_continue_setup(session_id="session-twot")
+        _write_session_lock(mock_repo, "session-twot-old", {
+            "plan_path": "plans/first-plan.md",
+            "status": "TERMINAL_CLOSED",
+            "session_id": "session-twot",
+            "updated_at": "2026-06-24T01:00:00+00:00",
+        })
+        _write_session_lock(mock_repo, "session-twot-new", {
+            "plan_path": "plans/second-plan.md",
+            "status": "TERMINAL_CLOSED",
+            "session_id": "session-twot",
+            "updated_at": "2026-06-24T02:00:00+00:00",
+        })
+        result = check(mock_repo, session_id="session-twot")
+        assert result["verdict"] == "STOP"
+        assert result["reason"] == "POST_PLAN_TERMINAL"
+        assert "second-plan.md" in result.get("active_plan_path", "")
+
+
+class TestT16_DeferredLockSkipped:
+    """T16: Lock with status=DEFERRED for current session is skipped entirely."""
+
+    def test_deferred_lock_skipped(self, mock_repo, full_continue_setup):
+        full_continue_setup(session_id="session-def")
+        _write_session_lock(mock_repo, "session-def", {
+            "plan_path": "plans/deferred-plan.md",
+            "status": "DEFERRED",
+            "session_id": "session-def",
+            "updated_at": "2026-06-24T01:00:00+00:00",
+        })
+        result = check(mock_repo, session_id="session-def")
+        assert result["verdict"] == "CONTINUE"
+
+
+class TestT17_EndToEndMultiPlanSession:
+    """T17: End-to-end multi-plan session simulation.
+    Plan A → TERMINAL → Plan B (IN_PROGRESS) → check returns ACTIVE_PLAN_INCOMPLETE for B."""
+
+    def test_multi_plan_lifecycle(self, mock_repo, full_continue_setup):
+        from datetime import datetime, timezone, timedelta
+        full_continue_setup(session_id="session-e2e")
+        now = datetime.now(timezone.utc)
+
+        # Plan A: created, then terminal-closed
+        _write_session_lock(mock_repo, "session-e2e-planA", {
+            "plan_path": "plans/plan-alpha.md",
+            "status": "TERMINAL_CLOSED",
+            "session_id": "session-e2e",
+            "updated_at": (now - timedelta(hours=1)).isoformat(),
+        })
+        # Plan B: started after A closed
+        _write_session_lock(mock_repo, "session-e2e-planB", {
+            "plan_path": "plans/plan-beta.md",
+            "status": "IN_PROGRESS",
+            "session_id": "session-e2e",
+            "last_taskcard": "TC-BETA-001",
+            "updated_at": now.isoformat(),
+        })
+        result = check(mock_repo, session_id="session-e2e")
+        assert result["verdict"] == "STOP"
+        assert result["reason"] == "ACTIVE_PLAN_INCOMPLETE"
+        assert "plan-beta.md" in result.get("detail", "")
+        assert "TC-BETA-001" in result.get("detail", "")
