@@ -19,7 +19,11 @@
 -->
 # Snoopy Juggling Seal — SAL Source-to-Consumption Pipeline Forensics and Redesign Plan
 # Format Factory — Specification Authority Layer
-# Plan version: 3.16 (updated 2026-06-22: all agent-resolvable SA-HEAL items complete;
+# Plan version: 4.0 (updated 2026-06-24: §33 Extended Forensic Investigation added;
+# run dazzling-purring-kernighan; ASM-001 through ASM-015 verified;
+# TC-SAL-DIAG-F001 through F021 registered; attrition table added;
+# 5 new root causes documented; consumer reachability traced)
+# Prior: 3.16 (updated 2026-06-22: all agent-resolvable SA-HEAL items complete;
 # TC-SA-HEAL-005/006/007/009/010/011 completed_verified; VER-SA-005/007/011 VERIFIED;
 # remaining: EXT-03 (Gate 11 Babar Raza) + TC-ZS-005 (blocked_external);
 # v3.15: §31 status corrections — TC-HARD-001/002/004/006 + SA-HEAL-004 verified;
@@ -97,6 +101,7 @@ A real, SHA-256-verified specification corpus exists:
 | Others | Various | Cache dirs exist | unknown | unknown | 0 |
 
 The 78 FODS verified facts at `.local/spec-cache/fods/1.3/workbench/verified-facts-review.yaml`
+[INVESTIGATION-2026-06-24: CONTRADICTED by ASM-001 — actually 4,991 facts (4,348 verified + 639 verified_with_note + 3 pending + 1 unknown). See §33.2 for evidence.]
 are the only real, independently verified specification facts in the system. They use fact IDs
 in the format `FACT-FODS-NNN` and are validated by `validate_spec_fact_refs.py`.
 
