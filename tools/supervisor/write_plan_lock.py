@@ -70,13 +70,16 @@ def validate_plan_binding(target_path: str, intent: str = "harden") -> tuple[boo
     """Return (allowed: bool, reason: str).
 
     Reads all active (non-expired) session-keyed lock files and checks:
-    1. If target_path is in forbidden_mutation_paths of any active lock → blocked.
-    2. If any lock is TERMINAL_CLOSED and its binding_contract.active_plan_path ==
-       target_path → blocked.
-    3. If no matching lock exists or all locks are cleared → allowed.
+    1. If target_path is in forbidden_mutation_paths of any active lock -> blocked.
+    2. TC-PG-007: If ANY lock has status == TERMINAL_CLOSED and its plan_path
+       matches target_path -> blocked (regardless of binding_contract).
+    3. TC-PG-007: Calls plan_identity.validate_plan_mutability() as fallback
+       for plans with front-matter terminal locks (survives lock file expiry).
+    4. If no matching lock exists or all locks are cleared -> allowed.
 
-    This provides a callable enforcement API for hardening scripts and execution
-    scripts to verify they are writing to the correct plan file.
+    # TC-PG-004: snoopy-juggling-seal.md is no longer hardcoded here.
+    # Dynamic exclusion via universal TERMINAL_CLOSED scan replaces the
+    # former hardcoded forbidden_mutation_paths entry.
     """
     norm_target = str(target_path).replace("\\", "/")
     if not _plan_locks_dir.exists():
@@ -86,15 +89,39 @@ def validate_plan_binding(target_path: str, intent: str = "harden") -> tuple[boo
             lock = json.loads(lf.read_text(encoding="utf-8"))
         except Exception:
             continue
+
+        # Check explicit forbidden_mutation_paths from binding_contract
         bc = lock.get("binding_contract", {})
         forbidden = bc.get("forbidden_mutation_paths", [])
         for fp in forbidden:
             if norm_target.endswith(str(fp).replace("\\", "/")):
                 return False, f"forbidden_mutation_path:{fp}"
+
+        # TC-PG-007: Universal terminal lock enforcement — block writes to any
+        # plan with a TERMINAL_CLOSED lock regardless of which session wrote it.
         if lock.get("status") == "TERMINAL_CLOSED":
-            active = bc.get("active_plan_path", "")
-            if active and norm_target.endswith(str(active).replace("\\", "/")):
-                return False, "terminal_closed_plan"
+            lock_plan = str(lock.get("plan_path", "")).replace("\\", "/")
+            if lock_plan and (norm_target.endswith(lock_plan) or norm_target == lock_plan):
+                return (
+                    False,
+                    f"TERMINAL_PLAN_MUTATION_REJECTED: plan '{target_path}' has "
+                    f"TERMINAL_CLOSED lock from session "
+                    f"'{lock.get('session_id', 'unknown')}' "
+                    f"(locked at {lock.get('updated_at', 'unknown')})",
+                )
+
+    # TC-PG-007: Also check plan identity front-matter if plan_identity module available
+    try:
+        _here_dir = Path(__file__).resolve().parent
+        if str(_here_dir) not in sys.path:
+            sys.path.insert(0, str(_here_dir))
+        from plan_identity import validate_plan_mutability  # type: ignore[import]
+        allowed, reason = validate_plan_mutability(Path(target_path))
+        if not allowed:
+            return False, reason
+    except ImportError:
+        pass  # plan_identity not yet available — graceful degradation
+
     return True, "allowed"
 
 
@@ -167,13 +194,19 @@ def write_lock(plan_path: str, last_taskcard: str | None = None, complete: bool 
             "hardening_may_change_plan_path": False,
             "forbidden_mutation_paths": [
                 "plans/master-plan-memory.md",
-                "plans/snoopy-juggling-seal.md",
+                # TC-PG-004: snoopy-juggling-seal.md removed — dynamic exclusion
+                # via TERMINAL_CLOSED scan in validate_plan_binding() replaces
+                # the hardcoded entry. All non-active plans are now protected
+                # dynamically, not just snoopy.
             ],
         }
 
     # 1. Write shared fallback lock (backwards compatibility) — now includes session_id
+    # TC-AMD-FIX-003: Atomic write via temp+rename for crash safety
     _shared_lock_path.parent.mkdir(parents=True, exist_ok=True)
-    _shared_lock_path.write_text(json.dumps(lock, indent=2) + "\n", encoding="utf-8")
+    _shared_tmp = _shared_lock_path.with_suffix(".tmp")
+    _shared_tmp.write_text(json.dumps(lock, indent=2) + "\n", encoding="utf-8")
+    os.replace(str(_shared_tmp), str(_shared_lock_path))
     print(f"[write_plan_lock] {_shared_lock_path} written \u2014 status={status}, plan={plan_path!r}")
 
     # 2. Write session-keyed lock (race-safe; one file per (session, plan) pair)
@@ -184,8 +217,77 @@ def write_lock(plan_path: str, last_taskcard: str | None = None, complete: bool 
     _plan_hash = hashlib.sha256(plan_path.encode()).hexdigest()[:8]
     _plan_locks_dir.mkdir(parents=True, exist_ok=True)
     keyed_path = _plan_locks_dir / f"{sid}-{_plan_hash}.json"
-    keyed_path.write_text(json.dumps(lock, indent=2) + "\n", encoding="utf-8")
+
+    # F-006 / TC-PG-007: Overwrite protection — do NOT overwrite a TERMINAL_CLOSED
+    # lock with IN_PROGRESS. This prevents the lock-overwrite scenario where a
+    # subsequent plan operation destroys the terminal state of a completed plan.
+    if keyed_path.exists() and status == "IN_PROGRESS":
+        try:
+            existing = json.loads(keyed_path.read_text(encoding="utf-8"))
+            if existing.get("status") == "TERMINAL_CLOSED":
+                print(
+                    f"[write_plan_lock] BLOCKED: refusing to overwrite TERMINAL_CLOSED "
+                    f"lock at {keyed_path.name} with IN_PROGRESS for plan {plan_path!r}",
+                    file=sys.stderr,
+                )
+                return
+        except Exception:
+            pass  # If read fails, proceed with write
+
+    # TC-AMD-FIX-003: Atomic write via temp+rename for crash safety
+    _keyed_tmp = keyed_path.with_suffix(".tmp")
+    _keyed_tmp.write_text(json.dumps(lock, indent=2) + "\n", encoding="utf-8")
+    os.replace(str(_keyed_tmp), str(keyed_path))
     print(f"[write_plan_lock] {keyed_path} written \u2014 session={sid!r}")
+
+    # TC-PG-007: When terminal-closing a plan, append plan_terminal_lock block to the
+    # plan file itself for durable lock detection beyond session-keyed lock expiry.
+    if terminal and status in ("TERMINAL_CLOSED", "ITERATION_REQUIRED"):
+        _append_terminal_lock_to_plan(plan_path, sid, status, datetime.now(timezone.utc).isoformat())
+
+
+def _append_terminal_lock_to_plan(
+    plan_path: str,
+    session_id: str,
+    status: str,
+    locked_at: str,
+) -> None:
+    """TC-PG-007: Append a plan_terminal_lock HTML comment to the plan file.
+
+    This durable marker lets plan_identity.validate_plan_mutability() detect
+    the terminal lock directly from the plan file — even after session-keyed
+    lock files expire or are overwritten.
+
+    Appends only if no such block already exists (idempotent).
+    Non-blocking: write failure is logged to stderr and ignored.
+    """
+    try:
+        p = Path(plan_path)
+        if not p.is_absolute():
+            p = _repo_root / p
+        if not p.exists():
+            return  # Non-existent plan — skip silently
+
+        existing = p.read_text(encoding="utf-8", errors="replace")
+        if "<!--plan_terminal_lock:" in existing:
+            return  # Already has a terminal lock block — idempotent
+
+        terminal_block = (
+            "\n\n"
+            "<!--plan_terminal_lock:\n"
+            f"  status: {status}\n"
+            f'  locked_at: "{locked_at}"\n'
+            f'  locked_by: "{session_id}"\n'
+            "  successor_required_for_future_changes: true\n"
+            '  mutation_policy: "no further plan/hardening/execution writes"\n'
+            "-->\n"
+        )
+        p.write_text(existing + terminal_block, encoding="utf-8")
+        print(f"[write_plan_lock] terminal lock block appended to plan file: {p.name}")
+    except Exception as exc:
+        # Log to stderr but do not block — terminal lock in lock file is primary
+        print(f"[write_plan_lock] WARNING: could not append terminal lock to plan file: {exc}",
+              file=sys.stderr)
 
 
 def clear_lock(session_id: str | None = None) -> None:
