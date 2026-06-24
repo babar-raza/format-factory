@@ -1,21 +1,14 @@
 # Work Item Grades
-Sprint: convergence-product-verify-20260624-3f98f85d
-Generated: 2026-06-24T12:46:30.454634
-Global Status: ACCEPTED
+Sprint: capability-convergence-iteration-3-20260624
+Generated: 2026-06-24T13:04:56.769471
+Global Status: ACCEPTED_WITH_REWORK
 
 | Item ID | Grade | Rework Required |
 |---------|-------|-----------------|
-| LEDGER-FIX-FODS | ACCEPTED_VERIFIED |  |
-| LEDGER-FIX-FODT | ACCEPTED_VERIFIED |  |
-| LEDGER-FIX-ABW | ACCEPTED_VERIFIED |  |
-| LOCK-CLEANUP | ACCEPTED_VERIFIED |  |
-| FODS-ROUNDTRIP-VERIFY | ACCEPTED_VERIFIED |  |
-| FODT-ROUNDTRIP-VERIFY | ACCEPTED_VERIFIED |  |
-| FODS-TESTSUITE | ACCEPTED_VERIFIED |  |
-| FODT-TESTSUITE | ACCEPTED_VERIFIED |  |
+| TC-C7-005 | ACCEPTED_VERIFIED |  |
 
 ## Summary
-- Accepted: 8
-- Rework: 0
+- Accepted: 1
+- Rework: 1
 - Overclaimed: 0
-- Autonomous Continue: True
+- Autonomous Continue: False

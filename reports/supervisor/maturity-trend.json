@@ -1,18 +1,18 @@
 {
   "schema_version": "1.0",
   "generated_from": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\reports\\supervisor\\grading-history.jsonl",
-  "sprint_count": 550,
+  "sprint_count": 552,
   "summary": {
-    "sprint_count": 550,
+    "sprint_count": 552,
     "verdict_distribution": {
       "ACCEPTED": 232,
-      "ACCEPTED_WITH_REWORK": 318
+      "ACCEPTED_WITH_REWORK": 320
     },
     "avg_evidence_quality_score": 0.734,
     "avg_rework_rate": 0.173,
     "avg_accepted_verified_ratio": 0.8,
-    "govblock_sprint_count": 83,
-    "govblock_rate": 0.151,
+    "govblock_sprint_count": 85,
+    "govblock_rate": 0.154,
     "recent_5_avg_quality": 0.73,
     "trend_direction": "stable"
   },
@@ -10743,6 +10743,48 @@
       "exit_code": 0,
       "has_govblock": false,
       "govblock_items": []
+    },
+    {
+      "index": 550,
+      "sprint_id": "agentic-maturity-wave1-20260624-3f98f85d",
+      "run_id": "agentic-maturity-wave1-20260624-3f98f85d",
+      "timestamp": "2026-06-24T12:56:00.230630",
+      "verdict": "ACCEPTED_WITH_REWORK",
+      "evidence_quality_score": 0.65,
+      "accepted_count": 4,
+      "rework_count": 1,
+      "overclaimed_count": 0,
+      "total_items": 5,
+      "accepted_verified_ratio": 0.8,
+      "rework_rate": 0.2,
+      "overclaim_rate": 0.0,
+      "continuation_state": false,
+      "exit_code": 3,
+      "has_govblock": true,
+      "govblock_items": [
+        "GOV_BLOCK:monolith_detection_validator"
+      ]
+    },
+    {
+      "index": 551,
+      "sprint_id": "capability-convergence-iteration-3-20260624",
+      "run_id": "cap-convergence-iter3-20260624-c22c1651",
+      "timestamp": "2026-06-24T13:04:56.769471",
+      "verdict": "ACCEPTED_WITH_REWORK",
+      "evidence_quality_score": 0.65,
+      "accepted_count": 1,
+      "rework_count": 1,
+      "overclaimed_count": 0,
+      "total_items": 2,
+      "accepted_verified_ratio": 0.5,
+      "rework_rate": 0.5,
+      "overclaim_rate": 0.0,
+      "continuation_state": false,
+      "exit_code": 3,
+      "has_govblock": true,
+      "govblock_items": [
+        "GOV_BLOCK:validate_source_architecture"
+      ]
     }
   ]
 }

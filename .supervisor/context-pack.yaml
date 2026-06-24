@@ -1,24 +1,25 @@
 schema_version: '1.0'
-generated_at: '2026-06-24T12:48:00.461763'
+generated_at: '2026-06-24T13:06:06.724934'
 repo_root: C:\Users\prora\OneDrive\Documents\GitHub\format-factory
 git:
-  head: 10ebf328
+  head: c22c1651
   status:
-    modified_count: 45
-    untracked_count: 58
+    modified_count: 35
+    untracked_count: 7
     staged_count: 1
-    total_changed: 881
+    total_changed: 43
     clean: false
 supervisor_mode: 4
 latest_sprint:
-  sprint_id: PROD-GOV-HEAL-20260624
+  sprint_id: agentic-maturity-wave1-20260624-3f98f85d
   run_id: unknown
-  autonomous_continue: true
-  iteration: 12
+  autonomous_continue: false
+  iteration: 1
   max_iterations: 12
-  hard_stops: []
+  hard_stops:
+  - critical_rework_blocks_continuation
   rework_items:
-  - LANE_ENFORCEMENT:1_violations
+  - GOV_BLOCK:monolith_detection_validator
 poc_matrix:
   sprint: capability-layer-closeout-rnext
   last_updated: '2026-06-24'

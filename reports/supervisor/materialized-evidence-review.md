@@ -1,7 +1,7 @@
 # Materialized Evidence Review
-# Run ID: agentic-maturity-wave1-20260624-3f98f85d
-# Sprint: agentic-maturity-wave1-20260624-3f98f85d
-# Generated: 2026-06-24T12:56:01.499251
+# Run ID: cap-convergence-iter3-20260624-c22c1651
+# Sprint: capability-convergence-iteration-3-20260624
+# Generated: 2026-06-24T13:04:58.163947
 
 ## Materialization Summary
 
@@ -13,13 +13,10 @@
 
 | Item | Grade | Note |
 |------|-------|------|
-| TC-AMD-FIX-002 | ACCEPTED | All 1 evidence path(s) verified |
-| TC-AMD-FIX-003 | ACCEPTED | All 1 evidence path(s) verified |
-| TC-AMD-SIGNAL-001 | ACCEPTED | All 3 evidence path(s) verified |
-| TC-AMD-DOC-001 | ACCEPTED | All 1 evidence path(s) verified |
+| TC-C7-005 | ACCEPTED | All 4 evidence path(s) verified |
 
 ## Manifest Location
-- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\materialized\agentic-maturity-wave1-20260624-3f98f85d\materialized-evidence-manifest.yaml
+- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\materialized\cap-convergence-iter3-20260624-c22c1651\materialized-evidence-manifest.yaml
 
 ## Patch Location
-- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\materialized\agentic-maturity-wave1-20260624-3f98f85d\source-change-diffs.patch
+- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\materialized\cap-convergence-iter3-20260624-c22c1651\source-change-diffs.patch

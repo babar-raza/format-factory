@@ -1,14 +1,14 @@
 # Session Resume Briefing
 # Format Factory — Supervisor-Generated
-# Generated: 2026-06-24T12:51:09.296035
+# Generated: 2026-06-24T13:06:06.712474
 
 ## Quick State
-- Last sprint: convergence-product-verify-20260624-3f98f85d
-- Evidence verdict: ACCEPTED
-- Tests: 1609 passed / 0 failed
+- Last sprint: capability-convergence-iteration-3-20260624
+- Evidence verdict: ACCEPTED_WITH_REWORK
+- Tests: 32 passed / 0 failed
 - PENDING markers: 0
 - CRITICAL contradictions: 0
-- Autonomous continue: True
+- Autonomous continue: False
 - Current supervisor mode: MODE 4
 - MCP status: ACTIVE (.vscode/mcp.json present)
 
@@ -23,7 +23,7 @@
 5. Prose context: `reports/supervisor/next-sprint.md`
 
 ## Where To Find Evidence
-- Last evidence bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\convergence-product-verify-20260624-3f98f85d\declaration-review-package.zip
+- Last evidence bundle: .local/evidences/cap-convergence-iter3-20260624-c22c1651/
 - Supervisor outputs: reports/supervisor/
 - Project memory: .supervisor/project-memory.md
 
@@ -86,3 +86,9 @@
 - No push without explicit user authorization.
 - No gate self-approval. All gates 1-11 require human approval.
 - MCP activation (MODE 4): COMPLETE.
+
+
+## Maturity Trend
+
+Maturity trend written: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\reports\supervisor\maturity-trend.json
+  Sprints: 552, avg quality: 0.734, trend: stable

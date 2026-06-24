@@ -1,183 +1,24 @@
-- item_id: LEDGER-FIX-FODS
-  item_title: Fix FODS product-deepening-ledger entry
+- item_id: TC-C7-005
+  item_title: Inject gap_ledger_ref into work item declarations
   declared_status: completed
   supervisor_grade: ACCEPTED_VERIFIED
   evidence_found: true
   evidence_paths:
-  - registry/product-deepening-ledger.yaml
-  tests_supporting: []
+  - tests/supervisor/test_gap_ledger_ref_injection.py
+  - tools/supervisor/autonomous_cycle.py
+  - tools/supervisor/gap_ledger_to_work_items.py
+  - tools/supervisor/capability_feature_compiler.py
+  tests_supporting: &id001
+  - tests/supervisor/test_gap_ledger_ref_injection.py
   tests_missing: []
   acceptance_criteria_met:
   - Evidence found
   - No missing paths
-  - 'Governance item: file-content validated (test coverage N/A by design)'
   acceptance_criteria_failed: []
   required_rework: ''
   can_autonomously_repair: false
   next_prompt_instruction: ''
-  purpose_check:
-    item_type: GOVERNANCE_TASKCARD
-    has_gap_ref: null
-    verdict: NOT_APPLICABLE
-    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
-  test_layer_check:
-    inadequate: false
-    note: non-product item, skip
-  semantic_verification:
-    adequate: false
-    confidence: 0.0
-    stub_detected: false
-    deficiencies:
-    - 'few key fields found: [] (expected >=3)'
-    llm_used: false
-    intermediate_verified: true
-    source: intermediate_verify
-    checks:
-    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\registry\product-deepening-ledger.yaml
-      exists: true
-      content_ok: false
-      detail: 'few key fields found: [] (expected >=3)'
-      check_type: yaml_content
-    summary: 0/1 evidence files passed content check
-    _cached_at: '2026-06-24T06:53:08.129654+00:00'
-    _from_cache: true
-- item_id: LEDGER-FIX-FODT
-  item_title: Fix FODT product-deepening-ledger entry
-  declared_status: completed
-  supervisor_grade: ACCEPTED_VERIFIED
-  evidence_found: true
-  evidence_paths:
-  - registry/product-deepening-ledger.yaml
-  tests_supporting: []
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  - 'Governance item: file-content validated (test coverage N/A by design)'
-  acceptance_criteria_failed: []
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: ''
-  purpose_check:
-    item_type: GOVERNANCE_TASKCARD
-    has_gap_ref: null
-    verdict: NOT_APPLICABLE
-    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
-  test_layer_check:
-    inadequate: false
-    note: non-product item, skip
-  semantic_verification:
-    adequate: false
-    confidence: 0.0
-    stub_detected: false
-    deficiencies:
-    - 'few key fields found: [] (expected >=3)'
-    llm_used: false
-    intermediate_verified: true
-    source: intermediate_verify
-    checks:
-    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\registry\product-deepening-ledger.yaml
-      exists: true
-      content_ok: false
-      detail: 'few key fields found: [] (expected >=3)'
-      check_type: yaml_content
-    summary: 0/1 evidence files passed content check
-    _cached_at: '2026-06-24T06:53:08.175831+00:00'
-    _from_cache: true
-- item_id: LEDGER-FIX-ABW
-  item_title: Fix ABW product-deepening-ledger qname status
-  declared_status: completed
-  supervisor_grade: ACCEPTED_VERIFIED
-  evidence_found: true
-  evidence_paths:
-  - registry/product-deepening-ledger.yaml
-  tests_supporting: []
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  - 'Governance item: file-content validated (test coverage N/A by design)'
-  acceptance_criteria_failed: []
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: ''
-  purpose_check:
-    item_type: GOVERNANCE_TASKCARD
-    has_gap_ref: null
-    verdict: NOT_APPLICABLE
-    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
-  test_layer_check:
-    inadequate: false
-    note: non-product item, skip
-  semantic_verification:
-    adequate: false
-    confidence: 0.0
-    stub_detected: false
-    deficiencies:
-    - 'few key fields found: [] (expected >=3)'
-    llm_used: false
-    intermediate_verified: true
-    source: intermediate_verify
-    checks:
-    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\registry\product-deepening-ledger.yaml
-      exists: true
-      content_ok: false
-      detail: 'few key fields found: [] (expected >=3)'
-      check_type: yaml_content
-    summary: 0/1 evidence files passed content check
-    _cached_at: '2026-06-24T06:53:08.215092+00:00'
-    _from_cache: true
-- item_id: LOCK-CLEANUP
-  item_title: Clean stale plan locks blocking check_continuation
-  declared_status: completed
-  supervisor_grade: ACCEPTED_VERIFIED
-  evidence_found: true
-  evidence_paths:
-  - .local/supervisor/plan-locks/
-  tests_supporting: []
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  - 'Governance item: file-content validated (test coverage N/A by design)'
-  acceptance_criteria_failed: []
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: ''
-  purpose_check:
-    item_type: GOVERNANCE_TASKCARD
-    has_gap_ref: null
-    verdict: NOT_APPLICABLE
-    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
-  test_layer_check:
-    inadequate: false
-    note: non-product item, skip
-  semantic_verification:
-    adequate: false
-    confidence: 0.0
-    stub_detected: false
-    deficiencies:
-    - evidence_files_unreadable
-    llm_used: false
-- item_id: FODS-ROUNDTRIP-VERIFY
-  item_title: Verify FODS 6-step roundtrip (load/inspect/edit/save/reload/export)
-  declared_status: completed
-  supervisor_grade: ACCEPTED_VERIFIED
-  evidence_found: true
-  evidence_paths:
-  - src/python/fods/parser.py
-  - src/python/fods/neutral_model.py
-  - src/python/fods/writer.py
-  tests_supporting: []
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  - 'Governance item: file-content validated (test coverage N/A by design)'
-  acceptance_criteria_failed: []
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: ''
+  tests_evidence_verified: *id001
   purpose_check:
     item_type: GOVERNANCE_TASKCARD
     has_gap_ref: null
@@ -193,135 +34,26 @@
     deficiencies: []
     llm_used: false
     intermediate_verified: true
-    source: intermediate_verify
+    source: intermediate_content_check
     checks:
-    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\fods\parser.py
+    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\tests\supervisor\test_gap_ledger_ref_injection.py
       exists: true
       content_ok: true
-      detail: 'non-empty (16621 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\fods\parser.py'
-      check_type: nonzero_existence
-    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\fods\neutral_model.py
+      detail: valid (7 test functions with assertions)
+      check_type: python_test_content
+    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\tools\supervisor\autonomous_cycle.py
       exists: true
       content_ok: true
-      detail: 'non-empty (42358 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\fods\neutral_model.py'
+      detail: 'non-empty (124630 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\tools\supervisor\autonomous_cycle.py'
       check_type: nonzero_existence
-    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\fods\writer.py
+    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\tools\supervisor\gap_ledger_to_work_items.py
       exists: true
       content_ok: true
-      detail: 'non-empty (7308 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\fods\writer.py'
+      detail: 'non-empty (8810 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\tools\supervisor\gap_ledger_to_work_items.py'
       check_type: nonzero_existence
-    summary: 3/3 evidence files passed content check
-    _cached_at: '2026-06-24T06:53:08.257302+00:00'
-    _from_cache: true
-- item_id: FODT-ROUNDTRIP-VERIFY
-  item_title: Verify FODT load/save/reload roundtrip
-  declared_status: completed
-  supervisor_grade: ACCEPTED_VERIFIED
-  evidence_found: true
-  evidence_paths:
-  - src/python/fodt/parser.py
-  - src/python/fodt/writer.py
-  tests_supporting: []
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  - 'Governance item: file-content validated (test coverage N/A by design)'
-  acceptance_criteria_failed: []
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: ''
-  purpose_check:
-    item_type: GOVERNANCE_TASKCARD
-    has_gap_ref: null
-    verdict: NOT_APPLICABLE
-    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
-  test_layer_check:
-    inadequate: false
-    note: non-product item, skip
-  semantic_verification:
-    adequate: true
-    confidence: 0.7
-    stub_detected: false
-    deficiencies: []
-    llm_used: false
-    intermediate_verified: true
-    source: intermediate_verify
-    checks:
-    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\fodt\parser.py
+    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\tools\supervisor\capability_feature_compiler.py
       exists: true
       content_ok: true
-      detail: 'non-empty (15948 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\fodt\parser.py'
+      detail: 'non-empty (9132 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\tools\supervisor\capability_feature_compiler.py'
       check_type: nonzero_existence
-    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\fodt\writer.py
-      exists: true
-      content_ok: true
-      detail: 'non-empty (13216 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\fodt\writer.py'
-      check_type: nonzero_existence
-    summary: 2/2 evidence files passed content check
-    _cached_at: '2026-06-24T06:53:08.300062+00:00'
-    _from_cache: true
-- item_id: FODS-TESTSUITE
-  item_title: Run FODS test suite
-  declared_status: completed
-  supervisor_grade: ACCEPTED_VERIFIED
-  evidence_found: true
-  evidence_paths:
-  - tests/python/fods/
-  tests_supporting: []
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  - 'Governance item: file-content validated (test coverage N/A by design)'
-  acceptance_criteria_failed: []
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: ''
-  purpose_check:
-    item_type: GOVERNANCE_TASKCARD
-    has_gap_ref: null
-    verdict: NOT_APPLICABLE
-    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
-  test_layer_check:
-    inadequate: false
-    note: non-product item, skip
-  semantic_verification:
-    adequate: false
-    confidence: 0.0
-    stub_detected: false
-    deficiencies:
-    - evidence_files_unreadable
-    llm_used: false
-- item_id: FODT-TESTSUITE
-  item_title: Run FODT test suite
-  declared_status: completed
-  supervisor_grade: ACCEPTED_VERIFIED
-  evidence_found: true
-  evidence_paths:
-  - tests/python/fodt/
-  tests_supporting: []
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  - 'Governance item: file-content validated (test coverage N/A by design)'
-  acceptance_criteria_failed: []
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: ''
-  purpose_check:
-    item_type: GOVERNANCE_TASKCARD
-    has_gap_ref: null
-    verdict: NOT_APPLICABLE
-    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
-  test_layer_check:
-    inadequate: false
-    note: non-product item, skip
-  semantic_verification:
-    adequate: false
-    confidence: 0.0
-    stub_detected: false
-    deficiencies:
-    - evidence_files_unreadable
-    llm_used: false
+    summary: 4/4 evidence files passed content check

@@ -134,6 +134,53 @@ def check(repo_root: Path, *, session_id: str | None = None,
                 # CLAUDE_CHAT_ID unknown — warn but do not block (advisory)
                 pass  # CHAT_ID_UNKNOWN is advisory only
 
+    # --- Check 0c: Session-scoped chat plan binding (PLAN-SCOPED-CONT-20260623) ---
+    # Reads .local/missions/*/plan-binding.yaml files. If a binding exists for this
+    # session with status=IN_PROGRESS and global_ledger_fallback_allowed=false,
+    # block continuation so the agent stays on the bound plan.
+    _missions_dir = repo_root / ".local" / "missions"
+    if _missions_dir.is_dir():
+        for _binding_path in sorted(_missions_dir.glob("*/plan-binding.yaml")):
+            try:
+                import yaml as _yaml_mod
+                _binding_data = _yaml_mod.safe_load(
+                    _binding_path.read_text(encoding="utf-8")
+                )
+                _b = (_binding_data or {}).get("chat_plan_binding", {})
+            except Exception:
+                continue  # Corrupt binding — skip, don't crash
+            # Session scoping: only applies to the session that created the binding
+            _b_sid = _b.get("session_id")
+            if _b_sid and _b_sid != session_id:
+                continue  # Different session — not our binding
+            if _b.get("status") == "COMPLETE":
+                continue  # Completed — no longer blocking
+            # TTL: skip stale bindings (default 48h)
+            _b_ttl = _b.get("ttl_hours", 48)
+            _b_created = _b.get("created_at", "")
+            if _b_created:
+                try:
+                    from datetime import datetime as _bdt, timezone as _btz, timedelta as _td
+                    _b_ts = _bdt.fromisoformat(_b_created)
+                    if _bdt.now(_btz.utc) - _b_ts > _td(hours=_b_ttl):
+                        continue  # Expired binding
+                except Exception:
+                    pass  # Can't parse — don't skip, enforce cautiously
+            # Active binding found for this session
+            if not _b.get("global_ledger_fallback_allowed", True):
+                return _stop(
+                    "CHAT_PLAN_BINDING_ACTIVE",
+                    (
+                        f"Chat plan binding is active: {_b.get('plan_path', 'unknown')}. "
+                        f"Mission: {_b.get('mission_id', 'unknown')}. "
+                        f"Complete all taskcards or use --clear-mission to reset."
+                    ),
+                    iteration=iteration,
+                    max_iterations=max_iterations,
+                    plan_path=_b.get("plan_path"),
+                    mission_id=_b.get("mission_id"),
+                )
+
     # --- Check 1b: Active per-chat plan lock (PLAN_LOCK_GATE) ---
     # If a per-chat plan is loaded and not yet 100% complete, block continuation
     # entirely. Product deepening sprints MUST NOT run while a plan is active.
@@ -514,6 +561,15 @@ def check(repo_root: Path, *, session_id: str | None = None,
             print(f"WARNING [Check9]: product_deepening_gate error: {_pd_err}", file=sys.stderr)
 
     # --- All checks passed ---
+    # Resolve product chat_id (advisory — TC-PSC-003 Part A)
+    _product_chat_id = None
+    if not track or track == "product":
+        try:
+            from continuation_identity import get_or_create_product_chat_id
+            _product_chat_id = get_or_create_product_chat_id()
+        except Exception:
+            pass
+
     result = {
         "verdict": "CONTINUE",
         "iteration": iteration,
@@ -521,6 +577,7 @@ def check(repo_root: Path, *, session_id: str | None = None,
         "continuation_state": cont_state,
         "session_id": signal.get("session_id"),
         "track": track,
+        "product_chat_id": _product_chat_id,
         "next_work_items_path": work_items_rel,
         "next_sprint_path": "reports/supervisor/next-sprint.md",
         "rework_items": rework_items,
@@ -531,11 +588,39 @@ def check(repo_root: Path, *, session_id: str | None = None,
             f"evidence_continuation bridge failed: "
             f"{signal.get('evidence_continuation_error', 'unknown')}"
         )
+    # Log verdict to continuation ledger (non-blocking)
+    _log_verdict("CONTINUE", "", session_id=signal.get("session_id"),
+                 signal_path=str(signal_path), track=track or "product",
+                 iteration=iteration)
     return result
+
+
+def _log_verdict(verdict: str, reason: str, **context) -> None:
+    """Non-blocking: append a continuation verdict to the JSONL ledger."""
+    try:
+        sys.path.insert(0, str(_here))
+        from continuation_ledger import append_event
+        append_event(
+            event_type="CONTINUATION_VERDICT",
+            artifact_path=context.get("signal_path", "unknown"),
+            session_id=context.get("session_id"),
+            metadata={
+                "verdict": verdict,
+                "reason": reason,
+                "iteration": context.get("iteration"),
+                "track": context.get("track", "product"),
+            },
+        )
+    except Exception:
+        pass  # Ledger failure must never block continuation
 
 
 def _stop(reason: str, detail: str, *, iteration: int = 0,
           max_iterations: int = 5, **extras) -> dict:
+    _log_verdict("STOP", reason, iteration=iteration, **{
+        k: v for k, v in extras.items()
+        if k in ("session_id", "signal_path", "track")
+    })
     return {
         "verdict": "STOP",
         "reason": reason,

@@ -231,3 +231,29 @@ def get_or_create_machinery_identity() -> ContinuationIdentity:
         branch=branch,
     )
     return identity
+
+
+def get_or_create_product_chat_id() -> str:
+    """Get or create a persistent chat_id for the product track.
+
+    Unlike machinery track (which generates a fresh UUID4 each call),
+    this persists the chat_id to a file so it remains stable within a session.
+    """
+    chat_id_path = _REPO_ROOT / ".local" / "supervisor" / "product" / "current-chat-id.json"
+    if chat_id_path.exists():
+        try:
+            data = json.loads(chat_id_path.read_text(encoding="utf-8"))
+            existing_id = data.get("chat_id")
+            if existing_id:
+                return existing_id
+        except Exception:
+            pass
+    # Generate new chat_id and persist
+    new_id = str(uuid.uuid4())
+    chat_id_path.parent.mkdir(parents=True, exist_ok=True)
+    chat_id_path.write_text(json.dumps({
+        "chat_id": new_id,
+        "track_type": "product",
+        "created_at": datetime.now(timezone.utc).isoformat(),
+    }), encoding="utf-8")
+    return new_id
