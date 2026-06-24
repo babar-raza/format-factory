@@ -457,7 +457,7 @@ def _check_skill_transcript_existence(doc: dict, repo_root: Path) -> list[str]:
     return warnings
 
 
-def _check_fix_sprint_evidence(doc: dict) -> list[str]:
+def check_fix_sprint_evidence(doc: dict) -> list[str]:
     """FSE-001: Warn when test files are in changed_files but not in any item's evidence_paths.
 
     When a sprint changes test files AND code files, the test files should appear
@@ -485,7 +485,7 @@ def _check_fix_sprint_evidence(doc: dict) -> list[str]:
     return warnings
 
 
-def _check_parent_id_evidence_tagging(doc: dict) -> list[str]:
+def check_parent_id_evidence_tagging(doc: dict) -> list[str]:
     """TC-VHL-REWORK-004: Warn when planned_work_items have no evidence_paths.
 
     Every planned_work_item with status=completed should have at least one
@@ -501,6 +501,44 @@ def _check_parent_id_evidence_tagging(doc: dict) -> list[str]:
             warnings.append(
                 f"WARN(PARENT-ID): planned_work_item '{item_id}' has status=completed "
                 f"but no evidence_paths — grader will return OVERCLAIMED"
+            )
+    return warnings
+
+
+# Backward-compat aliases (TC-FL-004)
+_check_fix_sprint_evidence = check_fix_sprint_evidence
+_check_parent_id_evidence_tagging = check_parent_id_evidence_tagging
+
+
+def check_contract_compliance(doc: dict, repo_root: Path = _REPO) -> list[str]:
+    """CONTRACT-001: Warn when contracted gap-sourced items are not addressed.
+
+    Reads sprint-contract.json (written by autonomous_cycle Step 4a2) and checks
+    that each contracted gap_ref appears in the declaration's planned_work_items.
+    """
+    contract_path = repo_root / ".local" / "supervisor" / "sprint-contract.json"
+    if not contract_path.exists():
+        return []
+
+    try:
+        contract = json.loads(contract_path.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return []
+
+    # Collect all gap_ledger_ref / gap_ref values from declaration items
+    declared_gaps: set[str] = set()
+    for item in doc.get("planned_work_items", []):
+        ref = item.get("gap_ledger_ref") or item.get("gap_ref")
+        if ref:
+            declared_gaps.add(ref)
+
+    warnings: list[str] = []
+    for ci in contract.get("contracted_items", []):
+        gap_ref = ci.get("gap_ref", "")
+        if gap_ref and gap_ref not in declared_gaps:
+            warnings.append(
+                f"WARN(CONTRACT-001): Contracted item {ci.get('item_id', '?')} "
+                f"(gap_ref={gap_ref}) not addressed in declaration"
             )
     return warnings
 
@@ -588,10 +626,13 @@ def validate_file(
     transcript_warnings = _check_skill_transcript_existence(doc, repo_root)
 
     # --- Phase 9 (FSE-001): Fix sprint evidence completeness (WARN only) ---
-    fse_warnings = _check_fix_sprint_evidence(doc)
+    fse_warnings = check_fix_sprint_evidence(doc)
 
     # --- Phase 10 (TC-VHL-REWORK-004): Parent-ID evidence tagging (WARN only) ---
-    parent_id_warnings = _check_parent_id_evidence_tagging(doc)
+    parent_id_warnings = check_parent_id_evidence_tagging(doc)
+
+    # --- Phase 11 (TC-FL-010): Contract compliance check (WARN only) ---
+    contract_warnings = check_contract_compliance(doc, repo_root)
 
     return {
         "passed": len(errors) == 0,
@@ -602,6 +643,7 @@ def validate_file(
         "transcript_warnings": transcript_warnings,
         "fse_warnings": fse_warnings,
         "parent_id_warnings": parent_id_warnings,
+        "contract_warnings": contract_warnings,
     }
 
 

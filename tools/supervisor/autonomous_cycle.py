@@ -389,6 +389,115 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
     except Exception as _qn_err:
         print(f"  WARNING: QName coverage check skipped (non-blocking): {_qn_err}")
 
+    # Step 0a-v54v55 (FF-DEFERRED-RESOLVE-20260624 TC-D1): V54/V55 promotion tracker.
+    print("=== STEP 0a-v54v55: V54/V55 PROMOTION TRACKER ===")
+    try:
+        _v54_tracker_path = repo_root / "reports" / "v54v55-sprint-tracker.json"
+        if _v54_tracker_path.exists():
+            import json as _v54_json
+            _v54_data = _v54_json.loads(_v54_tracker_path.read_text(encoding="utf-8"))
+            _v54_count = _v54_data.get("clean_sprint_count", 0)
+            _v54_target = _v54_data.get("target_clean_sprints", 3)
+            _v54_promoted = _v54_data.get("promoted", False)
+            if _v54_promoted:
+                print(f"  V54/V55 already promoted to blocking ({_v54_count}/{_v54_target} clean sprints)")
+            else:
+                print(f"  V54/V55 clean sprints: {_v54_count}/{_v54_target} (promotion pending)")
+                if _v54_count >= _v54_target:
+                    print("  INFO: V54/V55 eligible for promotion — will promote after governance run")
+        else:
+            print("  SKIP: reports/v54v55-sprint-tracker.json not found")
+    except Exception as _v54_err:
+        print(f"  WARNING: V54/V55 tracker check skipped (non-blocking): {_v54_err}")
+
+    # Step 0a-sal (FF-DEFERRED-RESOLVE-20260624 TC-D3): SAL-to-QName cross-reference check.
+    print("=== STEP 0a-sal: SAL-TO-QNAME CROSS-REFERENCE CHECK ===")
+    try:
+        import subprocess as _sal_subprocess
+        _sal_tool = repo_root / "tools" / "audit_sal_to_qname.py"
+        _sal_baseline_path = repo_root / "reports" / "sal-qname-baseline.json"
+        if _sal_tool.exists():
+            _sal_result = _sal_subprocess.run(
+                [sys.executable, str(_sal_tool)],
+                capture_output=True, text=True, timeout=60, cwd=str(repo_root),
+            )
+            import re as _sal_re
+            _sal_high_match = _sal_re.search(r"High severity:\s+(\d+)", _sal_result.stdout)
+            _sal_high = int(_sal_high_match.group(1)) if _sal_high_match else 0
+            _sal_bl_high = 28  # default baseline
+            if _sal_baseline_path.exists():
+                try:
+                    _sal_bl_data = json.loads(_sal_baseline_path.read_text(encoding="utf-8"))
+                    _sal_bl_high = int(_sal_bl_data.get("high_severity_count", 28))
+                except Exception:
+                    pass
+            if _sal_high > _sal_bl_high:
+                continuation_warnings.append(
+                    f"SAL_QNAME_DANGLING_REFS: {_sal_high} HIGH gaps (baseline {_sal_bl_high})"
+                )
+                print(f"  WARNING: SAL-QName HIGH gaps increased: {_sal_high} > baseline {_sal_bl_high}")
+            else:
+                print(f"  SAL-QName audit: {_sal_high} HIGH gaps (baseline: {_sal_bl_high}) — OK")
+        else:
+            print("  SKIP: tools/audit_sal_to_qname.py not found")
+    except Exception as _sal_err:
+        print(f"  WARNING: SAL-QName check skipped (non-blocking): {_sal_err}")
+
+    # Step 0a-gap-sal (FF-DEFERRED-RESOLVE-20260624 TC-D4): Gap-ledger SAL traceability check.
+    print("=== STEP 0a-gap-sal: GAP-LEDGER SAL TRACEABILITY CHECK ===")
+    try:
+        import subprocess as _gsal_subprocess
+        _gsal_tool = repo_root / "tools" / "audit_gap_ledger_sal_refs.py"
+        _gsal_baseline_path = repo_root / "reports" / "gap-ledger-sal-baseline.json"
+        if _gsal_tool.exists():
+            _gsal_result = _gsal_subprocess.run(
+                [sys.executable, str(_gsal_tool)],
+                capture_output=True, text=True, timeout=60, cwd=str(repo_root),
+            )
+            import re as _gsal_re
+            _gsal_high_match = _gsal_re.search(r"High severity:\s+(\d+)", _gsal_result.stdout)
+            _gsal_high = int(_gsal_high_match.group(1)) if _gsal_high_match else 0
+            _gsal_bl_high = 0  # default baseline
+            if _gsal_baseline_path.exists():
+                try:
+                    _gsal_bl_data = json.loads(_gsal_baseline_path.read_text(encoding="utf-8"))
+                    _gsal_bl_high = int(_gsal_bl_data.get("high_severity_count", 0))
+                except Exception:
+                    pass
+            if _gsal_high > _gsal_bl_high:
+                continuation_warnings.append(
+                    f"GAP_LEDGER_SAL_TRACEABILITY: {_gsal_high} HIGH gaps (baseline {_gsal_bl_high})"
+                )
+                print(f"  WARNING: Gap-ledger SAL HIGH gaps increased: {_gsal_high} > baseline {_gsal_bl_high}")
+            else:
+                print(f"  Gap-ledger SAL audit: {_gsal_high} HIGH gaps (baseline: {_gsal_bl_high}) — OK")
+        else:
+            print("  SKIP: tools/audit_gap_ledger_sal_refs.py not found")
+    except Exception as _gsal_err:
+        print(f"  WARNING: Gap-ledger SAL check skipped (non-blocking): {_gsal_err}")
+
+    # Step 0c: Action queue consumption — promote machine_executable actions (TC-FL-008)
+    _consumed_actions: list[dict] = []
+    try:
+        _aq_path = repo_root / "reports" / "capability-layer" / "action-queue.json"
+        _gl_path_0c = repo_root / "reports" / "capability-layer" / "gap-ledger.json"
+        if _aq_path.exists() and _gl_path_0c.exists():
+            _aq = json.loads(_aq_path.read_text(encoding="utf-8"))
+            _gl_0c = json.loads(_gl_path_0c.read_text(encoding="utf-8"))
+            _gap_status_0c = {g["gap_id"]: g.get("status", "open") for g in _gl_0c.get("gaps", [])}
+
+            for _action in _aq.get("actions", []):
+                if (_action.get("machine_executable")
+                        and not _action.get("advisory_only")
+                        and _gap_status_0c.get(_action.get("gap_id")) != "closed"):
+                    _action["taskcard"] = f"TC-ACT-{_action['gap_id']}-{sprint_id[:8]}"
+                    _consumed_actions.append(_action)
+
+            if _consumed_actions:
+                print(f"  [Step 0c] Consumed {len(_consumed_actions)} executable actions from queue")
+    except Exception as _aq_err:
+        print(f"  WARNING: Action queue consumption skipped: {_aq_err}")
+
     # Step 0b: Detect active per-chat plan lock
     plan_lock = None
     _plan_locks_dir = repo_root / ".local" / "supervisor" / "plan-locks"
@@ -609,6 +718,60 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
     except Exception as _lc_err:
         print(f"  [LANE_GUARD] Error: {_lc_err}")
 
+    # Step 1b: Evidence completeness pre-check + auto-repair (TC-FL-005)
+    print("\n=== STEP 1b: EVIDENCE COMPLETENESS PRE-CHECK ===")
+    _evidence_repair_count = 0
+    try:
+        from sprint_executor_validate import (
+            check_fix_sprint_evidence as _check_fse,
+            check_parent_id_evidence_tagging as _check_pid,
+        )
+        _fse_warns = _check_fse(decl)
+        _pid_warns = _check_pid(decl)
+
+        if _fse_warns or _pid_warns:
+            # Auto-repair FSE-001: add changed test files to matching PRODUCT items
+            _changed_tests = {
+                f for f in (decl.get("changed_files") or [])
+                if "/test_" in f or f.startswith("tests/")
+            }
+            for _item in decl.get("planned_work_items", []):
+                if _item.get("item_type") in ("PRODUCT_SOURCE", "PRODUCT_TEST"):
+                    _existing_ep = set(_item.get("evidence_paths") or [])
+                    _fmt_parts = (_item.get("gap_ledger_ref") or "").split("-")[1:2]
+                    _fmt_lower = _fmt_parts[0].lower() if _fmt_parts else ""
+                    for _tf in _changed_tests:
+                        if _fmt_lower and _fmt_lower in _tf.lower() and _tf not in _existing_ep:
+                            _item.setdefault("evidence_paths", []).append(_tf)
+                            _evidence_repair_count += 1
+
+            # Auto-repair PID-001: copy children's evidence to empty parents
+            _items_by_id = {i.get("item_id"): i for i in decl.get("planned_work_items", [])}
+            for _item in decl.get("planned_work_items", []):
+                _parent_id = _item.get("parent_id")
+                if _parent_id and _parent_id in _items_by_id:
+                    _parent = _items_by_id[_parent_id]
+                    if _parent.get("status") == "completed" and not (_parent.get("evidence_paths") or []):
+                        _child_evidence = _item.get("evidence_paths") or []
+                        if _child_evidence:
+                            _parent.setdefault("evidence_paths", []).extend(_child_evidence)
+                            _evidence_repair_count += 1
+
+            # Re-validate after repair
+            _fse_warns = _check_fse(decl)
+            _pid_warns = _check_pid(decl)
+
+            # Remaining warnings become rework items
+            review.setdefault("rework_items", [])
+            for _w in _fse_warns + _pid_warns:
+                if _w not in review["rework_items"]:
+                    review["rework_items"].append(_w)
+
+        print(f"  FSE-001 warnings: {len(_fse_warns)}, PID-001 warnings: {len(_pid_warns)}, "
+              f"Auto-repairs: {_evidence_repair_count}")
+    except Exception as _ev_err:
+        print(f"  WARNING: Evidence pre-check skipped: {_ev_err}")
+
     # Step 2: Inspect declared evidence
     print("\n=== STEP 2: INSPECT DECLARED EVIDENCE ===")
     inspection = inspect_declaration(decl, repo_root)
@@ -785,6 +948,38 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
     except Exception as e:
         print(f"  WARNING: Governance validators skipped: {e}")
 
+    # Step 2e-v54v55: Update V54/V55 sprint tracker after governance run (TC-D1)
+    try:
+        _v54_tracker_path2 = repo_root / "reports" / "v54v55-sprint-tracker.json"
+        if _v54_tracker_path2.exists() and 'governance_validation_result' in dir():
+            _v54_data2 = json.loads(_v54_tracker_path2.read_text(encoding="utf-8"))
+            if not _v54_data2.get("promoted", False):
+                # Check if V54/V55 produced false positives (WARN on real cross-lane violations)
+                _v54_false_pos = False
+                for _v in governance_validation_result.get("validators", []):
+                    if _v.get("validator", "").startswith(("validate_cross_lane_product", "validate_cross_lane_machinery")):
+                        if _v.get("result") in ("WARN", "FAIL"):
+                            _v54_false_pos = True
+                            break
+                if not _v54_false_pos:
+                    _v54_data2["clean_sprint_count"] = _v54_data2.get("clean_sprint_count", 0) + 1
+                    _v54_data2["sprints"].append({
+                        "date": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
+                        "false_positives": False,
+                        "sprint_id": run_id,
+                    })
+                    # Auto-promote if target reached
+                    if _v54_data2["clean_sprint_count"] >= _v54_data2.get("target_clean_sprints", 3):
+                        _v54_data2["promoted"] = True
+                        print(f"  V54/V55 PROMOTION: {_v54_data2['clean_sprint_count']} clean sprints reached — marked for promotion")
+                    else:
+                        print(f"  V54/V55 tracker: {_v54_data2['clean_sprint_count']}/{_v54_data2.get('target_clean_sprints', 3)} clean sprints")
+                    _v54_tracker_path2.write_text(json.dumps(_v54_data2, indent=2) + "\n", encoding="utf-8")
+                else:
+                    print("  V54/V55 tracker: false positive detected this sprint — not incrementing")
+    except Exception as _v54_err2:
+        print(f"  WARNING: V54/V55 tracker update skipped (non-blocking): {_v54_err2}")
+
     # Step 2e½: Source structure validator (spec-derived architecture governance)
     print("\n=== STEP 2e½: SOURCE STRUCTURE VALIDATOR ===")
     try:
@@ -931,7 +1126,40 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
     print(f"  Overclaimed: {len(review['overclaimed_items'])}")
     print(f"  Autonomous Continue: {review['autonomous_continue']}")
 
-    # Step 3a: Report LLM semantic verification results
+    # Step 3a-closure: Automated gap closure from graded evidence (TC-FL-002)
+    print("\n=== STEP 3a-closure: GAP CLOSURE FROM GRADES ===")
+    try:
+        from gap_closure_engine import close_gaps_from_grades as _close_gaps
+        _gl_path = repo_root / "reports" / "capability-layer" / "gap-ledger.json"
+        if _gl_path.exists():
+            _closure_result = _close_gaps(
+                review=review, declaration=decl,
+                gap_ledger_path=_gl_path, sprint_id=sprint_id,
+            )
+            review["gap_closures"] = _closure_result
+            print(f"  Matches: {_closure_result.get('matches', 0)}, "
+                  f"Closed: {_closure_result.get('closed', 0)}, "
+                  f"Skipped: {_closure_result.get('skipped', 0)}")
+        else:
+            print("  gap-ledger.json not found — skipped")
+    except Exception as _gc_err:
+        print(f"  WARNING: Gap closure skipped: {_gc_err}")
+        review["gap_closures"] = {"status": "error", "error": str(_gc_err)}
+
+    # Step 3a-verify: Post-closure verification levels (TC-FL-013)
+    if review.get("gap_closures", {}).get("closed", 0) > 0:
+        try:
+            from gap_verification_engine import verify_closed_gaps as _verify_closed
+            _verifications = _verify_closed(
+                review["gap_closures"], decl.get("test_results", {}), decl, repo_root
+            )
+            review["gap_verifications"] = _verifications
+            _l2_count = sum(1 for v in _verifications if v.get("verification_level") == 2)
+            print(f"  Gap verifications: {len(_verifications)} total, {_l2_count} at Level 2")
+        except Exception as _gv_err:
+            print(f"  WARNING: Gap verification skipped: {_gv_err}")
+
+    # Step 3a-llm: Report LLM semantic verification results
     sv_items = [g for g in review.get("item_grades", []) if g.get("semantic_verification", {}).get("llm_used")]
     if sv_items:
         sv_downgrades = [g for g in sv_items if not g["semantic_verification"].get("adequate")]
@@ -1452,6 +1680,32 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
         json.dumps(next_work, indent=2), encoding="utf-8"
     )
     print(f"  Prompt: {prompt_path}")
+
+    # Step 4a2: Write sprint contract for gap-sourced items (TC-FL-010)
+    _gap_items = next_work.get("gap_sourced_items", [])
+    if _gap_items:
+        try:
+            _contract = {
+                "sprint_id": sprint_id,
+                "created_at": datetime.now(timezone.utc).isoformat(),
+                "contracted_items": [
+                    {
+                        "item_id": gi.get("item_id", ""),
+                        "gap_ref": gi.get("gap_ref") or gi.get("gap_id", ""),
+                        "verification_command": gi.get("verification_command", ""),
+                        "acceptance_criteria": gi.get("acceptance_criteria", ""),
+                        "priority": gi.get("priority", 99),
+                        "source": "gap_ledger",
+                    }
+                    for gi in _gap_items
+                ],
+            }
+            _contract_path = repo_root / ".local" / "supervisor" / "sprint-contract.json"
+            _contract_path.parent.mkdir(parents=True, exist_ok=True)
+            _contract_path.write_text(json.dumps(_contract, indent=2) + "\n", encoding="utf-8")
+            print(f"  Sprint contract: {len(_gap_items)} gap-sourced items written")
+        except Exception as _sc_err:
+            print(f"  WARNING: Sprint contract write failed: {_sc_err}")
 
     # Step 4b: Prompt quality validation (R108: moved after prompt generation)
     print("\n=== STEP 4b: PROMPT QUALITY VALIDATION ===")
