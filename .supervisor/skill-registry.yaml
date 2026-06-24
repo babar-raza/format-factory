@@ -621,8 +621,8 @@ skills:
     status: suspended
     spec_qname_required: true
     overflow_split_allowed: false
-    purpose: "Add one spec-backed domain analytics function to a spec-owned module. BLOCKED by V35 if target file is at LOC cap. BLOCKED by V50 if target is *_analytics_extra.py, *_extra.py, or *_misc.py. Overflow to *_analytics_extra.py is FORBIDDEN — spec-level module split required when analytics.py hits cap."
-    product_track: foss_python_analytics
+    purpose: "Add one spec-backed domain analytics function to a spec-owned domain module with spec_qname. BLOCKED by V35 if target file is at LOC cap. BLOCKED by V50 if target is analytics.py, *_analytics.py, *_analytics_extra.py, *_extra.py, or *_misc.py. Overflow splits FORBIDDEN — create spec-level segregation taskcard instead."
+    product_track: foss_python_spec_domain
     required_handoff_fields:
       - format_id
       - function_name
