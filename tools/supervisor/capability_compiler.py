@@ -287,8 +287,16 @@ def compile_gate_readiness_projection(feature_ir: dict, taskcard: dict) -> dict:
 
 def compile_gap_to_feature_ir(gap: dict) -> dict:
     """Phase 1: Compile a gap record into a feature IR."""
-    fmt = gap.get("format_id", "UNKNOWN")
-    func = gap.get("function_name", "unknown_func")
+    # Accept both consumer-mapped fields (format_id/function_name) and raw gap-ledger
+    # fields (format/capability_name).  The queue consumer maps before calling, but
+    # CLI callers pass raw gap-ledger records directly.
+    fmt = gap.get("format_id") or gap.get("format", "UNKNOWN")
+    if fmt != "UNKNOWN":
+        fmt = fmt.upper()
+    raw_name = gap.get("function_name") or gap.get("capability_name", "unknown_func")
+    func = raw_name.lower().replace(" ", "_")
+    if func != "unknown_func" and not func.startswith(fmt.lower() + "_"):
+        func = f"{fmt.lower()}_{func}"
     sig = gap.get("expected_signature", f"{func}(source) -> Any")
     family = FORMAT_FAMILIES.get(fmt, {})
     module_base = family.get("module_base", f"src/python/{fmt.lower()}")

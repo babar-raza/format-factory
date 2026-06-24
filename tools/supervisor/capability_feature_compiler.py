@@ -140,6 +140,7 @@ def _gap_to_work_item(gap: dict, score: int) -> dict:
         "external_gate": _is_external_gate(gap),
         "gap_id": gap_id,
         "gap_ref": gap_id,
+        "gap_ledger_ref": gap_id,
         "spec_facts": gap.get("spec_facts") or [],
     }
 

@@ -1,0 +1,387 @@
+# src-architecture-gap-register.yaml
+# Generated for TC-GOV-AUDIT-001
+# Confirmed structural gaps from source-structure-baseline.json analysis
+#
+# execution_authority: false
+
+architecture_gaps:
+  - format: "abw"
+    source_root: "src/python/abw/"
+    gap_count: 4
+    execution_authority: false
+    gaps:
+      - gap_type: "monolithic_file"
+        file: "src/python/abw/word_document.py"
+        loc: 1026
+        description: "word_document.py exceeds 800 LOC limit (1026 LOC)"
+        remediation: "Extract analytics/model concerns to separate modules"
+        blocking_validator: "V39 (monolith_detection_validator)"
+        severity: "medium"
+      - gap_type: "monolithic_file"
+        file: "src/python/abw/abw_codec.py"
+        loc: 897
+        description: "abw_codec.py exceeds 800 LOC limit (897 LOC)"
+        remediation: "Extract analytics/model concerns to separate modules"
+        blocking_validator: "V39 (monolith_detection_validator)"
+        severity: "medium"
+      - gap_type: "missing_analytics_separation"
+        description: "No abw_analytics.py file exists; analytics mixed into main codec/parser"
+        remediation: "Create src/python/abw/abw_analytics.py and extract arithmetic functions"
+        blocking_validator: "V39 (monolith_detection_validator)"
+        severity: "medium"
+      - gap_type: "missing_model_separation"
+        description: "No dedicated models.py; model classes embedded in main source file"
+        remediation: "Extract data model classes to src/python/abw/models.py"
+        severity: "low"
+
+  - format: "csv"
+    source_root: "src/python/csv/"
+    gap_count: 3
+    execution_authority: false
+    gaps:
+      - gap_type: "monolithic_file"
+        file: "src/python/csv/tabular_document.py"
+        loc: 960
+        description: "tabular_document.py exceeds 800 LOC limit (960 LOC)"
+        remediation: "Extract analytics/model concerns to separate modules"
+        blocking_validator: "V39 (monolith_detection_validator)"
+        severity: "medium"
+      - gap_type: "missing_analytics_separation"
+        description: "No csv_analytics.py file exists; analytics mixed into main codec/parser"
+        remediation: "Create src/python/csv/csv_analytics.py and extract arithmetic functions"
+        blocking_validator: "V39 (monolith_detection_validator)"
+        severity: "medium"
+      - gap_type: "missing_model_separation"
+        description: "No dedicated models.py; model classes embedded in main source file"
+        remediation: "Extract data model classes to src/python/csv/models.py"
+        severity: "low"
+
+  - format: "dif"
+    source_root: "src/python/dif/"
+    gap_count: 3
+    execution_authority: false
+    gaps:
+      - gap_type: "monolithic_file"
+        file: "src/python/dif/interchange_document.py"
+        loc: 994
+        description: "interchange_document.py exceeds 800 LOC limit (994 LOC)"
+        remediation: "Extract analytics/model concerns to separate modules"
+        blocking_validator: "V39 (monolith_detection_validator)"
+        severity: "medium"
+      - gap_type: "missing_analytics_separation"
+        description: "No dif_analytics.py file exists; analytics mixed into main codec/parser"
+        remediation: "Create src/python/dif/dif_analytics.py and extract arithmetic functions"
+        blocking_validator: "V39 (monolith_detection_validator)"
+        severity: "medium"
+      - gap_type: "missing_model_separation"
+        description: "No dedicated models.py; model classes embedded in main source file"
+        remediation: "Extract data model classes to src/python/dif/models.py"
+        severity: "low"
+
+  - format: "fodg"
+    source_root: "src/python/fodg/"
+    gap_count: 4
+    execution_authority: false
+    gaps:
+      - gap_type: "monolithic_file"
+        file: "src/python/fodg/drawing_document.py"
+        loc: 1007
+        description: "drawing_document.py exceeds 800 LOC limit (1007 LOC)"
+        remediation: "Extract analytics/model concerns to separate modules"
+        blocking_validator: "V39 (monolith_detection_validator)"
+        severity: "medium"
+      - gap_type: "monolithic_file"
+        file: "src/python/fodg/fodg_codec.py"
+        loc: 831
+        description: "fodg_codec.py exceeds 800 LOC limit (831 LOC)"
+        remediation: "Extract analytics/model concerns to separate modules"
+        blocking_validator: "V39 (monolith_detection_validator)"
+        severity: "medium"
+      - gap_type: "missing_analytics_separation"
+        description: "No fodg_analytics.py file exists; analytics mixed into main codec/parser"
+        remediation: "Create src/python/fodg/fodg_analytics.py and extract arithmetic functions"
+        blocking_validator: "V39 (monolith_detection_validator)"
+        severity: "medium"
+      - gap_type: "missing_model_separation"
+        description: "No dedicated models.py; model classes embedded in main source file"
+        remediation: "Extract data model classes to src/python/fodg/models.py"
+        severity: "low"
+
+  - format: "fodp"
+    source_root: "src/python/fodp/"
+    gap_count: 1
+    execution_authority: false
+    gaps:
+      - gap_type: "missing_model_separation"
+        description: "No dedicated models.py; model classes embedded in main source file"
+        remediation: "Extract data model classes to src/python/fodp/models.py"
+        severity: "low"
+
+  - format: "fods"
+    source_root: "src/python/fods/"
+    gap_count: 3
+    execution_authority: false
+    gaps:
+      - gap_type: "monolithic_file"
+        file: "src/python/fods/neutral_model.py"
+        loc: 1231
+        description: "neutral_model.py exceeds 800 LOC limit (1231 LOC)"
+        remediation: "Extract analytics/model concerns to separate modules"
+        blocking_validator: "V39 (monolith_detection_validator)"
+        severity: "high"
+      - gap_type: "monolithic_file"
+        file: "src/python/fods/spreadsheet_document.py"
+        loc: 1035
+        description: "spreadsheet_document.py exceeds 800 LOC limit (1035 LOC)"
+        remediation: "Extract analytics/model concerns to separate modules"
+        blocking_validator: "V39 (monolith_detection_validator)"
+        severity: "medium"
+      - gap_type: "missing_analytics_separation"
+        description: "No fods_analytics.py file exists; analytics mixed into main codec/parser"
+        remediation: "Create src/python/fods/fods_analytics.py and extract arithmetic functions"
+        blocking_validator: "V39 (monolith_detection_validator)"
+        severity: "medium"
+
+  - format: "fodt"
+    source_root: "src/python/fodt/"
+    gap_count: 3
+    execution_authority: false
+    gaps:
+      - gap_type: "monolithic_file"
+        file: "src/python/fodt/neutral_model.py"
+        loc: 1916
+        description: "neutral_model.py exceeds 800 LOC limit (1916 LOC)"
+        remediation: "Extract analytics/model concerns to separate modules"
+        blocking_validator: "V39 (monolith_detection_validator)"
+        severity: "high"
+      - gap_type: "monolithic_file"
+        file: "src/python/fodt/text_document.py"
+        loc: 992
+        description: "text_document.py exceeds 800 LOC limit (992 LOC)"
+        remediation: "Extract analytics/model concerns to separate modules"
+        blocking_validator: "V39 (monolith_detection_validator)"
+        severity: "medium"
+      - gap_type: "missing_analytics_separation"
+        description: "No fodt_analytics.py file exists; analytics mixed into main codec/parser"
+        remediation: "Create src/python/fodt/fodt_analytics.py and extract arithmetic functions"
+        blocking_validator: "V39 (monolith_detection_validator)"
+        severity: "medium"
+
+  - format: "gnumeric"
+    source_root: "src/python/gnumeric/"
+    gap_count: 3
+    execution_authority: false
+    gaps:
+      - gap_type: "monolithic_file"
+        file: "src/python/gnumeric/gnumeric_codec.py"
+        loc: 1112
+        description: "gnumeric_codec.py exceeds 800 LOC limit (1112 LOC)"
+        remediation: "Extract analytics/model concerns to separate modules"
+        blocking_validator: "V39 (monolith_detection_validator)"
+        severity: "medium"
+      - gap_type: "missing_analytics_separation"
+        description: "No gnumeric_analytics.py file exists; analytics mixed into main codec/parser"
+        remediation: "Create src/python/gnumeric/gnumeric_analytics.py and extract arithmetic functions"
+        blocking_validator: "V39 (monolith_detection_validator)"
+        severity: "medium"
+      - gap_type: "missing_model_separation"
+        description: "No dedicated models.py; model classes embedded in main source file"
+        remediation: "Extract data model classes to src/python/gnumeric/models.py"
+        severity: "low"
+
+  - format: "ndjson"
+    source_root: "src/python/ndjson/"
+    gap_count: 4
+    execution_authority: false
+    gaps:
+      - gap_type: "monolithic_file"
+        file: "src/python/ndjson/ndjson_codec.py"
+        loc: 1080
+        description: "ndjson_codec.py exceeds 800 LOC limit (1080 LOC)"
+        remediation: "Extract analytics/model concerns to separate modules"
+        blocking_validator: "V39 (monolith_detection_validator)"
+        severity: "medium"
+      - gap_type: "monolithic_file"
+        file: "src/python/ndjson/json_stream.py"
+        loc: 928
+        description: "json_stream.py exceeds 800 LOC limit (928 LOC)"
+        remediation: "Extract analytics/model concerns to separate modules"
+        blocking_validator: "V39 (monolith_detection_validator)"
+        severity: "medium"
+      - gap_type: "missing_analytics_separation"
+        description: "No ndjson_analytics.py file exists; analytics mixed into main codec/parser"
+        remediation: "Create src/python/ndjson/ndjson_analytics.py and extract arithmetic functions"
+        blocking_validator: "V39 (monolith_detection_validator)"
+        severity: "medium"
+      - gap_type: "missing_model_separation"
+        description: "No dedicated models.py; model classes embedded in main source file"
+        remediation: "Extract data model classes to src/python/ndjson/models.py"
+        severity: "low"
+
+  - format: "ods"
+    source_root: "src/python/ods/"
+    gap_count: 3
+    execution_authority: false
+    gaps:
+      - gap_type: "monolithic_file"
+        file: "src/python/ods/spreadsheet_document.py"
+        loc: 901
+        description: "spreadsheet_document.py exceeds 800 LOC limit (901 LOC)"
+        remediation: "Extract analytics/model concerns to separate modules"
+        blocking_validator: "V39 (monolith_detection_validator)"
+        severity: "medium"
+      - gap_type: "missing_analytics_separation"
+        description: "No ods_analytics.py file exists; analytics mixed into main codec/parser"
+        remediation: "Create src/python/ods/ods_analytics.py and extract arithmetic functions"
+        blocking_validator: "V39 (monolith_detection_validator)"
+        severity: "medium"
+      - gap_type: "missing_model_separation"
+        description: "No dedicated models.py; model classes embedded in main source file"
+        remediation: "Extract data model classes to src/python/ods/models.py"
+        severity: "low"
+
+  - format: "pbm"
+    source_root: "src/python/pbm/"
+    gap_count: 1
+    execution_authority: false
+    gaps:
+      - gap_type: "missing_model_separation"
+        description: "No dedicated models.py; model classes embedded in main source file"
+        remediation: "Extract data model classes to src/python/pbm/models.py"
+        severity: "low"
+
+  - format: "pgm"
+    source_root: "src/python/pgm/"
+    gap_count: 1
+    execution_authority: false
+    gaps:
+      - gap_type: "missing_model_separation"
+        description: "No dedicated models.py; model classes embedded in main source file"
+        remediation: "Extract data model classes to src/python/pgm/models.py"
+        severity: "low"
+
+  - format: "ppm"
+    source_root: "src/python/ppm/"
+    gap_count: 1
+    execution_authority: false
+    gaps:
+      - gap_type: "missing_model_separation"
+        description: "No dedicated models.py; model classes embedded in main source file"
+        remediation: "Extract data model classes to src/python/ppm/models.py"
+        severity: "low"
+
+  - format: "qoi"
+    source_root: "src/python/qoi/"
+    gap_count: 1
+    execution_authority: false
+    gaps:
+      - gap_type: "missing_model_separation"
+        description: "No dedicated models.py; model classes embedded in main source file"
+        remediation: "Extract data model classes to src/python/qoi/models.py"
+        severity: "low"
+
+  - format: "sylk"
+    source_root: "src/python/sylk/"
+    gap_count: 3
+    execution_authority: false
+    gaps:
+      - gap_type: "monolithic_file"
+        file: "src/python/sylk/spreadsheet_document.py"
+        loc: 857
+        description: "spreadsheet_document.py exceeds 800 LOC limit (857 LOC)"
+        remediation: "Extract analytics/model concerns to separate modules"
+        blocking_validator: "V39 (monolith_detection_validator)"
+        severity: "medium"
+      - gap_type: "missing_analytics_separation"
+        description: "No sylk_analytics.py file exists; analytics mixed into main codec/parser"
+        remediation: "Create src/python/sylk/sylk_analytics.py and extract arithmetic functions"
+        blocking_validator: "V39 (monolith_detection_validator)"
+        severity: "medium"
+      - gap_type: "missing_model_separation"
+        description: "No dedicated models.py; model classes embedded in main source file"
+        remediation: "Extract data model classes to src/python/sylk/models.py"
+        severity: "low"
+
+  - format: "toml"
+    source_root: "src/python/toml/"
+    gap_count: 1
+    execution_authority: false
+    gaps:
+      - gap_type: "missing_model_separation"
+        description: "No dedicated models.py; model classes embedded in main source file"
+        remediation: "Extract data model classes to src/python/toml/models.py"
+        severity: "low"
+
+  - format: "tsv"
+    source_root: "src/python/tsv/"
+    gap_count: 3
+    execution_authority: false
+    gaps:
+      - gap_type: "monolithic_file"
+        file: "src/python/tsv/tsv_parser.py"
+        loc: 817
+        description: "tsv_parser.py exceeds 800 LOC limit (817 LOC)"
+        remediation: "Extract analytics/model concerns to separate modules"
+        blocking_validator: "V39 (monolith_detection_validator)"
+        severity: "medium"
+      - gap_type: "missing_analytics_separation"
+        description: "No tsv_analytics.py file exists; analytics mixed into main codec/parser"
+        remediation: "Create src/python/tsv/tsv_analytics.py and extract arithmetic functions"
+        blocking_validator: "V39 (monolith_detection_validator)"
+        severity: "medium"
+      - gap_type: "missing_model_separation"
+        description: "No dedicated models.py; model classes embedded in main source file"
+        remediation: "Extract data model classes to src/python/tsv/models.py"
+        severity: "low"
+
+  - format: "xcf"
+    source_root: "src/python/xcf/"
+    gap_count: 4
+    execution_authority: false
+    gaps:
+      - gap_type: "monolithic_file"
+        file: "src/python/xcf/xcf_parser.py"
+        loc: 1277
+        description: "xcf_parser.py exceeds 800 LOC limit (1277 LOC)"
+        remediation: "Extract analytics/model concerns to separate modules"
+        blocking_validator: "V39 (monolith_detection_validator)"
+        severity: "high"
+      - gap_type: "monolithic_file"
+        file: "src/python/xcf/xcf_image_metrics.py"
+        loc: 906
+        description: "xcf_image_metrics.py exceeds 800 LOC limit (906 LOC)"
+        remediation: "Extract analytics/model concerns to separate modules"
+        blocking_validator: "V39 (monolith_detection_validator)"
+        severity: "medium"
+      - gap_type: "missing_analytics_separation"
+        description: "No xcf_analytics.py file exists; analytics mixed into main codec/parser"
+        remediation: "Create src/python/xcf/xcf_analytics.py and extract arithmetic functions"
+        blocking_validator: "V39 (monolith_detection_validator)"
+        severity: "medium"
+      - gap_type: "missing_model_separation"
+        description: "No dedicated models.py; model classes embedded in main source file"
+        remediation: "Extract data model classes to src/python/xcf/models.py"
+        severity: "low"
+
+  - format: "zst"
+    source_root: "src/python/zst/"
+    gap_count: 3
+    execution_authority: false
+    gaps:
+      - gap_type: "monolithic_file"
+        file: "src/python/zst/zst_codec.py"
+        loc: 1549
+        description: "zst_codec.py exceeds 800 LOC limit (1549 LOC)"
+        remediation: "Extract analytics/model concerns to separate modules"
+        blocking_validator: "V39 (monolith_detection_validator)"
+        severity: "high"
+      - gap_type: "missing_analytics_separation"
+        description: "No zst_analytics.py file exists; analytics mixed into main codec/parser"
+        remediation: "Create src/python/zst/zst_analytics.py and extract arithmetic functions"
+        blocking_validator: "V39 (monolith_detection_validator)"
+        severity: "medium"
+      - gap_type: "missing_model_separation"
+        description: "No dedicated models.py; model classes embedded in main source file"
+        remediation: "Extract data model classes to src/python/zst/models.py"
+        severity: "low"
+

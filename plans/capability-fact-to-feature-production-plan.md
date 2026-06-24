@@ -145,10 +145,10 @@ Stages 7-12 are broken: The action queue is advisory-only and unread. The compil
 Gap closure is performed by one-off manual scripts (`tools/close_comm_gaps.py`, `tools/close_fods_fodt_ppm_gaps.py`, `tools/close_xcf_zst_gaps.py`) that write `status='closed'` directly to `gap-ledger.json`. These scripts are NOT called by the autonomous cycle after a PASS-graded work item. Additionally, `capability_map_generator.py` **regenerates** `gap-ledger.json` from scratch on each run — potentially overwriting any manual closure writes. The autonomous cycle has no closure feedback loop: completed gaps re-appear in every sprint's gap selection, causing infinite re-selection of already-implemented capabilities.
 
 - **Severity:** HIGH — structural; invalidates the gap-ledger as a dynamic capability inventory
-- **Current state:** ACTIVE — manual `close_*.py` scripts exist but are never called by autonomous cycle
-- **Consequence:** Same gaps re-selected every sprint; capability progress is invisible to the pipeline
+- **Current state:** **PARTIALLY RESOLVED** *(updated 2026-06-24)* — `gap_closure_engine.py` (158 lines) IS wired into `autonomous_cycle.py` Step 3a-closure. `update_gap_status()` API added to `capability_map_generator.py`. Generator's merge code preserves `closed_by_sprint` and `closed_at` on regeneration. **Remaining gap:** zero production closures because declarations lack `gap_ledger_ref` entries — the engine's matcher finds no qualifying items. Manual `close_*.py` scripts still account for all 969 closed gaps.
+- **Consequence:** Same gaps re-selected every sprint until declarations include `gap_ledger_ref`
 - **Fix Target:** Stage 7 (TC-C7-001 through TC-C7-004) — Capability Closure Wiring
-- **Evidence:** `.local/evidences/capability-fact-to-feature-forensics-20260623-06f0ea05/capability-fact-to-feature/closure-feedback-analysis.md`
+- **Evidence:** `.local/evidences/capability-fact-to-feature-forensics-20260623-06f0ea05/capability-fact-to-feature/closure-feedback-analysis.md`, `tests/capability_layer/test_update_gap_status.py` (7 tests), `tests/supervisor/test_gap_closure_engine.py` (18 tests)
 
 ---
 
@@ -379,8 +379,9 @@ Feedback (closed capabilities removed from future selection; regressions reopen)
 
 ### C9: Capability Closure Feedback *(Added 2026-06-23, velvet-hatching-lark)*
 - **Test:** After a PASS-graded work item with `gap_ledger_ref`, the corresponding gap-ledger entry has `status='closed'`; same gap does NOT appear in next sprint's gap selection
-- **Current:** FAIL — gap-ledger is never mutated by autonomous cycle (RC-8); same gaps re-selected every sprint; `close_*.py` scripts exist but are manual-only. Evidence: `.local/evidences/capability-fact-to-feature-forensics-20260623-06f0ea05/capability-fact-to-feature/closure-feedback-analysis.md`
+- **Current:** **PARTIAL** *(updated 2026-06-24, convergence iteration 1)* — `gap_closure_engine.py` EXISTS and IS WIRED into `autonomous_cycle.py` Step 3a-closure (line 1108). Engine matches graded items to `gap_ledger_ref`, evaluates closure criteria (ACCEPTED grade + test evidence + no failures), and writes `closed` status. **However:** zero production closures have occurred (`gap-closure-log.json` is empty; 0 gaps have `closed_by_engine=true`). Root cause: declarations do not include `gap_ledger_ref` in `planned_work_items` — the engine's `_match_grades_to_gaps()` finds zero matches. Also: `update_gap_status()` standalone API added to `capability_map_generator.py` (TC-C7-001). 25 tests pass (18 engine + 7 API).
 - **Target:** TC-C7-001 through TC-C7-004 implemented and passing
+- **Remaining:** Declarations must include `gap_ledger_ref` for the engine to activate. This is a process/tooling gap, not a code gap.
 
 ---
 
@@ -467,13 +468,16 @@ Feedback (closed capabilities removed from future selection; regressions reopen)
 ### Stage 7: Capability Closure Wiring (RC-8 Fix) *(Added 2026-06-23, velvet-hatching-lark)*
 **Objective:** Wire gap closure into the autonomous cycle so that PASS-graded work items close their corresponding gap-ledger entries, preventing infinite re-selection of implemented capabilities.
 
-**Taskcards:**
-- TC-C7-001: Design and implement `update_gap_status(gap_id, new_status, evidence_path)` in `capability_map_generator.py`. Takes gap_id + sprint declaration reference → updates the matching entry in `gap-ledger.json` with `status='closed'`, `closed_by='autonomous_cycle'`, `closed_date=<ISO8601>`, `evidence_path=<declaration_path>`. Must be idempotent (second call on same gap_id is a safe no-op). Must survive `capability_map_generator.py` regeneration (post-generation hook that re-applies known closures from a closure-manifest).
-- TC-C7-002: Wire TC-C7-001 into `autonomous_cycle.py` post-grade step. After a declaration is graded PASS, for each work item with a `gap_ledger_ref` field in its declaration, call `update_gap_status(gap_id, "closed", evidence_path)`.
-- TC-C7-003: Add test: verify that a gap successfully closed by TC-C7-002 does NOT appear in the next sprint's `_load_gap_ledger_goals()` output.
-- TC-C7-004: Add idempotency test: verify that calling `update_gap_status` twice on the same gap_id is a safe no-op (no duplicate entries, no error, no state corruption).
+**Status:** *(updated 2026-06-24, convergence iteration 1)* **CODE COMPLETE — DATA PATH BROKEN.** All 4 taskcards implemented and tested. `gap_closure_engine.py` is wired into `autonomous_cycle.py` Step 3a-closure. `update_gap_status()` standalone API added to `capability_map_generator.py`. 25 tests pass (18 engine + 7 API). **Remaining:** declarations must include `gap_ledger_ref` in `planned_work_items` for the engine to activate. Zero production closures to date. See TC-C7-005 (new).
 
-**Gate:** C9 passes — gap-ledger entries are mutated after PASS grade; closed gaps absent from next sprint selection.
+**Taskcards:**
+- TC-C7-001: ~~Design and implement `update_gap_status()`~~ **DONE** (2026-06-24). Implemented in `capability_map_generator.py`. Idempotent. Regeneration-safe (generator merge code preserves `closed_by_sprint`, `closed_at`). 7 tests in `tests/capability_layer/test_update_gap_status.py`.
+- TC-C7-002: ~~Wire into `autonomous_cycle.py` post-grade step~~ **ALREADY DONE** (prior sprint). `gap_closure_engine.py` wired at Step 3a-closure (line 1108). 18 tests in `tests/supervisor/test_gap_closure_engine.py`.
+- TC-C7-003: ~~Test: closed gap absent from next sprint~~ **DONE** (2026-06-24). `TestClosedGapAbsentFromSelection` in `test_update_gap_status.py`.
+- TC-C7-004: ~~Idempotency test~~ **DONE** (2026-06-24). `TestIdempotency` in `test_update_gap_status.py` + `TestIdempotentRerun` in `test_gap_closure_engine.py`.
+- TC-C7-005: **NEW** — Ensure `generate_next_worker_prompt.py` and/or `sprint_executor_validate.py` inject `gap_ledger_ref` into work item declarations when a work item's function name matches a gap-ledger entry. Without this, the closure engine cannot activate. **Status: OPEN.**
+
+**Gate:** C9 PARTIAL — code path is complete; zero production closures (data path requires TC-C7-005).
 
 ---
 
@@ -541,10 +545,11 @@ Stage 0 (Diagnostics) → required by all stages
 | TC-C6-001 | 6 | Harden Lane 2 gate: consumption checks | TC-C1-003, TC-C2-004 |
 | TC-C6-002 | 6 | Harden Lane 3 gate: compiler output consumed | TC-C1-003 |
 | TC-C6-003 | 6 | End-to-end reverse trace check | TC-C5-004 |
-| TC-C7-001 | 7 | Implement update_gap_status() with idempotency + regen-safe closure manifest | TC-C1-002 |
-| TC-C7-002 | 7 | Wire gap closure into autonomous_cycle.py post-grade step | TC-C7-001 |
-| TC-C7-003 | 7 | Test: closed gap absent from next sprint gap selection | TC-C7-002 |
-| TC-C7-004 | 7 | Idempotency test: double-close same gap is safe no-op | TC-C7-001 |
+| TC-C7-001 | 7 | ~~Implement update_gap_status()~~ DONE 2026-06-24 | TC-C1-002 |
+| TC-C7-002 | 7 | ~~Wire gap closure into autonomous_cycle.py~~ DONE (prior sprint) | TC-C7-001 |
+| TC-C7-003 | 7 | ~~Test: closed gap absent from selection~~ DONE 2026-06-24 | TC-C7-002 |
+| TC-C7-004 | 7 | ~~Idempotency test~~ DONE 2026-06-24 | TC-C7-001 |
+| TC-C7-005 | 7 | Inject gap_ledger_ref into work item declarations (data path fix) | TC-C7-002 |
 
 ---
 
@@ -1412,5 +1417,57 @@ The plan must NOT be declared TERMINAL_CLOSED until Stage 7 (gap closure integra
 | Gap-ledger regeneration risk | Architectural | OPEN | TC-VHL-REWORK-003 |
 | Evidence contract missing FSE-001 | Process quality | OPEN | TC-EVIDENCE-QUAL-001 |
 | Authority fabric unwired in supervisor_loop.py | Architectural | OPEN | TC-C8-001 |
-| Gap closure not integrated into autonomous cycle | Structural (RC-8) | OPEN | TC-C7-001 through TC-C7-004 |
+| Gap closure not integrated into autonomous cycle | Structural (RC-8) | **PARTIAL** *(2026-06-24)* — code path complete; zero production closures (data path: TC-C7-005) | TC-C7-001 through TC-C7-005 |
 | Non-mainstream stream compiler zero callers | Coverage gap | OPEN | TC-C1-EXTEND-001 |
+| SAL spec_refs bulk-attached per format (RC-1 remaining) | Data granularity | **OPEN** *(2026-06-24, Stage 0 corrected)* — ALL format SAL facts bulk-attached to EVERY capability (e.g., 5,013 FODS facts per capability). Case normalization works; join is functional but non-specific. | TC-C5-001 (per-capability spec_refs) |
+| Compiler CLI gap field mapping bug | Tool usability | **FIXED** *(2026-06-24, convergence iteration 2)* — `compile_gap_to_feature_ir()` now accepts both consumer-mapped fields (`format_id`/`function_name`) and raw gap-ledger fields (`format`/`capability_name`). 34 compiler tests pass. | TC-C1-005 (CLOSED) |
+
+---
+
+## Appendix D: Stage 0 Diagnostic Baseline Results (2026-06-24, convergence iteration 1)
+
+**Run date:** 2026-06-24 | **Evidence directory:** `.local/stage0-diagnostics/`
+
+### TC-C0-001: Capability Map Generator
+- Output: 1,782 records (125 commercial + 1,657 FOSS), 910 gaps, 20 action items
+- **Finding:** Counts drift between runs (last read: 1,003 gaps in production ledger vs 910 regenerated)
+- Generator preserves closed status on regeneration (merge code lines 1280-1288)
+
+### TC-C0-002: Capability Compiler (standalone CLI)
+- **Bug found and FIXED (iteration 2):** CLI passed raw gap-ledger fields directly to `compile_gap_to_feature_ir()` without mapping `format→format_id`, `capability_name→function_name`. Result: `format_id=UNKNOWN`.
+- **Fix applied:** `compile_gap_to_feature_ir()` now accepts both consumer-mapped and raw gap-ledger field names. Falls back to `format` when `format_id` absent; derives `function_name` from `capability_name`. 34 compiler tests pass.
+
+### TC-C0-003: Queue Consumer
+- Successfully compiled 3 gaps to taskcards (priority-ordered, deterministic selection)
+- Output: `TC-94EE382C.json` (XCF), `TC-9306CA32.json` (ABW), `TC-A15E2748.json` (CSV)
+- All taskcards have `advisory_only: True`
+
+### TC-C0-004: FODS Trace Through Compiler
+- Traced GAP-FODS-COMM-LOAD-001 through compiler (with consumer field mapping)
+- Feature IR and taskcard correctly generated: `format_id=FODS, function_name=fods_load`
+- **Finding:** `spec_qnames` has 5,009 entries — ALL FODS SAL facts bulk-attached to every capability. Confirms RC-1 remaining issue.
+
+### TC-C0-005: SAL Fact Counts vs Capability spec_refs
+- SAL facts use lowercase format IDs (`fods`, `fodt`); capabilities use uppercase (`FODS`, `FODT`). Both generator and compiler normalize to `.upper()` internally — the case difference does NOT break the join.
+- **Corrected finding:** SAL facts ARE successfully attached as `spec_refs` (FODS capabilities have 5,013 spec_refs). However, ALL format facts are **bulk-attached** to EVERY capability in that format (RC-1 remaining issue). Spec_refs are format-level, not per-capability operation-level.
+- 14,486 SAL facts across 25 formats; 1,782 capabilities across 18 formats.
+
+### TC-C0-006: Evidence Path Format Baseline
+- Evidence paths use relative paths from repo root (e.g., `.local/evidences/<run_id>/<subdir>/<filename>`)
+- All 15 artifacts from velvet-hatching-lark evidence declaration resolve correctly
+- Changed files also use relative paths and resolve correctly
+
+### Gate Status Summary (post-Stage 0)
+
+| Gate | Status | Evidence |
+|------|--------|----------|
+| C0 (SAL Input) | PASS | 14,486 facts, 25 formats |
+| C1 (Fact-to-Capability) | PARTIAL — join works but bulk-attached (RC-1) | All format facts attached to every capability |
+| C2 (Capability Granularity) | PASS | One function = one capability |
+| C3 (Gap-Ledger Consumption) | PARTIAL | Read by task generator; 0 open FODS |
+| C4 (Compiler Integration) | PARTIAL | Mainstream stream wired |
+| C5 (Queue Executability) | FAIL | All items advisory_only=true |
+| C6 (Contract Closure) | FAIL | AST-scan only |
+| C7 (_EXPANSION_GOALS) | PARTIAL | Fallback only, but re-activates for FOSS |
+| C8 (End-to-End Trace) | FAIL | No function through compiler pipeline |
+| C9 (Closure Feedback) | PARTIAL | Code complete; zero production closures |

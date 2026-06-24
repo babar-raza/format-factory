@@ -1,0 +1,330 @@
+# production-code-governance-rules.yaml
+# Format Factory — Production Code Governance Rules
+#
+# Canonical reference for all machine-enforced and manual governance rules
+# governing source code, naming, testing, packaging, analytics, and generation.
+#
+# Each rule maps to a validator (V1–V48) in tools/supervisor/governance_validators.py
+# or is marked MANUAL for rules enforced by policy only.
+#
+# Schema:
+#   rule_id:            RULE-{AREA}-NNN
+#   area:               architecture | naming | testing | packaging | analytics |
+#                       generation | governance
+#   statement:          One-line rule statement
+#   validator_ref:      V1 | V2 | ... | V48 | MANUAL
+#   enforcement_level:  blocking | warning | advisory
+#   details:            Extended description (optional)
+#   baseline_file:      Registry file used for threshold checks (optional)
+#   exceptions:         Known exceptions or exemption conditions (optional)
+#
+# Enforcement levels:
+#   blocking  — Sprint will not proceed; autonomous_continue = false
+#   warning   — Logged and visible in review but does not block
+#   advisory  — Policy-only; no automated enforcement today
+#
+# Total validators: 48 (V1–V48) in governance_validators.py
+# See also: tools/validators/source_structure_validator.py (V35/V39 LOC checks)
+# Baseline file: registry/source-structure-baseline.json
+
+---
+version: "1.0"
+last_updated: "2026-06-24"
+authority: "plans/spec-to-feature-radical-correction-plan.md"
+validator_source: "tools/supervisor/governance_validators.py"
+
+rules:
+
+  # =========================================================================
+  # Architecture / Anti-Monolith (AM)
+  # =========================================================================
+
+  - rule_id: "RULE-AM-001"
+    area: "architecture"
+    statement: >
+      No single Python source file may exceed 800 lines of code (new files).
+    validator_ref: "V39"
+    enforcement_level: "blocking"
+    details: >
+      Measured by line iteration with encoding='utf-8', errors='replace'
+      (same method as V35). Existing violations are tracked in
+      registry/source-structure-baseline.json with frozen baseline_loc_cap
+      ceilings. New files exceeding 800 LOC are added as new_violation_detected.
+    baseline_file: "registry/source-structure-baseline.json"
+    exceptions:
+      - "Pre-existing known_violations with baseline_loc_cap are grandfathered"
+      - "tools/supervisor/ infrastructure files have separate caps"
+
+  - rule_id: "RULE-AM-002"
+    area: "architecture"
+    statement: >
+      No single Python source file may exceed 60 top-level functions (new files).
+    validator_ref: "V39"
+    enforcement_level: "blocking"
+    details: >
+      Counted via ast.parse → ast.iter_child_nodes filtering FunctionDef.
+      Existing violations tracked with baseline_functions_cap in
+      registry/source-structure-baseline.json.
+    baseline_file: "registry/source-structure-baseline.json"
+    exceptions:
+      - "Pre-existing known_violations with baseline_functions_cap"
+
+  - rule_id: "RULE-AM-003"
+    area: "architecture"
+    statement: >
+      Anti-monolith detection blocks sprints when source files grow beyond
+      their frozen baseline caps.
+    validator_ref: "V39"
+    enforcement_level: "blocking"
+    details: >
+      GOV_BLOCK:monolith_detection_validator and
+      GOV_BLOCK:validate_source_architecture are structural failures that
+      override the Supreme Directive. The next sprint MUST be the analytics
+      separation refactor (TC-HEAL-PY-{FORMAT}-001).
+    exceptions:
+      - "Only two named validators trigger GOV_BLOCK override"
+
+  - rule_id: "RULE-AM-004"
+    area: "architecture"
+    statement: >
+      Function count caps in source-structure-baseline.json are write-once
+      and must not be increased beyond the baseline_functions_cap value.
+    validator_ref: "V39"
+    enforcement_level: "blocking"
+    details: >
+      If a file's function count exceeds baseline_functions_cap, the source
+      structure validator sets blocks_sprint=True. Resolution requires
+      extracting functions to a separate module (e.g., _analytics.py).
+    baseline_file: "registry/source-structure-baseline.json"
+
+  # =========================================================================
+  # QName / Naming (QN)
+  # =========================================================================
+
+  - rule_id: "RULE-QN-001"
+    area: "naming"
+    statement: >
+      ODF-derived classes must carry a spec_qname attribute mapping to
+      the canonical spec element name.
+    validator_ref: "V36"
+    enforcement_level: "warning"
+    details: >
+      V36 (validate_no_stub_tests) also checks for over-reliance on
+      spec_qname-only assertions. If >80% of assertions in a test file are
+      weak (assert True or assert spec_qname ==), result is WARN.
+    exceptions:
+      - "Non-ODF formats (PBM, PGM, PPM, QOI, ZST) are exempt"
+
+  - rule_id: "RULE-QN-002"
+    area: "naming"
+    statement: >
+      Format-prefixed names (e.g., FodsCell) may only appear as Compat/
+      facade aliases; primary implementation classes use canonical spec names.
+    validator_ref: "V36"
+    enforcement_level: "warning"
+    details: >
+      Canonical naming: Spec QName -> canonical class (e.g., Table.TableCell)
+      -> facade in Compat/ only. The spec-to-feature correction plan (Lane 9)
+      governs the naming hierarchy.
+
+  # =========================================================================
+  # Analytics (AN)
+  # =========================================================================
+
+  - rule_id: "RULE-AN-001"
+    area: "analytics"
+    statement: >
+      Analytics functions matching mod_*_times_* patterns must reside in
+      dedicated {format}_analytics.py files, not main parser/codec files.
+    validator_ref: "V42"
+    enforcement_level: "blocking"
+    details: >
+      V42 (validate_deepening_suspension) rejects PRODUCT_SOURCE items with
+      _mod_\d+_times_\d+ in evidence_paths. Introduced 2026-06-18 to enforce
+      the analytics extraction pattern after rotation suspension.
+    exceptions:
+      - "Applies only to mod_times arithmetic patterns"
+      - "Other analytics functions get advisory guidance (RULE-AN-002)"
+
+  - rule_id: "RULE-AN-002"
+    area: "analytics"
+    statement: >
+      All format-specific analytics should be placed in
+      {format}_analytics.py, not in the main codec or parser module.
+    validator_ref: "MANUAL"
+    enforcement_level: "advisory"
+    details: >
+      Extraction pattern: move arithmetic functions to {format}_analytics.py.
+      Add 'try: from .{format}_analytics import *; except ImportError: pass'
+      at bottom of main codec/parser. The analytics module imports base
+      functions from the codec/parser as needed. No __init__.py changes
+      required beyond the wildcard re-export.
+
+  # =========================================================================
+  # Packaging (PK)
+  # =========================================================================
+
+  - rule_id: "RULE-PK-001"
+    area: "packaging"
+    statement: >
+      Package __init__.py files should not exceed 100 lines of code.
+    validator_ref: "V39"
+    enforcement_level: "warning"
+    details: >
+      Large __init__.py files indicate missing dynamic export generation.
+      Preferred pattern: 3-line dynamic __all__ using vars(sys.modules[__name__]).
+      ZST and XCF __init__.py were reduced from ~770 LOC to ~810 LOC using
+      this pattern (2026-06-18).
+
+  - rule_id: "RULE-PK-002"
+    area: "packaging"
+    statement: >
+      Python packages intended for distribution should include a py.typed
+      marker file for PEP 561 compliance.
+    validator_ref: "MANUAL"
+    enforcement_level: "advisory"
+    details: >
+      Not currently enforced by any validator. Tracked as a packaging
+      readiness criterion for Gate 11 preparation.
+
+  # =========================================================================
+  # Stubs / Architecture-Only (ST)
+  # =========================================================================
+
+  - rule_id: "RULE-ST-001"
+    area: "generation"
+    statement: >
+      Architecture-only stub files are blocked from being cited as evidence
+      for RELEASE_GATE or READINESS work items.
+    validator_ref: "V48"
+    enforcement_level: "blocking"
+    details: >
+      V48 (validate_architecture_only_stub_gate) detects files with
+      '# GENERATED -- architecture_only' markers or '# TODO: implement'
+      comments generated by tools/spec/generate_canonical_stubs.py.
+      RELEASE_GATE/READINESS items citing these files are blocked.
+      PRODUCT_SOURCE items receive WARN only.
+    exceptions:
+      - "PRODUCT_SOURCE items get WARN, not FAIL"
+      - "'except ImportError: pass' is a legitimate analytics fallback, not a stub"
+
+  - rule_id: "RULE-ST-002"
+    area: "testing"
+    statement: >
+      Test files must not consist primarily of stub assertions
+      (assert True, pass-only tests, spec_qname-only checks).
+    validator_ref: "V36"
+    enforcement_level: "warning"
+    details: >
+      V36 counts weak assertion patterns (assert True, assert X.spec_qname ==)
+      and warns when >80% of assertions in a file are weak or spec_qname-only.
+      This prevents test files from passing governance while providing no
+      behavioral coverage.
+
+  # =========================================================================
+  # Taskcards / Guard (TC)
+  # =========================================================================
+
+  - rule_id: "RULE-TC-001"
+    area: "governance"
+    statement: >
+      TC-GUARD-001 requires all PRODUCT_SOURCE and PRODUCT_TEST items to
+      have at least one of: gap_ledger_ref, capability_ref, or spec_fact_refs.
+    validator_ref: "V45"
+    enforcement_level: "blocking"
+    details: >
+      Unconditional BLOCK mode in autonomous_cycle.py Step 2d3. Items without
+      purpose traceability are added to rework_items after grading. The
+      _guard001_violations flag is collected pre-grade and enforced post-grade.
+      No grace period or deadline — always enforced.
+
+  - rule_id: "RULE-TC-002"
+    area: "governance"
+    statement: >
+      Product work items should include spec_fact_refs linking to canonical
+      spec facts (FACT-{FORMAT}-NNN) for traceability.
+    validator_ref: "V45"
+    enforcement_level: "blocking"
+    details: >
+      Part of TC-GUARD-001 enforcement. Items are classified as PURPOSEFUL
+      (has gap_ledger_ref/capability_ref/spec_fact_refs) or UNPURPOSEFUL
+      (missing all three). Non-PRODUCT items receive NOT_APPLICABLE.
+      TC-GUARD-002 in grade_declared_work.py performs the purpose_check.
+
+  # =========================================================================
+  # Baseline (BL)
+  # =========================================================================
+
+  - rule_id: "RULE-BL-001"
+    area: "architecture"
+    statement: >
+      Baseline LOC caps (baseline_loc_cap) in source-structure-baseline.json
+      are write-once and must never be increased.
+    validator_ref: "MANUAL"
+    enforcement_level: "blocking"
+    details: >
+      Only the 'loc' field is mutable (updated after healing via
+      tools/supervisor/update_source_baseline.py --path <file>).
+      baseline_loc_cap is set once when a violation is first recorded and
+      serves as the permanent ceiling. Increasing it defeats the purpose
+      of anti-monolith enforcement. The new-violations detector script
+      in CLAUDE.md sprint closeout Step 0 enforces this by never modifying
+      existing known_violations entries.
+    baseline_file: "registry/source-structure-baseline.json"
+
+  # =========================================================================
+  # Governance Meta (GV)
+  # =========================================================================
+
+  - rule_id: "RULE-GV-001"
+    area: "governance"
+    statement: >
+      All changes to src/ must pass the full governance validator suite
+      (V1 through V48) before sprint acceptance.
+    validator_ref: "V1-V48"
+    enforcement_level: "blocking"
+    details: >
+      run_all_governance_validators(declaration) executes all 48 validators.
+      Any validator returning blocks_sprint=True causes autonomous_continue
+      to be set to false. The validator suite is invoked by
+      tools/supervisor/supervisor_loop.py autonomous-cycle during sprint
+      closeout.
+    exceptions:
+      - "Sprint closeout is best-effort; if validators crash, log and continue"
+      - "GOV_BLOCK from V39 source architecture overrides Supreme Directive"
+
+  # =========================================================================
+  # Deepening (DP)
+  # =========================================================================
+
+  - rule_id: "RULE-DP-001"
+    area: "analytics"
+    statement: >
+      Product deepening rotation is suspended for mod_times arithmetic
+      patterns; V42 blocks any new mod_*_times_* function additions.
+    validator_ref: "V42"
+    enforcement_level: "blocking"
+    details: >
+      Suspended 2026-06-18. The arithmetic analytics rotation
+      (mod_prime_times_multiplier functions across ZST/XCF/FODG) has no spec
+      backing, no GAP-ledger entry, and does not advance any gate criterion.
+      Future analytics MUST trace to a GAP-* entry, reference a spec fact,
+      and route to {format}_analytics.py.
+
+  # =========================================================================
+  # Cross-Language (CL)
+  # =========================================================================
+
+  - rule_id: "RULE-CL-001"
+    area: "packaging"
+    statement: >
+      Commercial-track formats require both .NET and Python implementations
+      for cross-language parity before Gate 11 approval.
+    validator_ref: "MANUAL"
+    enforcement_level: "advisory"
+    details: >
+      Gate 11 criteria include C1-C20 (.NET) and P1-P11 (Python).
+      Babar Raza is the sole approver. Preparation is agent-owned;
+      only the final commercial sign-off requires human business authority.
+      Format registry at registry/format-registry.yaml tracks per-format
+      gate readiness.

@@ -1105,6 +1105,37 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
     print(f"  Overclaimed: {len(review['overclaimed_items'])}")
     print(f"  Autonomous Continue: {review['autonomous_continue']}")
 
+    # Step 3a-pre: Merge gap_ledger_ref from work items into declaration (TC-C7-005)
+    # The closure engine needs gap_ledger_ref in planned_work_items to match gaps.
+    # Worker-written declarations often omit this field. Merge from canonical work items.
+    try:
+        _wi_sources = [
+            repo_root / ".local" / "supervisor" / "product" / "next-work-items.json",
+            repo_root / ".local" / "supervisor" / "next-work-items.json",
+        ]
+        _wi_by_id: dict[str, str] = {}
+        for _wi_src in _wi_sources:
+            if _wi_src.exists():
+                _wi_data = json.loads(_wi_src.read_text(encoding="utf-8"))
+                _wi_list = _wi_data if isinstance(_wi_data, list) else _wi_data.get("items", _wi_data.get("work_items", []))
+                for _wi in _wi_list:
+                    _ref = _wi.get("gap_ledger_ref") or _wi.get("gap_id")
+                    _wid = _wi.get("item_id") or _wi.get("action_id")
+                    if _ref and _wid:
+                        _wi_by_id[_wid] = _ref
+                break  # use first available source
+        if _wi_by_id:
+            _merged = 0
+            for _di in decl.get("planned_work_items", []):
+                _did = _di.get("item_id", "")
+                if not _di.get("gap_ledger_ref") and _did in _wi_by_id:
+                    _di["gap_ledger_ref"] = _wi_by_id[_did]
+                    _merged += 1
+            if _merged:
+                print(f"  [TC-C7-005] Merged gap_ledger_ref into {_merged} declaration item(s)")
+    except Exception as _merge_err:
+        print(f"  WARNING: gap_ledger_ref merge skipped: {_merge_err}")
+
     # Step 3a-closure: Automated gap closure from graded evidence (TC-FL-002)
     print("\n=== STEP 3a-closure: GAP CLOSURE FROM GRADES ===")
     try:
@@ -1389,6 +1420,7 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
         print(f"  WARNING: Rework classification skipped (non-blocking): {_rw_err}")
 
     # Step 3d+3e+3f: SAL recompute, capability map, queue consumer, fabric
+    # Step 3e: Capability Queue Consumer (TC-WIRE-001) — wiring in extensions module
     # Extracted to autonomous_cycle_extensions.py (TC-SGOV-008)
     try:
         from autonomous_cycle_extensions import run_sal_capmap_recompute
@@ -2006,6 +2038,14 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
         stream_signal_path = stream_signal_dir / "continuation-signal.json"
         atomic_write_json(stream_signal_path, stream_signal)
         print(f"  Stream signal: {stream_signal_path}")
+
+        # TC-AMD-SIGNAL-001: Emit maturity signal for external consumption
+        try:
+            from emit_maturity_signal import emit_signal as _emit_maturity
+            _emit_maturity(review, signal, repo_root)
+            print("  Maturity signal: reports/supervisor/maturity-signal.json")
+        except Exception as _ms_err:
+            print(f"  WARNING: Maturity signal emission skipped: {_ms_err}")
 
         # TC-SH-006: GOV_BLOCK auto-repair directive — extracted to extensions
         if _current_structural_blocks:

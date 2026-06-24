@@ -56,6 +56,10 @@ _DOMAIN_MODULES = {
     "presentation_document", "word_document", "tabular_document",
     "interchange_document", "json_stream", "config_document",
     "bitmap_image", "grayscale_image", "color_image", "image_document",
+    "workbook_document", "compressed_stream", "compat",
+    # D-group extraction targets (new domain-pattern files)
+    "word_stats", "workbook_stats", "record_stats",
+    "neutral_ops", "document_edit", "drawing_metrics",
 }
 
 # Suffixes that indicate recognized converter/exporter files

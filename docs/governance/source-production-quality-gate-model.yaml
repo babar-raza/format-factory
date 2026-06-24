@@ -1,0 +1,94 @@
+# Source Production Quality Gate Model — Format Factory
+# Authority: docs/code-quality/production-readiness-standard.md + registry/gate11-criteria.yaml
+# Purpose: Define quality gate levels for source production readiness
+
+gate_levels:
+
+  - gate_id: "L0"
+    level: 0
+    name: "Import Gate"
+    description: "Python module imports without error; .NET project compiles"
+    tools:
+      - "python -c 'from {format}.{module} import *'"
+      - "dotnet build src/net/{format}/FormatFactory.{Format}.csproj"
+    blocking: true
+    minimum_for: "any source change"
+
+  - gate_id: "L1"
+    level: 1
+    name: "Unit Test Gate"
+    description: "All unit tests pass for the affected format"
+    tools:
+      - ".venv/Scripts/pytest tests/python/{format}/ -q"
+      - "dotnet test tests/net/FormatFactory.{Format}.Tests/"
+    blocking: true
+    minimum_for: "any source change"
+
+  - gate_id: "L2"
+    level: 2
+    name: "Integration Test Gate"
+    description: "Cross-module and governance validator tests pass"
+    tools:
+      - ".venv/Scripts/pytest tests/supervisor/test_governance_validators.py -q"
+      - "python tools/validators/source_structure_validator.py"
+    blocking: true
+    minimum_for: "architecture changes, validator changes"
+
+  - gate_id: "L3"
+    level: 3
+    name: "Package and Consumer Gate"
+    description: "Package builds, installs, and consumer can import and use API"
+    tools:
+      - "python packaging/python/build-local-packages.py"
+      - "pip install --user dist/{format}*.whl"
+      - "python -c 'from format_factory_{format} import *; print(dir())'"
+    blocking: true
+    minimum_for: "packaging claims, consumer-ready claims"
+
+  - gate_id: "L4"
+    level: 4
+    name: "Round-Trip Gate"
+    description: "Load → mutate → save → reload preserves data integrity"
+    tools:
+      - "Round-trip test in tests/python/{format}/test_roundtrip.py"
+      - ".NET round-trip tests in FormatFactory.{Format}.Tests"
+    blocking: true
+    minimum_for: "production-readiness claims"
+
+  - gate_id: "L5"
+    level: 5
+    name: "Spec Parity Gate"
+    description: "Implementation covers spec QNames from shared/qname-registry/{format}.yaml"
+    tools:
+      - "QName coverage check against shared/qname-registry/"
+      - "Spec fact reference validation against .local/sal-output/sal-facts-latest.json"
+    blocking: false
+    minimum_for: "spec-parity claims"
+
+  - gate_id: "G11"
+    level: 11
+    name: "Commercial Release Gate (Gate 11)"
+    description: "Commercial release readiness — requires Babar Raza business authority"
+    tools:
+      - "registry/gate11-criteria.yaml (C1-C20 .NET, P1-P11 Python)"
+      - "/check-gate {format} 11"
+    blocking: true
+    minimum_for: "commercial release"
+    approval_authority: "Babar Raza"
+    gate_type: "TRUE_EXTERNAL_GATE"
+    criteria_reference: "registry/gate11-criteria.yaml"
+
+validation_rules:
+
+  - rule: "No production-readiness claim without L4 evidence"
+    enforcement: "advisory"
+
+  - rule: "No packaging claim without L3 evidence"
+    enforcement: "advisory"
+
+  - rule: "No spec-parity claim without L5 evidence"
+    enforcement: "advisory"
+
+  - rule: "Gate 11 requires all L0-L5 gates passed plus business approval"
+    enforcement: "blocking"
+    gate_type: "TRUE_EXTERNAL_GATE"

@@ -1409,6 +1409,60 @@ def _discover_missing_foss_formats(poc_data: dict, sprint_now: str) -> list[dict
 
 
 # ---------------------------------------------------------------------------
+# Gap closure API (TC-C7-001 — Stage 7 Capability Closure Wiring)
+# ---------------------------------------------------------------------------
+
+_DEFAULT_GAP_LEDGER_PATH = _DEFAULT_OUTPUT_DIR / "gap-ledger.json"
+
+
+def update_gap_status(
+    gap_id: str,
+    new_status: str,
+    evidence_path: str | None = None,
+    *,
+    closed_by: str = "autonomous_cycle",
+    gap_ledger_path: Path | None = None,
+) -> dict:
+    """Update the status of a gap-ledger entry in place.
+
+    Designed to be called by autonomous_cycle.py after a PASS-graded work item
+    that references a gap_ledger_ref.  Writes directly to gap-ledger.json.
+
+    Returns a dict with: {gap_id, previous_status, new_status, updated}.
+    Idempotent: if the gap already has the target status, returns updated=False.
+    """
+    ledger_path = gap_ledger_path or _DEFAULT_GAP_LEDGER_PATH
+    if not ledger_path.exists():
+        return {"gap_id": gap_id, "previous_status": None, "new_status": new_status,
+                "updated": False, "error": "gap-ledger.json not found"}
+
+    data = json.loads(ledger_path.read_text(encoding="utf-8"))
+    gaps = data.get("gaps", [])
+
+    for gap in gaps:
+        if gap.get("gap_id") == gap_id:
+            prev = gap.get("status", "unknown")
+            if prev == new_status:
+                return {"gap_id": gap_id, "previous_status": prev,
+                        "new_status": new_status, "updated": False}
+            gap["status"] = new_status
+            if new_status == "closed":
+                gap["closed_by_sprint"] = closed_by
+                gap["closed_at"] = datetime.now(timezone.utc).isoformat()
+                if evidence_path:
+                    gap["closed_evidence"] = evidence_path
+            data["total_gaps"] = len(gaps)
+            ledger_path.write_text(
+                json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8"
+            )
+            return {"gap_id": gap_id, "previous_status": prev,
+                    "new_status": new_status, "updated": True}
+
+    return {"gap_id": gap_id, "previous_status": None, "new_status": new_status,
+            "updated": False, "error": f"gap_id {gap_id} not found in ledger"}
+
+
+# ---------------------------------------------------------------------------
 # CLI
 # ---------------------------------------------------------------------------
 

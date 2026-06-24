@@ -1,21 +1,7 @@
-## ACTIVE PER-CHAT PLAN — SYSTEM LEDGER SUPPRESSED
-
-A per-chat plan is active. Complete ALL plan taskcards before any ledger/product work.
-
-- **Plan:** `C:/Users/prora/.claude/plans/polymorphic-brewing-cosmos.md`
-- **Last completed taskcard:** `None`
-- **Action:** Read the plan file. Find the next open taskcard after `None`. Execute it.
-  After each: `python tools/supervisor/write_plan_lock.py --plan-path "C:/Users/prora/.claude/plans/polymorphic-brewing-cosmos.md" --last-taskcard <TC_ID>`
-  When ALL done: `python tools/supervisor/write_plan_lock.py --plan-path "C:/Users/prora/.claude/plans/polymorphic-brewing-cosmos.md" --complete`
-
-**Do NOT start system ledger / product hardening work until plan status = COMPLETE.**
-
----
-
 # Supervisor-Generated Next Sprint Prompt
-# Source sprint: PROD-GOV-HEAL-20260624
+# Source sprint: convergence-product-verify-20260624-3f98f85d
 # Stream: mainstream
-# Generated: 2026-06-24T12:03:35.757185
+# Generated: 2026-06-24T12:51:09.262045
 # ADVISORY ONLY — not a Format Factory authority document
 # This is INPUT to the next sprint, not a gate approval or commit authorization.
 
@@ -25,10 +11,10 @@ A per-chat plan is active. Complete ALL plan taskcards before any ledger/product
 ADVANCE: Product deepening — .NET commercial + Python FOSS + dogfood + packaging
 
 ## Prior Sprint Summary
-- Sprint ID: PROD-GOV-HEAL-20260624
-- Evidence verdict: ACCEPTED_WITH_REWORK
-- Tests: 37 passed, 0 failed, 0 skipped
-- Autonomous continue: False
+- Sprint ID: convergence-product-verify-20260624-3f98f85d
+- Evidence verdict: ACCEPTED
+- Tests: 1609 passed, 0 failed, 0 skipped
+- Autonomous continue: True
 
 ## STOP_REASON_ADVISORY (enforced by stop_reason_adjudicator.py)
 

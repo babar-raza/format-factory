@@ -932,6 +932,26 @@ def write_outputs(review: dict, output_dir: Path) -> None:
         yaml.dump(overclaimed, default_flow_style=False, sort_keys=False), encoding="utf-8"
     )
 
+    # Record grading failures to FailureMemory (TC-AMD-FIX-002)
+    try:
+        from failure_memory import FailureMemory
+        repo_root = output_dir
+        while repo_root != repo_root.parent:
+            if (repo_root / ".git").exists():
+                break
+            repo_root = repo_root.parent
+        fm = FailureMemory(repo_root)
+        for g in review.get("item_grades", []):
+            if g.get("supervisor_grade") in ("REWORK_REQUIRED", "REJECTED", "OVERCLAIMED"):
+                fm.record_failure(
+                    category="GRADING_FALSE_POSITIVE" if g.get("supervisor_grade") == "OVERCLAIMED" else "OVERCLAIM_FAILURE",
+                    root_cause=g.get("required_rework", "unknown"),
+                    sprint_id=review.get("sprint_id", ""),
+                )
+        fm.save()
+    except Exception:
+        pass  # Non-blocking — failure-memory write must never break grading
+
     # Review markdown
     lines = [
         f"# Supervisor Review: {review['run_id']}",

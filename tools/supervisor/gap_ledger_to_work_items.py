@@ -98,6 +98,7 @@ def _gap_to_work_item(gap: dict[str, Any], score: int) -> dict[str, Any]:
         "verification_command": f".venv/Scripts/pytest tests/python/{fmt.lower()}/ -q",
         "evidence_expected": f"Test run showing {cap} passing for {fmt}",
         "source": "gap-ledger",
+        "gap_ledger_ref": gap_id,
         "gap_id": gap_id,
         "format": fmt,
         "capability_name": cap,

@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-06-18T17:02:37.820294+00:00",
+  "generated_at": "2026-06-24T06:37:33.636226+00:00",
   "generator_version": "1.3",
-  "total_candidates": 5,
-  "gap_ledger_goals_available": 932,
-  "hardcoded_fallback_goals_used": 77,
+  "total_candidates": 20,
+  "gap_ledger_goals_available": 873,
+  "hardcoded_fallback_goals_used": 96,
   "advisory_only_skipped": 0,
   "source": "gap_ledger_primary+expansion_goals_fallback",
   "expansion_goal_fallback": false,
@@ -11,11 +11,135 @@
   "zero_task_circuit_breaker": false,
   "tasks": [
     {
-      "action_id": "atg-abw-installed-workflow-001",
+      "action_id": "atg-abw-abw-section-count-001",
       "action_type": "IMPLEMENT_SMALL_PRODUCT_FEATURE",
       "stream": "product",
       "lane": "product_feature",
       "priority": 1,
+      "source": "capability_expansion:abw-abw_section_count",
+      "gap_ledger_ref": "GAP-ABW-FOSS-ABW_SECTION_-001",
+      "reason": "Close gap GAP-ABW-FOSS-ABW_SECTION_-001: add test coverage for Abw Section Count",
+      "objective": "Implement abw_section_count() for ABW format: Close gap GAP-ABW-FOSS-ABW_SECTION_-001: add test coverage for Abw Section Count",
+      "autonomy_value": 3,
+      "product_value": 3,
+      "risk_level": "LOW",
+      "gate_classification": "LOCAL_AUTONOMOUS",
+      "human_approval_required": false,
+      "allowed_paths": [
+        "src/python/abw/",
+        "tests/python/abw/"
+      ],
+      "forbidden_paths": [
+        "src/net/",
+        "registry/",
+        "product-capability-matrix/poc-targets.yaml",
+        ".supervisor/",
+        "AGENTS.md",
+        "GOVERNANCE.md"
+      ],
+      "expected_files_to_change": [
+        "src/python/abw/abw_codec.py"
+      ],
+      "target_path": "src/python/abw/abw_codec.py",
+      "expected_tests": [
+        "tests/python/abw/test_gap_abw_section_count.py"
+      ],
+      "expected_ledgers": [
+        "reports/r90/product-code-change-ledger.json"
+      ],
+      "expected_capability_updates": [
+        "ABW-abw_section_count -> test_verified"
+      ],
+      "expected_spec_refs": [],
+      "rollback_strategy": "git checkout src/python/abw/abw_codec.py",
+      "max_attempts": 3,
+      "repair_allowed": true,
+      "evidence_required": true,
+      "done_criteria": "pytest tests/python/abw/test_gap_abw_section_count.py passes; abw_section_count() defined in src/python/abw/abw_codec.py; ledger entry added",
+      "status": "pending",
+      "external_gate": false,
+      "queued_at": null,
+      "started_at": null,
+      "completed_at": null,
+      "result_path": null,
+      "error": null,
+      "sprint_id": null,
+      "pattern": "test_coverage",
+      "spec_authority": "Discovered via source introspection \u2014 not in poc-targets.yaml",
+      "format": "abw",
+      "function_name": "abw_section_count",
+      "advisory_only": false,
+      "compiled_taskcard_id": "TC-A7B0F913",
+      "compiled_taskcard_path": ".local\\capability-consumer\\taskcards-test\\TC-A7B0F913.json"
+    },
+    {
+      "action_id": "atg-abw-get-paragraphs-002",
+      "action_type": "IMPLEMENT_SMALL_PRODUCT_FEATURE",
+      "stream": "product",
+      "lane": "product_feature",
+      "priority": 2,
+      "source": "capability_expansion:abw-get_paragraphs",
+      "gap_ledger_ref": "GAP-ABW-FOSS-GET_PARAGRAP-001",
+      "reason": "Close gap GAP-ABW-FOSS-GET_PARAGRAP-001: add test coverage for Get Paragraphs",
+      "objective": "Implement get_paragraphs() for ABW format: Close gap GAP-ABW-FOSS-GET_PARAGRAP-001: add test coverage for Get Paragraphs",
+      "autonomy_value": 3,
+      "product_value": 3,
+      "risk_level": "LOW",
+      "gate_classification": "LOCAL_AUTONOMOUS",
+      "human_approval_required": false,
+      "allowed_paths": [
+        "src/python/abw/",
+        "tests/python/abw/"
+      ],
+      "forbidden_paths": [
+        "src/net/",
+        "registry/",
+        "product-capability-matrix/poc-targets.yaml",
+        ".supervisor/",
+        "AGENTS.md",
+        "GOVERNANCE.md"
+      ],
+      "expected_files_to_change": [
+        "src/python/abw/abw_codec.py"
+      ],
+      "target_path": "src/python/abw/abw_codec.py",
+      "expected_tests": [
+        "tests/python/abw/test_gap_get_paragraphs.py"
+      ],
+      "expected_ledgers": [
+        "reports/r90/product-code-change-ledger.json"
+      ],
+      "expected_capability_updates": [
+        "ABW-get_paragraphs -> test_verified"
+      ],
+      "expected_spec_refs": [],
+      "rollback_strategy": "git checkout src/python/abw/abw_codec.py",
+      "max_attempts": 3,
+      "repair_allowed": true,
+      "evidence_required": true,
+      "done_criteria": "pytest tests/python/abw/test_gap_get_paragraphs.py passes; get_paragraphs() defined in src/python/abw/abw_codec.py; ledger entry added",
+      "status": "pending",
+      "external_gate": false,
+      "queued_at": null,
+      "started_at": null,
+      "completed_at": null,
+      "result_path": null,
+      "error": null,
+      "sprint_id": null,
+      "pattern": "test_coverage",
+      "spec_authority": "Generated from poc-targets.yaml python_status + source introspection. op_status=PASS",
+      "format": "abw",
+      "function_name": "get_paragraphs",
+      "advisory_only": false,
+      "compiled_taskcard_id": null,
+      "compiled_taskcard_path": null
+    },
+    {
+      "action_id": "atg-abw-installed-workflow-003",
+      "action_type": "IMPLEMENT_SMALL_PRODUCT_FEATURE",
+      "stream": "product",
+      "lane": "product_feature",
+      "priority": 3,
       "source": "capability_expansion:abw-installed_workflow",
       "gap_ledger_ref": "GAP-ABW-FOSS-INSTALLED_WO-001",
       "reason": "Close gap GAP-ABW-FOSS-INSTALLED_WO-001: add test coverage for Installed Workflow",
@@ -68,14 +192,16 @@
       "spec_authority": "Generated from poc-targets.yaml python_status + source introspection. op_status=PASS",
       "format": "abw",
       "function_name": "installed_workflow",
-      "advisory_only": false
+      "advisory_only": false,
+      "compiled_taskcard_id": null,
+      "compiled_taskcard_path": null
     },
     {
-      "action_id": "atg-abw-abwerror-002",
+      "action_id": "atg-abw-abwerror-004",
       "action_type": "IMPLEMENT_SMALL_PRODUCT_FEATURE",
       "stream": "product",
       "lane": "product_feature",
-      "priority": 2,
+      "priority": 4,
       "source": "capability_expansion:abw-abwerror",
       "gap_ledger_ref": "GAP-ABW-FOSS-ABWERROR-001",
       "reason": "Close gap GAP-ABW-FOSS-ABWERROR-001: add test coverage for Abwerror",
@@ -128,14 +254,16 @@
       "spec_authority": "Discovered via source introspection \u2014 not in poc-targets.yaml",
       "format": "abw",
       "function_name": "abwerror",
-      "advisory_only": false
+      "advisory_only": false,
+      "compiled_taskcard_id": null,
+      "compiled_taskcard_path": null
     },
     {
-      "action_id": "atg-abw-abwparseerror-003",
+      "action_id": "atg-abw-abwparseerror-005",
       "action_type": "IMPLEMENT_SMALL_PRODUCT_FEATURE",
       "stream": "product",
       "lane": "product_feature",
-      "priority": 3,
+      "priority": 5,
       "source": "capability_expansion:abw-abwparseerror",
       "gap_ledger_ref": "GAP-ABW-FOSS-ABWPARSEERRO-001",
       "reason": "Close gap GAP-ABW-FOSS-ABWPARSEERRO-001: add test coverage for Abwparseerror",
@@ -188,26 +316,28 @@
       "spec_authority": "Discovered via source introspection \u2014 not in poc-targets.yaml",
       "format": "abw",
       "function_name": "abwparseerror",
-      "advisory_only": false
+      "advisory_only": false,
+      "compiled_taskcard_id": null,
+      "compiled_taskcard_path": null
     },
     {
-      "action_id": "atg-csv-csverror-004",
+      "action_id": "atg-abw-abw-has-headings-006",
       "action_type": "IMPLEMENT_SMALL_PRODUCT_FEATURE",
       "stream": "product",
       "lane": "product_feature",
-      "priority": 4,
-      "source": "capability_expansion:csv-csverror",
-      "gap_ledger_ref": "GAP-CSV-FOSS-CSVERROR-001",
-      "reason": "Close gap GAP-CSV-FOSS-CSVERROR-001: add test coverage for Csverror",
-      "objective": "Implement csverror() for CSV format: Close gap GAP-CSV-FOSS-CSVERROR-001: add test coverage for Csverror",
+      "priority": 6,
+      "source": "capability_expansion:abw-abw_has_headings",
+      "gap_ledger_ref": "GAP-ABW-FOSS-ABW_HAS_HEAD-001",
+      "reason": "Close gap GAP-ABW-FOSS-ABW_HAS_HEAD-001: add test coverage for Abw Has Headings",
+      "objective": "Implement abw_has_headings() for ABW format: Close gap GAP-ABW-FOSS-ABW_HAS_HEAD-001: add test coverage for Abw Has Headings",
       "autonomy_value": 3,
       "product_value": 3,
       "risk_level": "LOW",
       "gate_classification": "LOCAL_AUTONOMOUS",
       "human_approval_required": false,
       "allowed_paths": [
-        "src/python/csv/",
-        "tests/python/csv/"
+        "src/python/abw/",
+        "tests/python/abw/"
       ],
       "forbidden_paths": [
         "src/net/",
@@ -218,24 +348,24 @@
         "GOVERNANCE.md"
       ],
       "expected_files_to_change": [
-        "src/python/csv/csv_parser.py"
+        "src/python/abw/abw_codec.py"
       ],
-      "target_path": "src/python/csv/csv_parser.py",
+      "target_path": "src/python/abw/abw_codec.py",
       "expected_tests": [
-        "tests/python/csv/test_gap_csverror.py"
+        "tests/python/abw/test_gap_abw_has_headings.py"
       ],
       "expected_ledgers": [
         "reports/r90/product-code-change-ledger.json"
       ],
       "expected_capability_updates": [
-        "CSV-csverror -> test_verified"
+        "ABW-abw_has_headings -> test_verified"
       ],
       "expected_spec_refs": [],
-      "rollback_strategy": "git checkout src/python/csv/csv_parser.py",
+      "rollback_strategy": "git checkout src/python/abw/abw_codec.py",
       "max_attempts": 3,
       "repair_allowed": true,
       "evidence_required": true,
-      "done_criteria": "pytest tests/python/csv/test_gap_csverror.py passes; csverror() defined in src/python/csv/csv_parser.py; ledger entry added",
+      "done_criteria": "pytest tests/python/abw/test_gap_abw_has_headings.py passes; abw_has_headings() defined in src/python/abw/abw_codec.py; ledger entry added",
       "status": "pending",
       "external_gate": false,
       "queued_at": null,
@@ -245,29 +375,31 @@
       "error": null,
       "sprint_id": null,
       "pattern": "test_coverage",
-      "spec_authority": "Discovered via source scan \u2014 NOT in poc-targets.yaml. Add to foss_reduced_products.",
-      "format": "csv",
-      "function_name": "csverror",
-      "advisory_only": false
+      "spec_authority": "Discovered via source introspection \u2014 not in poc-targets.yaml",
+      "format": "abw",
+      "function_name": "abw_has_headings",
+      "advisory_only": false,
+      "compiled_taskcard_id": "TC-A5AFE742",
+      "compiled_taskcard_path": ".local\\capability-consumer\\taskcards-test\\TC-A5AFE742.json"
     },
     {
-      "action_id": "atg-csv-csvinputerror-005",
+      "action_id": "atg-abw-abw-digit-count-007",
       "action_type": "IMPLEMENT_SMALL_PRODUCT_FEATURE",
       "stream": "product",
       "lane": "product_feature",
-      "priority": 5,
-      "source": "capability_expansion:csv-csvinputerror",
-      "gap_ledger_ref": "GAP-CSV-FOSS-CSVINPUTERRO-001",
-      "reason": "Close gap GAP-CSV-FOSS-CSVINPUTERRO-001: add test coverage for Csvinputerror",
-      "objective": "Implement csvinputerror() for CSV format: Close gap GAP-CSV-FOSS-CSVINPUTERRO-001: add test coverage for Csvinputerror",
+      "priority": 7,
+      "source": "capability_expansion:abw-abw_digit_count",
+      "gap_ledger_ref": "GAP-ABW-FOSS-ABW_DIGIT_CO-001",
+      "reason": "Close gap GAP-ABW-FOSS-ABW_DIGIT_CO-001: add test coverage for Abw Digit Count",
+      "objective": "Implement abw_digit_count() for ABW format: Close gap GAP-ABW-FOSS-ABW_DIGIT_CO-001: add test coverage for Abw Digit Count",
       "autonomy_value": 3,
       "product_value": 3,
       "risk_level": "LOW",
       "gate_classification": "LOCAL_AUTONOMOUS",
       "human_approval_required": false,
       "allowed_paths": [
-        "src/python/csv/",
-        "tests/python/csv/"
+        "src/python/abw/",
+        "tests/python/abw/"
       ],
       "forbidden_paths": [
         "src/net/",
@@ -278,24 +410,24 @@
         "GOVERNANCE.md"
       ],
       "expected_files_to_change": [
-        "src/python/csv/csv_parser.py"
+        "src/python/abw/abw_codec.py"
       ],
-      "target_path": "src/python/csv/csv_parser.py",
+      "target_path": "src/python/abw/abw_codec.py",
       "expected_tests": [
-        "tests/python/csv/test_gap_csvinputerror.py"
+        "tests/python/abw/test_gap_abw_digit_count.py"
       ],
       "expected_ledgers": [
         "reports/r90/product-code-change-ledger.json"
       ],
       "expected_capability_updates": [
-        "CSV-csvinputerror -> test_verified"
+        "ABW-abw_digit_count -> test_verified"
       ],
       "expected_spec_refs": [],
-      "rollback_strategy": "git checkout src/python/csv/csv_parser.py",
+      "rollback_strategy": "git checkout src/python/abw/abw_codec.py",
       "max_attempts": 3,
       "repair_allowed": true,
       "evidence_required": true,
-      "done_criteria": "pytest tests/python/csv/test_gap_csvinputerror.py passes; csvinputerror() defined in src/python/csv/csv_parser.py; ledger entry added",
+      "done_criteria": "pytest tests/python/abw/test_gap_abw_digit_count.py passes; abw_digit_count() defined in src/python/abw/abw_codec.py; ledger entry added",
       "status": "pending",
       "external_gate": false,
       "queued_at": null,
@@ -305,10 +437,818 @@
       "error": null,
       "sprint_id": null,
       "pattern": "test_coverage",
-      "spec_authority": "Discovered via source scan \u2014 NOT in poc-targets.yaml. Add to foss_reduced_products.",
-      "format": "csv",
-      "function_name": "csvinputerror",
-      "advisory_only": false
+      "spec_authority": "Discovered via source introspection \u2014 not in poc-targets.yaml",
+      "format": "abw",
+      "function_name": "abw_digit_count",
+      "advisory_only": false,
+      "compiled_taskcard_id": "TC-98C11FEA",
+      "compiled_taskcard_path": ".local\\capability-consumer\\taskcards-test\\TC-98C11FEA.json"
+    },
+    {
+      "action_id": "atg-abw-abw-alpha-char-count-008",
+      "action_type": "IMPLEMENT_SMALL_PRODUCT_FEATURE",
+      "stream": "product",
+      "lane": "product_feature",
+      "priority": 8,
+      "source": "capability_expansion:abw-abw_alpha_char_count",
+      "gap_ledger_ref": "GAP-ABW-FOSS-ABW_ALPHA_CH-001",
+      "reason": "Close gap GAP-ABW-FOSS-ABW_ALPHA_CH-001: add test coverage for Abw Alpha Char Count",
+      "objective": "Implement abw_alpha_char_count() for ABW format: Close gap GAP-ABW-FOSS-ABW_ALPHA_CH-001: add test coverage for Abw Alpha Char Count",
+      "autonomy_value": 3,
+      "product_value": 3,
+      "risk_level": "LOW",
+      "gate_classification": "LOCAL_AUTONOMOUS",
+      "human_approval_required": false,
+      "allowed_paths": [
+        "src/python/abw/",
+        "tests/python/abw/"
+      ],
+      "forbidden_paths": [
+        "src/net/",
+        "registry/",
+        "product-capability-matrix/poc-targets.yaml",
+        ".supervisor/",
+        "AGENTS.md",
+        "GOVERNANCE.md"
+      ],
+      "expected_files_to_change": [
+        "src/python/abw/abw_codec.py"
+      ],
+      "target_path": "src/python/abw/abw_codec.py",
+      "expected_tests": [
+        "tests/python/abw/test_gap_abw_alpha_char_count.py"
+      ],
+      "expected_ledgers": [
+        "reports/r90/product-code-change-ledger.json"
+      ],
+      "expected_capability_updates": [
+        "ABW-abw_alpha_char_count -> test_verified"
+      ],
+      "expected_spec_refs": [],
+      "rollback_strategy": "git checkout src/python/abw/abw_codec.py",
+      "max_attempts": 3,
+      "repair_allowed": true,
+      "evidence_required": true,
+      "done_criteria": "pytest tests/python/abw/test_gap_abw_alpha_char_count.py passes; abw_alpha_char_count() defined in src/python/abw/abw_codec.py; ledger entry added",
+      "status": "pending",
+      "external_gate": false,
+      "queued_at": null,
+      "started_at": null,
+      "completed_at": null,
+      "result_path": null,
+      "error": null,
+      "sprint_id": null,
+      "pattern": "test_coverage",
+      "spec_authority": "Discovered via source introspection \u2014 not in poc-targets.yaml",
+      "format": "abw",
+      "function_name": "abw_alpha_char_count",
+      "advisory_only": false,
+      "compiled_taskcard_id": "TC-C5A33829",
+      "compiled_taskcard_path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\capability-consumer\\taskcards\\TC-C5A33829.json"
+    },
+    {
+      "action_id": "atg-abw-abw-alpha-ratio-009",
+      "action_type": "IMPLEMENT_SMALL_PRODUCT_FEATURE",
+      "stream": "product",
+      "lane": "product_feature",
+      "priority": 9,
+      "source": "capability_expansion:abw-abw_alpha_ratio",
+      "gap_ledger_ref": "GAP-ABW-FOSS-ABW_ALPHA_RA-001",
+      "reason": "Close gap GAP-ABW-FOSS-ABW_ALPHA_RA-001: add test coverage for Abw Alpha Ratio",
+      "objective": "Implement abw_alpha_ratio() for ABW format: Close gap GAP-ABW-FOSS-ABW_ALPHA_RA-001: add test coverage for Abw Alpha Ratio",
+      "autonomy_value": 3,
+      "product_value": 3,
+      "risk_level": "LOW",
+      "gate_classification": "LOCAL_AUTONOMOUS",
+      "human_approval_required": false,
+      "allowed_paths": [
+        "src/python/abw/",
+        "tests/python/abw/"
+      ],
+      "forbidden_paths": [
+        "src/net/",
+        "registry/",
+        "product-capability-matrix/poc-targets.yaml",
+        ".supervisor/",
+        "AGENTS.md",
+        "GOVERNANCE.md"
+      ],
+      "expected_files_to_change": [
+        "src/python/abw/abw_codec.py"
+      ],
+      "target_path": "src/python/abw/abw_codec.py",
+      "expected_tests": [
+        "tests/python/abw/test_gap_abw_alpha_ratio.py"
+      ],
+      "expected_ledgers": [
+        "reports/r90/product-code-change-ledger.json"
+      ],
+      "expected_capability_updates": [
+        "ABW-abw_alpha_ratio -> test_verified"
+      ],
+      "expected_spec_refs": [],
+      "rollback_strategy": "git checkout src/python/abw/abw_codec.py",
+      "max_attempts": 3,
+      "repair_allowed": true,
+      "evidence_required": true,
+      "done_criteria": "pytest tests/python/abw/test_gap_abw_alpha_ratio.py passes; abw_alpha_ratio() defined in src/python/abw/abw_codec.py; ledger entry added",
+      "status": "pending",
+      "external_gate": false,
+      "queued_at": null,
+      "started_at": null,
+      "completed_at": null,
+      "result_path": null,
+      "error": null,
+      "sprint_id": null,
+      "pattern": "test_coverage",
+      "spec_authority": "Discovered via source introspection \u2014 not in poc-targets.yaml",
+      "format": "abw",
+      "function_name": "abw_alpha_ratio",
+      "advisory_only": false,
+      "compiled_taskcard_id": "TC-EF3F2A0A",
+      "compiled_taskcard_path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\capability-consumer\\taskcards\\TC-EF3F2A0A.json"
+    },
+    {
+      "action_id": "atg-abw-abw-avg-paragraph-length-010",
+      "action_type": "IMPLEMENT_SMALL_PRODUCT_FEATURE",
+      "stream": "product",
+      "lane": "product_feature",
+      "priority": 10,
+      "source": "capability_expansion:abw-abw_avg_paragraph_length",
+      "gap_ledger_ref": "GAP-ABW-FOSS-ABW_AVG_PARA-001",
+      "reason": "Close gap GAP-ABW-FOSS-ABW_AVG_PARA-001: add test coverage for Abw Avg Paragraph Length",
+      "objective": "Implement abw_avg_paragraph_length() for ABW format: Close gap GAP-ABW-FOSS-ABW_AVG_PARA-001: add test coverage for Abw Avg Paragraph Length",
+      "autonomy_value": 3,
+      "product_value": 3,
+      "risk_level": "LOW",
+      "gate_classification": "LOCAL_AUTONOMOUS",
+      "human_approval_required": false,
+      "allowed_paths": [
+        "src/python/abw/",
+        "tests/python/abw/"
+      ],
+      "forbidden_paths": [
+        "src/net/",
+        "registry/",
+        "product-capability-matrix/poc-targets.yaml",
+        ".supervisor/",
+        "AGENTS.md",
+        "GOVERNANCE.md"
+      ],
+      "expected_files_to_change": [
+        "src/python/abw/abw_codec.py"
+      ],
+      "target_path": "src/python/abw/abw_codec.py",
+      "expected_tests": [
+        "tests/python/abw/test_gap_abw_avg_paragraph_length.py"
+      ],
+      "expected_ledgers": [
+        "reports/r90/product-code-change-ledger.json"
+      ],
+      "expected_capability_updates": [
+        "ABW-abw_avg_paragraph_length -> test_verified"
+      ],
+      "expected_spec_refs": [],
+      "rollback_strategy": "git checkout src/python/abw/abw_codec.py",
+      "max_attempts": 3,
+      "repair_allowed": true,
+      "evidence_required": true,
+      "done_criteria": "pytest tests/python/abw/test_gap_abw_avg_paragraph_length.py passes; abw_avg_paragraph_length() defined in src/python/abw/abw_codec.py; ledger entry added",
+      "status": "pending",
+      "external_gate": false,
+      "queued_at": null,
+      "started_at": null,
+      "completed_at": null,
+      "result_path": null,
+      "error": null,
+      "sprint_id": null,
+      "pattern": "test_coverage",
+      "spec_authority": "Discovered via source introspection \u2014 not in poc-targets.yaml",
+      "format": "abw",
+      "function_name": "abw_avg_paragraph_length",
+      "advisory_only": false,
+      "compiled_taskcard_id": "TC-C3861912",
+      "compiled_taskcard_path": "C:\\Users\\prora\\AppData\\Local\\Temp\\tmp2dfp67ll\\TC-C3861912.json"
+    },
+    {
+      "action_id": "atg-abw-abw-char-per-paragraph-011",
+      "action_type": "IMPLEMENT_SMALL_PRODUCT_FEATURE",
+      "stream": "product",
+      "lane": "product_feature",
+      "priority": 11,
+      "source": "capability_expansion:abw-abw_char_per_paragraph",
+      "gap_ledger_ref": "GAP-ABW-FOSS-ABW_CHAR_PER-001",
+      "reason": "Close gap GAP-ABW-FOSS-ABW_CHAR_PER-001: add test coverage for Abw Char Per Paragraph",
+      "objective": "Implement abw_char_per_paragraph() for ABW format: Close gap GAP-ABW-FOSS-ABW_CHAR_PER-001: add test coverage for Abw Char Per Paragraph",
+      "autonomy_value": 3,
+      "product_value": 3,
+      "risk_level": "LOW",
+      "gate_classification": "LOCAL_AUTONOMOUS",
+      "human_approval_required": false,
+      "allowed_paths": [
+        "src/python/abw/",
+        "tests/python/abw/"
+      ],
+      "forbidden_paths": [
+        "src/net/",
+        "registry/",
+        "product-capability-matrix/poc-targets.yaml",
+        ".supervisor/",
+        "AGENTS.md",
+        "GOVERNANCE.md"
+      ],
+      "expected_files_to_change": [
+        "src/python/abw/abw_codec.py"
+      ],
+      "target_path": "src/python/abw/abw_codec.py",
+      "expected_tests": [
+        "tests/python/abw/test_gap_abw_char_per_paragraph.py"
+      ],
+      "expected_ledgers": [
+        "reports/r90/product-code-change-ledger.json"
+      ],
+      "expected_capability_updates": [
+        "ABW-abw_char_per_paragraph -> test_verified"
+      ],
+      "expected_spec_refs": [],
+      "rollback_strategy": "git checkout src/python/abw/abw_codec.py",
+      "max_attempts": 3,
+      "repair_allowed": true,
+      "evidence_required": true,
+      "done_criteria": "pytest tests/python/abw/test_gap_abw_char_per_paragraph.py passes; abw_char_per_paragraph() defined in src/python/abw/abw_codec.py; ledger entry added",
+      "status": "pending",
+      "external_gate": false,
+      "queued_at": null,
+      "started_at": null,
+      "completed_at": null,
+      "result_path": null,
+      "error": null,
+      "sprint_id": null,
+      "pattern": "test_coverage",
+      "spec_authority": "Discovered via source introspection \u2014 not in poc-targets.yaml",
+      "format": "abw",
+      "function_name": "abw_char_per_paragraph",
+      "advisory_only": false,
+      "compiled_taskcard_id": "TC-8E75DC10",
+      "compiled_taskcard_path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\capability-consumer\\taskcards\\TC-8E75DC10.json"
+    },
+    {
+      "action_id": "atg-abw-abw-chars-per-word-012",
+      "action_type": "IMPLEMENT_SMALL_PRODUCT_FEATURE",
+      "stream": "product",
+      "lane": "product_feature",
+      "priority": 12,
+      "source": "capability_expansion:abw-abw_chars_per_word",
+      "gap_ledger_ref": "GAP-ABW-FOSS-ABW_CHARS_PE-001",
+      "reason": "Close gap GAP-ABW-FOSS-ABW_CHARS_PE-001: add test coverage for Abw Chars Per Word",
+      "objective": "Implement abw_chars_per_word() for ABW format: Close gap GAP-ABW-FOSS-ABW_CHARS_PE-001: add test coverage for Abw Chars Per Word",
+      "autonomy_value": 3,
+      "product_value": 3,
+      "risk_level": "LOW",
+      "gate_classification": "LOCAL_AUTONOMOUS",
+      "human_approval_required": false,
+      "allowed_paths": [
+        "src/python/abw/",
+        "tests/python/abw/"
+      ],
+      "forbidden_paths": [
+        "src/net/",
+        "registry/",
+        "product-capability-matrix/poc-targets.yaml",
+        ".supervisor/",
+        "AGENTS.md",
+        "GOVERNANCE.md"
+      ],
+      "expected_files_to_change": [
+        "src/python/abw/abw_codec.py"
+      ],
+      "target_path": "src/python/abw/abw_codec.py",
+      "expected_tests": [
+        "tests/python/abw/test_gap_abw_chars_per_word.py"
+      ],
+      "expected_ledgers": [
+        "reports/r90/product-code-change-ledger.json"
+      ],
+      "expected_capability_updates": [
+        "ABW-abw_chars_per_word -> test_verified"
+      ],
+      "expected_spec_refs": [],
+      "rollback_strategy": "git checkout src/python/abw/abw_codec.py",
+      "max_attempts": 3,
+      "repair_allowed": true,
+      "evidence_required": true,
+      "done_criteria": "pytest tests/python/abw/test_gap_abw_chars_per_word.py passes; abw_chars_per_word() defined in src/python/abw/abw_codec.py; ledger entry added",
+      "status": "pending",
+      "external_gate": false,
+      "queued_at": null,
+      "started_at": null,
+      "completed_at": null,
+      "result_path": null,
+      "error": null,
+      "sprint_id": null,
+      "pattern": "test_coverage",
+      "spec_authority": "Discovered via source introspection \u2014 not in poc-targets.yaml",
+      "format": "abw",
+      "function_name": "abw_chars_per_word",
+      "advisory_only": false,
+      "compiled_taskcard_id": "TC-CEC39240",
+      "compiled_taskcard_path": "C:\\Users\\prora\\AppData\\Local\\Temp\\tmp2dfp67ll\\TC-CEC39240.json"
+    },
+    {
+      "action_id": "atg-abw-abw-consonant-to-vowel-ratio-013",
+      "action_type": "IMPLEMENT_SMALL_PRODUCT_FEATURE",
+      "stream": "product",
+      "lane": "product_feature",
+      "priority": 13,
+      "source": "capability_expansion:abw-abw_consonant_to_vowel_ratio",
+      "gap_ledger_ref": "GAP-ABW-FOSS-ABW_CONSONAN-001",
+      "reason": "Close gap GAP-ABW-FOSS-ABW_CONSONAN-001: add test coverage for Abw Consonant To Vowel Ratio",
+      "objective": "Implement abw_consonant_to_vowel_ratio() for ABW format: Close gap GAP-ABW-FOSS-ABW_CONSONAN-001: add test coverage for Abw Consonant To Vowel Ratio",
+      "autonomy_value": 3,
+      "product_value": 3,
+      "risk_level": "LOW",
+      "gate_classification": "LOCAL_AUTONOMOUS",
+      "human_approval_required": false,
+      "allowed_paths": [
+        "src/python/abw/",
+        "tests/python/abw/"
+      ],
+      "forbidden_paths": [
+        "src/net/",
+        "registry/",
+        "product-capability-matrix/poc-targets.yaml",
+        ".supervisor/",
+        "AGENTS.md",
+        "GOVERNANCE.md"
+      ],
+      "expected_files_to_change": [
+        "src/python/abw/abw_codec.py"
+      ],
+      "target_path": "src/python/abw/abw_codec.py",
+      "expected_tests": [
+        "tests/python/abw/test_gap_abw_consonant_to_vowel_ratio.py"
+      ],
+      "expected_ledgers": [
+        "reports/r90/product-code-change-ledger.json"
+      ],
+      "expected_capability_updates": [
+        "ABW-abw_consonant_to_vowel_ratio -> test_verified"
+      ],
+      "expected_spec_refs": [],
+      "rollback_strategy": "git checkout src/python/abw/abw_codec.py",
+      "max_attempts": 3,
+      "repair_allowed": true,
+      "evidence_required": true,
+      "done_criteria": "pytest tests/python/abw/test_gap_abw_consonant_to_vowel_ratio.py passes; abw_consonant_to_vowel_ratio() defined in src/python/abw/abw_codec.py; ledger entry added",
+      "status": "pending",
+      "external_gate": false,
+      "queued_at": null,
+      "started_at": null,
+      "completed_at": null,
+      "result_path": null,
+      "error": null,
+      "sprint_id": null,
+      "pattern": "test_coverage",
+      "spec_authority": "Discovered via source introspection \u2014 not in poc-targets.yaml",
+      "format": "abw",
+      "function_name": "abw_consonant_to_vowel_ratio",
+      "advisory_only": false,
+      "compiled_taskcard_id": "TC-ABEFF80A",
+      "compiled_taskcard_path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\capability-consumer\\taskcards\\TC-ABEFF80A.json"
+    },
+    {
+      "action_id": "atg-abw-abw-empty-paragraph-ratio-014",
+      "action_type": "IMPLEMENT_SMALL_PRODUCT_FEATURE",
+      "stream": "product",
+      "lane": "product_feature",
+      "priority": 14,
+      "source": "capability_expansion:abw-abw_empty_paragraph_ratio",
+      "gap_ledger_ref": "GAP-ABW-FOSS-ABW_EMPTY_PA-001",
+      "reason": "Close gap GAP-ABW-FOSS-ABW_EMPTY_PA-001: add test coverage for Abw Empty Paragraph Ratio",
+      "objective": "Implement abw_empty_paragraph_ratio() for ABW format: Close gap GAP-ABW-FOSS-ABW_EMPTY_PA-001: add test coverage for Abw Empty Paragraph Ratio",
+      "autonomy_value": 3,
+      "product_value": 3,
+      "risk_level": "LOW",
+      "gate_classification": "LOCAL_AUTONOMOUS",
+      "human_approval_required": false,
+      "allowed_paths": [
+        "src/python/abw/",
+        "tests/python/abw/"
+      ],
+      "forbidden_paths": [
+        "src/net/",
+        "registry/",
+        "product-capability-matrix/poc-targets.yaml",
+        ".supervisor/",
+        "AGENTS.md",
+        "GOVERNANCE.md"
+      ],
+      "expected_files_to_change": [
+        "src/python/abw/abw_codec.py"
+      ],
+      "target_path": "src/python/abw/abw_codec.py",
+      "expected_tests": [
+        "tests/python/abw/test_gap_abw_empty_paragraph_ratio.py"
+      ],
+      "expected_ledgers": [
+        "reports/r90/product-code-change-ledger.json"
+      ],
+      "expected_capability_updates": [
+        "ABW-abw_empty_paragraph_ratio -> test_verified"
+      ],
+      "expected_spec_refs": [],
+      "rollback_strategy": "git checkout src/python/abw/abw_codec.py",
+      "max_attempts": 3,
+      "repair_allowed": true,
+      "evidence_required": true,
+      "done_criteria": "pytest tests/python/abw/test_gap_abw_empty_paragraph_ratio.py passes; abw_empty_paragraph_ratio() defined in src/python/abw/abw_codec.py; ledger entry added",
+      "status": "pending",
+      "external_gate": false,
+      "queued_at": null,
+      "started_at": null,
+      "completed_at": null,
+      "result_path": null,
+      "error": null,
+      "sprint_id": null,
+      "pattern": "test_coverage",
+      "spec_authority": "Discovered via source introspection \u2014 not in poc-targets.yaml",
+      "format": "abw",
+      "function_name": "abw_empty_paragraph_ratio",
+      "advisory_only": false,
+      "compiled_taskcard_id": "TC-8679BB23",
+      "compiled_taskcard_path": "C:\\Users\\prora\\AppData\\Local\\Temp\\tmpbxnlyke0\\TC-8679BB23.json"
+    },
+    {
+      "action_id": "atg-abw-abw-file-size-bytes-015",
+      "action_type": "IMPLEMENT_SMALL_PRODUCT_FEATURE",
+      "stream": "product",
+      "lane": "product_feature",
+      "priority": 15,
+      "source": "capability_expansion:abw-abw_file_size_bytes",
+      "gap_ledger_ref": "GAP-ABW-FOSS-ABW_FILE_SIZ-001",
+      "reason": "Close gap GAP-ABW-FOSS-ABW_FILE_SIZ-001: add test coverage for Abw File Size Bytes",
+      "objective": "Implement abw_file_size_bytes() for ABW format: Close gap GAP-ABW-FOSS-ABW_FILE_SIZ-001: add test coverage for Abw File Size Bytes",
+      "autonomy_value": 3,
+      "product_value": 3,
+      "risk_level": "LOW",
+      "gate_classification": "LOCAL_AUTONOMOUS",
+      "human_approval_required": false,
+      "allowed_paths": [
+        "src/python/abw/",
+        "tests/python/abw/"
+      ],
+      "forbidden_paths": [
+        "src/net/",
+        "registry/",
+        "product-capability-matrix/poc-targets.yaml",
+        ".supervisor/",
+        "AGENTS.md",
+        "GOVERNANCE.md"
+      ],
+      "expected_files_to_change": [
+        "src/python/abw/abw_codec.py"
+      ],
+      "target_path": "src/python/abw/abw_codec.py",
+      "expected_tests": [
+        "tests/python/abw/test_gap_abw_file_size_bytes.py"
+      ],
+      "expected_ledgers": [
+        "reports/r90/product-code-change-ledger.json"
+      ],
+      "expected_capability_updates": [
+        "ABW-abw_file_size_bytes -> test_verified"
+      ],
+      "expected_spec_refs": [],
+      "rollback_strategy": "git checkout src/python/abw/abw_codec.py",
+      "max_attempts": 3,
+      "repair_allowed": true,
+      "evidence_required": true,
+      "done_criteria": "pytest tests/python/abw/test_gap_abw_file_size_bytes.py passes; abw_file_size_bytes() defined in src/python/abw/abw_codec.py; ledger entry added",
+      "status": "pending",
+      "external_gate": false,
+      "queued_at": null,
+      "started_at": null,
+      "completed_at": null,
+      "result_path": null,
+      "error": null,
+      "sprint_id": null,
+      "pattern": "test_coverage",
+      "spec_authority": "Discovered via source introspection \u2014 not in poc-targets.yaml",
+      "format": "abw",
+      "function_name": "abw_file_size_bytes",
+      "advisory_only": false,
+      "compiled_taskcard_id": "TC-E147506A",
+      "compiled_taskcard_path": "C:\\Users\\prora\\AppData\\Local\\Temp\\tmpbxnlyke0\\TC-E147506A.json"
+    },
+    {
+      "action_id": "atg-abw-abw-has-multiple-paragraphs-016",
+      "action_type": "IMPLEMENT_SMALL_PRODUCT_FEATURE",
+      "stream": "product",
+      "lane": "product_feature",
+      "priority": 16,
+      "source": "capability_expansion:abw-abw_has_multiple_paragraphs",
+      "gap_ledger_ref": "GAP-ABW-FOSS-ABW_HAS_MULT-001",
+      "reason": "Close gap GAP-ABW-FOSS-ABW_HAS_MULT-001: add test coverage for Abw Has Multiple Paragraphs",
+      "objective": "Implement abw_has_multiple_paragraphs() for ABW format: Close gap GAP-ABW-FOSS-ABW_HAS_MULT-001: add test coverage for Abw Has Multiple Paragraphs",
+      "autonomy_value": 3,
+      "product_value": 3,
+      "risk_level": "LOW",
+      "gate_classification": "LOCAL_AUTONOMOUS",
+      "human_approval_required": false,
+      "allowed_paths": [
+        "src/python/abw/",
+        "tests/python/abw/"
+      ],
+      "forbidden_paths": [
+        "src/net/",
+        "registry/",
+        "product-capability-matrix/poc-targets.yaml",
+        ".supervisor/",
+        "AGENTS.md",
+        "GOVERNANCE.md"
+      ],
+      "expected_files_to_change": [
+        "src/python/abw/abw_codec.py"
+      ],
+      "target_path": "src/python/abw/abw_codec.py",
+      "expected_tests": [
+        "tests/python/abw/test_gap_abw_has_multiple_paragraphs.py"
+      ],
+      "expected_ledgers": [
+        "reports/r90/product-code-change-ledger.json"
+      ],
+      "expected_capability_updates": [
+        "ABW-abw_has_multiple_paragraphs -> test_verified"
+      ],
+      "expected_spec_refs": [],
+      "rollback_strategy": "git checkout src/python/abw/abw_codec.py",
+      "max_attempts": 3,
+      "repair_allowed": true,
+      "evidence_required": true,
+      "done_criteria": "pytest tests/python/abw/test_gap_abw_has_multiple_paragraphs.py passes; abw_has_multiple_paragraphs() defined in src/python/abw/abw_codec.py; ledger entry added",
+      "status": "pending",
+      "external_gate": false,
+      "queued_at": null,
+      "started_at": null,
+      "completed_at": null,
+      "result_path": null,
+      "error": null,
+      "sprint_id": null,
+      "pattern": "test_coverage",
+      "spec_authority": "Discovered via source introspection \u2014 not in poc-targets.yaml",
+      "format": "abw",
+      "function_name": "abw_has_multiple_paragraphs",
+      "advisory_only": false,
+      "compiled_taskcard_id": "TC-3BD7BA23",
+      "compiled_taskcard_path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\capability-consumer\\taskcards\\TC-3BD7BA23.json"
+    },
+    {
+      "action_id": "atg-abw-abw-has-punctuation-017",
+      "action_type": "IMPLEMENT_SMALL_PRODUCT_FEATURE",
+      "stream": "product",
+      "lane": "product_feature",
+      "priority": 17,
+      "source": "capability_expansion:abw-abw_has_punctuation",
+      "gap_ledger_ref": "GAP-ABW-FOSS-ABW_HAS_PUNC-001",
+      "reason": "Close gap GAP-ABW-FOSS-ABW_HAS_PUNC-001: add test coverage for Abw Has Punctuation",
+      "objective": "Implement abw_has_punctuation() for ABW format: Close gap GAP-ABW-FOSS-ABW_HAS_PUNC-001: add test coverage for Abw Has Punctuation",
+      "autonomy_value": 3,
+      "product_value": 3,
+      "risk_level": "LOW",
+      "gate_classification": "LOCAL_AUTONOMOUS",
+      "human_approval_required": false,
+      "allowed_paths": [
+        "src/python/abw/",
+        "tests/python/abw/"
+      ],
+      "forbidden_paths": [
+        "src/net/",
+        "registry/",
+        "product-capability-matrix/poc-targets.yaml",
+        ".supervisor/",
+        "AGENTS.md",
+        "GOVERNANCE.md"
+      ],
+      "expected_files_to_change": [
+        "src/python/abw/abw_codec.py"
+      ],
+      "target_path": "src/python/abw/abw_codec.py",
+      "expected_tests": [
+        "tests/python/abw/test_gap_abw_has_punctuation.py"
+      ],
+      "expected_ledgers": [
+        "reports/r90/product-code-change-ledger.json"
+      ],
+      "expected_capability_updates": [
+        "ABW-abw_has_punctuation -> test_verified"
+      ],
+      "expected_spec_refs": [],
+      "rollback_strategy": "git checkout src/python/abw/abw_codec.py",
+      "max_attempts": 3,
+      "repair_allowed": true,
+      "evidence_required": true,
+      "done_criteria": "pytest tests/python/abw/test_gap_abw_has_punctuation.py passes; abw_has_punctuation() defined in src/python/abw/abw_codec.py; ledger entry added",
+      "status": "pending",
+      "external_gate": false,
+      "queued_at": null,
+      "started_at": null,
+      "completed_at": null,
+      "result_path": null,
+      "error": null,
+      "sprint_id": null,
+      "pattern": "test_coverage",
+      "spec_authority": "Discovered via source introspection \u2014 not in poc-targets.yaml",
+      "format": "abw",
+      "function_name": "abw_has_punctuation",
+      "advisory_only": false,
+      "compiled_taskcard_id": "TC-0D926D4B",
+      "compiled_taskcard_path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\capability-consumer\\taskcards\\TC-0D926D4B.json"
+    },
+    {
+      "action_id": "atg-abw-abw-has-single-paragraph-018",
+      "action_type": "IMPLEMENT_SMALL_PRODUCT_FEATURE",
+      "stream": "product",
+      "lane": "product_feature",
+      "priority": 18,
+      "source": "capability_expansion:abw-abw_has_single_paragraph",
+      "gap_ledger_ref": "GAP-ABW-FOSS-ABW_HAS_SING-001",
+      "reason": "Close gap GAP-ABW-FOSS-ABW_HAS_SING-001: add test coverage for Abw Has Single Paragraph",
+      "objective": "Implement abw_has_single_paragraph() for ABW format: Close gap GAP-ABW-FOSS-ABW_HAS_SING-001: add test coverage for Abw Has Single Paragraph",
+      "autonomy_value": 3,
+      "product_value": 3,
+      "risk_level": "LOW",
+      "gate_classification": "LOCAL_AUTONOMOUS",
+      "human_approval_required": false,
+      "allowed_paths": [
+        "src/python/abw/",
+        "tests/python/abw/"
+      ],
+      "forbidden_paths": [
+        "src/net/",
+        "registry/",
+        "product-capability-matrix/poc-targets.yaml",
+        ".supervisor/",
+        "AGENTS.md",
+        "GOVERNANCE.md"
+      ],
+      "expected_files_to_change": [
+        "src/python/abw/abw_codec.py"
+      ],
+      "target_path": "src/python/abw/abw_codec.py",
+      "expected_tests": [
+        "tests/python/abw/test_gap_abw_has_single_paragraph.py"
+      ],
+      "expected_ledgers": [
+        "reports/r90/product-code-change-ledger.json"
+      ],
+      "expected_capability_updates": [
+        "ABW-abw_has_single_paragraph -> test_verified"
+      ],
+      "expected_spec_refs": [],
+      "rollback_strategy": "git checkout src/python/abw/abw_codec.py",
+      "max_attempts": 3,
+      "repair_allowed": true,
+      "evidence_required": true,
+      "done_criteria": "pytest tests/python/abw/test_gap_abw_has_single_paragraph.py passes; abw_has_single_paragraph() defined in src/python/abw/abw_codec.py; ledger entry added",
+      "status": "pending",
+      "external_gate": false,
+      "queued_at": null,
+      "started_at": null,
+      "completed_at": null,
+      "result_path": null,
+      "error": null,
+      "sprint_id": null,
+      "pattern": "test_coverage",
+      "spec_authority": "Discovered via source introspection \u2014 not in poc-targets.yaml",
+      "format": "abw",
+      "function_name": "abw_has_single_paragraph",
+      "advisory_only": false,
+      "compiled_taskcard_id": "TC-59D6F442",
+      "compiled_taskcard_path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\capability-consumer\\taskcards\\TC-59D6F442.json"
+    },
+    {
+      "action_id": "atg-abw-abw-letter-ratio-019",
+      "action_type": "IMPLEMENT_SMALL_PRODUCT_FEATURE",
+      "stream": "product",
+      "lane": "product_feature",
+      "priority": 19,
+      "source": "capability_expansion:abw-abw_letter_ratio",
+      "gap_ledger_ref": "GAP-ABW-FOSS-ABW_LETTER_R-001",
+      "reason": "Close gap GAP-ABW-FOSS-ABW_LETTER_R-001: add test coverage for Abw Letter Ratio",
+      "objective": "Implement abw_letter_ratio() for ABW format: Close gap GAP-ABW-FOSS-ABW_LETTER_R-001: add test coverage for Abw Letter Ratio",
+      "autonomy_value": 3,
+      "product_value": 3,
+      "risk_level": "LOW",
+      "gate_classification": "LOCAL_AUTONOMOUS",
+      "human_approval_required": false,
+      "allowed_paths": [
+        "src/python/abw/",
+        "tests/python/abw/"
+      ],
+      "forbidden_paths": [
+        "src/net/",
+        "registry/",
+        "product-capability-matrix/poc-targets.yaml",
+        ".supervisor/",
+        "AGENTS.md",
+        "GOVERNANCE.md"
+      ],
+      "expected_files_to_change": [
+        "src/python/abw/abw_codec.py"
+      ],
+      "target_path": "src/python/abw/abw_codec.py",
+      "expected_tests": [
+        "tests/python/abw/test_gap_abw_letter_ratio.py"
+      ],
+      "expected_ledgers": [
+        "reports/r90/product-code-change-ledger.json"
+      ],
+      "expected_capability_updates": [
+        "ABW-abw_letter_ratio -> test_verified"
+      ],
+      "expected_spec_refs": [],
+      "rollback_strategy": "git checkout src/python/abw/abw_codec.py",
+      "max_attempts": 3,
+      "repair_allowed": true,
+      "evidence_required": true,
+      "done_criteria": "pytest tests/python/abw/test_gap_abw_letter_ratio.py passes; abw_letter_ratio() defined in src/python/abw/abw_codec.py; ledger entry added",
+      "status": "pending",
+      "external_gate": false,
+      "queued_at": null,
+      "started_at": null,
+      "completed_at": null,
+      "result_path": null,
+      "error": null,
+      "sprint_id": null,
+      "pattern": "test_coverage",
+      "spec_authority": "Discovered via source introspection \u2014 not in poc-targets.yaml",
+      "format": "abw",
+      "function_name": "abw_letter_ratio",
+      "advisory_only": false,
+      "compiled_taskcard_id": "TC-8773BDFB",
+      "compiled_taskcard_path": "C:\\Users\\prora\\AppData\\Local\\Temp\\tmpql41x4fz\\TC-8773BDFB.json"
+    },
+    {
+      "action_id": "atg-abw-abw-longest-paragraph-chars-020",
+      "action_type": "IMPLEMENT_SMALL_PRODUCT_FEATURE",
+      "stream": "product",
+      "lane": "product_feature",
+      "priority": 20,
+      "source": "capability_expansion:abw-abw_longest_paragraph_chars",
+      "gap_ledger_ref": "GAP-ABW-FOSS-ABW_LONGEST_-001",
+      "reason": "Close gap GAP-ABW-FOSS-ABW_LONGEST_-001: add test coverage for Abw Longest Paragraph Chars",
+      "objective": "Implement abw_longest_paragraph_chars() for ABW format: Close gap GAP-ABW-FOSS-ABW_LONGEST_-001: add test coverage for Abw Longest Paragraph Chars",
+      "autonomy_value": 3,
+      "product_value": 3,
+      "risk_level": "LOW",
+      "gate_classification": "LOCAL_AUTONOMOUS",
+      "human_approval_required": false,
+      "allowed_paths": [
+        "src/python/abw/",
+        "tests/python/abw/"
+      ],
+      "forbidden_paths": [
+        "src/net/",
+        "registry/",
+        "product-capability-matrix/poc-targets.yaml",
+        ".supervisor/",
+        "AGENTS.md",
+        "GOVERNANCE.md"
+      ],
+      "expected_files_to_change": [
+        "src/python/abw/abw_codec.py"
+      ],
+      "target_path": "src/python/abw/abw_codec.py",
+      "expected_tests": [
+        "tests/python/abw/test_gap_abw_longest_paragraph_chars.py"
+      ],
+      "expected_ledgers": [
+        "reports/r90/product-code-change-ledger.json"
+      ],
+      "expected_capability_updates": [
+        "ABW-abw_longest_paragraph_chars -> test_verified"
+      ],
+      "expected_spec_refs": [],
+      "rollback_strategy": "git checkout src/python/abw/abw_codec.py",
+      "max_attempts": 3,
+      "repair_allowed": true,
+      "evidence_required": true,
+      "done_criteria": "pytest tests/python/abw/test_gap_abw_longest_paragraph_chars.py passes; abw_longest_paragraph_chars() defined in src/python/abw/abw_codec.py; ledger entry added",
+      "status": "pending",
+      "external_gate": false,
+      "queued_at": null,
+      "started_at": null,
+      "completed_at": null,
+      "result_path": null,
+      "error": null,
+      "sprint_id": null,
+      "pattern": "test_coverage",
+      "spec_authority": "Discovered via source introspection \u2014 not in poc-targets.yaml",
+      "format": "abw",
+      "function_name": "abw_longest_paragraph_chars",
+      "advisory_only": false,
+      "compiled_taskcard_id": null,
+      "compiled_taskcard_path": null
     }
   ]
 }

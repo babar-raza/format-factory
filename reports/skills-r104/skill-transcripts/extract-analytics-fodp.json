@@ -1,0 +1,40 @@
+{
+  "invocation_id": "VNK-008-PILOT-FODP",
+  "skill_id": "decompose-monolithic-codec",
+  "mode": "live",
+  "inputs": {
+    "format_id": "fodp",
+    "source_file": "src/python/fodp/fodp_codec.py",
+    "analytics_target_file": "src/python/fodp/fodp_analytics.py",
+    "functions_to_move": [
+      "fodp_slide_titles",
+      "fodp_master_page_count",
+      "fodp_text_per_slide",
+      "fodp_average_shapes_per_slide"
+    ]
+  },
+  "allowed_files": [
+    "src/python/fodp/fodp_codec.py",
+    "src/python/fodp/fodp_analytics.py"
+  ],
+  "actual_files_changed": [
+    "src/python/fodp/fodp_codec.py",
+    "src/python/fodp/fodp_analytics.py"
+  ],
+  "tests_run": "tests/python/fodp/ (184 tests, 0 failures — excluding 13 pre-existing collection errors for non-existent functions)",
+  "result": "PASS",
+  "ledger_entry_id": "VNK-008-FODP-ANALYTICS-EXTRACT",
+  "notes": {
+    "loc_before": 812,
+    "loc_after": 748,
+    "loc_reduced": 64,
+    "analytics_file_loc": 96,
+    "functions_extracted": 4,
+    "pilot_verdict": "PILOT_VIABLE",
+    "abort_gate": "PASSED (4 pure analytics functions >= 3 required)",
+    "pre_existing_collection_errors": 13,
+    "pre_existing_error_cause": "Test files import functions like fodp_slide_count_squared that were never implemented — confirmed by git stash verification",
+    "backward_compat": "fodp_codec.py re-exports analytics via try: from .fodp_analytics import *",
+    "sprint": "vivid-napping-kurzweil"
+  }
+}

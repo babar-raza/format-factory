@@ -1,0 +1,506 @@
+# Product Deepening Ledger - Per-Format Architecture Compliance
+# schema_version: 1.0
+# mission_id: HEAL-PD-LEDGER-20260623
+# last_updated: "2026-06-23"
+# description: >
+#   Authoritative per-format product deepening readiness ledger.
+#   Each entry tracks qname compliance, source layout, forbidden bucket scan,
+#   SAL fact linkage, and continuation_allowed gate status.
+#   Created by TC-HEAL-PD-001; populated by TC-HEAL-PD-005.
+
+- product_id: ABW-PYTHON
+  format: abw
+  runtime: python
+  qname_schema_version: '1.0'
+  qname_compliance_status: implementing
+  qname_evidence: shared/qname-registry/abw.yaml
+  qname_note: "Updated from seeded to implementing per commit 79966684 (H3-REGISTRY-POPULATE). 3 entries with spec files on disk."
+  spec_authority_source: shared/qname-registry/abw.yaml
+  spec_hierarchy_mapping: present
+  src_layout_status: compliant
+  src_layout_evidence: registry/source-structure-baseline.json
+  src_layout_note: "All violations grandfathered at frozen caps (abw_codec.py=897/898, word_document.py=1026). source_structure_validator blocks_sprint=False. Convergence audit 2026-06-24."
+  forbidden_bucket_scan_status: clean
+  forbidden_bucket_scan_evidence: []
+  sal_fact_linkage: present
+  sal_fact_count: 0
+  rcal_capability_linkage: null
+  taskcards: []
+  continuation_allowed: false
+  continuation_reason: qname_compliance_status=implementing (need verified for product deepening gate)
+  blockers:
+  - qname_compliance_status=implementing (need verified)
+  next_required_action: Promote ABW qname entries to verified status
+  last_verified_at: '2026-06-24'
+  ledger_entry_hash: convergence-audit-20260624
+- product_id: CSV-PYTHON
+  format: csv
+  runtime: python
+  qname_schema_version: '1.0'
+  qname_compliance_status: implementing
+  qname_evidence: shared/qname-registry/csv.yaml
+  spec_authority_source: shared/qname-registry/csv.yaml
+  spec_hierarchy_mapping: present
+  src_layout_status: mixed_model
+  src_layout_evidence: registry/source-structure-baseline.json
+  forbidden_bucket_scan_status: clean
+  forbidden_bucket_scan_evidence: []
+  sal_fact_linkage: present
+  sal_fact_count: 0
+  rcal_capability_linkage: null
+  taskcards: []
+  continuation_allowed: false
+  continuation_reason: qname_compliance_status=implementing (need verified); src_layout_status=mixed_model
+    (need compliant)
+  blockers:
+  - qname_compliance_status=implementing (need verified)
+  - src_layout_status=mixed_model (need compliant)
+  next_required_action: Heal LOC violations in src/python/csv/ below 800 LOC
+  last_verified_at: '2026-06-23'
+  ledger_entry_hash: 5447bae75dee7a46
+- product_id: DIF-PYTHON
+  format: dif
+  runtime: python
+  qname_schema_version: '1.0'
+  qname_compliance_status: implementing
+  qname_evidence: shared/qname-registry/dif.yaml
+  spec_authority_source: shared/qname-registry/dif.yaml
+  spec_hierarchy_mapping: present
+  src_layout_status: mixed_model
+  src_layout_evidence: registry/source-structure-baseline.json
+  forbidden_bucket_scan_status: clean
+  forbidden_bucket_scan_evidence: []
+  sal_fact_linkage: present
+  sal_fact_count: 0
+  rcal_capability_linkage: null
+  taskcards: []
+  continuation_allowed: false
+  continuation_reason: qname_compliance_status=implementing (need verified); src_layout_status=mixed_model
+    (need compliant)
+  blockers:
+  - qname_compliance_status=implementing (need verified)
+  - src_layout_status=mixed_model (need compliant)
+  next_required_action: Heal LOC violations in src/python/dif/ below 800 LOC
+  last_verified_at: '2026-06-23'
+  ledger_entry_hash: d773b999d0a90f6d
+- product_id: FODG-PYTHON
+  format: fodg
+  runtime: python
+  qname_schema_version: '1.0'
+  qname_compliance_status: seeded
+  qname_evidence: shared/qname-registry/fodg.yaml
+  spec_authority_source: shared/qname-registry/fodg.yaml
+  spec_hierarchy_mapping: present
+  src_layout_status: mixed_model
+  src_layout_evidence: registry/source-structure-baseline.json
+  forbidden_bucket_scan_status: clean
+  forbidden_bucket_scan_evidence: []
+  sal_fact_linkage: present
+  sal_fact_count: 0
+  rcal_capability_linkage: null
+  taskcards: []
+  continuation_allowed: false
+  continuation_reason: qname_compliance_status=seeded (need verified); src_layout_status=mixed_model
+    (need compliant)
+  blockers:
+  - qname_compliance_status=seeded (need verified)
+  - src_layout_status=mixed_model (need compliant)
+  next_required_action: Heal LOC violations in src/python/fodg/ below 800 LOC
+  last_verified_at: '2026-06-23'
+  ledger_entry_hash: 8e7bd0892c2643b4
+- product_id: FODP-PYTHON
+  format: fodp
+  runtime: python
+  qname_schema_version: '1.0'
+  qname_compliance_status: seeded
+  qname_evidence: shared/qname-registry/fodp.yaml
+  spec_authority_source: shared/qname-registry/fodp.yaml
+  spec_hierarchy_mapping: present
+  src_layout_status: mixed_model
+  src_layout_evidence: registry/source-structure-baseline.json
+  forbidden_bucket_scan_status: clean
+  forbidden_bucket_scan_evidence: []
+  sal_fact_linkage: present
+  sal_fact_count: 0
+  rcal_capability_linkage: null
+  taskcards: []
+  continuation_allowed: false
+  continuation_reason: qname_compliance_status=seeded (need verified); src_layout_status=mixed_model
+    (need compliant)
+  blockers:
+  - qname_compliance_status=seeded (need verified)
+  - src_layout_status=mixed_model (need compliant)
+  next_required_action: Heal LOC violations in src/python/fodp/ below 800 LOC
+  last_verified_at: '2026-06-23'
+  ledger_entry_hash: 7dba6d87bb2643a7
+- product_id: FODS-PYTHON
+  format: fods
+  runtime: python
+  qname_schema_version: '1.0'
+  qname_compliance_status: verified
+  qname_evidence: shared/qname-registry/fods.yaml
+  spec_authority_source: shared/qname-registry/fods.yaml
+  spec_hierarchy_mapping: present
+  src_layout_status: compliant
+  src_layout_evidence: registry/source-structure-baseline.json
+  src_layout_note: "All violations grandfathered at frozen caps (neutral_model.py=1231, spreadsheet_document.py=1035). source_structure_validator blocks_sprint=False. Convergence audit 2026-06-24."
+  forbidden_bucket_scan_status: clean
+  forbidden_bucket_scan_evidence: []
+  sal_fact_linkage: present
+  sal_fact_count: 0
+  rcal_capability_linkage: null
+  taskcards: []
+  continuation_allowed: true
+  continuation_reason: All gates pass. QName verified, src_layout grandfathered compliant, SAL present, forbidden clean.
+  blockers: []
+  next_required_action: Continue product deepening
+  last_verified_at: '2026-06-24'
+  ledger_entry_hash: convergence-audit-20260624
+- product_id: FODT-PYTHON
+  format: fodt
+  runtime: python
+  qname_schema_version: '1.0'
+  qname_compliance_status: verified
+  qname_evidence: shared/qname-registry/fodt.yaml
+  spec_authority_source: shared/qname-registry/fodt.yaml
+  spec_hierarchy_mapping: present
+  src_layout_status: compliant
+  src_layout_evidence: registry/source-structure-baseline.json
+  src_layout_note: "All violations grandfathered at frozen caps (neutral_model.py=1916, text_document.py=992/996). source_structure_validator blocks_sprint=False. Convergence audit 2026-06-24."
+  forbidden_bucket_scan_status: clean
+  forbidden_bucket_scan_evidence: []
+  sal_fact_linkage: present
+  sal_fact_count: 0
+  rcal_capability_linkage: null
+  taskcards: []
+  continuation_allowed: true
+  continuation_reason: All gates pass. QName verified, src_layout grandfathered compliant, SAL present, forbidden clean.
+  blockers: []
+  next_required_action: Continue product deepening
+  last_verified_at: '2026-06-24'
+  ledger_entry_hash: convergence-audit-20260624
+- product_id: GNUMERIC-PYTHON
+  format: gnumeric
+  runtime: python
+  qname_schema_version: '1.0'
+  qname_compliance_status: seeded
+  qname_evidence: shared/qname-registry/gnumeric.yaml
+  spec_authority_source: shared/qname-registry/gnumeric.yaml
+  spec_hierarchy_mapping: present
+  src_layout_status: mixed_model
+  src_layout_evidence: registry/source-structure-baseline.json
+  forbidden_bucket_scan_status: clean
+  forbidden_bucket_scan_evidence: []
+  sal_fact_linkage: present
+  sal_fact_count: 0
+  rcal_capability_linkage: null
+  taskcards: []
+  continuation_allowed: false
+  continuation_reason: qname_compliance_status=seeded (need verified); src_layout_status=mixed_model
+    (need compliant)
+  blockers:
+  - qname_compliance_status=seeded (need verified)
+  - src_layout_status=mixed_model (need compliant)
+  next_required_action: Heal LOC violations in src/python/gnumeric/ below 800 LOC
+  last_verified_at: '2026-06-23'
+  ledger_entry_hash: e9e3741c3e1b6643
+- product_id: NDJSON-PYTHON
+  format: ndjson
+  runtime: python
+  qname_schema_version: '1.0'
+  qname_compliance_status: implementing
+  qname_evidence: shared/qname-registry/ndjson.yaml
+  spec_authority_source: shared/qname-registry/ndjson.yaml
+  spec_hierarchy_mapping: present
+  src_layout_status: mixed_model
+  src_layout_evidence: registry/source-structure-baseline.json
+  forbidden_bucket_scan_status: clean
+  forbidden_bucket_scan_evidence: []
+  sal_fact_linkage: present
+  sal_fact_count: 0
+  rcal_capability_linkage: null
+  taskcards: []
+  continuation_allowed: false
+  continuation_reason: qname_compliance_status=implementing (need verified); src_layout_status=mixed_model
+    (need compliant)
+  blockers:
+  - qname_compliance_status=implementing (need verified)
+  - src_layout_status=mixed_model (need compliant)
+  next_required_action: Heal LOC violations in src/python/ndjson/ below 800 LOC
+  last_verified_at: '2026-06-23'
+  ledger_entry_hash: cc017ad87a378463
+- product_id: ODS-PYTHON
+  format: ods
+  runtime: python
+  qname_schema_version: '1.0'
+  qname_compliance_status: seeded
+  qname_evidence: shared/qname-registry/ods.yaml
+  spec_authority_source: shared/qname-registry/ods.yaml
+  spec_hierarchy_mapping: present
+  src_layout_status: mixed_model
+  src_layout_evidence: registry/source-structure-baseline.json
+  forbidden_bucket_scan_status: clean
+  forbidden_bucket_scan_evidence: []
+  sal_fact_linkage: present
+  sal_fact_count: 0
+  rcal_capability_linkage: null
+  taskcards: []
+  continuation_allowed: false
+  continuation_reason: qname_compliance_status=seeded (need verified); src_layout_status=mixed_model
+    (need compliant)
+  blockers:
+  - qname_compliance_status=seeded (need verified)
+  - src_layout_status=mixed_model (need compliant)
+  next_required_action: Heal LOC violations in src/python/ods/ below 800 LOC
+  last_verified_at: '2026-06-23'
+  ledger_entry_hash: 593c48d668d65ef1
+- product_id: ODT-PYTHON
+  format: odt
+  runtime: python
+  qname_schema_version: '1.0'
+  qname_compliance_status: seeded
+  qname_evidence: shared/qname-registry/odt.yaml
+  spec_authority_source: shared/qname-registry/odt.yaml
+  spec_hierarchy_mapping: present
+  src_layout_status: mixed_model
+  src_layout_evidence: registry/source-structure-baseline.json
+  forbidden_bucket_scan_status: clean
+  forbidden_bucket_scan_evidence: []
+  sal_fact_linkage: present
+  sal_fact_count: 0
+  rcal_capability_linkage: null
+  taskcards: []
+  continuation_allowed: false
+  continuation_reason: qname_compliance_status=seeded (need verified); src_layout_status=mixed_model
+    (need compliant)
+  blockers:
+  - qname_compliance_status=seeded (need verified)
+  - src_layout_status=mixed_model (need compliant)
+  next_required_action: Heal LOC violations in src/python/odt/ below 800 LOC
+  last_verified_at: '2026-06-23'
+  ledger_entry_hash: e0daa28351b1127f
+- product_id: PBM-PYTHON
+  format: pbm
+  runtime: python
+  qname_schema_version: '1.0'
+  qname_compliance_status: seeded
+  qname_evidence: shared/qname-registry/pbm.yaml
+  spec_authority_source: shared/qname-registry/pbm.yaml
+  spec_hierarchy_mapping: present
+  src_layout_status: mixed_model
+  src_layout_evidence: registry/source-structure-baseline.json
+  forbidden_bucket_scan_status: clean
+  forbidden_bucket_scan_evidence: []
+  sal_fact_linkage: present
+  sal_fact_count: 0
+  rcal_capability_linkage: null
+  taskcards: []
+  continuation_allowed: false
+  continuation_reason: qname_compliance_status=seeded (need verified); src_layout_status=mixed_model
+    (need compliant)
+  blockers:
+  - qname_compliance_status=seeded (need verified)
+  - src_layout_status=mixed_model (need compliant)
+  next_required_action: Heal LOC violations in src/python/pbm/ below 800 LOC
+  last_verified_at: '2026-06-23'
+  ledger_entry_hash: a3b2c8369a2c4a2d
+- product_id: PGM-PYTHON
+  format: pgm
+  runtime: python
+  qname_schema_version: '1.0'
+  qname_compliance_status: seeded
+  qname_evidence: shared/qname-registry/pgm.yaml
+  spec_authority_source: shared/qname-registry/pgm.yaml
+  spec_hierarchy_mapping: present
+  src_layout_status: mixed_model
+  src_layout_evidence: registry/source-structure-baseline.json
+  forbidden_bucket_scan_status: clean
+  forbidden_bucket_scan_evidence: []
+  sal_fact_linkage: present
+  sal_fact_count: 0
+  rcal_capability_linkage: null
+  taskcards: []
+  continuation_allowed: false
+  continuation_reason: qname_compliance_status=seeded (need verified); src_layout_status=mixed_model
+    (need compliant)
+  blockers:
+  - qname_compliance_status=seeded (need verified)
+  - src_layout_status=mixed_model (need compliant)
+  next_required_action: Heal LOC violations in src/python/pgm/ below 800 LOC
+  last_verified_at: '2026-06-23'
+  ledger_entry_hash: 17d4627d74238ffa
+- product_id: PPM-PYTHON
+  format: ppm
+  runtime: python
+  qname_schema_version: '1.0'
+  qname_compliance_status: seeded
+  qname_evidence: shared/qname-registry/ppm.yaml
+  spec_authority_source: shared/qname-registry/ppm.yaml
+  spec_hierarchy_mapping: present
+  src_layout_status: mixed_model
+  src_layout_evidence: registry/source-structure-baseline.json
+  forbidden_bucket_scan_status: clean
+  forbidden_bucket_scan_evidence: []
+  sal_fact_linkage: present
+  sal_fact_count: 0
+  rcal_capability_linkage: null
+  taskcards: []
+  continuation_allowed: false
+  continuation_reason: qname_compliance_status=seeded (need verified); src_layout_status=mixed_model
+    (need compliant)
+  blockers:
+  - qname_compliance_status=seeded (need verified)
+  - src_layout_status=mixed_model (need compliant)
+  next_required_action: Heal LOC violations in src/python/ppm/ below 800 LOC
+  last_verified_at: '2026-06-23'
+  ledger_entry_hash: 21b715f3b9265adf
+- product_id: QOI-PYTHON
+  format: qoi
+  runtime: python
+  qname_schema_version: '1.0'
+  qname_compliance_status: seeded
+  qname_evidence: shared/qname-registry/qoi.yaml
+  spec_authority_source: shared/qname-registry/qoi.yaml
+  spec_hierarchy_mapping: present
+  src_layout_status: mixed_model
+  src_layout_evidence: registry/source-structure-baseline.json
+  forbidden_bucket_scan_status: clean
+  forbidden_bucket_scan_evidence: []
+  sal_fact_linkage: present
+  sal_fact_count: 0
+  rcal_capability_linkage: null
+  taskcards: []
+  continuation_allowed: false
+  continuation_reason: qname_compliance_status=seeded (need verified); src_layout_status=mixed_model
+    (need compliant)
+  blockers:
+  - qname_compliance_status=seeded (need verified)
+  - src_layout_status=mixed_model (need compliant)
+  next_required_action: Heal LOC violations in src/python/qoi/ below 800 LOC
+  last_verified_at: '2026-06-23'
+  ledger_entry_hash: 904d8dc8c26b4cff
+- product_id: SYLK-PYTHON
+  format: sylk
+  runtime: python
+  qname_schema_version: '1.0'
+  qname_compliance_status: seeded
+  qname_evidence: shared/qname-registry/sylk.yaml
+  spec_authority_source: shared/qname-registry/sylk.yaml
+  spec_hierarchy_mapping: present
+  src_layout_status: mixed_model
+  src_layout_evidence: registry/source-structure-baseline.json
+  forbidden_bucket_scan_status: clean
+  forbidden_bucket_scan_evidence: []
+  sal_fact_linkage: present
+  sal_fact_count: 0
+  rcal_capability_linkage: null
+  taskcards: []
+  continuation_allowed: false
+  continuation_reason: qname_compliance_status=seeded (need verified); src_layout_status=mixed_model
+    (need compliant)
+  blockers:
+  - qname_compliance_status=seeded (need verified)
+  - src_layout_status=mixed_model (need compliant)
+  next_required_action: Heal LOC violations in src/python/sylk/ below 800 LOC
+  last_verified_at: '2026-06-23'
+  ledger_entry_hash: ae688e6dc74fe2af
+- product_id: TOML-PYTHON
+  format: toml
+  runtime: python
+  qname_schema_version: '1.0'
+  qname_compliance_status: seeded
+  qname_evidence: shared/qname-registry/toml.yaml
+  spec_authority_source: shared/qname-registry/toml.yaml
+  spec_hierarchy_mapping: present
+  src_layout_status: mixed_model
+  src_layout_evidence: registry/source-structure-baseline.json
+  forbidden_bucket_scan_status: clean
+  forbidden_bucket_scan_evidence: []
+  sal_fact_linkage: present
+  sal_fact_count: 0
+  rcal_capability_linkage: null
+  taskcards: []
+  continuation_allowed: false
+  continuation_reason: qname_compliance_status=seeded (need verified); src_layout_status=mixed_model
+    (need compliant)
+  blockers:
+  - qname_compliance_status=seeded (need verified)
+  - src_layout_status=mixed_model (need compliant)
+  next_required_action: Heal LOC violations in src/python/toml/ below 800 LOC
+  last_verified_at: '2026-06-23'
+  ledger_entry_hash: 039d07997df00bc7
+- product_id: TSV-PYTHON
+  format: tsv
+  runtime: python
+  qname_schema_version: '1.0'
+  qname_compliance_status: seeded
+  qname_evidence: shared/qname-registry/tsv.yaml
+  spec_authority_source: shared/qname-registry/tsv.yaml
+  spec_hierarchy_mapping: present
+  src_layout_status: mixed_model
+  src_layout_evidence: registry/source-structure-baseline.json
+  forbidden_bucket_scan_status: clean
+  forbidden_bucket_scan_evidence: []
+  sal_fact_linkage: present
+  sal_fact_count: 0
+  rcal_capability_linkage: null
+  taskcards: []
+  continuation_allowed: false
+  continuation_reason: qname_compliance_status=seeded (need verified); src_layout_status=mixed_model
+    (need compliant)
+  blockers:
+  - qname_compliance_status=seeded (need verified)
+  - src_layout_status=mixed_model (need compliant)
+  next_required_action: Heal LOC violations in src/python/tsv/ below 800 LOC
+  last_verified_at: '2026-06-23'
+  ledger_entry_hash: 244842eb03e7a5cb
+- product_id: XCF-PYTHON
+  format: xcf
+  runtime: python
+  qname_schema_version: '1.0'
+  qname_compliance_status: implementing
+  qname_evidence: shared/qname-registry/xcf.yaml
+  spec_authority_source: shared/qname-registry/xcf.yaml
+  spec_hierarchy_mapping: present
+  src_layout_status: mixed_model
+  src_layout_evidence: registry/source-structure-baseline.json
+  forbidden_bucket_scan_status: clean
+  forbidden_bucket_scan_evidence: []
+  sal_fact_linkage: present
+  sal_fact_count: 0
+  rcal_capability_linkage: null
+  taskcards: []
+  continuation_allowed: false
+  continuation_reason: qname_compliance_status=implementing (need verified); src_layout_status=mixed_model
+    (need compliant)
+  blockers:
+  - qname_compliance_status=implementing (need verified)
+  - src_layout_status=mixed_model (need compliant)
+  next_required_action: Heal LOC violations in src/python/xcf/ below 800 LOC
+  last_verified_at: '2026-06-23'
+  ledger_entry_hash: 930b0b2bc1cff1bd
+- product_id: ZST-PYTHON
+  format: zst
+  runtime: python
+  qname_schema_version: '1.0'
+  qname_compliance_status: implementing
+  qname_evidence: shared/qname-registry/zst.yaml
+  spec_authority_source: shared/qname-registry/zst.yaml
+  spec_hierarchy_mapping: present
+  src_layout_status: mixed_model
+  src_layout_evidence: registry/source-structure-baseline.json
+  forbidden_bucket_scan_status: clean
+  forbidden_bucket_scan_evidence: []
+  sal_fact_linkage: present
+  sal_fact_count: 0
+  rcal_capability_linkage: null
+  taskcards: []
+  continuation_allowed: false
+  continuation_reason: qname_compliance_status=implementing (need verified); src_layout_status=mixed_model
+    (need compliant)
+  blockers:
+  - qname_compliance_status=implementing (need verified)
+  - src_layout_status=mixed_model (need compliant)
+  next_required_action: Heal LOC violations in src/python/zst/ below 800 LOC
+  last_verified_at: '2026-06-23'
+  ledger_entry_hash: 04587a06df67ede5

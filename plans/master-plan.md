@@ -3,8 +3,8 @@
 **Document type:** Living Master Plan
 **Authority level:** Single Operational Authority
 **Project:** format-factory
-**Version:** 4.8
-**Last updated:** 2026-06-24 (v4.8: Section 29 re-created — FF-Machinery-Readiness CLOSED; Section 28 follow-ups CLOSED)
+**Version:** 5.4
+**Last updated:** 2026-06-24 (v5.4: header version sync; convergence audit — governance_validator_utils.py commit pending)
 **Last verified:** 2026-06-24
 
 **Current phase:** Multi-format POC — 11 targets (3 commercial .NET, 8 FOSS Python). Gate 11 G11-G sub-gate approved by Babar Raza 2026-06-05 (FODS, FODT, Netpbm). Registry gate_11.status: commercial_readiness_in_progress; g11g_status: APPROVED_BY_BABAR_RAZA_2026_06_05 (G11-G sub-gate approved). commercial_product_ready: false (all entries). Full Gate 11 requires Babar Raza final commercial authorization.
@@ -2351,5 +2351,50 @@ Convergence iteration (H10-H12):
 
 ---
 
-*End of plans/master-plan.md — version 5.3 — 2026-06-24 (Section 43: keen-snacking-quiche plan governance CLOSED — 9 taskcards, 64 tests, 2 convergence iterations)*
+## Section 44: polymorphic-brewing-cosmos — Production Governance Healing (CLOSED)
+
+**Plan file:** `C:\Users\prora\.claude\plans\polymorphic-brewing-cosmos.md`
+**Mission ID:** PROD-GOV-HEAL-20260623
+**Plan type:** machinery_hardening
+**Status:** CLOSED (TERMINAL_CLOSED)
+**Opened:** 2026-06-24
+**Closed:** 2026-06-24
+
+### Scope
+
+Full production governance healing: 8 taskcards covering session bootstrap, H1-H9 contradiction resolution, governance documentation, src/ forensic inventory, capability compiler wiring, governance validator expansion (V64-V66), analytics secondary split (blocked), and governed FODP product deepening.
+
+### Taskcards completed (7/8 + 1 blocked)
+
+- **TC-GOV-PRE-001** — Session Bootstrap: Plan lock written, stale locks resolved
+- **TC-GOV-UNBLOCK-001** — H1-H9 Contradiction Resolution: 8 OVERCLAIMED contradictions cleared to 0 CRITICAL by providing actual evidence paths
+- **TC-GOV-DOCS-001** — Governance Documentation: 7 governance standard documents verified (production-code-governance-standard, rules YAML, python-library-standard, dotnet-library-standard, cross-language-semantic-standard, prohibited-patterns, quality-gate-model)
+- **TC-GOV-AUDIT-001** — src/ Forensic Inventory: 4 inventory files created (src-product-inventory.json, src-monolith-register.yaml, src-production-readiness-matrix.json, src-architecture-gap-register.yaml)
+- **TC-GOV-MACH-001** — Capability Compiler Wiring: `autonomous_task_generator.py` --use-compiler import path fixed, field normalization added (capability_name→function_name, format→format_id), dry-run verified with 20 candidates
+- **TC-GOV-MACH-002** — V64/V65/V66 Governance Validators: V64 py_typed_marker, V65 all_exports_declared, V66 multi_responsibility_file added; 15 regression tests pass
+- **TC-GOV-ANALYTICS-001** — Analytics Secondary Split: BLOCKED (analytics files fodg/xcf/zst removed in commit 3622b1da during rotation suspension)
+- **TC-GOV-PRODUCT-001** — FODP Governed Product Deepening: `get_document_metadata` implemented (spec_qname: office:meta), 22 tests pass, product-code-change-ledger entry added
+
+### Key commits
+
+- `f594f067` — feat(governance): V64/V65/V66 validators + autonomous_task_generator --use-compiler fix
+- `fb7e3ea0` — feat(fodp): get_document_metadata tests + product-code-change-ledger + baseline updates
+
+### Verification performed
+
+- 37 tests (15 V64-V66 + 22 FODP metadata): all pass
+- H1-H9 rework declaration validated via sprint_executor_validate.py → PASS
+- Supervisor autonomous-cycle: ACCEPTED (8/8 items accepted, 0 rework)
+- Lifecycle audit: AUDIT_PASS (after GOV_BLOCK false-positive resolution)
+- Source structure validator: 0 worsened violations, 0 new violations
+
+### Non-blocking follow-ups
+
+- TC-GOV-ANALYTICS-001 remains blocked — analytics files removed in rotation suspension; re-evaluation needed if analytics rotation resumes
+- H3-REGISTRY-POPULATE: 12 of 26 qname-registry python_file entries still null (DIF, FODG, FODP, FODT, GNUMERIC, PGM, PPM, SYLK, TOML, TSV, ZST)
+- H5-V54V55-PROMOTE: Long-running tracker, partial by design
+
+---
+
+*End of plans/master-plan.md — version 5.4 — 2026-06-24 (Section 44: polymorphic-brewing-cosmos production governance healing CLOSED — 8 taskcards, 37 tests, convergence verified)*
 *This document is the single operational authority for format-factory. All other documents are subordinate to it for operational decisions.*

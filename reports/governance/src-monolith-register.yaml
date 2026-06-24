@@ -1,0 +1,483 @@
+# src-monolith-register.yaml
+# Generated for TC-GOV-AUDIT-001
+# Monolithic files from source-structure-baseline.json
+# where baseline_loc_cap > 800 or baseline_functions_cap > 60
+#
+# execution_authority: false
+
+monoliths:
+  - path: "src/python/abw/abw_codec.py"
+    loc: 898
+    baseline_loc_cap: 898
+    functions: 51
+    baseline_functions_cap: 371
+    category: "mixed_model_analytics"
+    responsibilities:
+      - parsing
+      - encoding
+      - analytics
+    extraction_boundary:
+      - "extract analytics to {format}_analytics.py"
+      - "extract model classes to models.py"
+    blocking_validator: "V39 (monolith_detection_validator)"
+    execution_authority: false
+
+  - path: "src/python/abw/word_document.py"
+    loc: 1026
+    baseline_loc_cap: 1026
+    functions: 98
+    baseline_functions_cap: 98
+    category: "new_violation_detected"
+    responsibilities:
+      - document_model
+      - API_surface
+    extraction_boundary:
+      - "separate query/mutation methods from core model"
+    blocking_validator: "V39 (monolith_detection_validator)"
+    execution_authority: false
+
+  - path: "src/python/csv/csv_parser.py"
+    loc: 382
+    baseline_loc_cap: 382
+    functions: 12
+    baseline_functions_cap: 350
+    category: "mixed_model_analytics"
+    responsibilities:
+      - parsing
+      - data_extraction
+    extraction_boundary:
+      - "extract analytics to {format}_analytics.py"
+      - "extract model classes to models.py"
+    blocking_validator: "V39 (monolith_detection_validator)"
+    execution_authority: false
+
+  - path: "src/python/csv/tabular_document.py"
+    loc: 960
+    baseline_loc_cap: 968
+    functions: 64
+    baseline_functions_cap: 65
+    category: "new_violation_detected"
+    responsibilities:
+      - document_model
+      - API_surface
+    extraction_boundary:
+      - "separate query/mutation methods from core model"
+    blocking_validator: "V39 (monolith_detection_validator)"
+    execution_authority: false
+
+  - path: "src/python/dif/dif_parser.py"
+    loc: 664
+    baseline_loc_cap: 664
+    functions: 22
+    baseline_functions_cap: 361
+    category: "mixed_model_analytics"
+    responsibilities:
+      - parsing
+      - data_extraction
+    extraction_boundary:
+      - "extract analytics to {format}_analytics.py"
+      - "extract model classes to models.py"
+    blocking_validator: "V39 (monolith_detection_validator)"
+    execution_authority: false
+
+  - path: "src/python/dif/interchange_document.py"
+    loc: 994
+    baseline_loc_cap: 1023
+    functions: 64
+    baseline_functions_cap: 67
+    category: "new_violation_detected"
+    responsibilities:
+      - document_model
+      - API_surface
+    extraction_boundary:
+      - "separate query/mutation methods from core model"
+    blocking_validator: "V39 (monolith_detection_validator)"
+    execution_authority: false
+
+  - path: "src/python/fodg/drawing_document.py"
+    loc: 1007
+    baseline_loc_cap: 1007
+    functions: 93
+    baseline_functions_cap: 100
+    category: "spec_level_domain_module"
+    responsibilities:
+      - document_model
+      - API_surface
+    extraction_boundary:
+      - "separate query/mutation methods from core model"
+    blocking_validator: "V39 (monolith_detection_validator)"
+    execution_authority: false
+
+  - path: "src/python/fodg/fodg_codec.py"
+    loc: 831
+    baseline_loc_cap: 831
+    functions: 38
+    baseline_functions_cap: 38
+    category: "mixed_model_analytics"
+    responsibilities:
+      - parsing
+      - encoding
+      - analytics
+    extraction_boundary:
+      - "extract analytics to {format}_analytics.py"
+      - "extract model classes to models.py"
+    blocking_validator: "V39 (monolith_detection_validator)"
+    execution_authority: false
+
+  - path: "src/python/fodp/fodp_codec.py"
+    loc: 200
+    baseline_loc_cap: 812
+    functions: 9
+    baseline_functions_cap: 327
+    category: "mixed_model_analytics"
+    responsibilities:
+      - parsing
+      - encoding
+      - analytics
+    extraction_boundary:
+      - "extract analytics to {format}_analytics.py"
+      - "extract model classes to models.py"
+    blocking_validator: "V39 (monolith_detection_validator)"
+    execution_authority: false
+
+  - path: "src/python/fods/neutral_model.py"
+    loc: 1231
+    baseline_loc_cap: 1231
+    functions: 56
+    baseline_functions_cap: 358
+    category: "model_only"
+    responsibilities:
+      - data_model
+      - validation
+      - transformation
+    extraction_boundary:
+      - "split by entity type (sheet/row/cell)"
+    blocking_validator: "V39 (monolith_detection_validator)"
+    execution_authority: false
+
+  - path: "src/python/fods/spreadsheet_document.py"
+    loc: 1035
+    baseline_loc_cap: 1035
+    functions: 24
+    baseline_functions_cap: 24
+    category: "analytics_separation_result"
+    responsibilities:
+      - document_model
+      - API_surface
+    extraction_boundary:
+      - "separate query/mutation methods from core model"
+    blocking_validator: "V39 (monolith_detection_validator)"
+    execution_authority: false
+
+  - path: "src/python/fodt/neutral_model.py"
+    loc: 1916
+    baseline_loc_cap: 1916
+    functions: 358
+    baseline_functions_cap: 358
+    category: "mixed_model_analytics"
+    responsibilities:
+      - data_model
+      - validation
+      - transformation
+    extraction_boundary:
+      - "split by entity type (sheet/row/cell)"
+    blocking_validator: "V39 (monolith_detection_validator)"
+    execution_authority: false
+
+  - path: "src/python/fodt/text_document.py"
+    loc: 992
+    baseline_loc_cap: 996
+    functions: 90
+    baseline_functions_cap: 92
+    category: "new_violation_detected"
+    responsibilities:
+      - document_model
+      - API_surface
+    extraction_boundary:
+      - "separate query/mutation methods from core model"
+    blocking_validator: "V39 (monolith_detection_validator)"
+    execution_authority: false
+
+  - path: "src/python/gnumeric/gnumeric_codec.py"
+    loc: 1113
+    baseline_loc_cap: 1113
+    functions: 49
+    baseline_functions_cap: 382
+    category: "mixed_model_analytics"
+    responsibilities:
+      - parsing
+      - encoding
+      - analytics
+    extraction_boundary:
+      - "extract analytics to {format}_analytics.py"
+      - "extract model classes to models.py"
+    blocking_validator: "V39 (monolith_detection_validator)"
+    execution_authority: false
+
+  - path: "src/python/ndjson/json_stream.py"
+    loc: 928
+    baseline_loc_cap: 928
+    functions: 67
+    baseline_functions_cap: 67
+    category: "analytics_extraction"
+    responsibilities:
+      - document_model
+      - API_surface
+    extraction_boundary:
+      - "requires manual analysis"
+    blocking_validator: "V39 (monolith_detection_validator)"
+    execution_authority: false
+
+  - path: "src/python/ndjson/ndjson_codec.py"
+    loc: 1081
+    baseline_loc_cap: 1081
+    functions: 42
+    baseline_functions_cap: 349
+    category: "mixed_model_analytics"
+    responsibilities:
+      - parsing
+      - encoding
+      - analytics
+    extraction_boundary:
+      - "extract analytics to {format}_analytics.py"
+      - "extract model classes to models.py"
+    blocking_validator: "V39 (monolith_detection_validator)"
+    execution_authority: false
+
+  - path: "src/python/ods/ods_parser.py"
+    loc: 788
+    baseline_loc_cap: 788
+    functions: 369
+    baseline_functions_cap: 369
+    category: "mixed_model_analytics"
+    responsibilities:
+      - parsing
+      - data_extraction
+    extraction_boundary:
+      - "extract analytics to {format}_analytics.py"
+      - "extract model classes to models.py"
+    blocking_validator: "V39 (monolith_detection_validator)"
+    execution_authority: false
+
+  - path: "src/python/ods/spreadsheet_document.py"
+    loc: 901
+    baseline_loc_cap: 901
+    functions: 54
+    baseline_functions_cap: 54
+    category: "new_violation_detected"
+    responsibilities:
+      - document_model
+      - API_surface
+    extraction_boundary:
+      - "separate query/mutation methods from core model"
+    blocking_validator: "V39 (monolith_detection_validator)"
+    execution_authority: false
+
+  - path: "src/python/odt/odt_parser.py"
+    loc: 262
+    baseline_loc_cap: 262
+    functions: 7
+    baseline_functions_cap: 314
+    category: "mixed_model_analytics"
+    responsibilities:
+      - parsing
+      - data_extraction
+    extraction_boundary:
+      - "extract analytics to {format}_analytics.py"
+      - "extract model classes to models.py"
+    blocking_validator: "V39 (monolith_detection_validator)"
+    execution_authority: false
+
+  - path: "src/python/pbm/pbm_parser.py"
+    loc: 615
+    baseline_loc_cap: 615
+    functions: 20
+    baseline_functions_cap: 347
+    category: "mixed_model_analytics"
+    responsibilities:
+      - parsing
+      - data_extraction
+    extraction_boundary:
+      - "extract analytics to {format}_analytics.py"
+      - "extract model classes to models.py"
+    blocking_validator: "V39 (monolith_detection_validator)"
+    execution_authority: false
+
+  - path: "src/python/pgm/pgm_parser.py"
+    loc: 651
+    baseline_loc_cap: 651
+    functions: 20
+    baseline_functions_cap: 344
+    category: "mixed_model_analytics"
+    responsibilities:
+      - parsing
+      - data_extraction
+    extraction_boundary:
+      - "extract analytics to {format}_analytics.py"
+      - "extract model classes to models.py"
+    blocking_validator: "V39 (monolith_detection_validator)"
+    execution_authority: false
+
+  - path: "src/python/ppm/ppm_parser.py"
+    loc: 638
+    baseline_loc_cap: 638
+    functions: 19
+    baseline_functions_cap: 347
+    category: "mixed_model_analytics"
+    responsibilities:
+      - parsing
+      - data_extraction
+    extraction_boundary:
+      - "extract analytics to {format}_analytics.py"
+      - "extract model classes to models.py"
+    blocking_validator: "V39 (monolith_detection_validator)"
+    execution_authority: false
+
+  - path: "src/python/qoi/image_document.py"
+    loc: 720
+    baseline_loc_cap: 720
+    functions: 64
+    baseline_functions_cap: 64
+    category: "new_violation_detected"
+    responsibilities:
+      - document_model
+      - API_surface
+    extraction_boundary:
+      - "separate query/mutation methods from core model"
+    blocking_validator: "V39 (monolith_detection_validator)"
+    execution_authority: false
+
+  - path: "src/python/qoi/qoi_parser.py"
+    loc: 320
+    baseline_loc_cap: 320
+    functions: 7
+    baseline_functions_cap: 345
+    category: "mixed_model_analytics"
+    responsibilities:
+      - parsing
+      - data_extraction
+    extraction_boundary:
+      - "extract analytics to {format}_analytics.py"
+      - "extract model classes to models.py"
+    blocking_validator: "V39 (monolith_detection_validator)"
+    execution_authority: false
+
+  - path: "src/python/sylk/spreadsheet_document.py"
+    loc: 857
+    baseline_loc_cap: 889
+    functions: 64
+    baseline_functions_cap: 66
+    category: "new_violation_detected"
+    responsibilities:
+      - document_model
+      - API_surface
+    extraction_boundary:
+      - "separate query/mutation methods from core model"
+    blocking_validator: "V39 (monolith_detection_validator)"
+    execution_authority: false
+
+  - path: "src/python/sylk/sylk_parser.py"
+    loc: 740
+    baseline_loc_cap: 740
+    functions: 25
+    baseline_functions_cap: 367
+    category: "mixed_model_analytics"
+    responsibilities:
+      - parsing
+      - data_extraction
+    extraction_boundary:
+      - "extract analytics to {format}_analytics.py"
+      - "extract model classes to models.py"
+    blocking_validator: "V39 (monolith_detection_validator)"
+    execution_authority: false
+
+  - path: "src/python/toml/toml_codec.py"
+    loc: 728
+    baseline_loc_cap: 728
+    functions: 27
+    baseline_functions_cap: 370
+    category: "mixed_model_analytics"
+    responsibilities:
+      - parsing
+      - encoding
+      - analytics
+    extraction_boundary:
+      - "extract analytics to {format}_analytics.py"
+      - "extract model classes to models.py"
+    blocking_validator: "V39 (monolith_detection_validator)"
+    execution_authority: false
+
+  - path: "src/python/tsv/tabular_document.py"
+    loc: 787
+    baseline_loc_cap: 807
+    functions: 54
+    baseline_functions_cap: 55
+    category: "new_violation_detected"
+    responsibilities:
+      - document_model
+      - API_surface
+    extraction_boundary:
+      - "separate query/mutation methods from core model"
+    blocking_validator: "V39 (monolith_detection_validator)"
+    execution_authority: false
+
+  - path: "src/python/tsv/tsv_parser.py"
+    loc: 818
+    baseline_loc_cap: 818
+    functions: 38
+    baseline_functions_cap: 367
+    category: "mixed_model_analytics"
+    responsibilities:
+      - parsing
+      - data_extraction
+    extraction_boundary:
+      - "extract analytics to {format}_analytics.py"
+      - "extract model classes to models.py"
+    blocking_validator: "V39 (monolith_detection_validator)"
+    execution_authority: false
+
+  - path: "src/python/xcf/xcf_image_metrics.py"
+    loc: 906
+    baseline_loc_cap: 906
+    functions: 104
+    baseline_functions_cap: 104
+    category: "analytics_extraction"
+    responsibilities:
+      - document_model
+      - API_surface
+    extraction_boundary:
+      - "requires manual analysis"
+    blocking_validator: "V39 (monolith_detection_validator)"
+    execution_authority: false
+
+  - path: "src/python/xcf/xcf_parser.py"
+    loc: 280
+    baseline_loc_cap: 1277
+    functions: 7
+    baseline_functions_cap: 575
+    category: "mixed_model_analytics"
+    responsibilities:
+      - parsing
+      - data_extraction
+    extraction_boundary:
+      - "extract analytics to {format}_analytics.py"
+      - "extract model classes to models.py"
+    blocking_validator: "V39 (monolith_detection_validator)"
+    execution_authority: false
+
+  - path: "src/python/zst/zst_codec.py"
+    loc: 900
+    baseline_loc_cap: 1549
+    functions: 20
+    baseline_functions_cap: 561
+    category: "mixed_model_analytics"
+    responsibilities:
+      - parsing
+      - encoding
+      - analytics
+    extraction_boundary:
+      - "extract analytics to {format}_analytics.py"
+      - "extract model classes to models.py"
+    blocking_validator: "V39 (monolith_detection_validator)"
+    execution_authority: false
+
