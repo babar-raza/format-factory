@@ -1,0 +1,157 @@
+---
+# Repair Taskcards — Machinery Readiness Audit FF-MACH-AUDIT-20260623
+# Plan: sorted-purring-stardust | Taskcard: TC-TASKCARD-001 | Requirement: REQ-TASK-001
+
+taskcards:
+  - taskcard_id: TC-MACH-CAP-001
+    title: "Add write_selected_gaps() to capability_compiler.py"
+    gap_refs: [GAP-MACH-001, GAP-MACH-002]
+    root_cause: RC-2
+    priority: CRITICAL
+    scope:
+      allowed_files:
+        - tools/supervisor/capability_compiler.py
+        - tests/supervisor/test_capability_compiler.py
+      forbidden_files:
+        - tools/supervisor/autonomous_task_generator.py
+        - src/**
+    acceptance_criteria:
+      - "python capability_compiler.py --output selected-product-gaps.json exits 0"
+      - "selected_gap_count >= 1"
+      - "All selected gaps have status=open"
+      - "Max 2 gaps from same format"
+      - "Unit tests pass"
+    tests: [test_write_selected_gaps, test_priority_ordering, test_format_diversity, test_all_closed_exits_1]
+
+  - taskcard_id: TC-MACH-CAP-002
+    title: "Wire gap selection into autonomous_task_generator.py"
+    gap_refs: [GAP-MACH-003]
+    root_cause: RC-1
+    priority: CRITICAL
+    dependencies: [TC-MACH-CAP-001]
+    scope:
+      allowed_files:
+        - tools/supervisor/autonomous_task_generator.py
+        - tests/supervisor/test_autonomous_task_generator.py
+      forbidden_files:
+        - tools/supervisor/capability_compiler.py
+    acceptance_criteria:
+      - "next-work-items.json contains >=3 items with gap_ledger_ref"
+      - "Advisory template items < 20% of work queue"
+      - "Fallback to direct gap-ledger reading if selected-product-gaps.json empty"
+    tests: [test_gap_referenced_proportion]
+
+  - taskcard_id: TC-MACH-VAL-001
+    title: "Add V50 validate_spec_fact_refs_density()"
+    gap_refs: [GAP-MACH-004]
+    root_cause: RC-4
+    priority: HIGH
+    note: "Rescoped from V49 (already exists) to V50 (new density check)"
+    scope:
+      allowed_files:
+        - tools/supervisor/governance_validators.py
+        - tools/supervisor/governance_validators_ext.py
+        - tests/supervisor/test_governance_validators.py
+    acceptance_criteria:
+      - "V50 function present and wired into runner"
+      - "PRODUCT_SOURCE items without spec_fact_ref → REWORK_REQUIRED"
+      - "Compat/ classes excluded"
+      - "3 tests pass"
+    tests: [test_v50_positive, test_v50_negative, test_v50_compat_excluded]
+
+  - taskcard_id: TC-MACH-LANE-001
+    title: "Add check_lane_conflict() at Step 1b"
+    gap_refs: [GAP-MACH-005]
+    root_cause: RC-3
+    priority: HIGH
+    scope:
+      allowed_files:
+        - tools/supervisor/autonomous_cycle.py
+        - tests/supervisor/test_lane_guard.py
+    acceptance_criteria:
+      - "check_lane_conflict() called at Step 1b"
+      - "MACHINERY + src/ file → exit 3"
+      - "Grace period mechanism works"
+    tests: [test_machinery_src_fails, test_product_tools_fails, test_grace_period]
+
+  - taskcard_id: TC-MACH-SAL-001
+    title: "Escalate SAL staleness to sprint-blocking"
+    gap_refs: [GAP-MACH-006, GAP-MACH-007]
+    root_cause: RC-7
+    priority: MEDIUM
+    scope:
+      allowed_files:
+        - tools/supervisor/autonomous_cycle.py
+        - tests/supervisor/test_sal_staleness.py
+    acceptance_criteria:
+      - "SAL >7 days + product sprint → hard_stop"
+      - "SAL >7 days + MACHINERY:sal_repair → warning only"
+      - "refresh_check.py called with correct subcommand (scan)"
+    tests: [test_stale_sal_blocks_product, test_stale_sal_allows_sal_repair]
+
+  - taskcard_id: TC-MACH-BACK-001
+    title: "Create tools/backfill/ skeleton (inventory + plan_generator)"
+    gap_refs: [GAP-MACH-008]
+    root_cause: RC-6
+    priority: MEDIUM
+    scope:
+      allowed_files:
+        - tools/backfill/__init__.py
+        - tools/backfill/inventory.py
+        - tools/backfill/plan_generator.py
+        - tests/backfill/test_inventory.py
+      forbidden_files:
+        - tools/backfill/executor.py
+        - src/**
+    acceptance_criteria:
+      - "inventory.py runs on FODS and produces valid YAML"
+      - "plan_generator.py produces readable migration plan"
+      - "No executor exists (read-only tools only)"
+    tests: [test_inventory_fods]
+
+  - taskcard_id: TC-MACH-SRC-001
+    title: "Add V51 validate_public_api_surface_ratio()"
+    gap_refs: [GAP-MACH-009]
+    root_cause: RC-5
+    priority: MEDIUM
+    note: "Using V51 since V50 used for spec_fact_refs density"
+    scope:
+      allowed_files:
+        - tools/supervisor/governance_validators.py
+        - tools/supervisor/governance_validators_ext.py
+        - tests/supervisor/test_governance_validators.py
+    acceptance_criteria:
+      - "V51 function present, WARN-only mode"
+      - ">50 exports with <20% tested → WARN"
+      - "2 tests pass"
+    tests: [test_v51_under_threshold, test_v51_over_threshold]
+
+  - taskcard_id: TC-MACH-FM-001
+    title: "Add escalation threshold to failure_memory.py"
+    gap_refs: [GAP-MACH-010]
+    root_cause: RC-8
+    priority: MEDIUM
+    scope:
+      allowed_files:
+        - tools/supervisor/failure_memory.py
+        - tests/supervisor/test_failure_memory.py
+    acceptance_criteria:
+      - "occurrence_count >= 10 → severity: high"
+      - "occurrence_count >= 50 → severity: critical"
+      - "occurrence_count >= 100 → requires_root_cause_fix + hard_stops"
+      - "3 tests pass"
+    tests: [test_threshold_10, test_threshold_100, test_threshold_277]
+
+  - taskcard_id: TC-MACH-CAP-003
+    title: "Track architecture_only stubs in gap-ledger"
+    gap_refs: [GAP-MACH-011]
+    root_cause: RC-6
+    priority: LOW
+    scope:
+      allowed_files:
+        - reports/capability-layer/gap-ledger.json
+    acceptance_criteria:
+      - ">=29 new gap entries appended (17 Python + 12 .NET)"
+      - "JSON valid after append"
+      - "All new entries have current_state: architecture_only"
+    tests: [test_gap_ledger_total_increases]

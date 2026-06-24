@@ -324,18 +324,16 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
 
     # Step 0a-staleness (TC-MACH-SAL-001): Escalate SAL staleness to sprint-blocking
     # for PRODUCT sprints when >7 days old. MACHINERY:sal_repair sprints are exempt.
+    # Logic extracted to autonomous_cycle_extensions.check_sal_staleness() for testability.
     try:
-        if _sal_is_stale:
-            _sprint_type = decl.get("declared_scope", {}).get("sprint_type", "").upper()
-            if "SAL_REPAIR" not in _sprint_type and "MACHINERY" not in _sprint_type:
-                hard_stops.append(
-                    "SAL_STALE: sal-facts-latest.json is >7 days old. "
-                    "Run SAL refresh before product sprints. "
-                    "Override: set sprint_type to MACHINERY:sal_repair"
-                )
-                print("  [SAL_STALENESS] BLOCKING: SAL facts >7 days old for product sprint")
-            else:
-                print("  [SAL_STALENESS] WARNING: SAL stale but machinery/sal_repair sprint — not blocking")
+        from autonomous_cycle_extensions import check_sal_staleness
+        _sprint_type = decl.get("declared_scope", {}).get("sprint_type", "")
+        _sal_stops = check_sal_staleness(sal_is_stale=_sal_is_stale, sprint_type=_sprint_type)
+        if _sal_stops:
+            hard_stops.extend(_sal_stops)
+            print("  [SAL_STALENESS] BLOCKING: SAL facts >7 days old for product sprint")
+        elif _sal_is_stale:
+            print("  [SAL_STALENESS] WARNING: SAL stale but machinery/sal_repair sprint — not blocking")
     except Exception as _sal_stale_err:
         print(f"  [SAL_STALENESS] Error: {_sal_stale_err}")
 
@@ -677,44 +675,25 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
 
     # Step 1c (TC-MACH-LANE-001): Preventive lane conflict guard
     # Checks declared_scope.lane against changed_files BEFORE grading.
+    # Logic extracted to autonomous_cycle_extensions.check_lane_conflicts() for testability.
     _lane_conflict_detected = False
     try:
-        _declared_lane = decl.get("declared_scope", {}).get("lane", "").upper()
+        from autonomous_cycle_extensions import check_lane_conflicts
+        _declared_lane = decl.get("declared_scope", {}).get("lane", "")
         _changed = decl.get("changed_files", [])
-        _lane_violations = []
-        if _declared_lane == "MACHINERY":
-            for _cf in _changed:
-                if isinstance(_cf, str) and (_cf.startswith("src/python/") or _cf.startswith("src/net/")):
-                    _lane_violations.append(f"MACHINERY sprint touched product source: {_cf}")
-        elif _declared_lane == "PRODUCT":
-            for _cf in _changed:
-                if isinstance(_cf, str) and _cf.startswith("tools/supervisor/") and not _cf.endswith("_test.py"):
-                    _lane_violations.append(f"PRODUCT sprint touched machinery: {_cf}")
-        if _lane_violations:
-            # Check grace period
-            _grace_active = False
-            try:
-                _policies_path = repo_root / ".supervisor" / "policies.yaml"
-                if _policies_path.exists():
-                    import yaml as _yaml_lc
-                    _pol = _yaml_lc.safe_load(_policies_path.read_text(encoding="utf-8"))
-                    _grace_until = (_pol or {}).get("lanes_grace_period_until", "")
-                    if _grace_until:
-                        from datetime import datetime as _dt_lc
-                        if _dt_lc.now().isoformat() < str(_grace_until):
-                            _grace_active = True
-            except Exception:
-                pass
-            if _grace_active:
-                print(f"  [LANE_GUARD] WARNING (grace period active): {len(_lane_violations)} violation(s)")
-                for _lv in _lane_violations[:3]:
-                    print(f"    - {_lv}")
-            else:
-                print(f"  [LANE_GUARD] CONFLICT DETECTED: {len(_lane_violations)} violation(s)")
-                for _lv in _lane_violations[:3]:
-                    print(f"    - {_lv}")
-                hard_stops.append(f"LANE_CONFLICT: {_declared_lane} sprint has cross-lane file changes")
-                _lane_conflict_detected = True
+        _policies_path = repo_root / ".supervisor" / "policies.yaml"
+        _lane_stops = check_lane_conflicts(
+            declared_lane=_declared_lane,
+            changed_files=_changed,
+            policies_path=_policies_path if _policies_path.exists() else None,
+        )
+        if _lane_stops:
+            for _ls in _lane_stops:
+                print(f"  [LANE_GUARD] CONFLICT DETECTED: {_ls}")
+                hard_stops.append(_ls)
+            _lane_conflict_detected = True
+        else:
+            print("  [LANE_GUARD] No lane conflicts detected")
     except Exception as _lc_err:
         print(f"  [LANE_GUARD] Error: {_lc_err}")
 

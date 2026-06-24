@@ -1,0 +1,115 @@
+{
+  "audit_id": "convergence-loop-1",
+  "audited_at": "2026-06-23T18:25:33.841458+00:00",
+  "authoritative_plan": "C:/Users/prora/.claude/plans/sorted-purring-stardust.md",
+  "sprint_id": "FF-MACH-AUDIT-20260623",
+  "achievements": [
+    {
+      "taskcard": "TC-MACH-CAP-001",
+      "classification": "COMPLETED_AND_VERIFIED",
+      "proof_level": 3,
+      "target": 3
+    },
+    {
+      "taskcard": "TC-MACH-CAP-002",
+      "classification": "COMPLETED_IMPLEMENTATION_ONLY",
+      "proof_level": 2,
+      "target": 3,
+      "caveat": "No dedicated unit test for priority boost logic"
+    },
+    {
+      "taskcard": "TC-MACH-VAL-001",
+      "classification": "COMPLETED_AND_VERIFIED",
+      "proof_level": 2,
+      "target": 3
+    },
+    {
+      "taskcard": "TC-MACH-SRC-001",
+      "classification": "COMPLETED_AND_VERIFIED",
+      "proof_level": 2,
+      "target": 2
+    },
+    {
+      "taskcard": "TC-MACH-LANE-001",
+      "classification": "COMPLETED_AND_VERIFIED",
+      "proof_level": 2,
+      "target": 3
+    },
+    {
+      "taskcard": "TC-MACH-SAL-001",
+      "classification": "COMPLETED_AND_VERIFIED",
+      "proof_level": 2,
+      "target": 3
+    },
+    {
+      "taskcard": "TC-MACH-FM-001",
+      "classification": "COMPLETED_AND_VERIFIED",
+      "proof_level": 3,
+      "target": 3
+    },
+    {
+      "taskcard": "TC-MACH-BACK-001",
+      "classification": "COMPLETED_AND_VERIFIED",
+      "proof_level": 3,
+      "target": 3
+    },
+    {
+      "taskcard": "TC-MACH-CAP-003",
+      "classification": "COMPLETED_AND_VERIFIED",
+      "proof_level": 3,
+      "target": 3
+    }
+  ],
+  "l1_issues": [
+    {
+      "issue_id": "L1-001",
+      "issue_level": "L1_EXECUTION",
+      "title": "TC-MACH-CAP-002 has no dedicated unit test",
+      "severity": "MEDIUM",
+      "blocker": false,
+      "required_fix_type": "ADD_TEST",
+      "requires_taskcard": true
+    },
+    {
+      "issue_id": "L1-002",
+      "issue_level": "L1_EXECUTION",
+      "title": "Lane guard + SAL staleness tests are logic extractions, not integration tests",
+      "severity": "LOW",
+      "blocker": false,
+      "required_fix_type": "ACCEPT_WITH_LIMITATION",
+      "requires_taskcard": false,
+      "acceptance_note": "Standard pattern for autonomous_cycle.py monolith guards"
+    }
+  ],
+  "l2_issues": [
+    {
+      "issue_id": "L2-001",
+      "issue_level": "L2_INTEGRATION",
+      "title": "active-plan-lock.json references wrong plan after terminal close",
+      "severity": "MEDIUM",
+      "blocker": false,
+      "required_fix_type": "STATE_REPAIR",
+      "requires_taskcard": true
+    }
+  ],
+  "l3_issues": [],
+  "evidence_quality_verdict": "ADEQUATE_WITH_LIMITATIONS",
+  "final_verdict": "SPRINT_ACCEPTED_WITH_LIMITATIONS",
+  "proof_targets_met": 5,
+  "proof_targets_total": 9,
+  "next_stage_recommendation": "PROMPT_3",
+  "actionable_items": [
+    {
+      "id": "ACT-001",
+      "source": "L1-001",
+      "action": "Add unit test for task generator priority boost",
+      "type": "ADD_TEST"
+    },
+    {
+      "id": "ACT-002",
+      "source": "L2-001",
+      "action": "Repair active-plan-lock.json state",
+      "type": "STATE_REPAIR"
+    }
+  ]
+}

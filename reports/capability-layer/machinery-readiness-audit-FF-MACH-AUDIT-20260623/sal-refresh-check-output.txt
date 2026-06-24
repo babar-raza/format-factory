@@ -1,0 +1,21 @@
+SAL Refresh Check Output — FF-MACH-AUDIT-20260623
+Command: python tools/spec-cache/refresh_check.py scan
+Exit code: 1 (STALE)
+
+Scanning 19 spec-index.yaml entries...
+
+  [STALE (missing_file)]  fodt/1.3  — spec-index.yaml missing
+  [STALE (missing_file)]  odf-shared/1.3  — part1/spec-index.yaml missing
+  [STALE (missing_file)]  odf-shared/1.3  — part2/spec-index.yaml missing
+  [STALE (missing_file)]  odf-shared/1.3  — part4/spec-index.yaml missing
+
+------------------------------------------------------------
+Summary: 19 entries scanned, 4 stale
+Stale breakdown:
+  missing_file         : 4
+
+STALE entries found. Remediation required before Gate 2.
+
+Note: refresh_check.py uses subcommands (scan, validate, show), NOT --all flag.
+The autonomous_cycle.py Step 0a-refresh block references refresh_check.py --all which
+would fail with exit code 2 (unrecognized arguments). This is a wiring bug.

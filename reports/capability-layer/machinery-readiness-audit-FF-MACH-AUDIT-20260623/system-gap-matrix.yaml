@@ -1,0 +1,148 @@
+---
+# System Gap Matrix — Machinery Readiness Audit FF-MACH-AUDIT-20260623
+# Plan: sorted-purring-stardust | Taskcard: TC-GAP-001 | Requirement: REQ-GAP-001
+
+gaps:
+  - gap_id: GAP-MACH-001
+    title: "capability_compiler.py does not write to selected-product-gaps.json"
+    severity: CRITICAL
+    root_cause: RC-2
+    evidence_path: "$AUDIT_DIR/lane-f-capability-layer-audit.md"
+    current_behavior: "capability_compiler.py generates feature IRs, gate projections, etc. but never writes gap selections to selected-product-gaps.json"
+    expected_behavior: "After scoring, compiler writes top-N gaps to selected-product-gaps.json"
+    required_fix: "Add write_selected_gaps() to capability_compiler.py with --output CLI flag"
+    tests_required: ["test_write_selected_gaps_positive", "test_priority_ordering", "test_format_diversity", "test_all_closed_exits_1"]
+    suggested_taskcard_id: TC-MACH-CAP-001
+    must_fix_before_product_deepening: true
+
+  - gap_id: GAP-MACH-002
+    title: "selected-product-gaps.json always empty (selected_gap_count: 0)"
+    severity: CRITICAL
+    root_cause: RC-1
+    evidence_path: "$AUDIT_DIR/lane-a-repo-governance-state.md"
+    current_behavior: "selected_gap_count is 0; select_poc_gaps.py sources from poc-targets.yaml which produces 0 selections"
+    expected_behavior: "selected_gap_count >= 1 after capability compiler runs"
+    required_fix: "Wire capability_compiler scoring into gap selection pipeline"
+    tests_required: ["test_selected_gap_count_nonzero"]
+    suggested_taskcard_id: TC-MACH-CAP-001
+    must_fix_before_product_deepening: true
+
+  - gap_id: GAP-MACH-003
+    title: "autonomous_task_generator.py does not use scored gap selections"
+    severity: HIGH
+    root_cause: RC-1, RC-2
+    evidence_path: "$AUDIT_DIR/lane-g-downstream-layers.md"
+    current_behavior: "_load_gap_ledger_goals() reads gap-ledger directly without priority scoring or format diversity"
+    expected_behavior: "Task generator reads selected-product-gaps.json as priority filter, falls back to direct reading"
+    required_fix: "Add capability_compiler invocation before gap goal generation in task generator"
+    tests_required: ["test_gap_referenced_proportion_gte_80pct"]
+    suggested_taskcard_id: TC-MACH-CAP-002
+    must_fix_before_product_deepening: true
+
+  - gap_id: GAP-MACH-004
+    title: "V49 is WARN-only and no spec_fact_refs density validator exists"
+    severity: MEDIUM
+    root_cause: RC-4
+    evidence_path: "$AUDIT_DIR/lane-d-skills-and-repeatability.md"
+    current_behavior: "V49 (validate_qname_structure) checks spec_qname presence, WARN-only. No density check for spec_fact_refs."
+    expected_behavior: "V50 validates >=1 spec_fact_ref per new non-Compat/non-spec class in PRODUCT_SOURCE items"
+    required_fix: "Add V50 validate_spec_fact_refs_density() to governance_validators_ext.py"
+    tests_required: ["test_v50_positive", "test_v50_negative", "test_v50_compat_excluded"]
+    suggested_taskcard_id: TC-MACH-VAL-001
+    must_fix_before_product_deepening: false
+
+  - gap_id: GAP-MACH-005
+    title: "Lane enforcement is post-hoc (after grading)"
+    severity: HIGH
+    root_cause: RC-3
+    evidence_path: "$AUDIT_DIR/lane-h-supervisor-audit.md"
+    current_behavior: "Lane enforcement at Step 2e (line 892) runs AFTER grading at Step 3 (line 746)"
+    expected_behavior: "check_lane_conflict() at Step 1b catches violations BEFORE grading"
+    required_fix: "Add check_lane_conflict() at Step 1b in autonomous_cycle.py"
+    tests_required: ["test_machinery_touching_src_fails", "test_product_touching_tools_fails", "test_grace_period"]
+    suggested_taskcard_id: TC-MACH-LANE-001
+    must_fix_before_product_deepening: false
+
+  - gap_id: GAP-MACH-006
+    title: "SAL staleness is warn-only, never sprint-blocking"
+    severity: MEDIUM
+    root_cause: RC-7
+    evidence_path: "$AUDIT_DIR/lane-e-sal-audit.md"
+    current_behavior: "refresh_check.py returns non-zero for stale SAL; autonomous_cycle.py logs warning only"
+    expected_behavior: "SAL >7 days old blocks PRODUCT sprints (exception: MACHINERY:sal_repair)"
+    required_fix: "Escalate SAL staleness to hard_stop when >7 days AND product sprint"
+    tests_required: ["test_stale_sal_blocks_product", "test_stale_sal_allows_sal_repair"]
+    suggested_taskcard_id: TC-MACH-SAL-001
+    must_fix_before_product_deepening: false
+
+  - gap_id: GAP-MACH-007
+    title: "refresh_check.py CLI interface mismatch"
+    severity: LOW
+    root_cause: RC-7
+    evidence_path: "$AUDIT_DIR/sal-refresh-check-output.txt"
+    current_behavior: "autonomous_cycle.py calls refresh_check.py --all; actual CLI uses subcommands (scan, validate, show)"
+    expected_behavior: "Step 0a-refresh uses correct subcommand: refresh_check.py scan"
+    required_fix: "Update autonomous_cycle.py Step 0a-refresh to use 'scan' subcommand"
+    tests_required: []
+    suggested_taskcard_id: TC-MACH-SAL-001
+    must_fix_before_product_deepening: false
+
+  - gap_id: GAP-MACH-008
+    title: "No backfill facility for canonical naming migration"
+    severity: MEDIUM
+    root_cause: RC-6
+    evidence_path: "$AUDIT_DIR/lane-i-backfill-facility-design.md"
+    current_behavior: "No tools exist to inventory or migrate format-prefixed names to canonical names"
+    expected_behavior: "tools/backfill/inventory.py + plan_generator.py provide read-only analysis"
+    required_fix: "Create tools/backfill/ with inventory.py and plan_generator.py"
+    tests_required: ["test_inventory_fods_produces_mapping"]
+    suggested_taskcard_id: TC-MACH-BACK-001
+    must_fix_before_product_deepening: false
+
+  - gap_id: GAP-MACH-009
+    title: "Public API surface uncontrolled (NDJSON 88% analytics, CSV 88%, TSV 89%)"
+    severity: MEDIUM
+    root_cause: RC-5
+    evidence_path: "$AUDIT_DIR/lane-c-product-source-quality.md"
+    current_behavior: "NDJSON: 116 exports (14 core, 102 analytics). No governance on export ratio."
+    expected_behavior: "V50/V51 warns when >50 exports with <20% tested"
+    required_fix: "Add V50 validate_public_api_surface_ratio() to governance_validators.py"
+    tests_required: ["test_v50_under_threshold_passes", "test_v50_over_threshold_warns"]
+    suggested_taskcard_id: TC-MACH-SRC-001
+    must_fix_before_product_deepening: false
+
+  - gap_id: GAP-MACH-010
+    title: "Failure memory has no escalation path beyond setting escalated=true"
+    severity: MEDIUM
+    root_cause: RC-8
+    evidence_path: "$AUDIT_DIR/lane-h-supervisor-audit.md"
+    current_behavior: "FM-0013: 283 occurrences, escalated=true, resolved=false. No action taken."
+    expected_behavior: "At 100+ occurrences: inject into continuation hard_stops"
+    required_fix: "Add threshold-triggered escalation to failure_memory.py"
+    tests_required: ["test_threshold_10_high", "test_threshold_100_critical", "test_threshold_277_hard_stop"]
+    suggested_taskcard_id: TC-MACH-FM-001
+    must_fix_before_product_deepening: false
+
+  - gap_id: GAP-MACH-011
+    title: "29 architecture_only stubs not tracked in gap-ledger"
+    severity: LOW
+    root_cause: RC-6
+    evidence_path: "$AUDIT_DIR/lane-b-qname-schema-audit.md"
+    current_behavior: "17 Python + 12 .NET architecture_only stubs exist with no gap-ledger entries"
+    expected_behavior: "Each stub has a gap entry with current_state: architecture_only"
+    required_fix: "Append stub gap entries to gap-ledger.json"
+    tests_required: ["test_gap_ledger_total_increases"]
+    suggested_taskcard_id: TC-MACH-CAP-003
+    must_fix_before_product_deepening: false
+
+  - gap_id: GAP-MACH-012
+    title: "56 validators (not 48 as documented)"
+    severity: INFO
+    root_cause: documentation_drift
+    evidence_path: "$AUDIT_DIR/lane-b-qname-schema-audit.md"
+    current_behavior: "Plan and prior documentation reference 48 validators"
+    expected_behavior: "Documentation reflects actual count: 56 validators (V1-V56)"
+    required_fix: "Update documentation references"
+    tests_required: []
+    suggested_taskcard_id: null
+    must_fix_before_product_deepening: false

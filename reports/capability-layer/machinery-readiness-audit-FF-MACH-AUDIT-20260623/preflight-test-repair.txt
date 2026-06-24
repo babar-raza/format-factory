@@ -1,0 +1,82 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.2, pytest-8.4.2, pluggy-1.6.0
+rootdir: C:\Users\prora\OneDrive\Documents\GitHub\format-factory
+configfile: pyproject.toml
+plugins: anyio-4.13.0, cov-7.1.0, timeout-2.4.0
+timeout: 120.0s
+timeout method: thread
+timeout func_only: False
+collected 761 items
+
+tests\python\pgm\test_pgm_conveyor_deepening.py ..........               [  1%]
+tests\python\pgm\test_pgm_gap_closure_batch.py ....................      [  3%]
+tests\python\pgm\test_pgm_gap_closure_foss.py .......................... [  7%]
+................                                                         [  9%]
+tests\python\pgm\test_pgm_gate5_neutral_model.py .........               [ 10%]
+tests\python\pgm\test_pgm_gate6_oracle.py ..........                     [ 11%]
+tests\python\pgm\test_pgm_gate7_fuzz_guard.py ...........                [ 13%]
+tests\python\pgm\test_pgm_parser.py ..........                           [ 14%]
+tests\python\pgm\test_r105_pgm_write_hardening.py ............           [ 16%]
+tests\python\pgm\test_r106_pgm_strict_errors.py .........                [ 17%]
+tests\python\pgm\test_r154_pgm_dimensions_normalize.py ...........       [ 18%]
+tests\python\pgm\test_r155_pgm_histogram_threshold.py ...........        [ 20%]
+tests\python\pgm\test_r158_pgm_accessors.py ..........                   [ 21%]
+tests\python\pgm\test_r159_pgm_threshold_minmax.py ..........            [ 22%]
+tests\python\pgm\test_r161_pgm_flip.py .....                             [ 23%]
+tests\python\pgm\test_r165_pgm_pixel_stats.py ........                   [ 24%]
+tests\python\pgm\test_r170_pgm_rotate90.py ........                      [ 25%]
+tests\python\pgm\test_r171_pgm_grayscale_variance.py ......              [ 26%]
+tests\python\pgm\test_r187_pgm_contrast_range.py ..........              [ 27%]
+tests\python\pgm\test_r188_pgm_bright_pixel_ratio.py ......              [ 28%]
+tests\python\pgm\test_r199_pgm_dark_pixel_count.py ......                [ 29%]
+tests\python\pgm\test_r202_pgm_average_brightness.py ......              [ 30%]
+tests\python\pgm\test_r208_pgm_max_pixel_value.py ......                 [ 31%]
+tests\python\pgm\test_r212_pgm_min_pixel_value.py ......                 [ 31%]
+tests\python\pgm\test_r232_pgm_dynamic_range_pixel_sum.py ..........     [ 33%]
+tests\python\pgm\test_r232_pgm_total_pixel_and_quartiles.py ...........  [ 34%]
+tests\python\pgm\test_r232_pgm_uniform_nonzero.py ..........             [ 35%]
+tests\python\pgm\test_r235_pgm_zero_saturated.py ..........              [ 37%]
+tests\python\pgm\test_r238_pgm_stddev_brightness_ratio.py ......         [ 37%]
+tests\python\pgm\test_r243_pgm_saturated_all_dark.py ..........          [ 39%]
+tests\python\pgm\test_r252_pgm_any_zero_all_bright.py ............       [ 40%]
+tests\python\pgm\test_r254_pgm_brightness_geometry_analytics.py ........ [ 41%]
+.........................................                                [ 47%]
+tests\python\pgm\test_r255_pgm_diagonal_aspect_ratio.py ............     [ 48%]
+tests\python\pgm\test_r256_pgm_brightness_contrast_analytics.py ........ [ 49%]
+....................................................                     [ 56%]
+tests\python\pgm\test_r258_pgm_bright_pixel_ratio.py ......              [ 57%]
+tests\python\pgm\test_r262_pgm_column_count_is_uniform.py ..........     [ 58%]
+tests\python\pgm\test_r272_pgm_min_brightness_is_bright.py ..........    [ 60%]
+tests\python\pgm\test_r282_pgm_gap_closure.py .....                      [ 60%]
+tests\python\pgm\test_r283_pgm_analytics_gaps.py ..............          [ 62%]
+tests\python\pgm\test_r284_pgm_additional_gaps.py ...................... [ 65%]
+..............                                                           [ 67%]
+tests\python\pgm\test_r292_pgm_new_analytics.py ....................     [ 70%]
+tests\python\pgm\test_r374_pgm_analytics.py ............................ [ 73%]
+........................................................................ [ 83%]
+......                                                                   [ 83%]
+tests\python\pgm\test_r43_gate9_deepening.py .......                     [ 84%]
+tests\python\pgm\test_r55_pgm_p5_binary.py .........                     [ 86%]
+tests\python\pgm\test_r58_pgm_deepening.py .................             [ 88%]
+tests\python\pgm\test_r73_pgm_advancement.py ..........                  [ 89%]
+tests\python\pgm\test_r84_pgm_write.py .........                         [ 90%]
+tests\python\pgm\test_r87_pgm_to_ppm_dogfood.py ...........              [ 92%]
+tests\python\pgm\test_r96_pgm_write_read.py ........                     [ 93%]
+tests\python\pgm\test_rnext47_pgm_probe_gap_closure.py .......           [ 94%]
+tests\python\pgm\test_rnext_pgm_median_pixel_value.py ........           [ 95%]
+tests\python\pgm\test_spec_compat_layer.py ...............               [ 97%]
+tests\python\pgm\test_tc_51cbbcb4_pgm_probe.py .....................     [100%]
+
+============================= 761 passed in 6.23s =============================
+
+
+=== CLASSIFICATION SECTION ===
+Test run: 2026-06-23T21:49:25+05:00
+Result: 761 passed, 0 failed
+Classification: No failures present — the 2 pgm boundary failures reported in preflight state (§1.5) are no longer reproducible.
+Resolution: ALREADY_RESOLVED — no repair needed.
+
+=== RESOLUTION_SUMMARY ===
+tests_repaired: 0 (failures were not reproducible)
+method: none_needed
+final_result: PASS (761 passed, 0 failed)

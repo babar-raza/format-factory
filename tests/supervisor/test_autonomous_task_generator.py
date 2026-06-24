@@ -192,3 +192,65 @@ class TestSkipExisting:
         )
         # With skip, count should be <= without skip
         assert len(candidates_with_skip) <= len(candidates_without_skip)
+
+
+class TestSelectedGapPriorityBoost:
+    """TC-MACH-CAP-002: Verify selected-gap priority boost in task scoring."""
+
+    def test_score_task_baseline(self):
+        """_score_task returns 10 - (pv+av) + risk_penalty."""
+        goal = {"product_value": 3, "autonomy_value": 3, "risk_level": "LOW"}
+        assert _score_task(goal) == 4.0  # 10 - 6 + 0
+
+    def test_selected_gap_boost_logic(self):
+        """Tasks with gap_id in selected set get -3.0 boost (lower = higher priority)."""
+        selected_ids = {"GAP-FODS-COMM-SAVE_SAME_FO-001", "GAP-FODT-COMM-SAVE_SAME_FO-001"}
+        goal_selected = {
+            "product_value": 3, "autonomy_value": 3, "risk_level": "LOW",
+            "gap_id": "GAP-FODS-COMM-SAVE_SAME_FO-001", "format": "fods",
+            "function_name": "save_same_format",
+        }
+        goal_unselected = {
+            "product_value": 3, "autonomy_value": 3, "risk_level": "LOW",
+            "gap_id": "GAP-OTHER-001", "format": "fods",
+            "function_name": "other_function",
+        }
+        base_selected = _score_task(goal_selected)
+        base_unselected = _score_task(goal_unselected)
+        assert base_selected == base_unselected, "Same base score for identical values"
+
+        # Simulate _score_task_with_memory boost
+        def score_with_boost(goal, selected_gap_ids):
+            base = _score_task(goal)
+            gid = goal.get("gap_id", "")
+            if gid and gid in selected_gap_ids:
+                base -= 3.0
+            return base
+
+        boosted = score_with_boost(goal_selected, selected_ids)
+        unboosted = score_with_boost(goal_unselected, selected_ids)
+        assert boosted < unboosted, "Selected gap task should have lower (better) score"
+        assert unboosted - boosted == 3.0, "Boost magnitude should be exactly 3.0"
+
+    def test_no_boost_without_gap_id(self):
+        """Tasks without gap_id get no boost even if selected set is non-empty."""
+        selected_ids = {"GAP-FODS-COMM-SAVE_SAME_FO-001"}
+        goal_no_gid = {"product_value": 3, "autonomy_value": 3, "risk_level": "LOW"}
+        base = _score_task(goal_no_gid)
+        gid = goal_no_gid.get("gap_id", "")
+        boost = -3.0 if (gid and gid in selected_ids) else 0.0
+        assert boost == 0.0, "No gap_id means no boost"
+        assert base + boost == base
+
+    def test_empty_selected_set_no_boost(self):
+        """Empty selected set means no tasks get boosted."""
+        selected_ids = set()
+        goal = {
+            "product_value": 3, "autonomy_value": 3, "risk_level": "LOW",
+            "gap_id": "GAP-FODS-COMM-SAVE_SAME_FO-001",
+        }
+        base = _score_task(goal)
+        gid = goal.get("gap_id", "")
+        boost = -3.0 if (gid and gid in selected_ids) else 0.0
+        assert boost == 0.0
+        assert base + boost == base

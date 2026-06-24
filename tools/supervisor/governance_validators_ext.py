@@ -720,8 +720,9 @@ def validate_cross_lane_product_touching_machinery(
     indicate architectural drift — work that belongs to the MACHINERY track is being
     bundled with PRODUCT_SOURCE items.
 
-    Severity: WARN-only (blocks_sprint=False). Promotes to blocking after 3 clean sprints
-    with no false positives. Exception: items with lane_exception='MACHINERY_HEALING' bypass.
+    Severity: Conditional-blocking (blocks_sprint=True when violations found).
+    Promoted 2026-06-24 after 3 clean sprints (FF-V54V55-PROMOTE-20260624).
+    Exception: items with lane_exception='MACHINERY_HEALING' bypass.
 
     Added 2026-06-23 (FF-FORENSIC-AUDIT-20260623 / A4) as part of lane boundary hardening.
     """
@@ -772,7 +773,7 @@ def validate_cross_lane_product_touching_machinery(
     return {
         "validator": "validate_cross_lane_product_touching_machinery",
         "result": result,
-        "blocks_sprint": False,
+        "blocks_sprint": bool(warnings),
         "items": warnings,
         "summary": (
             f"V54: {len(warnings)} product item(s) mutating machinery files"
@@ -808,9 +809,10 @@ def validate_cross_lane_machinery_touching_product(
     Machinery sprints should not mutate product source files. Cross-lane mutations
     risk destabilizing product behavior during infrastructure work.
 
-    Severity: WARN-only (blocks_sprint=False). Exception: items with
-    lane_exception='MACHINERY_HEALING' bypass (analytics separation sprints that
-    necessarily extract src/ code to analytics files are legitimately cross-lane).
+    Severity: Conditional-blocking (blocks_sprint=True when violations found).
+    Promoted 2026-06-24 after 3 clean sprints (FF-V54V55-PROMOTE-20260624).
+    Exception: items with lane_exception='MACHINERY_HEALING' bypass (analytics
+    separation sprints that extract src/ code to analytics files are cross-lane).
 
     Added 2026-06-23 (FF-FORENSIC-AUDIT-20260623 / A4) as part of lane boundary hardening.
     """
@@ -859,7 +861,7 @@ def validate_cross_lane_machinery_touching_product(
     return {
         "validator": "validate_cross_lane_machinery_touching_product",
         "result": result,
-        "blocks_sprint": False,
+        "blocks_sprint": bool(warnings),
         "items": warnings,
         "summary": (
             f"V55: {len(warnings)} machinery item(s) mutating product src/ files"

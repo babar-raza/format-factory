@@ -1,11 +1,13 @@
 """
 autonomous_cycle_extensions.py — TC-SH helper blocks for autonomous_cycle.py
 
-Extracted to keep autonomous_cycle.py under its baseline_loc_cap (2448).
+Extracted to keep autonomous_cycle.py under its baseline_loc_cap.
 All functions are non-blocking helpers called from specific steps in autonomous_cycle.py.
 """
 
 import json
+import shutil
+import subprocess
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -281,3 +283,73 @@ def write_govblock_directive(structural_blocks: list, sprint_id: str,
         print(f"    Blocking formats: {directive['blocking_formats']}")
     except Exception as err:
         print(f"  WARNING: TC-SH-006 directive write failed (non-blocking): {err}")
+
+
+# ---------------------------------------------------------------------------
+# TC-MACH-LANE-001: Lane conflict guard (extracted for testability)
+# ---------------------------------------------------------------------------
+
+
+def check_lane_conflicts(
+    declared_lane: str,
+    changed_files: list,
+    policies_path: "Path | None" = None,
+) -> list:
+    """Check for cross-lane file changes and return hard_stop strings.
+
+    Returns empty list if no conflicts, or list of LANE_CONFLICT strings.
+    Grace period is checked via policies.yaml ``lanes_grace_period_until``.
+    """
+    hard_stops: list = []
+    _declared_lane = (declared_lane or "").upper()
+    _lane_violations: list = []
+
+    if _declared_lane == "MACHINERY":
+        for cf in changed_files:
+            if isinstance(cf, str) and (cf.startswith("src/python/") or cf.startswith("src/net/")):
+                _lane_violations.append(f"MACHINERY sprint touched product source: {cf}")
+    elif _declared_lane == "PRODUCT":
+        for cf in changed_files:
+            if isinstance(cf, str) and cf.startswith("tools/supervisor/") and not cf.endswith("_test.py"):
+                _lane_violations.append(f"PRODUCT sprint touched machinery: {cf}")
+
+    if _lane_violations:
+        _grace_active = False
+        if policies_path is not None:
+            try:
+                import yaml as _yaml_lc
+                _pol = _yaml_lc.safe_load(policies_path.read_text(encoding="utf-8"))
+                _grace_until = (_pol or {}).get("lanes_grace_period_until", "")
+                if _grace_until:
+                    if datetime.now().isoformat() < str(_grace_until):
+                        _grace_active = True
+            except Exception:
+                pass
+        if not _grace_active:
+            hard_stops.append(
+                f"LANE_CONFLICT: {_declared_lane} sprint has cross-lane file changes"
+            )
+    return hard_stops
+
+
+# ---------------------------------------------------------------------------
+# TC-MACH-SAL-001: SAL staleness escalation (extracted for testability)
+# ---------------------------------------------------------------------------
+
+
+def check_sal_staleness(sal_is_stale: bool, sprint_type: str) -> list:
+    """Return hard_stop strings when SAL is stale and sprint is product-type.
+
+    MACHINERY and SAL_REPAIR sprints are exempt from the block.
+    Returns empty list if not stale or sprint type is exempt.
+    """
+    hard_stops: list = []
+    if sal_is_stale:
+        _sprint_type = (sprint_type or "").upper()
+        if "SAL_REPAIR" not in _sprint_type and "MACHINERY" not in _sprint_type:
+            hard_stops.append(
+                "SAL_STALE: sal-facts-latest.json is >7 days old. "
+                "Run SAL refresh before product sprints. "
+                "Override: set sprint_type to MACHINERY:sal_repair"
+            )
+    return hard_stops
