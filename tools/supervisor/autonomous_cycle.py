@@ -1313,93 +1313,13 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
     except Exception as qs_err:
         print(f"  WARNING: Quality scoring skipped: {qs_err}")
 
-    # Step 3b: Post-grading anti-skip checks (R107: hard gates with severity)
-    print("\n=== STEP 3b: ANTI-SKIP QUALITY CHECKS ===")
+    # Step 3b: Post-grading anti-skip checks — extracted to autonomous_cycle_extensions.py (TC-SGOV-008)
     anti_skip_impact = None
     anti_skip_result = None
     try:
-        from validate_package_identity import _extract_stream_from_sprint
-        evidence_root = repo_root / decl.get("evidence_root", "")
-        target_stream = _extract_stream_from_sprint(sprint_id)
-        sample_outputs_dir = evidence_root / "sample-outputs"
-
-        # Load gaps if available
-        gaps_data = None
-        gaps_path = evidence_root / f"selected-gaps-{run_id}.json"
-        if gaps_path.exists():
-            try:
-                gaps_data = json.loads(gaps_path.read_text(encoding="utf-8"))
-            except Exception:
-                pass
-
-        # Load generated prompt if available
-        prompt_text = ""
-        prompt_path = review_dir / "combined-next-worker-prompt.md"
-        if prompt_path.exists():
-            prompt_text = prompt_path.read_text(encoding="utf-8")
-
-        # R111: Load global next-sprint.md for stream-output authority check
-        global_next_sprint_text = ""
-        global_ns_path = repo_root / "reports" / "supervisor" / "next-sprint.md"
-        if global_ns_path.exists():
-            try:
-                global_next_sprint_text = global_ns_path.read_text(encoding="utf-8")
-            except Exception:
-                pass
-
-        # Extract declared item types for stream-aware anti-skip exemptions
-        _declared_item_types = list({
-            item.get("item_type", "")
-            for item in decl.get("planned_work_items", [])
-            if item.get("item_type")
-        }) if decl else None
-
-        anti_skip_result = run_anti_skip_checks(
-            prompt_text=prompt_text,
-            gaps_data=gaps_data,
-            expected_sprint=sprint_id,
-            evidence_root=evidence_root,
-            declaration=decl,
-            grades=review.get("item_grades", []),
-            target_stream=target_stream,
-            repo_root=repo_root,
-            sample_outputs_dir=sample_outputs_dir if sample_outputs_dir.exists() else None,
-            next_sprint_text=global_next_sprint_text,
-            declared_scope=_declared_item_types,
-        )
-        # Write anti-skip results
-        (review_dir / "anti-skip-check-result.json").write_text(
-            json.dumps(anti_skip_result, indent=2), encoding="utf-8"
-        )
-        anti_skip_impact = anti_skip_result.get("impact", {})
-        print(f"  Anti-skip: {anti_skip_result['total_checks']} checks, "
-              f"{anti_skip_result['violations']} violations")
-        if anti_skip_impact:
-            if anti_skip_impact.get("block"):
-                print(f"  HARD GATE BLOCK: {anti_skip_impact['block_items']}")
-            if anti_skip_impact.get("downgrade"):
-                print(f"  DOWNGRADE: {anti_skip_impact['downgrade_items']}")
-            if anti_skip_impact.get("caveats"):
-                print(f"  CAVEATS: {anti_skip_impact['caveats']}")
-        if anti_skip_result["violations"] > 0:
-            for check in anti_skip_result["checks"]:
-                if check.get("is_violation"):
-                    sev = check.get("severity", "medium")
-                    print(f"    [{sev.upper()}] {check['check']} — {check.get('recommendation', '')[:100]}")
-
-        # R107: Apply hard gate enforcement to review
-        if anti_skip_impact and anti_skip_impact.get("block"):
-            review["autonomous_continue"] = False
-            review["stop_reason"] = f"Anti-skip critical block: {anti_skip_impact['block_items']}"
-            review["critical_rework_count"] = max(review["critical_rework_count"], 1)
-            print("  >>> CONTINUATION BLOCKED by anti-skip critical violations")
-        elif anti_skip_impact and anti_skip_impact.get("downgrade"):
-            # High-severity violations downgrade the overall verdict
-            if review["overall_verdict"] == "ACCEPTED":
-                review["overall_verdict"] = "ACCEPTED_WITH_REWORK"
-            review["anti_skip_downgrade_reasons"] = anti_skip_impact["downgrade_items"]
-            print("  >>> VERDICT DOWNGRADED by anti-skip high-severity violations")
-
+        from autonomous_cycle_extensions import run_post_grading_anti_skip
+        anti_skip_result, anti_skip_impact = run_post_grading_anti_skip(
+            review, decl, sprint_id, review_dir, repo_root, detected_stream)
     except Exception as e:
         print(f"  WARNING: Anti-skip checks skipped: {e}")
 
@@ -1468,126 +1388,21 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
     except Exception as _rw_err:
         print(f"  WARNING: Rework classification skipped (non-blocking): {_rw_err}")
 
-    # Step 3d: SAL + Capability Map Recompute (R1/R2 — recon sprint repair)
-    # Triggers SAL pipeline refresh and capability map regeneration after grading.
-    # Non-blocking: failures are logged but do not stop the cycle.
-    print("\n=== STEP 3d: SAL + CAPABILITY MAP RECOMPUTE ===")
-    import subprocess as _subprocess_recompute
-    sal_recompute_result = {"status": "skipped"}
-    capmap_recompute_result = {"status": "skipped"}
-
-    changed_files = decl.get("changed_files", [])
-    product_src_changed = any(
-        f.startswith("src/") for f in changed_files
-    )
-    if product_src_changed:
-        try:
-            sal_runner_path = repo_root / "tools" / "specification-authority-layer" / "sal_master_runner.py"
-            if sal_runner_path.exists():
-                sal_proc = _subprocess_recompute.run(
-                    [sys.executable, str(sal_runner_path), "--all", "--output-dir",
-                     str(repo_root / ".local" / "sal-output")],
-                    capture_output=True, text=True, timeout=120, cwd=str(repo_root)
-                )
-                sal_recompute_result = {
-                    "status": "completed" if sal_proc.returncode == 0 else "failed",
-                    "returncode": sal_proc.returncode,
-                    "trigger": "product_src_changed",
-                }
-                print(f"  SAL recompute: {'OK' if sal_proc.returncode == 0 else 'FAILED'} "
-                      f"(exit {sal_proc.returncode})")
-            else:
-                sal_recompute_result = {"status": "not_found", "path": str(sal_runner_path)}
-                print(f"  SAL recompute: sal_master_runner.py not found — skipped")
-        except Exception as sal_err:
-            sal_recompute_result = {"status": "error", "error": str(sal_err)}
-            print(f"  WARNING: SAL recompute failed: {sal_err}")
-
-        try:
-            capmap_gen_path = repo_root / "tools" / "capability_layer" / "capability_map_generator.py"
-            if capmap_gen_path.exists():
-                capmap_proc = _subprocess_recompute.run(
-                    [sys.executable, str(capmap_gen_path)],
-                    capture_output=True, text=True, timeout=120, cwd=str(repo_root)
-                )
-                capmap_recompute_result = {
-                    "status": "completed" if capmap_proc.returncode == 0 else "failed",
-                    "returncode": capmap_proc.returncode,
-                    "trigger": "sal_recompute_completed",
-                }
-                print(f"  Capability map recompute: {'OK' if capmap_proc.returncode == 0 else 'FAILED'} "
-                      f"(exit {capmap_proc.returncode})")
-            else:
-                capmap_recompute_result = {"status": "not_found", "path": str(capmap_gen_path)}
-                print(f"  Capability map recompute: capability_map_generator.py not found — skipped")
-        except Exception as cap_err:
-            capmap_recompute_result = {"status": "error", "error": str(cap_err)}
-            print(f"  WARNING: Capability map recompute failed: {cap_err}")
-    else:
-        print("  No product source changes detected — recompute skipped")
-
+    # Step 3d+3e+3f: SAL recompute, capability map, queue consumer, fabric
+    # Extracted to autonomous_cycle_extensions.py (TC-SGOV-008)
+    try:
+        from autonomous_cycle_extensions import run_sal_capmap_recompute
+        sal_recompute_result, capmap_recompute_result, cap_consumer_result, fabric_result = \
+            run_sal_capmap_recompute(decl, repo_root, review)
+    except Exception as _recompute_err:
+        print(f"  WARNING: Steps 3d+3e+3f skipped: {_recompute_err}")
+        sal_recompute_result = {"status": "error", "error": str(_recompute_err)}
+        capmap_recompute_result = {"status": "skipped"}
+        cap_consumer_result = {"status": "skipped"}
+        fabric_result = {"status": "skipped"}
     review["sal_recompute"] = sal_recompute_result
     review["capmap_recompute"] = capmap_recompute_result
-
-    # Step 3e: Capability Queue Consumer (TC-WIRE-001)
-    # Run capability_queue_consumer.py after every capability map recompute to compile
-    # fresh gap entries into actionable taskcards. Uses subprocess pattern consistent
-    # with SAL + capability map recompute above. Non-blocking.
-    print("\n=== STEP 3e: CAPABILITY QUEUE CONSUMER ===")
-    cap_consumer_result = {"status": "skipped"}
-    consumer_path = repo_root / "tools" / "supervisor" / "capability_queue_consumer.py"
-    if consumer_path.exists():
-        try:
-            consumer_proc = _subprocess_recompute.run(
-                [sys.executable, str(consumer_path), "--max-gaps", "5"],
-                capture_output=True, text=True, timeout=60, cwd=str(repo_root)
-            )
-            cap_consumer_result = {
-                "status": "completed" if consumer_proc.returncode == 0 else "failed",
-                "returncode": consumer_proc.returncode,
-                "trigger": "post_capmap_recompute",
-                "stdout_tail": consumer_proc.stdout.strip().splitlines()[-3:] if consumer_proc.stdout else [],
-            }
-            print(f"  Capability queue consumer: {'OK' if consumer_proc.returncode == 0 else 'FAILED'} "
-                  f"(exit {consumer_proc.returncode})")
-            if consumer_proc.stdout:
-                for line in consumer_proc.stdout.strip().splitlines()[-3:]:
-                    print(f"    {line}")
-        except Exception as consumer_err:
-            cap_consumer_result = {"status": "error", "error": str(consumer_err)}
-            print(f"  WARNING: Capability queue consumer failed: {consumer_err}")
-    else:
-        cap_consumer_result = {"status": "not_found", "path": str(consumer_path)}
-        print(f"  Capability queue consumer: not found — skipped")
     review["cap_consumer"] = cap_consumer_result
-
-    # Step 3f: Authority Integration Fabric (TC-FABRIC-001)
-    # Subprocess-invoke authority_integration_fabric.py to produce 4 canonical outputs:
-    # spec-context-pack-index.json, authority-integration-contract.json,
-    # mainstream-gap-queue-authoritative.json, supervisor-verdict-authority-packet.json.
-    # Non-blocking — failure is logged but does not prevent continuation.
-    print("\n=== STEP 3f: AUTHORITY INTEGRATION FABRIC ===")
-    fabric_result = {"status": "skipped"}
-    fabric_script = repo_root / "tools" / "supervisor" / "authority_integration_fabric.py"
-    if fabric_script.exists():
-        try:
-            fabric_proc = _subprocess_recompute.run(
-                [sys.executable, str(fabric_script)],
-                capture_output=True, text=True, timeout=120, cwd=str(repo_root)
-            )
-            fabric_result = {
-                "status": "completed" if fabric_proc.returncode == 0 else "failed",
-                "returncode": fabric_proc.returncode,
-                "stdout_lines": fabric_proc.stdout.strip().splitlines()[-5:] if fabric_proc.stdout else [],
-                "stderr_lines": fabric_proc.stderr.strip().splitlines()[-5:] if fabric_proc.stderr else [],
-            }
-            if fabric_proc.returncode == 0:
-                print("  Authority integration fabric: OK")
-            else:
-                print(f"  Authority integration fabric: non-zero exit {fabric_proc.returncode} (non-blocking)")
-        except Exception as fabric_err:
-            fabric_result = {"status": "error", "error": str(fabric_err)}
-            print(f"  Authority integration fabric error (non-blocking): {fabric_err}")
     review["authority_fabric"] = fabric_result
 
     # Step 3g: Track P reads machinery_to_product handoff (TC-P2-005-04, advisory)
@@ -1686,129 +1501,15 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
         except Exception as _sc_err:
             print(f"  WARNING: Sprint contract write failed: {_sc_err}")
 
-    # Step 4b: Prompt quality validation (R108: moved after prompt generation)
-    print("\n=== STEP 4b: PROMPT QUALITY VALIDATION ===")
+    # Steps 4b+4c: Prompt quality, zero-task circuit breaker, completeness
+    # Extracted to autonomous_cycle_extensions.py (TC-SGOV-008)
     try:
-        from validate_prompt_quality import validate_prompt_quality
-        target_stream = detected_stream
-        if prompt_path.exists():
-            prompt_text = prompt_path.read_text(encoding="utf-8")
-            has_repairs = len(review.get("rework_items", [])) > 0
-            pq_result = validate_prompt_quality(
-                prompt_text, target_stream,
-                has_repairs=has_repairs, has_advancement=True,
-            )
-            (review_dir / "prompt-quality-result.json").write_text(
-                json.dumps(pq_result, indent=2), encoding="utf-8"
-            )
-            if pq_result["valid"]:
-                print(f"  Prompt quality: PASS ({pq_result['passed']}/{pq_result['total_checks']} checks)")
-            else:
-                failed_checks = [c["check"] for c in pq_result["checks"] if not c["pass"]]
-                print(f"  Prompt quality: FAIL ({pq_result['failed']} failures: {failed_checks})")
-                # R108: Prompt quality failures — hard-stop only for truly unrecoverable issues
-                hard_prompt_failures = {"stream_identity", "not_generic"}
-                soft_prompt_failures = {"no_wrong_stream", "advancement_lane"}
-                failed_set = set(failed_checks)
-                has_hard = bool(hard_prompt_failures & failed_set)
-                has_soft_only = bool(soft_prompt_failures & failed_set) and not has_hard
-                if has_hard:
-                    review["autonomous_continue"] = False
-                    review["stop_reason"] = f"Prompt quality gate: {failed_checks}"
-                    review["prompt_quality_failure"] = True
-                    print("  >>> CONTINUATION BLOCKED by prompt quality failures")
-                elif has_soft_only:
-                    # Soft failures become rework items — safe lanes can continue
-                    review.setdefault("rework_items", [])
-                    review["rework_items"].append(f"PROMPT_QUALITY_REWORK:{','.join(failed_checks)}")
-                    print(f"  Prompt quality: soft failure {failed_checks} → rework (not hard stop)")
-        else:
-            print("  No prompt file to validate")
-    except Exception as e:
-        print(f"  WARNING: Prompt quality check skipped: {e}")
-    print(f"  Next work: {len(next_work['items'])} items (stream={detected_stream})")
-
-    # SUP-RECT-005: Circuit breaker for zero-task loops
-    if len(next_work.get("items", [])) == 0:
-        zero_task_counter_path = repo_root / ".local" / "supervisor" / "zero-task-counter.json"
-        ztc = {"count": 0, "sprints": []}
-        try:
-            if zero_task_counter_path.exists():
-                ztc = json.loads(zero_task_counter_path.read_text(encoding="utf-8"))
-        except (json.JSONDecodeError, OSError):
-            pass
-        ztc["count"] = ztc.get("count", 0) + 1
-        ztc.setdefault("sprints", []).append(sprint_id)
-        zero_task_counter_path.parent.mkdir(parents=True, exist_ok=True)
-        zero_task_counter_path.write_text(json.dumps(ztc, indent=2), encoding="utf-8")
-        if ztc["count"] >= 3:
-            print(f"  CIRCUIT BREAKER: {ztc['count']} consecutive zero-task cycles detected!")
-            review["stop_reason"] = (
-                review.get("stop_reason", "") +
-                f" CIRCUIT_BREAKER: {ztc['count']} zero-task cycles ({ztc['sprints'][-3:]})"
-            ).strip()
-            review["autonomous_continue"] = False
-        else:
-            print(f"  Zero-task warning: {ztc['count']}/3 before circuit breaker triggers")
-    else:
-        # Reset counter on successful task generation
-        ztc_path = repo_root / ".local" / "supervisor" / "zero-task-counter.json"
-        if ztc_path.exists():
-            ztc_path.write_text(json.dumps({"count": 0, "sprints": []}, indent=2), encoding="utf-8")
-
-    # Step 4b: Validate next-work-items stream correctness (R108)
-    try:
-        from validate_prompt_quality import validate_next_work_items
-        nwi_result = validate_next_work_items(next_work, detected_stream)
-        (review_dir / "next-work-items-quality.json").write_text(
-            json.dumps(nwi_result, indent=2), encoding="utf-8"
-        )
-        if nwi_result["valid"]:
-            print(f"  Next-work-items quality: PASS ({nwi_result['passed']}/{nwi_result['total_checks']})")
-        else:
-            failed = [c["check"] for c in nwi_result["checks"] if not c["pass"]]
-            print(f"  Next-work-items quality: FAIL ({failed})")
-            if "no_wrong_stream_items" in failed or "stream_field_match" in failed:
-                review["autonomous_continue"] = False
-                review["stop_reason"] = f"Next-work-items stream violation: {failed}"
-    except Exception as e:
-        print(f"  WARNING: Next-work-items validation skipped: {e}")
-
-    # Step 4c: Validate generated prompt has required sections
-    # NOTE: summary_classifier.classify_summary is NOT used here because it was designed
-    # for Stage 3 structured JSON/YAML outputs. Generated prompts are Markdown by design,
-    # and classify_summary always returns PROSE_ONLY on Markdown (false positive).
-    # Instead, we check that the generated prompt contains expected structural sections.
-    print("\n=== STEP 4c: PROMPT COMPLETENESS VALIDATION ===")
-    try:
-        if prompt_path.exists():
-            prompt_text = prompt_path.read_text(encoding="utf-8")
-            required_sections = ["## Sprint", "## Mandatory Evidence", "## Hard Prohibitions"]
-            found = [s for s in required_sections if s in prompt_text]
-            missing = [s for s in required_sections if s not in prompt_text]
-            has_tasks = "TASK-" in prompt_text or "## Group G" in prompt_text or "## Section 1" in prompt_text
-            classification = {
-                "classification": "STRUCTURED_PROMPT" if not missing and has_tasks else "INCOMPLETE_PROMPT",
-                "required_sections_found": found,
-                "required_sections_missing": missing,
-                "has_task_items": has_tasks,
-                "line_count": len(prompt_text.splitlines()),
-            }
-            (review_dir / "output-classification.json").write_text(
-                json.dumps(classification, indent=2), encoding="utf-8"
-            )
-            if missing or not has_tasks:
-                review.setdefault("rework_items", [])
-                review["rework_items"].append(f"PROMPT_INCOMPLETE:missing={missing},tasks={has_tasks}")
-                print(f"  Prompt completeness: INCOMPLETE (missing={missing}, tasks={has_tasks})")
-            else:
-                print(f"  Prompt completeness: PASS ({len(found)} sections, tasks=True, {classification['line_count']} lines)")
-        else:
-            print("  No prompt file to validate")
-            review["autonomous_continue"] = False
-            review["stop_reason"] = "No generated prompt file"
-    except Exception as e:
-        print(f"  WARNING: Prompt completeness check skipped: {e}")
+        from autonomous_cycle_extensions import validate_prompt_and_work_items
+        validate_prompt_and_work_items(
+            review, prompt_path, next_work, detected_stream,
+            sprint_id, review_dir, repo_root)
+    except Exception as _pv_err:
+        print(f"  WARNING: Steps 4b+4c (prompt validation) failed: {_pv_err}")
 
     # Step 5: Write cycle manifest
     print("\n=== STEP 5: WRITE CYCLE MANIFEST ===")
@@ -1862,123 +1563,13 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
     except Exception as _hist_err:
         print(f"  [WARN] grading-history.jsonl append failed: {_hist_err}")
 
-    # Step 6: Copy latest summaries to reports/supervisor/
-    print("\n=== STEP 6: COPY LATEST SUMMARIES ===")
-    latest_dir = repo_root / "reports" / "supervisor"
-    latest_dir.mkdir(parents=True, exist_ok=True)
-
-    copies = [
-        ("supervisor-review.md", "latest-review.md"),
-        ("combined-next-worker-prompt.md", "latest-next-worker-prompt.md"),
-        ("item-grades.json", "work-item-grades.json"),
-        ("item-grades.yaml", "work-item-grades.yaml"),
-    ]
-    for src_name, dst_name in copies:
-        src = review_dir / src_name
-        dst = latest_dir / dst_name
-        if src.exists():
-            shutil.copy2(str(src), str(dst))
-            print(f"  Copied: {dst}")
-
-    # R108: Also copy to per-stream state directory
-    stream_dir = repo_root / "reports" / "supervisor-streams" / detected_stream
-    stream_dir.mkdir(parents=True, exist_ok=True)
-    for src_name, dst_name in copies:
-        src = review_dir / src_name
-        dst = stream_dir / dst_name
-        if src.exists():
-            shutil.copy2(str(src), str(dst))
-    print(f"  Stream dir: {stream_dir}")
-
-    # Canonical work-items copy for check_continuation.py
-    # TC-P2-002: Write to track-specific subdir when --track is set.
-    _supervisor_dir = repo_root / ".local" / "supervisor"
-    if track == "product":
-        _track_supervisor_dir = _supervisor_dir / "product"
-    elif track == "machinery":
-        _track_supervisor_dir = _supervisor_dir / "machinery"
-    else:
-        _track_supervisor_dir = _supervisor_dir
-    canonical_work_items = _track_supervisor_dir / "next-work-items.json"
-    canonical_work_items.parent.mkdir(parents=True, exist_ok=True)
-    # Also always write to legacy path for backward compat (non-track callers)
-    legacy_work_items = _supervisor_dir / "next-work-items.json"
-    legacy_work_items.parent.mkdir(parents=True, exist_ok=True)
-    src_work = review_dir / "next-work-items.json"
-    if src_work.exists():
-        shutil.copy2(str(src_work), str(canonical_work_items))
-        if track:
-            shutil.copy2(str(src_work), str(legacy_work_items))
-        print(f"  Canonical work items: {canonical_work_items}")
-
-    # R112: Write stream-local authority map
-    authority_map = {
-        "stream": detected_stream,
-        "run_id": run_id,
-        "sprint_id": sprint_id,
-        "timestamp": timestamp,
-        "stream_local_dir": str(stream_dir),
-        "global_dir": str(latest_dir),
-        "authority": "STREAM_LOCAL",
-        "global_status": "ADVISORY_REFERENCE",
-        "stream_local_files": {
-            "evidence_review": str(stream_dir / "evidence-review.json"),
-            "contradictions": str(stream_dir / "contradictions.json"),
-            "next_prompt": str(stream_dir / "latest-next-worker-prompt.md"),
-            "work_item_grades": str(stream_dir / "work-item-grades.json"),
-            "continuation_signal": str(
-                repo_root / ".local" / "supervisor" / "streams" / detected_stream / "continuation-signal.json"
-            ),
-        },
-    }
-    (stream_dir / "authority-map.json").write_text(
-        json.dumps(authority_map, indent=2), encoding="utf-8"
-    )
-    print(f"  Authority map: {stream_dir / 'authority-map.json'}")
-
-    # Write human-readable work-item-grades.md to reports/supervisor/
-    grades = review.get("item_grades", [])
-    if grades:
-        wg_lines = [
-            "# Work Item Grades",
-            f"Sprint: {sprint_id}",
-            f"Generated: {timestamp}",
-            f"Global Status: {review.get('overall_verdict', 'UNKNOWN')}",
-            "",
-            "| Item ID | Grade | Rework Required |",
-            "|---------|-------|-----------------|",
-        ]
-        for g in grades:
-            rework = (g.get("required_rework") or "")[:80]
-            wg_lines.append(
-                f"| {g['item_id']} | {g['supervisor_grade']} | {rework} |"
-            )
-        wg_lines += [
-            "",
-            "## Summary",
-            f"- Accepted: {len(review['accepted_items'])}",
-            f"- Rework: {len(review['rework_items'])}",
-            f"- Overclaimed: {len(review['overclaimed_items'])}",
-            f"- Autonomous Continue: {review['autonomous_continue']}",
-        ]
-        (latest_dir / "work-item-grades.md").write_text("\n".join(wg_lines) + "\n", encoding="utf-8")
-        print(f"  Written: {latest_dir / 'work-item-grades.md'}")
-
-    # Write latest cycle summary
-    summary_lines = [
-        "# Latest Supervisor Cycle Summary",
-        f"Run: {run_id}",
-        f"Sprint: {sprint_id}",
-        f"Timestamp: {timestamp}",
-        f"Verdict: {review['overall_verdict']}",
-        f"Autonomous Continue: {review['autonomous_continue']}",
-        f"Accepted: {len(review['accepted_items'])}",
-        f"Rework: {len(review['rework_items'])}",
-        f"Overclaimed: {len(review['overclaimed_items'])}",
-        f"Review: {review_dir / 'supervisor-review.md'}",
-        f"Next Prompt: {prompt_path}",
-    ]
-    (latest_dir / "latest-cycle-summary.md").write_text("\n".join(summary_lines) + "\n", encoding="utf-8")
+    # Step 6: Copy latest summaries — extracted to autonomous_cycle_extensions.py (TC-SGOV-008)
+    try:
+        from autonomous_cycle_extensions import copy_cycle_summaries
+        copy_cycle_summaries(review, review_dir, repo_root, detected_stream,
+                             run_id, sprint_id, timestamp, track, prompt_path)
+    except Exception as _copy_err:
+        print(f"  WARNING: Step 6 (copy summaries) failed: {_copy_err}")
 
     # Step 7: Bridge to legacy format for session-resume/approval-gates/next-sprint
     print("\n=== STEP 7: BRIDGE TO LEGACY PACKET FORMAT ===")

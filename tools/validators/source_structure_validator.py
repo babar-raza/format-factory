@@ -606,5 +606,60 @@ def main() -> int:
     return 1 if result["blocks_sprint"] else 0
 
 
+def validate_suspended_rotation_stubs(repo_root: Path | None = None) -> dict:
+    """Detect orphaned test stubs for suspended rotation patterns (TC-SGOV-007).
+
+    Reads ``known_suspended_rotations`` from source-structure-baseline.json and
+    scans ``tests/python/`` for test files whose names match suspended patterns.
+    Returns WARN for any orphaned stubs found.
+    """
+    import re as _re
+
+    if repo_root is None:
+        repo_root = Path(__file__).resolve().parent.parent.parent
+
+    baseline_path = repo_root / _BASELINE_FILE
+    if not baseline_path.exists():
+        return {"result": "PASS", "orphaned_stubs": [], "error": "baseline file not found"}
+
+    baseline = json.loads(baseline_path.read_text(encoding="utf-8"))
+    rotations = baseline.get("known_suspended_rotations", [])
+    if not rotations:
+        return {"result": "PASS", "orphaned_stubs": []}
+
+    orphaned = []
+    tests_dir = repo_root / "tests" / "python"
+    if not tests_dir.is_dir():
+        return {"result": "PASS", "orphaned_stubs": [], "note": "tests/python not found"}
+
+    for rotation in rotations:
+        pattern = rotation.get("test_pattern", "")
+        if not pattern:
+            continue
+        compiled = _re.compile(pattern)
+        # Derive format name from file_pattern (e.g. "src/python/zst/zst_analytics.py" -> "zst")
+        file_pat = rotation.get("file_pattern", "")
+        parts = Path(file_pat).parts
+        fmt = parts[2] if len(parts) > 2 else ""
+        fmt_dir = tests_dir / fmt if fmt else None
+        search_dirs = [fmt_dir] if fmt_dir and fmt_dir.is_dir() else [tests_dir]
+        for search_dir in search_dirs:
+            for test_file in sorted(search_dir.rglob("test_*.py")):
+                try:
+                    content = test_file.read_text(encoding="utf-8", errors="replace")
+                except OSError:
+                    continue
+                if compiled.search(content):
+                    orphaned.append({
+                        "file": str(test_file.relative_to(repo_root)),
+                        "matched_pattern": pattern,
+                        "suspended_since": rotation.get("suspended_since", ""),
+                        "reason": rotation.get("reason", ""),
+                    })
+
+    result = "WARN" if orphaned else "PASS"
+    return {"result": result, "orphaned_stubs": orphaned}
+
+
 if __name__ == "__main__":
     sys.exit(main())

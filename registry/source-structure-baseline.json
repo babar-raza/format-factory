@@ -94,18 +94,6 @@
       "remediation_deadline": "2026-09-01",
       "remediation_sprint": "TC-PRODUCT-PLAN-001"
     },
-    "src/python/fodp/fodp_analytics.py": {
-      "loc": 603,
-      "baseline_loc_cap": 603,
-      "functions": 58,
-      "baseline_functions_cap": 58,
-      "category": "analytics_only",
-      "last_healed_check": "2026-06-23",
-      "last_healed_by": "decompose-monolithic-codec skill (TC-VNK-008)",
-      "note": "Created by TC-VNK-008 analytics extraction from fodp_codec.py. Originally named presentation_document.py, renamed to fodp_analytics.py during convergence loop.",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-SEP-C2"
-    },
     "src/python/fods/neutral_model.py": {
       "loc": 726,
       "baseline_loc_cap": 1231,
@@ -470,8 +458,8 @@
       "remediation_sprint": "TC-NET-H1-H3"
     },
     "tools/supervisor/autonomous_cycle.py": {
-      "loc": 2468,
-      "baseline_loc_cap": 2570,
+      "loc": 2334,
+      "baseline_loc_cap": 2350,
       "functions": 7,
       "baseline_functions_cap": 7,
       "category": "supervisor_infrastructure",
@@ -2464,8 +2452,8 @@
       "remediation_sprint": "TC-SIZE-D-series"
     },
     "src/python/ods/spreadsheet_document.py": {
-      "loc": 900,
-      "baseline_loc_cap": 900,
+      "loc": 901,
+      "baseline_loc_cap": 901,
       "functions": 54,
       "baseline_functions_cap": 54,
       "category": "new_violation_detected",
@@ -2507,101 +2495,31 @@
       "category": "analytics_extraction",
       "remediation_deadline": "2026-09-01",
       "remediation_sprint": "TC-SEP-C-series"
-    },
-    "src/python/abw/abw_analytics.py": {
-      "loc": 1021,
-      "baseline_loc_cap": 1021,
-      "functions": 98,
-      "baseline_functions_cap": 98,
-      "category": "new_violation_detected",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-SIZE-D"
-    },
-    "src/python/csv/csv_analytics.py": {
-      "loc": 955,
-      "baseline_loc_cap": 955,
-      "functions": 64,
-      "baseline_functions_cap": 64,
-      "category": "new_violation_detected",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-SIZE-D"
-    },
-    "src/python/dif/dif_analytics.py": {
-      "loc": 989,
-      "baseline_loc_cap": 989,
-      "functions": 64,
-      "baseline_functions_cap": 64,
-      "category": "new_violation_detected",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-SIZE-D"
-    },
-    "src/python/fods/fods_analytics.py": {
-      "loc": 1030,
-      "baseline_loc_cap": 1030,
-      "functions": 24,
-      "baseline_functions_cap": 24,
-      "category": "new_violation_detected",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-SIZE-D"
-    },
-    "src/python/fodt/fodt_analytics.py": {
-      "loc": 987,
-      "baseline_loc_cap": 987,
-      "functions": 90,
-      "baseline_functions_cap": 90,
-      "category": "new_violation_detected",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-SIZE-D"
-    },
-    "src/python/ndjson/ndjson_analytics.py": {
-      "loc": 923,
-      "baseline_loc_cap": 923,
-      "functions": 67,
-      "baseline_functions_cap": 67,
-      "category": "new_violation_detected",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-SIZE-D"
-    },
-    "src/python/ods/ods_analytics.py": {
-      "loc": 895,
-      "baseline_loc_cap": 895,
-      "functions": 54,
-      "baseline_functions_cap": 54,
-      "category": "new_violation_detected",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-SIZE-D"
-    },
-    "src/python/qoi/qoi_analytics.py": {
-      "loc": 715,
-      "baseline_loc_cap": 715,
-      "functions": 64,
-      "baseline_functions_cap": 64,
-      "category": "new_violation_detected",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-SIZE-D"
-    },
-    "src/python/sylk/sylk_analytics.py": {
-      "loc": 852,
-      "baseline_loc_cap": 852,
-      "functions": 64,
-      "baseline_functions_cap": 64,
-      "category": "new_violation_detected",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-SIZE-D"
-    },
-    "src/python/xcf/xcf_analytics.py": {
-      "loc": 901,
-      "baseline_loc_cap": 901,
-      "functions": 104,
-      "baseline_functions_cap": 104,
-      "category": "new_violation_detected",
-      "remediation_deadline": "2026-09-01",
-      "remediation_sprint": "TC-SIZE-D"
     }
   },
   "qname_ownership_baseline": {
     "canonical_classes_defined": 25,
     "canonical_classes_implemented": 0,
     "facades_without_canonical": 3
-  }
+  },
+  "known_suspended_rotations": [
+    {
+      "file_pattern": "src/python/zst/zst_analytics.py",
+      "test_pattern": "_mod_\\d+_times_\\d+",
+      "suspended_since": "2026-06-18",
+      "reason": "no spec backing, no GAP-ledger entry"
+    },
+    {
+      "file_pattern": "src/python/xcf/xcf_analytics.py",
+      "test_pattern": "_mod_\\d+_times_\\d+",
+      "suspended_since": "2026-06-18",
+      "reason": "no spec backing, no GAP-ledger entry"
+    },
+    {
+      "file_pattern": "src/python/fodg/fodg_analytics.py",
+      "test_pattern": "_mod_\\d+_times_\\d+",
+      "suspended_since": "2026-06-18",
+      "reason": "no spec backing, no GAP-ledger entry"
+    }
+  ]
 }
