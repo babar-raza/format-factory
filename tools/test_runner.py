@@ -545,6 +545,56 @@ def _compare_known_failures(
     )
 
 
+SHARD_LEDGER_PATH = REPO_ROOT / "registry" / "full-suite-shard-ledger.yaml"
+
+
+def _update_shard_ledger(shard_num: int, total_shards: int, result: dict) -> None:
+    """Write shard completion status to the shard ledger (best-effort)."""
+    try:
+        import yaml
+    except ImportError:
+        print("WARNING: pyyaml not available, skipping shard ledger update", file=sys.stderr)
+        return
+    try:
+        ledger = yaml.safe_load(SHARD_LEDGER_PATH.read_text(encoding="utf-8")) or {}
+        tr = result.get("test_results", {})
+        entry = {
+            "run_id": f"run-{datetime.now().strftime('%Y-%m-%d-%H%M%S')}",
+            "date": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
+            "shard_id": shard_num,
+            "tests_run": sum(tr.get(k, 0) for k in ("passed", "failed", "skipped", "errors")),
+            "passed": tr.get("passed", 0),
+            "failed": tr.get("failed", 0),
+            "duration_seconds": result.get("duration_seconds", 0),
+            "exit_code": result.get("pytest_exit_code", -1),
+        }
+        if not isinstance(ledger.get("history"), list):
+            ledger["history"] = []
+        ledger["history"].append(entry)
+
+        # Update resume_state
+        rs = ledger.setdefault("resume_state", {})
+        rs["last_completed_shard"] = shard_num
+        rs["last_run_date"] = entry["date"]
+        rs["last_run_id"] = entry["run_id"]
+        completed = set(rs.get("shards_completed") or [])
+        completed.add(shard_num)
+        rs["shards_completed"] = sorted(completed)
+        all_shards = set(range(1, total_shards + 1))
+        rs["shards_pending"] = sorted(all_shards - completed)
+        if rs["shards_pending"]:
+            rs["resume_from_shard"] = rs["shards_pending"][0]
+        else:
+            rs["resume_from_shard"] = None
+
+        ledger["last_updated"] = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+        SHARD_LEDGER_PATH.write_text(yaml.dump(ledger, default_flow_style=False, sort_keys=False),
+                                     encoding="utf-8")
+        print(f"  Shard ledger updated: shard {shard_num}/{total_shards}")
+    except Exception as e:
+        print(f"WARNING: could not update shard ledger: {e}", file=sys.stderr)
+
+
 def main():
     # Pre-process: handle --list-layers before argparse (avoids breaking mutex group)
     if "--list-layers" in sys.argv:
@@ -697,6 +747,10 @@ def main():
         json_out_path=args.json_out,
     )
 
+    # TC-FSLAY02-SHARD-001: Update shard ledger after sharded runs
+    if shard:
+        _update_shard_ledger(shard[0], shard[1], result)
+
     # Known-failures comparison (if requested)
     if args.known_failures and not args.dry_run:
         # Find junitxml from command args
@@ -731,7 +785,26 @@ def main():
         n_pre = len(result["known_failures"])
         print(f"  Known failures: {n_pre} pre-existing, {n_new} new")
 
-    sys.exit(result["pytest_exit_code"])
+    # TC-FSLAY02-KNOWN-001: Mask exit code when all failures are pre-existing.
+    # Only mask when --known-failures was provided AND new_failures is empty list.
+    exit_code = result["pytest_exit_code"]
+    if (args.known_failures
+            and result.get("new_failures") is not None
+            and len(result["new_failures"]) == 0
+            and exit_code != 0):
+        result["exit_code_masked"] = True
+        result["exit_code_mask_reason"] = "all_failures_pre_existing"
+        exit_code = 0
+        print(f"  Exit code masked: all {len(result.get('known_failures', []))} failures "
+              "are pre-existing known failures. New failures: 0.")
+        # Update JSON output if requested
+        if args.json_out:
+            result["pytest_exit_code"] = 0
+            out_path = Path(args.json_out)
+            with open(out_path, "w") as f:
+                json.dump(result, f, indent=2)
+
+    sys.exit(exit_code)
 
 
 if __name__ == "__main__":

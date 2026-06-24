@@ -2,15 +2,15 @@
   "schema_version": "1.0",
   "description": "Baseline test count snapshot for test_bare_pytest_count_near_baseline. Updated by sprint tooling whenever the count drifts beyond tolerance. Preferred over hard-coded constant because it is machine-readable and can be updated without touching test source.",
   "baseline": {
-    "total_tests": 89,
+    "total_tests": 152,
     "arithmetic_deepening_excluded": 10917,
     "full_suite_count": 46505,
     "tolerance": 50,
     "command": "python -m pytest --collect-only -q tests/test_health_check.py tests/python/test_pige_public_api_smoke.py tests/supervisor/test_governance_validators.py tests/python/dogfood/test_dogfood_tsv_ndjson_pipeline.py tests/test_layer_assignment.py",
     "clean_command": "python -m pytest --collect-only -q --skip-arithmetic",
-    "measured_date": "2026-06-18",
-    "measured_by": "format-factory-fullsuite-layering-20260618-fslay01",
-    "reason": "update-8: switched to fast-scan scope (5 representative files per layer). Full suite is 30k+ tests; baseline now tracks governance-representative subset."
+    "measured_date": "2026-06-24",
+    "measured_by": "format-factory-fullsuite-layering-20260623-fslay02-convergence",
+    "reason": "update-9: fslay02 convergence hardening added tests. Fast-scan scope grew 89→152."
   },
   "update_policy": {
     "trigger": "abs(actual - baseline) >= tolerance",
@@ -64,6 +64,11 @@
       "total_tests": 35588,
       "measured_date": "2026-06-18",
       "note": "update-7: archived; baseline now measures fast-scan scope only"
+    },
+    {
+      "total_tests": 152,
+      "measured_date": "2026-06-24",
+      "note": "update-9: fslay02 convergence — grader enforcement, shard ledger, exit-code masking, escalation date tests"
     }
   ]
 }

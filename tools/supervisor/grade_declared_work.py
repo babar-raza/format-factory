@@ -113,6 +113,85 @@ SCRIPT_DIR = Path(__file__).parent
 REPO_ROOT = SCRIPT_DIR.parent.parent
 
 # ---------------------------------------------------------------------------
+# TC-FSLAY02-ENF-002: Test-layer adequacy check for grading
+# ---------------------------------------------------------------------------
+_tl_manifest_cache: dict | None = None
+
+
+def _check_test_layer_for_grade(declaration: dict) -> dict:
+    """Check whether declared test_layer is adequate for changed_files.
+
+    Returns dict with 'inadequate' (bool) and 'reason' (str).
+    Exception-safe: returns inadequate=False on any failure.
+    """
+    global _tl_manifest_cache
+    try:
+        declared_layer = declaration.get("test_layer")
+        if not isinstance(declared_layer, int) or declared_layer < 0:
+            return {"inadequate": False, "note": "test_layer not declared or invalid"}
+
+        changed_files = declaration.get("changed_files", [])
+        if not changed_files:
+            return {"inadequate": False, "note": "no changed_files"}
+
+        # Load manifest rules (cached)
+        if _tl_manifest_cache is None:
+            try:
+                from test_layer_utils import compute_required_layer, load_change_impact_rules
+                _tl_manifest_cache = {"rules": load_change_impact_rules(), "fn": compute_required_layer}
+            except ImportError:
+                # Fallback: load rules directly
+                from fnmatch import fnmatch as _fnm
+                manifest_path = REPO_ROOT / "registry" / "test-layer-manifest.yaml"
+                if manifest_path.exists():
+                    rules = yaml.safe_load(manifest_path.read_text(encoding="utf-8")).get("change_impact", [])
+                else:
+                    rules = []
+                _tl_manifest_cache = {"rules": rules, "fn": None}
+
+        rules = _tl_manifest_cache["rules"]
+        if not rules:
+            return {"inadequate": False, "note": "no manifest rules"}
+
+        compute_fn = _tl_manifest_cache.get("fn")
+        if compute_fn:
+            required_layer, triggers = compute_fn(changed_files, rules)
+        else:
+            # Inline fallback
+            from fnmatch import fnmatch as _fnm
+            max_layer = 0
+            for f in changed_files:
+                f_norm = f.replace("\\", "/")
+                matched = False
+                for rule in rules:
+                    pat = rule.get("pattern", "")
+                    if pat == "_default":
+                        if not matched:
+                            max_layer = max(max_layer, rule.get("min_layer", 6))
+                        break
+                    if _fnm(f_norm, pat):
+                        max_layer = max(max_layer, rule.get("min_layer", 0))
+                        matched = True
+                        break
+            required_layer = max_layer
+            triggers = []
+
+        if declared_layer < required_layer:
+            return {
+                "inadequate": True,
+                "declared_layer": declared_layer,
+                "required_layer": required_layer,
+                "reason": (
+                    f"test_layer={declared_layer} inadequate for changed_files "
+                    f"(required: {required_layer}). Run tests at layer >= {required_layer}."
+                ),
+            }
+        return {"inadequate": False, "declared_layer": declared_layer, "required_layer": required_layer}
+    except Exception as exc:
+        return {"inadequate": False, "note": f"test_layer check failed: {exc}"}
+
+
+# ---------------------------------------------------------------------------
 # LLM semantic verification — optional enrichment layer
 # ---------------------------------------------------------------------------
 _sv_gateway = None
@@ -617,6 +696,21 @@ def grade_all(inspection: dict, declaration: dict,
                 "verdict": "NOT_APPLICABLE",
                 "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items",
             }
+
+        # TC-FSLAY02-ENF-002: Test-layer adequacy enforcement for product items
+        if _pc_type in ("PRODUCT_SOURCE", "PRODUCT_TEST"):
+            _tl_result = _check_test_layer_for_grade(declaration)
+            g["test_layer_check"] = _tl_result
+            if _tl_result.get("inadequate"):
+                _accepted_grades = (
+                    "ACCEPTED_VERIFIED", "ACCEPTED_WITH_LIMITATIONS",
+                    "ACCEPTED", "ACCEPTED_WITH_WARNINGS",
+                )
+                if g["supervisor_grade"] in _accepted_grades:
+                    g["supervisor_grade"] = "REWORK_REQUIRED"
+                    g["required_rework"] = _tl_result["reason"]
+        else:
+            g["test_layer_check"] = {"inadequate": False, "note": "non-product item, skip"}
 
         grades.append(g)
 
