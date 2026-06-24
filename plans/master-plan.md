@@ -1964,6 +1964,62 @@ Full machinery readiness audit across 10 lanes (A-J) followed by 9 repair taskca
 - Governance pilot tests: 28/30 pass (2 are pre-existing monolith condition, out of scope)
 - Lifecycle audit: `AUDIT_PASS`, `MISSION_COMPLETE`
 
+## Section 37 — enumerated-questing-wave: Test Governance Enforcement Hardening (fslay02) — CLOSED
+
+**Mission ID:** format-factory-fullsuite-layering-20260623-fslay02
+**Plan file:** `C:\Users\prora\.claude\plans\enumerated-questing-wave.md`
+**Status:** CLOSED — CONVERGENCE_COMPLETE (1 convergence iteration)
+**Commit:** `5976fc69`
+
+### What was completed
+
+**Original sprint (13 taskcards):**
+
+1. **TC-FSLAY02-SHARED-001:** Created `tools/supervisor/test_layer_utils.py` (77 LOC) — shared utilities preventing pattern-matching divergence between validator and grader. Exports `compute_required_layer`, `load_change_impact_rules`, `is_escalation_active`, `ADEQUACY_ESCALATION_DATE`, `PRODUCT_ITEM_TYPES`.
+
+2. **TC-FSLAY02-ENF-001:** Wired `sprint_executor_validate.py` adequacy validator to ERROR (not WARN) for PRODUCT_SOURCE/PRODUCT_TEST items with inadequate test_layer. Return type changed from `list[str]` to `tuple[list[str], list[str]]` (errors, warnings).
+
+3. **TC-FSLAY02-ENF-002:** Added `_check_test_layer_for_grade()` to `grade_declared_work.py`. Downgrades PRODUCT_SOURCE/PRODUCT_TEST items to REWORK_REQUIRED when test_layer is below manifest-required minimum.
+
+4. **TC-FSLAY02-L2-001:** Documented layer2 as intentionally path-scoped only. Added `marker_assignment: path_scoped_only` to manifest. Added `test_layer2_has_no_home_marker_assigned` test.
+
+5. **TC-FSLAY02-KNOWN-001:** Exit-code masking in `test_runner.py` — masks exit code to 0 when `--known-failures` provided and all failures are pre-existing known failures.
+
+6. **TC-FSLAY02-SHARD-001:** Added `_update_shard_ledger()` to `test_runner.py`. Writes shard completion data to `registry/full-suite-shard-ledger.yaml` with resume_state tracking.
+
+7. **TC-FSLAY02-PILOT-A/B/C:** Synthetic enforcement pilots verified interactively — product source ERROR, governance WARN, L6 escalation correct.
+
+**Convergence iteration 1 (4 audit gaps closed):**
+
+8. **L1-001 (KNOWN-001):** 4 automated tests — mask on pre-existing only, no mask on new failures, no mask without flag, no mask on already-zero exit code.
+9. **L1-002 (SHARD-001):** 2 automated tests — writes entry correctly, handles missing file gracefully.
+10. **L1-003 (ENF-002):** 4 automated tests — product inadequate flagged, adequate passes, empty files passes, missing test_layer passes.
+11. **L1-004 (escalation date):** 3 automated tests — before/on/after 2026-07-18 escalation date.
+
+### What changed
+
+- `tools/supervisor/test_layer_utils.py` — NEW (77 LOC)
+- `tools/supervisor/sprint_executor_validate.py` — tuple return for adequacy
+- `tools/supervisor/grade_declared_work.py` — `_check_test_layer_for_grade()` + grade_all integration
+- `tools/test_runner.py` — `_update_shard_ledger()` + exit-code masking
+- `tests/test_adequacy_validator.py` — 6 tests (4 updated + 2 new product enforcement)
+- `tests/test_fslay02_hardening.py` — NEW (13 tests across 4 classes)
+- `registry/test-layer-baseline.json` — baseline 89→152
+
+### Verification performed
+
+- 43/43 tests pass (6 adequacy + 13 hardening + 24 layer assignment)
+- Grader `_check_test_layer_for_grade` verified via import + direct call
+- Shard ledger writes verified via temp file round-trip
+- Exit-code masking logic verified via conditional simulation
+- Escalation date verified via datetime mocking
+
+### Follow-ups (non-blocking)
+
+- Escalation date 2026-07-18 approaching — non-product items will switch from WARN to ERROR
+- Populate slow-test and flaky-test ledgers as real data becomes available
+- L6 parallel shard execution runner (future optimization)
+
 ### Remaining follow-ups (non-blockers, out of scope)
 
 - XCF parser monolith: 117 analytics functions still defined inline in `xcf_parser.py` (separate GOV_BLOCK task)
