@@ -83,35 +83,29 @@ _FACT_REGISTRY_LOADED: bool = False
 
 
 def _build_fact_registry(repo_root: Path | None = None) -> dict[str, str]:
-    """Load all verified fact IDs from governed verified-facts-review.yaml files.
+    """Load all fact IDs from sal-facts-latest.json (single authoritative registry).
 
-    Scans .local/spec-cache/*/workbench/verified-facts-review.yaml
-    Returns a dict mapping fact_id → verification_status ("verified" | "needs_review" | ...).
-    Returns empty dict if no registry files exist (graceful degradation).
+    Returns a dict mapping fact_id (qname) -> fact_status.
+    Returns empty dict if sal-facts-latest.json does not exist (graceful degradation).
 
-    Added: SPEC-AUTHORITY-LAYER-PILOT-CLOSURE-DEBT-REPAIR-001 (2026-06-08)
+    Changed: 2026-06-23 — unified to sal-facts-latest.json instead of workbench YAML
+    (resolves two-registry problem: RC-3 in velvet-tickling-codd plan).
     """
     if repo_root is None:
-        # Derive repo root from this file's location: tools/supervisor/validate_spec_fact_refs.py
         repo_root = Path(__file__).resolve().parent.parent.parent
 
-    cache_dir = repo_root / ".local" / "spec-cache"
-    if not cache_dir.exists():
+    sal_path = repo_root / ".local" / "sal-output" / "sal-facts-latest.json"
+    if not sal_path.exists():
         return {}
 
     registry: dict[str, str] = {}
     try:
-        for facts_file in cache_dir.rglob("verified-facts-review.yaml"):
-            try:
-                data = yaml.safe_load(facts_file.read_text(encoding="utf-8")) or {}
-                for fact in data.get("facts", []):
-                    fact_id = fact.get("claim_id") or fact.get("fact_id") or ""
-                    if fact_id:
-                        provenance = fact.get("provenance", {})
-                        status = provenance.get("verification_status", "unknown")
-                        registry[fact_id] = status
-            except Exception:
-                pass
+        data = json.loads(sal_path.read_text(encoding="utf-8"))
+        for result in data.get("results", []):
+            for fact in result.get("spec_facts", []):
+                qname = fact.get("qname", "")
+                if qname:
+                    registry[qname] = fact.get("fact_status", "bootstrap_only")
     except Exception:
         pass
 
@@ -303,9 +297,10 @@ def check_item(item: dict) -> dict:
     has_exception = bool(exception_class)
 
     # Validate fact ID format if present
+    # Accept both workbench (FACT-FORMAT-NNN) and bootstrap (ODF-FACT-*, FODS-FACT-*, etc.) naming
     if has_refs:
         bad_refs = [r for r in spec_fact_refs if not (
-            isinstance(r, str) and r.startswith("FACT-") and len(r) > 6
+            isinstance(r, str) and ("FACT-" in r or "-FACT-" in r) and len(r) > 6
         )]
         if bad_refs:
             return {
@@ -318,10 +313,23 @@ def check_item(item: dict) -> dict:
                 "detail": f"item_type={item_type!r} has malformed spec_fact_refs",
             }
 
-    # Validate fact ID existence in governed registry (Lane 1 — DEBT-004 repair)
+    # Validate fact ID existence in governed registry (unified: sal-facts-latest.json)
     if has_refs:
         registry = get_fact_registry()
-        if registry:  # only reject if registry has been populated (graceful degradation)
+        if not registry and item_type in ("READINESS", "RELEASE_GATE"):
+            return {
+                "item_id": item_id,
+                "item_type": item_type,
+                "blocking_type": True,
+                "compliant": False,
+                "violation": (
+                    f"sal-facts-latest.json is empty or missing. "
+                    f"{item_type} items require a populated fact registry."
+                ),
+                "grade_impact": "reject",
+                "detail": "Empty fact registry blocks READINESS/RELEASE_GATE",
+            }
+        if registry:
             unknown_refs = [r for r in spec_fact_refs if r not in registry]
             if unknown_refs:
                 return {
@@ -330,9 +338,9 @@ def check_item(item: dict) -> dict:
                     "blocking_type": True,
                     "compliant": False,
                     "violation": (
-                        f"spec_fact_refs contain IDs not found in governed fact registry: "
-                        f"{unknown_refs}. Ensure the fact IDs exist in a "
-                        f"verified-facts-review.yaml file under .local/spec-cache/."
+                        f"spec_fact_refs contain IDs not found in sal-facts-latest.json: "
+                        f"{unknown_refs}. Ensure the fact IDs exist in "
+                        f".local/sal-output/sal-facts-latest.json."
                     ),
                     "grade_impact": "reject",
                     "detail": f"Unknown fact IDs: {unknown_refs}",

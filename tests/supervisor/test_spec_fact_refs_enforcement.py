@@ -179,7 +179,7 @@ class TestBlockingEnforcementPositive:
         item = {
             "item_id": "WI-TEST-POS-001",
             "item_type": "PRODUCT_SOURCE",
-            "spec_fact_refs": ["FACT-FODS-001", "FACT-FODS-002"],
+            "spec_fact_refs": ["FACT-FODS-001", "FACT-FODS-003"],
         }
         result = check_item(item)
         assert result["compliant"]

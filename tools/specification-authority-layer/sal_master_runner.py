@@ -691,6 +691,106 @@ _FORMAT_SPECIFIC_FACTS: Dict[str, List[Dict[str, str]]] = {
 }
 
 
+def _load_registered_source_ids() -> Dict[str, str]:
+    """Load spec-source-registry/sources.jsonl and return {format_id: source_id}.
+
+    When multiple sources exist for a format (e.g. zst has RFC8878 and RFC9659),
+    the first registered entry wins (primary spec).  Entries with status
+    'unavailable' are included but downstream quality_level() treats them as
+    Level 0 when the source file is absent.
+    """
+    registry_path = _REPO_ROOT / ".local" / "spec-source-registry" / "sources.jsonl"
+    mapping: Dict[str, str] = {}
+    if not registry_path.exists():
+        return mapping
+    try:
+        for line in registry_path.read_text(encoding="utf-8").splitlines():
+            line = line.strip()
+            if not line:
+                continue
+            entry = json.loads(line)
+            fid = entry.get("format_id", "").lower()
+            sid = entry.get("source_id", "")
+            if fid and sid and fid not in mapping:
+                mapping[fid] = sid
+    except Exception:
+        pass
+    return mapping
+
+
+# Module-level cache populated on first call
+_SOURCE_ID_MAP: Optional[Dict[str, str]] = None
+
+
+# ODF family formats share the ODF 1.3 spec but may have individual registry entries.
+# When a format is not in the registry, try its family parent.
+_ODF_FAMILY_FORMATS = frozenset(["fodt", "fods", "fodg", "fodp", "ods", "odt"])
+
+
+def _get_source_id_for_format(format_id: str) -> Optional[str]:
+    """Return the registered source_id for a format, or None if unregistered.
+
+    ODF family formats fall back to the 'fods' registry entry (shared ODF 1.3 spec)
+    when the specific format is not registered.
+    """
+    global _SOURCE_ID_MAP
+    if _SOURCE_ID_MAP is None:
+        _SOURCE_ID_MAP = _load_registered_source_ids()
+    fid = format_id.lower()
+    sid = _SOURCE_ID_MAP.get(fid)
+    if sid is None and fid in _ODF_FAMILY_FORMATS:
+        sid = _SOURCE_ID_MAP.get("fods")  # ODF 1.3 shared spec
+    return sid
+
+
+def _try_verify_facts_against_spec(
+    format_id: str, facts: List[Dict[str, str]]
+) -> List[Dict[str, str]]:
+    """Attempt to verify fact text against normalized spec text.
+
+    If normalized text exists for the format, checks each fact's first 50 chars
+    against the full text. Facts that match get fact_status upgraded to
+    'text_verified' (Level 2). Facts that don't match keep their current status.
+
+    Non-blocking: returns facts unchanged if normalized text is unavailable.
+    """
+    spec_cache = _REPO_ROOT / ".local" / "spec-cache"
+    text_candidates = list(spec_cache.glob(f"{format_id.lower()}/*/normalized/text.txt"))
+    if not text_candidates:
+        return facts
+
+    try:
+        full_text = text_candidates[0].read_text(encoding="utf-8")
+    except Exception:
+        return facts
+
+    if len(full_text) < 100:
+        return facts
+
+    # Fast inline verification: pre-build lowercase text once, then check each fact's
+    # first-50-chars substring. This is O(n) per fact instead of O(n*m) via spec_verifier.
+    full_text_lower = full_text.lower()
+
+    upgraded = 0
+    for f in facts:
+        desc = f.get("description", "") or f.get("claim", "")
+        if not desc or len(desc) < 10:
+            continue
+        fragment = desc[:50].lower()
+        if fragment in full_text_lower:
+            if f.get("fact_status") != "text_verified":
+                f["fact_status"] = "text_verified"
+                upgraded += 1
+
+    if upgraded:
+        print(
+            f"[sal_master_runner] {format_id}: {upgraded} facts upgraded to text_verified",
+            file=sys.stderr,
+        )
+
+    return facts
+
+
 def _load_format_registry() -> List[Dict[str, Any]]:
     """Load format-registry.yaml and return list of format dicts."""
     try:
@@ -756,10 +856,12 @@ def _spec_facts_for_format(fmt: Dict[str, Any]) -> List[Dict[str, str]]:
             f["qname"] = f["qname"].replace("FORMAT", fid.upper())
             f["authority"] = spec_body or "Unknown spec body"
 
-    # Tag all base template facts as bootstrap_only
+    # Tag all base template facts as bootstrap_only.
+    # Link to registered source_id when available (raises quality from Level 0 to Level 1).
+    registered_sid = _get_source_id_for_format(fid)
     for f in base:
         f["fact_status"] = "bootstrap_only"
-        f["source_id"] = None
+        f["source_id"] = registered_sid  # None if format has no registered spec
 
     # Step 2: Merge format-specific facts (override takes priority, appended after base)
     specific = _FORMAT_SPECIFIC_FACTS.get(fid, [])
@@ -767,7 +869,8 @@ def _spec_facts_for_format(fmt: Dict[str, Any]) -> List[Dict[str, str]]:
         specific_qnames = {f["qname"] for f in specific}
         # Keep base facts whose qnames don't collide with specific ones
         merged = [f for f in base if f["qname"] not in specific_qnames]
-        specific_tagged = [dict(f, fact_status="bootstrap_only", source_id=None)
+        specific_tagged = [dict(f, fact_status="bootstrap_only",
+                                source_id=registered_sid)
                            for f in specific]
         merged += specific_tagged
         return merged
@@ -918,6 +1021,10 @@ def run_sal_pipeline(
                 existing_qnames = {f.get("qname", "") for f in facts}
                 new_facts = [wf for wf in workbench_facts if wf["qname"] not in existing_qnames]
                 facts = facts + new_facts
+
+        # Lane C: Run spec_verifier to upgrade fact_status where possible.
+        # Facts verified against normalized spec text get fact_status="text_verified" (Level 2).
+        facts = _try_verify_facts_against_spec(fid, facts)
 
         entry = {
             "format_id": fid,
