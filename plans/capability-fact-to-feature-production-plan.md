@@ -426,12 +426,14 @@ Feedback (closed capabilities removed from future selection; regressions reopen)
 
 > **Human Gate Policy (velvet-hatching-lark session decision, 2026-06-23):** Compiled gap taskcards for FOSS capabilities enter the autonomous queue **WITHOUT** a per-taskcard human approval gate. The `advisory_only: false` flag is the execution gate — NOT a human gate. Human gates (`external_gate: true`) apply ONLY to Gate 11 G11-G commercial release execution (Babar Raza only), git push requiring credentials, and package publication. This is consistent with AGENTS.md §AG1 and §AG5. **For Stage 3 implementation:** change `advisory_only` True→False for items satisfying `machine_executable: true AND commercial_impact == "NONE" AND priority in ("P0","P1","P2")`. Do NOT add `external_gate: true` for FOSS items. The `advisory_only` flag already exists per-item on all 24 current queue items — only the VALUE needs changing.
 
-**Taskcards:**
-- TC-C3-001: In `capability_map_generator.py`, change `advisory_only` VALUE: items with `machine_executable: true AND commercial_impact == "NONE" AND priority in ("P0","P1","P2")` get `advisory_only: False`. (Note: the per-item field already exists on all items — change the value, do not add the field. See RC-4 update 2026-06-23.)
-- TC-C3-002: Wire `capability_queue_consumer.py` as a callable from the supervisor pipeline (not just standalone)
-- TC-C3-003: Add test: verify queue consumer processes non-advisory items and produces taskcards
+**Status:** *(updated 2026-06-24, convergence iteration 4)* **TC-C3-001 and TC-C3-002 ALREADY DONE.** `_build_action_queue()` at line 1015 already sets `advisory_only: not is_machine_executable`. Current action queue: 16/24 items are `advisory_only=False`. `_run_capability_consumer()` already wired at `generate_next_worker_prompt.py:1037` for mainstream stream. Gate C5 condition met.
 
-**Gate:** C5 passes — at least one queue item is executable and has a downstream consumer.
+**Taskcards:**
+- TC-C3-001: ~~Change advisory_only VALUE~~ **ALREADY DONE** (pre-existing code at line 997-1015). Confirmed 2026-06-24: `is_machine_executable` logic matches the plan's eligibility criteria exactly. 16/24 items are executable.
+- TC-C3-002: ~~Wire queue consumer as callable~~ **ALREADY DONE** (pre-existing: `_run_capability_consumer()` at `generate_next_worker_prompt.py:1037`).
+- TC-C3-003: Add test: verify queue consumer processes non-advisory items and produces taskcards — **OPEN** (test coverage gap, but not blocking)
+
+**Gate:** C5 ~~FAIL~~ **PASS** — 16 queue items are executable; downstream consumer wired at `generate_next_worker_prompt.py:1037`.
 
 ### Stage 4: Contract-Based Closure (RC-5 Fix)
 **Objective:** Replace implicit AST-scan closure with contract verification.
@@ -1466,7 +1468,7 @@ The plan must NOT be declared TERMINAL_CLOSED until Stage 7 (gap closure integra
 | C2 (Capability Granularity) | PASS | One function = one capability |
 | C3 (Gap-Ledger Consumption) | PARTIAL | Read by task generator; 0 open FODS |
 | C4 (Compiler Integration) | PARTIAL | Mainstream stream wired |
-| C5 (Queue Executability) | FAIL | All items advisory_only=true |
+| C5 (Queue Executability) | **PASS** *(updated iter 4)* | 16/24 items advisory_only=False; consumer wired at generate_next_worker_prompt.py:1037 |
 | C6 (Contract Closure) | FAIL | AST-scan only |
 | C7 (_EXPANSION_GOALS) | PARTIAL | Fallback only, but re-activates for FOSS |
 | C8 (End-to-End Trace) | FAIL | No function through compiler pipeline |
