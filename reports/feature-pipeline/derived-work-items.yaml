@@ -1,0 +1,81 @@
+filtered_count: 5
+generated_at: '2026-06-23T18:54:30.064127+00:00'
+items:
+- blocks_poc: false
+  capability: SpecQNameActivation_List
+  commercial_impact: NONE
+  description: TC-FODT-BOOT-001
+  format: FODT
+  foss_impact: MEDIUM
+  gap_ledger_ref: GAP-FODT-QNAME-001
+  gap_type: spec_qname_not_activated
+  item_id: WI-GAP-FODT-QNAME-001
+  lane: product
+  priority: 24
+  spec_facts:
+  - FACT-FODT-005
+  title: SpecQNameActivation_List for FODT
+  verification: python -c "from fodt.spec.text.list_ import List; print(List.spec_qname)"
+- blocks_poc: false
+  capability: SpecQNameActivation_ListItem
+  commercial_impact: NONE
+  description: TC-FODT-BOOT-001
+  format: FODT
+  foss_impact: MEDIUM
+  gap_ledger_ref: GAP-FODT-QNAME-002
+  gap_type: spec_qname_not_activated
+  item_id: WI-GAP-FODT-QNAME-002
+  lane: product
+  priority: 24
+  spec_facts:
+  - FACT-FODT-005
+  title: SpecQNameActivation_ListItem for FODT
+  verification: python -c "from fodt.spec.text.list_item import ListItem; print(ListItem.spec_qname)"
+- blocks_poc: false
+  capability: SpecQNameActivation_Table
+  commercial_impact: NONE
+  description: TC-FODT-BOOT-001
+  format: FODT
+  foss_impact: MEDIUM
+  gap_ledger_ref: GAP-FODT-QNAME-003
+  gap_type: spec_qname_not_activated
+  item_id: WI-GAP-FODT-QNAME-003
+  lane: product
+  priority: 24
+  spec_facts:
+  - FACT-FODT-007
+  title: SpecQNameActivation_Table for FODT
+  verification: python -c "from fodt.spec.table.table import Table; print(Table.spec_qname)"
+- blocks_poc: false
+  capability: SpecQNameActivation_TableRow
+  commercial_impact: NONE
+  description: TC-FODT-BOOT-001
+  format: FODT
+  foss_impact: MEDIUM
+  gap_ledger_ref: GAP-FODT-QNAME-004
+  gap_type: spec_qname_not_activated
+  item_id: WI-GAP-FODT-QNAME-004
+  lane: product
+  priority: 24
+  spec_facts:
+  - FACT-FODT-007
+  title: SpecQNameActivation_TableRow for FODT
+  verification: python -c "from fodt.spec.table.table_row import TableRow; print(TableRow.spec_qname)"
+- blocks_poc: false
+  capability: SpecQNameActivation_TableCell
+  commercial_impact: NONE
+  description: TC-FODT-BOOT-001
+  format: FODT
+  foss_impact: MEDIUM
+  gap_ledger_ref: GAP-FODT-QNAME-005
+  gap_type: spec_qname_not_activated
+  item_id: WI-GAP-FODT-QNAME-005
+  lane: product
+  priority: 24
+  spec_facts:
+  - FACT-FODT-007
+  title: SpecQNameActivation_TableCell for FODT
+  verification: python -c "from fodt.spec.table.table_cell import TableCell; print(TableCell.spec_qname)"
+max_items: 10
+source: reports\capability-layer\gap-ledger.json
+total_input_gaps: 961
