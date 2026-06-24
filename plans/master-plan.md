@@ -1853,5 +1853,56 @@ Full machinery readiness audit across 10 lanes (A-J) followed by 9 repair taskca
 
 ---
 
-*End of plans/master-plan.md — version 4.5 — 2026-06-24 (Section 34: velvet-tickling-codd CLOSED; SAL structural repair + hardening; 11 taskcards, 79 tests; 1788d05f)*
+## Section 35 — misty-hopping-token: V54/V55 Promotion + QName Backfill + Deferred Items Resolution (CLOSED)
+
+**Mission ID:** FF-V54V55-PROMOTE-20260624
+**Plan file:** `C:\Users\prora\.claude\plans\misty-hopping-token.md`
+**Status:** CLOSED — CONVERGENCE_COMPLETE_ALL_GREEN (1 iteration)
+**Commits:** `dd60c5de`, `98742d9b`
+
+### What was completed
+
+1. **TC-D1: V54/V55 Promotion (WARN → conditional-blocking)**
+   - Recorded Sprint 3 in `reports/v54v55-sprint-tracker.json` (3/3 clean sprints, promoted=true)
+   - `governance_validators_ext.py`: V54 (line 775) and V55 (line 864) `blocks_sprint` changed from `False` to `bool(warnings)`
+   - Docstrings updated to reflect conditional-blocking status
+   - Test assertions updated: violation scenarios now expect `blocks_sprint=True`
+   - Pre-sprint hook (Step 0a-v54v55) and post-governance hook (Step 2e-v54v55) wired in `autonomous_cycle.py`
+
+2. **TC-D2: QName Backfill Pilot (3 entries)**
+   - `csv:header` → `src/python/csv/spec/record/header.py` (Header) + `Compat/csv_header.py` (CsvHeader)
+   - `pbm:raster` → `src/python/pbm/spec/bitmap/raster.py` (Raster) + `Compat/pbm_raster.py` (PbmRaster)
+   - `qoi:end-marker` → `src/python/qoi/spec/chunk/end_marker.py` (EndMarker) + `Compat/qoi_end_marker.py` (QoiEndMarker)
+   - All `__init__.py` exports updated; qname-registry entries set to `status: "implementing"`
+
+3. **TC-D3: SAL/Gap-Ledger Audit Tool Wiring**
+   - Step 0a-sal hook: runs `tools/audit_sal_to_qname.py`, baseline at `reports/sal-qname-baseline.json` (28 HIGH)
+   - Step 0a-gap-sal hook: runs `tools/audit_gap_ledger_sal_refs.py`, baseline at `reports/gap-ledger-sal-baseline.json` (1235 HIGH, 43.4%)
+
+4. **TC-D4: V54/V55 Auto-Promotion Hook**
+   - Step 2e-v54v55 in autonomous_cycle.py: auto-increments clean sprint count after governance pass, auto-sets promoted=true at threshold
+
+5. **Analytics file cleanup** (pre-staged, committed as part of session):
+   - 18 `*_analytics.py` files deleted across all format modules (abw, csv, dif, fodp, fods, fodt, gnumeric, ndjson, ods, odt, pbm, pgm, ppm, qoi, sylk, toml, tsv)
+   - Codec/parser `try: from .xxx_analytics import *; except ImportError: pass` patterns handle absence gracefully
+
+### Verification performed
+
+- All 6 new spec/Compat classes import correctly with correct `spec_qname` attributes
+- V54/V55 behavioral tests: clean declaration → `blocks_sprint=False`, violation → `blocks_sprint=True`, HEALING bypass → `blocks_sprint=False`
+- `governance_validators_ext.py` and `autonomous_cycle.py` parse cleanly (ast.parse)
+- Tracker state: `clean_sprint_count=3`, `promoted=true`, `promoted_at="2026-06-24"`
+- All codec/parser imports clean without analytics files
+- Convergence audit: 1 iteration, 0 actionable findings, all items at target proof level
+
+### Remaining follow-ups (non-blockers)
+
+- 3 QName entries at `status: "implementing"` — advance to `"implemented"` after integration tests are added
+- 15 remaining QName entries still at `status: "seeded"` across PBM, QOI, CSV registries — future backfill sprints
+- SAL baseline (28 HIGH dangling refs) — reduce via SAL pipeline expansion to additional formats
+- Gap-ledger SAL baseline (43.4% traceability) — improve as more GAP entries get SAL fact references
+
+---
+
+*End of plans/master-plan.md — version 4.6 — 2026-06-24 (Section 35: misty-hopping-token CLOSED; V54/V55 promotion, QName backfill pilot, audit wiring; dd60c5de, 98742d9b)*
 *This document is the single operational authority for format-factory. All other documents are subordinate to it for operational decisions.*
