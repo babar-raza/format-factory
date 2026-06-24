@@ -268,7 +268,7 @@ def synthesize_trains(review: dict, poc_targets: dict, gaps: dict) -> list[dict]
             # Generic advancement train — sanitize next_action: never embed external-gate wording
             safe_next_action = (
                 "Prepare commit-ready packet only. Do not commit or push. "
-                "External gate requires explicit human authorization."
+                "External gate: classify specific blocker per AGENTS.md §AG."
                 if _next_action_requires_external_gate(next_action)
                 else next_action
             )
@@ -765,9 +765,9 @@ def _build_fallback_prompt(review, trains, sprint_goal, test_line,
     lines.append("")
 
     lines.append("## Hard Prohibitions")
-    lines.append("- No git push without explicit user authorization.")
-    lines.append("- No git commit without explicit user authorization.")
-    lines.append("- No Gate 8 or Gate 11 approval.")
+    lines.append("- No git push: SCM Agent task (AGENTS.md §AG4.2) — execute when credentials and branch policy allow; classify EXTERNAL_BLOCKER otherwise.")
+    lines.append("- No git commit: SCM Agent task (AGENTS.md §AG4.1) — execute when sprint policy authorizes, tests pass, diff clean; classify specific blocker otherwise.")
+    lines.append("- No Gate 11 G11-G approval (sole TRUE_EXTERNAL_GATE — Babar Raza only).")
     lines.append("- No commercial_product_ready: true.")
     lines.append("- No PyPI/NuGet/GitHub release publication.")
     lines.append("- No paid external AI API or web automation.")
@@ -825,23 +825,13 @@ STREAM_FORWARD_WORK = {
 
 # R-NMPC: Patterns that always require external human authorization — never agent-executable
 _EXTERNAL_GATE_PATTERNS = [
-    "git commit",
-    "git push",
-    "commit + push",
-    "commit and push",
-    "authorized git",
     "gate 11",
-    "gate 8",
     "g11-g",
-    "g8-g",
     "publication",
     "publish to nuget",
     "nuget publish",
     "human required for commercial",
     "commercial release",
-    "requires user authorization",
-    "requires explicit user authorization",
-    "requires human authorization",
 ]
 
 
@@ -895,7 +885,7 @@ def _make_task_adjudication_fields(task_label: str, task_title: str, context: di
         "execution_status": "executable" if agent_can_execute else "external-gate-pending",
         "allowed_next_action": (
             "Execute this task directly" if agent_can_execute
-            else "Prepare packet; wait for human authorization to execute"
+            else "Classify specific blocker per AGENTS.md §AG — execute if agent policy allows, else record EXTERNAL_BLOCKER"
         ),
         "stop_reason_reason": reason,
     }

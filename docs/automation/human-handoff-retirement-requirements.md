@@ -39,7 +39,7 @@ These are NOT retired. They require human approval:
 
 1. **G11-G Gate Approval** — commercial product readiness (Babar Raza, always)
 2. **MCP Activation (MODE 4)** — registers MCP servers system-wide (explicit written approval)
-3. **Push/Merge** — any git push to remote (explicit per-session approval)
+3. **Push/Merge** — SCM Agent task (AGENTS.md §AG4): classify EXTERNAL_BLOCKER: git_push_credentials_unavailable when credentials absent; force-push requires explicit policy authority
 4. **Credentials** — API keys, secrets, paid service configuration
 5. **Destructive Operations** — rm -rf, force-push, schema deletion
 6. **Governance Conflicts** — unresolvable contradictions in AGENTS.md or GOVERNANCE.md
@@ -84,4 +84,4 @@ This enables KPI measurement per sprint without external tooling.
 - OpenAI API calls — no paid access, not required
 - Replacing human authority at true gates — Format Factory gates are human-only
 - Daemon processes in MODE 0-3 — only allowed in MODE 3 temp directory rehearsal
-- Pushing code automatically — always requires explicit human approval
+- Pushing code without policy authorization — SCM Agent (AGENTS.md §AG4.2) pushes when credentials and branch policy allow; force-push and destructive operations remain forbidden without explicit policy authority

@@ -3,8 +3,8 @@
 **Document type:** Living Master Plan
 **Authority level:** Single Operational Authority
 **Project:** format-factory
-**Version:** 5.7
-**Last updated:** 2026-06-24 (v5.7: vast-sleeping-diffie HEAL-PD-LEDGER-20260623 CLOSED — product deepening ledger + Check 9 gate + convergence ALL-GREEN; Section 47 added)
+**Version:** 6.0
+**Last updated:** 2026-06-24 (v6.0: wise-munching-reef Human-Free Autonomy Governance Rectification CLOSED — 13 files, 37+ defects, AGENTS.md §AG alignment; Section 50 added)
 **Last verified:** 2026-06-24
 
 **Current phase:** Multi-format POC — 11 targets (3 commercial .NET, 8 FOSS Python). Gate 11 G11-G sub-gate approved by Babar Raza 2026-06-05 (FODS, FODT, Netpbm). Registry gate_11.status: commercial_readiness_in_progress; g11g_status: APPROVED_BY_BABAR_RAZA_2026_06_05 (G11-G sub-gate approved). commercial_product_ready: false (all entries). Full Gate 11 requires Babar Raza final commercial authorization.
@@ -37,8 +37,8 @@ These rules override convenience, speed, and agent summaries. They are permanent
 10. Execution prompts must define: allowed files, forbidden files, validation checks, evidence requirements, and stop conditions.
 11. No product code before required gates. Python product source (`src/python/{format}/`) may only be created after Gates 1-9 complete, Gate 9 human approval, implementation taskcards, and an explicit Phase 4 execution prompt. .NET follows the same sequence.
 12. No .NET commercial-tier source before: Gate 10 passed, DEC-033 resolved (Option B: .NET Commercial Only), commercial taskcards, and explicit commercial execution prompt. Commercial readiness requires load-edit-save-convert capability (C7+), not Tier 0 parser success alone.
-13. No commit unless explicitly requested by the human.
-14. No gate may be self-approved. All 11 gates require human approval.
+13. No commit: SCM Agent task (AGENTS.md §AG4.1) — execute when sprint policy authorizes, tests pass, diff clean; classify specific blocker otherwise.
+14. No gate may be self-approved without evidence. Gates 1-10: agent-owned policy gates (AGENTS.md §AG5). Gate 11 G11-G: Babar Raza only.
 15. No Phase 1 work may begin until Phase 0 is reviewed and accepted.
 16. Any agent-produced request for human review must first pass independent agent verification (DEC-034).
 
@@ -229,7 +229,7 @@ The declaration-driven model is canonical:
 
 ## Section 14 — Gate Model
 
-All 11 gates require human approval. No agent may self-approve.
+Gates 1-10 are agent-owned policy gates (evidence + validators + acceptance criteria per AGENTS.md §AG5). Gate 11 G11-G is the sole TRUE_EXTERNAL_GATE (Babar Raza). No agent may self-approve without evidence.
 
 | Gate | Name | Phase | Required Artifacts |
 |---|---|---|---|
@@ -2656,5 +2656,53 @@ TC-SAL-WIRE-001 through TC-SAL-WIRE-008 documented in snoopy §33.9. Highest pri
 
 ---
 
-*End of plans/master-plan.md — version 5.9 — 2026-06-24 (Section 49: dazzling-purring-kernighan FF-SAL-FORENSICS-001 CLOSED — SAL forensics, 15 taskcards, snoopy v4.0 with §33, 5 new root causes, convergence ALL-GREEN)*
+## Section 50 — wise-munching-reef: Human-Free Autonomy Governance Rectification (CLOSED)
+
+**Mission:** Eliminate stale "explicit human/user authorization" language from all generator code, stop-reason adjudicator, documentation, and gate model — aligning with AGENTS.md §AG (AG1-AG10) doctrine.
+**Execution plan:** `C:/Users/prora/.claude/plans/wise-munching-reef.md`
+**Type:** machinery_hardening
+**Convergence:** ALL-GREEN (2 iterations — initial 9-file fix + audit-discovered 5 additional live docs)
+**Closed:** 2026-06-24
+
+### Changes (13 files total)
+
+**Tier 1 — Generator code (9 original targets):**
+- `tools/supervisor/generate_next_worker_prompt.py` — Hard Prohibitions, `_EXTERNAL_GATE_PATTERNS`, fallback action
+- `tools/supervisor/generate_supervisor_packet.py` — Commit task, Non-Negotiable Rules, STOP_REASON_ADVISORY, approval-gates table
+- `tools/supervisor/generate_execution_handoff.py` — DEFAULT_SAFETY_GATES
+- `tools/supervisor/generate_mainstream_execution_packet.py` — stop_conditions + global_stop_conditions
+- `tools/supervisor/stop_reason_adjudicator.py` — commit/push: TRUE_EXTERNAL_GATE → AGENT_OWNED_REVIEW_CONTINUE, human_required=False
+
+**Tier 2 — Documentation:**
+- `docs/automation/supervisor-worker-contract.md` — Worker obligation 9
+- `docs/automation/human-handoff-retirement-requirements.md` — True Approval Gates + Non-Requirements
+
+**Tier 3 — Gate model:**
+- `GOVERNANCE.md` — §2.1, §2.4
+- `docs/gates.md` — Header, purpose, authorization rules, per-gate criteria
+
+**Tier 4 — Audit-discovered live docs (iteration 2):**
+- `plans/master-plan.md` — Lines 41, 232
+- `docs/format-expansion-roadmap.md` — Line 209
+- `docs/llm-and-embedding-strategy.md` — Line 90
+- `docs/planning-methodology.md` — Lines 35-36
+
+### Verification
+
+- All 5 Python files compile: ✓
+- Zero negative pattern hits in generators/adjudicator/docs/gate model: ✓
+- Governance validators: exit 0 (PASS): ✓
+- Supervisor tests: 200+ pass (1 pre-existing poc-targets checksum — unrelated): ✓
+- Only target files in diff: ✓
+- Historical archives (docs/history/, reports/governance/, reports/supervisor-r10*/) correctly preserved: ✓
+
+### Evidence
+
+- Evidence root: `.local/evidences/human-free-autonomy-governance-20260623-1800/`
+- Review package: `.local/supervisor/reviews/human-free-autonomy-governance-20260623-1800/declaration-review-package.zip`
+- Plan lock: TERMINAL_CLOSED (session 7da28319645c)
+
+---
+
+*End of plans/master-plan.md — version 6.0 — 2026-06-24 (Section 50: wise-munching-reef Human-Free Autonomy Governance Rectification CLOSED — 13 files, 37+ defects, 2-iteration convergence ALL-GREEN)*
 *This document is the single operational authority for format-factory. All other documents are subordinate to it for operational decisions.*

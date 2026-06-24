@@ -24,7 +24,7 @@
 
 ## 2. Gate Approval Process
 
-**2.1.** All 11 gates require human approval. No agent, script, or automated process may approve a gate by autonomous self-approval.
+**2.1.** Gates 1-10 use policy-based agent approval gates: the agent must satisfy all acceptance criteria, produce validated evidence, pass governance validators, and record the decision in `registry/format-registry.yaml`. No agent may self-approve without evidence. Gate 11 G11-G (commercial release) is the sole TRUE_EXTERNAL_GATE requiring Babar Raza's explicit business authority — it cannot be delegated to any agent or automated process.
 
 **2.1a. Delegated Decision Execution.** When the human project lead explicitly delegates a gate decision to the agent via an execution prompt — and all of the following criteria are satisfied — the agent may record the decision on the human's behalf as a delegated approval:
 1. The human has explicitly authorized the delegation in a named execution prompt.
@@ -43,7 +43,7 @@ A delegated approval is still a human-authorized approval — it is the executio
 
 **2.3.** A gate that has been marked passed must not be re-opened without a formal decision recorded in the decision register. If artifacts are later found to be deficient, create a gap entry and a resolution path rather than silently rolling back gate status.
 
-**2.4.** The project lead may approve Gates 1-3 without an additional reviewer in Phase 1-2. Gates 7 (fuzz) and 8 (security) require the reviewer to be technically qualified to assess the security claims.
+**2.4.** For Gates 1-3, the agent satisfies acceptance criteria and records approval autonomously when evidence is complete. For Gates 7 (fuzz) and 8 (security), the agent must produce validator-backed security evidence (automated fuzz results, security scan artifacts) before recording approval. Gate 11 G11-G requires Babar Raza's explicit commercial authorization — no agent or automated process may execute this gate.
 
 ---
 

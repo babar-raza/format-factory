@@ -250,8 +250,8 @@ def build_family_packet(
         "proposed_capability_delta": spec.get("proposed_capability_delta", {}),
         "validation_commands": spec.get("validation_commands", []),
         "stop_conditions": [
-            "git push without human authorization",
-            "Gate 8 or Gate 11 approval without human",
+            "git push without SCM Agent policy authorization (AGENTS.md §AG4)",
+            "Gate 11 G11-G approval without Babar Raza authorization",
             "product source edit outside allowed_files",
             "product-capability-matrix/poc-targets.yaml direct write",
             "AI output declared authoritative without test evidence",
@@ -311,8 +311,8 @@ def generate_mainstream_execution_packet(root: Optional[Path] = None) -> Dict[st
         "family_count": len(family_packets),
         "families": family_packets,
         "global_stop_conditions": [
-            "git push without explicit human authorization",
-            "Gate 8 or Gate 11 self-approval",
+            "git push without SCM Agent policy authorization (AGENTS.md §AG4)",
+            "Gate 11 G11-G self-approval (sole TRUE_EXTERNAL_GATE — Babar Raza only)",
             "product-capability-matrix/poc-targets.yaml direct write from this packet",
             "Acceleration advisory used as authoritative evidence without test validation",
             "External tool activated without MODE 4+ authorization",

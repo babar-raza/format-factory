@@ -506,24 +506,23 @@ def adjudicate_stop_reason(
 
     # ── Rule 11: Commit/push/merge ─────────────────────────────────────────
     if normalized == SignalCategory.PUSH_COMMIT:
-        safe_lanes = ctx.get("safe_lanes_available", False)
         return _make_decision(
             signal, normalized,
-            StopDecision.TRUE_EXTERNAL_GATE,
-            terminal=True,
-            blocks_implementation=not safe_lanes,
+            StopDecision.AGENT_OWNED_REVIEW_CONTINUE,
+            terminal=False,
+            blocks_implementation=False,
             blocks_poc_candidate=False,
-            blocks_release=True,
+            blocks_release=False,
             agent_can_handle=True,
-            human_required=True,
+            human_required=False,
             allowed_next_action=(
-                "Agent: prepare commit candidate summary and changed-file manifest. "
-                "Human: execute commit/push with explicit authorization."
+                "SCM Agent: execute commit/push when sprint policy authorizes per AGENTS.md §AG4. "
+                "If credentials unavailable, classify EXTERNAL_BLOCKER: git_push_credentials_unavailable."
             ),
-            reason="git commit/push/merge requires explicit human authorization",
+            reason="git commit/push/merge is SCM Agent task per AGENTS.md §AG4",
             remediation=(
-                "Agent prepares commit summary. Wait for explicit user authorization "
-                "before executing commit or push."
+                "SCM Agent commits when: tests pass, diff clean, governance validators pass, "
+                "sprint policy authorizes. Classify specific EXTERNAL_BLOCKER if conditions not met."
             ),
         )
 

@@ -14,7 +14,7 @@ The supervisor and worker operate in the same repo/worktree. Communication is fi
 6. **Use `partial`** when work is in progress but not finished.
 7. **Use `blocked_external_gate`** when an external approval or resource blocks completion.
 8. **Run tests** and record results in declaration (`tests_run`, `test_results`).
-9. **Never push, publish, or approve gates** without explicit human authorization.
+9. **Push and publish** follow SCM Agent policy (AGENTS.md §AG4): commit when sprint policy authorizes; push when credentials and branch policy allow. Classify EXTERNAL_BLOCKER when credentials absent. Gate approval: Gates 1-10 use evidence-backed policy gates (AGENTS.md §AG5). Gate 11 G11-G: sole TRUE_EXTERNAL_GATE (Babar Raza).
 
 ## Supervisor Obligations
 

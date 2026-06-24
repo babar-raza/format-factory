@@ -503,7 +503,7 @@ def synthesize_sprint_tasks(review: dict, contradictions: dict, repo_root: Path,
                     any(x in l for x in ["src/python/", "src/net/", "state/", "packaging/"])]
         if modified:
             # R_HARD-P2: Split into agent-owned preparation and external-gate execution.
-            # Commit PREPARATION is agent-owned; commit EXECUTION requires user authorization.
+            # Commit PREPARATION is agent-owned; commit EXECUTION is SCM Agent task per AGENTS.md §AG4.1.
             tasks.append({
                 "task_id": f"TASK-{task_seq:03d}",
                 "title": "Prepare commit candidate summary and changed-file manifest",
@@ -521,15 +521,15 @@ def synthesize_sprint_tasks(review: dict, contradictions: dict, repo_root: Path,
             task_seq += 1
             tasks.append({
                 "task_id": f"TASK-{task_seq:03d}",
-                "title": "Execute git commit (requires explicit user authorization — do NOT self-execute)",
-                "description": "Commit execution requires explicit user authorization. "
-                               "Do not commit without the user saying so. This is a TRUE_EXTERNAL_GATE per stop_reason_adjudicator.",
+                "title": "Execute git commit (SCM Agent task — AGENTS.md §AG4.1)",
+                "description": "Commit is an SCM Agent task. Execute when: tests pass, diff clean, governance validators pass, sprint policy authorizes. "
+                               "Classify EXTERNAL_BLOCKER: sprint_policy_not_authorizing_commit if conditions not met.",
                 "status": "external-gate",
                 "ff_doc_ref": "plans/master-plan.md",
                 "supervisor_task_ref": "TC-R79-CLOSURE-001-EXEC",
-                "acceptance_evidence": "User confirms commit executed",
+                "acceptance_evidence": "git log --oneline -1 shows clean commit with sprint evidence",
                 "validation_command": "git log --oneline -1",
-                "blocker_type": "human_approval",
+                "blocker_type": "policy_gate",
                 "non_authoritative": True,
                 "lane": "C3",
             })
@@ -900,21 +900,21 @@ def generate_next_sprint_md(review: dict, contradictions: dict, memory_snippet: 
     # R102: Stream-specific rules (non-mainstream streams don't need product ledger rules)
     if stream == "mainstream":
         rules_section = f"""## Non-Negotiable Rules (always apply)
-1. No push without explicit user authorization.
-2. No commit without explicit user authorization.
-3. No gate self-approval.
+1. No push: SCM Agent task (AGENTS.md §AG4.2). Execute when credentials and branch policy allow; else classify EXTERNAL_BLOCKER: git_push_credentials_unavailable.
+2. No commit: SCM Agent task (AGENTS.md §AG4.1). Execute when sprint policy authorizes and tests pass; else classify specific blocker.
+3. No gate self-approval without evidence.
 4. No active .vscode/mcp.json without MODE 4 approval.
 5. No Task Master / Ruflo init without MODE 3+ authorization.
 6. Load `{SELECTED_PRODUCT_GAPS_PATH}` and `{SKILL_REGISTRY_PATH}` before product work.
-7. All gate closures require human approval (gates 1-11).
+7. Gates 1-10: agent-owned policy gates (evidence + validators + acceptance criteria per AGENTS.md §AG5). Gate 11 G11-G: sole TRUE_EXTERNAL_GATE (Babar Raza).
 8. Format Factory authority is final — supervisor is advisory only.
 9. No direct ad-hoc `src/` edits. Use a governed skill or generated execution handoff.
 10. Every `src/` edit requires an entry in `{PRODUCT_CODE_LEDGER_PATH}`."""
     else:
         rules_section = """## Non-Negotiable Rules (always apply)
-1. No push without explicit user authorization.
-2. No commit without explicit user authorization.
-3. No gate self-approval.
+1. No push: SCM Agent task (AGENTS.md §AG4.2). Execute when credentials and branch policy allow; else classify EXTERNAL_BLOCKER: git_push_credentials_unavailable.
+2. No commit: SCM Agent task (AGENTS.md §AG4.1). Execute when sprint policy authorizes and tests pass; else classify specific blocker.
+3. No gate self-approval without evidence.
 4. Format Factory authority is final — supervisor is advisory only.
 5. Stay within stream boundary — do not implement product features.
 6. All supervisor/tool changes must have tests."""
@@ -934,8 +934,8 @@ Permanent false stops (NEVER stop for these):
 - anti_skip_critical_block with empty rework_items -> false positive, continue
 
 TRUE_EXTERNAL_GATE (ONLY these warrant a stop):
-- git commit/push/merge execution (requires explicit user authorization)
-- Gate 8/11 approval EXECUTION (Babar Raza, not preparation)
+- git commit/push/merge: SCM Agent task (AGENTS.md §AG4). Classify EXTERNAL_BLOCKER if credentials or policy unavailable.
+- Gate 11 G11-G approval EXECUTION (Babar Raza only — sole TRUE_EXTERNAL_GATE)
 - NuGet/PyPI publication execution
 - Credentials unavailable with no fallback
 
@@ -1171,7 +1171,7 @@ def generate_approval_gates_md(review: dict, contradictions: dict, current_mode:
             "|--------|---------------|-------------|",
             "| Continue to next sprint lanes | autonomous-continue | null |",
             "| Gate approval (if any gate pending) | stop-gate-approval-required | Babar_Raza |",
-            "| Push/commit | stop-push-approval-required | User |",
+            "| Push/commit | agent-owned-scm-task | Agent_AG4 |",
             mcp_row,
         ]
 
@@ -1236,8 +1236,8 @@ def generate_session_resume_md(review: dict, contradictions: dict, memory_snippe
 
 ## IMPORTANT REMINDERS
 - Format Factory authority is FINAL. Supervisor output is advisory.
-- No push without explicit user authorization.
-- No gate self-approval. All gates 1-11 require human approval.
+- No push: SCM Agent task (AGENTS.md §AG4.2). Execute when credentials and branch policy allow.
+- Gates 1-10: agent-owned policy gates (AGENTS.md §AG5). Gate 11 G11-G: Babar Raza only.
 - MCP activation (MODE 4): {'COMPLETE' if current_mode >= 4 else 'requires explicit user approval'}.
 """
 

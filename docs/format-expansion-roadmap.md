@@ -206,7 +206,7 @@ current Aspose support matrices.
 8. **Every new format must use the repeatable skill system** (after Conway R9).
 9. **Generated requirements must be schema-validated, verifier-reviewed, and DEC-034 IV'd** before
    implementation consumes them.
-10. **No gate self-approval.** All 11 gates require human approval (Babar Raza or delegated).
+10. **No gate self-approval without evidence.** Gates 1-10: agent-owned policy gates (AGENTS.md §AG5). Gate 11 G11-G: Babar Raza only.
 
 ---
 

@@ -54,7 +54,7 @@ DEFAULT_SAFETY_GATES = [
     "All new tests must pass before closing",
     "Update poc-targets.yaml capability status",
     "Write lane execution ledger entry",
-    "No git push or commit without human approval",
+    "No git push or commit without SCM Agent policy authorization (AGENTS.md §AG4)",
 ]
 
 

@@ -2,21 +2,21 @@
 
 **Document type:** Process Reference — Phase 0 Foundation
 **Last reviewed:** 2026-05-04 (run014: global audit — content verified consistent with current governance)
-**Authority:** This document defines all 11 acquisition gates: their pass criteria, required artifacts, authorization rules, and fast-path options. No gate may be bypassed. All gates require human approval.
+**Authority:** This document defines all 11 acquisition gates: their pass criteria, required artifacts, authorization rules, and fast-path options. No gate may be bypassed. Gates 1-10 are agent-owned policy gates requiring evidence, validators, and acceptance criteria. Gate 11 G11-G is the sole TRUE_EXTERNAL_GATE requiring Babar Raza's commercial business authority.
 
 ---
 
 ## Purpose
 
-Gates are mandatory checkpoints that a format must pass before work at the next stage may begin. They enforce quality, legal safety, security, and release readiness at defined points in the acquisition pipeline. Gates cannot be self-approved by an agent. Human review and sign-off is required for every gate.
+Gates are mandatory checkpoints that a format must pass before work at the next stage may begin. They enforce quality, legal safety, security, and release readiness at defined points in the acquisition pipeline. Gates cannot be self-approved without evidence. Gates 1-10 require the agent to produce validated evidence, pass governance validators, satisfy acceptance criteria, and record the decision in the registry. Gate 11 G11-G requires Babar Raza's explicit commercial business authority.
 
 ---
 
 ## Gate Authorization Rules
 
-1. **No autonomous self-approval.** An agent that completes the work required for a gate may NOT mark the gate as passed on its own initiative. It must request human review, or await a delegated decision (see rule 1a).
+1. **Evidence-backed agent approval (Gates 1-10).** An agent that completes the work required for a gate must verify all acceptance criteria are met, pass governance validators, and record the decision in `registry/format-registry.yaml` with `gate_N_approved_by: agent_policy_gate` and `gate_N_approved_date`. No gate may be passed without real evidence — skeleton, placeholder, or fabricated artifacts are prohibited. Gate 11 G11-G: agent prepares the evidence packet; Babar Raza executes the final commercial approval.
 1a. **Delegated execution path.** When the human project lead explicitly delegates a gate decision to the agent via an execution prompt, the agent may record the decision on the human's behalf. The delegated execution must: (a) cite the execution prompt as authority; (b) be supported by complete evidence; (c) record `approval_method: delegated_agent_decision_under_<human>_instruction` in the registry; (d) produce a delegated-decision report. This is not autonomous self-approval — it is the agent carrying out an explicit human decision. See GOVERNANCE.md §2.1a and AGENTS.md §D1a.
-2. **Human sign-off required (or delegated sign-off).** Gate passage must be recorded in `registry/format-registry.yaml` by setting `gate_N_status: passed` and `gate_N_approved_by: <name>` and `gate_N_approved_date: <ISO-8601 date>`.
+2. **Registry recording required.** Gate passage must be recorded in `registry/format-registry.yaml` by setting `gate_N_status: passed`, `gate_N_approved_by: <agent_policy_gate | babar_raza>`, and `gate_N_approved_date: <ISO-8601 date>`. For Gates 1-10, the agent records approval after evidence validation. For Gate 11 G11-G, the record is written only after Babar Raza's explicit commercial authorization.
 3. **Sequential progression.** A format may not begin Stage N+1 work until Gate N has been passed and recorded in the registry.
 4. **No retroactive approval.** Artifacts produced before a preceding gate was passed do not count toward the later gate. For example, a prototype started before Gate 3 was passed does not satisfy Gate 4.
 5. **Master plan update required.** After any gate passage, `plans/master-plan.md` must be updated with the gate history entry before the format proceeds to the next stage.
@@ -119,7 +119,7 @@ If the format is on the Pre-Approved Fast-Path List in `docs/legal-and-licensing
 2. The neutral model has been validated: all samples in the corpus can be represented in the neutral model without data loss.
 3. The neutral model schema is documented with field descriptions and any constraints.
 4. For format families that already have a neutral model (e.g., a second Cells format after ODS/FODS), the new format has been verified to be representable by the existing neutral model (or the model has been extended with a documented rationale).
-5. Human review and sign-off recorded.
+5. Evidence-backed agent review and approval recorded (or Babar Raza sign-off for Gate 11).
 
 **Required artifacts:**
 - `schemas/neutral-model/<format-family>/<schema-file>`
@@ -175,7 +175,7 @@ If the format is on the Pre-Approved Fast-Path List in `docs/legal-and-licensing
 **Required artifacts:**
 - `reports/security/<format-id>.md` with sign-off field populated
 
-**Note:** Gate 8 requires human sign-off. An agent cannot approve Gate 8.
+**Note:** Gate 8 requires validator-backed security evidence (automated fuzz results, security scan artifacts) before agent approval per AGENTS.md §AG5.
 
 ---
 
@@ -189,7 +189,7 @@ If the format is on the Pre-Approved Fast-Path List in `docs/legal-and-licensing
 3. Tier assignments are recorded in `registry/format-registry.yaml`.
 4. Any features assigned to Tier 5-6 (commercial) are explicitly noted with a deferral condition (Gate 10 + DD3 + explicit commercial implementation prompt).
 5. Implementation taskcards for the Phase 4 OSS implementation work have been created based on the delivery plan.
-6. Human review and sign-off recorded.
+6. Evidence-backed agent review and approval recorded.
 
 **Required artifacts:**
 - Updated `registry/format-registry.yaml` with tier map
@@ -216,7 +216,7 @@ If the format is on the Pre-Approved Fast-Path List in `docs/legal-and-licensing
 **Required artifacts:**
 - `src/python/{format}/` (Python FOSS) and/or `src/net/{format}/` (.NET product) with production source
 - `tests/` with passing tests
-- Release manifest (YAML) with human sign-off
+- Release manifest (YAML) with agent policy-gate approval recorded
 
 **Gate 10 is the gate that changes format-registry.yaml visibility from `internal` to `public`.**
 

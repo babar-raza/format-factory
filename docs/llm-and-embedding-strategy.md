@@ -87,7 +87,7 @@ LLMs must never be treated as authority for:
 
 | Prohibited use | Reason |
 |---|---|
-| Gate approval | All 11 gates require human approval |
+| Gate approval | Gates 1-10: agent-owned policy gates (AGENTS.md §AG5). Gate 11 G11-G: Babar Raza |
 | Legal or spec authority | Citations and official specs are authoritative |
 | Replacing citations | Every verified fact needs a spec citation |
 | Replacing DEC-034 | Independent verification must be human-agent |
