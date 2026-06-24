@@ -1,5 +1,6 @@
 """pbm.spec.bitmap — bitmap domain spec classes for PBM."""
 from .header import Header
 from .bitmap import Bitmap
+from .raster import Raster
 
-__all__ = ["Header", "Bitmap"]
+__all__ = ["Header", "Bitmap", "Raster"]
