@@ -32,3 +32,22 @@ growth_events:
       - "KG-007 registered in gaps.yaml"
     validation: "KG-007 visible in gaps.yaml"
     consumed_by_agents: "future sprint implementing V54 or equivalent"
+
+  - event_id: "GE-003"
+    source_task: "hidden-puzzling-rain TC-P2-002"
+    signal: "KC-PYTHON-002 was DRAFT_PENDING_AUTHORITY — no agent could use it; promoted after 20-format survey"
+    affected_knowledge_ids: ["KC-PYTHON-002"]
+    new_or_updated: "updated"
+    evidence:
+      - "All 20 Python format packages surveyed: abw, csv, dif, fodg, fodp, fods, fodt, gnumeric, ndjson, ods, odt, pbm, pgm, ppm, qoi, sylk, toml, tsv, xcf, zst"
+      - "All 20 formats confirm three-layer structure: spec/, Compat/, root codec/parser"
+      - "SHA-256 hashes computed for csv/__init__.py, ndjson/__init__.py, odt/__init__.py"
+      - "Validator exits 0 for KC-PYTHON-002 after promotion"
+    changes:
+      - "contracts/python-source-structure.yaml status: VERIFIED_CURRENT"
+      - "contracts/python-source-structure.yaml required_fields_or_components populated (6 components)"
+      - "contracts/python-source-structure.yaml authoritative_sources: 3 formats with SHA-256"
+      - "registry.yaml KC-PYTHON-002 status: VERIFIED_CURRENT"
+      - "registry.yaml KC-PYTHON-002 validators: V68 added"
+    validation: "validate_knowledge_contracts.py exits 0; KC-PYTHON-002 VERIFIED_CURRENT"
+    consumed_by_agents: "any agent creating new src/python/ format packages"

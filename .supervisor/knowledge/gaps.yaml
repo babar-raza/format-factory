@@ -54,5 +54,9 @@ gaps:
     severity: "MEDIUM"
     ambiguity_type: "VALIDATOR_MISSING"
     contract_id: "KC-GOVVAL-001"
-    status: "DISCOVERED"
-    notes: "validate_knowledge_contracts.py is not wired into autonomous_cycle.py — see TC-KS-005"
+    status: "CONTRACT_WRITTEN"
+    notes: >
+      V68 (knowledge_freshness_validator.py) created and wired into governance_validator_runner.py.
+      WARN-only (non-blocking). Called as V68 in run_all_governance_validators().
+      autonomous_cycle.py is at LOC cap — wiring via governance runner (not inline) per plan stop condition.
+      Closed by TC-P2-001 (hidden-puzzling-rain Phase 2), 2026-06-24.

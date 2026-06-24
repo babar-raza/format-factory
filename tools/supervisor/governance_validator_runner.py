@@ -1,4 +1,4 @@
-"""governance_validator_runner.py — Runs all governance validators (V1-V66).
+"""governance_validator_runner.py — Runs all governance validators (V1-V68).
 
 Extracted from governance_validators.py to keep that file within its LOC cap.
 This module imports validators from governance_validators LAZILY (inside the function
@@ -29,7 +29,7 @@ def run_all_governance_validators(
     declaration: dict,
     repo_root: Path | None = None,
 ) -> dict:
-    """Run all governance validators (V1-V66) against a declaration.
+    """Run all governance validators (V1-V68) against a declaration.
 
     Returns a composite result dict:
       {
@@ -104,6 +104,10 @@ def run_all_governance_validators(
     # V67 imported from dedicated signal validator file (both governance_validators*.py are AT CAP)
     from governance_validators_signal import (  # noqa: PLC0415
         validate_maturity_signal_schema as _validate_maturity_signal_schema,
+    )
+    # V68 imported from standalone knowledge freshness validator (autonomous_cycle.py is AT CAP)
+    from knowledge_freshness_validator import (  # noqa: PLC0415
+        validate_knowledge_freshness as _validate_knowledge_freshness,
     )
     from governance_validators_ext import (  # noqa: PLC0415
         validate_forbidden_module_names as _validate_forbidden_module_names,
@@ -227,6 +231,8 @@ def run_all_governance_validators(
         validate_multi_responsibility_file(declaration, repo_root),
         # V67 (TC-AMD-MACH-002): Maturity signal schema validator — FAIL if malformed
         _validate_maturity_signal_schema(declaration, repo_root),
+        # V68 (TC-P2-001): Knowledge contract freshness — WARN-only, never blocks sprint
+        _validate_knowledge_freshness(declaration, repo_root),
     ]
 
     # SAL format advisory (non-blocking, Lane E integration)

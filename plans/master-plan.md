@@ -1328,6 +1328,7 @@ TC-FODT-GAP-001, TC-FODT-AUDIT-001, TC-FODT-AUDIT-002, TC-RCAL-001
 | 2026-06-23 | Section 18 QName enforcement text corrected (test count, .NET wiring, skill execution) | Post-audit review revealed overclaims |
 | 2026-06-23 | Section 18 imperative-drifting-lecun summary corrected with per-phase caveats | Same review |
 | 2026-06-23 | Section 26 added with TC-QHARD-POST-001 through TC-QHARD-POST-006 | 6 unresolved audit gaps require governed taskcards |
+| 2026-06-25 | TC-QHARD-POST-001,002,004,005 closed; 10 qname registries patched; parity-matrix.yaml updated | XCF/NDJSON spec_qname verified; FODS reviewer ACCEPTED_VERIFIED; spec-parity honest status added |
 
 ### Audit Findings Incorporated
 
@@ -1396,7 +1397,8 @@ Closeout: CLOSED only after verdict.json exists with ACCEPTED_VERIFIED and all 1
 
 **TC-QHARD-POST-005**
 Title: Execute spec-parity-verification for FODS/FODT or document external blocker (TC-QHARD-063 reopen)
-Status: partially_done | Priority: LOW | Lane: Mainstream Product
+Status: closed | Priority: LOW | Lane: Mainstream Product
+Evidence: parity-matrix.yaml updated with honest spec_parity_status. FODS=PARTIAL (3/12 qnames have facades, SAL 4988 facts, 9/12 architecture_only). FODT=BLOCKED (SAL cache stale, missing fodt/1.3 spec-index.yaml and odf-shared/1.3 parts). unblock_condition documented for both.
 Source: AF-005
 Why it matters: TC-QHARD-063 was closed "structurally." No SAL run was performed. parity-matrix.yaml has no honest entry.
 Required work: (1) Run `python tools/spec-cache/refresh_check.py --all`. (2) If SAL cache available: run `/spec-parity-verification --format fods`. (3) If not available: add parity-matrix.yaml entry with `status: BLOCKED` and `unblock_condition: "SAL cache must contain ODF 1.3 facts"`.
@@ -2764,13 +2766,13 @@ All 7 Wave 2 corrections from the Execution Readiness Certification were applied
 ## Section 52: Self-Growing Repository Knowledge System (hidden-puzzling-rain) — CLOSED
 
 **Plan:** hidden-puzzling-rain (knowledge_infrastructure)
-**Date closed:** 2026-06-24
-**Status:** TERMINAL_CLOSED — ALL-GREEN, all 5 taskcards CLOSED
+**Date closed:** 2026-06-24 (Phase 1); Phase 2 closed 2026-06-24
+**Status:** TERMINAL_CLOSED — ALL-GREEN, Phase 1 (5 taskcards) + Phase 2 (TC-P2-001, TC-P2-002) CLOSED; TC-P2-003 DEFERRED
 
 ### What Was Completed
 
 - **TC-KS-001** — Created `.supervisor/knowledge/` seed infrastructure (10 files):
-  - `registry.yaml` (machine-readable contract index, 2 contracts: KC-PYTHON-001 VERIFIED_CURRENT, KC-PYTHON-002 DRAFT)
+  - `registry.yaml` (machine-readable contract index, 2 contracts: KC-PYTHON-001 VERIFIED_CURRENT, KC-PYTHON-002 DRAFT→VERIFIED_CURRENT in Phase 2)
   - `index.md`, `gaps.yaml` (KG-001..KG-007), `growth-events.yaml` (GE-001, GE-002)
   - `contracts/python-domain-model.yaml` (KC-PYTHON-001 with real SHA-256 drift detection)
   - `contracts/python-source-structure.yaml` (KC-PYTHON-002 DRAFT)
@@ -2806,15 +2808,47 @@ All 10 validation checks (V-01..V-10) pass:
 
 Post-sprint audit: SPRINT_ALL_GREEN_VERIFIED (0 failures, 0 L1/L2/L3 issues)
 
+### Phase 2 — Post-Execution Hardening (hidden-puzzling-rain, 2026-06-24)
+
+**Status:** COMPLETED — all Phase 2 taskcards CLOSED
+
+- **TC-P2-001** — Created `tools/supervisor/knowledge_freshness_validator.py` (V68, 84 LOC):
+  - `validate_knowledge_freshness(declaration, repo_root)` — WARN-only (never blocks sprint)
+  - Wired as V68 in `governance_validator_runner.py` (V1-V68, import + call at lines 108-235)
+  - Note: autonomous_cycle.py was at LOC cap (2401/2401) — new standalone file used per plan stop condition
+  - Note: V54 was already taken (FF-FORENSIC-A4) — V68 used (next available after V67)
+  - KG-007 in `.supervisor/knowledge/gaps.yaml` updated to `status: CONTRACT_WRITTEN`
+  - 5 regression tests in `tests/supervisor/test_knowledge_freshness_validator.py` — all PASS
+
+- **TC-P2-002** — Promoted KC-PYTHON-002 from DRAFT to VERIFIED_CURRENT:
+  - Full 20-format survey: all formats confirm three-layer structure (spec/, Compat/, codec/parser)
+  - `contracts/python-source-structure.yaml`: 6 required components, 3 authoritative sources with SHA-256
+  - `registry.yaml` KC-PYTHON-002 status: VERIFIED_CURRENT
+  - `validate_knowledge_contracts.py` exits 0: both contracts VERIFIED_CURRENT
+  - GE-003 appended to `growth-events.yaml`
+
+- **TC-P2-003** — Status: DEFERRED (explicitly acceptable per Phase 2 closeout criteria)
+  - Requires TC-P2-001 and a suitable production sprint. Low priority. Not blocking.
+
 ### Remaining Follow-ups (Non-Blockers)
 
-- KG-007: `validate_knowledge_contracts.py` not yet wired into `autonomous_cycle.py` — tracked as gap, future sprint
+- TC-P2-003 deferred until live production sprint uses Step 0 (L4 proof)
 
-### Files Changed (14)
+### Files Changed (Total: 14 Phase 1 + 6 Phase 2 = 20 files)
 
-New (10 in `.supervisor/knowledge/`) + Modified (4: AGENTS.md, docs/agent-methodology-index.md, add-python-api.md, add-python-object-model-feature.md)
+**Phase 2 new files (2):**
+- `tools/supervisor/knowledge_freshness_validator.py` (V68)
+- `tests/supervisor/test_knowledge_freshness_validator.py` (5 tests)
+
+**Phase 2 modified files (4):**
+- `.supervisor/knowledge/contracts/python-source-structure.yaml` (DRAFT → VERIFIED_CURRENT)
+- `.supervisor/knowledge/registry.yaml` (KC-PYTHON-002 promoted, V68 added)
+- `.supervisor/knowledge/growth-events.yaml` (GE-003 added)
+- `.supervisor/knowledge/gaps.yaml` (KG-007 → CONTRACT_WRITTEN)
+- `tools/supervisor/governance_validator_runner.py` (V68 import + call, V1-V68)
+- `plans/master-plan.md` (this update)
 
 ---
 
-*End of plans/master-plan.md — version 6.2 — 2026-06-24 (Section 52: hidden-puzzling-rain knowledge infrastructure CLOSED — 14 files, all V-01..V-10 pass, ALL-GREEN)*
+*End of plans/master-plan.md — version 6.3 — 2026-06-24 (Section 52: hidden-puzzling-rain Phase 2 CLOSED — TC-P2-001 V68, TC-P2-002 KC-PYTHON-002 promoted, ALL-GREEN)*
 *This document is the single operational authority for format-factory. All other documents are subordinate to it for operational decisions.*
