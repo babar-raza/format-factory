@@ -30,6 +30,7 @@ parent_plan_status: TERMINAL_CLOSED
 | 2026-06-23 | SCRIPTS AUDIT: 4 deliverables written to reports/_audit/scripts/ | Audit mode |
 | 2026-06-23 | PLAN HARDENING: 5 new findings (F-009 through F-013) + 5 taskcards (TC-VNK-H-007 through TC-VNK-H-011) from scripts audit | Plan hardening mode |
 | 2026-06-23 | EXECUTION: H-007 CLOSED (archived), H-008 CLOSED (renamed), H-009 PARTIAL (denied), H-010 CLOSED (assessment), H-011 CLOSED (assessment) | Plan-bound execution |
+| 2026-06-24 | EXECUTION: H-005 CLOSED — commit 02867046 (17 files, user authorized) | Plan-bound execution |
 
 ---
 
@@ -129,7 +130,7 @@ These are NOT reopened by this addendum.
 | F-002 | V57 WARN-only, no teeth | **CLOSED** | TC-VNK-H-002 — 17.6% coverage, incremental plan |
 | F-003 | Skill deprecation routing untested | **CLOSED** | TC-VNK-H-003 — ROUTING_NOT_AFFECTED |
 | F-004 | Governance hardening lacks integration tests | **CLOSED** | TC-VNK-H-004 — 4 integration tests added |
-| F-005 | No git commit | **BLOCKED_EXTERNAL** | TC-VNK-H-005 — requires user authorization |
+| F-005 | No git commit | **CLOSED** | TC-VNK-H-005 — commit 02867046 (17 files) |
 | F-006 | FODP codec residual debt | **CLOSED** | TC-VNK-H-006 — debt register + import bug fixed |
 | F-007 | DISCOVERED: analytics file misnamed presentation_document.py | **FIXED** | Renamed to fodp_analytics.py; import updated; all refs corrected |
 | F-008 | DISCOVERED: canonical validator count stale (61→63) | **FIXED** | TestCanonicalValidatorCount updated |
@@ -685,7 +686,7 @@ This addendum is CLOSED when ALL of:
 - [x] TC-VNK-H-002: V57 promotion plan exists — CLOSED (17.6% coverage, incremental plan documented)
 - [x] TC-VNK-H-003: /check-skill-coverage routing verified — CLOSED (ROUTING_NOT_AFFECTED)
 - [x] TC-VNK-H-004: Integration test added and passing — CLOSED (4 tests, 100 passed + canonical count fixed to 63)
-- [ ] TC-VNK-H-005: Git commit made — BLOCKED_EXTERNAL (requires user authorization)
+- [x] TC-VNK-H-005: Git commit made — CLOSED (commit 02867046, 17 files, user authorized)
 - [x] TC-VNK-H-006: FODP codec debt register created — CLOSED (+ import bug fixed: presentation_document→fodp_analytics)
 - [x] TC-VNK-H-007: Archive untraced proof graph scripts — CLOSED (3 files → .local/archived-scripts/)
 - [x] TC-VNK-H-008: Rename untrack-commands-plan.sh to .md — CLOSED (shebang/exit removed)
@@ -707,9 +708,9 @@ Minimum viable closeout (allows proceeding to next sprint):
 
 | Blocker | Type | Resolution |
 |---------|------|------------|
-| Git commit authorization | TRUE_EXTERNAL_GATE | User must explicitly authorize |
+| ~~Git commit authorization~~ | ~~TRUE_EXTERNAL_GATE~~ | RESOLVED — commit 02867046 |
 
-All other items are AGENT_RESOLVABLE — no external gate required.
+All blockers resolved. TC-VNK-H-009 is PARTIALLY_DONE (user denied rm -rf; .gitignore covers).
 
 ---
 
@@ -721,7 +722,7 @@ PRIORITY GROUP 1 (CLOSED or BLOCKED):
   TC-VNK-H-002 — CLOSED
   TC-VNK-H-003 — CLOSED
   TC-VNK-H-004 — CLOSED
-  TC-VNK-H-005 — BLOCKED_EXTERNAL (commit)
+  TC-VNK-H-005 — CLOSED (commit 02867046)
   TC-VNK-H-006 — CLOSED
 
 PRIORITY GROUP 2 (Scripts audit — quick hygiene):
