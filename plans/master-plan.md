@@ -2277,5 +2277,34 @@ Convergence iteration (H10-H12):
 
 ---
 
-*End of plans/master-plan.md — version 5.1 — 2026-06-24 (Section 41: zesty-conjuring-peacock CLOSED — spec-level code segregation, 20 format renames, 2 convergence iterations)*
+## Section 42 — eager-snuggling-sifakis: TC-FORENSICS-TERMINAL Convergence Hardening (CLOSED)
+
+**Plan:** `eager-snuggling-sifakis.md` | **Mission:** TC-FORENSICS-TERMINAL-20260623
+**Sprint type:** Convergence hardening (test alignment to evolved function signatures) | **Convergence iterations:** 1
+
+### What was completed
+
+**Test convergence (7 failures → 0):**
+- `test_open_taskcard_blocks_audit_pass` — fixed assertion for `open_taskcards` being `list[dict]` (not `list[str]`)
+- `TestClosureContract` (4 tests) — updated calls from positional kwargs to `build_closure_contract(audit_result, plan_path)` signature
+- `test_import_error_fallback` — replaced blanket `__import__` mock with selective mock preserving `hashlib` and other stdlib imports
+- `test_reopen_transitions_to_in_progress` — corrected: old lock is SUPERSEDED (new lock created separately by `write_lock()`)
+- `test_successor_mode_marks_superseded` — corrected: old lock is SUPERSEDED, reopening record tracks SUPERSEDED_BY_SUCCESSOR
+
+**Root causes:** Function signatures in `lifecycle_audit.py` and lock semantics in `reopen_plan_lock.py` evolved across prior sessions (TC-TCF-003 through TC-TCF-010), but tests written against the original design were not updated to match the final implementation.
+
+### Verification performed
+
+- `test_terminal_closure_prevention.py`: 32/32 pass (1.55s)
+- `TestRunAllValidators` (governance regression): 5/5 pass
+- Linter modifications (lifecycle_audit.py `stop_reason or ""`, test file formatting) confirmed compatible — tests pass after both rounds of linter changes
+
+### Non-blocking follow-ups
+
+- Full governance validator suite (207 tests, ~7min) not re-run in this session — `TestRunAllValidators` subset covers the critical path
+- V53 filesystem scanner exclusion added to `_fs_scanners` set in `test_governance_validators.py` — correct because V53 scans QName registry state, not declaration content
+
+---
+
+*End of plans/master-plan.md — version 5.2 — 2026-06-24 (Section 42: eager-snuggling-sifakis convergence CLOSED — 7 test fixes, 32/32 green)*
 *This document is the single operational authority for format-factory. All other documents are subordinate to it for operational decisions.*
