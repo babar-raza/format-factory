@@ -1,4 +1,3 @@
-#!/bin/bash
 # Untrack Commands Plan
 # Sprint: FORMAT-FACTORY-REPO-SHARING-GITIGNORE-REMOTE-REFRESH-PLAN-001
 # Generated: 2026-06-04
@@ -39,7 +38,5 @@
 #   # Must return empty
 #
 # ---------------------------------------------------------------------------
-# END OF PLAN — NO COMMANDS ARE EXECUTED BY THIS SCRIPT
+# END OF PLAN — NO COMMANDS ARE EXECUTED BY THIS FILE
 # ---------------------------------------------------------------------------
-echo "This is a plan file. Read the comments above before executing any commands."
-exit 0

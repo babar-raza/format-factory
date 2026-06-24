@@ -545,14 +545,19 @@ def validate_spec_authority_class_completeness(
     repo_root: Path | None = None,
     formats_filter: list[str] | None = None,
 ) -> dict:
-    """V53 (TC-QHARD-003): WARN for each QName registry entry whose python_file is missing or lacks the spec class.
+    """V53 (TC-QHARD-003): Validate QName registry python_file entries.
 
-    Reads all shared/qname-registry/*.yaml files. For entries where python_file != null:
+    Reads all shared/qname-registry/*.yaml files.
+
+    Pass 1 (WARN): For entries where python_file != null:
     1. If the file does not exist on disk: WARN "file missing".
     2. If the file exists but no ClassDef has spec_qname == qname: WARN "class missing".
 
-    Severity: WARN (blocks_sprint=False). All FODS entries produce WARN at Phase 0;
-    they become PASS after Phase 1 creates the spec authority classes.
+    Pass 2 (FAIL): For entries where status IN (implementing, implemented, stable)
+    AND python_file is null: FAIL with blocks_sprint=True.
+    Seeded and architecture_only entries with null python_file remain WARN-only.
+
+    TC-QNAME-VALIDATORS-001 (cheerful-floating-glade): upgraded to FAIL mode 2026-06-23.
     """
     import yaml as _yaml  # stdlib-compatible; pyyaml required
 
@@ -635,6 +640,45 @@ def validate_spec_authority_class_completeness(
                     "python_file": python_file,
                     "issue": f"File exists but no class with spec_qname == {qname!r}",
                 })
+
+    # Pass 2: FAIL for implementing/implemented/stable entries with null python_file
+    _FAIL_STATUSES = {"implementing", "implemented", "stable"}
+    blockers = []
+    for yaml_path in sorted(registry_dir.glob("*.yaml")):
+        if yaml_path.name == "schema.yaml":
+            continue
+        try:
+            entries = _yaml.safe_load(yaml_path.read_text(encoding="utf-8")) or []
+        except Exception:
+            continue
+        fmt_name = yaml_path.stem
+        if formats_filter and fmt_name not in formats_filter:
+            continue
+        for entry in entries:
+            if not isinstance(entry, dict):
+                continue
+            status = entry.get("status", "seeded")
+            python_file = entry.get("python_file")
+            qname = entry.get("qname", "")
+            if not python_file and status in _FAIL_STATUSES:
+                blockers.append({
+                    "format": fmt_name,
+                    "qname": qname,
+                    "status": status,
+                    "issue": f"status={status} but python_file is null — must be populated",
+                })
+
+    if blockers:
+        return {
+            "validator": "validate_spec_authority_class_completeness",
+            "result": "FAIL",
+            "blocks_sprint": True,
+            "items": blockers + warnings,
+            "summary": (
+                f"V53: {len(blockers)} registry entry(ies) with status "
+                f"implementing/implemented/stable have null python_file (BLOCKS SPRINT)"
+            ),
+        }
 
     result = "WARN" if warnings else "PASS"
     return {

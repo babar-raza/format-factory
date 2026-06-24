@@ -444,9 +444,10 @@ class TestRunAllValidators:
             )
         ])
         result = run_all_governance_validators(decl)
-        assert result["all_pass"]
+        failed = [v["validator"] for v in result["validators"] if v["result"] == "FAIL"]
+        assert result["all_pass"], f"Unexpected FAIL validators: {failed}"
         assert not result["blocks_sprint"]
-        assert result["fail_count"] == 0
+        assert result["fail_count"] == 0, f"Unexpected FAIL validators: {failed}"
 
     def test_ungoverned_product_fails_multiple_validators(self):
         from governance_validators import run_all_governance_validators

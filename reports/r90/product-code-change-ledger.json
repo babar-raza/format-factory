@@ -17594,6 +17594,35 @@
       "rationale": "Replaced stdlib csv.writer in dif_to_csv with FF csv_writer.write_csv. DIF->CSV is now a proper dogfood export (source_library(FF) -> export_function -> target_library(FF)). dogfood_status upgraded from GAP_DOGFOOD_EXTERNAL to IMPLEMENTED.",
       "test_impact": "14 passed, 1 skipped. All dogfood proof tests pass.",
       "gate_11_criterion": "P6 dogfood export coverage"
+    },
+    {
+      "entry_id": "VNK-008-FODP-ANALYTICS-EXTRACT",
+      "classification": "ANALYTICS_SEPARATION",
+      "origin_sprint": "vivid-napping-kurzweil",
+      "product": "FODP Python",
+      "capability_refs": [
+        "analytics_extraction"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/fodp/fodp_codec.py",
+          "state": "modified"
+        },
+        {
+          "path": "src/python/fodp/fodp_analytics.py",
+          "state": "created"
+        }
+      ],
+      "format": "FODP",
+      "skill_id": "decompose-monolithic-codec",
+      "functions_extracted": [
+        "fodp_slide_titles",
+        "fodp_master_page_count",
+        "fodp_text_per_slide",
+        "fodp_average_shapes_per_slide"
+      ],
+      "loc_before": 812,
+      "loc_after": 748
     }
   ],
   "total_entries": 959

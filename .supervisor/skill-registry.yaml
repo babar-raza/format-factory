@@ -348,9 +348,9 @@ skills:
   - skill_id: check-mcp-status
     command: /check-mcp-status
     command_file: .claude/commands/check-mcp-status.md
-    status: deferred
+    status: active
     spec_qname_required: false
-    deferred_reason: "No command file exists. MCP status is checked ad-hoc during preflight. Promote when automated MCP health monitoring is needed."
+    # deferred_reason removed 2026-06-23 (TC-VNK-006): command file .claude/commands/check-mcp-status.md exists; promoting to active.
     purpose: Check and classify the MCP server connection status using a 5-state model.
     product_track: planning
     required_handoff_fields:
@@ -866,6 +866,10 @@ skills:
     command: /decompose-monolithic-codec
     command_file: .claude/commands/decompose-monolithic-codec.md
     status: active
+    deprecated: true
+    deprecation_note: >
+      Use extract-analytics-from-monolith for new sprints (registered 2026-06-23, TC-VNK-004).
+      This skill remains active as a backward-compatible alias for sprints that already declared it.
     spec_qname_required: false
     purpose: >
       Move arithmetic/analytical functions from a format's main codec/parser into
@@ -889,7 +893,37 @@ skills:
       - BLOCKED_BASELINE_FAILING
       - BLOCKED_NO_BACKWARD_COMPAT
       - BLOCKED_NO_LOC_REDUCTION
-    notes: "Created 2026-06-22 by TC-AUDIT-007 (tender-dreaming-lovelace hardening). Governs FODG/XCF/ZST monolith decomposition."
+    notes: "Created 2026-06-22 by TC-AUDIT-007. DEPRECATED 2026-06-23 (TC-VNK-004): use extract-analytics-from-monolith."
+
+  - skill_id: extract-analytics-from-monolith
+    command: /extract-analytics-from-monolith
+    command_file: .claude/commands/extract-analytics-from-monolith.md
+    status: active
+    spec_qname_required: false
+    purpose: >
+      Extract pure arithmetic/analytics functions from a monolithic codec/parser file
+      into a dedicated {format}_analytics.py. Canonical skill for analytics separation.
+      Resolves GOV_BLOCK:monolith_detection_validator. Supersedes decompose-monolithic-codec.
+    product_track: src_healing
+    required_handoff_fields:
+      - format_id
+      - source_file
+      - analytics_target_file
+      - functions_to_move
+    mandatory_validations:
+      - analytics_target_below_loc_cap
+      - baseline_tests_pass_before_extraction
+      - backward_compat_tests_pass_after_extraction
+      - loc_reduction_positive
+      - baseline_json_updated
+      - skill_transcript_written
+    stop_conditions:
+      - BLOCKED_CAP_REACHED
+      - BLOCKED_BASELINE_FAILING
+      - BLOCKED_NO_BACKWARD_COMPAT
+      - BLOCKED_NO_LOC_REDUCTION
+      - BLOCKED_NO_PURE_ANALYTICS_FUNCTIONS
+    notes: "Registered 2026-06-23 (TC-VNK-004). Canonical analytics extraction skill. decompose-monolithic-codec is deprecated alias."
 
   - skill_id: python-qname-code-reviewer
     command: /python-qname-code-reviewer
