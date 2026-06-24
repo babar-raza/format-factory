@@ -889,9 +889,9 @@ def count_paragraphs_matching(model: dict, pattern: str, case_sensitive: bool = 
     return count
 
 
-# Analytics functions are in abw_analytics.py to keep this file within policy limits.
+# Analytics functions are in word_document.py to keep this file within policy limits.
 try:
-    from .abw_analytics import *  # noqa: F401, F403
+    from .word_document import *  # noqa: F401, F403
 except ImportError:
     pass
 

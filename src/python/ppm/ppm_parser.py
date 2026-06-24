@@ -632,6 +632,6 @@ def is_grayscale(file_path: str | Path) -> bool:
 # Analytics functions moved to ppm_analytics.py (TC-HEAL-FORMATS-BATCH2)
 # ---------------------------------------------------------------------------
 try:
-    from .ppm_analytics import *
+    from .color_image import *  # noqa: F401, F403
 except ImportError:
     pass

@@ -1,0 +1,32 @@
+{
+  "clean_sprint_count": 3,
+  "target_clean_sprints": 3,
+  "sprints": [
+    {
+      "date": "2026-06-23",
+      "false_positives": false,
+      "sprint_id": "FF-FORENSIC-AUDIT-20260623-HARDEN",
+      "note": "V54/V55 first deployment, no production items to trigger"
+    },
+    {
+      "date": "2026-06-24",
+      "false_positives": false,
+      "sprint_id": "convergence-gap-closure-20260624-b9c679"
+    },
+    {
+      "date": "2026-06-24",
+      "false_positives": false,
+      "sprint_id": "FF-V54V55-PROMOTE-20260624"
+    }
+  ],
+  "promoted": true,
+  "promoted_at": "2026-06-24",
+  "promotion_target": {
+    "validators": [
+      "V54_cross_lane_product_touching_machinery",
+      "V55_cross_lane_machinery_touching_product"
+    ],
+    "from_severity": "WARN",
+    "to_severity": "conditional-blocking"
+  }
+}

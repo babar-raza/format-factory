@@ -257,6 +257,6 @@ def probe_odt(file_path: str | Path) -> dict[str, Any]:
 # Analytics functions moved to odt_analytics.py (TC-HEAL-FORMATS-BATCH2)
 # ---------------------------------------------------------------------------
 try:
-    from .odt_analytics import *
+    from .text_document import *  # noqa: F401, F403
 except ImportError:
     pass

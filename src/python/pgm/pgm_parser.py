@@ -645,6 +645,6 @@ def grayscale_variance(file_path: str | Path) -> float:
 # Analytics functions moved to pgm_analytics.py (TC-HEAL-FORMATS-BATCH2)
 # ---------------------------------------------------------------------------
 try:
-    from .pgm_analytics import *
+    from .grayscale_image import *  # noqa: F401, F403
 except ImportError:
     pass

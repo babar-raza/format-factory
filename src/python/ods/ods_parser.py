@@ -780,9 +780,9 @@ def sum_row(
 
 
 # ---------------------------------------------------------------------------
-# Analytics functions moved to ods_analytics.py (TC-HEAL-FORMATS-BATCH1)
+# Analytics functions in spreadsheet_document.py (spec-owned domain module)
 # ---------------------------------------------------------------------------
 try:
-    from .ods_analytics import *
+    from .spreadsheet_document import *  # noqa: F401, F403
 except ImportError:
     pass

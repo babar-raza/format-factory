@@ -1909,8 +1909,8 @@ def fodt_total_block_count(document: dict[str, Any]) -> int:
     return blocks + lists + tables
 
 
-# Analytics functions are in fodt_analytics.py
+# Analytics functions are in text_document.py
 try:
-    from .fodt_analytics import *  # noqa: F401,F403
+    from .text_document import *  # noqa: F401, F403
 except ImportError:
     pass

@@ -1226,6 +1226,6 @@ def fods_sheet_row_variance(workbook: dict[str, Any]) -> float:
 # Re-imported here for backward compatibility.
 # ---------------------------------------------------------------------------
 try:
-    from .fods_analytics import *  # noqa: F401, F403
+    from .spreadsheet_document import *  # noqa: F401, F403
 except ImportError:
     pass

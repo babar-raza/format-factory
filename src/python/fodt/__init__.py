@@ -81,7 +81,7 @@ from .neutral_model import (
     document_empty_paragraph_count,
     fodt_total_block_count,
 )
-from .fodt_analytics import (
+from .text_document import (
     fodt_paragraph_count,
     fodt_word_count,
     fodt_heading_count,

@@ -374,8 +374,8 @@ def count_empty_cells(file_path: "str | Path", col_name: str) -> int:
 
 
 
-# Analytics functions are in csv_analytics.py to keep this file within policy limits.
+# Analytics functions are in tabular_document.py to keep this file within policy limits.
 try:
-    from .csv_analytics import *  # noqa: F401, F403
+    from .tabular_document import *  # noqa: F401, F403
 except ImportError:
     pass

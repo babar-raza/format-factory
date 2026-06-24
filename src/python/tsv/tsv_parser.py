@@ -812,6 +812,6 @@ def unique_column_values(data: Any, col_name: str) -> list[str]:
 # Analytics functions moved to tsv_analytics.py (TC-HEAL-FORMATS-BATCH1)
 # ---------------------------------------------------------------------------
 try:
-    from .tsv_analytics import *
+    from .tabular_document import *  # noqa: F401, F403
 except ImportError:
     pass

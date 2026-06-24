@@ -1075,6 +1075,6 @@ def _check_size(path: Path) -> None:
 # Analytics functions moved to ndjson_analytics.py (TC-HEAL-FORMATS-BATCH1)
 # ---------------------------------------------------------------------------
 try:
-    from .ndjson_analytics import *
+    from .json_stream import *  # noqa: F401, F403
 except ImportError:
     pass

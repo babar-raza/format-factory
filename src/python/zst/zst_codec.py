@@ -1544,6 +1544,6 @@ def zst_size_exceeds_1k(path: "str | Path") -> bool:
 # Analytics extension — arithmetic combination functions.
 # Separated from core codec to reduce file size. All names re-exported.
 try:
-    from .zst_analytics import *  # noqa: F401, F403
+    from .compression_metrics import *  # noqa: F401, F403
 except ImportError:
     pass  # Standalone module import (no package context) - analytics unavailable

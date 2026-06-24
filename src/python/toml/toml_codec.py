@@ -722,6 +722,6 @@ def count_sections_with_key(source: "str | bytes | Path", key: str) -> int:
 # Analytics functions moved to toml_analytics.py (TC-HEAL-FORMATS-BATCH2)
 # ---------------------------------------------------------------------------
 try:
-    from .toml_analytics import *
+    from .config_document import *  # noqa: F401, F403
 except ImportError:
     pass

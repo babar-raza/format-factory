@@ -609,6 +609,6 @@ def scale_nearest(file_path: "str | Path", dest_path: "str | Path", factor: int)
 # Analytics functions moved to pbm_analytics.py (TC-HEAL-FORMATS-BATCH2)
 # ---------------------------------------------------------------------------
 try:
-    from .pbm_analytics import *
+    from .bitmap_image import *  # noqa: F401, F403
 except ImportError:
     pass

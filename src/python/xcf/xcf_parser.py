@@ -1272,6 +1272,6 @@ def xcf_pixel_count_per_layer(file_path: str | Path) -> float:
 # Analytics extension — arithmetic combination functions.
 # Separated from core parser to reduce file size. All names re-exported.
 try:
-    from .xcf_analytics import *  # noqa: F401, F403
+    from .xcf_image_metrics import *  # noqa: F401, F403
 except ImportError:
     pass  # Standalone module import — analytics unavailable

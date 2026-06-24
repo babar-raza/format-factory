@@ -314,6 +314,6 @@ def probe_qoi(file_path: str | Path) -> dict[str, Any]:
 # Analytics functions moved to qoi_analytics.py (TC-HEAL-FORMATS-BATCH2)
 # ---------------------------------------------------------------------------
 try:
-    from .qoi_analytics import *
+    from .image_document import *  # noqa: F401, F403
 except ImportError:
     pass

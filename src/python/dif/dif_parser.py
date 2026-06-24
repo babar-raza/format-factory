@@ -656,8 +656,8 @@ def average_column(file_path: str | Path, col: int) -> float:
 
 
 
-# Analytics functions are in dif_analytics.py to keep this file within policy limits.
+# Analytics functions are in interchange_document.py to keep this file within policy limits.
 try:
-    from .dif_analytics import *  # noqa: F401, F403
+    from .interchange_document import *  # noqa: F401, F403
 except ImportError:
     pass

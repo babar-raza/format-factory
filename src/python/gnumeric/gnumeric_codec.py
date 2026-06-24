@@ -1107,6 +1107,6 @@ def correlation_columns(
 # Analytics functions moved to gnumeric_analytics.py (TC-HEAL-FORMATS-BATCH1)
 # ---------------------------------------------------------------------------
 try:
-    from .gnumeric_analytics import *
+    from .workbook_document import *  # noqa: F401, F403
 except ImportError:
     pass
