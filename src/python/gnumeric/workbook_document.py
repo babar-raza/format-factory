@@ -18,10 +18,12 @@ from .gnumeric_codec import (
     extract_values,
     get_sheet_metadata,
     get_cell_value,
-    get_all_values,
     get_row_count,
     get_column_count,
     count_nonempty_cells,
+)
+from .gnumeric_workbook_stats import (
+    get_all_values,
     get_sheet_as_rows,
     row_count,
 )

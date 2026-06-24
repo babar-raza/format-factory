@@ -17,7 +17,8 @@ namespace_uri = "http://www.abisource.com/awml.dtd"
 import re
 from pathlib import Path
 
-from .abw_codec import count_words, extract_text, load
+from .abw_codec import extract_text, load
+from .abw_word_stats import count_words
 
 
 def abw_sentence_count(model: dict) -> int:

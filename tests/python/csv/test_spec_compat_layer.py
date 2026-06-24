@@ -6,9 +6,10 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent.parent))
 
-from src.python.csv.Compat import CsvRecord, CsvField
+from src.python.csv.Compat import CsvRecord, CsvField, CsvHeader
 from src.python.csv.spec.record.record import Record as SpecRecord
 from src.python.csv.spec.record.field import Field as SpecField
+from src.python.csv.spec.record.header import Header as SpecHeader
 
 
 class TestCsvRecordMetadata:
@@ -72,3 +73,49 @@ class TestCsvFieldBehavior:
     def test_repr_nonempty(self):
         f = CsvField("x")
         assert repr(f)
+
+
+class TestCsvHeaderMetadata:
+    def test_spec_qname(self):
+        assert CsvHeader.spec_qname == "csv:header"
+
+    def test_spec_fact_ref(self):
+        assert CsvHeader.spec_fact_ref == "FACT-CSV-001"
+
+    def test_namespace_uri_present(self):
+        assert CsvHeader.namespace_uri
+
+
+class TestCsvHeaderBehavior:
+    def test_instantiation(self):
+        h = CsvHeader({"names": ["a", "b"]})
+        assert h is not None
+
+    def test_names_property(self):
+        h = CsvHeader({"names": ["name", "age", "city"]})
+        assert h.names == ["name", "age", "city"]
+
+    def test_count(self):
+        h = CsvHeader({"names": ["x", "y"]})
+        assert h.count == 2
+
+    def test_has_duplicates_false(self):
+        h = CsvHeader({"names": ["a", "b", "c"]})
+        assert h.has_duplicates is False
+
+    def test_has_duplicates_true(self):
+        h = CsvHeader({"names": ["a", "b", "a"]})
+        assert h.has_duplicates is True
+
+    def test_to_dict(self):
+        d = {"names": ["x"]}
+        h = CsvHeader(d)
+        assert h.to_dict() == d
+
+    def test_inherits_spec_class(self):
+        h = CsvHeader({"names": []})
+        assert isinstance(h, SpecHeader)
+
+    def test_repr_nonempty(self):
+        h = CsvHeader({"names": ["a"]})
+        assert repr(h)
