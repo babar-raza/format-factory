@@ -555,4 +555,60 @@ At any step:
 
 ---
 
+## 26. Infrastructure Added — PLAN-SCOPED-CONT-20260623 (2026-06-24)
+
+The following infrastructure was delivered by mission `PLAN-SCOPED-CONT-20260623`
+(plan file: `C:/Users/prora/.claude/plans/frolicking-weaving-hamming.md`).
+This is additive to the CCI-MVP hardening completed 2026-06-18 (commit 8195c8d).
+
+### RC-001 Partial Resolution — Product Track chat_id
+
+`tools/supervisor/continuation_identity.py` now includes `get_or_create_product_chat_id()`.
+It writes/reads `.local/supervisor/product/current-chat-id.json` (UUID4, persists for
+session lifetime). Product track `check_continuation.py` output now includes
+`product_chat_id` in the result dict. Full CHAT_ID_MISMATCH enforcement for product track
+is deferred (RC-001 full fix requires per-chat directory infrastructure — TC-CCI-011).
+
+### TC-CCI-009 Partial Resolution — Continuation Ledger Wiring
+
+`tools/supervisor/continuation_ledger.py` (existing, 136 lines) is now wired into
+`tools/supervisor/check_continuation.py`. Every STOP and CONTINUE verdict appends a
+`CONTINUATION_VERDICT` JSONL entry to `.local/supervisor/continuation-ledger.jsonl`
+via the non-blocking `_log_verdict()` helper. Ledger writes are wrapped in
+`try/except: pass` — ledger failure cannot block continuation.
+
+### Check 0c — Session-Scoped Chat Plan Binding (New Check)
+
+A new Check 0c has been inserted between Check 0b and Check 1b in
+`tools/supervisor/check_continuation.py`. It reads per-mission binding files from
+`.local/missions/<mission_id>/plan-binding.yaml` and enforces that a chat with an
+active `IN_PROGRESS` binding (where `global_ledger_fallback_allowed: false`) does not
+fall back to the global system ledger.
+
+Key design properties:
+- **Session-scoped**: binding includes `session_id`; only the creating session is blocked.
+  Other sessions are unaffected (prevents the original cross-chat contamination problem).
+- **48-hour TTL**: stale bindings from crashed sessions auto-expire.
+- **COMPLETE status**: completed bindings do not block.
+- **Non-blocking on error**: corrupt bindings are skipped with `continue`.
+- **STOP reason**: `CHAT_PLAN_BINDING_ACTIVE` (non-overridable per CLAUDE.md).
+
+### New CLI Tool — write_chat_plan_binding.py
+
+`tools/supervisor/write_chat_plan_binding.py` (~130 lines) manages mission binding files:
+- `--mission-id X --plan-path Y` — creates/updates IN_PROGRESS binding
+- `--complete` — marks binding COMPLETE (unblocks global ledger)
+- `--last-taskcard Z` — progress tracking
+- `--clear-mission X` — removes binding directory (crash recovery)
+- `--ttl-hours N` — override TTL (default: 48)
+
+### Tests
+
+`tests/supervisor/test_plan_scoped_continuation.py` — 7 integration tests verifying:
+same-session blocking, cross-session safety, COMPLETE non-blocking, TTL expiry,
+no-binding pass-through, clear-mission removal, and ledger entry writing.
+All 7 pass.
+
+---
+
 END OF PLAN

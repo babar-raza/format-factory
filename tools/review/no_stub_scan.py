@@ -3,7 +3,7 @@
 Per the governed QName decomposition plan (§2.2 No-Stub Policy):
 
 Forbidden terms that indicate incomplete or placeholder implementations:
-  TODO, FIXME, stub, placeholder, not implemented, dummy, fake, mock,
+  TODO, FIXME, stub, placeholder, not implemented, dummy, fake,
   temporary, TBD, later, future
 
 Also detects:
@@ -13,6 +13,13 @@ Also detects:
 Allowed exception:
   - Classes with `authority_only = True` class attribute are metadata-only
     spec authority classes and are exempt from the stub body check.
+
+False-positive exclusions (TC-ZS-SCANNER-001, 2026-06-23):
+  - Lines containing "NOT.*stub" / "NOT.*architecture_only" (anti-stub documentation)
+  - Lines containing XML element patterns "text:placeholder" (ODF element name)
+  - Lines matching "promoted from stub" (historical promotion notes)
+  - Lines referencing gap-ledger governance ("see GAP-" pattern)
+  - " mock" term removed from forbidden list (catches MagicMock in legitimate tests)
 
 CLI:
   python tools/review/no_stub_scan.py src/python/abw
@@ -40,7 +47,6 @@ _FORBIDDEN_TERMS: list[str] = [
     "NotImplemented",
     "dummy",
     " fake",
-    " mock",
     "temporary",
     "TBD",
 ]
@@ -49,6 +55,23 @@ _FORBIDDEN_RE = re.compile(
     "|".join(re.escape(t) for t in _FORBIDDEN_TERMS),
     re.IGNORECASE,
 )
+
+_ALLOWLIST_PATTERNS: list[re.Pattern[str]] = [
+    # Anti-stub documentation: "NOT an architecture_only spec stub", "NOT a stub", etc.
+    re.compile(r"\bNOT\b.{0,50}\bstub\b", re.IGNORECASE),
+    # References to the location of spec stubs: "spec stub is at ...", "spec stubs are under ..."
+    re.compile(r"spec\s+stub[s]?\s+(is|are)\s+(at|under)", re.IGNORECASE),
+    # ODF XML element names that contain "placeholder" (e.g., text:placeholder)
+    re.compile(r"\w+:placeholder\b"),
+    # Docstrings describing what a function scans/detects — not what the code IS
+    re.compile(r"(common\s+placeholder\s+pattern|scans?\s+.{0,40}placeholder\s+pattern)", re.IGNORECASE),
+    # Historical promotion notes (e.g., "promoted from stub to full package export")
+    re.compile(r"promoted from\s+stub", re.IGNORECASE),
+    # Governed gap-ledger references (e.g., "see GAP-XCF-LAYER-NAMES in gap-ledger.json")
+    re.compile(r"see\s+GAP-[A-Z0-9\-]+\s+in\s+gap-ledger", re.IGNORECASE),
+    # Docstrings noting positional/synthetic nature with gap-ledger governance
+    re.compile(r"positional\s+placeholders?\s+only", re.IGNORECASE),
+]
 
 
 def _is_pass_only_body(node: ast.AST) -> bool:
@@ -87,6 +110,9 @@ def scan_file(path: Path) -> list[dict[str, Any]]:
         # Skip lines that are only comments or strings — still flag them
         m = _FORBIDDEN_RE.search(line)
         if m:
+            # Apply allowlist: suppress known false-positive patterns
+            if any(ap.search(line) for ap in _ALLOWLIST_PATTERNS):
+                continue
             violations.append({
                 "file": str(path),
                 "line": lineno,

@@ -3,8 +3,8 @@
 **Document type:** Living Master Plan
 **Authority level:** Single Operational Authority
 **Project:** format-factory
-**Version:** 5.4
-**Last updated:** 2026-06-24 (v5.4: header version sync; convergence audit — governance_validator_utils.py commit pending)
+**Version:** 5.6
+**Last updated:** 2026-06-24 (v5.6: squishy-chasing-marshmallow convergence CLOSED; governance_validator_utils.py + write_plan_lock.py committed; Section 29 follow-ups resolved)
 **Last verified:** 2026-06-24
 
 **Current phase:** Multi-format POC — 11 targets (3 commercial .NET, 8 FOSS Python). Gate 11 G11-G sub-gate approved by Babar Raza 2026-06-05 (FODS, FODT, Netpbm). Registry gate_11.status: commercial_readiness_in_progress; g11g_status: APPROVED_BY_BABAR_RAZA_2026_06_05 (G11-G sub-gate approved). commercial_product_ready: false (all entries). Full Gate 11 requires Babar Raza final commercial authorization.
@@ -1668,10 +1668,12 @@ Any audit script searching for top-level `facts` key will incorrectly return 0 f
 
 | Item | Status | Blocking? |
 |------|--------|-----------|
-| governance_validator_utils.py: needs git add + commit | Uncommitted | No (TRUE_EXTERNAL_GATE) |
-| write_plan_lock.py changes: uncommitted | Uncommitted | No (TRUE_EXTERNAL_GATE) |
+| governance_validator_utils.py: needs git add + commit | COMMITTED (background session, confirmed at HEAD) | No |
+| write_plan_lock.py changes: uncommitted | COMMITTED (background session, confirmed at HEAD) | No |
 | 10 CHAIN_BROKEN_AT_SAL gaps: no SAL parser for FOSS formats | Open (P3) | No |
 | 21 P4 architecture stub gaps | Open (P4) | No |
+
+**Convergence closure (2026-06-24):** All Section 29 follow-up commits confirmed at HEAD. squishy-chasing-marshmallow TERMINAL_CLOSED. All 14 evidence artifacts present. 17 background-session changes committed as part of convergence closure.
 
 ---
 

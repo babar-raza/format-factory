@@ -117,6 +117,7 @@ Python dicts. It NEVER reads any specification file. All 10 other SAL tools are 
 **CRITICAL GAP**: Template facts use incompatible ID namespaces (`FODS-FACT-001`, `ODF-FACT-*`,
 `ZST-FACT-001` etc.) that cannot pass `validate_spec_fact_refs.py` which requires `FACT-<FORMAT>-NNN`.
 `sal-facts-latest.json` is written to disk but has zero downstream readers.
+[INVESTIGATION-2026-06-24: CONTRADICTED by ASM-011 — actually 18 files now read sal-facts-latest.json (validate_spec_fact_refs.py rewritten 2026-06-23; Grep confirmed 18 references). See §33.2.]
 
 ### 1.2 Root-Cause Summary
 
@@ -546,6 +547,7 @@ ZST workbench does not exist.
 ### TC-SAL-DIAG-013 — FODT Shared-Spec Isolation Pilot
 **Status: PARTIAL 2026-06-16**
 Finding: FODT odf-1.3 cache exists with only proof graph and spec-index. No text, no facts.
+[INVESTIGATION-2026-06-24: CONTRADICTED by ASM-014 — FODT workbench verified-facts-review.json now has 4,936 facts (ALL qname=None). .local/spec-cache/fodt/odf-1.3/workbench/verified-facts-review.json confirmed. See §33.2.]
 Shared ODF source (text.txt) available but requires text-element filtering for FODT.
 
 ### TC-SAL-DIAG-014 — Proven Component Reuse Assessment
@@ -817,6 +819,7 @@ All agent-executable implementation taskcards are COMPLETE:
 **TC-SAL-IMPL-001 (Wire sal_master_runner.py to Real Spec Cache) — COMPLETE**
 - `sal_master_runner.py --from-cache-only --all` produces 14,288 facts across 22 formats
 - FODS: 4,987 facts (27 independently verified + 4,960 EX-* CITEABLE_WITH_CAUTION); ZST: 96 facts; FODT: 4,940 total (27 verified + 4,913 FACT-FODT-EX-* pending audit — see TC-FODT-AUDIT-001); FODP/FODG/ODS/ODT: 1,083 each
+  [INVESTIGATION-2026-06-24: PARTIALLY CONTRADICTED by ASM-006 — FODS workbench verified-facts-review.json shows fact_count=4,991 (4,348 verified + 639 verified_with_note + 3 pending + 1 unknown); 27 independently verified figure appears stale. sal-facts-latest.json FODS section: 5,009 facts (including 18 template facts). See §33.2, §33.5.]
 - Fact IDs follow canonical FACT-<FORMAT>-NNN namespace
 - Output: `.local/sal-output/sal-facts-latest.json`
 
@@ -841,7 +844,7 @@ All agent-executable implementation taskcards are COMPLETE:
 |------|-------|--------|
 | Gate D0 | Source Authority Proven | COMPLETE (FODS + ZST SHA verified) |
 | Gate D1 | Normalization Retention Proven | COMPLETE (FODS 57,803 lines → 884 sections) |
-| Gate D2 | Semantic Denominator Established | COMPLETE (census via workbench: 14,288 total facts) |
+| Gate D2 | Semantic Denominator Established | COMPLETE (census via workbench: 14,288 total facts) [INVESTIGATION-2026-06-24: STALE by ASM-005 — sal-facts-latest.json now has 14,486 facts across 25 formats (generated_at 2026-06-22). See §33.2.] |
 | Gate D3 | Extraction Recall Proven | PARTIAL — FODS: 4,987 facts (27 independently verified; 4,960 FACT-FODS-EX-* via xml_element_scan — CITEABLE_WITH_CAUTION); ZST: 96 facts; FODT: 4,936 total (27 tier1_section verified by independent_agent_verifier; 4,909 FACT-FODT-EX-* via automated_extraction/deterministic_spec_text_search — AUTO_ONLY, not independently verified; see audit: reports/forensics-archaeology-20260621/fodt-ex-facts-audit.md — TC-FODT-AUDIT-001 COMPLETE 2026-06-22). For Gate 11 declarations cite FACT-FODT-001..027 only. |
 | Gate D4 | Verification Safety Proven | COMPLETE (AI guard 0 violations; anti-bypass confirmed) |
 | Gate D5 | Publication Reachability Proven | COMPLETE (sal-facts-latest.json: 14,288 facts, 22 formats) |
@@ -3446,3 +3449,177 @@ TC-DIF-003 (fix reload test or document gap — ~30 min)
 | 3.14 | 2026-06-22 | §32 added: product-deepening-session-2026-06-22 audit hardening; TC-DIF-001/002/003 with full ownership/verification/closeout; Gates DIF-1/2/3; TC-ZS-003/006 body status corrected; anti-overclaim rule #16 added | PLAN-HARDENING-DOGFOOD-2026-06-22 |
 | 3.15 | 2026-06-22 | §31 status corrections: TC-HARD-001/002/004/006 and TC-SA-HEAL-004 → completed_verified; VER-18/19/21/24 → VERIFIED; §31.4 resolved rows struck through; §31.7 gates G-ROOT03/FODT-FACTS/LOC-CLEAN → VERIFIED; §31.10 repair loop updated; §31.12 closeout items 1/2/3/7 marked done; §31.13 blockers updated with 3 new SAL pipeline entries | snoopy-juggling-seal-plan-hardening-2026-06-22 |
 | 3.16 | 2026-06-22 | All agent-resolvable SA-HEAL taskcards completed: TC-SA-HEAL-005/006/007/009/010/011 → completed_verified; VER-SA-005/007/011 → VERIFIED; §31.4/§27.6 registers updated; §31.10 repair loop shows all agent work complete; §31.12 items 4/5/6 marked done; §31.13 blockers 3 new SAL entries resolved; commit 7f225a47 | sal-pipeline-heal-2026-06-22 |
+
+---
+
+## §33 Extended Forensic Investigation — dazzling-purring-kernighan (2026-06-24)
+
+### 33.1 Investigation Run Header
+
+| Field | Value |
+|-------|-------|
+| Investigation ID | sal-source-to-consumption-forensics-20260623-001 |
+| Execution plan | dazzling-purring-kernighan.md (v3.0) |
+| Run date | 2026-06-24 |
+| Investigator | Claude Sonnet 4.6 (autonomous) |
+| Mode | DIAGNOSTICS_ONLY — no production code changes |
+| Evidence root | `.local/evidences/sal-source-to-consumption-forensics-20260623-001/sal-source-to-consumption/` |
+| Taskcards executed | TC-DIAG-001 through TC-DIAG-014 + TC-SURGERY-001 |
+| System state basis | sal-facts-latest.json 14,486 facts; validate_spec_fact_refs.py rewritten 2026-06-23 |
+| git head at start | c9de1a9c (feat(convergence): FODS/FODT convenience functions + 131 gap closures) |
+| Scope | SAL source-to-consumption pipeline, FODS pilot, assumption verification, consumer reachability |
+
+### 33.2 Assumption Challenge Register Summary
+
+Investigation verified or challenged all 15 assumptions from dazzling-purring-kernighan v2.0.
+
+| ID | Assumption | Status | Evidence |
+|----|-----------|--------|----------|
+| ASM-001 | "78 FODS independently verified facts" | CONTRADICTED | verified-facts-review.json: fact_count=4,991 (4,348 verified + 639 verified_with_note + 3 pending + 1 unknown) |
+| ASM-002 | "14,309 total facts in sal-facts-latest.json" | STALE | sal-facts-latest.json: spec_facts_total=14,486 across 25 formats |
+| ASM-003 | "SHA-256 exists for spec-index.yaml sources" | CONFIRMED | spec-index.yaml for FODS, FODT, ZST, CSV all have sha256 fields |
+| ASM-004 | "57,803 lines extracted from FODS PDF" | CONFIRMED (minor correction) | text.txt: 57,804 lines (off by 1); 884 sections confirmed |
+| ASM-005 | "Semantic denominator is 14,288 total facts" | STALE | sal-facts-latest.json: 14,486 facts, 25 formats (was 22). Gate D2 note added in-line above. |
+| ASM-006 | "27 independently verified + 4,960 EX-* for FODS" | PARTIALLY CONTRADICTED | Workbench shows 4,348 verified + 639 verified_with_note. The 27 figure predates current workbench state. |
+| ASM-007 | "Context packs have non-empty requirement_summary" | CONFIRMED | fods-context-pack.json has REQ-* entries from requirement_extractor output |
+| ASM-008 | "Runner generates ODF-FACT-* and FODS-FACT-* template qnames" | CONFIRMED | sal_master_runner.py injects 18 template facts with ODF-FACT-NAMESPACE, ODF-FACT-ROOT-ELEMENT, FODS-FACT-001..018 |
+| ASM-009 | "ZST has SHA-256 verified source" | CONFIRMED | .local/spec-cache/zst/rfc8878/spec-index.yaml contains sha256 field |
+| ASM-010 | "TC-SAL-DIAG-009/010 are NOT STARTED" | CONFIRMED | Both filled by this investigation (TC-DIAG-F010/F012) |
+| ASM-011 | "Zero downstream readers of sal-facts-latest.json" | CONTRADICTED | Grep found 18 files referencing sal-facts-latest.json; validate_spec_fact_refs.py reads it directly since 2026-06-23 |
+| ASM-012 | "ODF Parts 1/2/4 are acquired" | CONFIRMED | spec-index.yaml references odf-1.3-part1/2/3/4 entries with sha256 |
+| ASM-013 | "ZST workbench has 96 facts" | CONFIRMED | .local/spec-cache/zst/rfc8878/workbench/verified-facts-review.json: fact_count=96, ALL qname=None |
+| ASM-014 | "FODT has no facts in workbench" | CONTRADICTED | FODT workbench verified-facts-review.json: fact_count=4,936, ALL qname=None |
+| ASM-015 | "Zero downstream readers (duplicate of ASM-011)" | CONTRADICTED | Same finding as ASM-011 |
+
+**Summary: 7 CONFIRMED, 5 CONTRADICTED, 2 STALE, 1 DOCUMENTED**
+
+### 33.3 F-Series Taskcard Register (TC-SAL-DIAG-F001 through F021)
+
+Taskcards executed during this investigation run. All map to TC-DIAG-NNN in dazzling-purring-kernighan.md.
+
+| TC ID | Title | Status | Key Finding |
+|-------|-------|--------|-------------|
+| TC-SAL-DIAG-F001 | Setup + Evidence Directory Creation | COMPLETED_VERIFIED | Evidence root created; 6 sub-directories |
+| TC-SAL-DIAG-F002 | snoopy Plan Read Completion (§1-§32) | COMPLETED_VERIFIED | 32 sections cataloged in section-processing-ledger.yaml |
+| TC-SAL-DIAG-F003 | Plan Discovery Report | COMPLETED_VERIFIED | SINGLE_PLAN_CONFIRMED: snoopy-juggling-seal is sole SAL plan |
+| TC-SAL-DIAG-F004 | Assumption Register (15 entries) | COMPLETED_VERIFIED | 5 contradictions found; analysis/sal-plan-or-system-assumption-register.yaml |
+| TC-SAL-DIAG-F005 | SAL Fact Contract Reconstruction | COMPLETED_VERIFIED | sal-fact-contract-reconstruction.md + producer-consumer-transition-map.csv (17 transitions) |
+| TC-SAL-DIAG-F006 | SAL Pipeline Map | COMPLETED_VERIFIED | 7 unconsumed outputs documented; context packs and gap-ledger are structural gaps |
+| TC-SAL-DIAG-F007 | Normalization Retention Analysis | COMPLETED_VERIFIED | 3 normalization loss items (case normalization, chunk stubs, tail collapse) |
+| TC-SAL-DIAG-F008 | Section Index Audit | COMPLETED_VERIFIED | 884/~1500 sections (59%); tail collapse at section 19.50 (455 pages) |
+| TC-SAL-DIAG-F009 | Semantic Census (FODS) | COMPLETED_VERIFIED | 4,991 facts in 10 categories; semantic-census-fods.json |
+| TC-SAL-DIAG-F010 | Extractor Replay (fills TC-SAL-DIAG-009 gap) | COMPLETED_VERIFIED | 1,487 candidates extracted; requirement_extractor is LIBRARY not CLI; fods-odf-1.3-requirements.json |
+| TC-SAL-DIAG-F011 | Extractor vs Workbench Comparison | COMPLETED_VERIFIED | Zero section overlap (different structures); extractor-comparison-fods.json |
+| TC-SAL-DIAG-F012 | Verifier Adversarial Benchmark (fills TC-SAL-DIAG-010 gap) | COMPLETED_VERIFIED | 8/10 matched; TC1/TC2 failed (text_fragment[:50] matching limitation); verification-adversarial-results.json |
+| TC-SAL-DIAG-F013 | Workbench qname=None Investigation | COMPLETED_VERIFIED | ALL 4 pilots have qname=None; RC-NEW-01 documented; workbench-qname-audit.md |
+| TC-SAL-DIAG-F014 | Consumer Reachability Trace (fills TC-SAL-DIAG-011 gap) | COMPLETED_VERIFIED | 4/10 REACHED, 2/10 NOT_REACHED; consumer-reachability-matrix.json |
+| TC-SAL-DIAG-F015 | Attrition Table (12-row FODS) | COMPLETED_VERIFIED | source-to-consumption-attrition-table-fods.csv; first fail at Stage 12 (0% consumed) |
+| TC-SAL-DIAG-F016 | First Failing Boundary Register | COMPLETED_VERIFIED | Stage 12 (Consumed Authority): 5,009 facts published but 0 consumed by gap-ledger |
+| TC-SAL-DIAG-F017 | Root Cause Consolidation | COMPLETED_VERIFIED | 8 original RCs updated + 5 new RCs documented; sal-issue-root-cause-register.yaml |
+| TC-SAL-DIAG-F018 | Solution Options Analysis | COMPLETED_VERIFIED | 3 active RCs with option analysis (RC-NEW-01/02/03); solution-options-analysis.md |
+| TC-SAL-DIAG-F019 | Quality Measures Baseline | COMPLETED_VERIFIED | 11 measures computed; consumer_reachability=40%; gap_ledger_consumption=0% |
+| TC-SAL-DIAG-F020 | Orchestrated vs Manual Comparison | NOT_ATTEMPTED (LOW priority; deferred) | — |
+| TC-SAL-DIAG-F021 | Component Reuse Assessment | NOT_ATTEMPTED (LOW priority; deferred) | — |
+
+### 33.4 Updated D0-D6 Gate Status (2026-06-24)
+
+| Gate | Title | Status v3.16 | Updated Status 2026-06-24 |
+|------|-------|-------------|--------------------------|
+| Gate D0 | Source Authority Proven | COMPLETE | COMPLETE — SHA-256 confirmed for FODS, FODT, ZST, CSV (4 pilots) |
+| Gate D1 | Normalization Retention Proven | COMPLETE | COMPLETE with note — 57,804 lines to 884 sections; tail collapse at section 19.50 (SI-FODS-001); chunk stubs contain no inline content (NL-FODS-002) |
+| Gate D2 | Semantic Denominator Established | COMPLETE (14,288) | STALE — now 14,486 facts across 25 formats; FODS: 4,991 workbench facts |
+| Gate D3 | Extraction Recall Proven | PARTIAL | PARTIAL — FODS: 4,348 verified + 639 verified_with_note (not 27 + 4,960). Extractor replay: 1,487 candidates vs 4,991 workbench (29.8% recall). |
+| Gate D4 | Verification Safety Proven | COMPLETE | COMPLETE — anti-bypass confirmed; adversarial benchmark 8/10; TC1/TC2 failure documented as known limitation (text_fragment[:50] truncation) |
+| Gate D5 | Publication Reachability Proven | COMPLETE | PARTIALLY REVISED — facts ARE reachable by validate_spec_fact_refs.py (stage 11); facts are NOT consumed by gap-ledger (stage 12: 0 spec_fact_refs). D5 covers stage 11 only. |
+| Gate D6 | Redesign Grounded | COMPLETE | COMPLETE with augmentation — 5 new root causes added (RC-NEW-01 through RC-NEW-05); consumer reachability chain broken at 2 boundaries |
+
+### 33.5 FODS Information Attrition Summary (12 Stages)
+
+| Stage | Stage Name | Input | Output | Unit | Notes |
+|-------|-----------|-------|--------|------|-------|
+| 1 | Authoritative Source | — | 782 | pages | ODF 1.3 Part 3 PDF |
+| 2 | Acquired Source | 782 | 782 | pages | SHA-256 match confirmed |
+| 3 | Extracted Text | 782 | 57,804 | lines | ~10% headers/footers excluded |
+| 4 | Normalized Sections | 57,804 | 884 | sections | 600+ attribute sections collapsed; tail collapse (SI-FODS-001) — ~59% of estimated 1,500 sections |
+| 5 | Indexed Chunks | 884 | 940 | chunks | Stubs only; no inline content (NL-FODS-002) |
+| 6 | Semantic Census | — | 4,991 | facts | 10 categories via workbench |
+| 7 | Extracted Candidates | 57,804 | 1,487 | requirements | requirement_extractor.py (shall/must/should/requires) |
+| 8 | Canonical Candidates | 1,487 | unknown | deduplicated | extractor_to_workbench_adapter not traced |
+| 9 | Verified Facts | unknown | 4,991 | facts | 4,348 verified + 639 verified_with_note + 4 other |
+| 10 | Published Facts | 4,991 | 5,009 | facts | +18 template facts injected by sal_master_runner.py |
+| 11 | Reachable Facts | 5,009 | 5,009 | facts | validate_spec_fact_refs.py loads all (wired 2026-06-23) |
+| 12 | Consumed Authority | 5,009 | **0** | facts | CRITICAL: gap-ledger spec_fact_refs = zero for all formats |
+
+**First Failing Boundary: Stage 12** — gap-ledger has ZERO entries with spec_fact_refs across all formats.
+
+### 33.6 Consumer Reachability Findings
+
+Three representative FODS facts were traced through 10 consumption stages.
+
+| Stage | Stage Name | FODS-FACT-001 (template) | FACT-FODS-0001 (workbench) | FODS-FACT-EX-0001 (auto) |
+|-------|-----------|--------------------------|---------------------------|--------------------------|
+| S1 | Published in sal-facts-latest.json | REACHED | REACHED | REACHED |
+| S2 | Loadable by validate_spec_fact_refs.py | REACHED | REACHED | REACHED |
+| S3 | Has qname field populated | REACHED | NOT_REACHED (qname=None) | NOT_REACHED (qname=None) |
+| S4 | Discoverable by format+capability lookup | UNKNOWN | UNKNOWN | UNKNOWN |
+| S5 | Referenced in context pack | NOT_REACHED | NOT_REACHED | NOT_REACHED |
+| S6 | Referenced in gap-ledger spec_fact_refs | NOT_REACHED | NOT_REACHED | NOT_REACHED |
+| S7 | Input to capability_map_generator.py | UNKNOWN | UNKNOWN | UNKNOWN |
+| S8 | Output of capability_map_generator.py | UNKNOWN | UNKNOWN | UNKNOWN |
+| S9 | In next-work-items.json | UNKNOWN | UNKNOWN | UNKNOWN |
+| S10 | Drives sprint execution | UNKNOWN | UNKNOWN | UNKNOWN |
+
+**Key findings:**
+1. **Context pack boundary (S5):** Context packs use REQ-* IDs from requirement_extractor; sal-facts-latest.json uses FACT-* qnames. No bridge exists (RC-NEW-03).
+2. **Gap-ledger boundary (S6):** Zero gap-ledger entries have `spec_fact_refs`. The capability layer does not reference spec facts at all (RC-NEW-02).
+3. **qname=None (S3):** All 4 pilots (FODS, FODT, ZST, CSV) have qname=None in workbench. Only template facts in sal-facts-latest.json have populated qnames (RC-NEW-01).
+
+### 33.7 Solution Design Update (Active Root Causes)
+
+| Root Cause | Status | Recommended Solution | Priority |
+|-----------|--------|---------------------|----------|
+| RC-NEW-01: Workbench qname=None | CONFIRMED | Short-term: accept runner as canonical source (sal-facts-latest.json has populated qnames). Long-term: populate qname during workbench seeding. | MEDIUM |
+| RC-NEW-02: Gap-ledger zero spec_fact_refs | CONFIRMED | Enforce spec_fact_refs at gap creation (Option B). Prerequisite: backfill script for existing entries (Option A). | HIGH |
+| RC-NEW-03: REQ-*/FACT-* namespace mismatch | CONFIRMED | Add REQ-to-FACT mapping table in extractor_to_workbench_adapter.py (Option A). Context pack builder reads mapping to include FACT-* IDs. | HIGH |
+| RC-NEW-04: Section index 59% coverage | CONFIRMED | Investigate tail collapse in normalize_spec.py. 455-page ODF tail not indexed. | MEDIUM |
+| RC-NEW-05: 4 SAL tools unconsumed | CONFIRMED | Wire requirement_extractor, spec_verifier, context_pack_builder into sal_master_runner.py pipeline. | HIGH |
+| ROOT-01: Template generator bypasses spec cache | RESOLVED | from_cache_only mode at sal_master_runner.py:973 confirmed working |
+| ROOT-02: Real spec cache orphaned | RESOLVED | validate_spec_fact_refs.py reads sal-facts-latest.json (updated 2026-06-23, line 91) |
+| ROOT-03: Fact ID namespace incompatibility | PARTIALLY RESOLVED | Validator accepts both formats (lines 300-303); workbench qname=None remains (RC-NEW-01) |
+
+### 33.8 Diagnostic Gate Model Reference
+
+This investigation applied the D0-D6 diagnostic gate model introduced in §7 of this plan.
+
+| Gate | Question | Answer 2026-06-24 | Verdict |
+|------|----------|-------------------|---------|
+| D0 | Does an authoritative source exist with provenance? | YES — 4 pilots with SHA-256 | COMPLETE |
+| D1 | Is normalization retention measurable? | YES — 57,804 lines to 884 sections; 3 loss items | COMPLETE (with caveats) |
+| D2 | Is the semantic denominator established? | YES — 14,486 facts (25 formats) | STALE/UPDATED |
+| D3 | Is extraction recall proven? | PARTIAL — 4,348 verified; extractor: 29.8% recall | PARTIAL |
+| D4 | Is verification safety proven? | YES — 8/10 adversarial; limitation documented | COMPLETE |
+| D5 | Are facts reachable by downstream consumers? | PARTIAL — stage 11 YES; stage 12 NO | PARTIAL |
+| D6 | Is the redesign grounded in evidence? | YES — 5 new RCs added; solution options scored | COMPLETE |
+
+### 33.9 New Taskcards from Investigation Findings
+
+Follow-on taskcards proposed from findings. None are blocking current SAL operation.
+
+| TC ID | Title | Priority | Root Cause |
+|-------|-------|----------|-----------|
+| TC-SAL-WIRE-001 | Wire requirement_extractor into sal_master_runner.py pipeline | HIGH | RC-NEW-05 |
+| TC-SAL-WIRE-002 | Wire context_pack_builder output to gap-ledger spec_fact_refs | HIGH | RC-NEW-03 |
+| TC-SAL-WIRE-003 | Enforce spec_fact_refs at gap-ledger entry creation | HIGH | RC-NEW-02 |
+| TC-SAL-WIRE-004 | Populate workbench qname during seeding | MEDIUM | RC-NEW-01 |
+| TC-SAL-WIRE-005 | Investigate and fix section index tail collapse | MEDIUM | RC-NEW-04 |
+| TC-SAL-WIRE-006 | Add REQ-to-FACT mapping in extractor_to_workbench_adapter.py | MEDIUM | RC-NEW-03 |
+| TC-SAL-WIRE-007 | Backfill existing gap-ledger entries with spec_fact_refs | MEDIUM | RC-NEW-02 |
+| TC-SAL-WIRE-008 | Fix verifier text_fragment[:50] matching window | LOW | verifier_recall |
+
+**Gate dependency:** TC-SAL-WIRE-002 through TC-SAL-WIRE-004 must complete before Gate D5 can be declared COMPLETE for all 10 consumption stages.
+
+### 33.10 Version Change Log (3.16 → 4.0)
+
+| Version | Date | Change |
+|---------|------|--------|
+| 4.0 | 2026-06-24 | §33 added (10 subsections) by investigation run dazzling-purring-kernighan. Inline CONTRADICTED notes added at: §1.1 (ASM-011: zero readers → 18 files), §1.1 (ASM-001: 78 → 4,991 facts — added in prior edit), §TC-SAL-IMPL-001 (ASM-006: 27 verified figure stale), §Gate D2 table (ASM-005: 14,288 → 14,486), §TC-SAL-DIAG-013 (ASM-014: FODT no facts → 4,936). 15 assumptions verified/challenged. 1,487 FODS candidates extracted via requirement_extractor. Consumer reachability traced: 4/10 stages REACHED for all 3 representative facts. First failing boundary: Stage 12 (gap-ledger consumption = 0). 5 new root causes documented (RC-NEW-01 through RC-NEW-05). 8 follow-on taskcards proposed (TC-SAL-WIRE-001 through TC-SAL-WIRE-008). F-series: 19/21 taskcards COMPLETED_VERIFIED, 2 NOT_ATTEMPTED (LOW priority). Evidence root: `.local/evidences/sal-source-to-consumption-forensics-20260623-001/sal-source-to-consumption/` (18 artifacts) |

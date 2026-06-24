@@ -23,8 +23,12 @@ from governance_validators_ext import validate_expansion_fallback_refs
 
 
 def test_seeded_format_not_allowed():
-    """Seeded formats (e.g. abw) must be blocked with qname_gate=FAIL."""
-    r = check_product_readiness("abw")
+    """Seeded formats (e.g. fodg) must be blocked with qname_gate=FAIL.
+
+    Note: abw was seeded at plan creation but was promoted to implementing by commit
+    79966684. fodg remains seeded. Test updated to use fodg.
+    """
+    r = check_product_readiness("fodg")
     assert r["allowed"] is False
     assert r["qname_gate"] == "FAIL"
 
@@ -37,23 +41,34 @@ def test_implementing_format_not_allowed():
     assert r["qname_gate"] == "PASS"
 
 
-def test_fods_oversized_not_allowed():
-    """FODS has qname=verified but src_layout=oversized — must be blocked."""
+def test_fods_verified_compliant_allowed():
+    """FODS has qname=verified and src_layout=compliant after convergence healing.
+
+    Note: FODS was oversized at plan creation (sprint produced src_layout=oversized).
+    Convergence audits (polymorphic-brewing-cosmos) healed the layout and promoted
+    FODS to allowed=True. This test reflects the current post-convergence state.
+    """
     r = check_product_readiness("fods")
-    assert r["allowed"] is False
-    assert r["src_layout_gate"] == "FAIL"
+    assert r["allowed"] is True
     assert r["qname_gate"] == "PASS"
+    assert r["src_layout_gate"] == "PASS"
 
 
 def test_all_20_formats_return_result():
-    """load_ledger() returns 20 entries; check_product_readiness works for each."""
+    """load_ledger() returns 20 entries; check_product_readiness works for each.
+
+    Note: all 20 formats were blocked at plan creation. After convergence healing
+    fods and fodt are allowed=True. The test verifies structural correctness of
+    results for all formats rather than asserting all-blocked.
+    """
     ledger = load_ledger()
     assert len(ledger) == 20, f"Expected 20, got {len(ledger)}"
     for fmt in ledger:
         r = check_product_readiness(fmt)
         assert "format" in r
         assert "allowed" in r
-        assert r["allowed"] is False  # all 20 blocked at launch
+        assert isinstance(r["allowed"], bool)
+        assert "qname_gate" in r
 
 
 # ── Group 2: Error handling and bootstrap tolerance ──
@@ -209,3 +224,152 @@ def test_v58_skips_governance_taskcard():
     assert r["result"] == "PASS"
     assert r["total_checked"] == 0
     assert r["fallback_count"] == 0
+
+
+# ── Group 5: Check 9 real integration (calls check_continuation.check() directly) ──
+# These tests advance proof from PROOF_LEVEL_2 (unit) to PROOF_LEVEL_3 (integration).
+
+
+def _make_minimal_signal(tmp_path: Path, *, autonomous_continue: bool = True) -> Path:
+    """Write a minimal continuation signal sufficient to reach Check 9."""
+    signal = {
+        "continuation_state": "YES_CONTINUE",
+        "autonomous_continue": autonomous_continue,
+        "stop_reason": None,
+        "iteration": 0,
+        "max_iterations": 5,
+        "rework_items": [],
+        "hard_stops": [],
+    }
+    sig_path = tmp_path / ".local" / "supervisor" / "continuation-signal.json"
+    sig_path.parent.mkdir(parents=True, exist_ok=True)
+    sig_path.write_text(json.dumps(signal), encoding="utf-8")
+    return sig_path
+
+
+def _make_gates_file(tmp_path: Path) -> None:
+    """Write approval-gates.md that satisfies Check 6."""
+    gates_dir = tmp_path / "reports" / "supervisor"
+    gates_dir.mkdir(parents=True, exist_ok=True)
+    (gates_dir / "approval-gates.md").write_text(
+        "AUTONOMOUS_CONTINUE: YES\n", encoding="utf-8"
+    )
+
+
+def _make_work_items(tmp_path: Path) -> None:
+    """Write next-work-items.json to satisfy Check 7."""
+    wi_dir = tmp_path / ".local" / "supervisor"
+    wi_dir.mkdir(parents=True, exist_ok=True)
+    (wi_dir / "next-work-items.json").write_text(
+        json.dumps({"stream": "product", "work_items": []}), encoding="utf-8"
+    )
+
+
+def _make_plan_lock(tmp_path: Path, *, status: str = "TERMINAL_CLOSED") -> None:
+    """Write active-plan-lock.json to satisfy plan lock checks."""
+    lock = {"plan_path": "plans/test-plan.md", "status": status}
+    lock_path = tmp_path / ".local" / "supervisor" / "active-plan-lock.json"
+    lock_path.parent.mkdir(parents=True, exist_ok=True)
+    lock_path.write_text(json.dumps(lock), encoding="utf-8")
+
+
+def test_check9_real_check_call_blocks_on_blocked_format(tmp_path):
+    """PROOF_LEVEL_3: check() returns STOP when selected gaps contain a blocked format.
+
+    This test calls check_continuation.check() directly with a synthesized repo
+    layout, exercising Check 9 through the real continuation orchestration path.
+    """
+    from check_continuation import check
+
+    # Write a single-entry ledger where 'testfmt' is blocked
+    ledger_data = [{
+        "product_id": "TEST-PYTHON",
+        "format": "testfmt",
+        "runtime": "python",
+        "qname_schema_version": "1.0",
+        "qname_compliance_status": "seeded",
+        "spec_hierarchy_mapping": "missing",
+        "src_layout_status": "mixed_model",
+        "forbidden_bucket_scan_status": "clean",
+        "sal_fact_linkage": "present",
+        "sal_fact_count": 10,
+        "continuation_allowed": False,
+        "continuation_reason": "qname_status_not_verified",
+        "blockers": ["qname_compliance_gate: FAIL"],
+        "next_required_action": "Heal qname registry",
+        "last_verified_at": "2026-06-24",
+        "ledger_entry_hash": "abcd1234abcd1234",
+    }]
+    ledger_path = tmp_path / "registry" / "product-deepening-ledger.yaml"
+    ledger_path.parent.mkdir(parents=True, exist_ok=True)
+    ledger_path.write_text(yaml.dump(ledger_data), encoding="utf-8")
+
+    # Write selected-product-gaps.json containing the blocked format
+    gaps_path = tmp_path / ".local" / "supervisor" / "selected-product-gaps.json"
+    gaps_path.parent.mkdir(parents=True, exist_ok=True)
+    gaps_path.write_text(json.dumps({
+        "selected_gaps": [{"format": "testfmt", "gap_id": "GAP-TEST-001"}]
+    }), encoding="utf-8")
+
+    # Scaffold the other required files so earlier checks pass
+    _make_minimal_signal(tmp_path)
+    _make_gates_file(tmp_path)
+    _make_work_items(tmp_path)
+    _make_plan_lock(tmp_path)
+
+    result = check(tmp_path, session_id="test-session-check9")
+
+    assert result["verdict"] == "STOP", (
+        f"Expected STOP from Check 9 but got: {result}"
+    )
+    assert result["reason"] == "product_deepening_architecture_gate", (
+        f"Wrong stop reason: {result['reason']}"
+    )
+    assert "testfmt" in result.get("blocked_formats", []), (
+        f"Expected testfmt in blocked_formats: {result}"
+    )
+
+
+def test_check9_real_check_call_continues_when_no_gaps(tmp_path):
+    """PROOF_LEVEL_3: check() reaches CONTINUE when selected-product-gaps.json is absent.
+
+    Bootstrap tolerance: if gaps file is missing, Check 9 is silently skipped.
+    The test verifies the check() passes through to a CONTINUE verdict when no gaps are selected.
+    """
+    from check_continuation import check
+
+    # Write real ledger (all blocked)
+    ledger_path = tmp_path / "registry" / "product-deepening-ledger.yaml"
+    ledger_path.parent.mkdir(parents=True, exist_ok=True)
+    ledger_data = [{
+        "product_id": "TEST-PYTHON",
+        "format": "testfmt",
+        "runtime": "python",
+        "qname_schema_version": "1.0",
+        "qname_compliance_status": "seeded",
+        "spec_hierarchy_mapping": "missing",
+        "src_layout_status": "mixed_model",
+        "forbidden_bucket_scan_status": "clean",
+        "sal_fact_linkage": "present",
+        "sal_fact_count": 0,
+        "continuation_allowed": False,
+        "continuation_reason": "qname_status_not_verified",
+        "blockers": [],
+        "next_required_action": "Heal qname registry",
+        "last_verified_at": "2026-06-24",
+        "ledger_entry_hash": "abcd1234abcd1234",
+    }]
+    ledger_path.write_text(yaml.dump(ledger_data), encoding="utf-8")
+
+    # No gaps file written — Check 9 should be skipped (bootstrap tolerance)
+    _make_minimal_signal(tmp_path)
+    _make_gates_file(tmp_path)
+    _make_work_items(tmp_path)
+    _make_plan_lock(tmp_path)
+
+    result = check(tmp_path, session_id="test-session-check9-bt")
+
+    # Check 9 was skipped → should reach CONTINUE
+    assert result["verdict"] == "CONTINUE", (
+        f"Expected CONTINUE (Check 9 bootstrap) but got: {result}"
+    )
