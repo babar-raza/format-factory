@@ -2444,5 +2444,47 @@ Post-closure convergence audit confirmed all-green:
 
 ---
 
-*End of plans/master-plan.md — version 5.5 — 2026-06-24 (Section 45: cheerful-floating-glade healing audit CLOSED — 8 taskcards, convergence ALL-GREEN)*
+## Section 46: linear-swimming-hearth — Idempotent Deep Recon Sprint + Convergence (CLOSED)
+
+**Plan file:** `C:\Users\prora\.claude\plans\linear-swimming-hearth.md`
+**Status:** TERMINAL_CLOSED (convergence audit ALL-GREEN, 3 iterations)
+**Mission:** Idempotent deep recon of spec-to-feature correction plan compliance — 10 recon taskcards + 1 convergence repair taskcard
+
+### Completed (11 taskcards, all GREEN)
+
+| Taskcard | Deliverable | Verification |
+|----------|-------------|--------------|
+| TC-RECON-001 | Run setup: safety lock, plan ID, repo snapshot, governance baseline | 4 evidence files, all substantive |
+| TC-RECON-002 | PGM contradiction repair (2 transient failures) | 66/66 PGM tests pass |
+| TC-RECON-003 | Spec-to-feature requirement extraction (no-information-loss) | 168 REQ-* IDs, 33 sections, 100% coverage |
+| TC-RECON-004 | 95-artifact presence and quality audit | 95 rows: 14 quality, 69 missing (Lane 14/15 design docs) |
+| TC-RECON-005 | Capability layer + compiler state audit | Pipeline classified, file:line citations |
+| TC-RECON-006 | SAL pipeline state audit | Gate PASSED (exit 0), 14K facts fresh |
+| TC-RECON-007 | Lane 14 autonomous supervision gap analysis | 4/8 real enforcement, 4/8 prompt-only |
+| TC-RECON-008 | Lane 15 healing/learning gap analysis | failure-memory.json active (21 entries), no auto-propagation |
+| TC-RECON-009 | System-healing gate verdict | 4 PASS, 4 PARTIAL — PRODUCT_REGENERATION_BLOCKED |
+| TC-RECON-010 | Evidence declaration + autonomous-cycle + review package | Validated, package built (327KB) |
+| TC-HEAL-LANE2-001 | Lane 2 consumer_wired regression repair (convergence) | Gate PASSED, 109/109 governance tests |
+
+### Convergence loop (3 iterations)
+
+1. **Iteration 1 (audit):** Found L2-001 — commit c9de1a9c removed Step 3e comment from autonomous_cycle.py, breaking gate string match
+2. **Iteration 2 (repair):** Restored 1-line comment; Lane 2 consumer_wired restored to true
+3. **Iteration 3 (re-audit):** ALL GREEN — gate PASSED (exit 0), 109/109 gov tests, 66/66 PGM, LOC within cap
+
+### Evidence
+
+- Evidence root: `.local/evidences/ff-idempotent-spec-to-feature-swarm-20260623-06f0ea0/` (25 artifacts)
+- Review package: `.local/supervisor/reviews/ff-idempotent-spec-to-feature-swarm-20260623-06f0ea0/declaration-review-package.zip`
+- Convergence state: `.supervisor/state/convergence-loop-linear-swimming-hearth/`
+
+### Non-blocking follow-ups (deferred to Wave 3)
+
+- REQ-CAP-002: Action queue advisory_only → machine_executable transition
+- REQ-SUP-001: Lane 14 validate_lane_ownership/validate_dag_ordering WARN → BLOCK upgrades
+- REQ-HEAL-001: Lane 15 rule proposal → governance validator propagation pathway
+
+---
+
+*End of plans/master-plan.md — version 5.6 — 2026-06-24 (Section 46: linear-swimming-hearth deep recon + convergence CLOSED — 11 taskcards, 3 convergence iterations, ALL-GREEN)*
 *This document is the single operational authority for format-factory. All other documents are subordinate to it for operational decisions.*
