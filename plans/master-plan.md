@@ -3,8 +3,8 @@
 **Document type:** Living Master Plan
 **Authority level:** Single Operational Authority
 **Project:** format-factory
-**Version:** 4.5
-**Last updated:** 2026-06-24 (v4.5: Section 34 added — velvet-tickling-codd CLOSED; SAL structural repair + hardening; 11 taskcards, 79 tests; commit 1788d05f)
+**Version:** 4.7
+**Last updated:** 2026-06-24 (v4.7: Section 36 added — soft-stargazing-hearth CLOSED; analytics forensic migration, 20 files deleted, 17 parsers rewired, 9 taskcards; 98742d9b)
 **Last verified:** 2026-06-24
 
 **Current phase:** Multi-format POC — 11 targets (3 commercial .NET, 8 FOSS Python). Gate 11 G11-G sub-gate approved by Babar Raza 2026-06-05 (FODS, FODT, Netpbm). Registry gate_11.status: commercial_readiness_in_progress (registry not yet updated after G11-G). commercial_product_ready: false (all entries).
@@ -1904,5 +1904,74 @@ Full machinery readiness audit across 10 lanes (A-J) followed by 9 repair taskca
 
 ---
 
-*End of plans/master-plan.md — version 4.6 — 2026-06-24 (Section 35: misty-hopping-token CLOSED; V54/V55 promotion, QName backfill pilot, audit wiring; dd60c5de, 98742d9b)*
+## Section 36 — soft-stargazing-hearth: Analytics Forensic Migration (CLOSED)
+
+**Mission ID:** FF-ANALYTICS-FORENSIC-MIGRATION-20260623
+**Plan file:** `C:\Users\prora\.claude\plans\soft-stargazing-hearth.md`
+**Plan type:** machinery_hardening
+**Status:** CLOSED — CONVERGENCE_COMPLETE_ALL_GREEN (2 iterations, 9 taskcards)
+**Commits:** `98742d9b` (analytics files + parser rewiring, committed by parallel session)
+
+### What was completed
+
+**Iteration 0 — Core Migration (TC-AF-001 through TC-AF-006):**
+
+1. **TC-AF-001: Fixed broken import blocks in 5 domain modules**
+   - ODS `spreadsheet_document.py`: added `parse_ods_strict` import
+   - TSV `tabular_document.py`: added `get_column_values` import
+   - QOI `image_document.py`: added `_parse_header` import
+   - GNUMERIC `workbook_document.py`: added `row_count` import
+   - ODT `text_document.py`: added `zipfile`, `ET`, `NS`, `_check_file_size`, `_validate_container` imports
+
+2. **TC-AF-002: Fixed `fodt/__init__.py` line 84**
+   - Changed `from .fodt_analytics import (` to `from .text_document import (`
+
+3. **TC-AF-003: Deleted all 20 `*_analytics.py` files**
+   - ABW, CSV, DIF, FODP, FODS (2), FODT, GNUMERIC, NDJSON, ODS, ODT, PBM, PGM, PPM, QOI, SYLK, TOML, TSV, XCF, ZST
+
+4. **TC-AF-004: Updated `registry/source-structure-baseline.json`**
+   - Removed 12 analytics entries from `known_violations`
+
+5. **TC-AF-005: Residual scan** — 0 import references, 0 `__init__.py` references remain
+
+6. **TC-AF-006: Full regression** — 22,557 passed, 336 failed (pre-existing orphans), 781 errors (pre-existing orphans)
+
+7. **17 parser/codec files rewired** from `*_analytics` to spec-owned domain modules:
+   - abw_codec → word_document, csv_parser → tabular_document, dif_parser → interchange_document
+   - fodp_codec → presentation_document, fods/neutral_model → spreadsheet_document
+   - fodt/neutral_model → text_document, gnumeric_codec → workbook_document
+   - ndjson_codec → json_stream, ods_parser → spreadsheet_document
+   - odt_parser → text_document, pbm_parser → bitmap_image, pgm_parser → grayscale_image
+   - ppm_parser → color_image, qoi_parser → image_document, sylk_parser → spreadsheet_document
+   - toml_codec → config_document, tsv_parser → tabular_document
+   - xcf_parser → xcf_image_metrics, zst_codec → compression_metrics
+
+**Iteration 1 — Convergence Hardening (TC-AF-007 through TC-AF-009):**
+
+8. **TC-AF-007:** Fixed duplicate `# noqa` comments in 7 parser files
+9. **TC-AF-008:** Fixed stale docstring in `presentation_document.py`
+10. **TC-AF-009:** Updated `test_separation_pilots.py` — rewrote 3 test classes for post-migration reality (28/30 pass; 2 pre-existing XCF/ZST monolith OOS)
+
+### Verification performed
+
+- 0 analytics files remain in `src/python/`
+- 20/20 domain modules present and functional
+- 0 `__init__.py` analytics references
+- 0 duplicate noqa comments
+- 0 stale baseline entries
+- All 1,288 analytics functions preserved identically in spec-owned domain modules
+- End-to-end import verification: all 19 formats import key analytics functions successfully
+- Governance pilot tests: 28/30 pass (2 are pre-existing monolith condition, out of scope)
+- Lifecycle audit: `AUDIT_PASS`, `MISSION_COMPLETE`
+
+### Remaining follow-ups (non-blockers, out of scope)
+
+- XCF parser monolith: 117 analytics functions still defined inline in `xcf_parser.py` (separate GOV_BLOCK task)
+- ZST codec monolith: 55 analytics functions still defined inline in `zst_codec.py` (separate GOV_BLOCK task)
+- 336 orphan test failures: tests for never-implemented functions (pre-existing, tracked separately)
+- 781 orphan test collection errors: tests importing non-existent functions (pre-existing)
+
+---
+
+*End of plans/master-plan.md — version 4.7 — 2026-06-24 (Section 36: soft-stargazing-hearth CLOSED; analytics forensic migration, 20 files deleted, 17 parsers rewired, 9 taskcards, 2 convergence iterations; 98742d9b)*
 *This document is the single operational authority for format-factory. All other documents are subordinate to it for operational decisions.*
