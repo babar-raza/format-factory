@@ -130,6 +130,12 @@ Read ALL files in the `plans/` root directory at the start of every session:
 These files define the project's strategic direction and must be read before any work begins.
 If new files appear in `plans/`, read those too.
 
+### VR-003: Cross-Check MEMORY.md Taskcard Claims Against HEAD
+
+When MEMORY.md cites a commit for a fix to a taskcard listed as `not_attempted`
+in master-plan §26, verify the fix exists at HEAD before continuing. If verified:
+update §26 status. Do not trust MEMORY.md claim without HEAD verification.
+
 ## After Reading session-resume.md
 
 Check `reports/supervisor/approval-gates.md`:
@@ -180,7 +186,7 @@ When `rework_items` in the continuation signal contains any item matching
 
 1. Do NOT proceed to the next product deepening sprint
 2. The NEXT sprint must be the analytics separation refactor for the blocking format
-   (execute TC-HEAL-PY-{FORMAT}-001 as documented in `docs/code-quality/production-readiness-standard.md` §8.1)
+   (apply §8.1 Analytics Separation Protocol from `docs/code-quality/production-readiness-standard.md`)
 3. Only after the GOV_BLOCK rework item is resolved (gone from `rework_items`) may
    product deepening resume
 4. `check_continuation.py` will return STOP with `reason: structural_govblock_must_be_resolved_first`
