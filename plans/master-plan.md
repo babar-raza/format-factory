@@ -3,8 +3,8 @@
 **Document type:** Living Master Plan
 **Authority level:** Single Operational Authority
 **Project:** format-factory
-**Version:** 4.4
-**Last updated:** 2026-06-24 (v4.4: Section 33 added — sorted-purring-stardust CLOSED; machinery readiness audit + 9 repair taskcards + 3 convergence iterations; 199 tests; commit 77dea47d)
+**Version:** 4.5
+**Last updated:** 2026-06-24 (v4.5: Section 34 added — velvet-tickling-codd CLOSED; SAL structural repair + hardening; 11 taskcards, 79 tests; commit 1788d05f)
 **Last verified:** 2026-06-24
 
 **Current phase:** Multi-format POC — 11 targets (3 commercial .NET, 8 FOSS Python). Gate 11 G11-G sub-gate approved by Babar Raza 2026-06-05 (FODS, FODT, Netpbm). Registry gate_11.status: commercial_readiness_in_progress (registry not yet updated after G11-G). commercial_product_ready: false (all entries).
@@ -1797,5 +1797,61 @@ Full machinery readiness audit across 10 lanes (A-J) followed by 9 repair taskca
 
 ---
 
-*End of plans/master-plan.md — version 4.4 — 2026-06-24 (Section 33: sorted-purring-stardust CLOSED; 9 repair taskcards; 3 convergence iterations; 199 tests; 77dea47d)*
+## Section 34 — velvet-tickling-codd: SAL Structural Repair (CLOSED)
+
+**Plan:** velvet-tickling-codd v2.0
+**Status:** ACCEPTED_VERIFIED — TERMINAL_CLOSED (hardened)
+**Mission:** SAL Production Assessment and Repair — structural fix for 5 root causes
+**Commit:** 1788d05f
+**Evidence root:** `.local/evidences/sal-authority-repair-20260623/`
+
+### What was completed
+
+11 taskcards across 5 lanes + 1 hardening iteration:
+
+| Lane | Taskcard | Description | Tests |
+|------|----------|-------------|-------|
+| B (pre-condition) | TC-SAL-LANE-B01 | Bootstrap source_id from spec-source-registry | 5 |
+| A (quality contract) | TC-SAL-LANE-A01 | fact_quality.py module — 4-level quality contract | 26 |
+| A (registry) | TC-SAL-LANE-A03 | Unified validate_spec_fact_refs to sal-facts-latest.json | 20 |
+| A (enforcement) | TC-SAL-LANE-A04 | V47 quality threshold enforcement per item_type | 10 |
+| C (verification) | TC-SAL-LANE-C | Inline text verification — 4,944 facts text_verified | 6 |
+| D (determinism) | TC-SAL-LANE-D | Priority-ordered deterministic gap selection | 8 |
+| E (advisory) | TC-SAL-LANE-E | SAL format advisory in governance runner | 2 |
+| Hardening | TC-SAL-HARD-001–004 | Unit + integration tests for all PL1 items | 23 |
+
+### Root causes addressed
+
+- **RC-1 (Circular authority):** Bootstrap facts now carry registered source_id (Level 0→1). Inline text verification raises to Level 2. V47 enforces quality thresholds per item_type.
+- **RC-2 (Quality blindness):** fact_quality.py defines 4-level contract. V47 checks quality level, not just existence. RELEASE_GATE requires Level 2+.
+- **RC-3 (Two-registry inconsistency):** validate_spec_fact_refs.py unified to sal-facts-latest.json. Workbench YAML scanning removed.
+- **RC-4 (Non-deterministic selection):** Priority sort (P0→P5) + alphabetical within priority. Assigned-gap tracking prevents repeat selection.
+- **RC-5 (Dormant spec_verifier):** Replaced with fast inline substring verification. 4,944 facts upgraded.
+
+### Key changes
+
+- New module: `tools/specification-authority-layer/fact_quality.py` (141 LOC)
+- Modified: `sal_master_runner.py` (+113 LOC — source_id registration, text verification, ODF fallback)
+- Modified: `validate_spec_fact_refs.py` (unified to sal-facts-latest.json)
+- Modified: `capability_queue_consumer.py` (deterministic selection — committed in prior session)
+- Modified: `governance_validators.py` V47 (quality threshold enforcement — committed in prior session)
+- Modified: `governance_validator_runner.py` (advisory wiring — committed in prior session)
+- 6 new test files, 1 modified test file
+
+### Verification
+
+- 79 sprint-specific tests pass (26 fact_quality + 11 runner hardening + 10 V47 thresholds + 20 spec_fact_refs + 8 deterministic + 4 integration)
+- V47 integration tested in full governance pass: PASS for valid PRODUCT_SOURCE, FAIL for RELEASE_GATE with bootstrap-only facts
+- sal-facts-latest.json regenerated: 14,486 facts, 4,944 text_verified, 38 null source_id (unregistered formats)
+- 0 regressions
+
+### Remaining follow-ups (non-blockers)
+
+- 38 facts across 11 formats have null source_id (no spec registered: ora, qoi, xcf, zpaq, ppm, sylk, xpm, pam, ndjson, toml, odf-shared). Requires spec-source-registry entries.
+- Text verification uses first-50-char substring match — adequate for current use but a more robust verification method would strengthen Level 2 confidence.
+- 1 pre-existing test failure: `test_total_fact_refs_across_product_source` (FACT-FODG-* not in sal-facts-latest.json). Requires FODG SAL pipeline run.
+
+---
+
+*End of plans/master-plan.md — version 4.5 — 2026-06-24 (Section 34: velvet-tickling-codd CLOSED; SAL structural repair + hardening; 11 taskcards, 79 tests; 1788d05f)*
 *This document is the single operational authority for format-factory. All other documents are subordinate to it for operational decisions.*
