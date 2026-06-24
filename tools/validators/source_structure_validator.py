@@ -59,7 +59,7 @@ _DOMAIN_MODULES = {
     "workbook_document", "compressed_stream", "compat",
     # D-group extraction targets (new domain-pattern files)
     "word_stats", "workbook_stats", "record_stats",
-    "neutral_ops", "document_edit", "drawing_metrics",
+    "neutral_ops", "document_edit", "document_query", "drawing_metrics",
 }
 
 # Suffixes that indicate recognized converter/exporter files

@@ -124,7 +124,8 @@
       "Bash(.venv/Scripts/pytest tests/supervisor/test_tc_hard_007_governance_calibration.py tests/supervisor/test_tc_hard_002_stream_field_plan_locked.py tests/supervisor/test_evidence_quality_governance_exempt.py tests/supervisor/test_governance_validators.py -v --timeout=60)",
       "Bash(git status -u)",
       "Bash(for f in .local/supervisor/plan-locks/*.json)",
-      "Bash(grep -rn \"compile_gap\\\\|capability_compiler\" /c/Users/prora/OneDrive/Documents/GitHub/format-factory/tools/supervisor/*.py)"
+      "Bash(grep -rn \"compile_gap\\\\|capability_compiler\" /c/Users/prora/OneDrive/Documents/GitHub/format-factory/tools/supervisor/*.py)",
+      "Bash(.venv/Scripts/pytest tests/supervisor/test_no_stub_scan.py -v --tb=short)"
     ],
     "deny": [
       "Write(.env)",
