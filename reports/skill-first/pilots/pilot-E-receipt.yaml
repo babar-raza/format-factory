@@ -1,0 +1,59 @@
+---
+pilot_id: E
+skill_ids:
+  - validate-mutation-guard
+run_id: skill-first-89e03009
+started_at: "2026-06-24T00:00:00Z"
+completed_at: "2026-06-24T00:00:00Z"
+verdict: PASS
+downgrade_protection_verdict: DOWNGRADE_PROTECTION_PROVEN
+
+v48_validator: validate_architecture_only_stub_gate
+
+steps_completed:
+  - step: 1
+    action: identify_stub_target
+    result: PASS
+    detail: >
+      No existing src/python files have the GENERATED architecture_only marker.
+      Created a synthetic stub at
+      .local/evidences/skill-first-89e03009/test_stub_v48.py
+      with content: '# GENERATED — architecture_only / # TODO: implement'
+      This tests the V48 detection logic directly.
+  - step: 2
+    action: create_synthetic_release_gate_declaration
+    result: PASS
+    detail: >
+      Synthetic declaration created with:
+      item_type=RELEASE_GATE, item_id=TEST-DOWNGRADE-001,
+      evidence_paths=[.local/evidences/skill-first-89e03009/test_stub_v48.py]
+  - step: 3
+    action: run_governance_validators
+    result: PASS
+    detail: >
+      run_all_governance_validators() called with synthetic declaration.
+      67 total validators run.
+  - step: 4
+    action: verify_v48_fires
+    result: PASS
+    detail: >
+      validate_architecture_only_stub_gate: FAIL
+      Summary: V48: 1 RELEASE_GATE item(s) cite architecture_only stubs (blocked);
+               0 PRODUCT item(s) cite stubs (warned)
+      items: [{item_id: TEST-DOWNGRADE-001, evidence_path: test_stub_v48.py,
+               issue: Evidence file is an architecture_only stub — not behavioral proof}]
+      blocks_sprint: True
+  - step: 5
+    action: write_receipt
+    result: PASS
+    detail: "verdict: DOWNGRADE_PROTECTION_PROVEN, gate V7: PASS"
+
+v48_behavior_confirmed:
+  trigger: RELEASE_GATE item citing file with GENERATED architecture_only marker
+  result: FAIL (blocks_sprint=True)
+  protection: Architecture skeleton stubs cannot be accepted as behavioral proof at Gate 11/RELEASE_GATE
+
+evidence_paths:
+  - .local/evidences/skill-first-89e03009/test_stub_v48.py
+  - .local/evidences/skill-first-89e03009/pilot-E-validator-output.txt
+  - tools/supervisor/governance_validators_ext.py

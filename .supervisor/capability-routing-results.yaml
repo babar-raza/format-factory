@@ -1,0 +1,234 @@
+active_routes: 29
+broken_reference_routes: 0
+generated_by: build_capability_routes.py
+missing_skill_routes: 1
+mission_id: SKILL-FIRST-001
+overall_verdict: PARTIAL
+routes:
+- declared_status: ROUTE_ACTIVE
+  gap_id: null
+  preferred_skill_ids:
+  - reproduce-master-plan
+  - build-context-pack
+  route_id: status_and_recon
+  unresolved_skill_ids: []
+  verdict: ROUTE_ACTIVE
+- declared_status: ROUTE_ACTIVE
+  gap_id: null
+  preferred_skill_ids:
+  - create-taskcard
+  - plan-hardening
+  route_id: plan_creation
+  unresolved_skill_ids: []
+  verdict: ROUTE_ACTIVE
+- declared_status: ROUTE_ACTIVE
+  gap_id: null
+  preferred_skill_ids:
+  - plan-hardening
+  - execution-handoff
+  route_id: plan_hardening
+  unresolved_skill_ids: []
+  verdict: ROUTE_ACTIVE
+- declared_status: ROUTE_ACTIVE
+  gap_id: null
+  preferred_skill_ids:
+  - create-taskcard
+  - promote-gap-to-taskcard
+  route_id: taskcard_generation
+  unresolved_skill_ids: []
+  verdict: ROUTE_ACTIVE
+- declared_status: ROUTE_ACTIVE
+  gap_id: null
+  preferred_skill_ids:
+  - autonomous-loop
+  - execution-handoff
+  route_id: taskcard_execution
+  unresolved_skill_ids: []
+  verdict: ROUTE_ACTIVE
+- declared_status: ROUTE_ACTIVE
+  gap_id: null
+  preferred_skill_ids:
+  - sal-pipeline-heal
+  route_id: specification_ingestion
+  unresolved_skill_ids: []
+  verdict: ROUTE_ACTIVE
+- declared_status: ROUTE_ACTIVE
+  gap_id: null
+  preferred_skill_ids:
+  - sal-pipeline-heal
+  route_id: fact_normalization
+  unresolved_skill_ids: []
+  verdict: ROUTE_ACTIVE
+- declared_status: ROUTE_ACTIVE
+  gap_id: null
+  preferred_skill_ids:
+  - sal-pipeline-heal
+  route_id: fact_authorization
+  unresolved_skill_ids: []
+  verdict: ROUTE_ACTIVE
+- declared_status: ROUTE_ACTIVE
+  gap_id: null
+  preferred_skill_ids:
+  - spec-literal-qname-to-code-mapping
+  - qname-backfill
+  route_id: qname_generation
+  unresolved_skill_ids: []
+  verdict: ROUTE_ACTIVE
+- declared_status: ROUTE_ACTIVE
+  gap_id: null
+  preferred_skill_ids:
+  - spec-shaped-product-architecture-blueprint
+  route_id: hierarchy_generation
+  unresolved_skill_ids: []
+  verdict: ROUTE_ACTIVE
+- declared_status: ROUTE_ACTIVE
+  gap_id: null
+  preferred_skill_ids:
+  - update-capability-matrix
+  - score-format
+  route_id: capability_extraction
+  unresolved_skill_ids: []
+  verdict: ROUTE_ACTIVE
+- declared_status: ROUTE_ACTIVE
+  gap_id: null
+  preferred_skill_ids:
+  - check-gate
+  - check-skill-coverage
+  route_id: capability_audit
+  unresolved_skill_ids: []
+  verdict: ROUTE_ACTIVE
+- declared_status: ROUTE_ACTIVE
+  gap_id: null
+  preferred_skill_ids:
+  - select-poc-gap
+  - promote-gap-to-taskcard
+  route_id: feature_planning
+  unresolved_skill_ids: []
+  verdict: ROUTE_ACTIVE
+- declared_status: ROUTE_ACTIVE
+  gap_id: null
+  preferred_skill_ids:
+  - spec-parity-source-regeneration-and-migration
+  route_id: source_generation
+  unresolved_skill_ids: []
+  verdict: ROUTE_ACTIVE
+- declared_status: ROUTE_ACTIVE
+  gap_id: null
+  preferred_skill_ids:
+  - spec-parity-source-regeneration-and-migration
+  route_id: source_migration
+  unresolved_skill_ids: []
+  verdict: ROUTE_ACTIVE
+- declared_status: ROUTE_ACTIVE
+  gap_id: null
+  preferred_skill_ids:
+  - extract-analytics-from-monolith
+  route_id: analytics_migration
+  unresolved_skill_ids: []
+  verdict: ROUTE_ACTIVE
+- declared_status: ROUTE_ACTIVE
+  gap_id: null
+  preferred_skill_ids:
+  - add-python-api
+  - add-dotnet-api
+  route_id: product_backfill
+  unresolved_skill_ids: []
+  verdict: ROUTE_ACTIVE
+- declared_status: ROUTE_ACTIVE
+  gap_id: null
+  preferred_skill_ids:
+  - add-python-object-model-feature
+  - add-dotnet-object-model-feature
+  route_id: product_deepening
+  unresolved_skill_ids: []
+  verdict: ROUTE_ACTIVE
+- declared_status: ROUTE_ACTIVE
+  gap_id: null
+  preferred_skill_ids:
+  - add-roundtrip-test
+  route_id: test_migration
+  unresolved_skill_ids: []
+  verdict: ROUTE_ACTIVE
+- declared_status: ROUTE_ACTIVE
+  gap_id: null
+  preferred_skill_ids:
+  - verify-dogfood-path
+  - validate-skill-transcript
+  route_id: focused_verification
+  unresolved_skill_ids: []
+  verdict: ROUTE_ACTIVE
+- declared_status: ROUTE_ACTIVE
+  gap_id: null
+  preferred_skill_ids:
+  - post-sprint-audit
+  route_id: integration_verification
+  unresolved_skill_ids: []
+  verdict: ROUTE_ACTIVE
+- declared_status: ROUTE_ACTIVE
+  gap_id: null
+  preferred_skill_ids:
+  - add-installed-package-example
+  - package-install-proof
+  route_id: e2e_proof
+  unresolved_skill_ids: []
+  verdict: ROUTE_ACTIVE
+- declared_status: ROUTE_ACTIVE
+  gap_id: null
+  preferred_skill_ids:
+  - package-install-proof
+  route_id: package_build
+  unresolved_skill_ids: []
+  verdict: ROUTE_ACTIVE
+- declared_status: ROUTE_ACTIVE
+  gap_id: null
+  preferred_skill_ids:
+  - verify-dogfood-path
+  - add-dogfood-export
+  route_id: consumer_verification
+  unresolved_skill_ids: []
+  verdict: ROUTE_ACTIVE
+- declared_status: ROUTE_ACTIVE
+  gap_id: null
+  preferred_skill_ids:
+  - post-sprint-audit
+  - evidence-review-next-prompt
+  route_id: forensic_audit
+  unresolved_skill_ids: []
+  verdict: ROUTE_ACTIVE
+- declared_status: ROUTE_ACTIVE
+  gap_id: null
+  preferred_skill_ids:
+  - post-sprint-audit
+  - post-sprint-loop
+  route_id: sprint_audit
+  unresolved_skill_ids: []
+  verdict: ROUTE_ACTIVE
+- declared_status: ROUTE_ACTIVE
+  gap_id: null
+  preferred_skill_ids:
+  - build-evidence-bundle
+  - materialize-declaration-review
+  route_id: evidence_capture
+  unresolved_skill_ids: []
+  verdict: ROUTE_ACTIVE
+- declared_status: ROUTE_ACTIVE
+  gap_id: null
+  preferred_skill_ids:
+  - validate-product-code-ledger
+  route_id: ledger_reconciliation
+  unresolved_skill_ids: []
+  verdict: ROUTE_ACTIVE
+- declared_status: ROUTE_ACTIVE
+  gap_id: null
+  preferred_skill_ids:
+  - record-lane-execution
+  route_id: task_closure
+  unresolved_skill_ids: []
+  verdict: ROUTE_ACTIVE
+- declared_status: MISSING_SKILL_CAPABILITY
+  gap_id: SKILL-GAP-011
+  preferred_skill_ids: []
+  route_id: rollback_and_recovery
+  unresolved_skill_ids: []
+  verdict: MISSING_SKILL_CAPABILITY
+total_routes: 30

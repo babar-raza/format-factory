@@ -1,0 +1,60 @@
+commits_scanned: 3
+entries:
+- commit_sha: 5d668226bbea518eba52c3a5a481903e4c36164d
+  has_skill_transcript: false
+  src_paths_changed:
+  - src/python/abw/abw_codec.py
+  - src/python/csv/csv_parser.py
+  - src/python/dif/__init__.py
+  - src/python/dif/dif_parser.py
+  - src/python/fods/__init__.py
+  - src/python/gnumeric/gnumeric_codec.py
+  - src/python/ndjson/ndjson_codec.py
+  - src/python/ods/__init__.py
+  - src/python/pbm/pbm_parser.py
+  - src/python/pgm/pgm_parser.py
+  - src/python/ppm/ppm_parser.py
+  - src/python/qoi/image_document.py
+  - src/python/qoi/qoi_parser.py
+  - src/python/sylk/__init__.py
+  - src/python/sylk/sylk_parser.py
+  - src/python/toml/toml_codec.py
+  - src/python/tsv/__init__.py
+  - src/python/tsv/tsv_parser.py
+  - src/python/xcf/xcf_parser.py
+  - src/python/zst/zst_codec.py
+  verdict: UNGOVERNED_MUTATION
+- commit_sha: d9877f5eb9883d46257a62513230daedfb3f9064
+  has_skill_transcript: false
+  src_paths_changed:
+  - src/python/csv/__init__.py
+  - src/python/dif/__init__.py
+  - src/python/fods/__init__.py
+  - src/python/ods/__init__.py
+  - src/python/odt/__init__.py
+  - src/python/pbm/__init__.py
+  - src/python/pgm/__init__.py
+  - src/python/ppm/__init__.py
+  - src/python/qoi/__init__.py
+  - src/python/sylk/__init__.py
+  - src/python/toml/__init__.py
+  - src/python/tsv/__init__.py
+  verdict: UNGOVERNED_MUTATION
+- commit_sha: 0d504216f4ea42084968e2a85fe715578cdf27cb
+  has_skill_transcript: false
+  src_paths_changed:
+  - src/python/fodg/drawing_document.py
+  - src/python/fodg/drawing_metrics.py
+  - src/python/fodt/__init__.py
+  - src/python/fodt/fodt_document_edit.py
+  - src/python/fodt/fodt_document_query.py
+  - src/python/fodt/fodt_neutral_ops.py
+  - src/python/fodt/neutral_model.py
+  - src/python/ndjson/ndjson_codec.py
+  - src/python/ndjson/ndjson_record_stats.py
+  verdict: UNGOVERNED_MUTATION
+generated_by: scan_residual_bypasses.py
+mission_id: SKILL-FIRST-001
+note: UNGOVERNED_MUTATION = src/ changed in this commit but no skill transcript found.
+  This is expected for commits predating the skill-first policy.
+ungoverned_mutation_count: 3

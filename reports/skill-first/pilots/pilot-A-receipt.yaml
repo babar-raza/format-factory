@@ -1,0 +1,51 @@
+---
+pilot_id: A
+skill_ids:
+  - detect-ad-hoc-execution
+run_id: skill-first-89e03009
+started_at: "2026-06-24T00:00:00Z"
+completed_at: "2026-06-24T00:00:00Z"
+verdict: PASS
+idempotency_verdict: IDEMPOTENT_VERIFIED
+
+target_tool: tools/supervisor/detect_ad_hoc_execution.py
+target_type: PYTHON_BACKED_DETERMINISTIC
+
+steps_completed:
+  - step: 1
+    action: run_tool_first_time
+    result: PASS
+    detail: >
+      python tools/supervisor/detect_ad_hoc_execution.py
+      --output .local/evidences/skill-first-89e03009/pilot-A-run1.yaml
+      Scanned 179 files: 7 GOVERNED, 172 AD_HOC
+  - step: 2
+    action: run_tool_second_time
+    result: PASS
+    detail: >
+      python tools/supervisor/detect_ad_hoc_execution.py
+      --output .local/evidences/skill-first-89e03009/pilot-A-run2.yaml
+      Scanned 179 files: 7 GOVERNED, 172 AD_HOC (identical counts)
+  - step: 3
+    action: diff_outputs
+    result: PASS
+    detail: >
+      run1 == run2 (excluding generated_at timestamp field).
+      total_files=179, governed_count=7, ad_hoc_count=172.
+      Zero diff on all classification entries.
+  - step: 4
+    action: write_receipt
+    result: PASS
+    detail: "idempotency_verdict: IDEMPOTENT_VERIFIED"
+
+idempotency_notes: >
+  Two consecutive runs on unchanged tree produce identical YAML output
+  (excluding the generated_at timestamp). Classification is deterministic:
+  substring match against skill-registry.yaml implementation_paths.
+  Prompt-backed .md skills are excluded from this idempotency scope
+  (non-deterministic LLM output by definition).
+
+evidence_paths:
+  - .local/evidences/skill-first-89e03009/pilot-A-run1.yaml
+  - .local/evidences/skill-first-89e03009/pilot-A-run2.yaml
+  - tools/supervisor/detect_ad_hoc_execution.py

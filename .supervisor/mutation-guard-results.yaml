@@ -1,0 +1,11 @@
+enforcement_layer: DECLARATION_BASED
+generated_by: validate-mutation-guard
+mission_id: SKILL-FIRST-001
+note: Declaration-based enforcement layer validated. V48 fires on RELEASE_GATE items
+  citing architecture_only stubs.
+overall_verdict: PASS
+structural_gap: 'SKILL-GAP-012: agents that never submit declarations bypass this
+  gate'
+test_declaration: .local/evidences/skill-first-89e03009/test-downgrade-declaration.yaml
+v48_result: FAIL (blocks_sprint=True)
+validator_run: true

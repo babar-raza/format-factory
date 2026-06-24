@@ -17,6 +17,7 @@ active_mappings:
   roundtrip_test: add-roundtrip-test
   installed_example: add-installed-package-example
   analytics_function: add-analytics-function  # NOTE: rotation suspended; requires FACT-<FORMAT>-* ref
+  extract_analytics_from_monolith: extract-analytics-from-monolith  # SKILL-GAP-005 CLOSED: command exists
   spec_literal_migration: spec-parity-source-regeneration-and-migration
   python_reduced_parity: python-reduced-spec-parity-model
   qname_mapping: spec-literal-qname-to-code-mapping
@@ -24,6 +25,10 @@ active_mappings:
   sal_pipeline_heal: sal-pipeline-heal
   governance_skill_check: check-skill-coverage
   sprint_loop: autonomous-loop
+  skill_inventory: inventory-skills
+  detect_ad_hoc_execution: detect-ad-hoc-execution
+  scan_residual_bypasses: scan-residual-bypasses
+  sync_skill_command_registry: sync-skill-command-registry
 
 gap_mappings:
   capability_compiler:
@@ -31,11 +36,6 @@ gap_mappings:
     verdict: BLOCKED_SKILL_GAP
     master_plan_clause: "spec-to-feature plan Lane 3, ROOT-08"
     gap_register_id: SKILL-GAP-003
-  extract_analytics_from_monolith:
-    status: gap
-    verdict: BLOCKED_SKILL_GAP
-    master_plan_clause: "section 24.7 analytics separation RULE-AM-001"
-    gap_register_id: SKILL-GAP-005
   pre_sprint_governance_hook:
     status: gap
     verdict: BLOCKED_SKILL_GAP
@@ -51,3 +51,8 @@ gap_mappings:
     verdict: BLOCKED_SKILL_GAP
     master_plan_clause: "spec-to-feature plan Lane 14"
     gap_register_id: SKILL-GAP-010
+  rollback_and_recovery:
+    status: gap
+    verdict: BLOCKED_SKILL_GAP
+    master_plan_clause: "SKILL-FIRST-001 capability-routing-registry.yaml route: rollback_and_recovery"
+    gap_register_id: SKILL-GAP-011

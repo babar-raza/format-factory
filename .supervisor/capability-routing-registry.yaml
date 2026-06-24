@@ -1,0 +1,492 @@
+---
+version: "1.0"
+created_at: "2026-06-24"
+mission_id: SKILL-FIRST-001
+plan_id: cached-growing-snail
+authority: ".supervisor/skill-first-policy.md Rule 3"
+note: >
+  Schema-rich routing registry. 30 routes covering all operation types in the
+  Format Factory governed execution model. Each route has a stable route_id.
+  Machine-readable lookup authority: preferred_skill_ids[0] is the primary skill.
+  Agents must query this file before any mutating work (see skill-first-policy.md Rule 3).
+  Source of truth for route resolution; work-type-skill-map.yaml is the compact
+  machine-readable equivalent for fast lookups.
+
+skill_route_schema:
+  route_id: string                   # stable, snake_case, unique
+  description: string                # human-readable operation description
+  preferred_skill_ids: list[string]  # registered skill IDs, primary first
+  fallback_skill_ids: list[string]   # optional fallbacks
+  current_status: ROUTE_ACTIVE | MISSING_SKILL_CAPABILITY
+  gap_id: string | null              # if MISSING_SKILL_CAPABILITY, references gap-ledger.json
+  required_handoff_fields: list[string]  # fields required in skill invocation handoff
+  evidence_path_pattern: string      # where outputs land
+
+routes:
+
+  - route_id: status_and_recon
+    description: >
+      Read current project state — session resume, approval gates, plan lock,
+      continuation signal, evidence review. Produces context pack for next decision.
+    preferred_skill_ids:
+      - reproduce-master-plan
+      - build-context-pack
+    fallback_skill_ids: []
+    current_status: ROUTE_ACTIVE
+    gap_id: null
+    required_handoff_fields:
+      - skill_id
+    evidence_path_pattern: "reports/supervisor/"
+
+  - route_id: plan_creation
+    description: >
+      Create a new plan or taskcard from a problem statement, gap entry, or
+      strategic objective. Produces a governed plan file.
+    preferred_skill_ids:
+      - create-taskcard
+      - plan-hardening
+    fallback_skill_ids: []
+    current_status: ROUTE_ACTIVE
+    gap_id: null
+    required_handoff_fields:
+      - skill_id
+      - plan_path
+    evidence_path_pattern: "plans/"
+
+  - route_id: plan_hardening
+    description: >
+      Convert audit findings (partially_done, not_attempted, claimed_unproven,
+      risk_not_reduced) into governed taskcards with status tracking.
+    preferred_skill_ids:
+      - plan-hardening
+      - execution-handoff
+    fallback_skill_ids: []
+    current_status: ROUTE_ACTIVE
+    gap_id: null
+    required_handoff_fields:
+      - skill_id
+      - plan_path
+      - audit_findings_path
+    evidence_path_pattern: "plans/"
+
+  - route_id: taskcard_generation
+    description: >
+      Generate a taskcard from a gap ledger entry or informal problem statement.
+      Produces a YAML taskcard with owned fields, acceptance criteria, and evidence paths.
+    preferred_skill_ids:
+      - create-taskcard
+      - promote-gap-to-taskcard
+    fallback_skill_ids: []
+    current_status: ROUTE_ACTIVE
+    gap_id: null
+    required_handoff_fields:
+      - skill_id
+      - gap_id
+    evidence_path_pattern: ".local/taskcards/"
+
+  - route_id: taskcard_execution
+    description: >
+      Execute a governed taskcard through the autonomous sprint loop.
+      Runs closeout, declaration, grading, and continuation check.
+    preferred_skill_ids:
+      - autonomous-loop
+      - execution-handoff
+    fallback_skill_ids: []
+    current_status: ROUTE_ACTIVE
+    gap_id: null
+    required_handoff_fields:
+      - skill_id
+      - taskcard_id
+    evidence_path_pattern: ".local/evidences/"
+
+  - route_id: specification_ingestion
+    description: >
+      Ingest a format specification (ODF, image, document) into the SAL facts
+      pipeline. Produces FACT-FORMAT-NNN entries in sal-facts-latest.json.
+    preferred_skill_ids:
+      - sal-pipeline-heal
+    fallback_skill_ids: []
+    current_status: ROUTE_ACTIVE
+    gap_id: null
+    required_handoff_fields:
+      - skill_id
+      - format_id
+    evidence_path_pattern: ".local/spec-cache/"
+
+  - route_id: fact_normalization
+    description: >
+      Normalize and deduplicate SAL facts. Repairs broken chains between
+      sal-facts-latest.json, qname-registry, and source spec_qname values.
+    preferred_skill_ids:
+      - sal-pipeline-heal
+    fallback_skill_ids: []
+    current_status: ROUTE_ACTIVE
+    gap_id: null
+    required_handoff_fields:
+      - skill_id
+      - format_id
+    evidence_path_pattern: ".local/spec-cache/"
+
+  - route_id: fact_authorization
+    description: >
+      Authorize a set of spec facts for use in product deepening. Verifies
+      FACT-FORMAT-NNN refs are present and trace to a registered spec source.
+    preferred_skill_ids:
+      - sal-pipeline-heal
+    fallback_skill_ids: []
+    current_status: ROUTE_ACTIVE
+    gap_id: null
+    required_handoff_fields:
+      - skill_id
+      - format_id
+      - spec_fact_refs
+    evidence_path_pattern: ".local/spec-cache/"
+
+  - route_id: qname_generation
+    description: >
+      Generate or backfill QName mappings (spec QName → canonical class → facade).
+      Produces entries in shared/qname-registry/{format}.yaml.
+    preferred_skill_ids:
+      - spec-literal-qname-to-code-mapping
+      - qname-backfill
+    fallback_skill_ids: []
+    current_status: ROUTE_ACTIVE
+    gap_id: null
+    required_handoff_fields:
+      - skill_id
+      - format_id
+      - qname
+    evidence_path_pattern: "shared/qname-registry/"
+
+  - route_id: hierarchy_generation
+    description: >
+      Generate a spec-shaped product architecture blueprint for a format.
+      Produces canonical class hierarchy in src/ following spec QName structure.
+    preferred_skill_ids:
+      - spec-shaped-product-architecture-blueprint
+    fallback_skill_ids: []
+    current_status: ROUTE_ACTIVE
+    gap_id: null
+    required_handoff_fields:
+      - skill_id
+      - format_id
+      - spec_fact_refs
+    evidence_path_pattern: "src/"
+
+  - route_id: capability_extraction
+    description: >
+      Extract and update capability matrix from current source state.
+      Scores a format against the capability scorecard.
+    preferred_skill_ids:
+      - update-capability-matrix
+      - score-format
+    fallback_skill_ids: []
+    current_status: ROUTE_ACTIVE
+    gap_id: null
+    required_handoff_fields:
+      - skill_id
+      - format_id
+    evidence_path_pattern: "reports/capability-layer/"
+
+  - route_id: capability_audit
+    description: >
+      Audit capability gates for a format or the overall project.
+      Verifies gate criteria (C1-C20, P1-P11) and produces gate report.
+    preferred_skill_ids:
+      - check-gate
+      - check-skill-coverage
+    fallback_skill_ids: []
+    current_status: ROUTE_ACTIVE
+    gap_id: null
+    required_handoff_fields:
+      - skill_id
+      - format_id
+    evidence_path_pattern: "reports/capability-layer/"
+
+  - route_id: feature_planning
+    description: >
+      Select the next highest-value gap for product deepening and convert it
+      to a governed taskcard or pilot target.
+    preferred_skill_ids:
+      - select-poc-gap
+      - promote-gap-to-taskcard
+    fallback_skill_ids: []
+    current_status: ROUTE_ACTIVE
+    gap_id: null
+    required_handoff_fields:
+      - skill_id
+      - gap_id
+    evidence_path_pattern: "reports/capability-layer/"
+
+  - route_id: source_generation
+    description: >
+      Generate or regenerate source files for a format from spec facts.
+      Follows spec-parity-source-regeneration-and-migration skill contract.
+    preferred_skill_ids:
+      - spec-parity-source-regeneration-and-migration
+    fallback_skill_ids: []
+    current_status: ROUTE_ACTIVE
+    gap_id: null
+    required_handoff_fields:
+      - skill_id
+      - format_id
+      - exact_source_paths
+      - ledger_entry_path
+    evidence_path_pattern: "src/"
+
+  - route_id: source_migration
+    description: >
+      Migrate existing source files to spec-parity naming and structure.
+      Renames, reshapes, and re-registers classes per canonical QName hierarchy.
+    preferred_skill_ids:
+      - spec-parity-source-regeneration-and-migration
+    fallback_skill_ids: []
+    current_status: ROUTE_ACTIVE
+    gap_id: null
+    required_handoff_fields:
+      - skill_id
+      - format_id
+      - exact_source_paths
+      - ledger_entry_path
+    evidence_path_pattern: "src/"
+
+  - route_id: analytics_migration
+    description: >
+      Extract analytics functions from a monolithic codec/parser file into
+      a separate {format}_analytics.py. Resolves GOV_BLOCK:monolith_detection.
+    preferred_skill_ids:
+      - extract-analytics-from-monolith
+    fallback_skill_ids: []
+    current_status: ROUTE_ACTIVE
+    gap_id: null
+    required_handoff_fields:
+      - skill_id
+      - format_id
+      - exact_source_paths
+      - ledger_entry_path
+    evidence_path_pattern: "src/python/"
+
+  - route_id: product_backfill
+    description: >
+      Add a new API function (Python or .NET) to an existing format product.
+      Requires gap_ledger_ref and spec_fact_refs in handoff.
+    preferred_skill_ids:
+      - add-python-api
+      - add-dotnet-api
+    fallback_skill_ids: []
+    current_status: ROUTE_ACTIVE
+    gap_id: null
+    required_handoff_fields:
+      - skill_id
+      - format_id
+      - api_name
+      - exact_source_paths
+      - exact_test_paths
+      - ledger_entry_path
+      - gap_ledger_ref
+    evidence_path_pattern: "src/"
+
+  - route_id: product_deepening
+    description: >
+      Add a new feature to an existing format's object model (Python or .NET).
+      Requires spec_fact_refs; rotation currently suspended.
+    preferred_skill_ids:
+      - add-python-object-model-feature
+      - add-dotnet-object-model-feature
+    fallback_skill_ids: []
+    current_status: ROUTE_ACTIVE
+    gap_id: null
+    required_handoff_fields:
+      - skill_id
+      - format_id
+      - feature_name
+      - exact_source_paths
+      - exact_test_paths
+      - ledger_entry_path
+      - spec_fact_refs
+    evidence_path_pattern: "src/"
+
+  - route_id: test_migration
+    description: >
+      Add a roundtrip test for a format's read-write cycle.
+      Verifies a write skill produces identical output to the original on re-read.
+    preferred_skill_ids:
+      - add-roundtrip-test
+    fallback_skill_ids: []
+    current_status: ROUTE_ACTIVE
+    gap_id: null
+    required_handoff_fields:
+      - skill_id
+      - format_id
+      - exact_test_paths
+    evidence_path_pattern: "tests/"
+
+  - route_id: focused_verification
+    description: >
+      Run a focused dogfood path or skill transcript validation.
+      Proves a specific operation works end-to-end with installed package.
+    preferred_skill_ids:
+      - verify-dogfood-path
+      - validate-skill-transcript
+    fallback_skill_ids: []
+    current_status: ROUTE_ACTIVE
+    gap_id: null
+    required_handoff_fields:
+      - skill_id
+      - format_id
+    evidence_path_pattern: ".local/dogfood-proofs/"
+
+  - route_id: integration_verification
+    description: >
+      Run a post-sprint audit covering all work items in a sprint declaration.
+      Classifies each item into the 6-category audit schema.
+    preferred_skill_ids:
+      - post-sprint-audit
+    fallback_skill_ids: []
+    current_status: ROUTE_ACTIVE
+    gap_id: null
+    required_handoff_fields:
+      - skill_id
+      - declaration_path
+    evidence_path_pattern: ".local/evidences/"
+
+  - route_id: e2e_proof
+    description: >
+      Prove that an installed package works end-to-end via a published example.
+      Creates or updates examples/python/{format}/ and runs the example.
+    preferred_skill_ids:
+      - add-installed-package-example
+      - package-install-proof
+    fallback_skill_ids: []
+    current_status: ROUTE_ACTIVE
+    gap_id: null
+    required_handoff_fields:
+      - skill_id
+      - format_id
+      - example_path
+    evidence_path_pattern: "examples/"
+
+  - route_id: package_build
+    description: >
+      Build and verify installability of a Python or .NET package.
+      Produces wheel/nupkg and confirms pip/dotnet install succeeds.
+    preferred_skill_ids:
+      - package-install-proof
+    fallback_skill_ids: []
+    current_status: ROUTE_ACTIVE
+    gap_id: null
+    required_handoff_fields:
+      - skill_id
+      - format_id
+      - package_path
+    evidence_path_pattern: ".local/package-builds/"
+
+  - route_id: consumer_verification
+    description: >
+      Verify a format's dogfood export path from the consumer perspective.
+      Proves exported artifacts are usable by downstream tools.
+    preferred_skill_ids:
+      - verify-dogfood-path
+      - add-dogfood-export
+    fallback_skill_ids: []
+    current_status: ROUTE_ACTIVE
+    gap_id: null
+    required_handoff_fields:
+      - skill_id
+      - format_id
+    evidence_path_pattern: ".local/dogfood-proofs/"
+
+  - route_id: forensic_audit
+    description: >
+      Deep forensic audit of sprint evidence quality, contradiction detection,
+      and stale fact identification. Produces materialized evidence review.
+    preferred_skill_ids:
+      - post-sprint-audit
+      - evidence-review-next-prompt
+    fallback_skill_ids: []
+    current_status: ROUTE_ACTIVE
+    gap_id: null
+    required_handoff_fields:
+      - skill_id
+      - declaration_path
+    evidence_path_pattern: "reports/supervisor/"
+
+  - route_id: sprint_audit
+    description: >
+      Run the full post-sprint audit and produce the structured sprint audit
+      classifying every work item into one of 6 categories.
+    preferred_skill_ids:
+      - post-sprint-audit
+      - post-sprint-loop
+    fallback_skill_ids: []
+    current_status: ROUTE_ACTIVE
+    gap_id: null
+    required_handoff_fields:
+      - skill_id
+      - declaration_path
+    evidence_path_pattern: "reports/supervisor/"
+
+  - route_id: evidence_capture
+    description: >
+      Build an evidence bundle from declared work items and produce
+      a materialized declaration review package.
+    preferred_skill_ids:
+      - build-evidence-bundle
+      - materialize-declaration-review
+    fallback_skill_ids: []
+    current_status: ROUTE_ACTIVE
+    gap_id: null
+    required_handoff_fields:
+      - skill_id
+      - declaration_path
+    evidence_path_pattern: ".local/evidences/"
+
+  - route_id: ledger_reconciliation
+    description: >
+      Validate the product code change ledger against declared work items.
+      Detects missing ledger entries for src/ mutations.
+    preferred_skill_ids:
+      - validate-product-code-ledger
+    fallback_skill_ids: []
+    current_status: ROUTE_ACTIVE
+    gap_id: null
+    required_handoff_fields:
+      - skill_id
+      - ledger_path
+    evidence_path_pattern: "reports/r90/"
+
+  - route_id: task_closure
+    description: >
+      Record the execution of a lane or task with a receipt. Closes the lane
+      in the supervision tracking system with evidence pointers.
+    preferred_skill_ids:
+      - record-lane-execution
+    fallback_skill_ids: []
+    current_status: ROUTE_ACTIVE
+    gap_id: null
+    required_handoff_fields:
+      - skill_id
+      - lane_id
+      - evidence_paths
+    evidence_path_pattern: "reports/supervisor/"
+
+  - route_id: rollback_and_recovery
+    description: >
+      Roll back a failed sprint mutation, restore from backup, and produce
+      a verified clean state. Requires explicit fixture specification.
+    preferred_skill_ids: []
+    fallback_skill_ids: []
+    current_status: MISSING_SKILL_CAPABILITY
+    gap_id: SKILL-GAP-011
+    required_handoff_fields:
+      - skill_id
+      - target_paths
+      - backup_path
+    evidence_path_pattern: ".local/archive/"
+
+gap_count:
+  total_routes: 30
+  active_routes: 29
+  missing_skill_routes: 1
+  missing_skill_gap_ids:
+    - SKILL-GAP-011

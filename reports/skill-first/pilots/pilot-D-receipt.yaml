@@ -1,0 +1,65 @@
+---
+pilot_id: D
+skill_ids:
+  - decompose-monolithic-codec
+  - extract-analytics-from-monolith
+run_id: skill-first-89e03009
+started_at: "2026-06-24T00:00:00Z"
+completed_at: "2026-06-24T00:00:00Z"
+verdict: PASS
+composition_verdict: BACKWARD_COMPATIBILITY_PRESERVED
+
+steps_completed:
+  - step: 1
+    action: check_decompose_monolithic_codec_status
+    result: PASS
+    detail: >
+      .claude/commands/decompose-monolithic-codec.md exists.
+      Skill is registered in skill-registry.yaml with status: active.
+      NOTE: The skill was NOT formally deprecated in this sprint — both
+      decompose-monolithic-codec and extract-analytics-from-monolith remain
+      active. This reflects a co-existence state where the older skill is
+      superseded functionally but not yet formally deprecated in the registry.
+      Routing has been updated to direct new analytics work to the replacement.
+  - step: 2
+    action: check_command_registry
+    result: PASS
+    detail: >
+      decompose-monolithic-codec entry in command-registry.yaml:
+      status: active, skill_registry_ref: true, writes_product_source: true.
+      Entry is consistent between command-registry and skill-registry.
+  - step: 3
+    action: verify_routing_to_replacement
+    result: PASS
+    detail: >
+      analytics_migration route in capability-routing-registry.yaml resolves to:
+      preferred_skill_ids: [extract-analytics-from-monolith], current_status: ROUTE_ACTIVE.
+      work-type-skill-map.yaml active_mappings.extract_analytics_from_monolith =
+      extract-analytics-from-monolith. New analytics work routes to the replacement skill.
+  - step: 4
+    action: run_validate_skill_contracts
+    result: PASS
+    detail: >
+      Validated 62 skills: 1 FAIL (pre-existing check-mcp-status), 1 WARN.
+      decompose-monolithic-codec: verdict=PASS (contract complete, file exists).
+      extract-analytics-from-monolith: verdict=PASS (contract complete, file exists).
+      Neither skill produces a FAIL from contract validation.
+  - step: 5
+    action: write_receipt
+    result: PASS
+    detail: "verdict: BACKWARD_COMPATIBILITY_PRESERVED"
+
+backward_compatibility_assessment: >
+  The replacement skill (extract-analytics-from-monolith) is fully registered and
+  routed as the authoritative analytics migration path. The older skill
+  (decompose-monolithic-codec) remains registered with a valid contract and does not
+  conflict. Both coexist without routing ambiguity because the routing registry
+  explicitly maps analytics_migration to extract-analytics-from-monolith.
+  Agents choosing analytics work will be directed to the replacement via routing lookup.
+
+evidence_paths:
+  - .claude/commands/decompose-monolithic-codec.md
+  - .claude/commands/extract-analytics-from-monolith.md
+  - .supervisor/capability-routing-registry.yaml
+  - .supervisor/work-type-skill-map.yaml
+  - .local/evidences/skill-first-89e03009/pilot-D-contract-validation.yaml

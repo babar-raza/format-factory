@@ -806,6 +806,27 @@ See GOVERNANCE.md §26.14.
 
 ---
 
+## AG0. Mandatory Skill Discovery (Pre-Task Gate — Before Any Mutating Work)
+
+**Sprint:** SKILL-FIRST-001 (cached-growing-snail)
+**Date:** 2026-06-24
+**Authority:** `.supervisor/skill-first-policy.md`, `.supervisor/skill-registry.yaml` global_controls
+
+Before any mutating work, every agent MUST:
+1. Load `.supervisor/skill-registry.yaml` and `.supervisor/capability-routing-registry.yaml`
+2. Classify the required operation using the `route_id` taxonomy in the routing registry
+3. Lookup the matching route — if `current_status: ROUTE_ACTIVE`, use only the listed `preferred_skill_ids`
+4. If `current_status: MISSING_SKILL_CAPABILITY`: create the smallest missing atomic skill (see §AG1), register it, test it, use it — do NOT proceed with direct mutation
+5. Record the `skill_route` entry and `skill_id` in the task handoff before execution
+6. After execution, run `validate-skill-transcript` against the handoff to confirm compliance
+
+Direct `src/` edits without a registered skill binding are BLOCKED (see `global_controls` in skill-registry.yaml).
+This rule is enforced post-declaration by `governance_validators.py` Step 2d and monitored pre-commit by `scan-residual-bypasses`.
+
+**Quick routing lookup:** `.supervisor/work-type-skill-map.yaml` (compact) or `.supervisor/capability-routing-registry.yaml` (full 30-route schema).
+
+---
+
 ## AG. Human-Free Autonomy and Agent Delegation Doctrine
 
 **Sprint:** human-free-autonomy-governance-20260612-001
