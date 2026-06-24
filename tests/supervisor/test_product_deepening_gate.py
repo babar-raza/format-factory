@@ -265,12 +265,18 @@ def _make_work_items(tmp_path: Path) -> None:
     )
 
 
-def _make_plan_lock(tmp_path: Path, *, status: str = "TERMINAL_CLOSED") -> None:
-    """Write active-plan-lock.json to satisfy plan lock checks."""
-    lock = {"plan_path": "plans/test-plan.md", "status": status}
-    lock_path = tmp_path / ".local" / "supervisor" / "active-plan-lock.json"
-    lock_path.parent.mkdir(parents=True, exist_ok=True)
-    lock_path.write_text(json.dumps(lock), encoding="utf-8")
+def _make_plan_lock(tmp_path: Path) -> None:
+    """Ensure no active plan lock files exist so POST_PLAN_TERMINAL is not triggered.
+
+    check_continuation Check M6 fires on TERMINAL_CLOSED locks. Integration tests
+    pass an empty plan-locks directory so the plan lock checks are bypassed cleanly.
+    """
+    plan_locks_dir = tmp_path / ".local" / "supervisor" / "plan-locks"
+    plan_locks_dir.mkdir(parents=True, exist_ok=True)
+    # Active plan lock absent -> no TERMINAL_CLOSED trigger
+    active_lock = tmp_path / ".local" / "supervisor" / "active-plan-lock.json"
+    if active_lock.exists():
+        active_lock.unlink()
 
 
 def test_check9_real_check_call_blocks_on_blocked_format(tmp_path):
