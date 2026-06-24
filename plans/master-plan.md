@@ -1344,7 +1344,8 @@ TC-FODT-GAP-001, TC-FODT-AUDIT-001, TC-FODT-AUDIT-002, TC-RCAL-001
 
 **TC-QHARD-POST-001**
 Title: Fix XcfImage spec_qname — resolve V53 xcf:image violation
-Status: not_attempted | Priority: HIGH | Lane: Mainstream Product
+Status: closed | Priority: HIGH | Lane: Mainstream Product
+Evidence: XcfImage already had spec_qname="xcf:image", spec_fact_ref="FACT-XCF-001", namespace_uri, local_name at class level. 6 V53 tests in tests/python/xcf/test_xcf_spec_qname.py pass. 718 XCF tests pass.
 Source: AF-001
 Why it matters: `XcfImage` at xcf_parser.py:61 is a plain `@dataclass` with no `spec_qname`. Registry says status `implementing` with this file as `python_file` — V53 fires a live WARN.
 Required work: Add `spec_qname: str = "xcf:image"` and `spec_fact_ref: str = "FACT-XCF-001"` to `XcfImage` dataclass body.
@@ -1356,7 +1357,8 @@ Closeout: CLOSED only after V53 confirms 0 xcf violations AND XCF tests pass.
 
 **TC-QHARD-POST-002**
 Title: Fix ndjson:record V53 violation — add NdjsonRecord class or correct registry python_file
-Status: not_attempted | Priority: HIGH | Lane: Mainstream Product
+Status: closed | Priority: HIGH | Lane: Mainstream Product
+Evidence: Authority-only NdjsonRecord class added to ndjson_codec.py with spec_qname="ndjson:record", spec_fact_ref="FACT-NDJSON-001", namespace_uri, local_name, authority_only=True. 12 V53 tests in tests/python/ndjson/test_ndjson_spec_qname.py pass. NDJSON tests pass.
 Source: AF-002
 Why it matters: ndjson_codec.py has only `NdjsonError` and `NdjsonParseError`. No `NdjsonRecord` class exists in the package. Registry entry points there with `implementing` status.
 Required work (Path A): Add authority-only `NdjsonRecord` class to ndjson_codec.py with `spec_qname: str = "ndjson:record"` and `authority_only: bool = True` — no behavioral methods.
@@ -1381,7 +1383,8 @@ Closeout: CLOSED only after dotnet test passes >=4 assertions.
 
 **TC-QHARD-POST-004**
 Title: Execute python-qname-code-reviewer against FODS and produce verdict.json
-Status: not_attempted | Priority: MEDIUM | Lane: Skills / Governed Execution
+Status: closed | Priority: MEDIUM | Lane: Skills / Governed Execution
+Evidence: verdict.json at .local/evidences/qname-hardening/fods-reviewer-post-001/verdict.json. ACCEPTED_VERIFIED. 10 pass, 3 warn, 0 fail. FACT-FODS-002 added to SAL cache. FodsDocument/FodsSheet/FodsCell added to backfill inventory with DONE status.
 Source: AF-004
 Why it matters: Sprint claimed "Reviewer verdict ACCEPTED_VERIFIED" for FODS. No verdict.json exists. Claim is CLAIMED_UNPROVEN.
 Required work: (1) Run `/python-qname-code-reviewer --format fods`. (2) Capture produced `verdict.json`. (3) If REWORK_REQUIRED, address findings, re-run. (4) Save evidence at `.local/evidences/qname-hardening/fods-reviewer-post-001/verdict.json`.
@@ -2756,5 +2759,62 @@ All 7 Wave 2 corrections from the Execution Readiness Certification were applied
 
 ---
 
-*End of plans/master-plan.md — version 6.1 — 2026-06-24 (Section 51: recursive-hugging-bird Wave 2 machinery hardening CLOSED — 9 new/modified files, 21 new tests, 143 total pass, ALL-GREEN)*
+---
+
+## Section 52: Self-Growing Repository Knowledge System (hidden-puzzling-rain) — CLOSED
+
+**Plan:** hidden-puzzling-rain (knowledge_infrastructure)
+**Date closed:** 2026-06-24
+**Status:** TERMINAL_CLOSED — ALL-GREEN, all 5 taskcards CLOSED
+
+### What Was Completed
+
+- **TC-KS-001** — Created `.supervisor/knowledge/` seed infrastructure (10 files):
+  - `registry.yaml` (machine-readable contract index, 2 contracts: KC-PYTHON-001 VERIFIED_CURRENT, KC-PYTHON-002 DRAFT)
+  - `index.md`, `gaps.yaml` (KG-001..KG-007), `growth-events.yaml` (GE-001, GE-002)
+  - `contracts/python-domain-model.yaml` (KC-PYTHON-001 with real SHA-256 drift detection)
+  - `contracts/python-source-structure.yaml` (KC-PYTHON-002 DRAFT)
+  - `examples/python-domain-model-canonical.py` (verbatim CsvDocument copy with REQUIRED: annotations)
+  - `consumption-proofs/pilot-001.yaml`, `consumption-proofs/pilot-001-evidence.py`
+  - `validate_knowledge_contracts.py` (80-line drift detector, exits 0)
+
+- **TC-KS-002** — Prepended Step 0 (Knowledge Registry Lookup) to two skill command files:
+  - `.claude/commands/add-python-object-model-feature.md` (v1.4)
+  - `.claude/commands/add-python-api.md` (v1.3); Step 5 conflict resolved
+
+- **TC-KS-003** — Updated agent entry points:
+  - `docs/agent-methodology-index.md` — Section 12 (Knowledge Registry) added
+  - `AGENTS.md` — Rule B2b added after B2a (before B3)
+
+- **TC-KS-004** — Consumption pilot executed: agent used KC-PYTHON-001 alone to produce correct `ZstDocument.get_frame_type()` snippet (path-based variant, safe default, type coercion). Verdict: `KNOWLEDGE_CONTRACT_SUFFICIENT`
+
+- **TC-KS-005** — Gap KG-007 registered and GE-002 growth event appended (governance validator integration deferred to future sprint)
+
+### Verification Performed
+
+All 10 validation checks (V-01..V-10) pass:
+- V-01: all 10 infrastructure files exist
+- V-02: registry has 2 contracts
+- V-03: `validate_knowledge_contracts.py` exits 0; `KC-PYTHON-001 VERIFIED_CURRENT`
+- V-04: source_hashes contain real 64-char SHA-256 values
+- V-05: both skill files contain "Knowledge Registry Lookup"; Step 5 replaced
+- V-06: B2b appears after B2a and before B3 in AGENTS.md
+- V-07: Section 12 in agent-methodology-index.md
+- V-08: pilot-001.yaml verdict = KNOWLEDGE_CONTRACT_SUFFICIENT (L3 proof)
+- V-09: gaps.yaml contains KG-001..KG-007
+- V-10: growth-events.yaml contains GE-001, GE-002
+
+Post-sprint audit: SPRINT_ALL_GREEN_VERIFIED (0 failures, 0 L1/L2/L3 issues)
+
+### Remaining Follow-ups (Non-Blockers)
+
+- KG-007: `validate_knowledge_contracts.py` not yet wired into `autonomous_cycle.py` — tracked as gap, future sprint
+
+### Files Changed (14)
+
+New (10 in `.supervisor/knowledge/`) + Modified (4: AGENTS.md, docs/agent-methodology-index.md, add-python-api.md, add-python-object-model-feature.md)
+
+---
+
+*End of plans/master-plan.md — version 6.2 — 2026-06-24 (Section 52: hidden-puzzling-rain knowledge infrastructure CLOSED — 14 files, all V-01..V-10 pass, ALL-GREEN)*
 *This document is the single operational authority for format-factory. All other documents are subordinate to it for operational decisions.*

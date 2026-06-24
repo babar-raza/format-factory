@@ -1,0 +1,121 @@
+knowledge_id: "KC-PYTHON-001"
+stable_semantic_key: "python_domain_model_class"
+title: "Python Domain Model Class Pattern"
+subject_type: "SOURCE_STRUCTURE"
+scope: "All Python format packages in src/python/*/"
+status: "VERIFIED_CURRENT"
+enforcement: "PARTIALLY_ENFORCED"
+
+authority: >
+  Verified from 7 production implementations: csv/models.py, ndjson/models.py,
+  gnumeric/models.py, toml/models.py, zst/models.py, abw/models.py, tsv/models.py.
+  Backed by V53 governance validator (spec_qname classvar) and V45 (naming convention).
+  Confirmed by .supervisor/skill-registry.yaml spec_qname_required: true entries.
+
+authoritative_sources:
+  - "src/python/csv/models.py"
+  - "src/python/ndjson/models.py"
+  - "src/python/gnumeric/models.py"
+  - "src/python/toml/models.py"
+  - "src/python/zst/models.py"
+  - "src/python/abw/models.py"
+  - "src/python/tsv/models.py"
+  - ".supervisor/skill-registry.yaml"
+  - "tools/supervisor/governance_validators.py (V53)"
+
+# SHA-256 hashes for drift detection.
+# Validator recomputes these at use time and exits 1 if diverged.
+# source_hashes stored ONLY here (not in registry.yaml).
+source_hashes:
+  - path: "src/python/csv/models.py"
+    sha256: "74981685c5c4562ad130d0002ac960a1bda6d25852955fa4dfb68e84d770cda2"
+  - path: "src/python/ndjson/models.py"
+    sha256: "3027a57cbcdd8f7b24cd5d1ddbd28f6dfd32d334d5cd011a3f3b86eed4348ddd"
+
+applies_to:
+  - "src/python/*/models.py"
+
+required_fields_or_components:
+  - name: "spec_qname class attribute"
+    description: "Bare class attribute (not ClassVar type hint in current code). Must match shared/qname-registry/{format}.yaml qname field exactly."
+    example: 'spec_qname = "csv:record"'
+  - name: "spec_fact_ref class attribute"
+    description: "FACT-FORMAT-NNN string, references SAL fact"
+    example: 'spec_fact_ref = "FACT-CSV-001"'
+  - name: "namespace_uri class attribute"
+    example: 'namespace_uri = "https://www.iana.org/assignments/media-types/text/csv"'
+  - name: "local_name class attribute"
+    example: 'local_name = "record"'
+  - name: "facade_names class attribute"
+    example: "facade_names = []"
+  - name: "__init__ constructor"
+    description: "Accepts neutral model (dict or list), stores as self._data or self._records"
+  - name: "from_file classmethod"
+    description: "Loads file via relative import of codec inside the method body. Returns instance."
+  - name: "typed property methods"
+    description: "One property per neutral model key. Return defensive copies (list(), dict()). Use .get(key, default). Coerce to correct type."
+  - name: "accessor method"
+    description: "get_cell(), get_record(), or equivalent. Returns safe default on out-of-bounds."
+  - name: "to_dict or to_list export"
+    description: "Round-trips the underlying neutral model."
+  - name: "__repr__ method"
+    description: "Includes key counts. Format: ClassName(count=N, ...)"
+  - name: "__init__.py export"
+    description: "from .models import {Format}Document  # noqa: F401"
+  - name: "test file"
+    description: "tests/python/{format}/test_{format}_document_model.py"
+
+naming_rules:
+  - "Class name: {Format}Document where Format is title-case of the format_id (Csv, Ndjson, Gnumeric, etc.)"
+  - "File name: models.py (always, no alternatives)"
+
+path_rules:
+  - "Source file: src/python/{format_id}/models.py"
+  - "Test file: tests/python/{format_id}/test_{format_id}_document_model.py"
+  - "QName binding: shared/qname-registry/{format_id}.yaml"
+
+allowed_variants:
+  - key: "dict-based"
+    description: "Most formats. __init__(self, data: dict[str, Any]). self._data = data. to_dict() returns dict(self._data)."
+    examples: ["csv", "gnumeric", "toml", "abw", "tsv"]
+  - key: "list-based"
+    description: "NDJSON only. __init__(self, records: list[Any]). self._records = list(records). to_list() instead of to_dict()."
+    examples: ["ndjson"]
+  - key: "path-based"
+    description: "ZST only. __init__(self, path, data=None). Requires file path for frame-level analysis without full decompression."
+    examples: ["zst"]
+
+forbidden_patterns:
+  - "spec_qname: str = '...' (instance field — breaks V53; must be bare class attribute)"
+  - "Format-prefixed class as primary implementation outside Compat/ (breaks V45)"
+  - "Properties returning self._data directly (not a copy — breaks defensive-copy contract)"
+  - "from .module import function at module level inside from_file (must be inside method body)"
+  - "Missing from_file classmethod"
+  - "Missing __repr__"
+  - "Missing to_dict or to_list"
+
+canonical_examples:
+  - example_id: "CE-PYTHON-001"
+    knowledge_id: "KC-PYTHON-001"
+    path: ".supervisor/knowledge/examples/python-domain-model-canonical.py"
+    purpose: "Complete canonical reference. Exact copy of src/python/csv/models.py with inline component annotations."
+    supported_variant: "dict-based"
+    validator: ".venv/Scripts/python .supervisor/knowledge/validate_knowledge_contracts.py --contract KC-PYTHON-001"
+    status: "VERIFIED_CURRENT"
+
+validation_commands:
+  - ".venv/Scripts/python .supervisor/knowledge/validate_knowledge_contracts.py --contract KC-PYTHON-001"
+
+update_triggers:
+  - "Any authoritative_sources file is modified (hash will diverge — validator exits 1)"
+  - "A new models.py is added that introduces a new required pattern"
+  - "V53 or V45 governance validators are modified to enforce new constraints"
+  - "A new allowed_variant is introduced for a new format"
+
+consumers:
+  - ".claude/commands/add-python-object-model-feature.md (Step 0)"
+  - ".claude/commands/add-python-api.md (Step 0)"
+  - "Any agent creating or modifying src/python/*/models.py"
+  - "AGENTS.md B2b (knowledge-first rule)"
+
+last_verified_revision: "2026-06-24"

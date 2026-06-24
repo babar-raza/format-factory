@@ -24,6 +24,8 @@
 
 **B2a.** Before any product architecture, source generation, or spec-parity work, read `docs/spec-to-feature-correction-plan-summary.md` (quick reference) or the full plan at `plans/spec-to-feature-radical-correction-plan.md`. This plan defines the 16-lane remediation structure, canonical naming rules (spec QName → canonical class → facade), 8 spec-parity validators, Gate 11 criteria (C1-C20, P1-P11), and the binding constraint that system healing lanes (1-6, 14, 15) must complete before product regeneration lanes (7-13).
 
+**B2b.** Before modifying any `src/python/` source file or creating new model, spec, or analytics classes: (1) read `.supervisor/knowledge/registry.yaml`; (2) load applicable contracts from `.supervisor/knowledge/contracts/`; (3) verify contract `status: VERIFIED_CURRENT`; (4) follow the contract — do not infer structure from nearby implementations; (5) if knowledge is missing, stale, or contradicted: add an entry to `.supervisor/knowledge/gaps.yaml`, investigate authority, write or repair the contract, then resume the original task. This rule runs before Step 5 of any product skill that says "inspect existing conventions."
+
 **B3.** An agent must not proceed if the current phase or gate status is unclear. Log a gap (Section M) and apply the Human Task Conversion Rule (Section AG1): use `tools/supervisor/stop_reason_adjudicator.py` to classify the blocker, create a machine-readable gap record, and continue with safe non-blocked work. Classify as `EXTERNAL_BLOCKER` only if the Stop Reason Adjudicator returns `TRUE_EXTERNAL_GATE` or `UNSAFE_WORKSPACE`. Do not default to waiting for human clarification when the agent can classify and continue.
 
 ---

@@ -1,0 +1,34 @@
+growth_events:
+  - event_id: "GE-001"
+    source_task: "hidden-puzzling-rain"
+    source_audit: "Plan forensics sprint 2026-06-24"
+    signal: "Agent opened csv/models.py to infer domain model structure"
+    affected_knowledge_ids: ["KC-PYTHON-001"]
+    new_or_updated: "new"
+    evidence:
+      - "7 implementations verified: csv, ndjson, gnumeric, toml, zst, abw, tsv models.py"
+      - "V53 governance validator confirmed spec_qname enforcement"
+      - ".supervisor/skill-registry.yaml confirmed spec_qname_required: true for domain model skills"
+    changes:
+      - "Created .supervisor/knowledge/registry.yaml"
+      - "Created .supervisor/knowledge/contracts/python-domain-model.yaml (KC-PYTHON-001)"
+      - "Created .supervisor/knowledge/examples/python-domain-model-canonical.py"
+      - "Updated .claude/commands/add-python-object-model-feature.md (Step 0)"
+      - "Updated .claude/commands/add-python-api.md (Step 0)"
+      - "Updated docs/agent-methodology-index.md (Section 12)"
+      - "Updated AGENTS.md (B2b)"
+    validation: "validate_knowledge_contracts.py exits 0; KC-PYTHON-001 VERIFIED_CURRENT"
+    consumed_by_agents: "TC-KS-004 pilot"
+
+  - event_id: "GE-002"
+    source_task: "hidden-puzzling-rain TC-KS-005"
+    signal: "validate_knowledge_contracts.py not wired into autonomous_cycle.py"
+    affected_knowledge_ids: ["KG-007"]
+    new_or_updated: "gap_registered"
+    evidence:
+      - "autonomous_cycle.py does not call .supervisor/knowledge/validate_knowledge_contracts.py"
+      - "governance_validators.py has no V54 or equivalent for knowledge freshness"
+    changes:
+      - "KG-007 registered in gaps.yaml"
+    validation: "KG-007 visible in gaps.yaml"
+    consumed_by_agents: "future sprint implementing V54 or equivalent"

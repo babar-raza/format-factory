@@ -1,0 +1,45 @@
+schema_version: "1.0"
+registry_id: "format-factory-knowledge-registry"
+title: "Format Factory Agent Knowledge Registry"
+description: "Canonical machine-readable index of knowledge contracts for recurring repository structures."
+last_verified_git_head: "30de4ad0"
+last_verified_date: "2026-06-24"
+query_tool: ".venv/Scripts/python .supervisor/knowledge/validate_knowledge_contracts.py"
+
+entry_points:
+  - path: ".supervisor/knowledge/index.md"
+    audience: "agents"
+    load_when: "before any src/python/ product work"
+  - path: "AGENTS.md"
+    audience: "all agents"
+    load_when: "always"
+
+contracts:
+  - contract_id: "KC-PYTHON-001"
+    stable_semantic_key: "python_domain_model_class"
+    title: "Python Domain Model Class Pattern"
+    subject_type: "SOURCE_STRUCTURE"
+    path: ".supervisor/knowledge/contracts/python-domain-model.yaml"
+    status: "VERIFIED_CURRENT"
+    enforcement: "PARTIALLY_ENFORCED"
+    validators:
+      - "V53 (tools/supervisor/governance_validators.py — spec_qname classvar)"
+      - "V45 (governance_validators.py — no format prefix outside Compat/)"
+    applies_to:
+      - "src/python/*/models.py"
+    last_verified_date: "2026-06-24"
+
+  - contract_id: "KC-PYTHON-002"
+    stable_semantic_key: "python_format_source_structure"
+    title: "Python Format Package Directory Layout (Three-Layer)"
+    subject_type: "DIRECTORY_LAYOUT"
+    path: ".supervisor/knowledge/contracts/python-source-structure.yaml"
+    status: "DRAFT_PENDING_AUTHORITY"
+    enforcement: "UNVALIDATED"
+    validators: []
+    applies_to:
+      - "src/python/*/"
+    last_verified_date: "2026-06-24"
+
+gaps_path: ".supervisor/knowledge/gaps.yaml"
+growth_events_path: ".supervisor/knowledge/growth-events.yaml"

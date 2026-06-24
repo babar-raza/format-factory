@@ -1,6 +1,6 @@
 ---
-version: "1.1"
-last-updated: "2026-06-03"
+version: "1.4"
+last-updated: "2026-06-24"
 phase-available: "3+"
 gate-required: null
 generated_by: claude
@@ -10,6 +10,18 @@ visibility: generated
 # /add-python-object-model-feature
 
 Add a new object-model feature to a Python FOSS product (fods, fodt, pbm, pgm, ppm, sylk, zst).
+
+## Step 0 — Knowledge Registry Lookup (MANDATORY, before any code)
+
+Before modifying or creating any Python domain model class:
+
+1. Read `.supervisor/knowledge/registry.yaml` — locate `stable_semantic_key: python_domain_model_class` (KC-PYTHON-001)
+2. Read `.supervisor/knowledge/contracts/python-domain-model.yaml`
+3. Verify `status: VERIFIED_CURRENT`. If STALE: run `.venv/Scripts/python .supervisor/knowledge/validate_knowledge_contracts.py --contract KC-PYTHON-001` and update contract before proceeding.
+4. Read `.supervisor/knowledge/examples/python-domain-model-canonical.py`
+5. Follow the contract structure exactly. Do NOT infer structure by inspecting other implementations.
+
+If contract is missing or status is `CONTRADICTED`: add an entry to `.supervisor/knowledge/gaps.yaml` (following KG-001 template), investigate authority, write/repair contract, then resume this skill.
 
 ## Usage
 
@@ -120,3 +132,4 @@ with: skill_id, format_id, feature_name, changed_files, test_results, ledger_ent
 - 1.1 (2026-06-03): Added frontmatter, allowed/forbidden paths, rollback, changelog (Skills R99)
 - 1.2 (2026-06-03): Added validation, transcript requirement, sample invocation (Skills R101).
 - 1.3 (2026-06-21): Renamed "Spec-Literal Requirements" → "Mandatory QName Requirements"; added spec_qname and spec_fact_ref as explicit required handoff fields (TC-SKILL-HARDEN-001).
+- 1.4 (2026-06-24): Added Step 0 knowledge registry lookup (hidden-puzzling-rain).

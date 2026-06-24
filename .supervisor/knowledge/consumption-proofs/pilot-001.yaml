@@ -1,0 +1,23 @@
+pilot_id: "pilot-001"
+knowledge_id: "KC-PYTHON-001"
+task: "Add ZstDocument.get_frame_type() method to src/python/zst/models.py"
+knowledge_query: "python_domain_model_class"
+contracts_returned:
+  - "KC-PYTHON-001: .supervisor/knowledge/contracts/python-domain-model.yaml"
+examples_returned:
+  - ".supervisor/knowledge/examples/python-domain-model-canonical.py"
+validators_returned:
+  - ".venv/Scripts/python .supervisor/knowledge/validate_knowledge_contracts.py --contract KC-PYTHON-001"
+broad_search_required: false
+artifact_created_or_modified: ".supervisor/knowledge/consumption-proofs/pilot-001-evidence.py"
+validation_result: >
+  Snippet follows KC-PYTHON-001 path-based variant: self._path access, try/except
+  returning '' as safe default, str() coercion on return value, docstring, no module-level
+  relative imports. All required elements present from contract alone.
+remaining_ambiguity: >
+  The exact magic byte layout for skippable frames required domain knowledge of the ZST
+  spec (not in the contract). The contract covers the structural pattern (path-based variant,
+  safe default, type coercion) but not format-specific byte parsing details.
+  This is expected — the contract covers CLASS STRUCTURE, not format spec internals.
+verdict: "KNOWLEDGE_CONTRACT_SUFFICIENT"
+executed_in_taskcard: "TC-KS-004"

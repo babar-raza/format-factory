@@ -1,6 +1,6 @@
 ---
-version: "1.2"
-last-updated: "2026-06-03"
+version: "1.3"
+last-updated: "2026-06-24"
 phase-available: "3+"
 gate-required: "Explicit product implementation authorization for the named format"
 generated_by: codex
@@ -8,6 +8,20 @@ visibility: generated
 ---
 
 # /add-python-api
+
+## Step 0 — Knowledge Registry Lookup (MANDATORY, before QName compliance check)
+
+Before naming any class or modifying any Python domain model:
+
+1. Read `.supervisor/knowledge/registry.yaml` — locate `stable_semantic_key: python_domain_model_class` (KC-PYTHON-001)
+2. Read `.supervisor/knowledge/contracts/python-domain-model.yaml`
+3. Verify `status: VERIFIED_CURRENT`. If STALE: run `.venv/Scripts/python .supervisor/knowledge/validate_knowledge_contracts.py --contract KC-PYTHON-001`.
+4. Read `.supervisor/knowledge/examples/python-domain-model-canonical.py`
+5. Follow the contract structure. Do NOT infer structure from nearby implementations.
+
+If contract is missing or contradicted: add to `.supervisor/knowledge/gaps.yaml`, investigate, then proceed.
+
+---
 
 ## MANDATORY PRE-CHECK: QName Compliance (must complete before naming any class)
 
@@ -57,7 +71,7 @@ in `.local/sal-output/sal-facts-latest.json`. Verify the cited QName exists in t
    package or infer authorization from a matrix target.
 4. Confirm the product-code ledger and its validator exist and pass before touching source. If either
    is missing, stop with `BLOCKED_GOVERNED_LEDGER_NOT_INSTALLED`.
-5. Inspect existing module conventions, exports, and tests. Keep the change limited to the named API.
+5. Follow KC-PYTHON-001 contract (loaded in Step 0) for module conventions, export patterns, and test structure. Keep the change limited to the named API.
 6. Add or modify only the exact authorized files under `src/python/<format_id>/` and the exact
    authorized test files under `tests/python/<format_id>/`.
 7. Add focused tests for normal behavior, one boundary case, and one invalid-input case when applicable.
@@ -127,3 +141,4 @@ with: skill_id, format_id, api_name, changed_files, test_results, ledger_entry_i
 
 - 1.0 (2026-06-02): Initial R90 governed minimum viable command.
 - 1.2 (2026-06-03): Added allowed/forbidden paths, rollback, transcript requirement, sample invocation (Skills R101).
+- 1.3 (2026-06-24): Added Step 0 knowledge registry lookup; replaced Step 5 "Inspect existing module conventions" with KC-PYTHON-001 contract reference (hidden-puzzling-rain).

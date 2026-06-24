@@ -167,3 +167,26 @@ Use `memory/15-ai-modules-and-state-management-architecture-20260509.md` as a me
 architecture reference for AI modules, embeddings, state management, no-drift work, workflow
 orchestration, playbook replay, review queues, and Phase 4 source generation. It is context only.
 Prompts must distinguish design direction from implemented state.
+
+## 12. Knowledge Registry (added 2026-06-24)
+
+Before creating or modifying Python domain model classes, skills, or format source files, query the knowledge registry:
+
+**Registry:** [.supervisor/knowledge/registry.yaml](../.supervisor/knowledge/registry.yaml)
+**Index:** [.supervisor/knowledge/index.md](../.supervisor/knowledge/index.md)
+**Query tool:** `.venv/Scripts/python .supervisor/knowledge/validate_knowledge_contracts.py`
+
+**When to use:**
+- Before any `src/python/*/models.py` creation or modification
+- Before invoking `/add-python-object-model-feature` or `/add-python-api`
+- When uncertain about any recurring repository structure
+
+**Available contracts:**
+| ID | Subject | Status |
+|----|---------|--------|
+| KC-PYTHON-001 | Python domain model class pattern | VERIFIED_CURRENT |
+| KC-PYTHON-002 | Python format package directory layout | DRAFT_PENDING_AUTHORITY |
+
+**Adding a knowledge gap:** When you encounter an ambiguity not covered by an existing contract, append an entry to `.supervisor/knowledge/gaps.yaml` following the KG-001 template before browsing implementations.
+
+**Adding a growth event:** When you resolve an ambiguity by writing a contract, append an entry to `.supervisor/knowledge/growth-events.yaml` following the GE-001 template.
