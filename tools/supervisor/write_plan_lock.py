@@ -52,6 +52,46 @@ FORBIDDEN_AS_ACTIVE_PLAN = [
     "plans/master-plan-memory.md",
 ]
 
+# TC-AMD-MACH-001: Temp/pytest path markers — shared lock must NOT be written for these.
+# Pytest tests call write_plan_lock() with tmp_path fixtures, corrupting the shared
+# active-plan-lock.json. Only the session-keyed lock is written for temp paths.
+import tempfile as _tempfile
+_TEMP_MARKERS = (
+    _tempfile.gettempdir().lower().replace("\\", "/"),
+    "/tmp/pytest",
+    "appdata/local/temp",
+    "pytest",
+)
+
+
+def _is_temp_path(p: str) -> bool:
+    """Return True if plan_path looks like a pytest temp or system temp directory."""
+    pl = p.lower().replace("\\", "/")
+    return any(m in pl for m in _TEMP_MARKERS)
+
+
+def cleanup_orphaned_tmp_files() -> None:
+    """TC-AMD-MACH-003: Remove orphaned .tmp files left by crashed atomic writes.
+
+    If a process dies between .write_text(".tmp") and os.replace(), a .tmp file
+    persists indefinitely. This function is called at the start of write_lock()
+    to keep the lock directories clean.
+
+    Exception-safe: deletion errors are logged to stderr and silently ignored.
+    """
+    for search_dir in (_plan_locks_dir, _shared_lock_path.parent):
+        if not search_dir.exists():
+            continue
+        for tmp_file in search_dir.glob("*.tmp"):
+            try:
+                tmp_file.unlink()
+                print(f"[write_plan_lock] Removed orphaned .tmp: {tmp_file}", file=sys.stderr)
+            except Exception as exc:
+                print(
+                    f"[write_plan_lock] WARNING: could not remove orphaned .tmp {tmp_file}: {exc}",
+                    file=sys.stderr,
+                )
+
 
 def _get_session_id() -> str:
     """Get or create a session ID for the current process."""
@@ -129,6 +169,8 @@ def write_lock(plan_path: str, last_taskcard: str | None = None, complete: bool 
                terminal: bool = False, session_id: str | None = None,
                track_type: str | None = "product", binding: bool = False,
                audit_gate: bool = False) -> None:
+    # TC-AMD-MACH-003: Clean up orphaned .tmp files from previously crashed atomic writes
+    cleanup_orphaned_tmp_files()
     # B3: normalize path separators so Windows backslashes don't prevent matching
     plan_path = str(plan_path).replace("\\", "/")
 
@@ -202,12 +244,24 @@ def write_lock(plan_path: str, last_taskcard: str | None = None, complete: bool 
         }
 
     # 1. Write shared fallback lock (backwards compatibility) — now includes session_id
-    # TC-AMD-FIX-003: Atomic write via temp+rename for crash safety
-    _shared_lock_path.parent.mkdir(parents=True, exist_ok=True)
-    _shared_tmp = _shared_lock_path.with_suffix(".tmp")
-    _shared_tmp.write_text(json.dumps(lock, indent=2) + "\n", encoding="utf-8")
-    os.replace(str(_shared_tmp), str(_shared_lock_path))
-    print(f"[write_plan_lock] {_shared_lock_path} written \u2014 status={status}, plan={plan_path!r}")
+    # TC-AMD-MACH-001: Skip shared lock for pytest/temp paths to prevent contamination.
+    # Tests call write_plan_lock() with tmp_path fixtures; writing the shared lock with
+    # a temp path causes check_continuation.py to return ACTIVE_PLAN_INCOMPLETE for all
+    # real sprints. Session-keyed lock is still written for test isolation.
+    _wrote_shared = False
+    if _is_temp_path(str(plan_path)):
+        print(
+            f"[write_plan_lock] SKIPPING shared lock: plan_path is temp/pytest ({plan_path})",
+            file=sys.stderr,
+        )
+    else:
+        # TC-AMD-FIX-003: Atomic write via temp+rename for crash safety
+        _shared_lock_path.parent.mkdir(parents=True, exist_ok=True)
+        _shared_tmp = _shared_lock_path.with_suffix(".tmp")
+        _shared_tmp.write_text(json.dumps(lock, indent=2) + "\n", encoding="utf-8")
+        os.replace(str(_shared_tmp), str(_shared_lock_path))
+        print(f"[write_plan_lock] {_shared_lock_path} written \u2014 status={status}, plan={plan_path!r}")
+        _wrote_shared = True
 
     # 2. Write session-keyed lock (race-safe; one file per (session, plan) pair)
     # TC-LOCK-002 (FF-LOCK-HEAL-20260624): Use plan_path hash in filename to support
@@ -240,18 +294,20 @@ def write_lock(plan_path: str, last_taskcard: str | None = None, complete: bool 
     os.replace(str(_keyed_tmp), str(keyed_path))
     print(f"[write_plan_lock] {keyed_path} written \u2014 session={sid!r}")
 
-    # TC-AMD-CONV-002: Post-write verification — read both locks and warn on mismatch
-    try:
-        _shared_readback = json.loads(_shared_lock_path.read_text(encoding="utf-8"))
-        _keyed_readback = json.loads(keyed_path.read_text(encoding="utf-8"))
-        if _shared_readback.get("status") != _keyed_readback.get("status"):
-            print(
-                f"[write_plan_lock] WARNING: lock mismatch after write — "
-                f"shared={_shared_readback.get('status')}, keyed={_keyed_readback.get('status')}",
-                file=sys.stderr,
-            )
-    except Exception:
-        pass  # Verification is best-effort
+    # TC-AMD-CONV-002: Post-write verification — read both locks and warn on mismatch.
+    # Only runs when shared lock was written (skipped for temp/pytest paths).
+    if _wrote_shared:
+        try:
+            _shared_readback = json.loads(_shared_lock_path.read_text(encoding="utf-8"))
+            _keyed_readback = json.loads(keyed_path.read_text(encoding="utf-8"))
+            if _shared_readback.get("status") != _keyed_readback.get("status"):
+                print(
+                    f"[write_plan_lock] WARNING: lock mismatch after write — "
+                    f"shared={_shared_readback.get('status')}, keyed={_keyed_readback.get('status')}",
+                    file=sys.stderr,
+                )
+        except Exception:
+            pass  # Verification is best-effort
 
     # TC-PG-007: When terminal-closing a plan, append plan_terminal_lock block to the
     # plan file itself for durable lock detection beyond session-keyed lock expiry.

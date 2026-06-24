@@ -258,7 +258,6 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
       None     → legacy mode (all groups, shared .local/supervisor/ path)
     """
     timestamp = datetime.now().isoformat()
-
     # Step 0 (pre-cycle): Stale queue repair (disabled by default, dry-run safe)
     print("=== STEP 0: PRE-CYCLE STALE REPAIR ===")
     repair_result = run_stale_repair_pre_cycle(repo_root, dry_run=True, enabled=False)
@@ -268,7 +267,6 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
         print(f"  Stale repair: stale={repair_result.get('stale_count', 0)} "
               f"gaps={repair_result.get('gap_count', 0)} "
               f"status={repair_result.get('status', 'UNKNOWN')}")
-
     # Step 0a (TC-SAL-REGEN-001): SAL regeneration trigger.
     # Refreshes spec facts if sal-facts-latest.json is older than 7 days.
     # Completely non-blocking: timeout or error logs and skips — never stops sprint.
@@ -321,7 +319,6 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
                 print("  SAL runner not found — skipping regeneration")
     except Exception as _sal_exc:
         print(f"  WARNING: SAL regeneration check skipped (non-blocking): {_sal_exc}")
-
     # Step 0a-staleness (TC-MACH-SAL-001): Escalate SAL staleness to sprint-blocking
     # for PRODUCT sprints when >7 days old. MACHINERY:sal_repair sprints are exempt.
     # Logic extracted to autonomous_cycle_extensions.check_sal_staleness() for testability.
@@ -336,7 +333,6 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
             print("  [SAL_STALENESS] WARNING: SAL stale but machinery/sal_repair sprint — not blocking")
     except Exception as _sal_stale_err:
         print(f"  [SAL_STALENESS] Error: {_sal_stale_err}")
-
     # Step 0a-prepass (TC-SH-005) + Step 0a3 (TC-SH-011): extracted to extensions
     try:
         from autonomous_cycle_extensions import run_sprint_learnings_prepass, run_stale_lock_reaper
@@ -386,7 +382,6 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
             print("  SKIP: tools/audit_qname_coverage.py not found")
     except Exception as _qn_err:
         print(f"  WARNING: QName coverage check skipped (non-blocking): {_qn_err}")
-
     # Step 0a-v54v55 (FF-DEFERRED-RESOLVE-20260624 TC-D1): V54/V55 promotion tracker.
     print("=== STEP 0a-v54v55: V54/V55 PROMOTION TRACKER ===")
     try:
@@ -407,7 +402,6 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
             print("  SKIP: reports/v54v55-sprint-tracker.json not found")
     except Exception as _v54_err:
         print(f"  WARNING: V54/V55 tracker check skipped (non-blocking): {_v54_err}")
-
     # Step 0a-sal (FF-DEFERRED-RESOLVE-20260624 TC-D3): SAL-to-QName cross-reference check.
     print("=== STEP 0a-sal: SAL-TO-QNAME CROSS-REFERENCE CHECK ===")
     try:
@@ -440,7 +434,6 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
             print("  SKIP: tools/audit_sal_to_qname.py not found")
     except Exception as _sal_err:
         print(f"  WARNING: SAL-QName check skipped (non-blocking): {_sal_err}")
-
     # Step 0a-gap-sal (FF-DEFERRED-RESOLVE-20260624 TC-D4): Gap-ledger SAL traceability check.
     print("=== STEP 0a-gap-sal: GAP-LEDGER SAL TRACEABILITY CHECK ===")
     try:
@@ -2046,7 +2039,14 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
             print("  Maturity signal: reports/supervisor/maturity-signal.json")
         except Exception as _ms_err:
             print(f"  WARNING: Maturity signal emission skipped: {_ms_err}")
-
+        # TC-AMD-LLM-001: Adversarial check (non-blocking pilot)
+        try:
+            from adversarial_check import run_and_write as _adv_rw
+            _adv_high = _adv_rw(review, repo_root, sprint_id, signal.get("iteration", 0))
+            if _adv_high and signal.get("iteration", 0) >= 3:
+                continuation_warnings.append(f"adversarial_check_high_risk:{_adv_high}_findings")
+        except Exception as _ae:
+            print(f"  WARNING: Adversarial check skip: {_ae}")
         # TC-SH-006: GOV_BLOCK auto-repair directive — extracted to extensions
         if _current_structural_blocks:
             try:

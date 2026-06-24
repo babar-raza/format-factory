@@ -101,6 +101,10 @@ def run_all_governance_validators(
         validate_multi_responsibility_file,
     )
     # V50-V56 imported directly from ext module (governance_validators.py is at LOC cap)
+    # V67 imported from dedicated signal validator file (both governance_validators*.py are AT CAP)
+    from governance_validators_signal import (  # noqa: PLC0415
+        validate_maturity_signal_schema as _validate_maturity_signal_schema,
+    )
     from governance_validators_ext import (  # noqa: PLC0415
         validate_forbidden_module_names as _validate_forbidden_module_names,
         validate_spec_qname_coverage as _validate_spec_qname_coverage,
@@ -221,6 +225,8 @@ def run_all_governance_validators(
         validate_all_exports_declared(declaration, repo_root),
         # V66 (TC-GOV-MACH-002): Single file mixes parser+model+serializer responsibilities (WARN-only)
         validate_multi_responsibility_file(declaration, repo_root),
+        # V67 (TC-AMD-MACH-002): Maturity signal schema validator — FAIL if malformed
+        _validate_maturity_signal_schema(declaration, repo_root),
     ]
 
     # SAL format advisory (non-blocking, Lane E integration)

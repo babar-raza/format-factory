@@ -53,7 +53,9 @@ def test_terminal_updates_both_lock_files(tmp_path):
     shared = tmp_path / "active-plan-lock.json"
     keyed_dir = tmp_path / "plan-locks"
     keyed_dir.mkdir()
-    keyed = keyed_dir / f"{sid}.json"
+    import hashlib
+    plan_hash = hashlib.sha256(plan.encode()).hexdigest()[:8]
+    keyed = keyed_dir / f"{sid}-{plan_hash}.json"
 
     # Patch paths by calling write_lock with explicit session_id and monkey-patching paths
     import write_plan_lock as wpl
