@@ -3069,6 +3069,102 @@ def validate_qname_structure(declaration: dict, repo_root: Path | None = None) -
     }
 
 
+def validate_py_typed_marker(declaration: dict, repo_root: "Path | None" = None) -> dict:
+    """V64 (TC-GOV-MACH-002): Check Python packages in changed_files have py.typed marker."""
+    _r = repo_root or REPO_ROOT
+    items = []
+    for f in declaration.get("changed_files", []):
+        if not f.startswith("src/python/"):
+            continue
+        parts = f.replace("\\", "/").split("/")
+        if len(parts) < 3:
+            continue
+        pkg_dir = _r / "src" / "python" / parts[2]
+        if pkg_dir.is_dir() and not (pkg_dir / "py.typed").exists():
+            items.append({"file": f, "package": parts[2], "issue": "missing py.typed"})
+    if items:
+        return {
+            "validator": "validate_py_typed_marker", "result": "WARN",
+            "items": items, "summary": f"V64: {len(items)} packages missing py.typed",
+            "blocks_sprint": False,
+        }
+    return {
+        "validator": "validate_py_typed_marker", "result": "PASS", "items": [],
+        "summary": "V64: All changed packages have py.typed", "blocks_sprint": False,
+    }
+
+
+def validate_all_exports_declared(declaration: dict, repo_root: "Path | None" = None) -> dict:
+    """V65 (TC-GOV-MACH-002): Check Python packages in changed_files declare __all__ in __init__.py."""
+    _r = repo_root or REPO_ROOT
+    items = []
+    for f in declaration.get("changed_files", []):
+        if not f.startswith("src/python/"):
+            continue
+        parts = f.replace("\\", "/").split("/")
+        if len(parts) < 3:
+            continue
+        init_path = _r / "src" / "python" / parts[2] / "__init__.py"
+        if init_path.exists():
+            try:
+                content = init_path.read_text(encoding="utf-8", errors="replace")
+                if "__all__" not in content:
+                    items.append({"file": str(init_path), "package": parts[2], "issue": "no __all__"})
+            except Exception:
+                pass
+    if items:
+        return {
+            "validator": "validate_all_exports_declared", "result": "WARN",
+            "items": items, "summary": f"V65: {len(items)} packages lack __all__ in __init__.py",
+            "blocks_sprint": False,
+        }
+    return {
+        "validator": "validate_all_exports_declared", "result": "PASS", "items": [],
+        "summary": "V65: All changed packages declare __all__", "blocks_sprint": False,
+    }
+
+
+def validate_multi_responsibility_file(declaration: dict, repo_root: "Path | None" = None) -> dict:
+    """V66 (TC-GOV-MACH-002): WARN if a single Python source file mixes parser/model/serializer roles."""
+    import ast as _ast
+    _r = repo_root or REPO_ROOT
+    items = []
+    _ROLE_KEYWORDS = {
+        "parser": {"parse", "tokenize", "lex", "read_", "load_", "decode"},
+        "model": {"__init__", "spec_qname", "namespace_uri"},
+        "serializer": {"write_", "serialize", "encode", "emit", "dump"},
+    }
+    for f in declaration.get("changed_files", []):
+        if not f.startswith("src/python/") or not f.endswith(".py"):
+            continue
+        if "__init__" in f or "analytics" in f or "Compat" in f or "exceptions" in f:
+            continue
+        p = _r / f.replace("\\", "/")
+        if not p.is_file():
+            continue
+        try:
+            tree = _ast.parse(p.read_text(encoding="utf-8", errors="replace"))
+        except Exception:
+            continue
+        fn_names = {n.name.lower() for n in _ast.walk(tree) if isinstance(n, (_ast.FunctionDef, _ast.AsyncFunctionDef))}
+        roles_found = set()
+        for role, kws in _ROLE_KEYWORDS.items():
+            if any(any(kw in fn for kw in kws) for fn in fn_names):
+                roles_found.add(role)
+        if len(roles_found) >= 3:
+            items.append({"file": f, "roles": sorted(roles_found)})
+    if items:
+        return {
+            "validator": "validate_multi_responsibility_file", "result": "WARN",
+            "items": items, "summary": f"V66: {len(items)} file(s) mix parser+model+serializer",
+            "blocks_sprint": False,
+        }
+    return {
+        "validator": "validate_multi_responsibility_file", "result": "PASS", "items": [],
+        "summary": "V66: No multi-responsibility files detected", "blocks_sprint": False,
+    }
+
+
 # V48 (TC-ZS-001): Extracted to governance_validators_ext.py (TC-WHALE-GOVBLOCK-001)
 # to keep this file within baseline_loc_cap. Imported here for backward compatibility.
 from governance_validators_ext import validate_architecture_only_stub_gate  # noqa: E402

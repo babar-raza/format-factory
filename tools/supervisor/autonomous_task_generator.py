@@ -1791,13 +1791,73 @@ def main() -> int:
         "--enqueue-top", type=int, default=0,
         help="Auto-enqueue top N tasks to action queue"
     )
+    parser.add_argument(
+        "--use-compiler", action="store_true",
+        help="Use capability compiler as primary task source (opt-in)"
+    )
+    parser.add_argument(
+        "--dry-run", action="store_true",
+        help="Print candidates without writing to disk"
+    )
     args = parser.parse_args()
 
+    # TC-GOV-MACH-001: opt-in capability compiler path
+    if args.use_compiler:
+        try:
+            # capability_compiler.py lives in the same directory (tools/supervisor/)
+            sys.path.insert(0, str(_here))
+            from capability_compiler import compile_gap, compile_gap_to_feature_ir
+            gap_ledger_path = _REPO_ROOT / "reports" / "capability-layer" / "gap-ledger.json"
+            if gap_ledger_path.exists():
+                gl_data = json.loads(gap_ledger_path.read_text(encoding="utf-8"))
+                gl_gaps = gl_data.get("gaps", []) if isinstance(gl_data, dict) else gl_data
+                open_gaps = [g for g in gl_gaps if g.get("status") == "open"]
+                compiler_candidates = []
+                for gap in open_gaps[:args.max_candidates]:
+                    # Normalize gap-ledger fields to compiler's expected schema
+                    if "format_id" not in gap and "format" in gap:
+                        gap["format_id"] = gap["format"].upper()
+                    if "function_name" not in gap and "capability_name" in gap:
+                        # Derive function_name: "Load" -> "fods_load", "Save Same Format" -> "fods_save_same_format"
+                        fmt_lower = gap.get("format_id", gap.get("format", "unknown")).lower()
+                        cap_slug = gap["capability_name"].lower().replace(" ", "_")
+                        gap["function_name"] = f"{fmt_lower}_{cap_slug}"
+                    try:
+                        ir = compile_gap_to_feature_ir(gap)
+                        compiler_candidates.append(ir)
+                    except Exception:
+                        continue
+                if compiler_candidates:
+                    print(f"TASK_GENERATOR: compiler produced {len(compiler_candidates)} candidates")
+                    if not args.dry_run:
+                        args.output.parent.mkdir(parents=True, exist_ok=True)
+                        args.output.write_text(json.dumps(compiler_candidates, indent=2) + "\n")
+                    else:
+                        for c in compiler_candidates[:5]:
+                            print(f"  - {c.get('feature_id', '?')}: {c.get('function_name', '?')}")
+                    return 0
+                else:
+                    print("TASK_GENERATOR: compiler produced 0 candidates from gap-ledger, falling back")
+            else:
+                print("TASK_GENERATOR: gap-ledger.json not found, falling back to expansion goals")
+        except ImportError as exc:
+            print(f"TASK_GENERATOR: --use-compiler: compiler not importable ({exc}), falling back")
+        except Exception as exc:
+            print(f"TASK_GENERATOR: --use-compiler failed ({exc}), falling back to expansion goals")
+
     candidates = generate_task_candidates(
-        output_path=args.output,
+        output_path=args.output if not args.dry_run else None,
         max_candidates=args.max_candidates,
         skip_existing=not args.no_skip_existing,
     )
+
+    if args.dry_run:
+        print(f"TASK_GENERATOR: {len(candidates)} candidates (dry-run, not written)")
+        for c in candidates[:5]:
+            fn = c.get("function_name", "?")
+            fmt = c.get("format", "?")
+            print(f"  - {fmt}/{fn}")
+        return 0
 
     print(f"TASK_GENERATOR: {len(candidates)} candidates written to {args.output}")
 
