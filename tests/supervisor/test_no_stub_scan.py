@@ -257,6 +257,32 @@ class TestFalsePositivePrevention:
             f"Real implementation must have zero violations. Got: {violations}"
         )
 
+    def test_does_not_flag_gap_ledger_reference(self, tmp_path: Path) -> None:
+        """Pattern 6: 'see GAP-XCF-LAYER-NAMES in gap-ledger.json' must NOT be flagged."""
+        src = tmp_path / "governed.py"
+        src.write_text(textwrap.dedent("""
+            def xcf_layer_name_list(file_path):
+                \"\"\"Returns synthetic names. see GAP-XCF-LAYER-NAMES in gap-ledger.json
+                for the real implementation status.
+                \"\"\"
+                return ["Layer 0"]
+        """))
+        violations = scan_file(src)
+        assert violations == [], f"Gap-ledger reference line falsely flagged: {violations}"
+
+    def test_does_not_flag_positional_placeholder_docstring(self, tmp_path: Path) -> None:
+        """Pattern 7: 'positional placeholders only' must NOT be flagged."""
+        src = tmp_path / "synthetic_names.py"
+        src.write_text(textwrap.dedent("""
+            def get_layer_names(img):
+                \"\"\"This function returns positional placeholders only.
+                Returns empty list if no layers.
+                \"\"\"
+                return [f"Layer {i}" for i in range(img.num_layers)]
+        """))
+        violations = scan_file(src)
+        assert violations == [], f"Positional placeholder docstring falsely flagged: {violations}"
+
 
 # ---------------------------------------------------------------------------
 # Integration: scan src/python and verify only governed findings remain
