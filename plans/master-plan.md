@@ -2589,5 +2589,72 @@ Two compounding problems: (1) 2 PGM test failures triggered `AUTONOMOUS_CONTINUE
 
 ---
 
-*End of plans/master-plan.md — version 5.8 — 2026-06-24 (Section 48: frolicking-weaving-hamming PLAN-SCOPED-CONT-20260623 CLOSED — plan-scoped continuation hardening, Check 0c, 6 taskcards, convergence ALL-GREEN)*
+## Section 49 — dazzling-purring-kernighan: FF-SAL-FORENSICS-001 Extended Forensic Investigation (CLOSED)
+
+**Mission:** FF-SAL-FORENSICS-001 — SAL Source-to-Consumption Pipeline Forensics
+**Execution plan:** `C:/Users/prora/.claude/plans/dazzling-purring-kernighan.md` (v3.0, sha256 prefix: 52453a2a2548dbf7)
+**Target plan:** `plans/snoopy-juggling-seal.md` (v3.16 → 4.0, sha256 prefix: 2accb583f5943a04, 3625 lines)
+**Mode:** DIAGNOSTICS_ONLY — no production code changes
+**Convergence:** ALL-GREEN (1 iteration, FIND-MASTER-001 resolved)
+**Closed:** 2026-06-24
+
+### Taskcards (15 total — all COMPLETED_VERIFIED)
+
+| TC | Title | Status |
+|----|-------|--------|
+| TC-DIAG-001 | Setup + Evidence Directory + Plan Read | COMPLETED_VERIFIED |
+| TC-DIAG-002 | Assumption Register (15 entries) | COMPLETED_VERIFIED |
+| TC-DIAG-003 | SAL Fact Contract + Pipeline Map | COMPLETED_VERIFIED |
+| TC-DIAG-004 | Normalization Retention + Section Index | COMPLETED_VERIFIED |
+| TC-DIAG-005 | Semantic Census (FODS: 4,991 facts) | COMPLETED_VERIFIED |
+| TC-DIAG-006 | Extractor Replay (1,487 candidates) | COMPLETED_VERIFIED |
+| TC-DIAG-007 | Verifier Adversarial Benchmark (8/10) | COMPLETED_VERIFIED |
+| TC-DIAG-008 | Consumer Reachability Trace (4/10 REACHED) | COMPLETED_VERIFIED |
+| TC-DIAG-009 | Workbench qname=None Investigation (all 4 pilots) | COMPLETED_VERIFIED |
+| TC-DIAG-010 | Attrition Table (12 rows, Stage 12 = 0%) | COMPLETED_VERIFIED |
+| TC-DIAG-011 | Root Cause Consolidation (8 original + 5 new) | COMPLETED_VERIFIED |
+| TC-DIAG-012 | Orchestrator Comparison | NOT_ATTEMPTED (LOW, deferred) |
+| TC-DIAG-013 | Component Reuse Assessment | NOT_ATTEMPTED (LOW, deferred) |
+| TC-DIAG-014 | Quality Measures Baseline (11 measures) | COMPLETED_VERIFIED |
+| TC-SURGERY-001 | Surgical Enhancement of snoopy v3.16 → v4.0 | COMPLETED_VERIFIED |
+
+### Key Findings
+
+- **ASM-001 CONTRADICTED:** "78 FODS facts" → actually 4,991 (4,348 verified + 639 verified_with_note)
+- **ASM-011 CONTRADICTED:** "zero downstream readers" → 18 files now read sal-facts-latest.json
+- **ASM-014 CONTRADICTED:** "FODT has no facts" → 4,936 facts (all qname=None)
+- **ASM-005 STALE:** "14,288 total facts" → 14,486 (25 formats)
+- **5 new root causes:** RC-NEW-01 (qname=None), RC-NEW-02 (gap-ledger zero spec_fact_refs), RC-NEW-03 (REQ-*/FACT-* mismatch), RC-NEW-04 (section index 59%), RC-NEW-05 (4 tools unconsumed)
+- **First failing boundary:** Stage 12 (gap-ledger consumption = 0%)
+- **Consumer reachability:** 4/10 stages REACHED; broken at context-pack boundary (S5) and gap-ledger boundary (S6)
+
+### What Changed
+
+- `plans/snoopy-juggling-seal.md`: §33 appended (10 subsections, §33.1–§33.10); 5 inline CONTRADICTED notes; version header updated to 4.0 (commits 838a4c98, 06bff8c5)
+- Evidence artifacts (18 files) in `.local/evidences/sal-source-to-consumption-forensics-20260623-001/` (gitignored)
+- Plan locked TERMINAL_CLOSED (session 7da28319645c, lock file 7da28319645c-9236531f.json)
+
+### Follow-On Taskcards (proposed, not blocking)
+
+TC-SAL-WIRE-001 through TC-SAL-WIRE-008 documented in snoopy §33.9. Highest priority:
+- TC-SAL-WIRE-001: Wire requirement_extractor into sal_master_runner.py
+- TC-SAL-WIRE-002: Wire context_pack_builder output to gap-ledger spec_fact_refs
+- TC-SAL-WIRE-003: Enforce spec_fact_refs at gap-ledger entry creation
+
+### Verification
+
+- §33 structure: `grep "^## §33" plans/snoopy-juggling-seal.md` → line 3455 ✓
+- 10 subsections: `grep "^### 33\." plans/snoopy-juggling-seal.md | wc -l` → 10 ✓
+- No src/ changes: `git diff src/` → 0 lines ✓
+- Working tree clean: `git status` → "nothing to commit" ✓
+- Plan lock: `7da28319645c-9236531f.json` → TERMINAL_CLOSED ✓
+
+### Evidence
+
+- Evidence root: `.local/evidences/sal-source-to-consumption-forensics-20260623-001/sal-source-to-consumption/`
+- Primary commits: `838a4c98` (snoopy v4.0 §33), `06bff8c5` (contradiction notes)
+
+---
+
+*End of plans/master-plan.md — version 5.9 — 2026-06-24 (Section 49: dazzling-purring-kernighan FF-SAL-FORENSICS-001 CLOSED — SAL forensics, 15 taskcards, snoopy v4.0 with §33, 5 new root causes, convergence ALL-GREEN)*
 *This document is the single operational authority for format-factory. All other documents are subordinate to it for operational decisions.*
