@@ -1627,5 +1627,54 @@ No content has been deleted — only moved to archive files with pointers.
 
 ---
 
-*End of plans/master-plan.md — version 4.0 — 2026-06-23 (UNIFIED-FF-FINAL-20260623: unified multi-plan sprint CLOSED; GOV_BLOCK resolved; lifecycle_audit.py + --audit-gate wired; capability maps regenerated; pilots FODS/SYLK pass-verified; TC-UNIFIED-012 open non-blocker)*
+## Section 30 — Self-Healing Autonomy Plan: squishy-tumbling-wind (2026-06-23)
+
+**Source:** Plan `squishy-tumbling-wind` (per-chat plan, 12+3 taskcards).
+**Plan file:** `C:/Users/prora/.claude/plans/squishy-tumbling-wind.md`
+**Status:** CONVERGENCE_COMPLETE_ALL_GREEN (1 iteration). TERMINAL_CLOSED.
+**Commit:** `d4857da8` (5 files: autonomous_cycle_extensions.py, autonomous_task_generator.py, capability_queue_consumer.py, model-selection.yaml, ndjson/__init__.py)
+
+### 30.1 — What was completed
+
+| Taskcard | Title | Status | Proof |
+|----------|-------|--------|-------|
+| TC-SH-001 | Fix 2 failing governance tests | VERIFIED | L3 (pre-existing fix 06f0ea05, 82/82 pass) |
+| TC-SH-002 | Professionalize proof-of-use | VERIFIED | L4 (HTTP 200, gpt-oss, 1672ms, ai_advisory) |
+| TC-SH-003 | Persistent compiled-gap-taskcards.json | VERIFIED | L3 (104 entries, dedup, priority sort) |
+| TC-SH-004 | advisory_only lifting for FOSS P0 | IMPL_ONLY | L1 (GOVERNED_EXCLUSION: 0 P0 gaps) |
+| TC-SH-005 | Sprint learnings pre-pass | VERIFIED | L3 (73 learnings scanned, 2 proposals) |
+| TC-SH-006 | FM-0013/FM-0017 GOV_BLOCK directive | VERIFIED | L3 (auto_apply_wired=true, convergence fix) |
+| TC-SH-007 | Rework root cause classifier | VERIFIED | L2 (synthetic: 10 items, 9 categories) |
+| TC-SH-008 | TC-0015 Spec Retrieval Evaluation | VERIFIED | L3 (7.2KB report, YES recommendation) |
+| TC-SH-009 | FODS Vector Index Pilot (TC-0016) | VERIFIED | L4 (940 chunks, 4096-dim, 14.7MB embeddings) |
+| TC-SH-010 | model-selection.yaml updates | VERIFIED | L3 (gpt-oss + qwen3-embedding-8b added) |
+| TC-SH-011 | Stale lock reaper + dedup | IMPL_ONLY | L1 (GOVERNED_EXCLUSION: no stale locks) |
+| TC-SH-012 | Maturity trend wiring | IMPL_ONLY | L1 (GOVERNED_EXCLUSION: session-resume regenerated) |
+| TC-SH-013 | Fix FM auto_apply_wired (convergence) | VERIFIED | L3 |
+| TC-SH-014 | Commit uncommitted sprint work | VERIFIED | L2 (d4857da8) |
+| TC-SH-015 | Synthetic rework classifier test | VERIFIED | L2 |
+
+### 30.2 — Key artifacts
+
+- `tools/supervisor/autonomous_cycle_extensions.py` (283 LOC) — extracted helper module
+- `.local/embedding-index/fods-index.json` + `fods-embeddings.bin` (15.4 MB) — first semantic index
+- `docs/spec-retrieval-tier3-evaluation.md` — TC-0015 evaluation report
+- `.local/supervisor/compiled-gap-taskcards.json` — persistent gap-to-task pipeline
+- `.local/supervisor/pre-pass-advisory.json` — sprint learnings output
+
+### 30.3 — Verification
+
+- Post-sprint audit: 6 findings identified, all consumed in convergence iteration 1
+- FM-0013/FM-0017 auto_apply_wired verified via JSON parse
+- classify_rework_items synthetic test: 10 inputs, 9 categories, all pass
+- Re-audit: 0 actionable findings remaining
+
+### 30.4 — Follow-ups (non-blocking)
+
+- TC-SH-004/011/012 at PROOF_LEVEL_1 (GOVERNED_EXCLUSION) — will advance when runtime conditions arise
+- git push for d4857da8: TRUE_EXTERNAL_GATE
+
+---
+
+*End of plans/master-plan.md — version 4.1 — 2026-06-24 (Section 30: squishy-tumbling-wind self-healing plan CONVERGENCE_COMPLETE_ALL_GREEN; 12+3 taskcards; commit d4857da8; professionalize proof-of-use L4; FODS vector index L4; gap-to-task pipeline L3)*
 *This document is the single operational authority for format-factory. All other documents are subordinate to it for operational decisions.*

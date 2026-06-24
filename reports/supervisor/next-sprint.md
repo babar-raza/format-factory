@@ -1,34 +1,20 @@
-## ACTIVE PER-CHAT PLAN — SYSTEM LEDGER SUPPRESSED
-
-A per-chat plan is active. Complete ALL plan taskcards before any ledger/product work.
-
-- **Plan:** `plans/unified-multi-plan-execution.md`
-- **Last completed taskcard:** `TC-UNIFIED-090`
-- **Action:** Read the plan file. Find the next open taskcard after `TC-UNIFIED-090`. Execute it.
-  After each: `python tools/supervisor/write_plan_lock.py --plan-path "plans/unified-multi-plan-execution.md" --last-taskcard <TC_ID>`
-  When ALL done: `python tools/supervisor/write_plan_lock.py --plan-path "plans/unified-multi-plan-execution.md" --complete`
-
-**Do NOT start system ledger / product hardening work until plan status = COMPLETE.**
-
----
-
 # Supervisor-Generated Next Sprint Prompt
-# Source sprint: sal-authority-repair-20260623
+# Source sprint: effervescent-wandering-blossom
 # Stream: mainstream
-# Generated: 2026-06-23T22:40:36.609182
+# Generated: 2026-06-24T07:53:07.462133
 # ADVISORY ONLY — not a Format Factory authority document
 # This is INPUT to the next sprint, not a gate approval or commit authorization.
 
 ---
 
 ## Sprint Focus
-PRODUCT + REPAIR: Advance product POC AND address CRITICAL contradictions
+ADVANCE: Product deepening — .NET commercial + Python FOSS + dogfood + packaging
 
 ## Prior Sprint Summary
-- Sprint ID: sal-authority-repair-20260623
+- Sprint ID: effervescent-wandering-blossom
 - Evidence verdict: ACCEPTED
-- Tests: 256 passed, 1 failed, 0 skipped
-- Autonomous continue: False
+- Tests: 33957 passed, 0 failed, 0 skipped
+- Autonomous continue: True
 
 ## STOP_REASON_ADVISORY (enforced by stop_reason_adjudicator.py)
 
@@ -50,26 +36,26 @@ TRUE_EXTERNAL_GATE (ONLY these warrant a stop):
 - Credentials unavailable with no fallback
 
 ## Section 1: New Product Work (Advisory — Always Execute)
-- [pending] TASK-002: Select governed product gaps and validate the product-code ledger
-- [agent-owned] TASK-003: Prepare commit candidate summary and changed-file manifest
-- [external-gate] TASK-004: Execute git commit (requires explicit user authorization — do NOT self-execute)
-- [pending] TASK-005: Work on open taskcard: TC-0020-spec-workbench-core
-- [pending] TASK-006: Work on open taskcard: TC-0033-fods-gate7-malformed-fuzz-testing
-- [pending] TASK-007: Work on open taskcard: ZST-IMPL-001-python-source-scaffold
-- [pending] TASK-008: Product deepening: GAP-FODS-COMM-SAVE_SAME_FO-001 — GAP-FODS-COMM-SAVE_SAME_FO-001
-- [pending] TASK-009: Product deepening: GAP-FODT-COMM-SAVE_SAME_FO-001 — GAP-FODT-COMM-SAVE_SAME_FO-001
-- [pending] TASK-010: Product deepening: GAP-FODS-COMM-RELOAD_AND_V-001 — GAP-FODS-COMM-RELOAD_AND_V-001
-- [pending] TASK-011: Product deepening: GAP-FODT-COMM-RELOAD_AND_V-001 — GAP-FODT-COMM-RELOAD_AND_V-001
-- [pending] TASK-012: Product deepening: GAP-ABW-FOSS-ABW_SECTION_-001 — GAP-ABW-FOSS-ABW_SECTION_-001
-- [pending] TASK-013: Advance one dogfood export path using a Format Factory library
-- [pending] TASK-014: Build package artifacts and run installed-workflow proof
-- [pending] TASK-015: Write evidence declaration and run supervisor autonomous-cycle
+- [pending] TASK-001: Select governed product gaps and validate the product-code ledger
+- [agent-owned] TASK-002: Prepare commit candidate summary and changed-file manifest
+- [external-gate] TASK-003: Execute git commit (requires explicit user authorization — do NOT self-execute)
+- [pending] TASK-004: Work on open taskcard: TC-0015-spec-retrieval-strategy-evaluation
+- [pending] TASK-005: Work on open taskcard: TC-0016-fods-vector-index-pilot
+- [pending] TASK-006: Work on open taskcard: TC-0020-spec-workbench-core
+- [pending] TASK-007: Product deepening: GAP-FODS-COMM-SAVE_SAME_FO-001 — GAP-FODS-COMM-SAVE_SAME_FO-001
+- [pending] TASK-008: Product deepening: GAP-FODT-COMM-SAVE_SAME_FO-001 — GAP-FODT-COMM-SAVE_SAME_FO-001
+- [pending] TASK-009: Product deepening: GAP-FODS-COMM-RELOAD_AND_V-001 — GAP-FODS-COMM-RELOAD_AND_V-001
+- [pending] TASK-010: Product deepening: GAP-FODT-COMM-RELOAD_AND_V-001 — GAP-FODT-COMM-RELOAD_AND_V-001
+- [pending] TASK-011: Product deepening: GAP-ABW-FOSS-ABW_SECTION_-001 — GAP-ABW-FOSS-ABW_SECTION_-001
+- [pending] TASK-012: Advance one dogfood export path using a Format Factory library
+- [pending] TASK-013: Build package artifacts and run installed-workflow proof
+- [pending] TASK-014: Write evidence declaration and run supervisor autonomous-cycle
 
 ## Section 2: Rework / Repair (Advisory — Fix Before Closeout)
-- [pending] REPAIR-001: Repair: Tests failed: 1 failures detected
+None
 
 ## Contradictions Context
-- [CRITICAL] Tests failed: 1 failures detected
+None
 
 ## Non-Negotiable Rules (always apply)
 1. No push without explicit user authorization.
