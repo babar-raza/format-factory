@@ -1,12 +1,13 @@
 [
   {
-    "item_id": "TC-SH-001",
-    "item_title": "Fix 2 failing tests blocking autonomous continuation",
+    "item_id": "GOVBLOCK-INVESTIGATION",
+    "item_title": "Investigate and resolve stale GOV_BLOCK in continuation signal",
     "declared_status": "completed",
     "supervisor_grade": "ACCEPTED_VERIFIED",
     "evidence_found": true,
     "evidence_paths": [
-      "reports/supervisor/approval-gates.md"
+      "tools/validators/validate_source_architecture.py",
+      ".local/supervisor/continuation-signal.json"
     ],
     "tests_supporting": [],
     "tests_missing": [],
@@ -39,478 +40,166 @@
       "source": "intermediate_content_check",
       "checks": [
         {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\reports\\supervisor\\approval-gates.md",
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tools\\validators\\validate_source_architecture.py",
           "exists": true,
           "content_ok": true,
-          "detail": "markdown with 16 lines, header=yes",
-          "check_type": "markdown_content"
+          "detail": "non-empty (17053 bytes): C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tools\\validators\\validate_source_architecture.py",
+          "check_type": "nonzero_existence"
+        },
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\supervisor\\continuation-signal.json",
+          "exists": true,
+          "content_ok": true,
+          "detail": "JSON object with 14 keys",
+          "check_type": "json_content"
+        }
+      ],
+      "summary": "2/2 evidence files passed content check"
+    }
+  },
+  {
+    "item_id": "TC-HEAL-ABW-001",
+    "item_title": "Promote ABW qname entries from implementing to verified",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_VERIFIED",
+    "evidence_found": true,
+    "evidence_paths": [
+      "shared/qname-registry/abw.yaml",
+      "registry/product-deepening-ledger.yaml",
+      "src/python/abw/spec/document/document.py",
+      "src/python/abw/spec/document/section.py",
+      "src/python/abw/spec/document/paragraph.py"
+    ],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "Governance item: file-content validated (test coverage N/A by design)"
+    ],
+    "acceptance_criteria_failed": [],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "",
+    "purpose_check": {
+      "item_type": "GOVERNANCE_TASKCARD",
+      "has_gap_ref": null,
+      "verdict": "NOT_APPLICABLE",
+      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
+    },
+    "test_layer_check": {
+      "inadequate": false,
+      "note": "non-product item, skip"
+    },
+    "semantic_verification": {
+      "adequate": true,
+      "confidence": 0.42,
+      "stub_detected": false,
+      "deficiencies": [
+        "few key fields found: [] (expected >=3)",
+        "few key fields found: [] (expected >=3)"
+      ],
+      "llm_used": false,
+      "intermediate_verified": true,
+      "source": "intermediate_content_check",
+      "checks": [
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\shared\\qname-registry\\abw.yaml",
+          "exists": true,
+          "content_ok": false,
+          "detail": "few key fields found: [] (expected >=3)",
+          "check_type": "yaml_content"
+        },
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\registry\\product-deepening-ledger.yaml",
+          "exists": true,
+          "content_ok": false,
+          "detail": "few key fields found: [] (expected >=3)",
+          "check_type": "yaml_content"
+        },
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\python\\abw\\spec\\document\\document.py",
+          "exists": true,
+          "content_ok": true,
+          "detail": "non-empty (1907 bytes): C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\python\\abw\\spec\\document\\document.py",
+          "check_type": "nonzero_existence"
+        },
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\python\\abw\\spec\\document\\section.py",
+          "exists": true,
+          "content_ok": true,
+          "detail": "non-empty (1617 bytes): C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\python\\abw\\spec\\document\\section.py",
+          "check_type": "nonzero_existence"
+        },
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\python\\abw\\spec\\document\\paragraph.py",
+          "exists": true,
+          "content_ok": true,
+          "detail": "non-empty (1373 bytes): C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\python\\abw\\spec\\document\\paragraph.py",
+          "check_type": "nonzero_existence"
+        }
+      ],
+      "summary": "3/5 evidence files passed content check"
+    }
+  },
+  {
+    "item_id": "TC-GAP-TRIAGE-001",
+    "item_title": "Triage all 32 open gaps to zero open",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_VERIFIED",
+    "evidence_found": true,
+    "evidence_paths": [
+      "reports/capability-layer/gap-ledger.json"
+    ],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "Governance item: file-content validated (test coverage N/A by design)"
+    ],
+    "acceptance_criteria_failed": [],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "",
+    "purpose_check": {
+      "item_type": "GOVERNANCE_TASKCARD",
+      "has_gap_ref": null,
+      "verdict": "NOT_APPLICABLE",
+      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
+    },
+    "test_layer_check": {
+      "inadequate": false,
+      "note": "non-product item, skip"
+    },
+    "semantic_verification": {
+      "adequate": true,
+      "confidence": 0.7,
+      "stub_detected": false,
+      "deficiencies": [],
+      "llm_used": false,
+      "intermediate_verified": true,
+      "source": "intermediate_content_check",
+      "checks": [
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\reports\\capability-layer\\gap-ledger.json",
+          "exists": true,
+          "content_ok": true,
+          "detail": "JSON object with 6 keys",
+          "check_type": "json_content"
         }
       ],
       "summary": "1/1 evidence files passed content check"
     }
   },
   {
-    "item_id": "TC-SH-002",
-    "item_title": "First governed professionalize.com proof-of-use",
+    "item_id": "TC-LOCK-HYGIENE-001",
+    "item_title": "Verify plan locks are clean",
     "declared_status": "completed",
     "supervisor_grade": "ACCEPTED_VERIFIED",
     "evidence_found": true,
     "evidence_paths": [
-      ".local/evidences/squishy-tumbling-wind-sh002/TC-SH-002-evidence.md"
-    ],
-    "tests_supporting": [],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths",
-      "Governance item: file-content validated (test coverage N/A by design)"
-    ],
-    "acceptance_criteria_failed": [],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": "",
-    "purpose_check": {
-      "item_type": "GOVERNANCE_TASKCARD",
-      "has_gap_ref": null,
-      "verdict": "NOT_APPLICABLE",
-      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
-    },
-    "test_layer_check": {
-      "inadequate": false,
-      "note": "non-product item, skip"
-    },
-    "semantic_verification": {
-      "adequate": true,
-      "confidence": 0.7,
-      "stub_detected": false,
-      "deficiencies": [],
-      "llm_used": false,
-      "intermediate_verified": true,
-      "source": "intermediate_verify",
-      "checks": [
-        {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\evidences\\squishy-tumbling-wind-sh002\\TC-SH-002-evidence.md",
-          "exists": true,
-          "content_ok": true,
-          "detail": "markdown with 45 lines, header=yes",
-          "check_type": "markdown_content"
-        }
-      ],
-      "summary": "1/1 evidence files passed content check",
-      "_cached_at": "2026-06-23T17:15:06.125967+00:00",
-      "_from_cache": true
-    }
-  },
-  {
-    "item_id": "TC-SH-003",
-    "item_title": "Route capability_queue_consumer output to persistent compiled-gap-taskcards.json",
-    "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_VERIFIED",
-    "evidence_found": true,
-    "evidence_paths": [
-      "tools/supervisor/capability_queue_consumer.py",
-      "tools/supervisor/autonomous_task_generator.py",
-      ".local/supervisor/compiled-gap-taskcards.json"
-    ],
-    "tests_supporting": [],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths",
-      "Governance item: file-content validated (test coverage N/A by design)"
-    ],
-    "acceptance_criteria_failed": [],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": "",
-    "purpose_check": {
-      "item_type": "GOVERNANCE_TASKCARD",
-      "has_gap_ref": null,
-      "verdict": "NOT_APPLICABLE",
-      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
-    },
-    "test_layer_check": {
-      "inadequate": false,
-      "note": "non-product item, skip"
-    },
-    "semantic_verification": {
-      "adequate": true,
-      "confidence": 0.7,
-      "stub_detected": false,
-      "deficiencies": [],
-      "llm_used": false,
-      "intermediate_verified": true,
-      "source": "intermediate_content_check",
-      "checks": [
-        {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tools\\supervisor\\capability_queue_consumer.py",
-          "exists": true,
-          "content_ok": true,
-          "detail": "non-empty (12946 bytes): C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tools\\supervisor\\capability_queue_consumer.py",
-          "check_type": "nonzero_existence"
-        },
-        {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tools\\supervisor\\autonomous_task_generator.py",
-          "exists": true,
-          "content_ok": true,
-          "detail": "non-empty (75438 bytes): C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tools\\supervisor\\autonomous_task_generator.py",
-          "check_type": "nonzero_existence"
-        },
-        {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\supervisor\\compiled-gap-taskcards.json",
-          "exists": true,
-          "content_ok": true,
-          "detail": "JSON object with 3 keys",
-          "check_type": "json_content"
-        }
-      ],
-      "summary": "3/3 evidence files passed content check"
-    }
-  },
-  {
-    "item_id": "TC-SH-004",
-    "item_title": "Remove advisory_only flag from FOSS P0 gap queue items",
-    "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_VERIFIED",
-    "evidence_found": true,
-    "evidence_paths": [
-      "tools/supervisor/capability_queue_consumer.py"
-    ],
-    "tests_supporting": [],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths",
-      "Governance item: file-content validated (test coverage N/A by design)"
-    ],
-    "acceptance_criteria_failed": [],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": "",
-    "purpose_check": {
-      "item_type": "GOVERNANCE_TASKCARD",
-      "has_gap_ref": null,
-      "verdict": "NOT_APPLICABLE",
-      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
-    },
-    "test_layer_check": {
-      "inadequate": false,
-      "note": "non-product item, skip"
-    },
-    "semantic_verification": {
-      "adequate": true,
-      "confidence": 0.7,
-      "stub_detected": false,
-      "deficiencies": [],
-      "llm_used": false,
-      "intermediate_verified": true,
-      "source": "intermediate_verify",
-      "checks": [
-        {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tools\\supervisor\\capability_queue_consumer.py",
-          "exists": true,
-          "content_ok": true,
-          "detail": "non-empty (12946 bytes): C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tools\\supervisor\\capability_queue_consumer.py",
-          "check_type": "nonzero_existence"
-        }
-      ],
-      "summary": "1/1 evidence files passed content check",
-      "_cached_at": "2026-06-23T17:23:48.729229+00:00",
-      "_from_cache": true
-    }
-  },
-  {
-    "item_id": "TC-SH-005",
-    "item_title": "Wire sprint learnings into autonomous_cycle Step 0 pre-pass",
-    "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_VERIFIED",
-    "evidence_found": true,
-    "evidence_paths": [
-      "tools/supervisor/autonomous_cycle.py"
-    ],
-    "tests_supporting": [],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths",
-      "Governance item: file-content validated (test coverage N/A by design)"
-    ],
-    "acceptance_criteria_failed": [],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": "",
-    "purpose_check": {
-      "item_type": "GOVERNANCE_TASKCARD",
-      "has_gap_ref": null,
-      "verdict": "NOT_APPLICABLE",
-      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
-    },
-    "test_layer_check": {
-      "inadequate": false,
-      "note": "non-product item, skip"
-    },
-    "semantic_verification": {
-      "adequate": true,
-      "confidence": 0.7,
-      "stub_detected": false,
-      "deficiencies": [],
-      "llm_used": false,
-      "intermediate_verified": true,
-      "source": "intermediate_verify",
-      "checks": [
-        {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tools\\supervisor\\autonomous_cycle.py",
-          "exists": true,
-          "content_ok": true,
-          "detail": "non-empty (128397 bytes): C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tools\\supervisor\\autonomous_cycle.py",
-          "check_type": "nonzero_existence"
-        }
-      ],
-      "summary": "1/1 evidence files passed content check",
-      "_cached_at": "2026-06-23T17:30:20.465499+00:00",
-      "_from_cache": true
-    }
-  },
-  {
-    "item_id": "TC-SH-006",
-    "item_title": "Failure-memory auto-corrector: FM-0013 + FM-0017 GOV_BLOCK directive",
-    "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_VERIFIED",
-    "evidence_found": true,
-    "evidence_paths": [
-      "tools/supervisor/autonomous_cycle.py",
-      ".local/supervisor/failure-memory.json"
-    ],
-    "tests_supporting": [],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths",
-      "Governance item: file-content validated (test coverage N/A by design)"
-    ],
-    "acceptance_criteria_failed": [],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": "",
-    "purpose_check": {
-      "item_type": "GOVERNANCE_TASKCARD",
-      "has_gap_ref": null,
-      "verdict": "NOT_APPLICABLE",
-      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
-    },
-    "test_layer_check": {
-      "inadequate": false,
-      "note": "non-product item, skip"
-    },
-    "semantic_verification": {
-      "adequate": true,
-      "confidence": 0.7,
-      "stub_detected": false,
-      "deficiencies": [],
-      "llm_used": false,
-      "intermediate_verified": true,
-      "source": "intermediate_verify",
-      "checks": [
-        {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tools\\supervisor\\autonomous_cycle.py",
-          "exists": true,
-          "content_ok": true,
-          "detail": "non-empty (128397 bytes): C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tools\\supervisor\\autonomous_cycle.py",
-          "check_type": "nonzero_existence"
-        },
-        {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\supervisor\\failure-memory.json",
-          "exists": true,
-          "content_ok": true,
-          "detail": "JSON object with 5 keys",
-          "check_type": "json_content"
-        }
-      ],
-      "summary": "2/2 evidence files passed content check",
-      "_cached_at": "2026-06-23T17:30:20.508124+00:00",
-      "_from_cache": true
-    }
-  },
-  {
-    "item_id": "TC-SH-007",
-    "item_title": "Failure-memory auto-classifier: rework root cause classification",
-    "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_VERIFIED",
-    "evidence_found": true,
-    "evidence_paths": [
-      "tools/supervisor/autonomous_cycle.py"
-    ],
-    "tests_supporting": [],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths",
-      "Governance item: file-content validated (test coverage N/A by design)"
-    ],
-    "acceptance_criteria_failed": [],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": "",
-    "purpose_check": {
-      "item_type": "GOVERNANCE_TASKCARD",
-      "has_gap_ref": null,
-      "verdict": "NOT_APPLICABLE",
-      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
-    },
-    "test_layer_check": {
-      "inadequate": false,
-      "note": "non-product item, skip"
-    },
-    "semantic_verification": {
-      "adequate": true,
-      "confidence": 0.7,
-      "stub_detected": false,
-      "deficiencies": [],
-      "llm_used": false,
-      "intermediate_verified": true,
-      "source": "intermediate_verify",
-      "checks": [
-        {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tools\\supervisor\\autonomous_cycle.py",
-          "exists": true,
-          "content_ok": true,
-          "detail": "non-empty (128397 bytes): C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tools\\supervisor\\autonomous_cycle.py",
-          "check_type": "nonzero_existence"
-        }
-      ],
-      "summary": "1/1 evidence files passed content check",
-      "_cached_at": "2026-06-23T17:30:20.554556+00:00",
-      "_from_cache": true
-    }
-  },
-  {
-    "item_id": "TC-SH-008",
-    "item_title": "Execute TC-0015: Spec Retrieval Strategy Evaluation",
-    "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_VERIFIED",
-    "evidence_found": true,
-    "evidence_paths": [
-      "docs/spec-retrieval-tier3-evaluation.md",
-      "taskcards/TC-0015-spec-retrieval-strategy-evaluation.md"
-    ],
-    "tests_supporting": [],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths",
-      "Governance item: file-content validated (test coverage N/A by design)"
-    ],
-    "acceptance_criteria_failed": [],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": "",
-    "purpose_check": {
-      "item_type": "GOVERNANCE_TASKCARD",
-      "has_gap_ref": null,
-      "verdict": "NOT_APPLICABLE",
-      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
-    },
-    "test_layer_check": {
-      "inadequate": false,
-      "note": "non-product item, skip"
-    },
-    "semantic_verification": {
-      "adequate": true,
-      "confidence": 0.7,
-      "stub_detected": false,
-      "deficiencies": [],
-      "llm_used": false,
-      "intermediate_verified": true,
-      "source": "intermediate_verify",
-      "checks": [
-        {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\docs\\spec-retrieval-tier3-evaluation.md",
-          "exists": true,
-          "content_ok": true,
-          "detail": "markdown with 123 lines, header=yes",
-          "check_type": "markdown_content"
-        },
-        {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\taskcards\\TC-0015-spec-retrieval-strategy-evaluation.md",
-          "exists": true,
-          "content_ok": true,
-          "detail": "markdown with 133 lines, header=yes",
-          "check_type": "markdown_content"
-        }
-      ],
-      "summary": "2/2 evidence files passed content check",
-      "_cached_at": "2026-06-23T17:15:06.388514+00:00",
-      "_from_cache": true
-    }
-  },
-  {
-    "item_id": "TC-SH-009",
-    "item_title": "Execute TC-0016: FODS Vector Index Pilot",
-    "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_VERIFIED",
-    "evidence_found": true,
-    "evidence_paths": [
-      ".local/embedding-index/fods-index.json",
-      "taskcards/TC-0016-fods-vector-index-pilot.md"
-    ],
-    "tests_supporting": [],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths",
-      "Governance item: file-content validated (test coverage N/A by design)"
-    ],
-    "acceptance_criteria_failed": [],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": "",
-    "purpose_check": {
-      "item_type": "GOVERNANCE_TASKCARD",
-      "has_gap_ref": null,
-      "verdict": "NOT_APPLICABLE",
-      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
-    },
-    "test_layer_check": {
-      "inadequate": false,
-      "note": "non-product item, skip"
-    },
-    "semantic_verification": {
-      "adequate": true,
-      "confidence": 0.7,
-      "stub_detected": false,
-      "deficiencies": [],
-      "llm_used": false,
-      "intermediate_verified": true,
-      "source": "intermediate_verify",
-      "checks": [
-        {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\embedding-index\\fods-index.json",
-          "exists": true,
-          "content_ok": true,
-          "detail": "JSON object with 11 keys",
-          "check_type": "json_content"
-        },
-        {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\taskcards\\TC-0016-fods-vector-index-pilot.md",
-          "exists": true,
-          "content_ok": true,
-          "detail": "markdown with 134 lines, header=yes",
-          "check_type": "markdown_content"
-        }
-      ],
-      "summary": "2/2 evidence files passed content check",
-      "_cached_at": "2026-06-23T17:15:06.435049+00:00",
-      "_from_cache": true
-    }
-  },
-  {
-    "item_id": "TC-SH-010",
-    "item_title": "Add gpt-oss entries to model-selection.yaml",
-    "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_VERIFIED",
-    "evidence_found": true,
-    "evidence_paths": [
-      "tools/llm/model-selection.yaml"
+      ".local/supervisor/plan-locks/"
     ],
     "tests_supporting": [],
     "tests_missing": [],
@@ -538,34 +227,19 @@
       "confidence": 0.0,
       "stub_detected": false,
       "deficiencies": [
-        "few key fields found: [] (expected >=3)"
+        "evidence_files_unreadable"
       ],
-      "llm_used": false,
-      "intermediate_verified": true,
-      "source": "intermediate_verify",
-      "checks": [
-        {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tools\\llm\\model-selection.yaml",
-          "exists": true,
-          "content_ok": false,
-          "detail": "few key fields found: [] (expected >=3)",
-          "check_type": "yaml_content"
-        }
-      ],
-      "summary": "0/1 evidence files passed content check",
-      "_cached_at": "2026-06-23T17:15:06.475578+00:00",
-      "_from_cache": true
+      "llm_used": false
     }
   },
   {
-    "item_id": "TC-SH-011",
-    "item_title": "Idempotency validators: stale plan lock reaper + duplicate queue item detector",
+    "item_id": "QOI-LOC-FIX",
+    "item_title": "Fix QOI image_document.py LOC cap violation",
     "declared_status": "completed",
     "supervisor_grade": "ACCEPTED_VERIFIED",
     "evidence_found": true,
     "evidence_paths": [
-      "tools/supervisor/autonomous_cycle.py",
-      "tools/supervisor/capability_queue_consumer.py"
+      "src/python/qoi/image_document.py"
     ],
     "tests_supporting": [],
     "tests_missing": [],
@@ -595,78 +269,17 @@
       "deficiencies": [],
       "llm_used": false,
       "intermediate_verified": true,
-      "source": "intermediate_verify",
+      "source": "intermediate_content_check",
       "checks": [
         {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tools\\supervisor\\autonomous_cycle.py",
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\python\\qoi\\image_document.py",
           "exists": true,
           "content_ok": true,
-          "detail": "non-empty (128397 bytes): C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tools\\supervisor\\autonomous_cycle.py",
-          "check_type": "nonzero_existence"
-        },
-        {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tools\\supervisor\\capability_queue_consumer.py",
-          "exists": true,
-          "content_ok": true,
-          "detail": "non-empty (12946 bytes): C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tools\\supervisor\\capability_queue_consumer.py",
+          "detail": "non-empty (23670 bytes): C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\python\\qoi\\image_document.py",
           "check_type": "nonzero_existence"
         }
       ],
-      "summary": "2/2 evidence files passed content check",
-      "_cached_at": "2026-06-23T17:30:20.620022+00:00",
-      "_from_cache": true
-    }
-  },
-  {
-    "item_id": "TC-SH-012",
-    "item_title": "Wire maturity_trend.py into sprint closeout + session-resume.md",
-    "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_VERIFIED",
-    "evidence_found": true,
-    "evidence_paths": [
-      "tools/supervisor/autonomous_cycle.py"
-    ],
-    "tests_supporting": [],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths",
-      "Governance item: file-content validated (test coverage N/A by design)"
-    ],
-    "acceptance_criteria_failed": [],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": "",
-    "purpose_check": {
-      "item_type": "GOVERNANCE_TASKCARD",
-      "has_gap_ref": null,
-      "verdict": "NOT_APPLICABLE",
-      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
-    },
-    "test_layer_check": {
-      "inadequate": false,
-      "note": "non-product item, skip"
-    },
-    "semantic_verification": {
-      "adequate": true,
-      "confidence": 0.7,
-      "stub_detected": false,
-      "deficiencies": [],
-      "llm_used": false,
-      "intermediate_verified": true,
-      "source": "intermediate_verify",
-      "checks": [
-        {
-          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tools\\supervisor\\autonomous_cycle.py",
-          "exists": true,
-          "content_ok": true,
-          "detail": "non-empty (128397 bytes): C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tools\\supervisor\\autonomous_cycle.py",
-          "check_type": "nonzero_existence"
-        }
-      ],
-      "summary": "1/1 evidence files passed content check",
-      "_cached_at": "2026-06-23T17:30:20.665194+00:00",
-      "_from_cache": true
+      "summary": "1/1 evidence files passed content check"
     }
   }
 ]

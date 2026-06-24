@@ -247,7 +247,19 @@ class TestNoOrphanSourceFiles:
         "exceptions", "models", "neutral_model", "list_traversal",
         "csv_exporter", "conftest", "compat",
         # Spec-derived domain module names (ODF canonical element names)
-        "drawing_document",
+        "drawing_document", "word_document", "tabular_document",
+        "interchange_document", "spreadsheet_document", "spreadsheet_model_document",
+        "text_document", "presentation_document", "workbook_document",
+        "json_stream", "compressed_stream",
+        "bitmap_image", "grayscale_image", "color_image", "image_document",
+        "drawing_metrics", "compression_metrics", "xcf_image_metrics",
+        "config_document",
+    }
+    # D-group extraction target suffixes (format-prefixed domain module files)
+    _DOMAIN_SUFFIXES = {
+        "word_stats", "workbook_stats", "record_stats",
+        "neutral_ops", "document_edit", "document_query", "drawing_metrics",
+        "image_metrics", "compression_metrics",
     }
     _CONVERTER_PATTERNS = {"_to_", "_exporter", "_encoder"}
 
@@ -258,6 +270,8 @@ class TestNoOrphanSourceFiles:
         if stem.startswith(f"{format_id}_"):
             suffix = stem[len(format_id) + 1:]
             if suffix in ("parser", "writer", "codec", "stats", "encoder", "analytics"):
+                return True
+            if suffix in self._DOMAIN_SUFFIXES:
                 return True
             # Secondary analytics split: {format}_analytics_{category}.py (master-plan.md §24.11)
             if suffix.startswith("analytics_"):

@@ -38,10 +38,18 @@ _default_baseline = _default_repo / "registry" / "source-structure-baseline.json
 
 # Pattern for analytics function names:
 # {format}_{property}_{formula} where formula contains mod_N, times_N, plus_, minus_, div_
+# Kept for V42 rotation-suspension enforcement (deepening suspension validator).
 _ANALYTICS_PATTERN = re.compile(
     r"^(?:abw|csv|dif|fodg|fods|fodt|fodp|gnumeric|ndjson|ods|odt|pbm|pgm|ppm|qoi|sylk|toml|tsv|xcf|zst)"
     r"_.+_(?:mod_\d+|times_\d+|plus_|minus_|div_)"
 )
+
+# Domain module file suffixes that are EXEMPT from RULE-AM-001 function checks.
+# These files ARE the analytics/domain containers — functions here are expected.
+_DOMAIN_MODULE_SUFFIXES = frozenset([
+    "_document.py", "_image.py", "_metrics.py", "_stats.py",
+    "_stream.py", "_ops.py", "_edit.py", "_query.py",
+])
 
 _MAX_LOC_NEW = 800
 _MAX_FUNCTIONS_NEW = 60
@@ -135,10 +143,13 @@ def scan(src_root: Path, baseline: dict, repo_root: Path) -> dict:
 
         # --- RULE-AM-001: Analytics functions outside analytics.py ---
         # Exempt: files named analytics.py OR ending with _analytics.py OR __init__.py
+        # Also exempt: domain module files (*_document.py, *_metrics.py, *_stats.py, etc.)
+        _is_domain_module = any(fname.endswith(s) for s in _DOMAIN_MODULE_SUFFIXES)
         _is_analytics_file = (
             fname == "analytics.py"
             or fname.endswith("_analytics.py")
             or fname == "__init__.py"
+            or _is_domain_module
         )
         if not _is_analytics_file:
             functions = _parse_functions(fpath)
@@ -159,6 +170,37 @@ def scan(src_root: Path, baseline: dict, repo_root: Path) -> dict:
                     "status": status,
                     "is_known_violation": is_known,
                 })
+
+            # --- RULE-AM-001-DOMAIN: {format_id}_* functions in codec/parser files ---
+            # Catches analytics functions that don't follow the arithmetic naming pattern.
+            # Exempt: domain modules (checked above), analytics files.
+            # WARN for known_violations files, FAIL for new files.
+            if fname.endswith(("_codec.py", "_parser.py")):
+                format_id = fpath.parent.name
+                domain_fns = [
+                    f for f in functions
+                    if f.startswith(f"{format_id}_")
+                    and not _ANALYTICS_PATTERN.match(f)
+                ]
+                if len(domain_fns) > 10:
+                    status = "WARN" if is_known else "FAIL"
+                    if status == "FAIL":
+                        fail_count += 1
+                    else:
+                        warn_count += 1
+                    items.append({
+                        "file": rel_posix,
+                        "rule": "RULE-AM-001-DOMAIN",
+                        "description": (
+                            f"{len(domain_fns)} domain-prefixed function(s) in codec/parser "
+                            f"(should be in a domain module *_stats.py/*_metrics.py)"
+                        ),
+                        "examples": domain_fns[:3],
+                        "current": len(domain_fns),
+                        "cap": 10,
+                        "status": status,
+                        "is_known_violation": is_known,
+                    })
 
         # --- RULE-AM-002: __init__.py size ---
         if fname == "__init__.py":

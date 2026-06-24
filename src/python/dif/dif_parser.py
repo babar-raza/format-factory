@@ -11,6 +11,7 @@ Parses TABLE, VECTORS, TUPLES, DATA sections.
 Technology: Python stdlib only (open/read/split).
 
 License: Apache-2.0
+spec_concept: DIF Data Interchange Format vector/tuple
 """
 
 from __future__ import annotations

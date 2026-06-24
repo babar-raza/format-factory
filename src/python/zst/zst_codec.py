@@ -3,9 +3,9 @@ ZST codec — minimal Zstandard compress/decompress/probe API.
 
 FOSS track. Requires python-zstandard (pip install zstandard).
 No commercial libraries used. No vendored dependencies.
-
 Acquisition gates 1-7 passed. Implementation authorized: R20.
 commercial_product_ready: false
+spec_concept: Zstandard frame/block compressed stream
 """
 
 from __future__ import annotations

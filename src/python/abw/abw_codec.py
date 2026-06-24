@@ -10,6 +10,7 @@ commercial_product_ready: false
 Security note: DOCTYPE declarations are stripped before parsing.
 The DTD at http://www.abisource.com/awml.dtd is unreachable (server down),
 and ElementTree does not resolve external DTDs anyway (XXE-safe).
+spec_concept: AbiWord document section/paragraph/span
 """
 
 from __future__ import annotations

@@ -5,9 +5,9 @@ Acquisition Gates 1-7 PASSED.
 
 FOSS track only — no commercial readiness implied.
 """
+from .exceptions import *  # noqa: F401, F403
 from .tsv_parser import *  # noqa: F401, F403
 from .tabular_document import *  # noqa: F401, F403
-from .exceptions import *  # noqa: F401, F403
 
 import sys as _sys
 __all__ = [k for k in vars(_sys.modules[__name__]) if not k.startswith("_")]

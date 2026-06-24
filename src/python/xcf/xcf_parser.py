@@ -10,8 +10,8 @@ Implements Gate 4 prototype scope per R28 parser plan.
 Parses header, property list, and layer offset table.
 Does NOT decode pixel/tile data.
 Technology: Python struct.unpack binary decoder (stdlib).
-
 License: Apache-2.0
+spec_concept: XCF GIMP image layer/channel/property block
 """
 
 from __future__ import annotations

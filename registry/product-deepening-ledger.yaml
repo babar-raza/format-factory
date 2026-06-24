@@ -12,9 +12,9 @@
   format: abw
   runtime: python
   qname_schema_version: '1.0'
-  qname_compliance_status: implementing
+  qname_compliance_status: verified
   qname_evidence: shared/qname-registry/abw.yaml
-  qname_note: "Updated from seeded to implementing per commit 79966684 (H3-REGISTRY-POPULATE). 3 entries with spec files on disk."
+  qname_note: "Promoted from implementing to verified. 3 spec files verified on disk (document.py 63 LOC, section.py 55 LOC, paragraph.py 50 LOC). All have spec_qname + spec_fact_ref. Convergence audit 2026-06-24."
   spec_authority_source: shared/qname-registry/abw.yaml
   spec_hierarchy_mapping: present
   src_layout_status: compliant
@@ -26,11 +26,10 @@
   sal_fact_count: 0
   rcal_capability_linkage: null
   taskcards: []
-  continuation_allowed: false
-  continuation_reason: qname_compliance_status=implementing (need verified for product deepening gate)
-  blockers:
-  - qname_compliance_status=implementing (need verified)
-  next_required_action: Promote ABW qname entries to verified status
+  continuation_allowed: true
+  continuation_reason: All gates pass. QName verified, src_layout compliant (grandfathered), SAL present, forbidden clean.
+  blockers: []
+  next_required_action: Continue product deepening
   last_verified_at: '2026-06-24'
   ledger_entry_hash: convergence-audit-20260624
 - product_id: CSV-PYTHON

@@ -135,6 +135,92 @@ class TestNoDuplicates:
         assert dups == [], f"Duplicate functions in {fmt}/{filename}: {dups}"
 
 
+class TestPythonDomainModulePilot:
+    """TC-PILOT-I4: D-group codec files reduced and domain modules wired."""
+
+    @pytest.mark.parametrize("fmt,filename,max_loc", [
+        ("abw", "abw_codec.py", 800),
+        ("gnumeric", "gnumeric_codec.py", 800),
+        ("ndjson", "ndjson_codec.py", 800),
+        ("fodg", "drawing_document.py", 800),
+        ("fodt", "neutral_model.py", 800),
+    ])
+    def test_codec_under_800loc(self, fmt, filename, max_loc):
+        """After D-group extraction, primary codec/model files must be ≤ 800 LOC."""
+        p = _REPO / "src" / "python" / fmt / filename
+        assert p.is_file(), f"{fmt}/{filename} does not exist"
+        loc = sum(1 for _ in p.open(encoding="utf-8", errors="replace"))
+        assert loc <= max_loc, (
+            f"{fmt}/{filename}: {loc} LOC exceeds max {max_loc}"
+        )
+
+    @pytest.mark.parametrize("fmt,stats_file", [
+        ("abw", "abw_word_stats.py"),
+        ("gnumeric", "gnumeric_workbook_stats.py"),
+        ("ndjson", "ndjson_record_stats.py"),
+        ("fodg", "drawing_metrics.py"),
+        ("fodt", "fodt_neutral_ops.py"),
+        ("fodt", "fodt_document_edit.py"),
+        ("fodt", "fodt_document_query.py"),
+    ])
+    def test_domain_stats_file_exists(self, fmt, stats_file):
+        """D-group extraction target files must exist."""
+        p = _REPO / "src" / "python" / fmt / stats_file
+        assert p.is_file(), f"{fmt}/{stats_file} missing — D-group extraction incomplete"
+
+    def test_no_analytics_py_files(self):
+        """Binding rule: NO *_analytics.py files may be created."""
+        analytics_files = list((_REPO / "src" / "python").rglob("*_analytics.py"))
+        assert not analytics_files, (
+            f"Banned *_analytics.py files found:\n"
+            + "\n".join(f"  - {f.relative_to(_REPO)}" for f in analytics_files)
+        )
+
+
+class TestSpecConceptTags:
+    """TC-SPEC-G (RESURRECTED): Non-ODF parser/codec files have spec_concept tags."""
+
+    @pytest.mark.parametrize("fmt,filename", [
+        ("csv", "csv_parser.py"),
+        ("tsv", "tsv_parser.py"),
+        ("dif", "dif_parser.py"),
+        ("sylk", "sylk_parser.py"),
+        ("ndjson", "ndjson_codec.py"),
+        ("toml", "toml_codec.py"),
+        ("abw", "abw_codec.py"),
+        ("gnumeric", "gnumeric_codec.py"),
+        ("pbm", "pbm_parser.py"),
+        ("pgm", "pgm_parser.py"),
+        ("ppm", "ppm_parser.py"),
+        ("qoi", "qoi_parser.py"),
+        ("xcf", "xcf_parser.py"),
+        ("zst", "zst_codec.py"),
+    ])
+    def test_has_spec_concept(self, fmt, filename):
+        """TC-SPEC-G: spec_concept: tag in module docstring."""
+        p = _REPO / "src" / "python" / fmt / filename
+        source = p.read_text(encoding="utf-8", errors="replace")
+        assert "spec_concept:" in source, (
+            f"{fmt}/{filename} missing spec_concept: tag"
+        )
+
+
+class TestInitPyUnderLimit:
+    """TC-INIT-E: All format __init__.py files ≤ 100 LOC."""
+
+    @pytest.mark.parametrize("fmt", [
+        "abw", "csv", "dif", "fodg", "fodp", "fods", "fodt",
+        "gnumeric", "ndjson", "ods", "odt", "pbm", "pgm", "ppm",
+        "qoi", "sylk", "toml", "tsv", "xcf", "zst",
+    ])
+    def test_init_under_100loc(self, fmt):
+        """__init__.py must be ≤ 100 LOC (TC-INIT-E)."""
+        p = _REPO / "src" / "python" / fmt / "__init__.py"
+        assert p.is_file(), f"{fmt}/__init__.py does not exist"
+        loc = sum(1 for _ in p.open(encoding="utf-8", errors="replace"))
+        assert loc <= 100, f"{fmt}/__init__.py: {loc} LOC exceeds 100"
+
+
 class TestSpecQName:
     """TC-SPEC-G: Domain modules have spec_qname headers."""
 

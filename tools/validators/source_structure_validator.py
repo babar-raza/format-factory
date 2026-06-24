@@ -121,8 +121,8 @@ def _is_recognized_file(filename: str, format_id: str) -> bool:
     # Format-prefixed known files: csv_parser, csv_writer, etc.
     if stem.startswith(f"{format_id}_"):
         suffix = stem[len(format_id) + 1:]
-        if suffix in _KNOWN_PURPOSES or suffix in ("parser", "writer", "codec",
-                                                      "stats", "encoder"):
+        if (suffix in _KNOWN_PURPOSES or suffix in _DOMAIN_MODULES
+                or suffix in ("parser", "writer", "codec", "stats", "encoder")):
             return True
     # Domain module names (spec-derived, format-agnostic)
     if stem in _DOMAIN_MODULES:

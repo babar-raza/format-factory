@@ -17,6 +17,7 @@ with src/python/csv/ when running under conftest.py sys.path injection.
 R55 Train H: CSV Gate 4 prototype (TC-ACQN-CSV-001).
 
 License: Apache-2.0
+spec_concept: RFC 4180 comma-separated values record/field
 """
 
 from __future__ import annotations

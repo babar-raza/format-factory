@@ -8,6 +8,7 @@ Uses Python stdlib json module — no external dependencies.
 Acquisition gates 1-4 initiated.
 commercial_product_ready: false
 track: python-foss
+spec_concept: Newline-delimited JSON record stream
 """
 
 from __future__ import annotations

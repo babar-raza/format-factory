@@ -7,6 +7,7 @@ hand-built serializer for write (no external dependencies).
 Acquisition Gates 1-4 initiated.
 
 License: Apache-2.0
+spec_concept: TOML v1.0 key-value pair / table / array
 """
 from __future__ import annotations
 

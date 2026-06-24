@@ -13,6 +13,7 @@ Technology: Python stdlib only (open/read/split).
 R55 Train F: P5 binary decode added (TC-BINARY-PGM-001).
 
 License: Apache-2.0
+spec_concept: PGM P5 binary grayscale pixel map
 """
 
 from __future__ import annotations

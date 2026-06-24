@@ -11,6 +11,7 @@ Parses SYLK files: ID record, C records (cells with X/Y/K fields), E record.
 Technology: Python stdlib only (open/read/split).
 
 License: Apache-2.0
+spec_concept: SYLK symbolic link B-record cell (row/col/value)
 """
 
 from __future__ import annotations

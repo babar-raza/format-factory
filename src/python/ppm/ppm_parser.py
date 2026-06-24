@@ -13,6 +13,7 @@ Technology: Python stdlib only (open/read/split).
 R55 Train F: P6 binary decode added (TC-BINARY-PPM-001).
 
 License: Apache-2.0
+spec_concept: PPM P6 binary RGB pixel map
 """
 
 from __future__ import annotations

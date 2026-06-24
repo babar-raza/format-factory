@@ -6,6 +6,7 @@ Uses gzip + xml.etree.ElementTree (stdlib) — no external dependencies.
 
 Acquisition gates 1-7 passed. Implementation authorized: R20.
 commercial_product_ready: false
+spec_concept: Gnumeric XML cell/sheet workbook
 """
 
 from __future__ import annotations

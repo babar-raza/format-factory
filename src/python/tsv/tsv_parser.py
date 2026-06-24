@@ -17,6 +17,7 @@ directly, which is correct for standard TSV (no quoted tab-containing fields).
 R55 Train H: TSV Gate 4 prototype (TC-ACQN-TSV-001).
 
 License: Apache-2.0
+spec_concept: IANA text/tab-separated-values row/cell
 """
 
 from __future__ import annotations

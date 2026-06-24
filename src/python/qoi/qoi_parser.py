@@ -11,6 +11,7 @@ Full pixel decode of all 6 QOI chunk types.
 Technology: Python struct.unpack binary decoder (stdlib).
 
 License: Apache-2.0
+spec_concept: QOI quite OK image header/pixel chunk
 """
 
 from __future__ import annotations

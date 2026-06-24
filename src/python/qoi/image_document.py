@@ -718,4 +718,3 @@ def qoi_is_wide(file_path: str | Path) -> bool:
     """Return True if image width is more than twice its height."""
     img = parse_qoi_strict(file_path)
     return img.width > 2 * img.height
-

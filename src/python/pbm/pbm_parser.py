@@ -13,6 +13,7 @@ Technology: Python stdlib only (open/read/split).
 R55 Train F: P4 binary decode added (TC-BINARY-PBM-001).
 
 License: Apache-2.0
+spec_concept: PBM P4 binary bitmap pixel map
 """
 
 from __future__ import annotations
