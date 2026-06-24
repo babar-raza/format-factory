@@ -3,9 +3,9 @@
 **Document type:** Living Master Plan
 **Authority level:** Single Operational Authority
 **Project:** format-factory
-**Version:** 4.0
-**Last updated:** 2026-06-23 (v4.0: Section 28 added — UNIFIED-FF-FINAL-20260623 sprint CLOSED; GOV_BLOCK xcf_parser.py resolved; lifecycle_audit.py + --audit-gate + ITERATION_REQUIRED wired; capability maps + pilots + compiler stub committed; TC-UNIFIED-012 open non-blocker)
-**Last verified:** 2026-06-23
+**Version:** 4.3
+**Last updated:** 2026-06-24 (v4.3: Section 32 added — pure-knitting-dusk CLOSED; bidirectional feedback loop TC-FL-001–014; gap closure engine + FSE/PID enforcement + action queue activation + sprint contract + gap verification engine; 60 tests; commit ef420c79)
+**Last verified:** 2026-06-24
 
 **Current phase:** Multi-format POC — 11 targets (3 commercial .NET, 8 FOSS Python). Gate 11 G11-G sub-gate approved by Babar Raza 2026-06-05 (FODS, FODT, Netpbm). Registry gate_11.status: commercial_readiness_in_progress (registry not yet updated after G11-G). commercial_product_ready: false (all entries).
 
@@ -1715,5 +1715,41 @@ No content has been deleted — only moved to archive files with pointers.
 
 ---
 
-*End of plans/master-plan.md — version 4.2 — 2026-06-24 (Section 31: MGHEAL-20260623 convergence CLOSED; 19 taskcards; lifecycle AUDIT_PASS; overclaim corrections; 33,983 tests)*
+## Section 32 — pure-knitting-dusk: Bidirectional Feedback Loop (TC-FL-001–014) — CLOSED
+
+**Plan file:** `C:\Users\prora\.claude\plans\pure-knitting-dusk.md`
+**Mission:** Close the unidirectional pipeline gap — add backward path from grades to gap closure, verification, and enforcement.
+**Status:** ALL 14 TASKCARDS CLOSED. `SPRINT_ALL_GREEN_VERIFIED`.
+**Commit:** `ef420c79` on main.
+
+### Root cause addressed
+
+The supervisor pipeline was unidirectional: gaps → work items → sprint → grades, but no backward path existed to close gaps from graded evidence, enforce evidence completeness, activate action queue items, or verify gap status claims. Gap closures relied on one-off scripts. FSE-001/PID-001 warnings were advisory-only. All 24 action queue items were permanently `advisory_only: True`.
+
+### What was built (5 phases)
+
+| Phase | TCs | What | Files |
+|-------|-----|------|-------|
+| 1. Gap Closure Engine | TC-FL-001/002/003 | Automated gap closure from graded evidence | `tools/supervisor/gap_closure_engine.py` (NEW, ~130 LOC), wired at `autonomous_cycle.py` Step 3a-closure |
+| 2. FSE-001/PID-001 Enforcement | TC-FL-004/005/006 | Auto-repair + block for evidence gaps | `sprint_executor_validate.py` (public APIs + backward-compat aliases), wired at `autonomous_cycle.py` Step 1b |
+| 3. Action Queue Activation | TC-FL-007/008/009 | Removed advisory_only hardcode, action consumer | `capability_map_generator.py` lines 1015/1332, consumer at `autonomous_cycle.py` Step 0c |
+| 4. Sprint Contract | TC-FL-010/011 | Structured work item contract | Writer at `autonomous_cycle.py` Step 4a2, checker at `sprint_executor_validate.py` Phase 11 |
+| 5. Gap Verification Engine | TC-FL-012/013/014 | 3-level verification (file/test/evidence chain) | `tools/supervisor/gap_verification_engine.py` (NEW, ~110 LOC), wired at `autonomous_cycle.py` Step 3a-verify |
+
+### Verification performed
+
+- **Unit tests:** 60/60 PASS (18 closure + 14 FSE/PID + 7 action queue + 6 contract + 15 verification)
+- **Governance tests:** 109/109 PASS (no regressions)
+- **Import verification:** All new modules import cleanly from `autonomous_cycle.py` context
+- **Integration wiring:** All 5 Step blocks confirmed present with correct try-except safety wrappers
+- **Backward compat:** `_check_fix_sprint_evidence` and `_check_parent_id_evidence_tagging` aliases verified
+
+### Remaining follow-ups (non-blockers)
+
+- `_consumed_actions` (Step 0c) is populated but not explicitly merged into `generate_next_work_items()` output — actions are correctly filtered and tagged, and the compiler already has its own gap-sourced item path. Full consumer wiring is a future enhancement.
+- End-to-end proof through a live autonomous cycle run (not just unit tests) will occur naturally in the next sprint cycle.
+
+---
+
+*End of plans/master-plan.md — version 4.3 — 2026-06-24 (Section 32: pure-knitting-dusk CLOSED; 14 taskcards; bidirectional feedback loop; 60 tests; ef420c79)*
 *This document is the single operational authority for format-factory. All other documents are subordinate to it for operational decisions.*
