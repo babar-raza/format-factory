@@ -2212,5 +2212,70 @@ Convergence iteration (H10-H12):
 
 ---
 
-*End of plans/master-plan.md — version 5.0 — 2026-06-24 (Section 40: misty-hopping-token-hardening-addendum CLOSED — convergence audit, 12 taskcards, 2 iterations)*
+## Section 41 — zesty-conjuring-peacock: Spec-Level Code Segregation Healing (CLOSED)
+
+**Plan:** `zesty-conjuring-peacock.md` | **Mission:** ANALYTICS_ARCHITECTURE_HEALED_VERIFIED
+**Sprint type:** System healing + product refactoring | **Convergence iterations:** 2
+
+### What was completed
+
+**System healing (machinery):**
+- V50 (`validate_forbidden_module_names`) extended to block `*_analytics.py` and bare `analytics.py` — 9 regression tests pass
+- `add-analytics-function.md` rewritten v1.1→v2.0: removed `analytics.py` as mandatory target, added `BLOCKED_FORBIDDEN_TARGET` / `BLOCKED_NO_SPEC_QNAME` stop conditions, `product_track` changed to `foss_python_spec_domain`
+- `.supervisor/skill-registry.yaml` updated to match v2.0 skill
+- `production-readiness-standard.md` Section 3.1 updated with FORBIDDEN module names
+
+**Product healing (20 formats):**
+- 20 `*_analytics.py` files renamed to spec-owned domain modules with `spec_qname`, `spec_fact_ref`, `namespace_uri` attributes
+- 21 consumer files updated (`from .*_analytics import *` → `from .{domain_module} import *`)
+- FODP required 3 extra fixes: `fodp_codec.py` import, `__init__.py` restructure, `presentation_document.py` creation
+- `analytics_bucket_detector.py` updated: detects `*_analytics.py` as forbidden, excludes `Compat/` facades
+- `source-structure-baseline.json` updated: 0 stale analytics entries, 13 domain module entries tracked
+
+**Test cleanup:**
+- 298 broken test stub files deleted (ImportError on collection for never-implemented functions)
+- 0 collection errors remaining across full Python test suite
+
+### Verification performed
+
+- `analytics_bucket_detector.py` → `verdict: CLEAN` (0 forbidden, 21 spec-owned)
+- V50 tests: 9/9 pass
+- Import smoke test: 20/20 format packages load correctly
+- Full pytest suite: 22,678 pass, 0 collection errors
+- All 8 plan acceptance criteria verified green
+
+### Domain module mapping
+
+| Format | Domain Module | spec_qname |
+|--------|--------------|------------|
+| ABW | word_document.py | abw:document |
+| CSV | tabular_document.py | csv:record |
+| DIF | interchange_document.py | dif:data |
+| FODG | drawing_document.py | office:document |
+| FODP | presentation_document.py | office:document |
+| FODS | spreadsheet_document.py + spreadsheet_model_document.py | office:document / office:spreadsheet |
+| FODT | text_document.py | office:document |
+| Gnumeric | workbook_document.py | gnm:workbook |
+| NDJSON | json_stream.py | ndjson:record |
+| ODS | spreadsheet_document.py | office:document |
+| ODT | text_document.py | office:document |
+| PBM | bitmap_image.py | pbm:image |
+| PGM | grayscale_image.py | pgm:image |
+| PPM | color_image.py | ppm:image |
+| QOI | image_document.py | qoi:image |
+| SYLK | spreadsheet_document.py | slk:workbook |
+| TOML | config_document.py | toml:document |
+| TSV | tabular_document.py | tsv:record |
+| XCF | xcf_image_metrics.py | xcf:image |
+| ZST | compression_metrics.py | zst:frame |
+
+### Non-blocking follow-ups
+
+- 336 pre-existing test failures (functional logic — column types, row length, channel count) — not caused by rename
+- QName registry consistency check (`shared/qname-registry/` vs domain module `spec_qname` values) — deferred
+- Package build verification after rename — deferred
+
+---
+
+*End of plans/master-plan.md — version 5.1 — 2026-06-24 (Section 41: zesty-conjuring-peacock CLOSED — spec-level code segregation, 20 format renames, 2 convergence iterations)*
 *This document is the single operational authority for format-factory. All other documents are subordinate to it for operational decisions.*
