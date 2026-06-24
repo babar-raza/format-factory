@@ -2542,5 +2542,52 @@ After convergence audits by subsequent sessions:
 
 ---
 
-*End of plans/master-plan.md — version 5.7 — 2026-06-24 (Section 47: vast-sleeping-diffie HEAL-PD-LEDGER-20260623 CLOSED — product deepening ledger + Check 9 gate, convergence ALL-GREEN — 10 taskcards)*
+---
+
+## Section 48: frolicking-weaving-hamming — PLAN-SCOPED-CONT-20260623: Plan-Scoped Autonomous Continuation Hardening (CLOSED)
+
+**Plan file:** `C:\Users\prora\.claude\plans\frolicking-weaving-hamming.md`
+**Mission ID:** PLAN-SCOPED-CONT-20260623
+**Plan type:** machinery_hardening
+**Status:** TERMINAL_CLOSED (convergence ALL-GREEN, 1 audit iteration, 2026-06-24)
+
+### Context
+
+Two compounding problems: (1) 2 PGM test failures triggered `AUTONOMOUS_CONTINUE: NO` (blocked continuation), and (2) the continuation system lacked a mechanism to scope a chat to a specific plan — it would fall back to the global system ledger even when an active plan was in progress.
+
+### What was completed
+
+- **TC-PSC-001 CLOSED**: PGM test failures were phantom — evidence-review.json had stale test names. Tests already passed; no code fix needed.
+- **TC-PSC-002 CLOSED**: Check 0c added to `check_continuation.py` — session-scoped chat plan binding that blocks global ledger fallback when an IN_PROGRESS binding exists for the current session. Includes 48h TTL, COMPLETE-status bypass, session-id scoping (other sessions unaffected).
+- **TC-PSC-003 CLOSED**: `continuation_ledger.py` wired into `check_continuation.py` — every STOP/CONTINUE verdict appended to `.local/supervisor/continuation-ledger.jsonl`. Product track `check_continuation` output now includes `product_chat_id` via new `get_or_create_product_chat_id()` in `continuation_identity.py`.
+- **TC-PSC-004 CLOSED**: 7 integration tests in `tests/supervisor/test_plan_scoped_continuation.py` — all pass.
+- **TC-PSC-005 CLOSED**: Representative pilot — 6 steps proving binding blocks, unblocks, cross-session safe, ledger captured.
+- **TC-PSC-006 CLOSED**: Final reconciliation — 129 supervisor tests pass, 66 PGM tests pass, `plans/continuation-isolation-plan.md` Section 26 added, terminal lock written.
+
+### Verification performed
+
+- 129/0 supervisor tests (including 7 new plan-scoped continuation tests)
+- 66/0 PGM tests, 15/0 L0 health/smoke tests
+- Check 0c verified: CHAT_PLAN_BINDING_ACTIVE stop, TTL bypass, session-scoping, COMPLETE bypass
+- Mission binding PLAN-SCOPED-CONT-20260623: status=COMPLETE
+- Terminal lock: session-keyed `7da28319645c-6a8c9ef4.json` status=TERMINAL_CLOSED
+
+### Key files
+
+| File | Change |
+|------|--------|
+| `tools/supervisor/write_chat_plan_binding.py` | NEW — CLI for per-mission chat plan bindings |
+| `tools/supervisor/check_continuation.py` | ADD Check 0c + `_log_verdict` helper |
+| `tools/supervisor/continuation_identity.py` | ADD `get_or_create_product_chat_id()` |
+| `tests/supervisor/test_plan_scoped_continuation.py` | NEW — 7 integration tests |
+| `plans/continuation-isolation-plan.md` | ADD Section 26 (RC-001/TC-CCI-009 partial) |
+
+### Evidence
+
+- Evidence root: `.local/evidences/plan-scoped-cont-20260624/`
+- Primary commit: `140961c9` (feat: plan-scoped continuation + convergence pipeline state)
+
+---
+
+*End of plans/master-plan.md — version 5.8 — 2026-06-24 (Section 48: frolicking-weaving-hamming PLAN-SCOPED-CONT-20260623 CLOSED — plan-scoped continuation hardening, Check 0c, 6 taskcards, convergence ALL-GREEN)*
 *This document is the single operational authority for format-factory. All other documents are subordinate to it for operational decisions.*
