@@ -3,8 +3,8 @@
 **Document type:** Living Master Plan
 **Authority level:** Single Operational Authority
 **Project:** format-factory
-**Version:** 5.6
-**Last updated:** 2026-06-24 (v5.6: squishy-chasing-marshmallow convergence CLOSED; governance_validator_utils.py + write_plan_lock.py committed; Section 29 follow-ups resolved)
+**Version:** 5.7
+**Last updated:** 2026-06-24 (v5.7: vast-sleeping-diffie HEAL-PD-LEDGER-20260623 CLOSED — product deepening ledger + Check 9 gate + convergence ALL-GREEN; Section 47 added)
 **Last verified:** 2026-06-24
 
 **Current phase:** Multi-format POC — 11 targets (3 commercial .NET, 8 FOSS Python). Gate 11 G11-G sub-gate approved by Babar Raza 2026-06-05 (FODS, FODT, Netpbm). Registry gate_11.status: commercial_readiness_in_progress; g11g_status: APPROVED_BY_BABAR_RAZA_2026_06_05 (G11-G sub-gate approved). commercial_product_ready: false (all entries). Full Gate 11 requires Babar Raza final commercial authorization.
@@ -2488,5 +2488,59 @@ Post-closure convergence audit confirmed all-green:
 
 ---
 
-*End of plans/master-plan.md — version 5.6 — 2026-06-24 (Section 46: linear-swimming-hearth deep recon + convergence CLOSED — 11 taskcards, 3 convergence iterations, ALL-GREEN)*
+---
+
+## Section 47: vast-sleeping-diffie — HEAL-PD-LEDGER-20260623: Product Deepening Ledger + Architecture Gate (CLOSED)
+
+**Plan file:** `C:\Users\prora\.claude\plans\vast-sleeping-diffie.md`
+**Mission ID:** HEAL-PD-LEDGER-20260623
+**Plan type:** machinery_hardening
+**Status:** TERMINAL_CLOSED (lifecycle audit AUDIT_PASS, convergence ALL-GREEN, 1 iteration)
+
+### Context
+
+Product deepening lacked per-format architecture compliance checks. Formats could be selected for product deepening without verified qname status, correct src layout, or SAL fact linkage. TC-GUARD-001 silently accepted `EXPANSION-FALLBACK-*` synthetic gap references.
+
+### Completed (7 plan taskcards + 3 convergence taskcards)
+
+| Taskcard | Deliverable | Verification |
+|----------|-------------|--------------|
+| TC-PD-001 | `registry/product-deepening-ledger.yaml` — schema + 20 empty entries | YAML parses, 20 entries |
+| TC-PD-002 | `tools/supervisor/product_deepening_gate.py` — gate evaluator + CLI | 4 functions exercised, `--dry-run` exits 1 |
+| TC-PD-003 | Check 9 in `check_continuation.py` — product deepening architecture gate | py_compile OK, 4 unit tests pass |
+| TC-PD-004 | Gate results emission in `autonomous_cycle.py` | Pre-committed; 2 occurrences confirmed |
+| TC-PD-005 | Ledger backfill — real inspection data for all 20 formats | 0 unknowns, fods=verified/compliant |
+| TC-PD-006 | V58 `validate_expansion_fallback_refs` in governance_validators_ext.py | Pre-committed; WARN-only, blocks_sprint=False |
+| TC-PD-007 | 17 tests + dry-run readiness certification | 17/17 pass, dry-run exit 1 |
+| TC-PD-C01 | All sprint files committed | c94fc626, 30011c23, 140961c9, d655fc04 |
+| TC-PD-C02 | Check 9 integration tests — calls `check()` directly | 2 tests, proof PROOF_LEVEL_2 → PROOF_LEVEL_3 |
+| TC-PD-C03 | Evidence declaration attribution corrected | TC-PD-004/006 pre-committed noted; test_results fixed |
+
+### Verification performed
+
+- 19/19 tests pass (`tests/supervisor/test_product_deepening_gate.py`) including 2 PROOF_LEVEL_3 integration tests
+- `--dry-run` CLI: 20-row compliance matrix, exit 1 (all blocked at plan close)
+- Lifecycle audit: `verdict=AUDIT_PASS`, `mission_complete=true`, `closure_authorized=true`
+- Check 9 exercises `check_continuation.check()` directly with synthetic repo layout — both STOP and CONTINUE paths verified
+
+### Post-convergence ledger state (2026-06-24)
+
+After convergence audits by subsequent sessions:
+- **2 formats allowed** (fods, fodt): qname=verified, src_layout=compliant
+- **18 formats blocked**: 7 implementing (need qname promotion to verified), 11 seeded (need implementing→verified)
+- All 20 forbidden_bucket_scan_status=clean, sal_fact_linkage=present
+
+### Non-blocking follow-ups
+
+- Promote seeded/implementing qname entries to `verified` status for each format to unlock product deepening
+- Pre-existing governance test failures in `test_plan_governance_gates.py` (lock ledger entries, V56 context) — not introduced by this plan
+
+### Evidence
+
+- Evidence root: `.local/evidences/heal-pd-ledger-20260623/` (convergence amendments logged in declaration)
+- Convergence state: `.supervisor/state/convergence-loop-state.json` (verdict: CONVERGENCE_COMPLETE_ALL_GREEN)
+
+---
+
+*End of plans/master-plan.md — version 5.7 — 2026-06-24 (Section 47: vast-sleeping-diffie HEAL-PD-LEDGER-20260623 CLOSED — product deepening ledger + Check 9 gate, convergence ALL-GREEN — 10 taskcards)*
 *This document is the single operational authority for format-factory. All other documents are subordinate to it for operational decisions.*
