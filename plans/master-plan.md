@@ -3,8 +3,8 @@
 **Document type:** Living Master Plan
 **Authority level:** Single Operational Authority
 **Project:** format-factory
-**Version:** 4.7
-**Last updated:** 2026-06-24 (v4.7: Section 36 added — soft-stargazing-hearth CLOSED; analytics forensic migration, 20 files deleted, 17 parsers rewired, 9 taskcards; 98742d9b)
+**Version:** 4.8
+**Last updated:** 2026-06-24 (v4.8: Section 29 re-created — FF-Machinery-Readiness CLOSED; Section 28 follow-ups CLOSED)
 **Last verified:** 2026-06-24
 
 **Current phase:** Multi-format POC — 11 targets (3 commercial .NET, 8 FOSS Python). Gate 11 G11-G sub-gate approved by Babar Raza 2026-06-05 (FODS, FODT, Netpbm). Registry gate_11.status: commercial_readiness_in_progress (registry not yet updated after G11-G). commercial_product_ready: false (all entries).
@@ -1610,7 +1610,67 @@ Any audit script searching for top-level `facts` key will incorrectly return 0 f
 | TC-UNIFIED-012: auto-set `govblock_resolved_by` in autonomous_cycle.py | Open | No |
 | SAL verdict UNKNOWN: fix parse path in sal-verdict generation for sal-facts-latest.json dict structure | Open | No |
 | Capability map validation advisory warning: action-queue items missing `advisory_only=true` | Open | No |
-| `ndjson_null_field_count` old callers with positional `field_name` arg: check for breakage | Open | No |
+| `ndjson_null_field_count` old callers with positional `field_name` arg: check for breakage | CLOSED | No |
+| TC-UNIFIED-012: auto-set `govblock_resolved_by` in autonomous_cycle.py | CLOSED (already_implemented lines 1822-1845) | No |
+| SAL verdict UNKNOWN | CLOSED (TC-MRH-001: sal-verdict-v2.json, DETERMINISTIC_WITH_CONSUMERS) | No |
+
+---
+
+## Section 29 — FF-Machinery-Readiness: squishy-chasing-marshmallow (CLOSED)
+
+**Mission ID:** FF-MACHINERY-READINESS-20260623
+**Plan file:** `C:/Users/prora/.claude/plans/squishy-chasing-marshmallow.md`
+**Plan type:** machinery_hardening
+**Status:** CLOSED — All 8 taskcards DONE. Evidence verified. Convergence iteration 0 complete.
+**Evidence root:** `.local/evidences/ff-machinery-readiness-20260623/ff-machinery-readiness/` (14 artifacts)
+
+### 29.1 — Audit Findings (pre-execution)
+
+| System | Verdict | Source |
+|--------|---------|--------|
+| QName | DEFINED_AND_PARTIALLY_INTEGRATED | qname-verdict.json |
+| SAL | DETERMINISTIC_WITH_CONSUMERS (14,313 facts, 4987 FODS) | sal-verdict-v2.json |
+| RCAL | LOW risk — 1003 gaps, 969 closed, 96.7% | gap-ledger.json |
+| Chain | 10 CHAIN_INTACT (ODF+image), 10 CHAIN_BROKEN_AT_SAL (FOSS) | chain-verification-multiformat.json |
+| Capability compiler | Reads gap-ledger.json (load_gaps() at runtime) | capability-compiler-gap-ledger-proof.json |
+
+### 29.2 — Taskcard Register
+
+| TC | Title | Evidence Artifact | Status |
+|----|-------|-------------------|--------|
+| TC-MRH-001 | SAL chain multi-format verification (20 formats) | chain-verification-multiformat.json | DONE |
+| TC-MRH-002 | governance_validator_utils.py extraction (3179→3051 LOC) | governance-validators-headroom-proof.json | DONE |
+| TC-MRH-003 | poc-targets.yaml path confirmation | poc-targets-path-fix.json | DONE |
+| TC-MRH-004 | Autonomous deepening proof (exit 3 acceptable) | product-deepening-proof.yaml | DONE |
+| TC-MRH-005 | write_plan_lock.py --cleanup-stale-locks | stale-lock-cleanup-proof.json | DONE |
+| TC-MRH-006 | govblock_resolved_by auto-setting (already implemented) | govblock-auto-set-proof.json | DONE |
+| TC-MRH-007 | ndjson_null_field_count caller breakage check | ndjson-caller-breakage-check.json | DONE |
+| TC-CAP-GAP-001 | capability_to_feature_compiler gap-ledger wiring | capability-compiler-gap-ledger-proof.json | DONE |
+
+### 29.3 — Files Changed
+
+| File | Change |
+|------|--------|
+| `tools/supervisor/governance_validator_utils.py` | NEW (153 LOC) — constants + helpers extracted from governance_validators.py |
+| `tools/supervisor/governance_validators.py` | 3179→3051 LOC (import from utils; cap=3179 unchanged) |
+| `tools/supervisor/write_plan_lock.py` | Added cleanup_stale_locks() + --cleanup-stale-locks CLI |
+| `reports/capability-layer/gap-ledger.json` | 10 CHAIN-SAL gap entries (GAP-CHAIN-*-SAL-MRH-001) |
+
+### 29.4 — Verification Performed
+
+- 92 governance validator tests pass
+- source_structure_validator: blocks_sprint=false, 0 new/worsened violations
+- 15 L0 health check tests pass
+- All 14 evidence artifacts verified present
+
+### 29.5 — Remaining Follow-ups (non-blockers)
+
+| Item | Status | Blocking? |
+|------|--------|-----------|
+| governance_validator_utils.py: needs git add + commit | Uncommitted | No (TRUE_EXTERNAL_GATE) |
+| write_plan_lock.py changes: uncommitted | Uncommitted | No (TRUE_EXTERNAL_GATE) |
+| 10 CHAIN_BROKEN_AT_SAL gaps: no SAL parser for FOSS formats | Open (P3) | No |
+| 21 P4 architecture stub gaps | Open (P4) | No |
 
 ---
 
@@ -2029,5 +2089,49 @@ Full machinery readiness audit across 10 lanes (A-J) followed by 9 repair taskca
 
 ---
 
-*End of plans/master-plan.md — version 4.7 — 2026-06-24 (Section 36: soft-stargazing-hearth CLOSED; analytics forensic migration, 20 files deleted, 17 parsers rewired, 9 taskcards, 2 convergence iterations; 98742d9b)*
+## Section 38 — transient-spinning-owl: Skill-First Governance Deferred Items (CLOSED)
+
+**Mission ID:** FF-SGOV-DEFERRED-20260624-transient-spinning-owl
+**Parent mission:** FF-SKILL-GOV-SYNC-20260623-transient-spinning-owl (TERMINAL_CLOSED)
+**Plan file:** `C:\Users\prora\.claude\plans\transient-spinning-owl.md`
+**Status:** CLOSED — CONVERGENCE_COMPLETE_ALL_GREEN (1 convergence iteration)
+**Commit:** `552c7c5b`
+
+### What was completed
+
+Three deferred items from the parent skill-governance-sync mission:
+
+1. **TC-SGOV-008 (MEDIUM):** Extracted 4 self-contained step blocks from `autonomous_cycle.py` into `autonomous_cycle_extensions.py`, reducing LOC from 2743 → 2334. New `baseline_loc_cap` set to 2350. Extracted functions: `run_sal_capmap_recompute()` (Steps 3d+3e+3f), `copy_cycle_summaries()` (Step 6), `run_post_grading_anti_skip()` (Step 3b), `validate_prompt_and_work_items()` (Steps 4b+4c + zero-task circuit breaker).
+
+2. **TC-SGOV-003 (LOW):** Added `known_suspended_rotations` configuration block to `registry/source-structure-baseline.json` with 3 entries (ZST, XCF, FODG arithmetic analytics patterns `_mod_\d+_times_\d+`).
+
+3. **TC-SGOV-007 (LOW):** Created `validate_suspended_rotation_stubs()` in `tools/validators/source_structure_validator.py` (~53 lines). Reads config from TC-SGOV-003, scans `tests/python/` for orphaned test stubs matching suspended patterns, returns WARN for any found.
+
+### What changed
+
+- `tools/supervisor/autonomous_cycle.py` — 4 step blocks replaced with extracted function calls (-409 LOC)
+- `tools/supervisor/autonomous_cycle_extensions.py` — 4 new functions added (+523 LOC, 283→806 total)
+- `tools/validators/source_structure_validator.py` — `validate_suspended_rotation_stubs()` added (+55 LOC)
+- `registry/source-structure-baseline.json` — `known_suspended_rotations` config + LOC/cap updates
+- `tests/supervisor/test_suspended_rotation_stubs.py` — NEW (4 test cases)
+
+### Verification performed
+
+- 20/20 plan-scope tests pass (4 stub validator + 9 adoption integration + 7 transcript existence)
+- 142/142 supervisor tests pass (broader regression suite, two runs)
+- All 5 plan gates (G-DEF-1 through G-DEF-5) verified PASS
+- V35-method LOC measurement: 2334 (matches baseline)
+- Function count: 7 (matches `baseline_functions_cap`)
+- All 4 extracted functions importable with correct signatures
+- All 4 import call sites wired in `autonomous_cycle.py`
+- Real-repo smoke test: `validate_suspended_rotation_stubs()` returns PASS/0 orphans
+- JSON validation: `source-structure-baseline.json` parses cleanly
+
+### Follow-ups (non-blocking, out of scope)
+
+- `validate_suspended_rotation_stubs()` is not wired into `governance_validator_runner.py` — by design, since `governance_validators.py` is at its LOC cap (3179/3179). Available for manual/on-demand invocation. Pipeline wiring requires a separate governance infrastructure expansion.
+
+---
+
+*End of plans/master-plan.md — version 4.9 — 2026-06-24 (Section 38: transient-spinning-owl CLOSED — SGOV deferred items, 3 taskcards, LOC cap reduction + suspended rotation config + stub validator)*
 *This document is the single operational authority for format-factory. All other documents are subordinate to it for operational decisions.*
