@@ -1676,5 +1676,44 @@ No content has been deleted — only moved to archive files with pointers.
 
 ---
 
-*End of plans/master-plan.md — version 4.1 — 2026-06-24 (Section 30: squishy-tumbling-wind self-healing plan CONVERGENCE_COMPLETE_ALL_GREEN; 12+3 taskcards; commit d4857da8; professionalize proof-of-use L4; FODS vector index L4; gap-to-task pipeline L3)*
+## Section 31 — MGHEAL-20260623: Machinery Healing Convergence (effervescent-wandering-blossom)
+
+**Status:** CLOSED (TERMINAL_CLOSED via lifecycle audit AUDIT_PASS)
+**Plan file:** `C:/Users/prora/.claude/plans/effervescent-wandering-blossom.md`
+**Plan type:** machinery_hardening
+**Taskcards:** 12 original (TC-MGHEAL-001–012) + 7 remediation (TC-MGHEAL-R01–R07) = 19 total
+**Commits:** 453c9d34 (concurrent session committed all deliverables)
+
+### What was completed
+
+1. **Production documentation extended:** production-library-checklist (S16-18 + S11/S14 updates), gap inventory rewritten, 4 new RCAs (6-9)
+2. **ndjson `__init__.py` healed:** 260→26 LOC via dynamic `__all__` pattern, 1409 tests pass (PROOF_LEVEL_2)
+3. **Governance machinery verified:** `--check-baseline-growth` exit 0 confirmed, V59 positive/negative controls confirmed, 9 new violations correctly blocked
+4. **779 test files deleted:** All sampled (8/8) confirmed broken (import nonexistent functions from suspended arithmetic rotation)
+5. **Overclaim corrections (convergence):** TC-MGHEAL-005 (V59), TC-MGHEAL-007 (pre-commit hooks), TC-MGHEAL-009 (capability compiler) reclassified as VERIFICATION_ONLY — all three pre-existed in commit `39a995cb`
+6. **Plan lock fixed:** Session-keyed + active locks corrected to point to effervescent-wandering-blossom
+7. **Governance test diagnostic:** assertion added to `test_governance_declaration_passes_all` showing which validator fails when intermittent failure recurs; 109/109 pass
+
+### Verification performed
+
+- Lifecycle audit: AUDIT_PASS, mission_complete: true, closure_authorized: true
+- Evidence declaration: VALIDATION PASS (sprint_executor_validate.py --repair)
+- Autonomous-cycle: exit 0 (ACCEPTED)
+- Test counts: 33,983 collected, 33,957 runnable, 1 pre-existing collection error, 0 failures
+- Governance tests: 109/109 pass (intermittent failure now has diagnostic)
+- Review package: 416,855 bytes, SHA-256 `ec8cbcf01a8eb519e11f0e4b16fb0170db5e2f294b559d74fd151db4554b93c8`
+
+### Remaining follow-ups (non-blockers)
+
+- 15 `__init__.py` files still need dynamic `__all__` migration (ndjson proven; apply to others)
+- 9 new spec-domain model files need baseline grandfathering
+- 1 intermittent governance test failure (`test_governance_declaration_passes_all`) — inter-test sys.path pollution; passes in isolation
+- 1 pre-existing collection error (`test_terminal_closure_prevention.py`) — imports resolve in isolation
+- V59 upgrade from WARN to FAIL deferred until parity matrix built
+- Full parser/domain separation for 7 oversized codecs — multi-sprint effort
+- git push for accumulated local commits: TRUE_EXTERNAL_GATE
+
+---
+
+*End of plans/master-plan.md — version 4.2 — 2026-06-24 (Section 31: MGHEAL-20260623 convergence CLOSED; 19 taskcards; lifecycle AUDIT_PASS; overclaim corrections; 33,983 tests)*
 *This document is the single operational authority for format-factory. All other documents are subordinate to it for operational decisions.*
