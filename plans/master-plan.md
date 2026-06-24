@@ -2133,5 +2133,42 @@ Three deferred items from the parent skill-governance-sync mission:
 
 ---
 
-*End of plans/master-plan.md — version 4.9 — 2026-06-24 (Section 38: transient-spinning-owl CLOSED — SGOV deferred items, 3 taskcards, LOC cap reduction + suspended rotation config + stub validator)*
+## Section 39 — dynamic-hugging-breeze: Lock System Healing (CLOSED)
+
+**Mission ID:** FF-LOCK-HEAL-20260624
+**Plan type:** machinery_hardening
+**Plan file:** `C:\Users\prora\.claude\plans\dynamic-hugging-breeze.md`
+**Status:** CLOSED
+**Commits:** c9de1a9c (TC-LOCK-001/004), 3fa5ea03 (TC-LOCK-002/003)
+
+### Problem
+
+`check_continuation.py` returned premature `POST_PLAN_TERMINAL` when a session had completed prior plans, blocking the autonomous pipeline even when newer plans were active. Root causes: single-slot `{sid}.json` lock overwrite (RC-0), phantom session ownership from `reopen_plan_lock.py` and manual lock editing (RC-1/1b), alphabetical single-pass iteration (RC-2), and session-terminal semantics conflicting with multi-plan sessions (RC-3).
+
+### What changed
+
+| Taskcard | File | Change |
+|----------|------|--------|
+| TC-LOCK-001 | `check_continuation.py` | Collect-then-decide replaces single-pass alphabetical loop; newest lock per session is authoritative |
+| TC-LOCK-002 | `write_plan_lock.py` | Lock filenames use `{sid}-{plan_hash}.json` for multi-plan support; atomic writes; overwrite protection; terminal lock in plan file |
+| TC-LOCK-003 | `reopen_plan_lock.py` | New file: marks old locks SUPERSEDED (preserving session_id), creates new lock via `write_lock()` |
+| TC-LOCK-004 | `test_plan_lock_gate.py` | 7 new tests (T11-T17): multi-plan sessions, phantom lock skip, alphabetical-order irrelevance |
+| TC-LOCK-005 | Data fix | Phantom lock files deleted, session identity reset |
+| TC-LOCK-006 | `check_continuation.py` | SUPERSEDED/DEFERRED status skip in collection phase (merged into TC-LOCK-001) |
+
+### Verification performed
+
+- 57/57 continuation tests pass (18 plan-lock-gate + 39 isolation)
+- E2E proof: `check_continuation.py` returns correct verdict for multi-plan sessions
+- Lifecycle audit: AUDIT_PASS, MISSION_COMPLETE
+- Post-plan convergence loop: 2 iterations, all findings consumed, all-green
+
+### Follow-ups (non-blocking, out of scope)
+
+- CLAUDE.md POST_PLAN_TERMINAL text could be amended for multi-plan session clarity (Section 9 of plan). Requires explicit user authorization — deferred.
+- Agent direct-editing of lock files can still create phantoms — governance/documentation control, not code-fixable.
+
+---
+
+*End of plans/master-plan.md — version 4.10 — 2026-06-24 (Section 39: dynamic-hugging-breeze CLOSED — lock system healing, 6 taskcards, multi-plan session support)*
 *This document is the single operational authority for format-factory. All other documents are subordinate to it for operational decisions.*

@@ -21,6 +21,8 @@ NS = {
     "text": "urn:oasis:names:tc:opendocument:xmlns:text:1.0",
     "presentation": "urn:oasis:names:tc:opendocument:xmlns:presentation:1.0",
     "style": "urn:oasis:names:tc:opendocument:xmlns:style:1.0",
+    "meta": "urn:oasis:names:tc:opendocument:xmlns:meta:1.0",
+    "dc": "http://purl.org/dc/elements/1.1/",
 }
 
 FODP_MIME = "application/vnd.oasis.opendocument.presentation-flat-xml"
@@ -104,6 +106,43 @@ def get_page_metadata(source: str | bytes | Path) -> list[dict[str, Any]]:
     """
     model = load(source)
     return model.get("pages", [])
+
+
+def get_document_metadata(source: str | bytes | Path) -> dict[str, Any]:
+    """Extract ODF document-level metadata from the ``<office:meta>`` element.
+
+    Returns a dict with these keys (all ``str | None``):
+        title, description, subject, creator, date, creation_date,
+        generator, language, editing_cycles, editing_duration,
+        initial_creator.
+
+    Spec authority:
+        ODF 1.3 Part 3, section 4 — Pre-defined metadata elements are stored
+        in the ``<office:meta>`` element (FACT-FODP-EX-0103, FACT-FODP-EX-0107,
+        FACT-FODP-EX-0109).
+
+    Args:
+        source: Path to .fodp file, bytes, or XML string.
+
+    Returns:
+        Document metadata dict.
+
+    Raises:
+        FodpParseError: If source cannot be parsed.
+    """
+    xml_bytes = _read_source(source)
+    root = _parse_xml(xml_bytes)
+
+    expected_tag = f"{{{NS['office']}}}document"
+    if root.tag != expected_tag:
+        raise FodpParseError(
+            f"Root element must be office:document, got {root.tag!r}"
+        )
+
+    return _extract_metadata(root)
+
+
+get_document_metadata.spec_qname = "office:meta"  # type: ignore[attr-defined]
 
 
 # ---------------------------------------------------------------------------
@@ -190,6 +229,33 @@ def _extract_pages(root: ET.Element) -> list[dict[str, Any]]:
             page_info["shape_count"] += 1
         pages.append(page_info)
     return pages
+
+
+def _extract_metadata(root: ET.Element) -> dict[str, Any]:
+    """Extract pre-defined metadata from <office:meta>."""
+    meta_el = root.find(f"{{{NS['office']}}}meta")
+    # Map of result key -> (namespace_prefix, local_name)
+    fields = {
+        "title": ("dc", "title"),
+        "description": ("dc", "description"),
+        "subject": ("dc", "subject"),
+        "creator": ("dc", "creator"),
+        "date": ("dc", "date"),
+        "language": ("dc", "language"),
+        "creation_date": ("meta", "creation-date"),
+        "generator": ("meta", "generator"),
+        "editing_cycles": ("meta", "editing-cycles"),
+        "editing_duration": ("meta", "editing-duration"),
+        "initial_creator": ("meta", "initial-creator"),
+    }
+    result: dict[str, Any] = {}
+    for key, (ns_prefix, local) in fields.items():
+        if meta_el is not None:
+            el = meta_el.find(f"{{{NS[ns_prefix]}}}{local}")
+            result[key] = el.text if el is not None else None
+        else:
+            result[key] = None
+    return result
 
 
 # Analytics separation (TC-VNK-008 / decompose-monolithic-codec skill)
