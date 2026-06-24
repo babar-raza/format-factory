@@ -1,7 +1,21 @@
+## ACTIVE PER-CHAT PLAN — SYSTEM LEDGER SUPPRESSED
+
+A per-chat plan is active. Complete ALL plan taskcards before any ledger/product work.
+
+- **Plan:** `C:/Users/prora/.claude/plans/polymorphic-brewing-cosmos.md`
+- **Last completed taskcard:** `None`
+- **Action:** Read the plan file. Find the next open taskcard after `None`. Execute it.
+  After each: `python tools/supervisor/write_plan_lock.py --plan-path "C:/Users/prora/.claude/plans/polymorphic-brewing-cosmos.md" --last-taskcard <TC_ID>`
+  When ALL done: `python tools/supervisor/write_plan_lock.py --plan-path "C:/Users/prora/.claude/plans/polymorphic-brewing-cosmos.md" --complete`
+
+**Do NOT start system ledger / product hardening work until plan status = COMPLETE.**
+
+---
+
 # Supervisor-Generated Next Sprint Prompt
-# Source sprint: convergence-sprint13-20260624-9660f4
+# Source sprint: PROD-GOV-HEAL-20260624
 # Stream: mainstream
-# Generated: 2026-06-24T10:50:14.279284
+# Generated: 2026-06-24T12:03:35.757185
 # ADVISORY ONLY — not a Format Factory authority document
 # This is INPUT to the next sprint, not a gate approval or commit authorization.
 
@@ -11,10 +25,10 @@
 ADVANCE: Product deepening — .NET commercial + Python FOSS + dogfood + packaging
 
 ## Prior Sprint Summary
-- Sprint ID: convergence-sprint13-20260624-9660f4
-- Evidence verdict: ACCEPTED
-- Tests: 1609 passed, 0 failed, 0 skipped
-- Autonomous continue: True
+- Sprint ID: PROD-GOV-HEAL-20260624
+- Evidence verdict: ACCEPTED_WITH_REWORK
+- Tests: 37 passed, 0 failed, 0 skipped
+- Autonomous continue: False
 
 ## STOP_REASON_ADVISORY (enforced by stop_reason_adjudicator.py)
 
@@ -88,55 +102,55 @@ None
 ## Project Memory Context
 ```
 
-## Entry: convergence-sprint9-20260624-9660f4
-- timestamp: 2026-06-24T10:09:07.415970
+## Entry: capability-convergence-iteration-1-20260624
+- timestamp: 2026-06-24T11:43:07.337296
+- verdict: ACCEPTED
+- test_count: 25
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\cap-convergence-iter1-20260624-3f98f85d\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 69
+- bundle_validation_pass: True
+- test_delta: +25
+- test_delta_from: 0
+
+## Entry: agentic-maturity-wave1-20260624-3f98f85d
+- timestamp: 2026-06-24T11:51:07.229944
+- verdict: ACCEPTED
+- test_count: 3
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\agentic-maturity-wave1-20260624-3f98f85d\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 69
+- bundle_validation_pass: True
+- test_delta: -22
+- test_delta_from: 25
+
+## Entry: convergence-product-verify-20260624-3f98f85d
+- timestamp: 2026-06-24T11:55:06.709637
 - verdict: ACCEPTED
 - test_count: 0
 - fail_count: 0
 - git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\convergence-sprint9-20260624-9660f4\declaration-review-package.zip
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\convergence-product-verify-20260624-3f98f85d\declaration-review-package.zip
 - pending_marker_count: 0
-- bundle_entry_count: 58
+- bundle_entry_count: 63
 - bundle_validation_pass: True
 
-## Entry: convergence-sprint10-20260624-9660f4
-- timestamp: 2026-06-24T10:35:06.913808
+## Entry: convergence-audit1-20260624-3f98f8
+- timestamp: 2026-06-24T12:01:06.758778
 - verdict: ACCEPTED
-- test_count: 3279
+- test_count: 6155
 - fail_count: 0
 - git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\convergence-sprint10-20260624-9660f4\declaration-review-package.zip
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\convergence-audit1-20260624-3f98f8\declaration-review-package.zip
 - pending_marker_count: 0
-- bundle_entry_count: 70
+- bundle_entry_count: 62
 - bundle_validation_pass: True
-- test_delta: +3279
+- test_delta: +6155
 - test_delta_from: 0
-
-## Entry: convergence-sprint11-20260624-9660f4
-- timestamp: 2026-06-24T10:39:05.943805
-- verdict: ACCEPTED
-- test_count: 1347
-- fail_count: 0
-- git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\convergence-sprint11-20260624-9660f4\declaration-review-package.zip
-- pending_marker_count: 0
-- bundle_entry_count: 71
-- bundle_validation_pass: True
-- test_delta: -1932
-- test_delta_from: 3279
-
-## Entry: convergence-sprint12-20260624-9660f4
-- timestamp: 2026-06-24T10:45:06.878454
-- verdict: ACCEPTED
-- test_count: 101
-- fail_count: 0
-- git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\convergence-sprint12-20260624-9660f4\declaration-review-package.zip
-- pending_marker_count: 0
-- bundle_entry_count: 64
-- bundle_validation_pass: True
-- test_delta: -1246
-- test_delta_from: 1347
 ```
 
 ---

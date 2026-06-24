@@ -46,7 +46,16 @@ _ALL_FORMATS = {
 _KNOWN_PURPOSES = {
     "__init__", "parser", "writer", "codec", "stats", "constants",
     "exceptions", "models", "neutral_model", "list_traversal",
-    "csv_exporter", "conftest",
+    "csv_exporter", "conftest", "analytics",
+}
+
+# Domain module names recognized per format (not orphans)
+_DOMAIN_MODULES = {
+    "xcf_image_metrics", "compression_metrics", "drawing_document",
+    "spreadsheet_document", "spreadsheet_model_document", "text_document",
+    "presentation_document", "word_document", "tabular_document",
+    "interchange_document", "json_stream", "config_document",
+    "bitmap_image", "grayscale_image", "color_image", "image_document",
 }
 
 # Suffixes that indicate recognized converter/exporter files
@@ -111,6 +120,9 @@ def _is_recognized_file(filename: str, format_id: str) -> bool:
         if suffix in _KNOWN_PURPOSES or suffix in ("parser", "writer", "codec",
                                                       "stats", "encoder"):
             return True
+    # Domain module names (spec-derived, format-agnostic)
+    if stem in _DOMAIN_MODULES:
+        return True
     # Converter/exporter files
     for pattern in _CONVERTER_PATTERNS:
         if pattern in stem:

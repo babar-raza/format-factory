@@ -1,14 +1,21 @@
 # Work Item Grades
-Sprint: convergence-sprint13-20260624-9660f4
-Generated: 2026-06-24T10:48:44.829137
-Global Status: ACCEPTED
+Sprint: PROD-GOV-HEAL-20260624
+Generated: 2026-06-24T12:01:07.522825
+Global Status: ACCEPTED_WITH_REWORK
 
 | Item ID | Grade | Rework Required |
 |---------|-------|-----------------|
-| COMMIT-PREP-001 | ACCEPTED_VERIFIED |  |
+| TC-GOV-PRE-001 | ACCEPTED_VERIFIED |  |
+| TC-GOV-UNBLOCK-001 | ACCEPTED_VERIFIED |  |
+| TC-GOV-DOCS-001 | ACCEPTED_VERIFIED |  |
+| TC-GOV-AUDIT-001 | ACCEPTED_VERIFIED |  |
+| TC-GOV-MACH-001 | ACCEPTED_VERIFIED |  |
+| TC-GOV-MACH-002 | ACCEPTED_VERIFIED |  |
+| TC-GOV-ANALYTICS-001 | BLOCKED_EXTERNAL_GATE |  |
+| TC-GOV-PRODUCT-001 | ACCEPTED_VERIFIED |  |
 
 ## Summary
-- Accepted: 1
-- Rework: 0
+- Accepted: 7
+- Rework: 2
 - Overclaimed: 0
-- Autonomous Continue: True
+- Autonomous Continue: False

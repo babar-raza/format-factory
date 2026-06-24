@@ -1,12 +1,13 @@
 [
   {
-    "item_id": "COMMIT-PREP-001",
-    "item_title": "Prepare commit candidate summary + product-code-change-ledger update",
+    "item_id": "TC-GOV-PRE-001",
+    "item_title": "Session Bootstrap",
     "declared_status": "completed",
     "supervisor_grade": "ACCEPTED_VERIFIED",
     "evidence_found": true,
     "evidence_paths": [
-      "reports/r90/product-code-change-ledger.json"
+      ".local/supervisor/plan-locks/13a7302fc4c5-10dc56ce.json",
+      ".local/evidences/H1-H9-rework-20260624/evidence-declaration.yaml"
     ],
     "tests_supporting": [],
     "tests_missing": [],
@@ -25,17 +26,513 @@
       "verdict": "NOT_APPLICABLE",
       "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
     },
+    "test_layer_check": {
+      "inadequate": false,
+      "note": "non-product item, skip"
+    },
     "semantic_verification": {
       "adequate": true,
-      "confidence": 0.78,
+      "confidence": 0.7,
+      "stub_detected": false,
+      "deficiencies": [],
+      "llm_used": false,
+      "intermediate_verified": true,
+      "source": "intermediate_content_check",
+      "checks": [
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\supervisor\\plan-locks\\13a7302fc4c5-10dc56ce.json",
+          "exists": true,
+          "content_ok": true,
+          "detail": "JSON object with 6 keys",
+          "check_type": "json_content"
+        },
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\evidences\\H1-H9-rework-20260624\\evidence-declaration.yaml",
+          "exists": true,
+          "content_ok": true,
+          "detail": "YAML has 6/6 expected fields",
+          "check_type": "yaml_content"
+        }
+      ],
+      "summary": "2/2 evidence files passed content check"
+    }
+  },
+  {
+    "item_id": "TC-GOV-UNBLOCK-001",
+    "item_title": "Resolve 8 OVERCLAIMED Contradictions (H1-H9 Rework)",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_VERIFIED",
+    "evidence_found": true,
+    "evidence_paths": [
+      ".local/evidences/H1-H9-rework-20260624/evidence-declaration.yaml",
+      "reports/supervisor/session-resume.md",
+      "reports/supervisor/approval-gates.md"
+    ],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "Governance item: file-content validated (test coverage N/A by design)"
+    ],
+    "acceptance_criteria_failed": [],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "",
+    "purpose_check": {
+      "item_type": "GOVERNANCE_TASKCARD",
+      "has_gap_ref": null,
+      "verdict": "NOT_APPLICABLE",
+      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
+    },
+    "test_layer_check": {
+      "inadequate": false,
+      "note": "non-product item, skip"
+    },
+    "semantic_verification": {
+      "adequate": true,
+      "confidence": 0.7,
+      "stub_detected": false,
+      "deficiencies": [],
+      "llm_used": false,
+      "intermediate_verified": true,
+      "source": "intermediate_content_check",
+      "checks": [
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\evidences\\H1-H9-rework-20260624\\evidence-declaration.yaml",
+          "exists": true,
+          "content_ok": true,
+          "detail": "YAML has 6/6 expected fields",
+          "check_type": "yaml_content"
+        },
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\reports\\supervisor\\session-resume.md",
+          "exists": true,
+          "content_ok": true,
+          "detail": "markdown with 78 lines, header=yes",
+          "check_type": "markdown_content"
+        },
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\reports\\supervisor\\approval-gates.md",
+          "exists": true,
+          "content_ok": true,
+          "detail": "markdown with 16 lines, header=yes",
+          "check_type": "markdown_content"
+        }
+      ],
+      "summary": "3/3 evidence files passed content check"
+    }
+  },
+  {
+    "item_id": "TC-GOV-DOCS-001",
+    "item_title": "Production-Code Governance Standard Documents",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_VERIFIED",
+    "evidence_found": true,
+    "evidence_paths": [
+      "docs/governance/production-code-governance-standard.md",
+      "docs/governance/production-code-governance-rules.yaml",
+      "docs/governance/python-library-standard.md",
+      "docs/governance/dotnet-library-standard.md",
+      "docs/governance/cross-language-semantic-standard.md",
+      "docs/governance/source-generation-prohibited-patterns.yaml",
+      "docs/governance/source-production-quality-gate-model.yaml"
+    ],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "Governance item: file-content validated (test coverage N/A by design)"
+    ],
+    "acceptance_criteria_failed": [],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "",
+    "purpose_check": {
+      "item_type": "GOVERNANCE_TASKCARD",
+      "has_gap_ref": null,
+      "verdict": "NOT_APPLICABLE",
+      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
+    },
+    "test_layer_check": {
+      "inadequate": false,
+      "note": "non-product item, skip"
+    },
+    "semantic_verification": {
+      "adequate": true,
+      "confidence": 0.39999999999999997,
       "stub_detected": false,
       "deficiencies": [
-        "No evidence of the required commit candidate summary (e.g., a markdown or text file summarizing the commit candidate).",
-        "Ledger entries reference test files, but the actual test code is not provided, so we cannot verify that the tests are substantive and not stubs.",
-        "Potential thin coverage: only result strings are shown (e.g., \"5 passed\"), without details on test assertions or scope."
+        "few key fields found: [] (expected >=3)",
+        "few key fields found: [] (expected >=3)",
+        "few key fields found: [] (expected >=3)"
       ],
-      "llm_used": true,
-      "low_confidence_override": true
+      "llm_used": false,
+      "intermediate_verified": true,
+      "source": "intermediate_verify",
+      "checks": [
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\docs\\governance\\production-code-governance-standard.md",
+          "exists": true,
+          "content_ok": true,
+          "detail": "markdown with 293 lines, header=yes",
+          "check_type": "markdown_content"
+        },
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\docs\\governance\\production-code-governance-rules.yaml",
+          "exists": true,
+          "content_ok": false,
+          "detail": "few key fields found: [] (expected >=3)",
+          "check_type": "yaml_content"
+        },
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\docs\\governance\\python-library-standard.md",
+          "exists": true,
+          "content_ok": true,
+          "detail": "markdown with 405 lines, header=yes",
+          "check_type": "markdown_content"
+        },
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\docs\\governance\\dotnet-library-standard.md",
+          "exists": true,
+          "content_ok": true,
+          "detail": "markdown with 317 lines, header=yes",
+          "check_type": "markdown_content"
+        },
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\docs\\governance\\cross-language-semantic-standard.md",
+          "exists": true,
+          "content_ok": true,
+          "detail": "markdown with 192 lines, header=yes",
+          "check_type": "markdown_content"
+        },
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\docs\\governance\\source-generation-prohibited-patterns.yaml",
+          "exists": true,
+          "content_ok": false,
+          "detail": "few key fields found: [] (expected >=3)",
+          "check_type": "yaml_content"
+        },
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\docs\\governance\\source-production-quality-gate-model.yaml",
+          "exists": true,
+          "content_ok": false,
+          "detail": "few key fields found: [] (expected >=3)",
+          "check_type": "yaml_content"
+        }
+      ],
+      "summary": "4/7 evidence files passed content check",
+      "_cached_at": "2026-06-24T06:54:24.323279+00:00",
+      "_from_cache": true
+    }
+  },
+  {
+    "item_id": "TC-GOV-AUDIT-001",
+    "item_title": "src/ Forensic Inventory",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_VERIFIED",
+    "evidence_found": true,
+    "evidence_paths": [
+      "reports/governance/src-product-inventory.json",
+      "reports/governance/src-monolith-register.yaml",
+      "reports/governance/src-production-readiness-matrix.json",
+      "reports/governance/src-architecture-gap-register.yaml"
+    ],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "Governance item: file-content validated (test coverage N/A by design)"
+    ],
+    "acceptance_criteria_failed": [],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "",
+    "purpose_check": {
+      "item_type": "GOVERNANCE_TASKCARD",
+      "has_gap_ref": null,
+      "verdict": "NOT_APPLICABLE",
+      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
+    },
+    "test_layer_check": {
+      "inadequate": false,
+      "note": "non-product item, skip"
+    },
+    "semantic_verification": {
+      "adequate": false,
+      "confidence": 0.35,
+      "stub_detected": false,
+      "deficiencies": [
+        "few key fields found: [] (expected >=3)",
+        "few key fields found: [] (expected >=3)"
+      ],
+      "llm_used": false,
+      "intermediate_verified": true,
+      "source": "intermediate_verify",
+      "checks": [
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\reports\\governance\\src-product-inventory.json",
+          "exists": true,
+          "content_ok": true,
+          "detail": "JSON array with 20 items",
+          "check_type": "json_content"
+        },
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\reports\\governance\\src-monolith-register.yaml",
+          "exists": true,
+          "content_ok": false,
+          "detail": "few key fields found: [] (expected >=3)",
+          "check_type": "yaml_content"
+        },
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\reports\\governance\\src-production-readiness-matrix.json",
+          "exists": true,
+          "content_ok": true,
+          "detail": "JSON array with 20 items",
+          "check_type": "json_content"
+        },
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\reports\\governance\\src-architecture-gap-register.yaml",
+          "exists": true,
+          "content_ok": false,
+          "detail": "few key fields found: [] (expected >=3)",
+          "check_type": "yaml_content"
+        }
+      ],
+      "summary": "2/4 evidence files passed content check",
+      "_cached_at": "2026-06-24T06:54:24.376529+00:00",
+      "_from_cache": true
+    }
+  },
+  {
+    "item_id": "TC-GOV-MACH-001",
+    "item_title": "Wire Capability Compiler to Production",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_VERIFIED",
+    "evidence_found": true,
+    "evidence_paths": [
+      "tools/supervisor/autonomous_task_generator.py",
+      ".local/tmp/compiler-test/feature-ir.json"
+    ],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "Governance item: file-content validated (test coverage N/A by design)"
+    ],
+    "acceptance_criteria_failed": [],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "",
+    "purpose_check": {
+      "item_type": "GOVERNANCE_TASKCARD",
+      "has_gap_ref": null,
+      "verdict": "NOT_APPLICABLE",
+      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
+    },
+    "test_layer_check": {
+      "inadequate": false,
+      "note": "non-product item, skip"
+    },
+    "semantic_verification": {
+      "adequate": true,
+      "confidence": 0.7,
+      "stub_detected": false,
+      "deficiencies": [],
+      "llm_used": false,
+      "intermediate_verified": true,
+      "source": "intermediate_verify",
+      "checks": [
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tools\\supervisor\\autonomous_task_generator.py",
+          "exists": true,
+          "content_ok": true,
+          "detail": "non-empty (78837 bytes): C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tools\\supervisor\\autonomous_task_generator.py",
+          "check_type": "nonzero_existence"
+        },
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\tmp\\compiler-test\\feature-ir.json",
+          "exists": true,
+          "content_ok": true,
+          "detail": "JSON object with 13 keys",
+          "check_type": "json_content"
+        }
+      ],
+      "summary": "2/2 evidence files passed content check",
+      "_cached_at": "2026-06-24T06:54:24.431703+00:00",
+      "_from_cache": true
+    }
+  },
+  {
+    "item_id": "TC-GOV-MACH-002",
+    "item_title": "Add Missing Governance Validators (V49+)",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_VERIFIED",
+    "evidence_found": true,
+    "evidence_paths": [
+      "tools/supervisor/governance_validators.py",
+      "tools/supervisor/governance_validator_runner.py",
+      "tests/supervisor/test_governance_validators_v64_v66.py"
+    ],
+    "tests_supporting": [
+      "tests/supervisor/test_governance_validators_v64_v66.py"
+    ],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths"
+    ],
+    "acceptance_criteria_failed": [],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "",
+    "tests_evidence_verified": [
+      "tests/supervisor/test_governance_validators_v64_v66.py"
+    ],
+    "purpose_check": {
+      "item_type": "GOVERNANCE_TASKCARD",
+      "has_gap_ref": null,
+      "verdict": "NOT_APPLICABLE",
+      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
+    },
+    "test_layer_check": {
+      "inadequate": false,
+      "note": "non-product item, skip"
+    },
+    "semantic_verification": {
+      "adequate": true,
+      "confidence": 0.7,
+      "stub_detected": false,
+      "deficiencies": [],
+      "llm_used": false,
+      "intermediate_verified": true,
+      "source": "intermediate_verify",
+      "checks": [
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tools\\supervisor\\governance_validators.py",
+          "exists": true,
+          "content_ok": true,
+          "detail": "non-empty (128900 bytes): C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tools\\supervisor\\governance_validators.py",
+          "check_type": "nonzero_existence"
+        },
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tools\\supervisor\\governance_validator_runner.py",
+          "exists": true,
+          "content_ok": true,
+          "detail": "non-empty (15441 bytes): C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tools\\supervisor\\governance_validator_runner.py",
+          "check_type": "nonzero_existence"
+        },
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tests\\supervisor\\test_governance_validators_v64_v66.py",
+          "exists": true,
+          "content_ok": true,
+          "detail": "valid (15 test functions with assertions)",
+          "check_type": "python_test_content"
+        }
+      ],
+      "summary": "3/3 evidence files passed content check",
+      "_cached_at": "2026-06-24T06:54:24.483312+00:00",
+      "_from_cache": true
+    }
+  },
+  {
+    "item_id": "TC-GOV-ANALYTICS-001",
+    "item_title": "Analytics Secondary Split",
+    "declared_status": "blocked_external_gate",
+    "supervisor_grade": "BLOCKED_EXTERNAL_GATE",
+    "evidence_found": false,
+    "evidence_paths": [],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [],
+    "acceptance_criteria_failed": [],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "This item requires external gate approval. Do not attempt.",
+    "purpose_check": {
+      "item_type": "GOVERNANCE_TASKCARD",
+      "has_gap_ref": null,
+      "verdict": "NOT_APPLICABLE",
+      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
+    },
+    "test_layer_check": {
+      "inadequate": false,
+      "note": "non-product item, skip"
+    }
+  },
+  {
+    "item_id": "TC-GOV-PRODUCT-001",
+    "item_title": "Governed Product Deepening",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_VERIFIED",
+    "evidence_found": true,
+    "evidence_paths": [
+      "src/python/fodp/fodp_codec.py",
+      "tests/python/fodp/test_fodp_get_document_metadata.py",
+      "reports/r90/product-code-change-ledger.json"
+    ],
+    "tests_supporting": [
+      "tests/python/fodp/test_fodp_get_document_metadata.py"
+    ],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths"
+    ],
+    "acceptance_criteria_failed": [],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "",
+    "tests_evidence_verified": [
+      "tests/python/fodp/test_fodp_get_document_metadata.py"
+    ],
+    "purpose_check": {
+      "item_type": "GOVERNANCE_TASKCARD",
+      "has_gap_ref": null,
+      "verdict": "NOT_APPLICABLE",
+      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
+    },
+    "test_layer_check": {
+      "inadequate": false,
+      "note": "non-product item, skip"
+    },
+    "semantic_verification": {
+      "adequate": true,
+      "confidence": 0.7,
+      "stub_detected": false,
+      "deficiencies": [],
+      "llm_used": false,
+      "intermediate_verified": true,
+      "source": "intermediate_verify",
+      "checks": [
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\python\\fodp\\fodp_codec.py",
+          "exists": true,
+          "content_ok": true,
+          "detail": "non-empty (8841 bytes): C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\src\\python\\fodp\\fodp_codec.py",
+          "check_type": "nonzero_existence"
+        },
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tests\\python\\fodp\\test_fodp_get_document_metadata.py",
+          "exists": true,
+          "content_ok": true,
+          "detail": "valid (22 test functions with assertions)",
+          "check_type": "python_test_content"
+        },
+        {
+          "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\reports\\r90\\product-code-change-ledger.json",
+          "exists": true,
+          "content_ok": true,
+          "detail": "JSON object with 7 keys",
+          "check_type": "json_content"
+        }
+      ],
+      "summary": "3/3 evidence files passed content check",
+      "_cached_at": "2026-06-24T06:54:24.540048+00:00",
+      "_from_cache": true
     }
   }
 ]

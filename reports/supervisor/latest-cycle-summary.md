@@ -1,11 +1,11 @@
 # Latest Supervisor Cycle Summary
-Run: convergence-sprint13-20260624-9660f4
-Sprint: convergence-sprint13-20260624-9660f4
-Timestamp: 2026-06-24T10:48:44.829137
-Verdict: ACCEPTED
-Autonomous Continue: True
-Accepted: 1
-Rework: 0
+Run: PROD-GOV-HEAL-20260624
+Sprint: PROD-GOV-HEAL-20260624
+Timestamp: 2026-06-24T12:01:07.522825
+Verdict: ACCEPTED_WITH_REWORK
+Autonomous Continue: False
+Accepted: 7
+Rework: 2
 Overclaimed: 0
-Review: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\convergence-sprint13-20260624-9660f4\supervisor-review.md
-Next Prompt: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\convergence-sprint13-20260624-9660f4\combined-next-worker-prompt.md
+Review: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\PROD-GOV-HEAL-20260624\supervisor-review.md
+Next Prompt: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\PROD-GOV-HEAL-20260624\combined-next-worker-prompt.md
