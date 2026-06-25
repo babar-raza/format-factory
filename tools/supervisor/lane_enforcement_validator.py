@@ -46,20 +46,34 @@ DEFAULT_LANE_OWNERSHIP: dict[str, str] = {
 }
 
 
+# Lane names that own governance/machinery infrastructure.
+# Product source files declared in these lanes are CRITICAL violations.
+_GOVERNANCE_LANES: frozenset[str] = frozenset({"SAL", "GOVERNANCE", "MACHINERY", "SUPERVISOR"})
+
+# Path prefixes that identify product source/test files.
+_PRODUCT_SOURCE_PREFIXES: tuple[str, ...] = (
+    "src/python/", "src/net/", "tests/python/", "tests/net/",
+)
+
+
 @dataclass
 class LaneEnforcementResult:
     """Result of lane enforcement validation."""
     passed: bool
     violations: list[str] = field(default_factory=list)
     evidence: list[str] = field(default_factory=list)
+    critical_violations: list[str] = field(default_factory=list)
 
     def summary(self) -> str:
         status = "PASS" if self.passed else "FAIL"
         lines = [f"LaneEnforcementValidator: {status}"]
         for e in self.evidence:
             lines.append(f"  [OK] {e}")
+        for v in self.critical_violations:
+            lines.append(f"  [CRITICAL] {v}")
         for v in self.violations:
-            lines.append(f"  [FAIL] {v}")
+            if v not in self.critical_violations:
+                lines.append(f"  [FAIL] {v}")
         return "\n".join(lines)
 
 
@@ -68,6 +82,17 @@ class LaneEnforcementValidator:
 
     def __init__(self, lane_ownership: dict[str, str] | None = None):
         self.lane_ownership = lane_ownership or DEFAULT_LANE_OWNERSHIP
+
+    def _is_critical_violation(self, file_path: str, declared_lane: str) -> bool:
+        """Return True if this is a CRITICAL violation.
+
+        CRITICAL: a product source/test file declared in a governance/SAL/machinery lane.
+        MULTI_LANE sprints bypass this check (declared_lane == "MULTI_LANE").
+        """
+        normalized = file_path.replace("\\", "/")
+        is_product_file = any(normalized.startswith(p) for p in _PRODUCT_SOURCE_PREFIXES)
+        is_governance_lane = declared_lane.upper() in _GOVERNANCE_LANES
+        return is_product_file and is_governance_lane
 
     def _resolve_lane(self, file_path: str) -> str | None:
         """Determine which lane owns a file path.
@@ -125,10 +150,13 @@ class LaneEnforcementValidator:
             for f, lane in file_lanes.items():
                 if lane and lane != declared_lane:
                     result.passed = False
-                    result.violations.append(
+                    msg = (
                         f"File '{f}' belongs to lane '{lane}' but declaration "
                         f"claims lane '{declared_lane}'"
                     )
+                    result.violations.append(msg)
+                    if self._is_critical_violation(f, declared_lane):
+                        result.critical_violations.append(msg)
                 elif lane == declared_lane:
                     result.evidence.append(f"File '{f}' → lane '{lane}' (matches)")
                 else:

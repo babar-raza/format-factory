@@ -242,6 +242,7 @@ def enrich_goals_with_compiled_taskcards(all_goals: list, repo_root: Path) -> No
             if gid in index:
                 goal["compiled_taskcard_id"] = index[gid].get("taskcard_id")
                 goal["compiled_taskcard_path"] = index[gid].get("taskcard_path")
+                goal["gap_ledger_ref"] = gid  # TC-GUARD-001 requires this field
     except Exception:
         pass
 

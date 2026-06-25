@@ -1273,10 +1273,19 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
         else:
             print(f"  Lane enforcement: FAIL — {len(lane_result.violations)} violation(s)")
             for v in lane_result.violations:
-                print(f"    [VIOLATION] {v}")
-            # Lane violations are advisory rework, not hard stops (multi-lane sprints are common)
-            review.setdefault("rework_items", [])
-            review["rework_items"].append(f"LANE_ENFORCEMENT:{len(lane_result.violations)}_violations")
+                severity = "CRITICAL" if v in lane_result.critical_violations else "VIOLATION"
+                print(f"    [{severity}] {v}")
+            # CRITICAL violations (product file in governance/SAL lane) → hard stop
+            if lane_result.critical_violations:
+                review.setdefault("hard_stops_detected", []).append(
+                    f"LANE_ENFORCEMENT_CRITICAL:{len(lane_result.critical_violations)}_violations"
+                )
+                print(f"  Lane enforcement: {len(lane_result.critical_violations)} CRITICAL violation(s) → hard_stops_detected")
+            # Non-critical violations remain advisory rework (multi-lane sprints are common)
+            non_critical = len(lane_result.violations) - len(lane_result.critical_violations)
+            if non_critical > 0:
+                review.setdefault("rework_items", [])
+                review["rework_items"].append(f"LANE_ENFORCEMENT:{non_critical}_violations")
     except Exception as lane_err:
         print(f"  WARNING: Lane enforcement check skipped: {lane_err}")
 
@@ -1324,6 +1333,17 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
         review["learning_consumer"] = {"scanned": scan_count, "proposals": len(proposals)}
     except Exception as lc_err:
         print(f"  WARNING: Learning consumer skipped: {lc_err}")
+
+    # Step 2h: Capability queue consumption — refresh compiled-gap-taskcards.json
+    print("\n=== STEP 2h: CAPABILITY QUEUE CONSUMER ===")
+    try:
+        from capability_queue_consumer import run_consumer as _run_cqc
+        cqc_summary = _run_cqc(max_gaps=10)
+        _cqc_compiled = cqc_summary.get("gaps_compiled", 0)
+        print(f"  Queue consumer: {_cqc_compiled} gap(s) compiled to taskcards")
+        review["capability_queue"] = {"compiled": _cqc_compiled, "status": cqc_summary.get("status")}
+    except Exception as cqc_err:
+        print(f"  WARNING: Capability queue consumer failed: {cqc_err}")
 
     # Write review outputs
     review_dir = repo_root / ".local" / "supervisor" / "reviews" / run_id

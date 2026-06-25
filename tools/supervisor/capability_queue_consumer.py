@@ -200,6 +200,7 @@ def compile_gaps_to_taskcards(
 
             # Enrich taskcard with gap metadata
             taskcard["source_gap_id"] = compiler_input.get("gap_id", "")
+            taskcard["gap_ledger_ref"] = compiler_input.get("gap_id", "")  # TC-GUARD-001 requires this
             taskcard["gap_type"] = compiler_input.get("gap_type", "")
             taskcard["gap_priority"] = compiler_input.get("priority", "P2")
             taskcard["compiled_at"] = _now_iso()
@@ -223,6 +224,7 @@ def compile_gaps_to_taskcards(
 
             compiled.append({
                 "gap_id": compiler_input.get("gap_id"),
+                "gap_ledger_ref": compiler_input.get("gap_id"),  # TC-GUARD-001 requires this
                 "format_id": fmt,
                 "function_name": func,
                 "taskcard_id": taskcard["taskcard_id"],
