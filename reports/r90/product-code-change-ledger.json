@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s112-dotnet-deepening-20260627",
+  "latest_sprint": "ff-sprint-s113-dotnet-deepening-20260627",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -20229,6 +20229,67 @@
         }
       ],
       "format": "NDJSON"
+    },
+    {
+      "entry_id": "PC-FODS-R134",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s113-dotnet-deepening-20260627",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.export_result_objects"
+      ],
+      "api_symbols": [
+        "FodsHtmlExporter.ExportToHtml",
+        "FodsJsonExporter.ExportToJson",
+        "FodsHtmlExportResult",
+        "FodsJsonExportResult"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/fods/FodsR134ExportResultObjectTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "FODS"
+    },
+    {
+      "entry_id": "PC-ZST-R124",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s113-dotnet-deepening-20260627",
+      "product": "ZST .NET",
+      "capability_refs": [
+        "commercial_net_products.ZST.dotnet_status.parser_constants"
+      ],
+      "api_symbols": [
+        "ZstParser.ZstdMagic",
+        "ZstParser.DefaultMaxFileSizeBytes"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/zst/ZstR124ParserConstantsTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "ZST"
+    },
+    {
+      "entry_id": "PC-TSV-R123",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s113-dotnet-deepening-20260627",
+      "product": "TSV .NET",
+      "capability_refs": [
+        "commercial_net_products.TSV.dotnet_status.headers_property"
+      ],
+      "api_symbols": [
+        "TsvDocument.Headers"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/tsv/TsvR123HeadersPropertyTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "TSV"
     }
   ],
   "total_entries": 1006,
