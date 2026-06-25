@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s101-dotnet-deepening-20260626",
+  "latest_sprint": "ff-sprint-s102-dotnet-deepening-20260626",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -19558,6 +19558,68 @@
         }
       ],
       "format": "TSV"
+    },
+    {
+      "entry_id": "PC-ZST-R120",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s102-dotnet-deepening-20260626",
+      "product": "ZST .NET",
+      "capability_refs": [
+        "commercial_net_products.ZST.dotnet_status.document_validity"
+      ],
+      "api_symbols": [
+        "IsValid",
+        "MagicValid",
+        "HasMultipleFrames",
+        "FileSizeKB",
+        "SizeLabel"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/zst/ZstR120DocumentValidityTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "ZST"
+    },
+    {
+      "entry_id": "PC-CSV-R121",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s102-dotnet-deepening-20260626",
+      "product": "CSV .NET",
+      "capability_refs": [
+        "commercial_net_products.CSV.dotnet_status.static_reader_writer"
+      ],
+      "api_symbols": [
+        "CsvReader.ReadRows",
+        "CsvWriter.WriteRows"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/csv/CsvR121StaticReaderWriterTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "CSV"
+    },
+    {
+      "entry_id": "PC-NDJSON-R120",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s102-dotnet-deepening-20260626",
+      "product": "NDJSON .NET",
+      "capability_refs": [
+        "commercial_net_products.NDJSON.dotnet_status.csv_exporter"
+      ],
+      "api_symbols": [
+        "NdjsonCsvExporter.Export"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/ndjson/NdjsonR120CsvExporterTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "NDJSON"
     }
   ],
   "total_entries": 1006,
