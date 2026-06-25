@@ -163,6 +163,43 @@ This rule is enforced starting from the first new format module added after
 individual decomposition sprints. Creating `src/python/core/` is tracked in
 `plans/product-code-healing-plan.md`.
 
+## 16. Cross-Language Architecture (RULE-CHECKLIST-CL-001 — added 2026-06-25)
+
+Any format implemented in both .NET and Python must have equivalent conceptual architecture:
+- Both must have a parser class, domain model class, and (where applicable) an exporter
+- Public API surface ratio must not exceed 20% difference between .NET and Python implementations
+- Naming must follow the same spec-QName-derived conventions in both languages
+
+Enforcement: V59 `validate_cross_language_parity` (currently WARN-only). Upgraded to FAIL
+for RELEASE_GATE items where the public API surface count differs >20% (see TC-GH-003, 2026-06-25).
+
+Status: PARTIAL — V59 is WARN-only for non-RELEASE_GATE items until parity is achieved.
+
+## 17. Import Direction (RULE-LIB-003 — added 2026-06-25)
+
+Import direction within a format package MUST follow the dependency chain:
+
+    Parser/Codec → Models → Analytics → Compat ← __init__.py
+
+Forbidden patterns:
+- `models.py` importing from `*_parser.py` or `*_codec.py`
+- `Compat/*.py` importing from `*_analytics.py`
+- `*_parser.py` importing from `Compat/`
+- `__init__.py` importing from `spec/` (use Compat/ instead)
+
+Enforcement: V73 `validate_dependency_direction` (WARN for existing grandfathered files; FAIL for new).
+Status: WARN-only for existing 20 packages (grandfathered).
+
+## 18. Error Handling Hierarchy (RULE-LIB-006 — added 2026-06-25)
+
+Each format package under `src/python/{format}/` MUST define a format-specific exception:
+- `exceptions.py` must exist in every format package
+- At minimum one exception class derived from `Exception` (or `FormatFactoryError` when available)
+- Parsers and codecs MUST NOT raise bare `ValueError` or `KeyError` for format errors
+
+Enforcement: V74 `validate_error_handling_hierarchy` (WARN for existing; FAIL for new format packages).
+Status: WARN-only for existing 20 packages (grandfathered).
+
 ## Validator Reference
 
 ```

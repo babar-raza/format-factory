@@ -1,7 +1,94 @@
 # Root Cause Analysis — SRC Governance Machinery Bypass
-**Sprint:** SRC Governance Healing (eventual-painting-torvalds)
-**Date:** 2026-06-17
-**Status:** Source-confirmed
+**Originally Written:** 2026-06-17 — SRC Governance Healing (eventual-painting-torvalds)
+**Last Updated:** 2026-06-25 — Governance & Machinery Healing (warm-jingling-sutherland)
+**Status:** RCA-1 FIXED. RCA-2/RCA-3/RCA-4/RCA-5 addressed in prior sprints. RCA-6 through RCA-9 new.
+
+---
+
+## Update: 2026-06-25 (Current Root Cause State)
+
+RCA-1 (CLAUDE.md Step 0 bypass) has been FIXED (TC-MACH-006, 2026-06-17).
+RCA-2 (write-once ceiling) is FIXED — `baseline_loc_cap` added to all entries.
+RCA-3 (pre-commit gate missing) is PARTIALLY ADDRESSED — `.pre-commit-config.yaml` created this sprint (TC-GH-005).
+RCA-4 (no targeted growth-check flag) is ADDRESSED — `--check-baseline-growth` flag exists in validator.
+RCA-5 (tests compared mutable `loc`) is FIXED — tests now compare against `baseline_loc_cap`.
+
+New root causes identified as of 2026-06-25 (GOVERNANCE-HEALING sprint warm-jingling-sutherland):
+
+---
+
+## RCA-6 (MEDIUM): Document-Class Monoliths Not Addressed by Analytics Separation
+
+**Location:** src/python/fods/spreadsheet_document.py, abw/word_document.py, dif/interchange_document.py,
+fodt/text_document.py, csv/tabular_document.py (5 files, 994–1035 LOC)
+**Severity:** MEDIUM — governance debt; Sprint GOV_BLOCK does not fire because these files don't
+contain analytics functions (no `{format}_{name}_mod_N_times_M` pattern)
+
+**Mechanism:**
+The analytics separation sprints (keen-dancing-hopper) successfully extracted arithmetic analytics
+functions from major codecs (ZST/XCF/FODG). However, 5 "document" class files remain above 800 LOC.
+These files contain domain operations (query/filter, row manipulation, section access), NOT analytics
+functions — so the `validate_deepening_suspension()` and `validate_source_architecture()` checks
+do not trigger GOV_BLOCK on them. They grew due to successive product deepening sprints adding
+domain-level methods, not arithmetic functions.
+
+**Impact:** These 5 files exceed the 800 LOC limit but are NOT blocked by current validators
+because their violations are in `known_violations` with frozen caps above 800. No active sprint
+is forcing them to heal.
+
+**Fix (TC-ARCH-* tasks in master-plan.md Section 57, added this sprint):** Each file gets a
+dedicated architecture healing taskcard. TC-GH-008 (this sprint) demonstrates the pattern on
+csv/tabular_document.py. Remaining 4 follow in future sprints.
+
+---
+
+## RCA-7 (MEDIUM): V59 Cross-Language Parity is Advisory-Only
+
+**Location:** tools/supervisor/governance_validators.py `validate_cross_language_parity()` (V59)
+**Severity:** MEDIUM — .NET implementations can diverge from Python without any blocking validator
+
+**Mechanism:**
+V59 reports mismatches between .NET and Python format implementations as WARN, never FAIL.
+This means a format can ship with a 5-method .NET API and a 50-method Python API and no
+validator ever blocks it. The advisory nature was intentional during early development but
+is now a governance gap as formats approach RELEASE_GATE status.
+
+**Fix (TC-GH-003, this sprint):** Upgraded V59 to FAIL for RELEASE_GATE items where
+.NET and Python public API surface counts differ by >20%.
+
+---
+
+## RCA-8 (LOW): No Import Direction Enforcement
+
+**Location:** All format packages under src/python/
+**Severity:** LOW — circular imports would be caught by Python at runtime; policy drift is the risk
+
+**Mechanism:**
+The "Parser → Model → Analytics → Compat ← __init__.py" import direction is documented in
+production-readiness-standard.md but no validator mechanically checks it. A developer adding
+`from .{format}_analytics import *` inside a parser file would not be blocked until TC-GH-007
+machinery proof runs (which only checks files in sprint declarations).
+
+**Fix (TC-GH-004, this sprint):** V73 `validate_dependency_direction` performs AST-based
+import scan for forbidden cross-layer patterns. WARN for existing grandfathered files;
+FAIL for new files.
+
+---
+
+## RCA-9 (LOW): No Error Handling Hierarchy Enforcement
+
+**Location:** All format packages under src/python/
+**Severity:** LOW — parsers can raise bare ValueError/KeyError without any validator catching it
+
+**Mechanism:**
+`exceptions.py` is listed as "If applicable" in the module structure table. No validator
+checks that parsers actually raise format-specific exceptions instead of bare Python exceptions.
+New format packages added without `exceptions.py` pass all governance validators.
+
+**Fix (TC-GH-004, this sprint):** V74 `validate_error_handling_hierarchy` checks that
+`exceptions.py` exists per format package. WARN for existing; FAIL for new packages.
+
+---
 
 ---
 

@@ -1338,3 +1338,22 @@ skills:
 sprint: FORMAT-FACTORY-R98-AUTONOMOUS-LOOP-TRUST-LAYER-ITERATION-SCALING-ACCELERATION-POC-MEGA-TRAIN-001
 version: '2.0'
 visibility: generated
+- advisory_only: false
+  command_file: .claude/commands/audit-root-tools.md
+  created_at: '2026-06-25'
+  description: Audit ad-hoc root-level scripts in tools/supervisor/ and classify each
+    as REGISTERED, QUARANTINED, KEPT, or REJECTED. Enforces mutation guard for tools/supervisor/*.py
+    changes.
+  notes: Created TC-SFE2-003 / twinkly-gliding-thimble (2026-06-25). Use to prove
+    all tools/supervisor/ scripts have skill attribution. Outputs audit register to
+    reports/skill-audit/.
+  product_track: machinery_governance
+  purpose: Enforce mutation guard on tools/supervisor/ scripts. Every script must be
+    either registered in skill-registry.yaml or have a documented disposition.
+  required_handoff_fields:
+  - audit_scope
+  - output_path
+  skill_id: audit-root-tools
+  spec_qname_required: false
+  status: active
+  test_paths: []

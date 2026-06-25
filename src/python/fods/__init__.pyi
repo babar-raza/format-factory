@@ -1,6 +1,4 @@
 """Type stubs for format-factory-fods (PQ-020)."""
-from typing import Any
-
 from fods.parser import parse_fods as parse_fods
 from fods.parser import parse_fods_strict as parse_fods_strict
 from fods.writer import write_fods as write_fods

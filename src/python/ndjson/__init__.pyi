@@ -1,6 +1,4 @@
 """Type stubs for format-factory-ndjson (PQ-020)."""
-from typing import Any
-
 from ndjson.ndjson_codec import load_ndjson as load_ndjson
 from ndjson.ndjson_codec import write_ndjson as write_ndjson
 from ndjson.ndjson_codec import probe_ndjson as probe_ndjson

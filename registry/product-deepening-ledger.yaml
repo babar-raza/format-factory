@@ -50,7 +50,19 @@
   sal_fact_linkage: present
   sal_fact_count: 2
   rcal_capability_linkage: null
-  taskcards: []
+  taskcards:
+  - task_id: TC-PDL-REPAIR-CSV-001
+    source_plan: sunny-crunching-galaxy
+    sprint_id: product-deepening-ledger-repair-csv
+    status: OPEN
+    priority: P1
+    skill: extract-analytics-from-monolith
+    action: "Extract analytics functions to csv_analytics.py. tabular_document.py must be ≤800 LOC."
+    acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
+    created_at: "2026-06-25"
+    created_by: multi-plan-intake-MCT-PDL-006
+    target_file: src/python/csv/tabular_document.py
+    current_loc: 960
   continuation_allowed: false
   continuation_reason: src_layout_gate=FAIL (mixed_model — LOC violations present)
   blockers:
@@ -83,7 +95,19 @@
   sal_fact_linkage: present
   sal_fact_count: 0
   rcal_capability_linkage: null
-  taskcards: []
+  taskcards:
+  - task_id: TC-PDL-REPAIR-DIF-001
+    source_plan: sunny-crunching-galaxy
+    sprint_id: product-deepening-ledger-repair-dif
+    status: OPEN
+    priority: P1
+    skill: extract-analytics-from-monolith
+    action: "Extract analytics functions to dif_analytics.py. interchange_document.py must be ≤800 LOC."
+    acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
+    created_at: "2026-06-25"
+    created_by: multi-plan-intake-MCT-PDL-006
+    target_file: src/python/dif/interchange_document.py
+    current_loc: 994
   continuation_allowed: false
   continuation_reason: src_layout_gate=FAIL (mixed_model — LOC violations present)
   blockers:
@@ -116,7 +140,19 @@
   sal_fact_linkage: present
   sal_fact_count: 1066
   rcal_capability_linkage: null
-  taskcards: []
+  taskcards:
+  - task_id: TC-PDL-REPAIR-FODG-001
+    source_plan: sunny-crunching-galaxy
+    sprint_id: product-deepening-ledger-repair-fodg
+    status: OPEN
+    priority: P1
+    skill: extract-analytics-from-monolith
+    action: "Extract analytics functions to fodg_analytics.py. fodg_codec.py must be ≤800 LOC."
+    acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
+    created_at: "2026-06-25"
+    created_by: multi-plan-intake-MCT-PDL-006
+    target_file: src/python/fodg/fodg_codec.py
+    current_loc: 831
   continuation_allowed: false
   continuation_reason: src_layout_gate=FAIL (mixed_model — LOC violations present)
   blockers:
@@ -149,7 +185,17 @@
   sal_fact_linkage: present
   sal_fact_count: 1066
   rcal_capability_linkage: null
-  taskcards: []
+  taskcards:
+  - task_id: TC-PDL-REPAIR-FODP-001
+    source_plan: sunny-crunching-galaxy
+    sprint_id: product-deepening-ledger-repair-fodp
+    status: OPEN
+    priority: P1
+    skill: decompose-monolithic-codec
+    action: "Audit src_layout in src/python/fodp/. Identify which file violates compliant layout and extract or reorganize."
+    acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
+    created_at: "2026-06-25"
+    created_by: multi-plan-intake-MCT-PDL-006
   continuation_allowed: false
   continuation_reason: src_layout_gate=FAIL (mixed_model — LOC violations present)
   blockers:
@@ -250,7 +296,17 @@
   sal_fact_linkage: present
   sal_fact_count: 0
   rcal_capability_linkage: null
-  taskcards: []
+  taskcards:
+  - task_id: TC-PDL-REPAIR-GNUMERIC-001
+    source_plan: sunny-crunching-galaxy
+    sprint_id: product-deepening-ledger-repair-gnumeric
+    status: OPEN
+    priority: P1
+    skill: decompose-monolithic-codec
+    action: "Audit src_layout in src/python/gnumeric/. Identify mixed_model violation and repair directory layout."
+    acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
+    created_at: "2026-06-25"
+    created_by: multi-plan-intake-MCT-PDL-006
   continuation_allowed: false
   continuation_reason: src_layout_gate=FAIL (mixed_model — LOC violations present)
   blockers:
@@ -283,7 +339,19 @@
   sal_fact_linkage: present
   sal_fact_count: 2
   rcal_capability_linkage: null
-  taskcards: []
+  taskcards:
+  - task_id: TC-PDL-REPAIR-NDJSON-001
+    source_plan: sunny-crunching-galaxy
+    sprint_id: product-deepening-ledger-repair-ndjson
+    status: OPEN
+    priority: P1
+    skill: extract-analytics-from-monolith
+    action: "Extract analytics functions to ndjson_analytics.py. json_stream.py must be ≤800 LOC."
+    acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
+    created_at: "2026-06-25"
+    created_by: multi-plan-intake-MCT-PDL-006
+    target_file: src/python/ndjson/json_stream.py
+    current_loc: 928
   continuation_allowed: false
   continuation_reason: src_layout_gate=FAIL (mixed_model — LOC violations present)
   blockers:
@@ -316,7 +384,19 @@
   sal_fact_linkage: present
   sal_fact_count: 1066
   rcal_capability_linkage: null
-  taskcards: []
+  taskcards:
+  - task_id: TC-PDL-REPAIR-ODS-001
+    source_plan: sunny-crunching-galaxy
+    sprint_id: product-deepening-ledger-repair-ods
+    status: OPEN
+    priority: P1
+    skill: extract-analytics-from-monolith
+    action: "Extract analytics functions to ods_analytics.py. neutral_model.py must be ≤800 LOC."
+    acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
+    created_at: "2026-06-25"
+    created_by: multi-plan-intake-MCT-PDL-006
+    target_file: src/python/ods/neutral_model.py
+    current_loc: 1231
   continuation_allowed: false
   continuation_reason: src_layout_gate=FAIL (mixed_model — LOC violations present)
   blockers:
@@ -349,7 +429,19 @@
   sal_fact_linkage: present
   sal_fact_count: 1066
   rcal_capability_linkage: null
-  taskcards: []
+  taskcards:
+  - task_id: TC-PDL-REPAIR-ODT-001
+    source_plan: sunny-crunching-galaxy
+    sprint_id: product-deepening-ledger-repair-odt
+    status: OPEN
+    priority: P1
+    skill: extract-analytics-from-monolith
+    action: "Extract analytics functions to odt_analytics.py. text_document.py must be ≤800 LOC."
+    acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
+    created_at: "2026-06-25"
+    created_by: multi-plan-intake-MCT-PDL-006
+    target_file: src/python/odt/text_document.py
+    current_loc: 992
   continuation_allowed: false
   continuation_reason: src_layout_gate=FAIL (mixed_model — LOC violations present)
   blockers:
@@ -382,7 +474,17 @@
   sal_fact_linkage: present
   sal_fact_count: 2
   rcal_capability_linkage: null
-  taskcards: []
+  taskcards:
+  - task_id: TC-PDL-REPAIR-PBM-001
+    source_plan: sunny-crunching-galaxy
+    sprint_id: product-deepening-ledger-repair-pbm
+    status: OPEN
+    priority: P1
+    skill: decompose-monolithic-codec
+    action: "Audit src_layout in src/python/pbm/. Identify mixed_model violation and repair."
+    acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
+    created_at: "2026-06-25"
+    created_by: multi-plan-intake-MCT-PDL-006
   continuation_allowed: false
   continuation_reason: src_layout_gate=FAIL (mixed_model — LOC violations present)
   blockers:
@@ -415,7 +517,17 @@
   sal_fact_linkage: present
   sal_fact_count: 2
   rcal_capability_linkage: null
-  taskcards: []
+  taskcards:
+  - task_id: TC-PDL-REPAIR-PGM-001
+    source_plan: sunny-crunching-galaxy
+    sprint_id: product-deepening-ledger-repair-pgm
+    status: OPEN
+    priority: P1
+    skill: decompose-monolithic-codec
+    action: "Audit src_layout in src/python/pgm/. Identify mixed_model violation and repair."
+    acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
+    created_at: "2026-06-25"
+    created_by: multi-plan-intake-MCT-PDL-006
   continuation_allowed: false
   continuation_reason: src_layout_gate=FAIL (mixed_model — LOC violations present)
   blockers:
@@ -448,7 +560,17 @@
   sal_fact_linkage: present
   sal_fact_count: 2
   rcal_capability_linkage: null
-  taskcards: []
+  taskcards:
+  - task_id: TC-PDL-REPAIR-PPM-001
+    source_plan: sunny-crunching-galaxy
+    sprint_id: product-deepening-ledger-repair-ppm
+    status: OPEN
+    priority: P1
+    skill: decompose-monolithic-codec
+    action: "Audit src_layout in src/python/ppm/. Identify mixed_model violation and repair."
+    acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
+    created_at: "2026-06-25"
+    created_by: multi-plan-intake-MCT-PDL-006
   continuation_allowed: false
   continuation_reason: src_layout_gate=FAIL (mixed_model — LOC violations present)
   blockers:
@@ -481,7 +603,17 @@
   sal_fact_linkage: present
   sal_fact_count: 0
   rcal_capability_linkage: null
-  taskcards: []
+  taskcards:
+  - task_id: TC-PDL-REPAIR-QOI-001
+    source_plan: sunny-crunching-galaxy
+    sprint_id: product-deepening-ledger-repair-qoi
+    status: OPEN
+    priority: P1
+    skill: decompose-monolithic-codec
+    action: "Audit src_layout in src/python/qoi/. Identify mixed_model violation and repair directory layout."
+    acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
+    created_at: "2026-06-25"
+    created_by: multi-plan-intake-MCT-PDL-006
   continuation_allowed: false
   continuation_reason: src_layout_gate=FAIL (mixed_model — LOC violations present)
   blockers:
@@ -514,7 +646,19 @@
   sal_fact_linkage: present
   sal_fact_count: 0
   rcal_capability_linkage: null
-  taskcards: []
+  taskcards:
+  - task_id: TC-PDL-REPAIR-SYLK-001
+    source_plan: sunny-crunching-galaxy
+    sprint_id: product-deepening-ledger-repair-sylk
+    status: OPEN
+    priority: P1
+    skill: extract-analytics-from-monolith
+    action: "Extract analytics functions to sylk_analytics.py. spreadsheet_document.py must be ≤800 LOC."
+    acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
+    created_at: "2026-06-25"
+    created_by: multi-plan-intake-MCT-PDL-006
+    target_file: src/python/sylk/spreadsheet_document.py
+    current_loc: 857
   continuation_allowed: false
   continuation_reason: src_layout_gate=FAIL (mixed_model — LOC violations present)
   blockers:
@@ -547,7 +691,17 @@
   sal_fact_linkage: present
   sal_fact_count: 0
   rcal_capability_linkage: null
-  taskcards: []
+  taskcards:
+  - task_id: TC-PDL-REPAIR-TOML-001
+    source_plan: sunny-crunching-galaxy
+    sprint_id: product-deepening-ledger-repair-toml
+    status: OPEN
+    priority: P1
+    skill: decompose-monolithic-codec
+    action: "Audit src_layout in src/python/toml/. Identify mixed_model violation and repair."
+    acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
+    created_at: "2026-06-25"
+    created_by: multi-plan-intake-MCT-PDL-006
   continuation_allowed: false
   continuation_reason: src_layout_gate=FAIL (mixed_model — LOC violations present)
   blockers:
@@ -580,7 +734,19 @@
   sal_fact_linkage: present
   sal_fact_count: 2
   rcal_capability_linkage: null
-  taskcards: []
+  taskcards:
+  - task_id: TC-PDL-REPAIR-TSV-001
+    source_plan: sunny-crunching-galaxy
+    sprint_id: product-deepening-ledger-repair-tsv
+    status: OPEN
+    priority: P1
+    skill: extract-analytics-from-monolith
+    action: "Extract analytics functions to tsv_analytics.py. tsv_parser.py must be ≤800 LOC."
+    acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
+    created_at: "2026-06-25"
+    created_by: multi-plan-intake-MCT-PDL-006
+    target_file: src/python/tsv/tsv_parser.py
+    current_loc: 818
   continuation_allowed: false
   continuation_reason: src_layout_gate=FAIL (mixed_model — LOC violations present)
   blockers:
@@ -613,7 +779,19 @@
   sal_fact_linkage: present
   sal_fact_count: 0
   rcal_capability_linkage: null
-  taskcards: []
+  taskcards:
+  - task_id: TC-PDL-REPAIR-XCF-001
+    source_plan: sunny-crunching-galaxy
+    sprint_id: product-deepening-ledger-repair-xcf
+    status: OPEN
+    priority: P1
+    skill: extract-analytics-from-monolith
+    action: "Extract analytics functions to xcf_analytics.py (already exists). xcf_parser.py must be ≤800 LOC."
+    acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
+    created_at: "2026-06-25"
+    created_by: multi-plan-intake-MCT-PDL-006
+    target_file: src/python/xcf/xcf_parser.py
+    current_loc: 1272
   continuation_allowed: false
   continuation_reason: src_layout_gate=FAIL (mixed_model — LOC violations present)
   blockers:
@@ -646,7 +824,19 @@
   sal_fact_linkage: present
   sal_fact_count: 94
   rcal_capability_linkage: null
-  taskcards: []
+  taskcards:
+  - task_id: TC-PDL-REPAIR-ZST-001
+    source_plan: sunny-crunching-galaxy
+    sprint_id: product-deepening-ledger-repair-zst
+    status: OPEN
+    priority: P1
+    skill: extract-analytics-from-monolith
+    action: "Route analytics functions to zst_analytics.py (already exists). zst_codec.py must be ≤800 LOC."
+    acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
+    created_at: "2026-06-25"
+    created_by: multi-plan-intake-MCT-PDL-006
+    target_file: src/python/zst/zst_codec.py
+    current_loc: 1549
   continuation_allowed: false
   continuation_reason: src_layout_gate=FAIL (mixed_model — LOC violations present)
   blockers:

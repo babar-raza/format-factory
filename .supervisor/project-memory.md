@@ -15946,3 +15946,16 @@ Contract: C:\Users\prora\OneDrive\Documents\
 - pending_marker_count: 0
 - bundle_entry_count: 58
 - bundle_validation_pass: True
+
+## Entry: multi-plan-intake-20260625
+- timestamp: 2026-06-25T22:29:07.157462
+- verdict: ACCEPTED
+- test_count: 145
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\multi-plan-intake-20260625\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 90
+- bundle_validation_pass: True
+- test_delta: +145
+- test_delta_from: 0

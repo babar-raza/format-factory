@@ -172,7 +172,8 @@ def export_to_csv(source: str | bytes | Path) -> str:
     Returns:
         CSV string with slide data.
     """
-    import io, csv as _csv
+    import io
+    import csv as _csv
     model = load(source)
     buf = io.StringIO()
     writer = _csv.writer(buf)

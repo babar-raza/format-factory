@@ -1,6 +1,4 @@
 """Type stubs for format-factory-toml (PQ-020)."""
-from typing import Any
-
 from toml.toml_codec import load_toml as load_toml
 from toml.toml_codec import write_toml as write_toml
 from toml.toml_codec import probe_toml as probe_toml

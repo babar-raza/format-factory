@@ -1,8 +1,17 @@
 manifest_id: multi-plan-intake-20260625
 generated_at: '2026-06-25'
+execution_completed_at: '2026-06-25'
 total_plans: 11
 total_taskcards_normalized: 89
 priority_model: P0=unblock, P1=integrity_safety, P2=hardening, P3=investigation, P4=pilots, P5=quality
+execution_summary:
+  done: 10
+  superseded: 1
+  deferred: 18
+  done_items: [MCT-PDL-002, MCT-PDL-003, MCT-PDL-004, MCT-PDL-005, MCT-RJO-004, MCT-TCF-002, MCT-SFE2-002, MCT-SHR-000, MCT-WYS-ALL, MCT-TDL-007, MCT-TDL-012]
+  deferred_items: [MCT-TCF-003, MCT-TCF-004, MCT-RJO-001, MCT-PDL-006, MCT-RJO-002, MCT-TCF-007, MCT-TCF-008, MCT-SFE2-003, MCT-MREAD-ALL, MCT-VWL-004, MCT-VWL-007, MCT-FA-009, MCT-FA-012, MCT-PQ-WAVE0, MCT-PQ-WAVE1]
+  tests_passed: 145
+  autonomous_cycle_exit: 0
 
 # Priority 0 — Unblocking (ledger / continuation gate integrity)
 p0_tasks:
@@ -27,7 +36,9 @@ p0_tasks:
     estimated_loc: 0
     dependencies: []
     safe_parallel: false
-    status: pending
+    status: done
+    completed_at: '2026-06-25'
+    evidence: registry/product-deepening-ledger.yaml
 
   - task_id: MCT-PDL-003
     source_plan: sunny-crunching-galaxy
@@ -38,7 +49,9 @@ p0_tasks:
     estimated_loc: 0
     dependencies: [MCT-PDL-002]
     safe_parallel: false
-    status: pending
+    status: done
+    completed_at: '2026-06-25'
+    evidence: registry/product-deepening-ledger.yaml
 
   - task_id: MCT-PDL-004
     source_plan: sunny-crunching-galaxy
@@ -49,20 +62,24 @@ p0_tasks:
     estimated_loc: 0
     dependencies: [MCT-PDL-002]
     safe_parallel: true
-    status: pending
+    status: done
+    completed_at: '2026-06-25'
+    evidence: registry/product-deepening-ledger.yaml
 
 # Priority 1 — Integrity and Safety
 
   - task_id: MCT-PDL-005
     source_plan: sunny-crunching-galaxy
     source_tc: TC-PDL-005
-    title: Add V54 governance validator — ledger compliance gate (~60 LOC)
+    title: Add V74 governance validator — ledger continuation gate (~126 LOC in governance_validators_ledger.py)
     priority: P1
     lane: governance
-    estimated_loc: 60
+    estimated_loc: 126
     dependencies: [MCT-PDL-002]
     safe_parallel: false
-    status: pending
+    status: done
+    completed_at: '2026-06-25'
+    evidence: tools/supervisor/governance_validators_ledger.py
 
   - task_id: MCT-RJO-004
     source_plan: rustling-jumping-otter
@@ -73,7 +90,9 @@ p0_tasks:
     estimated_loc: 30
     dependencies: []
     safe_parallel: true
-    status: pending
+    status: done
+    completed_at: '2026-06-25'
+    evidence: tools/supervisor/lifecycle_audit.py
 
   - task_id: MCT-TCF-002
     source_plan: reflective-exploring-kurzweil
@@ -84,7 +103,9 @@ p0_tasks:
     estimated_loc: 25
     dependencies: []
     safe_parallel: true
-    status: pending
+    status: done
+    completed_at: '2026-06-25'
+    evidence: tools/supervisor/write_plan_lock.py
 
   - task_id: MCT-TCF-003
     source_plan: reflective-exploring-kurzweil
@@ -95,7 +116,8 @@ p0_tasks:
     estimated_loc: 50
     dependencies: [MCT-TCF-002, MCT-RJO-004]
     safe_parallel: false
-    status: pending
+    status: deferred
+    deferred_reason: Requires dedicated session; TC-TCF-002 foundation laid (2026-06-25)
 
   - task_id: MCT-TCF-004
     source_plan: reflective-exploring-kurzweil
@@ -106,7 +128,8 @@ p0_tasks:
     estimated_loc: 30
     dependencies: [MCT-TCF-003]
     safe_parallel: false
-    status: pending
+    status: deferred
+    deferred_reason: Depends on MCT-TCF-003 which is deferred
 
   - task_id: MCT-SFE2-002
     source_plan: twinkly-gliding-thimble
@@ -117,7 +140,9 @@ p0_tasks:
     estimated_loc: 5
     dependencies: []
     safe_parallel: true
-    status: pending
+    status: done
+    completed_at: '2026-06-25'
+    evidence: .supervisor/capability-routing-registry.yaml
 
   - task_id: MCT-RJO-001
     source_plan: rustling-jumping-otter
@@ -128,7 +153,8 @@ p0_tasks:
     estimated_loc: 0
     dependencies: []
     safe_parallel: true
-    status: pending
+    status: deferred
+    deferred_reason: Requires dedicated session — not in P0/P1 execution scope
 
 # Priority 2 — Machinery Hardening / Investigations
 
@@ -141,7 +167,8 @@ p0_tasks:
     estimated_loc: 0
     dependencies: [MCT-PDL-002]
     safe_parallel: false
-    status: pending
+    status: deferred
+    deferred_reason: Scaffolding only — no urgent path; 17 formats already correctly gated
 
   - task_id: MCT-RJO-002
     source_plan: rustling-jumping-otter
@@ -152,7 +179,8 @@ p0_tasks:
     estimated_loc: 20
     dependencies: [MCT-RJO-004]
     safe_parallel: false
-    status: pending
+    status: deferred
+    deferred_reason: Requires dedicated session
 
   - task_id: MCT-TCF-007
     source_plan: reflective-exploring-kurzweil
@@ -163,7 +191,8 @@ p0_tasks:
     estimated_loc: 120
     dependencies: [MCT-TCF-004]
     safe_parallel: false
-    status: pending
+    status: deferred
+    deferred_reason: Depends on deferred MCT-TCF-004
 
   - task_id: MCT-TCF-008
     source_plan: reflective-exploring-kurzweil
@@ -174,7 +203,8 @@ p0_tasks:
     estimated_loc: 380
     dependencies: [MCT-TCF-007]
     safe_parallel: false
-    status: pending
+    status: deferred
+    deferred_reason: Depends on deferred MCT-TCF-007
 
   - task_id: MCT-SFE2-003
     source_plan: twinkly-gliding-thimble
@@ -185,7 +215,8 @@ p0_tasks:
     estimated_loc: 40
     dependencies: [MCT-SFE2-002]
     safe_parallel: false
-    status: pending
+    status: deferred
+    deferred_reason: Requires dedicated session
 
   - task_id: MCT-SHR-000
     source_plan: humble-meandering-bachman
@@ -196,7 +227,9 @@ p0_tasks:
     estimated_loc: 0
     dependencies: []
     safe_parallel: true
-    status: pending
+    status: done
+    completed_at: '2026-06-25'
+    evidence: reports/gate11/system-healing-gate-verdict-20260625.md
 
   - task_id: MCT-SHR-001
     source_plan: humble-meandering-bachman
@@ -207,31 +240,36 @@ p0_tasks:
     estimated_loc: 20
     dependencies: [MCT-SHR-000]
     safe_parallel: false
-    status: pending
+    status: superseded
+    superseded_reason: Lane 2 Condition 2 passed — healing gate PASSED all 9 lanes
 
 # Priority 3 — Investigation / Audit Sprints
 
   - task_id: MCT-WYS-ALL
     source_plan: woolly-yawning-stream
     source_tc: TC-WYS-A through TC-WYS-F
-    title: SAL investigation — produce 9 report artifacts in reports/spec-authority/spec-auth-inv-20260625-001/
+    title: SAL investigation — produce 11 report artifacts in reports/spec-authority/spec-auth-inv-20260625-001/
     priority: P3
     lane: investigation
     estimated_loc: 0
     dependencies: []
     safe_parallel: true
-    status: pending
+    status: done
+    completed_at: '2026-06-25'
+    evidence: reports/spec-authority/spec-auth-inv-20260625-001/investigation-verdict.md
 
   - task_id: MCT-TDL-007
     source_plan: tidy-dreaming-lollipop
     source_tc: TC-QNAME-HEAL-007
-    title: Infer severity for 1,120 gaps missing severity field in gap-ledger.json
+    title: Infer severity for 1,197 gaps missing severity field in gap-ledger.json
     priority: P3
     lane: governance
     estimated_loc: 30
     dependencies: []
     safe_parallel: true
-    status: pending
+    status: done
+    completed_at: '2026-06-25'
+    evidence: reports/capability-layer/gap-ledger.json
 
   - task_id: MCT-TDL-012
     source_plan: tidy-dreaming-lollipop
@@ -242,7 +280,9 @@ p0_tasks:
     estimated_loc: 40
     dependencies: []
     safe_parallel: true
-    status: pending
+    status: done
+    completed_at: '2026-06-25'
+    evidence: docs/architecture.md
 
   - task_id: MCT-MREAD-ALL
     source_plan: serialized-tickling-bentley
@@ -253,7 +293,8 @@ p0_tasks:
     estimated_loc: 0
     dependencies: []
     safe_parallel: false
-    status: pending
+    status: deferred
+    deferred_reason: serialized-tickling-bentley stale assumptions — requires dedicated session
 
 # Priority 4 — Pilots / Production Sprint Design
 
@@ -266,7 +307,8 @@ p0_tasks:
     estimated_loc: 0
     dependencies: []
     safe_parallel: true
-    status: pending
+    status: deferred
+    deferred_reason: vast-weaving-lampson requires dedicated session for sprint system design
 
   - task_id: MCT-VWL-007
     source_plan: vast-weaving-lampson
@@ -277,7 +319,8 @@ p0_tasks:
     estimated_loc: 50
     dependencies: []
     safe_parallel: false
-    status: pending
+    status: deferred
+    deferred_reason: Product deepening blocked by 17 mixed_model formats (continuation_allowed=false); SYLK is blocked
 
   - task_id: MCT-FA-009
     source_plan: eager-launching-phoenix
@@ -288,7 +331,8 @@ p0_tasks:
     estimated_loc: 100
     dependencies: []
     safe_parallel: false
-    status: pending
+    status: deferred
+    deferred_reason: eager-launching-phoenix SAL repair pilots require dedicated session
 
   - task_id: MCT-FA-012
     source_plan: eager-launching-phoenix
@@ -299,7 +343,8 @@ p0_tasks:
     estimated_loc: 200
     dependencies: []
     safe_parallel: false
-    status: pending
+    status: deferred
+    deferred_reason: eager-launching-phoenix requires dedicated session; GNUMERIC blocked by mixed_model gate
 
 # Priority 5 — Product Quality Healing
 
@@ -312,8 +357,8 @@ p0_tasks:
     estimated_loc: 0
     dependencies: []
     safe_parallel: false
-    status: pending
-    note: SUPERSEDED in plan-locks — recon required before executing
+    status: deferred
+    deferred_reason: zany-riding-goblet SUPERSEDED — recon required before executing
 
   - task_id: MCT-PQ-WAVE1
     source_plan: zany-riding-goblet
@@ -324,8 +369,8 @@ p0_tasks:
     estimated_loc: 200
     dependencies: [MCT-PQ-WAVE0]
     safe_parallel: false
-    status: pending
-    note: SUPERSEDED in plan-locks — recon required before executing
+    status: deferred
+    deferred_reason: zany-riding-goblet SUPERSEDED — depends on deferred MCT-PQ-WAVE0
 
 # Deduplication and Supersession notes:
 overlap_analysis:

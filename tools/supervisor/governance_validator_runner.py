@@ -143,6 +143,11 @@ def run_all_governance_validators(
     from governance_validators_dotnet import (  # noqa: PLC0415
         validate_dotnet_spec_qname as _validate_dotnet_spec_qname,
     )
+    # V75/V76 imported from ext2 (TC-GH-004, 2026-06-25): import direction + error handling hierarchy
+    from governance_validators_ext2 import (  # noqa: PLC0415
+        validate_dependency_direction as _validate_dependency_direction,
+        validate_error_handling_hierarchy as _validate_error_handling_hierarchy,
+    )
     results = [
         validate_execution_method_required(declaration),
         validate_source_diff_required(declaration),
@@ -265,6 +270,10 @@ def run_all_governance_validators(
         _validate_dotnet_spec_qname(declaration, repo_root),
         # V74 (TC-PDL-005): Block PRODUCT_SOURCE/PRODUCT_TEST items for formats with continuation_allowed=false
         _validate_ledger_continuation_gate(declaration, repo_root),
+        # V75 (TC-GH-004): Import direction within format packages must follow governed chain (RULE-LIB-003)
+        _validate_dependency_direction(declaration, repo_root),
+        # V76 (TC-GH-004): Format packages must have exceptions.py (RULE-LIB-006)
+        _validate_error_handling_hierarchy(declaration, repo_root),
     ]
 
     # SAL format advisory (non-blocking, Lane E integration)

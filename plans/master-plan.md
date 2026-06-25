@@ -3918,3 +3918,60 @@ Covered 5 Python FOSS packages (fods, fodt, ndjson, toml, gnumeric) and 4 .NET p
 
 - close-task.md invoked: SUCCESS.
 
+## Section 69 — multi-plan-intake-20260625: 11-Plan Canonical Intake + 10 Governance Taskcards (CLOSED)
+
+**Sprint ID:** multi-plan-intake-20260625
+**Mission:** Normalize 11 concurrent plans into a canonical priority model and execute all P0/P1/P2/P3-eligible governance work in a single session.
+**Evidence root:** **Canonical register:** **Autonomous cycle:** exit 0, autonomous_continue=True
+
+### What Was Completed
+
+| Task | Outcome |
+|------|---------|
+| MCT-PDL-002 | 17 mixed_model formats set to continuation_allowed=false |
+| MCT-PDL-003-004 | 8 schema fields + sal_fact_count backfilled for all 20 ledger entries |
+| MCT-PDL-005 | V74 validate_ledger_continuation_gate in governance_validators_ledger.py (126 LOC) |
+| MCT-RJO-004 | AUDIT_PASS_VACUOUS guard in lifecycle_audit.py + 2 tests |
+| MCT-TCF-002 | --completion-candidate flag in write_plan_lock.py |
+| MCT-SFE2-002 | SKILL-GAP-011 removed from missing_skill_gap_ids → 30/30 routes ACTIVE |
+| MCT-WYS-ALL | SAL investigation — 11 artifacts in reports/spec-authority/spec-auth-inv-20260625-001/ |
+| MCT-TDL-007 | Severity backfilled for 1,197 gaps (1,209 total, 0 missing) |
+| MCT-TDL-012 | Current State (2026-06-25) addendum added to docs/architecture.md |
+| MCT-SHR-000 | System healing gate PASSED — all 9 lanes |
+
+### What Changed
+
+- registry/product-deepening-ledger.yaml — continuation gates + schema fields + sal_fact_count
+- tools/supervisor/governance_validators_ledger.py — new file: V74 ledger continuation gate
+- tools/supervisor/governance_validator_runner.py — V74 wired (75 total validators)
+- tools/supervisor/lifecycle_audit.py — AUDIT_PASS_VACUOUS vacuous-call guard
+- tools/supervisor/write_plan_lock.py — --completion-candidate flag
+- .supervisor/capability-routing-registry.yaml — SKILL-GAP-011 removed from missing list
+- docs/architecture.md — Current State 2026-06-25 addendum
+- reports/capability-layer/gap-ledger.json — severity backfilled for all 1,209 gaps
+- registry/source-structure-baseline.json — governance_validators_ledger.py registered (cap=126)
+- tests/supervisor/test_lifecycle_audit.py — 2 vacuous-call guard tests added
+- reports/spec-authority/spec-auth-inv-20260625-001/ — 11 SAL investigation artifacts
+- reports/gate11/system-healing-gate-verdict-20260625.md — PASSED verdict
+
+### Verification Performed
+
+- 145 tests passed: 19 lifecycle_audit + 7 governance validators + 119 validators
+- V74 wired: 75 validators, PASS result; system-healing-gate: all 9 lanes PASSED
+- autonomous_cycle: exit 0, accepted=10, overclaim=0
+
+### Deferred Work
+
+- MCT-TCF-003/004/007/008 — terminal closure validators (requires dedicated session)
+- MCT-VWL-004/007 — sprint system design + SYLK pilot (dedicated session)
+- MCT-FA-009/012 — SAL repair pilots + GNUMERIC masquerade (dedicated session)
+- MCT-PDL-006 — 17-format repair taskcards (scaffolding only)
+- MCT-PQ-WAVE0/1 — zany-riding-goblet (SUPERSEDED, recon required)
+- MCT-MREAD-ALL — serialized-tickling-bentley (stale assumptions)
+
+### Commits
+
+- baef447a — gap-ledger severity + validator count 75
+- 42766391 — V74 extraction + lifecycle_audit vacuous guard + write_plan_lock candidate flag
+- f04041ca — governance_validators_ledger.py baseline registration
+- 49ab2fc6 — capability-routing-registry SKILL-GAP-011 fix + architecture addendum + system healing gate

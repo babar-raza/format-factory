@@ -99,7 +99,7 @@ def is_mutating_taskcard(data: dict) -> tuple[bool, str]:
         return False, f"task_type={task_type} is exempt from execution contract"
 
     if any(s in MUTATING_SPRINT_TYPES for s in sprint_types):
-        return True, f"sprint_types contains mutating type"
+        return True, "sprint_types contains mutating type"
 
     # Default: if task_type is not explicitly exempt, require contract
     return True, "task_type not in exempt list — contract required by default"

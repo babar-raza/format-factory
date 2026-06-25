@@ -150,6 +150,32 @@ Every `.py` file under `src/` must have a recognized owning purpose: parser, wri
 - Input validation at system boundaries (file I/O entry points)
 - Deterministic behavior — same input produces same output
 
+### 3.6 Import Direction (RULE-LIB-003 — new 2026-06-25)
+
+Import direction within a format package MUST follow the dependency chain:
+
+    Parser/Codec → Models → Analytics → Compat ← __init__.py
+
+Forbidden import patterns:
+- `models.py` importing from `*_parser.py` or `*_codec.py`
+- `Compat/*.py` importing from `*_analytics.py`
+- `*_parser.py` importing from `Compat/`
+- `__init__.py` importing from `spec/` (use Compat/ instead)
+
+Enforced by: V73 `validate_dependency_direction` (added TC-GH-004, 2026-06-25).
+Severity: WARN for existing files (grandfathered); FAIL for new files not in `known_violations`.
+
+### 3.7 Format-Specific Exception Hierarchy (RULE-LIB-006 — new 2026-06-25)
+
+Each format package under `src/python/{format}/` MUST define a format-specific exception:
+- `exceptions.py` must exist in every format package
+- At minimum one exception class derived from `Exception` (or `FormatFactoryError` when available)
+- Parsers and codecs MUST NOT raise bare `ValueError` or `KeyError` for format errors;
+  they must catch and re-raise as format-specific exceptions
+
+Enforced by: V74 `validate_error_handling_hierarchy` (added TC-GH-004, 2026-06-25).
+Severity: WARN for existing packages (grandfathered); FAIL for new format packages not in baseline.
+
 ---
 
 ## 4. .NET Best Practices
@@ -232,7 +258,9 @@ Complete list: `tools/supervisor/governance_validator_runner.py` (docstring). Ke
 | V67 `validate_maturity_signal_schema` | Maturity signal schema correctness | Yes (FAIL if malformed) |
 | `run_full_scan` (source_structure_validator) | Proactive scan of all `src/python/` files vs `baseline_loc_cap` | Yes (WORSENED = FAIL) |
 
-**WARN-only validators (V59-V66, V68):** cross-language parity, terminal closure completeness, public API surface ratio, py.typed markers, `__all__` declarations, multi-responsibility file detection, knowledge freshness. These do not block sprints but appear in rework_items.
+**WARN-only validators (V59-V66, V68, V73, V74):** cross-language parity, terminal closure completeness, public API surface ratio, py.typed markers, `__all__` declarations, multi-responsibility file detection, knowledge freshness, import direction (V73), error handling hierarchy (V74). These do not block sprints for existing grandfathered files but appear in rework_items; NEW files/packages → FAIL.
+
+V59 upgrade (2026-06-25): FAIL (not WARN) for RELEASE_GATE items where .NET and Python implementations of the same format have different public API surface counts (>20% difference).
 
 ### 7.2 Anti-Monolith Rules (Validator-Enforced)
 
@@ -307,8 +335,96 @@ When moving analytics functions from a codec file to `analytics.py`:
 | Forbidden module names | `governance_validators.py:validate_forbidden_module_names` (V50) | FAIL |
 | Spec fact refs density | `governance_validators.py:validate_spec_fact_refs_density` (V62) | REWORK_REQUIRED |
 | Multi-responsibility file | `governance_validators.py:validate_multi_responsibility_file` (V66) | WARN |
+| RULE-LIB-003 (import direction) | `governance_validators_ext2.py:validate_dependency_direction` (V73) | FAIL (new files) / WARN (existing) |
+| RULE-LIB-006 (error handling hierarchy) | `governance_validators_ext2.py:validate_error_handling_hierarchy` (V74) | FAIL (new packages) / WARN (existing) |
 | Lint (ruff check) | CI `governance-check` + `lint` jobs | FAIL (CI red) |
 | Security scan | CI `security` job (bandit) | FAIL (CI red) |
+
+---
+
+## 9. CI/CD Pipeline Governance
+
+This section governs both `.github/workflows/ci.yml` (GitHub Actions spec) and
+`.gitlab-ci.yml` (GitLab active remote) and binds all CI-adjacent enforcement rules.
+
+### 9.1 Required CI Jobs
+
+Every active CI job must have a **local proof command** — a command that can be run
+verbatim in a clean checkout to reproduce the CI job's behavior locally.
+
+| Job | Local proof command |
+|-----|-------------------|
+| lint | `python -m ruff check src/ tests/ tools/` |
+| security | `python -m bandit -r src/ -ll -q --skip B314` |
+| governance-check | `python tools/validators/source_structure_validator.py` |
+| governance-validators | `python -c "import sys; sys.path.insert(0,'tools/supervisor'); from governance_validators import run_all_governance_validators; ..."` |
+| skill-attribution-check | `python tools/governance/ci_skill_attribution_check.py --base-ref HEAD~1 --head-ref HEAD --allow-pre-policy --output /tmp/attr.json` |
+| test-fast | `python tools/test_runner.py --layer 3 --known-failures registry/known-failure-ledger.yaml` |
+| test-full | `pytest --cov=src --cov-report=xml && coverage report --fail-under=85` |
+| dotnet-build | Requires .NET 10.0 SDK: `dotnet restore ... && dotnet build ... && dotnet test ...` |
+
+### 9.2 Failure Suppression Rules
+
+`continue-on-error: true` (GitHub) or `allow_failure: true` (GitLab) requires:
+1. A dated comment explaining WHY the job may fail
+2. An open gap-ledger entry (e.g. `SKILL-GAP-008`) tracking resolution
+3. The underlying script MUST pass (exit 0) when the conditions are normal — the flag
+   guards against exceptional/environmental failures, not routine script failures
+4. The job itself must ALSO succeed (exit 0) in CI history, not just be suppressed
+
+Jobs where failure suppression is currently approved:
+- `skill-attribution-check`: `allow_failure: true` — pending SKILL-GAP-008 (pre-commit hooks)
+
+### 9.3 Advisory Failure Policy
+
+No CI failure — even if marked advisory, non-blocking, or `allow_failure` — may be
+carried indefinitely as "acceptable." Every CI failure is a finding with:
+- A root-cause classification (see CI estate register)
+- A taskcard tracking resolution
+- A deadline for promotion to mandatory or removal as obsolete
+
+### 9.4 CI Estate Register Location
+
+The authoritative CI function register is `.local/evidences/ci-estate-heal-20260625/ci-function-register.yaml`.
+Update this file whenever a CI job is added, changed, or removed.
+
+### 9.5 Dotnet Verification
+
+`.NET` CI jobs require .NET 10.0 SDK. Local verification may use:
+- System `dotnet` CLI if .NET 10.0 is installed
+- Or Docker: `docker run --rm -v $(pwd):/repo -w /repo mcr.microsoft.com/dotnet/sdk:10.0 bash -c "dotnet test ..."`
+
+---
+
+## 10. GitLab CI Parity
+
+The repository's primary git remote is GitLab. `.github/workflows/ci.yml` is the
+**specification** for CI behavior. `.gitlab-ci.yml` is the **active implementation**.
+
+### 10.1 Parity Rules
+
+1. Every job in `.github/workflows/ci.yml` must have an equivalent in `.gitlab-ci.yml`
+2. Docker images in `.gitlab-ci.yml` must use the same language runtime versions as
+   GitHub Actions setup steps (Python 3.11 default, matrix 3.10/3.11/3.12 for test-full)
+3. Trigger mapping: `push` → `$CI_PIPELINE_SOURCE == "push"`,
+   `pull_request` → `$CI_PIPELINE_SOURCE == "merge_request_event"`,
+   `push to main` → `$CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE == "push"`
+4. Divergence between `ci.yml` and `.gitlab-ci.yml` must be documented as
+   `CONFIGURATION_DRIFT` in the CI estate register within 24 hours of the divergence
+
+### 10.2 Sync Protocol
+
+When modifying `.github/workflows/ci.yml`, the author must simultaneously update
+`.gitlab-ci.yml` to match. A comment at the top of each file references the other.
+A future CI job may enforce sync (tracked as SKILL-GAP-009).
+
+### 10.3 GitLab-Specific Features
+
+The following GitLab features enhance `.gitlab-ci.yml` beyond GitHub parity:
+- `coverage:` regex for coverage extraction from terminal output
+- `artifacts.reports.coverage_report` for GitLab coverage visualization
+- `parallel.matrix` for Python version matrix (equivalent to GitHub matrix strategy)
+- `$CI_MERGE_REQUEST_DIFF_BASE_SHA` as the base ref for MR-based attribution checks
 
 ---
 
@@ -320,3 +436,5 @@ When moving analytics functions from a codec file to `analytics.py`:
 - Validator: `tools/validators/source_structure_validator.py`
 - Anti-monolith validator: `tools/validators/validate_source_architecture.py`
 - Baseline: `registry/source-structure-baseline.json`
+- CI workflows: `.github/workflows/ci.yml` (spec), `.gitlab-ci.yml` (active)
+- CI estate register: `.local/evidences/ci-estate-heal-20260625/ci-function-register.yaml`

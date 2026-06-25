@@ -1,7 +1,53 @@
 # src/ Architecture Gap Inventory
-**Generated:** 2026-06-17
-**Sprint:** SRC Governance Healing (eventual-painting-torvalds)
-**Source:** registry/source-structure-baseline.json (schema_version 2.0, baseline_date 2026-06-16)
+**Originally Generated:** 2026-06-17 — SRC Governance Healing (eventual-painting-torvalds)
+**Last Updated:** 2026-06-25 — Governance & Machinery Healing (warm-jingling-sutherland)
+
+---
+
+## Update: 2026-06-25 (Post-Analytics-Separation State)
+
+The 2026-06-17 inventory captured violations BEFORE the analytics separation sprints
+(keen-dancing-hopper, FODT forensic healing, product deepening missions). Significant healing
+occurred 2026-06-17 to 2026-06-25. LOC counts below verified at HEAD during TC-GH-PRE-001.
+
+### Current State at HEAD (2026-06-25)
+
+| File | 2026-06-17 LOC | HEAD LOC | Classification | Notes |
+|------|----------------|----------|----------------|-------|
+| src/python/zst/zst_codec.py | 3,873 | 899 | CLEAN (<800+delta) | Analytics extracted to zst_analytics.py; cap frozen at prior high |
+| src/python/xcf/xcf_parser.py | 3,610 | 288 | CLEAN | Analytics extracted; major healing complete |
+| src/python/fods/neutral_model.py | 4,127 | 717 | CLEAN | Partially healed; now below 800 LOC |
+| src/python/fods/spreadsheet_document.py | N/A (not tracked) | 1,035 | MONOLITHIC | Remains; needs TC-ARCH-FODS-002 |
+| src/python/abw/word_document.py | N/A (not tracked) | 1,026 | MONOLITHIC | Remains; needs TC-ARCH-ABW-001 |
+| src/python/dif/interchange_document.py | N/A (not tracked) | 994 | LARGE | Needs TC-ARCH-DIF-001 |
+| src/python/fodt/text_document.py | N/A (not tracked) | 990 | LARGE | Needs TC-ARCH-FODT-001 |
+| src/python/csv/tabular_document.py | N/A (not tracked) | 960 | TARGET | Healing via TC-GH-008 (this sprint) |
+| src/net/netpbm/Model/NetpbmImage.cs | 1,914 | 580 | CLEAN | Healed in prior sprint |
+| src/net/fods/FodsDocument.cs | 1,386 | 769 | APPROACHING | Below 800; monitor |
+| src/net/fodt/FodtDocument.cs | 977 | 754 | APPROACHING | Below 800; monitor |
+
+**Classification thresholds:** CLEAN (<800 LOC or at baseline cap), APPROACHING (700-800 LOC),
+LARGE (800-1000 LOC), MONOLITHIC (>1000 LOC).
+
+### Healing Progress Summary
+
+- Python files healed since 2026-06-17: 3 major (ZST -2,974 LOC, XCF -3,322 LOC, FODS neutral_model -3,410 LOC), several others
+- .NET files healed since 2026-06-17: NetpbmImage.cs -1,334 LOC
+- Remaining monolithic Python files requiring TC-ARCH-* taskcards: 5 (see Section 57 of master-plan.md)
+- Current sprint TC-GH-008 targets: csv/tabular_document.py (960 LOC → target <800)
+- Governance machinery upgraded this sprint: V73 (import direction) + V74 (error handling hierarchy)
+
+### What Changed Since 2026-06-17
+
+1. **Analytics separation completed for:** ZST → zst_analytics.py, XCF → xcf_analytics.py, FODG → fodg_analytics.py
+2. **FODT neutral_model.py healed:** Was 1,916 LOC (GOV_BLOCK), now 279 LOC after forensic healing sprint
+3. **FODS neutral_model.py healed:** Was 4,127 LOC, now 717 LOC
+4. **FODS/FODT document classes** remain: these contain domain operations NOT analytics, so analytics-extraction didn't trigger on them
+5. **Source structure baseline** now uses `baseline_loc_cap` (write-once) as primary enforcement — files at or below their cap PASS
+6. **V69-V72 added** since 2026-06-17: skill idempotency, SAL authority chain, lane DAG ordering, artifact identity
+7. **.pre-commit-config.yaml** still missing — addressed by TC-GH-005 (this sprint)
+
+---
 
 Policy limits: max 800 LOC per file, max 60 functions per file.
 

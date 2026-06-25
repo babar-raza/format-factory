@@ -1,6 +1,4 @@
 """Type stubs for format-factory-fodt (PQ-020)."""
-from typing import Any
-
 from fodt.parser import parse_fodt as parse_fodt
 from fodt.parser import parse_fodt_strict as parse_fodt_strict
 from fodt.writer import write_fodt as write_fodt

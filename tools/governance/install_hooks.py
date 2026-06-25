@@ -49,7 +49,7 @@ def install(verbose: bool = True) -> int:
         return 1
 
     if not HOOK_DEST_DIR.exists():
-        print(f"ERROR: .git/hooks/ directory not found — is this a git repo?", file=sys.stderr)
+        print("ERROR: .git/hooks/ directory not found — is this a git repo?", file=sys.stderr)
         return 1
 
     st = status()

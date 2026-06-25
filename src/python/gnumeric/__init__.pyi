@@ -1,6 +1,4 @@
 """Type stubs for format-factory-gnumeric (PQ-020)."""
-from typing import Any
-
 from gnumeric.gnumeric_codec import load as load
 from gnumeric.gnumeric_codec import write_gnumeric as write_gnumeric
 from gnumeric.gnumeric_codec import get_sheet_names as get_sheet_names
