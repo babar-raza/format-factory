@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s92-dotnet-deepening-20260626",
+  "latest_sprint": "ff-sprint-s93-dotnet-deepening-20260626",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -19087,6 +19087,42 @@
         "tests/net/netpbm/NetpbmR127ExporterPgmPpmTests.cs"
       ],
       "source_files": []
+    },
+    {
+      "entry_id": "PC-ZST-R118",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s93-dotnet-deepening-20260626",
+      "product": "ZST .NET",
+      "capability_refs": [
+        "commercial_net_products.ZST.dotnet_status.content_analytics"
+      ],
+      "change_type": "test_added",
+      "evidence_path": "tests/net/zst/ZstR118ContentAnalyticsTests.cs",
+      "description": "R118: 12 tests for ZstDocument computed properties \u2014 ContentTypeHint, IsEmptyContent, IsHighlyCompressed, OverheadBytes, BytesPerFrame"
+    },
+    {
+      "entry_id": "PC-FODT-R126",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s93-dotnet-deepening-20260626",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.export_html_structure"
+      ],
+      "change_type": "test_added",
+      "evidence_path": "tests/net/fodt/FodtR126ExportToHtmlStructureTests.cs",
+      "description": "R126: 11 tests for ExportToHtml structure \u2014 H1/H2 tags, body p tags, special char escaping, dogfood pipeline"
+    },
+    {
+      "entry_id": "PC-TSV-R118",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s93-dotnet-deepening-20260626",
+      "product": "TSV .NET",
+      "capability_refs": [
+        "commercial_net_products.TSV.dotnet_status.get_column_values_deep"
+      ],
+      "change_type": "test_added",
+      "evidence_path": "tests/net/tsv/TsvR118GetColumnValuesDeepTests.cs",
+      "description": "R118: 10 tests for GetColumnValues deep edge cases \u2014 short rows null, negative index, ToTsv round-trip"
     }
   ],
   "total_entries": 1006,
