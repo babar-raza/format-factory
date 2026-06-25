@@ -3114,11 +3114,10 @@ def validate_all_exports_declared(declaration: dict, repo_root: "Path | None" = 
             except Exception:
                 pass
     if items:
-        return {
-            "validator": "validate_all_exports_declared", "result": "WARN",
-            "items": items, "summary": f"V65: {len(items)} packages lack __all__ in __init__.py",
-            "blocks_sprint": False,
-        }
+        _ps = any(w.get("item_type") == "PRODUCT_SOURCE" for w in declaration.get("planned_work_items", []))
+        return {"validator": "validate_all_exports_declared", "result": "FAIL" if _ps else "WARN",
+                "items": items, "summary": f"V65: {len(items)} packages lack __all__ in __init__.py",
+                "blocks_sprint": _ps}
     return {
         "validator": "validate_all_exports_declared", "result": "PASS", "items": [],
         "summary": "V65: All changed packages declare __all__", "blocks_sprint": False,
@@ -3156,9 +3155,9 @@ def validate_multi_responsibility_file(declaration: dict, repo_root: "Path | Non
             items.append({"file": f, "roles": sorted(roles_found)})
     if items:
         return {
-            "validator": "validate_multi_responsibility_file", "result": "WARN",
-            "items": items, "summary": f"V66: {len(items)} file(s) mix parser+model+serializer",
-            "blocks_sprint": False,
+            "validator": "validate_multi_responsibility_file", "result": "FAIL",
+            "items": items, "summary": f"V66: {len(items)} file(s) mix parser+model+serializer — BLOCK",
+            "blocks_sprint": True,
         }
     return {
         "validator": "validate_multi_responsibility_file", "result": "PASS", "items": [],

@@ -1,4 +1,4 @@
-"""governance_validators_ext2.py — V75/V76: Import direction and error handling hierarchy validators.
+"""governance_validators_ext2.py — V75/V76/V77/V78/V79: Governance validators overflow.
 
 Extracted to keep governance_validators_ext.py within its baseline_loc_cap (1423 LOC).
 
@@ -10,6 +10,18 @@ V75 (TC-GH-004, 2026-06-25): validate_dependency_direction
 V76 (TC-GH-004, 2026-06-25): validate_error_handling_hierarchy
     RULE-LIB-006 — Each format package must have exceptions.py; parsers must not raise bare exceptions.
     WARN for existing packages (grandfathered); FAIL for NEW format packages not in baseline.
+
+V77 (TC-GM-002, PROD-GOVERNANCE-001): validate_analytics_naming_enforced
+    RULE-LIB-007 — Files named *_document.py must NOT have a module docstring containing
+    "analytics functions". That is the analytics-masquerade anti-pattern. blocks_sprint=True.
+
+V78 (TC-GM-003, PROD-GOVERNANCE-001): validate_dotnet_loc_cap
+    RULE-LIB-008 — .cs files in src/net/ must be ≤800 LOC unless already in known_violations.
+    Files ≤800 LOC always PASS. blocks_sprint=True.
+
+V79 (TC-GM-004, PROD-GOVERNANCE-001): validate_healing_stall_detector
+    RULE-LIB-009 — WARN when known_violations entries have loc == baseline_loc_cap (zero healing
+    progress since baseline was frozen). blocks_sprint=False (advisory only).
 """
 
 from __future__ import annotations
@@ -155,4 +167,152 @@ def validate_error_handling_hierarchy(declaration: dict, repo_root: "Path | None
             f"V76: {len(findings)} format package(s) missing exception hierarchy"
             if findings else "V76: Error handling hierarchy present in all modified packages"
         ),
+    }
+
+
+# V77 — PROD-GOVERNANCE-001 (TC-GM-002): analytics_naming_enforced
+# RULE-LIB-007: *_document.py files must not be analytics files in disguise.
+def validate_analytics_naming_enforced(declaration: dict, repo_root: "Path | None" = None) -> dict:
+    """V77: *_document.py files under src/python/ must not have 'analytics functions' in docstring.
+
+    blocks_sprint=True — analytics masquerade naming is a structural violation.
+    ATOMIC DEPLOYMENT: V77 must deploy in the same sprint as the gnumeric + toml renames.
+    """
+    import ast as _ast
+    from pathlib import Path as _Path
+
+    _r = repo_root or _Path(__file__).parent.parent.parent
+    items = []
+    for f in declaration.get("changed_files", []):
+        if "src/python" not in str(f):
+            continue
+        from pathlib import Path as _P
+        fname = _P(str(f)).name
+        if not fname.endswith("_document.py"):
+            continue
+        fpath = _r / str(f)
+        if not fpath.exists():
+            continue
+        try:
+            text = fpath.read_text(encoding="utf-8", errors="replace")
+            tree = _ast.parse(text)
+            docstring = _ast.get_docstring(tree) or ""
+        except Exception:
+            docstring = ""
+        if "analytics functions" in docstring:
+            items.append({"file": str(f), "docstring_snippet": docstring[:80]})
+
+    if items:
+        return {
+            "validator": "validate_analytics_naming_enforced",
+            "result": "FAIL",
+            "items": items,
+            "summary": f"V77: {len(items)} analytics-masquerade *_document.py file(s) detected — BLOCK",
+            "blocks_sprint": True,
+        }
+    return {
+        "validator": "validate_analytics_naming_enforced",
+        "result": "PASS",
+        "items": [],
+        "summary": "V77: No analytics-masquerade naming detected",
+        "blocks_sprint": False,
+    }
+
+
+# V78 — PROD-GOVERNANCE-001 (TC-GM-003): dotnet_loc_cap
+# RULE-LIB-008: .cs files in src/net/ must be ≤800 LOC unless already in known_violations.
+def validate_dotnet_loc_cap(declaration: dict, repo_root: "Path | None" = None) -> dict:
+    """V78: src/net/**/*.cs files must be ≤800 LOC or pre-existing in known_violations.
+
+    Files ≤800 LOC always PASS (new compliant files don't need a baseline entry).
+    blocks_sprint=True for new files >800 LOC not in known_violations.
+    """
+    from pathlib import Path as _Path
+
+    _r = repo_root or _Path(__file__).parent.parent.parent
+    _baseline_path = _r / "registry" / "source-structure-baseline.json"
+    try:
+        import json as _json
+        _baseline = _json.loads(_baseline_path.read_text(encoding="utf-8"))
+        _known = _baseline.get("known_violations", {})
+    except Exception:
+        _known = {}
+
+    items = []
+    for f in declaration.get("changed_files", []):
+        if "src/net" not in str(f) or not str(f).endswith(".cs"):
+            continue
+        fpath = _r / str(f)
+        if not fpath.exists():
+            continue
+        actual_loc = sum(1 for _ in fpath.open(encoding="utf-8", errors="replace"))
+        if actual_loc <= 800:
+            continue  # Always PASS for compliant files
+        rel_str = fpath.relative_to(_r).as_posix()
+        known_entry = _known.get(rel_str, {})
+        if not known_entry:
+            items.append({"file": str(f), "loc": actual_loc, "reason": "new_file_exceeds_800_loc"})
+        elif actual_loc > known_entry.get("baseline_loc_cap", 0):
+            items.append({"file": str(f), "loc": actual_loc,
+                          "cap": known_entry["baseline_loc_cap"], "reason": "worsened_beyond_cap"})
+
+    if items:
+        return {
+            "validator": "validate_dotnet_loc_cap",
+            "result": "FAIL",
+            "items": items,
+            "summary": f"V78: {len(items)} .cs file(s) exceed 800 LOC without baseline entry — BLOCK",
+            "blocks_sprint": True,
+        }
+    return {
+        "validator": "validate_dotnet_loc_cap",
+        "result": "PASS",
+        "items": [],
+        "summary": "V78: All .cs files within LOC cap",
+        "blocks_sprint": False,
+    }
+
+
+# V79 — PROD-GOVERNANCE-001 (TC-GM-004): healing_stall_detector
+# RULE-LIB-009: known_violations entries at loc == baseline_loc_cap have zero healing progress.
+def validate_healing_stall_detector(declaration: dict, repo_root: "Path | None" = None) -> dict:
+    """V79: WARN when known_violations entries show zero healing progress (loc == baseline_loc_cap).
+
+    blocks_sprint=False — advisory only. Does NOT use remediation_deadline (field does not exist).
+    """
+    from pathlib import Path as _Path
+
+    _r = repo_root or _Path(__file__).parent.parent.parent
+    _baseline_path = _r / "registry" / "source-structure-baseline.json"
+    try:
+        import json as _json
+        _baseline = _json.loads(_baseline_path.read_text(encoding="utf-8"))
+        _known = _baseline.get("known_violations", {})
+    except Exception:
+        return {
+            "validator": "validate_healing_stall_detector",
+            "result": "PASS",
+            "items": [],
+            "summary": "V79: Baseline not found — stall detection skipped",
+            "blocks_sprint": False,
+        }
+
+    stalled = []
+    for rel_path, entry in _known.items():
+        loc = entry.get("loc", 0)
+        cap = entry.get("baseline_loc_cap", 0)
+        if loc == cap and cap > 0:
+            fpath = _r / rel_path
+            if fpath.exists():
+                stalled.append({"file": rel_path, "loc": loc, "cap": cap})
+
+    return {
+        "validator": "validate_healing_stall_detector",
+        "result": "WARN" if stalled else "PASS",
+        "items": stalled,
+        "summary": (
+            f"V79: {len(stalled)} known_violation(s) show zero healing progress (loc == cap)"
+            if stalled else "V79: All known violations show healing progress"
+        ),
+        "blocks_sprint": False,
     }

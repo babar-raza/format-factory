@@ -1,0 +1,207 @@
+{
+  "schema_version": "1.0",
+  "generated": "2026-06-25",
+  "plan_ref": "PROD-GOVERNANCE-001 (elegant-hugging-barto.md)",
+  "standard_ref": "docs/code-quality/production-library-standard-v2.md",
+  "total_formats": 27,
+  "total_gap_dimension_entries": 135,
+  "total_failing_or_partial": 74,
+  "summary": {
+    "py_loc_violations": 10,
+    "py_missing_tests": 7,
+    "py_missing_explicit_all": 19,
+    "py_analytics_masquerade": 2,
+    "dotnet_loc_violations": 3
+  },
+  "formats": [
+    {"format": "csv", "lang": "python", "gaps": [
+      {"dimension": "all_files_lte_800_loc", "status": "FAIL", "file": "src/python/csv/tabular_doc.py", "loc": 960, "standard_loc": 800},
+      {"dimension": "tests_gte_65", "status": "FAIL", "file": "tests/python/csv/", "loc": 53, "standard_loc": 65},
+      {"dimension": "analytics_separate", "status": "PASS", "file": null, "loc": null, "standard_loc": null},
+      {"dimension": "explicit_all", "status": "FAIL", "file": "src/python/csv/__init__.py", "loc": null, "standard_loc": null},
+      {"dimension": "analytics_naming_compliant", "status": "PASS", "file": null, "loc": null, "standard_loc": null}
+    ]},
+    {"format": "ndjson", "lang": "python", "gaps": [
+      {"dimension": "all_files_lte_800_loc", "status": "PASS", "file": null, "loc": null, "standard_loc": 800},
+      {"dimension": "tests_gte_65", "status": "PASS", "file": "tests/python/ndjson/", "loc": 142, "standard_loc": 65},
+      {"dimension": "analytics_separate", "status": "PARTIAL", "file": "src/python/ndjson/ndjson_codec.py", "loc": null, "standard_loc": null},
+      {"dimension": "explicit_all", "status": "FAIL", "file": "src/python/ndjson/__init__.py", "loc": null, "standard_loc": null},
+      {"dimension": "analytics_naming_compliant", "status": "PASS", "file": null, "loc": null, "standard_loc": null}
+    ]},
+    {"format": "toml", "lang": "python", "gaps": [
+      {"dimension": "all_files_lte_800_loc", "status": "PASS", "file": null, "loc": null, "standard_loc": 800},
+      {"dimension": "tests_gte_65", "status": "FAIL", "file": "tests/python/toml_format/", "loc": 50, "standard_loc": 65},
+      {"dimension": "analytics_separate", "status": "FAIL_MASQUERADE", "file": "src/python/toml/config_document.py", "loc": 470, "standard_loc": 800},
+      {"dimension": "explicit_all", "status": "FAIL", "file": "src/python/toml/__init__.py", "loc": null, "standard_loc": null},
+      {"dimension": "analytics_naming_compliant", "status": "FAIL", "file": "src/python/toml/config_document.py", "loc": null, "standard_loc": null}
+    ]},
+    {"format": "tsv", "lang": "python", "gaps": [
+      {"dimension": "all_files_lte_800_loc", "status": "FAIL", "file": "src/python/tsv/tsv_parser.py", "loc": 818, "standard_loc": 800},
+      {"dimension": "tests_gte_65", "status": "PASS", "file": "tests/python/tsv/", "loc": 104, "standard_loc": 65},
+      {"dimension": "analytics_separate", "status": "FAIL", "file": "src/python/tsv/tsv_parser.py", "loc": null, "standard_loc": null},
+      {"dimension": "explicit_all", "status": "FAIL", "file": "src/python/tsv/__init__.py", "loc": null, "standard_loc": null},
+      {"dimension": "analytics_naming_compliant", "status": "PASS", "file": null, "loc": null, "standard_loc": null}
+    ]},
+    {"format": "fods", "lang": "python", "gaps": [
+      {"dimension": "all_files_lte_800_loc", "status": "FAIL", "file": "src/python/fods/spreadsheet_doc.py", "loc": 1035, "standard_loc": 800},
+      {"dimension": "tests_gte_65", "status": "PASS", "file": "tests/python/fods/", "loc": 93, "standard_loc": 65},
+      {"dimension": "analytics_separate", "status": "PASS", "file": null, "loc": null, "standard_loc": null},
+      {"dimension": "explicit_all", "status": "FAIL", "file": "src/python/fods/__init__.py", "loc": null, "standard_loc": null},
+      {"dimension": "analytics_naming_compliant", "status": "PASS", "file": null, "loc": null, "standard_loc": null}
+    ]},
+    {"format": "fodt", "lang": "python", "gaps": [
+      {"dimension": "all_files_lte_800_loc", "status": "FAIL", "file": "src/python/fodt/text_doc.py", "loc": 992, "standard_loc": 800},
+      {"dimension": "tests_gte_65", "status": "PASS", "file": "tests/python/fodt/", "loc": 130, "standard_loc": 65},
+      {"dimension": "analytics_separate", "status": "PASS", "file": null, "loc": null, "standard_loc": null},
+      {"dimension": "explicit_all", "status": "FAIL", "file": "src/python/fodt/__init__.py", "loc": null, "standard_loc": null},
+      {"dimension": "analytics_naming_compliant", "status": "PASS", "file": null, "loc": null, "standard_loc": null}
+    ]},
+    {"format": "xcf", "lang": "python", "gaps": [
+      {"dimension": "all_files_lte_800_loc", "status": "FAIL", "file": "src/python/xcf/xcf_parser.py", "loc": 1272, "standard_loc": 800},
+      {"dimension": "tests_gte_65", "status": "PASS", "file": "tests/python/xcf/", "loc": 62, "standard_loc": 65},
+      {"dimension": "analytics_separate", "status": "PASS", "file": null, "loc": null, "standard_loc": null},
+      {"dimension": "explicit_all", "status": "FAIL", "file": "src/python/xcf/__init__.py", "loc": null, "standard_loc": null},
+      {"dimension": "analytics_naming_compliant", "status": "PASS", "file": null, "loc": null, "standard_loc": null}
+    ]},
+    {"format": "zst", "lang": "python", "gaps": [
+      {"dimension": "all_files_lte_800_loc", "status": "FAIL", "file": "src/python/zst/zst_codec.py", "loc": 1549, "standard_loc": 800},
+      {"dimension": "tests_gte_65", "status": "PASS", "file": "tests/python/zst/", "loc": 82, "standard_loc": 65},
+      {"dimension": "analytics_separate", "status": "PASS", "file": null, "loc": null, "standard_loc": null},
+      {"dimension": "explicit_all", "status": "PASS", "file": "src/python/zst/__init__.py", "loc": null, "standard_loc": null},
+      {"dimension": "analytics_naming_compliant", "status": "PASS", "file": null, "loc": null, "standard_loc": null}
+    ]},
+    {"format": "abw", "lang": "python", "gaps": [
+      {"dimension": "all_files_lte_800_loc", "status": "FAIL", "file": "src/python/abw/word_doc.py", "loc": 1026, "standard_loc": 800},
+      {"dimension": "tests_gte_65", "status": "PASS", "file": "tests/python/abw/", "loc": 148, "standard_loc": 65},
+      {"dimension": "analytics_separate", "status": "FAIL", "file": "src/python/abw/", "loc": null, "standard_loc": null},
+      {"dimension": "explicit_all", "status": "FAIL", "file": "src/python/abw/__init__.py", "loc": null, "standard_loc": null},
+      {"dimension": "analytics_naming_compliant", "status": "PASS", "file": null, "loc": null, "standard_loc": null}
+    ]},
+    {"format": "dif", "lang": "python", "gaps": [
+      {"dimension": "all_files_lte_800_loc", "status": "FAIL", "file": "src/python/dif/interchange_doc.py", "loc": 994, "standard_loc": 800},
+      {"dimension": "tests_gte_65", "status": "PASS", "file": "tests/python/dif/", "loc": 86, "standard_loc": 65},
+      {"dimension": "analytics_separate", "status": "FAIL", "file": "src/python/dif/", "loc": null, "standard_loc": null},
+      {"dimension": "explicit_all", "status": "FAIL", "file": "src/python/dif/__init__.py", "loc": null, "standard_loc": null},
+      {"dimension": "analytics_naming_compliant", "status": "PASS", "file": null, "loc": null, "standard_loc": null}
+    ]},
+    {"format": "ods", "lang": "python", "gaps": [
+      {"dimension": "all_files_lte_800_loc", "status": "FAIL", "file": "src/python/ods/spreadsheet_doc.py", "loc": 901, "standard_loc": 800},
+      {"dimension": "tests_gte_65", "status": "PASS", "file": "tests/python/ods/", "loc": 101, "standard_loc": 65},
+      {"dimension": "analytics_separate", "status": "FAIL", "file": "src/python/ods/", "loc": null, "standard_loc": null},
+      {"dimension": "explicit_all", "status": "FAIL", "file": "src/python/ods/__init__.py", "loc": null, "standard_loc": null},
+      {"dimension": "analytics_naming_compliant", "status": "PASS", "file": null, "loc": null, "standard_loc": null}
+    ]},
+    {"format": "odt", "lang": "python", "gaps": [
+      {"dimension": "all_files_lte_800_loc", "status": "PASS", "file": null, "loc": null, "standard_loc": 800},
+      {"dimension": "tests_gte_65", "status": "FAIL", "file": "tests/python/odt/", "loc": 26, "standard_loc": 65},
+      {"dimension": "analytics_separate", "status": "FAIL", "file": "src/python/odt/", "loc": null, "standard_loc": null},
+      {"dimension": "explicit_all", "status": "FAIL", "file": "src/python/odt/__init__.py", "loc": null, "standard_loc": null},
+      {"dimension": "analytics_naming_compliant", "status": "PASS", "file": null, "loc": null, "standard_loc": null}
+    ]},
+    {"format": "gnumeric", "lang": "python", "gaps": [
+      {"dimension": "all_files_lte_800_loc", "status": "PASS", "file": null, "loc": 779, "standard_loc": 800},
+      {"dimension": "tests_gte_65", "status": "PASS", "file": "tests/python/gnumeric/", "loc": 110, "standard_loc": 65},
+      {"dimension": "analytics_separate", "status": "FAIL_MASQUERADE", "file": "src/python/gnumeric/workbook_document.py", "loc": 779, "standard_loc": 800},
+      {"dimension": "explicit_all", "status": "FAIL", "file": "src/python/gnumeric/__init__.py", "loc": null, "standard_loc": null},
+      {"dimension": "analytics_naming_compliant", "status": "FAIL", "file": "src/python/gnumeric/workbook_document.py", "loc": null, "standard_loc": null}
+    ]},
+    {"format": "sylk", "lang": "python", "gaps": [
+      {"dimension": "all_files_lte_800_loc", "status": "FAIL", "file": "src/python/sylk/spreadsheet_doc.py", "loc": 857, "standard_loc": 800},
+      {"dimension": "tests_gte_65", "status": "PASS", "file": "tests/python/sylk/", "loc": 90, "standard_loc": 65},
+      {"dimension": "analytics_separate", "status": "FAIL", "file": "src/python/sylk/", "loc": null, "standard_loc": null},
+      {"dimension": "explicit_all", "status": "FAIL", "file": "src/python/sylk/__init__.py", "loc": null, "standard_loc": null},
+      {"dimension": "analytics_naming_compliant", "status": "PASS", "file": null, "loc": null, "standard_loc": null}
+    ]},
+    {"format": "fodg", "lang": "python", "gaps": [
+      {"dimension": "all_files_lte_800_loc", "status": "FAIL", "file": "src/python/fodg/fodg_codec.py", "loc": 831, "standard_loc": 800},
+      {"dimension": "tests_gte_65", "status": "PASS", "file": "tests/python/fodg/", "loc": 95, "standard_loc": 65},
+      {"dimension": "analytics_separate", "status": "FAIL", "file": "src/python/fodg/", "loc": null, "standard_loc": null},
+      {"dimension": "explicit_all", "status": "FAIL", "file": "src/python/fodg/__init__.py", "loc": null, "standard_loc": null},
+      {"dimension": "analytics_naming_compliant", "status": "PASS", "file": null, "loc": null, "standard_loc": null}
+    ]},
+    {"format": "fodp", "lang": "python", "gaps": [
+      {"dimension": "all_files_lte_800_loc", "status": "PASS", "file": null, "loc": null, "standard_loc": 800},
+      {"dimension": "tests_gte_65", "status": "FAIL", "file": "tests/python/fodp/", "loc": 24, "standard_loc": 65},
+      {"dimension": "analytics_separate", "status": "NA", "file": null, "loc": null, "standard_loc": null},
+      {"dimension": "explicit_all", "status": "FAIL", "file": "src/python/fodp/__init__.py", "loc": null, "standard_loc": null},
+      {"dimension": "analytics_naming_compliant", "status": "PASS", "file": null, "loc": null, "standard_loc": null}
+    ]},
+    {"format": "pbm", "lang": "python", "gaps": [
+      {"dimension": "all_files_lte_800_loc", "status": "PASS", "file": null, "loc": null, "standard_loc": 800},
+      {"dimension": "tests_gte_65", "status": "PASS", "file": "tests/python/pbm/", "loc": 59, "standard_loc": 65},
+      {"dimension": "analytics_separate", "status": "NA", "file": null, "loc": null, "standard_loc": null},
+      {"dimension": "explicit_all", "status": "FAIL", "file": "src/python/pbm/__init__.py", "loc": null, "standard_loc": null},
+      {"dimension": "analytics_naming_compliant", "status": "PASS", "file": null, "loc": null, "standard_loc": null}
+    ]},
+    {"format": "pgm", "lang": "python", "gaps": [
+      {"dimension": "all_files_lte_800_loc", "status": "PASS", "file": null, "loc": null, "standard_loc": 800},
+      {"dimension": "tests_gte_65", "status": "PASS", "file": "tests/python/pgm/", "loc": 53, "standard_loc": 65},
+      {"dimension": "analytics_separate", "status": "NA", "file": null, "loc": null, "standard_loc": null},
+      {"dimension": "explicit_all", "status": "FAIL", "file": "src/python/pgm/__init__.py", "loc": null, "standard_loc": null},
+      {"dimension": "analytics_naming_compliant", "status": "PASS", "file": null, "loc": null, "standard_loc": null}
+    ]},
+    {"format": "ppm", "lang": "python", "gaps": [
+      {"dimension": "all_files_lte_800_loc", "status": "PASS", "file": null, "loc": null, "standard_loc": 800},
+      {"dimension": "tests_gte_65", "status": "PASS", "file": "tests/python/ppm/", "loc": 72, "standard_loc": 65},
+      {"dimension": "analytics_separate", "status": "NA", "file": null, "loc": null, "standard_loc": null},
+      {"dimension": "explicit_all", "status": "FAIL", "file": "src/python/ppm/__init__.py", "loc": null, "standard_loc": null},
+      {"dimension": "analytics_naming_compliant", "status": "PASS", "file": null, "loc": null, "standard_loc": null}
+    ]},
+    {"format": "qoi", "lang": "python", "gaps": [
+      {"dimension": "all_files_lte_800_loc", "status": "PASS", "file": null, "loc": null, "standard_loc": 800},
+      {"dimension": "tests_gte_65", "status": "FAIL", "file": "tests/python/qoi/", "loc": 35, "standard_loc": 65},
+      {"dimension": "analytics_separate", "status": "NA", "file": null, "loc": null, "standard_loc": null},
+      {"dimension": "explicit_all", "status": "FAIL", "file": "src/python/qoi/__init__.py", "loc": null, "standard_loc": null},
+      {"dimension": "analytics_naming_compliant", "status": "PASS", "file": null, "loc": null, "standard_loc": null}
+    ]},
+    {"format": "csv", "lang": "dotnet", "gaps": [
+      {"dimension": "all_files_lte_800_loc", "status": "PASS", "file": null, "loc": null, "standard_loc": 800},
+      {"dimension": "tests_present", "status": "PASS", "file": "tests/net/csv/", "loc": null, "standard_loc": null},
+      {"dimension": "has_exceptions_dir", "status": "PARTIAL", "file": null, "loc": null, "standard_loc": null},
+      {"dimension": "has_spec_dir", "status": "PARTIAL", "file": null, "loc": null, "standard_loc": null},
+      {"dimension": "xml_doc_comments", "status": "PARTIAL", "file": null, "loc": null, "standard_loc": null}
+    ]},
+    {"format": "ndjson", "lang": "dotnet", "gaps": [
+      {"dimension": "all_files_lte_800_loc", "status": "PASS", "file": null, "loc": null, "standard_loc": 800},
+      {"dimension": "tests_present", "status": "PASS", "file": "tests/net/ndjson/", "loc": null, "standard_loc": null},
+      {"dimension": "has_exceptions_dir", "status": "PARTIAL", "file": null, "loc": null, "standard_loc": null},
+      {"dimension": "has_spec_dir", "status": "PARTIAL", "file": null, "loc": null, "standard_loc": null},
+      {"dimension": "xml_doc_comments", "status": "PARTIAL", "file": null, "loc": null, "standard_loc": null}
+    ]},
+    {"format": "tsv", "lang": "dotnet", "gaps": [
+      {"dimension": "all_files_lte_800_loc", "status": "PASS", "file": null, "loc": null, "standard_loc": 800},
+      {"dimension": "tests_present", "status": "PASS", "file": "tests/net/tsv/", "loc": null, "standard_loc": null},
+      {"dimension": "has_exceptions_dir", "status": "PARTIAL", "file": null, "loc": null, "standard_loc": null},
+      {"dimension": "has_spec_dir", "status": "PARTIAL", "file": null, "loc": null, "standard_loc": null},
+      {"dimension": "xml_doc_comments", "status": "PARTIAL", "file": null, "loc": null, "standard_loc": null}
+    ]},
+    {"format": "zst", "lang": "dotnet", "gaps": [
+      {"dimension": "all_files_lte_800_loc", "status": "PASS", "file": null, "loc": null, "standard_loc": 800},
+      {"dimension": "tests_present", "status": "PASS", "file": "tests/net/zst/", "loc": null, "standard_loc": null},
+      {"dimension": "has_exceptions_dir", "status": "PARTIAL", "file": null, "loc": null, "standard_loc": null},
+      {"dimension": "has_spec_dir", "status": "PARTIAL", "file": null, "loc": null, "standard_loc": null},
+      {"dimension": "xml_doc_comments", "status": "PARTIAL", "file": null, "loc": null, "standard_loc": null}
+    ]},
+    {"format": "fods", "lang": "dotnet", "gaps": [
+      {"dimension": "all_files_lte_800_loc", "status": "FAIL", "file": "src/net/fods/FodsDocument.cs", "loc": 849, "standard_loc": 800},
+      {"dimension": "tests_present", "status": "PASS", "file": "tests/net/fods/", "loc": null, "standard_loc": null},
+      {"dimension": "has_exceptions_dir", "status": "PARTIAL", "file": null, "loc": null, "standard_loc": null},
+      {"dimension": "has_spec_dir", "status": "PASS", "file": "src/net/fods/Spec/", "loc": null, "standard_loc": null},
+      {"dimension": "xml_doc_comments", "status": "PARTIAL", "file": null, "loc": null, "standard_loc": null}
+    ]},
+    {"format": "fodt", "lang": "dotnet", "gaps": [
+      {"dimension": "all_files_lte_800_loc", "status": "FAIL", "file": "src/net/fodt/FodtDocument.cs", "loc": 708, "standard_loc": 800},
+      {"dimension": "tests_present", "status": "PASS", "file": "tests/net/fodt/", "loc": null, "standard_loc": null},
+      {"dimension": "has_exceptions_dir", "status": "PARTIAL", "file": null, "loc": null, "standard_loc": null},
+      {"dimension": "has_spec_dir", "status": "PASS", "file": "src/net/fodt/Spec/", "loc": null, "standard_loc": null},
+      {"dimension": "xml_doc_comments", "status": "PARTIAL", "file": null, "loc": null, "standard_loc": null}
+    ]},
+    {"format": "netpbm", "lang": "dotnet", "gaps": [
+      {"dimension": "all_files_lte_800_loc", "status": "FAIL", "file": "src/net/netpbm/Model/NetpbmImage.cs", "loc": 1914, "standard_loc": 800},
+      {"dimension": "tests_present", "status": "PASS", "file": "tests/net/netpbm/", "loc": null, "standard_loc": null},
+      {"dimension": "has_exceptions_dir", "status": "PASS", "file": "src/net/netpbm/Exceptions/", "loc": null, "standard_loc": null},
+      {"dimension": "has_spec_dir", "status": "PARTIAL", "file": null, "loc": null, "standard_loc": null},
+      {"dimension": "xml_doc_comments", "status": "PARTIAL", "file": null, "loc": null, "standard_loc": null}
+    ]}
+  ]
+}

@@ -105,6 +105,7 @@ formats:
     dotnet: {exists: false}
     parity: python_only
     decision: "FOSS Python only"
+    analytics_naming_compliant: true  # workbook_document.py renamed → gnumeric_analytics.py (PROD-GOVERNANCE-001)
 
   ods:
     python: {exists: true, module: "src/python/ods/"}
@@ -132,6 +133,7 @@ formats:
     python: {exists: true, module: "src/python/toml/"}
     dotnet: {exists: false}
     parity: python_only
+    analytics_naming_compliant: true  # config_document.py renamed → toml_analytics.py (PROD-GOVERNANCE-001)
 
   xcf:
     python: {exists: true, module: "src/python/xcf/"}

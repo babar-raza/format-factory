@@ -1790,10 +1790,10 @@ class TestCanonicalValidatorCount:
         }
         result = run_all_governance_validators(decl, None)
         validator_count = len(result["validators"])
-        assert validator_count == 77, (
-            f"Expected 77 canonical validators, got {validator_count}. "
+        assert validator_count == 81, (
+            f"Expected 81 canonical validators, got {validator_count}. "
             "If validators were added/removed, update this test. "
-            "(77 = 75 prior + V75 dependency_direction + V76 error_handling_hierarchy added by TC-GH-004)"
+            "(81 = 77 prior + V77 analytics_naming + V78 dotnet_loc_cap + V79 healing_stall + V-NEW-001 capability_fact_ratio)"
         )
 
 
@@ -2077,3 +2077,254 @@ class TestVSGF001SkillAttributionInDeclaration:
             item.get("reason") == "missing_skill_attribution"
             for item in result.get("items", [])
         )
+
+
+class TestV66Upgraded:
+    """4 regression tests for V66 validate_multi_responsibility_file — now blocks_sprint=True."""
+
+    def _get_validator(self):
+        import sys
+        sys.path.insert(0, "tools/supervisor")
+        from governance_validators import validate_multi_responsibility_file
+        return validate_multi_responsibility_file
+
+    def test_v66_clean_declaration_passes(self):
+        validator = self._get_validator()
+        decl = {"planned_work_items": [], "changed_files": []}
+        result = validator(decl)
+        assert result["result"] == "PASS"
+        assert result["blocks_sprint"] is False
+
+    def test_v66_three_role_file_fails_with_blocks_sprint(self, tmp_path):
+        validator = self._get_validator()
+        f = tmp_path / "src" / "python" / "fmt" / "fmt_codec.py"
+        f.parent.mkdir(parents=True)
+        # class with __init__ (model role) + parse_ (parser role) + write_ (serializer role)
+        f.write_text(
+            "class FmtDocument:\n    def __init__(self): pass\n"
+            "def parse_fmt(x): pass\n"
+            "def write_fmt(x): pass\n"
+        )
+        decl = {
+            "planned_work_items": [{
+                "item_type": "PRODUCT_SOURCE",
+                "evidence_paths": [str(f.relative_to(tmp_path))],
+            }],
+            "changed_files": ["src/python/fmt/fmt_codec.py"],
+        }
+        result = validator(decl, repo_root=tmp_path)
+        assert result["result"] == "FAIL"
+        assert result["blocks_sprint"] is True
+
+    def test_v66_two_role_codec_passes(self, tmp_path):
+        """Codec with load+write (2 roles, no model class) must PASS."""
+        validator = self._get_validator()
+        f = tmp_path / "src" / "python" / "fmt" / "fmt_codec.py"
+        f.parent.mkdir(parents=True)
+        f.write_text("def parse_fmt(x): pass\ndef write_fmt(x): pass\n")
+        decl = {
+            "planned_work_items": [{
+                "item_type": "PRODUCT_SOURCE",
+                "evidence_paths": [str(f.relative_to(tmp_path))],
+            }],
+            "changed_files": ["src/python/fmt/fmt_codec.py"],
+        }
+        result = validator(decl, repo_root=tmp_path)
+        assert result["result"] == "PASS"
+
+    def test_v66_result_is_fail_not_warn(self, tmp_path):
+        """V66 upgraded: must return FAIL not WARN when 3 roles detected."""
+        validator = self._get_validator()
+        f = tmp_path / "src" / "python" / "fmt" / "fmt_codec.py"
+        f.parent.mkdir(parents=True)
+        f.write_text(
+            "class FmtDocument:\n    def __init__(self): pass\n"
+            "def parse_fmt(x): pass\n"
+            "def write_fmt(x): pass\n"
+        )
+        decl = {
+            "planned_work_items": [{
+                "item_type": "PRODUCT_SOURCE",
+                "evidence_paths": [str(f.relative_to(tmp_path))],
+            }],
+            "changed_files": ["src/python/fmt/fmt_codec.py"],
+        }
+        result = validator(decl, repo_root=tmp_path)
+        assert result["result"] == "FAIL"
+        assert result["result"] != "WARN"
+
+
+class TestV77AnalyticsNamingEnforced:
+    """4 regression tests for V77 validate_analytics_naming_enforced."""
+
+    def _get_validator(self):
+        import sys
+        sys.path.insert(0, "tools/supervisor")
+        from governance_validators_ext2 import validate_analytics_naming_enforced
+        return validate_analytics_naming_enforced
+
+    def test_v77_clean_declaration_passes(self):
+        validator = self._get_validator()
+        decl = {"changed_files": [], "planned_work_items": []}
+        result = validator(decl)
+        assert result["result"] == "PASS"
+        assert result["blocks_sprint"] is False
+
+    def test_v77_document_with_analytics_docstring_fails(self, tmp_path):
+        validator = self._get_validator()
+        f = tmp_path / "src" / "python" / "fmt" / "fmt_document.py"
+        f.parent.mkdir(parents=True)
+        f.write_text('"""FMT analytics functions extracted from fmt_codec.py."""\n\ndef foo(): pass\n')
+        decl = {
+            "changed_files": ["src/python/fmt/fmt_document.py"],
+            "planned_work_items": [],
+        }
+        result = validator(decl, repo_root=tmp_path)
+        assert result["result"] == "FAIL"
+        assert result["blocks_sprint"] is True
+        assert len(result["items"]) == 1
+
+    def test_v77_document_without_analytics_docstring_passes(self, tmp_path):
+        validator = self._get_validator()
+        f = tmp_path / "src" / "python" / "fmt" / "fmt_document.py"
+        f.parent.mkdir(parents=True)
+        f.write_text('"""FMT domain model classes."""\n\nclass FmtDocument:\n    pass\n')
+        decl = {
+            "changed_files": ["src/python/fmt/fmt_document.py"],
+            "planned_work_items": [],
+        }
+        result = validator(decl, repo_root=tmp_path)
+        assert result["result"] == "PASS"
+
+    def test_v77_analytics_py_file_passes(self, tmp_path):
+        """Files named *_analytics.py (not *_document.py) must always PASS."""
+        validator = self._get_validator()
+        f = tmp_path / "src" / "python" / "fmt" / "fmt_analytics.py"
+        f.parent.mkdir(parents=True)
+        f.write_text('"""FMT analytics functions extracted from fmt_codec.py."""\n\ndef foo(): pass\n')
+        decl = {
+            "changed_files": ["src/python/fmt/fmt_analytics.py"],
+            "planned_work_items": [],
+        }
+        result = validator(decl, repo_root=tmp_path)
+        assert result["result"] == "PASS"
+
+
+class TestV78DotnetLocCap:
+    """4 regression tests for V78 validate_dotnet_loc_cap."""
+
+    def _get_validator(self):
+        import sys
+        sys.path.insert(0, "tools/supervisor")
+        from governance_validators_ext2 import validate_dotnet_loc_cap
+        return validate_dotnet_loc_cap
+
+    def _make_baseline(self, tmp_path, known=None):
+        import json
+        baseline = {"known_violations": known or {}}
+        bp = tmp_path / "registry" / "source-structure-baseline.json"
+        bp.parent.mkdir(parents=True, exist_ok=True)
+        bp.write_text(json.dumps(baseline))
+
+    def test_v78_no_cs_files_passes(self, tmp_path):
+        validator = self._get_validator()
+        self._make_baseline(tmp_path)
+        decl = {"changed_files": ["src/python/fmt/fmt_codec.py"], "planned_work_items": []}
+        result = validator(decl, repo_root=tmp_path)
+        assert result["result"] == "PASS"
+
+    def test_v78_small_cs_file_passes(self, tmp_path):
+        validator = self._get_validator()
+        self._make_baseline(tmp_path)
+        f = tmp_path / "src" / "net" / "fmt" / "FmtDocument.cs"
+        f.parent.mkdir(parents=True)
+        f.write_text("\n".join(["// line"] * 400) + "\n")
+        decl = {"changed_files": ["src/net/fmt/FmtDocument.cs"], "planned_work_items": []}
+        result = validator(decl, repo_root=tmp_path)
+        assert result["result"] == "PASS"
+
+    def test_v78_large_cs_file_not_in_baseline_fails(self, tmp_path):
+        validator = self._get_validator()
+        self._make_baseline(tmp_path)
+        f = tmp_path / "src" / "net" / "fmt" / "FmtDocument.cs"
+        f.parent.mkdir(parents=True)
+        f.write_text("\n".join(["// line"] * 900) + "\n")
+        decl = {"changed_files": ["src/net/fmt/FmtDocument.cs"], "planned_work_items": []}
+        result = validator(decl, repo_root=tmp_path)
+        assert result["result"] == "FAIL"
+        assert result["blocks_sprint"] is True
+
+    def test_v78_large_cs_file_in_baseline_passes(self, tmp_path):
+        validator = self._get_validator()
+        self._make_baseline(tmp_path, {"src/net/fmt/FmtDocument.cs": {"loc": 900, "baseline_loc_cap": 950}})
+        f = tmp_path / "src" / "net" / "fmt" / "FmtDocument.cs"
+        f.parent.mkdir(parents=True)
+        f.write_text("\n".join(["// line"] * 900) + "\n")
+        decl = {"changed_files": ["src/net/fmt/FmtDocument.cs"], "planned_work_items": []}
+        result = validator(decl, repo_root=tmp_path)
+        assert result["result"] == "PASS"
+
+
+class TestV79HealingStallDetector:
+    """4 regression tests for V79 validate_healing_stall_detector."""
+
+    def _get_validator(self):
+        import sys
+        sys.path.insert(0, "tools/supervisor")
+        from governance_validators_ext2 import validate_healing_stall_detector
+        return validate_healing_stall_detector
+
+    def _make_baseline(self, tmp_path, known):
+        import json
+        baseline = {"known_violations": known}
+        bp = tmp_path / "registry" / "source-structure-baseline.json"
+        bp.parent.mkdir(parents=True, exist_ok=True)
+        bp.write_text(json.dumps(baseline))
+
+    def test_v79_no_stalls_passes(self, tmp_path):
+        validator = self._get_validator()
+        self._make_baseline(tmp_path, {})
+        decl = {"changed_files": [], "planned_work_items": []}
+        result = validator(decl, repo_root=tmp_path)
+        assert result["result"] == "PASS"
+        assert result["blocks_sprint"] is False
+
+    def test_v79_stalled_violation_warns(self, tmp_path):
+        validator = self._get_validator()
+        stalled_file = tmp_path / "src" / "python" / "fmt" / "fmt_codec.py"
+        stalled_file.parent.mkdir(parents=True)
+        stalled_file.write_text("# stalled\n")
+        self._make_baseline(tmp_path, {
+            "src/python/fmt/fmt_codec.py": {"loc": 900, "baseline_loc_cap": 900}
+        })
+        decl = {"changed_files": [], "planned_work_items": []}
+        result = validator(decl, repo_root=tmp_path)
+        assert result["result"] == "WARN"
+        assert result["blocks_sprint"] is False
+        assert len(result["items"]) == 1
+
+    def test_v79_healed_violation_passes(self, tmp_path):
+        """File with loc < baseline_loc_cap shows healing progress — no WARN."""
+        validator = self._get_validator()
+        healed_file = tmp_path / "src" / "python" / "fmt" / "fmt_codec.py"
+        healed_file.parent.mkdir(parents=True)
+        healed_file.write_text("# healed\n")
+        self._make_baseline(tmp_path, {
+            "src/python/fmt/fmt_codec.py": {"loc": 750, "baseline_loc_cap": 900}
+        })
+        decl = {"changed_files": [], "planned_work_items": []}
+        result = validator(decl, repo_root=tmp_path)
+        assert result["result"] == "PASS"
+
+    def test_v79_blocks_sprint_is_always_false(self, tmp_path):
+        """V79 is advisory — must never set blocks_sprint=True."""
+        validator = self._get_validator()
+        stalled_file = tmp_path / "src" / "python" / "fmt" / "fmt_codec.py"
+        stalled_file.parent.mkdir(parents=True)
+        stalled_file.write_text("# stalled\n")
+        self._make_baseline(tmp_path, {
+            "src/python/fmt/fmt_codec.py": {"loc": 1500, "baseline_loc_cap": 1500}
+        })
+        decl = {"changed_files": [], "planned_work_items": []}
+        result = validator(decl, repo_root=tmp_path)
+        assert result["blocks_sprint"] is False

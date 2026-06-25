@@ -177,24 +177,28 @@ Gate 11 execution approval by Babar Raza, package publication credentials).
 
 ### GOV_BLOCK Exception (BINDING — overrides Supreme Directive for structural failures)
 
-`GOV_BLOCK:monolith_detection_validator` and `GOV_BLOCK:validate_source_architecture` are
-**structural failures**, not transient closeout failures. The Supreme Directive "log exit 3 and
-proceed" does NOT apply to these two validators.
+`GOV_BLOCK:monolith_detection_validator`, `GOV_BLOCK:validate_source_architecture`,
+`GOV_BLOCK:validate_multi_responsibility_file`, and `GOV_BLOCK:validate_analytics_naming_enforced`
+are **structural failures**, not transient closeout failures. The Supreme Directive "log exit 3 and
+proceed" does NOT apply to these validators.
 
-When `rework_items` in the continuation signal contains any item matching
-`GOV_BLOCK:monolith_detection_validator` or `GOV_BLOCK:validate_source_architecture`:
+When `rework_items` in the continuation signal contains any item matching one of these validators:
 
 1. Do NOT proceed to the next product deepening sprint
 2. The NEXT sprint must be the analytics separation refactor for the blocking format
-   (apply §8.1 Analytics Separation Protocol from `docs/code-quality/production-readiness-standard.md`)
+   (apply §8.1 Analytics Separation Protocol from `docs/code-quality/production-library-standard-v2.md`)
 3. Only after the GOV_BLOCK rework item is resolved (gone from `rework_items`) may
    product deepening resume
 4. `check_continuation.py` will return STOP with `reason: structural_govblock_must_be_resolved_first`
    as the machine-enforceable gate
 
 This is NOT a TRUE_EXTERNAL_GATE — the agent CAN resolve it by running the analytics
-separation sprint. This scope is intentionally narrow (two named validators only) to avoid
+separation sprint. This scope is intentionally narrow (four named validators) to avoid
 blocking on unrelated governance failures.
+
+**Production Library Standard v2:** All governance validators enforce the standard at
+`docs/code-quality/production-library-standard-v2.md`. This supersedes the v1 standard.
+Healing protocol for V66/V77 blocks: §8.1 of the v2 standard (Monolith Healing Protocol).
 - The only closeout that matters is the master plan. Every sprint must make progress on
   `reports/supervisor/next-sprint.md` tasks or gap-ledger closures.
 - Do NOT pause, summarize, or ask the user between sprints. Do NOT say "let me know" or

@@ -6,7 +6,7 @@ Acquisition Gates 1-7 PASSED.
 FOSS track only — no commercial readiness implied.
 """
 from .toml_codec import *  # noqa: F401, F403
-from .config_document import *  # noqa: F401, F403
+from .toml_analytics import *  # noqa: F401, F403
 from .exceptions import *  # noqa: F401, F403
 from .models import TomlDocument  # noqa: F401
 

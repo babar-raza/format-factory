@@ -678,7 +678,7 @@ def get_sheet_index(model: dict[str, Any], name: str) -> int:
 # Domain module re-exports
 # ---------------------------------------------------------------------------
 try:
-    from .workbook_document import *  # noqa: F401, F403
+    from .gnumeric_analytics import *  # noqa: F401, F403
 except ImportError:
     pass
 try:
