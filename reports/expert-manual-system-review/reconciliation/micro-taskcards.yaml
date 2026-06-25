@@ -1108,7 +1108,10 @@ wave_9:
         - "4: Re-run test suite — verify same pass count"
         - "5: Check git status — no unexpected modifications"
       effort: MEDIUM
-      status: PENDING
+      status: COMPLETE
+      completed_at: "2026-06-25"
+      evidence_path: reports/expert-manual-system-review/reconciliation/idempotency-baseline.json
+      completion_note: "SHA-256 baseline computed for 6 key files. All 6 SHA-256 hashes verified unchanged after re-run. Idempotency PASS. Regression: Python 18162/44/0, FODT 588/588, CSV 74/74."
       max_attempts: 3
       on_failure: SKIP_AND_DOCUMENT
 
@@ -1126,6 +1129,9 @@ wave_9:
         - "2: Produce final-audit.json with completion gates assessment"
         - "3: Determine final verdict"
       effort: SMALL
-      status: PENDING
+      status: COMPLETE
+      completed_at: "2026-06-25"
+      evidence_path: reports/expert-manual-system-review/reconciliation/final-audit.json
+      completion_note: "Final audit report produced. Mission verdict: MISSION_SUBSTANTIALLY_COMPLETE_WITH_DOCUMENTED_DEFERRALS. 25/34 COMPLETE, 1 SUPERSEDED, 5 SKIP_AND_DOCUMENT, 1 PARTIALLY_COMPLETE. SAL PASS (CSV 55, TOML 55). Idempotency PASS."
       max_attempts: 3
       on_failure: SKIP_AND_DOCUMENT
