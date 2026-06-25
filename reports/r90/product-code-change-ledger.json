@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s116-dotnet-deepening-20260627",
+  "latest_sprint": "ff-sprint-s117-dotnet-deepening-20260627",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -20475,9 +20475,69 @@
         }
       ],
       "format": "NDJSON"
+    },
+    {
+      "entry_id": "PC-FODS-R137",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s117-dotnet-deepening-20260627",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.pdf_export"
+      ],
+      "api_symbols": [
+        "FodsPdfExporter.ExportToPdf",
+        "FodsPdfExporter.ExportToPdfBytes"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/fods/FodsR137PdfExporterTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "FODS"
+    },
+    {
+      "entry_id": "PC-FODT-R138",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s117-dotnet-deepening-20260627",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.pdf_export"
+      ],
+      "api_symbols": [
+        "FodtPdfExporter.ExportToPdf",
+        "FodtPdfExporter.ExportToPdfBytes"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/fodt/FodtR138PdfExporterTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "FODT"
+    },
+    {
+      "entry_id": "PC-FODT-R139",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s117-dotnet-deepening-20260627",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.png_export"
+      ],
+      "api_symbols": [
+        "FodtPngExporter.ExportToPng",
+        "FodtPngExporter.ExportToPngBytes"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/fodt/FodtR139PngExporterTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "FODT"
     }
   ],
-  "total_entries": 1015,
+  "total_entries": 1018,
   "changes": [
     {
       "file": "src/python/dif/models.py",
