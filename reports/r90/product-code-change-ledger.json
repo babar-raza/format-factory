@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s99-dotnet-deepening-20260626",
+  "latest_sprint": "ff-sprint-s100-dotnet-deepening-20260626",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -19424,6 +19424,75 @@
         }
       ],
       "format": "Netpbm"
+    },
+    {
+      "entry_id": "PC-CSV-R119",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s100-dotnet-deepening-20260626",
+      "product": "CSV .NET",
+      "capability_refs": [
+        "commercial_net_products.CSV.dotnet_status.filter_mutation"
+      ],
+      "api_symbols": [
+        "Filter",
+        "HasColumn",
+        "IsEmpty",
+        "AddRow",
+        "RemoveRow",
+        "ToCsv"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/csv/CsvR119FilterMutationTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "CSV"
+    },
+    {
+      "entry_id": "PC-NDJSON-R118",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s100-dotnet-deepening-20260626",
+      "product": "NDJSON .NET",
+      "capability_refs": [
+        "commercial_net_products.NDJSON.dotnet_status.schema_analytics"
+      ],
+      "api_symbols": [
+        "IsUniformSchema",
+        "GetAllKeys",
+        "GetFieldValues",
+        "Filter"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/ndjson/NdjsonR118SchemaAnalyticsTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "NDJSON"
+    },
+    {
+      "entry_id": "PC-TSV-R119",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s100-dotnet-deepening-20260626",
+      "product": "TSV .NET",
+      "capability_refs": [
+        "commercial_net_products.TSV.dotnet_status.filter_serialize"
+      ],
+      "api_symbols": [
+        "Filter",
+        "IsEmpty",
+        "ToTsv",
+        "GetCellValue",
+        "ColumnCount"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/tsv/TsvR119FilterAndSerializeTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "TSV"
     }
   ],
   "total_entries": 1006,
