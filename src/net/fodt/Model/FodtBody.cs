@@ -9,7 +9,7 @@ namespace FormatFactory.Fodt;
 
 /// <summary>
 /// Typed wrapper for the ODF office:body/office:text element.
-/// Provides access to top-level paragraphs and headings.
+/// Provides access to top-level paragraphs, headings, and tables.
 ///
 /// ODF spec basis: ODF 1.3 §3.3 office:body, §3.4 office:text.
 /// </summary>
@@ -17,6 +17,8 @@ public sealed class FodtBody
 {
     private static readonly XNamespace NsText =
         "urn:oasis:names:tc:opendocument:xmlns:text:1.0";
+    private static readonly XNamespace NsTable =
+        "urn:oasis:names:tc:opendocument:xmlns:table:1.0";
 
     internal XElement Element { get; }
 
@@ -44,6 +46,23 @@ public sealed class FodtBody
                     result.Add(new FodtParagraph(child));
                 }
             }
+            return result;
+        }
+    }
+
+    /// <summary>
+    /// All top-level tables (table:table elements) in document order.
+    /// Provides structured access to rows and cells within each table.
+    ///
+    /// ODF spec basis: ODF 1.3 §9.4.2 table:table.
+    /// </summary>
+    public IReadOnlyList<FodtTable> Tables
+    {
+        get
+        {
+            var result = new List<FodtTable>();
+            foreach (var child in Element.Elements(NsTable + "table"))
+                result.Add(new FodtTable(child));
             return result;
         }
     }

@@ -217,6 +217,14 @@ public sealed partial class FodtDocument
         Body?.Paragraphs ?? Array.Empty<FodtParagraph>();
 
     /// <summary>
+    /// Convenience accessor: all top-level tables from office:body/office:text,
+    /// in document order. Returns empty list if body is absent or document has no tables.
+    /// ODF spec basis: ODF 1.3 §9.4.2 table:table.
+    /// </summary>
+    public IReadOnlyList<FodtTable> Tables =>
+        Body?.Tables ?? Array.Empty<FodtTable>();
+
+    /// <summary>
     /// Get the plain text content of the document (all paragraphs joined by newlines).
     /// R88 Train I: text analysis API.
     /// </summary>

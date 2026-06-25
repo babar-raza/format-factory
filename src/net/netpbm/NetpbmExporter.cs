@@ -12,13 +12,23 @@ using System;
 namespace FormatFactory.Netpbm;
 
 /// <summary>
-/// Cross-format export within the Netpbm family.
+/// Cross-format exporter within the Netpbm family only.
 ///
-/// Dogfooding: all exports use Format Factory's own NetpbmImage model.
-/// No external image libraries.
+/// <para>
+/// <b>Scope:</b> This exporter converts between Netpbm sub-formats (PBM, PGM, PPM).
+/// It does NOT export to or from non-Netpbm formats (JPEG, PNG, TIFF, etc.).
+/// All input and output types are <see cref="NetpbmImage"/>.
+/// </para>
 ///
-/// dogfood_status: IMPLEMENTED (PBM→PGM, PBM→PPM grayscale)
+/// <para>
+/// <b>Dogfood implementation:</b> all exports use Format Factory's own
+/// <see cref="NetpbmImage"/> model. No external image libraries are required.
+/// </para>
+///
+/// <para>
+/// dogfood_status: IMPLEMENTED (PBM→PGM, PBM→PPM grayscale)<br/>
 /// target_ff_library: FormatFactory.Netpbm.NetpbmWriter
+/// </para>
 /// </summary>
 public static class NetpbmExporter
 {

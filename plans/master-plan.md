@@ -302,7 +302,7 @@ See `registry/format-registry.yaml` for per-format gate status.
 | DEC-011 | Monorepo, extraction-ready | Decided |
 | DEC-012 | `plans/master-plan.md` single authority | Decided |
 | DEC-013 | Claude (VS Code) primary executor | Decided |
-| DEC-014 | Codex: deferred, not activated | Decided |
+| DEC-014 | Codex: activated (adapter live in AGENTS.md §A2a + docs/governance/codex-adapter.md) | Decided |
 | DEC-015 | Endpoint support: Claude + local + professionalize | Decided |
 | DEC-016 | Everything useful persists on disk | Decided |
 | DEC-017 | `.local/` is local-only, never committed | Decided |
@@ -3463,7 +3463,7 @@ Tests: 79 new tests PASS. Evidence: `.local/evidences/ff-layer-forensics-2026062
 |-----|---------|----------|--------|
 | SKILL-GAP-008 | No pre-commit hook | TC-SGF-001 | OPEN |
 | SKILL-GAP-012 | Declaration bypass (agents skip entirely) | TC-SGF-002 | OPEN |
-| DEC-014 | Codex not activated | TC-SGF-003 | OPEN |
+| DEC-014 | Codex not activated | TC-SGF-003 | CLOSED |
 | EP-008-GAP | Taskcard execution_contract not validated | TC-SGF-004 | OPEN |
 | AD_HOC-174 | 174 tools unregistered | TC-SGF-005 | OPEN |
 
@@ -3737,3 +3737,29 @@ bypass lanes via governance code changes.
 - Phase C: Wire authority_integration_fabric.py into autonomous_cycle.py Step 0
 - Phase C: Inject spec facts into generate_next_worker_prompt.py worker prompts
 - Phase D-F: Expand to ZST, CSV, TOML; production readiness dashboard authority level
+
+---
+
+## Section 65 — FODS Gate 11 Advancement: check-gate + dotnet CI + customer-readiness + C9 (CLOSED)
+
+**Version:** master-plan v7.3
+**Sprint cohort:** ff-sprint-s63 through ff-sprint-s66 (2026-06-26)
+
+| Task | Description | Status | Track |
+|------|-------------|--------|-------|
+| TC-S65-001 | /check-gate fods 11: CONDITIONALLY_READY, 5/7 min criteria PASS, G11-G APPROVED | CLOSED | GATE11 |
+| TC-S65-002 | dotnet build FODS (0 errors) + dotnet test 643/643 PASS — C5 evidence_verified | CLOSED | DOTNET |
+| TC-S65-003 | dotnet pack FODS: FormatFactory.Fods.0.1.0-tier0.nupkg (42,852 bytes) — C8 evidence_verified | CLOSED | DOTNET |
+| TC-S65-004 | FODS customer-readiness-checklist: all 8 criteria PASS — CUSTOMER_READY (agent-assessed) | CLOSED | GATE11 |
+| TC-S65-005 | FODS .NET class size audit: max=FodsDocument.cs 769 LOC — C9 evidence_verified | CLOSED | GATE11 |
+
+- TC-S65-001: CLOSED — `reports/gate11/fods-gate11-check-gate-result.md` updated. Overall: CONDITIONALLY_READY. G11-G APPROVED by Babar Raza 2026-06-05. Python 1,410 tests (vs min 50), .NET 643 tests (vs min 10). /check-gate skill criteria complete.
+- TC-S65-002: CLOSED — `dotnet build FormatFactory.Fods.csproj --configuration Release`: 0 errors, 28 warnings (XML doc comments only). `dotnet test tests/net/fods/`: 643/643 PASS. C5 (dotnet CI) now evidence_verified.
+- TC-S65-003: CLOSED — `dotnet pack FormatFactory.Fods.csproj --configuration Release --output .local/package-builds/nuget/`: FormatFactory.Fods.0.1.0-tier0.nupkg created (42,852 bytes). C8 (NuGet buildable) now evidence_verified.
+- TC-S65-004: CLOSED — `reports/gate11/fods-customer-readiness-assessment.md` produced. All 8 criteria assessed PASS: Install Proof, API Reference (docs/api/fods.md), Examples (5 scripts), Round-Trip Proof (6 semantic round-trips), Malformed Input (10 tests, 4 classes), Security Guards (100MB+DTD), Release Notes (fods-v0.1.0.md), Version (0.1.0). Verdict: CUSTOMER_READY (requires Babar Raza authorization for publication).
+- TC-S65-005: CLOSED — All 10 FODS .NET source files audited. Max LOC = FodsDocument.cs (769 LOC). All under 1,500 LOC limit. C9 now evidence_verified.
+- Gate 11 combined score after this section: 8/31 evidence_verified (up from 1/31 on 2026-06-21).
+  - .NET: C3, C4, C5, C8, C9 = 5/20 evidence_verified; C10 = blocked_external (TRUE_EXTERNAL_GATE)
+  - Python: P3, P4, P5 = 3/11 evidence_verified
+- FODS publication blocker: Babar Raza publication sign-off (G11-G already approved 2026-06-05).
+- Evidence roots: `.local/evidences/ff-sprint-s63-checkgate-fods11-20260626/`, `.local/evidences/ff-sprint-s64-fods-dotnet-ci-20260626/`, `.local/evidences/ff-sprint-s65-fods-customer-readiness-20260626/`, `.local/evidences/ff-sprint-s66-c9-audit-20260626/`.

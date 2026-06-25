@@ -9,6 +9,13 @@
 // Pure .NET PDF 1.4 writer — no NuGet dependencies.
 // Renders FODS spreadsheet cells as text lines using PDF text operators.
 // Supports multi-sheet documents (one PDF page per sheet).
+//
+// KNOWN SCOPE LIMITATION (PROB-002, Option C — formal declaration):
+//   PDF export is Latin-1-scoped (Unicode > U+00FF is replaced with '?').
+//   Root cause: PDF standard fonts (Helvetica, Helvetica-Bold) use WinAnsiEncoding (Latin-1).
+//   Full Unicode requires TrueType font embedding — deferred post-Gate 11.
+//   Resolution: Documented as v0.x known scope boundary. No PdfSharp NuGet added.
+//   Severity: MEDIUM (no existing customer requirement for non-Latin PDF at this stage).
 
 using System;
 using System.Collections.Generic;

@@ -1,0 +1,55 @@
+close_task_result:
+  prompt_path: .supervisor/prompts/prompt4-close-task.md
+  prompt_hash: "3196a5bd52bd6e03"
+  invocation_id: "witty-doodling-goose-close-task-20260625-iter2"
+  mission_id: spec-authority-machinery-explosion-20260625-c6b2470
+  plan_id: witty-doodling-goose
+  plan_revision: "Phase A complete + phase_a_execution_closed note in terminal lock"
+  plan_hash: "dd07cbc3ec27077b"
+
+  # close-task.md requirements verification
+  # Rule 1: Review everything changed in this session — DONE (see audit iter2)
+  # Rule 2: Commit all completed changes — DONE (10b6d5ad + 88203357 + 42d5de7a)
+  # Rule 3: Update master plan in place — DONE (Section 60 at 88203357, CLOSED status)
+  # Rule 4: Mark task closed only if implementation, verification, commit, and master plan
+  #          update are all complete — ALL CONDITIONS MET
+
+  taskcards_closed:
+    - TC-HEAL-A001
+    - TC-HEAL-A002
+    - TC-HEAL-A003
+    - TC-HEAL-A004
+
+  taskcards_not_closed: []
+
+  requirements_reconciled: true
+
+  queue_empty_and_valid: true
+
+  continuation_disabled: true  # TERMINAL_CLOSED in plan lock; POST_PLAN_TERMINAL stop enforced
+
+  closure_record_path: >
+    reports/spec-authority-machinery/spec-authority-machinery-explosion-20260625-c6b2470/audit/stage1-iter2/close-task-result.yaml
+
+  closure_record_valid: true
+
+  terminal_state_written: true
+  # Evidence: witty-doodling-goose.md plan lock has status=TERMINAL_CLOSED +
+  #           phase_a_execution_closed="2026-06-25 — TC-HEAL-A001 through TC-HEAL-A004 all COMPLETE"
+
+  contradictions: []
+
+  # Verification of close-task rules
+  verification:
+    all_changes_committed: true
+    commits:
+      - "10b6d5ad: fix(governance) SPEC-AUTH-PHASE-A closure"
+      - "88203357: docs(master-plan) Section 60 CLOSED"
+      - "42d5de7a: chore(psl-close) iter2 all-green audit + prompt binding"
+    master_plan_sections_updated:
+      - "Section 60 (witty-doodling-goose SAL Phase A CLOSED)"
+    master_plan_header_updated: "v6.1 last updated 2026-06-25"
+    no_uncommitted_relevant_changes: true
+    closure_status: CLOSED
+
+  verdict: CONVERGENCE_COMPLETE_ALL_GREEN_AND_TASK_CLOSED
