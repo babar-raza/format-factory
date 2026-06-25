@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s91-dotnet-deepening-20260626",
+  "latest_sprint": "ff-sprint-s92-dotnet-deepening-20260626",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -19055,6 +19055,36 @@
       "description": "Netpbm R126: 11 tests for Create canvas \u2014 dimensions, format, default/custom fill, PPM channels, zero/negative guards, dogfood edit+serialize",
       "test_files": [
         "tests/net/netpbm/NetpbmR126CreateCanvasTests.cs"
+      ],
+      "source_files": []
+    },
+    {
+      "entry_id": "PC-FODS-R127",
+      "classification": "TEST_ADDITION",
+      "sprint": "ff-sprint-s92-dotnet-deepening-20260626",
+      "description": "FODS R127: 10 tests for multi-sheet pipeline \u2014 two sheets independent data, SortRows isolation, sheet name order, FilterRows, export CSV sorted, SheetCount after remove, GetColumnAggregates, GetSheetByIndex, GetSheetByName case-sensitive, dogfood two-sheet sort+export",
+      "test_files": [
+        "tests/net/fods/FodsR127MultiSheetPipelineTests.cs"
+      ],
+      "source_files": []
+    },
+    {
+      "entry_id": "PC-FODT-R125",
+      "classification": "TEST_ADDITION",
+      "sprint": "ff-sprint-s92-dotnet-deepening-20260626",
+      "description": "FODT R125: 10 tests for RemoveAllParagraphs \u2014 empty doc no-op, single/multiple removed, plain text empty, headings also removed, rebuild after removal, GetDocumentStats all-zero, Paragraphs empty, dogfood remove+rebuild+export",
+      "test_files": [
+        "tests/net/fodt/FodtR125RemoveAllParagraphsTests.cs"
+      ],
+      "source_files": []
+    },
+    {
+      "entry_id": "PC-NETPBM-R127",
+      "classification": "TEST_ADDITION",
+      "sprint": "ff-sprint-s92-dotnet-deepening-20260626",
+      "description": "Netpbm R127: 11 tests for NetpbmExporter.PgmToPpm/PpmToPgm \u2014 result format, dimensions, gray pixel equal channels, black/white, wrong-format throws, luminance consistency, dogfood round-trip dimensions",
+      "test_files": [
+        "tests/net/netpbm/NetpbmR127ExporterPgmPpmTests.cs"
       ],
       "source_files": []
     }
