@@ -47,6 +47,8 @@ _KNOWN_PURPOSES = {
     "__init__", "parser", "writer", "codec", "stats", "constants",
     "exceptions", "models", "neutral_model", "list_traversal",
     "csv_exporter", "conftest", "analytics",
+    # Package infrastructure
+    "cli", "exporters", "spec",
 }
 
 # Domain module names recognized per format (not orphans)

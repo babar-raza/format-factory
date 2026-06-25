@@ -144,6 +144,13 @@ public sealed class NdjsonDocument
     }
 
     /// <summary>
+    /// Returns all records as typed <see cref="NdjsonRecord"/> wrappers.
+    /// Provides domain-specific field access over the raw <see cref="JsonElement"/> records.
+    /// </summary>
+    public IReadOnlyList<NdjsonRecord> TypedRecords =>
+        Records.Select(r => new NdjsonRecord(r)).ToList();
+
+    /// <summary>
     /// Save the document to a file. UTF-8, no BOM, LF line endings.
     /// </summary>
     public void SaveToFile(string path)
