@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "TC-GOV-PRODUCT-001",
+  "latest_sprint": "FORMAT-FACTORY-TOML-PYTHON-PROPS-20260625",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -17703,7 +17703,787 @@
       "spec_qname": "office:meta",
       "format": "FODP",
       "notes": "Added get_document_metadata() — extracts ODF document-level metadata from office:meta element. 11 pre-defined metadata fields (title, description, subject, creator, date, language, creation_date, generator, editing_cycles, editing_duration, initial_creator). 22 tests pass."
+    },
+    {
+      "entry_id": "PROD-TOML-EXCEPTION-001",
+      "timestamp": "2026-06-24T11:28:41.427538+00:00",
+      "file": "src/python/toml/exceptions.py",
+      "change_type": "feature_addition",
+      "description": "Add TomlInputError class as subclass of TomlError to complete error hierarchy",
+      "sprint": "machinery-product-reconciliation-20260624",
+      "evidence": "tests/python/toml_format/test_toml_gap_closure_batch.py TestErrorClasses passes"
+    },
+    {
+      "entry_id": "PROD-SYLK-IMPORT-001",
+      "timestamp": "2026-06-24T11:28:41.427556+00:00",
+      "file": "tests/python/sylk/test_r115_sylk_write_roundtrip.py",
+      "change_type": "bug_fix",
+      "description": "Fix ModuleNotFoundError during test collection by adding sys.path setup",
+      "sprint": "machinery-product-reconciliation-20260624",
+      "evidence": "1019 SYLK tests pass, all collections succeed"
+    },
+    {
+      "entry_id": "TEST-TOML-EXPECTATION-001",
+      "timestamp": "2026-06-24T11:28:41.427558+00:00",
+      "file": "tests/python/toml_format/test_r261_toml_sprint47_gaps.py",
+      "change_type": "test_fix",
+      "description": "Fix test_exact_5_for_minimal: minimal.toml has 3 top-level scalars not 5",
+      "sprint": "machinery-product-reconciliation-20260624",
+      "evidence": "toml_unique_value_count returns 3 for current minimal.toml (title,version,enabled)"
+    },
+    {
+      "entry_id": "SPEC-QNAME-FIX-20260624-001",
+      "timestamp": "2026-06-24T14:09:20.985311+00:00",
+      "change_type": "spec_qname_correction",
+      "description": "Fix spec_qname values to match qname-registry canonical values (V53 backfill)",
+      "files_changed": [
+        "src/python/abw/spec/document/document.py",
+        "src/python/abw/spec/document/section.py",
+        "src/python/abw/spec/document/paragraph.py",
+        "src/python/fodp/spec/draw/page.py",
+        "src/python/gnumeric/spec/workbook/workbook.py",
+        "src/python/gnumeric/spec/workbook/sheet.py"
+      ],
+      "gap_ref": "GAP-PROD-INV-QNAME-001",
+      "rationale": "spec_qname values used format-prefix (abw:, gnm:, draw:) instead of registry-canonical values (abiword:, gnumeric:, presentation:). V53 validate_spec_authority_class_completeness requires exact match with qname-registry entries.",
+      "test_impact": "tests/supervisor/test_spec_parity_validators_remaining.py::TestValidateSpecAuthorityClassCompleteness::test_repo_scan_passes_after_backfill now PASS"
+    },
+    {
+      "entry_id": "HO-RC004-QNAME-20260624-001",
+      "timestamp": "2026-06-24T14:40:17.695523+00:00",
+      "change_type": "spec_qname_backfill",
+      "description": "Add spec_qname ClassVar to ODS/ODT/SYLK/DIF dataclass models (HO-RC004-QNAME)",
+      "files_changed": [
+        "src/python/ods/ods_parser.py",
+        "src/python/odt/odt_parser.py",
+        "src/python/sylk/sylk_parser.py",
+        "src/python/dif/dif_parser.py"
+      ],
+      "gap_ref": "GAP-PROD-INV-QNAME-001",
+      "rationale": "spec_qname was missing or was a dataclass instance field instead of ClassVar. V53 validator requires class-level attributes.",
+      "test_impact": "V53 test_repo_scan_passes_after_backfill now PASS. 3244 ODS/ODT/SYLK/DIF tests pass."
+    },
+    {
+      "entry_id": "HO-RC002-MODELS-TSV-20260624-001",
+      "timestamp": "2026-06-24T14:40:17.695542+00:00",
+      "change_type": "domain_model_creation",
+      "description": "Create TsvDocument domain model class (HO-RC002-MODELS, PQ-T2-001)",
+      "files_changed": [
+        "src/python/tsv/models.py",
+        "src/python/tsv/__init__.py"
+      ],
+      "gap_ref": "GAP-PROD-INV-MODEL-001",
+      "rationale": "TSV had no typed domain class. TsvDocument wraps tsv_parser neutral model with spec_qname=tsv:record.",
+      "test_impact": "28 tests in test_tsv_document_model.py pass."
+    },
+    {
+      "entry_id": "HO-RC002-MODELS-CSV-20260624-001",
+      "timestamp": "2026-06-24T14:40:17.695544+00:00",
+      "change_type": "domain_model_creation",
+      "description": "Create CsvDocument domain model class (HO-RC002-MODELS, PQ-T2-002)",
+      "files_changed": [
+        "src/python/csv/models.py",
+        "src/python/csv/__init__.py"
+      ],
+      "gap_ref": "GAP-PROD-INV-MODEL-001",
+      "rationale": "CSV had no typed domain class. CsvDocument wraps csv_parser neutral model with spec_qname=csv:record.",
+      "test_impact": "28 tests in test_csv_document_model.py pass."
+    },
+    {
+      "entry_id": "HO-RC003-FODT-EXPORT-20260624-001",
+      "timestamp": "2026-06-24T14:40:17.695545+00:00",
+      "change_type": "exporter_addition",
+      "description": "Add FODT export targets: fodt_to_txt, fodt_to_markdown, fodt_to_html (HO-RC003-FODT-EXPORT)",
+      "files_changed": [
+        "src/python/fodt/exporters.py",
+        "src/python/fodt/__init__.py"
+      ],
+      "gap_ref": "GAP-INV-038",
+      "rationale": "FODT Python had 0 exporters vs .NET 5. Adds TXT/Markdown/HTML parity. 20 tests pass.",
+      "test_impact": "20 tests in test_fodt_exporters.py pass."
+    },
+    {
+      "entry_id": "PQ-T5-002-NET-TSV-SEAL-20260624",
+      "timestamp": "2026-06-24T14:40:17.695547+00:00",
+      "change_type": "api_consistency",
+      "description": "Seal .NET TsvDocument class (PQ-T5-002)",
+      "files_changed": [
+        "src/net/tsv/TsvDocument.cs"
+      ],
+      "gap_ref": "GAP-PROD-INV-QNAME-001",
+      "rationale": "TsvDocument was not sealed, inconsistent with CsvDocument, FodsDocument, NdjsonDocument, ZstDocument.",
+      "test_impact": "N/A (C# test suite not run in this environment)"
+    },
+    {
+      "entry_id": "HO-RC002-MODELS-NDJSON",
+      "classification": "PRODUCT_SOURCE",
+      "sprint": "FORMAT-FACTORY-MACHINERY-REPAIR",
+      "product": "NDJSON Python",
+      "gap_ledger_ref": "HO-RC002-MODELS",
+      "capability_refs": [
+        "foss_python_products.NDJSON.domain_model"
+      ],
+      "api_symbols": [
+        "NdjsonDocument",
+        "NdjsonDocument.from_file",
+        "NdjsonDocument.records",
+        "NdjsonDocument.record_count"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ndjson/models.py",
+          "sha256": "3027a57cbcdd8f7b24cd5d1ddbd28f6dfd32d334d5cd011a3f3b86eed4348ddd"
+        }
+      ],
+      "test_references": [
+        "tests/python/ndjson/test_ndjson_document_model.py"
+      ],
+      "notes": "NdjsonDocument domain model wrapping load_ndjson() list result. spec_qname=ndjson:record."
+    },
+    {
+      "entry_id": "HO-RC002-MODELS-GNUMERIC",
+      "classification": "PRODUCT_SOURCE",
+      "sprint": "FORMAT-FACTORY-MACHINERY-REPAIR",
+      "product": "GnumericDocument Python",
+      "gap_ledger_ref": "HO-RC002-MODELS",
+      "api_symbols": [
+        "GnumericDocument",
+        "GnumericDocument.from_file",
+        "GnumericDocument.spec_qname"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/gnumeric/models.py",
+          "sha256": "3dd8a171246bd613df02dc4515f97909ccdc1226c3f3ce3a17053334c65820eb"
+        }
+      ],
+      "test_references": [
+        "tests/python/gnumeric/test_gnumeric_document_model.py"
+      ],
+      "notes": "GnumericDocument domain model. spec_qname=gnumeric:workbook."
+    },
+    {
+      "entry_id": "HO-RC002-MODELS-TOML",
+      "classification": "PRODUCT_SOURCE",
+      "sprint": "FORMAT-FACTORY-MACHINERY-REPAIR",
+      "product": "TomlDocument Python",
+      "gap_ledger_ref": "HO-RC002-MODELS",
+      "api_symbols": [
+        "TomlDocument",
+        "TomlDocument.from_file",
+        "TomlDocument.spec_qname"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/toml/models.py",
+          "sha256": "991a733387fd8242ddb24e22623ced61612f505fe6eac6bde5a0b9710f23b8c2"
+        }
+      ],
+      "test_references": [
+        "tests/python/toml/test_toml_document_model.py"
+      ],
+      "notes": "TomlDocument domain model. spec_qname=toml:table."
+    },
+    {
+      "entry_id": "HO-RC002-MODELS-ABW",
+      "classification": "PRODUCT_SOURCE_ADDITION",
+      "origin_commit": "uncommitted_ff_machinery_repair_20260624_ext",
+      "product": "ABW Python FOSS",
+      "capability_refs": [
+        "GAP-PROD-INV-MODEL-001"
+      ],
+      "api_symbols": [
+        "AbwDocument"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/abw/models.py",
+          "state": "added",
+          "sha256": "03203e7287c5812ff73d74812c887b826508ba8afa588a726e03181e79d828c2"
+        }
+      ],
+      "format": "ABW",
+      "gap_ledger_ref": "GAP-PROD-INV-MODEL-001"
+    },
+    {
+      "entry_id": "HO-RC002-MODELS-ZST",
+      "classification": "PRODUCT_SOURCE_ADDITION",
+      "origin_commit": "uncommitted_ff_machinery_repair_20260624_ext",
+      "product": "ZST Python FOSS",
+      "capability_refs": [
+        "GAP-PROD-INV-MODEL-001"
+      ],
+      "api_symbols": [
+        "ZstDocument"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/zst/models.py",
+          "state": "added",
+          "sha256": "2759452e9e560caa4133a2d5a64d717f03fa9ecba91c16e2a60263d176c420b1"
+        }
+      ],
+      "format": "ZST",
+      "gap_ledger_ref": "GAP-PROD-INV-MODEL-001"
+    },
+    {
+      "entry_id": "HO-RC003-WRITER-ODT",
+      "classification": "PRODUCT_SOURCE_ADDITION",
+      "origin_commit": "uncommitted_ff_domain_models_ext_20260624",
+      "product": "ODT Python FOSS",
+      "capability_refs": [
+        "GAP-PROD-INV-WRITE-001"
+      ],
+      "api_symbols": [
+        "write_odt",
+        "odt_from_text",
+        "odt_from_model"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/odt/odt_writer.py",
+          "state": "added",
+          "sha256": "1d370a1391ad39f7c0b4e480f6f166d6ac8e747f1e2a1c232703b8cd1604ebb9"
+        }
+      ],
+      "format": "ODT",
+      "gap_ledger_ref": "GAP-PROD-INV-WRITE-001"
+    },
+    {
+      "entry_id": "HO-QNAME-ODS-ROW-001",
+      "timestamp": "2026-06-24T22:30:00Z",
+      "format": "ods",
+      "track": "python-foss",
+      "change_type": "bug_fix",
+      "file_path": "src/python/ods/ods_parser.py",
+      "description": "Fix OdsRow.spec_qname from instance field to ClassVar[str] for V53 compliance",
+      "gap_ledger_ref": "GAP-PROD-INV-QNAME-001",
+      "spec_fact_ref": "FACT-ODS-001",
+      "tests": [
+        "tests/python/ods/test_ods_spec_qname.py"
+      ]
+    },
+    {
+      "entry_id": "HO-QNAME-SYLK-DIF-001",
+      "timestamp": "2026-06-24T22:30:00Z",
+      "format": "sylk_dif",
+      "track": "python-foss",
+      "change_type": "bug_fix",
+      "file_path": "installed-packages-synced",
+      "description": "Sync SYLK/DIF installed packages to pick up ClassVar spec_qname already in source",
+      "gap_ledger_ref": "GAP-PROD-INV-QNAME-001",
+      "tests": [
+        "tests/python/sylk/test_sylk_spec_qname.py",
+        "tests/python/dif/test_dif_spec_qname.py"
+      ]
+    },
+    {
+      "entry_id": "HO-DOGFOOD-ODT-001",
+      "timestamp": "2026-06-24T22:30:00Z",
+      "format": "odt",
+      "track": "python-foss",
+      "change_type": "example",
+      "file_path": "examples/python/odt/dogfood_odt_roundtrip.py",
+      "description": "ODT dogfood: parse + write round-trip using new odt_writer.py",
+      "gap_ledger_ref": "GAP-PROD-INV-WRITE-001",
+      "tests": [
+        "examples/python/odt/dogfood_odt_roundtrip.py"
+      ]
+    },
+    {
+      "entry_id": "HO-API-ALLCLEAN-001",
+      "timestamp": "2026-06-24T23:50:00Z",
+      "format": "ALL_PYTHON",
+      "track": "python-foss",
+      "change_type": "bug_fix",
+      "file_path": "src/python/*/__init__.py (18 files)",
+      "description": "Fix dynamic __all__ in 18 __init__.py files to exclude ModuleType objects and typing names (Any, ClassVar, Path, dataclass, field). Closes GAP-PROD-INV-API-001.",
+      "gap_ledger_ref": "GAP-PROD-INV-API-001",
+      "tests": [
+        "smoke: 70 tests pass after patch"
+      ]
+    },
+    {
+      "entry_id": "HO-FODT-EXPORTER-GAPS-001",
+      "timestamp": "2026-06-24T23:50:00Z",
+      "format": "fodt",
+      "track": "python-foss",
+      "change_type": "gap_closure",
+      "file_path": "reports/capability-layer/gap-ledger.json",
+      "description": "Closed 3 stale FODT exporter gaps (FODT_TO_MARK, FODT_TO_HTML, FLUSH_LIST) - tests already existed in test_fodt_exporters.py",
+      "gap_ledger_ref": "GAP-FODT-FOSS-FODT_TO_MARK-001",
+      "tests": [
+        "tests/python/fodt/test_fodt_exporters.py"
+      ]
+    },
+    {
+      "entry_id": "HO-QNAME-NDJSON-RECORD-001",
+      "timestamp": "2026-06-25T04:00:00Z",
+      "change_type": "spec_qname_backfill",
+      "description": "Added NdjsonRecord authority-only class with spec_qname=ndjson:record to ndjson_codec.py (TC-QHARD-POST-002)",
+      "files_changed": [
+        "src/python/ndjson/ndjson_codec.py"
+      ],
+      "gap_ref": "TC-QHARD-POST-002",
+      "rationale": "V53 qname compliance: NdjsonRecord class needed for ndjson:record canonical QName mapping. Authority-only, no behavioral implementation.",
+      "source_files": [
+        {
+          "path": "src/python/ndjson/ndjson_codec.py",
+          "state": "present",
+          "sha256": "9eb64126acb5c89e2375913060bffc43cd61bcc6d226eb2e6ef3b02313169125"
+        }
+      ],
+      "test_files": [
+        "tests/python/ndjson/test_ndjson_spec_qname.py"
+      ],
+      "test_count": 12,
+      "format": "ndjson",
+      "track": "python-foss"
+    },
+    {
+      "entry_id": "HO-QNAME-XCF-LAYER-NAMES-001",
+      "timestamp": "2026-06-25T04:00:00Z",
+      "change_type": "spec_qname_backfill",
+      "description": "Added real XCF layer name extraction via _read_xcf_string helper in xcf_parser.py and xcf_image_metrics.py (GAP-XCF-LAYER-NAMES)",
+      "files_changed": [
+        "src/python/xcf/xcf_parser.py",
+        "src/python/xcf/xcf_image_metrics.py"
+      ],
+      "gap_ref": "GAP-XCF-LAYER-NAMES",
+      "rationale": "xcf_layer_name_list previously returned synthetic positional names. Now reads real XCF layer names from binary format using uint32 big-endian length-prefixed string parsing.",
+      "source_files": [
+        {
+          "path": "src/python/xcf/xcf_parser.py",
+          "state": "present",
+          "sha256": "b2655bd12db36eb650b6c3d5e2f70e3c7eb27fc92e0105833d079f3921cbefb2"
+        },
+        {
+          "path": "src/python/xcf/xcf_image_metrics.py",
+          "state": "present",
+          "sha256": "23d16e707f77ca5eb8f60ecb799cbcbc42a76a2c3f45df65e403dfc4028c43bf"
+        }
+      ],
+      "test_files": [
+        "tests/python/xcf/test_xcf_layer_names_real.py"
+      ],
+      "test_count": 18,
+      "format": "xcf",
+      "track": "python-foss"
+    },
+    {
+      "entry_id": "R117-GOVERNED-DOTNET-NETPBM-DOCUMENT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R117",
+      "skill": "add-dotnet-object-model-feature",
+      "product": "Netpbm .NET Commercial",
+      "capability_refs": [
+        "commercial_net_products.Netpbm.dotnet_status.document_model"
+      ],
+      "api_symbols": [
+        "NetpbmDocument",
+        "NetpbmDocument.Load",
+        "NetpbmDocument.LoadStream",
+        "NetpbmDocument.FromImage",
+        "NetpbmDocument.Save",
+        "NetpbmDocument.GetPixel",
+        "NetpbmDocument.GetPixelColor",
+        "NetpbmDocument.ToAsciiString",
+        "NetpbmDocument.ToBinaryBytes"
+      ],
+      "api_behavior": "NetpbmDocument sealed class wrapping NetpbmImage. Load(path), LoadStream, FromImage factory methods. Save, GetPixel, GetPixelColor, ToAsciiString, ToBinaryBytes. Closes GAP-PROD-INV-NETPBM-001.",
+      "gap_ledger_ref": "GAP-PROD-INV-NETPBM-001",
+      "changed_files": [
+        "src/net/netpbm/NetpbmDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR117DocumentTests.cs"
+      ],
+      "test_count": 12,
+      "source_files": [
+        {
+          "path": "src/net/netpbm/NetpbmDocument.cs",
+          "state": "present",
+          "sha256": "847977f1a4d3481e7394ec643ce7ee8f2d2d4f02445a44a02628e75938402d39"
+        }
+      ],
+      "format": "Netpbm"
+    },
+    {
+      "entry_id": "REALIGN-2026-06-24-001",
+      "timestamp": "2026-06-24T18:36:43.593162Z",
+      "format": "odt",
+      "change_type": "writer_added",
+      "files_changed": [
+        "src/python/odt/odt_writer.py"
+      ],
+      "description": "Added write_odt(), odt_from_text(), odt_from_model() to ODT format",
+      "gap_ledger_ref": "GAP-PROD-INV-WRITE-001",
+      "tests_added": [
+        "tests/python/odt/test_odt_writer.py (19 tests)"
+      ],
+      "track": "python-foss"
+    },
+    {
+      "entry_id": "REALIGN-2026-06-24-002",
+      "timestamp": "2026-06-24T18:36:43.593224Z",
+      "format": "fodt",
+      "change_type": "exporter_added",
+      "files_changed": [
+        "src/python/fodt/exporters.py"
+      ],
+      "description": "Added fodt_to_txt(), fodt_to_markdown(), fodt_to_html() exporters",
+      "gap_ledger_ref": "GAP-INV-038",
+      "tests_added": [
+        "tests/python/fodt/test_fodt_exporters.py (20 tests)"
+      ],
+      "track": "python-foss"
+    },
+    {
+      "entry_id": "REALIGN-2026-06-24-003",
+      "timestamp": "2026-06-24T18:36:43.593850Z",
+      "format": "multi",
+      "change_type": "domain_model_added",
+      "files_changed": [
+        "src/python/csv/models.py",
+        "src/python/gnumeric/models.py",
+        "src/python/ndjson/models.py",
+        "src/python/toml/models.py",
+        "src/python/tsv/models.py",
+        "src/python/abw/models.py",
+        "src/python/zst/models.py"
+      ],
+      "description": "Domain model classes added: CsvDocument, GnumericDocument, NdjsonDocument, TomlDocument, TsvDocument, AbwDocument, ZstDocument",
+      "gap_ledger_ref": "GAP-PROD-INV-MODEL-001",
+      "tests_added": [
+        "tests/python/*/test_*_document_model.py (133 tests)"
+      ],
+      "track": "python-foss"
+    },
+    {
+      "entry_id": "R117-GOVERNED-DOTNET-NDJSON-DOCUMENT-QUERY-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R117",
+      "skill": "add-dotnet-object-model-feature",
+      "product": "NDJSON .NET Commercial",
+      "capability_refs": [
+        "commercial_net_products.NDJSON.dotnet_status.document_query"
+      ],
+      "api_symbols": [
+        "NdjsonDocument.GetAllKeys",
+        "NdjsonDocument.Filter",
+        "NdjsonDocument.GetFieldValues",
+        "NdjsonDocument.IsUniformSchema"
+      ],
+      "api_behavior": "NdjsonDocument inspection APIs: GetAllKeys returns sorted unique top-level keys; Filter returns new NdjsonDocument matching predicate; GetFieldValues returns string values for a key; IsUniformSchema checks if all records have same schema.",
+      "gap_ledger_ref": null,
+      "changed_files": [
+        "src/net/ndjson/NdjsonDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/ndjson/NdjsonR117DocumentQueryTests.cs"
+      ],
+      "test_count": 16,
+      "source_files": [
+        {
+          "path": "src/net/ndjson/NdjsonDocument.cs",
+          "state": "present",
+          "sha256": "07da9a258dc4e18626985b534686cdbf516ab2bc1dbe48cce567d3a4af2c4d8a"
+        }
+      ],
+      "format": "NDJSON"
+    },
+    {
+      "entry_id": "R117-GOVERNED-DOTNET-TSV-DOCUMENT-QUERY-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R117",
+      "skill": "add-dotnet-object-model-feature",
+      "product": "TSV .NET Commercial",
+      "capability_refs": [
+        "commercial_net_products.TSV.dotnet_status.document_query"
+      ],
+      "api_symbols": [
+        "TsvDocument.IsEmpty",
+        "TsvDocument.GetCellValue",
+        "TsvDocument.GetColumnValues",
+        "TsvDocument.Filter"
+      ],
+      "api_behavior": "TsvDocument inspection: IsEmpty property; GetCellValue(row, col) with bounds check; GetColumnValues(colIndex) with null for short rows; Filter(predicate) returns new TsvDocument preserving headers.",
+      "gap_ledger_ref": null,
+      "changed_files": [
+        "src/net/tsv/TsvDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/tsv/TsvR117DocumentQueryTests.cs"
+      ],
+      "test_count": 15,
+      "source_files": [
+        {
+          "path": "src/net/tsv/TsvDocument.cs",
+          "state": "present",
+          "sha256": "82d6e95c97f2ea236fd737b0fe40185cbd45a45edd655559487b2f818adc8870"
+        }
+      ],
+      "format": "TSV"
+    },
+    {
+      "entry_id": "R117-GOVERNED-DOTNET-ZST-DOCUMENT-PROPS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R117",
+      "skill": "add-dotnet-object-model-feature",
+      "product": "ZST .NET Commercial",
+      "capability_refs": [
+        "commercial_net_products.ZST.dotnet_status.document_inspection"
+      ],
+      "api_symbols": [
+        "ZstDocument.HasMultipleFrames",
+        "ZstDocument.FileSizeKB",
+        "ZstDocument.IsValid",
+        "ZstDocument.SizeLabel"
+      ],
+      "api_behavior": "Computed properties: HasMultipleFrames (FrameCount>1); FileSizeKB (FileSizeBytes/1024); IsValid (MagicValid&&FrameCount>0); SizeLabel (empty/tiny/small/medium/large thresholds).",
+      "gap_ledger_ref": null,
+      "changed_files": [
+        "src/net/zst/ZstDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/zst/ZstR117DocumentPropertiesTests.cs"
+      ],
+      "test_count": 18,
+      "source_files": [
+        {
+          "path": "src/net/zst/ZstDocument.cs",
+          "state": "present",
+          "sha256": "55e20794e13d6dd2731816a5856f027f4463fb67f9d2b8265fae4e4908be2cd8"
+        }
+      ],
+      "format": "ZST"
+    },
+    {
+      "entry_id": "R117-GOVERNED-DOTNET-CSV-DOCUMENT-QUERY-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R117",
+      "skill": "add-dotnet-object-model-feature",
+      "product": "CSV .NET Commercial",
+      "capability_refs": [
+        "commercial_net_products.CSV.dotnet_status.document_query"
+      ],
+      "api_symbols": [
+        "CsvDocument.IsEmpty",
+        "CsvDocument.GetCellValue",
+        "CsvDocument.Filter",
+        "CsvDocument.HasColumn"
+      ],
+      "api_behavior": "CsvDocument inspection: IsEmpty; GetCellValue(row, col) null for out-of-bounds; Filter(predicate) new doc preserving headers; HasColumn(name) case-sensitive check.",
+      "gap_ledger_ref": null,
+      "changed_files": [
+        "src/net/csv/CsvDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/csv/CsvR117DocumentQueryTests.cs"
+      ],
+      "test_count": 15,
+      "source_files": [
+        {
+          "path": "src/net/csv/CsvDocument.cs",
+          "state": "present",
+          "sha256": "cd23e2d9a2adc7203d79a9fad4b74104eac459f95073fe08cc15c6f79749c283"
+        }
+      ],
+      "format": "CSV"
+    },
+    {
+      "entry_id": "R117-GOVERNED-DOTNET-FODS-XML-EXPORT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "FORMAT-FACTORY-FODS-XML-EXPORT-20260625",
+      "skill": "add-dotnet-api",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.export_xml"
+      ],
+      "api_symbols": [
+        "ExportSheetToXml"
+      ],
+      "api_behavior": "Exports FodsSheet as simple XML table string. Root element is <table name=\"...\"> with <row> and <cell> children. Empty cells produce <cell/>. Cell text is XML-escaped.",
+      "changed_files": [
+        "src/net/fods/FodsDocumentExporter.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR117XmlExportTests.cs"
+      ],
+      "test_count": 11,
+      "source_files": [
+        {
+          "path": "src/net/fods/FodsDocumentExporter.cs",
+          "state": "present",
+          "sha256": "0d83239c5ba5c04087a6518a266f300003effc3a5d255ea25a5dfb76c5459386"
+        }
+      ],
+      "format": "FODS"
+    },
+    {
+      "entry_id": "R118-GOVERNED-DOTNET-FODS-TSV-EXPORT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "FORMAT-FACTORY-FODS-TSV-EXPORT-20260625",
+      "skill": "add-dotnet-api",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.export_tsv"
+      ],
+      "api_symbols": [
+        "ExportSheetToTsv"
+      ],
+      "api_behavior": "Exports FodsSheet as TSV string. Each row becomes a line, cells are tab-separated. Tabs and newlines in cell values are replaced with spaces.",
+      "changed_files": [
+        "src/net/fods/FodsDocumentExporter.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR118TsvExportTests.cs"
+      ],
+      "test_count": 9,
+      "source_files": [
+        {
+          "path": "src/net/fods/FodsDocumentExporter.cs",
+          "state": "present",
+          "sha256": "b40e022f344d9e577663392ce88706ce5457d1907655a64566ba82c1dfc31769"
+        }
+      ],
+      "format": "FODS"
+    },
+    {
+      "entry_id": "R118-GOVERNED-DOTNET-NETPBM-DOCUMENT-PROPS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "FORMAT-FACTORY-NETPBM-DOCUMENT-PROPS-20260625",
+      "skill": "add-dotnet-api",
+      "product": "NETPBM .NET",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.document_properties"
+      ],
+      "api_symbols": [
+        "IsColor",
+        "IsGrayscale",
+        "IsBitmap",
+        "AspectRatio",
+        "IsSquare"
+      ],
+      "api_behavior": "NetpbmDocument computed properties: IsColor (PPM P3/P6), IsGrayscale (PGM P2/P5), IsBitmap (PBM P1/P4), AspectRatio (Width/Height), IsSquare (Width==Height).",
+      "changed_files": [
+        "src/net/netpbm/NetpbmDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR118DocumentPropertiesTests.cs"
+      ],
+      "test_count": 19,
+      "source_files": [
+        {
+          "path": "src/net/netpbm/NetpbmDocument.cs",
+          "state": "present",
+          "sha256": "f43e808cfeff28f43134aa855bd0499663434adbc5ba8de3701b1987ae963aca"
+        }
+      ],
+      "format": "NETPBM"
+    },
+    {
+      "entry_id": "R118-GOVERNED-PYTHON-ZST-DOCUMENT-PROPS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "FORMAT-FACTORY-ZST-PYTHON-PROPS-20260625",
+      "skill": "add-python-api",
+      "product": "ZST Python",
+      "capability_refs": [
+        "foss_python_products.ZST.python_status.document_properties"
+      ],
+      "api_symbols": [
+        "has_multiple_frames",
+        "is_empty",
+        "compressed_size_kb",
+        "compression_ratio"
+      ],
+      "api_behavior": "ZstDocument computed properties: has_multiple_frames (frame_count>1), is_empty (frame_count==0), compressed_size_kb (compressed_size/1024), compression_ratio (decompressed/compressed, 0.0 if compressed_size==0).",
+      "changed_files": [
+        "src/python/zst/models.py"
+      ],
+      "test_files": [
+        "tests/python/zst/test_zst_document_computed_props.py"
+      ],
+      "test_count": 16,
+      "source_files": [
+        {
+          "path": "src/python/zst/models.py",
+          "state": "present",
+          "sha256": "e1d192fe8120f6011d1ef721d979ddd04dd4d05f40bcdcb9c34af80b630d070b"
+        }
+      ],
+      "format": "ZST"
+    },
+    {
+      "entry_id": "R118-GOVERNED-PYTHON-TOML-DOCUMENT-PROPS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "FORMAT-FACTORY-TOML-PYTHON-PROPS-20260625",
+      "skill": "add-python-api",
+      "product": "TOML Python",
+      "capability_refs": [
+        "foss_python_products.TOML.python_status.document_properties"
+      ],
+      "api_symbols": [
+        "is_empty",
+        "has_nested_tables",
+        "has_arrays",
+        "scalar_key_count"
+      ],
+      "api_behavior": "TomlDocument computed properties: is_empty (key_count==0), has_nested_tables (any dict value), has_arrays (any list value), scalar_key_count (non-dict/list values).",
+      "changed_files": [
+        "src/python/toml/models.py"
+      ],
+      "test_files": [
+        "tests/python/toml/test_toml_document_computed_props.py"
+      ],
+      "test_count": 16,
+      "source_files": [
+        {
+          "path": "src/python/toml/models.py",
+          "state": "present",
+          "sha256": "3d7dff60c4e5909a1a64254ead24eeed3f9f4bf295e82f5fc679abb5448f093b"
+        }
+      ],
+      "format": "TOML"
+    },
+    {
+      "entry_id": "PC-TOML-GAP-CLOSURE-R120",
+      "date": "2026-06-25",
+      "sprint_id": "toml-gap-closure-r120-20260625",
+      "work_type": "roundtrip_test",
+      "format_id": "toml",
+      "files_changed": [
+        "tests/python/toml_format/test_r120_toml_gap_closure.py",
+        "tests/python/toml_format/test_r261_toml_sprint47_gaps.py"
+      ],
+      "gaps_closed": [
+        "GAP-TOML-FOSS-HAS_ARRAYS-001",
+        "GAP-TOML-FOSS-HAS_NESTED_T-001",
+        "GAP-TOML-FOSS-IS_EMPTY-001",
+        "GAP-TOML-FOSS-SCALAR_KEY_C-001",
+        "GAP-TOML-FOSS-TOML_HAS_NES-001",
+        "GAP-TOML-FOSS-TOML_SCALAR_-001"
+      ],
+      "test_count": 31,
+      "notes": "test_r120 adds 31 tests for toml_has_arrays, toml_has_nested_tables, toml_scalar_key_count, toml_is_empty. test_r261 corrected test_exact_5 -> test_exact_3 (minimal.toml has 3 top-level scalars)"
     }
   ],
-  "total_entries": 959
+  "total_entries": 992,
+  "changes": [
+    {
+      "entry_id": "PC-FODP-EXPORT-20260625",
+      "date": "2026-06-25",
+      "sprint_id": "ff-fodp-export-20260625",
+      "work_type": "export_function",
+      "format_id": "fodp",
+      "files_changed": [
+        "src/python/fodp/fodp_codec.py",
+        "src/python/fodp/__init__.py",
+        "tests/python/fodp/test_fodp_export_functions.py"
+      ],
+      "gaps_closed": [],
+      "test_count": 18,
+      "notes": "Added export_to_txt, export_to_csv, export_to_json to FODP. Enables FODP format to advance from gates 1-7 to 1-10. 18 tests PASS."
+    }
+  ]
 }

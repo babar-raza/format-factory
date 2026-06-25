@@ -18,6 +18,9 @@ from .fodp_codec import (
     extract_text,
     get_page_metadata,
     get_document_metadata,
+    export_to_txt,
+    export_to_csv,
+    export_to_json,
 )
 from .presentation_document import *  # noqa: F401, F403
 
@@ -29,6 +32,9 @@ __all__ = [
     "extract_text",
     "get_page_metadata",
     "get_document_metadata",
+    "export_to_txt",
+    "export_to_csv",
+    "export_to_json",
     "fodp_all_slides_have_text",
     "fodp_average_shapes_per_slide",
     "fodp_average_text_per_slide",

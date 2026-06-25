@@ -145,6 +145,60 @@ def get_document_metadata(source: str | bytes | Path) -> dict[str, Any]:
 get_document_metadata.spec_qname = "office:meta"  # type: ignore[attr-defined]
 
 
+def export_to_txt(source: str | bytes | Path) -> str:
+    """Export all slide text content as a plain-text string.
+
+    Each text item is joined with a newline. Returns empty string if no text.
+
+    Args:
+        source: Path to .fodp file, bytes, or XML string.
+
+    Returns:
+        Plain text string with all extracted text from all slides.
+    """
+    texts = extract_text(source)
+    return "\n".join(texts)
+
+
+def export_to_csv(source: str | bytes | Path) -> str:
+    """Export slide metadata as a CSV string.
+
+    Columns: slide_index, slide_name, shape_count, text_snippet (first 80 chars).
+    Header row included.
+
+    Args:
+        source: Path to .fodp file, bytes, or XML string.
+
+    Returns:
+        CSV string with slide data.
+    """
+    import io, csv as _csv
+    model = load(source)
+    buf = io.StringIO()
+    writer = _csv.writer(buf)
+    writer.writerow(["slide_index", "slide_name", "shape_count", "text_snippet"])
+    for i, page in enumerate(model.get("pages", [])):
+        name = page.get("name", f"Slide {i + 1}")
+        shape_count = page.get("shape_count", 0)
+        texts = page.get("text_content", [])
+        snippet = " ".join(texts)[:80]
+        writer.writerow([i, name, shape_count, snippet])
+    return buf.getvalue()
+
+
+def export_to_json(source: str | bytes | Path) -> str:
+    """Export the FODP model dict as a JSON string.
+
+    Args:
+        source: Path to .fodp file, bytes, or XML string.
+
+    Returns:
+        JSON string representation of the model.
+    """
+    import json
+    return json.dumps(load(source), ensure_ascii=False)
+
+
 # ---------------------------------------------------------------------------
 # Internal helpers
 # ---------------------------------------------------------------------------
