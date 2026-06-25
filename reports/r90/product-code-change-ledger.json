@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s95-dotnet-deepening-20260626",
+  "latest_sprint": "ff-sprint-s96-dotnet-deepening-20260626",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -19195,6 +19195,42 @@
       "change_type": "test_added",
       "evidence_path": "tests/net/netpbm/NetpbmR129BinaryRoundtripTests.cs",
       "description": "R129: 11 tests for ToBinaryBytes round-trip pixel accuracy \u2014 PGM P2\u2192P5, PPM P3\u2192P6, dimensions, pixel values, MaxValue preserved"
+    },
+    {
+      "entry_id": "PC-FODS-R128",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s96-dotnet-deepening-20260626",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.sheet_rows_model"
+      ],
+      "change_type": "test_added",
+      "evidence_path": "tests/net/fods/FodsR128SheetRowsModelTests.cs",
+      "description": "R128: 10 tests for FodsSheet.Rows model hierarchy \u2014 FodsRow.Cells, FodsCell.Value, IsCovered via iteration"
+    },
+    {
+      "entry_id": "PC-FODT-R129",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s96-dotnet-deepening-20260626",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.markdown_consistency"
+      ],
+      "change_type": "test_added",
+      "evidence_path": "tests/net/fodt/FodtR129ExportToMarkdownConsistencyTests.cs",
+      "description": "R129: 10 tests for ExportToMarkdown consistency \u2014 all paragraphs present, order preserved, consistent output, after-replace, newlines"
+    },
+    {
+      "entry_id": "PC-NETPBM-R130",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s96-dotnet-deepening-20260626",
+      "product": "Netpbm .NET",
+      "capability_refs": [
+        "commercial_net_products.Netpbm.dotnet_status.brightness_map"
+      ],
+      "change_type": "test_added",
+      "evidence_path": "tests/net/netpbm/NetpbmR130BrightnessMapTests.cs",
+      "description": "R130: 11 tests for GetBrightnessMap \u2014 length=PixelCount, [0,1] range, all-white=1.0, all-black=0.0, mid-gray\u22480.5, PPM length, dogfood vs GetBrightness"
     }
   ],
   "total_entries": 1006,
