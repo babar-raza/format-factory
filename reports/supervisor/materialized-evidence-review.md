@@ -1,11 +1,11 @@
 # Materialized Evidence Review
-# Run ID: ff-sprint-s61-dotnet-r117r118-20260626
-# Sprint: ff-sprint-s61-dotnet-r117r118-20260626
-# Generated: 2026-06-25T20:47:16.859140
+# Run ID: ff-sprint-s62-memory-sync-20260626
+# Sprint: ff-sprint-s62-memory-sync-20260626
+# Generated: 2026-06-25T20:53:18.034478
 
 ## Materialization Summary
 
-- Artifacts verified: 6
+- Artifacts verified: 1
 - Artifacts missing: 0
 - Source changes captured: 1
 
@@ -15,7 +15,7 @@
 |------|-------|------|
 
 ## Manifest Location
-- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\materialized\ff-sprint-s61-dotnet-r117r118-20260626\materialized-evidence-manifest.yaml
+- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\materialized\ff-sprint-s62-memory-sync-20260626\materialized-evidence-manifest.yaml
 
 ## Patch Location
-- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\materialized\ff-sprint-s61-dotnet-r117r118-20260626\source-change-diffs.patch
+- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\materialized\ff-sprint-s62-memory-sync-20260626\source-change-diffs.patch

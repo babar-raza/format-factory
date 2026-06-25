@@ -1,0 +1,87 @@
+---
+task_id: TC-SGF-005
+stable_semantic_key: skill_governance_forensic_174_adhoc_tools_registration
+mission_id: SKILL-GOV-FORENSIC-20260625
+plan_id: master-plan-section-62
+finding_ids:
+  - ADHOC_174_OF_181_TOOLS_UNREGISTERED
+  - GOVERNANCE_MACHINERY_NOT_SELF_GOVERNING
+agent_types:
+  - CLAUDE_CODE
+  - SUPERVISOR
+sprint_types:
+  - GOVERNANCE_MACHINERY
+title: "Register top-10 critical tools/supervisor/ scripts in skill-registry.yaml"
+task_type: REGISTRY_REPAIR
+objective: >
+  174 of 181 tools/supervisor/ Python scripts are classified AD_HOC (not registered
+  as skill implementations). This means the governance machinery that runs governance
+  is itself ungoverned — including autonomous_cycle.py, governance_validators.py,
+  check_continuation.py, etc.
+  This taskcard: (a) identifies the 10 most critical unregistered tools, (b) adds
+  them as implementation_paths in skill-registry.yaml, (c) re-runs detect_ad_hoc_execution.py
+  to confirm classification changes.
+  Note: Not all 174 need registration — many are legitimately internal helpers.
+  Only tools that implement a named, reusable, governed skill need registration.
+current_state: >
+  governance_validators.py, autonomous_cycle.py, check_continuation.py, grade_declared_work.py,
+  sprint_executor.py, etc. are all AD_HOC.
+  governed_count: 7 (only meta-governance tools: build_capability_routes.py,
+  detect_ad_hoc_execution.py, run_skill_idempotency.py, scan_residual_bypasses.py,
+  skill_inventory.py, sync_skill_command_registry.py, validate_skill_contracts.py)
+expected_state: >
+  The 10 most critical tools are registered as implementation_paths in skill-registry.yaml.
+  governed_count increases from 7 to ≥15.
+  detect_ad_hoc_execution.py re-run confirms new counts.
+priority: LOW
+dependencies: []
+required_capabilities:
+  - read_skill_registry
+  - identify_unregistered_critical_tools
+  - add_implementation_paths_to_registry
+skill_ids:
+  - normalize-skill-registry
+  - inventory-skills
+command_ids:
+  - /normalize-skill-registry
+  - /inventory-skills
+skill_creation_required: false
+allowed_paths:
+  - .supervisor/skill-registry.yaml
+  - .supervisor/ad-hoc-execution-inventory.yaml
+  - .supervisor/skill-inventory.yaml
+forbidden_paths:
+  - src/
+  - tools/supervisor/*.py  # no changes to the Python files themselves
+implementation_steps:
+  - "1. Run detect_ad_hoc_execution.py to confirm current baseline (174 AD_HOC, 7 GOVERNED)"
+  - "2. Identify 10 most critical unregistered tools by function:"
+  - "   - autonomous_cycle.py → skill: autonomous-loop"
+  - "   - governance_validators.py → skill: validate-skill-contracts (extend)"
+  - "   - check_continuation.py → skill: autonomous-loop (support tool)"
+  - "   - grade_declared_work.py → skill: post-sprint-audit (support tool)"
+  - "   - sprint_executor.py → skill: autonomous-loop (runner)"
+  - "   - write_plan_lock.py → skill: execution-handoff (support tool)"
+  - "   - scan_residual_bypasses.py → already GOVERNED"
+  - "   - build_declaration_review_package.py → skill: build-evidence-bundle"
+  - "   - gap_ledger_to_work_items.py → skill: select-poc-gap"
+  - "   - governance_validator_runner.py → skill: validate-skill-contracts (extend)"
+  - "3. Add each as implementation_path in the matching skill's registry entry"
+  - "4. Re-run detect_ad_hoc_execution.py and confirm governed_count ≥ 15"
+  - "5. Re-run validate-skill-contracts to confirm no regressions"
+focused_verification:
+  - governed_count_increases_to_at_least_15
+  - skill_contract_validation_still_passes
+  - no_new_skill_created_unnecessarily
+evidence_requirements:
+  - updated_ad_hoc_execution_inventory_yaml
+  - updated_skill_inventory_yaml
+  - skill_contract_validation_results_pass
+current_proof_level: 0
+target_proof_level: 3
+rollback: revert skill-registry.yaml changes; re-run detect_ad_hoc_execution.py
+status: OPEN
+closeout_rules:
+  - governed_count ≥ 15
+  - skill contract validation passes
+  - no regressions

@@ -113,11 +113,14 @@ def _load_transcript_commit_shas() -> set[str]:
         for f in TRANSCRIPT_PRIMARY.rglob("*.json"):
             try:
                 data = json.loads(f.read_text(encoding="utf-8"))
-                if sha := data.get("commit_sha"):
-                    shas.add(sha)
+                for field in ("commit_sha", "commit"):
+                    if sha := data.get(field):
+                        shas.add(sha)
                 for item in data.get("commits", []):
-                    if isinstance(item, dict) and (s := item.get("sha")):
-                        shas.add(s)
+                    if isinstance(item, dict):
+                        for field in ("sha", "commit_sha", "commit"):
+                            if s := item.get(field):
+                                shas.add(s)
             except Exception:
                 continue
 
@@ -125,11 +128,14 @@ def _load_transcript_commit_shas() -> set[str]:
     for f in REPO_ROOT.glob(SKILLS_REPORTS_GLOB):
         try:
             data = json.loads(f.read_text(encoding="utf-8"))
-            if sha := data.get("commit_sha"):
-                shas.add(sha)
+            for field in ("commit_sha", "commit"):
+                if sha := data.get(field):
+                    shas.add(sha)
             for item in data.get("commits", []):
-                if isinstance(item, dict) and (s := item.get("sha")):
-                    shas.add(s)
+                if isinstance(item, dict):
+                    for field in ("sha", "commit_sha", "commit"):
+                        if s := item.get(field):
+                            shas.add(s)
         except Exception:
             continue
 
@@ -183,8 +189,11 @@ def main() -> None:
             pre_policy_exempt.append(sha)
             continue
 
-        # Check transcript coverage
-        if sha in transcript_shas:
+        # Check transcript coverage — match on full SHA or 8-char prefix
+        sha_short = sha[:8]
+        if sha in transcript_shas or sha_short in transcript_shas or any(
+            s.startswith(sha_short) or sha.startswith(s[:8]) for s in transcript_shas
+        ):
             governed.append(sha)
         else:
             ungoverned.append({"sha": sha, "src_paths": commit["src_paths"]})

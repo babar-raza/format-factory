@@ -1,0 +1,77 @@
+---
+task_id: TC-SGF-004
+stable_semantic_key: skill_governance_forensic_taskcard_schema_execution_contract
+mission_id: SKILL-GOV-FORENSIC-20260625
+plan_id: master-plan-section-62
+finding_ids:
+  - EP-008-GAP
+  - TASKCARD_SCHEMA_ENFORCEMENT_MISSING
+agent_types:
+  - CLAUDE_CODE
+  - CODEX
+  - SUPERVISOR
+sprint_types:
+  - GOVERNANCE_MACHINERY
+title: "Enforce execution_contract schema in mutating taskcards before READY transition"
+task_type: TASKCARD_SCHEMA_REPAIR
+objective: >
+  Taskcards for mutating product/machinery work lack a mandatory execution_contract
+  field. The schema exists (.supervisor/schemas/autonomous-execution-contract.schema.json)
+  but is not validated at READY transition. This taskcard adds validation:
+  - A taskcard without required_capabilities, skill_ids, command_ids, allowed_paths,
+    and receipt_required=true may NOT transition to READY.
+  - The supervisor checks this during plan_hardening (Step 1 of Sprint Closeout).
+current_state: >
+  .supervisor/schemas/stage2-taskcard-contract.schema.json exists.
+  .supervisor/schemas/autonomous-execution-contract.schema.json exists.
+  No validation is called at READY transition — agents can create taskcards
+  without skill routes and put them in READY state.
+expected_state: >
+  tools/governance/validate_taskcard_execution_contract.py validates any taskcard
+  YAML against the execution_contract schema when transitioning to READY.
+  The sprint_executor.py or autonomous_cycle.py calls this validator before
+  processing READY taskcards.
+priority: MEDIUM
+dependencies:
+  - TC-SGF-001
+  - TC-SGF-002
+required_capabilities:
+  - read_taskcard_yaml
+  - validate_required_fields
+  - reject_taskcard_at_ready_without_skill_route
+skill_ids:
+  - validate-skill-contracts
+  - create-taskcard
+command_ids:
+  - /validate-skill-contracts
+skill_creation_required: false
+allowed_paths:
+  - tools/governance/
+  - .supervisor/schemas/
+  - tests/supervisor/
+forbidden_paths:
+  - src/
+implementation_steps:
+  - "1. Create tools/governance/validate_taskcard_execution_contract.py"
+  - "2. Script checks for: required_capabilities (list), skill_ids (list), command_ids (list), allowed_paths (list), receipt_required (bool, must be true)"
+  - "3. Returns JSON with verdict: VALID or INVALID + missing_fields"
+  - "4. Add 5 regression tests"
+  - "5. Document the gate: all PRODUCT taskcards and MACHINERY taskcards must pass before READY"
+focused_verification:
+  - valid_taskcard_returns_VALID
+  - taskcard_missing_skill_ids_returns_INVALID
+  - taskcard_missing_allowed_paths_returns_INVALID
+  - taskcard_with_receipt_required_false_returns_INVALID
+negative_controls:
+  - taskcard_with_empty_skill_ids_list → INVALID (empty ≠ populated)
+evidence_requirements:
+  - validate_taskcard_execution_contract.py_exists
+  - 5_regression_tests_pass
+current_proof_level: 0
+target_proof_level: 4
+rollback: delete tools/governance/validate_taskcard_execution_contract.py
+status: OPEN
+closeout_rules:
+  - validator script exists
+  - 5+ tests pass
+  - integration with autonomous_cycle.py documented

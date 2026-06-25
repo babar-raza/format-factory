@@ -1,0 +1,72 @@
+---
+task_id: TC-SGF-003
+stable_semantic_key: skill_governance_forensic_codex_adapter_activate
+mission_id: SKILL-GOV-FORENSIC-20260625
+plan_id: master-plan-section-62
+finding_ids:
+  - DEC-014
+  - CODEX_ENTRY_POINT_MISSING
+agent_types:
+  - CODEX
+sprint_types:
+  - GOVERNANCE_MACHINERY
+title: "Activate Codex governance adapter (close DEC-014)"
+task_type: CODEX_ADAPTER
+objective: >
+  DEC-014 (Codex integration) has been deferred since 2026-06-24. The Codex
+  agent has no repository-owned entry point pointing to canonical governance.
+  This taskcard: (a) verifies docs/governance/codex-adapter.md exists and is
+  complete, (b) ensures AGENTS.md references it, (c) proves Codex discovers
+  the policy through its normal AGENTS.md loading behavior.
+current_state: >
+  docs/governance/codex-adapter.md was created by skill-gov-forensic sprint (2026-06-25).
+  DEC-014 status: deferred (plans/master-plan.md DEC-014 entry).
+  AGENTS.md does NOT explicitly reference the codex adapter.
+expected_state: >
+  AGENTS.md §E or §AG section references docs/governance/codex-adapter.md.
+  docs/governance/codex-adapter.md canonically references skill-only-policy.yaml.
+  A Codex pilot (Pilot 2 from Section 29 of the governance audit prompt) runs
+  and returns AUTHORIZED through the policy chain.
+  DEC-014 status updated to: activated.
+priority: MEDIUM
+dependencies: []
+required_capabilities:
+  - read_agents_md
+  - edit_agents_md_governance_section
+  - prove_codex_policy_discovery
+skill_ids:
+  - enforce-skill-first-execution
+  - validate-skill-contracts
+command_ids:
+  - /enforce-skill-first-execution
+skill_creation_required: false
+allowed_paths:
+  - AGENTS.md
+  - docs/governance/codex-adapter.md
+  - plans/master-plan.md
+forbidden_paths:
+  - src/
+  - tools/supervisor/
+implementation_steps:
+  - "1. Read AGENTS.md §E (Reuse-Before-Regenerate) and §AG sections"
+  - "2. Add a subsection to AGENTS.md §E that references docs/governance/codex-adapter.md"
+  - "3. Verify docs/governance/codex-adapter.md is complete and references policy YAML"
+  - "4. Update plans/master-plan.md DEC-014 entry from 'deferred' to 'activated'"
+  - "5. Document Pilot 2 result: Codex can discover the policy via AGENTS.md → codex-adapter.md → skill-only-policy.yaml"
+focused_verification:
+  - agents_md_references_codex_adapter
+  - codex_adapter_references_canonical_policy
+  - codex_adapter_complete_with_all_required_sections
+integration_verification:
+  - pilot_2_codex_direct_mutation_rejection_documented
+evidence_requirements:
+  - agents_md_updated_with_codex_adapter_reference
+  - dec_014_status_updated_in_master_plan
+current_proof_level: 1  # codex-adapter.md exists
+target_proof_level: 3
+rollback: revert AGENTS.md change; restore DEC-014 to deferred
+status: OPEN
+closeout_rules:
+  - AGENTS.md references codex-adapter.md
+  - codex-adapter.md is complete
+  - DEC-014 updated to activated in master-plan.md

@@ -1,0 +1,93 @@
+---
+task_id: TC-SGF-002
+stable_semantic_key: skill_governance_forensic_declaration_bypass_close
+mission_id: SKILL-GOV-FORENSIC-20260625
+plan_id: master-plan-section-62
+finding_ids:
+  - SKILL-GAP-012
+  - EP-003-PARTIAL
+agent_types:
+  - CLAUDE_CODE
+  - CODEX
+  - SUPERVISOR
+sprint_types:
+  - GOVERNANCE_MACHINERY
+title: "Close SKILL-GAP-012: require skill_id in evidence declarations (supervisor enforcement)"
+task_type: SUPERVISOR_ENFORCEMENT
+objective: >
+  The declaration-based governance layer (EP-003) only enforces governance when
+  agents submit evidence declarations. Agents that skip declarations bypass everything.
+  This taskcard closes SKILL-GAP-012 by adding a validator (V-GAP012) that:
+  (a) requires the `declared_skill_ids` field in every PRODUCT_SOURCE work item, and
+  (b) fails grading with REWORK if the field is absent or empty.
+  Combined with the pre-commit hook (TC-SGF-001), this creates a two-layer check.
+current_state: >
+  SKILL-GAP-012 exists in skill-first-policy.md under "Known limitation" since 2026-06-24.
+  No governance validator enforces skill attribution in declarations.
+  TC-GUARD-001 enforces gap_ledger_ref/capability_ref/spec_fact_refs but NOT skill attribution.
+expected_state: >
+  governance_validators.py contains V-SGF-001 (validate_skill_attribution_in_declaration).
+  When a PRODUCT_SOURCE work item lacks declared_skill_ids field:
+    - blocks_sprint: True
+    - rework_item added with reason=missing_skill_attribution
+  When declared_skill_ids is present but contains unregistered IDs:
+    - blocks_sprint: True
+    - rework_item added with reason=unregistered_skill_id
+  When declared_skill_ids contains valid active skill IDs: PASS.
+priority: HIGH
+dependencies:
+  - TC-SGF-001  # pre-commit hook should be in place first
+required_capabilities:
+  - read_skill_registry
+  - validate_skill_id_is_active
+  - add_governance_validator
+  - write_regression_tests
+skill_ids:
+  - validate-skill-contracts
+  - enforce-skill-first-execution
+command_ids:
+  - /validate-skill-contracts
+skill_creation_required: false
+allowed_paths:
+  - tools/supervisor/governance_validators.py
+  - tests/supervisor/test_governance_validators.py
+  - .supervisor/skill-registry.yaml
+forbidden_paths:
+  - src/
+implementation_steps:
+  - "1. Add declared_skill_ids field to evidence declaration schema (optional for backwards compat)"
+  - "2. Add V-SGF-001 validator in governance_validators.py: validate_skill_attribution_in_declaration()"
+  - "3. Validator loads skill-registry.yaml, checks each PRODUCT_SOURCE work item for declared_skill_ids"
+  - "4. Missing field or empty list → rework item (WARN only until 2026-09-01, then BLOCK)"
+  - "5. Unregistered skill IDs → BLOCK immediately"
+  - "6. Register V-SGF-001 in run_all_governance_validators()"
+  - "7. Write 5 regression tests in test_governance_validators.py"
+  - "8. Prove idempotency: run validator twice on same declaration → identical output"
+  - "9. Update baseline_loc_cap in registry/source-structure-baseline.json for governance_validators.py"
+focused_verification:
+  - v_sgf_001_warns_on_missing_declared_skill_ids
+  - v_sgf_001_blocks_on_unregistered_skill_id
+  - v_sgf_001_passes_on_valid_active_skill_ids
+  - v_sgf_001_skips_non_product_source_items
+  - validator_is_registered_in_run_all
+integration_verification:
+  - full_sprint_with_declared_skill_ids_passes_grading
+  - full_sprint_without_declared_skill_ids_gets_rework_item
+negative_controls:
+  - declaration_with_wrong_skill_id_field_spelling → validator catches and blocks
+  - declaration_with_deprecated_skill_id → validator blocks (deprecated ≠ active)
+evidence_requirements:
+  - v_sgf_001_function_in_governance_validators.py
+  - 5_regression_tests_all_pass
+  - idempotency_proof
+  - baseline_cap_updated
+current_proof_level: 0
+target_proof_level: 4
+rollback: remove V-SGF-001 from governance_validators.py; restore cap in baseline JSON
+status: OPEN
+closeout_rules:
+  - V-SGF-001 implemented and registered
+  - 5+ regression tests pass
+  - idempotency proven
+  - baseline updated
+  - SKILL-GAP-012 marked resolved in skill-first-policy.md

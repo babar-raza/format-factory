@@ -1,0 +1,86 @@
+---
+task_id: TC-SGF-001
+stable_semantic_key: skill_governance_forensic_pre_commit_hook
+mission_id: SKILL-GOV-FORENSIC-20260625
+plan_id: master-plan-section-62
+finding_ids:
+  - SKILL-GAP-008
+  - EP-007-NOT_IMPLEMENTED
+agent_types:
+  - CLAUDE_CODE
+  - CODEX
+sprint_types:
+  - GOVERNANCE_MACHINERY
+title: "Implement pre-commit hook for skill attribution enforcement (SKILL-GAP-008)"
+task_type: MUTATION_GUARD
+objective: >
+  Create a git pre-commit hook that fires before any commit touching src/ paths.
+  The hook must verify that a skill execution transcript exists for the mutation.
+  This moves enforcement from post-hoc CI detection (EP-006) to pre-mutation
+  prevention (EP-007), eliminating the primary bypass vector (SKILL-GAP-012).
+current_state: >
+  EP-007 is NOT_IMPLEMENTED. SKILL-GAP-008 is in backlog since 2026-06-24.
+  Agents can commit src/ changes without any technical barrier — governance
+  relies entirely on voluntary compliance with prompt-only instructions.
+expected_state: >
+  .hooks/pre-commit-skill-guard script exists and is documented.
+  Developers and CI systems can install it via tools/governance/install_hooks.py.
+  When a commit touches src/ without a transcript, the hook prints a rejection
+  message and exits non-zero. Override requires --no-verify with documented exception.
+priority: HIGH
+dependencies:
+  - TC-SGF-003  # mutation guard script (EP-002) should exist first
+required_capabilities:
+  - implement_git_pre_commit_hook
+  - check_skill_transcript_exists
+  - reject_ungoverned_commit
+  - document_hook_installation
+skill_ids:
+  - enforce-skill-first-execution
+command_ids:
+  - /enforce-skill-first-execution
+skill_creation_required: false
+allowed_paths:
+  - .hooks/
+  - tools/governance/
+  - docs/governance/
+forbidden_paths:
+  - src/
+  - tests/
+implementation_steps:
+  - "1. Create .hooks/pre-commit-skill-guard (bash/python) that calls ci_skill_attribution_check.py --base-ref HEAD --head-ref HEAD"
+  - "2. Create tools/governance/install_hooks.py that symlinks .hooks/ into .git/hooks/"
+  - "3. Document the override process: --no-verify requires a documented exception in .local/exceptions/"
+  - "4. Test: commit src/ without transcript → hook fires, exit 1"
+  - "5. Test: commit src/ with transcript → hook passes, exit 0"
+  - "6. Test: commit non-src files → hook skips, exit 0"
+  - "7. Prove idempotency: run install_hooks.py twice → no change on second run"
+focused_verification:
+  - hook_rejects_ungoverned_src_commit
+  - hook_allows_governed_src_commit
+  - hook_skips_non_src_commits
+  - install_script_idempotent
+integration_verification:
+  - ci_yml_install_step_documented
+  - developer_setup_guide_updated
+negative_controls:
+  - remove_hook_then_commit_ungoverned_src → CI EP-006 still catches it
+  - override_with_no_verify_without_exception_record → not detectable pre-commit (documented limitation)
+pilot_requirements:
+  - Pilot 1 (direct mutation rejection): hook fires on ungoverned commit
+  - Pilot 9 (new script detection): hook installed in CI correctly
+evidence_requirements:
+  - hook_script_exists_at_.hooks/pre-commit-skill-guard
+  - install_script_exists_at_tools/governance/install_hooks.py
+  - test_results_showing_rejection_and_pass
+  - idempotency_proof_yaml
+current_proof_level: 0
+target_proof_level: 4
+rollback: delete .hooks/pre-commit-skill-guard; uninstall from .git/hooks/
+status: OPEN
+closeout_rules:
+  - hook script exists and tested
+  - install script works
+  - idempotency proven
+  - negative controls pass
+  - CI workflow updated to install hook
