@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s90-dotnet-deepening-20260626",
+  "latest_sprint": "ff-sprint-s91-dotnet-deepening-20260626",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -19025,6 +19025,36 @@
       "description": "Netpbm R125: 9 tests for Pipeline \u2014 empty pipeline, single/multi step, dimension preservation, null guards, PPM ToGrayscale step, dogfood three-step",
       "test_files": [
         "tests/net/netpbm/NetpbmR125PipelineTests.cs"
+      ],
+      "source_files": []
+    },
+    {
+      "entry_id": "PC-FODS-R126",
+      "classification": "TEST_ADDITION",
+      "sprint": "ff-sprint-s91-dotnet-deepening-20260626",
+      "description": "FODS R126: 10 tests for GetCellStyle \u2014 set/get round-trip, unstyled null, overwrite, out-of-range null, guards, dogfood multi-row",
+      "test_files": [
+        "tests/net/fods/FodsR126GetCellStyleTests.cs"
+      ],
+      "source_files": []
+    },
+    {
+      "entry_id": "PC-FODT-R124",
+      "classification": "TEST_ADDITION",
+      "sprint": "ff-sprint-s91-dotnet-deepening-20260626",
+      "description": "FODT R124: 10 tests for SearchText position tuples \u2014 ParagraphIndex/Position accuracy, multiple matches, cross-paragraph, case comparison, dogfood",
+      "test_files": [
+        "tests/net/fodt/FodtR124SearchTextPositionTests.cs"
+      ],
+      "source_files": []
+    },
+    {
+      "entry_id": "PC-NETPBM-R126",
+      "classification": "TEST_ADDITION",
+      "sprint": "ff-sprint-s91-dotnet-deepening-20260626",
+      "description": "Netpbm R126: 11 tests for Create canvas \u2014 dimensions, format, default/custom fill, PPM channels, zero/negative guards, dogfood edit+serialize",
+      "test_files": [
+        "tests/net/netpbm/NetpbmR126CreateCanvasTests.cs"
       ],
       "source_files": []
     }
