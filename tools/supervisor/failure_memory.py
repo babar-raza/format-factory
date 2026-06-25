@@ -119,6 +119,9 @@ class FailureMemory:
                 existing["escalated"] = True
             if correction:
                 existing["correction"] = correction
+            if files_modified:
+                merged = list(set(existing.get("files_modified", []) + files_modified))
+                existing["files_modified"] = sorted(merged)
             return existing
 
         entry: dict[str, Any] = {

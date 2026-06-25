@@ -105,7 +105,7 @@ def _make_gap_entry(section: dict, idx: int) -> dict:
     entry["gap_id"] = gap_id
     entry["suggested_taskcard"] = tc_src
     entry["suggested_pilot"] = f"CAP-PILOT-QNAME-FODT-{idx + 1}"
-    entry["suggested_verification"] = f"python tools/spec/validate_spec_registry.py shared/qname-registry/fodt.yaml"
+    entry["suggested_verification"] = "python tools/spec/validate_spec_registry.py shared/qname-registry/fodt.yaml"
     entry["recurrence_prevention"] = "V43 enforces registry entry before any Spec/ class committed"
     entry["related_capability_id"] = f"FODT-SPEC-PARITY-{idx + 1:03d}"
     entry["notes"] = f"Ingested from reviews/src/next_agent_handoff.md — {section['tc_id']}"

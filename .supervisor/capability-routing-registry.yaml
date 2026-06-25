@@ -474,19 +474,22 @@ routes:
     description: >
       Roll back a failed sprint mutation, restore from backup, and produce
       a verified clean state. Requires explicit fixture specification.
-    preferred_skill_ids: []
+    preferred_skill_ids:
+      - rollback-and-recovery
     fallback_skill_ids: []
-    current_status: MISSING_SKILL_CAPABILITY
+    current_status: ACTIVE
     gap_id: SKILL-GAP-011
+    gap_closed: "2026-06-25 (SKILL-GOVERNANCE-REPAIR-001 + rollback-and-recovery skill registered)"
     required_handoff_fields:
-      - skill_id
-      - target_paths
-      - backup_path
+      - rollback_target
+      - backup_path_or_stash_ref
+      - before_state_description
+      - after_state_expected
     evidence_path_pattern: ".local/archive/"
 
 gap_count:
   total_routes: 30
-  active_routes: 29
-  missing_skill_routes: 1
+  active_routes: 30
+  missing_skill_routes: 0
   missing_skill_gap_ids:
     - SKILL-GAP-011

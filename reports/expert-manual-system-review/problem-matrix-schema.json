@@ -1,0 +1,86 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Format Factory Problem Matrix Entry",
+  "type": "object",
+  "required": ["problem_id", "category", "severity", "confidence", "status", "summary", "direct_evidence", "why_it_matters", "system_root_cause", "fix_complexity", "owner_lane"],
+  "properties": {
+    "problem_id": {
+      "type": "string",
+      "pattern": "^PROB-[A-Z0-9-]+$",
+      "description": "Unique problem identifier"
+    },
+    "category": {
+      "type": "string",
+      "enum": ["DOTNET_COMMERCIAL", "PYTHON_FOSS", "SYSTEM_GAP", "EVIDENCE", "SKILLS", "PROCESS"]
+    },
+    "severity": {
+      "type": "string",
+      "enum": ["CRITICAL", "HIGH", "MEDIUM", "LOW"]
+    },
+    "confidence": {
+      "type": "string",
+      "enum": ["VERIFIED", "LIKELY", "NEEDS_CONFIRMATION"]
+    },
+    "status": {
+      "type": "string",
+      "enum": ["OPEN", "CLOSED_FIXED", "CLOSED_WONT_FIX", "CLOSED_DUPLICATE", "CLOSED_CORRECTED"]
+    },
+    "summary": {
+      "type": "string",
+      "description": "One-sentence problem summary"
+    },
+    "direct_evidence": {
+      "type": "string",
+      "description": "Source file path, line number, or code snippet proving the problem"
+    },
+    "affected_paths": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Paths to affected source files"
+    },
+    "why_it_matters": {
+      "type": "string",
+      "description": "Business and user impact"
+    },
+    "system_root_cause": {
+      "type": "string",
+      "description": "Which system component is the root cause"
+    },
+    "system_healing_first": {
+      "type": "string",
+      "description": "System change required before product fix"
+    },
+    "product_fix": {
+      "type": "string",
+      "description": "Specific code change needed in src/"
+    },
+    "test_strategy": {
+      "type": "string"
+    },
+    "verification_strategy": {
+      "type": "string"
+    },
+    "recurrence_prevention": {
+      "type": "string"
+    },
+    "fix_complexity": {
+      "type": "string",
+      "enum": ["LOW", "MEDIUM", "HIGH"]
+    },
+    "owner_lane": {
+      "type": "string",
+      "enum": ["dotnet_commercial", "python_foss", "system", "skills", "governance", "multi_lane"]
+    },
+    "suggested_sprint": {
+      "type": "string"
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "gap_ledger_ref": {
+      "type": "string",
+      "description": "Reference to gap in gap-ledger.json if this problem is tracked there"
+    }
+  }
+}

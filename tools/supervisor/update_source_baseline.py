@@ -221,7 +221,7 @@ def run(
     errors = [r for r in results if r.get("error")]
 
     if verbose:
-        print(f"\n--- Summary ---")
+        print("\n--- Summary ---")
         print(f"  Processed:    {len(results)}")
         print(f"  Now under cap: {len(results) - len(still_over)}")
         print(f"  Still over cap: {len([r for r in results if r.get('still_over_cap') and not r.get('error')])}")

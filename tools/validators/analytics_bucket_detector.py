@@ -134,7 +134,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.json_out:
         print(json.dumps(result, indent=2))
     else:
-        print(f"=== analytics_bucket_detector ===")
+        print("=== analytics_bucket_detector ===")
         print(f"Verdict: {result['verdict']}")
         s = result["summary"]
         print(f"  Forbidden name violations: {s['forbidden_name_count']}")

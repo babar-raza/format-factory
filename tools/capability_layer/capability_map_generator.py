@@ -1274,7 +1274,11 @@ def generate(
     existing_gap_path = output_dir / "gap-ledger.json"
     if existing_gap_path.exists():
         try:
-            old = json.loads(existing_gap_path.read_text(encoding="utf-8"))
+            old = json.loads(existing_gap_path.read_text(encoding="utf-8", errors="replace"))
+            # TC-STATUS-CASE-001: normalize CLOSED→closed on read to eliminate case inconsistency
+            for old_g in old.get("gaps", []):
+                if old_g.get("status") == "CLOSED":
+                    old_g["status"] = "closed"
             old_by_id = {g["gap_id"]: g for g in old.get("gaps", [])}
             generated_ids = {g["gap_id"] for g in gaps}
             # Preserve closed status and close metadata for regenerated gaps

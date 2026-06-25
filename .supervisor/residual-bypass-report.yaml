@@ -1,5 +1,18 @@
-commits_scanned: 3
+commits_scanned: 2
 entries:
+- commit_sha: 787b43e27a3dd6abf0de663ab2e5b9e1d4175925
+  has_skill_transcript: false
+  src_paths_changed:
+  - src/python/abw/models.py
+  - src/python/csv/models.py
+  - src/python/fodt/exporters.py
+  - src/python/gnumeric/models.py
+  - src/python/ndjson/models.py
+  - src/python/odt/odt_writer.py
+  - src/python/toml/models.py
+  - src/python/tsv/models.py
+  - src/python/zst/models.py
+  verdict: UNGOVERNED_MUTATION
 - commit_sha: 5d668226bbea518eba52c3a5a481903e4c36164d
   has_skill_transcript: false
   src_paths_changed:
@@ -24,37 +37,8 @@ entries:
   - src/python/xcf/xcf_parser.py
   - src/python/zst/zst_codec.py
   verdict: UNGOVERNED_MUTATION
-- commit_sha: d9877f5eb9883d46257a62513230daedfb3f9064
-  has_skill_transcript: false
-  src_paths_changed:
-  - src/python/csv/__init__.py
-  - src/python/dif/__init__.py
-  - src/python/fods/__init__.py
-  - src/python/ods/__init__.py
-  - src/python/odt/__init__.py
-  - src/python/pbm/__init__.py
-  - src/python/pgm/__init__.py
-  - src/python/ppm/__init__.py
-  - src/python/qoi/__init__.py
-  - src/python/sylk/__init__.py
-  - src/python/toml/__init__.py
-  - src/python/tsv/__init__.py
-  verdict: UNGOVERNED_MUTATION
-- commit_sha: 0d504216f4ea42084968e2a85fe715578cdf27cb
-  has_skill_transcript: false
-  src_paths_changed:
-  - src/python/fodg/drawing_document.py
-  - src/python/fodg/drawing_metrics.py
-  - src/python/fodt/__init__.py
-  - src/python/fodt/fodt_document_edit.py
-  - src/python/fodt/fodt_document_query.py
-  - src/python/fodt/fodt_neutral_ops.py
-  - src/python/fodt/neutral_model.py
-  - src/python/ndjson/ndjson_codec.py
-  - src/python/ndjson/ndjson_record_stats.py
-  verdict: UNGOVERNED_MUTATION
 generated_by: scan_residual_bypasses.py
 mission_id: SKILL-FIRST-001
 note: UNGOVERNED_MUTATION = src/ changed in this commit but no skill transcript found.
   This is expected for commits predating the skill-first policy.
-ungoverned_mutation_count: 3
+ungoverned_mutation_count: 2

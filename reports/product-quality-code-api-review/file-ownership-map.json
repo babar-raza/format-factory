@@ -1,0 +1,205 @@
+{
+  "review_sprint": "FORMAT-FACTORY-PRODUCT-CODE-API-QUALITY-REVIEW-PLAN-001",
+  "date": "2026-06-25",
+  "products": {
+    "dotnet": {
+      "fods": {
+        "source_root": "src/net/fods/",
+        "project_file": "src/net/fods/FormatFactory.Fods.csproj",
+        "source_files": [
+          "src/net/fods/FodsDocument.cs",
+          "src/net/fods/FodsDocumentAccessor.cs",
+          "src/net/fods/FodsDocumentExporter.cs",
+          "src/net/fods/FodsParser.cs",
+          "src/net/fods/FodsWriter.cs",
+          "src/net/fods/FodsCsvExporter.cs",
+          "src/net/fods/FodsHtmlExporter.cs",
+          "src/net/fods/FodsJsonExporter.cs",
+          "src/net/fods/FodsOdsExporter.cs",
+          "src/net/fods/FodsPdfExporter.cs",
+          "src/net/fods/FodsPngExporter.cs",
+          "src/net/fods/Model/FodsCell.cs",
+          "src/net/fods/Model/FodsRow.cs",
+          "src/net/fods/Model/FodsSheet.cs",
+          "src/net/fods/Exceptions/FodsDocumentException.cs",
+          "src/net/fods/Spec/Office/Document.cs",
+          "src/net/fods/Spec/Table/Table.cs",
+          "src/net/fods/Spec/Table/TableCell.cs",
+          "src/net/fods/Spec/Table/TableRow.cs"
+        ],
+        "test_root": "tests/net/fods/",
+        "examples": [],
+        "samples": "samples/by-format/fods/",
+        "readme": null,
+        "namespace": "FormatFactory.Fods"
+      },
+      "fodt": {
+        "source_root": "src/net/fodt/",
+        "project_file": "src/net/fodt/FormatFactory.Fodt.csproj",
+        "source_files": [
+          "src/net/fodt/FodtDocument.cs",
+          "src/net/fodt/FodtDocumentAccessor.cs",
+          "src/net/fodt/FodtParser.cs",
+          "src/net/fodt/FodtWriter.cs",
+          "src/net/fodt/FodtHtmlExporter.cs",
+          "src/net/fodt/FodtMarkdownExporter.cs",
+          "src/net/fodt/FodtTxtExporter.cs",
+          "src/net/fodt/FodtPdfExporter.cs",
+          "src/net/fodt/FodtPngExporter.cs",
+          "src/net/fodt/Model/FodtBody.cs",
+          "src/net/fodt/Model/FodtParagraph.cs",
+          "src/net/fodt/Exceptions/FodtDocumentException.cs",
+          "src/net/fodt/Spec/Office/Body.cs",
+          "src/net/fodt/Spec/Table/Table.cs",
+          "src/net/fodt/Spec/Table/TableCell.cs",
+          "src/net/fodt/Spec/Table/TableRow.cs",
+          "src/net/fodt/Spec/Text/Heading.cs",
+          "src/net/fodt/Spec/Text/List.cs",
+          "src/net/fodt/Spec/Text/ListItem.cs",
+          "src/net/fodt/Spec/Text/Paragraph.cs",
+          "src/net/fodt/Spec/Text/Span.cs"
+        ],
+        "test_root": "tests/net/fodt/",
+        "examples": [],
+        "samples": "samples/by-format/fodt/",
+        "readme": null,
+        "namespace": "FormatFactory.Fodt"
+      },
+      "netpbm": {
+        "source_root": "src/net/netpbm/",
+        "project_file": "src/net/netpbm/FormatFactory.Netpbm.csproj",
+        "source_files": [
+          "src/net/netpbm/NetpbmDocument.cs",
+          "src/net/netpbm/NetpbmParser.cs",
+          "src/net/netpbm/NetpbmWriter.cs",
+          "src/net/netpbm/NetpbmExporter.cs",
+          "src/net/netpbm/Model/NetpbmImage.cs",
+          "src/net/netpbm/Model/NetpbmFormat.cs",
+          "src/net/netpbm/Model/NetpbmImageAnalyzer.cs",
+          "src/net/netpbm/Model/NetpbmImageFilters.cs",
+          "src/net/netpbm/Model/NetpbmImageTransforms.cs",
+          "src/net/netpbm/Spec/NetpbmImage.cs",
+          "src/net/netpbm/Exceptions/NetpbmException.cs"
+        ],
+        "test_root": "tests/net/netpbm/",
+        "examples": [],
+        "samples": "samples/by-format/ (pbm/pgm/ppm — check)",
+        "readme": null,
+        "namespace": "FormatFactory.Netpbm"
+      },
+      "ndjson": {
+        "source_root": "src/net/ndjson/",
+        "project_file": "src/net/ndjson/FormatFactory.Ndjson.csproj",
+        "source_files": [
+          "src/net/ndjson/NdjsonDocument.cs",
+          "src/net/ndjson/NdjsonReader.cs",
+          "src/net/ndjson/NdjsonWriter.cs",
+          "src/net/ndjson/NdjsonCsvExporter.cs",
+          "src/net/ndjson/NdjsonException.cs",
+          "src/net/ndjson/Spec/NdjsonRecord.cs"
+        ],
+        "test_root": "tests/net/ndjson/",
+        "examples": [],
+        "samples": "samples/by-format/ndjson/",
+        "readme": null,
+        "namespace": "FormatFactory.Ndjson"
+      },
+      "csv": {
+        "source_root": "src/net/csv/",
+        "project_file": "src/net/csv/FormatFactory.Csv.csproj",
+        "source_files": [
+          "src/net/csv/CsvDocument.cs",
+          "src/net/csv/CsvReader.cs",
+          "src/net/csv/CsvWriter.cs",
+          "src/net/csv/Spec/CsvRecord.cs"
+        ],
+        "test_root": "tests/net/csv/",
+        "examples": [],
+        "samples": "samples/by-format/csv/",
+        "readme": null,
+        "namespace": "FormatFactory.Csv"
+      },
+      "tsv": {
+        "source_root": "src/net/tsv/",
+        "project_file": "src/net/tsv/FormatFactory.Tsv.csproj",
+        "source_files": [
+          "src/net/tsv/TsvDocument.cs",
+          "src/net/tsv/TsvReader.cs",
+          "src/net/tsv/TsvWriter.cs",
+          "src/net/tsv/TsvCsvExporter.cs",
+          "src/net/tsv/TsvException.cs",
+          "src/net/tsv/Spec/TsvRecord.cs"
+        ],
+        "test_root": "tests/net/tsv/",
+        "examples": [],
+        "samples": null,
+        "readme": null,
+        "namespace": "FormatFactory.Tsv"
+      },
+      "zst": {
+        "source_root": "src/net/zst/",
+        "project_file": "src/net/zst/FormatFactory.Zst.csproj",
+        "source_files": [
+          "src/net/zst/ZstDocument.cs",
+          "src/net/zst/ZstParser.cs",
+          "src/net/zst/Exceptions/ZstException.cs"
+        ],
+        "test_root": "tests/net/zst/",
+        "examples": [],
+        "samples": null,
+        "readme": null,
+        "namespace": "FormatFactory.Zst",
+        "known_gap": "NO_WRITER"
+      },
+      "html": {
+        "source_root": "src/net/html/",
+        "project_file": "src/net/html/FormatFactory.Html.csproj",
+        "source_files": ["src/net/html/HtmlWriter.cs"],
+        "test_root": "tests/net/html/",
+        "examples": [],
+        "role": "target_writer",
+        "namespace": "FormatFactory.Html"
+      },
+      "markdown": {
+        "source_root": "src/net/markdown/",
+        "project_file": "src/net/markdown/FormatFactory.Markdown.csproj",
+        "source_files": ["src/net/markdown/MarkdownWriter.cs"],
+        "test_root": "tests/net/markdown/",
+        "examples": [],
+        "role": "target_writer",
+        "namespace": "FormatFactory.Markdown"
+      },
+      "txt": {
+        "source_root": "src/net/txt/",
+        "project_file": "src/net/txt/FormatFactory.Txt.csproj",
+        "source_files": ["src/net/txt/TxtWriter.cs"],
+        "test_root": "tests/net/txt/",
+        "examples": [],
+        "role": "target_writer",
+        "namespace": "FormatFactory.Txt"
+      }
+    },
+    "python": {
+      "fods": {"source_root": "src/python/fods/", "pyproject": "src/python/fods/pyproject.toml", "examples": "examples/python/fods/", "samples": "samples/by-format/fods/"},
+      "fodt": {"source_root": "src/python/fodt/", "pyproject": "src/python/fodt/pyproject.toml", "examples": "examples/python/fodt/", "samples": "samples/by-format/fodt/"},
+      "ods": {"source_root": "src/python/ods/", "pyproject": "src/python/ods/pyproject.toml", "examples": "examples/python/ods/"},
+      "odt": {"source_root": "src/python/odt/", "pyproject": "src/python/odt/pyproject.toml", "examples": "examples/python/odt/"},
+      "abw": {"source_root": "src/python/abw/", "pyproject": "src/python/abw/pyproject.toml", "examples": "examples/python/abw/", "samples": "samples/by-format/abw/"},
+      "csv": {"source_root": "src/python/csv/", "pyproject": "src/python/csv/pyproject.toml", "examples": "examples/python/csv/", "samples": "samples/by-format/csv/"},
+      "tsv": {"source_root": "src/python/tsv/", "pyproject": "src/python/tsv/pyproject.toml", "examples": "examples/python/tsv/"},
+      "dif": {"source_root": "src/python/dif/", "pyproject": "src/python/dif/pyproject.toml", "examples": "examples/python/dif/", "samples": "samples/by-format/dif/"},
+      "gnumeric": {"source_root": "src/python/gnumeric/", "pyproject": "src/python/gnumeric/pyproject.toml", "examples": "examples/python/gnumeric/", "samples": "samples/by-format/gnumeric/"},
+      "ndjson": {"source_root": "src/python/ndjson/", "pyproject": "src/python/ndjson/pyproject.toml", "examples": "examples/python/ndjson/", "samples": "samples/by-format/ndjson/"},
+      "toml": {"source_root": "src/python/toml/", "pyproject": "src/python/toml/pyproject.toml", "examples": "examples/python/toml/"},
+      "sylk": {"source_root": "src/python/sylk/", "pyproject": "src/python/sylk/pyproject.toml", "examples": "examples/python/sylk/"},
+      "pbm": {"source_root": "src/python/pbm/", "pyproject": "src/python/pbm/pyproject.toml", "examples": "examples/python/pbm/"},
+      "pgm": {"source_root": "src/python/pgm/", "pyproject": "src/python/pgm/pyproject.toml", "examples": "examples/python/pgm/"},
+      "ppm": {"source_root": "src/python/ppm/", "pyproject": "src/python/ppm/pyproject.toml", "examples": "examples/python/ppm/"},
+      "qoi": {"source_root": "src/python/qoi/", "pyproject": "src/python/qoi/pyproject.toml", "examples": null},
+      "xcf": {"source_root": "src/python/xcf/", "pyproject": "src/python/xcf/pyproject.toml", "examples": null},
+      "zst": {"source_root": "src/python/zst/", "pyproject": "src/python/zst/pyproject.toml", "examples": "examples/python/zst/"},
+      "fodg": {"source_root": "src/python/fodg/", "pyproject": "src/python/fodg/pyproject.toml", "examples": "examples/python/fodg/", "samples": "samples/by-format/fodg/"},
+      "fodp": {"source_root": "src/python/fodp/", "pyproject": "src/python/fodp/pyproject.toml", "examples": "examples/python/fodp/", "samples": "samples/by-format/fodp/", "known_gap": "READ_ONLY_NO_WRITER"}
+    }
+  }
+}

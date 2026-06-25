@@ -24,8 +24,15 @@ Does NOT modify test files — returns test skeleton as string for caller review
 from __future__ import annotations
 
 import re
+import sys
 from pathlib import Path
 from typing import Optional
+
+# Ensure repo root is on sys.path so `tools.supervisor.*` absolute imports work
+# when this file is run as a script (python tools/supervisor/product_feature_factory.py)
+_REPO_ROOT = Path(__file__).resolve().parent.parent.parent
+if str(_REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(_REPO_ROOT))
 
 from tools.supervisor.test_drivers import (
     render_getter_test,
@@ -34,9 +41,6 @@ from tools.supervisor.test_drivers import (
     render_append_test,
     render_probe_test,
 )
-
-_here = Path(__file__).resolve().parent
-_REPO_ROOT = _here.parent.parent
 
 
 class FeatureFactoryError(Exception):
@@ -355,3 +359,88 @@ def {function_name}(source) -> dict:
         if module_parts:
             module_parts[-1] = module_parts[-1].removesuffix(".py")
         return ".".join(module_parts)
+
+
+# ---------------------------------------------------------------------------
+# CLI entry point (TC-EXPAND-001c)
+# ---------------------------------------------------------------------------
+
+if __name__ == "__main__":
+    import argparse
+
+    _PATTERNS = ("getter", "export_csv", "roundtrip_test", "append", "probe", "package_proof")
+
+    parser = argparse.ArgumentParser(
+        description="product_feature_factory — generate Python FOSS product functions",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="\n".join([
+            "Patterns:",
+            "  getter         — get_X(model, ...) -> T",
+            "  export_csv     — export_to_csv(source, dest=None) -> str",
+            "  roundtrip_test — test_roundtrip_<format>() skeleton",
+            "  append         — append_row/record(source, row) -> bytes",
+            "  probe          — probe_<format>(source) -> dict",
+            "  package_proof  — package import proof command",
+        ]),
+    )
+    parser.add_argument("--pattern", required=True, choices=_PATTERNS,
+                        help="Which code-generation pattern to apply")
+    parser.add_argument("--source-path", required=True,
+                        help="Target source file (e.g. src/python/abw/abw_codec.py)")
+    parser.add_argument("--function-name", required=True,
+                        help="Name of the function to generate")
+    parser.add_argument("--format-id", default=None,
+                        help="Format identifier (e.g. 'abw', 'ndjson'); inferred from source-path if omitted")
+    args = parser.parse_args()
+
+    factory = FeatureFactory()
+    fmt = args.format_id or Path(args.source_path).parts[-2] if len(Path(args.source_path).parts) >= 2 else "unknown"
+
+    try:
+        if args.pattern == "getter":
+            skeleton = factory.apply_getter(
+                source_path=args.source_path,
+                function_name=args.function_name,
+                return_type="Any",
+                docstring=f"Return {args.function_name.replace('_', ' ')} value.",
+                body_lines=[f'    return model.get("{args.function_name}", None)'],
+            )
+        elif args.pattern == "export_csv":
+            skeleton = factory.apply_export_csv(
+                source_path=args.source_path,
+                function_name=args.function_name,
+                format_name=fmt,
+            )
+        elif args.pattern == "roundtrip_test":
+            skeleton = factory.apply_roundtrip_test(
+                source_path=args.source_path,
+                format_name=fmt,
+            )
+        elif args.pattern == "append":
+            skeleton = factory.apply_append(
+                source_path=args.source_path,
+                function_name=args.function_name,
+                format_name=fmt,
+                collection_key="records",
+            )
+        elif args.pattern == "probe":
+            skeleton = factory.apply_probe(
+                source_path=args.source_path,
+                function_name=args.function_name,
+                format_name=fmt,
+                metadata_fields=[("file_size", "Path(source).stat().st_size"), ("format", f'"{fmt}"')],
+            )
+        elif args.pattern == "package_proof":
+            skeleton = factory.apply_package_proof(
+                source_path=args.source_path,
+                format_name=fmt,
+            )
+        else:
+            raise SystemExit(f"Unknown pattern: {args.pattern}")
+
+        print(f"PATTERN_APPLIED: {args.pattern} -> {args.source_path}")
+        print("--- test skeleton ---")
+        print(skeleton)
+    except FeatureFactoryError as exc:
+        print(f"ERROR: {exc}", file=__import__("sys").stderr)
+        raise SystemExit(1)

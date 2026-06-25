@@ -1,6 +1,6 @@
 """Detect anti-skip violations in sprint evidence and outputs.
 
-Eighteen detectors:
+Nineteen detectors:
 1. Generic prompt detector: flags next prompts that lack stream-specific content
 2. Stale gap detector: flags selected gaps with wrong sprint_id
 3. Missing raw logs detector: flags evidence without raw test logs
@@ -18,6 +18,9 @@ Eighteen detectors:
 15. Stale evidence manifest detector: flags evidence-manifest.yaml with wrong sprint_id
 16. Missing changed files detector: flags declared changed_files not found on disk
 17. Stream-local authority detector: flags missing stream-local authority files
+18. Wrong-stream next sprint detector: flags global next-sprint.md from a different stream
+19. ODF spec linkage detector: flags ODF PRODUCT_SOURCE items missing spec_qname_refs
+    and spec_fact_refs (high severity — downgrades verdict, does not block)
 
 Severity mapping (R107):
   critical — blocks continuation, requires rework
@@ -1086,6 +1089,57 @@ def detect_wrong_stream_next_sprint(
     }
 
 
+# R113: ODF formats that require spec linkage on PRODUCT_SOURCE items.
+# These formats have entries in shared/qname-registry/ and validated QName coverage.
+_ODF_SPEC_LINKAGE_FORMATS = frozenset({
+    "fods", "fodt", "ods", "odt", "fodg", "fodp",
+})
+
+
+def detect_odf_spec_linkage(
+    declaration: dict[str, Any],
+) -> dict[str, Any]:
+    """R113/Detector 19: Warn when ODF PRODUCT_SOURCE items lack spec refs.
+
+    ODF formats (FODS, FODT, ODS, ODT, FODG, FODP) have QName registries in
+    shared/qname-registry/ and spec-parity validators in governance_validators.py.
+    When a PRODUCT_SOURCE item for one of these formats declares no spec_qname_refs
+    AND no spec_fact_refs, it is missing verifiable spec linkage.
+
+    Severity: high — downgrades overall verdict but does NOT block continuation.
+    Other enforcement layers (TC-GUARD-001, skill registry, 6 governance validators)
+    already enforce at different points; this detector adds sprint-review visibility.
+
+    Scope: ODF formats only. Non-ODF formats (ZST, CSV, etc.) do not yet have
+    QName registries and are exempt.
+    """
+    missing_items: list[str] = []
+
+    for item in declaration.get("planned_work_items", []):
+        if item.get("item_type") != "PRODUCT_SOURCE":
+            continue
+        fmt = (item.get("format") or "").lower()
+        if fmt not in _ODF_SPEC_LINKAGE_FORMATS:
+            continue
+        has_qname = bool(item.get("spec_qname_refs"))
+        has_fact = bool(item.get("spec_fact_refs"))
+        if not has_qname and not has_fact:
+            missing_items.append(item.get("item_id", "<unknown>"))
+
+    is_violation = len(missing_items) > 0
+    return {
+        "check": "odf_spec_linkage",
+        "is_violation": is_violation,
+        "missing_items": missing_items,
+        "recommendation": (
+            f"ODF PRODUCT_SOURCE item(s) {missing_items} missing spec_qname_refs "
+            f"and spec_fact_refs. Add spec linkage or use a non-ODF item_type."
+            if is_violation
+            else "All ODF PRODUCT_SOURCE items have adequate spec linkage."
+        ),
+    }
+
+
 # R107: Severity mapping — determines how violations affect the cycle verdict
 SEVERITY_MAP = {
     "generic_prompt": "high",
@@ -1106,6 +1160,7 @@ SEVERITY_MAP = {
     "missing_changed_files": "high",
     "stream_local_authority": "low",
     "wrong_stream_next_sprint": "medium",  # R111: caveat, not block (global is last-writer)
+    "odf_spec_linkage": "high",  # R113: downgrades verdict; ODF items need spec refs
 }
 
 
@@ -1161,7 +1216,7 @@ def run_all_checks(
     next_sprint_text: str = "",
     declared_scope: list[str] | None = None,
 ) -> dict[str, Any]:
-    """Run all 18 anti-skip checks and return consolidated results with severity."""
+    """Run all 19 anti-skip checks and return consolidated results with severity."""
     results = []
 
     # Original 4 detectors
@@ -1234,6 +1289,10 @@ def run_all_checks(
     # R111 detector: wrong-stream global next-sprint
     if next_sprint_text and target_stream:
         results.append(detect_wrong_stream_next_sprint(next_sprint_text, target_stream, repo_root))
+
+    # R113 detector: ODF PRODUCT_SOURCE items missing spec linkage
+    if declaration:
+        results.append(detect_odf_spec_linkage(declaration))
 
     violations = [r for r in results if r.get("is_violation")]
 

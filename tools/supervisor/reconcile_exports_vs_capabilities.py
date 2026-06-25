@@ -121,7 +121,7 @@ def main() -> int:
     if use_json:
         print(json.dumps(result, indent=2))
     else:
-        print(f"Export vs Capability Reconciliation")
+        print("Export vs Capability Reconciliation")
         print(f"Formats: {result['total_formats']}")
         print(f"Total exports: {result['total_exports']}")
         print(f"Total cap functions: {result['total_capability_functions']}")

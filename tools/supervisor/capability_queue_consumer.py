@@ -46,6 +46,14 @@ _ELIGIBLE_PRODUCT_TYPES = {"foss", "foss_reduced", "open_source", "both"}
 # Gaps already implemented (skip compilation)
 _SKIP_GAP_TYPES = {"implementation_verified", "already_closed"}
 
+# Statuses that exclude a gap from work selection (mirrors capability_feature_compiler.py).
+# TC-DEFERRED-FILTER-001: extended to cover all non-actionable statuses.
+_SKIP_STATUSES = {
+    "closed", "CLOSED",
+    "DEFERRED_BY_DESIGN", "DEFERRED",
+    "test_verified", "implementation_verified",
+}
+
 
 def _now_iso() -> str:
     return datetime.now(timezone.utc).isoformat()
@@ -124,7 +132,7 @@ def load_foss_gaps(max_gaps: int = 5) -> list[dict]:
         ptype = gap.get("product_type", "").lower()
         if ptype not in _ELIGIBLE_PRODUCT_TYPES:
             continue
-        if gap.get("status", "").lower() == "closed":
+        if gap.get("status") in _SKIP_STATUSES:
             continue
         if gap.get("gap_type", "").lower() in _SKIP_GAP_TYPES:
             continue

@@ -163,7 +163,7 @@ def run_audit(
     }
 
     # Print summary
-    print(f"\nGap Ledger SAL Traceability Report")
+    print("\nGap Ledger SAL Traceability Report")
     print(f"{'='*50}")
     print(f"Total gaps audited:   {total_audited}")
     print(f"With spec_facts refs: {total_with_refs}")

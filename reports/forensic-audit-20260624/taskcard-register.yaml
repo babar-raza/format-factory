@@ -1,0 +1,506 @@
+# FORMAT FACTORY — TASKCARD REGISTER (FORENSIC AUDIT TASKCARDS)
+# Generated: 2026-06-24
+# Mission: FF-FORENSIC-AUDIT-20260624
+
+mission_id: FF-FORENSIC-AUDIT-20260624
+generated_at: "2026-06-24"
+total_taskcards: 18
+
+taskcards:
+
+  # ============================================================
+  # BATCH 1 — SPEC NORMALIZATION REPAIR
+  # ============================================================
+
+  - task_id: TC-FG-SAL-001-A
+    stable_semantic_key: sal_generic_spec_ingestion_rfc
+    mission_id: FF-FORENSIC-AUDIT-20260624
+    format_ids: [zst, csv, toml]
+    gap_ids: [FG-SAL-001]
+    root_cause_ids: [RC-001]
+    title: "Build SAL generic RFC ingestion adapter"
+    task_type: FACT_REGENERATION
+    priority: P0
+    severity: CRITICAL
+    lane: spec_authority
+    owner: agent
+    status: not_started
+    objective: |
+      Build tools/spec/sal_rfc_ingester.py that:
+        1. Reads RFC text from .local/spec-cache/{format}/rfc*.txt
+        2. Extracts semantic sections (grammar, ABNF, requirements, field definitions)
+        3. Generates fact candidates with section citations
+        4. Runs fact through existing verification pipeline
+        5. Writes facts to SAL format (.local/spec-cache/{format}/verified-facts.yaml)
+      Target formats: ZST (RFC 8878), CSV (RFC 4180), TOML (TOML 1.0 — similar structure)
+    source_boundary: SPEC_SOURCE
+    target_boundary: NORMALIZED_FACT
+    implementation_steps:
+      - "Read .local/spec-cache/zst/rfc8878/text.txt (if it exists)"
+      - "Parse sections by RFC structure (abstract, terminology, format description, grammar)"
+      - "Extract: magic numbers, frame format, field definitions, constraints, error conditions"
+      - "Generate FACT-ZST-NNN IDs for each semantic unit"
+      - "Write to .local/spec-cache/zst/verified-facts-rfc.yaml"
+      - "Repeat for CSV RFC 4180"
+    focused_verification:
+      - "Verify ZST fact count increases from 109 to 200+"
+      - "Verify CSV fact count increases from 8 to 30+"
+      - "Each fact has section citation and normative_text_hash"
+    current_proof_level: PROOF_LEVEL_0
+    target_proof_level: PROOF_LEVEL_3
+    dependencies: []
+    stop_conditions:
+      - "RFC text not available in spec-cache"
+
+  - task_id: TC-FG-SAL-001-B
+    stable_semantic_key: sal_xml_schema_ingestion
+    mission_id: FF-FORENSIC-AUDIT-20260624
+    format_ids: [gnumeric, abw]
+    gap_ids: [FG-SAL-001, FG-SAL-003]
+    root_cause_ids: [RC-001]
+    title: "Build SAL XML schema ingestion adapter for informal specs"
+    task_type: FACT_REGENERATION
+    priority: P1
+    severity: HIGH
+    lane: spec_authority
+    owner: agent
+    status: not_started
+    objective: |
+      Build tools/spec/sal_xml_ingester.py that:
+        1. Reads XML/XSD spec files for Gnumeric and AbiWord
+        2. Extracts element names, attribute names, types, cardinality, usage constraints
+        3. Generates FACT-GNUMERIC-NNN / FACT-ABW-NNN IDs
+        4. Writes to spec-cache verified-facts files
+    focused_verification:
+      - "Gnumeric fact count increases from 9 to 50+"
+      - "ABW fact count increases from 8 to 30+"
+    current_proof_level: PROOF_LEVEL_0
+    target_proof_level: PROOF_LEVEL_3
+
+  - task_id: TC-FG-SAL-002
+    stable_semantic_key: toml_spec_full_ingestion
+    mission_id: FF-FORENSIC-AUDIT-20260624
+    format_ids: [toml]
+    gap_ids: [FG-SAL-002]
+    root_cause_ids: [RC-001]
+    title: "Ingest TOML 1.0 spec into SAL pipeline"
+    task_type: FACT_REGENERATION
+    priority: P1
+    severity: HIGH
+    lane: spec_authority
+    owner: agent
+    status: not_started
+    objective: |
+      The TOML 1.0 specification (github.com/toml-lang/toml) contains:
+        - ABNF grammar for the full syntax
+        - Key types, value types, datetime, array, inline table
+        - Unicode handling, encoding requirements
+        - Error conditions
+      Extract 50-100 semantic units and seed into SAL.
+    implementation_steps:
+      - "Download TOML 1.0 spec text from github.com/toml-lang/toml/blob/1.0.0/toml.md"
+      - "Extract ABNF productions, key types, value types as semantic units"
+      - "Generate FACT-TOML-NNN IDs"
+      - "Write to .local/spec-cache/toml/verified-facts.yaml"
+      - "Re-run SAL for toml format"
+    focused_verification:
+      - "TOML fact count increases from 5 to 60+"
+      - "TOML capabilities/facts ratio drops from 14.8 to < 5"
+    current_proof_level: PROOF_LEVEL_0
+    target_proof_level: PROOF_LEVEL_3
+
+  - task_id: TC-FG-SAL-003
+    stable_semantic_key: abw_reverse_engineering_spec
+    mission_id: FF-FORENSIC-AUDIT-20260624
+    format_ids: [abw]
+    gap_ids: [FG-SAL-003]
+    root_cause_ids: [RC-001]
+    title: "Document AbiWord format from source and create authoritative spec artifact"
+    task_type: SPEC_INVENTORY
+    priority: P2
+    severity: HIGH
+    lane: spec_authority
+    owner: agent
+    status: not_started
+    objective: |
+      AbiWord has no normative spec. Create a format-description document from:
+        - AbiWord source code (src/wp/impexp/xp/ie_imp_AbiWord_1.cpp etc.)
+        - AbiWord wiki
+        - Sample files in corpus/
+      Record it as a MANUALLY_SEEDED spec source with explicit authority note.
+      Generate 30-50 FACT-ABW-NNN entries from the element/attribute inventory.
+    focused_verification:
+      - "ABW spec source created: .local/spec-cache/abw/format-description.md"
+      - "ABW fact count increases from 8 to 30+"
+      - "All new facts marked as manually_seeded with source citation"
+    current_proof_level: PROOF_LEVEL_0
+    target_proof_level: PROOF_LEVEL_2
+
+  # ============================================================
+  # BATCH 2 — QNAME REGISTRY REPAIR
+  # ============================================================
+
+  - task_id: TC-FG-QNAME-001-ODF
+    stable_semantic_key: qname_registry_populate_odf
+    mission_id: FF-FORENSIC-AUDIT-20260624
+    format_ids: [fods, fodt, ods, odt, fodp, fodg]
+    gap_ids: [FG-QNAME-001, FG-QNAME-002]
+    root_cause_ids: [RC-002]
+    title: "Populate qname-registry entries for ODF family formats"
+    task_type: QNAME_REPAIR
+    priority: P1
+    severity: CRITICAL
+    lane: qname_hierarchy
+    owner: agent
+    status: not_started
+    objective: |
+      For each ODF format, populate shared/qname-registry/{format}.yaml with entries:
+        - qname: "office:document"
+        - namespace_uri: "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+        - local_name: "document"
+        - canonical_class: "Document"
+        - spec_fact_ref: "FACT-FODS-001"
+        - status: implementing
+        - python_file: "src/python/fods/spec/document/document.py"
+      Use FACT-FODS-NNN IDs from SAL output as source.
+      Prioritize: root element, table, row, cell, style, metadata.
+      Target: 20-50 entries per ODF format (not 5000 — only govened structural types).
+    implementation_steps:
+      - "Read .local/sal-output/sal-facts-latest.json FODS facts"
+      - "Extract 20 most architecturally significant elements"
+      - "Populate shared/qname-registry/fods.yaml"
+      - "Repeat for fodt, ods, odt, fodp, fodg"
+    focused_verification:
+      - "shared/qname-registry/fods.yaml has > 20 entries"
+      - "Each entry has valid spec_fact_ref pointing to SAL fact"
+      - "python_file paths exist"
+    current_proof_level: PROOF_LEVEL_0
+    target_proof_level: PROOF_LEVEL_3
+
+  - task_id: TC-FG-QNAME-001-NON-ODF
+    stable_semantic_key: qname_registry_populate_non_odf
+    mission_id: FF-FORENSIC-AUDIT-20260624
+    format_ids: [abw, csv, dif, gnumeric, ndjson, pbm, pgm, ppm, qoi, sylk, toml, tsv, xcf, zst]
+    gap_ids: [FG-QNAME-001]
+    root_cause_ids: [RC-002]
+    title: "Populate qname-registry entries for non-ODF formats"
+    task_type: QNAME_REPAIR
+    priority: P2
+    severity: HIGH
+    lane: qname_hierarchy
+    owner: agent
+    status: not_started
+    objective: |
+      For each non-ODF format, seed 5-15 qname entries covering structural types.
+      Use bootstrap facts as the source if no verified facts exist.
+      Mark status as 'seeded' for bootstrap-derived entries.
+    current_proof_level: PROOF_LEVEL_0
+    target_proof_level: PROOF_LEVEL_2
+
+  - task_id: TC-FG-QNAME-002
+    stable_semantic_key: parity_matrix_qname_population
+    mission_id: FF-FORENSIC-AUDIT-20260624
+    format_ids: [all]
+    gap_ids: [FG-QNAME-002]
+    root_cause_ids: [RC-002]
+    title: "Populate parity matrix qname_compliance field from registry"
+    task_type: LEDGER_RECONCILIATION
+    priority: P2
+    severity: MEDIUM
+    lane: qname_hierarchy
+    owner: agent
+    status: not_started
+    objective: |
+      Update registry/parity-matrix.yaml:
+        - Read shared/qname-registry/{format}.yaml for each format
+        - Set qname_compliance = "implementing" if entries > 0
+        - Set qname_compliance = "seeded" if only bootstrap-derived entries
+        - Set qname_compliance = "none" if 0 entries
+      Write a script: tools/spec/update_parity_matrix.py
+    focused_verification:
+      - "parity-matrix.yaml: no format has '?' for qname_compliance"
+
+  # ============================================================
+  # BATCH 3 — CAPABILITY AUDIT AND REPAIR
+  # ============================================================
+
+  - task_id: TC-FG-CAP-001
+    stable_semantic_key: capability_inflation_audit
+    mission_id: FF-FORENSIC-AUDIT-20260624
+    format_ids: [abw, gnumeric, xcf, dif, sylk, csv, tsv, ndjson, toml, qoi, ppm, pgm, pbm]
+    gap_ids: [FG-CAP-001]
+    root_cause_ids: [RC-003]
+    title: "Audit and classify all 1,641 foss_reduced capabilities by derivation method"
+    task_type: CAPABILITY_REPAIR
+    priority: P1
+    severity: HIGH
+    lane: capability_extraction
+    owner: agent
+    status: not_started
+    objective: |
+      For each capability in unified-capability-map.json (foss_reduced):
+        Classify as: FACT_DERIVED | POC_GOAL_DERIVED | MANUAL | UNSUPPORTED
+      For POC_GOAL_DERIVED: mark as advisory_only=true in the cap map
+      Write classification to: reports/forensic-audit-20260624/capability-classification.json
+      Do NOT delete capabilities — classify them. Only UNSUPPORTED may be removed.
+    implementation_steps:
+      - "Load unified-capability-map.json foss_reduced entries"
+      - "For each format, check: does format have >= 1 verified spec fact supporting this capability type?"
+      - "Classify load/save/inspect/convert capabilities against spec fact evidence"
+      - "Write classification JSON"
+    focused_verification:
+      - "All 1,641 foss_reduced caps have derivation_class field"
+      - "POC_GOAL_DERIVED count is documented"
+      - "UNSUPPORTED list is < 5% of total (most caps are valid even if POC-derived)"
+    current_proof_level: PROOF_LEVEL_0
+    target_proof_level: PROOF_LEVEL_2
+
+  - task_id: TC-FG-CAP-002
+    stable_semantic_key: capability_spec_ref_linkage
+    mission_id: FF-FORENSIC-AUDIT-20260624
+    format_ids: [fods, fodt, ods, odt]
+    gap_ids: [FG-CAP-002]
+    root_cause_ids: [RC-003]
+    title: "Add per-capability spec_fact_refs linkage for ODF formats"
+    task_type: CAPABILITY_REPAIR
+    priority: P2
+    severity: MEDIUM
+    lane: capability_extraction
+    owner: agent
+    status: not_started
+    objective: |
+      For ODF formats (where verified facts exist), link each capability to specific fact IDs:
+        - Load capability -> FACT-FODS-001 to FACT-FODS-005 (document structure facts)
+        - Edit cells -> FACT-FODS-NNN (cell edit facts)
+        - Save -> FACT-FODS-NNN (write format facts)
+      This transforms spec_refs_count from "all format facts" to "relevant facts for this capability"
+
+  # ============================================================
+  # BATCH 4 — PRODUCT IMPLEMENTATION
+  # ============================================================
+
+  - task_id: TC-FG-PROD-001
+    stable_semantic_key: odt_write_roundtrip
+    mission_id: FF-FORENSIC-AUDIT-20260624
+    format_ids: [odt]
+    gap_ids: [FG-PROD-001]
+    root_cause_ids: [RC-005]
+    title: "Implement ODT write and roundtrip capability"
+    task_type: PRODUCT_BACKFILL
+    priority: P2
+    severity: HIGH
+    lane: python_product
+    owner: agent
+    status: not_started
+    objective: |
+      ODT has read support (odt_parser.py) but no write. Add:
+        - odt_writer.py: write_odt(paragraphs, dest), odt_from_text(text, dest)
+          (odt_writer.py exists per MEMORY.md — extend it)
+        - Roundtrip tests: load -> modify -> save -> reload -> verify
+      Target: 100+ tests. Match ABW/ODS/FODG maturity (roundtrip_capable_library).
+    implementation_steps:
+      - "Check odt_writer.py current state (created 2026-06-24)"
+      - "Extend write to handle styles, headings, lists"
+      - "Add tests/python/odt/test_odt_write_roundtrip.py with 50+ test cases"
+    focused_verification:
+      - "odt_write_roundtrip test suite passes"
+      - "write_odt produces valid ODT zip with mimetype + content.xml"
+      - "Reload of written ODT yields same paragraph structure"
+    current_proof_level: PROOF_LEVEL_2
+    target_proof_level: PROOF_LEVEL_4
+
+  - task_id: TC-FG-PROD-002
+    stable_semantic_key: fodp_full_read_write
+    mission_id: FF-FORENSIC-AUDIT-20260624
+    format_ids: [fodp]
+    gap_ids: [FG-PROD-002]
+    root_cause_ids: [RC-005]
+    title: "Implement FODP full page model: read all slide content, add write capability"
+    task_type: PRODUCT_BACKFILL
+    priority: P2
+    severity: HIGH
+    lane: python_product
+    owner: agent
+    status: not_started
+    objective: |
+      FODP has 1,066 verified spec facts but only 192 LOC and 16 tests.
+      Extend to:
+        - Parse full slide content (title, body, notes, shapes)
+        - Write minimal FODP from slide model
+        - Roundtrip tests
+    implementation_steps:
+      - "Read src/python/fodp/ — current state"
+      - "Extend parser to extract slide content beyond metadata"
+      - "Implement write path using existing fodt/fods patterns"
+      - "Write 80+ tests"
+    current_proof_level: PROOF_LEVEL_1
+    target_proof_level: PROOF_LEVEL_3
+
+  - task_id: TC-FG-PROD-003
+    stable_semantic_key: xcf_real_layer_extraction
+    mission_id: FF-FORENSIC-AUDIT-20260624
+    format_ids: [xcf]
+    gap_ids: [FG-PROD-003]
+    root_cause_ids: [RC-005]
+    title: "Implement real XCF layer name extraction and basic pixel data access"
+    task_type: PRODUCT_BACKFILL
+    priority: P3
+    severity: MEDIUM
+    lane: python_product
+    owner: agent
+    status: not_started
+    objective: |
+      xcf_layer_name_list() currently returns synthetic "Layer N" names.
+      Implement real binary parsing to extract:
+        - Actual layer names from XCF binary structure
+        - Layer count
+        - Image dimensions from header
+      XCF spec: binary format starting with "gimp xcf v011\0" or similar magic.
+    implementation_steps:
+      - "Read XCF binary format documentation from .local/spec-cache/xcf/"
+      - "Parse real layer name offsets from XCF header"
+      - "Return actual names, not 'Layer N' synthetic values"
+      - "Update/rename xcf_layer_name_list to reflect it returns real names"
+      - "Update 20+ test callers"
+    focused_verification:
+      - "xcf_layer_name_list() returns actual layer names from test XCF files"
+      - "GAP-XCF-LAYER-NAMES gap closed in gap-ledger"
+    current_proof_level: PROOF_LEVEL_1
+    target_proof_level: PROOF_LEVEL_3
+
+  - task_id: TC-FG-PROD-004
+    stable_semantic_key: netpbm_write_roundtrip
+    mission_id: FF-FORENSIC-AUDIT-20260624
+    format_ids: [ppm, pgm, pbm]
+    gap_ids: [FG-PROD-004]
+    root_cause_ids: [RC-005]
+    title: "Add write capability for NetPBM formats (PPM, PGM, PBM)"
+    task_type: PRODUCT_BACKFILL
+    priority: P3
+    severity: MEDIUM
+    lane: python_product
+    owner: agent
+    status: not_started
+    objective: |
+      NetPBM write is simple ASCII:
+        PPM: "P3\n{width} {height}\n{maxval}\n{r g b ...}"
+        PGM: "P2\n{width} {height}\n{maxval}\n{gray ...}"
+        PBM: "P1\n{width} {height}\n{0/1 ...}"
+      Add write_ppm/write_pgm/write_pbm functions.
+      Add binary variants (P6/P5/P4).
+      Add roundtrip tests.
+    implementation_steps:
+      - "Add write_{format}(pixel_data, dest) to each module"
+      - "Add roundtrip tests: load -> write -> reload -> compare"
+      - "Target: 60+ tests per format"
+    current_proof_level: PROOF_LEVEL_2
+    target_proof_level: PROOF_LEVEL_3
+
+  - task_id: TC-FG-PROD-005
+    stable_semantic_key: csv_tsv_roundtrip
+    mission_id: FF-FORENSIC-AUDIT-20260624
+    format_ids: [csv, tsv]
+    gap_ids: [FG-PROD-005]
+    root_cause_ids: [RC-005, RC-008]
+    title: "Implement CSV/TSV full roundtrip and test deepening"
+    task_type: PRODUCT_BACKFILL
+    priority: P2
+    severity: HIGH
+    lane: python_product
+    owner: agent
+    status: not_started
+    objective: |
+      CSV needs: roundtrip (read -> write -> reload -> verify)
+      TSV needs: write path + roundtrip
+      Both need: 100+ tests (from current 19 each)
+      Target gates: 5-10 for both formats
+    implementation_steps:
+      - "Add csv_roundtrip: load -> write -> reload -> assert equal"
+      - "Add tsv write path: write_tsv(rows, path) (already exists per MEMORY.md, verify)"
+      - "Write 80+ tests per format: load, write, roundtrip, edge cases, error conditions"
+    focused_verification:
+      - "CSV and TSV both have roundtrip tests passing"
+      - "Test count >= 80 per format"
+      - "Gates 5-10 passed for both"
+    current_proof_level: PROOF_LEVEL_2
+    target_proof_level: PROOF_LEVEL_4
+
+  # ============================================================
+  # BATCH 5 — TEST DEEPENING
+  # ============================================================
+
+  - task_id: TC-FG-TEST-001
+    stable_semantic_key: test_deepening_toml_fodp
+    mission_id: FF-FORENSIC-AUDIT-20260624
+    format_ids: [toml, fodp]
+    gap_ids: [FG-TEST-001]
+    root_cause_ids: [RC-006]
+    title: "Test deepening for TOML and FODP (< 20 tests each)"
+    task_type: TEST_REPAIR
+    priority: P2
+    severity: HIGH
+    lane: python_product
+    owner: agent
+    status: not_started
+    objective: |
+      TOML: add 80+ tests covering: load, type parsing (int/float/bool/string/datetime/array/table), roundtrip, error conditions
+      FODP: add 80+ tests covering: page count, slide metadata, title extraction
+    focused_verification:
+      - "TOML test count >= 80"
+      - "FODP test count >= 80"
+
+  # ============================================================
+  # BATCH 6 — GOVERNANCE AND MACHINERY
+  # ============================================================
+
+  - task_id: TC-FG-GOV-001
+    stable_semantic_key: qname_registry_downstream_consumer
+    mission_id: FF-FORENSIC-AUDIT-20260624
+    format_ids: [all]
+    gap_ids: [FG-GOV-001]
+    root_cause_ids: [RC-002, RC-009]
+    title: "Build qname-registry downstream consumer: parity validator"
+    task_type: FEATURE_COMPILER_REPAIR
+    priority: P1
+    severity: MEDIUM
+    lane: machinery
+    owner: agent
+    status: not_started
+    objective: |
+      Build tools/spec/validate_qname_registry.py:
+        - Reads shared/qname-registry/{format}.yaml
+        - For each entry, checks: python_file exists, class has spec_qname attribute
+        - Checks: spec_qname == entry.qname
+        - Reports mismatches and missing entries
+      Wire into governance_validators.py as V-NEW-QNAME-REGISTRY
+    focused_verification:
+      - "Validator passes for ODF formats with populated entries"
+      - "Validator reports empty registry for non-ODF formats"
+    current_proof_level: PROOF_LEVEL_0
+    target_proof_level: PROOF_LEVEL_3
+
+  - task_id: TC-FG-ANALYTIC-001
+    stable_semantic_key: analytics_audit_and_reclassify
+    mission_id: FF-FORENSIC-AUDIT-20260624
+    format_ids: [all]
+    gap_ids: [FG-ANALYTIC-001]
+    root_cause_ids: [RC-004]
+    title: "Audit analytics.py files and reclassify functions by spec provenance"
+    task_type: LEDGER_RECONCILIATION
+    priority: P2
+    severity: MEDIUM
+    lane: machinery
+    owner: agent
+    status: not_started
+    objective: |
+      For each {format}_analytics.py:
+        - List all functions
+        - Classify: SPEC_DERIVED (has gap_ledger_ref or spec_fact) vs ARITHMETIC_ONLY
+        - For ARITHMETIC_ONLY: mark as deprecated in the function docstring
+        - Generate report: reports/forensic-audit-20260624/analytics-classification.json
+      Do NOT delete functions (LOC cap is frozen). Only classify via docstrings.
+    focused_verification:
+      - "analytics-classification.json has entry for every analytics function"
+      - "SPEC_DERIVED count > ARITHMETIC_ONLY count for ZST/XCF/FODG (the 3 separated formats)"
+    current_proof_level: PROOF_LEVEL_1
+    target_proof_level: PROOF_LEVEL_2

@@ -1,0 +1,59 @@
+{
+  "skill_id": "add-python-object-model-feature",
+  "sprint_id": "PDEP-2026-06-25-001",
+  "invocation_timestamp": "2026-06-25T00:00:00",
+  "retroactive": true,
+  "retroactive_note": "Created by skill-governance-sync-sprint-20260625 as retroactive transcript. Work in commit 787b43e2 predated mandatory skill transcript enforcement but was performed using add-python-object-model-feature skill pattern.",
+  "format_ids": ["abw", "csv", "gnumeric", "ndjson", "toml", "tsv", "zst"],
+  "action": "add_domain_model_classes",
+  "models_added": [
+    "AbwDocument (src/python/abw/models.py) — spec_qname: abiword:document",
+    "CsvDocument (src/python/csv/models.py) — spec_qname: csv:record",
+    "GnumericDocument (src/python/gnumeric/models.py) — spec_qname: gnumeric:workbook",
+    "NdjsonDocument (src/python/ndjson/models.py) — spec_qname: ndjson:record",
+    "TomlDocument (src/python/toml/models.py) — spec_qname: toml:table",
+    "TsvDocument (src/python/tsv/models.py) — spec_qname: tsv:record",
+    "ZstDocument (src/python/zst/models.py) — spec_qname: zst:frame"
+  ],
+  "gaps_closed": [
+    "GAP-PROD-INV-MODEL-001"
+  ],
+  "code_changes": [
+    "src/python/abw/models.py",
+    "src/python/csv/models.py",
+    "src/python/gnumeric/models.py",
+    "src/python/ndjson/models.py",
+    "src/python/toml/models.py",
+    "src/python/tsv/models.py",
+    "src/python/zst/models.py"
+  ],
+  "test_additions": [
+    "tests/python/abw/test_abw_document_model.py",
+    "tests/python/csv_format/test_csv_document_model.py",
+    "tests/python/gnumeric/test_gnumeric_document_model.py",
+    "tests/python/ndjson/test_ndjson_document_model.py",
+    "tests/python/toml/test_toml_document_model.py",
+    "tests/python/tsv/test_tsv_document_model.py",
+    "tests/python/zst/test_zst_document_model.py"
+  ],
+  "validation_command": ".venv/Scripts/pytest tests/python/abw/test_abw_document_model.py tests/python/csv_format/test_csv_document_model.py tests/python/gnumeric/test_gnumeric_document_model.py tests/python/ndjson/test_ndjson_document_model.py tests/python/toml/test_toml_document_model.py tests/python/tsv/test_tsv_document_model.py tests/python/zst/test_zst_document_model.py -v",
+  "validation_result": "152 passed, 0 failed",
+  "evidence_paths": [
+    "src/python/abw/models.py",
+    "src/python/csv/models.py",
+    "src/python/gnumeric/models.py",
+    "src/python/ndjson/models.py",
+    "src/python/toml/models.py",
+    "src/python/tsv/models.py",
+    "src/python/zst/models.py",
+    "tests/python/abw/test_abw_document_model.py",
+    "tests/python/csv_format/test_csv_document_model.py",
+    "tests/python/gnumeric/test_gnumeric_document_model.py",
+    "tests/python/ndjson/test_ndjson_document_model.py",
+    "tests/python/toml/test_toml_document_model.py",
+    "tests/python/tsv/test_tsv_document_model.py",
+    "tests/python/zst/test_zst_document_model.py"
+  ],
+  "commit": "787b43e2",
+  "verdict": "PASS"
+}

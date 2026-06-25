@@ -1,0 +1,228 @@
+# FORMAT FACTORY — EXECUTION BATCH REGISTER
+# Generated: 2026-06-24
+# Mission: FF-FORENSIC-AUDIT-20260624
+
+mission_id: FF-FORENSIC-AUDIT-20260624
+generated_at: "2026-06-24"
+
+# Priority: Batches 0-1 are prerequisites for Batches 2-5.
+# Batches 2 and 3 can run in parallel after Batch 1.
+# Batch 4 requires Batch 3 (capability repair before product repair).
+# Batch 5 requires all preceding batches.
+
+batches:
+  - batch_id: BATCH-0
+    title: "Baseline and Traceability Infrastructure"
+    objective: "Complete the forensic audit inventories, stable IDs, current-state capture"
+    entry_gates:
+      - "Session not executing a per-chat plan"
+    taskcards:
+      - TC-FG-SAL-001-A  # recon only (read spec-cache)
+      - TC-FG-QNAME-002  # parity matrix remediation script (read-only)
+    parallel_lanes:
+      - "Spec source inventory — completed (see specification-source-inventory.yaml)"
+      - "Format inventory — completed (see format-inventory.yaml)"
+      - "Pipeline metrics — completed (see format-pipeline-metrics.csv)"
+    dependencies: []
+    mutation_ownership:
+      - "reports/forensic-audit-20260624/"
+    exit_gates:
+      - "All forensic audit artifacts written"
+      - "forensic-baseline.yaml written"
+    evidence:
+      - "reports/forensic-audit-20260624/format-inventory.yaml"
+      - "reports/forensic-audit-20260624/specification-source-inventory.yaml"
+      - "reports/forensic-audit-20260624/format-pipeline-metrics.csv"
+      - "reports/forensic-audit-20260624/forensic-gap-register.yaml"
+      - "reports/forensic-audit-20260624/root-cause-register.yaml"
+      - "reports/forensic-audit-20260624/portfolio-pipeline-metrics.md"
+      - "reports/forensic-audit-20260624/taskcard-register.yaml"
+    failure_reroute: "Log and continue — this batch only writes report files"
+    loop_required: false
+
+  - batch_id: BATCH-1
+    title: "Specification and Authority Repair"
+    objective: |
+      Ingest non-ODF specs into the SAL pipeline.
+      Target: increase non-ODF fact count from 149 to 600+.
+    entry_gates:
+      - "Batch 0 complete"
+      - "spec-cache directories exist for target formats"
+    taskcards:
+      - TC-FG-SAL-001-A  # RFC ingestion: ZST, CSV, TOML
+      - TC-FG-SAL-001-B  # XML schema ingestion: Gnumeric, ABW
+      - TC-FG-SAL-002    # TOML full spec ingestion
+      - TC-FG-SAL-003    # ABW reverse-engineering
+    parallel_lanes:
+      - name: lane_rfc_adapter
+        formats: [zst, csv]
+        tasks: [TC-FG-SAL-001-A]
+        mutation_owner: "tools/spec/sal_rfc_ingester.py + .local/spec-cache/zst/ + .local/spec-cache/csv/"
+      - name: lane_xml_adapter
+        formats: [gnumeric, abw]
+        tasks: [TC-FG-SAL-001-B, TC-FG-SAL-003]
+        mutation_owner: "tools/spec/sal_xml_ingester.py + .local/spec-cache/gnumeric/ + .local/spec-cache/abw/"
+      - name: lane_toml_spec
+        formats: [toml]
+        tasks: [TC-FG-SAL-002]
+        mutation_owner: ".local/spec-cache/toml/"
+    dependencies: [BATCH-0]
+    exit_gates:
+      - "ZST fact count > 200 (from 109)"
+      - "CSV fact count > 30 (from 8)"
+      - "Gnumeric fact count > 50 (from 9)"
+      - "ABW fact count > 30 (from 8)"
+      - "TOML fact count > 60 (from 5)"
+      - "Total non-ODF facts > 500 (from 149)"
+    failure_reroute: "If RFC adapter fails for a format, fall back to manual bootstrap seeding with explicit source citations"
+    loop_required: true
+
+  - batch_id: BATCH-2
+    title: "QName and Hierarchy Repair"
+    objective: |
+      Populate all 20 qname-registry files.
+      Fix parity matrix.
+      Build qname-registry validator.
+    entry_gates:
+      - "Batch 0 complete"
+      - "At least 1 verified fact per format"
+    taskcards:
+      - TC-FG-QNAME-001-ODF
+      - TC-FG-QNAME-001-NON-ODF
+      - TC-FG-QNAME-002
+      - TC-FG-GOV-001
+    parallel_lanes:
+      - name: lane_odf_qnames
+        formats: [fods, fodt, ods, odt, fodp, fodg]
+        tasks: [TC-FG-QNAME-001-ODF]
+        mutation_owner: "shared/qname-registry/fods.yaml + fodt.yaml + ods.yaml + odt.yaml + fodp.yaml + fodg.yaml"
+      - name: lane_non_odf_qnames
+        formats: [abw, csv, dif, gnumeric, ndjson, pbm, pgm, ppm, qoi, sylk, toml, tsv, xcf, zst]
+        tasks: [TC-FG-QNAME-001-NON-ODF]
+        mutation_owner: "shared/qname-registry/*.yaml (non-ODF files)"
+    dependencies: [BATCH-0]
+    exit_gates:
+      - "All 20 qname-registry files have > 0 entries"
+      - "Parity matrix: no '?' entries for qname_compliance"
+      - "V-NEW-QNAME-REGISTRY validator passes"
+    failure_reroute: "If SAL facts insufficient for a format: seed 5-10 entries manually with MANUALLY_SEEDED status"
+    loop_required: true
+
+  - batch_id: BATCH-3
+    title: "Capability Audit and Feature-Planning Repair"
+    objective: |
+      Classify all 1,641 foss_reduced capabilities by derivation method.
+      Link ODF capabilities to specific fact IDs.
+      Ensure no new POC-goal capabilities are generated.
+    entry_gates:
+      - "Batch 1 complete (spec facts available)"
+    taskcards:
+      - TC-FG-CAP-001
+      - TC-FG-CAP-002
+      - TC-FG-ANALYTIC-001
+    parallel_lanes:
+      - name: lane_cap_audit
+        tasks: [TC-FG-CAP-001]
+        mutation_owner: "reports/forensic-audit-20260624/capability-classification.json"
+      - name: lane_cap_spec_refs
+        tasks: [TC-FG-CAP-002]
+        mutation_owner: "reports/capability-layer/unified-capability-map.json (spec_fact_refs field only)"
+      - name: lane_analytics_audit
+        tasks: [TC-FG-ANALYTIC-001]
+        mutation_owner: "reports/forensic-audit-20260624/analytics-classification.json"
+    dependencies: [BATCH-1]
+    exit_gates:
+      - "capability-classification.json written with all 1,641 entries classified"
+      - "ODF capability spec_fact_refs point to specific fact IDs (not format total)"
+      - "analytics-classification.json written"
+    failure_reroute: "If classification script fails: write partial report and continue"
+    loop_required: false
+
+  - batch_id: BATCH-4
+    title: "Representative Format Pilots"
+    objective: |
+      Prove end-to-end traceability for one pilot per major failure class:
+        Pilot A: TOML (data family, rich spec not yet processed)
+        Pilot B: PPM (imaging, simple ASCII, missing write path)
+        Pilot C: CSV (cells, RFC-backed, needs roundtrip)
+    entry_gates:
+      - "Batch 1 complete (improved spec facts)"
+      - "Batch 2 complete (qname entries populated)"
+    taskcards:
+      - TC-FG-SAL-002  # TOML spec ingestion (prerequisite for TOML pilot)
+      - TC-FG-PROD-004  # NetPBM write (PPM pilot)
+      - TC-FG-PROD-005  # CSV/TSV roundtrip (CSV pilot)
+      - TC-FG-TEST-001  # TOML test deepening
+    parallel_lanes:
+      - name: pilot_toml
+        formats: [toml]
+        tasks: [TC-FG-SAL-002, TC-FG-TEST-001]
+        mutation_owner: ".local/spec-cache/toml/ + src/python/toml/ + tests/python/toml/"
+      - name: pilot_ppm
+        formats: [ppm, pgm, pbm]
+        tasks: [TC-FG-PROD-004]
+        mutation_owner: "src/python/ppm/ + src/python/pgm/ + src/python/pbm/ + tests/python/ppm/"
+      - name: pilot_csv
+        formats: [csv, tsv]
+        tasks: [TC-FG-PROD-005]
+        mutation_owner: "src/python/csv/ + src/python/tsv/ + tests/python/csv_format/ + tests/python/tsv/"
+    dependencies: [BATCH-1, BATCH-2]
+    exit_gates:
+      - "TOML test count >= 80 and roundtrip tests pass"
+      - "PPM write tests pass (P3 ASCII and P6 binary)"
+      - "CSV roundtrip tests pass"
+      - "Each pilot demonstrates spec->fact->qname->code->test chain"
+    loop_required: true
+
+  - batch_id: BATCH-5
+    title: "Product-Specific Deepening and Backfill"
+    objective: |
+      Heal the 8 formats with incomplete implementations.
+      Complete gates 5-10 for CSV, TSV, DIF, NDJSON.
+    entry_gates:
+      - "Batch 4 pilots pass"
+    taskcards:
+      - TC-FG-PROD-001  # ODT write + roundtrip
+      - TC-FG-PROD-002  # FODP full page model
+      - TC-FG-PROD-003  # XCF real layer extraction
+      - TC-FG-PKG-002   # Gates 5-10 for NDJSON, TSV, DIF, CSV
+    parallel_lanes:
+      - name: lane_odt_fodp
+        formats: [odt, fodp]
+        tasks: [TC-FG-PROD-001, TC-FG-PROD-002]
+        mutation_owner: "src/python/odt/ + src/python/fodp/"
+      - name: lane_xcf
+        formats: [xcf]
+        tasks: [TC-FG-PROD-003]
+        mutation_owner: "src/python/xcf/"
+      - name: lane_gate5to10
+        formats: [ndjson, tsv, dif, csv]
+        tasks: [TC-FG-PKG-002]
+    dependencies: [BATCH-4]
+    exit_gates:
+      - "ODT roundtrip tests pass"
+      - "FODP full page read/write works"
+      - "XCF returns real layer names"
+      - "NDJSON, TSV, DIF, CSV all pass gates 5-10"
+    loop_required: true
+
+  - batch_id: BATCH-6
+    title: "Package, Consumer, Regression, and Idempotency"
+    objective: |
+      Build wheels for all 16 packages.
+      Run install tests on each.
+      Prove consumer access (import + call) for each.
+      Run regression suite.
+    entry_gates:
+      - "Batch 5 complete"
+      - "All formats at roundtrip_capable_library or better"
+    taskcards:
+      - TC-FG-PKG-001  # Local package proof for gates 1-7 formats
+    dependencies: [BATCH-5]
+    exit_gates:
+      - "16 packages build without error"
+      - "16 packages install into clean venv"
+      - "Basic import + function call documented for each"
+      - "Regression suite (pytest) runs green"
+    failure_reroute: "PyPI publication is TRUE_EXTERNAL_GATE — stop at local build proof"
+    loop_required: false

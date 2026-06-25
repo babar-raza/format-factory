@@ -1,0 +1,696 @@
+---
+# Expert Review Reconciliation — Micro-Taskcard Graph
+# Mission: FORMAT-FACTORY-EXPERT-REVIEW-RECONCILIATION-001
+# Generated: 2026-06-25
+# HEAD: ae7fa540ca763ed3da8c922a8fc9fde825e1a97b
+
+schema_version: "1.0"
+wave_policy: >
+  Execute waves in order 0→9. Within a wave, tasks may execute in parallel
+  if they have no shared mutable paths. No wave may begin until all blocking
+  tasks from prior waves are complete.
+
+# ===================================================================
+# WAVE 0 — State Authority and Artifact Reconciliation
+# ===================================================================
+
+wave_0:
+  name: State and Artifact Reconciliation
+  objective: Repair stale state artifacts; establish one canonical current-state producer; resolve REC-A-001
+  blocking_for: All subsequent waves (state must be authoritative before any mutation)
+
+  taskcards:
+
+    - task_id: TC-RECON-W0-001
+      stable_semantic_key: next_action_json_repair
+      mission_id: FORMAT-FACTORY-EXPERT-REVIEW-RECONCILIATION-001
+      finding_ids: [REC-A-001]
+      title: "Repair next-action.json — update stale PREFLIGHT state to reflect current mission"
+      classification: STATE_AUTHORITY_REPAIR
+      severity: HIGH
+      priority: 1
+      current_state: "next-action.json shows current_state: PREFLIGHT (written 2026-06-05T00:00:00Z, never updated)"
+      expected_state: "next-action.json shows current mission state and correct updated_at timestamp"
+      skill_ids: [record-lane-execution]
+      allowed_paths:
+        - reports/expert-manual-system-review/next-action.json
+      forbidden_paths:
+        - src/
+        - tests/
+        - registry/
+      implementation_steps:
+        - 1: Write updated next-action.json with current_state: RECONCILIATION_IN_PROGRESS, mission_id, updated_at
+        - 2: Verify JSON is valid
+      focused_verification:
+        - JSON parses without error
+        - current_state field is not PREFLIGHT
+        - updated_at is current date
+      rollback: "Restore prior content from reports/expert-manual-system-review/next-action.json rollback (sprint start value)"
+      evidence_requirements:
+        - JSON validation output
+      effort: SMALL
+      status: PENDING
+
+    - task_id: TC-RECON-W0-002
+      stable_semantic_key: problem_register_unification
+      finding_ids: [REC-C-001, REC-D-001]
+      title: "Unify narrow heal register (9 problems) with phase-A register (18 problems) into canonical register"
+      classification: ARTIFACT_RECONCILIATION
+      severity: HIGH
+      priority: 2
+      current_state: "Two separate problem registers from different sprints with different scopes"
+      expected_state: "One canonical-problem-register.json containing all 27 problems with HEAD status"
+      skill_ids: [validate-product-code-ledger]
+      allowed_paths:
+        - reports/expert-manual-system-review/reconciliation/
+      implementation_steps:
+        - 1: canonical-problem-register.json already created by this reconciliation mission
+        - 2: Verify all 27 problem IDs are present
+        - 3: Verify HEAD status for each is accurate
+      focused_verification:
+        - 27 total problems
+        - 2 CRITICAL, 5 HIGH, 7 MEDIUM open
+        - All resolved problems show correct closure reason
+      rollback: "N/A — new artifact in reconciliation/ subdirectory"
+      effort: SMALL
+      status: COMPLETE
+
+    - task_id: TC-RECON-W0-003
+      stable_semantic_key: execution_state_mission_sync
+      finding_ids: [REC-F-001]
+      title: "Document sprint vs mission vs portfolio boundary — prevent terminal sprint from implying closed mission"
+      classification: STATE_AUTHORITY_REPAIR
+      severity: MEDIUM
+      priority: 3
+      current_state: "execution-state.json: terminal=true implies mission closed; but mission has 16 open problems"
+      expected_state: "Documented boundary: sprint HEAL-001 terminal; mission FORMAT-FACTORY-EXPERT-REVIEW is ACTIVE"
+      skill_ids: [record-lane-execution]
+      allowed_paths:
+        - reports/expert-manual-system-review/reconciliation/mission-state.json
+      implementation_steps:
+        - 1: Create mission-state.json with sprint_status, mission_status, portfolio_status separate fields
+      effort: SMALL
+      status: PENDING
+
+# ===================================================================
+# WAVE 1 — Governance and Skill Enforcement Hardening
+# ===================================================================
+
+wave_1:
+  name: Governance and Skill Enforcement
+  objective: >
+    Repair skill adoption enforcement; remove false blocker classification;
+    add terminal gate product conditions; document governance debt
+  blocking_for: Wave 4+ product mutation
+
+  taskcards:
+
+    - task_id: TC-RECON-W1-001
+      stable_semantic_key: skill_adoption_governance_debt
+      finding_ids: [REC-B-001]
+      title: "Document skill adoption FAIL as governance debt — add gap ledger entry"
+      classification: SKILL_ENFORCEMENT
+      severity: HIGH
+      priority: 1
+      current_state: "evidence-quality-closeout.json: adoption FAIL exempted as 'no skills applicable' without policy backing"
+      expected_state: "Gap ledger entry for skill adoption bypass; policy carve-out documented or removed"
+      skill_ids: [validate-product-code-ledger, preflight-skill-entry]
+      allowed_paths:
+        - reports/capability-layer/gap-ledger.json
+        - reports/expert-manual-system-review/reconciliation/
+      implementation_steps:
+        - 1: Add gap entry GAP-GOV-SKILL-ADOPT-001 to gap-ledger.json
+        - 2: Document in reconciliation report the policy defect
+        - 3: Create taskcard for adding policy carve-out or CI enforcement
+      effort: MEDIUM
+      status: PENDING
+
+    - task_id: TC-RECON-W1-002
+      stable_semantic_key: false_blocker_reclassification
+      finding_ids: [REC-E-001]
+      title: "Reclassify PROB-PK05 and PROB-PY01 remaining 8 as FALSE_BLOCKER_RESOLVED"
+      classification: AUTHORIZATION_REPAIR
+      severity: MEDIUM
+      priority: 2
+      current_state: "fix-eligibility-matrix classifies both as AGENT_CAN_PREPARE_ONLY / FIX_LATER_NEEDS_USER_APPROVAL"
+      expected_state: "Both reclassified as FALSE_BLOCKER_RESOLVED with evidence from subsequent sprints"
+      skill_ids: [validate-product-code-ledger]
+      allowed_paths:
+        - reports/expert-manual-system-review/fix-eligibility-matrix.json
+      implementation_steps:
+        - 1: Update fix-eligibility-matrix.json for PROB-PK05 and PROB-PY01
+        - 2: Add false_blocker_resolved_by field citing subsequent sprint evidence
+      effort: SMALL
+      status: PENDING
+
+    - task_id: TC-RECON-W1-003
+      stable_semantic_key: terminal_gate_product_conditions
+      finding_ids: [REC-G-001]
+      title: "Document required product gate conditions P1-P3 for future terminal gate schema"
+      classification: EVIDENCE_GATE_REPAIR
+      severity: HIGH
+      priority: 3
+      current_state: "terminal-gate-checklist.json conditions C1-C8 are process-only"
+      expected_state: "Product gate schema additions documented; taskcard for implementation"
+      implementation_steps:
+        - 1: Create terminal-gate-schema-extension.json in reconciliation/
+        - 2: Define P1 (all CRITICAL closed or VALID_EXTERNAL_GATE), P2 (all HIGH addressed), P3 (skill_id present)
+      effort: SMALL
+      status: PENDING
+
+    - task_id: TC-RECON-W1-004
+      stable_semantic_key: zst_solution_design_correction
+      finding_ids: [REC-H-001]
+      title: "Replace invalid GZipStream ZST solution with ZstdSharp — update PROB-001 design"
+      classification: PROBLEM_REGISTER_MIGRATION
+      severity: CRITICAL
+      priority: 1
+      current_state: "PROB-001 confirmed-problems.json proposes GZipStream — technically invalid for RFC 8878"
+      expected_state: "PROB-001 design specifies ZstdSharp.Port NuGet (MIT, managed, cross-platform)"
+      implementation_steps:
+        - 1: Update canonical-problem-register.json PROB-001 corrected_fix (already done in this reconciliation)
+        - 2: Create ZST-SOLUTION-DESIGN.md in reconciliation/ with full technical spec
+      effort: SMALL
+      status: PENDING
+
+    - task_id: TC-RECON-W1-005
+      stable_semantic_key: skill_implementation_paths_audit
+      finding_ids: [PROB-015]
+      title: "Audit skill registry for empty implementation_paths — classify each as advisory_only or assign paths"
+      classification: SKILL_ENFORCEMENT
+      severity: MEDIUM
+      priority: 4
+      skill_ids: [check-skill-coverage]
+      allowed_paths:
+        - .supervisor/skill-registry.yaml
+        - reports/expert-manual-system-review/reconciliation/
+      implementation_steps:
+        - 1: Run check-skill-coverage skill
+        - 2: For each skill with empty implementation_paths: determine correct paths or advisory_only flag
+        - 3: Update skill-registry.yaml entries
+      effort: MEDIUM
+      status: PENDING
+
+# ===================================================================
+# WAVE 2 — Gap Taxonomy and SAL Coverage
+# ===================================================================
+
+wave_2:
+  name: Gap Taxonomy Repair and SAL Coverage
+  objective: >
+    Repair 1207/1208 uninformative gap categories; extend SAL chain for 10 formats
+  blocking_for: Wave 4+ product work (gap-driven work requires taxonomy to function)
+
+  taskcards:
+
+    - task_id: TC-RECON-W2-001
+      stable_semantic_key: gap_taxonomy_deterministic_repair
+      finding_ids: [PROB-009, NF-001]
+      title: "Repair gap taxonomy — replace 'MISSING' category with deterministic categories from gap content"
+      classification: GAP_TAXONOMY_REPAIR
+      severity: CRITICAL
+      priority: 1
+      current_state: "1207/1208 gaps have category='MISSING'. Taxonomy repair recommended since June 25."
+      expected_state: "< 10% of gaps have unknown/MISSING category. 8-12 meaningful category buckets."
+      skill_ids: [build-capability-routes]
+      allowed_paths:
+        - reports/capability-layer/gap-ledger.json
+        - tools/supervisor/gap_ledger_to_work_items.py
+      implementation_steps:
+        - 1: Define 8-12 category buckets (e.g. extraction_missing, write_api_missing, test_missing, spec_parity, api_surface_incomplete, packaging, analytics, governance)
+        - 2: Implement category inference function in gap_ledger_to_work_items.py
+        - 3: Apply to all 1208 gaps; verify categories
+        - 4: Add validator: if >50% MISSING, block sprint generation
+      focused_verification:
+        - Category distribution across 1208 gaps is meaningful
+        - No single category has >70% of gaps
+        - "MISSING" category has <5% of gaps
+      rollback: "Restore gap-ledger.json from git"
+      effort: HIGH
+      dependencies: []
+      status: PENDING
+
+    - task_id: TC-RECON-W2-002
+      stable_semantic_key: sal_chain_extension_csv_toml
+      finding_ids: [PROB-010]
+      title: "Extend SAL chain for CSV and TOML — highest priority missing formats"
+      classification: SAL_BACKFILL
+      severity: HIGH
+      priority: 2
+      skill_ids: [sal-pipeline-heal]
+      allowed_paths:
+        - .local/spec-cache/
+        - shared/qname-registry/
+      implementation_steps:
+        - 1: Run sal-pipeline-heal for CSV (RFC 4180)
+        - 2: Run sal-pipeline-heal for TOML (TOML 1.0 spec)
+        - 3: Verify fact files generated in .local/spec-cache/
+        - 4: Wire facts to qname-registry entries
+      effort: HIGH
+      dependencies: []
+      status: PENDING
+
+# ===================================================================
+# WAVE 3 — Safe Backfills and Registry Updates
+# ===================================================================
+
+wave_3:
+  name: Safe Backfills — Package, README, Registry, Metadata
+  objective: Execute reversible, bounded backfills that don't require product architecture decisions
+
+  taskcards:
+
+    - task_id: TC-RECON-W3-001
+      stable_semantic_key: html_md_txt_reclassification
+      finding_ids: [PROB-004]
+      title: "Reclassify HTML/Markdown/TXT .NET as target_writer_utility in format-registry.yaml"
+      classification: CLAIM_AUTHORITY_REPAIR
+      severity: MEDIUM
+      priority: 1
+      skill_ids: [update-capability-matrix, validate-product-code-ledger]
+      allowed_paths:
+        - registry/format-registry.yaml
+      implementation_steps:
+        - 1: Read registry/format-registry.yaml current entries for HTML, Markdown, TXT
+        - 2: Change product_type from format_product to target_writer_utility
+        - 3: Update product count claims if hardcoded
+      focused_verification:
+        - format-registry.yaml entries updated
+        - JSON schema still valid
+      rollback: "git checkout registry/format-registry.yaml"
+      effort: SMALL
+      status: PENDING
+
+    - task_id: TC-RECON-W3-002
+      stable_semantic_key: prob013_poc_targets_reconciliation
+      finding_ids: [PROB-013, NF-005]
+      title: "Reconcile FodsOdsExporter PROTOTYPE vs PASS — downgrade poc-targets or complete exporter"
+      classification: CLAIM_AUTHORITY_REPAIR
+      severity: HIGH
+      priority: 2
+      current_state: "poc-targets.yaml PASS for ods_exporter; source has PROTOTYPE_STATUS comment"
+      expected_state: "poc-targets accurate — either PARTIAL (if still prototype) or PASS (if completed)"
+      skill_ids: [validate-product-code-ledger]
+      allowed_paths:
+        - product-capability-matrix/poc-targets.yaml
+        - reports/expert-manual-system-review/reconciliation/
+      implementation_steps:
+        - 1: Read FodsOdsExporter.cs fully — assess if it can produce a valid ODS ZIP
+        - 2: If prototype: downgrade poc-targets to PARTIAL with justification
+        - 3: If functional: document what makes it functional despite PROTOTYPE comment
+      effort: MEDIUM
+      status: PENDING
+
+    - task_id: TC-RECON-W3-003
+      stable_semantic_key: analytics_masquerade_rename
+      finding_ids: [PROB-014]
+      title: "Rename analytics masquerade files to *_analytics.py pattern"
+      classification: PRODUCT_ARCHITECTURE
+      severity: MEDIUM
+      priority: 3
+      skill_ids: [decompose-monolithic-codec]
+      allowed_paths:
+        - src/python/gnumeric/
+        - src/python/toml/
+      implementation_steps:
+        - 1: Rename gnumeric_workbook_stats.py → gnumeric_analytics.py
+        - 2: Update all imports referencing gnumeric_workbook_stats
+        - 3: Rename toml/config_document.py → toml_analytics.py (if it is truly analytics, not domain model)
+        - 4: Update all imports
+        - 5: Run affected tests
+      focused_verification:
+        - All imports resolve
+        - Affected tests pass
+        - No regression in gnumeric or toml test suites
+      rollback: "git checkout src/python/gnumeric/ src/python/toml/"
+      effort: MEDIUM
+      status: PENDING
+
+    - task_id: TC-RECON-W3-004
+      stable_semantic_key: zst_csproj_header_update
+      finding_ids: [NF-004]
+      title: "Update ZST .NET file headers to correct Gate 11 status"
+      classification: CLAIM_AUTHORITY_REPAIR
+      severity: LOW
+      priority: 4
+      skill_ids: [validate-product-code-ledger]
+      allowed_paths:
+        - src/net/zst/ZstParser.cs
+        - src/net/zst/ZstDocument.cs
+      implementation_steps:
+        - 1: Verify ZST Gate 11 status in poc-targets.yaml
+        - 2: If approved: update header comments
+        - 3: If not approved: leave as-is but document inconsistency
+      effort: SMALL
+      status: PENDING
+
+# ===================================================================
+# WAVE 4 — Critical Product Fixes
+# ===================================================================
+
+wave_4:
+  name: Critical Product Gap Healing
+  objective: Fix CRITICAL product gaps — ZST decompression, FODS PDF Unicode, FODT table traversal, ODS exporter
+  requires: Wave 0-2 complete (gap taxonomy needed for gap entry creation)
+
+  taskcards:
+
+    - task_id: TC-RECON-W4-001
+      stable_semantic_key: zst_dotnet_decompression
+      finding_ids: [PROB-001, REC-H-001]
+      title: "Implement ZST .NET decompression using ZstdSharp.Port NuGet"
+      classification: PRODUCT_FEATURE
+      severity: CRITICAL
+      priority: 1
+      skill_ids: [add-dotnet-api]
+      allowed_paths:
+        - src/net/zst/
+        - src/net/zst/FormatFactory.Zst.csproj
+        - tests/net/zst/
+      implementation_steps:
+        - 1: Add ZstdSharp.Port NuGet reference to FormatFactory.Zst.csproj
+        - 2: Implement ZstDocument.Decompress() → byte[] using ZstdSharp.Decompressor.Unwrap
+        - 3: Implement ZstDocument.DecompressToString(Encoding) → string
+        - 4: Implement ZstParser streaming overload
+        - 5: Add malformed-input test (invalid magic bytes → ZstInvalidMagicException)
+        - 6: Add roundtrip test: compress text → decompress → verify equality
+      focused_verification:
+        - dotnet build succeeds
+        - Roundtrip test: ZstdSharp.Compressor → ZstDocument.Decompress() produces original content
+        - Malformed input test: invalid magic bytes throws ZstInvalidMagicException
+      package_verification:
+        - dotnet pack produces .nupkg
+        - XML docs included (GenerateDocumentationFile=true already present)
+      rollback: "git checkout src/net/zst/"
+      effort: HIGH
+      dependencies: [TC-RECON-W2-001, TC-RECON-W1-004]
+      status: PENDING
+
+    - task_id: TC-RECON-W4-002
+      stable_semantic_key: fodt_table_traversal
+      finding_ids: [PROB-003]
+      title: "Implement FODT table traversal — add FodtBody.Tables with FodtTable/FodtTableCell"
+      classification: PRODUCT_ARCHITECTURE
+      severity: HIGH
+      priority: 2
+      skill_ids: [add-dotnet-object-model-feature]
+      allowed_paths:
+        - src/net/fodt/Model/
+        - src/net/fodt/FodtParser.cs
+        - tests/net/fodt/
+      implementation_steps:
+        - 1: Create FodtTable and FodtTableCell public model classes
+        - 2: Implement FodtBody.Tables property (IReadOnlyList<FodtTable>)
+        - 3: Extend FodtParser to populate Tables from table:table elements
+        - 4: Add test: load FODT with table → verify cells accessible
+        - 5: Ensure FodtBody.Paragraphs still works (non-breaking)
+      focused_verification:
+        - FodtBody.Tables returns populated list for table-containing documents
+        - FodtBody.Paragraphs unchanged
+        - All existing FODT tests still pass
+      rollback: "git checkout src/net/fodt/"
+      effort: MEDIUM
+      dependencies: [TC-RECON-W2-001]
+      status: PENDING
+
+    - task_id: TC-RECON-W4-003
+      stable_semantic_key: fods_pdf_unicode_scoping
+      finding_ids: [PROB-002]
+      title: "FODS PDF Unicode — document as Latin-1-scoped (Option C) or implement TrueType embedding"
+      classification: PRODUCT_FEATURE
+      severity: HIGH
+      priority: 3
+      skill_ids: [add-dotnet-api]
+      allowed_paths:
+        - src/net/fods/FodsPdfExporter.cs
+        - registry/format-registry.yaml
+      implementation_steps:
+        - 1: Assess: is PdfSharp NuGet acceptable? License and package size check.
+        - 2: If PdfSharp acceptable: implement TrueType font embedding for CJK/accented/RTL
+        - 3: If PdfSharp not acceptable: formally document Latin-1-scope as known limitation in format-registry.yaml
+        - 4: Add test: export cell with non-Latin content → verify either renders correctly or throws clear exception
+      focused_verification:
+        - Non-Latin PDF test: either characters render or explicit UnsupportedCharacterException thrown
+        - No silent garbling
+      rollback: "git checkout src/net/fods/FodsPdfExporter.cs"
+      effort: HIGH
+      dependencies: [TC-RECON-W2-001]
+      status: PENDING
+
+    - task_id: TC-RECON-W4-004
+      stable_semantic_key: fods_ods_exporter_validation
+      finding_ids: [PROB-013, PROB-016, NF-005]
+      title: "Validate FodsOdsExporter — test ODS ZIP structure validity; fix or downgrade"
+      classification: PRODUCT_FEATURE
+      severity: HIGH
+      priority: 4
+      skill_ids: [add-roundtrip-test, verify-dogfood-path]
+      allowed_paths:
+        - src/net/fods/FodsOdsExporter.cs
+        - tests/net/fods/
+        - product-capability-matrix/poc-targets.yaml
+      implementation_steps:
+        - 1: Read FodsOdsExporter.cs fully — trace Export() output path
+        - 2: Write test: Export small FODS → load the ODS result with FodsParser or verify ZIP structure
+        - 3: If test passes: remove PROTOTYPE_STATUS comment and update poc-targets to PASS
+        - 4: If test fails: fix root cause or downgrade poc-targets to PARTIAL
+      focused_verification:
+        - ODS export produces valid ZIP with required entries (mimetype, content.xml, styles.xml, META-INF/manifest.xml)
+        - ZIP can be opened (or explicitly document what's missing)
+      rollback: "git checkout src/net/fods/FodsOdsExporter.cs"
+      effort: MEDIUM
+      dependencies: [TC-RECON-W3-002]
+      status: PENDING
+
+# ===================================================================
+# WAVE 5 — Medium Product Gaps
+# ===================================================================
+
+wave_5:
+  name: Medium Product Gap Healing
+  objective: Fix medium-severity product gaps — CSV edit API, FODP writer, LLM grader fallback
+
+  taskcards:
+
+    - task_id: TC-RECON-W5-001
+      stable_semantic_key: csv_dotnet_edit_api
+      finding_ids: [PROB-005]
+      title: "Verify and complete CSV .NET edit API — AddRow, SetCell, RemoveRow"
+      classification: PRODUCT_FEATURE
+      severity: MEDIUM
+      priority: 1
+      skill_ids: [add-dotnet-api]
+      allowed_paths:
+        - src/net/csv/CsvDocument.cs
+        - tests/net/csv/
+      implementation_steps:
+        - 1: Read CsvDocument.cs — confirm what mutation methods exist at HEAD
+        - 2: If AddRow/SetCell/RemoveRow missing: add them
+        - 3: Add test: CsvDocument() + AddRow(["a","b"]) + Write → verify output
+      effort: SMALL
+      status: PENDING
+
+    - task_id: TC-RECON-W5-002
+      stable_semantic_key: fodp_python_writer
+      finding_ids: [PROB-006]
+      title: "Implement FODP Python write_fodp — specification-backed serialization"
+      classification: PRODUCT_FEATURE
+      severity: MEDIUM
+      priority: 2
+      skill_ids: [add-python-api]
+      allowed_paths:
+        - src/python/fodp/
+        - tests/python/fodp/
+      implementation_steps:
+        - 1: Study write_fodg() as reference pattern
+        - 2: Implement write_fodp(model, path) producing flat ODP XML
+        - 3: Add roundtrip test: load → write_fodp → reload → verify page count preserved
+      effort: MEDIUM
+      status: PENDING
+
+    - task_id: TC-RECON-W5-003
+      stable_semantic_key: llm_grader_fallback
+      finding_ids: [PROB-011]
+      title: "Add local deterministic evidence fallback when LLM grader unavailable"
+      classification: PRODUCT_FEATURE
+      severity: HIGH
+      priority: 3
+      skill_ids: [validate-product-code-ledger]
+      allowed_paths:
+        - tools/supervisor/grade_declared_work.py
+        - tools/supervisor/
+      implementation_steps:
+        - 1: Add local deterministic grader path: if LLM unavailable, use deterministic checks
+        - 2: Replace silent DEFERRED_WITH_REASON with explicit UNVERIFIED_EXTERNAL_GRADER state
+        - 3: Add governance validator: if DEFERRED_WITH_REASON > 20% of items, warn
+      effort: MEDIUM
+      status: PENDING
+
+# ===================================================================
+# WAVE 6 — System Tooling and Governance
+# ===================================================================
+
+wave_6:
+  name: System Tooling — Transcript CI, LOC Compliance, Evidence Gates
+  objective: Fix governance tool defects and enforce skill transcript CI
+
+  taskcards:
+
+    - task_id: TC-RECON-W6-001
+      stable_semantic_key: ci_transcript_verification
+      finding_ids: [PROB-017]
+      title: "Implement and wire ci_transcript_verification — validate skill transcripts in CI"
+      classification: SKILL_ENFORCEMENT
+      severity: MEDIUM
+      priority: 1
+      skill_ids: [validate-skill-transcript]
+      allowed_paths:
+        - .github/workflows/
+        - tools/supervisor/
+        - .supervisor/skill-registry.yaml
+      implementation_steps:
+        - 1: Implement ci_transcript_verification as active skill
+        - 2: Wire into .github/workflows/ci.yml
+        - 3: Update skill-registry.yaml entry from backlog to active
+      effort: MEDIUM
+      status: PENDING
+
+    - task_id: TC-RECON-W6-002
+      stable_semantic_key: governance_loc_compliance
+      finding_ids: [PROB-012]
+      title: "Begin decomposition of autonomous_cycle.py and governance_validators.py"
+      classification: PRODUCT_ARCHITECTURE
+      severity: MEDIUM
+      priority: 2
+      skill_ids: [decompose-monolithic-codec]
+      allowed_paths:
+        - tools/supervisor/autonomous_cycle.py
+        - tools/supervisor/governance_validators.py
+        - tools/supervisor/
+      implementation_steps:
+        - 1: Extract helpers/utilities from autonomous_cycle.py to autonomous_cycle_utils.py
+        - 2: Split governance_validators.py into validator modules (V1-V20.py, V21-V40.py, V41+.py)
+        - 3: Verify all 92 governance validator tests still pass
+      effort: HIGH
+      status: PENDING
+
+# ===================================================================
+# WAVE 7 — Product and Format Backfill
+# ===================================================================
+
+wave_7:
+  name: Full Product Backfill
+  objective: Backfill all affected products with verified fixes from Waves 4-6
+
+  taskcards:
+
+    - task_id: TC-RECON-W7-001
+      stable_semantic_key: full_python_consumer_reverification
+      title: "Re-run consumer_roundtrip.py for all 14 Python FOSS formats post-wave-5 fixes"
+      classification: REGRESSION
+      severity: HIGH
+      priority: 1
+      skill_ids: [verify-dogfood-path, add-installed-package-example]
+      implementation_steps:
+        - 1: Run each consumer_roundtrip.py example
+        - 2: Verify CONSUMER_PROOF: PASS for all formats
+        - 3: Update packaging-distribution-matrix.json with current status
+      effort: MEDIUM
+      status: PENDING
+
+    - task_id: TC-RECON-W7-002
+      stable_semantic_key: dotnet_package_rebuild
+      title: "Rebuild .NET packages (FODS, FODT, Netpbm, ZST) and verify package contents"
+      classification: PACKAGE_BACKFILL
+      severity: HIGH
+      priority: 2
+      skill_ids: [create-acquisition-pack]
+      allowed_paths:
+        - src/net/
+      implementation_steps:
+        - 1: dotnet build (all three Gate 11 products + ZST)
+        - 2: dotnet pack — produce .nupkg files
+        - 3: Inspect .nupkg: verify Description, GenerateDocumentationFile, PackageReadmeFile
+        - 4: Verify XML docs included
+      effort: MEDIUM
+      status: PENDING
+
+# ===================================================================
+# WAVE 8 — Regression and Package Consumer Verification
+# ===================================================================
+
+wave_8:
+  name: Regression and Package Consumer Tests
+  objective: Prove no regression from Waves 4-7; verify clean consumer experience
+
+  taskcards:
+
+    - task_id: TC-RECON-W8-001
+      stable_semantic_key: full_test_suite_regression
+      title: "Run full test suite after all product changes"
+      classification: REGRESSION
+      severity: HIGH
+      priority: 1
+      skill_ids: [add-roundtrip-test]
+      implementation_steps:
+        - 1: .venv/Scripts/pytest tests/ --ignore=tests/supervisor --tb=short -q
+        - 2: .venv/Scripts/pytest tests/supervisor/ -q
+        - 3: Record pass/fail counts
+        - 4: Any new failures require analysis and fix before Wave 9
+      effort: MEDIUM
+      status: PENDING
+
+    - task_id: TC-RECON-W8-002
+      stable_semantic_key: pip_install_clean_consumer
+      title: "Clean pip install proof for all 20 Python packages"
+      classification: PACKAGE_BACKFILL
+      severity: HIGH
+      priority: 2
+      skill_ids: [package-install-proof]
+      implementation_steps:
+        - 1: For each of 20 packages: pip install -e src/python/{pkg}/ && python -c "import {pkg}; print({pkg}.__version__)"
+        - 2: Verify all 20 pass
+        - 3: Update packaging-distribution-matrix.json
+      effort: MEDIUM
+      status: PENDING
+
+# ===================================================================
+# WAVE 9 — Idempotency and Final Audit
+# ===================================================================
+
+wave_9:
+  name: Idempotency Proof and Final Audit
+  objective: Prove no duplicate state or side effects from rerun; produce final audit
+
+  taskcards:
+
+    - task_id: TC-RECON-W9-001
+      stable_semantic_key: idempotency_verification
+      title: "No-change idempotency — rerun all healed systems and verify no state change"
+      classification: IDEMPOTENCY
+      severity: HIGH
+      priority: 1
+      skill_ids: [run-skill-idempotency]
+      implementation_steps:
+        - 1: Re-run all Wave 3 registry updates — verify no additional changes
+        - 2: Re-run all Wave 7 package builds — verify identical outputs
+        - 3: Re-run test suite — verify same pass count
+        - 4: Check git status — no unexpected modifications
+      effort: MEDIUM
+      status: PENDING
+
+    - task_id: TC-RECON-W9-002
+      stable_semantic_key: final_audit_report
+      title: "Produce final audit report for all 27 problems with current dispositions"
+      classification: CLOSEOUT
+      severity: HIGH
+      priority: 2
+      skill_ids: [post-sprint-audit]
+      allowed_paths:
+        - reports/expert-manual-system-review/reconciliation/
+      implementation_steps:
+        - 1: Update canonical-problem-register.json with final HEAD statuses
+        - 2: Produce final-audit.json with completion gates assessment
+        - 3: Determine final verdict
+      effort: SMALL
+      status: PENDING

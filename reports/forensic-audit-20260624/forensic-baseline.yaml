@@ -1,0 +1,141 @@
+# FORMAT FACTORY — FORENSIC BASELINE
+# Generated: 2026-06-24 | Mission: FF-FORENSIC-AUDIT-20260624
+
+forensic_baseline:
+  mission_id: FF-FORENSIC-AUDIT-20260624
+  repository: c:\Users\prora\OneDrive\Documents\GitHub\format-factory
+  branch: main
+  head: 30de4ad006587b3c0ad92c72f259b840a05a56a7
+  head_message: "docs(master-plan): v6.1 — Section 51 recursive-hugging-bird Wave 2 CLOSED"
+  worktree: clean_with_uncommitted_changes
+  active_plan: none  # no per-chat plan file loaded
+  current_supervisor: MODE 4 (ACTIVE_MCP_ACTIVATION)
+  autonomous_continue: YES
+  last_sprint: FORMAT-FACTORY-QNAME-PKG-CSV-20260624
+  last_sprint_verdict: ACCEPTED
+  last_sprint_tests: 59 passed / 0 failed
+
+  specification_roots:
+    - .local/sal-output/sal-facts-latest.json  # 14,486 facts, 14,331 verified
+    - .local/spec-cache/  # 26 format directories
+    - shared/qname-registry/  # 20 format YAML files (all empty)
+
+  normalized_fact_roots:
+    - .local/sal-output/sal-facts-latest.json
+    - .local/sal-output/sal-facts-20260624.json
+
+  qname_roots:
+    - shared/qname-registry/  # EMPTY — critical gap
+
+  capability_roots:
+    - reports/capability-layer/unified-capability-map.json  # 1,766 capabilities
+    - reports/capability-layer/capability_summary.json
+    - reports/capability-layer/commercial-capability-map.json
+    - reports/capability-layer/foss-reduced-capability-map.json
+
+  feature_roots:
+    - .local/supervisor/product/next-work-items.json  # gap-derived work items
+    - reports/supervisor/next-sprint.md  # prose sprint prompt
+
+  product_roots:
+    python: src/python/  # 20 format directories
+    dotnet: src/net/  # 10 format directories
+
+  test_roots:
+    python: tests/python/  # ~1,800 test files
+    dotnet: tests/net/  # ~250 test files
+
+  package_roots:
+    - packaging/python/package-matrix.yaml  # 16 packages, all local_only
+    - packaging/python/build-local-packages.py
+
+  ledgers:
+    - reports/r90/product-code-change-ledger.json  # 984 entries (40% analytics)
+    - reports/capability-layer/gap-ledger.json  # 1,018 gaps (975 closed)
+    - plans/master-plan-memory.md  # session memory
+
+  recent_runs:
+    - id: FORMAT-FACTORY-QNAME-PKG-CSV-20260624
+      verdict: ACCEPTED
+      tests: 59
+      date: "2026-06-24"
+    - id: FORMAT-FACTORY-MACHINERY-REPAIR-20260624-EXT
+      verdict: ACCEPTED
+      tests: 133
+      date: "2026-06-24"
+    - id: FORMAT-FACTORY-QNAME-DOGFOOD-20260624
+      verdict: ACCEPTED
+      tests: 39
+      date: "2026-06-24"
+
+  current_claims:
+    - claim: "14,486 spec facts fully authorize the capability map"
+      verification_status: PARTIALLY_TRUE
+      evidence: "ODF facts are well-authorized. Non-ODF facts are bootstrap-only (2-22 per format)."
+    - claim: "QName registry populated for 20 formats"
+      verification_status: FALSE
+      evidence: "All 20 shared/qname-registry/ files have entries: [] (zero entries)"
+    - claim: "1,018 gaps catalogued with 975 closed"
+      verification_status: TRUE
+      evidence: "reports/capability-layer/gap-ledger.json confirmed"
+    - claim: "16 packages in matrix"
+      verification_status: TRUE
+      evidence: "packaging/python/package-matrix.yaml — 16 packages, all local_only_not_published"
+    - claim: "All governed formats have Python source"
+      verification_status: FALSE
+      evidence: "xpm, pam, zpaq, ora have no Python source"
+
+  verified_claims:
+    - "FODS has 5,009 SAL facts (4,987 verified)"
+    - "FODT has 4,957 SAL facts (4,933 verified)"
+    - "FODS/FODT both have read/write/roundtrip in Python and .NET"
+    - "ZST has 625 Python tests"
+    - "Total SAL workbench-verified: 14,331"
+    - "All packages: local_only_not_published (0 commercially published)"
+
+  contradicted_claims:
+    - claim: "qname_compliance tracked for all formats"
+      contradiction: "parity-matrix.yaml shows '?' for ALL 24 formats"
+    - claim: "QName registry seeded for 20 formats"
+      contradiction: "All registry YAML files have entries: [] (zero entries populated)"
+
+  stale_claims:
+    - "analytics rotation producing valuable product depth"  # suspended 2026-06-18
+
+  evidence_root: reports/forensic-audit-20260624/
+
+  pipeline_break_summary:
+    critical:
+      - boundary: FACT_TO_QNAME
+        status: TOTAL_BREAK
+        evidence: "0 qname-registry entries across all 20 formats"
+      - boundary: SPEC_TO_FACT (non-ODF)
+        status: SEVERE_GAP
+        evidence: "13 formats have only 2-9 facts vs 149 total caps for those formats"
+    high:
+      - boundary: CODE_TO_PACKAGE
+        status: BLOCKED_EXTERNAL_GATE
+        evidence: "PyPI publication requires credentials + Gate 11 approval"
+      - boundary: FEATURE_TO_CODE (8 formats)
+        status: INCOMPLETE
+        evidence: "odt/fodp/xcf/ppm/pgm/pbm/csv/tsv have missing write paths"
+    medium:
+      - boundary: FACT_TO_CAPABILITY (inflation)
+        status: POC_GOAL_DERIVED
+        evidence: "27x average inflation for non-ODF foss capabilities"
+      - boundary: CODE_TO_INTEGRATION
+        status: NOT_STARTED
+        evidence: "No cross-format consumer or integration pipeline"
+
+  total_open_forensic_gaps: 18
+  total_root_causes_identified: 9
+  total_taskcards_generated: 18
+  execution_batches: 6
+  estimated_repair_priority_order:
+    - P0: TC-FG-SAL-001-A (RFC spec ingestion adapter)
+    - P1: TC-FG-QNAME-001-ODF (ODF qname population)
+    - P1: TC-FG-SAL-001-B (XML schema ingestion)
+    - P1: TC-FG-CAP-001 (capability audit)
+    - P2: TC-FG-PROD-005 (CSV/TSV roundtrip)
+    - P2: TC-FG-PROD-001 (ODT write)
+    - P2: TC-FG-TEST-001 (TOML/FODP test deepening)

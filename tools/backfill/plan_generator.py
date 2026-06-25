@@ -21,14 +21,14 @@ def generate_plan(format_name: str, inventory: dict) -> str:
     """Generate a human-readable migration plan from inventory data."""
     lines = [
         f"# Backfill Migration Plan — {format_name.upper()}",
-        f"",
-        f"## Summary",
+        "",
+        "## Summary",
         f"- Classes found: {inventory.get('classes_found', 0)}",
         f"- Migration needed: {inventory.get('migration_needed', 0)}",
         f"- Registry entries: {inventory.get('registry_entries', 0)}",
-        f"",
-        f"## Classes Requiring Migration",
-        f"",
+        "",
+        "## Classes Requiring Migration",
+        "",
     ]
 
     migration_classes = [c for c in inventory.get("classes", []) if c.get("migration_required")]
@@ -43,10 +43,10 @@ def generate_plan(format_name: str, inventory: dict) -> str:
             lines.append(f"- **Registry status:** {cls.get('registry_status', 'unknown')}")
             lines.append(f"- **Compatibility shim needed:** Yes (create Compat/{cls['current_name']}.py)")
             lines.append(f"- **Risk:** Check all imports of {cls['current_name']} across test and source files")
-            lines.append(f"")
+            lines.append("")
 
-    lines.append(f"## Non-Migration Classes")
-    lines.append(f"")
+    lines.append("## Non-Migration Classes")
+    lines.append("")
     for cls in inventory.get("classes", []):
         if not cls.get("migration_required"):
             status = "Compat facade" if cls.get("is_compat") else "spec stub" if cls.get("is_spec") else "production"

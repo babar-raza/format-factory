@@ -1,18 +1,20 @@
 # Work Item Grades
-Sprint: forensic-healing-20260624-dwp
-Generated: 2026-06-24T15:00:26.985186
-Global Status: ACCEPTED
+Sprint: immutable-percolating-forest-TC-PUB-20260625
+Generated: 2026-06-25T16:01:36.313816
+Global Status: ACCEPTED_WITH_REWORK
 
 | Item ID | Grade | Rework Required |
 |---------|-------|-----------------|
-| GOVBLOCK-INVESTIGATION | ACCEPTED_VERIFIED |  |
-| TC-HEAL-ABW-001 | ACCEPTED_VERIFIED |  |
-| TC-GAP-TRIAGE-001 | ACCEPTED_VERIFIED |  |
-| TC-LOCK-HYGIENE-001 | ACCEPTED_VERIFIED |  |
-| QOI-LOC-FIX | ACCEPTED_VERIFIED |  |
+| WI-TC-CRC-004-PBM | ACCEPTED_WITH_LIMITATIONS |  |
+| WI-TC-CRC-004-PGM | ACCEPTED_WITH_LIMITATIONS |  |
+| WI-TC-CRC-004-PPM | ACCEPTED_WITH_LIMITATIONS |  |
+| WI-TC-PUB-001-FODS | ACCEPTED_WITH_LIMITATIONS |  |
+| WI-TC-PUB-002-FODT | ACCEPTED_WITH_LIMITATIONS |  |
+| WI-TC-PUB-003-NETPBM | ACCEPTED_WITH_LIMITATIONS |  |
+| WI-TC-PUB-004-SIGNOFF | ACCEPTED_WITH_LIMITATIONS |  |
 
 ## Summary
-- Accepted: 5
-- Rework: 1
+- Accepted: 7
+- Rework: 0
 - Overclaimed: 0
-- Autonomous Continue: True
+- Autonomous Continue: true_with_rework

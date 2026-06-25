@@ -1,0 +1,49 @@
+{
+  "skill_id": "decompose-monolithic-codec",
+  "invocation_id": "decompose-monolithic-codec-gnumeric-20260625",
+  "mode": "live",
+  "result": "PASS",
+  "inputs": {
+    "format_id": "gnumeric",
+    "source_file": "src/python/gnumeric/gnumeric_codec.py",
+    "analytics_target_file": "src/python/gnumeric/gnumeric_analytics.py",
+    "functions_to_move": ["get_row_count", "get_column_count", "count_nonempty_cells"]
+  },
+  "actual_files_changed": [
+    "src/python/gnumeric/gnumeric_codec.py",
+    "src/python/gnumeric/gnumeric_analytics.py"
+  ],
+  "allowed_files": [
+    "src/python/gnumeric/gnumeric_analytics.py",
+    "src/python/gnumeric/gnumeric_codec.py"
+  ],
+  "tests_run": ["tests/python/gnumeric/"],
+  "functions_moved": 3,
+  "source_loc_before": 760,
+  "source_loc_after": 708,
+  "loc_reduction": 52,
+  "backward_compat_verified": true,
+  "codec_tests_pass": true,
+  "test_counts": {
+    "before": {"passed": 1040, "skipped": 1, "failed": 0},
+    "after":  {"passed": 1040, "skipped": 1, "failed": 0}
+  },
+  "negative_control": {
+    "format": "zst",
+    "source_file": "src/python/zst/zst_codec.py",
+    "codec_loc": 1549,
+    "codec_cap": 1549,
+    "analytics_target": "src/python/zst/zst_analytics.py",
+    "analytics_exists": false,
+    "result": "BLOCKED_CAP_REACHED_DEMONSTRATED_BY_INSPECTION",
+    "note": "ZST codec is at its baseline_loc_cap (1549/1549). FODG codec is also at cap (831/831). No existing analytics file in the codebase has a baseline_loc_cap entry. The BLOCKED_CAP_REACHED condition (analytics target LOC >= its cap) was verified by examining pre-flight Step 1.2 logic. If zst_analytics.py existed at its cap, the skill would refuse extraction."
+  },
+  "baseline_updated": true,
+  "baseline_entry": {
+    "path": "src/python/gnumeric/gnumeric_codec.py",
+    "loc_before": 747,
+    "loc_after": 708,
+    "baseline_loc_cap": 1113,
+    "field_updated": "loc"
+  }
+}

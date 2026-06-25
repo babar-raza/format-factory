@@ -213,13 +213,13 @@ def reopen_plan(
         _reopening_register_path.write_text(json.dumps(register, indent=2) + "\n", encoding="utf-8")
         print(f"[reopen_plan_lock] Reopening record appended to {_reopening_register_path.name}")
     else:
-        print(f"[reopen_plan_lock] Reopening record already exists (idempotent skip)")
+        print("[reopen_plan_lock] Reopening record already exists (idempotent skip)")
 
     if successor_path:
         print(f"[reopen_plan_lock] Original plan marked SUPERSEDED_BY_SUCCESSOR. "
               f"Successor: {successor_path}")
     else:
-        print(f"[reopen_plan_lock] Plan reopened. Original closure preserved in closure_history.")
+        print("[reopen_plan_lock] Plan reopened. Original closure preserved in closure_history.")
 
     return record
 

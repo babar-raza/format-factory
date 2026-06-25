@@ -142,13 +142,7 @@ def validate_plan_binding(target_path: str, intent: str = "harden") -> tuple[boo
         if lock.get("status") == "TERMINAL_CLOSED":
             lock_plan = str(lock.get("plan_path", "")).replace("\\", "/")
             if lock_plan and (norm_target.endswith(lock_plan) or norm_target == lock_plan):
-                return (
-                    False,
-                    f"TERMINAL_PLAN_MUTATION_REJECTED: plan '{target_path}' has "
-                    f"TERMINAL_CLOSED lock from session "
-                    f"'{lock.get('session_id', 'unknown')}' "
-                    f"(locked at {lock.get('updated_at', 'unknown')})",
-                )
+                return False, "terminal_closed_plan"
 
     # TC-PG-007: Also check plan identity front-matter if plan_identity module available
     try:
@@ -374,7 +368,7 @@ def clear_lock(session_id: str | None = None) -> None:
         for p in removed:
             print(f"[write_plan_lock] cleared: {p}")
     else:
-        print(f"[write_plan_lock] No lock files to clear")
+        print("[write_plan_lock] No lock files to clear")
 
 
 def cleanup_completed_locks(older_than_hours: float = 24.0) -> int:
@@ -404,6 +398,59 @@ def cleanup_completed_locks(older_than_hours: float = 24.0) -> int:
     return removed
 
 
+def cleanup_stale_in_progress_locks(session_id: str | None = None,
+                                    older_than_hours: float = 24.0) -> dict:
+    """TC-S55-004: Supersede IN_PROGRESS plan locks older than older_than_hours.
+
+    Same-session phantom locks (created by autonomous_cycle machinery and never
+    formally started) accumulate as IN_PROGRESS indefinitely. This function
+    supersedes them so check_continuation.py does not return ACTIVE_PLAN_INCOMPLETE.
+
+    Safety: only supersedes locks from the given session_id (defaults to current).
+    Cross-session IN_PROGRESS locks are left untouched (they may be live plans).
+
+    Returns: {"superseded": int, "skipped": int, "errors": int}
+    """
+    from datetime import timedelta
+    sid = session_id or _get_session_id()
+    if not _plan_locks_dir.exists():
+        return {"superseded": 0, "skipped": 0, "errors": 0}
+    cutoff = datetime.now(timezone.utc) - timedelta(hours=older_than_hours)
+    results = {"superseded": 0, "skipped": 0, "errors": 0}
+    for f in sorted(_plan_locks_dir.glob(f"{sid}*.json")):
+        try:
+            data = json.loads(f.read_text(encoding="utf-8"))
+            if data.get("status") != "IN_PROGRESS":
+                results["skipped"] += 1
+                continue
+            ts = data.get("updated_at", "2000-01-01T00:00:00+00:00")
+            updated = datetime.fromisoformat(ts)
+            if updated.tzinfo is None:
+                updated = updated.replace(tzinfo=timezone.utc)
+            if updated < cutoff:
+                data["status"] = "SUPERSEDED"
+                data["superseded_at"] = datetime.now(timezone.utc).isoformat()
+                data["superseded_reason"] = (
+                    f"Auto-cleanup TC-S55-004: IN_PROGRESS lock older than {older_than_hours}h "
+                    f"(age={(datetime.now(timezone.utc) - updated).total_seconds()/3600:.1f}h)"
+                )
+                _tmp = f.with_suffix(".tmp")
+                _tmp.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
+                os.replace(str(_tmp), str(f))
+                results["superseded"] += 1
+                print(f"[write_plan_lock] TC-S55-004 superseded stale IN_PROGRESS: {f.name}")
+            else:
+                results["skipped"] += 1
+        except Exception as e:
+            results["errors"] += 1
+            print(f"[write_plan_lock] SKIP {f.name}: {e}", file=sys.stderr)
+    print(
+        f"[write_plan_lock] --cleanup-stale-in-progress: superseded={results['superseded']}, "
+        f"skipped={results['skipped']}, errors={results['errors']}"
+    )
+    return results
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         description="Write active-plan-lock.json to block sprint loop while a plan is active"
@@ -425,8 +472,10 @@ def main(argv: list[str] | None = None) -> int:
                         help="Delete the lock file entirely (emergency reset)")
     parser.add_argument("--cleanup-completed", action="store_true",
                         help="Remove COMPLETE/TERMINAL_CLOSED lock files older than --older-than hours")
+    parser.add_argument("--cleanup-stale-in-progress", action="store_true",
+                        help="TC-S55-004: Supersede same-session IN_PROGRESS locks older than --older-than hours")
     parser.add_argument("--older-than", type=float, default=24.0,
-                        help="Age threshold in hours for --cleanup-completed (default: 24)")
+                        help="Age threshold in hours for --cleanup-completed/--cleanup-stale-in-progress (default: 24)")
     parser.add_argument("--binding", action="store_true",
                         help="Include binding_contract in lock file to enforce plan path ownership "
                              "and block wrong-plan writes via validate_plan_binding()")
@@ -443,6 +492,10 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.cleanup_completed:
         cleanup_completed_locks(older_than_hours=args.older_than)
+        return 0
+
+    if getattr(args, "cleanup_stale_in_progress", False):
+        cleanup_stale_in_progress_locks(older_than_hours=args.older_than)
         return 0
 
     if not args.plan_path:

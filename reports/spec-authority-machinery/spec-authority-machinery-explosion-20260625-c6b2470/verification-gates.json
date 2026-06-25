@@ -1,0 +1,188 @@
+{
+  "run_id": "spec-authority-machinery-explosion-20260625-c6b2470",
+  "generated_at": "2026-06-25",
+  "verification_gates": [
+    {
+      "gate_id": "VG-001",
+      "title": "authority_gate_validation.py returns P1 for Gnumeric",
+      "command": "python tools/supervisor/authority_gate_validation.py --format-id gnumeric --json",
+      "expected": {"authority_level_int": 1, "product_expansion_allowed": false},
+      "phase": "PRE_HEALING",
+      "status": "VERIFIED",
+      "notes": "Confirmed during investigation — P1 correct for schema-only format"
+    },
+    {
+      "gate_id": "VG-002",
+      "title": "authority_gate_validation.py returns P6 for FODS",
+      "command": "python tools/supervisor/authority_gate_validation.py --format-id fods --json",
+      "expected": {"authority_level_int": 6, "product_expansion_allowed": true},
+      "phase": "PRE_HEALING",
+      "status": "VERIFIED",
+      "notes": "Confirmed during investigation — P6 for FODS (1 fact in proof graph; code citations in Compat/)"
+    },
+    {
+      "gate_id": "VG-003",
+      "title": "TC-GUARD-001 BLOCKS sprint with only gap_ledger_ref (after Phase A)",
+      "file": "tools/supervisor/autonomous_cycle.py",
+      "test_method": "Submit test declaration with gap_ledger_ref only (no spec_fact_refs, no exception_classification) for FODS PRODUCT_SOURCE item",
+      "expected": "TC-GUARD-001 fires → added to rework_items → sprint REJECTED",
+      "phase": "POST_PHASE_A",
+      "status": "PENDING",
+      "notes": "Currently passes (gap_ledger_ref alone satisfies OR logic) — must FAIL after repair"
+    },
+    {
+      "gate_id": "VG-004",
+      "title": "TC-GUARD-001 PASSES sprint with exception_classification (after Phase A)",
+      "file": "tools/supervisor/autonomous_cycle.py",
+      "test_method": "Submit test declaration with gap_ledger_ref + exception_classification=no_public_spec_available for ABW PRODUCT_SOURCE item",
+      "expected": "TC-GUARD-001 passes → sprint proceeds",
+      "phase": "POST_PHASE_A",
+      "status": "PENDING",
+      "notes": "Must continue to pass for Tier 2 formats with valid exception_classification"
+    },
+    {
+      "gate_id": "VG-005",
+      "title": "V13 FAILS FODS PRODUCT_SOURCE item with no spec_fact_refs (after Phase A)",
+      "file": "tools/supervisor/governance_validators.py",
+      "test_method": "Submit FODS PRODUCT_SOURCE declaration without spec_fact_refs and without exception_classification",
+      "expected": "V13 fires → FAIL → blocks_sprint=True",
+      "phase": "POST_PHASE_A",
+      "status": "PENDING",
+      "notes": "Currently absent spec_fact_refs = no enforcement — must FAIL after repair"
+    },
+    {
+      "gate_id": "VG-006",
+      "title": "V13 PASSES Gnumeric PRODUCT_SOURCE item with exception_classification",
+      "file": "tools/supervisor/governance_validators.py",
+      "test_method": "Submit Gnumeric PRODUCT_SOURCE declaration with exception_classification=schema_authority_available",
+      "expected": "V13 passes → continues",
+      "phase": "POST_PHASE_A",
+      "status": "PENDING",
+      "notes": "Must continue to pass for schema-only formats with valid exception"
+    },
+    {
+      "gate_id": "VG-007",
+      "title": "product_task_selector BLOCKS NDJSON (P2, no exception) for product tasks",
+      "file": "tools/supervisor/product_task_selector.py",
+      "test_method": "Request product task selection for NDJSON format without exception_classification",
+      "expected": "_get_format_authority_status() returns P2_BLOCKED; no tasks emitted",
+      "phase": "POST_PHASE_A",
+      "status": "PENDING",
+      "notes": "Currently NDJSON returns ALLOWED from poc-targets check — must BLOCK after repair (unless legacy_backfill exception retained)"
+    },
+    {
+      "gate_id": "VG-008",
+      "title": "product_task_selector ALLOWS Gnumeric (P1, with schema_authority_available exception)",
+      "file": "tools/supervisor/product_task_selector.py",
+      "test_method": "Request product task selection for Gnumeric",
+      "expected": "exception_classification=schema_authority_available → ALLOWED_WITH_EXCEPTION; tasks emitted",
+      "phase": "POST_PHASE_A",
+      "status": "PENDING",
+      "notes": "Must continue to allow Tier 2 formats with valid exceptions"
+    },
+    {
+      "gate_id": "VG-009",
+      "title": "anti_skip Detector 19 fires for ODF PRODUCT_SOURCE item without spec_fact_refs",
+      "file": "tools/supervisor/anti_skip_checker.py",
+      "test_method": "Run anti_skip_checker on ODF PRODUCT_SOURCE item with no spec_qname_refs and no spec_fact_refs",
+      "expected": "Detector 19 fires → HIGH severity → verdict downgraded",
+      "phase": "PRE_HEALING",
+      "status": "VERIFIED",
+      "notes": "Already fires but only downgrades — confirmed during investigation"
+    },
+    {
+      "gate_id": "VG-010",
+      "title": "authority_conveyor.py returns action plan for FODS with gaps",
+      "command": "python tools/supervisor/authority_conveyor.py --format-id fods --target-level 6",
+      "expected": "Returns structured JSON with: current_level, target_level, gaps[], next_actions[]",
+      "phase": "PRE_HEALING",
+      "status": "VERIFIED",
+      "notes": "Confirmed tool runs and returns structured output"
+    },
+    {
+      "gate_id": "VG-011",
+      "title": "refresh_check.py reports stale entries",
+      "command": "python tools/spec-cache/refresh_check.py scan",
+      "expected": "Reports at least 4 stale entries: fodt/1.3, odf-shared/1.3 (parts 1,2,4)",
+      "phase": "PRE_HEALING",
+      "status": "VERIFIED",
+      "notes": "Confirmed during investigation"
+    },
+    {
+      "gate_id": "VG-012",
+      "title": "authority_integration_fabric.py NOT imported by autonomous_cycle.py (pre-healing)",
+      "command": "grep -n 'authority_integration_fabric' tools/supervisor/autonomous_cycle.py",
+      "expected": "Zero matches",
+      "phase": "PRE_HEALING",
+      "status": "VERIFIED",
+      "notes": "Confirmed unwired during investigation"
+    },
+    {
+      "gate_id": "VG-013",
+      "title": "authority_integration_fabric.py IS imported by autonomous_cycle.py (post-Phase C)",
+      "command": "grep -n 'authority_integration_fabric' tools/supervisor/autonomous_cycle.py",
+      "expected": "One or more matches → import call at Step 0b-authority-state",
+      "phase": "POST_PHASE_C",
+      "status": "PENDING"
+    },
+    {
+      "gate_id": "VG-014",
+      "title": "Worker prompt for FODS contains spec fact data (post-Phase C)",
+      "file": "tools/supervisor/generate_next_worker_prompt.py",
+      "test_method": "Generate prompt for FODS format; verify FACT-FODS-001..003 present in prompt output",
+      "expected": "Prompt contains at minimum: authority_level=P6, FACT-FODS-001 text excerpt",
+      "phase": "POST_PHASE_C",
+      "status": "PENDING"
+    },
+    {
+      "gate_id": "VG-015",
+      "title": "sal-facts-fods.json contains 4988 entries",
+      "command": "python -c \"import json; d=json.load(open('.local/spec-cache/sal-facts-fods.json')); print(len(d.get('spec_facts',[])))\"",
+      "expected": "4988",
+      "phase": "PRE_HEALING",
+      "status": "VERIFIED",
+      "notes": "Confirmed during investigation"
+    },
+    {
+      "gate_id": "VG-016",
+      "title": "poc-targets.yaml has authority_level field per format (post-Phase C)",
+      "command": "grep -c 'authority_level' product-capability-matrix/poc-targets.yaml",
+      "expected": "20 (one per format)",
+      "phase": "POST_PHASE_C",
+      "status": "PENDING"
+    },
+    {
+      "gate_id": "VG-017",
+      "title": "5 minimum spec authority skills registered in skill-registry.yaml (post-Phase C)",
+      "command": "grep -E 'acquire-spec-t3|normalize-spec|extract-spec-facts|authority-gate-validation|pilot-rerun-authority' .supervisor/skill-registry.yaml | wc -l",
+      "expected": "5",
+      "phase": "POST_PHASE_C",
+      "status": "PENDING"
+    },
+    {
+      "gate_id": "VG-018",
+      "title": "FODS proof graph contains at least 10 facts (post-Phase B)",
+      "file": ".local/spec-cache/fods/1.3/workbench/reports/*/fods-p6-proof-graph.yaml",
+      "test_method": "Count FACT-FODS-NNN entries in proof graph YAML",
+      "expected": "At least 10 facts covered",
+      "phase": "POST_PHASE_B",
+      "status": "PENDING"
+    },
+    {
+      "gate_id": "VG-019",
+      "title": "CSV authority level advances to P3+ after Phase D-001",
+      "command": "python tools/supervisor/authority_gate_validation.py --format-id csv --json",
+      "expected": {"authority_level_int": 3},
+      "phase": "POST_PHASE_D",
+      "status": "PENDING"
+    },
+    {
+      "gate_id": "VG-020",
+      "title": "ZST has at least 50 facts cited in code after Phase D-004",
+      "command": "grep -r 'FACT-ZST-' src/python/zst/ | wc -l",
+      "expected": "50+",
+      "phase": "POST_PHASE_D",
+      "status": "PENDING"
+    }
+  ]
+}

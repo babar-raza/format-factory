@@ -1,0 +1,60 @@
+{
+  "version": "1.0",
+  "mission_id": "FORMAT-FACTORY-EXPERT-REVIEW-RECONCILIATION-001",
+  "generated_at": "2026-06-25",
+  "head": "ae7fa540ca763ed3da8c922a8fc9fde825e1a97b",
+  "purpose": "Disambiguates sprint HEAL-001 (COMPLETE, June 5) from the current reconciliation mission (June 25). Prevents cross-sprint state contamination.",
+  "boundary": {
+    "completed_sprint": {
+      "sprint_id": "FORMAT-FACTORY-EXPERT-MANUAL-SYSTEM-REVIEW-INVESTIGATE-AND-HEAL-001",
+      "completed_at": "2026-06-05T00:19:30Z",
+      "scope": "9-problem narrow heal subset (PROB-PK01 through PROB-AUTO01)",
+      "outcome": "6 fixed, 2 blocked external (both since resolved by autonomous sprints), 1 partially resolved",
+      "authoritative_files": [
+        "reports/expert-manual-system-review/execution-state.json",
+        "reports/expert-manual-system-review/final-healing-verdict.json",
+        "reports/expert-manual-system-review/taskcard-registry.json"
+      ]
+    },
+    "current_mission": {
+      "mission_id": "FORMAT-FACTORY-EXPERT-REVIEW-RECONCILIATION-001",
+      "started_at": "2026-06-25",
+      "scope": "Full 117-file consumption, forensic reconciliation, hardening, classification, pilots",
+      "problem_register": "reports/expert-manual-system-review/reconciliation/canonical-problem-register.json",
+      "micro_taskcards": "reports/expert-manual-system-review/reconciliation/micro-taskcards.yaml",
+      "problems_in_scope": 27,
+      "open_critical": 2,
+      "open_high": 5,
+      "open_medium": 8,
+      "open_low": 1
+    }
+  },
+  "reconciliation_findings": [
+    "REC-A-001: next-action.json stale PREFLIGHT — repaired by TC-RECON-W0-001",
+    "REC-B-001: evidence-quality-closeout.json adoption_compliance FAIL — skill adoption governance debt (7 items, 0 transcripts)",
+    "REC-C-001: final-healing-verdict.json 9-problem scope conflict with 18-problem phase-A register",
+    "REC-D-001: taskcard-registry.json 13 PROCESS tasks ≠ PROB-001→018 fix tasks",
+    "REC-E-001: fix-eligibility-matrix.json false blockers (PROB-PK05 + PROB-PY01)",
+    "REC-F-001: execution-state.json COMPLETE vs next-action.json PREFLIGHT cross-state contradiction",
+    "REC-G-001: terminal-gate-checklist.json missing product completeness conditions P1-P3",
+    "REC-H-001: phase-A proposed ZstdSharp fix correct but GZipStream alternative invalid (RFC 1952 ≠ RFC 8878)"
+  ],
+  "wave_status": {
+    "wave_0": "IN_PROGRESS",
+    "wave_1": "PENDING",
+    "wave_2": "PENDING",
+    "wave_3": "PENDING",
+    "wave_4": "PENDING",
+    "wave_5": "PENDING",
+    "wave_6": "PENDING",
+    "wave_7": "PENDING",
+    "wave_8": "PENDING",
+    "wave_9": "PENDING"
+  },
+  "completed_taskcards": [
+    "TC-RECON-W0-002 (canonical-problem-register.json created — 27 problems merged)",
+    "TC-RECON-W0-001 (next-action.json repaired — stale PREFLIGHT state corrected)"
+  ],
+  "next_taskcard": "TC-RECON-W0-003 (this file)",
+  "after_this": "TC-RECON-W1-001 through TC-RECON-W1-005 (Wave 1 governance hardening)"
+}

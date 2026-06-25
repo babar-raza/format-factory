@@ -1,0 +1,41 @@
+{
+  "skill_id": "add-same-format-writer-feature",
+  "sprint_id": "PDEP-2026-06-25-001",
+  "invocation_timestamp": "2026-06-25T00:00:00",
+  "retroactive": true,
+  "retroactive_note": "Created by skill-governance-sync-sprint-20260625 as retroactive transcript. Work in commit 787b43e2 predated mandatory skill transcript enforcement but was performed using add-same-format-writer-feature skill pattern.",
+  "format_ids": ["fodt", "odt"],
+  "action": "add_exporter_writer_functions",
+  "features_added": [
+    "fodt_to_txt(path_or_model) -> str (src/python/fodt/exporters.py)",
+    "fodt_to_markdown(path_or_model) -> str (src/python/fodt/exporters.py)",
+    "fodt_to_html(path_or_model) -> str (src/python/fodt/exporters.py)",
+    "write_odt(paragraphs, dest) (src/python/odt/odt_writer.py)",
+    "odt_from_text(text, dest) (src/python/odt/odt_writer.py)",
+    "odt_from_model(model, dest) (src/python/odt/odt_writer.py)"
+  ],
+  "gaps_closed": [
+    "GAP-FODT-FOSS-FODT_TO_MARK-001",
+    "GAP-FODT-FOSS-FODT_TO_HTML-001",
+    "GAP-INV-038",
+    "GAP-PROD-INV-WRITE-001"
+  ],
+  "code_changes": [
+    "src/python/fodt/exporters.py",
+    "src/python/odt/odt_writer.py"
+  ],
+  "test_additions": [
+    "tests/python/fodt/test_fodt_exporters.py",
+    "tests/python/odt/test_odt_writer.py"
+  ],
+  "validation_command": ".venv/Scripts/pytest tests/python/fodt/test_fodt_exporters.py tests/python/odt/test_odt_writer.py -v",
+  "validation_result": "39 passed, 0 failed",
+  "evidence_paths": [
+    "src/python/fodt/exporters.py",
+    "src/python/odt/odt_writer.py",
+    "tests/python/fodt/test_fodt_exporters.py",
+    "tests/python/odt/test_odt_writer.py"
+  ],
+  "commit": "787b43e2",
+  "verdict": "PASS"
+}

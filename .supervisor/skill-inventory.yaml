@@ -5,9 +5,9 @@ skills:
 - command_file: .claude/commands/add-analytics-function.md
   command_file_exists: true
   implementation_paths: []
-  mechanism_type: DEFERRED
+  mechanism_type: DEPRECATED
   skill_id: add-analytics-function
-  status: deferred
+  status: deprecated
 - command_file: .claude/commands/add-dogfood-export.md
   command_file_exists: true
   implementation_paths: []
@@ -96,9 +96,9 @@ skills:
 - command_file: .claude/commands/check-mcp-status.md
   command_file_exists: false
   implementation_paths: []
-  mechanism_type: DEFERRED
+  mechanism_type: DEPRECATED
   skill_id: check-mcp-status
-  status: deferred
+  status: deprecated
 - command_file: .claude/commands/check-release-boundary.md
   command_file_exists: true
   implementation_paths: []
@@ -132,9 +132,9 @@ skills:
 - command_file: .claude/commands/decompose-monolithic-codec.md
   command_file_exists: true
   implementation_paths: []
-  mechanism_type: ATOMIC_SKILL
+  mechanism_type: DEPRECATED
   skill_id: decompose-monolithic-codec
-  status: active
+  status: deprecated
 - command_file: .claude/commands/detect-ad-hoc-execution.md
   command_file_exists: true
   implementation_paths:
@@ -245,6 +245,12 @@ skills:
   mechanism_type: ATOMIC_SKILL
   skill_id: post-sprint-loop
   status: active
+- command_file: .claude/commands/preflight-skill-entry.md
+  command_file_exists: true
+  implementation_paths: []
+  mechanism_type: ATOMIC_SKILL
+  skill_id: preflight-skill-entry
+  status: active
 - command_file: .claude/commands/promote-gap-to-taskcard.md
   command_file_exists: true
   implementation_paths: []
@@ -265,9 +271,10 @@ skills:
   status: active
 - command_file: .claude/commands/qname-backfill.md
   command_file_exists: true
-  mechanism_type: UNREGISTERED_COMMAND
+  implementation_paths: []
+  mechanism_type: ATOMIC_SKILL
   skill_id: qname-backfill
-  status: unregistered
+  status: active
 - command_file: .claude/commands/record-lane-execution.md
   command_file_exists: true
   implementation_paths: []
@@ -279,6 +286,12 @@ skills:
   implementation_paths: []
   mechanism_type: ATOMIC_SKILL
   skill_id: reproduce-master-plan
+  status: active
+- command_file: .claude/commands/rollback-and-recovery.md
+  command_file_exists: true
+  implementation_paths: []
+  mechanism_type: ATOMIC_SKILL
+  skill_id: rollback-and-recovery
   status: active
 - command_file: .claude/commands/run-skill-idempotency.md
   command_file_exists: true
@@ -387,4 +400,4 @@ skills:
   skill_id: verify-dogfood-path
   status: active
 status: complete
-total_skills: 63
+total_skills: 65

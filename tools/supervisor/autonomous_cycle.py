@@ -10,6 +10,7 @@ Exit codes:
   3 — cycle complete, critical rework exists
   9 — unexpected error
 """
+# ruff: noqa: F821  # complex control flow causes false-positive undefined-name in try/except blocks
 
 import argparse
 import json
@@ -511,7 +512,7 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
             if _ld.get("status") == "COMPLETION_CANDIDATE":
                 plan_lock = _ld
                 print(f"  [PLAN_LOCK] COMPLETION_CANDIDATE detected: {plan_lock.get('plan_path')}")
-                print(f"  [PLAN_LOCK] Running completion audit before proceeding...")
+                print("  [PLAN_LOCK] Running completion audit before proceeding...")
                 break
         except Exception as _pe:
             print(f"  [PLAN_LOCK] Warning: could not read {_lp.name}: {_pe}")
@@ -519,6 +520,10 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
     # Step 0b-reopen-check: Autonomous reopening of prematurely closed plans (TC-TCF-008)
     # If we find a TERMINAL_CLOSED lock for the current session AND the plan has open taskcards,
     # reopen the plan automatically.
+    # POSTCLEAN-002 guard: never auto-reopen external per-chat plans (~/.claude/plans/).
+    # These are loaded ONLY via plan-mode and must not be picked up by the autonomous loop.
+    # Only reopen plans that live inside the repository's plans/ directory.
+    _REPO_PLANS_DIR = str(repo_root / "plans").replace("\\", "/")
     if plan_lock is None:
         for _lp in _plan_lock_candidates:
             try:
@@ -528,6 +533,10 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
                 _plan_path = _ld.get("plan_path")
                 if not _plan_path:
                     continue
+                # POSTCLEAN-002: Skip external per-chat plan files (not in repo plans/)
+                _plan_path_norm = str(_plan_path).replace("\\", "/")
+                if not _plan_path_norm.startswith(_REPO_PLANS_DIR) and "/.claude/plans/" in _plan_path_norm:
+                    continue  # External per-chat plan — never auto-reopen
                 # Check if plan file has open taskcards
                 try:
                     import sys as _sys_reopen
@@ -550,7 +559,7 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
                             # Re-read the lock file which is now IN_PROGRESS
                             _ld_reopened = json.loads(_lp.read_text(encoding="utf-8"))
                             plan_lock = _ld_reopened
-                            print(f"  [AUTONOMOUS REOPEN] Plan reopened. Continuing execution.")
+                            print("  [AUTONOMOUS REOPEN] Plan reopened. Continuing execution.")
                         except Exception as _reopen_exc:
                             print(f"  [AUTONOMOUS REOPEN] WARNING: reopen failed ({_reopen_exc}). "
                                   "Plan remains TERMINAL_CLOSED.")
@@ -582,7 +591,7 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
             else:
                 for _f in _pev.get("failures", []):
                     print(f"  [PLAN_READINESS] CRITICAL: {_f}")
-                print(f"  [PLAN_READINESS] FAIL — plan not ready for execution. "
+                print("  [PLAN_READINESS] FAIL — plan not ready for execution. "
                       "Logging and continuing per Supreme Directive (exit 3 non-blocking).")
         except ImportError:
             print("  [PLAN_READINESS] validate_plan_readiness not available — skipping (non-blocking)")
@@ -846,7 +855,7 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
                       f"REQUIREMENT/READINESS/RELEASE_GATE items. "
                       f"Review {_ra_output_dir} for details.")
             else:
-                print(f"  PASS: Requirements authority validation passed.")
+                print("  PASS: Requirements authority validation passed.")
             (_ra_output_dir / "item-count.txt").write_text(
                 f"{_blocking_count} blocking-type items validated, overall={_ra_overall}\n",
                 encoding="utf-8",
@@ -854,8 +863,8 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
         except Exception as _ra_e:
             print(f"  WARNING: Requirements authority validation skipped: {_ra_e}")
     else:
-        print(f"  No REQUIREMENT/READINESS/RELEASE_GATE items in declaration — "
-              f"requirements authority step skipped")
+        print("  No REQUIREMENT/READINESS/RELEASE_GATE items in declaration — "
+              "requirements authority step skipped")
 
     # Step 2d3: TC-GUARD-001 — Gap ledger trace check — BLOCK mode (enforced 2026-06-18).
     # GOVERNANCE_ASSET items are exempt (they create the registry that gap-ledger entries reference).
@@ -890,7 +899,7 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
             for _v in _violations[:5]:
                 print(f"    {_v}")
         else:
-            print(f"  PASS: AI fact guard — 0 violations (AI-suggested facts not self-certified as verified)")
+            print("  PASS: AI fact guard — 0 violations (AI-suggested facts not self-certified as verified)")
     except Exception as _aig_e:
         print(f"  WARNING: AI fact guard skipped: {_aig_e}")
 
@@ -1271,13 +1280,17 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
         try:
             from failure_memory import FailureMemory
             fm = FailureMemory(repo_root)
+            import re as _fm_re
+            _MONO = "monolith_detection_validator"
             for v in governance_validation_result.get("validators", []):
                 if v.get("result") == "FAIL":
+                    _vf = _fm_re.findall(r'\b(src/[\w./]+\.(?:py|cs))\b', v.get("detail") or "") if v.get("validator") == _MONO else []
                     fm.record_failure(
                         category="GOVERNANCE_FALSE_TRIGGER" if not v.get("blocks_sprint") else "SUPERVISOR_CONTROL_FAILURE",
                         root_cause=f"governance_validator_{v['validator']}_failed",
                         correction="Requires item-level fix in declaration",
                         sprint_id=sprint_id,
+                        files_modified=_vf,
                     )
             fm.save()
         except Exception as fm_err:
@@ -1526,8 +1539,35 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
         except Exception as _sc_err:
             print(f"  WARNING: Sprint contract write failed: {_sc_err}")
 
+    # SUP-RECT-005: Circuit breaker for zero-task loops (inline + delegated to extensions)
+    _zero_task_counter_path = repo_root / ".local" / "supervisor" / "zero-task-counter.json"
+    _all_items = next_work.get("items", next_work.get("work_items", []))
+    if not _all_items:
+        try:
+            _ztc: dict = {}
+            if _zero_task_counter_path.exists():
+                _ztc = json.loads(_zero_task_counter_path.read_text(encoding="utf-8"))
+            _ztc["count"] = _ztc.get("count", 0) + 1
+            _ztc.setdefault("sprints", []).append(sprint_id)
+            _zero_task_counter_path.parent.mkdir(parents=True, exist_ok=True)
+            _zero_task_counter_path.write_text(json.dumps(_ztc, indent=2), encoding="utf-8")
+            if _ztc["count"] >= 3:
+                print(f"  CIRCUIT BREAKER: {_ztc['count']} consecutive zero-task cycles detected!")
+                review.setdefault("continuation_warnings", []).append(
+                    f"CIRCUIT_BREAKER: {_ztc['count']} zero-task cycles ({_ztc['sprints'][-3:]})"
+                )
+        except Exception as _ztc_err:
+            print(f"  WARNING: zero-task-counter update failed: {_ztc_err}")
+    else:
+        # Reset counter when tasks are present
+        try:
+            if _zero_task_counter_path.exists():
+                _zero_task_counter_path.write_text(json.dumps({"count": 0, "sprints": []}, indent=2), encoding="utf-8")
+        except Exception:
+            pass
+
     # Steps 4b+4c: Prompt quality, zero-task circuit breaker, completeness
-    # Extracted to autonomous_cycle_extensions.py (TC-SGOV-008)
+    # Delegated to autonomous_cycle_extensions.py (TC-SGOV-008)
     try:
         from autonomous_cycle_extensions import validate_prompt_and_work_items
         validate_prompt_and_work_items(
@@ -1922,14 +1962,15 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
         # evaluated; auto_continue_value incorporates hard_stops, overclaimed, and
         # rework_items — it is the authoritative value.
         try:
-            _wg_path = latest_dir / "work-item-grades.md"
+            _latest_dir = repo_root / "reports" / "supervisor"
+            _wg_path = _latest_dir / "work-item-grades.md"
             if _wg_path.exists():
                 _wg_text = _wg_path.read_text(encoding="utf-8")
                 _old_ac = f"- Autonomous Continue: {review['autonomous_continue']}"
                 _new_ac = f"- Autonomous Continue: {auto_continue_value}"
                 if _old_ac != _new_ac and _old_ac in _wg_text:
                     _wg_path.write_text(_wg_text.replace(_old_ac, _new_ac, 1), encoding="utf-8")
-            _cs_path = latest_dir / "latest-cycle-summary.md"
+            _cs_path = _latest_dir / "latest-cycle-summary.md"
             if _cs_path.exists():
                 _cs_text = _cs_path.read_text(encoding="utf-8")
                 _old_cs = f"Autonomous Continue: {review['autonomous_continue']}"
@@ -2100,6 +2141,214 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
                 atomic_write_json(signal_path, signal)
     except Exception as e:
         print(f"  WARNING: Continuation signal failed: {e}")
+
+    # TC-LOCK-POSTCLEAN-001: Auto-supersede stale TERMINAL_CLOSED plan locks after a clean sprint.
+    # Root cause: after a plan closes (TERMINAL_CLOSED) in session N, subsequent autonomous sprints
+    # in the SAME session hit POST_PLAN_TERMINAL because check_continuation.py sees the
+    # TERMINAL_CLOSED lock as the newest session lock, even though it predates all recent sprints.
+    # Fix: when autonomous_continue is True and the sprint produced a clean signal, scan for
+    # current-session TERMINAL_CLOSED locks whose updated_at < sprint start_time and auto-supersede.
+    # Non-blocking (wrapped in try/except). Only affects the current session's locks.
+    try:
+        if auto_continue_value:
+            _locks_dir = repo_root / ".local" / "supervisor" / "plan-locks"
+            _sprint_start = decl.get("start_time", "")
+            if _locks_dir.is_dir() and _sprint_start and session_id:
+                from datetime import datetime as _dt_lock, timezone as _tz_lock
+                try:
+                    _sprint_start_dt = _dt_lock.fromisoformat(
+                        _sprint_start.replace("Z", "+00:00")
+                    )
+                except Exception:
+                    _sprint_start_dt = None
+                if _sprint_start_dt:
+                    for _lf in sorted(_locks_dir.glob("*.json")):
+                        try:
+                            _ldata = json.loads(_lf.read_text(encoding="utf-8"))
+                        except Exception:
+                            continue
+                        if _ldata.get("status") != "TERMINAL_CLOSED":
+                            continue
+                        if _ldata.get("session_id") != session_id:
+                            continue  # Only auto-supersede current session's locks
+                        _lock_updated = _ldata.get("updated_at", "")
+                        try:
+                            _lock_dt = _dt_lock.fromisoformat(
+                                _lock_updated.replace("Z", "+00:00")
+                            )
+                            # Apply UTC offset normalization (make both offset-aware)
+                            if _sprint_start_dt.tzinfo is None:
+                                _sprint_start_dt = _sprint_start_dt.replace(
+                                    tzinfo=_tz_lock.utc
+                                )
+                        except Exception:
+                            continue
+                        if _lock_dt >= _sprint_start_dt:
+                            continue  # Lock is newer than sprint start — don't auto-supersede
+                        # Lock predates this sprint and is TERMINAL_CLOSED — auto-supersede
+                        _ldata["status"] = "SUPERSEDED"
+                        _ldata["superseded_at"] = timestamp
+                        _ldata["superseded_reason"] = (
+                            f"Auto-superseded by TC-LOCK-POSTCLEAN-001: clean sprint "
+                            f"'{sprint_id}' completed after this plan was closed. "
+                            "check_continuation.py can now proceed without POST_PLAN_TERMINAL."
+                        )
+                        _lf.write_text(json.dumps(_ldata, indent=2) + "\n", encoding="utf-8")
+                        print(
+                            f"  [POSTCLEAN] Auto-superseded stale TERMINAL_CLOSED lock: "
+                            f"{_lf.name} (plan={Path(_ldata.get('plan_path', '')).name})"
+                        )
+            # Also supersede phantom IN_PROGRESS locks (plan file does not exist) from
+            # the current session. These arise when reopen_plan_lock creates a new lock
+            # for a plan that no longer exists in the filesystem.
+            # Check session-keyed lock files first.
+            for _lf2 in sorted(_locks_dir.glob("*.json")):
+                try:
+                    _ldata2 = json.loads(_lf2.read_text(encoding="utf-8"))
+                except Exception:
+                    continue
+                if _ldata2.get("status") != "IN_PROGRESS":
+                    continue
+                if _ldata2.get("session_id") != session_id:
+                    continue
+                _phantom_path = _ldata2.get("plan_path", "")
+                if _phantom_path and not Path(_phantom_path).exists():
+                    _ldata2["status"] = "SUPERSEDED"
+                    _ldata2["superseded_at"] = timestamp
+                    _ldata2["superseded_reason"] = (
+                        f"Phantom lock auto-superseded by TC-LOCK-POSTCLEAN-001: "
+                        f"plan file '{_phantom_path}' does not exist. "
+                        "Clean sprint confirms no active plan context."
+                    )
+                    _lf2.write_text(json.dumps(_ldata2, indent=2) + "\n", encoding="utf-8")
+                    print(
+                        f"  [POSTCLEAN] Auto-superseded phantom IN_PROGRESS lock: "
+                        f"{_lf2.name} (plan={Path(_phantom_path).name})"
+                    )
+            _shared_lock_path = repo_root / ".local" / "supervisor" / "active-plan-lock.json"
+            if _shared_lock_path.exists():
+                try:
+                    _sldata = json.loads(_shared_lock_path.read_text(encoding="utf-8"))
+                    _sl_status = _sldata.get("status", "")
+                    _sl_same_session = _sldata.get("session_id") == session_id
+                    # Case A: Phantom IN_PROGRESS (plan file missing)
+                    if (
+                        _sl_same_session
+                        and _sl_status == "IN_PROGRESS"
+                        and not Path(_sldata.get("plan_path", "")).exists()
+                    ):
+                        _sldata["status"] = "SUPERSEDED"
+                        _sldata["superseded_at"] = timestamp
+                        _sldata["superseded_reason"] = (
+                            f"Phantom lock auto-superseded by TC-LOCK-POSTCLEAN-001: "
+                            f"plan file '{_sldata.get('plan_path', '')}' does not exist. "
+                            "Clean sprint confirms no active plan context."
+                        )
+                        _shared_lock_path.write_text(
+                            json.dumps(_sldata, indent=2) + "\n", encoding="utf-8"
+                        )
+                        print(
+                            f"  [POSTCLEAN] Auto-superseded phantom IN_PROGRESS lock: "
+                            f"active-plan-lock.json "
+                            f"(plan={Path(_sldata.get('plan_path', '')).name})"
+                        )
+                    # Case B: Stale TERMINAL_CLOSED (predates sprint start_time)
+                    elif (
+                        _sl_same_session
+                        and _sl_status == "TERMINAL_CLOSED"
+                        and _sprint_start_dt is not None
+                    ):
+                        _sl_updated = _sldata.get("updated_at", "")
+                        try:
+                            _sl_dt = _dt_lock.fromisoformat(
+                                _sl_updated.replace("Z", "+00:00")
+                            )
+                            if _sprint_start_dt.tzinfo is None:
+                                _sprint_start_dt = _sprint_start_dt.replace(
+                                    tzinfo=_tz_lock.utc
+                                )
+                            if _sl_dt < _sprint_start_dt:
+                                _sldata["status"] = "SUPERSEDED"
+                                _sldata["superseded_at"] = timestamp
+                                _sldata["superseded_reason"] = (
+                                    f"Auto-superseded by TC-LOCK-POSTCLEAN-001 (Case B): "
+                                    f"stale TERMINAL_CLOSED in active-plan-lock.json predates "
+                                    f"sprint start ({_sprint_start}). "
+                                    f"plan={_sldata.get('plan_path', '')}"
+                                )
+                                _shared_lock_path.write_text(
+                                    json.dumps(_sldata, indent=2) + "\n", encoding="utf-8"
+                                )
+                                print(
+                                    f"  [POSTCLEAN] Auto-superseded stale TERMINAL_CLOSED: "
+                                    f"active-plan-lock.json "
+                                    f"(plan={Path(_sldata.get('plan_path', '')).name}, "
+                                    f"updated_at={_sl_updated})"
+                                )
+                        except Exception:
+                            pass
+                except Exception as _sle:
+                    print(f"  [POSTCLEAN] Shared lock check skipped: {_sle}")
+            # POSTCLEAN-002b: Supersede ALL external per-chat plan locks (any status except
+            # SUPERSEDED/DEFERRED) to prevent future reopen-check from picking them up.
+            # External = path contains .claude/plans/ (per-chat plan modal, not repo plans/).
+            if auto_continue_value:
+                try:
+                    _pc2b_dir = repo_root / ".local" / "supervisor" / "plan-locks"
+                    if _pc2b_dir.is_dir():
+                        _pc2b_ext_count = 0
+                        for _pc2b_f in sorted(_pc2b_dir.glob("*.json")):
+                            try:
+                                _pc2b_d = json.loads(_pc2b_f.read_text(encoding="utf-8"))
+                                _pc2b_plan = _pc2b_d.get("plan_path", "").replace("\\", "/")
+                                _pc2b_status = _pc2b_d.get("status", "")
+                                if ".claude/plans/" in _pc2b_plan and _pc2b_status not in ("SUPERSEDED", "DEFERRED"):
+                                    _pc2b_d["status"] = "SUPERSEDED"
+                                    _pc2b_d["superseded_at"] = timestamp
+                                    _pc2b_d["superseded_reason"] = (
+                                        "POSTCLEAN-002b: External per-chat plan — superseded to prevent "
+                                        "reopen-check phantom lock cycle. Plan managed via plan-mode only."
+                                    )
+                                    _pc2b_f.write_text(json.dumps(_pc2b_d, indent=2) + "\n", encoding="utf-8")
+                                    _pc2b_ext_count += 1
+                            except Exception:
+                                continue
+                        if _pc2b_ext_count > 0:
+                            print(f"  [POSTCLEAN] POSTCLEAN-002b: superseded {_pc2b_ext_count} external plan lock(s)")
+                        # Also check active-plan-lock.json
+                        _pc2b_alp = repo_root / ".local" / "supervisor" / "active-plan-lock.json"
+                        if _pc2b_alp.exists():
+                            try:
+                                _pc2b_ald = json.loads(_pc2b_alp.read_text(encoding="utf-8"))
+                                _pc2b_alp_plan = _pc2b_ald.get("plan_path", "").replace("\\", "/")
+                                _pc2b_alp_status = _pc2b_ald.get("status", "")
+                                if ".claude/plans/" in _pc2b_alp_plan and _pc2b_alp_status not in ("SUPERSEDED", "DEFERRED"):
+                                    _pc2b_ald["status"] = "SUPERSEDED"
+                                    _pc2b_ald["superseded_at"] = timestamp
+                                    _pc2b_ald["superseded_reason"] = "POSTCLEAN-002b: External per-chat plan superseded."
+                                    _pc2b_alp.write_text(json.dumps(_pc2b_ald, indent=2) + "\n", encoding="utf-8")
+                                    print("  [POSTCLEAN] POSTCLEAN-002b: superseded active-plan-lock.json (external plan)")
+                            except Exception:
+                                pass
+                except Exception as _pc2b_err:
+                    print(f"  [POSTCLEAN] POSTCLEAN-002b skipped (non-blocking): {_pc2b_err}")
+
+            # TC-S55-004: Age-based cleanup — supersede same-session IN_PROGRESS locks
+            # older than 24h. Handles plans that exist on disk but were never actually
+            # started in the current conversation (autonomous_cycle machinery phantom locks).
+            if auto_continue_value and session_id:
+                try:
+                    from write_plan_lock import cleanup_stale_in_progress_locks as _csipl
+                    _age_result = _csipl(session_id=session_id, older_than_hours=24.0)
+                    if _age_result.get("superseded", 0) > 0:
+                        print(
+                            f"  [POSTCLEAN] TC-S55-004: superseded {_age_result['superseded']} "
+                            "stale IN_PROGRESS lock(s) older than 24h"
+                        )
+                except Exception as _s55_err:
+                    print(f"  [POSTCLEAN] TC-S55-004 skipped (non-blocking): {_s55_err}")
+    except Exception as _postclean_err:
+        print(f"  WARNING: TC-LOCK-POSTCLEAN-001 skipped (non-blocking): {_postclean_err}")
 
     # TC-P2-002-04: Write Track P handoff entry when running as Track P
     # (so Track M can read it to learn about new capabilities)

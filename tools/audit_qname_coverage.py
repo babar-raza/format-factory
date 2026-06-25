@@ -94,10 +94,15 @@ def _parse_val(v: str):
 
 
 def _has_spec_qname_python(path: Path) -> bool:
-    """Return True if the Python file has a spec_qname assignment."""
+    """Return True if the Python file has a spec_qname assignment.
+
+    Matches both simple assignments (``spec_qname = "..."```) and
+    type-annotated ClassVar assignments (``spec_qname: ClassVar[str] = "..."``).
+    """
     try:
         content = path.read_text(encoding="utf-8", errors="replace")
-        return bool(re.search(r"spec_qname\s*=", content))
+        # Match `spec_qname = "..."` OR `spec_qname: <type> = "..."`
+        return bool(re.search(r"spec_qname\s*(?::[^=]+)?\s*=", content))
     except Exception:
         return False
 

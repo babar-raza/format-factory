@@ -1,0 +1,69 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-06-25",
+  "sprint": "FORMAT-FACTORY-EXPERT-MANUAL-SYSTEM-REVIEW-PLAN-001",
+  "plan_id": "wondrous-moseying-puzzle",
+  "verdict": "EXPERT_MANUAL_SYSTEM_REVIEW_PLAN_READY",
+  "review_summary": {
+    "total_problems": 18,
+    "critical": 2,
+    "high": 5,
+    "medium": 7,
+    "low": 4,
+    "corrected": 2
+  },
+  "commercial_readiness": {
+    "FODS_dotnet": {
+      "score": 3.79,
+      "band": "COMMERCIAL_CANDIDATE_WITH_KNOWN_GAPS",
+      "gate_status": "G11-G_APPROVED",
+      "blocking_gaps": ["PROB-013"],
+      "scoped_ready": true,
+      "scope_exclusions": ["ODS_exporter_prototype", "non_latin_PDF_content"]
+    },
+    "FODT_dotnet": {
+      "score": 3.67,
+      "band": "COMMERCIAL_CANDIDATE_WITH_KNOWN_GAPS",
+      "gate_status": "G11-G_APPROVED",
+      "blocking_gaps": ["PROB-002", "PROB-003"],
+      "scoped_ready": true,
+      "scope_exclusions": ["table_traversal", "non_latin_PDF_content"]
+    },
+    "FODS_python": {"level": "PY-4", "ready": "scoped_release"},
+    "FODT_python": {"level": "PY-4", "ready": "scoped_release"}
+  },
+  "system_healing_sequence": [
+    {"phase": 1, "problem": "PROB-009", "action": "Fix gap ledger taxonomy", "enables": "gap routing and prioritization"},
+    {"phase": 2, "problem": "PROB-010", "action": "Extend SAL chain for 10 formats", "enables": "spec-parity grading"},
+    {"phase": 3, "problem": "PROB-011", "action": "Resolve LLM grader dependency", "enables": "reliable evidence quality"},
+    {"phase": 4, "problem": "PROB-013", "action": "Fix poc-targets discrepancies", "enables": "accurate readiness claims"},
+    {"phase": 5, "problem": "PROB-001", "action": "ZST .NET decompression", "blocked_by": "PROB-009"},
+    {"phase": 6, "problem": "PROB-002", "action": "FODS PDF Unicode", "blocked_by": "PROB-009"},
+    {"phase": 7, "problem": "PROB-003", "action": "FODT table model", "blocked_by": "PROB-009"},
+    {"phase": 8, "problem": "PROB-006", "action": "FODP write_fodp", "blocked_by": "PROB-009"},
+    {"phase": 9, "problem": "PROB-005", "action": "CSV edit API", "blocked_by": "PROB-009"},
+    {"phase": 10, "problem": "PROB-004", "action": "HTML/Markdown/TXT reclassification", "blocked_by": null}
+  ],
+  "next_sprint_recommendation": {
+    "sprint_id": "ff-expert-review-system-healing-001",
+    "goal": "Heal system gaps PROB-009 and PROB-011 before product work",
+    "scope": [
+      "Fix gap_ledger_to_work_items.py to populate category field",
+      "Re-run gap ledger generation",
+      "Add local evidence grader fallback or document limitation",
+      "Verify autonomous_cycle.py circuit breaker wired correctly"
+    ],
+    "constraints": ["No src/ changes", "No Gate 11 changes", "No publication"],
+    "files_in_scope": ["tools/supervisor/gap_ledger_to_work_items.py", "tools/supervisor/grade_declared_work.py", "reports/capability-layer/gap-ledger.json"]
+  },
+  "layers_assessed": [
+    {"layer": "dotnet_commercial_products", "maturity": "L2-L4 varies"},
+    {"layer": "python_foss_packages", "maturity": "L2-L4 varies"},
+    {"layer": "supervisor_infrastructure", "maturity": "L3"},
+    {"layer": "skills_layer", "maturity": "L2"},
+    {"layer": "sal_spec_authority", "maturity": "L4_odf_L0_other"},
+    {"layer": "gap_ledger", "maturity": "L1"},
+    {"layer": "evidence_system", "maturity": "L3"},
+    {"layer": "governance_validators", "maturity": "L4"}
+  ]
+}

@@ -1,0 +1,156 @@
+# FORMAT FACTORY — ROOT-CAUSE REGISTER
+# Generated: 2026-06-24
+# Mission: FF-FORENSIC-AUDIT-20260624
+
+mission_id: FF-FORENSIC-AUDIT-20260624
+generated_at: "2026-06-24"
+total_root_causes: 9
+
+root_causes:
+  - root_cause_id: RC-001
+    affected_gap_ids: [FG-SAL-001, FG-SAL-002, FG-SAL-003]
+    affected_formats: [abw, gnumeric, xcf, dif, sylk, csv, tsv, ndjson, toml, qoi, ppm, pgm, pbm, zst, xpm, pam, zpaq]
+    first_failing_boundary: SPEC_TO_FACT
+    symptom: "Non-ODF formats have 2-22 spec facts each, while ODF formats have 1,000-5,000. Capabilities are not supported by spec evidence."
+    local_cause: "SAL (Spec Authority Layer) pipeline was built and calibrated for ODF 1.3. For non-ODF formats it uses bootstrap-only seeding without automated extraction."
+    systemic_cause: "ODF has a machine-readable PDF that can be chunked and verified. Non-ODF formats range from short RFCs (8 pages) to informal community wikis to binary reverse-engineered specs. The SAL pipeline has no generic text-spec ingestion mode."
+    machinery_cause: "sal_master_runner.py processes spec_cache entries. For non-ODF formats, only manifest.yaml + provenance metadata exists in spec-cache — no chunked text, no verified-facts YAML."
+    governance_cause: "No enforcement exists requiring spec_facts > N before capabilities can be generated. TC-GUARD-001 guards new work items but does not retroactively audit existing capabilities."
+    state_cause: "14,486 total facts exists but 13,204 are ODF family. Non-ODF is 1,282 facts for 19 formats (~67 avg) — but many of these are also ODF-adjacent (ODS/ODT use ODF 1.3)."
+    why_prior_tests_missed_it: "No test validates that capability counts are proportional to verified fact counts. Inflation ratio is not a governance gate criterion."
+    recurrence_path: "New formats added without rich spec extraction will repeat the inflation pattern."
+    permanent_fix: "Build a generic spec-ingestion adapter for each spec type: RFC parser, XML schema parser, informal HTML spec crawler. Require verified_facts_count > 10 before capability generation is allowed."
+    prevention_controls:
+      - "Add V-NEW-001: validate that capabilities / verified_facts < 10 for non-ODF formats"
+      - "Add spec ingestion adapters (RFC, XSD, ABNF, informal HTML)"
+      - "Require spec_cache/{format}/chunks.jsonl before SAL processing"
+    product_backfill_required: false
+
+  - root_cause_id: RC-002
+    affected_gap_ids: [FG-QNAME-001, FG-QNAME-002]
+    affected_formats: [all_20_in_qname_registry]
+    first_failing_boundary: FACT_TO_QNAME
+    symptom: "All 20 qname-registry YAML files have 0 entries. Parity matrix shows '?' for all formats."
+    local_cause: "The qname registry seeding script (.local/tmp_create_registries.py per MEMORY.md) created file skeletons with 'entries: []' but did not populate the entries."
+    systemic_cause: "QName registry was designed as a data file to be populated by a generator. The generator was never built or run. Files were created manually as architecture placeholders."
+    machinery_cause: "No tool exists to: (a) read SAL facts, (b) derive qnames from facts, (c) write qname-registry YAML entries. The pipeline stops at SAL facts and skips the qname derivation step entirely."
+    governance_cause: "V53 validates that code classes have spec_qname class attributes, but it does not validate that the spec_qname is registered in the qname-registry. The registry is therefore orphaned."
+    why_prior_tests_missed_it: "No test reads qname-registry files and checks non-zero entries. Existing tests only validate Python class attributes."
+    recurrence_path: "Continued addition of classes with spec_qname attributes without registry entries means the registry diverges further from code."
+    permanent_fix: |
+      1. Build qname_registry_generator.py: reads SAL facts -> derives {namespace}:{local_name} -> writes entries to registry YAML
+      2. Build qname_registry_validator.py: checks that code spec_qname matches registered entries
+      3. Wire both into governance_validators.py
+    prevention_controls:
+      - "V-NEW-002: validate qname_registry entries > 0 for all formats with source code"
+      - "V-NEW-003: validate code spec_qname attributes exist in registry"
+    product_backfill_required: false
+
+  - root_cause_id: RC-003
+    affected_gap_ids: [FG-CAP-001, FG-CAP-002, FG-GOV-002]
+    affected_formats: [abw, gnumeric, xcf, dif, sylk, csv, tsv, ndjson, toml, qoi, ppm, pgm, pbm]
+    first_failing_boundary: FACT_TO_CAPABILITY
+    symptom: "Capability-to-fact inflation ratios range from 10x to 54x for non-ODF formats."
+    local_cause: "Capability extraction used POC_GOAL templates (load, save, inspect, convert, export) applied to every format, regardless of spec evidence. Each template generates 60-120 capabilities per format."
+    systemic_cause: "The capability_map_generator.py uses a format's goal_template to produce capability records. Goal templates are defined per format family, not per spec fact. No fact_id is attached to individual capabilities."
+    machinery_cause: "unified-capability-map.json shows spec_refs_count = 5009 for every FODS capability — this is the TOTAL fact count for FODS, not the count of facts relevant to each capability. Per-capability fact citation is missing."
+    governance_cause: "TC-GUARD-001 (gap_ledger_ref required) guards new PRODUCT_SOURCE items but does not retroactively audit the 1,641 existing foss_reduced capability records."
+    why_prior_tests_missed_it: "No test validates that capability.spec_refs points to specific fact IDs, not the total format fact count."
+    recurrence_path: "New formats added using the same goal-template approach will continue to produce inflated, unsupported capabilities."
+    permanent_fix: |
+      1. Redesign capability extraction: for each capability type (load/save/inspect), determine which spec facts are relevant
+      2. Build per-capability fact citation: capability.spec_fact_refs = [FACT-{FORMAT}-NNN, ...]
+      3. Audit existing 1,641 capabilities: classify each as FACT_DERIVED, POC_DERIVED, or UNSUPPORTED
+    prevention_controls:
+      - "Require len(spec_fact_refs) > 0 for each capability"
+      - "Cap capabilities = min(verified_facts * 5, N) per format"
+    product_backfill_required: false
+
+  - root_cause_id: RC-004
+    affected_gap_ids: [FG-ANALYTIC-001]
+    affected_formats: [fods, fodt, fodg, zst, xcf, ndjson, abw, gnumeric, sylk, dif, csv, tsv, ppm, pgm, pbm, qoi]
+    first_failing_boundary: FEATURE_TO_CODE
+    symptom: "40% of product ledger entries are type=analytics — arithmetic functions without spec backing."
+    local_cause: "Product deepening rotation 2026-05 to 2026-06 added arithmetic helper functions (e.g., _mod_prime_times_multiplier variants) to codec/parser files as a proxy for 'product deepening'."
+    systemic_cause: "The autonomous deepening loop selected arithmetic analytics as a safe, repeatable code generation pattern that passed governance validators. These functions did not advance any spec-to-feature requirement."
+    machinery_cause: "Rotation was suspended 2026-06-18 (keen-dancing-hopper plan). V42 validator blocks new additions. But 394 existing ledger entries remain as dead weight."
+    governance_cause: "V42 (deepening_suspension_validator) added post-facto. Analytics.py LOC cap reached for ZST/XCF/FODG — these files cannot grow further."
+    why_prior_tests_missed_it: "Tests for arithmetic functions passed (the functions are correct) but no validator asked whether the functions advance a spec requirement."
+    recurrence_path: "Rotation pattern could resume under different function names if V42 is weakened."
+    permanent_fix: |
+      1. Audit all analytics.py files: identify and remove functions with no spec_fact_ref
+      2. For the ~394 ledger entries: re-classify as DEPRECATED or RETAINED_WITH_REASON
+      3. LOC freed in analytics.py can accommodate real spec-derived functions
+    prevention_controls:
+      - "TC-GUARD-001 already requires gap_ledger_ref for new PRODUCT_SOURCE items"
+      - "V42 blocks new analytics to codec files"
+    product_backfill_required: true
+
+  - root_cause_id: RC-005
+    affected_gap_ids: [FG-PROD-001, FG-PROD-002, FG-PROD-003, FG-PROD-004, FG-PROD-005]
+    affected_formats: [odt, fodp, xcf, ppm, pgm, pbm, csv, tsv]
+    first_failing_boundary: FEATURE_TO_CODE
+    symptom: "8 formats have incomplete product implementations: read-only, probe-only, or prototype-only."
+    local_cause: "Product deepening rotation prioritized formats with analytic function generation. Formats requiring real parsing work (binary XCF, structured FODP, write-path CSV) received shallow implementations."
+    systemic_cause: "The autonomous sprint selector chose formats where analytics functions could be added quickly. Formats requiring new parsing logic or write capability were not selected."
+    machinery_cause: "Sprint work-item generation currently uses gap-ledger to select work. FG-PROD-001 to FG-PROD-005 are not in the gap ledger as open items — they are needed but not yet taskcarded at the right priority."
+    governance_cause: "APPROVAL_GATE_NO for Gate 5+ blocked product deepening for newer formats (CSV/TSV/NDJSON/DIF at gates 1-4 only)."
+    permanent_fix: |
+      1. Promote FG-PROD-001 to FG-PROD-005 to taskcards with specific implementation steps
+      2. Implement write paths for NetPBM formats (simple ASCII format)
+      3. Implement FODP full page model (ODF facts available)
+      4. Implement CSV/TSV roundtrip (RFC 4180 is short — full implementation feasible)
+    product_backfill_required: true
+
+  - root_cause_id: RC-006
+    affected_gap_ids: [FG-TEST-001]
+    affected_formats: [toml, csv, tsv, fodp]
+    first_failing_boundary: CODE_TO_TEST
+    symptom: "TOML (15 tests), CSV (19), TSV (19), FODP (16) have fewer than 20 tests each."
+    local_cause: "These formats received Gate 1-4 acceptance but no dedicated test-deepening sprint."
+    permanent_fix: "Each format needs a focused test sprint: write 80-120 tests covering load/parse/write/error-path."
+    product_backfill_required: true
+
+  - root_cause_id: RC-007
+    affected_gap_ids: [FG-DOTNET-001]
+    affected_formats: [abw, gnumeric, xcf, dif, sylk, qoi, ppm, pgm, pbm, fodg, fodp, ods, odt, ndjson, toml, csv, tsv]
+    first_failing_boundary: FEATURE_TO_CODE
+    symptom: ".NET source exists for only 10 formats. 15 formats have no .NET implementation."
+    local_cause: ".NET product development focused on FODS/FODT as flagship formats. Other formats were implemented in Python only."
+    systemic_cause: "Resource allocation favored Python prototyping for rapid spec validation. .NET commercialization requires explicit Gate 11 approval (Babar Raza) and is not an agent-autonomous decision."
+    governance_cause: "Gate 11 is a TRUE_EXTERNAL_GATE requiring Babar Raza's business decision. .NET expansion is gated behind commercial planning."
+    permanent_fix: |
+      1. AGENT CAN: prepare .NET implementation stubs for prioritized formats
+      2. AGENT CAN: add .NET unit test scaffolds
+      3. AGENT CANNOT: push to NuGet or authorize commercialization
+    product_backfill_required: true
+
+  - root_cause_id: RC-008
+    affected_gap_ids: [FG-PKG-001, FG-PKG-002]
+    affected_formats: [ndjson, tsv, dif, csv]
+    first_failing_boundary: CODE_TO_PACKAGE
+    symptom: "4 formats at Gate 1-4 only. Not package-proven. Missing gates 5-10."
+    local_cause: "Gates 5-10 (neutral model, packaging, round-trip, integration, load test) not executed for these formats."
+    permanent_fix: |
+      Execute gates 5-10 per format:
+        Gate 5: Neutral model
+        Gate 6: Python FOSS package build
+        Gate 7: Round-trip test
+        Gate 8: Integration test
+        Gate 9: Load/stress test
+        Gate 10: Consumer proof
+    product_backfill_required: true
+
+  - root_cause_id: RC-009
+    affected_gap_ids: [FG-GOV-001, FG-GOV-003]
+    affected_formats: [all]
+    first_failing_boundary: FACT_TO_QNAME
+    symptom: "QName machinery exists as file skeletons. No downstream tool consumes it. No integration pipeline exists."
+    local_cause: "The spec-to-feature plan described Lanes 7-13 (code generation from qnames) as requiring Lanes 1-6 first. Lanes 1-6 are still healing."
+    systemic_cause: "System healing (Lanes 1-6, 14, 15) was required before product regeneration (Lanes 7-13). The healing is not yet complete — RC-001 and RC-002 must resolve first."
+    permanent_fix: |
+      After RC-001 and RC-002 are resolved:
+        1. Build qname->class->file mapping generator
+        2. Build code skeleton generator from qname hierarchy
+        3. Build integration layer (format conversion orchestrator)
+    product_backfill_required: false

@@ -1,0 +1,330 @@
+{
+  "sprint_id": "FORMAT-FACTORY-PRODUCT-CODE-API-QUALITY-REVIEW-PLAN-001",
+  "date": "2026-06-25",
+  "scoring_scale": "0-5 (0=absent, 1=weak, 2=basic, 3=acceptable, 4=strong, 5=professional)",
+  "products": [
+    {
+      "product": "FODS", "language": ".NET",
+      "namespace": "FormatFactory.Fods",
+      "public_classes": ["FodsDocument", "FodsSheet", "FodsRow", "FodsCell", "FodsDocumentException"],
+      "exporter_classes": ["FodsCsvExporter", "FodsHtmlExporter", "FodsJsonExporter", "FodsOdsExporter", "FodsPdfExporter", "FodsPngExporter"],
+      "primary_entry_points": ["FodsDocument.Load(string filePath)", "FodsDocument.CreateNew()"],
+      "load_overloads": ["Load(string filePath)"],
+      "stream_load": false,
+      "bytes_load": false,
+      "edit_methods": ["SetCellValue", "SetCellFormula", "SetCellStyle", "MergeCells", "InsertRow", "InsertRowWithValues", "DeleteRows", "ClearSheet", "AddSheet", "RemoveSheet", "RenameSheet", "CopySheet", "SortRows"],
+      "save_methods": ["Save(string filePath)"],
+      "export_methods": ["FodsCsvExporter", "FodsHtmlExporter", "FodsJsonExporter", "FodsOdsExporter", "FodsPdfExporter", "FodsPngExporter"],
+      "query_methods": ["GetCellValue", "GetColumnHeaders", "GetRowCount", "GetColumnCount", "FilterRows", "GetColumnAggregates", "Sheets"],
+      "exception_type": "FodsDocumentException",
+      "api_issues": [
+        "No Load(Stream) overload",
+        "GetColumnHeaders has static overload inconsistency",
+        "csproj description contradicts source header re Gate 11"
+      ],
+      "scores": {
+        "namespace_quality": 4,
+        "naming_quality": 4,
+        "discoverability": 4,
+        "workflow_quality": 4,
+        "load_api": 3,
+        "edit_api": 5,
+        "save_api": 4,
+        "export_api": 4,
+        "validation_api": 3,
+        "error_api": 4,
+        "consistency": 3,
+        "usability": 4
+      },
+      "overall_api_score": 3.8,
+      "api_blockers": ["PQ-008 (no stream load)", "PQ-018 (static overload)"],
+      "recommended_fixes": ["Add Load(Stream stream)", "Remove or deprecate static GetColumnHeaders overload", "Fix csproj description"]
+    },
+    {
+      "product": "FODT", "language": ".NET",
+      "namespace": "FormatFactory.Fodt",
+      "public_classes": ["FodtDocument", "FodtBody", "FodtParagraph", "FodtDocumentException"],
+      "exporter_classes": ["FodtHtmlExporter", "FodtMarkdownExporter", "FodtTxtExporter", "FodtPdfExporter", "FodtPngExporter"],
+      "primary_entry_points": ["FodtDocument.Load(string filePath)", "FodtDocument.CreateNew()"],
+      "load_overloads": ["Load(string filePath)"],
+      "stream_load": false,
+      "bytes_load": false,
+      "api_issues": [
+        "No Load(Stream) overload",
+        "Table operations in Spec/Table/* may not be wired to public API"
+      ],
+      "scores": {
+        "namespace_quality": 4,
+        "naming_quality": 4,
+        "discoverability": 4,
+        "workflow_quality": 4,
+        "load_api": 3,
+        "edit_api": 4,
+        "save_api": 4,
+        "export_api": 4,
+        "validation_api": 3,
+        "error_api": 4,
+        "consistency": 4,
+        "usability": 4
+      },
+      "overall_api_score": 3.8,
+      "api_blockers": ["PQ-008 (no stream load)", "PQ-012 (table API confirmation)"],
+      "recommended_fixes": ["Add Load(Stream stream)", "Confirm/wire table operations"]
+    },
+    {
+      "product": "NetPBM", "language": ".NET",
+      "namespace": "FormatFactory.Netpbm",
+      "public_classes": ["NetpbmDocument", "NetpbmImage", "NetpbmParser", "NetpbmWriter", "NetpbmExporter", "NetpbmFormat", "NetpbmException"],
+      "primary_entry_points": ["NetpbmDocument.Load(string path)", "NetpbmDocument.LoadStream(Stream)"],
+      "load_overloads": ["Load(string path)", "LoadStream(Stream stream)"],
+      "stream_load": true,
+      "bytes_load": false,
+      "edit_methods": ["SetPixel", "FlipHorizontal", "FlipVertical", "Crop", "Resize", "Rotate", "ApplyFilter"],
+      "save_methods": ["Save(string path)"],
+      "export_methods": ["NetpbmExporter.PbmToPgm", "NetpbmExporter.PbmToPpm"],
+      "api_issues": [
+        "NetpbmExporter scope not documented (within-family only, not external format)"
+      ],
+      "scores": {
+        "namespace_quality": 4,
+        "naming_quality": 4,
+        "discoverability": 4,
+        "workflow_quality": 4,
+        "load_api": 5,
+        "edit_api": 4,
+        "save_api": 4,
+        "export_api": 3,
+        "validation_api": 4,
+        "error_api": 4,
+        "consistency": 4,
+        "usability": 4
+      },
+      "overall_api_score": 4.0,
+      "api_blockers": ["PQ-013 (exporter scope undocumented)"],
+      "recommended_fixes": ["Document NetpbmExporter as within-family converter"]
+    },
+    {
+      "product": "NDJSON", "language": ".NET",
+      "namespace": "FormatFactory.Ndjson",
+      "public_classes": ["NdjsonDocument", "NdjsonReader", "NdjsonWriter", "NdjsonCsvExporter", "NdjsonException"],
+      "primary_entry_points": ["NdjsonDocument.Load(string content)", "NdjsonDocument.LoadFile(string path)", "NdjsonDocument.Load(Stream stream)"],
+      "load_overloads": ["Load(string content)", "LoadFile(string path)", "Load(Stream stream)"],
+      "stream_load": true,
+      "model_type": "List<JsonElement>",
+      "api_issues": [
+        "Load(string) name suggests content but is easy to confuse with file path",
+        "No AddRecord() method — cannot add new records to existing document",
+        "Raw JsonElement model provides no typed domain access"
+      ],
+      "scores": {
+        "namespace_quality": 4,
+        "naming_quality": 2,
+        "discoverability": 3,
+        "workflow_quality": 3,
+        "load_api": 4,
+        "edit_api": 2,
+        "save_api": 3,
+        "export_api": 3,
+        "validation_api": 2,
+        "error_api": 3,
+        "consistency": 2,
+        "usability": 3
+      },
+      "overall_api_score": 2.8,
+      "api_blockers": ["PQ-010 (raw model)", "PQ-011 (naming)"],
+      "recommended_fixes": ["Rename Load(string content) to LoadFromContent(string)", "Add AddRecord() method", "Add typed field access"]
+    },
+    {
+      "product": "CSV", "language": ".NET",
+      "namespace": "FormatFactory.Csv",
+      "public_classes": ["CsvDocument", "CsvReader", "CsvWriter"],
+      "primary_entry_points": ["CsvDocument.Load(string content)", "CsvDocument.LoadFile(string path)"],
+      "load_overloads": ["Load(string content)", "LoadFile(string path)"],
+      "stream_load": false,
+      "api_issues": ["Thin standalone product — limited appeal as a commercial product"],
+      "scores": {
+        "namespace_quality": 4,
+        "naming_quality": 3,
+        "discoverability": 3,
+        "workflow_quality": 3,
+        "load_api": 3,
+        "edit_api": 2,
+        "save_api": 3,
+        "export_api": 1,
+        "validation_api": 2,
+        "error_api": 2,
+        "consistency": 3,
+        "usability": 3
+      },
+      "overall_api_score": 2.8,
+      "api_blockers": [],
+      "recommended_fixes": ["Add more edit methods (AddRow, SetCellValue)", "Add custom CsvException type"]
+    },
+    {
+      "product": "TSV", "language": ".NET",
+      "namespace": "FormatFactory.Tsv",
+      "public_classes": ["TsvDocument", "TsvReader", "TsvWriter", "TsvCsvExporter", "TsvException"],
+      "primary_entry_points": ["TsvReader.Read()", "TsvWriter.Write()"],
+      "stream_load": false,
+      "api_issues": ["TsvDocument entry point not clear — requires TsvReader"],
+      "scores": {
+        "namespace_quality": 4,
+        "naming_quality": 3,
+        "discoverability": 3,
+        "workflow_quality": 3,
+        "load_api": 2,
+        "edit_api": 1,
+        "save_api": 2,
+        "export_api": 3,
+        "validation_api": 2,
+        "error_api": 3,
+        "consistency": 2,
+        "usability": 2
+      },
+      "overall_api_score": 2.5,
+      "api_blockers": [],
+      "recommended_fixes": ["Align with CsvDocument.LoadFile() pattern (TsvDocument.LoadFile)"]
+    },
+    {
+      "product": "ZST", "language": ".NET",
+      "namespace": "FormatFactory.Zst",
+      "public_classes": ["ZstDocument", "ZstParser", "ZstException"],
+      "primary_entry_points": ["ZstParser.Parse(string filePath)", "ZstParser.Parse(byte[] data)"],
+      "stream_load": false,
+      "model_type": "Pure DTO (all init properties)",
+      "api_issues": [
+        "ZstDocument has NO Load() or Save() — cannot create from API, only from ZstParser",
+        "No compress or decompress capability at all",
+        "ZstDocument is a property bag, not a useful API object"
+      ],
+      "scores": {
+        "namespace_quality": 3,
+        "naming_quality": 3,
+        "discoverability": 2,
+        "workflow_quality": 1,
+        "load_api": 2,
+        "edit_api": 0,
+        "save_api": 0,
+        "export_api": 0,
+        "validation_api": 2,
+        "error_api": 3,
+        "consistency": 1,
+        "usability": 1
+      },
+      "overall_api_score": 1.5,
+      "api_blockers": ["PQ-007 (no write/compress capability)"],
+      "recommended_fixes": ["Add ZstWriter with Compress(Stream source, Stream dest)", "Add ZstDocument.Decompress() or ZstDocument.Load()"]
+    },
+    {
+      "product": "HTML", "language": ".NET",
+      "namespace": "FormatFactory.Html",
+      "public_classes": ["HtmlWriter"],
+      "api_issues": ["Writer helper only — not a standalone product"],
+      "scores": {
+        "namespace_quality": 3,
+        "naming_quality": 3,
+        "discoverability": 1,
+        "workflow_quality": 1,
+        "load_api": 0,
+        "edit_api": 0,
+        "save_api": 0,
+        "export_api": 0,
+        "validation_api": 0,
+        "error_api": 0,
+        "consistency": 1,
+        "usability": 1
+      },
+      "overall_api_score": 0.8,
+      "api_blockers": ["PQ-015"],
+      "recommended_fixes": ["Document as internal helper; don't market as standalone product"]
+    },
+    {
+      "product": "FODS", "language": "Python",
+      "module": "fods",
+      "public_classes": ["FodsDocument", "FodsSheet", "FodsCell"],
+      "key_functions_dict_api": ["parse_fods", "workbook_set_cell_value", "get_column_headers", "write_fods"],
+      "key_functions_class_api": ["FodsDocument.__init__", "FodsDocument.sheets", "FodsDocument.set_cell"],
+      "dual_api": true,
+      "wildcard_all": true,
+      "api_issues": [
+        "Two parallel APIs with no guidance (PQ-002)",
+        "~50+ names in __all__ from wildcard imports (PQ-001)",
+        "No curated __all__ list",
+        "No type stubs"
+      ],
+      "scores": {
+        "namespace_quality": 3,
+        "naming_quality": 3,
+        "discoverability": 2,
+        "workflow_quality": 3,
+        "load_api": 3,
+        "edit_api": 4,
+        "save_api": 3,
+        "export_api": 3,
+        "validation_api": 3,
+        "error_api": 3,
+        "consistency": 2,
+        "usability": 2
+      },
+      "overall_api_score": 2.8,
+      "api_blockers": ["PQ-001 (wildcard imports)", "PQ-002 (dual API)"],
+      "recommended_fixes": ["Choose one canonical API (class-based preferred)", "Curate __all__ explicitly", "Add type stubs (.pyi)"]
+    },
+    {
+      "product": "FODT", "language": "Python",
+      "module": "fodt",
+      "public_classes": ["FodtDocument"],
+      "key_functions": ["parse_fodt", "write_fodt", "fodt_to_txt", "fodt_to_markdown", "fodt_to_html"],
+      "wildcard_all": true,
+      "api_issues": [
+        "Wildcard imports from multiple submodules",
+        "No type stubs"
+      ],
+      "scores": {
+        "namespace_quality": 4,
+        "naming_quality": 4,
+        "discoverability": 3,
+        "workflow_quality": 4,
+        "load_api": 4,
+        "edit_api": 4,
+        "save_api": 4,
+        "export_api": 4,
+        "validation_api": 3,
+        "error_api": 2,
+        "consistency": 3,
+        "usability": 3
+      },
+      "overall_api_score": 3.5,
+      "api_blockers": ["PQ-001"],
+      "recommended_fixes": ["Curate __all__ explicitly", "Add type stubs"]
+    },
+    {
+      "product": "FODP", "language": "Python",
+      "module": "fodp",
+      "key_functions": ["load", "get_page_count", "fodp_slide_count"],
+      "read_only": true,
+      "no_write": true,
+      "api_issues": [
+        "Read-only with no user-facing documentation of this limitation (PQ-009)",
+        "get_page_count(path) and fodp_slide_count(path) take file path not model — confusing"
+      ],
+      "scores": {
+        "namespace_quality": 3,
+        "naming_quality": 2,
+        "discoverability": 2,
+        "workflow_quality": 1,
+        "load_api": 2,
+        "edit_api": 0,
+        "save_api": 0,
+        "export_api": 0,
+        "validation_api": 1,
+        "error_api": 1,
+        "consistency": 1,
+        "usability": 1
+      },
+      "overall_api_score": 1.2,
+      "api_blockers": ["PQ-009 (undocumented read-only limitation)"],
+      "recommended_fixes": ["Document read-only limitation clearly", "Add write_fodp() capability or stub it with NotImplementedError + message"]
+    }
+  ]
+}

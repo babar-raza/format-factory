@@ -2854,7 +2854,8 @@ def validate_qname_class_names(declaration: dict, repo_root: Path | None = None)
         if item.get("item_type") not in ("PRODUCT_SOURCE", "PRODUCT_TEST"):
             continue
         for path in item.get("evidence_paths", []):
-            if not (path.endswith(".cs") or path.endswith(".py")):
+            # V45 is a Python-only naming rule (.NET uses different conventions)
+            if not path.endswith(".py"):
                 continue
             if any(s in path for s in ("Compat/", "compat/", "/compat.")):
                 continue

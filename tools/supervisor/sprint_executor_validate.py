@@ -299,7 +299,7 @@ def _repair_document(doc: dict) -> tuple[dict, list[str]]:
                 continue
             if "id" in item and "item_id" not in item:
                 item["item_id"] = item.pop("id")
-                repairs.append(f"Renamed 'id' to 'item_id' in planned_work_items item")
+                repairs.append("Renamed 'id' to 'item_id' in planned_work_items item")
             if "acceptance_criteria" in item and not isinstance(item["acceptance_criteria"], str):
                 item["acceptance_criteria"] = str(item["acceptance_criteria"])
                 repairs.append("Converted acceptance_criteria to string")
@@ -312,7 +312,7 @@ def _repair_document(doc: dict) -> tuple[dict, list[str]]:
     # worker_self_grade must be valid
     if "worker_self_grade" in doc and doc["worker_self_grade"] not in _VALID_GRADES:
         doc["worker_self_grade"] = "PASS"
-        repairs.append(f"Reset worker_self_grade to PASS (was invalid)")
+        repairs.append("Reset worker_self_grade to PASS (was invalid)")
 
     # evidence_artifacts items must be objects with at least path + type
     if isinstance(doc.get("evidence_artifacts"), list):

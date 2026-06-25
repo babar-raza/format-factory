@@ -1,0 +1,423 @@
+# FORMAT FACTORY — FORENSIC GAP REGISTER
+# Generated: 2026-06-24
+# Mission: FF-FORENSIC-AUDIT-20260624
+# Note: This supplements the existing gap-ledger.json with forensic-level analysis
+
+mission_id: FF-FORENSIC-AUDIT-20260624
+generated_at: "2026-06-24"
+total_forensic_gaps: 28
+
+gaps:
+  # ============================================================
+  # LAYER 1 — SPEC NORMALIZATION GAPS
+  # ============================================================
+
+  - gap_id: FG-SAL-001
+    format_ids: [abw, gnumeric, xcf, dif, sylk, csv, tsv, ndjson, toml, qoi, ppm, pgm, pbm, zst]
+    family: all_non_odf
+    language: N/A
+    boundary: SPEC_TO_FACT
+    gap_type: incomplete_extraction
+    severity: CRITICAL
+    current_state: "3-22 facts per format"
+    expected_state: "50-500 facts per format (spec complexity appropriate)"
+    affected_counts:
+      formats_affected: 14
+      current_total_facts: 149  # sum of non-ODF, non-shared
+      expected_minimum_facts: 1500
+      inflation_evidence: "149 capabilities exist for formats with only 14 total verified non-bootstrap facts"
+    evidence:
+      - ".local/sal-output/sal-facts-latest.json — 14 formats have 3-9 facts each"
+      - "reports/forensic-audit-20260624/specification-source-inventory.yaml"
+    first_failing_boundary: SPEC_TO_FACT
+    likely_root_cause: "SAL pipeline only fully operational for ODF formats. Non-ODF spec parsing is bootstrap-seed only — no automated semantic extraction."
+    root_cause_layer: machinery
+    current_proof_level: PROOF_LEVEL_1
+    target_proof_level: PROOF_LEVEL_3
+    remediation_class: machinery_repair
+    dependencies: []
+    taskcards: [TC-FG-SAL-001-A, TC-FG-SAL-001-B]
+
+  - gap_id: FG-SAL-002
+    format_ids: [toml]
+    family: data
+    language: N/A
+    boundary: SPEC_TO_FACT
+    gap_type: incomplete_extraction
+    severity: HIGH
+    current_state: "5 bootstrap facts"
+    expected_state: "50-100 semantic units from TOML 1.0 spec"
+    affected_counts:
+      current_facts: 5
+      spec_source_pages: 50
+      verified_facts: 2
+    evidence:
+      - "TOML 1.0 specification exists at github.com/toml-lang/toml (50+ pages with ABNF grammar)"
+      - "Only 5 facts extracted despite rich normative spec"
+    first_failing_boundary: SPEC_TO_FACT
+    likely_root_cause: "TOML spec not ingested into SAL pipeline. Only bootstrap seeding done."
+    root_cause_layer: machinery
+    taskcards: [TC-FG-SAL-002]
+
+  - gap_id: FG-SAL-003
+    format_ids: [abw]
+    family: words
+    language: N/A
+    boundary: SPEC_TO_FACT
+    gap_type: missing_spec_source
+    severity: HIGH
+    current_state: "8 facts, only 5 verified — informal community spec only"
+    expected_state: "Formal or semi-formal AbiWord XML schema with verified fact extraction"
+    affected_counts:
+      current_facts: 8
+      current_capabilities: 149
+      inflation_ratio: 18.6
+    evidence:
+      - "ABW format has no normative spec. AbiWord source code + wiki is the only reference."
+    first_failing_boundary: SPEC_TO_FACT
+    likely_root_cause: "ABW spec does not exist as a normative document. Bootstrap seeding is the only option without reverse-engineering."
+    root_cause_layer: specification
+    taskcards: [TC-FG-SAL-003]
+
+  # ============================================================
+  # LAYER 2 — QNAME/HIERARCHY GAPS
+  # ============================================================
+
+  - gap_id: FG-QNAME-001
+    format_ids: [abw, csv, dif, fodg, fodp, fods, fodt, gnumeric, ndjson, ods, odt, pbm, pgm, ppm, qoi, sylk, toml, tsv, xcf, zst]
+    family: all
+    language: all
+    boundary: FACT_TO_QNAME
+    gap_type: missing_qname
+    severity: CRITICAL
+    current_state: "20 qname-registry YAML files all have 0 entries"
+    expected_state: "Each file should have 1 entry per governed qname (50-5000 per ODF format)"
+    affected_counts:
+      qname_registry_files: 20
+      total_entries_across_all: 0
+      expected_minimum_entries: 200  # conservative estimate
+    evidence:
+      - "shared/qname-registry/ — all 20 format YAML files are empty (entries: [])"
+      - "reports/forensic-audit-20260624/format-inventory.yaml confirms zero qname entries"
+    first_failing_boundary: FACT_TO_QNAME
+    likely_root_cause: "QName registry seeding was claimed complete but files are empty. The seeding script created file skeletons only. No actual qname→class mappings were populated."
+    root_cause_layer: machinery
+    current_proof_level: PROOF_LEVEL_0
+    target_proof_level: PROOF_LEVEL_3
+    remediation_class: machinery_repair
+    taskcards: [TC-FG-QNAME-001-ODF, TC-FG-QNAME-001-NON-ODF]
+
+  - gap_id: FG-QNAME-002
+    format_ids: [abw, csv, dif, fodg, fodp, fods, fodt, gnumeric, ndjson, ods, odt, pbm, pgm, ppm, qoi, sylk, toml, tsv, xcf, zst]
+    family: all
+    language: all
+    boundary: FACT_TO_QNAME
+    gap_type: missing_qname
+    severity: CRITICAL
+    current_state: "Parity matrix shows '?' for qname_compliance on ALL 24 formats"
+    expected_state: "Each format has confirmed qname_compliance state (implementing/implemented/stable)"
+    first_failing_boundary: FACT_TO_QNAME
+    likely_root_cause: "Parity matrix generation does not read qname_registry entries — it reads a different source that was never populated."
+    root_cause_layer: machinery
+    taskcards: [TC-FG-QNAME-002]
+
+  # ============================================================
+  # LAYER 3 — CAPABILITY INFLATION GAPS
+  # ============================================================
+
+  - gap_id: FG-CAP-001
+    format_ids: [abw, gnumeric, xcf, dif, sylk, csv, tsv, ndjson, toml, qoi, ppm, pgm, pbm]
+    family: all_non_odf
+    language: all
+    boundary: FACT_TO_CAPABILITY
+    gap_type: unsupported_capability
+    severity: HIGH
+    current_state: "1,641 foss_reduced capabilities; most from formats with 2-9 verified spec facts"
+    expected_state: "Capabilities trace to authorized spec facts with ratio < 5:1"
+    affected_counts:
+      formats_affected: 13
+      total_capabilities_for_these_formats: ~1100
+      verified_facts_supporting_them: ~40
+      inflation_ratio_average: ~27
+    evidence:
+      - "reports/capability-layer/capability_summary.json — 1,641 foss_reduced caps"
+      - "reports/forensic-audit-20260624/format-pipeline-metrics.csv — inflation ratios"
+      - "ndjson: 5 verified facts -> 112 capabilities (22.4x)"
+      - "tsv: 2 verified facts -> 96 capabilities (48x)"
+      - "xcf: 2 verified facts -> 108 capabilities (54x)"
+    first_failing_boundary: FACT_TO_CAPABILITY
+    likely_root_cause: "Capability extraction was driven by POC_GOAL templates (what a format library should do) rather than spec-fact derivation. TC-GUARD-001 now blocks future violations but does not retroactively fix existing capabilities."
+    root_cause_layer: machinery
+    remediation_class: capability_repair
+    taskcards: [TC-FG-CAP-001]
+
+  - gap_id: FG-CAP-002
+    format_ids: [all]
+    family: all
+    language: all
+    boundary: FACT_TO_CAPABILITY
+    gap_type: missing_spec_refs_in_capabilities
+    severity: MEDIUM
+    current_state: "capabilities in unified-capability-map.json have spec_refs_count = 5009/5013 for all FODS caps regardless of semantic relevance"
+    expected_state: "Each capability traces to specific fact IDs that directly support that capability"
+    first_failing_boundary: FACT_TO_CAPABILITY
+    likely_root_cause: "spec_refs on capabilities appears to be total format fact count, not capability-specific fact citations. Provenance is format-level not capability-level."
+    root_cause_layer: machinery
+    taskcards: [TC-FG-CAP-002]
+
+  # ============================================================
+  # LAYER 4 — PRODUCT IMPLEMENTATION GAPS
+  # ============================================================
+
+  - gap_id: FG-PROD-001
+    format_ids: [odt]
+    family: words
+    language: python
+    boundary: FEATURE_TO_CODE
+    gap_type: missing_code
+    severity: HIGH
+    current_state: "Read-only prototype — no write, no roundtrip"
+    expected_state: "Read + write + roundtrip (matching ODS, FODG, ABW, NDJSON maturity)"
+    affected_counts:
+      current_maturity: read_only_prototype
+      target_maturity: roundtrip_capable_library
+    first_failing_boundary: FEATURE_TO_CODE
+    likely_root_cause: "ODT writer deprioritized. odt_writer.py created 2026-06-24 (from MEMORY.md) but only basic paragraph write — no ODS-parity."
+    root_cause_layer: product
+    taskcards: [TC-FG-PROD-001]
+
+  - gap_id: FG-PROD-002
+    format_ids: [fodp]
+    family: presentation
+    language: python
+    boundary: FEATURE_TO_CODE
+    gap_type: missing_code
+    severity: HIGH
+    current_state: "Probe-only — partial page metadata read, no write, no roundtrip, only 16 tests"
+    expected_state: "Full read + write + roundtrip for presentation documents"
+    first_failing_boundary: FEATURE_TO_CODE
+    likely_root_cause: "FODP implementation was abandoned after initial probe. 1,066 verified spec facts exist but product is only 192 LOC."
+    root_cause_layer: product
+    taskcards: [TC-FG-PROD-002]
+
+  - gap_id: FG-PROD-003
+    format_ids: [xcf]
+    family: imaging
+    language: python
+    boundary: FEATURE_TO_CODE
+    gap_type: missing_real_implementation
+    severity: HIGH
+    current_state: "Probe-only — header/metadata read only, layer names are synthetic (xcf_layer_name_list returns 'Layer N' not actual names)"
+    expected_state: "Real layer name extraction, pixel data access, basic read/write"
+    evidence:
+      - "MEMORY.md: xcf_layer_name_list returns SYNTHETIC names — 20+ test callers"
+      - "GAP-XCF-LAYER-NAMES added to gap-ledger"
+    first_failing_boundary: FEATURE_TO_CODE
+    likely_root_cause: "XCF is a complex binary format. Initial implementation extracted only header bytes. Full pixel data and proper layer parsing requires significant binary parsing work."
+    root_cause_layer: product
+    taskcards: [TC-FG-PROD-003]
+
+  - gap_id: FG-PROD-004
+    format_ids: [ppm, pgm, pbm]
+    family: imaging
+    language: python
+    boundary: FEATURE_TO_CODE
+    gap_type: missing_code
+    severity: MEDIUM
+    current_state: "Read-only for all three NetPBM formats"
+    expected_state: "Read + write + roundtrip (these are simple formats)"
+    affected_counts:
+      formats_affected: 3
+    first_failing_boundary: FEATURE_TO_CODE
+    likely_root_cause: "NetPBM write was not implemented. PPM/PGM/PBM formats are simple ASCII/binary — write implementation is low effort."
+    root_cause_layer: product
+    taskcards: [TC-FG-PROD-004]
+
+  - gap_id: FG-PROD-005
+    format_ids: [csv, tsv]
+    family: cells
+    language: python
+    boundary: FEATURE_TO_CODE
+    gap_type: missing_code
+    severity: MEDIUM
+    current_state: "CSV: read prototype + write but no roundtrip. TSV: read prototype only."
+    expected_state: "Both: full read + write + roundtrip (these are simple formats)"
+    affected_counts:
+      csv_tests: 19
+      tsv_tests: 19
+      target_tests: 100+
+    first_failing_boundary: FEATURE_TO_CODE
+    likely_root_cause: "CSV/TSV treated as low-priority alongside richer ODF formats. Only Gate 1-4 completed."
+    root_cause_layer: product
+    taskcards: [TC-FG-PROD-005]
+
+  # ============================================================
+  # LAYER 5 — ANALYTICS MASQUERADE GAPS
+  # ============================================================
+
+  - gap_id: FG-ANALYTIC-001
+    format_ids: [fods, fodt, fodg, zst, xcf, ndjson, abw, gnumeric, sylk, dif, csv, tsv, ppm, pgm, pbm, qoi]
+    family: all
+    language: python
+    boundary: FEATURE_TO_CODE
+    gap_type: analytics_masquerade_naming
+    severity: MEDIUM
+    current_state: "394 of 984 product ledger entries (40%) are type=analytics — arithmetic functions injected into parsers/codecs before separation"
+    expected_state: "Analytics isolated to {format}_analytics.py; main codec is clean domain code"
+    affected_counts:
+      ledger_entries_analytics: 394
+      ledger_entries_total: 984
+      analytics_pct: "40.0%"
+    evidence:
+      - "reports/r90/product-code-change-ledger.json — 394 'analytics' type entries"
+      - "MEMORY.md — ZST/XCF/FODG analytics separation completed for these 3"
+      - "V42 validator blocks new analytics additions to codec files"
+    first_failing_boundary: FEATURE_TO_CODE
+    likely_root_cause: "Product deepening rotation 2026-05 to 2026-06 added arithmetic functions directly to codec/parser files rather than analytics sub-modules. Rotation suspended 2026-06-18 but legacy artifacts remain."
+    root_cause_layer: product
+    remediation_class: product_specific_repair
+    taskcards: [TC-FG-ANALYTIC-001]
+
+  # ============================================================
+  # LAYER 6 — TEST COVERAGE GAPS
+  # ============================================================
+
+  - gap_id: FG-TEST-001
+    format_ids: [toml, csv, tsv, fodp]
+    family: [cells, data, presentation]
+    language: python
+    boundary: CODE_TO_TEST
+    gap_type: missing_tests
+    severity: HIGH
+    current_state: "TOML: 15 tests. CSV: 19 tests. TSV: 19 tests. FODP: 16 tests."
+    expected_state: "100+ tests per format for production-track maturity"
+    affected_counts:
+      toml_tests: 15
+      csv_tests: 19
+      tsv_tests: 19
+      fodp_tests: 16
+    first_failing_boundary: CODE_TO_TEST
+    likely_root_cause: "Formats received Gate 1-4 implementations but product deepening (tests) was not prioritized."
+    root_cause_layer: product
+    taskcards: [TC-FG-TEST-001]
+
+  - gap_id: FG-TEST-002
+    format_ids: [xpm, pam, zpaq, ora]
+    family: [imaging, archive]
+    language: all
+    boundary: CODE_TO_TEST
+    gap_type: missing_tests
+    severity: LOW
+    current_state: "Zero tests — no implementation exists"
+    expected_state: "Format has at minimum read-only implementation with focused tests"
+    first_failing_boundary: FEATURE_TO_CODE
+    root_cause_layer: product
+    taskcards: [TC-FG-TEST-002]
+
+  # ============================================================
+  # LAYER 7 — PACKAGING AND CONSUMER PROOF GAPS
+  # ============================================================
+
+  - gap_id: FG-PKG-001
+    format_ids: [abw, gnumeric, fodg, fodp, zst]
+    family: all
+    language: python
+    boundary: CODE_TO_PACKAGE
+    gap_type: missing_package_proof
+    severity: HIGH
+    current_state: "Gates 1-7 passed but local_only_not_published"
+    expected_state: "Package installed, wheel built, E2E consumer proof"
+    affected_counts:
+      formats_gates_1_to_7: 5
+      formats_commercially_ready: 0
+    evidence:
+      - "packaging/python/package-matrix.yaml — all 16 packages: local_only_not_published"
+    first_failing_boundary: CODE_TO_PACKAGE
+    likely_root_cause: "PyPI publication requires explicit authorization and credentials (TRUE_EXTERNAL_GATE). Local wheel builds exist but publication is blocked pending Gate 11 approval."
+    root_cause_layer: governance
+    taskcards: [TC-FG-PKG-001]
+
+  - gap_id: FG-PKG-002
+    format_ids: [ndjson, tsv, dif, csv]
+    family: [data, cells]
+    language: python
+    boundary: CODE_TO_PACKAGE
+    gap_type: missing_package_proof
+    severity: MEDIUM
+    current_state: "Gates 1-4 only — missing gates 5-10"
+    expected_state: "All 10 gates for local FOSS packaging"
+    first_failing_boundary: CODE_TO_PACKAGE
+    likely_root_cause: "Gates 5-10 not yet executed for these formats. Only basic acquisition and prototype complete."
+    root_cause_layer: product
+    taskcards: [TC-FG-PKG-002]
+
+  # ============================================================
+  # LAYER 8 — .NET PRODUCT GAPS
+  # ============================================================
+
+  - gap_id: FG-DOTNET-001
+    format_ids: [abw, gnumeric, xcf, dif, sylk, qoi, ppm, pgm, pbm, fodg, fodp, ods, odt, ndjson, toml, csv, tsv]
+    family: all
+    language: dotnet
+    boundary: FEATURE_TO_CODE
+    gap_type: missing_code
+    severity: HIGH
+    current_state: ".NET source exists for only 10 formats: csv, fods, fodt, html, markdown, ndjson, netpbm, tsv, txt, zst"
+    expected_state: ".NET product for all commercially targeted formats"
+    affected_counts:
+      formats_with_dotnet: 10
+      formats_without_dotnet: 15
+      formats_planned_commercial: 25
+    evidence:
+      - "src/net/ contains: csv, fods, fodt, html, markdown, ndjson, netpbm, tsv, txt, zst"
+    first_failing_boundary: FEATURE_TO_CODE
+    likely_root_cause: ".NET product development focused on flagship formats (FODS, FODT) and conversions (HTML, Markdown, TXT). Other formats have Python-only implementations."
+    root_cause_layer: product
+    remediation_class: product_backfill
+    taskcards: [TC-FG-DOTNET-001]
+
+  # ============================================================
+  # LAYER 9 — ARCHITECTURE AND GOVERNANCE GAPS
+  # ============================================================
+
+  - gap_id: FG-GOV-001
+    format_ids: [all]
+    family: all
+    language: all
+    boundary: FACT_TO_QNAME
+    gap_type: unconsumed_machinery
+    severity: MEDIUM
+    current_state: "QName registry exists as architecture markers only. No downstream tooling consumes entries."
+    expected_state: "QName registry consumed by: code generator, capability extractor, parity validator"
+    first_failing_boundary: FACT_TO_QNAME
+    likely_root_cause: "QName registry was created as a design artifact. Downstream consumption was planned but not implemented (Lanes 7-13 in spec-to-feature plan)."
+    root_cause_layer: machinery
+    taskcards: [TC-FG-GOV-001]
+
+  - gap_id: FG-GOV-002
+    format_ids: [all]
+    family: all
+    language: python
+    boundary: FACT_TO_CAPABILITY
+    gap_type: missing_spec_refs_in_capabilities
+    severity: MEDIUM
+    current_state: "capability_feature_compiler.py generates capabilities from POC templates. TC-GUARD-001 now requires gap_ledger_ref for new items but existing 1,641 foss_reduced caps are unguarded."
+    expected_state: "All capabilities have specific spec_fact_refs linking to authorized facts"
+    first_failing_boundary: FACT_TO_CAPABILITY
+    likely_root_cause: "Historical capability extraction was POC-goal driven. Retroactive spec-fact attachment not yet executed."
+    root_cause_layer: machinery
+    taskcards: [TC-FG-GOV-002]
+
+  - gap_id: FG-GOV-003
+    format_ids: [all]
+    family: all
+    language: all
+    boundary: CODE_TO_INTEGRATION
+    gap_type: missing_integration
+    severity: MEDIUM
+    current_state: "No cross-format consumer or integration pipeline exists. Each format is an isolated Python/C# library."
+    expected_state: "Format Factory has a conversion/orchestration layer that proves cross-format consumers work"
+    first_failing_boundary: CODE_TO_INTEGRATION
+    likely_root_cause: "Integration layer not yet designed or implemented. Formats developed in isolation."
+    root_cause_layer: product
+    taskcards: [TC-FG-GOV-003]

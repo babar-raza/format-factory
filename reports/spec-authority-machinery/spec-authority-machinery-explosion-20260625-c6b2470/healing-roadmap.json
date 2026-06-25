@@ -1,0 +1,254 @@
+{
+  "run_id": "spec-authority-machinery-explosion-20260625-c6b2470",
+  "generated_at": "2026-06-25",
+  "phases": [
+    {
+      "phase": "A",
+      "name": "Stop the Bleeding — Close Critical Bypasses",
+      "sprints_estimated": 2,
+      "priority": "IMMEDIATE",
+      "items": [
+        {
+          "id": "A-001",
+          "title": "TC-GUARD-001: Change OR to AND logic",
+          "file": "tools/supervisor/autonomous_cycle.py",
+          "location": "Step 2d3, line ~869",
+          "change": "Replace OR(gap_ledger_ref, capability_ref, spec_fact_refs) with AND(gap_ledger_ref, OR(spec_fact_refs, exception_classification))",
+          "test": "Add test: sprint with gap_ledger_ref only → TC-GUARD-001 BLOCK; sprint with exception_classification → PASS",
+          "risk": "MODERATE — may block currently-valid sprints; need migration for existing declarations without spec_fact_refs to add exception_classification",
+          "root_cause": "RCA-SUPERVISOR-GATES-001"
+        },
+        {
+          "id": "A-002",
+          "title": "V13: Fire when spec_fact_refs absent (Tier 1 formats)",
+          "file": "tools/supervisor/governance_validators.py",
+          "location": "V13 validate_spec_fact_refs_wired, line ~912",
+          "change": "Add: if not spec_fact_refs and not exception_classification and item_type == PRODUCT_SOURCE and format in TIER1_FORMATS: FAIL",
+          "test": "Add test: FODS PRODUCT_SOURCE item with absent spec_fact_refs → V13 FAIL",
+          "risk": "MODERATE — will block existing FODS/FODT sprints without spec_fact_refs; controlled migration needed",
+          "root_cause": "RCA-V13-ENFORCEMENT-001"
+        },
+        {
+          "id": "A-003",
+          "title": "Evidence schema: Add spec_fact_refs as required-or-explain field",
+          "file": "docs/automation/supervisor-worker-contract.md",
+          "location": "Required fields section",
+          "change": "Add spec_fact_refs field with documentation: required for Tier 1, exception_classification for Tier 2",
+          "test": "sprint_executor_validate.py should warn when spec_fact_refs absent and no exception_classification for PRODUCT_SOURCE",
+          "risk": "LOW — documentation change; enforcement follows A-001 and A-002",
+          "root_cause": "RCA-EVIDENCE-SCHEMA-001"
+        },
+        {
+          "id": "A-004",
+          "title": "product_task_selector: Wire authority_gate_validation.py P-level check",
+          "file": "tools/supervisor/product_task_selector.py",
+          "location": "_get_format_authority_status()",
+          "change": "Call authority_gate_validation.py --format-id {fmt} --json; return actual P-level; block P<4 without exception",
+          "test": "Add test: Gnumeric task selection → ALLOWED (exception_classification); NDJSON without exception → BLOCKED (P2)",
+          "risk": "HIGH — will block product expansion for CSV/NDJSON/TOML/XCF/QOI (P2, legacy_backfill exception); these need explicit exception_classification to proceed",
+          "root_cause": "RCA-PRODUCT-SELECTION-001"
+        }
+      ]
+    },
+    {
+      "phase": "B",
+      "name": "Make One Vertical Slice Real — FODS Pilot",
+      "sprints_estimated": 1,
+      "priority": "HIGH",
+      "items": [
+        {
+          "id": "B-001",
+          "title": "Extend FODS proof graph to FACT-FODS-002..010",
+          "file": ".local/spec-cache/fods/1.3/workbench/reports/authority-conveyor-*/",
+          "change": "Run build_proof_graph_iter003.py for FACT-FODS-002 through FACT-FODS-010",
+          "test": "Verify 10 facts in proof graph; verify P6 classification is now based on 10 facts not 1",
+          "risk": "LOW",
+          "root_cause": "RCA-PROOF-GRAPH-001"
+        },
+        {
+          "id": "B-002",
+          "title": "Fix _check_code_citations rglob to exclude build/",
+          "file": "tools/supervisor/authority_gate_validation.py",
+          "change": "Filter: for f in src_dir.rglob('*.py') if 'build' not in f.parts and '__pycache__' not in f.parts",
+          "test": "Verify FODS P6 classification not based on build/ artifacts",
+          "risk": "LOW",
+          "root_cause": "RCA-CODE-CITATIONS-001"
+        },
+        {
+          "id": "B-003",
+          "title": "Add FACT-FODS-* citations to fods_parser.py key functions",
+          "file": "src/python/fods/ (main parser, not just Compat/)",
+          "change": "Add spec authority comment to parse_fods(), document_from_fods(), sheet_from_xml() etc.",
+          "test": "Add test: verify key parser functions have FACT-FODS-* in docstring or comment",
+          "risk": "LOW",
+          "root_cause": "RCA-CODE-CITATIONS-001"
+        },
+        {
+          "id": "B-004",
+          "title": "Run authority_conveyor.py for FODS and document gaps",
+          "file": "Manual execution",
+          "change": "python tools/supervisor/authority_conveyor.py --format-id fods --target-level 6",
+          "test": "Document output in pilot-rerun-plan.json",
+          "risk": "NONE",
+          "root_cause": "RCA-PROOF-GRAPH-001"
+        }
+      ]
+    },
+    {
+      "phase": "C",
+      "name": "Integrate Machinery",
+      "sprints_estimated": 3,
+      "priority": "HIGH",
+      "items": [
+        {
+          "id": "C-001",
+          "title": "Wire authority_integration_fabric.py into autonomous_cycle.py",
+          "file": "tools/supervisor/autonomous_cycle.py",
+          "change": "Add Step 0b-authority-state: call authority_integration_fabric.py, generate authority-integration-contract.json",
+          "test": "Verify authority-integration-contract.json written after sprint init",
+          "risk": "LOW",
+          "root_cause": "RCA-INTEGRATION-001"
+        },
+        {
+          "id": "C-002",
+          "title": "Inject spec facts into generate_next_worker_prompt.py",
+          "file": "tools/supervisor/generate_next_worker_prompt.py",
+          "change": "Add sal-facts-{format}.json to READ_BEFORE_EXECUTION; inject top-3 verified facts into prompt template",
+          "test": "Verify FODS worker prompt contains FACT-FODS-001..003 text",
+          "risk": "LOW",
+          "root_cause": "RCA-PROMPT-GENERATION-001"
+        },
+        {
+          "id": "C-003",
+          "title": "Register 5 minimum spec authority skills",
+          "file": ".supervisor/skill-registry.yaml",
+          "change": "Add: acquire-spec-t3, normalize-spec, extract-spec-facts, authority-gate-validation, pilot-rerun-authority",
+          "test": "Verify skills appear in skill inventory; validate-skill-contracts passes",
+          "risk": "LOW",
+          "root_cause": "RCA-SKILLS-REPEATABILITY-001"
+        },
+        {
+          "id": "C-004",
+          "title": "Add authority_level column to poc-targets.yaml",
+          "file": "product-capability-matrix/poc-targets.yaml",
+          "change": "Add authority_level, highest_proven_fact, proof_graph_exists fields per format",
+          "test": "Verify all 20 formats have authority_level populated",
+          "risk": "LOW",
+          "root_cause": "RCA-PRODUCT-LEDGER-001"
+        }
+      ]
+    },
+    {
+      "phase": "D",
+      "name": "Expand Coverage",
+      "sprints_estimated": 6,
+      "priority": "MODERATE",
+      "items": [
+        {
+          "id": "D-001",
+          "title": "T3 authorization and normalization for CSV (RFC4180)",
+          "target_format": "CSV",
+          "change": "Complete T3 auth; run acquire_spec.py; run spec_normalizer.py; advance from P2 to P3+",
+          "risk": "LOW",
+          "root_cause": "RCA-SPEC-CACHE-001"
+        },
+        {
+          "id": "D-002",
+          "title": "T3 authorization and normalization for TOML (spec-toml.io)",
+          "target_format": "TOML",
+          "change": "Complete T3 auth; run acquisition pipeline; advance from P2 to P3+",
+          "risk": "LOW",
+          "root_cause": "RCA-SPEC-CACHE-001"
+        },
+        {
+          "id": "D-003",
+          "title": "T3 authorization and normalization for NDJSON (ndjson.org)",
+          "target_format": "NDJSON",
+          "change": "Complete T3 auth; run acquisition pipeline; advance from P2 to P3+",
+          "risk": "LOW",
+          "root_cause": "RCA-SPEC-CACHE-001"
+        },
+        {
+          "id": "D-004",
+          "title": "Expand ZST RFC8878 coverage from 2 to 94+ facts",
+          "target_format": "ZST",
+          "change": "Run full extraction pipeline for RFC8878; advance 92 candidate facts to P5",
+          "risk": "LOW",
+          "root_cause": "RCA-NORMALIZATION-001"
+        },
+        {
+          "id": "D-005",
+          "title": "Behavioral spec-backed tests for FODT, ODS, ODT",
+          "change": "Add tests citing FACT-FODT/ODS/ODT-* with behavioral assertions per spec",
+          "risk": "LOW",
+          "root_cause": "RCA-TEST-QUALITY-001"
+        },
+        {
+          "id": "D-006",
+          "title": "sunset legacy_backfill exception for CSV/NDJSON/TOML/QOI after D-001..D-003 complete",
+          "change": "Remove legacy_backfill exception after T3+normalization complete; require real spec_fact_refs",
+          "risk": "LOW — only after D-001..D-003",
+          "root_cause": "RCA-SUPERVISOR-GATES-002"
+        }
+      ]
+    },
+    {
+      "phase": "E",
+      "name": "Safe AI Assist",
+      "sprints_estimated": 2,
+      "priority": "LOW",
+      "prerequisite": "Phases A-D complete",
+      "items": [
+        {
+          "id": "E-001",
+          "title": "Deploy embedding pipeline for FODS chunks.jsonl",
+          "change": "Embed FODS normalized chunks into local vector store (Chroma/FAISS)",
+          "risk": "LOW",
+          "root_cause": "RCA-AI-POLICY-001"
+        },
+        {
+          "id": "E-002",
+          "title": "Add V49 governance validator: ai_draft items cannot be cited as authoritative",
+          "file": "tools/supervisor/governance_validators.py",
+          "change": "Add V49 validate_ai_draft_authority() — blocks items citing ai_draft artifacts as authoritative evidence",
+          "risk": "LOW",
+          "root_cause": "RCA-AI-POLICY-001"
+        },
+        {
+          "id": "E-003",
+          "title": "Run contradiction detection for FODS code vs spec facts",
+          "change": "Use ai_evidence_critic.py to compare FODS Compat/ implementations against fods-p6-proof-graph.yaml",
+          "risk": "LOW — advisory output, not authority",
+          "root_cause": "RCA-AI-POLICY-001"
+        }
+      ]
+    },
+    {
+      "phase": "F",
+      "name": "Production Readiness",
+      "sprints_estimated": 3,
+      "priority": "LOW",
+      "prerequisite": "Phases A-E complete",
+      "items": [
+        {
+          "id": "F-001",
+          "title": "All ODF formats at P5+ (fact citations in code AND tests)",
+          "change": "Complete code+test citations for ODS, ODT, FODG, FODP",
+          "risk": "LOW"
+        },
+        {
+          "id": "F-002",
+          "title": "Product readiness dashboard shows authority level",
+          "change": "Add authority_level to readiness dashboard output; add P6 checkpoint to release gate",
+          "risk": "LOW"
+        },
+        {
+          "id": "F-003",
+          "title": "Pilot reruns stable and documented for 3 formats",
+          "change": "Document FODS, ZST, CSV pilot reruns with full chain evidence",
+          "risk": "LOW"
+        }
+      ]
+    }
+  ]
+}

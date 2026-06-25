@@ -1,13 +1,13 @@
 # Evidence Review — Supervisor
-Sprint ID: forensic-healing-20260624-dwp
-Timestamp: 2026-06-24T15:03:05.182704
+Sprint ID: ff-sprint-s61-dotnet-r117r118-20260626
+Timestamp: 2026-06-25T20:49:08.825374
 Verdict: ACCEPTED
-Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\forensic-healing-20260624-dwp\declaration-review-package.zip
+Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\ff-sprint-s61-dotnet-r117r118-20260626\declaration-review-package.zip
 
 ## Facts
-- Tests: 0 passed, 0 failed, 0 skipped
+- Tests: 115 passed, 0 failed, 0 skipped
 - Git HEAD: see-declaration
-- Bundle entries: 70
+- Bundle entries: 60
 - PENDING markers: 0
 
 ## Gate States

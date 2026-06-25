@@ -1372,6 +1372,7 @@ _GLOBAL_FORBIDDEN = [
 
 
 _GAP_LEDGER_PATH = _REPO_ROOT / "reports" / "capability-layer" / "gap-ledger.json"
+_SAL_FACTS_PATH = _REPO_ROOT / ".local" / "sal-output" / "sal-facts-latest.json"
 
 # Format name → Python source module mapping for gap-ledger integration
 _FORMAT_SOURCE_MAP: Dict[str, str] = {
@@ -1385,7 +1386,6 @@ _FORMAT_SOURCE_MAP: Dict[str, str] = {
     "CSV": "src/python/csv/csv_parser.py",
     "DIF": "src/python/dif/dif_parser.py",
     "SYLK": "src/python/sylk/sylk_parser.py",
-    "FODT": "src/python/fodt/__init__.py",
     "FODG": "src/python/fodg/fodg_codec.py",
     "FODP": "src/python/fodp/fodp_codec.py",
     "GNUMERIC": "src/python/gnumeric/gnumeric_codec.py",
@@ -1609,8 +1609,7 @@ def generate_task_candidates(
 
     # Lane 6: gap-ledger is PRIMARY; hardcoded goals demoted to fallback (missing fns only).
     # TC-SA-HEAL-006: require spec_facts for formats with ≥15 SAL facts (MIN_FACTS_T=15).
-    _sal_p = _REPO_ROOT / ".local" / "sal-output" / "sal-facts-latest.json"
-    _req_sf = _sal_p.exists() and any(len(e.get("spec_facts", [])) >= 15 for e in json.loads(_sal_p.read_text()).get("results", []))
+    _req_sf = _SAL_FACTS_PATH.exists() and any(len(e.get("spec_facts", [])) >= 15 for e in json.loads(_SAL_FACTS_PATH.read_text()).get("results", []))
     gap_ledger_goals, _spec_grounded_available = _load_gap_ledger_goals(
         require_spec_facts=_req_sf,
         exclude_gap_ids=_excluded_gap_ids,
@@ -1626,11 +1625,17 @@ def generate_task_candidates(
     except Exception:
         pass  # Compiled gap enrichment is best-effort
 
-    # Fallback: add hardcoded goals only for functions NOT in gap-ledger
-    for hardcoded_goal in _EXPANSION_GOALS:
-        if hardcoded_goal["function_name"] not in existing_fns:
-            all_goals.append(hardcoded_goal)
-            existing_fns.add(hardcoded_goal["function_name"])
+    # Fallback: add hardcoded goals only for functions NOT in gap-ledger.
+    # TC-C2-005-URGENT: when gap-ledger has FOSS goals, hardcoded _EXPANSION_GOALS are
+    # suppressed entirely — gap-ledger is the authoritative source. When FOSS goals are
+    # depleted (_expansion_goal_fallback=True), hardcoded goals provide continuity, but
+    # V42 (validate_deepening_suspension) blocks suspended-rotation functions at grading.
+    # This prevents hardcoded goals from overriding live gap-ledger entries.
+    if _expansion_goal_fallback:
+        for hardcoded_goal in _EXPANSION_GOALS:
+            if hardcoded_goal["function_name"] not in existing_fns:
+                all_goals.append(hardcoded_goal)
+                existing_fns.add(hardcoded_goal["function_name"])
 
     candidates = []
     advisory_skipped = 0

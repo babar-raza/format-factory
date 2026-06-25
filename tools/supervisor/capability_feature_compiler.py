@@ -43,8 +43,15 @@ _EVIDENCE_DEFAULT = "Work item accepted by supervisor pipeline"
 # Lanes 14-15 are machinery-owned; skip them
 _MAX_PRODUCT_LANE = 13
 
-# Statuses for implementation-verified filtering
-_SKIP_STATUSES = {"closed"}
+# Statuses that exclude a gap from work selection.
+# CLOSED/closed: already implemented; DEFERRED_BY_DESIGN/DEFERRED: intentionally deferred;
+# test_verified/implementation_verified: state beyond gap-level (capability is done).
+# TC-DEFERRED-FILTER-001 (2026-06-25): extended to handle all non-actionable statuses.
+_SKIP_STATUSES = {
+    "closed", "CLOSED",
+    "DEFERRED_BY_DESIGN", "DEFERRED",
+    "test_verified", "implementation_verified",
+}
 
 # Statuses that mean "not yet an open gap"
 _FAIL_STATUSES = {"implementation_verified"}
@@ -218,7 +225,7 @@ def run(
         return 1
 
     gaps: list[dict] = ledger["gaps"]
-    open_gaps = [g for g in gaps if g.get("status") != "closed"]
+    open_gaps = [g for g in gaps if g.get("status") not in _SKIP_STATUSES]
 
     items, dedup_items = compile_gaps(open_gaps, max_items=max_items)
 

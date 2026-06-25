@@ -1,0 +1,89 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-06-25",
+  "sprint": "FORMAT-FACTORY-EXPERT-MANUAL-SYSTEM-REVIEW-PLAN-001",
+  "risks": [
+    {
+      "risk_id": "R-001",
+      "problem_ref": "PROB-009",
+      "description": "Gap ledger taxonomy repair may assign wrong categories",
+      "risk_level": "MEDIUM",
+      "category": "SYSTEM_INTEGRITY",
+      "probability": "MEDIUM",
+      "impact": "HIGH",
+      "mitigation": "Verify 10 known gaps before bulk category update",
+      "rollback": "Restore gap-ledger.json from git"
+    },
+    {
+      "risk_id": "R-002",
+      "problem_ref": "PROB-001",
+      "description": "ZST decompression requires NuGet dependency",
+      "risk_level": "HIGH",
+      "category": "DEPENDENCY",
+      "probability": "MEDIUM",
+      "impact": "MEDIUM",
+      "mitigation": "Evaluate ZstdNet vs. ZstdSharp; prefer smallest footprint",
+      "rollback": "Remove ZstDecompressor.cs and ZstDocument changes"
+    },
+    {
+      "risk_id": "R-003",
+      "problem_ref": "PROB-002",
+      "description": "PDF Unicode fix requires font embedding or external library",
+      "risk_level": "HIGH",
+      "category": "SCOPE_CREEP",
+      "probability": "HIGH",
+      "impact": "MEDIUM",
+      "mitigation": "Option C: Document Latin-1 scope limit; defer Unicode to v2",
+      "rollback": "Update format-registry.yaml with scope limitation documentation"
+    },
+    {
+      "risk_id": "R-004",
+      "problem_ref": "PROB-003",
+      "description": "FODT table traversal adds to public API surface",
+      "risk_level": "MEDIUM",
+      "category": "REGRESSION",
+      "probability": "LOW",
+      "impact": "LOW",
+      "mitigation": "Add FodtBody.Tables as additive; do not change Paragraphs",
+      "rollback": "Remove FodtBody.Tables and FodtTable class"
+    },
+    {
+      "risk_id": "R-005",
+      "problem_ref": "PROB-010",
+      "description": "SAL chain extension requires building new spec parsers",
+      "risk_level": "HIGH",
+      "category": "ESTIMATION",
+      "probability": "MEDIUM",
+      "impact": "MEDIUM",
+      "mitigation": "Start with CSV (RFC 4180); then TOML; then SYLK",
+      "rollback": "No rollback needed; SAL extension is additive"
+    },
+    {
+      "risk_id": "R-006",
+      "problem_ref": "PROB-013",
+      "description": "Downgrading FodsOdsExporter may affect Gate 11 assessment",
+      "risk_level": "LOW",
+      "category": "SYSTEM_INTEGRITY",
+      "probability": "MEDIUM",
+      "impact": "MEDIUM",
+      "mitigation": "Fix ODS exporter first; then update poc-targets with evidence",
+      "rollback": "Revert poc-targets.yaml"
+    },
+    {
+      "risk_id": "R-007",
+      "problem_ref": "PROB-004",
+      "description": "Reclassifying HTML/Markdown/TXT changes format count",
+      "risk_level": "LOW",
+      "category": "SYSTEM_INTEGRITY",
+      "probability": "LOW",
+      "impact": "LOW",
+      "mitigation": "Update registry + documentation consistently",
+      "rollback": "Revert format-registry.yaml classification"
+    }
+  ],
+  "risk_summary": {
+    "HIGH": ["R-002", "R-003", "R-005"],
+    "MEDIUM": ["R-001", "R-004"],
+    "LOW": ["R-006", "R-007"]
+  }
+}

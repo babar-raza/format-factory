@@ -1,0 +1,136 @@
+{
+  "sprint_id": "FORMAT-FACTORY-PRODUCT-CODE-API-QUALITY-REVIEW-PLAN-001",
+  "date": "2026-06-25",
+  "claim_classifications": {
+    "CLAIM_VERIFIED": "Source confirms the claim",
+    "CLAIM_CONTRADICTED": "Source directly contradicts",
+    "CLAIM_OVERSTATED": "Partially true but inflated",
+    "CLAIM_UNDERSTATED": "Source is better than claimed",
+    "CLAIM_UNVERIFIABLE": "Insufficient evidence",
+    "NEEDS_VERIFICATION": "Requires deeper inspection"
+  },
+  "contradictions": [
+    {
+      "id": "CONTRADICTION-001",
+      "product": "FODS .NET",
+      "claim_source": "src/net/fods/FormatFactory.Fods.csproj PackageDescription",
+      "claim_text": "Gate 11 approved 2026-06-05",
+      "source_truth": "src/net/fods/FodsDocument.cs line 2-3: 'Gate 11 status: commercial_readiness_in_progress (NOT approved)'",
+      "classification": "CLAIM_CONTRADICTED",
+      "severity": "HIGH",
+      "confidence": "VERIFIED",
+      "pq_id": "PQ-006",
+      "recommended_fix": "Update FormatFactory.Fods.csproj PackageDescription to remove Gate 11 approval claim; replace with actual current status"
+    },
+    {
+      "id": "CONTRADICTION-002",
+      "product": "ZST .NET",
+      "claim_source": "reports/capability-layer/commercial-capability-map.json (to be verified)",
+      "claim_text": "ZST commercial capability — compress/decompress",
+      "source_truth": "src/net/zst/ZstDocument.cs is pure DTO; no ZstWriter.cs exists; no compress/decompress capability",
+      "classification": "NEEDS_VERIFICATION",
+      "severity": "HIGH",
+      "confidence": "LIKELY",
+      "pq_id": "PQ-007",
+      "recommended_fix": "Add ZstWriter class; update capability map to reflect actual capability"
+    },
+    {
+      "id": "CONTRADICTION-003",
+      "product": "14 Python FOSS formats",
+      "claim_source": "MEMORY.md: 'Product Deepening Mission COMPLETE (2026-06-25): 14 Python FOSS formats all at PROOF_LEVEL_4+'",
+      "claim_text": "14 Python FOSS formats at PROOF_LEVEL_4+",
+      "source_truth": "FODP is read-only (no write). QOI has no examples. XCF has no write/export. These may be in the 6 excluded formats — needs verification of which 14 were counted.",
+      "classification": "NEEDS_VERIFICATION",
+      "severity": "MEDIUM",
+      "confidence": "LIKELY",
+      "recommended_fix": "Define PROOF_LEVEL_4 explicitly and verify each of the 14 products against it"
+    },
+    {
+      "id": "CONTRADICTION-004",
+      "product": "FODT .NET",
+      "claim_source": "May be implied by Spec/Table/* file presence",
+      "claim_text": "FODT supports table operations",
+      "source_truth": "src/net/fodt/Spec/Table/Table.cs, TableCell.cs, TableRow.cs are architecture-only stubs (# GENERATED — architecture_only pattern)",
+      "classification": "NEEDS_VERIFICATION",
+      "severity": "MEDIUM",
+      "confidence": "LIKELY",
+      "pq_id": "PQ-012",
+      "recommended_fix": "Confirm whether FodtDocument.AddTable() or equivalent is in public API; if not, remove architecture stubs or wire them"
+    },
+    {
+      "id": "CONTRADICTION-005",
+      "product": "NetPBM .NET",
+      "claim_source": "Capability map may claim 'export' capability",
+      "claim_text": "NetPBM has export capability",
+      "source_truth": "NetpbmExporter confirmed to be within-family only (PBM→PGM, PBM→PPM). NOT an external format exporter.",
+      "classification": "CLAIM_OVERSTATED",
+      "severity": "LOW",
+      "confidence": "VERIFIED",
+      "pq_id": "PQ-013",
+      "recommended_fix": "Update capability map to clarify 'within-family format conversion' not 'external format export'"
+    },
+    {
+      "id": "CONTRADICTION-006",
+      "product": "HTML/Markdown/TXT .NET",
+      "claim_source": "Listed as format products in registry",
+      "claim_text": "HTML, Markdown, TXT are standalone products",
+      "source_truth": "These are internal writer helper classes used by FODS and FODT exporters. Not standalone products.",
+      "classification": "CLAIM_OVERSTATED",
+      "severity": "MEDIUM",
+      "confidence": "VERIFIED",
+      "pq_id": "PQ-015",
+      "recommended_fix": "Classify HTML/Markdown/TXT as internal helpers in all documentation; don't market as standalone products"
+    },
+    {
+      "id": "CONTRADICTION-007",
+      "product": "FODS Python",
+      "claim_source": "__init__.py module metadata: __commercial_ready__ = False",
+      "claim_text": "__commercial_ready__ = False (honest claim)",
+      "source_truth": "FodsDocument, write_fods, etc. are functional. __commercial_ready__ = False is accurate.",
+      "classification": "CLAIM_VERIFIED",
+      "severity": "NONE",
+      "confidence": "VERIFIED",
+      "note": "This claim is correct — FODS Python honestly declares it's not commercial-ready"
+    },
+    {
+      "id": "CONTRADICTION-008",
+      "product": "Python FODP",
+      "claim_source": "consumer_roundtrip.py example exists (implies roundtrip capability)",
+      "claim_text": "FODP supports consumer roundtrip",
+      "source_truth": "FODP is READ-ONLY — no write_fodp() exists. A 'consumer roundtrip' for FODP means load + inspect (not edit + save)",
+      "classification": "CLAIM_OVERSTATED",
+      "severity": "MEDIUM",
+      "confidence": "VERIFIED",
+      "pq_id": "PQ-009",
+      "recommended_fix": "Rename examples/python/fodp/consumer_roundtrip.py to consumer_inspect.py to avoid misleading 'roundtrip' claim"
+    },
+    {
+      "id": "CONTRADICTION-009",
+      "product": "SYLK Python",
+      "claim_source": "set_cell_value in public API implies model-based editing",
+      "claim_text": "SYLK supports cell value editing",
+      "source_truth": "set_cell_value(src, dest, row, col, value) takes SOURCE FILE PATH and DESTINATION FILE PATH — it's file-based, not model mutation",
+      "classification": "CLAIM_OVERSTATED",
+      "severity": "LOW",
+      "confidence": "VERIFIED",
+      "recommended_fix": "Document file-based nature of set_cell_value; rename to set_cell_value_in_file() for clarity"
+    }
+  ],
+  "global_claim_accuracy_score": 3,
+  "verified_true_claims": [
+    "FODS Python __commercial_ready__ = False is accurate",
+    "PBM Python exception hierarchy (PbmError → 4 subtypes) exists as claimed",
+    "FODS .NET has 5 export classes (CSV, HTML, JSON, ODS, PDF, PNG) — actually 6, one more than commonly claimed",
+    "Python ZST has compress/decompress (unlike .NET ZST)",
+    "XCF layer_name_list returns real layer names (fixed 2026-06-25)"
+  ],
+  "verified_false_claims": [
+    "FODS .csproj 'Gate 11 approved 2026-06-05' — CONTRADICTED by source header (CONTRADICTION-001)",
+    "HTML/Markdown/TXT as standalone products — they are internal helpers (CONTRADICTION-006)"
+  ],
+  "needs_verification": [
+    "ZST .NET compress capability in capability-layer reports",
+    "14 Python FOSS formats at PROOF_LEVEL_4+ — which 14, and what is PROOF_LEVEL_4?",
+    "FODT .NET table operations — Spec/Table/* wired to public API?"
+  ]
+}

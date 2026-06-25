@@ -532,7 +532,8 @@ def check(repo_root: Path, *, session_id: str | None = None,
     _pd_gaps_path = repo_root / ".local" / "supervisor" / "selected-product-gaps.json"
     if _pd_ledger.exists() and _pd_gaps_path.exists():
         try:
-            _pd_selected = json.loads(_pd_gaps_path.read_text(encoding="utf-8")).get("selected_gaps", [])
+            _pd_raw = json.loads(_pd_gaps_path.read_text(encoding="utf-8"))
+            _pd_selected = _pd_raw.get("selected_gaps", []) if isinstance(_pd_raw, dict) else (_pd_raw if isinstance(_pd_raw, list) else [])
             if _pd_selected:
                 sys.path.insert(0, str(_here))
                 from product_deepening_gate import check_formats_in_gaps as _chk_pd

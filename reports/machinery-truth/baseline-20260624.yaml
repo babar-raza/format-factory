@@ -1,0 +1,126 @@
+current_state_baseline:
+  mission_id: MACHINERY-TRUTH-PRODUCT-CONTRACT-20260624
+  repository: format-factory
+  branch: main
+  head: 1852a46d0792c2331d1ac9fb1b65843f6a562fd5
+  worktree: c:\Users\prora\OneDrive\Documents\GitHub\format-factory
+  active_plan: NONE (recursive-hugging-bird TERMINAL_CLOSED; no new plan loaded)
+  active_taskcards: []
+  active_queues:
+    - continuation_signal: autonomous_continue=true, iteration=8/12, session=7da28319645c
+  current_controller: autonomous_cycle.py (MODE 4, ACTIVE_MCP)
+  recent_runs:
+    - id: machinery-product-reconciliation-20260624
+      verdict: ACCEPTED
+      tests: 7255/0
+      timestamp: 2026-06-24T16:35:07
+    - id: recursive-hugging-bird-wave2-20260624
+      verdict: ACCEPTED
+      tests: 143/0
+      timestamp: 2026-06-24T16:44:55
+
+  git_status_summary:
+    modified_files: 56
+    untracked_files: 9
+    uncommitted_changes: true
+    note: All changes are supervisor state files, report updates, and 3 product fixes
+      (TOML exceptions.py, SYLK test path, test_plan_lock_machinery.py)
+
+  machinery_claims:
+    - claim: SAL is ghost infrastructure (3/20 tools active)
+      source: plans/spec-to-feature-radical-correction-plan.md (written 2026-06-12)
+      verdict: CONTRADICTED
+      evidence: 22 SAL tools exist in tools/specification-authority-layer/; sal-facts-latest.json
+        has 14,309 facts across 23 formats, generated 2026-06-21; sal_master_runner.py
+        and run_spec_pipeline.py are functional entry points
+
+    - claim: Capability Layer generates output nobody consumes
+      source: plans/spec-to-feature-radical-correction-plan.md (written 2026-06-12)
+      verdict: SUPERSEDED
+      evidence: autonomous_cycle.py line 1481 imports capability_feature_compiler and
+        calls compile_gaps; gap_ledger_ref is injected into work items (Step 3a-pre);
+        gap-ledger.json is the source for next-work-items generation
+
+    - claim: No capability-to-feature compiler exists
+      source: plans/spec-to-feature-radical-correction-plan.md (written 2026-06-12)
+      verdict: CONTRADICTED
+      evidence: tools/capability_layer/capability_to_feature_compiler.py exists;
+        tools/feature_compiler/gap_to_work_item.py exists
+
+    - claim: 11 governance validators
+      source: docs/architecture.md (written 2026-05-04)
+      verdict: CONTRADICTED
+      evidence: governance_validators.py V1-V49 (50 functions);
+        governance_validators_ext.py V50-V66 (14 more); governance_validators_signal.py V67;
+        total 67 registered validators (22 FAIL-blocking, 45 WARN-only)
+
+    - claim: .NET source at src/dotnet/
+      source: docs/architecture.md
+      verdict: CONTRADICTED
+      evidence: src/dotnet/ is a Phase 0 placeholder (_readme.md only);
+        actual .NET product source is at src/net/ (fods/, fodt/, netpbm/ + shared libs)
+
+    - claim: Autonomous healing/learning is prompt-only; ZERO durable learning
+      source: plans/spec-to-feature-radical-correction-plan.md
+      verdict: CURRENT
+      evidence: No failure-memory.json found; MEMORY.md is prose (200-line limit);
+        ai_learning_loop outputs are non_authoritative=True; no auto-propagation system
+
+    - claim: Product deepening rotation suspended
+      source: MEMORY.md
+      verdict: CURRENT
+      evidence: deepening-suspension validator V42 enforces; no mod_prime_times_multiplier
+        functions added; ZST/XCF/FODG analytics files at LOC cap
+
+  verified_claims:
+    - SAL pipeline has real facts (14,309 verified facts across 23 formats)
+    - capability_feature_compiler is wired into autonomous_cycle.py
+    - gap-ledger has 1,003 gaps; 969 closed, 0 POC-blocking
+    - 50 governance validators defined (not 11 as architecture.md states)
+    - src/net/ contains real .NET product source for FODS, FODT, Netpbm
+    - All 20 Python formats are installed packages (egg-info present)
+    - 3 formats have continuation_allowed=True: abw, fods, fodt
+    - Gate 11 G11-G sub-gate approved for FODS, FODT, Netpbm by Babar Raza 2026-06-05
+
+  contradicted_claims:
+    - SAL is ghost infrastructure (CONTRADICTED — 14,309 facts exist)
+    - No capability-to-feature compiler exists (CONTRADICTED — exists and wired)
+    - Capability Layer output is unconsumed (SUPERSEDED — wired in autonomous_cycle.py)
+    - 11 validators (CONTRADICTED — 50+)
+    - .NET at src/dotnet/ (CONTRADICTED — src/net/)
+    - docs/architecture.md "current" folder tree (MASSIVELY STALE — Phase 0 design)
+
+  stale_claims:
+    - docs/architecture.md last reviewed 2026-05-04 (Phase 0 document, system now Phase 4+)
+    - spec-to-feature-radical-correction-plan.md systemic failures list (written 2026-06-12,
+      many failures since addressed)
+    - plans/master-plan.md Section 49 (last section, closed, no current work section open)
+
+  additional_findings_from_ledger_agent:
+    format_registry_total: 25 formats (product-deepening-ledger has 20 Python formats;
+      5 additional formats tracked in format-registry.yaml: ora, plus others in different stages)
+    source_structure_violations: 270 tracked files; 251 at or above baseline_loc_cap (92.96%)
+    critical_loc_breach:
+      file: tests/supervisor/test_governance_validators.py
+      actual_loc: 1881
+      baseline_loc_cap: 1618
+      overage_percent: 116.3%
+      note: This file is OVER its frozen baseline_loc_cap. Governance enforcement gap —
+        test files are checked for function counts but the test_governance_validators.py
+        LOC breach should trigger a new_violation_detected entry or manual cap update.
+
+  evidence_root: .local/evidences/
+  machinery_layer_inventory: reports/machinery-truth/machinery-layer-inventory-20260624.md
+  product_contract: reports/machinery-truth/product-contract-20260624.md
+  claim_verification_matrix: reports/machinery-truth/claim-verification-matrix-20260624.md
+  verdict: MACHINERY_TRUTH_PARTIAL_PRODUCT_GRADING_MAY_PROCEED_WITH_LIMITS
+  verdict_rationale: >
+    Machinery is substantially real and wired. SAL has 14,309 facts; gap-ledger has
+    1,003 gaps with 969 closed; capability compiler is wired into autonomous_cycle.py;
+    50+ governance validators enforce policy. Product deepening is constrained: 3/20
+    formats may continue (continuation_allowed=True: abw, fods, fodt). 17/20 formats
+    are blocked pending qname_compliance_status advancement to 'verified'. Architecture
+    documentation (docs/architecture.md) is severely stale (Phase 0 description of a
+    Phase 4+ system). Product grading may proceed for the 3 continuation-allowed formats
+    immediately, and for all formats with the understanding that qname advancement is
+    the gate for deepening.

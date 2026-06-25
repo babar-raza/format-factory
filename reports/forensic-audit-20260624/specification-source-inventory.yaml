@@ -1,0 +1,307 @@
+# FORMAT FACTORY — SPECIFICATION SOURCE INVENTORY
+# Generated: 2026-06-24
+# Mission: FF-FORENSIC-AUDIT-20260624
+# Source: .local/spec-cache/ + .local/sal-output/sal-facts-latest.json + registry/format-registry.yaml
+
+mission_id: FF-FORENSIC-AUDIT-20260624
+generated_at: "2026-06-24"
+
+methodology: |
+  Spec facts are measured from .local/sal-output/sal-facts-latest.json
+  (generated 2026-06-24T16:06:12, 25 formats, 14,486 total facts, 14,331 verified).
+  Spec-cache directories in .local/spec-cache/ contain:
+    - ODF formats (fods/fodt): PDF + extracted text + chunks.jsonl + pages.jsonl
+    - ZST: RFC subdirectories (manifest only, not fully chunked)
+    - Most other formats: manifest.yaml + sparse YAML/JSON
+  Semantic units are FACT counts from the SAL pipeline, not raw spec line counts.
+  Line counts are from spec-cache text.txt where available.
+
+spec_count_summary:
+  total_spec_facts: 14486
+  total_workbench_verified: 14331
+  odf_family_facts: 13204  # fods+fodt+ods+odt+fodp+fodg+odf-shared
+  odf_family_pct: "91.2%"
+  non_odf_facts: 1282
+  non_odf_pct: "8.8%"
+  bootstrap_only_facts: 148  # facts with no text verification, seeded by hand
+  formats_with_rich_spec_coverage: [fods, fodt, ods, odt, fodp, fodg]
+  formats_with_sparse_spec_coverage: [zst, gnumeric, abw, dif, sylk, csv, tsv, xcf, qoi, ppm, pgm, pbm, ndjson, toml, xpm, pam, zpaq, ora]
+
+sources:
+  - spec_source_id: SPEC-FODS-ODF-1.3
+    format_id: fods
+    title: "OpenDocument Format for Office Applications v1.3 Part 3 (Schema)"
+    authority: OASIS Open
+    version: "ODF 1.3"
+    publication_date: "2022"
+    source_type: PDF + extracted text + chunks
+    source_path_or_reference: ".local/spec-cache/fods/"
+    authoritative: true
+    normative_or_informative: normative
+    machine_readable: true  # via PDF text extraction
+    extraction_method: pdf_text_extraction + chunking
+    file_hash: unknown (PDF not committed)
+    page_count: derived_from_pages_jsonl
+    raw_line_count: 2224560  # text.txt
+    nonblank_line_count: estimated_~800000
+    semantic_units:
+      chunks: 615888_bytes_jsonl
+      sal_facts: 5009
+      verified_facts: 4987
+      bootstrap_only: 22
+    spec_fact_statuses:
+      bootstrap_only: 22
+      verified: 122
+      text_verified: 4865
+    quality_note: "Richest spec in portfolio. SAL pipeline fully operational for ODF 1.3."
+    currentness: current_as_of_2022
+
+  - spec_source_id: SPEC-FODT-ODF-1.3
+    format_id: fodt
+    title: "ODF 1.3 (shared with FODS — same schema, different root element)"
+    authority: OASIS Open
+    version: "ODF 1.3"
+    source_type: Shared from fods spec extraction
+    authoritative: true
+    normative_or_informative: normative
+    sal_facts: 4957
+    verified_facts: 4933
+    bootstrap_only: 24
+    quality_note: "ODF 1.3 schema applies to FODT. Separate SAL run produces near-identical fact set to FODS."
+
+  - spec_source_id: SPEC-ODS-ODF-1.3
+    format_id: ods
+    title: "ODF 1.3 Spreadsheet (ZIP-wrapped ODS variant)"
+    authority: OASIS Open
+    version: "ODF 1.3"
+    sal_facts: 1077
+    verified_facts: 1069
+    bootstrap_only: 8
+    quality_note: "Same ODF schema as FODS but treated as separate format with ZIP container logic."
+
+  - spec_source_id: SPEC-ODT-ODF-1.3
+    format_id: odt
+    title: "ODF 1.3 Text (ZIP-wrapped ODT variant)"
+    authority: OASIS Open
+    version: "ODF 1.3"
+    sal_facts: 1074
+    verified_facts: 1066
+    bootstrap_only: 8
+
+  - spec_source_id: SPEC-FODP-ODF-1.3
+    format_id: fodp
+    title: "ODF 1.3 Flat Presentation"
+    authority: OASIS Open
+    version: "ODF 1.3"
+    sal_facts: 1071
+    verified_facts: 1066
+    bootstrap_only: 5
+
+  - spec_source_id: SPEC-FODG-ODF-1.3
+    format_id: fodg
+    title: "ODF 1.3 Flat Drawing"
+    authority: OASIS Open
+    version: "ODF 1.3"
+    sal_facts: 1071
+    verified_facts: 1066
+    bootstrap_only: 5
+
+  - spec_source_id: SPEC-ZST-RFC8878
+    format_id: zst
+    title: "Zstandard Compression and the 'application/zstd' Media Type (RFC 8878)"
+    authority: IETF
+    version: "RFC 8878"
+    source_type: RFC text
+    source_path_or_reference: ".local/spec-cache/zst/rfc8878/"
+    authoritative: true
+    normative_or_informative: normative
+    machine_readable: true
+    sal_facts: 109
+    verified_facts: 94
+    bootstrap_only: 15
+    quality_note: "Sparse fact extraction — 109 facts for a compression codec RFC. Semantic unit granularity is low compared to ODF."
+
+  - spec_source_id: SPEC-ABW-ABIWORD
+    format_id: abw
+    title: "AbiWord Document Format (informal/reverse-engineered)"
+    authority: AbiSource Community
+    version: "AbiWord 2.x"
+    source_type: informal_xml_schema + community_docs
+    authoritative: partial
+    normative_or_informative: informative
+    sal_facts: 8
+    verified_facts: 5
+    bootstrap_only: 3
+    quality_note: "CRITICAL GAP: Only 8 SAL facts for format with 149 capabilities. Bootstrap seeding dominates. No normative spec exists — community-documented XML structure only."
+
+  - spec_source_id: SPEC-GNUMERIC
+    format_id: gnumeric
+    title: "Gnumeric XML Spreadsheet Format (informal)"
+    authority: GNOME / Jody Goldberg
+    version: Gnumeric current
+    source_type: source_code_inspection + gnumeric.xsd
+    authoritative: partial
+    normative_or_informative: informative
+    sal_facts: 9
+    verified_facts: 3
+    bootstrap_only: 6
+    quality_note: "CRITICAL GAP: 9 facts for format with 102 capabilities. Only 3 verified facts. 6 bootstrap-only. Gnumeric has a partial XSD but it is not comprehensive."
+
+  - spec_source_id: SPEC-XCF
+    format_id: xcf
+    title: "GIMP XCF Binary Format (informal)"
+    authority: GIMP Project
+    version: XCF 11+
+    source_type: source_code_inspection + gimp-dev-docs
+    authoritative: partial
+    normative_or_informative: informative
+    sal_facts: 5
+    verified_facts: 2
+    bootstrap_only: 3
+    quality_note: "CRITICAL GAP: 5 bootstrap facts for a complex binary format with 108 capabilities. Spec is de-facto only — read from GIMP source code."
+
+  - spec_source_id: SPEC-QOI
+    format_id: qoi
+    title: "QOI — The Quite OK Image Format"
+    authority: Dominic Szablewski
+    version: "qoi.h 2021"
+    source_type: single_page_spec + reference_implementation
+    authoritative: true
+    normative_or_informative: normative
+    machine_readable: true
+    sal_facts: 5
+    verified_facts: 2
+    bootstrap_only: 3
+    quality_note: "QOI spec is tiny (1 page). 5 facts is near-complete for semantic units. Fact extraction appropriate."
+
+  - spec_source_id: SPEC-PPM-NETPBM
+    format_id: ppm
+    title: "NetPBM Portable Pixmap Format (P3/P6)"
+    authority: Jef Poskanzer / NetPBM project
+    version: NetPBM current
+    source_type: informal_spec + man_page
+    sal_facts: 5
+    verified_facts: 2
+    bootstrap_only: 3
+    quality_note: "NetPBM formats have short informal specs. 5 facts is plausible for semantic coverage."
+
+  - spec_source_id: SPEC-PGM-NETPBM
+    format_id: pgm
+    sal_facts: 5
+    verified_facts: 2
+    bootstrap_only: 3
+
+  - spec_source_id: SPEC-PBM-NETPBM
+    format_id: pbm
+    sal_facts: 5
+    verified_facts: 2
+    bootstrap_only: 3
+
+  - spec_source_id: SPEC-DIF
+    format_id: dif
+    title: "DIF — Data Interchange Format"
+    authority: Software Arts / VisiCalc
+    version: "1.0"
+    source_type: informal_historical_spec
+    sal_facts: 9
+    verified_facts: 3
+    bootstrap_only: 6
+    quality_note: "Historical format with informal spec. 9 facts is sparse for a format with 91 capabilities."
+
+  - spec_source_id: SPEC-SYLK
+    format_id: sylk
+    title: "SYLK — Symbolic Link File Format"
+    authority: Microsoft (historical)
+    version: SYLK 1.0
+    source_type: informal_historical_spec
+    sal_facts: 9
+    verified_facts: 3
+    bootstrap_only: 6
+    quality_note: "9 facts for 90 capabilities indicates capability-to-fact ratio is ~10x unsupported by spec evidence."
+
+  - spec_source_id: SPEC-CSV-RFC4180
+    format_id: csv
+    title: "Common Format and MIME Type for Comma-Separated Values (CSV) Files"
+    authority: IETF
+    version: "RFC 4180"
+    source_type: RFC
+    authoritative: true
+    normative_or_informative: normative
+    sal_facts: 8
+    verified_facts: 2
+    bootstrap_only: 6
+    quality_note: "RFC 4180 is short (7 pages). 8 facts is plausible. BUT 6 bootstrap = only 2 truly verified."
+
+  - spec_source_id: SPEC-TSV
+    format_id: tsv
+    title: "Tab-Separated Values (de facto)"
+    authority: IANA (text/tab-separated-values)
+    version: "de facto"
+    source_type: informal_de_facto
+    sal_facts: 5
+    verified_facts: 2
+    bootstrap_only: 3
+    quality_note: "TSV has no normative spec. 5 bootstrap-derived facts is appropriate for the format's complexity."
+
+  - spec_source_id: SPEC-NDJSON
+    format_id: ndjson
+    title: "Newline Delimited JSON"
+    authority: ndjson.org
+    version: "NDJSON 1.0"
+    source_type: informal_spec
+    sal_facts: 5
+    verified_facts: 2
+    bootstrap_only: 3
+    quality_note: "Very short spec. 5 facts is near-complete. BUT has 112 capabilities — massive capability inflation."
+
+  - spec_source_id: SPEC-TOML
+    format_id: toml
+    title: "TOML — Tom's Obvious Minimal Language v1.0"
+    authority: Tom Preston-Werner
+    version: "1.0.0"
+    source_type: community_spec
+    authoritative: true
+    normative_or_informative: normative
+    sal_facts: 5
+    verified_facts: 2
+    bootstrap_only: 3
+    quality_note: "TOML 1.0 spec exists (github.com/toml-lang/toml). Only 5 facts extracted — CHAIN_BROKEN_AT_SAL. Full spec could yield 50-100 semantic units."
+
+  - spec_source_id: SPEC-XPM
+    format_id: xpm
+    title: "X PixMap Format (XPM3)"
+    authority: MIT X Consortium
+    version: XPM 3
+    sal_facts: 3
+    verified_facts: 0
+    bootstrap_only: 3
+    quality_note: "No product source yet. All 3 facts bootstrap-only."
+
+  - spec_source_id: SPEC-PAM
+    format_id: pam
+    title: "NetPBM Portable Arbitrary Map"
+    authority: Jef Poskanzer / NetPBM
+    version: NetPBM current
+    sal_facts: 3
+    verified_facts: 0
+    bootstrap_only: 3
+
+  - spec_source_id: SPEC-ZPAQ
+    format_id: zpaq
+    title: "ZPAQ Archive Format"
+    authority: Matt Mahoney
+    version: "7.15"
+    sal_facts: 5
+    verified_facts: 2
+    bootstrap_only: 3
+    quality_note: "Blocked — Gate 1 passed but no implementation work started."
+
+  - spec_source_id: SPEC-ORA
+    format_id: ora
+    title: "OpenRaster Image Format"
+    authority: freedesktop.org
+    version: "0.0.5"
+    sal_facts: 6
+    verified_facts: 3
+    bootstrap_only: 3
+    quality_note: "Deferred borderline gate status. No implementation."

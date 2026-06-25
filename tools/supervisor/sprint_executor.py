@@ -291,7 +291,7 @@ def cmd_status(repo_root: Path) -> int:
         "verdict": cont.get("verdict", "UNKNOWN"),
     }
     print(json.dumps(output, indent=2))
-    return 0 if cont.get("verdict") == "CONTINUE" else 1
+    return 0  # status is a read-only reporter; verdict is in the JSON output
 
 
 # ---------------------------------------------------------------------------
@@ -453,7 +453,7 @@ def cmd_run_loop(repo_root: Path, *, max_cycles: int = 12, dry_run: bool = False
         # --- Step 4: Closeout via autonomous_cycle.py ---
         declaration_path = sprint_result.get("declaration_path")
         if declaration_path and Path(declaration_path).exists():
-            print(f"\n[Step 4] Running closeout: autonomous_cycle.py")
+            print("\n[Step 4] Running closeout: autonomous_cycle.py")
             closeout = subprocess.run(
                 [sys.executable, str(autonomous_cycle),
                  "--declaration", declaration_path,

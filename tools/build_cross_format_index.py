@@ -112,7 +112,7 @@ def build_index(dry_run: bool = False) -> dict[str, list[str]]:
     result = {fmt: sorted(paths) for fmt, paths in sorted(index.items())}
 
     # Stats
-    print(f"\nCross-Format Index Summary")
+    print("\nCross-Format Index Summary")
     print(f"  Files scanned: {total_files}")
     print(f"  Formats indexed: {len(result)}")
     for fmt, paths in sorted(result.items()):
@@ -160,7 +160,7 @@ def main():
     index = build_index(dry_run=args.dry_run)
 
     if not args.dry_run:
-        print(f"\nIndex written. Use with: python tools/test_runner.py --auto [--format FMT]")
+        print("\nIndex written. Use with: python tools/test_runner.py --auto [--format FMT]")
     return 0
 
 

@@ -1,0 +1,75 @@
+{
+  "version": "1.0",
+  "mission_id": "FORMAT-FACTORY-EXPERT-REVIEW-RECONCILIATION-001",
+  "generated_at": "2026-06-25",
+  "head": "ae7fa540ca763ed3da8c922a8fc9fde825e1a97b",
+  "taskcard": "TC-RECON-W1-005",
+  "problem_id": "PROB-015",
+  "summary": {
+    "total_skills": 65,
+    "skills_with_implementation_paths": 7,
+    "skills_without_implementation_paths": 58,
+    "deprecated_skills_without_paths": 3,
+    "active_skills_without_paths": 55
+  },
+  "skills_with_paths": [
+    {"name": "build-capability-routes", "paths": ["tools/supervisor/build_capability_routes.py"]},
+    {"name": "detect-ad-hoc-execution", "paths": ["tools/supervisor/detect_ad_hoc_execution.py"]},
+    {"name": "inventory-skills", "paths": ["tools/supervisor/skill_inventory.py"]},
+    {"name": "run-skill-idempotency", "paths": ["tools/supervisor/run_skill_idempotency.py"]},
+    {"name": "scan-residual-bypasses", "paths": ["tools/supervisor/scan_residual_bypasses.py"]},
+    {"name": "sync-skill-command-registry", "paths": ["tools/supervisor/sync_skill_command_registry.py"]},
+    {"name": "validate-skill-contracts", "paths": ["tools/supervisor/validate_skill_contracts.py"]}
+  ],
+  "skills_without_paths_active": [
+    "add-dogfood-export", "add-dotnet-api", "add-dotnet-object-model-feature",
+    "add-installed-package-example", "add-python-api", "add-python-object-model-feature",
+    "add-roundtrip-test", "add-same-format-writer-feature", "autonomous-loop",
+    "backfill-task-skill-ownership", "build-context-pack", "build-evidence-bundle",
+    "check-gate", "check-release-boundary", "check-skill-coverage",
+    "collect-skill-execution-receipts", "create-acquisition-pack", "create-taskcard",
+    "detect-duplicate-skills", "enforce-skill-first-execution", "evidence-review-next-prompt",
+    "execution-handoff", "export-plan-context", "extract-analytics-from-monolith",
+    "generate-execution-handoff", "implement-spec-stub", "inventory-commands",
+    "materialize-declaration-review", "memory-sprint", "normalize-skill-registry",
+    "package-install-proof", "plan-hardening", "post-sprint-audit", "post-sprint-loop",
+    "preflight-skill-entry", "promote-gap-to-taskcard", "python-qname-code-reviewer",
+    "python-reduced-spec-parity-model", "qname-backfill", "record-lane-execution",
+    "reproduce-master-plan", "rollback-and-recovery", "sal-pipeline-heal", "score-format",
+    "select-poc-gap", "spec-literal-qname-to-code-mapping",
+    "spec-parity-source-regeneration-and-migration", "spec-parity-verification",
+    "spec-shaped-product-architecture-blueprint", "sync-memory", "update-capability-matrix",
+    "validate-mutation-guard", "validate-product-code-ledger", "validate-skill-transcript",
+    "verify-dogfood-path"
+  ],
+  "skills_without_paths_deprecated": [
+    "add-analytics-function", "check-mcp-status", "decompose-monolithic-codec"
+  ],
+  "analysis": {
+    "root_cause": "Most skills are prompt-only: they define behavior via .claude/commands/*.md files but have no code-level implementation file that governance validators can enforce. The 7 skills with paths are supervisor infrastructure tools that happen to exist as Python scripts.",
+    "enforcement_gap": "Without implementation_paths, the skill registry cannot verify that a skill invocation actually ran the correct code. Skills become advisory-only behavior guides rather than enforced code pathways.",
+    "risk": "HIGH — skill adoption can be claimed without actual code execution. evidence-quality-closeout.json REC-B-001 demonstrates this: 7 items, 0 actual skill transcripts, adoption_compliance_status=FAIL.",
+    "categorization": {
+      "prompt_only_skills": 55,
+      "code_enforced_skills": 7,
+      "percentage_enforced": "10.8%"
+    }
+  },
+  "recommended_actions": [
+    {
+      "action": "Mark all 55 active prompt-only skills as advisory_only=true in the registry",
+      "rationale": "Honest classification prevents false adoption compliance claims",
+      "effort": "LOW — YAML edit only"
+    },
+    {
+      "action": "Add implementation_paths to the top 10 most-used skills (add-python-api, add-dotnet-api, add-roundtrip-test, score-format, check-gate, package-install-proof, record-lane-execution, validate-product-code-ledger, preflight-skill-entry, sal-pipeline-heal)",
+      "rationale": "These skills have the highest execution frequency and greatest impact on product quality",
+      "effort": "MEDIUM — requires creating or identifying the backing Python/bash scripts"
+    },
+    {
+      "action": "Add V49 governance validator: if adoption_compliance_status=FAIL and skill_transcripts=0, block sprint if >3 PRODUCT_SOURCE items",
+      "rationale": "Prevents silent skill adoption FAIL from not blocking continuation",
+      "effort": "MEDIUM — governance_validators.py addition"
+    }
+  ]
+}

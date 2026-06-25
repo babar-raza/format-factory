@@ -1,0 +1,109 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-06-25",
+  "sprint": "FORMAT-FACTORY-EXPERT-MANUAL-SYSTEM-REVIEW-PLAN-001",
+  "output_types": [
+    {
+      "type": "source_code",
+      "path": "src/",
+      "authority": "HIGHEST",
+      "can_mislead": false,
+      "review_approach": "Read directly; independent judgment before comparing to authority claims",
+      "known_discrepancies": [
+        "FodsOdsExporter: PROTOTYPE_STATUS in source vs PASS in poc-targets.yaml",
+        "ZstParser: probe-only in source; not flagged in authority layer"
+      ]
+    },
+    {
+      "type": "test_files",
+      "path": "tests/",
+      "authority": "HIGH",
+      "can_mislead": false,
+      "known_limitation": "Tests not executed in this review — structure only",
+      "density_assessment": {
+        "FODS_dotnet": {"files": 71, "quality": "good"},
+        "FODT_dotnet": {"files": 64, "quality": "good"},
+        "NetPBM_dotnet": {"files": 56, "quality": "good"},
+        "CSV_dotnet": {"files": 6, "quality": "critically_thin"},
+        "TSV_dotnet": {"files": 6, "quality": "critically_thin"},
+        "NDJSON_dotnet": {"files": 6, "quality": "critically_thin"},
+        "ZST_dotnet": {"files": 2, "quality": "critically_thin"},
+        "FODS_python": {"files": 93, "quality": "excellent"},
+        "FODT_python": {"files": 131, "quality": "excellent"}
+      }
+    },
+    {
+      "type": "evidence_bundles",
+      "path": ".local/evidences/",
+      "authority": "ADVISORY",
+      "can_mislead": true,
+      "mislead_reason": "Evidence quality grader requires LLM API keys; without keys spec-parity items get DEFERRED_WITH_REASON silently",
+      "last_sprint": "ff-test-coverage-20260625",
+      "last_sprint_tests": {"passed": 840, "failed": 0}
+    },
+    {
+      "type": "poc_targets_yaml",
+      "path": "product-capability-matrix/poc-targets.yaml",
+      "authority": "SELF_DECLARED_WITH_VERIFICATION_REQUIRED",
+      "can_mislead": true,
+      "known_discrepancies": [
+        {
+          "item": "fods.ods_exporter",
+          "poc_claim": "PASS",
+          "source_reality": "PROTOTYPE_STATUS in FodsOdsExporter.cs comments",
+          "confidence": "VERIFIED"
+        }
+      ]
+    },
+    {
+      "type": "parity_matrix",
+      "path": "registry/parity-matrix.yaml",
+      "authority": "ADVISORY_SELF_DECLARED",
+      "can_mislead": false,
+      "current_state": {
+        "FODS": "PARTIAL (3/12 qnames have facades, SAL 4988 facts)",
+        "FODT": "BLOCKED (SAL cache stale, missing fodt/1.3 spec-index.yaml)"
+      }
+    },
+    {
+      "type": "gap_ledger",
+      "path": "reports/capability-layer/gap-ledger.json",
+      "authority": "ADVISORY_GENERATED",
+      "can_mislead": true,
+      "mislead_reason": "1131 of 1132 gaps have unknown category — routing and prioritization impossible",
+      "total_gaps": 1132,
+      "gaps_with_unknown_category": 1131,
+      "gaps_with_real_category": 1
+    },
+    {
+      "type": "format_registry",
+      "path": "registry/format-registry.yaml",
+      "authority": "AUTHORITATIVE",
+      "can_mislead": true,
+      "mislead_reason": "HTML/Markdown/TXT listed as format products — inflates count to 25; true format product count is 22"
+    },
+    {
+      "type": "qname_registry",
+      "path": "shared/qname-registry/",
+      "authority": "AUTHORITATIVE",
+      "can_mislead": false,
+      "files": 20,
+      "status_distribution": {
+        "seeded": "most",
+        "implementing": "several",
+        "implemented": "few",
+        "stable": "none"
+      }
+    }
+  ],
+  "output_reliability_ranking": [
+    {"rank": 1, "type": "source_code", "reliability": "HIGHEST"},
+    {"rank": 2, "type": "test_files", "reliability": "HIGH"},
+    {"rank": 3, "type": "qname_registry", "reliability": "HIGH"},
+    {"rank": 4, "type": "format_registry", "reliability": "MEDIUM_HIGH"},
+    {"rank": 5, "type": "evidence_bundles", "reliability": "MEDIUM"},
+    {"rank": 6, "type": "poc_targets_yaml", "reliability": "MEDIUM"},
+    {"rank": 7, "type": "parity_matrix", "reliability": "LOW_MEDIUM"},
+    {"rank": 8, "type": "gap_ledger", "reliability": "LOW"}
+  ]
+}

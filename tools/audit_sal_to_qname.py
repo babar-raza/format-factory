@@ -186,7 +186,7 @@ def run_audit(format_filter: str | None = None, out_path: Path | None = None) ->
     }
 
     # Print summary
-    print(f"\nSAL-to-QName Cross-Reference Report")
+    print("\nSAL-to-QName Cross-Reference Report")
     print(f"{'='*50}")
     print(f"Formats audited:      {len(per_format)}")
     print(f"Total entries:        {total_entries}")

@@ -1,0 +1,235 @@
+{
+  "run_id": "spec-authority-machinery-explosion-20260625-c6b2470",
+  "generated_at": "2026-06-25",
+  "total_debt_items": 22,
+  "debt_items": [
+    {
+      "debt_id": "AD-001",
+      "format": "FODS",
+      "category": "proof_graph_scope",
+      "description": "P6 proof graph covers FACT-FODS-001 only (1/4988 facts = 0.02% coverage)",
+      "current_level": "P6 (1 fact)",
+      "target_level": "P6 (all facts)",
+      "severity": "HIGH",
+      "sprint_estimate": 5,
+      "repair": "B-001"
+    },
+    {
+      "debt_id": "AD-002",
+      "format": "FODS",
+      "category": "code_citations",
+      "description": "4985 verified facts have no code citations (only 3 facts cited in Compat/)",
+      "current_level": "P5 for 3 facts, P4 for 4985",
+      "target_level": "P5+ for top-100 facts",
+      "severity": "MODERATE",
+      "sprint_estimate": 3,
+      "repair": "B-003"
+    },
+    {
+      "debt_id": "AD-003",
+      "format": "FODT",
+      "category": "stale_spec",
+      "description": "FODT spec cache has MISSING_FILE — fodt/1.3 spec PDF not present",
+      "current_level": "P6 (claimed, using shared ODF facts)",
+      "target_level": "P6 (own spec PDF)",
+      "severity": "HIGH",
+      "sprint_estimate": 1,
+      "repair": "D-002 (re-acquire FODT spec)"
+    },
+    {
+      "debt_id": "AD-004",
+      "format": "FODT",
+      "category": "proof_graph",
+      "description": "No proof graph exists for any FODT fact",
+      "current_level": "P5",
+      "target_level": "P6",
+      "severity": "MODERATE",
+      "sprint_estimate": 1,
+      "repair": "Phase B extension for FODT"
+    },
+    {
+      "debt_id": "AD-005",
+      "format": "ODS",
+      "category": "proof_graph",
+      "description": "No proof graph for any ODS fact",
+      "current_level": "P5",
+      "target_level": "P6",
+      "severity": "MODERATE",
+      "sprint_estimate": 1,
+      "repair": "Phase D"
+    },
+    {
+      "debt_id": "AD-006",
+      "format": "ODT",
+      "category": "proof_graph",
+      "description": "No proof graph for any ODT fact",
+      "current_level": "P5",
+      "target_level": "P6",
+      "severity": "MODERATE",
+      "sprint_estimate": 1,
+      "repair": "Phase D"
+    },
+    {
+      "debt_id": "AD-007",
+      "format": "ZST",
+      "category": "fact_coverage",
+      "description": "Only 2/94 RFC8878 facts cited in code; 92 facts at P4 with no code citations",
+      "current_level": "P6 (2 facts), P4 (92 facts)",
+      "target_level": "P5+ for all 94 facts",
+      "severity": "MODERATE",
+      "sprint_estimate": 2,
+      "repair": "D-004"
+    },
+    {
+      "debt_id": "AD-008",
+      "format": "PBM",
+      "category": "fact_coverage",
+      "description": "Only 2 facts (magic numbers). Full Netpbm spec has encoding, whitespace, maxval, binary/ASCII rules uncovered.",
+      "current_level": "P5 (2 facts)",
+      "target_level": "P5 (20+ facts)",
+      "severity": "MODERATE",
+      "sprint_estimate": 2,
+      "repair": "Phase D"
+    },
+    {
+      "debt_id": "AD-009",
+      "format": "PGM",
+      "category": "fact_coverage",
+      "description": "Same as PBM — 2 facts only",
+      "current_level": "P5 (2 facts)",
+      "target_level": "P5 (20+ facts)",
+      "severity": "MODERATE",
+      "sprint_estimate": 2,
+      "repair": "Phase D"
+    },
+    {
+      "debt_id": "AD-010",
+      "format": "PPM",
+      "category": "fact_coverage",
+      "description": "Same as PBM — 2 facts only",
+      "current_level": "P5 (2 facts)",
+      "target_level": "P5 (20+ facts)",
+      "severity": "MODERATE",
+      "sprint_estimate": 2,
+      "repair": "Phase D"
+    },
+    {
+      "debt_id": "AD-011",
+      "format": "CSV",
+      "category": "spec_not_acquired",
+      "description": "RFC4180 accessible but T3 authorization not completed; no normalized text, no extracted facts",
+      "current_level": "P2",
+      "target_level": "P4+",
+      "severity": "HIGH",
+      "sprint_estimate": 2,
+      "repair": "D-001"
+    },
+    {
+      "debt_id": "AD-012",
+      "format": "TOML",
+      "category": "spec_not_acquired",
+      "description": "spec-toml.io accessible but T3 authorization not completed",
+      "current_level": "P2",
+      "target_level": "P4+",
+      "severity": "HIGH",
+      "sprint_estimate": 2,
+      "repair": "D-002"
+    },
+    {
+      "debt_id": "AD-013",
+      "format": "NDJSON",
+      "category": "spec_not_acquired",
+      "description": "ndjson.org spec accessible but not acquired",
+      "current_level": "P2",
+      "target_level": "P4+",
+      "severity": "HIGH",
+      "sprint_estimate": 2,
+      "repair": "D-003"
+    },
+    {
+      "debt_id": "AD-014",
+      "format": "XCF",
+      "category": "spec_not_acquired",
+      "description": "GIMP XCF community docs available; T3 eligibility check needed",
+      "current_level": "P2",
+      "target_level": "P3 (check T3 eligibility first)",
+      "severity": "LOW",
+      "sprint_estimate": 1,
+      "repair": "Phase D"
+    },
+    {
+      "debt_id": "AD-015",
+      "format": "QOI",
+      "category": "spec_not_acquired",
+      "description": "qoi.phoboslab.org spec available; T3 check needed",
+      "current_level": "P2",
+      "target_level": "P4+",
+      "severity": "MODERATE",
+      "sprint_estimate": 2,
+      "repair": "Phase D"
+    },
+    {
+      "debt_id": "AD-016",
+      "category": "pipeline_machinery",
+      "format": "ALL",
+      "description": "authority_integration_fabric.py never called — proof graph never updated per sprint",
+      "severity": "CRITICAL",
+      "sprint_estimate": 1,
+      "repair": "C-001"
+    },
+    {
+      "debt_id": "AD-017",
+      "category": "pipeline_machinery",
+      "format": "ALL",
+      "description": "product_task_selector never calls authority_gate_validation.py — P-level never enforced at task selection",
+      "severity": "CRITICAL",
+      "sprint_estimate": 1,
+      "repair": "A-004"
+    },
+    {
+      "debt_id": "AD-018",
+      "category": "evidence_schema",
+      "format": "ALL",
+      "description": "Evidence declaration schema missing spec_fact_refs as required field",
+      "severity": "CRITICAL",
+      "sprint_estimate": 1,
+      "repair": "A-003"
+    },
+    {
+      "debt_id": "AD-019",
+      "category": "governance",
+      "format": "ALL",
+      "description": "TC-GUARD-001 OR logic — gap_ledger_ref alone bypasses spec authority requirement",
+      "severity": "CRITICAL",
+      "sprint_estimate": 1,
+      "repair": "A-001"
+    },
+    {
+      "debt_id": "AD-020",
+      "category": "governance",
+      "format": "TIER1",
+      "description": "V13 absent-vs-invalid distinction — absent spec_fact_refs not enforced",
+      "severity": "CRITICAL",
+      "sprint_estimate": 1,
+      "repair": "A-002"
+    },
+    {
+      "debt_id": "AD-021",
+      "category": "skills",
+      "format": "ALL",
+      "description": "5 critical spec authority skills not registered: acquire-spec-t3, normalize-spec, extract-spec-facts, authority-gate-validation, pilot-rerun-authority",
+      "severity": "HIGH",
+      "sprint_estimate": 1,
+      "repair": "C-003"
+    },
+    {
+      "debt_id": "AD-022",
+      "category": "product_ledger",
+      "format": "ALL",
+      "description": "poc-targets.yaml has no authority_level column — no product readiness dashboard showing spec authority state",
+      "severity": "MODERATE",
+      "sprint_estimate": 1,
+      "repair": "C-004"
+    }
+  ]
+}

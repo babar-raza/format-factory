@@ -1,0 +1,316 @@
+{
+  "version": "2.0",
+  "mission_id": "FORMAT-FACTORY-EXPERT-REVIEW-RECONCILIATION-001",
+  "generated_at": "2026-06-25",
+  "head": "ae7fa540ca763ed3da8c922a8fc9fde825e1a97b",
+  "note": "Canonical register merging: phase-a-investigation/confirmed-problems.json (18 problems, June 25) + problem-register.json (9 narrow heal subset, June 5) + 5 new findings discovered during reconciliation",
+  "summary": {
+    "total_canonical": 27,
+    "critical_open": 2,
+    "high_open": 5,
+    "medium_open": 8,
+    "low_open": 1,
+    "closed_corrected": 4,
+    "closed_false_positive": 2,
+    "fully_closed": 7,
+    "new_findings": 5
+  },
+  "problems": [
+    {
+      "problem_id": "PROB-001",
+      "aliases": ["ZST-DECOMP-001"],
+      "category": "DOTNET_COMMERCIAL",
+      "severity": "CRITICAL",
+      "confidence": "VERIFIED",
+      "head_status": "OPEN",
+      "summary": "ZST .NET cannot decompress — probe-only inspection tool",
+      "direct_evidence": "ZstParser.cs line 21: 'Does NOT decompress — probe-only for metadata extraction'. ZstDocument has no DecompressedContent or Decompress() method.",
+      "invalid_proposed_fix": "System.IO.Compression.GZipStream — WRONG FORMAT (RFC 1952 vs RFC 8878)",
+      "corrected_fix": "ZstdSharp.Port NuGet (MIT license, pure managed, cross-platform). API: Decompressor.Unwrap() and DecompressionStream.",
+      "classification": "HARDEN_BEFORE_EXECUTION",
+      "hardening_required": ["TC-HARD-H-001 ZstdSharp solution design", "PROB-009 gap taxonomy (blocks gap entry creation)"],
+      "directly_executable": false,
+      "dependencies": ["PROB-009", "TC-HARD-H-001"]
+    },
+    {
+      "problem_id": "PROB-002",
+      "category": "DOTNET_COMMERCIAL",
+      "severity": "HIGH",
+      "confidence": "VERIFIED",
+      "head_status": "OPEN",
+      "summary": "FODS PDF exporter Latin-1 only — Unicode commercial blocker",
+      "direct_evidence": "FodsPdfExporter.cs: Latin-1 limitation confirmed. Helvetica only.",
+      "corrected_fix": "Option A: TrueType font embedding. Option B: PdfSharp NuGet. Option C: Document as Latin-1-scoped product.",
+      "classification": "HARDEN_BEFORE_EXECUTION",
+      "directly_executable": false,
+      "dependencies": ["PROB-009"]
+    },
+    {
+      "problem_id": "PROB-003",
+      "category": "DOTNET_COMMERCIAL",
+      "severity": "HIGH",
+      "confidence": "VERIFIED",
+      "head_status": "OPEN",
+      "summary": "FODT FodtBody.Paragraphs skips tables and lists",
+      "direct_evidence": "FodtBody.cs line 30: 'Does not recurse into tables or lists — top-level only'. Spec/Table/ stubs exist but unexposed in public API.",
+      "corrected_fix": "Add FodtBody.Tables property with FodtTable/FodtTableCell public model. Parser must populate from table elements.",
+      "classification": "EXECUTE_AFTER_NEW_SKILL_CREATION",
+      "directly_executable": false,
+      "dependencies": ["PROB-009", "add-dotnet-object-model-feature skill verification"]
+    },
+    {
+      "problem_id": "PROB-004",
+      "category": "DOTNET_COMMERCIAL",
+      "severity": "MEDIUM",
+      "confidence": "LIKELY",
+      "head_status": "LIKELY_OPEN",
+      "summary": "HTML/Markdown/TXT .NET projects counted as format products",
+      "direct_evidence": "Three target-writer projects exist in src/net/ with no parse/load capability.",
+      "corrected_fix": "Reclassify in format-registry.yaml as target_writer_utility.",
+      "classification": "EXECUTE_DIRECTLY_THROUGH_EXISTING_SKILL",
+      "existing_skill": "update-capability-matrix",
+      "directly_executable": true,
+      "dependencies": []
+    },
+    {
+      "problem_id": "PROB-005",
+      "category": "DOTNET_COMMERCIAL",
+      "severity": "MEDIUM",
+      "confidence": "VERIFIED",
+      "head_status": "PARTIALLY_RESOLVED",
+      "summary": "CSV .NET no edit API",
+      "direct_evidence": "Prior sprint added query methods (IsEmpty, GetCellValue, Filter, HasColumn) per MEMORY.md TC-S55-007. But AddRow/SetCell/RemoveRow not confirmed.",
+      "corrected_fix": "Verify query methods present. Add mutation methods if missing: AddRow, SetCell, RemoveRow.",
+      "classification": "INVESTIGATION_REQUIRED",
+      "directly_executable": false,
+      "note": "Need to read CsvDocument.cs to confirm current state"
+    },
+    {
+      "problem_id": "PROB-006",
+      "category": "PYTHON_FOSS",
+      "severity": "MEDIUM",
+      "confidence": "VERIFIED",
+      "head_status": "OPEN",
+      "summary": "FODP Python no write_fodp — read/export only",
+      "direct_evidence": "fodp_codec.py has export functions but no write_fodp().",
+      "corrected_fix": "Implement write_fodp(model, path) using flat ODP XML structure. Reference write_fodg() as pattern.",
+      "classification": "EXECUTE_AFTER_NEW_SKILL_CREATION",
+      "existing_skill": "add-python-api",
+      "directly_executable": false,
+      "dependencies": ["PROB-009"]
+    },
+    {
+      "problem_id": "PROB-007",
+      "category": "PYTHON_FOSS",
+      "severity": "LOW",
+      "confidence": "CORRECTED",
+      "head_status": "CLOSED_CORRECTED",
+      "summary": "[CORRECTED] ODS Python has write_ods()",
+      "resolution": "Initial assessment was wrong. write_ods() exists in ods_writer.py."
+    },
+    {
+      "problem_id": "PROB-008",
+      "category": "PYTHON_FOSS",
+      "severity": "LOW",
+      "confidence": "CORRECTED",
+      "head_status": "CLOSED_CORRECTED",
+      "summary": "[CORRECTED] PBM/PGM/PPM Python have write_* functions",
+      "resolution": "Initial assessment was wrong. write_pbm, write_pgm, write_ppm all exist."
+    },
+    {
+      "problem_id": "PROB-009",
+      "category": "SYSTEM_GAP",
+      "severity": "CRITICAL",
+      "confidence": "VERIFIED",
+      "head_status": "OPEN",
+      "summary": "Gap taxonomy broken — 1207/1208 gaps category 'MISSING' (was 'unknown', still uninformative)",
+      "direct_evidence": "gap-ledger.json: 1208 total, 1207 category='MISSING', 1 category='missing_implementation'. Category renamed 'unknown'→'MISSING' by subsequent sprint but no actual taxonomy repair occurred.",
+      "corrected_fix": "Implement deterministic category inference from gap content. Define 8-12 category buckets. Migrate existing entries. Add validator: >50% MISSING blocks sprint generation.",
+      "classification": "HARDEN_BEFORE_EXECUTION",
+      "directly_executable": false,
+      "blocks": ["PROB-001", "PROB-002", "PROB-003", "PROB-006", "all gap-driven product work"]
+    },
+    {
+      "problem_id": "PROB-010",
+      "category": "SYSTEM_GAP",
+      "severity": "HIGH",
+      "confidence": "VERIFIED",
+      "head_status": "OPEN",
+      "summary": "SAL chain broken for 10/20 Python formats",
+      "direct_evidence": "MEMORY.md confirms 10 CHAIN_BROKEN_AT_SAL: ABW, CSV, DIF, GNUMERIC, NDJSON, SYLK, TOML, TSV, XCF, ZST.",
+      "corrected_fix": "Build SAL extractors for missing format specs. Priority: CSV (RFC 4180), TOML spec, SYLK spec.",
+      "classification": "EXECUTE_AFTER_NEW_SKILL_CREATION",
+      "existing_skill": "sal-pipeline-heal",
+      "directly_executable": false,
+      "dependencies": ["PROB-009"]
+    },
+    {
+      "problem_id": "PROB-011",
+      "category": "SYSTEM_GAP",
+      "severity": "HIGH",
+      "confidence": "VERIFIED",
+      "head_status": "OPEN",
+      "summary": "LLM grader silently degrades evidence quality without API keys",
+      "direct_evidence": "MEMORY.md: 'evidence_quality_zero is now just a warning (not blocking).' Items get DEFERRED_WITH_REASON when LLM unavailable.",
+      "corrected_fix": "Implement local deterministic grader fallback OR add explicit UNVERIFIED_EXTERNAL_GRADER state. Block continuation if DEFERRED > 20%.",
+      "classification": "EXECUTE_AFTER_SMALL_SKILL_REPAIR",
+      "directly_executable": false
+    },
+    {
+      "problem_id": "PROB-012",
+      "category": "SYSTEM_GAP",
+      "severity": "MEDIUM",
+      "confidence": "VERIFIED",
+      "head_status": "OPEN",
+      "summary": "autonomous_cycle.py (2406 LOC) and governance_validators.py (3181 LOC) violate their own caps",
+      "corrected_fix": "Extract analytics/extensions from autonomous_cycle.py. Split governance_validators.py into modules.",
+      "classification": "EXECUTE_AFTER_SMALL_SKILL_REPAIR",
+      "existing_skill": "decompose-monolithic-codec",
+      "directly_executable": false
+    },
+    {
+      "problem_id": "PROB-013",
+      "category": "EVIDENCE",
+      "severity": "HIGH",
+      "confidence": "VERIFIED",
+      "head_status": "OPEN",
+      "summary": "FodsOdsExporter PROTOTYPE in source, PASS in poc-targets — false authority claim",
+      "direct_evidence": "FodsOdsExporter.cs: 'PROTOTYPE STATUS: design_complete_in_progress'. poc-targets.yaml PASS claim for ods_exporter capability.",
+      "corrected_fix": "Option A: Complete the exporter and verify with LibreOffice open test. Option B: Downgrade poc-targets from PASS to PARTIAL with explanation.",
+      "classification": "HARDEN_BEFORE_EXECUTION",
+      "directly_executable": false
+    },
+    {
+      "problem_id": "PROB-014",
+      "category": "PYTHON_FOSS",
+      "severity": "MEDIUM",
+      "confidence": "VERIFIED",
+      "head_status": "OPEN_DEFERRED",
+      "summary": "Analytics masquerade: gnumeric_workbook_stats.py, toml/config_document.py misnamed",
+      "direct_evidence": "MEMORY.md: GAP-PROD-INV-MASQ-001 is 'deferred governance debt, requires 16+ import changes'.",
+      "corrected_fix": "Rename to gnumeric_analytics.py, toml_analytics.py. Update all imports.",
+      "classification": "EXECUTE_DIRECTLY_THROUGH_EXISTING_SKILL",
+      "existing_skill": "decompose-monolithic-codec",
+      "directly_executable": true,
+      "dependencies": []
+    },
+    {
+      "problem_id": "PROB-015",
+      "category": "SKILLS",
+      "severity": "MEDIUM",
+      "confidence": "VERIFIED",
+      "head_status": "OPEN",
+      "summary": "Skills with empty implementation_paths — no code enforcement",
+      "corrected_fix": "For each active skill: add implementation paths or mark advisory_only.",
+      "classification": "EXECUTE_DIRECTLY_THROUGH_EXISTING_SKILL",
+      "existing_skill": "check-skill-coverage",
+      "directly_executable": true
+    },
+    {
+      "problem_id": "PROB-016",
+      "category": "DOTNET_COMMERCIAL",
+      "severity": "MEDIUM",
+      "confidence": "VERIFIED",
+      "head_status": "OPEN",
+      "summary": "FodsOdsExporter may not produce valid ODS ZIP (overlaps PROB-013)",
+      "resolution": "Same underlying issue as PROB-013. Will be resolved by PROB-013 fix."
+    },
+    {
+      "problem_id": "PROB-017",
+      "category": "SYSTEM_GAP",
+      "severity": "MEDIUM",
+      "confidence": "VERIFIED",
+      "head_status": "OPEN",
+      "summary": "ci_transcript_verification in backlog — skill transcripts not enforced in CI",
+      "corrected_fix": "Implement and wire ci_transcript_verification into sprint execution pipeline.",
+      "classification": "EXECUTE_AFTER_NEW_SKILL_CREATION",
+      "directly_executable": false
+    },
+    {
+      "problem_id": "PROB-018",
+      "category": "PYTHON_FOSS",
+      "severity": "LOW",
+      "confidence": "VERIFIED",
+      "head_status": "PARTIALLY_RESOLVED",
+      "summary": "ZST Python analytics-heavy codec — zst_analytics.py extracted per MEMORY.md",
+      "resolution": "zst_analytics.py created. Core codec may still be large. LOW severity; verify LOC."
+    },
+    {
+      "problem_id": "PROB-PK01", "head_status": "CLOSED_VERIFIED", "summary": "FODS .csproj stale Description — FIXED at HEAD"
+    },
+    {
+      "problem_id": "PROB-PK02", "head_status": "CLOSED_VERIFIED", "summary": "FODT .csproj stale Description — FIXED at HEAD"
+    },
+    {
+      "problem_id": "PROB-PK03", "head_status": "CLOSED_VERIFIED", "summary": "Netpbm .csproj Gate 11 NOT_STARTED — FIXED at HEAD"
+    },
+    {
+      "problem_id": "PROB-PK04", "head_status": "CLOSED_VERIFIED", "summary": "GenerateDocumentationFile missing — FIXED at HEAD (all 3 .csproj)"
+    },
+    {
+      "problem_id": "PROB-PK05", "head_status": "CLOSED_BY_SUBSEQUENT_SPRINT", "summary": "Netpbm PackageReadmeFile missing — FIXED: README.md + PackageReadmeFile at HEAD. Was classified as false blocker."
+    },
+    {
+      "problem_id": "PROB-SRC01", "head_status": "CLOSED_VERIFIED", "summary": "FodsCsvExporter.cs stale header — FIXED at HEAD"
+    },
+    {
+      "problem_id": "PROB-PY01", "head_status": "FULLY_CLOSED", "summary": "No pyproject.toml — ALL 20 packages have pyproject.toml at HEAD. Was classified as false blocker for 8 packages."
+    },
+    {
+      "problem_id": "PROB-PY02", "head_status": "CLOSED_FALSE_POSITIVE", "summary": "__version__ missing — never existed, __version__ = PACKAGE_VERSION present at line 72"
+    },
+    {
+      "problem_id": "PROB-AUTO01", "head_status": "LIKELY_RESOLVED", "summary": "session-resume.md stale — subsequent autonomous cycles have regenerated it"
+    },
+    {
+      "problem_id": "NF-001",
+      "category": "SYSTEM_GAP",
+      "severity": "CRITICAL",
+      "confidence": "VERIFIED",
+      "head_status": "OPEN",
+      "summary": "Gap taxonomy 'unknown'→'MISSING' rename — string rename, not taxonomy repair",
+      "note": "Same as PROB-009. The taxonomy rename confirmed the category generation pipeline was touched but not functionally repaired."
+    },
+    {
+      "problem_id": "NF-002",
+      "category": "GOVERNANCE",
+      "severity": "MEDIUM",
+      "confidence": "VERIFIED",
+      "head_status": "OPEN",
+      "summary": "Authorization policy overly conservative — false blockers misclassified as human gates",
+      "corrected_fix": "Clarify AGENTS.md: 'no unsolicited docs' vs 'no docs when full product healing mission is active'",
+      "classification": "EXECUTE_DIRECTLY_THROUGH_EXISTING_SKILL",
+      "existing_skill": "validate-mutation-guard",
+      "directly_executable": true
+    },
+    {
+      "problem_id": "NF-003",
+      "category": "EVIDENCE",
+      "severity": "LOW",
+      "confidence": "VERIFIED",
+      "head_status": "HISTORICAL",
+      "summary": "CLAIM-004 (no pyproject.toml) is stale — all 20 packages now have pyproject.toml"
+    },
+    {
+      "problem_id": "NF-004",
+      "category": "DOTNET_COMMERCIAL",
+      "severity": "LOW",
+      "confidence": "VERIFIED",
+      "head_status": "OPEN",
+      "summary": "ZST .csproj header says NOT approved — inconsistent with Netpbm/FODS/FODT which were updated",
+      "corrected_fix": "Update ZstParser.cs and ZstDocument.cs header comments to remove incorrect 'NOT approved' language, or verify ZST Gate 11 status in poc-targets.yaml.",
+      "classification": "INVESTIGATION_REQUIRED"
+    },
+    {
+      "problem_id": "NF-005",
+      "category": "EVIDENCE",
+      "severity": "MEDIUM",
+      "confidence": "VERIFIED",
+      "head_status": "OPEN",
+      "summary": "FodsOdsExporter Gate 11 status comment 'G11-G NOT approved' — inconsistent with FODS Gate 11 APPROVED",
+      "note": "FodsOdsExporter.cs says 'G11-G NOT approved' while poc-targets.yaml says Gate 11 APPROVED for FODS. The ODS exporter is a FODS component, so the approval status should match or be explicitly scoped.",
+      "corrected_fix": "Either update the comment to match the FODS Gate 11 approval scope, or document that ODS exporter is specifically excluded from the Gate 11 approval scope.",
+      "classification": "INVESTIGATION_REQUIRED"
+    }
+  ]
+}

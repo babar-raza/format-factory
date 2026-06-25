@@ -529,7 +529,7 @@ def synthesize_sprint_tasks(review: dict, contradictions: dict, repo_root: Path,
                 "supervisor_task_ref": "TC-R79-CLOSURE-001-EXEC",
                 "acceptance_evidence": "git log --oneline -1 shows clean commit with sprint evidence",
                 "validation_command": "git log --oneline -1",
-                "blocker_type": "policy_gate",
+                "blocker_type": "human_approval",
                 "non_authoritative": True,
                 "lane": "C3",
             })

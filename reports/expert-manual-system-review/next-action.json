@@ -1,7 +1,25 @@
 {
   "sprint_id": "FORMAT-FACTORY-EXPERT-MANUAL-SYSTEM-REVIEW-INVESTIGATE-AND-HEAL-001",
-  "current_state": "PREFLIGHT",
-  "next_action": "Create all 13 initial taskcards and coordinator files, then advance to CLAIM_BASELINE",
-  "next_taskcard": "TC-EXPERT-PREFLIGHT-001",
-  "updated_at": "2026-06-05T00:00:00Z"
+  "original_sprint_state": "COMPLETE",
+  "current_mission_id": "FORMAT-FACTORY-EXPERT-REVIEW-RECONCILIATION-001",
+  "current_state": "RECONCILIATION_IN_PROGRESS",
+  "prior_stale_state": "PREFLIGHT (written 2026-06-05T00:00:00Z, never updated — reconciliation finding REC-A-001)",
+  "reconciliation_head": "ae7fa540ca763ed3da8c922a8fc9fde825e1a97b",
+  "next_wave": "WAVE_1_GOVERNANCE_HARDENING",
+  "next_taskcard": "TC-RECON-W1-001",
+  "canonical_problem_register": "reports/expert-manual-system-review/reconciliation/canonical-problem-register.json",
+  "micro_taskcards": "reports/expert-manual-system-review/reconciliation/micro-taskcards.yaml",
+  "open_critical": [
+    "PROB-001 (ZST .NET no decompression)",
+    "PROB-009 (gap taxonomy 1207/1208 MISSING)"
+  ],
+  "open_high": [
+    "PROB-002 (PDF Unicode)",
+    "PROB-003 (FODT tables)",
+    "PROB-010 (SAL chain broken 10/20 formats)",
+    "PROB-011 (LLM grader silent degradation)",
+    "PROB-013 (FodsOdsExporter PROTOTYPE vs PASS)"
+  ],
+  "updated_at": "2026-06-25T00:00:00Z",
+  "update_reason": "TC-RECON-W0-001 — repair stale PREFLIGHT state (reconciliation finding REC-A-001). Original sprint HEAL-001 is COMPLETE; this file is now governed by reconciliation mission FORMAT-FACTORY-EXPERT-REVIEW-RECONCILIATION-001."
 }

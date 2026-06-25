@@ -1,0 +1,70 @@
+{
+  "version": "1.0",
+  "mission_id": "FORMAT-FACTORY-EXPERT-REVIEW-RECONCILIATION-001",
+  "generated_at": "2026-06-25",
+  "reconciliation_finding": "REC-G-001",
+  "purpose": "Extends terminal-gate-checklist.json (C1-C8 process-only gates) with product completeness conditions P1-P3 that were absent from the June 5 sprint's exit criteria.",
+  "root_cause": "terminal-gate-checklist.json evaluated 8 conditions (C1-C8) covering process fidelity (problem confirmed, evidence gathered, taskcards recorded, etc.) but had NO product completeness conditions. As a result, the sprint declared TERMINAL_GATE_PASSED with 2 CRITICAL open problems still unresolved.",
+  "product_conditions": [
+    {
+      "condition_id": "P1",
+      "label": "Critical Problems Resolved or Governed",
+      "description": "Every problem with severity=CRITICAL must be either CLOSED_VERIFIED or have an explicit unblocking taskcard with a defined execution lane and dependency chain.",
+      "evaluation": {
+        "PROB-001": {
+          "status": "OPEN",
+          "has_taskcard": true,
+          "taskcard": "TC-RECON-W4-001",
+          "blocker": "PROB-009 (gap taxonomy) must be resolved first; then ZstdSharp NuGet integration",
+          "p1_satisfied": false,
+          "p1_condition": "GOVERNED_NOT_RESOLVED"
+        },
+        "PROB-009": {
+          "status": "OPEN",
+          "has_taskcard": true,
+          "taskcard": "TC-RECON-W2-001",
+          "blocker": "No upstream blocker — directly executable in Wave 2",
+          "p1_satisfied": false,
+          "p1_condition": "GOVERNED_NOT_RESOLVED"
+        }
+      },
+      "current_result": "FAIL — 2 CRITICAL open at HEAD; both GOVERNED with taskcards but not resolved",
+      "required_for_closure": "PROB-001 and PROB-009 must reach CLOSED_VERIFIED or CLOSED_GOVERNED_PENDING_GATE"
+    },
+    {
+      "condition_id": "P2",
+      "label": "High Problems Resolved or Formally Deferred",
+      "description": "Every problem with severity=HIGH must be either CLOSED_VERIFIED, CLOSED_GOVERNED_PENDING_GATE, or FORMALLY_DEFERRED with documented rationale and acceptance by project authority.",
+      "evaluation": {
+        "PROB-002": {"status": "OPEN", "classification": "HARDEN_BEFORE_EXECUTION", "deferred": false},
+        "PROB-003": {"status": "OPEN", "classification": "EXECUTE_AFTER_NEW_SKILL_CREATION", "deferred": false},
+        "PROB-010": {"status": "OPEN", "classification": "EXECUTE_AFTER_NEW_SKILL_CREATION", "deferred": false},
+        "PROB-011": {"status": "OPEN", "classification": "EXECUTE_AFTER_SMALL_SKILL_REPAIR", "deferred": false},
+        "PROB-013": {"status": "OPEN", "classification": "HARDEN_BEFORE_EXECUTION", "deferred": false}
+      },
+      "current_result": "FAIL — 5 HIGH open; none formally deferred with written acceptance"
+    },
+    {
+      "condition_id": "P3",
+      "label": "Authority Consistency — poc-targets vs Source",
+      "description": "All PASS claims in poc-targets.yaml must be consistent with current source code. No PROTOTYPE or stub implementation may be claimed PASS without explicit scope annotation.",
+      "evaluation": {
+        "FodsOdsExporter": {
+          "poc_targets_claim": "PASS",
+          "source_status": "PROTOTYPE STATUS: design_complete_in_progress (FodsOdsExporter.cs line 5)",
+          "inconsistency": true,
+          "taskcard": "TC-RECON-W3-002"
+        }
+      },
+      "current_result": "FAIL — FodsOdsExporter PROTOTYPE vs PASS inconsistency unresolved"
+    }
+  ],
+  "extended_gate_result": {
+    "C1_through_C8": "PASS (process conditions from June 5 checklist)",
+    "P1_critical_governed": "FAIL",
+    "P2_high_deferred": "FAIL",
+    "P3_authority_consistent": "FAIL",
+    "overall": "FAIL — product conditions not met",
+    "note": "The original terminal-gate-checklist.json passing C1-C8 is a PROCESS PASS only. It does not constitute a product closure gate. This schema extension adds the missing product conditions."
+  }
+}

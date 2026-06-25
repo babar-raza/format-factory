@@ -257,10 +257,10 @@ def run_pipeline(format_id: str, dry_run: bool = False) -> Dict[str, Any]:
 
     # Step 3: Extraction (format-aware dispatch)
     if format_id in _ODF_FORMATS:
-        print(f"  [EXTRACT] ODF format — using XML element/attribute scanner")
+        print("  [EXTRACT] ODF format — using XML element/attribute scanner")
         candidates = _scan_odf_xml_elements(text_path)
     else:
-        print(f"  [EXTRACT] Non-ODF format — using RFC 2119 scanner")
+        print("  [EXTRACT] Non-ODF format — using RFC 2119 scanner")
         candidates = _extract_rfc2119(format_id, text_path)
 
     print(f"  [EXTRACT] Found {len(candidates)} raw candidates")
@@ -343,11 +343,11 @@ def run_pipeline(format_id: str, dry_run: bool = False) -> Dict[str, Any]:
                 capture_output=True, text=True, cwd=str(_REPO)
             )
             if result.returncode == 0:
-                print(f"  [VERIFY] Verification complete")
+                print("  [VERIFY] Verification complete")
             else:
                 print(f"  [VERIFY] Verification exited {result.returncode}: {result.stderr[:200]}")
         else:
-            print(f"  [VERIFY] run_fact_verification.py not found; skipping")
+            print("  [VERIFY] run_fact_verification.py not found; skipping")
 
     return {
         "format_id": format_id,

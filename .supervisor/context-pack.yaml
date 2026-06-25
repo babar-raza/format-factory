@@ -1,26 +1,26 @@
 schema_version: '1.0'
-generated_at: '2026-06-25T14:03:34.644842'
+generated_at: '2026-06-25T20:47:36.218167'
 repo_root: C:\Users\prora\OneDrive\Documents\GitHub\format-factory
 git:
-  head: addcb12b
+  head: ae7fa540
   status:
-    modified_count: 141
-    untracked_count: 48
+    modified_count: 173
+    untracked_count: 127
     staged_count: 1
-    total_changed: 190
+    total_changed: 302
     clean: false
 supervisor_mode: 4
 latest_sprint:
-  sprint_id: skill-governance-sync-20260625
+  sprint_id: ff-sprint-s60-qname-coverage-20260626
   run_id: unknown
   autonomous_continue: true
-  iteration: 1
+  iteration: 4
   max_iterations: 12
   hard_stops: []
   rework_items: []
 poc_matrix:
-  sprint: capability-layer-closeout-rnext
-  last_updated: '2026-06-24'
+  sprint: poc-promotion-qoi-dif-xcf-ods-20260625
+  last_updated: '2026-06-25'
   commercial_net_products:
     FODS:
       dotnet_tests: 618
@@ -36,8 +36,8 @@ poc_matrix:
       commercial_ready: false
   foss_python_products: {}
 skill_registry:
-  total_skills: 63
-  active_skills: 60
+  total_skills: 65
+  active_skills: 62
   skill_ids:
   - add-dogfood-export
   - add-dotnet-api
@@ -80,6 +80,7 @@ skill_registry:
   - python-qname-code-reviewer
   - python-reduced-spec-parity-model
   - qname-backfill
+  - preflight-skill-entry
   - record-lane-execution
   - reproduce-master-plan
   - run-skill-idempotency
@@ -99,10 +100,11 @@ skill_registry:
   - validate-skill-contracts
   - validate-skill-transcript
   - verify-dogfood-path
+  - rollback-and-recovery
   source_edits_require_handoff: true
   ledger_required: true
 product_code_ledger:
-  total_entries: 1001
+  total_entries: 1006
   governed_changes: 793
   backfilled: 4
   ledger_path: reports\r90\product-code-change-ledger.json
@@ -118,26 +120,3 @@ authority:
   commit_requires_user_auth: true
   push_requires_user_auth: true
   publication_blocked: true
-
-# ALL-GREEN criteria for skill governance tools (SKILL-GOVERNANCE-REPAIR-001 / TC-R006)
-# A convergence loop is ALL-GREEN if and only if ALL of these conditions are met.
-# Source of truth: plans/cached-growing-snail.md Rule GH-002
-all_green_criteria:
-  validate_skill_contracts:
-    fail_count: 0
-    warn_count: 0
-    overall_verdict: PASS
-    note: "Check .supervisor/skill-contract-validation-results.yaml"
-  sync_skill_command_registry:
-    pass1_auto_repaired: 0
-    pass2_auto_repaired: 0
-    pass2_status_drift: []
-    note: "True cold-start idempotency: run sync twice from clean committed state, both must show 0"
-  build_capability_routes:
-    broken_reference_routes: 0
-    note: "overall_verdict PARTIAL is acceptable (1 MISSING_SKILL route pre-existing)"
-  detect_ad_hoc_execution:
-    idempotent: true
-    note: "rerun1 output must equal rerun2 output"
-  last_updated: "2026-06-25"
-  mission_id: SKILL-GOVERNANCE-REPAIR-001

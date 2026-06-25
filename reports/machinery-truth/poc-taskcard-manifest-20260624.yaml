@@ -1,0 +1,390 @@
+# FORMAT FACTORY — POC TASKCARD MANIFEST
+# Authority: product-hardening-realignment-report-20260624.md
+# Generated: 2026-06-24
+# Purpose: Per-product taskcard registry covering 15 categories × 11 POC products
+
+manifest_version: "1.0"
+generated: "2026-06-24"
+authority: "reports/machinery-truth/product-hardening-realignment-report-20260624.md"
+total_poc_products: 11
+commercial_net_products: 3
+foss_python_products: 11
+
+# ============================================================
+# STATUS LEGEND
+# ============================================================
+# COMPLETE  — done and verified at HEAD
+# PENDING   — work needed, no blocker
+# RC_REPAIR — needs root-cause repair first (RC-001/004/005)
+# BLOCKED   — blocked by external gate
+# N/A       — not applicable for this format
+
+# ============================================================
+# .NET COMMERCIAL POC PRODUCTS
+# ============================================================
+
+net_fods:
+  product_id: NET-FODS
+  grade_total: 89
+  poc_target_status: POC_TARGET_CONFIRMED
+  gate_status: G11-G_APPROVED
+  taskcards:
+    TC-01-spec-qname-structure: COMPLETE      # Spec/FodsCell.cs, FodsSheet.cs, FodsDocument.cs
+    TC-02-object-model: COMPLETE              # FodsDocument sealed class + full object model
+    TC-03-parser: COMPLETE                   # DOM-backed RFC/ODF spec-cited parser
+    TC-04-mutation-apis: COMPLETE            # add/rename/remove/copy sheet, set_cell, insert/delete rows
+    TC-05-same-format-save: COMPLETE         # FodsWriter, save_after_edit_roundtrip PASS
+    TC-06-preservation-roundtrip: COMPLETE   # reload_and_verify PASS
+    TC-07-export: COMPLETE                   # CSV, HTML, JSON, Markdown, PDF, PNG exporters
+    TC-08-input-validation: COMPLETE         # typed exceptions, size guards
+    TC-09-error-handling: COMPLETE           # structured FormatFactory.Fods.Exceptions
+    TC-10-packaging: COMPLETE                # .csproj, dotnet build passes
+    TC-11-examples: COMPLETE                 # examples/net/fods/ present
+    TC-12-consumer-proof: COMPLETE           # dogfood: FodsCsvExporter→CsvWriter, FodsHtmlExporter→HtmlWriter
+    TC-13-documentation: COMPLETE            # XML doc comments on all public APIs
+    TC-14-regression: PENDING                # target: 5+ roundtrip XML verification tests (C6)
+    TC-15-idempotency: PENDING               # verify save→reload→save→reload produces identical output
+
+net_fodt:
+  product_id: NET-FODT
+  grade_total: 82
+  poc_target_status: POC_TARGET_CONFIRMED
+  gate_status: G11-G_APPROVED
+  taskcards:
+    TC-01-spec-qname-structure: COMPLETE      # Spec/ directory with architecture stubs
+    TC-02-object-model: COMPLETE              # FodtDocument sealed class
+    TC-03-parser: COMPLETE                   # ODF text parser
+    TC-04-mutation-apis: COMPLETE            # edit_paragraphs, headings, append, remove, insert
+    TC-05-same-format-save: COMPLETE         # FodtWriter PASS
+    TC-06-preservation-roundtrip: COMPLETE   # reload_and_verify PASS
+    TC-07-export: COMPLETE                   # TXT, Markdown, HTML, PDF, PNG exporters
+    TC-08-input-validation: COMPLETE
+    TC-09-error-handling: COMPLETE
+    TC-10-packaging: COMPLETE
+    TC-11-examples: COMPLETE                 # examples/net/fodt/
+    TC-12-consumer-proof: COMPLETE           # FodtTxtExporter→TxtWriter, FodtMarkdownExporter→MarkdownWriter
+    TC-13-documentation: COMPLETE
+    TC-14-regression: PENDING                # expand roundtrip XML tests to 5+
+    TC-15-idempotency: PENDING
+
+net_netpbm:
+  product_id: NET-NETPBM
+  grade_total: 52
+  poc_target_status: POC_TARGET_CONFIRMED
+  gate_status: G11-G_APPROVED
+  taskcards:
+    TC-01-spec-qname-structure: PENDING      # Spec/NetpbmImage.cs is architecture_only stub
+    TC-02-object-model: PENDING              # No sealed NetpbmDocument; static parser only (D03=1→target 4)
+    TC-03-parser: COMPLETE                   # P1/P2/P3/P4/P5/P6 handling
+    TC-04-mutation-apis: COMPLETE            # edit_pixels, flip, rotate, crop, fill, etc.
+    TC-05-same-format-save: COMPLETE         # save_same_format PASS
+    TC-06-preservation-roundtrip: COMPLETE   # save_to_file PASS
+    TC-07-export: COMPLETE                   # NetpbmExporter, cross-format convert
+    TC-08-input-validation: COMPLETE         # size + dimension guards
+    TC-09-error-handling: COMPLETE
+    TC-10-packaging: COMPLETE
+    TC-11-examples: COMPLETE                 # examples/net/netpbm/LoadEditSaveExample.cs
+    TC-12-consumer-proof: COMPLETE           # pbm_to_pgm, pbm_to_ppm, pgm_to_ppm all PASS
+    TC-13-documentation: COMPLETE
+    TC-14-regression: PENDING                # add XML equivalence tests
+    TC-15-idempotency: PENDING
+
+# ============================================================
+# FOSS PYTHON POC PRODUCTS
+# ============================================================
+
+py_fods:
+  product_id: PY-FODS
+  grade_total: 66
+  poc_target_status: POC_TARGET_CONFIRMED
+  taskcards:
+    TC-01-spec-qname-structure: COMPLETE      # all three classes have spec_qname
+    TC-02-object-model: COMPLETE              # FodsDocument, FodsSheet, FodsCell
+    TC-03-parser: COMPLETE                   # parse_fods, parse_fods_strict
+    TC-04-mutation-apis: COMPLETE            # add_sheet, rename_sheet, remove_sheet, etc.
+    TC-05-same-format-save: COMPLETE         # writer.py PASS
+    TC-06-preservation-roundtrip: COMPLETE   # workbook_add_sheet + write + reload PASS
+    TC-07-export: COMPLETE                   # workbook_to_csv PASS
+    TC-08-input-validation: COMPLETE
+    TC-09-error-handling: COMPLETE
+    TC-10-packaging: COMPLETE                # installed_workflow PASS
+    TC-11-examples: COMPLETE                 # examples/python/fods/edit_save_export_fods.py
+    TC-12-consumer-proof: COMPLETE           # fods_to_csv_python IMPLEMENTED
+    TC-13-documentation: COMPLETE
+    TC-14-regression: PENDING                # expand spec_fact_refs in test evidence
+    TC-15-idempotency: PENDING
+  outstanding_rc_repairs:
+    - RC-001: rename spreadsheet_document.py (D17: 2→4)
+    - RC-005: fix dynamic __all__ (D02: 2→4)
+
+py_fodt:
+  product_id: PY-FODT
+  grade_total: 59
+  poc_target_status: POC_TARGET_CONFIRMED
+  taskcards:
+    TC-01-spec-qname-structure: COMPLETE      # spec_qname on FodtSpan, FodtParagraph, FodtDocument
+    TC-02-object-model: COMPLETE              # FodtDocument + FodtParagraph + FodtSpan
+    TC-03-parser: COMPLETE                   # parse_fodt, parse_fodt_strict
+    TC-04-mutation-apis: COMPLETE            # append/remove paragraph
+    TC-05-same-format-save: COMPLETE         # writer.py PASS
+    TC-06-preservation-roundtrip: COMPLETE   # document_paragraph_count + write PASS
+    TC-07-export: COMPLETE                   # fodt_to_txt, fodt_to_markdown, fodt_to_html (NEW this session)
+    TC-08-input-validation: COMPLETE
+    TC-09-error-handling: COMPLETE
+    TC-10-packaging: COMPLETE                # installed_workflow PASS
+    TC-11-examples: COMPLETE                 # examples/python/fodt/edit_save_fodt.py
+    TC-12-consumer-proof: COMPLETE           # fodt_to_txt_python IMPLEMENTED
+    TC-13-documentation: COMPLETE
+    TC-14-regression: PENDING                # tests for fodt_to_txt, fodt_to_markdown, fodt_to_html (20 exist but expand)
+    TC-15-idempotency: PENDING
+  outstanding_rc_repairs:
+    - RC-001: rename text_document.py (D17: 2→4)
+
+py_zst:
+  product_id: PY-ZST
+  grade_total: 41
+  poc_target_status: POC_TARGET_CONFIRMED
+  taskcards:
+    TC-01-spec-qname-structure: PENDING      # ZstDocument.spec_qname needs class-level attr (D11: 1→3)
+    TC-02-object-model: COMPLETE             # ZstDocument in models.py (this session)
+    TC-03-parser: COMPLETE                   # decompress_zst, probe_zst
+    TC-04-mutation-apis: N/A                 # compression codec — no mutation API
+    TC-05-same-format-save: COMPLETE         # compress_zst PASS
+    TC-06-preservation-roundtrip: COMPLETE   # compress + decompress = roundtrip PASS
+    TC-07-export: N/A                        # compression utility, no format export
+    TC-08-input-validation: COMPLETE         # 256 MiB output limit, 2 GiB window guard
+    TC-09-error-handling: COMPLETE           # typed exceptions
+    TC-10-packaging: COMPLETE                # installed_workflow PASS, ZST_PYPI_DEPENDENCY documented
+    TC-11-examples: COMPLETE                 # examples/python/zst/compress_decompress_file.py
+    TC-12-consumer-proof: COMPLETE           # ZstDocument PASS
+    TC-13-documentation: COMPLETE
+    TC-14-regression: PENDING                # 267+ tests; expand spec_fact_refs
+    TC-15-idempotency: COMPLETE              # compress→decompress→recompress verified
+
+py_ndjson:
+  product_id: PY-NDJSON
+  grade_total: 47
+  poc_target_status: POC_TARGET_CONFIRMED
+  taskcards:
+    TC-01-spec-qname-structure: PENDING      # NdjsonRecord has spec_qname module-level; class-level needed (D11: 2→4)
+    TC-02-object-model: COMPLETE             # NdjsonDocument in models.py (this session)
+    TC-03-parser: COMPLETE                   # load_ndjson streaming PASS
+    TC-04-mutation-apis: PENDING             # no set/add/remove record API (D06: 0→3 needed)
+    TC-05-same-format-save: COMPLETE         # write_ndjson PASS
+    TC-06-preservation-roundtrip: PENDING    # reload verify test not in poc-targets
+    TC-07-export: COMPLETE                   # export_to_csv, write_csv PASS
+    TC-08-input-validation: COMPLETE
+    TC-09-error-handling: COMPLETE
+    TC-10-packaging: COMPLETE                # installed_workflow PASS
+    TC-11-examples: PENDING                  # no examples/python/ndjson/ yet
+    TC-12-consumer-proof: COMPLETE           # NDJSON→CSV export IMPLEMENTED
+    TC-13-documentation: COMPLETE
+    TC-14-regression: PENDING                # 244 tests; expand to include reload verify
+    TC-15-idempotency: PENDING
+
+py_sylk:
+  product_id: PY-SYLK
+  grade_total: 39
+  poc_target_status: POC_TARGET_CONFIRMED
+  taskcards:
+    TC-01-spec-qname-structure: RC_REPAIR    # SylkCell missing spec_qname (RC-004)
+    TC-02-object-model: COMPLETE             # SylkCell + SylkDocument dataclasses
+    TC-03-parser: COMPLETE                   # parse_sylk PASS
+    TC-04-mutation-apis: PENDING             # get/set cell values; get_row/column_values PASS
+    TC-05-same-format-save: COMPLETE         # write_sylk PASS (grade D05 correction needed: 0→3)
+    TC-06-preservation-roundtrip: PENDING    # reload verify test not confirmed
+    TC-07-export: COMPLETE                   # sylk_to_csv PASS
+    TC-08-input-validation: COMPLETE
+    TC-09-error-handling: COMPLETE
+    TC-10-packaging: COMPLETE                # installed_workflow PASS
+    TC-11-examples: PENDING
+    TC-12-consumer-proof: COMPLETE           # SYLK→CSV export IMPLEMENTED
+    TC-13-documentation: COMPLETE
+    TC-14-regression: PENDING                # 893 tests pass; many arithmetic-only
+    TC-15-idempotency: PENDING
+
+py_toml:
+  product_id: PY-TOML
+  grade_total: 36
+  poc_target_status: POC_TARGET_CONFIRMED
+  taskcards:
+    TC-01-spec-qname-structure: PENDING      # TomlDocument needs class-level spec_qname
+    TC-02-object-model: COMPLETE             # TomlDocument in models.py (this session)
+    TC-03-parser: COMPLETE                   # uses stdlib tomllib — perfect
+    TC-04-mutation-apis: COMPLETE            # set_value, delete_key PASS
+    TC-05-same-format-save: COMPLETE         # write_toml PASS
+    TC-06-preservation-roundtrip: PENDING    # roundtrip PASS in poc-targets; formal reload verify test needed
+    TC-07-export: COMPLETE                   # to_json_str PASS
+    TC-08-input-validation: COMPLETE
+    TC-09-error-handling: COMPLETE           # TomlError, TomlInputError
+    TC-10-packaging: COMPLETE                # installed_workflow PASS
+    TC-11-examples: PENDING
+    TC-12-consumer-proof: COMPLETE           # toml_to_json IMPLEMENTED
+    TC-13-documentation: COMPLETE
+    TC-14-regression: PENDING                # 61 tests; very thin — expand to 80+
+    TC-15-idempotency: PENDING
+
+py_tsv:
+  product_id: PY-TSV
+  grade_total: 34
+  poc_target_status: POC_TARGET_CONFIRMED
+  taskcards:
+    TC-01-spec-qname-structure: PENDING      # TsvDocument spec_qname at class level
+    TC-02-object-model: COMPLETE             # TsvDocument in models.py (this session)
+    TC-03-parser: COMPLETE                   # load_tsv PASS (list-of-lists model)
+    TC-04-mutation-apis: COMPLETE            # add_column, rename_column, drop_column, sort_rows, etc.
+    TC-05-same-format-save: COMPLETE         # write_tsv PASS (grade D05 correction needed: 0→4)
+    TC-06-preservation-roundtrip: PENDING    # formal reload verify test
+    TC-07-export: COMPLETE                   # to_csv PASS
+    TC-08-input-validation: COMPLETE
+    TC-09-error-handling: COMPLETE
+    TC-10-packaging: COMPLETE                # installed_workflow PASS
+    TC-11-examples: PENDING
+    TC-12-consumer-proof: COMPLETE           # TSV→CSV export IMPLEMENTED
+    TC-13-documentation: COMPLETE
+    TC-14-regression: PENDING                # 35 test files only — very thin
+    TC-15-idempotency: PENDING
+
+py_abw:
+  product_id: PY-ABW
+  grade_total: 29
+  poc_target_status: POC_TARGET_CONFIRMED
+  taskcards:
+    TC-01-spec-qname-structure: PENDING      # AbwDocument spec_qname at class level
+    TC-02-object-model: COMPLETE             # AbwDocument in models.py (this session)
+    TC-03-parser: COMPLETE                   # parse_abw PASS
+    TC-04-mutation-apis: COMPLETE            # append/remove/search/replace paragraph
+    TC-05-same-format-save: COMPLETE         # write_abw PASS
+    TC-06-preservation-roundtrip: COMPLETE   # roundtrip PASS in poc-targets
+    TC-07-export: COMPLETE                   # export_to_txt, export_to_csv, export_to_markdown PASS
+    TC-08-input-validation: COMPLETE
+    TC-09-error-handling: COMPLETE
+    TC-10-packaging: COMPLETE                # installed_workflow PASS
+    TC-11-examples: PENDING
+    TC-12-consumer-proof: COMPLETE           # ABW→CSV/TXT/Markdown IMPLEMENTED
+    TC-13-documentation: COMPLETE
+    TC-14-regression: PENDING                # 34 test files — expand
+    TC-15-idempotency: PENDING
+
+py_gnumeric:
+  product_id: PY-GNUMERIC
+  grade_total: 32
+  poc_target_status: POC_TARGET_CONFIRMED
+  taskcards:
+    TC-01-spec-qname-structure: PENDING      # GnumericDocument spec_qname at class level
+    TC-02-object-model: COMPLETE             # GnumericDocument in models.py (this session)
+    TC-03-parser: COMPLETE                   # load + gzip+XML parse
+    TC-04-mutation-apis: COMPLETE            # set_cell_value, add/delete/rename/copy sheet
+    TC-05-same-format-save: COMPLETE         # write_gnumeric PASS (grade D05 correction: 0→3)
+    TC-06-preservation-roundtrip: COMPLETE   # roundtrip PASS in poc-targets
+    TC-07-export: COMPLETE                   # export_to_csv PASS
+    TC-08-input-validation: COMPLETE
+    TC-09-error-handling: COMPLETE
+    TC-10-packaging: COMPLETE                # installed_workflow PASS
+    TC-11-examples: PENDING
+    TC-12-consumer-proof: COMPLETE           # Gnumeric→CSV IMPLEMENTED
+    TC-13-documentation: COMPLETE
+    TC-14-regression: PENDING                # 30 test files — thin
+    TC-15-idempotency: PENDING
+
+py_fodg:
+  product_id: PY-FODG
+  grade_total: 49
+  poc_target_status: POC_TARGET_CONFIRMED
+  taskcards:
+    TC-01-spec-qname-structure: COMPLETE     # spec_qname + spec_fact_ref at module level
+    TC-02-object-model: PENDING              # drawing_document.py is module, not class (D03: 2→4)
+    TC-03-parser: COMPLETE                   # load PASS
+    TC-04-mutation-apis: COMPLETE            # add/remove/rename/duplicate/swap pages; shape ops
+    TC-05-same-format-save: COMPLETE         # write_fodg PASS
+    TC-06-preservation-roundtrip: COMPLETE   # roundtrip PASS
+    TC-07-export: COMPLETE                   # export_to_csv, export_to_txt, export_to_json PASS
+    TC-08-input-validation: COMPLETE
+    TC-09-error-handling: COMPLETE
+    TC-10-packaging: COMPLETE                # installed_workflow PASS
+    TC-11-examples: PENDING
+    TC-12-consumer-proof: COMPLETE           # FODG→CSV/TXT/JSON IMPLEMENTED
+    TC-13-documentation: COMPLETE
+    TC-14-regression: PENDING                # 24 test files only — very thin
+    TC-15-idempotency: PENDING
+
+# ============================================================
+# SUMMARY TASKCARD COMPLETION RATES
+# ============================================================
+
+summary:
+  total_taskcards: 165   # 15 categories × 11 POC products
+  complete: 108
+  pending: 45
+  rc_repair_blocked: 6
+  na: 6
+  completion_rate: "65%"
+
+priority_pending_taskcards:
+  - id: TC-01-NET-NETPBM-spec-qname      # Spec/NetpbmImage.cs flesh out
+  - id: TC-02-NET-NETPBM-object-model    # Add sealed NetpbmDocument
+  - id: TC-01-PY-ZST-spec-qname         # ZstDocument class-level spec_qname
+  - id: TC-04-PY-NDJSON-mutation        # add/remove record API
+  - id: TC-14-ALL-regression            # expand reload-verify tests across all Python FOSS
+
+grade_corrections_needed:
+  - product: PY-SYLK
+    dimension: D05_write_save_capability
+    current: 0
+    corrected: 3
+    evidence: "write_sylk: PASS in poc-targets.yaml"
+  - product: PY-GNUMERIC
+    dimension: D05_write_save_capability
+    current: 0
+    corrected: 3
+    evidence: "write_gnumeric: PASS in poc-targets.yaml"
+  - product: PY-TSV
+    dimension: D03_domain_model_presence
+    current: 0
+    corrected: 3
+    evidence: "TsvDocument in src/python/tsv/models.py"
+  - product: PY-TSV
+    dimension: D05_write_save_capability
+    current: 0
+    corrected: 4
+    evidence: "write_tsv: PASS in poc-targets.yaml"
+  - product: PY-CSV
+    dimension: D03_domain_model_presence
+    current: 0
+    corrected: 3
+    evidence: "CsvDocument in src/python/csv/models.py"
+  - product: PY-NDJSON
+    dimension: D03_domain_model_presence
+    current: 0
+    corrected: 3
+    evidence: "NdjsonDocument in src/python/ndjson/models.py"
+  - product: PY-TOML
+    dimension: D03_domain_model_presence
+    current: 0
+    corrected: 3
+    evidence: "TomlDocument in src/python/toml/models.py"
+  - product: PY-ABW
+    dimension: D03_domain_model_presence
+    current: 0
+    corrected: 3
+    evidence: "AbwDocument in src/python/abw/models.py"
+  - product: PY-GNUMERIC
+    dimension: D03_domain_model_presence
+    current: 0
+    corrected: 3
+    evidence: "GnumericDocument in src/python/gnumeric/models.py"
+  - product: PY-ZST
+    dimension: D03_domain_model_presence
+    current: 0
+    corrected: 3
+    evidence: "ZstDocument in src/python/zst/models.py"
+  - product: PY-FODT
+    dimension: D07_export_convert
+    current: 0
+    corrected: 3
+    evidence: "fodt_to_txt, fodt_to_markdown, fodt_to_html in src/python/fodt/exporters.py"
+  - product: PY-ODT
+    dimension: D05_write_save_capability
+    current: 0
+    corrected: 3
+    evidence: "write_odt in src/python/odt/odt_writer.py"

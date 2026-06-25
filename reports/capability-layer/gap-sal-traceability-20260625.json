@@ -1,6 +1,6 @@
 {
   "audit_type": "gap_ledger_sal_traceability",
-  "generated_at": "2026-06-25T12:03:55.941169+00:00",
+  "generated_at": "2026-06-25T15:47:16.539324+00:00",
   "sal_facts_path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\spec-cache\\sal-facts-latest.json",
   "gap_ledger_path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\reports\\capability-layer\\gap-ledger.json",
   "sal_total_fact_ids": 14309,
@@ -9,15 +9,15 @@
     "status": null
   },
   "summary": {
-    "total_gaps_audited": 1132,
-    "gaps_with_spec_facts": 940,
-    "gaps_without_spec_facts": 192,
+    "total_gaps_audited": 1209,
+    "gaps_with_spec_facts": 1016,
+    "gaps_without_spec_facts": 193,
     "fully_resolved": 389,
     "partial": 19,
-    "none_resolved": 532,
-    "total_dangling_refs_sampled": 1565,
-    "high_severity_dangling": 1508,
-    "traceability_pct": 41.4
+    "none_resolved": 608,
+    "total_dangling_refs_sampled": 1784,
+    "high_severity_dangling": 1727,
+    "traceability_pct": 38.3
   },
   "dangling_ref_samples": [
     {
@@ -57,54 +57,6 @@
       "severity": "WARN"
     },
     {
-      "gap_id": "GAP-DIF-FOSS-PROBE_DIF-001",
-      "format": "DIF",
-      "dangling_ref": "FACT-DIF-001",
-      "severity": "HIGH"
-    },
-    {
-      "gap_id": "GAP-DIF-FOSS-PROBE_DIF-001",
-      "format": "DIF",
-      "dangling_ref": "FACT-DIF-002",
-      "severity": "HIGH"
-    },
-    {
-      "gap_id": "GAP-DIF-FOSS-PROBE_DIF-001",
-      "format": "DIF",
-      "dangling_ref": "FACT-DIF-003",
-      "severity": "HIGH"
-    },
-    {
-      "gap_id": "GAP-QOI-FOSS-PROBE_QOI-001",
-      "format": "QOI",
-      "dangling_ref": "FACT-QOI-001",
-      "severity": "HIGH"
-    },
-    {
-      "gap_id": "GAP-QOI-FOSS-PROBE_QOI-001",
-      "format": "QOI",
-      "dangling_ref": "FACT-QOI-002",
-      "severity": "HIGH"
-    },
-    {
-      "gap_id": "GAP-XCF-FOSS-PROBE_XCF-001",
-      "format": "XCF",
-      "dangling_ref": "FACT-XCF-001",
-      "severity": "HIGH"
-    },
-    {
-      "gap_id": "GAP-XCF-FOSS-PROBE_XCF-001",
-      "format": "XCF",
-      "dangling_ref": "FACT-XCF-002",
-      "severity": "HIGH"
-    },
-    {
-      "gap_id": "GAP-XCF-FOSS-PROBE_XCF-001",
-      "format": "XCF",
-      "dangling_ref": "FACT-XCF-003",
-      "severity": "HIGH"
-    },
-    {
       "gap_id": "GAP-ABW-FOSS-GET_PARAGRAP-001",
       "format": "ABW",
       "dangling_ref": "FACT-ABW-001",
@@ -318,6 +270,54 @@
       "gap_id": "GAP-ABW-FOSS-ABW_HEADING_-001",
       "format": "ABW",
       "dangling_ref": "FACT-ABW-003",
+      "severity": "HIGH"
+    },
+    {
+      "gap_id": "GAP-ABW-FOSS-ABW_VOCABULA-001",
+      "format": "ABW",
+      "dangling_ref": "FACT-ABW-001",
+      "severity": "HIGH"
+    },
+    {
+      "gap_id": "GAP-ABW-FOSS-ABW_VOCABULA-001",
+      "format": "ABW",
+      "dangling_ref": "FACT-ABW-002",
+      "severity": "HIGH"
+    },
+    {
+      "gap_id": "GAP-ABW-FOSS-ABW_VOCABULA-001",
+      "format": "ABW",
+      "dangling_ref": "FACT-ABW-003",
+      "severity": "HIGH"
+    },
+    {
+      "gap_id": "GAP-ABW-FOSS-ABW_AVERAGE_-001",
+      "format": "ABW",
+      "dangling_ref": "FACT-ABW-001",
+      "severity": "HIGH"
+    },
+    {
+      "gap_id": "GAP-ABW-FOSS-ABW_AVERAGE_-001",
+      "format": "ABW",
+      "dangling_ref": "FACT-ABW-002",
+      "severity": "HIGH"
+    },
+    {
+      "gap_id": "GAP-ABW-FOSS-ABW_AVERAGE_-001",
+      "format": "ABW",
+      "dangling_ref": "FACT-ABW-003",
+      "severity": "HIGH"
+    },
+    {
+      "gap_id": "GAP-ABW-FOSS-ABW_IS_EMPTY-001",
+      "format": "ABW",
+      "dangling_ref": "FACT-ABW-001",
+      "severity": "HIGH"
+    },
+    {
+      "gap_id": "GAP-ABW-FOSS-ABW_IS_EMPTY-001",
+      "format": "ABW",
+      "dangling_ref": "FACT-ABW-002",
       "severity": "HIGH"
     }
   ],
@@ -650,21 +650,6 @@
       ]
     },
     {
-      "gap_id": "GAP-DIF-FOSS-PROBE_DIF-001",
-      "format": "DIF",
-      "status": "closed",
-      "spec_facts_count": 15,
-      "resolved_count": 0,
-      "traceability": "NONE_RESOLVED",
-      "dangling": [
-        "FACT-DIF-001",
-        "FACT-DIF-002",
-        "FACT-DIF-003",
-        "FACT-DIF-004",
-        "FACT-DIF-005"
-      ]
-    },
-    {
       "gap_id": "GAP-FODS-COMM-RELOAD_AND_V-001",
       "format": "FODS",
       "status": "closed",
@@ -708,33 +693,6 @@
       "resolved_count": 2,
       "traceability": "FULLY_RESOLVED",
       "dangling": []
-    },
-    {
-      "gap_id": "GAP-QOI-FOSS-PROBE_QOI-001",
-      "format": "QOI",
-      "status": "closed",
-      "spec_facts_count": 2,
-      "resolved_count": 0,
-      "traceability": "NONE_RESOLVED",
-      "dangling": [
-        "FACT-QOI-001",
-        "FACT-QOI-002"
-      ]
-    },
-    {
-      "gap_id": "GAP-XCF-FOSS-PROBE_XCF-001",
-      "format": "XCF",
-      "status": "closed",
-      "spec_facts_count": 42,
-      "resolved_count": 0,
-      "traceability": "NONE_RESOLVED",
-      "dangling": [
-        "FACT-XCF-001",
-        "FACT-XCF-002",
-        "FACT-XCF-003",
-        "FACT-XCF-004",
-        "FACT-XCF-005"
-      ]
     },
     {
       "gap_id": "GAP-ABW-FOSS-GET_PARAGRAP-001",
@@ -2417,52 +2375,7 @@
       ]
     },
     {
-      "gap_id": "GAP-DIF-FOSS-PARSE_DIF_ST-001",
-      "format": "DIF",
-      "status": "closed",
-      "spec_facts_count": 15,
-      "resolved_count": 0,
-      "traceability": "NONE_RESOLVED",
-      "dangling": [
-        "FACT-DIF-001",
-        "FACT-DIF-002",
-        "FACT-DIF-003",
-        "FACT-DIF-004",
-        "FACT-DIF-005"
-      ]
-    },
-    {
-      "gap_id": "GAP-DIF-FOSS-PARSE_DIF-001",
-      "format": "DIF",
-      "status": "closed",
-      "spec_facts_count": 15,
-      "resolved_count": 0,
-      "traceability": "NONE_RESOLVED",
-      "dangling": [
-        "FACT-DIF-001",
-        "FACT-DIF-002",
-        "FACT-DIF-003",
-        "FACT-DIF-004",
-        "FACT-DIF-005"
-      ]
-    },
-    {
-      "gap_id": "GAP-DIF-FOSS-WRITE_DIF-001",
-      "format": "DIF",
-      "status": "closed",
-      "spec_facts_count": 15,
-      "resolved_count": 0,
-      "traceability": "NONE_RESOLVED",
-      "dangling": [
-        "FACT-DIF-001",
-        "FACT-DIF-002",
-        "FACT-DIF-003",
-        "FACT-DIF-004",
-        "FACT-DIF-005"
-      ]
-    },
-    {
-      "gap_id": "GAP-DIF-FOSS-GET_CAPABILI-001",
+      "gap_id": "GAP-DIF-FOSS-INSTALLED_WO-001",
       "format": "DIF",
       "status": "closed",
       "spec_facts_count": 15,
@@ -2492,7 +2405,7 @@
       ]
     },
     {
-      "gap_id": "GAP-DIF-FOSS-SET_CELL_VAL-001",
+      "gap_id": "GAP-DIF-FOSS-GET_VECTOR_C-001",
       "format": "DIF",
       "status": "closed",
       "spec_facts_count": 15,
@@ -2507,7 +2420,7 @@
       ]
     },
     {
-      "gap_id": "GAP-DIF-FOSS-GET_ROW_VALU-001",
+      "gap_id": "GAP-DIF-FOSS-DIF_COLUMN_U-001",
       "format": "DIF",
       "status": "closed",
       "spec_facts_count": 15,
@@ -2522,7 +2435,7 @@
       ]
     },
     {
-      "gap_id": "GAP-DIF-FOSS-GET_TITLE-001",
+      "gap_id": "GAP-DIF-FOSS-DIF_TOTAL_CE-001",
       "format": "DIF",
       "status": "closed",
       "spec_facts_count": 15,
@@ -2537,307 +2450,7 @@
       ]
     },
     {
-      "gap_id": "GAP-DIF-FOSS-GET_ROW_COUN-001",
-      "format": "DIF",
-      "status": "closed",
-      "spec_facts_count": 15,
-      "resolved_count": 0,
-      "traceability": "NONE_RESOLVED",
-      "dangling": [
-        "FACT-DIF-001",
-        "FACT-DIF-002",
-        "FACT-DIF-003",
-        "FACT-DIF-004",
-        "FACT-DIF-005"
-      ]
-    },
-    {
-      "gap_id": "GAP-DIF-FOSS-GET_COLUMN_C-001",
-      "format": "DIF",
-      "status": "closed",
-      "spec_facts_count": 15,
-      "resolved_count": 0,
-      "traceability": "NONE_RESOLVED",
-      "dangling": [
-        "FACT-DIF-001",
-        "FACT-DIF-002",
-        "FACT-DIF-003",
-        "FACT-DIF-004",
-        "FACT-DIF-005"
-      ]
-    },
-    {
-      "gap_id": "GAP-DIF-FOSS-GET_COLUMN_V-001",
-      "format": "DIF",
-      "status": "closed",
-      "spec_facts_count": 15,
-      "resolved_count": 0,
-      "traceability": "NONE_RESOLVED",
-      "dangling": [
-        "FACT-DIF-001",
-        "FACT-DIF-002",
-        "FACT-DIF-003",
-        "FACT-DIF-004",
-        "FACT-DIF-005"
-      ]
-    },
-    {
-      "gap_id": "GAP-DIF-FOSS-COUNT_NONEMP-001",
-      "format": "DIF",
-      "status": "closed",
-      "spec_facts_count": 15,
-      "resolved_count": 0,
-      "traceability": "NONE_RESOLVED",
-      "dangling": [
-        "FACT-DIF-001",
-        "FACT-DIF-002",
-        "FACT-DIF-003",
-        "FACT-DIF-004",
-        "FACT-DIF-005"
-      ]
-    },
-    {
-      "gap_id": "GAP-DIF-FOSS-GET_ALL_VALU-001",
-      "format": "DIF",
-      "status": "closed",
-      "spec_facts_count": 15,
-      "resolved_count": 0,
-      "traceability": "NONE_RESOLVED",
-      "dangling": [
-        "FACT-DIF-001",
-        "FACT-DIF-002",
-        "FACT-DIF-003",
-        "FACT-DIF-004",
-        "FACT-DIF-005"
-      ]
-    },
-    {
-      "gap_id": "GAP-DIF-FOSS-MIN_COLUMN_V-001",
-      "format": "DIF",
-      "status": "closed",
-      "spec_facts_count": 15,
-      "resolved_count": 0,
-      "traceability": "NONE_RESOLVED",
-      "dangling": [
-        "FACT-DIF-001",
-        "FACT-DIF-002",
-        "FACT-DIF-003",
-        "FACT-DIF-004",
-        "FACT-DIF-005"
-      ]
-    },
-    {
-      "gap_id": "GAP-DIF-FOSS-MAX_COLUMN_V-001",
-      "format": "DIF",
-      "status": "closed",
-      "spec_facts_count": 15,
-      "resolved_count": 0,
-      "traceability": "NONE_RESOLVED",
-      "dangling": [
-        "FACT-DIF-001",
-        "FACT-DIF-002",
-        "FACT-DIF-003",
-        "FACT-DIF-004",
-        "FACT-DIF-005"
-      ]
-    },
-    {
-      "gap_id": "GAP-DIF-FOSS-SUM_COLUMN-001",
-      "format": "DIF",
-      "status": "closed",
-      "spec_facts_count": 15,
-      "resolved_count": 0,
-      "traceability": "NONE_RESOLVED",
-      "dangling": [
-        "FACT-DIF-001",
-        "FACT-DIF-002",
-        "FACT-DIF-003",
-        "FACT-DIF-004",
-        "FACT-DIF-005"
-      ]
-    },
-    {
-      "gap_id": "GAP-DIF-FOSS-DIF_NUMERIC_-001",
-      "format": "DIF",
-      "status": "closed",
-      "spec_facts_count": 15,
-      "resolved_count": 0,
-      "traceability": "NONE_RESOLVED",
-      "dangling": [
-        "FACT-DIF-001",
-        "FACT-DIF-002",
-        "FACT-DIF-003",
-        "FACT-DIF-004",
-        "FACT-DIF-005"
-      ]
-    },
-    {
-      "gap_id": "GAP-DIF-FOSS-DIF_VECTOR_D-001",
-      "format": "DIF",
-      "status": "closed",
-      "spec_facts_count": 15,
-      "resolved_count": 0,
-      "traceability": "NONE_RESOLVED",
-      "dangling": [
-        "FACT-DIF-001",
-        "FACT-DIF-002",
-        "FACT-DIF-003",
-        "FACT-DIF-004",
-        "FACT-DIF-005"
-      ]
-    },
-    {
-      "gap_id": "GAP-DIF-FOSS-DIF_STRING_V-001",
-      "format": "DIF",
-      "status": "closed",
-      "spec_facts_count": 15,
-      "resolved_count": 0,
-      "traceability": "NONE_RESOLVED",
-      "dangling": [
-        "FACT-DIF-001",
-        "FACT-DIF-002",
-        "FACT-DIF-003",
-        "FACT-DIF-004",
-        "FACT-DIF-005"
-      ]
-    },
-    {
-      "gap_id": "GAP-DIF-FOSS-DIF_EMPTY_RO-001",
-      "format": "DIF",
-      "status": "closed",
-      "spec_facts_count": 15,
-      "resolved_count": 0,
-      "traceability": "NONE_RESOLVED",
-      "dangling": [
-        "FACT-DIF-001",
-        "FACT-DIF-002",
-        "FACT-DIF-003",
-        "FACT-DIF-004",
-        "FACT-DIF-005"
-      ]
-    },
-    {
-      "gap_id": "GAP-DIF-FOSS-DIF_STRING_C-001",
-      "format": "DIF",
-      "status": "closed",
-      "spec_facts_count": 15,
-      "resolved_count": 0,
-      "traceability": "NONE_RESOLVED",
-      "dangling": [
-        "FACT-DIF-001",
-        "FACT-DIF-002",
-        "FACT-DIF-003",
-        "FACT-DIF-004",
-        "FACT-DIF-005"
-      ]
-    },
-    {
-      "gap_id": "GAP-DIF-FOSS-ADD_ROW-001",
-      "format": "DIF",
-      "status": "closed",
-      "spec_facts_count": 15,
-      "resolved_count": 0,
-      "traceability": "NONE_RESOLVED",
-      "dangling": [
-        "FACT-DIF-001",
-        "FACT-DIF-002",
-        "FACT-DIF-003",
-        "FACT-DIF-004",
-        "FACT-DIF-005"
-      ]
-    },
-    {
-      "gap_id": "GAP-DIF-FOSS-DELETE_ROW-001",
-      "format": "DIF",
-      "status": "closed",
-      "spec_facts_count": 15,
-      "resolved_count": 0,
-      "traceability": "NONE_RESOLVED",
-      "dangling": [
-        "FACT-DIF-001",
-        "FACT-DIF-002",
-        "FACT-DIF-003",
-        "FACT-DIF-004",
-        "FACT-DIF-005"
-      ]
-    },
-    {
-      "gap_id": "GAP-DIF-FOSS-EXPORT_TO_HT-001",
-      "format": "DIF",
-      "status": "closed",
-      "spec_facts_count": 15,
-      "resolved_count": 0,
-      "traceability": "NONE_RESOLVED",
-      "dangling": [
-        "FACT-DIF-001",
-        "FACT-DIF-002",
-        "FACT-DIF-003",
-        "FACT-DIF-004",
-        "FACT-DIF-005"
-      ]
-    },
-    {
-      "gap_id": "GAP-DIF-FOSS-FILTER_ROWS_-001",
-      "format": "DIF",
-      "status": "closed",
-      "spec_facts_count": 15,
-      "resolved_count": 0,
-      "traceability": "NONE_RESOLVED",
-      "dangling": [
-        "FACT-DIF-001",
-        "FACT-DIF-002",
-        "FACT-DIF-003",
-        "FACT-DIF-004",
-        "FACT-DIF-005"
-      ]
-    },
-    {
-      "gap_id": "GAP-DIF-FOSS-SORT_ROWS_BY-001",
-      "format": "DIF",
-      "status": "closed",
-      "spec_facts_count": 15,
-      "resolved_count": 0,
-      "traceability": "NONE_RESOLVED",
-      "dangling": [
-        "FACT-DIF-001",
-        "FACT-DIF-002",
-        "FACT-DIF-003",
-        "FACT-DIF-004",
-        "FACT-DIF-005"
-      ]
-    },
-    {
-      "gap_id": "GAP-DIF-FOSS-GET_ROW_AS_D-001",
-      "format": "DIF",
-      "status": "closed",
-      "spec_facts_count": 15,
-      "resolved_count": 0,
-      "traceability": "NONE_RESOLVED",
-      "dangling": [
-        "FACT-DIF-001",
-        "FACT-DIF-002",
-        "FACT-DIF-003",
-        "FACT-DIF-004",
-        "FACT-DIF-005"
-      ]
-    },
-    {
-      "gap_id": "GAP-DIF-FOSS-GET_HEADER_I-001",
-      "format": "DIF",
-      "status": "closed",
-      "spec_facts_count": 15,
-      "resolved_count": 0,
-      "traceability": "NONE_RESOLVED",
-      "dangling": [
-        "FACT-DIF-001",
-        "FACT-DIF-002",
-        "FACT-DIF-003",
-        "FACT-DIF-004",
-        "FACT-DIF-005"
-      ]
-    },
-    {
-      "gap_id": "GAP-DIF-FOSS-COUNT_DISTIN-001",
+      "gap_id": "GAP-DIF-FOSS-DIF_COLUMN_T-001",
       "format": "DIF",
       "status": "closed",
       "spec_facts_count": 15,
@@ -2897,6 +2510,21 @@
       ]
     },
     {
+      "gap_id": "GAP-DIF-FOSS-DIF_ROW_COUN-001",
+      "format": "DIF",
+      "status": "closed",
+      "spec_facts_count": 15,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-DIF-001",
+        "FACT-DIF-002",
+        "FACT-DIF-003",
+        "FACT-DIF-004",
+        "FACT-DIF-005"
+      ]
+    },
+    {
       "gap_id": "GAP-DIF-FOSS-DIF_COLUMN_C-001",
       "format": "DIF",
       "status": "closed",
@@ -2912,7 +2540,37 @@
       ]
     },
     {
+      "gap_id": "GAP-DIF-FOSS-DIF_STRING_D-001",
+      "format": "DIF",
+      "status": "closed",
+      "spec_facts_count": 15,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-DIF-001",
+        "FACT-DIF-002",
+        "FACT-DIF-003",
+        "FACT-DIF-004",
+        "FACT-DIF-005"
+      ]
+    },
+    {
       "gap_id": "GAP-DIF-FOSS-DIF_MAX_CELL-001",
+      "format": "DIF",
+      "status": "closed",
+      "spec_facts_count": 15,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-DIF-001",
+        "FACT-DIF-002",
+        "FACT-DIF-003",
+        "FACT-DIF-004",
+        "FACT-DIF-005"
+      ]
+    },
+    {
+      "gap_id": "GAP-DIF-FOSS-DIF_HAS_EMPT-001",
       "format": "DIF",
       "status": "closed",
       "spec_facts_count": 15,
@@ -2943,6 +2601,21 @@
     },
     {
       "gap_id": "GAP-DIF-FOSS-DIF_ALL_NUME-001",
+      "format": "DIF",
+      "status": "closed",
+      "spec_facts_count": 15,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-DIF-001",
+        "FACT-DIF-002",
+        "FACT-DIF-003",
+        "FACT-DIF-004",
+        "FACT-DIF-005"
+      ]
+    },
+    {
+      "gap_id": "GAP-DIF-FOSS-DIF_NUMERIC_-001",
       "format": "DIF",
       "status": "closed",
       "spec_facts_count": 15,
@@ -3122,6 +2795,21 @@
       ]
     },
     {
+      "gap_id": "GAP-DIF-FOSS-DIF_TUPLE_CO-001",
+      "format": "DIF",
+      "status": "closed",
+      "spec_facts_count": 15,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-DIF-001",
+        "FACT-DIF-002",
+        "FACT-DIF-003",
+        "FACT-DIF-004",
+        "FACT-DIF-005"
+      ]
+    },
+    {
       "gap_id": "GAP-DIF-FOSS-DIF_IS_MULTI-001",
       "format": "DIF",
       "status": "closed",
@@ -3138,51 +2826,6 @@
     },
     {
       "gap_id": "GAP-DIF-FOSS-DIF_VECTOR_L-001",
-      "format": "DIF",
-      "status": "closed",
-      "spec_facts_count": 15,
-      "resolved_count": 0,
-      "traceability": "NONE_RESOLVED",
-      "dangling": [
-        "FACT-DIF-001",
-        "FACT-DIF-002",
-        "FACT-DIF-003",
-        "FACT-DIF-004",
-        "FACT-DIF-005"
-      ]
-    },
-    {
-      "gap_id": "GAP-DIF-FOSS-DIF_NONEMPTY-001",
-      "format": "DIF",
-      "status": "closed",
-      "spec_facts_count": 15,
-      "resolved_count": 0,
-      "traceability": "NONE_RESOLVED",
-      "dangling": [
-        "FACT-DIF-001",
-        "FACT-DIF-002",
-        "FACT-DIF-003",
-        "FACT-DIF-004",
-        "FACT-DIF-005"
-      ]
-    },
-    {
-      "gap_id": "GAP-DIF-FOSS-DIF_AVG_NUME-001",
-      "format": "DIF",
-      "status": "closed",
-      "spec_facts_count": 15,
-      "resolved_count": 0,
-      "traceability": "NONE_RESOLVED",
-      "dangling": [
-        "FACT-DIF-001",
-        "FACT-DIF-002",
-        "FACT-DIF-003",
-        "FACT-DIF-004",
-        "FACT-DIF-005"
-      ]
-    },
-    {
-      "gap_id": "GAP-DIF-FOSS-DIF_ROW_LENG-001",
       "format": "DIF",
       "status": "closed",
       "spec_facts_count": 15,
@@ -3242,6 +2885,21 @@
       ]
     },
     {
+      "gap_id": "GAP-DIF-FOSS-DIF_NONEMPTY-001",
+      "format": "DIF",
+      "status": "closed",
+      "spec_facts_count": 15,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-DIF-001",
+        "FACT-DIF-002",
+        "FACT-DIF-003",
+        "FACT-DIF-004",
+        "FACT-DIF-005"
+      ]
+    },
+    {
       "gap_id": "GAP-DIF-FOSS-DIF_HAS_STRI-001",
       "format": "DIF",
       "status": "closed",
@@ -3272,7 +2930,22 @@
       ]
     },
     {
-      "gap_id": "GAP-DIF-FOSS-DIF_TOTAL_CE-001",
+      "gap_id": "GAP-DIF-FOSS-DIF_STRING_V-001",
+      "format": "DIF",
+      "status": "closed",
+      "spec_facts_count": 15,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-DIF-001",
+        "FACT-DIF-002",
+        "FACT-DIF-003",
+        "FACT-DIF-004",
+        "FACT-DIF-005"
+      ]
+    },
+    {
+      "gap_id": "GAP-DIF-FOSS-DIF_VALUE_TY-001",
       "format": "DIF",
       "status": "closed",
       "spec_facts_count": 15,
@@ -6896,6 +6569,565 @@
       "dangling": []
     },
     {
+      "gap_id": "GAP-ODS-FOSS-ODS_ANALYTIC-001",
+      "format": "ODS",
+      "status": "closed",
+      "spec_facts_count": 3,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-ODS-001",
+        "FACT-ODS-002",
+        "FACT-ODS-003"
+      ]
+    },
+    {
+      "gap_id": "GAP-ODS-FOSS-INSTALLED_WO-001",
+      "format": "ODS",
+      "status": "closed",
+      "spec_facts_count": 3,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-ODS-001",
+        "FACT-ODS-002",
+        "FACT-ODS-003"
+      ]
+    },
+    {
+      "gap_id": "GAP-ODS-FOSS-EXPORT_ODS_T-001",
+      "format": "ODS",
+      "status": "closed",
+      "spec_facts_count": 3,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-ODS-001",
+        "FACT-ODS-002",
+        "FACT-ODS-003"
+      ]
+    },
+    {
+      "gap_id": "GAP-ODS-FOSS-GET_CSV_EXPO-001",
+      "format": "ODS",
+      "status": "closed",
+      "spec_facts_count": 3,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-ODS-001",
+        "FACT-ODS-002",
+        "FACT-ODS-003"
+      ]
+    },
+    {
+      "gap_id": "GAP-ODS-FOSS-ODS_COLUMN_C-001",
+      "format": "ODS",
+      "status": "closed",
+      "spec_facts_count": 3,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-ODS-001",
+        "FACT-ODS-002",
+        "FACT-ODS-003"
+      ]
+    },
+    {
+      "gap_id": "GAP-ODS-FOSS-ODS_EMPTY_RO-001",
+      "format": "ODS",
+      "status": "closed",
+      "spec_facts_count": 3,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-ODS-001",
+        "FACT-ODS-002",
+        "FACT-ODS-003"
+      ]
+    },
+    {
+      "gap_id": "GAP-ODS-FOSS-ODS_TOTAL_CE-001",
+      "format": "ODS",
+      "status": "closed",
+      "spec_facts_count": 3,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-ODS-001",
+        "FACT-ODS-002",
+        "FACT-ODS-003"
+      ]
+    },
+    {
+      "gap_id": "GAP-ODS-FOSS-ODS_HAS_MERG-001",
+      "format": "ODS",
+      "status": "closed",
+      "spec_facts_count": 3,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-ODS-001",
+        "FACT-ODS-002",
+        "FACT-ODS-003"
+      ]
+    },
+    {
+      "gap_id": "GAP-ODS-FOSS-ODS_NUMERIC_-001",
+      "format": "ODS",
+      "status": "closed",
+      "spec_facts_count": 3,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-ODS-001",
+        "FACT-ODS-002",
+        "FACT-ODS-003"
+      ]
+    },
+    {
+      "gap_id": "GAP-ODS-FOSS-ODS_AVERAGE_-001",
+      "format": "ODS",
+      "status": "closed",
+      "spec_facts_count": 3,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-ODS-001",
+        "FACT-ODS-002",
+        "FACT-ODS-003"
+      ]
+    },
+    {
+      "gap_id": "GAP-ODS-FOSS-ODS_HAS_EMPT-001",
+      "format": "ODS",
+      "status": "closed",
+      "spec_facts_count": 3,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-ODS-001",
+        "FACT-ODS-002",
+        "FACT-ODS-003"
+      ]
+    },
+    {
+      "gap_id": "GAP-ODS-FOSS-ODS_MERGED_C-001",
+      "format": "ODS",
+      "status": "closed",
+      "spec_facts_count": 3,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-ODS-001",
+        "FACT-ODS-002",
+        "FACT-ODS-003"
+      ]
+    },
+    {
+      "gap_id": "GAP-ODS-FOSS-ODS_AVG_CELL-001",
+      "format": "ODS",
+      "status": "closed",
+      "spec_facts_count": 3,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-ODS-001",
+        "FACT-ODS-002",
+        "FACT-ODS-003"
+      ]
+    },
+    {
+      "gap_id": "GAP-ODS-FOSS-ODS_DATA_DEN-001",
+      "format": "ODS",
+      "status": "closed",
+      "spec_facts_count": 3,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-ODS-001",
+        "FACT-ODS-002",
+        "FACT-ODS-003"
+      ]
+    },
+    {
+      "gap_id": "GAP-ODS-FOSS-ODS_MAX_CELL-001",
+      "format": "ODS",
+      "status": "closed",
+      "spec_facts_count": 3,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-ODS-001",
+        "FACT-ODS-002",
+        "FACT-ODS-003"
+      ]
+    },
+    {
+      "gap_id": "GAP-ODS-FOSS-ODS_MIN_CELL-001",
+      "format": "ODS",
+      "status": "closed",
+      "spec_facts_count": 3,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-ODS-001",
+        "FACT-ODS-002",
+        "FACT-ODS-003"
+      ]
+    },
+    {
+      "gap_id": "GAP-ODS-FOSS-ODS_ALL_SHEE-001",
+      "format": "ODS",
+      "status": "closed",
+      "spec_facts_count": 3,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-ODS-001",
+        "FACT-ODS-002",
+        "FACT-ODS-003"
+      ]
+    },
+    {
+      "gap_id": "GAP-ODS-FOSS-ODS_IS_SINGL-001",
+      "format": "ODS",
+      "status": "closed",
+      "spec_facts_count": 3,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-ODS-001",
+        "FACT-ODS-002",
+        "FACT-ODS-003"
+      ]
+    },
+    {
+      "gap_id": "GAP-ODS-FOSS-ODS_STRING_D-001",
+      "format": "ODS",
+      "status": "closed",
+      "spec_facts_count": 3,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-ODS-001",
+        "FACT-ODS-002",
+        "FACT-ODS-003"
+      ]
+    },
+    {
+      "gap_id": "GAP-ODS-FOSS-ODS_MAX_NUME-001",
+      "format": "ODS",
+      "status": "closed",
+      "spec_facts_count": 3,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-ODS-001",
+        "FACT-ODS-002",
+        "FACT-ODS-003"
+      ]
+    },
+    {
+      "gap_id": "GAP-ODS-FOSS-ODS_HAS_STRI-001",
+      "format": "ODS",
+      "status": "closed",
+      "spec_facts_count": 3,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-ODS-001",
+        "FACT-ODS-002",
+        "FACT-ODS-003"
+      ]
+    },
+    {
+      "gap_id": "GAP-ODS-FOSS-ODS_MIN_NUME-001",
+      "format": "ODS",
+      "status": "closed",
+      "spec_facts_count": 3,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-ODS-001",
+        "FACT-ODS-002",
+        "FACT-ODS-003"
+      ]
+    },
+    {
+      "gap_id": "GAP-ODS-FOSS-ODS_HAS_NUME-001",
+      "format": "ODS",
+      "status": "closed",
+      "spec_facts_count": 3,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-ODS-001",
+        "FACT-ODS-002",
+        "FACT-ODS-003"
+      ]
+    },
+    {
+      "gap_id": "GAP-ODS-FOSS-ODS_NONEMPTY-001",
+      "format": "ODS",
+      "status": "closed",
+      "spec_facts_count": 3,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-ODS-001",
+        "FACT-ODS-002",
+        "FACT-ODS-003"
+      ]
+    },
+    {
+      "gap_id": "GAP-ODS-FOSS-ODS_IS_EMPTY-001",
+      "format": "ODS",
+      "status": "closed",
+      "spec_facts_count": 3,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-ODS-001",
+        "FACT-ODS-002",
+        "FACT-ODS-003"
+      ]
+    },
+    {
+      "gap_id": "GAP-ODS-FOSS-ODS_AVG_ROW_-001",
+      "format": "ODS",
+      "status": "closed",
+      "spec_facts_count": 3,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-ODS-001",
+        "FACT-ODS-002",
+        "FACT-ODS-003"
+      ]
+    },
+    {
+      "gap_id": "GAP-ODS-FOSS-ODS_CELL_VAL-001",
+      "format": "ODS",
+      "status": "closed",
+      "spec_facts_count": 3,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-ODS-001",
+        "FACT-ODS-002",
+        "FACT-ODS-003"
+      ]
+    },
+    {
+      "gap_id": "GAP-ODS-FOSS-ODS_COLUMN_V-001",
+      "format": "ODS",
+      "status": "closed",
+      "spec_facts_count": 3,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-ODS-001",
+        "FACT-ODS-002",
+        "FACT-ODS-003"
+      ]
+    },
+    {
+      "gap_id": "GAP-ODS-FOSS-ODS_HAS_FORM-001",
+      "format": "ODS",
+      "status": "closed",
+      "spec_facts_count": 3,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-ODS-001",
+        "FACT-ODS-002",
+        "FACT-ODS-003"
+      ]
+    },
+    {
+      "gap_id": "GAP-ODS-FOSS-ODS_ROW_VALU-001",
+      "format": "ODS",
+      "status": "closed",
+      "spec_facts_count": 3,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-ODS-001",
+        "FACT-ODS-002",
+        "FACT-ODS-003"
+      ]
+    },
+    {
+      "gap_id": "GAP-ODS-FOSS-ODS_IS_MULTI-001",
+      "format": "ODS",
+      "status": "closed",
+      "spec_facts_count": 3,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-ODS-001",
+        "FACT-ODS-002",
+        "FACT-ODS-003"
+      ]
+    },
+    {
+      "gap_id": "GAP-ODS-FOSS-ODS_MAX_SHEE-001",
+      "format": "ODS",
+      "status": "closed",
+      "spec_facts_count": 3,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-ODS-001",
+        "FACT-ODS-002",
+        "FACT-ODS-003"
+      ]
+    },
+    {
+      "gap_id": "GAP-ODS-FOSS-ODS_IS_RECTA-001",
+      "format": "ODS",
+      "status": "closed",
+      "spec_facts_count": 3,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-ODS-001",
+        "FACT-ODS-002",
+        "FACT-ODS-003"
+      ]
+    },
+    {
+      "gap_id": "GAP-ODS-FOSS-ODS_TOTAL_ST-001",
+      "format": "ODS",
+      "status": "closed",
+      "spec_facts_count": 3,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-ODS-001",
+        "FACT-ODS-002",
+        "FACT-ODS-003"
+      ]
+    },
+    {
+      "gap_id": "GAP-ODS-FOSS-ODS_IS_ALL_N-001",
+      "format": "ODS",
+      "status": "closed",
+      "spec_facts_count": 3,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-ODS-001",
+        "FACT-ODS-002",
+        "FACT-ODS-003"
+      ]
+    },
+    {
+      "gap_id": "GAP-ODS-FOSS-ODS_EMPTY_SH-001",
+      "format": "ODS",
+      "status": "closed",
+      "spec_facts_count": 3,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-ODS-001",
+        "FACT-ODS-002",
+        "FACT-ODS-003"
+      ]
+    },
+    {
+      "gap_id": "GAP-ODS-FOSS-ODS_MIN_ROW_-001",
+      "format": "ODS",
+      "status": "closed",
+      "spec_facts_count": 3,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-ODS-001",
+        "FACT-ODS-002",
+        "FACT-ODS-003"
+      ]
+    },
+    {
+      "gap_id": "GAP-ODS-FOSS-ODS_AVG_NUME-001",
+      "format": "ODS",
+      "status": "closed",
+      "spec_facts_count": 3,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-ODS-001",
+        "FACT-ODS-002",
+        "FACT-ODS-003"
+      ]
+    },
+    {
+      "gap_id": "GAP-ODS-FOSS-ODS_LONGEST_-001",
+      "format": "ODS",
+      "status": "closed",
+      "spec_facts_count": 3,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-ODS-001",
+        "FACT-ODS-002",
+        "FACT-ODS-003"
+      ]
+    },
+    {
+      "gap_id": "GAP-ODS-FOSS-ODS_EMPTY_CO-001",
+      "format": "ODS",
+      "status": "closed",
+      "spec_facts_count": 3,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-ODS-001",
+        "FACT-ODS-002",
+        "FACT-ODS-003"
+      ]
+    },
+    {
+      "gap_id": "GAP-ODS-FOSS-ODS_CELL_DEN-001",
+      "format": "ODS",
+      "status": "closed",
+      "spec_facts_count": 3,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-ODS-001",
+        "FACT-ODS-002",
+        "FACT-ODS-003"
+      ]
+    },
+    {
+      "gap_id": "GAP-ODS-FOSS-ODS_IS_SQUAR-001",
+      "format": "ODS",
+      "status": "closed",
+      "spec_facts_count": 3,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-ODS-001",
+        "FACT-ODS-002",
+        "FACT-ODS-003"
+      ]
+    },
+    {
+      "gap_id": "GAP-ODS-FOSS-ODS_ROW_CELL-001",
+      "format": "ODS",
+      "status": "closed",
+      "spec_facts_count": 3,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-ODS-001",
+        "FACT-ODS-002",
+        "FACT-ODS-003"
+      ]
+    },
+    {
       "gap_id": "GAP-ODT-FOSS-WRITE_ODT-001",
       "format": "ODT",
       "status": "closed",
@@ -8593,6 +8825,42 @@
       "dangling": []
     },
     {
+      "gap_id": "GAP-QOI-FOSS-QOI_AREA-001",
+      "format": "QOI",
+      "status": "closed",
+      "spec_facts_count": 2,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-QOI-001",
+        "FACT-QOI-002"
+      ]
+    },
+    {
+      "gap_id": "GAP-QOI-FOSS-QOI_ASPECT_R-001",
+      "format": "QOI",
+      "status": "closed",
+      "spec_facts_count": 2,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-QOI-001",
+        "FACT-QOI-002"
+      ]
+    },
+    {
+      "gap_id": "GAP-QOI-FOSS-INSTALLED_WO-001",
+      "format": "QOI",
+      "status": "closed",
+      "spec_facts_count": 2,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-QOI-001",
+        "FACT-QOI-002"
+      ]
+    },
+    {
       "gap_id": "GAP-QOI-FOSS-QOI_UNIQUE_C-001",
       "format": "QOI",
       "status": "closed",
@@ -8617,7 +8885,55 @@
       ]
     },
     {
+      "gap_id": "GAP-QOI-FOSS-QOI_IS_OPAQU-001",
+      "format": "QOI",
+      "status": "closed",
+      "spec_facts_count": 2,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-QOI-001",
+        "FACT-QOI-002"
+      ]
+    },
+    {
+      "gap_id": "GAP-QOI-FOSS-QOI_HAS_ALPH-001",
+      "format": "QOI",
+      "status": "closed",
+      "spec_facts_count": 2,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-QOI-001",
+        "FACT-QOI-002"
+      ]
+    },
+    {
       "gap_id": "GAP-QOI-FOSS-QOI_AVERAGE_-001",
+      "format": "QOI",
+      "status": "closed",
+      "spec_facts_count": 2,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-QOI-001",
+        "FACT-QOI-002"
+      ]
+    },
+    {
+      "gap_id": "GAP-QOI-FOSS-QOI_RED_CHAN-001",
+      "format": "QOI",
+      "status": "closed",
+      "spec_facts_count": 2,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-QOI-001",
+        "FACT-QOI-002"
+      ]
+    },
+    {
+      "gap_id": "GAP-QOI-FOSS-QOI_DOMINANT-001",
       "format": "QOI",
       "status": "closed",
       "spec_facts_count": 2,
@@ -8689,6 +9005,30 @@
       ]
     },
     {
+      "gap_id": "GAP-QOI-FOSS-QOI_TOTAL_BR-001",
+      "format": "QOI",
+      "status": "closed",
+      "spec_facts_count": 2,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-QOI-001",
+        "FACT-QOI-002"
+      ]
+    },
+    {
+      "gap_id": "GAP-QOI-FOSS-QOI_AVG_RGB_-001",
+      "format": "QOI",
+      "status": "closed",
+      "spec_facts_count": 2,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-QOI-001",
+        "FACT-QOI-002"
+      ]
+    },
+    {
       "gap_id": "GAP-QOI-FOSS-QOI_RED_DOMI-001",
       "format": "QOI",
       "status": "closed",
@@ -8701,7 +9041,7 @@
       ]
     },
     {
-      "gap_id": "GAP-QOI-FOSS-QOI_ASPECT_R-001",
+      "gap_id": "GAP-QOI-FOSS-QOI_COLOR_CO-001",
       "format": "QOI",
       "status": "closed",
       "spec_facts_count": 2,
@@ -8713,7 +9053,7 @@
       ]
     },
     {
-      "gap_id": "GAP-QOI-FOSS-QOI_COLOR_CO-001",
+      "gap_id": "GAP-QOI-FOSS-QOI_AVG_RGB-001",
       "format": "QOI",
       "status": "closed",
       "spec_facts_count": 2,
@@ -8738,6 +9078,18 @@
     },
     {
       "gap_id": "GAP-QOI-FOSS-QOI_GREEN_DO-001",
+      "format": "QOI",
+      "status": "closed",
+      "spec_facts_count": 2,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-QOI-001",
+        "FACT-QOI-002"
+      ]
+    },
+    {
+      "gap_id": "GAP-QOI-FOSS-QOI_ROW_COUN-001",
       "format": "QOI",
       "status": "closed",
       "spec_facts_count": 2,
@@ -8893,18 +9245,6 @@
       ]
     },
     {
-      "gap_id": "GAP-QOI-FOSS-QOI_AREA-001",
-      "format": "QOI",
-      "status": "closed",
-      "spec_facts_count": 2,
-      "resolved_count": 0,
-      "traceability": "NONE_RESOLVED",
-      "dangling": [
-        "FACT-QOI-001",
-        "FACT-QOI-002"
-      ]
-    },
-    {
       "gap_id": "GAP-QOI-FOSS-QOI_IS_SMALL-001",
       "format": "QOI",
       "status": "closed",
@@ -8989,18 +9329,6 @@
       ]
     },
     {
-      "gap_id": "GAP-QOI-FOSS-QOI_IS_DARK-001",
-      "format": "QOI",
-      "status": "closed",
-      "spec_facts_count": 2,
-      "resolved_count": 0,
-      "traceability": "NONE_RESOLVED",
-      "dangling": [
-        "FACT-QOI-001",
-        "FACT-QOI-002"
-      ]
-    },
-    {
       "gap_id": "GAP-QOI-FOSS-QOI_COLOR_DE-001",
       "format": "QOI",
       "status": "closed",
@@ -9038,6 +9366,18 @@
     },
     {
       "gap_id": "GAP-QOI-FOSS-QOI_PIXEL_CO-001",
+      "format": "QOI",
+      "status": "closed",
+      "spec_facts_count": 2,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-QOI-001",
+        "FACT-QOI-002"
+      ]
+    },
+    {
+      "gap_id": "GAP-QOI-FOSS-QOI_MAX_BRIG-001",
       "format": "QOI",
       "status": "closed",
       "spec_facts_count": 2,
@@ -9109,79 +9449,19 @@
       ]
     },
     {
+      "gap_id": "GAP-QOI-FOSS-QOI_GREEN_BL-001",
+      "format": "QOI",
+      "status": "closed",
+      "spec_facts_count": 2,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-QOI-001",
+        "FACT-QOI-002"
+      ]
+    },
+    {
       "gap_id": "GAP-QOI-FOSS-QOI_IS_WIDE-001",
-      "format": "QOI",
-      "status": "closed",
-      "spec_facts_count": 2,
-      "resolved_count": 0,
-      "traceability": "NONE_RESOLVED",
-      "dangling": [
-        "FACT-QOI-001",
-        "FACT-QOI-002"
-      ]
-    },
-    {
-      "gap_id": "GAP-QOI-FOSS-ENCODE_QOI-001",
-      "format": "QOI",
-      "status": "closed",
-      "spec_facts_count": 2,
-      "resolved_count": 0,
-      "traceability": "NONE_RESOLVED",
-      "dangling": [
-        "FACT-QOI-001",
-        "FACT-QOI-002"
-      ]
-    },
-    {
-      "gap_id": "GAP-QOI-FOSS-ENCODE_QOI_T-001",
-      "format": "QOI",
-      "status": "closed",
-      "spec_facts_count": 2,
-      "resolved_count": 0,
-      "traceability": "NONE_RESOLVED",
-      "dangling": [
-        "FACT-QOI-001",
-        "FACT-QOI-002"
-      ]
-    },
-    {
-      "gap_id": "GAP-QOI-FOSS-GET_ENCODER_-001",
-      "format": "QOI",
-      "status": "closed",
-      "spec_facts_count": 2,
-      "resolved_count": 0,
-      "traceability": "NONE_RESOLVED",
-      "dangling": [
-        "FACT-QOI-001",
-        "FACT-QOI-002"
-      ]
-    },
-    {
-      "gap_id": "GAP-QOI-FOSS-GET_CAPABILI-001",
-      "format": "QOI",
-      "status": "closed",
-      "spec_facts_count": 2,
-      "resolved_count": 0,
-      "traceability": "NONE_RESOLVED",
-      "dangling": [
-        "FACT-QOI-001",
-        "FACT-QOI-002"
-      ]
-    },
-    {
-      "gap_id": "GAP-QOI-FOSS-PARSE_QOI_ST-001",
-      "format": "QOI",
-      "status": "closed",
-      "spec_facts_count": 2,
-      "resolved_count": 0,
-      "traceability": "NONE_RESOLVED",
-      "dangling": [
-        "FACT-QOI-001",
-        "FACT-QOI-002"
-      ]
-    },
-    {
-      "gap_id": "GAP-QOI-FOSS-PARSE_QOI-001",
       "format": "QOI",
       "status": "closed",
       "spec_facts_count": 2,
@@ -10933,7 +11213,7 @@
       ]
     },
     {
-      "gap_id": "GAP-XCF-FOSS-XCF_IMAGE_DI-001",
+      "gap_id": "GAP-XCF-FOSS-XCF_LAYER_NA-001",
       "format": "XCF",
       "status": "closed",
       "spec_facts_count": 42,
@@ -10948,7 +11228,7 @@
       ]
     },
     {
-      "gap_id": "GAP-XCF-FOSS-XCF_IMAGE_TY-001",
+      "gap_id": "GAP-XCF-FOSS-XCF_IMAGE_WI-001",
       "format": "XCF",
       "status": "closed",
       "spec_facts_count": 42,
@@ -10963,7 +11243,112 @@
       ]
     },
     {
-      "gap_id": "GAP-XCF-FOSS-XCF_FILE_SIZ-001",
+      "gap_id": "GAP-XCF-FOSS-XCF_IMAGE_HE-001",
+      "format": "XCF",
+      "status": "closed",
+      "spec_facts_count": 42,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-XCF-001",
+        "FACT-XCF-002",
+        "FACT-XCF-003",
+        "FACT-XCF-004",
+        "FACT-XCF-005"
+      ]
+    },
+    {
+      "gap_id": "GAP-XCF-FOSS-INSTALLED_WO-001",
+      "format": "XCF",
+      "status": "closed",
+      "spec_facts_count": 42,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-XCF-001",
+        "FACT-XCF-002",
+        "FACT-XCF-003",
+        "FACT-XCF-004",
+        "FACT-XCF-005"
+      ]
+    },
+    {
+      "gap_id": "GAP-XCF-FOSS-XCF_IS_LANDS-001",
+      "format": "XCF",
+      "status": "closed",
+      "spec_facts_count": 42,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-XCF-001",
+        "FACT-XCF-002",
+        "FACT-XCF-003",
+        "FACT-XCF-004",
+        "FACT-XCF-005"
+      ]
+    },
+    {
+      "gap_id": "GAP-XCF-FOSS-XCF_IS_INDEX-001",
+      "format": "XCF",
+      "status": "closed",
+      "spec_facts_count": 42,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-XCF-001",
+        "FACT-XCF-002",
+        "FACT-XCF-003",
+        "FACT-XCF-004",
+        "FACT-XCF-005"
+      ]
+    },
+    {
+      "gap_id": "GAP-XCF-FOSS-XCF_SUMMARY-001",
+      "format": "XCF",
+      "status": "closed",
+      "spec_facts_count": 42,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-XCF-001",
+        "FACT-XCF-002",
+        "FACT-XCF-003",
+        "FACT-XCF-004",
+        "FACT-XCF-005"
+      ]
+    },
+    {
+      "gap_id": "GAP-XCF-FOSS-XCF_WIDTH-001",
+      "format": "XCF",
+      "status": "closed",
+      "spec_facts_count": 42,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-XCF-001",
+        "FACT-XCF-002",
+        "FACT-XCF-003",
+        "FACT-XCF-004",
+        "FACT-XCF-005"
+      ]
+    },
+    {
+      "gap_id": "GAP-XCF-FOSS-XCF_MEGAPIXE-001",
+      "format": "XCF",
+      "status": "closed",
+      "spec_facts_count": 42,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-XCF-001",
+        "FACT-XCF-002",
+        "FACT-XCF-003",
+        "FACT-XCF-004",
+        "FACT-XCF-005"
+      ]
+    },
+    {
+      "gap_id": "GAP-XCF-FOSS-XCF_HAS_ALPH-001",
       "format": "XCF",
       "status": "closed",
       "spec_facts_count": 42,
@@ -10979,6 +11364,21 @@
     },
     {
       "gap_id": "GAP-XCF-FOSS-XCF_CANVAS_S-001",
+      "format": "XCF",
+      "status": "closed",
+      "spec_facts_count": 42,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-XCF-001",
+        "FACT-XCF-002",
+        "FACT-XCF-003",
+        "FACT-XCF-004",
+        "FACT-XCF-005"
+      ]
+    },
+    {
+      "gap_id": "GAP-XCF-FOSS-XCF_HEIGHT-001",
       "format": "XCF",
       "status": "closed",
       "spec_facts_count": 42,
@@ -11113,6 +11513,21 @@
       ]
     },
     {
+      "gap_id": "GAP-XCF-FOSS-XCF_CANVAS_A-001",
+      "format": "XCF",
+      "status": "closed",
+      "spec_facts_count": 42,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-XCF-001",
+        "FACT-XCF-002",
+        "FACT-XCF-003",
+        "FACT-XCF-004",
+        "FACT-XCF-005"
+      ]
+    },
+    {
       "gap_id": "GAP-XCF-FOSS-XCF_MAX_LAYE-001",
       "format": "XCF",
       "status": "closed",
@@ -11218,6 +11633,21 @@
       ]
     },
     {
+      "gap_id": "GAP-XCF-FOSS-XCF_COLUMN_C-001",
+      "format": "XCF",
+      "status": "closed",
+      "spec_facts_count": 42,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-XCF-001",
+        "FACT-XCF-002",
+        "FACT-XCF-003",
+        "FACT-XCF-004",
+        "FACT-XCF-005"
+      ]
+    },
+    {
       "gap_id": "GAP-XCF-FOSS-XCF_IS_WIDE-001",
       "format": "XCF",
       "status": "closed",
@@ -11263,21 +11693,6 @@
       ]
     },
     {
-      "gap_id": "GAP-XCF-FOSS-XCF_IS_MULTI-001",
-      "format": "XCF",
-      "status": "closed",
-      "spec_facts_count": 42,
-      "resolved_count": 0,
-      "traceability": "NONE_RESOLVED",
-      "dangling": [
-        "FACT-XCF-001",
-        "FACT-XCF-002",
-        "FACT-XCF-003",
-        "FACT-XCF-004",
-        "FACT-XCF-005"
-      ]
-    },
-    {
       "gap_id": "GAP-XCF-FOSS-XCF_ROW_COUN-001",
       "format": "XCF",
       "status": "closed",
@@ -11293,7 +11708,22 @@
       ]
     },
     {
-      "gap_id": "GAP-XCF-FOSS-XCF_FILE_BYT-001",
+      "gap_id": "GAP-XCF-FOSS-XCF_FILE_SIZ-001",
+      "format": "XCF",
+      "status": "closed",
+      "spec_facts_count": 42,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-XCF-001",
+        "FACT-XCF-002",
+        "FACT-XCF-003",
+        "FACT-XCF-004",
+        "FACT-XCF-005"
+      ]
+    },
+    {
+      "gap_id": "GAP-XCF-FOSS-XCF_IS_MULTI-001",
       "format": "XCF",
       "status": "closed",
       "spec_facts_count": 42,
@@ -11353,6 +11783,21 @@
       ]
     },
     {
+      "gap_id": "GAP-XCF-FOSS-XCF_IMAGE_TY-001",
+      "format": "XCF",
+      "status": "closed",
+      "spec_facts_count": 42,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-XCF-001",
+        "FACT-XCF-002",
+        "FACT-XCF-003",
+        "FACT-XCF-004",
+        "FACT-XCF-005"
+      ]
+    },
+    {
       "gap_id": "GAP-XCF-FOSS-XCF_FILE_HEA-001",
       "format": "XCF",
       "status": "closed",
@@ -11383,7 +11828,7 @@
       ]
     },
     {
-      "gap_id": "GAP-XCF-FOSS-XCF_IS_HIGH_-001",
+      "gap_id": "GAP-XCF-FOSS-XCF_PIXEL_PE-001",
       "format": "XCF",
       "status": "closed",
       "spec_facts_count": 42,
@@ -11398,7 +11843,22 @@
       ]
     },
     {
-      "gap_id": "GAP-XCF-FOSS-XCF_MEGAPIXE-001",
+      "gap_id": "GAP-XCF-FOSS-XCF_BYTES_PE-001",
+      "format": "XCF",
+      "status": "closed",
+      "spec_facts_count": 42,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-XCF-001",
+        "FACT-XCF-002",
+        "FACT-XCF-003",
+        "FACT-XCF-004",
+        "FACT-XCF-005"
+      ]
+    },
+    {
+      "gap_id": "GAP-XCF-FOSS-XCF_IS_HIGH_-001",
       "format": "XCF",
       "status": "closed",
       "spec_facts_count": 42,
@@ -11429,6 +11889,21 @@
     },
     {
       "gap_id": "GAP-XCF-FOSS-XCF_WIDTH_TO-001",
+      "format": "XCF",
+      "status": "closed",
+      "spec_facts_count": 42,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-XCF-001",
+        "FACT-XCF-002",
+        "FACT-XCF-003",
+        "FACT-XCF-004",
+        "FACT-XCF-005"
+      ]
+    },
+    {
+      "gap_id": "GAP-XCF-FOSS-XCF_CANVAS_P-001",
       "format": "XCF",
       "status": "closed",
       "spec_facts_count": 42,
@@ -11683,21 +12158,6 @@
       ]
     },
     {
-      "gap_id": "GAP-XCF-FOSS-XCF_LAYER_NA-001",
-      "format": "XCF",
-      "status": "closed",
-      "spec_facts_count": 42,
-      "resolved_count": 0,
-      "traceability": "NONE_RESOLVED",
-      "dangling": [
-        "FACT-XCF-001",
-        "FACT-XCF-002",
-        "FACT-XCF-003",
-        "FACT-XCF-004",
-        "FACT-XCF-005"
-      ]
-    },
-    {
       "gap_id": "GAP-XCF-FOSS-XCF_COLOR_DE-001",
       "format": "XCF",
       "status": "closed",
@@ -11803,37 +12263,7 @@
       ]
     },
     {
-      "gap_id": "GAP-XCF-FOSS-PARSE_XCF_ST-001",
-      "format": "XCF",
-      "status": "closed",
-      "spec_facts_count": 42,
-      "resolved_count": 0,
-      "traceability": "NONE_RESOLVED",
-      "dangling": [
-        "FACT-XCF-001",
-        "FACT-XCF-002",
-        "FACT-XCF-003",
-        "FACT-XCF-004",
-        "FACT-XCF-005"
-      ]
-    },
-    {
-      "gap_id": "GAP-XCF-FOSS-PARSE_XCF-001",
-      "format": "XCF",
-      "status": "closed",
-      "spec_facts_count": 42,
-      "resolved_count": 0,
-      "traceability": "NONE_RESOLVED",
-      "dangling": [
-        "FACT-XCF-001",
-        "FACT-XCF-002",
-        "FACT-XCF-003",
-        "FACT-XCF-004",
-        "FACT-XCF-005"
-      ]
-    },
-    {
-      "gap_id": "GAP-XCF-FOSS-GET_CAPABILI-001",
+      "gap_id": "GAP-XCF-FOSS-XCF_PIXEL_CO-001",
       "format": "XCF",
       "status": "closed",
       "spec_facts_count": 42,
@@ -12100,6 +12530,627 @@
         "FACT-ZST-EX-0084",
         "FACT-ZST-EX-0085",
         "FACT-ZST-EX-0086"
+      ]
+    },
+    {
+      "gap_id": "GAP-DIF-FOSS-PROBE_DIF-001",
+      "format": "DIF",
+      "status": "closed",
+      "spec_facts_count": 15,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-DIF-001",
+        "FACT-DIF-002",
+        "FACT-DIF-003",
+        "FACT-DIF-004",
+        "FACT-DIF-005"
+      ]
+    },
+    {
+      "gap_id": "GAP-QOI-FOSS-PROBE_QOI-001",
+      "format": "QOI",
+      "status": "closed",
+      "spec_facts_count": 2,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-QOI-001",
+        "FACT-QOI-002"
+      ]
+    },
+    {
+      "gap_id": "GAP-XCF-FOSS-PROBE_XCF-001",
+      "format": "XCF",
+      "status": "closed",
+      "spec_facts_count": 42,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-XCF-001",
+        "FACT-XCF-002",
+        "FACT-XCF-003",
+        "FACT-XCF-004",
+        "FACT-XCF-005"
+      ]
+    },
+    {
+      "gap_id": "GAP-DIF-FOSS-PARSE_DIF_ST-001",
+      "format": "DIF",
+      "status": "closed",
+      "spec_facts_count": 15,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-DIF-001",
+        "FACT-DIF-002",
+        "FACT-DIF-003",
+        "FACT-DIF-004",
+        "FACT-DIF-005"
+      ]
+    },
+    {
+      "gap_id": "GAP-DIF-FOSS-PARSE_DIF-001",
+      "format": "DIF",
+      "status": "closed",
+      "spec_facts_count": 15,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-DIF-001",
+        "FACT-DIF-002",
+        "FACT-DIF-003",
+        "FACT-DIF-004",
+        "FACT-DIF-005"
+      ]
+    },
+    {
+      "gap_id": "GAP-DIF-FOSS-WRITE_DIF-001",
+      "format": "DIF",
+      "status": "closed",
+      "spec_facts_count": 15,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-DIF-001",
+        "FACT-DIF-002",
+        "FACT-DIF-003",
+        "FACT-DIF-004",
+        "FACT-DIF-005"
+      ]
+    },
+    {
+      "gap_id": "GAP-DIF-FOSS-GET_CAPABILI-001",
+      "format": "DIF",
+      "status": "closed",
+      "spec_facts_count": 15,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-DIF-001",
+        "FACT-DIF-002",
+        "FACT-DIF-003",
+        "FACT-DIF-004",
+        "FACT-DIF-005"
+      ]
+    },
+    {
+      "gap_id": "GAP-DIF-FOSS-SET_CELL_VAL-001",
+      "format": "DIF",
+      "status": "closed",
+      "spec_facts_count": 15,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-DIF-001",
+        "FACT-DIF-002",
+        "FACT-DIF-003",
+        "FACT-DIF-004",
+        "FACT-DIF-005"
+      ]
+    },
+    {
+      "gap_id": "GAP-DIF-FOSS-GET_ROW_VALU-001",
+      "format": "DIF",
+      "status": "closed",
+      "spec_facts_count": 15,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-DIF-001",
+        "FACT-DIF-002",
+        "FACT-DIF-003",
+        "FACT-DIF-004",
+        "FACT-DIF-005"
+      ]
+    },
+    {
+      "gap_id": "GAP-DIF-FOSS-GET_TITLE-001",
+      "format": "DIF",
+      "status": "closed",
+      "spec_facts_count": 15,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-DIF-001",
+        "FACT-DIF-002",
+        "FACT-DIF-003",
+        "FACT-DIF-004",
+        "FACT-DIF-005"
+      ]
+    },
+    {
+      "gap_id": "GAP-DIF-FOSS-GET_ROW_COUN-001",
+      "format": "DIF",
+      "status": "closed",
+      "spec_facts_count": 15,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-DIF-001",
+        "FACT-DIF-002",
+        "FACT-DIF-003",
+        "FACT-DIF-004",
+        "FACT-DIF-005"
+      ]
+    },
+    {
+      "gap_id": "GAP-DIF-FOSS-GET_COLUMN_C-001",
+      "format": "DIF",
+      "status": "closed",
+      "spec_facts_count": 15,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-DIF-001",
+        "FACT-DIF-002",
+        "FACT-DIF-003",
+        "FACT-DIF-004",
+        "FACT-DIF-005"
+      ]
+    },
+    {
+      "gap_id": "GAP-DIF-FOSS-GET_COLUMN_V-001",
+      "format": "DIF",
+      "status": "closed",
+      "spec_facts_count": 15,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-DIF-001",
+        "FACT-DIF-002",
+        "FACT-DIF-003",
+        "FACT-DIF-004",
+        "FACT-DIF-005"
+      ]
+    },
+    {
+      "gap_id": "GAP-DIF-FOSS-COUNT_NONEMP-001",
+      "format": "DIF",
+      "status": "closed",
+      "spec_facts_count": 15,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-DIF-001",
+        "FACT-DIF-002",
+        "FACT-DIF-003",
+        "FACT-DIF-004",
+        "FACT-DIF-005"
+      ]
+    },
+    {
+      "gap_id": "GAP-DIF-FOSS-GET_ALL_VALU-001",
+      "format": "DIF",
+      "status": "closed",
+      "spec_facts_count": 15,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-DIF-001",
+        "FACT-DIF-002",
+        "FACT-DIF-003",
+        "FACT-DIF-004",
+        "FACT-DIF-005"
+      ]
+    },
+    {
+      "gap_id": "GAP-DIF-FOSS-MIN_COLUMN_V-001",
+      "format": "DIF",
+      "status": "closed",
+      "spec_facts_count": 15,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-DIF-001",
+        "FACT-DIF-002",
+        "FACT-DIF-003",
+        "FACT-DIF-004",
+        "FACT-DIF-005"
+      ]
+    },
+    {
+      "gap_id": "GAP-DIF-FOSS-MAX_COLUMN_V-001",
+      "format": "DIF",
+      "status": "closed",
+      "spec_facts_count": 15,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-DIF-001",
+        "FACT-DIF-002",
+        "FACT-DIF-003",
+        "FACT-DIF-004",
+        "FACT-DIF-005"
+      ]
+    },
+    {
+      "gap_id": "GAP-DIF-FOSS-SUM_COLUMN-001",
+      "format": "DIF",
+      "status": "closed",
+      "spec_facts_count": 15,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-DIF-001",
+        "FACT-DIF-002",
+        "FACT-DIF-003",
+        "FACT-DIF-004",
+        "FACT-DIF-005"
+      ]
+    },
+    {
+      "gap_id": "GAP-DIF-FOSS-DIF_VECTOR_D-001",
+      "format": "DIF",
+      "status": "closed",
+      "spec_facts_count": 15,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-DIF-001",
+        "FACT-DIF-002",
+        "FACT-DIF-003",
+        "FACT-DIF-004",
+        "FACT-DIF-005"
+      ]
+    },
+    {
+      "gap_id": "GAP-DIF-FOSS-DIF_EMPTY_RO-001",
+      "format": "DIF",
+      "status": "closed",
+      "spec_facts_count": 15,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-DIF-001",
+        "FACT-DIF-002",
+        "FACT-DIF-003",
+        "FACT-DIF-004",
+        "FACT-DIF-005"
+      ]
+    },
+    {
+      "gap_id": "GAP-DIF-FOSS-DIF_STRING_C-001",
+      "format": "DIF",
+      "status": "closed",
+      "spec_facts_count": 15,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-DIF-001",
+        "FACT-DIF-002",
+        "FACT-DIF-003",
+        "FACT-DIF-004",
+        "FACT-DIF-005"
+      ]
+    },
+    {
+      "gap_id": "GAP-DIF-FOSS-ADD_ROW-001",
+      "format": "DIF",
+      "status": "closed",
+      "spec_facts_count": 15,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-DIF-001",
+        "FACT-DIF-002",
+        "FACT-DIF-003",
+        "FACT-DIF-004",
+        "FACT-DIF-005"
+      ]
+    },
+    {
+      "gap_id": "GAP-DIF-FOSS-DELETE_ROW-001",
+      "format": "DIF",
+      "status": "closed",
+      "spec_facts_count": 15,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-DIF-001",
+        "FACT-DIF-002",
+        "FACT-DIF-003",
+        "FACT-DIF-004",
+        "FACT-DIF-005"
+      ]
+    },
+    {
+      "gap_id": "GAP-DIF-FOSS-EXPORT_TO_HT-001",
+      "format": "DIF",
+      "status": "closed",
+      "spec_facts_count": 15,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-DIF-001",
+        "FACT-DIF-002",
+        "FACT-DIF-003",
+        "FACT-DIF-004",
+        "FACT-DIF-005"
+      ]
+    },
+    {
+      "gap_id": "GAP-DIF-FOSS-FILTER_ROWS_-001",
+      "format": "DIF",
+      "status": "closed",
+      "spec_facts_count": 15,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-DIF-001",
+        "FACT-DIF-002",
+        "FACT-DIF-003",
+        "FACT-DIF-004",
+        "FACT-DIF-005"
+      ]
+    },
+    {
+      "gap_id": "GAP-DIF-FOSS-SORT_ROWS_BY-001",
+      "format": "DIF",
+      "status": "closed",
+      "spec_facts_count": 15,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-DIF-001",
+        "FACT-DIF-002",
+        "FACT-DIF-003",
+        "FACT-DIF-004",
+        "FACT-DIF-005"
+      ]
+    },
+    {
+      "gap_id": "GAP-DIF-FOSS-GET_ROW_AS_D-001",
+      "format": "DIF",
+      "status": "closed",
+      "spec_facts_count": 15,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-DIF-001",
+        "FACT-DIF-002",
+        "FACT-DIF-003",
+        "FACT-DIF-004",
+        "FACT-DIF-005"
+      ]
+    },
+    {
+      "gap_id": "GAP-DIF-FOSS-GET_HEADER_I-001",
+      "format": "DIF",
+      "status": "closed",
+      "spec_facts_count": 15,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-DIF-001",
+        "FACT-DIF-002",
+        "FACT-DIF-003",
+        "FACT-DIF-004",
+        "FACT-DIF-005"
+      ]
+    },
+    {
+      "gap_id": "GAP-DIF-FOSS-COUNT_DISTIN-001",
+      "format": "DIF",
+      "status": "closed",
+      "spec_facts_count": 15,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-DIF-001",
+        "FACT-DIF-002",
+        "FACT-DIF-003",
+        "FACT-DIF-004",
+        "FACT-DIF-005"
+      ]
+    },
+    {
+      "gap_id": "GAP-DIF-FOSS-DIF_AVG_NUME-001",
+      "format": "DIF",
+      "status": "closed",
+      "spec_facts_count": 15,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-DIF-001",
+        "FACT-DIF-002",
+        "FACT-DIF-003",
+        "FACT-DIF-004",
+        "FACT-DIF-005"
+      ]
+    },
+    {
+      "gap_id": "GAP-DIF-FOSS-DIF_ROW_LENG-001",
+      "format": "DIF",
+      "status": "closed",
+      "spec_facts_count": 15,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-DIF-001",
+        "FACT-DIF-002",
+        "FACT-DIF-003",
+        "FACT-DIF-004",
+        "FACT-DIF-005"
+      ]
+    },
+    {
+      "gap_id": "GAP-QOI-FOSS-QOI_IS_DARK-001",
+      "format": "QOI",
+      "status": "closed",
+      "spec_facts_count": 2,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-QOI-001",
+        "FACT-QOI-002"
+      ]
+    },
+    {
+      "gap_id": "GAP-QOI-FOSS-ENCODE_QOI-001",
+      "format": "QOI",
+      "status": "closed",
+      "spec_facts_count": 2,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-QOI-001",
+        "FACT-QOI-002"
+      ]
+    },
+    {
+      "gap_id": "GAP-QOI-FOSS-ENCODE_QOI_T-001",
+      "format": "QOI",
+      "status": "closed",
+      "spec_facts_count": 2,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-QOI-001",
+        "FACT-QOI-002"
+      ]
+    },
+    {
+      "gap_id": "GAP-QOI-FOSS-GET_ENCODER_-001",
+      "format": "QOI",
+      "status": "closed",
+      "spec_facts_count": 2,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-QOI-001",
+        "FACT-QOI-002"
+      ]
+    },
+    {
+      "gap_id": "GAP-QOI-FOSS-GET_CAPABILI-001",
+      "format": "QOI",
+      "status": "closed",
+      "spec_facts_count": 2,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-QOI-001",
+        "FACT-QOI-002"
+      ]
+    },
+    {
+      "gap_id": "GAP-QOI-FOSS-PARSE_QOI_ST-001",
+      "format": "QOI",
+      "status": "closed",
+      "spec_facts_count": 2,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-QOI-001",
+        "FACT-QOI-002"
+      ]
+    },
+    {
+      "gap_id": "GAP-QOI-FOSS-PARSE_QOI-001",
+      "format": "QOI",
+      "status": "closed",
+      "spec_facts_count": 2,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-QOI-001",
+        "FACT-QOI-002"
+      ]
+    },
+    {
+      "gap_id": "GAP-XCF-FOSS-XCF_IMAGE_DI-001",
+      "format": "XCF",
+      "status": "closed",
+      "spec_facts_count": 42,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-XCF-001",
+        "FACT-XCF-002",
+        "FACT-XCF-003",
+        "FACT-XCF-004",
+        "FACT-XCF-005"
+      ]
+    },
+    {
+      "gap_id": "GAP-XCF-FOSS-XCF_FILE_BYT-001",
+      "format": "XCF",
+      "status": "closed",
+      "spec_facts_count": 42,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-XCF-001",
+        "FACT-XCF-002",
+        "FACT-XCF-003",
+        "FACT-XCF-004",
+        "FACT-XCF-005"
+      ]
+    },
+    {
+      "gap_id": "GAP-XCF-FOSS-PARSE_XCF_ST-001",
+      "format": "XCF",
+      "status": "closed",
+      "spec_facts_count": 42,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-XCF-001",
+        "FACT-XCF-002",
+        "FACT-XCF-003",
+        "FACT-XCF-004",
+        "FACT-XCF-005"
+      ]
+    },
+    {
+      "gap_id": "GAP-XCF-FOSS-PARSE_XCF-001",
+      "format": "XCF",
+      "status": "closed",
+      "spec_facts_count": 42,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-XCF-001",
+        "FACT-XCF-002",
+        "FACT-XCF-003",
+        "FACT-XCF-004",
+        "FACT-XCF-005"
+      ]
+    },
+    {
+      "gap_id": "GAP-XCF-FOSS-GET_CAPABILI-001",
+      "format": "XCF",
+      "status": "closed",
+      "spec_facts_count": 42,
+      "resolved_count": 0,
+      "traceability": "NONE_RESOLVED",
+      "dangling": [
+        "FACT-XCF-001",
+        "FACT-XCF-002",
+        "FACT-XCF-003",
+        "FACT-XCF-004",
+        "FACT-XCF-005"
       ]
     },
     {
@@ -13259,30 +14310,6 @@
       ]
     },
     {
-      "gap_id": "GAP-XCF-FOSS-XCF_PIXEL_CO-001",
-      "format": "XCF",
-      "status": "closed",
-      "spec_facts_count": 2,
-      "resolved_count": 0,
-      "traceability": "NONE_RESOLVED",
-      "dangling": [
-        "FACT-XCF-001",
-        "FACT-XCF-002"
-      ]
-    },
-    {
-      "gap_id": "GAP-XCF-FOSS-XCF_BYTES_PE-001",
-      "format": "XCF",
-      "status": "closed",
-      "spec_facts_count": 2,
-      "resolved_count": 0,
-      "traceability": "NONE_RESOLVED",
-      "dangling": [
-        "FACT-XCF-001",
-        "FACT-XCF-002"
-      ]
-    },
-    {
       "gap_id": "GAP-XCF-FOSS-XCF_PIXEL_AR-001",
       "format": "XCF",
       "status": "closed",
@@ -13772,6 +14799,15 @@
       "gap_id": "GAP-DOTNET-SPEC-BEHAV-001",
       "format": "DOTNET",
       "status": "closed",
+      "spec_facts_count": 0,
+      "resolved_count": 0,
+      "traceability": "NO_REFS",
+      "dangling": []
+    },
+    {
+      "gap_id": "GAP-GOV-SKILL-ADOPT-001",
+      "format": "ALL",
+      "status": "DEFERRED",
       "spec_facts_count": 0,
       "resolved_count": 0,
       "traceability": "NO_REFS",

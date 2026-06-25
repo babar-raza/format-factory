@@ -1,0 +1,55 @@
+{
+  "version": "1.0",
+  "mission_id": "FORMAT-FACTORY-EXPERT-REVIEW-RECONCILIATION-001",
+  "generated_at": "2026-06-25",
+  "head": "ae7fa540ca763ed3da8c922a8fc9fde825e1a97b",
+  "pilots_executed": 6,
+  "pilots_passed": 4,
+  "pilots_with_open_findings": 2,
+  "pilots": [
+    {
+      "pilot_id": "PILOT-01",
+      "name": "State Reconciliation Verification",
+      "executed_at": "2026-06-25",
+      "verdict": "PASS",
+      "finding": "REC-A-001 and REC-F-001 RESOLVED by next-action.json repair and mission-state.json creation"
+    },
+    {
+      "pilot_id": "PILOT-02",
+      "name": "Skill Enforcement Gap Detection",
+      "executed_at": "2026-06-25",
+      "verdict": "SKILL_ENFORCEMENT_GAP_CONFIRMED",
+      "finding": "PROB-015 OPEN — 55/65 active skills prompt-only (10.8% code-enforced). GAP-GOV-SKILL-ADOPT-001 added."
+    },
+    {
+      "pilot_id": "PILOT-03",
+      "name": "False Blocker Reclassification Verification",
+      "executed_at": "2026-06-25",
+      "verdict": "PASS",
+      "finding": "REC-E-001 RESOLVED — PROB-PK05 and PROB-PY01 reclassified as FALSE_BLOCKER_RESOLVED with HEAD evidence"
+    },
+    {
+      "pilot_id": "PILOT-04",
+      "name": "Problem Register Scope Verification",
+      "executed_at": "2026-06-25",
+      "verdict": "PASS",
+      "finding": "REC-C-001 RESOLVED — 27-problem canonical register merges all scopes correctly (2 CRITICAL, 5 HIGH open)"
+    },
+    {
+      "pilot_id": "PILOT-05",
+      "name": "Gap Taxonomy Repair Verification",
+      "executed_at": "2026-06-25",
+      "verdict": "PASS",
+      "finding": "PROB-009 RESOLVED — 1207 MISSING categories repaired, 0 remaining. taxonomy_version=1.0."
+    },
+    {
+      "pilot_id": "PILOT-06",
+      "name": "SAL Chain Status Verification",
+      "executed_at": "2026-06-25",
+      "verdict": "PROB-010_CONFIRMED_OPEN",
+      "finding": "PROB-010 OPEN — 10/20 Python formats have broken SAL chain. Requires sal-pipeline-heal skill execution."
+    }
+  ],
+  "resolved_by_pilots": ["REC-A-001", "REC-C-001", "REC-E-001", "REC-F-001", "PROB-009"],
+  "confirmed_open_by_pilots": ["PROB-010", "PROB-015"]
+}

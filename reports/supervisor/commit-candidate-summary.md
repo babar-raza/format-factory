@@ -3,6 +3,33 @@
 **Status:** CANDIDATE — execution requires explicit user authorization (git commit is TRUE_EXTERNAL_GATE)
 **Based on:** Sprint series ending with FF-HEAL-QNAME-20260621-114042
 
+## ff-machinery-repair-20260624 Changes (added 2026-06-24)
+
+| File | Type | Description |
+|---|---|---|
+| `src/python/ndjson/models.py` | NEW | NdjsonDocument domain model — spec_qname="ndjson:record" |
+| `src/python/gnumeric/models.py` | NEW | GnumericDocument domain model — spec_qname="gnumeric:workbook" |
+| `src/python/toml/models.py` | NEW | TomlDocument domain model — spec_qname="toml:table" |
+| `src/python/csv/models.py` | NEW | CsvDocument domain model — spec_qname="csv:row" |
+| `src/python/fodt/exporters.py` | NEW | FodtToTxtExporter, FodtToMarkdownExporter |
+| `src/python/tsv/models.py` | NEW | TsvDocument domain model — spec_qname="tsv:row" |
+| `src/python/ndjson/__init__.py` | MODIFIED | Export NdjsonDocument |
+| `src/python/gnumeric/__init__.py` | MODIFIED | Export GnumericDocument |
+| `src/python/toml/__init__.py` | MODIFIED | Export TomlDocument |
+| `tests/python/ndjson/test_ndjson_document_model.py` | NEW | 23 passing tests |
+| `tests/python/gnumeric/test_gnumeric_document_model.py` | NEW | 37 tests |
+| `tests/python/toml/test_toml_document_model.py` | NEW | 37 tests |
+| `tests/python/csv_format/test_csv_document_model.py` | NEW | CSV model tests |
+| `tests/python/fodt/test_fodt_exporters.py` | NEW | FODT exporter tests |
+| `tests/python/tsv/test_tsv_document_model.py` | NEW | TSV model tests |
+| `tools/supervisor/write_plan_lock.py` | MODIFIED | Fix terminal_closed_plan return value |
+| `tests/supervisor/test_qname_ontology_generator.py` | MODIFIED | Fix test_fodp_finds_functions assertion |
+| `tests/supervisor/test_r170_actual_fixture_stale_repair.py` | MODIFIED | Fix import + target_path |
+| `plans/master-plan-memory.md` | MODIFIED | Add LEDGER-017 through LEDGER-021 |
+| `reports/r90/product-code-change-ledger.json` | MODIFIED | Add HO-RC002-MODELS entries |
+
+---
+
 ## FF-HEAL-QNAME-20260621-114042 Changes (added 2026-06-21)
 
 | File | Type | Description |

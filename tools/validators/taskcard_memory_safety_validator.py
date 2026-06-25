@@ -193,7 +193,7 @@ def run_all_checks(bundle_dir):
         if result:
             failures.append(result)
 
-    print(f"Taskcard Memory Safety Validator")
+    print("Taskcard Memory Safety Validator")
     print(f"Bundle: {bundle_dir}")
     print(f"Taskcards: {len(all_tcs)}")
     print(f"Checks run: {total_checks}")

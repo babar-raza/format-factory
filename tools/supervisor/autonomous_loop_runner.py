@@ -277,7 +277,7 @@ def check_continuation_allowed(signal: dict) -> tuple[bool, str]:
         return True, f"Continuation allowed: {cont_state}"
 
     if str(auto_cont).lower() == "false" or auto_cont is False:
-        return False, f"autonomous_continue is false"
+        return False, "autonomous_continue is false"
 
     return True, f"Continuation allowed (auto_continue={auto_cont})"
 
@@ -374,12 +374,45 @@ def _classify_item_executability(item: WorkItem) -> tuple[bool, str]:
 # ---------------------------------------------------------------------------
 
 def dispatch_product_gap_closure(item: WorkItem, evidence_root: Path) -> tuple[bool, str]:
-    """Execute a product gap closure task (reads gap from selected-product-gaps.json)."""
-    gap_path = REPO_ROOT / ".local" / "supervisor" / "selected-product-gaps.json"
-    result_note = f"Product gap closure task dispatched for: {item.description}"
+    """Execute a product gap closure task with authority preflight.
 
-    # Log the dispatch
+    TC-EXPAND-001a: replaced LOGISTICS_STUB with authority preflight gate.
+    Calls product_source_executor.run_authority_preflight() before logging.
+    BLOCK decision → returns (False, reason). ALLOW → logs with preflight_result.
+    """
+    sys.path.insert(0, str(SCRIPT_DIR))
+    from product_source_executor import run_authority_preflight  # noqa: PLC0415
+
+    gap_path = REPO_ROOT / ".local" / "supervisor" / "selected-product-gaps.json"
+
+    # Build item dict for preflight (maps WorkItem fields to preflight schema)
+    preflight_item: dict[str, Any] = {
+        "item_id": item.item_id,
+        "item_type": "PRODUCT_SOURCE",
+        "action_type": item.action_type,
+        "description": item.description,
+        "format_id": item.metadata.get("format_id") or item.metadata.get("format"),
+        "spec_fact_refs": item.metadata.get("spec_fact_refs", []),
+        "exception_classification": item.metadata.get("exception_classification", ""),
+        "exception_rationale": item.metadata.get("exception_rationale", ""),
+    }
+
+    preflight = run_authority_preflight(preflight_item)
+
     log_path = evidence_root / "raw-logs" / f"{item.item_id}-dispatch.json"
+    if preflight["decision"] == "BLOCK":
+        _write_json(log_path, {
+            "item_id": item.item_id,
+            "action_type": item.action_type,
+            "description": item.description,
+            "gap_source": str(gap_path),
+            "dispatched_at": _now_iso(),
+            "result": "BLOCKED",
+            "preflight_result": preflight,
+        })
+        return False, f"BLOCKED: authority preflight — {preflight['reason']}"
+
+    result_note = f"Product gap closure executed with authority preflight ALLOW for: {item.description}"
     _write_json(log_path, {
         "item_id": item.item_id,
         "action_type": item.action_type,
@@ -387,6 +420,7 @@ def dispatch_product_gap_closure(item: WorkItem, evidence_root: Path) -> tuple[b
         "gap_source": str(gap_path),
         "dispatched_at": _now_iso(),
         "result": "DISPATCHED",
+        "preflight_result": preflight,
         "note": result_note,
     })
     return True, result_note
@@ -406,16 +440,36 @@ def dispatch_ledger_update(item: WorkItem, evidence_root: Path) -> tuple[bool, s
 
 
 def dispatch_evidence_task(item: WorkItem, evidence_root: Path) -> tuple[bool, str]:
-    """Execute an evidence/declaration task."""
+    """Execute an evidence stub generation task via LocalDeterministicBackend.
+
+    TC-EXPAND-001b: replaced LOGISTICS_STUB with real LocalDeterministicBackend call.
+    Executes GENERATE_EVIDENCE_STUB action type which writes a stub JSON artifact.
+    """
+    sys.path.insert(0, str(SCRIPT_DIR / "backends"))
+    from local_deterministic_backend import LocalDeterministicBackend  # noqa: PLC0415
+
+    stub_target = str(evidence_root / "raw-logs" / f"{item.item_id}-evidence-stub.json")
+    action = {
+        "action_id": item.item_id,
+        "action_type": "GENERATE_EVIDENCE_STUB",
+        "target": stub_target,
+    }
+    backend = LocalDeterministicBackend()
+    backend_result = backend.execute(action, allowed_write_roots=[str(evidence_root)])
+
     log_path = evidence_root / "raw-logs" / f"{item.item_id}-dispatch.json"
     _write_json(log_path, {
         "item_id": item.item_id,
         "action_type": item.action_type,
         "description": item.description,
         "dispatched_at": _now_iso(),
-        "result": "DISPATCHED",
+        "result": backend_result.status,
+        "stub_target": stub_target,
+        "backend_errors": backend_result.errors,
+        "backend_exit_code": backend_result.exit_code,
     })
-    return True, f"Evidence task dispatched: {item.description}"
+    success = backend_result.status == "SUCCESS"
+    return success, f"Evidence stub {'generated' if success else 'FAILED'}: {stub_target}"
 
 
 def dispatch_agent_task(item: WorkItem, evidence_root: Path) -> tuple[bool, str]:
@@ -475,7 +529,7 @@ def dispatch_recompute(evidence_root: Path) -> tuple[bool, str]:
             encoding="utf-8",
         )
         if result.returncode == 0:
-            return True, f"RECOMPUTE_OK: capability maps refreshed (exit 0)"
+            return True, "RECOMPUTE_OK: capability maps refreshed (exit 0)"
         return False, f"RECOMPUTE_FAIL: exit {result.returncode} — {result.stderr[:200]}"
     except subprocess.TimeoutExpired:
         return False, "RECOMPUTE_TIMEOUT: capability_map_generator took >120s"
@@ -651,7 +705,7 @@ def run_loop(
             item.completed_at = _now_iso()
             result.items_consumed.append(item)
             items_consumed += 1
-            _log_result(f"    DRY_RUN: Item consumed (not dispatched)", "DRY")
+            _log_result("    DRY_RUN: Item consumed (not dispatched)", "DRY")
             continue
 
         try:
@@ -687,7 +741,7 @@ def run_loop(
 
         # Update queue state after each item (not terminal)
         write_queue_state(all_items, queue_state_path)
-        _log_result(f"    Queue state updated. Continuing...")
+        _log_result("    Queue state updated. Continuing...")
 
     # -- Step 5: Final state
     if result.stop_reason is None:
@@ -841,7 +895,7 @@ def main() -> int:
 
     # Summary
     print(f"\n{'='*60}")
-    print(f"LOOP RUNNER RESULT")
+    print("LOOP RUNNER RESULT")
     print(f"{'='*60}")
     print(f"  Items consumed : {len(result.items_consumed)}")
     print(f"  Items skipped  : {len(result.items_skipped)}")

@@ -1,0 +1,109 @@
+{
+  "run_id": "spec-authority-machinery-explosion-20260625-c6b2470",
+  "generated_at": "2026-06-25",
+  "pilots": [
+    {
+      "pilot_id": "PILOT-1",
+      "name": "FODS Positive Pilot — Full Chain Verification",
+      "format": "fods",
+      "purpose": "Confirm FODS chain is production-quality and document the template",
+      "type": "POSITIVE",
+      "pre_conditions": [
+        "FODS spec cache exists at .local/spec-cache/fods/1.3/",
+        "verified-facts.yaml has 4348+ entries",
+        "sal-facts-fods.json has 4988 entries",
+        "Compat/fods_document.py, fods_sheet.py, fods_cell.py exist with FACT-FODS-* citations"
+      ],
+      "steps": [
+        {
+          "step": 1,
+          "description": "Verify full chain artifact existence",
+          "command": "python tools/supervisor/authority_gate_validation.py --format-id fods --json",
+          "expected": {"authority_level_int": 6, "product_expansion_allowed": true}
+        },
+        {
+          "step": 2,
+          "description": "Count verified facts in workbench",
+          "command": "python -c \"import yaml; f=yaml.safe_load(open('.local/spec-cache/fods/1.3/workbench/verified-facts.yaml')); print(len(f.get('facts',[])))\"",
+          "expected": "4000+"
+        },
+        {
+          "step": 3,
+          "description": "Confirm FACT-FODS-001 code citation in Compat/",
+          "command": "grep -r 'FACT-FODS-001' src/python/fods/Compat/ --include='*.py'",
+          "expected": "At least 1 match in fods_document.py"
+        },
+        {
+          "step": 4,
+          "description": "Confirm behavioral test for FACT-FODS-001",
+          "command": ".venv/Scripts/pytest tests/python/fods/test_r125_fact_traceability.py -v",
+          "expected": "All tests pass; tests include behavioral assertions not just identifier checks"
+        },
+        {
+          "step": 5,
+          "description": "Negative test — temporarily create declaration without spec_fact_refs, verify V13 fires (AFTER Phase A repair)",
+          "command": "Create test declaration file + run governance_validators V13",
+          "expected": "V13 FAIL → blocks_sprint=True (after Phase A)",
+          "notes": "SKIP this step before Phase A repair — V13 won't fire yet"
+        },
+        {
+          "step": 6,
+          "description": "Run authority_conveyor for FODS",
+          "command": "python tools/supervisor/authority_conveyor.py --format-id fods --target-level 6",
+          "expected": "Returns gaps: FACT-FODS-002 through FACT-FODS-010 missing from proof graph"
+        }
+      ],
+      "evidence_output": ".local/spec-authority-machinery/spec-authority-machinery-explosion-20260625-c6b2470/pilot-1-fods/",
+      "classification": "CHAIN_INTACT_FOR_FACT_001",
+      "notes": "FODS is production-quality for FACT-FODS-001. 4987 remaining facts are P4 debt. Pilot confirms template chain is valid."
+    },
+    {
+      "pilot_id": "PILOT-2",
+      "name": "Gnumeric Bypass Pilot — Designed Exception Verification",
+      "format": "gnumeric",
+      "purpose": "Confirm Gnumeric bypass is architecturally correct (not a security hole), document exception path",
+      "type": "BYPASS_CHARACTERIZATION",
+      "pre_conditions": [
+        "Gnumeric spec-index.yaml exists at .local/spec-cache/gnumeric/v10/",
+        "verified-facts-review.yaml has exactly 3 structural facts",
+        "product-capability-matrix/poc-targets.yaml lists gnumeric"
+      ],
+      "steps": [
+        {
+          "step": 1,
+          "description": "Confirm Gnumeric is P1",
+          "command": "python tools/supervisor/authority_gate_validation.py --format-id gnumeric --json",
+          "expected": {"authority_level_int": 1, "product_expansion_allowed": false, "exception_classification": "schema_authority_available"}
+        },
+        {
+          "step": 2,
+          "description": "Confirm Gnumeric is in poc-targets",
+          "command": "grep -c 'gnumeric' product-capability-matrix/poc-targets.yaml",
+          "expected": "1+ (Gnumeric is registered)"
+        },
+        {
+          "step": 3,
+          "description": "Show hard-coded catalog bypass",
+          "command": "grep -A 20 '_CANDIDATE_CATALOG' tools/supervisor/product_task_selector.py | grep gnumeric",
+          "expected": "Gnumeric task entries in hard-coded catalog",
+          "notes": "This is the bypass — hard-coded tasks bypass P-level check entirely"
+        },
+        {
+          "step": 4,
+          "description": "Verify V13 PASSES for Gnumeric with exception_classification",
+          "command": "python -c \"from tools.supervisor.governance_validators import validate_spec_fact_refs_wired; ...\"",
+          "expected": "PASS with exception_classification=schema_authority_available"
+        },
+        {
+          "step": 5,
+          "description": "Classify bypass: DESIGNED vs STRUCTURAL",
+          "result": "DESIGNED — Gnumeric has no formal spec; P1 ceiling is correct; schema_authority_available exception is architecturally correct. The bypass is documented and intentional.",
+          "concern": "The bypass path in product_task_selector does NOT call authority_gate_validation.py — this means the P1 classification is never actually verified at task selection time. The exception_classification in evidence is asserted by the worker, not derived from authority_gate_validation. This is the structural gap to close in Phase A-004."
+        }
+      ],
+      "evidence_output": ".local/spec-authority-machinery/spec-authority-machinery-explosion-20260625-c6b2470/pilot-2-gnumeric/",
+      "classification": "DESIGNED_BYPASS_ARCHITECTURALLY_CORRECT_BUT_NOT_MACHINE_ENFORCED",
+      "notes": "Gnumeric exception is correct by design. But the exception is asserted by workers, not enforced by authority_gate_validation.py at task selection time. Phase A-004 closes this gap."
+    }
+  ]
+}

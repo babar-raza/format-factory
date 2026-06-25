@@ -15,8 +15,10 @@ from pathlib import Path
 REGISTRY = Path(".supervisor/knowledge/registry.yaml")
 
 
-def validate_knowledge_freshness(declaration: dict, repo_root: Path) -> dict:
+def validate_knowledge_freshness(declaration: dict, repo_root: Path | None = None) -> dict:
     """V68: Knowledge contract freshness check (WARN-only, never blocks sprint)."""
+    if repo_root is None:
+        repo_root = Path(__file__).resolve().parent.parent.parent
     try:
         import yaml
     except ImportError:

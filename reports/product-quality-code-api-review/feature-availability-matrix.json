@@ -1,0 +1,114 @@
+{
+  "sprint_id": "FORMAT-FACTORY-PRODUCT-CODE-API-QUALITY-REVIEW-PLAN-001",
+  "date": "2026-06-25",
+  "fa_levels": {
+    "FA-0": "Not available",
+    "FA-1": "Internal only or unproven",
+    "FA-2": "Public API exists but weak",
+    "FA-3": "Implemented and tested (basic case)",
+    "FA-4": "Implemented with edge/error/roundtrip tests",
+    "FA-5": "Professional with docs/examples/output proof"
+  },
+  "critical_gaps": [
+    {"product": "ZST (.NET)", "feature": "compress_bytes", "fa_level": "FA-0", "severity": "CRITICAL", "pq_id": "PQ-007"},
+    {"product": "ZST (.NET)", "feature": "decompress_bytes", "fa_level": "FA-0", "severity": "CRITICAL", "pq_id": "PQ-007"},
+    {"product": "ZST (.NET)", "feature": "ZstWriter class", "fa_level": "FA-0", "severity": "CRITICAL", "pq_id": "PQ-007"},
+    {"product": "FODP (Python)", "feature": "write_fodp", "fa_level": "FA-0", "severity": "HIGH", "pq_id": "PQ-009"},
+    {"product": "XCF (Python)", "feature": "write/export", "fa_level": "FA-0", "severity": "HIGH"},
+    {"product": "FODT (.NET)", "feature": "table operations", "fa_level": "FA-1", "severity": "MEDIUM", "pq_id": "PQ-012"},
+    {"product": "All .NET (except NetPBM)", "feature": "Load(Stream)", "fa_level": "FA-0", "severity": "MEDIUM", "pq_id": "PQ-008"},
+    {"product": "SYLK (Python)", "feature": "model-based edit", "fa_level": "FA-1", "severity": "MEDIUM"}
+  ],
+  "feature_matrix": {
+    "spreadsheet_load": {
+      "FODS_NET": "FA-4", "FODS_PY": "FA-4", "ODS_PY": "FA-4",
+      "SYLK_PY": "FA-3", "DIF_PY": "FA-3", "GNUMERIC_PY": "FA-4",
+      "CSV_NET": "FA-3", "CSV_PY": "FA-3", "TSV_NET": "FA-3", "TSV_PY": "FA-3"
+    },
+    "spreadsheet_typed_cells": {
+      "FODS_NET": "FA-4", "FODS_PY": "FA-3", "ODS_PY": "FA-3",
+      "SYLK_PY": "FA-2", "DIF_PY": "FA-2", "GNUMERIC_PY": "FA-3",
+      "CSV_NET": "FA-2", "CSV_PY": "FA-2", "TSV_NET": "FA-2", "TSV_PY": "FA-2"
+    },
+    "spreadsheet_multi_sheet": {
+      "FODS_NET": "FA-4", "FODS_PY": "FA-4", "ODS_PY": "FA-3",
+      "SYLK_PY": "FA-0", "DIF_PY": "FA-0", "GNUMERIC_PY": "FA-3",
+      "CSV_NET": "FA-0", "CSV_PY": "FA-0", "TSV_NET": "FA-0", "TSV_PY": "FA-0"
+    },
+    "spreadsheet_cell_crud": {
+      "FODS_NET": "FA-5", "FODS_PY": "FA-4", "ODS_PY": "FA-3",
+      "SYLK_PY": "FA-3", "DIF_PY": "FA-2", "GNUMERIC_PY": "FA-3",
+      "CSV_NET": "FA-3", "CSV_PY": "FA-3", "TSV_NET": "FA-3", "TSV_PY": "FA-3"
+    },
+    "spreadsheet_sheet_management": {
+      "FODS_NET": "FA-4", "FODS_PY": "FA-3", "ODS_PY": "FA-3",
+      "SYLK_PY": "FA-0", "DIF_PY": "FA-0", "GNUMERIC_PY": "FA-0",
+      "CSV_NET": "FA-0", "CSV_PY": "FA-0", "TSV_NET": "FA-0", "TSV_PY": "FA-0"
+    },
+    "spreadsheet_formula": {
+      "FODS_NET": "FA-3", "FODS_PY": "FA-2", "ODS_PY": "FA-1",
+      "SYLK_PY": "FA-0", "DIF_PY": "FA-0", "GNUMERIC_PY": "FA-0",
+      "CSV_NET": "FA-0", "CSV_PY": "FA-0", "TSV_NET": "FA-0", "TSV_PY": "FA-0"
+    },
+    "spreadsheet_export_csv": {
+      "FODS_NET": "FA-5", "FODS_PY": "FA-4", "ODS_PY": "FA-4",
+      "SYLK_PY": "FA-4", "DIF_PY": "FA-1", "GNUMERIC_PY": "FA-4",
+      "CSV_NET": "FA-3", "CSV_PY": "FA-3", "TSV_NET": "FA-3", "TSV_PY": "FA-2"
+    },
+    "spreadsheet_roundtrip": {
+      "FODS_NET": "FA-4", "FODS_PY": "FA-4", "ODS_PY": "FA-3",
+      "SYLK_PY": "FA-2", "DIF_PY": "FA-2", "GNUMERIC_PY": "FA-3",
+      "CSV_NET": "FA-2", "CSV_PY": "FA-2", "TSV_NET": "FA-2", "TSV_PY": "FA-2"
+    },
+    "document_paragraph_crud": {
+      "FODT_NET": "FA-4", "FODT_PY": "FA-4", "ODT_PY": "FA-3", "ABW_PY": "FA-4"
+    },
+    "document_headings": {
+      "FODT_NET": "FA-4", "FODT_PY": "FA-3", "ODT_PY": "FA-2", "ABW_PY": "FA-0"
+    },
+    "document_tables": {
+      "FODT_NET": "FA-1", "FODT_PY": "FA-2", "ODT_PY": "FA-1", "ABW_PY": "FA-0",
+      "note": "FODT .NET Spec/Table/* exists but wiring unconfirmed (PQ-012)"
+    },
+    "document_text_export": {
+      "FODT_NET": "FA-4", "FODT_PY": "FA-4", "ODT_PY": "FA-2", "ABW_PY": "FA-3"
+    },
+    "document_html_export": {
+      "FODT_NET": "FA-4", "FODT_PY": "FA-4", "ODT_PY": "FA-1", "ABW_PY": "FA-1"
+    },
+    "document_markdown_export": {
+      "FODT_NET": "FA-4", "FODT_PY": "FA-4", "ODT_PY": "FA-0", "ABW_PY": "FA-0"
+    },
+    "image_load_file": {
+      "NETPBM_NET": "FA-4", "PBM_PY": "FA-4", "PGM_PY": "FA-4", "PPM_PY": "FA-4", "QOI_PY": "FA-3", "XCF_PY": "FA-4"
+    },
+    "image_load_stream": {
+      "NETPBM_NET": "FA-4", "PBM_PY": "FA-0", "PGM_PY": "FA-0", "PPM_PY": "FA-0", "QOI_PY": "FA-0", "XCF_PY": "FA-0"
+    },
+    "image_transforms": {
+      "NETPBM_NET": "FA-4", "PBM_PY": "FA-0", "PGM_PY": "FA-0", "PPM_PY": "FA-0", "QOI_PY": "FA-0", "XCF_PY": "FA-0",
+      "note": ".NET has flip/rotate/resize/crop; Python image formats have none"
+    },
+    "image_format_conversion": {
+      "NETPBM_NET": "FA-4", "PBM_PY": "FA-4", "PGM_PY": "FA-4", "PPM_PY": "FA-3", "QOI_PY": "FA-0", "XCF_PY": "FA-0"
+    },
+    "image_binary_format": {
+      "NETPBM_NET": "FA-3", "PBM_PY": "FA-4", "PGM_PY": "FA-4", "PPM_PY": "FA-4", "QOI_PY": "FA-3", "XCF_PY": "FA-3"
+    },
+    "compression_compress": {
+      "ZST_NET": "FA-0", "ZST_PY": "FA-4",
+      "note": ".NET ZST has NO compress capability (PQ-007)"
+    },
+    "compression_decompress": {
+      "ZST_NET": "FA-0", "ZST_PY": "FA-4",
+      "note": ".NET ZST has NO decompress capability (PQ-007)"
+    },
+    "compression_roundtrip": {
+      "ZST_NET": "FA-0", "ZST_PY": "FA-4",
+      "note": "Python ZST is the only ZST product with roundtrip"
+    },
+    "compression_frame_inspect": {
+      "ZST_NET": "FA-3", "ZST_PY": "FA-3"
+    }
+  }
+}

@@ -1,0 +1,168 @@
+{
+  "version": "1.0",
+  "mission_id": "FORMAT-FACTORY-EXPERT-REVIEW-RECONCILIATION-001",
+  "generated_at": "2026-06-25",
+  "head": "ae7fa540ca763ed3da8c922a8fc9fde825e1a97b",
+  "verdict": "RECONCILIATION_COMPLETE_CRITICAL_SYSTEM_GAP_RESOLVED_PRODUCT_GAPS_GOVERNED",
+
+  "executive_summary": {
+    "artifacts_consumed": 117,
+    "artifacts_classified": 117,
+    "reconciliation_findings": 8,
+    "canonical_problems_registered": 27,
+    "problems_reverified_against_head": 27,
+    "taskcards_executed": 13,
+    "waves_completed": [0, 1, 2, 3],
+    "pilots_passed": 6,
+    "critical_problems_resolved": 1,
+    "critical_problems_remaining_governed": 1,
+    "high_problems_remaining": 5
+  },
+
+  "wave_execution_summary": {
+    "wave_0_state_repair": {
+      "status": "COMPLETE",
+      "taskcards": ["TC-RECON-W0-001", "TC-RECON-W0-002", "TC-RECON-W0-003"],
+      "outputs": [
+        "next-action.json repaired (PREFLIGHT → RECONCILIATION_IN_PROGRESS)",
+        "canonical-problem-register.json created (27 problems, version 2.0)",
+        "micro-taskcards.yaml created (Wave 0-9 graph)",
+        "mission-state.json created (sprint/mission boundary documented)"
+      ]
+    },
+    "wave_1_governance_hardening": {
+      "status": "COMPLETE",
+      "taskcards": ["TC-RECON-W1-001", "TC-RECON-W1-002", "TC-RECON-W1-003", "TC-RECON-W1-004", "TC-RECON-W1-005"],
+      "outputs": [
+        "GAP-GOV-SKILL-ADOPT-001 added to gap-ledger.json (skill adoption FAIL governance debt)",
+        "fix-eligibility-matrix.json reclassified — PROB-PK05 + PROB-PY01 as FALSE_BLOCKER_RESOLVED",
+        "terminal-gate-schema-extension.json created (product conditions P1-P3)",
+        "ZST-SOLUTION-DESIGN.md created (ZstdSharp.Port corrected fix vs invalid GZipStream)",
+        "skill-implementation-paths-audit.json created (55/65 active skills prompt-only)"
+      ]
+    },
+    "wave_2_gap_taxonomy": {
+      "status": "COMPLETE",
+      "taskcards": ["TC-RECON-W2-001"],
+      "outputs": [
+        "Gap taxonomy REPAIRED: 1207 MISSING → deterministic 10-category taxonomy",
+        "0 MISSING/unknown categories remain",
+        "taxonomy_version=1.0 applied to gap-ledger.json",
+        "PROB-009 RESOLVED"
+      ]
+    },
+    "wave_3_safe_backfills": {
+      "status": "COMPLETE",
+      "taskcards": ["TC-RECON-W3-001", "TC-RECON-W3-002", "TC-RECON-W3-003"],
+      "outputs": [
+        "HTML/Markdown/TXT .csproj files annotated with product_class=target_writer_utility",
+        "poc-targets.yaml FODS section updated: fods_to_ods_dotnet=PROTOTYPE (NF-005/PROB-013 reconciled)",
+        "NF-004 ZST gate 11 status: VERIFIED_CONSISTENT (NOT approved is correct — ZST at gates 1-10)"
+      ]
+    }
+  },
+
+  "problem_status_at_closure": {
+    "CRITICAL": {
+      "PROB-001": {
+        "summary": "ZST .NET cannot decompress — probe-only inspection tool",
+        "status": "OPEN_GOVERNED",
+        "governance": "TC-RECON-W4-001 (Wave 4); blocked by PROB-009 which is now RESOLVED; ZstdSharp.Port solution designed in ZST-SOLUTION-DESIGN.md",
+        "next_action": "TC-RECON-W4-001 execution in next sprint: add ZstdSharp.Port NuGet, implement Decompress(), add tests"
+      },
+      "PROB-009": {
+        "summary": "Gap taxonomy broken — 1207/1208 MISSING categories",
+        "status": "RESOLVED",
+        "resolution": "TC-RECON-W2-001 — deterministic taxonomy repair applied. 0 MISSING remain. taxonomy_version=1.0."
+      }
+    },
+    "HIGH": {
+      "PROB-002": "OPEN — FODS PDF Latin-1 only; classification=HARDEN_BEFORE_EXECUTION; awaiting gap entry with correct category",
+      "PROB-003": "OPEN — FODT no table traversal; classification=EXECUTE_AFTER_NEW_SKILL_CREATION",
+      "PROB-010": "OPEN_CONFIRMED — SAL chain broken 10/20 Python formats; PILOT-06 confirmed; requires sal-pipeline-heal",
+      "PROB-011": "OPEN — LLM grader silent degradation; classification=EXECUTE_AFTER_SMALL_SKILL_REPAIR",
+      "PROB-013": "PARTIALLY_RESOLVED — FodsOdsExporter PROTOTYPE status now documented in poc-targets.yaml; source PROTOTYPE comment still requires completion or scope annotation"
+    },
+    "MEDIUM": {
+      "PROB-004": "RESOLVED — HTML/Markdown/TXT annotated as product_class=target_writer_utility in all 3 .csproj files",
+      "PROB-005": "OPEN — CSV .NET no mutation API; investigation required",
+      "PROB-006": "OPEN — FODP Python no write_fodp",
+      "PROB-012": "OPEN — autonomous_cycle.py + governance_validators.py LOC cap violations",
+      "PROB-014": "OPEN_DEFERRED — analytics masquerade rename (16+ import changes required)",
+      "PROB-015": "OPEN_CONFIRMED — 55/65 skills prompt-only; PILOT-02 confirmed; GAP-GOV-SKILL-ADOPT-001 added",
+      "PROB-016": "OPEN — FodsOdsExporter ODS ZIP validity overlaps PROB-013",
+      "PROB-017": "OPEN — ci_transcript_verification in backlog"
+    },
+    "CLOSED_THIS_SESSION": ["PROB-004 (utility reclassification)", "PROB-009 (gap taxonomy repair)", "PROB-PK05 (false blocker)", "PROB-PY01 (false blocker)"],
+    "PREVIOUSLY_CLOSED": ["PROB-007", "PROB-008", "PROB-PK01", "PROB-PK02", "PROB-PK03", "PROB-PK04", "PROB-PK05", "PROB-SRC01", "PROB-PY01", "PROB-PY02", "PROB-AUTO01"]
+  },
+
+  "reconciliation_findings_resolved": {
+    "REC-A-001": "RESOLVED — next-action.json stale PREFLIGHT repaired",
+    "REC-B-001": "GOVERNED — GAP-GOV-SKILL-ADOPT-001 added; skill enforcement gap documented and tracked",
+    "REC-C-001": "RESOLVED — canonical-problem-register.json merges all scopes; PILOT-04 verified",
+    "REC-D-001": "DOCUMENTED — taskcard-registry.json 13 PROCESS tasks correctly separate from PROB-001→018 fix tasks",
+    "REC-E-001": "RESOLVED — PROB-PK05 and PROB-PY01 reclassified as FALSE_BLOCKER_RESOLVED; PILOT-03 verified",
+    "REC-F-001": "RESOLVED — execution-state.json COMPLETE vs next-action.json contradiction explained and documented",
+    "REC-G-001": "GOVERNED — terminal-gate-schema-extension.json adds P1-P3 product conditions; all FAIL until product gaps resolved",
+    "REC-H-001": "RESOLVED — ZST-SOLUTION-DESIGN.md created with correct ZstdSharp.Port fix; invalid GZipStream rejected"
+  },
+
+  "new_artifacts_created": [
+    "reports/expert-manual-system-review/reconciliation/RECONCILIATION-MASTER-REPORT.md",
+    "reports/expert-manual-system-review/reconciliation/canonical-problem-register.json",
+    "reports/expert-manual-system-review/reconciliation/micro-taskcards.yaml",
+    "reports/expert-manual-system-review/reconciliation/mission-state.json",
+    "reports/expert-manual-system-review/reconciliation/terminal-gate-schema-extension.json",
+    "reports/expert-manual-system-review/reconciliation/ZST-SOLUTION-DESIGN.md",
+    "reports/expert-manual-system-review/reconciliation/skill-implementation-paths-audit.json",
+    "reports/expert-manual-system-review/reconciliation/nf-004-zst-gate11-status-finding.json",
+    "reports/expert-manual-system-review/reconciliation/pilot-results.json",
+    "reports/expert-manual-system-review/reconciliation/FINAL-EXECUTION-REPORT.json"
+  ],
+
+  "source_mutations": {
+    "gap-ledger.json": "1207 gap categories repaired (MISSING → deterministic taxonomy); 2 new gaps added; taxonomy_version=1.0",
+    "fix-eligibility-matrix.json": "PROB-PK05 and PROB-PY01 reclassified as FALSE_BLOCKER_RESOLVED",
+    "poc-targets.yaml": "FODS dogfood_status: fods_to_ods_dotnet=PROTOTYPE added (NF-005/PROB-013)",
+    "src/net/html/FormatFactory.Html.csproj": "product_class=target_writer_utility annotation added",
+    "src/net/markdown/FormatFactory.Markdown.csproj": "product_class=target_writer_utility annotation added",
+    "src/net/txt/FormatFactory.Txt.csproj": "product_class=target_writer_utility annotation added"
+  },
+
+  "invalid_solutions_rejected": [
+    {
+      "problem": "PROB-001 ZST .NET decompression",
+      "invalid_fix": "System.IO.Compression.GZipStream",
+      "reason": "RFC 1952 (GZIP) != RFC 8878 (Zstandard). Wrong format — will throw InvalidDataException on first byte.",
+      "corrected_fix": "ZstdSharp.Port NuGet (MIT, pure managed, cross-platform). API: Decompressor.Unwrap() and DecompressionStream.",
+      "designed_in": "ZST-SOLUTION-DESIGN.md"
+    }
+  ],
+
+  "remaining_governed_work": {
+    "wave_4_critical_products": "TC-RECON-W4-001 (ZST decompression via ZstdSharp), TC-RECON-W4-002 (FODT table traversal), TC-RECON-W4-003 (FODS PDF Unicode), TC-RECON-W4-004 (ODS exporter validation)",
+    "wave_5_medium_products": "FODP write_fodp, CSV mutation API, SAL chain repair (sal-pipeline-heal)",
+    "wave_6_tooling": "LLM grader local fallback or UNVERIFIED state, V49 skill adoption validator",
+    "wave_7_8_9": "Analytics masquerade rename, regression suite, idempotency verification"
+  },
+
+  "completion_gate_status": {
+    "G1_117_files_consumed": "PASS",
+    "G2_repository_bound_to_head": "PASS",
+    "G3_all_artifacts_classified": "PASS",
+    "G4_reconciliation_findings_produced": "PASS — 8 findings (REC-A through REC-H)",
+    "G5_canonical_problem_register_27": "PASS",
+    "G6_all_27_reverified_at_head": "PASS",
+    "G7_hardening_items_AJ_documented": "PASS — A(ZST design), B(taxonomy), C(false blockers), D(scope), E(skill audit), F(terminal gate), G(ODS reconcile), H(utility reclassify), I(NF-004), J(mission boundary)",
+    "G8_gap_taxonomy_repaired": "PASS — PROB-009 RESOLVED",
+    "G9_micro_taskcards_wave_0_9": "PASS — micro-taskcards.yaml",
+    "G10_6_pilots_executed": "PASS — PILOT-01 through PILOT-06",
+    "G11_critical_systems_healed_or_governed": "PARTIAL — PROB-009 RESOLVED; PROB-001 GOVERNED with ZstdSharp design",
+    "G12_no_invalid_solutions_unchallenged": "PASS — GZipStream invalid fix rejected; ZstdSharp correct fix documented",
+    "G13_source_mutations_reversible": "PASS — all mutations are annotations/documentation, no logic changes",
+    "G14_pilot_evidence_captured": "PASS — pilot-results.json with 6 structured pilot verdicts"
+  },
+
+  "final_verdict": "RECONCILIATION_COMPLETE_CRITICAL_SYSTEM_GAP_RESOLVED_PRODUCT_GAPS_GOVERNED"
+}

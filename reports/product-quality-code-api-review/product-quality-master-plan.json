@@ -1,0 +1,102 @@
+{
+  "sprint_id": "FORMAT-FACTORY-PRODUCT-CODE-API-QUALITY-REVIEW-PLAN-001",
+  "date": "2026-06-25",
+  "overall_verdict": "POC_CANDIDATE_WITH_GAPS",
+  "products_reviewed": 30,
+  "problems_identified": 20,
+  "release_blockers": 8,
+  "dotnet_products": {
+    "count": 10,
+    "commercial_candidates": ["FODS .NET", "FODT .NET", "NetPBM .NET"],
+    "poc_candidates": ["NDJSON .NET"],
+    "demo_prototypes": ["CSV .NET", "TSV .NET", "ZST .NET"],
+    "not_products": ["HTML .NET", "Markdown .NET", "TXT .NET"],
+    "gate11_status": "NOT_APPROVED",
+    "gate11_approver": "Babar Raza"
+  },
+  "python_products": {
+    "count": 20,
+    "py4_release_candidates": ["FODS Python", "FODT Python"],
+    "py3_production_usable": [
+      "ODS", "ODT", "ZST", "NDJSON", "TOML", "CSV", "TSV",
+      "SYLK", "DIF", "GNUMERIC", "ABW", "FODG", "PBM", "PGM", "PPM"
+    ],
+    "py2_needs_work": ["QOI", "XCF", "FODP"]
+  },
+  "critical_problems": [
+    {
+      "id": "PQ-007",
+      "severity": "CRITICAL",
+      "product": "ZST .NET",
+      "summary": "No compress/decompress/write capability — pure read-only DTO"
+    },
+    {
+      "id": "PQ-006",
+      "severity": "HIGH",
+      "product": "FODS .NET",
+      "summary": "csproj claims Gate 11 approved; source confirms NOT approved"
+    },
+    {
+      "id": "PQ-002",
+      "severity": "HIGH",
+      "product": "FODS Python",
+      "summary": "Dual API (dict functions + class API) with no guidance"
+    }
+  ],
+  "fix_sprints": [
+    {
+      "id": "QF-1",
+      "name": "Release Blockers",
+      "priority": "P0",
+      "problems_addressed": ["PQ-007", "PQ-006", "PQ-002", "PQ-009"],
+      "estimated_effort": "M-L"
+    },
+    {
+      "id": "QF-2",
+      "name": "Packaging Completeness",
+      "priority": "P1",
+      "problems_addressed": ["PQ-004", "PQ-005", "PQ-014"],
+      "estimated_effort": "L-XL"
+    },
+    {
+      "id": "QF-3",
+      "name": "API Surface Cleanup",
+      "priority": "P1-P2",
+      "problems_addressed": ["PQ-001", "PQ-008", "PQ-010", "PQ-011", "PQ-018"],
+      "estimated_effort": "L"
+    },
+    {
+      "id": "QF-4",
+      "name": "Examples and Documentation",
+      "priority": "P2",
+      "problems_addressed": ["PQ-003", "PQ-019", "PQ-015"],
+      "estimated_effort": "M"
+    },
+    {
+      "id": "QF-5",
+      "name": "Deferred Quality",
+      "priority": "P3",
+      "problems_addressed": ["PQ-013", "PQ-016", "PQ-017", "PQ-020"],
+      "estimated_effort": "XL"
+    }
+  ],
+  "after_all_fix_sprints": {
+    "fods_net_expected_score": 4.3,
+    "fodt_net_expected_score": 4.2,
+    "netpbm_net_expected_score": 4.3,
+    "zst_net_expected_score": 3.8,
+    "fods_python_expected_level": "PY-5",
+    "fodt_python_expected_level": "PY-5",
+    "python_average_expected_level": "PY-4",
+    "p0_problems_remaining": 0,
+    "p1_problems_remaining": 0
+  },
+  "phases_complete": {
+    "phase_a_product_inventory": "COMPLETE",
+    "phase_b_deep_review": "COMPLETE",
+    "phase_c_dry_run": "READY",
+    "phase_d_live_readonly": "PENDING",
+    "phase_e_pilot_fix": "PENDING",
+    "phase_f_unified_fixes": "PENDING"
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "sprint_id": "FORMAT-FACTORY-PRODUCT-CODE-API-QUALITY-REVIEW-PLAN-001",
+  "date": "2026-06-25",
+  "total_risks": 17,
+  "by_severity": {"CRITICAL": 2, "HIGH": 7, "MEDIUM": 6, "LOW": 2},
+  "risks": [
+    {
+      "id": "RISK-001", "severity": "CRITICAL", "pq_id": "PQ-007",
+      "product": "ZST .NET", "status": "OPEN", "fix_sprint": "QF-1",
+      "summary": "No compress/decompress capability — ZstDocument is pure read-only DTO"
+    },
+    {
+      "id": "RISK-002", "severity": "CRITICAL", "pq_id": "PQ-006",
+      "product": "FODS .NET", "status": "OPEN", "fix_sprint": "QF-1",
+      "summary": "csproj claims Gate 11 approved; source confirms NOT approved"
+    },
+    {
+      "id": "RISK-003", "severity": "HIGH", "pq_id": "PQ-001",
+      "product": "All Python (20)", "status": "OPEN", "fix_sprint": "QF-3",
+      "summary": "Wildcard star-imports expose 50+ names including internals"
+    },
+    {
+      "id": "RISK-004", "severity": "HIGH", "pq_id": "PQ-002",
+      "product": "FODS Python", "status": "OPEN", "fix_sprint": "QF-1",
+      "summary": "Dual API (dict + class) with no guidance for users"
+    },
+    {
+      "id": "RISK-005", "severity": "HIGH", "pq_id": "PQ-004",
+      "product": "All Python (20)", "status": "OPEN", "fix_sprint": "QF-2",
+      "summary": "pyproject.toml missing authors, urls, keywords, classifiers, readme"
+    },
+    {
+      "id": "RISK-006", "severity": "HIGH", "pq_id": "PQ-005",
+      "product": "All .NET (10)", "status": "OPEN", "fix_sprint": "QF-2",
+      "summary": "README.md referenced in csproj but does not exist"
+    },
+    {
+      "id": "RISK-007", "severity": "HIGH", "pq_id": "PQ-009",
+      "product": "FODP Python", "status": "OPEN", "fix_sprint": "QF-1",
+      "summary": "Read-only limitation undocumented; consumer_roundtrip.py name misleading"
+    },
+    {
+      "id": "RISK-008", "severity": "HIGH", "pq_id": "PQ-014",
+      "product": "All 30 products", "status": "OPEN", "fix_sprint": "QF-2",
+      "summary": "No README.md for any product"
+    },
+    {
+      "id": "RISK-009", "severity": "HIGH", "pq_id": "PQ-015",
+      "product": "HTML/Markdown/TXT .NET", "status": "OPEN", "fix_sprint": "QF-4",
+      "summary": "Writer helpers listed as standalone products"
+    },
+    {
+      "id": "RISK-010", "severity": "MEDIUM", "pq_id": "PQ-008",
+      "product": "FODS .NET, FODT .NET", "status": "OPEN", "fix_sprint": "QF-3",
+      "summary": "No Load(Stream) overload — cannot use in in-memory workflows"
+    },
+    {
+      "id": "RISK-011", "severity": "MEDIUM", "pq_id": "PQ-010",
+      "product": "NDJSON .NET", "status": "OPEN", "fix_sprint": "QF-3",
+      "summary": "NdjsonDocument exposes raw JsonElement — not a typed domain model"
+    },
+    {
+      "id": "RISK-012", "severity": "MEDIUM", "pq_id": "PQ-019",
+      "product": "All Python (20)", "status": "OPEN", "fix_sprint": "QF-4",
+      "summary": "No CLI entry points — reduced FOSS usability"
+    },
+    {
+      "id": "RISK-013", "severity": "MEDIUM", "pq_id": "PQ-003",
+      "product": "All Python examples", "status": "OPEN", "fix_sprint": "QF-4",
+      "summary": "Examples use dev-path imports — not runnable from installed package"
+    },
+    {
+      "id": "RISK-014", "severity": "MEDIUM", "pq_id": "PQ-017",
+      "product": "FODS .NET, FODT .NET, NetPBM .NET", "status": "OPEN", "fix_sprint": "QF-5",
+      "summary": "Test files named by sprint (R87, R100) — not discoverable by feature"
+    },
+    {
+      "id": "RISK-015", "severity": "MEDIUM", "pq_id": "PQ-016",
+      "product": "All Python", "status": "OPEN", "fix_sprint": "QF-5",
+      "summary": "_shared/ dead abstraction — exists but unused by all formats"
+    },
+    {
+      "id": "RISK-016", "severity": "LOW", "pq_id": "PQ-013",
+      "product": "NetPBM .NET", "status": "OPEN", "fix_sprint": "QF-5",
+      "summary": "NetpbmExporter within-family scope not documented"
+    },
+    {
+      "id": "RISK-017", "severity": "LOW", "pq_id": "PQ-020",
+      "product": "All Python (20)", "status": "OPEN", "fix_sprint": "QF-5",
+      "summary": "No .pyi type stubs — poor IDE support"
+    }
+  ]
+}

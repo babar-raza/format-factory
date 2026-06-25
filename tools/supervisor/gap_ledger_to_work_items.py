@@ -1,4 +1,12 @@
-"""gap_ledger_to_work_items.py — Phase E (FF-FORENSIC-AUDIT-20260623 / TC-CAPABILITY-REPAIR-002)
+"""gap_ledger_to_work_items.py — Standalone CLI tool (NOT imported by supervisor pipeline).
+
+TC-ORPHAN-RESOLVE-001: This file is a standalone CLI batch compiler and is NOT wired
+into the supervisor pipeline. For supervisor integration, use capability_feature_compiler.py
+(the active compiler, called from autonomous_cycle.py:1481). This file's gap→work_item
+logic is duplicated there.
+
+Original docstring retained below:
+Phase E (FF-FORENSIC-AUDIT-20260623 / TC-CAPABILITY-REPAIR-002)
 
 Batch compiler: reads gap-ledger.json → converts open gaps to next-work-items.json format.
 This is the capability-to-feature compiler Phase 2 implementation.
@@ -174,7 +182,7 @@ def run(
     print(f"Items selected: {len(work_items)}")
 
     if work_items:
-        print(f"\nTop 5 work items (by priority):")
+        print("\nTop 5 work items (by priority):")
         for item in work_items[:5]:
             print(f"  [{item['priority']:3d}] {item['item_id']}: {item['title'][:60]}")
 

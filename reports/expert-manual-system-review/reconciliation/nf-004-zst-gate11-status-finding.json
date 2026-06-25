@@ -1,0 +1,25 @@
+{
+  "finding_id": "NF-004",
+  "taskcard": "TC-RECON-W3-003",
+  "category": "DOTNET_COMMERCIAL",
+  "severity": "LOW",
+  "head_status": "VERIFIED_CONSISTENT",
+  "summary": "ZST .csproj header 'NOT approved' is accurate — NOT an inconsistency",
+  "investigation": {
+    "zst_parser_header": "Gate 11 status: commercial_readiness_in_progress (NOT approved)",
+    "zst_document_header": "Gate 11 status: commercial_readiness_in_progress (NOT approved)",
+    "poc_targets_zst": {
+      "gates_passed": "1-10",
+      "gate_10_status": "local_release_candidate_ready",
+      "gate_11_status": "NOT_PRESENT (ZST has not passed Gate 11)"
+    },
+    "fods_for_comparison": {
+      "gates_passed": "1-11",
+      "gate_11_status": "APPROVED",
+      "gate_11_g11g": "APPROVED_BY_BABAR_RAZA_2026_06_05"
+    }
+  },
+  "verdict": "CONSISTENT — ZstParser.cs header correctly reflects that ZST has NOT passed Gate 11. The language difference from FODS/FODT/Netpbm is because those products DID pass Gate 11 (2026-06-05). ZST is at a different lifecycle stage (gates 1-10 only). No fix required.",
+  "action_taken": "No source change required. NF-004 reclassified from OPEN to VERIFIED_CONSISTENT. Document that ZST Gate 11 remains open pending PROB-001 (decompression) resolution.",
+  "remaining_blocker": "PROB-001 (ZST .NET no decompression) must be resolved before ZST can be considered for Gate 11 submission. ZstdSharp.Port solution in ZST-SOLUTION-DESIGN.md."
+}

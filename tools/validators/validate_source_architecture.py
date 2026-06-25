@@ -260,7 +260,7 @@ def scan(src_root: Path, baseline: dict, repo_root: Path) -> dict:
                     items.append({
                         "file": rel_posix,
                         "rule": "RULE-AM-003-WORSENED",
-                        "description": f"Known violation grew beyond baseline_loc_cap",
+                        "description": "Known violation grew beyond baseline_loc_cap",
                         "current": loc,
                         "cap": cap,
                         "status": "WARN",
@@ -411,7 +411,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.json_out:
         print(json.dumps(result, indent=2))
     else:
-        print(f"=== validate_source_architecture ===")
+        print("=== validate_source_architecture ===")
         print(f"Result: {result['result']}  |  {result['summary']}")
         print(f"Blocks sprint: {result['blocks_sprint']}")
         if result["items"]:

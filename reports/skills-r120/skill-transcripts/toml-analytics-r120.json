@@ -1,0 +1,31 @@
+{
+  "skill_id": "add-analytics-function",
+  "sprint_id": "ff-toml-r120-20260625",
+  "invocation_timestamp": "2026-06-25T01:10:00",
+  "format_id": "toml",
+  "action": "add_analytics_functions",
+  "functions_added": [
+    "toml_has_arrays",
+    "toml_has_nested_tables",
+    "toml_scalar_key_count"
+  ],
+  "gaps_closed": [
+    "GAP-TOML-FOSS-HAS_ARRAYS-001",
+    "GAP-TOML-FOSS-HAS_NESTED_T-001",
+    "GAP-TOML-FOSS-SCALAR_KEY_C-001",
+    "GAP-TOML-FOSS-IS_EMPTY-001"
+  ],
+  "code_changes": [
+    "src/python/toml/config_document.py"
+  ],
+  "test_additions": [
+    "tests/python/toml_format/test_r120_toml_gap_closure.py"
+  ],
+  "validation_command": ".venv/Scripts/pytest tests/python/toml_format/test_r120_toml_gap_closure.py -v",
+  "validation_result": "31 passed, 0 failed",
+  "evidence_paths": [
+    "tests/python/toml_format/test_r120_toml_gap_closure.py",
+    "src/python/toml/config_document.py"
+  ],
+  "verdict": "PASS"
+}

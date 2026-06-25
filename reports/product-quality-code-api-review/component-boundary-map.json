@@ -1,0 +1,154 @@
+{
+  "sprint_id": "FORMAT-FACTORY-PRODUCT-CODE-API-QUALITY-REVIEW-PLAN-001",
+  "date": "2026-06-25",
+  "description": "Component boundary map showing which source files implement which architectural responsibilities per product",
+  "component_roles": {
+    "PARSER": "Reads file/bytes/stream; returns in-memory model",
+    "MODEL": "Typed domain data containers (classes/dataclasses)",
+    "EDIT": "Mutation operations on in-memory model",
+    "WRITER": "Serializes in-memory model back to file format",
+    "EXPORTER": "Converts to a DIFFERENT target format",
+    "VALIDATION": "Format invariant checking",
+    "EXCEPTION": "Custom exception types",
+    "FACADE": "Public entry point hiding internal complexity",
+    "ENTRY_POINT": "Package/namespace root (namespace in .NET, __init__.py in Python)"
+  },
+  "products": {
+    "dotnet_fods": {
+      "PARSER": "src/net/fods/FodsParser.cs",
+      "MODEL": ["src/net/fods/Model/FodsCell.cs", "src/net/fods/Model/FodsRow.cs", "src/net/fods/Model/FodsSheet.cs"],
+      "EDIT": "src/net/fods/FodsDocument.cs (partial 1)",
+      "WRITER": "src/net/fods/FodsWriter.cs",
+      "EXPORTER": ["src/net/fods/FodsCsvExporter.cs", "src/net/fods/FodsHtmlExporter.cs", "src/net/fods/FodsJsonExporter.cs", "src/net/fods/FodsOdsExporter.cs", "src/net/fods/FodsPdfExporter.cs", "src/net/fods/FodsPngExporter.cs"],
+      "VALIDATION": "src/net/fods/FodsParser.cs (DTD check, size guard)",
+      "EXCEPTION": "src/net/fods/Exceptions/FodsDocumentException.cs",
+      "FACADE": ["src/net/fods/FodsDocument.cs", "src/net/fods/FodsDocumentAccessor.cs", "src/net/fods/FodsDocumentExporter.cs"],
+      "ENTRY_POINT": "FormatFactory.Fods namespace",
+      "ARCHITECTURE_STUBS": ["src/net/fods/Spec/Office/Document.cs", "src/net/fods/Spec/Table/Table.cs", "src/net/fods/Spec/Table/TableCell.cs", "src/net/fods/Spec/Table/TableRow.cs"],
+      "boundary_issues": ["FodsDocumentAccessor has ExportSheetToHtml() but FodsHtmlExporter is also separate — boundary overlap"]
+    },
+    "dotnet_fodt": {
+      "PARSER": "src/net/fodt/FodtParser.cs",
+      "MODEL": ["src/net/fodt/Model/FodtBody.cs", "src/net/fodt/Model/FodtParagraph.cs"],
+      "EDIT": "src/net/fodt/FodtDocument.cs (partial 1)",
+      "WRITER": "src/net/fodt/FodtWriter.cs",
+      "EXPORTER": ["src/net/fodt/FodtHtmlExporter.cs", "src/net/fodt/FodtMarkdownExporter.cs", "src/net/fodt/FodtTxtExporter.cs", "src/net/fodt/FodtPdfExporter.cs", "src/net/fodt/FodtPngExporter.cs"],
+      "VALIDATION": "src/net/fodt/FodtParser.cs (DTD check, size guard)",
+      "EXCEPTION": "src/net/fodt/Exceptions/FodtDocumentException.cs",
+      "FACADE": ["src/net/fodt/FodtDocument.cs", "src/net/fodt/FodtDocumentAccessor.cs"],
+      "ENTRY_POINT": "FormatFactory.Fodt namespace",
+      "ARCHITECTURE_STUBS": ["src/net/fodt/Spec/Office/Body.cs", "src/net/fodt/Spec/Table/Table.cs", "src/net/fodt/Spec/Table/TableCell.cs", "src/net/fodt/Spec/Table/TableRow.cs", "src/net/fodt/Spec/Text/Heading.cs", "src/net/fodt/Spec/Text/List.cs", "src/net/fodt/Spec/Text/ListItem.cs", "src/net/fodt/Spec/Text/Paragraph.cs", "src/net/fodt/Spec/Text/Span.cs"],
+      "boundary_issues": ["Table operations in Spec/Table/* not confirmed wired to FodtDocument public API"]
+    },
+    "dotnet_netpbm": {
+      "PARSER": "src/net/netpbm/NetpbmParser.cs",
+      "MODEL": {
+        "core": "src/net/netpbm/Model/NetpbmImage.cs",
+        "analyzer": "src/net/netpbm/Model/NetpbmImageAnalyzer.cs",
+        "filters": "src/net/netpbm/Model/NetpbmImageFilters.cs",
+        "transforms": "src/net/netpbm/Model/NetpbmImageTransforms.cs",
+        "format_enum": "src/net/netpbm/Model/NetpbmFormat.cs"
+      },
+      "EDIT": "src/net/netpbm/Model/NetpbmImageTransforms.cs + NetpbmImageFilters.cs",
+      "WRITER": "src/net/netpbm/NetpbmWriter.cs",
+      "EXPORTER": "src/net/netpbm/NetpbmExporter.cs (within-family: PBM→PGM, PBM→PPM)",
+      "VALIDATION": "src/net/netpbm/NetpbmParser.cs",
+      "EXCEPTION": "src/net/netpbm/Exceptions/NetpbmException.cs",
+      "FACADE": "src/net/netpbm/NetpbmDocument.cs",
+      "ENTRY_POINT": "FormatFactory.Netpbm namespace",
+      "boundary_issues": ["NetpbmExporter scope (within-family) not documented in public API"]
+    },
+    "dotnet_ndjson": {
+      "PARSER": "src/net/ndjson/NdjsonReader.cs",
+      "MODEL": "src/net/ndjson/NdjsonDocument.cs (holds List<JsonElement>)",
+      "EDIT": "None (no AddRecord method)",
+      "WRITER": "src/net/ndjson/NdjsonWriter.cs",
+      "EXPORTER": "src/net/ndjson/NdjsonCsvExporter.cs",
+      "VALIDATION": "src/net/ndjson/NdjsonReader.cs",
+      "EXCEPTION": "src/net/ndjson/NdjsonException.cs",
+      "FACADE": "src/net/ndjson/NdjsonDocument.cs",
+      "ENTRY_POINT": "FormatFactory.Ndjson namespace",
+      "boundary_issues": ["NdjsonDocument acts as both facade and model — exposes raw JsonElement in public API (internal type leakage)"]
+    },
+    "dotnet_zst": {
+      "PARSER": "src/net/zst/ZstParser.cs",
+      "MODEL": "src/net/zst/ZstDocument.cs (pure DTO)",
+      "EDIT": "MISSING",
+      "WRITER": "MISSING",
+      "EXPORTER": "MISSING",
+      "VALIDATION": "src/net/zst/ZstParser.cs (magic check)",
+      "EXCEPTION": "src/net/zst/Exceptions/ZstException.cs",
+      "FACADE": "None (ZstParser is the only entry point)",
+      "ENTRY_POINT": "FormatFactory.Zst namespace",
+      "boundary_issues": ["No writer class is a product completeness gap (PQ-007)", "ZstDocument has no constructor/factory — only created by ZstParser"]
+    },
+    "python_fods": {
+      "PARSER": "src/python/fods/parser.py",
+      "MODEL": {
+        "primary": "src/python/fods/models.py (FodsDocument/FodsSheet/FodsCell)",
+        "neutral": "src/python/fods/neutral_model.py (dict functions)",
+        "alt_facade_1": "src/python/fods/spreadsheet_document.py",
+        "alt_facade_2": "src/python/fods/spreadsheet_model_document.py",
+        "compat_stubs": "src/python/fods/Compat/ (architecture-only)"
+      },
+      "EDIT": "src/python/fods/neutral_model.py (dict functions) + FodsDocument class methods",
+      "WRITER": "src/python/fods/writer.py",
+      "EXPORTER": ["src/python/fods/csv_exporter.py", "src/python/fods/fods_to_tsv.py"],
+      "VALIDATION": "src/python/fods/parser.py",
+      "EXCEPTION": "src/python/fods/exceptions.py",
+      "FACADE": "src/python/fods/__init__.py (wildcard exports all)",
+      "ENTRY_POINT": "src/python/fods/__init__.py",
+      "ARCHITECTURE_STUBS": ["src/python/fods/Spec/", "src/python/fods/Compat/"],
+      "boundary_issues": [
+        "THREE competing model/facade implementations",
+        "Dual API (dict functions vs class wrappers)",
+        "_shared/_base_codec.py not used"
+      ]
+    },
+    "python_fodt": {
+      "PARSER": "src/python/fodt/parser.py",
+      "MODEL": "src/python/fodt/models.py (FodtDocument)",
+      "EDIT": ["src/python/fodt/fodt_document_edit.py (729 LOC)", "src/python/fodt/fodt_neutral_ops.py (796 LOC)", "src/python/fodt/text_document.py (992 LOC)"],
+      "WRITER": "src/python/fodt/writer.py",
+      "EXPORTER": "src/python/fodt/exporters.py (fodt_to_txt, fodt_to_markdown, fodt_to_html)",
+      "VALIDATION": "src/python/fodt/parser.py",
+      "EXCEPTION": "None (no custom exception type)",
+      "FACADE": "src/python/fodt/__init__.py",
+      "ENTRY_POINT": "src/python/fodt/__init__.py",
+      "ARCHITECTURE_STUBS": ["src/python/fodt/Spec/", "src/python/fodt/Compat/"],
+      "boundary_issues": ["No custom exception type"]
+    },
+    "python_pbm": {
+      "PARSER": "src/python/pbm/pbm_parser.py",
+      "MODEL": "src/python/pbm/pbm_parser.py (PbmImage dataclass)",
+      "EDIT": "None (no pixel-level edit in pbm)",
+      "WRITER": "src/python/pbm/pbm_parser.py (write functions)",
+      "EXPORTER": "Cross-format (pbm_to_pgm in pgm package)",
+      "VALIDATION": "src/python/pbm/pbm_parser.py (MAX_FILE_SIZE, MAX_DIMENSION, error hierarchy)",
+      "EXCEPTION": "src/python/pbm/pbm_parser.py (PbmError hierarchy: 4 subtypes)",
+      "FACADE": "src/python/pbm/__init__.py",
+      "ENTRY_POINT": "src/python/pbm/__init__.py",
+      "boundary_issues": ["Parser, model, and writer all in same file — acceptable for small format but not ideal for growth"]
+    },
+    "python_sylk": {
+      "PARSER": "src/python/sylk/sylk_parser.py",
+      "MODEL": "src/python/sylk/sylk_parser.py (SylkDocument, SylkCell)",
+      "EDIT": "src/python/sylk/sylk_parser.py (set_cell_value FILE-BASED — anti-pattern)",
+      "WRITER": "src/python/sylk/sylk_parser.py",
+      "EXPORTER": "src/python/sylk/sylk_parser.py (sylk_to_csv)",
+      "EXCEPTION": "None",
+      "FACADE": "src/python/sylk/__init__.py",
+      "boundary_issues": ["Everything in one file", "Edit operations are file-based (take src+dest paths) not model-based"]
+    },
+    "python_fodp": {
+      "PARSER": "src/python/fodp/fodp_codec.py",
+      "MODEL": "dict (no typed model class)",
+      "EDIT": "MISSING",
+      "WRITER": "MISSING",
+      "EXPORTER": "MISSING",
+      "EXCEPTION": "None",
+      "FACADE": "src/python/fodp/__init__.py",
+      "boundary_issues": ["No writer architecture at all", "Dict-only model", "Read-only with no documentation of limitation"]
+    }
+  }
+}

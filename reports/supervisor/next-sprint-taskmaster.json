@@ -1,8 +1,8 @@
 {
-  "sprint_id": "supervisor-export-20260624-150305",
-  "timestamp": "2026-06-24T15:03:05.894139",
+  "sprint_id": "supervisor-export-20260625-174106",
+  "timestamp": "2026-06-25T17:41:06.307724",
   "verdict": "ACCEPTED",
-  "source_bundle": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\supervisor\\reviews\\forensic-healing-20260624-dwp\\declaration-review-package.zip",
+  "source_bundle": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\supervisor\\reviews\\ff-gates-advancement-20260625\\declaration-review-package.zip",
   "tasks": [
     {
       "task_id": "TASK-001",
@@ -19,7 +19,7 @@
     {
       "task_id": "TASK-002",
       "title": "Prepare commit candidate summary and changed-file manifest",
-      "description": "Modified tracked files detected: 22 file(s) (e.g. .supervisor/state/current-run.json). Build evidence bundle and write commit candidate manifest. Agent-owned preparation \u2014 do NOT self-commit.",
+      "description": "Modified tracked files detected: 2 file(s) (e.g. .supervisor/state/current-run.json). Build evidence bundle and write commit candidate manifest. Agent-owned preparation \u2014 do NOT self-commit.",
       "status": "agent-owned",
       "ff_doc_ref": "plans/master-plan.md",
       "supervisor_task_ref": "TC-R79-CLOSURE-001",
@@ -30,12 +30,12 @@
     },
     {
       "task_id": "TASK-003",
-      "title": "Execute git commit (requires explicit user authorization \u2014 do NOT self-execute)",
-      "description": "Commit execution requires explicit user authorization. Do not commit without the user saying so. This is a TRUE_EXTERNAL_GATE per stop_reason_adjudicator.",
+      "title": "Execute git commit (SCM Agent task \u2014 AGENTS.md \u00a7AG4.1)",
+      "description": "Commit is an SCM Agent task. Execute when: tests pass, diff clean, governance validators pass, sprint policy authorizes. Classify EXTERNAL_BLOCKER: sprint_policy_not_authorizing_commit if conditions not met.",
       "status": "external-gate",
       "ff_doc_ref": "plans/master-plan.md",
       "supervisor_task_ref": "TC-R79-CLOSURE-001-EXEC",
-      "acceptance_evidence": "User confirms commit executed",
+      "acceptance_evidence": "git log --oneline -1 shows clean commit with sprint evidence",
       "validation_command": "git log --oneline -1",
       "blocker_type": "human_approval",
       "non_authoritative": true,
@@ -79,66 +79,6 @@
     },
     {
       "task_id": "TASK-007",
-      "title": "Product deepening: GAP-FODS-COMM-SAVE_SAME_FO-001 \u2014 GAP-FODS-COMM-SAVE_SAME_FO-001",
-      "description": "Product target: FODS. Product objective: GAP-FODS-COMM-SAVE_SAME_FO-001. Use generated execution handoff from .supervisor/skill-registry.yaml; ledger any src edit in reports/r90/product-code-change-ledger.json.",
-      "status": "pending",
-      "ff_doc_ref": ".local/supervisor/selected-product-gaps.json",
-      "supervisor_task_ref": "GAP-FODS-COMM-SAVE_SAME_FO-001",
-      "acceptance_evidence": "New tests pass for GAP-FODS-COMM-SAVE_SAME_FO-001; capability implemented or documented",
-      "validation_command": "pytest tests/ -x -q",
-      "non_authoritative": true,
-      "lane": "C3"
-    },
-    {
-      "task_id": "TASK-008",
-      "title": "Product deepening: GAP-FODT-COMM-SAVE_SAME_FO-001 \u2014 GAP-FODT-COMM-SAVE_SAME_FO-001",
-      "description": "Product target: FODT. Product objective: GAP-FODT-COMM-SAVE_SAME_FO-001. Use generated execution handoff from .supervisor/skill-registry.yaml; ledger any src edit in reports/r90/product-code-change-ledger.json.",
-      "status": "pending",
-      "ff_doc_ref": ".local/supervisor/selected-product-gaps.json",
-      "supervisor_task_ref": "GAP-FODT-COMM-SAVE_SAME_FO-001",
-      "acceptance_evidence": "New tests pass for GAP-FODT-COMM-SAVE_SAME_FO-001; capability implemented or documented",
-      "validation_command": "pytest tests/ -x -q",
-      "non_authoritative": true,
-      "lane": "C3"
-    },
-    {
-      "task_id": "TASK-009",
-      "title": "Product deepening: GAP-FODS-COMM-RELOAD_AND_V-001 \u2014 GAP-FODS-COMM-RELOAD_AND_V-001",
-      "description": "Product target: FODS. Product objective: GAP-FODS-COMM-RELOAD_AND_V-001. Use generated execution handoff from .supervisor/skill-registry.yaml; ledger any src edit in reports/r90/product-code-change-ledger.json.",
-      "status": "pending",
-      "ff_doc_ref": ".local/supervisor/selected-product-gaps.json",
-      "supervisor_task_ref": "GAP-FODS-COMM-RELOAD_AND_V-001",
-      "acceptance_evidence": "New tests pass for GAP-FODS-COMM-RELOAD_AND_V-001; capability implemented or documented",
-      "validation_command": "pytest tests/ -x -q",
-      "non_authoritative": true,
-      "lane": "C3"
-    },
-    {
-      "task_id": "TASK-010",
-      "title": "Product deepening: GAP-FODT-COMM-RELOAD_AND_V-001 \u2014 GAP-FODT-COMM-RELOAD_AND_V-001",
-      "description": "Product target: FODT. Product objective: GAP-FODT-COMM-RELOAD_AND_V-001. Use generated execution handoff from .supervisor/skill-registry.yaml; ledger any src edit in reports/r90/product-code-change-ledger.json.",
-      "status": "pending",
-      "ff_doc_ref": ".local/supervisor/selected-product-gaps.json",
-      "supervisor_task_ref": "GAP-FODT-COMM-RELOAD_AND_V-001",
-      "acceptance_evidence": "New tests pass for GAP-FODT-COMM-RELOAD_AND_V-001; capability implemented or documented",
-      "validation_command": "pytest tests/ -x -q",
-      "non_authoritative": true,
-      "lane": "C3"
-    },
-    {
-      "task_id": "TASK-011",
-      "title": "Product deepening: GAP-ABW-FOSS-ABW_SECTION_-001 \u2014 GAP-ABW-FOSS-ABW_SECTION_-001",
-      "description": "Product target: ABW. Product objective: GAP-ABW-FOSS-ABW_SECTION_-001. Use generated execution handoff from .supervisor/skill-registry.yaml; ledger any src edit in reports/r90/product-code-change-ledger.json.",
-      "status": "pending",
-      "ff_doc_ref": ".local/supervisor/selected-product-gaps.json",
-      "supervisor_task_ref": "GAP-ABW-FOSS-ABW_SECTION_-001",
-      "acceptance_evidence": "New tests pass for GAP-ABW-FOSS-ABW_SECTION_-001; capability implemented or documented",
-      "validation_command": "pytest tests/ -x -q",
-      "non_authoritative": true,
-      "lane": "C3"
-    },
-    {
-      "task_id": "TASK-012",
       "title": "Advance one dogfood export path using a Format Factory library",
       "description": "Product objective: close or verify a selected dogfood export from .local/supervisor/selected-product-gaps.json. Use a Format Factory-produced library and record truthful status.",
       "status": "pending",
@@ -150,7 +90,7 @@
       "lane": "C4"
     },
     {
-      "task_id": "TASK-013",
+      "task_id": "TASK-008",
       "title": "Build package artifacts and run installed-workflow proof",
       "description": "Product objective: prove changed product packages from physical artifacts. A missing artifact is a failure, not a skipped package test.",
       "status": "pending",
@@ -162,7 +102,7 @@
       "lane": "C5"
     },
     {
-      "task_id": "TASK-014",
+      "task_id": "TASK-009",
       "title": "Write evidence declaration and run supervisor autonomous-cycle",
       "description": "Write .local/evidences/<run_id>/evidence-declaration.yaml for all work items, then run the declaration-driven supervisor autonomous-cycle. ZIP export is optional.",
       "status": "pending",
@@ -174,5 +114,5 @@
       "lane": "C6"
     }
   ],
-  "notes": "Generated from evidence review of sprint forensic-healing-20260624-dwp"
+  "notes": "Generated from evidence review of sprint ff-gates-advancement-20260625"
 }

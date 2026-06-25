@@ -1,0 +1,74 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-06-25",
+  "sprint": "FORMAT-FACTORY-EXPERT-MANUAL-SYSTEM-REVIEW-PLAN-001",
+  "totals": {
+    "dotnet_projects": 10,
+    "python_packages": 20,
+    "formats_in_registry": 25,
+    "skills_registered": 65,
+    "governance_validators": 50,
+    "gaps_in_ledger": 1132,
+    "gaps_with_unknown_category": 1131,
+    "qname_registry_files": 20,
+    "sal_formats_intact": 2,
+    "sal_formats_broken": 10
+  },
+  "dotnet_products": [
+    {"format": "FODS", "loc": 3569, "test_files": 71, "gate": "G11-G_APPROVED", "classification": "COMMERCIAL_CANDIDATE"},
+    {"format": "FODT", "loc": 2543, "test_files": 64, "gate": "G11-G_APPROVED", "classification": "COMMERCIAL_CANDIDATE"},
+    {"format": "NetPBM", "loc_estimate": 1940, "test_files": 56, "gate": "in_progress", "classification": "COMMERCIAL_CANDIDATE"},
+    {"format": "CSV", "loc": 380, "test_files": 6, "gate": "in_progress", "classification": "THIN_PARSER"},
+    {"format": "TSV", "loc": 410, "test_files": 6, "gate": "in_progress", "classification": "THIN_PARSER"},
+    {"format": "NDJSON", "loc": 419, "test_files": 6, "gate": "in_progress", "classification": "THIN_PARSER"},
+    {"format": "ZST", "loc": 233, "test_files": 2, "gate": "in_progress", "classification": "INSPECTION_ONLY"},
+    {"format": "HTML", "loc": 118, "test_files": 1, "gate": "not_a_format_product", "classification": "TARGET_WRITER_UTILITY"},
+    {"format": "Markdown", "loc": 84, "test_files": 1, "gate": "not_a_format_product", "classification": "TARGET_WRITER_UTILITY"},
+    {"format": "TXT", "loc": 70, "test_files": 1, "gate": "not_a_format_product", "classification": "TARGET_WRITER_UTILITY"}
+  ],
+  "python_packages": [
+    {"format": "FODS", "has_writer": true, "has_export": true, "compat_facades": 12, "classification": "LOAD_EDIT_SAVE_POC"},
+    {"format": "FODT", "has_writer": true, "has_export": true, "compat_facades": 10, "classification": "LOAD_EDIT_SAVE_POC"},
+    {"format": "ABW", "has_writer": true, "has_export": true, "compat_facades": 2, "classification": "PARSER_WITH_MODEL"},
+    {"format": "CSV", "has_writer": true, "has_export": false, "compat_facades": 3, "classification": "PARSER_WITH_MODEL"},
+    {"format": "DIF", "has_writer": true, "has_export": true, "compat_facades": 3, "classification": "THIN_PARSER"},
+    {"format": "FODG", "has_writer": true, "has_export": true, "compat_facades": 2, "classification": "LOAD_EDIT_SAVE_POC"},
+    {"format": "FODP", "has_writer": false, "has_export": true, "compat_facades": 2, "classification": "READ_ONLY", "note": "export_to_txt/csv/json but no write_fodp"},
+    {"format": "GNUMERIC", "has_writer": true, "has_export": true, "compat_facades": 0, "classification": "PARSER_WITH_MODEL"},
+    {"format": "NDJSON", "has_writer": true, "has_export": false, "compat_facades": 1, "classification": "PARSER_WITH_MODEL"},
+    {"format": "ODS", "has_writer": true, "has_export": true, "compat_facades": 0, "classification": "PARSER_WITH_MODEL", "note": "ods_writer.py write_ods() exists"},
+    {"format": "ODT", "has_writer": true, "has_export": false, "compat_facades": 0, "classification": "PARSER_WITH_MODEL"},
+    {"format": "PBM", "has_writer": true, "has_export": true, "compat_facades": 0, "classification": "PARSER_WITH_MODEL", "note": "write_pbm + exports to pgm/ppm"},
+    {"format": "PGM", "has_writer": true, "has_export": true, "compat_facades": 0, "classification": "PARSER_WITH_MODEL", "note": "write_pgm + exports to ppm"},
+    {"format": "PPM", "has_writer": true, "has_export": false, "compat_facades": 0, "classification": "THIN_PARSER", "note": "write_ppm exists"},
+    {"format": "QOI", "has_writer": true, "has_export": false, "compat_facades": 0, "classification": "PARSER_WITH_MODEL"},
+    {"format": "SYLK", "has_writer": true, "has_export": true, "compat_facades": 3, "classification": "PARSER_WITH_MODEL", "note": "file-based set_cell_value API"},
+    {"format": "TOML", "has_writer": true, "has_export": false, "compat_facades": 0, "classification": "PARSER_WITH_MODEL"},
+    {"format": "TSV", "has_writer": true, "has_export": false, "compat_facades": 3, "classification": "PARSER_WITH_MODEL"},
+    {"format": "XCF", "has_writer": false, "has_export": false, "compat_facades": 0, "classification": "PARSER_ONLY"},
+    {"format": "ZST", "has_writer": false, "has_export": false, "compat_facades": 0, "classification": "PARSER_WITH_MODEL", "note": "compress/decompress via zstandard"}
+  ],
+  "authority_registries": [
+    {"path": "registry/format-registry.yaml", "authority": "AUTHORITATIVE", "contents": "25 formats scored with gates and legal categories"},
+    {"path": "registry/parity-matrix.yaml", "authority": "ADVISORY", "contents": "Spec parity per format; FODS=PARTIAL, FODT=BLOCKED"},
+    {"path": "registry/source-structure-baseline.json", "authority": "AUTHORITATIVE", "contents": "LOC caps — write-once per file"},
+    {"path": "registry/known-failure-ledger.yaml", "authority": "AUTHORITATIVE", "contents": "Pre-existing test failures catalog"},
+    {"path": "shared/qname-registry/", "authority": "AUTHORITATIVE", "contents": "20 format-specific YAML QName registries"},
+    {"path": "product-capability-matrix/poc-targets.yaml", "authority": "SELF_DECLARED_WITH_VERIFICATION_REQUIRED", "contents": "Capability PASS/FAIL per format"}
+  ],
+  "autonomous_machinery": {
+    "autonomous_cycle_loc": 2406,
+    "governance_validators_loc": 3181,
+    "governance_validators_count": 50,
+    "skills_registered": 65,
+    "skills_with_empty_implementation_paths": "several",
+    "skills_deprecated_still_in_registry": ["add-analytics-function"],
+    "skills_backlog": ["capability_compiler", "extract_analytics_from_monolith", "ci_transcript_verification"]
+  },
+  "sal_coverage": {
+    "fods_facts": 4988,
+    "fodt_facts": 4936,
+    "chain_intact_formats": ["FODS", "FODT", "ODS", "ODT", "FODG", "FODP", "PBM", "PGM", "PPM", "QOI"],
+    "chain_broken_formats": ["ABW", "CSV", "DIF", "GNUMERIC", "NDJSON", "SYLK", "TOML", "TSV", "XCF", "ZST"]
+  }
+}

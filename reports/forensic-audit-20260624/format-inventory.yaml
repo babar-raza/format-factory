@@ -1,0 +1,574 @@
+# FORMAT FACTORY — FORENSIC FORMAT INVENTORY
+# Generated: 2026-06-24
+# Mission: FF-FORENSIC-AUDIT-20260624
+# Source: format-registry.yaml + format-completion-matrix.yaml + parity-matrix.yaml + package-matrix.yaml
+
+mission_id: FF-FORENSIC-AUDIT-20260624
+generated_at: "2026-06-24"
+total_formats_in_registry: 25
+total_formats_with_python_source: 20
+total_formats_with_dotnet_source: 10
+total_formats_with_no_source: 4  # xpm, pam, zpaq, ora
+
+formats:
+  - format_id: fods
+    canonical_name: Flat OpenDocument Spreadsheet
+    aliases: [FlatODS]
+    family: cells
+    specification_authority: OASIS
+    specification_version: ODF 1.3
+    languages: [python, dotnet]
+    source_roots:
+      python: src/python/fods/
+      dotnet: src/net/fods/
+    normalized_fact_roots: [.local/sal-output/sal-facts-latest.json]
+    qname_roots: [shared/qname-registry/fods.yaml]
+    capability_roots: [reports/capability-layer/unified-capability-map.json]
+    product_roots:
+      python: src/python/fods/
+      dotnet: src/net/fods/
+    test_roots:
+      python: tests/python/fods/
+      dotnet: tests/net/fods/
+    package_roots: [packaging/python/]
+    current_state: PRODUCT_PARTIAL
+    current_proof_level: PROOF_LEVEL_4
+    plan_ids: []
+    ledger_ids: [reports/r90/product-code-change-ledger.json]
+    known_gaps:
+      - GAP-FODS-COMM-LOAD-001 (closed)
+      - qname_registry_empty
+    metrics:
+      sal_facts: 5009
+      sal_verified: 4987
+      python_loc: 793
+      dotnet_loc: 2072
+      python_tests: 211
+      dotnet_tests: 611
+      capabilities: 142
+      gates_passed: [1,2,3,4,5,6,7,8,9,10]
+      read_support: true
+      write_support: true
+      roundtrip_support: true
+      maturity_class: production_track_real
+      package_publish_status: local_only_not_published
+
+  - format_id: fodt
+    canonical_name: Flat OpenDocument Text
+    aliases: [FlatODT]
+    family: words
+    specification_authority: OASIS
+    specification_version: ODF 1.3
+    languages: [python, dotnet]
+    source_roots:
+      python: src/python/fodt/
+      dotnet: src/net/fodt/
+    current_state: PRODUCT_PARTIAL
+    current_proof_level: PROOF_LEVEL_4
+    metrics:
+      sal_facts: 4957
+      sal_verified: 4933
+      python_loc: 857
+      dotnet_loc: 1748
+      python_tests: 248
+      dotnet_tests: 567
+      capabilities: 197
+      gates_passed: [1,2,3,4,5,6,7,8,9,10]
+      read_support: true
+      write_support: true
+      roundtrip_support: true
+      maturity_class: production_track_real
+      package_publish_status: local_only_not_published
+
+  - format_id: ods
+    canonical_name: OpenDocument Spreadsheet
+    aliases: []
+    family: cells
+    specification_authority: OASIS
+    specification_version: ODF 1.3
+    languages: [python]
+    source_roots:
+      python: src/python/ods/
+    current_state: PRODUCT_PARTIAL
+    current_proof_level: PROOF_LEVEL_3
+    metrics:
+      sal_facts: 1077
+      sal_verified: 1069
+      python_loc: 450
+      dotnet_loc: 0
+      python_tests: 69
+      capabilities: 0  # not in separate cap map entry
+      read_support: true
+      write_support: true
+      roundtrip_support: true
+      maturity_class: roundtrip_capable_library
+
+  - format_id: odt
+    canonical_name: OpenDocument Text
+    aliases: []
+    family: words
+    specification_authority: OASIS
+    specification_version: ODF 1.3
+    languages: [python]
+    source_roots:
+      python: src/python/odt/
+    current_state: CODE_PARTIAL
+    current_proof_level: PROOF_LEVEL_2
+    metrics:
+      sal_facts: 1074
+      sal_verified: 1066
+      python_loc: 250
+      dotnet_loc: 0
+      python_tests: 66
+      read_support: true
+      write_support: false
+      roundtrip_support: false
+      maturity_class: read_only_prototype
+    known_gaps: [write_support_missing, roundtrip_missing]
+
+  - format_id: fodp
+    canonical_name: Flat OpenDocument Presentation
+    aliases: [FlatODP]
+    family: presentation
+    specification_authority: OASIS
+    specification_version: ODF 1.3
+    languages: [python]
+    source_roots:
+      python: src/python/fodp/
+    current_state: CODE_PARTIAL
+    current_proof_level: PROOF_LEVEL_1
+    metrics:
+      sal_facts: 1071
+      sal_verified: 1066
+      python_loc: 192
+      python_tests: 16
+      capabilities: 0
+      read_support: partial  # page metadata only
+      write_support: false
+      roundtrip_support: false
+      maturity_class: probe_only
+    known_gaps: [partial_read_only, no_write, no_roundtrip, very_low_test_count]
+
+  - format_id: fodg
+    canonical_name: Flat OpenDocument Drawing
+    aliases: [FlatODG]
+    family: drawing
+    specification_authority: OASIS
+    specification_version: ODF 1.3
+    languages: [python]
+    source_roots:
+      python: src/python/fodg/
+    current_state: PRODUCT_PARTIAL
+    current_proof_level: PROOF_LEVEL_3
+    metrics:
+      sal_facts: 1071
+      sal_verified: 1066
+      python_loc: 217
+      python_tests: 60
+      capabilities: 125
+      read_support: true
+      write_support: true
+      roundtrip_support: true
+      maturity_class: roundtrip_capable_library
+
+  - format_id: zst
+    canonical_name: Zstandard Compressed Data
+    aliases: [Zstandard, ZST]
+    family: archive
+    specification_authority: IETF
+    specification_version: RFC 8878 + RFC 9659
+    languages: [python]
+    source_roots:
+      python: src/python/zst/
+    current_state: PRODUCT_PARTIAL
+    current_proof_level: PROOF_LEVEL_3
+    metrics:
+      sal_facts: 109
+      sal_verified: 94
+      python_loc: 303
+      python_tests: 625
+      read_support: true
+      write_support: true
+      roundtrip_support: true
+      maturity_class: production_track_real
+
+  - format_id: abw
+    canonical_name: AbiWord Document
+    aliases: [ABW]
+    family: words
+    specification_authority: AbiSource
+    specification_version: AbiWord 2.x
+    languages: [python]
+    source_roots:
+      python: src/python/abw/
+    current_state: PRODUCT_PARTIAL
+    current_proof_level: PROOF_LEVEL_3
+    metrics:
+      sal_facts: 8
+      sal_verified: 5
+      python_loc: 141
+      python_tests: 82
+      capabilities: 149
+      read_support: true
+      write_support: true
+      roundtrip_support: true
+      maturity_class: roundtrip_capable_library
+    known_gaps: [very_low_sal_fact_count_8_vs_149_capabilities, bootstrap_fact_dominance]
+
+  - format_id: gnumeric
+    canonical_name: Gnumeric Spreadsheet
+    aliases: []
+    family: cells
+    specification_authority: GNOME/Gnumeric
+    specification_version: Gnumeric XML
+    languages: [python]
+    source_roots:
+      python: src/python/gnumeric/
+    current_state: PRODUCT_PARTIAL
+    current_proof_level: PROOF_LEVEL_3
+    metrics:
+      sal_facts: 9
+      sal_verified: 3
+      python_loc: 170
+      python_tests: 73
+      capabilities: 102
+      read_support: true
+      write_support: true
+      roundtrip_support: true
+      maturity_class: export_capable_library
+    known_gaps: [very_low_sal_fact_count_9_vs_102_capabilities, only_3_verified_facts]
+
+  - format_id: xcf
+    canonical_name: GIMP XCF Image
+    aliases: [XCF, GIMP Native]
+    family: imaging
+    specification_authority: GIMP Project
+    specification_version: XCF 11+
+    languages: [python]
+    source_roots:
+      python: src/python/xcf/
+    current_state: CODE_PARTIAL
+    current_proof_level: PROOF_LEVEL_2
+    metrics:
+      sal_facts: 5
+      sal_verified: 2
+      python_loc: 271
+      python_tests: 42
+      capabilities: 108
+      read_support: partial  # header/metadata only
+      write_support: false
+      roundtrip_support: false
+      maturity_class: probe_only
+    known_gaps: [partial_read_only, xcf_layer_name_list_synthetic_only, no_real_layer_extraction]
+
+  - format_id: qoi
+    canonical_name: Quite OK Image
+    aliases: [QOI]
+    family: imaging
+    specification_authority: QOI Spec (Dominic Szablewski)
+    specification_version: QOI v1
+    languages: [python]
+    source_roots:
+      python: src/python/qoi/
+    current_state: PRODUCT_PARTIAL
+    current_proof_level: PROOF_LEVEL_3
+    metrics:
+      sal_facts: 5
+      sal_verified: 2
+      python_loc: 480
+      python_tests: 108
+      capabilities: 71
+      read_support: true
+      write_support: true
+      roundtrip_support: true
+      maturity_class: roundtrip_capable_library
+    known_gaps: [low_sal_fact_count, capabilities_not_spec_derived]
+
+  - format_id: ppm
+    canonical_name: Portable Pixmap Format
+    aliases: [PPM, P3/P6 NetPBM]
+    family: imaging
+    specification_authority: Jef Poskanzer
+    specification_version: NetPBM
+    languages: [python]
+    source_roots:
+      python: src/python/ppm/
+    current_state: CODE_PARTIAL
+    current_proof_level: PROOF_LEVEL_2
+    metrics:
+      sal_facts: 5
+      sal_verified: 2
+      python_loc: 322
+      python_tests: 49
+      capabilities: 76
+      read_support: true  # P3 ASCII + P6 binary
+      write_support: false
+      roundtrip_support: false
+      maturity_class: read_only_prototype
+
+  - format_id: pgm
+    canonical_name: Portable Graymap Format
+    aliases: [PGM, P2/P5 NetPBM]
+    family: imaging
+    specification_authority: Jef Poskanzer
+    specification_version: NetPBM
+    languages: [python]
+    source_roots:
+      python: src/python/pgm/
+    current_state: CODE_PARTIAL
+    current_proof_level: PROOF_LEVEL_2
+    metrics:
+      sal_facts: 5
+      sal_verified: 2
+      python_loc: 319
+      python_tests: 47
+      capabilities: 75
+      read_support: true  # P2 ASCII + P5 binary
+      write_support: false
+      roundtrip_support: false
+      maturity_class: read_only_prototype
+
+  - format_id: pbm
+    canonical_name: Portable Bitmap Format
+    aliases: [PBM, P1/P4 NetPBM]
+    family: imaging
+    specification_authority: Jef Poskanzer
+    specification_version: NetPBM
+    languages: [python]
+    source_roots:
+      python: src/python/pbm/
+    current_state: CODE_PARTIAL
+    current_proof_level: PROOF_LEVEL_2
+    metrics:
+      sal_facts: 5
+      sal_verified: 2
+      python_loc: 290
+      python_tests: 48
+      capabilities: 67
+      read_support: true  # P1 ASCII + P4 binary
+      write_support: false
+      roundtrip_support: false
+      maturity_class: read_only_prototype
+
+  - format_id: dif
+    canonical_name: Data Interchange Format
+    aliases: [DIF]
+    family: cells
+    specification_authority: VisiCalc/Software Arts
+    specification_version: DIF 1.0
+    languages: [python]
+    source_roots:
+      python: src/python/dif/
+    current_state: CODE_PARTIAL
+    current_proof_level: PROOF_LEVEL_2
+    metrics:
+      sal_facts: 9
+      sal_verified: 3
+      python_loc: 303
+      python_tests: 40
+      capabilities: 91
+      read_support: true
+      write_support: true
+      roundtrip_support: false
+      maturity_class: read_write_prototype
+    known_gaps: [no_roundtrip, low_sal_facts_9_vs_91_caps]
+
+  - format_id: sylk
+    canonical_name: Symbolic Link File Format
+    aliases: [SYLK, SLK]
+    family: cells
+    specification_authority: Microsoft
+    specification_version: SYLK 1.0
+    languages: [python]
+    source_roots:
+      python: src/python/sylk/
+    current_state: PRODUCT_PARTIAL
+    current_proof_level: PROOF_LEVEL_3
+    metrics:
+      sal_facts: 9
+      sal_verified: 3
+      python_loc: 241
+      python_tests: 46
+      capabilities: 90
+      read_support: true
+      write_support: true
+      roundtrip_support: true
+      maturity_class: read_write_prototype
+    known_gaps: [low_sal_facts_9_vs_90_caps, 893_tests_confirm_roundtrip]
+
+  - format_id: csv
+    canonical_name: Comma Separated Values
+    aliases: [CSV]
+    family: cells
+    specification_authority: IETF
+    specification_version: RFC 4180
+    languages: [python]
+    source_roots:
+      python: src/python/csv/
+    current_state: CODE_PARTIAL
+    current_proof_level: PROOF_LEVEL_2
+    metrics:
+      sal_facts: 8
+      sal_verified: 2
+      python_loc: 213
+      python_tests: 19
+      capabilities: 90
+      read_support: prototype
+      write_support: true
+      roundtrip_support: false
+      maturity_class: read_write_prototype
+    known_gaps: [no_roundtrip, very_low_test_count_19, gates_1_to_4_only, low_sal_facts_8_vs_90_caps]
+
+  - format_id: tsv
+    canonical_name: Tab Separated Values
+    aliases: [TSV]
+    family: cells
+    specification_authority: N/A (de facto)
+    specification_version: IANA text/tab-separated-values
+    languages: [python]
+    source_roots:
+      python: src/python/tsv/
+    current_state: CODE_PARTIAL
+    current_proof_level: PROOF_LEVEL_2
+    metrics:
+      sal_facts: 5
+      sal_verified: 2
+      python_loc: 198
+      python_tests: 19
+      capabilities: 96
+      read_support: prototype
+      write_support: false
+      roundtrip_support: false
+      maturity_class: read_only_prototype
+    known_gaps: [no_write, no_roundtrip, very_low_test_count_19, gates_1_to_4_only]
+
+  - format_id: ndjson
+    canonical_name: Newline Delimited JSON
+    aliases: [NDJSON, JSON Lines]
+    family: data
+    specification_authority: ndjson.org
+    specification_version: NDJSON 1.0
+    languages: [python]
+    source_roots:
+      python: src/python/ndjson/
+    current_state: PRODUCT_PARTIAL
+    current_proof_level: PROOF_LEVEL_3
+    metrics:
+      sal_facts: 5
+      sal_verified: 2
+      python_loc: 815
+      python_tests: 80
+      capabilities: 112
+      read_support: true
+      write_support: true
+      roundtrip_support: true
+      maturity_class: roundtrip_capable_library
+    known_gaps: [very_low_sal_facts_5, gates_1_to_4_only]
+
+  - format_id: toml
+    canonical_name: Tom's Obvious Minimal Language
+    aliases: [TOML]
+    family: data
+    specification_authority: Tom Preston-Werner
+    specification_version: TOML 1.0
+    languages: [python]
+    source_roots:
+      python: src/python/toml/
+    current_state: PRODUCT_PARTIAL
+    current_proof_level: PROOF_LEVEL_3
+    metrics:
+      sal_facts: 5
+      sal_verified: 2
+      python_loc: 290
+      python_tests: 15
+      capabilities: 74
+      read_support: true
+      write_support: true
+      roundtrip_support: true
+      maturity_class: roundtrip_capable_library
+    known_gaps: [very_low_test_count_15, very_low_sal_facts_5, gates_1_to_4_only]
+
+  # --- FORMATS WITH NO PRODUCT SOURCE ---
+  - format_id: xpm
+    canonical_name: X PixMap
+    aliases: [XPM]
+    family: imaging
+    specification_authority: MIT X Consortium
+    specification_version: XPM 3
+    languages: []
+    source_roots: {}
+    current_state: SPEC_ONLY
+    current_proof_level: PROOF_LEVEL_0
+    metrics:
+      sal_facts: 3
+      sal_verified: 0
+      python_loc: 0
+      python_tests: 0
+      maturity_class: acquisition_only
+
+  - format_id: pam
+    canonical_name: Portable Arbitrary Map
+    aliases: [PAM]
+    family: imaging
+    specification_authority: Jef Poskanzer
+    specification_version: NetPBM PAM
+    languages: []
+    source_roots: {}
+    current_state: SPEC_ONLY
+    current_proof_level: PROOF_LEVEL_0
+    metrics:
+      sal_facts: 3
+      sal_verified: 0
+      python_loc: 0
+      python_tests: 0
+      maturity_class: acquisition_only
+
+  - format_id: zpaq
+    canonical_name: ZPAQ Archive
+    aliases: []
+    family: archive
+    specification_authority: Matt Mahoney
+    specification_version: ZPAQ 7.15
+    languages: []
+    source_roots: {}
+    current_state: DISCOVERED
+    current_proof_level: PROOF_LEVEL_0
+    metrics:
+      sal_facts: 5
+      sal_verified: 2
+      python_loc: 0
+      python_tests: 0
+      maturity_class: blocked
+
+  - format_id: ora
+    canonical_name: OpenRaster
+    aliases: []
+    family: imaging
+    specification_authority: freedesktop.org
+    specification_version: OpenRaster 0.0.5
+    languages: []
+    source_roots: {}
+    current_state: STALE
+    current_proof_level: PROOF_LEVEL_0
+    metrics:
+      sal_facts: 6
+      sal_verified: 3
+      python_loc: 0
+      python_tests: 0
+      maturity_class: stale_or_contaminated
+
+  - format_id: odf-shared
+    canonical_name: ODF Shared Infrastructure
+    aliases: []
+    family: odf
+    specification_authority: OASIS
+    specification_version: ODF 1.3
+    languages: []
+    source_roots: {}
+    current_state: FACTS_AUTHORIZED
+    current_proof_level: PROOF_LEVEL_1
+    metrics:
+      sal_facts: 18
+      sal_verified: 13
+      python_loc: 0
+      note: Shared ODF facts consumed by fods/fodt/ods/odt/fodp/fodg

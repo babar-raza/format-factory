@@ -1,9 +1,9 @@
-active_routes: 29
+active_routes: 30
 broken_reference_routes: 0
 generated_by: build_capability_routes.py
-missing_skill_routes: 1
+missing_skill_routes: 0
 mission_id: SKILL-FIRST-001
-overall_verdict: PARTIAL
+overall_verdict: PASS
 routes:
 - declared_status: ROUTE_ACTIVE
   gap_id: null
@@ -225,10 +225,11 @@ routes:
   route_id: task_closure
   unresolved_skill_ids: []
   verdict: ROUTE_ACTIVE
-- declared_status: MISSING_SKILL_CAPABILITY
+- declared_status: ACTIVE
   gap_id: SKILL-GAP-011
-  preferred_skill_ids: []
+  preferred_skill_ids:
+  - rollback-and-recovery
   route_id: rollback_and_recovery
   unresolved_skill_ids: []
-  verdict: MISSING_SKILL_CAPABILITY
+  verdict: ROUTE_ACTIVE
 total_routes: 30

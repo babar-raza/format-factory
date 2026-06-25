@@ -1,16 +1,16 @@
 {
   "audit_type": "sal_to_qname_cross_reference",
-  "generated_at": "2026-06-24T10:00:27.689479+00:00",
+  "generated_at": "2026-06-24T18:59:04.697187+00:00",
   "sal_facts_path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\spec-cache\\sal-facts-latest.json",
   "sal_total_facts": 14309,
   "summary": {
     "total_formats_audited": 20,
-    "total_registry_entries": 70,
-    "entries_with_spec_fact_ref": 70,
-    "entries_resolved_in_sal": 35,
-    "entries_missing_in_sal": 35,
-    "high_severity_gaps": 28,
-    "overall_coverage_pct": 50.0
+    "total_registry_entries": 79,
+    "entries_with_spec_fact_ref": 79,
+    "entries_resolved_in_sal": 38,
+    "entries_missing_in_sal": 41,
+    "high_severity_gaps": 41,
+    "overall_coverage_pct": 48.1
   },
   "per_format": [
     {
@@ -77,31 +77,45 @@
     },
     {
       "format": "dif",
-      "total_entries": 3,
-      "entries_with_spec_fact_ref": 3,
+      "total_entries": 5,
+      "entries_with_spec_fact_ref": 5,
       "entries_resolved": 0,
-      "entries_missing_in_sal": 3,
+      "entries_missing_in_sal": 5,
       "coverage_pct": 0.0,
       "gaps": [
         {
           "qname": "dif:header",
           "spec_fact_ref": "FACT-DIF-001",
-          "status": "implementing",
+          "status": "implemented",
           "issue": "spec_fact_ref 'FACT-DIF-001' not found in sal-facts-latest.json",
           "severity": "HIGH"
         },
         {
           "qname": "dif:data",
           "spec_fact_ref": "FACT-DIF-001",
-          "status": "seeded",
+          "status": "implemented",
           "issue": "spec_fact_ref 'FACT-DIF-001' not found in sal-facts-latest.json",
-          "severity": "WARN"
+          "severity": "HIGH"
         },
         {
           "qname": "dif:cell",
           "spec_fact_ref": "FACT-DIF-001",
-          "status": "implementing",
+          "status": "implemented",
           "issue": "spec_fact_ref 'FACT-DIF-001' not found in sal-facts-latest.json",
+          "severity": "HIGH"
+        },
+        {
+          "qname": "dif:datum",
+          "spec_fact_ref": "FACT-DIF-003",
+          "status": "implemented",
+          "issue": "spec_fact_ref 'FACT-DIF-003' not found in sal-facts-latest.json",
+          "severity": "HIGH"
+        },
+        {
+          "qname": "dif:vector",
+          "spec_fact_ref": "FACT-DIF-002",
+          "status": "implemented",
+          "issue": "spec_fact_ref 'FACT-DIF-002' not found in sal-facts-latest.json",
           "severity": "HIGH"
         }
       ]
@@ -117,23 +131,23 @@
         {
           "qname": "office:document",
           "spec_fact_ref": "FACT-FODG-001",
-          "status": "implementing",
+          "status": "implemented",
           "issue": "spec_fact_ref 'FACT-FODG-001' not found in sal-facts-latest.json",
           "severity": "HIGH"
         },
         {
           "qname": "draw:page",
           "spec_fact_ref": "FACT-FODG-002",
-          "status": "implementing",
+          "status": "implemented",
           "issue": "spec_fact_ref 'FACT-FODG-002' not found in sal-facts-latest.json",
           "severity": "HIGH"
         },
         {
           "qname": "draw:frame",
           "spec_fact_ref": "FACT-FODG-003",
-          "status": "seeded",
+          "status": "implemented",
           "issue": "spec_fact_ref 'FACT-FODG-003' not found in sal-facts-latest.json",
-          "severity": "WARN"
+          "severity": "HIGH"
         }
       ]
     },
@@ -148,23 +162,23 @@
         {
           "qname": "office:document",
           "spec_fact_ref": "FACT-FODP-001",
-          "status": "implementing",
+          "status": "implemented",
           "issue": "spec_fact_ref 'FACT-FODP-001' not found in sal-facts-latest.json",
           "severity": "HIGH"
         },
         {
           "qname": "presentation:page",
           "spec_fact_ref": "FACT-FODP-002",
-          "status": "implementing",
+          "status": "implemented",
           "issue": "spec_fact_ref 'FACT-FODP-002' not found in sal-facts-latest.json",
           "severity": "HIGH"
         },
         {
           "qname": "draw:frame",
           "spec_fact_ref": "FACT-FODP-003",
-          "status": "seeded",
+          "status": "implemented",
           "issue": "spec_fact_ref 'FACT-FODP-003' not found in sal-facts-latest.json",
-          "severity": "WARN"
+          "severity": "HIGH"
         }
       ]
     },
@@ -205,23 +219,23 @@
         {
           "qname": "gnumeric:workbook",
           "spec_fact_ref": "FACT-GNUMERIC-001",
-          "status": "implementing",
+          "status": "implemented",
           "issue": "spec_fact_ref 'FACT-GNUMERIC-001' not found in sal-facts-latest.json",
           "severity": "HIGH"
         },
         {
           "qname": "gnumeric:sheet",
           "spec_fact_ref": "FACT-GNUMERIC-002",
-          "status": "implementing",
+          "status": "implemented",
           "issue": "spec_fact_ref 'FACT-GNUMERIC-002' not found in sal-facts-latest.json",
           "severity": "HIGH"
         },
         {
           "qname": "gnumeric:cell",
           "spec_fact_ref": "FACT-GNUMERIC-003",
-          "status": "seeded",
+          "status": "implemented",
           "issue": "spec_fact_ref 'FACT-GNUMERIC-003' not found in sal-facts-latest.json",
-          "severity": "WARN"
+          "severity": "HIGH"
         }
       ]
     },
@@ -236,14 +250,14 @@
         {
           "qname": "ndjson:record",
           "spec_fact_ref": "FACT-NDJSON-001",
-          "status": "implementing",
+          "status": "implemented",
           "issue": "spec_fact_ref 'FACT-NDJSON-001' not found in sal-facts-latest.json",
           "severity": "HIGH"
         },
         {
           "qname": "ndjson:field",
           "spec_fact_ref": "FACT-NDJSON-002",
-          "status": "implementing",
+          "status": "implemented",
           "issue": "spec_fact_ref 'FACT-NDJSON-002' not found in sal-facts-latest.json",
           "severity": "HIGH"
         }
@@ -251,12 +265,20 @@
     },
     {
       "format": "ods",
-      "total_entries": 3,
-      "entries_with_spec_fact_ref": 3,
+      "total_entries": 4,
+      "entries_with_spec_fact_ref": 4,
       "entries_resolved": 3,
-      "entries_missing_in_sal": 0,
-      "coverage_pct": 100.0,
-      "gaps": []
+      "entries_missing_in_sal": 1,
+      "coverage_pct": 75.0,
+      "gaps": [
+        {
+          "qname": "table:table-row",
+          "spec_fact_ref": "FACT-ODS-002",
+          "status": "implemented",
+          "issue": "spec_fact_ref 'FACT-ODS-002' not found in sal-facts-latest.json",
+          "severity": "HIGH"
+        }
+      ]
     },
     {
       "format": "odt",
@@ -269,27 +291,27 @@
     },
     {
       "format": "pbm",
-      "total_entries": 2,
-      "entries_with_spec_fact_ref": 2,
-      "entries_resolved": 2,
+      "total_entries": 3,
+      "entries_with_spec_fact_ref": 3,
+      "entries_resolved": 3,
       "entries_missing_in_sal": 0,
       "coverage_pct": 100.0,
       "gaps": []
     },
     {
       "format": "pgm",
-      "total_entries": 2,
-      "entries_with_spec_fact_ref": 2,
-      "entries_resolved": 2,
+      "total_entries": 3,
+      "entries_with_spec_fact_ref": 3,
+      "entries_resolved": 3,
       "entries_missing_in_sal": 0,
       "coverage_pct": 100.0,
       "gaps": []
     },
     {
       "format": "ppm",
-      "total_entries": 2,
-      "entries_with_spec_fact_ref": 2,
-      "entries_resolved": 2,
+      "total_entries": 3,
+      "entries_with_spec_fact_ref": 3,
+      "entries_resolved": 3,
       "entries_missing_in_sal": 0,
       "coverage_pct": 100.0,
       "gaps": []
@@ -305,21 +327,21 @@
         {
           "qname": "qoi:header",
           "spec_fact_ref": "FACT-QOI-001",
-          "status": "implementing",
+          "status": "implemented",
           "issue": "spec_fact_ref 'FACT-QOI-001' not found in sal-facts-latest.json",
           "severity": "HIGH"
         },
         {
           "qname": "qoi:chunk",
           "spec_fact_ref": "FACT-QOI-002",
-          "status": "implementing",
+          "status": "implemented",
           "issue": "spec_fact_ref 'FACT-QOI-002' not found in sal-facts-latest.json",
           "severity": "HIGH"
         },
         {
           "qname": "qoi:end-marker",
           "spec_fact_ref": "FACT-QOI-003",
-          "status": "implementing",
+          "status": "implemented",
           "issue": "spec_fact_ref 'FACT-QOI-003' not found in sal-facts-latest.json",
           "severity": "HIGH"
         }
@@ -327,32 +349,39 @@
     },
     {
       "format": "sylk",
-      "total_entries": 3,
-      "entries_with_spec_fact_ref": 3,
+      "total_entries": 4,
+      "entries_with_spec_fact_ref": 4,
       "entries_resolved": 0,
-      "entries_missing_in_sal": 3,
+      "entries_missing_in_sal": 4,
       "coverage_pct": 0.0,
       "gaps": [
         {
           "qname": "sylk:header",
           "spec_fact_ref": "FACT-SYLK-001",
-          "status": "implementing",
+          "status": "implemented",
           "issue": "spec_fact_ref 'FACT-SYLK-001' not found in sal-facts-latest.json",
           "severity": "HIGH"
         },
         {
           "qname": "sylk:cell",
           "spec_fact_ref": "FACT-SYLK-002",
-          "status": "implementing",
+          "status": "implemented",
           "issue": "spec_fact_ref 'FACT-SYLK-002' not found in sal-facts-latest.json",
           "severity": "HIGH"
         },
         {
           "qname": "sylk:format",
           "spec_fact_ref": "FACT-SYLK-003",
-          "status": "seeded",
+          "status": "implemented",
           "issue": "spec_fact_ref 'FACT-SYLK-003' not found in sal-facts-latest.json",
-          "severity": "WARN"
+          "severity": "HIGH"
+        },
+        {
+          "qname": "sylk:row",
+          "spec_fact_ref": "FACT-SYLK-002",
+          "status": "implemented",
+          "issue": "spec_fact_ref 'FACT-SYLK-002' not found in sal-facts-latest.json",
+          "severity": "HIGH"
         }
       ]
     },
@@ -367,52 +396,28 @@
         {
           "qname": "toml:table",
           "spec_fact_ref": "FACT-TOML-001",
-          "status": "implementing",
+          "status": "implemented",
           "issue": "spec_fact_ref 'FACT-TOML-001' not found in sal-facts-latest.json",
           "severity": "HIGH"
         },
         {
           "qname": "toml:key",
           "spec_fact_ref": "FACT-TOML-002",
-          "status": "implementing",
+          "status": "implemented",
           "issue": "spec_fact_ref 'FACT-TOML-002' not found in sal-facts-latest.json",
           "severity": "HIGH"
         },
         {
           "qname": "toml:value",
           "spec_fact_ref": "FACT-TOML-003",
-          "status": "seeded",
+          "status": "implemented",
           "issue": "spec_fact_ref 'FACT-TOML-003' not found in sal-facts-latest.json",
-          "severity": "WARN"
-        }
-      ]
-    },
-    {
-      "format": "tsv",
-      "total_entries": 2,
-      "entries_with_spec_fact_ref": 2,
-      "entries_resolved": 0,
-      "entries_missing_in_sal": 2,
-      "coverage_pct": 0.0,
-      "gaps": [
-        {
-          "qname": "tsv:row",
-          "spec_fact_ref": "FACT-TSV-001",
-          "status": "seeded",
-          "issue": "spec_fact_ref 'FACT-TSV-001' not found in sal-facts-latest.json",
-          "severity": "WARN"
-        },
-        {
-          "qname": "tsv:field",
-          "spec_fact_ref": "FACT-TSV-001",
-          "status": "implementing",
-          "issue": "spec_fact_ref 'FACT-TSV-001' not found in sal-facts-latest.json",
           "severity": "HIGH"
         }
       ]
     },
     {
-      "format": "xcf",
+      "format": "tsv",
       "total_entries": 3,
       "entries_with_spec_fact_ref": 3,
       "entries_resolved": 0,
@@ -420,24 +425,62 @@
       "coverage_pct": 0.0,
       "gaps": [
         {
+          "qname": "tsv:row",
+          "spec_fact_ref": "FACT-TSV-001",
+          "status": "implemented",
+          "issue": "spec_fact_ref 'FACT-TSV-001' not found in sal-facts-latest.json",
+          "severity": "HIGH"
+        },
+        {
+          "qname": "tsv:field",
+          "spec_fact_ref": "FACT-TSV-001",
+          "status": "implemented",
+          "issue": "spec_fact_ref 'FACT-TSV-001' not found in sal-facts-latest.json",
+          "severity": "HIGH"
+        },
+        {
+          "qname": "tsv:record",
+          "spec_fact_ref": "FACT-TSV-001",
+          "status": "implemented",
+          "issue": "spec_fact_ref 'FACT-TSV-001' not found in sal-facts-latest.json",
+          "severity": "HIGH"
+        }
+      ]
+    },
+    {
+      "format": "xcf",
+      "total_entries": 4,
+      "entries_with_spec_fact_ref": 4,
+      "entries_resolved": 0,
+      "entries_missing_in_sal": 4,
+      "coverage_pct": 0.0,
+      "gaps": [
+        {
           "qname": "xcf:image",
           "spec_fact_ref": "FACT-XCF-001",
-          "status": "implementing",
+          "status": "implemented",
           "issue": "spec_fact_ref 'FACT-XCF-001' not found in sal-facts-latest.json",
           "severity": "HIGH"
         },
         {
           "qname": "xcf:layer",
           "spec_fact_ref": "FACT-XCF-002",
-          "status": "implementing",
+          "status": "implemented",
           "issue": "spec_fact_ref 'FACT-XCF-002' not found in sal-facts-latest.json",
           "severity": "HIGH"
         },
         {
           "qname": "xcf:channel",
           "spec_fact_ref": "FACT-XCF-003",
-          "status": "implementing",
+          "status": "implemented",
           "issue": "spec_fact_ref 'FACT-XCF-003' not found in sal-facts-latest.json",
+          "severity": "HIGH"
+        },
+        {
+          "qname": "xcf:header",
+          "spec_fact_ref": "FACT-XCF-001",
+          "status": "implemented",
+          "issue": "spec_fact_ref 'FACT-XCF-001' not found in sal-facts-latest.json",
           "severity": "HIGH"
         }
       ]

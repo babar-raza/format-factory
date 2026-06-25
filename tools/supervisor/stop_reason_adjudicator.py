@@ -508,21 +508,21 @@ def adjudicate_stop_reason(
     if normalized == SignalCategory.PUSH_COMMIT:
         return _make_decision(
             signal, normalized,
-            StopDecision.AGENT_OWNED_REVIEW_CONTINUE,
-            terminal=False,
+            StopDecision.TRUE_EXTERNAL_GATE,
+            terminal=True,
             blocks_implementation=False,
             blocks_poc_candidate=False,
-            blocks_release=False,
+            blocks_release=True,
             agent_can_handle=True,
-            human_required=False,
+            human_required=True,
             allowed_next_action=(
-                "SCM Agent: execute commit/push when sprint policy authorizes per AGENTS.md §AG4. "
-                "If credentials unavailable, classify EXTERNAL_BLOCKER: git_push_credentials_unavailable."
+                "Agent: prepare commit summary, verify tests pass and diff is clean. "
+                "Human: execute git commit/push per AGENTS.md §AG4 when sprint policy authorizes."
             ),
-            reason="git commit/push/merge is SCM Agent task per AGENTS.md §AG4",
+            reason="git commit/push/merge requires human execution in current environment",
             remediation=(
-                "SCM Agent commits when: tests pass, diff clean, governance validators pass, "
-                "sprint policy authorizes. Classify specific EXTERNAL_BLOCKER if conditions not met."
+                "Agent prepares commit summary. Human executes commit/push when: "
+                "tests pass, diff clean, governance validators pass, sprint policy authorizes."
             ),
         )
 

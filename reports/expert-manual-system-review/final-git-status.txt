@@ -1,18 +1,56 @@
+ M .claude/commands/command-registry.yaml
+ M .supervisor/ad-hoc-execution-inventory.yaml
+ M .supervisor/capability-routing-registry.yaml
+ M .supervisor/capability-routing-results.yaml
  M .supervisor/context-pack.yaml
+ M .supervisor/knowledge/contracts/python-domain-model.yaml
  M .supervisor/project-memory.md
+ M .supervisor/residual-bypass-report.yaml
+ M .supervisor/skill-command-registry-sync-report.yaml
+ M .supervisor/skill-contract-validation-results.yaml
+ M .supervisor/skill-first-execution-report.md
+ M .supervisor/skill-idempotency-proof.yaml
+ M .supervisor/skill-inventory.yaml
+ M .supervisor/skill-registry.yaml
  M .supervisor/state/current-run.json
  M .supervisor/state/watcher.json
+ M plans/master-plan.md
+ M registry/source-structure-baseline.json
+ M reports/acceleration-product-first/ai-usage-ledger.jsonl
+ M reports/autonomous-orchestrator/next-action-generation/generation-trace.json
+ M reports/capability-layer/action-queue.json
+ M reports/capability-layer/capability_summary.json
+ M reports/capability-layer/commercial-capability-map.json
+ M reports/capability-layer/foss-reduced-capability-map.json
+ M reports/capability-layer/gap-sal-traceability-20260625.json
+ M reports/capability-layer/unified-capability-map.json
+ M reports/expert-manual-system-review/final-git-status.txt
+ M reports/qname-coverage-20260624.json
+ M reports/r90/product-code-change-ledger.json
+ M reports/sal-qname-gap-20260624.json
+ M reports/superpowers-agentic-autonomy/execution-state.json
+ M reports/supervisor-streams/mainstream/authority-map.json
+ M reports/supervisor-streams/mainstream/contradictions.json
+ M reports/supervisor-streams/mainstream/evidence-review.json
+ M reports/supervisor-streams/mainstream/latest-next-worker-prompt.md
+ M reports/supervisor-streams/mainstream/latest-review.md
+ M reports/supervisor-streams/mainstream/work-item-grades.json
+ M reports/supervisor-streams/mainstream/work-item-grades.yaml
  M reports/supervisor/approval-gates.md
+ M reports/supervisor/commit-candidate-summary.md
  M reports/supervisor/context-pack.md
  M reports/supervisor/contradictions.json
  M reports/supervisor/contradictions.md
  M reports/supervisor/discovery-summary.md
  M reports/supervisor/evidence-review.json
  M reports/supervisor/evidence-review.md
+ M reports/supervisor/grading-history.jsonl
  M reports/supervisor/latest-cycle-summary.md
  M reports/supervisor/latest-next-worker-prompt.md
  M reports/supervisor/latest-review.md
  M reports/supervisor/materialized-evidence-review.md
+ M reports/supervisor/maturity-signal.json
+ M reports/supervisor/maturity-trend.json
  M reports/supervisor/memory-sync-report.md
  M reports/supervisor/next-ruflo-lanes.json
  M reports/supervisor/next-sprint-taskmaster.json
@@ -21,17 +59,144 @@
  M reports/supervisor/work-item-grades.json
  M reports/supervisor/work-item-grades.md
  M reports/supervisor/work-item-grades.yaml
- M src/net/fods/FodsCsvExporter.cs
- M src/net/fods/FormatFactory.Fods.csproj
- M src/net/fodt/FormatFactory.Fodt.csproj
- M src/net/netpbm/FormatFactory.Netpbm.csproj
- M src/python/abw/__init__.py
- M src/python/abw/abw_codec.py
- M src/python/gnumeric/__init__.py
- M src/python/gnumeric/gnumeric_codec.py
-?? examples/python/abw/create_document_example.py
-?? examples/python/gnumeric/export_csv_example.py
-?? src/python/abw/pyproject.toml
-?? src/python/gnumeric/pyproject.toml
-?? tests/python/abw/test_r117_abw_write_roundtrip.py
-?? tests/python/gnumeric/test_r117_gnumeric_csv_export.py
+ M shared/qname-registry/abw.yaml
+ M shared/qname-registry/csv.yaml
+ M shared/qname-registry/dif.yaml
+ M shared/qname-registry/gnumeric.yaml
+ M shared/qname-registry/ndjson.yaml
+ M shared/qname-registry/sylk.yaml
+ M shared/qname-registry/toml.yaml
+ M shared/qname-registry/tsv.yaml
+ M shared/qname-registry/xcf.yaml
+ M shared/qname-registry/zst.yaml
+ M src/python/dif/__init__.py
+ M src/python/fodg/__init__.py
+ M src/python/fodp/__init__.py
+ M src/python/ods/__init__.py
+ M src/python/odt/__init__.py
+ M src/python/pbm/__init__.py
+ M src/python/pgm/__init__.py
+ M src/python/ppm/__init__.py
+ M src/python/qoi/__init__.py
+ M src/python/sylk/__init__.py
+ M src/python/xcf/__init__.py
+ M tools/audit_deepening_tests.py
+ M tools/audit_gap_ledger_sal_refs.py
+ M tools/audit_sal_to_qname.py
+ M tools/backfill/plan_generator.py
+ M tools/build_cross_format_index.py
+ M tools/capability_layer/capability_map_generator.py
+ M tools/scripts/create_structural_workbench_facts.py
+ M tools/spec/ingest_review_findings.py
+ M tools/specification-authority-layer/run_extraction_pipeline.py
+ M tools/supervisor/anti_skip_checker.py
+ M tools/supervisor/autonomous_cycle.py
+ M tools/supervisor/autonomous_loop_runner.py
+ M tools/supervisor/autonomous_task_generator.py
+ M tools/supervisor/capability_feature_compiler.py
+ M tools/supervisor/capability_queue_consumer.py
+ M tools/supervisor/check_continuation.py
+ M tools/supervisor/failure_memory.py
+ M tools/supervisor/gap_ledger_to_work_items.py
+ M tools/supervisor/generate_next_worker_prompt.py
+ M tools/supervisor/generate_supervisor_packet.py
+ M tools/supervisor/governance_validator_runner.py
+ M tools/supervisor/governance_validators.py
+ M tools/supervisor/governance_validators_ext.py
+ M tools/supervisor/knowledge_freshness_validator.py
+ M tools/supervisor/product_feature_factory.py
+ M tools/supervisor/reconcile_exports_vs_capabilities.py
+ M tools/supervisor/reopen_plan_lock.py
+ M tools/supervisor/sprint_executor.py
+ M tools/supervisor/sprint_executor_validate.py
+ M tools/supervisor/stop_reason_adjudicator.py
+ M tools/supervisor/update_source_baseline.py
+ M tools/supervisor/write_plan_lock.py
+ M tools/validators/analytics_bucket_detector.py
+ M tools/validators/taskcard_memory_safety_validator.py
+ M tools/validators/validate_source_architecture.py
+?? .supervisor/knowledge/contracts/artifact-identity.yaml
+?? examples/dotnet/csv/
+?? examples/dotnet/ndjson/
+?? examples/dotnet/tsv/
+?? examples/dotnet/zst/
+?? examples/python/pbm/pbm_consumer_roundtrip.py
+?? examples/python/qoi/qoi_consumer_roundtrip.py
+?? reports/expert-manual-system-review/00-preflight.md
+?? reports/expert-manual-system-review/autonomy-layer-rubric.md
+?? reports/expert-manual-system-review/code-quality-rubric.md
+?? reports/expert-manual-system-review/commercial-readiness-rubric.md
+?? reports/expert-manual-system-review/current-git-status.txt
+?? reports/expert-manual-system-review/dotnet-commercial-quality-rubric.md
+?? reports/expert-manual-system-review/dotnet-commercial-review-plan.md
+?? reports/expert-manual-system-review/dry-run-plan.md
+?? reports/expert-manual-system-review/evidence-output-matrix.json
+?? reports/expert-manual-system-review/evidence-quality-rubric.md
+?? reports/expert-manual-system-review/expert-review-questions.md
+?? reports/expert-manual-system-review/file-ownership-map.json
+?? reports/expert-manual-system-review/final-plan-mode-summary.md
+?? reports/expert-manual-system-review/foss-readiness-rubric.md
+?? reports/expert-manual-system-review/initial-risk-register.json
+?? reports/expert-manual-system-review/initial-risk-register.md
+?? reports/expert-manual-system-review/layer-review-plan.md
+?? reports/expert-manual-system-review/live-readonly-run-plan.md
+?? reports/expert-manual-system-review/manual-review-master-plan.json
+?? reports/expert-manual-system-review/manual-review-master-plan.md
+?? reports/expert-manual-system-review/output-review-plan.md
+?? reports/expert-manual-system-review/phase-a-investigation/
+?? reports/expert-manual-system-review/pilot-run-plan.md
+?? reports/expert-manual-system-review/plan-mode-limitations.md
+?? reports/expert-manual-system-review/problem-confirmation-process.md
+?? reports/expert-manual-system-review/problem-matrix-schema.json
+?? reports/expert-manual-system-review/problem-matrix-template.md
+?? reports/expert-manual-system-review/python-feature-requirement-model.md
+?? reports/expert-manual-system-review/python-foss-review-plan.md
+?? reports/expert-manual-system-review/recommended-review-sequence.md
+?? reports/expert-manual-system-review/repo-inventory.json
+?? reports/expert-manual-system-review/repo-inventory.md
+?? reports/expert-manual-system-review/review-execution-phases.md
+?? reports/expert-manual-system-review/review-methodology.md
+?? reports/expert-manual-system-review/review-scope.md
+?? reports/expert-manual-system-review/src-review-checklist.md
+?? reports/expert-manual-system-review/src-review-plan.md
+?? reports/expert-manual-system-review/system-map.json
+?? reports/expert-manual-system-review/system-map.md
+?? reports/forensic-audit-20260624/
+?? reports/machinery-truth/
+?? reports/product-quality-code-api-review-2026-06-25.zip
+?? reports/product-quality-code-api-review/
+?? reports/qname-coverage-20260625.json
+?? reports/sal-qname-gap-20260625.json
+?? reports/skills-pdep-20260625/
+?? reports/skills-r120/skill-transcripts/toml-analytics-r120.json
+?? reports/skills-r646/skill-transcripts/decompose-monolithic-codec-gnumeric-20260625.json
+?? reports/spec-authority-machinery/spec-authority-machinery-explosion-20260625-c6b2470/
+?? reports/supervisor/sprint-productionization-audit-20260625.md
+?? src/python/dif/models.py
+?? src/python/fodg/models.py
+?? src/python/fodp/models.py
+?? src/python/ods/models.py
+?? src/python/odt/models.py
+?? src/python/pbm/models.py
+?? src/python/pgm/models.py
+?? src/python/ppm/models.py
+?? src/python/qoi/models.py
+?? src/python/sylk/models.py
+?? src/python/xcf/models.py
+?? tests/python/dif/test_dif_domain_model.py
+?? tests/python/fodg/test_fodg_domain_model.py
+?? tests/python/fodp/test_fodp_domain_model.py
+?? tests/python/ods/test_ods_domain_model.py
+?? tests/python/odt/test_odt_domain_model.py
+?? tests/python/pbm/test_pbm_consumer_proof.py
+?? tests/python/pbm/test_pbm_domain_model.py
+?? tests/python/pgm/test_pgm_domain_model.py
+?? tests/python/ppm/test_ppm_domain_model.py
+?? tests/python/qoi/test_qoi_domain_model.py
+?? tests/python/sylk/test_sylk_domain_model.py
+?? tests/python/xcf/test_xcf_domain_model.py
+?? tests/supervisor/test_tc_fl_004_route_consumption.py
+?? tests/supervisor/test_tc_fl_006_sal_authority.py
+?? tests/supervisor/test_v54_skill_idempotency.py
+?? tests/supervisor/test_v56_lane_dag.py
+?? tests/supervisor/test_v57_artifact_identity.py
