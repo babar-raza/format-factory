@@ -95,14 +95,19 @@ class TestV50ForbiddenModuleNames:
         assert result["result"] == "PASS"
         assert result["blocks_sprint"] is False
 
-    def test_analytics_file_is_not_blocked(self, tmp_path):
-        """Positive control: *_analytics.py (no extra/misc) → PASS."""
+    def test_analytics_file_is_blocked(self, tmp_path):
+        """Negative control: *_analytics.py → FAIL (extended 2026-06-23, zesty-conjuring-peacock).
+
+        V50 was extended on 2026-06-23 to also block format-prefixed *_analytics.py files
+        since the product deepening rotation is suspended and no new analytics should be created.
+        """
         target = tmp_path / "src" / "python" / "csv" / "csv_analytics.py"
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_text("def csv_fn(): pass\n")
         decl = _decl(["src/python/csv/csv_analytics.py"])
         result = validate_forbidden_module_names(decl, repo_root=tmp_path)
-        assert result["result"] == "PASS"
+        assert result["result"] == "FAIL"
+        assert result["blocks_sprint"] is True
 
     def test_codec_file_is_not_blocked(self, tmp_path):
         """Positive control: *_codec.py → PASS."""

@@ -8,7 +8,6 @@ spec_qname = "zst:frame"
 spec_fact_ref = "FACT-ZST-001"
 namespace_uri = "urn:facebook:zstandard"
 
-import math
 from pathlib import Path
 
 from .zst_codec import (

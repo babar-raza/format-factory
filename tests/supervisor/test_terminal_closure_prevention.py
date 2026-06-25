@@ -733,7 +733,7 @@ class TestCompletionCandidateIntegration:
         }))
 
         # Write session ID file
-        sid_file = tmp_path / ".local" / "supervisor" / f"session-product.id"
+        sid_file = tmp_path / ".local" / "supervisor" / "session-product.id"
         sid_file.write_text(json.dumps({"session_id": session_id}))
 
         # Write continuation signal

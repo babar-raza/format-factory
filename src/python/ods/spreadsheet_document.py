@@ -9,14 +9,9 @@ spec_fact_ref = "FACT-ODS-001"
 namespace_uri = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
 
 from pathlib import Path
-from typing import Any
 
 from .ods_parser import (
-    parse_ods,
     parse_ods_strict,
-    get_row_count,
-    get_column_count,
-    get_cell_value,
 )
 
 

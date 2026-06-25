@@ -14,19 +14,22 @@ This is the upgrade from the zero-stale dry-run pilot (Sprint 2) to actual fixtu
 from __future__ import annotations
 
 import json
+import sys
 import tempfile
 import os
 from pathlib import Path
 
 import pytest
 
+_REPO_ROOT = Path(__file__).resolve().parents[2]
+if str(_REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(_REPO_ROOT))
+
 from tools.supervisor.rework_orchestrator import (
     ReworkOrchestrator,
     StaleQueueDetector,
     DefectClass,
 )
-
-_REPO_ROOT = Path(__file__).resolve().parents[2]
 
 
 def _make_fixture_queue(items: list[dict]) -> Path:
@@ -43,7 +46,7 @@ def _make_fixture_queue(items: list[dict]) -> Path:
 _STALE_ITEM_1 = {
     "action_id": "FIXTURE-STALE-001",
     "action_type": "PRODUCT_SOURCE_PATCH_BOUNDED",
-    "target_path": "src/python/gnumeric/gnumeric_codec.py",
+    "target_path": "src/python/gnumeric/gnumeric_workbook_stats.py",
     "status": "pending",
     "function_name": "average_column",
     "description": "Add average_column (STALE: already added in Sprint 2)",
@@ -206,10 +209,10 @@ class TestFunctionExistenceProof:
     """Direct proof that Sprint 2 functions exist in source (fixture grounding)."""
 
     def test_average_column_exists_in_gnumeric(self):
-        """average_column is present in gnumeric_codec.py — Sprint 2 output verified."""
+        """average_column is present in gnumeric_workbook_stats.py — verified in source."""
         detector = StaleQueueDetector(repo_root=_REPO_ROOT)
         assert detector.function_exists_in_source(
-            "src/python/gnumeric/gnumeric_codec.py", "average_column"
+            "src/python/gnumeric/gnumeric_workbook_stats.py", "average_column"
         ) is True
 
     def test_sum_column_exists_in_dif(self):

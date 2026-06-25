@@ -12,9 +12,7 @@ from pathlib import Path
 from typing import Any
 
 from .tsv_parser import (
-    load_tsv,
     parse_tsv_strict,
-    write_tsv,
     get_column_values,
 )
 

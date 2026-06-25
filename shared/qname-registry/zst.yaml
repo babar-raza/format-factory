@@ -1,35 +1,32 @@
-# QName Registry: ZST (seeded, TC-HARD-008, 2026-06-22)
-# Status: seeded - spec elements identified, not yet implemented as spec/ classes
-
-- qname: "zst:frame"
-  namespace_uri: "urn:ietf:rfc:8878:zstandard"
-  local_name: "frame"
-  canonical_class: "Zst.Frame"
-  spec_fact_ref: "FACT-ZST-001"
-  status: "implementing"
-  source_layer: "Spec"
-  facade_names: ["ZstFrame"]
-  python_file: "src/python/zst/spec/frame/frame.py"
+- qname: zst:frame
+  namespace_uri: urn:ietf:rfc:8878:zstandard
+  local_name: frame
+  canonical_class: Zst.Frame
+  spec_fact_ref: FACT-ZST-001
+  status: implemented
+  source_layer: Spec
+  facade_names:
+  - ZstFrame
+  python_file: src/python/zst/spec/frame/frame.py
   dotnet_file: null
-
-- qname: "zst:block"
-  namespace_uri: "urn:ietf:rfc:8878:zstandard"
-  local_name: "block"
-  canonical_class: "Zst.Block"
-  spec_fact_ref: "FACT-ZST-002"
-  status: "implementing"
-  source_layer: "Spec"
-  facade_names: ["ZstBlock"]
-  python_file: "src/python/zst/spec/frame/block.py"
+- qname: zst:block
+  namespace_uri: urn:ietf:rfc:8878:zstandard
+  local_name: block
+  canonical_class: Zst.Block
+  spec_fact_ref: FACT-ZST-002
+  status: implemented
+  source_layer: Spec
+  facade_names:
+  - ZstBlock
+  python_file: src/python/zst/spec/frame/block.py
   dotnet_file: null
-
-- qname: "zst:magic-number"
-  namespace_uri: "urn:ietf:rfc:8878:zstandard"
-  local_name: "magic-number"
-  canonical_class: "Zst.MagicNumber"
-  spec_fact_ref: "FACT-ZST-003"
-  status: "seeded"
-  source_layer: "Spec"
+- qname: zst:magic-number
+  namespace_uri: urn:ietf:rfc:8878:zstandard
+  local_name: magic-number
+  canonical_class: Zst.MagicNumber
+  spec_fact_ref: FACT-ZST-003
+  status: implemented
+  source_layer: Spec
   facade_names: []
-  python_file: null
+  python_file: src/python/zst/zst_codec.py
   dotnet_file: null

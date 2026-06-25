@@ -59,8 +59,41 @@ jobs:
           python-version: "3.11"
       - name: Install dependencies
         run: pip install -e ".[dev]"
-      - name: Governance validators smoke test
-        run: python -c "import sys; sys.path.insert(0, 'tools/supervisor'); from governance_validators import run_all_governance_validators; print('Governance validators: OK')"
+      - name: Source structure validation
+        run: python tools/validators/source_structure_validator.py
+      - name: Governance validators check
+        run: |
+          python -c "
+          import sys
+          sys.path.insert(0, 'tools/supervisor')
+          from governance_validators import run_all_governance_validators
+          decl = {
+              'run_id': 'ci-governance-check',
+              'sprint_id': 'ci',
+              'declared_scope': 'CI_CHECK',
+              'planned_work_items': [],
+              'evidence_root': '.local/evidences/',
+              'worker_self_verdict': 'PASS',
+              'worker_self_grade': 'PASS',
+              'start_time': '1970-01-01T00:00:00',
+              'end_time': '1970-01-01T00:00:01',
+              'git_head_start': 'HEAD',
+              'git_head_end': 'HEAD',
+              'git_status_final': 'clean',
+              'declared_scope_items': [],
+              'completed_work_items': [],
+              'incomplete_work_items': [],
+              'changed_files': [],
+              'tests_run': [],
+              'test_results': {},
+              'reports_created': [],
+              'next_recommended_work': 'continue',
+              'acceptance_criteria': 'CI governance check passes',
+          }
+          result = run_all_governance_validators(decl)
+          print(f'Governance validators: fail={result[\"fail_count\"]} warn={result[\"warn_count\"]} pass={result[\"pass_count\"]} blocks={result[\"blocks_sprint\"]}')
+          sys.exit(1 if result['blocks_sprint'] else 0)
+          "
 
   dotnet-build:
     runs-on: ubuntu-latest
@@ -68,31 +101,23 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: "9.0.x"
+          dotnet-version: "10.0.x"
       - name: Restore all .NET projects
-        run: dotnet restore src/net/*/FormatFactory.*.csproj
-      - name: Build established .NET projects (csv, fods, fodt, ndjson, tsv)
+        run: dotnet restore src/net/*/FormatFactory.*.csproj tests/net/*/FormatFactory.*.Tests.csproj
+      - name: Build all .NET projects
         run: |
-          for fmt in csv fods fodt ndjson tsv; do
-            proj="src/net/${fmt}/FormatFactory.*.csproj"
-            echo "Building $proj"
-            dotnet build $proj --configuration Release --no-restore
+          # Build in dependency order: leaf deps first, then consumers
+          for fmt in csv html txt markdown fods fodt ndjson tsv netpbm zst; do
+            proj=$(ls src/net/${fmt}/FormatFactory.*.csproj)
+            echo "Building ${fmt}"
+            dotnet build "${proj}" --configuration Release --no-restore
           done
-      - name: Build experimental .NET projects (html, markdown, txt, netpbm)
-        continue-on-error: true
+      - name: Run .NET tests
         run: |
-          for fmt in html markdown txt netpbm; do
-            proj="src/net/${fmt}/FormatFactory.*.csproj"
-            echo "Building $proj (experimental)"
-            dotnet build $proj --configuration Release --no-restore
+          for proj in tests/net/*/FormatFactory.*.Tests.csproj; do
+            echo "Testing ${proj}"
+            dotnet test "${proj}" --configuration Release
           done
-      - name: Run .NET tests (if any)
-        run: |
-          if [ -d "tests/dotnet" ]; then
-            for proj in tests/dotnet/*/FormatFactory.*.Tests.csproj; do
-              [ -f "$proj" ] && dotnet test "$proj" --no-build --configuration Release
-            done
-          fi
 
   test-full:
     if: github.event_name == 'push'
@@ -108,7 +133,7 @@ jobs:
       - name: Install dependencies
         run: pip install -e ".[dev]"
       - name: Run full test suite with coverage
-        run: pytest --cov=src --cov-report=xml --cov-report=term-missing --continue-on-collection-errors
+        run: pytest --cov=src --cov-report=xml --cov-report=term-missing
       - name: Coverage threshold
         run: coverage report --fail-under=85
       - name: Upload coverage

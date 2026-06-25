@@ -20,3 +20,7 @@ class TomlParseError(TomlError):
 
 class TomlWriteError(TomlError):
     """Raised when a toml file cannot be written."""
+
+
+class TomlInputError(TomlError):
+    """Raised when toml input is invalid or cannot be read."""

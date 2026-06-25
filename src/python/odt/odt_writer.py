@@ -26,7 +26,6 @@ _ODT_MIMETYPE = "application/vnd.oasis.opendocument.text"
 
 def _build_content_xml(paragraphs: list[str]) -> str:
     """Build a minimal content.xml string for the given paragraphs."""
-    import xml.etree.ElementTree as ET
 
     # Build paragraph elements
     para_xml = ""

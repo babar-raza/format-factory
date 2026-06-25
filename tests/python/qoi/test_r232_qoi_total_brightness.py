@@ -1,5 +1,6 @@
 """Tests for qoi_total_brightness (Sprint 22)."""
-import pytest, struct
+import pytest
+import struct
 from src.python.qoi import qoi_total_brightness
 
 

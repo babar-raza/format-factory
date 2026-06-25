@@ -9,7 +9,6 @@ spec_fact_ref = "FACT-QOI-001"
 namespace_uri = "urn:qoi:quite-ok-image"
 
 from pathlib import Path
-from typing import Any
 
 from .qoi_parser import (
     _parse_header,

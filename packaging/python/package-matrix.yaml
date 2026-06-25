@@ -1,252 +1,440 @@
----
-# Python FOSS Package Matrix
-# Sprint: FORMAT-FACTORY-R21-FOSS-RELEASE-READINESS-AND-GATE11-COMMERCIAL-PREEXECUTION-TRAIN-001
-# Date: 2026-05-17
-# Status: local_only_not_published
-
 packages:
-  - package_name: aspose-format-factory-zst
-    module_path: src/python/zst/
-    module_import: zst
-    format_id: zst
-    license: Apache-2.0
-    python_version: ">=3.9"
-    dependencies:
-      - zstandard>=0.21.0
-    capability_level: alpha-foss-preview
-    source_path: src/python/zst/
-    tests_path: tests/python/zst/
-    examples_path: examples/python/zst/
-    publish_status: local_only_not_published
-    publication_authorized: false
-    commercial_ready: false
-    acquisition_gates_passed: [1, 2, 3, 4, 5, 6, 7]
-    gate_5_note: "Gate 5 waived (waived_not_applicable) — ZST is a compression codec, no neutral model needed"
-
-  - package_name: aspose-format-factory-fodp
-    module_path: src/python/fodp/
-    module_import: fodp
-    format_id: fodp
-    license: Apache-2.0
-    python_version: ">=3.9"
-    dependencies: []
-    capability_level: alpha-foss-preview
-    source_path: src/python/fodp/
-    tests_path: tests/python/fodp/
-    examples_path: examples/python/fodp/
-    publish_status: local_only_not_published
-    publication_authorized: false
-    commercial_ready: false
-    acquisition_gates_passed: [1, 2, 3, 4, 5, 6, 7]
-
-  - package_name: aspose-format-factory-fodg
-    module_path: src/python/fodg/
-    module_import: fodg
-    format_id: fodg
-    license: Apache-2.0
-    python_version: ">=3.9"
-    dependencies: []
-    capability_level: alpha-foss-preview
-    source_path: src/python/fodg/
-    tests_path: tests/python/fodg/
-    examples_path: examples/python/fodg/
-    publish_status: local_only_not_published
-    publication_authorized: false
-    commercial_ready: false
-    acquisition_gates_passed: [1, 2, 3, 4, 5, 6, 7]
-
-  - package_name: aspose-format-factory-gnumeric
-    module_path: src/python/gnumeric/
-    module_import: gnumeric
-    format_id: gnumeric
-    license: Apache-2.0
-    python_version: ">=3.9"
-    dependencies: []
-    capability_level: alpha-foss-preview
-    source_path: src/python/gnumeric/
-    tests_path: tests/python/gnumeric/
-    examples_path: examples/python/gnumeric/
-    publish_status: local_only_not_published
-    publication_authorized: false
-    commercial_ready: false
-    acquisition_gates_passed: [1, 2, 3, 4, 5, 6, 7]
-
-  - package_name: aspose-format-factory-abw
-    module_path: src/python/abw/
-    module_import: abw
-    format_id: abw
-    license: Apache-2.0
-    python_version: ">=3.9"
-    dependencies: []
-    capability_level: alpha-foss-preview
-    source_path: src/python/abw/
-    tests_path: tests/python/abw/
-    examples_path: examples/python/abw/
-    publish_status: local_only_not_published
-    publication_authorized: false
-    commercial_ready: false
-    acquisition_gates_passed: [1, 2, 3, 4, 5, 6, 7]
-
-  - package_name: aspose-format-factory-fods
-    module_path: src/python/fods/
-    module_import: fods
-    format_id: fods
-    license: Apache-2.0
-    python_version: ">=3.9"
-    dependencies: []
-    capability_level: alpha-foss-preview
-    source_path: src/python/fods/
-    tests_path: tests/python/fods/
-    examples_path: examples/python/fods/
-    publish_status: local_only_not_published
-    publication_authorized: false
-    commercial_ready: false
-    acquisition_gates_passed: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-
-  - package_name: aspose-format-factory-fodt
-    module_path: src/python/fodt/
-    module_import: fodt
-    format_id: fodt
-    license: Apache-2.0
-    python_version: ">=3.9"
-    dependencies: []
-    capability_level: alpha-foss-preview
-    source_path: src/python/fodt/
-    tests_path: tests/python/fodt/
-    examples_path: examples/python/fodt/
-    publish_status: local_only_not_published
-    publication_authorized: false
-    commercial_ready: false
-    acquisition_gates_passed: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-
-  - package_name: aspose-format-factory-pgm
-    module_path: src/python/pgm/
-    module_import: pgm
-    format_id: pgm
-    license: Apache-2.0
-    python_version: ">=3.9"
-    dependencies: []
-    capability_level: alpha-foss-preview
-    source_path: src/python/pgm/
-    tests_path: tests/python/pgm/
-    examples_path: examples/python/pgm/
-    publish_status: local_only_not_published
-    publication_authorized: false
-    commercial_ready: false
-    acquisition_gates_passed: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-
-  - package_name: aspose-format-factory-pbm
-    module_path: src/python/pbm/
-    module_import: pbm
-    format_id: pbm
-    license: Apache-2.0
-    python_version: ">=3.9"
-    dependencies: []
-    capability_level: alpha-foss-preview
-    source_path: src/python/pbm/
-    tests_path: tests/python/pbm/
-    examples_path: examples/python/pbm/
-    publish_status: local_only_not_published
-    publication_authorized: false
-    commercial_ready: false
-    acquisition_gates_passed: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-
-  - package_name: aspose-format-factory-ppm
-    module_path: src/python/ppm/
-    module_import: ppm
-    format_id: ppm
-    license: Apache-2.0
-    python_version: ">=3.9"
-    dependencies: []
-    capability_level: alpha-foss-preview
-    source_path: src/python/ppm/
-    tests_path: tests/python/ppm/
-    examples_path: examples/python/ppm/
-    publish_status: local_only_not_published
-    publication_authorized: false
-    commercial_ready: false
-    acquisition_gates_passed: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-
-  - package_name: aspose-format-factory-sylk
-    module_path: src/python/sylk/
-    module_import: sylk
-    format_id: sylk
-    license: Apache-2.0
-    python_version: ">=3.9"
-    dependencies: []
-    capability_level: alpha-foss-preview
-    source_path: src/python/sylk/
-    tests_path: tests/python/sylk/
-    examples_path: examples/python/sylk/
-    publish_status: local_only_not_published
-    publication_authorized: false
-    commercial_ready: false
-    acquisition_gates_passed: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-
-  - package_name: aspose-format-factory-ndjson
-    module_path: src/python/ndjson/
-    module_import: ndjson
-    format_id: ndjson
-    license: Apache-2.0
-    python_version: ">=3.9"
-    dependencies: []
-    capability_level: alpha-foss-preview
-    source_path: src/python/ndjson/
-    tests_path: tests/python/ndjson/
-    examples_path: examples/python/ndjson/
-    publish_status: local_only_not_published
-    publication_authorized: false
-    commercial_ready: false
-    acquisition_gates_passed: [1, 2, 3, 4]
-
-  - package_name: aspose-format-factory-tsv
-    module_path: src/python/tsv/
-    module_import: tsv
-    format_id: tsv
-    license: Apache-2.0
-    python_version: ">=3.9"
-    dependencies: []
-    capability_level: alpha-foss-preview
-    source_path: src/python/tsv/
-    tests_path: tests/python/tsv/
-    examples_path: examples/python/tsv/
-    publish_status: local_only_not_published
-    publication_authorized: false
-    commercial_ready: false
-    acquisition_gates_passed: [1, 2, 3, 4]
-
-  - package_name: aspose-format-factory-dif
-    module_path: src/python/dif/
-    module_import: dif
-    format_id: dif
-    license: Apache-2.0
-    python_version: ">=3.9"
-    dependencies: []
-    capability_level: alpha-foss-preview
-    source_path: src/python/dif/
-    tests_path: tests/python/dif/
-    examples_path: examples/python/dif/
-    publish_status: local_only_not_published
-    publication_authorized: false
-    commercial_ready: false
-    acquisition_gates_passed: [1, 2, 3, 4]
-    dogfood_exports:
-      - dif_to_csv: csv_writer.write_csv
-    dogfood_note: "TC-DIF-002 (2026-06-22): import path fixed for installed-package context"
-
-  - package_name: aspose-format-factory-csv
-    module_path: src/python/csv/
-    module_import: csv
-    format_id: csv
-    license: Apache-2.0
-    python_version: ">=3.9"
-    dependencies: []
-    capability_level: alpha-foss-preview
-    source_path: src/python/csv/
-    tests_path: tests/python/csv/
-    examples_path: examples/python/csv/
-    publish_status: local_only_not_published
-    publication_authorized: false
-    commercial_ready: false
-    acquisition_gates_passed: [1, 2, 3, 4]
-    note: "Required as dependency for dif dogfood export (dif_to_csv uses csv.csv_writer.write_csv)"
+- acquisition_gates_passed:
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  capability_level: alpha-foss-preview
+  commercial_ready: false
+  dependencies:
+  - zstandard>=0.21.0
+  examples_path: examples/python/zst/
+  format_id: zst
+  gate_5_note: Gate 5 waived (waived_not_applicable) — ZST is a compression codec,
+    no neutral model needed
+  license: Apache-2.0
+  module_import: zst
+  module_path: src/python/zst/
+  package_name: aspose-format-factory-zst
+  publication_authorized: false
+  publish_status: local_only_not_published
+  python_version: '>=3.9'
+  source_path: src/python/zst/
+  tests_path: tests/python/zst/
+- acquisition_gates_passed:
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  capability_level: alpha-foss-preview
+  commercial_ready: false
+  dependencies: []
+  examples_path: examples/python/fodp/
+  format_id: fodp
+  license: Apache-2.0
+  module_import: fodp
+  module_path: src/python/fodp/
+  package_name: aspose-format-factory-fodp
+  publication_authorized: false
+  publish_status: local_only_not_published
+  python_version: '>=3.9'
+  source_path: src/python/fodp/
+  tests_path: tests/python/fodp/
+- acquisition_gates_passed:
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  capability_level: alpha-foss-preview
+  commercial_ready: false
+  dependencies: []
+  examples_path: examples/python/fodg/
+  format_id: fodg
+  license: Apache-2.0
+  module_import: fodg
+  module_path: src/python/fodg/
+  package_name: aspose-format-factory-fodg
+  publication_authorized: false
+  publish_status: local_only_not_published
+  python_version: '>=3.9'
+  source_path: src/python/fodg/
+  tests_path: tests/python/fodg/
+- acquisition_gates_passed:
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  capability_level: alpha-foss-preview
+  commercial_ready: false
+  dependencies: []
+  examples_path: examples/python/gnumeric/
+  format_id: gnumeric
+  license: Apache-2.0
+  module_import: gnumeric
+  module_path: src/python/gnumeric/
+  package_name: aspose-format-factory-gnumeric
+  publication_authorized: false
+  publish_status: local_only_not_published
+  python_version: '>=3.9'
+  source_path: src/python/gnumeric/
+  tests_path: tests/python/gnumeric/
+- acquisition_gates_passed:
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  capability_level: alpha-foss-preview
+  commercial_ready: false
+  dependencies: []
+  examples_path: examples/python/abw/
+  format_id: abw
+  license: Apache-2.0
+  module_import: abw
+  module_path: src/python/abw/
+  package_name: aspose-format-factory-abw
+  publication_authorized: false
+  publish_status: local_only_not_published
+  python_version: '>=3.9'
+  source_path: src/python/abw/
+  tests_path: tests/python/abw/
+- acquisition_gates_passed:
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
+  capability_level: alpha-foss-preview
+  commercial_ready: false
+  dependencies: []
+  examples_path: examples/python/fods/
+  format_id: fods
+  license: Apache-2.0
+  module_import: fods
+  module_path: src/python/fods/
+  package_name: aspose-format-factory-fods
+  publication_authorized: false
+  publish_status: local_only_not_published
+  python_version: '>=3.9'
+  source_path: src/python/fods/
+  tests_path: tests/python/fods/
+- acquisition_gates_passed:
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
+  capability_level: alpha-foss-preview
+  commercial_ready: false
+  dependencies: []
+  examples_path: examples/python/fodt/
+  format_id: fodt
+  license: Apache-2.0
+  module_import: fodt
+  module_path: src/python/fodt/
+  package_name: aspose-format-factory-fodt
+  publication_authorized: false
+  publish_status: local_only_not_published
+  python_version: '>=3.9'
+  source_path: src/python/fodt/
+  tests_path: tests/python/fodt/
+- acquisition_gates_passed:
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
+  capability_level: alpha-foss-preview
+  commercial_ready: false
+  dependencies: []
+  examples_path: examples/python/pgm/
+  format_id: pgm
+  license: Apache-2.0
+  module_import: pgm
+  module_path: src/python/pgm/
+  package_name: aspose-format-factory-pgm
+  publication_authorized: false
+  publish_status: local_only_not_published
+  python_version: '>=3.9'
+  source_path: src/python/pgm/
+  tests_path: tests/python/pgm/
+- acquisition_gates_passed:
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
+  capability_level: alpha-foss-preview
+  commercial_ready: false
+  dependencies: []
+  examples_path: examples/python/pbm/
+  format_id: pbm
+  license: Apache-2.0
+  module_import: pbm
+  module_path: src/python/pbm/
+  package_name: aspose-format-factory-pbm
+  publication_authorized: false
+  publish_status: local_only_not_published
+  python_version: '>=3.9'
+  source_path: src/python/pbm/
+  tests_path: tests/python/pbm/
+- acquisition_gates_passed:
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
+  capability_level: alpha-foss-preview
+  commercial_ready: false
+  dependencies: []
+  examples_path: examples/python/ppm/
+  format_id: ppm
+  license: Apache-2.0
+  module_import: ppm
+  module_path: src/python/ppm/
+  package_name: aspose-format-factory-ppm
+  publication_authorized: false
+  publish_status: local_only_not_published
+  python_version: '>=3.9'
+  source_path: src/python/ppm/
+  tests_path: tests/python/ppm/
+- acquisition_gates_passed:
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
+  capability_level: alpha-foss-preview
+  commercial_ready: false
+  dependencies: []
+  examples_path: examples/python/sylk/
+  format_id: sylk
+  license: Apache-2.0
+  module_import: sylk
+  module_path: src/python/sylk/
+  package_name: aspose-format-factory-sylk
+  publication_authorized: false
+  publish_status: local_only_not_published
+  python_version: '>=3.9'
+  source_path: src/python/sylk/
+  tests_path: tests/python/sylk/
+- acquisition_gates_passed:
+  - 1
+  - 2
+  - 3
+  - 4
+  capability_level: alpha-foss-preview
+  commercial_ready: false
+  dependencies: []
+  examples_path: examples/python/ndjson/
+  format_id: ndjson
+  license: Apache-2.0
+  module_import: ndjson
+  module_path: src/python/ndjson/
+  package_name: aspose-format-factory-ndjson
+  publication_authorized: false
+  publish_status: local_only_not_published
+  python_version: '>=3.9'
+  source_path: src/python/ndjson/
+  tests_path: tests/python/ndjson/
+- acquisition_gates_passed:
+  - 1
+  - 2
+  - 3
+  - 4
+  capability_level: alpha-foss-preview
+  commercial_ready: false
+  dependencies: []
+  examples_path: examples/python/tsv/
+  format_id: tsv
+  license: Apache-2.0
+  module_import: tsv
+  module_path: src/python/tsv/
+  package_name: aspose-format-factory-tsv
+  publication_authorized: false
+  publish_status: local_only_not_published
+  python_version: '>=3.9'
+  source_path: src/python/tsv/
+  tests_path: tests/python/tsv/
+- acquisition_gates_passed:
+  - 1
+  - 2
+  - 3
+  - 4
+  capability_level: alpha-foss-preview
+  commercial_ready: false
+  dependencies: []
+  dogfood_exports:
+  - dif_to_csv: csv_writer.write_csv
+  dogfood_note: 'TC-DIF-002 (2026-06-22): import path fixed for installed-package
+    context'
+  examples_path: examples/python/dif/
+  format_id: dif
+  license: Apache-2.0
+  module_import: dif
+  module_path: src/python/dif/
+  package_name: aspose-format-factory-dif
+  publication_authorized: false
+  publish_status: local_only_not_published
+  python_version: '>=3.9'
+  source_path: src/python/dif/
+  tests_path: tests/python/dif/
+- acquisition_gates_passed:
+  - 1
+  - 2
+  - 3
+  - 4
+  capability_level: alpha-foss-preview
+  commercial_ready: false
+  dependencies: []
+  examples_path: examples/python/csv/
+  format_id: csv
+  license: Apache-2.0
+  module_import: csv
+  module_path: src/python/csv/
+  note: Required as dependency for dif dogfood export (dif_to_csv uses csv.csv_writer.write_csv)
+  package_name: aspose-format-factory-csv
+  publication_authorized: false
+  publish_status: local_only_not_published
+  python_version: '>=3.9'
+  source_path: src/python/csv/
+  tests_path: tests/python/csv/
+- acquisition_gates_passed:
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  capability_level: alpha-foss-preview
+  commercial_ready: false
+  dependencies: []
+  examples_path: examples/python/odt/
+  format_id: odt
+  license: Apache-2.0
+  module_import: odt
+  module_path: src/python/odt/
+  note: odt_writer.py added in sprint ff-domain-models-ext-20260624
+  package_name: aspose-format-factory-odt
+  publication_authorized: false
+  publish_status: local_only_not_published
+  python_version: '>=3.9'
+  source_path: src/python/odt/
+  tests_path: tests/python/odt/
+- acquisition_gates_passed:
+  - 1
+  - 2
+  - 3
+  - 4
+  capability_level: alpha-foss-preview
+  commercial_ready: false
+  dependencies: []
+  format_id: ods
+  license: Apache-2.0
+  module_import: ods
+  module_path: src/python/ods/
+  package_name: aspose-format-factory-ods
+  publication_authorized: false
+  publish_status: local_only_not_published
+  python_version: '>=3.9'
+  source_path: src/python/ods/
+  tests_path: tests/python/ods/
+- acquisition_gates_passed:
+  - 1
+  - 2
+  - 3
+  - 4
+  capability_level: alpha-foss-preview
+  commercial_ready: false
+  dependencies: []
+  format_id: qoi
+  license: Apache-2.0
+  module_import: qoi
+  module_path: src/python/qoi/
+  package_name: aspose-format-factory-qoi
+  publication_authorized: false
+  publish_status: local_only_not_published
+  python_version: '>=3.9'
+  source_path: src/python/qoi/
+  tests_path: tests/python/qoi/
+- acquisition_gates_passed:
+  - 1
+  - 2
+  - 3
+  - 4
+  capability_level: alpha-foss-preview
+  commercial_ready: false
+  dependencies: []
+  format_id: toml
+  license: Apache-2.0
+  module_import: toml
+  module_path: src/python/toml/
+  package_name: aspose-format-factory-toml
+  publication_authorized: false
+  publish_status: local_only_not_published
+  python_version: '>=3.9'
+  source_path: src/python/toml/
+  tests_path: tests/python/toml/
+- acquisition_gates_passed:
+  - 1
+  - 2
+  - 3
+  - 4
+  capability_level: alpha-foss-preview
+  commercial_ready: false
+  dependencies: []
+  format_id: xcf
+  license: Apache-2.0
+  module_import: xcf
+  module_path: src/python/xcf/
+  package_name: aspose-format-factory-xcf
+  publication_authorized: false
+  publish_status: local_only_not_published
+  python_version: '>=3.9'
+  source_path: src/python/xcf/
+  tests_path: tests/python/xcf/

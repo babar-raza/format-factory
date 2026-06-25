@@ -51,7 +51,7 @@ def test_cycle_anti_skip_with_declaration(tmp_path):
         prior_test_count=50,
     )
 
-    assert result["total_checks"] == 17
+    assert result["total_checks"] == 18
     # Should pass — evidence quality has at least one ACCEPTED_VERIFIED
     assert result["all_pass"] is True
 

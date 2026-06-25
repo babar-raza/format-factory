@@ -1251,6 +1251,30 @@ skills:
   spec_qname_required: false
   status: active
   test_paths: []
+- command: /rollback-and-recovery
+  command_file: .claude/commands/rollback-and-recovery.md
+  idempotency: idempotent
+  implementation_paths: []
+  mandatory_validations:
+  - backup_path_exists_before_restore
+  - git_stash_list_checked_before_pop
+  - no_destructive_operation_without_confirm
+  notes: Created TC-S55-004 / SKILL-GAP-011 (2026-06-25). Use for git stash/pop,
+    backup restore, partial-state rollback, and plan-lock repair operations. All rollback
+    actions must be declared in evidence with before/after state comparison.
+  product_track: machinery_repair
+  purpose: Govern rollback, backup-restore, and partial-state recovery operations.
+    Ensures every destructive or reversible operation is declared, verified, and
+    evidence-captured before execution.
+  required_handoff_fields:
+  - rollback_target
+  - backup_path_or_stash_ref
+  - before_state_description
+  - after_state_expected
+  skill_id: rollback-and-recovery
+  spec_qname_required: false
+  status: active
+  test_paths: []
 sprint: FORMAT-FACTORY-R98-AUTONOMOUS-LOOP-TRUST-LAYER-ITERATION-SCALING-ACCELERATION-POC-MEGA-TRAIN-001
 version: '2.0'
 visibility: generated

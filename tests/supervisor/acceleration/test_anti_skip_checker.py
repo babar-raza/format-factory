@@ -465,5 +465,5 @@ def test_run_all_16_checks_legacy(tmp_path):
         repo_root=tmp_path,
         sample_outputs_dir=samples,
     )
-    assert result["total_checks"] == 17
+    assert result["total_checks"] == 18
     assert result["all_pass"] is True

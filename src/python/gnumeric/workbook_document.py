@@ -13,18 +13,10 @@ from typing import Any
 
 from .gnumeric_codec import (
     load,
-    get_sheet_count,
-    get_cell_count,
-    extract_values,
-    get_sheet_metadata,
-    get_cell_value,
-    get_row_count,
     get_column_count,
     count_nonempty_cells,
 )
 from .gnumeric_workbook_stats import (
-    get_all_values,
-    get_sheet_as_rows,
     row_count,
 )
 

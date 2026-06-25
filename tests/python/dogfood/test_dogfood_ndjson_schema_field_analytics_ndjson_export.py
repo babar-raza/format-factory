@@ -75,12 +75,12 @@ class TestNdjsonSchemaFieldAnalyticsNdjsonExport:
             stats = field_stats(path, "value")
             filtered = filter_records(path, "tag", "t0")
             ndjson_count = ndjson_record_count(path)
-            assert isinstance(valid, bool), f"probe_ndjson must be bool"
-            assert isinstance(fields, list), f"get_field_names must be list"
-            assert count >= 0, f"get_record_count must be >= 0"
-            assert isinstance(stats, dict), f"field_stats must be dict"
-            assert isinstance(filtered, list), f"filter_records must be list"
-            assert ndjson_count >= 0, f"ndjson_record_count must be >= 0"
+            assert isinstance(valid, bool), "probe_ndjson must be bool"
+            assert isinstance(fields, list), "get_field_names must be list"
+            assert count >= 0, "get_record_count must be >= 0"
+            assert isinstance(stats, dict), "field_stats must be dict"
+            assert isinstance(filtered, list), "filter_records must be list"
+            assert ndjson_count >= 0, "ndjson_record_count must be >= 0"
             records.append({
                 "file": Path(path).name,
                 "is_valid": valid,

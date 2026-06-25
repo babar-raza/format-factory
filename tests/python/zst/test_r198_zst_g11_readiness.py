@@ -54,6 +54,8 @@ class TestZstApiCompleteness:
             "zst_max_byte_value", "zst_min_byte_value", "zst_min_byte_exceeds_zero",
             "zst_is_empty_decompressed", "zst_is_trivial_compression",
             "zst_byte_range", "zst_is_single_byte",
+            # Domain model class (ZstDocument — added R118 sprint)
+            "ZstDocument",
         }
         actual = set(zst.__all__)
         assert expected == actual, f"API mismatch. Missing: {expected - actual}. Extra: {actual - expected}"

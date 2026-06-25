@@ -1,6 +1,10 @@
 // FormatFactory.Tsv — TSV Document model
 // commercial_product_ready: false
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
 namespace FormatFactory.Tsv;
 
 /// <summary>
@@ -13,7 +17,7 @@ namespace FormatFactory.Tsv;
 ///
 /// MWP status: minimal viable product.
 /// </summary>
-public class TsvDocument
+public sealed class TsvDocument
 {
     /// <summary>Header row (first row), or null if HasHeaders is false.</summary>
     public string[]? Headers { get; set; }
@@ -85,6 +89,46 @@ public class TsvDocument
             allRows.Add(row);
 
         TsvWriter.WriteRowsToFile(allRows, path);
+    }
+
+    /// <summary>True if the document has no data rows.</summary>
+    public bool IsEmpty => Rows.Count == 0;
+
+    /// <summary>
+    /// Get the cell value at the given zero-based row and column index.
+    /// Returns null if the row or column is out of bounds.
+    /// </summary>
+    public string? GetCellValue(int row, int col)
+    {
+        if (row < 0 || row >= Rows.Count) return null;
+        var r = Rows[row];
+        if (col < 0 || col >= r.Length) return null;
+        return r[col];
+    }
+
+    /// <summary>
+    /// Returns all values in the given column index across all data rows.
+    /// Rows that are too short return null for the missing cell.
+    /// </summary>
+    public IReadOnlyList<string?> GetColumnValues(int colIndex)
+    {
+        if (colIndex < 0) throw new ArgumentOutOfRangeException(nameof(colIndex));
+        return Rows.Select(r => colIndex < r.Length ? r[colIndex] : (string?)null).ToList();
+    }
+
+    /// <summary>
+    /// Returns a new TsvDocument containing only rows that match the predicate.
+    /// Headers are preserved unchanged.
+    /// </summary>
+    public TsvDocument Filter(Func<string[], bool> predicate)
+    {
+        if (predicate is null) throw new ArgumentNullException(nameof(predicate));
+        return new TsvDocument
+        {
+            Headers = Headers,
+            HasHeaders = HasHeaders,
+            Rows = Rows.Where(predicate).ToList()
+        };
     }
 
     // -------------------------------------------------------------------------

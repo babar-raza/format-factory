@@ -293,7 +293,7 @@ class TestNoOrphanSourceFiles:
                 if not self._is_recognized(py_file.name, fmt):
                     orphans.append(f"{fmt}/{py_file.name}")
         assert not orphans, (
-            f"Orphan source files (unrecognized purpose):\n"
+            "Orphan source files (unrecognized purpose):\n"
             + "\n".join(f"  - {o}" for o in orphans)
         )
 

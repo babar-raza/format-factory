@@ -8,9 +8,7 @@ spec_qname = "xcf:image"
 spec_fact_ref = "FACT-XCF-001"
 namespace_uri = "urn:gimp:xcf-native"
 
-import math
 import os
-import re
 from pathlib import Path
 from typing import Any
 
@@ -750,19 +748,13 @@ def xcf_total_pixel_count(file_path: str | Path) -> int:
 
 
 def xcf_layer_name_list(file_path: str | Path) -> list:
-    """Return SYNTHETIC positional layer names ('Layer 0', 'Layer 1', ...) based on count.
+    """Return actual layer names read from the XCF layer records.
 
-    WARNING: These are NOT actual XCF layer names from the file. Real layer names
-    require XCF layer record parsing (see GAP-XCF-LAYER-NAMES in gap-ledger.json).
-    This function returns positional placeholders only. Returns empty list if no layers.
-
-    TC-ZS-003 disposition: PATH B (2026-06-22) — semantic mismatch resolved via docstring.
-    Rename to xcf_layer_synthetic_names_list deferred (20+ test callers; see gap-ledger).
+    Returns a list of strings (may be empty strings if unnamed). Returns [] if no layers.
+    GAP-XCF-LAYER-NAMES closed: real names now parsed from layer records.
     """
     img = parse_xcf_strict(file_path)
-    if img.num_layers == 0:
-        return []
-    return [f"Layer {i}" for i in range(img.num_layers)]
+    return list(img.layer_names) if img.layer_names else []
 
 
 def xcf_color_depth(file_path: str | Path) -> int:

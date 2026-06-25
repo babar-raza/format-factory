@@ -151,5 +151,5 @@ class TestFodtRegistryValidation:
         # No warnings about spec_fact_ref not found when context pack is available
         unresolved = [w for w in warnings if "not found in context pack" in w]
         assert unresolved == [], (
-            f"Some spec_fact_refs unresolvable in context pack:\n" + "\n".join(unresolved)
+            "Some spec_fact_refs unresolvable in context pack:\n" + "\n".join(unresolved)
         )

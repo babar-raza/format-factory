@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import ast
 import json
+import subprocess
 import sys
 from pathlib import Path
 
@@ -172,7 +173,7 @@ class TestPythonDomainModulePilot:
         """Binding rule: NO *_analytics.py files may be created."""
         analytics_files = list((_REPO / "src" / "python").rglob("*_analytics.py"))
         assert not analytics_files, (
-            f"Banned *_analytics.py files found:\n"
+            "Banned *_analytics.py files found:\n"
             + "\n".join(f"  - {f.relative_to(_REPO)}" for f in analytics_files)
         )
 
@@ -246,3 +247,47 @@ class TestSpecQName:
         assert "spec_qname" in source, (
             f"{fmt}/{filename} missing spec_qname header"
         )
+
+
+class TestDotNetBuildPilot:
+    """TC-PILOT-I3: .NET governed decomposition builds cleanly and respects LOC limits."""
+
+    DOTNET_TARGETS = [
+        ("fods", "src/net/fods/FormatFactory.Fods.csproj"),
+        ("fodt", "src/net/fodt/FormatFactory.Fodt.csproj"),
+        ("netpbm", "src/net/netpbm/FormatFactory.Netpbm.csproj"),
+    ]
+
+    @pytest.mark.parametrize("fmt,csproj", DOTNET_TARGETS)
+    def test_dotnet_build_succeeds(self, fmt, csproj):
+        """dotnet build must exit 0 after decomposition."""
+        result = subprocess.run(
+            ["dotnet", "build", str(_REPO / csproj), "--no-restore", "-v", "quiet"],
+            capture_output=True, text=True, timeout=120
+        )
+        assert result.returncode == 0, (
+            f"{fmt} build failed (exit {result.returncode}):\n{result.stderr[-500:]}"
+        )
+
+    @pytest.mark.parametrize("fmt,directory,max_loc", [
+        ("fods", "src/net/fods", 800),
+        ("fodt", "src/net/fodt", 800),
+        ("netpbm", "src/net/netpbm/Model", 800),
+    ])
+    def test_no_dotnet_file_exceeds_loc_limit(self, fmt, directory, max_loc):
+        """No .cs file in decomposed .NET projects should exceed 800 LOC."""
+        violations = []
+        for cs_file in (_REPO / directory).glob("**/*.cs"):
+            loc = sum(1 for _ in cs_file.open(encoding="utf-8", errors="replace"))
+            if loc > max_loc:
+                violations.append(f"{cs_file.name}: {loc} LOC")
+        assert not violations, (
+            f"{fmt} has .cs files over {max_loc} LOC:\n" + "\n".join(violations)
+        )
+
+    def test_exceptions_directories_exist(self):
+        """fodt and netpbm must have Exceptions/ directories after decomposition."""
+        fodt_exc = _REPO / "src" / "net" / "fodt" / "Exceptions"
+        netpbm_exc = _REPO / "src" / "net" / "netpbm" / "Exceptions"
+        assert fodt_exc.is_dir(), "src/net/fodt/Exceptions/ does not exist"
+        assert netpbm_exc.is_dir(), "src/net/netpbm/Exceptions/ does not exist"

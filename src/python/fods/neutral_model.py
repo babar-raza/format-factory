@@ -945,12 +945,12 @@ def fods_string_density(workbook: dict[str, Any]) -> float:
 
 def fods_is_single_sheet(workbook: dict[str, Any]) -> bool:
     """Return True if the workbook contains exactly one sheet."""
-    return fods_sheet_count(workbook) == 1
+    return fods_sheet_count(workbook) == 1  # noqa: F405
 
 
 def fods_is_multi_sheet(workbook: dict[str, Any]) -> bool:
     """Return True if the workbook contains more than one sheet."""
-    return fods_sheet_count(workbook) > 1
+    return fods_sheet_count(workbook) > 1  # noqa: F405
 
 
 def fods_min_row_count(workbook: dict[str, Any]) -> int:
@@ -1006,7 +1006,7 @@ def fods_is_single_cell(workbook: dict[str, Any]) -> bool:
 
 def fods_nonempty_sheet_count(workbook: dict[str, Any]) -> int:
     """Return the number of sheets that contain at least one cell."""
-    return fods_sheet_count(workbook) - fods_empty_sheet_count(workbook)
+    return fods_sheet_count(workbook) - fods_empty_sheet_count(workbook)  # noqa: F405
 
 
 def fods_has_string_cells(workbook: dict[str, Any]) -> bool:

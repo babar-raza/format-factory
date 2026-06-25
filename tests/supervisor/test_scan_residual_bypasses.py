@@ -46,7 +46,8 @@ def test_main_produces_output(tmp_path):
 
 
 def test_entries_have_required_fields(tmp_path):
-    import subprocess, yaml
+    import subprocess
+    import yaml
     out = tmp_path / "bypass_report.yaml"
     subprocess.run(
         [sys.executable, str(_REPO / "tools" / "supervisor" / "scan_residual_bypasses.py"),

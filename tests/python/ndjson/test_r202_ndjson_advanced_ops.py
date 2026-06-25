@@ -58,7 +58,8 @@ class TestNdjsonProbeAndLoad:
         assert len(records) == 1
 
     def test_write_ndjson_to_file(self):
-        import tempfile, os
+        import tempfile
+        import os
         records = load_ndjson(_DATA)
         fd, path = tempfile.mkstemp(suffix=".ndjson")
         os.close(fd)

@@ -19,7 +19,7 @@ import zipfile
 import xml.etree.ElementTree as ET
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any
+from typing import Any, ClassVar
 
 
 # ODS constants
@@ -102,6 +102,7 @@ class OdsSizeError(OdsError):
 
 @dataclass
 class OdsCell:
+    spec_qname: ClassVar[str] = "table:table-cell"
     value: str | float | None = None
     value_type: str = ""
     text: str = ""
@@ -109,18 +110,20 @@ class OdsCell:
 
 @dataclass
 class OdsRow:
-    spec_qname: str = "table:table-row"
+    spec_qname: ClassVar[str] = "table:table-row"
     cells: list[OdsCell] = field(default_factory=list)
 
 
 @dataclass
 class OdsSheet:
+    spec_qname: ClassVar[str] = "table:table"
     name: str = ""
     rows: list[OdsRow] = field(default_factory=list)
 
 
 @dataclass
 class OdsDocument:
+    spec_qname: ClassVar[str] = "office:document"
     sheets: list[OdsSheet] = field(default_factory=list)
     path: str = ""
 

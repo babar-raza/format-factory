@@ -21,7 +21,7 @@ import io
 import os
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any
+from typing import Any, ClassVar
 
 
 MAX_FILE_SIZE = 64 * 1024 * 1024  # 64 MiB
@@ -47,6 +47,7 @@ class SylkParseError(SylkError):
 
 @dataclass
 class SylkCell:
+    spec_qname: ClassVar[str] = "slk:cell"
     row: int = 1
     col: int = 1
     value: Any = None
@@ -55,7 +56,7 @@ class SylkCell:
 
 @dataclass
 class SylkDocument:
-    spec_qname: str = "sylk:document"
+    spec_qname: ClassVar[str] = "sylk:document"
     cells: list[SylkCell] = field(default_factory=list)
     rows: int = 0
     cols: int = 0

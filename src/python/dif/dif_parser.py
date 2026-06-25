@@ -16,13 +16,10 @@ spec_concept: DIF Data Interchange Format vector/tuple
 
 from __future__ import annotations
 
-import csv
-import html as _html_module
-import io
 import os
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any
+from typing import Any, ClassVar
 
 
 MAX_FILE_SIZE = 64 * 1024 * 1024  # 64 MiB
@@ -44,14 +41,14 @@ class DifSizeError(DifError):
 
 @dataclass
 class DifCell:
-    spec_qname: str = "dif:cell"
+    spec_qname: ClassVar[str] = "dif:cell"
     value: Any = None
     value_type: str = "string"  # "numeric", "string", "special"
 
 
 @dataclass
 class DifDocument:
-    spec_qname: str = "dif:document"
+    spec_qname: ClassVar[str] = "dif:document"
     title: str = ""
     vectors: int = 0  # columns
     tuples: int = 0   # rows

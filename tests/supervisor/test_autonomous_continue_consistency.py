@@ -52,8 +52,8 @@ class TestSignalUnificationCodePresent:
         pos_auto = src.find(auto_continue_line)
         pos_unify = src.find(unify_marker)
 
-        assert pos_auto != -1, f"auto_continue_value computation not found"
-        assert pos_unify != -1, f"SIGNAL-UNIFY-001 marker not found"
+        assert pos_auto != -1, "auto_continue_value computation not found"
+        assert pos_unify != -1, "SIGNAL-UNIFY-001 marker not found"
         assert pos_unify > pos_auto, (
             f"SIGNAL-UNIFY-001 block (pos {pos_unify}) must come AFTER "
             f"auto_continue_value computation (pos {pos_auto})"
@@ -74,7 +74,7 @@ class TestSignalUnificationCodePresent:
         assert pos_unify != -1
         assert pos_signal != -1
         assert pos_unify < pos_signal, (
-            f"SIGNAL-UNIFY-001 block must appear before signal dict is written"
+            "SIGNAL-UNIFY-001 block must appear before signal dict is written"
         )
 
 

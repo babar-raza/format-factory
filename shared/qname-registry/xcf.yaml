@@ -1,35 +1,43 @@
-# QName Registry: XCF (seeded, TC-HARD-008, 2026-06-22)
-# Status: seeded - spec elements identified, not yet implemented as spec/ classes
-
-- qname: "xcf:image"
-  namespace_uri: "urn:format:xcf:2.10"
-  local_name: "image"
-  canonical_class: "Xcf.Image"
-  spec_fact_ref: "FACT-XCF-001"
-  status: "implementing"
-  source_layer: "Spec"
-  facade_names: ["XcfImage"]
-  python_file: "src/python/xcf/image_document.py"  # non-canonical: spec_qname in module, no spec/image/ class yet
+- qname: xcf:image
+  namespace_uri: urn:format:xcf:2.10
+  local_name: image
+  canonical_class: Xcf.Image
+  spec_fact_ref: FACT-XCF-001
+  status: implemented
+  source_layer: Spec
+  facade_names:
+  - XcfImage
+  python_file: src/python/xcf/image_document.py
   dotnet_file: null
-
-- qname: "xcf:layer"
-  namespace_uri: "urn:format:xcf:2.10"
-  local_name: "layer"
-  canonical_class: "Xcf.Layer"
-  spec_fact_ref: "FACT-XCF-002"
-  status: "implementing"
-  source_layer: "Spec"
-  facade_names: ["XcfLayer"]
-  python_file: "src/python/xcf/spec/layer/layer.py"
+- qname: xcf:layer
+  namespace_uri: urn:format:xcf:2.10
+  local_name: layer
+  canonical_class: Xcf.Layer
+  spec_fact_ref: FACT-XCF-002
+  status: implemented
+  source_layer: Spec
+  facade_names:
+  - XcfLayer
+  python_file: src/python/xcf/spec/layer/layer.py
   dotnet_file: null
-
-- qname: "xcf:channel"
-  namespace_uri: "urn:format:xcf:2.10"
-  local_name: "channel"
-  canonical_class: "Xcf.Channel"
-  spec_fact_ref: "FACT-XCF-003"
-  status: "implementing"
-  source_layer: "Spec"
-  facade_names: ["XcfChannel"]
-  python_file: "src/python/xcf/spec/layer/channel.py"
+- qname: xcf:channel
+  namespace_uri: urn:format:xcf:2.10
+  local_name: channel
+  canonical_class: Xcf.Channel
+  spec_fact_ref: FACT-XCF-003
+  status: implemented
+  source_layer: Spec
+  facade_names:
+  - XcfChannel
+  python_file: src/python/xcf/spec/layer/channel.py
+  dotnet_file: null
+- qname: xcf:header
+  namespace_uri: urn:gimp:xcf:2.10
+  local_name: header
+  canonical_class: Xcf.Header
+  spec_fact_ref: FACT-XCF-001
+  status: implemented
+  source_layer: Spec
+  facade_names: []
+  python_file: src/python/xcf/spec/layer/header.py
   dotnet_file: null

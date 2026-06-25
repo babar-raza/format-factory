@@ -10,7 +10,7 @@ These preserve the existing function API while providing a class-based interface
 
 from __future__ import annotations
 
-from typing import Any, Iterator
+from typing import Any
 
 from .Compat.fodt_paragraph import FodtParagraph as _CompatParagraph
 

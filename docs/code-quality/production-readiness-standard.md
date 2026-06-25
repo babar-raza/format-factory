@@ -3,8 +3,8 @@
 **Authority:** This document is the single authoritative code-quality contract for Format Factory.
 It is binding on all source code under `src/`. Automated validators enforce these rules.
 
-**Effective:** 2026-06-18
-**Enforced by:** `tools/validators/validate_source_architecture.py`, `tools/validators/source_structure_validator.py`, `tools/supervisor/governance_validators.py`
+**Effective:** 2026-06-25 (updated from 2026-06-18; validator suite expanded to V68)
+**Enforced by:** `tools/validators/validate_source_architecture.py`, `tools/validators/source_structure_validator.py`, `tools/supervisor/governance_validators.py`, `tools/supervisor/governance_validators_ext.py`, `tools/supervisor/governance_validators_signal.py`, `tools/supervisor/knowledge_freshness_validator.py`
 
 ---
 
@@ -109,6 +109,27 @@ from .{format}_parser import parse_{format}, parse_{format}_strict
 __all__ = ["parse_{format}", "{format}_word_count", ...]
 ```
 
+**Dynamic `__all__` pattern (RULE-AM-005 — binding for `__init__.py` > 60 exports):**
+
+When a package has more than 60 public exports, use the dynamic `__all__` pattern instead of a static list:
+```python
+import sys as _sys
+import types as _types
+_FF_API_EXCLUDE = frozenset({"Any", "ClassVar", "Dict", "List", "Optional", "Path", "Set",
+    "Tuple", "Union", "dataclass", "field", "TYPE_CHECKING"})  # typing + stdlib re-imports
+__all__ = [
+    k for k in vars(_sys.modules[__name__])
+    if not k.startswith("_")
+    and not isinstance(getattr(_sys.modules[__name__], k), _types.ModuleType)
+    and k not in _FF_API_EXCLUDE
+]
+del _sys, _types, _FF_API_EXCLUDE
+```
+
+This pattern prevents module re-export pollution while keeping `__init__.py` under 100 LOC.
+Star imports on the consumer side must add `# noqa: F401, F403, F405` when the exported names
+are referenced in `__all__` string lists (ruff cannot trace star import contents).
+
 ### 3.3 Import Stability
 
 - All public functions must be re-exported via `__all__` in `__init__.py`
@@ -197,13 +218,21 @@ Tests must not contain production logic. Tests validate behavior; they do not im
 
 ### 7.1 Validator Suite
 
-The following validators run on every `autonomous-cycle` via `governance_validators.py`:
+**68 validators** (V1-V68) run on every `autonomous-cycle` via `governance_validators.py` + extensions.
+Complete list: `tools/supervisor/governance_validator_runner.py` (docstring). Key blocking validators:
 
 | Validator | What it checks | Blocks sprint? |
 |-----------|---------------|----------------|
-| `validate_monolith_detection` | LOC vs `baseline_loc_cap` (now using cap, not stale `loc`) | Yes (FAIL) |
-| `validate_source_architecture` | Analytics-in-parser (RULE-AM-001), `__init__.py` size (RULE-AM-002), new file LOC (RULE-AM-003), new file function count (RULE-AM-004) | Yes (FAIL for new violations) |
-| `run_full_scan` in `source_structure_validator.py` | Proactive scan of all `src/python/` files vs `baseline_loc_cap` | Yes (blocks) |
+| V1 `validate_monolith_detection` | LOC vs `baseline_loc_cap` (now using cap, not stale `loc`) | Yes (FAIL) |
+| V2 `validate_source_architecture` | Analytics-in-parser (RULE-AM-001), `__init__.py` size (RULE-AM-002), new file LOC (RULE-AM-003), new file function count (RULE-AM-004) | Yes (FAIL for new violations) |
+| V40 `validate_source_architecture_v40` | Anti-monolith separation check (updated RULE-AM-001/AM-003) | Yes (GOV_BLOCK) |
+| V50 `validate_forbidden_module_names` | Blocks `*_analytics_extra.py`, `*_extra.py`, `*_misc.py` | Yes (FAIL) |
+| V61 `validate_error_fallback_safety` | `write_plan_lock.py` must write ITERATION_REQUIRED correctly | Yes (FAIL on regression) |
+| V62 `validate_spec_fact_refs_density` | PRODUCT_SOURCE items need ≥1 spec_fact_ref | Rework required |
+| V67 `validate_maturity_signal_schema` | Maturity signal schema correctness | Yes (FAIL if malformed) |
+| `run_full_scan` (source_structure_validator) | Proactive scan of all `src/python/` files vs `baseline_loc_cap` | Yes (WORSENED = FAIL) |
+
+**WARN-only validators (V59-V66, V68):** cross-language parity, terminal closure completeness, public API surface ratio, py.typed markers, `__all__` declarations, multi-responsibility file detection, knowledge freshness. These do not block sprints but appear in rework_items.
 
 ### 7.2 Anti-Monolith Rules (Validator-Enforced)
 
@@ -271,9 +300,15 @@ When moving analytics functions from a codec file to `analytics.py`:
 | RULE-AM-002 (`__init__.py` ≤ 100 LOC) | `validate_source_architecture.py` | FAIL (new files) / WARN (existing) |
 | RULE-AM-003 (no new file > 800 LOC) | `validate_source_architecture.py` + `source_structure_validator.py` | FAIL |
 | RULE-AM-004 (no new file > 60 functions) | `validate_source_architecture.py` | FAIL |
-| Baseline monotonicity | `source_structure_validator.py --check-baseline-growth` + `governance_validators.py` | FAIL (worsened) |
-| Spec traceability (ODF) | `governance_validators.py:validate_spec_qname_coverage` | FAIL |
+| RULE-AM-005 (dynamic `__all__` for > 60 exports) | `governance_validators.py:validate_all_exports_declared` (V65) | WARN |
+| Baseline monotonicity | `source_structure_validator.py` + `governance_validators.py` | FAIL (worsened) |
+| Spec traceability (ODF) | `governance_validators.py:validate_spec_qname_coverage` (V51) | WARN |
 | Spec traceability (non-ODF) | `governance_validators.py:validate_spec_concept_tags` | WARN |
+| Forbidden module names | `governance_validators.py:validate_forbidden_module_names` (V50) | FAIL |
+| Spec fact refs density | `governance_validators.py:validate_spec_fact_refs_density` (V62) | REWORK_REQUIRED |
+| Multi-responsibility file | `governance_validators.py:validate_multi_responsibility_file` (V66) | WARN |
+| Lint (ruff check) | CI `governance-check` + `lint` jobs | FAIL (CI red) |
+| Security scan | CI `security` job (bandit) | FAIL (CI red) |
 
 ---
 

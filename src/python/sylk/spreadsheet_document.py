@@ -9,25 +9,9 @@ spec_fact_ref = "FACT-SYLK-001"
 namespace_uri = "urn:sylk:symbolic-link"
 
 from pathlib import Path
-from typing import Any
 
 from .sylk_parser import (
-    parse_sylk,
     parse_sylk_strict,
-    get_row_count,
-    get_column_count,
-    get_cell_count,
-    get_all_values,
-    count_nonempty_cells,
-    get_cell_value,
-    get_row_values,
-    get_column_values,
-    sum_column,
-    min_column_value,
-    max_column_value,
-    average_column,
-    count_distinct_values,
-    find_rows_by_value,
 )
 
 

@@ -130,12 +130,12 @@ class TestCycleStreamFieldPlanLocked:
         # TERMINAL_CLOSED DOES trigger PLAN_LOCKED (only COMPLETE bypasses it)
         assert result.get("work_selection_mode") == "PLAN_LOCKED"
         # But stream field is still emitted (TC-HARD-002 fix covers this path too)
-        assert "stream" in result, f"Missing stream field for TERMINAL_CLOSED case"
+        assert "stream" in result, "Missing stream field for TERMINAL_CLOSED case"
         # And stream_field_match still passes
         val = validate_next_work_items(result, target_stream="mainstream")
         checks = {c["check"]: c for c in val.get("checks", [])}
         sfm = checks.get("stream_field_match", {})
-        assert sfm.get("pass") is True, f"stream_field_match should be True for TERMINAL_CLOSED case"
+        assert sfm.get("pass") is True, "stream_field_match should be True for TERMINAL_CLOSED case"
 
     def test_stream_field_detail_is_correct(self):
         """stream_field_match detail must show actual vs target stream values."""

@@ -1,35 +1,51 @@
-# QName Registry: DIF (seeded, TC-HARD-008, 2026-06-22)
-# Status: seeded - spec elements identified, not yet implemented as spec/ classes
-
-- qname: "dif:header"
-  namespace_uri: "urn:format:dif:1.0"
-  local_name: "header"
-  canonical_class: "Dif.Header"
-  spec_fact_ref: "FACT-DIF-001"
-  status: "implementing"
-  source_layer: "Spec"
+- qname: dif:header
+  namespace_uri: urn:format:dif:1.0
+  local_name: header
+  canonical_class: Dif.Header
+  spec_fact_ref: FACT-DIF-001
+  status: implemented
+  source_layer: Spec
   facade_names: []
-  python_file: "src/python/dif/spec/table/header.py"
+  python_file: src/python/dif/spec/table/header.py
   dotnet_file: null
-
-- qname: "dif:data"
-  namespace_uri: "urn:format:dif:1.0"
-  local_name: "data"
-  canonical_class: "Dif.Data"
-  spec_fact_ref: "FACT-DIF-001"
-  status: "seeded"
-  source_layer: "Spec"
+- qname: dif:data
+  namespace_uri: urn:format:dif:1.0
+  local_name: data
+  canonical_class: Dif.Data
+  spec_fact_ref: FACT-DIF-001
+  status: implemented
+  source_layer: Spec
   facade_names: []
-  python_file: null
+  python_file: src/python/dif/dif_parser.py
   dotnet_file: null
-
-- qname: "dif:cell"
-  namespace_uri: "urn:format:dif:1.0"
-  local_name: "cell"
-  canonical_class: "Dif.Cell"
-  spec_fact_ref: "FACT-DIF-001"
-  status: "implementing"
-  source_layer: "Spec"
-  facade_names: ["DifCell"]
-  python_file: "src/python/dif/dif_parser.py"  # non-canonical: spec_qname in parser class, no spec/ class yet
+- qname: dif:cell
+  namespace_uri: urn:format:dif:1.0
+  local_name: cell
+  canonical_class: Dif.Cell
+  spec_fact_ref: FACT-DIF-001
+  status: implemented
+  source_layer: Spec
+  facade_names:
+  - DifCell
+  python_file: src/python/dif/dif_parser.py
+  dotnet_file: null
+- qname: dif:datum
+  namespace_uri: urn:format:dif:1.0
+  local_name: datum
+  canonical_class: Dif.Datum
+  spec_fact_ref: FACT-DIF-003
+  status: implemented
+  source_layer: Spec
+  facade_names: []
+  python_file: src/python/dif/spec/table/datum.py
+  dotnet_file: null
+- qname: dif:vector
+  namespace_uri: urn:format:dif:1.0
+  local_name: vector
+  canonical_class: Dif.Vector
+  spec_fact_ref: FACT-DIF-002
+  status: implemented
+  source_layer: Spec
+  facade_names: []
+  python_file: src/python/dif/spec/table/vector.py
   dotnet_file: null

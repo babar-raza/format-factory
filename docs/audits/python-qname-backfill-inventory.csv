@@ -468,6 +468,9 @@ fods,src/python/fods/__init__.py,FORMAT_ID,src/python/fods/__init__.py,,N/A_INFR
 fods,src/python/fods/__init__.py,SPEC_VERSION,src/python/fods/__init__.py,,N/A_INFRASTRUCTURE,,LOW,YES,,PENDING,,
 fods,src/python/fods/__init__.py,PACKAGE_VERSION,src/python/fods/__init__.py,,N/A_INFRASTRUCTURE,,LOW,YES,,PENDING,,
 fods,src/python/fods/__init__.py,MAX_FILE_BYTES,src/python/fods/__init__.py,,N/A_INFRASTRUCTURE,,LOW,YES,,PENDING,,
+fods,src/python/fods/Compat/fods_document.py,FodsDocument,src/python/fods/Compat/fods_document.py,office:document,office:document,FACT-FODS-001,HIGH,YES,,DONE,ACCEPTED_VERIFIED,Compat facade inherits spec/office/document.py::Document
+fods,src/python/fods/Compat/fods_sheet.py,FodsSheet,src/python/fods/Compat/fods_sheet.py,table:table,table:table,FACT-FODS-004,HIGH,YES,,DONE,ACCEPTED_VERIFIED,Compat facade inherits spec/table/table.py::Table
+fods,src/python/fods/Compat/fods_cell.py,FodsCell,src/python/fods/Compat/fods_cell.py,table:table-cell,table:table-cell,FACT-FODS-006,HIGH,YES,,DONE,ACCEPTED_VERIFIED,Compat facade inherits spec/table/table_cell.py::TableCell
 fodt,src/python/fodt/__init__.py,parse_fodt,src/python/fodt/__init__.py,,N/A_FUNCTIONAL_ENTRYPOINT,,HIGH,YES,,PENDING,,
 fodt,src/python/fodt/__init__.py,parse_fodt_strict,src/python/fodt/__init__.py,,N/A_FUNCTIONAL_ENTRYPOINT,,HIGH,YES,,PENDING,,
 fodt,src/python/fodt/__init__.py,write_fodt,src/python/fodt/__init__.py,,N/A_FUNCTIONAL_ENTRYPOINT,,HIGH,YES,,PENDING,,

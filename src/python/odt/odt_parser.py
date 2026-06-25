@@ -19,7 +19,7 @@ import zipfile
 import xml.etree.ElementTree as ET
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any
+from typing import Any, ClassVar
 
 
 # ODT constants
@@ -100,24 +100,27 @@ class OdtSizeError(OdtError):
 
 @dataclass
 class OdtParagraph:
+    spec_qname: ClassVar[str] = "text:p"
     text: str = ""
     style: str = ""
 
 
 @dataclass
 class OdtHeading:
+    spec_qname: ClassVar[str] = "text:h"
     text: str = ""
     level: int = 1
 
 
 @dataclass
 class OdtListItem:
-    spec_qname: str = "text:list-item"
+    spec_qname: ClassVar[str] = "text:list-item"
     text: str = ""
 
 
 @dataclass
 class OdtDocument:
+    spec_qname: ClassVar[str] = "office:document"
     paragraphs: list[OdtParagraph] = field(default_factory=list)
     headings: list[OdtHeading] = field(default_factory=list)
     elements: list[OdtParagraph | OdtHeading | OdtListItem] = field(default_factory=list)

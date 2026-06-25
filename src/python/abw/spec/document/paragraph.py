@@ -15,7 +15,7 @@ class Paragraph:
     merged into the text string by the neutral model parser).
     """
 
-    spec_qname = "abw:p"
+    spec_qname = "abiword:p"
     spec_fact_ref = "FACT-ABW-003"
     namespace_uri = "http://www.abisource.com/awml/"
     local_name = "p"

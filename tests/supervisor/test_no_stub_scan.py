@@ -316,7 +316,7 @@ class TestProductionScanIntegration:
                 unexpected.append(v)
 
         assert len(unexpected) == 0, (
-            f"Unexpected ungoverneed violations found in src/python:\n"
+            "Unexpected ungoverneed violations found in src/python:\n"
             + "\n".join(
                 f"  [{v['kind']}] {v['file']}:{v['line']} -- {v['text'][:80]}"
                 for v in unexpected

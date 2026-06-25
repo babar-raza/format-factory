@@ -127,7 +127,7 @@ class TestCapabilityMapSpecFactRefs:
         for entry in fods[:5]:
             sfr = entry.get("spec_fact_refs", [])
             assert "FACT-FODS-002" not in sfr, (
-                f"FACT-FODS-002 (not_found_in_normalized_text) must not appear in spec_fact_refs"
+                "FACT-FODS-002 (not_found_in_normalized_text) must not appear in spec_fact_refs"
             )
 
     def test_pbm_entries_have_spec_fact_refs(self):

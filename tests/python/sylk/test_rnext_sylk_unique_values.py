@@ -54,7 +54,8 @@ class TestSylkUniqueValuesBasic:
 
     def test_duplicate_values_counted_once(self):
         # Create a temporary SYLK file with repeated values and verify dedup
-        import tempfile, os
+        import tempfile
+        import os
         content = "ID;P\nC;X1;Y1;K5\nC;X1;Y2;K5\nC;X1;Y3;K10\nE\n"
         with tempfile.NamedTemporaryFile(
             suffix=".slk", mode="w", delete=False, encoding="ascii"

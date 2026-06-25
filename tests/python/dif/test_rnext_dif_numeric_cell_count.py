@@ -28,7 +28,7 @@ def _write_dif(tmp_path, vectors, tuples, data_rows):
             if cell_type == 0:
                 lines.extend([f"0,{num_val}", f'"{str_val}"'])
             else:
-                lines.extend([f"1,0", f'"{str_val}"'])
+                lines.extend(["1,0", f'"{str_val}"'])
     lines.extend(["-1,0", "EOD"])
     p = tmp_path / "test.dif"
     p.write_text("\n".join(lines) + "\n", encoding="utf-8")

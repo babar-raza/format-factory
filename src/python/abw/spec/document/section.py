@@ -20,7 +20,7 @@ class Section:
     list, so Section wraps a named slice of that list.
     """
 
-    spec_qname = "abw:section"
+    spec_qname = "abiword:section"
     spec_fact_ref = "FACT-ABW-002"
     namespace_uri = "http://www.abisource.com/awml/"
     local_name = "section"

@@ -8,7 +8,8 @@ Tests 8 new analytics functions:
 """
 from __future__ import annotations
 
-import sys, tempfile
+import sys
+import tempfile
 from pathlib import Path
 
 _REPO = Path(__file__).resolve().parents[3]

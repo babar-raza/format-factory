@@ -1,5 +1,6 @@
 """Sprint 20: XCF/TOML/Gnumeric/NDJSON product deepening — 8 new analytics functions."""
-import sys, tempfile
+import sys
+import tempfile
 from pathlib import Path
 
 _REPO = Path(__file__).resolve().parents[3]

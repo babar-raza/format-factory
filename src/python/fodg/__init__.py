@@ -18,9 +18,20 @@ from .drawing_document import *  # noqa: F401, F403
 
 # Compute public API: all non-private names loaded so far
 import sys as _sys
-__all__ = [k for k in vars(_sys.modules[__name__]) if not k.startswith("_")]
-del _sys
+import types as _types
+_FF_API_EXCLUDE = frozenset({
+    "Any", "ClassVar", "Dict", "FrozenSet", "List", "Optional", "Path",
+    "Set", "Tuple", "Type", "Union", "dataclass", "field", "TYPE_CHECKING",
+})
+__all__ = [
+    k for k in vars(_sys.modules[__name__])
+    if not k.startswith("_")
+    and k not in _FF_API_EXCLUDE
+    and not isinstance(getattr(_sys.modules[__name__], k), _types.ModuleType)
+]
+del _sys, _types, _FF_API_EXCLUDE
 
 __version__ = "0.1.0.dev0"
 __track__ = "python-foss"
+__capability_level__ = "alpha-foss-preview"
 __commercial_ready__ = False

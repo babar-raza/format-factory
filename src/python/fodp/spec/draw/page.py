@@ -15,7 +15,7 @@ from typing import Any
 class Page:
     """Canonical spec-shaped class for draw:page in FODP context (presentation slide)."""
 
-    spec_qname = "draw:page"
+    spec_qname = "presentation:page"
     spec_fact_ref = "FACT-FODP-EX-0417"
     namespace_uri = "urn:oasis:names:tc:opendocument:xmlns:drawing:1.0"
     local_name = "page"

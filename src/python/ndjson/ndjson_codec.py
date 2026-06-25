@@ -29,6 +29,21 @@ class NdjsonParseError(NdjsonError):
     """Raised when NDJSON content cannot be parsed."""
 
 
+class NdjsonRecord:
+    """Authority-only spec class for ndjson:record concept.
+
+    Spec QName: ndjson:record — a single JSON value on one line in an NDJSON stream.
+    This is an authority marker (architecture_only) — no behavioral implementation.
+    Real record access is via load_ndjson() which returns Python objects directly.
+    """
+
+    spec_qname: str = "ndjson:record"
+    spec_fact_ref: str = "FACT-NDJSON-001"
+    namespace_uri: str = "https://ndjson.org"
+    local_name: str = "record"
+    authority_only: bool = True
+
+
 def probe_ndjson(source) -> bool:
     """Probe whether source looks like a valid NDJSON file.
 

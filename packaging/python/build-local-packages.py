@@ -42,6 +42,13 @@ PACKAGE_DESCRIPTIONS = {
     "sylk": "Minimal FOSS Symbolic Link (.sylk) parser",
     "ndjson": "Minimal FOSS Newline-Delimited JSON (.ndjson/.jsonl) codec",
     "tsv": "Minimal FOSS Tab-Separated Values (.tsv) parser",
+    "odt": "Minimal FOSS OpenDocument Text (.odt) parser and writer",
+    "csv": "Minimal FOSS Comma-Separated Values (.csv) parser",
+    "dif": "Minimal FOSS Data Interchange Format (.dif) parser",
+    "ods": "Minimal FOSS OpenDocument Spreadsheet (.ods) parser",
+    "qoi": "Minimal FOSS Quite OK Image Format (.qoi) parser",
+    "toml": "Minimal FOSS TOML (.toml) configuration parser",
+    "xcf": "Minimal FOSS GIMP XCF image (.xcf) parser",
 }
 
 PACKAGE_DEPS = {
@@ -58,6 +65,13 @@ PACKAGE_DEPS = {
     "sylk": "[]",
     "ndjson": "[]",
     "tsv": "[]",
+    "odt": "[]",
+    "csv": "[]",
+    "dif": "[]",
+    "ods": "[]",
+    "qoi": "[]",
+    "toml": "[]",
+    "xcf": "[]",
 }
 
 

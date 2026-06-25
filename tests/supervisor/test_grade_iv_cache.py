@@ -66,7 +66,7 @@ class TestIVCacheKeyIsolation:
 
         cache_path = tmp_path / "grade-cache.json"
         ev_hash_v1 = _evidence_hash(item, inspection)
-        _cache_grade(f"iv:TC-CONTENT-001", ev_hash_v1,
+        _cache_grade("iv:TC-CONTENT-001", ev_hash_v1,
                      {"adequate": True, "source": "intermediate_verify"},
                      cache_path=cache_path)
 
@@ -75,5 +75,5 @@ class TestIVCacheKeyIsolation:
         ev_hash_v2 = _evidence_hash(item, inspection)
 
         assert ev_hash_v1 != ev_hash_v2, "Content change must produce different hash"
-        result = _get_cached_grade(f"iv:TC-CONTENT-001", ev_hash_v2, cache_path=cache_path)
+        result = _get_cached_grade("iv:TC-CONTENT-001", ev_hash_v2, cache_path=cache_path)
         assert result is None, "Cache must miss after content change (different ev_hash)"

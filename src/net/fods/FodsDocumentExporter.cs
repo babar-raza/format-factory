@@ -193,8 +193,82 @@ public static class FodsDocumentExporter
     }
 
     // -------------------------------------------------------------------------
+    // TSV (table:table-row → tab-separated values)
+    // -------------------------------------------------------------------------
+
+    /// <summary>
+    /// Export a sheet as TSV (tab-separated values).
+    /// Each row becomes a line, cells are tab-separated.
+    /// Cell values that contain tabs or newlines have those characters replaced with spaces
+    /// to preserve the single-row-per-line invariant.
+    /// Sprint: FORMAT-FACTORY-FODS-TSV-EXPORT-20260625.
+    /// </summary>
+    public static string ExportSheetToTsv(FodsSheet sheet)
+    {
+        ArgumentNullException.ThrowIfNull(sheet);
+        var sb = new StringBuilder();
+        foreach (var row in sheet.Rows)
+        {
+            bool firstCell = true;
+            foreach (var cell in row.Cells)
+            {
+                if (!firstCell) sb.Append('\t');
+                firstCell = false;
+                var val = cell.Value ?? string.Empty;
+                // Replace tabs and newlines to preserve TSV structure
+                val = val.Replace('\t', ' ').Replace('\r', ' ').Replace('\n', ' ');
+                sb.Append(val);
+            }
+            sb.AppendLine();
+        }
+        return sb.ToString();
+    }
+
+    // -------------------------------------------------------------------------
+    // XML (table:table-row → simple XML table)
+    // -------------------------------------------------------------------------
+
+    /// <summary>
+    /// Export a sheet as a simple XML table string.
+    /// Each row becomes a &lt;row&gt; element, each cell a &lt;cell&gt; element.
+    /// Cell text is XML-escaped. Root element is &lt;table name="{sheetName}"&gt;.
+    /// Empty cell values produce empty &lt;cell/&gt; elements.
+    /// Sprint: FORMAT-FACTORY-FODS-XML-EXPORT-20260625.
+    /// </summary>
+    public static string ExportSheetToXml(FodsSheet sheet)
+    {
+        ArgumentNullException.ThrowIfNull(sheet);
+        var sb = new StringBuilder();
+        var name = XmlAttrEscape(sheet.Name ?? "sheet");
+        sb.AppendLine($"<table name=\"{name}\">");
+        foreach (var row in sheet.Rows)
+        {
+            sb.Append("  <row>");
+            foreach (var cell in row.Cells)
+            {
+                var text = XmlEscape(cell.Value ?? string.Empty);
+                if (text.Length == 0)
+                    sb.Append("<cell/>");
+                else
+                    sb.Append($"<cell>{text}</cell>");
+            }
+            sb.AppendLine("</row>");
+        }
+        sb.AppendLine("</table>");
+        return sb.ToString();
+    }
+
+    // -------------------------------------------------------------------------
     // Private helpers
     // -------------------------------------------------------------------------
+
+    private static string XmlEscape(string s) =>
+        s.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;")
+         .Replace("\"", "&quot;").Replace("'", "&apos;");
+
+    private static string XmlAttrEscape(string s) =>
+        s.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;")
+         .Replace("\"", "&quot;");
 
     private static string MdEscape(string s) => s.Replace("|", "\\|");
 

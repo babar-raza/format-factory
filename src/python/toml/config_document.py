@@ -9,7 +9,6 @@ spec_fact_ref = "FACT-TOML-001"
 namespace_uri = "urn:toml:v1.0.0"
 
 from pathlib import Path
-from typing import Any
 
 from .toml_codec import (
     load_toml,
@@ -419,4 +418,52 @@ def toml_has_no_booleans(source: "str | bytes | Path") -> bool:
 def toml_has_at_least_one_numeric(source: "str | bytes | Path") -> bool:
     """Return True if at least one top-level value is numeric (int or float, not bool)."""
     return toml_has_numeric_values(source)
+
+
+def toml_has_arrays(source: "str | bytes | Path") -> bool:
+    """Return True if the TOML document has at least one top-level list (array) value.
+
+    Covers GAP-TOML-FOSS-HAS_ARRAYS-001.
+
+    Args:
+        source: TOML string, bytes, or file path.
+
+    Returns:
+        True if any top-level value is a list.
+    """
+    model = load_toml(source)
+    data = model.get("data", model)
+    return any(isinstance(v, list) for v in data.values())
+
+
+def toml_has_nested_tables(source: "str | bytes | Path") -> bool:
+    """Return True if the TOML document has at least one nested table (dict value).
+
+    Covers GAP-TOML-FOSS-HAS_NESTED_T-001.
+
+    Args:
+        source: TOML string, bytes, or file path.
+
+    Returns:
+        True if any top-level value is a dict (TOML table).
+    """
+    return toml_nested_table_count(source) > 0
+
+
+def toml_scalar_key_count(source: "str | bytes | Path") -> int:
+    """Count the number of top-level keys whose values are scalar (not dict or list).
+
+    Scalars include: str, int, float, bool, datetime.
+
+    Covers GAP-TOML-FOSS-SCALAR_KEY_C-001.
+
+    Args:
+        source: TOML string, bytes, or file path.
+
+    Returns:
+        Integer count of scalar top-level key-value pairs.
+    """
+    model = load_toml(source)
+    data = model.get("data", model)
+    return sum(1 for v in data.values() if not isinstance(v, (dict, list)))
 

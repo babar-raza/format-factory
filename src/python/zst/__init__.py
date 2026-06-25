@@ -7,6 +7,7 @@ Acquisition Gates 1-7 PASSED. Implementation authorized: R20 sprint prompt.
 FOSS track only — no commercial readiness implied.
 See: acquisition-packs/zst/ for gate evidence.
 """
+# ruff: noqa: F405  # __all__ references names from intentional star imports
 
 # Import all core codec functions and exception classes
 from .zst_codec import *  # noqa: F401, F403
@@ -68,7 +69,11 @@ __all__ = [
     "zst_is_trivial_compression",
     "zst_byte_range",
     "zst_is_single_byte",
+    # Domain model class
+    "ZstDocument",
 ]
+
+from .models import ZstDocument  # noqa: F401
 
 __version__ = "0.1.0.dev0"
 __track__ = "python-foss"

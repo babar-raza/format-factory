@@ -29,7 +29,7 @@ spec_qname = "office:document"
 spec_fact_ref = "FACT-FODP-001"
 namespace_uri = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
 
-import re
+from pathlib import Path
 from typing import Any
 
 from .fodp_codec import load, get_page_count, NS, _parse_xml, _read_source

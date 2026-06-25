@@ -13,6 +13,7 @@ Technology: Python struct.unpack binary decoder (stdlib).
 License: Apache-2.0
 spec_concept: XCF GIMP image layer/channel/property block
 """
+# ruff: noqa: F811  # analytics functions have superseding redefinitions from extraction; earlier stubs are intentionally replaced
 
 from __future__ import annotations
 
@@ -65,6 +66,7 @@ class XcfImage:
     version: str = ""
     num_layers: int = 0
     path: str = ""
+    layer_names: list = None  # type: ignore[assignment]
 
 
 def _parse_header(data: bytes) -> tuple[int, int, int, str]:
@@ -134,21 +136,29 @@ def _parse_properties(data: bytes, offset: int) -> tuple[int, int]:
     return count, pos
 
 
-def _parse_layer_offsets(data: bytes, offset: int) -> tuple[int, list[int]]:
-    """Read the layer offset table starting at offset.
+def _read_xcf_string(data: bytes, offset: int) -> tuple[str, int]:
+    """Read an XCF length-prefixed string. Returns (name, end_offset)."""
+    if offset + 4 > len(data):
+        return "", offset + 4
+    (length,) = struct.unpack(">I", data[offset : offset + 4])
+    end = offset + 4 + length
+    s = data[offset + 4 : end - 1].decode("utf-8", errors="replace") if length > 0 else ""
+    return s, end
 
-    Returns (num_layers, list_of_offsets).
-    Format: sequence of uint32 offsets, terminated by 0 sentinel.
-    """
+
+def _parse_layer_offsets(data: bytes, offset: int) -> tuple[int, list[int], list[str]]:
+    """Read the layer offset table. Returns (num_layers, offsets, names)."""
     pos = offset
     offsets: list[int] = []
+    names: list[str] = []
     while pos + 4 <= len(data):
-        (layer_offset,) = struct.unpack(">I", data[pos : pos + 4])
+        (lo,) = struct.unpack(">I", data[pos : pos + 4])
         pos += 4
-        if layer_offset == 0:
+        if lo == 0:
             break
-        offsets.append(layer_offset)
-    return len(offsets), offsets
+        offsets.append(lo)
+        names.append(_read_xcf_string(data, lo + 12)[0])
+    return len(offsets), offsets, names
 
 
 def parse_xcf_strict(file_path: str | Path) -> XcfImage:
@@ -168,7 +178,7 @@ def parse_xcf_strict(file_path: str | Path) -> XcfImage:
     _num_props, after_props = _parse_properties(data, XCF_HEADER_SIZE)
 
     # Parse layer offset table
-    num_layers, _layer_offsets = _parse_layer_offsets(data, after_props)
+    num_layers, _layer_offsets, layer_names = _parse_layer_offsets(data, after_props)
 
     return XcfImage(
         width=width,
@@ -177,6 +187,7 @@ def parse_xcf_strict(file_path: str | Path) -> XcfImage:
         version=version,
         num_layers=num_layers,
         path=str(path),
+        layer_names=layer_names,
     )
 
 
@@ -622,15 +633,6 @@ def xcf_dimension_ratio(file_path: str | Path) -> float:
     if img.height == 0:
         return 0.0
     return img.width / img.height
-
-
-def xcf_layer_density(file_path: str | Path) -> float:
-    """Return num_layers / total_pixels. 0.0 if image has no pixels."""
-    img = parse_xcf_strict(file_path)
-    total = img.width * img.height
-    if total == 0:
-        return 0.0
-    return img.num_layers / total
 
 
 def xcf_total_layer_pixels(file_path: str | Path) -> int:
@@ -1112,19 +1114,13 @@ def xcf_total_pixel_count(file_path: str | Path) -> int:
 
 
 def xcf_layer_name_list(file_path: str | Path) -> list:
-    """Return SYNTHETIC positional layer names ('Layer 0', 'Layer 1', ...) based on count.
+    """Return actual layer names read from the XCF layer records.
 
-    WARNING: These are NOT actual XCF layer names from the file. Real layer names
-    require XCF layer record parsing (see GAP-XCF-LAYER-NAMES in gap-ledger.json).
-    This function returns positional placeholders only. Returns empty list if no layers.
-
-    TC-ZS-003 disposition: PATH B (2026-06-22) — semantic mismatch resolved via docstring.
-    Rename to xcf_layer_synthetic_names_list deferred (20+ test callers; see gap-ledger).
+    Returns a list of strings (may be empty strings if unnamed). Returns [] if no layers.
+    GAP-XCF-LAYER-NAMES closed: real names now parsed from layer records.
     """
     img = parse_xcf_strict(file_path)
-    if img.num_layers == 0:
-        return []
-    return [f"Layer {i}" for i in range(img.num_layers)]
+    return list(img.layer_names) if img.layer_names else []
 
 
 def xcf_color_depth(file_path: str | Path) -> int:

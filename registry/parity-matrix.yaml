@@ -17,11 +17,21 @@ formats:
     python: {exists: true, module: "src/python/fods/"}
     dotnet: {exists: true, project: "src/net/fods/FormatFactory.Fods.csproj"}
     parity: both
+    spec_parity_status: COMPLETE
+    spec_parity_evidence: "sal-facts-fods.json (4988 facts, verified). All 12/12 registry qnames now have Compat/ facade classes. TC-SP-002 (2026-06-25): 9 new facades created (FodsBody, FodsSpreadsheet, FodsTableRow, FodsCoveredCell, FodsParagraph, FodsSpan, FodsAutomaticStyles, FodsStyle, FodsDateStyle). 45/45 V53 compliance tests pass."
+    spec_parity_assessed_at: "2026-06-25"
+    spec_parity_blocks_gate11: false
+    unblock_condition: null
 
   fodt:
     python: {exists: true, module: "src/python/fodt/"}
     dotnet: {exists: true, project: "src/net/fodt/FormatFactory.Fodt.csproj"}
     parity: both
+    spec_parity_status: VERIFIED
+    spec_parity_evidence: "TC-SP-004+005 (2026-06-25): SAL cache repaired (4936 FODT facts from workbench). All 8 behavioral qnames (text:p, text:h, text:span, text:list, text:list-item, table:table, table:table-row, table:table-cell) have Compat/ facades. office:body is .NET-only (intentional). 40/40 V53 compliance tests pass."
+    spec_parity_assessed_at: "2026-06-25"
+    spec_parity_blocks_gate11: false
+    unblock_condition: null
 
   ndjson:
     python: {exists: true, module: "src/python/ndjson/"}

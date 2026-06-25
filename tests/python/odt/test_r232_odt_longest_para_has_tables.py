@@ -2,7 +2,8 @@
 
 Product deepening: ODT analytics — TC-H3-002-ODT / PDC-ODT-LONGEST-TABLES-001.
 """
-import sys, zipfile
+import sys
+import zipfile
 from pathlib import Path
 
 _REPO = Path(__file__).resolve().parent.parent.parent.parent
@@ -19,9 +20,9 @@ def _make_odt(tmp_path, name, paragraphs, has_table=False):
     table_xml = ""
     if has_table:
         table_xml = (
-            f'<table:table table:name="T1">'
-            f'<table:table-row><table:table-cell><text:p>cell</text:p></table:table-cell></table:table-row>'
-            f'</table:table>'
+            '<table:table table:name="T1">'
+            '<table:table-row><table:table-cell><text:p>cell</text:p></table:table-cell></table:table-row>'
+            '</table:table>'
         )
     content = (
         f'<?xml version="1.0"?>'

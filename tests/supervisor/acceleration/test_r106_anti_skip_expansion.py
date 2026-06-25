@@ -191,5 +191,5 @@ def test_run_all_16_checks(tmp_path):
         sample_outputs_dir=samples,
         prior_test_count=50,
     )
-    assert result["total_checks"] == 17
+    assert result["total_checks"] == 18
     assert result["all_pass"] is True

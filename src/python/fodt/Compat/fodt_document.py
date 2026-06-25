@@ -7,7 +7,6 @@ Canonical spec class: src/python/fodt/spec/office/document.py::Document
 """
 from __future__ import annotations
 
-from typing import Any
 
 from ..spec.office.document import Document as _SpecDocument
 from ..spec.text.paragraph import Paragraph as _Paragraph

@@ -83,6 +83,38 @@ public sealed class CsvDocument
         CsvWriter.WriteRowsToFile(allRows, path);
     }
 
+    /// <summary>True if the document has no data rows.</summary>
+    public bool IsEmpty => Rows.Count == 0;
+
+    /// <summary>
+    /// Get the cell value at the given zero-based row and column index.
+    /// Returns null if the row or column is out of bounds.
+    /// </summary>
+    public string? GetCellValue(int row, int col)
+    {
+        if (row < 0 || row >= Rows.Count) return null;
+        var r = Rows[row];
+        if (col < 0 || col >= r.Length) return null;
+        return r[col];
+    }
+
+    /// <summary>
+    /// Returns a new CsvDocument containing only rows that match the predicate.
+    /// Headers are preserved unchanged.
+    /// </summary>
+    public CsvDocument Filter(Func<string[], bool> predicate)
+    {
+        if (predicate is null) throw new ArgumentNullException(nameof(predicate));
+        return new CsvDocument(Headers, Rows.Where(predicate).ToList());
+    }
+
+    /// <summary>
+    /// Returns true if the document has a header with the given name.
+    /// Case-sensitive. Always returns false if the document has no headers.
+    /// </summary>
+    public bool HasColumn(string name) =>
+        Headers is not null && Array.IndexOf(Headers, name) >= 0;
+
     /// <summary>Get values from a specific column by index.</summary>
     public List<string> GetColumn(int index)
     {

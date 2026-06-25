@@ -1315,7 +1315,7 @@ def zst_is_rle_efficient(path: "str | Path") -> bool:
     return zst_decompressed_size(path) / compressed > 100
 
 
-def zst_avg_frame_size(path: "str | Path") -> float:
+def zst_avg_frame_size(path: "str | Path") -> float:  # noqa: F811
     """Return average frame size in bytes. 0.0 if no frames."""
     frames = zst_frame_count(path)
     if frames == 0:

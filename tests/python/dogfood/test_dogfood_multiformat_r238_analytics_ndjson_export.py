@@ -4,7 +4,10 @@ Collects new R238 analytics from QOI, XCF, CSV, ODS, ODT, SYLK, PGM, PPM
 and exports them as NDJSON records.
 """
 from __future__ import annotations
-import json, os, sys, tempfile
+import json
+import os
+import sys
+import tempfile
 from pathlib import Path
 
 _REPO = Path(__file__).resolve().parents[3]

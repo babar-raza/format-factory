@@ -526,3 +526,133 @@ notes: >
   Lock file 13a7302fc4c5-d5f45c35.json (hash-keyed format).
   Added by TC-PG-001 ledger reconciliation iteration 2 (FF-PLAN-GOV-001).
 ```
+
+---
+
+### LEDGER-017 — frolicking-weaving-hamming
+
+```yaml
+ledger_entry_id: LEDGER-017
+mission_id: frolicking-weaving-hamming
+repository: format-factory
+branch: main
+plan_path: C:/Users/prora/.claude/plans/frolicking-weaving-hamming.md
+plan_hash: unknown
+plan_status: TERMINAL_CLOSED
+created_at: "2026-06-24 (approximate)"
+created_by: autonomous-agent
+plan_description: >
+  Per-chat plan. Terminal closed by session 7da28319645c.
+terminal_lock:
+  locked_at: "2026-06-24T09:19:43.107665+00:00"
+  locked_by: "7da28319645c"
+  lock_state: TERMINAL_CLOSED
+final_verdict: null
+notes: >
+  Lock file 7da28319645c-6a8c9ef4.json (hash-keyed format).
+  Added by TC-PG-001 ledger reconciliation (governance gate repair).
+```
+
+---
+
+### LEDGER-018 — dazzling-purring-kernighan
+
+```yaml
+ledger_entry_id: LEDGER-018
+mission_id: dazzling-purring-kernighan
+repository: format-factory
+branch: main
+plan_path: C:/Users/prora/.claude/plans/dazzling-purring-kernighan.md
+plan_hash: unknown
+plan_status: TERMINAL_CLOSED
+created_at: "2026-06-24 (approximate)"
+created_by: autonomous-agent
+plan_description: >
+  Per-chat plan. Terminal closed by session 7da28319645c.
+terminal_lock:
+  locked_at: "2026-06-24T09:23:48.377798+00:00"
+  locked_by: "7da28319645c"
+  lock_state: TERMINAL_CLOSED
+final_verdict: null
+notes: >
+  Lock file 7da28319645c-9236531f.json (hash-keyed format).
+  Added by TC-PG-001 ledger reconciliation (governance gate repair).
+```
+
+---
+
+### LEDGER-019 — distributed-waddling-pelican
+
+```yaml
+ledger_entry_id: LEDGER-019
+mission_id: distributed-waddling-pelican
+repository: format-factory
+branch: main
+plan_path: C:/Users/prora/.claude/plans/distributed-waddling-pelican.md
+plan_hash: unknown
+plan_status: TERMINAL_CLOSED
+created_at: "2026-06-24 (approximate)"
+created_by: autonomous-agent
+plan_description: >
+  Per-chat plan. Terminal closed by session 7da28319645c.
+terminal_lock:
+  locked_at: "2026-06-24T10:02:22.006640+00:00"
+  locked_by: "7da28319645c"
+  lock_state: TERMINAL_CLOSED
+final_verdict: null
+notes: >
+  Lock file 7da28319645c-044b12cf.json (hash-keyed format).
+  Added by TC-PG-001 ledger reconciliation (governance gate repair).
+```
+
+---
+
+### LEDGER-020 — wise-munching-reef
+
+```yaml
+ledger_entry_id: LEDGER-020
+mission_id: wise-munching-reef
+repository: format-factory
+branch: main
+plan_path: C:/Users/prora/.claude/plans/wise-munching-reef.md
+plan_hash: unknown
+plan_status: TERMINAL_CLOSED
+created_at: "2026-06-24 (approximate)"
+created_by: autonomous-agent
+plan_description: >
+  Per-chat plan. Terminal closed by session 7da28319645c.
+terminal_lock:
+  locked_at: "2026-06-24T11:07:35.156638+00:00"
+  locked_by: "7da28319645c"
+  lock_state: TERMINAL_CLOSED
+final_verdict: null
+notes: >
+  Lock file 7da28319645c-c989bc91.json (hash-keyed format).
+  Added by TC-PG-001 ledger reconciliation (governance gate repair).
+```
+
+---
+
+### LEDGER-021 — recursive-hugging-bird
+
+```yaml
+ledger_entry_id: LEDGER-021
+mission_id: recursive-hugging-bird
+repository: format-factory
+branch: main
+plan_path: C:/Users/prora/.claude/plans/recursive-hugging-bird.md
+plan_hash: unknown
+plan_status: TERMINAL_CLOSED
+created_at: "2026-06-24 (approximate)"
+created_by: autonomous-agent
+plan_description: >
+  Per-chat plan. Terminal closed by session 7da28319645c.
+terminal_lock:
+  locked_at: "2026-06-24T11:35:13.503048+00:00"
+  locked_by: "7da28319645c"
+  lock_state: TERMINAL_CLOSED
+final_verdict: null
+notes: >
+  Lock file 7da28319645c-f3a3c566.json (hash-keyed format).
+  Added by TC-PG-001 ledger reconciliation (governance gate repair).
+```

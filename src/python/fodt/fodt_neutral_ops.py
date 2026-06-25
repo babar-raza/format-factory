@@ -5,7 +5,7 @@ These functions do not perform I/O — they operate on in-memory dicts.
 """
 from __future__ import annotations
 
-from .neutral_model import build_document
+from typing import Any
 
 # ---------------------------------------------------------------------------
 # Document statistics (R57 — new capability)

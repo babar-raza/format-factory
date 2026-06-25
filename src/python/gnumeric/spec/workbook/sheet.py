@@ -15,7 +15,7 @@ from typing import Any
 class Sheet:
     """Canonical spec-shaped class for gnm:Sheet."""
 
-    spec_qname = "gnm:Sheet"
+    spec_qname = "gnumeric:sheet"
     spec_fact_ref = "FACT-GNUMERIC-002"
     namespace_uri = "http://www.gnumeric.org/v10.dtd"
     local_name = "Sheet"

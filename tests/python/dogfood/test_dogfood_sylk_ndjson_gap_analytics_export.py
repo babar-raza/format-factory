@@ -4,7 +4,10 @@ Collects analytics using the 4 gap-closure functions plus 4 new deepening
 functions, exports as NDJSON, and validates the pipeline.
 """
 from __future__ import annotations
-import json, os, sys, tempfile
+import json
+import os
+import sys
+import tempfile
 from pathlib import Path
 
 _REPO = Path(__file__).resolve().parents[3]

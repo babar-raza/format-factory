@@ -641,46 +641,6 @@ def clear_cell(
     return {**model, "sheets": new_sheets, "cell_count": total}
 
 
-def get_row_count(model: dict[str, Any], sheet_idx: int) -> int:
-    """Return the number of distinct rows with data in the sheet.
-
-    Raises:
-        TypeError: If model is not a dict.
-        GnumericError: If sheet_idx is out of range.
-    """
-    if not isinstance(model, dict):
-        raise TypeError("model must be a dict")
-    sheets = model.get("sheets", [])
-    if sheet_idx < 0 or sheet_idx >= len(sheets):
-        raise GnumericError(f"sheet_index {sheet_idx} out of range")
-    grid = sheets[sheet_idx].get("cell_grid", {})
-    if not grid:
-        return 0
-    return len({r for r, _ in grid})
-
-
-# ---------------------------------------------------------------------------
-# Sprint 6 additions (R140)
-# ---------------------------------------------------------------------------
-
-def get_column_count(model: dict[str, Any], sheet_idx: int) -> int:
-    """Return the number of distinct columns with data in the sheet.
-
-    Raises:
-        TypeError: If model is not a dict.
-        GnumericError: If sheet_idx is out of range.
-    """
-    if not isinstance(model, dict):
-        raise TypeError("model must be a dict")
-    sheets = model.get("sheets", [])
-    if sheet_idx < 0 or sheet_idx >= len(sheets):
-        raise GnumericError(f"sheet_index {sheet_idx} out of range")
-    grid = sheets[sheet_idx].get("cell_grid", {})
-    if not grid:
-        return 0
-    return len({c for _, c in grid})
-
-
 def read_cell(
     model: dict[str, Any], sheet_idx: int, row: int, col: int
 ) -> "str | None":
@@ -696,26 +656,6 @@ def read_cell(
     if sheet_idx < 0 or sheet_idx >= len(sheets):
         raise GnumericError(f"sheet_index {sheet_idx} out of range")
     return sheets[sheet_idx].get("cell_grid", {}).get((row, col))
-
-
-# ---------------------------------------------------------------------------
-# Sprint 7 additions (R142)
-# ---------------------------------------------------------------------------
-
-def count_nonempty_cells(model: dict[str, Any], sheet_idx: int) -> int:
-    """Return the number of cells with non-empty values.
-
-    Raises:
-        TypeError: If model is not a dict.
-        GnumericError: If sheet_idx is out of range.
-    """
-    if not isinstance(model, dict):
-        raise TypeError("model must be a dict")
-    sheets = model.get("sheets", [])
-    if sheet_idx < 0 or sheet_idx >= len(sheets):
-        raise GnumericError(f"sheet_index {sheet_idx} out of range")
-    grid = sheets[sheet_idx].get("cell_grid", {})
-    return sum(1 for v in grid.values() if v)
 
 
 # ---------------------------------------------------------------------------
@@ -735,6 +675,14 @@ def get_sheet_index(model: dict[str, Any], name: str) -> int:
 
 
 # ---------------------------------------------------------------------------
+# Analytics re-export (functions extracted to gnumeric_analytics.py)
+# ---------------------------------------------------------------------------
+try:
+    from .gnumeric_analytics import *  # noqa: F401, F403
+except ImportError:
+    pass
+
+# ---------------------------------------------------------------------------
 # Domain module re-exports
 # ---------------------------------------------------------------------------
 try:
@@ -745,3 +693,16 @@ try:
     from .gnumeric_workbook_stats import *  # noqa: F401, F403
 except ImportError:
     pass
+
+
+def probe_gnumeric_codec(source) -> dict:
+    """gnumeric: Return format metadata without full parse."""
+    try:
+        from pathlib import Path as _Path
+        return {
+            "format": "gnumeric",
+            "file_size": _Path(source).stat().st_size,
+            "valid": True,
+        }
+    except Exception as exc:
+        return {"format": "gnumeric", "valid": False, "error": str(exc)}

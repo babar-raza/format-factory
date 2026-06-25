@@ -58,4 +58,29 @@ public sealed class ZstDocument
 
     /// <summary>True if FileSizeBytes is 0 after skipping magic bytes.</summary>
     public bool IsEmptyContent { get; init; }
+
+    // ---- Computed convenience properties ----
+
+    /// <summary>True if FrameCount is greater than 1 (multi-frame archive).</summary>
+    public bool HasMultipleFrames => FrameCount > 1;
+
+    /// <summary>File size in kilobytes (FileSizeBytes / 1024.0).</summary>
+    public double FileSizeKB => FileSizeBytes / 1024.0;
+
+    /// <summary>
+    /// True if the document appears structurally valid:
+    /// magic bytes are present and at least one frame was detected.
+    /// </summary>
+    public bool IsValid => MagicValid && FrameCount > 0;
+
+    /// <summary>
+    /// Human-readable size label based on FileSizeBytes:
+    /// "empty" (0), "tiny" (&lt;512 B), "small" (&lt;10 KB), "medium" (&lt;1 MB), "large" (>=1 MB).
+    /// </summary>
+    public string SizeLabel =>
+        FileSizeBytes == 0 ? "empty" :
+        FileSizeBytes < 512 ? "tiny" :
+        FileSizeBytes < 10_240 ? "small" :
+        FileSizeBytes < 1_048_576 ? "medium" :
+        "large";
 }

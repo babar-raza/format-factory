@@ -1,7 +1,8 @@
 # Architecture — format-factory
 
-**Document type:** Architecture Reference — Phase 0 Foundation
-**Last reviewed:** 2026-05-04 (run014: folder tree updated — added specification-cache.md, TC-0007, TC-0008, memory/ folder)
+**Document type:** Architecture Reference — Phase 0 Foundation + Phase 4 Current-State Addendum
+**Last reviewed:** 2026-06-24 (Phase 4 addendum added — current-state section appended at end of document)
+**⚠ STALENESS WARNING:** The folder tree and pipeline architecture sections below describe the Phase 0 design (written 2026-05-04). The system has evolved significantly. See the **Current State (Phase 4+)** section at the bottom for verified current-state information.
 **Authority:** This document is the architectural design reference for format-factory. For operational project state (current phase, gate history, active work), see `plans/master-plan.md`.
 
 ---
@@ -400,3 +401,79 @@ Generates ~80% of evidence-declaration.yaml automatically from the lane-executio
 - `docs/llm-endpoint-strategy.md` — LLM endpoint and credentials policy
 - `docs/specification-cache.md` — specification cache policy and schema
 - `AGENTS.md` — agent operating contract
+
+---
+
+## ⚠ Current State (Phase 4+) — Verified 2026-06-24
+
+**The sections above are Phase 0 design. The following reflects the actual system at HEAD 1852a46d.**
+
+Full verified inventory: `reports/machinery-truth/machinery-layer-inventory-20260624.md`
+Product contracts: `reports/machinery-truth/product-contract-20260624.md`
+Claim verification matrix: `reports/machinery-truth/claim-verification-matrix-20260624.md`
+
+### Corrected Source Layout
+
+```
+src/
+  python/{format}/         Python FOSS product — 20 formats (all installed)
+  net/{format}/            .NET commercial product — fods/, fodt/, netpbm/ + shared libs
+  dotnet/_readme.md        Phase 0 placeholder ONLY — no product source here
+```
+
+**CRITICAL:** The `.NET` product source is at `src/net/`, NOT `src/dotnet/` as the Phase 0
+design specified. `src/dotnet/` contains only a `_readme.md` orientation file.
+
+### Corrected Governance Validator Count
+
+The Phase 0 section above documents 11 validators. Current count:
+- `tools/supervisor/governance_validators.py`: V1–V49 (primary validators, 3,179 LOC)
+- `tools/supervisor/governance_validators_ext.py`: V50–V66 (14 extended validators)
+- `tools/supervisor/governance_validators_signal.py`: V67 maturity signal validator
+- **Total: 67 validators** (22 FAIL-blocking, 45 WARN-only)
+- `tools/supervisor/governance_validator_runner.py`: registers and runs all 67
+
+### Corrected SAL / Capability Pipeline
+
+The Phase 0 section above describes a simple pipeline. Current reality:
+- **SAL**: 22 tools in `tools/specification-authority-layer/`; 14,309 spec facts across
+  23 formats in `.local/spec-cache/sal-facts-latest.json` (generated 2026-06-21)
+- **Capability Layer**: `tools/capability_layer/` with capability_map_generator.py,
+  capability_to_feature_compiler.py, gap_ledger_to_work_items.py
+- **Gap Ledger**: `reports/capability-layer/gap-ledger.json` — 1,003 gaps, 969 closed,
+  0 POC-blocking
+- **Feature Compiler**: wired into `tools/supervisor/autonomous_cycle.py` (Step 3a-pre)
+
+### Current Product Status (2026-06-24)
+
+**11 POC Targets** (from `product-capability-matrix/poc-targets.yaml`):
+
+| Track | Format | POC Status |
+|-------|--------|-----------|
+| .NET Commercial | FODS | POC ops all PASS, G11-G approved |
+| .NET Commercial | FODT | POC ops all PASS, G11-G approved |
+| .NET Commercial | Netpbm (PBM/PGM/PPM) | POC ops PASS |
+| Python FOSS | ZST | compress/decompress/probe PASS |
+| Python FOSS | PBM/PGM/PPM | parse+write PASS |
+| Python FOSS | SYLK | parse+sylk_to_csv PASS |
+| Python FOSS | TSV | parse+write+export PASS |
+| Python FOSS | ABW | parse+write+all exports PASS |
+| Python FOSS | Gnumeric | parse+write+export PASS |
+
+**Gate 11 Status:**
+- G11-G sub-gate approved by Babar Raza 2026-06-05 (FODS, FODT, Netpbm)
+- Full Gate 11 (commercial release): requires Babar Raza final sign-off (TRUE_EXTERNAL_GATE)
+
+### QName Compliance Gate
+
+Product deepening requires `qname_compliance_status = verified` in
+`shared/qname-registry/{format}.yaml`. Current state:
+- **3/20 formats verified** (continuation_allowed=True): abw, fods, fodt
+- **4/20 implementing**: csv, ndjson, xcf, zst
+- **13/20 seeded**: dif, fodg, fodp, gnumeric, ods, odt, pbm, pgm, ppm, qoi, sylk, toml, tsv
+
+### Master Plan Status
+
+Master plan (`plans/master-plan.md`) is at v5.7, Section 49 (all CLOSED).
+Current work is driven by `reports/supervisor/next-sprint.md` and the autonomous
+continuation signal (`.local/supervisor/continuation-signal.json`).

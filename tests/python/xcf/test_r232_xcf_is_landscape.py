@@ -1,5 +1,6 @@
 """Tests for xcf_is_landscape (Sprint 22)."""
-import pytest, struct
+import pytest
+import struct
 from src.python.xcf import xcf_is_landscape
 
 

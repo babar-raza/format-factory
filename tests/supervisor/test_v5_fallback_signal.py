@@ -66,7 +66,10 @@ def _commercial_gap(gap_id: str) -> dict:
 
 @pytest.fixture()
 def patch_ledger(monkeypatch, tmp_path):
-    """Patches _GAP_LEDGER_PATH and returns a factory for writing ledger content."""
+    """Patches _GAP_LEDGER_PATH and _SAL_FACTS_PATH, returns factory for writing ledger content."""
+    # Also patch SAL facts path to nonexistent so require_spec_facts stays False
+    monkeypatch.setattr(_atg, "_SAL_FACTS_PATH", tmp_path / "nonexistent-sal.json")
+
     def _setup(gaps: list[dict]) -> Path:
         p = _write_ledger(tmp_path, gaps)
         monkeypatch.setattr(_atg, "_GAP_LEDGER_PATH", p)
@@ -100,6 +103,7 @@ class TestExpansionGoalFallbackSignal:
     def test_fallback_true_when_ledger_missing(self, monkeypatch, tmp_path):
         """When ledger file doesn't exist, fallback fires."""
         monkeypatch.setattr(_atg, "_GAP_LEDGER_PATH", tmp_path / "nonexistent.json")
+        monkeypatch.setattr(_atg, "_SAL_FACTS_PATH", tmp_path / "nonexistent-sal.json")
         out_path = tmp_path / "candidates.json"
         generate_task_candidates(output_path=out_path, max_candidates=20)
         data = json.loads(out_path.read_text())

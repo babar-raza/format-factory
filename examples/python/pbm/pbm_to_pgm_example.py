@@ -33,7 +33,7 @@ def main() -> None:
     from pbm import parse_pbm_strict, convert_pbm_to_pgm
     from pgm.pgm_parser import parse_pgm_strict
 
-    print("=== PBM → PGM Dogfood Export Example ===\n")
+    print("=== PBM -> PGM Dogfood Export Example ===\n")
 
     # Create a sample 3x3 PBM in memory (text format P1)
     pbm_content = (
@@ -56,7 +56,7 @@ def main() -> None:
 
         # Step 1: Parse PBM using FF pbm library
         pbm_image = parse_pbm_strict(pbm_path)
-        print(f"Parsed PBM: {pbm_image.width}x{pbm_image.height}, format={pbm_image.format_type}")
+        print(f"Parsed PBM: {pbm_image.width}x{pbm_image.height}, format={pbm_image.magic}")
         print(f"PBM pixels (1=black, 0=white): {pbm_image.pixels}")
 
         # Step 2: Convert to PGM using FF dogfood export
@@ -68,19 +68,19 @@ def main() -> None:
         # Step 3: Parse and verify the output
         pgm_image = parse_pgm_strict(pgm_path)
         print(f"\nVerification:")
-        print(f"  PGM format: {pgm_image.format_type}")
+        print(f"  PGM format: {pgm_image.magic}")
         print(f"  PGM maxval: {pgm_image.maxval}")
         print(f"  PGM pixels (255=white, 0=black): {pgm_image.pixels}")
 
         # Verify pixel mapping: PBM 0(white)→PGM 255, PBM 1(black)→PGM 0
         expected = [255 if p == 0 else 0 for p in pbm_image.pixels]
         assert pgm_image.pixels == expected, f"Pixel mismatch: {pgm_image.pixels} != {expected}"
-        print("  Pixel mapping verification: PASS (PBM 0→255, PBM 1→0)")
+        print("  Pixel mapping verification: PASS (PBM 0->255, PBM 1->0)")
 
         content_preview = pgm_path.read_text(encoding="ascii").split("\n")[:4]
         print(f"\nPGM file header: {content_preview}")
 
-    print("\n=== PBM → PGM Example Complete ===")
+    print("\n=== PBM -> PGM Example Complete ===")
 
 
 if __name__ == "__main__":

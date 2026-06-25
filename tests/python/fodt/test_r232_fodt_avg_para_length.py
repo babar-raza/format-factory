@@ -1,5 +1,7 @@
 """Tests for fodt_average_paragraph_length (Sprint 22)."""
-import pytest, tempfile, os
+import pytest
+import tempfile
+import os
 from src.python.fodt import fodt_average_paragraph_length
 
 

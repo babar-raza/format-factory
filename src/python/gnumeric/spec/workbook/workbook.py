@@ -15,7 +15,7 @@ from typing import Any
 class Workbook:
     """Canonical spec-shaped class for gnm:Workbook."""
 
-    spec_qname = "gnm:Workbook"
+    spec_qname = "gnumeric:workbook"
     spec_fact_ref = "FACT-GNUMERIC-001"
     namespace_uri = "http://www.gnumeric.org/v10.dtd"
     local_name = "Workbook"

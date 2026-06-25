@@ -61,7 +61,8 @@ def test_command_field_required():
 def test_deprecated_status_produces_skip(tmp_path):
     """Regression: deprecated skills must always be SKIP (not validated).
     If this breaks, skills changed to deprecated to suppress WARNs will get re-validated."""
-    import yaml, subprocess
+    import yaml
+    import subprocess
     fake_registry = {
         "skills": [
             {"skill_id": "deprecated-test", "status": "deprecated",

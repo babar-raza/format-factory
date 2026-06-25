@@ -9,15 +9,9 @@ spec_fact_ref = "FACT-PGM-001"
 namespace_uri = "urn:netpbm:portable-graymap"
 
 from pathlib import Path
-from typing import Any
 
 from .pgm_parser import (
     parse_pgm_strict,
-    image_pixel_stats,
-    pixel_count,
-    average_gray,
-    min_max_gray,
-    get_dimensions,
 )
 
 

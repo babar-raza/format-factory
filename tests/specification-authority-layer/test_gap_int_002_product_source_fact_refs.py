@@ -78,7 +78,7 @@ class TestProductSourceFactRefs:
     def test_fods_neutral_model_cites_fact_refs(self):
         path = _SRC_PYTHON / "fods" / "neutral_model.py"
         refs = _scan_source_fact_refs(path)
-        assert len(refs) >= 1, f"fods/neutral_model.py has no FACT- references (GAP-INT-002 not wired)"
+        assert len(refs) >= 1, "fods/neutral_model.py has no FACT- references (GAP-INT-002 not wired)"
 
     def test_fods_cited_facts_exist_in_sal(self, sal_index):
         path = _SRC_PYTHON / "fods" / "neutral_model.py"
@@ -92,7 +92,7 @@ class TestProductSourceFactRefs:
     def test_fodt_neutral_model_cites_fact_refs(self):
         path = _SRC_PYTHON / "fodt" / "neutral_model.py"
         refs = _scan_source_fact_refs(path)
-        assert len(refs) >= 1, f"fodt/neutral_model.py has no FACT- references (GAP-INT-002 not wired)"
+        assert len(refs) >= 1, "fodt/neutral_model.py has no FACT- references (GAP-INT-002 not wired)"
 
     def test_fodt_cited_facts_exist_in_sal(self, sal_index):
         path = _SRC_PYTHON / "fodt" / "neutral_model.py"
@@ -109,7 +109,7 @@ class TestProductSourceFactRefs:
         codec_path = _SRC_PYTHON / "zst" / "zst_codec.py"
         refs = _scan_source_fact_refs(init_path) + _scan_source_fact_refs(codec_path)
         assert len(refs) >= 1, (
-            f"ZST source (zst/__init__.py, zst/zst_codec.py) has no FACT- references"
+            "ZST source (zst/__init__.py, zst/zst_codec.py) has no FACT- references"
         )
 
     def test_zst_cited_facts_exist_in_sal(self, sal_index):

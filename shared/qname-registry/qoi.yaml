@@ -1,35 +1,31 @@
-# QName Registry: QOI (seeded, TC-HARD-008, 2026-06-22)
-# Status: seeded - spec elements identified, not yet implemented as spec/ classes
-
-- qname: "qoi:header"
-  namespace_uri: "urn:format:qoi:1.0"
-  local_name: "header"
-  canonical_class: "Qoi.Header"
-  spec_fact_ref: "FACT-QOI-001"
-  status: "implementing"
-  source_layer: "Spec"
+- qname: qoi:header
+  namespace_uri: urn:format:qoi:1.0
+  local_name: header
+  canonical_class: Qoi.Header
+  spec_fact_ref: FACT-QOI-001
+  status: implemented
+  source_layer: Spec
   facade_names: []
-  python_file: "src/python/qoi/spec/chunk/header.py"
+  python_file: src/python/qoi/spec/chunk/header.py
   dotnet_file: null
-
-- qname: "qoi:chunk"
-  namespace_uri: "urn:format:qoi:1.0"
-  local_name: "chunk"
-  canonical_class: "Qoi.Chunk"
-  spec_fact_ref: "FACT-QOI-002"
-  status: "implementing"
-  source_layer: "Spec"
+- qname: qoi:chunk
+  namespace_uri: urn:format:qoi:1.0
+  local_name: chunk
+  canonical_class: Qoi.Chunk
+  spec_fact_ref: FACT-QOI-002
+  status: implemented
+  source_layer: Spec
   facade_names: []
-  python_file: "src/python/qoi/spec/chunk/chunk.py"
+  python_file: src/python/qoi/spec/chunk/chunk.py
   dotnet_file: null
-
-- qname: "qoi:end-marker"
-  namespace_uri: "urn:format:qoi:1.0"
-  local_name: "end-marker"
-  canonical_class: "Qoi.EndMarker"
-  spec_fact_ref: "FACT-QOI-003"
-  status: "implementing"
-  source_layer: "Spec"
-  facade_names: ["QoiEndMarker"]
-  python_file: "src/python/qoi/spec/chunk/end_marker.py"
+- qname: qoi:end-marker
+  namespace_uri: urn:format:qoi:1.0
+  local_name: end-marker
+  canonical_class: Qoi.EndMarker
+  spec_fact_ref: FACT-QOI-003
+  status: implemented
+  source_layer: Spec
+  facade_names:
+  - QoiEndMarker
+  python_file: src/python/qoi/spec/chunk/end_marker.py
   dotnet_file: null

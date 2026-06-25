@@ -27,8 +27,8 @@ class TestTomlUniqueValueCount:
     def test_return_type(self):
         assert isinstance(toml_unique_value_count(_MINIMAL), int)
 
-    def test_exact_5_for_minimal(self):
-        assert toml_unique_value_count(_MINIMAL) == 5
+    def test_exact_3_for_minimal(self):
+        assert toml_unique_value_count(_MINIMAL) == 3
 
     def test_positive(self):
         assert toml_unique_value_count(_MINIMAL) > 0

@@ -218,4 +218,5 @@ class TestRealRepoOntology:
         funcs = scan_source_for_functions(src)
         names = [f["name"] for f in funcs]
         assert "load" in names
-        assert "fodp_slide_count" in names
+        # fodp_slide_count lives in presentation_document.py, not fodp_codec.py
+        assert "get_page_count" in names

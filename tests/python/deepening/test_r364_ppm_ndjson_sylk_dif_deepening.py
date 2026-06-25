@@ -1,5 +1,7 @@
 """Sprint 134 — PPM/NDJSON/SYLK/DIF cycle 16 product deepening tests."""
-import sys, tempfile, json
+import sys
+import tempfile
+import json
 from pathlib import Path
 
 _REPO = Path(__file__).resolve().parents[3]

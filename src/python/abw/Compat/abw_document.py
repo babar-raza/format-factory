@@ -7,7 +7,6 @@ Canonical spec class: src/python/abw/spec/document/document.py::Document
 """
 from __future__ import annotations
 
-from typing import Any
 
 from ..spec.document.document import Document as _SpecDocument
 from ..spec.document.paragraph import Paragraph as _Paragraph

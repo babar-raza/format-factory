@@ -8,6 +8,7 @@ Acquisition Gates 1-3 PASSED. Gates 4-7 delegated PASS (R20).
 FOSS track only — no commercial readiness implied.
 See: acquisition-packs/fodp/ for gate evidence.
 """
+# ruff: noqa: F405  # __all__ references names from intentional star imports
 
 from .fodp_codec import (
     FodpError,

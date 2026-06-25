@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.Json;
 
@@ -62,6 +63,69 @@ public sealed class NdjsonDocument
             sb.Append('\n');
         }
         return sb.ToString();
+    }
+
+    /// <summary>
+    /// Returns all unique JSON property keys found across all object records.
+    /// Only keys at the top level of each record are included.
+    /// Non-object records (arrays, primitives) contribute no keys.
+    /// </summary>
+    public IReadOnlyList<string> GetAllKeys()
+    {
+        var keys = new SortedSet<string>(StringComparer.Ordinal);
+        foreach (var rec in Records)
+        {
+            if (rec.ValueKind == JsonValueKind.Object)
+                foreach (var prop in rec.EnumerateObject())
+                    keys.Add(prop.Name);
+        }
+        return keys.ToList();
+    }
+
+    /// <summary>
+    /// Returns a new NdjsonDocument containing only records that match the predicate.
+    /// </summary>
+    public NdjsonDocument Filter(Func<JsonElement, bool> predicate)
+    {
+        if (predicate is null) throw new ArgumentNullException(nameof(predicate));
+        return new NdjsonDocument(Records.Where(predicate).ToList());
+    }
+
+    /// <summary>
+    /// Returns all string representations of the value at the given field key
+    /// for every object record that contains the key.
+    /// Records missing the key or non-object records are skipped.
+    /// </summary>
+    public IReadOnlyList<string> GetFieldValues(string key)
+    {
+        if (key is null) throw new ArgumentNullException(nameof(key));
+        var result = new List<string>();
+        foreach (var rec in Records)
+        {
+            if (rec.ValueKind == JsonValueKind.Object
+                && rec.TryGetProperty(key, out var val))
+                result.Add(val.ToString());
+        }
+        return result;
+    }
+
+    /// <summary>
+    /// Returns true if all object records in the document share exactly the same set of top-level keys.
+    /// An empty document returns true. Non-object records are ignored.
+    /// </summary>
+    public bool IsUniformSchema()
+    {
+        IReadOnlyCollection<string>? referenceKeys = null;
+        foreach (var rec in Records)
+        {
+            if (rec.ValueKind != JsonValueKind.Object) continue;
+            var keys = rec.EnumerateObject().Select(p => p.Name).OrderBy(k => k).ToList();
+            if (referenceKeys is null)
+                referenceKeys = keys;
+            else if (!keys.SequenceEqual(referenceKeys))
+                return false;
+        }
+        return true;
     }
 
     /// <summary>

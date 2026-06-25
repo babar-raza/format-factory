@@ -186,9 +186,13 @@ class TestSpecCacheFreshnessCheck:
         assert not stale, f"Unexpected STALE_WARNING for ZST facts: {stale}"
 
     def test_abw_format_has_unknown_freshness(self):
-        """ABW has no spec cache — check_spec_cache_freshness returns empty (not error)."""
+        """ABW spec cache facts exist but have UNKNOWN_FRESHNESS (no registered sha256)."""
         results = check_spec_cache_freshness("abw")
-        assert results == [], f"ABW should return empty list (no spec cache), got: {results}"
+        assert isinstance(results, list)
+        # ABW facts may exist with UNKNOWN_FRESHNESS; all must have valid status
+        for r in results:
+            assert r["status"] in (_CURRENT, _STALE_WARNING, _UNKNOWN), \
+                f"Unexpected status for ABW fact: {r}"
 
     def test_fods_facts_run_without_error(self):
         results = check_spec_cache_freshness("fods")

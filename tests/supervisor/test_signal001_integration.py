@@ -168,7 +168,9 @@ class TestSignal001HelperVariableAlignment:
 
     def test_govblock_prefix_constants_match_autonomous_cycle(self):
         """Prefixes used in the call-site filter must match _GOVBLOCK_PREFIXES in autonomous_cycle.py."""
-        import re, inspect, autonomous_cycle as ac
+        import re
+        import inspect
+        import autonomous_cycle as ac
         src = inspect.getsource(ac)
         # Extract _GOVBLOCK_PREFIXES tuple from source
         m = re.search(r'_GOVBLOCK_PREFIXES\s*=\s*\(([^)]+)\)', src)

@@ -1,6 +1,7 @@
 """Dogfood: PGM + PPM deepening analytics -> NDJSON export."""
 from __future__ import annotations
-import json, sys
+import json
+import sys
 from pathlib import Path
 
 _REPO = Path(__file__).resolve().parents[3]

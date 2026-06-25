@@ -7,6 +7,8 @@ spec_concept: ODF Drawing page/shape/text-item derived metrics
 """
 from __future__ import annotations
 
+from pathlib import Path
+
 from .fodg_codec import load
 from .drawing_document import (
     fodg_non_text_shape_count,

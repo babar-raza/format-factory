@@ -20,7 +20,7 @@ class Document:
         is_abw (bool), section_count (int), paragraph_count (int), paragraphs (list[str])
     """
 
-    spec_qname = "abw:abiword"
+    spec_qname = "abiword:document"
     spec_fact_ref = "FACT-ABW-001"
     namespace_uri = "http://www.abisource.com/awml/"
     local_name = "abiword"

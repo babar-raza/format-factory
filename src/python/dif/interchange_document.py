@@ -16,7 +16,7 @@ import html as _html_module
 from pathlib import Path
 from typing import Any
 
-from .dif_parser import DifCell, DifDocument, get_column_values, parse_dif, parse_dif_strict, total_cell_count
+from .dif_parser import DifCell, DifDocument, get_column_values, parse_dif, parse_dif_strict
 
 # dogfood_status: IMPLEMENTED — DIF→CSV uses FF csv_writer.write_csv (add-dogfood-export 2026-06-22)
 # TC-DIF-002 (2026-06-22): installed-package path first; sys.path-injected fallback for source-tree

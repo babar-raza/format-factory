@@ -3,6 +3,10 @@
 Tests write_sylk + parse_sylk_strict roundtrip, sylk_to_csv edge cases,
 and dogfood pipeline (create → write → parse → CSV).
 """
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[3]))
 
 import pytest
 

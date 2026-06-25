@@ -4,7 +4,10 @@ Collects analytics from 12+ formats and exports as NDJSON records.
 Covers: DIF, FODT, ODS, ODT, PBM, PGM, PPM, QOI, SYLK, XCF, ABW, FODS, FODP, Gnumeric.
 """
 from __future__ import annotations
-import json, os, sys, tempfile
+import json
+import os
+import sys
+import tempfile
 from pathlib import Path
 
 _REPO = Path(__file__).resolve().parents[3]

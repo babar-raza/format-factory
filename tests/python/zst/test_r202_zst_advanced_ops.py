@@ -117,7 +117,8 @@ class TestZstAnalytics:
         assert isinstance(result["ratio"], float)
 
     def test_zst_compressed_size_int(self):
-        import tempfile, os
+        import tempfile
+        import os
         # zst_compressed_size takes file path
         fd, path = tempfile.mkstemp(suffix=".zst")
         os.close(fd)
@@ -131,7 +132,8 @@ class TestZstAnalytics:
             os.unlink(path)
 
     def test_zst_decompressed_size_int(self):
-        import tempfile, os
+        import tempfile
+        import os
         # zst_decompressed_size takes file path
         fd, path = tempfile.mkstemp(suffix=".zst")
         os.close(fd)
@@ -149,7 +151,8 @@ class TestZstBatch:
     """batch_compress, batch_decompress — take list[tuple[src_path, dst_path]]."""
 
     def test_batch_compress_list(self):
-        import tempfile, os
+        import tempfile
+        import os
         fd1, src1 = tempfile.mkstemp(); os.close(fd1)
         fd2, src2 = tempfile.mkstemp(); os.close(fd2)
         fd3, dst1 = tempfile.mkstemp(suffix=".zst"); os.close(fd3)
@@ -163,10 +166,11 @@ class TestZstBatch:
         finally:
             for p in [src1, src2, dst1, dst2]:
                 try: os.unlink(p)
-                except: pass
+                except Exception: pass
 
     def test_batch_decompress_list(self):
-        import tempfile, os
+        import tempfile
+        import os
         fd1, src = tempfile.mkstemp(suffix=".zst"); os.close(fd1)
         fd2, dst = tempfile.mkstemp(); os.close(fd2)
         try:
@@ -177,4 +181,4 @@ class TestZstBatch:
         finally:
             for p in [src, dst]:
                 try: os.unlink(p)
-                except: pass
+                except Exception: pass
