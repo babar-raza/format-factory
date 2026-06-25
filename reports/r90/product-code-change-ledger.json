@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s105-dotnet-deepening-20260626",
+  "latest_sprint": "ff-sprint-s106-dotnet-deepening-20260626",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -19800,6 +19800,65 @@
       "source_files": [
         {
           "path": "tests/net/txt/TxtR118FileOutputAndExceptionTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "TXT"
+    },
+    {
+      "entry_id": "PC-HTML-R119",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s106-dotnet-deepening-20260626",
+      "product": "HTML .NET",
+      "capability_refs": [
+        "commercial_net_products.HTML.dotnet_status.table_edge_cases"
+      ],
+      "api_symbols": [
+        "HtmlWriter.WriteTable",
+        "HtmlWriter.EscapeHtml"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/html/HtmlR119TableEdgeCasesTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "HTML"
+    },
+    {
+      "entry_id": "PC-MARKDOWN-R119",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s106-dotnet-deepening-20260626",
+      "product": "Markdown .NET",
+      "capability_refs": [
+        "commercial_net_products.Markdown.dotnet_status.paragraph_edge_cases"
+      ],
+      "api_symbols": [
+        "MarkdownWriter.WriteParagraphs",
+        "MarkdownWriter.WriteHeading"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/markdown/MarkdownR119ParagraphEdgeCasesTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "Markdown"
+    },
+    {
+      "entry_id": "PC-TXT-R119",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s106-dotnet-deepening-20260626",
+      "product": "TXT .NET",
+      "capability_refs": [
+        "commercial_net_products.TXT.dotnet_status.writelines_edge_cases"
+      ],
+      "api_symbols": [
+        "TxtWriter.WriteLines"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/txt/TxtR119WriteLinesEdgeCasesTests.cs",
           "state": "present"
         }
       ],
