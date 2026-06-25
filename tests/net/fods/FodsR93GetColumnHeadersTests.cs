@@ -42,12 +42,13 @@ public class FodsR93GetColumnHeadersTests
     }
 
     [Fact]
-    public void GetColumnHeaders_StaticOverload_AcceptsSheet()
+    public void GetColumnHeaders_FirstSheetOverload_ReturnsNonNull()
     {
+        // PQ-018: static overload removed; use instance overload instead
         var doc = FodsDocument.Load(SampleFodsPath);
-        var sheets = doc.Sheets;
-        Assert.True(sheets.Count > 0);
-        var headers = FodsDocument.GetColumnHeaders(sheets[0]);
+        var sheetNames = doc.GetSheetNames();
+        Assert.True(sheetNames.Count > 0);
+        var headers = doc.GetColumnHeaders(sheetNames[0]);
         Assert.NotNull(headers);
     }
 

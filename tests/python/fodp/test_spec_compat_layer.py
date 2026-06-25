@@ -64,7 +64,7 @@ class TestFodpPageBehavior:
         assert p is not None
 
     def test_spec_qname(self):
-        assert FodpPage.spec_qname == "draw:page"
+        assert FodpPage.spec_qname == "presentation:page"
 
     def test_name_property(self):
         p = FodpPage(_SAMPLE_PAGE)

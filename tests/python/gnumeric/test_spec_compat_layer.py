@@ -24,7 +24,7 @@ _SAMPLE_SHEET = {"name": "Sheet1", "cell_count": 6, "cell_values": {"A1": "Hello
 
 class TestGnumericWorkbookMetadata:
     def test_spec_qname(self):
-        assert GnumericWorkbook.spec_qname == "gnm:Workbook"
+        assert GnumericWorkbook.spec_qname == "gnumeric:workbook"
 
     def test_spec_fact_ref(self):
         assert GnumericWorkbook.spec_fact_ref == "FACT-GNUMERIC-001"
@@ -66,7 +66,7 @@ class TestGnumericSheetBehavior:
         assert s is not None
 
     def test_spec_qname(self):
-        assert GnumericSheet.spec_qname == "gnm:Sheet"
+        assert GnumericSheet.spec_qname == "gnumeric:sheet"
 
     def test_name_property(self):
         s = GnumericSheet(_SAMPLE_SHEET)

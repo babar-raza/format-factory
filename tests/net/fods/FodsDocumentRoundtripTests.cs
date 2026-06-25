@@ -144,7 +144,7 @@ public class FodsDocumentRoundtripTests
     [Fact]
     public void Load_NullPath_ThrowsFodsDocumentException()
     {
-        Assert.Throws<FodsDocumentException>(() => FodsDocument.Load(null!));
+        Assert.Throws<FodsDocumentException>(() => FodsDocument.Load((string)null!));
     }
 
     // ------------------------------------------------------------------

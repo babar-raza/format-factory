@@ -23,7 +23,7 @@ _SAMPLE_DOC = {
 
 class TestAbwDocumentMetadata:
     def test_spec_qname(self):
-        assert AbwDocument.spec_qname == "abw:abiword"
+        assert AbwDocument.spec_qname == "abiword:document"
 
     def test_spec_fact_ref(self):
         assert AbwDocument.spec_fact_ref == "FACT-ABW-001"
@@ -71,7 +71,7 @@ class TestAbwParagraphBehavior:
         assert p is not None
 
     def test_spec_qname(self):
-        assert AbwParagraph.spec_qname == "abw:p"
+        assert AbwParagraph.spec_qname == "abiword:p"
 
     def test_text_property(self):
         p = AbwParagraph("Hello world")

@@ -1774,7 +1774,7 @@ class TestCanonicalValidatorCount:
     """TC-PROD-H-040R: Assert canonical validator count to catch silent additions/removals."""
 
     def test_canonical_validator_count(self):
-        """run_all_governance_validators must return exactly 64 validator results."""
+        """run_all_governance_validators must return exactly 72 validator results."""
         import sys
         from pathlib import Path
         sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "tools" / "supervisor"))
@@ -1790,8 +1790,8 @@ class TestCanonicalValidatorCount:
         }
         result = run_all_governance_validators(decl, None)
         validator_count = len(result["validators"])
-        assert validator_count == 68, (
-            f"Expected 68 canonical validators, got {validator_count}. "
+        assert validator_count == 72, (
+            f"Expected 72 canonical validators, got {validator_count}. "
             "If validators were added/removed, update this test."
         )
 
