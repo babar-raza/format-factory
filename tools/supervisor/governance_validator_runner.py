@@ -146,9 +146,13 @@ def run_all_governance_validators(
         validate_dotnet_spec_qname as _validate_dotnet_spec_qname,
     )
     # V75/V76 imported from ext2 (TC-GH-004, 2026-06-25): import direction + error handling hierarchy
+    # V77/V78/V79 imported from ext2 (TC-GM-002/003/004, PROD-GOVERNANCE-001): analytics naming, dotnet LOC, healing stall
     from governance_validators_ext2 import (  # noqa: PLC0415
         validate_dependency_direction as _validate_dependency_direction,
         validate_error_handling_hierarchy as _validate_error_handling_hierarchy,
+        validate_analytics_naming_enforced as _validate_analytics_naming_enforced,
+        validate_dotnet_loc_cap as _validate_dotnet_loc_cap,
+        validate_healing_stall_detector as _validate_healing_stall_detector,
     )
     results = [
         validate_execution_method_required(declaration),
@@ -276,7 +280,20 @@ def run_all_governance_validators(
         _validate_dependency_direction(declaration, repo_root),
         # V76 (TC-GH-004): Format packages must have exceptions.py (RULE-LIB-006)
         _validate_error_handling_hierarchy(declaration, repo_root),
+        # V77 (PROD-GOVERNANCE-001 TC-GM-002): *_document.py must not masquerade as analytics — BLOCK
+        _validate_analytics_naming_enforced(declaration, repo_root),
+        # V78 (PROD-GOVERNANCE-001 TC-GM-003): .cs files in src/net/ must be ≤800 LOC — BLOCK
+        _validate_dotnet_loc_cap(declaration, repo_root),
+        # V79 (PROD-GOVERNANCE-001 TC-GM-004): WARN when known_violations show zero healing progress
+        _validate_healing_stall_detector(declaration, repo_root),
     ]
+
+    # V-NEW-001 (SAL-VHIP-001): Capability-to-fact inflation ratio check (WARN only, advisory)
+    try:
+        from governance_validators_ext import validate_capability_fact_ratio as _vcfr  # noqa: PLC0415
+        results.append(_vcfr(declaration, repo_root))
+    except Exception:
+        pass
 
     # SAL format advisory (non-blocking, Lane E integration)
     try:

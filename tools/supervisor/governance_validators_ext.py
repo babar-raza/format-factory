@@ -237,8 +237,9 @@ def validate_forbidden_module_names(
     """V50 — MODULE-NAME-001: Forbid generic analytics-bucket module names.
 
     Blocks creation of or modification of files matching:
-      *_analytics.py, *_analytics_extra.py, *_extra.py, *_misc.py, bare analytics.py
+      *_analytics_extra.py, *_extra.py, *_misc.py, bare analytics.py
       *_helpers.py / *_utils.py containing format-prefixed spec behavior
+    ALLOWED: *_analytics.py (canonical Analytics Layer name per production-library-standard-v2.md)
 
     Deletion of these files (where file does NOT exist on disk) is ALWAYS allowed.
     The validator checks Path(repo / path).exists() before flagging — so deleting
@@ -248,15 +249,17 @@ def validate_forbidden_module_names(
     Every product module must map to a spec section, element, or domain concept.
 
     Added 2026-06-22 (TC-ANAL-SEG-HEAL-001) as part of spec-level segregation healing.
-    Extended 2026-06-23 (zesty-conjuring-peacock): *_analytics.py and bare analytics.py
-    added to FORBIDDEN — all analytics-bucket patterns now blocked, not just overflow files.
+    Extended 2026-06-23 (zesty-conjuring-peacock): bare analytics.py added to FORBIDDEN.
+    Corrected 2026-06-25 (PROD-GOVERNANCE-001): *_analytics.py REMOVED from FORBIDDEN —
+    {format}_analytics.py is the canonical analytics layer name per production-library-standard-v2.md.
+    Only _analytics_extra (overflow bucket) remains forbidden.
     """
     import re
 
     repo = repo_root or _REPO_ROOT
     FORBIDDEN = re.compile(
         r"src/python/[^/]+/"
-        r"(?:[^/]+_(?:analytics_extra|analytics|extra|misc)|analytics)\.py$"
+        r"(?:[^/]+_(?:analytics_extra|extra|misc)|analytics)\.py$"
     )
     CONDITIONAL = re.compile(
         r"src/python/[^/]+/[^/]+_(helpers|utils)\.py$"
@@ -1384,6 +1387,10 @@ def validate_skill_attribution_in_declaration(
         ),
     }
 
+
+# V-NEW-001 (SAL-VHIP-001): validate_capability_fact_ratio extracted to governance_validators_sal.py
+# to keep this file within its baseline_loc_cap. Imported here for backward compatibility.
+from governance_validators_sal import validate_capability_fact_ratio  # noqa: F401, E402
 
 # V74 (TC-PDL-005): validate_ledger_continuation_gate extracted to governance_validators_ledger.py
 # to keep this file within its baseline_loc_cap. Imported here for backward compatibility.

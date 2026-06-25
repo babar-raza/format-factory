@@ -18617,6 +18617,67 @@
       "gaps_closed": [],
       "test_count": 0,
       "notes": "Added LoadContent(string) named alias for Load(string) in .NET NdjsonDocument for clarity."
+    },
+    {
+      "entry_id": "PC-PBM-PGM-PPM-GAP-CLOSURE-20260626",
+      "sprint_id": "ff-sprint-s82-gap-closure-20260626",
+      "type": "GAP_CLOSURE",
+      "format": "netpbm (pbm/pgm/ppm)",
+      "description": "Closed 20 P2 gaps for PBM/PGM/PPM domain models (from_file, width, height, magic, path, to_dict). Implementations verified in models.py; 24 tests pass.",
+      "gap_refs": [
+        "GAP-PBM-FOSS-FROM_FILE-001",
+        "GAP-PBM-FOSS-WIDTH-001",
+        "GAP-PBM-FOSS-HEIGHT-001",
+        "GAP-PBM-FOSS-MAGIC-001",
+        "GAP-PBM-FOSS-PATH-001",
+        "GAP-PBM-FOSS-TO_DICT-001",
+        "GAP-PGM-FOSS-FROM_FILE-001",
+        "GAP-PGM-FOSS-WIDTH-001",
+        "GAP-PGM-FOSS-HEIGHT-001",
+        "GAP-PGM-FOSS-MAXVAL-001",
+        "GAP-PGM-FOSS-MAGIC-001",
+        "GAP-PGM-FOSS-IS_BINARY-001",
+        "GAP-PGM-FOSS-PATH-001",
+        "GAP-PGM-FOSS-TO_DICT-001",
+        "GAP-PPM-FOSS-FROM_FILE-001",
+        "GAP-PPM-FOSS-WIDTH-001",
+        "GAP-PPM-FOSS-HEIGHT-001",
+        "GAP-PPM-FOSS-MAGIC-001",
+        "GAP-PPM-FOSS-PATH-001",
+        "GAP-PPM-FOSS-TO_DICT-001"
+      ],
+      "evidence_files": [
+        "src/python/pbm/models.py",
+        "src/python/pgm/models.py",
+        "src/python/ppm/models.py",
+        "tests/python/pbm/test_pbm_domain_model.py",
+        "tests/python/pgm/test_pgm_domain_model.py",
+        "tests/python/ppm/test_ppm_domain_model.py"
+      ],
+      "timestamp": "2026-06-26T16:00:00Z"
+    },
+    {
+      "entry_id": "PC-SYLK-QOI-XCF-FODP-GAP-CLOSURE-20260626",
+      "sprint_id": "ff-sprint-s82-gap-closure-20260626",
+      "type": "GAP_CLOSURE",
+      "format": "sylk/qoi/xcf/fodp",
+      "description": "Closed 7 P2 gaps: SYLK column count, QOI/XCF path, FODP exporters (txt/csv/json) and FodpDocument. Implementations verified.",
+      "gap_refs": [
+        "GAP-SYLK-FOSS-COL_COUNT-001",
+        "GAP-QOI-FOSS-PATH-001",
+        "GAP-XCF-FOSS-PATH-001",
+        "GAP-FODP-FOSS-EXPORT_TO_TX-001",
+        "GAP-FODP-FOSS-EXPORT_TO_CS-001",
+        "GAP-FODP-FOSS-EXPORT_TO_JS-001",
+        "GAP-FODP-FOSS-FODPDOCUMENT-001"
+      ],
+      "evidence_files": [
+        "src/python/sylk/sylk_parser.py",
+        "src/python/qoi/models.py",
+        "src/python/xcf/xcf_parser.py",
+        "src/python/fodp/"
+      ],
+      "timestamp": "2026-06-26T16:00:00Z"
     }
   ],
   "total_entries": 1006,
