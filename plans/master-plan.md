@@ -3763,3 +3763,32 @@ bypass lanes via governance code changes.
   - Python: P3, P4, P5 = 3/11 evidence_verified
 - FODS publication blocker: Babar Raza publication sign-off (G11-G already approved 2026-06-05).
 - Evidence roots: `.local/evidences/ff-sprint-s63-checkgate-fods11-20260626/`, `.local/evidences/ff-sprint-s64-fods-dotnet-ci-20260626/`, `.local/evidences/ff-sprint-s65-fods-customer-readiness-20260626/`, `.local/evidences/ff-sprint-s66-c9-audit-20260626/`.
+
+---
+
+## Section 66 — Convergence Loop: GOV-ENFORCE Separation + Validator Count (CLOSED)
+
+**Mission:** PSL convergence loop post GOV-ENFORCE-FULLSWEEP-SUCCESSOR-20260624 TERMINAL_CLOSED.
+**Prompt binding:** prompt1 (audit) → prompt2 (hardening) → prompt3 (execution) → prompt4 (close-task).
+
+| Task | Description | Status | Track |
+|------|-------------|--------|-------|
+| FINDING-SEP-001 | xcf_parser.py: 116 xcf_* dups removed → separation PASS | CLOSED | GOVERNANCE |
+| FINDING-SEP-002 | zst_codec.py: 55 zst_* dups removed → separation PASS | CLOSED | GOVERNANCE |
+| FINDING-SEP-003 | fods/neutral_model.py: 38 fods_* dups removed → separation PASS | CLOSED | GOVERNANCE |
+| FINDING-VC-001 | test_canonical_validator_count: 72 → 73 | CLOSED | GOVERNANCE |
+
+### Convergence Results
+
+- FINDING-SEP-001: xcf_parser.py 1273→288 LOC; all 116 xcf_* defs removed (duplicates of xcf_image_metrics.py); re-import added.
+- FINDING-SEP-002: zst_codec.py 1549→899 LOC; all 55 zst_* defs removed (duplicates of compression_metrics.py); re-import added.
+- FINDING-SEP-003: fods/neutral_model.py 1231→717 LOC; all 38 fods_* defs removed (duplicates of spreadsheet_model_document.py); re-import added.
+- FINDING-VC-001: test_canonical_validator_count assertion updated 72→73.
+- All 3263 xcf/zst/fods tests pass; 198 governance tests pass; 84 governance pilots pass.
+- Validator: 0 separation FAILs, 0 orphans, blocks_sprint=False.
+- *_analytics.py files: 0 (ban maintained).
+- Format source cap violations: 0.
+- Commits: d4a4ca0d (separation), f4b848a3 (validator count).
+- Convergence iterations: 3 (audit→fix×2→all-green).
+- close-task.md invoked: SUCCESS.
+
