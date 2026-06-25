@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s93-dotnet-deepening-20260626",
+  "latest_sprint": "ff-sprint-s94-dotnet-deepening-20260626",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -19123,6 +19123,42 @@
       "change_type": "test_added",
       "evidence_path": "tests/net/tsv/TsvR118GetColumnValuesDeepTests.cs",
       "description": "R118: 10 tests for GetColumnValues deep edge cases \u2014 short rows null, negative index, ToTsv round-trip"
+    },
+    {
+      "entry_id": "PC-CSV-R118",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s94-dotnet-deepening-20260626",
+      "product": "CSV .NET",
+      "capability_refs": [
+        "commercial_net_products.CSV.dotnet_status.get_column"
+      ],
+      "change_type": "test_added",
+      "evidence_path": "tests/net/csv/CsvR118GetColumnTests.cs",
+      "description": "R118: 10 tests for GetColumn(int) and GetColumn(string) \u2014 by index/header, empty doc, out-of-bounds, dogfood consistency"
+    },
+    {
+      "entry_id": "PC-FODT-R127",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s94-dotnet-deepening-20260626",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.export_markdown_headings"
+      ],
+      "change_type": "test_added",
+      "evidence_path": "tests/net/fodt/FodtR127ExportToMarkdownHeadingTests.cs",
+      "description": "R127: 11 tests for ExportToMarkdown heading hierarchy \u2014 H1/#, H2/##, H3/###, body text no prefix, order preservation"
+    },
+    {
+      "entry_id": "PC-NETPBM-R128",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s94-dotnet-deepening-20260626",
+      "product": "Netpbm .NET",
+      "capability_refs": [
+        "commercial_net_products.Netpbm.dotnet_status.exporter_pbm_conversion"
+      ],
+      "change_type": "test_added",
+      "evidence_path": "tests/net/netpbm/NetpbmR128ExporterPbmTests.cs",
+      "description": "R128: 11 tests for NetpbmExporter PbmToPgm/PbmToPpm \u2014 pixel mapping 0\u2192255/1\u21920, dimensions, format guards, dogfood"
     }
   ],
   "total_entries": 1006,
