@@ -674,13 +674,22 @@ foss_reduced_products:
     load: PASS
     get_page_count: PASS
     slide_titles: PASS
+    export_to_txt: PASS
+    export_to_csv: PASS
+    export_to_json: PASS
     installed_workflow: PASS
+  dogfood_status:
+    export_to_csv: IMPLEMENTED
+    export_to_txt: IMPLEMENTED
+    export_to_json: IMPLEMENTED
+    target_ff_library: format-factory-fodp export_to_csv / export_to_txt / export_to_json
+    notes: Added export functions 2026-06-25. consumer_roundtrip.py CONSUMER_PROOF PASS.
   examples:
     python: examples/python/fodp/consumer_roundtrip.py
   tests:
     python: tests/python/fodp/
   blockers: []
-  next_action: Write capability not applicable (read-only format)
+  next_action: Continue FOSS product deepening
 - format: CSV
   classification: POC_TARGET_CONFIRMED
   full_name: Comma-Separated Values
