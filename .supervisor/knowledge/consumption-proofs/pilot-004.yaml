@@ -1,0 +1,77 @@
+pilot_id: "pilot-004"
+status: "PLANNED"
+verdict: "PENDING_L4_SPRINT"
+proof_level: "L4_PRODUCTION_PENDING"
+proof_level_note: >
+  L4 requires a real autonomous sprint cycle — NOT a simulated in-session exercise.
+  The agent must invoke /add-python-object-model-feature with Step 0 active (KC-PYTHON-001 loaded
+  autonomously), have V68 fire at session start (requires TC-P3-002 first), and produce a
+  production class that passes V53/V45 + full test suite. This file is a PLANNED spec only.
+  Do NOT change verdict until all L4 execution criteria are met.
+
+knowledge_ids_used_target:
+  - "KC-PYTHON-001"
+  - "KC-PYTHON-002"
+
+task_target: >
+  Add a domain model class or new accessor method for a format not yet covered by pilots
+  001-003 (suggested: ODS, DIF, SYLK, FODG, or FODP — confirmed NOT: ZST, ABW, TOML).
+  Agent must invoke the /add-python-object-model-feature skill, navigate Step 0 autonomously
+  (load KC-PYTHON-001 from registry), produce a correct production model class or method, and
+  have the class committed to the repository with passing tests.
+
+prerequisites:
+  - "TC-P3-002 COMPLETE: V68 fires at session start (Step 0a-knowledge in autonomous_cycle.py or hook)"
+  - "TC-P2-001 COMPLETE: V68 wired into governance_validator_runner.py (already done)"
+  - "TC-P2-002 COMPLETE: KC-PYTHON-002 VERIFIED_CURRENT (already done)"
+  - "A suitable format/feature must be selected and declared in this file under selected_format"
+  - "autonomous_cycle.py session must be a REAL sprint — not a simulated in-session exercise"
+
+selected_format: null
+selected_feature: null
+
+l4_execution_criteria:
+  - criterion: "Skill invocation"
+    description: "Agent invokes /add-python-object-model-feature (not ad-hoc execution)"
+    verified: false
+  - criterion: "Step 0 autonomous navigation"
+    description: "Agent reads .supervisor/knowledge/registry.yaml and loads KC-PYTHON-001 WITHOUT being prompted by human"
+    verified: false
+  - criterion: "V68 session-start check"
+    description: "autonomous_cycle.py log shows 'KNOWLEDGE FRESHNESS: PASS' (or WARNING) at session start before sprint work"
+    verified: false
+  - criterion: "Production class committed"
+    description: "New or updated models.py class is committed to repository (not just a code snippet)"
+    verified: false
+  - criterion: "V53 pass"
+    description: "spec_qname is a bare class attribute (not instance field) — governance_validators V53 passes"
+    verified: false
+  - criterion: "V45 pass"
+    description: "No format-prefixed primary class outside Compat/ — V45 passes"
+    verified: false
+  - criterion: "Test suite pass"
+    description: "tests/python/{format}/test_{format}_document_model.py passes (all tests green)"
+    verified: false
+  - criterion: "No additional browsing required"
+    description: "Agent did not need to inspect other implementations to infer structure"
+    verified: null
+
+l4_verdict_options:
+  - "KNOWLEDGE_CONTRACT_SUFFICIENT_PRODUCTION_VERIFIED"
+  - "KNOWLEDGE_CONTRACT_PARTIALLY_SUFFICIENT_PRODUCTION_VERIFIED"
+  - "KNOWLEDGE_CONTRACT_INSUFFICIENT_PRODUCTION_REVEALED_GAP"
+
+executed_in_taskcard: "TC-P2-003 (activation deferred — TC-P3-002 must complete first)"
+activation_gate: "TC-P3-002"
+
+comparison_to_prior_pilots:
+  pilot_001_format: "ZST (path-based variant, L3)"
+  pilot_002_format: "ABW (dict-based variant, L3)"
+  pilot_003_format: "TOML (dict-based variant + directory layout, L3 multi-contract)"
+  pilot_004_format: "TBD (any format not in 001-003, L4 PRODUCTION)"
+  key_difference: >
+    Pilots 001-003 are all L3 (simulated, in-session, controlled). pilot-004 is the first
+    L4 proof: real autonomous sprint, real skill invocation, real production commit, real
+    test suite pass. The knowledge contracts (KC-PYTHON-001, KC-PYTHON-002) have been
+    VERIFIED_CURRENT since Phase 2. pilot-004 proves they work in production, not just
+    in controlled exercises.

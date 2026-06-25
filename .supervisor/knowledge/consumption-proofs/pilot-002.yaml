@@ -1,0 +1,27 @@
+pilot_id: "pilot-002"
+knowledge_id: "KC-PYTHON-001"
+task: "Add AbwDocument.word_count property to src/python/abw/models.py"
+knowledge_query: "python_domain_model_class"
+contracts_returned:
+  - "KC-PYTHON-001: .supervisor/knowledge/contracts/python-domain-model.yaml"
+examples_returned:
+  - ".supervisor/knowledge/examples/python-domain-model-canonical.py"
+validators_returned:
+  - ".venv/Scripts/python .supervisor/knowledge/validate_knowledge_contracts.py --contract KC-PYTHON-001"
+format_variant: "dict-based (ABW is listed explicitly in allowed_variants.dict-based.examples)"
+broad_search_required: false
+artifact_created_or_modified: ".supervisor/knowledge/consumption-proofs/pilot-002-evidence.py"
+validation_result: >
+  Snippet follows KC-PYTHON-001 dict-based variant: int() coercion, uses self.paragraphs
+  (defensive-copy property), not self._data directly (forbidden pattern). Safe default
+  returns int(0) on empty paragraphs. All 3 test cases pass (7 words, 0 empty, 5 single).
+  spec_qname confirmed as class-level attribute, not instance field.
+remaining_ambiguity: "None. ABW dict-based variant is fully specified in contract."
+verdict: "KNOWLEDGE_CONTRACT_SUFFICIENT"
+comparison_to_pilot_001:
+  pilot_001_format: "ZST (path-based variant)"
+  pilot_002_format: "ABW (dict-based variant)"
+  pilot_001_broad_search_required: false
+  pilot_002_broad_search_required: false
+  contract_coverage: "Both variants fully covered by KC-PYTHON-001. No additional browsing required for either."
+executed_in_taskcard: "PILOT_RERUN_PROOF"

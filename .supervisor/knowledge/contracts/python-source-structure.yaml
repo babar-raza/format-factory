@@ -73,6 +73,47 @@ required_fields_or_components:
       domain model class and the document file is legacy.
     example: "src/python/csv/tabular_document.py"
 
+spec_file_patterns:
+  description: >
+    Within spec/{domain_namespace}/, class files follow the pattern:
+    {element}.py where {element} is the local_name from the qname registry entry
+    (e.g., qname "csv:record" → element "record" → spec/record/record.py).
+    The namespace directory name matches the domain concept (record, table, layer, office,
+    text, image). Each namespace directory has __init__.py + at least one element .py file.
+    Multiple element files may exist in one namespace (e.g., ndjson/spec/record/ has
+    record.py AND field.py).
+  concrete_examples:
+    - path: "src/python/csv/spec/record/record.py"
+      qname: "csv:record"
+      namespace_dir: "record"
+      element_file: "record.py"
+      note: "Primary spec class for CSV; also field.py, header.py in same dir"
+    - path: "src/python/ndjson/spec/record/field.py"
+      qname: "ndjson:field"
+      namespace_dir: "record"
+      element_file: "field.py"
+      note: "Field element; record.py also present in same namespace dir"
+    - path: "src/python/odt/spec/text/paragraph.py"
+      qname: "odt:text"
+      namespace_dir: "text"
+      element_file: "paragraph.py"
+      note: "ODT uses two namespace dirs (text/, office/); heading.py also in text/"
+  remaining_ambiguity: >
+    KC-PYTHON-002 confirms at least one namespace subdirectory and element file exist
+    per format, but does NOT enumerate ALL files within each namespace dir.
+    Agents needing a complete file listing should ls spec/{namespace}/ directly.
+    This is LOW severity for most tasks (adding a models.py method never requires
+    knowing all spec file names).
+
+invariants:
+  - "Every format has EXACTLY ONE spec/ directory at the package root."
+  - "Every spec/ has at least one namespace subdirectory (never empty)."
+  - "Namespace subdirectory name is a domain concept word, NOT the format name."
+  - "Each namespace dir has __init__.py (may be empty)."
+  - "Element .py files use lowercase with underscores (matches local_name in qname registry)."
+  - "All spec classes set spec_qname as bare class attribute or ClassVar[str] (never instance field)."
+  - "Spec classes are architecture_only or partial — behavior lives in codec/parser/models.py."
+
 naming_rules:
   - "Package root dir: src/python/{format_id}/ (all lowercase)"
   - "Spec class dir: spec/{domain_namespace}/{class}.py (lowercase, underscore)"

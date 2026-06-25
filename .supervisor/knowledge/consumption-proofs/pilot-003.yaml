@@ -1,0 +1,66 @@
+pilot_id: "pilot-003"
+knowledge_ids_used:
+  - "KC-PYTHON-001"
+  - "KC-PYTHON-002"
+task: "Add TomlDocument.get_key_count() method to src/python/toml/models.py AND confirm the TOML package follows the three-layer directory structure"
+knowledge_query: "python_domain_model_class + python_format_source_structure"
+contracts_returned:
+  - "KC-PYTHON-001: .supervisor/knowledge/contracts/python-domain-model.yaml"
+  - "KC-PYTHON-002: .supervisor/knowledge/contracts/python-source-structure.yaml"
+examples_returned:
+  - ".supervisor/knowledge/examples/python-domain-model-canonical.py"
+validators_returned:
+  - ".venv/Scripts/python .supervisor/knowledge/validate_knowledge_contracts.py"
+format_variant: "dict-based (TOML is listed explicitly in KC-PYTHON-001 allowed_variants.dict-based.examples)"
+kc_python_002_available: true
+kc_python_002_status_at_run_time: "VERIFIED_CURRENT"
+broad_search_required: false
+artifact_created_or_modified: ".supervisor/knowledge/consumption-proofs/pilot-003-evidence.py"
+part_a_result: >
+  KC-PYTHON-002 answered the layout question without browsing:
+  TOML is in the 20-format survey; all 20 have spec/, Compat/, codec/parser, exceptions.py.
+  Expected TOML layout: spec/table/__init__.py + table.py + key.py,
+  Compat/toml_table.py + toml_key.py, toml_codec.py, exceptions.py, __init__.py.
+  Agent would NOT need to list src/python/toml/ to know this.
+part_b_result: >
+  KC-PYTHON-001 provided get_key_count() pattern:
+  dict-based variant, int() coercion, safe default via try/except,
+  no module-level imports. Snippet produced without reading models.py.
+validation_result: >
+  Both KC-PYTHON-001 and KC-PYTHON-002 used simultaneously — first multi-contract pilot.
+  Part A (layout): KC-PYTHON-002 VERIFIED_CURRENT answered the directory question.
+  Part B (accessor): KC-PYTHON-001 dict-based variant answered the method structure.
+  V68 governance runner check: PASS (5 source hashes verified, not stale).
+  No browsing of toml_codec.py, config_document.py, or models.py was needed.
+remaining_ambiguity: >
+  Minor: KC-PYTHON-002 confirms spec/ presence and spec/table/ as the namespace dir
+  (from survey), but does not enumerate individual files within spec/table/.
+  Agent would know table.py/key.py exist by convention (spec element = spec file) but
+  KC-PYTHON-002 does not explicitly list them. This is LOW severity — adding a method
+  to models.py does not require knowing spec/ file names.
+verdict: "KNOWLEDGE_CONTRACT_SUFFICIENT"
+proof_level: "L3_MULTI_CONTRACT"
+proof_level_note: >
+  This pilot is L3 (simulated, in-session, controlled). It was executed by an agent during
+  the plan review session, NOT by a real autonomous sprint invoking a skill command.
+  HC-006 (2026-06-25): pilot-003 was reclassified from implied-L4 to explicit L3_MULTI_CONTRACT.
+  The L4 production proof target is pilot-004 — see consumption-proofs/pilot-004.yaml.
+  Simulated means: the agent read contracts + example and produced a code snippet. No
+  autonomous_cycle.py session, no skill invocation, no V68 session-start check, no
+  actual models.py modification or test run. The snippet is a valid pattern demonstration
+  but NOT a production class committed to the repository.
+comparison_to_prior_pilots:
+  pilot_001_format: "ZST (path-based variant)"
+  pilot_002_format: "ABW (dict-based variant)"
+  pilot_003_format: "TOML (dict-based variant + directory layout)"
+  pilot_001_contracts_used: ["KC-PYTHON-001"]
+  pilot_002_contracts_used: ["KC-PYTHON-001"]
+  pilot_003_contracts_used: ["KC-PYTHON-001", "KC-PYTHON-002"]
+  key_difference: >
+    Pilots 001 and 002 (Phase 1): Only KC-PYTHON-001 available and queryable.
+    KC-PYTHON-002 existed as DRAFT_PENDING_AUTHORITY — unusable, returned "skipped" by validator.
+    Pilot 003 (Phase 2): Both contracts VERIFIED_CURRENT. Layout question answerable
+    without browsing. This is the first pilot that proves Phase 2 advancement.
+  kc_002_was_draft_in_phase1: true
+  kc_002_is_verified_in_phase2: true
+executed_in_taskcard: "pilot-rerun-proof-2026-06-25"
