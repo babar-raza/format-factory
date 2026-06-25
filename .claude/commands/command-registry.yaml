@@ -194,7 +194,7 @@ commands:
   phase: all
   skill_id: add-analytics-function
   skill_registry_ref: true
-  status: deferred
+  status: deprecated
   suspension_note: Rotation suspended 2026-06-18 by keen-dancing-hopper plan. V42
     blocks sprint if used.
   writes_product_source: true
@@ -592,7 +592,7 @@ commands:
   phase: 3
   skill_id: decompose-monolithic-codec
   skill_registry_ref: true
-  status: active
+  status: deprecated
   writes_product_source: true
 - command_id: python-qname-code-reviewer
   created: '2026-06-23'
@@ -625,7 +625,7 @@ commands:
 - command_file: .claude/commands/check-mcp-status.md
   command_id: check-mcp-status
   skill_id: check-mcp-status
-  status: deferred
+  status: deprecated
 - command_file: .claude/commands/extract-analytics-from-monolith.md
   command_id: extract-analytics-from-monolith
   skill_id: extract-analytics-from-monolith
@@ -681,6 +681,10 @@ commands:
 - command_file: .claude/commands/enforce-skill-first-execution.md
   command_id: enforce-skill-first-execution
   skill_id: enforce-skill-first-execution
+  status: active
+- command_file: .claude/commands/qname-backfill.md
+  command_id: qname-backfill
+  skill_id: qname-backfill
   status: active
 generated_at: '2026-06-18'
 generated_by: TC-0004

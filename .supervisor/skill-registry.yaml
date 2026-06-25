@@ -52,515 +52,10 @@ missing_skill_workflow:
 registry_id: r98-governed-skills-expanded
 registry_status: active_fail_closed
 skills:
-- command: /add-dotnet-api
-  command_file: .claude/commands/add-dotnet-api.md
-  mandatory_validations:
-  - product_code_ledger_validator
-  - focused_dotnet_tests
-  - no_gate_or_release_state_change
-  product_track: commercial_dotnet
-  purpose: Add or extend one bounded commercial .NET product API with focused tests
-    and evidence.
-  required_handoff_fields:
-  - format_id
-  - api_name
-  - exact_source_paths
-  - exact_test_paths
-  - ledger_entry_path
-  - focused_test_command
-  sal_aware: true
-  sal_note: Handoff must include FACT-{FORMAT}-* spec_fact_refs from sal-facts-latest.json
-    before execution
-  sal_required_in_handoff: true
-  skill_id: add-dotnet-api
-  spec_qname_required: true
-  status: active
-- command: /add-python-api
-  command_file: .claude/commands/add-python-api.md
-  mandatory_validations:
-  - product_code_ledger_validator
-  - focused_python_tests
-  - no_gate_or_release_state_change
-  product_track: foss_python
-  purpose: Add or extend one bounded Python FOSS product API with focused tests and
-    evidence.
-  required_handoff_fields:
-  - format_id
-  - api_name
-  - exact_source_paths
-  - exact_test_paths
-  - ledger_entry_path
-  - focused_test_command
-  sal_aware: true
-  sal_note: Handoff must include FACT-{FORMAT}-* spec_fact_refs from sal-facts-latest.json
-    before execution
-  sal_required_in_handoff: true
-  skill_id: add-python-api
-  spec_qname_required: true
-  status: active
-- command: /add-dogfood-export
-  command_file: .claude/commands/add-dogfood-export.md
-  mandatory_validations:
-  - product_code_ledger_validator
-  - dogfood_backend_is_format_factory_library
-  - external_export_dependency_scan
-  - focused_export_tests
-  product_track: cross_product_export
-  purpose: Add one bounded export path whose write backend is another Format Factory
-    library.
-  required_handoff_fields:
-  - source_format_id
-  - target_format_id
-  - export_name
-  - target_ff_library
-  - exact_source_paths
-  - exact_test_paths
-  - ledger_entry_path
-  - focused_test_command
-  skill_id: add-dogfood-export
-  spec_qname_required: false
-  status: active
-- command: /update-capability-matrix
-  command_file: .claude/commands/update-capability-matrix.md
-  mandatory_validations:
-  - evidence_paths_exist
-  - claimed_statuses_match_test_evidence
-  - commercial_product_ready_remains_false
-  - gate_11_approved_remains_false
-  product_track: shared_reference_snapshot
-  purpose: Reconcile proven product capability results into the POC target matrix
-    without changing gate authority.
-  required_handoff_fields:
-  - matrix_entry
-  - evidence_paths
-  - focused_validation_commands
-  - claimed_status_changes
-  skill_id: update-capability-matrix
-  spec_qname_required: false
-  status: active
-- command: /add-dotnet-object-model-feature
-  command_file: .claude/commands/add-dotnet-object-model-feature.md
-  mandatory_validations:
-  - product_code_ledger_validator
-  - focused_dotnet_tests
-  product_track: commercial_dotnet
-  purpose: Add a feature to a .NET object model (property, method, conversion).
-  required_handoff_fields:
-  - format_id
-  - feature_name
-  - exact_source_paths
-  - exact_test_paths
-  - ledger_entry_path
-  sal_aware: true
-  sal_note: Handoff must include spec_qname + FACT-{FORMAT}-* from sal-facts-latest.json
-  sal_required_in_handoff: true
-  skill_id: add-dotnet-object-model-feature
-  spec_qname_required: true
-  status: active
-- command: /add-python-object-model-feature
-  command_file: .claude/commands/add-python-object-model-feature.md
-  mandatory_validations:
-  - product_code_ledger_validator
-  - focused_python_tests
-  product_track: foss_python
-  purpose: Add a feature to a Python object model (method, conversion, property).
-  required_handoff_fields:
-  - format_id
-  - feature_name
-  - spec_qname
-  - spec_fact_ref
-  - exact_source_paths
-  - exact_test_paths
-  - ledger_entry_path
-  sal_aware: true
-  sal_note: Handoff must include spec_qname + FACT-{FORMAT}-* from sal-facts-latest.json
-  sal_required_in_handoff: true
-  skill_id: add-python-object-model-feature
-  spec_qname_required: true
-  status: active
-- command: /add-same-format-writer-feature
-  command_file: .claude/commands/add-same-format-writer-feature.md
-  mandatory_validations:
-  - product_code_ledger_validator
-  - roundtrip_test_pass
-  product_track: cross_product
-  purpose: Add same-format save/write capability after editing.
-  required_handoff_fields:
-  - format_id
-  - writer_scope
-  - exact_source_paths
-  - exact_test_paths
-  - ledger_entry_path
-  skill_id: add-same-format-writer-feature
-  spec_qname_required: true
-  status: active
-- command: /add-roundtrip-test
-  command_file: .claude/commands/add-roundtrip-test.md
-  mandatory_validations:
-  - focused_tests_pass
-  product_track: testing
-  purpose: Add a parse-edit-write-reparse roundtrip test.
-  required_handoff_fields:
-  - format_id
-  - roundtrip_scope
-  - exact_test_paths
-  skill_id: add-roundtrip-test
-  spec_qname_required: false
-  status: active
-- command: /add-installed-package-example
-  command_file: .claude/commands/add-installed-package-example.md
-  mandatory_validations:
-  - example_runs_without_error
-  product_track: developer_experience
-  purpose: Add an example that uses an installed package (not PYTHONPATH).
-  required_handoff_fields:
-  - format_id
-  - example_scope
-  - example_path
-  skill_id: add-installed-package-example
-  spec_qname_required: false
-  status: active
-- command: /promote-gap-to-taskcard
-  command_file: .claude/commands/promote-gap-to-taskcard.md
-  mandatory_validations:
-  - taskcard_valid_yaml
-  product_track: planning
-  purpose: Promote a product gap from the POC matrix to a formal taskcard.
-  required_handoff_fields:
-  - gap_id
-  - taskcard_path
-  skill_id: promote-gap-to-taskcard
-  spec_qname_required: false
-  status: active
-- command: /generate-execution-handoff
-  command_file: .claude/commands/generate-execution-handoff.md
-  mandatory_validations:
-  - handoff_yaml_valid
-  product_track: planning
-  purpose: Generate a structured execution handoff for a governed skill.
-  required_handoff_fields:
-  - skill_id
-  - target_format
-  - scope
-  skill_id: generate-execution-handoff
-  spec_qname_required: false
-  status: active
-- command: /verify-dogfood-path
-  command_file: .claude/commands/verify-dogfood-path.md
-  mandatory_validations:
-  - product_code_ledger_validator
-  - no_external_imaging_backends
-  - focused_export_tests
-  product_track: cross_product_export
-  purpose: Verify that an export path uses only Format Factory libraries.
-  required_handoff_fields:
-  - export_name
-  - source_format
-  - target_format
-  - exact_test_paths
-  skill_id: verify-dogfood-path
-  spec_qname_required: false
-  status: active
-- command: /package-install-proof
-  command_file: .claude/commands/package-install-proof.md
-  mandatory_validations:
-  - wheel_builds
-  - import_succeeds
-  product_track: packaging
-  purpose: Prove that a package installs and imports correctly from wheel.
-  required_handoff_fields:
-  - format_id
-  - package_name
-  skill_id: package-install-proof
-  spec_qname_required: false
-  status: active
-- command: /materialize-declaration-review
-  command_file: .claude/commands/materialize-declaration-review.md
-  mandatory_validations:
-  - declaration_yaml_valid
-  - zip_builds_successfully
-  product_track: planning
-  purpose: Build a declaration review package ZIP from an evidence declaration YAML
-    for supervisor grading.
-  required_handoff_fields:
-  - declaration_path
-  skill_id: materialize-declaration-review
-  spec_qname_required: false
-  status: active
-- command: /record-lane-execution
-  command_file: .claude/commands/record-lane-execution.md
-  mandatory_validations:
-  - lane_id_unique
-  product_track: planning
-  purpose: Record the execution of a sprint lane into the lane execution ledger for
-    multi-lane coordination and evidence tracking.
-  required_handoff_fields:
-  - lane_id
-  - sprint_id
-  skill_id: record-lane-execution
-  spec_qname_required: false
-  status: active
-- command: /build-context-pack
-  command_file: .claude/commands/build-context-pack.md
-  mandatory_validations:
-  - context_pack_yaml_valid
-  product_track: planning
-  purpose: Build a machine-readable context pack YAML summarizing current project
-    state for session bootstrap.
-  required_handoff_fields:
-  - output_path
-  skill_id: build-context-pack
-  spec_qname_required: false
-  status: active
-- command: /check-mcp-status
-  command_file: .claude/commands/check-mcp-status.md
-  mandatory_validations:
-  - status_classified
-  product_track: planning
-  purpose: Check and classify the MCP server connection status using a 5-state model.
-  required_handoff_fields:
-  - mcp_server_name
-  skill_id: check-mcp-status
-  spec_qname_required: false
-  status: deferred
-- command: /select-poc-gap
-  command_file: .claude/commands/select-poc-gap.md
-  mandatory_validations:
-  - gap_exists_in_matrix
-  product_track: planning
-  purpose: Select the next product gap from the POC matrix for sprint execution based
-    on priority and readiness.
-  required_handoff_fields:
-  - matrix_path
-  skill_id: select-poc-gap
-  spec_qname_required: false
-  status: active
-- command: /validate-product-code-ledger
-  command_file: .claude/commands/validate-product-code-ledger.md
-  mandatory_validations:
-  - ledger_json_valid
-  - validator_exit_zero
-  product_track: planning
-  purpose: Run the product-code change ledger validator and report pass/fail results
-    for sprint evidence.
-  required_handoff_fields:
-  - ledger_path
-  skill_id: validate-product-code-ledger
-  spec_qname_required: false
-  status: active
-- command: /validate-skill-transcript
-  command_file: .claude/commands/validate-skill-transcript.md
-  mandatory_validations:
-  - transcript_json_valid
-  - skill_id_registered
-  product_track: planning
-  purpose: Validate a skill invocation transcript against the registry schema and
-    report pass/fail.
-  required_handoff_fields:
-  - transcript_path
-  skill_id: validate-skill-transcript
-  spec_qname_required: false
-  status: active
-- command: /evidence-review-next-prompt
-  command_file: .claude/commands/evidence-review-next-prompt.md
-  mandatory_validations:
-  - bundle_exists
-  - next_prompt_generated
-  product_track: planning
-  purpose: Review evidence bundle and produce the next execution prompt.
-  required_handoff_fields:
-  - evidence_bundle_path
-  skill_id: evidence-review-next-prompt
-  spec_qname_required: false
-  status: active
-- command: /execution-handoff
-  command_file: .claude/commands/execution-handoff.md
-  mandatory_validations:
-  - plan_hardening_score_met
-  - handoff_prompt_generated
-  product_track: planning
-  purpose: Convert a hardened plan into a single-go autonomous execution prompt with
-    internal gates.
-  required_handoff_fields:
-  - plan_path
-  skill_id: execution-handoff
-  spec_qname_required: false
-  status: active
-- command: /export-plan-context
-  command_file: .claude/commands/export-plan-context.md
-  mandatory_validations:
-  - context_zip_created
-  product_track: planning
-  purpose: Bundle long-term plan context files into a zip for LLM sharing.
-  required_handoff_fields:
-  - output_path
-  skill_id: export-plan-context
-  spec_qname_required: false
-  status: active
-- command: /memory-sprint
-  command_file: .claude/commands/memory-sprint.md
-  mandatory_validations:
-  - memory_file_created
-  - index_updated
-  product_track: planning
-  purpose: Capture strategic decisions and architecture notes into durable memory
-    artifacts.
-  required_handoff_fields:
-  - memory_topic
-  skill_id: memory-sprint
-  spec_qname_required: false
-  status: active
-- command: /plan-hardening
-  command_file: .claude/commands/plan-hardening.md
-  mandatory_validations:
-  - hardening_score_reported
-  product_track: planning
-  purpose: Review, challenge, and harden a draft plan against repo truth before execution.
-  required_handoff_fields:
-  - plan_path
-  skill_id: plan-hardening
-  spec_qname_required: false
-  status: active
-- command: /spec-literal-qname-to-code-mapping
-  command_file: .claude/commands/spec-literal-qname-to-code-mapping.md
-  mandatory_validations:
-  - qname_map_json_valid
-  - namespace_tree_json_valid
-  - qname_generator_exit_zero
-  product_track: spec_parity
-  purpose: 'Generate or validate a QName-to-code mapping for a format. Produces qname-to-code-map-<format>.yaml,
-    namespace-tree-<format>.yaml, and containment-graph-<format>.yaml. Required before
-    any product model work.
-
-    '
-  required_handoff_fields:
-  - format_id
-  - source_paths
-  - output_dir
-  sal_aware: true
-  sal_note: 'SAL-driven skill: spec_qname must trace to a FACT-{FORMAT}-* entry. Handoff
-    requires sal_facts_path.'
-  sal_required_in_handoff: true
-  skill_id: spec-literal-qname-to-code-mapping
-  spec_qname_required: true
-  status: active
-- command: /spec-shaped-product-architecture-blueprint
-  command_file: .claude/commands/spec-shaped-product-architecture-blueprint.md
-  mandatory_validations:
-  - blueprint_yaml_valid
-  - no_flat_class_violations
-  - spec_qname_present_in_all_classes
-  product_track: spec_parity
-  purpose: 'Generate a spec-shaped architecture blueprint for a format. The blueprint
-    defines the class hierarchy, containment edges, and namespace mapping that implementation
-    must follow. No flat/ad-hoc class invention allowed.
-
-    '
-  required_handoff_fields:
-  - format_id
-  - spec_body
-  - qname_map_path
-  - output_path
-  skill_id: spec-shaped-product-architecture-blueprint
-  spec_qname_required: true
-  status: active
-- command: /spec-parity-source-regeneration-and-migration
-  command_file: .claude/commands/spec-parity-source-regeneration-and-migration.md
-  mandatory_validations:
-  - product_code_ledger_validator
-  - spec_parity_validator_pass
-  - no_flat_class_violations
-  - focused_tests_pass
-  product_track: spec_parity
-  purpose: 'Regenerate or migrate existing source code to match the spec-shaped blueprint.
-    May not create arbitrary flat classes for spec concepts. All model classes must
-    have a canonical_namespace and spec_qname.
-
-    '
-  required_handoff_fields:
-  - format_id
-  - blueprint_path
-  - exact_source_paths
-  - exact_test_paths
-  - ledger_entry_path
-  skill_id: spec-parity-source-regeneration-and-migration
-  spec_qname_required: true
-  status: active
-- command: /python-reduced-spec-parity-model
-  command_file: .claude/commands/python-reduced-spec-parity-model.md
-  mandatory_validations:
-  - product_code_ledger_validator
-  - spec_qname_present
-  - reduced_scope_documented
-  - focused_python_tests
-  product_track: foss_python
-  purpose: 'Implement a reduced-scope spec-parity model for a Python FOSS format.
-    "Reduced" means a documented subset of the full spec is implemented, with spec_qname
-    present and a valid exception classification for omitted spec concepts. Not a
-    free pass to omit spec fields.
-
-    '
-  required_handoff_fields:
-  - format_id
-  - spec_qname
-  - reduced_scope_rationale
-  - exact_source_paths
-  - exact_test_paths
-  - ledger_entry_path
-  skill_id: python-reduced-spec-parity-model
-  spec_qname_required: true
-  status: active
-- command: /spec-parity-verification
-  command_file: .claude/commands/spec-parity-verification.md
-  mandatory_validations:
-  - spec_parity_qname_validator_run
-  - namespace_tree_validator_run
-  - skeleton_progress_validator_run
-  - skill_wiring_validator_run
-  - verification_report_written
-  product_track: spec_parity
-  purpose: 'Run spec-parity validators (SpecParityQNameValidator, NamespaceTreeValidator,
-    SkeletonProgressValidator, SkillWiringValidator) and produce a structured verification
-    report. Required before any product model taskcard is declared complete.
-
-    '
-  required_handoff_fields:
-  - format_id
-  - evidence_root
-  skill_id: spec-parity-verification
-  spec_qname_required: false
-  status: active
-- command: /post-sprint-audit
-  command_file: .claude/commands/post-sprint-audit.md
-  mandatory_validations:
-  - stage1_issue_model_schema_valid
-  - root_cause_present_on_all_issues
-  - claim_classification_matrix_present
-  product_track: governance
-  purpose: Run Stage 1 post-sprint evidence audit with L1/L2/L3 issue discovery
-  required_handoff_fields:
-  - evidence_root
-  skill_id: post-sprint-audit
-  spec_qname_required: false
-  status: active
-- command: /post-sprint-loop
-  command_file: .claude/commands/post-sprint-loop.md
-  mandatory_validations:
-  - loop_state_machine_valid
-  - summary_classification_valid
-  - quality_scores_above_threshold
-  - evidence_bundle_present
-  product_track: governance
-  purpose: 'Run full post-sprint autonomy loop: Audit -> Harden -> Execute -> Classify
-    -> Loop until all-green'
-  required_handoff_fields:
-  - evidence_root
-  - run_id
-  skill_id: post-sprint-loop
-  spec_qname_required: false
-  status: active
 - command: /add-analytics-function
   command_file: .claude/commands/add-analytics-function.md
+  idempotency: not_specified
+  implementation_paths: []
   mandatory_validations:
   - loc_cap_not_exceeded
   - spec_fact_ref_in_sal_output
@@ -587,9 +82,186 @@ skills:
   - expected_values
   skill_id: add-analytics-function
   spec_qname_required: true
-  status: deferred
+  status: deprecated
+  test_paths: []
+- command: /add-dogfood-export
+  command_file: .claude/commands/add-dogfood-export.md
+  idempotency: not_specified
+  implementation_paths: []
+  mandatory_validations:
+  - product_code_ledger_validator
+  - dogfood_backend_is_format_factory_library
+  - external_export_dependency_scan
+  - focused_export_tests
+  product_track: cross_product_export
+  purpose: Add one bounded export path whose write backend is another Format Factory
+    library.
+  required_handoff_fields:
+  - source_format_id
+  - target_format_id
+  - export_name
+  - target_ff_library
+  - exact_source_paths
+  - exact_test_paths
+  - ledger_entry_path
+  - focused_test_command
+  skill_id: add-dogfood-export
+  spec_qname_required: false
+  status: active
+  test_paths: []
+- command: /add-dotnet-api
+  command_file: .claude/commands/add-dotnet-api.md
+  idempotency: not_specified
+  implementation_paths: []
+  mandatory_validations:
+  - product_code_ledger_validator
+  - focused_dotnet_tests
+  - no_gate_or_release_state_change
+  product_track: commercial_dotnet
+  purpose: Add or extend one bounded commercial .NET product API with focused tests
+    and evidence.
+  required_handoff_fields:
+  - format_id
+  - api_name
+  - exact_source_paths
+  - exact_test_paths
+  - ledger_entry_path
+  - focused_test_command
+  sal_aware: true
+  sal_note: Handoff must include FACT-{FORMAT}-* spec_fact_refs from sal-facts-latest.json
+    before execution
+  sal_required_in_handoff: true
+  skill_id: add-dotnet-api
+  spec_qname_required: true
+  status: active
+  test_paths: []
+- command: /add-dotnet-object-model-feature
+  command_file: .claude/commands/add-dotnet-object-model-feature.md
+  idempotency: not_specified
+  implementation_paths: []
+  mandatory_validations:
+  - product_code_ledger_validator
+  - focused_dotnet_tests
+  product_track: commercial_dotnet
+  purpose: Add a feature to a .NET object model (property, method, conversion).
+  required_handoff_fields:
+  - format_id
+  - feature_name
+  - exact_source_paths
+  - exact_test_paths
+  - ledger_entry_path
+  sal_aware: true
+  sal_note: Handoff must include spec_qname + FACT-{FORMAT}-* from sal-facts-latest.json
+  sal_required_in_handoff: true
+  skill_id: add-dotnet-object-model-feature
+  spec_qname_required: true
+  status: active
+  test_paths: []
+- command: /add-installed-package-example
+  command_file: .claude/commands/add-installed-package-example.md
+  idempotency: not_specified
+  implementation_paths: []
+  mandatory_validations:
+  - example_runs_without_error
+  product_track: developer_experience
+  purpose: Add an example that uses an installed package (not PYTHONPATH).
+  required_handoff_fields:
+  - format_id
+  - example_scope
+  - example_path
+  skill_id: add-installed-package-example
+  spec_qname_required: false
+  status: active
+  test_paths: []
+- command: /add-python-api
+  command_file: .claude/commands/add-python-api.md
+  idempotency: not_specified
+  implementation_paths: []
+  mandatory_validations:
+  - product_code_ledger_validator
+  - focused_python_tests
+  - no_gate_or_release_state_change
+  product_track: foss_python
+  purpose: Add or extend one bounded Python FOSS product API with focused tests and
+    evidence.
+  required_handoff_fields:
+  - format_id
+  - api_name
+  - exact_source_paths
+  - exact_test_paths
+  - ledger_entry_path
+  - focused_test_command
+  sal_aware: true
+  sal_note: Handoff must include FACT-{FORMAT}-* spec_fact_refs from sal-facts-latest.json
+    before execution
+  sal_required_in_handoff: true
+  skill_id: add-python-api
+  spec_qname_required: true
+  status: active
+  test_paths: []
+- command: /add-python-object-model-feature
+  command_file: .claude/commands/add-python-object-model-feature.md
+  idempotency: not_specified
+  implementation_paths: []
+  mandatory_validations:
+  - product_code_ledger_validator
+  - focused_python_tests
+  product_track: foss_python
+  purpose: Add a feature to a Python object model (method, conversion, property).
+  required_handoff_fields:
+  - format_id
+  - feature_name
+  - spec_qname
+  - spec_fact_ref
+  - exact_source_paths
+  - exact_test_paths
+  - ledger_entry_path
+  sal_aware: true
+  sal_note: Handoff must include spec_qname + FACT-{FORMAT}-* from sal-facts-latest.json
+  sal_required_in_handoff: true
+  skill_id: add-python-object-model-feature
+  spec_qname_required: true
+  status: active
+  test_paths: []
+- command: /add-roundtrip-test
+  command_file: .claude/commands/add-roundtrip-test.md
+  idempotency: not_specified
+  implementation_paths: []
+  mandatory_validations:
+  - focused_tests_pass
+  product_track: testing
+  purpose: Add a parse-edit-write-reparse roundtrip test.
+  required_handoff_fields:
+  - format_id
+  - roundtrip_scope
+  - exact_test_paths
+  skill_id: add-roundtrip-test
+  spec_qname_required: false
+  status: active
+  test_paths: []
+- command: /add-same-format-writer-feature
+  command_file: .claude/commands/add-same-format-writer-feature.md
+  idempotency: not_specified
+  implementation_paths: []
+  mandatory_validations:
+  - product_code_ledger_validator
+  - roundtrip_test_pass
+  product_track: cross_product
+  purpose: Add same-format save/write capability after editing.
+  required_handoff_fields:
+  - format_id
+  - writer_scope
+  - exact_source_paths
+  - exact_test_paths
+  - ledger_entry_path
+  skill_id: add-same-format-writer-feature
+  spec_qname_required: true
+  status: active
+  test_paths: []
 - command: /autonomous-loop
   command_file: .claude/commands/autonomous-loop.md
+  idempotency: not_specified
+  implementation_paths: []
   mandatory_validations:
   - check_skill_coverage_before_product_work
   - no_direct_src_edit_without_skill
@@ -603,46 +275,71 @@ skills:
   skill_id: autonomous-loop
   spec_qname_required: false
   status: active
-- command: /sync-memory
-  command_file: .claude/commands/sync-memory.md
+  test_paths: []
+- command: /backfill-task-skill-ownership
+  command_file: .claude/commands/backfill-task-skill-ownership.md
+  created_at: '2026-06-24'
+  idempotency: Same plan files produce same recommendations; read-only
+  implementation_paths: []
+  mission_id: SKILL-FIRST-001
+  output_paths:
+  - .supervisor/taskcard-skill-backfill.yaml
+  purpose: Scan plan files for mutating tasks lacking skill_ids; produce backfill
+    recommendations.
+  skill_id: backfill-task-skill-ownership
+  status: active
+  test_paths: []
+  version: '1.0'
+- command: /build-capability-routes
+  command_file: .claude/commands/build-capability-routes.md
+  created_at: '2026-06-24'
+  idempotency: Same inputs produce same output
+  implementation_paths:
+  - tools/supervisor/build_capability_routes.py
+  mission_id: SKILL-FIRST-001
+  output_paths:
+  - .supervisor/capability-routing-results.yaml
+  purpose: Read capability-routing-registry.yaml, verify preferred_skill_ids resolve
+    to registered active skills.
+  skill_id: build-capability-routes
+  status: active
+  test_paths: []
+  version: '1.0'
+- command: /build-context-pack
+  command_file: .claude/commands/build-context-pack.md
+  idempotency: not_specified
+  implementation_paths: []
   mandatory_validations:
-  - sync_report_written
-  notes: Maintenance skill. Read-only except for memory-sync-report.md. Added 2026-06-21
-    (SKILL-GAP-002).
-  product_track: maintenance
-  purpose: Compare memory files against master-plan.md; detect contradictions; produce
-    memory-sync-report.md.
+  - context_pack_yaml_valid
+  product_track: planning
+  purpose: Build a machine-readable context pack YAML summarizing current project
+    state for session bootstrap.
   required_handoff_fields:
-  - memory_file_path
-  skill_id: sync-memory
+  - output_path
+  skill_id: build-context-pack
   spec_qname_required: false
   status: active
-- command: /score-format
-  command_file: .claude/commands/score-format.md
+  test_paths: []
+- command: /build-evidence-bundle
+  command_file: .claude/commands/build-evidence-bundle.md
+  idempotency: not_specified
+  implementation_paths: []
   mandatory_validations:
-  - scoring_sheet_produced
-  notes: Phase 1 acquisition. Read-only. Added 2026-06-21 (SKILL-GAP-003).
-  product_track: acquisition
-  purpose: Apply scoring model to a format candidate; produce a scoring sheet.
+  - bundle_zip_created
+  - sha256_printed
+  notes: Phase 1 acquisition. Added 2026-06-21 (SKILL-GAP-008).
+  product_track: planning
+  purpose: Build and validate an evidence bundle for the current phase/sprint.
   required_handoff_fields:
-  - format_id
-  skill_id: score-format
+  - run_id
+  skill_id: build-evidence-bundle
   spec_qname_required: false
   status: active
-- command: /create-acquisition-pack
-  command_file: .claude/commands/create-acquisition-pack.md
-  mandatory_validations:
-  - acquisition_pack_valid_structure
-  notes: Phase 1 acquisition. Added 2026-06-21 (SKILL-GAP-004).
-  product_track: acquisition
-  purpose: Initialize a format acquisition pack from the template.
-  required_handoff_fields:
-  - format_id
-  skill_id: create-acquisition-pack
-  spec_qname_required: false
-  status: active
+  test_paths: []
 - command: /check-gate
   command_file: .claude/commands/check-gate.md
+  idempotency: not_specified
+  implementation_paths: []
   mandatory_validations:
   - gate_criteria_evaluated
   - no_self_approval
@@ -655,47 +352,25 @@ skills:
   skill_id: check-gate
   spec_qname_required: false
   status: active
-- command: /create-taskcard
-  command_file: .claude/commands/create-taskcard.md
+  test_paths: []
+- command: /check-mcp-status
+  command_file: .claude/commands/check-mcp-status.md
+  idempotency: not_specified
+  implementation_paths: []
   mandatory_validations:
-  - taskcard_yaml_valid
-  notes: Phase 1 acquisition. Added 2026-06-21 (SKILL-GAP-006).
+  - status_classified
   product_track: planning
-  purpose: Create a new taskcard from the template with all required fields.
+  purpose: Check and classify the MCP server connection status using a 5-state model.
   required_handoff_fields:
-  - taskcard_id
-  - title
-  skill_id: create-taskcard
+  - mcp_server_name
+  skill_id: check-mcp-status
   spec_qname_required: false
-  status: active
-- command: /reproduce-master-plan
-  command_file: .claude/commands/reproduce-master-plan.md
-  mandatory_validations:
-  - summary_generated
-  - not_authoritative_stated
-  notes: Read-only. Added 2026-06-21 (SKILL-GAP-007).
-  product_track: planning
-  purpose: Generate a current-state summary from repo artifacts (read-only).
-  required_handoff_fields:
-  - output_summary_path
-  skill_id: reproduce-master-plan
-  spec_qname_required: false
-  status: active
-- command: /build-evidence-bundle
-  command_file: .claude/commands/build-evidence-bundle.md
-  mandatory_validations:
-  - bundle_zip_created
-  - sha256_printed
-  notes: Phase 1 acquisition. Added 2026-06-21 (SKILL-GAP-008).
-  product_track: planning
-  purpose: Build and validate an evidence bundle for the current phase/sprint.
-  required_handoff_fields:
-  - run_id
-  skill_id: build-evidence-bundle
-  spec_qname_required: false
-  status: active
+  status: deprecated
+  test_paths: []
 - command: /check-release-boundary
   command_file: .claude/commands/check-release-boundary.md
+  idempotency: not_specified
+  implementation_paths: []
   mandatory_validations:
   - commercial_artifacts_absent_from_oss
   notes: Phase 3+. Gate 9 required before use. Added 2026-06-21 (SKILL-GAP-009).
@@ -706,8 +381,11 @@ skills:
   skill_id: check-release-boundary
   spec_qname_required: false
   status: active
+  test_paths: []
 - command: /check-skill-coverage
   command_file: .claude/commands/check-skill-coverage.md
+  idempotency: not_specified
+  implementation_paths: []
   mandatory_validations:
   - skill_registry_read
   - verdict_emitted
@@ -726,62 +404,52 @@ skills:
   skill_id: check-skill-coverage
   spec_qname_required: false
   status: active
-- command: /sal-pipeline-heal
-  command_file: .claude/commands/sal-pipeline-heal.md
+  test_paths: []
+- command: /collect-skill-execution-receipts
+  command_file: .claude/commands/collect-skill-execution-receipts.md
+  created_at: '2026-06-24'
+  idempotency: Same transcripts produce same index (stable sort)
+  implementation_paths: []
+  mission_id: SKILL-FIRST-001
+  output_paths:
+  - .supervisor/skill-execution-receipt-index.yaml
+  purpose: Scan .local/transcripts/ for skill execution transcripts; aggregate into
+    unified receipt index.
+  skill_id: collect-skill-execution-receipts
+  status: active
+  test_paths: []
+  version: '1.0'
+- command: /create-acquisition-pack
+  command_file: .claude/commands/create-acquisition-pack.md
+  idempotency: not_specified
+  implementation_paths: []
   mandatory_validations:
-  - spec_cache_verified
-  - tool_invoked
-  - output_artifact_produced
-  - fact_ids_in_correct_namespace
-  - skill_transcript_written
-  notes: SAL infrastructure skill. Blocks all NOT STARTED SAL taskcards until registered.
-    Added 2026-06-21 (SKILL-GAP-011, TC-SAL-SKILL-001).
-  product_track: sal_infrastructure
-  purpose: 'Govern execution of one SAL pipeline healing sprint. Covers all root causes
-    (ROOT-01..ROOT-08) in plans/snoopy-juggling-seal.md. Produces a skill transcript
-    proving governed invocation. Required for all TC-SAL-IMPL-* and TC-SAL-DIAG-*
-    taskcards that are NOT STARTED.
-
-    '
+  - acquisition_pack_valid_structure
+  notes: Phase 1 acquisition. Added 2026-06-21 (SKILL-GAP-004).
+  product_track: acquisition
+  purpose: Initialize a format acquisition pack from the template.
   required_handoff_fields:
-  - taskcard_id
   - format_id
-  - root_cause_id
-  - spec_cache_path
-  - target_stage
-  skill_id: sal-pipeline-heal
+  skill_id: create-acquisition-pack
   spec_qname_required: false
   status: active
-- command: /implement-spec-stub
-  command_file: .claude/commands/implement-spec-stub.md
+  test_paths: []
+- command: /create-taskcard
+  command_file: .claude/commands/create-taskcard.md
+  idempotency: not_specified
+  implementation_paths: []
   mandatory_validations:
-  - stub_has_architecture_only_marker
-  - spec_qname_in_qname_registry
-  - baseline_tests_pass_before_changes
-  - equivalence_tests_pass_after_changes
-  - behavioral_regression_count_zero
-  - skill_transcript_written
-  notes: Created 2026-06-22 by TC-AUDIT-006 (tender-dreaming-lovelace hardening).
-    Governs FODT spec/ bootstrap path.
-  product_track: spec_literal_healing
-  purpose: 'Fill ONE architecture_only spec/ stub file with behavioral implementation,
-    proving equivalence to models.py via tests. One stub per invocation. Required
-    for FODT spec/ bootstrap path (11 stubs in src/python/fodt/spec/).
-
-    '
+  - taskcard_yaml_valid
+  notes: Phase 1 acquisition. Added 2026-06-21 (SKILL-GAP-006).
+  product_track: planning
+  purpose: Create a new taskcard from the template with all required fields.
   required_handoff_fields:
-  - format_id
-  - stub_path
-  - spec_qname
-  - behavioral_equivalence_test_path
-  skill_id: implement-spec-stub
-  spec_qname_required: true
+  - taskcard_id
+  - title
+  skill_id: create-taskcard
+  spec_qname_required: false
   status: active
-  stop_conditions:
-  - BLOCKED_NOT_A_STUB
-  - BLOCKED_NO_QNAME_RECORD
-  - BLOCKED_BASELINE_FAILING
-  - BLOCKED_EQUIVALENCE_FAILURE
+  test_paths: []
 - command: /decompose-monolithic-codec
   command_file: .claude/commands/decompose-monolithic-codec.md
   deprecated: true
@@ -790,6 +458,8 @@ skills:
     for sprints that already declared it.
 
     '
+  idempotency: not_specified
+  implementation_paths: []
   mandatory_validations:
   - analytics_target_below_loc_cap
   - baseline_tests_pass_before_extraction
@@ -812,14 +482,106 @@ skills:
   - functions_to_move
   skill_id: decompose-monolithic-codec
   spec_qname_required: false
-  status: active
+  status: deprecated
   stop_conditions:
   - BLOCKED_CAP_REACHED
   - BLOCKED_BASELINE_FAILING
   - BLOCKED_NO_BACKWARD_COMPAT
   - BLOCKED_NO_LOC_REDUCTION
+  test_paths: []
+- command: /detect-ad-hoc-execution
+  command_file: .claude/commands/detect-ad-hoc-execution.md
+  created_at: '2026-06-24'
+  idempotency: Re-scan same tree produces same list
+  implementation_paths:
+  - tools/supervisor/detect_ad_hoc_execution.py
+  mission_id: SKILL-FIRST-001
+  output_paths:
+  - .supervisor/ad-hoc-execution-inventory.yaml
+  purpose: Scan tools/supervisor/*.py for scripts not referenced in skill-registry.yaml;
+    classify as GOVERNED vs AD_HOC.
+  skill_id: detect-ad-hoc-execution
+  status: active
+  test_paths: []
+  version: '1.0'
+- command: /detect-duplicate-skills
+  command_file: .claude/commands/detect-duplicate-skills.md
+  created_at: '2026-06-24'
+  idempotency: Same registry produces same report
+  implementation_paths: []
+  mission_id: SKILL-FIRST-001
+  output_paths:
+  - .supervisor/duplicate-skill-report.yaml
+  purpose: Compare purpose strings and command_file paths across skills; flag DUPLICATE
+    or OVERLAPPING.
+  skill_id: detect-duplicate-skills
+  status: active
+  test_paths: []
+  version: '1.0'
+- command: /enforce-skill-first-execution
+  command_file: .claude/commands/enforce-skill-first-execution.md
+  created_at: '2026-06-24'
+  idempotency: Safe to rerun; each step is idempotent
+  implementation_paths: []
+  mission_id: SKILL-FIRST-001
+  output_paths:
+  - .supervisor/skill-first-execution-report.md
+  purpose: 'Composite: run all 13 atomic skill-first governance checks in sequence;
+    produce unified execution report.'
+  skill_id: enforce-skill-first-execution
+  skill_type: COMPOSITE_SKILL
+  status: active
+  test_paths: []
+  version: '1.0'
+- command: /evidence-review-next-prompt
+  command_file: .claude/commands/evidence-review-next-prompt.md
+  idempotency: not_specified
+  implementation_paths: []
+  mandatory_validations:
+  - bundle_exists
+  - next_prompt_generated
+  product_track: planning
+  purpose: Review evidence bundle and produce the next execution prompt.
+  required_handoff_fields:
+  - evidence_bundle_path
+  skill_id: evidence-review-next-prompt
+  spec_qname_required: false
+  status: active
+  test_paths: []
+- command: /execution-handoff
+  command_file: .claude/commands/execution-handoff.md
+  idempotency: not_specified
+  implementation_paths: []
+  mandatory_validations:
+  - plan_hardening_score_met
+  - handoff_prompt_generated
+  product_track: planning
+  purpose: Convert a hardened plan into a single-go autonomous execution prompt with
+    internal gates.
+  required_handoff_fields:
+  - plan_path
+  skill_id: execution-handoff
+  spec_qname_required: false
+  status: active
+  test_paths: []
+- command: /export-plan-context
+  command_file: .claude/commands/export-plan-context.md
+  idempotency: not_specified
+  implementation_paths: []
+  mandatory_validations:
+  - context_zip_created
+  product_track: planning
+  purpose: Bundle long-term plan context files into a zip for LLM sharing.
+  required_handoff_fields:
+  - output_path
+  skill_id: export-plan-context
+  spec_qname_required: false
+  status: active
+  test_paths: []
 - command: /extract-analytics-from-monolith
   command_file: .claude/commands/extract-analytics-from-monolith.md
+  idempotency: not_specified
+  implementation_paths: []
   mandatory_validations:
   - analytics_target_below_loc_cap
   - baseline_tests_pass_before_extraction
@@ -849,8 +611,217 @@ skills:
   - BLOCKED_NO_BACKWARD_COMPAT
   - BLOCKED_NO_LOC_REDUCTION
   - BLOCKED_NO_PURE_ANALYTICS_FUNCTIONS
+  test_paths: []
+- command: /generate-execution-handoff
+  command_file: .claude/commands/generate-execution-handoff.md
+  idempotency: not_specified
+  implementation_paths: []
+  mandatory_validations:
+  - handoff_yaml_valid
+  product_track: planning
+  purpose: Generate a structured execution handoff for a governed skill.
+  required_handoff_fields:
+  - skill_id
+  - target_format
+  - scope
+  skill_id: generate-execution-handoff
+  spec_qname_required: false
+  status: active
+  test_paths: []
+- command: /implement-spec-stub
+  command_file: .claude/commands/implement-spec-stub.md
+  idempotency: not_specified
+  implementation_paths: []
+  mandatory_validations:
+  - stub_has_architecture_only_marker
+  - spec_qname_in_qname_registry
+  - baseline_tests_pass_before_changes
+  - equivalence_tests_pass_after_changes
+  - behavioral_regression_count_zero
+  - skill_transcript_written
+  notes: Created 2026-06-22 by TC-AUDIT-006 (tender-dreaming-lovelace hardening).
+    Governs FODT spec/ bootstrap path.
+  product_track: spec_literal_healing
+  purpose: 'Fill ONE architecture_only spec/ stub file with behavioral implementation,
+    proving equivalence to models.py via tests. One stub per invocation. Required
+    for FODT spec/ bootstrap path (11 stubs in src/python/fodt/spec/).
+
+    '
+  required_handoff_fields:
+  - format_id
+  - stub_path
+  - spec_qname
+  - behavioral_equivalence_test_path
+  skill_id: implement-spec-stub
+  spec_qname_required: true
+  status: active
+  stop_conditions:
+  - BLOCKED_NOT_A_STUB
+  - BLOCKED_NO_QNAME_RECORD
+  - BLOCKED_BASELINE_FAILING
+  - BLOCKED_EQUIVALENCE_FAILURE
+  test_paths: []
+- command: /inventory-commands
+  command_file: .claude/commands/inventory-commands.md
+  created_at: '2026-06-24'
+  idempotency: Rerun produces identical YAML if command-registry.yaml unchanged
+  implementation_paths: []
+  mission_id: SKILL-FIRST-001
+  output_paths:
+  - .supervisor/command-inventory.yaml
+  purpose: Read command-registry.yaml and produce a flattened command inventory with
+    status classification.
+  skill_id: inventory-commands
+  status: active
+  test_paths: []
+  version: '1.0'
+- command: /inventory-skills
+  command_file: .claude/commands/inventory-skills.md
+  created_at: '2026-06-24'
+  created_by: TC-SF-006C Pilot C
+  idempotency: Same inputs produce same output; partial-state resume safe
+  implementation_paths:
+  - tools/supervisor/skill_inventory.py
+  mission_id: SKILL-FIRST-001
+  output_paths:
+  - .supervisor/skill-inventory.yaml
+  purpose: Scan skill-registry.yaml and .claude/commands/ to produce complete mechanism
+    inventory. Supports partial-state resume.
+  skill_id: inventory-skills
+  status: active
+  test_paths:
+  - tests/supervisor/test_skill_inventory.py
+  version: '1.0'
+- command: /materialize-declaration-review
+  command_file: .claude/commands/materialize-declaration-review.md
+  idempotency: not_specified
+  implementation_paths: []
+  mandatory_validations:
+  - declaration_yaml_valid
+  - zip_builds_successfully
+  product_track: planning
+  purpose: Build a declaration review package ZIP from an evidence declaration YAML
+    for supervisor grading.
+  required_handoff_fields:
+  - declaration_path
+  skill_id: materialize-declaration-review
+  spec_qname_required: false
+  status: active
+  test_paths: []
+- command: /memory-sprint
+  command_file: .claude/commands/memory-sprint.md
+  idempotency: not_specified
+  implementation_paths: []
+  mandatory_validations:
+  - memory_file_created
+  - index_updated
+  product_track: planning
+  purpose: Capture strategic decisions and architecture notes into durable memory
+    artifacts.
+  required_handoff_fields:
+  - memory_topic
+  skill_id: memory-sprint
+  spec_qname_required: false
+  status: active
+  test_paths: []
+- command: /normalize-skill-registry
+  command_file: .claude/commands/normalize-skill-registry.md
+  created_at: '2026-06-24'
+  idempotency: Running twice produces identical file (stable sort)
+  implementation_paths: []
+  mission_id: SKILL-FIRST-001
+  output_paths:
+  - .supervisor/skill-registry.yaml
+  purpose: Sort skill-registry.yaml entries by skill_id, fill missing optional fields,
+    remove duplicates.
+  skill_id: normalize-skill-registry
+  status: active
+  test_paths: []
+  version: '1.0'
+- command: /package-install-proof
+  command_file: .claude/commands/package-install-proof.md
+  idempotency: not_specified
+  implementation_paths: []
+  mandatory_validations:
+  - wheel_builds
+  - import_succeeds
+  product_track: packaging
+  purpose: Prove that a package installs and imports correctly from wheel.
+  required_handoff_fields:
+  - format_id
+  - package_name
+  skill_id: package-install-proof
+  spec_qname_required: false
+  status: active
+  test_paths: []
+- command: /plan-hardening
+  command_file: .claude/commands/plan-hardening.md
+  idempotency: not_specified
+  implementation_paths: []
+  mandatory_validations:
+  - hardening_score_reported
+  product_track: planning
+  purpose: Review, challenge, and harden a draft plan against repo truth before execution.
+  required_handoff_fields:
+  - plan_path
+  skill_id: plan-hardening
+  spec_qname_required: false
+  status: active
+  test_paths: []
+- command: /post-sprint-audit
+  command_file: .claude/commands/post-sprint-audit.md
+  idempotency: not_specified
+  implementation_paths: []
+  mandatory_validations:
+  - stage1_issue_model_schema_valid
+  - root_cause_present_on_all_issues
+  - claim_classification_matrix_present
+  product_track: governance
+  purpose: Run Stage 1 post-sprint evidence audit with L1/L2/L3 issue discovery
+  required_handoff_fields:
+  - evidence_root
+  skill_id: post-sprint-audit
+  spec_qname_required: false
+  status: active
+  test_paths: []
+- command: /post-sprint-loop
+  command_file: .claude/commands/post-sprint-loop.md
+  idempotency: not_specified
+  implementation_paths: []
+  mandatory_validations:
+  - loop_state_machine_valid
+  - summary_classification_valid
+  - quality_scores_above_threshold
+  - evidence_bundle_present
+  product_track: governance
+  purpose: 'Run full post-sprint autonomy loop: Audit -> Harden -> Execute -> Classify
+    -> Loop until all-green'
+  required_handoff_fields:
+  - evidence_root
+  - run_id
+  skill_id: post-sprint-loop
+  spec_qname_required: false
+  status: active
+  test_paths: []
+- command: /promote-gap-to-taskcard
+  command_file: .claude/commands/promote-gap-to-taskcard.md
+  idempotency: not_specified
+  implementation_paths: []
+  mandatory_validations:
+  - taskcard_valid_yaml
+  product_track: planning
+  purpose: Promote a product gap from the POC matrix to a formal taskcard.
+  required_handoff_fields:
+  - gap_id
+  - taskcard_path
+  skill_id: promote-gap-to-taskcard
+  spec_qname_required: false
+  status: active
+  test_paths: []
 - command: /python-qname-code-reviewer
   command_file: .claude/commands/python-qname-code-reviewer.md
+  idempotency: not_specified
+  implementation_paths: []
   mandatory_validations:
   - all_13_checks_run
   - verdict_json_written
@@ -874,130 +845,77 @@ skills:
   - BLOCKED_SAL_CACHE_UNAVAILABLE
   - BLOCKED_NO_REGISTRY_ENTRY
   - BLOCKED_BREAKING_API_CHANGE
-- command: /inventory-skills
-  command_file: .claude/commands/inventory-skills.md
-  created_at: '2026-06-24'
-  created_by: TC-SF-006C Pilot C
-  idempotency: Same inputs produce same output; partial-state resume safe
-  implementation_paths:
-  - tools/supervisor/skill_inventory.py
-  mission_id: SKILL-FIRST-001
-  output_paths:
-  - .supervisor/skill-inventory.yaml
-  purpose: Scan skill-registry.yaml and .claude/commands/ to produce complete mechanism
-    inventory. Supports partial-state resume.
-  skill_id: inventory-skills
-  status: active
-  test_paths:
-  - tests/supervisor/test_skill_inventory.py
-  version: '1.0'
-- command: /inventory-commands
-  command_file: .claude/commands/inventory-commands.md
-  created_at: '2026-06-24'
-  idempotency: Rerun produces identical YAML if command-registry.yaml unchanged
+  test_paths: []
+- command: /python-reduced-spec-parity-model
+  command_file: .claude/commands/python-reduced-spec-parity-model.md
+  idempotency: not_specified
   implementation_paths: []
-  mission_id: SKILL-FIRST-001
-  output_paths:
-  - .supervisor/command-inventory.yaml
-  purpose: Read command-registry.yaml and produce a flattened command inventory with
-    status classification.
-  skill_id: inventory-commands
+  mandatory_validations:
+  - product_code_ledger_validator
+  - spec_qname_present
+  - reduced_scope_documented
+  - focused_python_tests
+  product_track: foss_python
+  purpose: 'Implement a reduced-scope spec-parity model for a Python FOSS format.
+    "Reduced" means a documented subset of the full spec is implemented, with spec_qname
+    present and a valid exception classification for omitted spec concepts. Not a
+    free pass to omit spec fields.
+
+    '
+  required_handoff_fields:
+  - format_id
+  - spec_qname
+  - reduced_scope_rationale
+  - exact_source_paths
+  - exact_test_paths
+  - ledger_entry_path
+  skill_id: python-reduced-spec-parity-model
+  spec_qname_required: true
   status: active
-  version: '1.0'
-- command: /detect-ad-hoc-execution
-  command_file: .claude/commands/detect-ad-hoc-execution.md
-  created_at: '2026-06-24'
-  idempotency: Re-scan same tree produces same list
-  implementation_paths:
-  - tools/supervisor/detect_ad_hoc_execution.py
-  mission_id: SKILL-FIRST-001
-  output_paths:
-  - .supervisor/ad-hoc-execution-inventory.yaml
-  purpose: Scan tools/supervisor/*.py for scripts not referenced in skill-registry.yaml;
-    classify as GOVERNED vs AD_HOC.
-  skill_id: detect-ad-hoc-execution
-  status: active
-  version: '1.0'
-- command: /validate-skill-contracts
-  command_file: .claude/commands/validate-skill-contracts.md
-  created_at: '2026-06-24'
-  idempotency: Same registry produces same results
-  implementation_paths:
-  - tools/supervisor/validate_skill_contracts.py
-  mission_id: SKILL-FIRST-001
-  output_paths:
-  - .supervisor/skill-contract-validation-results.yaml
-  purpose: For each registered active skill, verify command_file exists, required
-    fields present, status valid enum.
-  skill_id: validate-skill-contracts
-  status: active
-  version: '1.0'
-- command: /normalize-skill-registry
-  command_file: .claude/commands/normalize-skill-registry.md
-  created_at: '2026-06-24'
-  idempotency: Running twice produces identical file (stable sort)
+  test_paths: []
+- command: /qname-backfill
+  command_file: .claude/commands/qname-backfill.md
+  created_at: '2026-06-25'
+  created_by: TC-SF-011
+  idempotency: not_specified
   implementation_paths: []
-  mission_id: SKILL-FIRST-001
-  output_paths:
-  - .supervisor/skill-registry.yaml
-  purpose: Sort skill-registry.yaml entries by skill_id, fill missing optional fields,
-    remove duplicates.
-  skill_id: normalize-skill-registry
+  mechanism_type: ATOMIC_SKILL
+  purpose: Backfill spec_qname authority classes for format QName registry entries
+  skill_id: qname-backfill
   status: active
-  version: '1.0'
-- command: /build-capability-routes
-  command_file: .claude/commands/build-capability-routes.md
-  created_at: '2026-06-24'
-  idempotency: Same inputs produce same output
-  implementation_paths:
-  - tools/supervisor/build_capability_routes.py
-  mission_id: SKILL-FIRST-001
-  output_paths:
-  - .supervisor/capability-routing-results.yaml
-  purpose: Read capability-routing-registry.yaml, verify preferred_skill_ids resolve
-    to registered active skills.
-  skill_id: build-capability-routes
-  status: active
-  version: '1.0'
-- command: /detect-duplicate-skills
-  command_file: .claude/commands/detect-duplicate-skills.md
-  created_at: '2026-06-24'
-  idempotency: Same registry produces same report
+  test_paths: []
+- command: /record-lane-execution
+  command_file: .claude/commands/record-lane-execution.md
+  idempotency: not_specified
   implementation_paths: []
-  mission_id: SKILL-FIRST-001
-  output_paths:
-  - .supervisor/duplicate-skill-report.yaml
-  purpose: Compare purpose strings and command_file paths across skills; flag DUPLICATE
-    or OVERLAPPING.
-  skill_id: detect-duplicate-skills
+  mandatory_validations:
+  - lane_id_unique
+  product_track: planning
+  purpose: Record the execution of a sprint lane into the lane execution ledger for
+    multi-lane coordination and evidence tracking.
+  required_handoff_fields:
+  - lane_id
+  - sprint_id
+  skill_id: record-lane-execution
+  spec_qname_required: false
   status: active
-  version: '1.0'
-- command: /backfill-task-skill-ownership
-  command_file: .claude/commands/backfill-task-skill-ownership.md
-  created_at: '2026-06-24'
-  idempotency: Same plan files produce same recommendations; read-only
+  test_paths: []
+- command: /reproduce-master-plan
+  command_file: .claude/commands/reproduce-master-plan.md
+  idempotency: not_specified
   implementation_paths: []
-  mission_id: SKILL-FIRST-001
-  output_paths:
-  - .supervisor/taskcard-skill-backfill.yaml
-  purpose: Scan plan files for mutating tasks lacking skill_ids; produce backfill
-    recommendations.
-  skill_id: backfill-task-skill-ownership
+  mandatory_validations:
+  - summary_generated
+  - not_authoritative_stated
+  notes: Read-only. Added 2026-06-21 (SKILL-GAP-007).
+  product_track: planning
+  purpose: Generate a current-state summary from repo artifacts (read-only).
+  required_handoff_fields:
+  - output_summary_path
+  skill_id: reproduce-master-plan
+  spec_qname_required: false
   status: active
-  version: '1.0'
-- command: /validate-mutation-guard
-  command_file: .claude/commands/validate-mutation-guard.md
-  created_at: '2026-06-24'
-  idempotency: Same synthetic declaration produces same validator output
-  implementation_paths: []
-  mission_id: SKILL-FIRST-001
-  output_paths:
-  - .supervisor/mutation-guard-results.yaml
-  purpose: Prove governance validators correctly block declarations with undeclared
-    src/ edits or stub citations in RELEASE_GATE items.
-  skill_id: validate-mutation-guard
-  status: active
-  version: '1.0'
+  test_paths: []
 - command: /run-skill-idempotency
   command_file: .claude/commands/run-skill-idempotency.md
   created_at: '2026-06-24'
@@ -1011,20 +929,37 @@ skills:
     and produce idempotency verdict.
   skill_id: run-skill-idempotency
   status: active
+  test_paths: []
   version: '1.0'
-- command: /collect-skill-execution-receipts
-  command_file: .claude/commands/collect-skill-execution-receipts.md
-  created_at: '2026-06-24'
-  idempotency: Same transcripts produce same index (stable sort)
+- command: /sal-pipeline-heal
+  command_file: .claude/commands/sal-pipeline-heal.md
+  idempotency: not_specified
   implementation_paths: []
-  mission_id: SKILL-FIRST-001
-  output_paths:
-  - .supervisor/skill-execution-receipt-index.yaml
-  purpose: Scan .local/transcripts/ for skill execution transcripts; aggregate into
-    unified receipt index.
-  skill_id: collect-skill-execution-receipts
+  mandatory_validations:
+  - spec_cache_verified
+  - tool_invoked
+  - output_artifact_produced
+  - fact_ids_in_correct_namespace
+  - skill_transcript_written
+  notes: SAL infrastructure skill. Blocks all NOT STARTED SAL taskcards until registered.
+    Added 2026-06-21 (SKILL-GAP-011, TC-SAL-SKILL-001).
+  product_track: sal_infrastructure
+  purpose: 'Govern execution of one SAL pipeline healing sprint. Covers all root causes
+    (ROOT-01..ROOT-08) in plans/snoopy-juggling-seal.md. Produces a skill transcript
+    proving governed invocation. Required for all TC-SAL-IMPL-* and TC-SAL-DIAG-*
+    taskcards that are NOT STARTED.
+
+    '
+  required_handoff_fields:
+  - taskcard_id
+  - format_id
+  - root_cause_id
+  - spec_cache_path
+  - target_stage
+  skill_id: sal-pipeline-heal
+  spec_qname_required: false
   status: active
-  version: '1.0'
+  test_paths: []
 - command: /scan-residual-bypasses
   command_file: .claude/commands/scan-residual-bypasses.md
   created_at: '2026-06-24'
@@ -1037,7 +972,152 @@ skills:
   purpose: Scan git log for src/ mutations lacking skill transcript; report as UNGOVERNED_MUTATION.
   skill_id: scan-residual-bypasses
   status: active
+  test_paths: []
   version: '1.0'
+- command: /score-format
+  command_file: .claude/commands/score-format.md
+  idempotency: not_specified
+  implementation_paths: []
+  mandatory_validations:
+  - scoring_sheet_produced
+  notes: Phase 1 acquisition. Read-only. Added 2026-06-21 (SKILL-GAP-003).
+  product_track: acquisition
+  purpose: Apply scoring model to a format candidate; produce a scoring sheet.
+  required_handoff_fields:
+  - format_id
+  skill_id: score-format
+  spec_qname_required: false
+  status: active
+  test_paths: []
+- command: /select-poc-gap
+  command_file: .claude/commands/select-poc-gap.md
+  idempotency: not_specified
+  implementation_paths: []
+  mandatory_validations:
+  - gap_exists_in_matrix
+  product_track: planning
+  purpose: Select the next product gap from the POC matrix for sprint execution based
+    on priority and readiness.
+  required_handoff_fields:
+  - matrix_path
+  skill_id: select-poc-gap
+  spec_qname_required: false
+  status: active
+  test_paths: []
+- command: /spec-literal-qname-to-code-mapping
+  command_file: .claude/commands/spec-literal-qname-to-code-mapping.md
+  idempotency: not_specified
+  implementation_paths: []
+  mandatory_validations:
+  - qname_map_json_valid
+  - namespace_tree_json_valid
+  - qname_generator_exit_zero
+  product_track: spec_parity
+  purpose: 'Generate or validate a QName-to-code mapping for a format. Produces qname-to-code-map-<format>.yaml,
+    namespace-tree-<format>.yaml, and containment-graph-<format>.yaml. Required before
+    any product model work.
+
+    '
+  required_handoff_fields:
+  - format_id
+  - source_paths
+  - output_dir
+  sal_aware: true
+  sal_note: 'SAL-driven skill: spec_qname must trace to a FACT-{FORMAT}-* entry. Handoff
+    requires sal_facts_path.'
+  sal_required_in_handoff: true
+  skill_id: spec-literal-qname-to-code-mapping
+  spec_qname_required: true
+  status: active
+  test_paths: []
+- command: /spec-parity-source-regeneration-and-migration
+  command_file: .claude/commands/spec-parity-source-regeneration-and-migration.md
+  idempotency: not_specified
+  implementation_paths: []
+  mandatory_validations:
+  - product_code_ledger_validator
+  - spec_parity_validator_pass
+  - no_flat_class_violations
+  - focused_tests_pass
+  product_track: spec_parity
+  purpose: 'Regenerate or migrate existing source code to match the spec-shaped blueprint.
+    May not create arbitrary flat classes for spec concepts. All model classes must
+    have a canonical_namespace and spec_qname.
+
+    '
+  required_handoff_fields:
+  - format_id
+  - blueprint_path
+  - exact_source_paths
+  - exact_test_paths
+  - ledger_entry_path
+  skill_id: spec-parity-source-regeneration-and-migration
+  spec_qname_required: true
+  status: active
+  test_paths: []
+- command: /spec-parity-verification
+  command_file: .claude/commands/spec-parity-verification.md
+  idempotency: not_specified
+  implementation_paths: []
+  mandatory_validations:
+  - spec_parity_qname_validator_run
+  - namespace_tree_validator_run
+  - skeleton_progress_validator_run
+  - skill_wiring_validator_run
+  - verification_report_written
+  product_track: spec_parity
+  purpose: 'Run spec-parity validators (SpecParityQNameValidator, NamespaceTreeValidator,
+    SkeletonProgressValidator, SkillWiringValidator) and produce a structured verification
+    report. Required before any product model taskcard is declared complete.
+
+    '
+  required_handoff_fields:
+  - format_id
+  - evidence_root
+  skill_id: spec-parity-verification
+  spec_qname_required: false
+  status: active
+  test_paths: []
+- command: /spec-shaped-product-architecture-blueprint
+  command_file: .claude/commands/spec-shaped-product-architecture-blueprint.md
+  idempotency: not_specified
+  implementation_paths: []
+  mandatory_validations:
+  - blueprint_yaml_valid
+  - no_flat_class_violations
+  - spec_qname_present_in_all_classes
+  product_track: spec_parity
+  purpose: 'Generate a spec-shaped architecture blueprint for a format. The blueprint
+    defines the class hierarchy, containment edges, and namespace mapping that implementation
+    must follow. No flat/ad-hoc class invention allowed.
+
+    '
+  required_handoff_fields:
+  - format_id
+  - spec_body
+  - qname_map_path
+  - output_path
+  skill_id: spec-shaped-product-architecture-blueprint
+  spec_qname_required: true
+  status: active
+  test_paths: []
+- command: /sync-memory
+  command_file: .claude/commands/sync-memory.md
+  idempotency: not_specified
+  implementation_paths: []
+  mandatory_validations:
+  - sync_report_written
+  notes: Maintenance skill. Read-only except for memory-sync-report.md. Added 2026-06-21
+    (SKILL-GAP-002).
+  product_track: maintenance
+  purpose: Compare memory files against master-plan.md; detect contradictions; produce
+    memory-sync-report.md.
+  required_handoff_fields:
+  - memory_file_path
+  skill_id: sync-memory
+  spec_qname_required: false
+  status: active
+  test_paths: []
 - command: /sync-skill-command-registry
   command_file: .claude/commands/sync-skill-command-registry.md
   created_at: '2026-06-24'
@@ -1051,28 +1131,109 @@ skills:
     and .claude/commands/*.md files.
   skill_id: sync-skill-command-registry
   status: active
+  test_paths: []
   version: '1.0'
-- command: /enforce-skill-first-execution
-  command_file: .claude/commands/enforce-skill-first-execution.md
+- command: /update-capability-matrix
+  command_file: .claude/commands/update-capability-matrix.md
+  idempotency: not_specified
+  implementation_paths: []
+  mandatory_validations:
+  - evidence_paths_exist
+  - claimed_statuses_match_test_evidence
+  - commercial_product_ready_remains_false
+  - gate_11_approved_remains_false
+  product_track: shared_reference_snapshot
+  purpose: Reconcile proven product capability results into the POC target matrix
+    without changing gate authority.
+  required_handoff_fields:
+  - matrix_entry
+  - evidence_paths
+  - focused_validation_commands
+  - claimed_status_changes
+  skill_id: update-capability-matrix
+  spec_qname_required: false
+  status: active
+  test_paths: []
+- command: /validate-mutation-guard
+  command_file: .claude/commands/validate-mutation-guard.md
   created_at: '2026-06-24'
-  idempotency: Safe to rerun; each step is idempotent
+  idempotency: Same synthetic declaration produces same validator output
   implementation_paths: []
   mission_id: SKILL-FIRST-001
   output_paths:
-  - .supervisor/skill-first-execution-report.md
-  purpose: 'Composite: run all 13 atomic skill-first governance checks in sequence;
-    produce unified execution report.'
-  skill_id: enforce-skill-first-execution
-  skill_type: COMPOSITE_SKILL
+  - .supervisor/mutation-guard-results.yaml
+  purpose: Prove governance validators correctly block declarations with undeclared
+    src/ edits or stub citations in RELEASE_GATE items.
+  skill_id: validate-mutation-guard
   status: active
+  test_paths: []
   version: '1.0'
-- command_file: .claude/commands/qname-backfill.md
-  created_at: '2026-06-25'
-  created_by: TC-SF-011
-  mechanism_type: ATOMIC_SKILL
-  purpose: Backfill spec_qname authority classes for format QName registry entries
-  skill_id: qname-backfill
+- command: /validate-product-code-ledger
+  command_file: .claude/commands/validate-product-code-ledger.md
+  idempotency: not_specified
+  implementation_paths: []
+  mandatory_validations:
+  - ledger_json_valid
+  - validator_exit_zero
+  product_track: planning
+  purpose: Run the product-code change ledger validator and report pass/fail results
+    for sprint evidence.
+  required_handoff_fields:
+  - ledger_path
+  skill_id: validate-product-code-ledger
+  spec_qname_required: false
   status: active
+  test_paths: []
+- command: /validate-skill-contracts
+  command_file: .claude/commands/validate-skill-contracts.md
+  created_at: '2026-06-24'
+  idempotency: Same registry produces same results
+  implementation_paths:
+  - tools/supervisor/validate_skill_contracts.py
+  mission_id: SKILL-FIRST-001
+  output_paths:
+  - .supervisor/skill-contract-validation-results.yaml
+  purpose: For each registered active skill, verify command_file exists, required
+    fields present, status valid enum.
+  skill_id: validate-skill-contracts
+  status: active
+  test_paths: []
+  version: '1.0'
+- command: /validate-skill-transcript
+  command_file: .claude/commands/validate-skill-transcript.md
+  idempotency: not_specified
+  implementation_paths: []
+  mandatory_validations:
+  - transcript_json_valid
+  - skill_id_registered
+  product_track: planning
+  purpose: Validate a skill invocation transcript against the registry schema and
+    report pass/fail.
+  required_handoff_fields:
+  - transcript_path
+  skill_id: validate-skill-transcript
+  spec_qname_required: false
+  status: active
+  test_paths: []
+- command: /verify-dogfood-path
+  command_file: .claude/commands/verify-dogfood-path.md
+  idempotency: not_specified
+  implementation_paths: []
+  mandatory_validations:
+  - product_code_ledger_validator
+  - no_external_imaging_backends
+  - focused_export_tests
+  product_track: cross_product_export
+  purpose: Verify that an export path uses only Format Factory libraries.
+  required_handoff_fields:
+  - export_name
+  - source_format
+  - target_format
+  - exact_test_paths
+  skill_id: verify-dogfood-path
+  spec_qname_required: false
+  status: active
+  test_paths: []
 sprint: FORMAT-FACTORY-R98-AUTONOMOUS-LOOP-TRUST-LAYER-ITERATION-SCALING-ACCELERATION-POC-MEGA-TRAIN-001
 version: '2.0'
 visibility: generated
