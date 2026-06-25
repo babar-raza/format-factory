@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s100-dotnet-deepening-20260626",
+  "latest_sprint": "ff-sprint-s101-dotnet-deepening-20260626",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -19489,6 +19489,71 @@
       "source_files": [
         {
           "path": "tests/net/tsv/TsvR119FilterAndSerializeTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "TSV"
+    },
+    {
+      "entry_id": "PC-CSV-R120",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s101-dotnet-deepening-20260626",
+      "product": "CSV .NET",
+      "capability_refs": [
+        "commercial_net_products.CSV.dotnet_status.set_cell_escape"
+      ],
+      "api_symbols": [
+        "SetCell",
+        "EscapeField",
+        "ColumnCount",
+        "ToCsv"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/csv/CsvR120SetCellEscapeTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "CSV"
+    },
+    {
+      "entry_id": "PC-NDJSON-R119",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s101-dotnet-deepening-20260626",
+      "product": "NDJSON .NET",
+      "capability_refs": [
+        "commercial_net_products.NDJSON.dotnet_status.typed_records"
+      ],
+      "api_symbols": [
+        "TypedRecords",
+        "GetTypedRecord",
+        "NdjsonRecord.Keys",
+        "TryGetValue",
+        "ToNdjson"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/ndjson/NdjsonR119TypedRecordsTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "NDJSON"
+    },
+    {
+      "entry_id": "PC-TSV-R120",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s101-dotnet-deepening-20260626",
+      "product": "TSV .NET",
+      "capability_refs": [
+        "commercial_net_products.TSV.dotnet_status.csv_exporter"
+      ],
+      "api_symbols": [
+        "TsvCsvExporter.ToCsv",
+        "TsvWriter.Export"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/tsv/TsvR120CsvExporterTests.cs",
           "state": "present"
         }
       ],
