@@ -1790,8 +1790,8 @@ class TestCanonicalValidatorCount:
         }
         result = run_all_governance_validators(decl, None)
         validator_count = len(result["validators"])
-        assert validator_count == 72, (
-            f"Expected 72 canonical validators, got {validator_count}. "
+        assert validator_count == 73, (
+            f"Expected 73 canonical validators, got {validator_count}. "
             "If validators were added/removed, update this test."
         )
 
