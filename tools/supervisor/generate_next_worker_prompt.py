@@ -951,7 +951,9 @@ def generate_next_work_items(review: dict, stream: str = None, plan_lock: dict |
     ["G1","G2","G6","G7","G8"] for Track M). None = include all groups.
     """
     # Plan-lock guard: if a per-chat plan is active, suppress system ledger entirely.
-    if plan_lock and plan_lock.get("status") != "COMPLETE":
+    # TERMINAL statuses (COMPLETE, SUPERSEDED, TERMINAL_CLOSED, DEFERRED) are NOT active.
+    _PLAN_LOCK_TERMINAL_STATUSES = {"COMPLETE", "SUPERSEDED", "TERMINAL_CLOSED", "DEFERRED"}
+    if plan_lock and plan_lock.get("status") not in _PLAN_LOCK_TERMINAL_STATUSES:
         _plan_path = plan_lock.get("plan_path", "unknown")
         _last_tc = plan_lock.get("last_taskcard", "unknown")
         return {
@@ -1022,8 +1024,10 @@ def generate_next_work_items(review: dict, stream: str = None, plan_lock: dict |
     # Capability-compiler-generated work items (TC-WIRE-001: subprocess invocation)
     # Non-blocking: if consumer fails or returns nothing, continues with existing items.
     # These are G4 product items — only include when Track P groups allowed.
+    # TC-C1-EXTEND-001: stream restriction removed — gap-ledger gaps are format-agnostic
+    # and applicable to any stream with product groups enabled (analytics, mainstream, etc.)
     _product_groups_allowed = any(_group_allowed(g) for g in ("G3", "G4", "G5"))
-    if effective_stream in ("mainstream", "product", None) and _product_groups_allowed:
+    if _product_groups_allowed:
         compiled_taskcards = _run_capability_consumer(REPO_ROOT)
         for tc in compiled_taskcards:
             func_name = tc.get("function_name", "capability_function")
@@ -1119,6 +1123,42 @@ def generate_next_work_items(review: dict, stream: str = None, plan_lock: dict |
                 **adj,
             })
             priority += 1
+
+    # TC-FL-004: Inject preferred_skill_id from capability routing registry (non-blocking)
+    try:
+        _routing_path = REPO_ROOT / ".supervisor" / "capability-routing-registry.yaml"
+        if _routing_path.exists():
+            _routing_data = yaml.safe_load(_routing_path.read_text(encoding="utf-8"))
+            # Build route_id → preferred_skill_id lookup
+            _route_skill_map: dict = {}
+            for _route in _routing_data.get("routes", []):
+                _rids = _route.get("preferred_skill_ids", [])
+                if _rids:
+                    _route_skill_map[_route["route_id"]] = _rids[0]
+            # Source/lane → route_id heuristic: source takes priority over lane
+            _source_to_route = {
+                "capability-compiler": "product_backfill",
+                "product-factory": "product_deepening",
+                "per-chat-plan": "plan_creation",
+            }
+            _lane_to_route = {
+                "rework": "taskcard_execution",
+                "product-advancement": "product_deepening",
+                "per-chat-plan": "plan_creation",
+            }
+            _injected = 0
+            for _item in items:
+                if _item.get("preferred_skill_id"):
+                    continue  # already set, skip
+                _src = _item.get("source", "")
+                _lane = _item.get("lane", "")
+                _route_id = _source_to_route.get(_src) or _lane_to_route.get(_lane)
+                if _route_id and _route_id in _route_skill_map:
+                    _item["preferred_skill_id"] = _route_skill_map[_route_id]
+                    _item["route_id"] = _route_id
+                    _injected += 1
+    except Exception:
+        pass  # Non-blocking — fallback to existing behavior if routing fails
 
     return {
         "run_id": review.get("run_id", "unknown"),

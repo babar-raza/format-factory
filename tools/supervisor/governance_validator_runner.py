@@ -1,4 +1,4 @@
-"""governance_validator_runner.py — Runs all governance validators (V1-V68).
+"""governance_validator_runner.py — Runs all governance validators (V1-V69).
 
 Extracted from governance_validators.py to keep that file within its LOC cap.
 This module imports validators from governance_validators LAZILY (inside the function
@@ -29,7 +29,7 @@ def run_all_governance_validators(
     declaration: dict,
     repo_root: Path | None = None,
 ) -> dict:
-    """Run all governance validators (V1-V68) against a declaration.
+    """Run all governance validators (V1-V69) against a declaration.
 
     Returns a composite result dict:
       {
@@ -124,6 +124,10 @@ def run_all_governance_validators(
         validate_error_fallback_safety as _validate_error_fallback_safety,
         validate_spec_fact_refs_density as _validate_spec_fact_refs_density,
         validate_public_api_surface_ratio as _validate_public_api_surface_ratio,
+        validate_skill_idempotency_declared as _validate_skill_idempotency_declared,
+        validate_sal_authority_chain as _validate_sal_authority_chain,
+        validate_lane_dag_ordering as _validate_lane_dag_ordering,
+        validate_artifact_identity as _validate_artifact_identity,
     )
     results = [
         validate_execution_method_required(declaration),
@@ -233,6 +237,14 @@ def run_all_governance_validators(
         _validate_maturity_signal_schema(declaration, repo_root),
         # V68 (TC-P2-001): Knowledge contract freshness — WARN-only, never blocks sprint
         _validate_knowledge_freshness(declaration, repo_root),
+        # V69 (TC-FL-005): Skill idempotency declared — WARN if skill_id has not_specified idempotency
+        _validate_skill_idempotency_declared(declaration, repo_root),
+        # V70 (TC-FL-006): SAL authority chain — WARN when spec_fact_refs cited for code_introspection formats
+        _validate_sal_authority_chain(declaration, repo_root),
+        # V71 (TC-FL-007): Lane DAG ordering — system healing (L1-6) before product deepening (L7-13)
+        _validate_lane_dag_ordering(declaration, repo_root),
+        # V72 (TC-FL-010): Artifact identity — FAIL for RELEASE_GATE missing artifact_id/authority
+        _validate_artifact_identity(declaration, repo_root),
     ]
 
     # SAL format advisory (non-blocking, Lane E integration)

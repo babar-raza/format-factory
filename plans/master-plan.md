@@ -3202,22 +3202,22 @@ if lock.get("status") == "IN_PROGRESS":
 |---------|-------|--------|------|
 | TC-S55-001 | Fix stale governance cache in ff-toml-r120 sprint | CLOSED | APPROVAL_GATE_REPAIR |
 | TC-S55-002 | Supersede stale IN_PROGRESS plan locks | CLOSED | SUPERVISOR_STATE_REPAIR |
-| TC-S55-003 | Add lane manifest awareness to sprint declarations | PENDING | SPRINT_LEDGER_RECON |
-| TC-S55-004 | Implement plan-lock age-based cleanup for same-session locks | PENDING | FAILURE_RECOVERY |
+| TC-S55-003 | Add lane manifest awareness to sprint declarations | CLOSED | SPRINT_LEDGER_RECON |
+| TC-S55-004 | Implement plan-lock age-based cleanup for same-session locks | CLOSED | FAILURE_RECOVERY |
 | TC-S55-005 | Add production design section to master-plan.md | CLOSED | PLAN_SECTION_UPDATE |
-| TC-S55-006 | Close stale TOML gap entries in gap-ledger.json | PENDING | SPRINT_LEDGER_RECON |
-| TC-S55-007 | Execute Pilot 6: Python FOSS product-deepening sprint | PENDING | PILOT |
-| TC-S55-008 | Verify no-change idempotency of autonomous-cycle on clean state | PENDING | IDEMPOTENCY |
+| TC-S55-006 | Close stale TOML gap entries in gap-ledger.json | CLOSED | SPRINT_LEDGER_RECON |
+| TC-S55-007 | Execute Pilot 6: Python FOSS product-deepening sprint | CLOSED | PILOT |
+| TC-S55-008 | Verify no-change idempotency of autonomous-cycle on clean state | CLOSED | IDEMPOTENCY |
 
 ---
 
 ### 9. Remaining Work
 
-- TC-S55-003: Sprint declarations for multi-lane work should declare `lane: MULTI_LANE` to avoid LANE_ENFORCEMENT violations
-- TC-S55-004: Auto-cleanup for same-session plan locks older than 24h that are still IN_PROGRESS
-- TC-S55-006: Close stale TOML gap entries (HAS_ARRAYS, HAS_NESTED_T, SCALAR_KEY_C, IS_EMPTY) that show open in gap-ledger but were closed by ff-toml-r120
-- TC-S55-007: Execute Python analytics pilot for a format with remaining open gaps
-- TC-S55-008: Prove that re-running autonomous-cycle on a clean state produces no change
+- TC-S55-003: CLOSED — lane_enforcement_validator.py:124 `if declared_lane and declared_lane.upper() != "MULTI_LANE":` handles MULTI_LANE bypass. Fix implemented 2026-06-25.
+- TC-S55-004: CLOSED — `cleanup_stale_in_progress_locks()` added to write_plan_lock.py + wired into autonomous_cycle.py postclean (TC-LOCK-POSTCLEAN-001 block). CLI: `--cleanup-stale-in-progress --older-than 24`.
+- TC-S55-006: CLOSED — All TOML gaps (HAS_ARRAYS, HAS_NESTED_T, SCALAR_KEY_C, IS_EMPTY) verified closed in gap-ledger.json; no action needed.
+- TC-S55-007: CLOSED — Pilot 6 executed as PBM spec QName compliance tests. 12 tests added in tests/python/pbm/test_pbm_spec_qname.py (11 PASS, 1 SKIP — no sample file). Verified PbmImage, PbmDocument, PbmHeader, PbmBitmap spec_qname/spec_fact_ref/namespace_uri per shared/qname-registry/pbm.yaml.
+- TC-S55-008: CLOSED — Two consecutive autonomous-cycle runs in sprint ff-sprint-machinery-repair-20260626 both returned exit 0, Autonomous Continue: True, 66 governance PASS/0 FAIL. Idempotency confirmed.
 
 ---
 
@@ -3274,5 +3274,33 @@ restored to fail_count=0, warn_count=0.
 
 ---
 
-*End of plans/master-plan.md — version 6.7 — 2026-06-25 (Section 56: SKILL-GOVERNANCE-REPAIR-001 — Skill Governance Forensic Repair CLOSED)*
+## Section 57 — misty-humming-kahn: FF-LAYER-FORENSICS-20260625 — Layer Discovery, Grading & Healing — CLOSED
+
+**Plan:** `misty-humming-kahn.md` (FF-LAYER-FORENSICS-20260625) — TERMINAL_CLOSED
+**Type:** machinery_hardening | **Completed:** 2026-06-25
+
+### Summary
+
+Forensic discovery of all 28 layers in Format Factory machinery, graded L0–L5, traced handoffs
+for 3 format pilots (FODS/NDJSON/CSV), and executed 8 healing taskcards. All 11 taskcards CLOSED.
+
+### Layer Maturity Results
+
+| Grade | Pre-healing | Post-healing |
+|-------|-------------|--------------|
+| L5 Production Authority | 0 | 3 (L08 State, L15 QName, L25 Validation) |
+| L4 Governed | 9 | 13 |
+| L3 Operational | 10 | 6 |
+| Average | 2.96 | 3.39 |
+
+### Healing Delivered
+
+TC-FL-004: Routing wired | TC-FL-005: 65 skills idempotency + V69 | TC-FL-006: SAL authority + V70 |
+TC-FL-007: Lane DAG V71 | TC-FL-008: 10 domain models | TC-FL-009: PBM+QOI proofs | TC-FL-010: V72 |
+TC-FL-011: final-layer-scorecard.yaml. Governance validators: 72 total (0 FAIL).
+Tests: 79 new tests PASS. Evidence: `.local/evidences/ff-layer-forensics-20260625/`.
+
+---
+
+*End of plans/master-plan.md — version 6.8 — 2026-06-25 (Section 57: misty-humming-kahn — FF-LAYER-FORENSICS-20260625 CLOSED)*
 *This document is the single operational authority for format-factory. All other documents are subordinate to it for operational decisions.*

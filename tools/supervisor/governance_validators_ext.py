@@ -1423,3 +1423,337 @@ def validate_public_api_surface_ratio(
             if warnings else "V63: All modified __init__.py files have acceptable test coverage"
         ),
     }
+
+
+# V69 — TC-FL-005: skill_idempotency_declared_validator
+# WARN-only: fires when a PRODUCT_SOURCE work item claims a skill_id for a skill
+# that still has idempotency: not_specified in the skill registry.
+def validate_skill_idempotency_declared(declaration: dict, repo_root: "Path | None" = None) -> dict:
+    """V69 (TC-FL-005): WARN if a PRODUCT_SOURCE item invokes a skill with idempotency: not_specified.
+
+    Guards against regressions where newly-added skills omit an idempotency declaration.
+    WARN-only (never blocks_sprint=True) — purpose is regression detection.
+    """
+    from pathlib import Path as _Path
+    import yaml as _yaml
+
+    _r = repo_root or Path(__file__).parent.parent.parent
+    _registry_path = _r / ".supervisor" / "skill-registry.yaml"
+
+    # Build skill_id → idempotency lookup
+    _skill_idempotency: dict = {}
+    try:
+        _reg = _yaml.safe_load(_registry_path.read_text(encoding="utf-8"))
+        for _skill in _reg.get("skills", []):
+            _sid = _skill.get("skill_id")
+            if _sid:
+                _skill_idempotency[_sid] = _skill.get("idempotency", "not_specified")
+    except Exception:
+        return {
+            "validator": "validate_skill_idempotency_declared",
+            "result": "PASS",
+            "blocks_sprint": False,
+            "items": [],
+            "summary": "V67: Skill registry unavailable — skipped",
+        }
+
+    warnings = []
+    for item in declaration.get("planned_work_items", []):
+        if item.get("item_type") not in ("PRODUCT_SOURCE", "PRODUCT_TEST", "GOVERNANCE_TASKCARD"):
+            continue
+        skill_id = item.get("skill_id") or item.get("skill_used")
+        if not skill_id:
+            continue
+        idempotency = _skill_idempotency.get(skill_id, "unknown")
+        if idempotency in ("not_specified", "unknown"):
+            warnings.append({
+                "item_id": item.get("item_id", "unknown"),
+                "skill_id": skill_id,
+                "idempotency": idempotency,
+                "issue": f"Skill '{skill_id}' has idempotency: {idempotency} — declare idempotency in skill registry",
+            })
+
+    result = "WARN" if warnings else "PASS"
+    return {
+        "validator": "validate_skill_idempotency_declared",
+        "result": result,
+        "blocks_sprint": False,  # WARN-only
+        "items": warnings,
+        "summary": (
+            f"V69: {len(warnings)} work item(s) use skill(s) without idempotency declaration"
+            if warnings else "V69: All work items use skills with declared idempotency"
+        ),
+    }
+
+
+# V70 — TC-FL-006: sal_authority_chain_validator
+# WARN-only: fires when a PRODUCT_SOURCE work item cites spec_fact_refs for a format
+# whose qname registry has authority_source: code_introspection (circular authority).
+# Guides agent to use empirical_refs instead.
+def validate_sal_authority_chain(declaration: dict, repo_root: "Path | None" = None) -> dict:
+    """V70 (TC-FL-006): WARN when spec_fact_refs cited for code_introspection formats.
+
+    For formats where authority_source is code_introspection/community_informal_spec/
+    informational_rfc, spec_fact_refs IDs are not truly SAL-extracted facts.
+    The agent should use empirical_refs instead to avoid false authority claims.
+    WARN-only — never blocks sprint.
+    """
+    from pathlib import Path as _Path
+    import yaml as _yaml
+
+    _r = repo_root or _Path(__file__).parent.parent.parent
+    _qname_dir = _r / "shared" / "qname-registry"
+    _NON_AUTHORITATIVE = {"code_introspection", "community_informal_spec", "informational_rfc"}
+
+    # Build format → authority_source map from qname registries
+    _fmt_authority: dict = {}
+    try:
+        for _yf in _qname_dir.glob("*.yaml"):
+            if _yf.name == "schema.yaml":
+                continue
+            fmt = _yf.stem
+            try:
+                entries = _yaml.safe_load(_yf.read_text(encoding="utf-8"))
+                if isinstance(entries, list) and entries:
+                    for e in entries:
+                        if isinstance(e, dict) and "authority_source" in e:
+                            _fmt_authority[fmt] = e["authority_source"]
+                            break
+            except Exception:
+                pass
+    except Exception:
+        pass
+
+    warnings = []
+    for item in declaration.get("planned_work_items", []):
+        if item.get("item_type") not in ("PRODUCT_SOURCE", "PRODUCT_TEST"):
+            continue
+        # Get format_id from item
+        fmt_id = item.get("format_id") or ""
+        if not fmt_id:
+            continue
+        authority = _fmt_authority.get(fmt_id.lower(), "unknown")
+        if authority not in _NON_AUTHORITATIVE:
+            continue  # authoritative or unknown — skip
+        spec_refs = item.get("spec_fact_refs", [])
+        if not spec_refs:
+            continue  # no spec_fact_refs — no issue
+        warnings.append({
+            "item_id": item.get("item_id", "unknown"),
+            "format_id": fmt_id,
+            "authority_source": authority,
+            "spec_fact_refs": spec_refs,
+            "issue": (
+                f"Format '{fmt_id}' has authority_source: {authority} but item cites "
+                f"spec_fact_refs {spec_refs}. Use empirical_refs for non-authoritative formats."
+            ),
+        })
+
+    result = "WARN" if warnings else "PASS"
+    return {
+        "validator": "validate_sal_authority_chain",
+        "result": result,
+        "blocks_sprint": False,  # WARN-only
+        "items": warnings,
+        "summary": (
+            f"V70: {len(warnings)} item(s) cite spec_fact_refs for non-authoritative format(s)"
+            if warnings else "V70: SAL authority chain clean — no circular refs detected"
+        ),
+    }
+
+
+# V71 — TC-FL-007: lane_dag_ordering_validator
+# Enforces: system-healing (Lane 1-6) gaps must be resolved before product deepening (Lane 7-13).
+# WARN for P4+ open system-healing gaps; FAIL for P2+ open system-healing gaps.
+# System-healing gaps are identified by gap_id prefix patterns.
+_SYSTEM_HEALING_GAP_PREFIXES = (
+    "GAP-CHAIN-",       # SAL chain broken
+    "GAP-FORENSICS-",   # forensic investigation findings
+    "GAP-SAL-",         # SAL authority
+    "GAP-PROD-INV-QNAME-",  # QName compliance
+    "GAP-PROD-INV-MASQ-",   # analytics masquerade (architecture debt)
+    "GAP-PROD-INV-MODEL-",  # domain model missing
+)
+_SYSTEM_HEALING_GAP_CLOSED_STATUSES = {"closed", "DEFERRED_BY_DESIGN", "WONT_FIX", "deferred"}
+_SYSTEM_HEALING_HIGH_PRIORITY = {"P0", "P1", "P2"}  # blocks sprint (FAIL)
+_SYSTEM_HEALING_WARN_PRIORITY = {"P3", "P4"}         # WARN only
+
+
+def validate_lane_dag_ordering(declaration: dict, repo_root: "Path | None" = None) -> dict:
+    """V71 (TC-FL-007): Enforce Lane DAG — system healing before product deepening.
+
+    For any PRODUCT_SOURCE item targeting a format:
+    - Check if any open system-healing (Lane 1-6 proxy) gaps exist for that format
+    - P2+ open gaps: FAIL (blocks_sprint=True)
+    - P4+ open gaps: WARN (blocks_sprint=False)
+    - Closed or DEFERRED_BY_DESIGN gaps do not trigger
+
+    Gap ID prefixes that represent system healing:
+      GAP-CHAIN-*, GAP-FORENSICS-*, GAP-SAL-*, GAP-PROD-INV-QNAME-*,
+      GAP-PROD-INV-MASQ-*, GAP-PROD-INV-MODEL-*
+    """
+    import json as _json
+    from pathlib import Path as _Path
+
+    _r = repo_root or _Path(__file__).parent.parent.parent
+    _gl_path = _r / "reports" / "capability-layer" / "gap-ledger.json"
+
+    # Load gap-ledger; skip if unavailable
+    try:
+        _gl_data = _json.loads(_gl_path.read_text(encoding="utf-8"))
+        _gl_entries = _gl_data if isinstance(_gl_data, list) else _gl_data.get("gaps", [])
+    except Exception:
+        return {
+            "validator": "validate_lane_dag_ordering",
+            "result": "PASS",
+            "blocks_sprint": False,
+            "items": [],
+            "summary": "V71: Gap ledger unavailable — lane DAG check skipped",
+        }
+
+    # Build format → open system-healing gaps
+    _open_healing_by_format: dict = {}
+    for gap in _gl_entries:
+        gid = gap.get("gap_id", "")
+        status = gap.get("status", "open")
+        if status in _SYSTEM_HEALING_GAP_CLOSED_STATUSES:
+            continue
+        if not any(gid.startswith(p) for p in _SYSTEM_HEALING_GAP_PREFIXES):
+            continue
+        # Extract format from gap_id (e.g., GAP-CHAIN-CSV-SAL-MRH-001 → csv)
+        fmt = gap.get("format") or ""
+        if not fmt:
+            # Try to extract from gap_id second segment
+            parts = gid.split("-")
+            if len(parts) >= 3:
+                fmt = parts[2].lower()
+        if fmt:
+            _open_healing_by_format.setdefault(fmt, []).append({
+                "gap_id": gid, "priority": gap.get("priority", "P4"), "status": status,
+            })
+
+    fail_items = []
+    warn_items = []
+    for item in declaration.get("planned_work_items", []):
+        if item.get("item_type") not in ("PRODUCT_SOURCE", "PRODUCT_TEST"):
+            continue
+        fmt_id = (item.get("format_id") or "").lower()
+        if not fmt_id:
+            continue
+        open_gaps = _open_healing_by_format.get(fmt_id, [])
+        for gap in open_gaps:
+            entry = {
+                "item_id": item.get("item_id", "unknown"),
+                "format_id": fmt_id,
+                "gap_id": gap["gap_id"],
+                "gap_priority": gap["priority"],
+                "gap_status": gap["status"],
+                "issue": (
+                    f"Open system-healing gap {gap['gap_id']} (priority={gap['priority']}) "
+                    f"must be resolved before PRODUCT_SOURCE work on '{fmt_id}'."
+                ),
+            }
+            if gap["priority"] in _SYSTEM_HEALING_HIGH_PRIORITY:
+                fail_items.append(entry)
+            else:
+                warn_items.append(entry)
+
+    if fail_items:
+        return {
+            "validator": "validate_lane_dag_ordering",
+            "result": "FAIL",
+            "blocks_sprint": True,
+            "items": fail_items + warn_items,
+            "summary": (
+                f"V71: {len(fail_items)} P2+ system-healing gap(s) block product work "
+                f"(Lane 1-6 must complete before Lane 7-13)"
+            ),
+        }
+    if warn_items:
+        return {
+            "validator": "validate_lane_dag_ordering",
+            "result": "WARN",
+            "blocks_sprint": False,
+            "items": warn_items,
+            "summary": f"V71: {len(warn_items)} P3-P4 system-healing gap(s) pending (WARN-only)",
+        }
+    return {
+        "validator": "validate_lane_dag_ordering",
+        "result": "PASS",
+        "blocks_sprint": False,
+        "items": [],
+        "summary": "V71: Lane DAG ordering satisfied — no open system-healing gaps block product work",
+    }
+
+
+# V72 — TC-FL-010: artifact_identity_validator
+# WARN for PRODUCT_SOURCE items; FAIL for RELEASE_GATE items missing artifact_id/authority.
+_VALID_AUTHORITY_VALUES = {"AUTHORITATIVE", "VERIFIED_DERIVATION", "AI_DRAFT", "UNVERIFIED"}
+
+
+def validate_artifact_identity(declaration: dict, repo_root: "Path | None" = None) -> dict:
+    """V72 (TC-FL-010): Check evidence_artifacts have artifact_id and authority fields.
+
+    RELEASE_GATE items: FAIL (blocks_sprint=True) when evidence artifacts lack artifact_id
+      and authority fields.
+    PRODUCT_SOURCE/GOVERNANCE_TASKCARD items: WARN only (blocks_sprint=False).
+    """
+    _RELEASE_GATE_TYPES = {"RELEASE_GATE", "READINESS"}
+    _WARN_TYPES = {"PRODUCT_SOURCE", "PRODUCT_TEST", "GOVERNANCE_TASKCARD"}
+
+    fail_items = []
+    warn_items = []
+
+    for item in declaration.get("planned_work_items", []):
+        item_type = item.get("item_type", "")
+        if item_type not in _RELEASE_GATE_TYPES and item_type not in _WARN_TYPES:
+            continue
+
+        for artifact in item.get("evidence_artifacts", []):
+            issues = []
+            if not artifact.get("artifact_id"):
+                issues.append("missing artifact_id")
+            authority = artifact.get("authority")
+            if not authority:
+                issues.append("missing authority")
+            elif authority not in _VALID_AUTHORITY_VALUES:
+                issues.append(f"invalid authority '{authority}' (must be one of {sorted(_VALID_AUTHORITY_VALUES)})")
+
+            if issues:
+                entry = {
+                    "item_id": item.get("item_id", "unknown"),
+                    "item_type": item_type,
+                    "artifact_path": artifact.get("path", "unknown"),
+                    "issues": issues,
+                    "issue": f"Artifact '{artifact.get('path', '?')}': {'; '.join(issues)}",
+                }
+                if item_type in _RELEASE_GATE_TYPES:
+                    fail_items.append(entry)
+                else:
+                    warn_items.append(entry)
+
+    if fail_items:
+        return {
+            "validator": "validate_artifact_identity",
+            "result": "FAIL",
+            "blocks_sprint": True,
+            "items": fail_items + warn_items,
+            "summary": (
+                f"V72: {len(fail_items)} RELEASE_GATE artifact(s) missing artifact_id/authority"
+            ),
+        }
+    if warn_items:
+        return {
+            "validator": "validate_artifact_identity",
+            "result": "WARN",
+            "blocks_sprint": False,
+            "items": warn_items,
+            "summary": f"V72: {len(warn_items)} artifact(s) missing identity fields (WARN-only)",
+        }
+    return {
+        "validator": "validate_artifact_identity",
+        "result": "PASS",
+        "blocks_sprint": False,
+        "items": [],
+        "summary": "V72: All evidence artifacts have required identity fields",
+    }
