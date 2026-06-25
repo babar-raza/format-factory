@@ -1,0 +1,27 @@
+id: TC-PDEP-CLOSE-001
+title: "Commit all PDEP-2026-06-25-001 mission deliverables"
+status: OPEN
+priority: P0
+severity: CRITICAL
+finding_ref: FIND-COMMIT-001
+mission_id: PDEP-2026-06-25-001
+
+description: >
+  68 untracked files + modified files from prior sessions are uncommitted.
+  All consumer_roundtrip.py examples, new model files, sample files,
+  and state files must be committed to make the work durable.
+
+acceptance_criteria:
+  - All 12 consumer_roundtrip.py examples committed
+  - FODT dogfood_fodt_exporters.py committed
+  - samples/by-format/ndjson/ committed
+  - src/python/*/models.py files committed (where new)
+  - src/python/fodt/exporters.py committed
+  - src/python/odt/odt_writer.py committed
+  - .supervisor/state/product-deepening/ committed with updated baseline
+  - Clean git status for mission deliverables
+  - Commit hash recorded in closure record
+
+evidence_required:
+  - git log showing commit with mission deliverables
+  - git status showing clean working tree for tracked files

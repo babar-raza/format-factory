@@ -1,0 +1,18 @@
+id: TC-PDEP-CLOSE-002
+title: "Update baseline.yaml with completed products and final proof levels"
+status: OPEN
+priority: P1
+severity: HIGH
+finding_ref: FIND-STATE-001
+mission_id: PDEP-2026-06-25-001
+
+description: >
+  baseline.yaml has completed_products: [] and proof_level_at_start only.
+  Must update to reflect all 14 completed formats and achieved proof levels.
+
+acceptance_criteria:
+  - completed_products lists all 14 formats: ODS/TOML/SYLK/NDJSON/TSV/CSV/GNUMERIC/ABW/ZST/DIF/FODG/FODP + FODT+FODS from prior
+  - proof_level_at_end section added with actual levels
+  - mission_status: COMPLETE
+  - queued_products cleared or set to []
+  - active_product: null or mission_complete
