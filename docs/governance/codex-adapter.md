@@ -1,0 +1,110 @@
+# Format Factory — Codex Agent Governance Adapter
+
+**This file is the Codex entry point for skill-only governance.**
+**It is subordinate to `docs/governance/skill-only-policy.yaml` — the canonical authority.**
+
+If any instruction in this file conflicts with `docs/governance/skill-only-policy.yaml`,
+the policy file wins.
+
+---
+
+## 1. Canonical Policy
+
+The authoritative skill-only governance policy is:
+
+```
+docs/governance/skill-only-policy.yaml
+```
+
+Read this file at the start of every session before any mutating work.
+
+The policy applies equally to **Claude Code** and **Codex**. Both agents consume the same:
+- Skill registry (`.supervisor/skill-registry.yaml`)
+- Capability routing registry (`.supervisor/capability-routing-registry.yaml`)
+- Command registry (`.claude/commands/command-registry.yaml`)
+- Mutation guard (`tools/governance/pre_mutation_guard.py`)
+- Execution receipt schema (`.supervisor/schemas/evidence-declaration.schema.json`)
+- Exception policy (`docs/governance/skill-only-policy.yaml § 8`)
+- Audit rules (`tools/governance/ci_skill_attribution_check.py`)
+
+## 2. Codex-Specific Entry Points
+
+Additional Codex context: `AGENTS.md` (also consumed by Claude Code).
+
+Do not duplicate governance rules in Codex-specific files. Reference the canonical policy.
+
+## 3. Mandatory Execution Contract for Codex
+
+Before any governed mutation, Codex MUST:
+
+1. **Query the skill registry** — load `.supervisor/skill-registry.yaml`
+2. **Query capability routing** — load `.supervisor/capability-routing-registry.yaml`
+3. **Classify the operation** using the `route_id` taxonomy
+4. **Select the registered skill** (`preferred_skill_ids[0]` for the matching route)
+5. **Call the mutation guard** (optional but encouraged):
+   ```
+   python tools/governance/pre_mutation_guard.py \
+       --agent-type CODEX \
+       --task-id <task_id> \
+       --skill-id <skill_id> \
+       --target-paths <paths> \
+       --mission-id <mission_id> \
+       --sprint-id <sprint_id>
+   ```
+6. **Execute through the skill** (not through shell `patch` or direct file writes)
+7. **Write an execution receipt** (transcript YAML at `.local/transcripts/<id>.json`)
+8. **Validate receipt** using `validate-skill-transcript`
+
+## 4. If No Skill Matches
+
+When `check-skill-coverage` returns `BLOCKED_SKILL_GAP`:
+
+1. Do NOT write a one-time shell script
+2. Do NOT edit the file directly
+3. Follow the Missing Skill Workflow in `.supervisor/skill-first-policy.md Rule 6`:
+   - Create a skill development taskcard
+   - Implement the smallest correct atomic skill
+   - Register it
+   - Add tests and command file
+   - Prove idempotency
+   - Use the skill to complete the original task
+
+## 5. Exception Process
+
+Direct mutation without a registered skill is allowed only for:
+- Read-only investigation (no file mutation)
+- Disposable fixtures (no canonical state mutation)
+- Emergency recovery of the governance system itself
+
+Every exception must be recorded in `.local/exceptions/` per
+`docs/governance/skill-only-policy.yaml § 8`.
+
+Forbidden exception reasons: "small change", "urgent", "documentation only", "one-time".
+
+## 6. Supervisor Rejection
+
+The supervisor (`tools/supervisor/autonomous_cycle.py`) rejects any task result lacking:
+- A valid taskcard with `skill_id`
+- A registered skill
+- A command ID
+- An execution receipt
+- A changed-path list with validation
+- Evidence
+
+Codex submissions without these will be classified as `UNGOVERNED_MUTATION` and
+create repair taskcards that block progression.
+
+## 7. CI Enforcement
+
+GitHub Actions (`ci.yml`) runs `tools/governance/ci_skill_attribution_check.py`
+on every push to `main` and every PR. Ungoverned `src/` mutations cause CI to fail.
+
+## 8. Known Governance Gaps (Codex-Specific)
+
+| Gap | Description | Status |
+|-----|-------------|--------|
+| DEC-014 | Codex integration fully deferred | backlog |
+| EP-002-GAP | Mutation guard must be called explicitly | partial |
+| SKILL-GAP-012 | Agents bypassing declaration bypass EP-003 | backlog |
+
+These gaps are tracked in `docs/governance/skill-only-policy.yaml § known_gaps`.

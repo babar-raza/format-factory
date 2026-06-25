@@ -1,0 +1,380 @@
+---
+# Format Factory — Canonical Skill-Only Execution Policy
+# This is the SINGLE AUTHORITATIVE machine-readable policy for skill-only governance.
+# All agent entry points (CLAUDE.md, AGENTS.md, Codex adapters) MUST reference this file.
+# They must NOT copy, diverge from, or redefine governance semantics from this file.
+#
+# Authority order (conflicts: later wins):
+#   1. plans/master-plan.md (strategic direction)
+#   2. THIS FILE (operational policy — canonical for all agents)
+#   3. CLAUDE.md / AGENTS.md (agent-specific operational notes, must not redefine)
+#   4. .supervisor/skill-first-policy.md (derived summary — subordinate to this file)
+
+policy_id: SKILL-ONLY-POLICY-001
+version: "2.0"
+created: "2026-06-25"
+owner: format-factory-governance
+applies_to_agents:
+  - CLAUDE_CODE
+  - CODEX
+  - SUPERVISOR
+  - LOCAL_AUTOMATION
+  - CI
+
+# ─────────────────────────────────────────────
+# 1. GOVERNED OPERATIONS
+# All of these require a registered skill before any mutation occurs.
+# ─────────────────────────────────────────────
+governed_operations:
+  - creating_editing_moving_deleting_files
+  - applying_patches
+  - generating_code
+  - changing_project_files
+  - changing_package_metadata
+  - updating_product_capability_documentation
+  - changing_tests_or_fixtures
+  - running_migrations_or_backfills
+  - changing_taskcard_states
+  - changing_sprint_state
+  - changing_approval_gates
+  - changing_ledgers_or_registries
+  - accepting_or_closing_gap_findings
+  - creating_release_artifacts
+  - producing_canonical_evidence
+  - marking_gates_complete
+
+# ─────────────────────────────────────────────
+# 2. READ-ONLY EXCEPTION
+# Allowed without a skill ONLY when ALL of these hold:
+#   (a) no repository file is mutated
+#   (b) no canonical state is mutated
+#   (c) no accepted output is created
+#   (d) no existing audit or inventory skill covers the operation
+# ─────────────────────────────────────────────
+read_only_exception:
+  allowed: true
+  conditions:
+    - no_mutation_of_repository_files
+    - no_mutation_of_canonical_state
+    - no_creation_of_accepted_outputs
+    - no_existing_skill_covers_operation
+  note: >
+    Read-only investigation does NOT require a skill but MUST be recorded
+    when it influences a governed decision.
+
+# ─────────────────────────────────────────────
+# 3. SKILL DISCOVERY REQUIREMENTS
+# ─────────────────────────────────────────────
+skill_discovery_required: true
+skill_registry_path: .supervisor/skill-registry.yaml
+capability_routing_registry_path: .supervisor/capability-routing-registry.yaml
+command_registry_path: .claude/commands/command-registry.yaml
+
+discovery_algorithm:
+  step_1: classify_task_operation_type_using_route_id_taxonomy
+  step_2: query_capability_routing_registry_by_route_id
+  step_3: if_ROUTE_ACTIVE_select_preferred_skill_ids_primary
+  step_4: verify_skill_in_skill_registry_with_status_active
+  step_5: if_MISSING_SKILL_CAPABILITY_follow_missing_skill_workflow
+  step_6: if_no_route_classify_as_MISSING_SKILL_CAPABILITY
+
+# ─────────────────────────────────────────────
+# 4. SKILL RESOLUTION PRIORITY
+# ─────────────────────────────────────────────
+exact_capability_match_required: true
+composition_allowed: true
+
+skill_resolution_order:
+  - REUSE_EXACT_MATCH         # existing skill fully covers capability
+  - REUSE_PARAMETERIZED_MATCH # existing skill covers capability with different params
+  - COMPOSE_EXISTING_SKILLS   # combine atomic skills for multi-capability task
+  - REPAIR_EXISTING_SKILL     # fix broken/stale skill before replacement
+  - EXTEND_EXISTING_SKILL     # add bounded capability to existing skill (same responsibility)
+  - CREATE_MISSING_MICRO_SKILL  # ONLY when no existing skill owns responsibility
+
+# ─────────────────────────────────────────────
+# 5. NEW SKILL CREATION RULES
+# ─────────────────────────────────────────────
+new_skill_creation_rule:
+  allowed_when:
+    - no_existing_skill_owns_the_responsibility
+    - capability_is_expected_to_recur
+    - rejection_reasons_documented_for_all_candidates
+  forbidden_when:
+    - existing_skill_can_be_repaired
+    - new_skill_is_sprint_specific
+    - new_skill_duplicates_existing_logic
+    - new_skill_is_one_file_wrapper
+    - new_skill_is_trivial_with_no_reusable_semantics
+  required_steps:
+    - record_missing_capability
+    - create_skill_development_micro_taskcard
+    - design_contract_with_input_output_schemas
+    - implement_smallest_correct_atomic_skill
+    - write_tests
+    - register_in_skill_registry
+    - add_command_file
+    - add_route_to_work_type_skill_map
+    - prove_focused_behavior
+    - prove_idempotency
+    - use_skill_to_complete_original_task
+    - write_execution_receipt
+
+registration_required: true
+tests_required: true
+idempotency_required: true
+execution_receipt_required: true
+
+# ─────────────────────────────────────────────
+# 6. MUTATION AUTHORIZATION
+# Pre-mutation, the agent must hold an authorization record.
+# ─────────────────────────────────────────────
+direct_mutation_allowed: false
+mutation_authorization_required: true
+
+mutation_authorization_schema:
+  authorization_id: required
+  agent_type: required              # CLAUDE_CODE | CODEX | SUPERVISOR | CI
+  mission_id: required
+  sprint_id: required
+  task_id: required
+  skill_resolution_id: required
+  skill_id: required
+  skill_version: required
+  command_id: required
+  allowed_paths: required_list
+  normalized_input_hash: required
+  expiry: required
+  single_use_or_reusable: required
+  issued_by: required
+
+mutation_rejection_conditions:
+  - no_active_task
+  - no_skill_resolution_on_record
+  - no_registered_skill_bound
+  - no_command_bound
+  - skill_version_stale
+  - skill_status_broken_or_disabled
+  - target_path_outside_ownership
+  - agent_attempting_direct_patch
+  - receipt_generation_unavailable
+  - operation_differs_from_task_contract
+
+# ─────────────────────────────────────────────
+# 7. ENFORCEMENT POINTS
+# These must ALL be active for the policy to be enforced.
+# Current enforcement status shown — see gaps below.
+# ─────────────────────────────────────────────
+enforcement_points:
+  - id: EP-001
+    name: skill_registry_query
+    mechanism: agent_prompt_instruction
+    enforced_by: CLAUDE.md + AGENTS.md + codex-adapter.md
+    tool_neutral: true
+    current_status: PROMPT_ONLY  # no runtime check
+    gap: EP-001-GAP  # agents can skip without technical barrier
+
+  - id: EP-002
+    name: mutation_guard_pre_mutation
+    mechanism: python_script_pre_check
+    enforced_by: tools/governance/pre_mutation_guard.py
+    tool_neutral: true
+    current_status: IMPLEMENTED  # script exists, not called automatically
+    gap: EP-002-GAP  # must be called by agent; no automatic invocation
+
+  - id: EP-003
+    name: declaration_governance_validators
+    mechanism: autonomous_cycle_step_2d
+    enforced_by: tools/supervisor/autonomous_cycle.py + governance_validators.py (48 validators)
+    tool_neutral: false  # fires only when agent submits declaration
+    current_status: PARTIAL
+    gap: SKILL-GAP-012  # agents that skip declaration bypass entirely
+
+  - id: EP-004
+    name: execution_receipt_required
+    mechanism: agent_transcript_write
+    enforced_by: validate-skill-transcript skill
+    tool_neutral: false
+    current_status: PROMPT_ONLY
+    gap: EP-004-GAP  # receipts are written if agent complies; no enforcement if not
+
+  - id: EP-005
+    name: supervisor_rejection_of_unskilled_work
+    mechanism: autonomous_cycle_grading
+    enforced_by: tools/supervisor/grade_declared_work.py (TC-GUARD-001/002)
+    tool_neutral: false
+    current_status: PARTIAL
+    gap: SKILL-GAP-012  # same as EP-003
+
+  - id: EP-006
+    name: ci_skill_attribution_check
+    mechanism: github_actions_job
+    enforced_by: .github/workflows/ci.yml + tools/governance/ci_skill_attribution_check.py
+    tool_neutral: true
+    current_status: IMPLEMENTED  # script exists, workflow job added
+    gap: null
+
+  - id: EP-007
+    name: pre_commit_hook
+    mechanism: git_pre_commit_hook
+    enforced_by: .hooks/pre-commit-skill-guard
+    tool_neutral: true
+    current_status: NOT_IMPLEMENTED
+    gap: SKILL-GAP-008  # tracked, in backlog
+
+  - id: EP-008
+    name: taskcard_schema_execution_contract
+    mechanism: yaml_schema_validation
+    enforced_by: .supervisor/schemas/taskcard-execution-contract.schema.json
+    tool_neutral: true
+    current_status: SCHEMA_DEFINED_NOT_ENFORCED
+    gap: EP-008-GAP  # schema exists but not validated at taskcard READY transition
+
+  - id: EP-009
+    name: plan_skill_route_validation
+    mechanism: plan_validator_script
+    enforced_by: tools/governance/validate_plan_skill_routes.py
+    tool_neutral: true
+    current_status: NOT_IMPLEMENTED
+    gap: EP-009-GAP
+
+# ─────────────────────────────────────────────
+# 8. EXCEPTION POLICY
+# ─────────────────────────────────────────────
+exception_process:
+  recording_required: true
+  schema:
+    exception_id: required
+    mission_id: required
+    task_id: required
+    agent_type: required
+    operation: required
+    reason: required
+    scope: required
+    paths: required_list
+    mutation_allowed: required
+    authority: required
+    expiry: required
+    reusable_logic_review: required
+    final_disposition: required
+  storage_path: .local/exceptions/
+
+forbidden_exception_reasons:
+  - no_skill_applicable
+  - small_change
+  - documentation_only
+  - urgent
+  - pre_existing
+  - one_time
+  - assistant_discretion
+
+# ─────────────────────────────────────────────
+# 9. VIOLATION RESPONSE
+# ─────────────────────────────────────────────
+violation_response:
+  on_ungoverned_mutation:
+    - classify_as_UNGOVERNED_MUTATION_in_residual_bypass_report
+    - create_repair_taskcard
+    - require_retroactive_skill_binding_or_reconstruction
+    - block_close_task_until_receipt_exists
+  on_skill_created_not_used:
+    - classify_as_SKILL_CREATED_NOT_USED_violation
+    - require_original_task_completion_via_skill
+  on_broken_skill_direct_bypass:
+    - reject_bypass
+    - require_skill_repair_first
+    - then_rerun_via_skill
+
+# ─────────────────────────────────────────────
+# 10. CODEX-SPECIFIC ADAPTER
+# ─────────────────────────────────────────────
+codex_adapter:
+  path: docs/governance/codex-adapter.md
+  canonical_policy_reference: docs/governance/skill-only-policy.yaml
+  note: >
+    Codex must consume the same skill registry, capability routing registry,
+    taskcard schema, mutation guard, execution receipt schema, exception policy,
+    and audit rules as Claude Code. Codex has different shell tool access
+    but must not have different governance semantics.
+
+# ─────────────────────────────────────────────
+# 11. KNOWN GAPS (requiring planned remediation)
+# ─────────────────────────────────────────────
+known_gaps:
+  - gap_id: SKILL-GAP-008
+    description: Pre-commit/pre-push hook for AG0 enforcement
+    status: backlog
+    blocking: false
+
+  - gap_id: SKILL-GAP-012
+    description: >
+      Agents that edit files without submitting an evidence declaration
+      bypass the declaration-based governance layer (EP-003) entirely.
+      This is the primary first unenforced boundary.
+    status: backlog
+    blocking: false
+    first_unenforced_boundary: true
+
+  - gap_id: EP-001-GAP
+    description: Skill registry query is prompt-only (no technical barrier to skip)
+    status: open
+    blocking: false
+
+  - gap_id: EP-002-GAP
+    description: >
+      pre_mutation_guard.py exists but must be called explicitly by agent.
+      No automatic invocation from tool layer.
+    status: partial
+    blocking: false
+
+  - gap_id: EP-004-GAP
+    description: Execution receipts are voluntary — no enforcement if agent skips
+    status: open
+    blocking: false
+
+  - gap_id: EP-008-GAP
+    description: taskcard execution_contract schema defined but not validated at READY transition
+    status: open
+    blocking: false
+
+  - gap_id: EP-009-GAP
+    description: Plan skill-route validator not implemented
+    status: open
+    blocking: false
+
+# ─────────────────────────────────────────────
+# 12. COMPLIANCE TARGET
+# ─────────────────────────────────────────────
+compliance_target:
+  accepted_direct_mutations: 0
+  receipt_backed_mutations: equals_governed_mutations_total
+  claude_code_compliance_rate: 1.0
+  codex_compliance_rate: 1.0
+  product_sprint_compliance_rate: 1.0
+  machinery_sprint_compliance_rate: 1.0
+
+# ─────────────────────────────────────────────
+# 13. CANONICAL PATHS
+# ─────────────────────────────────────────────
+canonical_paths:
+  this_policy: docs/governance/skill-only-policy.yaml
+  skill_registry: .supervisor/skill-registry.yaml
+  capability_routing_registry: .supervisor/capability-routing-registry.yaml
+  command_registry: .claude/commands/command-registry.yaml
+  taskcard_schema: .supervisor/schemas/stage2-taskcard-contract.schema.json
+  execution_contract_schema: .supervisor/schemas/autonomous-execution-contract.schema.json
+  mutation_guard: tools/governance/pre_mutation_guard.py
+  receipt_schema: .supervisor/schemas/evidence-declaration.schema.json
+  claude_code_entry_points:
+    - CLAUDE.md
+    - AGENTS.md
+  codex_entry_points:
+    - docs/governance/codex-adapter.md
+    - AGENTS.md
+  supervisor_enforcement: tools/supervisor/autonomous_cycle.py
+  ci_check: tools/governance/ci_skill_attribution_check.py
+  ci_workflow: .github/workflows/ci.yml
+  pilots: reports/skill-governance-forensic/pilots/
+  historical_backfill: reports/skill-governance-forensic/backfill/
+  idempotency_verdict: reports/skill-governance-forensic/idempotency-verdict.yaml
+  final_audit: reports/skill-governance-forensic/final-audit.md
