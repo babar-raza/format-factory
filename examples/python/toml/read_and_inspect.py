@@ -12,20 +12,18 @@ import os
 from pathlib import Path
 
 _REPO = Path(__file__).resolve().parents[3]
-sys.path.insert(0, str(_REPO / "src" / "python" / "toml"))
 
-from toml_codec import (
-    load_toml,
-    probe_toml,
-    list_sections,
-    get_value,
-    get_all_keys,
-    get_keys,
-    has_key,
-    has_section,
-    to_json_str,
-    count_keys,
-)
+try:
+    from toml import (  # installed: format-factory-toml
+        load_toml, probe_toml, list_sections, get_value,
+        get_all_keys, get_keys, has_key, has_section, to_json_str, count_keys,
+    )
+except ImportError:
+    sys.path.insert(0, str(_REPO / "src" / "python" / "toml"))
+    from toml_codec import (  # type: ignore  # dev fallback
+        load_toml, probe_toml, list_sections, get_value,
+        get_all_keys, get_keys, has_key, has_section, to_json_str, count_keys,
+    )
 
 # --- Create or use sample ---
 if len(sys.argv) > 1:

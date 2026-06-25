@@ -1,4 +1,7 @@
-"""Clean consumer proof: FODP load -> inspect -> analyze -> export.
+"""Consumer proof: FODP load -> inspect -> analyze -> export.
+
+FODP is a read-only format. write_fodp() raises NotImplementedError.
+Use load() + export_to_*() for all read/export workflows.
 
 Steps:
   1. Load .fodp file to neutral model dict
@@ -12,7 +15,7 @@ DOGFOOD CONTRACT:
   - asserts real semantic result at every boundary
 
 Runnable:
-  python examples/python/fodp/consumer_roundtrip.py
+  python examples/python/fodp/consumer_inspect.py
 """
 from __future__ import annotations
 

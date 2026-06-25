@@ -16,6 +16,9 @@ import tempfile
 from pathlib import Path
 
 _REPO = Path(__file__).resolve().parents[3]
+# CSV uses direct src/ import: the FF 'csv' package name conflicts with Python stdlib csv.py.
+# 'from csv.csv_parser import ...' fails because stdlib csv.py shadows the FF csv/ directory.
+# The only reliable path is src.python.csv.* with the repo root on sys.path.
 if str(_REPO) not in sys.path:
     sys.path.insert(0, str(_REPO))
 

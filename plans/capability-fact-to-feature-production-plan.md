@@ -354,7 +354,7 @@ Feedback (closed capabilities removed from future selection; regressions reopen)
 
 ### C4: Compiler Production Integration
 - **Test:** `supervisor_loop.py` or `generate_next_worker_prompt.py` subprocess-invokes `capability_queue_consumer.py` which in turn calls `capability_compiler`
-- **Current:** **PARTIAL** *(updated 2026-06-23, velvet-hatching-lark)* — TC-WIRE-001 COMPLETE for mainstream stream. `_run_capability_consumer()` at `generate_next_worker_prompt.py:1037` IS called when `effective_stream in ("mainstream","product",None) AND _product_groups_allowed`. Non-mainstream streams (e.g., "analytics") do NOT invoke the consumer. Evidence: `.local/evidences/capability-fact-to-feature-forensics-20260623-06f0ea05/capability-fact-to-feature/compiler-invocation-chain.md`
+- **Current:** **PASS** *(updated 2026-06-25, TC-C1-EXTEND-001 CLOSED)* — Stream restriction removed from `generate_next_worker_prompt.py:1026`. Guard is now `if _product_groups_allowed:` only (was `if effective_stream in ("mainstream","product",None) and _product_groups_allowed:`). Compiler fires for all streams where product groups are enabled. Evidence: source line confirmed at `generate_next_worker_prompt.py:1026`. **Qualification (PL1):** No behavioral test confirms compiler is actually invoked during a non-mainstream stream sprint. Code change is correct; downstream effect is assumed. See TC-C1-EXTEND-BEHAVIORAL-001 in Appendix G for required follow-up.
 - **Target:** All production streams invoke `capability_queue_consumer.py` (not just mainstream)
 
 ### C5: Action Queue Executability
@@ -1476,7 +1476,7 @@ The plan must NOT be declared TERMINAL_CLOSED until Stage 7 (gap closure integra
 | C6 (Contract Closure) | **PARTIAL** *(updated iter 4)* | test_verified closure gate exists (AST-level); spec_refs contract not enforced (TC-C4-002 open) |
 | C7 (_EXPANSION_GOALS) | PARTIAL | Fallback only, but re-activates for FOSS |
 | C8 (End-to-End Trace) | **PASS** *(updated iter 4)* | 8 tests in test_end_to_end_pipeline.py verify gap→IR→taskcard chain; compile_gap() traces CSV/XCF/FODS through full pipeline |
-| C9 (Closure Feedback) | **READY** *(updated 2026-06-25, TC-CLOSURE-PROOF-001 PASS)* | Code + data path wired; 7 proof tests pass (real ledger copy); engine closes gaps, writes audit log, idempotent on rerun. Evidence: `tests/supervisor/test_tc_closure_proof_001.py`. |
+| C9 (Closure Feedback) | **READY_WITH_CAVEAT** *(updated 2026-06-25, forensic re-review)* | Engine closes gaps in fixture-isolated integration tests (PL3; 7 proof tests pass). However: real `gap-closure-log.json` has 1 entry from prior session contamination (`closed_by_engine=None`); no production-sprint-cycle closure has occurred with `closed_by_engine` set to a truthy value. Step 3a-pre merge in `autonomous_cycle.py` has not been validated end-to-end. See TC-PROD-CLOSURE-PROOF-001 in Appendix G to advance to full READY. |
 
 ---
 
@@ -1515,10 +1515,10 @@ The plan must NOT be declared TERMINAL_CLOSED until Stage 7 (gap closure integra
 
 | Taskcard | Priority | Gate Impact | Status |
 |---------|---------|------------|--------|
-| TC-CLOSURE-PROOF-001 | P0 BLOCKING | C9: PARTIAL → READY | **CLOSED** *(2026-06-25)* — 7/7 proof tests pass; `tests/supervisor/test_tc_closure_proof_001.py` |
+| TC-CLOSURE-PROOF-001 | P0 BLOCKING | C9: PARTIAL → READY_WITH_CAVEAT | **CLOSED (ISOLATION PROOF ONLY)** *(2026-06-25)* — 7/7 proof tests pass; fixture-isolated (real ledger copy to tmp_path); `tests/supervisor/test_tc_closure_proof_001.py`. Caveat: real `gap-closure-log.json` has 1 contamination entry from prior session with `closed_by_engine=None`; no production-cycle closure demonstrated. TC-PROD-CLOSURE-PROOF-001 required for full READY. |
 | TC-DEFERRED-FILTER-001 | P1 | Work selection correctness | **CLOSED** *(2026-06-25)* — compiler + consumer filters fixed; 17/17 integration tests pass; `tests/supervisor/test_tc_deferred_filter_001.py` |
-| TC-C1-EXTEND-001 | P1 | C4: PARTIAL → PASS | **CLOSED** *(2026-06-25)* — stream restriction removed from `generate_next_worker_prompt.py:1026`; compiler now fires for all streams with product groups enabled |
-| TC-C2-005-URGENT | P1 URGENT | C3/C7 risk | **CLOSED** *(2026-06-25)* — FOSS fallback confirmed active (0 foss_reduced test-coverage gaps). Hardcoded `_EXPANSION_GOALS` gated on `_expansion_goal_fallback` flag (runs ONLY when gap-ledger FOSS goals depleted). V42 validator provides governance protection against suspended rotation. |
+| TC-C1-EXTEND-001 | P1 | C4: PARTIAL → PASS | **CLOSED (PL1 — code change only)** *(2026-06-25)* — stream restriction removed from `generate_next_worker_prompt.py:1026`; compiler now fires for all streams with product groups enabled. No behavioral test confirms invocation for non-mainstream streams. TC-C1-EXTEND-BEHAVIORAL-001 required for behavioral proof. |
+| TC-C2-005-URGENT | P1 URGENT | C3/C7 risk | **CLOSED (CONTEXT SHIFTED)** *(2026-06-25)* — `_EXPANSION_GOALS` loop gated on `_expansion_goal_fallback` flag; fix code-correct. However: autonomous_cycle regenerated gap-ledger mid-sprint, restoring 999 FOSS task goals; `_expansion_goal_fallback=False` currently; fix is dormant. Fix activates if/when FOSS goals deplete again. TC-C2-005-MONITORING-001 in Appendix G tracks depletion threshold. Urgency framing (3 open FOSS gaps) belongs to pre-regeneration ledger snapshot that no longer exists. |
 | TC-ORPHAN-RESOLVE-001 | P2 | Code hygiene | **CLOSED** *(2026-06-25)* — clarifying docstring added to `gap_ledger_to_work_items.py` |
 | TC-ENCODING-FIX-001 | P2 | Data integrity | **CLOSED** *(2026-06-25)* — gap-ledger.json re-written cleanly; `read_text(errors='replace')` added to capability_map_generator.py |
 | TC-STATUS-CASE-001 | P2 | Data integrity | **CLOSED** *(2026-06-25)* — `CLOSED→closed` normalization added in capability_map_generator.py merge loop; 1 existing `CLOSED` entry patched in gap-ledger.json |
@@ -1585,3 +1585,325 @@ The plan must NOT be declared TERMINAL_CLOSED until Stage 7 (gap closure integra
 3. **Count statistics versioning:** All inline gap/capability counts MUST have format: `<count> *(as of YYYY-MM-DD)*`. Any count without this tag is treated as STALE.
 
 4. **Filter regression test requirement:** Any new status value added to gap-ledger.json MUST be accompanied by a test verifying it is excluded from (or explicitly included in) work selection.
+
+---
+
+## Appendix G: Post-Sprint Hardening — Evidence-Based Review (2026-06-25)
+
+**Review type:** Evidence-Based Achievement Review — independent verification against live repository state
+**Review date:** 2026-06-25
+**Source:** Post-sprint protocol executed after velvet-hatching-lark sprint closeout
+**Verdict:** SPRINT_PARTIALLY_VERIFIED — 6/8 taskcards at PL3; 1 at PL1; 1 at PL2 with dissolved urgency context
+
+---
+
+### G.1 Plan File Hardening Change Log
+
+| Change ID | Section Changed | Nature of Change | Reason |
+|-----------|----------------|-----------------|--------|
+| G-CHG-001 | Section 8 C4 | PARTIAL → PASS with PL1 qualification | TC-C1-EXTEND-001 closed; code change confirmed |
+| G-CHG-002 | Appendix D gate table C9 | READY → READY_WITH_CAVEAT | Real closure log contamination + no production-cycle closure |
+| G-CHG-003 | Appendix F.3 TC-CLOSURE-PROOF-001 | CLOSED → CLOSED (ISOLATION PROOF ONLY) | Contamination entry discovered; production proof still needed |
+| G-CHG-004 | Appendix F.3 TC-C1-EXTEND-001 | CLOSED → CLOSED (PL1 — code change only) | No behavioral test for non-mainstream stream invocation |
+| G-CHG-005 | Appendix F.3 TC-C2-005-URGENT | CLOSED → CLOSED (CONTEXT SHIFTED) | Ledger regenerated mid-sprint; 999 FOSS goals now; fix dormant |
+| G-CHG-006 | Appendix G (new) | Full hardening section added | Post-review unresolved work register and new taskcards |
+
+---
+
+### G.2 Audit Findings Incorporated
+
+These findings come from the post-sprint evidence-based review. Each has a corresponding taskcard or documented rationale.
+
+| Finding ID | Severity | Description | Disposition |
+|-----------|---------|-------------|-------------|
+| G-FIND-001 | HIGH | Real `gap-closure-log.json` has 1 entry from prior session with `closed_by_engine=None` — not a production engine closure | → TC-LOG-CONTAMINATION-001 |
+| G-FIND-002 | HIGH | Step 3a-pre merge in `autonomous_cycle.py` has never been validated end-to-end in a production sprint cycle | → TC-PROD-CLOSURE-PROOF-001 |
+| G-FIND-003 | HIGH | TC-C1-EXTEND-001 is PL1 only — no test verifies compiler actually fires for non-mainstream streams in a real sprint | → TC-C1-EXTEND-BEHAVIORAL-001 |
+| G-FIND-004 | MEDIUM | TC-C2-005-URGENT fix is dormant — autonomous_cycle regenerated gap-ledger mid-sprint, restoring 999 FOSS goals, setting fallback=False | → TC-C2-005-MONITORING-001 |
+| G-FIND-005 | MEDIUM | C4 gate in Section 8 lagged Appendix D gate summary by one session; gate-table atomicity rule violated | → Repaired G-CHG-001; G.8 Governance Rule added |
+| G-FIND-006 | LOW | `gap_ledger_to_work_items.py` docstring fix (TC-ORPHAN-RESOLVE-001) is documentation only; no production behavioral change | Acknowledged; no follow-up taskcard needed |
+
+---
+
+### G.3 Resolved / Preserved Work
+
+The following sprint outcomes are confirmed independently verified and require no further action:
+
+| Item | Evidence | Proof Level | Follow-up Required |
+|------|---------|-------------|-------------------|
+| TC-DEFERRED-FILTER-001: Deferred gap filter | 17/17 tests pass; 0 deferred leakage vs. 1,132-gap real ledger | PL3 | None |
+| TC-ENCODING-FIX-001: UTF-8 encoding | `json.loads(encoding='utf-8')` succeeds on live ledger | PL3 | None |
+| TC-STATUS-CASE-001: CLOSED→closed normalization | 0 CLOSED entries in live 1,132-gap ledger | PL3 | None |
+| TC-C3-003: Action queue advisory_only logic | 10/10 tests; real consumer code called | PL3 | None |
+| TC-ORPHAN-RESOLVE-001: gap_ledger_to_work_items.py docstring | File confirmed not imported by pipeline; docstring states role clearly | PL2 | None |
+
+---
+
+### G.4 Unresolved Work Register
+
+These items remain partially done, claimed unproven, or require follow-up verification.
+
+| Item ID | Classification | Priority | Gap Description | Required Resolution |
+|---------|---------------|---------|----------------|---------------------|
+| TC-PROD-CLOSURE-PROOF-001 | not_attempted | P0 BLOCKING | Production-sprint gap closure via engine never demonstrated | Verify Step 3a-pre merge fires + engine closes gap in a real autonomous sprint |
+| TC-C1-EXTEND-BEHAVIORAL-001 | not_attempted | P1 | No behavioral test for compiler invocation on non-mainstream streams | Write test asserting consumer is called when effective_stream='acceleration' |
+| TC-LOG-CONTAMINATION-001 | partially_done | P2 | gap-closure-log.json has 1 contamination entry with closed_by_engine=None | Document, verify it doesn't affect engine logic, consider resetting |
+| TC-C2-005-MONITORING-001 | not_attempted | P2 | No monitoring for FOSS goal depletion approaching threshold | Add count check that alerts when open FOSS test-coverage gaps < 10 |
+| C9 Production Path Validation | claimed_unproven | P0 | C9=READY_WITH_CAVEAT — fixture-isolated proof only; production autonomous_cycle path untested | TC-PROD-CLOSURE-PROOF-001 completes this |
+
+---
+
+### G.5 Taskcard Register
+
+#### TC-PROD-CLOSURE-PROOF-001
+
+**Title:** End-to-End Production Gap Closure Proof Through Autonomous Cycle
+**Source finding:** G-FIND-001, G-FIND-002
+**Why it matters:** C9 gate designation READY is only justified by fixture-isolated tests. The real production path (autonomous_cycle.py Step 3a-pre merge → Step 3a-closure → engine call) has never been validated with a real work item carrying `gap_ledger_ref`. If the Step 3a-pre merge fails silently, gaps never close through the engine and the entire closure feedback loop (RC-8 fix) remains non-functional in production.
+**Current status:** `not_attempted`
+**Priority:** P0 — BLOCKING C9 advancing to full READY
+**Lane owner:** Capability Layer / Supervisor Infrastructure
+
+**Required work:**
+1. Select 1 open gap from live `reports/capability-layer/gap-ledger.json` (e.g., `gap_id` from `status='open'` entries)
+2. Construct a declaration with `planned_work_items[0].gap_ledger_ref = <selected_gap_id>`
+3. Write a minimal test implementation for that gap (must pass at least 1 test)
+4. Submit declaration through `autonomous_cycle.py` (not just `close_gaps_from_grades` in isolation)
+5. After autonomous_cycle completes, inspect:
+   - `reports/capability-layer/gap-closure-log.json` — must have a new entry
+   - That entry must have `closed_by_engine` set to a non-None truthy value (sprint_id string)
+   - Gap in `gap-ledger.json` must show `status='closed'`
+6. Verify same gap does NOT reappear in next sprint's work selection
+
+**Required verification:**
+- `gap-closure-log.json` new entry count increased from baseline
+- New entry has `closed_by_engine` field with truthy value
+- Gap status changed in live ledger
+- Gap absent from next-work-items.json after closure
+
+**Required evidence:**
+- `tests/supervisor/test_tc_prod_closure_proof_001.py` with at least 5 tests
+- OR step-by-step execution log showing all assertions met
+- Before/after snapshot of `gap-closure-log.json`
+- Before/after snapshot of gap entry in `gap-ledger.json`
+
+**Acceptance criteria:**
+- Production autonomous_cycle path closes ≥ 1 gap with `closed_by_engine` truthy
+- `gap-closure-log.json` non-empty with valid entry
+- No regressions in 18 engine tests + 7 proof tests (25 total)
+- C9 gate advances to READY (unqualified) in Section 8
+
+**Stop conditions:**
+- If Step 3a-pre merge cannot be traced to the correct dictionary lookup, STOP and file a diagnostic finding — do not guess
+- If `closed_by_engine=None` appears again, diagnose why `_apply_closures()` is not setting the field
+
+**Allowed actions:** Run autonomous_cycle with a controlled declaration; read gap-closure-log.json; read gap-ledger.json; write test file; update plan status
+**Forbidden actions:** Manually editing `gap-closure-log.json`; marking this complete without live evidence; treating fixture-isolated tests as production proof
+
+**Dependencies:** Real gap with `status='open'` must exist in gap-ledger.json; `autonomous_cycle.py` must be runnable
+**Closeout rule:** Taskcard closes when `gap-closure-log.json` has ≥ 1 entry with `closed_by_engine` truthy AND the gap status is `'closed'` in the live ledger AND the evidence file exists
+
+---
+
+#### TC-C1-EXTEND-BEHAVIORAL-001
+
+**Title:** Behavioral Test: Compiler Invoked for Non-Mainstream Streams
+**Source finding:** G-FIND-003
+**Why it matters:** TC-C1-EXTEND-001 removed the stream guard at PL1 (code change only). If the `_product_groups_allowed` flag is False for non-mainstream streams for other reasons (e.g., stream-specific guards elsewhere in the call chain), the compiler still won't fire. A behavioral test is required to confirm the code change has its intended effect.
+**Current status:** `not_attempted`
+**Priority:** P1
+**Lane owner:** Supervisor Infrastructure
+
+**Required work:**
+1. Write test that patches `effective_stream = 'acceleration'` and `_product_groups_allowed = True`
+2. Mock or capture calls to `_run_capability_consumer()`
+3. Assert the function is called (not skipped) when those conditions hold
+4. Alternatively: run a real acceleration-stream sprint and check that capability items appear in compiler output
+
+**Required evidence:**
+- `tests/supervisor/test_tc_c1_extend_behavioral.py` (5+ tests)
+- OR captured sprint log showing consumer called during non-mainstream stream
+
+**Acceptance criteria:**
+- Confirmed: `_run_capability_consumer()` is called when `effective_stream='acceleration'` and `_product_groups_allowed=True`
+- C4 gate advances from PASS(PL1) to PASS(PL3)
+
+**Stop conditions:** None — this is pure test authoring
+**Dependencies:** TC-C1-EXTEND-001 CLOSED (already done)
+**Closeout rule:** Closes when behavioral test passes and C4 note updated from PL1→PL3
+
+---
+
+#### TC-LOG-CONTAMINATION-001
+
+**Title:** Document and Assess gap-closure-log.json Contamination Entry
+**Source finding:** G-FIND-001
+**Why it matters:** The live `gap-closure-log.json` contains 1 entry (`sprint_id='tc-closure-proof-001'`, `item_id='PROOF-001'`, `closed_by_engine=None`) from a prior session's unguarded test run before the `ledger_copy` fixture was implemented. This entry is not a genuine production engine closure. If not documented, future reviewers will miscount production closures or misinterpret the log.
+**Current status:** `partially_done` (contamination is documented here; no action taken yet)
+**Priority:** P2
+**Lane owner:** Supervisor Infrastructure
+
+**Required work:**
+1. Read the full entry in `gap-closure-log.json` — verify it has `closed_by_engine=None`
+2. Confirm it does NOT cause `_apply_closures()` to malfunction on subsequent calls
+3. Document in the closure log entry itself (add a `review_note` field or inline comment if format allows)
+4. Decide: reset the log to `[]` (clean slate) OR preserve with annotation. Document the decision.
+5. Update TC-LOG-CONTAMINATION-001 status to reflect resolution
+
+**Required evidence:**
+- Confirmation that the engine correctly handles a log with 1 prior entry (idempotency test with pre-populated log)
+- Decision record (reset vs. preserve) written in plan
+
+**Acceptance criteria:**
+- Engine behavior confirmed correct with contamination entry present
+- Decision on log cleanup documented and executed
+- No reviewer will miscount production closures from this log
+
+**Stop conditions:** None
+**Dependencies:** None
+**Closeout rule:** Closes when verification is documented and cleanup decision executed
+
+---
+
+#### TC-C2-005-MONITORING-001
+
+**Title:** FOSS Goal Depletion Monitoring — Alert at <10 Open Goals
+**Source finding:** G-FIND-004
+**Why it matters:** TC-C2-005-URGENT's fix is currently dormant (999 FOSS goals in regenerated ledger). When those goals deplete again, `_expansion_goal_fallback=True` will fire, re-activating the 116 hardcoded `_EXPANSION_GOALS`. Without monitoring, this will happen silently. The prior incident (3 open gaps detected only forensically, weeks after the fact) must not recur.
+**Current status:** `not_attempted`
+**Priority:** P2
+**Lane owner:** Supervisor Infrastructure / Autonomous Task Generator
+
+**Required work:**
+1. Add a check in `autonomous_task_generator._load_gap_ledger_goals()` that counts open FOSS test-coverage goals
+2. If count < 10 (configurable threshold), emit a WARNING log line: `"FOSS DEPLETION WARNING: only {count} open FOSS test-coverage goals remain; _expansion_goal_fallback may activate soon"`
+3. Optionally: surface this count in `generate_next_worker_prompt.py` output so it appears in the sprint prompt
+4. Write a test that asserts the warning appears when goal count is below threshold
+
+**Required evidence:**
+- Warning log line present in `autonomous_task_generator.py`
+- Test in `tests/supervisor/test_tc_c2_005_monitoring.py`
+
+**Acceptance criteria:**
+- Warning fires when FOSS open goals < threshold
+- Sprint prompt shows current FOSS goal count when depletion risk is present
+
+**Stop conditions:** None
+**Dependencies:** `_load_gap_ledger_goals()` in `autonomous_task_generator.py`
+**Closeout rule:** Closes when warning check exists, test passes, and threshold is configurable
+
+---
+
+### G.6 Lane Ownership
+
+| Lane | Owner | Scope |
+|------|-------|-------|
+| Supervisor Infrastructure | Autonomous Agent | TC-PROD-CLOSURE-PROOF-001, TC-C1-EXTEND-BEHAVIORAL-001, TC-LOG-CONTAMINATION-001, TC-C2-005-MONITORING-001 |
+| Capability Layer Gates | Autonomous Agent | C4(PL3), C9(READY unqualified) advancement |
+| Data Integrity | Autonomous Agent | gap-closure-log.json contamination resolution |
+
+---
+
+### G.7 Gate Contract
+
+| Gate | Current Designation | Required Evidence for Advancement | Blocking Taskcards |
+|------|--------------------|------------------------------------|-------------------|
+| C4 | PASS (PL1) | Behavioral test: compiler fires for non-mainstream stream | TC-C1-EXTEND-BEHAVIORAL-001 |
+| C9 | READY_WITH_CAVEAT | Production-cycle closure with `closed_by_engine` truthy; Step 3a-pre merge validated | TC-PROD-CLOSURE-PROOF-001 |
+
+**Gate advancement rule (mandatory):** Section 8 gate status and Appendix D gate summary MUST be updated in the SAME edit as the taskcard that provides the advancement evidence. No out-of-sync gate states.
+
+---
+
+### G.8 Evidence Contract
+
+For ALL future taskcard completions, the following evidence is required before marking a taskcard closed:
+
+| Evidence Type | Required For | Minimum Standard |
+|--------------|-------------|-----------------|
+| Test file (`tests/supervisor/test_<id>.py`) | All taskcards | ≥ 5 tests, all pass live |
+| Source read confirmation | Code changes | Direct file read verifying change exists |
+| Behavioral proof | Any PL1 item being promoted | Observable output (log line, file change, API return) confirming code path executed |
+| Before/after snapshot | Stateful changes (logs, ledger) | File size or content hash before and after operation |
+| No-regression confirmation | Any supervisor infrastructure change | Governance test suite passes (≥ 38 validators) |
+
+---
+
+### G.9 Verification Matrix
+
+| Item | Implementation | Behavioral Proof | Test Coverage | Proof Level | Verified By |
+|------|---------------|-----------------|---------------|-------------|-------------|
+| TC-DEFERRED-FILTER-001 | Y | Y (real 1,132-gap ledger) | 17/17 pass | PL3 | Evidence-based review 2026-06-25 |
+| TC-ENCODING-FIX-001 | Y | Y (json.loads succeeds) | N/A | PL3 | Direct verification 2026-06-25 |
+| TC-STATUS-CASE-001 | Y | Y (0 CLOSED entries) | N/A | PL3 | Direct verification 2026-06-25 |
+| TC-C3-003 | Y | Y (real consumer code) | 10/10 pass | PL3 | Evidence-based review 2026-06-25 |
+| TC-CLOSURE-PROOF-001 | Y | Y (fixture-isolated) | 7/7 pass | PL3 (isolation only) | Evidence-based review 2026-06-25 |
+| TC-C1-EXTEND-001 | Y | N (assumed from code) | Code confirmed | PL1 | Code read 2026-06-25 |
+| TC-C2-005-URGENT | Y | N/A (dormant) | Code confirmed | PL2 | Code read 2026-06-25 |
+| TC-ORPHAN-RESOLVE-001 | Y | Y (grep confirms no import) | N/A | PL2 | Direct verification 2026-06-25 |
+| **TC-PROD-CLOSURE-PROOF-001** | N | N | 0 | **PL0** | Required |
+| **TC-C1-EXTEND-BEHAVIORAL-001** | N | N | 0 | **PL0** | Required |
+| **TC-LOG-CONTAMINATION-001** | N | N | 0 | **PL0** | Required |
+| **TC-C2-005-MONITORING-001** | N | N | 0 | **PL0** | Required |
+
+---
+
+### G.10 Repair Loop
+
+If any of the following sentinel conditions are detected, execute the repair loop immediately:
+
+| Sentinel | Indicator | Repair |
+|---------|---------|-------|
+| Production closure broken | `gap-closure-log.json` has no new entries after a sprint with `gap_ledger_ref` work items | Run TC-PROD-CLOSURE-PROOF-001; diagnose Step 3a-pre merge |
+| FOSS depletion | `_expansion_goal_fallback=True` in `autonomous_task_generator.py` output | TC-C2-005-MONITORING-001; regenerate gap-ledger; investigate why FOSS goals depleted |
+| Non-mainstream stream compiler bypass | No capability items in sprint prompt for acceleration/skills/supervisor streams | Re-verify `_product_groups_allowed` value for that stream; check generate_next_worker_prompt.py |
+| Gate state divergence | Section 8 gate differs from Appendix D summary | Apply G-CHG rule: update both in same edit |
+| New status value in ledger | Gap-ledger contains a status not in `_SKIP_STATUSES` | Add to `_SKIP_STATUSES` in both compiler and consumer; add integration test |
+
+---
+
+### G.11 Anti-Overclaim Rules
+
+The following claims MUST NOT be repeated in future sprint declarations or plan updates unless they are independently verified against live repository state:
+
+1. **"Gap closure is working in production."** — Only claim this after TC-PROD-CLOSURE-PROOF-001 passes with `closed_by_engine` truthy in the live log.
+
+2. **"C9 is READY."** — Only after TC-PROD-CLOSURE-PROOF-001 completes. Current designation is READY_WITH_CAVEAT.
+
+3. **"FOSS fallback was active and fixed."** — The fix is code-correct but dormant (999 FOSS goals exist). The urgency framing belongs to a pre-regeneration snapshot. Do not cite TC-C2-005-URGENT as proof that fallback risk is eliminated.
+
+4. **"The compiler fires for all streams."** — Code change is correct (PL1). Behavioral proof (PL3) pending TC-C1-EXTEND-BEHAVIORAL-001.
+
+5. **"TC-CLOSURE-PROOF-001 proves production-level closure."** — It proves isolated behavioral correctness. Production-level proof requires autonomous_cycle execution with a real declaration containing `gap_ledger_ref`.
+
+6. **"gap-closure-log.json is clean."** — It has 1 contamination entry from a prior session that must be documented, not ignored.
+
+7. **"Gap counts are current."** — Always tag counts with `*(as of YYYY-MM-DD)*`. The ledger count changed from 1 open gap to 105 open gaps within a single session due to autonomous_cycle regeneration.
+
+---
+
+### G.12 Closeout Criteria
+
+The Appendix G hardening block is complete when ALL of the following are met:
+
+- [ ] TC-PROD-CLOSURE-PROOF-001 CLOSED — production-cycle closure demonstrated with `closed_by_engine` truthy
+- [ ] TC-C1-EXTEND-BEHAVIORAL-001 CLOSED — behavioral test confirms compiler fires for non-mainstream streams
+- [ ] TC-LOG-CONTAMINATION-001 CLOSED — contamination entry assessed; cleanup decision documented and executed
+- [ ] TC-C2-005-MONITORING-001 CLOSED — depletion warning exists and is tested
+- [ ] Section 8 C9 updated to READY (unqualified)
+- [ ] Section 8 C4 updated from PASS(PL1) to PASS(PL3) with behavioral test citation
+- [ ] Gate-table atomicity rule has been demonstrated across ≥ 2 gate updates without divergence
+
+**Until all checklist items are checked, Appendix G is OPEN and the agent MUST NOT claim the capability closure pipeline is production-proven.**
+
+---
+
+### G.13 Remaining True Blockers
+
+| Blocker | Nature | Why It Cannot Be Auto-Resolved |
+|---------|--------|-------------------------------|
+| Production gap closure path unvalidated | Technical verification gap | Requires running a real autonomous_cycle sprint with a `gap_ledger_ref` work item and inspecting live outputs — this is observable state, not a code change |
+| gap-closure-log.json contamination | Data integrity | Requires a decision (reset vs. preserve with annotation) that has lasting audit implications |
+| FOSS goal depletion is a future event | Monitoring gap | Cannot be validated until depletion occurs; monitoring must be in place before then |
+
+These are not TRUE_EXTERNAL_GATEs (no credentials, no business authority, no human required). All three are agent-executable. They are listed here to distinguish from the resolved sprint work above.

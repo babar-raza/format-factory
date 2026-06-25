@@ -3010,7 +3010,7 @@ examples verifying the full load→inspect→mutate→save→reload cycle.
 
 ---
 
-## Section 55 — Autonomous Sprint Identity, Continuation, and Production Supervision (IN_PROGRESS)
+## Section 55 — Autonomous Sprint Identity, Continuation, and Production Supervision (CLOSED)
 
 **Mission ID:** FF-SPRINT-PRODUCTIONIZATION-001
 **Added:** 2026-06-25
@@ -3302,5 +3302,128 @@ Tests: 79 new tests PASS. Evidence: `.local/evidences/ff-layer-forensics-2026062
 
 ---
 
-*End of plans/master-plan.md — version 6.8 — 2026-06-25 (Section 57: misty-humming-kahn — FF-LAYER-FORENSICS-20260625 CLOSED)*
+## Section 56 — Pilot 7: PGM/PPM/QOI Spec QName Compliance Tests (CLOSED)
+
+**Mission:** Extend spec QName compliance test coverage to PGM, PPM, and QOI formats (parallel to PBM Pilot 6 pattern).
+
+| Task ID | Description | Status | Type |
+|---------|-------------|--------|------|
+| TC-S56-001 | PGM spec QName compliance tests | CLOSED | PILOT |
+| TC-S56-002 | PPM spec QName compliance tests | CLOSED | PILOT |
+| TC-S56-003 | QOI spec QName compliance tests | CLOSED | PILOT |
+
+### Notes
+
+- TC-S56-001: CLOSED — `tests/python/pgm/test_pgm_spec_qname.py` created. 12 tests: 11 PASS, 1 SKIP (no PGM sample file). Verified PgmImage/PgmDocument.spec_qname='pgm:image', PgmHeader.spec_qname='pgm:header'+FACT-PGM-001, PgmGraymap.spec_qname='pgm:graymap'+FACT-PGM-002, registry linkage all pass.
+- TC-S56-002: CLOSED — `tests/python/ppm/test_ppm_spec_qname.py` created. 12 tests: 11 PASS, 1 SKIP (no PPM sample file). Verified PpmImage/PpmDocument.spec_qname='ppm:image', PpmHeader+FACT-PPM-001, PpmPixmap+FACT-PPM-002, registry linkage all pass.
+- TC-S56-003: CLOSED — `tests/python/qoi/test_qoi_spec_qname.py` created. 13 tests: 12 PASS, 1 SKIP (no QOI sample file). Verified QoiImage/QoiDocument.spec_qname='qoi:image', QoiHeader+FACT-QOI-001, QoiChunk+FACT-QOI-002, QoiEndMarker.spec_qname='qoi:end-marker', registry linkage all pass.
+- Total: 37 tests across 3 formats: 34 PASS, 3 SKIP.
+- Sprint: ff-sprint-s56-pilot7-20260626. Evidence: `.local/evidences/ff-sprint-s56-pilot7-20260626/`.
+
+---
+
+## Section 57 — Pilot 8: CSV/TSV/TOML/ZST/GNUMERIC Spec QName Compliance Tests (CLOSED)
+
+**Mission:** Extend spec QName compliance test coverage to 5 additional Python FOSS formats. Also fix GnumericWorkbook/GnumericSheet Compat qname mismatch (gnm:Workbook → gnumeric:workbook).
+
+| Task ID | Description | Status | Type |
+|---------|-------------|--------|------|
+| TC-S57-001 | CSV spec QName compliance tests | CLOSED | PILOT |
+| TC-S57-002 | TSV spec QName compliance tests | CLOSED | PILOT |
+| TC-S57-003 | TOML spec QName compliance tests | CLOSED | PILOT |
+| TC-S57-004 | ZST spec QName compliance tests | CLOSED | PILOT |
+| TC-S57-005 | GNUMERIC spec QName compliance tests + Compat fix | CLOSED | PILOT |
+
+### Notes
+
+- TC-S57-001: CLOSED — `tests/python/csv_format/test_csv_spec_qname.py` created (uses src.python.csv import to avoid stdlib conflict). 10 tests: 10 PASS. Verified CsvDocument.spec_qname='csv:record', CsvRecord+FACT-CSV-001, CsvHeader, CsvField+FACT-CSV-002, registry linkage.
+- TC-S57-002: CLOSED — `tests/python/tsv/test_tsv_spec_qname.py` created. 10 tests: 10 PASS. Verified TsvDocument.spec_qname='tsv:record', TsvRecord+FACT-TSV-001, TsvField+FACT-TSV-002, registry linkage.
+- TC-S57-003: CLOSED — `tests/python/toml/test_toml_spec_qname.py` created. 10 tests: 10 PASS. Verified TomlDocument.spec_qname='toml:table', TomlTable+FACT-TOML-001, TomlKey+FACT-TOML-002, registry linkage.
+- TC-S57-004: CLOSED — `tests/python/zst/test_zst_spec_qname.py` created. 10 tests: 10 PASS. Verified ZstDocument.spec_qname='zst:frame', ZstFrame+FACT-ZST-001, ZstBlock+FACT-ZST-002, registry linkage.
+- TC-S57-005: CLOSED — `tests/python/gnumeric/test_gnumeric_spec_qname.py` created (12 tests: 12 PASS). Fixed `GnumericWorkbook.spec_qname` from `gnm:Workbook` → `gnumeric:workbook` and `GnumericSheet.spec_qname` from `gnm:Sheet` → `gnumeric:sheet` in `src/python/gnumeric/Compat/`. Verified registry linkage.
+- Total new tests: 52 PASS, 0 FAIL across 5 formats.
+- Sprint: ff-sprint-s57-pilot8-20260626. Evidence: `.local/evidences/ff-sprint-s57-pilot8-20260626/`.
+
+---
+
+## Section 58 — Pilot 9: ABW/FODS/FODT/FODG/FODP Spec QName Compliance Tests (CLOSED)
+
+**Mission:** Complete spec QName compliance test coverage for all remaining Python FOSS formats. Also fix ABW Compat (abiword:document) and FODP Compat (presentation:page) qname mismatches.
+
+| Task ID | Description | Status | Type |
+|---------|-------------|--------|------|
+| TC-S58-001 | ABW spec QName compliance tests + Compat fix | CLOSED | PILOT |
+| TC-S58-002 | FODS spec QName compliance tests | CLOSED | PILOT |
+| TC-S58-003 | FODT spec QName compliance tests | CLOSED | PILOT |
+| TC-S58-004 | FODG spec QName compliance tests | CLOSED | PILOT |
+| TC-S58-005 | FODP spec QName compliance tests + Compat fix | CLOSED | PILOT |
+
+### Notes
+
+- TC-S58-001: CLOSED — `tests/python/abw/test_abw_spec_qname.py` created (8 tests: 8 PASS). Fixed `AbwDocument.spec_qname` from `abw:abiword` → `abiword:document` and `AbwParagraph.spec_qname` from `abw:p` → `abiword:p` in Compat/. Verified registry linkage (all abiword: prefix).
+- TC-S58-002: CLOSED — `tests/python/fods/test_fods_spec_qname.py` created (9 tests: 9 PASS). Uses src.python.fods path for FODS Compat absolute imports. Verified FodsDocument='office:document', FodsSheet='table:table', FodsCell='table:table-cell'.
+- TC-S58-003: CLOSED — `tests/python/fodt/test_fodt_spec_qname.py` created (9 tests: 9 PASS). Verified FodtDocument='office:document', FodtParagraph='text:p', FodtHeading='text:h', registry linkage.
+- TC-S58-004: CLOSED — `tests/python/fodg/test_fodg_spec_qname.py` created (7 tests: 7 PASS). Verified FodgDocument='office:document', FodgPage='draw:page', registry linkage.
+- TC-S58-005: CLOSED — `tests/python/fodp/test_fodp_spec_qname.py` created (7 tests: 7 PASS). Fixed `FodpPage.spec_qname` from `draw:page` → `presentation:page` to match registry. Verified FodpDocument='office:document', FodpPage='presentation:page'.
+- Total new tests: 42 PASS, 0 FAIL across 5 formats. **All 20 Python FOSS formats now have spec qname compliance tests.**
+- Qname mismatch fixes: 3 Compat classes corrected (GnumericWorkbook, GnumericSheet in S57; AbwDocument, AbwParagraph, FodpPage in S58).
+- Sprint: ff-sprint-s58-pilot9-20260626. Evidence: `.local/evidences/ff-sprint-s58-pilot9-20260626/`.
+
+---
+
+---
+
+## Section 59 — Governance Repair: Validator Count + Section 55 Closure (CLOSED)
+
+| Task | Description | Status | Track |
+|------|-------------|--------|-------|
+| TC-S59-001 | Fix test_canonical_validator_count 68 → 72 | CLOSED | GOVERNANCE |
+| TC-S59-002 | Close Section 55 (IN_PROGRESS → CLOSED) | CLOSED | GOVERNANCE |
+
+- TC-S59-001: CLOSED — `tests/supervisor/test_governance_validators.py` updated: `test_canonical_validator_count` assertion changed from 68 → 72. V69-V72 were added in layer forensics sprint. 109 governance tests PASS.
+- TC-S59-002: CLOSED — `plans/master-plan.md` Section 55 header updated from `(IN_PROGRESS)` → `(CLOSED)`. All 8 TC-S55 tasks were already CLOSED.
+- Sprint: ff-sprint-s59-governance-20260626. Evidence: `.local/evidences/ff-sprint-s59-governance-20260626/`.
+
+---
+
+## Section 60 — QName Coverage: 84.5% → 99.4% + Audit Tool Fix (CLOSED)
+
+| Task | Description | Status | Track |
+|------|-------------|--------|-------|
+| TC-S60-001 | Fix audit_qname_coverage.py regex for ClassVar annotations | CLOSED | GOVERNANCE |
+| TC-S60-002 | Create 5 authority-only spec classes for missing qnames | CLOSED | PRODUCT |
+| TC-S60-003 | Update 5 registries to point to new spec class files | CLOSED | GOVERNANCE |
+| TC-S60-004 | Achieve 99.4% qname coverage (100% for non-intentional gaps) | CLOSED | GOVERNANCE |
+| TC-S60-005 | Fix stale FodpPage spec_qname test (draw:page → presentation:page) | CLOSED | TEST |
+
+- TC-S60-001: CLOSED — `tools/audit_qname_coverage.py` regex fixed from `spec_qname\s*=` to `spec_qname\s*(?:[^=]+)?\s*=`. Now detects `ClassVar[str]` annotated assignments. 11 false-positive gaps eliminated immediately.
+- TC-S60-002: CLOSED — 5 new authority-only spec classes: `gnumeric/spec/workbook/cell.py` (gnumeric:cell/FACT-GNUMERIC-003), `fodg/spec/draw/frame.py` (draw:frame/FACT-FODG-003), `toml/spec/table/value.py` (toml:value/FACT-TOML-003), `tsv/spec/record/row.py` (tsv:row/FACT-TSV-001), `zst/spec/frame/magic_number.py` (zst:magic-number/FACT-ZST-003 with RFC 8878 §3.1.1 constant).
+- TC-S60-003: CLOSED — gnumeric.yaml, fodg.yaml, toml.yaml, tsv.yaml, zst.yaml updated to point to new spec files (previously pointing to at-cap codec files).
+- TC-S60-004: CLOSED — `reports/qname-coverage-20260626.json` shows 99.4% (65/66). 1 intentional gap: fodt:office:body null python_file (by architectural design, enforced by test_no_office_body_python_stub). Previously 84.5% (11 gaps). 429 spec qname tests PASS.
+- TC-S60-005: CLOSED — `tests/python/fodp/test_spec_compat_layer.py::TestFodpPageBehavior::test_spec_qname` updated to expect `presentation:page` (was stale at `draw:page`).
+- Sprint: ff-sprint-s60-qname-coverage-20260626. Evidence: `.local/evidences/ff-sprint-s60-qname-coverage-20260626/`.
+
+---
+
+## Section 61 — .NET R117/R118 Document Model + Exporter Tests (CLOSED)
+
+| Task | Description | Status | Track |
+|------|-------------|--------|-------|
+| TC-S61-001 | Verify NetpbmDocument R117 .NET tests (12 tests) | CLOSED | DOTNET |
+| TC-S61-002 | Verify NetpbmDocument R118 properties .NET tests (19 tests) | CLOSED | DOTNET |
+| TC-S61-003 | Verify FODS ExportSheetToXml R117 .NET tests (11 tests) | CLOSED | DOTNET |
+| TC-S61-004 | Verify FODS ExportSheetToTsv R118 .NET tests (9 tests) | CLOSED | DOTNET |
+| TC-S61-005 | Verify CSV/NDJSON/TSV/ZST R117 document model .NET tests (64 tests) | CLOSED | DOTNET |
+
+- TC-S61-001: CLOSED — `tests/net/netpbm/NetpbmR117DocumentTests.cs` verified: 12 tests PASS. Tests NetpbmDocument.FromImage(), Width/Height/Format/PixelCount/MaxValue properties, IsColor/IsGrayscale/IsBitmap, AspectRatio, IsSquare.
+- TC-S61-002: CLOSED — `tests/net/netpbm/NetpbmR118DocumentPropertiesTests.cs` verified: 19 tests PASS. Tests Load/LoadStream factory methods, all document property combinations.
+- TC-S61-003: CLOSED — `tests/net/fods/FodsR117XmlExportTests.cs` verified: 11 tests PASS. Tests FodsDocumentExporter.ExportSheetToXml() — empty sheet, name attribute, cell values, multi-sheet.
+- TC-S61-004: CLOSED — `tests/net/fods/FodsR118TsvExportTests.cs` verified: 9 tests PASS. Tests FodsDocumentExporter.ExportSheetToTsv() — empty sheet, single cell, multi-row, delimiter consistency.
+- TC-S61-005: CLOSED — CSV R117 (15), NDJSON R117 (16), TSV R117 (15), ZST R117 (18) = 64 tests PASS. All document query/model tests for pre-existing untracked test files.
+- Total new .NET tests verified this sprint: 115 PASS, 0 FAIL.
+- Sprint: ff-sprint-s61-dotnet-r117r118-20260626. Evidence: `.local/evidences/ff-sprint-s61-dotnet-r117r118-20260626/`.
+
+---
+
+*End of plans/master-plan.md — version 7.2 — 2026-06-26 (Sections 59-61 CLOSED: governance repair, qname coverage 84.5%→99.4%, 115 new .NET tests verified)*
 *This document is the single operational authority for format-factory. All other documents are subordinate to it for operational decisions.*

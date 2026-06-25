@@ -28,14 +28,16 @@ _REPO = Path(__file__).resolve().parents[3]
 import abw as abw_pkg
 from abw import load, write_abw, append_paragraph, export_to_plain_text
 
-# AbwDocument is in src/ (installed package via site-packages copy)
-if str(_REPO) not in sys.path:
-    sys.path.insert(0, str(_REPO))
 try:
-    from src.python.abw.models import AbwDocument  # type: ignore
+    from abw import AbwDocument
     _HAVE_ABWDOC = True
 except ImportError:
-    _HAVE_ABWDOC = False
+    try:
+        sys.path.insert(0, str(_REPO / "src" / "python"))
+        from abw.models import AbwDocument  # type: ignore
+        _HAVE_ABWDOC = True
+    except ImportError:
+        _HAVE_ABWDOC = False
 
 SAMPLE_ABW = _REPO / "samples" / "by-format" / "abw" / "two-paragraphs.abw"
 OUTPUT_DIR = _REPO / ".local" / "dogfood-proofs" / "abw"

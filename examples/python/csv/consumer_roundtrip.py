@@ -1,7 +1,8 @@
 """Clean consumer proof: CSV load -> inspect -> mutate -> save -> reload.
 
-NOTE: The FF CSV package is named 'csv' which conflicts with Python's stdlib csv.
-This example uses sys.path.insert to import from src/python/csv/ directly.
+NOTE: The Format Factory CSV package (format-factory-csv) imports as 'csv', which
+shadows Python's stdlib csv module. For this reason, this example imports via
+src/ path insertion rather than the installed package.
 This is the established pattern for CSV examples in this repo.
 
 Steps:
@@ -19,6 +20,9 @@ import sys
 from pathlib import Path
 
 _REPO = Path(__file__).resolve().parents[3]
+# CSV uses direct src/ import: the FF 'csv' package name conflicts with Python stdlib csv.py.
+# 'from csv.csv_parser import ...' fails because stdlib csv.py shadows the FF csv/ directory.
+# The only reliable path is src.python.csv.* with the repo root on sys.path.
 if str(_REPO) not in sys.path:
     sys.path.insert(0, str(_REPO))
 

@@ -80,9 +80,11 @@ commercial_net_products:
     fods_to_html_dotnet: IMPLEMENTED
     target_ff_library_for_csv_dotnet: FormatFactory.Csv.CsvWriter
     target_ff_library_for_html_dotnet: FormatFactory.Html.HtmlWriter
+    fods_to_ods_dotnet: PROTOTYPE
+    fods_to_ods_dotnet_note: FodsOdsExporter.cs line 5 says PROTOTYPE STATUS design_complete_in_progress — Gate 11 approval for FODS covers the core product not this exporter component. NF-005 / PROB-013 reconciliation 2026-06-25.
     notes: FodsCsvExporter delegates to FormatFactory.Csv.CsvWriter (MWP sprint R119-prep);
       FodsHtmlExporter delegates to FormatFactory.Html.HtmlWriter (MWP sprint R119-prep);
-      dogfood_status reconciled R120
+      dogfood_status reconciled R120; ODS exporter PROTOTYPE status added 2026-06-25 (PROB-013/NF-005)
   examples:
     python: examples/python/fods/edit_save_export_fods.py
     dotnet_csv: examples/net/fods/ExportCsvExample.cs

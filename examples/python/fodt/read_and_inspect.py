@@ -10,9 +10,12 @@ import sys
 from pathlib import Path
 
 _REPO = Path(__file__).resolve().parents[3]
-sys.path.insert(0, str(_REPO))
 
-from src.python.fodt import parse_fodt_strict, document_text_content
+try:
+    from fodt import parse_fodt_strict, document_text_content
+except ImportError:
+    sys.path.insert(0, str(_REPO / "src" / "python"))
+    from fodt import parse_fodt_strict, document_text_content  # type: ignore
 
 # --- Locate sample ---
 if len(sys.argv) > 1:

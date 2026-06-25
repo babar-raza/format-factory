@@ -12,9 +12,12 @@ import os
 from pathlib import Path
 
 _REPO = Path(__file__).resolve().parents[3]
-sys.path.insert(0, str(_REPO / "src" / "python" / "sylk"))
 
-import sylk_parser as sylk
+try:
+    import sylk  # installed: format-factory-sylk
+except ImportError:
+    sys.path.insert(0, str(_REPO / "src" / "python" / "sylk"))
+    import sylk_parser as sylk  # type: ignore  # dev fallback: direct module
 
 # --- Create or use sample ---
 if len(sys.argv) > 1:
