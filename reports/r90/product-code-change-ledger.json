@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s87-dotnet-deepening-20260626",
+  "latest_sprint": "ff-sprint-s88-dotnet-deepening-20260626",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -18937,6 +18937,36 @@
         "tests/net/netpbm/NetpbmR122CopyRegionTests.cs"
       ],
       "format": "Netpbm"
+    },
+    {
+      "entry_id": "PC-FODS-R123",
+      "classification": "TEST_ADDITION",
+      "sprint": "ff-sprint-s88-dotnet-deepening-20260626",
+      "description": "FODS R123: 9 tests for SortRows \u2014 ascending/descending sort, multi-column row movement, empty sheet, single row, guards",
+      "test_files": [
+        "tests/net/fods/FodsR123SortRowsTests.cs"
+      ],
+      "source_files": []
+    },
+    {
+      "entry_id": "PC-FODT-R121",
+      "classification": "TEST_ADDITION",
+      "sprint": "ff-sprint-s88-dotnet-deepening-20260626",
+      "description": "FODT R121: 9 tests for GetWordFrequency \u2014 empty doc, single/repeated word, multi-paragraph, minLength filtering, unique keys, dogfood sum check",
+      "test_files": [
+        "tests/net/fodt/FodtR121GetWordFrequencyTests.cs"
+      ],
+      "source_files": []
+    },
+    {
+      "entry_id": "PC-NETPBM-R123",
+      "classification": "TEST_ADDITION",
+      "sprint": "ff-sprint-s88-dotnet-deepening-20260626",
+      "description": "Netpbm R123: 10 tests for ToGrayscale/ToColor \u2014 format transitions, dimension/pixel-count preservation, white/black pixels, dogfood pipeline",
+      "test_files": [
+        "tests/net/netpbm/NetpbmR123ToGrayscaleColorTests.cs"
+      ],
+      "source_files": []
     }
   ],
   "total_entries": 1006,
