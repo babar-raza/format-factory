@@ -1,0 +1,69 @@
+final_all_green_candidate:
+  mission_id: spec-authority-machinery-explosion-20260625-c6b2470
+  plan_id: witty-doodling-goose
+  plan_path: "C:/Users/prora/.claude/plans/witty-doodling-goose.md"
+  plan_revision: "Phase A execution + closure (phase_a_execution_closed 2026-06-25)"
+  plan_hash: "dd07cbc3ec27077b"
+  final_audit_path: >
+    reports/spec-authority-machinery/spec-authority-machinery-explosion-20260625-c6b2470/audit/stage1-iter2/stage1-iter2-sprint-audit-summary.md
+  material_findings: 0
+  actionable_findings: 0
+  unresolved_mandatory_requirements: 0
+  open_mandatory_taskcards: 0
+  weakly_verified_mandatory_items: 0
+  unconsumed_findings: 0
+  rework_items: 0
+  eligible_tasks: 0
+  required_proof_gaps: 0
+  e2e_failures: 0
+  pilot_failures: 0
+  regression_failures: 0
+  idempotency_failures: 0
+  state_reconciled: true
+  closure_prompt_authorized: true
+
+  # Supporting evidence
+  verification_gates_passed: 7
+  test_evidence:
+    test_tc_guard_001_enforce: "10/10 PASS"
+    test_governance_validators: "124/124 PASS (5 new V13 tests)"
+    supervisor_suite_prior_session: "246/246 PASS"
+
+  # Taskcard registry
+  taskcards:
+    TC-HEAL-A001:
+      status: COMPLETE
+      commit: "10b6d5ad"
+      proof_level: 3
+      target_proof_level: 2
+      proof_gap: none
+    TC-HEAL-A002:
+      status: COMPLETE
+      commit: "10b6d5ad"
+      proof_level: 2
+      target_proof_level: 2
+      proof_gap: none
+    TC-HEAL-A003:
+      status: COMPLETE
+      commit: "10b6d5ad"
+      proof_level: 2
+      target_proof_level: 2
+      proof_gap: none
+    TC-HEAL-A004:
+      status: COMPLETE
+      commit: "10b6d5ad"
+      proof_level: 3
+      target_proof_level: 2
+      proof_gap: none
+
+  # Commits
+  commits:
+    - hash: "10b6d5ad"
+      message: "fix(governance): SPEC-AUTH-PHASE-A closure"
+      files_changed: 12
+    - hash: "88203357"
+      message: "docs(master-plan): Section 60 CLOSED"
+      files_changed: 1
+
+  candidate_status: VALID_ALL_GREEN_CLOSE_TASK_AUTHORIZED
+  assessed_at: "2026-06-25"

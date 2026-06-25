@@ -1,0 +1,36 @@
+supervisor_prompt_binding:
+  post_sprint_audit:
+    path: .supervisor/prompts/prompt1-post-sprint-audit.md
+    content_hash: "263dab3dadad6845"
+    registry_id: PSL-PROMPT-1
+    role_verified: true
+    mode: audit
+    stage: 1
+  plan_hardening:
+    path: .supervisor/prompts/prompt2-plan-hardening.md
+    content_hash: "4fe227b68c0e58e0"
+    registry_id: PSL-PROMPT-2
+    role_verified: true
+    mode: plan
+    stage: 2
+  controlled_execution:
+    path: .supervisor/prompts/prompt3-controlled-execution.md
+    content_hash: "5246d218a39a8464"
+    registry_id: PSL-PROMPT-3
+    role_verified: true
+    mode: execution
+    stage: 3
+  close_task:
+    expected_path: .supervisor/prompts/close-task.md
+    resolved_path: .supervisor/prompts/prompt4-close-task.md
+    resolution_reason: "prompt4-close-task.md is the canonical close-task prompt; no close-task.md alias exists in registry"
+    content_hash: "3196a5bd52bd6e03"
+    role_verified: true
+    mode: closure
+    stage: 4
+  binding_status: BOUND
+  binding_iteration: 2
+  bound_at: "2026-06-25"
+  authoritative_plan: "C:/Users/prora/.claude/plans/witty-doodling-goose.md"
+  plan_hash: "dd07cbc3ec27077b"
+  mission_id: spec-authority-machinery-explosion-20260625-c6b2470
