@@ -131,6 +131,9 @@ def run_all_governance_validators(
         validate_lane_dag_ordering as _validate_lane_dag_ordering,
         validate_artifact_identity as _validate_artifact_identity,
         validate_skill_attribution_in_declaration as _validate_skill_attribution,
+    )
+    # V74 imported from dedicated ledger gate validator file (TC-PDL-005)
+    from governance_validators_ledger import (  # noqa: PLC0415
         validate_ledger_continuation_gate as _validate_ledger_continuation_gate,
     )
     # V73 imported from dedicated .NET qname validator file (TC-DOTNET-QNAME-001)

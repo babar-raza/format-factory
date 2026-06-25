@@ -1,18 +1,101 @@
 {
   "schema": "format-factory-maturity-signal/v1",
   "project_id": "format-factory",
-  "run_id": "ff-sprint-s75-commit-20260626",
-  "timestamp": "2026-06-25T17:07:38.233192+00:00",
-  "sprint_verdict": "ACCEPTED",
-  "autonomous_continue": true,
-  "iteration": 9,
+  "run_id": "multi-plan-intake-20260625",
+  "timestamp": "2026-06-25T17:13:20.090790+00:00",
+  "sprint_verdict": "ACCEPTED_WITH_REWORK",
+  "autonomous_continue": false,
+  "iteration": 10,
   "test_results": {
     "total": 0,
     "passed": 0,
     "failed": 0
   },
-  "work_items": [],
-  "rework_items": [],
+  "work_items": [
+    {
+      "id": "MCT-PDL-002",
+      "grade": "OVERCLAIMED",
+      "confidence": 0.0,
+      "llm_used": false,
+      "rework_reason": "Item declared completed but no evidence found. Provide evidence at declared paths."
+    },
+    {
+      "id": "MCT-PDL-003-004",
+      "grade": "OVERCLAIMED",
+      "confidence": 0.0,
+      "llm_used": false,
+      "rework_reason": "Item declared completed but no evidence found. Provide evidence at declared paths."
+    },
+    {
+      "id": "MCT-PDL-005",
+      "grade": "OVERCLAIMED",
+      "confidence": 0.0,
+      "llm_used": false,
+      "rework_reason": "Item declared completed but no evidence found. Provide evidence at declared paths."
+    },
+    {
+      "id": "MCT-RJO-004",
+      "grade": "OVERCLAIMED",
+      "confidence": 0.0,
+      "llm_used": false,
+      "rework_reason": "Item declared completed but no evidence found. Provide evidence at declared paths."
+    },
+    {
+      "id": "MCT-TCF-002",
+      "grade": "OVERCLAIMED",
+      "confidence": 0.0,
+      "llm_used": false,
+      "rework_reason": "Item declared completed but no evidence found. Provide evidence at declared paths."
+    },
+    {
+      "id": "MCT-SFE2-002",
+      "grade": "OVERCLAIMED",
+      "confidence": 0.0,
+      "llm_used": false,
+      "rework_reason": "Item declared completed but no evidence found. Provide evidence at declared paths."
+    },
+    {
+      "id": "MCT-WYS-ALL",
+      "grade": "OVERCLAIMED",
+      "confidence": 0.0,
+      "llm_used": false,
+      "rework_reason": "Item declared completed but no evidence found. Provide evidence at declared paths."
+    },
+    {
+      "id": "MCT-TDL-007",
+      "grade": "OVERCLAIMED",
+      "confidence": 0.0,
+      "llm_used": false,
+      "rework_reason": "Item declared completed but no evidence found. Provide evidence at declared paths."
+    },
+    {
+      "id": "MCT-TDL-012",
+      "grade": "OVERCLAIMED",
+      "confidence": 0.0,
+      "llm_used": false,
+      "rework_reason": "Item declared completed but no evidence found. Provide evidence at declared paths."
+    },
+    {
+      "id": "MCT-SHR-000",
+      "grade": "OVERCLAIMED",
+      "confidence": 0.0,
+      "llm_used": false,
+      "rework_reason": "Item declared completed but no evidence found. Provide evidence at declared paths."
+    }
+  ],
+  "rework_items": [
+    "MCT-PDL-002",
+    "MCT-PDL-003-004",
+    "MCT-PDL-005",
+    "MCT-RJO-004",
+    "MCT-TCF-002",
+    "MCT-SFE2-002",
+    "MCT-WYS-ALL",
+    "MCT-TDL-007",
+    "MCT-TDL-012",
+    "MCT-SHR-000",
+    "GOV_BLOCK:monolith_detection_validator"
+  ],
   "agentic_maturity_score": 4.4,
   "active_gaps": [],
   "next_action_hint": "",
