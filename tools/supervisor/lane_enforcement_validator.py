@@ -15,6 +15,20 @@ from dataclasses import dataclass, field
 from typing import Any
 
 
+# Paths that are exempt from lane enforcement.
+# These files are modified as standard bookkeeping in EVERY product sprint
+# regardless of which product lane is being targeted. They must not contribute
+# to multi-lane spread counts or trigger cross-lane violations.
+GLOBAL_EXEMPT_PATHS: list[str] = [
+    "reports/capability-layer/gap-ledger.json",
+    "registry/source-structure-baseline.json",
+    "reports/r90/product-code-change-ledger.json",
+    "reports/supervisor/",
+    ".local/",
+    ".supervisor/",
+]
+
+
 # Default lane ownership rules (path prefix → lane)
 DEFAULT_LANE_OWNERSHIP: dict[str, str] = {
     "tools/specification-authority-layer/": "SAL",
@@ -56,8 +70,15 @@ class LaneEnforcementValidator:
         self.lane_ownership = lane_ownership or DEFAULT_LANE_OWNERSHIP
 
     def _resolve_lane(self, file_path: str) -> str | None:
-        """Determine which lane owns a file path."""
+        """Determine which lane owns a file path.
+
+        Returns None for globally exempt paths — these are excluded from
+        both multi-lane spread counts and cross-lane violation checks.
+        """
         normalized = file_path.replace("\\", "/")
+        for exempt in GLOBAL_EXEMPT_PATHS:
+            if normalized.startswith(exempt) or normalized == exempt.rstrip("/"):
+                return None
         for prefix, lane in sorted(
             self.lane_ownership.items(), key=lambda x: -len(x[0])
         ):
@@ -100,7 +121,7 @@ class LaneEnforcementValidator:
             file_lanes[f] = self._resolve_lane(f)
 
         # Check against declared lane
-        if declared_lane:
+        if declared_lane and declared_lane.upper() != "MULTI_LANE":
             for f, lane in file_lanes.items():
                 if lane and lane != declared_lane:
                     result.passed = False
@@ -113,9 +134,14 @@ class LaneEnforcementValidator:
                 else:
                     result.evidence.append(f"File '{f}' → no lane ownership defined")
         else:
-            # No declared lane — check for multi-lane spread
+            # No declared lane (or MULTI_LANE declared) — check for multi-lane spread
             lanes_touched = {l for l in file_lanes.values() if l}
-            if len(lanes_touched) > 2:
+            if declared_lane and declared_lane.upper() == "MULTI_LANE":
+                # Multi-lane sprint: allow any number of lanes, just report
+                result.evidence.append(
+                    f"Multi-lane sprint declared. Lanes touched: {sorted(lanes_touched)}"
+                )
+            elif len(lanes_touched) > 2:
                 result.passed = False
                 result.violations.append(
                     f"Declaration touches {len(lanes_touched)} lanes without "

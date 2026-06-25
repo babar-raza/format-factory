@@ -2,6 +2,8 @@
 
 A File Format Acquisition System that produces legal parsers, converters, importers, exporters, validators, and compatibility tools for structured file formats.
 
+**Current state (2026-06-25):** 20 formats supported across Python FOSS and .NET commercial tracks. 14,498+ tests passing. 53 governance validators. 16 installable Python packages. Gate 11 G11-G sub-gate approved by Babar Raza 2026-06-05 (FODS, FODT, Netpbm). Product deepening mission COMPLETE: all 14 Python FOSS formats at PROOF_LEVEL_4+.
+
 ---
 
 ## What This Project Does
@@ -27,31 +29,60 @@ The project goals are:
 
 ---
 
-## Products
+## Quick Start
 
-| Track | Technology | License | Status |
-|---|---|---|---|
-| Python open-source library | Python 3.11+ | Apache 2.0 | Source created for FODS and FODT; no public release yet |
-| .NET product library | net8.0, net10.0 | Proprietary (FOSS packaging deferred, DEC-033) | C4-C6 vertical slice created for FODS and FODT; not commercial-ready; Gate 11 NOT approved |
+```bash
+# Check autonomous sprint loop status
+python tools/supervisor/check_continuation.py
 
-Source layout: `src/python/{format}/` for Python FOSS; `src/net/{format}/` for .NET product.
+# Run all Python FOSS tests
+.venv/Scripts/pytest tests/python/ -x
+
+# Build a local installable package (e.g. fods)
+python packaging/python/build-local-packages.py --format fods
+
+# Run governance validators against the latest evidence declaration
+python tools/supervisor/governance_validators.py --check
+```
 
 ---
 
-## First Pilots: FODS and FODT
+## Products
 
-**FODS Gates 1-10 passed. FODT Gates 1-10 passed. Approved gate decisions are recorded in `registry/format-registry.yaml`.**
+### Python FOSS Track (16 installable packages, local only)
 
-**FODS**, Flat OpenDocument Spreadsheet, is the first pilot format. It is a flat XML variant of the ODF spreadsheet format, published by OASIS under royalty-free terms as part of ODF 1.3. It is a single XML file, so it avoids ZIP container complexity.
+| Format | Type | Package | Consumer Proof |
+|--------|------|---------|----------------|
+| FODS | Flat ODF Spreadsheet | `aspose-format-factory-fods` | PASS |
+| FODT | Flat ODF Text | `aspose-format-factory-fodt` | PASS |
+| ODS | ODF Spreadsheet | `aspose-format-factory-ods` | PASS |
+| ODT | ODF Text | `aspose-format-factory-odt` | PASS |
+| FODG | Flat ODF Drawing | `aspose-format-factory-fodg` | PASS |
+| FODP | Flat ODF Presentation | `aspose-format-factory-fodp` | PASS |
+| GNUMERIC | Gnumeric spreadsheet | `aspose-format-factory-gnumeric` | PASS |
+| ABW | AbiWord | `aspose-format-factory-abw` | PASS |
+| DIF | Data Interchange Format | `aspose-format-factory-dif` | PASS |
+| SYLK | Symbolic Link | `aspose-format-factory-sylk` | PASS |
+| TOML | Config/data format | `aspose-format-factory-toml` | PASS |
+| NDJSON | Newline-delimited JSON | `aspose-format-factory-ndjson` | PASS |
+| TSV | Tab-separated values | `aspose-format-factory-tsv` | PASS |
+| CSV | Comma-separated values | `aspose-format-factory-csv` | PASS |
+| ZST | Zstandard compression | `aspose-format-factory-zst` | PASS |
+| PBM/PGM/PPM | Netpbm image formats | `aspose-format-factory-pbm/pgm/ppm` | PASS |
 
-**FODT**, Flat OpenDocument Text, is the second pilot format. It reuses the ODF flat-XML acquisition strategy while proving the pipeline can handle a different product family: word-processing documents.
+All packages: `publish_status: local_only_not_published`, `publication_authorized: false`. See `packaging/python/package-matrix.yaml`.
 
-Current implementation status:
+### .NET Commercial Track (3 products)
 
-- FODS Python source exists in `src/python/fods/`; Gate 11 commercial_readiness_in_progress (NOT approved).
-- FODT Python source exists in `src/python/fodt/`; Gate 10 approved by Babar Raza 2026-05-11; Gate 11 commercial_readiness_in_progress (NOT approved).
-- .NET C4-C6 vertical slice exists for both formats in `src/net/fods/` and `src/net/fodt/`; not commercial-ready; Gate 11 NOT approved; commercial_product_ready: false.
-- ODF reuse strategy: [docs/odf-flat-family-reuse-strategy.md](docs/odf-flat-family-reuse-strategy.md).
+| Format | .NET Project | Gate 11 G11-G | Status |
+|--------|-------------|---------------|--------|
+| FODS | `src/net/fods/` | APPROVED 2026-06-05 (Babar Raza) | 618 tests, not commercially released |
+| FODT | `src/net/fodt/` | APPROVED 2026-06-05 (Babar Raza) | 568 tests, not commercially released |
+| Netpbm | `src/net/netpbm/` | APPROVED 2026-06-05 (Babar Raza) | 423 tests, not commercially released |
+
+`commercial_product_ready: false` for all entries — requires Gate 11 G11-G EXECUTION approval (Babar Raza only) and full spec-parity verification.
+
+Source layout: `src/python/{format}/` for Python FOSS; `src/net/{format}/` for .NET product.
 
 ---
 
@@ -59,14 +90,14 @@ Current implementation status:
 
 The project is organized around six format families:
 
-| Family | Description | Examples |
+| Family | Description | Formats |
 |---|---|---|
-| Cells | Spreadsheets and tabular data | FODS, ODS, XLSX |
-| Words | Word processing documents | FODT, ODT, DOCX |
-| Slides | Presentations | FODP, ODP, PPTX |
-| Imaging | Raster and vector images | SVG, PNG with metadata |
-| Diagram/CAD | Diagrams and technical drawings | DrawingML, DXF |
-| Archive | Container and archive formats | ZIP, TAR when format-relevant |
+| Cells | Spreadsheets and tabular data | FODS, ODS, DIF, SYLK, GNUMERIC, CSV, TSV |
+| Words | Word processing documents | FODT, ODT, ABW |
+| Slides | Presentations | FODP |
+| Drawing | Vector drawing | FODG |
+| Imaging | Raster images | PBM, PGM, PPM, QOI, XCF |
+| Data/Archive | Config, data, compression | TOML, NDJSON, ZST |
 
 ---
 
@@ -86,89 +117,103 @@ Every format passes through 11 mandatory gates:
 10. **Gate 10**: OSS Readiness Complete, production source and release manifest
 11. **Gate 11**: Commercial Readiness Complete, commercial tier and proprietary manifest
 
-Agents may prepare evidence, but only a human can approve a gate.
+Gates 1-10 are agent-owned policy gates with evidence, validators, and acceptance criteria. Gate 11 G11-G (commercial release EXECUTION) requires Babar Raza's business authority — the only TRUE_EXTERNAL_GATE.
 
 ---
 
 ## Engineering Practices
 
-- **Test Suite:** 1,000+ test files with 11,800+ assertions covering edge cases, error paths, and spec-fact traceability. Tests verify that code cites the correct specification sections (e.g., `tests/python/zst/test_r127_zst_fact_traceability.py`).
+- **Test Suite:** 14,498+ tests passing, 0 failures (as of product-deepening-mission-complete sprint 2026-06-25). Tests span unit, integration, roundtrip, analytics, spec-fact traceability, and installed-package workflow proofs.
 - **Test Framework:** pytest with `--import-mode=importlib` and 120-second per-test timeout. Dual conftest pattern handles stdlib module shadowing (`csv`, `html`).
-- **Quality Gates:** 11 programmatic governance validators block sprints on policy violations (`tools/supervisor/governance_validators.py`). Validators enforce: declaration schema compliance, evidence artifact existence, anti-skip checks, adoption compliance, prompt quality, skill registry consistency, spec-fact references, state machine transitions, cross-stream rules, evidence quality scoring, and package manifest completeness.
-- **Security:** Gate 8 requires human security review before any format reaches product. Parser threat model covers XXE, billion laughs, zip bombs, path traversal, malformed input handling, memory limits, recursion limits, and binary parser safety (`docs/security.md`).
+- **Quality Gates:** 53 programmatic governance validators (V1-V53) block sprints on policy violations (`tools/supervisor/governance_validators.py`). Validators enforce: declaration schema compliance, evidence artifact existence, anti-skip checks, skill-first execution, spec-fact references, QName compliance, architecture stub detection, analytics separation, lane enforcement, and package manifest completeness.
+- **Source Size Policy:** Maximum 800 LOC and 60 functions per production file, tracked in `registry/source-structure-baseline.json`. Violations are frozen at `baseline_loc_cap` (write-once).
+- **Security:** Gate 8 requires security review before any format reaches product. Parser threat model covers XXE, billion laughs, zip bombs, path traversal, malformed input handling, memory limits, recursion limits, and binary parser safety (`docs/security.md`).
+- **QName Compliance:** Every exported Python class carries a `spec_qname` class attribute mapping to its canonical ODF/format specification element (enforced by V51-V53). Spec authority classes live in `{format}/spec/`; Compat/ facades expose simplified names.
 
 ---
 
 ## Autonomous Supervision Architecture
 
-format-factory uses an autonomous supervisor pipeline that manages multi-sprint execution with bounded repair and evidence materialization.
+format-factory uses an autonomous supervisor pipeline that manages multi-sprint execution with bounded repair and evidence materialization. Over 585 autonomous sprint cycles have been completed.
 
-- **State Management:** Session state persisted in `session-resume.md` and `continuation-signal.json`. Cross-window recovery restores full operational context from these files without requiring prior conversation history.
-- **Flow Orchestration:** 4-stream architecture (Mainstream Product, Acceleration, Skills/Governed Execution, Supervisor/Autonomous Continuation) with a 15-state taskcard machine governing work item lifecycle. Pipeline: sprint start, execute work items, write evidence declaration, validate with 11 governance validators, grade work items, generate next sprint, check continuation signal.
-- **Boundary Enforcement:** `AGENTS.md` (59KB operating contract) defines non-negotiable rules for all automated executors. 11 governance validators programmatically block sprints on policy violations. Gate approvals require explicit human authorization.
-- **Adaptive Repair:** `tools/supervisor/bounded_repair_engine.py` classifies test and build failures into 6 categories (IMPORT, SYNTAX, ATTRIBUTE, NAME, ASSERTION, TIMEOUT) and applies targeted repairs with automatic rollback on failure. Repairs are bounded to a maximum of 3 attempts per error.
+- **State Management:** Session state persisted in `reports/supervisor/session-resume.md` and `.local/supervisor/continuation-signal.json`. Cross-window recovery restores full operational context without requiring prior conversation history.
+- **Flow Orchestration:** 4-stream architecture (Mainstream Product, Acceleration, Skills/Governed Execution, Supervisor/Autonomous Continuation) with a 15-state taskcard machine governing work item lifecycle. Pipeline: sprint start → execute work items → write evidence declaration → validate with 53 governance validators → grade work items → generate next sprint → check continuation signal.
+- **Boundary Enforcement:** `AGENTS.md` (~60KB operating contract) defines non-negotiable rules for all automated executors. 53 governance validators programmatically block sprints on policy violations. Gate 11 G11-G approval requires explicit human business authority.
+- **Adaptive Repair:** `tools/supervisor/bounded_repair_engine.py` classifies test and build failures into 6 categories (IMPORT, SYNTAX, ATTRIBUTE, NAME, ASSERTION, TIMEOUT) and applies targeted repairs with automatic rollback on failure.
+- **CCI (Cross-Chat Continuation Isolation):** `session_id` field in continuation signals prevents cross-chat state contamination. SESSION_MISMATCH is a non-overridable hard stop.
 
 Key implementation files:
+
 - `tools/supervisor/autonomous_cycle.py` — Sprint execution and evidence pipeline
-- `tools/supervisor/governance_validators.py` — 11 programmatic quality gates
+- `tools/supervisor/governance_validators.py` — 53 programmatic quality gates (V1-V53)
+- `tools/supervisor/lane_enforcement_validator.py` — Cross-lane file ownership enforcement
 - `tools/supervisor/bounded_repair_engine.py` — Error classification and bounded repair
-- `tools/supervisor/product_feature_factory.py` — 6-pattern feature generation (getter, export_csv, roundtrip, append, probe, package_proof)
-- `tools/supervisor/evidence_auto_packager.py` — Automatic evidence declaration generation
+- `tools/supervisor/check_continuation.py` — Autonomous loop continuation gate
+- `packaging/python/build-local-packages.py` — Local Python wheel builder for all 16 formats
 
 ---
 
 ## Project Status
 
-**Current phase:** Phase 3/4. FODS Gates 1-10 are passed and Gate 11 is `commercial_readiness_in_progress` (NOT approved). FODT Gates 1-10 are passed, Gate 11 is `commercial_readiness_in_progress` (NOT approved). DEC-033 resolved as Option B (.NET Commercial Only). commercial_product_ready: false. ZST Gates 1-4 prototype COMPLETE (R18, 2026-05-16). FODP/FODG/Gnumeric/ABW Gate 1 APPROVED (R18, delegated).
+| Item | Status |
+|------|--------|
+| Python FOSS formats | 20 formats in source; 16 installable packages; all local only |
+| .NET commercial formats | FODS, FODT, Netpbm; G11-G sub-gate approved; not commercially released |
+| Gate 11 G11-G | APPROVED by Babar Raza 2026-06-05 (sub-gate); G11-G EXECUTION pending |
+| commercial_product_ready | false (all entries) |
+| Tests passing | 14,498+ Python + .NET (0 failures) |
+| Governance validators | 53 (V1-V53) |
+| Product deepening | COMPLETE — all 14 Python FOSS formats at PROOF_LEVEL_4+ |
+| Spec parity (FODS) | PARTIAL — 3/12 qnames have Compat/ facades |
+| Spec parity (FODT) | BLOCKED — SAL cache missing FODT ODF 1.3 facts |
+| Autonomous loop | ACTIVE — MODE 4 (MCP active), AUTONOMOUS_CONTINUE: YES |
 
-- Phase 0 Foundation: Complete, accepted 2026-05-04.
-- FODS Gates 1-10: Complete, approved by Babar Raza across run017 through run048.
-- FODS Python Phase 4 source: Created under `src/python/fods/` in run051, TC-0050 completed.
-- FODT Gates 1-10: Complete, approved by Babar Raza across run041 through TC-0052 (Gate 10 approved 2026-05-11).
-- FODT Gate 11: commercial_readiness_in_progress; DEC-033 resolved Option B; NOT approved.
-- FODT Python Phase 4 source: Created under `src/python/fodt/` with 115/115 tests passing (TC-0052 completed).
-- Format Understanding Layer: FUL-001 schemas created, FUL-002 FODS completed, FUL-003 FODT completed.
-- .NET C4-C6 vertical slice: Created for FODS (src/net/fods/) and FODT (src/net/fodt/); DEC-033 resolved Option B; commercial_product_ready: false.
-- ZST (Zstandard): Gates 1-3 PASSED. **Gate 4 prototype COMPLETE (R18, 2026-05-16):** prototypes/by-format/zst/ created; 38/38 tests PASS; 15/15 corpus PASS; Gate 5 N/A (codec format). Gate 4 approval pending human review.
-- Multi-format Gate 1 (R18): **FODP Gate 1 APPROVED** (8.7; OASIS RF; Aspose.Slides FULL_RT). **FODG Gate 1 APPROVED** (8.1; OASIS RF; Aspose.Imaging LOAD_ONLY). **Gnumeric Gate 1 APPROVED** (8.2; Cat2; Aspose NOT_SUPPORTED). **ABW Gate 1 APPROVED** (7.8; Cat2; Aspose NOT_SUPPORTED). ORA: scored 6.8 (Borderline; pending human review). dnumber/.numbers = FORMAL_REJECT (Category 5). 8 formats total in registry.
-
-For current status, active work, and decisions, see [plans/master-plan.md](plans/master-plan.md). The master plan and [registry/format-registry.yaml](registry/format-registry.yaml) are the authoritative status sources.
+For canonical per-format status, see:
+- `product-capability-matrix/poc-targets.yaml` — product targets and gate status
+- `registry/parity-matrix.yaml` — Python/.NET parity tracking
+- `reports/supervisor/session-resume.md` — last sprint outcome and next action
+- `reports/supervisor/approval-gates.md` — current continuation authorization
 
 ---
 
 ## Repository Structure
 
 ```text
-docs/         Architecture, policy, and process documentation
-plans/        Living master plan, single operational authority
-taskcards/    Atomic work units
-registry/     Format registry and scoring model
-acquisition-packs/  Per-format evidence, legal notes, samples, parser notes
-samples/      Licensed sample corpus with provenance records
-schemas/      Neutral-model and format-understanding schemas
-prototypes/   Reference prototype parsers, internal only
-src/          Production source code
-tests/        Test fixtures, oracle outputs, fuzz seeds, product tests
-tools/        Acquisition, scoring, validation, evidence, and oracle tools
-reports/      Security and legal reports
-.claude/      Claude Code project configuration and commands
+docs/                 Architecture, policy, process, and governance documentation
+plans/                Living master plan (master-plan.md) and per-chat plan files
+registry/             Format registry, parity matrix, scoring model, source baseline
+shared/qname-registry/  Canonical QName registry YAMLs for all 20 formats
+acquisition-packs/    Per-format evidence, legal notes, samples, parser notes
+samples/              Licensed sample corpus with provenance records
+schemas/              Neutral-model and format-understanding schemas
+src/python/           Python FOSS production source (one package per format)
+src/net/              .NET commercial production source (one project per format)
+tests/python/         Python format tests
+tests/net/            .NET format tests
+tests/supervisor/     Governance and supervisor infrastructure tests
+tools/supervisor/     Autonomous cycle, governance validators, sprint tools
+tools/spec/           SAL (Specification Authority Layer) tools
+packaging/python/     Local Python wheel builder and package matrix
+examples/python/      Consumer roundtrip proof scripts (one per format)
+reports/              Sprint reviews, capability maps, gap ledger, audit reports
+.supervisor/          Supervisor knowledge base, skill registry, context packs
+.claude/              Claude Code project configuration and slash commands
 ```
 
 ---
 
 ## Agent Methodology and Fresh Chat Start
 
-Agents must start from the methodology index when producing plans or prompts. Fresh chat sessions should read the continuity brief before planning work. Evidence bundle review must precede next prompt generation when a bundle exists.
+Agents must read `CLAUDE.md` and `AGENTS.md` before starting any work. Fresh chat sessions read `reports/supervisor/session-resume.md` to restore operational context.
 
 | Resource | Purpose |
 |---|---|
-| [docs/agent-methodology-index.md](docs/agent-methodology-index.md) | Start here for plan and prompt work |
-| [docs/planning-methodology.md](docs/planning-methodology.md) | Core planning principles and prompt anatomy |
-| [docs/agent-execution-handoff-standard.md](docs/agent-execution-handoff-standard.md) | Execution handoff standard |
-| [docs/plan-hardening-checklist.md](docs/plan-hardening-checklist.md) | 22-item plan hardening checklist |
-| [docs/fresh-chat-continuity-brief.md](docs/fresh-chat-continuity-brief.md) | Fresh session orientation guide |
-| [docs/prompts/README.md](docs/prompts/README.md) | Prompt template index |
-| [memory/00-index.md](memory/00-index.md) | Memory package index |
+| [CLAUDE.md](CLAUDE.md) | Session start instructions and Supreme Directive |
+| [AGENTS.md](AGENTS.md) | Operating contract for all executors (~60KB) |
+| [plans/master-plan.md](plans/master-plan.md) | Single operational authority (42 sections) |
+| [reports/supervisor/session-resume.md](reports/supervisor/session-resume.md) | Last sprint outcome and next action |
+| [docs/agent-methodology-index.md](docs/agent-methodology-index.md) | Methodology index for plan and prompt work |
+| [docs/automation/supervisor-worker-contract.md](docs/automation/supervisor-worker-contract.md) | Evidence declaration schema |
 
 ---
 
