@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s84-dotnet-deepening-20260626",
+  "latest_sprint": "ff-sprint-s85-dotnet-deepening-20260626",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -18785,6 +18785,57 @@
       ],
       "test_files": [
         "tests/net/netpbm/NetpbmR119SerializationTests.cs"
+      ],
+      "format": "Netpbm"
+    },
+    {
+      "entry_id": "PC-FODS-R120-SHEET-ENUM-20260626",
+      "classification": "PRODUCT_DEEPENING",
+      "sprint": "ff-sprint-s85-dotnet-deepening-20260626",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.sheet_enumeration"
+      ],
+      "api_symbols": [
+        "FodsDocument.SheetCount",
+        "FodsDocument.Sheets",
+        "FodsDocument.GetSheetNames"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR120SheetEnumerationTests.cs"
+      ],
+      "format": "FODS"
+    },
+    {
+      "entry_id": "PC-FODT-R118-PARA-STYLES-20260626",
+      "classification": "PRODUCT_DEEPENING",
+      "sprint": "ff-sprint-s85-dotnet-deepening-20260626",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.paragraph_style_bulk"
+      ],
+      "api_symbols": [
+        "FodtDocument.GetParagraphStyles"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR118GetParagraphStylesTests.cs"
+      ],
+      "format": "FODT"
+    },
+    {
+      "entry_id": "PC-NETPBM-R120-PIXEL-ACCESS-20260626",
+      "classification": "PRODUCT_DEEPENING",
+      "sprint": "ff-sprint-s85-dotnet-deepening-20260626",
+      "product": "Netpbm .NET",
+      "capability_refs": [
+        "commercial_net_products.Netpbm.dotnet_status.pixel_access"
+      ],
+      "api_symbols": [
+        "NetpbmDocument.GetPixel",
+        "NetpbmDocument.GetPixelColor"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR120PixelAccessTests.cs"
       ],
       "format": "Netpbm"
     }
