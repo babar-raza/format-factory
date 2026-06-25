@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s107-dotnet-deepening-20260626",
+  "latest_sprint": "ff-sprint-s108-dotnet-deepening-20260626",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -19931,6 +19931,65 @@
         }
       ],
       "format": "CSV"
+    },
+    {
+      "entry_id": "PC-FODS-R132",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s108-dotnet-deepening-20260626",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.export_by_name"
+      ],
+      "api_symbols": [
+        "FodsDocument.ExportSheetToHtml(sheetName)",
+        "FodsDocument.GetColumnHeaders(sheetName)"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/fods/FodsR132ExportSheetByNameTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "FODS"
+    },
+    {
+      "entry_id": "PC-FODT-R133",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s108-dotnet-deepening-20260626",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.get_paragraph_texts"
+      ],
+      "api_symbols": [
+        "FodtDocument.GetParagraphTexts"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/fodt/FodtR133GetParagraphTextsTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "FODT"
+    },
+    {
+      "entry_id": "PC-NETPBM-R135",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s108-dotnet-deepening-20260626",
+      "product": "Netpbm .NET",
+      "capability_refs": [
+        "commercial_net_products.Netpbm.dotnet_status.histogram_brightness_map"
+      ],
+      "api_symbols": [
+        "NetpbmImage.GetHistogram",
+        "NetpbmImage.GetBrightnessMap"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/netpbm/NetpbmR135HistogramAndBrightnessMapTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "Netpbm"
     }
   ],
   "total_entries": 1006,
