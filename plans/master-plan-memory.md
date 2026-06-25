@@ -656,3 +656,54 @@ notes: >
   Lock file 7da28319645c-f3a3c566.json (hash-keyed format).
   Added by TC-PG-001 ledger reconciliation (governance gate repair).
 ```
+
+### LEDGER-022 — abstract-dazzling-charm
+
+```yaml
+ledger_entry_id: LEDGER-022
+mission_id: FF-CAP-FORENSICS-20260625
+repository: format-factory
+branch: main
+plan_path: C:/Users/prora/.claude/plans/abstract-dazzling-charm.md
+plan_hash: 11f9f7ea9a63ecf4
+plan_status: TERMINAL_CLOSED
+created_at: "2026-06-25"
+created_by: autonomous-agent
+plan_description: >
+  Capability Layer Forensic Investigation and Plan Surgical Enhancement (MODE A).
+  Session abstract-dazzling-charm executed 6 taskcards:
+  TC-FF-CAP-001: Evidence root + diagnostic setup
+  TC-FF-CAP-002: Gate status reconciliation audit C0-C9
+  TC-FF-CAP-003: Statistics reconciliation + pipeline map
+  TC-FF-CAP-004: SAL-to-capability traceability failure analysis
+  TC-FF-CAP-005: Critical failure boundary investigations (A/B/C/D)
+  TC-FF-CAP-006: Authoritative plan surgical enhancement (Appendix H)
+terminal_lock:
+  locked_at: "2026-06-25T21:42:06+00:00"
+  locked_by: "5c16c5c46b6f"
+  lock_state: TERMINAL_CLOSED
+  superseded_at: "2026-06-25T21:42:18+00:00"
+  superseded_reason: "Auto-superseded by TC-LOCK-POSTCLEAN-001 after clean sprint"
+final_verdict: CONVERGENCE_COMPLETE_ALL_GREEN_AND_TASK_CLOSED
+what_was_completed:
+  - 12 evidence artifacts in .local/evidences/capability-fact-to-feature-forensics-20260625-abstract/
+  - Gate status audit C0-C9 with verified contradictions (C4 upgraded to PASS, C9 corrected to PARTIAL)
+  - SAL traceability root cause identified (RC-9, 38.3% traceability, ID naming inconsistency)
+  - FOSS fallback regression confirmed ACTIVE (0 open gaps, 0 FOSS tasks/sprint)
+  - Compiler injection confirmed working (blocked only by 0 open gaps)
+  - TC-C1-EXTEND-001 confirmed COMPLETE (stream guard removed)
+what_changed:
+  - plans/capability-fact-to-feature-production-plan.md: 9 surgical edits (RC-9, TC-C5-TRACE-001, Appendix H, statistics 14309→14872, 1779→2009, queue 24→64)
+  - All changes committed in 49ab2fc6
+remaining_followups:
+  - TC-GAP-REGEN-001: Generate new open FOSS gaps (B-001 — BLOCKING)
+  - TC-V4-002 through TC-V4-010: Appx G Tier 0/1 taskcards
+  - TC-C5-TRACE-001: SAL ID normalization (C1 gate)
+  - TC-PROD-CLOSURE-PROOF-001: Production closure proof (C9 gate)
+  - TC-C1-EXTEND-BEHAVIORAL-001: Behavioral test (C4 PL1→PL3)
+notes: >
+  Plan lock was written as TERMINAL_CLOSED by write_plan_lock.py --terminal,
+  then auto-superseded by TC-LOCK-POSTCLEAN-001. Forensics session was READ-ONLY
+  (no production source mutation). Evidence in .local/ (gitignored). Production
+  plan changes committed at 49ab2fc6.
+```
