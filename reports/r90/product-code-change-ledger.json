@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s86-dotnet-deepening-20260626",
+  "latest_sprint": "ff-sprint-s87-dotnet-deepening-20260626",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -18886,6 +18886,55 @@
       ],
       "test_files": [
         "tests/net/netpbm/NetpbmR121ImageEditingTests.cs"
+      ],
+      "format": "Netpbm"
+    },
+    {
+      "entry_id": "PC-FODS-R122-CELL-DATA-TYPE-20260626",
+      "classification": "PRODUCT_DEEPENING",
+      "sprint": "ff-sprint-s87-dotnet-deepening-20260626",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.cell_metadata"
+      ],
+      "api_symbols": [
+        "FodsDocument.GetCellDataType"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR122GetCellDataTypeTests.cs"
+      ],
+      "format": "FODS"
+    },
+    {
+      "entry_id": "PC-FODT-R120-DOC-METADATA-20260626",
+      "classification": "PRODUCT_DEEPENING",
+      "sprint": "ff-sprint-s87-dotnet-deepening-20260626",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.document_metadata"
+      ],
+      "api_symbols": [
+        "FodtDocument.GetDocumentMetadata"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR120GetDocumentMetadataTests.cs"
+      ],
+      "format": "FODT"
+    },
+    {
+      "entry_id": "PC-NETPBM-R122-COPY-REGION-20260626",
+      "classification": "PRODUCT_DEEPENING",
+      "sprint": "ff-sprint-s87-dotnet-deepening-20260626",
+      "product": "Netpbm .NET",
+      "capability_refs": [
+        "commercial_net_products.Netpbm.dotnet_status.image_region_ops"
+      ],
+      "api_symbols": [
+        "NetpbmImage.CopyRegion",
+        "NetpbmImage.Clone"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR122CopyRegionTests.cs"
       ],
       "format": "Netpbm"
     }
