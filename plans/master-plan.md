@@ -4030,10 +4030,11 @@ audit-hardening-execution-closure loop applied.
 ## §57 — Product Quality Forensic Healing Mission (FORMAT-FACTORY-PQ-EXECUTE-001)
 
 **Sprint:** FORMAT-FACTORY-PQ-EXECUTE-001
-**Mission:** zany-riding-goblet.md v4 (final)
+**Mission:** zany-riding-goblet.md v6 (PSL loop re-verified)
 **Date:** 2026-06-25
-**Status:** CLOSED — ALL_TASKCARDS_COMPLETE
+**Status:** CLOSED — ALL_TASKCARDS_COMPLETE — PSL_LOOP_CONFIRMED
 **Plan type:** execution_mission
+**PSL loop verification (v6, 2026-06-25):** All 24 per-taskcard statuses confirmed COMPLETE at HEAD=273c9c54. Autonomous-cycle: ACCEPTED (23 items, 1 minor lane enforcement rework, non-blocking). All-green candidate: 0 material findings, 0 actionable findings, 0 eligible tasks. Plan updated to v6; TERMINAL_CLOSED written.
 
 ### Mission Summary
 
