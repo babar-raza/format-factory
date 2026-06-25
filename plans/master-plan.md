@@ -4389,3 +4389,51 @@ The SAL Verification, Hardening, and Integration Sprint executed 8 lanes (A/B/D/
 7. All pilots F1/F2/F3/F4 PASS — PASS
 8. 0 new governance validator regressions — PASS
 
+---
+
+## Section 76 — FF-AUTH-GATE-HARDENING-20260624: False Human-Blocker Elimination & Gate Authorization Hardening (CLOSED)
+
+**Mission:** FF-AUTH-GATE-HARDENING-20260624
+**Plan:** playful-dazzling-elephant.md (TERMINAL_CLOSED)
+**Date:** 2026-06-25
+**Commit:** 704581ac
+**Status:** CLOSED — ALL_GREEN, 145 tests PASS, FALSE_HUMAN_BLOCKERS_ELIMINATED_AND_GATE_POLICY_PROVEN
+
+### What Was Accomplished
+
+All 11 TC-AUTH-* taskcards executed and verified. Zero regressions.
+
+| Taskcard | Title | Status | Evidence |
+|----------|-------|--------|----------|
+| TC-AUTH-001 | Canonical Authorization Policy Contract | CLOSED | `docs/governance/authorization-policy-v1.yaml` |
+| TC-AUTH-002 | Gate-Contract Registry | CLOSED | `registry/gate-contract-registry.yaml` |
+| TC-AUTH-003 | Authorization Surface Inventory | CLOSED | `reports/authorization-surface-inventory.yaml` |
+| TC-AUTH-004 | False-Human-Blocker Register | CLOSED | `registry/false-human-blocker-register.yaml` |
+| TC-AUTH-005 | Authorization Backfill Report | CLOSED | `reports/authorization-backfill-report.yaml` |
+| TC-AUTH-006 | V80 Premature Human Auth Validator | CLOSED | `tools/supervisor/governance_validators_gate_auth.py` |
+| TC-AUTH-007 | V81 Gate Transition State Machine Validator | CLOSED | `tools/supervisor/governance_validators_gate_auth.py` |
+| TC-AUTH-008 | Explicit Blocker State Constants (alias) | CLOSED | `tools/supervisor/stop_reason_adjudicator.py` |
+| TC-AUTH-009 | Pilot Tests A-E (30 tests) | CLOSED | `tests/supervisor/test_gate_authorization_pilots.py` |
+| TC-AUTH-010 | Prompt & Skill Reference Updates | CLOSED | `autonomous-loop.md`, `autonomous-stop-reason-policy.md`, `generate_next_worker_prompt.py` |
+| TC-AUTH-011 | Fix generate_supervisor_packet.py blocker_type Bug | CLOSED | Confirmed already fixed in prior session |
+
+### Key Deliverables
+- **FORMAT_FACTORY_GATE_AUTHORIZATION_V1** — canonical gate policy (Gates 0-10 agent-autonomous, Gate 11 = Babar Raza G11-G commercial execution only)
+- **V80/V81** in `governance_validators_gate_auth.py` — dedicated file (eliminates RISK-02 LOC cap); V80 detects false human blockers; V81 enforces gate-transition state machine
+- **StopDecision.WAITING_GATE_11_AUTHORIZATION** — alias to `RELEASE_APPROVAL_PENDING_NOT_IMPLEMENTATION_BLOCKER` (backward compatible, 115 existing tests untouched)
+- **30 pilot tests** (Pilots A-E + negative controls) — all PASS; covers uncertainty (A), repair (B), multi-option (C), valid Gate 11 (D), parallel lanes (E)
+
+### Test Results
+- 30 pilot tests (test_gate_authorization_pilots.py): PASS
+- 91 adjudicator tests (test_stop_reason_adjudicator.py): PASS (zero regressions)
+- 24 human gate policy tests (test_human_gate_policy.py): PASS (zero regressions)
+- **Total: 145/145 PASS**
+
+### Risk Elimination (v3)
+| Risk | Resolution |
+|------|-----------|
+| RISK-01 (Gate 3 "human-reviewed" ambiguity) | TC-AUTH-002 Gate 3 entry includes `human_reviewed_note` disambiguation field |
+| RISK-02 (ext.py LOC cap) | V80/V81 in dedicated `governance_validators_gate_auth.py` — zero pre-existing cap |
+| RISK-03 (TC-AUTH-011 blind fix) | Grep-first + 5-line context read + decision table mandated — confirmed already fixed |
+| RISK-04 (novel phrasing) | V80 uses dual detection: `_HUMAN_AUTH_PHRASES` frozenset + `_HUMAN_GATE_ITEM_TYPES` structural check |
+
