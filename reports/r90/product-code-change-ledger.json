@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s106-dotnet-deepening-20260626",
+  "latest_sprint": "ff-sprint-s107-dotnet-deepening-20260626",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -19863,6 +19863,74 @@
         }
       ],
       "format": "TXT"
+    },
+    {
+      "entry_id": "PC-ZST-R122",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s107-dotnet-deepening-20260626",
+      "product": "ZST .NET",
+      "capability_refs": [
+        "commercial_net_products.ZST.dotnet_status.frame_analytics"
+      ],
+      "api_symbols": [
+        "ZstDocument.FrameHeaderDescriptor",
+        "ZstDocument.IsMinimalFrame",
+        "ZstDocument.SizeExceeds100K",
+        "ZstDocument.IsHighlyCompressed",
+        "ZstDocument.OverheadBytes",
+        "ZstDocument.BytesPerFrame",
+        "ZstDocument.ContentTypeHint",
+        "ZstDocument.IsEmptyContent"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/zst/ZstR122FrameAnalyticsTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "ZST"
+    },
+    {
+      "entry_id": "PC-TSV-R121",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s107-dotnet-deepening-20260626",
+      "product": "TSV .NET",
+      "capability_refs": [
+        "commercial_net_products.TSV.dotnet_status.save_to_file"
+      ],
+      "api_symbols": [
+        "TsvDocument.SaveToFile",
+        "TsvDocument.ToTsv",
+        "TsvDocument.LoadFile"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/tsv/TsvR121SaveToFileTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "TSV"
+    },
+    {
+      "entry_id": "PC-CSV-R122",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s107-dotnet-deepening-20260626",
+      "product": "CSV .NET",
+      "capability_refs": [
+        "commercial_net_products.CSV.dotnet_status.save_to_file"
+      ],
+      "api_symbols": [
+        "CsvDocument.SaveToFile",
+        "CsvDocument.ToCsv",
+        "CsvDocument.LoadFile"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/csv/CsvR122SaveToFileTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "CSV"
     }
   ],
   "total_entries": 1006,
