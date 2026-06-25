@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s102-dotnet-deepening-20260626",
+  "latest_sprint": "ff-sprint-s103-dotnet-deepening-20260626",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -19620,6 +19620,66 @@
         }
       ],
       "format": "NDJSON"
+    },
+    {
+      "entry_id": "PC-ZST-R121",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s103-dotnet-deepening-20260626",
+      "product": "ZST .NET",
+      "capability_refs": [
+        "commercial_net_products.ZST.dotnet_status.stream_compress"
+      ],
+      "api_symbols": [
+        "ZstWriter.Compress(Stream,Stream,level)",
+        "ZstWriter.Decompress(Stream,Stream)"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/zst/ZstR121StreamCompressTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "ZST"
+    },
+    {
+      "entry_id": "PC-NDJSON-R121",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s103-dotnet-deepening-20260626",
+      "product": "NDJSON .NET",
+      "capability_refs": [
+        "commercial_net_products.NDJSON.dotnet_status.write_records"
+      ],
+      "api_symbols": [
+        "NdjsonWriter.WriteRecords",
+        "NdjsonWriter.WriteRecordsToFile"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/ndjson/NdjsonR121WriteRecordsTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "NDJSON"
+    },
+    {
+      "entry_id": "PC-NETPBM-R134",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s103-dotnet-deepening-20260626",
+      "product": "Netpbm .NET",
+      "capability_refs": [
+        "commercial_net_products.Netpbm.dotnet_status.comments_maxvalue"
+      ],
+      "api_symbols": [
+        "NetpbmImage.Comments",
+        "NetpbmDocument.MaxValue"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/netpbm/NetpbmR134CommentsAndMaxValueTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "Netpbm"
     }
   ],
   "total_entries": 1006,
