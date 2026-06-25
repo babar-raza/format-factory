@@ -1,0 +1,416 @@
+---
+# Taskcards
+# Sprint: ff-machinery-readiness-audit-20260625
+# Source: System gap matrix (artifact 15) + solution design (plan atomic-chasing-glade.md)
+# All 14 required taskcard groups from the audit plan
+
+taskcards_version: "1.0"
+generated: "2026-06-25"
+audit_sprint: "ff-machinery-readiness-audit-20260625"
+
+taskcards:
+  # ── SAL REPAIR ─────────────────────────────────────────────────────────────
+  - taskcard_id: SAL-REPAIR-001
+    group: SAL
+    title: "Wire SAL pipeline for 1 non-ODF format (CSV) as proof of chain restoration"
+    gap_ref: GAP-MACH-001
+    lane: 1
+    wave: 1A
+    severity: BLOCKER
+    status: NOT_STARTED
+    description: >-
+      The SAL pipeline has 17/20 tools dormant. Wire the spec_parser tool for CSV
+      (RFC 4180 — publicly available spec text). Prove end-to-end fact extraction:
+      spec text → normalized facts → sal-facts-csv.json with at least 3 FACT-CSV-NNN entries.
+      This does NOT require restoring all 17 tools — only the minimum viable path.
+    inputs:
+      - RFC 4180 spec text (https://tools.ietf.org/rfc/rfc4180 — agent fetches)
+      - .local/spec-cache/sal-facts-csv.json (current: minimal stub)
+    outputs:
+      - .local/spec-cache/sal-facts-csv.json with 3+ FACT-CSV-NNN entries
+      - tools/supervisor/sal_csv_proof.py (minimal runner)
+      - Evidence in .local/evidences/ declaration
+    acceptance_criteria: "sal-facts-csv.json has 3+ facts; fact_id follows FACT-CSV-NNN pattern"
+    effort: HIGH
+
+  - taskcard_id: SAL-REPAIR-002
+    group: SAL
+    title: "Classify CHAIN_BROKEN_AT_SAL status for remaining 9 non-ODF formats"
+    gap_ref: GAP-MACH-014
+    lane: 1
+    wave: 1B
+    severity: MEDIUM
+    status: NOT_STARTED
+    description: >-
+      After SAL-REPAIR-001 proves the pattern for CSV, classify each of the 9 remaining
+      CHAIN_BROKEN formats (DIF, GNUMERIC, NDJSON, SYLK, TOML, TSV, XCF, ZST, ABW):
+      Is the chain breakage EXPECTED (no public spec = cannot be fixed) or FIXABLE
+      (public spec exists, just needs wiring)?
+      Record verdict per format in shared/qname-registry/{format}.yaml.
+    outputs:
+      - Updated shared/qname-registry/ YAML for 9 formats with sal_chain_status
+    acceptance_criteria: "All 9 formats have sal_chain_status in YAML"
+    effort: LOW
+
+  # ── CAPABILITY LAYER ──────────────────────────────────────────────────────
+  - taskcard_id: CAPABILITY-REPAIR-001
+    group: CAPABILITY
+    title: "Replace _EXPANSION_GOALS hardcoded list with gap-ledger-driven task selection"
+    gap_ref: GAP-MACH-002
+    lane: 3
+    wave: 1B
+    severity: BLOCKER
+    status: NOT_STARTED
+    description: >-
+      autonomous_task_generator.py uses a hardcoded _EXPANSION_GOALS list of 20+ entries,
+      many with spec_authority=no_public_spec_available. This must be replaced with
+      gap-ledger-driven selection: read gap-ledger.json, filter by priority score,
+      select top-N gaps matching the current stream's target formats.
+    inputs:
+      - reports/capability-layer/gap-ledger.json
+      - tools/supervisor/autonomous_task_generator.py (current)
+    outputs:
+      - Updated autonomous_task_generator.py using gap-ledger as task source
+      - _EXPANSION_GOALS replaced or removed
+    acceptance_criteria: >-
+      Running autonomous_task_generator produces tasks that cite gap_ledger_ref
+      values matching real entries in gap-ledger.json
+    effort: MEDIUM
+
+  - taskcard_id: FEATURE-COMPILER-001
+    group: CAPABILITY
+    title: "Implement feature compiler Phase 1: gap entry → taskcard skeleton with spec_fact_refs"
+    gap_ref: GAP-MACH-005
+    lane: 3
+    wave: 1B
+    severity: HIGH
+    status: NOT_STARTED
+    description: >-
+      docs/capability-feature-compiler-spec.md defines the design. Phase 2 is unimplemented.
+      Phase 1 goal: given a gap entry (with gap_id, format, capability_type, spec_fact_refs),
+      produce a work item skeleton in .local/supervisor/next-work-items.json format.
+      The output must include gap_ledger_ref and at least 1 spec_fact_ref from sal-facts-latest.json.
+    inputs:
+      - reports/capability-layer/gap-ledger.json
+      - .local/spec-cache/sal-facts-latest.json
+    outputs:
+      - tools/supervisor/capability_feature_compiler.py (Phase 1 complete)
+      - Unit test: test_feature_compiler_phase1.py
+    acceptance_criteria: >-
+      Given a gap with spec_fact_refs, compiler produces work item skeleton with
+      gap_ledger_ref + spec_fact_refs populated
+    effort: HIGH
+
+  # ── SKILL HARDENING ────────────────────────────────────────────────────────
+  - taskcard_id: SKILL-HARDENING-001
+    group: SKILL
+    title: "Add SAL fact pre-check to add-python-api skill"
+    gap_ref: GAP-MACH-016
+    lane: 4
+    wave: 1B
+    severity: MEDIUM
+    status: NOT_STARTED
+    description: >-
+      .claude/commands/add-python-api.md enforces gap_ledger_ref but does not verify
+      that at least 1 SAL fact exists for the target format before proceeding.
+      Add Step 0a: verify FACT-{FORMAT}-NNN exists in .local/spec-cache/sal-facts-{format}.json.
+      If no facts: STOP with message "SAL chain broken for {format}. Run SAL-REPAIR-001 first."
+    outputs:
+      - Updated .claude/commands/add-python-api.md with SAL check step
+    acceptance_criteria: "Skill refuses execution when no SAL facts exist for target format"
+    effort: LOW
+
+  - taskcard_id: SKILL-HARDENING-002
+    group: SKILL
+    title: "Add gap_ledger_ref mandatory check as preflight for add-python-api skill"
+    gap_ref: GAP-MACH-016
+    lane: 4
+    wave: 1B
+    severity: MEDIUM
+    status: NOT_STARTED
+    description: >-
+      TC-GUARD-001 enforces gap_ledger_ref at declaration time (post-execution).
+      SKILL-HARDENING-002 enforces it PRE-execution in the skill itself.
+      Add preflight check: if no gap_ledger_ref provided, skill prompts for one
+      and looks it up in gap-ledger.json before proceeding.
+    outputs:
+      - Updated .claude/commands/add-python-api.md
+    acceptance_criteria: "Skill requires gap_ledger_ref before executing any file writes"
+    effort: LOW
+
+  # ── SOURCE STANDARDIZATION ────────────────────────────────────────────────
+  - taskcard_id: SRC-STANDARDIZATION-001
+    group: SOURCE
+    title: "Extract analytics from DIF, CSV, FODG to {format}_analytics.py (LOC healing)"
+    gap_ref: GAP-MACH-013
+    lane: 7
+    wave: 4
+    severity: MEDIUM
+    status: NOT_STARTED
+    description: >-
+      DIF (664 LOC at cap), CSV (382 LOC trending), FODG (3176 LOC — severe).
+      Apply §8.1 Analytics Separation Protocol from docs/code-quality/production-readiness-standard.md:
+      Move arithmetic functions to {format}_analytics.py.
+      Update __init__.py with try-import fallback.
+      Run V35 LOC check to verify healing.
+    outputs:
+      - src/python/dif/dif_analytics.py
+      - src/python/csv/csv_analytics.py (partial analytics; RFC 4180 parser stays in main)
+      - src/python/fodg/fodg_analytics.py (verify existing; FODG was healed 2026-06-18)
+    acceptance_criteria: "V35 passes for all 3 formats (LOC below cap after healing)"
+    effort: HIGH
+
+  - taskcard_id: SRC-MASQUERADE-001
+    group: SOURCE
+    title: "Rename analytics masquerade files (gnumeric/workbook_document.py, toml/config_document.py)"
+    gap_ref: GAP-MACH-010
+    lane: 7
+    wave: 4
+    severity: HIGH
+    status: NOT_STARTED
+    description: >-
+      gnumeric/workbook_document.py and toml/config_document.py are analytics files
+      named as if they were domain models. This causes confusion for new agents and
+      violates the model layer naming conventions.
+      Rename: workbook_document.py → gnumeric_workbook_stats.py
+      Rename: config_document.py → toml_config_stats.py
+      Update all imports (20+ callers per file).
+    acceptance_criteria: >-
+      No file named *_document.py (except legitimate domain models with spec_qname)
+      contains exclusively analytics/arithmetic functions
+    effort: LOW
+
+  # ── QNAME / BACKFILL ──────────────────────────────────────────────────────
+  - taskcard_id: QNAME-BACKFILL-SYSTEM-001
+    group: BACKFILL
+    title: "Build automated qname-backfill system (5 modules)"
+    gap_ref: GAP-MACH-007
+    lane: 2
+    wave: 1A
+    severity: HIGH
+    status: NOT_STARTED
+    description: >-
+      Build 5 tools in tools/supervisor/:
+      (1) backfill_inventory_scanner.py — static scan → CSV
+      (2) backfill_qname_mapper.py — symbol → qname cross-reference
+      (3) backfill_migration_planner.py — plan migration type per symbol
+      (4) V53 compliance wrapper — post-migration validation
+      (5) evidence module — produce backfill work item declaration
+      See artifact-12-backfill-facility-design.md for full module specs.
+    outputs:
+      - tools/supervisor/backfill_inventory_scanner.py
+      - tools/supervisor/backfill_qname_mapper.py
+      - tools/supervisor/backfill_migration_planner.py
+      - tests/supervisor/test_backfill_scanner.py
+    acceptance_criteria: "Scanner applied to ABW produces CSV matching existing inventory"
+    effort: HIGH
+
+  - taskcard_id: QNAME-BACKFILL-PILOT-001
+    group: BACKFILL
+    title: "Run backfill scanner for NDJSON, TSV, SYLK (Phase 1 pilot)"
+    gap_ref: GAP-MACH-007
+    lane: 2
+    wave: 1B
+    severity: HIGH
+    status: NOT_STARTED
+    description: >-
+      After QNAME-BACKFILL-SYSTEM-001, run backfill scanner against NDJSON, TSV, SYLK.
+      Produce inventory CSVs and migration plans for each.
+      These are the simplest formats (low symbol count, no analytics masquerade).
+      Validates scanner correctness before running on complex formats.
+    outputs:
+      - docs/audits/python-qname-backfill-inventory-ndjson.csv
+      - docs/audits/python-qname-backfill-inventory-tsv.csv
+      - docs/audits/python-qname-backfill-inventory-sylk.csv
+      - docs/audits/python-qname-backfill-migration-{ndjson,tsv,sylk}.yaml
+    acceptance_criteria: "V53 passes for all spec classes in NDJSON/TSV/SYLK post-migration"
+    effort: MEDIUM
+
+  - taskcard_id: QNAME-VALIDATORS-001
+    group: VALIDATORS
+    title: "Upgrade V43 from WARN to FAIL for formats at implementing+ status"
+    gap_ref: GAP-MACH-009
+    lane: 5
+    wave: 2
+    severity: HIGH
+    status: NOT_STARTED
+    description: >-
+      V43 (validate_spec_qname_presence) currently returns WARN for formats with
+      qname_compliance_status=implementing. This allows non-compliant product sprints.
+      Upgrade to FAIL for any format that has been at implementing status for 60+ days.
+      Grace period: new formats entering implementing get 60 days before FAIL mode.
+    outputs:
+      - Updated tools/supervisor/governance_validators.py V43 logic
+      - Updated tests/supervisor/test_governance_validators.py
+    acceptance_criteria: "V43 returns FAIL (not WARN) for implementing-status formats"
+    effort: LOW
+
+  - taskcard_id: QNAME-BACKFILL-SKILL-001
+    group: BACKFILL
+    title: "Create .claude/commands/qname-backfill.md skill execution guide"
+    gap_ref: GAP-MACH-017
+    lane: 2
+    wave: 1A
+    severity: LOW
+    status: NOT_STARTED
+    description: >-
+      The qname-backfill skill is listed in skill-registry.yaml but may lack a
+      full execution guide. Create or complete .claude/commands/qname-backfill.md:
+      Step-by-step instructions for running the backfill system for a new format.
+    outputs:
+      - .claude/commands/qname-backfill.md
+    acceptance_criteria: "Skill guide has 8+ steps; references all 5 backfill modules"
+    effort: LOW
+
+  # ── SUPERVISOR REPAIR ──────────────────────────────────────────────────────
+  - taskcard_id: SUPERVISOR-LANES-001
+    group: SUPERVISOR
+    title: "Add code-enforced wave gate pre-check (machinery lanes before product lanes)"
+    gap_ref: GAP-MACH-004
+    lane: 14
+    wave: 0
+    severity: BLOCKER
+    status: NOT_STARTED
+    description: >-
+      Add wave_gate_check() as Step 0c in autonomous_cycle.py.
+      Before any product lane (7-13) sprint, verify:
+      (1) Lane 1 (SAL) has active extraction or CHAIN_BROKEN acknowledged for target format
+      (2) Lane 3 (compiler) can produce gap→workitem for target format
+      (3) Lane 5 V43 is in FAIL mode for target format
+      If any check fails: return NO_BROKEN_BASELINE continuation state.
+    outputs:
+      - tools/supervisor/wave_gate_check.py (new module)
+      - Updated tools/supervisor/autonomous_cycle.py (Step 0c)
+      - tests/supervisor/test_wave_gate_check.py
+    acceptance_criteria: >-
+      Product lane sprint blocked when SAL chain broken AND no explicit CHAIN_BROKEN
+      acknowledgment in shared/qname-registry/{format}.yaml
+    effort: MEDIUM
+
+  - taskcard_id: SUPERVISOR-CONTINUATION-001
+    group: SUPERVISOR
+    title: "Wire overclaim detector (10 patterns) into autonomous_cycle.py Step 2d"
+    gap_ref: GAP-MACH-003
+    lane: 14
+    wave: 0
+    severity: BLOCKER
+    status: NOT_STARTED
+    description: >-
+      The 10-pattern overclaim detector exists but is never called.
+      Wire it into autonomous_cycle.py Step 2d (post-inspection, pre-grading):
+      run detector against each declaration item; if overclaim pattern detected,
+      add item to rework_items with reason=overclaim_detected.
+    outputs:
+      - Updated tools/supervisor/autonomous_cycle.py Step 2d
+      - Tests in tests/supervisor/test_overclaim_detector_wiring.py
+    acceptance_criteria: "Declaration with overclaim pattern goes to rework_items"
+    effort: LOW
+
+  # ── GATE 11 ────────────────────────────────────────────────────────────────
+  - taskcard_id: GATE11-STOP-001
+    group: GATE11
+    title: "Verify Gate 11 stop behavior is mechanical — wire poc-targets.yaml checks"
+    gap_ref: GAP-MACH-019
+    lane: 15
+    wave: 0
+    severity: LOW
+    status: NOT_STARTED
+    description: >-
+      Currently check_continuation.py does not verify 8 customer readiness criteria
+      before returning CONTINUE for a Gate 11 format sprint.
+      Wire poc-targets.yaml gate_11_approved check into check_continuation.py.
+      Also: add customer_readiness_criteria_complete check before allowing RELEASE_GATE declarations.
+    outputs:
+      - Updated tools/supervisor/check_continuation.py
+      - Tests in tests/supervisor/test_gate11_checks.py
+    acceptance_criteria: "CONTINUE blocked for format sprint if gate_11_approved=false in poc-targets.yaml"
+    effort: LOW
+
+  # ── PILOT PRODUCTS ────────────────────────────────────────────────────────
+  - taskcard_id: PRODUCT-PILOT-001
+    group: PRODUCT
+    title: "Define and execute 3 pilot products for spec-to-library-to-export proof"
+    gap_ref: GAP-MACH-015
+    lane: 9
+    wave: 5
+    severity: MEDIUM
+    status: NOT_STARTED
+    description: >-
+      After machinery repairs (SAL-REPAIR-001, CAPABILITY-REPAIR-001), execute 3 pilots:
+      PILOT-ODS-001: ODS consumer roundtrip proof (SAL CHAIN_INTACT — can start NOW)
+      PILOT-NDJSON-COMPILER-001: NDJSON feature from feature compiler (after FC-001)
+      PILOT-CSV-SPEC-001: CSV spec-parity proof (after SAL-REPAIR-001)
+      Each pilot must demonstrate the full chain:
+      spec fact → domain model class → library API → consumer roundtrip → dogfood example
+    outputs:
+      - examples/python/ods/ods_consumer_roundtrip.py
+      - examples/python/ndjson/ (if not exists)
+      - examples/python/csv/ (if not exists)
+    acceptance_criteria: >-
+      All 3 pilot roundtrips produce CONSUMER_PROOF: PASS;
+      each cites at least 1 spec_fact_ref in its evidence declaration
+    effort: HIGH
+
+  # ── EVIDENCE AND PLANNING ─────────────────────────────────────────────────
+  - taskcard_id: EVIDENCE-LEDGER-001
+    group: EVIDENCE
+    title: "Assign provisional FACT-* IDs to 192 gaps without spec_fact_refs"
+    gap_ref: GAP-MACH-008
+    lane: 1
+    wave: 1A
+    severity: HIGH
+    status: NOT_STARTED
+    description: >-
+      reports/capability-layer/gap-sal-traceability-20260625.json shows 192 gaps
+      with no spec fact linkage. These gaps cannot drive TC-GUARD-001-compliant
+      work items (which require spec_fact_refs). Assign provisional FACT-{FORMAT}-PROV-NNN
+      IDs to each gap based on the gap's capability description and the closest
+      SAL fact in sal-facts-latest.json.
+    outputs:
+      - Updated reports/capability-layer/gap-ledger.json (192 entries with spec_fact_refs)
+    acceptance_criteria: "gap-sal-traceability shows traceability >= 80% (up from 41.4%)"
+    effort: MEDIUM
+
+  - taskcard_id: GAP-PLANNING-001
+    group: PLANNING
+    title: "Gap matrix triage session — select top 20 gaps for next 3 sprints"
+    gap_ref: GAP-MACH-018
+    lane: null
+    wave: null
+    severity: LOW
+    status: NOT_STARTED
+    description: >-
+      With 1132+ open gaps, work selection is currently random or hardcoded.
+      Run a triage session to select the top 20 gaps by priority score + impact.
+      Assign each to a sprint. Produce a sprint roadmap covering 3 sprints.
+      Use the /promote-gap-to-taskcard skill for each top-20 gap.
+    outputs:
+      - reports/machinery-readiness-audit-20260625/gap-triage-top20.yaml
+    acceptance_criteria: "20 gaps selected; each has taskcard + sprint assignment"
+    effort: LOW
+
+summary:
+  total_taskcards: 19
+  by_severity:
+    blocker: 4
+    high: 8
+    medium: 5
+    low: 4
+  by_lane:
+    machinery_lane_14_supervisor: 2
+    machinery_lane_15_learning: 1
+    machinery_lane_1_sal: 2
+    machinery_lane_2_qname: 3
+    machinery_lane_3_compiler: 2
+    machinery_lane_4_skills: 2
+    machinery_lane_5_validators: 1
+    product_lane_7_9: 2
+    cross_cutting: 4
+  execution_order:
+    wave_0: [SUPERVISOR-LANES-001, SUPERVISOR-CONTINUATION-001, GATE11-STOP-001]
+    wave_1a: [SAL-REPAIR-001, QNAME-BACKFILL-SYSTEM-001, QNAME-BACKFILL-SKILL-001, EVIDENCE-LEDGER-001]
+    wave_1b: [SAL-REPAIR-002, CAPABILITY-REPAIR-001, FEATURE-COMPILER-001, SKILL-HARDENING-001, SKILL-HARDENING-002, QNAME-BACKFILL-PILOT-001]
+    wave_2: [QNAME-VALIDATORS-001]
+    wave_4: [SRC-STANDARDIZATION-001, SRC-MASQUERADE-001]
+    wave_5: [PRODUCT-PILOT-001]
+    anytime: [GAP-PLANNING-001]

@@ -1,0 +1,280 @@
+---
+# System Gap Matrix
+# Sprint: ff-machinery-readiness-audit-20260625
+# Source: Lanes A-J audit findings (artifacts 01-14)
+# All gaps classified by: severity, blocker_for_product_deepening, must_fix_before_next_sprint
+
+gap_matrix_version: "1.0"
+generated: "2026-06-25"
+audit_sprint: "ff-machinery-readiness-audit-20260625"
+
+gaps:
+  # ── BLOCKER SEVERITY ──────────────────────────────────────────────────────
+  - gap_id: GAP-MACH-001
+    title: "SAL pipeline dormant — 17/20 pipeline tools dead"
+    severity: BLOCKER
+    lane: E
+    source: artifact-07-sal-audit
+    must_fix_before_product_deepening: true
+    blockers_product_deepening_at_level: PROOF_LEVEL_5
+    evidence: ".local/spec-cache/ has facts but no live extraction for non-ODF"
+    current_state: "3 of 20 SAL pipeline tools active; 17 dead/dormant"
+    required_fix: "Wire sal_master_runner.py for 1 non-ODF format (CSV/NDJSON) as proof"
+    taskcard: SAL-REPAIR-001
+    effort: HIGH
+
+  - gap_id: GAP-MACH-002
+    title: "_EXPANSION_GOALS hardcoded — gap-ledger never consumed by task generator"
+    severity: BLOCKER
+    lane: G
+    source: artifact-09-downstream-layer-audit
+    must_fix_before_product_deepening: true
+    blockers_product_deepening_at_level: PROOF_LEVEL_5
+    evidence: "tools/supervisor/autonomous_task_generator.py lines 1-200 confirmed"
+    current_state: "20+ hardcoded entries; many have spec_authority=no_public_spec_available"
+    required_fix: "Replace _EXPANSION_GOALS with gap-ledger-driven task selection"
+    taskcard: CAPABILITY-REPAIR-001
+    effort: MEDIUM
+
+  - gap_id: GAP-MACH-003
+    title: "Overclaim detector (10 patterns) never called by autonomous_cycle.py"
+    severity: BLOCKER
+    lane: H
+    source: artifact-10-autonomous-supervisor-audit
+    must_fix_before_product_deepening: true
+    blockers_product_deepening_at_level: any
+    evidence: "autonomous_cycle.py Step 2d does not call overclaim detector"
+    current_state: "10-pattern detector exists in code; integration point absent"
+    required_fix: "Wire overclaim detector into autonomous_cycle.py Step 2d"
+    taskcard: SUPERVISOR-CONTINUATION-001
+    effort: LOW
+
+  - gap_id: GAP-MACH-004
+    title: "Lane DAG not code-enforced — product lanes can run before machinery completes"
+    severity: BLOCKER
+    lane: H
+    source: artifact-11-lane-separation-and-collision-risk
+    must_fix_before_product_deepening: true
+    blockers_product_deepening_at_level: any
+    evidence: "check_continuation.py has no wave_gate validation"
+    current_state: "Lane ownership enforced by prompt only (SUP-GAP-001, SUP-GAP-002)"
+    required_fix: "Add wave_gate_check() pre-step in autonomous_cycle.py"
+    taskcard: SUPERVISOR-LANES-001
+    effort: MEDIUM
+
+  # ── HIGH SEVERITY ─────────────────────────────────────────────────────────
+  - gap_id: GAP-MACH-005
+    title: "Feature compiler Phase 1 not implemented — gap cannot drive taskcard skeleton"
+    severity: HIGH
+    lane: F
+    source: artifact-08-capability-layer-audit
+    must_fix_before_product_deepening: false
+    blockers_product_deepening_at_level: PROOF_LEVEL_5
+    evidence: "docs/capability-feature-compiler-spec.md design exists; Phase 2 unimplemented"
+    current_state: "Phase 1 (gap→taskcard skeleton) not started; design exists"
+    required_fix: "Implement Phase 1 feature compiler: gap entry → work item with spec_fact_refs"
+    taskcard: FEATURE-COMPILER-001
+    effort: HIGH
+
+  - gap_id: GAP-MACH-006
+    title: "Zero durable learning — FailureMemory imported but not integrated"
+    severity: HIGH
+    lane: H
+    source: artifact-10-autonomous-supervisor-audit
+    must_fix_before_product_deepening: false
+    blockers_product_deepening_at_level: "degrades repeatability at all levels"
+    evidence: "No failure-memory.json found; FailureMemory imported in autonomous_cycle.py"
+    current_state: "SUP-GAP-009: class exists; no write path; failures not persisted"
+    required_fix: "Wire FailureMemory into autonomous_cycle.py post-grade step"
+    taskcard: SUPERVISOR-LEARNING-001
+    effort: MEDIUM
+
+  - gap_id: GAP-MACH-007
+    title: "Backfill inventory covers only ABW (1/20 formats)"
+    severity: HIGH
+    lane: I
+    source: artifact-12-backfill-facility-design
+    must_fix_before_product_deepening: false
+    blockers_product_deepening_at_level: PROOF_LEVEL_5
+    evidence: "docs/audits/python-qname-backfill-inventory.csv covers ABW only"
+    current_state: "~800 symbols across 19 formats have no QName inventory"
+    required_fix: "Build automated backfill scanner; run Phase 1 pilot (NDJSON/TSV/SYLK)"
+    taskcard: QNAME-BACKFILL-SYSTEM-001
+    effort: HIGH
+
+  - gap_id: GAP-MACH-008
+    title: "Gap-SAL traceability at 41.4% — 192 gaps without spec_fact_refs"
+    severity: HIGH
+    lane: F
+    source: artifact-08-capability-layer-audit
+    must_fix_before_product_deepening: false
+    blockers_product_deepening_at_level: PROOF_LEVEL_5
+    evidence: "reports/capability-layer/gap-sal-traceability-20260625.json"
+    current_state: "192 of 464 tracked gaps have no spec fact linkage"
+    required_fix: "Assign provisional FACT-* IDs to 192 spec-traceable gaps"
+    taskcard: EVIDENCE-LEDGER-001
+    effort: MEDIUM
+
+  - gap_id: GAP-MACH-009
+    title: "V43 in WARN mode — implementing-status formats not hard-blocked"
+    severity: HIGH
+    lane: B
+    source: artifact-03-qname-schema-audit
+    must_fix_before_product_deepening: false
+    blockers_product_deepening_at_level: PROOF_LEVEL_5
+    evidence: "governance_validators.py V43 returns WARN (not FAIL) for implementing"
+    current_state: "V43 WARN allows non-compliant product sprints to continue"
+    required_fix: "Upgrade V43 to FAIL for all formats at implementing+ status"
+    taskcard: QNAME-VALIDATORS-001
+    effort: LOW
+
+  - gap_id: GAP-MACH-010
+    title: "Analytics masquerade in gnumeric/workbook_document.py and toml/config_document.py"
+    severity: HIGH
+    lane: C
+    source: artifact-05-src-source-quality-review
+    must_fix_before_product_deepening: false
+    blockers_product_deepening_at_level: PROOF_LEVEL_4
+    evidence: "RC-001: 16 analytics masquerade files; 2 are most confusing"
+    current_state: "workbook_document.py and config_document.py named as models but are analytics"
+    required_fix: "Rename to {format}_workbook_stats.py and {format}_config_stats.py"
+    taskcard: SRC-MASQUERADE-001
+    effort: LOW
+
+  - gap_id: GAP-MACH-011
+    title: "Lane collision risk — 7/8 collision scenarios prompt-only enforced"
+    severity: HIGH
+    lane: H
+    source: artifact-11-lane-separation-and-collision-risk
+    must_fix_before_product_deepening: true
+    blockers_product_deepening_at_level: any
+    evidence: "CV-001 through CV-005, HC-001 through HC-003; 1/8 mechanically enforced"
+    current_state: "gap-ledger.json writes uncoordinated; base registry writes unprotected"
+    required_fix: "Gap-ledger write lock + wave gate + stale lock auto-cleanup"
+    taskcard: SUPERVISOR-LANES-001
+    effort: MEDIUM
+
+  # ── MEDIUM SEVERITY ───────────────────────────────────────────────────────
+  - gap_id: GAP-MACH-012
+    title: "FodtDocument.cs at LOC cap (977 LOC) — healing scheduled 2026-09-01"
+    severity: MEDIUM
+    lane: C
+    source: artifact-05-src-source-quality-review
+    must_fix_before_product_deepening: false
+    blockers_product_deepening_at_level: PROOF_LEVEL_5
+    evidence: "FodtDocument.cs 977 LOC; FodtDocumentAccessor.cs created as separation"
+    current_state: "Frozen cap; FodtDocumentAccessor.cs began separation"
+    required_fix: "Complete behavioral methods migration to FodtDocumentAccessor.cs"
+    taskcard: SRC-STANDARDIZATION-001
+    effort: MEDIUM
+
+  - gap_id: GAP-MACH-013
+    title: "DIF/CSV/FODG mixed model — analytics not fully separated"
+    severity: MEDIUM
+    lane: C
+    source: artifact-05-src-source-quality-review
+    must_fix_before_product_deepening: false
+    blockers_product_deepening_at_level: PROOF_LEVEL_4
+    evidence: "dif_parser.py 664 LOC (at cap); csv_parser.py 382 LOC (below cap)"
+    current_state: "Analytics mixed in parser files; cap policy prevents worsening"
+    required_fix: "Extract analytics to {format}_analytics.py per §8.1 protocol"
+    taskcard: SRC-STANDARDIZATION-001
+    effort: HIGH
+
+  - gap_id: GAP-MACH-014
+    title: "CHAIN_BROKEN_AT_SAL for 10 non-ODF formats"
+    severity: MEDIUM
+    lane: E
+    source: artifact-07-sal-audit
+    must_fix_before_product_deepening: false
+    blockers_product_deepening_at_level: PROOF_LEVEL_5
+    evidence: "SAL chain intact for 10 ODF/image; broken for CSV/DIF/GNUMERIC/etc."
+    current_state: "10 GAP-CHAIN-*-SAL-MRH-001 entries in gap-ledger.json"
+    required_fix: "SAL-REPAIR-001 proves 1 format; then chain repair for remaining 9"
+    taskcard: SAL-REPAIR-002
+    effort: HIGH
+
+  - gap_id: GAP-MACH-015
+    title: "6 formats not at PROOF_LEVEL_4 (ODS/ODT/XCF/FODG/FODP/QOI)"
+    severity: MEDIUM
+    lane: J
+    source: artifact-14-product-deepening-readiness-plan
+    must_fix_before_product_deepening: false
+    blockers_product_deepening_at_level: "themselves only"
+    evidence: "poc-targets.yaml; product deepening mission COMPLETE for 14; 6 remain"
+    current_state: "ODS/ODT at PROOF_LEVEL_3; XCF/FODG at LOC cap; FODP/QOI at LEVEL_2"
+    required_fix: "Wave C (ODS/ODT/XCF/FODG) and Wave D (FODP/QOI) pilots"
+    taskcard: PRODUCT-PILOT-001
+    effort: HIGH
+
+  - gap_id: GAP-MACH-016
+    title: "add-python-api skill lacks SAL fact pre-check"
+    severity: MEDIUM
+    lane: D
+    source: artifact-06-skill-inventory-and-gaps
+    must_fix_before_product_deepening: false
+    blockers_product_deepening_at_level: PROOF_LEVEL_5
+    evidence: ".claude/commands/add-python-api.md; no step verifies SAL fact availability"
+    current_state: "Skill enforces gap_ledger_ref but not actual spec fact linkage verification"
+    required_fix: "Add Step 0 to skill: verify at least 1 FACT-{FORMAT}-* in sal-facts-latest.json"
+    taskcard: SKILL-HARDENING-001
+    effort: LOW
+
+  # ── LOW SEVERITY ──────────────────────────────────────────────────────────
+  - gap_id: GAP-MACH-017
+    title: "No qname-backfill skill command file (.claude/commands/qname-backfill.md)"
+    severity: LOW
+    lane: I
+    source: artifact-12-backfill-facility-design
+    must_fix_before_product_deepening: false
+    blockers_product_deepening_at_level: PROOF_LEVEL_5
+    evidence: "Skill listed in skill-registry.yaml but command file may be stub"
+    current_state: "GAP-SKILL-001: qname-backfill skill execution guide absent"
+    required_fix: "Create .claude/commands/qname-backfill.md with full execution guide"
+    taskcard: QNAME-BACKFILL-SKILL-001
+    effort: LOW
+
+  - gap_id: GAP-MACH-018
+    title: "GAP-PLANNING-001: no triage session planned for 1132+ open gaps"
+    severity: LOW
+    lane: F
+    source: artifact-08-capability-layer-audit
+    must_fix_before_product_deepening: false
+    blockers_product_deepening_at_level: "degrades priority accuracy"
+    evidence: "gap-ledger.json 1132+ items; top-20 for next 3 sprints not selected"
+    current_state: "All items equally unweighted in action queue"
+    required_fix: "Run gap triage session; select top 20 priority gaps for next 3 sprints"
+    taskcard: GAP-PLANNING-001
+    effort: LOW
+
+  - gap_id: GAP-MACH-019
+    title: "Gate 11 stop behavior partially mechanical — 2 of 5 checks are prompt-only"
+    severity: LOW
+    lane: J
+    source: artifact-13-gate11-readiness-review
+    must_fix_before_product_deepening: false
+    blockers_product_deepening_at_level: "Gate 11 only"
+    evidence: "check_continuation.py doesn't verify 8 customer criteria mechanically"
+    current_state: "poc-targets.yaml has structured data; not fed to continuation checker"
+    required_fix: "Wire poc-targets.yaml gate_11_approved check into check_continuation.py"
+    taskcard: GATE11-STOP-001
+    effort: LOW
+
+summary:
+  total_gaps: 19
+  severity_breakdown:
+    blocker: 4
+    high: 7
+    medium: 5
+    low: 3
+  must_fix_before_product_deepening:
+    count: 5
+    gap_ids: [GAP-MACH-001, GAP-MACH-002, GAP-MACH-003, GAP-MACH-004, GAP-MACH-011]
+  agent_resolvable_count: 19
+  true_external_gate_count: 0
+  verdict_impact: >-
+    4 BLOCKER gaps prevent repeatably-correct spec-backed product deepening.
+    All 4 are agent-resolvable machinery repairs.
+    No TRUE_EXTERNAL_GATEs block machinery repair work.
+    Product deepening AT PROOF_LEVEL_4 (wave B targets) can proceed immediately
+    for ODS/ODT (SAL CHAIN_INTACT); other formats require SAL-REPAIR-001 first.
