@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s115-dotnet-deepening-20260627",
+  "latest_sprint": "ff-sprint-s116-dotnet-deepening-20260627",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -20417,9 +20417,67 @@
         }
       ],
       "format": "FODS"
+    },
+    {
+      "entry_id": "PC-FODT-R137",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s116-dotnet-deepening-20260627",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.stream_load"
+      ],
+      "api_symbols": [
+        "FodtDocument.Load(Stream)"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/fodt/FodtR137StreamLoadTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "FODT"
+    },
+    {
+      "entry_id": "PC-ZST-R126",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s116-dotnet-deepening-20260627",
+      "product": "ZST .NET",
+      "capability_refs": [
+        "commercial_net_products.ZST.dotnet_status.decompress_limit"
+      ],
+      "api_symbols": [
+        "ZstWriter.Decompress(byte[],long)",
+        "ZstWriter.DefaultMaxDecompressedBytes"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/zst/ZstR126DecompressLimitTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "ZST"
+    },
+    {
+      "entry_id": "PC-NDJSON-R124",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s116-dotnet-deepening-20260627",
+      "product": "NDJSON .NET",
+      "capability_refs": [
+        "commercial_net_products.NDJSON.dotnet_status.tondjson_serialization"
+      ],
+      "api_symbols": [
+        "NdjsonDocument.ToNdjson"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/ndjson/NdjsonR124ToNdjsonSerializationTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "NDJSON"
     }
   ],
-  "total_entries": 1012,
+  "total_entries": 1015,
   "changes": [
     {
       "file": "src/python/dif/models.py",
