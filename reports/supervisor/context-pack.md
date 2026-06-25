@@ -1,19 +1,19 @@
 # Supervisor Context Pack
 # Format Factory — Machine-Readable State Snapshot
-# Generated: 2026-06-25T21:58:37.795295
+# Generated: 2026-06-25T22:07:37.847768
 # ADVISORY ONLY — not a gate approval or authority document
 
 ## Current State
 
 | Item | Value |
 |------|-------|
-| Git HEAD | 3fc8ec30 |
+| Git HEAD | 49ab2fc6 |
 | Working tree clean | False |
 | Supervisor mode | MODE 4 |
 | Latest sprint | unknown |
-| Sprint ID | ff-sprint-s73-idempotency-20260626... |
+| Sprint ID | ff-sprint-s74-zst-sylk-deepening-20260626... |
 | Autonomous continue | True |
-| Iteration | 7/12 |
+| Iteration | 8/12 |
 | MCP status | MCP_CONFIG_PRESENT_MODE4_ACTIVE |
 | Active skills | 62 |
 | Ledger entries | 1006 total (793 governed) |

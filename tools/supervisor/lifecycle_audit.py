@@ -199,45 +199,11 @@ def run_lifecycle_audit(
     # ------------------------------------------------------------------
     # 0. Vacuous-call guard (TC-RJO-004)
     # ------------------------------------------------------------------
-    # If called with neither --plan-path nor --mission-id, the audit would
-    # parse 0 taskcards and report mission_complete=True vacuously.
-    # Detect this and emit AUDIT_PASS_VACUOUS to make the condition explicit.
-    if not plan_path and not mission_id:
-        vacuous_result = {
-            "mission_id": None,
-            "sprint_id": sprint_id,
-            "verdict": "AUDIT_PASS_VACUOUS",
-            "mission_complete": False,
-            "findings": [
-                {
-                    "finding_id": "FIND-VAC-001",
-                    "type": "VACUOUS_CALL",
-                    "severity": "HIGH",
-                    "description": (
-                        "lifecycle_audit called without --plan-path or --mission-id. "
-                        "Taskcards parsed: 0. mission_complete would be vacuously true. "
-                        "Pass --plan-path to audit real taskcard state."
-                    ),
-                    "source_file": "CLI",
-                    "recommended_action": (
-                        "Re-run with --plan-path <plan-file> or --mission-id <mission-id>"
-                    ),
-                }
-            ],
-            "rework_items": [],
-            "open_gaps": [],
-            "open_taskcards": [],
-            "all_taskcards_closed": False,
-            "taskcards": [],
-            "timestamp": datetime.now(timezone.utc).isoformat(),
-        }
-        output_path = repo_root / _OUTPUT_PATH_REL
-        output_path.parent.mkdir(parents=True, exist_ok=True)
-        output_path.write_text(
-            json.dumps(vacuous_result, indent=2) + "\n",
-            encoding="utf-8",
-        )
-        return vacuous_result
+    # Track whether this is a vacuous call (no plan_path, no mission_id).
+    # When vacuous, we still run signal-based checks (for GOVBLOCK, rework, etc.)
+    # but we force mission_complete=False and mark the verdict as AUDIT_PASS_VACUOUS
+    # when no other issue is detected — preventing false AUDIT_PASS with 0 taskcards.
+    _vacuous_call = not plan_path and not mission_id
 
     # ------------------------------------------------------------------
     # 1. Read continuation signal
@@ -418,6 +384,30 @@ def run_lifecycle_audit(
 
     next_iteration_required = verdict == "AUDIT_REQUIRES_ITERATION"
     mission_complete = verdict == "AUDIT_PASS" and not open_gaps
+
+    # TC-RJO-004: Vacuous-call guard — if called without plan_path or mission_id,
+    # convert AUDIT_PASS to AUDIT_PASS_VACUOUS and force mission_complete=False.
+    # Signal-based checks (GOVBLOCK, CONTINUATION_BLOCKED) still run and can produce
+    # AUDIT_REQUIRES_ITERATION correctly — we only intercept the vacuous AUDIT_PASS case.
+    if _vacuous_call and verdict == "AUDIT_PASS":
+        verdict = "AUDIT_PASS_VACUOUS"
+        mission_complete = False
+        next_iteration_required = False
+        findings.append({
+            "finding_id": "FIND-VAC-001",
+            "type": "VACUOUS_CALL",
+            "severity": "HIGH",
+            "description": (
+                "lifecycle_audit called without --plan-path or --mission-id. "
+                f"Taskcards parsed: {total_taskcards_parsed}. "
+                "mission_complete is forced to False to prevent vacuous truth. "
+                "Pass --plan-path to audit real taskcard state."
+            ),
+            "source_file": "CLI",
+            "recommended_action": (
+                "Re-run with --plan-path <plan-file> or --mission-id <mission-id>"
+            ),
+        })
 
     if verdict == "AUDIT_PASS" and not open_gaps:
         recommended_action = "MISSION_COMPLETE"

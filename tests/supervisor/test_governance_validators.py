@@ -1790,10 +1790,10 @@ class TestCanonicalValidatorCount:
         }
         result = run_all_governance_validators(decl, None)
         validator_count = len(result["validators"])
-        assert validator_count == 74, (
-            f"Expected 74 canonical validators, got {validator_count}. "
+        assert validator_count == 75, (
+            f"Expected 75 canonical validators, got {validator_count}. "
             "If validators were added/removed, update this test. "
-            "(74 = 73 prior + V-SGF-001 added by TC-SGF-002)"
+            "(75 = 74 prior + V74 ledger continuation gate added by TC-PDL-005)"
         )
 
 
