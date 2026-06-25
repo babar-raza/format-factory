@@ -1,6 +1,6 @@
 # Supervisor Context Pack
 # Format Factory — Machine-Readable State Snapshot
-# Generated: 2026-06-25T22:51:50.375603
+# Generated: 2026-06-25T22:53:07.262982
 # ADVISORY ONLY — not a gate approval or authority document
 
 ## Current State
@@ -11,9 +11,9 @@
 | Working tree clean | False |
 | Supervisor mode | MODE 4 |
 | Latest sprint | unknown |
-| Sprint ID | ff-sprint-s79-dotnet-commit-20260626... |
+| Sprint ID | tc-inf-001-llm-grader-test... |
 | Autonomous continue | True |
-| Iteration | 2/12 |
+| Iteration | 3/12 |
 | MCP status | MCP_CONFIG_PRESENT_MODE4_ACTIVE |
 | Active skills | 63 |
 | Ledger entries | 1011 total (793 governed) |

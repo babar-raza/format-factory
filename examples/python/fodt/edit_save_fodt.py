@@ -24,12 +24,6 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).parent.parent.parent.parent
 sys.path.insert(0, str(REPO_ROOT))
 
-try:
-    from fodt import (
-except ImportError:
-    import sys
-    from pathlib import Path as _Path
-    sys.path.insert(0, str(_Path(__file__).resolve().parents[3]))
 from src.python.fodt import (
     parse_fodt,
     write_fodt,
