@@ -21,17 +21,25 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-# Allow running from repo root without install
-REPO_ROOT = Path(__file__).parent.parent.parent.parent
-sys.path.insert(0, str(REPO_ROOT))
-
-from src.python.fods import (
-    parse_fods,
-    write_fods,
-    workbook_set_cell_value,
-    workbook_warnings_for_unsupported_edit,
-    workbook_sheet_summary,
-)
+try:
+    from fods import (
+        parse_fods,
+        write_fods,
+        workbook_set_cell_value,
+        workbook_warnings_for_unsupported_edit,
+        workbook_sheet_summary,
+    )
+    REPO_ROOT = Path(__file__).resolve().parents[3]
+except ImportError:
+    REPO_ROOT = Path(__file__).resolve().parents[3]
+    sys.path.insert(0, str(REPO_ROOT))
+    from src.python.fods import (
+        parse_fods,
+        write_fods,
+        workbook_set_cell_value,
+        workbook_warnings_for_unsupported_edit,
+        workbook_sheet_summary,
+    )
 
 SAMPLE_FODS = REPO_ROOT / "samples" / "by-format" / "fods" / "minimal-spreadsheet.fods"
 

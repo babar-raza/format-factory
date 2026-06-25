@@ -41,6 +41,7 @@ These rules override convenience, speed, and agent summaries. They are permanent
 14. No gate may be self-approved without evidence. Gates 1-10: agent-owned policy gates (AGENTS.md §AG5). Gate 11 G11-G: Babar Raza only.
 15. No Phase 1 work may begin until Phase 0 is reviewed and accepted.
 16. Any agent-produced request for human review must first pass independent agent verification (DEC-034).
+17. All src/ files exceeding 800 LOC must have a `healing_plan` entry in `registry/source-structure-baseline.json`. RULE-LIB-001 (production-library-checklist.md) is binding. See Section 72 for governed healing taskcards.
 
 ---
 
@@ -4024,3 +4025,194 @@ audit-hardening-execution-closure loop applied.
 ### Commits
 
 - d9166623 — chore(supervisor-state): post-closeout state snapshot containing micro-taskcards.yaml (all 34 tasks resolved), final-audit.json, idempotency-baseline.json
+
+## §57 — Product Quality Forensic Healing Mission (FORMAT-FACTORY-PQ-EXECUTE-001)
+
+**Sprint:** FORMAT-FACTORY-PQ-EXECUTE-001
+**Mission:** zany-riding-goblet.md v4 (final)
+**Date:** 2026-06-25
+**Status:** CLOSED — ALL_TASKCARDS_COMPLETE
+**Plan type:** execution_mission
+
+### Mission Summary
+
+Bundle: 57-file product quality review (PQ-001 to PQ-020) from prior plan FORMAT-FACTORY-PRODUCT-CODE-API-QUALITY-REVIEW-PLAN-001.
+28 forensic defects corrected in v2/v2.1 before execution. Plan hardened to v3/v4 — all taskcards closed (including TC-PQ-030c, TC-PQ-031, TC-PQ-040b, TC-PQ-062, TC-PQ-071, TC-PQ-080, TC-PQ-081 reopened and re-executed in final session).
+30 products regraded: all improved, zero P0/P1/P2 findings remaining open. 15 PQ findings FIXED (2026-06-25 final).
+
+### Findings Status
+
+| Category | Count |
+|----------|-------|
+| FIXED | 15 |
+| STALE_CORRECTED | 1 |
+| NOT_AN_ISSUE | 1 |
+| CONFIRMED_SCOPE | 1 |
+| AUDITED_DEFERRED | 1 |
+| DEFERRED_QF4 | 1 |
+| DEFERRED_QF5 | 2 |
+| CONFIRMED_OPEN_P0 | 0 |
+
+### Key Completions
+
+| Taskcard | Outcome |
+|----------|---------|
+| TC-PQ-010 | Gate 11 false claims fixed — FODS/FODT/NetPBM all say "commercial_readiness_in_progress" |
+| TC-PQ-011 | ZstWriter.cs created with ZstdSharp.Port (Compress/Decompress/CompressFile/DecompressFile) |
+| TC-PQ-012 | write_fodp() stub added raising NotImplementedError |
+| TC-PQ-020 | FODS __init__.py module docstring added (PRIMARY API / LOWER-LEVEL API guidance) |
+| TC-PQ-021 | _FF_API_EXCLUDE applied in 18/20 Python __init__.py files |
+| TC-PQ-030a | NdjsonRecord.cs created as typed accessor for JSON records (additive, non-breaking) |
+| TC-PQ-030b | TypedRecords property added to NdjsonDocument (IReadOnlyList<NdjsonRecord>) |
+| TC-PQ-030c | LoadFromContent(string) additive alias in NdjsonDocument.cs |
+| TC-PQ-031 | FODT Tables confirmed wired (FodtDocument.Tables at line 224) — NOT_AN_ISSUE |
+| TC-PQ-040 | FODS Load(Stream) at FodsDocument.cs:138; FODT Load(Stream) confirmed |
+| TC-PQ-050 | Sprint-named test audit complete — fods 53%, fodt 50%, netpbm 61%; deferred rename |
+| TC-PQ-060 | HTML/Markdown/TXT export_helper_only README classification added |
+| TC-PQ-061 | All 10 .NET READMEs backfilled (csv/tsv/zst/ndjson/html/markdown/txt + existing 3) |
+| TC-PQ-062 | 4 example files: try/except dual-mode import (edit_save_fods.py, edit_save_fodt.py, edit_save_export_fodt.py, qoi_consumer_roundtrip.py) |
+| TC-PQ-070 | All 20 Python src/python/*/README.md files created |
+| TC-PQ-071 | html/markdown/txt: classification=export_helper_only + standalone_product:false in parity-matrix.yaml |
+| TC-PQ-080 | Canonical finding register: 20 entries, 15 FIXED, all_p0_resolved=true |
+| TC-PQ-081 | 30-product post-fix grades: python avg 3.05→3.40, dotnet avg 2.55→3.14, QOI +0.1 additional |
+
+### Deferred to QF4/QF5
+
+- PQ-016, PQ-019, PQ-020: Low-severity; no blocking risk for Gate 11
+- PQ-019 (cross-lang parity): planned in Phase I of zazzy-yawning-platypus
+- PQ-020 (analytics masquerade): GAP-PROD-INV-MASQ-001, requires 16+ import changes
+
+---
+
+## Section 71 — VAST-WEAVING-LAMPSON-001: Production Autonomous Sprint System Design
+
+**Sprint:** VAST-WEAVING-LAMPSON-001
+**Mission:** vast-weaving-lampson.md
+**Date:** 2026-06-25
+**Status:** ACTIVE — TC-VWL-004 executed (documentation), pilots deferred
+
+### Production Autonomous Sprint System Design
+
+The Format Factory autonomous sprint system operates in production MODE 4 (ACTIVE_MCP_ACTIVATION) with the following 28 characteristics:
+
+**I. Sprint Selection Authority**
+1. **Canonical task register** (canonical-task-register.yaml) is the highest-priority authority during multi-plan intake sessions
+2. **check_continuation.py** governs autonomous loop selection; returns CONTINUE (with next-sprint.md) or STOP (with reason)
+3. **Per-chat plan** (if loaded via plan mode) takes precedence over all other selection mechanisms
+4. **next-sprint.md** governs when no per-chat plan is active and check_continuation.py returns CONTINUE
+
+**II. Continuation Gate Enforcement**
+5. `SESSION_MISMATCH` / `CHAT_ID_MISMATCH` / `POST_PLAN_TERMINAL` / `PLAN_COMPLETED_IN_SESSION` are NON-OVERRIDABLE hard stops
+6. `ACTIVE_PLAN_INCOMPLETE` blocks autonomous loop but NOT explicit user instructions
+7. `MAX_ITERATIONS` (iteration >= max_iterations): governed rollover — reset iteration to 0 and continue
+8. Stale plan locks must be SUPERSEDED (not TERMINAL_CLOSED) to avoid false POST_PLAN_TERMINAL
+
+**III. Lifecycle Audit Gate**
+9. `lifecycle_audit.py` called with `--plan-path` + `--mission-id` returns: AUDIT_PASS, AUDIT_REQUIRES_ITERATION, or AUDIT_PASS_VACUOUS
+10. AUDIT_PASS_VACUOUS (vacuous call without plan_path/mission_id) forces `mission_complete=False` — cannot trigger TERMINAL_CLOSED
+11. `--completion-candidate` flag in `write_plan_lock.py` marks plan as COMPLETION_CANDIDATE before TERMINAL_CLOSED
+12. `--terminal --audit-gate` combination requires lifecycle audit PASS before writing TERMINAL_CLOSED
+
+**IV. Governance Validators**
+13. 75 governance validators (V1-V74 + V-ext) in governance_validators.py + governance_validators_ledger.py + governance_validators_spec.py + governance_validators_ext.py
+14. GOV_BLOCK:monolith_detection_validator and GOV_BLOCK:validate_source_architecture are structural failures — Supreme Directive override does NOT apply
+15. TC-GUARD-001 (BLOCK mode): PRODUCT_SOURCE/PRODUCT_TEST items without gap_ledger_ref/capability_ref/spec_fact_refs → rework_items
+
+**V. Product Deepening Gate**
+16. product-deepening-ledger.yaml (registry/): 3 formats with continuation_allowed=true (ABW, FODS, FODT); 17 blocked (src_layout=mixed_model)
+17. V74 validate_ledger_continuation_gate blocks product deepening items for blocked formats
+18. Each blocked format has a repair taskcard (TC-PDL-REPAIR-{FORMAT}-001) in the ledger specifying the extract-analytics-from-monolith skill
+
+**VI. System Healing Gate**
+19. check_system_healing_gate.py: 9 lanes (SAL, capability, compiler, skills, validators, qname, BYP-001, supervision, healing) — all PASS as of 2026-06-25
+20. Wave 3 all-PASS closes the product acquisition unblock condition
+
+**VII. Skill-First Execution**
+21. 66 registered skills in .supervisor/skill-registry.yaml; every source mutation must use a registered skill
+22. audit-root-tools skill (added 2026-06-25) enforces mutation guard on tools/supervisor/ scripts
+23. SKILL-GAP-011 resolved: rollback-and-recovery route wired in capability-routing-registry.yaml
+
+**VIII. Evidence and Closeout**
+24. Sprint closeout: evidence declaration → sprint_executor_validate.py --repair → autonomous_cycle.py → build_declaration_review_package.py
+25. Evidence declarations require: gap_ledger_ref OR capability_ref OR spec_fact_refs for PRODUCT_SOURCE items
+26. Evidence quality zero (LLM grader unavailable): appended to continuation_warnings, NOT hard_stops
+27. SIGNAL-UNIFY-001 patch ensures work-item-grades.md and latest-cycle-summary.md use signal-consistent auto_continue value
+
+**IX. Format Quality Metrics**
+28. PROOF_LEVEL_0–5 maturity: 14 Python formats at PROOF_LEVEL_4+ (consumer_roundtrip.py verified); Gate 11 advancement 8/31 for FODS (.NET); FODT CUSTOMER_READY pending Babar Raza sign-off
+
+### Completion Status
+
+- **TC-VWL-001**: DONE (check_continuation returns CONTINUE — eager-wishing-bear lock irrelevant)
+- **TC-VWL-002**: DONE (CONTINUE with zero rework_items)
+- **TC-VWL-003**: DONE (LANE_ENFORCEMENT + GOV_BLOCK validators confirmed operational)
+- **TC-VWL-004**: DONE (this section — production sprint system design documented)
+- **TC-VWL-005–014**: Pilots deferred — SYLK blocked (src_layout=mixed_model), others require dedicated sessions
+
+---
+
+## Section 72 — Architecture Healing Taskcards (2026-06-25)
+
+Architecture debt documented: `docs/code-quality/src-architecture-gap-inventory.md` (updated 2026-06-25).
+Root cause analysis: `docs/code-quality/root-cause-analysis.md` (updated with RCA-6 through RCA-9).
+Machinery proof: TC-GH-007 evidence at `.local/evidences/governance-healing-20260625/`.
+Reference sprint: GOVERNANCE-HEALING-20260625 (warm-jingling-sutherland).
+One healing demonstrated: TC-GH-008 (csv/tabular_document.py reduced from 960 to 799 LOC).
+
+Rules binding on all work below:
+- RULE-LIB-003 (import direction) — enforced by V75
+- RULE-LIB-006 (error handling hierarchy) — enforced by V76
+- RULE-AM-003 (new file LOC <= 800) — enforced by V35/V40
+- NEVER increase baseline_loc_cap. Set healing_target = actual post-healing LOC.
+
+### TC-ARCH-ZST-001 -- Heal src/python/zst/zst_codec.py
+- Status: OPEN
+- Approach: Extract frame reading/writing binary logic to zst_frame_parser.py (PROVISIONAL target)
+- Prerequisites: (1) Read zst_codec.py fully before starting. (2) Analytics already extracted to zst_analytics.py -- do NOT touch it. (3) Run ZST tests BEFORE starting to establish baseline.
+- Risk: HIGH (binary format, ~1549 LOC, complex Zstandard frame structure)
+- Acceptance: zst_codec.py < 800 LOC, all ZST tests pass, V35 PASS for this file
+
+### TC-ARCH-XCF-001 -- Heal src/python/xcf/xcf_parser.py
+- Status: OPEN
+- Approach: Extract low-level binary helpers (uint32/string/offset reading) to xcf_binary.py
+- Prerequisites: Analytics in xcf_analytics.py + xcf_image_metrics.py -- do NOT touch those.
+- Risk: HIGH (binary format, ~1272 LOC, complex XCF layer/channel/pixel structure)
+- Acceptance: xcf_parser.py < 800 LOC, all XCF tests pass
+
+### TC-ARCH-FODS-001 -- Heal src/python/fods/neutral_model.py
+- Status: OPEN
+- Approach: Read fully; extract query/filter operations to neutral_model_query.py (PROVISIONAL)
+- Risk: MEDIUM (well-tested ODF spreadsheet format)
+- Acceptance: neutral_model.py < 800 LOC, all FODS tests pass
+
+### TC-ARCH-FODS-002 -- Heal src/python/fods/spreadsheet_document.py
+- Status: OPEN
+- Approach: Extract sheet-level write operations (add_row, set_cell_value, rename) to spreadsheet_ops.py
+- Risk: MEDIUM
+- Acceptance: spreadsheet_document.py < 800 LOC, all FODS tests pass
+
+### TC-ARCH-ABW-001 -- Heal src/python/abw/word_document.py
+- Status: OPEN
+- Approach: Extract paragraph-level manipulation to word_ops.py (PROVISIONAL)
+- Risk: MEDIUM
+- Acceptance: word_document.py < 800 LOC, all ABW tests pass
+
+### TC-ARCH-DIF-001 -- Heal src/python/dif/interchange_document.py
+- Status: OPEN
+- Approach: Extract conversion methods (to_csv, to_json, format helpers) to dif_converter.py (PROVISIONAL)
+- Risk: LOW-MEDIUM
+- Acceptance: interchange_document.py < 800 LOC, all DIF tests pass
+
+### TC-ARCH-FODT-001 -- Heal src/python/fodt/text_document.py
+- Status: OPEN
+- Approach: Extract text-level operations to text_ops.py (PROVISIONAL)
+- Risk: MEDIUM (complex ODF text format)
+- Acceptance: text_document.py < 800 LOC, all FODT tests pass
+
+### TC-ARCH-NETPBM-001 -- Heal src/net/netpbm/Model/NetpbmImage.cs
+- Status: OPEN
+- Approach: Extract NetpbmImageReader.cs (file reading), NetpbmImageMetrics.cs (metrics/stats)
+- Prerequisites: Run all NetPBM tests before starting. dotnet build+test required.
+- Risk: HIGH (~1914 LOC .NET model, complex pixel format logic)
+- Acceptance: NetpbmImage.cs < 800 LOC, all NetPBM tests pass
+

@@ -21,16 +21,25 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-REPO_ROOT = Path(__file__).parent.parent.parent.parent
-sys.path.insert(0, str(REPO_ROOT))
-
-from src.python.fodt import (
-    parse_fodt,
-    write_fodt,
-    document_set_block_text,
-    document_warnings_for_unsupported_edit,
-    document_stats,
-)
+try:
+    from fodt import (
+        parse_fodt,
+        write_fodt,
+        document_set_block_text,
+        document_warnings_for_unsupported_edit,
+        document_stats,
+    )
+    REPO_ROOT = Path(__file__).resolve().parents[3]
+except ImportError:
+    REPO_ROOT = Path(__file__).resolve().parents[3]
+    sys.path.insert(0, str(REPO_ROOT))
+    from src.python.fodt import (
+        parse_fodt,
+        write_fodt,
+        document_set_block_text,
+        document_warnings_for_unsupported_edit,
+        document_stats,
+    )
 
 SAMPLE_FODT = REPO_ROOT / "samples" / "by-format" / "fodt" / "minimal-document.fodt"
 

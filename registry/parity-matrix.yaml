@@ -53,6 +53,7 @@ formats:
     dotnet: {exists: true, project: "src/net/html/FormatFactory.Html.csproj"}
     parity: dotnet_only
     classification: export_helper_only
+    standalone_product: false
     classification_note: "Output-only export target. Not a parseable input format. Used internally by FODS/FODT/NetPBM exporters. Not intended as a standalone product format."
 
   markdown:
@@ -60,6 +61,7 @@ formats:
     dotnet: {exists: true, project: "src/net/markdown/FormatFactory.Markdown.csproj"}
     parity: dotnet_only
     classification: export_helper_only
+    standalone_product: false
     classification_note: "Output-only export target. Not a parseable input format. Used internally by FODT/FODS exporters to produce Markdown renditions."
 
   txt:
@@ -67,6 +69,7 @@ formats:
     dotnet: {exists: true, project: "src/net/txt/FormatFactory.Txt.csproj"}
     parity: dotnet_only
     classification: export_helper_only
+    standalone_product: false
     classification_note: "Output-only export target. Plain text extraction helper used by FODT/FODS/NetPBM exporters. Not a standalone parseable format."
 
   netpbm:

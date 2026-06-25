@@ -13,18 +13,29 @@ Usage:
 import sys
 from pathlib import Path
 
-_REPO = Path(__file__).parent.parent.parent.parent
-sys.path.insert(0, str(_REPO))
-
-from src.python.qoi.models import QoiDocument
-from src.python.qoi.image_document import (
-    qoi_dimensions,
-    qoi_pixel_count,
-    qoi_channel_count,
-    qoi_is_opaque,
-    qoi_average_brightness,
-    qoi_total_brightness,
-)
+try:
+    from qoi.models import QoiDocument
+    from qoi.image_document import (
+        qoi_dimensions,
+        qoi_pixel_count,
+        qoi_channel_count,
+        qoi_is_opaque,
+        qoi_average_brightness,
+        qoi_total_brightness,
+    )
+    _REPO = Path(__file__).resolve().parents[3]
+except ImportError:
+    _REPO = Path(__file__).resolve().parents[3]
+    sys.path.insert(0, str(_REPO))
+    from src.python.qoi.models import QoiDocument
+    from src.python.qoi.image_document import (
+        qoi_dimensions,
+        qoi_pixel_count,
+        qoi_channel_count,
+        qoi_is_opaque,
+        qoi_average_brightness,
+        qoi_total_brightness,
+    )
 
 SAMPLE = _REPO / "samples" / "by-format" / "qoi" / "valid" / "4x1-gradient.qoi"
 

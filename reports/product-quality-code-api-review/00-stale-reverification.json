@@ -1,0 +1,66 @@
+{
+  "generated_at": "2026-06-25T17:49:00.663960+00:00",
+  "generator": "TC-PQ-001",
+  "findings": {
+    "PQ-003": {
+      "finding": "Example files use src.python imports without try/except fallback",
+      "status": "CONFIRMED",
+      "bare_import_count": 12,
+      "files": [
+        "examples\\python\\cross_format\\toml_ndjson_csv_pipeline.py",
+        "examples\\python\\csv\\consumer_roundtrip.py",
+        "examples\\python\\csv\\read_and_inspect.py",
+        "examples\\python\\fods\\edit_and_export.py",
+        "examples\\python\\fods\\edit_save_export_fods.py",
+        "examples\\python\\fods\\edit_save_fods.py",
+        "examples\\python\\fodt\\dogfood_fodt_exporters.py",
+        "examples\\python\\fodt\\edit_and_export.py",
+        "examples\\python\\fodt\\edit_save_export_fodt.py",
+        "examples\\python\\fodt\\edit_save_fodt.py",
+        "examples\\python\\pbm\\pbm_consumer_roundtrip.py",
+        "examples\\python\\qoi\\qoi_consumer_roundtrip.py"
+      ],
+      "note": "TC-PQ-062 required to fix"
+    },
+    "PQ-005": {
+      "finding": ".NET packages missing README.md",
+      "status": "PARTIALLY_FIXED",
+      "present": [
+        "csv",
+        "tsv",
+        "ndjson",
+        "zst",
+        "fods",
+        "fodt",
+        "netpbm"
+      ],
+      "missing": [
+        "html",
+        "markdown",
+        "txt"
+      ]
+    },
+    "PQ-014": {
+      "finding": "Python packages missing README.md",
+      "status": "FIXED",
+      "python_readme_count": 20,
+      "note": "All 20 Python FOSS packages have README.md"
+    },
+    "NDJSON_SEVERITY_UPGRADE": {
+      "finding": "NdjsonDocument.Records is mutable List<JsonElement>",
+      "status": "UPGRADED",
+      "note": "Severity upgraded \u2014 TypedRecords (IReadOnlyList<NdjsonRecord>) added additively. Records preserved."
+    },
+    "GATE11_SCOPE": {
+      "finding": "Gate 11 false approval claim in csproj files",
+      "status": "FIXED",
+      "fixed_in": [
+        "FODS",
+        "FODT",
+        "NetPBM"
+      ],
+      "verified_clean": true,
+      "note": "TC-PQ-010 complete \u2014 zero Gate 11 approved matches in all csprojs"
+    }
+  }
+}
