@@ -50,6 +50,35 @@ jobs:
           name: test-results-fast
           path: .local/test-results/
 
+  skill-attribution-check:
+    # EP-006: Detect src/ mutations without skill execution transcripts.
+    # Policy: docs/governance/skill-only-policy.yaml § enforcement_points.EP-006
+    # This check fires AFTER commit (detection, not prevention).
+    # Prevention requires pre-commit hooks (SKILL-GAP-008 — in backlog).
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 50  # enough history to trace skill transcripts
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Check skill attribution for src/ mutations
+        run: |
+          python tools/governance/ci_skill_attribution_check.py \
+            --base-ref "HEAD~1" \
+            --head-ref "HEAD" \
+            --allow-pre-policy \
+            --output .local/ci-skill-attribution-report.json
+        continue-on-error: true  # WARN only until SKILL-GAP-008 (pre-commit hook) is closed
+      - name: Upload skill attribution report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: skill-attribution-report
+          path: .local/ci-skill-attribution-report.json
+        continue-on-error: true
+
   governance-check:
     runs-on: ubuntu-latest
     steps:
