@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s113-dotnet-deepening-20260627",
+  "latest_sprint": "ff-sprint-s114-dotnet-deepening-20260627",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -20290,9 +20290,72 @@
         }
       ],
       "format": "TSV"
+    },
+    {
+      "entry_id": "PC-FODT-R135",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s114-dotnet-deepening-20260627",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.table_getcelltext"
+      ],
+      "api_symbols": [
+        "FodtTable.GetCellText",
+        "FodtTable.Name",
+        "FodtTable.RowCount"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/fodt/FodtR135TableGetCellTextTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "FODT"
+    },
+    {
+      "entry_id": "PC-FODS-R135",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s114-dotnet-deepening-20260627",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.ods_exporter"
+      ],
+      "api_symbols": [
+        "FodsOdsExporter.ExportToOds",
+        "FodsOdsExporter.ExportToOdsBytes",
+        "FodsOdsExportResult.SheetCount",
+        "FodsOdsExportResult.TotalRowsExported",
+        "FodsOdsExportResult.TotalCellsExported"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/fods/FodsR135OdsExporterTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "FODS"
+    },
+    {
+      "entry_id": "PC-CSV-R125",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s114-dotnet-deepening-20260627",
+      "product": "CSV .NET",
+      "capability_refs": [
+        "commercial_net_products.CSV.dotnet_status.stream_readrows"
+      ],
+      "api_symbols": [
+        "CsvReader.ReadRows(Stream)"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/csv/CsvR125StreamReadRowsTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "CSV"
     }
   ],
-  "total_entries": 1006,
+  "total_entries": 1009,
   "changes": [
     {
       "file": "src/python/dif/models.py",
