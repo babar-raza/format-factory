@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s85-dotnet-deepening-20260626",
+  "latest_sprint": "ff-sprint-s86-dotnet-deepening-20260626",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -18836,6 +18836,56 @@
       ],
       "test_files": [
         "tests/net/netpbm/NetpbmR120PixelAccessTests.cs"
+      ],
+      "format": "Netpbm"
+    },
+    {
+      "entry_id": "PC-FODS-R121-FIND-CELLS-20260626",
+      "classification": "PRODUCT_DEEPENING",
+      "sprint": "ff-sprint-s86-dotnet-deepening-20260626",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.cell_search"
+      ],
+      "api_symbols": [
+        "FodsDocument.FindCellsByValue"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR121FindCellsByValueTests.cs"
+      ],
+      "format": "FODS"
+    },
+    {
+      "entry_id": "PC-FODT-R119-OUTLINE-JSON-20260626",
+      "classification": "PRODUCT_DEEPENING",
+      "sprint": "ff-sprint-s86-dotnet-deepening-20260626",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.outline_json"
+      ],
+      "api_symbols": [
+        "FodtDocument.ExportToOutlineJson"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR119ExportToOutlineJsonTests.cs"
+      ],
+      "format": "FODT"
+    },
+    {
+      "entry_id": "PC-NETPBM-R121-IMAGE-EDIT-20260626",
+      "classification": "PRODUCT_DEEPENING",
+      "sprint": "ff-sprint-s86-dotnet-deepening-20260626",
+      "product": "Netpbm .NET",
+      "capability_refs": [
+        "commercial_net_products.Netpbm.dotnet_status.image_editing"
+      ],
+      "api_symbols": [
+        "NetpbmImage.SetPixel",
+        "NetpbmImage.SetPixelColor",
+        "NetpbmImage.FillRegion"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR121ImageEditingTests.cs"
       ],
       "format": "Netpbm"
     }
