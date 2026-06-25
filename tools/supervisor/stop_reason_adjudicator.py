@@ -68,6 +68,14 @@ class StopDecision:
     UNSAFE_WORKSPACE = "UNSAFE_WORKSPACE"
     RUNTIME_LIMIT_CONTINUATION_REQUIRED = "RUNTIME_LIMIT_CONTINUATION_REQUIRED"
     STATE_CONTRADICTION_REPAIR_REQUIRED = "STATE_CONTRADICTION_REPAIR_REQUIRED"
+    # Aliases for canonical gate-authorization policy (TC-AUTH-008)
+    # WAITING_GATE_11_AUTHORIZATION maps to the SAME string as RELEASE_APPROVAL_PENDING...
+    # so existing tests continue to pass and new code can use the canonical name.
+    WAITING_GATE_11_AUTHORIZATION = RELEASE_APPROVAL_PENDING_NOT_IMPLEMENTATION_BLOCKER
+    # Explicit blocking-state constants for classification (non-terminal)
+    BLOCKED_LOCAL = "BLOCKED_LOCAL"              # agent can fix locally; not terminal
+    BLOCKED_DEPENDENCY = "BLOCKED_DEPENDENCY"    # blocked on another lane/sprint; not terminal
+    BLOCKED_EXTERNAL = "BLOCKED_EXTERNAL"        # true external (creds, push); equivalent to TRUE_EXTERNAL_GATE
 
 
 # ─────────────────────────────────────────────────────────────
@@ -154,6 +162,11 @@ _SIGNAL_KEYWORDS: dict[str, str] = {
     "babar_approval_required": SignalCategory.HUMAN_GATE,
     "approval_blocked": SignalCategory.HUMAN_GATE,
     "blocked": SignalCategory.HUMAN_GATE,
+    # Canonical gate-authorization aliases (TC-AUTH-008)
+    "waiting_gate_11_authorization": SignalCategory.GATE_11,
+    "blocked_local": SignalCategory.IMPLEMENTATION_GATE,
+    "blocked_dependency": SignalCategory.IMPLEMENTATION_GATE,
+    "blocked_external": SignalCategory.PUSH_COMMIT,
 }
 
 

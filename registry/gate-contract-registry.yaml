@@ -1,0 +1,275 @@
+schema_version: "1.0"
+authority_source: "docs/gates.md"
+policy_reference: "docs/governance/authorization-policy-v1.yaml (FORMAT_FACTORY_GATE_AUTHORIZATION_V1)"
+generated_date: "2026-06-24"
+
+gates:
+  - gate_id: GATE_0
+    gate_number: 0
+    title: "Pre-Pipeline"
+    purpose: "Format is under consideration; initial scoring and legal assessment"
+    autonomous: true
+    human_authorization_required: false
+    authorization_role: null
+    preparation_is_agent_owned: true
+    entry_conditions:
+      - "Format name known"
+      - "Scoring model can be applied"
+    required_work:
+      - "Apply scoring model"
+      - "Assign legal category"
+      - "Create format registry entry"
+    required_evidence:
+      - "registry/format-registry.yaml entry"
+      - "Scoring model output"
+    exit_conditions:
+      - "Candidate accepted: score above threshold AND legal category assigned"
+    next_gate: 1
+
+  - gate_id: GATE_1
+    gate_number: 1
+    title: "Candidate Accepted"
+    purpose: "Format is formally accepted for development pipeline"
+    autonomous: true
+    human_authorization_required: false
+    authorization_role: null
+    preparation_is_agent_owned: true
+    entry_conditions:
+      - "Gate 0 passed"
+      - "Format score above minimum threshold"
+    required_work:
+      - "Produce spec-evidence.md"
+      - "Assign legal notes"
+    required_evidence:
+      - "spec-evidence.md"
+      - "legal-notes.md"
+    exit_conditions:
+      - "spec-evidence.md signed off"
+      - "Legal category confirmed"
+    next_gate: 2
+
+  - gate_id: GATE_2
+    gate_number: 2
+    title: "Evidence Complete"
+    purpose: "Spec evidence collected and legal review complete"
+    autonomous: true
+    human_authorization_required: false
+    authorization_role: null
+    preparation_is_agent_owned: true
+    entry_conditions:
+      - "Gate 1 passed"
+    required_work:
+      - "Collect spec documentation"
+      - "Confirm legal status"
+    required_evidence:
+      - "spec-evidence.md with specification references"
+      - "legal-notes.md with legal classification"
+    exit_conditions:
+      - "Spec evidence confirmed"
+      - "Legal sign-off recorded"
+    next_gate: 3
+
+  - gate_id: GATE_3
+    gate_number: 3
+    title: "Sample Corpus Ready"
+    purpose: "Minimum sample corpus assembled with provenance confirmed"
+    autonomous: true
+    human_authorization_required: false
+    authorization_role: null
+    preparation_is_agent_owned: true
+    human_reviewed_note: >
+      The 'human-reviewed provenance' language in docs/gates.md refers to per-sample
+      corpus provenance verification — a verification task agents can perform.
+      It is NOT a gate-level human authorization requirement.
+      Gates 0-10 require no human authorization per FORMAT_FACTORY_GATE_AUTHORIZATION_V1.
+    entry_conditions:
+      - "Gate 2 passed"
+    required_work:
+      - "Assemble minimum sample corpus (≥3 files per format)"
+      - "Confirm provenance per-sample"
+      - "Verify corpus represents format variants"
+    required_evidence:
+      - "samples/by-format/{format}/ directory with verified samples"
+      - "Provenance record per sample"
+    exit_conditions:
+      - "Minimum corpus assembled"
+      - "All samples have confirmed provenance"
+    next_gate: 4
+
+  - gate_id: GATE_4
+    gate_number: 4
+    title: "Prototype Complete"
+    purpose: "Working parser prototype with security review"
+    autonomous: true
+    human_authorization_required: false
+    authorization_role: null
+    preparation_is_agent_owned: true
+    entry_conditions:
+      - "Gate 3 passed"
+    required_work:
+      - "Implement working parser/reader"
+      - "Run security review on parser"
+    required_evidence:
+      - "Working parser code"
+      - "Security review output"
+      - "Passing parse tests on corpus samples"
+    exit_conditions:
+      - "Parser works on all corpus samples"
+      - "Security review passed"
+    next_gate: 5
+
+  - gate_id: GATE_5
+    gate_number: 5
+    title: "Neutral Model Defined"
+    purpose: "Format-agnostic neutral model schema and validation complete"
+    autonomous: true
+    human_authorization_required: false
+    authorization_role: null
+    preparation_is_agent_owned: true
+    entry_conditions:
+      - "Gate 4 passed"
+    required_work:
+      - "Design neutral model schema"
+      - "Implement schema validation"
+      - "Map parser output to neutral model"
+    required_evidence:
+      - "Neutral model schema file"
+      - "Validation passing on corpus"
+      - "Round-trip parser → neutral → reserialize test"
+    exit_conditions:
+      - "Neutral model schema complete and validated"
+    next_gate: 6
+
+  - gate_id: GATE_6
+    gate_number: 6
+    title: "Oracle Comparison Complete"
+    purpose: "Behavioral discrepancies between reference implementation and ours classified"
+    autonomous: true
+    human_authorization_required: false
+    authorization_role: null
+    preparation_is_agent_owned: true
+    entry_conditions:
+      - "Gate 5 passed"
+    required_work:
+      - "Compare output against oracle/reference implementation"
+      - "Classify all discrepancies"
+    required_evidence:
+      - "Oracle comparison report"
+      - "Discrepancy classification matrix"
+    exit_conditions:
+      - "All discrepancies classified (acceptable/blocked/mitigated)"
+    next_gate: 7
+
+  - gate_id: GATE_7
+    gate_number: 7
+    title: "Fuzz Testing Complete"
+    purpose: "Fuzz testing (10K-100K iterations) passed with mitigations in place"
+    autonomous: true
+    human_authorization_required: false
+    authorization_role: null
+    preparation_is_agent_owned: true
+    entry_conditions:
+      - "Gate 6 passed"
+    required_work:
+      - "Run fuzz testing (≥10,000 iterations)"
+      - "Identify and mitigate crashes/hangs"
+    required_evidence:
+      - "Fuzz test run results"
+      - "Mitigation record for any crashes"
+    exit_conditions:
+      - "≥10,000 fuzz iterations completed"
+      - "All crashes mitigated or documented as acceptable"
+    next_gate: 8
+
+  - gate_id: GATE_8
+    gate_number: 8
+    title: "Security Review Complete"
+    purpose: "All security threats identified and mitigated"
+    autonomous: true
+    human_authorization_required: false
+    authorization_role: null
+    preparation_is_agent_owned: true
+    entry_conditions:
+      - "Gate 7 passed"
+    required_work:
+      - "Conduct full security threat model"
+      - "Implement mitigations for all threats"
+    required_evidence:
+      - "Security review report"
+      - "Threat mitigation record"
+    exit_conditions:
+      - "All threats mitigated or accepted with documented rationale"
+    next_gate: 9
+
+  - gate_id: GATE_9
+    gate_number: 9
+    title: "Product Mapping Complete"
+    purpose: "Tier assignments and delivery plan confirmed"
+    autonomous: true
+    human_authorization_required: false
+    authorization_role: null
+    preparation_is_agent_owned: true
+    entry_conditions:
+      - "Gate 8 passed"
+    required_work:
+      - "Assign product tier"
+      - "Create delivery plan"
+      - "Map to POC targets"
+    required_evidence:
+      - "registry/format-registry.yaml tier assignment"
+      - "product-capability-matrix/poc-targets.yaml entry"
+    exit_conditions:
+      - "Tier assigned"
+      - "Delivery plan documented"
+    next_gate: 10
+
+  - gate_id: GATE_10
+    gate_number: 10
+    title: "Commercial Readiness"
+    purpose: "Load-edit-save-convert capability proven at production quality"
+    autonomous: true
+    human_authorization_required: false
+    authorization_role: null
+    preparation_is_agent_owned: true
+    entry_conditions:
+      - "Gate 9 passed"
+    required_work:
+      - "Implement load, edit, save, convert operations"
+      - "Achieve PROOF_LEVEL_4+ consumer proof"
+      - "Pass all governance validators"
+    required_evidence:
+      - "Consumer roundtrip proof (examples/python/{format}/consumer_roundtrip.py)"
+      - "PROOF_LEVEL_4+ evidence"
+      - "All governance validators PASS"
+    exit_conditions:
+      - "All 4 operations implemented and verified"
+      - "Consumer proof PASS"
+      - "Zero governance violations"
+    next_gate: 11
+
+  - gate_id: GATE_11
+    gate_number: 11
+    title: "Commercial Release"
+    purpose: "Commercial release authorization and publication"
+    autonomous: false
+    autonomous_preparation: true
+    human_authorization_required: true
+    authorization_role: "Babar Raza"
+    authorization_scope: "G11-G commercial release execution ONLY"
+    preparation_is_agent_owned: true
+    transition_authorization: true
+    entry_conditions:
+      - "Gate 10 passed"
+      - "Zero eligible autonomous work remaining"
+      - "Evidence packet prepared"
+    required_work:
+      - "Prepare commercial release evidence packet (agent-owned)"
+      - "Submit for Babar Raza authorization (TRUE_EXTERNAL_GATE)"
+    required_evidence:
+      - "Commercial release evidence packet"
+      - "Gate 10 completion proof"
+      - "Zero open audit findings"
+    exit_conditions:
+      - "Babar Raza G11-G approval granted"
+      - "Package published to registry"
+    next_gate: null

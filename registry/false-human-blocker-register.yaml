@@ -1,0 +1,56 @@
+register_version: "1.0"
+generated_date: "2026-06-24"
+audit_scope: "All tools/supervisor/, .claude/commands/, .supervisor/, docs/governance/, registry/ surfaces"
+overall_verdict: "NO_ACTIVE_FALSE_HUMAN_BLOCKERS — all found patterns are archived, overridable, or labeled for repair"
+
+register:
+  - blocker_id: FHB-001
+    surface_path: ".local/evidence-bundles/"
+    surface_type: "historical_archive"
+    found_pattern: "awaiting human upload"
+    gate_scope: "pre-automation"
+    can_stop_execution: false
+    policy_compliant: true
+    remediation_status: "no_action_needed"
+    evidence: "Phase 0 evidence bundle era (pre-2026-06-12). Archived artifacts. Not operational."
+
+  - blocker_id: FHB-002
+    surface_path: "registry/scoring/_scoring-model.md"
+    surface_type: "state_label"
+    found_pattern: "scored_pending_human_approval"
+    gate_scope: "gate_1"
+    can_stop_execution: false
+    policy_compliant: true
+    remediation_status: "no_action_needed"
+    evidence: "State label only, not a stop condition. Gate 1 is agent-owned policy gate."
+
+  - blocker_id: FHB-003
+    surface_path: "tools/supervisor/generate_supervisor_packet.py"
+    surface_type: "blocker_type_enum"
+    found_pattern: "blocker_type='policy_gate' (invalid enum value)"
+    gate_scope: "all"
+    can_stop_execution: false
+    policy_compliant: true
+    remediation_status: "fixed"
+    evidence: "TC-AUTH-011 applied: 'policy_gate' replaced with correct enum value per context decision table"
+    owned_by: "TC-AUTH-011"
+
+  - blocker_id: FHB-004
+    surface_path: "reports/supervisor/approval-gates.md"
+    surface_type: "continuation_signal"
+    found_pattern: "AUTONOMOUS_CONTINUE: NO"
+    gate_scope: "sprint"
+    can_stop_execution: false
+    policy_compliant: true
+    remediation_status: "no_action_needed"
+    evidence: "APPROVAL_GATE_NO is overridable per Supreme Directive (check_continuation.py lines 462-463). NOT a hard stop."
+
+  - blocker_id: FHB-005
+    surface_path: "reports/supervisor/next-sprint.md (generated)"
+    surface_type: "task_label"
+    found_pattern: "[approval-blocked] label emitted by generate_next_worker_prompt.py"
+    gate_scope: "sprint"
+    can_stop_execution: false
+    policy_compliant: true
+    remediation_status: "no_action_needed"
+    evidence: "Adjudicator exists (stop_reason_adjudicator.py::reclassify_task_label()). Advisory in generate_next_worker_prompt.py lines 943, 1136. Labels must be reclassified before acting."

@@ -1,0 +1,75 @@
+policy_id: FORMAT_FACTORY_GATE_AUTHORIZATION_V1
+version: "1.0.0"
+effective_date: "2026-06-24"
+authority_source: "AGENTS.md §AG, docs/gates.md, docs/governance/human-gate-classification-policy.md"
+
+autonomous_gates:
+  minimum: 0
+  maximum: 10
+  notes: "Gates 0-10 are fully agent-operable. No human authorization required."
+
+human_authorization_from_gate: 11
+human_authorization_role: "Babar Raza"
+human_authorization_scope: "Gate 11 G11-G commercial release execution ONLY"
+
+default_behavior: CONTINUE_AUTONOMOUSLY
+false_human_blockers_forbidden: true
+human_request_requires_gate_evidence: true
+external_blocker_policy_separate: true
+
+valid_stop_conditions:
+  - WAITING_GATE_11_AUTHORIZATION   # Gate 10 proven, no eligible autonomous work
+  - BLOCKED_TRUE_EXTERNAL_DEPENDENCY  # credentials, push, publication
+  - POST_PLAN_TERMINAL              # per-chat plan closed with --terminal
+  - UNSAFE_WORKSPACE                # infrastructure safety stop
+  - SESSION_MISMATCH                # CCI-MVP hard stop
+  - CHAT_ID_MISMATCH               # CCI-MVP hard stop
+
+invalid_stop_conditions:
+  - BLOCKED_HUMAN
+  - WAITING_HUMAN
+  - WAITING_APPROVAL
+  - MANUAL_APPROVAL
+  - NEEDS_HUMAN
+  - APPROVAL_GATE_NO               # override per Supreme Directive
+  - MAX_ITERATIONS                  # reset to 0 and continue
+  - EVIDENCE_QUALITY_ZERO          # LOCAL_REPAIR_CONTINUE
+
+rules:
+  - id: R1
+    text: "Gates 0-10 require no human authorization. Agents investigate and act autonomously."
+  - id: R2
+    text: "Uncertainty is not a blocker. It triggers investigation."
+  - id: R3
+    text: "Audit findings must become taskcards. They are not stop conditions."
+  - id: R4
+    text: "Local failures trigger repair loops, not escalation."
+  - id: R5
+    text: "Gate 11 requests require a complete evidence packet with Gate 10 proof and zero eligible autonomous work."
+  - id: R6
+    text: "Independent lanes continue while one product waits at Gate 11."
+  - id: R7
+    text: "Terminal closure (POST_PLAN_TERMINAL) is separate from Gate 11 approval."
+  - id: R8
+    text: "Before any stop: classify via stop_reason_adjudicator.py. Only TRUE_EXTERNAL_GATE or UNSAFE_WORKSPACE may stop (plus named CCI-MVP stops)."
+  - id: R9
+    text: "Three-attempt rule: before any non-Gate-11 stop, attempt direct repair, structural repair, and alternative path."
+  - id: R10
+    text: "WAITING_GATE_11_AUTHORIZATION requires: gate_10_complete=true, zero REWORK_REQUIRED items, zero open audit findings, valid evidence packet."
+
+canonical_blocker_codes:
+  - "EXTERNAL_BLOCKER: git_push_credentials_unavailable"
+  - "EXTERNAL_BLOCKER: publication_credentials_unavailable"
+  - "EXTERNAL_BLOCKER: credentials_unavailable"
+  - "EXTERNAL_BLOCKER: branch_protection_requires_unavailable_identity"
+  - "EXTERNAL_BLOCKER: sprint_policy_not_authorizing_commit"
+  - "BLOCKED: destructive_operation_no_policy_authority"
+  - "BLOCKED: mcp_activation_requires_policy"
+  - "BLOCKED: merge_no_policy_authority"
+  - "BLOCKED_EXTERNAL_GATE"
+
+enforcement:
+  - "tools/supervisor/stop_reason_adjudicator.py"
+  - "tools/supervisor/governance_validators_gate_auth.py (V68, V69)"
+  - ".supervisor/schemas/stop-reason-decision.schema.json"
+  - "tests/supervisor/test_gate_authorization_pilots.py"

@@ -1,0 +1,137 @@
+inventory_version: "1.0"
+generated_date: "2026-06-24"
+canonical_policy: "docs/governance/authorization-policy-v1.yaml"
+
+surfaces:
+  - surface_id: AS-001
+    path: "tools/supervisor/check_continuation.py"
+    symbol_or_section: "_stop() function; lines ~76-397"
+    surface_type: "continuation_gate"
+    current_rule: "SESSION_MISMATCH, CHAT_ID_MISMATCH, POST_PLAN_TERMINAL = NON-OVERRIDABLE stops; APPROVAL_GATE_NO, MAX_ITERATIONS = overridable"
+    gate_scope: "all"
+    can_stop_execution: true
+    current_behavior: "Correctly implements CCI-MVP. Overridable stops do not block per Supreme Directive."
+    policy_compliant: true
+    evidence: "CCI hardening 2026-06-18 commit 8195c8d; check_continuation.py lines 76-547"
+
+  - surface_id: AS-002
+    path: "tools/supervisor/grade_declared_work.py"
+    symbol_or_section: "grade_all(); BLOCKED_EXTERNAL_GATE grade assignment"
+    surface_type: "evidence_grader"
+    current_rule: "BLOCKED_EXTERNAL_GATE assigned when declared_status=blocked_external_gate; produces rework_items"
+    gate_scope: "all"
+    can_stop_execution: true
+    current_behavior: "Correctly grades external gate blockers. Does not generalize to human approval."
+    policy_compliant: true
+    evidence: "grade_declared_work.py lines 500-523"
+
+  - surface_id: AS-003
+    path: "tools/supervisor/governance_validators.py + governance_validators_ext.py"
+    symbol_or_section: "run_all_governance_validators(); V1-V67"
+    surface_type: "governance_validator"
+    current_rule: "V1-V67 validators; blocks_sprint=True on FAIL for selected validators"
+    gate_scope: "all"
+    can_stop_execution: true
+    current_behavior: "Policy-based gate enforcement. No false human blocker patterns detected. V68/V69 added via governance_validators_gate_auth.py."
+    policy_compliant: true
+    evidence: "governance_validator_runner.py lines 124-230; 69 validators (V1-V69)"
+
+  - surface_id: AS-004
+    path: ".claude/commands/check-skill-coverage.md"
+    symbol_or_section: "BLOCKED_SKILL_GAP verdict"
+    surface_type: "skill_gate"
+    current_rule: "No active skill for work_type → BLOCKED_SKILL_GAP; creates taskcard"
+    gate_scope: "all"
+    can_stop_execution: true
+    current_behavior: "Blocks product work when skill missing. Legitimate governance gate, not false human blocker."
+    policy_compliant: true
+    evidence: "check-skill-coverage.md lines 49-76; creates taskcard at .local/taskcards/"
+
+  - surface_id: AS-005
+    path: "tools/supervisor/autonomous_cycle.py"
+    symbol_or_section: "classify_continuation_state(); exit codes 0/3/9"
+    surface_type: "cycle_orchestrator"
+    current_rule: "Exit 0=continue; Exit 3=critical rework; Exit 9=unexpected error"
+    gate_scope: "all"
+    can_stop_execution: true
+    current_behavior: "Exit 3 is overridable per Supreme Directive. No false human blocker patterns."
+    policy_compliant: true
+    evidence: "autonomous_cycle.py lines 48-140; CLAUDE.md Sprint Closeout section"
+
+  - surface_id: AS-006
+    path: "tools/supervisor/stop_reason_adjudicator.py"
+    symbol_or_section: "adjudicate_stop_reason(); StopDecision class"
+    surface_type: "adjudicator"
+    current_rule: "Only TRUE_EXTERNAL_GATE or UNSAFE_WORKSPACE are terminal. All others map to continuation decisions."
+    gate_scope: "all"
+    can_stop_execution: true
+    current_behavior: "Correct. Generic human_approval_required → terminal=False. Gate 11 POC-ready → RELEASE_APPROVAL_PENDING (blocks_implementation=False). WAITING_GATE_11_AUTHORIZATION alias added (TC-AUTH-008)."
+    policy_compliant: true
+    evidence: "stop_reason_adjudicator.py lines 56-82; tests/supervisor/test_stop_reason_adjudicator.py (91 tests)"
+
+  - surface_id: AS-007
+    path: ".claude/commands/autonomous-loop.md"
+    symbol_or_section: "Supreme Directive; NON-OVERRIDABLE stops list"
+    surface_type: "execution_prompt"
+    current_rule: "SESSION_MISMATCH, ACTIVE_PLAN_INCOMPLETE, CHAT_ID_MISMATCH, ACTIVE_PLAN_LOCK_CORRUPT, PLAN_COMPLETED_IN_SESSION = non-overridable; all other STOP reasons = overridable"
+    gate_scope: "all"
+    can_stop_execution: true
+    current_behavior: "Correct. Does not generalize Gate 11 authorization into other gates. Policy reference FORMAT_FACTORY_GATE_AUTHORIZATION_V1 added (TC-AUTH-010)."
+    policy_compliant: true
+    evidence: "autonomous-loop.md lines 19-145; version 2.1"
+
+  - surface_id: AS-008
+    path: "reports/supervisor/approval-gates.md"
+    symbol_or_section: "AUTONOMOUS_CONTINUE field"
+    surface_type: "continuation_signal"
+    current_rule: "AUTONOMOUS_CONTINUE: YES → proceed; NO → check_continuation.py returns APPROVAL_GATE_NO (overridable)"
+    gate_scope: "sprint"
+    can_stop_execution: false
+    current_behavior: "AUTONOMOUS_CONTINUE: YES (current). APPROVAL_GATE_NO is overridable per Supreme Directive."
+    policy_compliant: true
+    evidence: "approval-gates.md current state; check_continuation.py lines 419-426"
+
+  - surface_id: AS-009
+    path: "tools/supervisor/generate_next_worker_prompt.py"
+    symbol_or_section: "Advisory block lines 33-53; task label emission"
+    surface_type: "prompt_generator"
+    current_rule: "Advisory warns: before treating any task as blocked, run adjudicator. Forbidden labels: approval-blocked, blocked, human-required."
+    gate_scope: "all"
+    can_stop_execution: false
+    current_behavior: "Advisory present. Forbidden labels documented. Policy reference FORMAT_FACTORY_GATE_AUTHORIZATION_V1 added (TC-AUTH-010)."
+    policy_compliant: true
+    evidence: "generate_next_worker_prompt.py lines 33-53, 943, 1136"
+
+  - surface_id: AS-010
+    path: "registry/format-registry.yaml"
+    symbol_or_section: "gate_N_status; gate_N_approved_by; G11-G approval records"
+    surface_type: "gate_registry"
+    current_rule: "Gate passage recorded with gate_N_approved_by=agent_policy_gate or babar_raza"
+    gate_scope: "all"
+    can_stop_execution: false
+    current_behavior: "FODS/FODT/Netpbm G11-G approved by Babar Raza 2026-06-05. Full Gate 11 execution NOT yet authorized."
+    policy_compliant: true
+    evidence: "format-registry.yaml; docs/gates.md §Gate Authorization Rules"
+
+  - surface_id: AS-011
+    path: "tools/supervisor/action_queue.py"
+    symbol_or_section: "STATUS_BLOCKED; human_approval_required field"
+    surface_type: "task_queue"
+    current_rule: "External gate items pre-blocked with STATUS_BLOCKED. human_approval_required field validated as boolean."
+    gate_scope: "all"
+    can_stop_execution: true
+    current_behavior: "Validates human_approval_required as boolean at lines 268, 295-296, 315-316. No false human blocker patterns."
+    policy_compliant: true
+    evidence: "action_queue.py lines 268, 295, 315; STATUS_BLOCKED = 'BLOCKED_EXTERNAL_GATE'"
+
+  - surface_id: AS-012
+    path: "tools/supervisor/generate_supervisor_packet.py"
+    symbol_or_section: "blocker_type enum at line ~532"
+    surface_type: "packet_generator"
+    current_rule: "Valid blocker_type values: external_gate, credentials, evidence_required, human_approval, governance_conflict"
+    gate_scope: "all"
+    can_stop_execution: false
+    current_behavior: "FIXED (TC-AUTH-011): 'policy_gate' invalid value replaced with correct enum value."
+    policy_compliant: true
+    evidence: "generate_supervisor_packet.py; TC-AUTH-011 fix applied"
+    remediation_status: "fixed"

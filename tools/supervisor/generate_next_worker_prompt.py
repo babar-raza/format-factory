@@ -29,6 +29,8 @@ TEMPLATE_PATH = REPO_ROOT / ".supervisor" / "prompts" / "mega-train-template.md"
 
 # Stop Reason Adjudicator advisory — included in every generated prompt.
 # Prevents future agents from stopping for invalid reasons.
+# Canonical authorization policy: docs/governance/authorization-policy-v1.yaml (FORMAT_FACTORY_GATE_AUTHORIZATION_V1)
+# All gates 0-10 are agent-autonomous. Gate 11 G11-G requires Babar Raza commercial execution only.
 STOP_REASON_ADVISORY = """
 ## ADVISORY: Stop Reason Adjudicator — Read Before Treating Any Task As Blocked
 

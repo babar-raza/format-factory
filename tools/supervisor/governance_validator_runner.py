@@ -1,4 +1,4 @@
-"""governance_validator_runner.py — Runs all governance validators (V1-V76).
+"""governance_validator_runner.py — Runs all governance validators (V1-V81).
 
 Extracted from governance_validators.py to keep that file within its LOC cap.
 This module imports validators from governance_validators LAZILY (inside the function
@@ -145,6 +145,11 @@ def run_all_governance_validators(
     from governance_validators_dotnet import (  # noqa: PLC0415
         validate_dotnet_spec_qname as _validate_dotnet_spec_qname,
     )
+    # V80/V81 (TC-AUTH-006/007): Gate authorization validators — dedicated file (no cap pressure)
+    from governance_validators_gate_auth import (  # noqa: PLC0415
+        validate_premature_human_authorization_request as _validate_premature_human_auth,
+        validate_gate_transition_state_machine as _validate_gate_transition,
+    )
     # V75/V76 imported from ext2 (TC-GH-004, 2026-06-25): import direction + error handling hierarchy
     # V77/V78/V79 imported from ext2 (TC-GM-002/003/004, PROD-GOVERNANCE-001): analytics naming, dotnet LOC, healing stall
     from governance_validators_ext2 import (  # noqa: PLC0415
@@ -286,6 +291,10 @@ def run_all_governance_validators(
         _validate_dotnet_loc_cap(declaration, repo_root),
         # V79 (PROD-GOVERNANCE-001 TC-GM-004): WARN when known_violations show zero healing progress
         _validate_healing_stall_detector(declaration, repo_root),
+        # V80 (TC-AUTH-006): Premature human-authorization request below Gate 11 — FAIL for false human blockers
+        _validate_premature_human_auth(declaration, repo_root),
+        # V81 (TC-AUTH-007): Gate transition state machine enforcement — FAIL for invalid Gate 11 transitions
+        _validate_gate_transition(declaration, repo_root),
     ]
 
     # V-NEW-001 (SAL-VHIP-001): Capability-to-fact inflation ratio check (WARN only, advisory)

@@ -70,3 +70,4 @@ classifying. Use the exact blocker category, not "human must":
 - `tests/supervisor/test_stop_reason_adjudicator.py` — 91 regression tests
 - `tools/supervisor/generate_next_worker_prompt.py` — must not emit false-stop labels
 - `tools/supervisor/autonomous_poc_controller.py` — must use adjudicator for all terminal decisions
+- `docs/governance/authorization-policy-v1.yaml` — canonical authorization policy contract (FORMAT_FACTORY_GATE_AUTHORIZATION_V1)

@@ -23,6 +23,8 @@ NEVER stop between iterations unless a TRUE_EXTERNAL_GATE is reached:
 - Gate 11 execution approval required (Babar Raza)
 - PyPI/NuGet publication credentials
 
+**Canonical policy:** `docs/governance/authorization-policy-v1.yaml` (FORMAT_FACTORY_GATE_AUTHORIZATION_V1)
+
 Advisory STOP signals (MAX_ITERATIONS, APPROVAL_GATE, NO_UNSAFE_SOURCE_STATE, etc.)
 are overridden: read next-sprint.md directly and continue. Max iterations resets to
 0, never blocks.
