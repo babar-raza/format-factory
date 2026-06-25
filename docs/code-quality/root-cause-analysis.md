@@ -69,7 +69,7 @@ production-readiness-standard.md but no validator mechanically checks it. A deve
 `from .{format}_analytics import *` inside a parser file would not be blocked until TC-GH-007
 machinery proof runs (which only checks files in sprint declarations).
 
-**Fix (TC-GH-004, this sprint):** V73 `validate_dependency_direction` performs AST-based
+**Fix (TC-GH-004, this sprint):** V75 `validate_dependency_direction` performs AST-based
 import scan for forbidden cross-layer patterns. WARN for existing grandfathered files;
 FAIL for new files.
 
@@ -85,7 +85,7 @@ FAIL for new files.
 checks that parsers actually raise format-specific exceptions instead of bare Python exceptions.
 New format packages added without `exceptions.py` pass all governance validators.
 
-**Fix (TC-GH-004, this sprint):** V74 `validate_error_handling_hierarchy` checks that
+**Fix (TC-GH-004, this sprint):** V76 `validate_error_handling_hierarchy` checks that
 `exceptions.py` exists per format package. WARN for existing; FAIL for new packages.
 
 ---

@@ -187,7 +187,7 @@ Forbidden patterns:
 - `*_parser.py` importing from `Compat/`
 - `__init__.py` importing from `spec/` (use Compat/ instead)
 
-Enforcement: V73 `validate_dependency_direction` (WARN for existing grandfathered files; FAIL for new).
+Enforcement: V75 `validate_dependency_direction` (WARN for existing grandfathered files; FAIL for new).
 Status: WARN-only for existing 20 packages (grandfathered).
 
 ## 18. Error Handling Hierarchy (RULE-LIB-006 — added 2026-06-25)
@@ -197,7 +197,7 @@ Each format package under `src/python/{format}/` MUST define a format-specific e
 - At minimum one exception class derived from `Exception` (or `FormatFactoryError` when available)
 - Parsers and codecs MUST NOT raise bare `ValueError` or `KeyError` for format errors
 
-Enforcement: V74 `validate_error_handling_hierarchy` (WARN for existing; FAIL for new format packages).
+Enforcement: V76 `validate_error_handling_hierarchy` (WARN for existing; FAIL for new format packages).
 Status: WARN-only for existing 20 packages (grandfathered).
 
 ## Validator Reference

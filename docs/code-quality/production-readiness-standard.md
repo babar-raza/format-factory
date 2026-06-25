@@ -162,7 +162,7 @@ Forbidden import patterns:
 - `*_parser.py` importing from `Compat/`
 - `__init__.py` importing from `spec/` (use Compat/ instead)
 
-Enforced by: V73 `validate_dependency_direction` (added TC-GH-004, 2026-06-25).
+Enforced by: V75 `validate_dependency_direction` (added TC-GH-004, 2026-06-25).
 Severity: WARN for existing files (grandfathered); FAIL for new files not in `known_violations`.
 
 ### 3.7 Format-Specific Exception Hierarchy (RULE-LIB-006 — new 2026-06-25)
@@ -173,7 +173,7 @@ Each format package under `src/python/{format}/` MUST define a format-specific e
 - Parsers and codecs MUST NOT raise bare `ValueError` or `KeyError` for format errors;
   they must catch and re-raise as format-specific exceptions
 
-Enforced by: V74 `validate_error_handling_hierarchy` (added TC-GH-004, 2026-06-25).
+Enforced by: V76 `validate_error_handling_hierarchy` (added TC-GH-004, 2026-06-25).
 Severity: WARN for existing packages (grandfathered); FAIL for new format packages not in baseline.
 
 ---
@@ -258,7 +258,7 @@ Complete list: `tools/supervisor/governance_validator_runner.py` (docstring). Ke
 | V67 `validate_maturity_signal_schema` | Maturity signal schema correctness | Yes (FAIL if malformed) |
 | `run_full_scan` (source_structure_validator) | Proactive scan of all `src/python/` files vs `baseline_loc_cap` | Yes (WORSENED = FAIL) |
 
-**WARN-only validators (V59-V66, V68, V73, V74):** cross-language parity, terminal closure completeness, public API surface ratio, py.typed markers, `__all__` declarations, multi-responsibility file detection, knowledge freshness, import direction (V73), error handling hierarchy (V74). These do not block sprints for existing grandfathered files but appear in rework_items; NEW files/packages → FAIL.
+**WARN-only validators (V59-V66, V68, V75, V76):** cross-language parity, terminal closure completeness, public API surface ratio, py.typed markers, `__all__` declarations, multi-responsibility file detection, knowledge freshness, import direction (V73), error handling hierarchy (V74). These do not block sprints for existing grandfathered files but appear in rework_items; NEW files/packages → FAIL.
 
 V59 upgrade (2026-06-25): FAIL (not WARN) for RELEASE_GATE items where .NET and Python implementations of the same format have different public API surface counts (>20% difference).
 
@@ -335,8 +335,8 @@ When moving analytics functions from a codec file to `analytics.py`:
 | Forbidden module names | `governance_validators.py:validate_forbidden_module_names` (V50) | FAIL |
 | Spec fact refs density | `governance_validators.py:validate_spec_fact_refs_density` (V62) | REWORK_REQUIRED |
 | Multi-responsibility file | `governance_validators.py:validate_multi_responsibility_file` (V66) | WARN |
-| RULE-LIB-003 (import direction) | `governance_validators_ext2.py:validate_dependency_direction` (V73) | FAIL (new files) / WARN (existing) |
-| RULE-LIB-006 (error handling hierarchy) | `governance_validators_ext2.py:validate_error_handling_hierarchy` (V74) | FAIL (new packages) / WARN (existing) |
+| RULE-LIB-003 (import direction) | `governance_validators_ext2.py:validate_dependency_direction` (V75) | FAIL (new files) / WARN (existing) |
+| RULE-LIB-006 (error handling hierarchy) | `governance_validators_ext2.py:validate_error_handling_hierarchy` (V76) | FAIL (new packages) / WARN (existing) |
 | Lint (ruff check) | CI `governance-check` + `lint` jobs | FAIL (CI red) |
 | Security scan | CI `security` job (bandit) | FAIL (CI red) |
 

@@ -1,4 +1,4 @@
-"""governance_validator_runner.py — Runs all governance validators (V1-V74).
+"""governance_validator_runner.py — Runs all governance validators (V1-V76).
 
 Extracted from governance_validators.py to keep that file within its LOC cap.
 This module imports validators from governance_validators LAZILY (inside the function
@@ -21,6 +21,8 @@ V55: validate_cross_lane_machinery_touching_product — machinery items must not
 V56: validate_hardening_target_identity — plan hardening must target active native plan (TC-PG-006, FAIL for snoopy fallback; WARN for other wrong targets)
 V73: validate_dotnet_spec_qname — .NET Spec/*.cs files must have SpecQName constant with correct registry value (TC-DOTNET-QNAME-001, WARN; FAIL for RELEASE_GATE)
 V74: validate_ledger_continuation_gate — block PRODUCT_SOURCE/PRODUCT_TEST items for formats with continuation_allowed=false in product-deepening-ledger.yaml (TC-PDL-005, FAIL)
+V75: validate_dependency_direction — import direction within format packages must follow governed chain (RULE-LIB-003, TC-GH-004, 2026-06-25; WARN existing, FAIL new)
+V76: validate_error_handling_hierarchy — format packages must have exceptions.py (RULE-LIB-006, TC-GH-004, 2026-06-25; WARN existing, FAIL new)
 """
 from __future__ import annotations
 
