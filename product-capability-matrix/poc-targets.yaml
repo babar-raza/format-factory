@@ -398,7 +398,7 @@ foss_reduced_products:
   classification: POC_TARGET_CONFIRMED
   full_name: Tom's Obvious, Minimal Language (TOML) configuration format
   python_source: src/python/toml/
-  gates_passed: 1-4 (Python FOSS track)
+  gates_passed: 1-7 (Python FOSS track)
   scope: read + write + value access + merge + JSON export + set/delete (11 functions;
     61 tests PASS)
   commercial_product_ready: false
@@ -414,23 +414,25 @@ foss_reduced_products:
     set_value: PASS
     list_sections: PASS
     delete_key: PASS
+    installed_workflow: PASS
   dogfood_status:
     toml_to_json: IMPLEMENTED
     target_ff_library: format-factory-toml to_json_str
     notes: TOML→JSON export verified 2026-06-18; to_json_str(file_path) returns
       pretty-printed JSON string; no external library needed. consumer_roundtrip.py CONSUMER_PROOF PASS 2026-06-25.
+      INSTALLED_WORKFLOW PASS 2026-06-25 from wheel.
   examples:
     python: examples/python/toml/consumer_roundtrip.py
   tests:
     python: tests/python/toml/
     python_count: 61
   blockers: []
-  next_action: dogfood export via TOML config roundtrip; package install proof
+  next_action: Continue FOSS product deepening
 - format: NDJSON
   classification: POC_TARGET_CONFIRMED
   full_name: Newline-Delimited JSON (NDJSON/JSONL)
   python_source: src/python/ndjson/
-  gates_passed: 1-4 (Python FOSS track)
+  gates_passed: 1-7 (Python FOSS track)
   scope: read + write + CSV export + field stats + filtering/grouping/aggregation
     (244 tests PASS)
   commercial_product_ready: false
@@ -462,7 +464,7 @@ foss_reduced_products:
   classification: POC_TARGET_CONFIRMED
   full_name: Flat OpenDocument Graphics (ODF Drawing)
   python_source: src/python/fodg/
-  gates_passed: 1-4 (Python FOSS track)
+  gates_passed: 1-7 (Python FOSS track)
   scope: read + write + text/CSV/JSON export + page ops + shape ops (29 functions;
     24 test files)
   commercial_product_ready: false
@@ -509,7 +511,7 @@ foss_reduced_products:
   classification: POC_TARGET_CONFIRMED
   full_name: Tab-Separated Values
   python_source: src/python/tsv/
-  gates_passed: 1-4 (Python FOSS track)
+  gates_passed: 1-7 (Python FOSS track)
   scope: read + write + column/row ops + sort + filter + merge + stats (32 functions;
     35 test files)
   commercial_product_ready: false
@@ -554,7 +556,7 @@ foss_reduced_products:
   classification: POC_TARGET_CONFIRMED
   full_name: AbiWord document format
   python_source: src/python/abw/
-  gates_passed: 1-4 (Python FOSS track)
+  gates_passed: 1-7 (Python FOSS track)
   scope: read + write + text/CSV/Markdown export + paragraph ops + word analysis (42
     functions; 34 test files)
   commercial_product_ready: false
@@ -610,7 +612,7 @@ foss_reduced_products:
   classification: POC_TARGET_CONFIRMED
   full_name: Gnumeric XML spreadsheet format
   python_source: src/python/gnumeric/
-  gates_passed: 1-4 (Python FOSS track)
+  gates_passed: 1-7 (Python FOSS track)
   scope: read + write + cell/row/column/sheet ops + roundtrip (44 functions; 30 test
     files)
   commercial_product_ready: false
@@ -683,7 +685,7 @@ foss_reduced_products:
   classification: POC_TARGET_CONFIRMED
   full_name: Comma-Separated Values
   python_source: src/python/csv/
-  gates_passed: 1-4 (Python FOSS track)
+  gates_passed: 1-7 (Python FOSS track)
   commercial_product_ready: false
   python_foss_status:
     load: PASS
@@ -772,7 +774,7 @@ foss_reduced_products:
   classification: POC_TARGET_CONFIRMED
   full_name: GIMP XCF image format
   python_source: src/python/xcf/
-  gates_passed: 1-4 (Python FOSS track)
+  gates_passed: 1-7 (Python FOSS track)
   scope: read + layer inspection + real layer names + image metrics (xcf_layer_name_list returns real names from XCF binary)
   commercial_product_ready: false
   promoted_from_hold: '2026-06-25'
@@ -826,7 +828,8 @@ foss_reduced_products:
   tests:
     python: tests/python/ods/
   blockers: []
-  next_action: Package install proof for non-editable wheel
+  next_action: Continue FOSS product deepening — gates 8-10
+  installed_workflow_proof: PASS (2026-06-25 — wheel reinstall + add_row + document_to_ods_bytes verified from site-packages)
 on_hold: []
 summary:
   commercial_net_confirmed: 3
