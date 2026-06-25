@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s103-dotnet-deepening-20260626",
+  "latest_sprint": "ff-sprint-s104-dotnet-deepening-20260626",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -19680,6 +19680,70 @@
         }
       ],
       "format": "Netpbm"
+    },
+    {
+      "entry_id": "PC-HTML-R117",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s104-dotnet-deepening-20260626",
+      "product": "HTML .NET",
+      "capability_refs": [
+        "commercial_net_products.HTML.dotnet_status.writer_api"
+      ],
+      "api_symbols": [
+        "HtmlWriter.EscapeHtml",
+        "HtmlWriter.WriteHeading",
+        "HtmlWriter.WriteParagraphs",
+        "HtmlWriter.WriteTable"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/html/HtmlR117WriterTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "HTML"
+    },
+    {
+      "entry_id": "PC-MARKDOWN-R117",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s104-dotnet-deepening-20260626",
+      "product": "Markdown .NET",
+      "capability_refs": [
+        "commercial_net_products.Markdown.dotnet_status.writer_api"
+      ],
+      "api_symbols": [
+        "MarkdownWriter.WriteHeading",
+        "MarkdownWriter.WriteParagraphs",
+        "MarkdownWriter.WriteLines"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/markdown/MarkdownR117WriterTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "Markdown"
+    },
+    {
+      "entry_id": "PC-TXT-R117",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s104-dotnet-deepening-20260626",
+      "product": "TXT .NET",
+      "capability_refs": [
+        "commercial_net_products.TXT.dotnet_status.writer_api"
+      ],
+      "api_symbols": [
+        "TxtWriter.WriteLines",
+        "TxtWriter.WriteParagraphs",
+        "TxtWriter.WriteLinesToFile"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/txt/TxtR117WriterTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "TXT"
     }
   ],
   "total_entries": 1006,
