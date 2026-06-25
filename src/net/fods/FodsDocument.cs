@@ -125,6 +125,44 @@ public sealed partial class FodsDocument
         }
     }
 
+    /// <summary>
+    /// Load a FODS document from a <see cref="Stream"/>.
+    /// The stream must contain valid FODS XML.
+    /// </summary>
+    /// <param name="stream">Readable stream containing FODS content. Must not be null.</param>
+    /// <param name="maxContentBytes">
+    /// Optional maximum number of bytes to read from the stream (default 50 MB).
+    /// </param>
+    /// <exception cref="ArgumentNullException">Thrown if <paramref name="stream"/> is null.</exception>
+    /// <exception cref="FodsDocumentException">Thrown on parse or security failures.</exception>
+    public static FodsDocument Load(Stream stream,
+        long maxContentBytes = 50L * 1024 * 1024)
+    {
+        if (stream is null) throw new ArgumentNullException(nameof(stream));
+
+        var readerSettings = new XmlReaderSettings
+        {
+            DtdProcessing = DtdProcessing.Prohibit,
+            XmlResolver   = null,
+        };
+
+        try
+        {
+            using var reader = XmlReader.Create(stream, readerSettings);
+            var doc = XDocument.Load(reader, LoadOptions.PreserveWhitespace);
+            return new FodsDocument(doc) { MaxFileSizeBytes = maxContentBytes };
+        }
+        catch (XmlException ex)
+        {
+            throw new FodsDocumentException($"XML parse error: {ex.Message}", ex);
+        }
+        catch (Exception ex) when (ex is not FodsDocumentException)
+        {
+            throw new FodsDocumentException(
+                $"Unexpected error loading FODS from stream: {ex.GetType().Name}: {ex.Message}", ex);
+        }
+    }
+
     // -------------------------------------------------------------------------
     // Save
     // -------------------------------------------------------------------------
@@ -370,7 +408,7 @@ public sealed partial class FodsDocument
     {
         var sheets = Sheets;
         if (sheets.Count == 0) return Array.Empty<string>();
-        return GetColumnHeaders(sheets[0]);
+        return GetColumnHeadersFromSheet(sheets[0]);
     }
 
     /// <summary>
@@ -382,15 +420,15 @@ public sealed partial class FodsDocument
     {
         var sheet = GetSheetByName(sheetName);
         if (sheet == null) return Array.Empty<string>();
-        return GetColumnHeaders(sheet);
+        return GetColumnHeadersFromSheet(sheet);
     }
 
     /// <summary>
     /// Return the column headers from the first row of <paramref name="sheet"/>.
     /// Returns an empty list if the first row is empty.
-    /// R93 Train K.
+    /// R93 Train K. Internal helper — use the instance overloads instead.
     /// </summary>
-    public static IReadOnlyList<string> GetColumnHeaders(FodsSheet sheet)
+    private static IReadOnlyList<string> GetColumnHeadersFromSheet(FodsSheet sheet)
     {
         var tableEl = sheet.Element;
         var nsTable = XNamespace.Get("urn:oasis:names:tc:opendocument:xmlns:table:1.0");

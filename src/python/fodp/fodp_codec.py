@@ -200,6 +200,26 @@ def export_to_json(source: str | bytes | Path) -> str:
 
 
 # ---------------------------------------------------------------------------
+# Write stub (read-only format — write is not supported)
+# ---------------------------------------------------------------------------
+
+def write_fodp(model: dict, dest: str | Path) -> None:
+    """Stub: FODP is a read-only format in Format Factory.
+
+    FODP (Flat OpenDocument Presentation) write support is not implemented.
+    Use load() + export_to_txt()/export_to_csv()/export_to_json() for read workflows.
+
+    Raises:
+        NotImplementedError: Always. FODP write is not supported.
+    """
+    raise NotImplementedError(
+        "write_fodp() is not supported. FODP is a read-only format in Format Factory. "
+        "Use load() to read presentations, export_to_txt() / export_to_csv() / "
+        "export_to_json() to extract content."
+    )
+
+
+# ---------------------------------------------------------------------------
 # Internal helpers
 # ---------------------------------------------------------------------------
 

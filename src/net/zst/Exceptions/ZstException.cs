@@ -32,3 +32,12 @@ public class ZstFileNotFoundException : ZstException
     /// <inheritdoc/>
     public ZstFileNotFoundException(string message) : base(message) { }
 }
+
+/// <summary>Raised when a compress or decompress operation fails.</summary>
+public class ZstWriteException : ZstException
+{
+    /// <inheritdoc/>
+    public ZstWriteException(string message) : base(message) { }
+    /// <inheritdoc/>
+    public ZstWriteException(string message, Exception inner) : base(message, inner) { }
+}

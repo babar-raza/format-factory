@@ -9,6 +9,7 @@ from .exceptions import *  # noqa: F401, F403
 from .dif_parser import *  # noqa: F401, F403
 from .dif_stats import *  # noqa: F401, F403
 from .interchange_document import *  # noqa: F401, F403
+from .models import DifModelDocument, DifDoc  # noqa: F401
 
 import sys as _sys
 import types as _types

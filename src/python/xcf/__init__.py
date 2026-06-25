@@ -13,6 +13,7 @@ from .xcf_parser import *  # noqa: F401, F403
 # This import happens BEFORE __all__ computation so xcf_is_landscape
 # and other spec-level functions are part of the public API.
 from .image_document import *  # noqa: F401, F403
+from .models import XcfDocument  # noqa: F401
 
 # Compute public API: all non-private names loaded so far
 import sys as _sys

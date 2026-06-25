@@ -15,6 +15,7 @@ from .fodg_codec import *  # noqa: F401, F403
 # This import is placed BEFORE _core_names capture so all domain functions
 # are included in __all__ and part of the public API.
 from .drawing_document import *  # noqa: F401, F403
+from .models import FodgDocument  # noqa: F401
 
 # Compute public API: all non-private names loaded so far
 import sys as _sys

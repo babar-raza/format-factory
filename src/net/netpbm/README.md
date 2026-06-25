@@ -36,7 +36,7 @@ var flipped = NetpbmExporter.FlipHorizontal(image);
 
 ## Gate Status
 
-Gate 11 approved by Babar Raza 2026-06-05. Commercial product ready.
+Gate 11 status: commercial_readiness_in_progress. Babar Raza approval required before commercial release.
 See `product-capability-matrix/poc-targets.yaml` for capability matrix entry.
 
 ## License

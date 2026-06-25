@@ -128,6 +128,44 @@ public sealed partial class FodtDocument
         }
     }
 
+    /// <summary>
+    /// Load a FODT document from a <see cref="Stream"/>.
+    /// The stream must contain valid FODT XML.
+    /// </summary>
+    /// <param name="stream">Readable stream containing FODT content. Must not be null.</param>
+    /// <param name="maxContentBytes">
+    /// Optional maximum number of bytes to read from the stream (default 50 MB).
+    /// </param>
+    /// <exception cref="ArgumentNullException">Thrown if <paramref name="stream"/> is null.</exception>
+    /// <exception cref="FodtDocumentException">Thrown on parse or security failures.</exception>
+    public static FodtDocument Load(Stream stream,
+        long maxContentBytes = 50L * 1024 * 1024)
+    {
+        if (stream is null) throw new ArgumentNullException(nameof(stream));
+
+        var readerSettings = new XmlReaderSettings
+        {
+            DtdProcessing = DtdProcessing.Prohibit,
+            XmlResolver   = null,
+        };
+
+        try
+        {
+            using var reader = XmlReader.Create(stream, readerSettings);
+            var doc = XDocument.Load(reader, LoadOptions.PreserveWhitespace);
+            return new FodtDocument(doc) { MaxFileSizeBytes = maxContentBytes };
+        }
+        catch (XmlException ex)
+        {
+            throw new FodtDocumentException($"XML parse error: {ex.Message}", ex);
+        }
+        catch (Exception ex) when (ex is not FodtDocumentException)
+        {
+            throw new FodtDocumentException(
+                $"Unexpected error loading FODT from stream: {ex.GetType().Name}: {ex.Message}", ex);
+        }
+    }
+
     // -------------------------------------------------------------------------
     // Save
     // -------------------------------------------------------------------------

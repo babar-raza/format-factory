@@ -1,7 +1,7 @@
 // FormatFactory.Fods -- Commercial .NET FODS to CSV Exporter
 // DEC-033 Option B: .NET Commercial Only
 // Delegates CSV serialization to FormatFactory.Csv.CsvWriter
-// Gate 11 approved 2026-06-05.
+// Gate 11 status: commercial_readiness_in_progress (NOT approved — Babar Raza approval required).
 // dogfood_status: IMPLEMENTED — delegates CSV serialization to FormatFactory.Csv.CsvWriter
 
 using System;
@@ -33,7 +33,7 @@ namespace FormatFactory.Fods;
 /// ODF basis:
 ///   §9.4.2 table:table, §9.4.4 table:table-row, §9.4.5 table:table-cell, §6.1.1 text:p
 ///
-/// Gate 11 approved 2026-06-05.
+/// Gate 11 status: commercial_readiness_in_progress (NOT approved — Babar Raza approval required).
 /// </summary>
 public static class FodsCsvExporter
 {

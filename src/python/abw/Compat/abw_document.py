@@ -19,7 +19,7 @@ class AbwDocument(_SpecDocument):
     metadata and core properties from the spec authority class.
     """
 
-    spec_qname = "abw:abiword"
+    spec_qname = "abiword:document"
     spec_fact_ref = "FACT-ABW-001"
     namespace_uri = "http://www.abisource.com/awml/"
 

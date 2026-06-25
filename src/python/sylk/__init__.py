@@ -8,6 +8,7 @@ FOSS track only — no commercial readiness implied.
 from .exceptions import *  # noqa: F401, F403
 from .sylk_parser import *  # noqa: F401, F403
 from .spreadsheet_document import *  # noqa: F401, F403
+from .models import SylkModelDocument, SylkDoc  # noqa: F401
 
 import sys as _sys
 import types as _types

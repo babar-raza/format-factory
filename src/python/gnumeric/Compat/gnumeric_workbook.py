@@ -13,7 +13,7 @@ from ..spec.workbook.sheet import Sheet as _Sheet
 class GnumericWorkbook(_SpecWorkbook):
     """Production facade for gnm:Workbook (Gnumeric spreadsheet root element)."""
 
-    spec_qname = "gnm:Workbook"
+    spec_qname = "gnumeric:workbook"
     spec_fact_ref = "FACT-GNUMERIC-001"
     namespace_uri = "http://www.gnumeric.org/v10.dtd"
 

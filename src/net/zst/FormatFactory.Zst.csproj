@@ -8,7 +8,7 @@
     <RootNamespace>FormatFactory.Zst</RootNamespace>
     <Version>0.1.0-r85-poc</Version>
     <Authors>format-factory</Authors>
-    <Description>FormatFactory.Zst: .NET commercial library for Zstandard compressed files (.zst). Parse, probe, and inspect ZST files. Gate 11 status: commercial_readiness_in_progress.</Description>
+    <Description>FormatFactory.Zst: .NET commercial library for Zstandard compressed files (.zst). Parse, compress, decompress, and inspect ZST files (RFC 8878). commercial_readiness_in_progress.</Description>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageId>FormatFactory.Zst</PackageId>
     <Nullable>enable</Nullable>
@@ -16,6 +16,11 @@
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
+
+  <ItemGroup>
+    <!-- ZstdSharp.Port: pure managed C# port of Zstandard algorithm (RFC 8878) -->
+    <PackageReference Include="ZstdSharp.Port" Version="0.8.1" />
+  </ItemGroup>
 
   <!-- Gate 11 Note:
        Gate 11 status: commercial_readiness_in_progress (NOT approved).

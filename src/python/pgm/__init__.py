@@ -9,6 +9,7 @@ from .pgm_parser import *  # noqa: F401, F403
 from .grayscale_image import *  # noqa: F401, F403
 from .pgm_to_ppm import *  # noqa: F401, F403
 from .exceptions import *  # noqa: F401, F403
+from .models import PgmDocument  # noqa: F401
 
 import sys as _sys
 import types as _types

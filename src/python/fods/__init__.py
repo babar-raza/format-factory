@@ -1,9 +1,16 @@
 """format-factory: FODS (OpenDocument Flat Spreadsheet) FOSS Python track.
 
-Minimal FOSS implementation for .fods format support.
-Acquisition Gates 1-7 PASSED.
+Primary API (class-based — use this):
+    from fods import FodsDocument
+    doc = FodsDocument.from_file("spreadsheet.fods")
+    print(doc.sheet_count, doc.sheets[0].name)
+
+Legacy dict API (still supported, but not the primary surface):
+    from fods import parse_fods, write_fods
+    model = parse_fods("spreadsheet.fods")
 
 FOSS track only — no commercial readiness implied.
+Acquisition Gates 1-7 PASSED.
 """
 from .parser import *  # noqa: F401, F403
 from .writer import *  # noqa: F401, F403

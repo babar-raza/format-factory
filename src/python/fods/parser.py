@@ -74,6 +74,14 @@ from .neutral_model import build_workbook, make_warning, validate_workbook
 def parse_fods(file_path: "str | os.PathLike") -> "dict[str, Any]":
     """Parse a FODS file and return the neutral model dict.
 
+    .. deprecated::
+        This dict-based API is the legacy interface. Prefer the class-based API::
+
+            from fods import FodsDocument
+            doc = FodsDocument.from_file(file_path)
+
+        parse_fods() remains supported for backward compatibility.
+
     Never raises. Returns {"error": str, "parse_errors": list} on failure.
 
     Args:

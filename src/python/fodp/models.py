@@ -1,0 +1,68 @@
+"""Domain model classes for FODP (Flat OpenDocument Presentation).
+
+Classes:
+    FodpDocument — typed wrapper over the dict-based neutral model from load()
+
+spec_qname: office:document
+spec_fact_ref: see shared/qname-registry/fodp.yaml
+"""
+
+from __future__ import annotations
+
+from pathlib import Path
+from typing import Any, ClassVar
+
+
+class FodpDocument:
+    """Typed domain model for a Flat OpenDocument Presentation (.fodp) file.
+
+    Wraps the neutral model dict returned by fodp_codec.load().
+    Neutral model keys: is_fodp (bool), page_count (int),
+    pages (list[dict]), styles_count (int).
+    """
+
+    spec_qname: ClassVar[str] = "office:document"
+    spec_fact_ref: ClassVar[str] = "FACT-FODP-001"
+    namespace_uri: ClassVar[str] = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+    local_name: ClassVar[str] = "document"
+    facade_names: ClassVar[list] = []
+
+    def __init__(self, data: dict[str, Any]) -> None:
+        self._data = data
+
+    @classmethod
+    def from_file(cls, path: str | Path) -> "FodpDocument":
+        """Load a FODP file and return a FodpDocument."""
+        from .fodp_codec import load
+        return cls(load(path))
+
+    @property
+    def page_count(self) -> int:
+        """Number of presentation slides."""
+        return int(self._data.get("page_count", 0))
+
+    @property
+    def styles_count(self) -> int:
+        """Number of defined styles."""
+        return int(self._data.get("styles_count", 0))
+
+    @property
+    def pages(self) -> list[dict[str, Any]]:
+        """List of slide dicts (name, style, title, text_content, shape_count)."""
+        return list(self._data.get("pages", []))
+
+    @property
+    def is_fodp(self) -> bool:
+        """True if the file was recognised as a valid FODP document."""
+        return bool(self._data.get("is_fodp", False))
+
+    def to_dict(self) -> dict[str, Any]:
+        """Return document summary as a dict."""
+        return {
+            "is_fodp": self.is_fodp,
+            "page_count": self.page_count,
+            "styles_count": self.styles_count,
+        }
+
+    def __repr__(self) -> str:
+        return f"FodpDocument(page_count={self.page_count}, styles_count={self.styles_count})"

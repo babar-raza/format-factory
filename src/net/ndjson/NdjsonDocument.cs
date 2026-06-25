@@ -29,12 +29,27 @@ public sealed class NdjsonDocument
         Records = records ?? throw new ArgumentNullException(nameof(records));
     }
 
-    /// <summary>Load from an NDJSON string.</summary>
-    public static NdjsonDocument Load(string content)
+    /// <summary>
+    /// Load from an NDJSON content string (one JSON object per line).
+    /// This is the preferred method when loading from in-memory content.
+    /// For file loading, use <see cref="LoadFile(string)"/>.
+    /// </summary>
+    /// <param name="ndjsonContent">NDJSON content string.</param>
+    public static NdjsonDocument LoadFromContent(string ndjsonContent)
     {
-        var records = NdjsonReader.ReadRecords(content);
+        var records = NdjsonReader.ReadRecords(ndjsonContent);
         return new NdjsonDocument(records);
     }
+
+    /// <summary>
+    /// Load from an NDJSON string.
+    /// </summary>
+    /// <remarks>
+    /// Prefer <see cref="LoadFromContent(string)"/> which makes the intent explicit.
+    /// This overload is retained for backward compatibility.
+    /// </remarks>
+    public static NdjsonDocument Load(string content)
+        => LoadFromContent(content);
 
     /// <summary>Load from a stream.</summary>
     public static NdjsonDocument Load(Stream stream)

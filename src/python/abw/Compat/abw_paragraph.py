@@ -17,7 +17,7 @@ class AbwParagraph(_SpecParagraph):
     Primary public API entry point for paragraph-level access.
     """
 
-    spec_qname = "abw:p"
+    spec_qname = "abiword:p"
     spec_fact_ref = "FACT-ABW-003"
     namespace_uri = "http://www.abisource.com/awml/"
 

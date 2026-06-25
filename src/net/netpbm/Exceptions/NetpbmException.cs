@@ -1,5 +1,5 @@
 // FormatFactory.Netpbm -- Exception types
-// Gate 11 approved by Babar Raza 2026-06-05.
+// Gate 11 status: commercial_readiness_in_progress (NOT approved — Babar Raza approval required).
 
 using System;
 

@@ -12,6 +12,6 @@ from ..spec.workbook.sheet import Sheet as _SpecSheet
 class GnumericSheet(_SpecSheet):
     """Production facade for gnm:Sheet (Gnumeric spreadsheet sheet element)."""
 
-    spec_qname = "gnm:Sheet"
+    spec_qname = "gnumeric:sheet"
     spec_fact_ref = "FACT-GNUMERIC-002"
     namespace_uri = "http://www.gnumeric.org/v10.dtd"
