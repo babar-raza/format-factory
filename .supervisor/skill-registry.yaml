@@ -884,6 +884,23 @@ skills:
   skill_id: qname-backfill
   status: active
   test_paths: []
+- command: /preflight-skill-entry
+  command_file: .claude/commands/preflight-skill-entry.md
+  created_at: '2026-06-25'
+  created_by: TC-R008
+  idempotency: idempotent
+  mandatory_validations:
+  - required_fields_present
+  - status_valid
+  mechanism_type: ATOMIC_SKILL
+  product_track: governance
+  purpose: Validate a proposed skill-registry.yaml entry before insertion to prevent
+    missing required fields (command, purpose, status, skill_id) at write time
+  required_handoff_fields:
+  - skill_entry_yaml_path
+  skill_id: preflight-skill-entry
+  spec_qname_required: false
+  status: active
 - command: /record-lane-execution
   command_file: .claude/commands/record-lane-execution.md
   idempotency: not_specified

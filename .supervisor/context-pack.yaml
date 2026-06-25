@@ -1,23 +1,22 @@
 schema_version: '1.0'
-generated_at: '2026-06-24T15:02:02.292269'
+generated_at: '2026-06-25T14:03:34.644842'
 repo_root: C:\Users\prora\OneDrive\Documents\GitHub\format-factory
 git:
-  head: dc5ffd20
+  head: addcb12b
   status:
-    modified_count: 55
-    untracked_count: 0
+    modified_count: 141
+    untracked_count: 48
     staged_count: 1
-    total_changed: 56
+    total_changed: 190
     clean: false
 supervisor_mode: 4
 latest_sprint:
-  sprint_id: capability-convergence-iteration-3-20260624
+  sprint_id: skill-governance-sync-20260625
   run_id: unknown
   autonomous_continue: true
-  iteration: 2
+  iteration: 1
   max_iterations: 12
-  hard_stops:
-  - critical_rework_blocks_continuation
+  hard_stops: []
   rework_items: []
 poc_matrix:
   sprint: capability-layer-closeout-rnext
@@ -37,72 +36,108 @@ poc_matrix:
       commercial_ready: false
   foss_python_products: {}
 skill_registry:
-  total_skills: 48
-  active_skills: 47
+  total_skills: 63
+  active_skills: 60
   skill_ids:
-  - add-dotnet-api
-  - add-python-api
   - add-dogfood-export
-  - update-capability-matrix
+  - add-dotnet-api
   - add-dotnet-object-model-feature
-  - add-python-object-model-feature
-  - add-same-format-writer-feature
-  - add-roundtrip-test
   - add-installed-package-example
-  - promote-gap-to-taskcard
-  - generate-execution-handoff
-  - verify-dogfood-path
-  - package-install-proof
-  - materialize-declaration-review
-  - record-lane-execution
+  - add-python-api
+  - add-python-object-model-feature
+  - add-roundtrip-test
+  - add-same-format-writer-feature
+  - autonomous-loop
+  - backfill-task-skill-ownership
+  - build-capability-routes
   - build-context-pack
-  - check-mcp-status
-  - select-poc-gap
-  - validate-product-code-ledger
-  - validate-skill-transcript
+  - build-evidence-bundle
+  - check-gate
+  - check-release-boundary
+  - check-skill-coverage
+  - collect-skill-execution-receipts
+  - create-acquisition-pack
+  - create-taskcard
+  - detect-ad-hoc-execution
+  - detect-duplicate-skills
+  - enforce-skill-first-execution
   - evidence-review-next-prompt
   - execution-handoff
   - export-plan-context
+  - extract-analytics-from-monolith
+  - generate-execution-handoff
+  - implement-spec-stub
+  - inventory-commands
+  - inventory-skills
+  - materialize-declaration-review
   - memory-sprint
+  - normalize-skill-registry
+  - package-install-proof
   - plan-hardening
-  - spec-literal-qname-to-code-mapping
-  - spec-shaped-product-architecture-blueprint
-  - spec-parity-source-regeneration-and-migration
-  - python-reduced-spec-parity-model
-  - spec-parity-verification
   - post-sprint-audit
   - post-sprint-loop
-  - autonomous-loop
-  - sync-memory
-  - score-format
-  - create-acquisition-pack
-  - check-gate
-  - create-taskcard
-  - reproduce-master-plan
-  - build-evidence-bundle
-  - check-release-boundary
-  - check-skill-coverage
-  - sal-pipeline-heal
-  - implement-spec-stub
-  - decompose-monolithic-codec
-  - extract-analytics-from-monolith
+  - promote-gap-to-taskcard
   - python-qname-code-reviewer
+  - python-reduced-spec-parity-model
+  - qname-backfill
+  - record-lane-execution
+  - reproduce-master-plan
+  - run-skill-idempotency
+  - sal-pipeline-heal
+  - scan-residual-bypasses
+  - score-format
+  - select-poc-gap
+  - spec-literal-qname-to-code-mapping
+  - spec-parity-source-regeneration-and-migration
+  - spec-parity-verification
+  - spec-shaped-product-architecture-blueprint
+  - sync-memory
+  - sync-skill-command-registry
+  - update-capability-matrix
+  - validate-mutation-guard
+  - validate-product-code-ledger
+  - validate-skill-contracts
+  - validate-skill-transcript
+  - verify-dogfood-path
   source_edits_require_handoff: true
   ledger_required: true
 product_code_ledger:
-  total_entries: 966
-  governed_changes: 783
+  total_entries: 1001
+  governed_changes: 793
   backfilled: 4
   ledger_path: reports\r90\product-code-change-ledger.json
 mcp_status:
   classification: MCP_CONFIG_PRESENT_MODE4_ACTIVE
   file_present: true
   mode: 4
-  server_count: 2
-  description: .vscode/mcp.json present with 2 server(s); MODE 4
+  server_count: 3
+  description: .vscode/mcp.json present with 3 server(s); MODE 4
 authority:
   supervisor_is_advisory: true
   gate_approval_requires_babar_raza: true
   commit_requires_user_auth: true
   push_requires_user_auth: true
   publication_blocked: true
+
+# ALL-GREEN criteria for skill governance tools (SKILL-GOVERNANCE-REPAIR-001 / TC-R006)
+# A convergence loop is ALL-GREEN if and only if ALL of these conditions are met.
+# Source of truth: plans/cached-growing-snail.md Rule GH-002
+all_green_criteria:
+  validate_skill_contracts:
+    fail_count: 0
+    warn_count: 0
+    overall_verdict: PASS
+    note: "Check .supervisor/skill-contract-validation-results.yaml"
+  sync_skill_command_registry:
+    pass1_auto_repaired: 0
+    pass2_auto_repaired: 0
+    pass2_status_drift: []
+    note: "True cold-start idempotency: run sync twice from clean committed state, both must show 0"
+  build_capability_routes:
+    broken_reference_routes: 0
+    note: "overall_verdict PARTIAL is acceptable (1 MISSING_SKILL route pre-existing)"
+  detect_ad_hoc_execution:
+    idempotent: true
+    note: "rerun1 output must equal rerun2 output"
+  last_updated: "2026-06-25"
+  mission_id: SKILL-GOVERNANCE-REPAIR-001
