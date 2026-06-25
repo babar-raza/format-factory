@@ -1,21 +1,15 @@
-"""Clean consumer proof: FODP load -> inspect -> analyze.
-
-FODP (Flat ODF Presentation) is a read-only format in this package.
-No write_fodp function exists. The consumer proof demonstrates the full
-inspection and analytics flow.
+"""Clean consumer proof: FODP load -> inspect -> analyze -> export.
 
 Steps:
   1. Load .fodp file to neutral model dict
   2. Inspect: page_count, pages, slides, text
   3. Analyze: slide stats via analytics functions
+  4. Export: export_to_txt, export_to_csv, export_to_json
 
 DOGFOOD CONTRACT:
   - uses `import fodp` (installed package, not src/)
   - no src/ path manipulation
   - asserts real semantic result at every boundary
-
-Note: FODP is READ-ONLY in Format Factory. No write_fodp function exists.
-The consumer proof covers Steps 1-13 (load through inspection).
 
 Runnable:
   python examples/python/fodp/consumer_roundtrip.py
@@ -30,6 +24,7 @@ _REPO = Path(__file__).resolve().parents[3]
 import fodp as fodp_pkg
 from fodp import load, get_page_count, get_page_metadata
 from fodp import fodp_slide_count, fodp_slide_titles, fodp_has_multi_slide
+from fodp import export_to_txt, export_to_csv, export_to_json
 
 SAMPLE_FODP = _REPO / "samples" / "by-format" / "fodp" / "two-slides-basic.fodp"
 MINIMAL_FODP = _REPO / "samples" / "by-format" / "fodp" / "minimal-presentation.fodp"
@@ -73,7 +68,21 @@ def main() -> int:
     minimal_pages = get_page_count(str(MINIMAL_FODP))
     print(f"\n[MINIMAL] {MINIMAL_FODP.name}: pages={minimal_pages}, text={model2['pages'][0]['text_content']!r}")
 
-    print("\nCONSUMER_PROOF: PASS -- load -> inspect -> analyze (read-only format, no write_fodp)")
+    # Step 5: Export
+    txt = export_to_txt(str(SAMPLE_FODP))
+    csv_out = export_to_csv(str(SAMPLE_FODP))
+    json_out = export_to_json(str(SAMPLE_FODP))
+    assert isinstance(txt, str)
+    assert "slide_index" in csv_out
+    import json as _json
+    parsed = _json.loads(json_out)
+    assert parsed.get("is_fodp") is True
+    print(f"\n[EXPORT] txt={len(txt)}chars, csv_rows={csv_out.count(chr(10))}, json_pages={len(parsed['pages'])}")
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    (OUTPUT_DIR / "export.csv").write_text(csv_out)
+    (OUTPUT_DIR / "export.json").write_text(json_out)
+
+    print("\nCONSUMER_PROOF: PASS -- load -> inspect -> analyze -> export (txt/csv/json)")
     return 0
 
 
