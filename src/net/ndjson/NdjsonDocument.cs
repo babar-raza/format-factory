@@ -151,6 +151,12 @@ public sealed class NdjsonDocument
         Records.Select(r => new NdjsonRecord(r)).ToList();
 
     /// <summary>
+    /// Named alias for <see cref="Load(string)"/> making intent explicit.
+    /// Prefer LoadContent() for clarity over the ambiguous Load(string) overload.
+    /// </summary>
+    public static NdjsonDocument LoadContent(string jsonlContent) => Load(jsonlContent);
+
+    /// <summary>
     /// Save the document to a file. UTF-8, no BOM, LF line endings.
     /// </summary>
     public void SaveToFile(string path)

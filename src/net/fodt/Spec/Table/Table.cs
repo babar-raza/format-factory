@@ -1,6 +1,7 @@
 // FormatFactory.Fodt — Spec.Table.Table — Canonical spec-shaped model class
 // spec_qname: table:table
 // spec_fact_ref: FACT-FODT-007
+// architecture_only — not wired to public API; table editing not yet implemented (TC-PQ-031)
 namespace FormatFactory.Fodt.Spec.Table;
 
 /// <summary>

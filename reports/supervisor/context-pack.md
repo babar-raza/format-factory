@@ -1,19 +1,19 @@
 # Supervisor Context Pack
 # Format Factory — Machine-Readable State Snapshot
-# Generated: 2026-06-25T22:53:07.262982
+# Generated: 2026-06-25T22:54:20.569010
 # ADVISORY ONLY — not a gate approval or authority document
 
 ## Current State
 
 | Item | Value |
 |------|-------|
-| Git HEAD | c99aa7be |
+| Git HEAD | aeeb60ca |
 | Working tree clean | False |
 | Supervisor mode | MODE 4 |
 | Latest sprint | unknown |
 | Sprint ID | tc-inf-001-llm-grader-test... |
 | Autonomous continue | True |
-| Iteration | 3/12 |
+| Iteration | 4/12 |
 | MCP status | MCP_CONFIG_PRESENT_MODE4_ACTIVE |
 | Active skills | 63 |
 | Ledger entries | 1011 total (793 governed) |
