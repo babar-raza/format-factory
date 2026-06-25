@@ -13,6 +13,12 @@ from pathlib import Path
 _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO))
 
+try:
+    from fodt import parse_fodt_strict, write_fodt, document_text_content, document_to_html
+except ImportError:
+    import sys
+    from pathlib import Path as _Path
+    sys.path.insert(0, str(_Path(__file__).resolve().parents[3]))
 from src.python.fodt import parse_fodt_strict, write_fodt, document_text_content, document_to_html
 
 # --- Build or load document ---

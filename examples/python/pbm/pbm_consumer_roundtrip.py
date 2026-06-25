@@ -14,6 +14,13 @@ from pathlib import Path
 _REPO = Path(__file__).parent.parent.parent.parent
 sys.path.insert(0, str(_REPO))
 
+try:
+    from pbm.pbm_parser import parse_pbm_strict, write_pbm
+    from pbm.models import PbmDocument
+except ImportError:
+    import sys
+    from pathlib import Path as _Path
+    sys.path.insert(0, str(_Path(__file__).resolve().parents[3]))
 from src.python.pbm.pbm_parser import parse_pbm_strict, write_pbm
 from src.python.pbm.models import PbmDocument
 

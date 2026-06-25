@@ -27,6 +27,12 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).parent.parent.parent.parent
 sys.path.insert(0, str(REPO_ROOT))
 
+try:
+    from fods import (
+except ImportError:
+    import sys
+    from pathlib import Path as _Path
+    sys.path.insert(0, str(_Path(__file__).resolve().parents[3]))
 from src.python.fods import (
     parse_fods,
     write_fods,
@@ -37,6 +43,12 @@ from src.python.fods import (
     workbook_warnings_for_unsupported_edit,
     workbook_add_sheet,
 )
+try:
+    from fods.csv_exporter import export_fods_to_csv_file
+except ImportError:
+    import sys
+    from pathlib import Path as _Path
+    sys.path.insert(0, str(_Path(__file__).resolve().parents[3]))
 from src.python.fods.csv_exporter import export_fods_to_csv_file
 
 SAMPLE_FODS = REPO_ROOT / "samples" / "by-format" / "fods" / "minimal-spreadsheet.fods"

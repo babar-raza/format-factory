@@ -26,6 +26,14 @@ _REPO = Path(__file__).resolve().parents[3]
 if str(_REPO) not in sys.path:
     sys.path.insert(0, str(_REPO))
 
+try:
+    from csv.csv_parser import parse_csv  # type: ignore
+    from csv.csv_writer import write_csv_to_file  # type: ignore
+    from csv.models import CsvDocument  # type: ignore
+except ImportError:
+    import sys
+    from pathlib import Path as _Path
+    sys.path.insert(0, str(_Path(__file__).resolve().parents[3]))
 from src.python.csv.csv_parser import parse_csv  # type: ignore
 from src.python.csv.csv_writer import write_csv_to_file  # type: ignore
 from src.python.csv.models import CsvDocument  # type: ignore

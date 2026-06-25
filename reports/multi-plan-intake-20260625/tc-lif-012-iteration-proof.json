@@ -1,0 +1,25 @@
+{
+  "proof_id": "TC-LIF-012-REAL-ITERATION-PROOF",
+  "mission": "MACH-LIF-FORENSICS-RJO-20260625",
+  "steps": [
+    {
+      "step": 1,
+      "action": "run lifecycle_audit with OPEN taskcard",
+      "verdict": "AUDIT_REQUIRES_ITERATION",
+      "returncode": 1
+    },
+    {
+      "step": 2,
+      "action": "simulate work \u2014 close taskcard in plan",
+      "verdict": "N/A (edit only)",
+      "returncode": 0
+    },
+    {
+      "step": 3,
+      "action": "re-run lifecycle_audit with CLOSED taskcard",
+      "verdict": "AUDIT_PASS",
+      "returncode": 0
+    }
+  ],
+  "conclusion": "lifecycle_audit.py correctly enforces the iteration cycle: REQUIRES_ITERATION \u2192 work \u2192 AUDIT_PASS"
+}
