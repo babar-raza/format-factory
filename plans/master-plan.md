@@ -4,7 +4,7 @@
 **Authority level:** Single Operational Authority
 **Project:** format-factory
 **Version:** 6.0
-**Last updated:** 2026-06-24 (v6.0: wise-munching-reef Human-Free Autonomy Governance Rectification CLOSED — 13 files, 37+ defects, AGENTS.md §AG alignment; Section 50 added)
+**Last updated:** 2026-06-25 (v6.1: witty-doodling-goose SAL Phase A Bypass Closure CLOSED — TC-GUARD-001 AND logic, V13 enforcement tests, spec_fact_refs contract doc, authority gate wiring; Section 60 added)
 **Last verified:** 2026-06-24
 
 **Current phase:** Multi-format POC — 11 targets (3 commercial .NET, 8 FOSS Python). Gate 11 G11-G sub-gate approved by Babar Raza 2026-06-05 (FODS, FODT, Netpbm). Registry gate_11.status: commercial_readiness_in_progress; g11g_status: APPROVED_BY_BABAR_RAZA_2026_06_05 (G11-G sub-gate approved). commercial_product_ready: false (all entries). Full Gate 11 requires Babar Raza final commercial authorization.
@@ -3664,3 +3664,76 @@ accepted_direct_mutations == 0, and CI enforcement is blocking (not continue-on-
 ### Evidence Root
 
 `.local/evidences/immutable-percolating-forest-TC-PUB-20260625/`
+
+---
+
+## Section 60 — witty-doodling-goose: SAL Bypass Closure — Phase A (CLOSED)
+
+**Plan:** `C:\Users\prora\.claude\plans\witty-doodling-goose.md`
+**Run ID:** `spec-authority-machinery-explosion-20260625-c6b2470`
+**Commit:** `10b6d5ad` (2026-06-25)
+**Status:** CLOSED — all 4 Phase A taskcards complete, all verification gates PASS
+
+### Background
+
+The Specification Authority Layer (SAL) investigation sprint
+(`spec-authority-machinery-explosion-20260625-c6b2470`) found that despite a fully
+functional SAL with 14,313 verified spec facts, three critical bypass paths allowed
+product work to proceed without spec authority citations. Phase A closed the structural
+bypass lanes via governance code changes.
+
+### Taskcards
+
+| TC | Description | Status | Commit |
+|----|-------------|--------|--------|
+| TC-HEAL-A001 | TC-GUARD-001 AND logic in guard_001_checker.py | CLOSED | 10b6d5ad |
+| TC-HEAL-A002 | V13 enforcement tests (5 new in test_governance_validators.py) | CLOSED | 10b6d5ad |
+| TC-HEAL-A003 | spec_fact_refs documented in supervisor-worker-contract.md | CLOSED | 10b6d5ad |
+| TC-HEAL-A004 | authority_gate_validation.py wired into product_task_selector.py | CLOSED | 10b6d5ad |
+
+### Key Changes
+
+- **TC-GUARD-001 (guard_001_checker.py):** Upgraded from OR logic to AND logic.
+  `gap_ledger_ref` alone no longer satisfies the gate. Items must provide BOTH a
+  gap reference (`gap_ledger_ref` OR `capability_ref`) AND spec authority
+  (`spec_fact_refs` OR `exception_classification`).
+- **V13 enforcement (test_governance_validators.py):** 5 tests confirm V13 correctly
+  fires when `spec_fact_refs` absent and no `exception_classification` at item level.
+  Prior investigation claim (BP-002) that V13 was a no-op was INACCURATE — corrected.
+- **Contract documentation (supervisor-worker-contract.md):** `spec_fact_refs`
+  documented as required-or-explain for Tier 1 (formal spec formats) and Tier 2
+  (schema-only/no-public-spec formats use `exception_classification`).
+- **Authority gate wiring (product_task_selector.py):** `_get_format_authority_status()`
+  now calls `authority_gate_validation.py --format-id {fmt} --json` to get real P-level.
+  Returns `ALLOWED_WITH_EXCEPTION:{exception_class}` for Tier 2 formats with valid
+  exception (gnumeric=`schema_authority_available`, abw=`no_public_spec_available`).
+
+### Verification Gates (all PASS)
+
+| Gate | Description | Result |
+|------|-------------|--------|
+| VG-003 | gap_ledger_ref only → TC-GUARD-001 violation | PASS |
+| VG-003b | gap_ledger_ref + spec_fact_refs → no violation | PASS |
+| VG-005 | V13 fires for absent spec_fact_refs (no exception) | PASS |
+| VG-006 | V13 allows schema_authority_available exception | PASS |
+| VG-007 | product_task_selector calls authority gate | PASS |
+
+### Test Results
+
+- TC-GUARD-001 regression tests: 10/10 PASS
+- Governance validators full suite: 124/124 PASS (5 new V13 tests)
+- Supervisor full suite: 246/246 PASS
+
+### PSL Convergence
+
+- Stage 1 audit (pre-hardening): `SPRINT_REQUIRES_PLAN_HARDENING` (3 material issues)
+- Stage 1 audit (post-Phase A): `SPRINT_ALL_GREEN_VERIFIED` (0 material issues)
+- All-green candidate: open_material_issues=0, regressions=0, verification_gates_pass=5
+- Audit artifact: `reports/spec-authority-machinery/.../audit/stage1/stage1-fresh-audit-phase-a.yaml`
+
+### Remaining Work (Phase B-F — future plans)
+
+- Phase B: FODS vertical slice — add FACT-FODS-* citations to source code and tests
+- Phase C: Wire authority_integration_fabric.py into autonomous_cycle.py Step 0
+- Phase C: Inject spec facts into generate_next_worker_prompt.py worker prompts
+- Phase D-F: Expand to ZST, CSV, TOML; production readiness dashboard authority level
