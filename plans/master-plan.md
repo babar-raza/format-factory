@@ -3474,7 +3474,7 @@ accepted_direct_mutations == 0, and CI enforcement is blocking (not continue-on-
 
 ---
 
-*End of plans/master-plan.md — version 7.4 — 2026-06-25 (Section 63 added: eager-wishing-bear CI machinery hardening CLOSED; Section 62: multiple CLOSED entries)*
+*End of plans/master-plan.md — version 7.5 — 2026-06-25 (Section 64 added: immutable-percolating-forest CLOSED; Section 63: eager-wishing-bear CI machinery hardening CLOSED)*
 *This document is the single operational authority for format-factory. All other documents are subordinate to it for operational decisions.*
 
 ---
@@ -3592,3 +3592,75 @@ accepted_direct_mutations == 0, and CI enforcement is blocking (not continue-on-
 - **Skill transcript**: `reports/skills-r646/skill-transcripts/decompose-monolithic-codec-gnumeric-20260625.json`
 - **CI function register**: `.local/evidences/ci-estate/ci-function-register.yaml`
 - **V59-V68 gap mapping**: `.local/evidences/ci-estate/governance-gap-v59-v68-mapping.yaml`
+
+---
+
+## Section 64 — immutable-percolating-forest: Unblock → Spec Parity → Package Proofs → Publication (CLOSED)
+
+**Plan file:** `C:\Users\prora\.claude\plans\immutable-percolating-forest.md`
+**Plan type:** production_execution_hardening
+**Status:** CLOSED (TERMINAL_CLOSED + PSL all-green convergence)
+**Opened:** 2026-06-25
+**Closed:** 2026-06-25
+
+### Scope
+
+39 taskcards across 6 phases:
+- Phase 1 (UNBLOCK): Restore autonomous continuation
+- Phase 2 (SPEC PARITY): FODS COMPLETE (12/12), FODT VERIFIED (8/8)
+- Phase 3 (PACKAGE PROOFS): All 16 Python packages install-proven
+- Phase 4 (CUSTOMER READINESS): All 8 criteria PASS for FODS/FODT/Netpbm
+- Phase 5 (PUBLICATION): NuGet packets + Gate 11 sign-off request
+- Phase 6 (INFRASTRUCTURE): Onboarding guide, GOV_BLOCK audit, decomposition plan
+
+### Taskcards Completed
+
+| Phase | TCs | Status | Key Outcome |
+|-------|-----|--------|-------------|
+| 1 — UNBLOCK | TC-UB-001..005 | CLOSED | autonomous_continue=true, 0 GOV_BLOCK items |
+| 2 — SPEC PARITY | TC-SP-001..005 | CLOSED | FODS=COMPLETE (12/12), FODT=VERIFIED (8/8) |
+| 3 — PACKAGES | TC-PKG-001..017 | CLOSED | All 16 packages install-proven, consumer_roundtrip.py for all |
+| 4 — READINESS | TC-CRC-001..004 | CLOSED | 8 criteria PASS: FODS, FODT, Netpbm (PBM/PGM/PPM) |
+| 5 — PUBLICATION | TC-PUB-001..003 | CLOSED | FormatFactory.Fods/Fodt/Netpbm .nupkg packets built |
+| 5 — PUBLICATION | TC-PUB-004 | EXTERNAL_GATE | Gate 11 sign-off request prepared for Babar Raza |
+| 6 — INFRA | TC-INF-001 | BLOCKED_EXTERNAL | LLM grader requires GPT_OSS_ENDPOINT env var |
+| 6 — INFRA | TC-INF-002 | CLOSED | `docs/format-onboarding-guide.md` — 20-step playbook |
+| 6 — INFRA | TC-INF-003 | CLOSED | GOV_BLOCK audit: 17% rate, top-2 causes, 2 repair TCs |
+| 6 — INFRA | TC-INF-004 | CLOSED | Decomposition plan: governance_validators + autonomous_cycle |
+
+### Key Deliverables
+
+| Artifact | Description |
+|----------|-------------|
+| `docs/publication/gate11-final-signoff-request.md` | Gate 11 NuGet sign-off request (FODS/FODT/Netpbm) |
+| `docs/format-onboarding-guide.md` | Step-by-step guide for adding format 21+ |
+| `.local/publication-packets/*/gate11-evidence.yaml` | SHA-256 verified evidence bundles (3 products) |
+| `tests/python/{pbm,pgm,ppm}/test_*_malformed_and_security.py` | 48 security tests, all PASS |
+| `docs/api/{pbm,pgm,ppm}.md` | Netpbm API reference docs |
+| `registry/parity-matrix.yaml` | FODS=COMPLETE, FODT=VERIFIED |
+| `.local/analysis/immutable-percolating-forest/govblock-distribution.yaml` | GOV_BLOCK root cause analysis |
+| `.local/analysis/immutable-percolating-forest/infra-decomposition-plan.yaml` | governance_validators + autonomous_cycle decomp plan |
+
+### Test Evidence
+
+- PBM malformed/security: 15/15 PASS
+- PGM malformed/security: 15/15 PASS
+- PPM malformed/security: 18/18 PASS
+- Total new security tests: 48/48 PASS
+
+### External Blockers (not agent-resolvable)
+
+- `EXTERNAL_BLOCKER:gate_11_final_commercial_approval_required_babar_raza` — TC-PUB-004
+- `EXTERNAL_BLOCKER:llm_grader_api_key_required` — TC-INF-001
+
+### PSL Convergence
+
+- PSL iterations: 2
+- Stage 1 audit iteration 1: SPRINT_REQUIRES_PLAN_HARDENING
+- Stage 1 audit iteration 2: SPRINT_ALL_GREEN_VERIFIED
+- Final all-green candidate: PASS (material_findings=0, actionable_findings=0, eligible_tasks=0)
+- close-task.md verdict: CONVERGENCE_COMPLETE_ALL_GREEN_AND_TASK_CLOSED
+
+### Evidence Root
+
+`.local/evidences/immutable-percolating-forest-TC-PUB-20260625/`
