@@ -67,10 +67,18 @@ negative_controls:
 evidence_requirements:
   - validate_taskcard_execution_contract.py_exists
   - 5_regression_tests_pass
-current_proof_level: 0
+current_proof_level: 4
 target_proof_level: 4
 rollback: delete tools/governance/validate_taskcard_execution_contract.py
-status: OPEN
+status: CLOSED
+closed_at: '2026-06-25'
+closeout_evidence:
+  - tools/governance/validate_taskcard_execution_contract.py created (~165 LOC)
+  - Validates required_capabilities, skill_ids, command_ids, allowed_paths, receipt_required
+  - Returns JSON with verdict VALID or INVALID + missing_fields + errors
+  - 7 regression tests in tests/supervisor/test_validate_taskcard_execution_contract.py
+  - All 7 pass (includes 5 core + 2 additional controls)
+  - Exempt task types (ANALYSIS, AUDIT, READ_ONLY) correctly skip validation
 closeout_rules:
   - validator script exists
   - 5+ tests pass

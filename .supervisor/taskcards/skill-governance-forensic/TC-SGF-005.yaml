@@ -77,10 +77,21 @@ evidence_requirements:
   - updated_ad_hoc_execution_inventory_yaml
   - updated_skill_inventory_yaml
   - skill_contract_validation_results_pass
-current_proof_level: 0
+current_proof_level: 3
 target_proof_level: 3
 rollback: revert skill-registry.yaml changes; re-run detect_ad_hoc_execution.py
-status: OPEN
+status: CLOSED
+closed_at: '2026-06-25'
+closeout_evidence:
+  - skill-registry.yaml updated with implementation_paths for 7 critical skills
+  - autonomous-loop gets autonomous_cycle.py + check_continuation.py + sprint_executor.py
+  - validate-skill-contracts gets governance_validators.py + governance_validators_ext.py
+  - build-evidence-bundle gets build_declaration_review_package.py
+  - select-poc-gap gets gap_ledger_to_work_items.py
+  - post-sprint-audit gets grade_declared_work.py
+  - execution-handoff gets write_plan_lock.py
+  - enforce-skill-first-execution gets pre_mutation_guard.py + ci_skill_attribution_check.py
+  - governed_count increased from 7 to 16 (target was 15)
 closeout_rules:
   - governed_count ≥ 15
   - skill contract validation passes

@@ -12,6 +12,13 @@
 
 **A2.** Codex (OpenAI API or GitHub Copilot agent mode) is an optional secondary agent. Codex is activated only when explicitly instructed by a human. Codex output that enters the repository must be tagged `generated_by: codex` in the artifact's front matter.
 
+**A2a. Codex Governance Adapter.** When Codex is activated, it MUST load its governance policy through the canonical adapter before taking any action:
+1. Read `docs/governance/codex-adapter.md` — this is the Codex-specific entry point.
+2. Follow the 7-step execution contract defined there: query registry → classify operation → select skill → call pre-mutation guard → execute through skill → write receipt → validate.
+3. The adapter references `docs/governance/skill-only-policy.yaml` as the single-authority policy YAML.
+4. Codex must not mutate `src/`, `tests/`, `tools/`, `.supervisor/`, or `plans/` without a registered skill bound to the operation.
+5. DEC-014 status: **activated** (2026-06-25). See `docs/governance/codex-adapter.md` for pilot results.
+
 **A3.** An agent must not assume a role beyond what is assigned. Claude is an executor, not an approver. Claude never approves its own output as production-ready.
 
 ---

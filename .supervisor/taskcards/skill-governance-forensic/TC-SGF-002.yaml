@@ -81,10 +81,22 @@ evidence_requirements:
   - 5_regression_tests_all_pass
   - idempotency_proof
   - baseline_cap_updated
-current_proof_level: 0
+current_proof_level: 4
 target_proof_level: 4
-rollback: remove V-SGF-001 from governance_validators.py; restore cap in baseline JSON
-status: OPEN
+rollback: remove V-SGF-001 from governance_validators_ext.py; restore runner import
+status: CLOSED
+closed_at: '2026-06-25'
+closeout_evidence:
+  - validate_skill_attribution_in_declaration (V-SGF-001) added to governance_validators_ext.py
+  - Wired into governance_validator_runner.py (imported + added to results list)
+  - WARN on missing declared_skill_ids (before 2026-09-01 cutoff)
+  - BLOCK on unregistered skill IDs (immediate)
+  - PASS on valid active skill IDs
+  - Skips non-PRODUCT_SOURCE items
+  - 5 regression tests in TestVSGF001SkillAttributionInDeclaration: all pass
+  - Full suite: 119 passed, 0 failed (validator count updated to 74)
+  - Idempotency proven: identical output on two consecutive runs
+  - SKILL-GAP-012 marked resolved in docs/governance/skill-only-policy.yaml
 closeout_rules:
   - V-SGF-001 implemented and registered
   - 5+ regression tests pass

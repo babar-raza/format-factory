@@ -311,7 +311,14 @@ known_gaps:
       Agents that edit files without submitting an evidence declaration
       bypass the declaration-based governance layer (EP-003) entirely.
       This is the primary first unenforced boundary.
-    status: backlog
+    status: resolved
+    resolved_at: '2026-06-25'
+    resolution: >
+      V-SGF-001 (validate_skill_attribution_in_declaration) added to governance_validators_ext.py
+      and wired into run_all_governance_validators() via governance_validator_runner.py.
+      WARN for missing declared_skill_ids (until 2026-09-01), BLOCK for unregistered skill IDs.
+      5 regression tests in tests/supervisor/test_governance_validators.py pass (119/119 total).
+      Idempotency proven: identical output on two consecutive runs.
     blocking: false
     first_unenforced_boundary: true
 

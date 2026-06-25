@@ -74,10 +74,18 @@ evidence_requirements:
   - install_script_exists_at_tools/governance/install_hooks.py
   - test_results_showing_rejection_and_pass
   - idempotency_proof_yaml
-current_proof_level: 0
+current_proof_level: 4
 target_proof_level: 4
 rollback: delete .hooks/pre-commit-skill-guard; uninstall from .git/hooks/
-status: OPEN
+status: CLOSED
+closed_at: '2026-06-25'
+closeout_evidence:
+  - .hooks/pre-commit-skill-guard created (Python, ~150 LOC)
+  - tools/governance/install_hooks.py created (idempotent, --status/--uninstall flags)
+  - install_hooks.py --status shows INSTALLED after first run
+  - second run shows 'Already installed (idempotent)' exit 0
+  - hook fires on src/ staged changes, passes when no src/ changes
+  - symlink target verified correct via path.resolve() comparison
 closeout_rules:
   - hook script exists and tested
   - install script works

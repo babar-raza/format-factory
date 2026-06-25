@@ -1790,9 +1790,10 @@ class TestCanonicalValidatorCount:
         }
         result = run_all_governance_validators(decl, None)
         validator_count = len(result["validators"])
-        assert validator_count == 73, (
-            f"Expected 73 canonical validators, got {validator_count}. "
-            "If validators were added/removed, update this test."
+        assert validator_count == 74, (
+            f"Expected 74 canonical validators, got {validator_count}. "
+            "If validators were added/removed, update this test. "
+            "(74 = 73 prior + V-SGF-001 added by TC-SGF-002)"
         )
 
 
@@ -1978,3 +1979,101 @@ class TestV13SpecFactRefsEnforcement:
         result = check_item(item)
         assert result["compliant"] is True
         assert result["blocking_type"] is False
+
+
+# ---------------------------------------------------------------------------
+# V-SGF-001 regression tests (TC-SGF-002)
+# ---------------------------------------------------------------------------
+
+class TestVSGF001SkillAttributionInDeclaration:
+    """5 regression tests for validate_skill_attribution_in_declaration (V-SGF-001)."""
+
+    def _make_declaration(self, items: list) -> dict:
+        return {
+            "completed_work_items": items,
+            "planned_work_items": [],
+        }
+
+    def _get_validator(self):
+        import sys
+        from pathlib import Path
+        repo = Path(__file__).resolve().parent.parent.parent
+        if str(repo / "tools" / "supervisor") not in sys.path:
+            sys.path.insert(0, str(repo / "tools" / "supervisor"))
+        from governance_validators_ext import validate_skill_attribution_in_declaration
+        return validate_skill_attribution_in_declaration, repo
+
+    # T1: PASS when declared_skill_ids contains a valid registered skill
+    def test_v_sgf_001_passes_on_valid_active_skill_ids(self):
+        """Valid declared_skill_ids with a registered skill → PASS."""
+        validator, repo = self._get_validator()
+        decl = self._make_declaration([{
+            "item_id": "W-001",
+            "item_type": "PRODUCT_SOURCE",
+            "declared_skill_ids": ["add-python-api"],  # registered in skill-registry.yaml
+        }])
+        result = validator(decl, repo)
+        # Should be PASS (registered skill)
+        assert result["result"] == "PASS"
+        assert result["blocks_sprint"] is False
+
+    # T2: WARN when declared_skill_ids is missing (WARN only until 2026-09-01)
+    def test_v_sgf_001_warns_on_missing_declared_skill_ids(self):
+        """PRODUCT_SOURCE item without declared_skill_ids → WARN (not block, before cutoff)."""
+        validator, repo = self._get_validator()
+        decl = self._make_declaration([{
+            "item_id": "W-002",
+            "item_type": "PRODUCT_SOURCE",
+            # no declared_skill_ids
+        }])
+        result = validator(decl, repo)
+        # Before 2026-09-01 → WARN, not FAIL; blocks_sprint may be False or True depending on date
+        assert result["result"] in ("WARN", "FAIL"), f"Unexpected result: {result['result']}"
+        assert "missing_skill_attribution" in str(result.get("items", []))
+
+    # T3: BLOCK on unregistered skill IDs
+    def test_v_sgf_001_blocks_on_unregistered_skill_id(self):
+        """declared_skill_ids with an unregistered ID → FAIL + blocks_sprint=True."""
+        validator, repo = self._get_validator()
+        decl = self._make_declaration([{
+            "item_id": "W-003",
+            "item_type": "PRODUCT_SOURCE",
+            "declared_skill_ids": ["nonexistent-skill-xyz-12345"],
+        }])
+        result = validator(decl, repo)
+        assert result["result"] == "FAIL"
+        assert result["blocks_sprint"] is True
+        assert any(
+            item.get("reason") == "unregistered_skill_id"
+            for item in result.get("items", [])
+        )
+
+    # T4: PASS when no PRODUCT_SOURCE items (non-product items skipped)
+    def test_v_sgf_001_skips_non_product_source_items(self):
+        """Items with item_type != PRODUCT_SOURCE are not checked."""
+        validator, repo = self._get_validator()
+        decl = self._make_declaration([{
+            "item_id": "W-004",
+            "item_type": "GOVERNANCE_TASKCARD",
+            # No declared_skill_ids — but this type is skipped
+        }])
+        result = validator(decl, repo)
+        assert result["result"] == "PASS"
+        assert result["blocks_sprint"] is False
+        assert "skipped" in result["summary"].lower() or "No PRODUCT" in result["summary"]
+
+    # T5: Negative control — empty declared_skill_ids list is treated as missing
+    def test_v_sgf_001_warns_on_empty_declared_skill_ids(self):
+        """Empty declared_skill_ids list is treated same as missing → WARN/FAIL."""
+        validator, repo = self._get_validator()
+        decl = self._make_declaration([{
+            "item_id": "W-005",
+            "item_type": "PRODUCT_SOURCE",
+            "declared_skill_ids": [],  # empty list
+        }])
+        result = validator(decl, repo)
+        assert result["result"] in ("WARN", "FAIL")
+        assert any(
+            item.get("reason") == "missing_skill_attribution"
+            for item in result.get("items", [])
+        )

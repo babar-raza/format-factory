@@ -19,6 +19,7 @@ V53: validate_spec_authority_class_completeness — registry python_file entries
 V54: validate_cross_lane_product_touching_machinery — product items must not mutate tools/supervisor/ (FF-FORENSIC-A4, WARN-only)
 V55: validate_cross_lane_machinery_touching_product — machinery items must not mutate src/ (FF-FORENSIC-A4, WARN-only)
 V56: validate_hardening_target_identity — plan hardening must target active native plan (TC-PG-006, FAIL for snoopy fallback; WARN for other wrong targets)
+V73: validate_dotnet_spec_qname — .NET Spec/*.cs files must have SpecQName constant with correct registry value (TC-DOTNET-QNAME-001, WARN; FAIL for RELEASE_GATE)
 """
 from __future__ import annotations
 
@@ -128,6 +129,11 @@ def run_all_governance_validators(
         validate_sal_authority_chain as _validate_sal_authority_chain,
         validate_lane_dag_ordering as _validate_lane_dag_ordering,
         validate_artifact_identity as _validate_artifact_identity,
+        validate_skill_attribution_in_declaration as _validate_skill_attribution,
+    )
+    # V73 imported from dedicated .NET qname validator file (TC-DOTNET-QNAME-001)
+    from governance_validators_dotnet import (  # noqa: PLC0415
+        validate_dotnet_spec_qname as _validate_dotnet_spec_qname,
     )
     results = [
         validate_execution_method_required(declaration),
@@ -245,6 +251,10 @@ def run_all_governance_validators(
         _validate_lane_dag_ordering(declaration, repo_root),
         # V72 (TC-FL-010): Artifact identity — FAIL for RELEASE_GATE missing artifact_id/authority
         _validate_artifact_identity(declaration, repo_root),
+        # V-SGF-001 (TC-SGF-002): Skill attribution in declaration — WARN on missing, BLOCK on unregistered
+        _validate_skill_attribution(declaration, repo_root),
+        # V73 (TC-DOTNET-QNAME-001): .NET Spec/ files must have SpecQName with correct value (WARN; FAIL for RELEASE_GATE)
+        _validate_dotnet_spec_qname(declaration, repo_root),
     ]
 
     # SAL format advisory (non-blocking, Lane E integration)

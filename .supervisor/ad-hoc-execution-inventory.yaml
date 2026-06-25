@@ -1,4 +1,4 @@
-ad_hoc_count: 174
+ad_hoc_count: 167
 entries:
 - classification: AD_HOC
   file: action_queue.py
@@ -42,7 +42,7 @@ entries:
 - classification: AD_HOC
   file: authority_integration_fabric.py
   path: tools/supervisor/authority_integration_fabric.py
-- classification: AD_HOC
+- classification: GOVERNED
   file: autonomous_cycle.py
   path: tools/supervisor/autonomous_cycle.py
 - classification: AD_HOC
@@ -90,7 +90,7 @@ entries:
 - classification: AD_HOC
   file: build_context_pack.py
   path: tools/supervisor/build_context_pack.py
-- classification: AD_HOC
+- classification: GOVERNED
   file: build_declaration_review_package.py
   path: tools/supervisor/build_declaration_review_package.py
 - classification: AD_HOC
@@ -123,7 +123,7 @@ entries:
 - classification: AD_HOC
   file: cci_migration.py
   path: tools/supervisor/cci_migration.py
-- classification: AD_HOC
+- classification: GOVERNED
   file: check_continuation.py
   path: tools/supervisor/check_continuation.py
 - classification: AD_HOC
@@ -210,7 +210,7 @@ entries:
 - classification: AD_HOC
   file: gap_closure_engine.py
   path: tools/supervisor/gap_closure_engine.py
-- classification: AD_HOC
+- classification: GOVERNED
   file: gap_ledger_to_work_items.py
   path: tools/supervisor/gap_ledger_to_work_items.py
 - classification: AD_HOC
@@ -255,16 +255,19 @@ entries:
 - classification: AD_HOC
   file: governance_validator_utils.py
   path: tools/supervisor/governance_validator_utils.py
-- classification: AD_HOC
+- classification: GOVERNED
   file: governance_validators.py
   path: tools/supervisor/governance_validators.py
 - classification: AD_HOC
+  file: governance_validators_dotnet.py
+  path: tools/supervisor/governance_validators_dotnet.py
+- classification: GOVERNED
   file: governance_validators_ext.py
   path: tools/supervisor/governance_validators_ext.py
 - classification: AD_HOC
   file: governance_validators_signal.py
   path: tools/supervisor/governance_validators_signal.py
-- classification: AD_HOC
+- classification: GOVERNED
   file: grade_declared_work.py
   path: tools/supervisor/grade_declared_work.py
 - classification: AD_HOC
@@ -432,7 +435,7 @@ entries:
 - classification: AD_HOC
   file: source_pattern_miner.py
   path: tools/supervisor/source_pattern_miner.py
-- classification: AD_HOC
+- classification: GOVERNED
   file: sprint_executor.py
   path: tools/supervisor/sprint_executor.py
 - classification: AD_HOC
@@ -493,6 +496,9 @@ entries:
   file: validate_evidence_for_supervisor.py
   path: tools/supervisor/validate_evidence_for_supervisor.py
 - classification: AD_HOC
+  file: validate_execution_plan.py
+  path: tools/supervisor/validate_execution_plan.py
+- classification: AD_HOC
   file: validate_ledger_entry.py
   path: tools/supervisor/validate_ledger_entry.py
 - classification: AD_HOC
@@ -534,7 +540,7 @@ entries:
 - classification: AD_HOC
   file: write_chat_plan_binding.py
   path: tools/supervisor/write_chat_plan_binding.py
-- classification: AD_HOC
+- classification: GOVERNED
   file: write_plan_lock.py
   path: tools/supervisor/write_plan_lock.py
 - classification: AD_HOC
@@ -544,8 +550,8 @@ entries:
   file: write_track_handoff.py
   path: tools/supervisor/write_track_handoff.py
 generated_by: detect_ad_hoc_execution.py
-governed_count: 7
+governed_count: 16
 mission_id: SKILL-FIRST-001
 note: GOVERNED = referenced in skill-registry.yaml; AD_HOC = not referenced
 status: complete
-total_files: 181
+total_files: 183

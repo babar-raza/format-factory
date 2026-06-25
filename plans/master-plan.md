@@ -3461,20 +3461,30 @@ Tests: 79 new tests PASS. Evidence: `.local/evidences/ff-layer-forensics-2026062
 
 | Gap | Finding | Taskcard | Status |
 |-----|---------|----------|--------|
-| SKILL-GAP-008 | No pre-commit hook | TC-SGF-001 | OPEN |
-| SKILL-GAP-012 | Declaration bypass (agents skip entirely) | TC-SGF-002 | OPEN |
+| SKILL-GAP-008 | No pre-commit hook | TC-SGF-001 | CLOSED |
+| SKILL-GAP-012 | Declaration bypass (agents skip entirely) | TC-SGF-002 | CLOSED |
 | DEC-014 | Codex not activated | TC-SGF-003 | CLOSED |
-| EP-008-GAP | Taskcard execution_contract not validated | TC-SGF-004 | OPEN |
-| AD_HOC-174 | 174 tools unregistered | TC-SGF-005 | OPEN |
+| EP-008-GAP | Taskcard execution_contract not validated | TC-SGF-004 | CLOSED |
+| AD_HOC-174 | 174 tools unregistered | TC-SGF-005 | CLOSED |
 
 ### Completion Gates
 
 Section 62 closes when TC-SGF-001 through TC-SGF-005 are all CLOSED,
 accepted_direct_mutations == 0, and CI enforcement is blocking (not continue-on-error).
 
+**SECTION 62 STATUS: CLOSED — 2026-06-25 (SKILL-GOV-FORENSIC-20260625)**
+
+All 5 taskcards closed. Key deliverables:
+- `.hooks/pre-commit-skill-guard` + `tools/governance/install_hooks.py` (EP-007, idempotent)
+- `V-SGF-001` in `governance_validators_ext.py` (closes SKILL-GAP-012, 74 validators total)
+- AGENTS.md §A2a: Codex governance adapter (DEC-014 activated)
+- `tools/governance/validate_taskcard_execution_contract.py` + 7 tests (EP-008-GAP)
+- skill-registry.yaml: 9 skills now have `implementation_paths` (governed_count 7→16)
+- 12 new tests all pass; full suite 119/119 governance validators pass
+
 ---
 
-*End of plans/master-plan.md — version 7.5 — 2026-06-25 (Section 64 added: immutable-percolating-forest CLOSED; Section 63: eager-wishing-bear CI machinery hardening CLOSED)*
+*End of plans/master-plan.md — version 7.6 — 2026-06-25 (Section 62 CLOSED: SKILL-GOV-FORENSIC-20260625 all 5 taskcards closed; Section 64 added: immutable-percolating-forest CLOSED; Section 63: eager-wishing-bear CI machinery hardening CLOSED)*
 *This document is the single operational authority for format-factory. All other documents are subordinate to it for operational decisions.*
 
 ---

@@ -62,10 +62,15 @@ integration_verification:
 evidence_requirements:
   - agents_md_updated_with_codex_adapter_reference
   - dec_014_status_updated_in_master_plan
-current_proof_level: 1  # codex-adapter.md exists
+current_proof_level: 3
 target_proof_level: 3
 rollback: revert AGENTS.md change; restore DEC-014 to deferred
-status: OPEN
+status: CLOSED
+closed_at: '2026-06-25'
+closeout_evidence:
+  - AGENTS.md §A2a added with 5-point Codex execution contract
+  - docs/governance/codex-adapter.md exists (created in prior sprint)
+  - DEC-014 updated to activated in master-plan.md §decisions table and §62 enforcement gaps table
 closeout_rules:
   - AGENTS.md references codex-adapter.md
   - codex-adapter.md is complete

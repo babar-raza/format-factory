@@ -14,6 +14,7 @@ zesty-conjuring-peacock (2026-06-23): V50 extended — *_analytics.py + bare ana
 TC-QHARD-001 (2026-06-22): V51 validate_spec_qname_coverage — exported classes must have spec_qname.
 TC-QHARD-002 (2026-06-22): V52 validate_compat_import_integrity — Compat/ facades import from real spec/ classes.
 TC-QHARD-003 (2026-06-22): V53 validate_spec_authority_class_completeness — registry python_file entries exist.
+TC-SGF-002 (2026-06-25): V-SGF-001 validate_skill_attribution_in_declaration — closes SKILL-GAP-012.
 """
 
 from __future__ import annotations
@@ -1756,4 +1757,146 @@ def validate_artifact_identity(declaration: dict, repo_root: "Path | None" = Non
         "blocks_sprint": False,
         "items": [],
         "summary": "V72: All evidence artifacts have required identity fields",
+    }
+
+
+# ---------------------------------------------------------------------------
+# V-SGF-001: validate_skill_attribution_in_declaration (TC-SGF-002)
+# Closes SKILL-GAP-012: declaration bypass — agents that skip declarations
+# bypass all governance validators.
+#
+# Enforcement levels (per TC-SGF-002 spec):
+#   - Missing declared_skill_ids → WARN only until 2026-09-01, then BLOCK
+#   - declared_skill_ids present but contains unregistered IDs → BLOCK immediately
+#   - declared_skill_ids with all valid active IDs → PASS
+#   - Non-PRODUCT_SOURCE items → skip
+# ---------------------------------------------------------------------------
+
+_SKILL_REGISTRY_CACHE: dict | None = None
+_SKILL_ATTRIBUTION_WARN_CUTOFF = "2026-09-01"  # date after which WARN becomes BLOCK
+
+
+def _load_skill_registry(repo_root: Path | None) -> set[str]:
+    """Return the set of active skill_ids from skill-registry.yaml."""
+    import yaml as _yaml
+
+    if repo_root is None:
+        return set()
+    registry_path = repo_root / ".supervisor" / "skill-registry.yaml"
+    if not registry_path.exists():
+        return set()
+    try:
+        data = _yaml.safe_load(registry_path.read_text(encoding="utf-8"))
+        skills = data.get("skills", [])
+        return {
+            s["skill_id"]
+            for s in skills
+            if isinstance(s, dict)
+            and s.get("status") in ("active",)
+            and not s.get("deprecated", False)
+            and "skill_id" in s
+        }
+    except Exception:
+        return set()
+
+
+def validate_skill_attribution_in_declaration(
+    declaration: dict, repo_root: Path
+) -> dict:
+    """
+    V-SGF-001: Check that PRODUCT_SOURCE work items in the declaration have
+    a `declared_skill_ids` field populated with registered active skill IDs.
+
+    WARN-only for missing field (until 2026-09-01), BLOCK for unregistered IDs.
+    """
+    from datetime import date
+
+    items = declaration.get("completed_work_items", []) + declaration.get("planned_work_items", [])
+    product_source_items = [
+        item for item in items
+        if isinstance(item, dict) and item.get("item_type") in ("PRODUCT_SOURCE", "PRODUCT_TEST")
+    ]
+
+    if not product_source_items:
+        return {
+            "validator": "validate_skill_attribution_in_declaration",
+            "result": "PASS",
+            "blocks_sprint": False,
+            "items": [],
+            "summary": "V-SGF-001: No PRODUCT_SOURCE/PRODUCT_TEST items — skill attribution check skipped",
+        }
+
+    active_skill_ids = _load_skill_registry(repo_root)
+
+    missing_attribution: list[dict] = []
+    unregistered_skill_ids: list[dict] = []
+
+    for item in product_source_items:
+        item_id = item.get("item_id", item.get("id", "UNKNOWN"))
+        declared = item.get("declared_skill_ids")
+
+        if declared is None or (isinstance(declared, list) and len(declared) == 0):
+            missing_attribution.append({
+                "item_id": item_id,
+                "reason": "missing_skill_attribution",
+                "declared_skill_ids": declared,
+            })
+            continue
+
+        if not isinstance(declared, list):
+            missing_attribution.append({
+                "item_id": item_id,
+                "reason": "declared_skill_ids_not_a_list",
+                "declared_skill_ids": declared,
+            })
+            continue
+
+        # Check each declared skill_id against registry
+        if active_skill_ids:  # only block if registry loaded successfully
+            for sid in declared:
+                if sid not in active_skill_ids:
+                    unregistered_skill_ids.append({
+                        "item_id": item_id,
+                        "reason": "unregistered_skill_id",
+                        "skill_id": sid,
+                        "registered_example": sorted(active_skill_ids)[:3] if active_skill_ids else [],
+                    })
+
+    # Unregistered skill IDs → BLOCK immediately (TC-SGF-002 spec)
+    if unregistered_skill_ids:
+        return {
+            "validator": "validate_skill_attribution_in_declaration",
+            "result": "FAIL",
+            "blocks_sprint": True,
+            "items": unregistered_skill_ids + missing_attribution,
+            "summary": (
+                f"V-SGF-001: {len(unregistered_skill_ids)} item(s) declare unregistered skill IDs — BLOCKED"
+            ),
+        }
+
+    # Missing declared_skill_ids → WARN until 2026-09-01, then BLOCK
+    if missing_attribution:
+        today = date.today()
+        cutoff = date(2026, 9, 1)
+        blocks = today >= cutoff
+
+        return {
+            "validator": "validate_skill_attribution_in_declaration",
+            "result": "FAIL" if blocks else "WARN",
+            "blocks_sprint": blocks,
+            "items": missing_attribution,
+            "summary": (
+                f"V-SGF-001: {len(missing_attribution)} PRODUCT_SOURCE item(s) missing declared_skill_ids "
+                f"({'BLOCKED' if blocks else 'WARN-only until 2026-09-01'})"
+            ),
+        }
+
+    return {
+        "validator": "validate_skill_attribution_in_declaration",
+        "result": "PASS",
+        "blocks_sprint": False,
+        "items": [],
+        "summary": (
+            f"V-SGF-001: All {len(product_source_items)} PRODUCT_SOURCE item(s) have valid skill attribution"
+        ),
     }

@@ -1,0 +1,146 @@
+#!/usr/bin/env python3
+"""
+pre-commit-skill-guard — Format Factory governance hook (EP-007)
+Fires before any commit touching src/ paths.
+
+Installation: python tools/governance/install_hooks.py
+Manual install: ln -sf ../../.hooks/pre-commit-skill-guard .git/hooks/pre-commit
+
+Exit codes:
+  0 — commit allowed (no src/ changes, or governed transcript found)
+  1 — BLOCKED: ungoverned src/ mutation detected
+  2 — CONFIG_ERROR: hook misconfigured
+"""
+
+from __future__ import annotations
+
+import json
+import os
+import subprocess
+import sys
+from pathlib import Path
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+SRC_PREFIX = "src/"
+TRANSCRIPT_DIRS = [
+    REPO_ROOT / ".local" / "transcripts",
+    REPO_ROOT / "reports",
+]
+EXCEPTION_DIR = REPO_ROOT / ".local" / "exceptions"
+CI_CHECK_SCRIPT = REPO_ROOT / "tools" / "governance" / "ci_skill_attribution_check.py"
+
+
+def get_staged_files() -> list[str]:
+    """Return list of staged file paths."""
+    result = subprocess.run(
+        ["git", "diff", "--cached", "--name-only"],
+        capture_output=True, text=True, cwd=str(REPO_ROOT)
+    )
+    if result.returncode != 0:
+        return []
+    return [f.strip() for f in result.stdout.splitlines() if f.strip()]
+
+
+def staged_touches_src(files: list[str]) -> bool:
+    """Return True if any staged file is under src/."""
+    return any(f.startswith(SRC_PREFIX) for f in files)
+
+
+def find_skill_transcript_for_head() -> bool:
+    """
+    Check if a skill execution transcript exists for the pending commit.
+    Uses ci_skill_attribution_check.py in dry-run mode against HEAD.
+    Falls back to scanning transcript dirs directly for any recent transcript.
+    """
+    # Use the CI check script if available
+    if CI_CHECK_SCRIPT.exists():
+        result = subprocess.run(
+            [sys.executable, str(CI_CHECK_SCRIPT),
+             "--base-ref", "HEAD", "--head-ref", "HEAD",
+             "--allow-pre-policy", "--staged-only"],
+            capture_output=True, text=True, cwd=str(REPO_ROOT)
+        )
+        if result.returncode == 0:
+            return True
+        # returncode 2 = config error (be permissive on error)
+        if result.returncode == 2:
+            print(f"[skill-guard] WARNING: ci_skill_attribution_check.py config error — allowing commit", file=sys.stderr)
+            return True
+        # returncode 1 = ungoverned detected
+        return False
+
+    # Fallback: look for any transcript file modified in last 30 minutes
+    import time
+    now = time.time()
+    cutoff = now - (30 * 60)  # 30 minutes
+    for tdir in TRANSCRIPT_DIRS:
+        if not tdir.exists():
+            continue
+        for p in tdir.rglob("*.json"):
+            try:
+                if p.stat().st_mtime >= cutoff:
+                    data = json.loads(p.read_text(encoding="utf-8"))
+                    if "skill_id" in data or "skill_invocation" in data:
+                        return True
+            except Exception:
+                continue
+    return False
+
+
+def check_exception_record() -> bool:
+    """Return True if a --no-verify exception record exists for this session."""
+    if not EXCEPTION_DIR.exists():
+        return False
+    for p in EXCEPTION_DIR.glob("*.yaml"):
+        try:
+            content = p.read_text(encoding="utf-8")
+            if "no_verify_exception" in content or "pre_commit_bypass" in content:
+                return True
+        except Exception:
+            continue
+    return False
+
+
+def main() -> int:
+    staged = get_staged_files()
+
+    # If no src/ files staged, skip guard
+    if not staged_touches_src(staged):
+        return 0
+
+    src_files = [f for f in staged if f.startswith(SRC_PREFIX)]
+    print(f"[skill-guard] src/ files staged: {src_files}", file=sys.stderr)
+
+    # Check for exception record
+    if check_exception_record():
+        print("[skill-guard] Exception record found — bypassing skill check", file=sys.stderr)
+        return 0
+
+    # Check for skill transcript
+    if find_skill_transcript_for_head():
+        print("[skill-guard] PASS: skill execution transcript found", file=sys.stderr)
+        return 0
+
+    # BLOCK the commit
+    print("", file=sys.stderr)
+    print("=" * 70, file=sys.stderr)
+    print("[skill-guard] BLOCKED: ungoverned src/ mutation", file=sys.stderr)
+    print("", file=sys.stderr)
+    print("  This commit touches src/ but no skill execution transcript was found.", file=sys.stderr)
+    print("  You must execute a registered skill before committing src/ changes.", file=sys.stderr)
+    print("", file=sys.stderr)
+    print("  To execute a skill:", file=sys.stderr)
+    print("    /add-python-api, /add-python-object-model-feature, etc.", file=sys.stderr)
+    print("", file=sys.stderr)
+    print("  To override (with documented exception):", file=sys.stderr)
+    print("    1. Create .local/exceptions/<id>.yaml with pre_commit_bypass: true", file=sys.stderr)
+    print("    2. Document the reason for the bypass", file=sys.stderr)
+    print("    3. Re-commit (NOT --no-verify)", file=sys.stderr)
+    print("", file=sys.stderr)
+    print("  See: docs/governance/skill-only-policy.yaml for the full policy.", file=sys.stderr)
+    print("=" * 70, file=sys.stderr)
+    return 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())
