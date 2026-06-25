@@ -1,0 +1,249 @@
+# FORMAT FACTORY — PRODUCT HEALING PRIORITY QUEUE
+# Generated from: manual library review + grade matrix + root-cause analysis
+# Date: 2026-06-24
+
+metadata:
+  generated: "2026-06-24"
+  basis: "MANUAL_LIBRARY_GRADE + MACHINERY_EXPECTATION_GRADE + business value"
+
+# Priority buckets (execute in order within each bucket):
+#   TIER-1: Structural correctness — must fix before any product deepening
+#   TIER-2: API completeness — P1 gaps blocking usability
+#   TIER-3: Coverage and tests — P2 gaps reducing confidence
+#   TIER-4: Spec alignment — P2 gaps reducing machinery scores
+#   TIER-5: Classification cleanup — P3 gaps (reclassification only)
+
+priority_queue:
+
+  tier_1_structural_correctness:
+    rationale: >
+      These are naming and architecture violations that create false impressions
+      about product completeness. They must be fixed before any new capability work.
+
+    - item_id: PQ-T1-001
+      title: "Rename 16 analytics-masquerade files to {format}_analytics_extra.py"
+      gap_refs: [GAP-PROD-INV-MASQ-001, GAP-INV-001..GAP-INV-016]
+      root_cause: RC-001
+      effort: HIGH  # 16 files × imports × test updates
+      impact: CRITICAL  # removes false domain-model impressions across entire Python portfolio
+      recommended_skill: extract-analytics-from-monolith
+      batch_order:
+        priority_1: [fods, fodt]   # already have real models.py — rename is safe
+        priority_2: [csv, tsv, ndjson, ods, odt]  # moderate usage
+        priority_3: [abw, dif, gnumeric, sylk, toml, pbm, pgm, ppm, qoi]
+      acceptance_criteria: >
+        All 16 files renamed to {format}_analytics_extra.py (or consolidated into
+        existing {format}_analytics.py). All imports updated. All tests pass.
+        No file named *_document.py or *_image.py contains only analytics functions.
+
+    - item_id: PQ-T1-002
+      title: "Fix spec_qname pattern: class attribute vs dataclass field default"
+      gap_refs: [GAP-PROD-INV-QNAME-001, GAP-INV-033..GAP-INV-036]
+      root_cause: RC-004
+      effort: LOW
+      impact: HIGH  # machinery validators depend on class-level spec_qname
+      recommended_skill: qname-backfill
+      affected_classes:
+        - ods.OdsCell: add spec_qname = "table:table-cell"
+        - ods.OdsSheet: add spec_qname = "table:table"
+        - ods.OdsDocument: add spec_qname = "office:document"
+        - odt.OdtParagraph: add spec_qname = "text:p"
+        - odt.OdtHeading: add spec_qname = "text:h"
+        - odt.OdtDocument: add spec_qname = "office:document"
+        - sylk.SylkCell: add spec_qname = "slk:cell"
+        - dif.DifCell: change from dataclass field default to class attribute
+      acceptance_criteria: >
+        All listed classes have spec_qname as class-level attribute (not dataclass field).
+        V36 spec_qname check passes for all affected formats.
+
+  tier_2_api_completeness:
+    rationale: >
+      These are P1 gaps where users cannot perform basic operations.
+      Prioritized by user value and cross-product symmetry.
+
+    - item_id: PQ-T2-001
+      title: "Add Python TsvDocument domain class (parity with .NET TsvDocument)"
+      gap_refs: [GAP-PROD-INV-MODEL-001, GAP-INV-022]
+      root_cause: RC-002
+      effort: MEDIUM
+      impact: HIGH  # TSV is widely used; .NET has it
+      recommended_skill: add-python-object-model-feature
+      spec_qname: "tsv:record"
+      model_pattern: "Wrap tsv_parser output in TsvDocument(headers, rows, row_count, has_header)"
+      acceptance_criteria: >
+        TsvDocument class in tsv/models.py with spec_qname = "tsv:record".
+        TsvDocument.from_file(path) factory method works.
+        Iterating rows via TsvDocument.rows works.
+
+    - item_id: PQ-T2-002
+      title: "Add Python CsvDocument domain class (parity with .NET CsvDocument)"
+      gap_refs: [GAP-PROD-INV-MODEL-001, GAP-INV-018]
+      root_cause: RC-002
+      effort: MEDIUM
+      impact: HIGH  # CSV is most common format; .NET has it
+      recommended_skill: add-python-object-model-feature
+      spec_qname: "csv:record"
+      acceptance_criteria: >
+        CsvDocument class with spec_qname = "csv:record" in csv/models.py.
+        CsvDocument.from_file(path) factory method.
+
+    - item_id: PQ-T2-003
+      title: "Add Python NdjsonDocument domain class (parity with .NET NdjsonDocument)"
+      gap_refs: [GAP-PROD-INV-MODEL-001, GAP-INV-020]
+      root_cause: RC-002
+      effort: MEDIUM
+      impact: HIGH
+      recommended_skill: add-python-object-model-feature
+      spec_qname: "ndjson:record"
+
+    - item_id: PQ-T2-004
+      title: "Add TSV Python writer (parity with .NET TsvWriter)"
+      gap_refs: [GAP-PROD-INV-WRITE-001, GAP-INV-030]
+      root_cause: RC-003
+      effort: LOW  # TSV is simple tab-separated; trivial writer
+      impact: HIGH  # critical parity gap vs .NET
+      recommended_skill: add-same-format-writer-feature
+      acceptance_criteria: >
+        write_tsv(rows, path, headers=None) in tsv_parser.py or tsv_writer.py.
+        Round-trip: load → write → reload → compare passes.
+
+    - item_id: PQ-T2-005
+      title: "Add DIF Python writer"
+      gap_refs: [GAP-PROD-INV-WRITE-001, GAP-INV-026]
+      root_cause: RC-003
+      effort: MEDIUM  # DIF has well-defined domain model (DifDocument)
+      impact: MEDIUM
+      recommended_skill: add-same-format-writer-feature
+
+    - item_id: PQ-T2-006
+      title: "Add SYLK Python writer"
+      gap_refs: [GAP-PROD-INV-WRITE-001, GAP-INV-029]
+      root_cause: RC-003
+      effort: MEDIUM
+      impact: MEDIUM
+
+    - item_id: PQ-T2-007
+      title: "Add Python FODT export targets (HTML/Markdown/TXT, parity with .NET)"
+      gap_refs: [GAP-INV-038]
+      root_cause: RC-003
+      effort: HIGH  # requires 3 new exporters
+      impact: HIGH  # .NET FODT has 5 exporters; Python has 0
+      recommended_skill: add-dogfood-export
+      acceptance_criteria: >
+        fodt_to_html(), fodt_to_markdown(), fodt_to_txt() functions or exporter classes.
+        At minimum: fodt_to_txt() is trivial (extract text content).
+
+    - item_id: PQ-T2-008
+      title: "Add GnumericDocument domain class and writer"
+      gap_refs: [GAP-PROD-INV-MODEL-001, GAP-PROD-INV-WRITE-001, GAP-INV-019, GAP-INV-027]
+      root_cause: RC-002, RC-003
+      effort: MEDIUM  # gzip+XML write is feasible with stdlib
+      impact: MEDIUM
+
+  tier_3_coverage_and_tests:
+
+    - item_id: PQ-T3-001
+      title: "Expand ODT test coverage to ≥50 files"
+      gap_refs: [GAP-INV-040]
+      root_cause: RC-006
+      effort: MEDIUM
+      impact: MEDIUM
+      current_files: 24
+      target_files: 50
+      recommended_skill: add-roundtrip-test
+
+    - item_id: PQ-T3-002
+      title: "Expand FODP test coverage to ≥50 files"
+      gap_refs: [GAP-INV-040]
+      root_cause: RC-006
+      effort: MEDIUM
+      current_files: 24
+      target_files: 50
+
+    - item_id: PQ-T3-003
+      title: "Expand QOI test coverage to ≥50 files"
+      gap_refs: [GAP-INV-041]
+      root_cause: RC-006
+      effort: LOW
+      current_files: 35
+      target_files: 50
+
+  tier_4_spec_alignment:
+
+    - item_id: PQ-T4-001
+      title: "Fix dynamic __all__ in high-tier Python formats (FODS, FODT, ODS, CSV, NDJSON)"
+      gap_refs: [GAP-PROD-INV-API-001, GAP-INV-037]
+      root_cause: RC-005
+      effort: MEDIUM
+      impact: MEDIUM  # improves API discoverability and IDE experience
+      approach: >
+        Convert to static __all__ list for each format.
+        Pattern: see FODP (__init__.py 94 LOC) and ZST (__init__.py 76 LOC).
+      acceptance_criteria: >
+        No type imports (Any, Path, dataclass, field) appear in __all__ for
+        FODS, FODT, ODS, CSV, NDJSON. Tab-complete shows only actual API functions.
+
+    - item_id: PQ-T4-002
+      title: "Add NetpbmDocument sealed class to .NET Netpbm"
+      gap_refs: [GAP-PROD-INV-NETPBM-001, GAP-INV-024]
+      root_cause: RC-002
+      effort: MEDIUM
+      impact: MEDIUM  # architectural consistency with other .NET products
+      recommended_skill: add-dotnet-object-model-feature
+      acceptance_criteria: >
+        public sealed class NetpbmDocument with Width, Height, Magic, FilePath properties.
+        NetpbmDocument.Load(path) factory method.
+        TsvDocument pattern: not 'not sealed' issue.
+
+    - item_id: PQ-T4-003
+      title: "Add ZST Python write capability"
+      gap_refs: [GAP-INV-031, GAP-INV-032]
+      root_cause: RC-003
+      effort: LOW  # zstandard library supports write
+      impact: LOW  # ZST is a compression layer, not a document format
+
+  tier_5_classification_cleanup:
+
+    - item_id: PQ-T5-001
+      title: "Reclassify NET-HTML, NET-MARKDOWN, NET-TXT as exporter sub-components"
+      gap_refs: [GAP-PROD-INV-STUB-001, GAP-INV-042]
+      root_cause: RC-007
+      effort: LOW  # metadata change only
+      impact: LOW  # reduces inflated product count from 30→27 standalone products
+      action: >
+        Update product_inventory.yaml to mark these as product_type: exporter_infrastructure.
+        Update product count in any reports/gates.
+        Do NOT delete the files — they are needed as export targets.
+
+    - item_id: PQ-T5-002
+      title: "Unseal TsvDocument in .NET (should be sealed like CsvDocument)"
+      gap_refs: []
+      root_cause: RC-004
+      effort: LOW
+      impact: LOW
+      action: >
+        Change `public class TsvDocument` to `public sealed class TsvDocument`
+        in src/net/tsv/TsvDocument.cs for consistency with CsvDocument, FodsDocument,
+        NdjsonDocument, ZstDocument.
+
+# ============================================================
+# SUMMARY STATISTICS
+# ============================================================
+
+summary:
+  tier_1_items: 2
+  tier_2_items: 8
+  tier_3_items: 3
+  tier_4_items: 3
+  tier_5_items: 2
+  total_items: 18
+
+  top_3_by_impact:
+    - PQ-T1-001: "Rename 16 analytics-masquerade files — removes false domain-model impressions"
+    - PQ-T2-007: "Add Python FODT export targets — closes critical Python/.NET asymmetry"
+    - PQ-T2-001: "Add Python TsvDocument — closes TSV parity gap vs .NET"
+
+  low_hanging_fruit:
+    - PQ-T2-004: "Add TSV Python writer — trivial effort, high parity impact"
+    - PQ-T1-002: "Fix spec_qname pattern — ODS/ODT/SYLK/DIF — small code change"
+    - PQ-T5-002: "Seal TsvDocument in .NET — one-word change"

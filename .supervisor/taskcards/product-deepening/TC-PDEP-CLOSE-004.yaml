@@ -1,0 +1,25 @@
+id: TC-PDEP-CLOSE-004
+title: "Update product-grade-matrix.yaml with PDEP-2026-06-25-001 proof levels"
+status: CLOSED
+priority: P1
+severity: HIGH
+finding_ref: FIND-GRADE-MATRIX-001
+mission_id: PDEP-2026-06-25-001
+closed_at: "2026-06-25T04:00:00Z"
+
+description: >
+  product-grade-matrix.yaml had D06_mutation_api=0 for 9 formats where
+  mutation was newly proven by PDEP-2026-06-25-001. Must append a
+  deepening_mission_update section with corrected D06 values and
+  proof level changes.
+
+acceptance_criteria:
+  - deepening_mission_update section added to product-grade-matrix.yaml
+  - D06_mutation_api corrections documented for ABW/CSV/DIF/FODG/GNUMERIC/NDJSON/TOML/TSV/ZST
+  - All 14 format proof level advances recorded
+  - consumer_proof status (PASS/MAINTAINED) for each format
+
+closure_evidence:
+  - path: "reports/product-inventory/product-grade-matrix.yaml"
+    section: "deepening_mission_update"
+    formats_updated: 14

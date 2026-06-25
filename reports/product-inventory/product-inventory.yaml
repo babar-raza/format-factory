@@ -1,0 +1,716 @@
+# FORMAT FACTORY — COMPLETE PRODUCT INVENTORY
+# Generated: 2026-06-24 (manual library review session)
+# Protocol: FORMAT FACTORY COMPLETE PRODUCT INVENTORY, MANUAL LIBRARY REVIEW,
+#            EXPECTATION COMPARISON, GAP ANALYSIS, ROOT-CAUSE CLASSIFICATION,
+#            AND GOVERNED LEDGERING PROTOCOL
+
+metadata:
+  total_python_products: 20
+  total_dotnet_products: 10
+  total_products: 30
+  review_date: "2026-06-24"
+
+# ============================================================
+# PYTHON PRODUCTS
+# ============================================================
+
+python_products:
+
+  - product_id: PY-ABW
+    format: abw
+    track: foss_python
+    loc_total: 1954
+    main_file: src/python/abw/abw_codec.py
+    domain_model_classes: []
+    analytics_masquerade_files:
+      - src/python/abw/word_document.py  # ANALYTICS bag — NOT a WordDocument class
+    spec_qname_module: "abw:document"  # module-level, not on a class
+    has_writer: false
+    has_exporter: false
+    has_converter: false
+    test_files: 147
+    import_pattern: dynamic_all
+    api_type: function_bag
+    model_quality: ANALYTICS_MASQUERADE
+    notes: >
+      word_document.py is 100% analytics functions (abw_sentence_count, abw_longest_word, etc.)
+      with docstring "ABW analytics — extracted analytics/computation functions".
+      No WordDocument domain class exists anywhere.
+
+  - product_id: PY-CSV
+    format: csv
+    track: foss_python
+    loc_total: 1680
+    main_file: src/python/csv/csv_parser.py
+    domain_model_classes: []
+    analytics_masquerade_files:
+      - src/python/csv/tabular_document.py  # ANALYTICS bag
+    spec_qname_module: "csv:record"
+    has_writer: true
+    has_exporter: false
+    has_converter: false
+    test_files: 53
+    import_pattern: dynamic_all
+    api_type: function_bag
+    model_quality: ANALYTICS_MASQUERADE
+    notes: >
+      csv_parser.py is a proper RFC 4180 parser. csv_writer.py is a proper writer.
+      tabular_document.py is analytics masquerading under a domain-model filename.
+      No CsvDocument class.
+
+  - product_id: PY-DIF
+    format: dif
+    track: foss_python
+    loc_total: 1918
+    main_file: src/python/dif/dif_parser.py
+    domain_model_classes:
+      - name: DifCell
+        spec_qname: "dif:cell"
+        in_file: src/python/dif/dif_parser.py
+        type: dataclass
+      - name: DifDocument
+        spec_qname: "dif:document"
+        in_file: src/python/dif/dif_parser.py
+        type: dataclass
+    analytics_masquerade_files:
+      - src/python/dif/interchange_document.py  # ANALYTICS bag
+    has_writer: false
+    has_exporter: false
+    has_converter: false
+    test_files: 85
+    import_pattern: dynamic_all
+    api_type: dataclass_model_plus_function_bag
+    model_quality: PARTIAL_MODEL
+    notes: >
+      DifCell and DifDocument dataclasses are in dif_parser.py with spec_qname.
+      interchange_document.py is analytics masquerading.
+
+  - product_id: PY-GNUMERIC
+    format: gnumeric
+    track: foss_python
+    loc_total: 1882
+    main_file: src/python/gnumeric/gnumeric_codec.py
+    domain_model_classes: []
+    analytics_masquerade_files:
+      - src/python/gnumeric/workbook_document.py  # ANALYTICS bag
+    spec_qname_module: "gnm:workbook"
+    has_writer: false
+    has_exporter: false
+    has_converter: false
+    test_files: 109
+    import_pattern: dynamic_all
+    api_type: function_bag
+    model_quality: ANALYTICS_MASQUERADE
+    notes: >
+      gnumeric_codec.py uses gzip + xml.etree for stdlib-only parse.
+      workbook_document.py is analytics bag — no GnumericWorkbook class.
+
+  - product_id: PY-NDJSON
+    format: ndjson
+    track: foss_python
+    loc_total: 2115
+    main_file: src/python/ndjson/ndjson_codec.py
+    domain_model_classes: []
+    analytics_masquerade_files:
+      - src/python/ndjson/json_stream.py  # ANALYTICS bag
+    spec_qname_module: "ndjson:record"
+    has_writer: true   # write_ndjson in codec
+    has_exporter: false
+    has_converter: false
+    test_files: 140
+    import_pattern: dynamic_all
+    api_type: function_bag
+    model_quality: ANALYTICS_MASQUERADE
+    notes: >
+      json_stream.py docstring: "NDJSON analytics functions extracted from ndjson_codec.py".
+      ndjson_codec.py has load_ndjson, write_ndjson functions (not a class).
+      ndjson_analytics.py (923 LOC) contains 37+ analytics functions.
+
+  - product_id: PY-ODS
+    format: ods
+    track: foss_python
+    loc_total: 2341
+    main_file: src/python/ods/ods_parser.py
+    domain_model_classes:
+      - name: OdsCell
+        spec_qname: null  # missing spec_qname
+        in_file: src/python/ods/ods_parser.py
+        type: dataclass
+      - name: OdsRow
+        spec_qname: "table:table-row"
+        in_file: src/python/ods/ods_parser.py
+        type: dataclass
+      - name: OdsSheet
+        spec_qname: null  # missing spec_qname
+        in_file: src/python/ods/ods_parser.py
+        type: dataclass
+      - name: OdsDocument
+        spec_qname: null  # missing spec_qname
+        in_file: src/python/ods/ods_parser.py
+        type: dataclass
+    analytics_masquerade_files:
+      - src/python/ods/spreadsheet_document.py  # ANALYTICS bag
+    has_writer: true   # ods_writer.py
+    has_exporter: true  # ods_csv_exporter.py
+    has_converter: false
+    test_files: 100
+    import_pattern: dynamic_all
+    api_type: dataclass_model_plus_function_bag
+    model_quality: PARTIAL_MODEL
+    notes: >
+      Best-equipped Python format: OdsDocument model + writer + CSV exporter.
+      3 of 4 dataclasses missing spec_qname (OdsRow has it, others don't).
+      spreadsheet_document.py is analytics masquerade.
+
+  - product_id: PY-ODT
+    format: odt
+    track: foss_python
+    loc_total: 895
+    main_file: src/python/odt/odt_parser.py
+    domain_model_classes:
+      - name: OdtParagraph
+        spec_qname: null
+        in_file: src/python/odt/odt_parser.py
+        type: dataclass
+      - name: OdtHeading
+        spec_qname: null
+        in_file: src/python/odt/odt_parser.py
+        type: dataclass
+      - name: OdtListItem
+        spec_qname: "text:list-item"
+        in_file: src/python/odt/odt_parser.py
+        type: dataclass
+      - name: OdtDocument
+        spec_qname: null
+        in_file: src/python/odt/odt_parser.py
+        type: dataclass
+    analytics_masquerade_files:
+      - src/python/odt/text_document.py  # ANALYTICS bag
+    has_writer: false
+    has_exporter: false
+    has_converter: false
+    test_files: 24
+    import_pattern: dynamic_all
+    api_type: dataclass_model_plus_function_bag
+    model_quality: PARTIAL_MODEL
+    notes: >
+      Smallest Python product (895 LOC). 4 domain classes but mostly missing spec_qname.
+      No writer. Only 24 test files (very thin coverage).
+
+  - product_id: PY-PBM
+    format: pbm
+    track: foss_python
+    loc_total: 1369
+    main_file: src/python/pbm/pbm_parser.py
+    domain_model_classes:
+      - name: PbmImage
+        spec_qname: "pbm:image"
+        in_file: src/python/pbm/pbm_parser.py
+        type: dataclass
+    analytics_masquerade_files:
+      - src/python/pbm/bitmap_image.py  # ANALYTICS bag
+    has_writer: false
+    has_exporter: false
+    has_converter: true  # pbm_to_pgm, pbm_to_ppm
+    test_files: 58
+    import_pattern: dynamic_all
+    api_type: dataclass_model_plus_function_bag
+    model_quality: GOOD_MODEL
+    notes: >
+      PbmImage dataclass with spec_qname. Converters to PGM/PPM.
+      bitmap_image.py is analytics masquerade.
+
+  - product_id: PY-PGM
+    format: pgm
+    track: foss_python
+    loc_total: 1358
+    main_file: src/python/pgm/pgm_parser.py
+    domain_model_classes:
+      - name: PgmImage
+        spec_qname: "pgm:image"
+        in_file: src/python/pgm/pgm_parser.py
+        type: dataclass
+    analytics_masquerade_files:
+      - src/python/pgm/grayscale_image.py  # ANALYTICS bag
+    has_writer: false
+    has_exporter: false
+    has_converter: true  # pgm_to_ppm
+    test_files: 52
+    import_pattern: dynamic_all
+    api_type: dataclass_model_plus_function_bag
+    model_quality: GOOD_MODEL
+
+  - product_id: PY-PPM
+    format: ppm
+    track: foss_python
+    loc_total: 1556
+    main_file: src/python/ppm/ppm_parser.py
+    domain_model_classes:
+      - name: PpmImage
+        spec_qname: "ppm:image"
+        in_file: src/python/ppm/ppm_parser.py
+        type: dataclass
+    analytics_masquerade_files:
+      - src/python/ppm/color_image.py  # ANALYTICS bag
+    has_writer: false
+    has_exporter: false
+    has_converter: true  # ppm_to_pgm
+    test_files: 71
+    import_pattern: dynamic_all
+    api_type: dataclass_model_plus_function_bag
+    model_quality: GOOD_MODEL
+
+  - product_id: PY-QOI
+    format: qoi
+    track: foss_python
+    loc_total: 1303
+    main_file: src/python/qoi/qoi_parser.py
+    domain_model_classes:
+      - name: QoiImage
+        spec_qname: "qoi:image"
+        in_file: src/python/qoi/qoi_parser.py
+        type: dataclass
+    analytics_masquerade_files:
+      - src/python/qoi/image_document.py  # ANALYTICS bag
+    has_writer: false
+    has_exporter: false
+    has_converter: false
+    test_files: 35
+    import_pattern: dynamic_all
+    api_type: dataclass_model_plus_function_bag
+    model_quality: GOOD_MODEL
+    notes: >
+      QoiImage dataclass with spec_qname, qoi_encoder.py for write.
+      Very thin test coverage (35 files).
+
+  - product_id: PY-SYLK
+    format: sylk
+    track: foss_python
+    loc_total: 1638
+    main_file: src/python/sylk/sylk_parser.py
+    domain_model_classes:
+      - name: SylkCell
+        spec_qname: null
+        in_file: src/python/sylk/sylk_parser.py
+        type: dataclass
+      - name: SylkDocument
+        spec_qname: "sylk:document"
+        in_file: src/python/sylk/sylk_parser.py
+        type: dataclass
+    analytics_masquerade_files:
+      - src/python/sylk/spreadsheet_document.py  # ANALYTICS bag
+    has_writer: false
+    has_exporter: false
+    has_converter: false
+    test_files: 89
+    import_pattern: dynamic_all
+    api_type: dataclass_model_plus_function_bag
+    model_quality: PARTIAL_MODEL
+
+  - product_id: PY-TOML
+    format: toml
+    track: foss_python
+    loc_total: 1195
+    main_file: src/python/toml/toml_codec.py
+    domain_model_classes: []
+    analytics_masquerade_files:
+      - src/python/toml/config_document.py  # ANALYTICS bag
+    spec_qname_module: "toml:document"
+    has_writer: true  # toml_codec has write functions
+    has_exporter: false
+    has_converter: false
+    test_files: 48
+    import_pattern: dynamic_all
+    api_type: function_bag
+    model_quality: ANALYTICS_MASQUERADE
+    notes: >
+      Uses stdlib tomllib (Python 3.11+) — no external deps. Has write capability.
+      config_document.py is analytics masquerade. No TomlDocument class.
+
+  - product_id: PY-TSV
+    format: tsv
+    track: foss_python
+    loc_total: 1647
+    main_file: src/python/tsv/tsv_parser.py
+    domain_model_classes: []
+    analytics_masquerade_files:
+      - src/python/tsv/tabular_document.py  # ANALYTICS bag
+    spec_qname_module: "tsv:record"
+    has_writer: false
+    has_exporter: false
+    has_converter: false
+    test_files: 103
+    import_pattern: dynamic_all
+    api_type: function_bag
+    model_quality: ANALYTICS_MASQUERADE
+    notes: >
+      tabular_document.py is analytics bag. No TsvDocument class.
+
+  - product_id: PY-XCF
+    format: xcf
+    track: foss_python
+    loc_total: 2279
+    main_file: src/python/xcf/xcf_parser.py
+    domain_model_classes:
+      - name: XcfImage
+        spec_qname: "xcf:image"
+        in_file: src/python/xcf/xcf_parser.py
+        type: dataclass
+      - name: XcfImageSpec
+        spec_qname: "xcf:image"
+        in_file: src/python/xcf/image_document.py
+        type: spec_authority_class
+    analytics_masquerade_files: []  # image_document.py is proper spec domain module (DIFFERENT pattern)
+    spec_qname_module: "xcf:image"
+    has_writer: false
+    has_exporter: false
+    has_converter: false
+    test_files: 60
+    import_pattern: dynamic_all (with pre-computed comment)
+    api_type: dataclass_model_plus_spec_domain
+    model_quality: GOOD_MODEL
+    notes: >
+      image_document.py is a PROPER spec-level domain module (not analytics masquerade).
+      XcfImageSpec is a spec authority class. XcfImage dataclass with spec_qname.
+      Known issue: xcf_layer_name_list returns SYNTHETIC names (GAP-XCF-LAYER-NAMES).
+      xcf_analytics.py (4773 LOC) is separate analytics file.
+
+  - product_id: PY-ZST
+    format: zst
+    track: foss_python
+    loc_total: 2419
+    main_file: src/python/zst/zst_codec.py
+    domain_model_classes: []
+    analytics_masquerade_files:
+      - src/python/zst/compressed_stream.py  # likely analytics — not a CompressedStream class
+    spec_qname_module: null
+    has_writer: false
+    has_exporter: false
+    has_converter: false
+    test_files: 81
+    import_pattern: static_all (76-line __init__.py with explicit __all__)
+    api_type: function_bag
+    model_quality: ANALYTICS_MASQUERADE
+    notes: >
+      zst_codec.py cites RFC 8878. Has compress/decompress/probe functions.
+      zst_analytics.py (4604 LOC) is separate analytics. __init__.py uses
+      static __all__ list (76 LOC). compressed_stream.py and compression_metrics.py
+      are likely analytics bags.
+
+  - product_id: PY-FODG
+    format: fodg
+    track: foss_python
+    loc_total: 1989
+    main_file: src/python/fodg/fodg_codec.py
+    domain_model_classes: []
+    analytics_masquerade_files: []
+    spec_domain_files:
+      - src/python/fodg/drawing_document.py  # PROPER spec domain module
+    spec_qname_module: "office:document"
+    has_writer: false
+    has_exporter: false
+    has_converter: false
+    test_files: 95
+    import_pattern: dynamic_all (with comment)
+    api_type: function_bag_plus_spec_domain
+    model_quality: SPEC_DOMAIN_MODULE
+    notes: >
+      drawing_document.py is a proper spec-level domain module with spec_qname,
+      spec_fact_ref, ODF 1.3 citations. fodg_analytics.py (3214 LOC) separate.
+      No domain model class however — functions only.
+
+  - product_id: PY-FODP
+    format: fodp
+    track: foss_python
+    loc_total: 990
+    main_file: src/python/fodp/fodp_codec.py
+    domain_model_classes: []
+    analytics_masquerade_files: []
+    spec_domain_files:
+      - src/python/fodp/presentation_document.py  # has spec_qname at module + class level
+    spec_qname_module: "office:document"
+    has_writer: false
+    has_exporter: false
+    has_converter: false
+    test_files: 24
+    import_pattern: static_all (94 LOC)
+    api_type: function_bag_plus_spec_domain
+    model_quality: SPEC_DOMAIN_MODULE
+    notes: >
+      Smallest Python product (990 LOC). presentation_document.py has spec_qname.
+      Only 24 test files. No write capability.
+
+  - product_id: PY-FODS
+    format: fods
+    track: foss_python
+    loc_total: 4063
+    main_file: src/python/fods/parser.py  # (fods_parser.py likely)
+    domain_model_classes:
+      - name: FodsCell
+        spec_qname: "table:table-cell"
+        in_file: src/python/fods/models.py
+        type: class_with_properties
+      - name: FodsSheet
+        spec_qname: "table:table"
+        in_file: src/python/fods/models.py
+        type: class_with_properties
+      - name: FodsDocument
+        spec_qname: "office:document"
+        in_file: src/python/fods/models.py
+        type: class_with_properties
+    analytics_masquerade_files:
+      - src/python/fods/spreadsheet_document.py  # ANALYTICS bag (docstring says fods_analytics.py)
+    has_writer: true  # fods/writer.py
+    has_exporter: true  # fods/csv_exporter.py
+    has_converter: false
+    test_files: 92
+    import_pattern: dynamic_all
+    api_type: full_class_model_plus_function_bag
+    model_quality: BEST_PYTHON
+    notes: >
+      Best-structured Python product. FodsCell/FodsSheet/FodsDocument are real OO classes
+      with typed properties (not just dataclasses). FodsDocument.from_file() factory method.
+      Compat/ facades exist (architecture stubs). spreadsheet_document.py is analytics masquerade.
+
+  - product_id: PY-FODT
+    format: fodt
+    track: foss_python
+    loc_total: 4321
+    main_file: src/python/fodt/fodt_codec.py
+    domain_model_classes:
+      - name: FodtSpan
+        spec_qname: "text:span"
+        in_file: src/python/fodt/models.py
+        type: dataclass
+      - name: FodtParagraph
+        spec_qname: "text:p"
+        in_file: src/python/fodt/models.py
+        type: dataclass
+      - name: FodtDocument
+        spec_qname: "office:document"
+        in_file: src/python/fodt/models.py
+        type: dataclass
+    analytics_masquerade_files:
+      - src/python/fodt/text_document.py  # ANALYTICS bag
+    has_writer: true  # fodt/writer.py
+    has_exporter: false
+    has_converter: false
+    test_files: 129
+    import_pattern: dynamic_all
+    api_type: full_class_model_plus_function_bag
+    model_quality: BEST_PYTHON
+    notes: >
+      Second-best Python product. Three-level model (Span → Paragraph → Document).
+      spec_qname on all three levels. Has writer. text_document.py is analytics masquerade.
+
+# ============================================================
+# .NET PRODUCTS
+# ============================================================
+
+dotnet_products:
+
+  - product_id: NET-CSV
+    format: csv
+    track: commercial_dotnet
+    loc_total: 348
+    main_document_class: CsvDocument
+    class_type: sealed
+    spec_citations:
+      - "RFC 4180"
+    key_files:
+      - src/net/csv/CsvDocument.cs   # sealed class with headers/rows/load/save
+      - src/net/csv/CsvReader.cs     # RFC 4180 compliant parser
+      - src/net/csv/CsvWriter.cs     # field-level escaping
+      - src/net/csv/Spec/CsvRecord.cs  # spec_qname: csv:record
+    has_writer: true
+    has_exporter: false
+    has_converter: false
+    mutation_api: true
+    model_quality: GOOD_DOTNET
+
+  - product_id: NET-FODS
+    format: fods
+    track: commercial_dotnet
+    loc_total: 3480
+    main_document_class: FodsDocument
+    class_type: sealed
+    spec_citations:
+      - "ODF 1.3 §3.1.2"
+      - "ODF 1.3 §3.7"
+      - "ODF 1.3 §9.4.2"
+      - "DTD prohibited, XmlResolver disabled (security)"
+    key_files:
+      - src/net/fods/FodsDocument.cs   # sealed, DOM-backed, factory methods
+      - src/net/fods/FodsParser.cs
+      - src/net/fods/FodsWriter.cs
+      - src/net/fods/FodsCsvExporter.cs
+      - src/net/fods/FodsHtmlExporter.cs
+      - src/net/fods/FodsJsonExporter.cs
+      - src/net/fods/FodsOdsExporter.cs
+      - src/net/fods/FodsPdfExporter.cs
+      - src/net/fods/FodsPngExporter.cs
+    has_writer: true
+    has_exporter: true  # 7 exporters: CSV, HTML, JSON, ODS, PDF, PNG + document
+    has_converter: false
+    mutation_api: true
+    model_quality: BEST_DOTNET
+    notes: >
+      Most complete .NET product. 7 export targets. DOM-backed sealed class.
+      ODF spec sections cited. Security-hardened XML parsing.
+      Spec/ folder: Document.cs, Table/*.cs with spec_qname comments.
+
+  - product_id: NET-FODT
+    format: fodt
+    track: commercial_dotnet
+    loc_total: 2548
+    main_document_class: FodtDocument
+    class_type: sealed
+    spec_citations:
+      - "ODF 1.3"
+    key_files:
+      - src/net/fodt/FodtDocument.cs
+      - src/net/fodt/FodtParser.cs
+      - src/net/fodt/FodtWriter.cs
+      - src/net/fodt/FodtHtmlExporter.cs
+      - src/net/fodt/FodtMarkdownExporter.cs
+      - src/net/fodt/FodtPdfExporter.cs
+      - src/net/fodt/FodtPngExporter.cs
+      - src/net/fodt/FodtTxtExporter.cs
+    has_writer: true
+    has_exporter: true  # 5 exporters: HTML, Markdown, PDF, PNG, TXT
+    has_converter: false
+    mutation_api: true
+    model_quality: BEST_DOTNET
+
+  - product_id: NET-HTML
+    format: html
+    track: commercial_dotnet
+    loc_total: 118
+    main_document_class: null  # HtmlWriter static only
+    class_type: static
+    spec_citations: []
+    key_files:
+      - src/net/html/HtmlWriter.cs
+    has_writer: true
+    has_exporter: false
+    has_converter: false
+    mutation_api: false
+    model_quality: STUB_WRITER
+    notes: >
+      Stub writer only. No document model, no parser, no exporter.
+      Output target for FODT/FODS exporters — not a standalone product.
+
+  - product_id: NET-MARKDOWN
+    format: markdown
+    track: commercial_dotnet
+    loc_total: 84
+    main_document_class: null
+    class_type: static
+    spec_citations: []
+    key_files:
+      - src/net/markdown/MarkdownWriter.cs
+    has_writer: true
+    has_exporter: false
+    has_converter: false
+    mutation_api: false
+    model_quality: STUB_WRITER
+    notes: >
+      Stub writer only. Output target for FodtMarkdownExporter.
+
+  - product_id: NET-NDJSON
+    format: ndjson
+    track: commercial_dotnet
+    loc_total: 355
+    main_document_class: NdjsonDocument
+    class_type: sealed
+    spec_citations: []
+    key_files:
+      - src/net/ndjson/NdjsonDocument.cs   # sealed with List<JsonElement>
+      - src/net/ndjson/NdjsonReader.cs
+      - src/net/ndjson/NdjsonWriter.cs
+      - src/net/ndjson/NdjsonCsvExporter.cs
+    has_writer: true
+    has_exporter: true  # CSV exporter
+    has_converter: false
+    mutation_api: true
+    model_quality: GOOD_DOTNET
+
+  - product_id: NET-NETPBM
+    format: netpbm
+    track: commercial_dotnet
+    loc_total: 739
+    main_document_class: null  # NetpbmParser is static — no NetpbmDocument
+    class_type: static
+    spec_citations:
+      - "Netpbm file format specification"
+    key_files:
+      - src/net/netpbm/NetpbmParser.cs   # static Parse + ParseStream
+      - src/net/netpbm/NetpbmWriter.cs
+      - src/net/netpbm/NetpbmExporter.cs
+    has_writer: true
+    has_exporter: true
+    has_converter: false
+    mutation_api: false
+    model_quality: PARTIAL_DOTNET
+    notes: >
+      No NetpbmDocument sealed class. Parser returns implicit model via dictionary.
+      File size guards, dimension guards, security posture documented.
+      Spec/ folder has NetpbmImage.cs architecture stub.
+
+  - product_id: NET-TSV
+    format: tsv
+    track: commercial_dotnet
+    loc_total: 366
+    main_document_class: TsvDocument
+    class_type: plain_class  # not sealed
+    spec_citations: []
+    key_files:
+      - src/net/tsv/TsvDocument.cs
+      - src/net/tsv/TsvReader.cs
+      - src/net/tsv/TsvWriter.cs
+      - src/net/tsv/TsvCsvExporter.cs
+    has_writer: true
+    has_exporter: true  # CSV exporter
+    has_converter: false
+    mutation_api: true
+    model_quality: GOOD_DOTNET
+    notes: >
+      TsvDocument is not sealed (unlike other .NET products). Minor consistency gap.
+
+  - product_id: NET-TXT
+    format: txt
+    track: commercial_dotnet
+    loc_total: 70
+    main_document_class: null
+    class_type: static
+    spec_citations: []
+    key_files:
+      - src/net/txt/TxtWriter.cs
+    has_writer: true
+    has_exporter: false
+    has_converter: false
+    mutation_api: false
+    model_quality: STUB_WRITER
+    notes: >
+      Minimal stub writer (70 LOC). Output target for FodtTxtExporter.
+
+  - product_id: NET-ZST
+    format: zst
+    track: commercial_dotnet
+    loc_total: 208
+    main_document_class: ZstDocument
+    class_type: sealed
+    spec_citations:
+      - "IETF RFC 8878 §3.1.1"
+      - "IETF RFC 8878 §3.1.2"
+    key_files:
+      - src/net/zst/ZstDocument.cs   # sealed domain model
+      - src/net/zst/ZstParser.cs
+    has_writer: false
+    has_exporter: false
+    has_converter: false
+    mutation_api: false
+    model_quality: MINIMAL_DOTNET
+    notes: >
+      RFC 8878 cited. ZstDocument sealed class with FilePath, FileSizeBytes, magic detection.
+      No write capability. Parser only.

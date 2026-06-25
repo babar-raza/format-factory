@@ -1,0 +1,253 @@
+# FORMAT FACTORY — EXECUTION HANDOFFS
+# Grouped by shared root cause for batch execution
+# Date: 2026-06-24
+
+metadata:
+  generated: "2026-06-24"
+  source: product-gap-register.yaml + product-healing-priority-queue.yaml
+
+# Handoffs are grouped by root cause so that a single sprint can execute
+# all same-cause repairs in one pass.
+
+handoffs:
+
+  # ============================================================
+  # HANDOFF 1: Analytics masquerade rename sprint
+  # Root cause: RC-001 | 16 files | Skill: extract-analytics-from-monolith
+  # ============================================================
+
+  - handoff_id: HO-RC001-RENAME
+    title: "Batch rename analytics-masquerade files"
+    root_cause: RC-001
+    priority_queue_items: [PQ-T1-001]
+    gap_ledger_ref: GAP-PROD-INV-MASQ-001
+    skill: extract-analytics-from-monolith
+    batch_1_formats: [fods, fodt]
+    batch_2_formats: [csv, tsv, ndjson, ods, odt]
+    batch_3_formats: [abw, dif, gnumeric, sylk, toml, pbm, pgm, ppm, qoi]
+    pre_conditions:
+      - All tests pass before rename
+      - Identify all import sites for each file
+    execution_pattern: >
+      For each format in batch:
+      1. Rename {format}/{old_name}.py → {format}/{format}_analytics_extra.py
+         OR if format already has {format}_analytics.py: merge contents there
+      2. Update src/python/{format}/__init__.py imports
+      3. Update all test files referencing old name
+      4. Run tests for that format
+      5. Move to next
+    acceptance_criteria: >
+      No file named word_document.py, tabular_document.py, spreadsheet_document.py,
+      text_document.py, interchange_document.py, workbook_document.py, config_document.py,
+      bitmap_image.py, grayscale_image.py, color_image.py, image_document.py (for QOI/NDJSON)
+      contains analytics functions as its primary content.
+    estimated_impact: >
+      Removes RC-001 as a finding. Improves product model quality for 16 products.
+      Does NOT create domain model classes (separate handoff HO-RC002).
+
+  # ============================================================
+  # HANDOFF 2: Domain model class creation sprint
+  # Root cause: RC-002 | 7 Python formats + .NET Netpbm | Skill: add-python-object-model-feature
+  # ============================================================
+
+  - handoff_id: HO-RC002-MODELS
+    title: "Create domain model classes for function-bag Python products"
+    root_cause: RC-002
+    priority_queue_items: [PQ-T2-001, PQ-T2-002, PQ-T2-003, PQ-T2-008, PQ-T4-002]
+    gap_ledger_ref: GAP-PROD-INV-MODEL-001
+    skill: add-python-object-model-feature
+    ordered_formats:
+      - format: tsv
+        class: TsvDocument
+        spec_qname: "tsv:record"
+        pattern: "wrap existing tsv_parser output"
+        effort: LOW
+      - format: csv
+        class: CsvDocument
+        spec_qname: "csv:record"
+        effort: LOW
+      - format: ndjson
+        class: NdjsonDocument
+        spec_qname: "ndjson:record"
+        effort: LOW
+      - format: gnumeric
+        class: GnumericWorkbook
+        spec_qname: "gnm:workbook"
+        effort: MEDIUM
+      - format: toml
+        class: TomlDocument
+        spec_qname: "toml:document"
+        effort: LOW
+      - format: zst
+        class: ZstDocument
+        spec_qname: "zst:stream"
+        effort: LOW
+      - format: abw
+        class: AbwDocument
+        spec_qname: "abw:document"
+        effort: MEDIUM
+    dotnet_items:
+      - format: netpbm
+        class: NetpbmDocument
+        skill: add-dotnet-object-model-feature
+    execution_pattern: >
+      For each format in ordered_formats:
+      1. Create src/python/{format}/models.py (same pattern as fods/models.py)
+      2. Define class with spec_qname class attribute
+      3. Add from_file() factory classmethod
+      4. Add typed properties wrapping parser output dict
+      5. Export from __init__.py
+      6. Add 5+ tests verifying load → property access
+    acceptance_criteria: >
+      Each format has a typed document class in models.py.
+      spec_qname is a class-level attribute (not dataclass field).
+      from_file(path) factory method works.
+      D03_domain_model_presence grade improves to ≥3 for all affected formats.
+
+  # ============================================================
+  # HANDOFF 3: Writer capability sprint
+  # Root cause: RC-003 | 7 Python formats | Skill: add-same-format-writer-feature
+  # ============================================================
+
+  - handoff_id: HO-RC003-WRITERS
+    title: "Add write capability to read-only Python products"
+    root_cause: RC-003
+    priority_queue_items: [PQ-T2-004, PQ-T2-005, PQ-T2-006]
+    gap_ledger_ref: GAP-PROD-INV-WRITE-001
+    ordered_formats:
+      - format: tsv
+        effort: TRIVIAL
+        approach: "Tab-separated row writer — 30 lines"
+      - format: dif
+        effort: LOW
+        approach: "DifDocument → DIF format writer following existing domain model"
+      - format: sylk
+        effort: LOW
+        approach: "SylkDocument → SYLK format writer"
+      - format: odt
+        effort: MEDIUM
+        approach: "OdtDocument → ZIP container + content.xml writer"
+      - format: gnumeric
+        effort: MEDIUM
+        approach: "gzip(xml.etree serialization of GnumericWorkbook)"
+    acceptance_criteria: >
+      write_{format}(document, path) function exists for each format.
+      Round-trip test: load → modify (add row/cell) → save → reload → verify.
+      Tests pass for each format.
+
+  # ============================================================
+  # HANDOFF 4: spec_qname backfill sprint
+  # Root cause: RC-004 | 4 formats, 8 classes | Skill: qname-backfill
+  # ============================================================
+
+  - handoff_id: HO-RC004-QNAME
+    title: "Add missing spec_qname class attributes to domain model classes"
+    root_cause: RC-004
+    priority_queue_items: [PQ-T1-002]
+    gap_ledger_ref: GAP-PROD-INV-QNAME-001
+    skill: qname-backfill
+    changes:
+      ods:
+        OdsCell: add_spec_qname = "table:table-cell"
+        OdsSheet: add_spec_qname = "table:table"
+        OdsDocument: add_spec_qname = "office:document"
+      odt:
+        OdtParagraph: add_spec_qname = "text:p"
+        OdtHeading: add_spec_qname = "text:h"
+        OdtDocument: add_spec_qname = "office:document"
+      sylk:
+        SylkCell: add_spec_qname = "slk:cell"
+      dif:
+        DifCell: change_from_field_default_to_class_attribute
+    execution_pattern: >
+      Edit each parser file to add/fix spec_qname as class-level attribute.
+      Run governance validators: V36 spec_qname check should pass.
+    estimated_effort: "2 hours total — small code changes"
+    acceptance_criteria: >
+      All 8 listed classes have spec_qname as class-level attribute.
+      `assert SomeClass.spec_qname == "ns:element"` works (not `SomeClass().spec_qname`).
+
+  # ============================================================
+  # HANDOFF 5: __all__ cleanup sprint
+  # Root cause: RC-005 | 16 formats | No skill — __init__.py edits
+  # ============================================================
+
+  - handoff_id: HO-RC005-ALL
+    title: "Fix dynamic __all__ API pollution in high-tier Python formats"
+    root_cause: RC-005
+    priority_queue_items: [PQ-T4-001]
+    gap_ledger_ref: GAP-PROD-INV-API-001
+    priority_formats: [fods, fodt, ods, csv, ndjson]  # execute these first
+    remaining_formats: [abw, dif, gnumeric, odt, pbm, pgm, ppm, qoi, sylk, toml, tsv]
+    execution_pattern: >
+      For priority formats:
+      1. Import format package into Python REPL
+      2. Run `sorted([k for k in dir(module) if not k.startswith("_")])`
+      3. Filter to only actual API functions (exclude Any, Path, dataclass, field, etc.)
+      4. Replace dynamic __all__ with explicit static list
+      5. Ensure all documented functions are included
+    acceptance_criteria: >
+      For FODS, FODT, ODS, CSV, NDJSON: import {format}; {format}.__all__ contains
+      no type utilities (Any, Path, dataclass, field, Iterator, Optional).
+      Tab-completion in IDE shows only user-facing API.
+
+  # ============================================================
+  # HANDOFF 6: FODT Python export targets (P1 parity gap)
+  # Root cause: RC-003 | 1 format, 3 exporters | Skill: add-dogfood-export
+  # ============================================================
+
+  - handoff_id: HO-RC003-FODT-EXPORT
+    title: "Add FODT Python export targets (HTML, Markdown, TXT)"
+    root_cause: RC-003
+    priority_queue_items: [PQ-T2-007]
+    gap_ledger_ref: GAP-INV-038
+    skill: add-dogfood-export
+    ordered_exports:
+      - target: txt
+        effort: TRIVIAL
+        approach: "Extract all text: and text:h content as plain text"
+      - target: markdown
+        effort: LOW
+        approach: "Map text:h → # headings, text:p → paragraphs, text:list-item → bullets"
+      - target: html
+        effort: MEDIUM
+        approach: "Map ODF elements to HTML tags with basic CSS"
+    acceptance_criteria: >
+      fodt_to_txt(path_or_doc) → str
+      fodt_to_markdown(path_or_doc) → str
+      fodt_to_html(path_or_doc) → str
+      Each function tested against a sample FODT file.
+      Parity with .NET FodtTxtExporter/FodtMarkdownExporter/FodtHtmlExporter verified.
+
+# ============================================================
+# LANE ASSIGNMENTS
+# ============================================================
+
+lane_assignments:
+  lane_12_product_model_repair:
+    - HO-RC001-RENAME
+    - HO-RC002-MODELS
+    - HO-RC003-WRITERS
+    - HO-RC004-QNAME
+    - HO-RC005-ALL
+    - HO-RC003-FODT-EXPORT
+    notes: >
+      All 6 handoffs belong to Lane 12 (Python FOSS product model repair) with
+      HO-RC004-QNAME also touching Lane 7 (spec parity).
+
+  suggested_sprint_order:
+    sprint_1:
+      items: [HO-RC004-QNAME, HO-RC003-WRITERS_TSV]
+      rationale: "Lowest effort, highest parity impact. Can complete in single session."
+    sprint_2:
+      items: [HO-RC001-RENAME_BATCH1]
+      rationale: "FODS/FODT rename — safe because real models.py already exists."
+    sprint_3:
+      items: [HO-RC002-MODELS_TIER1]
+      rationale: "TSV/CSV/NDJSON domain classes — medium effort, high value."
+    sprint_4:
+      items: [HO-RC003-FODT-EXPORT_TXT, HO-RC003-FODT-EXPORT_MD]
+      rationale: "Quick wins on export parity."
+    sprint_5:
+      items: [HO-RC005-ALL_PRIORITY]
+      rationale: "__all__ cleanup for FODS/FODT/ODS/CSV/NDJSON."

@@ -1,0 +1,456 @@
+# FORMAT FACTORY — PRODUCT GAP REGISTER
+# Produced from: FORMAT FACTORY COMPLETE PRODUCT INVENTORY, MANUAL LIBRARY REVIEW,
+#                EXPECTATION COMPARISON, GAP ANALYSIS protocol
+# Date: 2026-06-24
+
+# Each gap entry:
+#   gap_id       — unique identifier
+#   product_ids  — affected products
+#   gap_type     — missing_domain_model | analytics_masquerade | missing_writer |
+#                  missing_exporter | missing_spec_qname | missing_tests |
+#                  missing_spec_facts | incomplete_implementation | api_pollution |
+#                  dotnet_not_sealed
+#   root_cause   — RC-xxx reference (see root-cause-register.yaml)
+#   severity     — P0 (blocks Gate 11) | P1 (major API gap) | P2 (structural) | P3 (minor)
+#   status       — open | in_progress | closed
+
+metadata:
+  generated: "2026-06-24"
+  total_gaps: 42
+
+gaps:
+
+  # ============================================================
+  # CATEGORY A: ANALYTICS MASQUERADE (domain-model filenames containing analytics)
+  # ============================================================
+
+  - gap_id: GAP-INV-001
+    title: "word_document.py is analytics bag, not domain model"
+    product_ids: [PY-ABW]
+    gap_type: analytics_masquerade
+    root_cause: RC-001
+    severity: P2
+    status: open
+    details: >
+      abw/word_document.py docstring: "ABW analytics — extracted analytics/computation functions".
+      Filename implies WordDocument class. No such class exists in any ABW file.
+      100+ analytics functions (abw_sentence_count, abw_longest_word, etc.) with no domain class.
+
+  - gap_id: GAP-INV-002
+    title: "tabular_document.py (CSV) is analytics bag, not domain model"
+    product_ids: [PY-CSV]
+    gap_type: analytics_masquerade
+    root_cause: RC-001
+    severity: P2
+    status: open
+    details: >
+      csv/tabular_document.py: "CSV analytics — extracted analytics/computation functions".
+      No CsvDocument class anywhere in CSV product.
+
+  - gap_id: GAP-INV-003
+    title: "interchange_document.py (DIF) is analytics bag, not domain model"
+    product_ids: [PY-DIF]
+    gap_type: analytics_masquerade
+    root_cause: RC-001
+    severity: P2
+    status: open
+    details: >
+      dif/interchange_document.py is analytics despite DifCell/DifDocument existing in dif_parser.py.
+      Naming creates false impression of separate domain model file.
+
+  - gap_id: GAP-INV-004
+    title: "workbook_document.py (Gnumeric) is analytics bag, not domain model"
+    product_ids: [PY-GNUMERIC]
+    gap_type: analytics_masquerade
+    root_cause: RC-001
+    severity: P2
+    status: open
+
+  - gap_id: GAP-INV-005
+    title: "json_stream.py (NDJSON) is analytics bag, not domain model"
+    product_ids: [PY-NDJSON]
+    gap_type: analytics_masquerade
+    root_cause: RC-001
+    severity: P2
+    status: open
+    details: >
+      ndjson/json_stream.py: "NDJSON analytics functions extracted from ndjson_codec.py".
+      No NdjsonStream class. Misnamed: should be ndjson_analytics_extra.py or similar.
+
+  - gap_id: GAP-INV-006
+    title: "spreadsheet_document.py (ODS) is analytics bag, not domain model"
+    product_ids: [PY-ODS]
+    gap_type: analytics_masquerade
+    root_cause: RC-001
+    severity: P2
+    status: open
+
+  - gap_id: GAP-INV-007
+    title: "text_document.py (ODT) is analytics bag, not domain model"
+    product_ids: [PY-ODT]
+    gap_type: analytics_masquerade
+    root_cause: RC-001
+    severity: P2
+    status: open
+
+  - gap_id: GAP-INV-008
+    title: "bitmap_image.py (PBM) is analytics bag, not domain model"
+    product_ids: [PY-PBM]
+    gap_type: analytics_masquerade
+    root_cause: RC-001
+    severity: P2
+    status: open
+
+  - gap_id: GAP-INV-009
+    title: "grayscale_image.py (PGM) is analytics bag, not domain model"
+    product_ids: [PY-PGM]
+    gap_type: analytics_masquerade
+    root_cause: RC-001
+    severity: P2
+    status: open
+
+  - gap_id: GAP-INV-010
+    title: "color_image.py (PPM) is analytics bag, not domain model"
+    product_ids: [PY-PPM]
+    gap_type: analytics_masquerade
+    root_cause: RC-001
+    severity: P2
+    status: open
+
+  - gap_id: GAP-INV-011
+    title: "image_document.py (QOI) is analytics bag, not domain model"
+    product_ids: [PY-QOI]
+    gap_type: analytics_masquerade
+    root_cause: RC-001
+    severity: P2
+    status: open
+
+  - gap_id: GAP-INV-012
+    title: "spreadsheet_document.py (SYLK) is analytics bag, not domain model"
+    product_ids: [PY-SYLK]
+    gap_type: analytics_masquerade
+    root_cause: RC-001
+    severity: P2
+    status: open
+
+  - gap_id: GAP-INV-013
+    title: "config_document.py (TOML) is analytics bag, not domain model"
+    product_ids: [PY-TOML]
+    gap_type: analytics_masquerade
+    root_cause: RC-001
+    severity: P2
+    status: open
+
+  - gap_id: GAP-INV-014
+    title: "tabular_document.py (TSV) is analytics bag, not domain model"
+    product_ids: [PY-TSV]
+    gap_type: analytics_masquerade
+    root_cause: RC-001
+    severity: P2
+    status: open
+
+  - gap_id: GAP-INV-015
+    title: "spreadsheet_document.py (FODS) is analytics bag, not domain model"
+    product_ids: [PY-FODS]
+    gap_type: analytics_masquerade
+    root_cause: RC-001
+    severity: P2
+    status: open
+    details: >
+      fods/spreadsheet_document.py docstring: "fods_analytics.py -- Analytics functions".
+      Despite FODS having excellent FodsDocument in models.py, this file pollutes
+      the product with a masquerade analytics bag under a domain-model filename.
+
+  - gap_id: GAP-INV-016
+    title: "text_document.py (FODT) is analytics bag, not domain model"
+    product_ids: [PY-FODT]
+    gap_type: analytics_masquerade
+    root_cause: RC-001
+    severity: P2
+    status: open
+
+  # ============================================================
+  # CATEGORY B: MISSING DOMAIN MODEL (no typed classes at all)
+  # ============================================================
+
+  - gap_id: GAP-INV-017
+    title: "ABW has no WordDocument domain class"
+    product_ids: [PY-ABW]
+    gap_type: missing_domain_model
+    root_cause: RC-002
+    severity: P1
+    status: open
+    details: >
+      A Python product for AbiWord with 1954 LOC but no domain model class.
+      Users cannot: create a document instance, add elements, iterate structure.
+      Contrast: .NET FODT has FodtDocument with full mutation API.
+
+  - gap_id: GAP-INV-018
+    title: "CSV Python has no CsvDocument domain class"
+    product_ids: [PY-CSV]
+    gap_type: missing_domain_model
+    root_cause: RC-002
+    severity: P1
+    status: open
+    details: >
+      .NET CSV has sealed CsvDocument. Python CSV has 1680 LOC of functions but no class.
+      Asymmetry between Python and .NET products is a user-visible architectural deficiency.
+
+  - gap_id: GAP-INV-019
+    title: "Gnumeric has no GnumericWorkbook domain class"
+    product_ids: [PY-GNUMERIC]
+    gap_type: missing_domain_model
+    root_cause: RC-002
+    severity: P1
+    status: open
+
+  - gap_id: GAP-INV-020
+    title: "NDJSON Python has no NdjsonDocument domain class"
+    product_ids: [PY-NDJSON]
+    gap_type: missing_domain_model
+    root_cause: RC-002
+    severity: P1
+    status: open
+    details: >
+      .NET NDJSON has sealed NdjsonDocument with List<JsonElement>. Python NDJSON
+      returns raw lists — no domain wrapper class.
+
+  - gap_id: GAP-INV-021
+    title: "TOML has no TomlDocument domain class"
+    product_ids: [PY-TOML]
+    gap_type: missing_domain_model
+    root_cause: RC-002
+    severity: P1
+    status: open
+
+  - gap_id: GAP-INV-022
+    title: "TSV Python has no TsvDocument domain class"
+    product_ids: [PY-TSV]
+    gap_type: missing_domain_model
+    root_cause: RC-002
+    severity: P1
+    status: open
+    details: >
+      .NET TSV has TsvDocument. Python TSV has tabular_document.py which is an analytics bag.
+
+  - gap_id: GAP-INV-023
+    title: "ZST Python has no ZstDocument domain class"
+    product_ids: [PY-ZST]
+    gap_type: missing_domain_model
+    root_cause: RC-002
+    severity: P1
+    status: open
+    details: >
+      .NET ZST has ZstDocument sealed class with RFC 8878 citations. Python ZST has
+      compressed_stream.py (likely analytics) and no corresponding class.
+
+  - gap_id: GAP-INV-024
+    title: ".NET Netpbm has no NetpbmDocument class (static parser only)"
+    product_ids: [NET-NETPBM]
+    gap_type: missing_domain_model
+    root_cause: RC-002
+    severity: P2
+    status: open
+    details: >
+      NetpbmParser is static — returns implicit model. No sealed NetpbmDocument
+      comparable to CsvDocument/FodsDocument/TsvDocument pattern.
+
+  # ============================================================
+  # CATEGORY C: MISSING WRITER / SAVE CAPABILITY
+  # ============================================================
+
+  - gap_id: GAP-INV-025
+    title: "ABW has no writer (read-only)"
+    product_ids: [PY-ABW]
+    gap_type: missing_writer
+    root_cause: RC-003
+    severity: P1
+    status: open
+
+  - gap_id: GAP-INV-026
+    title: "DIF has no writer (read-only)"
+    product_ids: [PY-DIF]
+    gap_type: missing_writer
+    root_cause: RC-003
+    severity: P1
+    status: open
+
+  - gap_id: GAP-INV-027
+    title: "Gnumeric has no writer (read-only)"
+    product_ids: [PY-GNUMERIC]
+    gap_type: missing_writer
+    root_cause: RC-003
+    severity: P1
+    status: open
+
+  - gap_id: GAP-INV-028
+    title: "ODT Python has no writer (read-only)"
+    product_ids: [PY-ODT]
+    gap_type: missing_writer
+    root_cause: RC-003
+    severity: P1
+    status: open
+
+  - gap_id: GAP-INV-029
+    title: "SYLK has no writer (read-only)"
+    product_ids: [PY-SYLK]
+    gap_type: missing_writer
+    root_cause: RC-003
+    severity: P1
+    status: open
+
+  - gap_id: GAP-INV-030
+    title: "TSV Python has no writer (read-only)"
+    product_ids: [PY-TSV]
+    gap_type: missing_writer
+    root_cause: RC-003
+    severity: P1
+    status: open
+    details: >
+      .NET TSV has TsvWriter. Python TSV has no write capability.
+
+  - gap_id: GAP-INV-031
+    title: "XCF has no writer"
+    product_ids: [PY-XCF]
+    gap_type: missing_writer
+    root_cause: RC-003
+    severity: P2
+    status: open
+    details: >
+      XCF is GIMP native format. Write may be intentionally deferred.
+      But gap is documented.
+
+  - gap_id: GAP-INV-032
+    title: ".NET ZST has no writer"
+    product_ids: [NET-ZST]
+    gap_type: missing_writer
+    root_cause: RC-003
+    severity: P2
+    status: open
+
+  # ============================================================
+  # CATEGORY D: MISSING SPEC_QNAME ON DOMAIN MODEL CLASSES
+  # ============================================================
+
+  - gap_id: GAP-INV-033
+    title: "ODS domain classes mostly missing spec_qname"
+    product_ids: [PY-ODS]
+    gap_type: missing_spec_qname
+    root_cause: RC-004
+    severity: P2
+    status: open
+    details: >
+      OdsCell, OdsSheet, OdsDocument are missing spec_qname. Only OdsRow has it.
+      Required per spec-to-feature plan: every model class needs spec_qname.
+
+  - gap_id: GAP-INV-034
+    title: "ODT domain classes mostly missing spec_qname"
+    product_ids: [PY-ODT]
+    gap_type: missing_spec_qname
+    root_cause: RC-004
+    severity: P2
+    status: open
+    details: >
+      OdtParagraph, OdtHeading, OdtDocument missing spec_qname.
+      Only OdtListItem has it.
+
+  - gap_id: GAP-INV-035
+    title: "SYLK SylkCell missing spec_qname"
+    product_ids: [PY-SYLK]
+    gap_type: missing_spec_qname
+    root_cause: RC-004
+    severity: P2
+    status: open
+
+  - gap_id: GAP-INV-036
+    title: "DIF DifCell missing class-level spec_qname (has field default)"
+    product_ids: [PY-DIF]
+    gap_type: missing_spec_qname
+    root_cause: RC-004
+    severity: P3
+    status: open
+    details: >
+      DifCell has spec_qname as a dataclass field with default value — not as
+      a class-level class attribute. This is the wrong pattern per spec-to-feature plan.
+
+  # ============================================================
+  # CATEGORY E: DYNAMIC __all__ API POLLUTION
+  # ============================================================
+
+  - gap_id: GAP-INV-037
+    title: "Dynamic __all__ in 16 of 20 Python formats exports type imports as public API"
+    product_ids: [PY-ABW, PY-CSV, PY-DIF, PY-GNUMERIC, PY-NDJSON, PY-ODS, PY-ODT,
+                  PY-PBM, PY-PGM, PY-PPM, PY-QOI, PY-SYLK, PY-TOML, PY-TSV, PY-FODS, PY-FODT]
+    gap_type: api_pollution
+    root_cause: RC-005
+    severity: P2
+    status: open
+    details: >
+      Pattern: `__all__ = [k for k in vars(_sys.modules[__name__]) if not k.startswith("_")]`
+      This exports Any, Path, FormatFactoryError, dataclass, field, Iterator, etc. as
+      public API symbols alongside actual functions. Breaks API discoverability.
+      Affects 16 of 20 Python products.
+
+  # ============================================================
+  # CATEGORY F: MISSING EXPORTER / CONVERSION CAPABILITY
+  # ============================================================
+
+  - gap_id: GAP-INV-038
+    title: "FODT Python has no export capability (vs .NET FODT with 5 exporters)"
+    product_ids: [PY-FODT]
+    gap_type: missing_exporter
+    root_cause: RC-003
+    severity: P1
+    status: open
+    details: >
+      .NET FODT exports to: HTML, Markdown, PDF, PNG, TXT.
+      Python FODT: read + write only. Zero exporters.
+      Creates significant Python/.NET asymmetry.
+
+  - gap_id: GAP-INV-039
+    title: "ABW/DIF/Gnumeric/SYLK have no export path at all"
+    product_ids: [PY-ABW, PY-DIF, PY-GNUMERIC, PY-SYLK]
+    gap_type: missing_exporter
+    root_cause: RC-003
+    severity: P2
+    status: open
+
+  # ============================================================
+  # CATEGORY G: THIN TEST COVERAGE
+  # ============================================================
+
+  - gap_id: GAP-INV-040
+    title: "ODT and FODP have critically thin test coverage (<25 files)"
+    product_ids: [PY-ODT, PY-FODP]
+    gap_type: missing_tests
+    root_cause: RC-006
+    severity: P2
+    status: open
+    details: >
+      PY-ODT: 24 test files. PY-FODP: 24 test files. These products are effectively
+      under-tested and cannot be declared production-ready.
+
+  - gap_id: GAP-INV-041
+    title: "QOI has only 35 test files despite having domain model and encoder"
+    product_ids: [PY-QOI]
+    gap_type: missing_tests
+    root_cause: RC-006
+    severity: P2
+    status: open
+
+  # ============================================================
+  # CATEGORY H: STUB WRITER PRODUCTS (.NET)
+  # ============================================================
+
+  - gap_id: GAP-INV-042
+    title: ".NET HTML, Markdown, TXT are stub writers (no domain model, no parser)"
+    product_ids: [NET-HTML, NET-MARKDOWN, NET-TXT]
+    gap_type: missing_domain_model
+    root_cause: RC-007
+    severity: P3
+    status: open
+    details: >
+      These three products exist only as output targets for FODS/FODT exporters.
+      They have no parser, no domain model, no test coverage.
+      Should be documented as "export-target stub" not standalone products.
+      Combined score: 9/50 manual grade.

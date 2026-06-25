@@ -1,0 +1,123 @@
+# FORMAT FACTORY — PRODUCT INVENTORY REVIEW VERDICT
+# Protocol: FORMAT FACTORY COMPLETE PRODUCT INVENTORY, MANUAL LIBRARY REVIEW,
+#            EXPECTATION COMPARISON, GAP ANALYSIS, ROOT-CAUSE CLASSIFICATION,
+#            AND GOVERNED LEDGERING PROTOCOL
+# Date: 2026-06-24
+
+verdict: PRODUCT_GRADING_COMPLETE_WITH_EXECUTION_GAPS
+
+# Justification:
+# - ALL 30 products inventoried (20 Python FOSS + 10 .NET commercial)
+# - ALL products graded across 20 dimensions (MANUAL_LIBRARY_GRADE + MACHINERY_EXPECTATION_GRADE)
+# - ALL gaps identified, root-cause classified, and led to actionable handoffs
+# - Gap ledger updated with 7 new cross-product gaps (GAP-PROD-INV-*)
+# - BUT: 18 execution items remain (6 handoffs, grouped by root cause)
+# - THEREFORE: not ALL_PRODUCTS_INVENTORIED_GRADED_AND_TASKCARDED
+#   (taskcards in execution-handoffs.yaml but not yet promoted to per-format gap ledger entries)
+
+phase_outputs_produced:
+  - file: reports/product-inventory/product-inventory.yaml
+    description: "Complete product inventory — 30 products × all attributes"
+  - file: reports/product-inventory/product-grade-matrix.yaml
+    description: "20-dimension grade matrix — all 30 products × MANUAL_LIBRARY + MACHINERY grades"
+  - file: reports/product-inventory/product-gap-register.yaml
+    description: "42 per-product gaps (7 categories: analytics masquerade, missing model, missing writer, etc.)"
+  - file: reports/product-inventory/root-cause-register.yaml
+    description: "7 shared root causes with origin analysis, impact, and remediation paths"
+  - file: reports/product-inventory/product-healing-priority-queue.yaml
+    description: "18 prioritized healing items in 5 tiers with effort/impact ratings"
+  - file: reports/product-inventory/execution-handoffs.yaml
+    description: "6 execution handoffs grouped by root cause with sprint order suggestion"
+  - file: reports/product-inventory/review-verdict.yaml
+    description: "This file — protocol verdict"
+
+gap_ledger_updates:
+  file: reports/capability-layer/gap-ledger.json
+  gaps_added: 7
+  new_gap_ids:
+    - GAP-PROD-INV-MASQ-001
+    - GAP-PROD-INV-MODEL-001
+    - GAP-PROD-INV-WRITE-001
+    - GAP-PROD-INV-QNAME-001
+    - GAP-PROD-INV-API-001
+    - GAP-PROD-INV-NETPBM-001
+    - GAP-PROD-INV-STUB-001
+  previous_total: 1003
+  new_total: 1010
+
+key_findings:
+  finding_1:
+    severity: CRITICAL
+    title: "Analytics masquerade: 16 Python products have analytics bags disguised as domain model files"
+    detail: >
+      word_document.py, tabular_document.py, spreadsheet_document.py, text_document.py,
+      bitmap_image.py, grayscale_image.py, color_image.py, image_document.py (QOI/NDJSON),
+      config_document.py, workbook_document.py, interchange_document.py are all analytics
+      function bags with domain-model filenames. This is the single largest structural
+      misrepresentation in the codebase.
+    affected_products: 16
+    root_cause: RC-001
+
+  finding_2:
+    severity: HIGH
+    title: "7 Python products have no domain model class at all"
+    detail: >
+      ABW, CSV, Gnumeric, NDJSON, TOML, TSV, ZST Python products expose only function bags.
+      .NET counterparts (where they exist) have properly structured sealed domain model classes.
+      The Python/.NET asymmetry is most visible in: CSV vs CsvDocument, TSV vs TsvDocument,
+      NDJSON vs NdjsonDocument.
+    affected_products: 7
+    root_cause: RC-002
+
+  finding_3:
+    severity: HIGH
+    title: "Python/.NET exporter parity gap: FODT Python has 0 exporters vs .NET's 5"
+    detail: >
+      .NET FODT: HTML, Markdown, PDF, PNG, TXT exporters.
+      .NET FODS: 7 exporters.
+      Python FODT: read + write only, zero exporters.
+      Python FODS: read + write + CSV exporter only.
+      This gap is the most visible capability asymmetry to end users.
+    affected_products: PY-FODT
+    root_cause: RC-003
+
+  finding_4:
+    severity: MEDIUM
+    title: "Best Python product (FODS) still has analytics masquerade file"
+    detail: >
+      Even PY-FODS — which has the best model (FodsCell/FodsSheet/FodsDocument in models.py)
+      — still has spreadsheet_document.py containing analytics with docstring
+      "fods_analytics.py -- Analytics functions". This underscores that RC-001 affects
+      every format regardless of model quality.
+    affected_products: PY-FODS
+    root_cause: RC-001
+
+  finding_5:
+    severity: HIGH
+    title: ".NET HTML, Markdown, TXT are output-target stubs, not standalone products"
+    detail: >
+      These three .NET products score 9/50 on manual grade — no parser, no model, no spec.
+      They exist solely as output targets for FodtHtmlExporter, FodtMarkdownExporter, etc.
+      They should be reclassified as exporter infrastructure, reducing the standalone
+      product count from 30 to 27 for Gate 11 purposes.
+    affected_products: NET-HTML, NET-MARKDOWN, NET-TXT
+    root_cause: RC-007
+
+portfolio_summary:
+  python_average_manual_grade: 21.5  # out of 50
+  python_average_machinery_grade: 19.6  # out of 50
+  dotnet_average_manual_grade: 31.8  # out of 50 (falls to 22.5 if stubs excluded)
+  dotnet_average_machinery_grade: 24.0
+  best_python_product: PY-FODS (manual: 39, machinery: 27)
+  best_dotnet_product: NET-FODS (manual: 50, machinery: 39)
+  worst_python_products: [PY-ABW, PY-TSV, PY-GNUMERIC]
+  worst_dotnet_products: [NET-HTML, NET-MARKDOWN, NET-TXT]
+
+gate_11_readiness:
+  status: NOT_READY
+  rationale: >
+    commercial_product_ready: false in all .NET source files.
+    No Python product has reached release gate readiness (D20 = 0 for all Python).
+    .NET FODS and FODT are closest (D20 = 2/5).
+    Critical gaps: RC-001 analytics masquerade, RC-002 missing models, RC-003 missing writers.
+    Recommend: execute Tier-1 and Tier-2 healing sprints before Gate 11 preparation.

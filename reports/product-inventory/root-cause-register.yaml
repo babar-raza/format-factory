@@ -1,0 +1,205 @@
+# FORMAT FACTORY — ROOT CAUSE REGISTER
+# Cross-product pattern analysis from manual library review
+# Date: 2026-06-24
+
+metadata:
+  generated: "2026-06-24"
+  total_root_causes: 7
+
+root_causes:
+
+  - root_cause_id: RC-001
+    title: "Analytics extraction renamed to domain-model filenames"
+    pattern: analytics_masquerade
+    affected_product_count: 16
+    affected_products:
+      - PY-ABW (word_document.py)
+      - PY-CSV (tabular_document.py)
+      - PY-DIF (interchange_document.py)
+      - PY-GNUMERIC (workbook_document.py)
+      - PY-NDJSON (json_stream.py)
+      - PY-ODS (spreadsheet_document.py)
+      - PY-ODT (text_document.py)
+      - PY-PBM (bitmap_image.py)
+      - PY-PGM (grayscale_image.py)
+      - PY-PPM (color_image.py)
+      - PY-QOI (image_document.py)
+      - PY-SYLK (spreadsheet_document.py)
+      - PY-TOML (config_document.py)
+      - PY-TSV (tabular_document.py)
+      - PY-FODS (spreadsheet_document.py)
+      - PY-FODT (text_document.py)
+    origin: >
+      During the analytics extraction sprint (TC-HEAL-FORMATS-BATCH1, TC-HEAL-FORMATS-BATCH2),
+      when functions were extracted from main codec files to comply with 800-LOC/60-function
+      policy, they were placed into files whose names suggest domain model classes:
+      word_document.py, spreadsheet_document.py, text_document.py, tabular_document.py,
+      bitmap_image.py, grayscale_image.py, etc.
+      The actual domain-facing file should have been named {format}_analytics.py.
+    impact: >
+      1. Users expect word_document.py to contain a WordDocument class — it contains 100+ stat functions.
+      2. Violates spec-to-feature plan canonical naming: spec QName → canonical class.
+      3. Creates false impression that domain modeling is complete.
+      4. The V42 deepening_suspension_validator governs new analytics in these files but does
+         not rename existing ones.
+    remediation: >
+      Batch-rename all 16 masquerade files to {format}_analytics_extra.py or similar.
+      If a true domain model class is desired, create it separately (separate gap).
+      Must update all imports in __init__.py and test files.
+      Risk: 16 files × N imports = high blast radius. Prioritize by format tier.
+    remediation_skill: extract-analytics-from-monolith
+
+  - root_cause_id: RC-002
+    title: "Python products were built as function bags, not OO domain models"
+    pattern: missing_domain_model
+    affected_product_count: 9
+    affected_products:
+      - PY-ABW (no WordDocument class)
+      - PY-CSV (no CsvDocument class)
+      - PY-GNUMERIC (no GnumericWorkbook class)
+      - PY-NDJSON (no NdjsonDocument class)
+      - PY-TOML (no TomlDocument class)
+      - PY-TSV (no TsvDocument class)
+      - PY-ZST (no ZstDocument class)
+      - NET-NETPBM (no NetpbmDocument — static parser only)
+      - (DIF, ODS, ODT, PBM/PGM/PPM have domain classes but incomplete)
+    origin: >
+      The FOSS Python track was built around the "Gate 4 prototype" approach: parse-and-probe
+      function APIs. This produced usable parsers but not OO domain models.
+      The .NET commercial track was built from day one with sealed domain model classes.
+      Python products simply never received the model class they needed.
+    impact: >
+      Users of Python products cannot:
+      - Create a typed document instance
+      - Traverse the document via an OO API
+      - Mutate fields and save back
+      The library feels like a collection of utility scripts, not a product.
+    remediation: >
+      For each format missing a domain class:
+      1. Define the canonical class per spec QName (e.g., CsvDocument ← csv:record)
+      2. Wrap the existing parse function output
+      3. Add typed properties
+      4. Add factory classmethod from_file()
+      5. Ensure spec_qname class attribute is set
+      Priority: CSV, TSV, NDJSON (highest usage); then ABW, Gnumeric, TOML, ZST.
+    remediation_skill: add-python-object-model-feature
+
+  - root_cause_id: RC-003
+    title: "Python products lack write capability due to read-only prototype origins"
+    pattern: missing_writer
+    affected_product_count: 8
+    affected_products:
+      - PY-ABW (no writer)
+      - PY-DIF (no writer)
+      - PY-GNUMERIC (no writer)
+      - PY-ODT (no writer)
+      - PY-SYLK (no writer)
+      - PY-TSV (no writer)
+      - PY-FODT (no export — has writer but zero exporters vs .NET's 5)
+      - NET-ZST (no .NET writer)
+    origin: >
+      The Gate 4 → Gate 5 pipeline produced parsers only. Writers were added for formats
+      where they were explicitly tasked (CSV, ODS, FODS, FODT). Other formats were
+      left read-only. The gap accumulates because each format requires a separate effort.
+    impact: >
+      Round-trip use cases (load → modify → save) are impossible for 7 Python formats.
+      The "library" experience is: you can read it but not write it back.
+    remediation: >
+      Implement write capability per format starting with high-value formats:
+      DIF (existing model), SYLK (existing model), TSV (critical parity gap vs .NET).
+      Gnumeric requires gzip+XML write — feasible with stdlib.
+      ODT requires ZIP container write — moderate effort.
+      ABW is lowest priority (format is legacy).
+    remediation_skill: add-same-format-writer-feature
+
+  - root_cause_id: RC-004
+    title: "spec_qname not consistently applied to dataclass fields vs class attributes"
+    pattern: missing_spec_qname
+    affected_product_count: 5
+    affected_products:
+      - PY-ODS (OdsCell, OdsSheet, OdsDocument missing; OdsRow has it)
+      - PY-ODT (OdtParagraph, OdtHeading, OdtDocument missing; OdtListItem has it)
+      - PY-SYLK (SylkCell missing; SylkDocument has it)
+      - PY-DIF (spec_qname as dataclass field default, not class attribute — wrong pattern)
+    origin: >
+      When domain classes were created, spec_qname was only added to some.
+      Also: using spec_qname as a dataclass field (with default value) vs. a class attribute
+      (Python class variable) are different things. The spec-to-feature plan requires
+      class attribute pattern (as done in FodsCell, FodtSpan, XcfImage).
+    impact: >
+      Machinery validators (V36 spec_qname check) cannot verify parity.
+      LLM grader cannot assess spec alignment.
+      No qname-backfill can occur without class-level attributes.
+    remediation: >
+      For each domain class missing spec_qname:
+      1. Add `spec_qname = "format:element"` as class attribute (not dataclass field)
+      2. Cross-reference with qname-registry/{format}.yaml to get correct qname
+      3. Add spec_fact_ref if FACT-FORMAT-NNN exists
+    remediation_skill: qname-backfill
+
+  - root_cause_id: RC-005
+    title: "Dynamic __all__ generator captures type imports as public symbols"
+    pattern: api_pollution
+    affected_product_count: 16
+    affected_products: all_python_except_ZST_FODG_FODP
+    origin: >
+      When __init__.py files were updated to include analytics exports after extraction,
+      the dynamic generator `[k for k in vars(_sys.modules[__name__]) if not k.startswith('_')]`
+      was used universally. This is convenient but exports every imported name
+      including `Any`, `Path`, `FormatFactoryError`, `dataclass`, `field`, `Iterator`.
+    impact: >
+      1. Users doing `from format_factory_csv import *` get unexpected symbols.
+      2. Tab-completion in IDEs shows 100+ symbols including type utilities.
+      3. `help(format_factory_csv)` is unreadable.
+      4. Breaks the stable public API contract.
+    remediation: >
+      Two approaches:
+      A. Convert to static __all__ list (as done in ZST: 76 LOC, FODP: 94 LOC).
+         High effort but produces clean, reviewable public API.
+      B. Filter out type imports: `[k for k in vars() if not k.startswith("_") and
+         k not in {"Any", "Path", "dataclass", "field", "Iterator", ...}]`
+         Lower effort, but fragile.
+      Recommend: Approach A for high-tier formats (FODS, FODT, ODS, CSV, NDJSON).
+                 Approach B for low-tier formats as interim.
+
+  - root_cause_id: RC-006
+    title: "Several formats have thin test coverage (<30 test files)"
+    pattern: insufficient_test_coverage
+    affected_product_count: 4
+    affected_products:
+      - PY-ODT (24 files)
+      - PY-FODP (24 files)
+      - PY-QOI (35 files)
+    origin: >
+      These formats were implemented late or received fewer sprint resources.
+      QOI is a niche image format. ODT has the full zip+XML parser but almost no tests.
+    impact: >
+      1. Cannot detect regressions.
+      2. Supervisor grader rates product_contract incomplete.
+      3. POC target coverage is low — no gate criterion met.
+    remediation: >
+      Target minimum 50 test files per format.
+      Start with ODT (has domain model, just needs tests).
+
+  - root_cause_id: RC-007
+    title: ".NET output-target stubs (HTML, Markdown, TXT) are not standalone products"
+    pattern: stub_writer_not_product
+    affected_product_count: 3
+    affected_products:
+      - NET-HTML
+      - NET-MARKDOWN
+      - NET-TXT
+    origin: >
+      When FODT and FODS exporters were built, they needed output writers for HTML,
+      Markdown, and TXT. These were created as minimal static classes. They were
+      included in the product inventory as ".NET products" but they are actually
+      exporter-infrastructure helpers, not standalone products.
+    impact: >
+      1. Product count is inflated (3 products that score 9/50).
+      2. They fail every gate criteria (no parser, no model, no spec).
+      3. If treated as products, they drag down the portfolio average.
+    remediation: >
+      Reclassify NET-HTML, NET-MARKDOWN, NET-TXT as "exporter infrastructure"
+      (sub-components of NET-FODS and NET-FODT), not as standalone products.
+      This reduces the effective product count from 30 to 27 for Gate 11 purposes.
+      Alternatively: implement parsers (HTML parser is non-trivial; Markdown is simpler).
