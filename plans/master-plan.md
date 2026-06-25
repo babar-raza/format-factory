@@ -3634,7 +3634,7 @@ All 5 taskcards closed. Key deliverables:
 | 4 — READINESS | TC-CRC-001..004 | CLOSED | 8 criteria PASS: FODS, FODT, Netpbm (PBM/PGM/PPM) |
 | 5 — PUBLICATION | TC-PUB-001..003 | CLOSED | FormatFactory.Fods/Fodt/Netpbm .nupkg packets built |
 | 5 — PUBLICATION | TC-PUB-004 | EXTERNAL_GATE | Gate 11 sign-off request prepared for Babar Raza |
-| 6 — INFRA | TC-INF-001 | BLOCKED_EXTERNAL | LLM grader requires GPT_OSS_ENDPOINT env var |
+| 6 — INFRA | TC-INF-001 | CLOSED | LLM grader active — openai 2.37.0 installed; llm_used=True, confidence=0.32 (2026-06-25) |
 | 6 — INFRA | TC-INF-002 | CLOSED | `docs/format-onboarding-guide.md` — 20-step playbook |
 | 6 — INFRA | TC-INF-003 | CLOSED | GOV_BLOCK audit: 17% rate, top-2 causes, 2 repair TCs |
 | 6 — INFRA | TC-INF-004 | CLOSED | Decomposition plan: governance_validators + autonomous_cycle |
@@ -3662,13 +3662,14 @@ All 5 taskcards closed. Key deliverables:
 ### External Blockers (not agent-resolvable)
 
 - `EXTERNAL_BLOCKER:gate_11_final_commercial_approval_required_babar_raza` — TC-PUB-004
-- `EXTERNAL_BLOCKER:llm_grader_api_key_required` — TC-INF-001
+
 
 ### PSL Convergence
 
-- PSL iterations: 2
+- PSL iterations: 3
 - Stage 1 audit iteration 1: SPRINT_REQUIRES_PLAN_HARDENING
 - Stage 1 audit iteration 2: SPRINT_ALL_GREEN_VERIFIED
+- Stage 1 audit iteration 3: SPRINT_ALL_GREEN_VERIFIED (TC-INF-001 resolved)
 - Final all-green candidate: PASS (material_findings=0, actionable_findings=0, eligible_tasks=0)
 - close-task.md verdict: CONVERGENCE_COMPLETE_ALL_GREEN_AND_TASK_CLOSED
 
