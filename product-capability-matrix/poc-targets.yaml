@@ -352,6 +352,10 @@ foss_reduced_products:
     ppm_to_pgm: IMPLEMENTED
     target_ff_library: format-factory-pgm write_pgm
     notes: Convert PBM 1-bit image to PGM grayscale using FF pgm writer
+  examples:
+    python_pbm: examples/python/pbm/pbm_to_pgm_example.py
+    python_pgm: examples/python/pgm/pgm_consumer_roundtrip.py
+    python_ppm: examples/python/ppm/ppm_consumer_roundtrip.py
   tests:
     python: tests/python/pbm/ + tests/python/pgm/ + tests/python/ppm/
   blockers: []
@@ -381,7 +385,9 @@ foss_reduced_products:
     notes: SYLK→CSV export implemented R84; no external library needed; write_sylk
       implemented (same-format save); get_cell_value, get_row_values, get_column_values,
       get_row_count, get_column_count verified 2026-06-18 (test_r156_sylk_accessors_mutation.py
-      18 tests pass)
+      18 tests pass). consumer_roundtrip.py CONSUMER_PROOF PASS 2026-06-25.
+  examples:
+    python: examples/python/sylk/consumer_roundtrip.py
   tests:
     python: tests/python/sylk/
     python_count: 309
@@ -412,7 +418,9 @@ foss_reduced_products:
     toml_to_json: IMPLEMENTED
     target_ff_library: format-factory-toml to_json_str
     notes: TOML→JSON export verified 2026-06-18; to_json_str(file_path) returns
-      pretty-printed JSON string; no external library needed
+      pretty-printed JSON string; no external library needed. consumer_roundtrip.py CONSUMER_PROOF PASS 2026-06-25.
+  examples:
+    python: examples/python/toml/consumer_roundtrip.py
   tests:
     python: tests/python/toml/
     python_count: 61
@@ -441,7 +449,10 @@ foss_reduced_products:
     write_csv: IMPLEMENTED
     target_ff_library: format-factory-ndjson export_to_csv / write_csv
     notes: NDJSON→CSV export via export_to_csv (returns string) or write_csv (writes
-      file). Sample output in reports/product-progress-rnext/samples/ndjson-write-csv-sample.csv
+      file). Sample output in reports/product-progress-rnext/samples/ndjson-write-csv-sample.csv.
+      consumer_roundtrip.py CONSUMER_PROOF PASS 2026-06-25.
+  examples:
+    python: examples/python/ndjson/consumer_roundtrip.py
   tests:
     python: tests/python/ndjson/
     python_count: 244
@@ -486,7 +497,9 @@ foss_reduced_products:
     export_to_json: IMPLEMENTED
     target_ff_library: format-factory-fodg export_to_csv / export_to_txt / export_to_json
     notes: FODG→CSV/TXT/JSON export verified 2026-06-18; export_to_csv('file.fodg')
-      returns shape/text table as CSV string
+      returns shape/text table as CSV string. consumer_roundtrip.py CONSUMER_PROOF PASS 2026-06-25.
+  examples:
+    python: examples/python/fodg/consumer_roundtrip.py
   tests:
     python: tests/python/fodg/
     python_count: 24
@@ -529,7 +542,9 @@ foss_reduced_products:
     tsv_to_csv: IMPLEMENTED
     target_ff_library: format-factory-tsv to_csv
     notes: TSV→CSV export verified 2026-06-18; to_csv(file_path) returns CSV string
-      with header row preserved; no external library needed
+      with header row preserved; no external library needed. consumer_roundtrip.py CONSUMER_PROOF PASS 2026-06-25.
+  examples:
+    python: examples/python/tsv/consumer_roundtrip.py
   tests:
     python: tests/python/tsv/
     python_count: 35
@@ -582,7 +597,10 @@ foss_reduced_products:
     export_to_json: IMPLEMENTED
     target_ff_library: format-factory-abw export_to_csv / export_to_txt / export_to_markdown
     notes: ABW→CSV/TXT/Markdown/JSON export verified 2026-06-18; all export functions
-      take file path directly; export_to_csv returns paragraph-per-row CSV
+      take file path directly; export_to_csv returns paragraph-per-row CSV.
+      consumer_roundtrip.py CONSUMER_PROOF PASS 2026-06-25.
+  examples:
+    python: examples/python/abw/consumer_roundtrip.py
   tests:
     python: tests/python/abw/
     python_count: 34
@@ -635,7 +653,10 @@ foss_reduced_products:
     export_to_csv: IMPLEMENTED
     target_ff_library: format-factory-gnumeric export_to_csv
     notes: Gnumeric→CSV export verified 2026-06-18; export_to_csv(file_path) returns
-      CSV string with cell values; active sheet exported
+      CSV string with cell values; active sheet exported.
+      consumer_roundtrip.py CONSUMER_PROOF PASS 2026-06-25.
+  examples:
+    python: examples/python/gnumeric/consumer_roundtrip.py
   tests:
     python: tests/python/gnumeric/
     python_count: 30
