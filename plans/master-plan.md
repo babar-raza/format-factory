@@ -3474,7 +3474,7 @@ accepted_direct_mutations == 0, and CI enforcement is blocking (not continue-on-
 
 ---
 
-*End of plans/master-plan.md — version 7.3 — 2026-06-25 (Section 62: Skill Governance Forensic Audit IN_PROGRESS; Sections 59-61 CLOSED)*
+*End of plans/master-plan.md — version 7.4 — 2026-06-25 (Section 63 added: eager-wishing-bear CI machinery hardening CLOSED; Section 62: multiple CLOSED entries)*
 *This document is the single operational authority for format-factory. All other documents are subordinate to it for operational decisions.*
 
 ---
@@ -3545,3 +3545,50 @@ accepted_direct_mutations == 0, and CI enforcement is blocking (not continue-on-
 
 *Plan tender-finding-wave.md GOV-ENFORCE-FULLSWEEP-SUCCESSOR-20260624: TERMINAL_CLOSED*
 
+
+
+---
+
+## Section 63 — eager-wishing-bear: CI Estate + GOV-HEAL-20260623 Machinery Hardening (CLOSED)
+
+**Plan file:** `C:\Users\prora\.claude\plans\eager-wishing-bear.md`
+**Mission IDs:** GOV-HEAL-20260623, CI-ESTATE-20260623
+**Plan type:** machinery_hardening
+**Status:** CLOSED (TERMINAL_CLOSED)
+**Opened:** 2026-06-23
+**Closed:** 2026-06-25
+
+### Scope
+
+11 taskcards covering CI defect repair (4 defects), governance gap closure (V59-V68 mapping), production readiness standard update (68 validators), and Python source healing pilot (gnumeric decomposition).
+
+### Taskcards completed (11/11)
+
+| Task | Description | Status |
+|------|-------------|--------|
+| TC-CI-002 | Fix .NET SDK 9.0.x→10.0.x, remove continue-on-error | CLOSED |
+| TC-CI-003 | governance-check runs real validators (not import-only) | CLOSED |
+| TC-CI-004 | Remove `--continue-on-collection-errors` suppression | CLOSED |
+| TC-CI-005 | Fix release.yml OIDC/API token inconsistency | CLOSED |
+| TC-CI-001 | Write CI estate function register (7 functions) | CLOSED |
+| TC-CI-006 | Full CI green verification local (6/7 GREEN) | CLOSED |
+| TC-GOV-002 | Verify governance gap coverage V59-V68 | CLOSED |
+| TC-SRC-001 | Update production readiness standard (68 validators) | CLOSED |
+| TC-SRC-002 | Python source healing pilot: gnumeric_codec.py 760→708 LOC | CLOSED |
+| TC-SRC-003 | .NET source healing pilot: SUPERSEDED (no files >800 LOC) | CLOSED |
+| TC-CLOSE-001 | Evidence declaration + autonomous cycle + terminal lock | CLOSED |
+
+### Key outcomes
+
+- **CI fixes**: ci.yml dotnet-version 9.0.x→10.0.x, governance-check runs real validation, `--continue-on-collection-errors` removed, release.yml id-token permission cleaned up
+- **Governance**: V59-V68 validator gap coverage documented; production-readiness-standard.md updated to 68 validators with RULE-AM-005 and enforcement table
+- **Source healing**: `gnumeric_codec.py` reduced 760→708 LOC (52 lines). 3 functions (`get_row_count`, `get_column_count`, `count_nonempty_cells`) moved to `gnumeric_workbook_stats.py`. 1040 tests pass before/after.
+- **Negative control**: ZST codec at cap 1549/1549 → BLOCKED_CAP_REACHED demonstrated by inspection
+- **14 pre-existing gnumeric collection errors** documented in `registry/known-failure-ledger.yaml` (group: `gnumeric_missing_analytics_suspended_rotation`) — tests were written for rotation functions before rotation was suspended
+
+### Evidence
+
+- **Evidence declaration**: `.local/evidences/ci-estate-20260625/evidence-declaration.yaml`
+- **Skill transcript**: `reports/skills-r646/skill-transcripts/decompose-monolithic-codec-gnumeric-20260625.json`
+- **CI function register**: `.local/evidences/ci-estate/ci-function-register.yaml`
+- **V59-V68 gap mapping**: `.local/evidences/ci-estate/governance-gap-v59-v68-mapping.yaml`
