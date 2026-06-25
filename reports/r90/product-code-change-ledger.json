@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s109-dotnet-deepening-20260626",
+  "latest_sprint": "ff-sprint-s110-dotnet-deepening-20260626",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -20051,6 +20051,64 @@
         }
       ],
       "format": "TSV"
+    },
+    {
+      "entry_id": "PC-NETPBM-R136",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s110-dotnet-deepening-20260626",
+      "product": "Netpbm .NET",
+      "capability_refs": [
+        "commercial_net_products.Netpbm.dotnet_status.invert"
+      ],
+      "api_symbols": [
+        "NetpbmImage.Invert"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/netpbm/NetpbmR136InvertTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "Netpbm"
+    },
+    {
+      "entry_id": "PC-FODT-R134",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s110-dotnet-deepening-20260626",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.paragraph_set_text"
+      ],
+      "api_symbols": [
+        "FodtParagraph.SetText"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/fodt/FodtR134ParagraphSetTextTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "FODT"
+    },
+    {
+      "entry_id": "PC-HTML-R120",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s110-dotnet-deepening-20260626",
+      "product": "HTML .NET",
+      "capability_refs": [
+        "commercial_net_products.HTML.dotnet_status.escape_html_integration"
+      ],
+      "api_symbols": [
+        "HtmlWriter.EscapeHtml",
+        "HtmlWriter.WriteTable"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/html/HtmlR120EscapeIntegrationTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "HTML"
     }
   ],
   "total_entries": 1006,
