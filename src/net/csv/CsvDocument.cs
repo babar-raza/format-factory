@@ -130,4 +130,63 @@ public sealed class CsvDocument
         if (idx < 0) throw new CsvReaderException($"Header '{headerName}' not found.");
         return GetColumn(idx);
     }
+
+    // -------------------------------------------------------------------------
+    // Mutation API
+    // -------------------------------------------------------------------------
+
+    /// <summary>
+    /// Append a new data row to the document.
+    /// Values are padded or truncated to match <see cref="ColumnCount"/> when headers are present.
+    /// </summary>
+    /// <param name="values">Cell values for the new row. Must not be null.</param>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="values"/> is null.</exception>
+    public void AddRow(IEnumerable<string> values)
+    {
+        if (values is null) throw new ArgumentNullException(nameof(values));
+        Rows.Add(values.ToArray());
+    }
+
+    /// <summary>
+    /// Set the value of a specific cell by zero-based row and column index.
+    /// The row array is widened if <paramref name="col"/> exceeds its current length.
+    /// </summary>
+    /// <param name="row">Zero-based row index.</param>
+    /// <param name="col">Zero-based column index.</param>
+    /// <param name="value">Value to write. Null is stored as empty string.</param>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// Thrown when <paramref name="row"/> is negative or exceeds <see cref="RowCount"/>.
+    /// Thrown when <paramref name="col"/> is negative.
+    /// </exception>
+    public void SetCell(int row, int col, string value)
+    {
+        if (row < 0 || row >= Rows.Count)
+            throw new ArgumentOutOfRangeException(nameof(row), $"Row index {row} is out of range [0, {Rows.Count}).");
+        if (col < 0)
+            throw new ArgumentOutOfRangeException(nameof(col), "Column index must be non-negative.");
+
+        var existing = Rows[row];
+        if (col >= existing.Length)
+        {
+            // Widen the row array to accommodate the target column.
+            var widened = new string[col + 1];
+            Array.Copy(existing, widened, existing.Length);
+            Rows[row] = widened;
+        }
+        Rows[row][col] = value ?? string.Empty;
+    }
+
+    /// <summary>
+    /// Remove a data row at the given zero-based index.
+    /// </summary>
+    /// <param name="index">Zero-based index of the row to remove.</param>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// Thrown when <paramref name="index"/> is negative or &gt;= <see cref="RowCount"/>.
+    /// </exception>
+    public void RemoveRow(int index)
+    {
+        if (index < 0 || index >= Rows.Count)
+            throw new ArgumentOutOfRangeException(nameof(index), $"Row index {index} is out of range [0, {Rows.Count}).");
+        Rows.RemoveAt(index);
+    }
 }
