@@ -3860,3 +3860,51 @@ Section 32 (pure-knitting-dusk) lists "TC-FL-008: 10 domain models" in the heali
 
 - close-task.md invoked: SUCCESS.
 
+---
+
+## Section 68 — misty-humming-kahn: FF-QF-BACKLOG-COMPLETION-20260625 — QF Healing Backlog Completion (CLOSED)
+
+**Plan:** `C:\Users\prora\.claude\plans\misty-humming-kahn.md` (FF-QF-BACKLOG-COMPLETION-20260625) — TERMINAL_CLOSED
+**Type:** product_quality_healing | **Completed:** 2026-06-25 | **Post-plan audit repair:** 2026-06-25
+
+### Summary
+
+Executed all 8 unresolved QF backlog items from the QF sprint audit (QF-1 through QF-4 waves).
+Covered 5 Python FOSS packages (fods, fodt, ndjson, toml, gnumeric) and 4 .NET packages (csv, ndjson, tsv, zst).
+
+### Taskcards Closed
+
+| ID | Description | Evidence | Status |
+|----|-------------|----------|--------|
+| TC-QF-R-001 | CLI wheel packaging: 5 wheels built; ff-fods/fodt/gnumeric/ndjson/toml invoked from isolated --target installs | /tmp/cli-wheels/ (5 wheels); all 5 main() invocations pass | CLOSED |
+| TC-QF-R-002 | CLI smoke tests (5 formats × 4 tests = 20 total) | 20 passed in 1.65s (pytest regression-verified) | CLOSED |
+| TC-QF-R-003 | PackageReadmeFile in csv/ndjson/tsv/zst csproj; dotnet pack produces README.md in nupkg | README.md confirmed in FormatFactory.Csv nupkg via zipfile -l | CLOSED |
+| TC-QF-R-004 | TOML example end-to-end run | Exit 0; Sections + Total leaf keys output confirmed | CLOSED |
+| TC-QF-R-005 | FodtStreamLoadTests.cs (5 tests incl. DTD/XXE rejection) | 5 passed (dotnet test --filter FodtStreamLoad) | CLOSED |
+| TC-QF-R-006 | export_helper_only classification documented | architecture.md Internal Format Classification Policy section | CLOSED |
+| TC-QF-R-007a | NetpbmExporter XML doc: "within the Netpbm family only" | src/net/netpbm/NetpbmExporter.cs:15 | CLOSED |
+| TC-QF-R-007b | _shared/ lifecycle decision (RETAIN) | architecture.md _shared/ Lifecycle Decision section | CLOSED |
+| TC-QF-R-007c | Sprint-named test file rename | FORMALLY_DEFERRED — owner: next-sprint-test-refactor | DEFERRED |
+| TC-QF-R-007d | .pyi type stubs for 5 packages | 5 files committed in 844bba71 | CLOSED |
+| TC-QF-R-008 | NdjsonRecord .NET typed wrapper + TypedRecords | 6 passed (dotnet test --filter NdjsonRecordTyped) | CLOSED |
+
+### Post-Plan Audit Repairs (applied by post-plan convergence loop)
+
+1. **TC-QF-R-007d**: 5 .pyi stubs were on disk but untracked. Replaced stubgen-output fods/fodt stubs with handcrafted stubs. All 5 committed in `844bba71`.
+2. **TC-QF-R-003**: No sprint-era nupkg artifact. `dotnet pack src/net/csv/` run — README.md confirmed in nupkg via `python -m zipfile -l`.
+3. **TC-QF-R-001**: Only fods was invoked from wheel install. Installed fodt/gnumeric/ndjson/toml to /tmp/test-cli-{fmt}/ targets; all 4 main() invocations verified.
+
+### Commits
+
+- `c3b29f8b` — PackageReadmeFile in csv/ndjson/tsv/zst csproj (TC-QF-R-003)
+- `01a28925` — FodtStreamLoadTests.cs, NdjsonRecord.cs, NdjsonRecordTypedTests.cs, 5 Python CLI test files (TC-QF-R-002, TC-QF-R-005, TC-QF-R-008)
+- `844bba71` — 5 .pyi stub files (TC-QF-R-007d) [post-plan audit repair]
+
+### Final Regression Results
+
+- 20/20 Python CLI smoke tests pass
+- 5/5 FodtStreamLoadTests pass (including DTD/XXE rejection)
+- 6/6 NdjsonRecordTypedTests pass
+
+- close-task.md invoked: SUCCESS.
+
