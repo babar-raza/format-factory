@@ -1,0 +1,33 @@
+issue_level: L3_SYSTEM_WEAKNESS
+sprint_id: spec-authority-machinery-explosion-20260625-c6b2470
+issues:
+  - issue_id: IS-L3-001
+    title: Investigation Sprint Findings Not Auto-Promoted to Queue
+    description: >
+      The supervisor pipeline accepted the investigation-only sprint (ACCEPTED verdict).
+      However, no mechanism automatically promotes investigation findings to repair tasks.
+      next-healing-sprint-prompt.md must be manually consumed to start Phase A.
+      The system accepted investigation reports as sprint-complete without checking
+      whether any derived repair tasks were queued.
+    root_cause: Supervisor pipeline has no investigation→repair promotion chain
+    severity: HIGH
+    recurrence_risk: HIGH
+    required_fix_type: system_healing_in_future_phase
+    requires_governance_change: true
+    recommended_next_stage: PROMPT2_HARDEN
+
+  - issue_id: IS-L3-002
+    title: guard_001_checker.py OR Logic Allows Spec Authority Bypass Without Test Coverage
+    description: >
+      TC-GUARD-001 uses OR logic: gap_ledger_ref OR capability_ref OR spec_fact_refs.
+      This is the most confirmed critical bypass in the investigation.
+      The bypass has existed since 2026-06-18 when TC-GUARD-001 was put in BLOCK mode.
+      There is no test in tests/supervisor/ that specifically validates the AND requirement.
+      tests/supervisor/test_tc_guard_001_enforce.py (8 tests) tests the OR behavior as correct.
+    root_cause: TC-GUARD-001 AND requirement was never defined; OR was the original spec
+    severity: CRITICAL
+    recurrence_risk: HIGH
+    required_fix_type: code_change + test_change
+    requires_governance_change: false
+    requires_reexecution: true
+    recommended_next_stage: PROMPT3_EXECUTE

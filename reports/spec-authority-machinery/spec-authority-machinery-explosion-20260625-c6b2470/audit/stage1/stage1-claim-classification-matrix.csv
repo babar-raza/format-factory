@@ -1,0 +1,11 @@
+claim_id,claim_text,classification,proof_level,notes
+CL-001,Final verdict SPEC_AUTHORITY_LAYER_EXISTS_BUT_PIPELINE_BYPASSES_IT,ACCEPTED_VERIFIED,integration_validation,"Live tool outputs confirm: authority-gate P-levels real; TC-GUARD-001 OR logic confirmed in guard_001_checker.py"
+CL-002,BP-001 TC-GUARD-001 OR logic allows gap_ledger_ref alone to satisfy gate,ACCEPTED_VERIFIED,focused_validation,"guard_001_checker.py lines 65-68 confirmed by code inspection. gap_ledger_ref OR capability_ref OR spec_fact_refs."
+CL-003,BP-002 V13 is no-op for absent spec_fact_refs,MISLEADING,no_proof_yet,"WRONG: validate_spec_fact_refs.py check_item() fires HARD BLOCK for absent spec_fact_refs with no item-level exception_classification. Live test confirms compliant=False."
+CL-004,BP-003 product_task_selector uses poc-targets binary check only,ACCEPTED_VERIFIED,focused_validation,"product_task_selector.py _get_format_authority_status() confirmed: reads poc-targets.yaml only. _CANDIDATE_CATALOG hard-coded."
+CL-005,BP-004 authority_integration_fabric.py not wired into autonomous_cycle.py,ACCEPTED_VERIFIED,focused_validation,"grep 'authority_integration_fabric' tools/supervisor/autonomous_cycle.py → 0 matches (investigation finding)"
+CL-006,FODS has 4988 verified SAL facts at P6,ACCEPTED_VERIFIED,focused_validation,"authority-gate-per-format.json fods.level=P6. sal-facts-counts.txt confirms fact counts."
+CL-007,FODT is P6,ACCEPTED_WITH_LIMITATIONS,partial_validation,"authority-gate returns P6 but refresh-check shows fodt/1.3 STALE (missing_file). P6 is authority_gate cached value not confirmed by live spec."
+CL-008,22 authority debt items characterized,ACCEPTED_VERIFIED,implementation_only,"authority-debt-ledger.json has 22 structured entries. Not yet queued as repair tasks."
+CL-009,Phase A healing instructions are complete and actionable,ACCEPTED_VERIFIED,implementation_only,"next-healing-sprint-prompt.md contains exact file locations, code changes, tests. Not executed yet."
+CL-010,Pilot runs designed,ACCEPTED_WITH_LIMITATIONS,no_proof_yet,"pilot-rerun-design.md documents run steps. Neither pilot was executed. No execution proof."

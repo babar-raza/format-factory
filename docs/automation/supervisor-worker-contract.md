@@ -51,6 +51,27 @@ The supervisor and worker operate in the same repo/worktree. Communication is fi
 | worker_self_grade | string | PASS/PARTIAL/FAIL/BLOCKED |
 | next_recommended_work | array | Suggested next tasks |
 
+## spec_fact_refs (required-or-explain, SAL-HEAL-A001 2026-06-25)
+
+For every `PRODUCT_SOURCE`, `READINESS`, or `RELEASE_GATE` work item, EITHER:
+
+**Option A — Tier 1 formats** (formats with accessible formal specifications: fods, fodt, ods, odt, fodg, fodp, zst, pbm, pgm, ppm, csv, ndjson, toml, xcf, qoi):
+- Provide at the **work item level**: `spec_fact_refs: ["FACT-{FORMAT}-NNN"]`
+- IDs must exist in `.local/sal-output/sal-facts-latest.json`
+- Example: `spec_fact_refs: ["FACT-FODS-001", "FACT-FODS-004"]`
+
+**Option B — Tier 2 formats** (no public spec or schema-only: gnumeric, abw, sylk, dif, tsv):
+- Provide at the **work item level**: `exception_classification: {valid_value}`
+- Valid values: `no_public_spec_available`, `schema_authority_available`, `legacy_backfill`, `investigation_only`, `fallback_authority_approved`, `sample_only_non_product`
+
+**Omitting both** is a HARD BLOCK (V13 gate fires, blocks_sprint=True).
+
+**TC-GUARD-001 AND rule** (SAL-HEAL-A001): Every `PRODUCT_SOURCE`/`PRODUCT_TEST` item must have BOTH:
+- A gap reference: `gap_ledger_ref` OR `capability_ref`
+- Spec authority: `spec_fact_refs` OR `exception_classification` (at work item level)
+
+`gap_ledger_ref` alone is no longer sufficient for TC-GUARD-001 (upgraded 2026-06-25).
+
 ## Work Item Status Values
 
 | Status | Meaning |

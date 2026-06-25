@@ -1,7 +1,10 @@
 """guard_001_checker.py — TC-GUARD-001 enforcement with GOVERNANCE_ASSET exemption.
 
-TC-GUARD-001 requires that every PRODUCT_SOURCE and PRODUCT_TEST item references a
-GAP-ledger entry via gap_ledger_ref, capability_ref, or spec_fact_refs.
+TC-GUARD-001 requires that every PRODUCT_SOURCE and PRODUCT_TEST item has BOTH:
+  (a) a gap/capability reference: gap_ledger_ref OR capability_ref
+  (b) spec authority citation: spec_fact_refs OR exception_classification
+
+gap_ledger_ref alone is NOT sufficient (SAL-HEAL-A001, 2026-06-25 AND-logic upgrade).
 
 GOVERNANCE_ASSET items are explicitly EXEMPT from this check because they CREATE the
 registry/manifest/validator infrastructure that gap-ledger entries will later reference.
@@ -62,23 +65,34 @@ def check_guard_001(item: dict) -> dict:
             "violation": False,
             "reason": f"item_type={item_type!r} is not in CHECKED_ITEM_TYPES — not checked by TC-GUARD-001",
         }
-    has_ref = bool(
-        item.get("gap_ledger_ref")
-        or item.get("capability_ref")
-        or item.get("spec_fact_refs")
-    )
+    has_ledger_ref = bool(item.get("gap_ledger_ref") or item.get("capability_ref"))
+    has_spec_authority = bool(item.get("spec_fact_refs") or item.get("exception_classification"))
+    # TC-GUARD-001 AND logic (SAL-HEAL-A001 2026-06-25):
+    # Requires BOTH a gap/capability reference AND spec authority (facts or exception).
+    # gap_ledger_ref alone is no longer sufficient — spec_fact_refs or exception_classification required.
+    has_ref = bool(has_ledger_ref and has_spec_authority)
     if has_ref:
         return {
             "exempt": False,
             "violation": False,
-            "reason": "has gap_ledger_ref, capability_ref, or spec_fact_refs",
+            "reason": "has (gap_ledger_ref or capability_ref) AND (spec_fact_refs or exception_classification)",
+        }
+    if not has_ledger_ref:
+        return {
+            "exempt": False,
+            "violation": True,
+            "reason": (
+                f"PRODUCT_SOURCE/TEST item missing gap_ledger_ref and capability_ref "
+                f"— item_id={item.get('item_id', '?')!r}"
+            ),
         }
     return {
         "exempt": False,
         "violation": True,
         "reason": (
-            f"PRODUCT_SOURCE/TEST item missing gap_ledger_ref, capability_ref, "
-            f"and spec_fact_refs — item_id={item.get('item_id', '?')!r}"
+            f"PRODUCT_SOURCE/TEST item has gap_ledger_ref/capability_ref but lacks "
+            f"spec_fact_refs and exception_classification — add spec authority citation "
+            f"or valid exception_classification — item_id={item.get('item_id', '?')!r}"
         ),
     }
 

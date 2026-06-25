@@ -1,0 +1,24 @@
+run_id: spec-authority-machinery-explosion-20260625-c6b2470
+audit_stage: stage1
+final_verdict: SPRINT_REQUIRES_PLAN_HARDENING
+
+material_issues:
+  - IS-L1-001  # BP-002 overclaim — investigation accuracy issue
+  - IS-L2-001  # Phase A not queued — critical blocker
+  - IS-L3-002  # TC-GUARD-001 bypass no regression test
+
+next_stage: PROMPT2_HARDEN
+rationale: >
+  Investigation sprint is complete and valid. Final verdict stands.
+  BP-002 claim is inaccurate (V13 already blocks absent spec_fact_refs).
+  Phase A repairs (TC-GUARD-001 AND logic, product_task_selector wire) are
+  confirmed necessary and not initiated. Plan hardening must add taskcards
+  for Phase A execution before controlled execution can begin.
+
+immediate_actions:
+  - Add Phase A taskcards to witty-doodling-goose.md (TC-HEAL-A001, A002, A003, A004)
+  - Note BP-002 correction in plan amendments
+  - Execute Stage 3 after hardening
+
+blocked_on: null
+external_gate: null

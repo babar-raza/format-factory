@@ -1879,3 +1879,102 @@ class TestV63PublicApiSurfaceRatio:
         }
         result = validate_public_api_surface_ratio(decl)
         assert result["result"] == "PASS"
+
+
+# ---------------------------------------------------------------------------
+# TC-HEAL-A002: V13 enforcement confirmation tests (SAL-HEAL-A001 audit, 2026-06-25)
+# BP-002 investigation claim was inaccurate: V13 already blocks absent spec_fact_refs.
+# These tests document and lock in the correct behavior.
+# ---------------------------------------------------------------------------
+
+class TestV13SpecFactRefsEnforcement:
+    """Confirm V13 (validate_spec_fact_refs_wired / check_item) correctly enforces:
+    - absent spec_fact_refs + absent exception_classification → HARD BLOCK
+    - item-level exception_classification → PASS
+    - valid spec_fact_refs → PASS
+    """
+
+    def test_v13_blocks_product_source_no_spec_fact_refs_no_exception(self):
+        """CRITICAL: PRODUCT_SOURCE with neither spec_fact_refs nor exception → compliant=False."""
+        import sys
+        from pathlib import Path
+        sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent / "tools" / "supervisor"))
+        from validate_spec_fact_refs import check_item
+        item = {
+            "item_id": "V13-NEG-001",
+            "item_type": "PRODUCT_SOURCE",
+            "gap_ledger_ref": "GAP-FODS-0001",
+            # No spec_fact_refs, no exception_classification
+        }
+        result = check_item(item)
+        assert result["compliant"] is False, (
+            f"Expected HARD BLOCK for PRODUCT_SOURCE with no spec authority, got: {result}"
+        )
+        assert result["grade_impact"] == "reject"
+        assert "BLOCKING" in result["violation"]
+
+    def test_v13_passes_legacy_backfill_exception_at_item_level(self):
+        """Item-level exception_classification=legacy_backfill → compliant=True (designed bypass)."""
+        import sys
+        from pathlib import Path
+        sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent / "tools" / "supervisor"))
+        from validate_spec_fact_refs import check_item
+        item = {
+            "item_id": "V13-EXC-001",
+            "item_type": "PRODUCT_SOURCE",
+            "gap_ledger_ref": "GAP-CSV-001",
+            "exception_classification": "legacy_backfill",
+        }
+        result = check_item(item)
+        assert result["compliant"] is True, (
+            f"Expected PASS for item with legacy_backfill exception, got: {result}"
+        )
+
+    def test_v13_passes_schema_authority_exception(self):
+        """schema_authority_available exception for schema-only formats → PASS."""
+        import sys
+        from pathlib import Path
+        sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent / "tools" / "supervisor"))
+        from validate_spec_fact_refs import check_item
+        item = {
+            "item_id": "V13-SCHEMA-001",
+            "item_type": "PRODUCT_SOURCE",
+            "gap_ledger_ref": "GAP-GNUMERIC-001",
+            "exception_classification": "schema_authority_available",
+        }
+        result = check_item(item)
+        assert result["compliant"] is True
+
+    def test_v13_passes_valid_spec_fact_refs(self):
+        """Valid spec_fact_refs (mocked registry) → compliant=True."""
+        import sys
+        from pathlib import Path
+        from unittest.mock import patch
+        sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent / "tools" / "supervisor"))
+        from validate_spec_fact_refs import check_item
+        item = {
+            "item_id": "V13-POS-001",
+            "item_type": "PRODUCT_SOURCE",
+            "gap_ledger_ref": "GAP-FODS-001",
+            "spec_fact_refs": ["FACT-FODS-001"],
+        }
+        fake_registry = {"FACT-FODS-001": "verified"}
+        with patch("validate_spec_fact_refs.get_fact_registry", return_value=fake_registry):
+            result = check_item(item)
+        assert result["compliant"] is True
+        assert result["grade_impact"] == "none"
+
+    def test_v13_non_blocking_type_passes_unconditionally(self):
+        """GOVERNANCE_TASKCARD is not a blocking type — always compliant."""
+        import sys
+        from pathlib import Path
+        sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent / "tools" / "supervisor"))
+        from validate_spec_fact_refs import check_item
+        item = {
+            "item_id": "V13-GOV-001",
+            "item_type": "GOVERNANCE_TASKCARD",
+            # No spec_fact_refs, no exception — but not a blocking type
+        }
+        result = check_item(item)
+        assert result["compliant"] is True
+        assert result["blocking_type"] is False

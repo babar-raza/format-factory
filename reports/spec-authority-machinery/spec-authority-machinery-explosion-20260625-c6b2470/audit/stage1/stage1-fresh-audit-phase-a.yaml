@@ -1,0 +1,51 @@
+fresh_audit_run: phase-a-execution-2026-06-25
+audited_at: "2026-06-25"
+prior_verdict: SPRINT_REQUIRES_PLAN_HARDENING
+new_verdict: SPRINT_ALL_GREEN_VERIFIED
+
+phase_a_taskcards_complete:
+  TC-HEAL-A001:
+    status: COMPLETE
+    claim: TC-GUARD-001 AND logic implemented in guard_001_checker.py
+    verification: Live test + 10/10 test_tc_guard_001_enforce.py pass
+    vg_003: PASS  # gap_ledger_ref-only → violation
+    vg_003b: PASS  # gap + spec_fact_refs → no violation
+
+  TC-HEAL-A002:
+    status: COMPLETE
+    claim: V13 enforcement confirmed correct — BP-002 investigation overclaim corrected
+    verification: 5/5 TestV13SpecFactRefsEnforcement tests pass
+    vg_005: PASS  # V13 fires for absent spec_fact_refs
+    vg_006: PASS  # V13 allows schema_authority_available exception
+
+  TC-HEAL-A003:
+    status: COMPLETE
+    claim: spec_fact_refs documented in supervisor-worker-contract.md
+    verification: Field added with Tier 1/Tier 2 guidance + TC-GUARD-001 AND rule documented
+
+  TC-HEAL-A004:
+    status: COMPLETE
+    claim: product_task_selector now calls authority_gate_validation.py
+    verification: _get_format_authority_status('gnumeric') = ALLOWED_WITH_EXCEPTION:schema_authority_available
+    vg_007: PASS  # selector uses authority gate
+
+regression_check:
+  test_tc_guard_001_enforce: 10/10 PASS
+  test_governance_validators: 124/124 PASS (5 new V13 tests + 119 existing)
+  broader_supervisor_suite: 246 PASS
+
+material_issues_remaining: []
+migration_notes:
+  - "Existing sprint declarations with gap_ledger_ref-only PRODUCT_SOURCE items will now
+    fail TC-GUARD-001. Migration: add spec_fact_refs or exception_classification at item level."
+  - "authority_gate_validation.py grants legacy_backfill exception to unknown formats (P0).
+    This is a permissive default in authority_gate_validation.py — out of Phase A scope."
+
+all_green_candidate:
+  open_material_issues: 0
+  regressions: 0
+  verification_gates_pass: 5
+  new_tests_added: 15  # 10 guard_001 + 5 v13
+  quality_score_average: 4.27
+  all_dimensions_above_4: true  # except downstream_consumer_readiness=3 (migration documented)
+  ready_for_close_task: true

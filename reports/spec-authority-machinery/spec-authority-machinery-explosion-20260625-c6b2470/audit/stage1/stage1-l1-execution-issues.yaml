@@ -1,0 +1,89 @@
+issue_level: L1_EXECUTION
+sprint_id: spec-authority-machinery-explosion-20260625-c6b2470
+issues:
+  - issue_id: IS-L1-001
+    title: BP-002 Investigation Claim is Inaccurate — V13 Already Blocks Absent spec_fact_refs
+    description: >
+      The investigation (machinery-bypass-ledger.json BP-002) claims V13 only fires when
+      spec_fact_refs is PROVIDED AND INVALID. Code inspection + live test prove this is WRONG.
+      validate_spec_fact_refs.py check_item() fires HARD BLOCK (compliant=False) when
+      spec_fact_refs is absent AND no exception_classification at item level.
+      The actual bypass is: exception_classification=legacy_backfill at item level allows PASS.
+      BP-002 severity was listed as CRITICAL; actual severity is MODERATE (designed exception bypass).
+    evidence: >
+      Live test: check_item({'item_type':'PRODUCT_SOURCE','gap_ledger_ref':'GAP-TEST-001'}) →
+      compliant=False, violation="has empty spec_fact_refs and no exception_classification. BLOCKING."
+    missing_evidence: null
+    root_cause: Investigation performed code-path analysis without live execution verification
+    why_not_only_symptom: Overclaiming bypass severity damages Phase A priority ordering
+    affected_files:
+      - tools/supervisor/validate_spec_fact_refs.py
+      - reports/spec-authority-machinery/.../machinery-bypass-ledger.json
+    affected_components: [V13, governance_validators]
+    severity: HIGH
+    blocker: true
+    recurrence_risk: MEDIUM
+    required_fix_type: evidence_correction + investigation_addendum
+    requires_plan_update: true
+    requires_taskcard: true
+    requires_system_healing: false
+    requires_reexecution: true
+    requires_governance_change: false
+    requires_evidence_repair: true
+    recommended_next_stage: PROMPT2_HARDEN
+    acceptance_impact: BP-002 repair priority should be downgraded; Phase A focus shifts to A-001 and A-004
+
+  - issue_id: IS-L1-002
+    title: Pilot Runs Designed But Not Executed
+    description: >
+      pilot-rerun-design.md documents two pilot runs (FODS positive, Gnumeric bypass).
+      Neither pilot was executed. Evidence-declaration sprint was investigation_only with
+      tests_run=0. The pilot plans exist but no execution proof exists.
+    evidence: evidence-declaration.yaml tests_run=0, exception_classification=investigation_only
+    missing_evidence: Pilot execution outputs, authority_conveyor.py run outputs
+    root_cause: Sprint scope was correctly scoped to investigation_only; pilots marked for next phase
+    why_not_only_symptom: Pilot execution would confirm or refute live bypass behavior
+    affected_files:
+      - reports/spec-authority-machinery/.../pilot-rerun-design.md
+    affected_components: [pilot_runs, authority_conveyor]
+    severity: MEDIUM
+    blocker: false
+    recurrence_risk: LOW
+    required_fix_type: execution_in_phase_b
+    requires_plan_update: false
+    requires_taskcard: true
+    requires_system_healing: false
+    requires_reexecution: false
+    requires_governance_change: false
+    requires_evidence_repair: false
+    recommended_next_stage: PROMPT3_EXECUTE
+    acceptance_impact: Does not block Phase A; pilot execution is Phase B work
+
+  - issue_id: IS-L1-003
+    title: FODT P6 vs STALE Contradiction in Raw Logs
+    description: >
+      authority-gate-per-format.json reports FODT=P6 (product_expansion=true).
+      refresh-check.txt reports fodt/1.3 as STALE (missing_file). This is a contradiction:
+      FODT cannot be both P6 (verified facts in production) and have a missing spec file.
+      Investigation authority-debt-ledger.json AD-003 notes this but the format-authority-matrix
+      still lists FODT at P6 without qualifying the contradiction prominently.
+    evidence: raw-logs/authority-gate-per-format.json fodt.level=P6; raw-logs/refresh-check.txt fodt/1.3 STALE(missing_file)
+    missing_evidence: How authority_gate_validation.py computed P6 for FODT despite stale spec
+    root_cause: authority_gate_validation.py uses cached P-level from spec-index.yaml, not refresh_check status
+    why_not_only_symptom: FODT P6 overclaim could influence product expansion decisions
+    affected_files:
+      - reports/spec-authority-machinery/.../format-authority-matrix.json
+      - .local/spec-cache/fodt/
+    affected_components: [authority_gate_validation, format_authority_matrix]
+    severity: MEDIUM
+    blocker: false
+    recurrence_risk: MEDIUM
+    required_fix_type: clarify_in_matrix
+    requires_plan_update: false
+    requires_taskcard: false
+    requires_system_healing: false
+    requires_reexecution: false
+    requires_governance_change: false
+    requires_evidence_repair: true
+    recommended_next_stage: PROMPT3_EXECUTE
+    acceptance_impact: FODT P6 should be qualified as "claimed P6 / spec cache stale"

@@ -34,37 +34,59 @@ _BLOCKED_AUTHORITY_STATES: frozenset[str] = frozenset({
     "BLOCKED_SYNTHETIC_REQUIREMENTS",
     "BLOCKED_AI_ONLY_AUTHORITY",
     "BLOCKED_UNKNOWN_AUTHORITY",
+    "BLOCKED_INSUFFICIENT_AUTHORITY",  # SAL-HEAL-A004: P<4 without valid exception
 })
 
 
 def _get_format_authority_status(format_name: str) -> str:
     """Return the authority gate status for a format.
 
-    Returns 'ALLOWED' only for formats explicitly registered in poc-targets.yaml
-    with a confirmed classification. All unknown or unregistered formats default
-    to BLOCKED_UNKNOWN_AUTHORITY (safe default).
+    SAL-HEAL-A004 (2026-06-25): Now calls authority_gate_validation.py to get the
+    real P-level instead of using poc-targets.yaml binary membership check.
+    Formats with exception_classification (Tier 2) are ALLOWED_WITH_EXCEPTION.
+    Formats at P4+ are ALLOWED. Formats below P4 without exception are BLOCKED.
 
-    Fixed: SPEC-AUTHORITY-LAYER-FULL-PILOT-VERIFICATION-HEALING-AND-CLOSURE-001 (2026-06-08)
-    Prior behavior returned 'ALLOWED' for unknown formats — unsafe.
+    Falls back to poc-targets.yaml membership if authority_gate_validation.py fails.
     """
+    import subprocess
+
+    fmt_lower = format_name.lower()
+    # Try authority_gate_validation.py for the real P-level
+    try:
+        result = subprocess.run(
+            [sys.executable, str(_repo_root / "tools" / "supervisor" / "authority_gate_validation.py"),
+             "--format-id", fmt_lower, "--json"],
+            capture_output=True, text=True, timeout=15
+        )
+        # Parse JSON even on non-zero exit (authority_gate returns 1 for P<4 formats with valid JSON)
+        if result.stdout.strip():
+            gate = json.loads(result.stdout)
+            product_expansion = gate.get("product_expansion_allowed", False)
+            exception_class = gate.get("exception_allowed")
+            if product_expansion:
+                return "ALLOWED"
+            if exception_class:
+                # Tier 2 format with valid exception — ALLOWED with recorded exception
+                return f"ALLOWED_WITH_EXCEPTION:{exception_class}"
+            return "BLOCKED_INSUFFICIENT_AUTHORITY"
+    except Exception:
+        pass  # Fall through to poc-targets fallback
+
+    # Fallback: poc-targets.yaml membership (legacy — kept as safety net per SAL-HEAL-A004)
     poc_targets_path = _repo_root / "product-capability-matrix" / "poc-targets.yaml"
     if not poc_targets_path.exists():
         return "BLOCKED_MISSING_SPEC"
-
     try:
         with open(poc_targets_path, encoding="utf-8") as f:
             data = yaml.safe_load(f)
     except Exception:
         return "BLOCKED_MISSING_SPEC"
-
-    # Collect all registered format names from all sections
     registered: set[str] = set()
     for section_key, section_val in data.items():
         if isinstance(section_val, list):
             for item in section_val:
                 if isinstance(item, dict) and "format" in item:
                     registered.add(item["format"].upper())
-
     if format_name.upper() in registered:
         return "ALLOWED"
     return "BLOCKED_UNKNOWN_AUTHORITY"
@@ -178,10 +200,12 @@ def _check_candidate(candidate: dict[str, Any]) -> dict[str, Any]:
     """Verify a candidate task is actionable in the current repo state."""
     result = dict(candidate)
 
-    # Authority gate — must pass before any other check
+    # Authority gate — must pass before any other check (SAL-HEAL-A004: calls authority_gate_validation.py)
     authority_status = _get_format_authority_status(candidate.get("format", ""))
     result["authority_status"] = authority_status
-    if authority_status in _BLOCKED_AUTHORITY_STATES:
+    # ALLOWED_WITH_EXCEPTION:* statuses are allowed (Tier 2 formats with valid exception)
+    is_blocked = authority_status in _BLOCKED_AUTHORITY_STATES and not authority_status.startswith("ALLOWED")
+    if is_blocked:
         result["target_exists"] = False
         result["already_implemented"] = False
         result["actionable"] = False
