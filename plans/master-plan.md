@@ -3425,7 +3425,56 @@ Tests: 79 new tests PASS. Evidence: `.local/evidences/ff-layer-forensics-2026062
 
 ---
 
-*End of plans/master-plan.md — version 7.3 — 2026-06-26 (Sections 59-62 CLOSED: governance repair, qname coverage 84.5%→99.4%, 115 new .NET tests, PSL loop all-green)*
+## Section 62 — Tool-Neutral Skill/Command-Only Execution Governance Forensic Audit (IN_PROGRESS)
+
+**Mission:** SKILL-GOV-FORENSIC-20260625
+**Sprint:** skill-governance-forensic-audit-20260625
+
+### Current Skill Governance State
+
+| Metric | Value |
+|--------|-------|
+| Skills registered | 65 (62 active, 3 deprecated) |
+| Skills with Python implementation | 7 (meta-governance only) |
+| Prompt-backed skills | 58 (empty `implementation_paths`) |
+| tools/supervisor/ AD_HOC | 174 of 181 (96.1%) |
+| Capability routes ACTIVE | 30/30 |
+| Post-policy UNGOVERNED_MUTATION commits | 2 (BF-001 resolved, BF-002 partial) |
+| **First unenforced boundary** | **Edit/Write/Bash tool invocation — no pre-mutation hook** |
+| **Overall verdict** | **DIRECT_MUTATION_BYPASSES_REMAIN** |
+
+### Artifacts Created This Sprint
+
+| Artifact | Path | Purpose |
+|----------|------|---------|
+| Canonical policy | `docs/governance/skill-only-policy.yaml` | Machine-readable single-authority policy for all agents |
+| Runtime guard | `tools/governance/pre_mutation_guard.py` | Pre-mutation authorization check (EP-002) |
+| CI check | `tools/governance/ci_skill_attribution_check.py` | Post-hoc detection of ungoverned src/ mutations (EP-006) |
+| Codex adapter | `docs/governance/codex-adapter.md` | Codex entry point → canonical policy |
+| CI job | `.github/workflows/ci.yml` (skill-attribution-check job) | CI enforcement |
+| Bypass proof | `reports/skill-governance-forensic/pilots/bypass-test-results.yaml` | Active bypass tests |
+| Idempotency | `reports/skill-governance-forensic/idempotency-verdict.yaml` | Proof for new tools |
+| Backfill | `reports/skill-governance-forensic/historical-backfill.yaml` | Historical accounting |
+| Micro-taskcards | `.supervisor/taskcards/skill-governance-forensic/TC-SGF-001..005` | Governing remaining gaps |
+
+### Enforcement Gaps Tracked
+
+| Gap | Finding | Taskcard | Status |
+|-----|---------|----------|--------|
+| SKILL-GAP-008 | No pre-commit hook | TC-SGF-001 | OPEN |
+| SKILL-GAP-012 | Declaration bypass (agents skip entirely) | TC-SGF-002 | OPEN |
+| DEC-014 | Codex not activated | TC-SGF-003 | OPEN |
+| EP-008-GAP | Taskcard execution_contract not validated | TC-SGF-004 | OPEN |
+| AD_HOC-174 | 174 tools unregistered | TC-SGF-005 | OPEN |
+
+### Completion Gates
+
+Section 62 closes when TC-SGF-001 through TC-SGF-005 are all CLOSED,
+accepted_direct_mutations == 0, and CI enforcement is blocking (not continue-on-error).
+
+---
+
+*End of plans/master-plan.md — version 7.3 — 2026-06-25 (Section 62: Skill Governance Forensic Audit IN_PROGRESS; Sections 59-61 CLOSED)*
 *This document is the single operational authority for format-factory. All other documents are subordinate to it for operational decisions.*
 
 ---
