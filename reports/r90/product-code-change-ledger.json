@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s96-dotnet-deepening-20260626",
+  "latest_sprint": "ff-sprint-s97-dotnet-deepening-20260626",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -19231,6 +19231,70 @@
       "change_type": "test_added",
       "evidence_path": "tests/net/netpbm/NetpbmR130BrightnessMapTests.cs",
       "description": "R130: 11 tests for GetBrightnessMap \u2014 length=PixelCount, [0,1] range, all-white=1.0, all-black=0.0, mid-gray\u22480.5, PPM length, dogfood vs GetBrightness"
+    },
+    {
+      "entry_id": "PC-FODS-R129",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s97-dotnet-deepening-20260626",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.row_col_count_consistency"
+      ],
+      "api_symbols": [
+        "GetRowCount",
+        "GetColumnCount",
+        "InsertRow",
+        "InsertRowWithValues",
+        "DeleteRows",
+        "ClearSheet"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/fods/FodsR129RowColumnCountConsistencyTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "FODS"
+    },
+    {
+      "entry_id": "PC-FODT-R130",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s97-dotnet-deepening-20260626",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.markdown_deep_headings"
+      ],
+      "api_symbols": [
+        "ExportToMarkdown",
+        "AppendHeading"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/fodt/FodtR130ExportToMarkdownDeepHeadingsTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "FODT"
+    },
+    {
+      "entry_id": "PC-NETPBM-R131",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s97-dotnet-deepening-20260626",
+      "product": "Netpbm .NET",
+      "capability_refs": [
+        "commercial_net_products.Netpbm.dotnet_status.image_stats"
+      ],
+      "api_symbols": [
+        "GetStats",
+        "GetChannelStats"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/netpbm/NetpbmR131ImageStatsTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "Netpbm"
     }
   ],
   "total_entries": 1006,
