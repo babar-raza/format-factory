@@ -171,6 +171,9 @@ public sealed class CsvDocument
             // Widen the row array to accommodate the target column.
             var widened = new string[col + 1];
             Array.Copy(existing, widened, existing.Length);
+            // Fill newly created slots with empty string (not null).
+            for (int i = existing.Length; i < widened.Length; i++)
+                widened[i] = string.Empty;
             Rows[row] = widened;
         }
         Rows[row][col] = value ?? string.Empty;
