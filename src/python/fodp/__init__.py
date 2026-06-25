@@ -1,12 +1,7 @@
-"""
-format-factory: FODP (Flat OpenDocument Presentation) FOSS Python track.
+"""format-factory: FODP (Flat OpenDocument Presentation) FOSS Python track.
 
-Minimal FOSS implementation for .fodp format support.
-ODF 1.3 Part 3 specification — OASIS Royalty-Free Category 1.
-Acquisition Gates 1-3 PASSED. Gates 4-7 delegated PASS (R20).
-
-FOSS track only — no commercial readiness implied.
-See: acquisition-packs/fodp/ for gate evidence.
+ODF 1.3 Part 3 spec. Acquisition Gates 1-3 PASSED; 4-7 delegated PASS (R20).
+FOSS track — no commercial readiness implied. See: acquisition-packs/fodp/
 """
 # ruff: noqa: F405  # __all__ references names from intentional star imports
 
@@ -21,8 +16,10 @@ from .fodp_codec import (
     export_to_txt,
     export_to_csv,
     export_to_json,
+    write_fodp,
 )
 from .presentation_document import *  # noqa: F401, F403
+from .models import FodpDocument  # noqa: F401
 
 __all__ = [
     "FodpError",
@@ -35,6 +32,7 @@ __all__ = [
     "export_to_txt",
     "export_to_csv",
     "export_to_json",
+    "write_fodp",
     "fodp_all_slides_have_text",
     "fodp_average_shapes_per_slide",
     "fodp_average_text_per_slide",
@@ -93,6 +91,7 @@ __all__ = [
     "fodp_total_shape_count",
     "fodp_total_text_chars",
     "fodp_total_text_length",
+    "FodpDocument",
 ]
 
 __version__ = "0.1.0.dev0"
