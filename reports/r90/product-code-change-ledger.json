@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s89-dotnet-deepening-20260626",
+  "latest_sprint": "ff-sprint-s90-dotnet-deepening-20260626",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -18995,6 +18995,36 @@
       "description": "Netpbm R124: 11 tests for ConvertFormat \u2014 PGM P2\u2194P5, PPM P3\u2194P6, same-format identity, cross-family throws, dogfood P2\u2192P5\u2192P2 round-trip",
       "test_files": [
         "tests/net/netpbm/NetpbmR124ConvertFormatTests.cs"
+      ],
+      "source_files": []
+    },
+    {
+      "entry_id": "PC-FODS-R125",
+      "classification": "TEST_ADDITION",
+      "sprint": "ff-sprint-s90-dotnet-deepening-20260626",
+      "description": "FODS R125: 10 tests for GetCellFormula \u2014 set then get, non-formula null, out-of-range null, guards, dogfood",
+      "test_files": [
+        "tests/net/fods/FodsR125GetCellFormulaTests.cs"
+      ],
+      "source_files": []
+    },
+    {
+      "entry_id": "PC-FODT-R123",
+      "classification": "TEST_ADDITION",
+      "sprint": "ff-sprint-s90-dotnet-deepening-20260626",
+      "description": "FODT R123: 10 tests for ReplaceText count \u2014 no-match=0, single/multiple, cross-paragraph, case variants, dogfood",
+      "test_files": [
+        "tests/net/fodt/FodtR123ReplaceTextCountTests.cs"
+      ],
+      "source_files": []
+    },
+    {
+      "entry_id": "PC-NETPBM-R125",
+      "classification": "TEST_ADDITION",
+      "sprint": "ff-sprint-s90-dotnet-deepening-20260626",
+      "description": "Netpbm R125: 9 tests for Pipeline \u2014 empty pipeline, single/multi step, dimension preservation, null guards, PPM ToGrayscale step, dogfood three-step",
+      "test_files": [
+        "tests/net/netpbm/NetpbmR125PipelineTests.cs"
       ],
       "source_files": []
     }
