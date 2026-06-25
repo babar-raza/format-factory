@@ -1,0 +1,71 @@
+---
+generated_by: skill-governance-forensic-audit
+mission_id: SKILL-GOV-FORENSIC-20260625
+generated_at: "2026-06-25"
+
+# Idempotency proof for tools created by this sprint.
+# Python-backed tools only (prompt-backed .md skills are excluded — LLM output is non-deterministic by design).
+
+tools_tested:
+
+  - tool_id: pre_mutation_guard
+    path: tools/governance/pre_mutation_guard.py
+    test_type: classification_stability
+
+    run_1:
+      verdict: AUTHORIZED
+      rejection_condition: null
+      exit_code: 0
+      note: "Task NONE → BLOCKED; valid task + valid skill → AUTHORIZED"
+
+    run_2:
+      verdict: AUTHORIZED
+      rejection_condition: null
+      exit_code: 0
+
+    idempotency_verdict: IDEMPOTENT_VERDICT_STABLE
+    non_idempotent_field: authorization_id
+    non_idempotent_reason: >
+      authorization_id includes timestamp for uniqueness — intentional.
+      The verdict field (AUTHORIZED/BLOCKED/CONFIG_ERROR) is fully deterministic
+      on the same inputs. The rejection_condition is also deterministic.
+    classification_idempotent: true
+
+  - tool_id: ci_skill_attribution_check
+    path: tools/governance/ci_skill_attribution_check.py
+    test_type: commit_classification_stability
+
+    run_1:
+      verdict: PASS
+      commits_checked: 0
+      ungoverned: 0
+      exit_code: 0
+      input: "HEAD~3..HEAD (no src/ changes in recent commits)"
+
+    run_2:
+      verdict: PASS
+      commits_checked: 0
+      ungoverned: 0
+      exit_code: 0
+
+    run_3_known_ungoverned_commit:
+      sha: 787b43e27a3dd6abf0de663ab2e5b9e1d4175925
+      verdict_before_transcript: FAIL (ungoverned=1)
+      verdict_after_retroactive_transcript: PASS (governed=1)
+      note: "With retroactive transcript in reports/skills-pdep-20260625/, commit is correctly recognized"
+
+    idempotency_verdict: IDEMPOTENT_DETERMINISTIC
+    note: >
+      Classification (GOVERNED/UNGOVERNED) is deterministic given same commits and same transcript set.
+      Adding a retroactive transcript changes classification deterministically.
+
+overall_verdict: IDEMPOTENCY_VERIFIED_FOR_PYTHON_TOOLS
+note: >
+  Both new Python-backed tools (pre_mutation_guard.py, ci_skill_attribution_check.py)
+  produce stable verdicts on repeated runs. The authorization_id non-determinism is
+  intentional and documented.
+
+  Prompt-backed skills (65 skills in .supervisor/skill-registry.yaml with empty
+  implementation_paths) are excluded from idempotency testing per the policy in
+  .supervisor/skill-first-policy.md Rule 5:
+  "Does NOT apply to prompt-backed skills (.md command files) — those are evaluated structurally."

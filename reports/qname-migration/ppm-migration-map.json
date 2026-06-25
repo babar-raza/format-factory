@@ -1,0 +1,72 @@
+{
+  "format_id": "ppm",
+  "date": "20260625",
+  "total_entries": 3,
+  "compliant_count": 0,
+  "compliant_pct": 0.0,
+  "blocks_gate_count": 0,
+  "state_counts": {
+    "WRONG_PATH_IN_SPEC": 2,
+    "MISSING_CLASS": 1
+  },
+  "action_counts": {
+    "MOVE_FILE": 3
+  },
+  "risk_counts": {
+    "HIGH": 3
+  },
+  "migration_ready": true,
+  "entries": [
+    {
+      "qname": "ppm:header",
+      "status": "implemented",
+      "canonical_class": "Ppm.Header",
+      "current_path": "src/python/ppm/spec/pixmap/header.py",
+      "target_path": "src/python/ppm/spec/ppm/header.py",
+      "source_layer": "Spec",
+      "current_state": "WRONG_PATH_IN_SPEC",
+      "action_required": "MOVE_FILE",
+      "migration_risk": "HIGH",
+      "estimated_effort": "medium",
+      "blocks_gate": false,
+      "test_changes_required": [],
+      "notes": [
+        "In spec/ but wrong sub-path. Got src/python/ppm/spec/pixmap/header.py, expected src/python/ppm/spec/ppm/header.py"
+      ]
+    },
+    {
+      "qname": "ppm:raster",
+      "status": "implemented",
+      "canonical_class": "Ppm.Raster",
+      "current_path": "src/python/ppm/ppm_parser.py",
+      "target_path": "src/python/ppm/spec/ppm/raster.py",
+      "source_layer": "Spec",
+      "current_state": "MISSING_CLASS",
+      "action_required": "MOVE_FILE",
+      "migration_risk": "HIGH",
+      "estimated_effort": "medium",
+      "blocks_gate": false,
+      "test_changes_required": [],
+      "notes": [
+        "Registry canonical_class 'Ppm.Raster' (short: 'Raster') not found in src/python/ppm/ppm_parser.py. Defined: ['PpmDecodeError', 'PpmError', 'PpmImage', 'PpmInvalidHeaderError', 'PpmInvalidMagicError']"
+      ]
+    },
+    {
+      "qname": "ppm:pixmap",
+      "status": "implemented",
+      "canonical_class": "Ppm.Pixmap",
+      "current_path": "src/python/ppm/spec/pixmap/pixmap.py",
+      "target_path": "src/python/ppm/spec/ppm/pixmap.py",
+      "source_layer": "Spec",
+      "current_state": "WRONG_PATH_IN_SPEC",
+      "action_required": "MOVE_FILE",
+      "migration_risk": "HIGH",
+      "estimated_effort": "medium",
+      "blocks_gate": false,
+      "test_changes_required": [],
+      "notes": [
+        "In spec/ but wrong sub-path. Got src/python/ppm/spec/pixmap/pixmap.py, expected src/python/ppm/spec/ppm/pixmap.py"
+      ]
+    }
+  ]
+}

@@ -301,6 +301,13 @@ formats:
         exporters, FodsEditSaveTests, local NuGet pack. G11-F validation in_progress.
         G11-G APPROVED by Babar Raza 2026-06-05. commercial_product_ready: false.'
       g11g_status: APPROVED_BY_BABAR_RAZA_2026_06_05
+      known_scope_limitations:
+        pdf_unicode_support: latin1_only
+        pdf_unicode_rationale: PDF standard fonts (Helvetica, Helvetica-Bold) use WinAnsiEncoding
+          (Latin-1). Non-Latin-1 chars (Unicode > U+00FF) replaced with '?'. Full Unicode
+          PDF requires TrueType font embedding. Deferred post-Gate-11. PROB-002 Option C.
+        pdf_limitation_severity: MEDIUM
+        pdf_limitation_resolution: DEFERRED_POST_GATE11
     phase_4_python_source:
       status: created
       run: run051

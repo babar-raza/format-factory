@@ -472,8 +472,109 @@ Product deepening requires `qname_compliance_status = verified` in
 - **4/20 implementing**: csv, ndjson, xcf, zst
 - **13/20 seeded**: dif, fodg, fodp, gnumeric, ods, odt, pbm, pgm, ppm, qoi, sylk, toml, tsv
 
+### Internal Format Classification Policy
+
+Some formats produced by Format Factory are classified as `export_helper_only` in
+`registry/parity-matrix.yaml`. This policy section is the authoritative definition
+of what that classification means and its governance implications.
+
+**Formats classified `export_helper_only` (as of 2026-06-25):**
+- HTML (`.html`) — output-only; produced by FODS/FODT/NetPBM exporters
+- Markdown (`.md`) — output-only; produced by FODT exporters
+- TXT (`.txt`) — output-only; produced by FODT/NetPBM exporters
+
+**Policy rules for `export_helper_only` formats:**
+
+1. **No Gap Ledger entries as standalone products.** HTML/Markdown/TXT are NOT
+   tracked as separate product capabilities in `reports/capability-layer/gap-ledger.json`.
+   They are internal export targets of other products.
+
+2. **No Gate 11 criteria.** These formats do not require their own C1-C20 (.NET) or
+   P1-P11 (Python) Gate 11 sign-off. Their quality is measured through the parent format's
+   criteria (e.g., FODS exporting to HTML is covered under FODS Gate 11).
+
+3. **No "read" capability expected.** Format Factory does not provide a parser or reader
+   for these formats. Any work item claiming to add "read" capability for HTML/Markdown/TXT
+   is out of scope and should be rejected.
+
+4. **No pyproject.toml or csproj required.** These are not packaged as standalone libraries.
+
+**Machine-readable source:** `registry/parity-matrix.yaml` — look for
+`classification: export_helper_only` entries under `html`, `markdown`, `txt`.
+
+**Classification change authority:** Changes to this policy require explicit sign-off from
+the project lead (Babar Raza) and must update both this document and parity-matrix.yaml.
+
+### `src/python/_shared/` Lifecycle Decision (PQ-016 Audit, 2026-06-25)
+
+**Decision: RETAIN — actively used by 18/20 Python FOSS format packages.**
+
+The `src/python/_shared/` directory provides shared infrastructure for all Python FOSS
+format packages:
+- `FormatFactoryError` — base exception class
+- `ParseError`, `WriteError`, `ValidationError`, `SizeLimitError` — typed exceptions
+- `BaseParser`, `BaseCodec` — abstract base classes
+
+**Usage:** 18 of 20 formats import from `_shared` via their `exceptions.py` files
+(pattern: `from _shared._shared_exceptions import FormatFactoryError`). Only FODS and FODT
+do not directly import from `_shared`.
+
+**Deletion criterion (for future review):** Delete only if a shared exception hierarchy
+is no longer needed AND no format imports from `_shared`. Current threshold is NOT met.
+
 ### Master Plan Status
 
 Master plan (`plans/master-plan.md`) is at v5.7, Section 49 (all CLOSED).
 Current work is driven by `reports/supervisor/next-sprint.md` and the autonomous
 continuation signal (`.local/supervisor/continuation-signal.json`).
+
+---
+
+## Current State (2026-06-25) — Addendum
+
+This addendum corrects stale claims in earlier sections of this document.
+
+### QName Verification
+
+Earlier sections stated "3/20 qnames verified" — this is outdated. As of 2026-06-25:
+
+- **20/20 Python FOSS formats** have QName registries in `shared/qname-registry/`
+- **99.4% QName coverage** (65/66 active registry entries have python_file pointers)
+- **1 intentional gap:** `fodt:office:body` (python_file=null, enforced by test_no_office_body_python_stub)
+- All 21 QName registry YAML files are in `shared/qname-registry/`
+- V53 governance validator enforces registry completeness on every sprint
+
+### SAL (Spec Authority Layer) Coverage
+
+- **14,315 total SAL facts** in `.local/spec-cache/sal-facts-latest.json`
+- **7 formats with rich facts** (>3): FODS, FODT, FODP, FODG, ODS, ODT, ZST
+- **6 formats with partial facts** (2 generic stubs): CSV, NDJSON, PBM, PGM, PPM, TSV
+- **7 formats with zero facts**: Gnumeric, ABW, QOI, XCF, DIF, SYLK, TOML
+- Root cause: SAL spec parser only implemented for ODF formats (see SAL investigation: `reports/spec-authority/spec-auth-inv-20260625-001/`)
+
+### Governance Validators
+
+- **74 total validators** (V1–V74), up from 72 in prior documentation
+- V74 (TC-PDL-005): Ledger continuation gate — blocks PRODUCT sprints for mixed_model formats
+- All validators registered in `tools/supervisor/governance_validator_runner.py`
+- 109+ governance tests pass
+
+### Product Deepening Ledger
+
+- **20 Python FOSS products** in `registry/product-deepening-ledger.yaml`
+- **3 formats with continuation_allowed=true**: ABW, FODS, FODT (src_layout=compliant)
+- **17 formats with continuation_allowed=false**: CSV, DIF, FODG, FODP, GNUMERIC, NDJSON, ODS, ODT, PBM, PGM, PPM, QOI, SYLK, TOML, TSV, XCF, ZST (src_layout=mixed_model — LOC violations unhealed)
+- Product deepening for mixed_model formats is gated by LOC healing first
+
+### Consumer Proof Status
+
+- **14 Python FOSS formats at PROOF_LEVEL_4+**: ODS, TOML, SYLK, NDJSON, TSV, CSV, GNUMERIC, ABW, ZST, DIF, FODG, FODP (read-only), FODS, FODT
+- Consumer roundtrip examples in `examples/python/*/consumer_roundtrip.py`
+- All 20 format wheel packages built in `.local/package-builds/python-foss/`
+- Gate 11 advancement: 8/31 criteria (C3/C4/C5/C8/C9 .NET + P3/P4/P5 Python) for FODS
+
+### Capability Gap Ledger
+
+- **1,209 total gaps** in `reports/capability-layer/gap-ledger.json`
+- **1,174 closed (INFO)**, 34 LOW, 1 MEDIUM remaining
+- All gaps now have `severity` field (backfilled 2026-06-25 via TC-ARCH-DOC-012)

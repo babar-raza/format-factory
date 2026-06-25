@@ -48,8 +48,8 @@ wave_0:
         - tests/
         - registry/
       implementation_steps:
-        - 1: Write updated next-action.json with current_state: RECONCILIATION_IN_PROGRESS, mission_id, updated_at
-        - 2: Verify JSON is valid
+        - "1: Write updated next-action.json with current_state=RECONCILIATION_IN_PROGRESS, mission_id, updated_at"
+        - "2: Verify JSON is valid"
       focused_verification:
         - JSON parses without error
         - current_state field is not PREFLIGHT
@@ -76,9 +76,9 @@ wave_0:
       allowed_paths:
         - reports/expert-manual-system-review/reconciliation/
       implementation_steps:
-        - 1: canonical-problem-register.json already created by this reconciliation mission
-        - 2: Verify all 27 problem IDs are present
-        - 3: Verify HEAD status for each is accurate
+        - "1: canonical-problem-register.json already created by this reconciliation mission"
+        - "2: Verify all 27 problem IDs are present"
+        - "3: Verify HEAD status for each is accurate"
       focused_verification:
         - 27 total problems
         - 2 CRITICAL, 5 HIGH, 7 MEDIUM open
@@ -103,7 +103,7 @@ wave_0:
       allowed_paths:
         - reports/expert-manual-system-review/reconciliation/mission-state.json
       implementation_steps:
-        - 1: Create mission-state.json with sprint_status, mission_status, portfolio_status separate fields
+        - "1: Create mission-state.json with sprint_status, mission_status, portfolio_status separate fields"
       effort: SMALL
       status: COMPLETE
       completed_at: "2026-06-25"
@@ -138,9 +138,9 @@ wave_1:
         - reports/capability-layer/gap-ledger.json
         - reports/expert-manual-system-review/reconciliation/
       implementation_steps:
-        - 1: Add gap entry GAP-GOV-SKILL-ADOPT-001 to gap-ledger.json
-        - 2: Document in reconciliation report the policy defect
-        - 3: Create taskcard for adding policy carve-out or CI enforcement
+        - "1: Add gap entry GAP-GOV-SKILL-ADOPT-001 to gap-ledger.json"
+        - "2: Document in reconciliation report the policy defect"
+        - "3: Create taskcard for adding policy carve-out or CI enforcement"
       effort: MEDIUM
       status: COMPLETE
       completed_at: "2026-06-25"
@@ -160,8 +160,8 @@ wave_1:
       allowed_paths:
         - reports/expert-manual-system-review/fix-eligibility-matrix.json
       implementation_steps:
-        - 1: Update fix-eligibility-matrix.json for PROB-PK05 and PROB-PY01
-        - 2: Add false_blocker_resolved_by field citing subsequent sprint evidence
+        - "1: Update fix-eligibility-matrix.json for PROB-PK05 and PROB-PY01"
+        - "2: Add false_blocker_resolved_by field citing subsequent sprint evidence"
       effort: SMALL
       status: COMPLETE
       completed_at: "2026-06-25"
@@ -178,8 +178,8 @@ wave_1:
       current_state: "terminal-gate-checklist.json conditions C1-C8 are process-only"
       expected_state: "Product gate schema additions documented; taskcard for implementation"
       implementation_steps:
-        - 1: Create terminal-gate-schema-extension.json in reconciliation/
-        - 2: Define P1 (all CRITICAL closed or VALID_EXTERNAL_GATE), P2 (all HIGH addressed), P3 (skill_id present)
+        - "1: Create terminal-gate-schema-extension.json in reconciliation/"
+        - "2: Define P1 (all CRITICAL closed or VALID_EXTERNAL_GATE), P2 (all HIGH addressed), P3 (skill_id present)"
       effort: SMALL
       status: COMPLETE
       completed_at: "2026-06-25"
@@ -196,8 +196,8 @@ wave_1:
       current_state: "PROB-001 confirmed-problems.json proposes GZipStream — technically invalid for RFC 8878"
       expected_state: "PROB-001 design specifies ZstdSharp.Port NuGet (MIT, managed, cross-platform)"
       implementation_steps:
-        - 1: Update canonical-problem-register.json PROB-001 corrected_fix (already done in this reconciliation)
-        - 2: Create ZST-SOLUTION-DESIGN.md in reconciliation/ with full technical spec
+        - "1: Update canonical-problem-register.json PROB-001 corrected_fix (already done in this reconciliation)"
+        - "2: Create ZST-SOLUTION-DESIGN.md in reconciliation/ with full technical spec"
       effort: SMALL
       status: COMPLETE
       completed_at: "2026-06-25"
@@ -216,9 +216,9 @@ wave_1:
         - .supervisor/skill-registry.yaml
         - reports/expert-manual-system-review/reconciliation/
       implementation_steps:
-        - 1: Run check-skill-coverage skill
-        - 2: For each skill with empty implementation_paths: determine correct paths or advisory_only flag
-        - 3: Document findings in skill-implementation-paths-audit.json
+        - "1: Run check-skill-coverage skill"
+        - "2: For each skill with empty implementation_paths -- determine correct paths or advisory_only flag"
+        - "3: Document findings in skill-implementation-paths-audit.json"
       effort: MEDIUM
       status: COMPLETE
       completed_at: "2026-06-25"
@@ -254,9 +254,9 @@ wave_2:
         - reports/capability-layer/gap-ledger.json
         - tools/supervisor/gap_ledger_to_work_items.py
       implementation_steps:
-        - 1: Define 8-12 category buckets (10 buckets applied — test_coverage_general, test_coverage_analytics, test_coverage_load, test_coverage_write, spec_qname, foss_python, dotnet_commercial, governance, code_quality, missing_implementation)
-        - 2: Applied deterministic inference function to all 1207 MISSING gaps
-        - 3: 0 MISSING categories remain; taxonomy_version=1.0 written to gap-ledger.json
+        - "1: Define 8-12 category buckets (10 buckets applied — test_coverage_general, test_coverage_analytics, test_coverage_load, test_coverage_write, spec_qname, foss_python, dotnet_commercial, governance, code_quality, missing_implementation)"
+        - "2: Applied deterministic inference function to all 1207 MISSING gaps"
+        - "3: 0 MISSING categories remain; taxonomy_version=1.0 written to gap-ledger.json"
       focused_verification:
         - 0 gaps with category MISSING
         - taxonomy_version = "1.0" in gap-ledger.json metadata
@@ -286,9 +286,9 @@ wave_2:
         - shared/qname-registry/
       redesign_note: "DO NOT run sal-pipeline-heal for CSV or TOML — both produce 0 facts (SAL parser is ODF-XML-only). Use TC-RECON-W2-003 and TC-RECON-W2-004 (manual seeding) instead."
       implementation_steps:
-        - 1: "[SUPERSEDED] Do NOT run sal-pipeline-heal for CSV or TOML"
-        - 2: "Execute TC-RECON-W2-003 (manual CSV seeding) and TC-RECON-W2-004 (manual TOML seeding)"
-        - 3: "Verify each sal-facts file has fact_count > 50 BEFORE marking this task complete"
+        - "1: [SUPERSEDED] Do NOT run sal-pipeline-heal for CSV or TOML"
+        - "2: Execute TC-RECON-W2-003 (manual CSV seeding) and TC-RECON-W2-004 (manual TOML seeding)"
+        - "3: Verify each sal-facts file has fact_count > 50 BEFORE marking this task complete"
       acceptance_criterion: "sal-facts-CSV.json fact_count > 50 AND sal-facts-TOML.json fact_count > 50. If either is 0: TASK FAILED (not DEFERRED)."
       failure_condition: "If fact_count == 0 after any sal-pipeline-heal invocation: TASK FAILED — do not mark as DEFERRED or COMPLETE."
       machinery_weakness: "MW-003: SAL pipeline exits 0 with 0 facts. --min-facts flag needed."
@@ -311,10 +311,10 @@ wave_2:
       allowed_paths:
         - .local/spec-cache/sal-facts-CSV.json
       implementation_steps:
-        - 1: "Read RFC 4180 specification (CSV format). Extract clause-level statements as facts."
-        - 2: "Curate minimum 50 facts covering: field delimiter, record terminator, header row, quoting rules, encoding, line endings, field escaping, empty fields, whitespace handling"
-        - 3: "Write facts to .local/spec-cache/sal-facts-CSV.json as JSON array with fields: qname, fact_id, section, clause, fact_type, content, source_spec"
-        - 4: "Verify: python -c \"import json,pathlib; d=json.loads(pathlib.Path('.local/spec-cache/sal-facts-CSV.json').read_text()); print(len(d))\" — must print >= 50"
+        - "1: Read RFC 4180 specification (CSV format). Extract clause-level statements as facts."
+        - "2: Curate minimum 50 facts covering field delimiter, record terminator, header row, quoting rules, encoding, line endings, field escaping, empty fields, whitespace handling"
+        - "3: Write facts to .local/spec-cache/sal-facts-CSV.json as JSON array with fields qname, fact_id, section, clause, fact_type, content, source_spec"
+        - "4: Verify sal-facts-CSV.json parses as JSON list with length >= 50"
       acceptance_criterion: "sal-facts-CSV.json exists AND json.loads produces list of length >= 50"
       failure_condition: "Length < 50 = TASK FAILED, not complete"
       rollback: "Delete .local/spec-cache/sal-facts-CSV.json"
@@ -337,10 +337,10 @@ wave_2:
       allowed_paths:
         - .local/spec-cache/sal-facts-TOML.json
       implementation_steps:
-        - 1: "Read TOML 1.0 specification. Extract clause-level statements as facts."
-        - 2: "Curate minimum 50 facts covering: key-value pairs, tables, inline tables, arrays, array of tables, string types (basic/literal/multiline), integer types, float, boolean, datetime, comment syntax, unicode support"
-        - 3: "Write facts to .local/spec-cache/sal-facts-TOML.json as JSON array with fields: qname, fact_id, section, clause, fact_type, content, source_spec"
-        - 4: "Verify length >= 50"
+        - "1: Read TOML 1.0 specification. Extract clause-level statements as facts."
+        - "2: Curate minimum 50 facts covering key-value pairs, tables, inline tables, arrays, array of tables, string types (basic/literal/multiline), integer types, float, boolean, datetime, comment syntax, unicode support"
+        - "3: Write facts to .local/spec-cache/sal-facts-TOML.json as JSON array with fields qname, fact_id, section, clause, fact_type, content, source_spec"
+        - "4: Verify length >= 50"
       acceptance_criterion: "sal-facts-TOML.json exists AND json.loads produces list of length >= 50"
       failure_condition: "Length < 50 = TASK FAILED"
       rollback: "Delete .local/spec-cache/sal-facts-TOML.json"
@@ -377,9 +377,9 @@ wave_3:
         - src/net/markdown/FormatFactory.Markdown.csproj
         - src/net/txt/FormatFactory.Txt.csproj
       implementation_steps:
-        - 1: "[CORRECTED] Target is .csproj files, NOT format-registry.yaml (HTML/MD/TXT not in registry)"
-        - 2: "Added product_class=target_writer_utility annotation to all 3 .csproj files"
-        - 3: "Added comment: NOT a format product. No load/parse capability. Internal dogfood export target."
+        - "1: [CORRECTED] Target is .csproj files, NOT format-registry.yaml (HTML/MD/TXT not in registry)"
+        - "2: Added product_class=target_writer_utility annotation to all 3 .csproj files"
+        - "3: \"Added comment: NOT a format product. No load/parse capability. Internal dogfood export target.\""
       focused_verification:
         - All 3 .csproj files contain product_class=target_writer_utility annotation
         - format-registry.yaml NOT modified (HTML/MD/TXT are not registered format products)
@@ -404,8 +404,8 @@ wave_3:
         - product-capability-matrix/poc-targets.yaml
         - reports/expert-manual-system-review/reconciliation/
       implementation_steps:
-        - 1: "DONE: Added fods_to_ods_dotnet: PROTOTYPE to poc-targets.yaml FODS dogfood_status section"
-        - 2: "REMAINING: Validate ODS ZIP structure (TC-RECON-W4-004 — actual ZIP structure test)"
+        - "1: \"DONE: Added fods_to_ods_dotnet: PROTOTYPE to poc-targets.yaml FODS dogfood_status section\""
+        - "2: \"REMAINING: Validate ODS ZIP structure (TC-RECON-W4-004 — actual ZIP structure test)\""
       effort: MEDIUM
       status: PARTIALLY_COMPLETE
       partially_complete_note: "poc-targets.yaml updated with PROTOTYPE status. Full validation (ODS ZIP structure test) is TC-RECON-W4-004 which depends on this taskcard being at least PARTIALLY_COMPLETE."
@@ -428,11 +428,11 @@ wave_3:
         - src/python/gnumeric/
         - src/python/toml/
       implementation_steps:
-        - 1: Rename gnumeric_workbook_stats.py → gnumeric_analytics.py
-        - 2: Update all imports referencing gnumeric_workbook_stats
-        - 3: Rename toml/config_document.py → toml_analytics.py (if it is truly analytics, not domain model)
-        - 4: Update all imports
-        - 5: Run affected tests
+        - "1: Rename gnumeric_workbook_stats.py → gnumeric_analytics.py"
+        - "2: Update all imports referencing gnumeric_workbook_stats"
+        - "3: Rename toml/config_document.py → toml_analytics.py (if it is truly analytics, not domain model)"
+        - "4: Update all imports"
+        - "5: Run affected tests"
       focused_verification:
         - All imports resolve
         - Affected tests pass
@@ -459,9 +459,9 @@ wave_3:
         - src/net/zst/ZstParser.cs
         - src/net/zst/ZstDocument.cs
       implementation_steps:
-        - 1: "DONE: Verified ZST Gate 11 status in poc-targets.yaml — ZST at gates 1-10 only"
-        - 2: "DONE: 'NOT approved' header is consistent with poc-targets.yaml lifecycle position"
-        - 3: "DONE: Documented in nf-004-zst-gate11-status-finding.json"
+        - "1: \"DONE: Verified ZST Gate 11 status in poc-targets.yaml — ZST at gates 1-10 only\""
+        - "2: \"DONE: 'NOT approved' header is consistent with poc-targets.yaml lifecycle position\""
+        - "3: \"DONE: Documented in nf-004-zst-gate11-status-finding.json\""
       focused_verification:
         - nf-004-zst-gate11-status-finding.json verdict = VERIFIED_CONSISTENT
       effort: SMALL
@@ -501,13 +501,13 @@ wave_4:
         - step: "Verify NuGet feed allows ZstdSharp.Port: dotnet package search ZstdSharp.Port"
         - on_fail: "If ZstdSharp.Port unavailable: document as EXTERNAL_BLOCKER:nuget_feed_restriction and skip to next task"
       implementation_steps:
-        - 1: "[PREFLIGHT] dotnet package search ZstdSharp.Port — verify availability"
-        - 2: Add ZstdSharp.Port NuGet reference to FormatFactory.Zst.csproj
-        - 3: Implement ZstDocument.Decompress() → byte[] using ZstdSharp.Decompressor.Unwrap
-        - 4: Implement ZstDocument.DecompressToString(Encoding) → string
-        - 5: Implement ZstParser streaming overload
-        - 6: Add malformed-input test (invalid magic bytes → ZstInvalidMagicException)
-        - 7: Add roundtrip test: compress text → decompress → verify equality
+        - "1: [PREFLIGHT] dotnet package search ZstdSharp.Port — verify availability"
+        - "2: Add ZstdSharp.Port NuGet reference to FormatFactory.Zst.csproj"
+        - "3: Implement ZstDocument.Decompress() → byte[] using ZstdSharp.Decompressor.Unwrap"
+        - "4: Implement ZstDocument.DecompressToString(Encoding) → string"
+        - "5: Implement ZstParser streaming overload"
+        - "6: Add malformed-input test (invalid magic bytes → ZstInvalidMagicException)"
+        - "7: Add roundtrip test: compress text → decompress → verify equality"
       focused_verification:
         - dotnet build succeeds
         - Roundtrip test: ZstdSharp.Compressor → ZstDocument.Decompress() produces original content
@@ -537,11 +537,11 @@ wave_4:
         - src/net/fodt/FodtParser.cs
         - tests/net/fodt/
       implementation_steps:
-        - 1: Create FodtTable and FodtTableCell public model classes
-        - 2: Implement FodtBody.Tables property (IReadOnlyList<FodtTable>)
-        - 3: Extend FodtParser to populate Tables from table:table elements
-        - 4: Add test: load FODT with table → verify cells accessible
-        - 5: Ensure FodtBody.Paragraphs still works (non-breaking)
+        - "1: Create FodtTable and FodtTableCell public model classes"
+        - "2: Implement FodtBody.Tables property (IReadOnlyList<FodtTable>)"
+        - "3: Extend FodtParser to populate Tables from table:table elements"
+        - "4: Add test: load FODT with table → verify cells accessible"
+        - "5: Ensure FodtBody.Paragraphs still works (non-breaking)"
       focused_verification:
         - FodtBody.Tables returns populated list for table-containing documents
         - FodtBody.Paragraphs unchanged
@@ -573,11 +573,11 @@ wave_4:
         - src/net/fods/FodsPdfExporter.cs
         - registry/format-registry.yaml
       implementation_steps:
-        - 1: "Update FodsPdfExporter.cs header comment: formally state Latin-1-scoped as known limitation for v0.x"
-        - 2: "Update format-registry.yaml FODS entry: add pdf_unicode_scope: latin-1 field"
-        - 3: "Add test: export FODS cell with non-Latin content → verify either throws FodsPdfUnsupportedCharacterException or explicitly documents garbling as known"
-        - 4: "DO NOT add PdfSharp NuGet dependency"
-        - 5: "DO NOT implement TrueType font embedding"
+        - "1: \"Update FodsPdfExporter.cs header comment: formally state Latin-1-scoped as known limitation for v0.x\""
+        - "2: \"Update format-registry.yaml FODS entry: add pdf_unicode_scope: latin-1 field\""
+        - "3: \"Add test: export FODS cell with non-Latin content → verify either throws FodsPdfUnsupportedCharacterException or explicitly documents garbling as known\""
+        - "4: DO NOT add PdfSharp NuGet dependency"
+        - "5: DO NOT implement TrueType font embedding"
       focused_verification:
         - FodsPdfExporter.cs has explicit Latin-1 scope comment
         - format-registry.yaml FODS entry has pdf_unicode_scope field
@@ -603,10 +603,10 @@ wave_4:
         - tests/net/fods/
         - product-capability-matrix/poc-targets.yaml
       implementation_steps:
-        - 1: Read FodsOdsExporter.cs fully — trace Export() output path
-        - 2: Write test: Export small FODS → load the ODS result with FodsParser or verify ZIP structure
-        - 3: If test passes: remove PROTOTYPE_STATUS comment and update poc-targets to PASS
-        - 4: If test fails: fix root cause or downgrade poc-targets to PARTIAL
+        - "1: Read FodsOdsExporter.cs fully — trace Export() output path"
+        - "2: Write test: Export small FODS → load the ODS result with FodsParser or verify ZIP structure"
+        - "3: If test passes: remove PROTOTYPE_STATUS comment and update poc-targets to PASS"
+        - "4: If test fails: fix root cause or downgrade poc-targets to PARTIAL"
       focused_verification:
         - ODS export produces valid ZIP with required entries (mimetype, content.xml, styles.xml, META-INF/manifest.xml)
         - ZIP can be opened (or explicitly document what's missing)
@@ -645,12 +645,12 @@ wave_5:
         - src/net/csv/CsvDocument.cs
         - tests/net/csv/
       implementation_steps:
-        - 1: "Read CsvDocument.cs — CONFIRM AddRow/SetCell/RemoveRow are NOT present (expected: query-only API)"
-        - 2: "Implement AddRow(IEnumerable<string> values) — appends a row to the document"
-        - 3: "Implement SetCell(int row, int col, string value) — mutates a specific cell"
-        - 4: "Implement RemoveRow(int index) — removes a row by index"
-        - 5: "Add test: new CsvDocument() + AddRow(['a','b']) + SetCell(0,0,'X') + RemoveRow(0) → verify state"
-        - 6: "Verify all existing CsvDocument tests still pass (query API unchanged)"
+        - "1: \"Read CsvDocument.cs — CONFIRM AddRow/SetCell/RemoveRow are NOT present (expected: query-only API)\""
+        - "2: Implement AddRow(IEnumerable<string> values) — appends a row to the document"
+        - "3: Implement SetCell(int row, int col, string value) — mutates a specific cell"
+        - "4: Implement RemoveRow(int index) — removes a row by index"
+        - "5: \"Add test: new CsvDocument() + AddRow(['a','b']) + SetCell(0,0,'X') + RemoveRow(0) → verify state\""
+        - "6: Verify all existing CsvDocument tests still pass (query API unchanged)"
       focused_verification:
         - CsvDocument.cs has AddRow, SetCell, RemoveRow public methods
         - Mutation tests pass
@@ -680,10 +680,10 @@ wave_5:
         source: ".local/spec-cache/sal-facts-FODP.json"
         note: "V53 validator requires spec_fact_refs for PRODUCT_SOURCE items. Must cite FACT-FODP-001 from sal-facts-FODP.json in declaration evidence_paths."
       implementation_steps:
-        - 1: "Study write_fodg() as reference pattern"
-        - 2: "Implement write_fodp(model, path) producing flat ODP XML"
-        - 3: "Add roundtrip test: load → write_fodp → reload → verify page count preserved"
-        - 4: "In evidence declaration: include spec_fact_ref: FACT-FODP-001 in evidence_paths"
+        - "1: Study write_fodg() as reference pattern"
+        - "2: Implement write_fodp(model, path) producing flat ODP XML"
+        - "3: \"Add roundtrip test: load → write_fodp → reload → verify page count preserved\""
+        - "4: \"In evidence declaration: include spec_fact_ref: FACT-FODP-001 in evidence_paths\""
       effort: MEDIUM
       status: PENDING
       max_attempts: 3
@@ -701,9 +701,9 @@ wave_5:
         - tools/supervisor/grade_declared_work.py
         - tools/supervisor/
       implementation_steps:
-        - 1: Add local deterministic grader path: if LLM unavailable, use deterministic checks
-        - 2: Replace silent DEFERRED_WITH_REASON with explicit UNVERIFIED_EXTERNAL_GRADER state
-        - 3: Add governance validator: if DEFERRED_WITH_REASON > 20% of items, warn
+        - "1: Add local deterministic grader path: if LLM unavailable, use deterministic checks"
+        - "2: Replace silent DEFERRED_WITH_REASON with explicit UNVERIFIED_EXTERNAL_GRADER state"
+        - "3: Add governance validator: if DEFERRED_WITH_REASON > 20% of items, warn"
       effort: MEDIUM
       status: PENDING
       max_attempts: 3
@@ -732,9 +732,9 @@ wave_6:
         - tools/supervisor/
         - .supervisor/skill-registry.yaml
       implementation_steps:
-        - 1: Implement ci_transcript_verification as active skill
-        - 2: Wire into .github/workflows/ci.yml
-        - 3: Update skill-registry.yaml entry from backlog to active
+        - "1: Implement ci_transcript_verification as active skill"
+        - "2: Wire into .github/workflows/ci.yml"
+        - "3: Update skill-registry.yaml entry from backlog to active"
       effort: MEDIUM
       status: PENDING
       max_attempts: 3
@@ -762,11 +762,11 @@ wave_6:
         verify_with: "python tools/validators/source_structure_validator.py after each extraction"
         note: "autonomous_cycle.py cap=2401, governance_validators.py cap=3179. Both write-once. Extraction reduces original (PASS) but new files must not exceed 800 LOC."
       implementation_steps:
-        - 1: Extract small helpers from autonomous_cycle.py to autonomous_cycle_utils.py (target < 800 LOC per extracted file)
-        - 2: Run source structure validator after each extraction
-        - 3: If extracted file > 800 LOC: register in known_violations BEFORE continuing
-        - 4: Repeat for governance_validators.py → governance_validator_modules/
-        - 5: Verify all 92 governance validator tests still pass
+        - "1: Extract small helpers from autonomous_cycle.py to autonomous_cycle_utils.py (target < 800 LOC per extracted file)"
+        - "2: Run source structure validator after each extraction"
+        - "3: If extracted file > 800 LOC: register in known_violations BEFORE continuing"
+        - "4: Repeat for governance_validators.py → governance_validator_modules/"
+        - "5: Verify all 92 governance validator tests still pass"
       effort: HIGH
       status: PENDING
       max_attempts: 3
@@ -787,11 +787,11 @@ wave_6:
       allowed_paths:
         - .supervisor/skill-registry.yaml
       implementation_steps:
-        - 1: "Read skill-implementation-paths-audit.json — get list of 55 prompt-only skill IDs"
-        - 2: "For each skill with empty implementation_paths: add advisory_only: true to skill-registry.yaml entry"
-        - 3: "Verify: count of skills with advisory_only=true == 55"
-        - 4: "Verify: 7 code-enforced skills do NOT have advisory_only=true"
-        - 5: "Verify skill-registry.yaml still parses as valid YAML"
+        - "1: Read skill-implementation-paths-audit.json — get list of 55 prompt-only skill IDs"
+        - "2: \"For each skill with empty implementation_paths: add advisory_only: true to skill-registry.yaml entry\""
+        - "3: \"Verify: count of skills with advisory_only=true == 55\""
+        - "4: \"Verify: 7 code-enforced skills do NOT have advisory_only=true\""
+        - "5: Verify skill-registry.yaml still parses as valid YAML"
       acceptance_criterion: "55 skills have advisory_only=true; 7 code-enforced skills unchanged"
       rollback: "git checkout .supervisor/skill-registry.yaml"
       effort: MEDIUM
@@ -815,10 +815,10 @@ wave_6:
         - .local/evidences/
         - reports/expert-manual-system-review/reconciliation/
       implementation_steps:
-        - 1: "Write .local/evidences/recon-wave-0-3-retroactive/evidence-declaration.yaml covering all Wave 0-3 work"
-        - 2: "For each Wave 0-3 taskcard: declare the work item, skill_id used (post-hoc), evidence_path"
-        - 3: "Write reports/expert-manual-system-review/reconciliation/wave-0-3-retroactive-attestation.yaml"
-        - 4: "Note: retroactive attestation does NOT replace real skill enforcement — MW-001 plan validator would prevent this in future"
+        - "1: Write .local/evidences/recon-wave-0-3-retroactive/evidence-declaration.yaml covering all Wave 0-3 work"
+        - "2: \"For each Wave 0-3 taskcard: declare the work item, skill_id used (post-hoc), evidence_path\""
+        - "3: Write reports/expert-manual-system-review/reconciliation/wave-0-3-retroactive-attestation.yaml"
+        - "4: \"Note: retroactive attestation does NOT replace real skill enforcement — MW-001 plan validator would prevent this in future\""
       rollback: "Delete .local/evidences/recon-wave-0-3-retroactive/"
       effort: SMALL
       status: PENDING
@@ -839,13 +839,13 @@ wave_6:
       allowed_paths:
         - tools/supervisor/validate_execution_plan.py
       implementation_steps:
-        - 1: "Create tools/supervisor/validate_execution_plan.py"
-        - 2: "Check 1: All skill_ids in plan tasks are active in .supervisor/skill-registry.yaml"
-        - 3: "Check 2: All allowed_paths exist (or are in-plan creation targets)"
-        - 4: "Check 3: All dependency task_ids reference valid tasks in the plan"
-        - 5: "Check 4: No PENDING taskcard has all prerequisites COMPLETE/RESOLVED but is not starting"
-        - 6: "Output: JSON report with PASS/FAIL per check + list of violations"
-        - 7: "Test: run against this micro-taskcards.yaml and verify all checks pass after healing"
+        - "1: Create tools/supervisor/validate_execution_plan.py"
+        - "2: \"Check 1: All skill_ids in plan tasks are active in .supervisor/skill-registry.yaml\""
+        - "3: \"Check 2: All allowed_paths exist (or are in-plan creation targets)\""
+        - "4: \"Check 3: All dependency task_ids reference valid tasks in the plan\""
+        - "5: \"Check 4: No PENDING taskcard has all prerequisites COMPLETE/RESOLVED but is not starting\""
+        - "6: \"Output: JSON report with PASS/FAIL per check + list of violations\""
+        - "7: \"Test: run against this micro-taskcards.yaml and verify all checks pass after healing\""
       acceptance_criterion: "validate_execution_plan.py --plan micro-taskcards.yaml exits 0 with all checks PASS"
       effort: MEDIUM
       status: PENDING
@@ -873,10 +873,10 @@ wave_7:
         note: "FODP consumer proof = read+inspect only (no write_fodp exists at this stage — PROB-006 pending as TC-RECON-W5-002)"
         expected_result: "FODP consumer_roundtrip.py verifies load + analytics (get_page_count, fodp_slide_count) but does NOT produce a write roundtrip"
       implementation_steps:
-        - 1: Run each consumer_roundtrip.py example for all 14 formats
-        - 2: "FODP: verify read+inspect analytics pass (load, get_page_count, fodp_slide_count) — NOT write roundtrip"
-        - 3: Verify CONSUMER_PROOF: PASS for all formats (FODP = ANALYTICS_PASS, not WRITE_PASS)
-        - 4: Update packaging-distribution-matrix.json with current status
+        - "1: Run each consumer_roundtrip.py example for all 14 formats"
+        - "2: \"FODP: verify read+inspect analytics pass (load, get_page_count, fodp_slide_count) — NOT write roundtrip\""
+        - "3: Verify CONSUMER_PROOF: PASS for all formats (FODP = ANALYTICS_PASS, not WRITE_PASS)"
+        - "4: Update packaging-distribution-matrix.json with current status"
       effort: MEDIUM
       status: PENDING
       max_attempts: 3
@@ -892,10 +892,10 @@ wave_7:
       allowed_paths:
         - src/net/
       implementation_steps:
-        - 1: dotnet build (all three Gate 11 products + ZST)
-        - 2: dotnet pack — produce .nupkg files
-        - 3: Inspect .nupkg: verify Description, GenerateDocumentationFile, PackageReadmeFile
-        - 4: Verify XML docs included
+        - "1: dotnet build (all three Gate 11 products + ZST)"
+        - "2: dotnet pack — produce .nupkg files"
+        - "3: Inspect .nupkg: verify Description, GenerateDocumentationFile, PackageReadmeFile"
+        - "4: Verify XML docs included"
       effort: MEDIUM
       status: PENDING
       max_attempts: 3
@@ -919,10 +919,10 @@ wave_8:
       priority: 1
       skill_ids: [add-roundtrip-test]
       implementation_steps:
-        - 1: .venv/Scripts/pytest tests/ --ignore=tests/supervisor --tb=short -q
-        - 2: .venv/Scripts/pytest tests/supervisor/ -q
-        - 3: Record pass/fail counts
-        - 4: Any new failures require analysis and fix before Wave 9
+        - "1: .venv/Scripts/pytest tests/ --ignore=tests/supervisor --tb=short -q"
+        - "2: .venv/Scripts/pytest tests/supervisor/ -q"
+        - "3: Record pass/fail counts"
+        - "4: Any new failures require analysis and fix before Wave 9"
       effort: MEDIUM
       status: PENDING
       max_attempts: 3
@@ -936,9 +936,9 @@ wave_8:
       priority: 2
       skill_ids: [package-install-proof]
       implementation_steps:
-        - 1: "For each of 20 packages: pip install -e src/python/{pkg}/ && python -c \"import {pkg}; print({pkg}.__version__)\""
-        - 2: Verify all 20 pass
-        - 3: Update packaging-distribution-matrix.json
+        - "1: For each of 20 packages run pip install -e src/python/{pkg}/ then verify import succeeds"
+        - "2: Verify all 20 pass"
+        - "3: Update packaging-distribution-matrix.json"
       effort: MEDIUM
       status: PENDING
       max_attempts: 3
@@ -969,11 +969,11 @@ wave_9:
         baseline_file: "reports/expert-manual-system-review/reconciliation/idempotency-baseline.json"
         fields_required: [file_path, sha256_before, sha256_after]
       implementation_steps:
-        - 1: "[PREREQ] Compute SHA-256 of all Wave 3 annotation targets; write idempotency-baseline.json"
-        - 2: Re-run all Wave 3 registry updates — verify no additional changes (SHA-256 unchanged)
-        - 3: Re-run all Wave 7 package builds — verify identical outputs
-        - 4: Re-run test suite — verify same pass count
-        - 5: Check git status — no unexpected modifications
+        - "1: [PREREQ] Compute SHA-256 of all Wave 3 annotation targets; write idempotency-baseline.json"
+        - "2: Re-run all Wave 3 registry updates — verify no additional changes (SHA-256 unchanged)"
+        - "3: Re-run all Wave 7 package builds — verify identical outputs"
+        - "4: Re-run test suite — verify same pass count"
+        - "5: Check git status — no unexpected modifications"
       effort: MEDIUM
       status: PENDING
       max_attempts: 3
@@ -989,9 +989,9 @@ wave_9:
       allowed_paths:
         - reports/expert-manual-system-review/reconciliation/
       implementation_steps:
-        - 1: Update canonical-problem-register.json with final HEAD statuses
-        - 2: Produce final-audit.json with completion gates assessment
-        - 3: Determine final verdict
+        - "1: Update canonical-problem-register.json with final HEAD statuses"
+        - "2: Produce final-audit.json with completion gates assessment"
+        - "3: Determine final verdict"
       effort: SMALL
       status: PENDING
       max_attempts: 3

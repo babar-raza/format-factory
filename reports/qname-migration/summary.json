@@ -1,0 +1,389 @@
+{
+  "date": "20260625",
+  "tool": "qname_migration_planner",
+  "description": "Per-format migration readiness maps from current src/ to qname-compliant architecture",
+  "formats_planned": 20,
+  "formats_needing_migration": 18,
+  "formats_fully_compliant": 2,
+  "formats": [
+    {
+      "format_id": "abw",
+      "date": "20260625",
+      "total_entries": 3,
+      "compliant_count": 0,
+      "compliant_pct": 0.0,
+      "blocks_gate_count": 0,
+      "state_counts": {
+        "WRONG_PATH_IN_SPEC": 3
+      },
+      "action_counts": {
+        "MOVE_FILE": 3
+      },
+      "risk_counts": {
+        "HIGH": 3
+      },
+      "migration_ready": true
+    },
+    {
+      "format_id": "csv",
+      "date": "20260625",
+      "total_entries": 3,
+      "compliant_count": 0,
+      "compliant_pct": 0.0,
+      "blocks_gate_count": 0,
+      "state_counts": {
+        "WRONG_PATH_IN_SPEC": 3
+      },
+      "action_counts": {
+        "MOVE_FILE": 3
+      },
+      "risk_counts": {
+        "HIGH": 3
+      },
+      "migration_ready": true
+    },
+    {
+      "format_id": "dif",
+      "date": "20260625",
+      "total_entries": 5,
+      "compliant_count": 0,
+      "compliant_pct": 0.0,
+      "blocks_gate_count": 0,
+      "state_counts": {
+        "WRONG_PATH_IN_SPEC": 3,
+        "MISSING_CLASS": 2
+      },
+      "action_counts": {
+        "MOVE_FILE": 5
+      },
+      "risk_counts": {
+        "HIGH": 5
+      },
+      "migration_ready": true
+    },
+    {
+      "format_id": "fodg",
+      "date": "20260625",
+      "total_entries": 3,
+      "compliant_count": 3,
+      "compliant_pct": 1.0,
+      "blocks_gate_count": 0,
+      "state_counts": {
+        "MATCH": 3
+      },
+      "action_counts": {
+        "NONE": 3
+      },
+      "risk_counts": {
+        "LOW": 3
+      },
+      "migration_ready": true
+    },
+    {
+      "format_id": "fodp",
+      "date": "20260625",
+      "total_entries": 3,
+      "compliant_count": 1,
+      "compliant_pct": 0.333,
+      "blocks_gate_count": 0,
+      "state_counts": {
+        "MATCH": 1,
+        "WRONG_PATH_IN_SPEC": 1,
+        "MISSING_CLASS": 1
+      },
+      "action_counts": {
+        "NONE": 1,
+        "MOVE_FILE": 2
+      },
+      "risk_counts": {
+        "LOW": 1,
+        "HIGH": 2
+      },
+      "migration_ready": true
+    },
+    {
+      "format_id": "fods",
+      "date": "20260625",
+      "total_entries": 12,
+      "compliant_count": 11,
+      "compliant_pct": 0.917,
+      "blocks_gate_count": 0,
+      "state_counts": {
+        "MATCH": 11,
+        "WRONG_PATH_IN_SPEC": 1
+      },
+      "action_counts": {
+        "NONE": 11,
+        "MOVE_FILE": 1
+      },
+      "risk_counts": {
+        "LOW": 11,
+        "HIGH": 1
+      },
+      "migration_ready": true
+    },
+    {
+      "format_id": "fodt",
+      "date": "20260625",
+      "total_entries": 9,
+      "compliant_count": 6,
+      "compliant_pct": 0.667,
+      "blocks_gate_count": 0,
+      "state_counts": {
+        "ARCHITECTURE_ONLY_NO_FILE": 1,
+        "WRONG_PATH_IN_SPEC": 3,
+        "MATCH": 5
+      },
+      "action_counts": {
+        "NONE": 6,
+        "MOVE_FILE": 3
+      },
+      "risk_counts": {
+        "LOW": 6,
+        "HIGH": 3
+      },
+      "migration_ready": true
+    },
+    {
+      "format_id": "gnumeric",
+      "date": "20260625",
+      "total_entries": 3,
+      "compliant_count": 0,
+      "compliant_pct": 0.0,
+      "blocks_gate_count": 0,
+      "state_counts": {
+        "WRONG_PATH_IN_SPEC": 3
+      },
+      "action_counts": {
+        "MOVE_FILE": 3
+      },
+      "risk_counts": {
+        "HIGH": 3
+      },
+      "migration_ready": true
+    },
+    {
+      "format_id": "ndjson",
+      "date": "20260625",
+      "total_entries": 2,
+      "compliant_count": 0,
+      "compliant_pct": 0.0,
+      "blocks_gate_count": 0,
+      "state_counts": {
+        "WRONG_PATH_IN_SPEC": 2
+      },
+      "action_counts": {
+        "MOVE_FILE": 2
+      },
+      "risk_counts": {
+        "HIGH": 2
+      },
+      "migration_ready": true
+    },
+    {
+      "format_id": "ods",
+      "date": "20260625",
+      "total_entries": 4,
+      "compliant_count": 4,
+      "compliant_pct": 1.0,
+      "blocks_gate_count": 0,
+      "state_counts": {
+        "MATCH": 4
+      },
+      "action_counts": {
+        "NONE": 4
+      },
+      "risk_counts": {
+        "LOW": 4
+      },
+      "migration_ready": true
+    },
+    {
+      "format_id": "odt",
+      "date": "20260625",
+      "total_entries": 3,
+      "compliant_count": 1,
+      "compliant_pct": 0.333,
+      "blocks_gate_count": 0,
+      "state_counts": {
+        "MATCH": 1,
+        "WRONG_PATH_IN_SPEC": 2
+      },
+      "action_counts": {
+        "NONE": 1,
+        "MOVE_FILE": 2
+      },
+      "risk_counts": {
+        "LOW": 1,
+        "HIGH": 2
+      },
+      "migration_ready": true
+    },
+    {
+      "format_id": "pbm",
+      "date": "20260625",
+      "total_entries": 3,
+      "compliant_count": 0,
+      "compliant_pct": 0.0,
+      "blocks_gate_count": 0,
+      "state_counts": {
+        "WRONG_PATH_IN_SPEC": 3
+      },
+      "action_counts": {
+        "MOVE_FILE": 3
+      },
+      "risk_counts": {
+        "HIGH": 3
+      },
+      "migration_ready": true
+    },
+    {
+      "format_id": "pgm",
+      "date": "20260625",
+      "total_entries": 3,
+      "compliant_count": 0,
+      "compliant_pct": 0.0,
+      "blocks_gate_count": 0,
+      "state_counts": {
+        "WRONG_PATH_IN_SPEC": 2,
+        "MISSING_CLASS": 1
+      },
+      "action_counts": {
+        "MOVE_FILE": 3
+      },
+      "risk_counts": {
+        "HIGH": 3
+      },
+      "migration_ready": true
+    },
+    {
+      "format_id": "ppm",
+      "date": "20260625",
+      "total_entries": 3,
+      "compliant_count": 0,
+      "compliant_pct": 0.0,
+      "blocks_gate_count": 0,
+      "state_counts": {
+        "WRONG_PATH_IN_SPEC": 2,
+        "MISSING_CLASS": 1
+      },
+      "action_counts": {
+        "MOVE_FILE": 3
+      },
+      "risk_counts": {
+        "HIGH": 3
+      },
+      "migration_ready": true
+    },
+    {
+      "format_id": "qoi",
+      "date": "20260625",
+      "total_entries": 3,
+      "compliant_count": 0,
+      "compliant_pct": 0.0,
+      "blocks_gate_count": 0,
+      "state_counts": {
+        "WRONG_PATH_IN_SPEC": 3
+      },
+      "action_counts": {
+        "MOVE_FILE": 3
+      },
+      "risk_counts": {
+        "HIGH": 3
+      },
+      "migration_ready": true
+    },
+    {
+      "format_id": "sylk",
+      "date": "20260625",
+      "total_entries": 4,
+      "compliant_count": 0,
+      "compliant_pct": 0.0,
+      "blocks_gate_count": 0,
+      "state_counts": {
+        "WRONG_PATH_IN_SPEC": 3,
+        "MISSING_CLASS": 1
+      },
+      "action_counts": {
+        "MOVE_FILE": 4
+      },
+      "risk_counts": {
+        "HIGH": 4
+      },
+      "migration_ready": true
+    },
+    {
+      "format_id": "toml",
+      "date": "20260625",
+      "total_entries": 3,
+      "compliant_count": 0,
+      "compliant_pct": 0.0,
+      "blocks_gate_count": 0,
+      "state_counts": {
+        "WRONG_PATH_IN_SPEC": 3
+      },
+      "action_counts": {
+        "MOVE_FILE": 3
+      },
+      "risk_counts": {
+        "HIGH": 3
+      },
+      "migration_ready": true
+    },
+    {
+      "format_id": "tsv",
+      "date": "20260625",
+      "total_entries": 3,
+      "compliant_count": 0,
+      "compliant_pct": 0.0,
+      "blocks_gate_count": 0,
+      "state_counts": {
+        "WRONG_PATH_IN_SPEC": 3
+      },
+      "action_counts": {
+        "MOVE_FILE": 3
+      },
+      "risk_counts": {
+        "HIGH": 3
+      },
+      "migration_ready": true
+    },
+    {
+      "format_id": "xcf",
+      "date": "20260625",
+      "total_entries": 4,
+      "compliant_count": 0,
+      "compliant_pct": 0.0,
+      "blocks_gate_count": 0,
+      "state_counts": {
+        "MISSING_CLASS": 1,
+        "WRONG_PATH_IN_SPEC": 3
+      },
+      "action_counts": {
+        "MOVE_FILE": 4
+      },
+      "risk_counts": {
+        "HIGH": 4
+      },
+      "migration_ready": true
+    },
+    {
+      "format_id": "zst",
+      "date": "20260625",
+      "total_entries": 3,
+      "compliant_count": 0,
+      "compliant_pct": 0.0,
+      "blocks_gate_count": 0,
+      "state_counts": {
+        "WRONG_PATH_IN_SPEC": 3
+      },
+      "action_counts": {
+        "MOVE_FILE": 3
+      },
+      "risk_counts": {
+        "HIGH": 3
+      },
+      "migration_ready": true
+    }
+  ]
+}

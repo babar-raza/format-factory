@@ -1,0 +1,71 @@
+{
+  "format_id": "abw",
+  "date": "20260625",
+  "total_entries": 3,
+  "compliant_count": 0,
+  "compliant_pct": 0.0,
+  "blocks_gate_count": 0,
+  "state_counts": {
+    "WRONG_PATH_IN_SPEC": 3
+  },
+  "action_counts": {
+    "MOVE_FILE": 3
+  },
+  "risk_counts": {
+    "HIGH": 3
+  },
+  "migration_ready": true,
+  "entries": [
+    {
+      "qname": "abiword:document",
+      "status": "verified",
+      "canonical_class": "Abiword.Document",
+      "current_path": "src/python/abw/spec/document/document.py",
+      "target_path": "src/python/abw/spec/abiword/document.py",
+      "source_layer": "Spec",
+      "current_state": "WRONG_PATH_IN_SPEC",
+      "action_required": "MOVE_FILE",
+      "migration_risk": "HIGH",
+      "estimated_effort": "medium",
+      "blocks_gate": false,
+      "test_changes_required": [],
+      "notes": [
+        "In spec/ but wrong sub-path. Got src/python/abw/spec/document/document.py, expected src/python/abw/spec/abiword/document.py"
+      ]
+    },
+    {
+      "qname": "abiword:section",
+      "status": "verified",
+      "canonical_class": "Abiword.Section",
+      "current_path": "src/python/abw/spec/document/section.py",
+      "target_path": "src/python/abw/spec/abiword/section.py",
+      "source_layer": "Spec",
+      "current_state": "WRONG_PATH_IN_SPEC",
+      "action_required": "MOVE_FILE",
+      "migration_risk": "HIGH",
+      "estimated_effort": "medium",
+      "blocks_gate": false,
+      "test_changes_required": [],
+      "notes": [
+        "In spec/ but wrong sub-path. Got src/python/abw/spec/document/section.py, expected src/python/abw/spec/abiword/section.py"
+      ]
+    },
+    {
+      "qname": "abiword:p",
+      "status": "verified",
+      "canonical_class": "Abiword.Paragraph",
+      "current_path": "src/python/abw/spec/document/paragraph.py",
+      "target_path": "src/python/abw/spec/abiword/p.py",
+      "source_layer": "Spec",
+      "current_state": "WRONG_PATH_IN_SPEC",
+      "action_required": "MOVE_FILE",
+      "migration_risk": "HIGH",
+      "estimated_effort": "medium",
+      "blocks_gate": false,
+      "test_changes_required": [],
+      "notes": [
+        "In spec/ but wrong sub-path. Got src/python/abw/spec/document/paragraph.py, expected src/python/abw/spec/abiword/p.py"
+      ]
+    }
+  ]
+}

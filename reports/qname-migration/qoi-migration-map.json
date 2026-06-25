@@ -1,0 +1,71 @@
+{
+  "format_id": "qoi",
+  "date": "20260625",
+  "total_entries": 3,
+  "compliant_count": 0,
+  "compliant_pct": 0.0,
+  "blocks_gate_count": 0,
+  "state_counts": {
+    "WRONG_PATH_IN_SPEC": 3
+  },
+  "action_counts": {
+    "MOVE_FILE": 3
+  },
+  "risk_counts": {
+    "HIGH": 3
+  },
+  "migration_ready": true,
+  "entries": [
+    {
+      "qname": "qoi:header",
+      "status": "implemented",
+      "canonical_class": "Qoi.Header",
+      "current_path": "src/python/qoi/spec/chunk/header.py",
+      "target_path": "src/python/qoi/spec/qoi/header.py",
+      "source_layer": "Spec",
+      "current_state": "WRONG_PATH_IN_SPEC",
+      "action_required": "MOVE_FILE",
+      "migration_risk": "HIGH",
+      "estimated_effort": "medium",
+      "blocks_gate": false,
+      "test_changes_required": [],
+      "notes": [
+        "In spec/ but wrong sub-path. Got src/python/qoi/spec/chunk/header.py, expected src/python/qoi/spec/qoi/header.py"
+      ]
+    },
+    {
+      "qname": "qoi:chunk",
+      "status": "implemented",
+      "canonical_class": "Qoi.Chunk",
+      "current_path": "src/python/qoi/spec/chunk/chunk.py",
+      "target_path": "src/python/qoi/spec/qoi/chunk.py",
+      "source_layer": "Spec",
+      "current_state": "WRONG_PATH_IN_SPEC",
+      "action_required": "MOVE_FILE",
+      "migration_risk": "HIGH",
+      "estimated_effort": "medium",
+      "blocks_gate": false,
+      "test_changes_required": [],
+      "notes": [
+        "In spec/ but wrong sub-path. Got src/python/qoi/spec/chunk/chunk.py, expected src/python/qoi/spec/qoi/chunk.py"
+      ]
+    },
+    {
+      "qname": "qoi:end-marker",
+      "status": "implemented",
+      "canonical_class": "Qoi.EndMarker",
+      "current_path": "src/python/qoi/spec/chunk/end_marker.py",
+      "target_path": "src/python/qoi/spec/qoi/end_marker.py",
+      "source_layer": "Spec",
+      "current_state": "WRONG_PATH_IN_SPEC",
+      "action_required": "MOVE_FILE",
+      "migration_risk": "HIGH",
+      "estimated_effort": "medium",
+      "blocks_gate": false,
+      "test_changes_required": [],
+      "notes": [
+        "In spec/ but wrong sub-path. Got src/python/qoi/spec/chunk/end_marker.py, expected src/python/qoi/spec/qoi/end_marker.py"
+      ]
+    }
+  ]
+}

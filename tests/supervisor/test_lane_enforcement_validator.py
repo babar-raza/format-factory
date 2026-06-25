@@ -132,3 +132,53 @@ class TestGlobalExemptPaths:
         # It matches reports/ prefix → REPORTING lane
         lane = v._resolve_lane("reports/capability-layer/capability_summary.json")
         assert lane == "REPORTING"
+
+
+class TestMultiLaneDeclaration:
+    """Tests for multi-lane sprint declarations (TC-S55-003)."""
+
+    def test_multi_lane_passes_with_cross_lane_files(self):
+        """Declaring MULTI_LANE skips single-lane constraint — multi-format sprints PASS.
+
+        TC-S55-003: sprint declarations for multi-lane work must use declared_scope: multi_lane
+        to avoid LANE_ENFORCEMENT violations.
+        """
+        declaration = {
+            "changed_files": [
+                "src/python/fods/parser.py",
+                "tools/supervisor/governance_validators.py",
+                "reports/supervisor/next-sprint.md",
+            ]
+        }
+        result = LaneEnforcementValidator().validate(
+            declaration, declared_lane="MULTI_LANE"
+        )
+        assert result.passed is True, f"MULTI_LANE declaration should PASS: {result.violations}"
+        assert len(result.violations) == 0
+        assert any("Multi-lane" in e or "multi" in e.lower() for e in result.evidence)
+
+    def test_multi_lane_case_insensitive(self):
+        """declared_lane='multi_lane' (lowercase) is accepted as MULTI_LANE."""
+        declaration = {
+            "changed_files": [
+                "src/python/xcf/xcf_parser.py",
+                "src/net/fods/FodsDocument.cs",
+            ]
+        }
+        result = LaneEnforcementValidator().validate(
+            declaration, declared_lane="multi_lane"
+        )
+        assert result.passed is True
+
+    def test_single_lane_cross_lane_still_fails(self):
+        """Without MULTI_LANE declared, cross-lane spread still produces violations."""
+        declaration = {
+            "changed_files": [
+                "src/python/fods/parser.py",
+                "tools/supervisor/governance_validators.py",
+            ]
+        }
+        result = LaneEnforcementValidator().validate(
+            declaration, declared_lane="PYTHON_PRODUCT"
+        )
+        assert result.passed is False, "Cross-lane without MULTI_LANE should FAIL"

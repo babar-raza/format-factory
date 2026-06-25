@@ -17,11 +17,15 @@ formats:
     python: {exists: true, module: "src/python/fods/"}
     dotnet: {exists: true, project: "src/net/fods/FormatFactory.Fods.csproj"}
     parity: both
-    spec_parity_status: COMPLETE
-    spec_parity_evidence: "sal-facts-fods.json (4988 facts, verified). All 12/12 registry qnames now have Compat/ facade classes. TC-SP-002 (2026-06-25): 9 new facades created (FodsBody, FodsSpreadsheet, FodsTableRow, FodsCoveredCell, FodsParagraph, FodsSpan, FodsAutomaticStyles, FodsStyle, FodsDateStyle). 45/45 V53 compliance tests pass."
+    spec_parity_status: PARTIAL
+    spec_qname_registry_coverage: COMPLETE
+    behavioral_parity: PARTIAL
+    spec_parity_evidence: "sal-facts-fods.json (4988 facts, verified). All 12/12 registry qnames have Compat/ facades. TC-SP-002 (2026-06-25): 9 new facades created. 45/45 V53 compliance tests pass. HOWEVER: behavioral parity is PARTIAL — .NET has 23 mutation methods (SetCellValue, InsertRow, DeleteRows, etc.); Python is read-only with CSV export only. TC-SRFA-026 (2026-06-25)."
+    parity_notes: ".NET is full editing suite (23 mutation methods, 6 export formats); Python is read+CSV-export only. spec_qname on classes: Python has ClassVar[str]; .NET is comment-only (TC-SRFA-016)."
+    missing_python: ["set_cell_value", "insert_row", "delete_rows", "merge_cells", "export_to_html", "export_to_json", "export_to_markdown", "load_from_stream"]
     spec_parity_assessed_at: "2026-06-25"
     spec_parity_blocks_gate11: false
-    unblock_condition: null
+    unblock_condition: "TC-SRFA-024 (mutation API) + TC-SRFA-025 (export parity) must be resolved for behavioral COMPLETE"
 
   fodt:
     python: {exists: true, module: "src/python/fodt/"}

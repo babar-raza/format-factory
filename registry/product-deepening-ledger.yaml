@@ -27,6 +27,14 @@
   next_required_action: Continue product deepening
   last_verified_at: '2026-06-24'
   ledger_entry_hash: convergence-audit-20260624
+  spec_parity_status: not_assessed
+  consumer_proof_level: 0
+  proof_level_target: 4
+  blocked_formats: &id001 []
+  healing_sprint_id: null
+  schema_version: '2.0'
+  ledger_entry_version: 2
+  last_deepening_sprint: null
 - product_id: CSV-PYTHON
   format: csv
   runtime: python
@@ -40,11 +48,11 @@
   forbidden_bucket_scan_status: clean
   forbidden_bucket_scan_evidence: []
   sal_fact_linkage: present
-  sal_fact_count: 0
+  sal_fact_count: 2
   rcal_capability_linkage: null
   taskcards: []
-  continuation_allowed: true
-  continuation_reason: QName verified. Spec files present with spec_qname attributes.
+  continuation_allowed: false
+  continuation_reason: src_layout_gate=FAIL (mixed_model — LOC violations present)
   blockers:
   - src_layout_status=mixed_model (need compliant)
   next_required_action: Heal LOC violations in src/python/csv/ below 800 LOC
@@ -52,6 +60,14 @@
   ledger_entry_hash: 5447bae75dee7a46
   qname_note: Promoted from implementing to verified. Spec files verified on disk
     with spec_qname + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
+  spec_parity_status: not_assessed
+  consumer_proof_level: 0
+  proof_level_target: 4
+  blocked_formats: *id001
+  healing_sprint_id: null
+  schema_version: '2.0'
+  ledger_entry_version: 2
+  last_deepening_sprint: null
 - product_id: DIF-PYTHON
   format: dif
   runtime: python
@@ -68,8 +84,8 @@
   sal_fact_count: 0
   rcal_capability_linkage: null
   taskcards: []
-  continuation_allowed: true
-  continuation_reason: QName verified. Spec files present with spec_qname attributes.
+  continuation_allowed: false
+  continuation_reason: src_layout_gate=FAIL (mixed_model — LOC violations present)
   blockers:
   - src_layout_status=mixed_model (need compliant)
   next_required_action: Heal LOC violations in src/python/dif/ below 800 LOC
@@ -77,6 +93,14 @@
   ledger_entry_hash: d773b999d0a90f6d
   qname_note: Promoted from implementing to verified. Spec files verified on disk
     with spec_qname + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
+  spec_parity_status: not_assessed
+  consumer_proof_level: 0
+  proof_level_target: 4
+  blocked_formats: *id001
+  healing_sprint_id: null
+  schema_version: '2.0'
+  ledger_entry_version: 2
+  last_deepening_sprint: null
 - product_id: FODG-PYTHON
   format: fodg
   runtime: python
@@ -90,11 +114,11 @@
   forbidden_bucket_scan_status: clean
   forbidden_bucket_scan_evidence: []
   sal_fact_linkage: present
-  sal_fact_count: 0
+  sal_fact_count: 1066
   rcal_capability_linkage: null
   taskcards: []
-  continuation_allowed: true
-  continuation_reason: QName verified. Spec files present with spec_qname attributes.
+  continuation_allowed: false
+  continuation_reason: src_layout_gate=FAIL (mixed_model — LOC violations present)
   blockers:
   - src_layout_status=mixed_model (need compliant)
   next_required_action: Heal LOC violations in src/python/fodg/ below 800 LOC
@@ -102,6 +126,14 @@
   ledger_entry_hash: 8e7bd0892c2643b4
   qname_note: Promoted from seeded to verified. Spec files verified on disk with spec_qname
     + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
+  spec_parity_status: not_assessed
+  consumer_proof_level: 0
+  proof_level_target: 4
+  blocked_formats: *id001
+  healing_sprint_id: null
+  schema_version: '2.0'
+  ledger_entry_version: 2
+  last_deepening_sprint: null
 - product_id: FODP-PYTHON
   format: fodp
   runtime: python
@@ -115,11 +147,11 @@
   forbidden_bucket_scan_status: clean
   forbidden_bucket_scan_evidence: []
   sal_fact_linkage: present
-  sal_fact_count: 0
+  sal_fact_count: 1066
   rcal_capability_linkage: null
   taskcards: []
-  continuation_allowed: true
-  continuation_reason: QName verified. Spec files present with spec_qname attributes.
+  continuation_allowed: false
+  continuation_reason: src_layout_gate=FAIL (mixed_model — LOC violations present)
   blockers:
   - src_layout_status=mixed_model (need compliant)
   next_required_action: Heal LOC violations in src/python/fodp/ below 800 LOC
@@ -127,6 +159,14 @@
   ledger_entry_hash: 7dba6d87bb2643a7
   qname_note: Promoted from seeded to verified. Spec files verified on disk with spec_qname
     + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
+  spec_parity_status: not_assessed
+  consumer_proof_level: 0
+  proof_level_target: 4
+  blocked_formats: *id001
+  healing_sprint_id: null
+  schema_version: '2.0'
+  ledger_entry_version: 2
+  last_deepening_sprint: null
 - product_id: FODS-PYTHON
   format: fods
   runtime: python
@@ -143,7 +183,7 @@
   forbidden_bucket_scan_status: clean
   forbidden_bucket_scan_evidence: []
   sal_fact_linkage: present
-  sal_fact_count: 0
+  sal_fact_count: 4987
   rcal_capability_linkage: null
   taskcards: []
   continuation_allowed: true
@@ -153,6 +193,14 @@
   next_required_action: Continue product deepening
   last_verified_at: '2026-06-24'
   ledger_entry_hash: convergence-audit-20260624
+  spec_parity_status: not_assessed
+  consumer_proof_level: 0
+  proof_level_target: 4
+  blocked_formats: *id001
+  healing_sprint_id: null
+  schema_version: '2.0'
+  ledger_entry_version: 2
+  last_deepening_sprint: null
 - product_id: FODT-PYTHON
   format: fodt
   runtime: python
@@ -169,7 +217,7 @@
   forbidden_bucket_scan_status: clean
   forbidden_bucket_scan_evidence: []
   sal_fact_linkage: present
-  sal_fact_count: 0
+  sal_fact_count: 4933
   rcal_capability_linkage: null
   taskcards: []
   continuation_allowed: true
@@ -179,6 +227,14 @@
   next_required_action: Continue product deepening
   last_verified_at: '2026-06-24'
   ledger_entry_hash: convergence-audit-20260624
+  spec_parity_status: not_assessed
+  consumer_proof_level: 0
+  proof_level_target: 4
+  blocked_formats: *id001
+  healing_sprint_id: null
+  schema_version: '2.0'
+  ledger_entry_version: 2
+  last_deepening_sprint: null
 - product_id: GNUMERIC-PYTHON
   format: gnumeric
   runtime: python
@@ -195,8 +251,8 @@
   sal_fact_count: 0
   rcal_capability_linkage: null
   taskcards: []
-  continuation_allowed: true
-  continuation_reason: QName verified. Spec files present with spec_qname attributes.
+  continuation_allowed: false
+  continuation_reason: src_layout_gate=FAIL (mixed_model — LOC violations present)
   blockers:
   - src_layout_status=mixed_model (need compliant)
   next_required_action: Heal LOC violations in src/python/gnumeric/ below 800 LOC
@@ -204,6 +260,14 @@
   ledger_entry_hash: e9e3741c3e1b6643
   qname_note: Promoted from seeded to verified. Spec files verified on disk with spec_qname
     + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
+  spec_parity_status: not_assessed
+  consumer_proof_level: 0
+  proof_level_target: 4
+  blocked_formats: *id001
+  healing_sprint_id: null
+  schema_version: '2.0'
+  ledger_entry_version: 2
+  last_deepening_sprint: null
 - product_id: NDJSON-PYTHON
   format: ndjson
   runtime: python
@@ -217,11 +281,11 @@
   forbidden_bucket_scan_status: clean
   forbidden_bucket_scan_evidence: []
   sal_fact_linkage: present
-  sal_fact_count: 0
+  sal_fact_count: 2
   rcal_capability_linkage: null
   taskcards: []
-  continuation_allowed: true
-  continuation_reason: QName verified. Spec files present with spec_qname attributes.
+  continuation_allowed: false
+  continuation_reason: src_layout_gate=FAIL (mixed_model — LOC violations present)
   blockers:
   - src_layout_status=mixed_model (need compliant)
   next_required_action: Heal LOC violations in src/python/ndjson/ below 800 LOC
@@ -229,6 +293,14 @@
   ledger_entry_hash: cc017ad87a378463
   qname_note: Promoted from implementing to verified. Spec files verified on disk
     with spec_qname + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
+  spec_parity_status: not_assessed
+  consumer_proof_level: 0
+  proof_level_target: 4
+  blocked_formats: *id001
+  healing_sprint_id: null
+  schema_version: '2.0'
+  ledger_entry_version: 2
+  last_deepening_sprint: null
 - product_id: ODS-PYTHON
   format: ods
   runtime: python
@@ -242,11 +314,11 @@
   forbidden_bucket_scan_status: clean
   forbidden_bucket_scan_evidence: []
   sal_fact_linkage: present
-  sal_fact_count: 0
+  sal_fact_count: 1066
   rcal_capability_linkage: null
   taskcards: []
-  continuation_allowed: true
-  continuation_reason: QName verified. Spec files present with spec_qname attributes.
+  continuation_allowed: false
+  continuation_reason: src_layout_gate=FAIL (mixed_model — LOC violations present)
   blockers:
   - src_layout_status=mixed_model (need compliant)
   next_required_action: Heal LOC violations in src/python/ods/ below 800 LOC
@@ -254,6 +326,14 @@
   ledger_entry_hash: 593c48d668d65ef1
   qname_note: Promoted from seeded to verified. Spec files verified on disk with spec_qname
     + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
+  spec_parity_status: not_assessed
+  consumer_proof_level: 0
+  proof_level_target: 4
+  blocked_formats: *id001
+  healing_sprint_id: null
+  schema_version: '2.0'
+  ledger_entry_version: 2
+  last_deepening_sprint: null
 - product_id: ODT-PYTHON
   format: odt
   runtime: python
@@ -267,11 +347,11 @@
   forbidden_bucket_scan_status: clean
   forbidden_bucket_scan_evidence: []
   sal_fact_linkage: present
-  sal_fact_count: 0
+  sal_fact_count: 1066
   rcal_capability_linkage: null
   taskcards: []
-  continuation_allowed: true
-  continuation_reason: QName verified. Spec files present with spec_qname attributes.
+  continuation_allowed: false
+  continuation_reason: src_layout_gate=FAIL (mixed_model — LOC violations present)
   blockers:
   - src_layout_status=mixed_model (need compliant)
   next_required_action: Heal LOC violations in src/python/odt/ below 800 LOC
@@ -279,6 +359,14 @@
   ledger_entry_hash: e0daa28351b1127f
   qname_note: Promoted from seeded to verified. Spec files verified on disk with spec_qname
     + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
+  spec_parity_status: not_assessed
+  consumer_proof_level: 0
+  proof_level_target: 4
+  blocked_formats: *id001
+  healing_sprint_id: null
+  schema_version: '2.0'
+  ledger_entry_version: 2
+  last_deepening_sprint: null
 - product_id: PBM-PYTHON
   format: pbm
   runtime: python
@@ -292,11 +380,11 @@
   forbidden_bucket_scan_status: clean
   forbidden_bucket_scan_evidence: []
   sal_fact_linkage: present
-  sal_fact_count: 0
+  sal_fact_count: 2
   rcal_capability_linkage: null
   taskcards: []
-  continuation_allowed: true
-  continuation_reason: QName verified. Spec files present with spec_qname attributes.
+  continuation_allowed: false
+  continuation_reason: src_layout_gate=FAIL (mixed_model — LOC violations present)
   blockers:
   - src_layout_status=mixed_model (need compliant)
   next_required_action: Heal LOC violations in src/python/pbm/ below 800 LOC
@@ -304,6 +392,14 @@
   ledger_entry_hash: a3b2c8369a2c4a2d
   qname_note: Promoted from seeded to verified. Spec files verified on disk with spec_qname
     + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
+  spec_parity_status: not_assessed
+  consumer_proof_level: 0
+  proof_level_target: 4
+  blocked_formats: *id001
+  healing_sprint_id: null
+  schema_version: '2.0'
+  ledger_entry_version: 2
+  last_deepening_sprint: null
 - product_id: PGM-PYTHON
   format: pgm
   runtime: python
@@ -317,11 +413,11 @@
   forbidden_bucket_scan_status: clean
   forbidden_bucket_scan_evidence: []
   sal_fact_linkage: present
-  sal_fact_count: 0
+  sal_fact_count: 2
   rcal_capability_linkage: null
   taskcards: []
-  continuation_allowed: true
-  continuation_reason: QName verified. Spec files present with spec_qname attributes.
+  continuation_allowed: false
+  continuation_reason: src_layout_gate=FAIL (mixed_model — LOC violations present)
   blockers:
   - src_layout_status=mixed_model (need compliant)
   next_required_action: Heal LOC violations in src/python/pgm/ below 800 LOC
@@ -329,6 +425,14 @@
   ledger_entry_hash: 17d4627d74238ffa
   qname_note: Promoted from seeded to verified. Spec files verified on disk with spec_qname
     + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
+  spec_parity_status: not_assessed
+  consumer_proof_level: 0
+  proof_level_target: 4
+  blocked_formats: *id001
+  healing_sprint_id: null
+  schema_version: '2.0'
+  ledger_entry_version: 2
+  last_deepening_sprint: null
 - product_id: PPM-PYTHON
   format: ppm
   runtime: python
@@ -342,11 +446,11 @@
   forbidden_bucket_scan_status: clean
   forbidden_bucket_scan_evidence: []
   sal_fact_linkage: present
-  sal_fact_count: 0
+  sal_fact_count: 2
   rcal_capability_linkage: null
   taskcards: []
-  continuation_allowed: true
-  continuation_reason: QName verified. Spec files present with spec_qname attributes.
+  continuation_allowed: false
+  continuation_reason: src_layout_gate=FAIL (mixed_model — LOC violations present)
   blockers:
   - src_layout_status=mixed_model (need compliant)
   next_required_action: Heal LOC violations in src/python/ppm/ below 800 LOC
@@ -354,6 +458,14 @@
   ledger_entry_hash: 21b715f3b9265adf
   qname_note: Promoted from seeded to verified. Spec files verified on disk with spec_qname
     + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
+  spec_parity_status: not_assessed
+  consumer_proof_level: 0
+  proof_level_target: 4
+  blocked_formats: *id001
+  healing_sprint_id: null
+  schema_version: '2.0'
+  ledger_entry_version: 2
+  last_deepening_sprint: null
 - product_id: QOI-PYTHON
   format: qoi
   runtime: python
@@ -370,8 +482,8 @@
   sal_fact_count: 0
   rcal_capability_linkage: null
   taskcards: []
-  continuation_allowed: true
-  continuation_reason: QName verified. Spec files present with spec_qname attributes.
+  continuation_allowed: false
+  continuation_reason: src_layout_gate=FAIL (mixed_model — LOC violations present)
   blockers:
   - src_layout_status=mixed_model (need compliant)
   next_required_action: Heal LOC violations in src/python/qoi/ below 800 LOC
@@ -379,6 +491,14 @@
   ledger_entry_hash: 904d8dc8c26b4cff
   qname_note: Promoted from seeded to verified. Spec files verified on disk with spec_qname
     + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
+  spec_parity_status: not_assessed
+  consumer_proof_level: 0
+  proof_level_target: 4
+  blocked_formats: *id001
+  healing_sprint_id: null
+  schema_version: '2.0'
+  ledger_entry_version: 2
+  last_deepening_sprint: null
 - product_id: SYLK-PYTHON
   format: sylk
   runtime: python
@@ -395,8 +515,8 @@
   sal_fact_count: 0
   rcal_capability_linkage: null
   taskcards: []
-  continuation_allowed: true
-  continuation_reason: QName verified. Spec files present with spec_qname attributes.
+  continuation_allowed: false
+  continuation_reason: src_layout_gate=FAIL (mixed_model — LOC violations present)
   blockers:
   - src_layout_status=mixed_model (need compliant)
   next_required_action: Heal LOC violations in src/python/sylk/ below 800 LOC
@@ -404,6 +524,14 @@
   ledger_entry_hash: ae688e6dc74fe2af
   qname_note: Promoted from seeded to verified. Spec files verified on disk with spec_qname
     + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
+  spec_parity_status: not_assessed
+  consumer_proof_level: 0
+  proof_level_target: 4
+  blocked_formats: *id001
+  healing_sprint_id: null
+  schema_version: '2.0'
+  ledger_entry_version: 2
+  last_deepening_sprint: null
 - product_id: TOML-PYTHON
   format: toml
   runtime: python
@@ -420,8 +548,8 @@
   sal_fact_count: 0
   rcal_capability_linkage: null
   taskcards: []
-  continuation_allowed: true
-  continuation_reason: QName verified. Spec files present with spec_qname attributes.
+  continuation_allowed: false
+  continuation_reason: src_layout_gate=FAIL (mixed_model — LOC violations present)
   blockers:
   - src_layout_status=mixed_model (need compliant)
   next_required_action: Heal LOC violations in src/python/toml/ below 800 LOC
@@ -429,6 +557,14 @@
   ledger_entry_hash: 039d07997df00bc7
   qname_note: Promoted from seeded to verified. Spec files verified on disk with spec_qname
     + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
+  spec_parity_status: not_assessed
+  consumer_proof_level: 0
+  proof_level_target: 4
+  blocked_formats: *id001
+  healing_sprint_id: null
+  schema_version: '2.0'
+  ledger_entry_version: 2
+  last_deepening_sprint: null
 - product_id: TSV-PYTHON
   format: tsv
   runtime: python
@@ -442,11 +578,11 @@
   forbidden_bucket_scan_status: clean
   forbidden_bucket_scan_evidence: []
   sal_fact_linkage: present
-  sal_fact_count: 0
+  sal_fact_count: 2
   rcal_capability_linkage: null
   taskcards: []
-  continuation_allowed: true
-  continuation_reason: QName verified. Spec files present with spec_qname attributes.
+  continuation_allowed: false
+  continuation_reason: src_layout_gate=FAIL (mixed_model — LOC violations present)
   blockers:
   - src_layout_status=mixed_model (need compliant)
   next_required_action: Heal LOC violations in src/python/tsv/ below 800 LOC
@@ -454,6 +590,14 @@
   ledger_entry_hash: 244842eb03e7a5cb
   qname_note: Promoted from seeded to verified. Spec files verified on disk with spec_qname
     + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
+  spec_parity_status: not_assessed
+  consumer_proof_level: 0
+  proof_level_target: 4
+  blocked_formats: *id001
+  healing_sprint_id: null
+  schema_version: '2.0'
+  ledger_entry_version: 2
+  last_deepening_sprint: null
 - product_id: XCF-PYTHON
   format: xcf
   runtime: python
@@ -470,8 +614,8 @@
   sal_fact_count: 0
   rcal_capability_linkage: null
   taskcards: []
-  continuation_allowed: true
-  continuation_reason: QName verified. Spec files present with spec_qname attributes.
+  continuation_allowed: false
+  continuation_reason: src_layout_gate=FAIL (mixed_model — LOC violations present)
   blockers:
   - src_layout_status=mixed_model (need compliant)
   next_required_action: Heal LOC violations in src/python/xcf/ below 800 LOC
@@ -479,6 +623,14 @@
   ledger_entry_hash: 930b0b2bc1cff1bd
   qname_note: Promoted from implementing to verified. Spec files verified on disk
     with spec_qname + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
+  spec_parity_status: not_assessed
+  consumer_proof_level: 0
+  proof_level_target: 4
+  blocked_formats: *id001
+  healing_sprint_id: null
+  schema_version: '2.0'
+  ledger_entry_version: 2
+  last_deepening_sprint: null
 - product_id: ZST-PYTHON
   format: zst
   runtime: python
@@ -492,11 +644,11 @@
   forbidden_bucket_scan_status: clean
   forbidden_bucket_scan_evidence: []
   sal_fact_linkage: present
-  sal_fact_count: 0
+  sal_fact_count: 94
   rcal_capability_linkage: null
   taskcards: []
-  continuation_allowed: true
-  continuation_reason: QName verified. Spec files present with spec_qname attributes.
+  continuation_allowed: false
+  continuation_reason: src_layout_gate=FAIL (mixed_model — LOC violations present)
   blockers:
   - src_layout_status=mixed_model (need compliant)
   next_required_action: Heal LOC violations in src/python/zst/ below 800 LOC
@@ -504,3 +656,11 @@
   ledger_entry_hash: 04587a06df67ede5
   qname_note: Promoted from implementing to verified. Spec files verified on disk
     with spec_qname + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
+  spec_parity_status: not_assessed
+  consumer_proof_level: 0
+  proof_level_target: 4
+  blocked_formats: *id001
+  healing_sprint_id: null
+  schema_version: '2.0'
+  ledger_entry_version: 2
+  last_deepening_sprint: null

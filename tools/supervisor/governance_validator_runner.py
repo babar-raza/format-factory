@@ -1,4 +1,4 @@
-"""governance_validator_runner.py — Runs all governance validators (V1-V69).
+"""governance_validator_runner.py — Runs all governance validators (V1-V74).
 
 Extracted from governance_validators.py to keep that file within its LOC cap.
 This module imports validators from governance_validators LAZILY (inside the function
@@ -20,6 +20,7 @@ V54: validate_cross_lane_product_touching_machinery — product items must not m
 V55: validate_cross_lane_machinery_touching_product — machinery items must not mutate src/ (FF-FORENSIC-A4, WARN-only)
 V56: validate_hardening_target_identity — plan hardening must target active native plan (TC-PG-006, FAIL for snoopy fallback; WARN for other wrong targets)
 V73: validate_dotnet_spec_qname — .NET Spec/*.cs files must have SpecQName constant with correct registry value (TC-DOTNET-QNAME-001, WARN; FAIL for RELEASE_GATE)
+V74: validate_ledger_continuation_gate — block PRODUCT_SOURCE/PRODUCT_TEST items for formats with continuation_allowed=false in product-deepening-ledger.yaml (TC-PDL-005, FAIL)
 """
 from __future__ import annotations
 
@@ -130,6 +131,7 @@ def run_all_governance_validators(
         validate_lane_dag_ordering as _validate_lane_dag_ordering,
         validate_artifact_identity as _validate_artifact_identity,
         validate_skill_attribution_in_declaration as _validate_skill_attribution,
+        validate_ledger_continuation_gate as _validate_ledger_continuation_gate,
     )
     # V73 imported from dedicated .NET qname validator file (TC-DOTNET-QNAME-001)
     from governance_validators_dotnet import (  # noqa: PLC0415
@@ -255,6 +257,8 @@ def run_all_governance_validators(
         _validate_skill_attribution(declaration, repo_root),
         # V73 (TC-DOTNET-QNAME-001): .NET Spec/ files must have SpecQName with correct value (WARN; FAIL for RELEASE_GATE)
         _validate_dotnet_spec_qname(declaration, repo_root),
+        # V74 (TC-PDL-005): Block PRODUCT_SOURCE/PRODUCT_TEST items for formats with continuation_allowed=false
+        _validate_ledger_continuation_gate(declaration, repo_root),
     ]
 
     # SAL format advisory (non-blocking, Lane E integration)

@@ -1,0 +1,342 @@
+manifest_id: multi-plan-intake-20260625
+generated_at: '2026-06-25'
+total_plans: 11
+total_taskcards_normalized: 89
+priority_model: P0=unblock, P1=integrity_safety, P2=hardening, P3=investigation, P4=pilots, P5=quality
+
+# Priority 0 — Unblocking (ledger / continuation gate integrity)
+p0_tasks:
+
+  - task_id: MCT-PDL-001
+    source_plan: sunny-crunching-galaxy
+    source_tc: TC-PDL-001
+    title: SUPERSEDE lovely-seeking-dongarra plan lock; regenerate next-work-items.json
+    priority: P0
+    lane: governance
+    estimated_loc: 0
+    dependencies: []
+    safe_parallel: false
+    status: superseded_by_check  # check_continuation already returns CONTINUE
+
+  - task_id: MCT-PDL-002
+    source_plan: sunny-crunching-galaxy
+    source_tc: TC-PDL-002
+    title: Fix continuation_allowed true→false for 17 mixed_model formats in product-deepening-ledger.yaml
+    priority: P0
+    lane: governance
+    estimated_loc: 0
+    dependencies: []
+    safe_parallel: false
+    status: pending
+
+  - task_id: MCT-PDL-003
+    source_plan: sunny-crunching-galaxy
+    source_tc: TC-PDL-003
+    title: Add 8 missing schema fields to all 20 ledger entries (spec_parity_status etc.)
+    priority: P0
+    lane: governance
+    estimated_loc: 0
+    dependencies: [MCT-PDL-002]
+    safe_parallel: false
+    status: pending
+
+  - task_id: MCT-PDL-004
+    source_plan: sunny-crunching-galaxy
+    source_tc: TC-PDL-004
+    title: Backfill sal_fact_count from sal-facts-latest.json for all 20 formats
+    priority: P0
+    lane: governance
+    estimated_loc: 0
+    dependencies: [MCT-PDL-002]
+    safe_parallel: true
+    status: pending
+
+# Priority 1 — Integrity and Safety
+
+  - task_id: MCT-PDL-005
+    source_plan: sunny-crunching-galaxy
+    source_tc: TC-PDL-005
+    title: Add V54 governance validator — ledger compliance gate (~60 LOC)
+    priority: P1
+    lane: governance
+    estimated_loc: 60
+    dependencies: [MCT-PDL-002]
+    safe_parallel: false
+    status: pending
+
+  - task_id: MCT-RJO-004
+    source_plan: rustling-jumping-otter
+    source_tc: TC-RJO-004
+    title: Add vacuous-call guard to lifecycle_audit.py (AUDIT_PASS_VACUOUS when no plan_path+mission_id)
+    priority: P1
+    lane: governance
+    estimated_loc: 30
+    dependencies: []
+    safe_parallel: true
+    status: pending
+
+  - task_id: MCT-TCF-002
+    source_plan: reflective-exploring-kurzweil
+    source_tc: TC-TCF-002
+    title: Add --completion-candidate flag to write_plan_lock.py (+25 LOC)
+    priority: P1
+    lane: governance
+    estimated_loc: 25
+    dependencies: []
+    safe_parallel: true
+    status: pending
+
+  - task_id: MCT-TCF-003
+    source_plan: reflective-exploring-kurzweil
+    source_tc: TC-TCF-003
+    title: Mandatory lifecycle audit gate in write_plan_lock.py + 4 guards in lifecycle_audit.py
+    priority: P1
+    lane: governance
+    estimated_loc: 50
+    dependencies: [MCT-TCF-002, MCT-RJO-004]
+    safe_parallel: false
+    status: pending
+
+  - task_id: MCT-TCF-004
+    source_plan: reflective-exploring-kurzweil
+    source_tc: TC-TCF-004
+    title: Write terminal_closure_record.json on every TERMINAL_CLOSED
+    priority: P1
+    lane: governance
+    estimated_loc: 30
+    dependencies: [MCT-TCF-003]
+    safe_parallel: false
+    status: pending
+
+  - task_id: MCT-SFE2-002
+    source_plan: twinkly-gliding-thimble
+    source_tc: TC-SFE2-002
+    title: Fix SKILL-GAP-011 routing in capability-routing-registry.yaml → 30/30 ACTIVE
+    priority: P1
+    lane: governance
+    estimated_loc: 5
+    dependencies: []
+    safe_parallel: true
+    status: pending
+
+  - task_id: MCT-RJO-001
+    source_plan: rustling-jumping-otter
+    source_tc: TC-RJO-001
+    title: Reconcile agile-munching-quasar.md — mark TC-LIF-009/010/011 CLOSED
+    priority: P1
+    lane: governance
+    estimated_loc: 0
+    dependencies: []
+    safe_parallel: true
+    status: pending
+
+# Priority 2 — Machinery Hardening / Investigations
+
+  - task_id: MCT-PDL-006
+    source_plan: sunny-crunching-galaxy
+    source_tc: TC-PDL-006
+    title: Add repair taskcards for 17 blocked formats in ledger
+    priority: P2
+    lane: governance
+    estimated_loc: 0
+    dependencies: [MCT-PDL-002]
+    safe_parallel: false
+    status: pending
+
+  - task_id: MCT-RJO-002
+    source_plan: rustling-jumping-otter
+    source_tc: TC-RJO-002
+    title: TC-LIF-012 — 3-step AUDIT_REQUIRES_ITERATION → work → AUDIT_PASS iteration proof
+    priority: P2
+    lane: governance
+    estimated_loc: 20
+    dependencies: [MCT-RJO-004]
+    safe_parallel: false
+    status: pending
+
+  - task_id: MCT-TCF-007
+    source_plan: reflective-exploring-kurzweil
+    source_tc: TC-TCF-007
+    title: Add V-TCF-001/002/003 validators in terminal_closure_validators.py (~120 LOC)
+    priority: P2
+    lane: governance
+    estimated_loc: 120
+    dependencies: [MCT-TCF-004]
+    safe_parallel: false
+    status: pending
+
+  - task_id: MCT-TCF-008
+    source_plan: reflective-exploring-kurzweil
+    source_tc: TC-TCF-008
+    title: 12-pilot test suite test_terminal_closure_pilots.py (~380 LOC)
+    priority: P2
+    lane: governance
+    estimated_loc: 380
+    dependencies: [MCT-TCF-007]
+    safe_parallel: false
+    status: pending
+
+  - task_id: MCT-SFE2-003
+    source_plan: twinkly-gliding-thimble
+    source_tc: TC-SFE2-003
+    title: Create audit-root-tools skill (~40 LOC Python inline)
+    priority: P2
+    lane: governance
+    estimated_loc: 40
+    dependencies: [MCT-SFE2-002]
+    safe_parallel: false
+    status: pending
+
+  - task_id: MCT-SHR-000
+    source_plan: humble-meandering-bachman
+    source_tc: TC-SHR-000
+    title: Run check_system_healing_gate.py live and capture lane-by-lane verdict
+    priority: P2
+    lane: governance
+    estimated_loc: 0
+    dependencies: []
+    safe_parallel: true
+    status: pending
+
+  - task_id: MCT-SHR-001
+    source_plan: humble-meandering-bachman
+    source_tc: TC-SHR-001
+    title: Fix Lane 2 (action_queue advisory_only) if PARTIAL
+    priority: P2
+    lane: governance
+    estimated_loc: 20
+    dependencies: [MCT-SHR-000]
+    safe_parallel: false
+    status: pending
+
+# Priority 3 — Investigation / Audit Sprints
+
+  - task_id: MCT-WYS-ALL
+    source_plan: woolly-yawning-stream
+    source_tc: TC-WYS-A through TC-WYS-F
+    title: SAL investigation — produce 9 report artifacts in reports/spec-authority/spec-auth-inv-20260625-001/
+    priority: P3
+    lane: investigation
+    estimated_loc: 0
+    dependencies: []
+    safe_parallel: true
+    status: pending
+
+  - task_id: MCT-TDL-007
+    source_plan: tidy-dreaming-lollipop
+    source_tc: TC-QNAME-HEAL-007
+    title: Infer severity for 1,120 gaps missing severity field in gap-ledger.json
+    priority: P3
+    lane: governance
+    estimated_loc: 30
+    dependencies: []
+    safe_parallel: true
+    status: pending
+
+  - task_id: MCT-TDL-012
+    source_plan: tidy-dreaming-lollipop
+    source_tc: TC-ARCH-DOC-012
+    title: Add Current State (2026-06-25) addendum to docs/architecture.md
+    priority: P3
+    lane: documentation
+    estimated_loc: 40
+    dependencies: []
+    safe_parallel: true
+    status: pending
+
+  - task_id: MCT-MREAD-ALL
+    source_plan: serialized-tickling-bentley
+    source_tc: TC-MREAD-001 through TC-MREAD-013
+    title: Machinery readiness audit FF-MREAD-20260625 — 4 pilots + 20+ output files + Section 30 to master-plan.md
+    priority: P3
+    lane: audit
+    estimated_loc: 0
+    dependencies: []
+    safe_parallel: false
+    status: pending
+
+# Priority 4 — Pilots / Production Sprint Design
+
+  - task_id: MCT-VWL-004
+    source_plan: vast-weaving-lampson
+    source_tc: TC-VWL-004
+    title: Add 28-sub-section production sprint system design to plans/master-plan.md
+    priority: P4
+    lane: documentation
+    estimated_loc: 0
+    dependencies: []
+    safe_parallel: true
+    status: pending
+
+  - task_id: MCT-VWL-007
+    source_plan: vast-weaving-lampson
+    source_tc: TC-VWL-007
+    title: SYLK deepening pilot
+    priority: P4
+    lane: product
+    estimated_loc: 50
+    dependencies: []
+    safe_parallel: false
+    status: pending
+
+  - task_id: MCT-FA-009
+    source_plan: eager-launching-phoenix
+    source_tc: TC-FA-009
+    title: CSV SAL chain repair pilot — RFC 4180 → FACT-CSV-NNN facts
+    priority: P4
+    lane: sal
+    estimated_loc: 100
+    dependencies: []
+    safe_parallel: false
+    status: pending
+
+  - task_id: MCT-FA-012
+    source_plan: eager-launching-phoenix
+    source_tc: TC-FA-012
+    title: GNUMERIC analytics masquerade — create gnumeric_analytics.py and move arithmetic functions
+    priority: P4
+    lane: product
+    estimated_loc: 200
+    dependencies: []
+    safe_parallel: false
+    status: pending
+
+# Priority 5 — Product Quality Healing
+
+  - task_id: MCT-PQ-WAVE0
+    source_plan: zany-riding-goblet
+    source_tc: TC-PQ-000/001
+    title: Wave 0 — bundle completeness gate + stale finding reverification
+    priority: P5
+    lane: quality
+    estimated_loc: 0
+    dependencies: []
+    safe_parallel: false
+    status: pending
+    note: SUPERSEDED in plan-locks — recon required before executing
+
+  - task_id: MCT-PQ-WAVE1
+    source_plan: zany-riding-goblet
+    source_tc: TC-PQ-010/011
+    title: Wave 1 — P0 release blockers (Gate 11 false claims + ZST .NET writer)
+    priority: P5
+    lane: quality
+    estimated_loc: 200
+    dependencies: [MCT-PQ-WAVE0]
+    safe_parallel: false
+    status: pending
+    note: SUPERSEDED in plan-locks — recon required before executing
+
+# Deduplication and Supersession notes:
+overlap_analysis:
+  - MCT-PDL-001 is effectively already DONE (check_continuation returns CONTINUE)
+  - MCT-VWL-001 (SUPERSEDE eager-wishing-bear lock) is effectively already DONE (CONTINUE returned)
+  - MCT-TDL-012 and MCT-VWL-004 partially overlap (both write to docs/architecture.md / master-plan.md) — sequence them
+  - MCT-RJO-004 + MCT-TCF-003 both touch lifecycle_audit.py — sequence MCT-RJO-004 first
+
+contradiction_register:
+  - CONTR-001: serialized-tickling-bentley claims check_continuation returns POST_PLAN_TERMINAL (STALE — actually CONTINUE)
+  - CONTR-002: vast-weaving-lampson TC-VWL-001 claims eager-wishing-bear is blocking (STALE — CONTINUE returned)
+  - CONTR-003: zany-riding-goblet is SUPERSEDED in plan-locks from 2 sessions — state unknown without recon
+  - CONTR-004: tidy-dreaming-lollipop claims sal_fact_count=0 for all formats (VALID — ledger confirms)
+  - CONTR-005: sunny-crunching-galaxy claims 17 formats have continuation_allowed=true incorrectly (VALID — ledger confirms)

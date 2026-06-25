@@ -1,0 +1,61 @@
+{
+  "mission": "spec-auth-inv-20260625-001",
+  "generated_at": "2026-06-25",
+  "verdict": "SPEC_AUTHORITY_INVESTIGATION_COMPLETE_CRITICAL_GAPS_FOUND",
+  "root_causes": [
+    {
+      "rc_id": "RC-001",
+      "title": "SAL parser only covers ODF formats — 7 formats have 0 facts",
+      "affected_formats": ["gnumeric", "abw", "qoi", "xcf", "dif", "sylk", "toml"],
+      "severity": "CRITICAL",
+      "healing_effort": "HIGH"
+    },
+    {
+      "rc_id": "RC-002",
+      "title": "Non-ODF formats have only 2 generic template facts",
+      "affected_formats": ["csv", "ndjson", "pbm", "pgm", "ppm", "tsv"],
+      "severity": "HIGH",
+      "healing_effort": "MEDIUM"
+    },
+    {
+      "rc_id": "RC-003",
+      "title": "V13 governance validator degrades to non-blocking on ImportError",
+      "affected_formats": ["all"],
+      "severity": "HIGH",
+      "healing_effort": "LOW"
+    },
+    {
+      "rc_id": "RC-004",
+      "title": "Evidence schema lacks provenance fields (no chunk_id, section_ref, page_ref)",
+      "affected_formats": ["all"],
+      "severity": "MEDIUM",
+      "healing_effort": "MEDIUM"
+    },
+    {
+      "rc_id": "RC-005",
+      "title": "SAL format advisory not wired into autonomous_cycle.py (LOC cap)",
+      "affected_formats": ["all"],
+      "severity": "MEDIUM",
+      "healing_effort": "LOW"
+    },
+    {
+      "rc_id": "RC-006",
+      "title": "Capability extraction is goal-based, not spec-fact-driven",
+      "affected_formats": ["all"],
+      "severity": "HIGH",
+      "healing_effort": "HIGH"
+    }
+  ],
+  "gap_ledger_refs": [
+    "GAP-SAL-RC001-001", "GAP-SAL-RC001-002", "GAP-SAL-RC001-003",
+    "GAP-SAL-RC001-004", "GAP-SAL-RC001-005", "GAP-SAL-RC001-006",
+    "GAP-SAL-RC001-007", "GAP-SAL-RC002-001", "GAP-SAL-RC002-002",
+    "GAP-SAL-RC002-003", "GAP-SAL-RC002-004", "GAP-SAL-RC003-001",
+    "GAP-SAL-RC004-001", "GAP-SAL-RC005-001", "GAP-SAL-RC006-001"
+  ],
+  "chain_status": {
+    "CHAIN_INTACT": ["fods", "fodt", "fodp", "fodg", "ods", "odt", "zst"],
+    "CHAIN_PARTIAL": ["csv", "ndjson", "pbm", "pgm", "ppm", "tsv"],
+    "CHAIN_BROKEN_AT_SAL": ["gnumeric", "abw", "qoi", "xcf", "dif", "sylk", "toml"]
+  }
+}

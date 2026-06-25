@@ -1,0 +1,540 @@
+schema_version: "1.0"
+sprint_id: ff-archaeology-20260625
+date: "2026-06-25"
+total_taskcards: 28
+
+taskcards:
+
+  # =====================================================================
+  # QNAME-BACKFILL GROUP (Priority: HIGH)
+  # =====================================================================
+
+  - taskcard_id: QNAME-BACKFILL-001
+    title: Fix DIF spec_qname on production codec classes
+    group: QNAME-BACKFILL
+    lane: C
+    status: open
+    severity: High
+    priority: 1
+    allowed_paths:
+      - src/python/dif/dif_parser.py
+      - tests/python/dif/test_dif_spec_qname.py
+    forbidden_paths:
+      - src/python/dif/spec/
+      - src/python/dif/Compat/
+    purpose: >
+      Inject spec_qname: ClassVar[str] on DifData and DifCell classes in the production
+      codec file. Registry already has entries. Compliance is blocked by missing ClassVar.
+    problem: >
+      dif_parser.py:DifData and dif_parser.py:DifCell lack spec_qname ClassVar.
+      QName compliance score for DIF is 60% (should be 100%).
+    evidence:
+      - reports/forensic-audit-20260625/per-product-qname-compliance.yaml (gap entry)
+    required_change: >
+      Add to dif_parser.py:
+        from typing import ClassVar  (if not present)
+        class DifData: spec_qname: ClassVar[str] = "dif:data"
+        class DifCell: spec_qname: ClassVar[str] = "dif:cell"
+    steps:
+      - Read src/python/dif/dif_parser.py to find DifData and DifCell class definitions
+      - Add ClassVar import if missing
+      - Inject spec_qname ClassVar on each class
+      - Run tests/python/dif/test_dif_spec_qname.py to verify
+    tests:
+      - tests/python/dif/test_dif_spec_qname.py (create if not exists, add V53 assertions)
+    evidence_required:
+      - SHA-256 of modified dif_parser.py
+      - Pytest output showing tests pass
+    closeout_criteria: >
+      V53 would pass for DIF (spec_qname ClassVar present on both DifData and DifCell).
+      QName compliance score for DIF >= 95%.
+    rollback_resume_notes: >
+      git revert on dif_parser.py if anything breaks. Purely additive change.
+    dependencies: []
+    gap_impact: SYSARCH-002
+    product_impact: DIF
+    machinery_impact: QName coverage metric improves
+
+  - taskcard_id: QNAME-BACKFILL-002
+    title: Fix FODG spec_qname on production codec class
+    group: QNAME-BACKFILL
+    lane: C
+    status: open
+    severity: High
+    priority: 1
+    allowed_paths:
+      - src/python/fodg/fodg_codec.py
+      - tests/python/fodg/
+    forbidden_paths:
+      - src/python/fodg/spec/
+      - src/python/fodg/Compat/
+    purpose: >
+      Inject spec_qname: ClassVar[str] = "draw:frame" on the primary FODG codec class.
+    problem: >
+      fodg_codec.py primary class lacks spec_qname ClassVar. QName compliance is 66.7%.
+    evidence:
+      - reports/forensic-audit-20260625/per-product-qname-compliance.yaml (gap entry)
+    required_change: >
+      Identify primary FODG codec class, add spec_qname: ClassVar[str] = "draw:frame"
+    steps:
+      - Read src/python/fodg/fodg_codec.py to identify primary class
+      - Add ClassVar import if missing
+      - Inject spec_qname ClassVar
+      - Run FODG tests to verify no regression
+    tests:
+      - tests/python/fodg/ (existing tests + new spec_qname test)
+    evidence_required:
+      - SHA-256 of modified fodg_codec.py
+      - Pytest output
+    closeout_criteria: QName compliance for FODG >= 95%
+    dependencies: []
+    gap_impact: SYSARCH-003
+    product_impact: FODG
+
+  - taskcard_id: QNAME-BACKFILL-003
+    title: Design and implement scan_qname_gaps.py
+    group: QNAME-BACKFILL
+    lane: J
+    status: open
+    severity: Medium
+    priority: 3
+    allowed_paths:
+      - tools/backfill/
+      - tests/supervisor/
+    purpose: Automated inventory of all classes missing spec_qname ClassVar
+    steps:
+      - Create tools/backfill/ directory
+      - Implement scan_qname_gaps.py per design in backfill-facility-design.md
+      - Add unit tests
+      - Run on full src/python/ and document output
+    gap_impact: SYSARCH-001
+
+  - taskcard_id: QNAME-BACKFILL-004
+    title: Design and implement inject_spec_qname.py
+    group: QNAME-BACKFILL
+    lane: J
+    status: open
+    severity: Medium
+    priority: 3
+    allowed_paths:
+      - tools/backfill/
+      - tests/supervisor/
+    purpose: Auto-inject spec_qname ClassVar from registry with --dry-run safety
+    steps:
+      - Implement inject_spec_qname.py per design in backfill-facility-design.md
+      - Support --dry-run flag
+      - Test on DIF and FODG (after QNAME-BACKFILL-001/002 for baseline comparison)
+    dependencies:
+      - QNAME-BACKFILL-003
+    gap_impact: SYSARCH-001
+
+  # =====================================================================
+  # SRC-STANDARDIZATION GROUP (Priority: MEDIUM)
+  # =====================================================================
+
+  - taskcard_id: SRC-STD-001
+    title: Create ODS domain model class (OdsDocument)
+    group: SRC-STANDARDIZATION
+    lane: D
+    status: open
+    severity: Medium
+    priority: 3
+    allowed_paths:
+      - src/python/ods/models.py
+      - tests/python/ods/test_ods_document_model.py
+    forbidden_paths:
+      - src/python/ods/ods_parser.py
+      - src/python/ods/ods_writer.py
+    purpose: Upgrade ODS from Gen3 to Gen4 by providing typed domain model class
+    required_change: >
+      Create src/python/ods/models.py with OdsDocument class:
+      - spec_qname: ClassVar[str] = "table:table"
+      - from_file(path) -> OdsDocument factory
+      - sheets property (list of dicts)
+      - sheet_count property
+      - to_dict() method
+    tests:
+      - tests/python/ods/test_ods_document_model.py (30+ tests)
+    gap_impact: SYSARCH-004
+
+  - taskcard_id: SRC-STD-002
+    title: Create ODT domain model class (OdtDocument)
+    group: SRC-STANDARDIZATION
+    lane: D
+    status: open
+    severity: Medium
+    priority: 3
+    allowed_paths:
+      - src/python/odt/models.py
+      - tests/python/odt/test_odt_document_model.py
+    purpose: Upgrade ODT from Gen3 to Gen4
+    required_change: >
+      Create OdtDocument with spec_qname="text:body", from_file(), paragraphs, paragraph_count
+    gap_impact: SYSARCH-004
+
+  - taskcard_id: SRC-STD-003
+    title: Create PBM domain model class (PbmImage)
+    group: SRC-STANDARDIZATION
+    lane: D
+    status: open
+    severity: Medium
+    priority: 3
+    allowed_paths:
+      - src/python/pbm/models.py
+      - tests/python/pbm/test_pbm_document_model.py
+    purpose: Upgrade PBM from Gen3 to Gen4
+    required_change: >
+      Create PbmImage with spec_qname="pbm:bitmap", from_file(), width, height, pixel_count
+    gap_impact: SYSARCH-004
+
+  - taskcard_id: SRC-STD-004
+    title: Create PGM domain model class (PgmImage)
+    group: SRC-STANDARDIZATION
+    lane: D
+    status: open
+    severity: Medium
+    priority: 3
+    allowed_paths:
+      - src/python/pgm/models.py
+      - tests/python/pgm/test_pgm_document_model.py
+    purpose: Upgrade PGM from Gen3 to Gen4
+    gap_impact: SYSARCH-004
+
+  - taskcard_id: SRC-STD-005
+    title: Create PPM domain model class (PpmImage)
+    group: SRC-STANDARDIZATION
+    lane: D
+    status: open
+    severity: Medium
+    priority: 3
+    allowed_paths:
+      - src/python/ppm/models.py
+      - tests/python/ppm/test_ppm_document_model.py
+    purpose: Upgrade PPM from Gen3 to Gen4
+    gap_impact: SYSARCH-004
+
+  - taskcard_id: SRC-STD-006
+    title: Create QOI domain model class (QoiImage)
+    group: SRC-STANDARDIZATION
+    lane: D
+    status: open
+    severity: Medium
+    priority: 3
+    allowed_paths:
+      - src/python/qoi/models.py
+      - tests/python/qoi/test_qoi_document_model.py
+    purpose: Upgrade QOI from Gen3 to Gen4
+    gap_impact: SYSARCH-004
+
+  - taskcard_id: SRC-STD-007
+    title: Create SYLK domain model class (SylkDocument)
+    group: SRC-STANDARDIZATION
+    lane: D
+    status: open
+    severity: Medium
+    priority: 3
+    allowed_paths:
+      - src/python/sylk/models.py
+      - tests/python/sylk/test_sylk_document_model.py
+    purpose: Upgrade SYLK from Gen3 to Gen4
+    gap_impact: SYSARCH-004
+
+  # =====================================================================
+  # CAPABILITY-REPAIR GROUP (Priority: HIGH)
+  # =====================================================================
+
+  - taskcard_id: CAP-REPAIR-001
+    title: Wire gap_ledger_to_work_items.py into autonomous task selection
+    group: CAPABILITY-REPAIR
+    lane: F
+    status: open
+    severity: High
+    priority: 1
+    allowed_paths:
+      - tools/supervisor/autonomous_cycle.py
+      - tools/supervisor/gap_ledger_to_work_items.py
+      - tools/supervisor/capability_feature_compiler.py
+    purpose: Unify two capability compilers so gap-ledger gaps appear in task queue
+    required_change: >
+      Option A: Call gap_ledger_to_work_items.py output in autonomous_cycle.py Step 3a-pre,
+      merging its work items with capability_feature_compiler.py output.
+      Option B: Make capability_feature_compiler.py the single compiler with
+      gap_ledger_to_work_items.py as an optional input.
+    tests:
+      - Integration test: gap-ledger entry → next-work-items.json → sprint task
+    gap_impact: SYSARCH-005
+
+  - taskcard_id: CAP-REPAIR-002
+    title: Unify capability compiler pipelines (de-duplicate)
+    group: CAPABILITY-REPAIR
+    lane: F
+    status: open
+    severity: Medium
+    priority: 2
+    allowed_paths:
+      - tools/supervisor/capability_feature_compiler.py
+      - tools/supervisor/gap_ledger_to_work_items.py
+    purpose: Eliminate duplicate compiler logic; one source of truth for work item generation
+    dependencies:
+      - CAP-REPAIR-001
+    gap_impact: SYSARCH-005
+
+  # =====================================================================
+  # FEATURE-COMPILER GROUP (Priority: MEDIUM)
+  # =====================================================================
+
+  - taskcard_id: FEAT-COMP-001
+    title: Integration test for full SAL→capability→feature→task pipeline
+    group: FEATURE-COMPILER
+    lane: F
+    status: open
+    severity: Medium
+    priority: 2
+    allowed_paths:
+      - tests/supervisor/test_sal_capability_pipeline.py
+    purpose: Prove end-to-end SAL fact → work item traceability
+    required_change: >
+      Integration test that:
+      1. Loads a SAL fact (FACT-FODS-001)
+      2. Verifies it appears in capability map
+      3. Verifies capability appears in gap-ledger
+      4. Verifies gap produces work item via compiler
+      5. Verifies work item has gap_ledger_ref field
+
+  - taskcard_id: FEAT-COMP-002
+    title: Spec fact traceability proof per work item
+    group: FEATURE-COMPILER
+    lane: F
+    status: open
+    severity: Medium
+    priority: 3
+    allowed_paths:
+      - tests/supervisor/test_work_item_traceability.py
+    purpose: Prove every work item can be traced to at least one SAL fact
+
+  # =====================================================================
+  # BACKFILL GROUP (Priority: MEDIUM)
+  # =====================================================================
+
+  - taskcard_id: BACKFILL-001
+    title: Implement generate_domain_model.py for batch Gen3→Gen4 upgrade
+    group: BACKFILL
+    lane: J
+    status: open
+    severity: Medium
+    priority: 3
+    allowed_paths:
+      - tools/backfill/generate_domain_model.py
+      - tests/supervisor/test_backfill_tools.py
+    purpose: Auto-generate models.py with domain model class from spec/ + registry
+    dependencies:
+      - QNAME-BACKFILL-003
+    gap_impact: SYSARCH-001
+
+  - taskcard_id: BACKFILL-002
+    title: Implement generate_compat_facade.py from registry
+    group: BACKFILL
+    lane: J
+    status: open
+    severity: Medium
+    priority: 3
+    allowed_paths:
+      - tools/backfill/generate_compat_facade.py
+    purpose: Auto-generate Compat/ facade stubs from qname-registry entries
+    gap_impact: SYSARCH-001
+
+  # =====================================================================
+  # SKILL-HARDENING GROUP (Priority: LOW)
+  # =====================================================================
+
+  - taskcard_id: SKILL-HARD-001
+    title: Create add-domain-model-class skill for Gen3→Gen4 upgrades
+    group: SKILL-HARDENING
+    lane: H
+    status: open
+    severity: Low
+    priority: 4
+    allowed_paths:
+      - .claude/commands/add-domain-model-class.md
+      - .supervisor/skill-registry.yaml
+    purpose: Govern the pattern of creating models.py domain model classes
+
+  - taskcard_id: SKILL-HARD-002
+    title: Create add-net-spec-qname skill for .NET ClassVar injection
+    group: SKILL-HARDENING
+    lane: H
+    status: open
+    severity: Low
+    priority: 4
+    allowed_paths:
+      - .claude/commands/add-net-spec-qname.md
+      - .supervisor/skill-registry.yaml
+    purpose: Govern spec_qname ClassVar injection in C# projects
+
+  # =====================================================================
+  # SUPERVISOR-LANES GROUP (Priority: MEDIUM)
+  # =====================================================================
+
+  - taskcard_id: SUP-LANE-001
+    title: Code-enforce Wave 3 gate before product lane items
+    group: SUPERVISOR-LANES
+    lane: I
+    status: open
+    severity: Medium
+    priority: 3
+    allowed_paths:
+      - tools/supervisor/autonomous_cycle.py
+      - tests/supervisor/test_wave_gate.py
+    purpose: Prevent product lane items (7-13) from running before Wave 3 is COMPLETE
+    gap_impact: SYSARCH-011
+
+  - taskcard_id: SUP-LANE-002
+    title: Integrate failure_memory.py into sprint selection
+    group: SUPERVISOR-LANES
+    lane: I
+    status: open
+    severity: Low
+    priority: 5
+    allowed_paths:
+      - tools/supervisor/failure_memory.py
+      - tools/supervisor/autonomous_cycle.py
+    purpose: Durable failure memory prevents repeating same mistakes
+    gap_impact: SYSARCH-012
+
+  # =====================================================================
+  # GATE11-STOP GROUP (Priority: HIGH)
+  # =====================================================================
+
+  - taskcard_id: G11-001
+    title: Prepare Gate 11 commercial sign-off packet for FODS/FODT
+    group: GATE11-STOP
+    lane: K
+    status: open
+    severity: High
+    priority: 1
+    allowed_paths:
+      - docs/publication/
+      - reports/supervisor/
+    forbidden_paths:
+      - src/
+    purpose: Submit Gate 11 packet to Babar Raza for commercial release authorization
+    problem: >
+      FODS and FODT have all technical criteria met. Full Gate 11 requires
+      Babar Raza's business authorization (TRUE_EXTERNAL_GATE).
+    steps:
+      - Compile NuGet package SHA-256
+      - Compile test summary (638 FODS + 496 FODT passing)
+      - Write Gate 11 criteria scorecard (C1-C20, P1-P11 all PASS)
+      - Write release notes reference
+      - Package everything into docs/publication/gate11-submission-fods.md
+      - Request Babar Raza review
+    evidence_required:
+      - Gate 11 packet document
+      - Test count proof
+    closeout_criteria: Babar Raza authorizes commercial release
+    gap_impact: SYSARCH-013
+
+  - taskcard_id: G11-002
+    title: Verify all architecture_only stubs excluded from RELEASE_GATE evidence
+    group: GATE11-STOP
+    lane: K
+    status: open
+    severity: Medium
+    priority: 2
+    allowed_paths:
+      - tests/supervisor/test_v48_stub_gate.py
+    purpose: Confirm V48 blocks any accidental architecture_only stub citation in Gate 11 evidence
+    steps:
+      - Run existing V48 tests to confirm all negative controls pass
+      - Add new negative controls for FODS/FODT spec/ skeleton files
+
+  # =====================================================================
+  # PRODUCT-PILOT GROUP (Priority: HIGH)
+  # =====================================================================
+
+  - taskcard_id: PILOT-001
+    title: FODS/FODT spec→SAL→capability→source→export end-to-end proof
+    group: PRODUCT-PILOT
+    lane: K
+    status: open
+    severity: High
+    priority: 1
+    allowed_paths:
+      - reports/forensic-audit-20260625/
+      - tests/python/fods/
+      - tests/python/fodt/
+    purpose: >
+      Produce documented proof that the full pipeline works for FODS:
+      load → inspect object model → edit → save → export → verify
+    steps:
+      - Run load proof: FodsDocument.from_file() on minimal.fods
+      - Run edit proof: set_cell_value, add_row
+      - Run save proof: write_fods() + re-parse
+      - Run export proof: fods_to_csv(), fods_to_html()
+      - Document trace: FACT-FODS-001 → capability → feature → source function
+    evidence_required:
+      - Load/edit/save/export results JSON
+
+  # =====================================================================
+  # CROSS-LANGUAGE-PARITY GROUP (Priority: MEDIUM)
+  # =====================================================================
+
+  - taskcard_id: PARITY-001
+    title: Add spec_qname to CSV .NET and NetPBM .NET
+    group: CROSS-LANGUAGE-PARITY
+    lane: C
+    status: open
+    severity: Medium
+    priority: 3
+    allowed_paths:
+      - src/net/csv/CsvDocument.cs
+      - src/net/netpbm/NetpbmDocument.cs
+    purpose: Extend .NET spec_qname coverage from 50% to 70%
+    required_change: >
+      Add: public static readonly string SpecQName = "csv:record"; to CsvDocument
+      Add: public static readonly string SpecQName = "netpbm:document"; to NetpbmDocument
+    gap_impact: SYSARCH-008
+
+  - taskcard_id: PARITY-002
+    title: Map 10 Python-only formats to cross-language gap ledger
+    group: CROSS-LANGUAGE-PARITY
+    lane: C
+    status: open
+    severity: Low
+    priority: 4
+    allowed_paths:
+      - reports/capability-layer/gap-ledger.json
+    purpose: Document which Python formats lack .NET equivalent and why
+
+  # =====================================================================
+  # EVIDENCE-LEDGER GROUP (Priority: LOW)
+  # =====================================================================
+
+  - taskcard_id: EVL-001
+    title: Create sprint closeout for forensic audit
+    group: EVIDENCE-LEDGER
+    lane: A
+    status: open
+    severity: Low
+    priority: 5
+    allowed_paths:
+      - .local/evidences/ff-archaeology-20260625/
+    purpose: Create evidence-declaration.yaml for this audit sprint
+    steps:
+      - Write evidence-declaration.yaml citing all 27 artifact files
+      - Run sprint_executor_validate.py --repair
+      - Run autonomous_cycle.py autonomous-cycle
+
+  - taskcard_id: EVL-002
+    title: Update gap-ledger with new SYSARCH-* gaps from this audit
+    group: EVIDENCE-LEDGER
+    lane: A
+    status: open
+    severity: Low
+    priority: 5
+    allowed_paths:
+      - reports/capability-layer/gap-ledger.json
+    purpose: Ensure all 14 SYSARCH gaps are tracked in the ledger
+    steps:
+      - Add SYSARCH-001 through SYSARCH-014 as gap-ledger entries
+      - Set priority, owning_lane, blocks_poc per gap matrix

@@ -1,0 +1,525 @@
+schema_version: "1.0"
+sprint_id: ff-archaeology-20260625
+date: "2026-06-25"
+total_gaps: 14
+
+gaps:
+
+  - gap_id: SYSARCH-001
+    layer: Backfill
+    lane: J
+    severity: High
+    evidence: reports/forensic-audit-20260625/backfill-facility-design.md
+    current_behavior: >
+      QName backfill is a manual task-driven process. Each format requires a TC-QHARD-POST-*
+      taskcard and 20-40 minutes of manual injection work per format.
+    expected_behavior: >
+      An automated scan_qname_gaps.py tool identifies all classes missing spec_qname.
+      An inject_spec_qname.py tool injects ClassVar from registry with --dry-run option.
+      A generate_domain_model.py tool creates models.py from spec/ + registry.
+    root_cause: >
+      The spec-to-feature correction plan addressed qname governance but did not
+      include automated backfill tooling. Each format was treated as a manual sprint task.
+    product_impact: >
+      Manual backfill required for 7 Gen3 formats (ODS, ODT, PBM, PGM, PPM, QOI, SYLK).
+      7 x 2-4 hours = significant manual effort per round.
+    machinery_impact: >
+      No tooling to automatically verify qname compliance across all 20 formats.
+      V53 only catches violations at sprint submission, not proactively.
+    repeatability_impact: >
+      Cannot guarantee new formats added to src/ will be qname-compliant.
+      Each new format requires manual backfill process.
+    autonomy_impact: Low
+    qname_impact: >
+      3 HIGH-severity qname gaps (DIF, FODG) exist because backfill is manual.
+      Would be caught and fixed automatically with automated tooling.
+    required_fix: >
+      Implement tools/backfill/scan_qname_gaps.py, inject_spec_qname.py,
+      generate_domain_model.py, backfill_evidence_snapshot.py
+    tests_required:
+      - Unit tests for scan_qname_gaps.py
+      - Dry-run verification for inject_spec_qname.py
+      - V53 post-backfill validation
+    evidence_required:
+      - Before/after SHA-256 snapshots
+      - Pytest pass/fail for affected format
+    must_fix_before_product_deepening: "no"
+    can_defer: "yes"
+    suggested_taskcard_id: BACKFILL-001
+    priority: 2
+
+  - gap_id: SYSARCH-002
+    layer: QName
+    lane: C
+    severity: High
+    evidence:
+      - src/python/dif/dif_parser.py
+      - reports/forensic-audit-20260625/per-product-qname-compliance.yaml
+    current_behavior: >
+      DifData and DifCell classes in dif_parser.py lack spec_qname: ClassVar[str].
+      The Compat/ facades and spec/ skeletons have spec_qname, but the production
+      codec class does not. V53 would flag this if run.
+    expected_behavior: >
+      DifData has spec_qname: ClassVar[str] = "dif:data"
+      DifCell has spec_qname: ClassVar[str] = "dif:cell"
+      Both ClassVars present on production class, V53 passes.
+    root_cause: >
+      spec_qname was injected into spec/ and Compat/ but not backfilled to the
+      original codec class. TC-QHARD-POST-001 covered some formats but missed DIF.
+    product_impact: >
+      DIF product cannot claim full qname compliance. V53 would block DIF
+      from RELEASE_GATE until fixed. DIF product audit shows 60% compliance.
+    machinery_impact: >
+      qname-coverage report shows DIF at 60% instead of 100%.
+      Capability map spec_refs for DIF may be incomplete.
+    repeatability_impact: High
+    autonomy_impact: Medium
+    qname_impact: High
+    required_fix: >
+      Add to src/python/dif/dif_parser.py:
+      - from typing import ClassVar (if not present)
+      - class DifData: spec_qname: ClassVar[str] = "dif:data"
+      - class DifCell: spec_qname: ClassVar[str] = "dif:cell"
+    tests_required:
+      - tests/python/dif/test_dif_spec_qname.py (V53 compliance tests)
+    evidence_required:
+      - SHA-256 before/after for dif_parser.py
+      - pytest output for dif spec_qname tests
+    must_fix_before_product_deepening: "yes"
+    can_defer: "no"
+    suggested_taskcard_id: QNAME-BACKFILL-001
+    priority: 1
+
+  - gap_id: SYSARCH-003
+    layer: QName
+    lane: C
+    severity: High
+    evidence:
+      - src/python/fodg/fodg_codec.py
+      - reports/forensic-audit-20260625/per-product-qname-compliance.yaml
+    current_behavior: >
+      The primary codec class in fodg_codec.py lacks spec_qname: ClassVar[str] = "draw:frame".
+      Compat/ facades and spec/ skeletons have it. Production codec class does not.
+    expected_behavior: >
+      Primary FODG class has spec_qname: ClassVar[str] = "draw:frame". V53 passes.
+    root_cause: >
+      Same pattern as DIF: backfill was incomplete for FODG.
+    product_impact: >
+      FODG compliance report shows 66.7%. Cannot claim spec compliance.
+    machinery_impact: Medium
+    repeatability_impact: High
+    autonomy_impact: Medium
+    qname_impact: High
+    required_fix: >
+      Add to src/python/fodg/fodg_codec.py:
+      - from typing import ClassVar (if not present)
+      - spec_qname: ClassVar[str] = "draw:frame" on primary FodgFrame or equivalent class
+    tests_required:
+      - New test file: tests/python/fodg/test_fodg_spec_qname.py
+    evidence_required:
+      - SHA-256 before/after for fodg_codec.py
+      - pytest output
+    must_fix_before_product_deepening: "yes"
+    can_defer: "no"
+    suggested_taskcard_id: QNAME-BACKFILL-002
+    priority: 1
+
+  - gap_id: SYSARCH-004
+    layer: Domain Model
+    lane: D
+    severity: Medium
+    evidence:
+      - reports/forensic-audit-20260625/per-product-capability-matrix.yaml
+      - reports/forensic-audit-20260625/generation-archaeology.md
+    current_behavior: >
+      7 Python formats (ODS, ODT, PBM, PGM, PPM, QOI, SYLK) are Gen3 — they have
+      spec_qname in codec classes but lack models.py with typed domain model classes.
+      Users can only access data via raw dict model.
+    expected_behavior: >
+      Each format has a models.py with:
+      - Domain class (OdsDocument, OdtDocument, PbmImage, etc.)
+      - spec_qname: ClassVar[str] attribute
+      - from_file(path) factory method
+      - Typed property access (.headers, .rows, etc.)
+      - to_dict() serialization
+    root_cause: >
+      Domain model expansion (Epoch 3, 2026-06-20 to 2026-06-24) addressed Gen4 formats
+      but did not reach the 7 Gen3 formats before the sprint rotation ended.
+    product_impact: >
+      Gen3 formats cannot offer typed API. Consumer experience is raw dict access only.
+      Cannot pass capability criteria requiring domain model.
+    machinery_impact: Low
+    repeatability_impact: Medium
+    autonomy_impact: Low
+    qname_impact: Low
+    required_fix: >
+      Create src/python/{format}/models.py for: ODS, ODT, PBM, PGM, PPM, QOI, SYLK
+      Each using pattern: spec_qname ClassVar + from_file() + typed properties + to_dict()
+    tests_required:
+      - tests/python/{format}/test_{format}_document_model.py for each (30+ tests each)
+    evidence_required:
+      - from_file() working proof
+      - Property access test results
+    must_fix_before_product_deepening: "no"
+    can_defer: "yes"
+    suggested_taskcard_id: SRC-STD-001
+    priority: 3
+
+  - gap_id: SYSARCH-005
+    layer: Capability
+    lane: F
+    severity: High
+    evidence:
+      - reports/forensic-audit-20260625/capability-layer-audit.md
+      - tools/supervisor/gap_ledger_to_work_items.py
+    current_behavior: >
+      Two capability compilers exist (capability_feature_compiler.py and
+      gap_ledger_to_work_items.py) but gap_ledger_to_work_items.py is standalone
+      and not wired into the autonomous task selection loop. Its output does not
+      automatically appear in the supervisor's task queue.
+    expected_behavior: >
+      A single compiler pipeline: gap-ledger → capability_feature_compiler.py →
+      next-work-items.json → autonomous_cycle.py Step 3a. OR both compilers unified
+      into one call with de-duplication.
+    root_cause: >
+      gap_ledger_to_work_items.py was created as a standalone batch tool.
+      capability_feature_compiler.py was wired into autonomous_cycle.py separately.
+      The two were never unified.
+    product_impact: >
+      Work items from gap_ledger_to_work_items.py are invisible to the supervisor.
+      Some open gaps may never be assigned to sprint tasks automatically.
+    machinery_impact: High
+    repeatability_impact: High
+    autonomy_impact: High
+    qname_impact: Low
+    required_fix: >
+      Either:
+      1. Wire gap_ledger_to_work_items.py into autonomous_cycle.py Step 3a-pre, OR
+      2. Make capability_feature_compiler.py the single compiler and deprecate gap_ledger_to_work_items.py
+    tests_required:
+      - Integration test: gap-ledger entry → next-work-items.json → sprint task
+    evidence_required:
+      - End-to-end trace showing gap_id → capability_id → work_item_id → sprint task
+    must_fix_before_product_deepening: "yes"
+    can_defer: "no"
+    suggested_taskcard_id: CAP-REPAIR-001
+    priority: 1
+
+  - gap_id: SYSARCH-006
+    layer: SAL
+    lane: E
+    severity: Medium
+    evidence:
+      - reports/forensic-audit-20260625/sal-audit.md
+    current_behavior: >
+      All SAL facts are manually workbench-verified. No automatic extraction from
+      spec documents. Each new format requires human effort to seed facts.
+    expected_behavior: >
+      SAL extraction pipeline automatically parses spec documents and produces
+      candidate facts for human review. Reduces manual effort per format.
+    root_cause: >
+      ODF SAL extraction was human-assisted from the start. No NLP or
+      structured spec parser was built for non-ODF formats.
+    product_impact: >
+      9 non-ODF formats have thin SAL coverage (14-34 facts vs 5,000+).
+      Capability maps for these formats are SAL-sparse.
+    machinery_impact: High
+    repeatability_impact: High
+    autonomy_impact: Low
+    qname_impact: Low
+    required_fix: >
+      Design SAL auto-extraction pipeline for grammar-based formats (TOML, NDJSON, CSV).
+      At minimum: auto-seed facts from schema definitions, RFC sections, or grammar rules.
+    tests_required:
+      - Fact stability test (same input → same FACT-ID)
+      - Negative test (reject invented facts)
+    evidence_required:
+      - Before/after fact count per format
+      - Traceability: FACT-ID → spec section
+    must_fix_before_product_deepening: "no"
+    can_defer: "yes"
+    suggested_taskcard_id: SAL-REPAIR-001
+    priority: 4
+
+  - gap_id: SYSARCH-007
+    layer: Source Architecture
+    lane: D
+    severity: Medium
+    evidence:
+      - registry/source-structure-baseline.json
+    current_behavior: >
+      47 source files are in known_violations with frozen baseline_loc_cap values.
+      Some files are far above 800 LOC (fods/neutral_model.py at 1,231, fodg_codec.py at 831).
+      These cannot be reduced without analytics extraction sprints.
+    expected_behavior: >
+      All production source files below 800 LOC / 60 functions.
+      Known violations should gradually heal via analytics extraction.
+    root_cause: >
+      Pre-governance era files started oversized. Baseline_loc_cap is write-once
+      so caps are frozen. Analytics extraction healed ZST, XCF, FODG, FODT but
+      others remain oversized.
+    product_impact: >
+      Oversized files are harder to maintain and test.
+      Any increase in LOC above baseline_loc_cap triggers GOV_BLOCK.
+    machinery_impact: Medium
+    repeatability_impact: Low
+    autonomy_impact: Low
+    qname_impact: Low
+    required_fix: >
+      Analytics extraction sprints for remaining oversized files:
+      - sylk_parser.py → sylk_analytics.py
+      - gnumeric_codec.py → gnumeric_analytics.py
+      - fods/neutral_model.py → fods_analytics.py
+    tests_required:
+      - Source structure validator passes after extraction
+    evidence_required:
+      - LOC reduction proof (before/after)
+    must_fix_before_product_deepening: "no"
+    can_defer: "yes"
+    suggested_taskcard_id: SRC-HYGIENE-001
+    priority: 4
+
+  - gap_id: SYSARCH-008
+    layer: QName
+    lane: C
+    severity: Medium
+    evidence:
+      - reports/forensic-audit-20260625/per-product-qname-compliance.yaml
+      - src/net/csv/CsvDocument.cs
+      - src/net/netpbm/NetpbmDocument.cs
+    current_behavior: >
+      .NET CSV project (FormatFactory.Csv) and NetPBM project (FormatFactory.Netpbm)
+      lack spec_qname ClassVar on their primary document classes.
+    expected_behavior: >
+      CsvDocument.cs has: public static readonly string SpecQName = "csv:record";
+      NetpbmDocument.cs has: public static readonly string SpecQName = "netpbm:document";
+    root_cause: >
+      .NET spec_qname injection was done for commercial products (FODS, FODT) but
+      not extended to all .NET projects.
+    product_impact: >
+      CSV .NET and NetPBM .NET cannot claim spec_qname compliance.
+      Gate 11 criteria C11 would fail for these products.
+    machinery_impact: Low
+    repeatability_impact: Medium
+    autonomy_impact: Low
+    qname_impact: Medium
+    required_fix: >
+      Add SpecQName static readonly string to CsvDocument.cs and NetpbmDocument.cs.
+      Taskcard: PARITY-001.
+    tests_required:
+      - C# unit test: Assert.Equal("csv:record", CsvDocument.SpecQName)
+    evidence_required:
+      - File modification proof
+      - Test pass results
+    must_fix_before_product_deepening: "no"
+    can_defer: "yes"
+    suggested_taskcard_id: PARITY-001
+    priority: 3
+
+  - gap_id: SYSARCH-009
+    layer: SAL
+    lane: E
+    severity: Medium
+    evidence:
+      - reports/forensic-audit-20260625/sal-audit.md
+    current_behavior: >
+      10 formats (ABW, CSV, DIF, GNUMERIC, NDJSON, SYLK, TOML, TSV, XCF, ZST) are
+      CHAIN_BROKEN_AT_SAL. SAL facts exist but the extraction pipeline doesn't extend
+      to these formats for spec-section-level linking.
+    expected_behavior: >
+      All formats have spec-section-level SAL linkage. CHAIN_INTACT for all.
+    root_cause: >
+      SAL parser was built for ODF formats (FODS, FODT, ODS, ODT) with full
+      spec-section indexing. Non-ODF formats were manually seeded without spec-index.yaml.
+    product_impact: >
+      Capability maps for CHAIN_BROKEN_AT_SAL formats cannot show spec_refs_count
+      from SAL. Evidence quality is lower for these formats.
+    machinery_impact: High
+    repeatability_impact: High
+    autonomy_impact: Low
+    qname_impact: Low
+    required_fix: >
+      Create spec-index.yaml for each of the 10 CHAIN_BROKEN_AT_SAL formats.
+      Run sal-pipeline-heal skill for each. Update unified-capability-map.json.
+    tests_required:
+      - Chain verification test for each format
+    evidence_required:
+      - chain-verification.json showing CHAIN_INTACT for each format
+    must_fix_before_product_deepening: "no"
+    can_defer: "yes"
+    suggested_taskcard_id: SAL-REPAIR-002
+    priority: 4
+
+  - gap_id: SYSARCH-010
+    layer: Source Quality
+    lane: D
+    severity: Low
+    evidence:
+      - reports/forensic-audit-20260625/src-source-quality-review.md
+    current_behavior: >
+      Each format has format-specific exporter functions (e.g., fodg.export_to_txt(),
+      ndjson.ndjson_to_csv()). No unified cross-format export interface exists.
+    expected_behavior: >
+      A unified export interface: export(source_path, target_format, dest_path) or
+      ExportTo{Format}(model, dest_path) naming convention enforced across formats.
+    root_cause: >
+      Exporters were added per-format as needed without defining a shared interface contract.
+    product_impact: >
+      API consumers must learn different function signatures per format.
+      Cross-format export examples are inconsistent.
+    machinery_impact: Low
+    repeatability_impact: Medium
+    autonomy_impact: Low
+    qname_impact: Low
+    required_fix: >
+      Define naming convention in docs/architecture.md:
+      {format}_export_to_{target}(model_or_path, dest_path) -> Path
+      Apply to existing exporters, enforce in add-dogfood-export skill.
+    tests_required:
+      - Convention test: all export functions follow naming pattern
+    evidence_required:
+      - docs/architecture.md updated section
+    must_fix_before_product_deepening: "no"
+    can_defer: "yes"
+    suggested_taskcard_id: SRC-STD-010
+    priority: 5
+
+  - gap_id: SYSARCH-011
+    layer: Supervisor
+    lane: I
+    severity: Medium
+    evidence:
+      - reports/forensic-audit-20260625/lane-separation-and-collision-risk.md
+    current_behavior: >
+      Lane ownership validation checks declared_lane against item lane strings but
+      the ASSIGNMENT of work items to lanes is prompt-driven (not code-enforced).
+      DAG wave ordering is documented in plans but not enforced by code.
+    expected_behavior: >
+      autonomous_cycle.py verifies that items in a product sprint are from product lanes
+      (7-13), and items in a machinery sprint are from machinery lanes (1-6, 14, 15).
+      Wave ordering gate is code-enforced (Wave 3 check before Wave 4-7 items).
+    root_cause: >
+      Lane enforcement validator was added post-facto but only validates what's declared,
+      not what SHOULD be assigned. Wave DAG is architectural documentation, not code.
+    product_impact: Medium
+    machinery_impact: Medium
+    repeatability_impact: Medium
+    autonomy_impact: Medium
+    qname_impact: Low
+    required_fix: >
+      Add code-level gate in autonomous_cycle.py:
+      If current sprint contains items from product lanes (7-13),
+      verify Wave 3 gate is COMPLETE before proceeding.
+    tests_required:
+      - Test: Wave 5 items blocked when Wave 3 not complete
+    evidence_required:
+      - Code diff showing gate implementation
+      - Test pass evidence
+    must_fix_before_product_deepening: "no"
+    can_defer: "yes"
+    suggested_taskcard_id: SUP-LANE-001
+    priority: 3
+
+  - gap_id: SYSARCH-012
+    layer: Supervisor
+    lane: I
+    severity: Low
+    evidence:
+      - tools/supervisor/failure_memory.py
+    current_behavior: >
+      All decision rules are static. When a validator fails repeatedly for the same
+      root cause, the supervisor doesn't learn to avoid the same mistake.
+      failure_memory.py exists but is not integrated into decision logic.
+    expected_behavior: >
+      failure_memory.py is integrated into autonomous_cycle.py.
+      When a work item fails, its failure mode is recorded.
+      Next sprint selection avoids patterns that previously failed.
+    root_cause: >
+      failure_memory.py was created as infrastructure but integration was deferred.
+    product_impact: Low
+    machinery_impact: Medium
+    repeatability_impact: High
+    autonomy_impact: High
+    qname_impact: Low
+    required_fix: >
+      Integrate failure_memory.py into autonomous_cycle.py:
+      1. Load failure history before sprint selection
+      2. Filter or de-prioritize items matching known failure patterns
+      3. Record new failures after each sprint
+    tests_required:
+      - failure_memory integration test
+    evidence_required:
+      - Code diff
+      - Test showing failure avoidance
+    must_fix_before_product_deepening: "no"
+    can_defer: "yes"
+    suggested_taskcard_id: SUP-LANE-002
+    priority: 5
+
+  - gap_id: SYSARCH-013
+    layer: Gate 11
+    lane: K
+    severity: Blocker
+    evidence:
+      - reports/forensic-audit-20260625/gate11-readiness-review.md
+      - tools/supervisor/governance_validators.py (V48)
+    current_behavior: >
+      FODS and FODT have all technical Gate 11 criteria met (C1-C20, P1-P11 all PASS)
+      and G11-G sub-gate APPROVED. However, the full Gate 11 (commercial release)
+      has not been executed because it requires Babar Raza's final business authorization.
+    expected_behavior: >
+      Commercial sign-off packet submitted to Babar Raza. Authorization received.
+      NuGet packages published to registry.
+    root_cause: >
+      Gate 11 execution is a TRUE_EXTERNAL_GATE requiring business authority.
+      The agent cannot self-authorize commercial publication.
+    product_impact: Blocker for commercial revenue
+    machinery_impact: None
+    repeatability_impact: None
+    autonomy_impact: None
+    qname_impact: None
+    required_fix: >
+      1. Prepare Gate 11 commercial sign-off packet (agent-owned)
+      2. Submit to Babar Raza (TRUE_EXTERNAL_GATE)
+      3. Execute publication after authorization
+    tests_required: All already passing (638 FODS + 496 FODT)
+    evidence_required:
+      - Gate 11 sign-off packet (taskcards.yaml entry G11-001)
+    must_fix_before_product_deepening: "no"
+    can_defer: "yes"
+    suggested_taskcard_id: G11-001
+    priority: 1
+
+  - gap_id: SYSARCH-014
+    layer: Source Quality
+    lane: D
+    severity: Low
+    evidence:
+      - reports/forensic-audit-20260625/source-hygiene-audit.md
+    current_behavior: >
+      16 Python analytics files are named misleadingly (analytics masquerade):
+      gnumeric_workbook_stats.py, config_document.py, etc.
+      These contain spec-backed analytical functions but are named after config/workbook
+      concepts rather than following {format}_analytics.py convention.
+    expected_behavior: >
+      All analytics files follow {format}_analytics.py naming convention.
+    root_cause: >
+      Pre-RULE-AM-001 naming. Files were created before analytics naming rule existed.
+      Rename requires updating 16+ import chains.
+    product_impact: Low
+    machinery_impact: Low
+    repeatability_impact: Low
+    autonomy_impact: Low
+    qname_impact: Low
+    required_fix: >
+      GAP-PROD-INV-MASQ-001: Rename 16 analytics masquerade files to {format}_analytics.py.
+      Update all import chains. Run full test suite after.
+    tests_required:
+      - Import test: from {format} import {analytics_function} still works after rename
+    evidence_required:
+      - Before/after file listing
+      - Full test suite pass
+    must_fix_before_product_deepening: "no"
+    can_defer: "yes"
+    suggested_taskcard_id: SRC-HYGIENE-002
+    priority: 5

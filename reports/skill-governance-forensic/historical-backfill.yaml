@@ -1,0 +1,116 @@
+---
+generated_by: skill-governance-forensic-audit
+mission_id: SKILL-GOV-FORENSIC-20260625
+generated_at: "2026-06-25"
+
+# Historical backfill accounting — Section 30 of the governance audit lifecycle
+# Covers active and recent plans, sprints, and src/ mutations.
+# Methodology: traced residual-bypass-report.yaml + skill-first-execution-report.md
+
+pre_policy_period:
+  cutoff_commit: 4a37978f  # first ALL-GREEN skill-governance commit (2026-06-24)
+  scope: All commits before this commit predating SKILL-FIRST-001 policy
+  disposition: EXEMPT_PRE_POLICY
+  note: >
+    All src/ mutations before the SKILL-FIRST-001 policy enforcement date are
+    retroactively exempt. They are classified as pre-policy work.
+    No backfill required for pre-policy commits.
+
+post_policy_ungoverned_mutations:
+
+  - backfill_id: BF-001
+    commit_sha: 787b43e27a3dd6abf0de663ab2e5b9e1d4175925
+    sprint_id: PDEP-2026-06-25-001
+    task_id: various (domain model additions)
+    changed_paths:
+      - src/python/abw/models.py
+      - src/python/csv/models.py
+      - src/python/fodt/exporters.py
+      - src/python/gnumeric/models.py
+      - src/python/ndjson/models.py
+      - src/python/odt/odt_writer.py
+      - src/python/toml/models.py
+      - src/python/tsv/models.py
+      - src/python/zst/models.py
+    inferred_operation: add_domain_model_classes_and_exporters
+    existing_matching_skill: add-python-object-model-feature (domain models) + add-same-format-writer-feature (exporters)
+    skill_reconstruction_required: false  # skills existed at time of commit
+    current_output_valid: true  # 152+ tests pass for these files
+    retroactive_transcript:
+      path: reports/skills-pdep-20260625/skill-transcripts/pdep-domain-models-object-model-feature.json
+      created_by: skill-governance-sync-sprint-20260625
+      verdict: ACCEPTED (transcript recognized by ci_skill_attribution_check.py)
+    validation_required: false  # already validated
+    disposition: BIND_AND_REVALIDATE_EXISTING_SKILL
+    current_status: RESOLVED_VIA_RETROACTIVE_TRANSCRIPT
+
+  - backfill_id: BF-002
+    commit_sha: 5d668226bbea518eba52c3a5a481903e4c36164d
+    sprint_id: various (post-policy product deepening)
+    task_id: various
+    changed_paths:
+      - src/python/abw/abw_codec.py
+      - src/python/csv/csv_parser.py
+      - src/python/dif/__init__.py
+      - src/python/dif/dif_parser.py
+      - src/python/fods/__init__.py
+      - src/python/gnumeric/gnumeric_codec.py
+      - src/python/ndjson/ndjson_codec.py
+      - src/python/ods/__init__.py
+      - src/python/pbm/pbm_parser.py
+      - src/python/pgm/pgm_parser.py
+      - src/python/ppm/ppm_parser.py
+      - src/python/qoi/image_document.py
+      - src/python/qoi/qoi_parser.py
+      - src/python/sylk/__init__.py
+      - src/python/sylk/sylk_parser.py
+      - src/python/toml/toml_codec.py
+      - src/python/tsv/__init__.py
+      - src/python/tsv/tsv_parser.py
+      - src/python/xcf/xcf_parser.py
+      - src/python/zst/zst_codec.py
+    inferred_operation: multi_format_api_additions_and_qname_compliance
+    existing_matching_skills:
+      - add-python-api
+      - qname-backfill
+      - spec-parity-source-regeneration-and-migration
+    skill_reconstruction_required: false
+    current_output_valid: true  # 15891+ tests pass
+    retroactive_transcript:
+      path: reports/skills-pdep-20260625/skill-transcripts/pdep-exporters-writer-feature.json
+      note: Partial coverage — this transcript covers exporters but not all codec changes
+    disposition: MIGRATE_AD_HOC_LOGIC
+    current_status: PARTIALLY_RESOLVED_NEEDS_FULL_TRANSCRIPT_COVERAGE
+    remediation:
+      - Create additional retroactive transcript covering xcf, zst, ndjson, gnumeric codec changes
+      - Associate with skill IDs: add-python-api, spec-parity-source-regeneration-and-migration
+
+backfill_summary:
+  total_ungoverned_post_policy: 2
+  resolved: 1  # BF-001
+  partially_resolved: 1  # BF-002
+  unresolved: 0
+  pre_policy_exempt: many (all commits before 4a37978f)
+
+adoption_metrics_as_of_2026_06_25:
+  governed_mutations_total: 2  # post-policy src/ mutations
+  skill_backed_mutations: 1  # BF-001 fully resolved
+  receipt_backed_mutations: 1
+  direct_mutation_attempts: 2  # both BF-001 and BF-002
+  rejected_direct_mutations: 0  # no pre-mutation guard existed at time
+  accepted_direct_mutations: 2  # both succeeded without technical barrier
+  skills_reused: 2  # add-python-object-model-feature, add-same-format-writer-feature
+  skills_composed: 0
+  skills_repaired: 0
+  micro_skills_created: 2  # pre_mutation_guard.py, ci_skill_attribution_check.py (this sprint)
+  duplicate_skills_prevented: 0
+  skill_created_not_used_violations: 0
+  claude_code_compliance_rate: 0.50  # 1/2 post-policy mutations fully governed
+  codex_compliance_rate: 0.00  # Codex not yet activated (DEC-014)
+  product_sprint_compliance_rate: 0.50
+  machinery_sprint_compliance_rate: 0.00  # machinery self-governance not yet measured
+
+compliance_target_delta:
+  current_accepted_direct_mutations: 2
+  target_accepted_direct_mutations: 0
+  gap: 2  # BF-002 needs complete transcript; future mutations need pre-commit hook

@@ -1,0 +1,177 @@
+{
+  "format_id": "fodt",
+  "date": "20260625",
+  "total_entries": 9,
+  "compliant_count": 6,
+  "compliant_pct": 0.667,
+  "blocks_gate_count": 0,
+  "state_counts": {
+    "ARCHITECTURE_ONLY_NO_FILE": 1,
+    "WRONG_PATH_IN_SPEC": 3,
+    "MATCH": 5
+  },
+  "action_counts": {
+    "NONE": 6,
+    "MOVE_FILE": 3
+  },
+  "risk_counts": {
+    "LOW": 6,
+    "HIGH": 3
+  },
+  "migration_ready": true,
+  "entries": [
+    {
+      "qname": "office:body",
+      "status": "architecture_only",
+      "canonical_class": "Office.Body",
+      "current_path": null,
+      "target_path": "src/python/fodt/spec/office/body.py",
+      "source_layer": "Spec",
+      "current_state": "ARCHITECTURE_ONLY_NO_FILE",
+      "action_required": "NONE",
+      "migration_risk": "LOW",
+      "estimated_effort": "trivial",
+      "blocks_gate": false,
+      "test_changes_required": [],
+      "notes": [
+        "architecture_only with null python_file is intentional \u2014 body represented by facade"
+      ]
+    },
+    {
+      "qname": "text:p",
+      "status": "implemented",
+      "canonical_class": "Text.Paragraph",
+      "current_path": "src/python/fodt/spec/text/paragraph.py",
+      "target_path": "src/python/fodt/spec/text/p.py",
+      "source_layer": "Spec",
+      "current_state": "WRONG_PATH_IN_SPEC",
+      "action_required": "MOVE_FILE",
+      "migration_risk": "HIGH",
+      "estimated_effort": "medium",
+      "blocks_gate": false,
+      "test_changes_required": [],
+      "notes": [
+        "In spec/ but wrong sub-path. Got src/python/fodt/spec/text/paragraph.py, expected src/python/fodt/spec/text/p.py"
+      ]
+    },
+    {
+      "qname": "text:h",
+      "status": "implemented",
+      "canonical_class": "Text.Heading",
+      "current_path": "src/python/fodt/spec/text/heading.py",
+      "target_path": "src/python/fodt/spec/text/h.py",
+      "source_layer": "Spec",
+      "current_state": "WRONG_PATH_IN_SPEC",
+      "action_required": "MOVE_FILE",
+      "migration_risk": "HIGH",
+      "estimated_effort": "medium",
+      "blocks_gate": false,
+      "test_changes_required": [],
+      "notes": [
+        "In spec/ but wrong sub-path. Got src/python/fodt/spec/text/heading.py, expected src/python/fodt/spec/text/h.py"
+      ]
+    },
+    {
+      "qname": "text:span",
+      "status": "implemented",
+      "canonical_class": "Text.Span",
+      "current_path": "src/python/fodt/spec/text/span.py",
+      "target_path": "src/python/fodt/spec/text/span.py",
+      "source_layer": "Spec",
+      "current_state": "MATCH",
+      "action_required": "NONE",
+      "migration_risk": "LOW",
+      "estimated_effort": "trivial",
+      "blocks_gate": false,
+      "test_changes_required": [],
+      "notes": [
+        "Fully compliant"
+      ]
+    },
+    {
+      "qname": "text:list",
+      "status": "implemented",
+      "canonical_class": "Text.List",
+      "current_path": "src/python/fodt/spec/text/list_.py",
+      "target_path": "src/python/fodt/spec/text/list.py",
+      "source_layer": "Spec",
+      "current_state": "WRONG_PATH_IN_SPEC",
+      "action_required": "MOVE_FILE",
+      "migration_risk": "HIGH",
+      "estimated_effort": "medium",
+      "blocks_gate": false,
+      "test_changes_required": [],
+      "notes": [
+        "In spec/ but wrong sub-path. Got src/python/fodt/spec/text/list_.py, expected src/python/fodt/spec/text/list.py"
+      ]
+    },
+    {
+      "qname": "text:list-item",
+      "status": "implemented",
+      "canonical_class": "Text.ListItem",
+      "current_path": "src/python/fodt/spec/text/list_item.py",
+      "target_path": "src/python/fodt/spec/text/list_item.py",
+      "source_layer": "Spec",
+      "current_state": "MATCH",
+      "action_required": "NONE",
+      "migration_risk": "LOW",
+      "estimated_effort": "trivial",
+      "blocks_gate": false,
+      "test_changes_required": [],
+      "notes": [
+        "Fully compliant"
+      ]
+    },
+    {
+      "qname": "table:table",
+      "status": "implemented",
+      "canonical_class": "Table.Table",
+      "current_path": "src/python/fodt/spec/table/table.py",
+      "target_path": "src/python/fodt/spec/table/table.py",
+      "source_layer": "Spec",
+      "current_state": "MATCH",
+      "action_required": "NONE",
+      "migration_risk": "LOW",
+      "estimated_effort": "trivial",
+      "blocks_gate": false,
+      "test_changes_required": [],
+      "notes": [
+        "Fully compliant"
+      ]
+    },
+    {
+      "qname": "table:table-row",
+      "status": "implemented",
+      "canonical_class": "Table.TableRow",
+      "current_path": "src/python/fodt/spec/table/table_row.py",
+      "target_path": "src/python/fodt/spec/table/table_row.py",
+      "source_layer": "Spec",
+      "current_state": "MATCH",
+      "action_required": "NONE",
+      "migration_risk": "LOW",
+      "estimated_effort": "trivial",
+      "blocks_gate": false,
+      "test_changes_required": [],
+      "notes": [
+        "Fully compliant"
+      ]
+    },
+    {
+      "qname": "table:table-cell",
+      "status": "implemented",
+      "canonical_class": "Table.TableCell",
+      "current_path": "src/python/fodt/spec/table/table_cell.py",
+      "target_path": "src/python/fodt/spec/table/table_cell.py",
+      "source_layer": "Spec",
+      "current_state": "MATCH",
+      "action_required": "NONE",
+      "migration_risk": "LOW",
+      "estimated_effort": "trivial",
+      "blocks_gate": false,
+      "test_changes_required": [],
+      "notes": [
+        "Fully compliant"
+      ]
+    }
+  ]
+}

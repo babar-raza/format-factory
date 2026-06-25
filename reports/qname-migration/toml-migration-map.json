@@ -1,0 +1,71 @@
+{
+  "format_id": "toml",
+  "date": "20260625",
+  "total_entries": 3,
+  "compliant_count": 0,
+  "compliant_pct": 0.0,
+  "blocks_gate_count": 0,
+  "state_counts": {
+    "WRONG_PATH_IN_SPEC": 3
+  },
+  "action_counts": {
+    "MOVE_FILE": 3
+  },
+  "risk_counts": {
+    "HIGH": 3
+  },
+  "migration_ready": true,
+  "entries": [
+    {
+      "qname": "toml:table",
+      "status": "implemented",
+      "canonical_class": "Toml.Table",
+      "current_path": "src/python/toml/spec/table/table.py",
+      "target_path": "src/python/toml/spec/toml/table.py",
+      "source_layer": "Spec",
+      "current_state": "WRONG_PATH_IN_SPEC",
+      "action_required": "MOVE_FILE",
+      "migration_risk": "HIGH",
+      "estimated_effort": "medium",
+      "blocks_gate": false,
+      "test_changes_required": [],
+      "notes": [
+        "In spec/ but wrong sub-path. Got src/python/toml/spec/table/table.py, expected src/python/toml/spec/toml/table.py"
+      ]
+    },
+    {
+      "qname": "toml:key",
+      "status": "implemented",
+      "canonical_class": "Toml.Key",
+      "current_path": "src/python/toml/spec/table/key.py",
+      "target_path": "src/python/toml/spec/toml/key.py",
+      "source_layer": "Spec",
+      "current_state": "WRONG_PATH_IN_SPEC",
+      "action_required": "MOVE_FILE",
+      "migration_risk": "HIGH",
+      "estimated_effort": "medium",
+      "blocks_gate": false,
+      "test_changes_required": [],
+      "notes": [
+        "In spec/ but wrong sub-path. Got src/python/toml/spec/table/key.py, expected src/python/toml/spec/toml/key.py"
+      ]
+    },
+    {
+      "qname": "toml:value",
+      "status": "implemented",
+      "canonical_class": "Toml.Value",
+      "current_path": "src/python/toml/spec/table/value.py",
+      "target_path": "src/python/toml/spec/toml/value.py",
+      "source_layer": "Spec",
+      "current_state": "WRONG_PATH_IN_SPEC",
+      "action_required": "MOVE_FILE",
+      "migration_risk": "HIGH",
+      "estimated_effort": "medium",
+      "blocks_gate": false,
+      "test_changes_required": [],
+      "notes": [
+        "In spec/ but wrong sub-path. Got src/python/toml/spec/table/value.py, expected src/python/toml/spec/toml/value.py"
+      ]
+    }
+  ]
+}

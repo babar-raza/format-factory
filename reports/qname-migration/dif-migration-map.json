@@ -1,0 +1,106 @@
+{
+  "format_id": "dif",
+  "date": "20260625",
+  "total_entries": 5,
+  "compliant_count": 0,
+  "compliant_pct": 0.0,
+  "blocks_gate_count": 0,
+  "state_counts": {
+    "WRONG_PATH_IN_SPEC": 3,
+    "MISSING_CLASS": 2
+  },
+  "action_counts": {
+    "MOVE_FILE": 5
+  },
+  "risk_counts": {
+    "HIGH": 5
+  },
+  "migration_ready": true,
+  "entries": [
+    {
+      "qname": "dif:header",
+      "status": "implemented",
+      "canonical_class": "Dif.Header",
+      "current_path": "src/python/dif/spec/table/header.py",
+      "target_path": "src/python/dif/spec/dif/header.py",
+      "source_layer": "Spec",
+      "current_state": "WRONG_PATH_IN_SPEC",
+      "action_required": "MOVE_FILE",
+      "migration_risk": "HIGH",
+      "estimated_effort": "medium",
+      "blocks_gate": false,
+      "test_changes_required": [],
+      "notes": [
+        "In spec/ but wrong sub-path. Got src/python/dif/spec/table/header.py, expected src/python/dif/spec/dif/header.py"
+      ]
+    },
+    {
+      "qname": "dif:data",
+      "status": "implemented",
+      "canonical_class": "Dif.Data",
+      "current_path": "src/python/dif/dif_parser.py",
+      "target_path": "src/python/dif/spec/dif/data.py",
+      "source_layer": "Spec",
+      "current_state": "MISSING_CLASS",
+      "action_required": "MOVE_FILE",
+      "migration_risk": "HIGH",
+      "estimated_effort": "medium",
+      "blocks_gate": false,
+      "test_changes_required": [],
+      "notes": [
+        "Registry canonical_class 'Dif.Data' (short: 'Data') not found in src/python/dif/dif_parser.py. Defined: ['DifCell', 'DifDocument', 'DifError', 'DifInvalidFormatError', 'DifSizeError']"
+      ]
+    },
+    {
+      "qname": "dif:cell",
+      "status": "implemented",
+      "canonical_class": "Dif.Cell",
+      "current_path": "src/python/dif/dif_parser.py",
+      "target_path": "src/python/dif/spec/dif/cell.py",
+      "source_layer": "Spec",
+      "current_state": "MISSING_CLASS",
+      "action_required": "MOVE_FILE",
+      "migration_risk": "HIGH",
+      "estimated_effort": "medium",
+      "blocks_gate": false,
+      "test_changes_required": [],
+      "notes": [
+        "Registry canonical_class 'Dif.Cell' (short: 'Cell') not found in src/python/dif/dif_parser.py. Defined: ['DifCell', 'DifDocument', 'DifError', 'DifInvalidFormatError', 'DifSizeError']"
+      ]
+    },
+    {
+      "qname": "dif:datum",
+      "status": "implemented",
+      "canonical_class": "Dif.Datum",
+      "current_path": "src/python/dif/spec/table/datum.py",
+      "target_path": "src/python/dif/spec/dif/datum.py",
+      "source_layer": "Spec",
+      "current_state": "WRONG_PATH_IN_SPEC",
+      "action_required": "MOVE_FILE",
+      "migration_risk": "HIGH",
+      "estimated_effort": "medium",
+      "blocks_gate": false,
+      "test_changes_required": [],
+      "notes": [
+        "In spec/ but wrong sub-path. Got src/python/dif/spec/table/datum.py, expected src/python/dif/spec/dif/datum.py"
+      ]
+    },
+    {
+      "qname": "dif:vector",
+      "status": "implemented",
+      "canonical_class": "Dif.Vector",
+      "current_path": "src/python/dif/spec/table/vector.py",
+      "target_path": "src/python/dif/spec/dif/vector.py",
+      "source_layer": "Spec",
+      "current_state": "WRONG_PATH_IN_SPEC",
+      "action_required": "MOVE_FILE",
+      "migration_risk": "HIGH",
+      "estimated_effort": "medium",
+      "blocks_gate": false,
+      "test_changes_required": [],
+      "notes": [
+        "In spec/ but wrong sub-path. Got src/python/dif/spec/table/vector.py, expected src/python/dif/spec/dif/vector.py"
+      ]
+    }
+  ]
+}

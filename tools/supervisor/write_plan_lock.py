@@ -162,7 +162,8 @@ def validate_plan_binding(target_path: str, intent: str = "harden") -> tuple[boo
 def write_lock(plan_path: str, last_taskcard: str | None = None, complete: bool = False,
                terminal: bool = False, session_id: str | None = None,
                track_type: str | None = "product", binding: bool = False,
-               audit_gate: bool = False) -> None:
+               audit_gate: bool = False,
+               completion_candidate: bool = False) -> None:
     # TC-AMD-MACH-003: Clean up orphaned .tmp files from previously crashed atomic writes
     cleanup_orphaned_tmp_files()
     # B3: normalize path separators so Windows backslashes don't prevent matching
@@ -207,6 +208,11 @@ def write_lock(plan_path: str, last_taskcard: str | None = None, complete: bool 
                 file=sys.stderr,
             )
             status = "ITERATION_REQUIRED"
+    elif completion_candidate:
+        # TC-TCF-002: COMPLETION_CANDIDATE marks plan as audit-ready but not yet closed.
+        # check_continuation.py treats this as CONTINUE (allows lifecycle audit to run).
+        # Prevents premature TERMINAL_CLOSED writes before audit is performed.
+        status = "COMPLETION_CANDIDATE"
     else:
         status = "TERMINAL_CLOSED" if terminal else ("COMPLETE" if complete else "IN_PROGRESS")
 
@@ -484,6 +490,10 @@ def main(argv: list[str] | None = None) -> int:
                              "If audit requires iteration, writes ITERATION_REQUIRED instead of "
                              "TERMINAL_CLOSED so check_continuation.py returns CONTINUE. "
                              "Backward compat: --terminal without --audit-gate is unchanged.")
+    parser.add_argument("--completion-candidate", action="store_true",
+                        help="TC-TCF-002: Mark plan as COMPLETION_CANDIDATE (audit-ready, not yet closed). "
+                             "Allows lifecycle audit to run before TERMINAL_CLOSED is written. "
+                             "check_continuation.py returns CONTINUE for COMPLETION_CANDIDATE status.")
     args = parser.parse_args(argv)
 
     if args.clear:
@@ -506,7 +516,8 @@ def main(argv: list[str] | None = None) -> int:
     write_lock(args.plan_path, last_taskcard=args.last_taskcard,
                complete=args.complete, terminal=args.terminal,
                track_type=args.track_type, binding=args.binding,
-               audit_gate=getattr(args, "audit_gate", False))
+               audit_gate=getattr(args, "audit_gate", False),
+               completion_candidate=getattr(args, "completion_candidate", False))
     return 0
 
 

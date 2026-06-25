@@ -3400,3 +3400,449 @@ Complete when ALL of:
 
 Does NOT require live spec downloads (DEFECT-005 is external gate).
 Does NOT require Gate 11 approval.
+
+---
+
+## Section 29 — Source-Realization Forensic Audit Taskcards (TC-SRFA)
+
+**Origin:** `source-realization-forensics-20260625-001` forensic dry run (glimmering-shimmying-hamming plan)
+**Authority mode:** SURGICAL ENHANCEMENT — all findings route here as TC-SRFA-### taskcards
+**Evidence root:** `.local/evidences/source-realization-forensics-20260625-001/source-realization/`
+
+---
+
+### TC-SRFA-014: Write Architecture Contract Document
+
+**Status:** CLOSED | **Priority:** P2 | **Severity:** MEDIUM
+**Finding source:** TC-FORENSIC-012 (architecture contract creation)
+**Defect classification:** architecture
+
+**Defect:** No formal architecture contract document exists. The consistent layering pattern
+(spec/ → Compat/ → models.py → __init__.py) is observed in all 20 packages but is undocumented.
+New format authors have no specification to follow.
+
+**Resolution:** `docs/architecture-contract.md` written (2026-06-25).
+Also: `docs/spec-to-source-chain-contract.md` documenting the spec → source authority chain.
+
+**Acceptance criteria:**
+1. `docs/architecture-contract.md` exists and covers 10+ architectural conventions
+2. `docs/spec-to-source-chain-contract.md` maps chain integrity status for all 20 formats
+3. New contributors can implement a new format by following these documents alone
+
+**Evidence:** `docs/architecture-contract.md`, `docs/spec-to-source-chain-contract.md`
+**Blocking gate:** None (documentation debt)
+
+---
+
+### TC-SRFA-015: FeatureFactory — Add spec_qname Registry Check Before Insertion
+
+**Status:** OPEN | **Priority:** P2 | **Severity:** MEDIUM
+**Finding source:** TC-FORENSIC-002 (source-producing system dry run)
+**Defect classification:** architecture
+
+**Defect:** FeatureFactory (`tools/supervisor/product_feature_factory.py`) inserts Python functions
+into source files without verifying that the target class has a `spec_qname` entry in
+`shared/qname-registry/{format}.yaml`. A function can be inserted for a format not yet in the registry,
+breaking the spec-to-source authority chain.
+
+**Root cause:** FeatureFactory Pattern A-F insertion logic has no pre-validation step that checks
+registry existence before writing to disk.
+
+**Resolution:**
+1. Add `_validate_format_in_registry(format_name)` function to FeatureFactory
+2. Before any file write: check `shared/qname-registry/{format}.yaml` exists
+3. If missing: raise `FeatureFactoryError(f"Format '{format}' not in qname-registry — add registry entry first")`
+4. Add regression test in `tests/supervisor/test_feature_factory_authority.py`
+
+**Acceptance criteria:**
+1. FeatureFactory raises FeatureFactoryError for unknown format (no registry entry)
+2. FeatureFactory proceeds normally for registered formats
+3. Test: 2 negative controls (missing registry), 2 positive controls (registered format)
+
+**Blocking gate:** Lane 5 (capability-to-feature compiler) — compiler must validate authority
+
+---
+
+### TC-SRFA-016: .NET Model Classes Lack spec_qname Runtime Attribute
+
+**Status:** OPEN | **Priority:** P2 | **Severity:** MEDIUM
+**Finding source:** TC-FORENSIC-003, TC-FORENSIC-004, TC-FORENSIC-008
+**Defect classification:** spec_fidelity
+
+**Defect:** Python format classes have `spec_qname: ClassVar[str]` runtime metadata on every
+model class (FodsDocument, FodsSheet, FodsCell, etc.), enabling V53 compliance checking.
+.NET model classes (FodsDocument.cs, FodsSheet.cs, FodtParagraph.cs, NetpbmDocument.cs) have
+NO equivalent runtime metadata — spec traceability is comment-only (XML documentation comments).
+
+**Root cause:** V53 validator is Python-only. No .NET governance validator enforces runtime metadata.
+The .NET classes were authored before the spec_qname convention was established.
+
+**Resolution:**
+1. Add `public const string SpecQName = "table:table"` to each .NET model class
+2. Add equivalent constants to FODT, Netpbm, ZST model classes
+3. Create `tests/net/governance/SpecQNameTests.cs` verifying all model classes have SpecQName constant
+4. Update `shared/qname-registry/*.yaml` to reference .NET const path alongside `python_file`
+
+**Acceptance criteria:**
+1. All 10 .NET model classes have `SpecQName` constant matching qname-registry entry
+2. `SpecQNameTests.cs` verifies SpecQName is non-null and matches format registry
+3. Validator (if .NET governance is extended) can check at build time
+
+**Blocking gate:** C15 (.NET spec_qname compliance criterion)
+
+---
+
+### TC-SRFA-017: HTML/TXT/Markdown .NET Projects Are Empty Stubs
+
+**Status:** OPEN | **Priority:** LOW | **Severity:** LOW
+**Finding source:** TC-FORENSIC-010 (consolidated audit)
+**Defect classification:** packaging
+
+**Defect:** The .NET projects `src/net/html/`, `src/net/txt/`, `src/net/markdown/` exist as
+empty placeholder directories. They are referenced in solution files but produce no output.
+This inflates the apparent .NET format count.
+
+**Resolution:** Either implement stubs or remove from solution and document as future roadmap.
+Recommended: mark as `architecture_only` stubs in `registry/format-registry.yaml` to avoid
+misleading the gate readiness calculation.
+
+**Acceptance criteria:**
+1. Either: minimal stub with `HtmlDocument.cs` class (not packageable) explicitly marked as architecture_only
+2. Or: removed from `format-registry.yaml` with `status: roadmap_only`
+
+**Blocking gate:** None (low priority cleanup)
+
+---
+
+### TC-SRFA-018: Test Templates Produce Placeholder Assertions
+
+**Status:** OPEN | **Priority:** LOW | **Severity:** LOW
+**Finding source:** TC-FORENSIC-002 (source-producing system dry run)
+**Defect classification:** test_quality
+
+**Defect:** 4 of 5 test driver templates in `tools/supervisor/drivers/python/*.py.tmpl` produce
+trivial assertions (`isinstance(result, ...)`, `result is not None`). These pass immediately
+without verifying any behavioral correctness. The `summary_test.tmpl` and similar templates
+require manual replacement of PLACEHOLDER assertion blocks.
+
+**Root cause:** Templates are designed as starting points but callers do not replace assertions
+before committing tests. V36 (`validate_no_stub_tests`) flags these as weak but does not block.
+
+**Resolution:**
+1. Upgrade V36 to FAIL (not WARN) when >60% of assertions in a test file are trivial
+2. Add `# TODO: REPLACE_THIS_ASSERTION` marker in templates and add it to V36 detection
+3. Or: make templates generate realistic assertions using fixture values from the registry
+
+**Acceptance criteria:**
+1. V36 FAIL (not WARN) for new test files with >60% trivial assertions
+2. All 5 templates have `# TODO: REPLACE_THIS_ASSERTION` markers
+3. CI blocks merge if TODO markers remain in test files older than 48 hours
+
+**Blocking gate:** None (quality improvement)
+
+---
+
+### TC-SRFA-019: generate_canonical_stubs.py Not Called by Any Automated System
+
+**Status:** OPEN | **Priority:** P2 | **Severity:** MEDIUM
+**Finding source:** TC-FORENSIC-002 (source-producing system dry run)
+**Defect classification:** architecture
+
+**Defect:** `tools/spec/generate_canonical_stubs.py` is the only tool that creates spec/
+skeleton classes from `shared/qname-registry/*.yaml`. However, it is never called by:
+- `autonomous_cycle.py` (sprint loop)
+- CI/CD pipeline
+- Any monitoring script for registry changes
+
+New registry entries do NOT automatically produce skeleton classes. Engineers must manually
+invoke the tool and commit the results.
+
+**Resolution:**
+1. Add Step 0a-stubs in `autonomous_cycle.py`: check if any registry entry lacks a matching
+   `spec/{concept}/{class}.py` file; if so, run `generate_canonical_stubs.py {format}`
+2. Or: add CI job `check-stubs-in-sync.yml` that fails if registry diverges from generated stubs
+3. Add regression test verifying all "seeded" registry entries have corresponding spec/ files
+
+**Acceptance criteria:**
+1. `autonomous_cycle.py` detects missing stubs and generates them before sprint execution
+2. Or: CI check flags registry/stubs divergence in PRs
+3. Test: add registry entry for synthetic format → verify stub is generated without manual invocation
+
+**Blocking gate:** Lane 2 (canonical stub generation wiring)
+
+---
+
+### TC-SRFA-020: Netpbm Parser Allocation Bomb Guard Unverified
+
+**Status:** OPEN | **Priority:** HIGH | **Severity:** HIGH
+**Finding source:** TC-FORENSIC-005 (pilot 3 — .NET binary codec)
+**Defect classification:** security
+
+**Defect:** NetpbmDocument.cs (1914 LOC) loads PBM/PGM/PPM images with `width × height` pixel
+arrays. If an attacker supplies a crafted header with `width=65535, height=65535`, this allocates
+4 GB of memory before any I/O error is detected. The guard exists but was NOT directly verified
+during the forensic review (file read was blocked by tooling limits).
+
+**Root cause:** NetpbmParser.cs was not directly readable in the forensic session due to file
+size. The allocation guard existence cannot be confirmed from the model class alone.
+
+**Resolution:**
+1. Read `src/net/netpbm/NetpbmParser.cs` to verify width×height overflow guard exists
+2. If missing: add `if ((long)width * height > MaxPixelCount) throw new NetpbmSizeException(...)`
+3. Add test in `tests/net/netpbm/NetpbmSecurityTests.cs`:
+   - Crafted PBM header with `width=65535 height=65535` → expects `NetpbmSizeException`
+   - Not a real image — just header bytes sufficient to trigger the guard
+4. Verify `MaxPixelCount` constant is ≤ 100,000,000 (100M pixels = 400 MB max at 32-bit RGBA)
+
+**Acceptance criteria:**
+1. `NetpbmParser.cs` contains explicit `width * height > MaxPixelCount` guard before array allocation
+2. `NetpbmSecurityTests.cs` has at least 1 test with oversized dimensions → `NetpbmSizeException`
+3. Test runs in CI and passes
+
+**Blocking gate:** C18 (.NET security — input validation)
+
+---
+
+### TC-SRFA-021: FODS Python QName Coverage at 12/50+ (24%)
+
+**Status:** OPEN | **Priority:** P2 | **Severity:** MEDIUM
+**Finding source:** TC-FORENSIC-006 (pilot 4 — Python FODS)
+**Defect classification:** spec_fidelity
+
+**Defect:** The FODS format has 50+ distinct ODF QNames for spreadsheet concepts. Only 12 are
+mapped in `shared/qname-registry/fods.yaml` (24% coverage). V53 compliance requires facades for
+all registered QNames, but the registry itself is incomplete — unmapped QNames have no spec/
+class or Compat/ facade.
+
+**Root cause:** Registry was seeded with the most visible QNames (table:table, table:table-cell,
+etc.) but not the full ODF spreadsheet vocabulary (table:covered-table-cell, table:table-header-rows,
+office:annotation, table:table-column, etc.).
+
+**Resolution:**
+1. Enumerate all ODF 1.3 FODS QNames from SAL (`sal-facts-fods.json` 4988 facts)
+2. Add the top 25 missing QNames to `shared/qname-registry/fods.yaml`
+3. Run `generate_canonical_stubs.py fods` to produce spec/ skeletons
+4. Implement Compat/ facades for the new entries
+
+**Acceptance criteria:**
+1. `shared/qname-registry/fods.yaml` has ≥ 25 entries (current: 12)
+2. V53 passes for all new entries (spec_qname present, ClassVar pattern)
+3. No regression in existing FODS tests
+
+**Blocking gate:** P5 (Python spec QName coverage ≥ 80% for Gate 11)
+
+---
+
+### TC-SRFA-024: Python FODS Lacks Mutation API
+
+**Status:** OPEN | **Priority:** HIGH | **Severity:** HIGH
+**Finding source:** TC-FORENSIC-008 (pilot 6 — cross-language parity)
+**Defect classification:** consumer_readiness
+
+**Defect:** Python FodsDocument is READ-ONLY. Consumers cannot mutate cells, insert rows,
+delete rows, or manage sheets. The .NET equivalent has 23+ mutation methods (SetCellValue,
+InsertRow, DeleteRows, MergeCells, AddSheet, RemoveSheet, RenameSheet, CopySheet, ClearSheet,
+SetCellFormula, SortRows, etc.).
+
+This is the MOST CRITICAL cross-language parity gap for FODS.
+
+**Root cause:** Python FOSS tier was implemented as read-only analytics/inspection platform.
+Mutation API was never added to `models.py:FodsDocument`.
+
+**Resolution:**
+1. Add mutation methods to `src/python/fods/models.py:FodsDocument`:
+   - `set_cell_value(sheet_name, row, col, value)` — minimum viable mutation
+   - `insert_row(sheet_name, row_index, values)` — row insertion
+   - `delete_rows(sheet_name, start_row, count)` — row deletion
+2. Update `write_fods()` to persist mutations
+3. Add round-trip mutation test:
+   - Load fixture → set_cell_value → write → reload → verify value preserved
+4. Add skill-attributed work item with gap_ledger_ref pointing to GAP-FODS-MUTATION-001
+
+**Acceptance criteria:**
+1. `FodsDocument.set_cell_value(sheet, row, col, value)` works
+2. Mutation round-trip test passes: load → mutate → save → reload → verify
+3. `FodsDocument.insert_row(sheet, row_index, values)` works
+4. TC-GUARD-001 compliant: gap_ledger_ref present in evidence
+
+**Blocking gate:** P6 (Python FOSS mutation API)
+
+---
+
+### TC-SRFA-025: Python FODS Missing HTML/JSON/Markdown Export
+
+**Status:** OPEN | **Priority:** P2 | **Severity:** MEDIUM
+**Finding source:** TC-FORENSIC-008 (pilot 6 — cross-language parity)
+**Defect classification:** consumer_readiness
+
+**Defect:** Python FODS has CSV export only (1 format). .NET FODS has 6 export formats
+(HTML, JSON, Markdown, CSV, TSV, XML). Python consumers requiring HTML table output, JSON
+serialization, or Markdown tables from FODS spreadsheets have no API.
+
+**Resolution:**
+1. Add `export_fods_to_html(workbook, sheet=0)` → str
+2. Add `export_fods_to_json(workbook, sheet=0)` → str (JSON array of row objects)
+3. Add `export_fods_to_markdown(workbook, sheet=0)` → str
+4. Route through `src/python/fods/fods_analytics.py` or new `fods_exporters.py`
+5. Add tests covering empty sheet, single row, multiple sheets
+
+**Acceptance criteria:**
+1. 3 new export functions available via `from fods import export_fods_to_html, ...`
+2. HTML output is valid HTML table structure
+3. JSON output is parseable `json.loads()` result
+4. Markdown output renders in standard Markdown renderers
+5. TC-GUARD-001 compliant (gap_ledger_ref)
+
+**Blocking gate:** P7 (Python FOSS export parity)
+
+---
+
+### TC-SRFA-026: parity-matrix.yaml FODS Overclaims COMPLETE
+
+**Status:** OPEN | **Priority:** P2 | **Severity:** MEDIUM
+**Finding source:** TC-FORENSIC-008 (pilot 6 — cross-language parity)
+**Defect classification:** architecture
+
+**Defect:** `registry/parity-matrix.yaml` states `spec_parity_status: COMPLETE` for FODS.
+This claim is accurate for QName registry/facade coverage (12/12 entries, 45/45 V53 tests)
+but is INACCURATE for behavioral API parity: Python has NO mutation API vs. .NET's 23 methods;
+Python has 1 export format vs. .NET's 6.
+
+**Root cause:** `spec_parity_status` conflates two orthogonal dimensions:
+(a) QName registry coverage, and (b) behavioral API parity. These must be tracked separately.
+
+**Resolution:**
+Update `registry/parity-matrix.yaml` FODS entry to:
+```yaml
+fods:
+  spec_parity_status: PARTIAL
+  spec_qname_registry_coverage: COMPLETE  # 12/12 entries, 45/45 V53 tests
+  behavioral_parity: PARTIAL              # .NET full CRUD; Python read+CSV-export only
+  parity_notes: ".NET has 23 mutation methods; Python is read-only. .NET has 6 exporters; Python has 1."
+  missing_python: [set_cell_value, insert_row, delete_rows, export_to_html, export_to_json, export_to_markdown]
+```
+
+**Acceptance criteria:**
+1. `parity-matrix.yaml` FODS entry has `spec_qname_registry_coverage` and `behavioral_parity` as separate fields
+2. `spec_parity_status: PARTIAL` (not COMPLETE) for FODS
+3. Missing Python APIs are enumerated in `missing_python` list
+
+**Blocking gate:** None (accuracy cleanup; blocks overclaim reporting)
+
+---
+
+### TC-SRFA-027: generate_canonical_stubs.py python_file Path Not Validated
+
+**Status:** OPEN | **Priority:** LOW | **Severity:** LOW
+**Finding source:** TC-FORENSIC-009 (pilot 7 — negative generation)
+**Defect classification:** architecture
+
+**Defect:** When `generate_canonical_stubs.py` processes a valid registry YAML, it creates files
+at the `python_file` path specified in the YAML without validating that the path is within the
+expected package directory. A malformed or adversarial `python_file: ../../sensitive/path.py`
+would create a file outside `src/python/`.
+
+**Root cause:** Entry validation happens at format level (registry YAML must exist) but not at
+individual entry level (python_file path within valid scope).
+
+**Resolution:**
+1. Add path validation in `generate_canonical_stubs.py` entry processing
+2. Assert: `resolved_python_file.is_relative_to(repo_root / 'src' / 'python')`
+3. If assertion fails: raise `StubGenerationError(f"python_file path escapes src/python: {python_file}")`
+
+**Acceptance criteria:**
+1. Malformed python_file with `../../` path raises `StubGenerationError`
+2. Valid python_file within src/python/ proceeds normally
+3. Test: 1 negative (escape path), 1 positive (valid path)
+
+**Blocking gate:** None (security hardening)
+
+---
+
+### TC-SRFA-028: V53 Cannot Detect spec_qname as Instance Field vs ClassVar
+
+**Status:** OPEN | **Priority:** P2 | **Severity:** MEDIUM
+**Finding source:** TC-FORENSIC-009 (pilot 7 — negative generation)
+**Defect classification:** governance
+
+**Defect:** V53 validator (`governance_validators.py`) checks for `spec_qname` presence using
+AST parsing. However, it cannot distinguish:
+- `spec_qname: ClassVar[str] = "ns:elem"` (correct: class-level attribute, accessible as `Class.spec_qname`)
+- `spec_qname: str = "ns:elem"` (incorrect: instance field, NOT accessible as `Class.spec_qname`)
+
+Both produce similar AST nodes. The runtime workaround (`type(NdjsonRecord.__dict__["spec_qname"]) is str`)
+works but is only present in specific tests, not in the validator itself.
+
+**Root cause:** AST analysis of `AnnAssign` nodes does not inspect the annotation type for `ClassVar`.
+
+**Resolution:**
+1. In V53 `_check_spec_qname_attribute()`, add inspection of `AnnAssign` nodes
+2. If annotation is `Name("str")` (not `Subscript(ClassVar, str)`): warn "spec_qname is instance field, use ClassVar[str]"
+3. New warning code: `CLASSVAR_PATTERN_MISSING`
+4. Add test: class with `spec_qname: str = "x"` → CLASSVAR_PATTERN_MISSING warning
+
+**Acceptance criteria:**
+1. V53 emits CLASSVAR_PATTERN_MISSING for `spec_qname: str = "..."` pattern
+2. V53 passes for `spec_qname: ClassVar[str] = "..."` pattern
+3. Existing 45/45 V53 FODS tests still pass
+
+**Blocking gate:** Governance accuracy (non-blocking but enables better enforcement)
+
+---
+
+### TC-SRFA-029: FeatureFactory Anchor Loss Silent EOF Fallback
+
+**Status:** OPEN | **Priority:** LOW | **Severity:** LOW
+**Finding source:** TC-FORENSIC-009 (pilot 7 — negative generation)
+**Defect classification:** architecture
+
+**Defect:** `FeatureFactory._find_insertion_point(content, insert_before="target_fn")` silently
+returns `len(content)` (end of file) when the anchor function is not found. This causes generated
+functions to be appended at EOF with no error, violating the expected insertion order. The
+`FeatureFactoryError` class exists but is never raised for this case.
+
+**Root cause:** The fallback to EOF was intentional for "append at end" semantics, but when
+a specific `insert_before` anchor is specified, silent EOF fallback produces confusing output.
+
+**Resolution:**
+1. In `_find_insertion_point()`, when `insert_before` is specified but anchor is not found:
+   raise `FeatureFactoryError(f"Anchor function '{insert_before}' not found in {source_path}")`
+2. When `insert_before=None` (no anchor specified): EOF fallback is correct, keep it
+3. Add test: invoke FeatureFactory with non-existent anchor → FeatureFactoryError
+
+**Acceptance criteria:**
+1. `FeatureFactory` raises `FeatureFactoryError` when specified anchor not found
+2. `FeatureFactory` silently appends to EOF when `insert_before=None`
+3. Test: negative control (missing anchor) → FeatureFactoryError
+
+**Blocking gate:** None (robustness improvement)
+
+---
+
+## Section 29.1 — TC-SRFA Taskcard Status Summary
+
+| Taskcard | Severity | Status | Blocking Gate |
+|----------|----------|--------|---------------|
+| TC-SRFA-014 | MEDIUM | **CLOSED** | None |
+| TC-SRFA-015 | MEDIUM | OPEN | Lane 5 |
+| TC-SRFA-016 | MEDIUM | OPEN | C15 |
+| TC-SRFA-017 | LOW | OPEN | None |
+| TC-SRFA-018 | LOW | OPEN | None |
+| TC-SRFA-019 | MEDIUM | OPEN | Lane 2 |
+| TC-SRFA-020 | HIGH | OPEN | C18 |
+| TC-SRFA-021 | MEDIUM | OPEN | P5 |
+| TC-SRFA-024 | HIGH | OPEN | P6 |
+| TC-SRFA-025 | MEDIUM | OPEN | P7 |
+| TC-SRFA-026 | MEDIUM | OPEN | None |
+| TC-SRFA-027 | LOW | OPEN | None |
+| TC-SRFA-028 | MEDIUM | OPEN | None |
+| TC-SRFA-029 | LOW | OPEN | None |
+
+**Note on TC-SRFA-001 through TC-SRFA-013:** The forensic audit initially identified that
+13/20 Python packages lacked `models.py`. Direct verification at HEAD confirmed this finding
+was STALE — all 20 Python packages have `models.py` as of the forensic run date (2026-06-25).
+These taskcards are NOT added to this plan. The work was completed in the prior session
+(2026-06-24 domain model sprint, GAP-PROD-INV-MODEL-001 CLOSED).
+
+**Note on TC-SRFA-022 and TC-SRFA-023:** These were LOW-severity findings that are resolved by
+the existing `models.py` implementations. Not added as separate taskcards.

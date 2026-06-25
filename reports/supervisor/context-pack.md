@@ -1,19 +1,19 @@
 # Supervisor Context Pack
 # Format Factory — Machine-Readable State Snapshot
-# Generated: 2026-06-25T20:53:37.945973
+# Generated: 2026-06-25T21:58:37.795295
 # ADVISORY ONLY — not a gate approval or authority document
 
 ## Current State
 
 | Item | Value |
 |------|-------|
-| Git HEAD | 78b58533 |
+| Git HEAD | 3fc8ec30 |
 | Working tree clean | False |
 | Supervisor mode | MODE 4 |
 | Latest sprint | unknown |
-| Sprint ID | ff-sprint-s61-dotnet-r117r118-20260626... |
+| Sprint ID | ff-sprint-s73-idempotency-20260626... |
 | Autonomous continue | True |
-| Iteration | 5/12 |
+| Iteration | 7/12 |
 | MCP status | MCP_CONFIG_PRESENT_MODE4_ACTIVE |
 | Active skills | 62 |
 | Ledger entries | 1006 total (793 governed) |
@@ -22,10 +22,10 @@
 
 | Format | Tests | Gate 11 |
 |--------|-------|---------|
-| FODS | 618 | APPROVED_BY_BABAR_RAZA_2026_06_05 |
+| FODS | 643 | APPROVED_BY_BABAR_RAZA_2026_06_05 |
 | FODT | 568 | APPROVED_BY_BABAR_RAZA_2026_06_05 |
 | Netpbm | 423 | APPROVED_BY_BABAR_RAZA_2026_06_05 |
-| **Total** | **1609** | — |
+| **Total** | **1634** | — |
 
 ## Skill Registry
 

@@ -1,0 +1,72 @@
+{
+  "format_id": "pgm",
+  "date": "20260625",
+  "total_entries": 3,
+  "compliant_count": 0,
+  "compliant_pct": 0.0,
+  "blocks_gate_count": 0,
+  "state_counts": {
+    "WRONG_PATH_IN_SPEC": 2,
+    "MISSING_CLASS": 1
+  },
+  "action_counts": {
+    "MOVE_FILE": 3
+  },
+  "risk_counts": {
+    "HIGH": 3
+  },
+  "migration_ready": true,
+  "entries": [
+    {
+      "qname": "pgm:header",
+      "status": "implemented",
+      "canonical_class": "Pgm.Header",
+      "current_path": "src/python/pgm/spec/graymap/header.py",
+      "target_path": "src/python/pgm/spec/pgm/header.py",
+      "source_layer": "Spec",
+      "current_state": "WRONG_PATH_IN_SPEC",
+      "action_required": "MOVE_FILE",
+      "migration_risk": "HIGH",
+      "estimated_effort": "medium",
+      "blocks_gate": false,
+      "test_changes_required": [],
+      "notes": [
+        "In spec/ but wrong sub-path. Got src/python/pgm/spec/graymap/header.py, expected src/python/pgm/spec/pgm/header.py"
+      ]
+    },
+    {
+      "qname": "pgm:raster",
+      "status": "implemented",
+      "canonical_class": "Pgm.Raster",
+      "current_path": "src/python/pgm/pgm_parser.py",
+      "target_path": "src/python/pgm/spec/pgm/raster.py",
+      "source_layer": "Spec",
+      "current_state": "MISSING_CLASS",
+      "action_required": "MOVE_FILE",
+      "migration_risk": "HIGH",
+      "estimated_effort": "medium",
+      "blocks_gate": false,
+      "test_changes_required": [],
+      "notes": [
+        "Registry canonical_class 'Pgm.Raster' (short: 'Raster') not found in src/python/pgm/pgm_parser.py. Defined: ['PgmDecodeError', 'PgmError', 'PgmImage', 'PgmInvalidHeaderError', 'PgmInvalidMagicError']"
+      ]
+    },
+    {
+      "qname": "pgm:graymap",
+      "status": "implemented",
+      "canonical_class": "Pgm.Graymap",
+      "current_path": "src/python/pgm/spec/graymap/graymap.py",
+      "target_path": "src/python/pgm/spec/pgm/graymap.py",
+      "source_layer": "Spec",
+      "current_state": "WRONG_PATH_IN_SPEC",
+      "action_required": "MOVE_FILE",
+      "migration_risk": "HIGH",
+      "estimated_effort": "medium",
+      "blocks_gate": false,
+      "test_changes_required": [],
+      "notes": [
+        "In spec/ but wrong sub-path. Got src/python/pgm/spec/graymap/graymap.py, expected src/python/pgm/spec/pgm/graymap.py"
+      ]
+    }
+  ]
+}

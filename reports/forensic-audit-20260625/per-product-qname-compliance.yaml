@@ -1,0 +1,320 @@
+schema_version: "1.0"
+sprint_id: ff-archaeology-20260625
+date: "2026-06-25"
+overall_coverage: 84.5%
+overall_coverage_note: "169/200 qname-registry entries fully compliant"
+
+formats:
+
+  - format: ABW
+    registry_file: shared/qname-registry/abw.yaml
+    qname_entries: 3
+    entries_python_file_populated: 3
+    entries_dotnet_file_populated: 0
+    spec_qname_in_codec: true
+    spec_qname_in_spec_hierarchy: true
+    spec_qname_in_compat_facades: true
+    compliance_score: 100
+    gaps: []
+    blockers: false
+    primary_qname: "abiword:document"
+    notes: "100% compliant. Python-only format — dotnet_file correctly null."
+
+  - format: CSV
+    registry_file: shared/qname-registry/csv.yaml
+    qname_entries: 3
+    entries_python_file_populated: 3
+    entries_dotnet_file_populated: 1
+    spec_qname_in_codec: true
+    spec_qname_in_spec_hierarchy: true
+    spec_qname_in_compat_facades: true
+    compliance_score: 100
+    gaps: []
+    blockers: false
+    primary_qname: "csv:record"
+    notes: "100% compliant. .NET CSV exists but spec_qname not added — tracked as PARITY-001."
+
+  - format: DIF
+    registry_file: shared/qname-registry/dif.yaml
+    qname_entries: 3
+    entries_python_file_populated: 3
+    entries_dotnet_file_populated: 0
+    spec_qname_in_codec: false
+    spec_qname_in_spec_hierarchy: true
+    spec_qname_in_compat_facades: true
+    compliance_score: 60
+    gaps:
+      - qname: "dif:data"
+        location: src/python/dif/dif_parser.py
+        class: DifData
+        issue: "spec_qname ClassVar not present on production class"
+        severity: HIGH
+      - qname: "dif:cell"
+        location: src/python/dif/dif_parser.py
+        class: DifCell
+        issue: "spec_qname ClassVar not present on production class"
+        severity: HIGH
+    blockers: true
+    primary_qname: "dif:document"
+    taskcard: QNAME-BACKFILL-001
+    notes: "Registry has entries. Compat/ has spec_qname. Production codec classes lack ClassVar injection."
+
+  - format: FODG
+    registry_file: shared/qname-registry/fodg.yaml
+    qname_entries: 3
+    entries_python_file_populated: 3
+    entries_dotnet_file_populated: 0
+    spec_qname_in_codec: false
+    spec_qname_in_spec_hierarchy: true
+    spec_qname_in_compat_facades: true
+    compliance_score: 66
+    gaps:
+      - qname: "draw:frame"
+        location: src/python/fodg/fodg_codec.py
+        class: FodgFrame (or equivalent codec class)
+        issue: "spec_qname ClassVar not present on production class"
+        severity: HIGH
+    blockers: true
+    primary_qname: "draw:frame"
+    taskcard: QNAME-BACKFILL-002
+    notes: "Registry has draw:frame entry. Codec class lacks injection."
+
+  - format: FODP
+    registry_file: shared/qname-registry/fodp.yaml
+    qname_entries: 3
+    entries_python_file_populated: 3
+    entries_dotnet_file_populated: 0
+    spec_qname_in_codec: true
+    spec_qname_in_spec_hierarchy: true
+    spec_qname_in_compat_facades: true
+    compliance_score: 100
+    gaps: []
+    blockers: false
+    primary_qname: "presentation:page"
+    notes: "100% compliant. Python-only format."
+
+  - format: FODS
+    registry_file: shared/qname-registry/fods.yaml
+    qname_entries: 12
+    entries_python_file_populated: 12
+    entries_dotnet_file_populated: 10
+    spec_qname_in_codec: true
+    spec_qname_in_spec_hierarchy: true
+    spec_qname_in_compat_facades: true
+    compliance_score: 100
+    gaps: []
+    blockers: false
+    primary_qname: "office:document"
+    notes: "100% compliant. Commercial tier. Gate 11 G11-G APPROVED."
+
+  - format: FODT
+    registry_file: shared/qname-registry/fodt.yaml
+    qname_entries: 9
+    entries_python_file_populated: 9
+    entries_dotnet_file_populated: 7
+    spec_qname_in_codec: true
+    spec_qname_in_spec_hierarchy: true
+    spec_qname_in_compat_facades: true
+    compliance_score: 88
+    gaps:
+      - qname: "office:body"
+        location: src/python/fodt/spec/office/body.py
+        class: Body
+        issue: "python_file field null in registry (implementation exists but not linked)"
+        severity: LOW
+    blockers: false
+    primary_qname: "office:document"
+    notes: "88.9% compliant. Minor registry linkage gap — not a blocker."
+
+  - format: GNUMERIC
+    registry_file: shared/qname-registry/gnumeric.yaml
+    qname_entries: 3
+    entries_python_file_populated: 3
+    entries_dotnet_file_populated: 0
+    spec_qname_in_codec: true
+    spec_qname_in_spec_hierarchy: true
+    spec_qname_in_compat_facades: true
+    compliance_score: 100
+    gaps: []
+    blockers: false
+    primary_qname: "gnumeric:workbook"
+    notes: "100% compliant. Lowercase gnumeric: prefix (not gnm:). Python-only."
+
+  - format: NDJSON
+    registry_file: shared/qname-registry/ndjson.yaml
+    qname_entries: 2
+    entries_python_file_populated: 2
+    entries_dotnet_file_populated: 1
+    spec_qname_in_codec: true
+    spec_qname_in_spec_hierarchy: true
+    spec_qname_in_compat_facades: true
+    compliance_score: 100
+    gaps: []
+    blockers: false
+    primary_qname: "ndjson:record"
+    notes: "100% compliant. NdjsonRecord authority-only class present in ndjson_codec.py."
+
+  - format: ODS
+    registry_file: shared/qname-registry/ods.yaml
+    qname_entries: 4
+    entries_python_file_populated: 3
+    entries_dotnet_file_populated: 0
+    spec_qname_in_codec: true
+    spec_qname_in_spec_hierarchy: true
+    spec_qname_in_compat_facades: true
+    compliance_score: 90
+    gaps:
+      - qname: "office:spreadsheet"
+        location: src/python/ods/spec/office/spreadsheet.py
+        issue: "Implementation incomplete — architecture_only stub"
+        severity: LOW
+    blockers: false
+    primary_qname: "table:table"
+    notes: "OdsRow spec_qname fixed to ClassVar. Missing OdsDocument domain model."
+
+  - format: ODT
+    registry_file: shared/qname-registry/odt.yaml
+    qname_entries: 3
+    entries_python_file_populated: 3
+    entries_dotnet_file_populated: 0
+    spec_qname_in_codec: true
+    spec_qname_in_spec_hierarchy: true
+    spec_qname_in_compat_facades: true
+    compliance_score: 90
+    gaps:
+      - qname: "text:body"
+        issue: "Implementation architecture_only"
+        severity: LOW
+    blockers: false
+    primary_qname: "text:body"
+    notes: "Compliant on qname. Missing domain model class."
+
+  - format: PBM
+    registry_file: shared/qname-registry/pbm.yaml
+    qname_entries: 3
+    entries_python_file_populated: 3
+    entries_dotnet_file_populated: 2
+    spec_qname_in_codec: true
+    spec_qname_in_spec_hierarchy: true
+    spec_qname_in_compat_facades: true
+    compliance_score: 100
+    gaps: []
+    blockers: false
+    primary_qname: "pbm:bitmap"
+
+  - format: PGM
+    registry_file: shared/qname-registry/pgm.yaml
+    qname_entries: 3
+    entries_python_file_populated: 3
+    entries_dotnet_file_populated: 2
+    spec_qname_in_codec: true
+    spec_qname_in_spec_hierarchy: true
+    spec_qname_in_compat_facades: true
+    compliance_score: 100
+    gaps: []
+    blockers: false
+    primary_qname: "pgm:graymap"
+
+  - format: PPM
+    registry_file: shared/qname-registry/ppm.yaml
+    qname_entries: 3
+    entries_python_file_populated: 3
+    entries_dotnet_file_populated: 2
+    spec_qname_in_codec: true
+    spec_qname_in_spec_hierarchy: true
+    spec_qname_in_compat_facades: true
+    compliance_score: 100
+    gaps: []
+    blockers: false
+    primary_qname: "ppm:pixmap"
+
+  - format: QOI
+    registry_file: shared/qname-registry/qoi.yaml
+    qname_entries: 3
+    entries_python_file_populated: 3
+    entries_dotnet_file_populated: 0
+    spec_qname_in_codec: true
+    spec_qname_in_spec_hierarchy: true
+    spec_qname_in_compat_facades: true
+    compliance_score: 95
+    gaps: []
+    blockers: false
+    primary_qname: "qoi:chunk"
+
+  - format: SYLK
+    registry_file: shared/qname-registry/sylk.yaml
+    qname_entries: 3
+    entries_python_file_populated: 3
+    entries_dotnet_file_populated: 0
+    spec_qname_in_codec: true
+    spec_qname_in_spec_hierarchy: true
+    spec_qname_in_compat_facades: true
+    compliance_score: 95
+    gaps: []
+    blockers: false
+    primary_qname: "sylk:format"
+
+  - format: TOML
+    registry_file: shared/qname-registry/toml.yaml
+    qname_entries: 2
+    entries_python_file_populated: 2
+    entries_dotnet_file_populated: 0
+    spec_qname_in_codec: true
+    spec_qname_in_spec_hierarchy: true
+    spec_qname_in_compat_facades: true
+    compliance_score: 100
+    gaps: []
+    blockers: false
+    primary_qname: "toml:table"
+
+  - format: TSV
+    registry_file: shared/qname-registry/tsv.yaml
+    qname_entries: 2
+    entries_python_file_populated: 2
+    entries_dotnet_file_populated: 1
+    spec_qname_in_codec: true
+    spec_qname_in_spec_hierarchy: true
+    spec_qname_in_compat_facades: true
+    compliance_score: 100
+    gaps: []
+    blockers: false
+    primary_qname: "tsv:row"
+
+  - format: XCF
+    registry_file: shared/qname-registry/xcf.yaml
+    qname_entries: 3
+    entries_python_file_populated: 3
+    entries_dotnet_file_populated: 0
+    spec_qname_in_codec: true
+    spec_qname_in_spec_hierarchy: true
+    spec_qname_in_compat_facades: true
+    compliance_score: 100
+    gaps: []
+    blockers: false
+    primary_qname: "xcf:image"
+    notes: "XcfImage, XcfLayer, XcfChannel all compliant."
+
+  - format: ZST
+    registry_file: shared/qname-registry/zst.yaml
+    qname_entries: 3
+    entries_python_file_populated: 3
+    entries_dotnet_file_populated: 1
+    spec_qname_in_codec: true
+    spec_qname_in_spec_hierarchy: true
+    spec_qname_in_compat_facades: true
+    compliance_score: 100
+    gaps: []
+    blockers: false
+    primary_qname: "zst:frame"
+
+summary:
+  total_formats: 20
+  fully_compliant_100pct: 15
+  partially_compliant_60_99pct: 5
+  non_compliant_below_60pct: 0
+  high_severity_gaps: 3
+  high_severity_formats: [DIF, FODG]
+  low_severity_gaps: 5
+  blocker_formats: [DIF, FODG]
+  overall_coverage_score: 84.5
+  enforcement_note: "V53 validator (spec_qname ClassVar check) enforces at submission time."

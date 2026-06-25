@@ -1,0 +1,2300 @@
+{
+  "date": "20260625",
+  "tool": "qname_structure_validator",
+  "description": "Deep structural audit: canonical class existence, path hierarchy, .NET SpecQName value correctness",
+  "formats_audited": 20,
+  "total_pass": 189,
+  "total_warn": 60,
+  "total_fail": 0,
+  "total_migration_recommendations": 14,
+  "overall_verdict": "PASS",
+  "formats": [
+    {
+      "format_id": "abw",
+      "total_entries": 3,
+      "pass_count": 6,
+      "warn_count": 3,
+      "fail_count": 0,
+      "entries": [
+        {
+          "qname": "abiword:document",
+          "status": "verified",
+          "python_file": "src/python/abw/spec/document/document.py",
+          "dotnet_file": null,
+          "canonical_class": "Abiword.Document",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Document' found in src/python/abw/spec/document/document.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "WARN",
+              "severity": "LOW",
+              "detail": "Path diverges from qname hierarchy. Got: src/python/abw/spec/document/document.py, expected pattern: src/python/abw/spec/abiword/document.py"
+            }
+          ]
+        },
+        {
+          "qname": "abiword:section",
+          "status": "verified",
+          "python_file": "src/python/abw/spec/document/section.py",
+          "dotnet_file": null,
+          "canonical_class": "Abiword.Section",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Section' found in src/python/abw/spec/document/section.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "WARN",
+              "severity": "LOW",
+              "detail": "Path diverges from qname hierarchy. Got: src/python/abw/spec/document/section.py, expected pattern: src/python/abw/spec/abiword/section.py"
+            }
+          ]
+        },
+        {
+          "qname": "abiword:p",
+          "status": "verified",
+          "python_file": "src/python/abw/spec/document/paragraph.py",
+          "dotnet_file": null,
+          "canonical_class": "Abiword.Paragraph",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Paragraph' found in src/python/abw/spec/document/paragraph.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "WARN",
+              "severity": "LOW",
+              "detail": "Path diverges from qname hierarchy. Got: src/python/abw/spec/document/paragraph.py, expected pattern: src/python/abw/spec/abiword/p.py"
+            }
+          ]
+        }
+      ],
+      "migration_recommendations": []
+    },
+    {
+      "format_id": "csv",
+      "total_entries": 3,
+      "pass_count": 7,
+      "warn_count": 3,
+      "fail_count": 0,
+      "entries": [
+        {
+          "qname": "csv:record",
+          "status": "implemented",
+          "python_file": "src/python/csv/spec/record/record.py",
+          "dotnet_file": "src/net/csv/Spec/CsvRecord.cs",
+          "canonical_class": "Csv.Record",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Record' found in src/python/csv/spec/record/record.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "WARN",
+              "severity": "LOW",
+              "detail": "Path diverges from qname hierarchy. Got: src/python/csv/spec/record/record.py, expected pattern: src/python/csv/spec/csv/record.py"
+            },
+            {
+              "check": "dotnet_specqname_value",
+              "result": "PASS",
+              "detail": "SpecQName = \"csv:record\" \u2713"
+            }
+          ]
+        },
+        {
+          "qname": "csv:field",
+          "status": "implemented",
+          "python_file": "src/python/csv/spec/record/field.py",
+          "dotnet_file": null,
+          "canonical_class": "Csv.Field",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Field' found in src/python/csv/spec/record/field.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "WARN",
+              "severity": "LOW",
+              "detail": "Path diverges from qname hierarchy. Got: src/python/csv/spec/record/field.py, expected pattern: src/python/csv/spec/csv/field.py"
+            }
+          ]
+        },
+        {
+          "qname": "csv:header",
+          "status": "implemented",
+          "python_file": "src/python/csv/spec/record/header.py",
+          "dotnet_file": null,
+          "canonical_class": "Csv.Header",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Header' found in src/python/csv/spec/record/header.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "WARN",
+              "severity": "LOW",
+              "detail": "Path diverges from qname hierarchy. Got: src/python/csv/spec/record/header.py, expected pattern: src/python/csv/spec/csv/header.py"
+            }
+          ]
+        }
+      ],
+      "migration_recommendations": []
+    },
+    {
+      "format_id": "dif",
+      "total_entries": 5,
+      "pass_count": 8,
+      "warn_count": 7,
+      "fail_count": 0,
+      "entries": [
+        {
+          "qname": "dif:header",
+          "status": "implemented",
+          "python_file": "src/python/dif/spec/table/header.py",
+          "dotnet_file": null,
+          "canonical_class": "Dif.Header",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Header' found in src/python/dif/spec/table/header.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "WARN",
+              "severity": "LOW",
+              "detail": "Path diverges from qname hierarchy. Got: src/python/dif/spec/table/header.py, expected pattern: src/python/dif/spec/dif/header.py"
+            }
+          ]
+        },
+        {
+          "qname": "dif:data",
+          "status": "implemented",
+          "python_file": "src/python/dif/dif_parser.py",
+          "dotnet_file": null,
+          "canonical_class": "Dif.Data",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "WARN",
+              "severity": "MEDIUM",
+              "detail": "Class 'Data' (from canonical_class='Dif.Data') not found in src/python/dif/dif_parser.py. Defined: ['DifCell', 'DifDocument', 'DifError', 'DifInvalidFormatError', 'DifSizeError']"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "WARN",
+              "severity": "MEDIUM",
+              "detail": "Spec-layer qname maps to non-spec/ file: src/python/dif/dif_parser.py. Expected: src/python/dif/spec/dif/data.py"
+            }
+          ]
+        },
+        {
+          "qname": "dif:cell",
+          "status": "implemented",
+          "python_file": "src/python/dif/dif_parser.py",
+          "dotnet_file": null,
+          "canonical_class": "Dif.Cell",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "WARN",
+              "severity": "MEDIUM",
+              "detail": "Class 'Cell' (from canonical_class='Dif.Cell') not found in src/python/dif/dif_parser.py. Defined: ['DifCell', 'DifDocument', 'DifError', 'DifInvalidFormatError', 'DifSizeError']"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "WARN",
+              "severity": "MEDIUM",
+              "detail": "Spec-layer qname maps to non-spec/ file: src/python/dif/dif_parser.py. Expected: src/python/dif/spec/dif/cell.py"
+            }
+          ]
+        },
+        {
+          "qname": "dif:datum",
+          "status": "implemented",
+          "python_file": "src/python/dif/spec/table/datum.py",
+          "dotnet_file": null,
+          "canonical_class": "Dif.Datum",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Datum' found in src/python/dif/spec/table/datum.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "WARN",
+              "severity": "LOW",
+              "detail": "Path diverges from qname hierarchy. Got: src/python/dif/spec/table/datum.py, expected pattern: src/python/dif/spec/dif/datum.py"
+            }
+          ]
+        },
+        {
+          "qname": "dif:vector",
+          "status": "implemented",
+          "python_file": "src/python/dif/spec/table/vector.py",
+          "dotnet_file": null,
+          "canonical_class": "Dif.Vector",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Vector' found in src/python/dif/spec/table/vector.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "WARN",
+              "severity": "LOW",
+              "detail": "Path diverges from qname hierarchy. Got: src/python/dif/spec/table/vector.py, expected pattern: src/python/dif/spec/dif/vector.py"
+            }
+          ]
+        }
+      ],
+      "migration_recommendations": [
+        {
+          "qname": "dif:data",
+          "action": "RENAME_OR_CREATE_CLASS",
+          "target_path": "src/python/dif/dif_parser.py",
+          "expected_class": "Data",
+          "defined_classes": [
+            "DifCell",
+            "DifDocument",
+            "DifError",
+            "DifInvalidFormatError",
+            "DifSizeError"
+          ],
+          "note": "Registry expects class named 'Data'"
+        },
+        {
+          "qname": "dif:data",
+          "action": "MOVE_TO_SPEC_LAYER",
+          "current_path": "src/python/dif/dif_parser.py",
+          "suggested_path": "src/python/dif/spec/dif/data.py",
+          "note": "Spec-layer entries should live in spec/{namespace}/{local}.py"
+        },
+        {
+          "qname": "dif:cell",
+          "action": "RENAME_OR_CREATE_CLASS",
+          "target_path": "src/python/dif/dif_parser.py",
+          "expected_class": "Cell",
+          "defined_classes": [
+            "DifCell",
+            "DifDocument",
+            "DifError",
+            "DifInvalidFormatError",
+            "DifSizeError"
+          ],
+          "note": "Registry expects class named 'Cell'"
+        },
+        {
+          "qname": "dif:cell",
+          "action": "MOVE_TO_SPEC_LAYER",
+          "current_path": "src/python/dif/dif_parser.py",
+          "suggested_path": "src/python/dif/spec/dif/cell.py",
+          "note": "Spec-layer entries should live in spec/{namespace}/{local}.py"
+        }
+      ]
+    },
+    {
+      "format_id": "fodg",
+      "total_entries": 3,
+      "pass_count": 9,
+      "warn_count": 0,
+      "fail_count": 0,
+      "entries": [
+        {
+          "qname": "office:document",
+          "status": "implemented",
+          "python_file": "src/python/fodg/spec/office/document.py",
+          "dotnet_file": null,
+          "canonical_class": "Office.Document",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Document' found in src/python/fodg/spec/office/document.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "PASS",
+              "detail": "Path matches qname hierarchy: src/python/fodg/spec/office/document.py"
+            }
+          ]
+        },
+        {
+          "qname": "draw:page",
+          "status": "implemented",
+          "python_file": "src/python/fodg/spec/draw/page.py",
+          "dotnet_file": null,
+          "canonical_class": "Draw.Page",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Page' found in src/python/fodg/spec/draw/page.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "PASS",
+              "detail": "Path matches qname hierarchy: src/python/fodg/spec/draw/page.py"
+            }
+          ]
+        },
+        {
+          "qname": "draw:frame",
+          "status": "implemented",
+          "python_file": "src/python/fodg/spec/draw/frame.py",
+          "dotnet_file": null,
+          "canonical_class": "Draw.Frame",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Frame' found in src/python/fodg/spec/draw/frame.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "PASS",
+              "detail": "Path matches qname hierarchy: src/python/fodg/spec/draw/frame.py"
+            }
+          ]
+        }
+      ],
+      "migration_recommendations": []
+    },
+    {
+      "format_id": "fodp",
+      "total_entries": 3,
+      "pass_count": 6,
+      "warn_count": 3,
+      "fail_count": 0,
+      "entries": [
+        {
+          "qname": "office:document",
+          "status": "implemented",
+          "python_file": "src/python/fodp/spec/office/document.py",
+          "dotnet_file": null,
+          "canonical_class": "Office.Document",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Document' found in src/python/fodp/spec/office/document.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "PASS",
+              "detail": "Path matches qname hierarchy: src/python/fodp/spec/office/document.py"
+            }
+          ]
+        },
+        {
+          "qname": "presentation:page",
+          "status": "implemented",
+          "python_file": "src/python/fodp/spec/draw/page.py",
+          "dotnet_file": null,
+          "canonical_class": "Presentation.Page",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Page' found in src/python/fodp/spec/draw/page.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "WARN",
+              "severity": "LOW",
+              "detail": "Path diverges from qname hierarchy. Got: src/python/fodp/spec/draw/page.py, expected pattern: src/python/fodp/spec/presentation/page.py"
+            }
+          ]
+        },
+        {
+          "qname": "draw:frame",
+          "status": "implemented",
+          "python_file": "src/python/fodp/fodp_codec.py",
+          "dotnet_file": null,
+          "canonical_class": "Draw.Frame",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "WARN",
+              "severity": "MEDIUM",
+              "detail": "Class 'Frame' (from canonical_class='Draw.Frame') not found in src/python/fodp/fodp_codec.py. Defined: ['FodpError', 'FodpParseError']"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "WARN",
+              "severity": "MEDIUM",
+              "detail": "Spec-layer qname maps to non-spec/ file: src/python/fodp/fodp_codec.py. Expected: src/python/fodp/spec/draw/frame.py"
+            }
+          ]
+        }
+      ],
+      "migration_recommendations": [
+        {
+          "qname": "draw:frame",
+          "action": "RENAME_OR_CREATE_CLASS",
+          "target_path": "src/python/fodp/fodp_codec.py",
+          "expected_class": "Frame",
+          "defined_classes": [
+            "FodpError",
+            "FodpParseError"
+          ],
+          "note": "Registry expects class named 'Frame'"
+        },
+        {
+          "qname": "draw:frame",
+          "action": "MOVE_TO_SPEC_LAYER",
+          "current_path": "src/python/fodp/fodp_codec.py",
+          "suggested_path": "src/python/fodp/spec/draw/frame.py",
+          "note": "Spec-layer entries should live in spec/{namespace}/{local}.py"
+        }
+      ]
+    },
+    {
+      "format_id": "fods",
+      "total_entries": 12,
+      "pass_count": 39,
+      "warn_count": 1,
+      "fail_count": 0,
+      "entries": [
+        {
+          "qname": "office:document",
+          "status": "implemented",
+          "python_file": "src/python/fods/spec/office/document.py",
+          "dotnet_file": "src/net/fods/Spec/Office/Document.cs",
+          "canonical_class": "Office.Document",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Document' found in src/python/fods/spec/office/document.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "PASS",
+              "detail": "Path matches qname hierarchy: src/python/fods/spec/office/document.py"
+            },
+            {
+              "check": "dotnet_specqname_value",
+              "result": "PASS",
+              "detail": "SpecQName = \"office:document\" \u2713"
+            }
+          ]
+        },
+        {
+          "qname": "office:body",
+          "status": "implemented",
+          "python_file": "src/python/fods/spec/office/body.py",
+          "dotnet_file": null,
+          "canonical_class": "Office.Body",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Body' found in src/python/fods/spec/office/body.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "PASS",
+              "detail": "Path matches qname hierarchy: src/python/fods/spec/office/body.py"
+            }
+          ]
+        },
+        {
+          "qname": "office:spreadsheet",
+          "status": "implemented",
+          "python_file": "src/python/fods/spec/office/spreadsheet.py",
+          "dotnet_file": null,
+          "canonical_class": "Office.Spreadsheet",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Spreadsheet' found in src/python/fods/spec/office/spreadsheet.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "PASS",
+              "detail": "Path matches qname hierarchy: src/python/fods/spec/office/spreadsheet.py"
+            }
+          ]
+        },
+        {
+          "qname": "table:table",
+          "status": "implemented",
+          "python_file": "src/python/fods/spec/table/table.py",
+          "dotnet_file": "src/net/fods/Spec/Table/Table.cs",
+          "canonical_class": "Table.Table",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Table' found in src/python/fods/spec/table/table.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "PASS",
+              "detail": "Path matches qname hierarchy: src/python/fods/spec/table/table.py"
+            },
+            {
+              "check": "dotnet_specqname_value",
+              "result": "PASS",
+              "detail": "SpecQName = \"table:table\" \u2713"
+            }
+          ]
+        },
+        {
+          "qname": "table:table-row",
+          "status": "implemented",
+          "python_file": "src/python/fods/spec/table/table_row.py",
+          "dotnet_file": "src/net/fods/Spec/Table/TableRow.cs",
+          "canonical_class": "Table.TableRow",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'TableRow' found in src/python/fods/spec/table/table_row.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "PASS",
+              "detail": "Path matches qname hierarchy: src/python/fods/spec/table/table_row.py"
+            },
+            {
+              "check": "dotnet_specqname_value",
+              "result": "PASS",
+              "detail": "SpecQName = \"table:table-row\" \u2713"
+            }
+          ]
+        },
+        {
+          "qname": "table:table-cell",
+          "status": "implemented",
+          "python_file": "src/python/fods/spec/table/table_cell.py",
+          "dotnet_file": "src/net/fods/Spec/Table/TableCell.cs",
+          "canonical_class": "Table.TableCell",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'TableCell' found in src/python/fods/spec/table/table_cell.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "PASS",
+              "detail": "Path matches qname hierarchy: src/python/fods/spec/table/table_cell.py"
+            },
+            {
+              "check": "dotnet_specqname_value",
+              "result": "PASS",
+              "detail": "SpecQName = \"table:table-cell\" \u2713"
+            }
+          ]
+        },
+        {
+          "qname": "table:covered-table-cell",
+          "status": "implemented",
+          "python_file": "src/python/fods/spec/table/covered_table_cell.py",
+          "dotnet_file": null,
+          "canonical_class": "Table.CoveredTableCell",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'CoveredTableCell' found in src/python/fods/spec/table/covered_table_cell.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "PASS",
+              "detail": "Path matches qname hierarchy: src/python/fods/spec/table/covered_table_cell.py"
+            }
+          ]
+        },
+        {
+          "qname": "text:p",
+          "status": "implemented",
+          "python_file": "src/python/fods/spec/text/paragraph.py",
+          "dotnet_file": null,
+          "canonical_class": "Text.Paragraph",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Paragraph' found in src/python/fods/spec/text/paragraph.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "WARN",
+              "severity": "LOW",
+              "detail": "Path diverges from qname hierarchy. Got: src/python/fods/spec/text/paragraph.py, expected pattern: src/python/fods/spec/text/p.py"
+            }
+          ]
+        },
+        {
+          "qname": "text:span",
+          "status": "implemented",
+          "python_file": "src/python/fods/spec/text/span.py",
+          "dotnet_file": null,
+          "canonical_class": "Text.Span",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Span' found in src/python/fods/spec/text/span.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "PASS",
+              "detail": "Path matches qname hierarchy: src/python/fods/spec/text/span.py"
+            }
+          ]
+        },
+        {
+          "qname": "office:automatic-styles",
+          "status": "implemented",
+          "python_file": "src/python/fods/spec/office/automatic_styles.py",
+          "dotnet_file": null,
+          "canonical_class": "Office.AutomaticStyles",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'AutomaticStyles' found in src/python/fods/spec/office/automatic_styles.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "PASS",
+              "detail": "Path matches qname hierarchy: src/python/fods/spec/office/automatic_styles.py"
+            }
+          ]
+        },
+        {
+          "qname": "style:style",
+          "status": "implemented",
+          "python_file": "src/python/fods/spec/style/style.py",
+          "dotnet_file": null,
+          "canonical_class": "Style.Style",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Style' found in src/python/fods/spec/style/style.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "PASS",
+              "detail": "Path matches qname hierarchy: src/python/fods/spec/style/style.py"
+            }
+          ]
+        },
+        {
+          "qname": "number:date-style",
+          "status": "implemented",
+          "python_file": "src/python/fods/spec/number/date_style.py",
+          "dotnet_file": null,
+          "canonical_class": "Number.DateStyle",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'DateStyle' found in src/python/fods/spec/number/date_style.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "PASS",
+              "detail": "Path matches qname hierarchy: src/python/fods/spec/number/date_style.py"
+            }
+          ]
+        }
+      ],
+      "migration_recommendations": []
+    },
+    {
+      "format_id": "fodt",
+      "total_entries": 9,
+      "pass_count": 31,
+      "warn_count": 3,
+      "fail_count": 0,
+      "entries": [
+        {
+          "qname": "office:body",
+          "status": "architecture_only",
+          "python_file": null,
+          "dotnet_file": "src/net/fodt/Spec/Office/Body.cs",
+          "canonical_class": "Office.Body",
+          "checks": [
+            {
+              "check": "architecture_only_null_python_file",
+              "result": "PASS",
+              "detail": "architecture_only with python_file=null is intentional"
+            },
+            {
+              "check": "dotnet_specqname_value",
+              "result": "PASS",
+              "detail": "SpecQName = \"office:body\" \u2713"
+            }
+          ]
+        },
+        {
+          "qname": "text:p",
+          "status": "implemented",
+          "python_file": "src/python/fodt/spec/text/paragraph.py",
+          "dotnet_file": "src/net/fodt/Spec/Text/Paragraph.cs",
+          "canonical_class": "Text.Paragraph",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Paragraph' found in src/python/fodt/spec/text/paragraph.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "WARN",
+              "severity": "LOW",
+              "detail": "Path diverges from qname hierarchy. Got: src/python/fodt/spec/text/paragraph.py, expected pattern: src/python/fodt/spec/text/p.py"
+            },
+            {
+              "check": "dotnet_specqname_value",
+              "result": "PASS",
+              "detail": "SpecQName = \"text:p\" \u2713"
+            }
+          ]
+        },
+        {
+          "qname": "text:h",
+          "status": "implemented",
+          "python_file": "src/python/fodt/spec/text/heading.py",
+          "dotnet_file": "src/net/fodt/Spec/Text/Heading.cs",
+          "canonical_class": "Text.Heading",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Heading' found in src/python/fodt/spec/text/heading.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "WARN",
+              "severity": "LOW",
+              "detail": "Path diverges from qname hierarchy. Got: src/python/fodt/spec/text/heading.py, expected pattern: src/python/fodt/spec/text/h.py"
+            },
+            {
+              "check": "dotnet_specqname_value",
+              "result": "PASS",
+              "detail": "SpecQName = \"text:h\" \u2713"
+            }
+          ]
+        },
+        {
+          "qname": "text:span",
+          "status": "implemented",
+          "python_file": "src/python/fodt/spec/text/span.py",
+          "dotnet_file": "src/net/fodt/Spec/Text/Span.cs",
+          "canonical_class": "Text.Span",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Span' found in src/python/fodt/spec/text/span.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "PASS",
+              "detail": "Path matches qname hierarchy: src/python/fodt/spec/text/span.py"
+            },
+            {
+              "check": "dotnet_specqname_value",
+              "result": "PASS",
+              "detail": "SpecQName = \"text:span\" \u2713"
+            }
+          ]
+        },
+        {
+          "qname": "text:list",
+          "status": "implemented",
+          "python_file": "src/python/fodt/spec/text/list_.py",
+          "dotnet_file": "src/net/fodt/Spec/Text/List.cs",
+          "canonical_class": "Text.List",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'List' found in src/python/fodt/spec/text/list_.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "WARN",
+              "severity": "LOW",
+              "detail": "Path diverges from qname hierarchy. Got: src/python/fodt/spec/text/list_.py, expected pattern: src/python/fodt/spec/text/list.py"
+            },
+            {
+              "check": "dotnet_specqname_value",
+              "result": "PASS",
+              "detail": "SpecQName = \"text:list\" \u2713"
+            }
+          ]
+        },
+        {
+          "qname": "text:list-item",
+          "status": "implemented",
+          "python_file": "src/python/fodt/spec/text/list_item.py",
+          "dotnet_file": "src/net/fodt/Spec/Text/ListItem.cs",
+          "canonical_class": "Text.ListItem",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'ListItem' found in src/python/fodt/spec/text/list_item.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "PASS",
+              "detail": "Path matches qname hierarchy: src/python/fodt/spec/text/list_item.py"
+            },
+            {
+              "check": "dotnet_specqname_value",
+              "result": "PASS",
+              "detail": "SpecQName = \"text:list-item\" \u2713"
+            }
+          ]
+        },
+        {
+          "qname": "table:table",
+          "status": "implemented",
+          "python_file": "src/python/fodt/spec/table/table.py",
+          "dotnet_file": "src/net/fodt/Spec/Table/Table.cs",
+          "canonical_class": "Table.Table",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Table' found in src/python/fodt/spec/table/table.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "PASS",
+              "detail": "Path matches qname hierarchy: src/python/fodt/spec/table/table.py"
+            },
+            {
+              "check": "dotnet_specqname_value",
+              "result": "PASS",
+              "detail": "SpecQName = \"table:table\" \u2713"
+            }
+          ]
+        },
+        {
+          "qname": "table:table-row",
+          "status": "implemented",
+          "python_file": "src/python/fodt/spec/table/table_row.py",
+          "dotnet_file": "src/net/fodt/Spec/Table/TableRow.cs",
+          "canonical_class": "Table.TableRow",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'TableRow' found in src/python/fodt/spec/table/table_row.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "PASS",
+              "detail": "Path matches qname hierarchy: src/python/fodt/spec/table/table_row.py"
+            },
+            {
+              "check": "dotnet_specqname_value",
+              "result": "PASS",
+              "detail": "SpecQName = \"table:table-row\" \u2713"
+            }
+          ]
+        },
+        {
+          "qname": "table:table-cell",
+          "status": "implemented",
+          "python_file": "src/python/fodt/spec/table/table_cell.py",
+          "dotnet_file": "src/net/fodt/Spec/Table/TableCell.cs",
+          "canonical_class": "Table.TableCell",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'TableCell' found in src/python/fodt/spec/table/table_cell.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "PASS",
+              "detail": "Path matches qname hierarchy: src/python/fodt/spec/table/table_cell.py"
+            },
+            {
+              "check": "dotnet_specqname_value",
+              "result": "PASS",
+              "detail": "SpecQName = \"table:table-cell\" \u2713"
+            }
+          ]
+        }
+      ],
+      "migration_recommendations": []
+    },
+    {
+      "format_id": "gnumeric",
+      "total_entries": 3,
+      "pass_count": 6,
+      "warn_count": 3,
+      "fail_count": 0,
+      "entries": [
+        {
+          "qname": "gnumeric:workbook",
+          "status": "implemented",
+          "python_file": "src/python/gnumeric/spec/workbook/workbook.py",
+          "dotnet_file": null,
+          "canonical_class": "Gnumeric.Workbook",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Workbook' found in src/python/gnumeric/spec/workbook/workbook.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "WARN",
+              "severity": "LOW",
+              "detail": "Path diverges from qname hierarchy. Got: src/python/gnumeric/spec/workbook/workbook.py, expected pattern: src/python/gnumeric/spec/gnumeric/workbook.py"
+            }
+          ]
+        },
+        {
+          "qname": "gnumeric:sheet",
+          "status": "implemented",
+          "python_file": "src/python/gnumeric/spec/workbook/sheet.py",
+          "dotnet_file": null,
+          "canonical_class": "Gnumeric.Sheet",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Sheet' found in src/python/gnumeric/spec/workbook/sheet.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "WARN",
+              "severity": "LOW",
+              "detail": "Path diverges from qname hierarchy. Got: src/python/gnumeric/spec/workbook/sheet.py, expected pattern: src/python/gnumeric/spec/gnumeric/sheet.py"
+            }
+          ]
+        },
+        {
+          "qname": "gnumeric:cell",
+          "status": "implemented",
+          "python_file": "src/python/gnumeric/spec/workbook/cell.py",
+          "dotnet_file": null,
+          "canonical_class": "Gnumeric.Cell",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Cell' found in src/python/gnumeric/spec/workbook/cell.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "WARN",
+              "severity": "LOW",
+              "detail": "Path diverges from qname hierarchy. Got: src/python/gnumeric/spec/workbook/cell.py, expected pattern: src/python/gnumeric/spec/gnumeric/cell.py"
+            }
+          ]
+        }
+      ],
+      "migration_recommendations": []
+    },
+    {
+      "format_id": "ndjson",
+      "total_entries": 2,
+      "pass_count": 4,
+      "warn_count": 2,
+      "fail_count": 0,
+      "entries": [
+        {
+          "qname": "ndjson:record",
+          "status": "implemented",
+          "python_file": "src/python/ndjson/spec/record/record.py",
+          "dotnet_file": null,
+          "canonical_class": "Ndjson.Record",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Record' found in src/python/ndjson/spec/record/record.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "WARN",
+              "severity": "LOW",
+              "detail": "Path diverges from qname hierarchy. Got: src/python/ndjson/spec/record/record.py, expected pattern: src/python/ndjson/spec/ndjson/record.py"
+            }
+          ]
+        },
+        {
+          "qname": "ndjson:field",
+          "status": "implemented",
+          "python_file": "src/python/ndjson/spec/record/field.py",
+          "dotnet_file": null,
+          "canonical_class": "Ndjson.Field",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Field' found in src/python/ndjson/spec/record/field.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "WARN",
+              "severity": "LOW",
+              "detail": "Path diverges from qname hierarchy. Got: src/python/ndjson/spec/record/field.py, expected pattern: src/python/ndjson/spec/ndjson/field.py"
+            }
+          ]
+        }
+      ],
+      "migration_recommendations": []
+    },
+    {
+      "format_id": "ods",
+      "total_entries": 4,
+      "pass_count": 12,
+      "warn_count": 0,
+      "fail_count": 0,
+      "entries": [
+        {
+          "qname": "office:document",
+          "status": "implemented",
+          "python_file": "src/python/ods/spec/office/document.py",
+          "dotnet_file": null,
+          "canonical_class": "Office.Document",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Document' found in src/python/ods/spec/office/document.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "PASS",
+              "detail": "Path matches qname hierarchy: src/python/ods/spec/office/document.py"
+            }
+          ]
+        },
+        {
+          "qname": "table:table",
+          "status": "implemented",
+          "python_file": "src/python/ods/spec/table/table.py",
+          "dotnet_file": null,
+          "canonical_class": "Table.Table",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Table' found in src/python/ods/spec/table/table.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "PASS",
+              "detail": "Path matches qname hierarchy: src/python/ods/spec/table/table.py"
+            }
+          ]
+        },
+        {
+          "qname": "table:table-cell",
+          "status": "implemented",
+          "python_file": "src/python/ods/spec/table/table_cell.py",
+          "dotnet_file": null,
+          "canonical_class": "Table.TableCell",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'TableCell' found in src/python/ods/spec/table/table_cell.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "PASS",
+              "detail": "Path matches qname hierarchy: src/python/ods/spec/table/table_cell.py"
+            }
+          ]
+        },
+        {
+          "qname": "table:table-row",
+          "status": "implemented",
+          "python_file": "src/python/ods/spec/table/table_row.py",
+          "dotnet_file": null,
+          "canonical_class": "Ods.TableRow",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'TableRow' found in src/python/ods/spec/table/table_row.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "PASS",
+              "detail": "Path matches qname hierarchy: src/python/ods/spec/table/table_row.py"
+            }
+          ]
+        }
+      ],
+      "migration_recommendations": []
+    },
+    {
+      "format_id": "odt",
+      "total_entries": 3,
+      "pass_count": 7,
+      "warn_count": 2,
+      "fail_count": 0,
+      "entries": [
+        {
+          "qname": "office:document",
+          "status": "implemented",
+          "python_file": "src/python/odt/spec/office/document.py",
+          "dotnet_file": null,
+          "canonical_class": "Office.Document",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Document' found in src/python/odt/spec/office/document.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "PASS",
+              "detail": "Path matches qname hierarchy: src/python/odt/spec/office/document.py"
+            }
+          ]
+        },
+        {
+          "qname": "text:p",
+          "status": "implemented",
+          "python_file": "src/python/odt/spec/text/paragraph.py",
+          "dotnet_file": null,
+          "canonical_class": "Text.Paragraph",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Paragraph' found in src/python/odt/spec/text/paragraph.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "WARN",
+              "severity": "LOW",
+              "detail": "Path diverges from qname hierarchy. Got: src/python/odt/spec/text/paragraph.py, expected pattern: src/python/odt/spec/text/p.py"
+            }
+          ]
+        },
+        {
+          "qname": "text:h",
+          "status": "implemented",
+          "python_file": "src/python/odt/spec/text/heading.py",
+          "dotnet_file": null,
+          "canonical_class": "Text.Heading",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Heading' found in src/python/odt/spec/text/heading.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "WARN",
+              "severity": "LOW",
+              "detail": "Path diverges from qname hierarchy. Got: src/python/odt/spec/text/heading.py, expected pattern: src/python/odt/spec/text/h.py"
+            }
+          ]
+        }
+      ],
+      "migration_recommendations": []
+    },
+    {
+      "format_id": "pbm",
+      "total_entries": 3,
+      "pass_count": 6,
+      "warn_count": 3,
+      "fail_count": 0,
+      "entries": [
+        {
+          "qname": "pbm:header",
+          "status": "implemented",
+          "python_file": "src/python/pbm/spec/bitmap/header.py",
+          "dotnet_file": null,
+          "canonical_class": "Pbm.Header",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Header' found in src/python/pbm/spec/bitmap/header.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "WARN",
+              "severity": "LOW",
+              "detail": "Path diverges from qname hierarchy. Got: src/python/pbm/spec/bitmap/header.py, expected pattern: src/python/pbm/spec/pbm/header.py"
+            }
+          ]
+        },
+        {
+          "qname": "pbm:raster",
+          "status": "implemented",
+          "python_file": "src/python/pbm/spec/bitmap/raster.py",
+          "dotnet_file": null,
+          "canonical_class": "Pbm.Raster",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Raster' found in src/python/pbm/spec/bitmap/raster.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "WARN",
+              "severity": "LOW",
+              "detail": "Path diverges from qname hierarchy. Got: src/python/pbm/spec/bitmap/raster.py, expected pattern: src/python/pbm/spec/pbm/raster.py"
+            }
+          ]
+        },
+        {
+          "qname": "pbm:bitmap",
+          "status": "implemented",
+          "python_file": "src/python/pbm/spec/bitmap/bitmap.py",
+          "dotnet_file": null,
+          "canonical_class": "Pbm.Bitmap",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Bitmap' found in src/python/pbm/spec/bitmap/bitmap.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "WARN",
+              "severity": "LOW",
+              "detail": "Path diverges from qname hierarchy. Got: src/python/pbm/spec/bitmap/bitmap.py, expected pattern: src/python/pbm/spec/pbm/bitmap.py"
+            }
+          ]
+        }
+      ],
+      "migration_recommendations": []
+    },
+    {
+      "format_id": "pgm",
+      "total_entries": 3,
+      "pass_count": 5,
+      "warn_count": 4,
+      "fail_count": 0,
+      "entries": [
+        {
+          "qname": "pgm:header",
+          "status": "implemented",
+          "python_file": "src/python/pgm/spec/graymap/header.py",
+          "dotnet_file": null,
+          "canonical_class": "Pgm.Header",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Header' found in src/python/pgm/spec/graymap/header.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "WARN",
+              "severity": "LOW",
+              "detail": "Path diverges from qname hierarchy. Got: src/python/pgm/spec/graymap/header.py, expected pattern: src/python/pgm/spec/pgm/header.py"
+            }
+          ]
+        },
+        {
+          "qname": "pgm:raster",
+          "status": "implemented",
+          "python_file": "src/python/pgm/pgm_parser.py",
+          "dotnet_file": null,
+          "canonical_class": "Pgm.Raster",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "WARN",
+              "severity": "MEDIUM",
+              "detail": "Class 'Raster' (from canonical_class='Pgm.Raster') not found in src/python/pgm/pgm_parser.py. Defined: ['PgmDecodeError', 'PgmError', 'PgmImage', 'PgmInvalidHeaderError', 'PgmInvalidMagicError']"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "WARN",
+              "severity": "MEDIUM",
+              "detail": "Spec-layer qname maps to non-spec/ file: src/python/pgm/pgm_parser.py. Expected: src/python/pgm/spec/pgm/raster.py"
+            }
+          ]
+        },
+        {
+          "qname": "pgm:graymap",
+          "status": "implemented",
+          "python_file": "src/python/pgm/spec/graymap/graymap.py",
+          "dotnet_file": null,
+          "canonical_class": "Pgm.Graymap",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Graymap' found in src/python/pgm/spec/graymap/graymap.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "WARN",
+              "severity": "LOW",
+              "detail": "Path diverges from qname hierarchy. Got: src/python/pgm/spec/graymap/graymap.py, expected pattern: src/python/pgm/spec/pgm/graymap.py"
+            }
+          ]
+        }
+      ],
+      "migration_recommendations": [
+        {
+          "qname": "pgm:raster",
+          "action": "RENAME_OR_CREATE_CLASS",
+          "target_path": "src/python/pgm/pgm_parser.py",
+          "expected_class": "Raster",
+          "defined_classes": [
+            "PgmDecodeError",
+            "PgmError",
+            "PgmImage",
+            "PgmInvalidHeaderError",
+            "PgmInvalidMagicError",
+            "PgmSizeError"
+          ],
+          "note": "Registry expects class named 'Raster'"
+        },
+        {
+          "qname": "pgm:raster",
+          "action": "MOVE_TO_SPEC_LAYER",
+          "current_path": "src/python/pgm/pgm_parser.py",
+          "suggested_path": "src/python/pgm/spec/pgm/raster.py",
+          "note": "Spec-layer entries should live in spec/{namespace}/{local}.py"
+        }
+      ]
+    },
+    {
+      "format_id": "ppm",
+      "total_entries": 3,
+      "pass_count": 5,
+      "warn_count": 4,
+      "fail_count": 0,
+      "entries": [
+        {
+          "qname": "ppm:header",
+          "status": "implemented",
+          "python_file": "src/python/ppm/spec/pixmap/header.py",
+          "dotnet_file": null,
+          "canonical_class": "Ppm.Header",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Header' found in src/python/ppm/spec/pixmap/header.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "WARN",
+              "severity": "LOW",
+              "detail": "Path diverges from qname hierarchy. Got: src/python/ppm/spec/pixmap/header.py, expected pattern: src/python/ppm/spec/ppm/header.py"
+            }
+          ]
+        },
+        {
+          "qname": "ppm:raster",
+          "status": "implemented",
+          "python_file": "src/python/ppm/ppm_parser.py",
+          "dotnet_file": null,
+          "canonical_class": "Ppm.Raster",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "WARN",
+              "severity": "MEDIUM",
+              "detail": "Class 'Raster' (from canonical_class='Ppm.Raster') not found in src/python/ppm/ppm_parser.py. Defined: ['PpmDecodeError', 'PpmError', 'PpmImage', 'PpmInvalidHeaderError', 'PpmInvalidMagicError']"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "WARN",
+              "severity": "MEDIUM",
+              "detail": "Spec-layer qname maps to non-spec/ file: src/python/ppm/ppm_parser.py. Expected: src/python/ppm/spec/ppm/raster.py"
+            }
+          ]
+        },
+        {
+          "qname": "ppm:pixmap",
+          "status": "implemented",
+          "python_file": "src/python/ppm/spec/pixmap/pixmap.py",
+          "dotnet_file": null,
+          "canonical_class": "Ppm.Pixmap",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Pixmap' found in src/python/ppm/spec/pixmap/pixmap.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "WARN",
+              "severity": "LOW",
+              "detail": "Path diverges from qname hierarchy. Got: src/python/ppm/spec/pixmap/pixmap.py, expected pattern: src/python/ppm/spec/ppm/pixmap.py"
+            }
+          ]
+        }
+      ],
+      "migration_recommendations": [
+        {
+          "qname": "ppm:raster",
+          "action": "RENAME_OR_CREATE_CLASS",
+          "target_path": "src/python/ppm/ppm_parser.py",
+          "expected_class": "Raster",
+          "defined_classes": [
+            "PpmDecodeError",
+            "PpmError",
+            "PpmImage",
+            "PpmInvalidHeaderError",
+            "PpmInvalidMagicError",
+            "PpmSizeError"
+          ],
+          "note": "Registry expects class named 'Raster'"
+        },
+        {
+          "qname": "ppm:raster",
+          "action": "MOVE_TO_SPEC_LAYER",
+          "current_path": "src/python/ppm/ppm_parser.py",
+          "suggested_path": "src/python/ppm/spec/ppm/raster.py",
+          "note": "Spec-layer entries should live in spec/{namespace}/{local}.py"
+        }
+      ]
+    },
+    {
+      "format_id": "qoi",
+      "total_entries": 3,
+      "pass_count": 6,
+      "warn_count": 3,
+      "fail_count": 0,
+      "entries": [
+        {
+          "qname": "qoi:header",
+          "status": "implemented",
+          "python_file": "src/python/qoi/spec/chunk/header.py",
+          "dotnet_file": null,
+          "canonical_class": "Qoi.Header",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Header' found in src/python/qoi/spec/chunk/header.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "WARN",
+              "severity": "LOW",
+              "detail": "Path diverges from qname hierarchy. Got: src/python/qoi/spec/chunk/header.py, expected pattern: src/python/qoi/spec/qoi/header.py"
+            }
+          ]
+        },
+        {
+          "qname": "qoi:chunk",
+          "status": "implemented",
+          "python_file": "src/python/qoi/spec/chunk/chunk.py",
+          "dotnet_file": null,
+          "canonical_class": "Qoi.Chunk",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Chunk' found in src/python/qoi/spec/chunk/chunk.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "WARN",
+              "severity": "LOW",
+              "detail": "Path diverges from qname hierarchy. Got: src/python/qoi/spec/chunk/chunk.py, expected pattern: src/python/qoi/spec/qoi/chunk.py"
+            }
+          ]
+        },
+        {
+          "qname": "qoi:end-marker",
+          "status": "implemented",
+          "python_file": "src/python/qoi/spec/chunk/end_marker.py",
+          "dotnet_file": null,
+          "canonical_class": "Qoi.EndMarker",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'EndMarker' found in src/python/qoi/spec/chunk/end_marker.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "WARN",
+              "severity": "LOW",
+              "detail": "Path diverges from qname hierarchy. Got: src/python/qoi/spec/chunk/end_marker.py, expected pattern: src/python/qoi/spec/qoi/end_marker.py"
+            }
+          ]
+        }
+      ],
+      "migration_recommendations": []
+    },
+    {
+      "format_id": "sylk",
+      "total_entries": 4,
+      "pass_count": 7,
+      "warn_count": 5,
+      "fail_count": 0,
+      "entries": [
+        {
+          "qname": "sylk:header",
+          "status": "implemented",
+          "python_file": "src/python/sylk/spec/row/header.py",
+          "dotnet_file": null,
+          "canonical_class": "Sylk.Header",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Header' found in src/python/sylk/spec/row/header.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "WARN",
+              "severity": "LOW",
+              "detail": "Path diverges from qname hierarchy. Got: src/python/sylk/spec/row/header.py, expected pattern: src/python/sylk/spec/sylk/header.py"
+            }
+          ]
+        },
+        {
+          "qname": "sylk:cell",
+          "status": "implemented",
+          "python_file": "src/python/sylk/spec/row/cell.py",
+          "dotnet_file": null,
+          "canonical_class": "Sylk.Cell",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Cell' found in src/python/sylk/spec/row/cell.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "WARN",
+              "severity": "LOW",
+              "detail": "Path diverges from qname hierarchy. Got: src/python/sylk/spec/row/cell.py, expected pattern: src/python/sylk/spec/sylk/cell.py"
+            }
+          ]
+        },
+        {
+          "qname": "sylk:format",
+          "status": "implemented",
+          "python_file": "src/python/sylk/sylk_parser.py",
+          "dotnet_file": null,
+          "canonical_class": "Sylk.Format",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "WARN",
+              "severity": "MEDIUM",
+              "detail": "Class 'Format' (from canonical_class='Sylk.Format') not found in src/python/sylk/sylk_parser.py. Defined: ['SylkCell', 'SylkDocument', 'SylkError', 'SylkInvalidFormatError', 'SylkParseError']"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "WARN",
+              "severity": "MEDIUM",
+              "detail": "Spec-layer qname maps to non-spec/ file: src/python/sylk/sylk_parser.py. Expected: src/python/sylk/spec/sylk/format.py"
+            }
+          ]
+        },
+        {
+          "qname": "sylk:row",
+          "status": "implemented",
+          "python_file": "src/python/sylk/spec/row/row.py",
+          "dotnet_file": null,
+          "canonical_class": "Sylk.Row",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Row' found in src/python/sylk/spec/row/row.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "WARN",
+              "severity": "LOW",
+              "detail": "Path diverges from qname hierarchy. Got: src/python/sylk/spec/row/row.py, expected pattern: src/python/sylk/spec/sylk/row.py"
+            }
+          ]
+        }
+      ],
+      "migration_recommendations": [
+        {
+          "qname": "sylk:format",
+          "action": "RENAME_OR_CREATE_CLASS",
+          "target_path": "src/python/sylk/sylk_parser.py",
+          "expected_class": "Format",
+          "defined_classes": [
+            "SylkCell",
+            "SylkDocument",
+            "SylkError",
+            "SylkInvalidFormatError",
+            "SylkParseError",
+            "SylkSizeError"
+          ],
+          "note": "Registry expects class named 'Format'"
+        },
+        {
+          "qname": "sylk:format",
+          "action": "MOVE_TO_SPEC_LAYER",
+          "current_path": "src/python/sylk/sylk_parser.py",
+          "suggested_path": "src/python/sylk/spec/sylk/format.py",
+          "note": "Spec-layer entries should live in spec/{namespace}/{local}.py"
+        }
+      ]
+    },
+    {
+      "format_id": "toml",
+      "total_entries": 3,
+      "pass_count": 6,
+      "warn_count": 3,
+      "fail_count": 0,
+      "entries": [
+        {
+          "qname": "toml:table",
+          "status": "implemented",
+          "python_file": "src/python/toml/spec/table/table.py",
+          "dotnet_file": null,
+          "canonical_class": "Toml.Table",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Table' found in src/python/toml/spec/table/table.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "WARN",
+              "severity": "LOW",
+              "detail": "Path diverges from qname hierarchy. Got: src/python/toml/spec/table/table.py, expected pattern: src/python/toml/spec/toml/table.py"
+            }
+          ]
+        },
+        {
+          "qname": "toml:key",
+          "status": "implemented",
+          "python_file": "src/python/toml/spec/table/key.py",
+          "dotnet_file": null,
+          "canonical_class": "Toml.Key",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Key' found in src/python/toml/spec/table/key.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "WARN",
+              "severity": "LOW",
+              "detail": "Path diverges from qname hierarchy. Got: src/python/toml/spec/table/key.py, expected pattern: src/python/toml/spec/toml/key.py"
+            }
+          ]
+        },
+        {
+          "qname": "toml:value",
+          "status": "implemented",
+          "python_file": "src/python/toml/spec/table/value.py",
+          "dotnet_file": null,
+          "canonical_class": "Toml.Value",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Value' found in src/python/toml/spec/table/value.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "WARN",
+              "severity": "LOW",
+              "detail": "Path diverges from qname hierarchy. Got: src/python/toml/spec/table/value.py, expected pattern: src/python/toml/spec/toml/value.py"
+            }
+          ]
+        }
+      ],
+      "migration_recommendations": []
+    },
+    {
+      "format_id": "tsv",
+      "total_entries": 3,
+      "pass_count": 6,
+      "warn_count": 3,
+      "fail_count": 0,
+      "entries": [
+        {
+          "qname": "tsv:row",
+          "status": "implemented",
+          "python_file": "src/python/tsv/spec/record/row.py",
+          "dotnet_file": null,
+          "canonical_class": "Tsv.Row",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Row' found in src/python/tsv/spec/record/row.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "WARN",
+              "severity": "LOW",
+              "detail": "Path diverges from qname hierarchy. Got: src/python/tsv/spec/record/row.py, expected pattern: src/python/tsv/spec/tsv/row.py"
+            }
+          ]
+        },
+        {
+          "qname": "tsv:field",
+          "status": "implemented",
+          "python_file": "src/python/tsv/spec/record/field.py",
+          "dotnet_file": null,
+          "canonical_class": "Tsv.Field",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Field' found in src/python/tsv/spec/record/field.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "WARN",
+              "severity": "LOW",
+              "detail": "Path diverges from qname hierarchy. Got: src/python/tsv/spec/record/field.py, expected pattern: src/python/tsv/spec/tsv/field.py"
+            }
+          ]
+        },
+        {
+          "qname": "tsv:record",
+          "status": "implemented",
+          "python_file": "src/python/tsv/spec/record/record.py",
+          "dotnet_file": null,
+          "canonical_class": "Tsv.Record",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Record' found in src/python/tsv/spec/record/record.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "WARN",
+              "severity": "LOW",
+              "detail": "Path diverges from qname hierarchy. Got: src/python/tsv/spec/record/record.py, expected pattern: src/python/tsv/spec/tsv/record.py"
+            }
+          ]
+        }
+      ],
+      "migration_recommendations": []
+    },
+    {
+      "format_id": "xcf",
+      "total_entries": 4,
+      "pass_count": 7,
+      "warn_count": 5,
+      "fail_count": 0,
+      "entries": [
+        {
+          "qname": "xcf:image",
+          "status": "implemented",
+          "python_file": "src/python/xcf/image_document.py",
+          "dotnet_file": null,
+          "canonical_class": "Xcf.Image",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "WARN",
+              "severity": "MEDIUM",
+              "detail": "Class 'Image' (from canonical_class='Xcf.Image') not found in src/python/xcf/image_document.py. Defined: ['XcfImageSpec']"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "WARN",
+              "severity": "MEDIUM",
+              "detail": "Spec-layer qname maps to non-spec/ file: src/python/xcf/image_document.py. Expected: src/python/xcf/spec/xcf/image.py"
+            }
+          ]
+        },
+        {
+          "qname": "xcf:layer",
+          "status": "implemented",
+          "python_file": "src/python/xcf/spec/layer/layer.py",
+          "dotnet_file": null,
+          "canonical_class": "Xcf.Layer",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Layer' found in src/python/xcf/spec/layer/layer.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "WARN",
+              "severity": "LOW",
+              "detail": "Path diverges from qname hierarchy. Got: src/python/xcf/spec/layer/layer.py, expected pattern: src/python/xcf/spec/xcf/layer.py"
+            }
+          ]
+        },
+        {
+          "qname": "xcf:channel",
+          "status": "implemented",
+          "python_file": "src/python/xcf/spec/layer/channel.py",
+          "dotnet_file": null,
+          "canonical_class": "Xcf.Channel",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Channel' found in src/python/xcf/spec/layer/channel.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "WARN",
+              "severity": "LOW",
+              "detail": "Path diverges from qname hierarchy. Got: src/python/xcf/spec/layer/channel.py, expected pattern: src/python/xcf/spec/xcf/channel.py"
+            }
+          ]
+        },
+        {
+          "qname": "xcf:header",
+          "status": "implemented",
+          "python_file": "src/python/xcf/spec/layer/header.py",
+          "dotnet_file": null,
+          "canonical_class": "Xcf.Header",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Header' found in src/python/xcf/spec/layer/header.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "WARN",
+              "severity": "LOW",
+              "detail": "Path diverges from qname hierarchy. Got: src/python/xcf/spec/layer/header.py, expected pattern: src/python/xcf/spec/xcf/header.py"
+            }
+          ]
+        }
+      ],
+      "migration_recommendations": [
+        {
+          "qname": "xcf:image",
+          "action": "RENAME_OR_CREATE_CLASS",
+          "target_path": "src/python/xcf/image_document.py",
+          "expected_class": "Image",
+          "defined_classes": [
+            "XcfImageSpec"
+          ],
+          "note": "Registry expects class named 'Image'"
+        },
+        {
+          "qname": "xcf:image",
+          "action": "MOVE_TO_SPEC_LAYER",
+          "current_path": "src/python/xcf/image_document.py",
+          "suggested_path": "src/python/xcf/spec/xcf/image.py",
+          "note": "Spec-layer entries should live in spec/{namespace}/{local}.py"
+        }
+      ]
+    },
+    {
+      "format_id": "zst",
+      "total_entries": 3,
+      "pass_count": 6,
+      "warn_count": 3,
+      "fail_count": 0,
+      "entries": [
+        {
+          "qname": "zst:frame",
+          "status": "implemented",
+          "python_file": "src/python/zst/spec/frame/frame.py",
+          "dotnet_file": null,
+          "canonical_class": "Zst.Frame",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Frame' found in src/python/zst/spec/frame/frame.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "WARN",
+              "severity": "LOW",
+              "detail": "Path diverges from qname hierarchy. Got: src/python/zst/spec/frame/frame.py, expected pattern: src/python/zst/spec/zst/frame.py"
+            }
+          ]
+        },
+        {
+          "qname": "zst:block",
+          "status": "implemented",
+          "python_file": "src/python/zst/spec/frame/block.py",
+          "dotnet_file": null,
+          "canonical_class": "Zst.Block",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'Block' found in src/python/zst/spec/frame/block.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "WARN",
+              "severity": "LOW",
+              "detail": "Path diverges from qname hierarchy. Got: src/python/zst/spec/frame/block.py, expected pattern: src/python/zst/spec/zst/block.py"
+            }
+          ]
+        },
+        {
+          "qname": "zst:magic-number",
+          "status": "implemented",
+          "python_file": "src/python/zst/spec/frame/magic_number.py",
+          "dotnet_file": null,
+          "canonical_class": "Zst.MagicNumber",
+          "checks": [
+            {
+              "check": "python_spec_qname_present",
+              "result": "PASS"
+            },
+            {
+              "check": "canonical_class_defined",
+              "result": "PASS",
+              "detail": "Class 'MagicNumber' found in src/python/zst/spec/frame/magic_number.py"
+            },
+            {
+              "check": "path_hierarchy",
+              "result": "WARN",
+              "severity": "LOW",
+              "detail": "Path diverges from qname hierarchy. Got: src/python/zst/spec/frame/magic_number.py, expected pattern: src/python/zst/spec/zst/magic_number.py"
+            }
+          ]
+        }
+      ],
+      "migration_recommendations": []
+    }
+  ]
+}

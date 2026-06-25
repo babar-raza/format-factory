@@ -1,0 +1,75 @@
+{
+  "format_id": "fodp",
+  "date": "20260625",
+  "total_entries": 3,
+  "compliant_count": 1,
+  "compliant_pct": 0.333,
+  "blocks_gate_count": 0,
+  "state_counts": {
+    "MATCH": 1,
+    "WRONG_PATH_IN_SPEC": 1,
+    "MISSING_CLASS": 1
+  },
+  "action_counts": {
+    "NONE": 1,
+    "MOVE_FILE": 2
+  },
+  "risk_counts": {
+    "LOW": 1,
+    "HIGH": 2
+  },
+  "migration_ready": true,
+  "entries": [
+    {
+      "qname": "office:document",
+      "status": "implemented",
+      "canonical_class": "Office.Document",
+      "current_path": "src/python/fodp/spec/office/document.py",
+      "target_path": "src/python/fodp/spec/office/document.py",
+      "source_layer": "Spec",
+      "current_state": "MATCH",
+      "action_required": "NONE",
+      "migration_risk": "LOW",
+      "estimated_effort": "trivial",
+      "blocks_gate": false,
+      "test_changes_required": [],
+      "notes": [
+        "Fully compliant"
+      ]
+    },
+    {
+      "qname": "presentation:page",
+      "status": "implemented",
+      "canonical_class": "Presentation.Page",
+      "current_path": "src/python/fodp/spec/draw/page.py",
+      "target_path": "src/python/fodp/spec/presentation/page.py",
+      "source_layer": "Spec",
+      "current_state": "WRONG_PATH_IN_SPEC",
+      "action_required": "MOVE_FILE",
+      "migration_risk": "HIGH",
+      "estimated_effort": "medium",
+      "blocks_gate": false,
+      "test_changes_required": [],
+      "notes": [
+        "In spec/ but wrong sub-path. Got src/python/fodp/spec/draw/page.py, expected src/python/fodp/spec/presentation/page.py"
+      ]
+    },
+    {
+      "qname": "draw:frame",
+      "status": "implemented",
+      "canonical_class": "Draw.Frame",
+      "current_path": "src/python/fodp/fodp_codec.py",
+      "target_path": "src/python/fodp/spec/draw/frame.py",
+      "source_layer": "Spec",
+      "current_state": "MISSING_CLASS",
+      "action_required": "MOVE_FILE",
+      "migration_risk": "HIGH",
+      "estimated_effort": "medium",
+      "blocks_gate": false,
+      "test_changes_required": [],
+      "notes": [
+        "Registry canonical_class 'Draw.Frame' (short: 'Frame') not found in src/python/fodp/fodp_codec.py. Defined: ['FodpError', 'FodpParseError']"
+      ]
+    }
+  ]
+}

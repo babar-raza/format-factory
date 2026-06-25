@@ -1,0 +1,89 @@
+{
+  "format_id": "sylk",
+  "date": "20260625",
+  "total_entries": 4,
+  "compliant_count": 0,
+  "compliant_pct": 0.0,
+  "blocks_gate_count": 0,
+  "state_counts": {
+    "WRONG_PATH_IN_SPEC": 3,
+    "MISSING_CLASS": 1
+  },
+  "action_counts": {
+    "MOVE_FILE": 4
+  },
+  "risk_counts": {
+    "HIGH": 4
+  },
+  "migration_ready": true,
+  "entries": [
+    {
+      "qname": "sylk:header",
+      "status": "implemented",
+      "canonical_class": "Sylk.Header",
+      "current_path": "src/python/sylk/spec/row/header.py",
+      "target_path": "src/python/sylk/spec/sylk/header.py",
+      "source_layer": "Spec",
+      "current_state": "WRONG_PATH_IN_SPEC",
+      "action_required": "MOVE_FILE",
+      "migration_risk": "HIGH",
+      "estimated_effort": "medium",
+      "blocks_gate": false,
+      "test_changes_required": [],
+      "notes": [
+        "In spec/ but wrong sub-path. Got src/python/sylk/spec/row/header.py, expected src/python/sylk/spec/sylk/header.py"
+      ]
+    },
+    {
+      "qname": "sylk:cell",
+      "status": "implemented",
+      "canonical_class": "Sylk.Cell",
+      "current_path": "src/python/sylk/spec/row/cell.py",
+      "target_path": "src/python/sylk/spec/sylk/cell.py",
+      "source_layer": "Spec",
+      "current_state": "WRONG_PATH_IN_SPEC",
+      "action_required": "MOVE_FILE",
+      "migration_risk": "HIGH",
+      "estimated_effort": "medium",
+      "blocks_gate": false,
+      "test_changes_required": [],
+      "notes": [
+        "In spec/ but wrong sub-path. Got src/python/sylk/spec/row/cell.py, expected src/python/sylk/spec/sylk/cell.py"
+      ]
+    },
+    {
+      "qname": "sylk:format",
+      "status": "implemented",
+      "canonical_class": "Sylk.Format",
+      "current_path": "src/python/sylk/sylk_parser.py",
+      "target_path": "src/python/sylk/spec/sylk/format.py",
+      "source_layer": "Spec",
+      "current_state": "MISSING_CLASS",
+      "action_required": "MOVE_FILE",
+      "migration_risk": "HIGH",
+      "estimated_effort": "medium",
+      "blocks_gate": false,
+      "test_changes_required": [],
+      "notes": [
+        "Registry canonical_class 'Sylk.Format' (short: 'Format') not found in src/python/sylk/sylk_parser.py. Defined: ['SylkCell', 'SylkDocument', 'SylkError', 'SylkInvalidFormatError', 'SylkParseError']"
+      ]
+    },
+    {
+      "qname": "sylk:row",
+      "status": "implemented",
+      "canonical_class": "Sylk.Row",
+      "current_path": "src/python/sylk/spec/row/row.py",
+      "target_path": "src/python/sylk/spec/sylk/row.py",
+      "source_layer": "Spec",
+      "current_state": "WRONG_PATH_IN_SPEC",
+      "action_required": "MOVE_FILE",
+      "migration_risk": "HIGH",
+      "estimated_effort": "medium",
+      "blocks_gate": false,
+      "test_changes_required": [],
+      "notes": [
+        "In spec/ but wrong sub-path. Got src/python/sylk/spec/row/row.py, expected src/python/sylk/spec/sylk/row.py"
+      ]
+    }
+  ]
+}

@@ -1282,6 +1282,10 @@ def generate(
             old_by_id = {g["gap_id"]: g for g in old.get("gaps", [])}
             generated_ids = {g["gap_id"] for g in gaps}
             # Preserve closed status and close metadata for regenerated gaps
+            # TC-V4-003 (2026-06-25): also preserve closed_by_engine and closure_evidence
+            # so that engine closures survive generator reruns. Without this, gap_closure_engine
+            # sets closed_by_engine=True on the gap, but the next generator run destroys it,
+            # making C9 metric check (b) fail post-regen. See: plans/velvet-hatching-lark.md FINDING-003.
             for g in gaps:
                 if g["gap_id"] in old_by_id and old_by_id[g["gap_id"]].get("status") == "closed":
                     prev = old_by_id[g["gap_id"]]
@@ -1290,6 +1294,10 @@ def generate(
                         g["closed_by_sprint"] = prev["closed_by_sprint"]
                     if "closed_at" in prev:
                         g["closed_at"] = prev["closed_at"]
+                    if "closed_by_engine" in prev:
+                        g["closed_by_engine"] = prev["closed_by_engine"]
+                    if "closure_evidence" in prev:
+                        g["closure_evidence"] = prev["closure_evidence"]
             # Re-append supplemental gaps (manually added, not generated from poc-targets.yaml)
             for old_gap in old.get("gaps", []):
                 if old_gap["gap_id"] not in generated_ids:

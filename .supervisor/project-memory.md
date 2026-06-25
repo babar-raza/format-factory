@@ -15909,3 +15909,29 @@ Contract: C:\Users\prora\OneDrive\Documents\
 - pending_marker_count: 0
 - bundle_entry_count: 55
 - bundle_validation_pass: True
+
+## Entry: ff-sprint-s73-idempotency-20260626
+- timestamp: 2026-06-25T21:55:07.046228
+- verdict: ACCEPTED
+- test_count: 2
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\ff-sprint-s73-idempotency-20260626\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 59
+- bundle_validation_pass: True
+- test_delta: +2
+- test_delta_from: 0
+
+## Entry: ff-sprint-s74-zst-sylk-deepening-20260626
+- timestamp: 2026-06-25T21:59:06.989979
+- verdict: ACCEPTED
+- test_count: 1125
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\ff-sprint-s74-zst-sylk-deepening-20260626\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 56
+- bundle_validation_pass: True
+- test_delta: +1123
+- test_delta_from: 2

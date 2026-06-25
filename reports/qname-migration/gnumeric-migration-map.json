@@ -1,0 +1,71 @@
+{
+  "format_id": "gnumeric",
+  "date": "20260625",
+  "total_entries": 3,
+  "compliant_count": 0,
+  "compliant_pct": 0.0,
+  "blocks_gate_count": 0,
+  "state_counts": {
+    "WRONG_PATH_IN_SPEC": 3
+  },
+  "action_counts": {
+    "MOVE_FILE": 3
+  },
+  "risk_counts": {
+    "HIGH": 3
+  },
+  "migration_ready": true,
+  "entries": [
+    {
+      "qname": "gnumeric:workbook",
+      "status": "implemented",
+      "canonical_class": "Gnumeric.Workbook",
+      "current_path": "src/python/gnumeric/spec/workbook/workbook.py",
+      "target_path": "src/python/gnumeric/spec/gnumeric/workbook.py",
+      "source_layer": "Spec",
+      "current_state": "WRONG_PATH_IN_SPEC",
+      "action_required": "MOVE_FILE",
+      "migration_risk": "HIGH",
+      "estimated_effort": "medium",
+      "blocks_gate": false,
+      "test_changes_required": [],
+      "notes": [
+        "In spec/ but wrong sub-path. Got src/python/gnumeric/spec/workbook/workbook.py, expected src/python/gnumeric/spec/gnumeric/workbook.py"
+      ]
+    },
+    {
+      "qname": "gnumeric:sheet",
+      "status": "implemented",
+      "canonical_class": "Gnumeric.Sheet",
+      "current_path": "src/python/gnumeric/spec/workbook/sheet.py",
+      "target_path": "src/python/gnumeric/spec/gnumeric/sheet.py",
+      "source_layer": "Spec",
+      "current_state": "WRONG_PATH_IN_SPEC",
+      "action_required": "MOVE_FILE",
+      "migration_risk": "HIGH",
+      "estimated_effort": "medium",
+      "blocks_gate": false,
+      "test_changes_required": [],
+      "notes": [
+        "In spec/ but wrong sub-path. Got src/python/gnumeric/spec/workbook/sheet.py, expected src/python/gnumeric/spec/gnumeric/sheet.py"
+      ]
+    },
+    {
+      "qname": "gnumeric:cell",
+      "status": "implemented",
+      "canonical_class": "Gnumeric.Cell",
+      "current_path": "src/python/gnumeric/spec/workbook/cell.py",
+      "target_path": "src/python/gnumeric/spec/gnumeric/cell.py",
+      "source_layer": "Spec",
+      "current_state": "WRONG_PATH_IN_SPEC",
+      "action_required": "MOVE_FILE",
+      "migration_risk": "HIGH",
+      "estimated_effort": "medium",
+      "blocks_gate": false,
+      "test_changes_required": [],
+      "notes": [
+        "In spec/ but wrong sub-path. Got src/python/gnumeric/spec/workbook/cell.py, expected src/python/gnumeric/spec/gnumeric/cell.py"
+      ]
+    }
+  ]
+}

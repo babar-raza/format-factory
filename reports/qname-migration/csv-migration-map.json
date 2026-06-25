@@ -1,0 +1,71 @@
+{
+  "format_id": "csv",
+  "date": "20260625",
+  "total_entries": 3,
+  "compliant_count": 0,
+  "compliant_pct": 0.0,
+  "blocks_gate_count": 0,
+  "state_counts": {
+    "WRONG_PATH_IN_SPEC": 3
+  },
+  "action_counts": {
+    "MOVE_FILE": 3
+  },
+  "risk_counts": {
+    "HIGH": 3
+  },
+  "migration_ready": true,
+  "entries": [
+    {
+      "qname": "csv:record",
+      "status": "implemented",
+      "canonical_class": "Csv.Record",
+      "current_path": "src/python/csv/spec/record/record.py",
+      "target_path": "src/python/csv/spec/csv/record.py",
+      "source_layer": "Spec",
+      "current_state": "WRONG_PATH_IN_SPEC",
+      "action_required": "MOVE_FILE",
+      "migration_risk": "HIGH",
+      "estimated_effort": "medium",
+      "blocks_gate": false,
+      "test_changes_required": [],
+      "notes": [
+        "In spec/ but wrong sub-path. Got src/python/csv/spec/record/record.py, expected src/python/csv/spec/csv/record.py"
+      ]
+    },
+    {
+      "qname": "csv:field",
+      "status": "implemented",
+      "canonical_class": "Csv.Field",
+      "current_path": "src/python/csv/spec/record/field.py",
+      "target_path": "src/python/csv/spec/csv/field.py",
+      "source_layer": "Spec",
+      "current_state": "WRONG_PATH_IN_SPEC",
+      "action_required": "MOVE_FILE",
+      "migration_risk": "HIGH",
+      "estimated_effort": "medium",
+      "blocks_gate": false,
+      "test_changes_required": [],
+      "notes": [
+        "In spec/ but wrong sub-path. Got src/python/csv/spec/record/field.py, expected src/python/csv/spec/csv/field.py"
+      ]
+    },
+    {
+      "qname": "csv:header",
+      "status": "implemented",
+      "canonical_class": "Csv.Header",
+      "current_path": "src/python/csv/spec/record/header.py",
+      "target_path": "src/python/csv/spec/csv/header.py",
+      "source_layer": "Spec",
+      "current_state": "WRONG_PATH_IN_SPEC",
+      "action_required": "MOVE_FILE",
+      "migration_risk": "HIGH",
+      "estimated_effort": "medium",
+      "blocks_gate": false,
+      "test_changes_required": [],
+      "notes": [
+        "In spec/ but wrong sub-path. Got src/python/csv/spec/record/header.py, expected src/python/csv/spec/csv/header.py"
+      ]
+    }
+  ]
+}

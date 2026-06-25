@@ -1125,7 +1125,12 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
                     _wid = _wi.get("item_id") or _wi.get("action_id")
                     if _ref and _wid:
                         _wi_by_id[_wid] = _ref
-                break  # use first available source
+                # TC-V4-006 (2026-06-25): Only break if refs were actually found.
+                # Bug: prior code broke after first existing file even if it had 0 refs,
+                # preventing fallback to secondary source. E.g. if primary is in PLAN_LOCKED
+                # mode with no gap_ledger_ref items, secondary source was never checked.
+                if _wi_by_id:
+                    break  # found refs in this source; no need to check secondary
         if _wi_by_id:
             _merged = 0
             for _di in decl.get("planned_work_items", []):

@@ -1,0 +1,71 @@
+{
+  "format_id": "zst",
+  "date": "20260625",
+  "total_entries": 3,
+  "compliant_count": 0,
+  "compliant_pct": 0.0,
+  "blocks_gate_count": 0,
+  "state_counts": {
+    "WRONG_PATH_IN_SPEC": 3
+  },
+  "action_counts": {
+    "MOVE_FILE": 3
+  },
+  "risk_counts": {
+    "HIGH": 3
+  },
+  "migration_ready": true,
+  "entries": [
+    {
+      "qname": "zst:frame",
+      "status": "implemented",
+      "canonical_class": "Zst.Frame",
+      "current_path": "src/python/zst/spec/frame/frame.py",
+      "target_path": "src/python/zst/spec/zst/frame.py",
+      "source_layer": "Spec",
+      "current_state": "WRONG_PATH_IN_SPEC",
+      "action_required": "MOVE_FILE",
+      "migration_risk": "HIGH",
+      "estimated_effort": "medium",
+      "blocks_gate": false,
+      "test_changes_required": [],
+      "notes": [
+        "In spec/ but wrong sub-path. Got src/python/zst/spec/frame/frame.py, expected src/python/zst/spec/zst/frame.py"
+      ]
+    },
+    {
+      "qname": "zst:block",
+      "status": "implemented",
+      "canonical_class": "Zst.Block",
+      "current_path": "src/python/zst/spec/frame/block.py",
+      "target_path": "src/python/zst/spec/zst/block.py",
+      "source_layer": "Spec",
+      "current_state": "WRONG_PATH_IN_SPEC",
+      "action_required": "MOVE_FILE",
+      "migration_risk": "HIGH",
+      "estimated_effort": "medium",
+      "blocks_gate": false,
+      "test_changes_required": [],
+      "notes": [
+        "In spec/ but wrong sub-path. Got src/python/zst/spec/frame/block.py, expected src/python/zst/spec/zst/block.py"
+      ]
+    },
+    {
+      "qname": "zst:magic-number",
+      "status": "implemented",
+      "canonical_class": "Zst.MagicNumber",
+      "current_path": "src/python/zst/spec/frame/magic_number.py",
+      "target_path": "src/python/zst/spec/zst/magic_number.py",
+      "source_layer": "Spec",
+      "current_state": "WRONG_PATH_IN_SPEC",
+      "action_required": "MOVE_FILE",
+      "migration_risk": "HIGH",
+      "estimated_effort": "medium",
+      "blocks_gate": false,
+      "test_changes_required": [],
+      "notes": [
+        "In spec/ but wrong sub-path. Got src/python/zst/spec/frame/magic_number.py, expected src/python/zst/spec/zst/magic_number.py"
+      ]
+    }
+  ]
+}

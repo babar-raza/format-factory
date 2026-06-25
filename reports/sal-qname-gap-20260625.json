@@ -1,16 +1,16 @@
 {
   "audit_type": "sal_to_qname_cross_reference",
-  "generated_at": "2026-06-25T15:53:17.229273+00:00",
+  "generated_at": "2026-06-25T16:58:16.312880+00:00",
   "sal_facts_path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\spec-cache\\sal-facts-latest.json",
-  "sal_total_facts": 14309,
+  "sal_total_facts": 14315,
   "summary": {
     "total_formats_audited": 20,
     "total_registry_entries": 79,
     "entries_with_spec_fact_ref": 79,
-    "entries_resolved_in_sal": 38,
-    "entries_missing_in_sal": 41,
-    "high_severity_gaps": 41,
-    "overall_coverage_pct": 48.1
+    "entries_resolved_in_sal": 46,
+    "entries_missing_in_sal": 33,
+    "high_severity_gaps": 33,
+    "overall_coverage_pct": 58.2
   },
   "per_format": [
     {
@@ -48,32 +48,10 @@
       "format": "csv",
       "total_entries": 3,
       "entries_with_spec_fact_ref": 3,
-      "entries_resolved": 0,
-      "entries_missing_in_sal": 3,
-      "coverage_pct": 0.0,
-      "gaps": [
-        {
-          "qname": "csv:record",
-          "spec_fact_ref": "FACT-CSV-001",
-          "status": "implemented",
-          "issue": "spec_fact_ref 'FACT-CSV-001' not found in sal-facts-latest.json",
-          "severity": "HIGH"
-        },
-        {
-          "qname": "csv:field",
-          "spec_fact_ref": "FACT-CSV-001",
-          "status": "implemented",
-          "issue": "spec_fact_ref 'FACT-CSV-001' not found in sal-facts-latest.json",
-          "severity": "HIGH"
-        },
-        {
-          "qname": "csv:header",
-          "spec_fact_ref": "FACT-CSV-001",
-          "status": "implemented",
-          "issue": "spec_fact_ref 'FACT-CSV-001' not found in sal-facts-latest.json",
-          "severity": "HIGH"
-        }
-      ]
+      "entries_resolved": 3,
+      "entries_missing_in_sal": 0,
+      "coverage_pct": 100.0,
+      "gaps": []
     },
     {
       "format": "dif",
@@ -243,25 +221,10 @@
       "format": "ndjson",
       "total_entries": 2,
       "entries_with_spec_fact_ref": 2,
-      "entries_resolved": 0,
-      "entries_missing_in_sal": 2,
-      "coverage_pct": 0.0,
-      "gaps": [
-        {
-          "qname": "ndjson:record",
-          "spec_fact_ref": "FACT-NDJSON-001",
-          "status": "implemented",
-          "issue": "spec_fact_ref 'FACT-NDJSON-001' not found in sal-facts-latest.json",
-          "severity": "HIGH"
-        },
-        {
-          "qname": "ndjson:field",
-          "spec_fact_ref": "FACT-NDJSON-002",
-          "status": "implemented",
-          "issue": "spec_fact_ref 'FACT-NDJSON-002' not found in sal-facts-latest.json",
-          "severity": "HIGH"
-        }
-      ]
+      "entries_resolved": 2,
+      "entries_missing_in_sal": 0,
+      "coverage_pct": 100.0,
+      "gaps": []
     },
     {
       "format": "ods",
@@ -420,32 +383,10 @@
       "format": "tsv",
       "total_entries": 3,
       "entries_with_spec_fact_ref": 3,
-      "entries_resolved": 0,
-      "entries_missing_in_sal": 3,
-      "coverage_pct": 0.0,
-      "gaps": [
-        {
-          "qname": "tsv:row",
-          "spec_fact_ref": "FACT-TSV-001",
-          "status": "implemented",
-          "issue": "spec_fact_ref 'FACT-TSV-001' not found in sal-facts-latest.json",
-          "severity": "HIGH"
-        },
-        {
-          "qname": "tsv:field",
-          "spec_fact_ref": "FACT-TSV-001",
-          "status": "implemented",
-          "issue": "spec_fact_ref 'FACT-TSV-001' not found in sal-facts-latest.json",
-          "severity": "HIGH"
-        },
-        {
-          "qname": "tsv:record",
-          "spec_fact_ref": "FACT-TSV-001",
-          "status": "implemented",
-          "issue": "spec_fact_ref 'FACT-TSV-001' not found in sal-facts-latest.json",
-          "severity": "HIGH"
-        }
-      ]
+      "entries_resolved": 3,
+      "entries_missing_in_sal": 0,
+      "coverage_pct": 100.0,
+      "gaps": []
     },
     {
       "format": "xcf",

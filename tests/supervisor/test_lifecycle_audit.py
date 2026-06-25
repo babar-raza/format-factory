@@ -276,3 +276,39 @@ class TestLifecycleAuditCLI:
             "--json",
         ])
         assert exit_code == 1
+
+
+class TestVacuousCallGuard:
+    """TC-RJO-004: Vacuous-call guard — no plan_path and no mission_id."""
+
+    def test_vacuous_call_returns_audit_pass_vacuous(self, tmp_path):
+        """Without plan_path or mission_id, verdict must be AUDIT_PASS_VACUOUS, not AUDIT_PASS."""
+        from tools.supervisor.lifecycle_audit import run_lifecycle_audit
+
+        result = run_lifecycle_audit(repo_root=tmp_path)
+        assert result["verdict"] == "AUDIT_PASS_VACUOUS", (
+            f"Expected AUDIT_PASS_VACUOUS but got {result['verdict']!r}"
+        )
+        assert result["mission_complete"] is False, (
+            "mission_complete must be False for vacuous call"
+        )
+        finding_types = [f["type"] for f in result.get("findings", [])]
+        assert "VACUOUS_CALL" in finding_types, (
+            f"Expected VACUOUS_CALL finding, got: {finding_types}"
+        )
+
+    def test_vacuous_call_writes_output_file(self, tmp_path):
+        """Vacuous-call guard must still write lifecycle-audit-results.json."""
+        import json
+        from tools.supervisor.lifecycle_audit import run_lifecycle_audit
+
+        # Create expected output directory
+        out_dir = tmp_path / ".local" / "supervisor"
+        out_dir.mkdir(parents=True)
+
+        run_lifecycle_audit(repo_root=tmp_path)
+
+        out_path = tmp_path / ".local" / "supervisor" / "lifecycle-audit-results.json"
+        assert out_path.exists(), "lifecycle-audit-results.json must be written even for vacuous calls"
+        data = json.loads(out_path.read_text(encoding="utf-8"))
+        assert data["verdict"] == "AUDIT_PASS_VACUOUS"

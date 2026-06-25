@@ -1409,8 +1409,15 @@ def _load_gap_ledger_goals(
         exclude_gap_ids: Set of gap_ids to skip (from failure exclusion).
 
     Returns:
-        (goals, spec_grounded_available) — goals and whether spec-grounded goals
-        exist before filtering (used to determine expansion_goal_fallback signal).
+        tuple[list[dict], bool]: (goals_list, spec_grounded_available)
+          - goals_list: list of goal dicts (may be empty if 0 open FOSS gaps)
+          - spec_grounded_available: True if spec-grounded goals exist before filtering
+
+    CRITICAL — TC-V4-009 (2026-06-25): This function returns a TUPLE, not a list.
+    ALWAYS unpack: goals, spec_grounded = _load_gap_ledger_goals()
+    NEVER call len() on the return value — len((list, bool)) == 2, not the goal count.
+    FOSS depletion check: if len(goals) == 0 → _expansion_goal_fallback = True.
+    See: plans/velvet-hatching-lark.md TC-V4-009.
     """
     if not _GAP_LEDGER_PATH.exists():
         return [], False
@@ -1424,7 +1431,12 @@ def _load_gap_ledger_goals(
     spec_grounded_available = False
     goals = []
     for gap in gaps:
-        # Only generate tasks for FOSS gaps with missing test coverage
+        # Only generate tasks for OPEN FOSS gaps with missing test coverage.
+        # TC-FINDING-021 (2026-06-25): status filter was missing — caused all 1,130 CLOSED
+        # foss_reduced/test_coverage gaps to be returned as "goals", making
+        # _expansion_goal_fallback evaluate to False (wrong). Fixed by adding status check.
+        if gap.get("status") != "open":
+            continue
         if gap.get("product_type") != "foss_reduced":
             continue
         if gap.get("gap_type") not in ("missing_test_coverage", "no_test_coverage"):
@@ -1474,6 +1486,23 @@ def _load_gap_ledger_goals(
             "gap_source": "gap_ledger",
             "spec_facts": spec_facts,
         })
+
+    # TC-C2-005-MONITORING-001 (2026-06-25): Depletion warning
+    # Emit WARNING when open FOSS goals drop below threshold so depletion is caught early.
+    # Depletion already occurred (0 goals as of 2026-06-25T12:31:44Z) without prior warning.
+    # This prevents silent recurrence after TC-GAP-REGEN-001 restores new gaps.
+    _DEPLETION_THRESHOLD = 10
+    if len(goals) < _DEPLETION_THRESHOLD:
+        import sys as _sys_monitor
+        _msg = (
+            f"WARNING [TC-C2-005-MONITORING]: FOSS DEPLETION — "
+            f"only {len(goals)} open FOSS goals remain "
+            f"(threshold={_DEPLETION_THRESHOLD}). "
+            f"_expansion_goal_fallback will activate at 0. "
+            f"Run TC-GAP-REGEN-001 to regenerate open FOSS gaps before depletion."
+        )
+        print(_msg, file=_sys_monitor.stderr)
+        del _sys_monitor
 
     return goals, spec_grounded_available
 
@@ -1625,17 +1654,25 @@ def generate_task_candidates(
     except Exception:
         pass  # Compiled gap enrichment is best-effort
 
-    # Fallback: add hardcoded goals only for functions NOT in gap-ledger.
-    # TC-C2-005-URGENT: when gap-ledger has FOSS goals, hardcoded _EXPANSION_GOALS are
-    # suppressed entirely — gap-ledger is the authoritative source. When FOSS goals are
-    # depleted (_expansion_goal_fallback=True), hardcoded goals provide continuity, but
-    # V42 (validate_deepening_suspension) blocks suspended-rotation functions at grading.
-    # This prevents hardcoded goals from overriding live gap-ledger entries.
+    # TC-GUARD-001-EXPANSION-001 Path A (stop-gap, 2026-06-25):
+    # EXPANSION_GOALS are DISABLED even when _expansion_goal_fallback=True.
+    # Root cause: ALL 114 hardcoded _EXPANSION_GOALS lack gap_ledger_ref, so TC-GUARD-001
+    # blocks every one at Step 2d3 post-grade, creating an infinite rework loop.
+    # V42 also does NOT block them (they don't match _mod_N_times_M pattern).
+    # Fix: emit a WARNING; sprint runs honestly with 0 FOSS tasks until TC-GAP-REGEN-001
+    # generates new open gaps in the ledger and sets _expansion_goal_fallback=False.
+    # See: plans/velvet-hatching-lark.md FINDING-001, TC-GUARD-001-EXPANSION-001.
     if _expansion_goal_fallback:
-        for hardcoded_goal in _EXPANSION_GOALS:
-            if hardcoded_goal["function_name"] not in existing_fns:
-                all_goals.append(hardcoded_goal)
-                existing_fns.add(hardcoded_goal["function_name"])
+        import sys as _sys_guard
+        print(
+            "WARNING [TC-GUARD-001-EXPANSION-001]: FOSS fallback active but "
+            "EXPANSION_GOALS disabled — all 114 hardcoded goals lack gap_ledger_ref "
+            "and would be blocked by TC-GUARD-001. Sprint continues with 0 FOSS tasks. "
+            "Resolution: run TC-GAP-REGEN-001 to regenerate open FOSS gaps.",
+            file=_sys_guard.stderr,
+        )
+        del _sys_guard
+        # Do NOT add any hardcoded goals — they will be blocked by TC-GUARD-001.
 
     candidates = []
     advisory_skipped = 0

@@ -1,0 +1,977 @@
+schema_version: "1.0"
+sprint_id: ff-archaeology-20260625
+date: "2026-06-25"
+rating_legend:
+  green: Professional and qname-aligned — production ready
+  yellow: Working but needs targeted cleanup
+  orange: Useful prototype — not yet presentable as professional library
+  red: Malformed or misaligned — must be repaired before any release
+  gray: Insufficient evidence to rate
+
+products:
+
+  # =====================================================================
+  # PYTHON PRODUCTS
+  # =====================================================================
+
+  - product: ABW
+    format: AbiWord XML
+    language: Python
+    source_root: src/python/abw/
+    package: aspose-format-factory-abw
+    generation_wave: Gen4
+    status: active
+    parser_support: true
+    domain_model_support: true
+    domain_model_class: AbwDocument
+    edit_mutation_support: true
+    same_format_save: true
+    export_conversion_support: true
+    validation_support: true
+    error_handling_quality: good
+    spec_qname_compliance: full
+    spec_qname_value: "abiword:document"
+    namespace_compliance: full
+    folder_hierarchy_compliance: full
+    class_naming_compliance: full
+    test_coverage: 148_files
+    fixture_coverage: adequate
+    documentation_quality: adequate
+    source_quality_rating: green
+    cross_language_parity: python_only
+    recommendation: keep
+    required_machinery_fix: none
+    required_skill_fix: none
+    migration_risk: low
+    evidence_paths:
+      - src/python/abw/models.py
+      - src/python/abw/spec/document/document.py
+      - src/python/abw/Compat/abw_document.py
+      - tests/python/abw/test_abw_document_model.py
+
+  - product: CSV
+    format: Comma-Separated Values
+    language: Python
+    source_root: src/python/csv/
+    package: aspose-format-factory-csv
+    generation_wave: Gen4
+    status: active
+    parser_support: true
+    domain_model_support: true
+    domain_model_class: CsvDocument
+    edit_mutation_support: true
+    same_format_save: true
+    export_conversion_support: false
+    validation_support: true
+    error_handling_quality: good
+    spec_qname_compliance: full
+    spec_qname_value: "csv:record"
+    namespace_compliance: full
+    folder_hierarchy_compliance: full
+    class_naming_compliance: full
+    test_coverage: 53_files
+    fixture_coverage: adequate
+    documentation_quality: adequate
+    source_quality_rating: green
+    cross_language_parity: net_exists_orange
+    recommendation: keep
+    required_machinery_fix: none
+    required_skill_fix: none
+    migration_risk: low
+    evidence_paths:
+      - src/python/csv/models.py
+      - src/python/csv/csv_parser.py
+      - tests/python/csv_format/test_csv_document_model.py
+
+  - product: DIF
+    format: Data Interchange Format
+    language: Python
+    source_root: src/python/dif/
+    package: aspose-format-factory-dif
+    generation_wave: Gen4_partial
+    status: active
+    parser_support: true
+    domain_model_support: partial
+    domain_model_class: DifDocument (authority-only)
+    edit_mutation_support: true
+    same_format_save: true
+    export_conversion_support: false
+    validation_support: true
+    error_handling_quality: adequate
+    spec_qname_compliance: partial
+    spec_qname_gaps:
+      - "dif:data on production DifData class in dif_parser.py"
+      - "dif:cell on production DifCell class in dif_parser.py"
+    namespace_compliance: full
+    folder_hierarchy_compliance: full
+    class_naming_compliance: full
+    test_coverage: 86_files
+    fixture_coverage: adequate
+    documentation_quality: basic
+    source_quality_rating: yellow
+    cross_language_parity: python_only
+    recommendation: keep_with_qname_fix
+    required_machinery_fix: QNAME-BACKFILL-001
+    required_skill_fix: none
+    migration_risk: low
+    evidence_paths:
+      - src/python/dif/dif_parser.py
+      - tests/python/dif/test_dif_spec_qname.py
+
+  - product: FODG
+    format: Flat OpenDocument Graphics
+    language: Python
+    source_root: src/python/fodg/
+    package: aspose-format-factory-fodg
+    generation_wave: Gen4_partial
+    status: active
+    parser_support: true
+    domain_model_support: partial
+    domain_model_class: "dict-based model"
+    edit_mutation_support: true
+    same_format_save: true
+    export_conversion_support: true
+    validation_support: true
+    error_handling_quality: adequate
+    spec_qname_compliance: partial
+    spec_qname_gaps:
+      - "draw:frame on production class in fodg_codec.py"
+    namespace_compliance: full
+    folder_hierarchy_compliance: full
+    class_naming_compliance: full
+    test_coverage: 95_files
+    fixture_coverage: adequate
+    documentation_quality: basic
+    source_quality_rating: yellow
+    cross_language_parity: python_only
+    recommendation: keep_with_qname_fix
+    required_machinery_fix: QNAME-BACKFILL-002
+    required_skill_fix: none
+    migration_risk: low
+    evidence_paths:
+      - src/python/fodg/fodg_codec.py
+      - src/python/fodg/fodg_analytics.py
+
+  - product: FODP
+    format: Flat OpenDocument Presentation
+    language: Python
+    source_root: src/python/fodp/
+    package: aspose-format-factory-fodp
+    generation_wave: Gen4
+    status: active
+    parser_support: true
+    domain_model_support: partial
+    domain_model_class: "dict-based model (read-only)"
+    edit_mutation_support: false
+    same_format_save: false
+    export_conversion_support: false
+    validation_support: true
+    error_handling_quality: adequate
+    spec_qname_compliance: full
+    spec_qname_value: "presentation:page"
+    namespace_compliance: full
+    folder_hierarchy_compliance: full
+    class_naming_compliance: full
+    test_coverage: 24_files
+    fixture_coverage: basic
+    documentation_quality: basic
+    source_quality_rating: orange
+    cross_language_parity: python_only
+    recommendation: keep_with_writer_planned
+    required_machinery_fix: none
+    required_skill_fix: add-write-support
+    migration_risk: low
+    notes: "Read-only by design (presentation format). No write_fodp planned near-term."
+    evidence_paths:
+      - src/python/fodp/fodp_codec.py
+
+  - product: FODS
+    format: Flat OpenDocument Spreadsheet
+    language: Python
+    source_root: src/python/fods/
+    package: aspose-format-factory-fods
+    generation_wave: Gen4
+    status: active_commercial
+    parser_support: true
+    domain_model_support: true
+    domain_model_class: FodsDocument
+    edit_mutation_support: true
+    same_format_save: true
+    export_conversion_support: true
+    validation_support: true
+    error_handling_quality: excellent
+    spec_qname_compliance: full
+    spec_qname_value: "office:document, table:table, table:table-cell"
+    namespace_compliance: full
+    folder_hierarchy_compliance: full
+    class_naming_compliance: full
+    test_coverage: 93_files
+    fixture_coverage: comprehensive
+    documentation_quality: good
+    source_quality_rating: green
+    cross_language_parity: net_green
+    recommendation: keep
+    required_machinery_fix: none
+    required_skill_fix: none
+    migration_risk: none
+    gate_11_status: sub_gate_approved_2026_06_05
+    evidence_paths:
+      - src/python/fods/models.py
+      - src/python/fods/parser.py
+      - src/python/fods/writer.py
+      - src/python/fods/Compat/
+
+  - product: FODT
+    format: Flat OpenDocument Text
+    language: Python
+    source_root: src/python/fodt/
+    package: aspose-format-factory-fodt
+    generation_wave: Gen4
+    status: active_commercial
+    parser_support: true
+    domain_model_support: true
+    domain_model_class: FodtDocument
+    edit_mutation_support: true
+    same_format_save: true
+    export_conversion_support: true
+    validation_support: true
+    error_handling_quality: excellent
+    spec_qname_compliance: full
+    spec_qname_value: "office:document, text:paragraph"
+    namespace_compliance: full
+    folder_hierarchy_compliance: full
+    class_naming_compliance: full
+    test_coverage: 131_files
+    fixture_coverage: comprehensive
+    documentation_quality: good
+    source_quality_rating: green
+    cross_language_parity: net_green
+    recommendation: keep
+    required_machinery_fix: none
+    required_skill_fix: none
+    migration_risk: none
+    gate_11_status: sub_gate_approved_2026_06_05
+    evidence_paths:
+      - src/python/fodt/neutral_model.py
+      - src/python/fodt/writer.py
+      - src/python/fodt/Compat/
+      - src/python/fodt/exporters.py
+
+  - product: GNUMERIC
+    format: GNOME Spreadsheet
+    language: Python
+    source_root: src/python/gnumeric/
+    package: aspose-format-factory-gnumeric
+    generation_wave: Gen4
+    status: active
+    parser_support: true
+    domain_model_support: true
+    domain_model_class: GnumericDocument
+    edit_mutation_support: true
+    same_format_save: true
+    export_conversion_support: true
+    validation_support: true
+    error_handling_quality: adequate
+    spec_qname_compliance: full
+    spec_qname_value: "gnumeric:workbook"
+    namespace_compliance: full
+    folder_hierarchy_compliance: full
+    class_naming_compliance: full
+    test_coverage: 110_files
+    fixture_coverage: adequate
+    documentation_quality: adequate
+    source_quality_rating: yellow
+    cross_language_parity: python_only
+    recommendation: keep
+    required_machinery_fix: none
+    required_skill_fix: none
+    migration_risk: low
+    notes: "gnumeric_codec.py still oversized — analytics in gnumeric_workbook_stats.py"
+    evidence_paths:
+      - src/python/gnumeric/models.py
+      - src/python/gnumeric/gnumeric_codec.py
+
+  - product: NDJSON
+    format: Newline-Delimited JSON
+    language: Python
+    source_root: src/python/ndjson/
+    package: aspose-format-factory-ndjson
+    generation_wave: Gen4
+    status: active
+    parser_support: true
+    domain_model_support: true
+    domain_model_class: NdjsonDocument
+    edit_mutation_support: true
+    same_format_save: true
+    export_conversion_support: true
+    validation_support: true
+    error_handling_quality: good
+    spec_qname_compliance: full
+    spec_qname_value: "ndjson:record"
+    namespace_compliance: full
+    folder_hierarchy_compliance: full
+    class_naming_compliance: full
+    test_coverage: 142_files
+    fixture_coverage: adequate
+    documentation_quality: adequate
+    source_quality_rating: green
+    cross_language_parity: net_yellow
+    recommendation: keep
+    required_machinery_fix: none
+    required_skill_fix: none
+    migration_risk: low
+    evidence_paths:
+      - src/python/ndjson/models.py
+      - src/python/ndjson/ndjson_analytics.py
+      - src/python/ndjson/spec/record/field.py
+
+  - product: ODS
+    format: OpenDocument Spreadsheet
+    language: Python
+    source_root: src/python/ods/
+    package: aspose-format-factory-ods
+    generation_wave: Gen3
+    status: active
+    parser_support: true
+    domain_model_support: false
+    domain_model_class: null
+    edit_mutation_support: true
+    same_format_save: true
+    export_conversion_support: true
+    validation_support: true
+    error_handling_quality: adequate
+    spec_qname_compliance: partial
+    spec_qname_value: "table:table (on OdsTable), table:table-row (on OdsTableRow)"
+    namespace_compliance: full
+    folder_hierarchy_compliance: full
+    class_naming_compliance: full
+    test_coverage: 101_files
+    fixture_coverage: adequate
+    documentation_quality: basic
+    source_quality_rating: yellow
+    cross_language_parity: python_only
+    recommendation: keep_and_upgrade_to_gen4
+    required_machinery_fix: none
+    required_skill_fix: SRC-STD-001
+    migration_risk: low
+    evidence_paths:
+      - src/python/ods/ods_parser.py
+      - src/python/ods/ods_writer.py
+
+  - product: ODT
+    format: OpenDocument Text
+    language: Python
+    source_root: src/python/odt/
+    package: aspose-format-factory-odt
+    generation_wave: Gen3
+    status: active
+    parser_support: true
+    domain_model_support: false
+    domain_model_class: null
+    edit_mutation_support: false
+    same_format_save: true
+    export_conversion_support: false
+    validation_support: true
+    error_handling_quality: basic
+    spec_qname_compliance: partial
+    namespace_compliance: full
+    folder_hierarchy_compliance: full
+    class_naming_compliance: full
+    test_coverage: 26_files
+    fixture_coverage: basic
+    documentation_quality: basic
+    source_quality_rating: yellow
+    cross_language_parity: python_only
+    recommendation: keep_and_upgrade_to_gen4
+    required_machinery_fix: none
+    required_skill_fix: SRC-STD-002
+    migration_risk: low
+    evidence_paths:
+      - src/python/odt/odt_parser.py
+      - src/python/odt/odt_writer.py
+
+  - product: PBM
+    format: Portable Bitmap
+    language: Python
+    source_root: src/python/pbm/
+    package: aspose-format-factory-pbm
+    generation_wave: Gen3
+    status: active
+    parser_support: true
+    domain_model_support: false
+    domain_model_class: null
+    edit_mutation_support: true
+    same_format_save: true
+    export_conversion_support: true
+    validation_support: true
+    error_handling_quality: adequate
+    spec_qname_compliance: partial
+    spec_qname_value: "pbm:bitmap"
+    namespace_compliance: full
+    folder_hierarchy_compliance: full
+    class_naming_compliance: full
+    test_coverage: 59_files
+    fixture_coverage: adequate
+    documentation_quality: adequate
+    source_quality_rating: yellow
+    cross_language_parity: net_orange
+    recommendation: keep_and_upgrade_to_gen4
+    required_machinery_fix: none
+    required_skill_fix: SRC-STD-003
+    migration_risk: low
+    evidence_paths:
+      - src/python/pbm/pbm_parser.py
+      - docs/api/pbm.md
+
+  - product: PGM
+    format: Portable Graymap
+    language: Python
+    source_root: src/python/pgm/
+    package: aspose-format-factory-pgm
+    generation_wave: Gen3
+    status: active
+    parser_support: true
+    domain_model_support: false
+    domain_model_class: null
+    edit_mutation_support: true
+    same_format_save: true
+    export_conversion_support: true
+    validation_support: true
+    error_handling_quality: adequate
+    spec_qname_compliance: partial
+    spec_qname_value: "pgm:graymap"
+    namespace_compliance: full
+    folder_hierarchy_compliance: full
+    class_naming_compliance: full
+    test_coverage: 53_files
+    fixture_coverage: adequate
+    documentation_quality: adequate
+    source_quality_rating: yellow
+    cross_language_parity: net_orange
+    recommendation: keep_and_upgrade_to_gen4
+    required_machinery_fix: none
+    required_skill_fix: SRC-STD-004
+    migration_risk: low
+    evidence_paths:
+      - src/python/pgm/pgm_parser.py
+      - docs/api/pgm.md
+
+  - product: PPM
+    format: Portable Pixmap
+    language: Python
+    source_root: src/python/ppm/
+    package: aspose-format-factory-ppm
+    generation_wave: Gen3
+    status: active
+    parser_support: true
+    domain_model_support: false
+    domain_model_class: null
+    edit_mutation_support: true
+    same_format_save: true
+    export_conversion_support: true
+    validation_support: true
+    error_handling_quality: adequate
+    spec_qname_compliance: partial
+    spec_qname_value: "ppm:pixmap"
+    namespace_compliance: full
+    folder_hierarchy_compliance: full
+    class_naming_compliance: full
+    test_coverage: 72_files
+    fixture_coverage: adequate
+    documentation_quality: adequate
+    source_quality_rating: yellow
+    cross_language_parity: net_orange
+    recommendation: keep_and_upgrade_to_gen4
+    required_machinery_fix: none
+    required_skill_fix: SRC-STD-005
+    migration_risk: low
+    evidence_paths:
+      - src/python/ppm/ppm_parser.py
+      - docs/api/ppm.md
+
+  - product: QOI
+    format: Quite OK Image
+    language: Python
+    source_root: src/python/qoi/
+    package: aspose-format-factory-qoi
+    generation_wave: Gen3
+    status: active
+    parser_support: true
+    domain_model_support: false
+    domain_model_class: null
+    edit_mutation_support: true
+    same_format_save: true
+    export_conversion_support: false
+    validation_support: true
+    error_handling_quality: basic
+    spec_qname_compliance: partial
+    spec_qname_value: "qoi:chunk"
+    namespace_compliance: full
+    folder_hierarchy_compliance: full
+    class_naming_compliance: full
+    test_coverage: 35_files
+    fixture_coverage: basic
+    documentation_quality: basic
+    source_quality_rating: yellow
+    cross_language_parity: python_only
+    recommendation: keep_and_upgrade_to_gen4
+    required_machinery_fix: none
+    required_skill_fix: SRC-STD-006
+    migration_risk: low
+    evidence_paths:
+      - src/python/qoi/qoi_codec.py
+
+  - product: SYLK
+    format: Symbolic Link Format
+    language: Python
+    source_root: src/python/sylk/
+    package: aspose-format-factory-sylk
+    generation_wave: Gen3
+    status: active
+    parser_support: true
+    domain_model_support: false
+    domain_model_class: null
+    edit_mutation_support: true
+    same_format_save: true
+    export_conversion_support: true
+    validation_support: true
+    error_handling_quality: adequate
+    spec_qname_compliance: partial
+    spec_qname_value: "sylk:format"
+    namespace_compliance: full
+    folder_hierarchy_compliance: full
+    class_naming_compliance: full
+    test_coverage: 90_files
+    fixture_coverage: adequate
+    documentation_quality: basic
+    source_quality_rating: yellow
+    cross_language_parity: python_only
+    recommendation: keep_and_upgrade_to_gen4
+    required_machinery_fix: none
+    required_skill_fix: SRC-STD-007
+    migration_risk: low
+    evidence_paths:
+      - src/python/sylk/sylk_parser.py
+
+  - product: TOML
+    format: TOML Configuration
+    language: Python
+    source_root: src/python/toml/
+    package: aspose-format-factory-toml
+    generation_wave: Gen4
+    status: active
+    parser_support: true
+    domain_model_support: true
+    domain_model_class: TomlDocument
+    edit_mutation_support: true
+    same_format_save: true
+    export_conversion_support: false
+    validation_support: true
+    error_handling_quality: good
+    spec_qname_compliance: full
+    spec_qname_value: "toml:table"
+    namespace_compliance: full
+    folder_hierarchy_compliance: full
+    class_naming_compliance: full
+    test_coverage: 50_files
+    fixture_coverage: adequate
+    documentation_quality: adequate
+    source_quality_rating: green
+    cross_language_parity: python_only
+    recommendation: keep
+    required_machinery_fix: none
+    required_skill_fix: none
+    migration_risk: low
+    evidence_paths:
+      - src/python/toml/models.py
+      - src/python/toml/toml_codec.py
+
+  - product: TSV
+    format: Tab-Separated Values
+    language: Python
+    source_root: src/python/tsv/
+    package: aspose-format-factory-tsv
+    generation_wave: Gen4
+    status: active
+    parser_support: true
+    domain_model_support: true
+    domain_model_class: TsvDocument
+    edit_mutation_support: true
+    same_format_save: true
+    export_conversion_support: false
+    validation_support: true
+    error_handling_quality: good
+    spec_qname_compliance: full
+    spec_qname_value: "tsv:row"
+    namespace_compliance: full
+    folder_hierarchy_compliance: full
+    class_naming_compliance: full
+    test_coverage: 104_files
+    fixture_coverage: adequate
+    documentation_quality: adequate
+    source_quality_rating: green
+    cross_language_parity: net_yellow
+    recommendation: keep
+    required_machinery_fix: none
+    required_skill_fix: none
+    migration_risk: low
+    evidence_paths:
+      - src/python/tsv/models.py
+      - src/python/tsv/tsv_parser.py
+
+  - product: XCF
+    format: GIMP Exchange Format
+    language: Python
+    source_root: src/python/xcf/
+    package: aspose-format-factory-xcf
+    generation_wave: Gen4
+    status: active
+    parser_support: true
+    domain_model_support: true
+    domain_model_class: XcfImage
+    edit_mutation_support: false
+    same_format_save: false
+    export_conversion_support: true
+    validation_support: true
+    error_handling_quality: adequate
+    spec_qname_compliance: full
+    spec_qname_value: "xcf:image"
+    namespace_compliance: full
+    folder_hierarchy_compliance: full
+    class_naming_compliance: full
+    test_coverage: 62_files
+    fixture_coverage: adequate
+    documentation_quality: adequate
+    source_quality_rating: green
+    cross_language_parity: python_only
+    recommendation: keep
+    required_machinery_fix: none
+    required_skill_fix: none
+    migration_risk: low
+    notes: "XcfImage.layer_names now returns real layer names (fixed 2026-06-25)"
+    evidence_paths:
+      - src/python/xcf/xcf_parser.py
+      - src/python/xcf/xcf_image_metrics.py
+      - src/python/xcf/xcf_analytics.py
+
+  - product: ZST
+    format: Zstandard Compression
+    language: Python
+    source_root: src/python/zst/
+    package: aspose-format-factory-zst
+    generation_wave: Gen4
+    status: active
+    parser_support: true
+    domain_model_support: true
+    domain_model_class: ZstDocument
+    edit_mutation_support: false
+    same_format_save: true
+    export_conversion_support: false
+    validation_support: true
+    error_handling_quality: good
+    spec_qname_compliance: full
+    spec_qname_value: "zst:frame"
+    namespace_compliance: full
+    folder_hierarchy_compliance: full
+    class_naming_compliance: full
+    test_coverage: 83_files
+    fixture_coverage: adequate
+    documentation_quality: adequate
+    source_quality_rating: green
+    cross_language_parity: net_yellow
+    recommendation: keep
+    required_machinery_fix: none
+    required_skill_fix: none
+    migration_risk: low
+    evidence_paths:
+      - src/python/zst/models.py
+      - src/python/zst/zst_analytics.py
+
+  # =====================================================================
+  # .NET PRODUCTS
+  # =====================================================================
+
+  - product: FODS_NET
+    format: Flat OpenDocument Spreadsheet
+    language: CSharp
+    source_root: src/net/fods/
+    package: FormatFactory.Fods
+    generation_wave: Gen4
+    status: active_tier0_commercial
+    parser_support: true
+    domain_model_support: true
+    domain_model_class: FodsDocument
+    edit_mutation_support: true
+    same_format_save: true
+    export_conversion_support: true
+    validation_support: true
+    error_handling_quality: excellent
+    spec_qname_compliance: full
+    namespace_compliance: full
+    folder_hierarchy_compliance: full
+    class_naming_compliance: full
+    test_coverage: 638_tests
+    fixture_coverage: comprehensive
+    documentation_quality: excellent
+    source_quality_rating: green
+    cross_language_parity: python_green
+    recommendation: keep
+    gate_11_status: g11_g_approved_2026_06_05
+    migration_risk: none
+    evidence_paths:
+      - src/net/fods/FodsDocument.cs
+      - src/net/fods/FodsDocumentAccessor.cs
+      - tests/net/fods/
+
+  - product: FODT_NET
+    format: Flat OpenDocument Text
+    language: CSharp
+    source_root: src/net/fodt/
+    package: FormatFactory.Fodt
+    generation_wave: Gen4
+    status: active_tier0_commercial
+    parser_support: true
+    domain_model_support: true
+    domain_model_class: FodtDocument
+    edit_mutation_support: true
+    same_format_save: true
+    export_conversion_support: true
+    validation_support: true
+    error_handling_quality: excellent
+    spec_qname_compliance: full
+    namespace_compliance: full
+    folder_hierarchy_compliance: full
+    class_naming_compliance: full
+    test_coverage: 496_tests
+    fixture_coverage: comprehensive
+    documentation_quality: excellent
+    source_quality_rating: green
+    cross_language_parity: python_green
+    recommendation: keep
+    gate_11_status: g11_g_approved_2026_06_05
+    migration_risk: none
+    evidence_paths:
+      - src/net/fodt/FodtDocument.cs
+      - src/net/fodt/FodtDocumentAccessor.cs
+      - tests/net/fodt/
+
+  - product: CSV_NET
+    format: Comma-Separated Values
+    language: CSharp
+    source_root: src/net/csv/
+    package: FormatFactory.Csv
+    generation_wave: Gen3
+    status: mwp_not_release_ready
+    parser_support: true
+    domain_model_support: true
+    domain_model_class: CsvDocument
+    edit_mutation_support: true
+    same_format_save: true
+    export_conversion_support: false
+    validation_support: false
+    error_handling_quality: basic
+    spec_qname_compliance: none
+    namespace_compliance: none
+    folder_hierarchy_compliance: basic
+    class_naming_compliance: partial
+    test_coverage: 51_tests
+    fixture_coverage: basic
+    documentation_quality: basic
+    source_quality_rating: orange
+    cross_language_parity: python_green
+    recommendation: upgrade_spec_qname
+    required_machinery_fix: PARITY-001
+    migration_risk: low
+    evidence_paths:
+      - src/net/csv/CsvDocument.cs
+
+  - product: NDJSON_NET
+    format: Newline-Delimited JSON
+    language: CSharp
+    source_root: src/net/ndjson/
+    package: FormatFactory.Ndjson
+    generation_wave: Gen4
+    status: active
+    parser_support: true
+    domain_model_support: true
+    domain_model_class: NdjsonDocument
+    edit_mutation_support: true
+    same_format_save: true
+    export_conversion_support: true
+    validation_support: true
+    error_handling_quality: good
+    spec_qname_compliance: full
+    namespace_compliance: full
+    folder_hierarchy_compliance: full
+    class_naming_compliance: full
+    test_coverage: 55_tests
+    fixture_coverage: adequate
+    documentation_quality: adequate
+    source_quality_rating: yellow
+    cross_language_parity: python_green
+    recommendation: keep_expand_tests
+    migration_risk: low
+    evidence_paths:
+      - src/net/ndjson/NdjsonDocument.cs
+
+  - product: TSV_NET
+    format: Tab-Separated Values
+    language: CSharp
+    source_root: src/net/tsv/
+    package: FormatFactory.Tsv
+    generation_wave: Gen4
+    status: active
+    parser_support: true
+    domain_model_support: true
+    domain_model_class: TsvDocument
+    edit_mutation_support: true
+    same_format_save: true
+    export_conversion_support: true
+    validation_support: true
+    error_handling_quality: good
+    spec_qname_compliance: full
+    namespace_compliance: full
+    folder_hierarchy_compliance: full
+    class_naming_compliance: full
+    test_coverage: 63_tests
+    fixture_coverage: adequate
+    documentation_quality: adequate
+    source_quality_rating: yellow
+    cross_language_parity: python_green
+    recommendation: keep
+    migration_risk: low
+    evidence_paths:
+      - src/net/tsv/TsvDocument.cs
+
+  - product: ZST_NET
+    format: Zstandard Compression
+    language: CSharp
+    source_root: src/net/zst/
+    package: FormatFactory.Zst
+    generation_wave: Gen4
+    status: active
+    parser_support: true
+    domain_model_support: true
+    domain_model_class: ZstDocument
+    edit_mutation_support: false
+    same_format_save: true
+    export_conversion_support: false
+    validation_support: true
+    error_handling_quality: good
+    spec_qname_compliance: full
+    namespace_compliance: full
+    folder_hierarchy_compliance: full
+    class_naming_compliance: full
+    test_coverage: 48_tests
+    fixture_coverage: adequate
+    documentation_quality: basic
+    source_quality_rating: yellow
+    cross_language_parity: python_green
+    recommendation: keep
+    migration_risk: low
+    evidence_paths:
+      - src/net/zst/ZstDocument.cs
+
+  - product: NETPBM_NET
+    format: NetPBM (PBM/PGM/PPM unified)
+    language: CSharp
+    source_root: src/net/netpbm/
+    package: FormatFactory.Netpbm
+    generation_wave: Gen3
+    status: active_new
+    parser_support: true
+    domain_model_support: true
+    domain_model_class: NetpbmDocument
+    edit_mutation_support: false
+    same_format_save: true
+    export_conversion_support: true
+    validation_support: true
+    error_handling_quality: adequate
+    spec_qname_compliance: none
+    namespace_compliance: partial
+    folder_hierarchy_compliance: partial
+    class_naming_compliance: partial
+    test_coverage: 48_tests
+    fixture_coverage: basic
+    documentation_quality: basic
+    source_quality_rating: orange
+    cross_language_parity: python_yellow
+    recommendation: upgrade_spec_qname
+    required_machinery_fix: PARITY-001
+    migration_risk: low
+    evidence_paths:
+      - src/net/netpbm/NetpbmDocument.cs
+
+  - product: HTML_NET
+    format: HTML (exporter target)
+    language: CSharp
+    source_root: src/net/html/
+    package: FormatFactory.Html
+    generation_wave: Gen1
+    status: exporter_target_only
+    parser_support: false
+    domain_model_support: false
+    same_format_save: false
+    export_conversion_support: true
+    spec_qname_compliance: none
+    source_quality_rating: gray
+    cross_language_parity: no_python_equivalent
+    recommendation: keep_as_target
+    notes: "Exporter-only target library. Not a standalone product."
+
+  - product: MARKDOWN_NET
+    format: Markdown (exporter target)
+    language: CSharp
+    source_root: src/net/markdown/
+    package: FormatFactory.Markdown
+    generation_wave: Gen1
+    status: exporter_target_only
+    parser_support: false
+    domain_model_support: false
+    same_format_save: false
+    export_conversion_support: true
+    spec_qname_compliance: none
+    source_quality_rating: gray
+    cross_language_parity: no_python_equivalent
+    recommendation: keep_as_target
+    notes: "Exporter-only target library. Not a standalone product."
+
+  - product: TXT_NET
+    format: Plain Text (exporter target)
+    language: CSharp
+    source_root: src/net/txt/
+    package: FormatFactory.Txt
+    generation_wave: Gen1
+    status: exporter_target_only
+    parser_support: false
+    domain_model_support: false
+    same_format_save: false
+    export_conversion_support: true
+    spec_qname_compliance: none
+    source_quality_rating: gray
+    cross_language_parity: no_python_equivalent
+    recommendation: keep_as_target
+    notes: "Exporter-only target library. Not a standalone product."
+
+# =====================================================================
+# SUMMARY STATISTICS
+# =====================================================================
+summary:
+  python_products: 20
+  net_products: 10
+  python_green: 8
+  python_yellow: 11
+  python_orange: 1
+  python_red: 0
+  net_green: 2
+  net_yellow: 3
+  net_orange: 2
+  net_gray: 3
+  gen4_python: 13
+  gen3_python: 7
+  gen1_gen2_python: 0
+  gate11_approved: [FODS_NET, FODT_NET]
+  gate11_pending: [NETPBM_NET]
+  formats_needing_domain_model: [ODS, ODT, PBM, PGM, PPM, QOI, SYLK]
+  formats_needing_qname_fix: [DIF, FODG]
+  formats_needing_net_spec_qname: [CSV_NET, NETPBM_NET]

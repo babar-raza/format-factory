@@ -1,0 +1,89 @@
+{
+  "format_id": "xcf",
+  "date": "20260625",
+  "total_entries": 4,
+  "compliant_count": 0,
+  "compliant_pct": 0.0,
+  "blocks_gate_count": 0,
+  "state_counts": {
+    "MISSING_CLASS": 1,
+    "WRONG_PATH_IN_SPEC": 3
+  },
+  "action_counts": {
+    "MOVE_FILE": 4
+  },
+  "risk_counts": {
+    "HIGH": 4
+  },
+  "migration_ready": true,
+  "entries": [
+    {
+      "qname": "xcf:image",
+      "status": "implemented",
+      "canonical_class": "Xcf.Image",
+      "current_path": "src/python/xcf/image_document.py",
+      "target_path": "src/python/xcf/spec/xcf/image.py",
+      "source_layer": "Spec",
+      "current_state": "MISSING_CLASS",
+      "action_required": "MOVE_FILE",
+      "migration_risk": "HIGH",
+      "estimated_effort": "medium",
+      "blocks_gate": false,
+      "test_changes_required": [],
+      "notes": [
+        "Registry canonical_class 'Xcf.Image' (short: 'Image') not found in src/python/xcf/image_document.py. Defined: ['XcfImageSpec']"
+      ]
+    },
+    {
+      "qname": "xcf:layer",
+      "status": "implemented",
+      "canonical_class": "Xcf.Layer",
+      "current_path": "src/python/xcf/spec/layer/layer.py",
+      "target_path": "src/python/xcf/spec/xcf/layer.py",
+      "source_layer": "Spec",
+      "current_state": "WRONG_PATH_IN_SPEC",
+      "action_required": "MOVE_FILE",
+      "migration_risk": "HIGH",
+      "estimated_effort": "medium",
+      "blocks_gate": false,
+      "test_changes_required": [],
+      "notes": [
+        "In spec/ but wrong sub-path. Got src/python/xcf/spec/layer/layer.py, expected src/python/xcf/spec/xcf/layer.py"
+      ]
+    },
+    {
+      "qname": "xcf:channel",
+      "status": "implemented",
+      "canonical_class": "Xcf.Channel",
+      "current_path": "src/python/xcf/spec/layer/channel.py",
+      "target_path": "src/python/xcf/spec/xcf/channel.py",
+      "source_layer": "Spec",
+      "current_state": "WRONG_PATH_IN_SPEC",
+      "action_required": "MOVE_FILE",
+      "migration_risk": "HIGH",
+      "estimated_effort": "medium",
+      "blocks_gate": false,
+      "test_changes_required": [],
+      "notes": [
+        "In spec/ but wrong sub-path. Got src/python/xcf/spec/layer/channel.py, expected src/python/xcf/spec/xcf/channel.py"
+      ]
+    },
+    {
+      "qname": "xcf:header",
+      "status": "implemented",
+      "canonical_class": "Xcf.Header",
+      "current_path": "src/python/xcf/spec/layer/header.py",
+      "target_path": "src/python/xcf/spec/xcf/header.py",
+      "source_layer": "Spec",
+      "current_state": "WRONG_PATH_IN_SPEC",
+      "action_required": "MOVE_FILE",
+      "migration_risk": "HIGH",
+      "estimated_effort": "medium",
+      "blocks_gate": false,
+      "test_changes_required": [],
+      "notes": [
+        "In spec/ but wrong sub-path. Got src/python/xcf/spec/layer/header.py, expected src/python/xcf/spec/xcf/header.py"
+      ]
+    }
+  ]
+}
