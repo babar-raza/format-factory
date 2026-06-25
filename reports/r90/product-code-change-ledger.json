@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s114-dotnet-deepening-20260627",
+  "latest_sprint": "ff-sprint-s115-dotnet-deepening-20260627",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -20353,9 +20353,73 @@
         }
       ],
       "format": "CSV"
+    },
+    {
+      "entry_id": "PC-FODT-R136",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s115-dotnet-deepening-20260627",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.tablecell_columnspan"
+      ],
+      "api_symbols": [
+        "FodtTableCell.ColumnSpan",
+        "FodtTableCell.GetPlainText",
+        "FodtTableRow.CellCount"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/fodt/FodtR136TableCellColumnSpanTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "FODT"
+    },
+    {
+      "entry_id": "PC-ZST-R125",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s115-dotnet-deepening-20260627",
+      "product": "ZST .NET",
+      "capability_refs": [
+        "commercial_net_products.ZST.dotnet_status.document_computed_props"
+      ],
+      "api_symbols": [
+        "ZstDocument.IsMinimalFrame",
+        "ZstDocument.IsHighlyCompressed",
+        "ZstDocument.ContentTypeHint",
+        "ZstDocument.OverheadBytes",
+        "ZstDocument.BytesPerFrame",
+        "ZstDocument.IsEmptyContent"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/zst/ZstR125DocumentComputedPropsTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "ZST"
+    },
+    {
+      "entry_id": "PC-FODS-R136",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s115-dotnet-deepening-20260627",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.stream_load"
+      ],
+      "api_symbols": [
+        "FodsDocument.Load(Stream)"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/fods/FodsR136StreamLoadTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "FODS"
     }
   ],
-  "total_entries": 1009,
+  "total_entries": 1012,
   "changes": [
     {
       "file": "src/python/dif/models.py",
