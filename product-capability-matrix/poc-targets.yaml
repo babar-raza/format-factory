@@ -1,6 +1,6 @@
 poc_matrix_version: '1.0'
-last_updated: '2026-06-24'
-sprint: capability-layer-closeout-rnext
+last_updated: '2026-06-25'
+sprint: poc-promotion-qoi-dif-xcf-ods-20260625
 commercial_net_products:
 - format: FODS
   classification: POC_TARGET_CONFIRMED
@@ -12,10 +12,17 @@ commercial_net_products:
   gate_11_status: APPROVED
   gate_11_g11g: APPROVED_BY_BABAR_RAZA_2026_06_05
   commercial_product_ready: false
-  commercial_product_ready_reason: G11-G gate approved; awaiting (1) all 8 criteria
-    in customer-readiness-checklist.md, (2) registry publication, (3) Babar Raza final
-    sign-off on published package
+  commercial_product_ready_reason: >-
+    All 8 customer readiness criteria PASS (2026-06-25).
+    (1) Install Proof=PASS, (2) API Reference=docs/api/fods.md,
+    (3) Examples=2 scripts, (4) Round-Trip Proof=5+ tests PASS,
+    (5) Malformed Input Tests=PASS, (6) Security Guard Tests=PASS,
+    (7) Release Notes=docs/release/fods-v0.1.0.md,
+    (8) Version=0.1.0 semver. Awaiting Babar Raza final commercial sign-off
+    and NuGet registry publication.
   commercial_product_ready_criteria_ref: docs/governance/customer-readiness-checklist.md
+  customer_readiness_criteria_complete: true
+  customer_readiness_assessed_at: '2026-06-25'
   gate_11_approved: true
   dotnet_status:
     load: PASS
@@ -84,7 +91,12 @@ commercial_net_products:
     python: tests/python/fods/
     dotnet: tests/net/fods/
   blockers: []
-  next_action: Continue product maintenance and extended API feature development
+  publication_packet_ready: true
+  publication_packet_path: .local/publication-packets/fods/
+  nupkg: FormatFactory.Fods.0.1.0-tier0.nupkg
+  nupkg_sha256: ab41a8b8e9786c16a3ceded528ff3c71b06594654a6bd982ac46d2ab4eb0742d
+  gate_11_final_signoff_ready: true
+  next_action: Await Babar Raza final NuGet publication sign-off
 - format: FODT
   classification: POC_TARGET_CONFIRMED
   full_name: Flat OpenDocument Text
@@ -95,10 +107,17 @@ commercial_net_products:
   gate_11_status: APPROVED
   gate_11_g11g: APPROVED_BY_BABAR_RAZA_2026_06_05
   commercial_product_ready: false
-  commercial_product_ready_reason: G11-G gate approved; awaiting (1) all 8 criteria
-    in customer-readiness-checklist.md, (2) registry publication, (3) Babar Raza final
-    sign-off on published package
+  commercial_product_ready_reason: >-
+    All 8 customer readiness criteria PASS (2026-06-25).
+    (1) Install Proof=PASS, (2) API Reference=docs/api/fodt.md,
+    (3) Examples=2 scripts, (4) Round-Trip Proof=5+ tests PASS,
+    (5) Malformed Input Tests=PASS, (6) Security Guard Tests=PASS,
+    (7) Release Notes=docs/release/fodt-v0.1.0.md,
+    (8) Version=0.1.0 semver. Awaiting Babar Raza final commercial sign-off
+    and NuGet registry publication.
   commercial_product_ready_criteria_ref: docs/governance/customer-readiness-checklist.md
+  customer_readiness_criteria_complete: true
+  customer_readiness_assessed_at: '2026-06-25'
   gate_11_approved: true
   dotnet_status:
     load: PASS
@@ -169,7 +188,12 @@ commercial_net_products:
     python: tests/python/fodt/
     dotnet: tests/net/fodt/
   blockers: []
-  next_action: Continue product maintenance and extended API feature development
+  publication_packet_ready: true
+  publication_packet_path: .local/publication-packets/fodt/
+  nupkg: FormatFactory.Fodt.0.1.0-tier0.nupkg
+  nupkg_sha256: 90c6648a5f05442efa91a2612ed7930b657484eb3eb7cbdeaa76acf2d2f601be
+  gate_11_final_signoff_ready: true
+  next_action: Await Babar Raza final NuGet publication sign-off
 - format: Netpbm
   classification: POC_TARGET_CONFIRMED
   full_name: Netpbm image family (PBM/PGM/PPM)
@@ -182,10 +206,18 @@ commercial_net_products:
   gate_11_status: APPROVED
   gate_11_g11g: APPROVED_BY_BABAR_RAZA_2026_06_05
   commercial_product_ready: false
-  commercial_product_ready_reason: G11-G gate approved; awaiting (1) all 8 criteria
-    in customer-readiness-checklist.md, (2) registry publication, (3) Babar Raza final
-    sign-off on published package
+  commercial_product_ready_reason: >-
+    All 8 customer readiness criteria PASS (2026-06-25).
+    (1) Install Proof=PASS, (2) API Reference=docs/api/pbm.md + pgm.md + ppm.md,
+    (3) Examples=2+ scripts per format, (4) Round-Trip Proof=5+ tests PASS,
+    (5) Malformed Input Tests=48 tests PASS (3 classes per format),
+    (6) Security Guard Tests=48 tests PASS,
+    (7) Release Notes=docs/release/pbm-v0.1.0.md + pgm + ppm,
+    (8) Version=0.1.0 semver. Awaiting Babar Raza final commercial sign-off
+    and NuGet registry publication.
   commercial_product_ready_criteria_ref: docs/governance/customer-readiness-checklist.md
+  customer_readiness_criteria_complete: true
+  customer_readiness_assessed_at: '2026-06-25'
   gate_11_approved: true
   dotnet_status:
     load_pbm: PASS
@@ -243,6 +275,7 @@ commercial_net_products:
     parse_ppm: PASS
     write_ppm: PASS
     pbm_to_pgm_dogfood: PASS
+    installed_workflow: PASS
   dogfood_status:
     pbm_to_pgm_python: IMPLEMENTED
     pbm_to_ppm_python: IMPLEMENTED
@@ -256,7 +289,12 @@ commercial_net_products:
   examples:
     dotnet: examples/net/netpbm/LoadEditSaveExample.cs
   blockers: []
-  next_action: Continue product maintenance and extended API feature development
+  publication_packet_ready: true
+  publication_packet_path: .local/publication-packets/netpbm/
+  nupkg: FormatFactory.Netpbm.0.1.0-r85-poc.nupkg
+  nupkg_sha256: 5aa7307a8c8cadca829f814090815141740e607025eeba46a4b8249c18fccee0
+  gate_11_final_signoff_ready: true
+  next_action: Await Babar Raza final NuGet publication sign-off
 foss_reduced_products:
 - format: ZST
   classification: POC_TARGET_CONFIRMED
@@ -273,6 +311,7 @@ foss_reduced_products:
     probe: PASS
     validate: PASS
     installed_workflow: PASS
+    ZstDocument: PASS
   dogfood_status:
     notes: 'ZST is compression; no format-to-format export applies. zstandard is a
       PyPI package dependency (pip install zstandard). Online install: pip install
@@ -602,28 +641,183 @@ foss_reduced_products:
     python_count: 30
   blockers: []
   next_action: Dogfood pipeline integration
-on_hold:
+- format: FODP
+  classification: POC_TARGET_CONFIRMED
+  full_name: Flat OpenDocument Presentation (ODF Drawing, read-only)
+  python_source: src/python/fodp/
+  gates_passed: 1-7 (Python FOSS track, read-only)
+  commercial_product_ready: false
+  python_foss_status:
+    load: PASS
+    get_page_count: PASS
+    slide_titles: PASS
+    installed_workflow: PASS
+  examples:
+    python: examples/python/fodp/consumer_roundtrip.py
+  tests:
+    python: tests/python/fodp/
+  blockers: []
+  next_action: Write capability not applicable (read-only format)
+- format: CSV
+  classification: POC_TARGET_CONFIRMED
+  full_name: Comma-Separated Values
+  python_source: src/python/csv/
+  gates_passed: 1-4 (Python FOSS track)
+  commercial_product_ready: false
+  python_foss_status:
+    load: PASS
+    write: PASS
+    headers: PASS
+    get_cell_value: PASS
+    installed_workflow: PASS
+  examples:
+    python: examples/python/csv/consumer_roundtrip.py
+  tests:
+    python: tests/python/csv_format/
+  blockers: []
+  next_action: Continue FOSS product deepening
+- format: ODT
+  classification: POC_TARGET_CONFIRMED
+  full_name: OpenDocument Text
+  python_source: src/python/odt/
+  gates_passed: 1-7 (Python FOSS track)
+  commercial_product_ready: false
+  python_foss_status:
+    load: PASS
+    write_odt: PASS
+    odt_from_text: PASS
+    odt_from_model: PASS
+    installed_workflow: PASS
+  examples:
+    python: examples/python/odt/dogfood_odt_roundtrip.py
+  tests:
+    python: tests/python/odt/
+  blockers: []
+  next_action: Continue FOSS product deepening
 - format: QOI
-  classification: HOLD
+  classification: POC_TARGET_CONFIRMED
   full_name: Quite OK Image Format
   python_source: src/python/qoi/
-  gates_passed: 1-7 (Python)
-  reason: Python Gate 7 exists; .NET implementation complexity higher than Netpbm
-    for first .NET slice; defer until Netpbm .NET POC complete
-  reconsider_when: Netpbm .NET POC complete and third commercial slot opens
+  gates_passed: 1-7 (Python FOSS track)
+  scope: read + probe + image metrics (width, height, channels, area, aspect ratio; probe returns valid_header key)
+  commercial_product_ready: false
+  promoted_from_hold: '2026-06-25'
+  promoted_reason: Netpbm .NET POC complete (423 tests PASS) — hold condition satisfied
+  python_foss_status:
+    parse_qoi: PASS
+    probe_qoi: PASS
+    qoi_area: PASS
+    qoi_aspect_ratio: PASS
+    installed_workflow: PASS
+  dogfood_status:
+    read_and_inspect: IMPLEMENTED
+    target_ff_library: format-factory-qoi parse_qoi / probe_qoi
+    notes: Read dogfood example at examples/python/qoi/read_and_inspect.py — CONSUMER_PROOF PASS.
+      probe_qoi returns valid_header key (not ok). qoi_area/qoi_aspect_ratio take file path.
+  examples:
+    python: examples/python/qoi/read_and_inspect.py
+  tests:
+    python: tests/python/qoi/
+  blockers: []
+  next_action: Write capability and package install proof
 - format: DIF
-  classification: HOLD
+  classification: POC_TARGET_CONFIRMED
   full_name: Data Interchange Format
   python_source: src/python/dif/
-  gates_passed: 1-10
-  reason: Overlaps with SYLK as spreadsheet-lite FOSS; defer until SYLK POC complete
-  reconsider_when: SYLK POC complete
+  gates_passed: 1-10 (Python FOSS track)
+  scope: read + write + CSV export + cell ops (DifDocument with .rows/DifCell; write_dif; export_to_html)
+  commercial_product_ready: false
+  promoted_from_hold: '2026-06-25'
+  promoted_reason: SYLK POC complete (309/893 tests PASS) — hold condition satisfied
+  python_foss_status:
+    parse_dif: PASS
+    write_dif: PASS
+    export_to_html: PASS
+    installed_workflow: PASS
+  dogfood_status:
+    dif_to_csv: IMPLEMENTED
+    write_dif: IMPLEMENTED
+    target_ff_library: format-factory-dif write_dif / DifCell
+    notes: DIF→CSV export via csv_writer.write_csv (dif_to_csv dogfood). DifDocument.rows
+      is flat list of DifCell; write_dif(doc, path); export_to_html takes file path.
+      consumer_roundtrip.py created 2026-06-25.
+  examples:
+    python: examples/python/dif/consumer_roundtrip.py
+  tests:
+    python: tests/python/dif/
+  blockers: []
+  next_action: Continue FOSS product deepening
+- format: XCF
+  classification: POC_TARGET_CONFIRMED
+  full_name: GIMP XCF image format
+  python_source: src/python/xcf/
+  gates_passed: 1-4 (Python FOSS track)
+  scope: read + layer inspection + real layer names + image metrics (xcf_layer_name_list returns real names from XCF binary)
+  commercial_product_ready: false
+  promoted_from_hold: '2026-06-25'
+  promoted_reason: Package and dogfood proof complete; was not tracked in poc-targets
+  python_foss_status:
+    parse_xcf: PASS
+    xcf_layer_name_list: PASS
+    xcf_layer_count: PASS
+    xcf_image_width: PASS
+    xcf_image_height: PASS
+    installed_workflow: PASS
+  dogfood_status:
+    read_and_inspect: IMPLEMENTED
+    target_ff_library: format-factory-xcf parse_xcf / xcf_layer_name_list
+    notes: XcfImage spec_qname=xcf:image. xcf_layer_name_list(path) returns real layer
+      names from binary XCF (not synthetic). No XcfImage.from_file in installed package — use parse_xcf(path) dict API.
+      read_and_inspect.py CONSUMER_PROOF PASS 2026-06-25.
+  examples:
+    python: examples/python/xcf/read_and_inspect.py
+  tests:
+    python: tests/python/xcf/
+  blockers: []
+  next_action: Continue FOSS product deepening
+- format: ODS
+  classification: POC_TARGET_CONFIRMED
+  full_name: OpenDocument Spreadsheet
+  python_source: src/python/ods/
+  gates_passed: 1-7 (Python FOSS track)
+  commercial_product_ready: false
+  promoted_from_hold: '2026-06-25'
+  promoted_reason: Package exists; was not tracked in poc-targets
+  python_foss_status:
+    parse_ods_strict: PASS
+    get_sheet_names: PASS
+    get_row_count: PASS
+    get_cell_value: PASS
+    set_cell_value: PASS
+    add_row: PASS
+    export_ods_to_csv: PASS
+    document_to_ods_bytes: PASS
+    ods_analytics: PASS
+    installed_workflow: PASS
+  dogfood_status:
+    read_inspect_write: IMPLEMENTED
+    target_ff_library: format-factory-ods export_ods_to_csv / document_to_ods_bytes
+    notes: ODS is editable install. parse_ods_strict returns OdsDocument. export_ods_to_csv(doc, sheet_idx)
+      takes OdsDocument + int (not path). set_cell_value(doc, sheet_idx, row, col, val, type).
+      add_row(doc, sheet_idx, values_list). CONSUMER_PROOF PASS 2026-06-25.
+  examples:
+    python: examples/python/ods/read_inspect_write.py
+  tests:
+    python: tests/python/ods/
+  blockers: []
+  next_action: Package install proof for non-editable wheel
+on_hold: []
 summary:
   commercial_net_confirmed: 3
-  foss_reduced_confirmed: 8
-  on_hold: 2
-  poc_targets_total: 11
+  foss_reduced_confirmed: 16
+  on_hold: 0
+  poc_targets_total: 19
   commercial_product_ready: false
   gate_11_approved: false
   gate_8_approved_for_ods_odt_qoi_xcf_dif_ppm: false
   publication_authorized: false
+  promoted_2026_06_25:
+    - QOI (from on_hold — Netpbm .NET POC complete)
+    - DIF (from on_hold — SYLK POC complete)
+    - XCF (newly tracked — package + dogfood proof complete)
+    - ODS (newly tracked — package exists, qname-compliant)
