@@ -4035,6 +4035,7 @@ audit-hardening-execution-closure loop applied.
 **Status:** CLOSED — ALL_TASKCARDS_COMPLETE — PSL_LOOP_CONFIRMED
 **Plan type:** execution_mission
 **PSL loop verification (v6, 2026-06-25):** All 24 per-taskcard statuses confirmed COMPLETE at HEAD=273c9c54. Autonomous-cycle: ACCEPTED (23 items, 1 minor lane enforcement rework, non-blocking). All-green candidate: 0 material findings, 0 actionable findings, 0 eligible tasks. Plan updated to v6; TERMINAL_CLOSED written.
+**PSL re-audit (2026-06-25, HEAD=b45d6583):** Post-compaction audit found one gap: `GetTypedRecord(int index)` absent from `NdjsonDocument.cs` (TC-PQ-030a partial). Fixed: additive method `public NdjsonRecord GetTypedRecord(int index) => new NdjsonRecord(Records[index])`. NDJSON 66 pass, all .NET suites green (CSV 74, TSV 63, FODS 643, ZST 68, NetPBM 496, FODT 588), governance 135 pass. TERMINAL_CLOSED written (current session).
 
 ### Mission Summary
 
