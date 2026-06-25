@@ -1,0 +1,57 @@
+idempotency_revalidation:
+  mission_id: spec-authority-machinery-explosion-20260625-c6b2470
+  plan_id: witty-doodling-goose
+  plan_hash: "dd07cbc3ec27077b"  # unchanged from prior closure
+  prior_closure_commit: "a7380021"
+  current_head: "f04041ca"
+  revalidated_at: "2026-06-25"
+
+  # Prompt hashes — all stable (no prompt drift)
+  prompt_hashes:
+    post_sprint_audit: "263dab3dadad6845"  # MATCH
+    plan_hardening: "4fe227b68c0e58e0"    # MATCH
+    controlled_execution: "5246d218a39a8464"  # MATCH
+    close_task: "3196a5bd52bd6e03"        # MATCH
+  prompts_changed: false
+
+  # Phase A artifacts at current HEAD
+  phase_a_artifacts_present:
+    guard_001_AND_logic: true
+    selector_authority_gate: true
+    contract_spec_fact_refs: true
+    tc_guard_001_gap_only_violation_test: true
+    v13_enforcement_tests_class: true
+    v13_test_blocks_absent_refs: true
+    v13_test_allows_exception: true
+  all_phase_a_artifacts_intact: true
+
+  # Test results at current HEAD
+  tests_at_head:
+    test_tc_guard_001_enforce: "10/10 PASS"
+    TestV13SpecFactRefsEnforcement: "5/5 PASS"
+
+  # Verification gates at current HEAD
+  verification_gates:
+    VG-003: PASS  # gap_only=violation
+    VG-003b: PASS  # gap+spec=ok
+    VG-005: PASS  # V13 fires absent refs
+    VG-006: PASS  # V13 allows exception
+    VG-007: PASS  # selector uses authority gate
+
+  # Changes between closure commit and current HEAD
+  commits_since_closure: 12
+  phase_a_files_changed_since_closure: false
+  # Note: test_governance_validators.py had ADDITIVE changes (validator count 73→75,
+  #       new TestVSGF001 class) from other sprints. These are NOT Phase A scope
+  #       and do NOT invalidate the Phase A closure.
+  additive_changes_invalidate_closure: false
+
+  # Closure record status
+  prior_closure_record_exists: true
+  prior_closure_verdict: CONVERGENCE_COMPLETE_ALL_GREEN_AND_TASK_CLOSED
+  prior_closure_record_still_valid: true
+
+  # Idempotency verdict
+  close_task_should_reinvoke: false
+  reason: "Valid matching closure record exists. Phase A artifacts intact. All gates pass. No-change idempotency proven."
+  verdict: IDEMPOTENT_CLOSURE_CONFIRMED
