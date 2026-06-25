@@ -1354,6 +1354,101 @@ skills:
   spec_qname_required: false
   status: active
   test_paths: []
+- advisory_only: false
+  command_file: .claude/commands/build-obligation-register.md
+  created_at: '2026-06-25'
+  description: Scans all discovery sources and creates the all-format obligation register
+    (all-format-universe.yaml, all-format-obligation-register.yaml, format-accounting-gate.yaml)
+    in reports/all-format-deepening/. Verifies counts reconcile with zero omissions.
+  notes: Created TC-B-001 / transient-finding-clover (2026-06-25). Core of ALLFORMAT-DEEPENING-20260625 mission.
+  product_track: all_format_deepening
+  purpose: Build authoritative all-format obligation register ensuring no format is omitted.
+  required_handoff_fields:
+  - mission_id
+  - output_path
+  skill_id: build-obligation-register
+  spec_qname_required: false
+  status: active
+  test_paths: []
+- advisory_only: false
+  command_file: .claude/commands/create-consumer-roundtrip.md
+  created_at: '2026-06-25'
+  description: Generates examples/python/{format}/consumer_roundtrip.py for a given
+    format using the load→inspect→modify→save→reload→verify pattern. Prints CONSUMER_PROOF: PASS.
+  notes: Created TC-B-001 / transient-finding-clover (2026-06-25). Targets 10 Python
+    formats missing consumer_roundtrip.py (fodp fods fodt ods odt pbm pgm ppm qoi xcf).
+  product_track: foss_python_consumer
+  purpose: Advance 10 Python formats from PROOF_LEVEL_3 to PROOF_LEVEL_4.
+  required_handoff_fields:
+  - format_id
+  - fixture_path
+  skill_id: create-consumer-roundtrip
+  spec_qname_required: false
+  status: active
+  test_paths: []
+- advisory_only: false
+  command_file: .claude/commands/verify-obligation-entry.md
+  created_at: '2026-06-25'
+  description: Verifies a single obligation register entry against current repository
+    state. Runs tests, checks consumer_roundtrip.py, determines proof level, updates
+    entry fields.
+  notes: Created TC-B-001 / transient-finding-clover (2026-06-25).
+  product_track: all_format_deepening
+  purpose: Evidence-backed obligation entry verification and update.
+  required_handoff_fields:
+  - obligation_id
+  skill_id: verify-obligation-entry
+  spec_qname_required: false
+  status: active
+  test_paths: []
+- advisory_only: false
+  command_file: .claude/commands/portfolio-reconcile.md
+  created_at: '2026-06-25'
+  description: Reads obligation register, counts by terminal state, verifies portfolio
+    equation (completed + gate_11 + blocked + open = total), writes portfolio-reconciliation
+    YAML. Reports final verdict.
+  notes: Created TC-B-001 / transient-finding-clover (2026-06-25). Run after each
+    format completes to verify no omissions.
+  product_track: all_format_deepening
+  purpose: Portfolio count reconciliation with no-exception audit.
+  required_handoff_fields:
+  - mission_id
+  skill_id: portfolio-reconcile
+  spec_qname_required: false
+  status: active
+  test_paths: []
+- advisory_only: false
+  command_file: .claude/commands/update-obligation-entry.md
+  created_at: '2026-06-25'
+  description: Updates specific fields (current_state, current_proof_level, terminal_state,
+    evidence_paths) of an obligation register entry with guards preventing proof level
+    downgrade or unsupported terminal states.
+  notes: Created TC-B-001 / transient-finding-clover (2026-06-25).
+  product_track: all_format_deepening
+  purpose: Governed obligation entry field update with anti-overclaim guards.
+  required_handoff_fields:
+  - obligation_id
+  - fields_to_update
+  skill_id: update-obligation-entry
+  spec_qname_required: false
+  status: active
+  test_paths: []
+- advisory_only: false
+  command_file: .claude/commands/check-source-loc.md
+  created_at: '2026-06-25'
+  description: Audits LOC of Python format source files against baseline_loc_cap in
+    registry/source-structure-baseline.json. Reports violations. Never modifies baseline_loc_cap
+    (write-once).
+  notes: Created TC-B-001 / transient-finding-clover (2026-06-25). Uses V35 exact
+    LOC counting method.
+  product_track: source_structure
+  purpose: Source structure compliance audit for Python formats.
+  required_handoff_fields:
+  - formats_to_check
+  skill_id: check-source-loc
+  spec_qname_required: false
+  status: active
+  test_paths: []
 sprint: FORMAT-FACTORY-R98-AUTONOMOUS-LOOP-TRUST-LAYER-ITERATION-SCALING-ACCELERATION-POC-MEGA-TRAIN-001
 version: '2.0'
 visibility: generated

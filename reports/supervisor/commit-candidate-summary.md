@@ -1,8 +1,24 @@
 # Commit Candidate Summary
-**Generated:** 2026-06-26 (Sprint ff-sprint-s68-commit-candidate)
-**Git HEAD:** ae7fa540ca763ed3da8c922a8fc9fde825e1a97b
-**Status:** DIRTY — 24 modified files, 44 untracked files
-**BLOCKER:** EXTERNAL_BLOCKER: git_push_credentials_unavailable
+**Updated:** 2026-06-25 (Sprint ALLFORMAT-DEEPENING-20260625-TC-C-001 / transient-finding-clover)
+**Git HEAD:** 2a004fada6f485d08faff84bbf75a7fe899719f4
+**Status:** DIRTY — 71 modified/untracked files
+**BLOCKER:** EXTERNAL_BLOCKER: git_push_credentials_unavailable (push blocked; local commit authorized)
+**Plan:** transient-finding-clover (IN_PROGRESS)
+**AUTONOMOUS_CONTINUE:** YES
+**Last sprint evidence:** ACCEPTED (1609 tests, 0 failures)
+
+## This Session — New Artifacts (ALLFORMAT-DEEPENING-20260625)
+- `reports/all-format-deepening/all-format-universe.yaml` (NEW — 30 format surfaces)
+- `reports/all-format-deepening/all-format-obligation-register.yaml` (NEW — 30 entries)
+- `reports/all-format-deepening/format-accounting-gate.yaml` (NEW — counts reconcile: 18+2+10=30)
+- `.claude/commands/build-obligation-register.md` (NEW micro skill)
+- `.claude/commands/create-consumer-roundtrip.md` (NEW micro skill)
+- `.claude/commands/verify-obligation-entry.md` (NEW micro skill)
+- `.claude/commands/portfolio-reconcile.md` (NEW micro skill)
+- `.claude/commands/update-obligation-entry.md` (NEW micro skill)
+- `.claude/commands/check-source-loc.md` (NEW micro skill)
+- `.supervisor/skill-registry.yaml` (MODIFIED — 6 new micro skills)
+- `reports/r90/product-code-change-ledger.json` (MODIFIED — 2 new ledger entries)
 
 ---
 

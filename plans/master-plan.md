@@ -4337,3 +4337,54 @@ The oracle layer provides an independent, spec-backed test oracle infrastructure
 - Onboarding gate csv: `--check-new-format csv` → PASS
 - Onboarding gate ora: `--check-new-format ora` → WARN (correct — no package yet)
 
+---
+
+## Section 75 — SAL-VHIP-001: SAL Verification, Hardening, and Integration Sprint (CLOSED)
+
+**Mission:** SAL-VERIFICATION-HARDENING-001
+**Plan:** generic-soaring-chipmunk.md (TERMINAL_CLOSED)
+**Date:** 2026-06-25
+**Status:** CLOSED — all 9 declared acceptance criteria met and verified
+
+### What Was Accomplished
+
+The SAL Verification, Hardening, and Integration Sprint executed 8 lanes (A/B/D/E/F/I) with 8 forensic corrections applied before execution. Key deliverables:
+
+| Item | Result | Verification |
+|------|--------|-------------|
+| qname=None eliminated | 14,794 workbench facts fixed (0 remaining) | Live scan confirms |
+| ZST workbench upgraded | 15 → 120 verified facts | sal-facts-latest.json |
+| Gap-ledger spec_facts backfill | 84.3% → 98.3% (1221/1242 gaps) | Live query confirms |
+| V-NEW-001 inflation validator | WARN fires for PBM/PGM/PPM/QOI (37-42x) | Direct execution |
+| spec_fact_ref format check | Canonical regex + legacy pattern | Regex test PASS |
+| All pilots | F1/F2/F3/F4 PASS | Inline verification |
+
+### New Files Produced
+- `tools/specification-authority-layer/patch_workbench_qnames.py` — idempotent qname fixer
+- `tools/scripts/backfill_gap_spec_fact_refs.py` — gap-ledger spec_facts backfiller
+- `tools/supervisor/governance_validators_sal.py` — V-NEW-001 capability inflation validator
+
+### Modified Files
+- `tools/supervisor/validate_spec_fact_refs.py` — tightened canonical format check
+- `tools/supervisor/governance_validators_ext.py` — V-NEW-001 import stub
+- `tools/supervisor/governance_validator_runner.py` — V-NEW-001 wiring
+
+### Deferred Items (Carry-Forward to Next SAL Sprint)
+- **TC-SAL-WIRE-001:** Wire requirement_extractor into sal_master_runner.py (regression risk — requires careful review)
+- **TC-SAL-WIRE-006:** REQ-to-FACT mapping / context pack bridge (requires extractor_to_workbench_adapter.py changes)
+
+### Pre-existing Failures (Not Caused by This Sprint)
+- `test_registered_formats_have_bootstrap_level_1` — bootstrap level 1 gap
+- `test_fodt_neutral_model_cites_fact_refs` — fodt/neutral_model.py has no FACT-* refs
+- `test_total_fact_refs_across_product_source` — FODG cites FACT-FODG-001/002, not in SAL
+
+### Acceptance Criteria Status (All PASS)
+1. No SAL test regressions (391 pass, 3 pre-existing, 0 new) — PASS
+2. qname=None count = 0 in all workbench files — PASS (14794→0)
+3. ZST workbench ≥15 verified facts — PASS (120 verified)
+4. Gap-ledger spec_facts coverage ≥200 gaps — PASS (1221/1242)
+5. V-NEW-001 fires WARN for inflation — PASS (PBM/PGM/PPM/QOI)
+6. Format check tightened — PASS (canonical + legacy regex)
+7. All pilots F1/F2/F3/F4 PASS — PASS
+8. 0 new governance validator regressions — PASS
+

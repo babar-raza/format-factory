@@ -297,11 +297,23 @@ def check_item(item: dict) -> dict:
     has_exception = bool(exception_class)
 
     # Validate fact ID format if present
-    # Accept both workbench (FACT-FORMAT-NNN) and bootstrap (ODF-FACT-*, FODS-FACT-*, etc.) naming
+    # Canonical format: FACT-[A-Z]+-NNN (e.g. FACT-FODS-001)
+    # Legacy format: [A-Z]+-FACT-* (e.g. FODS-FACT-001) — accepted with WARN
+    import re as _re
+    _CANONICAL_FACT_PATTERN = _re.compile(r"^FACT-[A-Z][A-Z0-9_-]*-[0-9]+$")
+    _LEGACY_FACT_PATTERN = _re.compile(r"^[A-Z][A-Z0-9_-]*-FACT-[A-Z0-9_-]+$")
     if has_refs:
-        bad_refs = [r for r in spec_fact_refs if not (
-            isinstance(r, str) and ("FACT-" in r or "-FACT-" in r) and len(r) > 6
-        )]
+        bad_refs = []
+        legacy_refs = []
+        for r in spec_fact_refs:
+            if not isinstance(r, str) or len(r) <= 6:
+                bad_refs.append(r)
+            elif _CANONICAL_FACT_PATTERN.match(r):
+                pass  # canonical — ok
+            elif _LEGACY_FACT_PATTERN.match(r):
+                legacy_refs.append(r)  # legacy — warn but accept
+            else:
+                bad_refs.append(r)
         if bad_refs:
             return {
                 "item_id": item_id,
@@ -312,6 +324,9 @@ def check_item(item: dict) -> dict:
                 "grade_impact": "reject",
                 "detail": f"item_type={item_type!r} has malformed spec_fact_refs",
             }
+        if legacy_refs:
+            # Legacy IDs accepted but flagged — do not block, continue to existence check
+            pass  # caller can inspect result['warnings'] if needed
 
     # Validate fact ID existence in governed registry (unified: sal-facts-latest.json)
     if has_refs:

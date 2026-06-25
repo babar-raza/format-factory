@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "FORMAT-FACTORY-TOML-PYTHON-PROPS-20260625",
+  "latest_sprint": "ff-sprint-s84-dotnet-deepening-20260626",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -18689,6 +18689,104 @@
         "GAP-TOML-FOSS-INSTALLED_WO-001"
       ],
       "timestamp": "2026-06-26T16:30:00Z"
+    },
+    {
+      "sprint": "ALLFORMAT-DEEPENING-20260625-TC-B-001",
+      "action": "create_micro_skill_commands",
+      "plan": "transient-finding-clover",
+      "timestamp": "2026-06-25T18:46:44.272918+00:00",
+      "files": [
+        ".claude/commands/build-obligation-register.md",
+        ".claude/commands/create-consumer-roundtrip.md",
+        ".claude/commands/verify-obligation-entry.md",
+        ".claude/commands/portfolio-reconcile.md",
+        ".claude/commands/update-obligation-entry.md",
+        ".claude/commands/check-source-loc.md",
+        ".supervisor/skill-registry.yaml"
+      ],
+      "purpose": "Create 6 micro skills for ALLFORMAT-DEEPENING-20260625 mission",
+      "skill_ids": [
+        "build-obligation-register",
+        "create-consumer-roundtrip",
+        "verify-obligation-entry",
+        "portfolio-reconcile",
+        "update-obligation-entry",
+        "check-source-loc"
+      ]
+    },
+    {
+      "sprint": "ALLFORMAT-DEEPENING-20260625-TC-B-002",
+      "action": "build_obligation_register",
+      "plan": "transient-finding-clover",
+      "timestamp": "2026-06-25T18:48:46.044214+00:00",
+      "files": [
+        "reports/all-format-deepening/all-format-universe.yaml",
+        "reports/all-format-deepening/all-format-obligation-register.yaml",
+        "reports/all-format-deepening/format-accounting-gate.yaml"
+      ],
+      "purpose": "Create all-format obligation register: 30 surfaces, 18 completed, 2 gate_11, 10 open",
+      "counts_reconcile": true
+    },
+    {
+      "entry_id": "PC-FODS-R119-EXPORT-ALL-20260626",
+      "classification": "PRODUCT_DEEPENING",
+      "sprint": "ff-sprint-s84-dotnet-deepening-20260626",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.export_html",
+        "commercial_net_products.FODS.dotnet_status.export_json",
+        "commercial_net_products.FODS.dotnet_status.export_markdown",
+        "commercial_net_products.FODS.dotnet_status.export_csv",
+        "commercial_net_products.FODS.dotnet_status.export_tsv",
+        "commercial_net_products.FODS.dotnet_status.export_xml"
+      ],
+      "api_symbols": [
+        "FodsDocumentExporter.ExportSheetToHtml",
+        "FodsDocumentExporter.ExportSheetToJson",
+        "FodsDocumentExporter.ExportSheetToMarkdown",
+        "FodsDocumentExporter.ExportSheetToCsv",
+        "FodsDocumentExporter.ExportSheetToTsv",
+        "FodsDocumentExporter.ExportSheetToXml"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR119ExportAllFormatsTests.cs"
+      ],
+      "format": "FODS"
+    },
+    {
+      "entry_id": "PC-FODT-R117-FIND-BY-STYLE-20260626",
+      "classification": "PRODUCT_DEEPENING",
+      "sprint": "ff-sprint-s84-dotnet-deepening-20260626",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.paragraph_style_inspection"
+      ],
+      "api_symbols": [
+        "FodtDocument.FindParagraphsByStyle"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR117FindParagraphsByStyleTests.cs"
+      ],
+      "format": "FODT"
+    },
+    {
+      "entry_id": "PC-NETPBM-R119-SERIALIZATION-20260626",
+      "classification": "PRODUCT_DEEPENING",
+      "sprint": "ff-sprint-s84-dotnet-deepening-20260626",
+      "product": "Netpbm .NET",
+      "capability_refs": [
+        "commercial_net_products.Netpbm.dotnet_status.serialization"
+      ],
+      "api_symbols": [
+        "NetpbmDocument.ToAsciiString",
+        "NetpbmDocument.ToBinaryBytes",
+        "NetpbmDocument.LoadStream",
+        "NetpbmDocument.SourcePath"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR119SerializationTests.cs"
+      ],
+      "format": "Netpbm"
     }
   ],
   "total_entries": 1006,
