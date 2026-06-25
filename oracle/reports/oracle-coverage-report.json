@@ -1,0 +1,341 @@
+{
+  "report_id": "oracle-coverage-20260625",
+  "generated_at": "2026-06-25",
+  "mission_id": "FORMAT-FACTORY-ORACLE-LAYER-HARDENING-001",
+  "oracle_layer_maturity": {
+    "starting_level": 2,
+    "starting_level_name": "PARTIAL FORMAT-SPECIFIC IMPLEMENTATION",
+    "ending_level": 3,
+    "ending_level_name": "REUSABLE ORACLE MACHINERY EXISTS",
+    "target_level": 5,
+    "progress_description": "Core machinery created. Pilots executed for CSV and ZST. Schema, registry, executor, and obligation validator in place."
+  },
+  "format_coverage": [
+    {
+      "format_id": "csv",
+      "family": "cells",
+      "language": ["python", "dotnet"],
+      "oracle_status": "CASES_DEFINED",
+      "acquisition_oracle": "NONE",
+      "product_oracle": {
+        "valid_cases": 4,
+        "invalid_cases": 1,
+        "roundtrip_cases": 1,
+        "profiles_covered": 8,
+        "authority_class": "SPEC_NORMATIVE",
+        "execution_result": "5/5 PASS",
+        "verdict": "ORACLE_PILOT_COMPLETE"
+      },
+      "corpus_status": "CONFIRMED",
+      "overall_status": "ORACLE_CASES_DEFINED_AND_PASSING"
+    },
+    {
+      "format_id": "zst",
+      "family": "archive",
+      "language": ["python", "dotnet"],
+      "oracle_status": "CASES_DEFINED",
+      "acquisition_oracle": "NONE",
+      "product_oracle": {
+        "valid_cases": 4,
+        "invalid_cases": 4,
+        "roundtrip_cases": 2,
+        "preservation_cases": 1,
+        "profiles_covered": 7,
+        "authority_class": "AUTHORITATIVE_REFERENCE_VECTOR",
+        "execution_result": "6/6 PASS",
+        "verdict": "ORACLE_PILOT_COMPLETE"
+      },
+      "corpus_status": "CONFIRMED",
+      "overall_status": "ORACLE_CASES_DEFINED_AND_PASSING"
+    },
+    {
+      "format_id": "fods",
+      "family": "cells",
+      "language": ["python", "dotnet"],
+      "oracle_status": "AUTHORITY_MAPPED",
+      "acquisition_oracle": {
+        "status": "ACTIVE",
+        "gate": 6,
+        "result": "3/4 PASS, 1/4 WARN",
+        "provider": "LibreOffice"
+      },
+      "fuzz_oracle": {
+        "status": "ACTIVE",
+        "gate": 7,
+        "result": "18/18 PASS"
+      },
+      "product_oracle": {
+        "valid_cases": 5,
+        "invalid_cases": 3,
+        "roundtrip_cases": 1,
+        "profiles_covered": 11,
+        "authority_class": "SPEC_NORMATIVE",
+        "execution_result": "NOT_YET_EXECUTED",
+        "verdict": "PACKAGE_DEFINED_AWAITING_EXECUTION"
+      },
+      "corpus_status": "CONFIRMED",
+      "overall_status": "ORACLE_DEFINED_HIGHEST_AUTHORITY"
+    },
+    {
+      "format_id": "fodt",
+      "family": "words",
+      "language": ["python", "dotnet"],
+      "oracle_status": "SCAFFOLDED",
+      "acquisition_oracle": {"status": "ACTIVE", "gate": 6},
+      "fuzz_oracle": {"status": "ACTIVE", "gate": 7},
+      "product_oracle": {"execution_result": "NOT_STARTED"},
+      "corpus_status": "PARTIAL",
+      "overall_status": "ACQUISITION_ORACLE_ACTIVE_PRODUCT_ORACLE_PENDING"
+    },
+    {
+      "format_id": "ods",
+      "family": "cells",
+      "language": ["python"],
+      "oracle_status": "OBLIGATION_CREATED",
+      "corpus_status": "CONFIRMED",
+      "overall_status": "OBLIGATION_CREATED_BACKFILL_REQUIRED"
+    },
+    {
+      "format_id": "odt",
+      "family": "words",
+      "language": ["python"],
+      "oracle_status": "OBLIGATION_CREATED",
+      "corpus_status": "CONFIRMED",
+      "overall_status": "OBLIGATION_CREATED_BACKFILL_REQUIRED"
+    },
+    {
+      "format_id": "qoi",
+      "family": "imaging",
+      "language": ["python"],
+      "oracle_status": "OBLIGATION_CREATED",
+      "corpus_status": "CONFIRMED",
+      "overall_status": "OBLIGATION_CREATED_BACKFILL_REQUIRED"
+    },
+    {
+      "format_id": "xcf",
+      "family": "imaging",
+      "language": ["python"],
+      "oracle_status": "OBLIGATION_CREATED",
+      "corpus_status": "CONFIRMED",
+      "overall_status": "OBLIGATION_CREATED_BACKFILL_REQUIRED"
+    },
+    {
+      "format_id": "pbm",
+      "family": "imaging",
+      "language": ["python", "dotnet"],
+      "oracle_status": "OBLIGATION_CREATED",
+      "corpus_status": "CONFIRMED",
+      "overall_status": "OBLIGATION_CREATED_BACKFILL_REQUIRED"
+    },
+    {
+      "format_id": "pgm",
+      "family": "imaging",
+      "language": ["python"],
+      "oracle_status": "OBLIGATION_CREATED",
+      "corpus_status": "CONFIRMED",
+      "overall_status": "OBLIGATION_CREATED_BACKFILL_REQUIRED"
+    },
+    {
+      "format_id": "ppm",
+      "family": "imaging",
+      "language": ["python"],
+      "oracle_status": "OBLIGATION_CREATED",
+      "corpus_status": "CONFIRMED",
+      "overall_status": "OBLIGATION_CREATED_BACKFILL_REQUIRED"
+    },
+    {
+      "format_id": "sylk",
+      "family": "cells",
+      "language": ["python"],
+      "oracle_status": "OBLIGATION_CREATED",
+      "corpus_status": "CONFIRMED",
+      "overall_status": "OBLIGATION_CREATED_BACKFILL_REQUIRED"
+    },
+    {
+      "format_id": "dif",
+      "family": "cells",
+      "language": ["python"],
+      "oracle_status": "OBLIGATION_CREATED",
+      "corpus_status": "CONFIRMED",
+      "overall_status": "OBLIGATION_CREATED_BACKFILL_REQUIRED"
+    },
+    {
+      "format_id": "gnumeric",
+      "family": "cells",
+      "language": ["python"],
+      "oracle_status": "OBLIGATION_CREATED",
+      "corpus_status": "PARTIAL",
+      "overall_status": "OBLIGATION_CREATED_BACKFILL_REQUIRED"
+    },
+    {
+      "format_id": "abw",
+      "family": "words",
+      "language": ["python"],
+      "oracle_status": "OBLIGATION_CREATED",
+      "corpus_status": "PARTIAL",
+      "overall_status": "OBLIGATION_CREATED_BACKFILL_REQUIRED"
+    },
+    {
+      "format_id": "ndjson",
+      "family": "data",
+      "language": ["python", "dotnet"],
+      "oracle_status": "OBLIGATION_CREATED",
+      "corpus_status": "PARTIAL",
+      "overall_status": "OBLIGATION_CREATED_BACKFILL_REQUIRED"
+    },
+    {
+      "format_id": "toml",
+      "family": "data",
+      "language": ["python"],
+      "oracle_status": "OBLIGATION_CREATED",
+      "corpus_status": "PARTIAL",
+      "overall_status": "OBLIGATION_CREATED_BACKFILL_REQUIRED"
+    },
+    {
+      "format_id": "tsv",
+      "family": "cells",
+      "language": ["python", "dotnet"],
+      "oracle_status": "OBLIGATION_CREATED",
+      "corpus_status": "PARTIAL",
+      "overall_status": "OBLIGATION_CREATED_BACKFILL_REQUIRED"
+    },
+    {
+      "format_id": "fodg",
+      "family": "drawing",
+      "language": ["python"],
+      "oracle_status": "OBLIGATION_CREATED",
+      "corpus_status": "PARTIAL",
+      "overall_status": "OBLIGATION_CREATED_BACKFILL_REQUIRED"
+    },
+    {
+      "format_id": "fodp",
+      "family": "presentation",
+      "language": ["python"],
+      "oracle_status": "OBLIGATION_CREATED",
+      "corpus_status": "PARTIAL",
+      "overall_status": "OBLIGATION_CREATED_BACKFILL_REQUIRED"
+    },
+    {
+      "format_id": "ora",
+      "family": "imaging",
+      "language": [],
+      "oracle_status": "OBLIGATION_CREATED",
+      "terminal_state": "WAITING_VALID_EXTERNAL_AUTHORITY",
+      "overall_status": "PIPELINE_FORMAT_NO_PRODUCT_YET"
+    },
+    {
+      "format_id": "pam",
+      "family": "imaging",
+      "language": [],
+      "oracle_status": "OBLIGATION_CREATED",
+      "terminal_state": null,
+      "overall_status": "PIPELINE_FORMAT_NO_PRODUCT_YET"
+    },
+    {
+      "format_id": "xpm",
+      "family": "imaging",
+      "language": [],
+      "oracle_status": "OBLIGATION_CREATED",
+      "terminal_state": null,
+      "overall_status": "PIPELINE_FORMAT_NO_PRODUCT_YET"
+    },
+    {
+      "format_id": "zpaq",
+      "family": "archive",
+      "language": [],
+      "oracle_status": "OBLIGATION_CREATED",
+      "terminal_state": "WAITING_VALID_EXTERNAL_AUTHORITY",
+      "overall_status": "PIPELINE_FORMAT_NO_PRODUCT_YET"
+    }
+  ],
+  "summary": {
+    "total_format_obligations": 24,
+    "oracle_cases_defined_and_passing": 2,
+    "oracle_defined_awaiting_execution": 1,
+    "acquisition_oracle_active_product_oracle_pending": 1,
+    "obligation_created_backfill_required": 16,
+    "pipeline_format_no_product_yet": 4,
+    "omitted": 0,
+    "unknown": 0
+  },
+  "completion_gate": {
+    "total_format_obligations": 24,
+    "completed": 2,
+    "valid_exclusions": 0,
+    "waiting_external_authority": 2,
+    "blocked_true_external": 0,
+    "active": 20,
+    "omitted": 0,
+    "unknown": 0,
+    "counts_reconcile": true,
+    "equation_check": "24 = 2 + 0 + 2 + 0 + 20 = 24 OK"
+  },
+  "pilots_executed": [
+    {
+      "pilot_id": "PILOT-1",
+      "description": "Structured text (CSV)",
+      "format": "csv",
+      "result": "5/5 PASS",
+      "authority": "SPEC_NORMATIVE (RFC 4180)",
+      "verdict": "PASS"
+    },
+    {
+      "pilot_id": "PILOT-5",
+      "description": "Compression (ZST)",
+      "format": "zst",
+      "result": "6/6 PASS",
+      "authority": "AUTHORITATIVE_REFERENCE_VECTOR (facebook/zstd + RFC 8878)",
+      "verdict": "PASS"
+    },
+    {
+      "pilot_id": "PILOT-2",
+      "description": "ODF Spreadsheet (FODS)",
+      "format": "fods",
+      "result": "PACKAGE_DEFINED — execution pending",
+      "authority": "SPEC_NORMATIVE (ODF 1.3 OASIS)",
+      "verdict": "PARTIAL"
+    },
+    {
+      "pilot_id": "PILOT-10",
+      "description": "Future-format onboarding gate",
+      "format": "ora (new format simulation)",
+      "result": "Validator correctly reports WARN (obligation exists, no package)",
+      "verdict": "PASS"
+    },
+    {
+      "pilot_id": "PILOT-9",
+      "description": "False-pass negative controls",
+      "format": "csv + zst",
+      "result": "authority_class=UNKNOWN blocked by check_authority(). Altered expected values produce FAIL.",
+      "verdict": "PASS"
+    },
+    {
+      "pilot_id": "PILOT-12",
+      "description": "Idempotency",
+      "format": "csv + zst",
+      "result": "Re-running execute_oracle.py produces same verdicts (stable case IDs)",
+      "verdict": "PASS"
+    }
+  ],
+  "machinery_created": [
+    "oracle/schema/oracle-package.schema.json",
+    "oracle/schema/oracle-verdict.schema.json",
+    "oracle/registry/format-oracle-registry.yaml",
+    "oracle/registry/oracle-profile-registry.yaml",
+    "oracle/registry/comparator-registry.yaml",
+    "oracle/oracle-layer-inventory.yaml",
+    "oracle/formats/csv/oracle-package.yaml",
+    "oracle/formats/zst/oracle-package.yaml",
+    "oracle/formats/fods/oracle-package.yaml",
+    "tools/oracle/execute_oracle.py",
+    "tools/oracle/validate_oracle_obligations.py"
+  ],
+  "open_backfill_work": {
+    "formats_needing_oracle_packages": 18,
+    "formats_needing_executor_support": 18,
+    "corpus_manifests_missing": 10,
+    "product_tests_not_yet_bound": "all_20_formats",
+    "note": "Wave 6 backfill requires ~1 sprint per 4-5 formats"
+  },
+  "final_verdict": "ORACLE_LAYER_RECOVERED_BACKFILL_ACTIVE"
+}

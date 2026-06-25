@@ -1,0 +1,117 @@
+# Comparator Registry — Format Factory Oracle Layer
+# Defines reusable format-family comparators for oracle case execution.
+# Comparators are selected per case in oracle-package.yaml.
+
+schema_version: "1.0"
+last_updated: "2026-06-25"
+
+comparators:
+
+  # --- BYTES ---
+  - comparator_id: bytes-exact-comparator
+    name: Byte-Exact Comparator
+    description: >
+      Compares two byte sequences for byte-identical equality.
+      No normalization permitted.
+    equality_mode: BYTE_IDENTICAL
+    applicable_families: [archive]
+    applicable_profiles: [LOSSLESS_TRANSFORMATION, ROUNDTRIP_SEMANTIC_EQUIVALENCE]
+    implementation: oracle/shared/comparators/bytes_exact.py
+    tolerance: none
+
+  # --- TABULAR (CSV / TSV / DIF / SYLK) ---
+  - comparator_id: tabular-row-comparator
+    name: Tabular Row Comparator
+    description: >
+      Compares two tabular models (list-of-rows, list-of-headers) for semantic equivalence.
+      Applies whitespace strip to string values.
+      Numeric values compared with declared tolerance.
+    equality_mode: SEMANTICALLY_EQUIVALENT
+    applicable_families: [cells]
+    applicable_profiles:
+      - ROUNDTRIP_SEMANTIC_EQUIVALENCE
+      - SAME_FORMAT_SERIALIZATION
+    implementation: oracle/shared/comparators/tabular_row.py
+    parameters:
+      strip_whitespace: true
+      case_sensitive: true
+      row_order: strict
+      column_order: strict
+    tolerance: string-exact-after-strip
+
+  # --- SPREADSHEET (FODS / ODS / GNUMERIC) ---
+  - comparator_id: spreadsheet-cell-comparator
+    name: Spreadsheet Cell Comparator
+    description: >
+      Compares two workbook models by sheet count, sheet names, and cell values.
+      Numeric cells: FLOAT64 relative tolerance 1e-9.
+      String cells: exact after whitespace normalization.
+      Metadata (creator, modification-date) excluded.
+      Empty trailing rows/columns ignored.
+    equality_mode: SEMANTICALLY_EQUIVALENT
+    applicable_families: [cells]
+    applicable_profiles:
+      - ROUNDTRIP_SEMANTIC_EQUIVALENCE
+      - SAME_FORMAT_SERIALIZATION
+    implementation: oracle/shared/comparators/spreadsheet_cell.py
+    parameters:
+      numeric_tolerance: FLOAT64_RELATIVE_1E-9
+      string_whitespace: strip
+      sheet_order: strict
+      row_order: strict
+      column_order: strict
+      include_metadata: false
+      include_empty_trailing: false
+    tolerance: FLOAT64_RELATIVE_1E-9
+
+  # --- DOCUMENT (FODT / ODT / ABW) ---
+  - comparator_id: document-paragraph-comparator
+    name: Document Paragraph Comparator
+    description: >
+      Compares two document models by paragraph list, headings, lists, and tables.
+      Text content compared with whitespace normalization.
+      Style names and formatting attributes excluded by default.
+    equality_mode: SEMANTICALLY_EQUIVALENT
+    applicable_families: [words]
+    applicable_profiles:
+      - ROUNDTRIP_SEMANTIC_EQUIVALENCE
+      - SAME_FORMAT_SERIALIZATION
+    implementation: oracle/shared/comparators/document_paragraph.py
+    parameters:
+      compare_style_names: false
+      compare_formatting: false
+      whitespace_policy: normalize
+      paragraph_order: strict
+    tolerance: string-normalize
+
+  # --- IMAGING (PBM / PGM / PPM / QOI / XCF) ---
+  - comparator_id: pixel-channel-comparator
+    name: Pixel Channel Comparator
+    description: >
+      Compares two raster images by dimensions, channel count, and pixel values.
+      For lossless formats (PBM/PGM/PPM): byte-identical pixel values required.
+      For QOI: RGB+A channels, exact values.
+    equality_mode: BYTE_IDENTICAL
+    applicable_families: [imaging]
+    applicable_profiles:
+      - ROUNDTRIP_SEMANTIC_EQUIVALENCE
+      - DOMAIN_MODEL_MAPPING
+    implementation: oracle/shared/comparators/pixel_channel.py
+    parameters:
+      tolerance: 0  # exact for lossless Netpbm/QOI
+    tolerance: exact-pixels
+
+  # --- MODEL PROPERTY (generic) ---
+  - comparator_id: model-property-comparator
+    name: Model Property Comparator
+    description: >
+      Compares named properties of a domain model object against expected values.
+      Used for DOMAIN_MODEL_MAPPING oracle cases.
+    equality_mode: SEMANTICALLY_EQUIVALENT
+    applicable_families: [all]
+    applicable_profiles:
+      - DOMAIN_MODEL_MAPPING
+    implementation: oracle/shared/comparators/model_property.py
+    parameters:
+      type_coerce: false  # strict type comparison
+    tolerance: property-exact

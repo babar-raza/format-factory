@@ -1,0 +1,302 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "oracle-package.schema.json",
+  "title": "Format Factory Oracle Package",
+  "description": "Schema for a per-format oracle package. Every format must have one before product advancement beyond early prototype gates.",
+  "type": "object",
+  "required": [
+    "oracle_id",
+    "format_id",
+    "oracle_version",
+    "family",
+    "authority",
+    "profiles",
+    "valid_cases",
+    "invalid_cases",
+    "canonicalization",
+    "tolerance_policy",
+    "comparators",
+    "validators",
+    "generated_at",
+    "generator_skill",
+    "status"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "oracle_id": {
+      "type": "string",
+      "description": "Unique oracle package identifier. Pattern: oracle-{format_id}-v{N}",
+      "pattern": "^oracle-[a-z0-9_]+-v[0-9]+$"
+    },
+    "format_id": {
+      "type": "string",
+      "description": "Must match registry/format-registry.yaml format_id"
+    },
+    "format_version": {
+      "type": "string",
+      "description": "Format spec version this oracle targets (e.g. ODF 1.3, RFC 4180)"
+    },
+    "oracle_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "family": {
+      "type": "string",
+      "enum": ["cells", "words", "presentation", "drawing", "imaging", "archive", "data", "odf"]
+    },
+    "authority": {
+      "type": "object",
+      "required": ["specification_refs", "authority_summary"],
+      "properties": {
+        "specification_refs": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Specification documents (OASIS, IETF, etc.)"
+        },
+        "authorized_fact_refs": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "FACT-{FORMAT}-NNN identifiers from SAL"
+        },
+        "requirement_refs": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "capability_refs": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "authority_summary": {
+          "type": "string",
+          "description": "Human-readable summary of authority basis"
+        }
+      }
+    },
+    "corpus_refs": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Sample IDs from samples/_provenance.yaml or format _corpus-manifest.yaml"
+    },
+    "profiles": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "STRUCTURAL_VALIDITY",
+          "PARSE_VALIDITY",
+          "INVALID_INPUT_REJECTION",
+          "DOMAIN_MODEL_MAPPING",
+          "MUTATION_BEHAVIOR",
+          "SAME_FORMAT_SERIALIZATION",
+          "ROUNDTRIP_SEMANTIC_EQUIVALENCE",
+          "UNKNOWN_CONTENT_PRESERVATION",
+          "NORMALIZATION",
+          "LOSSY_TRANSFORMATION",
+          "LOSSLESS_TRANSFORMATION",
+          "EXPORT_CONFORMANCE",
+          "ERROR_CONTRACT",
+          "LIMITS_AND_BOUNDARIES",
+          "PACKAGE_CONSUMER",
+          "INTEROPERABILITY",
+          "SECURITY_ROBUSTNESS"
+        ]
+      },
+      "minItems": 1
+    },
+    "valid_cases": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/valid_case"}
+    },
+    "invalid_cases": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/invalid_case"}
+    },
+    "roundtrip_cases": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/roundtrip_case"}
+    },
+    "conversion_cases": {
+      "type": "array",
+      "items": {"type": "object"}
+    },
+    "preservation_cases": {
+      "type": "array",
+      "items": {"type": "object"}
+    },
+    "error_cases": {
+      "type": "array",
+      "items": {"type": "object"}
+    },
+    "unsupported_cases": {
+      "type": "array",
+      "items": {"type": "object"}
+    },
+    "canonicalization": {
+      "type": "object",
+      "required": ["method", "description"],
+      "properties": {
+        "method": {"type": "string"},
+        "description": {"type": "string"},
+        "ordering_policy": {"type": "string"},
+        "whitespace_policy": {"type": "string"},
+        "encoding_policy": {"type": "string"}
+      }
+    },
+    "tolerance_policy": {
+      "type": "object",
+      "required": ["numeric_tolerance", "policy_summary"],
+      "properties": {
+        "numeric_tolerance": {
+          "type": "string",
+          "enum": ["EXACT", "FLOAT64_RELATIVE_1E-9", "FLOAT32_RELATIVE_1E-6", "NOT_APPLICABLE"]
+        },
+        "ordering_tolerance": {"type": "string"},
+        "whitespace_tolerance": {"type": "string"},
+        "metadata_tolerance": {"type": "string"},
+        "policy_summary": {"type": "string"}
+      }
+    },
+    "comparators": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Comparator IDs from oracle/registry/comparator-registry.yaml"
+    },
+    "validators": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Validator IDs"
+    },
+    "consumers": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Product test IDs that consume this oracle"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date"
+    },
+    "generator_skill": {
+      "type": "string"
+    },
+    "generator_version": {
+      "type": "string"
+    },
+    "input_hashes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["path", "sha256"],
+        "properties": {
+          "path": {"type": "string"},
+          "sha256": {"type": "string"}
+        }
+      }
+    },
+    "package_hash": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "SCAFFOLDED",
+        "AUTHORITY_MAPPED",
+        "CASES_DEFINED",
+        "VERIFIED",
+        "PRODUCTION_ACTIVE",
+        "STALE",
+        "DEPRECATED"
+      ]
+    },
+    "stale_reason": {
+      "type": "string"
+    }
+  },
+  "$defs": {
+    "authority_class": {
+      "type": "string",
+      "enum": [
+        "SPEC_NORMATIVE",
+        "SPEC_INFORMATIVE",
+        "SCHEMA_DERIVED",
+        "AUTHORITATIVE_REFERENCE_VECTOR",
+        "VERIFIED_INTEROPERABILITY",
+        "ACCEPTED_EMPIRICAL",
+        "GENERATED_FROM_NEUTRAL_MODEL",
+        "PRODUCT_CONTRACT",
+        "AI_DRAFT_UNVERIFIED",
+        "IMPLEMENTATION_OBSERVED",
+        "REJECTED",
+        "UNKNOWN"
+      ]
+    },
+    "valid_case": {
+      "type": "object",
+      "required": ["case_id", "purpose", "authority_class", "applicable_profiles"],
+      "properties": {
+        "case_id": {"type": "string"},
+        "purpose": {"type": "string"},
+        "authority_class": {"$ref": "#/$defs/authority_class"},
+        "authority_refs": {"type": "array", "items": {"type": "string"}},
+        "sample_ref": {"type": "string"},
+        "input_hash": {"type": "string"},
+        "expected_parse_result": {"type": "string"},
+        "expected_model_properties": {"type": "array", "items": {"type": "object"}},
+        "expected_warnings": {"type": "array", "items": {"type": "string"}},
+        "forbidden_warnings": {"type": "array", "items": {"type": "string"}},
+        "applicable_profiles": {
+          "type": "array",
+          "items": {"type": "string"}
+        }
+      }
+    },
+    "invalid_case": {
+      "type": "object",
+      "required": ["case_id", "defect_class", "expected_failure_stage"],
+      "properties": {
+        "case_id": {"type": "string"},
+        "defect_class": {"type": "string"},
+        "malformed_boundary": {"type": "string"},
+        "authority_refs": {"type": "array", "items": {"type": "string"}},
+        "sample_ref": {"type": "string"},
+        "expected_failure_stage": {
+          "type": "string",
+          "enum": ["SIGNATURE_CHECK", "PARSE_HEADER", "PARSE_BODY", "MODEL_MAPPING", "ANY"]
+        },
+        "expected_error_type": {"type": "string"},
+        "expected_error_code": {"type": "string"},
+        "message_requirements": {"type": "array", "items": {"type": "string"}},
+        "partial_recovery_allowed": {"type": "boolean"},
+        "security_relevance": {"type": "boolean"}
+      }
+    },
+    "roundtrip_case": {
+      "type": "object",
+      "required": ["case_id", "operation", "equality_mode"],
+      "properties": {
+        "case_id": {"type": "string"},
+        "operation": {"type": "string"},
+        "equality_mode": {
+          "type": "string",
+          "enum": [
+            "BYTE_IDENTICAL",
+            "STRUCTURALLY_EQUIVALENT",
+            "SEMANTICALLY_EQUIVALENT",
+            "EQUIVALENT_WITH_ALLOWED_NORMALIZATION",
+            "INTENTIONALLY_LOSSY_WITH_DECLARED_LOSS"
+          ]
+        },
+        "canonicalizer": {"type": "string"},
+        "comparator": {"type": "string"},
+        "fields_required_equal": {"type": "array", "items": {"type": "string"}},
+        "fields_allowed_normalized": {"type": "array", "items": {"type": "string"}},
+        "fields_allowed_lossy": {"type": "array", "items": {"type": "string"}},
+        "ordering_policy": {"type": "string"},
+        "whitespace_policy": {"type": "string"},
+        "encoding_policy": {"type": "string"},
+        "metadata_policy": {"type": "string"},
+        "tolerance_policy": {"type": "string"},
+        "expected_diagnostics": {"type": "array", "items": {"type": "string"}}
+      }
+    }
+  }
+}

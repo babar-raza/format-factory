@@ -1,0 +1,286 @@
+# Oracle Layer Inventory — Format Factory
+# Wave 0: Forensic Discovery
+# Generated: 2026-06-25
+# Mission: FORMAT-FACTORY-ORACLE-LAYER-HARDENING-001
+
+mission_id: FORMAT-FACTORY-ORACLE-LAYER-HARDENING-001
+inventory_date: "2026-06-25"
+inventory_author: claude-sonnet-4-6
+
+# ==============================================================================
+# PART 1: EXISTING ORACLE COMPONENTS (discovered from repository)
+# ==============================================================================
+
+discovered_oracle_components:
+
+  - component_id: ORACLE-EXIST-001
+    name: "FODS Gate 6 Oracle Harness"
+    path: tools/oracle/run_fods_oracle.py
+    component_type: acquisition_oracle
+    format_scope: [fods]
+    language_scope: [python]
+    purpose: >
+      Gate 6 acquisition oracle: runs LibreOffice headless to export FODS samples
+      to CSV, then compares against prototype parser neutral model output.
+    inputs:
+      - samples/by-format/fods/*.fods
+      - prototypes/by-format/fods/fods_parser.py
+      - schemas/neutral-model/fods/
+    outputs:
+      - .local/oracle/fods/ (local-only, gitignored)
+      - acquisition-packs/fods/gate6-oracle-comparison-report.md (sanitized, committed)
+    authority_source: LibreOffice (third-party reference implementation)
+    producer: tools/oracle/run_fods_oracle.py
+    consumers:
+      - tools/oracle/compare_fods_oracle.py
+      - tools/oracle/summarize_oracle_results.py
+    schema: null  # no schema
+    validator: tools/oracle/validate_oracle_environment.py
+    tests: []
+    skill_ids: []
+    command_ids: []
+    currently_used: true
+    current_status: ACTIVE_PARTIAL
+    preservation_recommendation: >
+      RETAIN AND EXTEND. This is the only working oracle harness. Extend to cover
+      product source (not just prototype). Create parallel product oracle alongside.
+    notes: "Gate 6 passed: 3/4 PASS, 1/4 WARN (multi-sheet CSV export limitation — expected)."
+
+  - component_id: ORACLE-EXIST-002
+    name: "FODT Gate 6 Oracle Harness"
+    path: tools/oracle/run_fodt_oracle.py
+    component_type: acquisition_oracle
+    format_scope: [fodt]
+    language_scope: [python]
+    purpose: >
+      FODT version of the Gate 6 LibreOffice oracle. Same pattern as FODS.
+    inputs:
+      - samples/by-format/fodt/*.fodt
+    outputs:
+      - .local/oracle/fodt/ (local-only)
+      - acquisition-packs/fodt/gate6-oracle-comparison-report.md
+    authority_source: LibreOffice
+    producer: tools/oracle/run_fodt_oracle.py
+    consumers: [tools/oracle/compare_fodt_oracle.py]
+    currently_used: true
+    current_status: ACTIVE_PARTIAL
+    preservation_recommendation: RETAIN_AND_EXTEND
+
+  - component_id: ORACLE-EXIST-003
+    name: "Oracle Common Module"
+    path: tools/oracle/oracle_common.py
+    component_type: shared_library
+    format_scope: [fods, fodt]
+    purpose: >
+      Shared LibreOffice discovery, path model, and diagnostic utilities.
+      All oracle tools import from this module.
+    currently_used: true
+    current_status: PRODUCTION_ACTIVE
+    preservation_recommendation: >
+      RETAIN. Extend to support product oracle (not just LibreOffice acquisition).
+
+  - component_id: ORACLE-EXIST-004
+    name: "Oracle Provider Registry"
+    path: tools/oracle/provider_registry.yaml
+    component_type: registry
+    format_scope: [fods, fodt]
+    purpose: Maps format IDs to approved oracle execution providers (currently only LibreOffice).
+    currently_used: true
+    current_status: ACTIVE_PARTIAL
+    preservation_recommendation: >
+      RETAIN. Currently only has LibreOffice. Needs Python/pytest-based oracle provider
+      for product conformance testing (no external tool required).
+
+  - component_id: ORACLE-EXIST-005
+    name: "FODS Gate 7 Fuzz Test Runner"
+    path: tools/fuzz/run_gate7_fuzz_test.py
+    component_type: malformed_input_tester
+    format_scope: [fods]
+    purpose: Runs 18 malformed FODS fixtures; verifies no crashes.
+    inputs: [tests/fixtures/fods/malformed/]
+    outputs: [local result summary]
+    currently_used: true
+    current_status: PRODUCTION_ACTIVE
+    notes: "Gate 7 PASSED: 18/18 PASS, 0 crashes"
+    preservation_recommendation: >
+      RETAIN. Integrate with oracle INVALID_INPUT_REJECTION profile.
+
+  - component_id: ORACLE-EXIST-006
+    name: "FODT Gate 7 Fuzz Test Runner"
+    path: tools/fuzz/run_fodt_gate7_fuzz_test.py
+    component_type: malformed_input_tester
+    format_scope: [fodt]
+    currently_used: true
+    current_status: PRODUCTION_ACTIVE
+    preservation_recommendation: RETAIN
+
+  - component_id: ORACLE-EXIST-007
+    name: "FODS Malformed Fixtures"
+    path: tests/fixtures/fods/malformed/
+    component_type: test_fixtures
+    format_scope: [fods]
+    purpose: 18 malformed FODS files in 4 categories (Gate 7 malformed/fuzz testing).
+    currently_used: true
+    current_status: PRODUCTION_ACTIVE
+    preservation_recommendation: RETAIN_AND_EXPAND
+
+  - component_id: ORACLE-EXIST-008
+    name: "FODT Malformed Fixtures"
+    path: tests/fixtures/fodt/malformed/
+    component_type: test_fixtures
+    format_scope: [fodt]
+    currently_used: true
+    current_status: PRODUCTION_ACTIVE
+    preservation_recommendation: RETAIN_AND_EXPAND
+
+  - component_id: ORACLE-EXIST-009
+    name: "Sample Corpus (by-format)"
+    path: samples/by-format/
+    component_type: corpus
+    format_scope: [fods, fodt, ods, odt, qoi, xcf, ppm, pgm, pbm, sylk, dif, zst, abw, gnumeric, ndjson, toml, tsv, csv, fodg, fodp]
+    purpose: Physical sample files with provenance tracking.
+    currently_used: true
+    current_status: ACTIVE_PARTIAL
+    preservation_recommendation: >
+      RETAIN AND EXPAND. Core corpus layer. Some formats have _corpus-manifest.yaml
+      (ods, odt, qoi, xcf, ppm, pgm, pbm, sylk, dif, zst); others missing manifests.
+    formats_with_corpus_manifests: [ods, odt, qoi, xcf, ppm, pgm, pbm, sylk, dif, zst]
+    formats_missing_corpus_manifests: [fods, fodt, abw, gnumeric, ndjson, toml, tsv, csv, fodg, fodp]
+
+  - component_id: ORACLE-EXIST-010
+    name: "Sample Provenance Registry"
+    path: samples/_provenance.yaml
+    component_type: provenance_registry
+    format_scope: [fods, fodt]
+    purpose: Per-sample license records with SHA-256 hashes.
+    currently_used: true
+    current_status: ACTIVE_PARTIAL
+    preservation_recommendation: >
+      RETAIN. Currently only has FODS and FODT entries (8 samples total).
+      Must expand to all 22+ format directories.
+
+  - component_id: ORACLE-EXIST-011
+    name: "FODS Neutral Model Schema"
+    path: schemas/neutral-model/fods/
+    component_type: neutral_model_schema
+    format_scope: [fods]
+    purpose: Gate 5 neutral model definition. Entities: Workbook, Sheet, Row, Cell, Formula, Warning.
+    currently_used: true
+    current_status: PRODUCTION_ACTIVE
+    preservation_recommendation: RETAIN
+    notes: "Validated 4/4 PASS, 87 checks, 0 errors (Gate 5)"
+
+  - component_id: ORACLE-EXIST-012
+    name: "Self-test Oracle Harness"
+    path: tools/oracle/self_test_oracle_harness.py
+    component_type: infrastructure_test
+    format_scope: [fods]
+    purpose: Self-tests the oracle tooling without LibreOffice dependency.
+    currently_used: false
+    current_status: IMPLEMENTED_NOT_CONSUMED
+    preservation_recommendation: RETAIN_AND_ACTIVATE
+
+  - component_id: ORACLE-EXIST-013
+    name: "Validate Oracle Environment"
+    path: tools/oracle/validate_oracle_environment.py
+    component_type: environment_validator
+    format_scope: [fods, fodt]
+    purpose: Validates LibreOffice installation and oracle environment.
+    currently_used: false
+    current_status: IMPLEMENTED_NOT_CONSUMED
+    preservation_recommendation: RETAIN_AND_EXTEND
+
+
+# ==============================================================================
+# PART 2: MATURITY ASSESSMENT
+# ==============================================================================
+
+oracle_layer_maturity:
+  assessed_date: "2026-06-25"
+  current_level: 2
+  current_level_name: "PARTIAL FORMAT-SPECIFIC IMPLEMENTATION"
+  target_level: 5
+  target_level_name: "ALL-FORMAT PRODUCTION AUTHORITY WITH AUTO-ONBOARDING"
+
+  strengths:
+    - "Gate 6 acquisition oracle (LibreOffice) exists for FODS and FODT"
+    - "Gate 7 fuzz/malformed testing active for FODS and FODT"
+    - "Corpus exists (22+ format directories) with provenance policy"
+    - "Neutral model schema exists for FODS (Gate 5)"
+    - "Provider registry exists (LibreOffice)"
+    - "Sample policy (Apache-2.0) with hash verification active"
+
+  missing_components:
+    - "No product conformance oracle (only acquisition oracle)"
+    - "No schema-backed oracle package per format"
+    - "No oracle obligation register"
+    - "No oracle profile registry"
+    - "No family comparators or canonicalizers"
+    - "No oracle verdict schema or verdict engine"
+    - "No product test oracle binding"
+    - "No supervisor/gate integration for oracle"
+    - "No future-format auto-onboarding hook"
+    - "No stale detection"
+    - "18 formats have no oracle at all"
+    - "Corpus manifests missing for 10+ formats"
+    - "No authority classification on expected values"
+
+  broken_handoffs:
+    - "Gate 6 oracle → product test: no handoff (oracle is acquisition-only)"
+    - "Fuzz fixtures → product tests: fuzz runner is standalone, not test-integrated"
+    - "Corpus manifests → oracle cases: no linkage"
+
+  duplicated_truth:
+    - "Expected values duplicated ad-hoc across thousands of test files"
+    - "No canonical oracle cases; tests invent expected behavior locally"
+
+  bypass_paths:
+    - "Tests pass by asserting 'no exception' without checking model properties"
+    - "Arithmetic analytics tests: pass without any spec-derived expectation"
+    - "Generated outputs approved by product under test (no independent reference)"
+
+  false_pass_risks:
+    - "Parser can change behavior and all existing tests still pass (no oracle check)"
+    - "Snapshot tests: if golden file is product output, self-approval occurs"
+    - "Tests with only 'assert result is not None' provide no behavioral assurance"
+
+  false_fail_risks:
+    - "LibreOffice oracle may flag format differences that are spec-compliant variations"
+    - "No tolerance policies defined for any format"
+
+  evidence:
+    - "Wave 0 discovery: 2026-06-25"
+    - "tools/oracle/: 10 files (FODS+FODT scope only)"
+    - "samples/by-format/: 22 directories"
+    - "tests/fixtures/: 2 directories (fods, fodt malformed)"
+
+
+# ==============================================================================
+# PART 3: TARGET ARCHITECTURE
+# ==============================================================================
+
+target_architecture:
+  canonical_root: oracle/
+  schemas: oracle/schema/
+  registry: oracle/registry/
+  per_format: oracle/formats/<format_id>/
+  shared: oracle/shared/
+  reports: oracle/reports/
+  corpus_root: samples/by-format/  # SEPARATE — oracle references corpus, does not own it
+
+  key_design_decisions:
+    - id: D001
+      decision: "Oracle layer references corpus (samples/by-format/) but does not own it"
+      rationale: "Corpus ownership stays in samples/ with existing policy and provenance"
+    - id: D002
+      decision: "Acquisition oracle (LibreOffice/Gate 6) is retained separately from product oracle"
+      rationale: "They serve different purposes. Acquisition oracle = 'does LibreOffice agree?'. Product oracle = 'does product implement the spec?'"
+    - id: D003
+      decision: "Authority classification required on every oracle case expected value"
+      rationale: "Core non-negotiable oracle principle (§9 of mission spec)"
+    - id: D004
+      decision: "Family comparators live in oracle/shared/comparators/, parameterized per format"
+      rationale: "Avoid duplicating comparison logic per format"
+    - id: D005
+      decision: "Oracle verdicts are local-only (.local/oracle/) — only sanitized reports committed"
+      rationale: "Consistent with existing Gate 6 oracle local-output policy"

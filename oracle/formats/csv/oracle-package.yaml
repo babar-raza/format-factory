@@ -1,0 +1,319 @@
+# CSV Oracle Package — Format Factory
+# Format: CSV (Comma-Separated Values)
+# Authority: RFC 4180 (IETF)
+# Oracle version: 1
+# Status: CASES_DEFINED
+# Mission: FORMAT-FACTORY-ORACLE-LAYER-HARDENING-001 — Pilot 1 (Structured Text)
+
+oracle_id: oracle-csv-v1
+format_id: csv
+format_version: "RFC 4180"
+oracle_version: 1
+family: cells
+generated_at: "2026-06-25"
+generator_skill: oracle-layer-hardening-mission
+status: CASES_DEFINED
+
+# ==============================================================================
+# AUTHORITY
+# ==============================================================================
+authority:
+  specification_refs:
+    - id: RFC-4180
+      title: "Common Format and MIME Type for Comma-Separated Values (CSV) Files"
+      body: IETF
+      url: "https://www.ietf.org/rfc/rfc4180.txt"
+      legal_category: 1  # royalty-free IETF RFC
+      authority_class: SPEC_NORMATIVE
+    - id: RFC-4180-MIME
+      title: "MIME type text/csv (IANA)"
+      body: IANA
+      url: "https://www.iana.org/assignments/media-types/text/csv"
+      authority_class: SPEC_NORMATIVE
+  authorized_fact_refs: []  # SAL facts for CSV not extracted yet
+  requirement_refs: []
+  capability_refs: []
+  authority_summary: >
+    RFC 4180 defines the CSV format and its MIME type. It is normative and
+    royalty-free. Expected parser behaviors are derived from RFC 4180 §2.
+    Implementation-observed behavior for edge cases is classified ACCEPTED_EMPIRICAL.
+
+# ==============================================================================
+# CORPUS REFERENCES
+# ==============================================================================
+corpus_refs:
+  - corpus_id: csv-minimal-2x2
+    sample_ref: samples/by-format/csv/minimal-2x2.csv
+    sha256: null  # to be computed
+    license: project-owned-synthetic
+    authority_class: GENERATED_FROM_NEUTRAL_MODEL
+  - corpus_id: csv-single-cell
+    sample_ref: samples/by-format/csv/single-cell.csv
+    sha256: null
+    license: project-owned-synthetic
+    authority_class: GENERATED_FROM_NEUTRAL_MODEL
+  - corpus_id: csv-quoted-fields
+    sample_ref: samples/by-format/csv/quoted-fields.csv
+    sha256: null
+    license: project-owned-synthetic
+    authority_class: GENERATED_FROM_NEUTRAL_MODEL
+  - corpus_id: csv-invalid-unterminated-quote
+    sample_ref: samples/by-format/csv/invalid-unterminated-quote.csv
+    sha256: null
+    license: project-owned-synthetic
+    authority_class: GENERATED_FROM_NEUTRAL_MODEL
+
+# ==============================================================================
+# PROFILES
+# ==============================================================================
+profiles:
+  - STRUCTURAL_VALIDITY
+  - PARSE_VALIDITY
+  - INVALID_INPUT_REJECTION
+  - DOMAIN_MODEL_MAPPING
+  - MUTATION_BEHAVIOR
+  - SAME_FORMAT_SERIALIZATION
+  - ROUNDTRIP_SEMANTIC_EQUIVALENCE
+  - NORMALIZATION
+  - ERROR_CONTRACT
+  - LIMITS_AND_BOUNDARIES
+  - PACKAGE_CONSUMER
+
+profiles_not_applicable:
+  - profile: INTEROPERABILITY
+    reason: "No approved reference tool for CSV; RFC 4180 is authoritative"
+  - profile: LOSSLESS_TRANSFORMATION
+    reason: "CSV is a text format, not a compression format"
+  - profile: SECURITY_ROBUSTNESS
+    reason: "CSV has no injection attack surface in parse-only mode; entity injection not applicable"
+  - profile: UNKNOWN_CONTENT_PRESERVATION
+    reason: "CSV has no extension mechanism in RFC 4180"
+  - profile: EXPORT_CONFORMANCE
+    reason: "CSV → other formats not a primary operation"
+
+# ==============================================================================
+# VALID CASES
+# ==============================================================================
+valid_cases:
+
+  - case_id: csv-valid-001
+    purpose: "Minimal valid CSV — header row + 2 data rows, 2 columns"
+    authority_class: SPEC_NORMATIVE
+    authority_refs:
+      - "RFC 4180 §2 rule 1: Each record on separate line (CRLF/LF)"
+      - "RFC 4180 §2 rule 3: Optional header record with same number of fields"
+    sample_ref: samples/by-format/csv/minimal-2x2.csv
+    expected_parse_result: SUCCESS
+    expected_model_properties:
+      - property: headers
+        value: ["Name", "Age"]
+        authority: "RFC 4180 §2 rule 3 — first line is header"
+      - property: row_count
+        value: 2
+        authority: "RFC 4180 §2 rule 1 — 2 data records"
+      - property: has_header
+        value: true
+      - property: column_count
+        value: 2
+    expected_warnings: []
+    forbidden_warnings: ["crash", "exception"]
+    applicable_profiles:
+      - STRUCTURAL_VALIDITY
+      - PARSE_VALIDITY
+      - DOMAIN_MODEL_MAPPING
+
+  - case_id: csv-valid-002
+    purpose: "Single cell CSV — 1 row, 1 column (minimum meaningful content)"
+    authority_class: SPEC_NORMATIVE
+    authority_refs:
+      - "RFC 4180 §2 rule 1: 1 record"
+    sample_ref: samples/by-format/csv/single-cell.csv
+    expected_parse_result: SUCCESS
+    expected_model_properties:
+      - property: row_count
+        value: 1
+        authority: "RFC 4180 §2"
+      - property: column_count
+        value: 1
+      - property: has_header
+        value: true
+        note: "Single column 'value' — heuristic identifies as header"
+    applicable_profiles:
+      - STRUCTURAL_VALIDITY
+      - PARSE_VALIDITY
+      - LIMITS_AND_BOUNDARIES
+
+  - case_id: csv-valid-003
+    purpose: "Quoted fields with embedded commas and text — verifies RFC 4180 quoting rules"
+    authority_class: SPEC_NORMATIVE
+    authority_refs:
+      - "RFC 4180 §2 rule 5: Fields may be enclosed in double quotes"
+      - "RFC 4180 §2 rule 6: Fields with commas must be enclosed in double quotes"
+    sample_ref: samples/by-format/csv/quoted-fields.csv
+    expected_parse_result: SUCCESS
+    expected_model_properties:
+      - property: headers
+        value: ["name", "description", "price"]
+        authority: "RFC 4180 §2 rule 3"
+      - property: row_count
+        value: 2
+      - property: row_count
+        value: 2
+        authority: "RFC 4180 §2 rule 1 — 2 data records"
+      - property: column_count
+        value: 3
+        authority: "RFC 4180 §2 — 3 fields per record (name, description, price)"
+        # NOTE: cell_value row=0 col=1 should be "A simple widget, small"
+        # This authority is RFC 4180 §2 rule 6 — comma inside quoted field preserved.
+        # cell_value lookup requires extended executor support (tracked as oracle gap).
+    applicable_profiles:
+      - PARSE_VALIDITY
+      - NORMALIZATION
+
+  - case_id: csv-valid-004
+    purpose: "Empty file — 0 rows, 0 columns"
+    authority_class: ACCEPTED_EMPIRICAL
+    authority_refs:
+      - "RFC 4180 does not specify empty file behavior — empirical product contract"
+    sample_ref: null  # in-memory case
+    input_inline: ""
+    expected_parse_result: SUCCESS
+    expected_model_properties:
+      - property: row_count
+        value: 0
+      - property: column_count
+        value: 0
+      - property: has_header
+        value: false
+    applicable_profiles:
+      - LIMITS_AND_BOUNDARIES
+
+# ==============================================================================
+# INVALID CASES
+# ==============================================================================
+invalid_cases:
+
+  - case_id: csv-invalid-001
+    purpose: "Unterminated quoted field — malformed CSV"
+    defect_class: invalid-quoting
+    malformed_boundary: "Opening double-quote with no closing double-quote before end-of-file"
+    authority_refs:
+      - "RFC 4180 §2 rule 5: Closing quote must terminate quoted field"
+    sample_ref: samples/by-format/csv/invalid-unterminated-quote.csv
+    expected_failure_stage: PARSE_BODY
+    expected_error_type: "CsvParseError or ValueError"
+    expected_error_code: null
+    message_requirements:
+      - "Error must not be a bare crash (no unhandled exception propagation)"
+    partial_recovery_allowed: false
+    security_relevance: false
+
+  - case_id: csv-invalid-002
+    purpose: "Inconsistent column counts — varying field counts per row"
+    defect_class: structural-inconsistency
+    malformed_boundary: "Row 2 has 3 fields but row 1 has 2 fields"
+    authority_refs:
+      - "RFC 4180 §2 rule 4: Each record same number of fields as header"
+    sample_ref: null  # in-memory case
+    input_inline: "a,b\n1,2,3\n"
+    expected_failure_stage: PARSE_BODY
+    expected_error_type: "CsvParseError or ValueError (or WARNING — product-defined)"
+    partial_recovery_allowed: true  # parser may warn and continue
+    security_relevance: false
+
+# ==============================================================================
+# ROUNDTRIP CASES
+# ==============================================================================
+roundtrip_cases:
+
+  - case_id: csv-rt-001
+    purpose: "Parse → CsvDocument → write → re-parse → semantic equivalence"
+    operation: "load_csv(path) → write_csv_to_file(rows, path) → load_csv(path2)"
+    equality_mode: SEMANTICALLY_EQUIVALENT
+    canonicalizer: "csv-whitespace-strip"
+    comparator: "tabular-row-comparator"
+    fields_required_equal:
+      - row_count
+      - column_count
+      - headers
+      - all_cell_values
+    fields_allowed_normalized:
+      - trailing_newline
+      - line_endings
+    fields_allowed_lossy: []
+    ordering_policy: "rows must be in same order"
+    whitespace_policy: "trim leading/trailing whitespace on cell values"
+    encoding_policy: "UTF-8 input → UTF-8 output"
+    tolerance_policy: null  # CSV is string-only; no numeric tolerance needed
+    expected_diagnostics: []
+
+# ==============================================================================
+# CANONICALIZATION
+# ==============================================================================
+canonicalization:
+  method: csv-tabular-canonical
+  description: >
+    Canonical form for CSV comparison:
+    1. Strip leading/trailing whitespace from cell values
+    2. Normalize line endings to LF
+    3. Compare row-by-row, cell-by-cell
+    4. Empty trailing newline ignored
+  ordering_policy: "Row order preserved"
+  whitespace_policy: "Cell values: strip leading/trailing; internal preserved"
+  encoding_policy: "UTF-8 normalized"
+
+# ==============================================================================
+# TOLERANCE POLICY
+# ==============================================================================
+tolerance_policy:
+  numeric_tolerance: NOT_APPLICABLE
+  note: >
+    CSV stores all values as strings. No numeric tolerance applies.
+    All cell values must compare as strings after whitespace normalization.
+  ordering_tolerance: "Row order must be preserved"
+  whitespace_tolerance: "Leading/trailing whitespace stripped from cell values"
+  metadata_tolerance: "No metadata in RFC 4180 CSV"
+  policy_summary: "String-exact comparison after whitespace normalization"
+
+# ==============================================================================
+# COMPARATORS AND VALIDATORS
+# ==============================================================================
+comparators:
+  - tabular-row-comparator
+
+validators:
+  - csv-structural-validator
+
+consumers:
+  - tests/python/csv/test_csv_document_model.py
+  - tests/python/csv/test_csv_roundtrip.py
+
+# ==============================================================================
+# NEGATIVE CONTROLS (false-pass detection)
+# ==============================================================================
+negative_controls:
+  - control_id: csv-neg-001
+    description: "Altered golden output must FAIL"
+    test: "Replace expected cell value 'Alice' with 'Bob' — comparator must detect deviation"
+    expected_outcome: FAIL
+  - control_id: csv-neg-002
+    description: "Wrong row count must FAIL"
+    test: "Assert row_count == 99 when actual is 2"
+    expected_outcome: FAIL
+  - control_id: csv-neg-003
+    description: "Missing required authority on new case must block PASS"
+    test: "New case with authority_class: UNKNOWN must not produce PASS verdict"
+    expected_outcome: BLOCKED_MISSING_AUTHORITY
+
+# ==============================================================================
+# TRACEABILITY
+# ==============================================================================
+oracle_traceability:
+  oracle_id: oracle-csv-v1
+  specification_refs: [RFC-4180]
+  fact_refs: []  # to be populated from SAL when CSV facts extracted
+  requirement_refs: []
+  capability_refs: []
+  test_refs:
+    - tests/python/csv/test_csv_document_model.py
+    - tests/python/csv/test_csv_parse.py

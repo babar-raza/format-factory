@@ -1,0 +1,196 @@
+# Oracle Profile Registry — Format Factory
+# Defines reusable oracle profile categories and their requirements.
+# Products select applicable profiles; inapplicable profiles must be explicitly excluded with reason.
+
+schema_version: "1.0"
+last_updated: "2026-06-25"
+
+profiles:
+
+  - profile_id: STRUCTURAL_VALIDITY
+    name: Structural Validity
+    description: >
+      Verifies that the format's container/structural requirements are met.
+      For XML: well-formed XML, correct namespace declarations.
+      For binary: magic bytes, header fields, container structure.
+      For ZIP-based: valid ZIP container, required entries present.
+    required_cases:
+      - One minimal valid file (smallest possible conforming input)
+      - One empty/minimal-content case where format allows it
+    applicable_to: [all]
+    family_notes:
+      cells: "Workbook container with at least one sheet"
+      imaging: "Valid magic bytes, dimensions header"
+      archive: "Valid frame header, magic bytes"
+      data: "Parseable structure with at least one record/entry"
+
+  - profile_id: PARSE_VALIDITY
+    name: Parse Validity
+    description: >
+      Verifies correct parsing of known-valid inputs.
+      Parser must not throw on valid input.
+      Extracted model must match expected properties.
+    required_cases:
+      - At least one valid sample with explicitly declared expected properties
+      - Expected properties must trace to spec or authorized facts
+    authority_minimum: ACCEPTED_EMPIRICAL  # lowest acceptable — SPEC_NORMATIVE preferred
+    applicable_to: [all]
+
+  - profile_id: INVALID_INPUT_REJECTION
+    name: Invalid Input Rejection
+    description: >
+      Verifies that malformed/invalid inputs produce appropriate errors.
+      Parser must not crash on invalid input.
+      Error must be reported through the declared API contract.
+    required_cases:
+      - Wrong magic bytes / wrong signature
+      - Truncated file (at least 2 truncation points)
+      - One format-specific structural defect
+    applicable_to: [all]
+    security_note: "Parser crash = FAIL regardless of error message content"
+
+  - profile_id: DOMAIN_MODEL_MAPPING
+    name: Domain Model Mapping
+    description: >
+      Verifies that parsed content maps correctly to the domain object model.
+      spec_qname attributes must be present and correct.
+      Model properties must trace to spec QNames.
+    required_cases:
+      - spec_qname attribute present on domain model class
+      - Model properties accessible and correctly typed
+      - Factory method (from_file) works correctly
+    applicable_to: [all]
+    blockers: []
+
+  - profile_id: MUTATION_BEHAVIOR
+    name: Mutation Behavior
+    description: >
+      Verifies that the API allows expected mutations and produces correct results.
+    required_cases:
+      - At least one write operation producing a modified model
+      - Modified model parseable by the same parser
+    applicable_to: [fods, fodt, ods, odt, csv, tsv, ndjson, abw, fodg, gnumeric, toml, dif, sylk]
+
+  - profile_id: SAME_FORMAT_SERIALIZATION
+    name: Same-Format Serialization
+    description: >
+      Verifies that written output conforms to the format specification.
+      Output must be parseable. Structural validity required.
+    required_cases:
+      - Write minimal content → reload → model equivalent
+      - Written output passes structural validator
+    applicable_to: [fods, fodt, ods, odt, csv, tsv, ndjson, abw, gnumeric, toml, dif, sylk]
+
+  - profile_id: ROUNDTRIP_SEMANTIC_EQUIVALENCE
+    name: Roundtrip Semantic Equivalence
+    description: >
+      LOAD → MODEL → SAVE → LOAD → MODEL B must be semantically equivalent to MODEL A.
+      Equivalence is semantic (not byte-identical) unless format requires byte identity.
+    required_cases:
+      - At least one round-trip case with declared equality mode
+      - Fields allowed to differ must be explicitly declared (tolerance_policy)
+    equality_modes_supported:
+      - SEMANTICALLY_EQUIVALENT
+      - EQUIVALENT_WITH_ALLOWED_NORMALIZATION
+      - INTENTIONALLY_LOSSY_WITH_DECLARED_LOSS
+    applicable_to: [fods, fodt, ods, odt, csv, tsv, pbm, pgm, ppm, qoi, zst, ndjson, toml]
+
+  - profile_id: UNKNOWN_CONTENT_PRESERVATION
+    name: Unknown Content Preservation
+    description: >
+      Verifies behavior when format contains extensions or unknown elements.
+      Must not crash. May warn. If preservation is claimed, must preserve.
+    required_cases:
+      - Unknown/extension element present
+      - Expected behavior declared (IGNORE | WARN | PRESERVE | REJECT)
+    applicable_to: [fods, fodt, ods, odt, fodg, fodp, abw, gnumeric, xcf]
+
+  - profile_id: NORMALIZATION
+    name: Normalization
+    description: >
+      Verifies that normalization (whitespace, encoding, ordering) behaves as declared.
+    required_cases:
+      - Input with whitespace variations → expected normalized output
+    applicable_to: [csv, tsv, ndjson, toml, fods, fodt]
+
+  - profile_id: LOSSLESS_TRANSFORMATION
+    name: Lossless Transformation
+    description: >
+      For compression/decompression: decompressed output must byte-equal original.
+    required_cases:
+      - Compress → decompress → byte-identical to original
+      - At least 3 content types (empty, small, varied)
+    applicable_to: [zst]
+    equality_mode: BYTE_IDENTICAL
+
+  - profile_id: LOSSY_TRANSFORMATION
+    name: Lossy Transformation
+    description: >
+      For export operations where information loss is expected/declared.
+      Loss must be explicitly declared and bounded.
+    required_cases:
+      - Export with declared loss fields
+      - Unexpected loss = FAIL
+    applicable_to: []  # determined per-format based on export features
+
+  - profile_id: EXPORT_CONFORMANCE
+    name: Export Conformance
+    description: >
+      For formats that export to other formats (e.g., FODS→CSV, FODT→TXT/HTML/MD).
+      Output must conform to the target format's structural requirements.
+    required_cases:
+      - Export to declared target
+      - Output parseable by target format tools
+    applicable_to: [fods, fodt, odt]
+
+  - profile_id: ERROR_CONTRACT
+    name: Error Contract
+    description: >
+      Verifies that errors are raised through the declared exception hierarchy.
+      Right exception type, meaningful message. No raw OS/system exceptions leaking.
+    required_cases:
+      - Invalid input → correct exception type
+      - Exception has non-empty message
+    applicable_to: [all]
+
+  - profile_id: LIMITS_AND_BOUNDARIES
+    name: Limits and Boundaries
+    description: >
+      Verifies behavior at edge cases: empty content, max values, zero dimensions, etc.
+    required_cases:
+      - Empty/minimum content case
+      - At least one boundary condition
+    applicable_to: [imaging, zst, csv, tsv, ndjson]
+
+  - profile_id: PACKAGE_CONSUMER
+    name: Package Consumer
+    description: >
+      Verifies that the API works from an installed package (not just from source).
+      Must run from installed wheel (.whl) or nuget package.
+    required_cases:
+      - Import from installed package succeeds
+      - Basic API call produces correct result
+      - No source-tree imports in installed path
+    applicable_to: [all]
+
+  - profile_id: INTEROPERABILITY
+    name: Interoperability
+    description: >
+      Verifies that output is readable by at least one third-party tool.
+    required_cases:
+      - Output readable by approved reference tool
+    applicable_to: [fods, fodt]  # those with Gate 6 LibreOffice oracle
+    reference_tool_policy: "Only approved providers from tools/oracle/provider_registry.yaml"
+
+  - profile_id: SECURITY_ROBUSTNESS
+    name: Security Robustness
+    description: >
+      Verifies that security-critical behaviors are correct.
+      XML formats: XXE disabled, DTD processing disabled.
+      Archive formats: decompression bomb protection.
+      Image formats: oversized dimension protection.
+    required_cases:
+      - XML: entity injection sample → no external entity resolution
+      - Archive: oversized claimed size → safe failure
+      - Image: oversized dimensions → safe failure
+    applicable_to: [fods, fodt, xcf, zst, qoi, gnumeric, abw, ods, odt]

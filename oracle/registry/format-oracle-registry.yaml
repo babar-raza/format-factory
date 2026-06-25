@@ -1,0 +1,680 @@
+# Format Oracle Registry — Format Factory
+# Single authoritative source for oracle package status per format.
+# Generated: 2026-06-25 (Wave 0 discovery)
+# Mission: FORMAT-FACTORY-ORACLE-LAYER-HARDENING-001
+
+schema_version: "1.0"
+mission_id: "FORMAT-FACTORY-ORACLE-LAYER-HARDENING-001"
+last_updated: "2026-06-25"
+
+# Oracle obligation for each format.
+# Status lifecycle: OBLIGATION_CREATED → SCAFFOLDED → AUTHORITY_MAPPED → CASES_DEFINED → VERIFIED → PRODUCTION_ACTIVE
+# Terminal states: ORACLE_COMPLETE_AND_ENFORCED | VALID_FORMAT_SCOPE_EXCLUSION | WAITING_VALID_EXTERNAL_AUTHORITY | BLOCKED_TRUE_EXTERNAL_DEPENDENCY
+
+format_oracles:
+
+  # ==================== CELLS FAMILY ====================
+
+  - format_id: fods
+    family: cells
+    language: [python, dotnet]
+    oracle_id: oracle-fods-v1
+    oracle_package: oracle/formats/fods/oracle-package.yaml
+    authority:
+      specification_refs:
+        - "ODF 1.3 (OASIS) — docs.oasis-open.org/office/OpenDocument/v1.3/"
+      authorized_fact_refs: []  # SAL has 4988 FODS facts
+      spec_body: OASIS
+      legal_category: 1
+    corpus_status: PARTIAL  # 4 project-created samples in samples/by-format/fods/
+    acquisition_oracle_status: ACTIVE  # Gate 6 oracle (LibreOffice) — tools/oracle/run_fods_oracle.py
+    fuzz_status: ACTIVE  # Gate 7 — tools/fuzz/run_gate7_fuzz_test.py (18 fixtures)
+    product_oracle_status: SCAFFOLDED
+    profiles_applicable:
+      - STRUCTURAL_VALIDITY
+      - PARSE_VALIDITY
+      - INVALID_INPUT_REJECTION
+      - DOMAIN_MODEL_MAPPING
+      - MUTATION_BEHAVIOR
+      - SAME_FORMAT_SERIALIZATION
+      - ROUNDTRIP_SEMANTIC_EQUIVALENCE
+      - EXPORT_CONFORMANCE
+      - ERROR_CONTRACT
+      - PACKAGE_CONSUMER
+      - SECURITY_ROBUSTNESS
+    current_proof_level: 4
+    target_proof_level: 5
+    blockers: []
+    notes: "FODS has the most complete oracle infrastructure. Gate 6 LibreOffice oracle passes 3/4 PASS, 1 WARN. Fuzz: 18/18 PASS. Product oracle missing."
+
+  - format_id: fodt
+    family: words
+    language: [python, dotnet]
+    oracle_id: oracle-fodt-v1
+    oracle_package: oracle/formats/fodt/oracle-package.yaml
+    authority:
+      specification_refs:
+        - "ODF 1.3 (OASIS) — docs.oasis-open.org/office/OpenDocument/v1.3/"
+      spec_body: OASIS
+      legal_category: 1
+    corpus_status: PARTIAL  # 4 project-created samples in samples/by-format/fodt/
+    acquisition_oracle_status: ACTIVE  # Gate 6 oracle (LibreOffice) — tools/oracle/run_fodt_oracle.py
+    fuzz_status: ACTIVE  # Gate 7 — tools/fuzz/run_fodt_gate7_fuzz_test.py
+    product_oracle_status: SCAFFOLDED
+    profiles_applicable:
+      - STRUCTURAL_VALIDITY
+      - PARSE_VALIDITY
+      - INVALID_INPUT_REJECTION
+      - DOMAIN_MODEL_MAPPING
+      - MUTATION_BEHAVIOR
+      - SAME_FORMAT_SERIALIZATION
+      - ROUNDTRIP_SEMANTIC_EQUIVALENCE
+      - EXPORT_CONFORMANCE
+      - ERROR_CONTRACT
+      - PACKAGE_CONSUMER
+      - SECURITY_ROBUSTNESS
+    current_proof_level: 4
+    target_proof_level: 5
+    blockers: []
+
+  - format_id: ods
+    family: cells
+    language: [python]
+    oracle_id: oracle-ods-v1
+    oracle_package: oracle/formats/ods/oracle-package.yaml
+    authority:
+      specification_refs:
+        - "ODF 1.3 (OASIS)"
+      spec_body: OASIS
+      legal_category: 1
+    corpus_status: CONFIRMED  # _corpus-manifest.yaml exists, valid+invalid samples
+    acquisition_oracle_status: NONE
+    fuzz_status: NONE
+    product_oracle_status: OBLIGATION_CREATED
+    profiles_applicable:
+      - STRUCTURAL_VALIDITY
+      - PARSE_VALIDITY
+      - INVALID_INPUT_REJECTION
+      - DOMAIN_MODEL_MAPPING
+      - MUTATION_BEHAVIOR
+      - SAME_FORMAT_SERIALIZATION
+      - ROUNDTRIP_SEMANTIC_EQUIVALENCE
+      - ERROR_CONTRACT
+      - PACKAGE_CONSUMER
+    current_proof_level: 3
+    target_proof_level: 4
+    blockers: []
+
+  - format_id: gnumeric
+    family: cells
+    language: [python]
+    oracle_id: oracle-gnumeric-v1
+    oracle_package: oracle/formats/gnumeric/oracle-package.yaml
+    authority:
+      specification_refs:
+        - "Gnumeric XML format (GNOME Project)"
+      spec_body: GNOME Project
+      legal_category: 1
+    corpus_status: PARTIAL  # samples/by-format/gnumeric/ — no _corpus-manifest.yaml
+    acquisition_oracle_status: NONE
+    fuzz_status: NONE
+    product_oracle_status: OBLIGATION_CREATED
+    profiles_applicable:
+      - STRUCTURAL_VALIDITY
+      - PARSE_VALIDITY
+      - INVALID_INPUT_REJECTION
+      - DOMAIN_MODEL_MAPPING
+      - MUTATION_BEHAVIOR
+      - ERROR_CONTRACT
+      - PACKAGE_CONSUMER
+    current_proof_level: 2
+    target_proof_level: 4
+    blockers: []
+
+  - format_id: sylk
+    family: cells
+    language: [python]
+    oracle_id: oracle-sylk-v1
+    oracle_package: oracle/formats/sylk/oracle-package.yaml
+    authority:
+      specification_refs:
+        - "SYLK format (Microsoft, 1986) — informal community spec"
+      spec_body: Microsoft
+      authority_classification: ACCEPTED_EMPIRICAL
+    corpus_status: CONFIRMED  # _corpus-manifest.yaml exists
+    acquisition_oracle_status: NONE
+    fuzz_status: NONE
+    product_oracle_status: OBLIGATION_CREATED
+    profiles_applicable:
+      - STRUCTURAL_VALIDITY
+      - PARSE_VALIDITY
+      - INVALID_INPUT_REJECTION
+      - DOMAIN_MODEL_MAPPING
+      - ERROR_CONTRACT
+      - PACKAGE_CONSUMER
+    current_proof_level: 2
+    target_proof_level: 4
+    blockers: []
+    notes: "Weak spec — authority must be classified ACCEPTED_EMPIRICAL for empirical behavior cases"
+
+  - format_id: dif
+    family: cells
+    language: [python]
+    oracle_id: oracle-dif-v1
+    oracle_package: oracle/formats/dif/oracle-package.yaml
+    authority:
+      specification_refs:
+        - "DIF (Data Interchange Format, Software Arts 1981)"
+      spec_body: Software Arts
+      authority_classification: ACCEPTED_EMPIRICAL
+    corpus_status: CONFIRMED  # _corpus-manifest.yaml exists
+    acquisition_oracle_status: NONE
+    fuzz_status: NONE
+    product_oracle_status: OBLIGATION_CREATED
+    profiles_applicable:
+      - STRUCTURAL_VALIDITY
+      - PARSE_VALIDITY
+      - INVALID_INPUT_REJECTION
+      - DOMAIN_MODEL_MAPPING
+      - ERROR_CONTRACT
+      - PACKAGE_CONSUMER
+    current_proof_level: 2
+    target_proof_level: 4
+    blockers: []
+
+  - format_id: csv
+    family: cells
+    language: [python, dotnet]
+    oracle_id: oracle-csv-v1
+    oracle_package: oracle/formats/csv/oracle-package.yaml
+    authority:
+      specification_refs:
+        - "RFC 4180 (IETF)"
+      spec_body: IETF
+      legal_category: 1
+    corpus_status: PARTIAL  # no _corpus-manifest.yaml yet
+    acquisition_oracle_status: NONE
+    fuzz_status: NONE
+    product_oracle_status: OBLIGATION_CREATED
+    profiles_applicable:
+      - STRUCTURAL_VALIDITY
+      - PARSE_VALIDITY
+      - INVALID_INPUT_REJECTION
+      - DOMAIN_MODEL_MAPPING
+      - MUTATION_BEHAVIOR
+      - SAME_FORMAT_SERIALIZATION
+      - ROUNDTRIP_SEMANTIC_EQUIVALENCE
+      - ERROR_CONTRACT
+      - PACKAGE_CONSUMER
+    current_proof_level: 2
+    target_proof_level: 4
+    blockers: []
+
+  - format_id: tsv
+    family: cells
+    language: [python, dotnet]
+    oracle_id: oracle-tsv-v1
+    oracle_package: oracle/formats/tsv/oracle-package.yaml
+    authority:
+      specification_refs:
+        - "IANA text/tab-separated-values"
+      spec_body: IANA
+    corpus_status: PARTIAL
+    acquisition_oracle_status: NONE
+    fuzz_status: NONE
+    product_oracle_status: OBLIGATION_CREATED
+    profiles_applicable:
+      - STRUCTURAL_VALIDITY
+      - PARSE_VALIDITY
+      - INVALID_INPUT_REJECTION
+      - DOMAIN_MODEL_MAPPING
+      - ROUNDTRIP_SEMANTIC_EQUIVALENCE
+      - ERROR_CONTRACT
+      - PACKAGE_CONSUMER
+    current_proof_level: 2
+    target_proof_level: 4
+    blockers: []
+
+  # ==================== WORDS FAMILY ====================
+
+  - format_id: odt
+    family: words
+    language: [python]
+    oracle_id: oracle-odt-v1
+    oracle_package: oracle/formats/odt/oracle-package.yaml
+    authority:
+      specification_refs:
+        - "ODF 1.3 (OASIS)"
+      spec_body: OASIS
+      legal_category: 1
+    corpus_status: CONFIRMED  # _corpus-manifest.yaml exists
+    acquisition_oracle_status: NONE
+    fuzz_status: NONE
+    product_oracle_status: OBLIGATION_CREATED
+    profiles_applicable:
+      - STRUCTURAL_VALIDITY
+      - PARSE_VALIDITY
+      - INVALID_INPUT_REJECTION
+      - DOMAIN_MODEL_MAPPING
+      - MUTATION_BEHAVIOR
+      - SAME_FORMAT_SERIALIZATION
+      - ROUNDTRIP_SEMANTIC_EQUIVALENCE
+      - ERROR_CONTRACT
+      - PACKAGE_CONSUMER
+    current_proof_level: 3
+    target_proof_level: 4
+    blockers: []
+
+  - format_id: abw
+    family: words
+    language: [python]
+    oracle_id: oracle-abw-v1
+    oracle_package: oracle/formats/abw/oracle-package.yaml
+    authority:
+      specification_refs:
+        - "AbiWord XML format (AbiSource Project)"
+      spec_body: AbiSource Project
+      authority_classification: ACCEPTED_EMPIRICAL
+    corpus_status: PARTIAL  # no _corpus-manifest.yaml
+    acquisition_oracle_status: NONE
+    fuzz_status: NONE
+    product_oracle_status: OBLIGATION_CREATED
+    profiles_applicable:
+      - STRUCTURAL_VALIDITY
+      - PARSE_VALIDITY
+      - INVALID_INPUT_REJECTION
+      - DOMAIN_MODEL_MAPPING
+      - ERROR_CONTRACT
+      - PACKAGE_CONSUMER
+    current_proof_level: 2
+    target_proof_level: 4
+    blockers: []
+
+  # ==================== PRESENTATION / DRAWING FAMILY ====================
+
+  - format_id: fodp
+    family: presentation
+    language: [python]
+    oracle_id: oracle-fodp-v1
+    oracle_package: oracle/formats/fodp/oracle-package.yaml
+    authority:
+      specification_refs:
+        - "ODF 1.3 (OASIS)"
+      spec_body: OASIS
+      legal_category: 1
+    corpus_status: PARTIAL  # no _corpus-manifest.yaml
+    acquisition_oracle_status: NONE
+    fuzz_status: NONE
+    product_oracle_status: OBLIGATION_CREATED
+    profiles_applicable:
+      - STRUCTURAL_VALIDITY
+      - PARSE_VALIDITY
+      - INVALID_INPUT_REJECTION
+      - DOMAIN_MODEL_MAPPING
+      - ERROR_CONTRACT
+      - PACKAGE_CONSUMER
+    current_proof_level: 2
+    target_proof_level: 4
+    blockers: []
+
+  - format_id: fodg
+    family: drawing
+    language: [python]
+    oracle_id: oracle-fodg-v1
+    oracle_package: oracle/formats/fodg/oracle-package.yaml
+    authority:
+      specification_refs:
+        - "ODF 1.3 (OASIS)"
+      spec_body: OASIS
+      legal_category: 1
+    corpus_status: PARTIAL  # no _corpus-manifest.yaml
+    acquisition_oracle_status: NONE
+    fuzz_status: NONE
+    product_oracle_status: OBLIGATION_CREATED
+    profiles_applicable:
+      - STRUCTURAL_VALIDITY
+      - PARSE_VALIDITY
+      - INVALID_INPUT_REJECTION
+      - DOMAIN_MODEL_MAPPING
+      - ERROR_CONTRACT
+      - PACKAGE_CONSUMER
+    current_proof_level: 2
+    target_proof_level: 4
+    blockers: []
+
+  # ==================== IMAGING FAMILY ====================
+
+  - format_id: qoi
+    family: imaging
+    language: [python]
+    oracle_id: oracle-qoi-v1
+    oracle_package: oracle/formats/qoi/oracle-package.yaml
+    authority:
+      specification_refs:
+        - "QOI specification (Dominic Szablewski / phoboslab)"
+      spec_body: phoboslab
+      spec_url: "https://qoiformat.org/qoi-specification.pdf"
+    corpus_status: CONFIRMED  # _corpus-manifest.yaml exists
+    acquisition_oracle_status: NONE
+    fuzz_status: NONE
+    product_oracle_status: OBLIGATION_CREATED
+    profiles_applicable:
+      - STRUCTURAL_VALIDITY
+      - PARSE_VALIDITY
+      - INVALID_INPUT_REJECTION
+      - DOMAIN_MODEL_MAPPING
+      - ROUNDTRIP_SEMANTIC_EQUIVALENCE
+      - ERROR_CONTRACT
+      - LIMITS_AND_BOUNDARIES
+      - PACKAGE_CONSUMER
+      - SECURITY_ROBUSTNESS
+    current_proof_level: 2
+    target_proof_level: 4
+    blockers: []
+
+  - format_id: xcf
+    family: imaging
+    language: [python]
+    oracle_id: oracle-xcf-v1
+    oracle_package: oracle/formats/xcf/oracle-package.yaml
+    authority:
+      specification_refs:
+        - "XCF format specification (GIMP Development Team)"
+      spec_body: GIMP Development Team
+    corpus_status: CONFIRMED  # _corpus-manifest.yaml exists
+    acquisition_oracle_status: NONE
+    fuzz_status: NONE
+    product_oracle_status: OBLIGATION_CREATED
+    profiles_applicable:
+      - STRUCTURAL_VALIDITY
+      - PARSE_VALIDITY
+      - INVALID_INPUT_REJECTION
+      - DOMAIN_MODEL_MAPPING
+      - ERROR_CONTRACT
+      - LIMITS_AND_BOUNDARIES
+      - PACKAGE_CONSUMER
+      - SECURITY_ROBUSTNESS
+    current_proof_level: 2
+    target_proof_level: 4
+    blockers: []
+
+  - format_id: pbm
+    family: imaging
+    language: [python, dotnet]
+    oracle_id: oracle-pbm-v1
+    oracle_package: oracle/formats/pbm/oracle-package.yaml
+    authority:
+      specification_refs:
+        - "Netpbm PBM specification (Jef Poskanzer)"
+        - "Netpbm format specification — netpbm.sourceforge.net"
+      spec_body: Netpbm project
+    corpus_status: CONFIRMED  # _corpus-manifest.yaml exists
+    acquisition_oracle_status: NONE
+    fuzz_status: NONE
+    product_oracle_status: OBLIGATION_CREATED
+    profiles_applicable:
+      - STRUCTURAL_VALIDITY
+      - PARSE_VALIDITY
+      - INVALID_INPUT_REJECTION
+      - DOMAIN_MODEL_MAPPING
+      - ROUNDTRIP_SEMANTIC_EQUIVALENCE
+      - ERROR_CONTRACT
+      - LIMITS_AND_BOUNDARIES
+      - PACKAGE_CONSUMER
+    current_proof_level: 2
+    target_proof_level: 4
+    blockers: []
+
+  - format_id: pgm
+    family: imaging
+    language: [python]
+    oracle_id: oracle-pgm-v1
+    oracle_package: oracle/formats/pgm/oracle-package.yaml
+    authority:
+      specification_refs:
+        - "Netpbm PGM specification (Jef Poskanzer)"
+      spec_body: Netpbm project
+    corpus_status: CONFIRMED  # _corpus-manifest.yaml exists
+    acquisition_oracle_status: NONE
+    fuzz_status: NONE
+    product_oracle_status: OBLIGATION_CREATED
+    profiles_applicable:
+      - STRUCTURAL_VALIDITY
+      - PARSE_VALIDITY
+      - INVALID_INPUT_REJECTION
+      - DOMAIN_MODEL_MAPPING
+      - ROUNDTRIP_SEMANTIC_EQUIVALENCE
+      - ERROR_CONTRACT
+      - LIMITS_AND_BOUNDARIES
+      - PACKAGE_CONSUMER
+    current_proof_level: 2
+    target_proof_level: 4
+    blockers: []
+
+  - format_id: ppm
+    family: imaging
+    language: [python]
+    oracle_id: oracle-ppm-v1
+    oracle_package: oracle/formats/ppm/oracle-package.yaml
+    authority:
+      specification_refs:
+        - "Netpbm PPM specification (Jef Poskanzer)"
+      spec_body: Netpbm project
+    corpus_status: CONFIRMED  # _corpus-manifest.yaml exists
+    acquisition_oracle_status: NONE
+    fuzz_status: NONE
+    product_oracle_status: OBLIGATION_CREATED
+    profiles_applicable:
+      - STRUCTURAL_VALIDITY
+      - PARSE_VALIDITY
+      - INVALID_INPUT_REJECTION
+      - DOMAIN_MODEL_MAPPING
+      - ROUNDTRIP_SEMANTIC_EQUIVALENCE
+      - ERROR_CONTRACT
+      - LIMITS_AND_BOUNDARIES
+      - PACKAGE_CONSUMER
+    current_proof_level: 2
+    target_proof_level: 4
+    blockers: []
+
+  # ==================== ARCHIVE FAMILY ====================
+
+  - format_id: zst
+    family: archive
+    language: [python, dotnet]
+    oracle_id: oracle-zst-v1
+    oracle_package: oracle/formats/zst/oracle-package.yaml
+    authority:
+      specification_refs:
+        - "RFC 8878 — Zstandard Compression (IETF)"
+      spec_body: IETF
+      legal_category: 1
+    corpus_status: CONFIRMED  # _corpus-manifest.yaml exists, valid+invalid
+    acquisition_oracle_status: NONE
+    fuzz_status: NONE
+    product_oracle_status: OBLIGATION_CREATED
+    profiles_applicable:
+      - STRUCTURAL_VALIDITY
+      - PARSE_VALIDITY
+      - INVALID_INPUT_REJECTION
+      - DOMAIN_MODEL_MAPPING
+      - LOSSLESS_TRANSFORMATION
+      - ROUNDTRIP_SEMANTIC_EQUIVALENCE
+      - ERROR_CONTRACT
+      - LIMITS_AND_BOUNDARIES
+      - PACKAGE_CONSUMER
+      - SECURITY_ROBUSTNESS
+    current_proof_level: 2
+    target_proof_level: 4
+    blockers: []
+    notes: "RFC 8878 is authoritative (SPEC_NORMATIVE). ZST has the richest corpus (valid+invalid+generated)."
+
+  # ==================== DATA FAMILY ====================
+
+  - format_id: ndjson
+    family: data
+    language: [python, dotnet]
+    oracle_id: oracle-ndjson-v1
+    oracle_package: oracle/formats/ndjson/oracle-package.yaml
+    authority:
+      specification_refs:
+        - "NDJSON informal spec (ndjson.org)"
+        - "JSON (RFC 8259 / ECMA-404)"
+      spec_body: ndjson.org
+      authority_classification: PRODUCT_CONTRACT
+    corpus_status: PARTIAL  # no _corpus-manifest.yaml
+    acquisition_oracle_status: NONE
+    fuzz_status: NONE
+    product_oracle_status: OBLIGATION_CREATED
+    profiles_applicable:
+      - STRUCTURAL_VALIDITY
+      - PARSE_VALIDITY
+      - INVALID_INPUT_REJECTION
+      - DOMAIN_MODEL_MAPPING
+      - MUTATION_BEHAVIOR
+      - SAME_FORMAT_SERIALIZATION
+      - ROUNDTRIP_SEMANTIC_EQUIVALENCE
+      - ERROR_CONTRACT
+      - PACKAGE_CONSUMER
+    current_proof_level: 2
+    target_proof_level: 4
+    blockers: []
+
+  - format_id: toml
+    family: data
+    language: [python]
+    oracle_id: oracle-toml-v1
+    oracle_package: oracle/formats/toml/oracle-package.yaml
+    authority:
+      specification_refs:
+        - "TOML v1.0 specification (TOML Project)"
+        - "https://toml.io/en/v1.0.0"
+      spec_body: TOML Project
+    corpus_status: PARTIAL
+    acquisition_oracle_status: NONE
+    fuzz_status: NONE
+    product_oracle_status: OBLIGATION_CREATED
+    profiles_applicable:
+      - STRUCTURAL_VALIDITY
+      - PARSE_VALIDITY
+      - INVALID_INPUT_REJECTION
+      - DOMAIN_MODEL_MAPPING
+      - ROUNDTRIP_SEMANTIC_EQUIVALENCE
+      - ERROR_CONTRACT
+      - PACKAGE_CONSUMER
+    current_proof_level: 2
+    target_proof_level: 4
+    blockers: []
+
+  # ==================== PIPELINE / FUTURE FORMATS ====================
+  # These formats are in format-registry.yaml (evaluation pipeline) but do not
+  # yet have Python/C# products. Oracle obligations are created at intake.
+
+  - format_id: ora
+    family: imaging
+    language: []
+    oracle_id: oracle-ora-v1
+    oracle_package: null  # not yet created
+    authority:
+      specification_refs:
+        - "OpenRaster 0.0.3 (freedesktop.org informal spec)"
+      spec_body: freedesktop.org
+      legal_category: 2
+    corpus_status: NONE
+    acquisition_oracle_status: NONE
+    fuzz_status: NONE
+    product_oracle_status: OBLIGATION_CREATED
+    profiles_applicable:
+      - STRUCTURAL_VALIDITY
+      - PARSE_VALIDITY
+      - INVALID_INPUT_REJECTION
+      - DOMAIN_MODEL_MAPPING
+      - ERROR_CONTRACT
+    current_proof_level: 0
+    target_proof_level: 4
+    blockers:
+      - "No Python/C# product yet"
+      - "Legal category 2 — patent review required before Gate 4"
+    notes: "Pipeline format. Oracle obligation created at intake. No product yet."
+    terminal_state: WAITING_VALID_EXTERNAL_AUTHORITY
+
+  - format_id: pam
+    family: imaging
+    language: []
+    oracle_id: oracle-pam-v1
+    oracle_package: null
+    authority:
+      specification_refs:
+        - "Netpbm PAM specification (2000)"
+      spec_body: Netpbm project
+    corpus_status: NONE
+    acquisition_oracle_status: NONE
+    fuzz_status: NONE
+    product_oracle_status: OBLIGATION_CREATED
+    profiles_applicable:
+      - STRUCTURAL_VALIDITY
+      - PARSE_VALIDITY
+      - INVALID_INPUT_REJECTION
+      - DOMAIN_MODEL_MAPPING
+      - ERROR_CONTRACT
+    current_proof_level: 0
+    target_proof_level: 4
+    blockers:
+      - "No Python/C# product yet"
+    terminal_state: null  # active obligation
+
+  - format_id: xpm
+    family: imaging
+    language: []
+    oracle_id: oracle-xpm-v1
+    oracle_package: null
+    authority:
+      specification_refs:
+        - "XPM3 format specification (X Consortium / Arnaud Le Hors, 1991)"
+      spec_body: X Consortium
+    corpus_status: NONE
+    acquisition_oracle_status: NONE
+    fuzz_status: NONE
+    product_oracle_status: OBLIGATION_CREATED
+    profiles_applicable:
+      - STRUCTURAL_VALIDITY
+      - PARSE_VALIDITY
+      - INVALID_INPUT_REJECTION
+      - DOMAIN_MODEL_MAPPING
+      - ERROR_CONTRACT
+    current_proof_level: 0
+    target_proof_level: 4
+    blockers:
+      - "No Python/C# product yet"
+    terminal_state: null
+
+  - format_id: zpaq
+    family: archive
+    language: []
+    oracle_id: oracle-zpaq-v1
+    oracle_package: null
+    authority:
+      specification_refs:
+        - "ZPAQ Level 2 spec (Matt Mahoney, v2.06, 2013)"
+      spec_body: Matt Mahoney
+      legal_category: 2
+    corpus_status: NONE
+    acquisition_oracle_status: NONE
+    fuzz_status: NONE
+    product_oracle_status: OBLIGATION_CREATED
+    profiles_applicable:
+      - STRUCTURAL_VALIDITY
+      - PARSE_VALIDITY
+      - INVALID_INPUT_REJECTION
+      - DOMAIN_MODEL_MAPPING
+      - LOSSLESS_TRANSFORMATION
+      - ERROR_CONTRACT
+    current_proof_level: 0
+    target_proof_level: 4
+    blockers:
+      - "No Python/C# product yet"
+      - "Legal category 2 — patent review required before Gate 4"
+    terminal_state: WAITING_VALID_EXTERNAL_AUTHORITY
+
+# Total obligations: 24 formats (20 with Python FOSS products + 4 pipeline/future)
+# .NET products: fods, fodt, ndjson, netpbm (pbm/pgm/ppm combined), csv, tsv, zst

@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "oracle-verdict.schema.json",
+  "title": "Format Factory Oracle Verdict",
+  "description": "Schema for a single oracle execution verdict. Emitted per case execution.",
+  "type": "object",
+  "required": [
+    "verdict_id",
+    "oracle_id",
+    "oracle_version",
+    "format_id",
+    "product_id",
+    "language",
+    "case_id",
+    "result",
+    "authority_status",
+    "executed_at"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "verdict_id": {"type": "string"},
+    "oracle_id": {"type": "string"},
+    "oracle_version": {"type": "integer"},
+    "format_id": {"type": "string"},
+    "product_id": {"type": "string"},
+    "language": {"type": "string", "enum": ["python", "dotnet", "both"]},
+    "package_version": {"type": "string"},
+    "source_revision": {"type": "string"},
+    "case_id": {"type": "string"},
+    "profile": {"type": "string"},
+    "result": {
+      "type": "string",
+      "enum": [
+        "PASS",
+        "FAIL",
+        "BLOCKED_MISSING_AUTHORITY",
+        "BLOCKED_MISSING_SAMPLE",
+        "UNSUPPORTED_DECLARED",
+        "INVALID_ORACLE",
+        "STALE_ORACLE",
+        "INCONCLUSIVE",
+        "NOT_APPLICABLE"
+      ]
+    },
+    "authority_status": {
+      "type": "string",
+      "enum": [
+        "SPEC_NORMATIVE",
+        "SPEC_INFORMATIVE",
+        "ACCEPTED_EMPIRICAL",
+        "GENERATED_FROM_NEUTRAL_MODEL",
+        "AI_DRAFT_UNVERIFIED",
+        "IMPLEMENTATION_OBSERVED",
+        "UNKNOWN"
+      ]
+    },
+    "input_hash": {"type": "string"},
+    "output_hashes": {"type": "array", "items": {"type": "string"}},
+    "comparator": {"type": "string"},
+    "observed": {"type": "object"},
+    "expected": {"type": "object"},
+    "deviations": {"type": "array", "items": {"type": "object"}},
+    "tolerated_deviations": {"type": "array", "items": {"type": "object"}},
+    "untolerated_deviations": {"type": "array", "items": {"type": "object"}},
+    "diagnostics": {"type": "array", "items": {"type": "string"}},
+    "evidence": {"type": "array", "items": {"type": "string"}},
+    "executed_at": {"type": "string", "format": "date-time"}
+  }
+}
