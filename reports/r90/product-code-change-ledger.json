@@ -18518,6 +18518,79 @@
       "gaps_closed": [],
       "test_count": 0,
       "notes": ".NET ZstDocument consumer roundtrip proof via ZstParser.Parse. IsValid, HasMultipleFrames, FileSizeKB, SizeLabel computed properties."
+    },
+    {
+      "entry_id": "PC-NETPBM-DOCUMENT-CS-20260626",
+      "date": "2026-06-25",
+      "sprint_id": "ff-sprint-s79-dotnet-commit-20260626",
+      "work_type": "domain_model",
+      "format_id": "netpbm",
+      "files_changed": [
+        "src/net/netpbm/NetpbmDocument.cs"
+      ],
+      "gaps_closed": [
+        "GAP-PROD-INV-NETPBM-001"
+      ],
+      "test_count": 0,
+      "notes": ".NET NetpbmDocument sealed class: Load/Save, Width/Height/PixelCount/MaxValue/IsColor/IsGrayscale/IsBitmap/AspectRatio/IsSquare properties."
+    },
+    {
+      "entry_id": "PC-NETPBM-R117-TESTS-20260626",
+      "date": "2026-06-25",
+      "sprint_id": "ff-sprint-s79-dotnet-commit-20260626",
+      "work_type": "test",
+      "format_id": "netpbm",
+      "files_changed": [
+        "tests/net/netpbm/NetpbmR117DocumentTests.cs",
+        "tests/net/netpbm/NetpbmR118DocumentPropertiesTests.cs"
+      ],
+      "gaps_closed": [],
+      "test_count": 0,
+      "notes": "R117/R118 .NET Netpbm document model tests: NetpbmDocument FromImage, properties, Load/Save roundtrip."
+    },
+    {
+      "entry_id": "PC-FODS-R117-R118-TESTS-20260626",
+      "date": "2026-06-25",
+      "sprint_id": "ff-sprint-s79-dotnet-commit-20260626",
+      "work_type": "test",
+      "format_id": "fods",
+      "files_changed": [
+        "tests/net/fods/FodsR117XmlExportTests.cs",
+        "tests/net/fods/FodsR118TsvExportTests.cs"
+      ],
+      "gaps_closed": [],
+      "test_count": 0,
+      "notes": "R117 XML export and R118 TSV export deepening tests for .NET FODS commercial product."
+    },
+    {
+      "entry_id": "PC-CSV-NDJSON-TSV-ZST-R117-TESTS-20260626",
+      "date": "2026-06-25",
+      "sprint_id": "ff-sprint-s79-dotnet-commit-20260626",
+      "work_type": "test",
+      "format_id": "csv",
+      "files_changed": [
+        "tests/net/csv/CsvR117DocumentQueryTests.cs",
+        "tests/net/ndjson/NdjsonR117DocumentQueryTests.cs",
+        "tests/net/tsv/TsvR117DocumentQueryTests.cs",
+        "tests/net/zst/ZstR117DocumentPropertiesTests.cs"
+      ],
+      "gaps_closed": [],
+      "test_count": 0,
+      "notes": "R117 document query/properties deepening tests for .NET CSV, NDJSON, TSV, ZST commercial products."
+    },
+    {
+      "entry_id": "PC-PYTHON-CSV-ODT-EXAMPLES-20260626",
+      "date": "2026-06-25",
+      "sprint_id": "ff-sprint-s79-dotnet-commit-20260626",
+      "work_type": "consumer_proof",
+      "format_id": "csv",
+      "files_changed": [
+        "examples/python/csv/read_and_inspect.py",
+        "examples/python/odt/dogfood_odt_roundtrip.py"
+      ],
+      "gaps_closed": [],
+      "test_count": 0,
+      "notes": "Python FOSS dogfood examples: CSV read_and_inspect (parse, analytics, CsvDocument), ODT roundtrip (read/write/create). Both DOGFOOD PASS."
     }
   ],
   "total_entries": 1006,
