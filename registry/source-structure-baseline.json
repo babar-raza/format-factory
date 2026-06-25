@@ -664,9 +664,9 @@
       "remediation_sprint": "GRANDFATHERED"
     },
     "tools/supervisor/governance_validators_ext.py": {
-      "loc": 1423,
+      "loc": 1390,
       "baseline_loc_cap": 1423,
-      "functions": 17,
+      "functions": 16,
       "baseline_functions_cap": 13,
       "category": "governance_infrastructure",
       "note": "TC-WHALE-GOVBLOCK-001 (2026-06-21): Extension validators extracted from governance_validators.py to keep it under baseline_loc_cap. Contains V48 (validate_architecture_only_stub_gate, TC-ZS-001) and V50 (validate_forbidden_module_names, MODULE-NAME-001, TC-ANAL-SEG-HEAL-001, 2026-06-22). Cap updated 2026-06-23 for TC-PG-006 V56 validate_hardening_target_identity (governance infrastructure).",
@@ -2505,6 +2505,13 @@
       "baseline_functions_cap": 1,
       "category": "governance_infrastructure",
       "note": "TC-PDL-005 (2026-06-25): V74 ledger continuation gate \u2014 extracted from governance_validators_ext.py to keep ext file from growing further."
+    },
+    "tools/supervisor/governance_validators_spec.py": {
+      "loc": 571,
+      "baseline_loc_cap": 571,
+      "functions": 7,
+      "baseline_functions_cap": 7,
+      "category": "governance_infrastructure"
     }
   },
   "qname_ownership_baseline": {

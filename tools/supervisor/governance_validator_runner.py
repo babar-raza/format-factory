@@ -113,24 +113,27 @@ def run_all_governance_validators(
     )
     from governance_validators_ext import (  # noqa: PLC0415
         validate_forbidden_module_names as _validate_forbidden_module_names,
-        validate_spec_qname_coverage as _validate_spec_qname_coverage,
-        validate_compat_import_integrity as _validate_compat_import_integrity,
-        validate_spec_authority_class_completeness as _validate_spec_authority_class_completeness,
         validate_cross_lane_product_touching_machinery as _validate_cross_lane_product_touching_machinery,
         validate_cross_lane_machinery_touching_product as _validate_cross_lane_machinery_touching_product,
         validate_hardening_target_identity as _validate_hardening_target_identity,
         validate_changed_files_in_ledger as _validate_changed_files_in_ledger,
         validate_expansion_fallback_refs as _validate_expansion_fallback_refs,
-        validate_cross_language_parity as _validate_cross_language_parity,
         validate_terminal_closure_completeness as _validate_terminal_closure_completeness,
         validate_error_fallback_safety as _validate_error_fallback_safety,
-        validate_spec_fact_refs_density as _validate_spec_fact_refs_density,
         validate_public_api_surface_ratio as _validate_public_api_surface_ratio,
         validate_skill_idempotency_declared as _validate_skill_idempotency_declared,
         validate_sal_authority_chain as _validate_sal_authority_chain,
         validate_lane_dag_ordering as _validate_lane_dag_ordering,
         validate_artifact_identity as _validate_artifact_identity,
         validate_skill_attribution_in_declaration as _validate_skill_attribution,
+    )
+    # V51-V53, V59, V62 imported from spec validator file (TC-GOVBLOCK-SPEC-001)
+    from governance_validators_spec import (  # noqa: PLC0415
+        validate_spec_qname_coverage as _validate_spec_qname_coverage,
+        validate_compat_import_integrity as _validate_compat_import_integrity,
+        validate_spec_authority_class_completeness as _validate_spec_authority_class_completeness,
+        validate_cross_language_parity as _validate_cross_language_parity,
+        validate_spec_fact_refs_density as _validate_spec_fact_refs_density,
     )
     # V74 imported from dedicated ledger gate validator file (TC-PDL-005)
     from governance_validators_ledger import (  # noqa: PLC0415
