@@ -3975,3 +3975,52 @@ Covered 5 Python FOSS packages (fods, fodt, ndjson, toml, gnumeric) and 4 .NET p
 - 42766391 — V74 extraction + lifecycle_audit vacuous guard + write_plan_lock candidate flag
 - f04041ca — governance_validators_ledger.py baseline registration
 - 49ab2fc6 — capability-routing-registry SKILL-GAP-011 fix + architecture addendum + system healing gate
+
+## Section 70 — FORMAT-FACTORY-EXPERT-REVIEW-RECONCILIATION-001: Waves 4-9 Closure (CLOSED)
+
+**Plan:** `wondrous-moseying-puzzle.md` (FORMAT-FACTORY-FORENSIC-HEALING-SPRINT-001) — TERMINAL_CLOSED
+**Mission:** FORMAT-FACTORY-EXPERT-REVIEW-RECONCILIATION-001
+**Type:** expert_review_reconciliation | **Completed:** 2026-06-25
+**Verdict:** MISSION_SUBSTANTIALLY_COMPLETE_WITH_DOCUMENTED_DEFERRALS
+
+### Summary
+
+Executed Waves 4-9 of the Expert Manual System Review Reconciliation. All 34 micro-taskcards resolved
+(27 COMPLETE, 1 SUPERSEDED, 5 SKIP_AND_DOCUMENT, 1 PARTIALLY_COMPLETE, 0 PENDING). PSL-PROMPT-1/2/3/4
+audit-hardening-execution-closure loop applied.
+
+### Key Closures
+
+| Problem | Title | Disposition |
+|---------|-------|-------------|
+| PROB-001 | ZST .NET no decompression | SUPERSEDED — ZstWriter.cs already implemented |
+| PROB-002 | FODS PDF Latin-1 Unicode | DOCUMENTED_SCOPE_LIMIT — Latin-1 scope accepted for v0.x |
+| PROB-003 | FODT table traversal incomplete | FIXED — FodtTable.cs + 15 tests, 588 FODT tests pass |
+| PROB-005 | CSV .NET no mutation API | FIXED — AddRow/SetCell/RemoveRow + 23 tests, 74 CSV tests pass |
+| PROB-009 | Gap taxonomy MISSING categories | FIXED — gap-ledger.json taxonomy_version=1.0, 0 MISSING |
+| PROB-010 | SAL chain broken 10 formats | PARTIAL — CSV 55 facts + TOML 55 facts seeded (acceptance criterion PASS) |
+| PROB-013 | FodsOdsExporter PROTOTYPE | VERIFIED_PROTOTYPE — ZIP structure valid |
+| PROB-015 | 55/65 skills prompt-only | PARTIALLY_FIXED — 49 skills marked advisory_only=True |
+
+### Regression Results
+
+- Python format tests: 18,162 passed / 44 skipped / 0 failed
+- .NET FODT: 588/588 pass; .NET CSV: 74/74 pass
+- dotnet build: 0 errors for FODT, CSV, FODS, ZST, Netpbm
+
+### Quality Gates
+
+- SAL coverage: CSV 55 facts + TOML 55 facts (acceptance criterion >50 each) → PASS
+- Idempotency: all 6 SHA-256 baselines verified unchanged → PASS
+
+### Open Governance Debt (documented, not blocking)
+
+- GAP-PROD-INV-MASQ-001: Analytics masquerade rename (16+ import changes)
+- PROB-006: FODP write_fodp deferred post-Gate 11
+- PROB-011: LLM grader deterministic fallback
+- PROB-012: autonomous_cycle/governance_validators LOC decomposition
+- PROB-017: CI transcript verification wiring
+
+### Commits
+
+- d9166623 — chore(supervisor-state): post-closeout state snapshot containing micro-taskcards.yaml (all 34 tasks resolved), final-audit.json, idempotency-baseline.json
