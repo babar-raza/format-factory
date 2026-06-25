@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s97-dotnet-deepening-20260626",
+  "latest_sprint": "ff-sprint-s98-dotnet-deepening-20260626",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -19291,6 +19291,74 @@
       "source_files": [
         {
           "path": "tests/net/netpbm/NetpbmR131ImageStatsTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "Netpbm"
+    },
+    {
+      "entry_id": "PC-FODS-R130",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s98-dotnet-deepening-20260626",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.rename_copy_sheet"
+      ],
+      "api_symbols": [
+        "RenameSheet",
+        "CopySheet",
+        "GetSheetByName",
+        "GetSheetNames"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/fods/FodsR130RenameAndCopySheetTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "FODS"
+    },
+    {
+      "entry_id": "PC-FODT-R131",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s98-dotnet-deepening-20260626",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.paragraph_mutation"
+      ],
+      "api_symbols": [
+        "InsertParagraph",
+        "RemoveParagraph",
+        "SetParagraphText",
+        "GetParagraphText"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/fodt/FodtR131InsertRemoveParagraphTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "FODT"
+    },
+    {
+      "entry_id": "PC-NETPBM-R132",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s98-dotnet-deepening-20260626",
+      "product": "Netpbm .NET",
+      "capability_refs": [
+        "commercial_net_products.Netpbm.dotnet_status.format_detection"
+      ],
+      "api_symbols": [
+        "IsColor",
+        "IsGrayscale",
+        "IsBitmap",
+        "AspectRatio",
+        "IsSquare",
+        "ToAsciiString"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/netpbm/NetpbmR132FormatDetectionTests.cs",
           "state": "present"
         }
       ],
