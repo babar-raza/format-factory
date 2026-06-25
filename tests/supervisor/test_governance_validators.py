@@ -1790,10 +1790,10 @@ class TestCanonicalValidatorCount:
         }
         result = run_all_governance_validators(decl, None)
         validator_count = len(result["validators"])
-        assert validator_count == 81, (
-            f"Expected 81 canonical validators, got {validator_count}. "
+        assert validator_count == 83, (
+            f"Expected 83 canonical validators, got {validator_count}. "
             "If validators were added/removed, update this test. "
-            "(81 = 77 prior + V77 analytics_naming + V78 dotnet_loc_cap + V79 healing_stall + V-NEW-001 capability_fact_ratio)"
+            "(83 = 81 prior + 2 new validators added in sprint s84)"
         )
 
 
