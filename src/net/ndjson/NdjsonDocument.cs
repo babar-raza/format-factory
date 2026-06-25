@@ -151,6 +151,12 @@ public sealed class NdjsonDocument
         Records.Select(r => new NdjsonRecord(r)).ToList();
 
     /// <summary>
+    /// Returns the record at the given zero-based index as a typed <see cref="NdjsonRecord"/> wrapper.
+    /// </summary>
+    public NdjsonRecord GetTypedRecord(int index) =>
+        new NdjsonRecord(Records[index]);
+
+    /// <summary>
     /// Named alias for <see cref="Load(string)"/> making intent explicit.
     /// Prefer LoadContent() for clarity over the ambiguous Load(string) overload.
     /// </summary>
