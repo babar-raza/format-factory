@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s108-dotnet-deepening-20260626",
+  "latest_sprint": "ff-sprint-s109-dotnet-deepening-20260626",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -19990,6 +19990,67 @@
         }
       ],
       "format": "Netpbm"
+    },
+    {
+      "entry_id": "PC-NDJSON-R122",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s109-dotnet-deepening-20260626",
+      "product": "NDJSON .NET",
+      "capability_refs": [
+        "commercial_net_products.NDJSON.dotnet_status.save_to_file"
+      ],
+      "api_symbols": [
+        "NdjsonDocument.SaveToFile",
+        "NdjsonDocument.LoadFile"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/ndjson/NdjsonR122SaveToFileTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "NDJSON"
+    },
+    {
+      "entry_id": "PC-CSV-R123",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s109-dotnet-deepening-20260626",
+      "product": "CSV .NET",
+      "capability_refs": [
+        "commercial_net_products.CSV.dotnet_status.mutation_count"
+      ],
+      "api_symbols": [
+        "CsvDocument.RowCount",
+        "CsvDocument.ColumnCount",
+        "CsvDocument.AddRow",
+        "CsvDocument.Filter"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/csv/CsvR123MutationCountTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "CSV"
+    },
+    {
+      "entry_id": "PC-TSV-R122",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s109-dotnet-deepening-20260626",
+      "product": "TSV .NET",
+      "capability_refs": [
+        "commercial_net_products.TSV.dotnet_status.filter_predicate"
+      ],
+      "api_symbols": [
+        "TsvDocument.Filter"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/tsv/TsvR122FilterPredicateTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "TSV"
     }
   ],
   "total_entries": 1006,
