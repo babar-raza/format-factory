@@ -16,13 +16,6 @@ from pathlib import Path
 _REPO = Path(__file__).parent.parent.parent.parent
 sys.path.insert(0, str(_REPO))
 
-try:
-    from qoi.models import QoiDocument
-    from qoi.image_document import (
-except ImportError:
-    import sys
-    from pathlib import Path as _Path
-    sys.path.insert(0, str(_Path(__file__).resolve().parents[3]))
 from src.python.qoi.models import QoiDocument
 from src.python.qoi.image_document import (
     qoi_dimensions,
