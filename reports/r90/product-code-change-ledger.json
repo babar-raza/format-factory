@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s111-dotnet-deepening-20260627",
+  "latest_sprint": "ff-sprint-s112-dotnet-deepening-20260627",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -20170,6 +20170,65 @@
         }
       ],
       "format": "Markdown"
+    },
+    {
+      "entry_id": "PC-TXT-R120",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s112-dotnet-deepening-20260627",
+      "product": "TXT .NET",
+      "capability_refs": [
+        "commercial_net_products.TXT.dotnet_status.exception_parent_dir"
+      ],
+      "api_symbols": [
+        "TxtWriterException",
+        "TxtWriter.WriteLinesToFile"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/txt/TxtR120ExceptionAndParentDirTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "TXT"
+    },
+    {
+      "entry_id": "PC-CSV-R124",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s112-dotnet-deepening-20260627",
+      "product": "CSV .NET",
+      "capability_refs": [
+        "commercial_net_products.CSV.dotnet_status.write_rows_to_file"
+      ],
+      "api_symbols": [
+        "CsvWriter.WriteRowsToFile"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/csv/CsvR124WriteRowsToFileTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "CSV"
+    },
+    {
+      "entry_id": "PC-NDJSON-R123",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s112-dotnet-deepening-20260627",
+      "product": "NDJSON .NET",
+      "capability_refs": [
+        "commercial_net_products.NDJSON.dotnet_status.record_fields"
+      ],
+      "api_symbols": [
+        "NdjsonRecord.Fields",
+        "NdjsonRecord.RawElement"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/ndjson/NdjsonR123RecordFieldsTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "NDJSON"
     }
   ],
   "total_entries": 1006,
