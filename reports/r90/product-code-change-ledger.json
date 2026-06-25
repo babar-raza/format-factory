@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s110-dotnet-deepening-20260626",
+  "latest_sprint": "ff-sprint-s111-dotnet-deepening-20260627",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -20109,6 +20109,67 @@
         }
       ],
       "format": "HTML"
+    },
+    {
+      "entry_id": "PC-FODS-R133",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s111-dotnet-deepening-20260627",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.export_json_markdown_named"
+      ],
+      "api_symbols": [
+        "FodsDocument.ExportSheetToJson",
+        "FodsDocument.ExportSheetToMarkdown"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/fods/FodsR133ExportSheetJsonMarkdownNamedTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "FODS"
+    },
+    {
+      "entry_id": "PC-ZST-R123",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s111-dotnet-deepening-20260627",
+      "product": "ZST .NET",
+      "capability_refs": [
+        "commercial_net_products.ZST.dotnet_status.compression_levels"
+      ],
+      "api_symbols": [
+        "ZstWriter.DefaultCompressionLevel",
+        "ZstWriter.MinCompressionLevel",
+        "ZstWriter.MaxCompressionLevel",
+        "ZstWriter.Compress"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/zst/ZstR123CompressionLevelTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "ZST"
+    },
+    {
+      "entry_id": "PC-MARKDOWN-R120",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s111-dotnet-deepening-20260627",
+      "product": "Markdown .NET",
+      "capability_refs": [
+        "commercial_net_products.Markdown.dotnet_status.heading_levels"
+      ],
+      "api_symbols": [
+        "MarkdownWriter.WriteHeading"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/markdown/MarkdownR120HeadingLevelsTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "Markdown"
     }
   ],
   "total_entries": 1006,
