@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s94-dotnet-deepening-20260626",
+  "latest_sprint": "ff-sprint-s95-dotnet-deepening-20260626",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -19159,6 +19159,42 @@
       "change_type": "test_added",
       "evidence_path": "tests/net/netpbm/NetpbmR128ExporterPbmTests.cs",
       "description": "R128: 11 tests for NetpbmExporter PbmToPgm/PbmToPpm \u2014 pixel mapping 0\u2192255/1\u21920, dimensions, format guards, dogfood"
+    },
+    {
+      "entry_id": "PC-FODT-R128",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s95-dotnet-deepening-20260626",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.paragraph_model"
+      ],
+      "change_type": "test_added",
+      "evidence_path": "tests/net/fodt/FodtR128ParagraphModelTests.cs",
+      "description": "R128: 11 tests for FodtParagraph model properties \u2014 Text, IsHeading, OutlineLevel via Paragraphs collection"
+    },
+    {
+      "entry_id": "PC-ZST-R119",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s95-dotnet-deepening-20260626",
+      "product": "ZST .NET",
+      "capability_refs": [
+        "commercial_net_products.ZST.dotnet_status.frame_properties"
+      ],
+      "change_type": "test_added",
+      "evidence_path": "tests/net/zst/ZstR119FramePropertiesTests.cs",
+      "description": "R119: 10 tests for ZstDocument frame properties \u2014 IsMinimalFrame, SizeExceeds100K, FileSizeBytes, FrameHeaderDescriptor via live-parsed data"
+    },
+    {
+      "entry_id": "PC-NETPBM-R129",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s95-dotnet-deepening-20260626",
+      "product": "Netpbm .NET",
+      "capability_refs": [
+        "commercial_net_products.Netpbm.dotnet_status.binary_roundtrip"
+      ],
+      "change_type": "test_added",
+      "evidence_path": "tests/net/netpbm/NetpbmR129BinaryRoundtripTests.cs",
+      "description": "R129: 11 tests for ToBinaryBytes round-trip pixel accuracy \u2014 PGM P2\u2192P5, PPM P3\u2192P6, dimensions, pixel values, MaxValue preserved"
     }
   ],
   "total_entries": 1006,
