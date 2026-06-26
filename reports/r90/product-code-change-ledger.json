@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s280-zst-installed-workflow-20260626",
+  "latest_sprint": "ff-sprint-s281-fodp-installed-workflow-20260626",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -28760,9 +28760,109 @@
       "test_count": 9,
       "source_files": [],
       "format": "fodt"
+    },
+    {
+      "entry_id": "PC-NETPBM-R294",
+      "classification": "DOTNET_TEST_COVERAGE",
+      "sprint": "ff-sprint-s286-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "NETPBM",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.get_median"
+      ],
+      "api_symbols": [
+        "NetpbmImage.GetMedian"
+      ],
+      "api_behavior": "GetMedian(): int in [0,MaxValue]; all-zero=0; all-max=MaxValue; dims/format/MaxValue unchanged; idempotent; dogfood uniform and mixed in-range",
+      "changed_files": [
+        "tests/net/netpbm/NetpbmR294GetMedianDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR294GetMedianDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [],
+      "format": "netpbm"
+    },
+    {
+      "entry_id": "PC-FODS-R314",
+      "classification": "DOTNET_TEST_COVERAGE",
+      "sprint": "ff-sprint-s286-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "FODS",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.add_named_range"
+      ],
+      "api_symbols": [
+        "FodsDocument.AddNamedRange"
+      ],
+      "api_behavior": "AddNamedRange(name,sheetName,r0,c0,r1,c1): null/whitespace-name/null-sheet/nonexistent-sheet/negative-row throws; valid ok; SheetCount unchanged; called-twice ok; dogfood default-sheet, multiple-ranges",
+      "changed_files": [
+        "tests/net/fods/FodsR314AddNamedRangeDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR314AddNamedRangeDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [],
+      "format": "fods"
+    },
+    {
+      "entry_id": "PC-FODT-R301",
+      "classification": "DOTNET_TEST_COVERAGE",
+      "sprint": "ff-sprint-s286-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "FODT",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.get_table_cell_style"
+      ],
+      "api_symbols": [
+        "FodtDocument.GetTableCellStyle"
+      ],
+      "api_behavior": "GetTableCellStyle(tableIndex,row,col): negative/OOB/no-tables/negative-row/col throws; valid non-null; TableCount unchanged; idempotent; dogfood set-then-get",
+      "changed_files": [
+        "tests/net/fodt/FodtR301GetTableCellStyleDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR301GetTableCellStyleDedicatedTests.cs"
+      ],
+      "test_count": 9,
+      "source_files": [],
+      "format": "fodt"
+    },
+    {
+      "entry_id": "PC-FODP-R281",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s281-fodp-installed-workflow-20260626",
+      "skill": "add-python-api",
+      "product": "FODP Python FOSS",
+      "capability_refs": [
+        "foss_python_products.FODP.python_status.installed_workflow"
+      ],
+      "api_symbols": [
+        "fodp_installed_workflow"
+      ],
+      "api_behavior": "fodp_installed_workflow(source): loads FODP file, returns format, loaded, page_count, slide_count.",
+      "source_files": [
+        {
+          "path": "src/python/fodp/fodp_workflow.py",
+          "state": "present",
+          "sha256": "950207dcfe718f7c266d0666407296853a15e6b3a4bcac8ae1d67de324738ca9"
+        },
+        {
+          "path": "src/python/fodp/__init__.py",
+          "state": "present",
+          "sha256": "c8c121447482644c1077db29b7bc143939d6c72795bded6980eb2f314a3ae912"
+        }
+      ],
+      "test_files": [
+        "tests/python/fodp/test_r281_fodp_installed_workflow.py"
+      ],
+      "test_count": 11,
+      "format": "FODP"
     }
   ],
-  "total_entries": 1642,
+  "total_entries": 1645,
   "changes": [
     {
       "file": "src/python/dif/models.py",
