@@ -25216,6 +25216,90 @@
         "tests/net/fodt/FodtR260InsertHeadingDedicatedTests.cs"
       ],
       "test_count": 10
+    },
+    {
+      "entry_id": "PC-NETPBM-R253",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s246-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "NETPBM .NET",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.flip_horizontal"
+      ],
+      "api_symbols": [
+        "FlipHorizontal"
+      ],
+      "api_behavior": "FlipHorizontal() mirrors the image left-right in place (void). Pixel at (col, row) swaps with pixel at (W-1-col, row). Width/height/format/MaxValue preserved.",
+      "changed_files": [
+        "tests/net/netpbm/NetpbmR253FlipHorizontalDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR253FlipHorizontalDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "tests/net/netpbm/NetpbmR253FlipHorizontalDedicatedTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "NETPBM"
+    },
+    {
+      "entry_id": "PC-FODS-R265",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s246-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.sort_rows"
+      ],
+      "api_symbols": [
+        "SortRows"
+      ],
+      "api_behavior": "SortRows(sheetName, columnIndex, ascending) sorts rows by column index. Null/whitespace/nonexistent sheet throws. SheetCount unchanged. Ascending sorts A-Z; descending sorts Z-A.",
+      "changed_files": [
+        "tests/net/fods/FodsR265SortRowsDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR265SortRowsDedicatedTests.cs"
+      ],
+      "test_count": 9,
+      "source_files": [
+        {
+          "path": "tests/net/fods/FodsR265SortRowsDedicatedTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "FODS"
+    },
+    {
+      "entry_id": "PC-FODT-R261",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s246-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.remove_paragraph"
+      ],
+      "api_symbols": [
+        "RemoveParagraph"
+      ],
+      "api_behavior": "RemoveParagraph(index) removes paragraph at index. Negative/OOB throws. ParagraphCount decreases. Removing first shifts remaining paragraphs down.",
+      "changed_files": [
+        "tests/net/fodt/FodtR261RemoveParagraphDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR261RemoveParagraphDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "tests/net/fodt/FodtR261RemoveParagraphDedicatedTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "FODT"
     }
   ],
   "total_entries": 1270,
