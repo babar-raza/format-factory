@@ -1,13 +1,14 @@
 # GNUMERIC Oracle Package — Format Factory
 # Format: Gnumeric Spreadsheet
-# Authority: Gnumeric project format (gzip'd XML)
+# Authority: Gnumeric spec (gnumeric.org), Format Factory reference impl
 # Oracle version: 1
 # Status: CASES_DEFINED
-# Mission: TC-LA-003 / TC-LA-010 — oracle extension to Gen4-GREEN formats
+# Mission: FORMAT-FACTORY-ORACLE-LAYER-HARDENING-001 — Wave 6 Batch A
+# GAP-ORC-BACKFILL-A: Cells family oracle packages
 
 oracle_id: oracle-gnumeric-v1
 format_id: gnumeric
-format_version: "Gnumeric 1.12.x"
+format_version: "Gnumeric XML format"
 oracle_version: 1
 family: cells
 generated_at: "2026-06-26"
@@ -16,55 +17,145 @@ status: CASES_DEFINED
 
 authority:
   specification_refs:
-    - id: GNUMERIC-FORMAT
-      title: "Gnumeric File Format (gnm XML)"
-      body: GNOME Project
+    - id: GNUMERIC-SPEC
+      title: "Gnumeric file format (gnm XML — GNOME Project)"
+      body: "GNOME Gnumeric contributors"
       url: "https://gitlab.gnome.org/GNOME/gnumeric"
       legal_category: 1
-      authority_class: SPEC_INFORMATIVE
+      authority_class: AUTHORITATIVE_REFERENCE_VECTOR
+      note: "Gnumeric XML is a gzip-compressed XML workbook format."
   authorized_fact_refs:
     - "FACT-GNUMERIC-001"
     - "FACT-GNUMERIC-002"
     - "FACT-GNUMERIC-003"
+  requirement_refs: []
+  capability_refs:
+    - "gnumeric:parse"
+    - "gnumeric:workbook"
   authority_summary: >
-    Gnumeric files are gzip-compressed XML with a <gnm:Workbook> root element.
-    Sheets are <gnm:Sheet> elements containing <gnm:Cells> with <gnm:Cell> children.
+    Gnumeric files are gzip-compressed XML with gnm:Workbook root element.
+    Sheets are gnm:Sheet elements containing gnm:Cell children.
 
 corpus_refs:
-  - corpus_id: gnumeric-minimal-spreadsheet
+  - corpus_id: gnumeric-minimal
     sample_ref: samples/by-format/gnumeric/minimal-spreadsheet.gnumeric
     sha256: "sha256:9926a6db9705fee14e95b95b6d5deb9e6ecdc2e70feed7916b00b2e61572118c"
     license: project-owned-synthetic
     authority_class: GENERATED_FROM_NEUTRAL_MODEL
-    description: "Minimal Gnumeric spreadsheet with one sheet"
+    description: "1 sheet, 1 cell, minimal valid Gnumeric XML (gzip)"
+
+profiles:
+  - STRUCTURAL_VALIDITY
+  - PARSE_VALIDITY
+  - DOMAIN_MODEL_MAPPING
+
+profiles_not_applicable:
+  - profile: INTEROPERABILITY
+    reason: "No Python stdlib parser for Gnumeric"
+  - profile: LOSSLESS_TRANSFORMATION
+    reason: "Not a compression format"
+  - profile: SECURITY_ROBUSTNESS
+    reason: "No entity injection surface in parse-only mode"
+  - profile: UNKNOWN_CONTENT_PRESERVATION
+    reason: "Out of scope for this oracle version"
+  - profile: EXPORT_CONFORMANCE
+    reason: "Not a primary operation"
+  - profile: NORMALIZATION
+    reason: "Not applicable"
+  - profile: LIMITS_AND_BOUNDARIES
+    reason: "Not applicable for this oracle version"
+  - profile: MUTATION_BEHAVIOR
+    reason: "Not applicable for this oracle version"
+  - profile: SAME_FORMAT_SERIALIZATION
+    reason: "Not applicable for this oracle version"
+  - profile: ROUNDTRIP_SEMANTIC_EQUIVALENCE
+    reason: "Not applicable for this oracle version"
 
 valid_cases:
+
   - case_id: gnumeric-valid-001
-    profile: PARSE_VALIDITY
-    description: "minimal-spreadsheet.gnumeric loads without error"
-    input_ref: samples/by-format/gnumeric/minimal-spreadsheet.gnumeric
-    oracle_verdict: PASS
-    oracle_class: DETERMINISTIC
-    assertion:
-      type: python_callable
-      module: gnumeric.gnumeric_codec
-      callable: load
-      args: ["${input_ref}"]
-      expect_type: dict
-      expect_no_exception: true
-    authority_ref: FACT-GNUMERIC-001
+    purpose: "Minimal Gnumeric file parses without error"
+    authority_class: AUTHORITATIVE_REFERENCE_VECTOR
+    authority_refs:
+      - "GNUMERIC-SPEC -- gnm:Workbook XML structure"
+    sample_ref: samples/by-format/gnumeric/minimal-spreadsheet.gnumeric
+    input_hash: "sha256:9926a6db9705fee14e95b95b6d5deb9e6ecdc2e70feed7916b00b2e61572118c"
+    expected_parse_result: SUCCESS
+    expected_model_properties:
+      - property: sheet_count
+        value_min: 1
+        authority: GNUMERIC-SPEC
+    applicable_profiles:
+      - STRUCTURAL_VALIDITY
+      - PARSE_VALIDITY
 
   - case_id: gnumeric-valid-002
-    profile: PARSE_VALIDITY
-    description: "empty-sheet.gnumeric loads without error"
-    input_ref: samples/by-format/gnumeric/empty-sheet.gnumeric
-    oracle_verdict: PASS
-    oracle_class: DETERMINISTIC
-    assertion:
-      type: python_callable
-      module: gnumeric.gnumeric_codec
-      callable: load
-      args: ["${input_ref}"]
-      expect_type: dict
-      expect_no_exception: true
-    authority_ref: FACT-GNUMERIC-001
+    purpose: "Minimal Gnumeric has 1 sheet and 1 cell"
+    authority_class: AUTHORITATIVE_REFERENCE_VECTOR
+    authority_refs:
+      - "GNUMERIC-SPEC -- gnm:Sheet / gnm:Cell structure"
+    sample_ref: samples/by-format/gnumeric/minimal-spreadsheet.gnumeric
+    input_hash: "sha256:9926a6db9705fee14e95b95b6d5deb9e6ecdc2e70feed7916b00b2e61572118c"
+    expected_parse_result: SUCCESS
+    expected_model_properties:
+      - property: sheet_count
+        value: 1
+        authority: GNUMERIC-SPEC
+      - property: cell_count
+        value: 1
+        authority: GNUMERIC-SPEC
+    applicable_profiles:
+      - PARSE_VALIDITY
+      - DOMAIN_MODEL_MAPPING
+
+  - case_id: gnumeric-valid-003
+    purpose: "GnumericDocument.from_file() returns spec_qname=gnumeric:workbook"
+    authority_class: AUTHORITATIVE_REFERENCE_VECTOR
+    authority_refs:
+      - "shared/qname-registry/gnumeric.yaml -- gnumeric:workbook"
+    sample_ref: samples/by-format/gnumeric/minimal-spreadsheet.gnumeric
+    input_hash: "sha256:9926a6db9705fee14e95b95b6d5deb9e6ecdc2e70feed7916b00b2e61572118c"
+    expected_parse_result: SUCCESS
+    expected_model_properties:
+      - property: spec_qname
+        value: "gnumeric:workbook"
+        authority: GNUMERIC-SPEC
+    applicable_profiles:
+      - DOMAIN_MODEL_MAPPING
+
+invalid_cases:
+  - case_id: gnumeric-invalid-001
+    purpose: "Non-Gnumeric file must raise error or return is_gnumeric=False"
+    defect_class: wrong-format
+    malformed_boundary: "File is not valid Gnumeric XML"
+    authority_refs:
+      - "GNUMERIC-SPEC -- XML root element validation"
+    sample_ref: null
+    expected_failure_stage: PARSE
+    expected_error_type: "Exception or is_gnumeric=False"
+    partial_recovery_allowed: true
+    security_relevance: false
+    notes: "No invalid Gnumeric sample in corpus yet."
+
+canonicalization:
+  method: gnumeric-workbook-dict
+  description: "Canonical form is a dict with sheet_count, cell_count, and sheets list."
+  ordering_policy: "sheet order preserved"
+  whitespace_policy: "insignificant"
+  encoding_policy: "UTF-8"
+
+tolerance_policy:
+  numeric_tolerance: NOT_APPLICABLE
+  ordering_tolerance: "none"
+  whitespace_tolerance: "insignificant whitespace in XML"
+  metadata_tolerance: "None"
+  policy_summary: "Sheet and cell counts must match spec-defined sample structure"
+
+comparators:
+  - model-property-comparator
+
+validators:
+  - gnumeric-xml-validator
+
+consumers:
+  - tests/python/gnumeric/test_gnumeric_document_model.py
