@@ -29160,9 +29160,78 @@
       "test_count": 10,
       "source_files": [],
       "format": "fodt"
+    },
+    {
+      "entry_id": "PC-NETPBM-R298",
+      "classification": "DOTNET_TEST_COVERAGE",
+      "sprint": "ff-sprint-s290-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "NETPBM",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.apply_threshold"
+      ],
+      "api_symbols": [
+        "NetpbmImage.ApplyThreshold"
+      ],
+      "api_behavior": "ApplyThreshold(threshold): void in-place; all pixels 0 or MaxValue; dims/format/MaxValue unchanged; called-twice ok; threshold=0/MaxValue produces binary; dogfood mixed produces binary",
+      "changed_files": [
+        "tests/net/netpbm/NetpbmR298ApplyThresholdDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR298ApplyThresholdDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [],
+      "format": "netpbm"
+    },
+    {
+      "entry_id": "PC-FODS-R318",
+      "classification": "DOTNET_TEST_COVERAGE",
+      "sprint": "ff-sprint-s290-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "FODS",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.export_to_html"
+      ],
+      "api_symbols": [
+        "FodsDocument.ExportToHtml"
+      ],
+      "api_behavior": "ExportToHtml(filePath): null/whitespace throws; valid ok; file exists; non-empty; SheetCount unchanged; export-twice ok; dogfood with data, two paths",
+      "changed_files": [
+        "tests/net/fods/FodsR318ExportToHtmlDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR318ExportToHtmlDedicatedTests.cs"
+      ],
+      "test_count": 9,
+      "source_files": [],
+      "format": "fods"
+    },
+    {
+      "entry_id": "PC-FODT-R305",
+      "classification": "DOTNET_TEST_COVERAGE",
+      "sprint": "ff-sprint-s290-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "FODT",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.get_paragraph_style"
+      ],
+      "api_symbols": [
+        "FodtDocument.GetParagraphStyle"
+      ],
+      "api_behavior": "GetParagraphStyle(index): negative/OOB/no-paragraphs throws; valid non-null; ParagraphCount unchanged; idempotent; returns SetParagraphStyle value; dogfood add-set-get",
+      "changed_files": [
+        "tests/net/fodt/FodtR305GetParagraphStyleDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR305GetParagraphStyleDedicatedTests.cs"
+      ],
+      "test_count": 8,
+      "source_files": [],
+      "format": "fodt"
     }
   ],
-  "total_entries": 1658,
+  "total_entries": 1661,
   "changes": [
     {
       "file": "src/python/dif/models.py",
