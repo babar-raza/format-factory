@@ -22847,6 +22847,33 @@
       "description": "FodtDocument.GetDocumentOutline dedicated tests: empty/paras-only empty, single heading, text match, multiple in order, body excluded, IReadOnlyList type, count matches GetHeadingCount, levels correct, dogfood mixed content",
       "evidence_path": "tests/net/fodt/FodtR183GetDocumentOutlineTests.cs",
       "sprint": "ff-sprint-s174-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-NETPBM-R171",
+      "format": "NETPBM",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "NetpbmImage.Threshold: PBM throws InvalidOperationException; negative/over-max throws ArgumentOutOfRangeException; result format PBM_P1 MaxValue=1; dims unchanged; pixel-at-threshold=1; pixel-below=0; all-zero all-zero; dogfood PGM pipeline",
+      "evidence_path": "tests/net/netpbm/NetpbmR171ThresholdTests.cs",
+      "test_count": 10,
+      "sprint": "ff-sprint-s175-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-FODS-R182",
+      "format": "FODS",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "FodsDocument.SortRows: null/whitespace throws ArgumentException; nonexistent throws InvalidOperationException; negative sortColumn throws ArgumentOutOfRangeException; empty/single-row no-op; ascending numeric smallest-first; descending largest-first; lexicographic ascending; dogfood row data maintained",
+      "evidence_path": "tests/net/fods/FodsR182SortRowsDedicatedTests.cs",
+      "test_count": 10,
+      "sprint": "ff-sprint-s175-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-FODT-R184",
+      "format": "FODT",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "FodtDocument.GetWordCount: empty=0; single word=1; multi-word=3; headings included; whitespace-only=0; empty para=0; multiple paragraphs sum; matches manual count; dogfood mixed content; dogfood AppendParagraph increments",
+      "evidence_path": "tests/net/fodt/FodtR184GetWordCountTests.cs",
+      "test_count": 10,
+      "sprint": "ff-sprint-s175-dotnet-deepening-20260628"
     }
   ],
   "total_entries": 1270,
