@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s279-ods-installed-workflow-20260626",
+  "latest_sprint": "ff-sprint-s280-zst-installed-workflow-20260626",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -28591,9 +28591,109 @@
       "test_count": 9,
       "source_files": [],
       "format": "fodt"
+    },
+    {
+      "entry_id": "PC-ZST-R280",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s280-zst-installed-workflow-20260626",
+      "skill": "add-python-api",
+      "product": "ZST Python FOSS",
+      "capability_refs": [
+        "foss_python_products.ZST.python_status.installed_workflow"
+      ],
+      "api_symbols": [
+        "zst_installed_workflow"
+      ],
+      "api_behavior": "zst_installed_workflow(source): takes compressed bytes, returns format, loaded, compressed_size, decompressed_size, magic_ok.",
+      "source_files": [
+        {
+          "path": "src/python/zst/zst_workflow.py",
+          "state": "present",
+          "sha256": "87331feec2489c8db722b70e55721335b6dacca19bcda3e10619eaecb52fc063"
+        },
+        {
+          "path": "src/python/zst/__init__.py",
+          "state": "present",
+          "sha256": "e78ae76538a4595a7f47defd5861b3c2f77a9db650f2d3381d704d06b94b715b"
+        }
+      ],
+      "test_files": [
+        "tests/python/zst/test_r280_zst_installed_workflow.py"
+      ],
+      "test_count": 12,
+      "format": "ZST"
+    },
+    {
+      "entry_id": "PC-NETPBM-R292",
+      "classification": "DOTNET_TEST_COVERAGE",
+      "sprint": "ff-sprint-s284-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "NETPBM",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.get_variance"
+      ],
+      "api_symbols": [
+        "NetpbmImage.GetVariance"
+      ],
+      "api_behavior": "GetVariance(): double non-negative; all-zero/all-max non-negative; dims/format/MaxValue unchanged; idempotent; mixed non-negative; high-spread non-negative",
+      "changed_files": [
+        "tests/net/netpbm/NetpbmR292GetVarianceDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR292GetVarianceDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [],
+      "format": "netpbm"
+    },
+    {
+      "entry_id": "PC-FODS-R312",
+      "classification": "DOTNET_TEST_COVERAGE",
+      "sprint": "ff-sprint-s284-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "FODS",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.get_cell_formula"
+      ],
+      "api_symbols": [
+        "FodsDocument.GetCellFormula"
+      ],
+      "api_behavior": "GetCellFormula(sheetName,row,col): null/whitespace/nonexistent/negative-row/col throws; valid non-null; SheetCount unchanged; idempotent; dogfood set-then-get, multiple-cells",
+      "changed_files": [
+        "tests/net/fods/FodsR312GetCellFormulaDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR312GetCellFormulaDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [],
+      "format": "fods"
+    },
+    {
+      "entry_id": "PC-FODT-R299",
+      "classification": "DOTNET_TEST_COVERAGE",
+      "sprint": "ff-sprint-s284-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "FODT",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.set_table_name"
+      ],
+      "api_symbols": [
+        "FodtDocument.SetTableName"
+      ],
+      "api_behavior": "SetTableName(tableIndex,name): negative/OOB/no-tables throws; valid ok; TableCount/ParagraphCount unchanged; set-twice ok; GetTableName returns updated; dogfood add-set-get",
+      "changed_files": [
+        "tests/net/fodt/FodtR299SetTableNameDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR299SetTableNameDedicatedTests.cs"
+      ],
+      "test_count": 9,
+      "source_files": [],
+      "format": "fodt"
     }
   ],
-  "total_entries": 1635,
+  "total_entries": 1639,
   "changes": [
     {
       "file": "src/python/dif/models.py",
