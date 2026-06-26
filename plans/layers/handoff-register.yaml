@@ -1,0 +1,143 @@
+schema_version: "1.0"
+repository_revision: "a7744cf6"
+generated_at: "2026-06-26T00:00:00Z"
+
+# Cross-layer handoffs document when one layer's output becomes another layer's input.
+# Both producer and consumer permanent layer plan files must reference the same handoff_id.
+
+handoffs:
+  - handoff_id: HO-001
+    task_id: TC-SAL-001
+    producer_layer: L01
+    producer_plan: plans/layers/specification-authority-layer.md
+    consumer_layer: L02
+    consumer_plan: plans/layers/qname-hierarchy-layer.md
+    artifact: ".local/sal-output/sal-facts-latest.json"
+    schema: ".supervisor/schemas/evidence-declaration.schema.json"
+    authority: L01
+    version: null
+    producer_skill: ingest-spec-sal
+    validator_skill: spec-parity-verification
+    consumer_skill: qname-backfill
+    acceptance_criteria:
+      - "All 20 Python FOSS formats have ≥1 spec_fact entry"
+      - "Fact IDs follow FACT-{FORMAT}-NNN convention"
+      - "SAL facts JSON is parseable"
+    evidence_paths: []
+    status: PENDING
+
+  - handoff_id: HO-002
+    task_id: TC-SAL-001
+    producer_layer: L01
+    producer_plan: plans/layers/specification-authority-layer.md
+    consumer_layer: L03
+    consumer_plan: plans/layers/capability-layer.md
+    artifact: ".local/sal-output/sal-facts-latest.json"
+    schema: null
+    authority: L01
+    version: null
+    producer_skill: ingest-spec-sal
+    validator_skill: spec-parity-verification
+    consumer_skill: build-capability-routes
+    acceptance_criteria:
+      - "Capability records can cite spec_fact_refs from SAL output"
+      - "V13 spec_fact_refs validator passes for all PRODUCT_SOURCE items"
+    evidence_paths: []
+    status: PENDING
+
+  - handoff_id: HO-003
+    task_id: TC-CAP-001
+    producer_layer: L03
+    producer_plan: plans/layers/capability-layer.md
+    consumer_layer: L14
+    consumer_plan: plans/layers/feature-compilation-layer.md
+    artifact: "reports/capability-layer/gap-ledger.json"
+    schema: null
+    authority: L03
+    version: null
+    producer_skill: build-capability-routes
+    validator_skill: update-capability-matrix
+    consumer_skill: null
+    acceptance_criteria:
+      - "gap-ledger.json is read by feature compiler"
+      - "Feature compiler outputs correspond to gap entries"
+    evidence_paths: ["reports/capability-layer/gap-ledger.json"]
+    status: NOT_STARTED
+
+  - handoff_id: HO-004
+    task_id: TC-ORC-004
+    producer_layer: L05
+    producer_plan: plans/layers/oracle-layer.md
+    consumer_layer: L07
+    consumer_plan: plans/layers/test-infrastructure-layer.md
+    artifact: "oracle/formats/{format}/oracle-package.yaml"
+    schema: null
+    authority: L05
+    version: null
+    producer_skill: run-oracle
+    validator_skill: null
+    consumer_skill: add-roundtrip-test
+    acceptance_criteria:
+      - "Oracle VERIFIED status implies format API is correct"
+      - "Test infrastructure can rely on oracle-verified behavior"
+    evidence_paths: ["oracle/registry/format-oracle-registry.yaml"]
+    status: ACTIVE
+
+  - handoff_id: HO-005
+    task_id: TC-LP-001
+    producer_layer: L10
+    producer_plan: plans/layers/plan-prompt-authority-layer.md
+    consumer_layer: L11
+    consumer_plan: plans/layers/supervisor-sprint-layer.md
+    artifact: "plans/layers/index.yaml"
+    schema: null
+    authority: L10
+    version: "1.0"
+    producer_skill: null
+    validator_skill: null
+    consumer_skill: null
+    acceptance_criteria:
+      - "Supervisor can read index.yaml and find next ready task"
+      - "index.yaml layer statuses are current"
+      - "Task register is consistent with index"
+    evidence_paths: ["plans/layers/index.yaml"]
+    status: PENDING
+
+  - handoff_id: HO-006
+    task_id: TC-VAL-001
+    producer_layer: L12
+    producer_plan: plans/layers/validation-policy-layer.md
+    consumer_layer: L08
+    consumer_plan: plans/layers/evidence-review-layer.md
+    artifact: "declaration with primary_layer_id field"
+    schema: ".supervisor/schemas/evidence-declaration.schema.json"
+    authority: L12
+    version: null
+    producer_skill: validate-mutation-guard
+    validator_skill: validate-skill-contracts
+    consumer_skill: build-evidence-bundle
+    acceptance_criteria:
+      - "V83 fires WARN if primary_layer_id missing from PRODUCT_SOURCE item"
+      - "Declarations include primary_layer_id field for L06 items"
+    evidence_paths: []
+    status: NOT_STARTED
+
+  - handoff_id: HO-007
+    task_id: TC-SKILL-001
+    producer_layer: L13
+    producer_plan: plans/layers/skills-layer.md
+    consumer_layer: L11
+    consumer_plan: plans/layers/supervisor-sprint-layer.md
+    artifact: ".supervisor/skill-registry.yaml (19 new layer maintenance skills)"
+    schema: ".supervisor/schemas/skill-registry.schema.json"
+    authority: L13
+    version: null
+    producer_skill: sync-skill-command-registry
+    validator_skill: validate-skill-contracts
+    consumer_skill: null
+    acceptance_criteria:
+      - "All 19 layer-maintenance skills appear in skill-registry.yaml"
+      - "Corresponding .claude/commands/*.md files exist"
+      - "Skills are reusable and idempotent"
+    evidence_paths: [".supervisor/skill-registry.yaml"]
+    status: NOT_STARTED

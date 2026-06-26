@@ -1,0 +1,386 @@
+schema_version: "1.0"
+repository_revision: "a7744cf6"
+generated_at: "2026-06-26T00:00:00Z"
+session_id: "923e237958c1"
+
+decisions:
+  - decision_id: DEC-001
+    timestamp: "2026-06-26T00:00:00Z"
+    title: "Accept L01-SAL as independent layer"
+    candidate_slug: specification-authority-layer
+    decision: ACCEPT
+    layer_id: L01
+    rationale: >
+      The Specification Authority Layer is the upstream source of all spec facts.
+      17 of 24 tools are dormant. It has a dedicated tool directory
+      (tools/specification-authority-layer/) and its own plan (snoopy-juggling-seal.md).
+      It is clearly independent — no other layer owns spec fact extraction.
+    evidence: ["reports/layer-audit-2026-06-26/forensic-layer-discovery-report.md"]
+    decider: "distributed-growing-cerf plan"
+
+  - decision_id: DEC-002
+    timestamp: "2026-06-26T00:00:00Z"
+    title: "Accept L02-QName as independent layer"
+    candidate_slug: qname-hierarchy-layer
+    decision: ACCEPT
+    layer_id: L02
+    rationale: >
+      The QName registry (shared/qname-registry/) is the canonical mapping from
+      spec identifiers to code class names. Downstream consumers (L03, L06) read it.
+      It is independently governable — additions, modifications, and 99.4% coverage
+      are tracked separately from product source.
+    evidence: ["reports/qname-coverage-20260626.json"]
+    decider: "distributed-growing-cerf plan"
+
+  - decision_id: DEC-003
+    timestamp: "2026-06-26T00:00:00Z"
+    title: "Accept L03-Capability as independent layer"
+    candidate_slug: capability-layer
+    decision: ACCEPT
+    layer_id: L03
+    rationale: >
+      The capability layer (tools/capability_layer/) generates 1,242 entries in
+      gap-ledger.json. It is a distinct pipeline stage: spec facts → QNames →
+      capabilities → features. It currently has a critical disconnect (capabilities
+      never consumed by task generator) that can only be fixed by owning this layer.
+    evidence: ["reports/capability-layer/gap-ledger.json"]
+    decider: "distributed-growing-cerf plan"
+
+  - decision_id: DEC-004
+    timestamp: "2026-06-26T00:00:00Z"
+    title: "Accept L04-Corpus as independent layer"
+    candidate_slug: corpus-layer
+    decision: ACCEPT
+    layer_id: L04
+    rationale: >
+      The sample corpus (samples/by-format/) provides test inputs for L05 Oracle
+      and L07 Tests. It currently has 177 files with no governance. The absence
+      of corpus governance is a root cause for oracle failures and test coverage
+      gaps. It is clearly distinct from product source or tests.
+    evidence: ["reports/layer-audit-2026-06-26/forensic-layer-discovery-report.md"]
+    decider: "distributed-growing-cerf plan"
+
+  - decision_id: DEC-005
+    timestamp: "2026-06-26T00:00:00Z"
+    title: "Accept L05-Oracle as independent layer"
+    candidate_slug: oracle-layer
+    decision: ACCEPT
+    layer_id: L05
+    rationale: >
+      The oracle layer (oracle/, tools/oracle/) provides conformance verification.
+      All 20 Python formats are at VERIFIED (73/73 PASS). It has its own registry
+      (format-oracle-registry.yaml) and executor. Independent lifecycle: new oracle
+      cases can be added without changing product source.
+    evidence: ["oracle/registry/format-oracle-registry.yaml"]
+    decider: "distributed-growing-cerf plan"
+
+  - decision_id: DEC-006
+    timestamp: "2026-06-26T00:00:00Z"
+    title: "Accept L06-ProductArchitecture as independent layer"
+    candidate_slug: product-architecture-layer
+    decision: ACCEPT
+    layer_id: L06
+    rationale: >
+      The product source (src/python/, src/net/) is the primary deliverable. It has
+      its own production library standard (v2), LOC caps, spec_qname requirements,
+      and gate authority. Clearly independent from test infrastructure or documentation.
+    evidence: ["docs/code-quality/production-library-standard-v2.md"]
+    decider: "distributed-growing-cerf plan"
+
+  - decision_id: DEC-007
+    timestamp: "2026-06-26T00:00:00Z"
+    title: "Accept L07-TestInfrastructure as independent layer"
+    candidate_slug: test-infrastructure-layer
+    decision: ACCEPT
+    layer_id: L07
+    rationale: >
+      Test infrastructure (tests/) is a distinct layer from product source. It has
+      1,609 passing tests, its own pytest binary, and independent governance (V53,
+      V66 validators). Adding a test does not modify product source.
+    evidence: []
+    decider: "distributed-growing-cerf plan"
+
+  - decision_id: DEC-008
+    timestamp: "2026-06-26T00:00:00Z"
+    title: "Accept L08-EvidenceReview as independent layer"
+    candidate_slug: evidence-review-layer
+    decision: ACCEPT
+    layer_id: L08
+    rationale: >
+      Evidence and review packages (.local/evidences/, reports/supervisor/) have
+      their own schema, generation pipeline, and governance. They are consumed by
+      the supervisor (L11) but produced by the worker. Independent lifecycle.
+    evidence: [".supervisor/schemas/evidence-declaration.schema.json"]
+    decider: "distributed-growing-cerf plan"
+
+  - decision_id: DEC-009
+    timestamp: "2026-06-26T00:00:00Z"
+    title: "Accept L09-StateContinuation as independent layer"
+    candidate_slug: state-continuation-layer
+    decision: ACCEPT
+    layer_id: L09
+    rationale: >
+      Continuation state (.local/supervisor/continuation-signal.json, plan-locks/)
+      is a distinct concern: CCI-MVP session isolation, per-chat plan enforcement,
+      iteration counters, max_iterations. 45 dedicated tests. Cannot be merged
+      into supervisor without destroying CCI-MVP isolation guarantees.
+    evidence: [".local/supervisor/continuation-signal.json"]
+    decider: "distributed-growing-cerf plan"
+
+  - decision_id: DEC-010
+    timestamp: "2026-06-26T00:00:00Z"
+    title: "Accept L10-PlanPromptAuthority as independent layer"
+    candidate_slug: plan-prompt-authority-layer
+    decision: ACCEPT
+    layer_id: L10
+    rationale: >
+      Plan authority (plans/, .claude/commands/) and prompt generation are distinct
+      from the supervisor runtime. CLAUDE.md, AGENTS.md, and 16 plan files govern
+      what work is done. The supervisor generates next-sprint.md but plan authority
+      defines the strategic direction. 6 hardening addenda indicate fragmentation.
+    evidence: ["plans/master-plan.md"]
+    decider: "distributed-growing-cerf plan"
+
+  - decision_id: DEC-011
+    timestamp: "2026-06-26T00:00:00Z"
+    title: "Accept L11-SupervisorSprint as independent layer"
+    candidate_slug: supervisor-sprint-layer
+    decision: ACCEPT
+    layer_id: L11
+    rationale: >
+      The supervisor runtime (tools/supervisor/, 69 modules) is the autonomous
+      execution engine. It orchestrates all other layers but is itself independent
+      (its own governance, its own tests). Production-grade (maturity 5).
+    evidence: ["reports/supervisor/session-resume.md"]
+    decider: "distributed-growing-cerf plan"
+
+  - decision_id: DEC-012
+    timestamp: "2026-06-26T00:00:00Z"
+    title: "Accept L12-ValidationPolicy as independent layer"
+    candidate_slug: validation-policy-layer
+    decision: ACCEPT
+    layer_id: L12
+    rationale: >
+      85 governance validators in 9 modules govern all other layers. They have their
+      own tests (138 in test_governance_validators.py), their own production library
+      standard reference, and their own GOV_BLOCK exception protocol. Independent.
+    evidence: ["tools/supervisor/governance_validators.py"]
+    decider: "distributed-growing-cerf plan"
+
+  - decision_id: DEC-013
+    timestamp: "2026-06-26T00:00:00Z"
+    title: "Accept L13-Skills as independent layer"
+    candidate_slug: skills-layer
+    decision: ACCEPT
+    layer_id: L13
+    rationale: >
+      The skill registry (.supervisor/skill-registry.yaml, 74 skills, .claude/commands/)
+      is the execution governance plane — it governs HOW work is performed. Independent
+      from supervisor (which governs WHAT work is done). Has its own schema, 5 open
+      gaps, and 72 command entries.
+    evidence: [".supervisor/skill-registry.yaml"]
+    decider: "distributed-growing-cerf plan"
+
+  - decision_id: DEC-014
+    timestamp: "2026-06-26T00:00:00Z"
+    title: "Accept feature-compilation-layer as independent layer L14"
+    candidate_slug: feature-compilation-layer
+    decision: ACCEPT
+    layer_id: L14
+    rationale: >
+      Lane 3 in spec-to-feature plan defines a 9-phase compiler that converts
+      capabilities into features and taskcards. This is NOT the same as the
+      capability layer (L03 generates capability records) or product layer (L06
+      receives feature specs). The compiler is the missing bridge. Currently
+      NOT IMPLEMENTED (SKILL-GAP-003). Distinct enough for independent ownership.
+    evidence: ["plans/spec-to-feature-radical-correction-plan.md"]
+    decider: "distributed-growing-cerf plan"
+
+  - decision_id: DEC-015
+    timestamp: "2026-06-26T00:00:00Z"
+    title: "MERGE taskcard-work-queue-layer into plan-prompt-authority-layer (L10)"
+    candidate_slug: taskcard-work-queue-layer
+    decision: MERGE
+    layer_id: L10
+    rationale: >
+      Task routing and work queue management are integral to plan authority. There is
+      no separate tooling or directory for task queue independent of plan files. The
+      task-register.yaml in plans/layers/ serves as the work queue. Merging into L10
+      avoids creating a layer for a concern already owned by L10.
+    evidence: []
+    decider: "distributed-growing-cerf plan"
+
+  - decision_id: DEC-016
+    timestamp: "2026-06-26T00:00:00Z"
+    title: "Accept source-change-handoff-layer as independent layer L15"
+    candidate_slug: source-change-handoff-layer
+    decision: ACCEPT
+    layer_id: L15
+    rationale: >
+      Source mutation ownership (one owner per path) is currently enforced only in
+      prompts (SUP-GAP-006). The source handoff concern — who can mutate which paths,
+      cross-format shared file integration, concurrent mutation protection — is
+      distinct from product architecture (L06) and supervisor (L11).
+    evidence: []
+    decider: "distributed-growing-cerf plan"
+
+  - decision_id: DEC-017
+    timestamp: "2026-06-26T00:00:00Z"
+    title: "Accept product-output-dogfood-layer as independent layer L16"
+    candidate_slug: product-output-dogfood-layer
+    decision: ACCEPT
+    layer_id: L16
+    rationale: >
+      Dogfood exports (/add-dogfood-export, /verify-dogfood-path) are a distinct
+      pipeline: format package → export transformation → dogfood artifact →
+      downstream consumer. Not the same as product source generation or consumer API.
+    evidence: []
+    decider: "distributed-growing-cerf plan"
+
+  - decision_id: DEC-018
+    timestamp: "2026-06-26T00:00:00Z"
+    title: "Accept regression-compatibility-layer as independent layer L17"
+    candidate_slug: regression-compatibility-layer
+    decision: ACCEPT
+    layer_id: L17
+    rationale: >
+      Regression testing (backward compatibility, format version compatibility) is
+      distinct from unit/integration tests in L07. It requires a compatibility matrix
+      per format. The absence of such a layer is itself a gap.
+    evidence: []
+    decider: "distributed-growing-cerf plan"
+
+  - decision_id: DEC-019
+    timestamp: "2026-06-26T00:00:00Z"
+    title: "Accept package-release-layer as independent layer L18"
+    candidate_slug: package-release-layer
+    decision: ACCEPT
+    layer_id: L18
+    rationale: >
+      Package release (PyPI/NuGet) has its own credential requirements, gate
+      authority (Gate 11), and lifecycle separate from product source. Currently
+      blocked (Gate 11 not approved). Needs independent layer ownership.
+    evidence: []
+    decider: "distributed-growing-cerf plan"
+
+  - decision_id: DEC-020
+    timestamp: "2026-06-26T00:00:00Z"
+    title: "Accept consumer-api-layer as independent layer L19"
+    candidate_slug: consumer-api-layer
+    decision: ACCEPT
+    layer_id: L19
+    rationale: >
+      The public API surface (__init__.py exports, ≤100 LOC per production standard)
+      is the external consumer contract. It is distinct from product source internals.
+      External consumers see only this layer. Independent ownership needed.
+    evidence: ["docs/code-quality/production-library-standard-v2.md"]
+    decider: "distributed-growing-cerf plan"
+
+  - decision_id: DEC-021
+    timestamp: "2026-06-26T00:00:00Z"
+    title: "Accept security-legal-layer as independent layer L20"
+    candidate_slug: security-legal-layer
+    decision: ACCEPT
+    layer_id: L20
+    rationale: >
+      Legal category classification (legal_safety 30/30 in format-registry.yaml),
+      license compliance, and security analysis are independent governance concerns.
+      They gate Gate 8 and Gate 11. Cannot be owned by product or supervisor layers.
+    evidence: ["registry/format-registry.yaml"]
+    decider: "distributed-growing-cerf plan"
+
+  - decision_id: DEC-022
+    timestamp: "2026-06-26T00:00:00Z"
+    title: "Accept ai-acceleration-boundary-layer as independent layer L21"
+    candidate_slug: ai-acceleration-boundary-layer
+    decision: ACCEPT
+    layer_id: L21
+    rationale: >
+      The boundary between agent-executable work and human authority (Gate 11,
+      AGENTS.md §AG1-AG2, TRUE_EXTERNAL_GATE classification) is a distinct
+      architectural concern. It governs when AI stops and humans must act.
+      Not the same as supervisor sprint logic.
+    evidence: ["AGENTS.md"]
+    decider: "distributed-growing-cerf plan"
+
+  - decision_id: DEC-023
+    timestamp: "2026-06-26T00:00:00Z"
+    title: "Accept external-tool-governance-layer as independent layer L22"
+    candidate_slug: external-tool-governance-layer
+    decision: ACCEPT
+    layer_id: L22
+    rationale: >
+      MCP servers (.vscode/mcp.json), external tools, and their governance (activation
+      changes require explicit policy per CLAUDE.md) are distinct from the skills
+      registry (which governs internal skills). External tools have different
+      credential, policy, and lifecycle requirements.
+    evidence: []
+    decider: "distributed-growing-cerf plan"
+
+  - decision_id: DEC-024
+    timestamp: "2026-06-26T00:00:00Z"
+    title: "Accept knowledge-discoverability-layer as independent layer L23"
+    candidate_slug: knowledge-discoverability-layer
+    decision: ACCEPT
+    layer_id: L23
+    rationale: >
+      MEMORY.md, .supervisor/project-memory.md (591KB), and documentation discoverability
+      are independent concerns. Structured knowledge management (what assistants can
+      find, how it is organized) is distinct from supervisor state or plan authority.
+    evidence: [".supervisor/project-memory.md"]
+    decider: "distributed-growing-cerf plan"
+
+  - decision_id: DEC-025
+    timestamp: "2026-06-26T00:00:00Z"
+    title: "Accept metrics-product-velocity-layer as independent layer L24"
+    candidate_slug: metrics-product-velocity-layer
+    decision: ACCEPT
+    layer_id: L24
+    rationale: >
+      Velocity metrics (grading-history.jsonl, maturity-trend.json, maturity-signal.json)
+      and product progress tracking are distinct from evidence review (L08) which
+      produces per-sprint evidence. Metrics concern trends across sprints.
+    evidence: ["reports/supervisor/maturity-trend.json"]
+    decider: "distributed-growing-cerf plan"
+
+  - decision_id: DEC-026
+    timestamp: "2026-06-26T00:00:00Z"
+    title: "Accept recovery-rollback-layer as independent layer L25"
+    candidate_slug: recovery-rollback-layer
+    decision: ACCEPT
+    layer_id: L25
+    rationale: >
+      Recovery and rollback protocols (CLAUDE.md GOV_BLOCK exception, AGENTS.md
+      destructive operations, SKILL-GAP-011) are independent governance concerns.
+      They define what happens when something goes wrong — distinct from supervisor
+      sprint execution or validation policy.
+    evidence: []
+    decider: "distributed-growing-cerf plan"
+
+  - decision_id: DEC-027
+    timestamp: "2026-06-26T00:00:00Z"
+    title: "Accept provenance-artifact-identity-layer as independent layer L26"
+    candidate_slug: provenance-artifact-identity-layer
+    decision: ACCEPT
+    layer_id: L26
+    rationale: >
+      Provenance chain (SAL-HEAL-B001, provenance_chain field in evidence schema)
+      and artifact identity (SHA-256 tracking) are distinct from evidence review
+      (L08 reviews content) and SAL (L01 provides facts). Provenance concerns the
+      traceability from product change to spec fact.
+    evidence: [".supervisor/schemas/evidence-declaration.schema.json"]
+    decider: "distributed-growing-cerf plan"
+
+  - decision_id: DEC-028
+    timestamp: "2026-06-26T00:00:00Z"
+    title: "Accept format-language-obligation-layer as independent layer L27"
+    candidate_slug: format-language-obligation-layer
+    decision: ACCEPT
+    layer_id: L27
+    rationale: >
+      Per-format language obligations (what spec elements must be implemented for
+      each format, V82 oracle obligations, OBLIGATION_CREATED lifecycle) are distinct
+      from SAL (provides raw facts) and oracle (verifies compliance). This layer
+      tracks WHAT must be implemented per spec.
+    evidence: ["oracle/registry/format-oracle-registry.yaml"]
+    decider: "distributed-growing-cerf plan"

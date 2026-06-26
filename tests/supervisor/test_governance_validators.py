@@ -2393,3 +2393,220 @@ class TestV82OracleObligations:
         self._make_oracle_registry(tmp_path, ["csv"])
         result = validator({}, repo_root=tmp_path)
         assert result["blocks_sprint"] is False
+
+
+class TestV83PrimaryLayerClassified:
+    """V83: PRODUCT_SOURCE items should include primary_layer_id."""
+
+    def _get_validator(self):
+        import importlib
+        m = importlib.import_module("governance_validators_layers")
+        return m.validate_primary_layer_classified
+
+    def test_v83_pass_when_all_product_source_have_primary_layer_id(self):
+        """V83 returns PASS when all PRODUCT_SOURCE items have primary_layer_id."""
+        validator = self._get_validator()
+        declaration = {
+            "planned_work_items": [
+                {"work_item_id": "WI-001", "item_type": "PRODUCT_SOURCE", "primary_layer_id": "L06"},
+            ]
+        }
+        result = validator(declaration)
+        assert result["result"] == "PASS"
+        assert result["blocks_sprint"] is False
+
+    def test_v83_warn_when_product_source_missing_primary_layer_id(self):
+        """V83 returns WARN when PRODUCT_SOURCE item is missing primary_layer_id."""
+        validator = self._get_validator()
+        declaration = {
+            "planned_work_items": [
+                {"work_item_id": "WI-002", "item_type": "PRODUCT_SOURCE"},
+            ]
+        }
+        result = validator(declaration)
+        assert result["result"] == "WARN"
+        assert result["blocks_sprint"] is False
+        assert len(result["items"]) == 1
+
+    def test_v83_non_product_source_items_not_checked(self):
+        """V83 only checks PRODUCT_SOURCE items — other item_types are ignored."""
+        validator = self._get_validator()
+        declaration = {
+            "planned_work_items": [
+                {"work_item_id": "WI-003", "item_type": "GOVERNANCE"},
+                {"work_item_id": "WI-004", "item_type": "PRODUCT_TEST"},
+            ]
+        }
+        result = validator(declaration)
+        assert result["result"] == "PASS"
+        assert result["blocks_sprint"] is False
+
+
+class TestV84PermanentLayerPlanExists:
+    """V84: If primary_layer_id present, the layer plan file must exist."""
+
+    def _get_validator(self):
+        import importlib
+        m = importlib.import_module("governance_validators_layers")
+        return m.validate_permanent_layer_plan_exists
+
+    def _make_index(self, tmp_path, entries):
+        import yaml
+        index_dir = tmp_path / "plans" / "layers"
+        index_dir.mkdir(parents=True, exist_ok=True)
+        (index_dir / "index.yaml").write_text(yaml.dump({"layers": entries}))
+
+    def test_v84_pass_when_layer_plan_exists(self, tmp_path):
+        """V84 returns PASS when layer_id is in index.yaml and plan file exists."""
+        validator = self._get_validator()
+        plan_path = "plans/layers/product-architecture-layer.md"
+        self._make_index(tmp_path, [{"layer_id": "L06", "permanent_plan_path": plan_path}])
+        (tmp_path / plan_path).parent.mkdir(parents=True, exist_ok=True)
+        (tmp_path / plan_path).write_text("# L06\n")
+        declaration = {
+            "planned_work_items": [
+                {"work_item_id": "WI-005", "item_type": "PRODUCT_SOURCE", "primary_layer_id": "L06"},
+            ]
+        }
+        result = validator(declaration, repo_root=tmp_path)
+        assert result["result"] == "PASS"
+        assert result["blocks_sprint"] is False
+
+    def test_v84_warn_when_layer_plan_file_missing(self, tmp_path):
+        """V84 returns WARN when primary_layer_id is set but plan file not on disk."""
+        validator = self._get_validator()
+        plan_path = "plans/layers/missing-layer.md"
+        self._make_index(tmp_path, [{"layer_id": "L99", "permanent_plan_path": plan_path}])
+        # Do NOT create the plan file
+        declaration = {
+            "planned_work_items": [
+                {"work_item_id": "WI-006", "item_type": "PRODUCT_SOURCE", "primary_layer_id": "L99"},
+            ]
+        }
+        result = validator(declaration, repo_root=tmp_path)
+        assert result["result"] == "WARN"
+        assert result["blocks_sprint"] is False
+
+    def test_v84_blocks_sprint_is_always_false(self, tmp_path):
+        """V84 must never set blocks_sprint=True even when plan is missing."""
+        validator = self._get_validator()
+        self._make_index(tmp_path, [{"layer_id": "L98", "permanent_plan_path": "plans/layers/ghost.md"}])
+        declaration = {
+            "planned_work_items": [
+                {"work_item_id": "WI-007", "item_type": "PRODUCT_SOURCE", "primary_layer_id": "L98"},
+            ]
+        }
+        result = validator(declaration, repo_root=tmp_path)
+        assert result["blocks_sprint"] is False
+
+
+class TestV85PreworkLogPresent:
+    """V85: PRODUCT_SOURCE items should have a work_log_id reference."""
+
+    def _get_validator(self):
+        import importlib
+        m = importlib.import_module("governance_validators_layers")
+        return m.validate_prework_log_present
+
+    def test_v85_pass_when_work_log_id_present(self):
+        """V85 returns PASS when PRODUCT_SOURCE item has work_log_id."""
+        validator = self._get_validator()
+        declaration = {
+            "planned_work_items": [
+                {"work_item_id": "WI-010", "item_type": "PRODUCT_SOURCE", "work_log_id": "WL-001"},
+            ]
+        }
+        result = validator(declaration)
+        assert result["result"] == "PASS"
+        assert result["blocks_sprint"] is False
+
+    def test_v85_warn_when_work_log_id_missing(self):
+        """V85 returns WARN when PRODUCT_SOURCE item has no work_log_id."""
+        validator = self._get_validator()
+        declaration = {
+            "planned_work_items": [
+                {"work_item_id": "WI-011", "item_type": "PRODUCT_SOURCE"},
+            ]
+        }
+        result = validator(declaration)
+        assert result["result"] == "WARN"
+        assert result["blocks_sprint"] is False
+
+    def test_v85_blocks_sprint_is_always_false(self):
+        """V85 must never set blocks_sprint=True."""
+        validator = self._get_validator()
+        declaration = {
+            "planned_work_items": [
+                {"work_item_id": "WI-012", "item_type": "PRODUCT_SOURCE"},
+            ]
+        }
+        result = validator(declaration)
+        assert result["blocks_sprint"] is False
+
+
+class TestV86LayerTaskRegistered:
+    """V86: TC-* task_ids in declaration should appear in task-register.yaml."""
+
+    def _get_validator(self):
+        import importlib
+        m = importlib.import_module("governance_validators_layers")
+        return m.validate_layer_task_registered
+
+    def _make_register(self, tmp_path, task_ids):
+        import yaml
+        reg_dir = tmp_path / "plans" / "layers"
+        reg_dir.mkdir(parents=True, exist_ok=True)
+        tasks = [{"task_id": tid, "status": "TODO"} for tid in task_ids]
+        (reg_dir / "task-register.yaml").write_text(yaml.dump({"tasks": tasks}))
+
+    def test_v86_pass_when_task_id_registered(self, tmp_path):
+        """V86 returns PASS when TC- task_id appears in task-register.yaml."""
+        validator = self._get_validator()
+        self._make_register(tmp_path, ["TC-SAL-001"])
+        declaration = {
+            "planned_work_items": [
+                {"work_item_id": "WI-020", "item_type": "GOVERNANCE", "task_id": "TC-SAL-001"},
+            ]
+        }
+        result = validator(declaration, repo_root=tmp_path)
+        assert result["result"] == "PASS"
+        assert result["blocks_sprint"] is False
+
+    def test_v86_warn_when_task_id_not_registered(self, tmp_path):
+        """V86 returns WARN when TC- task_id is not in task-register.yaml."""
+        validator = self._get_validator()
+        self._make_register(tmp_path, ["TC-SAL-001"])
+        declaration = {
+            "planned_work_items": [
+                {"work_item_id": "WI-021", "item_type": "GOVERNANCE", "task_id": "TC-UNKNOWN-999"},
+            ]
+        }
+        result = validator(declaration, repo_root=tmp_path)
+        assert result["result"] == "WARN"
+        assert result["blocks_sprint"] is False
+        assert any("TC-UNKNOWN-999" in str(i) for i in result["items"])
+
+    def test_v86_non_tc_work_item_ids_not_checked(self, tmp_path):
+        """V86 only checks TC-* prefixed task IDs — other IDs are skipped."""
+        validator = self._get_validator()
+        self._make_register(tmp_path, [])
+        declaration = {
+            "planned_work_items": [
+                {"work_item_id": "WI-022-nontc", "item_type": "PRODUCT_SOURCE"},
+            ]
+        }
+        result = validator(declaration, repo_root=tmp_path)
+        assert result["result"] == "PASS"
+        assert result["blocks_sprint"] is False
+
+    def test_v86_blocks_sprint_is_always_false(self, tmp_path):
+        """V86 must never set blocks_sprint=True."""
+        validator = self._get_validator()
+        self._make_register(tmp_path, [])
+        declaration = {
+            "planned_work_items": [
+                {"work_item_id": "WI-023", "item_type": "GOVERNANCE", "task_id": "TC-MISSING-001"},
+            ]
+        }
+        result = validator(declaration, repo_root=tmp_path)
+        assert result["blocks_sprint"] is False

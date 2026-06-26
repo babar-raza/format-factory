@@ -1,4 +1,4 @@
-"""governance_validator_runner.py — Runs all governance validators (V1-V81).
+"""governance_validator_runner.py — Runs all governance validators (V1-V86).
 
 Extracted from governance_validators.py to keep that file within its LOC cap.
 This module imports validators from governance_validators LAZILY (inside the function
@@ -23,6 +23,10 @@ V73: validate_dotnet_spec_qname — .NET Spec/*.cs files must have SpecQName con
 V74: validate_ledger_continuation_gate — block PRODUCT_SOURCE/PRODUCT_TEST items for formats with continuation_allowed=false in product-deepening-ledger.yaml (TC-PDL-005, FAIL)
 V75: validate_dependency_direction — import direction within format packages must follow governed chain (RULE-LIB-003, TC-GH-004, 2026-06-25; WARN existing, FAIL new)
 V76: validate_error_handling_hierarchy — format packages must have exceptions.py (RULE-LIB-006, TC-GH-004, 2026-06-25; WARN existing, FAIL new)
+V83: validate_primary_layer_classified — PRODUCT_SOURCE items should include primary_layer_id (TC-LP-024, WARN-only)
+V84: validate_permanent_layer_plan_exists — if primary_layer_id present, plans/layers/<slug>.md must exist (TC-LP-024, WARN-only)
+V85: validate_prework_log_present — PRODUCT_SOURCE items should have a work_log_id in evidence (TC-LP-024, WARN-only)
+V86: validate_layer_task_registered — TC-* task_ids in declaration should appear in task-register.yaml (TC-LP-024, WARN-only)
 """
 from __future__ import annotations
 
@@ -320,6 +324,23 @@ def run_all_governance_validators(
         results.append(_vp(declaration, repo_root))
     except Exception:
         pass
+
+    # V83-V86 (TC-LP-024): Layer control plane governance validators (WARN-only)
+    try:
+        from governance_validators_layers import (  # noqa: PLC0415
+            validate_primary_layer_classified as _v83,
+            validate_permanent_layer_plan_exists as _v84,
+            validate_prework_log_present as _v85,
+            validate_layer_task_registered as _v86,
+        )
+        results.extend([
+            _v83(declaration, repo_root),  # V83
+            _v84(declaration, repo_root),  # V84
+            _v85(declaration, repo_root),  # V85
+            _v86(declaration, repo_root),  # V86
+        ])
+    except Exception:
+        pass  # Non-blocking on import failure
 
     # V-TCF-001/002/003 (TC-TCF-007): Terminal closure governance validators
     # V-TCF-001: FAIL on open taskcards at terminal claim (LIFECYCLE_HARDENING/MACHINERY_HARDENING)

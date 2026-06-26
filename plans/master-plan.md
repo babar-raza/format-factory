@@ -4753,3 +4753,61 @@ violations); `test_lane_guard.py` expectations updated to match.
 - RC-006 (capability compiler spec-grounding): capability_to_feature_compiler.py still goal-based — large architectural change, deferred
 - spec_fact_provenance advisory: will become required for READINESS/RELEASE_GATE at ≥80% workbench coverage (V-NEW-002 gate)
 
+## Section 81 — distributed-growing-cerf: Permanent Layer Control Plane Bootstrap (CLOSED)
+
+**Plan:** `plans/.claude/distributed-growing-cerf.md` — TERMINAL_CLOSED
+**Mission:** Create `plans/layers/` as the permanent one-layer-one-plan control plane so every assistant, agent, and the autonomous supervisor can identify layer ownership, read current state, register tasks, log progress, verify, and hand off across sessions.
+
+### What Was Completed
+
+| Deliverable | Detail | Verification |
+|-------------|--------|-------------|
+| plans/layers/ control plane | 34 files total | index.yaml has 27/27 layers with existing plan files |
+| 27 permanent layer plan files (L01-L27) | Full 39-section treatment for critical layers (L01, L05, L11-L13); concise for others; stubs for L15-L27 | All files exist on disk |
+| plans/layers/master.md | 27-section architecture with maturity matrix, dependency graph, supervisor work-selection contract | Created |
+| plans/layers/index.yaml | Machine-readable layer index (27 layers) for supervisor consumption | 27/27 layers consistent |
+| plans/layers/task-register.yaml | 11 initial tasks with valid plan references | TC-LP-001 through TC-PLAN-001 |
+| plans/layers/handoff-register.yaml | 7 cross-layer handoffs (HO-001 through HO-007) | Created |
+| plans/layers/decision-register.yaml | 28 taxonomy decisions (DEC-001 through DEC-028) | taskcard-work-queue merged into L10 |
+| plans/layers/dependency-register.yaml | 20 dependencies + 4 execution waves | Created |
+| plans/layers/change-ledger.jsonl | Append-only change log | Created |
+| 19 layer-maintenance micro-skills | Appended to .supervisor/skill-registry.yaml (93 total, was 74) | All 19 command files in .claude/commands/ |
+| Governance validators V83-V86 | governance_validators_layers.py (WARN-level, non-blocking) | 13/13 new tests PASS |
+
+### Tasks Completed
+
+| Taskcard | Status |
+|----------|--------|
+| TC-LP-001 (control plane infrastructure) | CLOSED |
+| TC-LP-002 to TC-LP-016 (27 layer plan files + master.md) | CLOSED |
+| TC-LP-022 (master.md final sync) | CLOSED |
+| TC-LP-023 (19 layer-maintenance micro-skills) | CLOSED |
+| TC-LP-024 (V83-V86 validators + tests) | CLOSED |
+| TC-LP-025 (idempotency verification + evidence) | CLOSED |
+
+### What Changed
+
+- `plans/layers/` — 34 new files (entire directory, new)
+- `plans/.claude/distributed-growing-cerf.md` — plan file (new)
+- `.supervisor/skill-registry.yaml` — 19 skill blocks appended (+408 lines)
+- `tools/supervisor/governance_validators_layers.py` — new file (V83-V86)
+- `tools/supervisor/governance_validator_runner.py` — V83-V86 wired in try-block
+- `tests/supervisor/test_governance_validators.py` — 13 new tests (TestV83-TestV86)
+- `.claude/commands/` — 19 new command files (layer governance micro-skills)
+
+### Verification Performed
+
+- index.yaml consistency: 27/27 layers, 0 missing plan files
+- task-register.yaml: 11 tasks, all plan paths valid
+- V83-V86 tests: 13/13 PASS
+- Evidence declaration: sprint_executor_validate.py PASS
+- No product source changes (src/python/, src/net/ untouched)
+- Governance validator count: 92 (was 88, +4 new V83-V86)
+
+### Next Actions (for future sessions)
+
+- TC-SAL-001: Activate 17 dormant SAL tools (P0 — 14/20 formats have zero SAL facts)
+- TC-SUP-001: Code-enforce lane ownership and DAG ordering (P1)
+- TC-CAP-001: Wire gap-ledger.json to autonomous task generator (P1)
+- TC-SKILL-001: Formally close the 19 skills in skills-layer.md §29 (P2)
+

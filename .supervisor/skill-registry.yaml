@@ -1503,6 +1503,414 @@ skills:
   spec_qname_required: false
   status: active
   test_paths: []
+- command: /identify-primary-layer
+  command_file: .claude/commands/identify-primary-layer.md
+  idempotency: read_only
+  implementation_paths:
+  - plans/layers/index.yaml
+  mandatory_validations:
+  - layer_plan_exists
+  - layer_in_index
+  notes: Created TC-LP-023 (2026-06-26). Layer governance maintenance skill. Returns
+    primary layer + permanent plan path for a given task or set of changed paths.
+  product_track: layer_governance
+  purpose: Given a task or work item, identify the primary layer that owns it and
+    return the permanent layer plan path from plans/layers/.
+  required_handoff_fields:
+  - task_id
+  - work_type
+  - changed_paths
+  skill_id: identify-primary-layer
+  spec_qname_required: false
+  status: active
+  test_paths: []
+- command: /create-permanent-layer-plan
+  command_file: .claude/commands/create-permanent-layer-plan.md
+  idempotency: create_or_update
+  implementation_paths:
+  - plans/layers/
+  mandatory_validations:
+  - no_duplicate_layer_id
+  - file_written
+  - index_updated
+  notes: Created TC-LP-023 (2026-06-26). Layer governance maintenance skill. Bootstraps
+    a new layer file using the 39-section template.
+  product_track: layer_governance
+  purpose: Bootstrap a new layer plan file in plans/layers/ using the 39-section template.
+    Registers the new layer in index.yaml and change-ledger.jsonl.
+  required_handoff_fields:
+  - layer_id
+  - canonical_slug
+  - canonical_name
+  - maturity_current
+  - maturity_target
+  - status
+  - dependencies
+  skill_id: create-permanent-layer-plan
+  spec_qname_required: false
+  status: active
+  test_paths: []
+- command: /update-layer-current-state
+  command_file: .claude/commands/update-layer-current-state.md
+  idempotency: create_or_update
+  implementation_paths:
+  - plans/layers/
+  mandatory_validations:
+  - layer_plan_exists
+  - section_updated
+  - change_logged
+  notes: Created TC-LP-023 (2026-06-26). Layer governance maintenance skill. Updates
+    section 9 of a permanent layer plan with the latest observed state.
+  product_track: layer_governance
+  purpose: Update section 9 (Current Implementation) of a permanent layer plan file
+    with the latest observed state from the codebase.
+  required_handoff_fields:
+  - layer_id
+  - permanent_plan_path
+  - current_state_summary
+  - key_metrics
+  skill_id: update-layer-current-state
+  spec_qname_required: false
+  status: active
+  test_paths: []
+- command: /register-layer-gap
+  command_file: .claude/commands/register-layer-gap.md
+  idempotency: create_or_update
+  implementation_paths:
+  - plans/layers/
+  mandatory_validations:
+  - gap_id_unique
+  - change_logged
+  notes: Created TC-LP-023 (2026-06-26). Layer governance maintenance skill. Adds
+    gap entries to section 14 of a permanent layer plan.
+  product_track: layer_governance
+  purpose: Add a new gap entry to section 14 (Gap Register) of a permanent layer plan
+    file. Gaps represent the delta between current state and target design.
+  required_handoff_fields:
+  - layer_id
+  - permanent_plan_path
+  - gap_id
+  - severity
+  - current_state
+  - target_state
+  - task_id
+  skill_id: register-layer-gap
+  spec_qname_required: false
+  status: active
+  test_paths: []
+- command: /register-layer-task
+  command_file: .claude/commands/register-layer-task.md
+  idempotency: create_or_update
+  implementation_paths:
+  - plans/layers/
+  - plans/layers/task-register.yaml
+  mandatory_validations:
+  - task_id_unique
+  - layer_plan_has_task
+  - change_logged
+  notes: Created TC-LP-023 (2026-06-26). Layer governance maintenance skill. Registers
+    a task in section 29 and in task-register.yaml.
+  product_track: layer_governance
+  purpose: Register a new task in section 29 (Active Taskcards) of a permanent layer
+    plan file AND add a corresponding entry to plans/layers/task-register.yaml.
+  required_handoff_fields:
+  - layer_id
+  - permanent_plan_path
+  - task_id
+  - title
+  - task_type
+  - severity
+  - priority
+  - next_action
+  skill_id: register-layer-task
+  spec_qname_required: false
+  status: active
+  test_paths: []
+- command: /append-layer-work-log
+  command_file: .claude/commands/append-layer-work-log.md
+  idempotency: append_only
+  implementation_paths:
+  - plans/layers/
+  mandatory_validations:
+  - section_exists
+  - entry_appended
+  notes: Created TC-LP-023 (2026-06-26). Layer governance maintenance skill. Appends
+    work log entries to section 34 of a permanent layer plan.
+  product_track: layer_governance
+  purpose: Append a new work log entry to section 34 (Work Log) of a permanent layer
+    plan file. Called after completing work associated with a layer task.
+  required_handoff_fields:
+  - layer_id
+  - permanent_plan_path
+  - task_id
+  - sprint_id
+  - work_summary
+  - evidence_paths
+  skill_id: append-layer-work-log
+  spec_qname_required: false
+  status: active
+  test_paths: []
+- command: /append-layer-verification-log
+  command_file: .claude/commands/append-layer-verification-log.md
+  idempotency: append_only
+  implementation_paths:
+  - plans/layers/
+  mandatory_validations:
+  - section_exists
+  - verdict_valid
+  - entry_appended
+  notes: Created TC-LP-023 (2026-06-26). Layer governance maintenance skill. Appends
+    verification log entries to section 35 of a permanent layer plan.
+  product_track: layer_governance
+  purpose: Append a verification log entry to section 35 (Verification Log) of a
+    permanent layer plan file. Called after verifying task acceptance criteria.
+  required_handoff_fields:
+  - layer_id
+  - permanent_plan_path
+  - task_id
+  - verdict
+  - verification_summary
+  - evidence_paths
+  skill_id: append-layer-verification-log
+  spec_qname_required: false
+  status: active
+  test_paths: []
+- command: /update-layer-session-handoff
+  command_file: .claude/commands/update-layer-session-handoff.md
+  idempotency: create_or_update
+  implementation_paths:
+  - plans/layers/
+  mandatory_validations:
+  - section_written
+  - exact_next_task_valid
+  - change_logged
+  notes: Created TC-LP-023 (2026-06-26). Layer governance maintenance skill. Writes
+    section 36 of a permanent layer plan to enable cross-session resume.
+  product_track: layer_governance
+  purpose: Write or update section 36 (Current Session Handoff) of a permanent layer
+    plan file. Called at session end so next assistant can resume without prior context.
+  required_handoff_fields:
+  - layer_id
+  - permanent_plan_path
+  - session_id
+  - current_status
+  - exact_next_task
+  - important_decisions
+  - resume_instructions
+  skill_id: update-layer-session-handoff
+  spec_qname_required: false
+  status: active
+  test_paths: []
+- command: /update-layer-master-index
+  command_file: .claude/commands/update-layer-master-index.md
+  idempotency: create_or_update
+  implementation_paths:
+  - plans/layers/index.yaml
+  - plans/layers/
+  mandatory_validations:
+  - index_has_layer
+  - status_consistent
+  - change_logged
+  notes: Created TC-LP-023 (2026-06-26). Layer governance maintenance skill. Syncs
+    layer status from plan file to index.yaml.
+  product_track: layer_governance
+  purpose: Sync a layer's status, maturity, and next_task_id from its permanent plan
+    file to plans/layers/index.yaml.
+  required_handoff_fields:
+  - layer_id
+  - permanent_plan_path
+  skill_id: update-layer-master-index
+  spec_qname_required: false
+  status: active
+  test_paths: []
+- command: /close-layer-task
+  command_file: .claude/commands/close-layer-task.md
+  idempotency: create_or_update
+  implementation_paths:
+  - plans/layers/
+  - plans/layers/task-register.yaml
+  mandatory_validations:
+  - task_was_active
+  - evidence_provided
+  - register_updated
+  notes: Created TC-LP-023 (2026-06-26). Layer governance maintenance skill. Closes
+    a task by moving it from section 29 to section 31 in the layer plan.
+  product_track: layer_governance
+  purpose: Close a layer task — move it from section 29 (Active Taskcards) to section
+    31 (Completed Tasks) and update status to CLOSED in task-register.yaml.
+  required_handoff_fields:
+  - layer_id
+  - permanent_plan_path
+  - task_id
+  - closure_verdict
+  - evidence_paths
+  skill_id: close-layer-task
+  spec_qname_required: false
+  status: active
+  test_paths: []
+- command: /reconcile-layer-index
+  command_file: .claude/commands/reconcile-layer-index.md
+  idempotency: read_only
+  implementation_paths:
+  - plans/layers/index.yaml
+  - plans/layers/
+  mandatory_validations: []
+  notes: Created TC-LP-023 (2026-06-26). Layer governance maintenance skill. Read-only
+    audit — verifies index.yaml consistency with all layer plan files.
+  product_track: layer_governance
+  purpose: Verify that plans/layers/index.yaml is consistent with all layer plan files.
+    Reports discrepancies without auto-fixing.
+  required_handoff_fields: []
+  skill_id: reconcile-layer-index
+  spec_qname_required: false
+  status: active
+  test_paths: []
+- command: /inventory-permanent-layer-plans
+  command_file: .claude/commands/inventory-permanent-layer-plans.md
+  idempotency: read_only
+  implementation_paths:
+  - plans/layers/
+  mandatory_validations: []
+  notes: Created TC-LP-023 (2026-06-26). Layer governance maintenance skill. Read-only
+    audit — lists all layer plan files and their status.
+  product_track: layer_governance
+  purpose: List all layer plan files in plans/layers/ and report their status, maturity,
+    and completeness. Read-only audit skill.
+  required_handoff_fields: []
+  skill_id: inventory-permanent-layer-plans
+  spec_qname_required: false
+  status: active
+  test_paths: []
+- command: /migrate-temporary-agent-plan
+  command_file: .claude/commands/migrate-temporary-agent-plan.md
+  idempotency: create_or_update
+  implementation_paths:
+  - plans/layers/
+  - plans/.claude/
+  mandatory_validations:
+  - temporary_plan_exists
+  - no_product_source_changes
+  - durable_content_migrated
+  notes: Created TC-LP-023 (2026-06-26). Layer governance maintenance skill. Extracts
+    durable content from temporary agent plans into permanent layer files.
+  product_track: layer_governance
+  purpose: Extract durable content from a temporary .claude/plans/ agent plan and
+    merge it into the appropriate permanent layer plan files in plans/layers/.
+  required_handoff_fields:
+  - temporary_plan_path
+  - target_layer_ids
+  skill_id: migrate-temporary-agent-plan
+  spec_qname_required: false
+  status: active
+  test_paths: []
+- command: /detect-unlogged-work
+  command_file: .claude/commands/detect-unlogged-work.md
+  idempotency: read_only
+  implementation_paths:
+  - plans/layers/
+  mandatory_validations: []
+  notes: Created TC-LP-023 (2026-06-26). Layer governance maintenance skill. Read-only
+    audit — finds git changes not referenced in any layer work log.
+  product_track: layer_governance
+  purpose: Find git changes that are NOT referenced in any permanent layer plan's
+    section 34 (Work Log). Identifies work done outside the governed layer control plane.
+  required_handoff_fields: []
+  skill_id: detect-unlogged-work
+  spec_qname_required: false
+  status: active
+  test_paths: []
+- command: /detect-stale-layer-state
+  command_file: .claude/commands/detect-stale-layer-state.md
+  idempotency: read_only
+  implementation_paths:
+  - plans/layers/
+  mandatory_validations: []
+  notes: Created TC-LP-023 (2026-06-26). Layer governance maintenance skill. Read-only
+    audit — finds layer plans whose section 9 predates source changes.
+  product_track: layer_governance
+  purpose: Find permanent layer plan files whose section 9 (Current Implementation)
+    does not reflect recent changes to the codebase.
+  required_handoff_fields: []
+  skill_id: detect-stale-layer-state
+  spec_qname_required: false
+  status: active
+  test_paths: []
+- command: /create-cross-layer-handoff
+  command_file: .claude/commands/create-cross-layer-handoff.md
+  idempotency: create_or_update
+  implementation_paths:
+  - plans/layers/handoff-register.yaml
+  - plans/layers/
+  mandatory_validations:
+  - handoff_id_unique
+  - both_layers_exist
+  - register_updated
+  notes: Created TC-LP-023 (2026-06-26). Layer governance maintenance skill. Registers
+    cross-layer handoffs in handoff-register.yaml and both layer plan files.
+  product_track: layer_governance
+  purpose: Register a new cross-layer handoff in plans/layers/handoff-register.yaml
+    and reference it in both the producer and consumer layer plan files.
+  required_handoff_fields:
+  - handoff_id
+  - producer_layer_id
+  - consumer_layer_id
+  - artifact
+  - task_id
+  - acceptance_criteria
+  skill_id: create-cross-layer-handoff
+  spec_qname_required: false
+  status: active
+  test_paths: []
+- command: /select-next-layer-task
+  command_file: .claude/commands/select-next-layer-task.md
+  idempotency: read_only
+  implementation_paths:
+  - plans/layers/index.yaml
+  - plans/layers/task-register.yaml
+  mandatory_validations: []
+  notes: Created TC-LP-023 (2026-06-26). Layer governance maintenance skill. Used
+    by autonomous supervisor for work selection from the layer control plane.
+  product_track: layer_governance
+  purpose: Read plans/layers/index.yaml and task-register.yaml to return the next
+    ready, dependency-valid layer task for execution.
+  required_handoff_fields: []
+  skill_id: select-next-layer-task
+  spec_qname_required: false
+  status: active
+  test_paths: []
+- command: /validate-permanent-layer-plans
+  command_file: .claude/commands/validate-permanent-layer-plans.md
+  idempotency: read_only
+  implementation_paths:
+  - plans/layers/
+  mandatory_validations: []
+  notes: Created TC-LP-023 (2026-06-26). Layer governance maintenance skill. Read-only
+    audit — checks all layer plan files for required 39-section completeness.
+  product_track: layer_governance
+  purpose: Validate all permanent layer plan files for structural completeness. Each
+    plan must have required metadata block and key sections.
+  required_handoff_fields: []
+  skill_id: validate-permanent-layer-plans
+  spec_qname_required: false
+  status: active
+  test_paths: []
+- command: /reconcile-layer-task-register
+  command_file: .claude/commands/reconcile-layer-task-register.md
+  idempotency: read_only
+  implementation_paths:
+  - plans/layers/task-register.yaml
+  - plans/layers/
+  mandatory_validations: []
+  notes: Created TC-LP-023 (2026-06-26). Layer governance maintenance skill. Read-only
+    audit — verifies task-register.yaml consistency with layer plan section 29 entries.
+  product_track: layer_governance
+  purpose: Verify that plans/layers/task-register.yaml is consistent with the section
+    29 (Active Taskcards) sections in all permanent layer plan files.
+  required_handoff_fields: []
+  skill_id: reconcile-layer-task-register
+  spec_qname_required: false
+  status: active
+  test_paths: []
 sprint: FORMAT-FACTORY-R98-AUTONOMOUS-LOOP-TRUST-LAYER-ITERATION-SCALING-ACCELERATION-POC-MEGA-TRAIN-001
 version: '2.0'
 visibility: generated
