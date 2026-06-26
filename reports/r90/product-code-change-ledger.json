@@ -29547,9 +29547,115 @@
       "tests_added": 9,
       "capability_ref": "commercial_net_products.FODT.dotnet_status.get_table_row_count",
       "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-ZST-R293",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s293-zst-frame-inspector-20260626",
+      "skill": "add-python-api",
+      "product": "foss_python_products.ZST.python_status.frame_inspector",
+      "capability_refs": [
+        "foss_python_products.ZST.python_status.frame_inspector"
+      ],
+      "api_symbols": [
+        "zst_inspect_frame"
+      ],
+      "api_behavior": "Return spec-shaped Frame object (zst:frame QName, FACT-ZST-001) from compressed ZST data",
+      "changed_files": [
+        "src/python/zst/zst_frame_inspector.py",
+        "src/python/zst/__init__.py"
+      ],
+      "test_files": [
+        "tests/python/zst/test_r293_zst_inspect_frame.py"
+      ],
+      "test_count": 9,
+      "source_files": [
+        {
+          "path": "src/python/zst/zst_frame_inspector.py",
+          "state": "created",
+          "sha256": "6446e37749c109e4c92f706e092ed50277d9eb74021998ce375d1edb3953966e"
+        },
+        {
+          "path": "src/python/zst/__init__.py",
+          "state": "modified",
+          "sha256": "443ed2dbbb68de7e4dcc337c7054448bfd91bd984628f9585d5bb494b2902fd0"
+        }
+      ],
+      "format": "zst"
+    },
+    {
+      "entry_id": "PC-NETPBM-R302",
+      "sprint": "ff-sprint-s294-dotnet-deepening-20260630",
+      "format": "NETPBM",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/netpbm/NetpbmR302CropDedicatedTests.cs",
+      "description": "Dedicated tests for NetpbmImage.Crop(x,y,w,h): valid ok, expected width/height, format/MaxValue unchanged, all pixels in range, full image ok, single pixel ok, dogfood crop pixel and sub-region",
+      "tests_added": 10,
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.crop",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-FODS-R322",
+      "sprint": "ff-sprint-s294-dotnet-deepening-20260630",
+      "format": "FODS",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fods/FodsR322AddRowDedicatedTests.cs",
+      "description": "Dedicated tests for FodsDocument.AddRow(sheetName,values): null/whitespace/nonexistent throws, valid ok, RowCount increases, SheetCount unchanged, multi-value ok, empty values ok, dogfood header+data and two-sheets",
+      "tests_added": 10,
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.add_row",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-FODT-R309",
+      "sprint": "ff-sprint-s294-dotnet-deepening-20260630",
+      "format": "FODT",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fodt/FodtR309SetTableCellTextDedicatedTests.cs",
+      "description": "Dedicated tests for FodtDocument.SetTableCellText(tableIndex,row,col,text): negative/OOB/no-tables/negative-row/negative-col throws, valid ok, TableCount/ParagraphCount unchanged, set-twice ok, dogfood set and get",
+      "tests_added": 10,
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.set_table_cell_text",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-TSV-R294",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s294-tsv-row-iterator-20260626",
+      "skill": "add-python-api",
+      "product": "foss_python_products.TSV.python_status.row_iterator",
+      "capability_refs": [
+        "foss_python_products.TSV.python_status.row_iterator"
+      ],
+      "api_symbols": [
+        "tsv_iter_records"
+      ],
+      "api_behavior": "Yield spec-shaped Record objects (tsv:record QName, FACT-TSV-001) for each data row in a TSV file",
+      "changed_files": [
+        "src/python/tsv/tsv_row_iterator.py",
+        "src/python/tsv/__init__.py"
+      ],
+      "test_files": [
+        "tests/python/tsv/test_r294_tsv_iter_records.py"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "src/python/tsv/tsv_row_iterator.py",
+          "state": "created",
+          "sha256": "502cb355a7968892bc43340e2be83958ae7c04ac62c121cff885273a2ab411bb"
+        },
+        {
+          "path": "src/python/tsv/__init__.py",
+          "state": "modified",
+          "sha256": "333c066d76f2d2a04f7ee330874efd1b71b52e6a2d5f055c4d3849e6fa82acf8"
+        }
+      ],
+      "format": "tsv"
     }
   ],
-  "total_entries": 1676,
+  "total_entries": 1680,
   "changes": [
     {
       "file": "src/python/dif/models.py",
