@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s232-dotnet-deepening-20260629",
+  "latest_sprint": "ff-sprint-s233-dotnet-deepening-20260629",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -24746,6 +24746,42 @@
       "description": "R247: Dedicated tests for FodtDocument.ReplaceText \u2014 null-old/new throws, nonexistent-no-exception, text-updated, ParagraphCount unchanged, GetWordCount non-negative, heading-updated, twice-latest-persists, dogfood replace-and-verify",
       "source_files": [
         "tests/net/fodt/FodtR247ReplaceTextTests.cs"
+      ],
+      "test_count": 9
+    },
+    {
+      "entry_id": "PC-NETPBM-R240",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s233-dotnet-deepening-20260629",
+      "format": "NETPBM",
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.threshold",
+      "description": "R240: Dedicated tests for NetpbmImage.Threshold \u2014 non-null, different-object, format/maxvalue/width/height preserved, pixel-at-or-above=MaxValue, pixel-below=0, original-unchanged, dogfood binary-output",
+      "source_files": [
+        "tests/net/netpbm/NetpbmR240ThresholdTests.cs"
+      ],
+      "test_count": 10
+    },
+    {
+      "entry_id": "PC-FODS-R251",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s233-dotnet-deepening-20260629",
+      "format": "FODS",
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.add_column",
+      "description": "R251: Dedicated tests for FodsDocument.AddColumn \u2014 null/whitespace/nonexistent/null-name throws, valid no-exception, HasColumn=true after add, SheetCount unchanged, two-columns both visible, dogfood add-column-get-values",
+      "source_files": [
+        "tests/net/fods/FodsR251AddColumnDedicatedTests.cs"
+      ],
+      "test_count": 9
+    },
+    {
+      "entry_id": "PC-FODT-R248",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s233-dotnet-deepening-20260629",
+      "format": "FODT",
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.move_paragraph",
+      "description": "R248: Dedicated tests for FodtDocument.MoveParagraph \u2014 negative/OOB from/to throws, valid no-exception, ParagraphCount unchanged, text-at-destination, move-first-to-last, dogfood verify-order",
+      "source_files": [
+        "tests/net/fodt/FodtR248MoveParagraphTests.cs"
       ],
       "test_count": 9
     }
