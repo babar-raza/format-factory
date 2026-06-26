@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s233-dotnet-deepening-20260629",
+  "latest_sprint": "ff-sprint-s234-dotnet-deepening-20260629",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -24784,6 +24784,42 @@
         "tests/net/fodt/FodtR248MoveParagraphTests.cs"
       ],
       "test_count": 9
+    },
+    {
+      "entry_id": "PC-NETPBM-R241",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s234-dotnet-deepening-20260629",
+      "format": "NETPBM",
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.posterize",
+      "description": "R241: Dedicated tests for NetpbmImage.Posterize \u2014 non-null, different-object, format/maxvalue/width/height preserved, pixel-in-valid-range, original-unchanged, uniform-all-same, dogfood 2-levels-reduced",
+      "source_files": [
+        "tests/net/netpbm/NetpbmR241PosterizeTests.cs"
+      ],
+      "test_count": 10
+    },
+    {
+      "entry_id": "PC-FODS-R252",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s234-dotnet-deepening-20260629",
+      "format": "FODS",
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.get_used_range",
+      "description": "R252: Dedicated tests for FodsDocument.GetUsedRange \u2014 null/whitespace/nonexistent throws, empty=non-null, after-AddRow non-null, row-count-positive, SheetCount unchanged, called-twice consistent, dogfood expand-range",
+      "source_files": [
+        "tests/net/fods/FodsR252GetUsedRangeDedicatedTests.cs"
+      ],
+      "test_count": 9
+    },
+    {
+      "entry_id": "PC-FODT-R249",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s234-dotnet-deepening-20260629",
+      "format": "FODT",
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.extract_plain_paragraphs",
+      "description": "R249: Dedicated tests for FodtDocument.ExtractPlainParagraphs \u2014 empty=non-null/empty, paragraphs-only=count-matches, headings-only=empty, mixed=only-paras, ParagraphCount unchanged, text-preserved, called-twice same, after-append increases, dogfood mixed",
+      "source_files": [
+        "tests/net/fodt/FodtR249ExtractPlainParagraphsTests.cs"
+      ],
+      "test_count": 10
     }
   ],
   "total_entries": 1270,
