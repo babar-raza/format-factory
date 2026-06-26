@@ -27442,9 +27442,78 @@
       "test_count": 9,
       "source_files": [],
       "format": "FODT"
+    },
+    {
+      "entry_id": "PC-NETPBM-R280",
+      "classification": "dotnet_test_deepening",
+      "sprint": "ff-sprint-s272-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "commercial_net_products.NETPBM",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.apply_gamma"
+      ],
+      "api_symbols": [
+        "NetpbmImage.ApplyGamma"
+      ],
+      "api_behavior": "Void in-place; valid no-exception; all pixels in [0,MaxValue]; dims/format/MaxValue unchanged; called-twice no-exception; uniform ok; dogfood set-pixels-gamma in-range; uniform-gamma all-in-range",
+      "changed_files": [
+        "tests/net/netpbm/NetpbmR280ApplyGammaDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR280ApplyGammaDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [],
+      "format": "NETPBM"
+    },
+    {
+      "entry_id": "PC-FODS-R299",
+      "classification": "dotnet_test_deepening",
+      "sprint": "ff-sprint-s272-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "commercial_net_products.FODS",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.merge_sheets"
+      ],
+      "api_symbols": [
+        "FodsDocument.MergeSheets"
+      ],
+      "api_behavior": "Void; null/whitespace/nonexistent source throws; null/nonexistent target throws; valid no-exception; SheetCount unchanged; dogfood merge-then-GetSheetNames; dogfood merge-then-access-target",
+      "changed_files": [
+        "tests/net/fods/FodsR299MergeSheetsDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR299MergeSheetsDedicatedTests.cs"
+      ],
+      "test_count": 9,
+      "source_files": [],
+      "format": "FODS"
+    },
+    {
+      "entry_id": "PC-FODT-R287",
+      "classification": "dotnet_test_deepening",
+      "sprint": "ff-sprint-s272-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "commercial_net_products.FODT",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.export_to_pdf"
+      ],
+      "api_symbols": [
+        "FodtDocument.ExportToPdf"
+      ],
+      "api_behavior": "Void; null/whitespace throws; valid no-exception; file exists after; non-empty\u2192non-empty file; ParagraphCount/TableCount unchanged; dogfood paragraphs pdf-exists; export-twice both exist",
+      "changed_files": [
+        "tests/net/fodt/FodtR287ExportToPdfDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR287ExportToPdfDedicatedTests.cs"
+      ],
+      "test_count": 9,
+      "source_files": [],
+      "format": "FODT"
     }
   ],
-  "total_entries": 1587,
+  "total_entries": 1590,
   "changes": [
     {
       "file": "src/python/dif/models.py",
