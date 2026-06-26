@@ -314,6 +314,13 @@ def run_all_governance_validators(
     except Exception:
         pass
 
+    # V-NEW-002 (SAL-HEAL-B001): spec_fact_provenance advisory check (WARN only, never blocks)
+    try:
+        from governance_validators_sal import validate_spec_fact_provenance_advisory as _vp  # noqa: PLC0415
+        results.append(_vp(declaration, repo_root))
+    except Exception:
+        pass
+
     # V-TCF-001/002/003 (TC-TCF-007): Terminal closure governance validators
     # V-TCF-001: FAIL on open taskcards at terminal claim (LIFECYCLE_HARDENING/MACHINERY_HARDENING)
     # V-TCF-002: WARN on missing terminal_closure_record.json evidence artifact
