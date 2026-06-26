@@ -25108,6 +25108,42 @@
         "tests/net/fodt/FodtR257SetParagraphStyleDedicatedTests.cs"
       ],
       "test_count": 10
+    },
+    {
+      "entry_id": "PC-NETPBM-R250",
+      "classification": "dotnet_test_coverage",
+      "sprint": "ff-sprint-s243-dotnet-deepening-20260629",
+      "format": "NETPBM",
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.to_color",
+      "description": "R250: Dedicated tests for NetpbmImage.ToColor \u2014 non-null, different-object, original-format-unchanged, result-format=PPM, width/height/MaxValue preserved, R/G/B channels non-null, dogfood pixel-replicated-to-channels",
+      "source_files": [
+        "tests/net/netpbm/NetpbmR250ToColorDedicatedTests.cs"
+      ],
+      "test_count": 11
+    },
+    {
+      "entry_id": "PC-FODS-R261",
+      "classification": "dotnet_test_coverage",
+      "sprint": "ff-sprint-s243-dotnet-deepening-20260629",
+      "format": "FODS",
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.get_column_aggregates",
+      "description": "R261: Dedicated tests for FodsDocument.GetColumnAggregates \u2014 null/whitespace throws, empty no-throw, single-cell count-positive, SheetCount unchanged, called-twice same, non-null result, dogfood add-data verify aggregates, dogfood sum>=max",
+      "source_files": [
+        "tests/net/fods/FodsR261GetColumnAggregatesDedicatedTests.cs"
+      ],
+      "test_count": 9
+    },
+    {
+      "entry_id": "PC-FODT-R258",
+      "classification": "dotnet_test_coverage",
+      "sprint": "ff-sprint-s243-dotnet-deepening-20260629",
+      "format": "FODT",
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.get_paragraphs_by_style",
+      "description": "R258: Dedicated tests for FodtDocument.GetParagraphsByStyle \u2014 null throws, empty-doc empty, no-match empty, after-SetStyle finds-para, ParagraphCount unchanged, called-twice same, multiple all-returned, non-matching not-returned, dogfood",
+      "source_files": [
+        "tests/net/fodt/FodtR258GetParagraphsByStyleDedicatedTests.cs"
+      ],
+      "test_count": 10
     }
   ],
   "total_entries": 1270,
