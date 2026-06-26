@@ -17,6 +17,8 @@ comparators:
     applicable_families: [archive]
     applicable_profiles: [LOSSLESS_TRANSFORMATION, ROUNDTRIP_SEMANTIC_EQUIVALENCE]
     implementation: oracle/shared/comparators/bytes_exact.py
+    implementation_status: INLINE_IN_EXECUTOR
+    implementation_note: "Inline comparison in tools/oracle/execute_oracle.py as of Wave 3. oracle/shared/comparators/ files are forward declarations for Wave 6 modular extraction."
     tolerance: none
 
   # --- TABULAR (CSV / TSV / DIF / SYLK) ---
@@ -32,6 +34,8 @@ comparators:
       - ROUNDTRIP_SEMANTIC_EQUIVALENCE
       - SAME_FORMAT_SERIALIZATION
     implementation: oracle/shared/comparators/tabular_row.py
+    implementation_status: INLINE_IN_EXECUTOR
+    implementation_note: "Inline comparison in tools/oracle/execute_oracle.py as of Wave 3. oracle/shared/comparators/ files are forward declarations for Wave 6 modular extraction."
     parameters:
       strip_whitespace: true
       case_sensitive: true
@@ -54,6 +58,8 @@ comparators:
       - ROUNDTRIP_SEMANTIC_EQUIVALENCE
       - SAME_FORMAT_SERIALIZATION
     implementation: oracle/shared/comparators/spreadsheet_cell.py
+    implementation_status: FORWARD_DECLARATION
+    implementation_note: "Not yet implemented inline — FODS executor uses direct property comparison. Wave 6 target for modular extraction."
     parameters:
       numeric_tolerance: FLOAT64_RELATIVE_1E-9
       string_whitespace: strip
@@ -77,6 +83,8 @@ comparators:
       - ROUNDTRIP_SEMANTIC_EQUIVALENCE
       - SAME_FORMAT_SERIALIZATION
     implementation: oracle/shared/comparators/document_paragraph.py
+    implementation_status: FORWARD_DECLARATION
+    implementation_note: "No oracle executor for words formats yet. Wave 6 target when FODT/ODT/ABW executor is created."
     parameters:
       compare_style_names: false
       compare_formatting: false
@@ -97,6 +105,8 @@ comparators:
       - ROUNDTRIP_SEMANTIC_EQUIVALENCE
       - DOMAIN_MODEL_MAPPING
     implementation: oracle/shared/comparators/pixel_channel.py
+    implementation_status: FORWARD_DECLARATION
+    implementation_note: "No oracle executor for imaging formats yet. Wave 6 target when PBM/PGM/PPM/QOI/XCF executor is created."
     parameters:
       tolerance: 0  # exact for lossless Netpbm/QOI
     tolerance: exact-pixels
@@ -112,6 +122,8 @@ comparators:
     applicable_profiles:
       - DOMAIN_MODEL_MAPPING
     implementation: oracle/shared/comparators/model_property.py
+    implementation_status: INLINE_IN_EXECUTOR
+    implementation_note: "Property comparison is inline in each format's execute_*_valid_case() function in tools/oracle/execute_oracle.py. This entry is a spec document for the generic pattern used across formats."
     parameters:
       type_coerce: false  # strict type comparison
     tolerance: property-exact

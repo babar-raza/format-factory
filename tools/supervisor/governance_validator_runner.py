@@ -158,6 +158,7 @@ def run_all_governance_validators(
         validate_analytics_naming_enforced as _validate_analytics_naming_enforced,
         validate_dotnet_loc_cap as _validate_dotnet_loc_cap,
         validate_healing_stall_detector as _validate_healing_stall_detector,
+        validate_oracle_obligations as _validate_oracle_obligations,
     )
     results = [
         validate_execution_method_required(declaration),
@@ -295,12 +296,21 @@ def run_all_governance_validators(
         _validate_premature_human_auth(declaration, repo_root),
         # V81 (TC-AUTH-007): Gate transition state machine enforcement — FAIL for invalid Gate 11 transitions
         _validate_gate_transition(declaration, repo_root),
+        # V82 (TC-ORC-003, ORACLE-LAYER-HARDENING-001): Oracle obligation registry completeness — WARN on missing
+        _validate_oracle_obligations(declaration, repo_root),
     ]
 
     # V-NEW-001 (SAL-VHIP-001): Capability-to-fact inflation ratio check (WARN only, advisory)
     try:
         from governance_validators_ext import validate_capability_fact_ratio as _vcfr  # noqa: PLC0415
         results.append(_vcfr(declaration, repo_root))
+    except Exception:
+        pass
+
+    # V-SAL-SCHEMA-001 (TC-LA-008): SAL facts schema validation (WARN only)
+    try:
+        from governance_validators_sal import validate_sal_facts_schema as _vss  # noqa: PLC0415
+        results.append(_vss(declaration, repo_root))
     except Exception:
         pass
 

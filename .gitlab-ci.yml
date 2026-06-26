@@ -112,6 +112,22 @@ test-full:
 
 # ─── GOVERNANCE ───────────────────────────────────────────────────────────────
 
+oracle-obligations:
+  # TC-ORC-005: Validate oracle obligation coverage for all registered formats.
+  # Every format in registry/format-registry.yaml must have an entry in
+  # oracle/registry/format-oracle-registry.yaml before advancing beyond Gate 4.
+  # RULE-ORC-001 — enforced by V82 (validate_oracle_obligations).
+  stage: governance
+  image: python:3.11
+  before_script:
+    - pip install pyyaml
+  script:
+    - python tools/oracle/validate_oracle_obligations.py
+  allow_failure: false
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push"'
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+
 governance-check:
   stage: governance
   image: python:3.11

@@ -1790,10 +1790,10 @@ class TestCanonicalValidatorCount:
         }
         result = run_all_governance_validators(decl, None)
         validator_count = len(result["validators"])
-        assert validator_count == 83, (
-            f"Expected 83 canonical validators, got {validator_count}. "
+        assert validator_count == 85, (
+            f"Expected 85 canonical validators, got {validator_count}. "
             "If validators were added/removed, update this test. "
-            "(83 = 81 prior + 2 new validators added in sprint s84)"
+            "(85 = 84 prior + V82 validate_oracle_obligations wired in runner via TC-ORC-003)"
         )
 
 
@@ -2327,4 +2327,69 @@ class TestV79HealingStallDetector:
         })
         decl = {"changed_files": [], "planned_work_items": []}
         result = validator(decl, repo_root=tmp_path)
+        assert result["blocks_sprint"] is False
+
+
+class TestV82OracleObligations:
+    """V82: Oracle obligation registry completeness validator."""
+
+    @staticmethod
+    def _get_validator():
+        import sys
+        sys.path.insert(0, "tools/supervisor")
+        from governance_validators_ext2 import validate_oracle_obligations
+        return validate_oracle_obligations
+
+    def _make_format_registry(self, tmp_path, formats):
+        """Create a minimal format-registry.yaml with given format IDs."""
+        import yaml
+        reg_dir = tmp_path / "registry"
+        reg_dir.mkdir(parents=True, exist_ok=True)
+        entries = {f: {"family": "data", "status": "active"} for f in formats}
+        (reg_dir / "format-registry.yaml").write_text(yaml.dump({"formats": entries}))
+
+    def _make_oracle_registry(self, tmp_path, formats):
+        """Create a minimal format-oracle-registry.yaml with given format IDs."""
+        import yaml
+        oracle_dir = tmp_path / "oracle" / "registry"
+        oracle_dir.mkdir(parents=True, exist_ok=True)
+        entries = {
+            f: {"oracle_id": f"oracle-{f}-v1", "product_oracle_status": "OBLIGATION_CREATED"}
+            for f in formats
+        }
+        (oracle_dir / "format-oracle-registry.yaml").write_text(
+            yaml.dump({"oracle_obligations": entries})
+        )
+
+    def test_v82_all_formats_have_obligations_passes(self, tmp_path):
+        """V82 returns PASS when all registered formats have oracle obligations."""
+        validator = self._get_validator()
+        # Both registries have same formats
+        self._make_format_registry(tmp_path, ["csv", "zst", "fods"])
+        self._make_oracle_registry(tmp_path, ["csv", "zst", "fods"])
+        result = validator({}, repo_root=tmp_path)
+        assert result["result"] == "PASS"
+        assert result["blocks_sprint"] is False
+        assert "csv" not in str(result.get("items", []))
+
+    def test_v82_missing_obligation_warns(self, tmp_path):
+        """V82 returns WARN when a format has no oracle obligation."""
+        validator = self._get_validator()
+        # format-registry has 'toml' but oracle registry does not
+        self._make_format_registry(tmp_path, ["csv", "toml"])
+        self._make_oracle_registry(tmp_path, ["csv"])
+        result = validator({}, repo_root=tmp_path)
+        assert result["result"] == "WARN"
+        assert result["blocks_sprint"] is False
+        items = result.get("items", [])
+        missing_ids = [i.get("format_id") for i in items if isinstance(i, dict)]
+        assert "toml" in missing_ids
+
+    def test_v82_blocks_sprint_is_always_false(self, tmp_path):
+        """V82 is advisory — must never set blocks_sprint=True."""
+        validator = self._get_validator()
+        # Even with missing obligations, blocks_sprint must be False
+        self._make_format_registry(tmp_path, ["csv", "new_format"])
+        self._make_oracle_registry(tmp_path, ["csv"])
+        result = validator({}, repo_root=tmp_path)
         assert result["blocks_sprint"] is False

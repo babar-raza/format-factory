@@ -4324,19 +4324,33 @@ The oracle layer provides an independent, spec-backed test oracle infrastructure
 - Ending level: 3 (REUSABLE ORACLE MACHINERY, CSV+ZST pilot-proven)
 - Target level: 5 (ALL-FORMAT PRODUCTION)
 
-### Open Backfill (Wave 5/6)
+### Wave 5 Hardening (CLOSED — 2026-06-26, oracle-layer-hardening-addendum.md)
 
-- 18 formats need oracle packages (OBLIGATION_CREATED_BACKFILL_REQUIRED)
-- FODS executor handler needed to run oracle/formats/fods/oracle-package.yaml
-- Oracle obligation validator to be registered as V80 in governance suite (Wave 5)
-- Estimated Wave 6 backfill: ~4 sprints (4-5 formats per sprint)
+| TC | Title | Result |
+|----|-------|--------|
+| TC-ORC-001 | FODS oracle executor | 7/8 PASS (fods-valid-005: genuine spec_qname oracle finding) |
+| TC-ORC-002 | Register cell_value executor gap | CLOSED — executor_property_gaps in oracle-coverage-report.json |
+| TC-ORC-003 | V82 oracle obligation governance validator | CLOSED — 85 validators total, 138/138 tests PASS |
+| TC-ORC-004 | Comparator registry implementation_status | CLOSED — all 6 entries annotated |
+| TC-ORC-005 | Oracle obligation CI step | CLOSED — oracle-obligations stage in .gitlab-ci.yml |
+| TC-ORC-006 | Runtime schema validation in executor | CLOSED — _validate_oracle_package_schema() wired |
+| TC-ORC-007 | Wave 6 backfill sprint plan | CLOSED — plans/oracle-backfill-wave6.md; 4 GAP-ORC-BACKFILL-* in gap-ledger.json |
 
-### Verification
+### Open Backfill (Wave 6)
+
+- 18 formats still need oracle packages (OBLIGATION_CREATED_BACKFILL_REQUIRED)
+- Wave 6 plan at `plans/oracle-backfill-wave6.md` with 4 batches (A: cells, B: words/draw, C: imaging, D: data)
+- 4 GAP-ORC-BACKFILL-* entries in gap-ledger.json (total: 1246 gaps)
+- Estimated Wave 6 backfill: 5 sprints (4-5 formats per sprint)
+
+### Verification (Wave 3 pilots + Wave 5 hardening)
 - CSV: `python tools/oracle/execute_oracle.py --format csv --all` → 5/5 PASS
 - ZST: `python tools/oracle/execute_oracle.py --format zst --all` → 6/6 PASS
+- FODS: `python tools/oracle/execute_oracle.py --format fods --all` → 7/8 PASS (fods-valid-005 genuine oracle finding)
 - Obligations: `python tools/oracle/validate_oracle_obligations.py` → 24/24 PASS
-- Onboarding gate csv: `--check-new-format csv` → PASS
-- Onboarding gate ora: `--check-new-format ora` → WARN (correct — no package yet)
+- Governance V82: `run_all_governance_validators()` → validate_oracle_obligations PASS (85 total validators)
+- Regression: `pytest tests/supervisor/test_governance_validators.py` → 138/138 PASS
+- CI: `.gitlab-ci.yml` has oracle-obligations stage (allow_failure: false)
 
 ---
 

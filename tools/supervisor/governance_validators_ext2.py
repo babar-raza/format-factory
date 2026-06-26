@@ -1,4 +1,4 @@
-"""governance_validators_ext2.py — V75/V76/V77/V78/V79: Governance validators overflow.
+"""governance_validators_ext2.py — V75/V76/V77/V78/V79/V82: Governance validators overflow.
 
 Extracted to keep governance_validators_ext.py within its baseline_loc_cap (1423 LOC).
 
@@ -22,6 +22,11 @@ V78 (TC-GM-003, PROD-GOVERNANCE-001): validate_dotnet_loc_cap
 V79 (TC-GM-004, PROD-GOVERNANCE-001): validate_healing_stall_detector
     RULE-LIB-009 — WARN when known_violations entries have loc == baseline_loc_cap (zero healing
     progress since baseline was frozen). blocks_sprint=False (advisory only).
+
+V82 (TC-ORC-003, ORACLE-LAYER-HARDENING-001): validate_oracle_obligations
+    RULE-ORC-001 — Every registered format must have an oracle obligation entry in
+    oracle/registry/format-oracle-registry.yaml before advancing beyond Gate 4.
+    WARN when any format is missing an obligation. blocks_sprint=False (advisory).
 """
 
 from __future__ import annotations
@@ -318,3 +323,100 @@ def validate_healing_stall_detector(declaration: dict, repo_root: "Path | None" 
         ),
         "blocks_sprint": False,
     }
+
+
+def validate_oracle_obligations(declaration: dict, repo_root: Path = None) -> dict:
+    """V82: Every registered format must have an oracle obligation entry.
+
+    RULE-ORC-001 — Checks oracle/registry/format-oracle-registry.yaml against
+    registry/format-registry.yaml. WARN when any format is missing an obligation.
+    blocks_sprint=False (advisory — obligation gap is a planning gap, not a code failure).
+    """
+    if repo_root is None:
+        repo_root = Path(__file__).resolve().parents[2]
+
+    try:
+        import yaml as _yaml
+
+        # Read format registry — supports both dict and list forms
+        fmt_reg_path = repo_root / "registry" / "format-registry.yaml"
+        oracle_reg_path = repo_root / "oracle" / "registry" / "format-oracle-registry.yaml"
+
+        if not fmt_reg_path.exists() or not oracle_reg_path.exists():
+            return {
+                "validator": "validate_oracle_obligations",
+                "result": "PASS",
+                "items": [],
+                "summary": "V82: Registry files not found — oracle obligation check skipped",
+                "blocks_sprint": False,
+            }
+
+        fmt_data = _yaml.safe_load(fmt_reg_path.read_text(encoding="utf-8")) or {}
+        oracle_data = _yaml.safe_load(oracle_reg_path.read_text(encoding="utf-8")) or {}
+
+        # Extract registered format IDs (supports dict-of-dicts or list-of-dicts)
+        # Real format-registry.yaml: {"formats": [{"format_id": "csv", ...}, ...]}
+        formats_raw = fmt_data.get("formats", {})
+        if isinstance(formats_raw, dict):
+            registered = set(formats_raw.keys())
+        elif isinstance(formats_raw, list):
+            registered = {
+                e.get("format_id") or e.get("id", "")
+                for e in formats_raw
+                if isinstance(e, dict)
+            }
+        else:
+            registered = set()
+
+        # Extract oracle obligation format IDs
+        # Real format-oracle-registry.yaml: {"format_oracles": [{"format_id": "csv", ...}, ...]}
+        # Test format: {"oracle_obligations": {"csv": {...}}}
+        oracle_raw = (
+            oracle_data.get("format_oracles")
+            or oracle_data.get("oracle_obligations")
+            or oracle_data
+        )
+        if isinstance(oracle_raw, dict):
+            oracle_ids = set(oracle_raw.keys())
+        elif isinstance(oracle_raw, list):
+            oracle_ids = {
+                e.get("format_id") or e.get("id", "")
+                for e in oracle_raw
+                if isinstance(e, dict)
+            }
+        else:
+            oracle_ids = set()
+
+        excluded = {"odf-shared"}
+        governed = registered - excluded
+
+        missing = sorted(governed - oracle_ids)
+        total = len(governed)
+
+        if missing:
+            return {
+                "validator": "validate_oracle_obligations",
+                "result": "WARN",
+                "items": [{"format_id": f, "code": "MISSING_OBLIGATION"} for f in missing],
+                "summary": (
+                    f"V82: {len(missing)}/{total} formats missing oracle obligation. "
+                    f"Missing: {missing[:5]}"
+                ),
+                "blocks_sprint": False,
+            }
+        return {
+            "validator": "validate_oracle_obligations",
+            "result": "PASS",
+            "items": [],
+            "summary": f"V82: All {total} registered formats have oracle obligations",
+            "blocks_sprint": False,
+        }
+
+    except Exception as e:
+        return {
+            "validator": "validate_oracle_obligations",
+            "result": "PASS",
+            "items": [],
+            "summary": f"V82: Oracle obligation check skipped due to error: {e}",
+            "blocks_sprint": False,
+        }

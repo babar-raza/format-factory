@@ -337,5 +337,31 @@
     "product_tests_not_yet_bound": "all_20_formats",
     "note": "Wave 6 backfill requires ~1 sprint per 4-5 formats"
   },
+  "executor_property_gaps": {
+    "registered_at": "2026-06-26",
+    "taskcard": "TC-ORC-002",
+    "description": "Properties not yet supported by the oracle executor's observed dict. Cases containing these properties return INCONCLUSIVE (not FAIL) and print a WARNING to stderr.",
+    "gaps_by_format": {
+      "csv": {
+        "supported_properties": ["row_count", "column_count", "has_header", "headers"],
+        "unsupported_properties": [
+          {
+            "property": "cell_value",
+            "status": "NOT_IMPLEMENTED",
+            "note": "Cell-level indexing requires executor Level 4+ support. Cases using cell_value will return INCONCLUSIVE.",
+            "workaround": "Use row_count/column_count/headers as proxy validators instead."
+          }
+        ]
+      },
+      "zst": {
+        "supported_properties": ["compressed_size", "decompressed_size", "frame_count", "is_empty", "spec_qname"],
+        "unsupported_properties": []
+      },
+      "fods": {
+        "supported_properties": ["spec_qname", "sheet_count", "first_sheet_name", "cell_count", "has_float_cell", "has_string_cell", "has_formula_cell"],
+        "unsupported_properties": []
+      }
+    }
+  },
   "final_verdict": "ORACLE_LAYER_RECOVERED_BACKFILL_ACTIVE"
 }

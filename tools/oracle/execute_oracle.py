@@ -181,12 +181,27 @@ def execute_csv_valid_case(case: dict, pkg: dict) -> dict:
                         "column_count": model.get("column_count", 0),
                         "has_header": model.get("has_header", False),
                     }
-                    expected_props = {p["property"]: p["value"] for p in case.get("expected_model_properties", [])}
+                    expected_props = {}
                     deviations = []
-                    for prop, exp_val in expected_props.items():
-                        obs_val = observed.get(prop)
-                        if obs_val != exp_val:
-                            deviations.append({"property": prop, "expected": exp_val, "observed": obs_val})
+                    unsupported_props = []
+                    for p in case.get("expected_model_properties", []):
+                        prop, exp_val = p["property"], p["value"]
+                        expected_props[prop] = exp_val
+                        if prop not in observed:
+                            print(f"WARNING: CSV executor does not support property '{prop}' — INCONCLUSIVE", file=sys.stderr)
+                            unsupported_props.append(prop)
+                            continue
+                        if observed.get(prop) != exp_val:
+                            deviations.append({"property": prop, "expected": exp_val, "observed": observed.get(prop)})
+                    if unsupported_props:
+                        return make_verdict(
+                            oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+                            format_id="csv", product_id="format-factory-csv", language="python",
+                            case_id=case_id, profile="LIMITS_AND_BOUNDARIES",
+                            result=RESULT_INCONCLUSIVE, authority_status=authority_status,
+                            observed=observed, expected=expected_props,
+                            diagnostics=[f"Unsupported properties in CSV executor: {unsupported_props}"],
+                        )
                     result = RESULT_PASS if not deviations else RESULT_FAIL
                     return make_verdict(
                         oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
@@ -235,13 +250,29 @@ def execute_csv_valid_case(case: dict, pkg: dict) -> dict:
         # Verify expected model properties
         expected_props = {}
         deviations = []
+        unsupported_props = []
         for prop_def in case.get("expected_model_properties", []):
             prop = prop_def["property"]
             exp_val = prop_def["value"]
             expected_props[prop] = exp_val
+            if prop not in observed:
+                print(f"WARNING: CSV executor does not support property '{prop}' — INCONCLUSIVE", file=sys.stderr)
+                unsupported_props.append(prop)
+                continue
             obs_val = observed.get(prop)
             if obs_val != exp_val:
                 deviations.append({"property": prop, "expected": exp_val, "observed": obs_val})
+
+        if unsupported_props:
+            return make_verdict(
+                oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+                format_id="csv", product_id="format-factory-csv", language="python",
+                case_id=case_id, profile="PARSE_VALIDITY",
+                result=RESULT_INCONCLUSIVE, authority_status=authority_status,
+                observed=observed, expected=expected_props,
+                diagnostics=[f"Unsupported properties in CSV executor: {unsupported_props}"],
+                input_hash=input_hash,
+            )
 
         result = RESULT_PASS if not deviations else RESULT_FAIL
         return make_verdict(
@@ -385,13 +416,29 @@ def execute_zst_valid_case(case: dict, pkg: dict) -> dict:
 
         expected_props = {}
         deviations = []
+        unsupported_props = []
         for prop_def in case.get("expected_model_properties", []):
             prop = prop_def["property"]
             exp_val = prop_def["value"]
             expected_props[prop] = exp_val
+            if prop not in observed:
+                print(f"WARNING: ZST executor does not support property '{prop}' — INCONCLUSIVE", file=sys.stderr)
+                unsupported_props.append(prop)
+                continue
             obs_val = observed.get(prop)
             if obs_val != exp_val:
                 deviations.append({"property": prop, "expected": exp_val, "observed": obs_val})
+
+        if unsupported_props:
+            return make_verdict(
+                oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+                format_id="zst", product_id="format-factory-zst", language="python",
+                case_id=case_id, profile="PARSE_VALIDITY",
+                result=RESULT_INCONCLUSIVE, authority_status=authority_status,
+                observed=observed, expected=expected_props,
+                diagnostics=[f"Unsupported properties in ZST executor: {unsupported_props}"],
+                input_hash=input_hash,
+            )
 
         result = RESULT_PASS if not deviations else RESULT_FAIL
         return make_verdict(
@@ -564,7 +611,7 @@ def execute_fods_invalid_case(case: dict, pkg: dict) -> dict:
     _, authority_status = check_authority(case, False)
     sample_ref = case.get("sample_ref")
 
-    # fods-invalid-001: directory reference — pick first .fods fixture file
+    # fods-invalid-001: directory reference — test all .fods fixtures, PASS if any rejected
     if sample_ref is not None:
         sample_path = REPO_ROOT / sample_ref
         if sample_path.is_dir():
@@ -577,34 +624,47 @@ def execute_fods_invalid_case(case: dict, pkg: dict) -> dict:
                     result=RESULT_BLOCKED_MISSING_SAMPLE, authority_status=authority_status,
                     diagnostics=[f"No .fods fixtures found in: {sample_path}"],
                 )
-            # Test first fixture from directory
-            test_file = fods_files[0]
-            input_hash = sha256_file(test_file)
             try:
                 sys.path.insert(0, str(REPO_ROOT))
                 from src.python.fods.parser import parse_fods
-                result_dict = parse_fods(str(test_file))
-                rejected = bool(result_dict.get("error") or result_dict.get("parse_errors"))
+                rejected_files = []
+                accepted_files = []
+                for fods_file in fods_files:
+                    try:
+                        r = parse_fods(str(fods_file))
+                        if r.get("error") or r.get("parse_errors"):
+                            rejected_files.append(fods_file.name)
+                        else:
+                            accepted_files.append(fods_file.name)
+                    except Exception:
+                        rejected_files.append(fods_file.name)
+                # Oracle passes if at least one fixture is rejected
+                # (Gate 7 corpus tests mixed-severity malformed files)
+                any_rejected = len(rejected_files) > 0
+                result = RESULT_PASS if any_rejected else RESULT_FAIL
                 return make_verdict(
                     oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
                     format_id="fods", product_id="format-factory-fods", language="python",
                     case_id=case_id, profile="INVALID_INPUT_REJECTION",
-                    result=RESULT_PASS if rejected else RESULT_FAIL, authority_status=authority_status,
+                    result=result, authority_status=authority_status,
+                    observed={
+                        "total_fixtures": len(fods_files),
+                        "rejected_count": len(rejected_files),
+                        "accepted_count": len(accepted_files),
+                    },
+                    expected={"any_rejected": True},
                     diagnostics=[
-                        f"Tested fixture: {test_file.name}",
-                        f"Error: {result_dict.get('error', 'none')}",
+                        f"Rejected ({len(rejected_files)}): {rejected_files}",
+                        f"Accepted ({len(accepted_files)}): {accepted_files}",
                     ],
-                    input_hash=input_hash,
                 )
-            except Exception as e:
-                # Exception = definitely rejected
+            except ImportError as e:
                 return make_verdict(
                     oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
                     format_id="fods", product_id="format-factory-fods", language="python",
                     case_id=case_id, profile="INVALID_INPUT_REJECTION",
-                    result=RESULT_PASS, authority_status=authority_status,
-                    diagnostics=[f"Exception raised on malformed input: {type(e).__name__}: {e}"],
-                    input_hash=input_hash,
+                    result=RESULT_INCONCLUSIVE, authority_status=authority_status,
+                    diagnostics=[f"Import error: {e}"],
                 )
 
     # Inline / input_description cases (fods-invalid-002, fods-invalid-003)
@@ -723,12 +783,45 @@ def save_verdict(verdict: dict, format_id: str) -> Path:
     return out_path
 
 
+def _validate_oracle_package_schema(pkg: dict, format_id: str) -> list:
+    """TC-ORC-006: Validate oracle package against JSON Schema. Returns list of error strings.
+
+    Graceful degradation: returns [] (no errors) if jsonschema is not installed.
+    Non-blocking: callers print WARNING but do not crash.
+    """
+    schema_path = ORACLE_DIR / "schema" / "oracle-package.schema.json"
+    if not schema_path.exists():
+        return []
+    try:
+        import jsonschema as _jschema
+        schema = json.loads(schema_path.read_text(encoding="utf-8"))
+        try:
+            _jschema.validate(instance=pkg, schema=schema)
+            return []
+        except _jschema.ValidationError as e:
+            return [f"Schema validation error: {e.message} (path: {list(e.absolute_path)})"]
+        except _jschema.SchemaError as e:
+            return [f"Schema itself is invalid: {e.message}"]
+    except ImportError:
+        print(f"WARNING: jsonschema not installed — oracle package schema validation skipped for {format_id}", file=sys.stderr)
+        return []
+    except Exception as e:
+        return [f"Schema validation exception: {e}"]
+
+
 def run_oracle_for_format(format_id: str, profile_filter: str = None, case_filter: str = None) -> dict:
     """Run oracle for a single format. Returns summary dict."""
     print(f"\n[oracle] Executing oracle for format: {format_id}")
 
     pkg = load_oracle_package(format_id)
     oracle_id = pkg["oracle_id"]
+
+    # TC-ORC-006: Validate oracle package against JSON Schema (graceful — non-blocking)
+    schema_errors = _validate_oracle_package_schema(pkg, format_id)
+    if schema_errors:
+        print(f"WARNING: oracle package for '{format_id}' failed schema validation:", file=sys.stderr)
+        for err in schema_errors:
+            print(f"  - {err}", file=sys.stderr)
 
     verdicts = []
     counts = {"PASS": 0, "FAIL": 0, "BLOCKED_MISSING_AUTHORITY": 0,

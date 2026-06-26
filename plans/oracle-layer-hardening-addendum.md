@@ -14,6 +14,14 @@
 | INIT | 2026-06-25 | Addendum created from PSL-PROMPT-1 audit of oracle layer mission |
 | RESOLVED-L1-001 | 2026-06-25 | All oracle files committed as 8263527f |
 | RESOLVED-L2-004 | 2026-06-25 | master-plan.md §74 added with CLOSED status |
+| TC-ORC-001 CLOSED | 2026-06-26 | FODS executor implemented; 7/8 PASS; fods-valid-005 genuine oracle finding |
+| TC-ORC-002 CLOSED | 2026-06-26 | executor_property_gaps added to coverage report; unsupported-property WARNINGs in CSV+ZST executors |
+| TC-ORC-003 CLOSED | 2026-06-26 | V82 validate_oracle_obligations wired into governance suite; 3 regression tests PASS |
+| TC-ORC-004 CLOSED | 2026-06-26 | All 6 comparator entries annotated with implementation_status + implementation_note |
+| TC-ORC-005 CLOSED | 2026-06-26 | oracle-obligations CI stage added to .gitlab-ci.yml; allow_failure: false |
+| TC-ORC-006 CLOSED | 2026-06-26 | _validate_oracle_package_schema() wired into run_oracle_for_format(); graceful fallback |
+| TC-ORC-007 CLOSED | 2026-06-26 | oracle-backfill-wave6.md created; 4 GAP-ORC-BACKFILL-* entries in gap-ledger.json |
+| ADDENDUM COMPLETE | 2026-06-26 | All 7 Wave 5/6 taskcards CLOSED. Plan status: TERMINAL_CLOSED |
 
 ---
 
@@ -60,13 +68,13 @@ All oracle layer Wave 3 deliverables are ACCEPTED_VERIFIED and must NOT be re-ex
 
 | TC ID | Title | Priority | Wave | Status |
 |---|---|---|---|---|
-| TC-ORC-001 | FODS oracle executor handler | HIGH | 5 | not_attempted |
-| TC-ORC-002 | Register cell_value executor gap | LOW | 5 | not_attempted |
-| TC-ORC-003 | Wire oracle obligation validator into governance suite as V80 | HIGH | 5 | not_attempted |
-| TC-ORC-004 | Add implementation_status to comparator registry | LOW | 5 | not_attempted |
-| TC-ORC-005 | Add oracle obligation CI step | MEDIUM | 5 | not_attempted |
-| TC-ORC-006 | Add runtime schema validation in executor | LOW | 5 | not_attempted |
-| TC-ORC-007 | Create Wave 6 oracle backfill sprint plan (18 formats) | MEDIUM | 6 | not_attempted |
+| TC-ORC-001 | FODS oracle executor handler | HIGH | 5 | CLOSED — 7/8 PASS (fods-valid-005 is genuine oracle finding: spec_qname office:document ≠ fods:spreadsheet) |
+| TC-ORC-002 | Register cell_value executor gap | LOW | 5 | CLOSED — executor_property_gaps section added to oracle-coverage-report.json; CSV/ZST/FODS supported_properties documented; unsupported-property warnings added to CSV+ZST executors |
+| TC-ORC-003 | Wire oracle obligation validator into governance suite as V82 | HIGH | 5 | CLOSED — V82 in governance_validators_ext2.py + governance_validator_runner.py; 3/3 regression tests PASS; real-repo 24/24 PASS |
+| TC-ORC-004 | Add implementation_status to comparator registry | LOW | 5 | CLOSED — all 6 comparator entries have implementation_status + implementation_note; YAML valid |
+| TC-ORC-005 | Add oracle obligation CI step | MEDIUM | 5 | CLOSED — oracle-obligations stage added to .gitlab-ci.yml; allow_failure: false; YAML valid |
+| TC-ORC-006 | Add runtime schema validation in executor | LOW | 5 | CLOSED — _validate_oracle_package_schema() wired into run_oracle_for_format(); prints WARNING; graceful fallback if jsonschema absent |
+| TC-ORC-007 | Create Wave 6 oracle backfill sprint plan (18 formats) | MEDIUM | 6 | CLOSED — plans/oracle-backfill-wave6.md created with 4 batches + authority sources; 4 GAP-ORC-BACKFILL-* entries in gap-ledger.json |
 
 ---
 
@@ -603,3 +611,12 @@ All work is agent-executable:
 The only BLOCKED_EXTERNAL risk:
 - FODS package wheel not installed or broken import path → fallback: reinstall from
   `.local/package-builds/python-foss/` or from source at `src/python/fods/`
+
+
+<!--plan_terminal_lock:
+  status: TERMINAL_CLOSED
+  locked_at: "2026-06-26T09:53:03.507698+00:00"
+  locked_by: "688d4a5de421"
+  successor_required_for_future_changes: true
+  mutation_policy: "no further plan/hardening/execution writes"
+-->
