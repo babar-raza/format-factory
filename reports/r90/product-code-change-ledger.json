@@ -27756,9 +27756,78 @@
       "tests_passed": 10,
       "tests_failed": 0,
       "worker_verdict": "PASS"
+    },
+    {
+      "entry_id": "PC-NETPBM-R284",
+      "classification": "dotnet_test_deepening",
+      "sprint": "ff-sprint-s276-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "commercial_net_products.NETPBM",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.rotate"
+      ],
+      "api_symbols": [
+        "NetpbmImage.Rotate"
+      ],
+      "api_behavior": "Void in-place; 90/180/0/360 no-exception; format/MaxValue unchanged; 180-dims-preserved; called-twice ok; dogfood 90-pixel-count; dogfood 180 no-exception",
+      "changed_files": [
+        "tests/net/netpbm/NetpbmR284RotateDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR284RotateDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [],
+      "format": "NETPBM"
+    },
+    {
+      "entry_id": "PC-FODS-R304",
+      "classification": "dotnet_test_deepening",
+      "sprint": "ff-sprint-s276-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "commercial_net_products.FODS",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.set_cell_alignment"
+      ],
+      "api_symbols": [
+        "FodsDocument.SetCellAlignment"
+      ],
+      "api_behavior": "Void; null/whitespace/nonexistent/negative-row/col throws; center/left/right no-exception; SheetCount unchanged; set-twice ok; dogfood multiple-cells",
+      "changed_files": [
+        "tests/net/fods/FodsR304SetCellAlignmentDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR304SetCellAlignmentDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [],
+      "format": "FODS"
+    },
+    {
+      "entry_id": "PC-FODT-R291",
+      "classification": "dotnet_test_deepening",
+      "sprint": "ff-sprint-s276-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "commercial_net_products.FODT",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.add_section"
+      ],
+      "api_symbols": [
+        "FodtDocument.AddSection"
+      ],
+      "api_behavior": "Void; valid/empty no-exception; SectionCount increases; TableCount/ParagraphCount unchanged; called-twice count+=2; long-name ok; dogfood add-section-then-paragraph; multiple-sections all no-exception",
+      "changed_files": [
+        "tests/net/fodt/FodtR291AddSectionDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR291AddSectionDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [],
+      "format": "FODT"
     }
   ],
-  "total_entries": 1599,
+  "total_entries": 1604,
   "changes": [
     {
       "file": "src/python/dif/models.py",
