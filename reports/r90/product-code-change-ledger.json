@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s123-dotnet-deepening-20260627",
+  "latest_sprint": "ff-sprint-s124-dotnet-deepening-20260627",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -20796,9 +20796,48 @@
         "tests/net/zst/ZstR128StreamCompressDecompressTests.cs"
       ],
       "description": "R128: 11 tests for ZstWriter.Compress(Stream,Stream) and Decompress(Stream,Stream) \u2014 non-empty output, magic bytes, null guards, roundtrip, UTF-8 preservation, dogfood pipeline"
+    },
+    {
+      "entry_id": "PC-FODT-R144",
+      "classification": "NEW_TEST_COVERAGE",
+      "sprint": "ff-sprint-s124-dotnet-deepening-20260627",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.spec_table_list"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR144SpecTableAndListTests.cs"
+      ],
+      "description": "R144: 15 tests for Spec.Table.Table/TableRow/TableCell, Spec.Text.List/ListItem, Spec.Office.Body \u2014 SpecQName/SpecFactRef constants, init-only properties, dogfood table-row-cell composition"
+    },
+    {
+      "entry_id": "PC-CSV-R128",
+      "classification": "NEW_TEST_COVERAGE",
+      "sprint": "ff-sprint-s124-dotnet-deepening-20260627",
+      "product": "CSV .NET",
+      "capability_refs": [
+        "commercial_net_products.CSV.dotnet_status.document_load_file"
+      ],
+      "test_files": [
+        "tests/net/csv/CsvR128DocumentLoadFileTests.cs"
+      ],
+      "description": "R128: 11 tests for CsvDocument.LoadFile(path, hasHeaders) \u2014 headers populated, row count, column count, hasHeaders=false, empty file, null/missing path throws, parity with Load(string)"
+    },
+    {
+      "entry_id": "PC-NDJSON-R130",
+      "classification": "NEW_TEST_COVERAGE",
+      "sprint": "ff-sprint-s124-dotnet-deepening-20260627",
+      "product": "NDJSON .NET",
+      "capability_refs": [
+        "commercial_net_products.NDJSON.dotnet_status.write_records_to_file"
+      ],
+      "test_files": [
+        "tests/net/ndjson/NdjsonR130WriteRecordsToFileTests.cs"
+      ],
+      "description": "R130: 10 tests for NdjsonWriter.WriteRecordsToFile(records, path) \u2014 file created, non-empty, line count, valid JSON lines, UTF-8 no-BOM, null guards, dogfood roundtrip, empty list creates empty file"
     }
   ],
-  "total_entries": 1138,
+  "total_entries": 1141,
   "changes": [
     {
       "file": "src/python/dif/models.py",
