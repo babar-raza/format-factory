@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s203-dotnet-deepening-20260629",
+  "latest_sprint": "ff-sprint-s204-dotnet-deepening-20260629",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -23728,6 +23728,36 @@
       "test_count": 10,
       "status": "completed",
       "notes": "Dedicated tests for FodtDocument.GetDocumentTitle: empty null/empty, no-exception, set-get, returns string, count unchanged, append unchanged, set-twice latest, dogfood"
+    },
+    {
+      "entry_id": "PC-NETPBM-R209",
+      "sprint": "ff-sprint-s204-dotnet-deepening-20260629",
+      "format": "NETPBM",
+      "capability": "ApplyKernel",
+      "test_file": "tests/net/netpbm/NetpbmR209ApplyKernelTests.cs",
+      "test_count": 11,
+      "status": "completed",
+      "notes": "Dedicated tests for NetpbmImage.ApplyKernel: null/non-square throws, PGM new image, format/dims/MaxValue preserved, uniform unchanged, clamped, identity kernel, dogfood"
+    },
+    {
+      "entry_id": "PC-FODS-R218",
+      "sprint": "ff-sprint-s204-dotnet-deepening-20260629",
+      "format": "FODS",
+      "capability": "SetColumnWidth",
+      "test_file": "tests/net/fods/FodsR218SetColumnWidthDedicatedTests.cs",
+      "test_count": 11,
+      "status": "completed",
+      "notes": "Dedicated tests for FodsDocument.SetColumnWidth: null/whitespace/nonexistent/negative-col/negative-width throws, valid no-exception, SheetCount, set-get, zero width, dogfood"
+    },
+    {
+      "entry_id": "PC-FODT-R219",
+      "sprint": "ff-sprint-s204-dotnet-deepening-20260629",
+      "format": "FODT",
+      "capability": "TrimParagraph",
+      "test_file": "tests/net/fodt/FodtR219TrimParagraphTests.cs",
+      "test_count": 10,
+      "status": "completed",
+      "notes": "Dedicated tests for FodtDocument.TrimParagraph: OOB/negative throws, leading/trailing whitespace removed, count unchanged, others unaffected, already-trimmed, dogfood"
     }
   ],
   "total_entries": 1270,
