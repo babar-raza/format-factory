@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s149-dotnet-deepening-20260628",
+  "latest_sprint": "ff-sprint-s150-dotnet-deepening-20260628",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -21740,6 +21740,48 @@
       "change_summary": "ZstR139DocumentFramePropertiesTests.cs: 10 tests for ZstDocument frame properties \u2014 BytesPerFrame/IsMinimalFrame/SizeExceeds100K/IsHighlyCompressed/OverheadBytes/FrameHeaderDescriptor defaults; init boundary tests; dogfood compress-small->ParseStream->IsMinimalFrame=true; dogfood compress-large->ParseStream->FrameCount>0.",
       "test_files": [
         "tests/net/zst/ZstR139DocumentFramePropertiesTests.cs"
+      ],
+      "source_files": []
+    },
+    {
+      "entry_id": "PC-NETPBM-R146",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s150-dotnet-deepening-20260628",
+      "product": "NETPBM .NET",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.crop"
+      ],
+      "change_summary": "NetpbmR146CropTests.cs: 10 tests for NetpbmImage.Crop \u2014 negative top/left/zero height/width/region exceeds bounds all throw; output dimensions match crop size; format preserved; original unchanged; top-left pixel correct; dogfood Create->SetPixel->Crop->GetPixel; dogfood crop full image same dims.",
+      "test_files": [
+        "tests/net/netpbm/NetpbmR146CropTests.cs"
+      ],
+      "source_files": []
+    },
+    {
+      "entry_id": "PC-FODS-R157",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s150-dotnet-deepening-20260628",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.get_column_count_dedicated"
+      ],
+      "change_summary": "FodsR157GetColumnCountDedicatedTests.cs: 10 tests for FodsDocument.GetColumnCount \u2014 empty doc=0, empty sheet=0, nonexistent named sheet throws; single cell=1, 3 cols=3; max-across-rows (wider row determines); idempotent; named sheet correct; dogfood CreateNew pipeline; dogfood named==first-sheet when single sheet.",
+      "test_files": [
+        "tests/net/fods/FodsR157GetColumnCountDedicatedTests.cs"
+      ],
+      "source_files": []
+    },
+    {
+      "entry_id": "PC-FODT-R159",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s150-dotnet-deepening-20260628",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.search_text_dedicated"
+      ],
+      "change_summary": "FodtR159SearchTextDedicatedTests.cs: 10 dedicated tests for FodtDocument.SearchText \u2014 null/empty query throws, empty doc=empty, not found=empty, single match/paragraph-index/position, multiple matches in same paragraph, case-insensitive, dogfood AppendParagraph->SearchText, dogfood multi-para correct index.",
+      "test_files": [
+        "tests/net/fodt/FodtR159SearchTextDedicatedTests.cs"
       ],
       "source_files": []
     }
