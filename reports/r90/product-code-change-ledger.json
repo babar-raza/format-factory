@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s208-dotnet-deepening-20260629",
+  "latest_sprint": "ff-sprint-s209-dotnet-deepening-20260629",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -23882,6 +23882,42 @@
       "description": "R223: Dedicated tests for FodtDocument.SetDocumentDescription/GetDocumentDescription \u2014 empty null/empty, no-exception, set-get, string type, count unchanged, same twice, latest, paragraphs unchanged, dogfood stable/round-trip",
       "source_files": [
         "tests/net/fodt/FodtR223SetDocumentDescriptionTests.cs"
+      ],
+      "test_count": 10
+    },
+    {
+      "entry_id": "PC-NETPBM-R215",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s209-dotnet-deepening-20260629",
+      "format": "NETPBM",
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.solarize",
+      "description": "R215: Dedicated tests for NetpbmImage.Solarize \u2014 PGM/PPM new image, format/MaxValue/dims preserved, all pixels valid range, original unchanged, dogfood uniform/format-dims-chain",
+      "source_files": [
+        "tests/net/netpbm/NetpbmR215SolarizeTests.cs"
+      ],
+      "test_count": 10
+    },
+    {
+      "entry_id": "PC-FODS-R224",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s209-dotnet-deepening-20260629",
+      "format": "FODS",
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.set_cell_font_name",
+      "description": "R224: Dedicated tests for FodsDocument.SetCellFontName/GetCellFontName \u2014 null/negative/null-name throws, valid no-exception, get-set, independent cells, SheetCount unchanged, set-twice latest, dogfood multi-cell",
+      "source_files": [
+        "tests/net/fods/FodsR224SetCellFontNameDedicatedTests.cs"
+      ],
+      "test_count": 10
+    },
+    {
+      "entry_id": "PC-FODT-R224",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s209-dotnet-deepening-20260629",
+      "format": "FODT",
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.set_document_subject",
+      "description": "R224: Dedicated tests for FodtDocument.SetDocumentSubject/GetDocumentSubject \u2014 empty null/empty, no-exception, set-get, string, count unchanged, same twice, set-twice latest, paragraphs unchanged, dogfood stable/round-trip",
+      "source_files": [
+        "tests/net/fodt/FodtR224SetDocumentSubjectTests.cs"
       ],
       "test_count": 10
     }
