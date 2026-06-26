@@ -22874,6 +22874,33 @@
       "evidence_path": "tests/net/fodt/FodtR184GetWordCountTests.cs",
       "test_count": 10,
       "sprint": "ff-sprint-s175-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-NETPBM-R172",
+      "format": "NETPBM",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "NetpbmImage.Equalize: PBM returns clone; returns new image; width/height/format unchanged; original unchanged; uniform image same value; all-zero stays zero; result pixels in valid range; dogfood PGM pipeline",
+      "evidence_path": "tests/net/netpbm/NetpbmR172EqualizeTests.cs",
+      "test_count": 10,
+      "sprint": "ff-sprint-s176-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-FODS-R183",
+      "format": "FODS",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "FodsDocument.RemoveSheet: null/whitespace throws ArgumentException; nonexistent throws InvalidOperationException; valid remove decrements SheetCount; removed sheet not findable; other sheets unaffected; double remove throws; sheet names updated; dogfood add-set-remove; dogfood remove-readd pipeline",
+      "evidence_path": "tests/net/fods/FodsR183RemoveSheetDedicatedTests.cs",
+      "test_count": 10,
+      "sprint": "ff-sprint-s176-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-FODT-R185",
+      "format": "FODT",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "FodtDocument.ExportToOutlineJson: empty returns empty array; non-null string; valid JSON; array type; single para index=0; text matches; heading level in range; body para level=0; count matches ParagraphCount; dogfood all fields present; dogfood indices sequential",
+      "evidence_path": "tests/net/fodt/FodtR185ExportToOutlineJsonTests.cs",
+      "test_count": 11,
+      "sprint": "ff-sprint-s176-dotnet-deepening-20260628"
     }
   ],
   "total_entries": 1270,
