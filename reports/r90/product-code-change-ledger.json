@@ -21862,6 +21862,84 @@
         }
       ],
       "format": "FODT"
+    },
+    {
+      "entry_id": "PC-NETPBM-R148",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s152-dotnet-deepening-20260628",
+      "product": "Netpbm .NET Commercial",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.tile"
+      ],
+      "api_symbols": [
+        "Tile"
+      ],
+      "api_behavior": "NetpbmImage.Tile(tilesX, tilesY) returns new image tiling source tilesX*tilesY times. Output dimensions = Width*tilesX by Height*tilesY. Throws ArgumentOutOfRangeException for zero/negative tile counts.",
+      "changed_files": [],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR148TileTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "src/net/netpbm/Transforms/NetpbmImageTransforms.cs",
+          "state": "present",
+          "sha256": ""
+        }
+      ],
+      "format": "Netpbm"
+    },
+    {
+      "entry_id": "PC-FODS-R159",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s152-dotnet-deepening-20260628",
+      "product": "FODS .NET Commercial",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.copy_sheet_dedicated"
+      ],
+      "api_symbols": [
+        "CopySheet"
+      ],
+      "api_behavior": "FodsDocument.CopySheet(sourceName, newName) clones sheet with new name. Throws ArgumentException for null/whitespace. Throws InvalidOperationException for nonexistent source or duplicate new name. Sheet count increases.",
+      "changed_files": [],
+      "test_files": [
+        "tests/net/fods/FodsR159CopySheetDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "src/net/fods/FodsDocument.cs",
+          "state": "present",
+          "sha256": ""
+        }
+      ],
+      "format": "FODS"
+    },
+    {
+      "entry_id": "PC-FODT-R161",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s152-dotnet-deepening-20260628",
+      "product": "FODT .NET Commercial",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.remove_paragraph_dedicated"
+      ],
+      "api_symbols": [
+        "RemoveParagraph"
+      ],
+      "api_behavior": "FodtDocument.RemoveParagraph(int index) removes paragraph at zero-based index. Throws ArgumentOutOfRangeException for negative/out-of-range index. Count decreases; subsequent paragraphs shift.",
+      "changed_files": [],
+      "test_files": [
+        "tests/net/fodt/FodtR161RemoveParagraphDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "src/net/fodt/FodtDocument.cs",
+          "state": "present",
+          "sha256": ""
+        }
+      ],
+      "format": "FODT"
     }
   ],
   "total_entries": 1201,
