@@ -27126,9 +27126,98 @@
       "test_count": 9,
       "source_files": [],
       "format": "FODT"
+    },
+    {
+      "entry_id": "PC-TOML-R266",
+      "sprint_id": "ff-sprint-s266-toml-installed-workflow-20260626",
+      "format": "toml",
+      "track": "python-foss",
+      "skill_id": "add-python-api",
+      "gap_closed": "GAP-TOML-FOSS-INSTALLED_WO-001",
+      "api_added": "toml_installed_workflow",
+      "description": "Added toml_installed_workflow() to toml_codec.py as named variant of installed_workflow()",
+      "source_files": [
+        "src/python/toml/toml_codec.py"
+      ],
+      "test_files": [
+        "tests/python/toml/test_r266_toml_installed_workflow.py"
+      ],
+      "tests_added": 12,
+      "tests_passed": 12,
+      "tests_failed": 0,
+      "worker_verdict": "PASS"
+    },
+    {
+      "entry_id": "PC-NETPBM-R276",
+      "classification": "dotnet_test_deepening",
+      "sprint": "ff-sprint-s268-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "commercial_net_products.NETPBM",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.flip_horizontal"
+      ],
+      "api_symbols": [
+        "NetpbmImage.FlipHorizontal"
+      ],
+      "api_behavior": "Void in-place; pixel at (col,row) moves to (W-1-col,row); flip-twice restores; dims/format/MaxValue unchanged; idempotent; dogfood known-positions swapped; flip-twice restored",
+      "changed_files": [
+        "tests/net/netpbm/NetpbmR276FlipHorizontalDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR276FlipHorizontalDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [],
+      "format": "NETPBM"
+    },
+    {
+      "entry_id": "PC-FODS-R294",
+      "classification": "dotnet_test_deepening",
+      "sprint": "ff-sprint-s268-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "commercial_net_products.FODS",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.get_sheet_names"
+      ],
+      "api_symbols": [
+        "FodsDocument.GetSheetNames"
+      ],
+      "api_behavior": "Returns non-null collection; count matches SheetCount; contains added names; after RenameSheet old gone new present; SheetCount unchanged; idempotent; dogfood two-sheets both present; dogfood rename updates list",
+      "changed_files": [
+        "tests/net/fods/FodsR294GetSheetNamesDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR294GetSheetNamesDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [],
+      "format": "FODS"
+    },
+    {
+      "entry_id": "PC-FODT-R283",
+      "classification": "dotnet_test_deepening",
+      "sprint": "ff-sprint-s268-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "commercial_net_products.FODT",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.add_paragraph"
+      ],
+      "api_symbols": [
+        "FodtDocument.AddParagraph"
+      ],
+      "api_behavior": "Void; valid/empty no-exception; ParagraphCount increases; GetParagraphText returns added text; TableCount unchanged; called-twice count+2; dogfood add-retrieve matches; multiple-paragraphs each retrievable",
+      "changed_files": [
+        "tests/net/fodt/FodtR283AddParagraphDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR283AddParagraphDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [],
+      "format": "FODT"
     }
   ],
-  "total_entries": 1573,
+  "total_entries": 1577,
   "changes": [
     {
       "file": "src/python/dif/models.py",
