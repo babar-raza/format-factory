@@ -22751,6 +22751,30 @@
       "description": "FodtDocument.GetParagraphStyles dedicated tests: empty doc empty, IReadOnlyList type, count matches ParagraphCount, single para count=1, all non-null strings, paragraph style empty-or-string, heading style, dogfood mixed content",
       "evidence_path": "tests/net/fodt/FodtR179GetParagraphStylesTests.cs",
       "sprint": "ff-sprint-s170-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-NETPBM-R167",
+      "format": "NETPBM",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "NetpbmImage.GetHistogram dedicated tests: zero-pixel empty, PBM length=2, PGM length=256, sum=pixel count, bin incremented for set pixel, PPM sum=pixel count, dogfood SetPixels->GetHistogram",
+      "evidence_path": "tests/net/netpbm/NetpbmR167GetHistogramTests.cs",
+      "sprint": "ff-sprint-s171-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-FODS-R178",
+      "format": "FODS",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "FodsDocument.GetColumnAggregates dedicated tests: null/whitespace throws, nonexistent sheet (0,0,0,0), header-only (0,0,0,0), non-numeric skipped, Count matches, Sum/Min/Max correct, dogfood multi-sheet pipeline",
+      "evidence_path": "tests/net/fods/FodsR178GetColumnAggregatesDedicatedTests.cs",
+      "sprint": "ff-sprint-s171-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-FODT-R180",
+      "format": "FODT",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "FodtDocument.GetCharCount dedicated tests: empty=0, non-negative, single-char=1, matches text.Length, additive across paragraphs, heading counted, whitespace counted, charCount>=wordCount, dogfood ReplaceText updates count",
+      "evidence_path": "tests/net/fodt/FodtR180GetCharCountTests.cs",
+      "sprint": "ff-sprint-s171-dotnet-deepening-20260628"
     }
   ],
   "total_entries": 1270,
