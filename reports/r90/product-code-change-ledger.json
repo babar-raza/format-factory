@@ -22727,6 +22727,30 @@
       "description": "FodtDocument.GetDocumentMetadata dedicated tests: non-null, IReadOnlyDictionary type, empty doc empty dict, all values strings, all keys strings, idempotent, AppendParagraph/Heading stable, dogfood pipelines",
       "evidence_path": "tests/net/fodt/FodtR178GetDocumentMetadataTests.cs",
       "sprint": "ff-sprint-s169-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-NETPBM-R166",
+      "format": "NETPBM",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "NetpbmImage.GetChannelStats dedicated tests: PBM/PGM throws InvalidOperationException, PPM returns R/G/B tuples, min<=mean<=max, uniform image mean=constant, single-pixel mean=value, dogfood pipeline",
+      "evidence_path": "tests/net/netpbm/NetpbmR166GetChannelStatsTests.cs",
+      "sprint": "ff-sprint-s170-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-FODS-R177",
+      "format": "FODS",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "FodsDocument.FilterRows dedicated tests: null/whitespace sheetName throws, null value throws ArgumentNullException, nonexistent sheet empty, header always included, single match header+row, case-sensitive, IReadOnlyList type, dogfood pipeline",
+      "evidence_path": "tests/net/fods/FodsR177FilterRowsDedicatedTests.cs",
+      "sprint": "ff-sprint-s170-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-FODT-R179",
+      "format": "FODT",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "FodtDocument.GetParagraphStyles dedicated tests: empty doc empty, IReadOnlyList type, count matches ParagraphCount, single para count=1, all non-null strings, paragraph style empty-or-string, heading style, dogfood mixed content",
+      "evidence_path": "tests/net/fodt/FodtR179GetParagraphStylesTests.cs",
+      "sprint": "ff-sprint-s170-dotnet-deepening-20260628"
     }
   ],
   "total_entries": 1270,
