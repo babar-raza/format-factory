@@ -27511,9 +27511,78 @@
       "test_count": 9,
       "source_files": [],
       "format": "FODT"
+    },
+    {
+      "entry_id": "PC-NETPBM-R281",
+      "classification": "dotnet_test_deepening",
+      "sprint": "ff-sprint-s273-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "commercial_net_products.NETPBM",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.get_luminance"
+      ],
+      "api_symbols": [
+        "NetpbmImage.GetLuminance"
+      ],
+      "api_behavior": "Returns double non-negative; all-zero=0.0; all-max positive; dims/format/MaxValue unchanged; idempotent; dogfood known-pixels in-range; dogfood uniform-bright positive",
+      "changed_files": [
+        "tests/net/netpbm/NetpbmR281GetLuminanceDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR281GetLuminanceDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [],
+      "format": "NETPBM"
+    },
+    {
+      "entry_id": "PC-FODS-R300",
+      "classification": "dotnet_test_deepening",
+      "sprint": "ff-sprint-s273-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "commercial_net_products.FODS",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.delete_sheet"
+      ],
+      "api_symbols": [
+        "FodsDocument.DeleteSheet"
+      ],
+      "api_behavior": "Void; null/whitespace/nonexistent throws; valid no-exception; SheetCount decreases; deleted name gone from GetSheetNames; remaining accessible; dogfood add-two-delete-one; dogfood names-updated",
+      "changed_files": [
+        "tests/net/fods/FodsR300DeleteSheetDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR300DeleteSheetDedicatedTests.cs"
+      ],
+      "test_count": 9,
+      "source_files": [],
+      "format": "FODS"
+    },
+    {
+      "entry_id": "PC-FODT-R288",
+      "classification": "dotnet_test_deepening",
+      "sprint": "ff-sprint-s273-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "commercial_net_products.FODT",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.export_to_text"
+      ],
+      "api_symbols": [
+        "FodtDocument.ExportToText"
+      ],
+      "api_behavior": "Void; null/whitespace throws; valid no-exception; file exists after; non-empty\u2192non-empty file; ParagraphCount/TableCount unchanged; dogfood paragraphs text-exists-nonEmpty; export-twice both exist",
+      "changed_files": [
+        "tests/net/fodt/FodtR288ExportToTextDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR288ExportToTextDedicatedTests.cs"
+      ],
+      "test_count": 9,
+      "source_files": [],
+      "format": "FODT"
     }
   ],
-  "total_entries": 1590,
+  "total_entries": 1593,
   "changes": [
     {
       "file": "src/python/dif/models.py",
