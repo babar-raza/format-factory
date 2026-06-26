@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s277-dif-installed-workflow-20260626",
+  "latest_sprint": "ff-sprint-s279-ods-installed-workflow-20260626",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -28460,9 +28460,140 @@
       "test_count": 9,
       "source_files": [],
       "format": "fodt"
+    },
+    {
+      "entry_id": "PC-XCF-R278",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s278-xcf-installed-workflow-20260626",
+      "skill": "add-python-api",
+      "product": "XCF Python FOSS",
+      "capability_refs": [
+        "foss_python_products.XCF.python_status.installed_workflow"
+      ],
+      "api_symbols": [
+        "xcf_installed_workflow"
+      ],
+      "api_behavior": "xcf_installed_workflow(source): loads XCF file, returns format, loaded, width, height, layer_count.",
+      "source_files": [
+        {
+          "path": "src/python/xcf/xcf_workflow.py",
+          "state": "present",
+          "sha256": "e0b2e4394185358b8e664beae33d4d32dcb375e7883b64f2bcf1d09d0569e055"
+        },
+        {
+          "path": "src/python/xcf/__init__.py",
+          "state": "present",
+          "sha256": "17dadf0d71a3b2494681ce6793750ec36d95e06f7389f2c9cd075ac8d137f91e"
+        }
+      ],
+      "test_files": [
+        "tests/python/xcf/test_r278_xcf_installed_workflow.py"
+      ],
+      "test_count": 12,
+      "format": "XCF"
+    },
+    {
+      "entry_id": "PC-ODS-R279",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s279-ods-installed-workflow-20260626",
+      "skill": "add-python-api",
+      "product": "ODS Python FOSS",
+      "capability_refs": [
+        "foss_python_products.ODS.python_status.installed_workflow"
+      ],
+      "api_symbols": [
+        "ods_installed_workflow"
+      ],
+      "api_behavior": "ods_installed_workflow(source): loads ODS file, returns format, loaded, sheet_count, row_count.",
+      "source_files": [
+        {
+          "path": "src/python/ods/ods_workflow.py",
+          "state": "present",
+          "sha256": "a9c6a302360395870464de97a6661e51a7a470f93edd9fb1f941a46cbc1bc9e0"
+        },
+        {
+          "path": "src/python/ods/__init__.py",
+          "state": "present",
+          "sha256": "edd83a5d01aabe546578d1b24f23ddbead6d0de2aba093adfa2ff99552732189"
+        }
+      ],
+      "test_files": [
+        "tests/python/ods/test_r279_ods_installed_workflow.py"
+      ],
+      "test_count": 11,
+      "format": "ODS"
+    },
+    {
+      "entry_id": "PC-NETPBM-R291",
+      "classification": "DOTNET_TEST_COVERAGE",
+      "sprint": "ff-sprint-s283-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "NETPBM",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.apply_sharpen"
+      ],
+      "api_symbols": [
+        "NetpbmImage.ApplySharpen"
+      ],
+      "api_behavior": "ApplySharpen(): void in-place; all pixels in [0,MaxValue]; dims/format/MaxValue unchanged; called-twice ok; uniform ok; dogfood mixed in-range",
+      "changed_files": [
+        "tests/net/netpbm/NetpbmR291ApplySharpenDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR291ApplySharpenDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [],
+      "format": "netpbm"
+    },
+    {
+      "entry_id": "PC-FODS-R311",
+      "classification": "DOTNET_TEST_COVERAGE",
+      "sprint": "ff-sprint-s283-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "FODS",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.delete_column"
+      ],
+      "api_symbols": [
+        "FodsDocument.DeleteColumn"
+      ],
+      "api_behavior": "DeleteColumn(sheetName,columnName): null/whitespace/nonexistent-sheet/null-col/nonexistent-col throws; valid ok; ColumnCount decreases; SheetCount unchanged; dogfood add-then-delete",
+      "changed_files": [
+        "tests/net/fods/FodsR311DeleteColumnDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR311DeleteColumnDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [],
+      "format": "fods"
+    },
+    {
+      "entry_id": "PC-FODT-R298",
+      "classification": "DOTNET_TEST_COVERAGE",
+      "sprint": "ff-sprint-s283-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "FODT",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.get_table_count"
+      ],
+      "api_symbols": [
+        "FodtDocument.TableCount"
+      ],
+      "api_behavior": "TableCount: int non-negative; increases after AddTable; ParagraphCount/SectionCount unchanged; idempotent; two-tables count>=before+2; dogfood multiple",
+      "changed_files": [
+        "tests/net/fodt/FodtR298GetTableCountDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR298GetTableCountDedicatedTests.cs"
+      ],
+      "test_count": 9,
+      "source_files": [],
+      "format": "fodt"
     }
   ],
-  "total_entries": 1630,
+  "total_entries": 1635,
   "changes": [
     {
       "file": "src/python/dif/models.py",
