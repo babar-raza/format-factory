@@ -22901,6 +22901,33 @@
       "evidence_path": "tests/net/fodt/FodtR185ExportToOutlineJsonTests.cs",
       "test_count": 11,
       "sprint": "ff-sprint-s176-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-NETPBM-R173",
+      "format": "NETPBM",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "NetpbmImage.MedianFilter: negative radius throws ArgumentOutOfRangeException; radius=0 returns clone; returns new image; width/height/format unchanged; original pixels unchanged; uniform image stays same; result in valid range; dogfood PGM spike preserves shape",
+      "evidence_path": "tests/net/netpbm/NetpbmR173MedianFilterTests.cs",
+      "test_count": 10,
+      "sprint": "ff-sprint-s177-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-FODS-R184",
+      "format": "FODS",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "FodsDocument.MergeCells: null/whitespace throws ArgumentException; rowSpan=0 throws ArgumentOutOfRangeException; colSpan=0 throws; nonexistent throws InvalidOperationException; negative startRow throws; valid 1x1 no-op; valid horizontal merge; valid vertical merge; dogfood add-rows-merge-data-preserved",
+      "evidence_path": "tests/net/fods/FodsR184MergeCellsDedicatedTests.cs",
+      "test_count": 9,
+      "sprint": "ff-sprint-s177-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-FODT-R186",
+      "format": "FODT",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "FodtDocument.GetPlainTextRange: negative startIndex throws; endIndex over count throws; start==end empty; start>end empty; single paragraph; multiple paragraphs joined by newline; partial range correct; dogfood all text present; dogfood range length matches paragraph count",
+      "evidence_path": "tests/net/fodt/FodtR186GetPlainTextRangeTests.cs",
+      "test_count": 10,
+      "sprint": "ff-sprint-s177-dotnet-deepening-20260628"
     }
   ],
   "total_entries": 1270,
