@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s195-dotnet-deepening-20260629",
+  "latest_sprint": "ff-sprint-s196-dotnet-deepening-20260629",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -23459,6 +23459,36 @@
       "capability": "SetParagraphStyle",
       "description": "Dedicated tests for FodtDocument.SetParagraphStyle: null throws, OOB throws, valid no-throw, count unchanged, text unchanged, heading para, called twice, dogfood three-para and text unchanged",
       "evidence_path": "tests/net/fodt/FodtR208SetParagraphStyleTests.cs",
+      "test_count": 10,
+      "status": "completed"
+    },
+    {
+      "entry_id": "PC-NETPBM-R199",
+      "sprint": "ff-sprint-s196-dotnet-deepening-20260629",
+      "format": "NETPBM",
+      "capability": "MergeVertical",
+      "description": "Dedicated tests for NetpbmImage.MergeVertical: null/width-mismatch/format-mismatch throw, new image, width same, height=sum, format preserved, MaxValue max, top-half base pixels, dogfood bottom-half pixel",
+      "evidence_path": "tests/net/netpbm/NetpbmR199MergeVerticalTests.cs",
+      "test_count": 10,
+      "status": "completed"
+    },
+    {
+      "entry_id": "PC-FODS-R208",
+      "sprint": "ff-sprint-s196-dotnet-deepening-20260629",
+      "format": "FODS",
+      "capability": "SortRows",
+      "description": "Dedicated tests for FodsDocument.SortRows: null/whitespace/nonexistent/negative-col throws, one-row no-throw, ascending first=smallest, descending first=largest, SheetCount unchanged, dogfood numeric and multi-col",
+      "evidence_path": "tests/net/fods/FodsR208SortRowsDedicatedTests.cs",
+      "test_count": 10,
+      "status": "completed"
+    },
+    {
+      "entry_id": "PC-FODT-R210",
+      "sprint": "ff-sprint-s196-dotnet-deepening-20260629",
+      "format": "FODT",
+      "capability": "GetParagraphTexts",
+      "description": "Dedicated tests for FodtDocument.GetParagraphTexts: empty, single, multiple in order, heading included, IReadOnlyList type, count matches, no nulls, mixed content, dogfood three paras and append updates",
+      "evidence_path": "tests/net/fodt/FodtR210GetParagraphTextsTests.cs",
       "test_count": 10,
       "status": "completed"
     }
