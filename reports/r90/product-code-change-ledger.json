@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s192-dotnet-deepening-20260629",
+  "latest_sprint": "ff-sprint-s193-dotnet-deepening-20260629",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -23337,6 +23337,36 @@
       "capability": "RemoveAllParagraphs",
       "description": "Dedicated tests for FodtDocument.RemoveAllParagraphs: empty no-op, single removed, heading removed, multiple all removed, count 0, append after works, called twice, dogfood remove-re-add and mixed content",
       "evidence_path": "tests/net/fodt/FodtR204RemoveAllParagraphsTests.cs",
+      "test_count": 10,
+      "status": "completed"
+    },
+    {
+      "entry_id": "PC-NETPBM-R195",
+      "sprint": "ff-sprint-s193-dotnet-deepening-20260629",
+      "format": "NETPBM",
+      "capability": "Equalize",
+      "description": "Dedicated tests for NetpbmImage.Equalize: PBM clone, PGM new image, format/dims/MaxValue preserved, PPM returns valid, dogfood two-value distribution and gradient",
+      "evidence_path": "tests/net/netpbm/NetpbmR195EqualizeTests.cs",
+      "test_count": 10,
+      "status": "completed"
+    },
+    {
+      "entry_id": "PC-FODS-R205",
+      "sprint": "ff-sprint-s193-dotnet-deepening-20260629",
+      "format": "FODS",
+      "capability": "MergeCells",
+      "description": "Dedicated tests for FodsDocument.MergeCells: null/whitespace throws, rowSpan/colSpan<1 throws, nonexistent throws, OOB throws, valid no-throw, SheetCount unchanged, dogfood merge-then-set-value and negative span",
+      "evidence_path": "tests/net/fods/FodsR205MergeCellsDedicatedTests.cs",
+      "test_count": 10,
+      "status": "completed"
+    },
+    {
+      "entry_id": "PC-FODT-R206",
+      "sprint": "ff-sprint-s193-dotnet-deepening-20260629",
+      "format": "FODT",
+      "capability": "CharCount",
+      "description": "Dedicated tests for FodtDocument.CharCount: empty=0, empty-para=0, single word, two paras sum, heading counted, after-append increases, after-remove decreases, spaces counted, dogfood three paras and add-remove",
+      "evidence_path": "tests/net/fodt/FodtR206CharCountTests.cs",
       "test_count": 10,
       "status": "completed"
     }
