@@ -22775,6 +22775,30 @@
       "description": "FodtDocument.GetCharCount dedicated tests: empty=0, non-negative, single-char=1, matches text.Length, additive across paragraphs, heading counted, whitespace counted, charCount>=wordCount, dogfood ReplaceText updates count",
       "evidence_path": "tests/net/fodt/FodtR180GetCharCountTests.cs",
       "sprint": "ff-sprint-s171-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-NETPBM-R168",
+      "format": "NETPBM",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "NetpbmImage.ApplyGamma dedicated tests: gamma=0 throws, negative throws, PBM clone, new image, dims/format unchanged, original unchanged, gamma=1.0 identity, all-zero stays zero, dogfood pipeline",
+      "evidence_path": "tests/net/netpbm/NetpbmR168ApplyGammaTests.cs",
+      "sprint": "ff-sprint-s172-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-FODS-R179",
+      "format": "FODS",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "FodsDocument.GetCellStyle dedicated tests: null/whitespace throws, nonexistent sheet null, neg row/col null, row/col at-count null, valid cell null-or-string, SetCellStyle then GetCellStyle returns set value, dogfood pipeline",
+      "evidence_path": "tests/net/fods/FodsR179GetCellStyleDedicatedTests.cs",
+      "sprint": "ff-sprint-s172-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-FODT-R181",
+      "format": "FODT",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "FodtDocument.FindParagraphsByStyle dedicated tests: null throws ArgumentNullException, empty doc empty, empty pattern matches all, heading matches Heading, case-insensitive, non-matching empty, indices in order, dogfood pipeline",
+      "evidence_path": "tests/net/fodt/FodtR181FindParagraphsByStyleTests.cs",
+      "sprint": "ff-sprint-s172-dotnet-deepening-20260628"
     }
   ],
   "total_entries": 1270,
