@@ -21231,9 +21231,39 @@
       "evidence_path": "tests/net/ndjson/NdjsonR137SaveToFileAndLoadAliasTests.cs",
       "test_count": 10,
       "capability_ref": "commercial_net_products.NDJSON.dotnet_status.save_to_file_and_load_aliases"
+    },
+    {
+      "entry_id": "PC-FODS-R148",
+      "format": "FODS",
+      "r_number": "R148",
+      "sprint": "ff-sprint-s137-dotnet-deepening-20260627",
+      "description": "FodsDocument.GetSheetByIndex - 10 tests: index -1 returns null, index=SheetCount returns null, index 99 returns null, index 0 returns first sheet, index 0 name matches GetSheetNames, index 1 returns second sheet (AddSheet), two sheets index 0 = first, SheetCount reflects AddSheet, dogfood AddSheet->GetSheetByIndex->SetCellValue->GetCellValue pipeline",
+      "evidence_path": "tests/net/fods/FodsR148GetSheetByIndexTests.cs",
+      "test_count": 10,
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.get_sheet_by_index"
+    },
+    {
+      "entry_id": "PC-CSV-R133",
+      "format": "CSV",
+      "r_number": "R133",
+      "sprint": "ff-sprint-s137-dotnet-deepening-20260627",
+      "description": "CsvWriter.WriteRows and CsvDocument.ToCsv - 10 tests: WriteRows null throws, empty=empty string, single row one field, multi-field LF line, comma field quoted, null field empty, ToCsv empty doc has headers, with data contains values, dogfood Load->Filter->ToCsv->Load round-trip 2 records (Alice+Carol score>80)",
+      "evidence_path": "tests/net/csv/CsvR133WriterRowsAndToCsvTests.cs",
+      "test_count": 10,
+      "capability_ref": "commercial_net_products.CSV.dotnet_status.writer_rows_and_to_csv"
+    },
+    {
+      "entry_id": "PC-FODT-R151",
+      "format": "FODT",
+      "r_number": "R151",
+      "sprint": "ff-sprint-s137-dotnet-deepening-20260627",
+      "description": "FodtDocument.GetPlainTextRange(startIndex, endIndex) - 10 tests: negative start throws, end>count throws, start=end=empty, start>end=empty, single paragraph range, two-paragraph range newline-joined, full range equals GetPlainText(), last para range, dogfood 4-paragraph->middle range contains Beta+Gamma but not Alpha/Delta",
+      "evidence_path": "tests/net/fodt/FodtR151GetPlainTextRangeTests.cs",
+      "test_count": 10,
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.get_plain_text_range"
     }
   ],
-  "total_entries": 1177,
+  "total_entries": 1180,
   "changes": [
     {
       "file": "src/python/dif/models.py",
