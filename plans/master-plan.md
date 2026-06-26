@@ -4451,3 +4451,50 @@ All 11 TC-AUTH-* taskcards executed and verified. Zero regressions.
 | RISK-03 (TC-AUTH-011 blind fix) | Grep-first + 5-line context read + decision table mandated — confirmed already fixed |
 | RISK-04 (novel phrasing) | V80 uses dual detection: `_HUMAN_AUTH_PHRASES` frozenset + `_HUMAN_GATE_ITEM_TYPES` structural check |
 
+---
+
+## Section 77 — flickering-yawning-dewdrop: Pre-Product-Acquisition Recon & Structural Repairs (CLOSED)
+
+**Sprint:** pre-product-acquisition-item-recon-20260625-c6b2470
+**Mission:** flickering-yawning-dewdrop.md (9-phase, 4 targeted structural repairs)
+**Date:** 2026-06-25 / 2026-06-26
+**Status:** CLOSED — ALL_REPAIRS_COMPLETE — READINESS_GATE_PASS
+**Plan type:** execution_mission
+**Commit:** `65b9dd4a` (5 files: autonomous_cycle.py, autonomous_cycle_extensions/__init__.py, autonomous_cycle_extensions.py, capability_queue_consumer.py, lane_enforcement_validator.py)
+
+### Mission Summary
+
+Addressed 3 primary structural breaks in the autonomous supervisor pipeline:
+1. **Zero-task state**: task generator produced 0 FOSS items because gap-ledger FOSS goals = 0 and EXPANSION_GOALS lacked gap_ledger_ref. Fix: wired `capability_queue_consumer.run_consumer()` as Step 2h in autonomous_cycle.py; added gap_ledger_ref to compiled taskcards; `enrich_goals_with_compiled_taskcards` call site confirmed at autonomous_task_generator.py:1652.
+2. **Spec-parity validators**: found pre-existing wiring (V34-V36 in governance_validator_runner.py lines 192-196). No action required.
+3. **Lane enforcement severity**: Added CRITICAL/WARNING classification — product files in governance lanes produce hard_stops_detected; MULTI_LANE sprints bypass CRITICAL check.
+
+### Readiness Gate Results (all 10 PASS)
+
+| Criterion | Status |
+|-----------|--------|
+| Task generator produces non-zero work items | PASS — 1 FOSS item with gap_ledger_ref |
+| compiled-gap-taskcards.json entries have gap_ledger_ref | PASS |
+| enrich_goals_with_compiled_taskcards sets gap_ledger_ref on goals | PASS |
+| Step 2h calls capability_queue_consumer | PASS |
+| Spec-parity validators run (V34-V36) | PASS (pre-existing) |
+| CRITICAL lane violations produce hard stop | PASS (negative control) |
+| MULTI_LANE sprints bypass CRITICAL | PASS (negative control) |
+| 135 governance validators pass | PASS |
+| Health check 6/6 pass | PASS |
+| Gate 11 BLOCKED (Babar Raza only) | PASS |
+
+**Overall verdict:** READY_FOR_CONTROLLED_EXISTING_PRODUCT_HEALING_ONLY
+Condition for upgrade to READY_FOR_CONTROLLED_PRODUCT_ACQUISITION_PILOT: 2-3 clean sprints with compiled-taskcard work items confirmed in declarations and TC-GUARD-001 passing.
+
+### Tests
+- Governance validators: 135 pass (`.venv/Scripts/pytest`)
+- Health check: 6 pass
+- NDJSON .NET (co-committed fix `b45d6583`): 66 pass
+
+### Deferred
+- End-to-end live pipeline validation → next autonomous sprint direction
+- `autonomous_cycle_extensions.py` flat file dead code → maintenance concern, non-blocking
+- 209 legacy compiled-gap-taskcards.json entries without gap_ledger_ref → drain naturally over ~20 sprints
+- autonomous_cycle.py LOC (2648 > cap 2623) → pre-existing write-once violation
+
