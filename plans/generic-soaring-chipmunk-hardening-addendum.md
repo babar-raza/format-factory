@@ -122,7 +122,7 @@ why_it_matters: >
 risk_addressed: Manual-only SAL limits growth beyond ODF+ZST
 status: completed_verified
 completed_at: "2026-06-26"
-completion_commit: pending_commit_after_this_update
+completion_commit: 5e0f5cf6
 priority: HIGH
 lane_owner: SAL_INFRASTRUCTURE_LANE
 supervisor_role: execution_agent
@@ -191,7 +191,7 @@ why_it_matters: >
 risk_addressed: Context packs cite requirements that cannot be matched to verified spec facts
 status: completed_verified
 completed_at: "2026-06-26"
-completion_commit: pending_commit_after_this_update
+completion_commit: 5e0f5cf6
 priority: MEDIUM
 lane_owner: SAL_INFRASTRUCTURE_LANE
 supervisor_role: execution_agent
