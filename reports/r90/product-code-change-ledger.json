@@ -27215,9 +27215,98 @@
       "test_count": 10,
       "source_files": [],
       "format": "FODT"
+    },
+    {
+      "entry_id": "PC-NETPBM-R277",
+      "classification": "dotnet_test_deepening",
+      "sprint": "ff-sprint-s269-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "commercial_net_products.NETPBM",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.get_darkest_pixel_value"
+      ],
+      "api_symbols": [
+        "NetpbmImage.GetDarkestPixelValue"
+      ],
+      "api_behavior": "Returns int in [0,MaxValue]; all-zero=0; all-max=MaxValue; dims/format/MaxValue unchanged; idempotent; dogfood known-min=min; single-dark-pixel dominates",
+      "changed_files": [
+        "tests/net/netpbm/NetpbmR277GetDarkestPixelValueDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR277GetDarkestPixelValueDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [],
+      "format": "NETPBM"
+    },
+    {
+      "entry_id": "PC-FODS-R295",
+      "classification": "dotnet_test_deepening",
+      "sprint": "ff-sprint-s269-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "commercial_net_products.FODS",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.add_column"
+      ],
+      "api_symbols": [
+        "FodsDocument.AddColumn"
+      ],
+      "api_behavior": "Void; null/whitespace/nonexistent throws; valid/empty-header no-exception; GetColumnCount increases; SheetCount unchanged; called-twice count+2; dogfood 3-cols count+3; two-sheets independent",
+      "changed_files": [
+        "tests/net/fods/FodsR295AddColumnDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR295AddColumnDedicatedTests.cs"
+      ],
+      "test_count": 9,
+      "source_files": [],
+      "format": "FODS"
+    },
+    {
+      "entry_id": "PC-FODT-R284",
+      "classification": "dotnet_test_deepening",
+      "sprint": "ff-sprint-s269-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "commercial_net_products.FODT",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.set_paragraph_text"
+      ],
+      "api_symbols": [
+        "FodtDocument.SetParagraphText"
+      ],
+      "api_behavior": "Void; negative/OOB throws; valid/empty no-exception; GetParagraphText returns updated; set-twice second wins; ParagraphCount/TableCount unchanged; dogfood add-set-retrieve; multiple paragraphs independent",
+      "changed_files": [
+        "tests/net/fodt/FodtR284SetParagraphTextDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR284SetParagraphTextDedicatedTests.cs"
+      ],
+      "test_count": 9,
+      "source_files": [],
+      "format": "FODT"
+    },
+    {
+      "entry_id": "PC-ZST-R267",
+      "sprint_id": "ff-sprint-s267-zst-compression-summary-20260626",
+      "format": "zst",
+      "track": "python-foss",
+      "skill_id": "add-python-api",
+      "gap_closed": "FOSS-ZST-API-EXTENSION",
+      "api_added": "get_compression_summary",
+      "description": "Added get_compression_summary(data, level) to zst_codec.py \u2014 comprehensive per-payload compression profile",
+      "source_files": [
+        "src/python/zst/zst_codec.py"
+      ],
+      "test_files": [
+        "tests/python/zst/test_r267_zst_compression_summary.py"
+      ],
+      "tests_added": 15,
+      "tests_passed": 15,
+      "tests_failed": 0,
+      "worker_verdict": "PASS"
     }
   ],
-  "total_entries": 1577,
+  "total_entries": 1580,
   "changes": [
     {
       "file": "src/python/dif/models.py",
