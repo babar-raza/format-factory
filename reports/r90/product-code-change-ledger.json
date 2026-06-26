@@ -22559,9 +22559,33 @@
       "description": "FodtDocument.GetParagraphTexts dedicated tests \u2014 empty, single, text match, multiple in order, heading included, mixed content, count match, IReadOnlyList, dogfood pipelines",
       "evidence_path": "tests/net/fodt/FodtR171GetParagraphTextsDedicatedTests.cs",
       "sprint": "ff-sprint-s162-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-NETPBM-R159",
+      "format": "NETPBM",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "NetpbmImage.Crop dedicated tests \u2014 negative top/left guards, zero dim guards, bounds-exceeded guards, output dims match cropHeight/cropWidth, format preserved, dogfood pixel extraction",
+      "evidence_path": "tests/net/netpbm/NetpbmR159CropTests.cs",
+      "sprint": "ff-sprint-s163-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-FODS-R170",
+      "format": "FODS",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "FodsDocument.HasSheet dedicated tests \u2014 null/whitespace/nonexistent/empty returns false, existing returns true, after AddSheet/RemoveSheet, case-sensitive, dogfood pipelines",
+      "evidence_path": "tests/net/fods/FodsR170HasSheetDedicatedTests.cs",
+      "sprint": "ff-sprint-s163-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-FODT-R172",
+      "format": "FODT",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "FodtDocument.GetHeadingParagraphs dedicated tests \u2014 empty, paras-only empty, single heading, IsHeading=true, multiple in order, paras excluded, count match, IReadOnlyList, dogfood pipelines",
+      "evidence_path": "tests/net/fodt/FodtR172GetHeadingParagraphsDedicatedTests.cs",
+      "sprint": "ff-sprint-s163-dotnet-deepening-20260628"
     }
   ],
-  "total_entries": 1255,
+  "total_entries": 1258,
   "changes": [
     {
       "file": "src/python/dif/models.py",
