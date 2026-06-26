@@ -4498,3 +4498,72 @@ Condition for upgrade to READY_FOR_CONTROLLED_PRODUCT_ACQUISITION_PILOT: 2-3 cle
 - 209 legacy compiled-gap-taskcards.json entries without gap_ledger_ref → drain naturally over ~20 sprints
 - autonomous_cycle.py LOC (2648 > cap 2623) → pre-existing write-once violation
 
+---
+
+## Section 78 — sunny-crunching-galaxy: Product Deepening Ledger Healing + QName/Spec-Src Architecture Alignment (CLOSED)
+
+**Plan:** `sunny-crunching-galaxy.md` — TERMINAL_CLOSED
+**Mission:** product-deepening-ledger-healing-20260625
+**Plan type:** machinery_hardening
+**Date:** 2026-06-26
+**Status:** CLOSED — ALL_GREEN_CONVERGENCE_COMPLETE
+
+### Mission Summary
+
+Investigated, verified, and healed the product deepening ledger (`registry/product-deepening-ledger.yaml`)
+and qname/spec-src architecture. The previous sprint (multi-plan-intake-20260625, §69) had incorrectly
+set `continuation_allowed=false` for all 17 `mixed_model` formats based on `src_layout_status` instead
+of Gen4 readiness. This sprint corrected the gate criterion and fixed the actual ClassVar violations.
+
+### What Was Completed
+
+| Taskcard | Outcome |
+|----------|---------|
+| TC-R01 | 7 Gen4-GREEN formats (csv/gnumeric/ndjson/toml/tsv/xcf/zst) restored to continuation_allowed=true |
+| TC-R02 | 10 blocked formats given accurate blockers: DIF/FODG=qname_gap, FODP=write_support_missing, ODS/ODT/PBM/PGM/PPM/QOI/SYLK=domain_model_missing |
+| TC-R03 | src/python/fodg/spec/draw/frame.py: Frame.spec_qname/spec_fact_ref/namespace_uri/local_name/authority_only all ClassVar |
+| TC-R04 | src/python/dif/spec/table/header.py, datum.py, vector.py: ClassVar[str] annotations added |
+| TC-R05 | tools/supervisor/governance_validators_ledger.py V74: blocked_formats dict now carries continuation_reason; violation reason surfaces actual ledger reason |
+| TC-R05 | tests/supervisor/test_governance_validators.py: TestV74LedgerContinuationGate 5 tests added |
+| TC-R06 | 6 nullable schema fields added to all 20 ledger entries (capability_to_feature_linkage, verification_commands, focused_validation, integration_validation, e2e_proof, pilot_proof) |
+| TC-R07 | Verification: 143/143 governance tests pass, 18/18 FODG qname tests pass, ledger 10+10 confirmed |
+| TC-R08 | Evidence declaration, review package built (SHA-256: 244f79a2...) |
+| TC-R09 | TC-LA pre-existing layer audit items acknowledged as out-of-scope |
+| TC-R10 | governance_validators_ledger.py trimmed from 129→125 LOC (cap=126) |
+
+### What Changed
+
+- registry/product-deepening-ledger.yaml — continuation gates corrected, blockers accurate, 6 schema fields
+- src/python/fodg/spec/draw/frame.py — ClassVar[str] on all class attributes
+- src/python/dif/spec/table/header.py — ClassVar[str] annotations
+- src/python/dif/spec/table/datum.py — ClassVar[str] annotations
+- src/python/dif/spec/table/vector.py — ClassVar[str] annotations
+- tools/supervisor/governance_validators_ledger.py — V74 dict-based blocked_formats with continuation_reason
+- tests/supervisor/test_governance_validators.py — TestV74LedgerContinuationGate (5 tests)
+- registry/source-structure-baseline.json — governance_validators_ledger.py loc updated 126→125
+
+### Verification Performed
+
+- 143/143 governance validator tests pass (includes 5 new V74 tests)
+- 18/18 FODG qname tests pass
+- Ledger gate assertion: 10 ALLOWED, 10 BLOCKED — verified by Python assertion
+- All 8 required schema fields present in all 20 entries — verified by Python assertion
+- next-work-items.json confirmed in LEDGER mode
+
+### Final Ledger State
+
+| Status | Formats |
+|--------|---------|
+| ALLOWED (10) | abw, csv, fods, fodt, gnumeric, ndjson, toml, tsv, xcf, zst |
+| BLOCKED (10) | dif, fodg, fodp, ods, odt, pbm, pgm, ppm, qoi, sylk |
+
+### Deferred
+
+- DIF registry mismatch: qname-registry/dif.yaml has `dif:data` pointing to dif_parser.py but class uses `spec_qname=dif:document` — requires separate registry repair sprint; DIF stays blocked
+- TC-LA layer audit items (SAL for 14 formats, gap closure audit) — separate track in reports/layer-audit-2026-06-26/
+- FODG LOC violation (fodg_codec.py at 831 LOC) — pre-existing, requires analytics separation sprint
+
+### Commits
+
+- `26a0e80a` — fix(ledger/qname): ledger healing, ClassVar fixes, V74 improvement (sunny-crunching-galaxy)
+
