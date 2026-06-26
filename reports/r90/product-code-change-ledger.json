@@ -22982,6 +22982,33 @@
       "evidence_path": "tests/net/fodt/FodtR188RemoveAllParagraphsTests.cs",
       "test_count": 10,
       "sprint": "ff-sprint-s179-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-NETPBM-R176",
+      "format": "NETPBM",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "NetpbmImage.ToGrayscale: PBM throws InvalidOperationException; PGM throws; PPM result format=PGM_P5; width/height unchanged; MaxValue preserved; returns new image; Pixels not null; result in valid range; dogfood PPM ToGrayscale pipeline",
+      "evidence_path": "tests/net/netpbm/NetpbmR176ToGrayscaleTests.cs",
+      "test_count": 10,
+      "sprint": "ff-sprint-s180-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-FODS-R187",
+      "format": "FODS",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "FodsDocument.CopySheet: null/whitespace source throws; null/whitespace new throws; nonexistent throws InvalidOperationException; duplicate new name throws; valid copy increments SheetCount; new sheet findable; data copied; original unchanged; dogfood modify-original copy-unaffected",
+      "evidence_path": "tests/net/fods/FodsR187CopySheetDedicatedTests.cs",
+      "test_count": 10,
+      "sprint": "ff-sprint-s180-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-FODT-R189",
+      "format": "FODT",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "FodtDocument.SetParagraphStyle: null styleName throws ArgumentNullException; negative index throws; at-count throws; valid set GetParagraphStyleName returns it; overwrites existing; heading style set; empty string accepted; persists after append; dogfood multiple/independent; dogfood AppendHeading then set",
+      "evidence_path": "tests/net/fodt/FodtR189SetParagraphStyleTests.cs",
+      "test_count": 10,
+      "sprint": "ff-sprint-s180-dotnet-deepening-20260628"
     }
   ],
   "total_entries": 1270,
