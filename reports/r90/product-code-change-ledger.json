@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s204-dotnet-deepening-20260629",
+  "latest_sprint": "ff-sprint-s205-dotnet-deepening-20260629",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -23758,6 +23758,36 @@
       "test_count": 10,
       "status": "completed",
       "notes": "Dedicated tests for FodtDocument.TrimParagraph: OOB/negative throws, leading/trailing whitespace removed, count unchanged, others unaffected, already-trimmed, dogfood"
+    },
+    {
+      "entry_id": "PC-NETPBM-R210",
+      "sprint": "ff-sprint-s205-dotnet-deepening-20260629",
+      "format": "NETPBM",
+      "capability": "Flip",
+      "test_file": "tests/net/netpbm/NetpbmR210FlipTests.cs",
+      "test_count": 11,
+      "status": "completed",
+      "notes": "Dedicated tests for NetpbmImage.Flip: PGM/PBM/PPM new image, format/dims/MaxValue preserved, horizontal/vertical mirror, flip-twice restores, dogfood"
+    },
+    {
+      "entry_id": "PC-FODS-R220",
+      "sprint": "ff-sprint-s205-dotnet-deepening-20260629",
+      "format": "FODS",
+      "capability": "SetCellStyle",
+      "test_file": "tests/net/fods/FodsR220SetCellStyleDedicatedTests.cs",
+      "test_count": 10,
+      "status": "completed",
+      "notes": "Dedicated tests for FodsDocument.SetCellStyle: null-sheet/negative-row/col/null-style throws, valid no-exception, get-returns-style, independent, set-twice, dogfood"
+    },
+    {
+      "entry_id": "PC-FODT-R220",
+      "sprint": "ff-sprint-s205-dotnet-deepening-20260629",
+      "format": "FODT",
+      "capability": "AppendSection",
+      "test_file": "tests/net/fodt/FodtR220AppendSectionTests.cs",
+      "test_count": 10,
+      "status": "completed",
+      "notes": "Dedicated tests for FodtDocument.AppendSection: null throws, valid no-exception, SectionCount increases, GetSectionNames contains, multiple all present, ParagraphCount unchanged, dogfood"
     }
   ],
   "total_entries": 1270,
