@@ -17,11 +17,7 @@ namespace FormatFactory.Tsv.Tests;
 public class TsvR118GetColumnValuesDeepTests
 {
     private static TsvDocument LoadTsv(string content)
-    {
-        var bytes = Encoding.UTF8.GetBytes(content);
-        using var ms = new MemoryStream(bytes);
-        return TsvDocument.LoadStream(ms);
-    }
+        => TsvDocument.Load(content, hasHeaders: false);
 
     // ---- GetColumnValues: normal retrieval ----
 
