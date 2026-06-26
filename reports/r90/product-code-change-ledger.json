@@ -23009,6 +23009,33 @@
       "evidence_path": "tests/net/fodt/FodtR189SetParagraphStyleTests.cs",
       "test_count": 10,
       "sprint": "ff-sprint-s180-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-NETPBM-R177",
+      "format": "NETPBM",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "NetpbmImage.Invert: PBM 0→1; PBM 1→0; PGM pixel→MaxValue-pixel; zero becomes MaxValue; MaxValue becomes zero; double-invert restores; uniform image all inverted same; in-place modification; dogfood PGM set-invert-verify",
+      "evidence_path": "tests/net/netpbm/NetpbmR177InvertTests.cs",
+      "test_count": 9,
+      "sprint": "ff-sprint-s181-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-FODS-R188",
+      "format": "FODS",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "FodsDocument.DeleteRows: null/whitespace throws; count=-1 throws; nonexistent throws; negative startRow throws; count=0 no-op; valid delete reduces row count; delete first shifts rows up; delete all gives count=0; dogfood delete-middle boundary rows preserved",
+      "evidence_path": "tests/net/fods/FodsR188DeleteRowsDedicatedTests.cs",
+      "test_count": 10,
+      "sprint": "ff-sprint-s181-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-FODT-R190",
+      "format": "FODT",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "FodtDocument.GetParagraphTexts: empty doc empty; single paragraph; multiple in order; headings included; IReadOnlyList; count matches ParagraphCount; no nulls; dogfood mixed content; dogfood after RemoveAllParagraphs empty",
+      "evidence_path": "tests/net/fodt/FodtR190GetParagraphTextsTests.cs",
+      "test_count": 10,
+      "sprint": "ff-sprint-s181-dotnet-deepening-20260628"
     }
   ],
   "total_entries": 1270,
