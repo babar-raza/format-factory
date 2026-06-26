@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s214-dotnet-deepening-20260629",
+  "latest_sprint": "ff-sprint-s215-dotnet-deepening-20260629",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -24098,6 +24098,42 @@
       "description": "R229: Dedicated tests for FodtDocument.GetCreationDate \u2014 no-exception, string/null, count unchanged, same twice, after-paragraphs/author/heading no-exception, dogfood stable/consistent",
       "source_files": [
         "tests/net/fodt/FodtR229GetCreationDateTests.cs"
+      ],
+      "test_count": 10
+    },
+    {
+      "entry_id": "PC-NETPBM-R221",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s215-dotnet-deepening-20260629",
+      "format": "NETPBM",
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.blur_box",
+      "description": "R221: Dedicated tests for NetpbmImage.BlurBox \u2014 negative throws, PGM/PPM new image, format/MaxValue/dims preserved, valid range, original unchanged, uniform output uniform, dogfood chain",
+      "source_files": [
+        "tests/net/netpbm/NetpbmR221BlurBoxTests.cs"
+      ],
+      "test_count": 10
+    },
+    {
+      "entry_id": "PC-FODS-R232",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s215-dotnet-deepening-20260629",
+      "format": "FODS",
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.set_cell_value",
+      "description": "R232: Dedicated tests for FodsDocument.SetCellValue \u2014 null/whitespace/nonexistent/negative throws, valid no-exception, get returns set, numeric string, SheetCount unchanged, independent cells, dogfood grid",
+      "source_files": [
+        "tests/net/fods/FodsR232SetCellValueDedicatedTests.cs"
+      ],
+      "test_count": 11
+    },
+    {
+      "entry_id": "PC-FODT-R230",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s215-dotnet-deepening-20260629",
+      "format": "FODT",
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.get_odf_version",
+      "description": "R230: Dedicated tests for FodtDocument.GetOdfVersion \u2014 no-exception, non-null, string type, count unchanged, same twice, stable after paragraphs/headings, non-empty, dogfood stable/consistent",
+      "source_files": [
+        "tests/net/fodt/FodtR230GetOdfVersionTests.cs"
       ],
       "test_count": 10
     }
