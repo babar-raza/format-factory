@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s274-fodg-installed-workflow-20260626",
+  "latest_sprint": "ff-sprint-s277-dif-installed-workflow-20260626",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -28298,9 +28298,171 @@
       "test_count": 9,
       "source_files": [],
       "format": "fodt"
+    },
+    {
+      "entry_id": "PC-ODT-R275",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s275-odt-installed-workflow-20260626",
+      "skill": "add-python-api",
+      "product": "ODT Python FOSS",
+      "capability_refs": [
+        "foss_python_products.ODT.python_status.installed_workflow"
+      ],
+      "api_symbols": [
+        "odt_installed_workflow"
+      ],
+      "api_behavior": "odt_installed_workflow(source): loads ODT file, returns format, loaded, paragraph_count, heading_count.",
+      "source_files": [
+        {
+          "path": "src/python/odt/odt_workflow.py",
+          "state": "present",
+          "sha256": "af5ff9f73e23c8f30b4bc7a11845b0333ddbc0ff3a4eacdec94a7a8f732c70f1"
+        },
+        {
+          "path": "src/python/odt/__init__.py",
+          "state": "present",
+          "sha256": "1d960537093c36a7cc057294ef1f40044aef83fc51a97b7bfd7805a5ee46bd1c"
+        }
+      ],
+      "test_files": [
+        "tests/python/odt/test_r275_odt_installed_workflow.py"
+      ],
+      "test_count": 11,
+      "format": "ODT"
+    },
+    {
+      "entry_id": "PC-QOI-R276",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s276-qoi-installed-workflow-20260626",
+      "skill": "add-python-api",
+      "product": "QOI Python FOSS",
+      "capability_refs": [
+        "foss_python_products.QOI.python_status.installed_workflow"
+      ],
+      "api_symbols": [
+        "qoi_installed_workflow"
+      ],
+      "api_behavior": "qoi_installed_workflow(source): loads QOI image, returns format, loaded, width, height, channels, pixel_count.",
+      "source_files": [
+        {
+          "path": "src/python/qoi/qoi_workflow.py",
+          "state": "present",
+          "sha256": "33194a3792812ee2e14e2d84dd2f7580d8139b8a7c720f58fce57aedecc6d66c"
+        },
+        {
+          "path": "src/python/qoi/__init__.py",
+          "state": "present",
+          "sha256": "1dce77baafc277dadf0314487118cd651ffc0083f39818de16351c9bde8f4e75"
+        }
+      ],
+      "test_files": [
+        "tests/python/qoi/test_r276_qoi_installed_workflow.py"
+      ],
+      "test_count": 12,
+      "format": "QOI"
+    },
+    {
+      "entry_id": "PC-DIF-R277",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s277-dif-installed-workflow-20260626",
+      "skill": "add-python-api",
+      "product": "DIF Python FOSS",
+      "capability_refs": [
+        "foss_python_products.DIF.python_status.installed_workflow"
+      ],
+      "api_symbols": [
+        "dif_installed_workflow"
+      ],
+      "api_behavior": "dif_installed_workflow(source): loads DIF file, returns format, loaded, row_count, column_count.",
+      "source_files": [
+        {
+          "path": "src/python/dif/dif_workflow.py",
+          "state": "present",
+          "sha256": "d0d7788912cfe81f009ae46d72c8e0deb3c283fbb985fa57750e336a1bd4a698"
+        },
+        {
+          "path": "src/python/dif/__init__.py",
+          "state": "present",
+          "sha256": "48990352779075f079f746d6d1edfec1ab92ab5ecacae6583f0afedbb3749231"
+        }
+      ],
+      "test_files": [
+        "tests/python/dif/test_r277_dif_installed_workflow.py"
+      ],
+      "test_count": 11,
+      "format": "DIF"
+    },
+    {
+      "entry_id": "PC-NETPBM-R290",
+      "classification": "DOTNET_TEST_COVERAGE",
+      "sprint": "ff-sprint-s282-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "NETPBM",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.normalize"
+      ],
+      "api_symbols": [
+        "NetpbmImage.Normalize"
+      ],
+      "api_behavior": "Normalize(): void in-place; all pixels in [0,MaxValue]; dims/format/MaxValue unchanged; called-twice ok; all-zero ok; dogfood mixed in-range",
+      "changed_files": [
+        "tests/net/netpbm/NetpbmR290NormalizeDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR290NormalizeDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [],
+      "format": "netpbm"
+    },
+    {
+      "entry_id": "PC-FODS-R310",
+      "classification": "DOTNET_TEST_COVERAGE",
+      "sprint": "ff-sprint-s282-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "FODS",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.rename_column"
+      ],
+      "api_symbols": [
+        "FodsDocument.RenameColumn"
+      ],
+      "api_behavior": "RenameColumn(sheetName,oldName,newName): null/whitespace/nonexistent-sheet/null-old/null-new/nonexistent-col throws; valid ok; SheetCount/ColumnCount unchanged; dogfood add-then-rename",
+      "changed_files": [
+        "tests/net/fods/FodsR310RenameColumnDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR310RenameColumnDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [],
+      "format": "fods"
+    },
+    {
+      "entry_id": "PC-FODT-R297",
+      "classification": "DOTNET_TEST_COVERAGE",
+      "sprint": "ff-sprint-s282-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "FODT",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.get_paragraph_count"
+      ],
+      "api_symbols": [
+        "FodtDocument.ParagraphCount"
+      ],
+      "api_behavior": "ParagraphCount: int non-negative; increases after AddParagraph; SectionCount/TableCount unchanged; idempotent; two-paragraphs count>=before+2; dogfood multiple",
+      "changed_files": [
+        "tests/net/fodt/FodtR297GetParagraphCountDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR297GetParagraphCountDedicatedTests.cs"
+      ],
+      "test_count": 9,
+      "source_files": [],
+      "format": "fodt"
     }
   ],
-  "total_entries": 1624,
+  "total_entries": 1630,
   "changes": [
     {
       "file": "src/python/dif/models.py",
