@@ -22655,9 +22655,33 @@
       "description": "FodtDocument.InsertParagraph dedicated tests \u2014 negative/beyond-count guards, insert-at-0/count valid, count increases, text accessible, shifts existing, append-at-end, dogfood pipelines",
       "evidence_path": "tests/net/fodt/FodtR175InsertParagraphDedicatedTests.cs",
       "sprint": "ff-sprint-s166-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-NETPBM-R163",
+      "format": "NETPBM",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "NetpbmImage.FlipHorizontal dedicated tests \u2014 in-place void, width/height/format unchanged, left\u2194right pixel swap, center unchanged, double-flip restores, multi-row consistency, zero-pixel unaffected",
+      "evidence_path": "tests/net/netpbm/NetpbmR163FlipHorizontalTests.cs",
+      "sprint": "ff-sprint-s167-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-FODS-R174",
+      "format": "FODS",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "FodsDocument.GetRowValues dedicated tests \u2014 no-sheet/nonexistent/negative/beyond guards, single cell, multiple cells, IReadOnlyList, count match, dogfood pipelines, named==unnamed for first row",
+      "evidence_path": "tests/net/fods/FodsR174GetRowValuesDedicatedTests.cs",
+      "sprint": "ff-sprint-s167-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-FODT-R176",
+      "format": "FODT",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "FodtDocument.MimeType and OdfVersion dedicated tests \u2014 null-or-string, idempotent, AppendParagraph/Heading unchanged, dogfood CreateEmpty access, dogfood content stable",
+      "evidence_path": "tests/net/fodt/FodtR176MimeTypeAndOdfVersionTests.cs",
+      "sprint": "ff-sprint-s167-dotnet-deepening-20260628"
     }
   ],
-  "total_entries": 1267,
+  "total_entries": 1270,
   "changes": [
     {
       "file": "src/python/dif/models.py",
