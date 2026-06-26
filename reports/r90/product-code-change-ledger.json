@@ -29370,9 +29370,115 @@
       "tests_added": 9,
       "capability_ref": "commercial_net_products.FODT.dotnet_status.get_table_cell_count",
       "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-SYLK-R290",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s290-sylk-cell-iterator-20260626",
+      "skill": "add-python-api",
+      "product": "foss_python_products.SYLK.python_status.cell_iterator",
+      "capability_refs": [
+        "foss_python_products.SYLK.python_status.cell_iterator"
+      ],
+      "api_symbols": [
+        "sylk_iter_cells"
+      ],
+      "api_behavior": "Yield spec-shaped Cell objects (sylk:cell) from SYLK document in row-major order",
+      "changed_files": [
+        "src/python/sylk/sylk_cell_iterator.py",
+        "src/python/sylk/__init__.py"
+      ],
+      "test_files": [
+        "tests/python/sylk/test_r290_sylk_iter_cells.py"
+      ],
+      "test_count": 11,
+      "source_files": [
+        {
+          "path": "src/python/sylk/sylk_cell_iterator.py",
+          "state": "created",
+          "sha256": "a3a890dd61bafee50c4f765b06af28b7e3d6c11310febf0e9908a599def80ee3"
+        },
+        {
+          "path": "src/python/sylk/__init__.py",
+          "state": "modified",
+          "sha256": "8457019204c1a98b0e11b6872883225432d44188b5e151a47137647bc825054c"
+        }
+      ],
+      "format": "sylk"
+    },
+    {
+      "entry_id": "PC-NETPBM-R300",
+      "sprint": "ff-sprint-s292-dotnet-deepening-20260630",
+      "format": "NETPBM",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/netpbm/NetpbmR300FlipHorizontalDedicatedTests.cs",
+      "description": "Dedicated tests for NetpbmImage.FlipHorizontal: valid ok, pixel mirrors horizontally, flip-twice restores, dims/format/MaxValue unchanged, all pixels in range, called-twice ok, dogfood double flip",
+      "tests_added": 10,
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.flip_horizontal",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-FODS-R320",
+      "sprint": "ff-sprint-s292-dotnet-deepening-20260630",
+      "format": "FODS",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fods/FodsR320GetSheetNamesDedicatedTests.cs",
+      "description": "Dedicated tests for FodsDocument.GetSheetNames: non-null, count matches SheetCount, contains added sheet, SheetCount unchanged, idempotent, increases after AddSheet, all non-null, dogfood two-sheets and rename",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.get_sheet_names",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-FODT-R307",
+      "sprint": "ff-sprint-s292-dotnet-deepening-20260630",
+      "format": "FODT",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fodt/FodtR307GetSectionStyleDedicatedTests.cs",
+      "description": "Dedicated tests for FodtDocument.GetSectionStyle: negative/OOB/no-sections throws, valid non-null, SectionCount/ParagraphCount unchanged, idempotent, returns SetSectionStyle value, dogfood",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.get_section_style",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-NDJSON-R291",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s291-ndjson-record-iterator-20260626",
+      "skill": "add-python-api",
+      "product": "foss_python_products.NDJSON.python_status.record_iterator",
+      "capability_refs": [
+        "foss_python_products.NDJSON.python_status.record_iterator"
+      ],
+      "api_symbols": [
+        "ndjson_iter_records"
+      ],
+      "api_behavior": "Yield spec-shaped Record objects (ndjson:record QName, FACT-NDJSON-001) from NDJSON file",
+      "changed_files": [
+        "src/python/ndjson/ndjson_record_iterator.py",
+        "src/python/ndjson/__init__.py"
+      ],
+      "test_files": [
+        "tests/python/ndjson/test_r291_ndjson_iter_records.py"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "src/python/ndjson/ndjson_record_iterator.py",
+          "state": "created",
+          "sha256": "8c0bd550641b44e03c64cb0c16b2395048e4185c98f01952b0f759250d533d04"
+        },
+        {
+          "path": "src/python/ndjson/__init__.py",
+          "state": "modified",
+          "sha256": "85f38518db9375dceaad066d7b66e405c9af61915822581e943e1533a6e6c2dc"
+        }
+      ],
+      "format": "ndjson"
     }
   ],
-  "total_entries": 1667,
+  "total_entries": 1671,
   "changes": [
     {
       "file": "src/python/dif/models.py",
