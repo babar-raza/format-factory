@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s198-dotnet-deepening-20260629",
+  "latest_sprint": "ff-sprint-s199-dotnet-deepening-20260629",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -23578,6 +23578,36 @@
       "test_count": 11,
       "status": "completed",
       "notes": "Dedicated tests for FodtDocument.ReplaceText: null throws, no-match unchanged, single/multi-para replaced, case-sensitive, empty replacement, ParagraphCount unchanged, dogfood"
+    },
+    {
+      "entry_id": "PC-NETPBM-R203",
+      "sprint": "ff-sprint-s199-dotnet-deepening-20260629",
+      "format": "NETPBM",
+      "capability": "Sharpen",
+      "test_file": "tests/net/netpbm/NetpbmR203SharpenTests.cs",
+      "test_count": 10,
+      "status": "completed",
+      "notes": "Dedicated tests for NetpbmImage.Sharpen: PGM/PBM/PPM new image, format/dims/MaxValue preserved, uniform unchanged, all pixels clamped, dogfood sharpen-twice"
+    },
+    {
+      "entry_id": "PC-FODS-R212",
+      "sprint": "ff-sprint-s199-dotnet-deepening-20260629",
+      "format": "FODS",
+      "capability": "GetCellStyle",
+      "test_file": "tests/net/fods/FodsR212GetCellStyleDedicatedTests.cs",
+      "test_count": 10,
+      "status": "completed",
+      "notes": "Dedicated tests for FodsDocument.GetCellStyle: null/negative throws, default null/empty, set then get, different cells, returns string, set-twice latest, dogfood"
+    },
+    {
+      "entry_id": "PC-FODT-R214",
+      "sprint": "ff-sprint-s199-dotnet-deepening-20260629",
+      "format": "FODT",
+      "capability": "ExportToTxt",
+      "test_file": "tests/net/fodt/FodtR214ExportToTxtTests.cs",
+      "test_count": 9,
+      "status": "completed",
+      "notes": "Dedicated tests for FodtDocument.ExportToTxt: null throws, empty creates file, single para text, multi-para all present, heading included, readable, order preserved, dogfood"
     }
   ],
   "total_entries": 1270,
