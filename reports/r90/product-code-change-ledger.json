@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s140-dotnet-deepening-20260627",
+  "latest_sprint": "ff-sprint-s141-dotnet-deepening-20260627",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -21363,9 +21363,51 @@
         "tests/net/fodt/FodtR153MaxFileSizeBytesAndHeadingTextsTests.cs"
       ],
       "source_files": []
+    },
+    {
+      "entry_id": "PC-FODS-R150",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s141-dotnet-deepening-20260627",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.merge_cells_dedicated"
+      ],
+      "change_summary": "FodsR150MergeCellsDedicatedTests.cs: 10 tests for FodsDocument.MergeCells \u2014 null/empty/whitespace sheetName throws ArgumentException; rowSpan/colSpan 0 and negative throw ArgumentOutOfRangeException; nonexistent sheet throws InvalidOperationException; dogfood SetCellValue->MergeCells->GetCellValue pipeline.",
+      "test_files": [
+        "tests/net/fods/FodsR150MergeCellsDedicatedTests.cs"
+      ],
+      "source_files": []
+    },
+    {
+      "entry_id": "PC-ZST-R136",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s141-dotnet-deepening-20260627",
+      "product": "ZST .NET",
+      "capability_refs": [
+        "commercial_net_products.ZST.dotnet_status.file_path_and_decompress_limit"
+      ],
+      "change_summary": "ZstR136FilePathAndDecompressLimitTests.cs: 10 tests for ZstDocument.FilePath (default null, object initializer, init-only, ParseStream null) and ZstWriter.Decompress with explicit maxDecompressedBytes (succeeds for small data, limit=size, default same as explicit, result within limit, dogfood pipeline).",
+      "test_files": [
+        "tests/net/zst/ZstR136FilePathAndDecompressLimitTests.cs"
+      ],
+      "source_files": []
+    },
+    {
+      "entry_id": "PC-FODT-R154",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s141-dotnet-deepening-20260627",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.remove_heading_and_paragraph_style"
+      ],
+      "change_summary": "FodtR154RemoveHeadingAndParagraphStyleTests.cs: 10 tests for FodtDocument.RemoveHeading (negative/equal-count throws, body paragraph throws InvalidOperationException, count decreases, first heading removed, GetHeadingTexts reflects removal) and SetParagraphStyle (null throws, negative/equal-count throws, dogfood pipeline).",
+      "test_files": [
+        "tests/net/fodt/FodtR154RemoveHeadingAndParagraphStyleTests.cs"
+      ],
+      "source_files": []
     }
   ],
-  "total_entries": 1189,
+  "total_entries": 1192,
   "changes": [
     {
       "file": "src/python/dif/models.py",
