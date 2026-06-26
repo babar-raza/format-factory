@@ -21940,6 +21940,84 @@
         }
       ],
       "format": "FODT"
+    },
+    {
+      "entry_id": "PC-NETPBM-R149",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s153-dotnet-deepening-20260628",
+      "product": "Netpbm .NET Commercial",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.solarize"
+      ],
+      "api_symbols": [
+        "Solarize"
+      ],
+      "api_behavior": "NetpbmImage.Solarize(byte threshold) inverts pixels > threshold (pixel = MaxValue - pixel). PBM images return clone unchanged. Original unmodified.",
+      "changed_files": [],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR149SolarizeTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "src/net/netpbm/Model/NetpbmImageFilters.cs",
+          "state": "present",
+          "sha256": ""
+        }
+      ],
+      "format": "Netpbm"
+    },
+    {
+      "entry_id": "PC-FODS-R160",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s153-dotnet-deepening-20260628",
+      "product": "FODS .NET Commercial",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.set_cell_style_dedicated"
+      ],
+      "api_symbols": [
+        "SetCellStyle"
+      ],
+      "api_behavior": "FodsDocument.SetCellStyle(sheetName, row, col, styleName) assigns named style to cell. Throws ArgumentException for null/whitespace/nonexistent sheetName. Throws ArgumentNullException for null styleName. Throws ArgumentOutOfRangeException for invalid row/col.",
+      "changed_files": [],
+      "test_files": [
+        "tests/net/fods/FodsR160SetCellStyleDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "src/net/fods/FodsDocument.cs",
+          "state": "present",
+          "sha256": ""
+        }
+      ],
+      "format": "FODS"
+    },
+    {
+      "entry_id": "PC-FODT-R162",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s153-dotnet-deepening-20260628",
+      "product": "FODT .NET Commercial",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.set_paragraph_text_dedicated"
+      ],
+      "api_symbols": [
+        "SetParagraphText"
+      ],
+      "api_behavior": "FodtDocument.SetParagraphText(int index, string text) replaces text at zero-based index. Throws ArgumentOutOfRangeException for invalid index. Other paragraphs unchanged; paragraph count unchanged.",
+      "changed_files": [],
+      "test_files": [
+        "tests/net/fodt/FodtR162SetParagraphTextDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "src/net/fodt/FodtDocument.cs",
+          "state": "present",
+          "sha256": ""
+        }
+      ],
+      "format": "FODT"
     }
   ],
   "total_entries": 1201,
