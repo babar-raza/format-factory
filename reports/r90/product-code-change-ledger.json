@@ -26225,9 +26225,94 @@
         }
       ],
       "format": "FODT"
+    },
+    {
+      "entry_id": "PC-NETPBM-R265",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s258-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "NETPBM .NET",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.resize"
+      ],
+      "api_symbols": [
+        "Resize"
+      ],
+      "api_behavior": "Resize(width, height) returns a new NetpbmImage at the specified dimensions. Zero/negative width or height throws. Result width/height match requested. Format and MaxValue preserved. Original dimensions unchanged.",
+      "changed_files": [
+        "tests/net/netpbm/NetpbmR265ResizeDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR265ResizeDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "tests/net/netpbm/NetpbmR265ResizeDedicatedTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "NETPBM"
+    },
+    {
+      "entry_id": "PC-FODS-R280",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s258-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.set_cell_comment"
+      ],
+      "api_symbols": [
+        "SetCellComment",
+        "GetCellComment"
+      ],
+      "api_behavior": "SetCellComment(sheetName, row, col, comment) attaches an annotation to a cell. Null/whitespace/nonexistent sheet throws. Negative row/col throws. GetCellComment returns the set comment. SheetCount unchanged. Set-twice keeps second comment.",
+      "changed_files": [
+        "tests/net/fods/FodsR280SetCellCommentDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR280SetCellCommentDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "tests/net/fods/FodsR280SetCellCommentDedicatedTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "FODS"
+    },
+    {
+      "entry_id": "PC-FODT-R273",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s258-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.set_table_cell_text"
+      ],
+      "api_symbols": [
+        "SetTableCellText"
+      ],
+      "api_behavior": "SetTableCellText(tableIndex, row, col, text) sets cell text in a table. Negative/OOB tableIndex, no-tables, negative row/col throws. Text retrievable via GetTableCellText. TableCount unchanged. Set-twice keeps second value.",
+      "changed_files": [
+        "tests/net/fodt/FodtR273SetTableCellTextDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR273SetTableCellTextDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "tests/net/fodt/FodtR273SetTableCellTextDedicatedTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "FODT"
     }
   ],
-  "total_entries": 1276,
+  "total_entries": 1279,
   "changes": [
     {
       "file": "src/python/dif/models.py",
