@@ -22607,9 +22607,33 @@
       "description": "FodtDocument.SearchText dedicated tests \u2014 null/empty query guard, empty doc, no match, single match, paragraph index, position, multiple occurrences, multi-paragraph, case-insensitive dogfood",
       "evidence_path": "tests/net/fodt/FodtR173SearchTextDedicatedTests.cs",
       "sprint": "ff-sprint-s164-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-NETPBM-R161",
+      "format": "NETPBM",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "NetpbmImage.MergeVertical dedicated tests \u2014 null/width-mismatch/format-mismatch guards, output height=sum, width preserved, format preserved, originals unchanged, dogfood top/bottom pixels",
+      "evidence_path": "tests/net/netpbm/NetpbmR161MergeVerticalTests.cs",
+      "sprint": "ff-sprint-s165-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-FODS-R172",
+      "format": "FODS",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "FodsDocument.ExportSheetToMarkdown dedicated tests \u2014 no-sheets throws, nonexistent throws, non-null/non-empty result, pipe chars, cell value in output, separator line, named matches unnamed, dogfood pipeline",
+      "evidence_path": "tests/net/fods/FodsR172ExportSheetToMarkdownDedicatedTests.cs",
+      "sprint": "ff-sprint-s165-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-FODT-R174",
+      "format": "FODT",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "FodtDocument.ReplaceText dedicated tests \u2014 null/empty oldText guard, null newText guard, empty doc returns 0, no-match returns 0, single/multiple replacements, multi-paragraph, dogfood pipeline, case-insensitive",
+      "evidence_path": "tests/net/fodt/FodtR174ReplaceTextDedicatedTests.cs",
+      "sprint": "ff-sprint-s165-dotnet-deepening-20260628"
     }
   ],
-  "total_entries": 1261,
+  "total_entries": 1264,
   "changes": [
     {
       "file": "src/python/dif/models.py",
