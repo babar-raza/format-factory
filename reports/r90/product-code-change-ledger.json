@@ -25180,6 +25180,42 @@
         "tests/net/fodt/FodtR259AddTableDedicatedTests.cs"
       ],
       "test_count": 11
+    },
+    {
+      "entry_id": "PC-NETPBM-R252",
+      "classification": "dotnet_test_coverage",
+      "sprint": "ff-sprint-s245-dotnet-deepening-20260629",
+      "format": "NETPBM",
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.to_grayscale",
+      "description": "R252: Dedicated tests for NetpbmImage.ToGrayscale \u2014 PBM/PGM throws, PPM no-exception, result-format=PGM, width/height/MaxValue preserved, Pixels non-null, original-format-unchanged, all-pixels-in-range, dogfood channel-values",
+      "source_files": [
+        "tests/net/netpbm/NetpbmR252ToGrayscaleDedicatedTests.cs"
+      ],
+      "test_count": 11
+    },
+    {
+      "entry_id": "PC-FODS-R264",
+      "classification": "dotnet_test_coverage",
+      "sprint": "ff-sprint-s245-dotnet-deepening-20260629",
+      "format": "FODS",
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.delete_column",
+      "description": "R264: Dedicated tests for FodsDocument.DeleteColumn \u2014 null/whitespace/nonexistent/negative throws, valid no-exception, SheetCount unchanged, GetColumnCount decreases, dogfood add-delete-verify, dogfood sheet-still-accessible",
+      "source_files": [
+        "tests/net/fods/FodsR264DeleteColumnDedicatedTests.cs"
+      ],
+      "test_count": 9
+    },
+    {
+      "entry_id": "PC-FODT-R260",
+      "classification": "dotnet_test_coverage",
+      "sprint": "ff-sprint-s245-dotnet-deepening-20260629",
+      "format": "FODT",
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.insert_heading",
+      "description": "R260: Dedicated tests for FodtDocument.InsertHeading \u2014 negative/OOB throws, valid no-exception, ParagraphCount/HeadingCount increases, text retrievable, level-1/2, insert-at-zero shifts, dogfood multiple-headings",
+      "source_files": [
+        "tests/net/fodt/FodtR260InsertHeadingDedicatedTests.cs"
+      ],
+      "test_count": 10
     }
   ],
   "total_entries": 1270,
