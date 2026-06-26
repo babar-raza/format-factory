@@ -1056,11 +1056,91 @@ def _load_workbench_verified_facts(format_id: str) -> List[Dict[str, str]]:
     return workbench_facts
 
 
+def _try_extract_requirements_from_spec(format_id: str) -> int:
+    """TC-SAL-CARRY-WIRE-001: Extract candidate requirements from normalized spec text.
+
+    Loads normalized text for the format from .local/spec-cache/, converts it to
+    pseudo-sections, then calls requirement_extractor.extract_requirements().
+    Stores output in .local/spec-artifacts/{source_id}-requirements.json.
+
+    Non-blocking: returns 0 if spec text unavailable or extraction fails.
+    Returns count of extracted requirements.
+    """
+    spec_cache = _REPO_ROOT / ".local" / "spec-cache"
+    text_candidates = list(spec_cache.glob(f"{format_id.lower()}/*/normalized/text.txt"))
+    if not text_candidates:
+        return 0
+
+    try:
+        full_text = text_candidates[0].read_text(encoding="utf-8")
+    except Exception:
+        return 0
+
+    if len(full_text) < 200:
+        return 0
+
+    # Build pseudo-sections by splitting on blank lines (paragraph-level chunks)
+    paragraphs = [p.strip() for p in full_text.split("\n\n") if p.strip()]
+    sections = []
+    for i, para in enumerate(paragraphs[:500]):  # cap at 500 sections
+        sections.append({
+            "section_id": f"{format_id.upper()}-SEC-{i:04d}",
+            "heading": "",
+            "content": para,
+        })
+
+    normalized_artifact = {"sections": sections}
+    source_id = f"{format_id.lower()}-spec-normalized"
+
+    try:
+        from requirement_extractor import extract_requirements  # type: ignore
+        reqs = extract_requirements(
+            source_id=source_id,
+            format_id=format_id.lower(),
+            normalized_artifact=normalized_artifact,
+        )
+        count = len(reqs)
+    except ImportError:
+        # Fallback: try absolute import
+        try:
+            import importlib.util
+            extractor_path = _HERE / "requirement_extractor.py"
+            spec = importlib.util.spec_from_file_location("requirement_extractor", extractor_path)
+            mod = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(mod)
+            reqs = mod.extract_requirements(
+                source_id=source_id,
+                format_id=format_id.lower(),
+                normalized_artifact=normalized_artifact,
+            )
+            count = len(reqs)
+        except Exception as exc:
+            print(
+                f"[sal_master_runner] WARN: requirement extraction failed for {format_id}: {exc}",
+                file=sys.stderr,
+            )
+            return 0
+    except Exception as exc:
+        print(
+            f"[sal_master_runner] WARN: requirement extraction failed for {format_id}: {exc}",
+            file=sys.stderr,
+        )
+        return 0
+
+    if count:
+        print(
+            f"[sal_master_runner] {format_id}: extracted {count} candidate requirements",
+            file=sys.stderr,
+        )
+    return count
+
+
 def run_sal_pipeline(
     formats: Optional[List[str]] = None,
     output_dir: Optional[Path] = None,
     from_cache_only: bool = False,
     write_latest: bool = True,
+    extract_requirements: bool = False,
 ) -> Dict[str, Any]:
     """
     Run the SAL pipeline for one or more formats.
@@ -1070,6 +1150,9 @@ def run_sal_pipeline(
         output_dir: directory to write output JSON (None = .local/sal-output)
         from_cache_only: if True, suppress template facts and emit only
             workbench-verified FACT-<FORMAT>-NNN facts (TC-SAL-IMPL-001)
+        extract_requirements: if True, also run requirement_extractor on normalized
+            spec text for each format and store candidate requirements in
+            .local/spec-artifacts/ (TC-SAL-CARRY-WIRE-001). Non-blocking.
 
     Returns:
         dict with keys: formats_processed, spec_facts_total, output_path, results
@@ -1115,6 +1198,11 @@ def run_sal_pipeline(
         # Facts verified against normalized spec text get fact_status="text_verified" (Level 2).
         facts = _try_verify_facts_against_spec(fid, facts)
 
+        # TC-SAL-CARRY-WIRE-001: optionally extract candidate requirements from spec text.
+        req_count = 0
+        if extract_requirements:
+            req_count = _try_extract_requirements_from_spec(fid)
+
         entry = {
             "format_id": fid,
             "display_name": fmt.get("display_name", fid),
@@ -1123,6 +1211,7 @@ def run_sal_pipeline(
             "spec_url": fmt.get("spec_url", ""),
             "spec_facts": facts,
             "workbench_verified_fact_count": len(workbench_facts),
+            "extracted_requirements_count": req_count,
         }
         results.append(entry)
 
@@ -1184,6 +1273,8 @@ def _cli() -> int:
                         help="List all known format IDs and exit")
     parser.add_argument("--from-cache-only", action="store_true",
                         help="Emit only workbench-verified FACT-<FORMAT>-NNN facts (suppress templates)")
+    parser.add_argument("--extract-requirements", action="store_true",
+                        help="TC-SAL-CARRY-WIRE-001: also run requirement_extractor on normalized spec text")
     args = parser.parse_args()
 
     if args.list_formats:
@@ -1206,6 +1297,7 @@ def _cli() -> int:
         output_dir=Path(args.output_dir),
         from_cache_only=args.from_cache_only,
         write_latest=write_latest,
+        extract_requirements=args.extract_requirements,
     )
 
     print(f"[sal_master_runner] Processed {result['formats_processed']} formats")

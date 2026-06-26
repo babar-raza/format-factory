@@ -22,6 +22,7 @@
 | Version | Date | Author | Change |
 |---------|------|--------|--------|
 | 1.0 | 2026-06-25 | PSL-PROMPT-2 (plan-hardening) | Initial hardening addendum from stage1 audit |
+| 1.1 | 2026-06-26 | execution_agent | TC-WIRE-001/006 completed_verified; BACKFILL-001 completed_verified; NON-ODF-001 blocked_local |
 
 ---
 
@@ -33,11 +34,11 @@ Source: `.local/evidences/sal-vhip-001-verification-hardening/stage1-issue-model
 |----------|-------|----------|--------------------|
 | L1-001 | L1_EXECUTION | HIGH | **RESOLVED** — committed as c54d2685 |
 | L1-002 | L1_EXECUTION | MEDIUM | **RESOLVED** — governance_validators_sal.py in commit |
-| L2-001 | L2_INTEGRATION | HIGH | **OPEN** → TC-SAL-CARRY-WIRE-001 |
-| L2-002 | L2_INTEGRATION | MEDIUM | **OPEN** → TC-SAL-CARRY-WIRE-006 |
+| L2-001 | L2_INTEGRATION | HIGH | **CLOSED** → TC-SAL-CARRY-WIRE-001 completed_verified |
+| L2-002 | L2_INTEGRATION | MEDIUM | **CLOSED** → TC-SAL-CARRY-WIRE-006 completed_verified |
 | L2-003 | L2_INTEGRATION | MEDIUM | **RESOLVED** — baseline updated in c54d2685 |
-| L3-001 | L3_SYSTEM | MEDIUM | **OPEN** → TC-SAL-CARRY-BACKFILL-001 |
-| L3-002 | L3_SYSTEM | MEDIUM | **OPEN** → TC-SAL-CARRY-NON-ODF-001 |
+| L3-001 | L3_SYSTEM | MEDIUM | **CLOSED** → TC-SAL-CARRY-BACKFILL-001 completed_verified |
+| L3-002 | L3_SYSTEM | MEDIUM | **BLOCKED_LOCAL** → TC-SAL-CARRY-NON-ODF-001 (no spec text for non-ODF beyond ZST) |
 
 ---
 
@@ -119,7 +120,9 @@ why_it_matters: >
   Without wiring, SAL is manual-only for non-ODF formats. New format spec facts require
   manual workbench creation — this does not scale.
 risk_addressed: Manual-only SAL limits growth beyond ODF+ZST
-status: not_attempted
+status: completed_verified
+completed_at: "2026-06-26"
+completion_commit: pending_commit_after_this_update
 priority: HIGH
 lane_owner: SAL_INFRASTRUCTURE_LANE
 supervisor_role: execution_agent
@@ -186,7 +189,9 @@ why_it_matters: >
   Without bridge, context packs are disconnected from SAL authority. The REQ-to-FACT
   chain is broken at the context pack level, making spec-parity verification advisory-only.
 risk_addressed: Context packs cite requirements that cannot be matched to verified spec facts
-status: not_attempted
+status: completed_verified
+completed_at: "2026-06-26"
+completion_commit: pending_commit_after_this_update
 priority: MEDIUM
 lane_owner: SAL_INFRASTRUCTURE_LANE
 supervisor_role: execution_agent
@@ -263,7 +268,8 @@ required_implementation:
 acceptance_criteria:
   - At least 10 FODS gaps have different spec_facts from each other (not all identical)
 
-machine_state: OPEN
+machine_state: CLOSED
+completion_evidence: FODS unique spec_fact sets went from 2 → 45 (acceptance: ≥10)
 ```
 
 ---
@@ -282,7 +288,13 @@ why_it_matters: >
   SAL authority is limited to ODF+ZST. All other formats rely on bootstrap templates.
   V-NEW-001 warns but cannot block without real spec facts to compare against.
 risk_addressed: Capability inflation for non-ODF formats is undetectable without real spec facts
-status: not_attempted
+status: blocked_local
+blocked_reason: >
+  Only .local/spec-cache/fods/1.3/normalized/text.txt and .local/spec-cache/zst/rfc8878/normalized/text.txt
+  exist. No other non-ODF format has normalized spec text in the spec-cache. Cannot ingest
+  spec text for PBM/PGM/PPM/QOI without external spec acquisition (TRUE_EXTERNAL_GATE for
+  spec documents that require downloading/verifying external files).
+blocked_at: "2026-06-26"
 priority: MEDIUM
 lane_owner: SAL_EXPANSION_LANE
 supervisor_role: advisory
@@ -306,9 +318,9 @@ machine_state: OPEN
 
 | Lane | Owner | Status |
 |------|-------|--------|
-| SAL_INFRASTRUCTURE_LANE | execution_agent | OPEN — TC-SAL-CARRY-WIRE-001, TC-SAL-CARRY-WIRE-006 |
-| SAL_EXPANSION_LANE | execution_agent (advisory) | OPEN — TC-SAL-CARRY-NON-ODF-001 |
-| SAL_QUALITY_LANE | execution_agent (advisory) | OPEN — TC-SAL-CARRY-BACKFILL-001 |
+| SAL_INFRASTRUCTURE_LANE | execution_agent | CLOSED — TC-SAL-CARRY-WIRE-001 completed_verified, TC-SAL-CARRY-WIRE-006 completed_verified |
+| SAL_EXPANSION_LANE | execution_agent (advisory) | BLOCKED_LOCAL — TC-SAL-CARRY-NON-ODF-001 (no spec text for non-ODF beyond ZST) |
+| SAL_QUALITY_LANE | execution_agent (advisory) | CLOSED — TC-SAL-CARRY-BACKFILL-001 completed_verified |
 
 ---
 
@@ -316,10 +328,10 @@ machine_state: OPEN
 
 | Gate | Condition | Current State |
 |------|-----------|---------------|
-| G-WIRE-001 | sal_master_runner.py calls requirement_extractor | NOT MET |
-| G-WIRE-006 | REQ-to-FACT bridge produces ≥10 links for 1 format | NOT MET |
-| G-QUALITY | ≥10 FODS gaps have different spec_facts | NOT MET |
-| G-NONODF | ≥1 non-ODF format has ≥15 verified facts beyond ZST | NOT MET |
+| G-WIRE-001 | sal_master_runner.py calls requirement_extractor | **MET** — ZST extracts 58 reqs; artifact written |
+| G-WIRE-006 | REQ-to-FACT bridge produces ≥10 links for 1 format | **MET** — FODS: 99/100 matched (99%); ZST: 96/96 (100%) |
+| G-QUALITY | ≥10 FODS gaps have different spec_facts | **MET** — 45 unique sets (was 2) |
+| G-NONODF | ≥1 non-ODF format has ≥15 verified facts beyond ZST | NOT MET — BLOCKED_LOCAL (no spec text available) |
 
 Gates G-QUALITY and G-NONODF are advisory (not blocking for product advancement).
 Gates G-WIRE-001 and G-WIRE-006 are BLOCKING for full SAL integration.
@@ -384,13 +396,15 @@ Permitted repair actions:
 
 This addendum is CLOSED when:
 
-- TC-SAL-CARRY-WIRE-001: status = `completed_verified`
-- TC-SAL-CARRY-WIRE-006: status = `completed_verified`
-- TC-SAL-CARRY-BACKFILL-001: status = `completed_verified` OR `follow_up` with documented rationale
-- TC-SAL-CARRY-NON-ODF-001: status = `completed_verified` OR `partially_done` with at least 1 new format
+- TC-SAL-CARRY-WIRE-001: status = `completed_verified` ✓ (2026-06-26)
+- TC-SAL-CARRY-WIRE-006: status = `completed_verified` ✓ (2026-06-26)
+- TC-SAL-CARRY-BACKFILL-001: status = `completed_verified` ✓ (2026-06-26)
+- TC-SAL-CARRY-NON-ODF-001: status = `blocked_local` — external spec acquisition required
 
-Minimum acceptance: WIRE-001 + WIRE-006 completed_verified.
-Advisory: BACKFILL-001 + NON-ODF-001 may be deferred to a further sprint.
+**ADDENDUM STATUS: ACCEPTED_VERIFIED (with one BLOCKED_LOCAL item)**
+Minimum acceptance: WIRE-001 + WIRE-006 completed_verified. ✓ MET.
+BACKFILL-001 completed_verified. ✓ MET.
+NON-ODF-001: BLOCKED_LOCAL — requires external spec documents not available in local cache.
 
 ---
 

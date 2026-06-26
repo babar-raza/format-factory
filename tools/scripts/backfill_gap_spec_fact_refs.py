@@ -40,6 +40,63 @@ def _normalize_format(fmt_str: str) -> str:
     return fmt_str.lower().strip().replace("-", "_").replace(" ", "_")
 
 
+def _keyword_match_facts(
+    gap: dict,
+    all_facts: list,
+    top_n: int = 10,
+) -> list:
+    """TC-SAL-CARRY-BACKFILL-001: Match facts to a gap by keyword relevance.
+
+    Extracts keywords from the gap's gap_id, title, and description.
+    Scores each fact by how many keywords appear in its description/claim text.
+    Returns top-n best-scoring facts, or empty list if no match.
+    """
+    import re
+
+    # Extract keywords from gap metadata
+    text_sources = [
+        gap.get("gap_id", ""),
+        gap.get("title", ""),
+        gap.get("description", ""),
+        gap.get("capability_name", ""),
+    ]
+    raw = " ".join(str(s) for s in text_sources if s)
+    # Split on non-alpha, lowercase, filter short words
+    tokens = re.split(r"[^a-zA-Z]+", raw.lower())
+    keywords = {t for t in tokens if len(t) >= 4 and t not in {
+        "with", "from", "that", "this", "have", "when", "then", "also",
+        "must", "should", "will", "format", "fods", "fodt", "foss"
+    }}
+
+    if not keywords:
+        return []
+
+    scored = []
+    for fact in all_facts:
+        desc = (fact.get("description", "") or fact.get("claim", "")).lower()
+        score = sum(1 for kw in keywords if kw in desc)
+        if score > 0:
+            scored.append((score, fact.get("qname", "")))
+
+    scored.sort(key=lambda x: -x[0])
+    matched_ids = [qname for _, qname in scored[:top_n] if qname]
+    return matched_ids
+
+
+def _load_sal_facts_with_objects(sal_facts_path: Path) -> dict:
+    """Build format -> [fact_objects] index (full dict, not just IDs) for semantic matching."""
+    sal = json.loads(sal_facts_path.read_text(encoding="utf-8", errors="replace"))
+    results = sal.get("results", [])
+    format_facts: dict = {}
+    for r in results:
+        fmt = r.get("format_id", "").lower().replace("-", "_")
+        facts = r.get("spec_facts", [])
+        verified = [f for f in facts if f.get("qname") and f.get("fact_status") == "verified"]
+        if fmt and verified:
+            format_facts[fmt] = verified
+    return format_facts
+
+
 def backfill(
     gap_ledger_path: str,
     sal_facts_path: str,
@@ -47,6 +104,8 @@ def backfill(
     dry_run: bool,
     output: str | None,
     top_n: int = 10,
+    semantic_match: bool = False,
+    force_overwrite: bool = False,
 ) -> dict:
     gap_path = Path(gap_ledger_path)
     sal_path = Path(sal_facts_path)
@@ -60,6 +119,7 @@ def backfill(
 
     gaps_data = json.loads(gap_path.read_text(encoding="utf-8", errors="replace"))
     format_facts = _load_sal_facts(sal_path)
+    format_facts_obj = _load_sal_facts_with_objects(sal_path) if semantic_match else {}
 
     # Restrict to requested formats if specified (None = all formats)
     target_formats = set(_normalize_format(f) for f in formats) if formats else None
@@ -79,10 +139,11 @@ def backfill(
             skipped_format_filter += 1
             continue
 
-        # Skip already populated
+        # Skip already populated (unless --force-overwrite)
         if gap.get("spec_facts") and len(gap.get("spec_facts", [])) > 0:
-            skipped_has_facts += 1
-            continue
+            if not force_overwrite:
+                skipped_has_facts += 1
+                continue
 
         # Look up SAL facts for this format
         sal_facts_for_fmt = format_facts.get(gap_fmt)
@@ -90,8 +151,15 @@ def backfill(
             skipped_no_sal += 1
             continue
 
-        # Assign top N facts
-        assigned = sal_facts_for_fmt[:top_n]
+        # Assign top N facts (or keyword-matched if --semantic-match)
+        if semantic_match:
+            all_format_facts_obj = format_facts_obj.get(gap_fmt, [])
+            assigned = _keyword_match_facts(gap, all_format_facts_obj, top_n=top_n)
+            if not assigned:
+                # Fallback to top-N if no keyword match
+                assigned = sal_facts_for_fmt[:top_n]
+        else:
+            assigned = sal_facts_for_fmt[:top_n]
         gap["spec_facts"] = assigned
         updated += 1
 
@@ -164,6 +232,16 @@ if __name__ == "__main__":
     )
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--output", default="", help="Path for JSON summary output")
+    parser.add_argument(
+        "--semantic-match",
+        action="store_true",
+        help="TC-SAL-CARRY-BACKFILL-001: match facts to gaps by keyword relevance rather than top-N"
+    )
+    parser.add_argument(
+        "--force-overwrite",
+        action="store_true",
+        help="Overwrite existing spec_facts (default: skip already-populated gaps)"
+    )
 
     args = parser.parse_args()
     fmts = [f.strip() for f in args.formats.split(",") if f.strip()] if args.formats else []
@@ -175,4 +253,6 @@ if __name__ == "__main__":
         dry_run=args.dry_run,
         output=args.output or None,
         top_n=args.top_n,
+        semantic_match=args.semantic_match,
+        force_overwrite=args.force_overwrite,
     )
