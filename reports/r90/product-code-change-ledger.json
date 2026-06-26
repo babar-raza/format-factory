@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s187-dotnet-deepening-20260628",
+  "latest_sprint": "ff-sprint-s188-dotnet-deepening-20260628",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -23197,6 +23197,33 @@
       "classification": "NET_TEST_DEEPENING",
       "description": "FodtDocument.GetHeadingParagraphs dedicated tests: empty returns empty, body excluded, heading included, IReadOnlyList, all IsHeading=true, count matches, multiple levels, mixed content, dogfood after remove",
       "evidence_path": "tests/net/fodt/FodtR196GetHeadingParagraphsTests.cs",
+      "test_count": 10
+    },
+    {
+      "id": "PC-NETPBM-R184",
+      "sprint": "ff-sprint-s188-dotnet-deepening-20260628",
+      "format": "NETPBM",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "NetpbmImage.Solarize dedicated tests: PBM clone, PGM new image, format/MaxValue preserved, dims unchanged, pixel>threshold inverted, pixel at threshold unchanged, dogfood PGM dims/zero pixel",
+      "evidence_path": "tests/net/netpbm/NetpbmR184SolarizeTests.cs",
+      "test_count": 10
+    },
+    {
+      "id": "PC-FODS-R195",
+      "sprint": "ff-sprint-s188-dotnet-deepening-20260628",
+      "format": "FODS",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "FodsDocument.ExportSheetToJson dedicated tests: empty returns array, one-row returns empty array, two-rows returns object, headers match, valid JSON, named-sheet nonexistent throws, named-sheet valid, dogfood set data then export",
+      "evidence_path": "tests/net/fods/FodsR195ExportSheetToJsonDedicatedTests.cs",
+      "test_count": 10
+    },
+    {
+      "id": "PC-FODT-R197",
+      "sprint": "ff-sprint-s188-dotnet-deepening-20260628",
+      "format": "FODT",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "FodtDocument.RemoveHeading dedicated tests: negative/at-count throws, body-para throws InvalidOperationException, valid decrements count, shifts up, heading count decrements, dogfood remove single/text gone",
+      "evidence_path": "tests/net/fodt/FodtR197RemoveHeadingTests.cs",
       "test_count": 10
     }
   ],
