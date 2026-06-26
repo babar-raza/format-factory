@@ -24964,6 +24964,42 @@
         "tests/net/fodt/FodtR253GetParagraphAtTests.cs"
       ],
       "test_count": 10
+    },
+    {
+      "entry_id": "PC-NETPBM-R246",
+      "classification": "dotnet_test_coverage",
+      "sprint": "ff-sprint-s239-dotnet-deepening-20260629",
+      "format": "NETPBM",
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.flip_vertical",
+      "description": "R246: Dedicated tests for NetpbmImage.FlipVertical \u2014 width/height/format/MaxValue preserved, top-row moves to bottom, bottom-row moves to top, center-row unchanged, double-flip restores, dogfood Create->SetPixel->FlipVertical->verify, two-column consistency",
+      "source_files": [
+        "tests/net/netpbm/NetpbmR246FlipVerticalDedicatedTests.cs"
+      ],
+      "test_count": 10
+    },
+    {
+      "entry_id": "PC-FODS-R257",
+      "classification": "dotnet_test_coverage",
+      "sprint": "ff-sprint-s239-dotnet-deepening-20260629",
+      "format": "FODS",
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.get_distinct_values",
+      "description": "R257: Dedicated tests for FodsDocument.GetDistinctValues \u2014 null/whitespace/nonexistent throws, empty=empty, all-same=single, with-duplicates deduplicates, SheetCount unchanged, called-twice same, dogfood dept-data verify",
+      "source_files": [
+        "tests/net/fods/FodsR257GetDistinctValuesDedicatedTests.cs"
+      ],
+      "test_count": 9
+    },
+    {
+      "entry_id": "PC-FODT-R254",
+      "classification": "dotnet_test_coverage",
+      "sprint": "ff-sprint-s239-dotnet-deepening-20260629",
+      "format": "FODT",
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.append_heading",
+      "description": "R254: Dedicated tests for FodtDocument.AppendHeading \u2014 valid no-exception, ParagraphCount/HeadingCount increase, text retrievable, level-1/level-2, multiple count matches, heading+paragraph both counted, TOC grows, dogfood verify-each",
+      "source_files": [
+        "tests/net/fodt/FodtR254AppendHeadingDedicatedTests.cs"
+      ],
+      "test_count": 10
     }
   ],
   "total_entries": 1270,
