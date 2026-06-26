@@ -29022,9 +29022,78 @@
       ],
       "test_count": 11,
       "format": "PPM"
+    },
+    {
+      "entry_id": "PC-NETPBM-R296",
+      "classification": "DOTNET_TEST_COVERAGE",
+      "sprint": "ff-sprint-s288-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "NETPBM",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.flip_vertical"
+      ],
+      "api_symbols": [
+        "NetpbmImage.FlipVertical"
+      ],
+      "api_behavior": "FlipVertical(): void in-place; pixels in [0,MaxValue]; pixel (x,row)->(x,H-1-row); flip-twice restores; dims/format/MaxValue unchanged; dogfood top-row-to-bottom, uniform",
+      "changed_files": [
+        "tests/net/netpbm/NetpbmR296FlipVerticalDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR296FlipVerticalDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [],
+      "format": "netpbm"
+    },
+    {
+      "entry_id": "PC-FODS-R316",
+      "classification": "DOTNET_TEST_COVERAGE",
+      "sprint": "ff-sprint-s288-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "FODS",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.sort_sheet"
+      ],
+      "api_symbols": [
+        "FodsDocument.SortSheet"
+      ],
+      "api_behavior": "SortSheet(sheetName,colIndex,ascending): null/whitespace/nonexistent/negative-col throws; asc/desc ok; SheetCount unchanged; sort-twice ok; dogfood add-rows-then-sort",
+      "changed_files": [
+        "tests/net/fods/FodsR316SortSheetDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR316SortSheetDedicatedTests.cs"
+      ],
+      "test_count": 9,
+      "source_files": [],
+      "format": "fods"
+    },
+    {
+      "entry_id": "PC-FODT-R303",
+      "classification": "DOTNET_TEST_COVERAGE",
+      "sprint": "ff-sprint-s288-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "FODT",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.add_table_column"
+      ],
+      "api_symbols": [
+        "FodtDocument.AddTableColumn"
+      ],
+      "api_behavior": "AddTableColumn(tableIndex): negative/OOB/no-tables throws; valid ok; GetTableColumnCount increases; TableCount/ParagraphCount unchanged; called-twice ok; dogfood add-table-then-column",
+      "changed_files": [
+        "tests/net/fodt/FodtR303AddTableColumnDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR303AddTableColumnDedicatedTests.cs"
+      ],
+      "test_count": 9,
+      "source_files": [],
+      "format": "fodt"
     }
   ],
-  "total_entries": 1649,
+  "total_entries": 1655,
   "changes": [
     {
       "file": "src/python/dif/models.py",
