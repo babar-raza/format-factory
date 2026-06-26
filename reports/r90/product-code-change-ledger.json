@@ -22631,9 +22631,33 @@
       "description": "FodtDocument.ReplaceText dedicated tests \u2014 null/empty oldText guard, null newText guard, empty doc returns 0, no-match returns 0, single/multiple replacements, multi-paragraph, dogfood pipeline, case-insensitive",
       "evidence_path": "tests/net/fodt/FodtR174ReplaceTextDedicatedTests.cs",
       "sprint": "ff-sprint-s165-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-NETPBM-R162",
+      "format": "NETPBM",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "NetpbmImage.Overlay dedicated tests \u2014 format-mismatch/negative-offset guards, format preserved, original unchanged, no-overlap same dims, pixel at origin, dogfood offset and clip",
+      "evidence_path": "tests/net/netpbm/NetpbmR162OverlayTests.cs",
+      "sprint": "ff-sprint-s166-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-FODS-R173",
+      "format": "FODS",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "FodsDocument.GetColumnValues dedicated tests \u2014 null/whitespace/nonexistent/negative guards, empty returns empty, single column values, count matches row count, IReadOnlyList, dogfood pipelines",
+      "evidence_path": "tests/net/fods/FodsR173GetColumnValuesDedicatedTests.cs",
+      "sprint": "ff-sprint-s166-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-FODT-R175",
+      "format": "FODT",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "FodtDocument.InsertParagraph dedicated tests \u2014 negative/beyond-count guards, insert-at-0/count valid, count increases, text accessible, shifts existing, append-at-end, dogfood pipelines",
+      "evidence_path": "tests/net/fodt/FodtR175InsertParagraphDedicatedTests.cs",
+      "sprint": "ff-sprint-s166-dotnet-deepening-20260628"
     }
   ],
-  "total_entries": 1264,
+  "total_entries": 1267,
   "changes": [
     {
       "file": "src/python/dif/models.py",
