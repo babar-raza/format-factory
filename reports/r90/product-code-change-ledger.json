@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s128-dotnet-deepening-20260627",
+  "latest_sprint": "ff-sprint-s129-dotnet-deepening-20260627",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -20991,9 +20991,39 @@
         "tests/net/ndjson/NdjsonR133StreamReadRecordsTests.cs"
       ],
       "description": "NDJSON R133: 10 tests for NdjsonReader.ReadRecords(Stream) \u2014 record count, ValueKind=Object, field access, null guard, empty stream, parity with string overload, dogfood roundtrip"
+    },
+    {
+      "entry_id": "PC-FODS-R143",
+      "format": "FODS",
+      "r_number": "R143",
+      "sprint": "ff-sprint-s129-dotnet-deepening-20260627",
+      "description": "FodsDocumentException hierarchy and throwing scenarios \u2014 10 tests: Exception subclass, message/inner constructors, Load null/empty/nonexistent throws, caught as base type, CreateNew no throw, dogfood pipeline",
+      "evidence_path": "tests/net/fods/FodsR143DocumentExceptionTests.cs",
+      "test_count": 10,
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.document_exception"
+    },
+    {
+      "entry_id": "PC-NDJSON-R134",
+      "format": "NDJSON",
+      "r_number": "R134",
+      "sprint": "ff-sprint-s129-dotnet-deepening-20260627",
+      "description": "NdjsonException hierarchy and NdjsonReader.MaxSize constant \u2014 10 tests: Exception subclass, message/inner, MaxSize=64MB, ReadRecords/ReadRecordsFromFile/WriteRecords null guards, dogfood invalid JSON catches NdjsonException",
+      "evidence_path": "tests/net/ndjson/NdjsonR134ExceptionAndMaxSizeTests.cs",
+      "test_count": 10,
+      "capability_ref": "commercial_net_products.NDJSON.dotnet_status.exception_and_max_size"
+    },
+    {
+      "entry_id": "PC-TSV-R129",
+      "format": "TSV",
+      "r_number": "R129",
+      "sprint": "ff-sprint-s129-dotnet-deepening-20260627",
+      "description": "TsvException hierarchy and TsvWriter field validation \u2014 10 tests: Exception subclass, message/inner, WriteRows tab/LF/CR rejection, null field as empty, valid rows, dogfood catch TsvException",
+      "evidence_path": "tests/net/tsv/TsvR129ExceptionAndWriterValidationTests.cs",
+      "test_count": 10,
+      "capability_ref": "commercial_net_products.TSV.dotnet_status.exception_and_writer_validation"
     }
   ],
-  "total_entries": 1153,
+  "total_entries": 1156,
   "changes": [
     {
       "file": "src/python/dif/models.py",
