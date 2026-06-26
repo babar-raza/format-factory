@@ -1,0 +1,76 @@
+# DIF Oracle Package — Format Factory
+# Format: Data Interchange Format
+# Authority: VisiCalc DIF specification (1981, public domain)
+# Oracle version: 1
+# Status: CASES_DEFINED
+# Mission: TC-LA-003 / TC-LA-010 — oracle extension to Gen4-GREEN formats
+# Note: DIF promoted to continuation_allowed=true (TC-R15, 2026-06-26)
+
+oracle_id: oracle-dif-v1
+format_id: dif
+format_version: "DIF 1.0 (VisiCalc)"
+oracle_version: 1
+family: cells
+generated_at: "2026-06-26"
+generator_skill: oracle-layer-hardening-mission
+status: CASES_DEFINED
+
+authority:
+  specification_refs:
+    - id: DIF-SPEC
+      title: "Data Interchange Format (DIF) Specification"
+      body: Software Arts Inc. (VisiCalc)
+      url: "https://en.wikipedia.org/wiki/Data_Interchange_Format"
+      legal_category: 1
+      authority_class: SPEC_INFORMATIVE
+  authorized_fact_refs:
+    - "FACT-DIF-001"
+    - "FACT-DIF-002"
+    - "FACT-DIF-003"
+  authority_summary: >
+    DIF is a text-based spreadsheet interchange format from VisiCalc (1981).
+    Structure: TABLE header, followed by VECTORS and TUPLES blocks, terminated by EOD.
+    dif:document (DifDocument class) is the authoritative model class (TC-R13).
+
+corpus_refs:
+  - corpus_id: dif-minimal-2x2
+    sample_ref: samples/by-format/dif/valid/minimal-2x2.dif
+    sha256: "sha256:6760f1c94bf23218c3daa6eb5f0a7d10a5df4f94384bb2887907365ee7fe87f8"
+    license: project-owned-synthetic
+    authority_class: GENERATED_FROM_NEUTRAL_MODEL
+    description: "Minimal 2x2 DIF table"
+  - corpus_id: dif-single-cell
+    sample_ref: samples/by-format/dif/valid/single-cell.dif
+    sha256: "sha256:d081f18da75652bafc6bf8e249758a7b6f7dbc10c827fa5c50a0266997109b49"
+    license: project-owned-synthetic
+    authority_class: GENERATED_FROM_NEUTRAL_MODEL
+    description: "DIF with single cell"
+
+valid_cases:
+  - case_id: dif-valid-001
+    profile: PARSE_VALIDITY
+    description: "minimal-2x2.dif parses without error"
+    input_ref: samples/by-format/dif/valid/minimal-2x2.dif
+    oracle_verdict: PASS
+    oracle_class: DETERMINISTIC
+    assertion:
+      type: python_callable
+      module: dif.dif_parser
+      callable: load_dif
+      args: ["${input_ref}"]
+      expect_no_exception: true
+    authority_ref: FACT-DIF-001
+
+  - case_id: dif-valid-002
+    profile: PARSE_VALIDITY
+    description: "single-cell.dif parses without error"
+    input_ref: samples/by-format/dif/valid/single-cell.dif
+    oracle_verdict: PASS
+    oracle_class: DETERMINISTIC
+    assertion:
+      type: python_callable
+      module: dif.dif_parser
+      callable: load_dif
+      args: ["${input_ref}"]
+      expect_no_exception: true
+    authority_ref: FACT-DIF-001

@@ -114,7 +114,7 @@
   - task_id: TC-PDL-REPAIR-DIF-001
     source_plan: sunny-crunching-galaxy
     sprint_id: product-deepening-ledger-repair-dif
-    status: OPEN
+    status: CLOSED
     priority: P1
     skill: extract-analytics-from-monolith
     action: |-
@@ -122,16 +122,17 @@
     acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
     created_at: '2026-06-25'
     created_by: multi-plan-intake-MCT-PDL-006
-  continuation_allowed: false
+    closed_at: '2026-06-26'
+    closed_by: TC-R13/TC-R14 (sunny-crunching-galaxy)
+  continuation_allowed: true
   continuation_reason: |-
-    qname_compliance_gap: spec/table/*.py ClassVar fixed. Remaining: dif:data in qname-registry.yaml points to dif_parser.py but DifDocument class uses dif:document qname. Update registry entry or align DifDocument.spec_qname=dif:data to resolve mismatch before green promotion.
-  blockers:
-  - qname_compliance_gap
-  next_required_action: Heal LOC violations in src/python/dif/ below 800 LOC
-  last_verified_at: '2026-06-23'
+    DIF: all 6 qnames verified (dif:header, dif:data, dif:document, dif:cell, dif:datum, dif:vector). Registry aligned: dif:data→interchange_document.py, dif:document→dif_parser.py. ClassVar fixed in spec/table/*.py. 997 tests pass. TC-R13/TC-R14/TC-R15 complete.
+  blockers: []
+  next_required_action: Continue product deepening (select gap from gap-ledger.json)
+  last_verified_at: '2026-06-26'
   ledger_entry_hash: d773b999d0a90f6d
   qname_note: |-
-    Promoted from implementing to verified. Spec files verified on disk with spec_qname + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24. spec/table/header.py, datum.py, vector.py ClassVar fix applied 2026-06-26.
+    All 6 DIF qnames verified. TC-R13: dif:data registry fixed (interchange_document.py). TC-R14: 997 tests pass, V53 pass. TC-R15: promoted to continuation_allowed=true 2026-06-26.
   spec_parity_status: not_assessed
   consumer_proof_level: 0
   proof_level_target: 4

@@ -16,12 +16,26 @@
   canonical_class: Dif.Data
   spec_fact_ref: FACT-DIF-001
   status: implemented
-  source_layer: Spec
+  source_layer: Analytics
+  facade_names: []
+  python_file: src/python/dif/interchange_document.py
+  dotnet_file: null
+  authority_source: code_introspection
+  spec_parser_available: false
+  note: "Module-level spec_qname in analytics file (interchange_document.py). TC-R13 fix: was pointing to dif_parser.py."
+- qname: dif:document
+  namespace_uri: urn:format:dif:1.0
+  local_name: document
+  canonical_class: Dif.Document
+  spec_fact_ref: FACT-DIF-001
+  status: implemented
+  source_layer: Parser
   facade_names: []
   python_file: src/python/dif/dif_parser.py
   dotnet_file: null
   authority_source: code_introspection
   spec_parser_available: false
+  note: "DifDocument class with spec_qname: ClassVar[str] = 'dif:document'. TC-R13: new entry."
 - qname: dif:cell
   namespace_uri: urn:format:dif:1.0
   local_name: cell

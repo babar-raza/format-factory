@@ -1,0 +1,212 @@
+# TOML Oracle Package — Format Factory
+# Format: Tom's Obvious, Minimal Language
+# Authority: TOML v1.0 spec (toml.io), Python stdlib tomllib (reference impl)
+# Oracle version: 1
+# Status: CASES_DEFINED
+# Mission: FORMAT-FACTORY-ORACLE-LAYER-HARDENING-001 — Wave 6 Batch D
+# GAP-ORC-BACKFILL-D: Stdlib-reference oracle for structured-text formats
+
+oracle_id: oracle-toml-v1
+format_id: toml
+format_version: "TOML v1.0"
+oracle_version: 1
+family: data
+generated_at: "2026-06-26"
+generator_skill: oracle-layer-hardening-mission
+status: CASES_DEFINED
+
+# ==============================================================================
+# AUTHORITY
+# ==============================================================================
+authority:
+  specification_refs:
+    - id: TOML-SPEC-V1
+      title: "TOML v1.0.0 specification (toml.io)"
+      body: "Tom Preston-Werner / TOML contributors"
+      url: "https://toml.io/en/v1.0.0"
+      legal_category: 1
+      authority_class: SPEC_NORMATIVE
+      note: "TOML v1.0.0 is the stable community spec used by Rust Cargo and Python tooling."
+    - id: PYTHON-TOMLLIB-STDLIB
+      title: "Python tomllib module (stdlib reference implementation, Python 3.11+)"
+      body: PSF
+      url: "https://docs.python.org/3/library/tomllib.html"
+      legal_category: 1
+      authority_class: ACCEPTED_EMPIRICAL_EVIDENCE
+      note: >
+        Python stdlib tomllib.loads() (PEP 680) provides authoritative reference
+        parsing for TOML v1.0 compliant files. Included since Python 3.11.
+  authorized_fact_refs:
+    - "FACT-TOML-001"
+    - "FACT-TOML-002"
+    - "FACT-TOML-003"
+    - "FACT-TOML-004"
+    - "FACT-TOML-005"
+  requirement_refs: []
+  capability_refs:
+    - "toml:parse"
+    - "toml:table"
+  authority_summary: >
+    TOML v1.0 is specified at toml.io. Python stdlib tomllib.loads() provides the
+    authoritative reference for parsing TOML files. Key/value pairs and tables
+    are the primary structural elements.
+
+# ==============================================================================
+# CORPUS REFERENCES
+# ==============================================================================
+corpus_refs:
+  - corpus_id: toml-minimal
+    sample_ref: samples/by-format/toml/minimal.toml
+    sha256: "sha256:93511a72e50a7d58b814f45f3834b9ab0b9ca8d9e1958410895e66767abf2491"
+    license: project-owned-synthetic
+    authority_class: GENERATED_FROM_NEUTRAL_MODEL
+    description: "5 top-level keys including 2 tables (server, database), header and scalar values"
+
+# ==============================================================================
+# PROFILES
+# ==============================================================================
+profiles:
+  - STRUCTURAL_VALIDITY
+  - PARSE_VALIDITY
+  - DOMAIN_MODEL_MAPPING
+  - MUTATION_BEHAVIOR
+  - SAME_FORMAT_SERIALIZATION
+  - ROUNDTRIP_SEMANTIC_EQUIVALENCE
+
+profiles_not_applicable:
+  - profile: INTEROPERABILITY
+    reason: "Python stdlib tomllib is the reference; no third-party tool required"
+  - profile: LOSSLESS_TRANSFORMATION
+    reason: "TOML is a text format, not a compression format"
+  - profile: SECURITY_ROBUSTNESS
+    reason: "No entity injection attack surface in parse-only mode"
+  - profile: UNKNOWN_CONTENT_PRESERVATION
+    reason: "TOML has no extension mechanism beyond the spec"
+  - profile: EXPORT_CONFORMANCE
+    reason: "TOML export to other formats not a primary operation"
+  - profile: NORMALIZATION
+    reason: "No normalization required for TOML"
+  - profile: LIMITS_AND_BOUNDARIES
+    reason: "Not applicable for this oracle version"
+
+# ==============================================================================
+# VALID CASES
+# ==============================================================================
+valid_cases:
+
+  - case_id: toml-valid-001
+    purpose: "Minimal TOML file parses without error"
+    authority_class: ACCEPTED_EMPIRICAL_EVIDENCE
+    authority_refs:
+      - "PYTHON-TOMLLIB-STDLIB -- tomllib.loads()"
+    sample_ref: samples/by-format/toml/minimal.toml
+    input_hash: "sha256:93511a72e50a7d58b814f45f3834b9ab0b9ca8d9e1958410895e66767abf2491"
+    expected_parse_result: SUCCESS
+    expected_model_properties:
+      - property: key_count
+        value_min: 1
+        authority: PYTHON-TOMLLIB-STDLIB
+    applicable_profiles:
+      - STRUCTURAL_VALIDITY
+      - PARSE_VALIDITY
+
+  - case_id: toml-valid-002
+    purpose: "TOML key count matches Python stdlib tomllib.loads()"
+    authority_class: ACCEPTED_EMPIRICAL_EVIDENCE
+    authority_refs:
+      - "PYTHON-TOMLLIB-STDLIB -- len(tomllib.loads(content))"
+    sample_ref: samples/by-format/toml/minimal.toml
+    input_hash: "sha256:93511a72e50a7d58b814f45f3834b9ab0b9ca8d9e1958410895e66767abf2491"
+    expected_parse_result: SUCCESS
+    expected_model_properties:
+      - property: key_count
+        value: 5
+        authority: PYTHON-TOMLLIB-STDLIB
+        derivation: "len(tomllib.loads(content)) == 5 (title, version, enabled, server, database)"
+    applicable_profiles:
+      - PARSE_VALIDITY
+      - DOMAIN_MODEL_MAPPING
+
+  - case_id: toml-valid-003
+    purpose: "TomlDocument.from_file() returns spec_qname=toml:table"
+    authority_class: ACCEPTED_EMPIRICAL_EVIDENCE
+    authority_refs:
+      - "shared/qname-registry/toml.yaml -- toml:table entry"
+    sample_ref: samples/by-format/toml/minimal.toml
+    input_hash: "sha256:93511a72e50a7d58b814f45f3834b9ab0b9ca8d9e1958410895e66767abf2491"
+    expected_parse_result: SUCCESS
+    expected_model_properties:
+      - property: spec_qname
+        value: "toml:table"
+        authority: TOML-SPEC-V1
+    applicable_profiles:
+      - DOMAIN_MODEL_MAPPING
+
+  - case_id: toml-valid-004
+    purpose: "Write+reload TOML preserves key count (roundtrip)"
+    authority_class: ACCEPTED_EMPIRICAL_EVIDENCE
+    authority_refs:
+      - "PYTHON-TOMLLIB-STDLIB -- tomllib roundtrip"
+    sample_ref: samples/by-format/toml/minimal.toml
+    input_hash: "sha256:93511a72e50a7d58b814f45f3834b9ab0b9ca8d9e1958410895e66767abf2491"
+    expected_parse_result: SUCCESS
+    roundtrip_fields_equal:
+      - key_count
+    applicable_profiles:
+      - ROUNDTRIP_SEMANTIC_EQUIVALENCE
+      - SAME_FORMAT_SERIALIZATION
+
+# ==============================================================================
+# INVALID CASES
+# ==============================================================================
+invalid_cases:
+
+  - case_id: toml-invalid-001
+    purpose: "File with invalid TOML syntax must raise ParseError"
+    defect_class: syntax-error
+    malformed_boundary: "File contains invalid TOML (e.g. bare key without value)"
+    authority_refs:
+      - "PYTHON-TOMLLIB-STDLIB -- tomllib.TOMLDecodeError"
+    sample_ref: null
+    expected_failure_stage: PARSE
+    expected_error_type: "TOMLDecodeError or ValueError"
+    partial_recovery_allowed: false
+    security_relevance: false
+    notes: "No invalid TOML sample in corpus yet. Defined for future corpus addition."
+
+# ==============================================================================
+# CANONICALIZATION
+# ==============================================================================
+canonicalization:
+  method: toml-key-value-dict
+  description: >
+    Canonical form is a Python dict produced by tomllib.loads(). Tables are
+    nested dicts. Key order is preserved from the file. All scalar types
+    (string, integer, float, bool, datetime) are Python-native types.
+  ordering_policy: "key order preserved from file"
+  whitespace_policy: "whitespace between keys and values is insignificant"
+  encoding_policy: "UTF-8 (required by TOML spec)"
+
+# ==============================================================================
+# TOLERANCE POLICY
+# ==============================================================================
+tolerance_policy:
+  numeric_tolerance: NOT_APPLICABLE
+  ordering_tolerance: "none -- key order must be preserved"
+  whitespace_tolerance: "inter-key whitespace is ignored; within-value whitespace is preserved"
+  metadata_tolerance: "None"
+  policy_summary: "Key count and structure must match Python stdlib tomllib.loads() output"
+
+# ==============================================================================
+# COMPARATORS AND VALIDATORS
+# ==============================================================================
+comparators:
+  - model-property-comparator
+  - key-count-comparator
+
+validators:
+  - toml-key-validator
+
+consumers:
+  - tests/python/toml/test_toml_roundtrip.py
+  - tests/python/toml/test_toml_parser.py

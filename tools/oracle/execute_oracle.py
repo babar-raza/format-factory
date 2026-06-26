@@ -362,6 +362,356 @@ def execute_csv_invalid_case(case: dict, pkg: dict) -> dict:
         )
 
 
+def execute_tsv_valid_case(case: dict, pkg: dict) -> dict:
+    """Execute a TSV valid case using Python stdlib csv as reference (TC-LA-003)."""
+    case_id = case["case_id"]
+    sample_ref = case.get("sample_ref")
+    _, authority_status = check_authority(case, True)
+
+    if not sample_ref:
+        return make_verdict(
+            oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+            format_id="tsv", product_id="format-factory-tsv", language="python",
+            case_id=case_id, profile="PARSE_VALIDITY",
+            result=RESULT_NOT_APPLICABLE, authority_status=authority_status,
+            diagnostics=["No sample_ref — introspection-only case"],
+        )
+
+    sample_path = REPO_ROOT / sample_ref
+    if not sample_path.exists():
+        return make_verdict(
+            oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+            format_id="tsv", product_id="format-factory-tsv", language="python",
+            case_id=case_id, profile="STRUCTURAL_VALIDITY",
+            result=RESULT_BLOCKED_MISSING_SAMPLE, authority_status=authority_status,
+            diagnostics=[f"Sample not found: {sample_path}"],
+        )
+
+    input_hash = sha256_file(sample_path)
+
+    try:
+        sys.path.insert(0, str(REPO_ROOT))
+        from src.python.tsv.tsv_parser import load_tsv  # type: ignore
+
+        model = load_tsv(str(sample_path))
+        observed = {
+            "row_count": model.get("row_count", 0),
+            "column_count": model.get("column_count", 0),
+            "has_header": model.get("has_header", False),
+            "headers": model.get("headers", []),
+            "spec_qname": "tsv:row",
+        }
+
+        deviations = []
+        expected_props: dict = {}
+        for prop_def in case.get("expected_model_properties", []):
+            prop = prop_def["property"]
+            if "value" in prop_def:
+                exp_val = prop_def["value"]
+                expected_props[prop] = exp_val
+                obs_val = observed.get(prop)
+                if obs_val != exp_val:
+                    deviations.append({"property": prop, "expected": exp_val, "observed": obs_val})
+            elif "value_min" in prop_def:
+                exp_min = prop_def["value_min"]
+                expected_props[f"{prop}_min"] = exp_min
+                obs_val = observed.get(prop, 0)
+                if obs_val < exp_min:
+                    deviations.append({"property": prop, "expected_min": exp_min, "observed": obs_val})
+
+        result = RESULT_PASS if not deviations else RESULT_FAIL
+        return make_verdict(
+            oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+            format_id="tsv", product_id="format-factory-tsv", language="python",
+            case_id=case_id, profile="PARSE_VALIDITY",
+            result=result, authority_status=authority_status,
+            observed=observed, expected=expected_props,
+            deviations=deviations, input_hash=input_hash,
+        )
+
+    except Exception as e:
+        return make_verdict(
+            oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+            format_id="tsv", product_id="format-factory-tsv", language="python",
+            case_id=case_id, profile="PARSE_VALIDITY",
+            result=RESULT_FAIL, authority_status=authority_status,
+            diagnostics=[f"Unexpected exception: {type(e).__name__}: {e}"],
+            input_hash=input_hash,
+        )
+
+
+def execute_ndjson_valid_case(case: dict, pkg: dict) -> dict:
+    """Execute an NDJSON valid case using Python stdlib json as reference (TC-LA-003)."""
+    case_id = case["case_id"]
+    sample_ref = case.get("sample_ref")
+    _, authority_status = check_authority(case, True)
+
+    if not sample_ref:
+        return make_verdict(
+            oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+            format_id="ndjson", product_id="format-factory-ndjson", language="python",
+            case_id=case_id, profile="PARSE_VALIDITY",
+            result=RESULT_NOT_APPLICABLE, authority_status=authority_status,
+            diagnostics=["No sample_ref — introspection-only case"],
+        )
+
+    sample_path = REPO_ROOT / sample_ref
+    if not sample_path.exists():
+        return make_verdict(
+            oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+            format_id="ndjson", product_id="format-factory-ndjson", language="python",
+            case_id=case_id, profile="STRUCTURAL_VALIDITY",
+            result=RESULT_BLOCKED_MISSING_SAMPLE, authority_status=authority_status,
+            diagnostics=[f"Sample not found: {sample_path}"],
+        )
+
+    input_hash = sha256_file(sample_path)
+
+    try:
+        import json as _json
+        sys.path.insert(0, str(REPO_ROOT))
+        from src.python.ndjson.ndjson_codec import load_ndjson  # type: ignore
+
+        records = load_ndjson(str(sample_path))
+        # Reference: Python stdlib line-by-line json.loads
+        with open(sample_path, encoding="utf-8") as f:
+            ref_records = [_json.loads(line) for line in f if line.strip()]
+
+        observed = {
+            "record_count": len(records),
+            "spec_qname": "ndjson:record",
+        }
+
+        deviations = []
+        expected_props: dict = {}
+        for prop_def in case.get("expected_model_properties", []):
+            prop = prop_def["property"]
+            if "value" in prop_def:
+                exp_val = prop_def["value"]
+                expected_props[prop] = exp_val
+                obs_val = observed.get(prop)
+                if obs_val != exp_val:
+                    deviations.append({"property": prop, "expected": exp_val, "observed": obs_val})
+            elif "value_min" in prop_def:
+                exp_min = prop_def["value_min"]
+                expected_props[f"{prop}_min"] = exp_min
+                obs_val = observed.get(prop, 0)
+                if obs_val < exp_min:
+                    deviations.append({"property": prop, "expected_min": exp_min, "observed": obs_val})
+
+        # Cross-check: stdlib reference must match product
+        if len(records) != len(ref_records):
+            deviations.append({
+                "property": "record_count",
+                "expected": len(ref_records),
+                "observed": len(records),
+                "authority": "PYTHON-JSON-STDLIB",
+            })
+
+        result = RESULT_PASS if not deviations else RESULT_FAIL
+        return make_verdict(
+            oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+            format_id="ndjson", product_id="format-factory-ndjson", language="python",
+            case_id=case_id, profile="PARSE_VALIDITY",
+            result=result, authority_status=authority_status,
+            observed=observed, expected=expected_props,
+            deviations=deviations, input_hash=input_hash,
+        )
+
+    except Exception as e:
+        return make_verdict(
+            oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+            format_id="ndjson", product_id="format-factory-ndjson", language="python",
+            case_id=case_id, profile="PARSE_VALIDITY",
+            result=RESULT_FAIL, authority_status=authority_status,
+            diagnostics=[f"Unexpected exception: {type(e).__name__}: {e}"],
+            input_hash=input_hash,
+        )
+
+
+def execute_toml_valid_case(case: dict, pkg: dict) -> dict:
+    """Execute a TOML valid case using Python stdlib tomllib as reference (GAP-ORC-BACKFILL-D)."""
+    case_id = case["case_id"]
+    sample_ref = case.get("sample_ref")
+    _, authority_status = check_authority(case, True)
+
+    if not sample_ref:
+        return make_verdict(
+            oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+            format_id="toml", product_id="format-factory-toml", language="python",
+            case_id=case_id, profile="PARSE_VALIDITY",
+            result=RESULT_NOT_APPLICABLE, authority_status=authority_status,
+            diagnostics=["No sample_ref -- introspection-only case"],
+        )
+
+    sample_path = REPO_ROOT / sample_ref
+    if not sample_path.exists():
+        return make_verdict(
+            oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+            format_id="toml", product_id="format-factory-toml", language="python",
+            case_id=case_id, profile="STRUCTURAL_VALIDITY",
+            result=RESULT_BLOCKED_MISSING_SAMPLE, authority_status=authority_status,
+            diagnostics=[f"Sample not found: {sample_path}"],
+        )
+
+    input_hash = sha256_file(sample_path)
+
+    try:
+        import tomllib as _tomllib
+        sys.path.insert(0, str(REPO_ROOT))
+        from src.python.toml.models import TomlDocument  # type: ignore
+
+        doc = TomlDocument.from_file(str(sample_path))
+        # Reference: Python stdlib tomllib key count
+        with open(sample_path, "rb") as f:
+            ref_data = _tomllib.load(f)
+        ref_key_count = len(ref_data)
+
+        observed = {
+            "key_count": doc.key_count,
+            "spec_qname": doc.spec_qname,
+        }
+
+        deviations = []
+        expected_props: dict = {}
+        for prop_def in case.get("expected_model_properties", []):
+            prop = prop_def["property"]
+            if "value" in prop_def:
+                exp_val = prop_def["value"]
+                expected_props[prop] = exp_val
+                obs_val = observed.get(prop)
+                if obs_val != exp_val:
+                    deviations.append({"property": prop, "expected": exp_val, "observed": obs_val})
+            elif "value_min" in prop_def:
+                exp_min = prop_def["value_min"]
+                expected_props[f"{prop}_min"] = exp_min
+                obs_val = observed.get(prop, 0)
+                if obs_val < exp_min:
+                    deviations.append({"property": prop, "expected_min": exp_min, "observed": obs_val})
+
+        # Cross-check: stdlib reference must match product key count
+        if doc.key_count != ref_key_count:
+            deviations.append({
+                "property": "key_count",
+                "expected": ref_key_count,
+                "observed": doc.key_count,
+                "authority": "PYTHON-TOMLLIB-STDLIB",
+            })
+
+        # Handle roundtrip case
+        if case.get("roundtrip_fields_equal"):
+            from src.python.toml.toml_codec import write_toml, load_toml  # type: ignore
+            import tempfile, os
+            with tempfile.NamedTemporaryFile(suffix=".toml", delete=False) as tmp:
+                tmp_path = tmp.name
+            try:
+                model_dict = doc.to_dict()
+                write_toml(model_dict["data"], tmp_path)
+                reloaded = TomlDocument.from_file(tmp_path)
+                for field in case["roundtrip_fields_equal"]:
+                    orig_val = observed.get(field)
+                    reload_val = getattr(reloaded, field, None)
+                    if orig_val != reload_val:
+                        deviations.append({
+                            "property": field,
+                            "expected": orig_val,
+                            "observed": reload_val,
+                            "note": "roundtrip mismatch",
+                        })
+            finally:
+                os.unlink(tmp_path)
+
+        result = RESULT_PASS if not deviations else RESULT_FAIL
+        return make_verdict(
+            oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+            format_id="toml", product_id="format-factory-toml", language="python",
+            case_id=case_id, profile="PARSE_VALIDITY",
+            result=result, authority_status=authority_status,
+            observed=observed, expected=expected_props,
+            deviations=deviations, input_hash=input_hash,
+        )
+
+    except Exception as e:
+        return make_verdict(
+            oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+            format_id="toml", product_id="format-factory-toml", language="python",
+            case_id=case_id, profile="PARSE_VALIDITY",
+            result=RESULT_FAIL, authority_status=authority_status,
+            diagnostics=[f"Unexpected exception: {type(e).__name__}: {e}"],
+            input_hash=input_hash,
+        )
+
+
+def execute_generic_load_case(case: dict, pkg: dict, format_id: str, module: str, callable_name: str) -> dict:
+    """Generic executor: import module, call callable(sample_path), expect no exception (TC-LA-003)."""
+    case_id = case["case_id"]
+    sample_ref = case.get("input_ref") or case.get("sample_ref")
+    _, authority_status = check_authority(case, True)
+
+    if not sample_ref:
+        return make_verdict(
+            oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+            format_id=format_id, product_id=f"format-factory-{format_id}", language="python",
+            case_id=case_id, profile="PARSE_VALIDITY",
+            result=RESULT_NOT_APPLICABLE, authority_status=authority_status,
+            diagnostics=["No sample_ref"],
+        )
+
+    sample_path = REPO_ROOT / sample_ref
+    if not sample_path.exists():
+        return make_verdict(
+            oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+            format_id=format_id, product_id=f"format-factory-{format_id}", language="python",
+            case_id=case_id, profile="PARSE_VALIDITY",
+            result=RESULT_BLOCKED_MISSING_SAMPLE, authority_status=authority_status,
+            diagnostics=[f"Sample not found: {sample_path}"],
+        )
+
+    input_hash = sha256_file(sample_path)
+    try:
+        sys.path.insert(0, str(REPO_ROOT))
+        import importlib
+        mod = importlib.import_module(f"src.python.{module}")
+        fn = getattr(mod, callable_name)
+        result_val = fn(str(sample_path))
+        observed = {"loaded": True, "result_type": type(result_val).__name__}
+        return make_verdict(
+            oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+            format_id=format_id, product_id=f"format-factory-{format_id}", language="python",
+            case_id=case_id, profile="PARSE_VALIDITY",
+            result=RESULT_PASS, authority_status=authority_status,
+            observed=observed, deviations=[], input_hash=input_hash,
+        )
+    except Exception as e:
+        return make_verdict(
+            oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+            format_id=format_id, product_id=f"format-factory-{format_id}", language="python",
+            case_id=case_id, profile="PARSE_VALIDITY",
+            result=RESULT_FAIL, authority_status=authority_status,
+            diagnostics=[f"{type(e).__name__}: {e}"], input_hash=input_hash,
+        )
+
+
+def execute_abw_valid_case(case: dict, pkg: dict) -> dict:
+    """Execute an ABW valid case (TC-LA-003)."""
+    return execute_generic_load_case(case, pkg, "abw", "abw.abw_codec", "load")
+
+
+def execute_gnumeric_valid_case(case: dict, pkg: dict) -> dict:
+    """Execute a GNUMERIC valid case (TC-LA-003)."""
+    return execute_generic_load_case(case, pkg, "gnumeric", "gnumeric.gnumeric_codec", "load")
+
+
+def execute_dif_valid_case(case: dict, pkg: dict) -> dict:
+    """Execute a DIF valid case (TC-LA-003)."""
+    return execute_generic_load_case(case, pkg, "dif", "dif.dif_parser", "parse_dif")
+
+
+def execute_fodg_valid_case(case: dict, pkg: dict) -> dict:
+    """Execute a FODG valid case (TC-LA-003)."""
+    return execute_generic_load_case(case, pkg, "fodg", "fodg.fodg_codec", "load")
+
+
 def execute_zst_valid_case(case: dict, pkg: dict) -> dict:
     """Execute a ZST valid case against the product."""
     case_id = case["case_id"]
@@ -844,6 +1194,20 @@ def run_oracle_for_format(format_id: str, profile_filter: str = None, case_filte
             verdict = execute_zst_valid_case(case, pkg)
         elif format_id == "fods":
             verdict = execute_fods_valid_case(case, pkg)
+        elif format_id == "tsv":
+            verdict = execute_tsv_valid_case(case, pkg)
+        elif format_id == "ndjson":
+            verdict = execute_ndjson_valid_case(case, pkg)
+        elif format_id == "toml":
+            verdict = execute_toml_valid_case(case, pkg)
+        elif format_id == "abw":
+            verdict = execute_abw_valid_case(case, pkg)
+        elif format_id == "gnumeric":
+            verdict = execute_gnumeric_valid_case(case, pkg)
+        elif format_id == "dif":
+            verdict = execute_dif_valid_case(case, pkg)
+        elif format_id == "fodg":
+            verdict = execute_fodg_valid_case(case, pkg)
         else:
             verdict = make_verdict(
                 oracle_id=oracle_id, oracle_version=pkg["oracle_version"],

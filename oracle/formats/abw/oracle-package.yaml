@@ -1,0 +1,71 @@
+# ABW Oracle Package — Format Factory
+# Format: AbiWord Document
+# Authority: AbiWord project format documentation (LibreOffice compatibility)
+# Oracle version: 1
+# Status: CASES_DEFINED
+# Mission: TC-LA-003 / TC-LA-010 — oracle extension to additional Gen4-GREEN formats
+
+oracle_id: oracle-abw-v1
+format_id: abw
+format_version: "AbiWord 2.x"
+oracle_version: 1
+family: document
+generated_at: "2026-06-26"
+generator_skill: oracle-layer-hardening-mission
+status: CASES_DEFINED
+
+authority:
+  specification_refs:
+    - id: ABIWORD-FORMAT
+      title: "AbiWord File Format Documentation"
+      body: AbiWord Project
+      url: "https://abisource.com/wiki/AbiWord_File_Format"
+      legal_category: 1
+      authority_class: SPEC_INFORMATIVE
+  authorized_fact_refs:
+    - "FACT-ABW-001"
+    - "FACT-ABW-002"
+    - "FACT-ABW-003"
+  authority_summary: >
+    ABW is the native XML format of AbiWord. Structure: <abiword> root containing
+    <section> and <p> elements for paragraphs. Python load() function provides
+    the reference parse result for format conformance.
+
+corpus_refs:
+  - corpus_id: abw-minimal-document
+    sample_ref: samples/by-format/abw/minimal-document.abw
+    sha256: "sha256:b4ec41a05ed15a26f7decdefe36475aa1b61419c533477667c50cc4866b8fb3f"
+    license: project-owned-synthetic
+    authority_class: GENERATED_FROM_NEUTRAL_MODEL
+    description: "Minimal AbiWord document with single paragraph"
+
+valid_cases:
+  - case_id: abw-valid-001
+    profile: PARSE_VALIDITY
+    description: "minimal-document.abw parses without error and returns dict"
+    input_ref: samples/by-format/abw/minimal-document.abw
+    oracle_verdict: PASS
+    oracle_class: DETERMINISTIC
+    assertion:
+      type: python_callable
+      module: abw.abw_codec
+      callable: load
+      args: ["${input_ref}"]
+      expect_type: dict
+      expect_no_exception: true
+    authority_ref: FACT-ABW-001
+
+  - case_id: abw-valid-002
+    profile: ROUNDTRIP
+    description: "load on minimal-document returns a dict with expected keys"
+    input_ref: samples/by-format/abw/minimal-document.abw
+    oracle_verdict: PASS
+    oracle_class: STRUCTURAL
+    assertion:
+      type: python_callable
+      module: abw.abw_codec
+      callable: load
+      args: ["${input_ref}"]
+      expect_type: dict
+      expect_no_exception: true
+    authority_ref: FACT-ABW-001

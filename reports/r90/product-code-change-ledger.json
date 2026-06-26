@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s127-dotnet-deepening-20260627",
+  "latest_sprint": "ff-sprint-s128-dotnet-deepening-20260627",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -20952,9 +20952,48 @@
         "tests/net/csv/CsvR130ToCsvSerializationTests.cs"
       ],
       "description": "CSV R130: 10 tests for CsvDocument.ToCsv() serialization and GetCellValue edge-cases \u2014 header line, row order, after mutation, null returns, dogfood roundtrip"
+    },
+    {
+      "entry_id": "PC-TSV-R128",
+      "classification": "GOVERNED_DOTNET_TEST",
+      "sprint": "ff-sprint-s128-dotnet-deepening-20260627",
+      "product": "TSV .NET",
+      "capability_refs": [
+        "commercial_net_products.TSV.dotnet_status.read_rows_from_file"
+      ],
+      "test_files": [
+        "tests/net/tsv/TsvR128ReadRowsFromFileTests.cs"
+      ],
+      "description": "TSV R128: 10 tests for TsvReader.ReadRowsFromFile(path) \u2014 row count, tab splitting, null/nonexistent guards, empty file, parity with ReadRows(string), dogfood roundtrip"
+    },
+    {
+      "entry_id": "PC-FODT-R145",
+      "classification": "GOVERNED_DOTNET_TEST",
+      "sprint": "ff-sprint-s128-dotnet-deepening-20260627",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.document_exception"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR145DocumentExceptionTests.cs"
+      ],
+      "description": "FODT R145: 10 tests for FodtDocumentException \u2014 Exception subclass, message/inner constructors, Load null/empty/nonexistent throws, caught as base type, CreateEmpty safe, dogfood pipeline"
+    },
+    {
+      "entry_id": "PC-NDJSON-R133",
+      "classification": "GOVERNED_DOTNET_TEST",
+      "sprint": "ff-sprint-s128-dotnet-deepening-20260627",
+      "product": "NDJSON .NET",
+      "capability_refs": [
+        "commercial_net_products.NDJSON.dotnet_status.stream_read_records"
+      ],
+      "test_files": [
+        "tests/net/ndjson/NdjsonR133StreamReadRecordsTests.cs"
+      ],
+      "description": "NDJSON R133: 10 tests for NdjsonReader.ReadRecords(Stream) \u2014 record count, ValueKind=Object, field access, null guard, empty stream, parity with string overload, dogfood roundtrip"
     }
   ],
-  "total_entries": 1150,
+  "total_entries": 1153,
   "changes": [
     {
       "file": "src/python/dif/models.py",

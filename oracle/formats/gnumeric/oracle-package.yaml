@@ -1,0 +1,70 @@
+# GNUMERIC Oracle Package — Format Factory
+# Format: Gnumeric Spreadsheet
+# Authority: Gnumeric project format (gzip'd XML)
+# Oracle version: 1
+# Status: CASES_DEFINED
+# Mission: TC-LA-003 / TC-LA-010 — oracle extension to Gen4-GREEN formats
+
+oracle_id: oracle-gnumeric-v1
+format_id: gnumeric
+format_version: "Gnumeric 1.12.x"
+oracle_version: 1
+family: cells
+generated_at: "2026-06-26"
+generator_skill: oracle-layer-hardening-mission
+status: CASES_DEFINED
+
+authority:
+  specification_refs:
+    - id: GNUMERIC-FORMAT
+      title: "Gnumeric File Format (gnm XML)"
+      body: GNOME Project
+      url: "https://gitlab.gnome.org/GNOME/gnumeric"
+      legal_category: 1
+      authority_class: SPEC_INFORMATIVE
+  authorized_fact_refs:
+    - "FACT-GNUMERIC-001"
+    - "FACT-GNUMERIC-002"
+    - "FACT-GNUMERIC-003"
+  authority_summary: >
+    Gnumeric files are gzip-compressed XML with a <gnm:Workbook> root element.
+    Sheets are <gnm:Sheet> elements containing <gnm:Cells> with <gnm:Cell> children.
+
+corpus_refs:
+  - corpus_id: gnumeric-minimal-spreadsheet
+    sample_ref: samples/by-format/gnumeric/minimal-spreadsheet.gnumeric
+    sha256: "sha256:9926a6db9705fee14e95b95b6d5deb9e6ecdc2e70feed7916b00b2e61572118c"
+    license: project-owned-synthetic
+    authority_class: GENERATED_FROM_NEUTRAL_MODEL
+    description: "Minimal Gnumeric spreadsheet with one sheet"
+
+valid_cases:
+  - case_id: gnumeric-valid-001
+    profile: PARSE_VALIDITY
+    description: "minimal-spreadsheet.gnumeric loads without error"
+    input_ref: samples/by-format/gnumeric/minimal-spreadsheet.gnumeric
+    oracle_verdict: PASS
+    oracle_class: DETERMINISTIC
+    assertion:
+      type: python_callable
+      module: gnumeric.gnumeric_codec
+      callable: load
+      args: ["${input_ref}"]
+      expect_type: dict
+      expect_no_exception: true
+    authority_ref: FACT-GNUMERIC-001
+
+  - case_id: gnumeric-valid-002
+    profile: PARSE_VALIDITY
+    description: "empty-sheet.gnumeric loads without error"
+    input_ref: samples/by-format/gnumeric/empty-sheet.gnumeric
+    oracle_verdict: PASS
+    oracle_class: DETERMINISTIC
+    assertion:
+      type: python_callable
+      module: gnumeric.gnumeric_codec
+      callable: load
+      args: ["${input_ref}"]
+      expect_type: dict
+      expect_no_exception: true
+    authority_ref: FACT-GNUMERIC-001

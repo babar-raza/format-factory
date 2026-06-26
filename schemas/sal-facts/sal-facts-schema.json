@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:format-factory:sal-facts:v1",
+  "title": "SAL Facts Database Schema",
+  "description": "Schema for sal-facts-latest.json and sal-facts-*.json databases produced by the Specification Authority Layer. NOTE: The 'qname' field in spec_facts contains FACT-FORMAT-NNN canonical IDs (e.g. 'FACT-FODS-001'), NOT namespace:element QNames. This is a historical naming quirk — the field acts as fact_id.",
+  "type": "object",
+  "required": ["generated_at", "generator", "formats_processed", "spec_facts_total", "workbench_verified_fact_total", "results"],
+  "additionalProperties": true,
+  "properties": {
+    "generated_at": {
+      "type": "string",
+      "description": "ISO-8601 timestamp when this database was generated."
+    },
+    "generator": {
+      "type": "string",
+      "description": "Name and version of the tool that generated this file."
+    },
+    "formats_processed": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of format entries in results."
+    },
+    "spec_facts_total": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Total spec_facts across all format results."
+    },
+    "workbench_verified_fact_total": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of facts that have been workbench-verified."
+    },
+    "results": {
+      "type": "array",
+      "description": "Per-format specification fact results.",
+      "items": {
+        "$ref": "#/$defs/format_result"
+      }
+    }
+  },
+  "$defs": {
+    "format_result": {
+      "type": "object",
+      "required": ["format_id", "spec_facts"],
+      "additionalProperties": true,
+      "properties": {
+        "format_id": {
+          "type": "string",
+          "description": "Lowercase format identifier (e.g. 'fods', 'csv')."
+        },
+        "display_name": {
+          "type": "string"
+        },
+        "spec_body": {
+          "type": "string"
+        },
+        "spec_version": {
+          "type": "string"
+        },
+        "spec_url": {
+          "type": "string"
+        },
+        "spec_facts": {
+          "type": "array",
+          "description": "Extracted specification facts for this format.",
+          "items": {
+            "$ref": "#/$defs/spec_fact"
+          }
+        }
+      }
+    },
+    "spec_fact": {
+      "type": "object",
+      "required": ["qname", "claim"],
+      "additionalProperties": true,
+      "properties": {
+        "qname": {
+          "type": "string",
+          "pattern": "^FACT-[A-Z]+-[0-9]+$",
+          "description": "Canonical fact identifier (e.g. 'FACT-FODS-001'). NOTE: Despite the name 'qname', this field contains FACT-IDs, not namespace:element QNames. Historical naming quirk from SAL pipeline."
+        },
+        "claim": {
+          "type": "string",
+          "description": "The specification claim or fact statement."
+        },
+        "section": {
+          "type": "string",
+          "description": "Section reference in the specification document."
+        },
+        "description": {
+          "type": "string",
+          "description": "Additional description of the fact."
+        },
+        "authority": {
+          "type": "string",
+          "description": "Authority source citation."
+        },
+        "verification_status": {
+          "type": "string",
+          "enum": ["verified", "unverified", "ai_draft", "disputed", "pending"],
+          "description": "Verification status of this fact."
+        },
+        "source": {
+          "type": "string",
+          "description": "Source of the fact extraction."
+        },
+        "fact_status": {
+          "type": "string",
+          "description": "Current status of the fact in the pipeline."
+        },
+        "authority_class": {
+          "type": "string",
+          "enum": ["AUTHORITATIVE", "VERIFIED_DERIVATION", "ACCEPTED_EMPIRICAL_EVIDENCE", "AI_DRAFT", "UNVERIFIED"],
+          "description": "Authority classification. AI_DRAFT requires promotion before use in product decisions."
+        }
+      }
+    }
+  }
+}
