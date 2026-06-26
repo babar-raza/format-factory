@@ -21201,9 +21201,39 @@
       "evidence_path": "tests/net/fodt/FodtR150ExportToMarkdownFileAndHtmlFileTests.cs",
       "test_count": 10,
       "capability_ref": "commercial_net_products.FODT.dotnet_status.export_to_markdown_and_html_file"
+    },
+    {
+      "entry_id": "PC-FODS-R147",
+      "format": "FODS",
+      "r_number": "R147",
+      "sprint": "ff-sprint-s136-dotnet-deepening-20260627",
+      "description": "FodsDocument.GetColumnHeaders and DeleteRows - 10 tests: GetColumnHeaders empty=empty, after SetCellValue first row contains value, returns IReadOnlyList, named-sheet nonexistent=empty, named-sheet with value; DeleteRows null/empty sheetName throws, nonexistent throws, negative count throws; dogfood SetCells->GetHeaders->DeleteRows verifies row count reduction",
+      "evidence_path": "tests/net/fods/FodsR147GetColumnHeadersAndDeleteRowsTests.cs",
+      "test_count": 10,
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.get_column_headers_and_delete_rows"
+    },
+    {
+      "entry_id": "PC-TSV-R132",
+      "format": "TSV",
+      "r_number": "R132",
+      "sprint": "ff-sprint-s136-dotnet-deepening-20260627",
+      "description": "TsvDocument.SaveToFile and LoadFile - 10 tests: SaveToFile creates file/non-empty content/headers written/data rows written/overwrites existing; LoadFile round-trip row count matches/headers preserved; dogfood Filter->SaveToFile->LoadFile contains only active rows (Alice+Carol, not Bob)",
+      "evidence_path": "tests/net/tsv/TsvR132SaveToFileAndLoadFileTests.cs",
+      "test_count": 10,
+      "capability_ref": "commercial_net_products.TSV.dotnet_status.save_to_file_and_load_file"
+    },
+    {
+      "entry_id": "PC-NDJSON-R137",
+      "format": "NDJSON",
+      "r_number": "R137",
+      "sprint": "ff-sprint-s136-dotnet-deepening-20260627",
+      "description": "NdjsonDocument.SaveToFile and LoadFromContent/LoadContent aliases - 10 tests: SaveToFile null/empty/whitespace throws NdjsonException, file created, non-empty content, round-trip via LoadFile same count; LoadFromContent same count as Load; LoadContent same count as Load; dogfood Filter->SaveToFile->LoadFile contains only active records",
+      "evidence_path": "tests/net/ndjson/NdjsonR137SaveToFileAndLoadAliasTests.cs",
+      "test_count": 10,
+      "capability_ref": "commercial_net_products.NDJSON.dotnet_status.save_to_file_and_load_aliases"
     }
   ],
-  "total_entries": 1174,
+  "total_entries": 1177,
   "changes": [
     {
       "file": "src/python/dif/models.py",
