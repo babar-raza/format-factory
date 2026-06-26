@@ -159,11 +159,73 @@ def validate_plan_binding(target_path: str, intent: str = "harden") -> tuple[boo
     return True, "allowed"
 
 
+def _should_require_audit(plan_path: str) -> bool:
+    """TC-TCF-003: Return True when plan file contains tracked TC-* taskcard entries.
+
+    When True, write_lock() automatically invokes lifecycle_audit before writing
+    TERMINAL_CLOSED — same as --audit-gate but without requiring the explicit flag.
+    Use --skip-audit to bypass this auto-trigger for plans without taskcard tracking.
+    """
+    import re as _re_tcf
+    _TC_RE = _re_tcf.compile(r"\bTC-[A-Z0-9]+-[A-Z0-9-]+", _re_tcf.IGNORECASE)
+    try:
+        p = Path(plan_path) if Path(plan_path).is_absolute() else _repo_root / plan_path
+        if not p.exists():
+            return False
+        return bool(_TC_RE.search(p.read_text(encoding="utf-8", errors="replace")))
+    except Exception:
+        return False
+
+
+def _write_terminal_closure_record(
+    plan_path: str,
+    session_id: str,
+    locked_at: str,
+    plan_hash: str = "",
+    audit_result: dict | None = None,
+) -> None:
+    """TC-TCF-004: Write terminal_closure_record.json when TERMINAL_CLOSED is set.
+
+    Produces a durable evidence artifact beyond the lock file and HTML comment.
+    Written to .local/evidences/plan-closures/{plan_hash}/terminal_closure_record.json.
+    Non-blocking: any failure is logged to stderr but does not prevent lock write.
+    """
+    import hashlib as _hashlib_tcf
+    record = {
+        "plan_path": plan_path,
+        "plan_hash": plan_hash,
+        "status": "TERMINAL_CLOSED",
+        "locked_at": locked_at,
+        "locked_by_session": session_id,
+        "closure_authorized": True,
+        "audit_verdict": (audit_result or {}).get("verdict", "NOT_RUN"),
+        "all_taskcards_closed": (audit_result or {}).get("all_taskcards_closed"),
+        "open_taskcards": (audit_result or {}).get("open_taskcards", []),
+        "guard_results": (audit_result or {}).get("guard_results", []),
+        "closure_contract": (audit_result or {}).get("closure_contract"),
+    }
+    try:
+        ph = plan_hash or _hashlib_tcf.sha256(plan_path.encode()).hexdigest()[:16]
+        d = _repo_root / ".local" / "evidences" / "plan-closures" / ph
+        d.mkdir(parents=True, exist_ok=True)
+        record_path = d / "terminal_closure_record.json"
+        record_path.write_text(
+            json.dumps(record, indent=2) + "\n", encoding="utf-8"
+        )
+        print(f"[write_plan_lock] TC-TCF-004: closure record written: {record_path}")
+    except Exception as exc:
+        print(
+            f"[write_plan_lock] WARNING: TC-TCF-004 closure record failed: {exc}",
+            file=sys.stderr,
+        )
+
+
 def write_lock(plan_path: str, last_taskcard: str | None = None, complete: bool = False,
                terminal: bool = False, session_id: str | None = None,
                track_type: str | None = "product", binding: bool = False,
                audit_gate: bool = False,
-               completion_candidate: bool = False) -> None:
+               completion_candidate: bool = False,
+               skip_audit: bool = False) -> None:
     # TC-AMD-MACH-003: Clean up orphaned .tmp files from previously crashed atomic writes
     cleanup_orphaned_tmp_files()
     # B3: normalize path separators so Windows backslashes don't prevent matching
@@ -177,27 +239,33 @@ def write_lock(plan_path: str, last_taskcard: str | None = None, complete: bool 
                 f"'{forbidden}' is a protected ledger file and cannot be an execution plan."
             )
 
-    # --audit-gate: call lifecycle_audit before writing TERMINAL_CLOSED.
+    # TC-TCF-003: Mandatory audit gate.
+    # Runs lifecycle_audit before writing TERMINAL_CLOSED when:
+    #   (a) --audit-gate is explicitly passed, OR
+    #   (b) plan file contains TC-* taskcard entries (auto-detected by _should_require_audit)
+    #       AND --skip-audit is NOT set.
     # If audit requires iteration → write ITERATION_REQUIRED instead of TERMINAL_CLOSED.
-    # Only applies when --terminal is set. Backward compat: --terminal without --audit-gate unchanged.
-    if terminal and audit_gate:
+    audit_result: dict | None = None
+    _auto_audit = terminal and not skip_audit and not audit_gate and _should_require_audit(plan_path)
+    if terminal and (audit_gate or _auto_audit):
+        _gate_label = "--audit-gate" if audit_gate else "auto-audit (TC-TCF-003)"
         try:
             from lifecycle_audit import run_lifecycle_audit  # type: ignore[import]
-            audit_result = run_lifecycle_audit(repo_root=_repo_root)
+            audit_result = run_lifecycle_audit(repo_root=_repo_root, plan_path=plan_path)
             audit_verdict = audit_result.get("verdict", "AUDIT_PASS")
             if audit_verdict == "AUDIT_REQUIRES_ITERATION":
                 status = "ITERATION_REQUIRED"
                 print(
-                    "[write_plan_lock] --audit-gate: lifecycle audit verdict=AUDIT_REQUIRES_ITERATION "
+                    f"[write_plan_lock] {_gate_label}: lifecycle audit verdict=AUDIT_REQUIRES_ITERATION "
                     "-> writing ITERATION_REQUIRED (plan will iterate)"
                 )
             else:
                 status = "TERMINAL_CLOSED"
-                print("[write_plan_lock] --audit-gate: lifecycle audit verdict=AUDIT_PASS -> TERMINAL_CLOSED")
+                print(f"[write_plan_lock] {_gate_label}: lifecycle audit verdict=AUDIT_PASS -> TERMINAL_CLOSED")
         except ImportError:
             # lifecycle_audit not installed yet — fall back to ITERATION_REQUIRED (D6 safety)
             print(
-                "[write_plan_lock] WARNING: --audit-gate requested but lifecycle_audit not importable; "
+                f"[write_plan_lock] WARNING: {_gate_label} requested but lifecycle_audit not importable; "
                 "falling back to ITERATION_REQUIRED",
                 file=sys.stderr,
             )
@@ -215,6 +283,21 @@ def write_lock(plan_path: str, last_taskcard: str | None = None, complete: bool 
         status = "COMPLETION_CANDIDATE"
     else:
         status = "TERMINAL_CLOSED" if terminal else ("COMPLETE" if complete else "IN_PROGRESS")
+
+    # TC-TCF-004: Write terminal closure evidence artifact before lock files.
+    # Non-blocking: failure logged to stderr but does not prevent lock write.
+    if status == "TERMINAL_CLOSED":
+        import hashlib as _hl
+        _ph = _hl.sha256(plan_path.encode()).hexdigest()[:16]
+        _now_iso = datetime.now(timezone.utc).isoformat()
+        _sid_for_record = session_id or _get_session_id()
+        _write_terminal_closure_record(
+            plan_path=plan_path,
+            session_id=_sid_for_record,
+            locked_at=_now_iso,
+            plan_hash=_ph,
+            audit_result=audit_result,
+        )
 
     # B2: get session_id BEFORE writing either file so both files have it
     sid = session_id or _get_session_id()
@@ -494,6 +577,10 @@ def main(argv: list[str] | None = None) -> int:
                         help="TC-TCF-002: Mark plan as COMPLETION_CANDIDATE (audit-ready, not yet closed). "
                              "Allows lifecycle audit to run before TERMINAL_CLOSED is written. "
                              "check_continuation.py returns CONTINUE for COMPLETION_CANDIDATE status.")
+    parser.add_argument("--skip-audit", action="store_true",
+                        help="TC-TCF-003: Emergency bypass — skip the mandatory auto-audit gate even when "
+                             "plan contains TC-* taskcard entries. Use only when lifecycle_audit is "
+                             "unavailable or the audit is known to be inapplicable.")
     args = parser.parse_args(argv)
 
     if args.clear:
@@ -517,7 +604,8 @@ def main(argv: list[str] | None = None) -> int:
                complete=args.complete, terminal=args.terminal,
                track_type=args.track_type, binding=args.binding,
                audit_gate=getattr(args, "audit_gate", False),
-               completion_candidate=getattr(args, "completion_candidate", False))
+               completion_candidate=getattr(args, "completion_candidate", False),
+               skip_audit=getattr(args, "skip_audit", False))
     return 0
 
 

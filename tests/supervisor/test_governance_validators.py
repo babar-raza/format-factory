@@ -1790,10 +1790,10 @@ class TestCanonicalValidatorCount:
         }
         result = run_all_governance_validators(decl, None)
         validator_count = len(result["validators"])
-        assert validator_count == 85, (
-            f"Expected 85 canonical validators, got {validator_count}. "
+        assert validator_count == 88, (
+            f"Expected 88 canonical validators, got {validator_count}. "
             "If validators were added/removed, update this test. "
-            "(85 = 84 prior + V82 validate_oracle_obligations wired in runner via TC-ORC-003)"
+            "(88 = 85 prior + V-TCF-001/002/003 terminal_closure_validators wired via TC-TCF-007)"
         )
 
 

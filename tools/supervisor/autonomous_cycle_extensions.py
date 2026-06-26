@@ -805,3 +805,120 @@ def validate_prompt_and_work_items(review, prompt_path, next_work, detected_stre
             review["stop_reason"] = "No generated prompt file"
     except Exception as e:
         print(f"  WARNING: Prompt completeness check skipped: {e}")
+
+
+# ---------------------------------------------------------------------------
+# TC-TCF-005: Autonomous reopening helpers
+# ---------------------------------------------------------------------------
+
+_TERMINAL_TASK_STATUSES = frozenset({"CLOSED", "SUPERSEDED", "EXCLUDED"})
+
+
+def find_next_eligible_task_in_plan(plan_path: str) -> dict | None:
+    """TC-TCF-005: Find the first open (non-terminal) taskcard in a plan.
+
+    Returns {"tc_id": ..., "plan_path": ..., "status": ...} or None.
+    Uses lifecycle_audit.parse_plan_taskcards which already knows the taskcard
+    status patterns (OPEN, IN_PROGRESS, PENDING, CLOSED, etc.).
+    """
+    try:
+        import sys as _sys
+        from pathlib import Path as _Path
+        _sys.path.insert(0, str(_Path(__file__).resolve().parent))
+        from lifecycle_audit import parse_plan_taskcards  # type: ignore[import]
+        tcs = parse_plan_taskcards(plan_path)
+        for tc in tcs:
+            if tc.get("status", "OPEN") not in _TERMINAL_TASK_STATUSES:
+                return {
+                    "tc_id": tc.get("tc_id") or tc.get("id", "UNKNOWN"),
+                    "plan_path": plan_path,
+                    "status": tc.get("status", "OPEN"),
+                }
+        return None
+    except Exception as exc:
+        print(f"  [TCF-005] find_next_eligible_task_in_plan error: {exc}")
+        return None
+
+
+def scan_closed_plan_test_regression(repo_root: "Path | None" = None) -> list[dict]:
+    """TC-TCF-005: Detect test regressions in TERMINAL_CLOSED plans.
+
+    Reads the most recent evidence-review.json and checks whether any
+    previously-PASS test item is now failing. Returns a (possibly empty) list
+    of regression dicts. Never raises — returns [] on any error.
+    """
+    import json as _json
+    from pathlib import Path as _Path
+
+    if repo_root is None:
+        repo_root = _Path(__file__).resolve().parent.parent.parent
+    else:
+        repo_root = _Path(repo_root)
+
+    result: list[dict] = []
+    try:
+        review_path = repo_root / "reports" / "supervisor" / "evidence-review.json"
+        if not review_path.exists():
+            return result
+        review = _json.loads(review_path.read_text(encoding="utf-8", errors="replace"))
+        items = review if isinstance(review, list) else review.get("items", [])
+        for item in items:
+            if not isinstance(item, dict):
+                continue
+            grade = str(item.get("grade", "")).upper()
+            prev_grade = str(item.get("previous_grade", grade)).upper()
+            if prev_grade == "PASS" and grade in ("FAIL", "NEEDS_REWORK"):
+                result.append({
+                    "item_id": item.get("id") or item.get("work_item_id"),
+                    "format": item.get("format"),
+                    "grade": grade,
+                    "previous_grade": prev_grade,
+                    "description": str(item.get("description", ""))[:120],
+                })
+    except Exception as exc:
+        print(f"  [TCF-005] scan_closed_plan_test_regression warning: {exc}")
+    return result
+
+
+def scan_closure_evidence_invalidation(repo_root: "Path | None" = None) -> list[dict]:
+    """TC-TCF-005: Find terminal closure records whose evidence is now missing.
+
+    Scans .local/evidences/plan-closures/ for terminal_closure_record.json files
+    and checks if the cited plan file still exists. Returns a (possibly empty)
+    list of dicts. Never raises — returns [] on any error.
+    """
+    import json as _json
+    from pathlib import Path as _Path
+
+    if repo_root is None:
+        repo_root = _Path(__file__).resolve().parent.parent.parent
+    else:
+        repo_root = _Path(repo_root)
+
+    result: list[dict] = []
+    try:
+        closures_dir = repo_root / ".local" / "evidences" / "plan-closures"
+        if not closures_dir.exists():
+            return result
+        for record_file in closures_dir.rglob("terminal_closure_record.json"):
+            try:
+                record = _json.loads(record_file.read_text(encoding="utf-8", errors="replace"))
+                plan_path = record.get("plan_path", "")
+                plan_exists = _Path(plan_path).exists() if plan_path else False
+                open_tcs = record.get("open_taskcards", [])
+                if not plan_exists or open_tcs:
+                    result.append({
+                        "record_file": str(record_file),
+                        "plan_path": plan_path,
+                        "plan_file_exists": plan_exists,
+                        "open_taskcards_in_record": open_tcs,
+                        "invalidation_reason": (
+                            "plan_file_missing" if not plan_exists
+                            else "open_taskcards_in_record"
+                        ),
+                    })
+            except Exception:
+                continue
+    except Exception as exc:
+        print(f"  [TCF-005] scan_closure_evidence_invalidation warning: {exc}")
+    return result

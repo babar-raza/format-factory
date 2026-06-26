@@ -224,6 +224,60 @@ def reopen_plan(
     return record
 
 
+def classify_work_scope(
+    new_work_description: str,
+    original_plan_path: str,
+    trigger: str,
+) -> str:
+    """TC-TCF-006: Classify whether new work is IN_SCOPE or OUT_OF_SCOPE of a closed plan.
+
+    IN_SCOPE when:
+      - trigger is a known in-scope type (e.g. MISSED_REQUIREMENT, REGRESSION, AUDIT_FINDING)
+      - OR new_work_description references a TC-* ID that appears in the original plan file
+
+    OUT_OF_SCOPE when:
+      - trigger is OUT_OF_SCOPE_WORK
+      - OR no TC-ID overlap with original plan and trigger is not an in-scope type
+
+    Returns "IN_SCOPE" or "OUT_OF_SCOPE".
+    """
+    import re as _re
+
+    _IN_SCOPE_TRIGGERS = frozenset({
+        "MISSED_REQUIREMENT",
+        "REGRESSION",
+        "AUDIT_FINDING",
+        "INCOMPLETE_VERIFICATION",
+        "AUTONOMOUS_OPEN_TASKCARD_DETECTION",
+        "EVIDENCE_INVALIDATION",
+        "DEFECTIVE_CLOSURE_MACHINERY",
+    })
+
+    # Explicit out-of-scope trigger
+    if trigger == "OUT_OF_SCOPE_WORK":
+        return "OUT_OF_SCOPE"
+
+    # Known in-scope triggers → always IN_SCOPE
+    if trigger in _IN_SCOPE_TRIGGERS:
+        return "IN_SCOPE"
+
+    # For other triggers (WRONG_MISSION, OTHER), check TC-ID overlap
+    _tc_pattern = _re.compile(r"\bTC-[A-Z0-9]+-[A-Z0-9-]+", _re.IGNORECASE)
+    new_tc_ids = set(_tc_pattern.findall(new_work_description))
+    if not new_tc_ids:
+        return "OUT_OF_SCOPE"
+
+    try:
+        plan_text = Path(original_plan_path).read_text(encoding="utf-8", errors="replace")
+        plan_tc_ids = set(_tc_pattern.findall(plan_text))
+        if new_tc_ids & plan_tc_ids:
+            return "IN_SCOPE"
+    except Exception:
+        pass
+
+    return "OUT_OF_SCOPE"
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         description="Governed reopening of TERMINAL_CLOSED plan locks"

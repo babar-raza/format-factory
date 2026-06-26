@@ -712,6 +712,101 @@ def execute_fodg_valid_case(case: dict, pkg: dict) -> dict:
     return execute_generic_load_case(case, pkg, "fodg", "fodg.fodg_codec", "load")
 
 
+def execute_ods_valid_case(case: dict, pkg: dict) -> dict:
+    """Execute an ODS valid case (GAP-ORC-BACKFILL-A)."""
+    return execute_generic_load_case(case, pkg, "ods", "ods.ods_parser", "parse_ods")
+
+
+def execute_sylk_valid_case(case: dict, pkg: dict) -> dict:
+    """Execute a SYLK valid case (GAP-ORC-BACKFILL-A)."""
+    return execute_generic_load_case(case, pkg, "sylk", "sylk.sylk_parser", "SylkDocument")
+
+
+def execute_fodt_valid_case(case: dict, pkg: dict) -> dict:
+    """Execute a FODT valid case (GAP-ORC-BACKFILL-B)."""
+    return execute_generic_load_case(case, pkg, "fodt", "fodt.parser", "parse_fodt")
+
+
+def execute_xcf_valid_case(case: dict, pkg: dict) -> dict:
+    """Execute an XCF valid case (GAP-ORC-BACKFILL-C)."""
+    return execute_generic_load_case(case, pkg, "xcf", "xcf.xcf_parser", "XcfImage")
+
+
+def execute_pbm_valid_case(case: dict, pkg: dict) -> dict:
+    """Execute a PBM valid case (GAP-ORC-BACKFILL-C)."""
+    return execute_generic_load_case(case, pkg, "pbm", "pbm.pbm_parser", "parse_pbm")
+
+
+def execute_pgm_valid_case(case: dict, pkg: dict) -> dict:
+    """Execute a PGM valid case (GAP-ORC-BACKFILL-C).
+
+    Uses src/python on sys.path to satisfy bare 'from pgm.*' imports in pgm_to_ppm.py.
+    """
+    case_id = case["case_id"]
+    sample_ref = case.get("input_ref") or case.get("sample_ref")
+    _, authority_status = check_authority(case, True)
+    if not sample_ref:
+        return make_verdict(
+            oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+            format_id="pgm", product_id="format-factory-pgm", language="python",
+            case_id=case_id, profile="PARSE_VALIDITY",
+            result=RESULT_NOT_APPLICABLE, authority_status=authority_status,
+            diagnostics=["No sample_ref"],
+        )
+    sample_path = REPO_ROOT / sample_ref
+    if not sample_path.exists():
+        return make_verdict(
+            oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+            format_id="pgm", product_id="format-factory-pgm", language="python",
+            case_id=case_id, profile="PARSE_VALIDITY",
+            result=RESULT_BLOCKED_MISSING_SAMPLE, authority_status=authority_status,
+            diagnostics=[f"Sample not found: {sample_path}"],
+        )
+    input_hash = sha256_file(sample_path)
+    try:
+        src_py = str(REPO_ROOT / "src" / "python")
+        if src_py not in sys.path:
+            sys.path.insert(0, src_py)
+        from pgm.pgm_parser import parse_pgm as _parse_pgm
+        result_val = _parse_pgm(str(sample_path))
+        return make_verdict(
+            oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+            format_id="pgm", product_id="format-factory-pgm", language="python",
+            case_id=case_id, profile="PARSE_VALIDITY",
+            result=RESULT_PASS, authority_status=authority_status,
+            observed={"loaded": True, "ok": result_val.get("ok") if isinstance(result_val, dict) else None},
+            deviations=[], input_hash=input_hash,
+        )
+    except Exception as e:
+        return make_verdict(
+            oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+            format_id="pgm", product_id="format-factory-pgm", language="python",
+            case_id=case_id, profile="PARSE_VALIDITY",
+            result=RESULT_FAIL, authority_status=authority_status,
+            diagnostics=[f"{type(e).__name__}: {e}"], input_hash=input_hash,
+        )
+
+
+def execute_ppm_valid_case(case: dict, pkg: dict) -> dict:
+    """Execute a PPM valid case (GAP-ORC-BACKFILL-C)."""
+    return execute_generic_load_case(case, pkg, "ppm", "ppm.ppm_parser", "parse_ppm")
+
+
+def execute_qoi_valid_case(case: dict, pkg: dict) -> dict:
+    """Execute a QOI valid case (GAP-ORC-BACKFILL-C)."""
+    return execute_generic_load_case(case, pkg, "qoi", "qoi.qoi_parser", "parse_qoi")
+
+
+def execute_odt_valid_case(case: dict, pkg: dict) -> dict:
+    """Execute an ODT valid case using parse_odt."""
+    return execute_generic_load_case(case, pkg, "odt", "odt.odt_parser", "parse_odt")
+
+
+def execute_fodp_valid_case(case: dict, pkg: dict) -> dict:
+    """Execute a FODP valid case using fodp load()."""
+    return execute_generic_load_case(case, pkg, "fodp", "fodp.fodp_codec", "load")
+
+
 def execute_zst_valid_case(case: dict, pkg: dict) -> dict:
     """Execute a ZST valid case against the product."""
     case_id = case["case_id"]
@@ -1208,6 +1303,26 @@ def run_oracle_for_format(format_id: str, profile_filter: str = None, case_filte
             verdict = execute_dif_valid_case(case, pkg)
         elif format_id == "fodg":
             verdict = execute_fodg_valid_case(case, pkg)
+        elif format_id == "ods":
+            verdict = execute_ods_valid_case(case, pkg)
+        elif format_id == "sylk":
+            verdict = execute_sylk_valid_case(case, pkg)
+        elif format_id == "fodt":
+            verdict = execute_fodt_valid_case(case, pkg)
+        elif format_id == "xcf":
+            verdict = execute_xcf_valid_case(case, pkg)
+        elif format_id == "pbm":
+            verdict = execute_pbm_valid_case(case, pkg)
+        elif format_id == "pgm":
+            verdict = execute_pgm_valid_case(case, pkg)
+        elif format_id == "ppm":
+            verdict = execute_ppm_valid_case(case, pkg)
+        elif format_id == "qoi":
+            verdict = execute_qoi_valid_case(case, pkg)
+        elif format_id == "odt":
+            verdict = execute_odt_valid_case(case, pkg)
+        elif format_id == "fodp":
+            verdict = execute_fodp_valid_case(case, pkg)
         else:
             verdict = make_verdict(
                 oracle_id=oracle_id, oracle_version=pkg["oracle_version"],

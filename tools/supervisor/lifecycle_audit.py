@@ -173,6 +173,174 @@ def build_closure_contract(
 
 
 # ---------------------------------------------------------------------------
+# TC-TCF-003: Premature-closure guards
+# ---------------------------------------------------------------------------
+
+
+def check_queue_exhaustion_guard(repo_root: Path, signal: dict) -> dict | None:
+    """TC-TCF-003-G1: Distinguish 'queue empty because done' vs 'queue empty because generator failed'.
+
+    Returns a CRITICAL finding if zero-task-counter shows repeated empty queue
+    without mission_complete being declared. GUARD_FAIL blocks TERMINAL_CLOSED.
+    Returns None when no issue is detected or the guard cannot run (non-blocking).
+    """
+    counter_path = repo_root / ".local" / "supervisor" / "zero-task-counter.json"
+    try:
+        if not counter_path.exists():
+            return None
+        counter = json.loads(counter_path.read_text(encoding="utf-8", errors="replace"))
+        count = int(counter.get("count", 0))
+        mission_complete_declared = bool(counter.get("mission_complete_declared"))
+        if count >= 3 and not mission_complete_declared:
+            return {
+                "finding_id": "FIND-GUARD-001",
+                "type": "QUEUE_EXHAUSTION_PREMATURE_CLOSURE",
+                "severity": "CRITICAL",
+                "description": (
+                    f"zero-task-counter.json count={count} (>=3) but mission_complete_declared=False. "
+                    "Queue exhaustion may be due to task generation failure, not true completion. "
+                    "TC-TCF-003-G1 GUARD_FAIL: cannot authorize TERMINAL_CLOSED."
+                ),
+                "source_file": str(counter_path),
+                "recommended_action": (
+                    "Verify task queue by checking next-work-items.json and gap-ledger. "
+                    "If truly complete, set mission_complete_declared=true in zero-task-counter.json. "
+                    "If tasks are missing, regenerate the task queue."
+                ),
+                "guard_id": "G1_QUEUE_EXHAUSTION",
+            }
+    except Exception:
+        pass  # Non-blocking; guard failure does not prevent audit
+    return None
+
+
+def check_closeout_task_guard(repo_root: Path) -> dict | None:
+    """TC-TCF-003-G2: Verify the most recent sprint was not a closeout-only sprint.
+
+    A closeout sprint (writing evidence, building review packages, updating reports)
+    is NOT a valid basis for terminal closure. The mission must show real product
+    or machinery work, not just administrative cleanup.
+    Returns CRITICAL finding if last declaration changed only administrative files.
+    Returns None when no issue is detected or guard cannot run (non-blocking).
+    """
+    _ADMIN_PREFIXES = (
+        ".local/evidences/",
+        "reports/supervisor/",
+        "reports/terminal-closure",
+        ".local/supervisor/",
+    )
+    _ADMIN_SUFFIXES = (".yaml", ".json", ".md")
+    try:
+        evidences_dir = repo_root / ".local" / "evidences"
+        if not evidences_dir.exists():
+            return None
+        # Find most recent evidence-declaration.yaml
+        declarations = sorted(
+            evidences_dir.rglob("evidence-declaration.yaml"),
+            key=lambda p: p.stat().st_mtime,
+            reverse=True,
+        )
+        if not declarations:
+            return None
+        latest = declarations[0]
+        content = latest.read_text(encoding="utf-8", errors="replace")
+        # Extract changed_files list via simple heuristic
+        import re as _re_g2
+        changed_match = _re_g2.findall(r"changed_files:\s*\n((?:\s+-[^\n]+\n)*)", content)
+        if not changed_match:
+            return None  # Cannot parse; non-blocking
+        changed_block = changed_match[-1]
+        files = [ln.strip().lstrip("- ").strip() for ln in changed_block.strip().splitlines() if ln.strip().startswith("-")]
+        if not files:
+            return None
+        admin_files = [
+            f for f in files
+            if any(f.startswith(p) for p in _ADMIN_PREFIXES)
+            or (all(f.endswith(s) for s in _ADMIN_SUFFIXES[:1]) and "evidence" in f)
+        ]
+        if files and len(admin_files) == len(files):
+            return {
+                "finding_id": "FIND-GUARD-002",
+                "type": "CLOSEOUT_ONLY_SPRINT",
+                "severity": "CRITICAL",
+                "description": (
+                    f"Most recent declaration ({latest.name}) changed only administrative files "
+                    f"(evidence, reports, YAML). Closeout sprint ≠ mission completion. "
+                    "TC-TCF-003-G2 GUARD_FAIL: cannot authorize TERMINAL_CLOSED from a closeout sprint."
+                ),
+                "source_file": str(latest),
+                "recommended_action": (
+                    "Verify that meaningful product or machinery work preceded this closeout sprint. "
+                    "If closure is valid, the prior sprint's declaration should show real implementation."
+                ),
+                "guard_id": "G2_CLOSEOUT_TASK",
+            }
+    except Exception:
+        pass  # Non-blocking
+    return None
+
+
+def check_iteration_limit_guard(signal: dict) -> dict | None:
+    """TC-TCF-003-G3: Warn when closure was triggered at MAX_ITERATIONS boundary.
+
+    An iteration limit is a checkpoint/rollover, not a completion signal.
+    Returns MEDIUM finding when stop_reason indicates iteration limit.
+    Returns None when not applicable (non-blocking GUARD_WARN only).
+    """
+    stop_reason = signal.get("stop_reason") or ""
+    if "MAX_ITERATIONS" in stop_reason or "GOVERNED_ROLLOVER" in stop_reason:
+        return {
+            "finding_id": "FIND-GUARD-003",
+            "type": "ITERATION_LIMIT_TRIGGERED",
+            "severity": "MEDIUM",
+            "description": (
+                f"stop_reason='{stop_reason}' indicates an iteration limit was reached. "
+                "MAX_ITERATIONS is a checkpoint/rollover signal, not a completion signal. "
+                "TC-TCF-003-G3 GUARD_WARN: verify mission is truly complete before terminal closure."
+            ),
+            "source_file": ".local/supervisor/continuation-signal.json",
+            "recommended_action": "Confirm all plan requirements are met; reset iteration counter and verify completion.",
+            "guard_id": "G3_ITERATION_LIMIT",
+        }
+    return None
+
+
+def check_sprint_audit_guard(repo_root: Path) -> dict | None:
+    """TC-TCF-003-G4: Warn when evidence-review.json appears newer than last sprint audit log.
+
+    An unconsumed sprint audit indicates the agent has not reviewed the most recent
+    sprint's findings before attempting terminal closure.
+    Returns MEDIUM finding when potential mismatch is detected (non-blocking GUARD_WARN).
+    Returns None when guard cannot determine state (non-blocking).
+    """
+    try:
+        review_path = repo_root / "reports" / "supervisor" / "evidence-review.json"
+        audit_log_path = repo_root / ".local" / "supervisor" / "sprint-audit-log.json"
+        if not review_path.exists():
+            return None
+        review_mtime = review_path.stat().st_mtime
+        if audit_log_path.exists():
+            audit_mtime = audit_log_path.stat().st_mtime
+            if review_mtime > audit_mtime + 60:  # >1 min gap
+                return {
+                    "finding_id": "FIND-GUARD-004",
+                    "type": "SPRINT_AUDIT_UNCONSUMED",
+                    "severity": "MEDIUM",
+                    "description": (
+                        "evidence-review.json is newer than sprint-audit-log.json by >60s. "
+                        "The most recent sprint's audit findings may not have been consumed. "
+                        "TC-TCF-003-G4 GUARD_WARN: confirm all sprint audit findings are addressed."
+                    ),
+                    "source_file": str(review_path),
+                    "recommended_action": "Review evidence-review.json findings and update sprint-audit-log.json.",
+                    "guard_id": "G4_SPRINT_AUDIT",
+                }
+    except Exception:
+        pass  # Non-blocking
+    return None
+
+
+# ---------------------------------------------------------------------------
 # Core audit function
 # ---------------------------------------------------------------------------
 
@@ -227,6 +395,24 @@ def run_lifecycle_audit(
     rework_items = list(raw_rework)
     govblock_resolved_by = signal.get("govblock_resolved_by")
     autonomous_continue = signal.get("autonomous_continue", True)
+
+    # ------------------------------------------------------------------
+    # 1b. TC-TCF-003: Premature-closure guards (run before GOV_BLOCK check)
+    # ------------------------------------------------------------------
+    _guard_results: list[str] = []
+    for _guard_fn, _guard_args in [
+        (check_queue_exhaustion_guard, (repo_root, signal)),
+        (check_closeout_task_guard, (repo_root,)),
+        (check_iteration_limit_guard, (signal,)),
+        (check_sprint_audit_guard, (repo_root,)),
+    ]:
+        try:
+            _gf = _guard_fn(*_guard_args)  # type: ignore[operator]
+            if _gf:
+                findings.append(_gf)
+                _guard_results.append(f"{_gf['guard_id']}:{_gf['severity']}")
+        except Exception:
+            pass  # Non-blocking; individual guard failure does not stop audit
 
     # ------------------------------------------------------------------
     # 2. Check for structural GOV_BLOCK
@@ -374,10 +560,15 @@ def run_lifecycle_audit(
     has_continuation_blocked = any(f["type"] == "CONTINUATION_BLOCKED" for f in findings)
     has_rework_pending = any(f["type"] == "REWORK_PENDING" for f in findings)
     has_open_gaps = bool(open_gaps)
+    # TC-TCF-003: CRITICAL guard findings (G1/G2) block closure same as open taskcards
+    has_critical_guard = any(
+        f.get("severity") == "CRITICAL" and f.get("guard_id", "").startswith("G")
+        for f in findings
+    )
 
     if has_external_gate:
         verdict = "AUDIT_BLOCKED_EXTERNAL"
-    elif has_govblock or has_continuation_blocked or has_rework_pending or has_open_gaps or has_open_taskcards:
+    elif has_govblock or has_continuation_blocked or has_rework_pending or has_open_gaps or has_open_taskcards or has_critical_guard:
         verdict = "AUDIT_REQUIRES_ITERATION"
     else:
         verdict = "AUDIT_PASS"
@@ -455,6 +646,7 @@ def run_lifecycle_audit(
         "next_iteration_required": next_iteration_required,
         "recommended_action": recommended_action,
         "closure_contract": closure_contract,
+        "guard_results": _guard_results,
         "signal_snapshot": {
             "autonomous_continue": autonomous_continue,
             "govblock_resolved_by": govblock_resolved_by,
@@ -469,6 +661,20 @@ def run_lifecycle_audit(
     output_path = repo_root / _OUTPUT_PATH_REL
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
+
+    # TC-TCF-003: Persist closure_contract.json alongside output when authorized.
+    # Allows V-TCF-002 to verify the contract exists before accepting terminal closure claims.
+    if closure_contract and closure_contract.get("closure_authorized") and plan_path:
+        import hashlib as _hl_c
+        _phash = closure_contract.get("plan_hash") or _hl_c.sha256(str(plan_path).encode()).hexdigest()[:16]
+        _cc_dir = repo_root / ".local" / "evidences" / "plan-closures" / _phash[:16]
+        try:
+            _cc_dir.mkdir(parents=True, exist_ok=True)
+            (_cc_dir / "closure_contract.json").write_text(
+                json.dumps(closure_contract, indent=2) + "\n", encoding="utf-8"
+            )
+        except Exception:
+            pass  # Non-blocking
 
     return result
 

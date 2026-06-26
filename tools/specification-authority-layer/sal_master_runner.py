@@ -662,6 +662,95 @@ _FORMAT_SPECIFIC_FACTS: Dict[str, List[Dict[str, str]]] = {
             ),
         },
     ],
+    "xpm": [
+        {
+            "qname": "XPM-FACT-001",
+            "section": "XPM3 Spec §1 — File Magic",
+            "description": (
+                "XPM files are C source files. The first non-blank, non-comment line "
+                "must be '/* XPM */'. This is the canonical magic identifier for XPM3."
+            ),
+        },
+        {
+            "qname": "XPM-FACT-002",
+            "section": "XPM3 Spec §2 — Header Values Array",
+            "description": (
+                "The image data is a C string array named <name>_xpm[]. "
+                "The first string encodes: \"width height ncolors chars_per_pixel\" "
+                "with optional hotspot x y for cursor images."
+            ),
+        },
+        {
+            "qname": "XPM-FACT-003",
+            "section": "XPM3 Spec §3 — Color Table",
+            "description": (
+                "Each of the ncolors strings defines one color entry: "
+                "\"chars key colorspec\". Key 'c' is the color (e.g. '#RGB' or 'None' "
+                "for transparent). Keys 'm', 'g4', 'g', 's' are optional variants."
+            ),
+        },
+        {
+            "qname": "XPM-FACT-004",
+            "section": "XPM3 Spec §4 — Pixel Data",
+            "description": (
+                "Remaining height strings encode pixel rows. Each pixel is chars_per_pixel "
+                "characters. Row strings have exactly width * chars_per_pixel characters."
+            ),
+        },
+        {
+            "qname": "XPM-FACT-005",
+            "section": "XPM3 Spec §5 — Transparent Color",
+            "description": (
+                "Transparency is signaled by color key 'c' with value 'None' (case-insensitive). "
+                "XPM3 does not support alpha channels; only full transparency."
+            ),
+        },
+    ],
+    "pam": [
+        {
+            "qname": "PAM-FACT-001",
+            "section": "Netpbm PAM Spec §1 — Magic Number",
+            "description": (
+                "PAM (Portable Arbitrary Map) files start with the ASCII magic 'P7' "
+                "followed by a newline. P7 is the sixth Netpbm format type."
+            ),
+        },
+        {
+            "qname": "PAM-FACT-002",
+            "section": "Netpbm PAM Spec §2 — Header Fields",
+            "description": (
+                "The PAM header contains lines: WIDTH <int>, HEIGHT <int>, DEPTH <int>, "
+                "MAXVAL <int>, TUPLTYPE <string> (optional), followed by ENDHDR. "
+                "Fields may appear in any order. Comments start with '#'."
+            ),
+        },
+        {
+            "qname": "PAM-FACT-003",
+            "section": "Netpbm PAM Spec §3 — Pixel Tuples",
+            "description": (
+                "After ENDHDR, pixel data consists of HEIGHT rows of WIDTH tuples. "
+                "Each tuple has DEPTH samples stored as big-endian binary. "
+                "Sample size: 1 byte if MAXVAL <= 255, else 2 bytes."
+            ),
+        },
+        {
+            "qname": "PAM-FACT-004",
+            "section": "Netpbm PAM Spec §4 — TUPLTYPE Values",
+            "description": (
+                "Standard TUPLTYPE values: BLACKANDWHITE (DEPTH=1, MAXVAL=1), "
+                "GRAYSCALE (DEPTH=1), RGB (DEPTH=3), BLACKANDWHITE_ALPHA (DEPTH=2), "
+                "GRAYSCALE_ALPHA (DEPTH=2), RGB_ALPHA (DEPTH=4)."
+            ),
+        },
+        {
+            "qname": "PAM-FACT-005",
+            "section": "Netpbm PAM Spec §5 — MAXVAL Range",
+            "description": (
+                "MAXVAL must be between 1 and 65535 inclusive. MAXVAL=1 is only "
+                "valid for BLACKANDWHITE TUPLTYPE. For other tuple types MAXVAL >= 2."
+            ),
+        },
+    ],
     "sylk": [
         {
             "qname": "SYLK-FACT-001",

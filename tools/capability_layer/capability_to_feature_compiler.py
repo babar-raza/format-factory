@@ -1,8 +1,23 @@
 """
-capability_to_feature_compiler.py — Phase 1 stub: gap-ledger → feature taskcard YAML stubs.
+capability_to_feature_compiler.py — Planning stub: gap-ledger → advisory taskcard YAML stubs.
+
+DEDUPLICATION NOTICE (TC-LA-007, 2026-06-26):
+  This is the PLANNING tool — it generates advisory YAML stub files for human review.
+  It is NOT the pipeline integration.
+
+  CANONICAL PIPELINE implementation: tools/supervisor/capability_feature_compiler.py
+    → Produces next-work-items.json consumed by autonomous_cycle.py
+    → Use this for supervisor loop work selection
+
+  THIS TOOL (tools/capability_layer/capability_to_feature_compiler.py):
+    → Produces per-gap YAML stub files in reports/capability-layer/taskcard-stubs/
+    → Output is advisory only (status: "backlog", requires_human_confirmation: true)
+    → Use this for offline planning and gap triage
+
+  Gap-filtering rules in this file are intentionally simpler than the pipeline version.
+  If you need authoritative skip-status rules, see _SKIP_STATUSES in the pipeline version.
 
 Purpose: Read gap-ledger.json → output feature taskcard YAML stubs for agent consumption.
-         Phase 2 (future): Wire to SAL fact provenance + QName registry.
 
 Governance:
   - Generated taskcard stubs have provenance: "gap_ledger_derived" and status: "backlog"
@@ -110,8 +125,8 @@ def generate_taskcard_stubs(gaps: list[dict], output_dir: str) -> list[str]:
             "gap_source": gap.get("source", "gap_ledger"),
             "gap_notes": gap.get("notes", ""),
             "phase2_extensions": {
-                "sal_fact_refs": [],  # Phase 2: wire to SAL fact provenance
-                "qname_refs": [],     # Phase 2: wire to QName registry
+                "sal_fact_refs": gap.get("spec_facts", []),  # Phase 2 IMPLEMENTED: wired to gap spec_facts
+                "qname_refs": [],     # Future: wire to QName registry
             },
         }
         fname = out / f"{gap_id}-taskcard-stub.yaml"

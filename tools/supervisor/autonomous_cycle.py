@@ -560,6 +560,14 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
                             _ld_reopened = json.loads(_lp.read_text(encoding="utf-8"))
                             plan_lock = _ld_reopened
                             print("  [AUTONOMOUS REOPEN] Plan reopened. Continuing execution.")
+                            # TC-TCF-005: identify next eligible task to prevent fall-through
+                            try:
+                                from autonomous_cycle_extensions import find_next_eligible_task_in_plan as _fnet  # type: ignore[import]
+                                _reopened_next = _fnet(_plan_path)
+                                if _reopened_next:
+                                    print(f"  [TCF-005] Reopened plan next task: {_reopened_next['tc_id']}")
+                            except Exception:
+                                pass  # Non-blocking
                         except Exception as _reopen_exc:
                             print(f"  [AUTONOMOUS REOPEN] WARNING: reopen failed ({_reopen_exc}). "
                                   "Plan remains TERMINAL_CLOSED.")

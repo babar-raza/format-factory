@@ -927,13 +927,19 @@ def validate_spec_fact_refs_wired(declaration: dict,
             sys.path.insert(0, str(_supervisor_dir))
         from validate_spec_fact_refs import validate_declaration_spec_fact_refs
     except ImportError as exc:
-        # Graceful degradation: cannot import the module — return WARN, not hard FAIL
+        # Hard FAIL: a missing enforcement module is a broken installation, not a
+        # graceful degradation scenario.  The spec-authority gate must fail closed
+        # (blocks_sprint=True) so that no product work silently bypasses spec-fact
+        # enforcement when the module is absent or unimportable.
         return _make_result(
             "spec_fact_refs_validator",
-            "WARN",
-            [{"note": f"spec_fact_refs enforcement module not importable: {exc}"}],
-            f"spec_fact_refs validator import error (non-blocking degradation): {exc}",
-            blocks_sprint=False,
+            "FAIL",
+            [{"note": (
+                f"V13: CRITICAL — spec_fact_refs enforcement module not importable: {exc}. "
+                "Fix installation or verify sys.path includes tools/supervisor/."
+            )}],
+            f"V13: spec_fact_refs enforcement unavailable — blocks sprint: {exc}",
+            blocks_sprint=True,
         )
 
     # TEST items add tests, not product source — exempt from spec_fact_refs

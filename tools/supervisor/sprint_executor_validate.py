@@ -510,6 +510,36 @@ _check_fix_sprint_evidence = check_fix_sprint_evidence
 _check_parent_id_evidence_tagging = check_parent_id_evidence_tagging
 
 
+def check_provenance_chain_completeness(doc: dict) -> list[str]:
+    """TC-LA-005: Warn when PRODUCT_SOURCE items lack a provenance_chain.
+
+    The provenance_chain field documents end-to-end traceability:
+    code change → test → spec fact → SAL database → gap-ledger entry.
+
+    This is WARN only (not ERROR) to allow incremental adoption.
+    See schemas/sal-facts/sal-facts-schema.json for FACT-ID format.
+    """
+    warnings: list[str] = []
+    for item in doc.get("planned_work_items", []):
+        if not isinstance(item, dict):
+            continue
+        item_type = item.get("item_type", "")
+        if item_type != "PRODUCT_SOURCE":
+            continue
+        item_id = item.get("item_id", "?")
+        status = item.get("status", "")
+        if status in ("not_started", "blocked_external_gate"):
+            continue
+        has_chain = bool(item.get("provenance_chain"))
+        has_spec_fact_refs = bool(item.get("spec_fact_refs"))
+        if not has_chain and not has_spec_fact_refs:
+            warnings.append(
+                f"WARN(TC-LA-005): PRODUCT_SOURCE item '{item_id}' has no provenance_chain "
+                f"or spec_fact_refs — add provenance_chain.spec_fact_ref to enable SAL traceability"
+            )
+    return warnings
+
+
 def check_contract_compliance(doc: dict, repo_root: Path = _REPO) -> list[str]:
     """CONTRACT-001: Warn when contracted gap-sourced items are not addressed.
 
@@ -634,6 +664,9 @@ def validate_file(
     # --- Phase 11 (TC-FL-010): Contract compliance check (WARN only) ---
     contract_warnings = check_contract_compliance(doc, repo_root)
 
+    # --- Phase 12 (TC-LA-005): Provenance chain completeness check (WARN only) ---
+    provenance_warnings = check_provenance_chain_completeness(doc)
+
     return {
         "passed": len(errors) == 0,
         "errors": errors,
@@ -644,6 +677,7 @@ def validate_file(
         "fse_warnings": fse_warnings,
         "parent_id_warnings": parent_id_warnings,
         "contract_warnings": contract_warnings,
+        "provenance_warnings": provenance_warnings,
     }
 
 
@@ -715,6 +749,12 @@ def main(argv: list[str] | None = None) -> int:
     if pid_warns:
         print(f"\nParent-ID evidence tagging warnings ({len(pid_warns)}):")
         for w in pid_warns:
+            print(f"  - {w}")
+
+    prov_warns = result.get("provenance_warnings", [])
+    if prov_warns:
+        print(f"\nProvenance chain warnings ({len(prov_warns)}):")
+        for w in prov_warns:
             print(f"  - {w}")
 
     if result["passed"]:

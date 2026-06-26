@@ -314,6 +314,24 @@ def run_all_governance_validators(
     except Exception:
         pass
 
+    # V-TCF-001/002/003 (TC-TCF-007): Terminal closure governance validators
+    # V-TCF-001: FAIL on open taskcards at terminal claim (LIFECYCLE_HARDENING/MACHINERY_HARDENING)
+    # V-TCF-002: WARN on missing terminal_closure_record.json evidence artifact
+    # V-TCF-003: WARN on premature closure trigger patterns (queue exhaustion, iteration limit)
+    try:
+        from terminal_closure_validators import (  # noqa: PLC0415
+            validate_no_open_taskcards_at_terminal as _vtcf1,
+            validate_terminal_closure_has_contract as _vtcf2,
+            validate_no_premature_closure_triggers as _vtcf3,
+        )
+        results.extend([
+            _vtcf1(declaration, repo_root),  # V-TCF-001
+            _vtcf2(declaration, repo_root),  # V-TCF-002
+            _vtcf3(declaration, repo_root),  # V-TCF-003
+        ])
+    except Exception:
+        pass  # Non-blocking on import failure
+
     # SAL format advisory (non-blocking, Lane E integration)
     try:
         from sal_format_advisory import build_advisory, _load_sal_facts
