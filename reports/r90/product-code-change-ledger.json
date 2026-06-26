@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s117-dotnet-deepening-20260627",
+  "latest_sprint": "ff-sprint-s118-dotnet-deepening-20260627",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -20535,9 +20535,67 @@
         }
       ],
       "format": "FODT"
+    },
+    {
+      "entry_id": "PC-NDJSON-R125",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s118-dotnet-deepening-20260627",
+      "product": "NDJSON .NET",
+      "capability_refs": [
+        "commercial_net_products.NDJSON.dotnet_status.stream_load"
+      ],
+      "api_symbols": [
+        "NdjsonDocument.Load(Stream)"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/ndjson/NdjsonR125StreamLoadTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "NDJSON"
+    },
+    {
+      "entry_id": "PC-FODT-R140",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s118-dotnet-deepening-20260627",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.path_export"
+      ],
+      "api_symbols": [
+        "FodtPdfExporter.ExportToPdf(string,string)",
+        "FodtPngExporter.ExportToPng(string,string)"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/fodt/FodtR140PathExportersTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "FODT"
+    },
+    {
+      "entry_id": "PC-FODS-R138",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s118-dotnet-deepening-20260627",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.pdf_path_export"
+      ],
+      "api_symbols": [
+        "FodsPdfExporter.ExportToPdf(string,string)"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/fods/FodsR138PdfPathExporterTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "FODS"
     }
   ],
-  "total_entries": 1018,
+  "total_entries": 1021,
   "changes": [
     {
       "file": "src/python/dif/models.py",
