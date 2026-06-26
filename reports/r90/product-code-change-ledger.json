@@ -27304,9 +27304,78 @@
       "tests_passed": 15,
       "tests_failed": 0,
       "worker_verdict": "PASS"
+    },
+    {
+      "entry_id": "PC-NETPBM-R278",
+      "classification": "dotnet_test_deepening",
+      "sprint": "ff-sprint-s270-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "commercial_net_products.NETPBM",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.get_brightest_pixel_value"
+      ],
+      "api_symbols": [
+        "NetpbmImage.GetBrightestPixelValue"
+      ],
+      "api_behavior": "Returns int in [0,MaxValue]; all-zero=0; all-max=MaxValue; dims/format/MaxValue unchanged; idempotent; dogfood known-max>=240; single-bright-pixel dominates",
+      "changed_files": [
+        "tests/net/netpbm/NetpbmR278GetBrightestPixelValueDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR278GetBrightestPixelValueDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [],
+      "format": "NETPBM"
+    },
+    {
+      "entry_id": "PC-FODS-R296",
+      "classification": "dotnet_test_deepening",
+      "sprint": "ff-sprint-s270-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "commercial_net_products.FODS",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.set_cell_color"
+      ],
+      "api_symbols": [
+        "FodsDocument.SetCellColor"
+      ],
+      "api_behavior": "Void; null/whitespace/nonexistent/negative-row/col throws; valid no-exception; SheetCount unchanged; set-twice no-exception; dogfood multiple-cells; dogfood set-color-then-value both succeed",
+      "changed_files": [
+        "tests/net/fods/FodsR296SetCellColorDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR296SetCellColorDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [],
+      "format": "FODS"
+    },
+    {
+      "entry_id": "PC-FODT-R285",
+      "classification": "dotnet_test_deepening",
+      "sprint": "ff-sprint-s270-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "commercial_net_products.FODT",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.get_table_name"
+      ],
+      "api_symbols": [
+        "FodtDocument.GetTableName"
+      ],
+      "api_behavior": "Returns string; negative/OOB/no-tables throws; non-null; non-empty; TableCount unchanged; idempotent; dogfood two-tables different names; dogfood non-empty string",
+      "changed_files": [
+        "tests/net/fodt/FodtR285GetTableNameDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR285GetTableNameDedicatedTests.cs"
+      ],
+      "test_count": 9,
+      "source_files": [],
+      "format": "FODT"
     }
   ],
-  "total_entries": 1580,
+  "total_entries": 1584,
   "changes": [
     {
       "file": "src/python/dif/models.py",
