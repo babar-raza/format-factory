@@ -26057,9 +26057,93 @@
         }
       ],
       "format": "FODT"
+    },
+    {
+      "entry_id": "PC-NETPBM-R263",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s256-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "NETPBM .NET",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.get_contrast"
+      ],
+      "api_symbols": [
+        "GetContrast"
+      ],
+      "api_behavior": "GetContrast() returns a double measure of contrast (non-negative). Non-mutating: width/height/format/MaxValue unchanged. Uniform image returns 0.0. Image with distinct min/max returns positive contrast. Idempotent.",
+      "changed_files": [
+        "tests/net/netpbm/NetpbmR263GetContrastDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR263GetContrastDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "tests/net/netpbm/NetpbmR263GetContrastDedicatedTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "NETPBM"
+    },
+    {
+      "entry_id": "PC-FODS-R277",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s256-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.rename_sheet"
+      ],
+      "api_symbols": [
+        "RenameSheet"
+      ],
+      "api_behavior": "RenameSheet(oldName, newName) renames an existing sheet. Null/whitespace/nonexistent old name throws. Null new name throws. SheetCount unchanged. Old name removed from GetSheetNames; new name present. Data accessible via new name.",
+      "changed_files": [
+        "tests/net/fods/FodsR277RenameSheetDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR277RenameSheetDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "tests/net/fods/FodsR277RenameSheetDedicatedTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "FODS"
+    },
+    {
+      "entry_id": "PC-FODT-R271",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s256-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.get_table_column_count"
+      ],
+      "api_symbols": [
+        "GetTableColumnCount"
+      ],
+      "api_behavior": "GetTableColumnCount(tableIndex) returns the number of columns in the table at index. Negative/OOB/no-tables throws. Returns column count matching AddTable cols. TableCount unchanged. Idempotent.",
+      "changed_files": [
+        "tests/net/fodt/FodtR271GetTableColumnCountDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR271GetTableColumnCountDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "tests/net/fodt/FodtR271GetTableColumnCountDedicatedTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "FODT"
     }
   ],
-  "total_entries": 1270,
+  "total_entries": 1273,
   "changes": [
     {
       "file": "src/python/dif/models.py",
