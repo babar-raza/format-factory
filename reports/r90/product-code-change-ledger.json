@@ -22408,6 +22408,85 @@
         }
       ],
       "format": "FODT"
+    },
+    {
+      "entry_id": "PC-NETPBM-R155",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s159-dotnet-deepening-20260628",
+      "product": "Netpbm .NET Commercial",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.adjust_contrast"
+      ],
+      "api_symbols": [
+        "AdjustContrast"
+      ],
+      "api_behavior": "NetpbmImage.AdjustContrast(double factor) applies contrast: pixel = mid + (pixel-mid)*factor. Throws ArgumentOutOfRangeException for negative factor. PBM returns clone. factor=1 is identity; factor=0 maps to midpoint.",
+      "changed_files": [],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR155AdjustContrastTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "src/net/netpbm/Model/NetpbmImageFilters.cs",
+          "state": "present",
+          "sha256": ""
+        }
+      ],
+      "format": "Netpbm"
+    },
+    {
+      "entry_id": "PC-FODS-R166",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s159-dotnet-deepening-20260628",
+      "product": "FODS .NET Commercial",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.mime_type_odf_version"
+      ],
+      "api_symbols": [
+        "MimeType",
+        "OdfVersion"
+      ],
+      "api_behavior": "FodsDocument.MimeType returns office:document/@office:mimetype (spreadsheet MIME). OdfVersion returns office:document/@office:version. Both non-null for CreateNew(). Both are idempotent.",
+      "changed_files": [],
+      "test_files": [
+        "tests/net/fods/FodsR166MimeTypeAndOdfVersionTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "src/net/fods/FodsDocument.cs",
+          "state": "present",
+          "sha256": ""
+        }
+      ],
+      "format": "FODS"
+    },
+    {
+      "entry_id": "PC-FODT-R168",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s159-dotnet-deepening-20260628",
+      "product": "FODT .NET Commercial",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.get_heading_texts_dedicated"
+      ],
+      "api_symbols": [
+        "GetHeadingTexts"
+      ],
+      "api_behavior": "FodtDocument.GetHeadingTexts() returns text of all heading paragraphs in document order. Returns empty list if no headings. Paragraphs excluded.",
+      "changed_files": [],
+      "test_files": [
+        "tests/net/fodt/FodtR168GetHeadingTextsDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "src/net/fodt/FodtDocument.cs",
+          "state": "present",
+          "sha256": ""
+        }
+      ],
+      "format": "FODT"
     }
   ],
   "total_entries": 1201,
