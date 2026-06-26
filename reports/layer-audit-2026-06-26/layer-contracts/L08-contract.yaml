@@ -1,0 +1,147 @@
+layer_id: L08
+canonical_name: Evidence and Review Package
+version: "1.0"
+generated_at: "2026-06-26"
+taskcard: TC-LA-PILOT-006
+mission: FORMAT-FACTORY-LAYER-AUDIT-20260626
+wiring_status: blueprint  # Reference document; not enforced by automation
+
+# Q1: What is this layer's purpose?
+purpose: >
+  Produce cryptographically signed evidence packages for every sprint that prove work
+  was completed, tested, and graded. Enable Babar Raza to review sprint output at Gate 11
+  and enable the supervisor to make informed continuation decisions. Every sprint must
+  produce an evidence declaration that passes schema validation before the sprint's work
+  is accepted.
+
+# Q2: What decisions does this layer own?
+owned_decisions:
+  - Evidence declaration schema (what fields are required)
+  - SHA-256 signing of review packages
+  - Sprint grading criteria (LLM grader + deterministic checks)
+  - Which work items require what level of evidence
+  - Review package ZIP structure
+
+# Q3: What decisions does this layer NOT own?
+non_owned_decisions:
+  - Sprint work selection (L11 Supervisor + L03 Capability own this)
+  - Whether a sprint should continue (L09 State + L11 Supervisor own this)
+  - Gate 11 execution approval (Babar Raza only)
+  - What constitutes a passing test (L06/L07 Product layers define this)
+
+# Q4: What are the authoritative inputs?
+authoritative_inputs:
+  - path: ".local/evidences/{run_id}/evidence-declaration.yaml"
+    type: evidence_declaration
+    description: >
+      Sprint declaration with all work items, test results, changed files.
+      Schema: docs/automation/supervisor-worker-contract.md
+      Required fields: evidence_root, start_time, end_time, git_head_start, git_head_end,
+      git_status_final, declared_scope, incomplete_work_items, changed_files, tests_run,
+      test_results, reports_created, worker_self_verdict, next_recommended_work
+    required: true
+  - path: "registry/source-structure-baseline.json"
+    type: source_baseline
+    description: LOC caps for known violations; used by evidence grader
+    required: true
+  - path: ".local/supervisor/product/next-work-items.json"
+    type: work_items
+    description: Planned work items for comparison against declared completed items
+    required: false
+
+# Q5: What are the output artifacts?
+output_artifacts:
+  - path: ".local/evidences/{run_id}/review-package-{run_id}.zip"
+    type: review_package
+    schema: "ZIP containing evidence-declaration.yaml + test outputs + changed file diffs"
+    consumer: Babar Raza (Gate 11 review); autonomous-cycle (for continuation decision)
+  - path: ".local/evidences/{run_id}/bundle-sha256.txt"
+    type: sha256_hash
+    consumer: Babar Raza (integrity verification)
+  - path: "reports/supervisor/maturity-signal.json"
+    type: maturity_signal
+    consumer: check_continuation.py; session-resume.md generation
+
+# Q6: What is the validation contract?
+validation_contract:
+  mandatory_validations:
+    - name: declaration_schema_validation
+      description: All required fields present; additionalProperties=false enforced
+      enforcement: sprint_executor_validate.py --repair
+      wiring_status: active
+    - name: sha256_integrity
+      description: Review package SHA-256 matches computed hash
+      enforcement: build_declaration_review_package.py
+      wiring_status: active
+    - name: bundle_validation_pass
+      description: bundle_validation_pass flag set in declaration
+      enforcement: supervisor pipeline sets this during grading
+      wiring_status: active
+  advisory_validations:
+    - name: llm_grader_evidence_quality
+      description: LLM grader confirms evidence paths contain real implementation
+      enforcement: semantic_verify_item() in grade_declared_work.py
+      wiring_status: active (GPT_OSS_ENDPOINT configured as of 2026-06-25)
+      note: Gracefully degrades if LLM unavailable; non-blocking
+
+# Q7: What is the error contract?
+error_contract:
+  on_schema_validation_fail:
+    action: sprint_executor_validate.py --repair auto-corrects; remaining FAILs must be fixed manually
+    downstream_effect: Supervisor loop rejects declaration; sprint not accepted
+    recovery: Fix FAIL fields in evidence-declaration.yaml; re-validate; resubmit
+  on_sha256_mismatch:
+    action: build_declaration_review_package.py exits non-zero
+    downstream_effect: Review package not trusted
+    recovery: Rebuild review package; check for file modification after signing
+  on_llm_grader_unavailable:
+    action: evidence_quality_zero in continuation_warnings (not hard_stops)
+    downstream_effect: Sprint continues; LLM grades deferred to next available session
+    recovery: Ensure GPT_OSS_ENDPOINT + GPT_OSS_API_KEY + openai SDK installed
+  on_closeout_failure:
+    action: "Log error; proceed to next sprint (Supreme Directive: best-effort closeout)"
+    downstream_effect: This sprint's evidence not formally reviewed; work still accepted
+    recovery: Manual closeout in next sprint if needed
+
+# Q8: What skills/commands produce this layer's outputs?
+producer_skills:
+  - command: /build-evidence-bundle
+    purpose: Creates the SHA-256 signed review package ZIP
+    idempotency: safe_rerun (deterministic from same declaration)
+  - command: /materialize-declaration-review
+    purpose: Materializes evidence review for human consumption
+    idempotency: safe_rerun
+
+# Q9: What skills/commands consume this layer's outputs?
+consumer_skills:
+  - command: /post-sprint-audit
+    purpose: Audits sprint evidence quality after supervisor review
+  - command: /plan-hardening
+    purpose: Converts weak evidence findings into plan amendments
+  - command: /check-gate
+    purpose: Uses evidence bundles to evaluate Gate 11 readiness
+  - command: /evidence-review-next-prompt
+    purpose: Extracts next-sprint prompt from evidence review
+
+# Q10: Who owns this layer?
+owner: autonomous_sprint  # Evidence production is fully agent-owned
+escalation: "Babar Raza (Gate 11: reviews packages; only external reviewer)"
+
+# Q11: What are the key gaps?
+key_gaps:
+  - gap_id: GAP-L08-RECOVERY-001
+    description: "Recovery from failed closeout is manual"
+    severity: LOW
+    impact: If autonomous-cycle crashes mid-closeout, sprint state is inconsistent
+    recommendation: Add --resume flag to supervisor_loop.py for partial closeout recovery
+    enforcement_taskcard: TBD-TASKCARD-LA-WIRE-050
+  - gap_id: GAP-L08-LLM-VAR-001
+    description: "LLM grader adds non-determinism to evidence quality scores"
+    severity: LOW
+    impact: Same sprint reruns may get different quality scores
+    recommendation: Cache LLM verdicts by (run_id, item_id) hash for deterministic reruns
+    enforcement_taskcard: TBD-TASKCARD-LA-WIRE-051
+
+current_maturity: L4
+target_maturity: L5
+maturity_gap: "L5 requires: automated recovery (+recovery_rollback), LLM caching (+idempotency), 100% negative controls"

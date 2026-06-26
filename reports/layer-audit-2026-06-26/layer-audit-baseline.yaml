@@ -3,14 +3,36 @@
 # Mission: FORMAT-FACTORY-LAYER-AUDIT-20260626
 # Generated: 2026-06-26
 # Investigator: claude-sonnet-4-6
-# Authority: Repository truth (HEAD 555aa4c7) outranks all prior reports
+# Authority: Repository truth (HEAD a3ed0a0c) outranks all prior reports
+# Baseline Refresh: 2026-06-26 — updated from 555aa4c7 to a3ed0a0c (+179 commits)
 
 layer_audit_baseline:
   mission_id: FORMAT-FACTORY-LAYER-AUDIT-20260626
   repository: c:/Users/prora/OneDrive/Documents/GitHub/format-factory
   branch: main
-  head: 555aa4c7
-  worktree: dirty  # 20+ modified files, 4 untracked
+  head: a3ed0a0c
+  prior_head: 555aa4c7
+  delta_commit_count: 179
+  worktree: dirty  # 51 modified/untracked files
+  delta_since_prior_baseline:
+    commits_10_most_recent:
+      - a3ed0a0c feat(net): add R166-R202 deepening tests for zst/fods/tsv/csv/netpbm/ndjson/fodt
+      - a24a8a2f feat(net): add R165-R201 deepening tests
+      - 4c2c90f3 feat(net-deepening): S190 — NETPBM BlurBox, FODS ExportSheetToMarkdown, FODT InsertParagraph
+      - b4eee6d9 feat(net): add R164-R200 deepening tests
+      - 7f51587e docs(sal): update addendum with completion commit hash 5e0f5cf6
+      - d44378d0 feat(net): add R163-R199 deepening tests
+      - 0987f0cf feat(net-deepening): S189 — NETPBM ApplyGamma, FODS GetSheetByIndex, FODT GetHeadingTexts
+      - 5e0f5cf6 feat(sal): SAL-VHIP-001 carry-forward — WIRE-001/006/BACKFILL-001 completed_verified
+      - 0eaf4bcf docs(master-plan): Section 89 — enumerated-singing-tiger fslay02 convergence CLOSED
+      - 14a3eb84 feat(net): add R162-R198 deepening tests
+    note: "... and 169 older commits not listed"
+    layer_impacts:
+      feat_oracle_commits: 3    # L05 (Oracle/Conformance) updated
+      feat_net_deepening_commits: 70  # L06 (.NET commercial) + L07 (Product) updated
+      feat_net_commits: 15      # L06 (.NET) updated (non-deepening)
+      docs_master_plan_commits: 7  # L10 (Plans) updated
+      other_commits: 84
   authoritative_plan: plans/master-plan.md
   plan_revision: v7.3
   supervisor_state: MODE_4_ACTIVE
@@ -28,8 +50,8 @@ layer_audit_baseline:
     registered_skills: 72
     claude_commands: 72
     qname_registry_entries: 79
-    gap_ledger_entries: 1242
-    gap_ledger_closed: 1203  # 96.8% — suspicious
+    gap_ledger_entries: 1246  # updated 2026-06-26; closed_by field MISSING in all sampled entries
+    gap_ledger_closed: 1203  # 96.8% — INDETERMINATE (closed_by not populated)
     sal_facts_total: 14315
     sal_facts_formats_with_nonzero: 5  # fods fodt ods odt fodg/fodp (ODF family only)
   discovered_architecture_docs:
@@ -1270,8 +1292,7 @@ false_layers:
 
   - name: failure_memory.json as active learning system
     actual_form: .local/supervisor/failure-memory.json file
-    problem: Per MEMORY.md: 'Zero durable learning. No failure-memory.json exists. Corrections do
-      not auto-propagate.' The file exists but drives no decisions.
+    problem: "Per MEMORY.md: 'Zero durable learning. No failure-memory.json exists. Corrections do not auto-propagate.' The file exists but drives no decisions."
     recommendation: Either wire it into autonomous_cycle.py or remove it
     risk: Misleads analysis that learning is active
 

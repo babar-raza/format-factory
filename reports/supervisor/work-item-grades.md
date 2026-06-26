@@ -1,14 +1,22 @@
 # Work Item Grades
-Sprint: ff-sprint-oracle-all-verified-20260626
-Generated: 2026-06-26T18:01:51.751412
-Global Status: ACCEPTED_WITH_REWORK
+Sprint: FORMAT-FACTORY-LAYER-AUDIT-20260626
+Generated: 2026-06-26T23:17:33.301806
+Global Status: ACCEPTED
 
 | Item ID | Grade | Rework Required |
 |---------|-------|-----------------|
-| WI-ORC-FINAL-001 | REWORK_REQUIRED |  |
+| TC-LA-PRE-000 | ACCEPTED_WITH_LIMITATIONS |  |
+| TC-LA-AUDIT-001 | ACCEPTED_WITH_LIMITATIONS |  |
+| TC-LA-AUDIT-002 | ACCEPTED_WITH_LIMITATIONS |  |
+| TC-LA-AUDIT-003 | ACCEPTED_WITH_LIMITATIONS |  |
+| TC-LA-PILOT-004 | ACCEPTED_WITH_LIMITATIONS |  |
+| TC-LA-PILOT-005 | ACCEPTED_VERIFIED |  |
+| TC-LA-PILOT-006 | ACCEPTED_WITH_LIMITATIONS |  |
+| TC-LA-HEAL-007 | ACCEPTED_WITH_LIMITATIONS |  |
+| TC-LA-HEAL-008 | ACCEPTED_WITH_LIMITATIONS |  |
 
 ## Summary
-- Accepted: 0
-- Rework: 1
+- Accepted: 9
+- Rework: 0
 - Overclaimed: 0
-- Autonomous Continue: true_with_rework
+- Autonomous Continue: True

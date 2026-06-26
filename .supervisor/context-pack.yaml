@@ -1,24 +1,23 @@
 schema_version: '1.0'
-generated_at: '2026-06-26T18:09:02.760601'
+generated_at: '2026-06-26T23:19:10.068343'
 repo_root: C:\Users\prora\OneDrive\Documents\GitHub\format-factory
 git:
-  head: a7744cf6
+  head: 2addaa63
   status:
-    modified_count: 79
-    untracked_count: 27
+    modified_count: 99
+    untracked_count: 13
     staged_count: 1
-    total_changed: 107
+    total_changed: 113
     clean: false
 supervisor_mode: 4
 latest_sprint:
-  sprint_id: ff-sprint-oracle-all-verified-20260626
+  sprint_id: FORMAT-FACTORY-LAYER-AUDIT-20260626
   run_id: unknown
-  autonomous_continue: true_with_rework
-  iteration: 11
+  autonomous_continue: true
+  iteration: 4
   max_iterations: 12
   hard_stops: []
-  rework_items:
-  - WI-ORC-FINAL-001
+  rework_items: []
 poc_matrix:
   sprint: poc-promotion-qoi-dif-xcf-ods-20260625
   last_updated: '2026-06-25'
@@ -37,8 +36,8 @@ poc_matrix:
       commercial_ready: false
   foss_python_products: {}
 skill_registry:
-  total_skills: 74
-  active_skills: 71
+  total_skills: 93
+  active_skills: 90
   skill_ids:
   - add-dogfood-export
   - add-dotnet-api
@@ -111,10 +110,29 @@ skill_registry:
   - check-source-loc
   - ingest-spec-sal
   - run-oracle
+  - identify-primary-layer
+  - create-permanent-layer-plan
+  - update-layer-current-state
+  - register-layer-gap
+  - register-layer-task
+  - append-layer-work-log
+  - append-layer-verification-log
+  - update-layer-session-handoff
+  - update-layer-master-index
+  - close-layer-task
+  - reconcile-layer-index
+  - inventory-permanent-layer-plans
+  - migrate-temporary-agent-plan
+  - detect-unlogged-work
+  - detect-stale-layer-state
+  - create-cross-layer-handoff
+  - select-next-layer-task
+  - validate-permanent-layer-plans
+  - reconcile-layer-task-register
   source_edits_require_handoff: true
   ledger_required: true
 product_code_ledger:
-  total_entries: 1192
+  total_entries: 1365
   governed_changes: 793
   backfilled: 4
   ledger_path: reports\r90\product-code-change-ledger.json

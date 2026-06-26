@@ -1,0 +1,138 @@
+layer_id: L01
+canonical_name: Specification Authority Layer (SAL)
+version: "1.0"
+generated_at: "2026-06-26"
+taskcard: TC-LA-PILOT-006
+mission: FORMAT-FACTORY-LAYER-AUDIT-20260626
+wiring_status: blueprint  # This file is a REFERENCE DOCUMENT, not enforced by automation
+
+# Q1: What is this layer's purpose?
+purpose: >
+  Extract machine-readable facts from format specifications (PDFs, RFCs, ISO documents)
+  and make them available to downstream layers for spec-parity verification. The SAL
+  transforms raw spec text into structured FACT-FORMAT-NNN records that trace implementation
+  decisions back to authoritative spec clauses.
+
+# Q2: What decisions does this layer own?
+owned_decisions:
+  - Which spec facts are canonical for a given format
+  - FACT-FORMAT-NNN identifier assignment
+  - Spec text normalization approach per format
+  - Which spec clauses map to which QNames
+
+# Q3: What decisions does this layer NOT own?
+non_owned_decisions:
+  - Which QNames exist (L02 owns this)
+  - Which capabilities to implement (L03 owns this)
+  - Whether implementation matches spec (L05 Oracle owns this)
+  - Implementation of parsers/writers (L06/L07 own this)
+
+# Q4: What are the authoritative inputs?
+authoritative_inputs:
+  - path: ".local/spec-cache/{format}/"
+    type: normalized_spec_text
+    description: PDF or RFC text normalized to plain text per format
+    required: true
+  - path: "shared/qname-registry/{format}.yaml"
+    type: qname_registry
+    description: QName definitions to link facts to (read-only input for SAL)
+    required: false
+
+# Q5: What are the output artifacts?
+output_artifacts:
+  - path: ".local/spec-cache/sal-facts-{format}.json"
+    type: sal_facts_file
+    schema: "informal — keys: fact_id, spec_clause, description, qname_ref"
+    consumer: L02 QName Authority (spec_fact_ref linkage)
+  - path: ".local/spec-cache/sal-facts-latest.json"
+    type: merged_sal_facts
+    schema: "keys: generated_at, formats_processed, spec_facts_total, results"
+    consumer: L03 Capability Authority; governance validators
+
+# Q6: What is the validation contract?
+validation_contract:
+  mandatory_validations:
+    - name: sal_facts_count_nonzero
+      description: sal-facts-{format}.json must have at least 1 fact after extraction
+      enforcement: post-run check in /ingest-spec-sal skill
+      wiring_status: partial  # skill exists; not wired into governance validators
+    - name: qname_spec_fact_ref_populated
+      description: At least 1 QName entry in {format}.yaml must have spec_fact_ref set
+      enforcement: post-run check in /ingest-spec-sal skill
+      wiring_status: partial
+  optional_validations:
+    - name: fact_id_format_check
+      description: All FACT-FORMAT-NNN IDs follow naming convention
+      wiring_status: planned
+      enforcement_taskcard: TBD-TASKCARD-LA-WIRE-001
+    - name: formal_schema_validation
+      description: Validate sal-facts JSON against formal schema
+      wiring_status: planned
+      enforcement_taskcard: TBD-TASKCARD-LA-WIRE-002
+      blocker: "schemas/ directory has only _readme.md — no formal SAL schema exists"
+
+# Q7: What is the error contract?
+error_contract:
+  on_extraction_failure:
+    action: log and skip format
+    downstream_effect: format remains CHAIN_BROKEN_AT_SAL; QName entries keep spec_fact_ref=null
+    recovery: manual normalization of spec text required
+  on_merge_failure:
+    action: log error; sal-facts-latest.json not updated
+    downstream_effect: stale consolidated view
+    recovery: re-run sal_master_runner.py after fixing normalized text
+  on_missing_spec_text:
+    action: PILOT_BLOCKED verdict in pilot report
+    downstream_effect: format cannot advance past L2 maturity
+    recovery: obtain spec PDF, normalize, retry
+
+# Q8: What skills/commands produce this layer's outputs?
+producer_skills:
+  - command: /ingest-spec-sal
+    file: .claude/commands/ingest-spec-sal.md
+    registration_status: registered (verified 2026-06-26; 93 total skills)
+    idempotency: safe_rerun
+
+# Q9: What skills/commands consume this layer's outputs?
+consumer_skills:
+  - command: /qname-backfill
+    purpose: Links FACT-FORMAT-NNN records to QName registry entries
+  - command: /python-qname-code-reviewer
+    purpose: Verifies spec_fact_ref populated in Python source classes
+  - command: /spec-parity-verification
+    purpose: Verifies implementation matches spec facts
+
+# Q10: Who owns this layer?
+owner: autonomous_sprint  # No named human owner; supervisor pipeline drives execution
+escalation: Babar Raza (Gate 11 only; SAL work is agent-owned)
+
+# Q11: What are the key gaps?
+key_gaps:
+  - gap_id: GAP-L01-SCHEMA-001
+    description: "No formal JSON schema for sal-facts files (schemas/ has only _readme.md)"
+    severity: HIGH
+    impact: Extraction cannot be validated against schema; silent format errors possible
+    recommendation: Create schemas/sal-facts-schema.json
+    enforcement_taskcard: TBD-TASKCARD-LA-WIRE-002
+  - gap_id: GAP-L01-COVERAGE-001
+    description: "Only 6/20 formats have SAL extraction working (ODF-family + ZST)"
+    severity: HIGH
+    impact: 14/20 formats lack spec authority; chain broken at L01
+    recommendation: Prioritize RFC formats (CSV, TOML) for normalized text creation
+    enforcement_taskcard: TBD-TASKCARD-SAL-EXPAND-001
+  - gap_id: GAP-L01-TESTS-001
+    description: "No automated tests of SAL extraction pipeline"
+    severity: MEDIUM
+    impact: Extraction regressions go undetected
+    recommendation: Add test_sal_extraction.py with 3+ format samples
+    enforcement_taskcard: TBD-TASKCARD-LA-WIRE-003
+  - gap_id: GAP-L01-STALE-001
+    description: "refresh_check.py exists but stale spec detection is non-enforced"
+    severity: LOW
+    impact: Spec cache may drift from actual spec version
+    recommendation: Wire refresh_check.py to fail governance check when spec cache is >90 days old
+    enforcement_taskcard: TBD-TASKCARD-LA-WIRE-004
+
+current_maturity: L2
+target_maturity: L3
+maturity_gap: "Requires: formal schema (raises schema_quality from 0), tests (raises test_coverage from 1), expand coverage to 10+ formats (raises producer_completeness from 2)"

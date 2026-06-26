@@ -1,0 +1,132 @@
+layer_id: L02
+canonical_name: QName Hierarchy Authority
+version: "1.0"
+generated_at: "2026-06-26"
+taskcard: TC-LA-PILOT-006
+mission: FORMAT-FACTORY-LAYER-AUDIT-20260626
+wiring_status: blueprint  # Reference document; not enforced by automation
+
+# Q1: What is this layer's purpose?
+purpose: >
+  Maintain the authoritative mapping from specification element names (QNames) to
+  canonical implementation classes. Every format element that can be implemented must
+  have a QName entry linking spec authority (FACT-FORMAT-NNN) to Python class and
+  .NET class implementations. This layer defines what "correct naming" means for all
+  Format Factory implementations.
+
+# Q2: What decisions does this layer own?
+owned_decisions:
+  - Canonical QName for each spec element (namespace_uri + local_name)
+  - Canonical class name (e.g., Table.TableCell, not FodsCell)
+  - Which Python file and .NET file implement each element
+  - QName lifecycle (seeded → architecture_only → implementing → implemented → stable)
+  - Which spec_fact_ref maps to which QName entry
+
+# Q3: What decisions does this layer NOT own?
+non_owned_decisions:
+  - What spec facts exist (L01 SAL owns this)
+  - Which capabilities are required (L03 Capability Authority owns this)
+  - Implementation correctness (L05 Oracle + L06/L07 Product layers own this)
+  - Whether a product file is syntactically valid (L06/L07 own this)
+
+# Q4: What are the authoritative inputs?
+authoritative_inputs:
+  - path: "shared/qname-registry/{format}.yaml"
+    type: qname_registry_file
+    description: Per-format YAML registry; each entry has qname, canonical_class, spec_fact_ref, python_file, dotnet_file
+    required: true
+  - path: "shared/qname-registry/schema.yaml"
+    type: registry_schema
+    description: JSON Schema for the per-format YAML files
+    required: true
+  - path: ".local/spec-cache/sal-facts-{format}.json"
+    type: sal_facts
+    description: Source of FACT-FORMAT-NNN IDs for spec_fact_ref linkage
+    required: false  # Can seed without SAL facts; spec_fact_ref=null until linked
+
+# Q5: What are the output artifacts?
+output_artifacts:
+  - path: "shared/qname-registry/{format}.yaml"
+    type: qname_registry_entry
+    consumer: V53 governance validator; /python-qname-code-reviewer; product source files
+  - path: "shared/qname-registry/schema.yaml"
+    type: registry_schema
+    consumer: YAML validation tooling
+
+# Q6: What is the validation contract?
+validation_contract:
+  mandatory_validations:
+    - name: V53_qname_compliance
+      description: All product source files must have spec_qname class attribute matching registry
+      enforcement: governance_validators.py validate_qname_compliance() — wired into autonomous_cycle.py
+      wiring_status: active
+    - name: V48_architecture_only_stub_gate
+      description: RELEASE_GATE items cannot cite architecture_only stub files as evidence
+      enforcement: governance_validators.py validate_architecture_only_stub_gate()
+      wiring_status: active
+    - name: V36_no_stub_tests
+      description: Test files cannot be >80% spec_qname-only assertions
+      enforcement: governance_validators.py validate_no_stub_tests()
+      wiring_status: active
+  optional_validations:
+    - name: qname_registration_schema_check
+      description: Validate new QName entries against schema.yaml at registration time
+      wiring_status: planned
+      enforcement_taskcard: TBD-TASKCARD-LA-WIRE-010
+
+# Q7: What is the error contract?
+error_contract:
+  on_missing_spec_qname:
+    action: V53 returns FAIL or WARN depending on file type
+    downstream_effect: Governance block if product source file lacks spec_qname
+    recovery: Add spec_qname class attribute to product source class
+  on_schema_violation:
+    action: YAML parse error; registry read fails
+    downstream_effect: Downstream consumers get empty or stale registry view
+    recovery: git restore shared/qname-registry/{format}.yaml; fix the entry
+  on_missing_spec_fact_ref:
+    action: V53 warning (not block); /python-qname-code-reviewer reports WARN
+    downstream_effect: QName entry is seeded but not linked to spec authority
+    recovery: Run /qname-backfill to link FACT-FORMAT-NNN from SAL
+
+# Q8: What skills/commands produce this layer's outputs?
+producer_skills:
+  - command: /qname-backfill
+    purpose: Links spec_fact_ref from SAL facts to QName registry entries
+    idempotency: safe_rerun (additive updates)
+  - command: /spec-literal-qname-to-code-mapping
+    purpose: Maps spec literal QNames to source code locations
+
+# Q9: What skills/commands consume this layer's outputs?
+consumer_skills:
+  - command: /python-qname-code-reviewer
+    purpose: Reviews Python source for spec_qname compliance
+  - command: /implement-spec-stub
+    purpose: Uses QName registry to identify stubs requiring implementation
+  - command: /spec-parity-verification
+    purpose: Uses canonical QNames to verify implementation parity
+  - command: /score-format
+    purpose: Scores QName coverage as part of format maturity assessment
+
+# Q10: Who owns this layer?
+owner: autonomous_sprint
+escalation: Babar Raza (Gate 11 only)
+
+# Q11: What are the key gaps?
+key_gaps:
+  - gap_id: GAP-L02-VERSION-001
+    description: "No versioning upgrade path for QName format changes"
+    severity: MEDIUM
+    impact: Breaking changes to qname-registry YAML format require manual migration of 21 files
+    recommendation: Add schema_version field to registry YAML; write migration script
+    enforcement_taskcard: TBD-TASKCARD-LA-WIRE-011
+  - gap_id: GAP-L02-REGVAL-001
+    description: "No validation at QName registration time (only detected post-hoc by V53)"
+    severity: MEDIUM
+    impact: Invalid entries can be committed before validators run
+    recommendation: Add pre-commit hook calling schema.yaml validation
+    enforcement_taskcard: TBD-TASKCARD-LA-WIRE-012
+
+current_maturity: L3
+target_maturity: L4
+maturity_gap: "Requires: versioning upgrade path (+versioning_compatibility), registration-time validation (+failure_handling)"

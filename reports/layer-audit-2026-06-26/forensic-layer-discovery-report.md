@@ -1,8 +1,14 @@
 # Format Factory — Forensic Layer Discovery Report
 **Mission:** FORMAT-FACTORY-LAYER-AUDIT-20260626
 **Date:** 2026-06-26
-**HEAD:** 555aa4c7 (branch: main)
+**HEAD:** a3ed0a0c (branch: main) — *Baseline Refresh 2026-06-26: updated from 555aa4c7, +179 commits*
 **Authority:** Repository truth only. No prior report, summary, or conversation is trusted without verification.
+
+---
+
+### Baseline Refresh (2026-06-26)
+
+Repository HEAD advanced from `555aa4c7` to `a3ed0a0c` (+179 commits). Dominant changes: 70 feat(net-deepening) commits expanding .NET commercial layer (L06), 15 feat(net) commits, 3 feat(oracle) commits (L05), and 1 feat(sal) commit completing SAL WIRE/BACKFILL (L01). Gap ledger updated: 1,246 entries (was 1,242); `closed_by` field absent in all sampled closed entries — closure evidence quality is INDETERMINATE.
 
 ---
 
@@ -195,23 +201,135 @@ This requires gap_verification_engine.py audit before trusting the ledger state.
 
 ---
 
-## 6. LAYER MATURITY SCORES (Key Dimensions)
+## 6. LAYER MATURITY SCORES — Full 25-Dimension Assessment (TC-LA-AUDIT-003)
 
-Maturity Model: L0=Absent, L1=Conceptual, L2=Partial, L3=Operational, L4=Governed, L5=Production Authority
+**Generated:** 2026-06-26 | **Formula:** v1.0 | **Assessment file:** `reports/layer-audit-2026-06-26/maturity-assessment-full.yaml`
 
-| Layer | Cohesion | Authority | Input Contract | Output Contract | Validation | Tests | Evidence | Overall |
-|---|---|---|---|---|---|---|---|---|
-| L01 SAL | 4 | 4 | 3 | 2 | 3 | 1 | 2 | **L2** |
-| L02 QName | 4 | 3 | 2 | 3 | 4 | 3 | 3 | **L3** |
-| L03 Capability | 4 | 3 | 3 | 3 | 3 | 2 | 3 | **L3** |
-| L05 Oracle | 4 | 4 | 3 | 3 | 3 | 1 | 3 | **L2** |
-| L06 Product Source | 5 | 4 | 4 | 4 | 4 | 5 | 4 | **L4** |
-| L07 Tests | 4 | 3 | 4 | 4 | 3 | 5 | 3 | **L4** |
-| L08 Evidence | 5 | 4 | 4 | 4 | 4 | 4 | 5 | **L4** |
-| L09 State/Continuation | 5 | 5 | 4 | 4 | 5 | 5 | 3 | **L4** |
-| L11 Supervisor | 4 | 5 | 5 | 5 | 5 | 5 | 5 | **L5** |
-| L12 Governance | 4 | 5 | 5 | 4 | 5 | 5 | 4 | **L4** |
-| L13 Skills/Commands | 5 | 4 | 4 | 4 | 4 | 4 | 4 | **L4** |
+**Maturity Bands:** L0=Absent (0–0.5) · L1=Conceptual (0.5–1.5) · L2=Partial (1.5–2.5) · L3=Operational (2.5–3.5) · L4=Governed (3.5–4.5) · L5=Production (4.5–5.0)
+
+**Scale:** 0=absent, 1=conceptual, 2=partial, 3=operational, 4=governed, 5=production
+
+**Bucket weights:** Contract×1.5 · Validation×1.5 · Lifecycle×1.0 · Integration×1.0 · Overhead×0.75 · Σ=5.75
+
+### CONTRACT Bucket (weight 1.5) — input_contract, output_contract, schema_quality, authority_clarity, provenance
+
+| Layer | in_ctr | out_ctr | schema | authority | provenance | **Bucket Avg** |
+|---|---|---|---|---|---|---|
+| L01 SAL | 3 | 3 | **0** | 4 | 3 | 2.60 |
+| L02 QName | 3 | 4 | 3 | 4 | 4 | 3.60 |
+| L03 Capability | 3 | 4 | 3 | 4 | 3 | 3.40 |
+| L05 Oracle | 4 | 4 | 3 | 5 | 3 | 3.80 |
+| L06 .NET | 4 | 4 | 3 | 4 | 3 | 3.60 |
+| L07 Python | 4 | 4 | 3 | 5 | 3 | 3.80 |
+| L08 Evidence | 5 | 4 | 5 | 5 | 4 | 4.60 |
+| L09 State | 5 | 5 | 4 | 5 | 4 | 4.60 |
+| L11 Supervisor | 5 | 5 | 5 | 5 | 4 | 4.80 |
+| L12 Governance | 5 | 4 | 5 | 5 | 4 | 4.60 |
+| L13 Skills | 4 | 4 | 3 | 4 | 3 | 3.60 |
+
+### VALIDATION Bucket (weight 1.5) — validation, test_coverage, negative_controls, idempotency, evidence_quality
+
+| Layer | valid | tests | neg_ctrl | idempot | evidence | **Bucket Avg** |
+|---|---|---|---|---|---|---|
+| L01 SAL | 2 | 1 | 1 | 3 | 2 | 1.80 |
+| L02 QName | 4 | 3 | 3 | 4 | 3 | 3.40 |
+| L03 Capability | 3 | 2 | 2 | 3 | 2 | 2.40 |
+| L05 Oracle | 4 | 4 | 4 | 5 | 3 | 4.00 |
+| L06 .NET | 5 | 4 | 4 | 4 | 4 | 4.20 |
+| L07 Python | 5 | 5 | 4 | 4 | 4 | 4.40 |
+| L08 Evidence | 5 | 4 | 3 | 4 | 5 | 4.20 |
+| L09 State | 5 | 5 | 5 | 4 | 4 | 4.60 |
+| L11 Supervisor | 5 | 5 | 5 | 5 | 5 | 5.00 |
+| L12 Governance | 5 | 5 | 5 | 5 | 4 | 4.80 |
+| L13 Skills | 3 | 3 | 2 | 4 | 3 | 3.00 |
+
+### LIFECYCLE Bucket (weight 1.0) — failure_handling, recovery_rollback, versioning_compatibility, stale_state_detection, artifact_identity
+
+| Layer | fail_hdl | recovery | versioning | stale_det | artifact | **Bucket Avg** |
+|---|---|---|---|---|---|---|
+| L01 SAL | 2 | 2 | 1 | 1 | 3 | 1.80 |
+| L02 QName | 2 | 4 | 2 | 3 | 4 | 3.00 |
+| L03 Capability | 2 | 3 | 2 | 2 | 3 | 2.40 |
+| L05 Oracle | 4 | 4 | 2 | 2 | 4 | 3.20 |
+| L06 .NET | 3 | 4 | 3 | 2 | 4 | 3.20 |
+| L07 Python | 3 | 4 | 3 | 3 | 4 | 3.40 |
+| L08 Evidence | 4 | 3 | 3 | 4 | 5 | 3.80 |
+| L09 State | 4 | 4 | 3 | 4 | 4 | 3.80 |
+| L11 Supervisor | 5 | 4 | 3 | 4 | 5 | 4.20 |
+| L12 Governance | 4 | 4 | 3 | 3 | 4 | 3.60 |
+| L13 Skills | 3 | 3 | 2 | 3 | 4 | 3.00 |
+
+### INTEGRATION Bucket (weight 1.0) — skill_command_integration, supervisor_integration, consumer_adoption, responsibility_cohesion, producer_completeness
+
+| Layer | skill_cmd | supervisor | consumer | cohesion | producer | **Bucket Avg** |
+|---|---|---|---|---|---|---|
+| L01 SAL | 4 | 2 | 3 | 4 | 2 | 3.00 |
+| L02 QName | 3 | 3 | 4 | 5 | 3 | 3.60 |
+| L03 Capability | 2 | 4 | 4 | 4 | 3 | 3.40 |
+| L05 Oracle | 4 | 2 | 2 | 5 | 4 | 3.40 |
+| L06 .NET | 3 | 3 | 3 | 4 | 3 | 3.20 |
+| L07 Python | 4 | 5 | 4 | 5 | 4 | 4.40 |
+| L08 Evidence | 4 | 5 | 4 | 5 | 4 | 4.40 |
+| L09 State | 3 | 5 | 5 | 5 | 4 | 4.40 |
+| L11 Supervisor | 4 | 5 | 5 | 5 | 5 | 4.80 |
+| L12 Governance | 3 | 5 | 5 | 5 | 4 | 4.40 |
+| L13 Skills | 5 | 4 | 4 | 4 | 4 | 4.20 |
+
+### OVERHEAD Bucket (weight 0.75) — maintainability, machinery_overhead, product_value, observability, security_compliance
+
+| Layer | maintain | mach_ovhd | prod_val | observ | security | **Bucket Avg** |
+|---|---|---|---|---|---|---|
+| L01 SAL | 3 | 2 | 4 | 2 | 3 | 2.80 |
+| L02 QName | 4 | 3 | 4 | 3 | 4 | 3.60 |
+| L03 Capability | 3 | 2 | 4 | 3 | 4 | 3.20 |
+| L05 Oracle | 4 | 3 | 5 | 3 | 4 | 3.80 |
+| L06 .NET | 4 | 3 | 5 | 3 | 4 | 3.80 |
+| L07 Python | 4 | 3 | 5 | 4 | 4 | 4.00 |
+| L08 Evidence | 4 | 3 | 5 | 4 | 4 | 4.00 |
+| L09 State | 4 | 3 | 5 | 4 | 4 | 4.00 |
+| L11 Supervisor | 4 | **2** | 5 | 5 | 4 | 4.00 |
+| L12 Governance | 4 | 3 | 5 | 5 | 5 | 4.40 |
+| L13 Skills | 3 | 3 | 4 | 3 | 4 | 3.40 |
+
+### MATURITY SUMMARY — Weighted Scores and Verdicts
+
+| Layer | Canonical Name | Ctr×1.5 | Val×1.5 | Lif×1.0 | Int×1.0 | Ovh×0.75 | **Weighted** | **Computed** | **Final** |
+|---|---|---|---|---|---|---|---|---|---|
+| L01 | Specification Authority (SAL) | 2.60 | 1.80 | 1.80 | 3.00 | 2.80 | **2.35** | L2 | **L2** |
+| L02 | QName Hierarchy Authority | 3.60 | 3.40 | 3.00 | 3.60 | 3.60 | **3.44** | L3 | **L3** |
+| L03 | Requirement and Capability Authority | 3.40 | 2.40 | 2.40 | 3.40 | 3.20 | **2.94** | L3 | **L3** |
+| L05 | Oracle and Conformance Authority | 3.80 | 4.00 | 3.20 | 3.40 | 3.80 | **3.68** | L4 | **L3** ⚠️ |
+| L06 | Product Source (.NET Commercial) | 3.60 | 4.20 | 3.20 | 3.20 | 3.80 | **3.64** | L4 | **L4** |
+| L07 | Product Source (Python FOSS) | 3.80 | 4.40 | 3.40 | 4.40 | 4.00 | **4.02** | L4 | **L4** |
+| L08 | Evidence and Review Package | 4.60 | 4.20 | 3.80 | 4.40 | 4.00 | **4.24** | L4 | **L4** |
+| L09 | State and Continuation Authority | 4.60 | 4.60 | 3.80 | 4.40 | 4.00 | **4.35** | L4 | **L4** |
+| L11 | Supervisor and Sprint Authority | 4.80 | 5.00 | 4.20 | 4.80 | 4.00 | **4.64** | L5 | **L5** |
+| L12 | Governance and Policy Enforcement | 4.60 | 4.80 | 3.60 | 4.40 | 4.40 | **4.42** | L4 | **L4** |
+| L13 | Skill and Command Execution | 3.60 | 3.00 | 3.00 | 4.20 | 3.40 | **3.42** | L3 | **L3** |
+
+⚠️ L05: Human override from computed L4 → L3. Rationale: supervisor_integration=2, consumer_adoption=2 — oracle results not consumed in sprint loop. Infrastructure is complete but disconnected from continuous verification.
+
+### Critical Zero Dimensions
+
+| Layer | Zero-Scored Dimension | Impact |
+|---|---|---|
+| L01 SAL | `schema_quality=0` | No formal schema for sal-facts JSON; `schemas/` directory contains only `_readme.md` |
+
+### Key Gaps by Layer
+
+| Layer | Top Gap | Score Drag |
+|---|---|---|
+| L01 | No formal SAL schema; 14/20 formats have 0 spec facts | schema_quality=0, test_coverage=1 |
+| L02 | No versioning upgrade path; no registration validation | versioning_compatibility=2 |
+| L03 | `closed_by` field absent from all closed entries (INDETERMINATE audit verdict) | evidence_quality=2 |
+| L05 | Oracle not wired into sprint cycle; verdicts not auto-consumed | supervisor_integration=2, consumer_adoption=2 |
+| L06 | Only 10/20 formats; not published to nuget.org | producer_completeness=3, consumer_adoption=3 |
+| L07 | 8/20 formats read-only (no write support); not published to PyPI | — |
+| L08 | Recovery from failed closeout is manual | recovery_rollback=3 |
+| L09 | No skill for state management; stale lock cleanup manual | skill_command_integration=3 |
+| L11 | failure-memory.json orphaned; grade-cache 565KB unbounded | machinery_overhead=2 |
+| L12 | CI skill-attribution-check is allow_failure=true; grade-cache unbounded | stale_state_detection=3 |
+| L13 | No skill versioning; no failure tests; CI enforcement advisory only | versioning_compatibility=2, negative_controls=2 |
 
 ---
 

@@ -1,0 +1,138 @@
+layer_id: L05
+canonical_name: Oracle and Conformance Authority
+version: "1.0"
+generated_at: "2026-06-26"
+taskcard: TC-LA-PILOT-006
+mission: FORMAT-FACTORY-LAYER-AUDIT-20260626
+wiring_status: blueprint  # Reference document; not enforced by automation
+
+# Q1: What is this layer's purpose?
+purpose: >
+  Provide deterministic, spec-backed conformance verification for all 20 supported formats.
+  The Oracle layer compares Format Factory output against canonical reference implementations
+  using a registry of comparators. This is the only layer that can definitively answer:
+  "Does this format implementation produce spec-correct output?"
+
+# Q2: What decisions does this layer own?
+owned_decisions:
+  - Oracle test case definitions (oracle-package.yaml per format)
+  - Comparator selection for each oracle case (comparator-registry.yaml)
+  - Oracle result classification (8 result types)
+  - Whether an implementation PASSES or FAILS conformance
+
+# Q3: What decisions does this layer NOT own?
+non_owned_decisions:
+  - What the correct spec output is (L01 SAL + L02 QName define this)
+  - Sprint work selection (L11 Supervisor; oracle results currently not wired in)
+  - Format implementation details (L06 .NET + L07 Python own this)
+  - Gap ledger updates based on oracle results (L03 Capability owns this)
+
+# Q4: What are the authoritative inputs?
+authoritative_inputs:
+  - path: "oracle/formats/{format}/oracle-package.yaml"
+    type: oracle_package
+    description: Defines oracle test cases for one format with comparator assignments
+    required: true
+  - path: "oracle/registry/comparator-registry.yaml"
+    type: comparator_registry
+    description: Defines available comparators (byte_exact, json_semantic, pdf_text_match, etc.)
+    required: true
+  - path: "oracle/formats/{format}/samples/"
+    type: sample_inputs
+    description: Canonical sample files for oracle comparison
+    required: true
+
+# Q5: What are the output artifacts?
+output_artifacts:
+  - path: ".local/oracle/{format}/oracle-results.json"
+    type: oracle_results
+    schema: "keys: format_id, run_at, results[{case_id, verdict, comparator, diff}]"
+    consumer: None currently (not consumed in sprint loop — key gap)
+  - path: "oracle/formats/{format}/reports/oracle-run-summary.json"
+    type: oracle_summary
+    description: Per-format committed oracle summary
+    consumer: Audit tools; manual review by Babar Raza
+
+# Q6: What is the validation contract?
+validation_contract:
+  oracle_result_types:
+    - PASS: Output matches canonical reference exactly per comparator
+    - FAIL_SEMANTIC: Output is semantically different from reference
+    - FAIL_STRUCTURAL: Output has wrong structure
+    - BLOCKED_MISSING_SAMPLE: No sample available for this oracle case
+    - INVALID_ORACLE: Oracle package is malformed
+    - STALE_ORACLE: Oracle case hasn't been run in >N days
+    - SKIP_MANUAL: Case requires manual human verification
+    - ERROR_EXECUTOR: execute_oracle.py internal error
+  mandatory_validations:
+    - name: oracle_all_formats_have_package
+      description: All 20 formats must have oracle-package.yaml
+      enforcement: verified (all 20 present as of 2026-06-26)
+      wiring_status: satisfied
+  gap_validations:
+    - name: oracle_results_consumed_in_sprint
+      description: Oracle FAIL results should trigger gap-ledger entries
+      enforcement: none currently
+      wiring_status: planned
+      enforcement_taskcard: TBD-TASKCARD-LA-WIRE-030
+
+# Q7: What is the error contract?
+error_contract:
+  on_oracle_fail:
+    action: FAIL_SEMANTIC or FAIL_STRUCTURAL recorded in oracle-results.json
+    downstream_effect: Not propagated to sprint loop (key gap — supervisor_integration=2)
+    recovery: Manual inspection of diff; fix implementation; re-run oracle
+  on_missing_sample:
+    action: BLOCKED_MISSING_SAMPLE result; oracle case skipped
+    downstream_effect: No conformance verdict for that case
+    recovery: Add sample to oracle/formats/{format}/samples/
+  on_stale_oracle:
+    action: STALE_ORACLE result returned (result type exists but not auto-triggered)
+    downstream_effect: Stale verdicts not flagged unless oracle is re-run manually
+    recovery: Run /run-oracle {format}; update oracle-run-summary.json
+
+# Q8: What skills/commands produce this layer's outputs?
+producer_skills:
+  - command: /run-oracle
+    purpose: Execute oracle for one or all formats; produces oracle-results.json
+    idempotency: fully deterministic; safe_rerun
+
+# Q9: What skills/commands consume this layer's outputs?
+consumer_skills:
+  - none_currently: Oracle verdicts not wired into any downstream skill or sprint loop
+  - planned:
+    - command: /register-layer-gap (if oracle FAIL → create gap entry)
+      enforcement_taskcard: TBD-TASKCARD-LA-WIRE-031
+    - name: governance_validator for oracle FAIL → BLOCK
+      enforcement_taskcard: TBD-TASKCARD-LA-WIRE-032
+
+# Q10: Who owns this layer?
+owner: autonomous_sprint
+escalation: "Babar Raza (Gate 11: oracle PASS is a Gate 11 criterion for commercial formats)"
+
+# Q11: What are the key gaps?
+key_gaps:
+  - gap_id: GAP-L05-SPRINT-WIRE-001
+    description: "Oracle NOT wired into autonomous sprint cycle"
+    severity: HIGH
+    impact: Oracle FAIL results do not block sprint continuation; implementations may regress
+    recommendation: Add governance validator that reads oracle-results.json and blocks if FAIL
+    enforcement_taskcard: TBD-TASKCARD-LA-WIRE-030
+  - gap_id: GAP-L05-CONSUMER-001
+    description: "Oracle verdicts not consumed by autonomous-cycle"
+    severity: HIGH
+    impact: Oracle infrastructure exists but is invisible to the sprint loop
+    recommendation: Wire /run-oracle into sprint closeout; add oracle_pass to evidence declaration
+    enforcement_taskcard: TBD-TASKCARD-LA-WIRE-031
+  - gap_id: GAP-L05-STALE-001
+    description: "STALE_ORACLE result type exists but is not auto-triggered"
+    severity: LOW
+    impact: Stale oracle results not flagged; verdicts may not reflect current implementation
+    recommendation: Add staleness check (oracle not run in >30 days → STALE_ORACLE auto-set)
+    enforcement_taskcard: TBD-TASKCARD-LA-WIRE-033
+
+current_maturity: L3  # Human override from computed L4
+computed_maturity: L4
+human_override_reason: "supervisor_integration=2, consumer_adoption=2 — oracle complete but disconnected from sprint loop"
+target_maturity: L4
+maturity_gap: "Requires: wire oracle into autonomous-cycle (+supervisor_integration), oracle FAIL → gap entry (+consumer_adoption)"

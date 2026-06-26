@@ -1,0 +1,184 @@
+audit_date: "2026-06-26"
+taskcard: TC-LA-HEAL-008
+mission: FORMAT-FACTORY-LAYER-AUDIT-20260626
+analyst: autonomous_sprint
+
+# ============================================================
+# SECTION 1: REVISED FALSE LAYER FINDINGS
+# ============================================================
+# NOTE: Two prior false-layer claims (from plan mode) were REVISED after forensic audit.
+# schemas/ and failure-memory.json were previously flagged as false layers — INCORRECT.
+
+false_layers_confirmed:
+  - path: "tools/supervisor/ai_product_brain.py"
+    finding: >
+      No callers found in tools/ directory. File defines AiProductBrain class but
+      grep of tools/supervisor/*.py shows zero imports or instantiations outside the file itself.
+    recommendation: DELETE or wire into autonomous_cycle.py as intended
+    priority: LOW
+    risk_of_deletion: LOW  # No callers; removing does not break anything
+    category: orphaned_implementation
+
+  - path: "tools/supervisor/ai_learning_loop.py"
+    finding: >
+      Only reference outside the file itself is check_system_healing_gate.py which checks
+      file existence ("ai_learning_loop_exists": _file_exists(path)) — not an import or execution.
+      The file is not wired into autonomous_cycle.py or any sprint loop.
+    recommendation: Wire into autonomous_cycle.py or DELETE — existence check is not consumption
+    priority: LOW
+    risk_of_deletion: LOW  # check_system_healing_gate.py would show False but still run
+    category: orphaned_implementation
+
+  - path: "tools/supervisor/ai_implementation_designer.py"
+    finding: >
+      Same pattern as ai_learning_loop.py: only reference is a file existence check in
+      check_system_healing_gate.py. Not imported or executed in any sprint pipeline.
+    recommendation: DELETE or wire to use during sprint design phase
+    priority: LOW
+    risk_of_deletion: LOW
+    category: orphaned_implementation
+
+false_layer_revisions:
+  - path: "schemas/"
+    prior_claim: "Only _readme.md exists. No neutral model schemas implemented. (from plan mode)"
+    revision: INCORRECT
+    actual_finding: >
+      schemas/ contains 44 schema files across 13 subdirectories:
+      autonomy/, capability/, evidence/, format-understanding/, generated-requirements/,
+      governance/, neutral-model/, package/, playbook/, queue/, sal-facts/, skills/, state/.
+      Files are actively consumed by tools/evidence/run04*.py, tools/playbook/,
+      tools/oracle/summarize_oracle_results.py and others.
+    verdict: NOT_A_FALSE_LAYER
+    status: ACTIVE_LAYER
+
+  - path: ".local/supervisor/failure-memory.json"
+    prior_claim: "Written by grade_declared_work.py but NOT consumed by autonomous_cycle.py (from plan mode)"
+    revision: INCORRECT
+    actual_finding: >
+      autonomous_cycle.py imports and uses FailureMemory at:
+      - Line 46: from failure_memory import FailureMemory
+      - Lines 1300-1304: Lane 5 writes governance failures to failure memory
+      - Lines 2623-2629: Best-effort failure memory write at sprint exit
+      failure_memory.py is also referenced by autonomous_task_generator.py and
+      generate_next_worker_prompt.py.
+    verdict: NOT_A_FALSE_LAYER
+    status: ACTIVELY_CONSUMED
+
+# ============================================================
+# SECTION 2: HARDENING ADDENDA STATUS
+# ============================================================
+
+hardening_addenda:
+  - file: plans/floating-stargazing-globe-hardening-addendum-20260623.md
+    parent_plan_status: TERMINAL_CLOSED
+    addendum_date: "2026-06-23"
+    open_taskcards: 4
+    closed_taskcards: 10
+    status: PARTIALLY_CLOSED
+    note: 4 open taskcards remain; parent plan is terminal; addendum is advisory
+
+  - file: plans/cap-fact-forensics-repair-hardening-addendum.md
+    parent_plan_status: TERMINAL_CLOSED
+    addendum_date: "2026-06-23"
+    open_taskcards: 2
+    closed_taskcards: 2
+    status: PARTIALLY_CLOSED
+    note: 2 open taskcards remain; all are hardening items for closed capability repair
+
+  - file: plans/vivid-napping-kurzweil-hardening-addendum.md
+    parent_plan_status: TERMINAL_CLOSED
+    addendum_date: unknown
+    open_taskcards: 0
+    closed_taskcards: 32
+    status: ALL_CLOSED
+    note: All 32 taskcards closed; no open work
+
+  - file: plans/misty-hopping-token-hardening-addendum.md
+    parent_plan_status: TERMINAL_CLOSED
+    addendum_date: unknown
+    open_taskcards: 1
+    closed_taskcards: 28
+    status: PARTIALLY_CLOSED
+    note: 1 open taskcard; 97% closed
+
+  - file: plans/generic-soaring-chipmunk-hardening-addendum.md
+    parent_plan_status: TERMINAL_CLOSED
+    addendum_date: unknown
+    open_taskcards: 7
+    closed_taskcards: 8
+    status: PARTIALLY_CLOSED
+    note: 7 open taskcards remain; largest outstanding addendum
+
+  - file: plans/oracle-layer-hardening-addendum.md
+    parent_plan_status: ACTIVE  # oracle layer hardening is ongoing
+    addendum_date: "2026-06-25"
+    open_taskcards: 7
+    closed_taskcards: 23
+    status: PARTIALLY_CLOSED
+    note: 7 open oracle hardening items; oracle wave 6 in progress per master-plan
+
+# ============================================================
+# SECTION 3: AI DEAD CODE AUDIT
+# ============================================================
+
+ai_dead_code:
+  ai_product_brain_py:
+    path: tools/supervisor/ai_product_brain.py
+    callers: []
+    file_exists_checks_only: false
+    verdict: DEAD_CODE
+    recommendation: DELETE
+    blocker_if_deleted: none
+
+  ai_learning_loop_py:
+    path: tools/supervisor/ai_learning_loop.py
+    callers:
+      - path: tools/supervisor/check_system_healing_gate.py
+        usage: "file existence check only — not imported/executed"
+    verdict: EFFECTIVELY_DEAD
+    recommendation: DELETE or wire into autonomous_cycle.py sprint exit hook
+    blocker_if_deleted: "check_system_healing_gate.py shows ai_learning_loop_exists=False — advisory only"
+
+  ai_implementation_designer_py:
+    path: tools/supervisor/ai_implementation_designer.py
+    callers:
+      - path: tools/supervisor/check_system_healing_gate.py
+        usage: "file existence check only — not imported/executed"
+    verdict: EFFECTIVELY_DEAD
+    recommendation: DELETE or wire into sprint design phase
+    blocker_if_deleted: "check_system_healing_gate.py shows ai_implementation_designer_exists=False — advisory only"
+
+  overall_recommendation: DEFER
+  rationale: >
+    Deleting these files is low-risk but creates check_system_healing_gate.py False flags.
+    Per TC-LA-HEAL-008 scope: AUDIT ONLY. No deletions in this sprint.
+    Recommend creating GAP entries and deferring to a dedicated dead-code cleanup sprint.
+
+# ============================================================
+# SECTION 4: GRADE-CACHE UNBOUNDED GROWTH
+# ============================================================
+
+infrastructure_debt:
+  - path: ".local/supervisor/grade-cache.json"
+    size_bytes: 635302  # 620 KB as of 2026-06-26 (was 565 KB earlier)
+    finding: "Grade cache grows unbounded; no TTL or pruning mechanism"
+    impact: >
+      Will eventually exceed memory limits for LLM grader. Stale entries from
+      old runs accumulate without expiry.
+    recommendation: Add TTL of 7 days; prune entries older than TTL at each autonomous-cycle run
+    priority: MEDIUM
+    enforcement_taskcard: TBD-TASKCARD-LA-WIRE-060
+
+# ============================================================
+# SECTION 5: AUDIT VERDICT
+# ============================================================
+
+audit_verdict: CORRECTED_FROM_PRIOR_PLAN
+summary: >
+  Two false-layer claims from the plan mode audit were incorrect:
+  (1) schemas/ has 44 schema files across 13 dirs and is actively consumed — NOT a false layer
+  (2) failure-memory.json IS consumed by autonomous_cycle.py at 3 call sites — NOT a false layer
+  True false layers: 3 AI dead code files (ai_product_brain.py, ai_learning_loop.py,
+  ai_implementation_designer.py) that are not wired into any sprint pipeline.
+  Hardening addenda: 5/6 partially closed; 1/6 fully closed; oracle addendum is actively open.
+  Grade-cache unbounded growth is the only infrastructure debt confirmed as actionable.

@@ -4949,3 +4949,77 @@ formally deferred (V13/V47/V62 cover non-ODF enforcement; new V-number task defe
 - `tools/build_cross_format_index.py` — dynamic generated_date
 - `tests/test_fslay02_hardening.py` — 6 new convergence tests
 - `registry/cross-format-test-index.yaml` — generated_date: 2026-06-26
+
+---
+
+## Section 90 — harmonic-strolling-blanket: FORMAT-FACTORY-LAYER-AUDIT-20260626 — CLOSED
+
+**Mission:** FORMAT-FACTORY-LAYER-AUDIT-20260626  
+**Plan:** `C:/Users/prora/.claude/plans/harmonic-strolling-blanket.md` (v2.1)  
+**Run ID:** ff-layer-audit-healing-20260626-230114  
+**Evidence root:** `.local/evidences/ff-layer-audit-healing-20260626-230114/`  
+**Status:** CLOSED — CONVERGENCE_COMPLETE_ALL_GREEN_AND_TASK_CLOSED  
+**Supervisor grade:** ACCEPTED (exit 0, iteration 4/12, all 9 items accepted)
+
+### What was completed
+
+9 taskcards executed (TC-LA-PRE-000 through TC-LA-HEAL-008):
+
+| Taskcard | Title | Grade |
+|----------|-------|-------|
+| TC-LA-PRE-000 | Pre-flight checks | ACCEPTED_WITH_LIMITATIONS |
+| TC-LA-AUDIT-001 | Refresh baseline against HEAD | ACCEPTED_WITH_LIMITATIONS |
+| TC-LA-AUDIT-002 | Gap ledger closure audit | ACCEPTED_WITH_LIMITATIONS |
+| TC-LA-AUDIT-003 | 25-dimension maturity assessment | ACCEPTED_WITH_LIMITATIONS |
+| TC-LA-PILOT-004 | /ingest-spec-sal skill registration | ACCEPTED_WITH_LIMITATIONS |
+| TC-LA-PILOT-005 | ZST SAL fact-depth pilot | ACCEPTED_VERIFIED |
+| TC-LA-PILOT-006 | Layer contract blueprint definitions | ACCEPTED_WITH_LIMITATIONS |
+| TC-LA-HEAL-007 | MEMORY.md truncation fix (OBSOLETE) | ACCEPTED_WITH_LIMITATIONS |
+| TC-LA-HEAL-008 | False layer remediation audit | ACCEPTED_WITH_LIMITATIONS |
+
+### Key findings
+
+- **L11 Supervisor** is the most mature layer: L5 (weighted score 4.64)
+- **L01 SAL** is the weakest critical layer: L2 (weighted score 2.35) — schema_quality=0 (no formal SAL schema)
+- **schemas/** (44 files, 13 dirs) and **failure-memory.json** were confirmed NOT false layers (prior plan assumptions corrected)
+- 3 confirmed AI dead code files (ai_product_brain.py, ai_learning_loop.py, ai_implementation_designer.py) — deletion deferred
+- Gap ledger: INDETERMINATE closure verdict — 96.9% closed but `closed_by` field absent from all closed entries
+- ZST SAL pilot: PILOT_PASS — 94 facts, all 3 QNames already linked (FACT-ZST-001/002/003)
+- /ingest-spec-sal: confirmed registered (93 skills total)
+- 6 layer contract blueprints created (L01/L02/L03/L05/L06/L08)
+
+### What changed
+
+| File | Action |
+|------|--------|
+| `reports/layer-audit-2026-06-26/layer-audit-baseline.yaml` | Updated HEAD to a3ed0a0c; delta section added |
+| `reports/layer-audit-2026-06-26/forensic-layer-discovery-report.md` | Section 6 replaced with 25-dimension assessment; Baseline Refresh section added |
+| `reports/layer-audit-2026-06-26/gap-ledger-audit.md` | Created — INDETERMINATE verdict |
+| `reports/layer-audit-2026-06-26/maturity-assessment-full.yaml` | Created — 11 layers × 25 dimensions |
+| `reports/layer-audit-2026-06-26/skill-registration-proof.md` | Created — /ingest-spec-sal confirmed |
+| `reports/layer-audit-2026-06-26/zst-sal-pilot.md` | Created — PILOT_PASS |
+| `reports/layer-audit-2026-06-26/layer-contracts/L01-contract.yaml` | Created (blueprint) |
+| `reports/layer-audit-2026-06-26/layer-contracts/L02-contract.yaml` | Created (blueprint) |
+| `reports/layer-audit-2026-06-26/layer-contracts/L03-contract.yaml` | Created (blueprint) |
+| `reports/layer-audit-2026-06-26/layer-contracts/L05-contract.yaml` | Created (blueprint) |
+| `reports/layer-audit-2026-06-26/layer-contracts/L06-contract.yaml` | Created (blueprint) |
+| `reports/layer-audit-2026-06-26/layer-contracts/L08-contract.yaml` | Created (blueprint) |
+| `reports/layer-audit-2026-06-26/addenda-status.yaml` | Created — false layer revisions + hardening addenda status |
+| `reports/layer-audit-2026-06-26/heal-007-skip-proof.md` | Created — OBSOLETE taskcard skip evidence |
+
+### Verification performed
+
+- All 9 work items: `evidence_found=True` after plan hardening (evidence_paths added to declaration)
+- autonomous-cycle exit 0 (ACCEPTED, iteration 4/12)
+- rework_items: [] — no pending rework
+- check_continuation.py: verdict=CONTINUE, continuation_state=YES
+- Review package: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\ff-layer-audit-healing-20260626-230114\declaration-review-package.zip (SHA-256: 8ccf6a4fd30832fba724a0fc928a3b1a83a6aee4ec4b0b13566ee04b1b296db3)
+
+### Remaining follow-ups (non-blocking)
+
+- GAP-L03-CLOSEDBY-001: Add `closed_by` field to gap-ledger closure schema (enforcement_taskcard: TBD-TASKCARD-LA-WIRE-021)
+- GAP-L05-SPRINT-WIRE-001: Wire oracle into autonomous sprint cycle (TBD-TASKCARD-LA-WIRE-030)
+- AI dead code cleanup: ai_product_brain.py, ai_learning_loop.py, ai_implementation_designer.py — delete in dedicated sprint
+- Grade-cache TTL: Add 7-day TTL to .local/supervisor/grade-cache.json (TBD-TASKCARD-LA-WIRE-060)
+- vivid-napping-kurzweil hardening addendum: ALL_CLOSED (32/32); others PARTIALLY_CLOSED
+

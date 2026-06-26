@@ -1,0 +1,521 @@
+# Format Factory — Full 25-Dimension Layer Maturity Assessment
+# Mission: FORMAT-FACTORY-LAYER-AUDIT-20260626
+# Generated: 2026-06-26
+# Analyst: autonomous sprint (TC-LA-AUDIT-003)
+# Formula version: 1.0
+
+formula_version: "1.0"
+scoring_scale: "0=absent, 1=conceptual, 2=partial, 3=operational, 4=governed, 5=production"
+maturity_bands:
+  L0: "0.0–0.5"
+  L1: "0.5–1.5"
+  L2: "1.5–2.5"
+  L3: "2.5–3.5"
+  L4: "3.5–4.5"
+  L5: "4.5–5.0"
+
+bucket_weights:
+  contract: 1.5   # input_contract, output_contract, schema_quality, authority_clarity, provenance
+  validation: 1.5  # validation, test_coverage, negative_controls, idempotency, evidence_quality
+  lifecycle: 1.0   # failure_handling, recovery_rollback, versioning_compatibility, stale_state_detection, artifact_identity
+  integration: 1.0 # skill_command_integration, supervisor_integration, consumer_adoption, responsibility_cohesion, producer_completeness
+  overhead: 0.75   # maintainability, machinery_overhead, product_value, observability, security_compliance
+
+# Formula: weighted_score = sum(bucket_avg * weight) / sum(weights)
+# sum(weights) = 1.5 + 1.5 + 1.0 + 1.0 + 0.75 = 5.75
+
+layers:
+  - layer_id: L01
+    canonical_name: Specification Authority (SAL)
+    dimension_scores:
+      # Contract bucket
+      input_contract: 3         # normalized text format defined, not formally schematized
+      output_contract: 3        # sal-facts-{format}.json exists but schema informal
+      schema_quality: 0         # schemas/ has only _readme.md — NO formal SAL schema
+      authority_clarity: 4      # sal_master_runner.py is clear authority
+      provenance: 3             # FACT-FORMAT-NNN IDs trace to spec source
+      # Validation bucket
+      validation: 2             # refresh_check.py exists but not enforced
+      test_coverage: 1          # no automated tests of SAL pipeline
+      negative_controls: 1      # no tests of bad spec input
+      idempotency: 3            # safe_rerun documented in /ingest-spec-sal skill
+      evidence_quality: 2       # sal-facts-latest.json is evidence; quality varies by format
+      # Lifecycle bucket
+      failure_handling: 2       # no explicit failure handling documented
+      recovery_rollback: 2      # facts are additive; can delete and remerge
+      versioning_compatibility: 1  # no spec version upgrade path
+      stale_state_detection: 1  # refresh_check.py not auto-called
+      artifact_identity: 3      # FACT-FORMAT-NNN IDs exist
+      # Integration bucket
+      skill_command_integration: 4  # /ingest-spec-sal registered (93 skills)
+      supervisor_integration: 2     # refresh_check.py wired but non-enforced
+      consumer_adoption: 3          # QName registry references FACT-IDs
+      responsibility_cohesion: 4    # clear: spec text → facts
+      producer_completeness: 2      # only 6/20 formats have facts
+      # Overhead bucket
+      maintainability: 3        # tools exist and are documented
+      machinery_overhead: 2     # heavy: PDF → normalize → extract → merge pipeline
+      product_value: 4          # enables spec-parity verification when working
+      observability: 2          # sal-facts-latest.json visible; no monitoring
+      security_compliance: 3    # reads spec PDFs; no external calls
+    bucket_avgs:
+      contract: 2.60   # (3+3+0+4+3)/5
+      validation: 1.80  # (2+1+1+3+2)/5
+      lifecycle: 1.80  # (2+2+1+1+3)/5
+      integration: 3.00 # (4+2+3+4+2)/5
+      overhead: 2.80   # (3+2+4+2+3)/5
+    weighted_score: 2.35  # (2.60*1.5 + 1.80*1.5 + 1.80*1.0 + 3.00*1.0 + 2.80*0.75) / 5.75
+    computed_maturity: "L2"
+    human_override: null
+    critical_zero_dimensions:
+      - schema_quality  # No formal SAL schema in schemas/; directory has only _readme.md
+    key_gaps:
+      - No formal schema for sal-facts JSON format
+      - Only 6/20 formats have extraction working (ODF family + ZST partial)
+      - SAL pipeline not tested; no negative controls
+      - No auto-staleness detection for cached spec versions
+
+  - layer_id: L02
+    canonical_name: QName Hierarchy Authority
+    dimension_scores:
+      input_contract: 3         # spec_fact_ref → qname mapping documented
+      output_contract: 4        # shared/qname-registry/*.yaml with defined fields
+      schema_quality: 3         # schema.yaml exists in qname-registry
+      authority_clarity: 4      # spec_qname class attr + canonical class hierarchy
+      provenance: 4             # FACT-FORMAT-NNN references on each entry
+      validation: 4             # V53 validator enforces compliance
+      test_coverage: 3          # spec_qname tests per format
+      negative_controls: 3      # V48 blocks architecture-only stubs from release
+      idempotency: 4            # qname entries additive; overwrite-safe
+      evidence_quality: 3       # qname-registry YAML files serve as evidence
+      failure_handling: 2       # no validation at qname registration time
+      recovery_rollback: 4      # git restore
+      versioning_compatibility: 2  # no version upgrade path for qname format changes
+      stale_state_detection: 3  # V53 detects non-compliant files
+      artifact_identity: 4      # canonical_class + qname as unique IDs
+      skill_command_integration: 3  # /qname-backfill skill exists
+      supervisor_integration: 3  # V53 wired into autonomous cycle
+      consumer_adoption: 4      # product source files cite spec_qname
+      responsibility_cohesion: 5  # one registry per format; crystal clear
+      producer_completeness: 3  # 99.4% coverage; 1 intentional gap
+      maintainability: 4        # YAML format; per-format files; readable
+      machinery_overhead: 3     # 21 YAML files + schema = manageable
+      product_value: 4          # enables spec_qname compliance checking
+      observability: 3          # grep-able; V53 reports violations
+      security_compliance: 4    # no security concerns
+    bucket_avgs:
+      contract: 3.60  # (3+4+3+4+4)/5
+      validation: 3.40  # (4+3+3+4+3)/5
+      lifecycle: 3.00  # (2+4+2+3+4)/5
+      integration: 3.60  # (3+3+4+5+3)/5
+      overhead: 3.60  # (4+3+4+3+4)/5
+    weighted_score: 3.44  # (3.60*1.5 + 3.40*1.5 + 3.00*1.0 + 3.60*1.0 + 3.60*0.75) / 5.75
+    computed_maturity: "L3"
+    human_override: null
+    critical_zero_dimensions: []
+    key_gaps:
+      - No version upgrade path (versioning_compatibility=2)
+      - No validation at qname registration time (failure_handling=2)
+      - /qname-backfill skill exists but registry enforcement is passive
+
+  - layer_id: L03
+    canonical_name: Requirement and Capability Authority
+    dimension_scores:
+      input_contract: 3         # capability names + format IDs defined
+      output_contract: 4        # gap-ledger.json schema with total_gaps + gaps array
+      schema_quality: 3         # gap schema implicitly defined by gap generator
+      authority_clarity: 4      # gap_ledger.json consumed by product-task-candidates.json
+      provenance: 3             # sprint_id + run_id in top-level; closed_by MISSING
+      validation: 3             # gap generator validates format registry
+      test_coverage: 2          # no tests of gap-ledger generation accuracy
+      negative_controls: 2      # no tests of malformed gap entries
+      idempotency: 3            # regenerable from capability-matrix
+      evidence_quality: 2       # closed_by MISSING; INDETERMINATE audit verdict
+      failure_handling: 2       # no explicit failure handling for gap generation
+      recovery_rollback: 3      # ledger is generated; can regenerate
+      versioning_compatibility: 2  # no version upgrade path
+      stale_state_detection: 2  # no automated staleness detection
+      artifact_identity: 3      # GAP-FORMAT-TYPE-NNN IDs exist
+      skill_command_integration: 2  # no skill for gap closure; ad-hoc
+      supervisor_integration: 4  # autonomous_task_generator.py reads gap ledger
+      consumer_adoption: 4      # product-task-candidates.json actively reads it
+      responsibility_cohesion: 4  # clear: track capability gaps
+      producer_completeness: 3  # 1,246 gaps tracked across 20 formats
+      maintainability: 3        # 18MB file is large; no pruning mechanism
+      machinery_overhead: 2     # 18MB JSON; slow to load
+      product_value: 4          # drives all product deepening decisions
+      observability: 3          # total_gaps visible in header
+      security_compliance: 4    # local file; no security concerns
+    bucket_avgs:
+      contract: 3.40  # (3+4+3+4+3)/5
+      validation: 2.40  # (3+2+2+3+2)/5
+      lifecycle: 2.40  # (2+3+2+2+3)/5
+      integration: 3.40  # (2+4+4+4+3)/5
+      overhead: 3.20  # (3+2+4+3+4)/5
+    weighted_score: 2.94  # (3.40*1.5 + 2.40*1.5 + 2.40*1.0 + 3.40*1.0 + 3.20*0.75) / 5.75
+    computed_maturity: "L3"
+    human_override: null
+    critical_zero_dimensions: []
+    key_gaps:
+      - closed_by field MISSING in all closed entries (evidence_quality=2)
+      - No tests of gap-ledger accuracy (test_coverage=2)
+      - 18MB file growing without pruning (machinery_overhead=2)
+      - No skill for governed gap closure
+
+  - layer_id: L05
+    canonical_name: Oracle and Conformance Authority
+    dimension_scores:
+      input_contract: 4         # oracle-package.yaml defines test cases with comparators
+      output_contract: 4        # 8 defined result types fully enumerated
+      schema_quality: 3         # comparator-registry.yaml defines comparators
+      authority_clarity: 5      # execute_oracle.py is sole authority; no LLM/network
+      provenance: 3             # oracle cases reference format + capability
+      validation: 4             # oracle results verified against canonical outputs
+      test_coverage: 4          # 20/20 formats have oracle packages
+      negative_controls: 4      # BLOCKED_MISSING_SAMPLE, INVALID_ORACLE handle bad inputs
+      idempotency: 5            # oracle runs are fully deterministic
+      evidence_quality: 3       # verdicts written to .local/oracle/; not bundled by default
+      failure_handling: 4       # 8 result types cover all failure modes
+      recovery_rollback: 4      # oracle verdicts are ephemeral; re-runnable
+      versioning_compatibility: 2  # no oracle version upgrade path
+      stale_state_detection: 2  # STALE_ORACLE result exists but not auto-triggered
+      artifact_identity: 4      # oracle cases have IDs in oracle-package.yaml
+      skill_command_integration: 4  # /run-oracle skill registered
+      supervisor_integration: 2  # oracle NOT wired into autonomous cycle
+      consumer_adoption: 2      # oracle run reports exist but not consumed in sprint loop
+      responsibility_cohesion: 5  # clear: conformance verification
+      producer_completeness: 4  # 20/20 formats have oracle packages
+      maintainability: 4        # oracle-package.yaml per-format; clean
+      machinery_overhead: 3     # execute_oracle.py 80+ lines; modular
+      product_value: 5          # key differentiator: spec-backed conformance
+      observability: 3          # verdict files exist in .local/oracle/
+      security_compliance: 4    # no LLM/network calls
+    bucket_avgs:
+      contract: 3.80  # (4+4+3+5+3)/5
+      validation: 4.00  # (4+4+4+5+3)/5
+      lifecycle: 3.20  # (4+4+2+2+4)/5
+      integration: 3.40  # (4+2+2+5+4)/5
+      overhead: 3.80  # (4+3+5+3+4)/5
+    weighted_score: 3.68  # (3.80*1.5 + 4.00*1.5 + 3.20*1.0 + 3.40*1.0 + 3.80*0.75) / 5.75
+    computed_maturity: "L4"
+    human_override: "L3 — supervisor_integration=2 and consumer_adoption=2; oracle verdicts not consumed in sprint loop; oracle infrastructure complete but disconnected from continuous verification"
+    critical_zero_dimensions: []
+    key_gaps:
+      - Oracle NOT wired into autonomous sprint cycle (supervisor_integration=2)
+      - Oracle verdicts not consumed by sprint closeout (consumer_adoption=2)
+      - No STALE_ORACLE auto-trigger (stale_state_detection=2)
+      - Comparators INLINE in executor (Wave 6 extraction planned)
+
+  - layer_id: L06
+    canonical_name: Product Source (.NET Commercial)
+    dimension_scores:
+      input_contract: 4         # format specs + qname registry define what to implement
+      output_contract: 4        # .NET assemblies + NuGet-compatible packages
+      schema_quality: 3         # spec_qname attributes on classes
+      authority_clarity: 4      # FODS/FODT as primary commercial formats
+      provenance: 3             # spec_fact_ref on some classes
+      validation: 5             # 401 .NET test files; build 0 errors
+      test_coverage: 4          # comprehensive for FODS/FODT; limited for other 8 formats
+      negative_controls: 4      # malformed input tests exist
+      idempotency: 4            # build is deterministic
+      evidence_quality: 4       # nupkg + SHA-256 as evidence; customer-readiness reports
+      failure_handling: 3       # exception handling in parsers
+      recovery_rollback: 4      # git restore
+      versioning_compatibility: 3  # 0.1.0-tier0 versioning scheme
+      stale_state_detection: 2  # no automated staleness check for .NET assemblies
+      artifact_identity: 4      # FormatFactory.*.dll assembly naming
+      skill_command_integration: 3  # /add-dotnet-api skill exists
+      supervisor_integration: 3  # governance_validators_dotnet.py
+      consumer_adoption: 3      # local NuGet packages; not published to nuget.org
+      responsibility_cohesion: 4  # clear: .NET commercial tier
+      producer_completeness: 3  # 10/20 formats implemented
+      maintainability: 4        # LOC caps enforced; 44 .cs files
+      machinery_overhead: 3     # C# build toolchain required
+      product_value: 5          # commercial revenue tier; FODS/FODT customer-ready
+      observability: 3          # build results visible
+      security_compliance: 4    # entity injection guard in FODT
+    bucket_avgs:
+      contract: 3.60  # (4+4+3+4+3)/5
+      validation: 4.20  # (5+4+4+4+4)/5
+      lifecycle: 3.20  # (3+4+3+2+4)/5
+      integration: 3.20  # (3+3+3+4+3)/5
+      overhead: 3.80  # (4+3+5+3+4)/5
+    weighted_score: 3.64  # (3.60*1.5 + 4.20*1.5 + 3.20*1.0 + 3.20*1.0 + 3.80*0.75) / 5.75
+    computed_maturity: "L4"
+    human_override: null
+    critical_zero_dimensions: []
+    key_gaps:
+      - Only 10/20 formats implemented (.NET selective strategy)
+      - Not published to nuget.org (publication_authorized: false)
+      - No automated staleness check for .NET assemblies
+
+  - layer_id: L07
+    canonical_name: Product Source (Python FOSS)
+    dimension_scores:
+      input_contract: 4         # format specs + qname registry
+      output_contract: 4        # wheels + installed workflow + consumer API
+      schema_quality: 3         # spec_qname class attrs
+      authority_clarity: 5      # poc-targets.yaml drives work selection
+      provenance: 3             # spec_fact_refs on some classes
+      validation: 5             # 2,086 Python test files; all pass
+      test_coverage: 5          # 20/20 formats; all 16 packages have installed-workflow
+      negative_controls: 4      # malformed input tests; security guard in FODT
+      idempotency: 4            # build is deterministic
+      evidence_quality: 4       # wheels + dogfood consumer proofs
+      failure_handling: 3       # exceptions defined per format
+      recovery_rollback: 4      # git restore
+      versioning_compatibility: 3  # 0.1.0.dev0 versioning
+      stale_state_detection: 3  # source baseline enforces LOC caps
+      artifact_identity: 4      # format_factory_{format} package naming
+      skill_command_integration: 4  # /add-python-api, /add-analytics-function registered
+      supervisor_integration: 5  # autonomous_cycle.py drives sprint work
+      consumer_adoption: 4      # consumer roundtrip examples for 14+ formats
+      responsibility_cohesion: 5  # clear: Python FOSS implementations
+      producer_completeness: 4  # 20/20 formats; 12/20 have write support
+      maintainability: 4        # LOC caps; analytics separation; known violations policy
+      machinery_overhead: 3     # complex: analytics.py split; __init__.py exports
+      product_value: 5          # FOSS customer value; 16 packages
+      observability: 4          # source structure validator; LOC tracking
+      security_compliance: 4    # entity injection guard; no network calls
+    bucket_avgs:
+      contract: 3.80  # (4+4+3+5+3)/5
+      validation: 4.40  # (5+5+4+4+4)/5
+      lifecycle: 3.40  # (3+4+3+3+4)/5
+      integration: 4.40  # (4+5+4+5+4)/5
+      overhead: 4.00  # (4+3+5+4+4)/5
+    weighted_score: 4.02  # (3.80*1.5 + 4.40*1.5 + 3.40*1.0 + 4.40*1.0 + 4.00*0.75) / 5.75
+    computed_maturity: "L4"
+    human_override: null
+    critical_zero_dimensions: []
+    key_gaps:
+      - 8/20 formats are read-only (no write support)
+      - Packages not published to PyPI
+      - spec_fact_ref sparse on Python classes vs ODF formats
+
+  - layer_id: L08
+    canonical_name: Evidence and Review Package
+    dimension_scores:
+      input_contract: 5         # declaration schema fully defined; additionalProperties:false
+      output_contract: 4        # ZIP package + SHA-256 as evidence
+      schema_quality: 5         # YAML schema validated by sprint_executor_validate.py
+      authority_clarity: 5      # supervisor is the sole reviewer
+      provenance: 4             # git_head_start/end + timestamps in every declaration
+      validation: 5             # sprint_executor_validate.py --repair catches all schema errors
+      test_coverage: 4          # supervisor tests validate declaration handling
+      negative_controls: 3      # GOV_BLOCK stops bad declarations
+      idempotency: 4            # re-running produces same package from same declaration
+      evidence_quality: 5       # SHA-256 packages with bundle_validation_pass flag
+      failure_handling: 4       # best-effort closeout; errors logged and continued
+      recovery_rollback: 3      # declaration in .local/ gitignored; rebuild from sprint state
+      versioning_compatibility: 3  # schema version field in declarations
+      stale_state_detection: 4  # supervisor detects stale signals
+      artifact_identity: 5      # run_id + SHA-256 for each package
+      skill_command_integration: 4  # /build-evidence-bundle skill
+      supervisor_integration: 5  # autonomous-cycle processes every declaration
+      consumer_adoption: 4      # Babar Raza reviews packages for Gate 11
+      responsibility_cohesion: 5  # clear: evidence generation and review
+      producer_completeness: 4  # every sprint produces a package
+      maintainability: 4        # well-organized; docs/automation/ has guides
+      machinery_overhead: 3     # complex: ZIP builder + SHA-256 + LLM grader
+      product_value: 5          # essential for governance; enables Gate 11
+      observability: 4          # review package contents visible; maturity-signal.json
+      security_compliance: 4    # no external service calls
+    bucket_avgs:
+      contract: 4.60  # (5+4+5+5+4)/5
+      validation: 4.20  # (5+4+3+4+5)/5
+      lifecycle: 3.80  # (4+3+3+4+5)/5
+      integration: 4.40  # (4+5+4+5+4)/5
+      overhead: 4.00  # (4+3+5+4+4)/5
+    weighted_score: 4.24  # (4.60*1.5 + 4.20*1.5 + 3.80*1.0 + 4.40*1.0 + 4.00*0.75) / 5.75
+    computed_maturity: "L4"
+    human_override: null
+    critical_zero_dimensions: []
+    key_gaps:
+      - Recovery from failed closeout is manual (recovery_rollback=3)
+      - LLM grader adds variability (non-deterministic evidence_quality in some sprints)
+
+  - layer_id: L09
+    canonical_name: State and Continuation Authority
+    dimension_scores:
+      input_contract: 5         # continuation-signal.json schema defined
+      output_contract: 5        # check_continuation.py returns structured JSON
+      schema_quality: 4         # continuation-signal.json has typed fields
+      authority_clarity: 5      # check_continuation.py is sole authority
+      provenance: 4             # session_id + iteration tracked
+      validation: 5             # 45 continuation tests pass
+      test_coverage: 5          # TC-CCI-G-01 through G-10; 45 total tests
+      negative_controls: 5      # SESSION_MISMATCH; CHAT_ID_MISMATCH; POST_PLAN_TERMINAL tested
+      idempotency: 4            # reset_track_signal.py for clean restart
+      evidence_quality: 4       # continuation reasoning logged in signal
+      failure_handling: 4       # hard stops enumerated; Supreme Directive overrides advisory stops
+      recovery_rollback: 4      # reset_track_signal.py recovers from bad state
+      versioning_compatibility: 3  # continuation-signal.json format evolves with code
+      stale_state_detection: 4  # 4h TTL on session files
+      artifact_identity: 4      # session_id is unique per chat
+      skill_command_integration: 3  # no skill for state management directly
+      supervisor_integration: 5  # check_continuation.py called by autonomous loop
+      consumer_adoption: 5      # CLAUDE.md + agents + autonomous loop all consume it
+      responsibility_cohesion: 5  # clear: sprint continuation decisions
+      producer_completeness: 4  # plan locks + session files + continuation signal complete
+      maintainability: 4        # continuation_identity.py + continuation_selector.py modular
+      machinery_overhead: 3     # multiple files: signal + locks + session ids
+      product_value: 5          # essential: prevents cross-chat contamination
+      observability: 4          # signal files readable; verbose logging
+      security_compliance: 4    # local files only
+    bucket_avgs:
+      contract: 4.60  # (5+5+4+5+4)/5
+      validation: 4.60  # (5+5+5+4+4)/5
+      lifecycle: 3.80  # (4+4+3+4+4)/5
+      integration: 4.40  # (3+5+5+5+4)/5
+      overhead: 4.00  # (4+3+5+4+4)/5
+    weighted_score: 4.35  # (4.60*1.5 + 4.60*1.5 + 3.80*1.0 + 4.40*1.0 + 4.00*0.75) / 5.75
+    computed_maturity: "L4"
+    human_override: null
+    critical_zero_dimensions: []
+    key_gaps:
+      - No skill for state management (skill_command_integration=3)
+      - Plan lock stale cleanup is manual (machinery_overhead=3)
+
+  - layer_id: L11
+    canonical_name: Supervisor and Sprint Authority
+    dimension_scores:
+      input_contract: 5         # declaration schema + work items format fully defined
+      output_contract: 5        # next-sprint.md + approval-gates.md + evidence-review.md
+      schema_quality: 5         # declarations validated by sprint_executor_validate.py
+      authority_clarity: 5      # supervisor_loop.py is unambiguous authority
+      provenance: 4             # git_head tracked in all cycles
+      validation: 5             # 109 governance tests passing
+      test_coverage: 5          # comprehensive supervisor tests
+      negative_controls: 5      # GOV_BLOCK + circuit breaker + anti-skip
+      idempotency: 5            # idempotency confirmed (approval-gates.md hash unchanged on re-run)
+      evidence_quality: 5       # maturity-signal.json + grading-history.jsonl
+      failure_handling: 5       # Supreme Directive: best-effort closeout
+      recovery_rollback: 4      # signal files recoverable; reset tool exists
+      versioning_compatibility: 3  # tools evolve; no backward compat promise
+      stale_state_detection: 4  # stale plan lock detection; 4h TTL
+      artifact_identity: 5      # run_id + sprint_id in every cycle
+      skill_command_integration: 4  # /autonomous-loop + /post-sprint-loop skills
+      supervisor_integration: 5  # is the supervisor
+      consumer_adoption: 5      # all agents consume supervisor outputs
+      responsibility_cohesion: 5  # clear: orchestration authority
+      producer_completeness: 5  # 199 tools; complete pipeline
+      maintainability: 4        # large files but modular; known violations tracked
+      machinery_overhead: 2     # failure-memory.json orphaned; grade-cache 565KB unbounded
+      product_value: 5          # existential: drives all product deepening
+      observability: 5          # comprehensive logs + signals + reports
+      security_compliance: 4    # LLM optional; no mandatory external calls
+    bucket_avgs:
+      contract: 4.80  # (5+5+5+5+4)/5
+      validation: 5.00  # (5+5+5+5+5)/5
+      lifecycle: 4.20  # (5+4+3+4+5)/5
+      integration: 4.80  # (4+5+5+5+5)/5
+      overhead: 4.00  # (4+2+5+5+4)/5
+    weighted_score: 4.64  # (4.80*1.5 + 5.00*1.5 + 4.20*1.0 + 4.80*1.0 + 4.00*0.75) / 5.75
+    computed_maturity: "L5"
+    human_override: null
+    critical_zero_dimensions: []
+    key_gaps:
+      - failure-memory.json orphaned (machinery_overhead=2): written but not consumed
+      - grade-cache.json 565KB unbounded growth; no TTL or pruning
+      - rework_orchestrator.py wiring is prompt-only (not code-enforced)
+
+  - layer_id: L12
+    canonical_name: Governance and Policy Enforcement
+    dimension_scores:
+      input_contract: 5         # declaration schema + source baselines as inputs
+      output_contract: 4        # PASS/FAIL/WARN verdicts from each validator
+      schema_quality: 5         # source-structure-baseline.json fully schematized
+      authority_clarity: 5      # governance_validators.py is the authority
+      provenance: 4             # validator version tracked in each run
+      validation: 5             # validators tested via test suite
+      test_coverage: 5          # 109 governance tests pass
+      negative_controls: 5      # 87 negative controls in test suite
+      idempotency: 5            # validators are pure functions
+      evidence_quality: 4       # rework_items in continuation signal
+      failure_handling: 4       # GOV_BLOCK blocks sprint; WARN continues
+      recovery_rollback: 4      # git restore fixes governance violations
+      versioning_compatibility: 3  # V-numbering exists; no upgrade path documented
+      stale_state_detection: 3  # grade-cache grows unbounded; no TTL
+      artifact_identity: 4      # validator names (V01-V77) are stable IDs
+      skill_command_integration: 3  # no skill for running validators directly
+      supervisor_integration: 5  # run_all_governance_validators called in autonomous_cycle.py
+      consumer_adoption: 5      # all sprints blocked by violations
+      responsibility_cohesion: 5  # clear: enforce code quality policies
+      producer_completeness: 4  # 77 validators; CI with allow_failure=true for skill-attribution
+      maintainability: 4        # modular: ext files for overflow validators
+      machinery_overhead: 3     # grade-cache 565KB growing unbounded
+      product_value: 5          # existential: prevents quality regressions
+      observability: 5          # per-validator verdicts visible
+      security_compliance: 5    # enforcement-only; no external calls
+    bucket_avgs:
+      contract: 4.60  # (5+4+5+5+4)/5
+      validation: 4.80  # (5+5+5+5+4)/5
+      lifecycle: 3.60  # (4+4+3+3+4)/5
+      integration: 4.40  # (3+5+5+5+4)/5
+      overhead: 4.40  # (4+3+5+5+5)/5
+    weighted_score: 4.42  # (4.60*1.5 + 4.80*1.5 + 3.60*1.0 + 4.40*1.0 + 4.40*0.75) / 5.75
+    computed_maturity: "L4"
+    human_override: null
+    critical_zero_dimensions: []
+    key_gaps:
+      - No skill for running validators directly (skill_command_integration=3)
+      - CI skill-attribution-check runs with allow_failure=true (not preventive)
+      - grade-cache.json 565KB unbounded (stale_state_detection=3)
+
+  - layer_id: L13
+    canonical_name: Skill and Command Execution
+    dimension_scores:
+      input_contract: 4         # skill registry defines required_handoff_fields
+      output_contract: 4        # skill command files define outputs
+      schema_quality: 3         # skill-registry.yaml is multi-doc; no JSON schema
+      authority_clarity: 4      # skill-registry.yaml is the authority
+      provenance: 3             # skills reference product_track and purpose
+      validation: 3             # V-SGF-001 checks skill attribution in declarations
+      test_coverage: 3          # some skill attribution tests; CI allow_failure=true
+      negative_controls: 2      # no tests of skill execution failures
+      idempotency: 4            # run_skill_idempotency skill exists
+      evidence_quality: 3       # skill execution receipts collected
+      failure_handling: 3       # no explicit failure handling for skill execution
+      recovery_rollback: 3      # git restore for skill file changes
+      versioning_compatibility: 2  # no skill versioning scheme
+      stale_state_detection: 3  # /detect-stale-layer-state skill registered
+      artifact_identity: 4      # command names (/ingest-spec-sal etc.) are stable IDs
+      skill_command_integration: 5  # 93 skills registered; command files exist
+      supervisor_integration: 4  # skill attribution checked in governance
+      consumer_adoption: 4      # skills used in sprint execution
+      responsibility_cohesion: 4  # clear: govern work execution through skills
+      producer_completeness: 4  # 93 skills cover major work types
+      maintainability: 3        # skill-registry.yaml is multi-doc; complex structure
+      machinery_overhead: 3     # 93 skills + 72 command files to maintain
+      product_value: 4          # ensures work is governed; prevents ad-hoc execution
+      observability: 3          # skill registry visible; receipts logged
+      security_compliance: 4    # skills define safe execution boundaries
+    bucket_avgs:
+      contract: 3.60  # (4+4+3+4+3)/5
+      validation: 3.00  # (3+3+2+4+3)/5
+      lifecycle: 3.00  # (3+3+2+3+4)/5
+      integration: 4.20  # (5+4+4+4+4)/5
+      overhead: 3.40  # (3+3+4+3+4)/5
+    weighted_score: 3.42  # (3.60*1.5 + 3.00*1.5 + 3.00*1.0 + 4.20*1.0 + 3.40*0.75) / 5.75
+    computed_maturity: "L3"
+    human_override: null
+    critical_zero_dimensions: []
+    key_gaps:
+      - No skill versioning scheme (versioning_compatibility=2)
+      - No tests of skill execution failures (negative_controls=2)
+      - skill-registry.yaml is multi-doc YAML (schema_quality=3); no JSON schema
+      - CI skill-attribution-check is allow_failure=true (not preventive)
+
+# Summary Table
+maturity_summary:
+  L01_SAL: "L2 — schema_quality=0 (no formal schema); 6/20 formats with facts"
+  L02_QName: "L3 — well-governed registry; versioning gap"
+  L03_Capability: "L3 — automated closure; evidence quality INDETERMINATE"
+  L05_Oracle: "L3 (human override from computed L4) — complete infrastructure; not wired into sprint loop"
+  L06_DotNET: "L4 — commercial tier; 10/20 formats; customer-readiness achieved for FODS/FODT"
+  L07_Python: "L4 — 20/20 formats; all 16 packages; strong test coverage"
+  L08_Evidence: "L4 — complete evidence chain; SHA-256 packages; Gate 11 support"
+  L09_State: "L4 — CCI hardened; 45 tests; TTL-based session identity"
+  L11_Supervisor: "L5 — production authority; idempotency confirmed; 109 tests"
+  L12_Governance: "L4 — 77 validators; 109 tests; grade-cache unbounded is the main gap"
+  L13_Skills: "L3 — 93 skills registered; versioning and CI enforcement gaps"

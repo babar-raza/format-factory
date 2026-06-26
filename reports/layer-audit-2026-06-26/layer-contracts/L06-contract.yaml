@@ -1,0 +1,140 @@
+layer_id: L06
+canonical_name: Product Source (.NET Commercial)
+version: "1.0"
+generated_at: "2026-06-26"
+taskcard: TC-LA-PILOT-006
+mission: FORMAT-FACTORY-LAYER-AUDIT-20260626
+wiring_status: blueprint  # Reference document; not enforced by automation
+
+# Q1: What is this layer's purpose?
+purpose: >
+  Implement commercial-tier format reading and writing in C#/.NET for the 10 highest-value
+  formats. Produce NuGet-compatible packages for enterprise/commercial distribution.
+  FODS and FODT are the primary tier; remaining 8 formats expand coverage opportunistically.
+  All implementations must trace to spec QNames and pass customer-readiness criteria.
+
+# Q2: What decisions does this layer own?
+owned_decisions:
+  - Which 10/20 formats have .NET implementations (selective commercial strategy)
+  - .NET class naming (must align with canonical_class from L02 QName registry)
+  - NuGet package versioning scheme (currently 0.1.0-tier0)
+  - Which .NET test files cover which capabilities
+  - Customer-readiness criteria per format (8 criteria: C1-C20 subset)
+
+# Q3: What decisions does this layer NOT own?
+non_owned_decisions:
+  - Format spec correctness (L01 SAL + L05 Oracle own this)
+  - Python FOSS implementations (L07 Python owns this)
+  - Publishing to nuget.org (TRUE_EXTERNAL_GATE: requires Babar Raza sign-off + credentials)
+  - Gate 11 commercial execution approval (Babar Raza only)
+
+# Q4: What are the authoritative inputs?
+authoritative_inputs:
+  - path: "src/net/{format}/"
+    type: dotnet_source
+    description: C# source files; LOC capped per governance validator
+    required: true
+  - path: "tests/net/{format}/"
+    type: dotnet_test_files
+    description: .NET test files; 401 test files across 10 formats
+    required: true
+  - path: "shared/qname-registry/{format}.yaml"
+    type: qname_registry
+    description: Defines canonical class names and spec_qname attributes
+    required: true
+
+# Q5: What are the output artifacts?
+output_artifacts:
+  - path: ".local/package-builds/dotnet/{format}/FormatFactory.{Format}.*.nupkg"
+    type: nuget_package
+    schema: "NuGet 2.x package; SemVer 0.1.0-tier0"
+    consumer: Babar Raza (Gate 11 review); enterprise customers (after publication)
+  - path: "reports/gate11/{format}-customer-readiness-assessment.md"
+    type: customer_readiness_report
+    consumer: Gate 11 evaluation; Babar Raza sign-off
+
+# Q6: What is the validation contract?
+validation_contract:
+  mandatory_validations:
+    - name: dotnet_build_zero_errors
+      description: dotnet build must produce 0 errors (warnings allowed)
+      enforcement: CI + governance_validators_dotnet.py
+      wiring_status: active
+      evidence: C5 criterion verified (643/643 .NET tests PASS as of 2026-06-26)
+    - name: customer_readiness_8_criteria
+      description: 8 customer-readiness criteria must pass for Gate 11 approval
+      enforcement: /check-gate fods 11 skill
+      wiring_status: active
+    - name: loc_cap_enforcement
+      description: All .NET source files must stay under LOC cap (max FodsDocument.cs 769 LOC)
+      enforcement: source_structure_validator.py + governance_validators_dotnet.py
+      wiring_status: active
+  optional_validations:
+    - name: nuget_sha256_signed
+      description: NuGet packages should be SHA-256 signed before distribution
+      wiring_status: planned
+      enforcement_taskcard: TBD-TASKCARD-LA-WIRE-040
+
+# Q7: What is the error contract?
+error_contract:
+  on_build_failure:
+    action: C5 criterion fails; GOV_BLOCK:validate_dotnet_build fires
+    downstream_effect: Sprint blocked; cannot advance Gate 11
+    recovery: Fix .cs syntax error; rebuild
+  on_test_regression:
+    action: Test count drops below baseline
+    downstream_effect: Sprint acceptance fails; rework item generated
+    recovery: Fix failing .NET test; re-run dotnet test
+  on_loc_cap_breach:
+    action: governance_validators_dotnet.py FAIL
+    downstream_effect: Sprint blocked
+    recovery: Extract logic to separate file; update baseline cap (write-once)
+
+# Q8: What skills/commands produce this layer's outputs?
+producer_skills:
+  - command: /add-dotnet-api
+    purpose: Adds new .NET public API methods per format
+    idempotency: safe if method doesn't already exist
+  - command: /add-dotnet-object-model-feature
+    purpose: Adds object model classes to .NET implementation
+    idempotency: safe
+  - command: /add-roundtrip-test
+    purpose: Adds round-trip test for .NET format
+
+# Q9: What skills/commands consume this layer's outputs?
+consumer_skills:
+  - command: /check-gate
+    purpose: Evaluates Gate 11 readiness for a format
+  - command: /check-release-boundary
+    purpose: Checks whether a .NET format is ready for commercial release
+  - command: /score-format
+    purpose: Scores .NET format implementation maturity
+
+# Q10: Who owns this layer?
+owner: autonomous_sprint  # Implementation is agent-owned
+escalation: Babar Raza (Gate 11 execution sign-off; nuget.org publication)
+
+# Q11: What are the key gaps?
+key_gaps:
+  - gap_id: GAP-L06-COVERAGE-001
+    description: "Only 10/20 formats have .NET implementations"
+    severity: MEDIUM
+    impact: 10 formats have no .NET commercial path; revenue opportunity constrained
+    recommendation: FODS/FODT customer-ready; prioritize ODS/ODT for next expansion
+    enforcement_taskcard: none (strategic decision by Babar Raza)
+  - gap_id: GAP-L06-PUBLISH-001
+    description: "NuGet packages not published to nuget.org"
+    severity: HIGH
+    impact: Commercial tier is ready but not distributed
+    recommendation: Await Babar Raza sign-off then use nuget push with credentials
+    blocker: TRUE_EXTERNAL_GATE (Babar Raza sign-off + nuget.org credentials)
+  - gap_id: GAP-L06-STALE-001
+    description: "No automated staleness check for .NET assemblies vs spec version"
+    severity: LOW
+    impact: .NET implementations may drift from spec without detection
+    recommendation: Add /check-release-boundary oracle integration
+    enforcement_taskcard: TBD-TASKCARD-LA-WIRE-041
+
+current_maturity: L4
+target_maturity: L4  # At target; L5 requires publication + all 20 formats
+maturity_gap: "L5 requires: publication to nuget.org (TRUE_EXTERNAL_GATE), 20/20 format coverage, oracle integration"

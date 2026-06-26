@@ -1,0 +1,135 @@
+layer_id: L03
+canonical_name: Requirement and Capability Authority
+version: "1.0"
+generated_at: "2026-06-26"
+taskcard: TC-LA-PILOT-006
+mission: FORMAT-FACTORY-LAYER-AUDIT-20260626
+wiring_status: blueprint  # Reference document; not enforced by automation
+
+# Q1: What is this layer's purpose?
+purpose: >
+  Track all capability gaps between the current Format Factory implementation and what
+  each format's spec requires. Produce the gap-ledger.json that drives sprint work selection.
+  Ensure that every sprint works on an actual spec-backed requirement, not arbitrary features.
+
+# Q2: What decisions does this layer own?
+owned_decisions:
+  - Which capabilities are required for each format (derived from QName registry + spec)
+  - Gap status lifecycle (open → closed / DEFERRED_BY_DESIGN / test_verified)
+  - Which gaps generate sprint work items (via product-task-candidates.json)
+  - Gap priority and severity classification
+
+# Q3: What decisions does this layer NOT own?
+non_owned_decisions:
+  - What QNames exist (L02 owns this)
+  - Whether a gap is truly resolved (L05 Oracle + L07/L06 tests must confirm)
+  - Sprint execution order (L11 Supervisor owns this)
+  - Evidence quality assessment (L08 Evidence owns this)
+
+# Q4: What are the authoritative inputs?
+authoritative_inputs:
+  - path: "reports/capability-layer/gap-ledger.json"
+    type: gap_ledger
+    description: 1,246 entries tracking capability gaps across 20 formats
+    required: true
+  - path: "shared/qname-registry/"
+    type: qname_registry
+    description: Defines which capabilities must exist
+    required: true
+  - path: "registry/format-registry.yaml"
+    type: format_registry
+    description: Defines 20 supported formats
+    required: true
+
+# Q5: What are the output artifacts?
+output_artifacts:
+  - path: "reports/capability-layer/gap-ledger.json"
+    type: gap_ledger
+    schema: "keys: schema_version, generated_at, sprint_id, run_id, total_gaps, gaps"
+    consumer: product-task-candidates.json; autonomous sprint work selection
+  - path: ".local/supervisor/product/next-work-items.json"
+    type: work_items
+    description: Compiled work items from gap ledger for current sprint
+    consumer: autonomous_cycle.py Step 3a-pre
+
+# Q6: What is the validation contract?
+validation_contract:
+  mandatory_validations:
+    - name: gap_ledger_parseable
+      description: gap-ledger.json must be valid JSON
+      enforcement: autonomous_task_generator.py reads it at sprint start
+      wiring_status: active
+    - name: gap_format_registry_alignment
+      description: All GAP-FORMAT-* IDs must reference formats in format-registry.yaml
+      enforcement: none currently
+      wiring_status: planned
+      enforcement_taskcard: TBD-TASKCARD-LA-WIRE-020
+  known_weakness:
+    description: >
+      closed_by field is ABSENT from the 'closed' status schema. 96.9% of closed entries
+      (1,208 of 1,246) have no direct link to evidence, sprint, or passing test.
+      Closure is driven by capability scanner detecting test coverage — plausible but
+      not individually verifiable. Audit verdict: INDETERMINATE.
+    audit_file: reports/layer-audit-2026-06-26/gap-ledger-audit.md
+
+# Q7: What is the error contract?
+error_contract:
+  on_gap_ledger_parse_failure:
+    action: autonomous_task_generator.py falls back to expansion_goals
+    downstream_effect: Sprint work from expansion_goals only; spec gaps ignored
+    recovery: Fix JSON syntax; regenerate gap-ledger.json
+  on_no_open_gaps:
+    action: product-task-candidates.json has 1 item (observed state 2026-06-26)
+    downstream_effect: Sprint work is minimal; expansion_goal_fallback=false
+    recovery: Re-audit closure quality; reopen overclaimed gaps if necessary
+  on_stale_gap_ledger:
+    action: New capabilities added to formats are not tracked
+    downstream_effect: QName additions not reflected in work items
+    recovery: Regenerate via autonomous_task_generator.py
+
+# Q8: What skills/commands produce this layer's outputs?
+producer_skills:
+  - command: /register-layer-gap
+    purpose: Adds new gap entries to gap-ledger.json
+    idempotency: additive; does not overwrite existing entries
+  - command: /close-layer-task
+    purpose: Closes a gap entry when test coverage is confirmed
+    idempotency: safe_rerun (idempotent close)
+
+# Q9: What skills/commands consume this layer's outputs?
+consumer_skills:
+  - command: /select-poc-gap
+    purpose: Selects next POC gap for implementation
+  - command: /promote-gap-to-taskcard
+    purpose: Converts open gap to governed taskcard
+  - command: /build-capability-routes
+    purpose: Routes capabilities to implementation slots
+
+# Q10: Who owns this layer?
+owner: autonomous_sprint
+escalation: Babar Raza (Gate 11 only; gap management is agent-owned)
+
+# Q11: What are the key gaps?
+key_gaps:
+  - gap_id: GAP-L03-CLOSEDBY-001
+    description: "closed_by field absent from all closed-status entries"
+    severity: HIGH
+    impact: Cannot verify individual gap closures without cross-referencing test files
+    recommendation: "Promote test_verified as the only valid closure status; require closed_by on all new closures"
+    enforcement_taskcard: TBD-TASKCARD-LA-WIRE-021
+  - gap_id: GAP-L03-TESTS-001
+    description: "No automated tests of gap-ledger accuracy"
+    severity: MEDIUM
+    impact: Fabricated or stale gaps go undetected
+    recommendation: Add test_gap_ledger_integrity.py with sample cross-reference checks
+    enforcement_taskcard: TBD-TASKCARD-LA-WIRE-022
+  - gap_id: GAP-L03-SIZE-001
+    description: "18MB gap-ledger.json; no pruning mechanism"
+    severity: LOW
+    impact: Slow to load; cannot be loaded into LLM context
+    recommendation: Archive DEFERRED_BY_DESIGN and test_verified entries to gap-ledger-archive.json
+    enforcement_taskcard: TBD-TASKCARD-LA-WIRE-023
+
+current_maturity: L3
+target_maturity: L3  # Can remain L3 if closure evidence quality is improved
+maturity_gap: "Requires: closed_by field enforcement (+evidence_quality), gap tests (+test_coverage)"
