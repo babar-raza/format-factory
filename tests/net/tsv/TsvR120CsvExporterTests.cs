@@ -1,4 +1,4 @@
-// Tests for TsvCsvExporter and TsvWriter.Export(doc) serialization.
+// Tests for TsvCsvExporter and doc.ToTsv() serialization.
 // Sprint: FORMAT-FACTORY-TSV-CSV-EXPORTER-20260626
 // Ledger: R120-GOVERNED-DOTNET-TSV-CSV-EXPORTER-001
 
@@ -24,7 +24,7 @@ public class TsvR120CsvExporterTests
     public void Export_ProducesNonEmptyString()
     {
         var doc = LoadTsv("Name\tScore\nAlice\t90\n");
-        var exported = TsvWriter.Export(doc);
+        var exported = doc.ToTsv();
         Assert.False(string.IsNullOrWhiteSpace(exported));
     }
 
@@ -32,7 +32,7 @@ public class TsvR120CsvExporterTests
     public void Export_ContainsHeaderNames()
     {
         var doc = LoadTsv("Name\tScore\nAlice\t90\n");
-        var exported = TsvWriter.Export(doc);
+        var exported = doc.ToTsv();
         Assert.Contains("Name", exported);
         Assert.Contains("Score", exported);
     }
@@ -41,7 +41,7 @@ public class TsvR120CsvExporterTests
     public void Export_ContainsDataValues()
     {
         var doc = LoadTsv("Name\tScore\nAlice\t90\nBob\t75\n");
-        var exported = TsvWriter.Export(doc);
+        var exported = doc.ToTsv();
         Assert.Contains("Alice", exported);
         Assert.Contains("Bob", exported);
     }
@@ -50,7 +50,7 @@ public class TsvR120CsvExporterTests
     public void Export_UsesTabs()
     {
         var doc = LoadTsv("Name\tScore\nAlice\t90\n");
-        var exported = TsvWriter.Export(doc);
+        var exported = doc.ToTsv();
         Assert.Contains("\t", exported);
     }
 
@@ -60,7 +60,7 @@ public class TsvR120CsvExporterTests
     public void TsvCsvExporter_OutputContainsCommas()
     {
         var doc = LoadTsv("Name\tScore\nAlice\t90\n");
-        var csv = TsvCsvExporter.ToCsv(doc);
+        var csv = TsvCsvExporter.Export(doc);
         Assert.Contains(",", csv);
     }
 
@@ -68,7 +68,7 @@ public class TsvR120CsvExporterTests
     public void TsvCsvExporter_OutputDoesNotContainTabs()
     {
         var doc = LoadTsv("Name\tScore\nAlice\t90\n");
-        var csv = TsvCsvExporter.ToCsv(doc);
+        var csv = TsvCsvExporter.Export(doc);
         Assert.DoesNotContain("\t", csv);
     }
 
@@ -76,7 +76,7 @@ public class TsvR120CsvExporterTests
     public void TsvCsvExporter_HeadersPreserved()
     {
         var doc = LoadTsv("FirstName\tLastName\nAlice\tSmith\n");
-        var csv = TsvCsvExporter.ToCsv(doc);
+        var csv = TsvCsvExporter.Export(doc);
         Assert.Contains("FirstName", csv);
         Assert.Contains("LastName", csv);
     }
@@ -85,7 +85,7 @@ public class TsvR120CsvExporterTests
     public void TsvCsvExporter_DataValuesPreserved()
     {
         var doc = LoadTsv("Name\tCity\nAlice\tLondon\nBob\tParis\n");
-        var csv = TsvCsvExporter.ToCsv(doc);
+        var csv = TsvCsvExporter.Export(doc);
         Assert.Contains("Alice", csv);
         Assert.Contains("London", csv);
         Assert.Contains("Bob", csv);
@@ -98,7 +98,7 @@ public class TsvR120CsvExporterTests
         // Count newlines in TSV data rows (2 data rows + header = 3 lines)
         // CSV output should have same number of data records
         var doc = LoadTsv("Name\tScore\nAlice\t90\nBob\t75\n");
-        var csv = TsvCsvExporter.ToCsv(doc);
+        var csv = TsvCsvExporter.Export(doc);
 
         var lines = csv.Split('\n', StringSplitOptions.RemoveEmptyEntries);
         // Header + 2 data rows = 3 lines
@@ -114,12 +114,12 @@ public class TsvR120CsvExporterTests
         var doc = LoadTsv(tsv);
 
         // Export back to TSV
-        var exported = TsvWriter.Export(doc);
+        var exported = doc.ToTsv();
         Assert.Contains("Widget", exported);
         Assert.Contains("Gadget", exported);
 
         // Convert to CSV
-        var csv = TsvCsvExporter.ToCsv(doc);
+        var csv = TsvCsvExporter.Export(doc);
         Assert.Contains(",", csv);
         Assert.Contains("Product", csv);
         Assert.Contains("9.99", csv);
