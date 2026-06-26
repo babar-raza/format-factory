@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s188-dotnet-deepening-20260628",
+  "latest_sprint": "ff-sprint-s189-dotnet-deepening-20260628",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -23224,6 +23224,33 @@
       "classification": "NET_TEST_DEEPENING",
       "description": "FodtDocument.RemoveHeading dedicated tests: negative/at-count throws, body-para throws InvalidOperationException, valid decrements count, shifts up, heading count decrements, dogfood remove single/text gone",
       "evidence_path": "tests/net/fodt/FodtR197RemoveHeadingTests.cs",
+      "test_count": 10
+    },
+    {
+      "id": "PC-NETPBM-R185",
+      "sprint": "ff-sprint-s189-dotnet-deepening-20260628",
+      "format": "NETPBM",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "NetpbmImage.ApplyGamma dedicated tests: gamma=0/-1 throws, PBM clone, PGM new image, format/MaxValue preserved, dims unchanged, gamma=1.0 identity, dogfood PGM dims/zero pixel stays zero",
+      "evidence_path": "tests/net/netpbm/NetpbmR185ApplyGammaTests.cs",
+      "test_count": 10
+    },
+    {
+      "id": "PC-FODS-R196",
+      "sprint": "ff-sprint-s189-dotnet-deepening-20260628",
+      "format": "FODS",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "FodsDocument.GetSheetByIndex dedicated tests: negative returns null, at-count returns null, index=0 first sheet, name matches, last index last sheet, middle correct, FodsSheet type, after AddSheet index=1, dogfood get+set cell, multiple sheets",
+      "evidence_path": "tests/net/fods/FodsR196GetSheetByIndexDedicatedTests.cs",
+      "test_count": 10
+    },
+    {
+      "id": "PC-FODT-R198",
+      "sprint": "ff-sprint-s189-dotnet-deepening-20260628",
+      "format": "FODT",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "FodtDocument.GetHeadingTexts dedicated tests: empty returns empty, body excluded, single heading, multiple in order, IReadOnlyList, no nulls, count matches, all levels, dogfood three headings/mixed content",
+      "evidence_path": "tests/net/fodt/FodtR198GetHeadingTextsTests.cs",
       "test_count": 10
     }
   ],
