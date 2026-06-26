@@ -21261,9 +21261,39 @@
       "evidence_path": "tests/net/fodt/FodtR151GetPlainTextRangeTests.cs",
       "test_count": 10,
       "capability_ref": "commercial_net_products.FODT.dotnet_status.get_plain_text_range"
+    },
+    {
+      "entry_id": "PC-ZST-R134",
+      "format": "ZST",
+      "r_number": "R134",
+      "sprint": "ff-sprint-s138-dotnet-deepening-20260627",
+      "description": "ZstWriter.CompressToFile - 10 tests: empty path throws, null path throws, file created, non-empty, magic bytes 0x28/0xB5/0x2F/0xFD, round-trip ParseStream IsValid=true, MagicValid=true, FrameCount=1, dogfood CompressToFile->ParseStream->IsValid+MagicValid+HasMultipleFrames=false pipeline",
+      "evidence_path": "tests/net/zst/ZstR134CompressToFileTests.cs",
+      "test_count": 10,
+      "capability_ref": "commercial_net_products.ZST.dotnet_status.compress_to_file"
+    },
+    {
+      "entry_id": "PC-NDJSON-R138",
+      "format": "NDJSON",
+      "r_number": "R138",
+      "sprint": "ff-sprint-s138-dotnet-deepening-20260627",
+      "description": "NdjsonWriter.WriteRecordsToFile - 10 tests: null records throws ArgumentNullException, null/empty/whitespace path throws NdjsonException, file created, non-empty, content matches WriteRecords, round-trip LoadFile same count, dogfood WriteToFile->LoadFile->Filter active=true yields 2 records (Alice+Carol)",
+      "evidence_path": "tests/net/ndjson/NdjsonR138WriterToFileTests.cs",
+      "test_count": 10,
+      "capability_ref": "commercial_net_products.NDJSON.dotnet_status.writer_to_file"
+    },
+    {
+      "entry_id": "PC-CSV-R134",
+      "format": "CSV",
+      "r_number": "R134",
+      "sprint": "ff-sprint-s138-dotnet-deepening-20260627",
+      "description": "CsvWriter.WriteRowsToFile and CsvWriterException - 10 tests: null rows throws ArgumentNullException, null/empty/whitespace path throws CsvWriterException, file created, content matches WriteRows, CsvWriterException is Exception subclass, round-trip LoadFile 3 data rows, dogfood WriteToFile->LoadFile->Filter active=true 2 records",
+      "evidence_path": "tests/net/csv/CsvR134WriterToFileTests.cs",
+      "test_count": 10,
+      "capability_ref": "commercial_net_products.CSV.dotnet_status.writer_to_file_and_exception"
     }
   ],
-  "total_entries": 1180,
+  "total_entries": 1183,
   "changes": [
     {
       "file": "src/python/dif/models.py",
