@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s126-dotnet-deepening-20260627",
+  "latest_sprint": "ff-sprint-s127-dotnet-deepening-20260627",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -20913,9 +20913,48 @@
         "tests/net/zst/ZstR130CompressToFileTests.cs"
       ],
       "description": "ZST R130: 10 tests for ZstWriter.CompressToFile(data, destPath, level) \u2014 output file, magic bytes, null guards, compression levels, parseable output, dogfood roundtrip"
+    },
+    {
+      "entry_id": "PC-NDJSON-R132",
+      "classification": "GOVERNED_DOTNET_TEST",
+      "sprint": "ff-sprint-s127-dotnet-deepening-20260627",
+      "product": "NDJSON .NET",
+      "capability_refs": [
+        "commercial_net_products.NDJSON.dotnet_status.spec_ndjson_record"
+      ],
+      "test_files": [
+        "tests/net/ndjson/NdjsonR132SpecNdjsonRecordTests.cs"
+      ],
+      "description": "NDJSON R132: 10 tests for Spec.NdjsonRecord canonical spec-shaped model class \u2014 SpecQName, RawJson, LineIndex, independence, dogfood pipeline"
+    },
+    {
+      "entry_id": "PC-NETPBM-R138",
+      "classification": "GOVERNED_DOTNET_TEST",
+      "sprint": "ff-sprint-s127-dotnet-deepening-20260627",
+      "product": "Netpbm .NET",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.spec_netpbm_image"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR138SpecNetpbmImageTests.cs"
+      ],
+      "description": "Netpbm R138: 10 tests for Spec.NetpbmImage canonical spec-shaped model class \u2014 SpecQName, MagicNumber, Width, Height, MaxVal, init-only, dogfood pipeline"
+    },
+    {
+      "entry_id": "PC-CSV-R130",
+      "classification": "GOVERNED_DOTNET_TEST",
+      "sprint": "ff-sprint-s127-dotnet-deepening-20260627",
+      "product": "CSV .NET",
+      "capability_refs": [
+        "commercial_net_products.CSV.dotnet_status.to_csv_serialization"
+      ],
+      "test_files": [
+        "tests/net/csv/CsvR130ToCsvSerializationTests.cs"
+      ],
+      "description": "CSV R130: 10 tests for CsvDocument.ToCsv() serialization and GetCellValue edge-cases \u2014 header line, row order, after mutation, null returns, dogfood roundtrip"
     }
   ],
-  "total_entries": 1147,
+  "total_entries": 1150,
   "changes": [
     {
       "file": "src/python/dif/models.py",
