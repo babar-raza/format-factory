@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s183-dotnet-deepening-20260628",
+  "latest_sprint": "ff-sprint-s184-dotnet-deepening-20260628",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -23089,6 +23089,33 @@
       "classification": "NET_TEST_DEEPENING",
       "description": "FodtDocument.ExportToHtmlFile dedicated tests: null/whitespace path throws, valid path creates file, file contains html tag, content matches ExportToHtml, empty doc ok, overwrite, dogfood heading+paragraph, re-read as string",
       "evidence_path": "tests/net/fodt/FodtR192ExportToHtmlFileTests.cs",
+      "test_count": 9
+    },
+    {
+      "id": "PC-NETPBM-R180",
+      "sprint": "ff-sprint-s184-dotnet-deepening-20260628",
+      "format": "NETPBM",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "NetpbmImage.FlipDiagonal dedicated tests: new image, width=originalHeight, height=originalWidth, format/MaxValue preserved, square dims same, non-square swapped, double-flip restores, pixel mapping, dogfood PGM",
+      "evidence_path": "tests/net/netpbm/NetpbmR180FlipDiagonalTests.cs",
+      "test_count": 10
+    },
+    {
+      "id": "PC-FODS-R191",
+      "sprint": "ff-sprint-s184-dotnet-deepening-20260628",
+      "format": "FODS",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "FodsCsvExporter.ExportFirstSheetToCsv dedicated tests: null/whitespace fodsPath throws, null/whitespace csvPath throws, nonexistent file throws, valid creates csv, result sourcePath/outputPath/rowsExported, dogfood minimal FODS",
+      "evidence_path": "tests/net/fods/FodsR191ExportFirstSheetToCsvTests.cs",
+      "test_count": 10
+    },
+    {
+      "id": "PC-FODT-R193",
+      "sprint": "ff-sprint-s184-dotnet-deepening-20260628",
+      "format": "FODT",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "FodtDocument.ExportToMarkdownFile dedicated tests: null/whitespace throws, valid creates file, content matches ExportToMarkdown, heading uses # prefix, empty ok, overwrite, dogfood heading+paragraph, multiple headings",
+      "evidence_path": "tests/net/fodt/FodtR193ExportToMarkdownFileTests.cs",
       "test_count": 9
     }
   ],
