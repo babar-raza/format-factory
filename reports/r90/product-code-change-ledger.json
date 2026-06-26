@@ -25721,6 +25721,90 @@
         }
       ],
       "format": "FODT"
+    },
+    {
+      "entry_id": "PC-NETPBM-R259",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s252-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "NETPBM .NET",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.get_min_pixel_value"
+      ],
+      "api_symbols": [
+        "GetMinPixelValue"
+      ],
+      "api_behavior": "GetMinPixelValue() returns the minimum pixel value across all pixels as an int. Non-mutating. All-zero=0. Result in [0, MaxValue]. Idempotent.",
+      "changed_files": [
+        "tests/net/netpbm/NetpbmR259GetMinPixelValueDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR259GetMinPixelValueDedicatedTests.cs"
+      ],
+      "test_count": 11,
+      "source_files": [
+        {
+          "path": "tests/net/netpbm/NetpbmR259GetMinPixelValueDedicatedTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "NETPBM"
+    },
+    {
+      "entry_id": "PC-FODS-R271",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s252-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.get_sheet_index"
+      ],
+      "api_symbols": [
+        "GetSheetIndex"
+      ],
+      "api_behavior": "GetSheetIndex(sheetName) returns the 0-based index of a sheet. Null/whitespace/nonexistent throws. First sheet=0. After AddSheet second=1. SheetCount unchanged. Idempotent.",
+      "changed_files": [
+        "tests/net/fods/FodsR271GetSheetIndexDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR271GetSheetIndexDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "tests/net/fods/FodsR271GetSheetIndexDedicatedTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "FODS"
+    },
+    {
+      "entry_id": "PC-FODT-R267",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s252-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.duplicate_paragraph"
+      ],
+      "api_symbols": [
+        "DuplicateParagraph"
+      ],
+      "api_behavior": "DuplicateParagraph(index) creates a copy of the paragraph and inserts it after. Negative/OOB throws. ParagraphCount increases by 1. Duplicate text matches original. Original unchanged.",
+      "changed_files": [
+        "tests/net/fodt/FodtR267DuplicateParagraphDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR267DuplicateParagraphDedicatedTests.cs"
+      ],
+      "test_count": 9,
+      "source_files": [
+        {
+          "path": "tests/net/fodt/FodtR267DuplicateParagraphDedicatedTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "FODT"
     }
   ],
   "total_entries": 1270,
