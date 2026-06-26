@@ -28229,9 +28229,78 @@
       ],
       "test_count": 11,
       "format": "FODG"
+    },
+    {
+      "entry_id": "PC-NETPBM-R289",
+      "classification": "DOTNET_TEST_COVERAGE",
+      "sprint": "ff-sprint-s281-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "NETPBM",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.get_contrast"
+      ],
+      "api_symbols": [
+        "NetpbmImage.GetContrast"
+      ],
+      "api_behavior": "GetContrast(): double non-negative; all-zero/all-max non-negative; dims/format/MaxValue unchanged; idempotent; mixed non-negative",
+      "changed_files": [
+        "tests/net/netpbm/NetpbmR289GetContrastDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR289GetContrastDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [],
+      "format": "netpbm"
+    },
+    {
+      "entry_id": "PC-FODS-R309",
+      "classification": "DOTNET_TEST_COVERAGE",
+      "sprint": "ff-sprint-s281-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "FODS",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.set_cell_style"
+      ],
+      "api_symbols": [
+        "FodsDocument.SetCellStyle"
+      ],
+      "api_behavior": "SetCellStyle(sheetName,row,col,style): null/whitespace/nonexistent/negative-row/col throws; valid ok; SheetCount unchanged; set-twice ok; dogfood bold/multiple-cells",
+      "changed_files": [
+        "tests/net/fods/FodsR309SetCellStyleDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR309SetCellStyleDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [],
+      "format": "fods"
+    },
+    {
+      "entry_id": "PC-FODT-R296",
+      "classification": "DOTNET_TEST_COVERAGE",
+      "sprint": "ff-sprint-s281-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "FODT",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.get_section_count"
+      ],
+      "api_symbols": [
+        "FodtDocument.GetSectionCount"
+      ],
+      "api_behavior": "GetSectionCount(): int non-negative; increases after AddSection; ParagraphCount/TableCount unchanged; idempotent; two-sections count>=before+2; dogfood multiple",
+      "changed_files": [
+        "tests/net/fodt/FodtR296GetSectionCountDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR296GetSectionCountDedicatedTests.cs"
+      ],
+      "test_count": 9,
+      "source_files": [],
+      "format": "fodt"
     }
   ],
-  "total_entries": 1620,
+  "total_entries": 1624,
   "changes": [
     {
       "file": "src/python/dif/models.py",
