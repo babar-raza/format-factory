@@ -4226,7 +4226,7 @@ Rules binding on all work below:
 
 **Plan:** `elegant-hugging-barto.md` (machinery_hardening)
 **Mission:** Ensure every src/ file is production-grade library code. Fix governance machinery so the system prevents future bad code — not just patches current bad code.
-**Status:** CLOSED (2026-06-25) — all 22 taskcards complete, autonomous dry run ACCEPTED (exit 0)
+**Status:** CLOSED (2026-06-25; post-closure hardening 2026-06-26) — 22+4 taskcards complete, autonomous dry run ACCEPTED (exit 0), corrected pilot confirms V77 blocks masquerade pattern
 
 ### Machinery Deliverables (COMPLETE)
 
@@ -4238,13 +4238,17 @@ Rules binding on all work below:
 | TC-GM-002 | V77 `validate_analytics_naming_enforced` added (blocks_sprint=True); gnumeric/workbook_document.py → gnumeric_analytics.py; toml/config_document.py → toml_analytics.py (ATOMIC) | CLOSED |
 | TC-GM-003 | V78 `validate_dotnet_loc_cap` added (blocks_sprint=True for new >800 LOC .cs files) | CLOSED |
 | TC-GM-004 | V79 `validate_healing_stall_detector` added (WARN advisory for zero healing progress) | CLOSED |
-| TC-GM-005 | 16 new governance regression tests; total 135 pass (was 92) | CLOSED |
+| TC-GM-005 | 16 new governance regression tests; total 151 pass (was 92; corrected from claimed 135) | CLOSED |
 
 ### Pilots (COMPLETE)
 
 | Taskcard | Deliverable | Status |
 |---------|-------------|--------|
-| TC-GP-NEG-001 | Negative pilot: 7 blocking FAILs detected | CLOSED |
+| TC-GP-NEG-001 | Negative pilot: 7 blocking FAILs (from unrelated validators; V77 passed vacuously — see TC-POST-001) | CLOSED |
+| TC-POST-001 | Corrected pilot: V77 fires on analytics masquerade file (FAIL+blocks_sprint=True confirmed PROOF_LEVEL_3) | CLOSED |
+| TC-POST-002 | lifecycle_audit re-run with --plan-path: 5 taskcards parsed (non-vacuous), all CLOSED | CLOSED |
+| TC-POST-003 | Canonical validator count test 89→93 (V83-V86 not updated by prior sprint); skill-registry.yaml YAML fix | CLOSED |
+| TC-POST-004 | Plan closeout criteria checkboxes marked [x]; plan file hygiene complete | CLOSED |
 | TC-GP-POS-001 | Positive pilot: 0 blocking FAILs, V66/V77/V78 all PASS | CLOSED |
 | TC-GP-NET-001/2/3 | .NET pilot: NetpbmImage.cs 580 LOC (already healed), 496 tests pass, V78 PASS | CLOSED |
 | TC-GP-PY-002/3 | Python pilot: gnumeric 938 pass (14 pre-existing errors), V77 PASS | CLOSED |
@@ -4259,7 +4263,7 @@ Rules binding on all work below:
 - governance_validators_ext2.py expanded with V77/V78/V79 (from 159 to ~370 LOC, below 800-LOC threshold).
 
 ### Gate Criteria Met
-- 135 governance validator tests pass
+- 151 governance validator tests pass (93 canonical validators)
 - Production Standard v2 document written and referenced in CLAUDE.md
 - 5 new GAP-MACH-* gaps logged and closed in gap-ledger
 - Analytics masquerade pattern eliminated from gnumeric and toml packages
@@ -4848,3 +4852,54 @@ This ensures plans are version-controlled, visible in PRs, and survive across ch
 ### Governance
 All changes committed. Ruff EXIT 0. Plan lock: TERMINAL_CLOSED.
 Next sessions use `plans/.claude/<name>.md` as the sole plan authority for migrated plan-mode files.
+
+
+## Section 83 — shiny-kindling-cocoa: SAL Verification, Hardening, and Integration (CLOSED)
+
+Sprint: sal-hardening-20260626-142632
+Date: 2026-06-26
+Status: ACCEPTED_VERIFIED
+Plan authority: C:\Users\prora\.claude\plans\shiny-kindling-cocoa.md (v2.0)
+
+### Mission Summary
+Forensic investigation and production-grade hardening of the Specification Authority Layer (SAL).
+The plan discovered that the GATE-0 test had a structural bug (used `work_items` key instead
+of `planned_work_items`), causing false "enforcement broken" readings. Actual enforcement (V13, V47)
+was verified working. Schema A (`FACT-FODS-001`) was already normalized in the registry (14,884 facts).
+
+### Critical Findings
+- CRITICAL-001 was a TEST BUG, not a code bug — GATE-0 used wrong dict key
+- Fact ID schema already normalized (Schema A) before plan execution
+- V13 and V47 correctly block empty refs / fake IDs with `planned_work_items` key
+- Only 8 dangling refs in gap-ledger (plan predicted 1,508)
+
+### Taskcards Executed
+| Taskcard | Status | Evidence |
+|---|---|---|
+| SAL-GATE0-001: Phase 0 + GATE-0 verification | COMPLETE | p0-gate0-verification.txt |
+| SAL-B0-DIAGNOSIS-001: Root cause analysis (wrong dict key) | COMPLETE | b0-key-diagnosis.txt |
+| SAL-PILOTF6-001: PILOT-F6 mandatory enforcement verification | COMPLETE | pilot-f6-negative.txt |
+| TC-SAL-AITEST-001: AI guard sentinel test (Lane C) | COMPLETE | test_ai_non_authority.py 3/3 PASS |
+| TC-SAL-ENFORCE-001: V13/V47 regression tests (Lane E) | COMPLETE | test_sal_path_resolution.py 6/6 PASS |
+| TC-SAL-PHASE2-001: Phase 2 sal_fact_refs implementation (Lane D) | COMPLETE | 18 stubs, all sal_fact_refs populated |
+| TC-SAL-INVERSE-001: Inverse SAL→product index (Lane D) | COMPLETE | 21 entries in inverse-sal-product-index.json |
+| TC-SAL-DEDUP-001: Fact deduplication scan (Lane G) | COMPLETE | 8 dangling refs, archives expected |
+| TC-SAL-DANGLING-001: Dangling ref count analysis (Lane A) | COMPLETE | 8 refs (not 1,508) |
+
+### Verification Results
+- PILOT-F6: V47 FAIL+blocks_sprint=True for FACT-FAKE-DOES-NOT-EXIST ✅
+- PILOT-AI-002: AI guard violations=1 for llm_extraction self-cert ✅
+- 204 tests pass (161 governance + 43 staleness/linkage) — 0 failures ✅
+- Validator count test updated: 89→93 (V83-V86 + V-TCF-001/002/003 wired) ✅
+- Phase 2 E2E: 18 stubs generated, all have sal_fact_refs populated from gap spec_facts ✅
+
+### Files Changed (committed in 4f87a811)
+- tests/supervisor/test_ai_non_authority.py (NEW — TC-SAL-AITEST-001)
+- tests/supervisor/test_sal_path_resolution.py (NEW — TC-SAL-ENFORCE-001)
+- tests/supervisor/test_governance_validators.py (validator count updated)
+- tools/capability_layer/capability_to_feature_compiler.py (Phase 2 sal_fact_refs wired)
+
+### Governance
+Plan lock: TERMINAL_CLOSED. Evidence root: .local/evidences/sal-hardening-20260626-142632/.
+sal-output is canonical sal-facts source (14,884 facts, 2026-06-26T13:06). V54 number collision
+formally deferred (V13/V47/V62 cover non-ODF enforcement; new V-number task deferred to next sprint).
