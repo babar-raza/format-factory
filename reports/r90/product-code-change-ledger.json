@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s217-dotnet-deepening-20260629",
+  "latest_sprint": "ff-sprint-s218-dotnet-deepening-20260629",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -24206,6 +24206,42 @@
       "description": "R232: Dedicated tests for FodtDocument.Load(Stream) \u2014 null throws, non-null, paragraph count matches, text matches, author preserved, MimeType non-null, multiple loads consistent, dogfood save-load-save-load/heading count",
       "source_files": [
         "tests/net/fodt/FodtR232LoadStreamTests.cs"
+      ],
+      "test_count": 10
+    },
+    {
+      "entry_id": "PC-NETPBM-R224",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s218-dotnet-deepening-20260629",
+      "format": "NETPBM",
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.fill_region",
+      "description": "R224: Dedicated tests for NetpbmImage.FillRegion \u2014 OOB/zero throws, valid no-exception, region pixels=value, outside unchanged, format/MaxValue preserved, dogfood fill-entire/overlapping",
+      "source_files": [
+        "tests/net/netpbm/NetpbmR224FillRegionTests.cs"
+      ],
+      "test_count": 10
+    },
+    {
+      "entry_id": "PC-FODS-R235",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s218-dotnet-deepening-20260629",
+      "format": "FODS",
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.get_numeric_column_values",
+      "description": "R235: Dedicated tests for FodsDocument.GetNumericColumnValues \u2014 null/whitespace/nonexistent/negative throws, empty=empty, non-null, SheetCount unchanged, dogfood numeric-values/mixed-only-numeric",
+      "source_files": [
+        "tests/net/fods/FodsR235GetNumericColumnValuesDedicatedTests.cs"
+      ],
+      "test_count": 10
+    },
+    {
+      "entry_id": "PC-FODT-R233",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s218-dotnet-deepening-20260629",
+      "format": "FODT",
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.export_to_markdown",
+      "description": "R233: Dedicated tests for FodtDocument.ExportToMarkdown \u2014 null throws, creates file, has content, paragraph in output, heading with #, count unchanged, export-twice, dogfood heading+para/multi-heading",
+      "source_files": [
+        "tests/net/fodt/FodtR233ExportToMarkdownDedicatedTests.cs"
       ],
       "test_count": 10
     }
