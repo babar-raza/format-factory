@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s230-dotnet-deepening-20260629",
+  "latest_sprint": "ff-sprint-s231-dotnet-deepening-20260629",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -24674,6 +24674,42 @@
       "description": "R245: Dedicated tests for FodtDocument.GetTableCellText \u2014 negative/OOB table-index/row/col throws, valid no-exception, string/null, set-then-get, count unchanged, called-twice, dogfood multi-cell",
       "source_files": [
         "tests/net/fodt/FodtR245GetTableCellTextTests.cs"
+      ],
+      "test_count": 10
+    },
+    {
+      "entry_id": "PC-NETPBM-R238",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s231-dotnet-deepening-20260629",
+      "format": "NETPBM",
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.clone",
+      "description": "R238: Dedicated tests for NetpbmImage.Clone \u2014 non-null, different-object, same-width/height/format/maxvalue/pixels, modify-clone-original-unchanged, called-twice-independent, dogfood clone-draw-original-preserved",
+      "source_files": [
+        "tests/net/netpbm/NetpbmR238CloneTests.cs"
+      ],
+      "test_count": 10
+    },
+    {
+      "entry_id": "PC-FODS-R249",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s231-dotnet-deepening-20260629",
+      "format": "FODS",
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.get_row_count",
+      "description": "R249: Dedicated tests for FodsDocument.GetRowCount \u2014 null/whitespace/nonexistent throws, empty=0, after-AddRow increases, after-DeleteRow decreases, SheetCount unchanged, called-twice same, dogfood add-multiple-rows",
+      "source_files": [
+        "tests/net/fods/FodsR249GetRowCountDedicatedTests.cs"
+      ],
+      "test_count": 9
+    },
+    {
+      "entry_id": "PC-FODT-R246",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s231-dotnet-deepening-20260629",
+      "format": "FODT",
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.set_table_cell_text",
+      "description": "R246: Dedicated tests for FodtDocument.SetTableCellText \u2014 negative/OOB table-index/row/col throws, valid no-exception, text-updated, TableCount unchanged, set-twice-latest, different-cells-independent, dogfood multi-cell",
+      "source_files": [
+        "tests/net/fodt/FodtR246SetTableCellTextTests.cs"
       ],
       "test_count": 10
     }
