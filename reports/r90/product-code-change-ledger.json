@@ -22583,9 +22583,33 @@
       "description": "FodtDocument.GetHeadingParagraphs dedicated tests \u2014 empty, paras-only empty, single heading, IsHeading=true, multiple in order, paras excluded, count match, IReadOnlyList, dogfood pipelines",
       "evidence_path": "tests/net/fodt/FodtR172GetHeadingParagraphsDedicatedTests.cs",
       "sprint": "ff-sprint-s163-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-NETPBM-R160",
+      "format": "NETPBM",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "NetpbmImage.MergeHorizontal dedicated tests \u2014 null/height-mismatch/format-mismatch guards, output width=sum, height preserved, format preserved, originals unchanged, dogfood left/right pixels",
+      "evidence_path": "tests/net/netpbm/NetpbmR160MergeHorizontalTests.cs",
+      "sprint": "ff-sprint-s164-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-FODS-R171",
+      "format": "FODS",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "FodsDocument.GetNumericColumnValues dedicated tests \u2014 null/whitespace/nonexistent/negative guards, empty sheet returns empty, string cells skipped, col-beyond-row skipped, IReadOnlyList, dogfood pipeline",
+      "evidence_path": "tests/net/fods/FodsR171GetNumericColumnValuesDedicatedTests.cs",
+      "sprint": "ff-sprint-s164-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-FODT-R173",
+      "format": "FODT",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "FodtDocument.SearchText dedicated tests \u2014 null/empty query guard, empty doc, no match, single match, paragraph index, position, multiple occurrences, multi-paragraph, case-insensitive dogfood",
+      "evidence_path": "tests/net/fodt/FodtR173SearchTextDedicatedTests.cs",
+      "sprint": "ff-sprint-s164-dotnet-deepening-20260628"
     }
   ],
-  "total_entries": 1258,
+  "total_entries": 1261,
   "changes": [
     {
       "file": "src/python/dif/models.py",
