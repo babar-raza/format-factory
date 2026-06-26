@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s143-dotnet-deepening-20260627",
+  "latest_sprint": "ff-sprint-s144-dotnet-deepening-20260627",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -21489,9 +21489,52 @@
         "tests/net/csv/CsvR135AddRowAndSetCellTests.cs"
       ],
       "source_files": []
+    },
+    {
+      "entry_id": "PC-FODS-R152",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s144-dotnet-deepening-20260627",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.pdf_export_result_properties"
+      ],
+      "change_summary": "FodsR152PdfExportResultPropertiesTests.cs: 10 tests for FodsPdfExportResult properties \u2014 OutputPath/PageCount/SheetCount/TotalRowsWritten defaults; object initializer; dogfood CreateNew->SetCellValue->ExportToPdf verifies result properties.",
+      "test_files": [
+        "tests/net/fods/FodsR152PdfExportResultPropertiesTests.cs"
+      ],
+      "source_files": []
+    },
+    {
+      "entry_id": "PC-TSV-R133",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s144-dotnet-deepening-20260627",
+      "product": "TSV .NET",
+      "capability_refs": [
+        "commercial_net_products.TSV.dotnet_status.write_rows_dedicated"
+      ],
+      "change_summary": "TsvR133WriteRowsDedicatedTests.cs: 10 tests for TsvWriter.WriteRows \u2014 null throws, empty=empty string, single row/column, tab-separated, multiple rows each on separate line, null=empty string, output contains tabs, 2 rows=2 newlines, WriteRowsToFile creates file, dogfood WriteRows->Load round-trip.",
+      "test_files": [
+        "tests/net/tsv/TsvR133WriteRowsDedicatedTests.cs"
+      ],
+      "source_files": []
+    },
+    {
+      "entry_id": "PC-NETPBM-R141-FIX",
+      "classification": "NET_TEST_CORRECTION",
+      "sprint": "ff-sprint-s144-dotnet-deepening-20260627",
+      "product": "NETPBM .NET",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.draw_rectangle_and_stats"
+      ],
+      "change_summary": "Fix NetpbmR141DrawRectangleAndChannelStatsTests.cs: corrected NetpbmImage.Create(width,height,format) parameter order and NetpbmFormat.PGM_P5/PPM_P6 enum values. Replaced invalid NetpbmImageAnalyzer.GetChannelStats(null!) with GetStats() and GetChannelStats() instance methods.",
+      "test_files": [
+        "tests/net/netpbm/NetpbmR141DrawRectangleAndChannelStatsTests.cs",
+        "tests/net/netpbm/NetpbmR142DrawLineTests.cs"
+      ],
+      "source_files": []
     }
   ],
-  "total_entries": 1198,
+  "total_entries": 1201,
   "changes": [
     {
       "file": "src/python/dif/models.py",

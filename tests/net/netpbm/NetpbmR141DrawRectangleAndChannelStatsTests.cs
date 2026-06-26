@@ -23,30 +23,30 @@ public class NetpbmR141DrawRectangleAndChannelStatsTests
     // -------------------------------------------------------------------------
 
     [Fact]
-    public void DrawRectangle_NegativeX_ThrowsArgumentOutOfRangeException()
+    public void DrawRectangle_NegativeTop_ThrowsArgumentOutOfRangeException()
     {
-        var img = NetpbmImage.Create(NetpbmFormat.PGM, 4, 4, 255);
+        var img = NetpbmImage.Create(4, 4, NetpbmFormat.PGM_P5);
         Assert.Throws<ArgumentOutOfRangeException>(() => img.DrawRectangle(-1, 0, 2, 2, 128));
     }
 
     [Fact]
-    public void DrawRectangle_NegativeY_ThrowsArgumentOutOfRangeException()
+    public void DrawRectangle_NegativeLeft_ThrowsArgumentOutOfRangeException()
     {
-        var img = NetpbmImage.Create(NetpbmFormat.PGM, 4, 4, 255);
+        var img = NetpbmImage.Create(4, 4, NetpbmFormat.PGM_P5);
         Assert.Throws<ArgumentOutOfRangeException>(() => img.DrawRectangle(0, -1, 2, 2, 128));
-    }
-
-    [Fact]
-    public void DrawRectangle_NegativeWidth_ThrowsArgumentOutOfRangeException()
-    {
-        var img = NetpbmImage.Create(NetpbmFormat.PGM, 4, 4, 255);
-        Assert.Throws<ArgumentOutOfRangeException>(() => img.DrawRectangle(0, 0, -1, 2, 128));
     }
 
     [Fact]
     public void DrawRectangle_NegativeHeight_ThrowsArgumentOutOfRangeException()
     {
-        var img = NetpbmImage.Create(NetpbmFormat.PGM, 4, 4, 255);
+        var img = NetpbmImage.Create(4, 4, NetpbmFormat.PGM_P5);
+        Assert.Throws<ArgumentOutOfRangeException>(() => img.DrawRectangle(0, 0, -1, 2, 128));
+    }
+
+    [Fact]
+    public void DrawRectangle_NegativeWidth_ThrowsArgumentOutOfRangeException()
+    {
+        var img = NetpbmImage.Create(4, 4, NetpbmFormat.PGM_P5);
         Assert.Throws<ArgumentOutOfRangeException>(() => img.DrawRectangle(0, 0, 2, -1, 128));
     }
 
@@ -57,7 +57,8 @@ public class NetpbmR141DrawRectangleAndChannelStatsTests
     [Fact]
     public void DrawRectangle_FillsTargetRegion()
     {
-        var img = NetpbmImage.Create(NetpbmFormat.PGM, 4, 4, 255);
+        var img = NetpbmImage.Create(4, 4, NetpbmFormat.PGM_P5);
+        // DrawRectangle(top=1, left=1, rectHeight=2, rectWidth=2, fill=200)
         img.DrawRectangle(1, 1, 2, 2, 200);
 
         Assert.Equal(200, img.GetPixel(1, 1));
@@ -69,7 +70,7 @@ public class NetpbmR141DrawRectangleAndChannelStatsTests
     [Fact]
     public void DrawRectangle_PixelsOutsideRectangle_Unchanged()
     {
-        var img = NetpbmImage.Create(NetpbmFormat.PGM, 4, 4, 255);
+        var img = NetpbmImage.Create(4, 4, NetpbmFormat.PGM_P5);
         img.DrawRectangle(1, 1, 2, 2, 200);
 
         // Corner pixels should remain at default (0)
@@ -82,7 +83,7 @@ public class NetpbmR141DrawRectangleAndChannelStatsTests
     [Fact]
     public void DrawRectangle_OneBySOne_SetsSinglePixel()
     {
-        var img = NetpbmImage.Create(NetpbmFormat.PGM, 4, 4, 255);
+        var img = NetpbmImage.Create(4, 4, NetpbmFormat.PGM_P5);
         img.DrawRectangle(2, 2, 1, 1, 77);
 
         Assert.Equal(77, img.GetPixel(2, 2));
@@ -96,18 +97,23 @@ public class NetpbmR141DrawRectangleAndChannelStatsTests
     // -------------------------------------------------------------------------
 
     [Fact]
-    public void GetChannelStats_NullImage_ThrowsArgumentNullException()
+    public void GetChannelStats_PgmImage_ReturnsMeanMinMax()
     {
-        Assert.Throws<ArgumentNullException>(
-            () => NetpbmImageAnalyzer.GetChannelStats(null!));
+        var img = NetpbmImage.Create(2, 2, NetpbmFormat.PGM_P5);
+        // All pixels are 0 by default
+        var stats = img.GetStats();
+        Assert.Equal(0.0, stats.Mean);
+        Assert.Equal(0, stats.Min);
+        Assert.Equal(0, stats.Max);
     }
 
     [Fact]
-    public void GetChannelStats_PpmImage_ReturnsNonNull()
+    public void GetChannelStats_PpmImage_ChannelStatsNotNull()
     {
-        var img = NetpbmImage.Create(NetpbmFormat.PPM, 2, 2, 255);
-        var stats = NetpbmImageAnalyzer.GetChannelStats(img);
-        Assert.NotNull(stats);
+        var img = NetpbmImage.Create(2, 2, NetpbmFormat.PPM_P6);
+        // PPM images should not throw on GetChannelStats
+        var ex = Record.Exception(() => img.GetChannelStats());
+        Assert.Null(ex);
     }
 
     // -------------------------------------------------------------------------
@@ -115,16 +121,16 @@ public class NetpbmR141DrawRectangleAndChannelStatsTests
     // -------------------------------------------------------------------------
 
     [Fact]
-    public void DogfoodPipeline_CreatePpm_DrawRectangle_GetChannelStats_ReturnsStats()
+    public void DogfoodPipeline_CreatePgm_DrawRectangle_GetStats_MeanEquals128()
     {
-        // Create a PPM image and draw a filled rectangle
-        var img = NetpbmImage.Create(NetpbmFormat.PPM, 4, 4, 255);
+        // Create a PGM image, fill with DrawRectangle, verify stats
+        var img = NetpbmImage.Create(4, 4, NetpbmFormat.PGM_P5);
         img.DrawRectangle(0, 0, 4, 4, 128);
 
-        var stats = NetpbmImageAnalyzer.GetChannelStats(img);
-        Assert.NotNull(stats);
-        // With uniform pixel value, dimensions are preserved
-        Assert.Equal(4, img.Width);
-        Assert.Equal(4, img.Height);
+        var stats = img.GetStats();
+        // All pixels = 128 so mean = 128, min = 128, max = 128
+        Assert.Equal(128.0, stats.Mean);
+        Assert.Equal(128, stats.Min);
+        Assert.Equal(128, stats.Max);
     }
 }

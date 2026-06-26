@@ -26,7 +26,7 @@ public class NetpbmR142DrawLineTests
     [Fact]
     public void DrawLine_OnPpmImage_ThrowsInvalidOperationException()
     {
-        var img = NetpbmImage.Create(NetpbmFormat.PPM, 4, 4, 255);
+        var img = NetpbmImage.Create(4, 4, NetpbmFormat.PPM_P6);
         Assert.Throws<InvalidOperationException>(() => img.DrawLine(0, 0, 3, 3, 200));
     }
 
@@ -37,7 +37,7 @@ public class NetpbmR142DrawLineTests
     [Fact]
     public void DrawLine_HorizontalLine_SetsStartPixel()
     {
-        var img = NetpbmImage.Create(NetpbmFormat.PGM, 5, 5, 255);
+        var img = NetpbmImage.Create(5, 5, NetpbmFormat.PGM_P5);
         img.DrawLine(0, 2, 4, 2, 128);
         Assert.Equal(128, img.GetPixel(2, 0)); // row=2, col=0
     }
@@ -45,7 +45,7 @@ public class NetpbmR142DrawLineTests
     [Fact]
     public void DrawLine_HorizontalLine_SetsEndPixel()
     {
-        var img = NetpbmImage.Create(NetpbmFormat.PGM, 5, 5, 255);
+        var img = NetpbmImage.Create(5, 5, NetpbmFormat.PGM_P5);
         img.DrawLine(0, 2, 4, 2, 128);
         Assert.Equal(128, img.GetPixel(2, 4)); // row=2, col=4
     }
@@ -53,7 +53,7 @@ public class NetpbmR142DrawLineTests
     [Fact]
     public void DrawLine_VerticalLine_SetsTopPixel()
     {
-        var img = NetpbmImage.Create(NetpbmFormat.PGM, 5, 5, 255);
+        var img = NetpbmImage.Create(5, 5, NetpbmFormat.PGM_P5);
         img.DrawLine(2, 0, 2, 4, 200);
         Assert.Equal(200, img.GetPixel(0, 2)); // row=0, col=2
     }
@@ -61,7 +61,7 @@ public class NetpbmR142DrawLineTests
     [Fact]
     public void DrawLine_VerticalLine_SetsBottomPixel()
     {
-        var img = NetpbmImage.Create(NetpbmFormat.PGM, 5, 5, 255);
+        var img = NetpbmImage.Create(5, 5, NetpbmFormat.PGM_P5);
         img.DrawLine(2, 0, 2, 4, 200);
         Assert.Equal(200, img.GetPixel(4, 2)); // row=4, col=2
     }
@@ -69,7 +69,7 @@ public class NetpbmR142DrawLineTests
     [Fact]
     public void DrawLine_DiagonalLine_SetsStartPixel()
     {
-        var img = NetpbmImage.Create(NetpbmFormat.PGM, 5, 5, 255);
+        var img = NetpbmImage.Create(5, 5, NetpbmFormat.PGM_P5);
         img.DrawLine(0, 0, 4, 4, 99);
         Assert.Equal(99, img.GetPixel(0, 0)); // start = row=0, col=0
     }
@@ -77,7 +77,7 @@ public class NetpbmR142DrawLineTests
     [Fact]
     public void DrawLine_SinglePointLine_SetsPixel()
     {
-        var img = NetpbmImage.Create(NetpbmFormat.PGM, 4, 4, 255);
+        var img = NetpbmImage.Create(4, 4, NetpbmFormat.PGM_P5);
         img.DrawLine(2, 2, 2, 2, 77);
         Assert.Equal(77, img.GetPixel(2, 2));
     }
@@ -85,7 +85,7 @@ public class NetpbmR142DrawLineTests
     [Fact]
     public void DrawLine_OutOfBoundsCoordinates_DoesNotThrow()
     {
-        var img = NetpbmImage.Create(NetpbmFormat.PGM, 4, 4, 255);
+        var img = NetpbmImage.Create(4, 4, NetpbmFormat.PGM_P5);
         // Line extends beyond image bounds — out-of-bounds pixels are clipped by bounds check
         var ex = Record.Exception(() => img.DrawLine(-2, -2, 10, 10, 50));
         Assert.Null(ex);
@@ -98,7 +98,7 @@ public class NetpbmR142DrawLineTests
     [Fact]
     public void DogfoodPipeline_DrawLine_GetPixel_BothEndpointsVerified()
     {
-        var img = NetpbmImage.Create(NetpbmFormat.PGM, 6, 6, 255);
+        var img = NetpbmImage.Create(6, 6, NetpbmFormat.PGM_P5);
         img.DrawLine(0, 0, 5, 0, 150); // horizontal line on row 0
 
         Assert.Equal(150, img.GetPixel(0, 0)); // start
@@ -108,7 +108,7 @@ public class NetpbmR142DrawLineTests
     [Fact]
     public void DogfoodPipeline_DrawLine_ThenDrawRectangle_BothOperationsSucceed()
     {
-        var img = NetpbmImage.Create(NetpbmFormat.PGM, 6, 6, 255);
+        var img = NetpbmImage.Create(6, 6, NetpbmFormat.PGM_P5);
         img.DrawLine(0, 0, 5, 5, 100);
         img.DrawRectangle(1, 1, 3, 3, 200);
 
