@@ -1,0 +1,41 @@
+sprint_id: MACH-DISC-20260623
+plan: lovely-chasing-moonbeam
+generated: "2026-06-25"
+level: L1
+description: "Execution Issues — problems encountered during taskcard execution"
+
+issues:
+  - id: L1-001
+    type: ENCODING_LIMITATION
+    severity: LOW
+    taskcard: TC-P3-001
+    description: >
+      autonomous_cycle.py --help exits 1 on Windows with default cp1252 encoding due to
+      Unicode arrow character (U+2192) in help text. UnicodeEncodeError on
+      encodings/cp1252.py line 19.
+    resolution: >
+      Resolved by setting PYTHONIOENCODING=utf-8 environment variable. Exit code 0,
+      full help text displayed. Functional invocation unaffected. Not a code defect —
+      Windows console encoding limitation only.
+    status: RESOLVED
+
+  - id: L1-002
+    type: EXPECTED_BEHAVIOR_DEVIATION
+    severity: NONE
+    taskcard: TC-P3-001
+    description: >
+      check_continuation.py returned STOP(ACTIVE_PLAN_INCOMPLETE) with exit 1, whereas
+      the plan's pre-execution expectation was CONTINUE (based on pre-lock-write system state).
+    resolution: >
+      This is CORRECT behavior. The plan lock was written as IN_PROGRESS before running pilots
+      per CLAUDE.md Step 0. check_continuation correctly detects the active lock.
+      ACTIVE_PLAN_INCOMPLETE is the expected and correct verdict at this execution stage.
+      No issue.
+    status: NOT_AN_ISSUE
+
+summary:
+  total_issues: 2
+  blocking_issues: 0
+  resolved_issues: 1
+  not_an_issue: 1
+  l1_verdict: CLEAN_EXECUTION

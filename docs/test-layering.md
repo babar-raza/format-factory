@@ -141,6 +141,22 @@ The fast-path bypasses pytest's full-tree discovery by passing explicit file/dir
 
 For L3 and above, full collection overhead (~25s) is unavoidable due to pytest's architecture.
 
+## Cross-Format Escalation
+
+When `--layer 1 --format {fmt}` is used, the runner checks `registry/cross-format-test-index.yaml`
+for test files that involve the requested format. If cross-format tests exist, the runner
+**automatically escalates L1 → L4** (Golden layer) to include those tests.
+
+Example: `--layer 1 --format csv` escalates to L4 because CSV participates in 50+ cross-format tests.
+
+**To suppress escalation** (for pure L1 timing): use `--no-cross-format`:
+```bash
+python tools/test_runner.py --layer 1 --format csv --no-cross-format
+```
+
+The `cross_format_paths_included` key in the JSON output shows which paths triggered escalation.
+An empty list means no escalation occurred (either no cross-format tests or `--no-cross-format` used).
+
 ## Known Environment-Dependent Test Failures
 
 Some tests at L3 (integration) may fail due to environment conditions, not code regressions:
@@ -156,7 +172,7 @@ These are **not layering regressions**. The marker assignment is correct — the
 
 ## Known Limitations
 
-1. **Collection overhead for L3+**: Layers 3–6 still require ~25s for pytest to collect all 14,500+ tests before marker filtering. This is a pytest architectural limitation. L0 and L1+format bypass this via the fast-path above.
+1. **Collection overhead for L3+**: Layers 3–6 still require ~25s for pytest to collect all 46,500+ tests before marker filtering. This is a pytest architectural limitation. L0 and L1+format bypass this via the fast-path above.
 2. **Layer 2 (Family)**: Not assigned as a marker — the runner handles family expansion by adding multiple directory paths to L1's marker expression.
 3. **No parallel execution**: pytest-xdist is not installed. Tests run sequentially.
 4. **Auto-detection scope**: `--auto` uses `git diff HEAD` + staged + unstaged changes. In CI, use `--base-ref` to compare against the target branch.

@@ -12,15 +12,24 @@ import os
 from pathlib import Path
 
 _REPO = Path(__file__).resolve().parents[3]
-sys.path.insert(0, str(_REPO))
-
-from src.python.tsv import (
+try:
+    from tsv import (
     load_tsv,
     write_tsv,
     probe_tsv,
     get_headers,
     count_rows,
 )
+except ImportError:
+    sys.path.insert(0, str(_REPO))
+    from src.python.tsv import (
+        load_tsv,
+        write_tsv,
+        probe_tsv,
+        get_headers,
+        count_rows,
+    )
+
 
 # --- Create or use sample ---
 if len(sys.argv) > 1:

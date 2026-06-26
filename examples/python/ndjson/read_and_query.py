@@ -12,9 +12,8 @@ import os
 from pathlib import Path
 
 _REPO = Path(__file__).resolve().parents[3]
-sys.path.insert(0, str(_REPO))
-
-from src.python.ndjson import (
+try:
+    from ndjson import (
     load_ndjson,
     write_ndjson,
     probe_ndjson,
@@ -23,6 +22,18 @@ from src.python.ndjson import (
     filter_records,
     field_stats,
 )
+except ImportError:
+    sys.path.insert(0, str(_REPO))
+    from src.python.ndjson import (
+        load_ndjson,
+        write_ndjson,
+        probe_ndjson,
+        get_record_count,
+        get_field_names,
+        filter_records,
+        field_stats,
+    )
+
 
 # --- Create or use sample ---
 if len(sys.argv) > 1:

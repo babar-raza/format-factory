@@ -19,7 +19,7 @@ except ImportError:
     import sys
     from pathlib import Path as _Path
     sys.path.insert(0, str(_Path(__file__).resolve().parents[3]))
-from src.python.fods import parse_fods_strict, write_fods, workbook_to_csv
+    from src.python.fods import parse_fods_strict, write_fods, workbook_to_csv
 
 # --- Build or load workbook ---
 sample_path = str(_REPO / "samples" / "by-format" / "fods" / "minimal-spreadsheet.fods")

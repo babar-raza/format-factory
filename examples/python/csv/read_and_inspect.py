@@ -22,23 +22,35 @@ _REPO = Path(__file__).resolve().parents[3]
 if str(_REPO) not in sys.path:
     sys.path.insert(0, str(_REPO))
 
-from src.python.csv.csv_parser import (  # type: ignore
-    parse_csv,
-    csv_row_count,
-    csv_column_count,
-    csv_has_header,
-    csv_to_dicts,
-    csv_is_all_numeric,
-    csv_has_duplicates,
-    csv_numeric_sum,
-)
+try:
+    from csv.csv_parser import (  # type: ignore
+        parse_csv,
+        csv_row_count,
+        csv_column_count,
+        csv_has_header,
+        csv_to_dicts,
+        csv_is_all_numeric,
+        csv_has_duplicates,
+        csv_numeric_sum,
+    )
+except ImportError:
+    from src.python.csv.csv_parser import (  # type: ignore
+        parse_csv,
+        csv_row_count,
+        csv_column_count,
+        csv_has_header,
+        csv_to_dicts,
+        csv_is_all_numeric,
+        csv_has_duplicates,
+        csv_numeric_sum,
+    )
 try:
     from csv.models import CsvDocument  # type: ignore
 except ImportError:
     import sys
     from pathlib import Path as _Path
     sys.path.insert(0, str(_Path(__file__).resolve().parents[3]))
-from src.python.csv.models import CsvDocument  # type: ignore
+    from src.python.csv.models import CsvDocument  # type: ignore
 
 SAMPLE_CSV = """\
 product,price,qty

@@ -1,13 +1,13 @@
 # Materialized Evidence Review
-# Run ID: ff-sprint-s80-yaml-fix-20260626
-# Sprint: ff-sprint-s80-yaml-fix-20260626
-# Generated: 2026-06-25T22:53:47.287771
+# Run ID: ff-sprint-s118-dotnet-deepening-20260627
+# Sprint: ff-sprint-s118-dotnet-deepening-20260627
+# Generated: 2026-06-26T14:24:49.196116
 
 ## Materialization Summary
 
-- Artifacts verified: 1
+- Artifacts verified: 4
 - Artifacts missing: 0
-- Source changes captured: 1
+- Source changes captured: 4
 
 ## Work Item Grades
 
@@ -15,7 +15,7 @@
 |------|-------|------|
 
 ## Manifest Location
-- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\materialized\ff-sprint-s80-yaml-fix-20260626\materialized-evidence-manifest.yaml
+- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\materialized\ff-sprint-s118-dotnet-deepening-20260627\materialized-evidence-manifest.yaml
 
 ## Patch Location
-- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\materialized\ff-sprint-s80-yaml-fix-20260626\source-change-diffs.patch
+- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\materialized\ff-sprint-s118-dotnet-deepening-20260627\source-change-diffs.patch

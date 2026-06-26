@@ -1,0 +1,69 @@
+{
+  "sprint_id": "MACH-DISC-20260623",
+  "timestamp": "2026-06-25T00:00:00+00:00",
+  "plan": "lovely-chasing-moonbeam",
+  "plan_type": "machinery_hardening",
+  "git_head": "e066458922033e714c52ae3e1886069eae69e54c",
+  "execution_results": {
+    "TC-P3-001": {
+      "status": "COMPLETE",
+      "pilot_commands_total": 7,
+      "pilot_commands_passed": 7,
+      "pilot_commands_failed": 0,
+      "pilot_results_path": "reports/capability-layer/machinery-discovery/pilot-results.md"
+    },
+    "TC-P3-002": {
+      "status": "COMPLETE",
+      "stage3_files_written": 15,
+      "schema_validated": true,
+      "zip_produced": true
+    }
+  },
+  "overall_verdict": "EXECUTION_COMPLETE_VERIFIED",
+  "all_green": true,
+  "quality_dimensions": {
+    "requirement_correctness": 5,
+    "implementation_correctness": 5,
+    "integration_completeness": 5,
+    "pipeline_compatibility": 5,
+    "governance_compliance": 5,
+    "evidence_completeness": 5,
+    "test_coverage": 4,
+    "validator_coverage": 5,
+    "repeatability": 5,
+    "idempotency": 5,
+    "downstream_consumer_readiness": 5,
+    "agentic_consumption_quality": 5,
+    "rollback_safety_quality": 5,
+    "documentation_skill_agent_sync_quality": 5,
+    "production_readiness": 5
+  },
+  "quality_summary": {
+    "dimensions_scored": 15,
+    "dimensions_passed": 15,
+    "dimensions_failed": 0,
+    "minimum_score": 4,
+    "maximum_score": 5,
+    "acceptance_threshold": 4,
+    "accepted": true
+  },
+  "prior_audit": {
+    "sprint": "sorted-purring-stardust",
+    "verdict": "READY_FOR_PRODUCT_DEEPENING",
+    "convergence": "CONVERGED_ALL_GREEN",
+    "proof_targets_met": 9,
+    "proof_targets_total": 9,
+    "total_tests": 199,
+    "remaining_limitations": 0,
+    "evidence_quality": "STRONG"
+  },
+  "reroute_required": false,
+  "issues": {
+    "L1_execution_issues": 1,
+    "L1_blocking": 0,
+    "L2_integration_issues": 1,
+    "L2_blocking": 0,
+    "L3_system_weaknesses": 3,
+    "L3_blocking": 0
+  }
+}

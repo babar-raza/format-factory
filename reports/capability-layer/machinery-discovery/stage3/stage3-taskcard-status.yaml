@@ -1,0 +1,61 @@
+sprint_id: MACH-DISC-20260623
+plan: lovely-chasing-moonbeam
+generated: "2026-06-25"
+
+taskcards:
+  - id: TC-P3-001
+    title: Live Pilot Execution
+    status: COMPLETE
+    commands_executed: 7
+    commands_passed: 7
+    commands_failed: 0
+    pilot_results_path: reports/capability-layer/machinery-discovery/pilot-results.md
+    notes: >
+      All 7 machinery commands executed and classified as PASS. check_continuation.py
+      correctly returned ACTIVE_PLAN_INCOMPLETE (expected post-lock-write behavior).
+      autonomous_cycle.py requires PYTHONIOENCODING=utf-8 on Windows — documented.
+      failure_memory store confirmed 26 entries. capability_feature_compiler importable.
+
+  - id: TC-P3-002
+    title: Prompt3 Stage3 Output Package
+    status: COMPLETE
+    files_written: 15
+    verdict: EXECUTION_COMPLETE_VERIFIED
+    zip_produced: true
+    notes: >
+      Synthesized prior audit (CONVERGED_ALL_GREEN, 9/9 proof targets, 199 tests) +
+      TC-P3-001 pilot results (7/7 PASS). All 15 stage3 files written.
+      stage3-quality-scoring-rubric.json validates against schema.
+      declaration-review-package ZIP produced with absolute path + SHA-256.
+
+superseded_taskcards:
+  - id: TC-DISC-001
+    covered_by: lane-h-supervisor-audit.md
+    evidence: "33 STEP markers mapped"
+  - id: TC-DISC-002
+    covered_by: Prior audit wiring grep
+    evidence: "All 7 components confirmed WIRED"
+  - id: TC-DISC-003
+    covered_by: audit-phase-summary.md
+    evidence: "Core + support file classification done"
+  - id: TC-DISC-004
+    covered_by: lane-h-supervisor-audit.md
+    evidence: "Step map with lines, 5 transitions documented"
+  - id: TC-DISC-005
+    covered_by: machinery-repair-plan.md
+    evidence: "4 flows traced end-to-end"
+  - id: TC-DISC-006
+    covered_by: system-gap-matrix.yaml
+    evidence: "GAP-MACH-001-008, all RC-1-8 FIXED"
+  - id: TC-DISC-007
+    covered_by: machinery-repair-plan.md + repair taskcards
+    evidence: "9 repairs implemented and tested"
+  - id: TC-DISC-008
+    covered_by: Prior audit decisions
+    evidence: "RETAIN/UPGRADE/MERGE decisions made"
+  - id: TC-DISC-010
+    covered_by: convergence-loop-3/stage1-issue-model.json
+    evidence: "0 remaining limitations, STRONG evidence quality"
+  - id: TC-DISC-012
+    covered_by: final-verdict.md
+    evidence: "READY_FOR_PRODUCT_DEEPENING"

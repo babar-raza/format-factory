@@ -21,8 +21,8 @@ except ImportError:
     import sys
     from pathlib import Path as _Path
     sys.path.insert(0, str(_Path(__file__).resolve().parents[3]))
-from src.python.pbm.pbm_parser import parse_pbm_strict, write_pbm
-from src.python.pbm.models import PbmDocument
+    from src.python.pbm.pbm_parser import parse_pbm_strict, write_pbm
+    from src.python.pbm.models import PbmDocument
 
 SAMPLE = _REPO / "samples" / "by-format" / "pbm" / "valid" / "2x2-checker.pbm"
 

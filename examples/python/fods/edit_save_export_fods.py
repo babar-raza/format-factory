@@ -25,9 +25,8 @@ import tempfile
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).parent.parent.parent.parent
-sys.path.insert(0, str(REPO_ROOT))
-
-from src.python.fods import (
+try:
+    from fods import (
     parse_fods,
     write_fods,
     workbook_stats,
@@ -37,13 +36,26 @@ from src.python.fods import (
     workbook_warnings_for_unsupported_edit,
     workbook_add_sheet,
 )
+except ImportError:
+    sys.path.insert(0, str(_REPO))
+    from src.python.fods import (
+        parse_fods,
+        write_fods,
+        workbook_stats,
+        workbook_sheet_order,
+        workbook_sheet_summary,
+        workbook_set_cell_value,
+        workbook_warnings_for_unsupported_edit,
+        workbook_add_sheet,
+    )
+
 try:
     from fods.csv_exporter import export_fods_to_csv_file
 except ImportError:
     import sys
     from pathlib import Path as _Path
     sys.path.insert(0, str(_Path(__file__).resolve().parents[3]))
-from src.python.fods.csv_exporter import export_fods_to_csv_file
+    from src.python.fods.csv_exporter import export_fods_to_csv_file
 
 SAMPLE_FODS = REPO_ROOT / "samples" / "by-format" / "fods" / "minimal-spreadsheet.fods"
 

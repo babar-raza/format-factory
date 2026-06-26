@@ -7,9 +7,11 @@ from pathlib import Path
 import sys
 
 _REPO = Path(__file__).resolve().parent.parent.parent.parent
-sys.path.insert(0, str(_REPO))
-
-import src.python.ods as ods
+try:
+    import ods
+except ImportError:
+    sys.path.insert(0, str(_REPO))
+    import src.python.ods as ods
 
 SAMPLE = _REPO / "samples/by-format/ods/valid/minimal-spreadsheet.ods"
 

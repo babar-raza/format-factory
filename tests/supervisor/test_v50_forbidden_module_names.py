@@ -95,19 +95,20 @@ class TestV50ForbiddenModuleNames:
         assert result["result"] == "PASS"
         assert result["blocks_sprint"] is False
 
-    def test_analytics_file_is_blocked(self, tmp_path):
-        """Negative control: *_analytics.py → FAIL (extended 2026-06-23, zesty-conjuring-peacock).
+    def test_analytics_file_is_allowed(self, tmp_path):
+        """Positive control: *_analytics.py → PASS (corrected 2026-06-25, PROD-GOVERNANCE-001).
 
-        V50 was extended on 2026-06-23 to also block format-prefixed *_analytics.py files
-        since the product deepening rotation is suspended and no new analytics should be created.
+        {format}_analytics.py is the canonical Analytics Layer name per production-library-standard-v2.md.
+        V50 was incorrectly extended on 2026-06-23 to block this canonical name — corrected here.
+        Only *_analytics_extra.py remains forbidden (overflow bucket pattern).
         """
         target = tmp_path / "src" / "python" / "csv" / "csv_analytics.py"
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_text("def csv_fn(): pass\n")
         decl = _decl(["src/python/csv/csv_analytics.py"])
         result = validate_forbidden_module_names(decl, repo_root=tmp_path)
-        assert result["result"] == "FAIL"
-        assert result["blocks_sprint"] is True
+        assert result["result"] == "PASS"
+        assert result["blocks_sprint"] is False
 
     def test_codec_file_is_not_blocked(self, tmp_path):
         """Positive control: *_codec.py → PASS."""

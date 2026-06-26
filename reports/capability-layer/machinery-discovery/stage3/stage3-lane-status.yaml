@@ -1,0 +1,69 @@
+sprint_id: MACH-DISC-20260623
+plan: lovely-chasing-moonbeam
+generated: "2026-06-25"
+
+lanes:
+  - lane_id: machinery_readiness
+    status: COMPLETE
+    source: reports/capability-layer/machinery-readiness-audit-FF-MACH-AUDIT-20260623/final-verdict.md
+    verdict: READY_FOR_PRODUCT_DEEPENING
+    notes: >
+      All 9 repair taskcards CLOSED. RC-1 through RC-8 all FIXED with verified tests.
+      199 total tests across 7 repair areas. Convergence loop 3: CONVERGED_ALL_GREEN.
+
+  - lane_id: qname_readiness
+    status: GOOD
+    source: reports/capability-layer/machinery-readiness-audit-FF-MACH-AUDIT-20260623/final-verdict.md
+    verdict: GOOD
+    notes: >
+      20-format registry, 71 entries, 56+ validators wired. V48 blocks RELEASE_GATE
+      items citing stubs.
+
+  - lane_id: source_quality
+    status: MIXED
+    source: reports/capability-layer/machinery-readiness-audit-FF-MACH-AUDIT-20260623/final-verdict.md
+    notes: >
+      GREEN: FODS (Python + .NET), NDJSON.
+      YELLOW: CSV, TSV, PGM, Netpbm (.NET).
+      ORANGE: XCF (synthetic layer names — fixed in subsequent sprint).
+
+  - lane_id: sal
+    status: OPERATIONAL
+    source: reports/capability-layer/machinery-readiness-audit-FF-MACH-AUDIT-20260623/final-verdict.md
+    notes: >
+      14,309 facts, 99.8% verified. Staleness now sprint-blocking for product sprints
+      >7 days (TC-MACH-SAL-001). SAL chain: 10 formats CHAIN_INTACT, 10 CHAIN_BROKEN_AT_SAL.
+
+  - lane_id: capability_layer
+    status: FIXED
+    source: reports/capability-layer/machinery-readiness-audit-FF-MACH-AUDIT-20260623/final-verdict.md
+    notes: >
+      Pipeline wired end-to-end. 961 gaps in ledger (including 21 architecture_only stub entries).
+      selected-product-gaps.json populated with 5 scored gaps.
+
+  - lane_id: skills
+    status: OPERATIONAL
+    source: reports/capability-layer/machinery-readiness-audit-FF-MACH-AUDIT-20260623/final-verdict.md
+    notes: >
+      60+ skills. V62 enforces spec_fact_refs density on product items.
+
+  - lane_id: supervisor
+    status: HARDENED
+    source: reports/capability-layer/machinery-readiness-audit-FF-MACH-AUDIT-20260623/final-verdict.md
+    notes: >
+      Lane enforcement: preventive guard at Step 1c (TC-MACH-LANE-001).
+      Failure memory: graduated escalation (10 -> HIGH, 50 -> CRITICAL, 100 -> requires_root_cause_fix).
+
+  - lane_id: backfill
+    status: READ_ONLY_FACILITY_CREATED
+    source: reports/capability-layer/machinery-readiness-audit-FF-MACH-AUDIT-20260623/final-verdict.md
+    notes: >
+      Read-only facility: inventory.py + plan_generator.py. Executor deferred
+      (requires --approved gate and separate plan).
+
+  - lane_id: pilot_execution
+    status: COMPLETE
+    source: reports/capability-layer/machinery-discovery/pilot-results.md
+    notes: >
+      7/7 commands PASS. Machinery is invocable as of 2026-06-25.
+      One encoding note: autonomous_cycle.py --help requires PYTHONIOENCODING=utf-8 on Windows.

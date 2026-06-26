@@ -1,0 +1,65 @@
+sprint_id: MACH-DISC-20260623
+plan: lovely-chasing-moonbeam
+generated: "2026-06-25"
+level: L3
+description: "System Weaknesses — architectural, strategic, or long-term concerns"
+
+weaknesses:
+  - id: L3-001
+    type: RAPID_LOC_GROWTH
+    severity: MEDIUM
+    component: tools/supervisor/autonomous_cycle.py
+    description: >
+      autonomous_cycle.py grew from 2374 LOC (2026-06-24) to 2623 LOC (2026-06-25),
+      a +249 LOC increase in approximately 1 day. tools/supervisor/ grew from 168 to
+      181 Python files (+13) in the same period. At this velocity, LOC cap management
+      and module decomposition become increasingly important.
+    current_state: >
+      LOC cap is tracked in registry/source-structure-baseline.json. Cap updates are
+      policy-governed (write-once for known_violations). The code growth is expected
+      from active sprint execution. No immediate governance block.
+    recommendation: >
+      Monitor LOC trajectory. If autonomous_cycle.py exceeds 3000 LOC, decompose
+      sprint-execution logic into autonomous_cycle_extensions.py (pattern already used
+      for check_lane_conflicts, check_sal_staleness). The decomposition pattern is established.
+    blocking: false
+
+  - id: L3-002
+    type: WINDOWS_ENCODING_FRAGILITY
+    severity: LOW
+    component: tools/supervisor/ (multiple)
+    description: >
+      Multiple supervisor tools may have Windows cp1252 encoding issues if they emit
+      Unicode characters to stdout. autonomous_cycle.py is the confirmed case.
+      Any tool with → or other non-ASCII chars in help text will fail on Windows
+      without PYTHONIOENCODING=utf-8.
+    recommendation: >
+      Standardize on ASCII-safe characters in argparse help text, or add
+      PYTHONIOENCODING=utf-8 to the launch script (.venv/Scripts/activate).
+    blocking: false
+
+  - id: L3-003
+    type: SAL_CHAIN_COVERAGE_GAP
+    severity: LOW
+    component: SAL pipeline
+    description: >
+      10 of 20 formats are CHAIN_BROKEN_AT_SAL (ABW, CSV, DIF, GNUMERIC, NDJSON,
+      SYLK, TOML, TSV, XCF, ZST). SAL spec parser exists only for ODF/image formats.
+      These formats lack spec-fact extraction from authoritative sources.
+    current_state: >
+      10 GAP-CHAIN-*-SAL-MRH-001 entries added to gap-ledger.json at P3/LOW priority.
+      Chain break is expected and documented. Does not block product deepening for
+      CHAIN_INTACT formats (ODS, ODT, FODS, FODT, FODG, FODP, PBM, PGM, PPM, QOI).
+    recommendation: >
+      Prioritize SAL chain extension for CSV and TSV (high-commercial-value formats)
+      in a future machinery sprint. Current state is tracked and not blocking.
+    blocking: false
+
+summary:
+  total_weaknesses: 3
+  blocking_weaknesses: 0
+  l3_verdict: NO_BLOCKING_SYSTEM_WEAKNESSES
+  notes: >
+    All identified weaknesses are LOW-MEDIUM severity with documented mitigations.
+    System is production-ready for FODS/FODT product deepening as established
+    by the prior audit verdict (READY_FOR_PRODUCT_DEEPENING).

@@ -34,9 +34,9 @@ except ImportError:
     import sys
     from pathlib import Path as _Path
     sys.path.insert(0, str(_Path(__file__).resolve().parents[3]))
-from src.python.csv.csv_parser import parse_csv  # type: ignore
-from src.python.csv.csv_writer import write_csv_to_file  # type: ignore
-from src.python.csv.models import CsvDocument  # type: ignore
+    from src.python.csv.csv_parser import parse_csv  # type: ignore
+    from src.python.csv.csv_writer import write_csv_to_file  # type: ignore
+    from src.python.csv.models import CsvDocument  # type: ignore
 
 SAMPLE_CSV = _REPO / "samples" / "by-format" / "csv" / "minimal-2x2.csv"
 OUTPUT_DIR = _REPO / ".local" / "dogfood-proofs" / "csv-consumer"

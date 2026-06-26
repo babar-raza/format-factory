@@ -26,10 +26,10 @@ except ImportError:
     import sys
     from pathlib import Path as _Path
     sys.path.insert(0, str(_Path(__file__).resolve().parents[3]))
-import src.python.toml as toml_pkg
-import src.python.ndjson as ndjson_pkg
-import src.python.csv as csv_pkg  # noqa: F401 (stdlib conflict guard)
-from src.python.csv.csv_writer import write_csv_to_file
+    import src.python.toml as toml_pkg
+    import src.python.ndjson as ndjson_pkg
+    import src.python.csv as csv_pkg  # noqa: F401 (stdlib conflict guard)
+    from src.python.csv.csv_writer import write_csv_to_file
 
 
 def run_pipeline(output_dir: Path) -> None:

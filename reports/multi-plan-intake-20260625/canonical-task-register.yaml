@@ -385,3 +385,53 @@ contradiction_register:
   - CONTR-003: zany-riding-goblet is SUPERSEDED in plan-locks from 2 sessions — state unknown without recon
   - CONTR-004: tidy-dreaming-lollipop claims sal_fact_count=0 for all formats (VALID — ledger confirms)
   - CONTR-005: sunny-crunching-galaxy claims 17 formats have continuation_allowed=true incorrectly (VALID — ledger confirms)
+
+
+<!--plan_terminal_lock:
+  status: TERMINAL_CLOSED
+  locked_at: "2026-06-25T17:54:53.274775+00:00"
+  locked_by: "e0a858ff29c2"
+  successor_required_for_future_changes: true
+  mutation_policy: "no further plan/hardening/execution writes"
+-->
+
+# === SESSION 2 (e0a858ff29c2) COMPLETIONS ===
+session_2_completed_tasks:
+  - {task_id: MCT-PDL-006, status: done, completed_at: '2026-06-25', evidence: 'registry/product-deepening-ledger.yaml 17 TC-PDL-REPAIR-*-001 entries'}
+  - {task_id: MCT-RJO-002, status: done, completed_at: '2026-06-25', evidence: 'reports/multi-plan-intake-20260625/tc-lif-012-iteration-proof.json'}
+  - {task_id: MCT-RJO-003, status: done, completed_at: '2026-06-25', evidence: 'write_plan_lock.py line 283 blocks TERMINAL_CLOSED overwrite; 0 overwrite candidates found'}
+  - {task_id: MCT-SFE2-003, status: done, completed_at: '2026-06-25', evidence: '.claude/commands/audit-root-tools.md + .supervisor/skill-registry.yaml (66 total)'}
+  - {task_id: MCT-SHR-000, status: done, completed_at: '2026-06-25', evidence: 'check_system_healing_gate.py PASSED all 9 lanes'}
+  - {task_id: MCT-SHR-001, status: done, completed_at: '2026-06-25', evidence: 'Lane 2 action_queue_not_advisory=True already PASS'}
+  - {task_id: MCT-SHR-002, status: done, completed_at: '2026-06-25', evidence: 'reports/system-healing/system-healing-gate-verdict-20260625.md'}
+  - {task_id: MCT-TDL-007, status: done, completed_at: '2026-06-25', evidence: 'gap-ledger.json 1039 gaps severity inferred'}
+  - {task_id: MCT-VWL-004, status: done, completed_at: '2026-06-25', evidence: 'plans/master-plan.md Section 71 (28 production design principles)'}
+  - {task_id: TC-PQ-080, status: done, completed_at: '2026-06-25', evidence: 'reports/product-quality-code-api-review/canonical-finding-register.json (20 findings)'}
+  - {task_id: TC-PQ-082_section57, status: done, completed_at: '2026-06-25', evidence: 'plans/master-plan.md §57'}
+
+session_2_verified_prior_completions:
+  - {task_id: MCT-WYS-ALL, status: done, verified_at: '2026-06-25', evidence: 'reports/spec-authority/spec-auth-inv-20260625-001/ 9 artifacts'}
+  - {task_id: MCT-TDL-012, status: done, verified_at: '2026-06-25', evidence: 'docs/architecture.md 2026-06-25 addendum'}
+  - {task_id: MCT-PQ-WAVE0, status: done, verified_at: '2026-06-25', evidence: 'reports/product-quality-code-api-review/00-bundle-manifest-verified.json + 00-stale-reverification.json'}
+  - {task_id: MCT-PQ-WAVE1, status: done, verified_at: '2026-06-25', evidence: 'TC-PQ-010 Gate11 + TC-PQ-011 ZstWriter + TC-PQ-012 write_fodp all verified'}
+  - {task_id: TC-PQ-010, status: done, verified_at: '2026-06-25', evidence: 'grep -r Gate 11 approved src/net = 0 matches'}
+  - {task_id: TC-PQ-011, status: done, verified_at: '2026-06-25', evidence: 'src/net/zst/ZstWriter.cs exists'}
+  - {task_id: TC-PQ-030a, status: done, verified_at: '2026-06-25', evidence: 'src/net/ndjson/NdjsonRecord.cs exists'}
+  - {task_id: TC-PQ-030b, status: done, verified_at: '2026-06-25', evidence: 'TypedRecords in NdjsonDocument.cs'}
+  - {task_id: TC-PQ-030c, status: done, verified_at: '2026-06-25', evidence: 'LoadFromContent at NdjsonDocument.cs:38 (v4 hardening note)'}
+  - {task_id: TC-PQ-040, status: done, verified_at: '2026-06-25', evidence: 'FODS Load(Stream) at FodsDocument.cs:138 + FODT Load(Stream) at FodtDocument.cs:141'}
+  - {task_id: TC-PQ-061, status: done, verified_at: '2026-06-25', evidence: 'all 10 .NET READMEs exist'}
+  - {task_id: TC-PQ-070, status: done, verified_at: '2026-06-25', evidence: '20 Python src/python/*/README.md files exist'}
+
+session_2_deferred:
+  - {task_id: MCT-TCF-003, reason: 'per user note — deferred'}
+  - {task_id: MCT-TCF-004, reason: 'per user note — deferred'}
+  - {task_id: MCT-TCF-007, reason: 'per user note — deferred + MCT-TCF-003 not done'}
+  - {task_id: MCT-TCF-008, reason: 'per user note — deferred + MCT-TCF-007 not done'}
+  - {task_id: MCT-VWL-007, reason: 'SYLK src_layout=mixed_model — continuation_allowed=false'}
+  - {task_id: MCT-FA-009, reason: 'CSV SAL chain requires SAL pipeline extension for non-ODF; needs dedicated session'}
+  - {task_id: MCT-FA-012, reason: 'GNUMERIC analytics masquerade; gnumeric_workbook_stats.py source change needs dedicated session'}
+  - {task_id: MCT-MREAD-ALL, reason: 'stale assumptions in serialized-tickling-bentley; continuation is CONTINUE not TERMINAL'}
+  - {task_id: TC-PQ-081, reason: '30-product regrade requires score_format.py x30; dedicated session needed'}
+  - {task_id: TC-PQ-083, reason: 'final evidence bundle + plan closure; after TC-PQ-081'}
+

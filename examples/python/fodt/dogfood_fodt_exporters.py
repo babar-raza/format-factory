@@ -20,7 +20,7 @@ except ImportError:
     import sys
     from pathlib import Path as _Path
     sys.path.insert(0, str(_Path(__file__).resolve().parents[3]))
-from src.python.fodt.exporters import fodt_to_txt, fodt_to_markdown, fodt_to_html
+    from src.python.fodt.exporters import fodt_to_txt, fodt_to_markdown, fodt_to_html
 
 SAMPLE_FODT = _REPO / "samples" / "by-format" / "fodt" / "headings-and-paragraphs.fodt"
 OUTPUT_DIR = _REPO / ".local" / "dogfood-proofs" / "fodt-exporters"
