@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s224-dotnet-deepening-20260629",
+  "latest_sprint": "ff-sprint-s225-dotnet-deepening-20260629",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -24458,6 +24458,42 @@
       "description": "R239: Dedicated tests for FodtDocument.ReplaceParagraphText \u2014 negative/OOB throws, valid no-exception, text updated, count unchanged, empty string, second-para independent, replace-twice latest, dogfood",
       "source_files": [
         "tests/net/fodt/FodtR239ReplaceParagraphTextTests.cs"
+      ],
+      "test_count": 10
+    },
+    {
+      "entry_id": "PC-NETPBM-R232",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s225-dotnet-deepening-20260629",
+      "format": "NETPBM",
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.rotate",
+      "description": "R232: Dedicated tests for NetpbmImage.Rotate \u2014 new image, format/MaxValue preserved, valid range, original unchanged, 0-degrees same, 360-degrees same, 90+270 round-trip, uniform stays uniform, dogfood chain",
+      "source_files": [
+        "tests/net/netpbm/NetpbmR232RotateTests.cs"
+      ],
+      "test_count": 10
+    },
+    {
+      "entry_id": "PC-FODS-R243",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s225-dotnet-deepening-20260629",
+      "format": "FODS",
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.get_column_names",
+      "description": "R243: Dedicated tests for FodsDocument.GetColumnNames \u2014 null/whitespace/nonexistent throws, empty non-null, after-set non-null, SheetCount unchanged, collection, called-twice, dogfood multi-headers/two-sheets",
+      "source_files": [
+        "tests/net/fods/FodsR243GetColumnNamesDedicatedTests.cs"
+      ],
+      "test_count": 10
+    },
+    {
+      "entry_id": "PC-FODT-R240",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s225-dotnet-deepening-20260629",
+      "format": "FODT",
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.insert_paragraph_at",
+      "description": "R240: Dedicated tests for FodtDocument.InsertParagraphAt \u2014 negative/OOB throws, valid no-exception, count increases, text retrievable, insert-at-zero shifts, insert-at-end, others preserved, dogfood",
+      "source_files": [
+        "tests/net/fodt/FodtR240InsertParagraphAtTests.cs"
       ],
       "test_count": 10
     }
