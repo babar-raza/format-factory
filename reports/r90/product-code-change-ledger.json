@@ -26479,9 +26479,94 @@
         }
       ],
       "format": "FODT"
+    },
+    {
+      "entry_id": "PC-NETPBM-R268",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s261-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "NETPBM .NET",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.get_median_pixel_value"
+      ],
+      "api_symbols": [
+        "GetMedianPixelValue"
+      ],
+      "api_behavior": "GetMedianPixelValue() returns median of all pixel values as int. Result in [0, MaxValue]. All-zero=0. Uniform image returns that value. Non-mutating. Idempotent.",
+      "changed_files": [
+        "tests/net/netpbm/NetpbmR268GetMedianPixelValueDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR268GetMedianPixelValueDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "tests/net/netpbm/NetpbmR268GetMedianPixelValueDedicatedTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "NETPBM"
+    },
+    {
+      "entry_id": "PC-FODS-R284",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s261-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.set_row_height"
+      ],
+      "api_symbols": [
+        "SetRowHeight",
+        "GetRowHeight"
+      ],
+      "api_behavior": "SetRowHeight(sheetName, rowIndex, height) sets the display height of a row. Null/whitespace/nonexistent sheet throws. Negative rowIndex throws. SheetCount unchanged. Set-twice no exception. GetRowHeight returns > 0 after set.",
+      "changed_files": [
+        "tests/net/fods/FodsR284SetRowHeightDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR284SetRowHeightDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "tests/net/fods/FodsR284SetRowHeightDedicatedTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "FODS"
+    },
+    {
+      "entry_id": "PC-FODT-R276",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s261-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.get_section_count"
+      ],
+      "api_symbols": [
+        "GetSectionCount"
+      ],
+      "api_behavior": "GetSectionCount() returns the number of sections in the document. Non-negative. New doc >= 0. Increases after AddSection. ParagraphCount unchanged. Idempotent.",
+      "changed_files": [
+        "tests/net/fodt/FodtR276GetSectionCountDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR276GetSectionCountDedicatedTests.cs"
+      ],
+      "test_count": 9,
+      "source_files": [
+        {
+          "path": "tests/net/fodt/FodtR276GetSectionCountDedicatedTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "FODT"
     }
   ],
-  "total_entries": 1285,
+  "total_entries": 1288,
   "changes": [
     {
       "file": "src/python/dif/models.py",
