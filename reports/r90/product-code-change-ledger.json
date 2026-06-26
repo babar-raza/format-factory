@@ -29229,9 +29229,150 @@
       "test_count": 8,
       "source_files": [],
       "format": "fodt"
+    },
+    {
+      "entry_id": "PC-ABW-R287",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s287-abw-installed-workflow-20260626",
+      "skill": "add-python-api",
+      "product": "foss_python_products.ABW.python_status.installed_workflow",
+      "capability_refs": [
+        "foss_python_products.ABW.python_status.installed_workflow"
+      ],
+      "api_symbols": [
+        "abw_installed_workflow"
+      ],
+      "api_behavior": "Load ABW file and return format metadata dict with format, loaded, paragraph_count, section_count",
+      "changed_files": [
+        "src/python/abw/abw_workflow.py",
+        "src/python/abw/__init__.py"
+      ],
+      "test_files": [
+        "tests/python/abw/test_r287_abw_installed_workflow.py"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "src/python/abw/abw_workflow.py",
+          "state": "created",
+          "sha256": "44fb3214d5bab3d0ee48c79f7b25418eb9353f690556d627b7eff8ca687d99f3"
+        },
+        {
+          "path": "src/python/abw/__init__.py",
+          "state": "modified",
+          "sha256": "ae0f1e1a43d47e74456819747ffc7d7be91c2c97edff044a29ee3b25a37020cd"
+        }
+      ],
+      "format": "abw"
+    },
+    {
+      "entry_id": "PC-NDJSON-R288",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s288-ndjson-installed-workflow-20260626",
+      "skill": "add-python-api",
+      "product": "foss_python_products.NDJSON.python_status.installed_workflow",
+      "capability_refs": [
+        "foss_python_products.NDJSON.python_status.installed_workflow"
+      ],
+      "api_symbols": [
+        "ndjson_installed_workflow"
+      ],
+      "api_behavior": "Load NDJSON file and return format metadata dict with format, loaded, record_count",
+      "changed_files": [
+        "src/python/ndjson/ndjson_workflow.py",
+        "src/python/ndjson/__init__.py"
+      ],
+      "test_files": [
+        "tests/python/ndjson/test_r288_ndjson_installed_workflow.py"
+      ],
+      "test_count": 9,
+      "source_files": [
+        {
+          "path": "src/python/ndjson/ndjson_workflow.py",
+          "state": "created",
+          "sha256": "edc82cc54fea91e3f58d1a0279bb4ad7d86702beed26b3176b28dc713c610e9d"
+        },
+        {
+          "path": "src/python/ndjson/__init__.py",
+          "state": "modified",
+          "sha256": "2b0eb72e4215e066c820904f940ed5002f8e02649f2bfbba2987ff12acae59a1"
+        }
+      ],
+      "format": "ndjson"
+    },
+    {
+      "entry_id": "PC-TOML-R289",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s289-toml-installed-workflow-20260626",
+      "skill": "add-python-api",
+      "product": "foss_python_products.TOML.python_status.installed_workflow",
+      "capability_refs": [
+        "foss_python_products.TOML.python_status.installed_workflow"
+      ],
+      "api_symbols": [
+        "toml_installed_workflow"
+      ],
+      "api_behavior": "Load TOML file and return format metadata dict with format, loaded, key_count, section_count",
+      "changed_files": [
+        "src/python/toml/toml_workflow.py",
+        "src/python/toml/__init__.py"
+      ],
+      "test_files": [
+        "tests/python/toml/test_r289_toml_installed_workflow.py"
+      ],
+      "test_count": 9,
+      "source_files": [
+        {
+          "path": "src/python/toml/toml_workflow.py",
+          "state": "created",
+          "sha256": "ba04f6f594dee693225b93b77daa568cdc3324e07e2f434b9cef0f5cfc193891"
+        },
+        {
+          "path": "src/python/toml/__init__.py",
+          "state": "modified",
+          "sha256": "5ec632d2c6cc0e95c3434f47aafbcdc5cd94b933bc7f12e46c114260476350c7"
+        }
+      ],
+      "format": "toml"
+    },
+    {
+      "entry_id": "PC-NETPBM-R299",
+      "sprint": "ff-sprint-s291-dotnet-deepening-20260630",
+      "format": "NETPBM",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/netpbm/NetpbmR299ApplyColorFilterDedicatedTests.cs",
+      "description": "Dedicated tests for NetpbmImage.ApplyColorFilter(r,g,b): valid ok, all pixels in [0,MaxValue], dims/format/MaxValue unchanged, called-twice ok, all-zero ok, dogfood standard luminance coefficients, dogfood mixed in-range",
+      "tests_added": 10,
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.apply_color_filter",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-FODS-R319",
+      "sprint": "ff-sprint-s291-dotnet-deepening-20260630",
+      "format": "FODS",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fods/FodsR319ExportToJsonDedicatedTests.cs",
+      "description": "Dedicated tests for FodsDocument.ExportToJson(filePath): null/whitespace throws, valid ok, file exists, non-empty, SheetCount unchanged, export-twice ok, dogfood with data and two paths",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.export_to_json",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-FODT-R306",
+      "sprint": "ff-sprint-s291-dotnet-deepening-20260630",
+      "format": "FODT",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fodt/FodtR306GetTableCellCountDedicatedTests.cs",
+      "description": "Dedicated tests for FodtDocument.GetTableCellCount(tableIndex): negative/OOB/no-tables throws, non-negative, rows*cols, TableCount/ParagraphCount unchanged, idempotent, dogfood",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.get_table_cell_count",
+      "date": "2026-07-01"
     }
   ],
-  "total_entries": 1661,
+  "total_entries": 1667,
   "changes": [
     {
       "file": "src/python/dif/models.py",
