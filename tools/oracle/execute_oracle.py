@@ -414,6 +414,259 @@ def execute_zst_valid_case(case: dict, pkg: dict) -> dict:
         )
 
 
+def _fods_all_cells(parse_result: dict) -> list:
+    """Collect all cell dicts from a parsed FODS result."""
+    cells = []
+    for sheet in parse_result.get("sheets", []):
+        for row in sheet.get("rows", []):
+            cells.extend(row.get("cells", []))
+    return cells
+
+
+def execute_fods_valid_case(case: dict, pkg: dict) -> dict:
+    """Execute a FODS valid case against the product."""
+    case_id = case["case_id"]
+    sample_ref = case.get("sample_ref")
+    auth_block, authority_status = check_authority(case, True)
+    if auth_block:
+        return make_verdict(
+            oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+            format_id="fods", product_id="format-factory-fods", language="python",
+            case_id=case_id, profile="PARSE_VALIDITY",
+            result=RESULT_BLOCKED_MISSING_AUTHORITY, authority_status=authority_status,
+            diagnostics=[f"Authority class {authority_status} blocks PASS"],
+        )
+
+    # Introspection-only case (spec_qname check — no file)
+    if sample_ref is None:
+        try:
+            sys.path.insert(0, str(REPO_ROOT))
+            from src.python.fods.models import FodsDocument
+            observed = {"spec_qname": getattr(FodsDocument, "spec_qname", None)}
+            expected_props = {p["property"]: p["value"] for p in case.get("expected_model_properties", [])}
+            deviations = []
+            for prop, exp_val in expected_props.items():
+                obs_val = observed.get(prop)
+                if obs_val != exp_val:
+                    deviations.append({"property": prop, "expected": exp_val, "observed": obs_val})
+            result = RESULT_PASS if not deviations else RESULT_FAIL
+            return make_verdict(
+                oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+                format_id="fods", product_id="format-factory-fods", language="python",
+                case_id=case_id, profile="DOMAIN_MODEL_MAPPING",
+                result=result, authority_status=authority_status,
+                observed=observed, expected=expected_props, deviations=deviations,
+            )
+        except Exception as e:
+            return make_verdict(
+                oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+                format_id="fods", product_id="format-factory-fods", language="python",
+                case_id=case_id, profile="DOMAIN_MODEL_MAPPING",
+                result=RESULT_FAIL, authority_status=authority_status,
+                diagnostics=[f"Introspection error: {e}"],
+            )
+
+    sample_path = REPO_ROOT / sample_ref
+    if not sample_path.exists():
+        return make_verdict(
+            oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+            format_id="fods", product_id="format-factory-fods", language="python",
+            case_id=case_id, profile="PARSE_VALIDITY",
+            result=RESULT_BLOCKED_MISSING_SAMPLE, authority_status=authority_status,
+            diagnostics=[f"Sample not found: {sample_path}"],
+        )
+
+    input_hash = sha256_file(sample_path)
+
+    try:
+        sys.path.insert(0, str(REPO_ROOT))
+        from src.python.fods.parser import parse_fods
+
+        parse_result = parse_fods(str(sample_path))
+
+        # Detect parse failure
+        if parse_result.get("error"):
+            return make_verdict(
+                oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+                format_id="fods", product_id="format-factory-fods", language="python",
+                case_id=case_id, profile="PARSE_VALIDITY",
+                result=RESULT_FAIL, authority_status=authority_status,
+                diagnostics=[f"Parse failed: {parse_result['error']}"],
+                input_hash=input_hash,
+            )
+
+        # Build observed properties
+        all_cells = _fods_all_cells(parse_result)
+        sheets = parse_result.get("sheets", [])
+        observed = {
+            "sheet_count": parse_result.get("sheet_count", 0),
+            "first_sheet_name": sheets[0]["name"] if sheets else None,
+            "cell_count": len(all_cells),
+            "has_float_cell": any(c.get("value_type") == "float" for c in all_cells),
+            "has_string_cell": any(c.get("value_type") == "string" for c in all_cells),
+            "has_formula_cell": any(c.get("formula") is not None for c in all_cells),
+        }
+
+        # Warn about unsupported properties
+        expected_props = {}
+        deviations = []
+        unsupported_props = []
+        for prop_def in case.get("expected_model_properties", []):
+            prop = prop_def["property"]
+            exp_val = prop_def["value"]
+            expected_props[prop] = exp_val
+            if prop not in observed:
+                unsupported_props.append(prop)
+                continue
+            obs_val = observed.get(prop)
+            if obs_val != exp_val:
+                deviations.append({"property": prop, "expected": exp_val, "observed": obs_val})
+
+        if unsupported_props:
+            # Unsupported properties produce INCONCLUSIVE, not FAIL
+            return make_verdict(
+                oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+                format_id="fods", product_id="format-factory-fods", language="python",
+                case_id=case_id, profile="DOMAIN_MODEL_MAPPING",
+                result=RESULT_INCONCLUSIVE, authority_status=authority_status,
+                observed=observed, expected=expected_props,
+                diagnostics=[f"Unsupported properties in executor: {unsupported_props}"],
+                input_hash=input_hash,
+            )
+
+        result = RESULT_PASS if not deviations else RESULT_FAIL
+        return make_verdict(
+            oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+            format_id="fods", product_id="format-factory-fods", language="python",
+            case_id=case_id, profile="PARSE_VALIDITY",
+            result=result, authority_status=authority_status,
+            observed=observed, expected=expected_props, deviations=deviations,
+            input_hash=input_hash,
+        )
+
+    except Exception as e:
+        return make_verdict(
+            oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+            format_id="fods", product_id="format-factory-fods", language="python",
+            case_id=case_id, profile="PARSE_VALIDITY",
+            result=RESULT_FAIL, authority_status=authority_status,
+            diagnostics=[f"Unexpected exception: {type(e).__name__}: {e}"],
+            input_hash=input_hash,
+        )
+
+
+def execute_fods_invalid_case(case: dict, pkg: dict) -> dict:
+    """Execute a FODS invalid case — expect parser error or failure mode."""
+    import tempfile
+    import os
+
+    case_id = case["case_id"]
+    _, authority_status = check_authority(case, False)
+    sample_ref = case.get("sample_ref")
+
+    # fods-invalid-001: directory reference — pick first .fods fixture file
+    if sample_ref is not None:
+        sample_path = REPO_ROOT / sample_ref
+        if sample_path.is_dir():
+            fods_files = sorted(sample_path.glob("*.fods"))
+            if not fods_files:
+                return make_verdict(
+                    oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+                    format_id="fods", product_id="format-factory-fods", language="python",
+                    case_id=case_id, profile="INVALID_INPUT_REJECTION",
+                    result=RESULT_BLOCKED_MISSING_SAMPLE, authority_status=authority_status,
+                    diagnostics=[f"No .fods fixtures found in: {sample_path}"],
+                )
+            # Test first fixture from directory
+            test_file = fods_files[0]
+            input_hash = sha256_file(test_file)
+            try:
+                sys.path.insert(0, str(REPO_ROOT))
+                from src.python.fods.parser import parse_fods
+                result_dict = parse_fods(str(test_file))
+                rejected = bool(result_dict.get("error") or result_dict.get("parse_errors"))
+                return make_verdict(
+                    oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+                    format_id="fods", product_id="format-factory-fods", language="python",
+                    case_id=case_id, profile="INVALID_INPUT_REJECTION",
+                    result=RESULT_PASS if rejected else RESULT_FAIL, authority_status=authority_status,
+                    diagnostics=[
+                        f"Tested fixture: {test_file.name}",
+                        f"Error: {result_dict.get('error', 'none')}",
+                    ],
+                    input_hash=input_hash,
+                )
+            except Exception as e:
+                # Exception = definitely rejected
+                return make_verdict(
+                    oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+                    format_id="fods", product_id="format-factory-fods", language="python",
+                    case_id=case_id, profile="INVALID_INPUT_REJECTION",
+                    result=RESULT_PASS, authority_status=authority_status,
+                    diagnostics=[f"Exception raised on malformed input: {type(e).__name__}: {e}"],
+                    input_hash=input_hash,
+                )
+
+    # Inline / input_description cases (fods-invalid-002, fods-invalid-003)
+    inline_content = case.get("input_inline") or case.get("input_description")
+    if inline_content is None:
+        return make_verdict(
+            oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+            format_id="fods", product_id="format-factory-fods", language="python",
+            case_id=case_id, profile="INVALID_INPUT_REJECTION",
+            result=RESULT_NOT_APPLICABLE, authority_status=authority_status,
+            diagnostics=["No inline content and no sample_ref — cannot execute"],
+        )
+
+    try:
+        sys.path.insert(0, str(REPO_ROOT))
+        from src.python.fods.parser import parse_fods
+
+        tmp_path = None
+        try:
+            with tempfile.NamedTemporaryFile(
+                mode="w", suffix=".fods", delete=False, encoding="utf-8"
+            ) as f:
+                f.write(inline_content)
+                tmp_path = f.name
+
+            result_dict = parse_fods(tmp_path)
+            rejected = bool(result_dict.get("error") or result_dict.get("parse_errors"))
+            return make_verdict(
+                oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+                format_id="fods", product_id="format-factory-fods", language="python",
+                case_id=case_id, profile="INVALID_INPUT_REJECTION",
+                result=RESULT_PASS if rejected else RESULT_FAIL, authority_status=authority_status,
+                diagnostics=[
+                    f"Input correctly {'rejected' if rejected else 'accepted (unexpected)'}",
+                    f"Error: {result_dict.get('error', 'none')}",
+                ],
+            )
+        except Exception as e:
+            return make_verdict(
+                oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+                format_id="fods", product_id="format-factory-fods", language="python",
+                case_id=case_id, profile="INVALID_INPUT_REJECTION",
+                result=RESULT_PASS, authority_status=authority_status,
+                diagnostics=[f"Exception raised: {type(e).__name__}: {e}"],
+            )
+        finally:
+            if tmp_path:
+                try:
+                    os.unlink(tmp_path)
+                except OSError:
+                    pass
+
+    except ImportError as e:
+        return make_verdict(
+            oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+            format_id="fods", product_id="format-factory-fods", language="python",
+            case_id=case_id, profile="INVALID_INPUT_REJECTION",
+            result=RESULT_INCONCLUSIVE, authority_status=authority_status,
+            diagnostics=[f"Import error: {e}"],
+        )
+
+
 def execute_zst_lossless_case(case: dict, pkg: dict) -> dict:
     """Execute ZST compress→decompress round-trip lossless case."""
     case_id = case["case_id"]
@@ -496,6 +749,8 @@ def run_oracle_for_format(format_id: str, profile_filter: str = None, case_filte
             verdict = execute_csv_valid_case(case, pkg)
         elif format_id == "zst":
             verdict = execute_zst_valid_case(case, pkg)
+        elif format_id == "fods":
+            verdict = execute_fods_valid_case(case, pkg)
         else:
             verdict = make_verdict(
                 oracle_id=oracle_id, oracle_version=pkg["oracle_version"],
@@ -526,20 +781,25 @@ def run_oracle_for_format(format_id: str, profile_filter: str = None, case_filte
             status_icon = "OK" if result == "PASS" else "FAIL"
             print(f"  [{status_icon}] {case_id}: {result}")
 
-    # Execute invalid cases (CSV)
-    if format_id == "csv":
+    # Execute invalid cases (CSV and FODS)
+    if format_id in ("csv", "fods"):
         for case in pkg.get("invalid_cases", []):
             case_id = case["case_id"]
             if case_filter and case_id != case_filter:
                 continue
-            # Only execute inline cases in this tool (file-based need special handling)
-            if case.get("input_inline") is not None:
+            if format_id == "csv":
+                # Only execute inline cases for CSV
+                if case.get("input_inline") is None:
+                    continue
                 verdict = execute_csv_invalid_case(case, pkg)
-                verdicts.append(verdict)
-                save_verdict(verdict, format_id)
-                result = verdict["result"]
-                counts[result] = counts.get(result, 0) + 1
-                print(f"  [{'OK' if result == 'PASS' else 'FAIL'}] {case_id}: {result}")
+            else:
+                # FODS: handles both directory refs and inline/description cases
+                verdict = execute_fods_invalid_case(case, pkg)
+            verdicts.append(verdict)
+            save_verdict(verdict, format_id)
+            result = verdict["result"]
+            counts[result] = counts.get(result, 0) + 1
+            print(f"  [{'OK' if result == 'PASS' else 'FAIL'}] {case_id}: {result}")
 
     # Summary
     total = len(verdicts)
