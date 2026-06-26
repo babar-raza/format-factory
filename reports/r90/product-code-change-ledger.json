@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s220-dotnet-deepening-20260629",
+  "latest_sprint": "ff-sprint-s221-dotnet-deepening-20260629",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -24314,6 +24314,42 @@
       "description": "R235: Dedicated tests for FodtDocument.ExportToText \u2014 null throws, creates file, has content, paragraph/heading in output, count unchanged, export-twice, multi-para, dogfood heading+para/set-author",
       "source_files": [
         "tests/net/fodt/FodtR235ExportToTextDedicatedTests.cs"
+      ],
+      "test_count": 10
+    },
+    {
+      "entry_id": "PC-NETPBM-R228",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s221-dotnet-deepening-20260629",
+      "format": "NETPBM",
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.get_average_pixel_value",
+      "description": "R228: Dedicated tests for NetpbmImage.GetAveragePixelValue \u2014 non-negative, format/MaxValue/dims preserved, uniform-zero=0, uniform-max=MaxValue, single-pixel=value, in-range, called-twice, dogfood",
+      "source_files": [
+        "tests/net/netpbm/NetpbmR228GetAveragePixelValueTests.cs"
+      ],
+      "test_count": 10
+    },
+    {
+      "entry_id": "PC-FODS-R239",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s221-dotnet-deepening-20260629",
+      "format": "FODS",
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.set_cell_formula",
+      "description": "R239: Dedicated tests for FodsDocument.SetCellFormula \u2014 null/whitespace/nonexistent/negative throws, valid no-exception, SheetCount unchanged, get-non-null, set-twice non-null, dogfood multi-cell",
+      "source_files": [
+        "tests/net/fods/FodsR239SetCellFormulaDedicatedTests.cs"
+      ],
+      "test_count": 10
+    },
+    {
+      "entry_id": "PC-FODT-R236",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s221-dotnet-deepening-20260629",
+      "format": "FODT",
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.get_word_count",
+      "description": "R236: Dedicated tests for FodtDocument.GetWordCount \u2014 empty no-exception, non-negative, single-para, count unchanged, two-para>=one-para, called-twice, after-heading, dogfood",
+      "source_files": [
+        "tests/net/fodt/FodtR236GetWordCountTests.cs"
       ],
       "test_count": 10
     }
