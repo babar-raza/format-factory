@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s124-dotnet-deepening-20260627",
+  "latest_sprint": "ff-sprint-s125-dotnet-deepening-20260627",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -20835,9 +20835,48 @@
         "tests/net/ndjson/NdjsonR130WriteRecordsToFileTests.cs"
       ],
       "description": "R130: 10 tests for NdjsonWriter.WriteRecordsToFile(records, path) \u2014 file created, non-empty, line count, valid JSON lines, UTF-8 no-BOM, null guards, dogfood roundtrip, empty list creates empty file"
+    },
+    {
+      "entry_id": "PC-FODS-R142",
+      "classification": "NEW_TEST_COVERAGE",
+      "sprint": "ff-sprint-s125-dotnet-deepening-20260627",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.spec_office_document"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR142SpecOfficeDocumentTests.cs"
+      ],
+      "description": "R142: 10 tests for Spec.Office.Document \u2014 SpecQName, SpecFactRef, MimeType default/assignable, Version null/assignable, SheetCount assignable, dogfood composition"
+    },
+    {
+      "entry_id": "PC-CSV-R129",
+      "classification": "NEW_TEST_COVERAGE",
+      "sprint": "ff-sprint-s125-dotnet-deepening-20260627",
+      "product": "CSV .NET",
+      "capability_refs": [
+        "commercial_net_products.CSV.dotnet_status.spec_csv_record"
+      ],
+      "test_files": [
+        "tests/net/csv/CsvR129SpecCsvRecordTests.cs"
+      ],
+      "description": "R129: 9 tests for Spec.CsvRecord \u2014 SpecQName constant, Fields empty/assignable, FieldCount computed, empty-string field valid, dogfood multi-record access"
+    },
+    {
+      "entry_id": "PC-ZST-R129",
+      "classification": "NEW_TEST_COVERAGE",
+      "sprint": "ff-sprint-s125-dotnet-deepening-20260627",
+      "product": "ZST .NET",
+      "capability_refs": [
+        "commercial_net_products.ZST.dotnet_status.exception_hierarchy"
+      ],
+      "test_files": [
+        "tests/net/zst/ZstR129ExceptionHierarchyTests.cs"
+      ],
+      "description": "R129: 11 tests for ZstFileSizeException, ZstFileNotFoundException, ZstException hierarchy \u2014 IsAssignableFrom chain, message preserved, Parse non-existent throws, dogfood all types"
     }
   ],
-  "total_entries": 1141,
+  "total_entries": 1144,
   "changes": [
     {
       "file": "src/python/dif/models.py",

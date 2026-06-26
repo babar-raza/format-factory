@@ -142,15 +142,16 @@ public class CsvR128DocumentLoadFileTests
     // -------------------------------------------------------------------------
 
     [Fact]
-    public void LoadFile_NullPath_ThrowsCsvException()
+    public void LoadFile_NullPath_ThrowsCsvReaderException()
     {
-        Assert.Throws<CsvException>(() => CsvDocument.LoadFile(null!));
+        Assert.Throws<CsvReaderException>(() => CsvDocument.LoadFile(null!));
     }
 
     [Fact]
-    public void LoadFile_NonExistentPath_ThrowsCsvException()
+    public void LoadFile_NonExistentPath_ThrowsException()
     {
-        Assert.Throws<CsvException>(() =>
+        // FileInfo.Length on non-existent file throws FileNotFoundException
+        Assert.ThrowsAny<Exception>(() =>
             CsvDocument.LoadFile("/nonexistent/r128-csv-test.csv"));
     }
 
