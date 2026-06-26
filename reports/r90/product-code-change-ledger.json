@@ -22330,6 +22330,84 @@
         }
       ],
       "format": "FODT"
+    },
+    {
+      "entry_id": "PC-NETPBM-R154",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s158-dotnet-deepening-20260628",
+      "product": "Netpbm .NET Commercial",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.median_filter"
+      ],
+      "api_symbols": [
+        "MedianFilter"
+      ],
+      "api_behavior": "NetpbmImage.MedianFilter(int radius) applies median smoothing. radius=0 returns clone. Throws ArgumentOutOfRangeException for negative radius. Uniform image interior unchanged. Non-destructive.",
+      "changed_files": [],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR154MedianFilterTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "src/net/netpbm/Model/NetpbmImageFilters.cs",
+          "state": "present",
+          "sha256": ""
+        }
+      ],
+      "format": "Netpbm"
+    },
+    {
+      "entry_id": "PC-FODS-R165",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s158-dotnet-deepening-20260628",
+      "product": "FODS .NET Commercial",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.delete_rows_dedicated"
+      ],
+      "api_symbols": [
+        "DeleteRows"
+      ],
+      "api_behavior": "FodsDocument.DeleteRows(sheetName, startRow, count) removes count rows starting at startRow. count=0 is no-op. Throws ArgumentException for null/whitespace sheetName. Throws InvalidOperationException for nonexistent sheet. Throws ArgumentOutOfRangeException for negative count or out-of-bounds range.",
+      "changed_files": [],
+      "test_files": [
+        "tests/net/fods/FodsR165DeleteRowsDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "src/net/fods/FodsDocument.cs",
+          "state": "present",
+          "sha256": ""
+        }
+      ],
+      "format": "FODS"
+    },
+    {
+      "entry_id": "PC-FODT-R167",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s158-dotnet-deepening-20260628",
+      "product": "FODT .NET Commercial",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.get_text_between_paragraphs_dedicated"
+      ],
+      "api_symbols": [
+        "GetTextBetweenParagraphs"
+      ],
+      "api_behavior": "FodtDocument.GetTextBetweenParagraphs(startIndex, endIndex) returns null for invalid ranges. Returns paragraphs [start,end) joined by newlines for valid ranges.",
+      "changed_files": [],
+      "test_files": [
+        "tests/net/fodt/FodtR167GetTextBetweenParagraphsDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "src/net/fodt/FodtDocument.cs",
+          "state": "present",
+          "sha256": ""
+        }
+      ],
+      "format": "FODT"
     }
   ],
   "total_entries": 1201,
