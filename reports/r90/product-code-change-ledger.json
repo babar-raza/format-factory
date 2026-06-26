@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s146-dotnet-deepening-20260628",
+  "latest_sprint": "ff-sprint-s147-dotnet-deepening-20260628",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -21614,6 +21614,48 @@
       "change_summary": "ZstR138SizeLabelAndComputedPropertiesTests.cs: 10 tests for ZstDocument computed properties \u2014 SizeLabel default=empty, FileSizeKB=0, HasMultipleFrames=false, IsValid=false, ContentTypeHint=unknown, IsEmptyContent=true; SizeLabel tiny/small boundary; dogfood compress->ParseStream->SizeLabel not empty; dogfood compress->ParseStream->IsValid=true.",
       "test_files": [
         "tests/net/zst/ZstR138SizeLabelAndComputedPropertiesTests.cs"
+      ],
+      "source_files": []
+    },
+    {
+      "entry_id": "PC-NETPBM-R144",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s147-dotnet-deepening-20260628",
+      "product": "NETPBM .NET",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.rotate_transforms"
+      ],
+      "change_summary": "NetpbmR144RotateTests.cs: 10 tests for NetpbmImage.Rotate90Cw (swaps dims, preserves format, original unchanged, top-left pixel mapping), Rotate180 (preserves dims, format, top-left to bottom-right), Rotate270Cw (swaps dims), dogfood 4x Rotate90Cw restores dims, dogfood 2x Rotate90Cw equals Rotate180 dims.",
+      "test_files": [
+        "tests/net/netpbm/NetpbmR144RotateTests.cs"
+      ],
+      "source_files": []
+    },
+    {
+      "entry_id": "PC-FODS-R155",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s147-dotnet-deepening-20260628",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.get_row_values_dedicated"
+      ],
+      "change_summary": "FodsR155GetRowValuesDedicatedTests.cs: 10 tests for FodsDocument.GetRowValues \u2014 empty doc throws, negative row throws, nonexistent sheet throws, single-cell row, multi-column row, after SetCellValue update, named sheet, dogfood CreateNew->SetCellValue->GetRowValues, dogfood multi-row per-row correct.",
+      "test_files": [
+        "tests/net/fods/FodsR155GetRowValuesDedicatedTests.cs"
+      ],
+      "source_files": []
+    },
+    {
+      "entry_id": "PC-TSV-R135",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s147-dotnet-deepening-20260628",
+      "product": "TSV .NET",
+      "capability_refs": [
+        "commercial_net_products.TSV.dotnet_status.get_column_values_dedicated"
+      ],
+      "change_summary": "TsvR135GetColumnValuesDedicatedTests.cs: 10 dedicated tests for TsvDocument.GetColumnValues \u2014 negative index throws, first/second column values, empty doc=empty list, count matches rows, single-row, short rows return null, index beyond all rows=all nulls, dogfood Load->GetColumnValues, dogfood with headers data rows only.",
+      "test_files": [
+        "tests/net/tsv/TsvR135GetColumnValuesDedicatedTests.cs"
       ],
       "source_files": []
     }
