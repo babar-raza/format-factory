@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-machinery-readiness-20260626-r3-TC-MREAD-F002",
+  "latest_sprint": "ff-sprint-s198-dotnet-deepening-20260629",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -23548,6 +23548,36 @@
         "tests/python/toml/test_gap_installed_workflow.py"
       ],
       "recorded_at": "2026-06-26T18:12:03.312437+00:00"
+    },
+    {
+      "entry_id": "PC-NETPBM-R202",
+      "sprint": "ff-sprint-s198-dotnet-deepening-20260629",
+      "format": "NETPBM",
+      "capability": "AdjustContrast",
+      "test_file": "tests/net/netpbm/NetpbmR202AdjustContrastTests.cs",
+      "test_count": 10,
+      "status": "completed",
+      "notes": "Dedicated tests for NetpbmImage.AdjustContrast: new image, format/dims/MaxValue preserved, factor=1 unchanged, factor=0 flat, high factor clamped, dogfood"
+    },
+    {
+      "entry_id": "PC-FODS-R211",
+      "sprint": "ff-sprint-s198-dotnet-deepening-20260629",
+      "format": "FODS",
+      "capability": "DeleteRows",
+      "test_file": "tests/net/fods/FodsR211DeleteRowsDedicatedTests.cs",
+      "test_count": 10,
+      "status": "completed",
+      "notes": "Dedicated tests for FodsDocument.DeleteRows: null/whitespace/nonexistent/negative/zero throws, row count decreases, SheetCount unchanged, rows shift up, dogfood"
+    },
+    {
+      "entry_id": "PC-FODT-R213",
+      "sprint": "ff-sprint-s198-dotnet-deepening-20260629",
+      "format": "FODT",
+      "capability": "ReplaceText",
+      "test_file": "tests/net/fodt/FodtR213ReplaceTextTests.cs",
+      "test_count": 11,
+      "status": "completed",
+      "notes": "Dedicated tests for FodtDocument.ReplaceText: null throws, no-match unchanged, single/multi-para replaced, case-sensitive, empty replacement, ParagraphCount unchanged, dogfood"
     }
   ],
   "total_entries": 1270,
