@@ -22928,6 +22928,33 @@
       "evidence_path": "tests/net/fodt/FodtR186GetPlainTextRangeTests.cs",
       "test_count": 10,
       "sprint": "ff-sprint-s177-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-NETPBM-R174",
+      "format": "NETPBM",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "NetpbmImage.Sepia: PBM returns clone; PGM returns clone; returns new image; width/height/format unchanged; original pixels unchanged; result pixels in valid range; dogfood PPM created non-null; dogfood PGM same dims/format",
+      "evidence_path": "tests/net/netpbm/NetpbmR174SepiaTests.cs",
+      "test_count": 10,
+      "sprint": "ff-sprint-s178-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-FODS-R185",
+      "format": "FODS",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "FodsDocument.ClearSheet: null/whitespace throws ArgumentException; nonexistent throws InvalidOperationException; empty sheet no-op; valid clear row count=0; sheet still exists; other sheets unaffected; SheetCount unchanged; dogfood clear-repopulate; dogfood default sheet clear",
+      "evidence_path": "tests/net/fods/FodsR185ClearSheetDedicatedTests.cs",
+      "test_count": 10,
+      "sprint": "ff-sprint-s178-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-FODT-R187",
+      "format": "FODT",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "FodtDocument.GetTextBetweenParagraphs: negative startIndex null; endIndex over count null; start==end null; start>end null; single paragraph text; multiple joined with newline; partial range excludes others; dogfood heading included; dogfood valid range non-null non-empty",
+      "evidence_path": "tests/net/fodt/FodtR187GetTextBetweenParagraphsTests.cs",
+      "test_count": 10,
+      "sprint": "ff-sprint-s178-dotnet-deepening-20260628"
     }
   ],
   "total_entries": 1270,
