@@ -29091,9 +29091,78 @@
       "test_count": 9,
       "source_files": [],
       "format": "fodt"
+    },
+    {
+      "entry_id": "PC-NETPBM-R297",
+      "classification": "DOTNET_TEST_COVERAGE",
+      "sprint": "ff-sprint-s289-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "NETPBM",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.get_pixel_count"
+      ],
+      "api_symbols": [
+        "NetpbmImage.GetPixelCount"
+      ],
+      "api_behavior": "GetPixelCount(): positive int; equals Width*Height; dims/format/MaxValue unchanged; idempotent; 4x4=16; 1x1=1; dogfood 7x5=35",
+      "changed_files": [
+        "tests/net/netpbm/NetpbmR297GetPixelCountDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR297GetPixelCountDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [],
+      "format": "netpbm"
+    },
+    {
+      "entry_id": "PC-FODS-R317",
+      "classification": "DOTNET_TEST_COVERAGE",
+      "sprint": "ff-sprint-s289-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "FODS",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.export_to_csv"
+      ],
+      "api_symbols": [
+        "FodsDocument.ExportToCsv"
+      ],
+      "api_behavior": "ExportToCsv(sheetName,filePath): null/whitespace-sheet/nonexistent/null-path/whitespace-path throws; valid ok; file exists; SheetCount unchanged; non-empty; dogfood with data",
+      "changed_files": [
+        "tests/net/fods/FodsR317ExportToCsvDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR317ExportToCsvDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [],
+      "format": "fods"
+    },
+    {
+      "entry_id": "PC-FODT-R304",
+      "classification": "DOTNET_TEST_COVERAGE",
+      "sprint": "ff-sprint-s289-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "FODT",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.set_paragraph_style"
+      ],
+      "api_symbols": [
+        "FodtDocument.SetParagraphStyle"
+      ],
+      "api_behavior": "SetParagraphStyle(index,style): negative/OOB/no-paragraphs throws; valid ok; ParagraphCount/TableCount/SectionCount unchanged; set-twice ok; dogfood add-para-set-style, multiple",
+      "changed_files": [
+        "tests/net/fodt/FodtR304SetParagraphStyleDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR304SetParagraphStyleDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [],
+      "format": "fodt"
     }
   ],
-  "total_entries": 1655,
+  "total_entries": 1658,
   "changes": [
     {
       "file": "src/python/dif/models.py",
