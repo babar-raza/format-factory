@@ -4931,7 +4931,7 @@ formally deferred (V13/V47/V62 cover non-ODF enforcement; new V-number task defe
 - **TC-CONV-004:** build_cross_format_index.py now writes dynamic `generated_date` (was static 2026-06-18)
 - **TC-CONV-005:** All changes committed in attributed fslay02 commit
 - **TC-CONV-006:** Pilot A L1/CSV re-run verified: 754 pass, 10 pre-existing, 0 new, exit 0
-- **TC-CONV-007:** Pilot B L3 in progress; governance proxy 151 tests PASS (32.26s); root cause (venv Python) fixed
+- **TC-CONV-007:** Pilot B L3 COMPLETE — 28,159 pass, test_results_reliable=True, 3051s, 438 pre-existing gap failures (not regressions). Known-failure ledger undercounts (116 entries vs ~438 actual pre-existing). Duration 3051s >> 120s manifest limit — timing gap deferred to TC-FSLAY03.
 
 ### Verification Results
 - 49 tests pass: 43 original adequacy/hardening/layer + 6 new convergence tests (TC-CONV-001/002)
