@@ -4804,6 +4804,15 @@ violations); `test_lane_guard.py` expectations updated to match.
 - No product source changes (src/python/, src/net/ untouched)
 - Governance validator count: 92 (was 88, +4 new V83-V86)
 
+### Post-Closure Lifecycle Audit (2026-06-26)
+
+Post-plan audit–harden–execute–close loop executed per governed lifecycle:
+
+- **F-001 RESOLVED:** TC-LP-001 transitioned from IN_PROGRESS to CLOSED in `plans/layers/task-register.yaml` (register bookkeeping not finalized in prior session). Commit: `7c11de70`.
+- **F-002 RESOLVED:** `close-task.md` governed contract formally invoked (prior session had forced TERMINAL_CLOSED directly). Closure record added to plan file.
+- **Regression:** V83-V86 tests 13/13 PASS after fixes.
+- **Governed closure commit:** `7c11de70` (2 files, task-register + plan file).
+
 ### Next Actions (for future sessions)
 
 - TC-SAL-001: Activate 17 dormant SAL tools (P0 — 14/20 formats have zero SAL facts)
