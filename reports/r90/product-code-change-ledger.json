@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s197-fods-test-fixes-20260626",
+  "latest_sprint": "ff-sprint-s273-sylk-installed-workflow-20260626",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -28002,9 +28002,136 @@
       "test_count": 10,
       "source_files": [],
       "format": "FODT"
+    },
+    {
+      "entry_id": "PC-GNUMERIC-R272",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s272-gnumeric-installed-workflow-20260626",
+      "skill": "add-python-api",
+      "product": "Gnumeric Python FOSS",
+      "capability_refs": [
+        "foss_python_products.Gnumeric.python_status.installed_workflow"
+      ],
+      "api_symbols": [
+        "gnumeric_installed_workflow"
+      ],
+      "api_behavior": "gnumeric_installed_workflow(source): loads a .gnumeric file, returns dict with format, loaded, sheet_count, cell_count.",
+      "source_files": [
+        {
+          "path": "src/python/gnumeric/gnumeric_codec.py",
+          "state": "present",
+          "sha256": "5eb0be9f57827ce2f2efa09064187aaa63aaecd8fbdcfd6ca673f2b3281a61f7"
+        }
+      ],
+      "test_files": [
+        "tests/python/gnumeric/test_r272_gnumeric_installed_workflow.py"
+      ],
+      "test_count": 11,
+      "notes": "Fixed workbook_document.py import chain (get_column_count/count_nonempty_cells from workbook_stats); fixed cell_count to use cell_grid.",
+      "format": "Gnumeric"
+    },
+    {
+      "entry_id": "PC-NETPBM-R287",
+      "classification": "DOTNET_TEST_COVERAGE",
+      "sprint": "ff-sprint-s279-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "NETPBM",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.set_pixel"
+      ],
+      "api_symbols": [
+        "NetpbmImage.SetPixel"
+      ],
+      "api_behavior": "SetPixel(x,y,value): negative/OOB x/y throws; value<0/value>MaxValue throws; valid ok; value retrievable by GetPixel; dims unchanged",
+      "changed_files": [
+        "tests/net/netpbm/NetpbmR287SetPixelDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR287SetPixelDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [],
+      "format": "netpbm"
+    },
+    {
+      "entry_id": "PC-FODS-R307",
+      "classification": "DOTNET_TEST_COVERAGE",
+      "sprint": "ff-sprint-s279-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "FODS",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.get_cell_value"
+      ],
+      "api_symbols": [
+        "FodsDocument.GetCellValue"
+      ],
+      "api_behavior": "GetCellValue(sheetName,row,col): null/whitespace/nonexistent/negative-row/col throws; valid non-null; returns SetCellValue value; SheetCount unchanged; idempotent",
+      "changed_files": [
+        "tests/net/fods/FodsR307GetCellValueDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR307GetCellValueDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [],
+      "format": "fods"
+    },
+    {
+      "entry_id": "PC-FODT-R294",
+      "classification": "DOTNET_TEST_COVERAGE",
+      "sprint": "ff-sprint-s279-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "FODT",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.get_table_cell_text"
+      ],
+      "api_symbols": [
+        "FodtDocument.GetTableCellText"
+      ],
+      "api_behavior": "GetTableCellText(tableIndex,row,col): negative/OOB/no-tables/negative-row/col throws; valid non-null; returns SetTableCellText value; TableCount unchanged; idempotent",
+      "changed_files": [
+        "tests/net/fodt/FodtR294GetTableCellTextDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR294GetTableCellTextDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [],
+      "format": "fodt"
+    },
+    {
+      "entry_id": "PC-SYLK-R273",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s273-sylk-installed-workflow-20260626",
+      "skill": "add-python-api",
+      "product": "SYLK Python FOSS",
+      "capability_refs": [
+        "foss_python_products.SYLK.python_status.installed_workflow"
+      ],
+      "api_symbols": [
+        "sylk_installed_workflow"
+      ],
+      "api_behavior": "sylk_installed_workflow(source): loads a SYLK file, returns dict with format, loaded, row_count, column_count, cell_count.",
+      "source_files": [
+        {
+          "path": "src/python/sylk/sylk_workflow.py",
+          "state": "present",
+          "sha256": "5f4ad2f5b82740bd83eef9aedef9463f3a27b24f666a9d7b84a578c0af3c3366"
+        },
+        {
+          "path": "src/python/sylk/__init__.py",
+          "state": "present",
+          "sha256": "5793e1579e610fdf35bb6d8c109f8605683dc867fae868f3cb4cc010f78a38af"
+        }
+      ],
+      "test_files": [
+        "tests/python/sylk/test_r273_sylk_installed_workflow.py"
+      ],
+      "test_count": 13,
+      "format": "SYLK"
     }
   ],
-  "total_entries": 1612,
+  "total_entries": 1616,
   "changes": [
     {
       "file": "src/python/dif/models.py",
