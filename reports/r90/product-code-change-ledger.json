@@ -25468,6 +25468,90 @@
         }
       ],
       "format": "FODT"
+    },
+    {
+      "entry_id": "PC-NETPBM-R256",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s249-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "NETPBM .NET",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.crop"
+      ],
+      "api_symbols": [
+        "Crop"
+      ],
+      "api_behavior": "Crop(x, y, width, height) extracts a rectangular region and returns a new image. Negative/zero/OOB args throw. Result dimensions match requested w/h. Format/MaxValue preserved. Original unchanged.",
+      "changed_files": [
+        "tests/net/netpbm/NetpbmR256CropDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR256CropDedicatedTests.cs"
+      ],
+      "test_count": 13,
+      "source_files": [
+        {
+          "path": "tests/net/netpbm/NetpbmR256CropDedicatedTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "NETPBM"
+    },
+    {
+      "entry_id": "PC-FODS-R268",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s249-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.get_row_count"
+      ],
+      "api_symbols": [
+        "GetRowCount"
+      ],
+      "api_behavior": "GetRowCount(sheetName) returns the number of rows in a sheet. Null/whitespace/nonexistent throws. Empty=0+. After AddRow increases. SheetCount unchanged. Idempotent.",
+      "changed_files": [
+        "tests/net/fods/FodsR268GetRowCountDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR268GetRowCountDedicatedTests.cs"
+      ],
+      "test_count": 9,
+      "source_files": [
+        {
+          "path": "tests/net/fods/FodsR268GetRowCountDedicatedTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "FODS"
+    },
+    {
+      "entry_id": "PC-FODT-R264",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s249-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.get_paragraph_style"
+      ],
+      "api_symbols": [
+        "GetParagraphStyle"
+      ],
+      "api_behavior": "GetParagraphStyle(index) returns the style name of the paragraph at index. Negative/OOB throws. Returns non-null non-empty string. After SetParagraphStyle returns that style. ParagraphCount unchanged. Idempotent.",
+      "changed_files": [
+        "tests/net/fodt/FodtR264GetParagraphStyleDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR264GetParagraphStyleDedicatedTests.cs"
+      ],
+      "test_count": 9,
+      "source_files": [
+        {
+          "path": "tests/net/fodt/FodtR264GetParagraphStyleDedicatedTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "FODT"
     }
   ],
   "total_entries": 1270,
