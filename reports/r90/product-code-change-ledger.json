@@ -21291,9 +21291,39 @@
       "evidence_path": "tests/net/csv/CsvR134WriterToFileTests.cs",
       "test_count": 10,
       "capability_ref": "commercial_net_products.CSV.dotnet_status.writer_to_file_and_exception"
+    },
+    {
+      "entry_id": "PC-FODS-R149",
+      "format": "FODS",
+      "r_number": "R149",
+      "sprint": "ff-sprint-s139-dotnet-deepening-20260627",
+      "description": "FodsDocument.GetSheetNames and SheetCount - 10 tests: GetSheetNames CreateNew has 1 entry/non-empty name, after AddSheet has 2/distinct/ordered; SheetCount CreateNew=1/after AddSheet=2/matches GetSheetNames.Count; dogfood CreateNew->AddSheet x2->GetSheetNames->SheetCount all 3 consistent",
+      "evidence_path": "tests/net/fods/FodsR149GetSheetNamesAndSheetCountTests.cs",
+      "test_count": 10,
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.get_sheet_names_and_sheet_count"
+    },
+    {
+      "entry_id": "PC-NETPBM-R140",
+      "format": "NETPBM",
+      "r_number": "R140",
+      "sprint": "ff-sprint-s139-dotnet-deepening-20260627",
+      "description": "NetpbmImage.FlipHorizontal and FlipVertical - 10 tests: FlipHorizontal preserves dimensions/column swap/double flip restores original/1x1 no-op; FlipVertical preserves dimensions/row swap/double flip restores/1x1 no-op; dogfood Create->FlipHorizontal->FlipVertical->dimensions unchanged",
+      "evidence_path": "tests/net/netpbm/NetpbmR140FlipHorizontalAndVerticalTests.cs",
+      "test_count": 10,
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.flip_horizontal_and_vertical"
+    },
+    {
+      "entry_id": "PC-FODT-R152",
+      "format": "FODT",
+      "r_number": "R152",
+      "sprint": "ff-sprint-s139-dotnet-deepening-20260627",
+      "description": "FodtDocument.RemoveParagraph(index) - 10 tests: negative/equalCount/large/empty-doc-zero throws ArgumentOutOfRangeException; decreases ParagraphCount; first para removed=second remains; last removed=first remains; middle removed=A+C remain; dogfood AppendParagraphs x4->RemoveParagraph(1)->3 remain(Alpha/Gamma/Delta)/Beta absent from GetPlainText",
+      "evidence_path": "tests/net/fodt/FodtR152RemoveParagraphTests.cs",
+      "test_count": 10,
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.remove_paragraph"
     }
   ],
-  "total_entries": 1183,
+  "total_entries": 1186,
   "changes": [
     {
       "file": "src/python/dif/models.py",
