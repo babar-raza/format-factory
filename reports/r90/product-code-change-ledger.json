@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s193-dotnet-deepening-20260629",
+  "latest_sprint": "ff-machinery-readiness-20260626-r3-TC-MREAD-F001",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -23369,6 +23369,68 @@
       "evidence_path": "tests/net/fodt/FodtR206CharCountTests.cs",
       "test_count": 10,
       "status": "completed"
+    },
+    {
+      "entry_id": "PC-NETPBM-R196",
+      "sprint": "ff-sprint-s194-dotnet-deepening-20260629",
+      "format": "NETPBM",
+      "capability": "MedianFilter",
+      "description": "Dedicated tests for NetpbmImage.MedianFilter: negative radius throws, radius=0 clone, PGM radius=1 new image, format/MaxValue/dims preserved, uniform stays uniform, PBM clone, dogfood",
+      "evidence_path": "tests/net/netpbm/NetpbmR196MedianFilterTests.cs",
+      "test_count": 10,
+      "status": "completed"
+    },
+    {
+      "entry_id": "PC-FODS-R206",
+      "sprint": "ff-sprint-s194-dotnet-deepening-20260629",
+      "format": "FODS",
+      "capability": "CopySheet",
+      "description": "Dedicated tests for FodsDocument.CopySheet: null/whitespace source/new throws, nonexistent throws, duplicate-name throws, SheetCount increments, returns FodsSheet, new name set, original unchanged, dogfood copy-twice",
+      "evidence_path": "tests/net/fods/FodsR206CopySheetDedicatedTests.cs",
+      "test_count": 10,
+      "status": "completed"
+    },
+    {
+      "entry_id": "PC-FODT-R207",
+      "sprint": "ff-sprint-s194-dotnet-deepening-20260629",
+      "format": "FODT",
+      "capability": "GetTextBetweenParagraphs",
+      "description": "Dedicated tests for FodtDocument.GetTextBetweenParagraphs: negative/OOB/start>=end returns null, single para text, two paras joined, heading included, middle range, dogfood three-para and full range",
+      "evidence_path": "tests/net/fodt/FodtR207GetTextBetweenParagraphsTests.cs",
+      "test_count": 10,
+      "status": "completed"
+    },
+    {
+      "entry_id": "PC-GNUMERIC-ANALYTICS-CIRCULAR-IMPORT-FIX-001",
+      "classification": "BUG_FIX",
+      "sprint": "ff-machinery-readiness-20260626-r3-TC-MREAD-F001",
+      "product": "GNUMERIC Python FOSS",
+      "description": "Fix circular import in gnumeric_analytics.py: get_column_count and count_nonempty_cells were imported from gnumeric_codec (where they are not defined at the time of import) instead of gnumeric_workbook_stats (where they actually live). This caused the try/except ImportError in gnumeric_codec.py to silently swallow the analytics import, resulting in 26 test collection errors.",
+      "gap_ids": [],
+      "capability_refs": [
+        "python_foss.GNUMERIC.analytics"
+      ],
+      "api_symbols": [
+        "gnumeric_sheet_summary",
+        "gnumeric_numeric_cell_count",
+        "gnumeric_empty_cell_count",
+        "gnumeric_total_cell_count"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/gnumeric/gnumeric_analytics.py",
+          "sha256": "74288cf26a05da3aa5147843d338fc84bc96363826966bef4742675b7e3f52c7",
+          "change": "fixed_import: get_column_count and count_nonempty_cells now imported from .gnumeric_workbook_stats instead of .gnumeric_codec"
+        }
+      ],
+      "test_files": [
+        "tests/python/gnumeric/test_rnext_gnumeric_empty_cell_count.py",
+        "tests/python/gnumeric/test_rnext_gnumeric_nonempty_cell_count_file.py",
+        "tests/python/gnumeric/test_rnext_gnumeric_total_cell_count.py",
+        "tests/python/dogfood/test_dogfood_zst_remaining_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_xcf_qoi_zst_remaining_analytics_ndjson_export.py"
+      ],
+      "recorded_at": "2026-06-26T17:55:33.423332Z"
     }
   ],
   "total_entries": 1270,
