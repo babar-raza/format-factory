@@ -25889,6 +25889,90 @@
         }
       ],
       "format": "FODT"
+    },
+    {
+      "entry_id": "PC-NETPBM-R261",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s254-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "NETPBM .NET",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.threshold"
+      ],
+      "api_symbols": [
+        "Threshold"
+      ],
+      "api_behavior": "Threshold(value) binarizes image in-place (void): pixels >= value become MaxValue; pixels < value become 0. Width/height/format/MaxValue preserved. Zero threshold: all become MaxValue.",
+      "changed_files": [
+        "tests/net/netpbm/NetpbmR261ThresholdDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR261ThresholdDedicatedTests.cs"
+      ],
+      "test_count": 11,
+      "source_files": [
+        {
+          "path": "tests/net/netpbm/NetpbmR261ThresholdDedicatedTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "NETPBM"
+    },
+    {
+      "entry_id": "PC-FODS-R274",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s254-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.copy_sheet"
+      ],
+      "api_symbols": [
+        "CopySheet"
+      ],
+      "api_behavior": "CopySheet(fromSheetName, newSheetName) copies a sheet. Null/whitespace/nonexistent source throws. Null newName throws. SheetCount increases by 1. New sheet in GetSheetNames. Original unchanged.",
+      "changed_files": [
+        "tests/net/fods/FodsR274CopySheetDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR274CopySheetDedicatedTests.cs"
+      ],
+      "test_count": 11,
+      "source_files": [
+        {
+          "path": "tests/net/fods/FodsR274CopySheetDedicatedTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "FODS"
+    },
+    {
+      "entry_id": "PC-FODT-R269",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s254-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.remove_table"
+      ],
+      "api_symbols": [
+        "RemoveTable"
+      ],
+      "api_behavior": "RemoveTable(tableIndex) removes table at index. Negative/OOB throws. TableCount decreases. Remove single \u2192 count=0. Other tables shift down. Dogfood: add then remove; two-tables remove-first second becomes index 0.",
+      "changed_files": [
+        "tests/net/fodt/FodtR269RemoveTableDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR269RemoveTableDedicatedTests.cs"
+      ],
+      "test_count": 9,
+      "source_files": [
+        {
+          "path": "tests/net/fodt/FodtR269RemoveTableDedicatedTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "FODT"
     }
   ],
   "total_entries": 1270,
