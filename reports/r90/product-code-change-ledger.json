@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s141-dotnet-deepening-20260627",
+  "latest_sprint": "ff-sprint-s142-dotnet-deepening-20260627",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -21405,9 +21405,51 @@
         "tests/net/fodt/FodtR154RemoveHeadingAndParagraphStyleTests.cs"
       ],
       "source_files": []
+    },
+    {
+      "entry_id": "PC-NETPBM-R142",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s142-dotnet-deepening-20260627",
+      "product": "NETPBM .NET",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.draw_line"
+      ],
+      "change_summary": "NetpbmR142DrawLineTests.cs: 10 tests for NetpbmImage.DrawLine \u2014 PPM throws InvalidOperationException; horizontal/vertical line sets start/end pixels; diagonal sets start; single-point; out-of-bounds does not throw; dogfood DrawLine->GetPixel->DrawRectangle pipeline.",
+      "test_files": [
+        "tests/net/netpbm/NetpbmR142DrawLineTests.cs"
+      ],
+      "source_files": []
+    },
+    {
+      "entry_id": "PC-FODS-R151",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s142-dotnet-deepening-20260627",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.ods_export_result_properties"
+      ],
+      "change_summary": "FodsR151OdsExportResultPropertiesTests.cs: 10 tests for FodsOdsExportResult properties \u2014 OutputPath/SheetCount/TotalRowsExported/TotalCellsExported defaults; object initializer; dogfood CreateNew->SetCellValue->ExportToOds verifies result properties non-zero.",
+      "test_files": [
+        "tests/net/fods/FodsR151OdsExportResultPropertiesTests.cs"
+      ],
+      "source_files": []
+    },
+    {
+      "entry_id": "PC-NDJSON-R139",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s142-dotnet-deepening-20260627",
+      "product": "NDJSON .NET",
+      "capability_refs": [
+        "commercial_net_products.NDJSON.dotnet_status.load_content_and_uniform_schema"
+      ],
+      "change_summary": "NdjsonR139LoadContentAndUniformSchemaTests.cs: 10 tests for NdjsonDocument.LoadContent (null throws, empty=0 records, valid JSONL, matches Load, single record) and IsUniformSchema (empty=true, single=true, uniform=true, different keys=false, dogfood Filter pipeline).",
+      "test_files": [
+        "tests/net/ndjson/NdjsonR139LoadContentAndUniformSchemaTests.cs"
+      ],
+      "source_files": []
     }
   ],
-  "total_entries": 1192,
+  "total_entries": 1195,
   "changes": [
     {
       "file": "src/python/dif/models.py",

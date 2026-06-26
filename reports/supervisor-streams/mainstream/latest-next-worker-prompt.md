@@ -1,6 +1,6 @@
 # FORMAT-FACTORY-RNEXT-MEGA-TRAIN-001
-# Generated: 2026-06-25T16:03:47.606592
-# Source: Supervisor autonomous-cycle review of immutable-percolating-forest-TC-PUB-20260625
+# Generated: 2026-06-26T18:09:01.671131
+# Source: Supervisor autonomous-cycle review of ff-sprint-s141-dotnet-deepening-20260627
 # Stream: mainstream
 # ADVISORY ONLY -- not a Format Factory authority document
 
@@ -27,10 +27,10 @@ Read these files before writing any code:
 ## Sprint Identity
 
 - Sprint ID: FORMAT-FACTORY-RNEXT-MEGA-TRAIN-001
-- Prior sprint: immutable-percolating-forest-TC-PUB-20260625
-- Prior verdict: ACCEPTED_WITH_REWORK
+- Prior sprint: ff-sprint-s141-dotnet-deepening-20260627
+- Prior verdict: ACCEPTED
 - Prior tests: 0 passed, 0 failed, 0 skipped
-- Autonomous continue: True
+- Autonomous continue: False
 
 ---
 
@@ -85,11 +85,15 @@ Read these files before writing any code:
 | N | G4 | FODP Python Improvement |
 | O | G4 | CSV Python Improvement |
 | P | G4 | ODT Python Improvement |
-| Q | G5 | Dogfood: fodt -> txt |
-| R | G5 | Dogfood: fodt -> html |
-| S | G6 | Package Build + Install Proof |
-| T | G7 | State + Memory + POC Matrix Sync |
-| U | G8 | Evidence Declaration + Supervisor Autonomous-Cycle |
+| Q | G4 | QOI Python Improvement |
+| R | G4 | DIF Python Improvement |
+| S | G4 | XCF Python Improvement |
+| T | G4 | ODS Python Improvement |
+| U | G5 | Dogfood: fodt -> txt |
+| V | G5 | Dogfood: fodt -> html |
+| W | G6 | Package Build + Install Proof |
+| X | G7 | State + Memory + POC Matrix Sync |
+| Y | G8 | Evidence Declaration + Supervisor Autonomous-Cycle |
 
 ---
 
@@ -222,7 +226,7 @@ python -m pytest tests/python/sylk/ -x -q
 
 ### Train H: TOML Python Improvement
 
-Continue TOML FOSS product. dogfood export via TOML config roundtrip; package install proof
+Continue TOML FOSS product. Continue FOSS product deepening
 
 **Acceptance Criteria:**
 - TOML Python test count maintained or increased
@@ -324,7 +328,7 @@ python -m pytest tests/python/gnumeric/ -x -q
 
 ### Train N: FODP Python Improvement
 
-Continue FODP FOSS product. Write capability not applicable (read-only format)
+Continue FODP FOSS product. Continue FOSS product deepening
 
 **Acceptance Criteria:**
 - FODP Python test count maintained or increased
@@ -373,9 +377,77 @@ Continue ODT FOSS product. Continue FOSS product deepening
 python -m pytest tests/python/odt/ -x -q
 ```
 
+### Train Q: QOI Python Improvement
+
+Continue QOI FOSS product. Write capability and package install proof
+
+**Acceptance Criteria:**
+- QOI Python test count maintained or increased
+
+**Files:**
+- `src/python/qoi/`
+- `tests/python/qoi/`
+- `reports/r90/product-code-change-ledger.json`
+
+**Verification:**
+```bash
+python -m pytest tests/python/qoi/ -x -q
+```
+
+### Train R: DIF Python Improvement
+
+Continue DIF FOSS product. Continue FOSS product deepening
+
+**Acceptance Criteria:**
+- DIF Python test count maintained or increased
+
+**Files:**
+- `src/python/dif/`
+- `tests/python/dif/`
+- `reports/r90/product-code-change-ledger.json`
+
+**Verification:**
+```bash
+python -m pytest tests/python/dif/ -x -q
+```
+
+### Train S: XCF Python Improvement
+
+Continue XCF FOSS product. Continue FOSS product deepening
+
+**Acceptance Criteria:**
+- XCF Python test count maintained or increased
+
+**Files:**
+- `src/python/xcf/`
+- `tests/python/xcf/`
+- `reports/r90/product-code-change-ledger.json`
+
+**Verification:**
+```bash
+python -m pytest tests/python/xcf/ -x -q
+```
+
+### Train T: ODS Python Improvement
+
+Continue ODS FOSS product. Continue FOSS product deepening — gates 8-10
+
+**Acceptance Criteria:**
+- ODS Python test count maintained or increased
+
+**Files:**
+- `src/python/ods/`
+- `tests/python/ods/`
+- `reports/r90/product-code-change-ledger.json`
+
+**Verification:**
+```bash
+python -m pytest tests/python/ods/ -x -q
+```
+
 ## Group G5: Dogfood Exports
 
-### Train Q: Dogfood: fodt -> txt
+### Train U: Dogfood: fodt -> txt
 
 No FF .NET text write library. Prerequisite: Build FormatFactory.Text .NET library with write_text().
 
@@ -383,7 +455,7 @@ No FF .NET text write library. Prerequisite: Build FormatFactory.Text .NET libra
 - Export test passes using FF library
 - Dogfood status updated in poc-targets.yaml
 
-### Train R: Dogfood: fodt -> html
+### Train V: Dogfood: fodt -> html
 
 No FF .NET HTML write library. Prerequisite: Build FormatFactory.Html .NET library.
 
@@ -393,7 +465,7 @@ No FF .NET HTML write library. Prerequisite: Build FormatFactory.Html .NET libra
 
 ## Group G6: Package / Install Proof
 
-### Train S: Package Build + Install Proof
+### Train W: Package Build + Install Proof
 
 Rebuild wheels/sdists for any changed packages. Run installed-workflow smoke test from extracted wheel. Treat missing artifacts as failures, not skips.
 
@@ -412,7 +484,7 @@ python -m pytest tests/evidence/ -x -q
 
 ## Group G7: State / Memory / POC Matrix
 
-### Train T: State + Memory + POC Matrix Sync
+### Train X: State + Memory + POC Matrix Sync
 
 Update state/current-state.md, .supervisor/project-memory.md, and product-capability-matrix/poc-targets.yaml with sprint results.
 
@@ -428,7 +500,7 @@ Update state/current-state.md, .supervisor/project-memory.md, and product-capabi
 
 ## Group G8: Evidence + Supervisor Loop
 
-### Train U: Evidence Declaration + Supervisor Autonomous-Cycle
+### Train Y: Evidence Declaration + Supervisor Autonomous-Cycle
 
 Write evidence-declaration.yaml listing ALL work items. Run autonomous-cycle. Verify session-resume.md is regenerated. Validate `reports/r90/product-code-change-ledger.json` for any governed product source edit.
 
@@ -527,27 +599,32 @@ END OF SUPERVISOR-GENERATED MEGA-TRAIN EXECUTION PROMPT
 The following failures have been recorded in durable failure memory.
 Address escalated failures with priority.
 
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_execution_method_required_validator_failed (seen 152x, last: ff-toml-r120-20260625)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_source_diff_required_validator_failed (seen 121x, last: FORMAT-FACTORY-SPRINT-R118-20260625)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_idempotency_key_required_validator_failed (seen 86x, last: FORMAT-FACTORY-SPRINT-R118-20260625)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_execution_method_required_validator_failed (seen 158x, last: product-deepening-ledger-healing-20260626)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_source_diff_required_validator_failed (seen 127x, last: product-deepening-ledger-healing-20260626)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_idempotency_key_required_validator_failed (seen 92x, last: product-deepening-ledger-healing-20260626)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_claim_classification_validator_failed (seen 7x, last: IDEMPOTENT-SWARM-EXECUTION-20260615-E31FA98)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_route_decision_required_validator_failed (seen 120x, last: FORMAT-FACTORY-SPRINT-R118-20260625)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_spec_fact_refs_validator_failed (seen 203x, last: FORMAT-FACTORY-SPRINT-R118-20260625)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_route_decision_required_validator_failed (seen 126x, last: product-deepening-ledger-healing-20260626)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_spec_fact_refs_validator_failed (seen 209x, last: product-deepening-ledger-healing-20260626)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_governed_direct_execution_validator_failed (seen 4x, last: ff-toml-r120-20260625)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_monolith_detection_validator_failed (seen 308x, last: wsg-pipeline-investigation-001)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): exit_code_3_rework_required (seen 249x, last: wsg-pipeline-investigation-001)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_monolith_detection_validator_failed (seen 328x, last: ff-sprint-orc-backfill-b-20260626)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): exit_code_3_rework_required (seen 280x, last: ff-sprint-orc-backfill-b-20260626)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_source_architecture_failed (seen 19x, last: capability-convergence-iteration-3-20260624)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_skill_transcript_present_failed (seen 17x, last: ff-toml-r120-20260625)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_skill_transcript_present_failed (seen 23x, last: product-deepening-ledger-healing-20260626)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_qname_class_names_failed (seen 4x, last: FORMAT-FACTORY-SPRINT-R118-20260625)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_error_fallback_safety_failed (seen 7x, last: convergence-test-repair-20260624-999bb7)
-- ESCALATED FAILURE (GRADING_FALSE_POSITIVE): Item declared completed but no evidence found. Provide evidence at declared paths. (seen 11x, last: FORMAT-FACTORY-MACHINERY-REPAIR-20260624)
-- WARNING: 16 unresolved failures in failure memory
+- ESCALATED FAILURE (GRADING_FALSE_POSITIVE): Item declared completed but no evidence found. Provide evidence at declared paths. (seen 90x, last: FORMAT-FACTORY-LAYER-AUDIT-EXECUTE-20260626)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_forbidden_module_names_failed (seen 3x, last: PROD-GOVERNANCE-001)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_spec_fact_refs_in_sal_output_failed (seen 4x, last: FORMAT-FACTORY-PQ-EXECUTE-001)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_ledger_continuation_gate_failed (seen 6x, last: product-deepening-ledger-healing-20260626)
+- ESCALATED FAILURE (OVERCLAIM_FAILURE):  (seen 18x, last: ff-sprint-oracle-all-verified-20260626)
+- WARNING: 20 unresolved failures in failure memory
 
 
 
 ## Learning-Based Governance Advisories
 
-- **SPRINT_CLOSEOUT_PATTERN** (seen 79x): Sprint declaration validated PASS with sprint_executor_validate.py — *Action:* Continue using sprint_executor_validate.py --repair before closeout
+- **SPRINT_CLOSEOUT_PATTERN** (seen 190x): Sprint declaration validated PASS with sprint_executor_validate.py — *Action:* Continue using sprint_executor_validate.py --repair before closeout
+- **TEST_FAILURE** (seen 60x): Sprint ended with 1 test failures (0 new) — *Action:* Fix test failures before closing sprint; never carry forward new failures
 
 ## Spec-Parity Requirements (from skill registry)
 
