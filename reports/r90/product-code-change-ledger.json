@@ -25805,6 +25805,90 @@
         }
       ],
       "format": "FODT"
+    },
+    {
+      "entry_id": "PC-NETPBM-R260",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s253-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "NETPBM .NET",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.get_max_pixel_value"
+      ],
+      "api_symbols": [
+        "GetMaxPixelValue"
+      ],
+      "api_behavior": "GetMaxPixelValue() returns the maximum pixel value across all pixels as an int. Non-mutating. All-zero=0. After SetPixel returns that value. Result in [0, MaxValue]. Idempotent.",
+      "changed_files": [
+        "tests/net/netpbm/NetpbmR260GetMaxPixelValueDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR260GetMaxPixelValueDedicatedTests.cs"
+      ],
+      "test_count": 11,
+      "source_files": [
+        {
+          "path": "tests/net/netpbm/NetpbmR260GetMaxPixelValueDedicatedTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "NETPBM"
+    },
+    {
+      "entry_id": "PC-FODS-R272",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s253-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.set_cell_background"
+      ],
+      "api_symbols": [
+        "SetCellBackground"
+      ],
+      "api_behavior": "SetCellBackground(sheetName, row, col, colorName) sets the background color of a cell. Null/whitespace/nonexistent throws. Negative row/col throws. SheetCount unchanged. Set-twice no-exception. Cell value unaffected.",
+      "changed_files": [
+        "tests/net/fods/FodsR272SetCellBackgroundDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR272SetCellBackgroundDedicatedTests.cs"
+      ],
+      "test_count": 11,
+      "source_files": [
+        {
+          "path": "tests/net/fods/FodsR272SetCellBackgroundDedicatedTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "FODS"
+    },
+    {
+      "entry_id": "PC-FODT-R268",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s253-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.set_paragraph_text"
+      ],
+      "api_symbols": [
+        "SetParagraphText"
+      ],
+      "api_behavior": "SetParagraphText(index, text) replaces the text of a paragraph. Negative/OOB throws. ParagraphCount unchanged. GetParagraphText returns new text. Others unaffected. Set-empty allowed. Set-twice keeps final.",
+      "changed_files": [
+        "tests/net/fodt/FodtR268SetParagraphTextDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR268SetParagraphTextDedicatedTests.cs"
+      ],
+      "test_count": 9,
+      "source_files": [
+        {
+          "path": "tests/net/fodt/FodtR268SetParagraphTextDedicatedTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "FODT"
     }
   ],
   "total_entries": 1270,
