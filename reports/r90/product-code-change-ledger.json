@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s147-dotnet-deepening-20260628",
+  "latest_sprint": "ff-sprint-s148-dotnet-deepening-20260628",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -21656,6 +21656,48 @@
       "change_summary": "TsvR135GetColumnValuesDedicatedTests.cs: 10 dedicated tests for TsvDocument.GetColumnValues \u2014 negative index throws, first/second column values, empty doc=empty list, count matches rows, single-row, short rows return null, index beyond all rows=all nulls, dogfood Load->GetColumnValues, dogfood with headers data rows only.",
       "test_files": [
         "tests/net/tsv/TsvR135GetColumnValuesDedicatedTests.cs"
+      ],
+      "source_files": []
+    },
+    {
+      "entry_id": "PC-FODT-R158",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s148-dotnet-deepening-20260628",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.export_to_outline_json"
+      ],
+      "change_summary": "FodtR158ExportToOutlineJsonTests.cs: 10 tests for FodtDocument.ExportToOutlineJson \u2014 empty doc=[], single paragraph index=0/level=0/text match, single heading level>0, multiple entries count/index sequential, valid parseable JSON, dogfood all-have-text-key, dogfood heading level vs paragraph level.",
+      "test_files": [
+        "tests/net/fodt/FodtR158ExportToOutlineJsonTests.cs"
+      ],
+      "source_files": []
+    },
+    {
+      "entry_id": "PC-NDJSON-R142",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s148-dotnet-deepening-20260628",
+      "product": "NDJSON .NET",
+      "capability_refs": [
+        "commercial_net_products.NDJSON.dotnet_status.record_fields_trygetvalue"
+      ],
+      "change_summary": "NdjsonR142RecordFieldsAndTryGetValueTests.cs: 10 dedicated tests for NdjsonRecord.Fields/Keys/TryGetValue/RawElement \u2014 non-object returns empty/false; object fields/keys correct; TryGetValue present=true/absent=false/value correct; RawElement kind; dogfood TypedRecords->Fields->Keys pipeline; dogfood TryGetValue chain.",
+      "test_files": [
+        "tests/net/ndjson/NdjsonR142RecordFieldsAndTryGetValueTests.cs"
+      ],
+      "source_files": []
+    },
+    {
+      "entry_id": "PC-CSV-R137",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s148-dotnet-deepening-20260628",
+      "product": "CSV .NET",
+      "capability_refs": [
+        "commercial_net_products.CSV.dotnet_status.get_column_dedicated"
+      ],
+      "change_summary": "CsvR137GetColumnDedicatedTests.cs: 10 dedicated tests for CsvDocument.GetColumn(int) and GetColumn(string) \u2014 negative/no-headers/missing-header guards; first/second col values; count matches rows; original unchanged; by-name values; dogfood Load->GetColumn; dogfood int and string return same values.",
+      "test_files": [
+        "tests/net/csv/CsvR137GetColumnDedicatedTests.cs"
       ],
       "source_files": []
     }
