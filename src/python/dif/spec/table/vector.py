@@ -8,17 +8,17 @@ Canonical class: Vector
 Facade: DifVector
 """
 from __future__ import annotations
-from typing import Any
+from typing import Any, ClassVar
 
 
 class Vector:
     """Canonical spec-shaped class for dif:vector (row or column vector)."""
 
-    spec_qname = "dif:vector"
-    spec_fact_ref = "FACT-DIF-002"
-    namespace_uri = "urn:format:dif:1.0"
-    local_name = "vector"
-    facade_names = ["DifVector"]
+    spec_qname: ClassVar[str] = "dif:vector"
+    spec_fact_ref: ClassVar[str] = "FACT-DIF-002"
+    namespace_uri: ClassVar[str] = "urn:format:dif:1.0"
+    local_name: ClassVar[str] = "vector"
+    facade_names: ClassVar[list] = ["DifVector"]
 
     def __init__(self, data: list[Any]) -> None:
         self._data = list(data)

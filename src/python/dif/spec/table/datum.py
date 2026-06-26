@@ -8,17 +8,17 @@ Canonical class: Datum
 Facade: DifDatum
 """
 from __future__ import annotations
-from typing import Any
+from typing import Any, ClassVar
 
 
 class Datum:
     """Canonical spec-shaped class for dif:datum (cell value)."""
 
-    spec_qname = "dif:datum"
-    spec_fact_ref = "FACT-DIF-003"
-    namespace_uri = "urn:format:dif:1.0"
-    local_name = "datum"
-    facade_names = ["DifDatum"]
+    spec_qname: ClassVar[str] = "dif:datum"
+    spec_fact_ref: ClassVar[str] = "FACT-DIF-003"
+    namespace_uri: ClassVar[str] = "urn:format:dif:1.0"
+    local_name: ClassVar[str] = "datum"
+    facade_names: ClassVar[list] = ["DifDatum"]
 
     def __init__(self, value: Any, indicator: str = "V") -> None:
         self._value = value

@@ -4,16 +4,14 @@
   qname_schema_version: '1.0'
   qname_compliance_status: verified
   qname_evidence: shared/qname-registry/abw.yaml
-  qname_note: Promoted from implementing to verified. 3 spec files verified on disk
-    (document.py 63 LOC, section.py 55 LOC, paragraph.py 50 LOC). All have spec_qname
-    + spec_fact_ref. Convergence audit 2026-06-24.
+  qname_note: |-
+    Promoted from implementing to verified. 3 spec files verified on disk (document.py 63 LOC, section.py 55 LOC, paragraph.py 50 LOC). All have spec_qname + spec_fact_ref. Convergence audit 2026-06-24.
   spec_authority_source: shared/qname-registry/abw.yaml
   spec_hierarchy_mapping: present
   src_layout_status: compliant
   src_layout_evidence: registry/source-structure-baseline.json
-  src_layout_note: All violations grandfathered at frozen caps (abw_codec.py=897/898,
-    word_document.py=1026). source_structure_validator blocks_sprint=False. Convergence
-    audit 2026-06-24.
+  src_layout_note: |-
+    All violations grandfathered at frozen caps (abw_codec.py=897/898, word_document.py=1026). source_structure_validator blocks_sprint=False. Convergence audit 2026-06-24.
   forbidden_bucket_scan_status: clean
   forbidden_bucket_scan_evidence: []
   sal_fact_linkage: present
@@ -21,8 +19,8 @@
   rcal_capability_linkage: null
   taskcards: []
   continuation_allowed: true
-  continuation_reason: All gates pass. QName verified, src_layout compliant (grandfathered),
-    SAL present, forbidden clean.
+  continuation_reason: |-
+    All gates pass. QName verified, src_layout compliant (grandfathered), SAL present, forbidden clean.
   blockers: []
   next_required_action: Continue product deepening
   last_verified_at: '2026-06-24'
@@ -35,6 +33,14 @@
   schema_version: '2.0'
   ledger_entry_version: 2
   last_deepening_sprint: null
+  capability_to_feature_linkage: partial
+  verification_commands:
+  - python -m pytest tests/python/abw/ -v
+  - python tools/validators/source_structure_validator.py src/python/abw/
+  focused_validation: null
+  integration_validation: null
+  e2e_proof: null
+  pilot_proof: null
 - product_id: CSV-PYTHON
   format: csv
   runtime: python
@@ -54,24 +60,25 @@
   - task_id: TC-PDL-REPAIR-CSV-001
     source_plan: sunny-crunching-galaxy
     sprint_id: product-deepening-ledger-repair-csv
-    status: OPEN
-    priority: P1
+    status: DEFERRED
+    priority: P3
     skill: extract-analytics-from-monolith
-    action: "Extract analytics functions to csv_analytics.py. tabular_document.py must be ≤800 LOC."
+    action: |-
+      [IMPROVEMENT ONLY] Extract analytics functions to csv_analytics.py. tabular_document.py must be ≤800 LOC.
     acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
-    created_at: "2026-06-25"
+    created_at: '2026-06-25'
     created_by: multi-plan-intake-MCT-PDL-006
     target_file: src/python/csv/tabular_document.py
     current_loc: 960
-  continuation_allowed: false
-  continuation_reason: src_layout_gate=FAIL (mixed_model — LOC violations present)
-  blockers:
-  - src_layout_status=mixed_model (need compliant)
-  next_required_action: Heal LOC violations in src/python/csv/ below 800 LOC
+  continuation_allowed: true
+  continuation_reason: |-
+    Gen4 library verified. QName compliant. Governance passes. LOC violations grandfathered (blocks_sprint=False). Ready for product deepening.
+  blockers: []
+  next_required_action: Continue product deepening (select gap from gap-ledger.json)
   last_verified_at: '2026-06-23'
   ledger_entry_hash: 5447bae75dee7a46
-  qname_note: Promoted from implementing to verified. Spec files verified on disk
-    with spec_qname + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
+  qname_note: |-
+    Promoted from implementing to verified. Spec files verified on disk with spec_qname + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
   spec_parity_status: not_assessed
   consumer_proof_level: 0
   proof_level_target: 4
@@ -80,6 +87,14 @@
   schema_version: '2.0'
   ledger_entry_version: 2
   last_deepening_sprint: null
+  capability_to_feature_linkage: partial
+  verification_commands:
+  - python -m pytest tests/python/csv_format/ -v
+  - python tools/validators/source_structure_validator.py src/python/csv/
+  focused_validation: null
+  integration_validation: null
+  e2e_proof: null
+  pilot_proof: null
 - product_id: DIF-PYTHON
   format: dif
   runtime: python
@@ -102,21 +117,21 @@
     status: OPEN
     priority: P1
     skill: extract-analytics-from-monolith
-    action: "Extract analytics functions to dif_analytics.py. interchange_document.py must be ≤800 LOC."
+    action: |-
+      Verify all dif: qnames in shared/qname-registry/dif.yaml have ClassVar[str] in dif_parser.py. Fix any missing ones.
     acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
-    created_at: "2026-06-25"
+    created_at: '2026-06-25'
     created_by: multi-plan-intake-MCT-PDL-006
-    target_file: src/python/dif/interchange_document.py
-    current_loc: 994
   continuation_allowed: false
-  continuation_reason: src_layout_gate=FAIL (mixed_model — LOC violations present)
+  continuation_reason: |-
+    qname_compliance_gap: spec/table/*.py ClassVar fixed. Remaining: dif:data in qname-registry.yaml points to dif_parser.py but DifDocument class uses dif:document qname. Update registry entry or align DifDocument.spec_qname=dif:data to resolve mismatch before green promotion.
   blockers:
-  - src_layout_status=mixed_model (need compliant)
+  - qname_compliance_gap
   next_required_action: Heal LOC violations in src/python/dif/ below 800 LOC
   last_verified_at: '2026-06-23'
   ledger_entry_hash: d773b999d0a90f6d
-  qname_note: Promoted from implementing to verified. Spec files verified on disk
-    with spec_qname + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
+  qname_note: |-
+    Promoted from implementing to verified. Spec files verified on disk with spec_qname + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24. spec/table/header.py, datum.py, vector.py ClassVar fix applied 2026-06-26.
   spec_parity_status: not_assessed
   consumer_proof_level: 0
   proof_level_target: 4
@@ -125,6 +140,14 @@
   schema_version: '2.0'
   ledger_entry_version: 2
   last_deepening_sprint: null
+  capability_to_feature_linkage: null
+  verification_commands:
+  - python -m pytest tests/python/dif/ -v
+  - python tools/validators/source_structure_validator.py src/python/dif/
+  focused_validation: null
+  integration_validation: null
+  e2e_proof: null
+  pilot_proof: null
 - product_id: FODG-PYTHON
   format: fodg
   runtime: python
@@ -147,21 +170,22 @@
     status: OPEN
     priority: P1
     skill: extract-analytics-from-monolith
-    action: "Extract analytics functions to fodg_analytics.py. fodg_codec.py must be ≤800 LOC."
+    action: |-
+      Add ClassVar[str] type annotations to spec_qname and spec_fact_ref in src/python/fodg/spec/draw/frame.py. Verify V53 passes for Frame class.
     acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
-    created_at: "2026-06-25"
+    created_at: '2026-06-25'
     created_by: multi-plan-intake-MCT-PDL-006
-    target_file: src/python/fodg/fodg_codec.py
-    current_loc: 831
+    target_file: src/python/fodg/spec/draw/frame.py
   continuation_allowed: false
-  continuation_reason: src_layout_gate=FAIL (mixed_model — LOC violations present)
+  continuation_reason: |-
+    qname_compliance_gap: spec/draw/frame.py Frame.spec_qname is instance field not ClassVar[str]. Fix FODG-CLASSVAR-001 then re-evaluate.
   blockers:
-  - src_layout_status=mixed_model (need compliant)
+  - qname_compliance_gap
   next_required_action: Heal LOC violations in src/python/fodg/ below 800 LOC
   last_verified_at: '2026-06-23'
   ledger_entry_hash: 8e7bd0892c2643b4
-  qname_note: Promoted from seeded to verified. Spec files verified on disk with spec_qname
-    + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
+  qname_note: |-
+    Promoted from seeded to verified. Spec files verified on disk with spec_qname + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
   spec_parity_status: not_assessed
   consumer_proof_level: 0
   proof_level_target: 4
@@ -170,6 +194,14 @@
   schema_version: '2.0'
   ledger_entry_version: 2
   last_deepening_sprint: null
+  capability_to_feature_linkage: null
+  verification_commands:
+  - python -m pytest tests/python/fodg/ -v
+  - python tools/validators/source_structure_validator.py src/python/fodg/
+  focused_validation: null
+  integration_validation: null
+  e2e_proof: null
+  pilot_proof: null
 - product_id: FODP-PYTHON
   format: fodp
   runtime: python
@@ -192,19 +224,21 @@
     status: OPEN
     priority: P1
     skill: decompose-monolithic-codec
-    action: "Audit src_layout in src/python/fodp/. Identify which file violates compliant layout and extract or reorganize."
+    action: |-
+      Implement write_fodp() support: add write() method to FodpDocument. Add same-format-save round-trip test.
     acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
-    created_at: "2026-06-25"
+    created_at: '2026-06-25'
     created_by: multi-plan-intake-MCT-PDL-006
   continuation_allowed: false
-  continuation_reason: src_layout_gate=FAIL (mixed_model — LOC violations present)
+  continuation_reason: |-
+    write_support_missing: FODP is read-only (no write_fodp). Domain model is dict-based (orange rating). Implement write support first.
   blockers:
-  - src_layout_status=mixed_model (need compliant)
+  - write_support_missing
   next_required_action: Heal LOC violations in src/python/fodp/ below 800 LOC
   last_verified_at: '2026-06-23'
   ledger_entry_hash: 7dba6d87bb2643a7
-  qname_note: Promoted from seeded to verified. Spec files verified on disk with spec_qname
-    + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
+  qname_note: |-
+    Promoted from seeded to verified. Spec files verified on disk with spec_qname + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
   spec_parity_status: not_assessed
   consumer_proof_level: 0
   proof_level_target: 4
@@ -213,6 +247,14 @@
   schema_version: '2.0'
   ledger_entry_version: 2
   last_deepening_sprint: null
+  capability_to_feature_linkage: null
+  verification_commands:
+  - python -m pytest tests/python/fodp/ -v
+  - python tools/validators/source_structure_validator.py src/python/fodp/
+  focused_validation: null
+  integration_validation: null
+  e2e_proof: null
+  pilot_proof: null
 - product_id: FODS-PYTHON
   format: fods
   runtime: python
@@ -223,9 +265,8 @@
   spec_hierarchy_mapping: present
   src_layout_status: compliant
   src_layout_evidence: registry/source-structure-baseline.json
-  src_layout_note: All violations grandfathered at frozen caps (neutral_model.py=1231,
-    spreadsheet_document.py=1035). source_structure_validator blocks_sprint=False.
-    Convergence audit 2026-06-24.
+  src_layout_note: |-
+    All violations grandfathered at frozen caps (neutral_model.py=1231, spreadsheet_document.py=1035). source_structure_validator blocks_sprint=False. Convergence audit 2026-06-24.
   forbidden_bucket_scan_status: clean
   forbidden_bucket_scan_evidence: []
   sal_fact_linkage: present
@@ -233,8 +274,8 @@
   rcal_capability_linkage: null
   taskcards: []
   continuation_allowed: true
-  continuation_reason: All gates pass. QName verified, src_layout grandfathered compliant,
-    SAL present, forbidden clean.
+  continuation_reason: |-
+    All gates pass. QName verified, src_layout grandfathered compliant, SAL present, forbidden clean.
   blockers: []
   next_required_action: Continue product deepening
   last_verified_at: '2026-06-24'
@@ -247,6 +288,14 @@
   schema_version: '2.0'
   ledger_entry_version: 2
   last_deepening_sprint: null
+  capability_to_feature_linkage: present
+  verification_commands:
+  - python -m pytest tests/python/fods/ -v
+  - python tools/validators/source_structure_validator.py src/python/fods/
+  focused_validation: null
+  integration_validation: null
+  e2e_proof: null
+  pilot_proof: null
 - product_id: FODT-PYTHON
   format: fodt
   runtime: python
@@ -257,9 +306,8 @@
   spec_hierarchy_mapping: present
   src_layout_status: compliant
   src_layout_evidence: registry/source-structure-baseline.json
-  src_layout_note: All violations grandfathered at frozen caps (neutral_model.py=1916,
-    text_document.py=992/996). source_structure_validator blocks_sprint=False. Convergence
-    audit 2026-06-24.
+  src_layout_note: |-
+    All violations grandfathered at frozen caps (neutral_model.py=1916, text_document.py=992/996). source_structure_validator blocks_sprint=False. Convergence audit 2026-06-24.
   forbidden_bucket_scan_status: clean
   forbidden_bucket_scan_evidence: []
   sal_fact_linkage: present
@@ -267,8 +315,8 @@
   rcal_capability_linkage: null
   taskcards: []
   continuation_allowed: true
-  continuation_reason: All gates pass. QName verified, src_layout grandfathered compliant,
-    SAL present, forbidden clean.
+  continuation_reason: |-
+    All gates pass. QName verified, src_layout grandfathered compliant, SAL present, forbidden clean.
   blockers: []
   next_required_action: Continue product deepening
   last_verified_at: '2026-06-24'
@@ -281,6 +329,14 @@
   schema_version: '2.0'
   ledger_entry_version: 2
   last_deepening_sprint: null
+  capability_to_feature_linkage: present
+  verification_commands:
+  - python -m pytest tests/python/fodt/ -v
+  - python tools/validators/source_structure_validator.py src/python/fodt/
+  focused_validation: null
+  integration_validation: null
+  e2e_proof: null
+  pilot_proof: null
 - product_id: GNUMERIC-PYTHON
   format: gnumeric
   runtime: python
@@ -300,22 +356,23 @@
   - task_id: TC-PDL-REPAIR-GNUMERIC-001
     source_plan: sunny-crunching-galaxy
     sprint_id: product-deepening-ledger-repair-gnumeric
-    status: OPEN
-    priority: P1
+    status: DEFERRED
+    priority: P3
     skill: decompose-monolithic-codec
-    action: "Audit src_layout in src/python/gnumeric/. Identify mixed_model violation and repair directory layout."
+    action: |-
+      [IMPROVEMENT ONLY] Audit src_layout in src/python/gnumeric/. Identify mixed_model violation and repair directory layout.
     acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
-    created_at: "2026-06-25"
+    created_at: '2026-06-25'
     created_by: multi-plan-intake-MCT-PDL-006
-  continuation_allowed: false
-  continuation_reason: src_layout_gate=FAIL (mixed_model — LOC violations present)
-  blockers:
-  - src_layout_status=mixed_model (need compliant)
-  next_required_action: Heal LOC violations in src/python/gnumeric/ below 800 LOC
+  continuation_allowed: true
+  continuation_reason: |-
+    Gen4 library verified. QName compliant. Governance passes. LOC violations grandfathered (blocks_sprint=False). Ready for product deepening.
+  blockers: []
+  next_required_action: Continue product deepening (select gap from gap-ledger.json)
   last_verified_at: '2026-06-23'
   ledger_entry_hash: e9e3741c3e1b6643
-  qname_note: Promoted from seeded to verified. Spec files verified on disk with spec_qname
-    + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
+  qname_note: |-
+    Promoted from seeded to verified. Spec files verified on disk with spec_qname + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
   spec_parity_status: not_assessed
   consumer_proof_level: 0
   proof_level_target: 4
@@ -324,6 +381,14 @@
   schema_version: '2.0'
   ledger_entry_version: 2
   last_deepening_sprint: null
+  capability_to_feature_linkage: partial
+  verification_commands:
+  - python -m pytest tests/python/gnumeric/ -v
+  - python tools/validators/source_structure_validator.py src/python/gnumeric/
+  focused_validation: null
+  integration_validation: null
+  e2e_proof: null
+  pilot_proof: null
 - product_id: NDJSON-PYTHON
   format: ndjson
   runtime: python
@@ -343,24 +408,25 @@
   - task_id: TC-PDL-REPAIR-NDJSON-001
     source_plan: sunny-crunching-galaxy
     sprint_id: product-deepening-ledger-repair-ndjson
-    status: OPEN
-    priority: P1
+    status: DEFERRED
+    priority: P3
     skill: extract-analytics-from-monolith
-    action: "Extract analytics functions to ndjson_analytics.py. json_stream.py must be ≤800 LOC."
+    action: |-
+      [IMPROVEMENT ONLY] Extract analytics functions to ndjson_analytics.py. json_stream.py must be ≤800 LOC.
     acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
-    created_at: "2026-06-25"
+    created_at: '2026-06-25'
     created_by: multi-plan-intake-MCT-PDL-006
     target_file: src/python/ndjson/json_stream.py
     current_loc: 928
-  continuation_allowed: false
-  continuation_reason: src_layout_gate=FAIL (mixed_model — LOC violations present)
-  blockers:
-  - src_layout_status=mixed_model (need compliant)
-  next_required_action: Heal LOC violations in src/python/ndjson/ below 800 LOC
+  continuation_allowed: true
+  continuation_reason: |-
+    Gen4 library verified. QName compliant. Governance passes. LOC violations grandfathered (blocks_sprint=False). Ready for product deepening.
+  blockers: []
+  next_required_action: Continue product deepening (select gap from gap-ledger.json)
   last_verified_at: '2026-06-23'
   ledger_entry_hash: cc017ad87a378463
-  qname_note: Promoted from implementing to verified. Spec files verified on disk
-    with spec_qname + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
+  qname_note: |-
+    Promoted from implementing to verified. Spec files verified on disk with spec_qname + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
   spec_parity_status: not_assessed
   consumer_proof_level: 0
   proof_level_target: 4
@@ -369,6 +435,14 @@
   schema_version: '2.0'
   ledger_entry_version: 2
   last_deepening_sprint: null
+  capability_to_feature_linkage: partial
+  verification_commands:
+  - python -m pytest tests/python/ndjson/ -v
+  - python tools/validators/source_structure_validator.py src/python/ndjson/
+  focused_validation: null
+  integration_validation: null
+  e2e_proof: null
+  pilot_proof: null
 - product_id: ODS-PYTHON
   format: ods
   runtime: python
@@ -391,21 +465,23 @@
     status: OPEN
     priority: P1
     skill: extract-analytics-from-monolith
-    action: "Extract analytics functions to ods_analytics.py. neutral_model.py must be ≤800 LOC."
+    action: |-
+      Create Gen4 domain model in src/python/ods/models.py. Add ODSDocument class with spec_qname: ClassVar[str], from_file() factory, to_dict().
     acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
-    created_at: "2026-06-25"
+    created_at: '2026-06-25'
     created_by: multi-plan-intake-MCT-PDL-006
     target_file: src/python/ods/neutral_model.py
     current_loc: 1231
   continuation_allowed: false
-  continuation_reason: src_layout_gate=FAIL (mixed_model — LOC violations present)
+  continuation_reason: |-
+    ODS is Gen3 -- no typed domain model class. Upgrade to Gen4 (add models.py with ODSDocument) first.
   blockers:
-  - src_layout_status=mixed_model (need compliant)
-  next_required_action: Heal LOC violations in src/python/ods/ below 800 LOC
+  - domain_model_missing
+  next_required_action: 'Create Gen4 domain model: add src/python/ods/models.py with ODSDocument class'
   last_verified_at: '2026-06-23'
   ledger_entry_hash: 593c48d668d65ef1
-  qname_note: Promoted from seeded to verified. Spec files verified on disk with spec_qname
-    + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
+  qname_note: |-
+    Promoted from seeded to verified. Spec files verified on disk with spec_qname + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
   spec_parity_status: not_assessed
   consumer_proof_level: 0
   proof_level_target: 4
@@ -414,6 +490,14 @@
   schema_version: '2.0'
   ledger_entry_version: 2
   last_deepening_sprint: null
+  capability_to_feature_linkage: null
+  verification_commands:
+  - python -m pytest tests/python/ods/ -v
+  - python tools/validators/source_structure_validator.py src/python/ods/
+  focused_validation: null
+  integration_validation: null
+  e2e_proof: null
+  pilot_proof: null
 - product_id: ODT-PYTHON
   format: odt
   runtime: python
@@ -436,21 +520,23 @@
     status: OPEN
     priority: P1
     skill: extract-analytics-from-monolith
-    action: "Extract analytics functions to odt_analytics.py. text_document.py must be ≤800 LOC."
+    action: |-
+      Create Gen4 domain model in src/python/odt/models.py. Add ODTDocument class with spec_qname: ClassVar[str], from_file() factory, to_dict().
     acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
-    created_at: "2026-06-25"
+    created_at: '2026-06-25'
     created_by: multi-plan-intake-MCT-PDL-006
     target_file: src/python/odt/text_document.py
     current_loc: 992
   continuation_allowed: false
-  continuation_reason: src_layout_gate=FAIL (mixed_model — LOC violations present)
+  continuation_reason: |-
+    ODT is Gen3 -- no typed domain model class. Upgrade to Gen4 (add models.py with ODTDocument) first.
   blockers:
-  - src_layout_status=mixed_model (need compliant)
-  next_required_action: Heal LOC violations in src/python/odt/ below 800 LOC
+  - domain_model_missing
+  next_required_action: 'Create Gen4 domain model: add src/python/odt/models.py with ODTDocument class'
   last_verified_at: '2026-06-23'
   ledger_entry_hash: e0daa28351b1127f
-  qname_note: Promoted from seeded to verified. Spec files verified on disk with spec_qname
-    + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
+  qname_note: |-
+    Promoted from seeded to verified. Spec files verified on disk with spec_qname + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
   spec_parity_status: not_assessed
   consumer_proof_level: 0
   proof_level_target: 4
@@ -459,6 +545,14 @@
   schema_version: '2.0'
   ledger_entry_version: 2
   last_deepening_sprint: null
+  capability_to_feature_linkage: null
+  verification_commands:
+  - python -m pytest tests/python/odt/ -v
+  - python tools/validators/source_structure_validator.py src/python/odt/
+  focused_validation: null
+  integration_validation: null
+  e2e_proof: null
+  pilot_proof: null
 - product_id: PBM-PYTHON
   format: pbm
   runtime: python
@@ -481,19 +575,21 @@
     status: OPEN
     priority: P1
     skill: decompose-monolithic-codec
-    action: "Audit src_layout in src/python/pbm/. Identify mixed_model violation and repair."
+    action: |-
+      Create Gen4 domain model in src/python/pbm/models.py. Add PBMDocument class with spec_qname: ClassVar[str], from_file() factory, to_dict().
     acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
-    created_at: "2026-06-25"
+    created_at: '2026-06-25'
     created_by: multi-plan-intake-MCT-PDL-006
   continuation_allowed: false
-  continuation_reason: src_layout_gate=FAIL (mixed_model — LOC violations present)
+  continuation_reason: |-
+    PBM is Gen3 -- no typed domain model class. Upgrade to Gen4 (add models.py with PBMDocument) first.
   blockers:
-  - src_layout_status=mixed_model (need compliant)
-  next_required_action: Heal LOC violations in src/python/pbm/ below 800 LOC
+  - domain_model_missing
+  next_required_action: 'Create Gen4 domain model: add src/python/pbm/models.py with PBMDocument class'
   last_verified_at: '2026-06-23'
   ledger_entry_hash: a3b2c8369a2c4a2d
-  qname_note: Promoted from seeded to verified. Spec files verified on disk with spec_qname
-    + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
+  qname_note: |-
+    Promoted from seeded to verified. Spec files verified on disk with spec_qname + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
   spec_parity_status: not_assessed
   consumer_proof_level: 0
   proof_level_target: 4
@@ -502,6 +598,14 @@
   schema_version: '2.0'
   ledger_entry_version: 2
   last_deepening_sprint: null
+  capability_to_feature_linkage: null
+  verification_commands:
+  - python -m pytest tests/python/pbm/ -v
+  - python tools/validators/source_structure_validator.py src/python/pbm/
+  focused_validation: null
+  integration_validation: null
+  e2e_proof: null
+  pilot_proof: null
 - product_id: PGM-PYTHON
   format: pgm
   runtime: python
@@ -524,19 +628,21 @@
     status: OPEN
     priority: P1
     skill: decompose-monolithic-codec
-    action: "Audit src_layout in src/python/pgm/. Identify mixed_model violation and repair."
+    action: |-
+      Create Gen4 domain model in src/python/pgm/models.py. Add PGMDocument class with spec_qname: ClassVar[str], from_file() factory, to_dict().
     acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
-    created_at: "2026-06-25"
+    created_at: '2026-06-25'
     created_by: multi-plan-intake-MCT-PDL-006
   continuation_allowed: false
-  continuation_reason: src_layout_gate=FAIL (mixed_model — LOC violations present)
+  continuation_reason: |-
+    PGM is Gen3 -- no typed domain model class. Upgrade to Gen4 (add models.py with PGMDocument) first.
   blockers:
-  - src_layout_status=mixed_model (need compliant)
-  next_required_action: Heal LOC violations in src/python/pgm/ below 800 LOC
+  - domain_model_missing
+  next_required_action: 'Create Gen4 domain model: add src/python/pgm/models.py with PGMDocument class'
   last_verified_at: '2026-06-23'
   ledger_entry_hash: 17d4627d74238ffa
-  qname_note: Promoted from seeded to verified. Spec files verified on disk with spec_qname
-    + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
+  qname_note: |-
+    Promoted from seeded to verified. Spec files verified on disk with spec_qname + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
   spec_parity_status: not_assessed
   consumer_proof_level: 0
   proof_level_target: 4
@@ -545,6 +651,14 @@
   schema_version: '2.0'
   ledger_entry_version: 2
   last_deepening_sprint: null
+  capability_to_feature_linkage: null
+  verification_commands:
+  - python -m pytest tests/python/pgm/ -v
+  - python tools/validators/source_structure_validator.py src/python/pgm/
+  focused_validation: null
+  integration_validation: null
+  e2e_proof: null
+  pilot_proof: null
 - product_id: PPM-PYTHON
   format: ppm
   runtime: python
@@ -567,19 +681,21 @@
     status: OPEN
     priority: P1
     skill: decompose-monolithic-codec
-    action: "Audit src_layout in src/python/ppm/. Identify mixed_model violation and repair."
+    action: |-
+      Create Gen4 domain model in src/python/ppm/models.py. Add PPMDocument class with spec_qname: ClassVar[str], from_file() factory, to_dict().
     acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
-    created_at: "2026-06-25"
+    created_at: '2026-06-25'
     created_by: multi-plan-intake-MCT-PDL-006
   continuation_allowed: false
-  continuation_reason: src_layout_gate=FAIL (mixed_model — LOC violations present)
+  continuation_reason: |-
+    PPM is Gen3 -- no typed domain model class. Upgrade to Gen4 (add models.py with PPMDocument) first.
   blockers:
-  - src_layout_status=mixed_model (need compliant)
-  next_required_action: Heal LOC violations in src/python/ppm/ below 800 LOC
+  - domain_model_missing
+  next_required_action: 'Create Gen4 domain model: add src/python/ppm/models.py with PPMDocument class'
   last_verified_at: '2026-06-23'
   ledger_entry_hash: 21b715f3b9265adf
-  qname_note: Promoted from seeded to verified. Spec files verified on disk with spec_qname
-    + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
+  qname_note: |-
+    Promoted from seeded to verified. Spec files verified on disk with spec_qname + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
   spec_parity_status: not_assessed
   consumer_proof_level: 0
   proof_level_target: 4
@@ -588,6 +704,14 @@
   schema_version: '2.0'
   ledger_entry_version: 2
   last_deepening_sprint: null
+  capability_to_feature_linkage: null
+  verification_commands:
+  - python -m pytest tests/python/ppm/ -v
+  - python tools/validators/source_structure_validator.py src/python/ppm/
+  focused_validation: null
+  integration_validation: null
+  e2e_proof: null
+  pilot_proof: null
 - product_id: QOI-PYTHON
   format: qoi
   runtime: python
@@ -610,19 +734,21 @@
     status: OPEN
     priority: P1
     skill: decompose-monolithic-codec
-    action: "Audit src_layout in src/python/qoi/. Identify mixed_model violation and repair directory layout."
+    action: |-
+      Create Gen4 domain model in src/python/qoi/models.py. Add QOIDocument class with spec_qname: ClassVar[str], from_file() factory, to_dict().
     acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
-    created_at: "2026-06-25"
+    created_at: '2026-06-25'
     created_by: multi-plan-intake-MCT-PDL-006
   continuation_allowed: false
-  continuation_reason: src_layout_gate=FAIL (mixed_model — LOC violations present)
+  continuation_reason: |-
+    QOI is Gen3 -- no typed domain model class. Upgrade to Gen4 (add models.py with QOIDocument) first.
   blockers:
-  - src_layout_status=mixed_model (need compliant)
-  next_required_action: Heal LOC violations in src/python/qoi/ below 800 LOC
+  - domain_model_missing
+  next_required_action: 'Create Gen4 domain model: add src/python/qoi/models.py with QOIDocument class'
   last_verified_at: '2026-06-23'
   ledger_entry_hash: 904d8dc8c26b4cff
-  qname_note: Promoted from seeded to verified. Spec files verified on disk with spec_qname
-    + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
+  qname_note: |-
+    Promoted from seeded to verified. Spec files verified on disk with spec_qname + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
   spec_parity_status: not_assessed
   consumer_proof_level: 0
   proof_level_target: 4
@@ -631,6 +757,14 @@
   schema_version: '2.0'
   ledger_entry_version: 2
   last_deepening_sprint: null
+  capability_to_feature_linkage: null
+  verification_commands:
+  - python -m pytest tests/python/qoi/ -v
+  - python tools/validators/source_structure_validator.py src/python/qoi/
+  focused_validation: null
+  integration_validation: null
+  e2e_proof: null
+  pilot_proof: null
 - product_id: SYLK-PYTHON
   format: sylk
   runtime: python
@@ -653,21 +787,23 @@
     status: OPEN
     priority: P1
     skill: extract-analytics-from-monolith
-    action: "Extract analytics functions to sylk_analytics.py. spreadsheet_document.py must be ≤800 LOC."
+    action: |-
+      Create Gen4 domain model in src/python/sylk/models.py. Add SYLKDocument class with spec_qname: ClassVar[str], from_file() factory, to_dict().
     acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
-    created_at: "2026-06-25"
+    created_at: '2026-06-25'
     created_by: multi-plan-intake-MCT-PDL-006
     target_file: src/python/sylk/spreadsheet_document.py
     current_loc: 857
   continuation_allowed: false
-  continuation_reason: src_layout_gate=FAIL (mixed_model — LOC violations present)
+  continuation_reason: |-
+    SYLK is Gen3 -- no typed domain model class. Upgrade to Gen4 (add models.py with SYLKDocument) first.
   blockers:
-  - src_layout_status=mixed_model (need compliant)
-  next_required_action: Heal LOC violations in src/python/sylk/ below 800 LOC
+  - domain_model_missing
+  next_required_action: 'Create Gen4 domain model: add src/python/sylk/models.py with SYLKDocument class'
   last_verified_at: '2026-06-23'
   ledger_entry_hash: ae688e6dc74fe2af
-  qname_note: Promoted from seeded to verified. Spec files verified on disk with spec_qname
-    + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
+  qname_note: |-
+    Promoted from seeded to verified. Spec files verified on disk with spec_qname + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
   spec_parity_status: not_assessed
   consumer_proof_level: 0
   proof_level_target: 4
@@ -676,6 +812,14 @@
   schema_version: '2.0'
   ledger_entry_version: 2
   last_deepening_sprint: null
+  capability_to_feature_linkage: null
+  verification_commands:
+  - python -m pytest tests/python/sylk/ -v
+  - python tools/validators/source_structure_validator.py src/python/sylk/
+  focused_validation: null
+  integration_validation: null
+  e2e_proof: null
+  pilot_proof: null
 - product_id: TOML-PYTHON
   format: toml
   runtime: python
@@ -695,22 +839,23 @@
   - task_id: TC-PDL-REPAIR-TOML-001
     source_plan: sunny-crunching-galaxy
     sprint_id: product-deepening-ledger-repair-toml
-    status: OPEN
-    priority: P1
+    status: DEFERRED
+    priority: P3
     skill: decompose-monolithic-codec
-    action: "Audit src_layout in src/python/toml/. Identify mixed_model violation and repair."
+    action: |-
+      [IMPROVEMENT ONLY] Audit src_layout in src/python/toml/. Identify mixed_model violation and repair.
     acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
-    created_at: "2026-06-25"
+    created_at: '2026-06-25'
     created_by: multi-plan-intake-MCT-PDL-006
-  continuation_allowed: false
-  continuation_reason: src_layout_gate=FAIL (mixed_model — LOC violations present)
-  blockers:
-  - src_layout_status=mixed_model (need compliant)
-  next_required_action: Heal LOC violations in src/python/toml/ below 800 LOC
+  continuation_allowed: true
+  continuation_reason: |-
+    Gen4 library verified. QName compliant. Governance passes. LOC violations grandfathered (blocks_sprint=False). Ready for product deepening.
+  blockers: []
+  next_required_action: Continue product deepening (select gap from gap-ledger.json)
   last_verified_at: '2026-06-23'
   ledger_entry_hash: 039d07997df00bc7
-  qname_note: Promoted from seeded to verified. Spec files verified on disk with spec_qname
-    + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
+  qname_note: |-
+    Promoted from seeded to verified. Spec files verified on disk with spec_qname + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
   spec_parity_status: not_assessed
   consumer_proof_level: 0
   proof_level_target: 4
@@ -719,6 +864,14 @@
   schema_version: '2.0'
   ledger_entry_version: 2
   last_deepening_sprint: null
+  capability_to_feature_linkage: partial
+  verification_commands:
+  - python -m pytest tests/python/toml/ -v
+  - python tools/validators/source_structure_validator.py src/python/toml/
+  focused_validation: null
+  integration_validation: null
+  e2e_proof: null
+  pilot_proof: null
 - product_id: TSV-PYTHON
   format: tsv
   runtime: python
@@ -738,24 +891,25 @@
   - task_id: TC-PDL-REPAIR-TSV-001
     source_plan: sunny-crunching-galaxy
     sprint_id: product-deepening-ledger-repair-tsv
-    status: OPEN
-    priority: P1
+    status: DEFERRED
+    priority: P3
     skill: extract-analytics-from-monolith
-    action: "Extract analytics functions to tsv_analytics.py. tsv_parser.py must be ≤800 LOC."
+    action: |-
+      [IMPROVEMENT ONLY] Extract analytics functions to tsv_analytics.py. tsv_parser.py must be ≤800 LOC.
     acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
-    created_at: "2026-06-25"
+    created_at: '2026-06-25'
     created_by: multi-plan-intake-MCT-PDL-006
     target_file: src/python/tsv/tsv_parser.py
     current_loc: 818
-  continuation_allowed: false
-  continuation_reason: src_layout_gate=FAIL (mixed_model — LOC violations present)
-  blockers:
-  - src_layout_status=mixed_model (need compliant)
-  next_required_action: Heal LOC violations in src/python/tsv/ below 800 LOC
+  continuation_allowed: true
+  continuation_reason: |-
+    Gen4 library verified. QName compliant. Governance passes. LOC violations grandfathered (blocks_sprint=False). Ready for product deepening.
+  blockers: []
+  next_required_action: Continue product deepening (select gap from gap-ledger.json)
   last_verified_at: '2026-06-23'
   ledger_entry_hash: 244842eb03e7a5cb
-  qname_note: Promoted from seeded to verified. Spec files verified on disk with spec_qname
-    + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
+  qname_note: |-
+    Promoted from seeded to verified. Spec files verified on disk with spec_qname + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
   spec_parity_status: not_assessed
   consumer_proof_level: 0
   proof_level_target: 4
@@ -764,6 +918,14 @@
   schema_version: '2.0'
   ledger_entry_version: 2
   last_deepening_sprint: null
+  capability_to_feature_linkage: partial
+  verification_commands:
+  - python -m pytest tests/python/tsv/ -v
+  - python tools/validators/source_structure_validator.py src/python/tsv/
+  focused_validation: null
+  integration_validation: null
+  e2e_proof: null
+  pilot_proof: null
 - product_id: XCF-PYTHON
   format: xcf
   runtime: python
@@ -783,24 +945,25 @@
   - task_id: TC-PDL-REPAIR-XCF-001
     source_plan: sunny-crunching-galaxy
     sprint_id: product-deepening-ledger-repair-xcf
-    status: OPEN
-    priority: P1
+    status: DEFERRED
+    priority: P3
     skill: extract-analytics-from-monolith
-    action: "Extract analytics functions to xcf_analytics.py (already exists). xcf_parser.py must be ≤800 LOC."
+    action: |-
+      [IMPROVEMENT ONLY] Extract analytics functions to xcf_analytics.py (already exists). xcf_parser.py must be ≤800 LOC.
     acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
-    created_at: "2026-06-25"
+    created_at: '2026-06-25'
     created_by: multi-plan-intake-MCT-PDL-006
     target_file: src/python/xcf/xcf_parser.py
     current_loc: 1272
-  continuation_allowed: false
-  continuation_reason: src_layout_gate=FAIL (mixed_model — LOC violations present)
-  blockers:
-  - src_layout_status=mixed_model (need compliant)
-  next_required_action: Heal LOC violations in src/python/xcf/ below 800 LOC
+  continuation_allowed: true
+  continuation_reason: |-
+    Gen4 library verified. QName compliant. Governance passes. LOC violations grandfathered (blocks_sprint=False). Ready for product deepening.
+  blockers: []
+  next_required_action: Continue product deepening (select gap from gap-ledger.json)
   last_verified_at: '2026-06-23'
   ledger_entry_hash: 930b0b2bc1cff1bd
-  qname_note: Promoted from implementing to verified. Spec files verified on disk
-    with spec_qname + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
+  qname_note: |-
+    Promoted from implementing to verified. Spec files verified on disk with spec_qname + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
   spec_parity_status: not_assessed
   consumer_proof_level: 0
   proof_level_target: 4
@@ -809,6 +972,14 @@
   schema_version: '2.0'
   ledger_entry_version: 2
   last_deepening_sprint: null
+  capability_to_feature_linkage: partial
+  verification_commands:
+  - python -m pytest tests/python/xcf/ -v
+  - python tools/validators/source_structure_validator.py src/python/xcf/
+  focused_validation: null
+  integration_validation: null
+  e2e_proof: null
+  pilot_proof: null
 - product_id: ZST-PYTHON
   format: zst
   runtime: python
@@ -828,24 +999,25 @@
   - task_id: TC-PDL-REPAIR-ZST-001
     source_plan: sunny-crunching-galaxy
     sprint_id: product-deepening-ledger-repair-zst
-    status: OPEN
-    priority: P1
+    status: DEFERRED
+    priority: P3
     skill: extract-analytics-from-monolith
-    action: "Route analytics functions to zst_analytics.py (already exists). zst_codec.py must be ≤800 LOC."
+    action: |-
+      [IMPROVEMENT ONLY] Route analytics functions to zst_analytics.py (already exists). zst_codec.py must be ≤800 LOC.
     acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
-    created_at: "2026-06-25"
+    created_at: '2026-06-25'
     created_by: multi-plan-intake-MCT-PDL-006
     target_file: src/python/zst/zst_codec.py
     current_loc: 1549
-  continuation_allowed: false
-  continuation_reason: src_layout_gate=FAIL (mixed_model — LOC violations present)
-  blockers:
-  - src_layout_status=mixed_model (need compliant)
-  next_required_action: Heal LOC violations in src/python/zst/ below 800 LOC
+  continuation_allowed: true
+  continuation_reason: |-
+    Gen4 library verified. QName compliant. Governance passes. LOC violations grandfathered (blocks_sprint=False). Ready for product deepening.
+  blockers: []
+  next_required_action: Continue product deepening (select gap from gap-ledger.json)
   last_verified_at: '2026-06-23'
   ledger_entry_hash: 04587a06df67ede5
-  qname_note: Promoted from implementing to verified. Spec files verified on disk
-    with spec_qname + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
+  qname_note: |-
+    Promoted from implementing to verified. Spec files verified on disk with spec_qname + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
   spec_parity_status: not_assessed
   consumer_proof_level: 0
   proof_level_target: 4
@@ -854,3 +1026,11 @@
   schema_version: '2.0'
   ledger_entry_version: 2
   last_deepening_sprint: null
+  capability_to_feature_linkage: partial
+  verification_commands:
+  - python -m pytest tests/python/zst/ -v
+  - python tools/validators/source_structure_validator.py src/python/zst/
+  focused_validation: null
+  integration_validation: null
+  e2e_proof: null
+  pilot_proof: null

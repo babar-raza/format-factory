@@ -8,17 +8,17 @@ Canonical class: Header
 Facade: DifHeader
 """
 from __future__ import annotations
-from typing import Any
+from typing import Any, ClassVar
 
 
 class Header:
     """Canonical spec-shaped class for dif:header block."""
 
-    spec_qname = "dif:header"
-    spec_fact_ref = "FACT-DIF-001"
-    namespace_uri = "urn:format:dif:1.0"
-    local_name = "header"
-    facade_names = ["DifHeader"]
+    spec_qname: ClassVar[str] = "dif:header"
+    spec_fact_ref: ClassVar[str] = "FACT-DIF-001"
+    namespace_uri: ClassVar[str] = "urn:format:dif:1.0"
+    local_name: ClassVar[str] = "header"
+    facade_names: ClassVar[list] = ["DifHeader"]
 
     def __init__(self, data: dict[str, Any]) -> None:
         self._data = data

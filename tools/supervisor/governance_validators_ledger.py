@@ -21,8 +21,7 @@ def validate_ledger_continuation_gate(
     """V74 (TC-PDL-005): Block PRODUCT_SOURCE/PRODUCT_TEST items for formats with
     continuation_allowed=false in product-deepening-ledger.yaml.
 
-    Formats with src_layout_status=mixed_model have continuation_allowed=false.
-    Product deepening sprints for those formats must not proceed until LOC violations are healed.
+    continuation_allowed=false is set for formats with qname gaps, missing domain model, or missing write support.
     """
     if repo_root is None:
         repo_root = Path(__file__).parent.parent.parent
@@ -57,11 +56,15 @@ def validate_ledger_continuation_gate(
             "summary": f"V74: could not load ledger — {exc}",
         }
 
-    # Build set of formats with continuation_allowed=false
-    blocked_formats: set[str] = set()
+    # Build map of format -> continuation_reason for blocked formats
+    blocked_formats: dict[str, str] = {}
     for entry in (ledger_entries or []):
         if not entry.get("continuation_allowed", True):
-            blocked_formats.add(entry.get("format", "").lower())
+            fmt_key = entry.get("format", "").lower()
+            blocked_formats[fmt_key] = entry.get(
+                "continuation_reason",
+                "continuation_allowed=false (no reason given in ledger)"
+            )
 
     if not blocked_formats:
         return {
@@ -94,11 +97,7 @@ def validate_ledger_continuation_gate(
                         "item_type": item_type,
                         "format": fmt,
                         "path": str(p),
-                        "reason": (
-                            f"Format '{fmt}' has continuation_allowed=false "
-                            "(src_layout=mixed_model, LOC violations unhealed). "
-                            "Heal LOC violations before product deepening."
-                        ),
+                        "reason": f"Format '{fmt}': continuation_allowed=false. {blocked_formats[fmt]}",
                     })
                     break
 
@@ -121,6 +120,6 @@ def validate_ledger_continuation_gate(
         "items": [],
         "summary": (
             f"V74: No PRODUCT items violate ledger continuation gate "
-            f"({len(blocked_formats)} formats blocked, none targeted)"
+            f"({len(blocked_formats)} formats blocked: {sorted(blocked_formats)}, none targeted)"
         ),
     }
