@@ -4811,3 +4811,31 @@ violations); `test_lane_guard.py` expectations updated to match.
 - TC-CAP-001: Wire gap-ledger.json to autonomous task generator (P1)
 - TC-SKILL-001: Formally close the 19 skills in skills-layer.md §29 (P2)
 
+
+## Section 82 — glistening-leaping-chipmunk: In-Repo Plan File Migration Convention (CLOSED)
+
+Sprint: FORMAT-FACTORY-PLAN-MIGRATION-001
+Date: 2026-06-26
+Status: ACCEPTED_VERIFIED
+
+### Mission Summary
+Migrated Claude Code plan-mode files from external `~/.claude/plans/` to in-repo `plans/.claude/`.
+This ensures plans are version-controlled, visible in PRs, and survive across chat sessions.
+
+### Taskcards Executed
+| Taskcard | Status | Evidence |
+|---|---|---|
+| TC-001: Self-migrate plan to plans/.claude/ | COMPLETE | git ls-files confirms .gitkeep + 2 MDs |
+| TC-002: CLAUDE.md Step 0 migration sub-step | COMPLETE | Lines 11-27 confirmed in CLAUDE.md |
+| TC-003: MEMORY.md MANDATORY rule | COMPLETE | Line 3 in MEMORY.md confirmed |
+| TC-004: .gitignore + git tracking verified | COMPLETE | plans/.claude/ tracked; not in .gitignore |
+
+### Verification Pilots
+- P1: `ls plans/.claude/` → glistening-leaping-chipmunk.md + distributed-growing-cerf.md + .gitkeep ✅
+- P2: `grep "plans/.claude" CLAUDE.md` → migration step lines 11-27 ✅
+- P3: `grep "plans/.claude" MEMORY.md` → MANDATORY rule line 3 ✅
+- P4: `git ls-files plans/.claude/` → .gitkeep, distributed-growing-cerf.md, glistening-leaping-chipmunk.md ✅
+
+### Governance
+All changes committed. Ruff EXIT 0. Plan lock: TERMINAL_CLOSED.
+Next sessions use `plans/.claude/<name>.md` as the sole plan authority for migrated plan-mode files.

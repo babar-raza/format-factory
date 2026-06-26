@@ -17,6 +17,7 @@ the external file; execution migrates it to in-repo immediately at session start
 ## Taskcards
 
 ### TC-001: Self-migrate this plan file into the repo
+**Status:** `complete` *(audit 2026-06-26: plans/.claude/glistening-leaping-chipmunk.md in git ls-files; .gitkeep committed; active plan lock redirected)*
 
 **File to copy:** `C:\Users\prora\.claude\plans\glistening-leaping-chipmunk.md`
 **Destination:** `plans/.claude/glistening-leaping-chipmunk.md`
@@ -34,6 +35,7 @@ field points to the in-repo path.
 ---
 
 ### TC-002: Update CLAUDE.md Step 0 — add plan migration sub-step
+**Status:** `complete` *(audit 2026-06-26: CLAUDE.md lines 11-27 confirmed migration sub-step; committed to git HEAD 4f87a811 ancestry)*
 
 **File:** `CLAUDE.md`
 
@@ -63,6 +65,7 @@ rule is unambiguous before "Execute the loaded plan exclusively."
 ---
 
 ### TC-003: Update MEMORY.md with the in-repo plan convention
+**Status:** `complete` *(audit 2026-06-26: MEMORY.md line 3 has MANDATORY rule; grep confirms "plans/.claude" at line 3+)*
 
 **File:** `C:\Users\prora\.claude\projects\c--Users-prora-OneDrive-Documents-GitHub-format-factory\memory\MEMORY.md`
 
@@ -83,6 +86,7 @@ When plan-mode creates a plan at `~/.claude/plans/<name>.md`:
 ---
 
 ### TC-004: Add plans/.claude/ to .gitignore or confirm it is tracked
+**Status:** `complete` *(audit 2026-06-26: .gitignore does NOT exclude plans/.claude/; git ls-files shows .gitkeep + 2 plan MDs tracked)*
 
 **File:** `.gitignore` (read first)
 
