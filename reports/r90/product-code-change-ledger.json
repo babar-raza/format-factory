@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s237-dotnet-deepening-20260629",
+  "latest_sprint": "ff-sprint-s238-dotnet-deepening-20260629",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -24926,6 +24926,42 @@
       "description": "R252: Dedicated tests for FodtDocument.CountSentences \u2014 empty=0, empty non-negative, one-sentence positive, ParagraphCount unchanged, called-twice same, two-paras non-decreasing, heading-only ok, after-append non-decreasing, always-non-negative, dogfood known-content",
       "source_files": [
         "tests/net/fodt/FodtR252CountSentencesTests.cs"
+      ],
+      "test_count": 10
+    },
+    {
+      "entry_id": "PC-NETPBM-R245",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s238-dotnet-deepening-20260629",
+      "format": "NETPBM",
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.copy_region",
+      "description": "R245: Dedicated tests for NetpbmImage.CopyRegion \u2014 OOB throws, non-null, different-object, specified-width/height, format/maxvalue preserved, pixels-copied, modify-copy-original-unchanged, dogfood copy-corner-verify",
+      "source_files": [
+        "tests/net/netpbm/NetpbmR245CopyRegionDedicatedTests.cs"
+      ],
+      "test_count": 10
+    },
+    {
+      "entry_id": "PC-FODS-R256",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s238-dotnet-deepening-20260629",
+      "format": "FODS",
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.add_sheet",
+      "description": "R256: Dedicated tests for FodsDocument.AddSheet \u2014 null/whitespace throws, valid no-exception, SheetCount increases, accessible via GetSheetNames/GetRowCount, two-sheets count+2, both names visible, dogfood data-isolated",
+      "source_files": [
+        "tests/net/fods/FodsR256AddSheetDedicatedTests.cs"
+      ],
+      "test_count": 9
+    },
+    {
+      "entry_id": "PC-FODT-R253",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s238-dotnet-deepening-20260629",
+      "format": "FODT",
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.get_paragraph_at",
+      "description": "R253: Dedicated tests for FodtDocument.GetParagraphAt \u2014 negative/OOB throws, first non-null/has-text, second non-null, last non-null, ParagraphCount unchanged, called-twice non-null, after-append accessible, dogfood verify-each",
+      "source_files": [
+        "tests/net/fodt/FodtR253GetParagraphAtTests.cs"
       ],
       "test_count": 10
     }
