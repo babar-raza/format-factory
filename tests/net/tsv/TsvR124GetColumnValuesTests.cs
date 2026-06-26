@@ -95,9 +95,9 @@ public class TsvR124GetColumnValuesTests
     [Fact]
     public void GetColumnValues_SingleRow_ReturnsSingleValue()
     {
-        var doc = TsvDocument.Load("A\tB\tC");
+        var doc = TsvDocument.Load("A\tB\tC", hasHeaders: false);
         var col = doc.GetColumnValues(0);
-        Assert.Equal(1, col.Count);
+        Assert.Single(col);
         Assert.Equal("A", col[0]);
     }
 
