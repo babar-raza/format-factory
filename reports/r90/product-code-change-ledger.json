@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s132-dotnet-deepening-20260627",
+  "latest_sprint": "ff-sprint-s133-dotnet-deepening-20260627",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -21111,9 +21111,39 @@
       "evidence_path": "tests/net/zst/ZstR132ParseStreamAndConstantsTests.cs",
       "test_count": 10,
       "capability_ref": "commercial_net_products.ZST.dotnet_status.parse_stream_and_constants"
+    },
+    {
+      "entry_id": "PC-FODT-R148",
+      "format": "FODT",
+      "r_number": "R148",
+      "sprint": "ff-sprint-s133-dotnet-deepening-20260627",
+      "description": "FodtDocument.GetTextBetweenParagraphs(startIndex, endIndex) \u2014 10 tests: single range=first para, two paras newline-joined, full range all three, middle slice, last para, invalid start>=end=null, negative start=null, end>count=null, empty doc null, dogfood AppendThree->GetTextBetweenAll",
+      "evidence_path": "tests/net/fodt/FodtR148GetTextBetweenParagraphsTests.cs",
+      "test_count": 10,
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.get_text_between_paragraphs"
+    },
+    {
+      "entry_id": "PC-CSV-R132",
+      "format": "CSV",
+      "r_number": "R132",
+      "sprint": "ff-sprint-s133-dotnet-deepening-20260627",
+      "description": "CsvDocument.IsEmpty and RemoveRow \u2014 10 tests: IsEmpty empty/data/after-remove-all, RemoveRow reduces count, first/last/middle row removal, single row remove=empty, dogfood Load->RemoveRow->ToCsv verifies row absent",
+      "evidence_path": "tests/net/csv/CsvR132IsEmptyAndRemoveRowTests.cs",
+      "test_count": 10,
+      "capability_ref": "commercial_net_products.CSV.dotnet_status.is_empty_and_remove_row"
+    },
+    {
+      "entry_id": "PC-NDJSON-R136",
+      "format": "NDJSON",
+      "r_number": "R136",
+      "sprint": "ff-sprint-s133-dotnet-deepening-20260627",
+      "description": "NdjsonDocument.ToNdjson() serialization \u2014 10 tests: empty doc=empty string, single record=one line, three records=three lines, each line valid JSON, round-trip same count, field values preserved, LF separator, dogfood Filter->ToNdjson->Load roundtrip",
+      "evidence_path": "tests/net/ndjson/NdjsonR136ToNdjsonSerializationTests.cs",
+      "test_count": 10,
+      "capability_ref": "commercial_net_products.NDJSON.dotnet_status.to_ndjson_serialization"
     }
   ],
-  "total_entries": 1165,
+  "total_entries": 1168,
   "changes": [
     {
       "file": "src/python/dif/models.py",
