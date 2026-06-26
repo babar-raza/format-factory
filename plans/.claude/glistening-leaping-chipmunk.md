@@ -121,3 +121,12 @@ exclude `plans/.claude/`.
 3. `python tools/supervisor/check_continuation.py` — returns CONTINUE (not POST_PLAN_TERMINAL or ACTIVE_PLAN_INCOMPLETE)
 4. CLAUDE.md Step 0 grep: `grep -n "plans/.claude" CLAUDE.md` — shows migration sub-step
 5. MEMORY.md grep: `grep -n "plans/.claude" memory/MEMORY.md` — shows MANDATORY rule
+
+
+<!--plan_terminal_lock:
+  status: TERMINAL_CLOSED
+  locked_at: "2026-06-26T17:09:43.685179+00:00"
+  locked_by: "923e237958c1"
+  successor_required_for_future_changes: true
+  mutation_policy: "no further plan/hardening/execution writes"
+-->
