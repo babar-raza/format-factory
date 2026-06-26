@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s130-dotnet-deepening-20260627",
+  "latest_sprint": "ff-sprint-s131-dotnet-deepening-20260627",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -21051,9 +21051,39 @@
       "evidence_path": "tests/net/zst/ZstR131SizeLabelAndDocumentPropertiesTests.cs",
       "test_count": 10,
       "capability_ref": "commercial_net_products.ZST.dotnet_status.size_label_and_document_properties"
+    },
+    {
+      "entry_id": "PC-FODS-R144",
+      "format": "FODS",
+      "r_number": "R144",
+      "sprint": "ff-sprint-s131-dotnet-deepening-20260627",
+      "description": "FodsHtmlExporter.HtmlEscape and FodsHtmlExportResult defaults \u2014 10 tests: HtmlEscape null/plain/ampersand/less-than/greater-than, result defaults, FodsHtmlExportException hierarchy, dogfood chain of special chars",
+      "evidence_path": "tests/net/fods/FodsR144HtmlExportUtilsTests.cs",
+      "test_count": 10,
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.html_export_utils"
+    },
+    {
+      "entry_id": "PC-NDJSON-R135",
+      "format": "NDJSON",
+      "r_number": "R135",
+      "sprint": "ff-sprint-s131-dotnet-deepening-20260627",
+      "description": "NdjsonDocument.Filter predicate \u2014 10 tests: all-match/none-match, selective by field value, new document result, empty doc, order preservation, GetAllKeys, dogfood chained filter pipeline",
+      "evidence_path": "tests/net/ndjson/NdjsonR135FilterPredicateTests.cs",
+      "test_count": 10,
+      "capability_ref": "commercial_net_products.NDJSON.dotnet_status.filter_predicate"
+    },
+    {
+      "entry_id": "PC-TSV-R130",
+      "format": "TSV",
+      "r_number": "R130",
+      "sprint": "ff-sprint-s131-dotnet-deepening-20260627",
+      "description": "TsvDocument.IsEmpty and GetCellValue \u2014 10 tests: IsEmpty true/false/after-clear, GetCellValue valid/out-of-range-row/out-of-range-col/negative, matches direct row access, dogfood Load->Filter->IsEmpty pipeline",
+      "evidence_path": "tests/net/tsv/TsvR130IsEmptyAndGetCellValueTests.cs",
+      "test_count": 10,
+      "capability_ref": "commercial_net_products.TSV.dotnet_status.is_empty_and_get_cell_value"
     }
   ],
-  "total_entries": 1159,
+  "total_entries": 1162,
   "changes": [
     {
       "file": "src/python/dif/models.py",
