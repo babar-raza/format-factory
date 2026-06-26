@@ -26817,9 +26817,93 @@
         }
       ],
       "format": "FODT"
+    },
+    {
+      "entry_id": "PC-NETPBM-R272",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s265-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "NETPBM .NET",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.flip_vertical"
+      ],
+      "api_symbols": [
+        "FlipVertical"
+      ],
+      "api_behavior": "FlipVertical() flips image upside-down in-place (void). Width/height/format/MaxValue unchanged. Pixel at (col, row) moves to (col, H-1-row). Flip twice restores original. All pixels remain valid.",
+      "changed_files": [
+        "tests/net/netpbm/NetpbmR272FlipVerticalDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR272FlipVerticalDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "tests/net/netpbm/NetpbmR272FlipVerticalDedicatedTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "NETPBM"
+    },
+    {
+      "entry_id": "PC-FODS-R289",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s265-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.get_cell_type"
+      ],
+      "api_symbols": [
+        "GetCellType"
+      ],
+      "api_behavior": "GetCellType(sheetName, row, col) returns the cell type as non-null string. Null/whitespace/nonexistent sheet throws. Negative row/col throws. After SetCellValue returns non-null. SheetCount unchanged. Idempotent.",
+      "changed_files": [
+        "tests/net/fods/FodsR289GetCellTypeDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR289GetCellTypeDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "tests/net/fods/FodsR289GetCellTypeDedicatedTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "FODS"
+    },
+    {
+      "entry_id": "PC-FODT-R280",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s265-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.save_to_file"
+      ],
+      "api_symbols": [
+        "SaveToFile"
+      ],
+      "api_behavior": "SaveToFile(filePath) saves the document to disk. Null/whitespace throws. Valid path no-exception. File exists after save. Non-empty content produces non-empty file. ParagraphCount/TableCount unchanged. Save-twice no-exception (overwrite).",
+      "changed_files": [
+        "tests/net/fodt/FodtR280SaveToFileDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR280SaveToFileDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "tests/net/fodt/FodtR280SaveToFileDedicatedTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "FODT"
     }
   ],
-  "total_entries": 1297,
+  "total_entries": 1300,
   "changes": [
     {
       "file": "src/python/dif/models.py",
