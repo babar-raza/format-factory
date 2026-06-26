@@ -22799,6 +22799,30 @@
       "description": "FodtDocument.FindParagraphsByStyle dedicated tests: null throws ArgumentNullException, empty doc empty, empty pattern matches all, heading matches Heading, case-insensitive, non-matching empty, indices in order, dogfood pipeline",
       "evidence_path": "tests/net/fodt/FodtR181FindParagraphsByStyleTests.cs",
       "sprint": "ff-sprint-s172-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-NETPBM-R169",
+      "format": "NETPBM",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "NetpbmImage.Solarize dedicated tests: PBM clone, new image, dims/format unchanged, original unchanged, pixel>threshold inverted, pixel<=threshold unchanged, pixel-at-threshold unchanged, dogfood pipeline",
+      "evidence_path": "tests/net/netpbm/NetpbmR169SolarizeTests.cs",
+      "sprint": "ff-sprint-s173-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-FODS-R180",
+      "format": "FODS",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "FodsDocument.GetCellFormula dedicated tests: null/whitespace throws, nonexistent null, neg row/col null, at-count null, plain cell null, SetCellFormula->GetCellFormula roundtrip, multi-cell dogfood",
+      "evidence_path": "tests/net/fods/FodsR180GetCellFormulaDedicatedTests.cs",
+      "sprint": "ff-sprint-s173-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-FODT-R182",
+      "format": "FODT",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "FodtDocument.GetHeadingCount dedicated tests: empty=0, paras-only=0, single heading=1, multiple headings, paras excluded, mixed content, matches GetHeadingParagraphs().Count, AppendHeading increments, RemoveHeading decrements",
+      "evidence_path": "tests/net/fodt/FodtR182GetHeadingCountTests.cs",
+      "sprint": "ff-sprint-s173-dotnet-deepening-20260628"
     }
   ],
   "total_entries": 1270,
