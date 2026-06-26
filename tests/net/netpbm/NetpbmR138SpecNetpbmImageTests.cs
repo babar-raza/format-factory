@@ -116,16 +116,17 @@ public class NetpbmR138SpecNetpbmImageTests
         if (!File.Exists(fixture))
             return;
 
-        var parser = new NetpbmParser();
-        var doc = parser.Parse(fixture);
+        // NetpbmParser.Parse is a static method returning Model.NetpbmImage
+        var parsed = NetpbmParser.Parse(fixture);
 
-        // Compose Spec.NetpbmImage from parsed document
+        // Compose Spec.NetpbmImage from parsed model
+        // Model.NetpbmImage.Format is a NetpbmFormat enum; Spec uses MagicNumber string
         var specImg = new Spec.NetpbmImage
         {
-            MagicNumber = doc.MagicNumber,
-            Width       = doc.Width,
-            Height      = doc.Height,
-            MaxVal      = doc.MaxVal
+            MagicNumber = parsed.Format.ToString(),
+            Width       = parsed.Width,
+            Height      = parsed.Height,
+            MaxVal      = parsed.MaxValue   // Model uses MaxValue; Spec uses MaxVal
         };
 
         Assert.Equal("netpbm:image", Spec.NetpbmImage.SpecQName);
