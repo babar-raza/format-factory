@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s148-dotnet-deepening-20260628",
+  "latest_sprint": "ff-sprint-s149-dotnet-deepening-20260628",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -21698,6 +21698,48 @@
       "change_summary": "CsvR137GetColumnDedicatedTests.cs: 10 dedicated tests for CsvDocument.GetColumn(int) and GetColumn(string) \u2014 negative/no-headers/missing-header guards; first/second col values; count matches rows; original unchanged; by-name values; dogfood Load->GetColumn; dogfood int and string return same values.",
       "test_files": [
         "tests/net/csv/CsvR137GetColumnDedicatedTests.cs"
+      ],
+      "source_files": []
+    },
+    {
+      "entry_id": "PC-NETPBM-R145",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s149-dotnet-deepening-20260628",
+      "product": "NETPBM .NET",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.threshold"
+      ],
+      "change_summary": "NetpbmR145ThresholdTests.cs: 10 tests for NetpbmImage.Threshold \u2014 PBM_P1/PBM_P4 input throws, negative/above-MaxValue threshold throws; output format=PBM_P1, MaxValue=1, dimensions match; pixel above threshold=1, below=0; original unchanged; dogfood Create->SetPixel->Threshold->GetPixel pipeline.",
+      "test_files": [
+        "tests/net/netpbm/NetpbmR145ThresholdTests.cs"
+      ],
+      "source_files": []
+    },
+    {
+      "entry_id": "PC-FODS-R156",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s149-dotnet-deepening-20260628",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.get_cell_count_dedicated"
+      ],
+      "change_summary": "FodsR156GetCellCountDedicatedTests.cs: 10 tests for FodsDocument.GetCellCount \u2014 empty doc=0, empty sheet=0, single cell=1, 3 cells in row=3, 2x2 grid=4, increases after SetCellValue, multi-row sum, idempotent; dogfood CreateNew->AddSheet->SetCellValue->GetCellCount; dogfood multi-sheet counts first sheet.",
+      "test_files": [
+        "tests/net/fods/FodsR156GetCellCountDedicatedTests.cs"
+      ],
+      "source_files": []
+    },
+    {
+      "entry_id": "PC-ZST-R139",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s149-dotnet-deepening-20260628",
+      "product": "ZST .NET",
+      "capability_refs": [
+        "commercial_net_products.ZST.dotnet_status.document_frame_properties"
+      ],
+      "change_summary": "ZstR139DocumentFramePropertiesTests.cs: 10 tests for ZstDocument frame properties \u2014 BytesPerFrame/IsMinimalFrame/SizeExceeds100K/IsHighlyCompressed/OverheadBytes/FrameHeaderDescriptor defaults; init boundary tests; dogfood compress-small->ParseStream->IsMinimalFrame=true; dogfood compress-large->ParseStream->FrameCount>0.",
+      "test_files": [
+        "tests/net/zst/ZstR139DocumentFramePropertiesTests.cs"
       ],
       "source_files": []
     }
