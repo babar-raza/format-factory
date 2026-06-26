@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s225-dotnet-deepening-20260629",
+  "latest_sprint": "ff-sprint-s226-dotnet-deepening-20260629",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -24494,6 +24494,42 @@
       "description": "R240: Dedicated tests for FodtDocument.InsertParagraphAt \u2014 negative/OOB throws, valid no-exception, count increases, text retrievable, insert-at-zero shifts, insert-at-end, others preserved, dogfood",
       "source_files": [
         "tests/net/fodt/FodtR240InsertParagraphAtTests.cs"
+      ],
+      "test_count": 10
+    },
+    {
+      "entry_id": "PC-NETPBM-R233",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s226-dotnet-deepening-20260629",
+      "format": "NETPBM",
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.convert_format",
+      "description": "R233: Dedicated tests for NetpbmImage.ConvertFormat \u2014 new image, target format set, MaxValue/width/height preserved, valid range, original unchanged, PGM-to-PPM/PPM-to-PGM no-exception, dogfood back-and-forth",
+      "source_files": [
+        "tests/net/netpbm/NetpbmR233ConvertFormatTests.cs"
+      ],
+      "test_count": 10
+    },
+    {
+      "entry_id": "PC-FODS-R244",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s226-dotnet-deepening-20260629",
+      "format": "FODS",
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.rename_sheet",
+      "description": "R244: Dedicated tests for FodsDocument.RenameSheet \u2014 null/whitespace/nonexistent/null-new throws, valid no-exception, new-name accessible, old-name gone, SheetCount unchanged, dogfood rename-two-sheets",
+      "source_files": [
+        "tests/net/fods/FodsR244RenameSheetDedicatedTests.cs"
+      ],
+      "test_count": 9
+    },
+    {
+      "entry_id": "PC-FODT-R241",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s226-dotnet-deepening-20260629",
+      "format": "FODT",
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.delete_paragraph_at",
+      "description": "R241: Dedicated tests for FodtDocument.DeleteParagraphAt \u2014 negative/OOB throws, valid no-exception, count decreases, first-shifts-down, delete-last, delete-middle-others-preserved, single=0, dogfood",
+      "source_files": [
+        "tests/net/fodt/FodtR241DeleteParagraphAtTests.cs"
       ],
       "test_count": 10
     }
