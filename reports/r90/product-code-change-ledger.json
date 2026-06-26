@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s186-dotnet-deepening-20260628",
+  "latest_sprint": "ff-sprint-s187-dotnet-deepening-20260628",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -23170,6 +23170,33 @@
       "classification": "NET_TEST_DEEPENING",
       "description": "FodtDocument.RemoveParagraph dedicated tests: negative/at-count/empty throws, valid decrements, first shifts up, remove last, remove heading decrements, remove all=0, dogfood middle/heading",
       "evidence_path": "tests/net/fodt/FodtR195RemoveParagraphTests.cs",
+      "test_count": 10
+    },
+    {
+      "id": "PC-NETPBM-R183",
+      "sprint": "ff-sprint-s187-dotnet-deepening-20260628",
+      "format": "NETPBM",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "NetpbmImage.Posterize dedicated tests: levels=0/1/-1 throws, PBM clone, PGM new image, format/MaxValue preserved, dims unchanged, dogfood PGM 2-level",
+      "evidence_path": "tests/net/netpbm/NetpbmR183PosterizeTests.cs",
+      "test_count": 10
+    },
+    {
+      "id": "PC-FODS-R194",
+      "sprint": "ff-sprint-s187-dotnet-deepening-20260628",
+      "format": "FODS",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "FodsDocument.InsertRow dedicated tests: null/whitespace throws, nonexistent throws, negative OOB throws, above-count throws, valid increments count, insert at 0 shifts, insert at count appends, dogfood insert and verify",
+      "evidence_path": "tests/net/fods/FodsR194InsertRowDedicatedTests.cs",
+      "test_count": 10
+    },
+    {
+      "id": "PC-FODT-R196",
+      "sprint": "ff-sprint-s187-dotnet-deepening-20260628",
+      "format": "FODT",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "FodtDocument.GetHeadingParagraphs dedicated tests: empty returns empty, body excluded, heading included, IReadOnlyList, all IsHeading=true, count matches, multiple levels, mixed content, dogfood after remove",
+      "evidence_path": "tests/net/fodt/FodtR196GetHeadingParagraphsTests.cs",
       "test_count": 10
     }
   ],
