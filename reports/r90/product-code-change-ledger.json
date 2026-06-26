@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s273-sylk-installed-workflow-20260626",
+  "latest_sprint": "ff-sprint-s274-fodg-installed-workflow-20260626",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -28129,9 +28129,109 @@
       ],
       "test_count": 13,
       "format": "SYLK"
+    },
+    {
+      "entry_id": "PC-NETPBM-R288",
+      "classification": "DOTNET_TEST_COVERAGE",
+      "sprint": "ff-sprint-s280-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "NETPBM",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.get_mean"
+      ],
+      "api_symbols": [
+        "NetpbmImage.GetMean"
+      ],
+      "api_behavior": "GetMean(): double non-negative; all-zero=0.0; all-max positive; dims/format/MaxValue unchanged; idempotent; mixed in [0,MaxValue]",
+      "changed_files": [
+        "tests/net/netpbm/NetpbmR288GetMeanDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR288GetMeanDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [],
+      "format": "netpbm"
+    },
+    {
+      "entry_id": "PC-FODS-R308",
+      "classification": "DOTNET_TEST_COVERAGE",
+      "sprint": "ff-sprint-s280-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "FODS",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.get_column_count"
+      ],
+      "api_symbols": [
+        "FodsDocument.GetColumnCount"
+      ],
+      "api_behavior": "GetColumnCount(sheetName): null/whitespace/nonexistent throws; valid non-negative; increases after AddColumn; SheetCount unchanged; idempotent; two-sheets independent; dogfood multiple-columns",
+      "changed_files": [
+        "tests/net/fods/FodsR308GetColumnCountDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR308GetColumnCountDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [],
+      "format": "fods"
+    },
+    {
+      "entry_id": "PC-FODT-R295",
+      "classification": "DOTNET_TEST_COVERAGE",
+      "sprint": "ff-sprint-s280-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "FODT",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.set_section_style"
+      ],
+      "api_symbols": [
+        "FodtDocument.SetSectionStyle"
+      ],
+      "api_behavior": "SetSectionStyle(sectionIndex,style): negative/OOB/no-sections throws; valid ok; SectionCount/ParagraphCount/TableCount unchanged; set-twice ok; dogfood multiple-sections",
+      "changed_files": [
+        "tests/net/fodt/FodtR295SetSectionStyleDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR295SetSectionStyleDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [],
+      "format": "fodt"
+    },
+    {
+      "entry_id": "PC-FODG-R274",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s274-fodg-installed-workflow-20260626",
+      "skill": "add-python-api",
+      "product": "FODG Python FOSS",
+      "capability_refs": [
+        "foss_python_products.FODG.python_status.installed_workflow"
+      ],
+      "api_symbols": [
+        "fodg_installed_workflow"
+      ],
+      "api_behavior": "fodg_installed_workflow(source): loads a FODG file, returns dict with format, loaded, page_count, shape_count.",
+      "source_files": [
+        {
+          "path": "src/python/fodg/fodg_workflow.py",
+          "state": "present",
+          "sha256": "aeb4f3390f7cde712d913167a723a023d08dee08e06e99847c40ed4b3922f2d6"
+        },
+        {
+          "path": "src/python/fodg/__init__.py",
+          "state": "present",
+          "sha256": "49c955ee99d5d734ae97b72f8776de3a15486bb19f66c08e958d6cb17e2a2498"
+        }
+      ],
+      "test_files": [
+        "tests/python/fodg/test_r274_fodg_installed_workflow.py"
+      ],
+      "test_count": 11,
+      "format": "FODG"
     }
   ],
-  "total_entries": 1616,
+  "total_entries": 1620,
   "changes": [
     {
       "file": "src/python/dif/models.py",
