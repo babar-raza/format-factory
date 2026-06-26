@@ -22955,6 +22955,33 @@
       "evidence_path": "tests/net/fodt/FodtR187GetTextBetweenParagraphsTests.cs",
       "test_count": 10,
       "sprint": "ff-sprint-s178-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-NETPBM-R175",
+      "format": "NETPBM",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "NetpbmImage.AdjustContrast: negative factor throws ArgumentOutOfRangeException; PBM returns clone; returns new image; width/height/format unchanged; original pixels unchanged; factor=1.0 identity; result pixels in valid range; dogfood PGM pipeline",
+      "evidence_path": "tests/net/netpbm/NetpbmR175AdjustContrastTests.cs",
+      "test_count": 10,
+      "sprint": "ff-sprint-s179-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-FODS-R186",
+      "format": "FODS",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "FodsDocument.GetCellCount: empty sheet=0; after SetCellValue positive; multiple rows summed; non-negative; add second sheet not counted; additional cell increases count; dogfood count positive; dogfood ClearSheet count=0; dogfood clear-repopulate non-negative",
+      "evidence_path": "tests/net/fods/FodsR186GetCellCountDedicatedTests.cs",
+      "test_count": 9,
+      "sprint": "ff-sprint-s179-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-FODT-R188",
+      "format": "FODT",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "FodtDocument.RemoveAllParagraphs: empty doc no-op; single paragraph removed; multiple removed; headings also removed; ParagraphCount=0; GetHeadingCount=0; idempotent; can re-append; dogfood populate-remove-repopulate; dogfood mixed content cleared",
+      "evidence_path": "tests/net/fodt/FodtR188RemoveAllParagraphsTests.cs",
+      "test_count": 10,
+      "sprint": "ff-sprint-s179-dotnet-deepening-20260628"
     }
   ],
   "total_entries": 1270,
