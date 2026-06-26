@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s142-dotnet-deepening-20260627",
+  "latest_sprint": "ff-sprint-s143-dotnet-deepening-20260627",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -21447,9 +21447,51 @@
         "tests/net/ndjson/NdjsonR139LoadContentAndUniformSchemaTests.cs"
       ],
       "source_files": []
+    },
+    {
+      "entry_id": "PC-FODT-R155",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s143-dotnet-deepening-20260627",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.get_text_between_and_insert_paragraph"
+      ],
+      "change_summary": "FodtR155GetTextBetweenAndInsertParagraphTests.cs: 10 tests for GetTextBetweenParagraphs (null for invalid ranges, valid ranges joined by newline) and InsertParagraph (negative/beyond-count throws, index=0 inserts before first, index=count appends, dogfood pipeline).",
+      "test_files": [
+        "tests/net/fodt/FodtR155GetTextBetweenAndInsertParagraphTests.cs"
+      ],
+      "source_files": []
+    },
+    {
+      "entry_id": "PC-ZST-R137",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s143-dotnet-deepening-20260627",
+      "product": "ZST .NET",
+      "capability_refs": [
+        "commercial_net_products.ZST.dotnet_status.exception_hierarchy"
+      ],
+      "change_summary": "ZstR137ExceptionHierarchyTests.cs: 10 tests for ZST exception hierarchy \u2014 ZstWriteException, ZstFileSizeException, ZstFileNotFoundException, ZstInvalidMagicException all subclass ZstException; message stored; inner exception stored; dogfood Parse nonexistent file throws ZstFileNotFoundException.",
+      "test_files": [
+        "tests/net/zst/ZstR137ExceptionHierarchyTests.cs"
+      ],
+      "source_files": []
+    },
+    {
+      "entry_id": "PC-CSV-R135",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s143-dotnet-deepening-20260627",
+      "product": "CSV .NET",
+      "capability_refs": [
+        "commercial_net_products.CSV.dotnet_status.add_row_and_set_cell"
+      ],
+      "change_summary": "CsvR135AddRowAndSetCellTests.cs: 10 tests for CsvDocument.AddRow (null throws, empty row, single/multi values, count increments twice) and SetCell (negative row/col throws, row>=count throws, valid update, dogfood AddRow->SetCell->ToCsv->Load round-trip).",
+      "test_files": [
+        "tests/net/csv/CsvR135AddRowAndSetCellTests.cs"
+      ],
+      "source_files": []
     }
   ],
-  "total_entries": 1195,
+  "total_entries": 1198,
   "changes": [
     {
       "file": "src/python/dif/models.py",
