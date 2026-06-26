@@ -22487,9 +22487,33 @@
         }
       ],
       "format": "FODT"
+    },
+    {
+      "id": "PC-NETPBM-R156",
+      "format": "NETPBM",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "NetpbmImage.Rotate90Cw dedicated tests \u2014 dims swap, pixel transform r,c\u2192c,H-1-r, format/original preserved, four-rotation restore, non-square dogfood",
+      "evidence_path": "tests/net/netpbm/NetpbmR156Rotate90CwTests.cs",
+      "sprint": "ff-sprint-s160-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-FODS-R167",
+      "format": "FODS",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "FodsDocument.MergeCells dedicated tests \u2014 null/whitespace/nonexistent guards, rowSpan/colSpan<1 guards, out-of-bounds guard, valid 1x1 identity, dogfood pipelines",
+      "evidence_path": "tests/net/fods/FodsR167MergeCellsDedicatedTests.cs",
+      "sprint": "ff-sprint-s160-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-FODT-R169",
+      "format": "FODT",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "FodtDocument.RemoveHeading dedicated tests \u2014 index guards, non-heading throws InvalidOperationException, count decreases, removed not in GetHeadingTexts, shift, dogfood pipelines",
+      "evidence_path": "tests/net/fodt/FodtR169RemoveHeadingDedicatedTests.cs",
+      "sprint": "ff-sprint-s160-dotnet-deepening-20260628"
     }
   ],
-  "total_entries": 1201,
+  "total_entries": 1249,
   "changes": [
     {
       "file": "src/python/dif/models.py",
