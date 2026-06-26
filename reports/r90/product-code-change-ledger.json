@@ -27649,9 +27649,116 @@
       "test_count": 9,
       "source_files": [],
       "format": "FODT"
+    },
+    {
+      "entry_id": "PC-NETPBM-R283",
+      "classification": "dotnet_test_deepening",
+      "sprint": "ff-sprint-s275-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "commercial_net_products.NETPBM",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.get_aspect_ratio"
+      ],
+      "api_symbols": [
+        "NetpbmImage.GetAspectRatio"
+      ],
+      "api_behavior": "Returns double Width/Height; square=1.0; wide>1.0; tall<1.0; 2x1=2.0; dims/format/MaxValue unchanged; dogfood 4x2=2.0; dogfood 3x6=0.5",
+      "changed_files": [
+        "tests/net/netpbm/NetpbmR283GetAspectRatioDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR283GetAspectRatioDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [],
+      "format": "NETPBM"
+    },
+    {
+      "entry_id": "PC-FODS-R303",
+      "classification": "dotnet_test_deepening",
+      "sprint": "ff-sprint-s275-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "commercial_net_products.FODS",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.freeze_panes"
+      ],
+      "api_symbols": [
+        "FodsDocument.FreezePanes"
+      ],
+      "api_behavior": "Void; null/whitespace/nonexistent/negative-row/col throws; valid no-exception; SheetCount unchanged; called-twice no-exception; dogfood freeze-rows-cols; dogfood freeze-then-add-data",
+      "changed_files": [
+        "tests/net/fods/FodsR303FreezePanesDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR303FreezePanesDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [],
+      "format": "FODS"
+    },
+    {
+      "entry_id": "PC-FODT-R290",
+      "classification": "dotnet_test_deepening",
+      "sprint": "ff-sprint-s275-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "commercial_net_products.FODT",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.add_table"
+      ],
+      "api_symbols": [
+        "FodtDocument.AddTable"
+      ],
+      "api_behavior": "Void; zero/negative-rows/cols throws; valid no-exception; TableCount increases; ParagraphCount unchanged; called-twice count+2; 1x1 valid; dogfood row-count-matches; dogfood col-count-matches",
+      "changed_files": [
+        "tests/net/fodt/FodtR290AddTableDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR290AddTableDedicatedTests.cs"
+      ],
+      "test_count": 11,
+      "source_files": [],
+      "format": "FODT"
+    },
+    {
+      "entry_id": "PC-TSV-R269",
+      "sprint_id": "ff-sprint-s269-tsv-ndjson-installed-workflow-20260626",
+      "format": "tsv",
+      "track": "python-foss",
+      "skill_id": "add-python-api",
+      "api_added": "tsv_installed_workflow",
+      "description": "Added tsv_installed_workflow() to tsv_parser.py",
+      "source_files": [
+        "src/python/tsv/tsv_parser.py"
+      ],
+      "test_files": [
+        "tests/python/tsv/test_r269_tsv_installed_workflow.py"
+      ],
+      "tests_added": 10,
+      "tests_passed": 10,
+      "tests_failed": 0,
+      "worker_verdict": "PASS"
+    },
+    {
+      "entry_id": "PC-NDJSON-R269",
+      "sprint_id": "ff-sprint-s269-tsv-ndjson-installed-workflow-20260626",
+      "format": "ndjson",
+      "track": "python-foss",
+      "skill_id": "add-python-api",
+      "api_added": "ndjson_installed_workflow",
+      "description": "Added ndjson_installed_workflow() to ndjson_codec.py",
+      "source_files": [
+        "src/python/ndjson/ndjson_codec.py"
+      ],
+      "test_files": [
+        "tests/python/ndjson/test_r269_ndjson_installed_workflow.py"
+      ],
+      "tests_added": 10,
+      "tests_passed": 10,
+      "tests_failed": 0,
+      "worker_verdict": "PASS"
     }
   ],
-  "total_entries": 1596,
+  "total_entries": 1599,
   "changes": [
     {
       "file": "src/python/dif/models.py",
