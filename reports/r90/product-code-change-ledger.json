@@ -27913,9 +27913,98 @@
       "test_count": 9,
       "source_files": [],
       "format": "FODT"
+    },
+    {
+      "entry_id": "PC-CSV-R271",
+      "sprint_id": "ff-sprint-s271-csv-installed-workflow-20260626",
+      "format": "csv",
+      "track": "python-foss",
+      "skill_id": "add-python-api",
+      "api_added": "csv_installed_workflow",
+      "description": "Added csv_workflow.py with csv_installed_workflow(); exported from csv __init__.py",
+      "source_files": [
+        "src/python/csv/csv_workflow.py",
+        "src/python/csv/__init__.py"
+      ],
+      "test_files": [
+        "tests/python/csv/test_r271_csv_installed_workflow.py"
+      ],
+      "tests_added": 11,
+      "tests_passed": 11,
+      "tests_failed": 0,
+      "worker_verdict": "PASS"
+    },
+    {
+      "entry_id": "PC-NETPBM-R286",
+      "classification": "dotnet_test_deepening",
+      "sprint": "ff-sprint-s278-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "commercial_net_products.NETPBM",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.get_pixel"
+      ],
+      "api_symbols": [
+        "NetpbmImage.GetPixel"
+      ],
+      "api_behavior": "Returns int; negative-x/y/OOB throws; in-range [0,MaxValue]; returns SetPixel value; dims/format unchanged; idempotent; dogfood set-then-get=same; multiple-pixels independent",
+      "changed_files": [
+        "tests/net/netpbm/NetpbmR286GetPixelDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR286GetPixelDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [],
+      "format": "NETPBM"
+    },
+    {
+      "entry_id": "PC-FODS-R306",
+      "classification": "dotnet_test_deepening",
+      "sprint": "ff-sprint-s278-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "commercial_net_products.FODS",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.set_cell_number_format"
+      ],
+      "api_symbols": [
+        "FodsDocument.SetCellNumberFormat"
+      ],
+      "api_behavior": "Void; null/whitespace/nonexistent/negative-row/col throws; currency/percentage no-exception; SheetCount unchanged; set-twice ok; dogfood multiple-formats",
+      "changed_files": [
+        "tests/net/fods/FodsR306SetCellNumberFormatDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR306SetCellNumberFormatDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [],
+      "format": "FODS"
+    },
+    {
+      "entry_id": "PC-FODT-R293",
+      "classification": "dotnet_test_deepening",
+      "sprint": "ff-sprint-s278-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "commercial_net_products.FODT",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.set_table_cell_style"
+      ],
+      "api_symbols": [
+        "FodtDocument.SetTableCellStyle"
+      ],
+      "api_behavior": "Void; negative/OOB/no-tables/negative-row/col throws; valid no-exception; TableCount unchanged; set-twice ok; dogfood add-table-set-style; multiple-cells no-exception",
+      "changed_files": [
+        "tests/net/fodt/FodtR293SetTableCellStyleDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR293SetTableCellStyleDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [],
+      "format": "FODT"
     }
   ],
-  "total_entries": 1608,
+  "total_entries": 1612,
   "changes": [
     {
       "file": "src/python/dif/models.py",
