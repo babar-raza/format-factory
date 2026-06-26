@@ -22703,6 +22703,30 @@
       "description": "FodtDocument.GetParagraphStyleName dedicated tests: negative/at-count/beyond returns null, valid index null-or-string, string type when non-null, idempotent, heading style accessible, dogfood mixed content",
       "evidence_path": "tests/net/fodt/FodtR177GetParagraphStyleNameTests.cs",
       "sprint": "ff-sprint-s168-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-NETPBM-R165",
+      "format": "NETPBM",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "NetpbmImage.BlurBox dedicated tests: radius<=0 throws ArgumentOutOfRangeException, PBM returns clone, returns new image, width/height/format unchanged, original unchanged, uniform image unchanged by blur, dogfood pixel-in-bounds",
+      "evidence_path": "tests/net/netpbm/NetpbmR165BlurBoxTests.cs",
+      "sprint": "ff-sprint-s169-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-FODS-R176",
+      "format": "FODS",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "FodsDocument.ExportSheetToCsvFile dedicated tests: null/whitespace sheetName throws, null/whitespace filePath throws, file created on disk, content non-empty, cell value present, dogfood AddSheet->SetCells->Export->ReadBack",
+      "evidence_path": "tests/net/fods/FodsR176ExportSheetToCsvFileDedicatedTests.cs",
+      "sprint": "ff-sprint-s169-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-FODT-R178",
+      "format": "FODT",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "FodtDocument.GetDocumentMetadata dedicated tests: non-null, IReadOnlyDictionary type, empty doc empty dict, all values strings, all keys strings, idempotent, AppendParagraph/Heading stable, dogfood pipelines",
+      "evidence_path": "tests/net/fodt/FodtR178GetDocumentMetadataTests.cs",
+      "sprint": "ff-sprint-s169-dotnet-deepening-20260628"
     }
   ],
   "total_entries": 1270,
