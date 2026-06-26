@@ -22174,6 +22174,84 @@
         }
       ],
       "format": "FODT"
+    },
+    {
+      "entry_id": "PC-NETPBM-R152",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s156-dotnet-deepening-20260628",
+      "product": "Netpbm .NET Commercial",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.sharpen"
+      ],
+      "api_symbols": [
+        "Sharpen"
+      ],
+      "api_behavior": "NetpbmImage.Sharpen() applies Laplacian sharpening kernel to PGM/PPM. PBM returns clone unchanged. Border pixels unmodified. Uniform image interior unchanged. Pixels clamped to [0, MaxValue].",
+      "changed_files": [],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR152SharpenTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "src/net/netpbm/Model/NetpbmImageFilters.cs",
+          "state": "present",
+          "sha256": ""
+        }
+      ],
+      "format": "Netpbm"
+    },
+    {
+      "entry_id": "PC-FODS-R163",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s156-dotnet-deepening-20260628",
+      "product": "FODS .NET Commercial",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.rename_sheet_dedicated"
+      ],
+      "api_symbols": [
+        "RenameSheet"
+      ],
+      "api_behavior": "FodsDocument.RenameSheet(oldName, newName) renames existing sheet. Throws ArgumentException for null/whitespace oldName/newName. Throws InvalidOperationException for nonexistent oldName or duplicate newName.",
+      "changed_files": [],
+      "test_files": [
+        "tests/net/fods/FodsR163RenameSheetDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "src/net/fods/FodsDocument.cs",
+          "state": "present",
+          "sha256": ""
+        }
+      ],
+      "format": "FODS"
+    },
+    {
+      "entry_id": "PC-FODT-R165",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s156-dotnet-deepening-20260628",
+      "product": "FODT .NET Commercial",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.word_count_dedicated"
+      ],
+      "api_symbols": [
+        "WordCount"
+      ],
+      "api_behavior": "FodtDocument.WordCount property splits GetPlainText() on whitespace (RemoveEmptyEntries). Empty/whitespace-only=0. Idempotent. Increases after AppendParagraph with text.",
+      "changed_files": [],
+      "test_files": [
+        "tests/net/fodt/FodtR165WordCountDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "src/net/fodt/FodtDocument.cs",
+          "state": "present",
+          "sha256": ""
+        }
+      ],
+      "format": "FODT"
     }
   ],
   "total_entries": 1201,
