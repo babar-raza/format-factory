@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s196-dotnet-deepening-20260629",
+  "latest_sprint": "ff-machinery-readiness-20260626-r3-TC-MREAD-F002",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -23491,6 +23491,63 @@
       "evidence_path": "tests/net/fodt/FodtR210GetParagraphTextsTests.cs",
       "test_count": 10,
       "status": "completed"
+    },
+    {
+      "entry_id": "PC-NETPBM-R200",
+      "sprint": "ff-sprint-s197-dotnet-deepening-20260629",
+      "format": "NETPBM",
+      "capability": "MergeHorizontal",
+      "description": "Dedicated tests for NetpbmImage.MergeHorizontal: null/height-mismatch/format-mismatch throw, new image, height same, width=sum, format/MaxValue preserved, left-half base pixels, dogfood right-half pixel",
+      "evidence_path": "tests/net/netpbm/NetpbmR200MergeHorizontalTests.cs",
+      "test_count": 10,
+      "status": "completed"
+    },
+    {
+      "entry_id": "PC-FODS-R209",
+      "sprint": "ff-sprint-s197-dotnet-deepening-20260629",
+      "format": "FODS",
+      "capability": "ClearSheet",
+      "description": "Dedicated tests for FodsDocument.ClearSheet: null/whitespace/nonexistent throws, empty no-throw, rows=0 after, SheetCount unchanged, other sheets unaffected, cell null after clear, dogfood clear-then-add and clear-twice",
+      "evidence_path": "tests/net/fods/FodsR209ClearSheetDedicatedTests.cs",
+      "test_count": 10,
+      "status": "completed"
+    },
+    {
+      "entry_id": "PC-FODT-R211",
+      "sprint": "ff-sprint-s197-dotnet-deepening-20260629",
+      "format": "FODT",
+      "capability": "WordCount",
+      "description": "Dedicated tests for FodtDocument.WordCount: empty=0, whitespace=0, one=1, two=2, two-para summed, heading counted, after-append increases, after-remove decreases, punctuation, dogfood",
+      "evidence_path": "tests/net/fodt/FodtR211WordCountTests.cs",
+      "test_count": 11,
+      "status": "completed"
+    },
+    {
+      "entry_id": "PC-TOML-INSTALLED-WORKFLOW-001",
+      "classification": "PRODUCT_FEATURE",
+      "sprint": "ff-machinery-readiness-20260626-r3-TC-MREAD-F002",
+      "product": "TOML Python FOSS",
+      "description": "Add installed_workflow() to toml_codec.py to close GAP-TOML-FOSS-INSTALLED_WO-001. The function is a round-trip proof that the installed TOML package can load a document and return basic metadata.",
+      "gap_ids": [
+        "GAP-TOML-FOSS-INSTALLED_WO-001"
+      ],
+      "capability_refs": [
+        "TOML-installed_workflow"
+      ],
+      "api_symbols": [
+        "installed_workflow"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/toml/toml_codec.py",
+          "sha256": "a71195b02cf295094560b5b25e65ea12a03eaa31856f4f31db015f1710d5e71a",
+          "change": "Added installed_workflow() function (lines 722-744 approx)"
+        }
+      ],
+      "test_files": [
+        "tests/python/toml/test_gap_installed_workflow.py"
+      ],
+      "recorded_at": "2026-06-26T18:12:03.312437+00:00"
     }
   ],
   "total_entries": 1270,
