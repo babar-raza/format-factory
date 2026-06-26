@@ -22511,9 +22511,33 @@
       "description": "FodtDocument.RemoveHeading dedicated tests \u2014 index guards, non-heading throws InvalidOperationException, count decreases, removed not in GetHeadingTexts, shift, dogfood pipelines",
       "evidence_path": "tests/net/fodt/FodtR169RemoveHeadingDedicatedTests.cs",
       "sprint": "ff-sprint-s160-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-NETPBM-R157",
+      "format": "NETPBM",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "NetpbmImage.Rotate270Cw dedicated tests \u2014 dims swap, pixel transform (r,c)\u2192(W-1-c,r), format/original preserved, four-rotation restore, non-square dogfood",
+      "evidence_path": "tests/net/netpbm/NetpbmR157Rotate270CwTests.cs",
+      "sprint": "ff-sprint-s161-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-FODS-R168",
+      "format": "FODS",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "FodsDocument.GetSheetByIndex dedicated tests \u2014 null for empty/negative/at-count/beyond, valid index returns sheet, name matches, SheetCount match, dogfood pipeline",
+      "evidence_path": "tests/net/fods/FodsR168GetSheetByIndexDedicatedTests.cs",
+      "sprint": "ff-sprint-s161-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-FODT-R170",
+      "format": "FODT",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "FodtDocument.InsertHeading dedicated tests \u2014 level 0/7 guard, negative/beyond index guard, level 1/6 valid, count increases, appears in GetHeadingTexts, insert at 0, dogfood pipelines",
+      "evidence_path": "tests/net/fodt/FodtR170InsertHeadingDedicatedTests.cs",
+      "sprint": "ff-sprint-s161-dotnet-deepening-20260628"
     }
   ],
-  "total_entries": 1249,
+  "total_entries": 1252,
   "changes": [
     {
       "file": "src/python/dif/models.py",
