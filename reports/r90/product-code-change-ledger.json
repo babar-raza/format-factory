@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s122-dotnet-deepening-20260627",
+  "latest_sprint": "ff-sprint-s123-dotnet-deepening-20260627",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -20757,9 +20757,48 @@
         "tests/net/tsv/TsvR125WriteRowsToFileTests.cs"
       ],
       "description": "R125: 11 tests for TsvWriter.WriteRowsToFile(rows, path) \u2014 file created, non-empty, tabs present, multi-row, null-field-empty, UTF-8 no-BOM, null rows throws, null/empty path throws, tab-in-field throws, dogfood roundtrip"
+    },
+    {
+      "entry_id": "PC-FODT-R143",
+      "classification": "NEW_TEST_COVERAGE",
+      "sprint": "ff-sprint-s123-dotnet-deepening-20260627",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.spec_text_paragraph"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR143SpecTextParagraphTests.cs"
+      ],
+      "description": "R143: 13 tests for Spec.Text.Paragraph, Heading, Span canonical spec-shaped model classes \u2014 SpecQName/SpecFactRef constants, init-only properties, dogfood composition"
+    },
+    {
+      "entry_id": "PC-TSV-R126",
+      "classification": "NEW_TEST_COVERAGE",
+      "sprint": "ff-sprint-s123-dotnet-deepening-20260627",
+      "product": "TSV .NET",
+      "capability_refs": [
+        "commercial_net_products.TSV.dotnet_status.document_load_file"
+      ],
+      "test_files": [
+        "tests/net/tsv/TsvR126DocumentLoadFileTests.cs"
+      ],
+      "description": "R126: 11 tests for TsvDocument.LoadFile(path, hasHeaders) \u2014 headers populated, row count, column count, hasHeaders=false, empty file, null path throws, parity with Load(string)"
+    },
+    {
+      "entry_id": "PC-ZST-R128",
+      "classification": "NEW_TEST_COVERAGE",
+      "sprint": "ff-sprint-s123-dotnet-deepening-20260627",
+      "product": "ZST .NET",
+      "capability_refs": [
+        "commercial_net_products.ZST.dotnet_status.stream_compress_decompress"
+      ],
+      "test_files": [
+        "tests/net/zst/ZstR128StreamCompressDecompressTests.cs"
+      ],
+      "description": "R128: 11 tests for ZstWriter.Compress(Stream,Stream) and Decompress(Stream,Stream) \u2014 non-empty output, magic bytes, null guards, roundtrip, UTF-8 preservation, dogfood pipeline"
     }
   ],
-  "total_entries": 1135,
+  "total_entries": 1138,
   "changes": [
     {
       "file": "src/python/dif/models.py",
