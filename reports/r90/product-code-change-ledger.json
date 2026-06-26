@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s216-dotnet-deepening-20260629",
+  "latest_sprint": "ff-sprint-s217-dotnet-deepening-20260629",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -24170,6 +24170,42 @@
       "description": "R231: Dedicated tests for FodtDocument.SaveToStream \u2014 null throws, empty doc no-exception, bytes>0, with-paragraphs bytes, count unchanged, MemoryStream, odf-marker, dogfood save-twice same-length/save-load paragraph-count preserved",
       "source_files": [
         "tests/net/fodt/FodtR231SaveToStreamTests.cs"
+      ],
+      "test_count": 10
+    },
+    {
+      "entry_id": "PC-NETPBM-R223",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s217-dotnet-deepening-20260629",
+      "format": "NETPBM",
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.crop",
+      "description": "R223: Dedicated tests for NetpbmImage.Crop \u2014 OOB/zero throws, PGM new image, format/MaxValue preserved, result has specified dims, valid range, dogfood centre-pixel preserved",
+      "source_files": [
+        "tests/net/netpbm/NetpbmR223CropTests.cs"
+      ],
+      "test_count": 10
+    },
+    {
+      "entry_id": "PC-FODS-R234",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s217-dotnet-deepening-20260629",
+      "format": "FODS",
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.get_sheet_stats",
+      "description": "R234: Dedicated tests for FodsDocument.GetSheetStats \u2014 null/whitespace/nonexistent throws, non-null, no-exception, SheetCount unchanged, empty stats=0, dogfood data-reflects/clear=0",
+      "source_files": [
+        "tests/net/fods/FodsR234GetSheetStatsDedicatedTests.cs"
+      ],
+      "test_count": 10
+    },
+    {
+      "entry_id": "PC-FODT-R232",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s217-dotnet-deepening-20260629",
+      "format": "FODT",
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.load_stream",
+      "description": "R232: Dedicated tests for FodtDocument.Load(Stream) \u2014 null throws, non-null, paragraph count matches, text matches, author preserved, MimeType non-null, multiple loads consistent, dogfood save-load-save-load/heading count",
+      "source_files": [
+        "tests/net/fodt/FodtR232LoadStreamTests.cs"
       ],
       "test_count": 10
     }
