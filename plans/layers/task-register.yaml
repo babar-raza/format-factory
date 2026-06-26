@@ -14,8 +14,8 @@ tasks:
     task_type: GOVERNANCE_INFRASTRUCTURE
     severity: CRITICAL
     priority: P0
-    status: IN_PROGRESS
-    current_stage: IMPLEMENTATION
+    status: CLOSED
+    current_stage: COMPLETED
     owner: "Claude-Sonnet-4.6"
     session_id: "923e237958c1"
     sprint_id: "lp-bootstrap"
@@ -26,13 +26,18 @@ tasks:
     command_ids: []
     allowed_paths: ["plans/layers/", ".supervisor/skill-registry.yaml", "tools/supervisor/governance_validators.py"]
     forbidden_paths: ["src/python/", "src/net/", "tests/python/", "tests/net/"]
-    evidence_paths: []
+    evidence_paths:
+      - plans/layers/index.yaml
+      - plans/layers/task-register.yaml
+      - plans/layers/master.md
+      - .local/evidences/lp-bootstrap-001/evidence-declaration.yaml
     created_at: "2026-06-26T00:00:00Z"
     started_at: "2026-06-26T00:00:00Z"
-    last_progress_at: "2026-06-26T00:00:00Z"
-    verified_at: null
-    closed_at: null
-    next_action: "Complete all 34 files; verify index consistency; write evidence declaration"
+    last_progress_at: "2026-06-26T21:52:06Z"
+    verified_at: "2026-06-26T21:52:06Z"
+    closed_at: "2026-06-26T22:00:00Z"
+    next_action: null
+    closure_summary: "34 files created (27 layer plans + master.md + 6 registers). 19 micro-skills registered. V83-V86 validators added with 13 tests PASS. Committed at 06e8f0cf."
 
   # L01-SAL tasks
   - task_id: TC-SAL-001
