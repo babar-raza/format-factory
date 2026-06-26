@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s226-dotnet-deepening-20260629",
+  "latest_sprint": "ff-sprint-s227-dotnet-deepening-20260629",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -24530,6 +24530,42 @@
       "description": "R241: Dedicated tests for FodtDocument.DeleteParagraphAt \u2014 negative/OOB throws, valid no-exception, count decreases, first-shifts-down, delete-last, delete-middle-others-preserved, single=0, dogfood",
       "source_files": [
         "tests/net/fodt/FodtR241DeleteParagraphAtTests.cs"
+      ],
+      "test_count": 10
+    },
+    {
+      "entry_id": "PC-NETPBM-R234",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s227-dotnet-deepening-20260629",
+      "format": "NETPBM",
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.get_channel_count",
+      "description": "R234: Dedicated tests for NetpbmImage.GetChannelCount \u2014 PGM=1 channel, PPM=3 channels, positive, format/MaxValue/dims preserved, called-twice, PGM_P2=1, PPM_P3=3, dogfood both-differ",
+      "source_files": [
+        "tests/net/netpbm/NetpbmR234GetChannelCountTests.cs"
+      ],
+      "test_count": 10
+    },
+    {
+      "entry_id": "PC-FODS-R245",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s227-dotnet-deepening-20260629",
+      "format": "FODS",
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.clear_sheet",
+      "description": "R245: Dedicated tests for FodsDocument.ClearSheet \u2014 null/whitespace/nonexistent throws, empty no-exception, after-clear row=0 cell=0, SheetCount unchanged, second-sheet unaffected, dogfood add-clear-verify",
+      "source_files": [
+        "tests/net/fods/FodsR245ClearSheetDedicatedTests.cs"
+      ],
+      "test_count": 9
+    },
+    {
+      "entry_id": "PC-FODT-R242",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s227-dotnet-deepening-20260629",
+      "format": "FODT",
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.get_heading_count",
+      "description": "R242: Dedicated tests for FodtDocument.GetHeadingCount \u2014 empty no-exception, empty=0, after-one=1, count unchanged, paragraphs-only=0, called-twice, multiple count, mixed correct, dogfood levels/stable",
+      "source_files": [
+        "tests/net/fodt/FodtR242GetHeadingCountTests.cs"
       ],
       "test_count": 10
     }
