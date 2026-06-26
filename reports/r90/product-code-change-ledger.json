@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s134-dotnet-deepening-20260627",
+  "latest_sprint": "ff-sprint-s140-dotnet-deepening-20260627",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -21321,9 +21321,51 @@
       "evidence_path": "tests/net/fodt/FodtR152RemoveParagraphTests.cs",
       "test_count": 10,
       "capability_ref": "commercial_net_products.FODT.dotnet_status.remove_paragraph"
+    },
+    {
+      "entry_id": "PC-ZST-R135",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s140-dotnet-deepening-20260627",
+      "product": "ZST .NET",
+      "capability_refs": [
+        "commercial_net_products.ZST.dotnet_status.writer_constants"
+      ],
+      "change_summary": "ZstR135WriterConstantsTests.cs: 10 tests for ZstWriter compression constants (DefaultCompressionLevel=3, MinCompressionLevel=1, MaxCompressionLevel=22, DefaultMaxDecompressedBytes=512MB) and dogfood compress at max level.",
+      "test_files": [
+        "tests/net/zst/ZstR135WriterConstantsTests.cs"
+      ],
+      "source_files": []
+    },
+    {
+      "entry_id": "PC-NETPBM-R141",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s140-dotnet-deepening-20260627",
+      "product": "NETPBM .NET",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.draw_rectangle_and_channel_stats"
+      ],
+      "change_summary": "NetpbmR141DrawRectangleAndChannelStatsTests.cs: 10 tests for NetpbmImage.DrawRectangle (negative arg guards, fill region, 1x1, pixels outside unchanged) and NetpbmImageAnalyzer.GetChannelStats (null guard, PPM non-null, dogfood pipeline).",
+      "test_files": [
+        "tests/net/netpbm/NetpbmR141DrawRectangleAndChannelStatsTests.cs"
+      ],
+      "source_files": []
+    },
+    {
+      "entry_id": "PC-FODT-R153",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s140-dotnet-deepening-20260627",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.max_file_size_bytes_and_heading_texts"
+      ],
+      "change_summary": "FodtR153MaxFileSizeBytesAndHeadingTextsTests.cs: 10 tests for FodtParser.MaxFileSizeBytes (default=50MB, positive, override, stored) and FodtDocument.GetHeadingTexts (empty, single, multiple, paragraphs excluded, mixed content, dogfood pipeline).",
+      "test_files": [
+        "tests/net/fodt/FodtR153MaxFileSizeBytesAndHeadingTextsTests.cs"
+      ],
+      "source_files": []
     }
   ],
-  "total_entries": 1186,
+  "total_entries": 1189,
   "changes": [
     {
       "file": "src/python/dif/models.py",
