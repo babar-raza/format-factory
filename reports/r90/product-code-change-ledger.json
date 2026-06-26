@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s119-dotnet-deepening-20260627",
+  "latest_sprint": "ff-sprint-s120-dotnet-deepening-20260627",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -20658,9 +20658,39 @@
         }
       ],
       "format": "NETPBM"
+    },
+    {
+      "entry_id": "PC-FODT-R141",
+      "sprint": "ff-sprint-s120-dotnet-deepening-20260627",
+      "format": "FODT",
+      "dotnet_revision": "R141",
+      "test_file": "tests/net/fodt/FodtR141ParseResultMetadataTests.cs",
+      "description": "FodtParseResult extended metadata: Title, Creator, Subject, InitialCreator, FileSizeBytes, MimeType, OdfVersion",
+      "test_count": 10,
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.parse_result_metadata"
+    },
+    {
+      "entry_id": "PC-ZST-R127",
+      "sprint": "ff-sprint-s120-dotnet-deepening-20260627",
+      "format": "ZST",
+      "dotnet_revision": "R127",
+      "test_file": "tests/net/zst/ZstR127InvalidMagicAndFilePathTests.cs",
+      "description": "ZstInvalidMagicException for wrong magic bytes; ParseStream with explicit filePath parameter",
+      "test_count": 11,
+      "capability_ref": "commercial_net_products.ZST.dotnet_status.invalid_magic_exception"
+    },
+    {
+      "entry_id": "PC-CSV-R127",
+      "sprint": "ff-sprint-s120-dotnet-deepening-20260627",
+      "format": "CSV",
+      "dotnet_revision": "R127",
+      "test_file": "tests/net/csv/CsvR127HasColumnAndGetColumnTests.cs",
+      "description": "CsvDocument.HasColumn(name) case-sensitivity and GetColumn(string headerName) named column access",
+      "test_count": 11,
+      "capability_ref": "commercial_net_products.CSV.dotnet_status.has_column_get_column"
     }
   ],
-  "total_entries": 1024,
+  "total_entries": 1129,
   "changes": [
     {
       "file": "src/python/dif/models.py",
