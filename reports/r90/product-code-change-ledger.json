@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s200-dotnet-deepening-20260629",
+  "latest_sprint": "ff-sprint-s201-dotnet-deepening-20260629",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -23638,6 +23638,36 @@
       "test_count": 10,
       "status": "completed",
       "notes": "Dedicated tests for FodtDocument.SetHeadingLevel: OOB/level-0/level-7 throws, valid no-exception, count/text unchanged, GetHeadingLevel returns new, dogfood"
+    },
+    {
+      "entry_id": "PC-NETPBM-R205",
+      "sprint": "ff-sprint-s201-dotnet-deepening-20260629",
+      "format": "NETPBM",
+      "capability": "Pixelate",
+      "test_file": "tests/net/netpbm/NetpbmR205PixelateTests.cs",
+      "test_count": 10,
+      "status": "completed",
+      "notes": "Dedicated tests for NetpbmImage.Pixelate: zero/negative throws, PGM/PBM new image, format/dims/MaxValue preserved, pixels clamped, dogfood"
+    },
+    {
+      "entry_id": "PC-FODS-R215",
+      "sprint": "ff-sprint-s201-dotnet-deepening-20260629",
+      "format": "FODS",
+      "capability": "GetCellDataType",
+      "test_file": "tests/net/fods/FodsR215GetCellDataTypeDedicatedTests.cs",
+      "test_count": 10,
+      "status": "completed",
+      "notes": "Dedicated tests for FodsDocument.GetCellDataType: null/negative throws, empty cell null, string non-null, is string type, different cells, dogfood"
+    },
+    {
+      "entry_id": "PC-FODT-R216",
+      "sprint": "ff-sprint-s201-dotnet-deepening-20260629",
+      "format": "FODT",
+      "capability": "FindParagraph",
+      "test_file": "tests/net/fodt/FodtR216FindParagraphTests.cs",
+      "test_count": 11,
+      "status": "completed",
+      "notes": "Dedicated tests for FodtDocument.FindParagraph: null throws, empty -1, not-present -1, first/second match, substring, case-sensitive, first-occurrence, count unchanged, dogfood"
     }
   ],
   "total_entries": 1270,
