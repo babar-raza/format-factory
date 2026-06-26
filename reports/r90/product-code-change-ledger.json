@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s118-dotnet-deepening-20260627",
+  "latest_sprint": "ff-sprint-s119-dotnet-deepening-20260627",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -20593,9 +20593,74 @@
         }
       ],
       "format": "FODS"
+    },
+    {
+      "entry_id": "PC-TSV-R124",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s119-dotnet-deepening-20260627",
+      "product": "TSV .NET",
+      "capability_refs": [
+        "commercial_net_products.TSV.dotnet_status.stream_read_rows"
+      ],
+      "api_symbols": [
+        "TsvReader.ReadRows(Stream)"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/tsv/TsvR124StreamReadRowsTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "TSV"
+    },
+    {
+      "entry_id": "PC-FODS-R139",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s119-dotnet-deepening-20260627",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.parse_result_metadata"
+      ],
+      "api_symbols": [
+        "FodsParseResult.FileSizeBytes",
+        "FodsParseResult.IsSuccess",
+        "FodsParseResult.Warnings",
+        "FodsSheetInfo.RowCount",
+        "FodsSheetInfo.CellCount"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/fods/FodsR139ParseResultMetadataTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "FODS"
+    },
+    {
+      "entry_id": "PC-NETPBM-R137",
+      "classification": "NET_TEST",
+      "sprint": "ff-sprint-s119-dotnet-deepening-20260627",
+      "product": "Netpbm .NET",
+      "capability_refs": [
+        "commercial_net_products.Netpbm.dotnet_status.parser_constants"
+      ],
+      "api_symbols": [
+        "NetpbmParser.DefaultMaxFileSizeBytes",
+        "NetpbmParser.DefaultMaxDimension",
+        "NetpbmParser.DefaultMaxPixels",
+        "NetpbmParser.ParseStream(knownLength)",
+        "NetpbmDocument.FromImage"
+      ],
+      "source_files": [
+        {
+          "path": "tests/net/netpbm/NetpbmR137ParserConstantsTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "NETPBM"
     }
   ],
-  "total_entries": 1021,
+  "total_entries": 1024,
   "changes": [
     {
       "file": "src/python/dif/models.py",
