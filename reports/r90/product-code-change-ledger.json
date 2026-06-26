@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s234-dotnet-deepening-20260629",
+  "latest_sprint": "ff-sprint-s235-dotnet-deepening-20260629",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -24820,6 +24820,42 @@
         "tests/net/fodt/FodtR249ExtractPlainParagraphsTests.cs"
       ],
       "test_count": 10
+    },
+    {
+      "entry_id": "PC-NETPBM-R242",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s235-dotnet-deepening-20260629",
+      "format": "NETPBM",
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.scale",
+      "description": "R242: Dedicated tests for NetpbmImage.Scale \u2014 non-null, different-object, format/maxvalue preserved, 2x-doubles-dims, 0.5x-halves-dims, original-unchanged, factor-1-same-dims, pixel-count-proportional, dogfood scale-up",
+      "source_files": [
+        "tests/net/netpbm/NetpbmR242ScaleTests.cs"
+      ],
+      "test_count": 10
+    },
+    {
+      "entry_id": "PC-FODS-R253",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s235-dotnet-deepening-20260629",
+      "format": "FODS",
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.sort_rows",
+      "description": "R253: Dedicated tests for FodsDocument.SortRows \u2014 null/whitespace/nonexistent throws, ascending no-exception, descending no-exception, row-count preserved, SheetCount unchanged, called-twice no-exception, dogfood add-sort-verify",
+      "source_files": [
+        "tests/net/fods/FodsR253SortRowsDedicatedTests.cs"
+      ],
+      "test_count": 9
+    },
+    {
+      "entry_id": "PC-FODT-R250",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s235-dotnet-deepening-20260629",
+      "format": "FODT",
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.get_table_of_contents",
+      "description": "R250: Dedicated tests for FodtDocument.GetTableOfContents \u2014 empty=non-null/empty, paras-only=empty, one-heading=1, two-headings=2, ParagraphCount unchanged, called-twice same, after-add increases, dogfood multi-level headings",
+      "source_files": [
+        "tests/net/fodt/FodtR250GetTableOfContentsTests.cs"
+      ],
+      "test_count": 9
     }
   ],
   "total_entries": 1270,
