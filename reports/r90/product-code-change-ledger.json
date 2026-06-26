@@ -22096,6 +22096,84 @@
         }
       ],
       "format": "FODT"
+    },
+    {
+      "entry_id": "PC-NETPBM-R151",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s155-dotnet-deepening-20260628",
+      "product": "Netpbm .NET Commercial",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.flip_diagonal"
+      ],
+      "api_symbols": [
+        "FlipDiagonal"
+      ],
+      "api_behavior": "NetpbmImage.FlipDiagonal() transposes image (pixel[r,c] -> pixel[c,r]). Output Width=original Height, Height=original Width. Format preserved, original unmodified.",
+      "changed_files": [],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR151FlipDiagonalTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "src/net/netpbm/Transforms/NetpbmImageTransforms.cs",
+          "state": "present",
+          "sha256": ""
+        }
+      ],
+      "format": "Netpbm"
+    },
+    {
+      "entry_id": "PC-FODS-R162",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s155-dotnet-deepening-20260628",
+      "product": "FODS .NET Commercial",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.sort_rows_dedicated"
+      ],
+      "api_symbols": [
+        "SortRows"
+      ],
+      "api_behavior": "FodsDocument.SortRows(sheetName, sortColumn, ascending=true) sorts rows by column. Throws ArgumentException for null/whitespace sheetName. Throws InvalidOperationException for nonexistent sheet. Throws ArgumentOutOfRangeException for negative sortColumn. Single-row is no-op.",
+      "changed_files": [],
+      "test_files": [
+        "tests/net/fods/FodsR162SortRowsDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "src/net/fods/FodsDocument.cs",
+          "state": "present",
+          "sha256": ""
+        }
+      ],
+      "format": "FODS"
+    },
+    {
+      "entry_id": "PC-FODT-R164",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s155-dotnet-deepening-20260628",
+      "product": "FODT .NET Commercial",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.char_count_dedicated"
+      ],
+      "api_symbols": [
+        "CharCount"
+      ],
+      "api_behavior": "FodtDocument.CharCount property returns total character count across all paragraphs (sum of text lengths). Empty doc=0. Empty paragraph contributes 0. Idempotent.",
+      "changed_files": [],
+      "test_files": [
+        "tests/net/fodt/FodtR164CharCountDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "src/net/fodt/FodtDocument.cs",
+          "state": "present",
+          "sha256": ""
+        }
+      ],
+      "format": "FODT"
     }
   ],
   "total_entries": 1201,
