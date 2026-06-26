@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s281-fodp-installed-workflow-20260626",
+  "latest_sprint": "ff-sprint-s284-ppm-installed-workflow-20260626",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -28860,9 +28860,171 @@
       ],
       "test_count": 11,
       "format": "FODP"
+    },
+    {
+      "entry_id": "PC-NETPBM-R295",
+      "classification": "DOTNET_TEST_COVERAGE",
+      "sprint": "ff-sprint-s287-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "NETPBM",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.get_mode"
+      ],
+      "api_symbols": [
+        "NetpbmImage.GetMode"
+      ],
+      "api_behavior": "GetMode(): int in [0,MaxValue]; all-zero=0; all-max=MaxValue; dims/format/MaxValue unchanged; idempotent; dogfood uniform and mixed in-range",
+      "changed_files": [
+        "tests/net/netpbm/NetpbmR295GetModeDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR295GetModeDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [],
+      "format": "netpbm"
+    },
+    {
+      "entry_id": "PC-FODS-R315",
+      "classification": "DOTNET_TEST_COVERAGE",
+      "sprint": "ff-sprint-s287-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "FODS",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.get_named_range_count"
+      ],
+      "api_symbols": [
+        "FodsDocument.GetNamedRangeCount"
+      ],
+      "api_behavior": "GetNamedRangeCount(): int non-negative; increases after AddNamedRange; SheetCount unchanged; idempotent; two-ranges count>=before+2; dogfood add-then-count, multiple",
+      "changed_files": [
+        "tests/net/fods/FodsR315GetNamedRangeCountDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR315GetNamedRangeCountDedicatedTests.cs"
+      ],
+      "test_count": 8,
+      "source_files": [],
+      "format": "fods"
+    },
+    {
+      "entry_id": "PC-FODT-R302",
+      "classification": "DOTNET_TEST_COVERAGE",
+      "sprint": "ff-sprint-s287-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "FODT",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.add_table_row"
+      ],
+      "api_symbols": [
+        "FodtDocument.AddTableRow"
+      ],
+      "api_behavior": "AddTableRow(tableIndex): negative/OOB/no-tables throws; valid ok; GetTableRowCount increases; TableCount/ParagraphCount unchanged; called-twice ok; dogfood add-table-then-row",
+      "changed_files": [
+        "tests/net/fodt/FodtR302AddTableRowDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR302AddTableRowDedicatedTests.cs"
+      ],
+      "test_count": 9,
+      "source_files": [],
+      "format": "fodt"
+    },
+    {
+      "entry_id": "PC-PBM-R282",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s282-pbm-installed-workflow-20260626",
+      "skill": "add-python-api",
+      "product": "PBM Python FOSS",
+      "capability_refs": [
+        "foss_python_products.PBM.python_status.installed_workflow"
+      ],
+      "api_symbols": [
+        "pbm_installed_workflow"
+      ],
+      "api_behavior": "pbm_installed_workflow(source): loads PBM file, returns format, loaded, width, height, pixel_count.",
+      "source_files": [
+        {
+          "path": "src/python/pbm/pbm_workflow.py",
+          "state": "present",
+          "sha256": "f4cddab3f8cb3ae29e76522684c84b7fb2c86f8062f6ad2c286c63510c7352de"
+        },
+        {
+          "path": "src/python/pbm/__init__.py",
+          "state": "present",
+          "sha256": "1c09898883f6b9e3149fd1c01229493a6cd8fddc17dbda621eab4060529715fb"
+        }
+      ],
+      "test_files": [
+        "tests/python/pbm/test_r282_pbm_installed_workflow.py"
+      ],
+      "test_count": 11,
+      "format": "PBM"
+    },
+    {
+      "entry_id": "PC-PGM-R283",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s283-pgm-installed-workflow-20260626",
+      "skill": "add-python-api",
+      "product": "PGM Python FOSS",
+      "capability_refs": [
+        "foss_python_products.PGM.python_status.installed_workflow"
+      ],
+      "api_symbols": [
+        "pgm_installed_workflow"
+      ],
+      "api_behavior": "pgm_installed_workflow(source): loads PGM file, returns format, loaded, width, height, pixel_count.",
+      "source_files": [
+        {
+          "path": "src/python/pgm/pgm_workflow.py",
+          "state": "present",
+          "sha256": "8844b0b2f1b7d9ff3b4881a258cf74381e5150fb63c0687e1ac20dbfb5e77802"
+        },
+        {
+          "path": "src/python/pgm/__init__.py",
+          "state": "present",
+          "sha256": "3f3428168a91a7584406819f3be08f5b1822d20d53734bbaf0b82efcd95b4049"
+        }
+      ],
+      "test_files": [
+        "tests/python/pgm/test_r283_pgm_installed_workflow.py"
+      ],
+      "test_count": 11,
+      "format": "PGM"
+    },
+    {
+      "entry_id": "PC-PPM-R284",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s284-ppm-installed-workflow-20260626",
+      "skill": "add-python-api",
+      "product": "PPM Python FOSS",
+      "capability_refs": [
+        "foss_python_products.PPM.python_status.installed_workflow"
+      ],
+      "api_symbols": [
+        "ppm_installed_workflow"
+      ],
+      "api_behavior": "ppm_installed_workflow(source): loads PPM file, returns format, loaded, width, height, pixel_count.",
+      "source_files": [
+        {
+          "path": "src/python/ppm/ppm_workflow.py",
+          "state": "present",
+          "sha256": "9f1168cbbc0ea84c8057483ae80801ed40ef01a85a69994db8206073fe5e89f4"
+        },
+        {
+          "path": "src/python/ppm/__init__.py",
+          "state": "present",
+          "sha256": "3cf48837b7f998be620aed0cc226b2d2477322951802165a8aee94f4710c9dd5"
+        }
+      ],
+      "test_files": [
+        "tests/python/ppm/test_r284_ppm_installed_workflow.py"
+      ],
+      "test_count": 11,
+      "format": "PPM"
     }
   ],
-  "total_entries": 1645,
+  "total_entries": 1649,
   "changes": [
     {
       "file": "src/python/dif/models.py",
