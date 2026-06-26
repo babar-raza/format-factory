@@ -1,0 +1,181 @@
+# .gitlab-ci.yml — Format Factory CI Pipeline
+# Mirrors .github/workflows/ci.yml for GitLab remote (gitlab.recruitize.ai)
+# Maintained in sync with .github/workflows/ci.yml — see docs/code-quality/production-readiness-standard.md §10
+#
+# STAGE ORDER: lint → security → test → governance → build
+# All stages run on push and merge_request events (except test-full which is push-to-main only).
+
+image: python:3.11
+
+stages:
+  - lint
+  - security
+  - test
+  - governance
+  - build
+
+# ─── LINT ─────────────────────────────────────────────────────────────────────
+
+lint:
+  stage: lint
+  image: python:3.11
+  script:
+    - pip install ruff
+    - ruff check src/ tests/ tools/ --output-format=gitlab
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push"'
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+
+skill-attribution-check:
+  # EP-006: Detect src/ mutations without skill execution transcripts.
+  # Policy: docs/governance/skill-only-policy.yaml § enforcement_points.EP-006
+  # This check fires AFTER commit (detection, not prevention).
+  # Prevention requires pre-commit hooks (SKILL-GAP-008 — in backlog).
+  stage: lint
+  image: python:3.11
+  allow_failure: true  # WARN only until SKILL-GAP-008 (pre-commit hook) is closed
+  before_script:
+    - pip install -e ".[dev]"
+    - mkdir -p .local
+  script:
+    - >
+      python tools/governance/ci_skill_attribution_check.py
+      --base-ref "${CI_MERGE_REQUEST_DIFF_BASE_SHA:-HEAD~1}"
+      --head-ref HEAD
+      --allow-pre-policy
+      --output .local/ci-skill-attribution-report.json
+  artifacts:
+    when: always
+    paths:
+      - .local/ci-skill-attribution-report.json
+    expire_in: 1 week
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push"'
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+
+# ─── SECURITY ─────────────────────────────────────────────────────────────────
+
+security:
+  stage: security
+  image: python:3.11
+  script:
+    - pip install bandit
+    - bandit -r src/ -ll -q --skip B314  # B314: xml.etree usage is intentional (see docs/security.md)
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push"'
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+
+# ─── TEST ─────────────────────────────────────────────────────────────────────
+
+test-fast:
+  # Mirrors GitHub Actions test-fast job (pull_request trigger)
+  # In GitLab, merge_request_event is equivalent.
+  stage: test
+  image: python:3.11
+  before_script:
+    - pip install -e ".[dev]"
+    - mkdir -p .local/test-results
+  script:
+    - python tools/test_runner.py --layer 3 --known-failures registry/known-failure-ledger.yaml --json-out .local/test-results/ci-fast.json
+  artifacts:
+    when: always
+    paths:
+      - .local/test-results/
+    expire_in: 1 week
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+
+test-full:
+  # Mirrors GitHub Actions test-full job (push to main only, matrix 3.10/3.11/3.12)
+  stage: test
+  parallel:
+    matrix:
+      - PYTHON_VERSION: ["3.10", "3.11", "3.12"]
+  image: python:${PYTHON_VERSION}
+  before_script:
+    - pip install -e ".[dev]"
+  script:
+    - pytest --cov=src --cov-report=xml --cov-report=term-missing
+    - coverage report --fail-under=85
+  coverage: '/TOTAL.*\s+(\d+%)$/'
+  artifacts:
+    when: always
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage.xml
+    paths:
+      - coverage.xml
+    expire_in: 1 week
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE == "push"'
+
+# ─── GOVERNANCE ───────────────────────────────────────────────────────────────
+
+governance-check:
+  stage: governance
+  image: python:3.11
+  before_script:
+    - pip install -e ".[dev]"
+  script:
+    - python tools/validators/source_structure_validator.py
+    - |
+      python -c "
+      import sys
+      sys.path.insert(0, 'tools/supervisor')
+      from governance_validators import run_all_governance_validators
+      decl = {
+          'run_id': 'ci-governance-check',
+          'sprint_id': 'ci',
+          'declared_scope': 'CI_CHECK',
+          'planned_work_items': [],
+          'evidence_root': '.local/evidences/',
+          'worker_self_verdict': 'PASS',
+          'worker_self_grade': 'PASS',
+          'start_time': '1970-01-01T00:00:00',
+          'end_time': '1970-01-01T00:00:01',
+          'git_head_start': 'HEAD',
+          'git_head_end': 'HEAD',
+          'git_status_final': 'clean',
+          'declared_scope_items': [],
+          'completed_work_items': [],
+          'incomplete_work_items': [],
+          'changed_files': [],
+          'tests_run': [],
+          'test_results': {},
+          'reports_created': [],
+          'next_recommended_work': 'continue',
+          'acceptance_criteria': 'CI governance check passes',
+      }
+      result = run_all_governance_validators(decl)
+      print(f'Governance validators: fail={result[\"fail_count\"]} warn={result[\"warn_count\"]} pass={result[\"pass_count\"]} blocks={result[\"blocks_sprint\"]}')
+      sys.exit(1 if result['blocks_sprint'] else 0)
+      "
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push"'
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+
+# ─── BUILD (.NET) ──────────────────────────────────────────────────────────────
+
+dotnet-build:
+  stage: build
+  image: mcr.microsoft.com/dotnet/sdk:10.0
+  script:
+    - dotnet restore src/net/*/FormatFactory.*.csproj tests/net/*/FormatFactory.*.Tests.csproj
+    - |
+      # Build in dependency order: leaf deps first, then consumers
+      for fmt in csv html txt markdown fods fodt ndjson tsv netpbm zst; do
+        proj=$(ls src/net/${fmt}/FormatFactory.*.csproj 2>/dev/null || true)
+        if [ -n "$proj" ]; then
+          echo "Building ${fmt}"
+          dotnet build "${proj}" --configuration Release --no-restore
+        fi
+      done
+    - |
+      for proj in tests/net/*/FormatFactory.*.Tests.csproj; do
+        echo "Testing ${proj}"
+        dotnet test "${proj}" --configuration Release
+      done
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push"'
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'

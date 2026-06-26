@@ -26,6 +26,8 @@ V79 (TC-GM-004, PROD-GOVERNANCE-001): validate_healing_stall_detector
 
 from __future__ import annotations
 
+from pathlib import Path
+
 
 # V75 — TC-GH-004: dependency_direction_validator
 # Enforces RULE-LIB-003: import direction Parser→Model→Analytics→Compat←__init__
