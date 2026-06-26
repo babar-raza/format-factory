@@ -25300,6 +25300,90 @@
         }
       ],
       "format": "FODT"
+    },
+    {
+      "entry_id": "PC-NETPBM-R254",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s247-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "NETPBM .NET",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.invert_colors"
+      ],
+      "api_symbols": [
+        "InvertColors"
+      ],
+      "api_behavior": "InvertColors() transforms each pixel in-place: pixel = MaxValue - pixel. Void return. Width/height/format/MaxValue preserved. Double invert restores original.",
+      "changed_files": [
+        "tests/net/netpbm/NetpbmR254InvertColorsDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR254InvertColorsDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "tests/net/netpbm/NetpbmR254InvertColorsDedicatedTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "NETPBM"
+    },
+    {
+      "entry_id": "PC-FODS-R266",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s247-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.add_column"
+      ],
+      "api_symbols": [
+        "AddColumn"
+      ],
+      "api_behavior": "AddColumn(sheetName, values) adds a new column with given values. Null/whitespace/nonexistent sheet throws. GetColumnCount increases. SheetCount unchanged.",
+      "changed_files": [
+        "tests/net/fods/FodsR266AddColumnDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR266AddColumnDedicatedTests.cs"
+      ],
+      "test_count": 9,
+      "source_files": [
+        {
+          "path": "tests/net/fods/FodsR266AddColumnDedicatedTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "FODS"
+    },
+    {
+      "entry_id": "PC-FODT-R262",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s247-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.insert_paragraph"
+      ],
+      "api_symbols": [
+        "InsertParagraph"
+      ],
+      "api_behavior": "InsertParagraph(index, text) inserts a paragraph at the given index. Negative/OOB throws. ParagraphCount increases. Insert at 0 shifts existing paragraphs.",
+      "changed_files": [
+        "tests/net/fodt/FodtR262InsertParagraphDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR262InsertParagraphDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "tests/net/fodt/FodtR262InsertParagraphDedicatedTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "FODT"
     }
   ],
   "total_entries": 1270,
