@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s221-dotnet-deepening-20260629",
+  "latest_sprint": "ff-sprint-s222-dotnet-deepening-20260629",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -24350,6 +24350,42 @@
       "description": "R236: Dedicated tests for FodtDocument.GetWordCount \u2014 empty no-exception, non-negative, single-para, count unchanged, two-para>=one-para, called-twice, after-heading, dogfood",
       "source_files": [
         "tests/net/fodt/FodtR236GetWordCountTests.cs"
+      ],
+      "test_count": 10
+    },
+    {
+      "entry_id": "PC-NETPBM-R229",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s222-dotnet-deepening-20260629",
+      "format": "NETPBM",
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.get_min_max_pixel_value",
+      "description": "R229: Dedicated tests for NetpbmImage.GetMinPixelValue/GetMaxPixelValue \u2014 non-negative, format/MaxValue/dims preserved, uniform-zero=both-0, set-one-pixel, min<=max, called-twice, dogfood",
+      "source_files": [
+        "tests/net/netpbm/NetpbmR229GetMinMaxPixelValueTests.cs"
+      ],
+      "test_count": 10
+    },
+    {
+      "entry_id": "PC-FODS-R240",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s222-dotnet-deepening-20260629",
+      "format": "FODS",
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.add_row",
+      "description": "R240: Dedicated tests for FodsDocument.AddRow \u2014 null/whitespace/nonexistent/null-data throws, valid no-exception, row count increases, SheetCount unchanged, two-rows +2, dogfood 5 rows",
+      "source_files": [
+        "tests/net/fods/FodsR240AddRowDedicatedTests.cs"
+      ],
+      "test_count": 9
+    },
+    {
+      "entry_id": "PC-FODT-R237",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s222-dotnet-deepening-20260629",
+      "format": "FODT",
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.get_character_count",
+      "description": "R237: Dedicated tests for FodtDocument.GetCharacterCount \u2014 empty no-exception, non-negative, single-para, count unchanged, longer>=shorter, called-twice, after-heading, dogfood",
+      "source_files": [
+        "tests/net/fodt/FodtR237GetCharacterCountTests.cs"
       ],
       "test_count": 10
     }
