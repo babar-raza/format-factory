@@ -1,0 +1,1887 @@
+---
+# Format Factory — Forensic Layer Audit Baseline
+# Mission: FORMAT-FACTORY-LAYER-AUDIT-20260626
+# Generated: 2026-06-26
+# Investigator: claude-sonnet-4-6
+# Authority: Repository truth (HEAD 555aa4c7) outranks all prior reports
+
+layer_audit_baseline:
+  mission_id: FORMAT-FACTORY-LAYER-AUDIT-20260626
+  repository: c:/Users/prora/OneDrive/Documents/GitHub/format-factory
+  branch: main
+  head: 555aa4c7
+  worktree: dirty  # 20+ modified files, 4 untracked
+  authoritative_plan: plans/master-plan.md
+  plan_revision: v7.3
+  supervisor_state: MODE_4_ACTIVE
+  skill_registry: .supervisor/skill-registry.yaml
+  command_registry: .claude/commands/command-registry.yaml
+  evidence_root: .local/evidences/
+  format_inventory:
+    python_formats: 20  # abw csv dif fodg fodp fods fodt gnumeric ndjson ods odt pbm pgm ppm qoi sylk toml tsv xcf zst
+    dotnet_formats: 10  # csv fods fodt html markdown ndjson netpbm tsv txt zst
+  product_inventory:
+    python_source_files: 614
+    dotnet_source_files: 138
+    supervisor_tools: 199
+    governance_validators: 82
+    registered_skills: 72
+    claude_commands: 72
+    qname_registry_entries: 79
+    gap_ledger_entries: 1242
+    gap_ledger_closed: 1203  # 96.8% — suspicious
+    sal_facts_total: 14315
+    sal_facts_formats_with_nonzero: 5  # fods fodt ods odt fodg/fodp (ODF family only)
+  discovered_architecture_docs:
+    - docs/architecture.md  # STALE — warns itself as stale
+    - docs/code-quality/production-library-standard-v2.md
+    - docs/capability-layer-design.md
+    - docs/capability-feature-compiler-spec.md
+    - plans/spec-to-feature-radical-correction-plan.md
+    - AGENTS.md
+    - GOVERNANCE.md
+  discovered_registries:
+    - registry/format-registry.yaml
+    - registry/format-completion-matrix.yaml
+    - registry/source-structure-baseline.json
+    - registry/parity-matrix.yaml
+    - registry/gate-contract-registry.yaml
+    - .supervisor/skill-registry.yaml
+    - shared/qname-registry/  # 20 format YAML files
+    - reports/capability-layer/gap-ledger.json
+  discovered_schemas:
+    - schemas/  # 22 JSON schemas
+    - .supervisor/schemas/
+    - oracle/schema/
+  discovered_validators:
+    - tools/supervisor/governance_validators.py  # 50 validate_ functions
+    - tools/supervisor/governance_validators_ext.py  # 15 functions
+    - tools/supervisor/governance_validators_ext2.py  # 6 functions
+    - tools/supervisor/governance_validators_sal.py  # 1 function
+    - tools/supervisor/governance_validators_spec.py  # 5 functions
+    - tools/supervisor/governance_validators_signal.py  # 1 function
+    - tools/supervisor/governance_validators_ledger.py  # 1 function
+    - tools/supervisor/governance_validators_gate_auth.py  # 2 functions
+    - tools/supervisor/governance_validators_dotnet.py  # 1 function
+    - tools/validators/source_structure_validator.py
+
+---
+# DISCOVERED LAYERS (28 layers investigated)
+
+discovered_layers:
+
+  - layer_id: L01
+    canonical_name: Specification Authority Layer
+    aliases: [SAL, spec-authority]
+    explicit_or_implicit: explicit
+    claimed_purpose: >
+      Parse, normalize, extract, and authorize facts from external format specifications.
+      Produce FACT-FORMAT-NNN records as the authoritative input to all downstream layers.
+    actual_responsibilities:
+      - PDF/document acquisition and snapshot
+      - Spec text normalization (chunking, section extraction)
+      - Fact extraction into sal-facts-*.json databases
+      - QName compliance reporting
+      - Spec governance runtime enforcement
+    implementation_paths:
+      - tools/specification-authority-layer/  # 23 Python files, ~5,500 LOC
+      - tools/spec-cache/  # refresh_check.py, acquire_spec.py, spec_index.py
+      - .local/spec-cache/  # 26 format subdirs with PDFs and normalized text
+      - .local/spec-cache/sal-facts-latest.json  # 9.8MB, 14315 facts total
+    documentation_paths:
+      - docs/specification-cache.md
+      - plans/spec-to-feature-radical-correction-plan.md (Lanes 1-6)
+    schema_paths:
+      - schemas/  # no formal sal-facts schema found
+    registry_paths:
+      - tools/specification-authority-layer/spec_source_registry.py
+    skill_ids: []  # no registered skill for SAL ingestion
+    command_ids: []  # no Claude command for SAL ops
+    producer_paths:
+      - tools/specification-authority-layer/sal_master_runner.py
+      - tools/specification-authority-layer/run_extraction_pipeline.py
+      - tools/specification-authority-layer/run_fact_verification.py
+    consumer_paths:
+      - tools/supervisor/governance_validators_sal.py
+      - tools/audit_sal_to_qname.py
+      - reports/capability-layer/gap-sal-traceability-*.json
+    input_artifacts:
+      - .local/spec-cache/{format}/  # raw PDFs and downloaded specs
+    output_artifacts:
+      - .local/spec-cache/sal-facts-latest.json  # 14315 facts but only for 5 formats
+      - .local/spec-cache/sal-facts-20260621.json
+      - reports/sal-qname-gap-20260626.json
+    validators:
+      - tools/supervisor/governance_validators_sal.py
+      - tools/specification-authority-layer/spec_verifier.py
+    tests:
+      - tests/supervisor/  # no dedicated SAL tests found
+    evidence_outputs: []
+    owner: unassigned
+    status: PARTIALLY_IMPLEMENTED
+    maturity_level: 2
+    critical_gaps:
+      - Only 5 of 20+ formats have real spec_facts (ODF family only)
+      - 14 formats (CSV TSV NDJSON ABW DIF GNUMERIC SYLK TOML XCF ZST PBM PGM PPM QOI) have 0 SAL facts
+      - No registered skill for SAL ingestion — manual execution required
+      - sal-facts schema not formally defined
+      - Spec normalization produces text.txt (2.2MB for FODS) but fact extraction from non-ODF specs is unimplemented
+
+  - layer_id: L02
+    canonical_name: QName and Hierarchy Authority Layer
+    aliases: [qname-registry, qname-authority]
+    explicit_or_implicit: explicit
+    claimed_purpose: >
+      Define canonical QNames mapping spec elements to implementation classes.
+      Bridge specification namespace to product source code.
+    actual_responsibilities:
+      - YAML registry of qnames per format (shared/qname-registry/)
+      - QName compliance reporting (V53 validator)
+      - Spec_qname class attribute enforcement in Python/C# classes
+    implementation_paths:
+      - shared/qname-registry/  # 20 format YAML files, 79 entries total
+      - tools/specification-authority-layer/qname_src_compliance_reporter.py
+    documentation_paths:
+      - registry/python-qname-architecture.json
+    schema_paths:
+      - shared/qname-registry/schema.yaml
+    registry_paths:
+      - shared/qname-registry/
+    skill_ids: [qname-backfill, python-qname-code-reviewer]
+    command_ids: [qname-backfill]
+    producer_paths:
+      - tools/specification-authority-layer/patch_workbench_qnames.py
+    consumer_paths:
+      - tools/audit_qname_coverage.py
+      - governance_validators_spec.py (V51-V53)
+    input_artifacts:
+      - .local/spec-cache/sal-facts-latest.json  # spec_fact_ref population
+    output_artifacts:
+      - shared/qname-registry/*.yaml
+      - reports/qname-coverage-20260626.json
+      - reports/sal-qname-gap-20260626.json
+    validators:
+      - tools/supervisor/governance_validators_spec.py
+    tests:
+      - tests/python/*/test_*spec_qname*.py  # per-format V53 tests
+    evidence_outputs:
+      - reports/qname-coverage-20260626.json
+    owner: unassigned
+    status: IMPLEMENTED_NOT_ENFORCED
+    maturity_level: 3
+    critical_gaps:
+      - Only 3 of 79 entries have status=verified; 75 are implemented (not spec_fact verified)
+      - spec_fact_ref population depends on SAL facts which are missing for 14 formats
+      - No automated sync from SAL facts -> qname registry
+      - Registry is 79 entries across 20 formats — very sparse for comprehensive coverage
+
+  - layer_id: L03
+    canonical_name: Requirement and Capability Authority Layer
+    aliases: [capability-layer, gap-ledger]
+    explicit_or_implicit: explicit
+    claimed_purpose: >
+      Translate spec facts and format requirements into capability gaps.
+      Track which capabilities exist vs which are missing.
+      Drive work item selection for product deepening.
+    actual_responsibilities:
+      - Gap ledger maintenance (1242 entries)
+      - Capability map generation (commercial + FOSS)
+      - Work item generation from open gaps
+      - Gap closure tracking
+    implementation_paths:
+      - tools/capability_layer/  # 5 Python files
+      - tools/supervisor/capability_to_feature_compiler.py
+      - tools/supervisor/capability_feature_compiler.py
+      - tools/supervisor/capability_compiler.py
+      - reports/capability-layer/gap-ledger.json
+    documentation_paths:
+      - docs/capability-layer-design.md
+      - docs/capability-feature-compiler-spec.md
+    schema_paths:
+      - schemas/capability/  # if present
+    registry_paths:
+      - reports/capability-layer/gap-ledger.json
+    skill_ids: [build-capability-routes, update-capability-matrix]
+    command_ids: [build-capability-routes, update-capability-matrix]
+    producer_paths:
+      - tools/capability_layer/capability_map_generator.py
+      - tools/capability_layer/capability_to_feature_compiler.py
+    consumer_paths:
+      - tools/supervisor/gap_closure_engine.py
+      - tools/supervisor/gap_ledger_to_work_items.py
+      - .local/supervisor/next-work-items.json
+    input_artifacts:
+      - .local/spec-cache/sal-facts-latest.json
+      - shared/qname-registry/
+    output_artifacts:
+      - reports/capability-layer/gap-ledger.json
+      - reports/capability-layer/foss-reduced-capability-map.json
+      - reports/capability-layer/commercial-capability-map.json
+      - .local/supervisor/next-work-items.json
+    validators:
+      - tools/capability_layer/validate_capability_map.py
+      - tools/supervisor/gap_verification_engine.py
+    tests:
+      - tests/capability_layer/  # if present
+    evidence_outputs:
+      - reports/capability-layer/gap-ledger.json
+    owner: unassigned
+    status: IMPLEMENTED_AND_CONSUMED
+    maturity_level: 3
+    critical_gaps:
+      - 1203/1242 gaps (96.8%) are closed — closure may be over-claimed not evidence-verified
+      - Only 1 gap is "open" currently — implies near-zero actionable work from this layer
+      - gap_ledger_ref injection into declarations depends on this layer feeding correctly
+      - No formal schema for gap-ledger entries (no runtime validation of entry structure)
+      - Gap closure engine may close gaps without independent test_verified proof
+
+  - layer_id: L04
+    canonical_name: Sample Corpus Authority Layer
+    aliases: [samples, test-corpus]
+    explicit_or_implicit: implicit
+    claimed_purpose: >
+      Provide authoritative, legally-cleared sample files for each format.
+      Feed oracle comparisons, test infrastructure, and consumer roundtrips.
+    actual_responsibilities:
+      - Sample file storage (samples/by-format/)
+      - Sample manifest tracking
+      - Legal clearance recording
+    implementation_paths:
+      - samples/  # 177 files
+      - samples/by-format/  # by format subdirs
+    documentation_paths:
+      - acquisition-packs/*/  # samples referenced in packs
+    schema_paths: []
+    registry_paths: []
+    skill_ids: []
+    command_ids: []
+    producer_paths: []  # manual addition only
+    consumer_paths:
+      - tools/oracle/run_fods_oracle.py
+      - tests/python/*/
+    input_artifacts: []
+    output_artifacts:
+      - samples/by-format/{format}/*.{ext}
+    validators: []
+    tests: []
+    evidence_outputs: []
+    owner: unassigned
+    status: PARTIALLY_IMPLEMENTED
+    maturity_level: 2
+    critical_gaps:
+      - No corpus authority schema or manifest
+      - No legal clearance tracking per sample file
+      - No format coverage matrix (which formats have how many samples)
+      - Samples exist but their governance status is undocumented
+
+  - layer_id: L05
+    canonical_name: Test Oracle / Conformance Authority Layer
+    aliases: [oracle, conformance-oracle]
+    explicit_or_implicit: explicit
+    claimed_purpose: >
+      Compare Format Factory parser output against a trusted reference implementation.
+      Provide independent conformance evidence for gate advancement.
+    actual_responsibilities:
+      - LibreOffice-based oracle comparison (FODS, FODT)
+      - Oracle result summarization and reporting
+      - Oracle environment validation
+    implementation_paths:
+      - tools/oracle/  # 11 Python files
+      - oracle/  # 103 files total including formats/, registry/, reports/, schema/
+    documentation_paths:
+      - oracle/oracle-layer-inventory.yaml
+      - oracle/oracle-authority-policy.md
+    schema_paths:
+      - oracle/schema/
+    registry_paths:
+      - oracle/registry/comparator-registry.yaml
+      - oracle/formats/  # per-format oracle results
+    skill_ids: []  # no registered oracle skill
+    command_ids: []
+    producer_paths:
+      - tools/oracle/run_fods_oracle.py
+      - tools/oracle/run_fodt_oracle.py
+      - tools/oracle/execute_oracle.py
+    consumer_paths:
+      - tools/oracle/summarize_oracle_results.py
+      - tools/oracle/compare_fods_oracle.py
+    input_artifacts:
+      - samples/by-format/{format}/
+      - src/python/{format}/  # product source being tested
+    output_artifacts:
+      - oracle/formats/{format}/reports/oracle-run-summary.json
+      - oracle/reports/oracle-coverage-report.json
+    validators:
+      - tools/oracle/validate_oracle_environment.py
+      - tools/oracle/validate_oracle_obligations.py
+    tests: []
+    evidence_outputs:
+      - oracle/formats/*/reports/oracle-run-summary.json
+    owner: unassigned
+    status: PARTIAL_EXPERIMENT
+    maturity_level: 2
+    critical_gaps:
+      - Only FODS and FODT oracle harnesses exist (2 of 20 Python formats)
+      - Oracle requires LibreOffice headless — environmental dependency undocumented
+      - No oracle skill registered — not invocable through governed flow
+      - Oracle tests products against reference but doesn't test against spec (different thing)
+      - execute_oracle.py exists but many format comparators are missing
+      - CSV oracle exists (oracle/formats/csv/) but no LibreOffice-based comparator
+      - ZST oracle exists but ZST is compression format — oracle approach TBD
+
+  - layer_id: L06
+    canonical_name: Product Source / Implementation Layer
+    aliases: [source, product-code]
+    explicit_or_implicit: explicit
+    claimed_purpose: >
+      Provide Python FOSS and .NET commercial implementations of format parsers,
+      writers, exporters, and validators.
+    actual_responsibilities:
+      - Python format packages (src/python/, 20 formats, 614 .py files)
+      - .NET format implementation (src/net/, 10 formats, 138 .cs files)
+      - Public API surface definition
+      - Spec_qname class attribute assignment
+    implementation_paths:
+      - src/python/  # 20 format packages
+      - src/net/  # 10 format dirs
+    documentation_paths:
+      - docs/architecture.md  # stale
+    schema_paths: []
+    registry_paths:
+      - registry/format-completion-matrix.yaml
+      - registry/source-structure-baseline.json
+    skill_ids:
+      - add-python-api
+      - add-dotnet-api
+      - add-python-object-model-feature
+      - add-dotnet-object-model-feature
+      - add-same-format-writer-feature
+    command_ids:
+      - add-python-api
+      - add-dotnet-api
+    producer_paths:
+      - .claude/commands/add-python-api.md  # skill-governed
+      - .claude/commands/add-dotnet-api.md
+    consumer_paths:
+      - tests/python/
+      - tests/net/
+      - examples/python/
+      - packaging/
+    input_artifacts:
+      - shared/qname-registry/  # spec_qname references
+      - reports/r90/product-code-change-ledger.json  # must exist before edit
+    output_artifacts:
+      - src/python/{format}/*.py
+      - src/net/{format}/*.cs
+    validators:
+      - tools/validators/source_structure_validator.py  # LOC + function caps
+      - governance_validators.py V35 (LOC), V66 (monolith detection)
+      - sprint_executor_validate.py (product_code_ledger check)
+    tests:
+      - tests/python/  # 2092 .py test files
+      - tests/net/  # 389 .cs test files
+    evidence_outputs:
+      - reports/r90/product-code-change-ledger.json
+    owner: product_team
+    status: IMPLEMENTED_AND_CONSUMED
+    maturity_level: 4
+    critical_gaps:
+      - 10 Python formats not in .NET yet (abw dif fodg fodp gnumeric ndjson ods odt pbm qoi sylk toml xcf — only 10 in .NET)
+      - architecture_only stubs in spec/ dirs are not production implementations
+      - LOC baseline caps are write-once — scaling is constrained
+      - No cross-language API parity registry (Python vs .NET for same format)
+      - V35 LOC cap system has no automated healing path for legitimate growth
+
+  - layer_id: L07
+    canonical_name: Test Infrastructure Layer
+    aliases: [tests, test-suite]
+    explicit_or_implicit: implicit
+    claimed_purpose: >
+      Verify product behavior through unit, integration, conformance, and roundtrip tests.
+      Provide evidence for gate advancement.
+    actual_responsibilities:
+      - Python format tests (tests/python/, 2092 files)
+      - .NET format tests (tests/net/, 389 files)
+      - Supervisor tests (tests/supervisor/, 366 files)
+      - Test layer classification (test-layer-manifest.yaml)
+    implementation_paths:
+      - tests/  # all test dirs
+      - registry/test-layer-baseline.json
+      - registry/test-layer-manifest.yaml
+    documentation_paths: []
+    schema_paths: []
+    registry_paths:
+      - registry/known-failure-ledger.yaml
+      - registry/flaky-test-ledger.yaml
+      - registry/cross-format-test-index.yaml
+    skill_ids: [add-roundtrip-test, create-consumer-roundtrip]
+    command_ids: [add-roundtrip-test, create-consumer-roundtrip]
+    producer_paths:
+      - tests/python/
+      - tests/net/
+    consumer_paths:
+      - tools/supervisor/autonomous_cycle.py  # reads test results
+    input_artifacts:
+      - src/python/  # tested code
+      - src/net/  # tested code
+      - samples/  # test fixtures
+    output_artifacts:
+      - .local/supervisor/grade-cache.json  # test results cached
+    validators:
+      - pytest (Python)
+      - dotnet test (C#)
+      - registry/known-failure-ledger.yaml
+    tests: []  # circular - this IS the test layer
+    evidence_outputs:
+      - .local/evidences/*/evidence-declaration.yaml
+    owner: product_team
+    status: IMPLEMENTED_AND_CONSUMED
+    maturity_level: 4
+    critical_gaps:
+      - Test count inflation: many arithmetic-deepening tests (697 files classified as arithmetic-only)
+      - No formal test adequacy contract beyond layer manifest WARN (not ERROR until 2026-07-18)
+      - Cross-format test index exists but marker-based collection takes 7+ min — unusable for CI
+      - No conformance tests linked to specific spec requirements (only behavioral tests)
+
+  - layer_id: L08
+    canonical_name: Evidence and Review Package Authority Layer
+    aliases: [evidence, declaration]
+    explicit_or_implicit: explicit
+    claimed_purpose: >
+      Capture verifiable evidence of work done in each sprint.
+      Enable autonomous grade assignment without human review.
+    actual_responsibilities:
+      - Evidence declaration schema enforcement
+      - Sprint evidence package construction
+      - LLM-based semantic verification
+      - Review package ZIP export
+    implementation_paths:
+      - tools/supervisor/evidence_declaration.py
+      - tools/supervisor/build_declaration_review_package.py
+      - tools/supervisor/sprint_executor_validate.py
+      - tools/supervisor/grade_declared_work.py
+    documentation_paths:
+      - docs/automation/supervisor-worker-contract.md
+    schema_paths:
+      - .supervisor/schemas/evidence-declaration.yaml
+    registry_paths: []
+    skill_ids: [build-evidence-bundle, collect-skill-execution-receipts]
+    command_ids: [build-evidence-bundle, collect-skill-execution-receipts]
+    producer_paths:
+      - .local/evidences/{run_id}/evidence-declaration.yaml
+    consumer_paths:
+      - tools/supervisor/supervisor_loop.py (autonomous-cycle)
+      - tools/supervisor/autonomous_cycle.py
+      - tools/supervisor/grade_declared_work.py
+    input_artifacts:
+      - .local/evidences/{run_id}/evidence-declaration.yaml
+    output_artifacts:
+      - .local/supervisor/reviews/{run_id}/declaration-review-package.zip
+      - reports/supervisor/evidence-review.json
+    validators:
+      - tools/supervisor/sprint_executor_validate.py --repair
+    tests:
+      - tests/supervisor/test_evidence_*.py
+    evidence_outputs:
+      - .local/supervisor/reviews/*/declaration-review-package.zip
+    owner: supervisor_layer
+    status: IMPLEMENTED_AND_CONSUMED
+    maturity_level: 4
+    critical_gaps:
+      - LLM grader (semantic verification) requires external env vars — degrades gracefully but not always
+      - evidence_quality_zero goes to continuation_warnings not hard_stops — silent degradation
+      - No cross-sprint evidence comparison (each sprint starts fresh)
+      - Focused-proof files ordering is convention, not schema-enforced
+
+  - layer_id: L09
+    canonical_name: State and Continuation Authority Layer
+    aliases: [continuation, cci, state]
+    explicit_or_implicit: explicit
+    claimed_purpose: >
+      Maintain autonomous sprint loop state across sessions.
+      Prevent cross-chat state contamination.
+      Enforce sprint iteration limits and post-plan terminal rules.
+    actual_responsibilities:
+      - continuation-signal.json maintenance
+      - Session identity stamping (session_id in signal)
+      - POST_PLAN_TERMINAL enforcement
+      - CHAT_ID_MISMATCH / SESSION_MISMATCH enforcement
+      - Plan lock file management
+    implementation_paths:
+      - tools/supervisor/check_continuation.py
+      - tools/supervisor/continuation_selector.py
+      - tools/supervisor/continuation_identity.py
+      - tools/supervisor/write_plan_lock.py
+      - .local/supervisor/continuation-signal.json
+      - .local/supervisor/plan-locks/
+    documentation_paths:
+      - CLAUDE.md (Cross-Chat Continuation Isolation section)
+    schema_paths: []  # signal JSON has no formal schema
+    registry_paths:
+      - .local/supervisor/plan-locks/  # per-session lock files
+      - .local/supervisor/active-plan-lock.json
+    skill_ids: []
+    command_ids: []
+    producer_paths:
+      - tools/supervisor/autonomous_cycle.py  # writes signal
+      - tools/supervisor/write_plan_lock.py  # writes locks
+    consumer_paths:
+      - tools/supervisor/check_continuation.py
+      - CLAUDE.md (agent reads output)
+    input_artifacts:
+      - .local/supervisor/continuation-signal.json
+      - .local/supervisor/plan-locks/*.json
+    output_artifacts:
+      - check_continuation.py stdout (JSON verdict)
+    validators:
+      - check_continuation.py (self-validating)
+    tests:
+      - tests/supervisor/continuation/test_isolation.py  # 45 tests
+    evidence_outputs: []
+    owner: supervisor_layer
+    status: IMPLEMENTED_AND_CONSUMED
+    maturity_level: 4
+    critical_gaps:
+      - Stale plan locks accumulate (TERMINAL_CLOSED vs SUPERSEDED confusion)
+      - 4h TTL session identity file can cause false POST_PLAN_TERMINAL after compaction
+      - No schema for continuation-signal.json
+      - SUPERSEDED status recently added but not all code paths handle it
+
+  - layer_id: L10
+    canonical_name: Plan and Prompt Authority Layer
+    aliases: [plans, taskcards, work-queue]
+    explicit_or_implicit: explicit
+    claimed_purpose: >
+      Organize and sequence work through plan files and taskcards.
+      Govern which work is authorized to execute.
+    actual_responsibilities:
+      - Master plan maintenance (plans/master-plan.md)
+      - Per-chat plan files (plans/*.md)
+      - Taskcard creation and tracking (taskcards/)
+      - Next sprint prompt generation
+    implementation_paths:
+      - plans/  # 16 files
+      - taskcards/  # 200+ subdirs — historical sprawl
+      - reports/supervisor/next-sprint.md
+      - .local/supervisor/next-work-items.json
+    documentation_paths:
+      - plans/master-plan.md  # authoritative
+    schema_paths: []
+    registry_paths: []
+    skill_ids: [create-taskcard, export-plan-context]
+    command_ids: [create-taskcard, export-plan-context]
+    producer_paths:
+      - tools/supervisor/generate_next_worker_prompt.py
+      - tools/supervisor/stream_prompt_generator.py
+    consumer_paths:
+      - autonomous_cycle.py
+      - CLAUDE.md agent
+    input_artifacts:
+      - reports/supervisor/evidence-review.json
+      - .local/supervisor/continuation-signal.json
+    output_artifacts:
+      - reports/supervisor/next-sprint.md
+      - .local/supervisor/next-work-items.json
+    validators:
+      - tools/supervisor/validate_plan_readiness.py
+    tests: []
+    evidence_outputs:
+      - .local/supervisor/reviews/
+    owner: supervisor_layer
+    status: IMPLEMENTED_AND_CONSUMED
+    maturity_level: 3
+    critical_gaps:
+      - taskcards/ directory has 200+ subdirs — no active authority, pure historical archive
+      - Hardening addenda plans proliferate (6 addendum files in plans/ root)
+      - No plan expiry or deprecation policy
+      - next-sprint.md is advisory-only but consumed as authority in some contexts
+
+  - layer_id: L11
+    canonical_name: Supervisor and Autonomous Sprint Authority Layer
+    aliases: [supervisor, autonomous-cycle, sprint-loop]
+    explicit_or_implicit: explicit
+    claimed_purpose: >
+      Orchestrate autonomous sprints end-to-end: work selection, execution,
+      grading, evidence, state update, and continuation decision.
+    actual_responsibilities:
+      - Sprint orchestration (autonomous_cycle.py 2401 LOC)
+      - Grade declared work (grade_declared_work.py)
+      - Session resume generation (session-resume.md)
+      - Approval gate management (approval-gates.md)
+      - Rework item tracking
+    implementation_paths:
+      - tools/supervisor/autonomous_cycle.py  # 2401 LOC
+      - tools/supervisor/supervisor_loop.py
+      - tools/supervisor/sprint_executor.py
+      - tools/supervisor/autonomous_orchestrator.py
+      - reports/supervisor/  # all supervisor outputs
+    documentation_paths:
+      - docs/automation/autonomous-supervision-replication-guide.md
+      - docs/automation/supervisor-worker-contract.md
+    schema_paths:
+      - .supervisor/schemas/
+    registry_paths:
+      - .supervisor/config.yaml
+      - .supervisor/policies.yaml
+    skill_ids: [post-sprint-loop, post-sprint-audit]
+    command_ids: [post-sprint-loop, post-sprint-audit]
+    producer_paths:
+      - tools/supervisor/autonomous_cycle.py
+    consumer_paths:
+      - CLAUDE.md agent
+      - check_continuation.py
+    input_artifacts:
+      - .local/evidences/{run_id}/evidence-declaration.yaml
+    output_artifacts:
+      - reports/supervisor/session-resume.md
+      - reports/supervisor/next-sprint.md
+      - reports/supervisor/approval-gates.md
+      - reports/supervisor/evidence-review.json
+      - .local/supervisor/continuation-signal.json
+    validators:
+      - governance_validators.py (82 functions)
+    tests:
+      - tests/supervisor/  # 366 Python test files
+    evidence_outputs:
+      - reports/supervisor/evidence-review.json
+      - .local/supervisor/reviews/*/declaration-review-package.zip
+    owner: supervisor_team
+    status: PRODUCTION_GRADE
+    maturity_level: 5
+    critical_gaps:
+      - 199 Python files in tools/supervisor/ — extreme complexity, maintainability concern
+      - Multiple AI sub-tools (ai_product_brain.py, ai_learning_loop.py) without clear consumers
+      - supervisor_loop.py 120s timeout — use autonomous_cycle.py directly
+      - Circuit breaker exists but is linear (not exponential backoff)
+
+  - layer_id: L12
+    canonical_name: Governance and Policy Enforcement Layer
+    aliases: [governance, validators, gov-block]
+    explicit_or_implicit: explicit
+    claimed_purpose: >
+      Enforce format-factory structural and procedural policies through machine-readable
+      validators wired into sprint closeout.
+    actual_responsibilities:
+      - 82 governance validator functions across 9 files
+      - V1-V77 coverage (architecture, analytics, skill, ledger, SAL, signal, dotnet)
+      - GOV_BLOCK enforcement (4 named validators that block continuation)
+      - Sprint declaration validation
+    implementation_paths:
+      - tools/supervisor/governance_validators.py  # 50 functions
+      - tools/supervisor/governance_validators_ext.py  # 15 functions
+      - tools/supervisor/governance_validators_ext2.py  # 6 functions
+      - tools/supervisor/governance_validators_sal.py
+      - tools/supervisor/governance_validators_spec.py
+      - tools/supervisor/governance_validators_signal.py
+      - tools/supervisor/governance_validators_ledger.py
+      - tools/supervisor/governance_validators_gate_auth.py
+      - tools/supervisor/governance_validators_dotnet.py
+      - tools/supervisor/governance_validator_runner.py
+      - tools/supervisor/governance_validator_utils.py
+    documentation_paths:
+      - docs/code-quality/production-library-standard-v2.md
+      - GOVERNANCE.md
+    schema_paths: []
+    registry_paths:
+      - registry/source-structure-baseline.json  # LOC caps
+    skill_ids: [validate-mutation-guard, scan-residual-bypasses]
+    command_ids: [scan-residual-bypasses, validate-mutation-guard]
+    producer_paths:
+      - governance_validator_runner.py
+    consumer_paths:
+      - autonomous_cycle.py (wired into sprint closeout)
+    input_artifacts:
+      - .local/evidences/{run_id}/evidence-declaration.yaml
+    output_artifacts:
+      - autonomous_cycle.py GOV_BLOCK/WARN output
+    validators: []  # self-contained
+    tests:
+      - tests/supervisor/test_governance_validators.py  # 109+ tests
+    evidence_outputs: []
+    owner: supervisor_team
+    status: IMPLEMENTED_AND_CONSUMED
+    maturity_level: 4
+    critical_gaps:
+      - Many validators are WARN-only (not blocking)
+      - V44 was a constant-WARN stub until recently fixed
+      - No versioning of validator contracts (V42 added after V41, renumbering fragile)
+      - Validator source files growing large (governance_validators.py was 3181 LOC)
+      - governance_validators_ext2.py has only V75/V76 — 2 functions in a dedicated file
+
+  - layer_id: L13
+    canonical_name: Skill and Command Execution Authority Layer
+    aliases: [skills, commands, skill-registry]
+    explicit_or_implicit: explicit
+    claimed_purpose: >
+      Ensure all product work is performed through registered, idempotent,
+      tested skills rather than ad-hoc scripts.
+    actual_responsibilities:
+      - Skill registry enforcement (72 skills)
+      - Skill contract validation
+      - Skill transcript recording
+      - Work-type to skill mapping
+    implementation_paths:
+      - .supervisor/skill-registry.yaml  # 1455 LOC, 72 skills
+      - .claude/commands/  # 72 .md command files
+      - tools/supervisor/validate_skill_registry.py
+      - tools/supervisor/validate_skill_contracts.py
+      - tools/supervisor/validate_skill_transcript.py
+      - tools/supervisor/gen_skill_transcripts.py
+    documentation_paths:
+      - .supervisor/skill-first-policy.md
+    schema_paths:
+      - .supervisor/schemas/skill-contract-schema.yaml  # if present
+    registry_paths:
+      - .supervisor/skill-registry.yaml
+      - .supervisor/work-type-skill-map.yaml
+      - .supervisor/command-inventory.yaml
+    skill_ids: [check-skill-coverage, inventory-skills, inventory-commands]
+    command_ids: [check-skill-coverage, inventory-skills, inventory-commands]
+    producer_paths:
+      - skills/  # skill prompt definitions
+    consumer_paths:
+      - autonomous_cycle.py
+      - governance_validators.py (V41 skill attribution)
+    input_artifacts:
+      - .supervisor/skill-registry.yaml
+    output_artifacts:
+      - .supervisor/skill-execution-receipt-index.yaml
+      - .supervisor/skill-idempotency-proof.yaml
+    validators:
+      - tools/supervisor/validate_skill_registry.py
+      - V41 (skill attribution for analytics)
+      - V42 (deepening suspension)
+    tests:
+      - tests/supervisor/test_skill*.py
+    evidence_outputs:
+      - .supervisor/skill-execution-receipt-index.yaml
+    owner: supervisor_team
+    status: IMPLEMENTED_AND_CONSUMED
+    maturity_level: 4
+    critical_gaps:
+      - skill-registry.yaml has YAML structural fragility (orphaned entries after top-level keys)
+      - No runtime enforcement of skill invocation in Claude sessions — honor-system only
+      - Skills directory exists but skill contract tests limited
+      - Missing skills for: SAL ingestion, oracle execution, corpus management
+
+  - layer_id: L14
+    canonical_name: Source-Change Handoff Authority Layer
+    aliases: [product-code-ledger, execution-handoff]
+    explicit_or_implicit: explicit
+    claimed_purpose: >
+      Gate every src/ edit behind a product-code-ledger entry.
+      Provide machine-readable handoff from planning to implementation.
+    actual_responsibilities:
+      - Product code change ledger maintenance
+      - Execution handoff generation
+      - Ad-hoc execution detection
+    implementation_paths:
+      - reports/r90/product-code-change-ledger.json
+      - tools/supervisor/generate_execution_handoff.py
+      - tools/supervisor/detect_ad_hoc_execution.py
+    documentation_paths: []
+    schema_paths: []
+    registry_paths:
+      - reports/r90/product-code-change-ledger.json
+    skill_ids: [generate-execution-handoff, detect-ad-hoc-execution]
+    command_ids: [generate-execution-handoff, detect-ad-hoc-execution]
+    producer_paths:
+      - tools/supervisor/generate_execution_handoff.py
+    consumer_paths:
+      - sprint_executor_validate.py (check ledger exists before src/ edit)
+    input_artifacts: []
+    output_artifacts:
+      - reports/r90/product-code-change-ledger.json
+    validators:
+      - sprint_executor_validate.py (product_code_ledger_required_before_source_edit)
+      - V38/V39 validators (if numbered)
+    tests:
+      - tests/supervisor/test_detect_ad_hoc*.py
+    evidence_outputs: []
+    owner: supervisor_team
+    status: IMPLEMENTED_AND_CONSUMED
+    maturity_level: 3
+    critical_gaps:
+      - Ledger is manually maintained — no automated wiring to git diffs
+      - Execution handoff generation exists but consumed inconsistently
+      - Ad-hoc execution still possible — detection is after-the-fact, not prevention
+
+  - layer_id: L15
+    canonical_name: Release and Packaging Authority Layer
+    aliases: [packaging, release, publication]
+    explicit_or_implicit: explicit
+    claimed_purpose: >
+      Build installable Python wheels and .NET packages.
+      Track packaging status per format.
+      Provide install-proof evidence.
+    actual_responsibilities:
+      - Python wheel building (packaging/python/build-local-packages.py)
+      - Package matrix management
+      - Install-proof execution (package_install_proof.py)
+    implementation_paths:
+      - packaging/python/  # build scripts and matrix
+      - packaging/python/package-matrix.yaml
+      - tools/supervisor/package_install_proof.py
+      - tools/supervisor/validate_package_identity.py
+    documentation_paths:
+      - release-manifests/
+    schema_paths: []
+    registry_paths:
+      - packaging/python/package-matrix.yaml
+    skill_ids: [package-install-proof, add-installed-package-example]
+    command_ids: [package-install-proof, add-installed-package-example]
+    producer_paths:
+      - packaging/python/build-local-packages.py
+    consumer_paths:
+      - examples/python/  # installed package examples
+    input_artifacts:
+      - src/python/{format}/
+    output_artifacts:
+      - .local/package-builds/python-foss/*.whl
+    validators:
+      - tools/supervisor/validate_package_identity.py
+    tests:
+      - tests/packaging/
+    evidence_outputs:
+      - .local/supervisor/install-proof-logs/
+    owner: product_team
+    status: PARTIALLY_IMPLEMENTED
+    maturity_level: 3
+    critical_gaps:
+      - NuGet/.NET publication not automated
+      - PyPI publication blocked on Babar Raza sign-off only
+      - package-matrix.yaml only covers Python FOSS packages
+      - Install proof runs but doesn't verify behavior (only import)
+      - No regression test for installed packages vs source packages
+
+  - layer_id: L16
+    canonical_name: AI and Acceleration Authority Boundary Layer
+    aliases: [ai-boundary, acceleration, ai-governance]
+    explicit_or_implicit: explicit
+    claimed_purpose: >
+      Control and audit AI-assisted code generation and decision-making.
+      Prevent AI output from being treated as specification authority.
+    actual_responsibilities:
+      - AI evidence critic (ai_evidence_critic.py)
+      - Adversarial checking (adversarial_check.py)
+      - LLM backend configuration
+      - AI-generated output classification (AI_DRAFT vs AUTHORITATIVE)
+    implementation_paths:
+      - tools/supervisor/ai_evidence_critic.py
+      - tools/supervisor/adversarial_check.py
+      - tools/supervisor/ai_supervisor_advisor.py
+      - tools/supervisor/ai_product_brain.py
+      - tools/supervisor/ai_learning_loop.py
+      - tools/supervisor/llm_backend_config.py
+      - .supervisor/autonomy-boundary-contract.yaml
+    documentation_paths:
+      - docs/ai-usage-operating-model.md
+      - docs/ai-usage-operating-model.yaml
+      - AGENTS.md (AI boundary rules)
+    schema_paths: []
+    registry_paths:
+      - .supervisor/ad-hoc-execution-inventory.yaml
+    skill_ids: []
+    command_ids: []
+    producer_paths: []
+    consumer_paths: []  # used internally within supervisor
+    input_artifacts: []
+    output_artifacts: []
+    validators:
+      - tools/supervisor/adversarial_check.py
+    tests: []
+    evidence_outputs: []
+    owner: supervisor_team
+    status: PARTIALLY_IMPLEMENTED
+    maturity_level: 2
+    critical_gaps:
+      - ai_product_brain.py, ai_learning_loop.py, ai_implementation_designer.py — no documented consumers
+      - No runtime enforcement of AI_DRAFT vs AUTHORITATIVE classification for downstream layers
+      - LLM grader requires env vars — graceful degradation means AI verification is optional
+      - No test coverage for adversarial_check.py
+      - AI output not formally tagged in artifact provenance chain
+
+  - layer_id: L17
+    canonical_name: Feature Compilation Layer
+    aliases: [capability-to-feature, gap-to-work-item]
+    explicit_or_implicit: explicit
+    claimed_purpose: >
+      Translate gap-ledger entries into structured work items with priority scoring.
+      Bridge capability analysis to sprint work selection.
+    actual_responsibilities:
+      - gap_ledger_to_work_items.py (gap → work item)
+      - capability_to_feature_compiler.py (capability → feature)
+      - Priority scoring
+      - next-work-items.json generation
+    implementation_paths:
+      - tools/supervisor/gap_ledger_to_work_items.py
+      - tools/supervisor/capability_to_feature_compiler.py
+      - tools/supervisor/capability_feature_compiler.py
+      - tools/capability_layer/capability_to_feature_compiler.py
+    documentation_paths:
+      - docs/capability-feature-compiler-spec.md
+    schema_paths: []
+    registry_paths: []
+    skill_ids: []
+    command_ids: []
+    producer_paths:
+      - tools/supervisor/gap_ledger_to_work_items.py
+    consumer_paths:
+      - autonomous_cycle.py (Step 3a-pre)
+    input_artifacts:
+      - reports/capability-layer/gap-ledger.json
+    output_artifacts:
+      - .local/supervisor/next-work-items.json
+    validators: []
+    tests:
+      - tests/capability_layer/
+    evidence_outputs: []
+    owner: supervisor_team
+    status: IMPLEMENTED_AND_CONSUMED
+    maturity_level: 3
+    critical_gaps:
+      - Two separate implementations (tools/supervisor/ AND tools/capability_layer/) — duplication
+      - gap-ledger is 96.8% closed → feature compiler produces near-zero work items
+      - Priority scoring logic undocumented
+      - No feedback loop: when gaps close from work items, gap-ledger doesn't auto-update
+
+  - layer_id: L18
+    canonical_name: Knowledge and Agent Discoverability Layer
+    aliases: [agents-md, claude-md, context-pack, project-memory]
+    explicit_or_implicit: implicit
+    claimed_purpose: >
+      Make architectural decisions, patterns, and conventions discoverable by
+      agent sessions across context windows.
+    actual_responsibilities:
+      - AGENTS.md (78KB — primary agent operating contract)
+      - CLAUDE.md (29KB — session instructions)
+      - .supervisor/project-memory.md (sprint memory)
+      - MEMORY.md (cross-session patterns)
+      - Context pack generation
+    implementation_paths:
+      - AGENTS.md
+      - CLAUDE.md
+      - .supervisor/project-memory.md
+      - .supervisor/context-pack.yaml
+      - reports/supervisor/context-pack.md
+    documentation_paths: []
+    schema_paths: []
+    registry_paths: []
+    skill_ids: [build-context-pack, memory-sprint, sync-memory]
+    command_ids: [build-context-pack, memory-sprint, sync-memory]
+    producer_paths:
+      - tools/supervisor/build_context_pack.py
+      - tools/supervisor/sync_local_memory.py
+    consumer_paths:
+      - CLAUDE.md agent sessions (via context loading)
+    input_artifacts: []
+    output_artifacts:
+      - reports/supervisor/context-pack.md
+      - .supervisor/context-pack.yaml
+    validators: []
+    tests: []
+    evidence_outputs: []
+    owner: supervisor_team
+    status: IMPLEMENTED_AND_CONSUMED
+    maturity_level: 3
+    critical_gaps:
+      - AGENTS.md is 78KB — growing toward information overload
+      - MEMORY.md truncated at 200 lines — exceeded (237 lines per warning)
+      - No structured indexing of decisions (AGENTS.md is prose)
+      - Context pack is generated but not consistently consumed
+      - No staleness detection for agent-facing docs
+
+  - layer_id: L19
+    canonical_name: Dogfood and Consumer Evidence Layer
+    aliases: [dogfood, consumer-proof, roundtrip]
+    explicit_or_implicit: explicit
+    claimed_purpose: >
+      Demonstrate that Format Factory libraries can be consumed as a customer would.
+      Provide consumer proof for gate advancement.
+    actual_responsibilities:
+      - Consumer roundtrip scripts (examples/python/)
+      - Dogfood evidence files
+      - Install-proof execution
+    implementation_paths:
+      - examples/python/  # consumer roundtrip scripts
+      - examples/  # mixed examples
+    documentation_paths:
+      - docs/export/dogfood-export-strategy.md  # if present
+    schema_paths: []
+    registry_paths: []
+    skill_ids: [add-dogfood-export, create-consumer-roundtrip, verify-dogfood-path]
+    command_ids: [add-dogfood-export, create-consumer-roundtrip, verify-dogfood-path]
+    producer_paths:
+      - .claude/commands/create-consumer-roundtrip.md
+    consumer_paths: []
+    input_artifacts:
+      - .local/package-builds/python-foss/*.whl
+    output_artifacts:
+      - examples/python/{format}/consumer_roundtrip.py
+      - .local/dogfood-proofs/
+    validators:
+      - tools/supervisor/verify_dogfood_path.py  # if exists
+    tests: []
+    evidence_outputs:
+      - .local/dogfood-proofs/
+    owner: product_team
+    status: PARTIALLY_IMPLEMENTED
+    maturity_level: 2
+    critical_gaps:
+      - Consumer roundtrips exist for some formats but not systematically tracked
+      - No coverage matrix (which formats have consumer proofs)
+      - Dogfood proves installation but not real-world usage scenarios
+      - No versioned API stability check between format releases
+
+  - layer_id: L20
+    canonical_name: Regression and Compatibility Authority Layer
+    aliases: [regression, known-failures, flaky-tests]
+    explicit_or_implicit: implicit
+    claimed_purpose: >
+      Track known failures, flaky tests, and historical regressions.
+      Prevent newly passing tests from regressing.
+    actual_responsibilities:
+      - Known failure ledger (registry/known-failure-ledger.yaml)
+      - Flaky test tracking (registry/flaky-test-ledger.yaml)
+      - Test count baseline (session-resume.md test counts)
+    implementation_paths:
+      - registry/known-failure-ledger.yaml
+      - registry/flaky-test-ledger.yaml
+      - registry/test-layer-baseline.json
+    documentation_paths: []
+    schema_paths: []
+    registry_paths:
+      - registry/known-failure-ledger.yaml
+      - registry/flaky-test-ledger.yaml
+    skill_ids: []
+    command_ids: []
+    producer_paths: []  # manual maintenance
+    consumer_paths:
+      - sprint declarations (tests_run/test_results fields)
+    input_artifacts: []
+    output_artifacts: []
+    validators: []
+    tests: []
+    evidence_outputs: []
+    owner: unassigned
+    status: PARTIALLY_IMPLEMENTED
+    maturity_level: 2
+    critical_gaps:
+      - No automated regression detection (only manual test count comparison)
+      - Known-failure-ledger is manually maintained with YAML structural bugs
+      - No compatibility contract between format API versions
+      - Test counts fluctuate wildly (0 to 15891 in recent sprints per project memory)
+      - No formal baseline for passing test counts per format
+
+  - layer_id: L21
+    canonical_name: Provenance and Artifact Identity Layer
+    aliases: [provenance, artifact-identity, sha256]
+    explicit_or_implicit: implicit
+    claimed_purpose: >
+      Ensure every artifact has traceable identity — who produced it, from what inputs,
+      at what git HEAD, with what evidence.
+    actual_responsibilities:
+      - git_head_start/end in declarations
+      - SHA-256 of review packages
+      - Evidence chain in declaration yaml
+    implementation_paths:
+      - tools/supervisor/evidence_declaration.py  # git_head fields
+      - tools/supervisor/build_declaration_review_package.py  # SHA-256 output
+    documentation_paths: []
+    schema_paths: []
+    registry_paths: []
+    skill_ids: []
+    command_ids: []
+    producer_paths:
+      - build_declaration_review_package.py
+    consumer_paths: []
+    input_artifacts: []
+    output_artifacts:
+      - .local/evidences/{run_id}/evidence-declaration.yaml  # with git_head fields
+    validators: []
+    tests: []
+    evidence_outputs: []
+    owner: supervisor_team
+    status: SCHEMA_ONLY
+    maturity_level: 1
+    critical_gaps:
+      - Provenance chain stops at declaration YAML — no formal chain from spec fact → source → test → package
+      - No artifact identity registry (which artifact was produced by which sprint)
+      - SHA-256 is printed but not persisted or checked downstream
+      - git_head fields exist in schema but not validated against actual HEAD at time of claim
+
+  - layer_id: L22
+    canonical_name: Product Architecture Authority Layer
+    aliases: [architecture, source-structure, production-standard]
+    explicit_or_implicit: explicit
+    claimed_purpose: >
+      Define and enforce structural rules for product source code.
+      Prevent monolithic codecs, enforce LOC caps, require analytics separation.
+    actual_responsibilities:
+      - LOC cap enforcement (source-structure-baseline.json)
+      - Function count limits
+      - Analytics separation enforcement (V66/V77)
+      - Monolith detection (V66)
+    implementation_paths:
+      - registry/source-structure-baseline.json
+      - docs/code-quality/production-library-standard-v2.md
+      - tools/validators/source_structure_validator.py
+      - tools/supervisor/governance_validators.py (V35, V66, V77)
+    documentation_paths:
+      - docs/code-quality/production-library-standard-v2.md
+      - docs/architecture.md  # STALE
+    schema_paths: []
+    registry_paths:
+      - registry/source-structure-baseline.json
+    skill_ids: [decompose-monolithic-codec, extract-analytics-from-monolith, check-source-loc]
+    command_ids: [decompose-monolithic-codec, extract-analytics-from-monolith, check-source-loc]
+    producer_paths: []  # rules enforced by validators
+    consumer_paths:
+      - governance_validator_runner.py
+    input_artifacts:
+      - src/python/  # source files being evaluated
+    output_artifacts:
+      - registry/source-structure-baseline.json  # updated caps
+    validators:
+      - tools/validators/source_structure_validator.py
+      - V35 (LOC), V66 (monolith), V77 (analytics naming)
+    tests: []
+    evidence_outputs: []
+    owner: supervisor_team
+    status: IMPLEMENTED_AND_CONSUMED
+    maturity_level: 3
+    critical_gaps:
+      - LOC baseline caps are write-once — no legitimate healing path for growing files
+      - analytics files (zst_analytics.py 4604 LOC, xcf_analytics.py 4773 LOC) exceed 800-LOC norm but are capped
+      - docs/architecture.md warns itself as stale
+      - No cross-language (Python vs .NET) architecture parity requirement
+      - Product architecture not checked on .NET side (only Python)
+
+  - layer_id: L23
+    canonical_name: Format and Legal Obligation Authority Layer
+    aliases: [legal, compliance, obligations, format-registry]
+    explicit_or_implicit: explicit
+    claimed_purpose: >
+      Record legal category, license, and compliance status for each format.
+      Gate work behind legal clearance (Gate 2).
+    actual_responsibilities:
+      - Format registry with legal_category per format
+      - Gate 2 legal review tracking
+      - Obligation register maintenance
+    implementation_paths:
+      - registry/format-registry.yaml  # legal_category field per format
+      - acquisition-packs/{format}/legal/  # per-format legal assessments
+      - SECURITY.md
+      - docs/legal-and-licensing.md
+    documentation_paths:
+      - docs/legal-and-licensing.md
+      - docs/compliance-posture.md
+    schema_paths: []
+    registry_paths:
+      - registry/format-registry.yaml
+    skill_ids: [build-obligation-register, verify-obligation-entry, update-obligation-entry]
+    command_ids: [build-obligation-register, verify-obligation-entry, update-obligation-entry]
+    producer_paths: []
+    consumer_paths:
+      - governance_validators_gate_auth.py
+    input_artifacts: []
+    output_artifacts:
+      - registry/format-registry.yaml (legal_category field)
+    validators:
+      - governance_validators_gate_auth.py (Gate 2 enforcement)
+    tests: []
+    evidence_outputs: []
+    owner: unassigned
+    status: DOCUMENTED_ONLY
+    maturity_level: 1
+    critical_gaps:
+      - No runtime enforcement of legal categories during product work
+      - Gate 2 is a gate in the pipeline but no machine-readable gate state per format
+      - Legal assessments in acquisition-packs/ are documents, not machine-readable facts
+      - No license compatibility checker for dependencies
+
+  - layer_id: L24
+    canonical_name: Security Authority Layer
+    aliases: [security, parser-security, threat-model]
+    explicit_or_implicit: implicit
+    claimed_purpose: >
+      Ensure format parsers are resilient to malformed input, injection, and adversarial payloads.
+    actual_responsibilities:
+      - Malformed input tests (tests/python/*/test_parser_malformed.py)
+      - Security threat model documentation
+      - Entity injection tests (e.g., FODT XML entity tests)
+    implementation_paths:
+      - docs/security.md  # parser threat model
+      - tests/python/fodt/test_parser_malformed.py
+      - SECURITY.md
+    documentation_paths:
+      - docs/security.md
+      - SECURITY.md
+    schema_paths: []
+    registry_paths: []
+    skill_ids: []
+    command_ids: []
+    producer_paths: []
+    consumer_paths: []
+    input_artifacts: []
+    output_artifacts: []
+    validators: []
+    tests:
+      - tests/python/fodt/test_parser_malformed.py  # 28 tests
+    evidence_outputs: []
+    owner: unassigned
+    status: CLAIMED_ONLY
+    maturity_level: 1
+    critical_gaps:
+      - Only FODT has documented security tests (28 malformed tests)
+      - No systematic malformed input test matrix for all 20 formats
+      - No fuzzing infrastructure (tools/fuzz/ exists but unclear coverage)
+      - Security docs exist but aren't wired to any gate or validator
+
+---
+# FALSE LAYER ANALYSIS
+
+false_layers:
+
+  - name: taskcards/ directory as active authority
+    actual_form: 200+ historical sprint directories, mostly markdown
+    problem: No machine reads these. Active work items are in .local/supervisor/next-work-items.json.
+    recommendation: ARCHIVE or DEPRECATE as sprint history; add to .gitignore or move to .local/
+    risk: None — already superseded by next-work-items.json
+
+  - name: reports/ as a layer
+    actual_form: Human-readable markdown and JSON reports generated by supervisor
+    problem: Reports have no downstream machine consumers except session-resume.md and next-sprint.md
+    recommendation: Treat reports/ as OBSERVATION surface, not authority
+    risk: Reports accumulate 100+ subdirs with no cleanup policy
+
+  - name: docs/ as architectural authority
+    actual_form: Documentation files, several self-described as stale
+    problem: docs/architecture.md warns itself as stale. Architecture decisions are enforced
+      through validators and baseline JSON, not docs.
+    recommendation: Keep as human reference; do NOT treat as machine authority
+    risk: Stale docs mislead new contributors and agents
+
+  - name: ai_product_brain.py / ai_learning_loop.py / ai_implementation_designer.py
+    actual_form: Python files in tools/supervisor/ with no documented consumers or tests
+    problem: 3 files (unknown LOC) with no evidence of active use or test coverage
+    recommendation: Audit for deletion or formal integration
+    risk: Dead code adds maintenance burden; may confuse future discovery passes
+
+  - name: failure_memory.json as active learning system
+    actual_form: .local/supervisor/failure-memory.json file
+    problem: Per MEMORY.md: 'Zero durable learning. No failure-memory.json exists. Corrections do
+      not auto-propagate.' The file exists but drives no decisions.
+    recommendation: Either wire it into autonomous_cycle.py or remove it
+    risk: Misleads analysis that learning is active
+
+  - name: plans/hardening-addenda proliferation
+    actual_form: 6+ hardening addendum files in plans/
+    problem: Addenda fragment authority across multiple files. Master-plan.md is the authority
+      but addenda create competing references.
+    recommendation: Merge resolved addenda into master-plan or archive to taskcards/
+    risk: Agents may read stale addenda as current authority
+
+---
+# HANDOFF ANALYSIS
+
+layer_handoffs:
+
+  - handoff_id: H01
+    upstream_layer: L01-Specification-Authority
+    downstream_layer: L02-QName-Hierarchy
+    artifact: sal-facts-latest.json (spec_fact_ref field)
+    schema: null
+    provenance_preserved: partial
+    status: PARTIAL
+    notes: >
+      Works for ODF family (FODS 4987 facts, FODT 4933). Broken for 14 formats with 0 facts.
+      spec_fact_ref in qname registry entries cannot be populated without SAL facts.
+
+  - handoff_id: H02
+    upstream_layer: L01-Specification-Authority
+    downstream_layer: L03-Capability-Layer
+    artifact: sal-facts-latest.json → gap-ledger entries
+    schema: null
+    provenance_preserved: false
+    status: UNVALIDATED
+    notes: >
+      Gap-ledger has 1203 closed entries but it's unclear how many were closed via SAL-backed
+      evidence vs. claimed via supervisor grading. No formal provenance chain from spec fact → gap closure.
+
+  - handoff_id: H03
+    upstream_layer: L03-Capability-Layer
+    downstream_layer: L17-Feature-Compilation
+    artifact: gap-ledger.json → next-work-items.json
+    schema: null
+    provenance_preserved: partial
+    status: PARTIAL
+    notes: >
+      gap_ledger_to_work_items.py works. But with 1203/1242 gaps closed, near-zero work items
+      are generated. Layer produces only 3 work items currently.
+
+  - handoff_id: H04
+    upstream_layer: L17-Feature-Compilation
+    downstream_layer: L11-Supervisor
+    artifact: next-work-items.json
+    schema: null
+    provenance_preserved: true
+    status: VERIFIED
+    notes: >
+      autonomous_cycle.py Step 3a-pre merges gap_ledger_ref from next-work-items.json.
+      Gap closure engine wired. This handoff is the most mature.
+
+  - handoff_id: H05
+    upstream_layer: L11-Supervisor
+    downstream_layer: L06-Product-Source
+    artifact: execution-handoff + skill invocation
+    schema: execution-handoff schema (in .supervisor/schemas/)
+    provenance_preserved: partial
+    status: PARTIAL
+    notes: >
+      Handoff exists via generate_execution_handoff.py. Source edits require product-code-ledger
+      entry. But detection is after-the-fact not preventive.
+
+  - handoff_id: H06
+    upstream_layer: L06-Product-Source
+    downstream_layer: L07-Test-Infrastructure
+    artifact: src/python/{format}/*.py → tests/python/{format}/
+    schema: null
+    provenance_preserved: false
+    status: UNVALIDATED
+    notes: >
+      Tests exist for all 20 Python formats. But many tests are arithmetic-deepening (697 files
+      classified as arithmetic-only) without spec-requirement tracing.
+
+  - handoff_id: H07
+    upstream_layer: L07-Test-Infrastructure
+    downstream_layer: L08-Evidence
+    artifact: pytest results → evidence-declaration.yaml test_results field
+    schema: evidence-declaration schema
+    provenance_preserved: true
+    status: VERIFIED
+    notes: Test results captured in declaration. Well-governed.
+
+  - handoff_id: H08
+    upstream_layer: L08-Evidence
+    downstream_layer: L09-State-Continuation
+    artifact: graded evidence → continuation-signal.json
+    schema: null (signal JSON has no schema)
+    provenance_preserved: true
+    status: VERIFIED
+    notes: autonomous_cycle.py writes continuation signal based on graded evidence.
+
+  - handoff_id: H09
+    upstream_layer: L06-Product-Source
+    downstream_layer: L15-Release-Packaging
+    artifact: src/python/{format}/ → .whl packages
+    schema: package-matrix.yaml
+    provenance_preserved: partial
+    status: PARTIAL
+    notes: >
+      build-local-packages.py works for all 16 Python packages. But install-proof only
+      verifies import, not behavior. .NET NuGet not automated.
+
+  - handoff_id: H10
+    upstream_layer: L05-Oracle
+    downstream_layer: L06-Product-Source (feedback)
+    artifact: oracle-run-summary.json → product corrections
+    schema: oracle/schema/
+    provenance_preserved: false
+    status: UNVALIDATED
+    notes: >
+      Oracle produces summary but no feedback loop to product source. Discrepancies are
+      manually reviewed. Oracle exists only for FODS/FODT.
+
+  - handoff_id: H11
+    upstream_layer: L02-QName-Hierarchy
+    downstream_layer: L06-Product-Source
+    artifact: qname-registry entries → spec_qname class attributes in Python/C#
+    schema: shared/qname-registry/schema.yaml
+    provenance_preserved: true
+    status: PARTIAL
+    notes: >
+      V53 validator enforces spec_qname at class level. 75/79 entries implemented.
+      But the qname registry itself has no spec_fact verification for 14 formats.
+
+---
+# CANDIDATE LAYER INVESTIGATION TABLE
+
+candidate_assessment:
+  # Format: L-ID | Exists | Actual Form | Current Maturity | Target Maturity | Critical Gaps | Disposition | Effort | Dependencies
+
+  - candidate: Specification Authority Layer
+    layer_id: L01
+    exists: true
+    actual_form: PARTIALLY_IMPLEMENTED — tools exist, 5/20 formats have real facts
+    current_maturity: 2
+    target_maturity: 4
+    critical_gaps: [no-sal-skill, 14-formats-zero-facts, no-schema-for-facts, no-downstream-validation]
+    disposition: RETAIN_AND_COMPLETE
+    effort: HIGH
+    dependencies: [spec PDFs acquired, text extraction working]
+
+  - candidate: QName and Hierarchy Authority Layer
+    layer_id: L02
+    exists: true
+    actual_form: IMPLEMENTED_NOT_ENFORCED — 79 entries, 75 implemented, 3 verified
+    current_maturity: 3
+    target_maturity: 4
+    critical_gaps: [spec_fact_ref empty for 14 formats, no auto-sync from SAL]
+    disposition: RETAIN_AND_HARDEN
+    effort: MEDIUM
+    dependencies: [L01 must produce facts for all formats]
+
+  - candidate: Requirement and Capability Authority Layer
+    layer_id: L03
+    exists: true
+    actual_form: IMPLEMENTED — but 96.8% closure suspicious
+    current_maturity: 3
+    target_maturity: 4
+    critical_gaps: [closure-not-evidence-backed, 1-open-gap-only, no-schema]
+    disposition: RETAIN_AND_AUDIT
+    effort: MEDIUM
+    dependencies: []
+
+  - candidate: Sample Corpus Authority Layer
+    layer_id: L04
+    exists: partial
+    actual_form: PARTIALLY_IMPLEMENTED — files exist, no governance
+    current_maturity: 2
+    target_maturity: 3
+    critical_gaps: [no-corpus-schema, no-legal-clearance-per-file, no-coverage-matrix]
+    disposition: FORMALIZE_AS_SUBLAYER
+    effort: LOW
+    dependencies: []
+
+  - candidate: Test Oracle / Conformance Authority Layer
+    layer_id: L05
+    exists: partial
+    actual_form: PARTIAL_EXPERIMENT — FODS/FODT only
+    current_maturity: 2
+    target_maturity: 4
+    critical_gaps: [only-2-formats, no-oracle-skill, no-spec-linkage]
+    disposition: RETAIN_AND_EXTEND
+    effort: HIGH
+    dependencies: [LibreOffice available, oracle skill registration]
+
+  - candidate: Product Source Layer
+    layer_id: L06
+    exists: true
+    actual_form: IMPLEMENTED_AND_CONSUMED
+    current_maturity: 4
+    target_maturity: 5
+    critical_gaps: [10-formats-no-dotnet, architecture_only-stubs, LOC-cap-inflexibility]
+    disposition: RETAIN
+    effort: ONGOING
+    dependencies: []
+
+  - candidate: Test Infrastructure Layer
+    layer_id: L07
+    exists: true
+    actual_form: IMPLEMENTED_AND_CONSUMED
+    current_maturity: 4
+    target_maturity: 5
+    critical_gaps: [697-arithmetic-only-tests, no-spec-requirement-tracing, slow-collection]
+    disposition: RETAIN_AND_PRUNE
+    effort: MEDIUM
+    dependencies: []
+
+  - candidate: Evidence and Review Package Layer
+    layer_id: L08
+    exists: true
+    actual_form: IMPLEMENTED_AND_CONSUMED
+    current_maturity: 4
+    target_maturity: 4
+    critical_gaps: [LLM-grader-optional, no-cross-sprint-comparison]
+    disposition: RETAIN
+    effort: LOW
+    dependencies: []
+
+  - candidate: State and Continuation Authority Layer
+    layer_id: L09
+    exists: true
+    actual_form: IMPLEMENTED_AND_CONSUMED
+    current_maturity: 4
+    target_maturity: 4
+    critical_gaps: [stale-lock-accumulation, no-signal-schema]
+    disposition: RETAIN_AND_HARDEN
+    effort: LOW
+    dependencies: []
+
+  - candidate: Plan and Prompt Authority Layer
+    layer_id: L10
+    exists: true
+    actual_form: IMPLEMENTED_AND_CONSUMED but fragmented
+    current_maturity: 3
+    target_maturity: 4
+    critical_gaps: [taskcards-sprawl, addendum-proliferation, no-plan-expiry]
+    disposition: CONSOLIDATE
+    effort: MEDIUM
+    dependencies: []
+
+  - candidate: Supervisor and Autonomous Sprint Layer
+    layer_id: L11
+    exists: true
+    actual_form: PRODUCTION_GRADE
+    current_maturity: 5
+    target_maturity: 5
+    critical_gaps: [199-files-complexity, ai-subtools-unused, circuit-breaker-linear]
+    disposition: RETAIN
+    effort: MAINTENANCE_ONLY
+    dependencies: []
+
+  - candidate: Governance and Policy Enforcement Layer
+    layer_id: L12
+    exists: true
+    actual_form: IMPLEMENTED_AND_CONSUMED
+    current_maturity: 4
+    target_maturity: 5
+    critical_gaps: [many-WARN-only-validators, no-validator-versioning, ext2-has-2-functions]
+    disposition: RETAIN_AND_CONSOLIDATE
+    effort: LOW
+    dependencies: []
+
+  - candidate: Skill and Command Execution Authority Layer
+    layer_id: L13
+    exists: true
+    actual_form: IMPLEMENTED_AND_CONSUMED
+    current_maturity: 4
+    target_maturity: 5
+    critical_gaps: [yaml-structural-fragility, honor-system-enforcement, missing-skills-for-SAL-oracle]
+    disposition: RETAIN_AND_HARDEN
+    effort: MEDIUM
+    dependencies: []
+
+  - candidate: Source-Change Handoff Authority Layer
+    layer_id: L14
+    exists: true
+    actual_form: IMPLEMENTED_AND_CONSUMED
+    current_maturity: 3
+    target_maturity: 4
+    critical_gaps: [manual-ledger, detection-not-prevention, no-git-diff-wiring]
+    disposition: RETAIN_AND_AUTOMATE
+    effort: MEDIUM
+    dependencies: []
+
+  - candidate: Release and Packaging Authority Layer
+    layer_id: L15
+    exists: partial
+    actual_form: PARTIALLY_IMPLEMENTED — Python local build only
+    current_maturity: 3
+    target_maturity: 4
+    critical_gaps: [no-dotnet-automation, PyPI-blocked-on-external, install-only-verifies-import]
+    disposition: RETAIN_AND_COMPLETE
+    effort: MEDIUM
+    dependencies: [Babar Raza sign-off for PyPI/NuGet]
+
+  - candidate: AI Boundary Layer
+    layer_id: L16
+    exists: partial
+    actual_form: PARTIALLY_IMPLEMENTED — contracts defined, enforcement weak
+    current_maturity: 2
+    target_maturity: 3
+    critical_gaps: [unused-ai-brain-files, optional-LLM-grader, no-draft-tagging-enforced]
+    disposition: CONSOLIDATE_OR_SIMPLIFY
+    effort: MEDIUM
+    dependencies: []
+
+  - candidate: Feature Compilation Layer
+    layer_id: L17
+    exists: true
+    actual_form: IMPLEMENTED_AND_CONSUMED but near-zero output (gap ledger 97% closed)
+    current_maturity: 3
+    target_maturity: 3
+    critical_gaps: [duplication-in-two-locations, closed-gap-ledger-limits-utility]
+    disposition: DEDUPLICATE
+    effort: LOW
+    dependencies: [L03 gap-ledger needs real open gaps]
+
+  - candidate: Knowledge and Discoverability Layer
+    layer_id: L18
+    exists: true
+    actual_form: IMPLEMENTED_AND_CONSUMED
+    current_maturity: 3
+    target_maturity: 4
+    critical_gaps: [AGENTS.md-78KB-overload, MEMORY.md-truncated, no-structured-decision-index]
+    disposition: RETAIN_AND_STRUCTURE
+    effort: MEDIUM
+    dependencies: []
+
+  - candidate: Dogfood and Consumer Evidence Layer
+    layer_id: L19
+    exists: partial
+    actual_form: PARTIALLY_IMPLEMENTED — examples exist for most formats
+    current_maturity: 2
+    target_maturity: 3
+    critical_gaps: [no-coverage-matrix, proves-import-not-usage, no-api-stability-check]
+    disposition: FORMALIZE
+    effort: MEDIUM
+    dependencies: []
+
+  - candidate: Regression and Compatibility Authority Layer
+    layer_id: L20
+    exists: partial
+    actual_form: PARTIALLY_IMPLEMENTED — ledgers exist, no automation
+    current_maturity: 2
+    target_maturity: 3
+    critical_gaps: [manual-maintenance, test-count-volatility, no-api-compat-contract]
+    disposition: FORMALIZE_AS_SUBLAYER
+    effort: MEDIUM
+    dependencies: []
+
+  - candidate: Provenance and Artifact Identity Layer
+    layer_id: L21
+    exists: partial
+    actual_form: SCHEMA_ONLY — git_head fields in declarations but no chain
+    current_maturity: 1
+    target_maturity: 3
+    critical_gaps: [no-full-chain-from-spec-to-package, SHA256-not-persisted, no-artifact-registry]
+    disposition: FORMALIZE_AS_SUBLAYER
+    effort: MEDIUM
+    dependencies: []
+
+  - candidate: Product Architecture Authority Layer
+    layer_id: L22
+    exists: true
+    actual_form: IMPLEMENTED — LOC caps + analytics separation enforced
+    current_maturity: 3
+    target_maturity: 4
+    critical_gaps: [LOC-cap-write-once-inflexibility, stale-architecture-doc, .NET-not-covered]
+    disposition: RETAIN_AND_HARDEN
+    effort: LOW
+    dependencies: []
+
+  - candidate: Format and Legal Obligation Authority Layer
+    layer_id: L23
+    exists: partial
+    actual_form: DOCUMENTED_ONLY — legal_category in format-registry.yaml
+    current_maturity: 1
+    target_maturity: 3
+    critical_gaps: [no-runtime-enforcement, no-machine-readable-gate-state, Gate-2-is-prose]
+    disposition: FORMALIZE_AS_SUBLAYER
+    effort: MEDIUM
+    dependencies: []
+
+  - candidate: Security Authority Layer
+    layer_id: L24
+    exists: partial
+    actual_form: CLAIMED_ONLY — docs + 1 format with malformed tests
+    current_maturity: 1
+    target_maturity: 3
+    critical_gaps: [only-FODT-has-security-tests, no-fuzz-matrix, no-security-gate]
+    disposition: FORMALIZE_AS_SUBLAYER
+    effort: HIGH
+    dependencies: []
+
+---
+# TARGET LAYER ARCHITECTURE
+
+target_architecture:
+  principles:
+    - Each layer owns a single coherent responsibility
+    - No new layer unless it adds operational value not achievable by extending an existing one
+    - False layers (taskcards/ archive, stale docs) are demoted to observation or archived
+    - Reduce machinery complexity — merge layers where responsibility overlaps
+    - Every layer must have a registered skill to invoke it
+    - Provenance chain must be unbroken from spec fact to deployed package
+
+  true_independent_layers:
+    - L01: Specification Authority Layer (needs SAL skill + 14 formats)
+    - L02: QName Hierarchy Authority (needs spec_fact_ref completion)
+    - L03: Capability and Gap Authority (needs closure audit)
+    - L05: Oracle and Conformance Authority (needs expansion to all formats)
+    - L06: Product Source Layer (production, ongoing)
+    - L07: Test Infrastructure Layer (production, prune arithmetic tests)
+    - L08: Evidence and Review Package Layer (production)
+    - L09: State and Continuation Layer (production)
+    - L11: Supervisor and Sprint Authority Layer (production)
+    - L12: Governance and Policy Layer (production)
+    - L13: Skill and Command Execution Layer (production)
+
+  sublayers_not_independent:
+    - L04: Sample Corpus → sublayer of L01 (corpus feeds SAL)
+    - L10: Plan Authority → sublayer of L11 (supervisor owns sprint prompts)
+    - L14: Source-Change Handoff → sublayer of L13 (a skill, not a layer)
+    - L17: Feature Compilation → sublayer of L03 (gap → work item is capability layer output)
+    - L19: Dogfood Evidence → sublayer of L08 (evidence type, not independent)
+    - L20: Regression Authority → sublayer of L07 (test layer concern)
+    - L21: Provenance → cross-cutting policy, embedded in L08+L15
+    - L22: Product Architecture → cross-cutting policy, enforced by L12
+    - L23: Legal/Obligation → sublayer of L13 (skill-governed gate check)
+    - L24: Security → sublayer of L07 (test layer concern)
+
+  rejected_as_layers:
+    - L15: Release/Packaging → formalize as skill set in L13, not independent layer
+    - L16: AI Boundary → cross-cutting policy in L08+L12, not independent layer
+    - L18: Knowledge → cross-cutting concern (docs + memory), not operational layer
+
+---
+# EFFORT ESTIMATES AND DEPENDENCIES
+
+micro_taskcards:
+
+  - taskcard_id: TC-LA-001
+    title: Register SAL ingestion skill and wire to all 14 missing formats
+    layer: L01
+    effort: HIGH
+    type: SKILL_GAP
+    dependencies: []
+    description: >
+      Create /ingest-spec-sal skill. Wire sal_master_runner.py to: CSV TSV NDJSON ABW
+      DIF GNUMERIC SYLK TOML XCF ZST PBM PGM PPM QOI. Must produce spec_facts for each.
+      Requires external spec documents to be acquired and placed in .local/spec-cache/.
+    acceptance_criteria:
+      - Skill registered in .supervisor/skill-registry.yaml
+      - Each format has ≥1 SAL fact in sal-facts-latest.json after run
+      - Skill is idempotent (re-run produces same output)
+      - V-SAL-001 validator passes
+
+  - taskcard_id: TC-LA-002
+    title: Audit and validate gap-ledger closure claims (96.8% closed suspicious)
+    layer: L03
+    effort: MEDIUM
+    type: AUDIT
+    dependencies: []
+    description: >
+      Run gap_verification_engine.py against all 1203 closed gaps.
+      Re-open gaps that were closed without test_verified evidence.
+      Produce honest open gap count to feed feature compiler.
+    acceptance_criteria:
+      - All closed gaps have at least one test_results path in evidence
+      - Gap ledger open count reflects reality
+      - Feature compiler produces ≥10 actionable work items
+
+  - taskcard_id: TC-LA-003
+    title: Extend oracle to 5 additional formats (CSV, ZST, TSV, NDJSON, ODS)
+    layer: L05
+    effort: HIGH
+    type: ORACLE_EXTENSION
+    dependencies: [oracle skill registration]
+    description: >
+      CSV: reference implementation comparison (Python csv module baseline).
+      ZST: python-zstandard as reference.
+      TSV: stdlib csv module with tab delimiter.
+      NDJSON: json.loads line-by-line as reference.
+      ODS: LibreOffice ODS export as reference.
+    acceptance_criteria:
+      - oracle/formats/{format}/reports/oracle-run-summary.json exists for each
+      - Each oracle passes ≥80% of samples
+      - Oracle skill registered
+
+  - taskcard_id: TC-LA-004
+    title: Create /ingest-spec-sal skill registration and idempotency proof
+    layer: L13
+    effort: LOW
+    type: SKILL_REGISTRATION
+    dependencies: [TC-LA-001]
+    description: >
+      Register the SAL ingestion skill in .supervisor/skill-registry.yaml with
+      mandatory_validations: [sal_facts_nonzero, spec_fact_refs_populated]
+      and idempotency proof in .supervisor/skill-idempotency-proof.yaml.
+    acceptance_criteria:
+      - Skill appears in registry
+      - /check-skill-coverage passes for SAL work
+      - Idempotency test in tests/supervisor/
+
+  - taskcard_id: TC-LA-005
+    title: Formalize provenance chain from spec fact to deployed package
+    layer: L21
+    effort: MEDIUM
+    type: SCHEMA_AND_TOOLING
+    dependencies: [TC-LA-001]
+    description: >
+      Add provenance_chain field to evidence declarations:
+        spec_fact_refs: [FACT-FODS-001, ...]
+        qname_refs: [fods:table, ...]
+        source_files: [src/python/fods/parser.py]
+        test_files: [tests/python/fods/test_r117.py]
+        package_artifact: fods-0.1.0.whl
+        sha256: <hash>
+      Wire sprint_executor_validate.py to require provenance_chain for PRODUCT_SOURCE items.
+    acceptance_criteria:
+      - Schema updated
+      - Validator enforces provenance_chain presence
+      - One format demonstrates complete chain
+
+  - taskcard_id: TC-LA-006
+    title: Archive taskcards/ directory and migrate active items to next-work-items.json
+    layer: L10
+    effort: LOW
+    type: CLEANUP
+    dependencies: []
+    description: >
+      Move taskcards/ to .local/sprint-history/ (gitignored).
+      Identify any active taskcards still referenced in master-plan.
+      Ensure those are in .local/supervisor/next-work-items.json.
+      Update master-plan.md references accordingly.
+    acceptance_criteria:
+      - taskcards/ no longer in committed repository
+      - Active taskcards present in next-work-items.json
+      - master-plan.md references updated
+
+  - taskcard_id: TC-LA-007
+    title: Consolidate feature compilation (deduplicate tools/supervisor/ vs tools/capability_layer/)
+    layer: L17
+    effort: LOW
+    type: DEDUPLICATION
+    dependencies: []
+    description: >
+      Two implementations of capability-to-feature compilation exist:
+        tools/supervisor/capability_feature_compiler.py
+        tools/capability_layer/capability_to_feature_compiler.py
+      Pick one canonical implementation. Redirect the other to import from canonical.
+      Update all consumers.
+    acceptance_criteria:
+      - Only one canonical implementation
+      - All consumers point to canonical
+      - Tests pass
+
+  - taskcard_id: TC-LA-008
+    title: Add SAL facts schema and validate sal-facts-latest.json against it
+    layer: L01
+    effort: LOW
+    type: SCHEMA
+    dependencies: []
+    description: >
+      Create schemas/sal-facts/sal-facts-schema.json (JSON Schema).
+      Required fields: generated_at, formats_processed, spec_facts_total, results[].
+      Each result: format_id, spec_facts[].
+      Each spec_fact: qname, fact_id, description, source_section, confidence.
+      Wire validate_spec_fact_refs.py to check schema on load.
+    acceptance_criteria:
+      - Schema file exists at schemas/sal-facts/sal-facts-schema.json
+      - sal-facts-latest.json validates against schema
+      - Validation wired into governance_validators_sal.py
+
+  - taskcard_id: TC-LA-009
+    title: Fix MEMORY.md truncation (237 lines, limit 200) by moving content to topic files
+    layer: L18
+    effort: LOW
+    type: MAINTENANCE
+    dependencies: []
+    description: >
+      Split detailed entries from MEMORY.md into topic files (e.g. patterns.md, governance.md).
+      Keep MEMORY.md as index under 200 lines.
+      Follow existing format-api-notes.md pattern.
+    acceptance_criteria:
+      - MEMORY.md ≤200 lines
+      - All content preserved in topic files
+      - MEMORY.md links to topic files
+
+  - taskcard_id: TC-LA-010
+    title: Add /run-oracle skill and extend oracle to all 20 formats systematically
+    layer: L05
+    effort: HIGH
+    type: SKILL_AND_EXTENSION
+    dependencies: [TC-LA-003]
+    description: >
+      Register /run-oracle skill in skill-registry.yaml.
+      Oracle harness pattern: reference implementation vs format-factory output.
+      Per-format oracle implementation for all 20 Python formats.
+      oracle/registry/comparator-registry.yaml updated per format.
+    acceptance_criteria:
+      - /run-oracle skill registered
+      - oracle/formats/{format}/ exists for all 20 formats
+      - Each oracle has ≥1 sample comparison
+      - V-ORACLE-001 validator enforces oracle coverage

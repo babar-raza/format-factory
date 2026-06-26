@@ -17,7 +17,7 @@ oracle_version: 1
 family: cells
 generated_at: "2026-06-25"
 generator_skill: oracle-layer-hardening-mission
-status: AUTHORITY_MAPPED
+status: VERIFIED
 
 # ==============================================================================
 # RELATIONSHIP TO ACQUISITION ORACLE
@@ -208,15 +208,15 @@ valid_cases:
       - PARSE_VALIDITY
 
   - case_id: fods-valid-005
-    purpose: "spec_qname compliance — FodsDocument domain model class"
+    purpose: "spec_qname compliance — FodsDocument domain model class uses ODF canonical qname"
     authority_class: PRODUCT_CONTRACT
     authority_refs:
-      - "shared/qname-registry/fods.yaml — fods:spreadsheet qname"
+      - "shared/qname-registry/fods.yaml — office:document qname (ODF canonical)"
     sample_ref: null  # introspection test, no file
     expected_parse_result: SUCCESS
     expected_model_properties:
       - property: spec_qname
-        value: "fods:spreadsheet"
+        value: "office:document"
         authority: "shared/qname-registry/fods.yaml"
     applicable_profiles:
       - DOMAIN_MODEL_MAPPING

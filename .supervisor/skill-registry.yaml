@@ -1450,6 +1450,59 @@ skills:
   spec_qname_required: false
   status: active
   test_paths: []
+- command: /ingest-spec-sal
+  command_file: .claude/commands/ingest-spec-sal.md
+  idempotency: create_or_update
+  implementation_paths:
+  - tools/spec/extract_sal_facts.py
+  - tools/spec/merge_sal_facts.py
+  mandatory_validations:
+  - sal_facts_nonzero
+  - spec_fact_refs_populated
+  - schema_valid
+  notes: Created TC-LA-004 (2026-06-26). Governs SAL ingestion for the 14 formats
+    with zero spec_facts. For stdlib-backed formats, see /run-oracle as alternative.
+  product_track: sal_ingestion
+  purpose: Ingest a format specification into the SAL to produce FACT-{FORMAT}-NNN
+    entries in sal-facts-latest.json. Only governed entry point for adding spec facts.
+  required_handoff_fields:
+  - format_id
+  - spec_source_uri
+  - spec_version
+  - spec_body
+  - target_fact_count_min
+  sal_aware: true
+  sal_note: Output must validate against schemas/sal-facts/sal-facts-schema.json.
+    sal_facts_nonzero required before declaring success.
+  skill_id: ingest-spec-sal
+  spec_qname_required: false
+  status: active
+  test_paths: []
+- command: /run-oracle
+  command_file: .claude/commands/run-oracle.md
+  idempotency: read_only
+  implementation_paths:
+  - tools/oracle/execute_oracle.py
+  - oracle/formats/
+  mandatory_validations:
+  - oracle_all_pass
+  - no_blocked_missing_authority
+  - verdict_file_exists
+  notes: Created TC-LA-010 (2026-06-26). Supports CSV/ZST/FODS (existing) + TSV/NDJSON
+    (new stdlib-reference executors). Schema warning (profiles_not_applicable) is
+    pre-existing in all oracle packages including ZST -- does not block execution.
+  product_track: oracle_execution
+  purpose: Execute Format Factory product conformance oracle for one or more formats.
+    Emits PASS/FAIL verdicts per case against authoritative reference (LibreOffice
+    for ODF, Python stdlib for CSV/TSV/NDJSON/ZST).
+  required_handoff_fields:
+  - format_id
+  sal_aware: true
+  sal_note: Oracle authorized_fact_refs must point to FACT-IDs in sal-facts-latest.json.
+  skill_id: run-oracle
+  spec_qname_required: false
+  status: active
+  test_paths: []
 sprint: FORMAT-FACTORY-R98-AUTONOMOUS-LOOP-TRUST-LAYER-ITERATION-SCALING-ACCELERATION-POC-MEGA-TRAIN-001
 version: '2.0'
 visibility: generated

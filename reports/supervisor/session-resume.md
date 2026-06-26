@@ -86,3 +86,9 @@
 - No push: SCM Agent task (AGENTS.md §AG4.2). Execute when credentials and branch policy allow.
 - Gates 1-10: agent-owned policy gates (AGENTS.md §AG5). Gate 11 G11-G: Babar Raza only.
 - MCP activation (MODE 4): COMPLETE.
+
+
+## Maturity Trend
+
+Maturity trend written: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\reports\supervisor\maturity-trend.json
+  Sprints: 761, avg quality: 0.748, trend: improving

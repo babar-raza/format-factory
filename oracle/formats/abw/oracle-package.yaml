@@ -2,7 +2,7 @@
 # Format: AbiWord Document
 # Authority: AbiWord project format documentation (LibreOffice compatibility)
 # Oracle version: 1
-# Status: CASES_DEFINED
+# Status: VERIFIED
 # Mission: TC-LA-003 / TC-LA-010 — oracle extension to additional Gen4-GREEN formats
 
 oracle_id: oracle-abw-v1
@@ -12,7 +12,7 @@ oracle_version: 1
 family: document
 generated_at: "2026-06-26"
 generator_skill: oracle-layer-hardening-mission
-status: CASES_DEFINED
+status: VERIFIED
 
 authority:
   specification_refs:
@@ -69,3 +69,18 @@ valid_cases:
       expect_type: dict
       expect_no_exception: true
     authority_ref: FACT-ABW-001
+
+  - case_id: abw-valid-003
+    purpose: "Two-paragraph ABW document loads successfully"
+    authority_class: SPEC_INFORMATIVE
+    authority_refs:
+      - "ABIWORD-FORMAT -- multiple paragraph support"
+    sample_ref: samples/by-format/abw/two-paragraphs.abw
+    input_hash: "sha256:1b8f8ec1396aeec54c71bbd3c30707db136d97a8a05ca2608cfe1cd0d67dddca"
+    expected_parse_result: SUCCESS
+    expected_model_properties:
+      - property: is_abw
+        value: true
+        authority: ABIWORD-FORMAT
+    applicable_profiles:
+      - PARSE_VALIDITY

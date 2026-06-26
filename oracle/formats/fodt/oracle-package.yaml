@@ -1,0 +1,158 @@
+# FODT Oracle Package — Format Factory
+# Format: Flat OpenDocument Text
+# Authority: OASIS OpenDocument Format spec (ODF 1.3)
+# Oracle version: 1
+# Status: CASES_DEFINED
+# Mission: FORMAT-FACTORY-ORACLE-LAYER-HARDENING-001 — Wave 6 Batch B
+# GAP-ORC-BACKFILL-B: Words/drawing family oracle packages
+
+oracle_id: oracle-fodt-v1
+format_id: fodt
+format_version: "ODF 1.3"
+oracle_version: 1
+family: words
+generated_at: "2026-06-26"
+generator_skill: oracle-layer-hardening-mission
+status: VERIFIED
+
+authority:
+  specification_refs:
+    - id: ODF-SPEC-13
+      title: "OASIS Open Document Format for Office Applications (ODF) v1.3"
+      body: "OASIS Open Document Format TC"
+      url: "https://docs.oasis-open.org/office/OpenDocument/v1.3/OpenDocument-v1.3-part3-schema.html"
+      legal_category: 1
+      authority_class: AUTHORITATIVE_REFERENCE_VECTOR
+      note: "FODT is flat (unzipped) ODF text format with office:document root element."
+  authorized_fact_refs:
+    - "FACT-FODT-001"
+    - "FACT-FODT-002"
+    - "FACT-FODT-003"
+  requirement_refs: []
+  capability_refs:
+    - "fodt:parse"
+    - "fodt:document"
+  authority_summary: >
+    FODT files are flat XML with office:document root element and ODF 1.3 namespace.
+    Paragraphs are text:p elements within office:body/office:text.
+    FodtDocument class is the authoritative domain model (spec_qname=office:document).
+
+corpus_refs:
+  - corpus_id: fodt-minimal
+    sample_ref: samples/by-format/fodt/minimal-document.fodt
+    sha256: "sha256:ed118bbaacea1779a3ce381ad1d0288e243f16a06bb233fa3e9723cd6afce738"
+    license: project-owned-synthetic
+    authority_class: GENERATED_FROM_NEUTRAL_MODEL
+    description: "Minimal valid FODT document with 1 paragraph block"
+
+profiles:
+  - STRUCTURAL_VALIDITY
+  - PARSE_VALIDITY
+  - DOMAIN_MODEL_MAPPING
+
+profiles_not_applicable:
+  - profile: INTEROPERABILITY
+    reason: "Out of scope for this oracle version"
+  - profile: LOSSLESS_TRANSFORMATION
+    reason: "Not a compression format"
+  - profile: SECURITY_ROBUSTNESS
+    reason: "XML entity injection tested separately"
+  - profile: UNKNOWN_CONTENT_PRESERVATION
+    reason: "Out of scope for this oracle version"
+  - profile: EXPORT_CONFORMANCE
+    reason: "Not a primary operation for this oracle version"
+  - profile: NORMALIZATION
+    reason: "Not applicable"
+  - profile: LIMITS_AND_BOUNDARIES
+    reason: "Not applicable for this oracle version"
+  - profile: MUTATION_BEHAVIOR
+    reason: "Not applicable for this oracle version"
+  - profile: SAME_FORMAT_SERIALIZATION
+    reason: "Not applicable for this oracle version"
+  - profile: ROUNDTRIP_SEMANTIC_EQUIVALENCE
+    reason: "Not applicable for this oracle version"
+
+valid_cases:
+
+  - case_id: fodt-valid-001
+    purpose: "Minimal FODT file parses without error"
+    authority_class: AUTHORITATIVE_REFERENCE_VECTOR
+    authority_refs:
+      - "ODF-SPEC-13 -- office:document XML root element"
+    sample_ref: samples/by-format/fodt/minimal-document.fodt
+    input_hash: "sha256:ed118bbaacea1779a3ce381ad1d0288e243f16a06bb233fa3e9723cd6afce738"
+    expected_parse_result: SUCCESS
+    expected_model_properties:
+      - property: loaded
+        value: true
+        authority: ODF-SPEC-13
+    applicable_profiles:
+      - STRUCTURAL_VALIDITY
+      - PARSE_VALIDITY
+
+  - case_id: fodt-valid-002
+    purpose: "Minimal FODT has ODF version 1.3"
+    authority_class: AUTHORITATIVE_REFERENCE_VECTOR
+    authority_refs:
+      - "ODF-SPEC-13 -- office:version attribute"
+    sample_ref: samples/by-format/fodt/minimal-document.fodt
+    input_hash: "sha256:ed118bbaacea1779a3ce381ad1d0288e243f16a06bb233fa3e9723cd6afce738"
+    expected_parse_result: SUCCESS
+    expected_model_properties:
+      - property: loaded
+        value: true
+        authority: ODF-SPEC-13
+    applicable_profiles:
+      - PARSE_VALIDITY
+
+  - case_id: fodt-valid-003
+    purpose: "FodtDocument returns spec_qname=office:document"
+    authority_class: AUTHORITATIVE_REFERENCE_VECTOR
+    authority_refs:
+      - "shared/qname-registry/fodt.yaml -- office:document"
+    sample_ref: samples/by-format/fodt/minimal-document.fodt
+    input_hash: "sha256:ed118bbaacea1779a3ce381ad1d0288e243f16a06bb233fa3e9723cd6afce738"
+    expected_parse_result: SUCCESS
+    expected_model_properties:
+      - property: spec_qname
+        value: "office:document"
+        authority: ODF-SPEC-13
+    applicable_profiles:
+      - DOMAIN_MODEL_MAPPING
+
+invalid_cases:
+  - case_id: fodt-invalid-001
+    purpose: "Non-FODT file must raise error or return parse_errors"
+    defect_class: wrong-format
+    malformed_boundary: "File is not valid FODT XML"
+    authority_refs:
+      - "ODF-SPEC-13 -- office:document root required"
+    sample_ref: null
+    expected_failure_stage: PARSE
+    expected_error_type: "Exception or parse_errors non-empty"
+    partial_recovery_allowed: true
+    security_relevance: false
+    notes: "No invalid FODT sample in corpus yet."
+
+canonicalization:
+  method: fodt-document-dict
+  description: "Canonical form is parsed dict with blocks list and parse_errors."
+  ordering_policy: "block order preserved"
+  whitespace_policy: "insignificant"
+  encoding_policy: "UTF-8"
+
+tolerance_policy:
+  numeric_tolerance: NOT_APPLICABLE
+  ordering_tolerance: "none"
+  whitespace_tolerance: "insignificant whitespace in XML"
+  metadata_tolerance: "None"
+  policy_summary: "Document must parse without errors; format_id must be fodt"
+
+comparators:
+  - model-property-comparator
+
+validators:
+  - fodt-xml-validator
+
+consumers:
+  - tests/python/fodt/test_fodt_document_model.py

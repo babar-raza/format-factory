@@ -1,20 +1,14 @@
 # Work Item Grades
-Sprint: immutable-percolating-forest-TC-PUB-20260625
-Generated: 2026-06-25T16:01:36.313816
+Sprint: ff-sprint-oracle-all-verified-20260626
+Generated: 2026-06-26T18:01:51.751412
 Global Status: ACCEPTED_WITH_REWORK
 
 | Item ID | Grade | Rework Required |
 |---------|-------|-----------------|
-| WI-TC-CRC-004-PBM | ACCEPTED_WITH_LIMITATIONS |  |
-| WI-TC-CRC-004-PGM | ACCEPTED_WITH_LIMITATIONS |  |
-| WI-TC-CRC-004-PPM | ACCEPTED_WITH_LIMITATIONS |  |
-| WI-TC-PUB-001-FODS | ACCEPTED_WITH_LIMITATIONS |  |
-| WI-TC-PUB-002-FODT | ACCEPTED_WITH_LIMITATIONS |  |
-| WI-TC-PUB-003-NETPBM | ACCEPTED_WITH_LIMITATIONS |  |
-| WI-TC-PUB-004-SIGNOFF | ACCEPTED_WITH_LIMITATIONS |  |
+| WI-ORC-FINAL-001 | REWORK_REQUIRED |  |
 
 ## Summary
-- Accepted: 7
-- Rework: 0
+- Accepted: 0
+- Rework: 1
 - Overclaimed: 0
 - Autonomous Continue: true_with_rework

@@ -1,8 +1,8 @@
 # Evidence Bundle Discovery Summary
-Timestamp: 2026-06-25T23:59:08.002989
+Timestamp: 2026-06-26T17:09:06.475461
 Status: found
-Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\format-factory-fullsuite-layering-20260625-fslay02\declaration-review-package.zip
+Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\ff-sprint-s55-closure-20260626\declaration-review-package.zip
 Sprint ID: unknown
-Entry count: 85
-Bundle mtime: 2026-06-25T23:58:18.325953
-Bundle size: 287723 bytes
+Entry count: 74
+Bundle mtime: 2026-06-26T17:08:06.815445
+Bundle size: 244904 bytes

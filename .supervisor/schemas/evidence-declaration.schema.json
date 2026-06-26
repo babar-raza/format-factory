@@ -62,7 +62,19 @@
           "execution_method": { "type": "string" },
           "claim_classification": { "type": "string" },
           "spec_fact_refs": { "type": "array", "items": { "type": "string" } },
-          "changed_files": { "type": "array", "items": { "type": "string" } }
+          "changed_files": { "type": "array", "items": { "type": "string" } },
+          "gap_ledger_ref": { "type": "string", "description": "GAP-* entry in gap-ledger.json that this work item closes." },
+          "provenance_chain": {
+            "type": "object",
+            "description": "Explicit end-to-end traceability chain: code → test → spec fact → SAL → gap. Required for PRODUCT_SOURCE items. TC-LA-005.",
+            "properties": {
+              "spec_fact_ref": { "type": "string", "pattern": "^FACT-[A-Z]+-[0-9]+$", "description": "Canonical FACT-FORMAT-NNN ID from sal-facts-latest.json" },
+              "gap_ledger_ref": { "type": "string", "description": "GAP-* entry this work closes" },
+              "capability_ref": { "type": "string", "description": "Capability identifier (e.g. csv:parse)" },
+              "qname_ref": { "type": "string", "description": "QName registry entry (e.g. csv:row)" },
+              "sal_verified": { "type": "boolean", "description": "True if spec_fact_ref was found in sal-facts-latest.json" }
+            }
+          }
         }
       }
     },

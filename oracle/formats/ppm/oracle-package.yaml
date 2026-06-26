@@ -1,0 +1,157 @@
+# PPM Oracle Package — Format Factory
+# Format: Portable Pixmap (Netpbm)
+# Authority: Netpbm manual specification
+# Oracle version: 1
+# Status: VERIFIED
+# Mission: FORMAT-FACTORY-ORACLE-LAYER-HARDENING-001 — Wave 6 Batch C
+# GAP-ORC-BACKFILL-C: Imaging family oracle packages
+
+oracle_id: oracle-ppm-v1
+format_id: ppm
+format_version: "PPM P3/P6 (Netpbm)"
+oracle_version: 1
+family: imaging
+generated_at: "2026-06-26"
+generator_skill: oracle-layer-hardening-mission
+status: VERIFIED
+
+authority:
+  specification_refs:
+    - id: NETPBM-SPEC
+      title: "Netpbm Manual — PPM format"
+      body: "Netpbm contributors"
+      url: "https://netpbm.sourceforge.net/doc/ppm.html"
+      legal_category: 1
+      authority_class: SPEC_NORMATIVE
+      note: "PPM is full color RGB. Magic: P3 (ASCII) or P6 (binary). Width height maxval then RGB pixels."
+  authorized_fact_refs:
+    - "FACT-PPM-001"
+    - "FACT-PPM-002"
+  requirement_refs: []
+  capability_refs:
+    - "ppm:parse"
+    - "ppm:raster"
+  authority_summary: >
+    PPM files have P3 (ASCII) or P6 (binary) magic, width, height, maxval header,
+    then RGB pixel data. ppm:raster is the authoritative spec qname.
+
+corpus_refs:
+  - corpus_id: ppm-1x1-red
+    sample_ref: samples/by-format/ppm/valid/1x1-red.ppm
+    sha256: "sha256:c940efc28573af63c6ebbfeb23e69ded35c645b0dca6c4553d62aa1977912614"
+    license: project-owned-synthetic
+    authority_class: GENERATED_FROM_NEUTRAL_MODEL
+    description: "1x1 red pixel PPM RGB image"
+
+profiles:
+  - STRUCTURAL_VALIDITY
+  - PARSE_VALIDITY
+
+profiles_not_applicable:
+  - profile: INTEROPERABILITY
+    reason: "Out of scope for this oracle version"
+  - profile: LOSSLESS_TRANSFORMATION
+    reason: "Not applicable for this oracle version"
+  - profile: DOMAIN_MODEL_MAPPING
+    reason: "No typed domain model class for this oracle version"
+  - profile: SECURITY_ROBUSTNESS
+    reason: "No injection surface in binary parse-only mode"
+  - profile: UNKNOWN_CONTENT_PRESERVATION
+    reason: "Out of scope for this oracle version"
+  - profile: EXPORT_CONFORMANCE
+    reason: "Not a primary operation"
+  - profile: NORMALIZATION
+    reason: "Not applicable"
+  - profile: LIMITS_AND_BOUNDARIES
+    reason: "Not applicable for this oracle version"
+  - profile: MUTATION_BEHAVIOR
+    reason: "Not applicable for this oracle version"
+  - profile: SAME_FORMAT_SERIALIZATION
+    reason: "Not applicable for this oracle version"
+  - profile: ROUNDTRIP_SEMANTIC_EQUIVALENCE
+    reason: "Not applicable for this oracle version"
+
+valid_cases:
+
+  - case_id: ppm-valid-001
+    purpose: "1x1 PPM RGB image parses without error"
+    authority_class: SPEC_NORMATIVE
+    authority_refs:
+      - "NETPBM-SPEC -- P3 magic header, width, height, maxval, RGB pixels"
+    sample_ref: samples/by-format/ppm/valid/1x1-red.ppm
+    input_hash: "sha256:c940efc28573af63c6ebbfeb23e69ded35c645b0dca6c4553d62aa1977912614"
+    expected_parse_result: SUCCESS
+    expected_model_properties:
+      - property: ok
+        value: true
+        authority: NETPBM-SPEC
+    applicable_profiles:
+      - STRUCTURAL_VALIDITY
+      - PARSE_VALIDITY
+
+  - case_id: ppm-valid-002
+    purpose: "2x2 RGBW PPM parses without error"
+    authority_class: SPEC_NORMATIVE
+    authority_refs:
+      - "NETPBM-SPEC -- multi-pixel RGB"
+    sample_ref: samples/by-format/ppm/valid/2x2-rgbw.ppm
+    input_hash: "sha256:bf7be37ba40db548717727afdeb0e390c3f0d6a07541fd5c23d06952f15abfa1"
+    expected_parse_result: SUCCESS
+    expected_model_properties:
+      - property: ok
+        value: true
+        authority: NETPBM-SPEC
+    applicable_profiles:
+      - PARSE_VALIDITY
+
+  - case_id: ppm-valid-003
+    purpose: "3x1 gradient PPM parses without error"
+    authority_class: SPEC_NORMATIVE
+    authority_refs:
+      - "NETPBM-SPEC -- RGB multi-column"
+    sample_ref: samples/by-format/ppm/valid/3x1-gradient.ppm
+    input_hash: "sha256:6d2dcea6dacd0406e868160730c709ccc90e4ce452e715222c5e08d65b07563d"
+    expected_parse_result: SUCCESS
+    expected_model_properties:
+      - property: ok
+        value: true
+        authority: NETPBM-SPEC
+    applicable_profiles:
+      - PARSE_VALIDITY
+
+invalid_cases:
+  - case_id: ppm-invalid-001
+    purpose: "Non-PPM file must raise error"
+    defect_class: wrong-format
+    malformed_boundary: "File lacks P3/P6 magic"
+    authority_refs:
+      - "NETPBM-SPEC -- magic required"
+    sample_ref: null
+    expected_failure_stage: PARSE
+    expected_error_type: "Exception"
+    partial_recovery_allowed: false
+    security_relevance: false
+    notes: "No invalid PPM sample in corpus yet."
+
+canonicalization:
+  method: ppm-parse-dict
+  description: "Canonical form is parse_ppm dict with ok, width, height, maxval, pixel_count."
+  ordering_policy: "pixel order preserved"
+  whitespace_policy: "binary format — not applicable"
+  encoding_policy: "binary"
+
+tolerance_policy:
+  numeric_tolerance: NOT_APPLICABLE
+  ordering_tolerance: "none"
+  whitespace_tolerance: "binary format — not applicable"
+  metadata_tolerance: "None"
+  policy_summary: "parse_ppm must return dict with ok=True for valid samples"
+
+comparators:
+  - model-property-comparator
+
+validators:
+  - ppm-magic-validator
+
+consumers:
+  - tests/python/ppm/test_ppm_document_model.py

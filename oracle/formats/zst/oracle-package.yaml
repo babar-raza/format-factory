@@ -12,7 +12,7 @@ oracle_version: 1
 family: archive
 generated_at: "2026-06-25"
 generator_skill: oracle-layer-hardening-mission
-status: CASES_DEFINED
+status: VERIFIED
 
 # ==============================================================================
 # AUTHORITY
@@ -30,7 +30,10 @@ authority:
       body: Meta Platforms / phoboslab
       url: "https://github.com/facebook/zstd/blob/dev/doc/zstd_compression_format.md"
       authority_class: SPEC_INFORMATIVE
-  authorized_fact_refs: []  # SAL facts for ZST not extracted
+  authorized_fact_refs:  # TC-LA-001: 94 ZST SAL facts in sal-facts-latest.json
+    - "FACT-ZST-001"
+    - "FACT-ZST-002"
+    - "FACT-ZST-003"
   authority_summary: >
     RFC 8878 is normative (IETF, royalty-free). The Zstandard compression format
     is fully specified in the RFC. Decompression behavior is deterministic:

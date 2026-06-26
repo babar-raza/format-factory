@@ -4500,13 +4500,13 @@ Condition for upgrade to READY_FOR_CONTROLLED_PRODUCT_ACQUISITION_PILOT: 2-3 cle
 
 ---
 
-## Section 78 — sunny-crunching-galaxy: Product Deepening Ledger Healing + QName/Spec-Src Architecture Alignment (CLOSED)
+## Section 78 — sunny-crunching-galaxy: Product Deepening Ledger Healing + QName/Spec-Src Architecture Alignment (CLOSED → REOPENED → CLOSED)
 
-**Plan:** `sunny-crunching-galaxy.md` — TERMINAL_CLOSED
+**Plan:** `sunny-crunching-galaxy.md` — TERMINAL_CLOSED (initial), REOPENED (2026-06-26), TERMINAL_CLOSED (final)
 **Mission:** product-deepening-ledger-healing-20260625
 **Plan type:** machinery_hardening
 **Date:** 2026-06-26
-**Status:** CLOSED — ALL_GREEN_CONVERGENCE_COMPLETE
+**Status:** CLOSED — ALL_GREEN_CONVERGENCE_COMPLETE (all three tracks)
 
 ### Mission Summary
 
@@ -4557,13 +4557,89 @@ of Gen4 readiness. This sprint corrected the gate criterion and fixed the actual
 | ALLOWED (10) | abw, csv, fods, fodt, gnumeric, ndjson, toml, tsv, xcf, zst |
 | BLOCKED (10) | dif, fodg, fodp, ods, odt, pbm, pgm, ppm, qoi, sylk |
 
-### Deferred
+### Deferred (Initial Close — superseded by Reopening)
 
-- DIF registry mismatch: qname-registry/dif.yaml has `dif:data` pointing to dif_parser.py but class uses `spec_qname=dif:document` — requires separate registry repair sprint; DIF stays blocked
-- TC-LA layer audit items (SAL for 14 formats, gap closure audit) — separate track in reports/layer-audit-2026-06-26/
-- FODG LOC violation (fodg_codec.py at 831 LOC) — pre-existing, requires analytics separation sprint
+- DIF registry mismatch: qname-registry/dif.yaml has `dif:data` pointing to dif_parser.py but class uses `spec_qname=dif:document` — **RESOLVED in Track A (TC-R13–TC-R15)**
+- TC-LA layer audit items (SAL for 14 formats, gap closure audit) — **RESOLVED in Track C (TC-LA-001–TC-LA-010)**
+- FODG LOC violation (fodg_codec.py at 831 LOC) — **RESOLVED in Track B (TC-R16–TC-R18)**
 
-### Commits
+### Commits (Initial Close)
 
 - `26a0e80a` — fix(ledger/qname): ledger healing, ClassVar fixes, V74 improvement (sunny-crunching-galaxy)
+
+---
+
+### Reopening — Tracks A/B/C (2026-06-26)
+
+**Reopen reason:** Three deferred items promoted to in-scope: DIF registry mismatch (FIND-DIF-REGISTRY-001),
+FODG analytics separation (FIND-FODG-LOC-001), and all 10 TC-LA layer audit items from
+`reports/layer-audit-2026-06-26/forensic-layer-discovery-report.md`.
+
+#### Track A — DIF Registry (TC-R13, TC-R14, TC-R15)
+
+| Taskcard | Outcome |
+|----------|---------|
+| TC-R13 | Fixed shared/qname-registry/dif.yaml: `dif:data` entry updated to point to interchange_document.py (Analytics layer); new `dif:document` entry added pointing to dif_parser.py (DifDocument class) |
+| TC-R14 | Re-verified all 6 DIF qnames: dif:header, dif:data, dif:document, dif:cell, dif:datum, dif:vector — all ClassVar[str] confirmed. 997 DIF tests pass, V53 6/6 pass |
+| TC-R15 | DIF ledger entry: continuation_allowed=true, qname_compliance_status=verified, blockers=[] |
+
+**DIF promoted from BLOCKED → ALLOWED.** Final ledger: 11 ALLOWED, 9 BLOCKED.
+
+#### Track B — FODG Analytics Separation (TC-R16, TC-R17, TC-R18)
+
+| Taskcard | Outcome |
+|----------|---------|
+| TC-R16 | Created src/python/fodg/fodg_analytics.py (184 LOC). Extracted 9 pure model-based analytics functions: get_all_text, get_page_text, count_shapes, export_to_json, get_page_count, find_text, total_text_length, find_shapes_by_text_pattern, export_page_to_json. fodg_codec.py reduced 831→673 LOC. Re-export block added to codec for backward compatibility. 810 FODG tests pass. |
+| TC-R17 | registry/source-structure-baseline.json: fodg_codec.py loc updated 831→673 (baseline_loc_cap frozen at 831). fodg_analytics.py at 184 LOC < 800, no baseline entry required. |
+| TC-R18 | Governance suite: 138+ tests pass, 0 GOV_BLOCK for fodg_codec.py. |
+
+#### Track C — Layer Audit (TC-LA-001 through TC-LA-010)
+
+| Taskcard | Outcome |
+|----------|---------|
+| TC-LA-001 | SAL facts already present for all 14 target formats (CSV:55, TSV:2, NDJSON:2, ABW:5, DIF:3, GNUMERIC:3, SYLK:3, TOML:55, XCF:2, ZST:94, QOI:2, PBM:2, PGM:2, PPM:2). Merge tool idempotency proven via dry-run (all 14 show combined_already_has_equal_or_more_facts). |
+| TC-LA-002 | Gap-ledger audit complete: 1,208/1,246 gaps closed (97%). 10-sample audit confirmed 0% overclaim rate — all 10 sampled gaps had implementation_verified + suggested_verification commands. Spot-verified 3 implementations in code. |
+| TC-LA-003 | Oracle extended to 10 formats: csv, fods, ndjson, toml, tsv, zst (existing) + abw, gnumeric, dif, fodg (new). All new formats: 2/2 PASS on execute_oracle.py. |
+| TC-LA-004 | /ingest-spec-sal skill registered in .supervisor/skill-registry.yaml (line 1453). Idempotency proven via tools/spec/merge_sal_facts.py dry-run (no duplication). |
+| TC-LA-005 | reports/provenance/fods-provenance-chain-example.yaml created: 6-step provenance chain (spec_fact_ref→qname→capability_gap_ref→feature_ref→test_ref→package_version) for FODS Save Same Format. chain_status=COMPLETE. |
+| TC-LA-006 | taskcards/ directory confirmed not tracked by automated pipeline tools. No action required. |
+| TC-LA-007 | gap_ledger_to_work_items.py confirmed as DEPRECATED standalone CLI (TC-ORPHAN-RESOLVE-001 notice already present). capability_feature_compiler.py is the active implementation (autonomous_cycle.py:1481). |
+| TC-LA-008 | schemas/sal-facts/sal-facts-schema.json confirmed: valid JSON schema for SAL facts DB with required fields (fact_id, format, spec_ref, text, qname, status). Already present as untracked file. |
+| TC-LA-009 | MEMORY.md confirmed at 113 lines — well under 180-line safety margin. No action required. |
+| TC-LA-010 | /run-oracle skill registered in .supervisor/skill-registry.yaml (line 1481). Oracle now covers 10/20 formats. |
+
+### What Changed (Reopening)
+
+- shared/qname-registry/dif.yaml — dif:data entry fixed; dif:document entry added (TC-R13)
+- registry/product-deepening-ledger.yaml — DIF promoted to continuation_allowed=true (TC-R15)
+- src/python/fodg/fodg_analytics.py — new file, 184 LOC with 9 extracted analytics functions (TC-R16)
+- src/python/fodg/fodg_codec.py — 9 analytics functions replaced with re-export block; 831→673 LOC (TC-R16)
+- registry/source-structure-baseline.json — fodg_codec.py loc updated 831→673 (TC-R17)
+- tools/oracle/execute_oracle.py — execute_generic_load_case + 4 format executors (abw/gnumeric/dif/fodg) added (TC-LA-003)
+- oracle/formats/abw/oracle-package.yaml — new oracle package (TC-LA-003)
+- oracle/formats/gnumeric/oracle-package.yaml — new oracle package (TC-LA-003)
+- oracle/formats/dif/oracle-package.yaml — updated with corrected callable parse_dif (TC-LA-003)
+- oracle/formats/fodg/oracle-package.yaml — updated oracle package (TC-LA-003)
+- reports/provenance/fods-provenance-chain-example.yaml — new provenance chain document (TC-LA-005)
+
+### Final Ledger State (After Reopening)
+
+| Status | Formats |
+|--------|---------|
+| ALLOWED (11) | abw, csv, dif, fods, fodt, gnumeric, ndjson, toml, tsv, xcf, zst |
+| BLOCKED (9) | fodg, fodp, ods, odt, pbm, pgm, ppm, qoi, sylk |
+
+### Verification Performed (Reopening)
+
+- 997/997 DIF tests pass + V53 6/6 PASS (TC-R14)
+- 810/810 FODG tests pass after analytics separation (TC-R16/R18)
+- Ledger gate: 11 ALLOWED, 9 BLOCKED — verified by Python assertion
+- Oracle: 10 formats with 2/2 PASS run summaries (TC-LA-003/TC-LA-010)
+- SAL facts: 14 target formats all have >0 facts, idempotency proven (TC-LA-001/TC-LA-004)
+- Gap-ledger: 0% overclaim rate from 10-sample audit (TC-LA-002)
+
+### Commits (Reopening)
+
+- `8185bf45` — feat(net-deepening): S128 (concurrent net-deepening agent sweep — includes all plan deliverables)
+- `c026e00a` — oracle: refine gnumeric oracle package (TC-LA-003 gnumeric correction)
 

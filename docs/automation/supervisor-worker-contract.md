@@ -72,6 +72,38 @@ For every `PRODUCT_SOURCE`, `READINESS`, or `RELEASE_GATE` work item, EITHER:
 
 `gap_ledger_ref` alone is no longer sufficient for TC-GUARD-001 (upgraded 2026-06-25).
 
+## spec_fact_provenance (optional advisory field — SAL-HEAL-B001 2026-06-26)
+
+For work items that have `spec_fact_refs`, an optional `spec_fact_provenance` array
+provides finer-grained traceability from the fact back to the source spec text.
+
+This field is **advisory** now and becomes **required for READINESS and RELEASE_GATE
+items** in a future sprint once workbench coverage reaches ≥80% of active formats.
+
+```yaml
+spec_fact_provenance:
+  - fact_id: FACT-FODS-001           # matches a spec_fact_refs entry
+    section_ref: "ODF 1.3 §3.1.2"   # human-readable section
+    page_ref: 90                     # page number in normalized spec text (integer)
+    source_sha256: "sha256:92cfe64ee30a8cca1be19a76d38628fdc8ef9153eb59547f6c96fe7b9b81b066"
+    # source_sha256 comes from workbench/verified-facts-review.yaml provenance field
+```
+
+**Field definitions:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `fact_id` | string | YES | FACT-FORMAT-NNN — must match a `spec_fact_refs` entry |
+| `section_ref` | string | NO | Human-readable spec section (e.g. "ODF 1.3 §9.2") |
+| `page_ref` | integer | NO | Page number in the normalized spec text.txt |
+| `source_sha256` | string | NO | SHA-256 of the spec source file (from workbench provenance) |
+
+**Finding provenance values:** Use `.local/spec-cache/{format}/{version}/workbench/verified-facts-review.yaml`.
+Each fact entry contains a `provenance` dict with `section_id`, `page_start`, and `source_sha256`.
+
+**V-NEW-002 gate (advisory):** When READINESS items have `spec_fact_refs` but no
+`spec_fact_provenance`, the governance validator emits WARN (not FAIL).
+
 ## Work Item Status Values
 
 | Status | Meaning |

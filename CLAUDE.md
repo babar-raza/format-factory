@@ -8,16 +8,28 @@ Check whether a per-chat plan file is loaded. Look for a system message containi
 `A plan file exists from plan mode at:` in the conversation context.
 
 **If a plan file is loaded:**
-1. Write the plan lock IMMEDIATELY — before any sprint, before any continuation check:
+1. **Migrate external plan to in-repo FIRST** — if the plan file path is outside the repository
+   (contains `/.claude/plans/` or `\.claude\plans\`), copy it into the repo before locking:
+   ```
+   # Copy to in-repo location
+   cp <external-plan-path> plans/.claude/<filename>
+   # Redirect the lock to the in-repo path
+   python tools/supervisor/write_plan_lock.py --plan-path plans/.claude/<filename>
+   ```
+   Example: plan at `C:/Users/.../.claude/plans/glistening-leaping-chipmunk.md` →
+   copy to `plans/.claude/glistening-leaping-chipmunk.md`, then lock that path.
+   The external file is the **seed only** — all subsequent reads, writes, taskcard
+   updates, and hardening go to `plans/.claude/<filename>` in the repo.
+2. Write the plan lock IMMEDIATELY — before any sprint, before any continuation check:
    ```
    python tools/supervisor/write_plan_lock.py --plan-path <plan-file-path>
    ```
-   Example: `python tools/supervisor/write_plan_lock.py --plan-path plans/polished-giggling-tome.md`
-2. The lock blocks `check_continuation.py` from returning CONTINUE for sprint loops.
-3. Execute the loaded plan exclusively. Do NOT resume prior sprints. Do NOT run product
+   Example: `python tools/supervisor/write_plan_lock.py --plan-path plans/.claude/glistening-leaping-chipmunk.md`
+3. The lock blocks `check_continuation.py` from returning CONTINUE for sprint loops.
+4. Execute the loaded plan exclusively. Do NOT resume prior sprints. Do NOT run product
    deepening rotations. The conversation summary saying "sprint N was in progress" is
    IRRELEVANT — the loaded plan is the SOLE work authority.
-4. When all plan taskcards are complete, run:
+5. When all plan taskcards are complete, run:
    ```
    python tools/supervisor/write_plan_lock.py --plan-path <plan-file-path> --terminal
    ```

@@ -12,7 +12,7 @@ oracle_version: 1
 family: cells
 generated_at: "2026-06-25"
 generator_skill: oracle-layer-hardening-mission
-status: CASES_DEFINED
+status: VERIFIED
 
 # ==============================================================================
 # AUTHORITY
@@ -30,7 +30,12 @@ authority:
       body: IANA
       url: "https://www.iana.org/assignments/media-types/text/csv"
       authority_class: SPEC_NORMATIVE
-  authorized_fact_refs: []  # SAL facts for CSV not extracted yet
+  authorized_fact_refs:  # TC-LA-001: 55 SAL facts now merged into sal-facts-latest.json
+    - "FACT-CSV-003"
+    - "FACT-CSV-004"
+    - "FACT-CSV-005"
+    - "FACT-CSV-006"
+    - "FACT-CSV-007"
   requirement_refs: []
   capability_refs: []
   authority_summary: >

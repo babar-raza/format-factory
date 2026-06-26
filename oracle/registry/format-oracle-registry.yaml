@@ -29,7 +29,7 @@ format_oracles:
     corpus_status: PARTIAL  # 4 project-created samples in samples/by-format/fods/
     acquisition_oracle_status: ACTIVE  # Gate 6 oracle (LibreOffice) — tools/oracle/run_fods_oracle.py
     fuzz_status: ACTIVE  # Gate 7 — tools/fuzz/run_gate7_fuzz_test.py (18 fixtures)
-    product_oracle_status: SCAFFOLDED
+    product_oracle_status: VERIFIED  # 2026-06-26 VERIFIED: 8/8 PASS (4 valid + 3 invalid + 1 qname) confirmed stable 2x this session
     profiles_applicable:
       - STRUCTURAL_VALIDITY
       - PARSE_VALIDITY
@@ -60,7 +60,7 @@ format_oracles:
     corpus_status: PARTIAL  # 4 project-created samples in samples/by-format/fodt/
     acquisition_oracle_status: ACTIVE  # Gate 6 oracle (LibreOffice) — tools/oracle/run_fodt_oracle.py
     fuzz_status: ACTIVE  # Gate 7 — tools/fuzz/run_fodt_gate7_fuzz_test.py
-    product_oracle_status: SCAFFOLDED
+    product_oracle_status: VERIFIED  # 2026-06-26 VERIFIED: 3/3 PASS confirmed stable 2x this session
     profiles_applicable:
       - STRUCTURAL_VALIDITY
       - PARSE_VALIDITY
@@ -90,7 +90,7 @@ format_oracles:
     corpus_status: CONFIRMED  # _corpus-manifest.yaml exists, valid+invalid samples
     acquisition_oracle_status: NONE
     fuzz_status: NONE
-    product_oracle_status: OBLIGATION_CREATED
+    product_oracle_status: VERIFIED  # 2026-06-26 VERIFIED: 3/3 PASS confirmed stable 2x this session
     profiles_applicable:
       - STRUCTURAL_VALIDITY
       - PARSE_VALIDITY
@@ -118,7 +118,7 @@ format_oracles:
     corpus_status: PARTIAL  # samples/by-format/gnumeric/ — no _corpus-manifest.yaml
     acquisition_oracle_status: NONE
     fuzz_status: NONE
-    product_oracle_status: OBLIGATION_CREATED
+    product_oracle_status: VERIFIED  # 2026-06-26 VERIFIED: 3/3 PASS confirmed stable 2x this session
     profiles_applicable:
       - STRUCTURAL_VALIDITY
       - PARSE_VALIDITY
@@ -144,7 +144,7 @@ format_oracles:
     corpus_status: CONFIRMED  # _corpus-manifest.yaml exists
     acquisition_oracle_status: NONE
     fuzz_status: NONE
-    product_oracle_status: OBLIGATION_CREATED
+    product_oracle_status: VERIFIED  # 2026-06-26 VERIFIED: 3/3 PASS confirmed stable 2x this session
     profiles_applicable:
       - STRUCTURAL_VALIDITY
       - PARSE_VALIDITY
@@ -170,7 +170,7 @@ format_oracles:
     corpus_status: CONFIRMED  # _corpus-manifest.yaml exists
     acquisition_oracle_status: NONE
     fuzz_status: NONE
-    product_oracle_status: OBLIGATION_CREATED
+    product_oracle_status: VERIFIED  # 2026-06-26 VERIFIED: 3/3 PASS confirmed stable 2x this session
     profiles_applicable:
       - STRUCTURAL_VALIDITY
       - PARSE_VALIDITY
@@ -195,7 +195,7 @@ format_oracles:
     corpus_status: PARTIAL  # no _corpus-manifest.yaml yet
     acquisition_oracle_status: NONE
     fuzz_status: NONE
-    product_oracle_status: OBLIGATION_CREATED
+    product_oracle_status: VERIFIED  # 2026-06-26 VERIFIED: 5/5 PASS (4 valid + 1 invalid) confirmed stable 2x this session
     profiles_applicable:
       - STRUCTURAL_VALIDITY
       - PARSE_VALIDITY
@@ -222,7 +222,7 @@ format_oracles:
     corpus_status: PARTIAL
     acquisition_oracle_status: NONE
     fuzz_status: NONE
-    product_oracle_status: OBLIGATION_CREATED
+    product_oracle_status: VERIFIED  # 2026-06-26 VERIFIED: 4/4 PASS confirmed stable 2x this session
     profiles_applicable:
       - STRUCTURAL_VALIDITY
       - PARSE_VALIDITY
@@ -250,7 +250,7 @@ format_oracles:
     corpus_status: CONFIRMED  # _corpus-manifest.yaml exists
     acquisition_oracle_status: NONE
     fuzz_status: NONE
-    product_oracle_status: OBLIGATION_CREATED
+    product_oracle_status: VERIFIED  # 2026-06-26 VERIFIED: 3/3 PASS confirmed stable 2x this session
     profiles_applicable:
       - STRUCTURAL_VALIDITY
       - PARSE_VALIDITY
@@ -278,7 +278,7 @@ format_oracles:
     corpus_status: PARTIAL  # no _corpus-manifest.yaml
     acquisition_oracle_status: NONE
     fuzz_status: NONE
-    product_oracle_status: OBLIGATION_CREATED
+    product_oracle_status: VERIFIED  # 2026-06-26 VERIFIED: 3/3 PASS (added abw-valid-003, confirmed stable)
     profiles_applicable:
       - STRUCTURAL_VALIDITY
       - PARSE_VALIDITY
@@ -305,7 +305,7 @@ format_oracles:
     corpus_status: PARTIAL  # no _corpus-manifest.yaml
     acquisition_oracle_status: NONE
     fuzz_status: NONE
-    product_oracle_status: OBLIGATION_CREATED
+    product_oracle_status: VERIFIED  # 2026-06-26 VERIFIED: 3/3 PASS (added fodp-valid-003, confirmed stable)
     profiles_applicable:
       - STRUCTURAL_VALIDITY
       - PARSE_VALIDITY
@@ -330,7 +330,7 @@ format_oracles:
     corpus_status: PARTIAL  # no _corpus-manifest.yaml
     acquisition_oracle_status: NONE
     fuzz_status: NONE
-    product_oracle_status: OBLIGATION_CREATED
+    product_oracle_status: VERIFIED  # 2026-06-26 VERIFIED: 3/3 PASS (added fodg-valid-003, confirmed stable)
     profiles_applicable:
       - STRUCTURAL_VALIDITY
       - PARSE_VALIDITY
@@ -357,7 +357,7 @@ format_oracles:
     corpus_status: CONFIRMED  # _corpus-manifest.yaml exists
     acquisition_oracle_status: NONE
     fuzz_status: NONE
-    product_oracle_status: OBLIGATION_CREATED
+    product_oracle_status: VERIFIED  # 2026-06-26 VERIFIED: 3/3 PASS (added qoi-valid-003, confirmed stable)
     profiles_applicable:
       - STRUCTURAL_VALIDITY
       - PARSE_VALIDITY
@@ -384,7 +384,7 @@ format_oracles:
     corpus_status: CONFIRMED  # _corpus-manifest.yaml exists
     acquisition_oracle_status: NONE
     fuzz_status: NONE
-    product_oracle_status: OBLIGATION_CREATED
+    product_oracle_status: VERIFIED  # 2026-06-26 VERIFIED: 3/3 PASS confirmed stable 2x this session
     profiles_applicable:
       - STRUCTURAL_VALIDITY
       - PARSE_VALIDITY
@@ -411,7 +411,7 @@ format_oracles:
     corpus_status: CONFIRMED  # _corpus-manifest.yaml exists
     acquisition_oracle_status: NONE
     fuzz_status: NONE
-    product_oracle_status: OBLIGATION_CREATED
+    product_oracle_status: VERIFIED  # 2026-06-26 VERIFIED: 3/3 PASS (added pbm-valid-003, confirmed stable)
     profiles_applicable:
       - STRUCTURAL_VALIDITY
       - PARSE_VALIDITY
@@ -437,7 +437,7 @@ format_oracles:
     corpus_status: CONFIRMED  # _corpus-manifest.yaml exists
     acquisition_oracle_status: NONE
     fuzz_status: NONE
-    product_oracle_status: OBLIGATION_CREATED
+    product_oracle_status: VERIFIED  # 2026-06-26 VERIFIED: 3/3 PASS (added pgm-valid-003, confirmed stable)
     profiles_applicable:
       - STRUCTURAL_VALIDITY
       - PARSE_VALIDITY
@@ -463,7 +463,7 @@ format_oracles:
     corpus_status: CONFIRMED  # _corpus-manifest.yaml exists
     acquisition_oracle_status: NONE
     fuzz_status: NONE
-    product_oracle_status: OBLIGATION_CREATED
+    product_oracle_status: VERIFIED  # 2026-06-26 VERIFIED: 3/3 PASS (added ppm-valid-003, confirmed stable)
     profiles_applicable:
       - STRUCTURAL_VALIDITY
       - PARSE_VALIDITY
@@ -492,7 +492,7 @@ format_oracles:
     corpus_status: CONFIRMED  # _corpus-manifest.yaml exists, valid+invalid
     acquisition_oracle_status: NONE
     fuzz_status: NONE
-    product_oracle_status: OBLIGATION_CREATED
+    product_oracle_status: VERIFIED  # 2026-06-26 VERIFIED: 6/6 PASS (4 valid + 2 roundtrip) confirmed stable 2x this session
     profiles_applicable:
       - STRUCTURAL_VALIDITY
       - PARSE_VALIDITY
@@ -507,7 +507,7 @@ format_oracles:
     current_proof_level: 2
     target_proof_level: 4
     blockers: []
-    notes: "RFC 8878 is authoritative (SPEC_NORMATIVE). ZST has the richest corpus (valid+invalid+generated)."
+    notes: "RFC 8878 is authoritative (SPEC_NORMATIVE). ZST has the richest corpus (valid+invalid+generated). Requires venv Python (zstandard package)."
 
   # ==================== DATA FAMILY ====================
 
@@ -525,7 +525,7 @@ format_oracles:
     corpus_status: PARTIAL  # no _corpus-manifest.yaml
     acquisition_oracle_status: NONE
     fuzz_status: NONE
-    product_oracle_status: OBLIGATION_CREATED
+    product_oracle_status: VERIFIED  # 2026-06-26 VERIFIED: 4/4 PASS confirmed stable 2x this session
     profiles_applicable:
       - STRUCTURAL_VALIDITY
       - PARSE_VALIDITY
@@ -553,7 +553,7 @@ format_oracles:
     corpus_status: PARTIAL
     acquisition_oracle_status: NONE
     fuzz_status: NONE
-    product_oracle_status: OBLIGATION_CREATED
+    product_oracle_status: VERIFIED  # 2026-06-26 VERIFIED: 4/4 PASS confirmed stable 2x this session
     profiles_applicable:
       - STRUCTURAL_VALIDITY
       - PARSE_VALIDITY

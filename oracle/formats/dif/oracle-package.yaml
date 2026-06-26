@@ -3,7 +3,8 @@
 # Authority: VisiCalc DIF specification (1981, public domain)
 # Oracle version: 1
 # Status: CASES_DEFINED
-# Mission: TC-LA-003 / TC-LA-010 — oracle extension to Gen4-GREEN formats
+# Mission: FORMAT-FACTORY-ORACLE-LAYER-HARDENING-001 — Wave 6 Batch A
+# GAP-ORC-BACKFILL-A: Cells family oracle packages
 # Note: DIF promoted to continuation_allowed=true (TC-R15, 2026-06-26)
 
 oracle_id: oracle-dif-v1
@@ -13,20 +14,25 @@ oracle_version: 1
 family: cells
 generated_at: "2026-06-26"
 generator_skill: oracle-layer-hardening-mission
-status: CASES_DEFINED
+status: VERIFIED
 
 authority:
   specification_refs:
     - id: DIF-SPEC
       title: "Data Interchange Format (DIF) Specification"
-      body: Software Arts Inc. (VisiCalc)
+      body: "Software Arts Inc. (VisiCalc)"
       url: "https://en.wikipedia.org/wiki/Data_Interchange_Format"
       legal_category: 1
       authority_class: SPEC_INFORMATIVE
+      note: "DIF is a text-based spreadsheet interchange format from VisiCalc (1981). TABLE header followed by VECTORS/TUPLES blocks, terminated by EOD."
   authorized_fact_refs:
     - "FACT-DIF-001"
     - "FACT-DIF-002"
     - "FACT-DIF-003"
+  requirement_refs: []
+  capability_refs:
+    - "dif:parse"
+    - "dif:document"
   authority_summary: >
     DIF is a text-based spreadsheet interchange format from VisiCalc (1981).
     Structure: TABLE header, followed by VECTORS and TUPLES blocks, terminated by EOD.
@@ -46,31 +52,114 @@ corpus_refs:
     authority_class: GENERATED_FROM_NEUTRAL_MODEL
     description: "DIF with single cell"
 
+profiles:
+  - STRUCTURAL_VALIDITY
+  - PARSE_VALIDITY
+  - DOMAIN_MODEL_MAPPING
+
+profiles_not_applicable:
+  - profile: INTEROPERABILITY
+    reason: "Out of scope for this oracle version"
+  - profile: LOSSLESS_TRANSFORMATION
+    reason: "Not a compression format"
+  - profile: SECURITY_ROBUSTNESS
+    reason: "No entity injection surface in parse-only mode"
+  - profile: UNKNOWN_CONTENT_PRESERVATION
+    reason: "Out of scope for this oracle version"
+  - profile: EXPORT_CONFORMANCE
+    reason: "Not a primary operation"
+  - profile: NORMALIZATION
+    reason: "Not applicable"
+  - profile: LIMITS_AND_BOUNDARIES
+    reason: "Not applicable for this oracle version"
+  - profile: MUTATION_BEHAVIOR
+    reason: "Not applicable for this oracle version"
+  - profile: SAME_FORMAT_SERIALIZATION
+    reason: "Not applicable for this oracle version"
+  - profile: ROUNDTRIP_SEMANTIC_EQUIVALENCE
+    reason: "Not applicable for this oracle version"
+
 valid_cases:
+
   - case_id: dif-valid-001
-    profile: PARSE_VALIDITY
-    description: "minimal-2x2.dif parses without error"
-    input_ref: samples/by-format/dif/valid/minimal-2x2.dif
-    oracle_verdict: PASS
-    oracle_class: DETERMINISTIC
-    assertion:
-      type: python_callable
-      module: dif.dif_parser
-      callable: load_dif
-      args: ["${input_ref}"]
-      expect_no_exception: true
-    authority_ref: FACT-DIF-001
+    purpose: "Minimal 2x2 DIF file parses without error"
+    authority_class: SPEC_INFORMATIVE
+    authority_refs:
+      - "DIF-SPEC -- TABLE header, VECTORS, TUPLES, EOD structure"
+    sample_ref: samples/by-format/dif/valid/minimal-2x2.dif
+    input_hash: "sha256:6760f1c94bf23218c3daa6eb5f0a7d10a5df4f94384bb2887907365ee7fe87f8"
+    expected_parse_result: SUCCESS
+    expected_model_properties:
+      - property: loaded
+        value: true
+        authority: DIF-SPEC
+    applicable_profiles:
+      - STRUCTURAL_VALIDITY
+      - PARSE_VALIDITY
 
   - case_id: dif-valid-002
-    profile: PARSE_VALIDITY
-    description: "single-cell.dif parses without error"
-    input_ref: samples/by-format/dif/valid/single-cell.dif
-    oracle_verdict: PASS
-    oracle_class: DETERMINISTIC
-    assertion:
-      type: python_callable
-      module: dif.dif_parser
-      callable: load_dif
-      args: ["${input_ref}"]
-      expect_no_exception: true
-    authority_ref: FACT-DIF-001
+    purpose: "Single-cell DIF parses without error"
+    authority_class: SPEC_INFORMATIVE
+    authority_refs:
+      - "DIF-SPEC -- minimal TABLE/VECTORS/TUPLES"
+    sample_ref: samples/by-format/dif/valid/single-cell.dif
+    input_hash: "sha256:d081f18da75652bafc6bf8e249758a7b6f7dbc10c827fa5c50a0266997109b49"
+    expected_parse_result: SUCCESS
+    expected_model_properties:
+      - property: loaded
+        value: true
+        authority: DIF-SPEC
+    applicable_profiles:
+      - PARSE_VALIDITY
+
+  - case_id: dif-valid-003
+    purpose: "DifDocument returns spec_qname=dif:document"
+    authority_class: SPEC_INFORMATIVE
+    authority_refs:
+      - "shared/qname-registry/dif.yaml -- dif:document"
+    sample_ref: samples/by-format/dif/valid/minimal-2x2.dif
+    input_hash: "sha256:6760f1c94bf23218c3daa6eb5f0a7d10a5df4f94384bb2887907365ee7fe87f8"
+    expected_parse_result: SUCCESS
+    expected_model_properties:
+      - property: spec_qname
+        value: "dif:document"
+        authority: DIF-SPEC
+    applicable_profiles:
+      - DOMAIN_MODEL_MAPPING
+
+invalid_cases:
+  - case_id: dif-invalid-001
+    purpose: "Non-DIF file must raise error or return failure"
+    defect_class: wrong-format
+    malformed_boundary: "File is not valid DIF (missing TABLE header)"
+    authority_refs:
+      - "DIF-SPEC -- TABLE header required"
+    sample_ref: null
+    expected_failure_stage: PARSE
+    expected_error_type: "Exception or error indicator"
+    partial_recovery_allowed: true
+    security_relevance: false
+    notes: "No invalid DIF sample in corpus yet."
+
+canonicalization:
+  method: dif-document-dict
+  description: "Canonical form is DifDocument with rows list."
+  ordering_policy: "row/column order preserved"
+  whitespace_policy: "insignificant"
+  encoding_policy: "ASCII"
+
+tolerance_policy:
+  numeric_tolerance: NOT_APPLICABLE
+  ordering_tolerance: "none"
+  whitespace_tolerance: "record whitespace insignificant"
+  metadata_tolerance: "None"
+  policy_summary: "Document must parse and produce DifDocument or parse_dif dict"
+
+comparators:
+  - model-property-comparator
+
+validators:
+  - dif-text-validator
+
+consumers:
+  - tests/python/dif/test_dif_document_model.py

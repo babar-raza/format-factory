@@ -2,7 +2,7 @@
 # Format: Flat OpenDocument Graphics
 # Authority: ODF 1.3 Part 3, OASIS Royalty-Free Category 1
 # Oracle version: 1
-# Status: CASES_DEFINED
+# Status: VERIFIED
 # Mission: TC-LA-003 / TC-LA-010 — oracle extension to formats with SAL facts
 # Note: FODG has 1066 SAL facts; analytics separated to fodg_analytics.py (TC-R16)
 
@@ -13,7 +13,7 @@ oracle_version: 1
 family: drawing
 generated_at: "2026-06-26"
 generator_skill: oracle-layer-hardening-mission
-status: CASES_DEFINED
+status: VERIFIED
 
 authority:
   specification_refs:
@@ -68,5 +68,21 @@ valid_cases:
       callable: probe_fodg
       args: ["${input_ref}"]
       expect_return_value: true
+      expect_no_exception: true
+    authority_ref: FACT-FODG-001
+
+  - case_id: fodg-valid-003
+    profile: PARSE_VALIDITY
+    description: "shapes-basic.fodg loads without error and returns dict with is_fodg=True"
+    input_ref: samples/by-format/fodg/shapes-basic.fodg
+    input_hash: "sha256:f916c13f4dbdb9b7b7a6937ae8e4ef858a9556222700dcf7e567d83dcdace2d4"
+    oracle_verdict: PASS
+    oracle_class: DETERMINISTIC
+    assertion:
+      type: python_callable
+      module: fodg.fodg_codec
+      callable: load
+      args: ["${input_ref}"]
+      expect_type: dict
       expect_no_exception: true
     authority_ref: FACT-FODG-001
