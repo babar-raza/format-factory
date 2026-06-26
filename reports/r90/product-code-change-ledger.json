@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s190-dotnet-deepening-20260628",
+  "latest_sprint": "ff-sprint-s191-dotnet-deepening-20260629",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -23279,6 +23279,36 @@
       "description": "FodtDocument.InsertParagraph dedicated tests: negative/above-count throws, valid increments, at-0 shifts, at-count appends, text accessible, null=empty, returns FodtParagraph, dogfood insert-middle/insert-remove",
       "evidence_path": "tests/net/fodt/FodtR199InsertParagraphTests.cs",
       "test_count": 10
+    },
+    {
+      "entry_id": "PC-NETPBM-R191",
+      "sprint": "ff-sprint-s191-dotnet-deepening-20260629",
+      "format": "NETPBM",
+      "capability": "Sepia",
+      "description": "Dedicated tests for NetpbmImage.Sepia: PBM/PGM clone, PPM luma-based sepia, red>blue channel, format/MaxValue/dims preserved, dogfood",
+      "evidence_path": "tests/net/netpbm/NetpbmR191SepiaTests.cs",
+      "test_count": 10,
+      "status": "completed"
+    },
+    {
+      "entry_id": "PC-FODS-R202",
+      "sprint": "ff-sprint-s191-dotnet-deepening-20260629",
+      "format": "FODS",
+      "capability": "ExportSheetToTsv",
+      "description": "Dedicated tests for FodsDocumentExporter.ExportSheetToTsv: empty, non-null, value present, tab-separated, two-rows, tab-in-value replaced, named-sheet, dogfood multi-cell and 3x3",
+      "evidence_path": "tests/net/fods/FodsR202ExportSheetToTsvDedicatedTests.cs",
+      "test_count": 10,
+      "status": "completed"
+    },
+    {
+      "entry_id": "PC-FODT-R202",
+      "sprint": "ff-sprint-s191-dotnet-deepening-20260629",
+      "format": "FODT",
+      "capability": "GetPlainTextRange",
+      "description": "Dedicated tests for FodtDocument.GetPlainTextRange: negative start throws, end>count throws, start==end empty, start>end empty, single-para, two-para joined, headings included, dogfood middle range and full range",
+      "evidence_path": "tests/net/fodt/FodtR202GetPlainTextRangeTests.cs",
+      "test_count": 10,
+      "status": "completed"
     }
   ],
   "total_entries": 1270,
