@@ -31,6 +31,25 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent.parent
 MANIFEST_PATH = REPO_ROOT / "registry" / "test-layer-manifest.yaml"
 
+# TC-CONV-003: Warn if not running inside the project venv.
+# test_runner.py uses sys.executable for pytest invocation, so system Python
+# will produce collection failures for L3+ (missing packages). Warn early.
+def _check_venv() -> None:
+    venv_python = REPO_ROOT / ".venv" / "Scripts" / "python.exe"
+    current = Path(sys.executable).resolve()
+    try:
+        expected = venv_python.resolve()
+        if current != expected:
+            print(
+                f"WARNING: test_runner.py is running under {current}\n"
+                f"  Expected venv Python: {expected}\n"
+                f"  L3+ runs will fail if project dependencies are not available.\n"
+                f"  Correct invocation: .venv\\Scripts\\python.exe tools/test_runner.py ...",
+                file=sys.stderr,
+            )
+    except Exception:
+        pass
+
 LAYER_NAMES = {
     0: "structural",
     1: "focused",
@@ -518,6 +537,31 @@ def _compare_known_failures(
                 known = []
 
     known_ids = {k.get("test_id", "") for k in known}
+    # TC-CONV-002: Build a normalized set of known IDs for dot-notation matching.
+    # JUnit XML classnames use dot-notation (tests.python.csv.test_foo) but
+    # the known-failure ledger uses slash-path format (tests/python/csv/test_foo.py).
+    # Build a lookup from the file-path portion (classname.replace('.', '/') + '.py').
+    known_file_paths: set[str] = set()
+    for entry in known:
+        tid = entry.get("test_id", "")
+        # Entries may be file paths with or without test function suffixes
+        file_part = tid.split("::")[0] if "::" in tid else tid
+        known_file_paths.add(file_part)
+
+    def _normalize_test_id(tid: str) -> str | None:
+        """Convert dot-notation classname::test to slash-path file reference.
+
+        Input:  'tests.python.csv.test_r290_foo::test_bar'
+        Output: 'tests/python/csv/test_r290_foo.py'
+        Returns None if normalization cannot be applied.
+        """
+        if "::" not in tid:
+            return None
+        classname = tid.split("::")[0]
+        if "." not in classname:
+            return None
+        slash_path = classname.replace(".", "/") + ".py"
+        return slash_path
 
     # Extract current failing test IDs from junitxml if available
     current_failures: list[str] = []
@@ -536,8 +580,18 @@ def _compare_known_failures(
         except Exception:
             pass
 
-    pre_existing = [f for f in current_failures if f in known_ids]
-    new_failures = [f for f in current_failures if f not in known_ids]
+    def _is_known(tid: str) -> bool:
+        """Check if a test ID matches any known-failure entry (direct or normalized)."""
+        if tid in known_ids:
+            return True
+        # Try normalized slash-path lookup for dot-notation classnames
+        normalized = _normalize_test_id(tid)
+        if normalized and normalized in known_file_paths:
+            return True
+        return False
+
+    pre_existing = [f for f in current_failures if _is_known(f)]
+    new_failures = [f for f in current_failures if not _is_known(f)]
 
     return (
         [{"test_id": tid} for tid in pre_existing],
@@ -596,6 +650,7 @@ def _update_shard_ledger(shard_num: int, total_shards: int, result: dict) -> Non
 
 
 def main():
+    _check_venv()
     # Pre-process: handle --list-layers before argparse (avoids breaking mutex group)
     if "--list-layers" in sys.argv:
         _handle_list_layers()
@@ -786,11 +841,14 @@ def main():
         print(f"  Known failures: {n_pre} pre-existing, {n_new} new")
 
     # TC-FSLAY02-KNOWN-001: Mask exit code when all failures are pre-existing.
-    # Only mask when --known-failures was provided AND new_failures is empty list.
+    # Only mask when --known-failures was provided AND new_failures is empty list
+    # AND there are actual pre-existing known failures (not vacuous 0-test case).
+    # TC-CONV-001: Guard against vacuous masking when 0 tests were collected.
     exit_code = result["pytest_exit_code"]
     if (args.known_failures
             and result.get("new_failures") is not None
             and len(result["new_failures"]) == 0
+            and len(result.get("known_failures", [])) > 0
             and exit_code != 0):
         result["exit_code_masked"] = True
         result["exit_code_mask_reason"] = "all_failures_pre_existing"

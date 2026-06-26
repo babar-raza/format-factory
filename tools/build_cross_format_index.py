@@ -19,6 +19,7 @@ import argparse
 import re
 import sys
 from collections import defaultdict
+from datetime import date
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -133,7 +134,7 @@ def _write_index(index: dict[str, list[str]]) -> None:
         "# Used by tools/test_runner.py --auto to detect cross-format tests when a format changes.",
         "",
         "schema_version: \"1.0\"",
-        "generated_date: \"2026-06-18\"",
+        f"generated_date: \"{date.today().isoformat()}\"",
         "description: >",
         "  When src/python/{format}/ changes, test_runner.py --auto will also include",
         "  all files listed under format_to_tests[format] in addition to tests/python/{format}/.",

@@ -229,3 +229,83 @@ class TestKnownFailuresExitCodeMasking:
 
         assert exit_code == 0
         assert "exit_code_masked" not in result
+
+    def test_no_mask_when_zero_tests_collected(self):
+        """TC-CONV-001: When both known_failures and new_failures are empty (0 tests
+        collected), exit-code masking must NOT fire. This guards against vacuous masking
+        that hides total collection failures as apparent success (IssL1-003)."""
+        result = {
+            "pytest_exit_code": 1,
+            "new_failures": [],
+            "known_failures": [],  # No pre-existing failures — 0 tests collected
+        }
+        known_failures_provided = True
+        exit_code = result["pytest_exit_code"]
+        # Replicate the FIXED masking condition (TC-CONV-001 adds known_failures > 0 guard)
+        if (known_failures_provided
+                and result.get("new_failures") is not None
+                and len(result["new_failures"]) == 0
+                and len(result.get("known_failures", [])) > 0
+                and exit_code != 0):
+            result["exit_code_masked"] = True
+            exit_code = 0
+
+        assert exit_code == 1, "Exit code must NOT be masked when 0 tests collected"
+        assert "exit_code_masked" not in result
+
+
+# ===== TC-CONV-002: Known-failure path normalization =====
+
+class TestKnownFailurePathNormalization:
+    """Test the dot-notation to slash-path normalization for known-failure matching.
+
+    JUnit XML classnames use dot-notation (tests.python.csv.test_foo).
+    Known-failure ledger uses slash-path format (tests/python/csv/test_foo.py).
+    TC-CONV-002 added _normalize_test_id() and _is_known() to bridge this gap.
+    """
+
+    def _normalize_test_id(self, tid: str):
+        """Replicate the normalization logic from tools/test_runner.py."""
+        if "::" not in tid:
+            return None
+        classname = tid.split("::")[0]
+        if "." not in classname:
+            return None
+        return classname.replace(".", "/") + ".py"
+
+    def test_normalize_dot_notation_to_slash_path(self):
+        """Dot-notation classname is converted to slash-path file reference."""
+        tid = "tests.python.csv.test_r290_csv_numeric_range_has_only_one_row::test_numeric_range_minimal"
+        result = self._normalize_test_id(tid)
+        assert result == "tests/python/csv/test_r290_csv_numeric_range_has_only_one_row.py"
+
+    def test_normalize_returns_none_without_double_colon(self):
+        """IDs without '::' separator return None (no function name, not a test ID)."""
+        tid = "tests/python/csv/test_foo.py"
+        assert self._normalize_test_id(tid) is None
+
+    def test_normalize_returns_none_without_dots_in_classname(self):
+        """Classnames without dots (non-module-path format) return None."""
+        tid = "test_simple::test_func"
+        assert self._normalize_test_id(tid) is None
+
+    def test_pre_existing_csv_failure_matches_ledger_entry(self):
+        """A real CSV analytics failure ID should match the ledger's file-path entry."""
+        ledger_entry = "tests/python/csv/test_r290_csv_numeric_range_has_only_one_row.py"
+        runner_id = "tests.python.csv.test_r290_csv_numeric_range_has_only_one_row::test_numeric_range_minimal"
+
+        known_file_paths = {ledger_entry}
+        normalized = self._normalize_test_id(runner_id)
+        assert normalized is not None
+        assert normalized in known_file_paths, (
+            f"Normalized ID '{normalized}' not found in known_file_paths"
+        )
+
+    def test_new_failure_does_not_match_ledger(self):
+        """A truly new failure ID should NOT match any ledger entry."""
+        runner_id = "tests.python.csv.test_new_unknown_failure::test_something_new"
+        known_file_paths = {
+            "tests/python/csv/test_r290_csv_numeric_range_has_only_one_row.py",
+        }
+        normalized = self._normalize_test_id(runner_id)
+        assert normalized not in known_file_paths
