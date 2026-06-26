@@ -27825,9 +27825,97 @@
       "test_count": 10,
       "source_files": [],
       "format": "FODT"
+    },
+    {
+      "entry_id": "PC-ABW-R270",
+      "sprint_id": "ff-sprint-s270-abw-installed-workflow-20260626",
+      "format": "abw",
+      "track": "python-foss",
+      "skill_id": "add-python-api",
+      "api_added": "abw_installed_workflow",
+      "description": "Added abw_installed_workflow() to abw_codec.py",
+      "source_files": [
+        "src/python/abw/abw_codec.py"
+      ],
+      "test_files": [
+        "tests/python/abw/test_r270_abw_installed_workflow.py"
+      ],
+      "tests_added": 11,
+      "tests_passed": 11,
+      "tests_failed": 0,
+      "worker_verdict": "PASS"
+    },
+    {
+      "entry_id": "PC-NETPBM-R285",
+      "classification": "dotnet_test_deepening",
+      "sprint": "ff-sprint-s277-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "commercial_net_products.NETPBM",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.apply_blur"
+      ],
+      "api_symbols": [
+        "NetpbmImage.ApplyBlur"
+      ],
+      "api_behavior": "Void in-place; valid no-exception; all pixels in [0,MaxValue]; dims/format/MaxValue unchanged; called-twice ok; uniform ok; dogfood pixels in-range; uniform all-in-range",
+      "changed_files": [
+        "tests/net/netpbm/NetpbmR285ApplyBlurDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR285ApplyBlurDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [],
+      "format": "NETPBM"
+    },
+    {
+      "entry_id": "PC-FODS-R305",
+      "classification": "dotnet_test_deepening",
+      "sprint": "ff-sprint-s277-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "commercial_net_products.FODS",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.set_cell_wrapping"
+      ],
+      "api_symbols": [
+        "FodsDocument.SetCellWrapping"
+      ],
+      "api_behavior": "Void; null/whitespace/nonexistent/negative-row/col throws; wrap-true/false no-exception; SheetCount unchanged; set-twice ok; dogfood multiple-cells",
+      "changed_files": [
+        "tests/net/fods/FodsR305SetCellWrappingDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR305SetCellWrappingDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [],
+      "format": "FODS"
+    },
+    {
+      "entry_id": "PC-FODT-R292",
+      "classification": "dotnet_test_deepening",
+      "sprint": "ff-sprint-s277-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "commercial_net_products.FODT",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.get_section_name"
+      ],
+      "api_symbols": [
+        "FodtDocument.GetSectionName"
+      ],
+      "api_behavior": "Returns string; negative/OOB/no-sections throws; non-null; non-empty; idempotent; ParagraphCount unchanged; dogfood add-named-section-get-matches; two-sections different names",
+      "changed_files": [
+        "tests/net/fodt/FodtR292GetSectionNameDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR292GetSectionNameDedicatedTests.cs"
+      ],
+      "test_count": 9,
+      "source_files": [],
+      "format": "FODT"
     }
   ],
-  "total_entries": 1604,
+  "total_entries": 1608,
   "changes": [
     {
       "file": "src/python/dif/models.py",
