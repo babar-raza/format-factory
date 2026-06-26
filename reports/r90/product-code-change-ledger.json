@@ -27057,9 +27057,78 @@
         }
       ],
       "format": "FODT"
+    },
+    {
+      "entry_id": "PC-NETPBM-R275",
+      "classification": "dotnet_test_deepening",
+      "sprint": "ff-sprint-s267-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "commercial_net_products.NETPBM",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.get_brightness"
+      ],
+      "api_symbols": [
+        "NetpbmImage.GetBrightness"
+      ],
+      "api_behavior": "Returns double brightness value; non-negative; uniform-zero=0.0; all-max positive; non-mutating; idempotent; dogfood known-pixels in-range; uniform-bright positive",
+      "changed_files": [
+        "tests/net/netpbm/NetpbmR275GetBrightnessDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR275GetBrightnessDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [],
+      "format": "NETPBM"
+    },
+    {
+      "entry_id": "PC-FODS-R292",
+      "classification": "dotnet_test_deepening",
+      "sprint": "ff-sprint-s267-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "commercial_net_products.FODS",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.get_row_count"
+      ],
+      "api_symbols": [
+        "FodsDocument.GetRowCount"
+      ],
+      "api_behavior": "Returns int row count; null/whitespace/nonexistent throws; non-negative; increases after AddRow; SheetCount unchanged; idempotent; dogfood two-adds count+2; monotonic growth",
+      "changed_files": [
+        "tests/net/fods/FodsR292GetRowCountDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR292GetRowCountDedicatedTests.cs"
+      ],
+      "test_count": 9,
+      "source_files": [],
+      "format": "FODS"
+    },
+    {
+      "entry_id": "PC-FODT-R282",
+      "classification": "dotnet_test_deepening",
+      "sprint": "ff-sprint-s267-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "commercial_net_products.FODT",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.get_table_row_count"
+      ],
+      "api_symbols": [
+        "FodtDocument.GetTableRowCount"
+      ],
+      "api_behavior": "Returns int row count for table at index; negative/OOB/no-tables throws; matches AddTable rows; TableCount unchanged; idempotent; dogfood 3-row=3; two-tables independent",
+      "changed_files": [
+        "tests/net/fodt/FodtR282GetTableRowCountDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR282GetTableRowCountDedicatedTests.cs"
+      ],
+      "test_count": 9,
+      "source_files": [],
+      "format": "FODT"
     }
   ],
-  "total_entries": 1303,
+  "total_entries": 1573,
   "changes": [
     {
       "file": "src/python/dif/models.py",
