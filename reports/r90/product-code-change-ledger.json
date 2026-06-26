@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s185-dotnet-deepening-20260628",
+  "latest_sprint": "ff-sprint-s186-dotnet-deepening-20260628",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -23144,6 +23144,33 @@
       "description": "FodtDocument.ExportToPlainTextFile dedicated tests: null/whitespace throws, valid creates file, matches GetPlainText, empty ok, non-empty not empty, overwrite, dogfood paragraph/heading text in file",
       "evidence_path": "tests/net/fodt/FodtR194ExportToPlainTextFileTests.cs",
       "test_count": 9
+    },
+    {
+      "id": "PC-NETPBM-R182",
+      "sprint": "ff-sprint-s186-dotnet-deepening-20260628",
+      "format": "NETPBM",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "NetpbmImage.Rotate180 dedicated tests: new image, width/height unchanged, format/MaxValue preserved, double-rotate restores dims, non-square both unchanged, pixel at origin maps to last, dogfood PGM/restore pixel",
+      "evidence_path": "tests/net/netpbm/NetpbmR182Rotate180Tests.cs",
+      "test_count": 10
+    },
+    {
+      "id": "PC-FODS-R193",
+      "sprint": "ff-sprint-s186-dotnet-deepening-20260628",
+      "format": "FODS",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "FodsDocument.RenameSheet dedicated tests: null/whitespace oldName/newName throws, nonexistent throws, duplicate new name throws, oldName gone, newName present, SheetCount unchanged, dogfood rename-and-verify",
+      "evidence_path": "tests/net/fods/FodsR193RenameSheetDedicatedTests.cs",
+      "test_count": 10
+    },
+    {
+      "id": "PC-FODT-R195",
+      "sprint": "ff-sprint-s186-dotnet-deepening-20260628",
+      "format": "FODT",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "FodtDocument.RemoveParagraph dedicated tests: negative/at-count/empty throws, valid decrements, first shifts up, remove last, remove heading decrements, remove all=0, dogfood middle/heading",
+      "evidence_path": "tests/net/fodt/FodtR195RemoveParagraphTests.cs",
+      "test_count": 10
     }
   ],
   "total_entries": 1270,
