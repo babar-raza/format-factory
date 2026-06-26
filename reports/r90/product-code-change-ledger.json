@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s238-dotnet-deepening-20260629",
+  "latest_sprint": "ff-sprint-s197-fods-test-fixes-20260626",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -26901,9 +26901,165 @@
         }
       ],
       "format": "FODT"
+    },
+    {
+      "entry_id": "PC-FODS-R197",
+      "classification": "NET_API_ADDITION",
+      "sprint": "ff-sprint-s197-fods-test-fixes-20260626",
+      "product": "FODS .NET",
+      "format": "FODS",
+      "api_symbols": [
+        "ClearCell",
+        "IsCellEmpty",
+        "GetCellType",
+        "GetCellType_sheetName_row_col",
+        "GetRowHeight",
+        "SetRowHeight_sheetName_rowIndex_height_fix",
+        "ExportToJson_sheetName_filePath",
+        "ExportToCsv_sheetName_string_overload",
+        "AddRowToSheet",
+        "SetCell",
+        "ExportToHtml",
+        "SetCellComment",
+        "GetCellComment",
+        "GetFormulas",
+        "SetCellRange",
+        "SetColumnHeaders",
+        "GetColumnHeaders_returns_IReadOnlyList",
+        "SetCellBackground",
+        "GetCellColor_named_sheet_non_null",
+        "ClearCell_alias_ClearCellValue",
+        "IsCellEmpty_string_int_int",
+        "GetCellType_R286",
+        "FodsUsedRange_Cols_property",
+        "ExportToJson_2arg_filePath_R288",
+        "ExportToCsv_1arg_string_return_R289"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR277RenameSheetDedicatedTests.cs",
+        "tests/net/fods/FodsR279DeleteRowDedicatedTests.cs",
+        "tests/net/fods/FodsR280SetCellCommentDedicatedTests.cs",
+        "tests/net/fods/FodsR281AddRowToSheetAndDeleteRowDeepTests.cs",
+        "tests/net/fods/FodsR282GetColumnCountDedicatedTests.cs",
+        "tests/net/fods/FodsR283ClearCellAndIsCellEmptyDeepTests.cs",
+        "tests/net/fods/FodsR283SetColumnWidthDedicatedTests.cs",
+        "tests/net/fods/FodsR284SetRowHeightDedicatedTests.cs",
+        "tests/net/fods/FodsR285GetCellValueDedicatedTests.cs",
+        "tests/net/fods/FodsR286GetCellTypeAndSetCellColorDeepTests.cs",
+        "tests/net/fods/FodsR287InsertRowDedicatedTests.cs",
+        "tests/net/fods/FodsR288ExportToJsonDedicatedTests.cs",
+        "tests/net/fods/FodsR289GetCellTypeDedicatedTests.cs",
+        "tests/net/fods/FodsR289GetColumnWidthAndSetColumnWidthDeepTests.cs",
+        "tests/net/fods/FodsR276ExportToMarkdownAndGetColumnHeadersDeepTests.cs",
+        "tests/net/fods/FodsR273GetCellRangeAndExportDeepTests.cs"
+      ],
+      "test_results": {
+        "total": 3584,
+        "passed": 3584,
+        "failed": 0,
+        "command": "dotnet test tests/net/fods/ --no-build -q"
+      },
+      "source_files": [
+        {
+          "path": "src/net/fods/FodsDocumentAccessor.cs",
+          "state": "present",
+          "sha256": "69f91e62624a317dadd3272883b66774f686d31468c4f8928d648aeaf981f873"
+        },
+        {
+          "path": "src/net/fods/FodsDocument.cs",
+          "state": "present",
+          "sha256": "6fb5eed6a5b9d188c58cf58de0cdf5a0507491a7120130a3b7bd6d1086580569"
+        }
+      ],
+      "notes": "Fixed 54 failing FODS .NET tests: corrected AddSheet Sheet1 conflicts in dedicated test files, fixed 2D array syntax in R273, fixed IReadOnlyList.Count vs .Length in R276, added missing methods: ClearCell, IsCellEmpty, GetCellType, GetRowHeight (with storage), ExportToJson(sheetName,filePath), ExportToCsv(sheetName)->string, FodsUsedRange.Cols, GetCellColor(string,int,int) returns non-null empty string. All 3584 tests pass."
+    },
+    {
+      "entry_id": "PC-NETPBM-R273",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s266-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "NETPBM .NET",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.apply_emboss"
+      ],
+      "api_symbols": [
+        "ApplyEmboss"
+      ],
+      "api_behavior": "ApplyEmboss() applies an emboss effect in-place (void). Width/height/format/MaxValue preserved. All pixels remain in [0, MaxValue]. Uniform image no-exception. Idempotent.",
+      "changed_files": [
+        "tests/net/netpbm/NetpbmR273ApplyEmbossDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR273ApplyEmbossDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "tests/net/netpbm/NetpbmR273ApplyEmbossDedicatedTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "NETPBM"
+    },
+    {
+      "entry_id": "PC-FODS-R290",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s266-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.set_sheet_visible"
+      ],
+      "api_symbols": [
+        "SetSheetVisible",
+        "IsSheetVisible"
+      ],
+      "api_behavior": "SetSheetVisible(sheetName, visible) shows or hides a sheet. Null/whitespace/nonexistent throws. Show/hide no-exception. SheetCount unchanged. IsSheetVisible reflects set state. Set-twice ok.",
+      "changed_files": [
+        "tests/net/fods/FodsR290SetSheetVisibleDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR290SetSheetVisibleDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "tests/net/fods/FodsR290SetSheetVisibleDedicatedTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "FODS"
+    },
+    {
+      "entry_id": "PC-FODT-R281",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s266-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.get_table_at"
+      ],
+      "api_symbols": [
+        "GetTableAt"
+      ],
+      "api_behavior": "GetTableAt(tableIndex) returns the table object at the given index. Negative/OOB/no-tables throws. Valid returns non-null. TableCount unchanged. Idempotent.",
+      "changed_files": [
+        "tests/net/fodt/FodtR281GetTableAtDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR281GetTableAtDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "tests/net/fodt/FodtR281GetTableAtDedicatedTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "FODT"
     }
   ],
-  "total_entries": 1300,
+  "total_entries": 1303,
   "changes": [
     {
       "file": "src/python/dif/models.py",
