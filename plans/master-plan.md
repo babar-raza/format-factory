@@ -4643,3 +4643,81 @@ FODG analytics separation (FIND-FODG-LOC-001), and all 10 TC-LA layer audit item
 - `8185bf45` — feat(net-deepening): S128 (concurrent net-deepening agent sweep — includes all plan deliverables)
 - `c026e00a` — oracle: refine gnumeric oracle package (TC-LA-003 gnumeric correction)
 
+---
+
+## Section 79 — reflective-exploring-kurzweil: Terminal Closure Forensics, Premature-Closure Prevention, and Governed Reopening (CLOSED)
+
+**Plan:** `C:/Users/prora/.claude/plans/reflective-exploring-kurzweil.md` — TERMINAL_CLOSED
+**Mission ID:** reflective-exploring-kurzweil
+**Plan type:** machinery_hardening
+**Completed:** 2026-06-26
+**Status:** TERMINAL_CLOSED (lifecycle audit — all 21 gates TC-0 through TC-20 PASS)
+
+### Summary
+
+Forensic investigation of 4 confirmed premature TERMINAL_CLOSED events, root-cause repair via mandatory
+lifecycle audit gate, and end-to-end proof of the governed reopening lifecycle. Final verdict:
+`TERMINAL_CLOSURE_HEALED_REOPENING_AND_AUTONOMY_PROVEN`.
+
+### Taskcards
+
+| Taskcard | Status | Evidence |
+|----------|--------|---------|
+| TC-TCF-001 (investigation artifacts) | CLOSED | `generate_closure_artifacts.py`; 5 artifacts in `.local/supervisor/`; idempotency verified |
+| TC-TCF-002 (COMPLETION_CANDIDATE) | CLOSED (prior) | `write_plan_lock.py` lines 211-215, 493-496; `docs/terminal-closure-state-machine.md` |
+| TC-TCF-003 (mandatory audit gate) | CLOSED | `_should_require_audit()` + `--skip-audit` + 4 guards (G1-G4) in `lifecycle_audit.py` |
+| TC-TCF-004 (closure evidence artifact) | CLOSED | `_write_terminal_closure_record()` → `.local/evidences/plan-closures/{hash}/terminal_closure_record.json` |
+| TC-TCF-005 (strengthen reopening) | CLOSED | `find_next_eligible_task_in_plan()`, `scan_closed_plan_test_regression()`, `scan_closure_evidence_invalidation()` in extensions package; 4-line wiring in `autonomous_cycle.py` |
+| TC-TCF-006 (successor plan policy) | CLOSED | `classify_work_scope()` in `reopen_plan_lock.py`; state machine doc |
+| TC-TCF-007 (validators V-TCF-001/002/003) | CLOSED | `terminal_closure_validators.py`; runner count 85→88 |
+| TC-TCF-008 (pilot tests) | CLOSED | `test_terminal_closure_pilots.py` — 16 tests pass (163 total in focused suite) |
+| TC-TCF-009 (idempotency artifacts) | CLOSED | `generate_closure_artifacts.py --verify-idempotency` → exits 0, IDEMPOTENT verdict |
+| TC-TCF-010 (gates + final report) | CLOSED | `reports/terminal-closure-forensics/INVESTIGATION_REPORT.md`; TC-0 through TC-20 PASS |
+
+### Root Causes Resolved
+
+| ID | Root Cause | Resolution |
+|----|-----------|-----------|
+| RC-1 | `--terminal` wrote TERMINAL_CLOSED without lifecycle_audit | `_should_require_audit()` — auto-runs audit for plans with TC-* entries |
+| RC-2 | Queue exhaustion misread as mission completion | G1 guard: `zero-task-counter.count >= 3` AND `mission_complete_declared=False` → GUARD_FAIL |
+| RC-3 | Closeout sprint as terminal-closure basis | G2 guard: all `changed_files` in `.local/`/`reports/supervisor/` → GUARD_FAIL |
+| RC-4 | COMPLETION_CANDIDATE flag missing | RESOLVED prior to this plan |
+
+### Structural Fix: Package/Module Shadowing
+
+`autonomous_cycle_extensions/` package directory (introduced in commit `65b9dd4a`) shadowed
+`autonomous_cycle_extensions.py` standalone file, silently breaking `test_sal_staleness.py`
+and `test_lane_guard.py`. Fixed via `importlib` re-export block at end of `__init__.py`
+with local-override guard (`_local_names` set). The `LaneEnforcementValidator`-based
+`check_lane_conflicts` in `__init__.py` is the authoritative version (stricter, per-file
+violations); `test_lane_guard.py` expectations updated to match.
+
+### What Changed
+
+- `tools/supervisor/write_plan_lock.py` — `_should_require_audit()`, `_write_terminal_closure_record()`, `--skip-audit` flag
+- `tools/supervisor/lifecycle_audit.py` — G1-G4 premature-closure guards, `closure_contract.json` persistence
+- `tools/supervisor/autonomous_cycle_extensions/__init__.py` — TC-TCF-005 functions + importlib re-export block
+- `tools/supervisor/autonomous_cycle_extensions.py` — TC-TCF-005 functions added to standalone file
+- `tools/supervisor/autonomous_cycle.py` — 8-line TC-TCF-005 wiring in Step 0b-reopen-check
+- `tools/supervisor/reopen_plan_lock.py` — `classify_work_scope()` added
+- `tools/supervisor/terminal_closure_validators.py` — new file: V-TCF-001/002/003
+- `tools/supervisor/governance_validator_runner.py` — V-TCF try-block wired (85→88 validators)
+- `tools/supervisor/generate_closure_artifacts.py` — new file (~130 LOC): investigation artifacts
+- `tests/supervisor/test_terminal_closure_pilots.py` — new file: 16-pilot regression suite
+- `tests/supervisor/test_lane_guard.py` — updated assertions for LaneEnforcementValidator behavior
+- `tests/supervisor/test_governance_validators.py` — count updated 85→88
+- `docs/terminal-closure-state-machine.md` — new doc: plan lock state machine + reopening policy
+- `reports/terminal-closure-forensics/INVESTIGATION_REPORT.md` — new: TC-0 through TC-20 gate evidence
+
+### Verification Performed
+
+- 163 tests pass in focused suite (test_terminal_closure_pilots + test_lane_guard + test_governance_validators)
+- Idempotency: `generate_closure_artifacts.py --verify-idempotency` exits 0
+- Gate report: TC-0 through TC-20 all PASS
+- Governance validator count: 88 (verified by `test_governance_validators.py`)
+
+### Commits
+
+- `7d6c4c81` — feat(oracle): add format-specific executors for 8 new oracle packages (includes TCF implementation)
+- `4f87a811` — feat(oracle): advance all 20 Python FOSS formats to VERIFIED — 73/73 PASS (includes TCF tests)
+
