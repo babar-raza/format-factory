@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s120-dotnet-deepening-20260627",
+  "latest_sprint": "ff-sprint-s121-dotnet-deepening-20260627",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -20688,9 +20688,39 @@
       "description": "CsvDocument.HasColumn(name) case-sensitivity and GetColumn(string headerName) named column access",
       "test_count": 11,
       "capability_ref": "commercial_net_products.CSV.dotnet_status.has_column_get_column"
+    },
+    {
+      "entry_id": "PC-FODS-R140",
+      "sprint": "ff-sprint-s121-dotnet-deepening-20260627",
+      "format": "FODS",
+      "dotnet_revision": "R140",
+      "test_file": "tests/net/fods/FodsR140PngPathExporterTests.cs",
+      "description": "FodsPngExporter.ExportToPng(string fodsPath, string pngPath) path-based overload",
+      "test_count": 10,
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.png_path_export"
+    },
+    {
+      "entry_id": "PC-FODT-R142",
+      "sprint": "ff-sprint-s121-dotnet-deepening-20260627",
+      "format": "FODT",
+      "dotnet_revision": "R142",
+      "test_file": "tests/net/fodt/FodtR142TxtPathExporterTests.cs",
+      "description": "FodtTxtExporter.ExportTxt(string fodtPath, string txtPath) path-based TXT export",
+      "test_count": 10,
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.txt_path_export"
+    },
+    {
+      "entry_id": "PC-NDJSON-R128",
+      "sprint": "ff-sprint-s121-dotnet-deepening-20260627",
+      "format": "NDJSON",
+      "dotnet_revision": "R128",
+      "test_file": "tests/net/ndjson/NdjsonR128LoadFileTests.cs",
+      "description": "NdjsonDocument.LoadFile(string path) dedicated coverage: null guard, not-found guard, parity, roundtrip",
+      "test_count": 10,
+      "capability_ref": "commercial_net_products.NDJSON.dotnet_status.load_file"
     }
   ],
-  "total_entries": 1129,
+  "total_entries": 1132,
   "changes": [
     {
       "file": "src/python/dif/models.py",
