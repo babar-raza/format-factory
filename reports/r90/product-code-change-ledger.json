@@ -26394,9 +26394,94 @@
         }
       ],
       "format": "FODT"
+    },
+    {
+      "entry_id": "PC-NETPBM-R267",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s260-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "NETPBM .NET",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.get_standard_deviation"
+      ],
+      "api_symbols": [
+        "GetStandardDeviation"
+      ],
+      "api_behavior": "GetStandardDeviation() returns double measure of pixel value spread. Non-negative. Uniform image = 0.0. Varied pixels > 0.0. Non-mutating: dims/format/MaxValue unchanged. Idempotent.",
+      "changed_files": [
+        "tests/net/netpbm/NetpbmR267GetStandardDeviationDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR267GetStandardDeviationDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "tests/net/netpbm/NetpbmR267GetStandardDeviationDedicatedTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "NETPBM"
+    },
+    {
+      "entry_id": "PC-FODS-R283",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s260-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.set_column_width"
+      ],
+      "api_symbols": [
+        "SetColumnWidth",
+        "GetColumnWidth"
+      ],
+      "api_behavior": "SetColumnWidth(sheetName, colIndex, width) sets the display width of a column. Null/whitespace/nonexistent sheet throws. Negative colIndex throws. SheetCount unchanged. Set-twice no exception. GetColumnWidth returns > 0 after set.",
+      "changed_files": [
+        "tests/net/fods/FodsR283SetColumnWidthDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR283SetColumnWidthDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "tests/net/fods/FodsR283SetColumnWidthDedicatedTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "FODS"
+    },
+    {
+      "entry_id": "PC-FODT-R275",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s260-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.get_paragraph_text"
+      ],
+      "api_symbols": [
+        "GetParagraphText"
+      ],
+      "api_behavior": "GetParagraphText(index) returns the text of a paragraph. Negative/OOB throws. Returns non-null string matching added text. After SetParagraphText returns new text. ParagraphCount unchanged. Idempotent.",
+      "changed_files": [
+        "tests/net/fodt/FodtR275GetParagraphTextDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR275GetParagraphTextDedicatedTests.cs"
+      ],
+      "test_count": 9,
+      "source_files": [
+        {
+          "path": "tests/net/fodt/FodtR275GetParagraphTextDedicatedTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "FODT"
     }
   ],
-  "total_entries": 1282,
+  "total_entries": 1285,
   "changes": [
     {
       "file": "src/python/dif/models.py",
