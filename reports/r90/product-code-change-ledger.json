@@ -22535,9 +22535,33 @@
       "description": "FodtDocument.InsertHeading dedicated tests \u2014 level 0/7 guard, negative/beyond index guard, level 1/6 valid, count increases, appears in GetHeadingTexts, insert at 0, dogfood pipelines",
       "evidence_path": "tests/net/fodt/FodtR170InsertHeadingDedicatedTests.cs",
       "sprint": "ff-sprint-s161-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-NETPBM-R158",
+      "format": "NETPBM",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "NetpbmImage.Rotate180 dedicated tests \u2014 dims unchanged, pixel reversal, top-left to bottom-right, double-rotate identity, format/original preserved, dogfood pipelines",
+      "evidence_path": "tests/net/netpbm/NetpbmR158Rotate180Tests.cs",
+      "sprint": "ff-sprint-s162-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-FODS-R169",
+      "format": "FODS",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "FodsDocument.GetSheetStats dedicated tests \u2014 null/whitespace guard, nonexistent returns zeros, RowCount/NonEmptyCellCount/CellCount/ColCount correct, dogfood pipelines",
+      "evidence_path": "tests/net/fods/FodsR169GetSheetStatsDedicatedTests.cs",
+      "sprint": "ff-sprint-s162-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-FODT-R171",
+      "format": "FODT",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "FodtDocument.GetParagraphTexts dedicated tests \u2014 empty, single, text match, multiple in order, heading included, mixed content, count match, IReadOnlyList, dogfood pipelines",
+      "evidence_path": "tests/net/fodt/FodtR171GetParagraphTextsDedicatedTests.cs",
+      "sprint": "ff-sprint-s162-dotnet-deepening-20260628"
     }
   ],
-  "total_entries": 1252,
+  "total_entries": 1255,
   "changes": [
     {
       "file": "src/python/dif/models.py",
