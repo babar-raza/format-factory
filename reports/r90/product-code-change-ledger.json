@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s228-dotnet-deepening-20260629",
+  "latest_sprint": "ff-sprint-s229-dotnet-deepening-20260629",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -24602,6 +24602,42 @@
       "description": "R243: Dedicated tests for FodtDocument.GetHeadingText \u2014 negative/OOB throws, first/second heading text, count unchanged, called-twice, different indices, non-null, dogfood mixed-content/level-2",
       "source_files": [
         "tests/net/fodt/FodtR243GetHeadingTextTests.cs"
+      ],
+      "test_count": 10
+    },
+    {
+      "entry_id": "PC-NETPBM-R236",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s229-dotnet-deepening-20260629",
+      "format": "NETPBM",
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.load_from_file",
+      "description": "R236: Dedicated tests for NetpbmImage.LoadFromFile \u2014 null/nonexistent throws, valid non-null, positive width/height/MaxValue, save-then-load format/dims/pixels preserved, dogfood PGM-and-PPM",
+      "source_files": [
+        "tests/net/netpbm/NetpbmR236LoadFromFileTests.cs"
+      ],
+      "test_count": 10
+    },
+    {
+      "entry_id": "PC-FODS-R247",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s229-dotnet-deepening-20260629",
+      "format": "FODS",
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.export_sheet_to_csv",
+      "description": "R247: Dedicated tests for FodsDocument.ExportSheetToCsv \u2014 null/whitespace/nonexistent/null-path throws, creates file, has content, SheetCount unchanged, export-twice, dogfood set-data-verify",
+      "source_files": [
+        "tests/net/fods/FodsR247ExportSheetToCsvDedicatedTests.cs"
+      ],
+      "test_count": 9
+    },
+    {
+      "entry_id": "PC-FODT-R244",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s229-dotnet-deepening-20260629",
+      "format": "FODT",
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.get_table_count",
+      "description": "R244: Dedicated tests for FodtDocument.GetTableCount \u2014 empty no-exception, empty=0, count unchanged, called-twice, paragraphs-only=0, headings-only=0, non-negative, after-add-table increases, two-tables=2, dogfood",
+      "source_files": [
+        "tests/net/fodt/FodtR244GetTableCountTests.cs"
       ],
       "test_count": 10
     }
