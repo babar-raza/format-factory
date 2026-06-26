@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s205-dotnet-deepening-20260629",
+  "latest_sprint": "ff-sprint-s206-dotnet-deepening-20260629",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -23788,6 +23788,36 @@
       "test_count": 10,
       "status": "completed",
       "notes": "Dedicated tests for FodtDocument.AppendSection: null throws, valid no-exception, SectionCount increases, GetSectionNames contains, multiple all present, ParagraphCount unchanged, dogfood"
+    },
+    {
+      "entry_id": "PC-NETPBM-R211",
+      "sprint": "ff-sprint-s206-dotnet-deepening-20260629",
+      "format": "NETPBM",
+      "capability": "Dither",
+      "test_file": "tests/net/netpbm/NetpbmR211DitherTests.cs",
+      "test_count": 12,
+      "status": "completed",
+      "notes": "Dedicated tests for NetpbmImage.Dither: PGM/PBM/PPM new image, format/dims/MaxValue preserved, black stays 0, white stays MaxValue, valid range, dogfood"
+    },
+    {
+      "entry_id": "PC-FODS-R221",
+      "sprint": "ff-sprint-s206-dotnet-deepening-20260629",
+      "format": "FODS",
+      "capability": "SetCellBold",
+      "test_file": "tests/net/fods/FodsR221SetCellBoldDedicatedTests.cs",
+      "test_count": 10,
+      "status": "completed",
+      "notes": "Dedicated tests for FodsDocument.SetCellBold: null/negative throws, true/false no-exception, GetCellBold true/false, independent cells, SheetCount, dogfood toggle"
+    },
+    {
+      "entry_id": "PC-FODT-R221",
+      "sprint": "ff-sprint-s206-dotnet-deepening-20260629",
+      "format": "FODT",
+      "capability": "GetMimeType",
+      "test_file": "tests/net/fodt/FodtR221GetMimeTypeTests.cs",
+      "test_count": 10,
+      "status": "completed",
+      "notes": "Dedicated tests for FodtDocument.GetMimeType: non-null, string, same twice, count unchanged, contains slash, contains text/opendocument, no spreadsheet, dogfood"
     }
   ],
   "total_entries": 1270,
