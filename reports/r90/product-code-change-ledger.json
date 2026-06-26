@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s235-dotnet-deepening-20260629",
+  "latest_sprint": "ff-sprint-s236-dotnet-deepening-20260629",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -24856,6 +24856,42 @@
         "tests/net/fodt/FodtR250GetTableOfContentsTests.cs"
       ],
       "test_count": 9
+    },
+    {
+      "entry_id": "PC-NETPBM-R243",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s236-dotnet-deepening-20260629",
+      "format": "NETPBM",
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.get_brightness",
+      "description": "R243: Dedicated tests for NetpbmImage.GetBrightness \u2014 all-black near-0, all-white near-MaxValue, valid-range, single-pixel increases, PGM/PPM valid, uniform-mid near-mid, called-twice same, uniform-size-independent, dogfood set-pixels",
+      "source_files": [
+        "tests/net/netpbm/NetpbmR243GetBrightnessTests.cs"
+      ],
+      "test_count": 10
+    },
+    {
+      "entry_id": "PC-FODS-R254",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s236-dotnet-deepening-20260629",
+      "format": "FODS",
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.set_column_width",
+      "description": "R254: Dedicated tests for FodsDocument.SetColumnWidth \u2014 null/whitespace/nonexistent/negative throws, valid no-exception, SheetCount unchanged, multiple-columns, called-twice, dogfood set-widths-save-file",
+      "source_files": [
+        "tests/net/fods/FodsR254SetColumnWidthDedicatedTests.cs"
+      ],
+      "test_count": 9
+    },
+    {
+      "entry_id": "PC-FODT-R251",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s236-dotnet-deepening-20260629",
+      "format": "FODT",
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.set_title",
+      "description": "R251: Dedicated tests for FodtDocument.SetTitle \u2014 null handled, empty no-exception, valid no-exception, ParagraphCount/TableCount unchanged, twice no-exception, special-chars, long-string, multiple-stable, dogfood count-preserved",
+      "source_files": [
+        "tests/net/fodt/FodtR251SetTitleTests.cs"
+      ],
+      "test_count": 10
     }
   ],
   "total_entries": 1270,
