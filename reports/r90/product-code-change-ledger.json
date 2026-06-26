@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s121-dotnet-deepening-20260627",
+  "latest_sprint": "ff-sprint-s122-dotnet-deepening-20260627",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -20718,9 +20718,48 @@
       "description": "NdjsonDocument.LoadFile(string path) dedicated coverage: null guard, not-found guard, parity, roundtrip",
       "test_count": 10,
       "capability_ref": "commercial_net_products.NDJSON.dotnet_status.load_file"
+    },
+    {
+      "entry_id": "PC-FODS-R141",
+      "classification": "NEW_TEST_COVERAGE",
+      "sprint": "ff-sprint-s122-dotnet-deepening-20260627",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.spec_table_cell"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR141SpecTableCellTests.cs"
+      ],
+      "description": "R141: 11 tests for Spec.Table.TableCell, TableRow, Table canonical spec-shaped model classes \u2014 SpecQName/SpecFactRef constants, init-only properties, dogfood composition"
+    },
+    {
+      "entry_id": "PC-NDJSON-R129",
+      "classification": "NEW_TEST_COVERAGE",
+      "sprint": "ff-sprint-s122-dotnet-deepening-20260627",
+      "product": "NDJSON .NET",
+      "capability_refs": [
+        "commercial_net_products.NDJSON.dotnet_status.read_records_from_file"
+      ],
+      "test_files": [
+        "tests/net/ndjson/NdjsonR129ReadRecordsFromFileTests.cs"
+      ],
+      "description": "R129: 10 tests for NdjsonReader.ReadRecordsFromFile(path) \u2014 file exists, record count, blank-line skip, empty file, null/empty/missing path throws, invalid JSON throws, parity with ReadRecords(string)"
+    },
+    {
+      "entry_id": "PC-TSV-R125",
+      "classification": "NEW_TEST_COVERAGE",
+      "sprint": "ff-sprint-s122-dotnet-deepening-20260627",
+      "product": "TSV .NET",
+      "capability_refs": [
+        "commercial_net_products.TSV.dotnet_status.write_rows_to_file"
+      ],
+      "test_files": [
+        "tests/net/tsv/TsvR125WriteRowsToFileTests.cs"
+      ],
+      "description": "R125: 11 tests for TsvWriter.WriteRowsToFile(rows, path) \u2014 file created, non-empty, tabs present, multi-row, null-field-empty, UTF-8 no-BOM, null rows throws, null/empty path throws, tab-in-field throws, dogfood roundtrip"
     }
   ],
-  "total_entries": 1132,
+  "total_entries": 1135,
   "changes": [
     {
       "file": "src/python/dif/models.py",
