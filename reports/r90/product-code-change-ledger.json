@@ -29476,9 +29476,80 @@
         }
       ],
       "format": "ndjson"
+    },
+    {
+      "entry_id": "PC-TOML-R292",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s292-toml-key-iterator-20260626",
+      "skill": "add-python-api",
+      "product": "foss_python_products.TOML.python_status.key_iterator",
+      "capability_refs": [
+        "foss_python_products.TOML.python_status.key_iterator"
+      ],
+      "api_symbols": [
+        "toml_iter_keys"
+      ],
+      "api_behavior": "Yield spec-shaped Key objects (toml:key QName, FACT-TOML-002) for every top-level key in a TOML file",
+      "changed_files": [
+        "src/python/toml/toml_key_iterator.py",
+        "src/python/toml/__init__.py"
+      ],
+      "test_files": [
+        "tests/python/toml/test_r292_toml_iter_keys.py"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "src/python/toml/toml_key_iterator.py",
+          "state": "created",
+          "sha256": "b8147c04602e88db0e73724bcac353a327f4ece20d970654daecbc88c0dc399a"
+        },
+        {
+          "path": "src/python/toml/__init__.py",
+          "state": "modified",
+          "sha256": "8753ed1002d4237e389da9acae40b6428b7344644dea4e7cf2dc00106024e624"
+        }
+      ],
+      "format": "toml"
+    },
+    {
+      "entry_id": "PC-NETPBM-R301",
+      "sprint": "ff-sprint-s293-dotnet-deepening-20260630",
+      "format": "NETPBM",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/netpbm/NetpbmR301RotateDedicatedTests.cs",
+      "description": "Dedicated tests for NetpbmImage.Rotate(degrees): 90/180/270 ok, all pixels in range, format/MaxValue unchanged, 360=same dims, called-twice ok, dogfood 180x2 and 90+270",
+      "tests_added": 10,
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.rotate",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-FODS-R321",
+      "sprint": "ff-sprint-s293-dotnet-deepening-20260630",
+      "format": "FODS",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fods/FodsR321GetRowCountDedicatedTests.cs",
+      "description": "Dedicated tests for FodsDocument.GetRowCount(sheetName): null/whitespace/nonexistent throws, non-negative, increases after new row, SheetCount unchanged, idempotent, dogfood multi-row and two-sheets",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.get_row_count",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-FODT-R308",
+      "sprint": "ff-sprint-s293-dotnet-deepening-20260630",
+      "format": "FODT",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fodt/FodtR308GetTableRowCountDedicatedTests.cs",
+      "description": "Dedicated tests for FodtDocument.GetTableRowCount(tableIndex): negative/OOB/no-tables throws, non-negative, increases after AddTableRow, TableCount/ParagraphCount unchanged, idempotent, dogfood",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.get_table_row_count",
+      "date": "2026-07-01"
     }
   ],
-  "total_entries": 1671,
+  "total_entries": 1676,
   "changes": [
     {
       "file": "src/python/dif/models.py",
