@@ -21171,9 +21171,39 @@
       "evidence_path": "tests/net/tsv/TsvR131HasHeadersAndColumnCountTests.cs",
       "test_count": 10,
       "capability_ref": "commercial_net_products.TSV.dotnet_status.has_headers_and_column_count"
+    },
+    {
+      "entry_id": "PC-FODS-R146",
+      "format": "FODS",
+      "r_number": "R146",
+      "sprint": "ff-sprint-s135-dotnet-deepening-20260627",
+      "description": "FodsCsvExporter.ExportSheetToCsvString and ExportAllSheetsToCsv - 10 tests: ExportSheetToCsvString null throws, empty sheet returns empty/whitespace, ExportAllSheetsToCsv null fodsPath/null outputDir/empty fodsPath/nonexistent throws FodsCsvExportException, EscapeCsvField null=empty/plain=unchanged/comma=quoted, dogfood CreateNew->SetCell->ExportSheetToCsvString contains values",
+      "evidence_path": "tests/net/fods/FodsR146CsvExporterStringAndAllSheetsTests.cs",
+      "test_count": 10,
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.csv_exporter_string_and_all_sheets"
+    },
+    {
+      "entry_id": "PC-ZST-R133",
+      "format": "ZST",
+      "r_number": "R133",
+      "sprint": "ff-sprint-s135-dotnet-deepening-20260627",
+      "description": "ZstDocument computed properties: SizeExceeds100K, IsHighlyCompressed, HasMultipleFrames, FileSizeKB - 10 tests: SizeExceeds100K false for small file/exactly100K/true for set value, IsHighlyCompressed false zero frames/true with init, HasMultipleFrames false single/true two frames, FileSizeKB 1024=1.0/zero=0.0, dogfood Compress->ParseStream->HasMultipleFrames/FileSizeKB/SizeExceeds100K consistency",
+      "evidence_path": "tests/net/zst/ZstR133ComputedPropertiesTests.cs",
+      "test_count": 10,
+      "capability_ref": "commercial_net_products.ZST.dotnet_status.computed_properties"
+    },
+    {
+      "entry_id": "PC-FODT-R150",
+      "format": "FODT",
+      "r_number": "R150",
+      "sprint": "ff-sprint-s135-dotnet-deepening-20260627",
+      "description": "FodtDocument.ExportToMarkdownFile and ExportToHtmlFile - 10 tests: ExportToMarkdownFile null/empty/whitespace throws ArgumentException, file created, content equals ExportToMarkdown(), overwrites existing, ExportToHtmlFile null throws/file created/content equals ExportToHtml(), dogfood AppendParagraph x2 -> both file exports contain texts",
+      "evidence_path": "tests/net/fodt/FodtR150ExportToMarkdownFileAndHtmlFileTests.cs",
+      "test_count": 10,
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.export_to_markdown_and_html_file"
     }
   ],
-  "total_entries": 1171,
+  "total_entries": 1174,
   "changes": [
     {
       "file": "src/python/dif/models.py",
