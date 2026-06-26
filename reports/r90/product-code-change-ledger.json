@@ -25384,6 +25384,90 @@
         }
       ],
       "format": "FODT"
+    },
+    {
+      "entry_id": "PC-NETPBM-R255",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s248-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "NETPBM .NET",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.rotate90"
+      ],
+      "api_symbols": [
+        "Rotate90"
+      ],
+      "api_behavior": "Rotate90() rotates image 90 degrees clockwise in-place (void). For non-square: new Width=oldHeight, new Height=oldWidth. Format/MaxValue preserved. Four rotations restore original.",
+      "changed_files": [
+        "tests/net/netpbm/NetpbmR255Rotate90DedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR255Rotate90DedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "tests/net/netpbm/NetpbmR255Rotate90DedicatedTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "NETPBM"
+    },
+    {
+      "entry_id": "PC-FODS-R267",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s248-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.export_to_csv"
+      ],
+      "api_symbols": [
+        "ExportToCsv"
+      ],
+      "api_behavior": "ExportToCsv(sheetName, filePath) exports sheet data to CSV file. Null/whitespace/nonexistent sheet throws. SheetCount unchanged. Exported file exists and is non-empty for data sheets.",
+      "changed_files": [
+        "tests/net/fods/FodsR267ExportToCsvDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR267ExportToCsvDedicatedTests.cs"
+      ],
+      "test_count": 9,
+      "source_files": [
+        {
+          "path": "tests/net/fods/FodsR267ExportToCsvDedicatedTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "FODS"
+    },
+    {
+      "entry_id": "PC-FODT-R263",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s248-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.get_character_count"
+      ],
+      "api_symbols": [
+        "GetCharacterCount"
+      ],
+      "api_behavior": "GetCharacterCount() returns the total number of characters across all paragraphs. Non-negative. Empty doc returns 0+. Grows with content. Idempotent (same result on consecutive calls). ParagraphCount unchanged.",
+      "changed_files": [
+        "tests/net/fodt/FodtR263GetCharacterCountDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR263GetCharacterCountDedicatedTests.cs"
+      ],
+      "test_count": 9,
+      "source_files": [
+        {
+          "path": "tests/net/fodt/FodtR263GetCharacterCountDedicatedTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "FODT"
     }
   ],
   "total_entries": 1270,
