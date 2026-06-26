@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s144-dotnet-deepening-20260627",
+  "latest_sprint": "ff-sprint-s145-dotnet-deepening-20260628",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -21530,6 +21530,48 @@
       "test_files": [
         "tests/net/netpbm/NetpbmR141DrawRectangleAndChannelStatsTests.cs",
         "tests/net/netpbm/NetpbmR142DrawLineTests.cs"
+      ],
+      "source_files": []
+    },
+    {
+      "entry_id": "PC-FODT-R156",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s145-dotnet-deepening-20260628",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.get_document_outline_and_metadata"
+      ],
+      "change_summary": "FodtR156GetDocumentOutlineAndMetadataTests.cs: 10 tests for FodtDocument.GetDocumentOutline (empty=empty, single heading level/text, multiple headings in order, paragraphs excluded) and GetDocumentMetadata (empty doc, IReadOnlyDictionary return type, dogfood multi-level, dogfood headings+paragraphs count).",
+      "test_files": [
+        "tests/net/fodt/FodtR156GetDocumentOutlineAndMetadataTests.cs"
+      ],
+      "source_files": []
+    },
+    {
+      "entry_id": "PC-TSV-R134",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s145-dotnet-deepening-20260628",
+      "product": "TSV .NET",
+      "capability_refs": [
+        "commercial_net_products.TSV.dotnet_status.read_rows_from_file_dedicated"
+      ],
+      "change_summary": "TsvR134ReadRowsFromFileDedicatedTests.cs: 10 tests for TsvReader.ReadRowsFromFile \u2014 null/empty/whitespace path throws TsvException, nonexistent path throws, valid file returns rows, single row splits by tab, empty trailing line skipped, multiple rows each correct, dogfood WriteRows->ReadRowsFromFile round-trip, dogfood ReadRowsFromFile->TsvDocument.LoadFile row counts match.",
+      "test_files": [
+        "tests/net/tsv/TsvR134ReadRowsFromFileDedicatedTests.cs"
+      ],
+      "source_files": []
+    },
+    {
+      "entry_id": "PC-FODS-R153",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s145-dotnet-deepening-20260628",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.parse_exception_and_result"
+      ],
+      "change_summary": "FodsR153ParseExceptionAndResultTests.cs: 10 tests for FodsParseException (message, Exception subclass, inner exception stored, can throw/catch) and FodsParseResult behavior (nonexistent file IsSuccess=false, Errors non-empty, empty path IsSuccess=false) and GetSheetNames throws FodsParseException on failure.",
+      "test_files": [
+        "tests/net/fods/FodsR153ParseExceptionAndResultTests.cs"
       ],
       "source_files": []
     }
