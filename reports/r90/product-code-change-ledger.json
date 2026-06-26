@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s201-dotnet-deepening-20260629",
+  "latest_sprint": "ff-sprint-s202-dotnet-deepening-20260629",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -23668,6 +23668,36 @@
       "test_count": 11,
       "status": "completed",
       "notes": "Dedicated tests for FodtDocument.FindParagraph: null throws, empty -1, not-present -1, first/second match, substring, case-sensitive, first-occurrence, count unchanged, dogfood"
+    },
+    {
+      "entry_id": "PC-NETPBM-R206",
+      "sprint": "ff-sprint-s202-dotnet-deepening-20260629",
+      "format": "NETPBM",
+      "capability": "BlurGaussian",
+      "test_file": "tests/net/netpbm/NetpbmR206BlurGaussianTests.cs",
+      "test_count": 11,
+      "status": "completed",
+      "notes": "Dedicated tests for NetpbmImage.BlurGaussian: negative throws, PGM/PBM/PPM new image, format/dims/MaxValue preserved, uniform unchanged, clamped, dogfood"
+    },
+    {
+      "entry_id": "PC-FODS-R216",
+      "sprint": "ff-sprint-s202-dotnet-deepening-20260629",
+      "format": "FODS",
+      "capability": "ExportToCsv",
+      "test_file": "tests/net/fods/FodsR216ExportToCsvDedicatedTests.cs",
+      "test_count": 10,
+      "status": "completed",
+      "notes": "Dedicated tests for FodsDocumentExporter.ExportToCsv: null throws, empty non-null, single value, comma-sep, two rows, comma-in-value, returns string, dogfood"
+    },
+    {
+      "entry_id": "PC-FODT-R217",
+      "sprint": "ff-sprint-s202-dotnet-deepening-20260629",
+      "format": "FODT",
+      "capability": "GetParagraphsByStyle",
+      "test_file": "tests/net/fodt/FodtR217GetParagraphsByStyleTests.cs",
+      "test_count": 10,
+      "status": "completed",
+      "notes": "Dedicated tests for FodtDocument.GetParagraphsByStyle: null throws, no-match empty, empty-doc empty, returns collection, count unchanged, matching style, valid no exception, dogfood"
     }
   ],
   "total_entries": 1270,
