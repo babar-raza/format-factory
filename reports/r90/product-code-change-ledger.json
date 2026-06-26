@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s236-dotnet-deepening-20260629",
+  "latest_sprint": "ff-sprint-s237-dotnet-deepening-20260629",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -24890,6 +24890,42 @@
       "description": "R251: Dedicated tests for FodtDocument.SetTitle \u2014 null handled, empty no-exception, valid no-exception, ParagraphCount/TableCount unchanged, twice no-exception, special-chars, long-string, multiple-stable, dogfood count-preserved",
       "source_files": [
         "tests/net/fodt/FodtR251SetTitleTests.cs"
+      ],
+      "test_count": 10
+    },
+    {
+      "entry_id": "PC-NETPBM-R244",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s237-dotnet-deepening-20260629",
+      "format": "NETPBM",
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.color_channels",
+      "description": "R244: Dedicated tests for NetpbmImage color channel properties \u2014 PGM Pixels non-null/correct-length, PPM Red/Green/BlueChannel non-null/correct-length, fill reflects in Pixels, PGM RedChannel=null, dogfood PPM verify channels",
+      "source_files": [
+        "tests/net/netpbm/NetpbmR244ColorChannelsTests.cs"
+      ],
+      "test_count": 10
+    },
+    {
+      "entry_id": "PC-FODS-R255",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s237-dotnet-deepening-20260629",
+      "format": "FODS",
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.get_cell_style",
+      "description": "R255: Dedicated tests for FodsDocument.GetCellStyle \u2014 null/whitespace/nonexistent/negative-row/negative-col throws, valid no-exception, plain-cell non-null, SheetCount unchanged, called-twice non-null, dogfood set-cell-get-style",
+      "source_files": [
+        "tests/net/fods/FodsR255GetCellStyleDedicatedTests.cs"
+      ],
+      "test_count": 9
+    },
+    {
+      "entry_id": "PC-FODT-R252",
+      "classification": "TEST_COVERAGE",
+      "sprint": "ff-sprint-s237-dotnet-deepening-20260629",
+      "format": "FODT",
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.count_sentences",
+      "description": "R252: Dedicated tests for FodtDocument.CountSentences \u2014 empty=0, empty non-negative, one-sentence positive, ParagraphCount unchanged, called-twice same, two-paras non-decreasing, heading-only ok, after-append non-decreasing, always-non-negative, dogfood known-content",
+      "source_files": [
+        "tests/net/fodt/FodtR252CountSentencesTests.cs"
       ],
       "test_count": 10
     }
