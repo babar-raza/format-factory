@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s133-dotnet-deepening-20260627",
+  "latest_sprint": "ff-sprint-s134-dotnet-deepening-20260627",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -21141,9 +21141,39 @@
       "evidence_path": "tests/net/ndjson/NdjsonR136ToNdjsonSerializationTests.cs",
       "test_count": 10,
       "capability_ref": "commercial_net_products.NDJSON.dotnet_status.to_ndjson_serialization"
+    },
+    {
+      "entry_id": "PC-NETPBM-R139",
+      "format": "NETPBM",
+      "r_number": "R139",
+      "sprint": "ff-sprint-s134-dotnet-deepening-20260627",
+      "description": "NetpbmParser constants and ParseStream \u2014 10 tests: DefaultMaxFileSizeBytes=64MB, DefaultMaxDimension=65536, DefaultMaxPixels=1B, all positive, size>dimension, ParseStream null throws, valid PPM stream returns non-null/Width/Height, Format=PPM, dogfood dimensions within constants",
+      "evidence_path": "tests/net/netpbm/NetpbmR139ParserConstantsAndParseStreamTests.cs",
+      "test_count": 10,
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.parser_constants_and_parse_stream"
+    },
+    {
+      "entry_id": "PC-FODT-R149",
+      "format": "FODT",
+      "r_number": "R149",
+      "sprint": "ff-sprint-s134-dotnet-deepening-20260627",
+      "description": "FodtDocument.ExportToPlainTextFile dedicated tests \u2014 10 tests: null/empty/whitespace path throws ArgumentException, file created, non-empty content, equals GetPlainText(), overwrites existing, dogfood AppendParagraphs\u00d73->ExportToPlainTextFile->ReadAllText",
+      "evidence_path": "tests/net/fodt/FodtR149ExportToPlainTextFileTests.cs",
+      "test_count": 10,
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.export_to_plain_text_file"
+    },
+    {
+      "entry_id": "PC-TSV-R131",
+      "format": "TSV",
+      "r_number": "R131",
+      "sprint": "ff-sprint-s134-dotnet-deepening-20260627",
+      "description": "TsvDocument.HasHeaders and ColumnCount \u2014 10 tests: HasHeaders true/false/empty, ColumnCount with/without headers/empty/single-col, Headers populated/null, dogfood Load->HasHeaders->ColumnCount->row access pipeline",
+      "evidence_path": "tests/net/tsv/TsvR131HasHeadersAndColumnCountTests.cs",
+      "test_count": 10,
+      "capability_ref": "commercial_net_products.TSV.dotnet_status.has_headers_and_column_count"
     }
   ],
-  "total_entries": 1168,
+  "total_entries": 1171,
   "changes": [
     {
       "file": "src/python/dif/models.py",
