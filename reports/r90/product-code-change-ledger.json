@@ -27580,9 +27580,78 @@
       "test_count": 9,
       "source_files": [],
       "format": "FODT"
+    },
+    {
+      "entry_id": "PC-NETPBM-R282",
+      "classification": "dotnet_test_deepening",
+      "sprint": "ff-sprint-s274-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "commercial_net_products.NETPBM",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.get_entropy"
+      ],
+      "api_symbols": [
+        "NetpbmImage.GetEntropy"
+      ],
+      "api_behavior": "Returns double non-negative; uniform=0.0; varied>0; dims/format/MaxValue unchanged; idempotent; dogfood two-value positive; dogfood uniform=0",
+      "changed_files": [
+        "tests/net/netpbm/NetpbmR282GetEntropyDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR282GetEntropyDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [],
+      "format": "NETPBM"
+    },
+    {
+      "entry_id": "PC-FODS-R302",
+      "classification": "dotnet_test_deepening",
+      "sprint": "ff-sprint-s274-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "commercial_net_products.FODS",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.set_cell_border"
+      ],
+      "api_symbols": [
+        "FodsDocument.SetCellBorder"
+      ],
+      "api_behavior": "Void; null/whitespace/nonexistent/negative-row/col throws; valid no-exception; SheetCount unchanged; set-twice no-exception; dogfood multiple-cells; dogfood border+value both succeed",
+      "changed_files": [
+        "tests/net/fods/FodsR302SetCellBorderDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR302SetCellBorderDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [],
+      "format": "FODS"
+    },
+    {
+      "entry_id": "PC-FODT-R289",
+      "classification": "dotnet_test_deepening",
+      "sprint": "ff-sprint-s274-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "commercial_net_products.FODT",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.get_image_count"
+      ],
+      "api_symbols": [
+        "FodtDocument.GetImageCount"
+      ],
+      "api_behavior": "Returns int non-negative; non-mutating; ParagraphCount/TableCount unchanged; idempotent; dogfood stable-across-calls; dogfood with-paragraphs non-negative",
+      "changed_files": [
+        "tests/net/fodt/FodtR289GetImageCountDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR289GetImageCountDedicatedTests.cs"
+      ],
+      "test_count": 9,
+      "source_files": [],
+      "format": "FODT"
     }
   ],
-  "total_entries": 1593,
+  "total_entries": 1596,
   "changes": [
     {
       "file": "src/python/dif/models.py",
