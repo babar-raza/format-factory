@@ -4,7 +4,7 @@
 **Authority level:** Single Operational Authority
 **Project:** format-factory
 **Version:** 6.0
-**Last updated:** 2026-06-25 (v6.1: witty-doodling-goose SAL Phase A Bypass Closure CLOSED — TC-GUARD-001 AND logic, V13 enforcement tests, spec_fact_refs contract doc, authority gate wiring; Section 60 added)
+**Last updated:** 2026-06-26 (v6.2: woolly-yawning-stream SAL Healing Sprint CLOSED — V13 hard-fail, V-NEW-002 provenance advisory wired, xpm/pam/NetPBM SAL facts, spec_fact_provenance contract; Section 80 added)
 **Last verified:** 2026-06-24
 
 **Current phase:** Multi-format POC — 11 targets (3 commercial .NET, 8 FOSS Python). Gate 11 G11-G sub-gate approved by Babar Raza 2026-06-05 (FODS, FODT, Netpbm). Registry gate_11.status: commercial_readiness_in_progress; g11g_status: APPROVED_BY_BABAR_RAZA_2026_06_05 (G11-G sub-gate approved). commercial_product_ready: false (all entries). Full Gate 11 requires Babar Raza final commercial authorization.
@@ -4720,4 +4720,36 @@ violations); `test_lane_guard.py` expectations updated to match.
 
 - `7d6c4c81` — feat(oracle): add format-specific executors for 8 new oracle packages (includes TCF implementation)
 - `4f87a811` — feat(oracle): advance all 20 Python FOSS formats to VERIFIED — 73/73 PASS (includes TCF tests)
+
+## Section 80 — woolly-yawning-stream: SAL Healing Sprint (CLOSED)
+
+**Plan:** `C:/Users/prora/.claude/plans/woolly-yawning-stream.md`
+**Mission:** Heal the Specification Authority Layer (SAL) — RC-001 through RC-004 from the spec-auth-inv-20260625-001 investigation.
+
+### Tasks Completed
+
+| ID | Task | Status | Commit |
+|----|------|--------|--------|
+| T1 | V13 ImportError → hard FAIL (blocks_sprint=True) in governance_validators.py | CLOSED | 10b6d5ad |
+| T1 | Add test_v13_fails_closed_when_module_unavailable to test_sal_path_resolution.py | CLOSED | 10b6d5ad |
+| T2 | Add xpm (5 facts) and pam (5 facts) to sal_master_runner._FORMAT_SPECIFIC_FACTS | CLOSED | c54d2685 |
+| T3 | Expand pbm/pgm/ppm/qoi/zpaq to ≥5 facts each in sal_master_runner | CLOSED | c54d2685 |
+| T4 | Add spec_fact_provenance advisory field to supervisor-worker-contract.md | CLOSED | 10b6d5ad |
+| T4 | Add V-NEW-002 (validate_spec_fact_provenance_advisory) to governance_validators_sal.py | CLOSED | c54d2685 |
+| T4b | Wire V-NEW-002 into governance_validator_runner.py (integration gap found in post-sprint audit) | CLOSED | 8b1e1f93 |
+| FIX | V-SAL-SCHEMA-001 sal_candidates path ordering — prefer .local/sal-output/ first | CLOSED | c54d2685 |
+
+### Verification
+
+- 148/148 governance + SAL tests PASS (test_sal_path_resolution.py, test_ai_non_authority.py, test_governance_validators.py)
+- V-SAL-SCHEMA-001: PASS — 25 formats, 14,884 facts total, zero zero-fact formats
+- V-NEW-002: WARN (non-blocking) for READINESS items with spec_fact_refs but no provenance — fires in integrated runner
+- V13 ImportError path: FAIL + blocks_sprint=True confirmed by mock test
+- sal-facts-latest.json: xpm=8, pam=8, pbm/pgm/ppm/qoi/zpaq all ≥5
+
+### Remaining Follow-Ups (Non-Blockers)
+
+- RC-005 (SAL advisory wiring): sal_format_advisory.py not integrated into autonomous_cycle.py — LOC-cap blocked, deferred
+- RC-006 (capability compiler spec-grounding): capability_to_feature_compiler.py still goal-based — large architectural change, deferred
+- spec_fact_provenance advisory: will become required for READINESS/RELEASE_GATE at ≥80% workbench coverage (V-NEW-002 gate)
 
