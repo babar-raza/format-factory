@@ -374,7 +374,7 @@
         "compress_bytes",
         "decompress_bytes"
       ],
-      "api_behavior": "No src change \u00e2\u20ac\u201d new tests only. Verifies compress/decompress round-trip with 8 test cases including edge cases (empty, binary, level range, invalid magic).",
+      "api_behavior": "No src change â€” new tests only. Verifies compress/decompress round-trip with 8 test cases including edge cases (empty, binary, level range, invalid magic).",
       "changed_files": [],
       "test_files": [
         "tests/python/zst/test_r93_zst_roundtrip.py"
@@ -402,7 +402,7 @@
         "convert_ppm_to_pgm",
         "ppm_pixels_to_pgm_pixels"
       ],
-      "api_behavior": "No src change \u00e2\u20ac\u201d workflow verification tests only. Verifies end-to-end PPM\u00e2\u2020\u2019PGM conversion using FF libraries exclusively, with luminance weighting validation.",
+      "api_behavior": "No src change â€” workflow verification tests only. Verifies end-to-end PPMâ†’PGM conversion using FF libraries exclusively, with luminance weighting validation.",
       "changed_files": [],
       "test_files": [
         "tests/python/ppm/test_r93_ppm_pgm_installed_workflow.py"
@@ -548,7 +548,7 @@
         "compress_bytes",
         "decompress_bytes"
       ],
-      "api_behavior": "No src change \u00e2\u20ac\u201d streaming pattern tests only. Verifies large payload, incompressible data, sequential compressions, all byte values.",
+      "api_behavior": "No src change â€” streaming pattern tests only. Verifies large payload, incompressible data, sequential compressions, all byte values.",
       "changed_files": [],
       "test_files": [
         "tests/python/zst/test_r94_zst_streaming.py"
@@ -576,7 +576,7 @@
         "ppm_pixels_to_pgm_pixels",
         "convert_ppm_to_pgm"
       ],
-      "api_behavior": "No src change \u00e2\u20ac\u201d grayscale conversion edge case tests. Verifies luminance weighting, pure-color behavior, empty input, file round-trip.",
+      "api_behavior": "No src change â€” grayscale conversion edge case tests. Verifies luminance weighting, pure-color behavior, empty input, file round-trip.",
       "changed_files": [],
       "test_files": [
         "tests/python/ppm/test_r94_ppm_grayscale_conversion.py"
@@ -722,7 +722,7 @@
         "compress_bytes",
         "decompress_bytes"
       ],
-      "api_behavior": "No src change \u00e2\u20ac\u201d compression level variation tests. Verifies level 1, level 19, binary data, empty bytes, size comparison.",
+      "api_behavior": "No src change â€” compression level variation tests. Verifies level 1, level 19, binary data, empty bytes, size comparison.",
       "changed_files": [],
       "test_files": [
         "tests/python/zst/test_r95_zst_level_variations.py"
@@ -750,7 +750,7 @@
         "parse_ppm",
         "write_ppm"
       ],
-      "api_behavior": "No src change \u00e2\u20ac\u201d pixel statistics and roundtrip integrity tests. Verifies parse structure, write-read roundtrip, single pixel, max/zero values.",
+      "api_behavior": "No src change â€” pixel statistics and roundtrip integrity tests. Verifies parse structure, write-read roundtrip, single pixel, max/zero values.",
       "changed_files": [],
       "test_files": [
         "tests/python/ppm/test_r95_ppm_pixel_stats.py"
@@ -778,7 +778,7 @@
         "write_sylk",
         "parse_sylk"
       ],
-      "api_behavior": "No src change \u00e2\u20ac\u201d roundtrip hardening tests. Verifies CRLF line endings, header/footer preservation, mixed types, float precision, large grid.",
+      "api_behavior": "No src change â€” roundtrip hardening tests. Verifies CRLF line endings, header/footer preservation, mixed types, float precision, large grid.",
       "changed_files": [],
       "test_files": [
         "tests/python/sylk/test_r95_sylk_roundtrip_hardening.py"
@@ -894,7 +894,7 @@
         "compress_bytes",
         "decompress_bytes"
       ],
-      "api_behavior": "No src change \u00e2\u20ac\u201d error handling tests. Invalid data, empty input, corrupt magic, boundary conditions.",
+      "api_behavior": "No src change â€” error handling tests. Invalid data, empty input, corrupt magic, boundary conditions.",
       "changed_files": [],
       "test_files": [
         "tests/python/zst/test_r96_zst_error_handling.py"
@@ -922,7 +922,7 @@
         "write_pgm",
         "parse_pgm"
       ],
-      "api_behavior": "No src change \u00e2\u20ac\u201d write-read integrity tests. Roundtrip dimensions, pixel count, single pixel, zero/max values.",
+      "api_behavior": "No src change â€” write-read integrity tests. Roundtrip dimensions, pixel count, single pixel, zero/max values.",
       "changed_files": [],
       "test_files": [
         "tests/python/pgm/test_r96_pgm_write_read.py"
@@ -949,7 +949,7 @@
       "api_symbols": [
         "parse_fods"
       ],
-      "api_behavior": "No src change \u00e2\u20ac\u201d workbook operations hardening tests. Parse structure, multi-sheet, error handling, consistency.",
+      "api_behavior": "No src change â€” workbook operations hardening tests. Parse structure, multi-sheet, error handling, consistency.",
       "changed_files": [],
       "test_files": [
         "tests/python/fods/test_r96_fods_workbook_operations.py"
@@ -1064,7 +1064,7 @@
         "write_pbm",
         "parse_pbm"
       ],
-      "api_behavior": "No src change \u00e2\u20ac\u201d PBM write-read integrity tests. Roundtrip dimensions, pixel count, single pixel, all-white/all-black.",
+      "api_behavior": "No src change â€” PBM write-read integrity tests. Roundtrip dimensions, pixel count, single pixel, all-white/all-black.",
       "changed_files": [],
       "test_files": [
         "tests/python/pbm/test_r97_pbm_write_read.py"
@@ -1091,7 +1091,7 @@
       "api_symbols": [
         "parse_fodt"
       ],
-      "api_behavior": "No src change \u00e2\u20ac\u201d FODT document operations hardening. Parse structure, format, paragraphs, consistency, error handling.",
+      "api_behavior": "No src change â€” FODT document operations hardening. Parse structure, format, paragraphs, consistency, error handling.",
       "changed_files": [],
       "test_files": [
         "tests/python/fodt/test_r97_fodt_document_operations.py"
@@ -1118,7 +1118,7 @@
       "api_symbols": [
         "parse_dif"
       ],
-      "api_behavior": "No src change \u00e2\u20ac\u201d DIF parse hardening tests. Structure, edge cases, error handling, consistency.",
+      "api_behavior": "No src change â€” DIF parse hardening tests. Structure, edge cases, error handling, consistency.",
       "changed_files": [],
       "test_files": [
         "tests/python/dif/test_r97_dif_parse_hardening.py"
@@ -1348,7 +1348,7 @@
         "ExportSheetToJson",
         "ExportFirstSheetToCsv"
       ],
-      "api_behavior": "No src change \u00e2\u20ac\u201d export quality edge case tests. CSV quoting, HTML structure, JSON validity, in-memory/file parity, by-name overloads.",
+      "api_behavior": "No src change â€” export quality edge case tests. CSV quoting, HTML structure, JSON validity, in-memory/file parity, by-name overloads.",
       "changed_files": [],
       "test_files": [
         "tests/net/fods/FodsR99ExportQualityTests.cs"
@@ -1380,7 +1380,7 @@
         "GetParagraphTexts",
         "SearchText"
       ],
-      "api_behavior": "No src change \u00e2\u20ac\u201d paragraph persistence tests. Multiple ReplaceText all persist, word/char counts, heading/paragraph text preservation after save/reload.",
+      "api_behavior": "No src change â€” paragraph persistence tests. Multiple ReplaceText all persist, word/char counts, heading/paragraph text preservation after save/reload.",
       "changed_files": [],
       "test_files": [
         "tests/net/fodt/FodtR99ParagraphPersistenceTests.cs"
@@ -1409,7 +1409,7 @@
         "decompress_bytes",
         "validate_file"
       ],
-      "api_behavior": "No src change \u00e2\u20ac\u201d streaming workflow tests. Large payload, output limit, multiple files, UTF-8, high entropy, truncated file, zero-length, compression level.",
+      "api_behavior": "No src change â€” streaming workflow tests. Large payload, output limit, multiple files, UTF-8, high entropy, truncated file, zero-length, compression level.",
       "changed_files": [],
       "test_files": [
         "tests/python/zst/test_r99_zst_streaming_workflow.py"
@@ -1439,7 +1439,7 @@
         "parse_ppm_strict",
         "write_pgm"
       ],
-      "api_behavior": "No src change \u00e2\u20ac\u201d PPM/PGM cross-format conversion tests. Grayscale conversion, color expansion, roundtrip, dimension preservation, maxval roundtrip.",
+      "api_behavior": "No src change â€” PPM/PGM cross-format conversion tests. Grayscale conversion, color expansion, roundtrip, dimension preservation, maxval roundtrip.",
       "changed_files": [],
       "test_files": [
         "tests/python/ppm/test_r99_ppm_pgm_conversion.py"
@@ -1471,7 +1471,7 @@
         "probe_sylk",
         "sylk_to_csv"
       ],
-      "api_behavior": "No src change \u00e2\u20ac\u201d full installed workflow tests. Create/write/parse/export, probe valid/invalid, dict mode, CSV headers, numeric values, empty cells.",
+      "api_behavior": "No src change â€” full installed workflow tests. Create/write/parse/export, probe valid/invalid, dict mode, CSV headers, numeric values, empty cells.",
       "changed_files": [],
       "test_files": [
         "tests/python/sylk/test_r99_sylk_installed_workflow.py"
@@ -1590,7 +1590,7 @@
         "ZstError",
         "ZstInvalidFrameError"
       ],
-      "api_behavior": "No src change \u00e2\u20ac\u201d deep probe/validate workflow tests. Valid/nonexistent/corrupt file validation, magic bytes, binary roundtrip, empty input, deterministic compression.",
+      "api_behavior": "No src change â€” deep probe/validate workflow tests. Valid/nonexistent/corrupt file validation, magic bytes, binary roundtrip, empty input, deterministic compression.",
       "changed_files": [],
       "test_files": [
         "tests/python/zst/test_r100_zst_probe_workflow.py"
@@ -1623,7 +1623,7 @@
         "write_pgm",
         "parse_pgm_strict"
       ],
-      "api_behavior": "No src change \u00e2\u20ac\u201d full PBM->PPM->PGM chain tests. Pixel mapping, dimension preservation, grayscale conversion, color expansion, all-black/all-white chains.",
+      "api_behavior": "No src change â€” full PBM->PPM->PGM chain tests. Pixel mapping, dimension preservation, grayscale conversion, color expansion, all-black/all-white chains.",
       "changed_files": [],
       "test_files": [
         "tests/python/ppm/test_r100_pbm_ppm_pgm_chain.py"
@@ -1666,7 +1666,7 @@
         "SylkDocument",
         "SylkCell"
       ],
-      "api_behavior": "No src change \u00e2\u20ac\u201d CSV export hardening + malformed input tests. Commas in values, empty cells, multirow, large grid, random bytes, empty file, special characters.",
+      "api_behavior": "No src change â€” CSV export hardening + malformed input tests. Commas in values, empty cells, multirow, large grid, random bytes, empty file, special characters.",
       "changed_files": [],
       "test_files": [
         "tests/python/sylk/test_r100_sylk_csv_malformed.py"
@@ -3493,7 +3493,7 @@
         "dif_to_csv",
         "parse_dif_strict"
       ],
-      "api_behavior": "probe_dif: returns dict with valid_header/exists/title. dif_to_csv: converts DIF to CSV string. parse_dif_strict: returns DifDocument or raises on invalid. Test-only coverage \u00e2\u20ac\u201d no src/ change.",
+      "api_behavior": "probe_dif: returns dict with valid_header/exists/title. dif_to_csv: converts DIF to CSV string. parse_dif_strict: returns DifDocument or raises on invalid. Test-only coverage â€” no src/ change.",
       "changed_files": [],
       "test_files": [
         "tests/python/dif/test_r116_dif_probe_csv_pipeline.py"
@@ -6390,7 +6390,7 @@
         "tests/python/dif/test_r64_dif_advancement.py"
       ],
       "test_count": 2,
-      "description": "Fixed module/function name shadowing in DIF tests \u00e2\u20ac\u201d import dif_stats function directly from module path instead of package namespace",
+      "description": "Fixed module/function name shadowing in DIF tests â€” import dif_stats function directly from module path instead of package namespace",
       "format": "DIF"
     },
     {
@@ -6447,7 +6447,7 @@
         "tests/python/ods/test_pff_ods_data_validation.py"
       ],
       "test_count": 5,
-      "description": "Exported ods_data_validation_count from ods package __init__.py \u00e2\u20ac\u201d function already existed in ods_stats.py but was missing from public API",
+      "description": "Exported ods_data_validation_count from ods package __init__.py â€” function already existed in ods_stats.py but was missing from public API",
       "format": "ODS"
     },
     {
@@ -6477,7 +6477,7 @@
         "tests/python/dif/test_r156_dif_cell_accessors.py"
       ],
       "test_count": 7,
-      "description": "DIF get_cell_value \u00e2\u20ac\u201d accessor for cell value at (row, col) 0-based indices",
+      "description": "DIF get_cell_value â€” accessor for cell value at (row, col) 0-based indices",
       "format": "DIF"
     },
     {
@@ -6507,7 +6507,7 @@
         "tests/python/dif/test_r156_dif_cell_accessors.py"
       ],
       "test_count": 6,
-      "description": "DIF set_cell_value \u00e2\u20ac\u201d mutation: modify cell value and write updated document",
+      "description": "DIF set_cell_value â€” mutation: modify cell value and write updated document",
       "format": "DIF"
     },
     {
@@ -6537,7 +6537,7 @@
         "tests/python/dif/test_r156_dif_cell_accessors.py"
       ],
       "test_count": 6,
-      "description": "DIF get_row_values \u00e2\u20ac\u201d accessor returning all cell values for a row",
+      "description": "DIF get_row_values â€” accessor returning all cell values for a row",
       "format": "DIF"
     },
     {
@@ -6567,7 +6567,7 @@
         "tests/python/sylk/test_r156_sylk_accessors_mutation.py"
       ],
       "test_count": 5,
-      "description": "SYLK get_row_count \u00e2\u20ac\u201d accessor returning maximum row index",
+      "description": "SYLK get_row_count â€” accessor returning maximum row index",
       "format": "SYLK"
     },
     {
@@ -6597,7 +6597,7 @@
         "tests/python/sylk/test_r156_sylk_accessors_mutation.py"
       ],
       "test_count": 4,
-      "description": "SYLK get_column_count \u00e2\u20ac\u201d accessor returning maximum column index",
+      "description": "SYLK get_column_count â€” accessor returning maximum column index",
       "format": "SYLK"
     },
     {
@@ -6627,7 +6627,7 @@
         "tests/python/sylk/test_r156_sylk_accessors_mutation.py"
       ],
       "test_count": 9,
-      "description": "SYLK set_cell_value \u00e2\u20ac\u201d mutation: modify or add cell value and write updated document",
+      "description": "SYLK set_cell_value â€” mutation: modify or add cell value and write updated document",
       "format": "SYLK"
     },
     {
@@ -6657,7 +6657,7 @@
         "tests/python/ods/test_r156_ods_accessors.py"
       ],
       "test_count": 9,
-      "description": "ODS get_cell_value \u00e2\u20ac\u201d accessor for cell value at (sheet_index, row, col) 0-based indices",
+      "description": "ODS get_cell_value â€” accessor for cell value at (sheet_index, row, col) 0-based indices",
       "format": "ODS"
     },
     {
@@ -6687,7 +6687,7 @@
         "tests/python/ods/test_r156_ods_accessors.py"
       ],
       "test_count": 3,
-      "description": "ODS get_sheet_names \u00e2\u20ac\u201d accessor returning list of sheet names",
+      "description": "ODS get_sheet_names â€” accessor returning list of sheet names",
       "format": "ODS"
     },
     {
@@ -6717,7 +6717,7 @@
         "tests/python/ods/test_r156_ods_accessors.py"
       ],
       "test_count": 5,
-      "description": "ODS get_row_count \u00e2\u20ac\u201d accessor returning number of non-empty rows in a sheet",
+      "description": "ODS get_row_count â€” accessor returning number of non-empty rows in a sheet",
       "format": "ODS"
     },
     {
@@ -6747,7 +6747,7 @@
         "tests/python/xcf/test_r156_xcf_helpers.py"
       ],
       "test_count": 5,
-      "description": "XCF xcf_version \u00e2\u20ac\u201d accessor returning version string from XCF header",
+      "description": "XCF xcf_version â€” accessor returning version string from XCF header",
       "format": "XCF"
     },
     {
@@ -6777,7 +6777,7 @@
         "tests/python/xcf/test_r156_xcf_helpers.py"
       ],
       "test_count": 4,
-      "description": "XCF xcf_image_type_name \u00e2\u20ac\u201d accessor returning human-readable image type name",
+      "description": "XCF xcf_image_type_name â€” accessor returning human-readable image type name",
       "format": "XCF"
     },
     {
@@ -6807,7 +6807,7 @@
         "tests/python/dif/test_r156_dif_column_values.py"
       ],
       "test_count": 7,
-      "description": "DIF get_column_values \u00e2\u20ac\u201d accessor returning all values for a column across rows",
+      "description": "DIF get_column_values â€” accessor returning all values for a column across rows",
       "format": "DIF"
     },
     {
@@ -6837,7 +6837,7 @@
         "tests/python/dif/test_r157_dif_metadata_accessors.py"
       ],
       "test_count": 4,
-      "description": "DIF get_title \u00e2\u20ac\u201d accessor returning document title from TABLE header",
+      "description": "DIF get_title â€” accessor returning document title from TABLE header",
       "format": "DIF"
     },
     {
@@ -6867,7 +6867,7 @@
         "tests/python/dif/test_r157_dif_metadata_accessors.py"
       ],
       "test_count": 4,
-      "description": "DIF get_row_count \u00e2\u20ac\u201d accessor returning number of data rows",
+      "description": "DIF get_row_count â€” accessor returning number of data rows",
       "format": "DIF"
     },
     {
@@ -6897,7 +6897,7 @@
         "tests/python/dif/test_r157_dif_metadata_accessors.py"
       ],
       "test_count": 4,
-      "description": "DIF get_column_count \u00e2\u20ac\u201d accessor returning VECTORS count (number of columns)",
+      "description": "DIF get_column_count â€” accessor returning VECTORS count (number of columns)",
       "format": "DIF"
     },
     {
@@ -6927,7 +6927,7 @@
         "tests/python/sylk/test_r157_sylk_cell_count.py"
       ],
       "test_count": 8,
-      "description": "SYLK get_cell_count \u00e2\u20ac\u201d accessor returning count of non-None valued cells",
+      "description": "SYLK get_cell_count â€” accessor returning count of non-None valued cells",
       "format": "SYLK"
     },
     {
@@ -6957,7 +6957,7 @@
         "tests/python/ods/test_r157_ods_column_row.py"
       ],
       "test_count": 5,
-      "description": "ODS get_column_count \u00e2\u20ac\u201d accessor returning max column count in a sheet",
+      "description": "ODS get_column_count â€” accessor returning max column count in a sheet",
       "format": "ODS"
     },
     {
@@ -6987,7 +6987,7 @@
         "tests/python/ods/test_r157_ods_column_row.py"
       ],
       "test_count": 8,
-      "description": "ODS get_row_values \u00e2\u20ac\u201d accessor returning all cell values for a given row",
+      "description": "ODS get_row_values â€” accessor returning all cell values for a given row",
       "format": "ODS"
     },
     {
@@ -7017,7 +7017,7 @@
         "tests/python/xcf/test_r157_xcf_pixel_file.py"
       ],
       "test_count": 4,
-      "description": "XCF xcf_pixel_count \u00e2\u20ac\u201d accessor returning width * height",
+      "description": "XCF xcf_pixel_count â€” accessor returning width * height",
       "format": "XCF"
     },
     {
@@ -7047,7 +7047,7 @@
         "tests/python/xcf/test_r157_xcf_pixel_file.py"
       ],
       "test_count": 5,
-      "description": "XCF xcf_file_size \u00e2\u20ac\u201d accessor returning file size in bytes",
+      "description": "XCF xcf_file_size â€” accessor returning file size in bytes",
       "format": "XCF"
     },
     {
@@ -7077,7 +7077,7 @@
         "tests/python/ppm/test_r157_ppm_accessors.py"
       ],
       "test_count": 5,
-      "description": "PPM pixel_count \u00e2\u20ac\u201d accessor returning total pixel count (width * height)",
+      "description": "PPM pixel_count â€” accessor returning total pixel count (width * height)",
       "format": "PPM"
     },
     {
@@ -7107,7 +7107,7 @@
         "tests/python/ppm/test_r157_ppm_accessors.py"
       ],
       "test_count": 5,
-      "description": "PPM average_color \u00e2\u20ac\u201d accessor returning average (R, G, B) tuple",
+      "description": "PPM average_color â€” accessor returning average (R, G, B) tuple",
       "format": "PPM"
     },
     {
@@ -7137,7 +7137,7 @@
         "tests/python/pbm/test_r157_pbm_accessors.py"
       ],
       "test_count": 5,
-      "description": "PBM pixel_count \u00e2\u20ac\u201d accessor returning total pixel count (width * height)",
+      "description": "PBM pixel_count â€” accessor returning total pixel count (width * height)",
       "format": "PBM"
     },
     {
@@ -7167,7 +7167,7 @@
         "tests/python/pbm/test_r157_pbm_accessors.py"
       ],
       "test_count": 6,
-      "description": "PBM count_black \u00e2\u20ac\u201d accessor returning count of black (value=1) pixels",
+      "description": "PBM count_black â€” accessor returning count of black (value=1) pixels",
       "format": "PBM"
     },
     {
@@ -7197,7 +7197,7 @@
         "tests/python/pgm/test_r158_pgm_accessors.py"
       ],
       "test_count": 5,
-      "description": "PGM pixel_count \u00e2\u20ac\u201d accessor returning total pixel count (width * height)",
+      "description": "PGM pixel_count â€” accessor returning total pixel count (width * height)",
       "format": "PGM"
     },
     {
@@ -7227,7 +7227,7 @@
         "tests/python/pgm/test_r158_pgm_accessors.py"
       ],
       "test_count": 5,
-      "description": "PGM average_gray \u00e2\u20ac\u201d accessor returning mean gray value",
+      "description": "PGM average_gray â€” accessor returning mean gray value",
       "format": "PGM"
     },
     {
@@ -7257,7 +7257,7 @@
         "tests/python/ppm/test_r158_ppm_crop.py"
       ],
       "test_count": 6,
-      "description": "PPM crop \u00e2\u20ac\u201d crop a rectangular region from a PPM image",
+      "description": "PPM crop â€” crop a rectangular region from a PPM image",
       "format": "PPM"
     },
     {
@@ -7287,7 +7287,7 @@
         "tests/python/ods/test_r158_ods_count_sheets.py"
       ],
       "test_count": 4,
-      "description": "ODS count_sheets \u00e2\u20ac\u201d accessor returning number of sheets",
+      "description": "ODS count_sheets â€” accessor returning number of sheets",
       "format": "ODS"
     },
     {
@@ -7317,7 +7317,7 @@
         "tests/python/dif/test_r158_dif_all_values.py"
       ],
       "test_count": 6,
-      "description": "DIF get_all_values \u00e2\u20ac\u201d accessor returning flat list of all cell values",
+      "description": "DIF get_all_values â€” accessor returning flat list of all cell values",
       "format": "DIF"
     },
     {
@@ -7347,7 +7347,7 @@
         "tests/python/sylk/test_r158_sylk_all_values.py"
       ],
       "test_count": 6,
-      "description": "SYLK get_all_values \u00e2\u20ac\u201d accessor returning flat list of all cell values",
+      "description": "SYLK get_all_values â€” accessor returning flat list of all cell values",
       "format": "SYLK"
     },
     {
@@ -7377,7 +7377,7 @@
         "tests/python/pgm/test_r159_pgm_threshold_minmax.py"
       ],
       "test_count": 5,
-      "description": "PGM count_above_threshold \u00e2\u20ac\u201d count pixels with value strictly above threshold",
+      "description": "PGM count_above_threshold â€” count pixels with value strictly above threshold",
       "format": "PGM"
     },
     {
@@ -7407,7 +7407,7 @@
         "tests/python/pgm/test_r159_pgm_threshold_minmax.py"
       ],
       "test_count": 5,
-      "description": "PGM min_max_gray \u00e2\u20ac\u201d return (min, max) gray values in image",
+      "description": "PGM min_max_gray â€” return (min, max) gray values in image",
       "format": "PGM"
     },
     {
@@ -7437,7 +7437,7 @@
         "tests/python/pbm/test_r159_pbm_flip.py"
       ],
       "test_count": 5,
-      "description": "PBM flip_horizontal \u00e2\u20ac\u201d mirror PBM image left-right and write result",
+      "description": "PBM flip_horizontal â€” mirror PBM image left-right and write result",
       "format": "PBM"
     },
     {
@@ -7467,7 +7467,7 @@
         "tests/python/ppm/test_r159_ppm_flip.py"
       ],
       "test_count": 5,
-      "description": "PPM flip_horizontal \u00e2\u20ac\u201d mirror PPM image left-right and write result",
+      "description": "PPM flip_horizontal â€” mirror PPM image left-right and write result",
       "format": "PPM"
     },
     {
@@ -7497,7 +7497,7 @@
         "tests/python/xcf/test_r159_xcf_is_rgb.py"
       ],
       "test_count": 4,
-      "description": "XCF xcf_is_rgb \u00e2\u20ac\u201d check if XCF image type is RGB (type 0)",
+      "description": "XCF xcf_is_rgb â€” check if XCF image type is RGB (type 0)",
       "format": "XCF"
     },
     {
@@ -7527,7 +7527,7 @@
         "tests/python/ods/test_r159_ods_all_values.py"
       ],
       "test_count": 6,
-      "description": "ODS get_all_values \u00e2\u20ac\u201d flat list of all cell values in a sheet",
+      "description": "ODS get_all_values â€” flat list of all cell values in a sheet",
       "format": "ODS"
     },
     {
@@ -7650,7 +7650,7 @@
         "tests/python/dif/test_r160_dif_min_max_column.py"
       ],
       "test_count": 5,
-      "description": "DIF min_column_value \u2014 minimum numeric value in a column",
+      "description": "DIF min_column_value — minimum numeric value in a column",
       "format": "DIF"
     },
     {
@@ -7680,7 +7680,7 @@
         "tests/python/dif/test_r160_dif_min_max_column.py"
       ],
       "test_count": 5,
-      "description": "DIF max_column_value \u2014 maximum numeric value in a column",
+      "description": "DIF max_column_value — maximum numeric value in a column",
       "format": "DIF"
     },
     {
@@ -7708,7 +7708,7 @@
       ],
       "test_files": [],
       "test_count": 0,
-      "description": "DIF total_cell_count \u2014 total number of cells across all rows",
+      "description": "DIF total_cell_count — total number of cells across all rows",
       "format": "DIF"
     },
     {
@@ -7738,7 +7738,7 @@
         "tests/python/sylk/test_r160_sylk_nonempty_sum.py"
       ],
       "test_count": 5,
-      "description": "SYLK count_nonempty_cells \u2014 count non-empty cells in document",
+      "description": "SYLK count_nonempty_cells — count non-empty cells in document",
       "format": "SYLK"
     },
     {
@@ -7768,7 +7768,7 @@
         "tests/python/sylk/test_r160_sylk_nonempty_sum.py"
       ],
       "test_count": 5,
-      "description": "SYLK sum_column \u2014 sum numeric values in a column",
+      "description": "SYLK sum_column — sum numeric values in a column",
       "format": "SYLK"
     },
     {
@@ -7798,7 +7798,7 @@
         "tests/python/toml/test_r160_toml_diff_rename.py"
       ],
       "test_count": 6,
-      "description": "TOML diff_keys \u2014 top-level keys in A but not in B",
+      "description": "TOML diff_keys — top-level keys in A but not in B",
       "format": "TOML"
     },
     {
@@ -7828,7 +7828,7 @@
         "tests/python/toml/test_r160_toml_diff_rename.py"
       ],
       "test_count": 5,
-      "description": "TOML rename_key \u2014 rename a top-level key in data dict",
+      "description": "TOML rename_key — rename a top-level key in data dict",
       "format": "TOML"
     },
     {
@@ -7855,7 +7855,7 @@
         "tests/python/sylk/test_r159_sylk_row_ops.py"
       ],
       "test_count": 6,
-      "description": "Fixed import pattern in test_r159_sylk_row_ops.py \u2014 changed from sys.path short import to src.python.sylk full dotted path to prevent cross-test import pollution",
+      "description": "Fixed import pattern in test_r159_sylk_row_ops.py — changed from sys.path short import to src.python.sylk full dotted path to prevent cross-test import pollution",
       "format": "SYLK"
     },
     {
@@ -8473,7 +8473,7 @@
       "test_files": [
         "tests/python/ods/test_r168_ods_sum_filter.py"
       ],
-      "change_summary": "Add sum_column function to ODS parser \u2014 sums numeric values in a column",
+      "change_summary": "Add sum_column function to ODS parser — sums numeric values in a column",
       "timestamp": "2026-06-11T23:30:00Z",
       "format": "ODS"
     },
@@ -8498,7 +8498,7 @@
       "test_files": [
         "tests/python/ods/test_r168_ods_sum_filter.py"
       ],
-      "change_summary": "Add filter_rows_by_value function to ODS parser \u2014 filter rows matching column value",
+      "change_summary": "Add filter_rows_by_value function to ODS parser — filter rows matching column value",
       "timestamp": "2026-06-11T23:30:00Z",
       "format": "ODS"
     },
@@ -8523,7 +8523,7 @@
       "test_files": [
         "tests/python/ndjson/test_r168_ndjson_markdown_table.py"
       ],
-      "change_summary": "Add to_markdown_table function to NDJSON codec \u2014 export records as GFM table",
+      "change_summary": "Add to_markdown_table function to NDJSON codec — export records as GFM table",
       "timestamp": "2026-06-11T23:30:00Z",
       "format": "NDJSON"
     },
@@ -8548,7 +8548,7 @@
       "test_files": [
         "tests/python/tsv/test_r168_tsv_numeric_columns.py"
       ],
-      "change_summary": "Add get_numeric_columns function to TSV parser \u2014 identify all-numeric columns",
+      "change_summary": "Add get_numeric_columns function to TSV parser — identify all-numeric columns",
       "timestamp": "2026-06-11T23:30:00Z",
       "format": "TSV"
     },
@@ -9156,7 +9156,7 @@
       "idempotency_key": "02d563e374082464e51f9855878fe89229b41c4b852a454c720e7393fe1f2356",
       "sprint_id": "PRODUCT-DEEPENING-HEALING-20260612",
       "export_path_affected": true,
-      "description": "Add rotate_90(file_path, dest_path) -> dict to PBM parser \u2014 90-degree CW rotation",
+      "description": "Add rotate_90(file_path, dest_path) -> dict to PBM parser — 90-degree CW rotation",
       "format": "PBM"
     },
     {
@@ -10471,7 +10471,7 @@
       ],
       "test_count": 8,
       "change_type": "addition",
-      "description": "Add fodp_total_shape_count \u2014 total shapes across all slides",
+      "description": "Add fodp_total_shape_count — total shapes across all slides",
       "timestamp": "2026-06-14T10:00:00+00:00",
       "format": "FODP",
       "classification": "GOVERNED_PRODUCT_CHANGE"
@@ -10495,7 +10495,7 @@
       ],
       "test_count": 12,
       "change_type": "addition",
-      "description": "Add gnumeric_empty_cell_count \u2014 count empty/None cells in a sheet",
+      "description": "Add gnumeric_empty_cell_count — count empty/None cells in a sheet",
       "timestamp": "2026-06-14T10:30:00+00:00",
       "format": "Gnumeric",
       "classification": "GOVERNED_PRODUCT_CHANGE"
@@ -10519,7 +10519,7 @@
       ],
       "test_count": 7,
       "change_type": "addition",
-      "description": "Add xcf_is_indexed \u2014 check if XCF image uses indexed color mode (completes RGB/Grayscale/Indexed trio)",
+      "description": "Add xcf_is_indexed — check if XCF image uses indexed color mode (completes RGB/Grayscale/Indexed trio)",
       "timestamp": "2026-06-14T11:00:00+00:00",
       "format": "XCF",
       "classification": "GOVERNED_PRODUCT_CHANGE"
@@ -10599,7 +10599,7 @@
       ],
       "test_count": 7,
       "change_type": "addition",
-      "description": "Add ppm_is_binary \u2014 detect P6 (binary) vs P3 (ASCII) PPM format",
+      "description": "Add ppm_is_binary — detect P6 (binary) vs P3 (ASCII) PPM format",
       "timestamp": "2026-06-14T11:30:00+00:00",
       "format": "PPM",
       "classification": "GOVERNED_PRODUCT_CHANGE"
@@ -10659,7 +10659,7 @@
       ],
       "test_count": 8,
       "change_type": "addition",
-      "description": "Add tsv_has_header \u2014 detect if TSV file has a header row",
+      "description": "Add tsv_has_header — detect if TSV file has a header row",
       "timestamp": "2026-06-14T12:00:00+00:00",
       "format": "TSV",
       "classification": "GOVERNED_PRODUCT_CHANGE"
@@ -16021,7 +16021,7 @@
           "state": "present"
         }
       ],
-      "note": "New: FODS\u2192ODS ZIP archive exporter. System.IO.Compression only. 20 tests pass."
+      "note": "New: FODS→ODS ZIP archive exporter. System.IO.Compression only. 20 tests pass."
     },
     {
       "id": 823,
@@ -17502,7 +17502,7 @@
       "created_at": "2026-06-21T22:00:00Z",
       "gap_ledger_ref": null,
       "capability_ref": "FODT-FOSS-WRITE_FODT-001",
-      "description": "FODT \u2192 NDJSON dogfood export. Source: Format Factory fodt library (parse_fodt). Target writer: Format Factory ndjson library (write_ndjson). Each FODT block exported as NDJSON record with block_type, text, block_index, heading_level. 18/18 tests pass. Forbidden third-party deps absent.",
+      "description": "FODT → NDJSON dogfood export. Source: Format Factory fodt library (parse_fodt). Target writer: Format Factory ndjson library (write_ndjson). Each FODT block exported as NDJSON record with block_type, text, block_index, heading_level. 18/18 tests pass. Forbidden third-party deps absent.",
       "changed_files": [
         "src/python/fodt/fodt_to_ndjson.py",
         "tests/python/fodt/test_r134_fodt_to_ndjson_dogfood.py"
@@ -17544,7 +17544,7 @@
       "created_at": "2026-06-21T23:00:00Z",
       "gap_ledger_ref": null,
       "capability_ref": "FODS-FOSS-PARSE_FODS-001",
-      "description": "FODS \u2192 TSV dogfood export. Source: Format Factory fods library (parse_fods). Target writer: Format Factory tsv library (write_tsv from tsv.tsv_parser). Each FODS sheet row exported as TSV row; first row optionally used as headers. 16/16 tests pass. Forbidden third-party deps absent.",
+      "description": "FODS → TSV dogfood export. Source: Format Factory fods library (parse_fods). Target writer: Format Factory tsv library (write_tsv from tsv.tsv_parser). Each FODS sheet row exported as TSV row; first row optionally used as headers. 16/16 tests pass. Forbidden third-party deps absent.",
       "changed_files": [
         "src/python/fods/fods_to_tsv.py",
         "tests/python/fods/test_r134_fods_to_tsv_dogfood.py"
@@ -17571,7 +17571,7 @@
         "src/python/fods/Compat/fods_sheet.py",
         "src/python/fods/Compat/fods_cell.py"
       ],
-      "rationale": "ARCHITECTURE MARKER pattern \u2014 FodsDocument/FodsSheet/FodsCell inherit canonical spec classes. Real production implementations are in fods/models.py. Files committed with PATH B doc-only disposition.",
+      "rationale": "ARCHITECTURE MARKER pattern — FodsDocument/FodsSheet/FodsCell inherit canonical spec classes. Real production implementations are in fods/models.py. Files committed with PATH B doc-only disposition.",
       "test_impact": "No behavioral changes. FODS test suite: 1335 passed, 8 skipped.",
       "gate_11_criterion": "P-ARCH-001 satisfied by spec_qname attribution"
     },
@@ -17702,7 +17702,7 @@
       ],
       "spec_qname": "office:meta",
       "format": "FODP",
-      "notes": "Added get_document_metadata() \u2014 extracts ODF document-level metadata from office:meta element. 11 pre-defined metadata fields (title, description, subject, creator, date, language, creation_date, generator, editing_cycles, editing_duration, initial_creator). 22 tests pass."
+      "notes": "Added get_document_metadata() — extracts ODF document-level metadata from office:meta element. 11 pre-defined metadata fields (title, description, subject, creator, date, language, creation_date, generator, editing_cycles, editing_duration, initial_creator). 22 tests pass."
     },
     {
       "entry_id": "PROD-TOML-EXCEPTION-001",
@@ -18942,7 +18942,7 @@
       "entry_id": "PC-FODS-R123",
       "classification": "TEST_ADDITION",
       "sprint": "ff-sprint-s88-dotnet-deepening-20260626",
-      "description": "FODS R123: 9 tests for SortRows \u2014 ascending/descending sort, multi-column row movement, empty sheet, single row, guards",
+      "description": "FODS R123: 9 tests for SortRows — ascending/descending sort, multi-column row movement, empty sheet, single row, guards",
       "test_files": [
         "tests/net/fods/FodsR123SortRowsTests.cs"
       ],
@@ -18952,7 +18952,7 @@
       "entry_id": "PC-FODT-R121",
       "classification": "TEST_ADDITION",
       "sprint": "ff-sprint-s88-dotnet-deepening-20260626",
-      "description": "FODT R121: 9 tests for GetWordFrequency \u2014 empty doc, single/repeated word, multi-paragraph, minLength filtering, unique keys, dogfood sum check",
+      "description": "FODT R121: 9 tests for GetWordFrequency — empty doc, single/repeated word, multi-paragraph, minLength filtering, unique keys, dogfood sum check",
       "test_files": [
         "tests/net/fodt/FodtR121GetWordFrequencyTests.cs"
       ],
@@ -18962,7 +18962,7 @@
       "entry_id": "PC-NETPBM-R123",
       "classification": "TEST_ADDITION",
       "sprint": "ff-sprint-s88-dotnet-deepening-20260626",
-      "description": "Netpbm R123: 10 tests for ToGrayscale/ToColor \u2014 format transitions, dimension/pixel-count preservation, white/black pixels, dogfood pipeline",
+      "description": "Netpbm R123: 10 tests for ToGrayscale/ToColor — format transitions, dimension/pixel-count preservation, white/black pixels, dogfood pipeline",
       "test_files": [
         "tests/net/netpbm/NetpbmR123ToGrayscaleColorTests.cs"
       ],
@@ -18972,7 +18972,7 @@
       "entry_id": "PC-FODS-R124",
       "classification": "TEST_ADDITION",
       "sprint": "ff-sprint-s89-dotnet-deepening-20260626",
-      "description": "FODS R124: 10 tests for InsertRowWithValues \u2014 single/multi values, null entries, index positioning, empty list, guards, dogfood HTML export",
+      "description": "FODS R124: 10 tests for InsertRowWithValues — single/multi values, null entries, index positioning, empty list, guards, dogfood HTML export",
       "test_files": [
         "tests/net/fods/FodsR124InsertRowWithValuesTests.cs"
       ],
@@ -18982,7 +18982,7 @@
       "entry_id": "PC-FODT-R122",
       "classification": "TEST_ADDITION",
       "sprint": "ff-sprint-s89-dotnet-deepening-20260626",
-      "description": "FODT R122: 11 tests for GetDocumentStats \u2014 empty doc all-zero, paragraph/heading counts, word/char count, tuple consistency with individual getters, dogfood",
+      "description": "FODT R122: 11 tests for GetDocumentStats — empty doc all-zero, paragraph/heading counts, word/char count, tuple consistency with individual getters, dogfood",
       "test_files": [
         "tests/net/fodt/FodtR122GetDocumentStatsTests.cs"
       ],
@@ -18992,7 +18992,7 @@
       "entry_id": "PC-NETPBM-R124",
       "classification": "TEST_ADDITION",
       "sprint": "ff-sprint-s89-dotnet-deepening-20260626",
-      "description": "Netpbm R124: 11 tests for ConvertFormat \u2014 PGM P2\u2194P5, PPM P3\u2194P6, same-format identity, cross-family throws, dogfood P2\u2192P5\u2192P2 round-trip",
+      "description": "Netpbm R124: 11 tests for ConvertFormat — PGM P2↔P5, PPM P3↔P6, same-format identity, cross-family throws, dogfood P2→P5→P2 round-trip",
       "test_files": [
         "tests/net/netpbm/NetpbmR124ConvertFormatTests.cs"
       ],
@@ -19002,7 +19002,7 @@
       "entry_id": "PC-FODS-R125",
       "classification": "TEST_ADDITION",
       "sprint": "ff-sprint-s90-dotnet-deepening-20260626",
-      "description": "FODS R125: 10 tests for GetCellFormula \u2014 set then get, non-formula null, out-of-range null, guards, dogfood",
+      "description": "FODS R125: 10 tests for GetCellFormula — set then get, non-formula null, out-of-range null, guards, dogfood",
       "test_files": [
         "tests/net/fods/FodsR125GetCellFormulaTests.cs"
       ],
@@ -19012,7 +19012,7 @@
       "entry_id": "PC-FODT-R123",
       "classification": "TEST_ADDITION",
       "sprint": "ff-sprint-s90-dotnet-deepening-20260626",
-      "description": "FODT R123: 10 tests for ReplaceText count \u2014 no-match=0, single/multiple, cross-paragraph, case variants, dogfood",
+      "description": "FODT R123: 10 tests for ReplaceText count — no-match=0, single/multiple, cross-paragraph, case variants, dogfood",
       "test_files": [
         "tests/net/fodt/FodtR123ReplaceTextCountTests.cs"
       ],
@@ -19022,7 +19022,7 @@
       "entry_id": "PC-NETPBM-R125",
       "classification": "TEST_ADDITION",
       "sprint": "ff-sprint-s90-dotnet-deepening-20260626",
-      "description": "Netpbm R125: 9 tests for Pipeline \u2014 empty pipeline, single/multi step, dimension preservation, null guards, PPM ToGrayscale step, dogfood three-step",
+      "description": "Netpbm R125: 9 tests for Pipeline — empty pipeline, single/multi step, dimension preservation, null guards, PPM ToGrayscale step, dogfood three-step",
       "test_files": [
         "tests/net/netpbm/NetpbmR125PipelineTests.cs"
       ],
@@ -19032,7 +19032,7 @@
       "entry_id": "PC-FODS-R126",
       "classification": "TEST_ADDITION",
       "sprint": "ff-sprint-s91-dotnet-deepening-20260626",
-      "description": "FODS R126: 10 tests for GetCellStyle \u2014 set/get round-trip, unstyled null, overwrite, out-of-range null, guards, dogfood multi-row",
+      "description": "FODS R126: 10 tests for GetCellStyle — set/get round-trip, unstyled null, overwrite, out-of-range null, guards, dogfood multi-row",
       "test_files": [
         "tests/net/fods/FodsR126GetCellStyleTests.cs"
       ],
@@ -19042,7 +19042,7 @@
       "entry_id": "PC-FODT-R124",
       "classification": "TEST_ADDITION",
       "sprint": "ff-sprint-s91-dotnet-deepening-20260626",
-      "description": "FODT R124: 10 tests for SearchText position tuples \u2014 ParagraphIndex/Position accuracy, multiple matches, cross-paragraph, case comparison, dogfood",
+      "description": "FODT R124: 10 tests for SearchText position tuples — ParagraphIndex/Position accuracy, multiple matches, cross-paragraph, case comparison, dogfood",
       "test_files": [
         "tests/net/fodt/FodtR124SearchTextPositionTests.cs"
       ],
@@ -19052,7 +19052,7 @@
       "entry_id": "PC-NETPBM-R126",
       "classification": "TEST_ADDITION",
       "sprint": "ff-sprint-s91-dotnet-deepening-20260626",
-      "description": "Netpbm R126: 11 tests for Create canvas \u2014 dimensions, format, default/custom fill, PPM channels, zero/negative guards, dogfood edit+serialize",
+      "description": "Netpbm R126: 11 tests for Create canvas — dimensions, format, default/custom fill, PPM channels, zero/negative guards, dogfood edit+serialize",
       "test_files": [
         "tests/net/netpbm/NetpbmR126CreateCanvasTests.cs"
       ],
@@ -19062,7 +19062,7 @@
       "entry_id": "PC-FODS-R127",
       "classification": "TEST_ADDITION",
       "sprint": "ff-sprint-s92-dotnet-deepening-20260626",
-      "description": "FODS R127: 10 tests for multi-sheet pipeline \u2014 two sheets independent data, SortRows isolation, sheet name order, FilterRows, export CSV sorted, SheetCount after remove, GetColumnAggregates, GetSheetByIndex, GetSheetByName case-sensitive, dogfood two-sheet sort+export",
+      "description": "FODS R127: 10 tests for multi-sheet pipeline — two sheets independent data, SortRows isolation, sheet name order, FilterRows, export CSV sorted, SheetCount after remove, GetColumnAggregates, GetSheetByIndex, GetSheetByName case-sensitive, dogfood two-sheet sort+export",
       "test_files": [
         "tests/net/fods/FodsR127MultiSheetPipelineTests.cs"
       ],
@@ -19072,7 +19072,7 @@
       "entry_id": "PC-FODT-R125",
       "classification": "TEST_ADDITION",
       "sprint": "ff-sprint-s92-dotnet-deepening-20260626",
-      "description": "FODT R125: 10 tests for RemoveAllParagraphs \u2014 empty doc no-op, single/multiple removed, plain text empty, headings also removed, rebuild after removal, GetDocumentStats all-zero, Paragraphs empty, dogfood remove+rebuild+export",
+      "description": "FODT R125: 10 tests for RemoveAllParagraphs — empty doc no-op, single/multiple removed, plain text empty, headings also removed, rebuild after removal, GetDocumentStats all-zero, Paragraphs empty, dogfood remove+rebuild+export",
       "test_files": [
         "tests/net/fodt/FodtR125RemoveAllParagraphsTests.cs"
       ],
@@ -19082,7 +19082,7 @@
       "entry_id": "PC-NETPBM-R127",
       "classification": "TEST_ADDITION",
       "sprint": "ff-sprint-s92-dotnet-deepening-20260626",
-      "description": "Netpbm R127: 11 tests for NetpbmExporter.PgmToPpm/PpmToPgm \u2014 result format, dimensions, gray pixel equal channels, black/white, wrong-format throws, luminance consistency, dogfood round-trip dimensions",
+      "description": "Netpbm R127: 11 tests for NetpbmExporter.PgmToPpm/PpmToPgm — result format, dimensions, gray pixel equal channels, black/white, wrong-format throws, luminance consistency, dogfood round-trip dimensions",
       "test_files": [
         "tests/net/netpbm/NetpbmR127ExporterPgmPpmTests.cs"
       ],
@@ -19098,7 +19098,7 @@
       ],
       "change_type": "test_added",
       "evidence_path": "tests/net/zst/ZstR118ContentAnalyticsTests.cs",
-      "description": "R118: 12 tests for ZstDocument computed properties \u2014 ContentTypeHint, IsEmptyContent, IsHighlyCompressed, OverheadBytes, BytesPerFrame"
+      "description": "R118: 12 tests for ZstDocument computed properties — ContentTypeHint, IsEmptyContent, IsHighlyCompressed, OverheadBytes, BytesPerFrame"
     },
     {
       "entry_id": "PC-FODT-R126",
@@ -19110,7 +19110,7 @@
       ],
       "change_type": "test_added",
       "evidence_path": "tests/net/fodt/FodtR126ExportToHtmlStructureTests.cs",
-      "description": "R126: 11 tests for ExportToHtml structure \u2014 H1/H2 tags, body p tags, special char escaping, dogfood pipeline"
+      "description": "R126: 11 tests for ExportToHtml structure — H1/H2 tags, body p tags, special char escaping, dogfood pipeline"
     },
     {
       "entry_id": "PC-TSV-R118",
@@ -19122,7 +19122,7 @@
       ],
       "change_type": "test_added",
       "evidence_path": "tests/net/tsv/TsvR118GetColumnValuesDeepTests.cs",
-      "description": "R118: 10 tests for GetColumnValues deep edge cases \u2014 short rows null, negative index, ToTsv round-trip"
+      "description": "R118: 10 tests for GetColumnValues deep edge cases — short rows null, negative index, ToTsv round-trip"
     },
     {
       "entry_id": "PC-CSV-R118",
@@ -19134,7 +19134,7 @@
       ],
       "change_type": "test_added",
       "evidence_path": "tests/net/csv/CsvR118GetColumnTests.cs",
-      "description": "R118: 10 tests for GetColumn(int) and GetColumn(string) \u2014 by index/header, empty doc, out-of-bounds, dogfood consistency"
+      "description": "R118: 10 tests for GetColumn(int) and GetColumn(string) — by index/header, empty doc, out-of-bounds, dogfood consistency"
     },
     {
       "entry_id": "PC-FODT-R127",
@@ -19146,7 +19146,7 @@
       ],
       "change_type": "test_added",
       "evidence_path": "tests/net/fodt/FodtR127ExportToMarkdownHeadingTests.cs",
-      "description": "R127: 11 tests for ExportToMarkdown heading hierarchy \u2014 H1/#, H2/##, H3/###, body text no prefix, order preservation"
+      "description": "R127: 11 tests for ExportToMarkdown heading hierarchy — H1/#, H2/##, H3/###, body text no prefix, order preservation"
     },
     {
       "entry_id": "PC-NETPBM-R128",
@@ -19158,7 +19158,7 @@
       ],
       "change_type": "test_added",
       "evidence_path": "tests/net/netpbm/NetpbmR128ExporterPbmTests.cs",
-      "description": "R128: 11 tests for NetpbmExporter PbmToPgm/PbmToPpm \u2014 pixel mapping 0\u2192255/1\u21920, dimensions, format guards, dogfood"
+      "description": "R128: 11 tests for NetpbmExporter PbmToPgm/PbmToPpm — pixel mapping 0→255/1→0, dimensions, format guards, dogfood"
     },
     {
       "entry_id": "PC-FODT-R128",
@@ -19170,7 +19170,7 @@
       ],
       "change_type": "test_added",
       "evidence_path": "tests/net/fodt/FodtR128ParagraphModelTests.cs",
-      "description": "R128: 11 tests for FodtParagraph model properties \u2014 Text, IsHeading, OutlineLevel via Paragraphs collection"
+      "description": "R128: 11 tests for FodtParagraph model properties — Text, IsHeading, OutlineLevel via Paragraphs collection"
     },
     {
       "entry_id": "PC-ZST-R119",
@@ -19182,7 +19182,7 @@
       ],
       "change_type": "test_added",
       "evidence_path": "tests/net/zst/ZstR119FramePropertiesTests.cs",
-      "description": "R119: 10 tests for ZstDocument frame properties \u2014 IsMinimalFrame, SizeExceeds100K, FileSizeBytes, FrameHeaderDescriptor via live-parsed data"
+      "description": "R119: 10 tests for ZstDocument frame properties — IsMinimalFrame, SizeExceeds100K, FileSizeBytes, FrameHeaderDescriptor via live-parsed data"
     },
     {
       "entry_id": "PC-NETPBM-R129",
@@ -19194,7 +19194,7 @@
       ],
       "change_type": "test_added",
       "evidence_path": "tests/net/netpbm/NetpbmR129BinaryRoundtripTests.cs",
-      "description": "R129: 11 tests for ToBinaryBytes round-trip pixel accuracy \u2014 PGM P2\u2192P5, PPM P3\u2192P6, dimensions, pixel values, MaxValue preserved"
+      "description": "R129: 11 tests for ToBinaryBytes round-trip pixel accuracy — PGM P2→P5, PPM P3→P6, dimensions, pixel values, MaxValue preserved"
     },
     {
       "entry_id": "PC-FODS-R128",
@@ -19206,7 +19206,7 @@
       ],
       "change_type": "test_added",
       "evidence_path": "tests/net/fods/FodsR128SheetRowsModelTests.cs",
-      "description": "R128: 10 tests for FodsSheet.Rows model hierarchy \u2014 FodsRow.Cells, FodsCell.Value, IsCovered via iteration"
+      "description": "R128: 10 tests for FodsSheet.Rows model hierarchy — FodsRow.Cells, FodsCell.Value, IsCovered via iteration"
     },
     {
       "entry_id": "PC-FODT-R129",
@@ -19218,7 +19218,7 @@
       ],
       "change_type": "test_added",
       "evidence_path": "tests/net/fodt/FodtR129ExportToMarkdownConsistencyTests.cs",
-      "description": "R129: 10 tests for ExportToMarkdown consistency \u2014 all paragraphs present, order preserved, consistent output, after-replace, newlines"
+      "description": "R129: 10 tests for ExportToMarkdown consistency — all paragraphs present, order preserved, consistent output, after-replace, newlines"
     },
     {
       "entry_id": "PC-NETPBM-R130",
@@ -19230,7 +19230,7 @@
       ],
       "change_type": "test_added",
       "evidence_path": "tests/net/netpbm/NetpbmR130BrightnessMapTests.cs",
-      "description": "R130: 11 tests for GetBrightnessMap \u2014 length=PixelCount, [0,1] range, all-white=1.0, all-black=0.0, mid-gray\u22480.5, PPM length, dogfood vs GetBrightness"
+      "description": "R130: 11 tests for GetBrightnessMap — length=PixelCount, [0,1] range, all-white=1.0, all-black=0.0, mid-gray≈0.5, PPM length, dogfood vs GetBrightness"
     },
     {
       "entry_id": "PC-FODS-R129",
@@ -20730,7 +20730,7 @@
       "test_files": [
         "tests/net/fods/FodsR141SpecTableCellTests.cs"
       ],
-      "description": "R141: 11 tests for Spec.Table.TableCell, TableRow, Table canonical spec-shaped model classes \u2014 SpecQName/SpecFactRef constants, init-only properties, dogfood composition"
+      "description": "R141: 11 tests for Spec.Table.TableCell, TableRow, Table canonical spec-shaped model classes — SpecQName/SpecFactRef constants, init-only properties, dogfood composition"
     },
     {
       "entry_id": "PC-NDJSON-R129",
@@ -20743,7 +20743,7 @@
       "test_files": [
         "tests/net/ndjson/NdjsonR129ReadRecordsFromFileTests.cs"
       ],
-      "description": "R129: 10 tests for NdjsonReader.ReadRecordsFromFile(path) \u2014 file exists, record count, blank-line skip, empty file, null/empty/missing path throws, invalid JSON throws, parity with ReadRecords(string)"
+      "description": "R129: 10 tests for NdjsonReader.ReadRecordsFromFile(path) — file exists, record count, blank-line skip, empty file, null/empty/missing path throws, invalid JSON throws, parity with ReadRecords(string)"
     },
     {
       "entry_id": "PC-TSV-R125",
@@ -20756,7 +20756,7 @@
       "test_files": [
         "tests/net/tsv/TsvR125WriteRowsToFileTests.cs"
       ],
-      "description": "R125: 11 tests for TsvWriter.WriteRowsToFile(rows, path) \u2014 file created, non-empty, tabs present, multi-row, null-field-empty, UTF-8 no-BOM, null rows throws, null/empty path throws, tab-in-field throws, dogfood roundtrip"
+      "description": "R125: 11 tests for TsvWriter.WriteRowsToFile(rows, path) — file created, non-empty, tabs present, multi-row, null-field-empty, UTF-8 no-BOM, null rows throws, null/empty path throws, tab-in-field throws, dogfood roundtrip"
     },
     {
       "entry_id": "PC-FODT-R143",
@@ -20769,7 +20769,7 @@
       "test_files": [
         "tests/net/fodt/FodtR143SpecTextParagraphTests.cs"
       ],
-      "description": "R143: 13 tests for Spec.Text.Paragraph, Heading, Span canonical spec-shaped model classes \u2014 SpecQName/SpecFactRef constants, init-only properties, dogfood composition"
+      "description": "R143: 13 tests for Spec.Text.Paragraph, Heading, Span canonical spec-shaped model classes — SpecQName/SpecFactRef constants, init-only properties, dogfood composition"
     },
     {
       "entry_id": "PC-TSV-R126",
@@ -20782,7 +20782,7 @@
       "test_files": [
         "tests/net/tsv/TsvR126DocumentLoadFileTests.cs"
       ],
-      "description": "R126: 11 tests for TsvDocument.LoadFile(path, hasHeaders) \u2014 headers populated, row count, column count, hasHeaders=false, empty file, null path throws, parity with Load(string)"
+      "description": "R126: 11 tests for TsvDocument.LoadFile(path, hasHeaders) — headers populated, row count, column count, hasHeaders=false, empty file, null path throws, parity with Load(string)"
     },
     {
       "entry_id": "PC-ZST-R128",
@@ -20795,7 +20795,7 @@
       "test_files": [
         "tests/net/zst/ZstR128StreamCompressDecompressTests.cs"
       ],
-      "description": "R128: 11 tests for ZstWriter.Compress(Stream,Stream) and Decompress(Stream,Stream) \u2014 non-empty output, magic bytes, null guards, roundtrip, UTF-8 preservation, dogfood pipeline"
+      "description": "R128: 11 tests for ZstWriter.Compress(Stream,Stream) and Decompress(Stream,Stream) — non-empty output, magic bytes, null guards, roundtrip, UTF-8 preservation, dogfood pipeline"
     },
     {
       "entry_id": "PC-FODT-R144",
@@ -20808,7 +20808,7 @@
       "test_files": [
         "tests/net/fodt/FodtR144SpecTableAndListTests.cs"
       ],
-      "description": "R144: 15 tests for Spec.Table.Table/TableRow/TableCell, Spec.Text.List/ListItem, Spec.Office.Body \u2014 SpecQName/SpecFactRef constants, init-only properties, dogfood table-row-cell composition"
+      "description": "R144: 15 tests for Spec.Table.Table/TableRow/TableCell, Spec.Text.List/ListItem, Spec.Office.Body — SpecQName/SpecFactRef constants, init-only properties, dogfood table-row-cell composition"
     },
     {
       "entry_id": "PC-CSV-R128",
@@ -20821,7 +20821,7 @@
       "test_files": [
         "tests/net/csv/CsvR128DocumentLoadFileTests.cs"
       ],
-      "description": "R128: 11 tests for CsvDocument.LoadFile(path, hasHeaders) \u2014 headers populated, row count, column count, hasHeaders=false, empty file, null/missing path throws, parity with Load(string)"
+      "description": "R128: 11 tests for CsvDocument.LoadFile(path, hasHeaders) — headers populated, row count, column count, hasHeaders=false, empty file, null/missing path throws, parity with Load(string)"
     },
     {
       "entry_id": "PC-NDJSON-R130",
@@ -20834,7 +20834,7 @@
       "test_files": [
         "tests/net/ndjson/NdjsonR130WriteRecordsToFileTests.cs"
       ],
-      "description": "R130: 10 tests for NdjsonWriter.WriteRecordsToFile(records, path) \u2014 file created, non-empty, line count, valid JSON lines, UTF-8 no-BOM, null guards, dogfood roundtrip, empty list creates empty file"
+      "description": "R130: 10 tests for NdjsonWriter.WriteRecordsToFile(records, path) — file created, non-empty, line count, valid JSON lines, UTF-8 no-BOM, null guards, dogfood roundtrip, empty list creates empty file"
     },
     {
       "entry_id": "PC-FODS-R142",
@@ -20847,7 +20847,7 @@
       "test_files": [
         "tests/net/fods/FodsR142SpecOfficeDocumentTests.cs"
       ],
-      "description": "R142: 10 tests for Spec.Office.Document \u2014 SpecQName, SpecFactRef, MimeType default/assignable, Version null/assignable, SheetCount assignable, dogfood composition"
+      "description": "R142: 10 tests for Spec.Office.Document — SpecQName, SpecFactRef, MimeType default/assignable, Version null/assignable, SheetCount assignable, dogfood composition"
     },
     {
       "entry_id": "PC-CSV-R129",
@@ -20860,7 +20860,7 @@
       "test_files": [
         "tests/net/csv/CsvR129SpecCsvRecordTests.cs"
       ],
-      "description": "R129: 9 tests for Spec.CsvRecord \u2014 SpecQName constant, Fields empty/assignable, FieldCount computed, empty-string field valid, dogfood multi-record access"
+      "description": "R129: 9 tests for Spec.CsvRecord — SpecQName constant, Fields empty/assignable, FieldCount computed, empty-string field valid, dogfood multi-record access"
     },
     {
       "entry_id": "PC-ZST-R129",
@@ -20873,7 +20873,7 @@
       "test_files": [
         "tests/net/zst/ZstR129ExceptionHierarchyTests.cs"
       ],
-      "description": "R129: 11 tests for ZstFileSizeException, ZstFileNotFoundException, ZstException hierarchy \u2014 IsAssignableFrom chain, message preserved, Parse non-existent throws, dogfood all types"
+      "description": "R129: 11 tests for ZstFileSizeException, ZstFileNotFoundException, ZstException hierarchy — IsAssignableFrom chain, message preserved, Parse non-existent throws, dogfood all types"
     },
     {
       "entry_id": "PC-TSV-R127",
@@ -20886,7 +20886,7 @@
       "test_files": [
         "tests/net/tsv/TsvR127SpecTsvRecordTests.cs"
       ],
-      "description": "TSV R127: 10 tests for Spec.TsvRecord canonical spec-shaped model class \u2014 SpecQName constant, Fields init-only, FieldCount, dogfood pipeline"
+      "description": "TSV R127: 10 tests for Spec.TsvRecord canonical spec-shaped model class — SpecQName constant, Fields init-only, FieldCount, dogfood pipeline"
     },
     {
       "entry_id": "PC-NDJSON-R131",
@@ -20899,7 +20899,7 @@
       "test_files": [
         "tests/net/ndjson/NdjsonR131RecordTryGetValueTests.cs"
       ],
-      "description": "NDJSON R131: 10 tests for NdjsonRecord.TryGetValue(key, out value) and NdjsonRecord.Keys \u2014 present/absent key, bool/numeric/string, Keys parity, dogfood pipeline"
+      "description": "NDJSON R131: 10 tests for NdjsonRecord.TryGetValue(key, out value) and NdjsonRecord.Keys — present/absent key, bool/numeric/string, Keys parity, dogfood pipeline"
     },
     {
       "entry_id": "PC-ZST-R130",
@@ -20912,7 +20912,7 @@
       "test_files": [
         "tests/net/zst/ZstR130CompressToFileTests.cs"
       ],
-      "description": "ZST R130: 10 tests for ZstWriter.CompressToFile(data, destPath, level) \u2014 output file, magic bytes, null guards, compression levels, parseable output, dogfood roundtrip"
+      "description": "ZST R130: 10 tests for ZstWriter.CompressToFile(data, destPath, level) — output file, magic bytes, null guards, compression levels, parseable output, dogfood roundtrip"
     },
     {
       "entry_id": "PC-NDJSON-R132",
@@ -20925,7 +20925,7 @@
       "test_files": [
         "tests/net/ndjson/NdjsonR132SpecNdjsonRecordTests.cs"
       ],
-      "description": "NDJSON R132: 10 tests for Spec.NdjsonRecord canonical spec-shaped model class \u2014 SpecQName, RawJson, LineIndex, independence, dogfood pipeline"
+      "description": "NDJSON R132: 10 tests for Spec.NdjsonRecord canonical spec-shaped model class — SpecQName, RawJson, LineIndex, independence, dogfood pipeline"
     },
     {
       "entry_id": "PC-NETPBM-R138",
@@ -20938,7 +20938,7 @@
       "test_files": [
         "tests/net/netpbm/NetpbmR138SpecNetpbmImageTests.cs"
       ],
-      "description": "Netpbm R138: 10 tests for Spec.NetpbmImage canonical spec-shaped model class \u2014 SpecQName, MagicNumber, Width, Height, MaxVal, init-only, dogfood pipeline"
+      "description": "Netpbm R138: 10 tests for Spec.NetpbmImage canonical spec-shaped model class — SpecQName, MagicNumber, Width, Height, MaxVal, init-only, dogfood pipeline"
     },
     {
       "entry_id": "PC-CSV-R130",
@@ -20951,7 +20951,7 @@
       "test_files": [
         "tests/net/csv/CsvR130ToCsvSerializationTests.cs"
       ],
-      "description": "CSV R130: 10 tests for CsvDocument.ToCsv() serialization and GetCellValue edge-cases \u2014 header line, row order, after mutation, null returns, dogfood roundtrip"
+      "description": "CSV R130: 10 tests for CsvDocument.ToCsv() serialization and GetCellValue edge-cases — header line, row order, after mutation, null returns, dogfood roundtrip"
     },
     {
       "entry_id": "PC-TSV-R128",
@@ -20964,7 +20964,7 @@
       "test_files": [
         "tests/net/tsv/TsvR128ReadRowsFromFileTests.cs"
       ],
-      "description": "TSV R128: 10 tests for TsvReader.ReadRowsFromFile(path) \u2014 row count, tab splitting, null/nonexistent guards, empty file, parity with ReadRows(string), dogfood roundtrip"
+      "description": "TSV R128: 10 tests for TsvReader.ReadRowsFromFile(path) — row count, tab splitting, null/nonexistent guards, empty file, parity with ReadRows(string), dogfood roundtrip"
     },
     {
       "entry_id": "PC-FODT-R145",
@@ -20977,7 +20977,7 @@
       "test_files": [
         "tests/net/fodt/FodtR145DocumentExceptionTests.cs"
       ],
-      "description": "FODT R145: 10 tests for FodtDocumentException \u2014 Exception subclass, message/inner constructors, Load null/empty/nonexistent throws, caught as base type, CreateEmpty safe, dogfood pipeline"
+      "description": "FODT R145: 10 tests for FodtDocumentException — Exception subclass, message/inner constructors, Load null/empty/nonexistent throws, caught as base type, CreateEmpty safe, dogfood pipeline"
     },
     {
       "entry_id": "PC-NDJSON-R133",
@@ -20990,14 +20990,14 @@
       "test_files": [
         "tests/net/ndjson/NdjsonR133StreamReadRecordsTests.cs"
       ],
-      "description": "NDJSON R133: 10 tests for NdjsonReader.ReadRecords(Stream) \u2014 record count, ValueKind=Object, field access, null guard, empty stream, parity with string overload, dogfood roundtrip"
+      "description": "NDJSON R133: 10 tests for NdjsonReader.ReadRecords(Stream) — record count, ValueKind=Object, field access, null guard, empty stream, parity with string overload, dogfood roundtrip"
     },
     {
       "entry_id": "PC-FODS-R143",
       "format": "FODS",
       "r_number": "R143",
       "sprint": "ff-sprint-s129-dotnet-deepening-20260627",
-      "description": "FodsDocumentException hierarchy and throwing scenarios \u2014 10 tests: Exception subclass, message/inner constructors, Load null/empty/nonexistent throws, caught as base type, CreateNew no throw, dogfood pipeline",
+      "description": "FodsDocumentException hierarchy and throwing scenarios — 10 tests: Exception subclass, message/inner constructors, Load null/empty/nonexistent throws, caught as base type, CreateNew no throw, dogfood pipeline",
       "evidence_path": "tests/net/fods/FodsR143DocumentExceptionTests.cs",
       "test_count": 10,
       "capability_ref": "commercial_net_products.FODS.dotnet_status.document_exception"
@@ -21007,7 +21007,7 @@
       "format": "NDJSON",
       "r_number": "R134",
       "sprint": "ff-sprint-s129-dotnet-deepening-20260627",
-      "description": "NdjsonException hierarchy and NdjsonReader.MaxSize constant \u2014 10 tests: Exception subclass, message/inner, MaxSize=64MB, ReadRecords/ReadRecordsFromFile/WriteRecords null guards, dogfood invalid JSON catches NdjsonException",
+      "description": "NdjsonException hierarchy and NdjsonReader.MaxSize constant — 10 tests: Exception subclass, message/inner, MaxSize=64MB, ReadRecords/ReadRecordsFromFile/WriteRecords null guards, dogfood invalid JSON catches NdjsonException",
       "evidence_path": "tests/net/ndjson/NdjsonR134ExceptionAndMaxSizeTests.cs",
       "test_count": 10,
       "capability_ref": "commercial_net_products.NDJSON.dotnet_status.exception_and_max_size"
@@ -21017,7 +21017,7 @@
       "format": "TSV",
       "r_number": "R129",
       "sprint": "ff-sprint-s129-dotnet-deepening-20260627",
-      "description": "TsvException hierarchy and TsvWriter field validation \u2014 10 tests: Exception subclass, message/inner, WriteRows tab/LF/CR rejection, null field as empty, valid rows, dogfood catch TsvException",
+      "description": "TsvException hierarchy and TsvWriter field validation — 10 tests: Exception subclass, message/inner, WriteRows tab/LF/CR rejection, null field as empty, valid rows, dogfood catch TsvException",
       "evidence_path": "tests/net/tsv/TsvR129ExceptionAndWriterValidationTests.cs",
       "test_count": 10,
       "capability_ref": "commercial_net_products.TSV.dotnet_status.exception_and_writer_validation"
@@ -21027,7 +21027,7 @@
       "format": "CSV",
       "r_number": "R131",
       "sprint": "ff-sprint-s130-dotnet-deepening-20260627",
-      "description": "CsvWriter.EscapeField RFC 4180 quoting and CsvWriterException hierarchy \u2014 10 tests: null/empty/plain fields, comma/double-quote/LF/CR quoting, exception subclass/message/inner, dogfood WriteRows roundtrip",
+      "description": "CsvWriter.EscapeField RFC 4180 quoting and CsvWriterException hierarchy — 10 tests: null/empty/plain fields, comma/double-quote/LF/CR quoting, exception subclass/message/inner, dogfood WriteRows roundtrip",
       "evidence_path": "tests/net/csv/CsvR131EscapeFieldAndWriterExceptionTests.cs",
       "test_count": 10,
       "capability_ref": "commercial_net_products.CSV.dotnet_status.escape_field_and_writer_exception"
@@ -21037,7 +21037,7 @@
       "format": "FODT",
       "r_number": "R146",
       "sprint": "ff-sprint-s130-dotnet-deepening-20260627",
-      "description": "FodtDocument.MaxFileSizeBytes init-only property and Body/CharCount/WordCount on empty doc \u2014 10 tests: default 50 MB, IsPositive, Load tiny guard rejects, Body non-null, Body.Paragraphs empty, CharCount=0, WordCount=0, dogfood AppendParagraph",
+      "description": "FodtDocument.MaxFileSizeBytes init-only property and Body/CharCount/WordCount on empty doc — 10 tests: default 50 MB, IsPositive, Load tiny guard rejects, Body non-null, Body.Paragraphs empty, CharCount=0, WordCount=0, dogfood AppendParagraph",
       "evidence_path": "tests/net/fodt/FodtR146MaxFileSizeBytesAndBodyTests.cs",
       "test_count": 10,
       "capability_ref": "commercial_net_products.FODT.dotnet_status.max_file_size_and_body"
@@ -21047,7 +21047,7 @@
       "format": "ZST",
       "r_number": "R131",
       "sprint": "ff-sprint-s130-dotnet-deepening-20260627",
-      "description": "ZstDocument.SizeLabel computed property and document properties \u2014 10 tests: empty/tiny/small/medium/large size labels, FileSizeKB, HasMultipleFrames false/true, IsValid true/false, dogfood Compress->ParseStream->SizeLabel pipeline",
+      "description": "ZstDocument.SizeLabel computed property and document properties — 10 tests: empty/tiny/small/medium/large size labels, FileSizeKB, HasMultipleFrames false/true, IsValid true/false, dogfood Compress->ParseStream->SizeLabel pipeline",
       "evidence_path": "tests/net/zst/ZstR131SizeLabelAndDocumentPropertiesTests.cs",
       "test_count": 10,
       "capability_ref": "commercial_net_products.ZST.dotnet_status.size_label_and_document_properties"
@@ -21057,7 +21057,7 @@
       "format": "FODS",
       "r_number": "R144",
       "sprint": "ff-sprint-s131-dotnet-deepening-20260627",
-      "description": "FodsHtmlExporter.HtmlEscape and FodsHtmlExportResult defaults \u2014 10 tests: HtmlEscape null/plain/ampersand/less-than/greater-than, result defaults, FodsHtmlExportException hierarchy, dogfood chain of special chars",
+      "description": "FodsHtmlExporter.HtmlEscape and FodsHtmlExportResult defaults — 10 tests: HtmlEscape null/plain/ampersand/less-than/greater-than, result defaults, FodsHtmlExportException hierarchy, dogfood chain of special chars",
       "evidence_path": "tests/net/fods/FodsR144HtmlExportUtilsTests.cs",
       "test_count": 10,
       "capability_ref": "commercial_net_products.FODS.dotnet_status.html_export_utils"
@@ -21067,7 +21067,7 @@
       "format": "NDJSON",
       "r_number": "R135",
       "sprint": "ff-sprint-s131-dotnet-deepening-20260627",
-      "description": "NdjsonDocument.Filter predicate \u2014 10 tests: all-match/none-match, selective by field value, new document result, empty doc, order preservation, GetAllKeys, dogfood chained filter pipeline",
+      "description": "NdjsonDocument.Filter predicate — 10 tests: all-match/none-match, selective by field value, new document result, empty doc, order preservation, GetAllKeys, dogfood chained filter pipeline",
       "evidence_path": "tests/net/ndjson/NdjsonR135FilterPredicateTests.cs",
       "test_count": 10,
       "capability_ref": "commercial_net_products.NDJSON.dotnet_status.filter_predicate"
@@ -21077,7 +21077,7 @@
       "format": "TSV",
       "r_number": "R130",
       "sprint": "ff-sprint-s131-dotnet-deepening-20260627",
-      "description": "TsvDocument.IsEmpty and GetCellValue \u2014 10 tests: IsEmpty true/false/after-clear, GetCellValue valid/out-of-range-row/out-of-range-col/negative, matches direct row access, dogfood Load->Filter->IsEmpty pipeline",
+      "description": "TsvDocument.IsEmpty and GetCellValue — 10 tests: IsEmpty true/false/after-clear, GetCellValue valid/out-of-range-row/out-of-range-col/negative, matches direct row access, dogfood Load->Filter->IsEmpty pipeline",
       "evidence_path": "tests/net/tsv/TsvR130IsEmptyAndGetCellValueTests.cs",
       "test_count": 10,
       "capability_ref": "commercial_net_products.TSV.dotnet_status.is_empty_and_get_cell_value"
@@ -21087,7 +21087,7 @@
       "format": "FODS",
       "r_number": "R145",
       "sprint": "ff-sprint-s132-dotnet-deepening-20260627",
-      "description": "FodsSheetInfo, FodsParseResult.Sheets, FodsParser.MaxFileSizeBytes, FodsParseException \u2014 10 tests: SheetInfo defaults/assignment, ParseResult collections default empty, Parser MaxFileSizeBytes=50MB, ParseException hierarchy, dogfood composition pipeline",
+      "description": "FodsSheetInfo, FodsParseResult.Sheets, FodsParser.MaxFileSizeBytes, FodsParseException — 10 tests: SheetInfo defaults/assignment, ParseResult collections default empty, Parser MaxFileSizeBytes=50MB, ParseException hierarchy, dogfood composition pipeline",
       "evidence_path": "tests/net/fods/FodsR145ParseResultAndSheetInfoTests.cs",
       "test_count": 10,
       "capability_ref": "commercial_net_products.FODS.dotnet_status.parse_result_and_sheet_info"
@@ -21097,7 +21097,7 @@
       "format": "FODT",
       "r_number": "R147",
       "sprint": "ff-sprint-s132-dotnet-deepening-20260627",
-      "description": "FodtDocument.Tables property and FodtTable model \u2014 10 tests: CreateEmpty Tables empty, Tables count 0, Body.Tables empty, GetCellText OOB null, RowCount non-negative, Rows non-null, Name non-null, Tables==Body.Tables, dogfood CreateEmpty\u2192Tables accessible",
+      "description": "FodtDocument.Tables property and FodtTable model — 10 tests: CreateEmpty Tables empty, Tables count 0, Body.Tables empty, GetCellText OOB null, RowCount non-negative, Rows non-null, Name non-null, Tables==Body.Tables, dogfood CreateEmpty→Tables accessible",
       "evidence_path": "tests/net/fodt/FodtR147TablesPropertyTests.cs",
       "test_count": 10,
       "capability_ref": "commercial_net_products.FODT.dotnet_status.tables_property"
@@ -21107,7 +21107,7 @@
       "format": "ZST",
       "r_number": "R132",
       "sprint": "ff-sprint-s132-dotnet-deepening-20260627",
-      "description": "ZstParser.ParseStream and constants (DefaultMaxFileSizeBytes=256MB, ZstdMagic) \u2014 10 tests: DefaultMaxFileSizeBytes, ZstdMagic 4 bytes/first/last byte, ParseStream null guard, valid stream returns non-null/MagicValid/IsValid, dogfood compress\u2192ParseStream pipeline",
+      "description": "ZstParser.ParseStream and constants (DefaultMaxFileSizeBytes=256MB, ZstdMagic) — 10 tests: DefaultMaxFileSizeBytes, ZstdMagic 4 bytes/first/last byte, ParseStream null guard, valid stream returns non-null/MagicValid/IsValid, dogfood compress→ParseStream pipeline",
       "evidence_path": "tests/net/zst/ZstR132ParseStreamAndConstantsTests.cs",
       "test_count": 10,
       "capability_ref": "commercial_net_products.ZST.dotnet_status.parse_stream_and_constants"
@@ -21117,7 +21117,7 @@
       "format": "FODT",
       "r_number": "R148",
       "sprint": "ff-sprint-s133-dotnet-deepening-20260627",
-      "description": "FodtDocument.GetTextBetweenParagraphs(startIndex, endIndex) \u2014 10 tests: single range=first para, two paras newline-joined, full range all three, middle slice, last para, invalid start>=end=null, negative start=null, end>count=null, empty doc null, dogfood AppendThree->GetTextBetweenAll",
+      "description": "FodtDocument.GetTextBetweenParagraphs(startIndex, endIndex) — 10 tests: single range=first para, two paras newline-joined, full range all three, middle slice, last para, invalid start>=end=null, negative start=null, end>count=null, empty doc null, dogfood AppendThree->GetTextBetweenAll",
       "evidence_path": "tests/net/fodt/FodtR148GetTextBetweenParagraphsTests.cs",
       "test_count": 10,
       "capability_ref": "commercial_net_products.FODT.dotnet_status.get_text_between_paragraphs"
@@ -21127,7 +21127,7 @@
       "format": "CSV",
       "r_number": "R132",
       "sprint": "ff-sprint-s133-dotnet-deepening-20260627",
-      "description": "CsvDocument.IsEmpty and RemoveRow \u2014 10 tests: IsEmpty empty/data/after-remove-all, RemoveRow reduces count, first/last/middle row removal, single row remove=empty, dogfood Load->RemoveRow->ToCsv verifies row absent",
+      "description": "CsvDocument.IsEmpty and RemoveRow — 10 tests: IsEmpty empty/data/after-remove-all, RemoveRow reduces count, first/last/middle row removal, single row remove=empty, dogfood Load->RemoveRow->ToCsv verifies row absent",
       "evidence_path": "tests/net/csv/CsvR132IsEmptyAndRemoveRowTests.cs",
       "test_count": 10,
       "capability_ref": "commercial_net_products.CSV.dotnet_status.is_empty_and_remove_row"
@@ -21137,7 +21137,7 @@
       "format": "NDJSON",
       "r_number": "R136",
       "sprint": "ff-sprint-s133-dotnet-deepening-20260627",
-      "description": "NdjsonDocument.ToNdjson() serialization \u2014 10 tests: empty doc=empty string, single record=one line, three records=three lines, each line valid JSON, round-trip same count, field values preserved, LF separator, dogfood Filter->ToNdjson->Load roundtrip",
+      "description": "NdjsonDocument.ToNdjson() serialization — 10 tests: empty doc=empty string, single record=one line, three records=three lines, each line valid JSON, round-trip same count, field values preserved, LF separator, dogfood Filter->ToNdjson->Load roundtrip",
       "evidence_path": "tests/net/ndjson/NdjsonR136ToNdjsonSerializationTests.cs",
       "test_count": 10,
       "capability_ref": "commercial_net_products.NDJSON.dotnet_status.to_ndjson_serialization"
@@ -21147,7 +21147,7 @@
       "format": "NETPBM",
       "r_number": "R139",
       "sprint": "ff-sprint-s134-dotnet-deepening-20260627",
-      "description": "NetpbmParser constants and ParseStream \u2014 10 tests: DefaultMaxFileSizeBytes=64MB, DefaultMaxDimension=65536, DefaultMaxPixels=1B, all positive, size>dimension, ParseStream null throws, valid PPM stream returns non-null/Width/Height, Format=PPM, dogfood dimensions within constants",
+      "description": "NetpbmParser constants and ParseStream — 10 tests: DefaultMaxFileSizeBytes=64MB, DefaultMaxDimension=65536, DefaultMaxPixels=1B, all positive, size>dimension, ParseStream null throws, valid PPM stream returns non-null/Width/Height, Format=PPM, dogfood dimensions within constants",
       "evidence_path": "tests/net/netpbm/NetpbmR139ParserConstantsAndParseStreamTests.cs",
       "test_count": 10,
       "capability_ref": "commercial_net_products.NETPBM.dotnet_status.parser_constants_and_parse_stream"
@@ -21157,7 +21157,7 @@
       "format": "FODT",
       "r_number": "R149",
       "sprint": "ff-sprint-s134-dotnet-deepening-20260627",
-      "description": "FodtDocument.ExportToPlainTextFile dedicated tests \u2014 10 tests: null/empty/whitespace path throws ArgumentException, file created, non-empty content, equals GetPlainText(), overwrites existing, dogfood AppendParagraphs\u00d73->ExportToPlainTextFile->ReadAllText",
+      "description": "FodtDocument.ExportToPlainTextFile dedicated tests — 10 tests: null/empty/whitespace path throws ArgumentException, file created, non-empty content, equals GetPlainText(), overwrites existing, dogfood AppendParagraphs×3->ExportToPlainTextFile->ReadAllText",
       "evidence_path": "tests/net/fodt/FodtR149ExportToPlainTextFileTests.cs",
       "test_count": 10,
       "capability_ref": "commercial_net_products.FODT.dotnet_status.export_to_plain_text_file"
@@ -21167,7 +21167,7 @@
       "format": "TSV",
       "r_number": "R131",
       "sprint": "ff-sprint-s134-dotnet-deepening-20260627",
-      "description": "TsvDocument.HasHeaders and ColumnCount \u2014 10 tests: HasHeaders true/false/empty, ColumnCount with/without headers/empty/single-col, Headers populated/null, dogfood Load->HasHeaders->ColumnCount->row access pipeline",
+      "description": "TsvDocument.HasHeaders and ColumnCount — 10 tests: HasHeaders true/false/empty, ColumnCount with/without headers/empty/single-col, Headers populated/null, dogfood Load->HasHeaders->ColumnCount->row access pipeline",
       "evidence_path": "tests/net/tsv/TsvR131HasHeadersAndColumnCountTests.cs",
       "test_count": 10,
       "capability_ref": "commercial_net_products.TSV.dotnet_status.has_headers_and_column_count"
@@ -21372,7 +21372,7 @@
       "capability_refs": [
         "commercial_net_products.FODS.dotnet_status.merge_cells_dedicated"
       ],
-      "change_summary": "FodsR150MergeCellsDedicatedTests.cs: 10 tests for FodsDocument.MergeCells \u2014 null/empty/whitespace sheetName throws ArgumentException; rowSpan/colSpan 0 and negative throw ArgumentOutOfRangeException; nonexistent sheet throws InvalidOperationException; dogfood SetCellValue->MergeCells->GetCellValue pipeline.",
+      "change_summary": "FodsR150MergeCellsDedicatedTests.cs: 10 tests for FodsDocument.MergeCells — null/empty/whitespace sheetName throws ArgumentException; rowSpan/colSpan 0 and negative throw ArgumentOutOfRangeException; nonexistent sheet throws InvalidOperationException; dogfood SetCellValue->MergeCells->GetCellValue pipeline.",
       "test_files": [
         "tests/net/fods/FodsR150MergeCellsDedicatedTests.cs"
       ],
@@ -21414,7 +21414,7 @@
       "capability_refs": [
         "commercial_net_products.NETPBM.dotnet_status.draw_line"
       ],
-      "change_summary": "NetpbmR142DrawLineTests.cs: 10 tests for NetpbmImage.DrawLine \u2014 PPM throws InvalidOperationException; horizontal/vertical line sets start/end pixels; diagonal sets start; single-point; out-of-bounds does not throw; dogfood DrawLine->GetPixel->DrawRectangle pipeline.",
+      "change_summary": "NetpbmR142DrawLineTests.cs: 10 tests for NetpbmImage.DrawLine — PPM throws InvalidOperationException; horizontal/vertical line sets start/end pixels; diagonal sets start; single-point; out-of-bounds does not throw; dogfood DrawLine->GetPixel->DrawRectangle pipeline.",
       "test_files": [
         "tests/net/netpbm/NetpbmR142DrawLineTests.cs"
       ],
@@ -21428,7 +21428,7 @@
       "capability_refs": [
         "commercial_net_products.FODS.dotnet_status.ods_export_result_properties"
       ],
-      "change_summary": "FodsR151OdsExportResultPropertiesTests.cs: 10 tests for FodsOdsExportResult properties \u2014 OutputPath/SheetCount/TotalRowsExported/TotalCellsExported defaults; object initializer; dogfood CreateNew->SetCellValue->ExportToOds verifies result properties non-zero.",
+      "change_summary": "FodsR151OdsExportResultPropertiesTests.cs: 10 tests for FodsOdsExportResult properties — OutputPath/SheetCount/TotalRowsExported/TotalCellsExported defaults; object initializer; dogfood CreateNew->SetCellValue->ExportToOds verifies result properties non-zero.",
       "test_files": [
         "tests/net/fods/FodsR151OdsExportResultPropertiesTests.cs"
       ],
@@ -21470,7 +21470,7 @@
       "capability_refs": [
         "commercial_net_products.ZST.dotnet_status.exception_hierarchy"
       ],
-      "change_summary": "ZstR137ExceptionHierarchyTests.cs: 10 tests for ZST exception hierarchy \u2014 ZstWriteException, ZstFileSizeException, ZstFileNotFoundException, ZstInvalidMagicException all subclass ZstException; message stored; inner exception stored; dogfood Parse nonexistent file throws ZstFileNotFoundException.",
+      "change_summary": "ZstR137ExceptionHierarchyTests.cs: 10 tests for ZST exception hierarchy — ZstWriteException, ZstFileSizeException, ZstFileNotFoundException, ZstInvalidMagicException all subclass ZstException; message stored; inner exception stored; dogfood Parse nonexistent file throws ZstFileNotFoundException.",
       "test_files": [
         "tests/net/zst/ZstR137ExceptionHierarchyTests.cs"
       ],
@@ -21498,7 +21498,7 @@
       "capability_refs": [
         "commercial_net_products.FODS.dotnet_status.pdf_export_result_properties"
       ],
-      "change_summary": "FodsR152PdfExportResultPropertiesTests.cs: 10 tests for FodsPdfExportResult properties \u2014 OutputPath/PageCount/SheetCount/TotalRowsWritten defaults; object initializer; dogfood CreateNew->SetCellValue->ExportToPdf verifies result properties.",
+      "change_summary": "FodsR152PdfExportResultPropertiesTests.cs: 10 tests for FodsPdfExportResult properties — OutputPath/PageCount/SheetCount/TotalRowsWritten defaults; object initializer; dogfood CreateNew->SetCellValue->ExportToPdf verifies result properties.",
       "test_files": [
         "tests/net/fods/FodsR152PdfExportResultPropertiesTests.cs"
       ],
@@ -21512,7 +21512,7 @@
       "capability_refs": [
         "commercial_net_products.TSV.dotnet_status.write_rows_dedicated"
       ],
-      "change_summary": "TsvR133WriteRowsDedicatedTests.cs: 10 tests for TsvWriter.WriteRows \u2014 null throws, empty=empty string, single row/column, tab-separated, multiple rows each on separate line, null=empty string, output contains tabs, 2 rows=2 newlines, WriteRowsToFile creates file, dogfood WriteRows->Load round-trip.",
+      "change_summary": "TsvR133WriteRowsDedicatedTests.cs: 10 tests for TsvWriter.WriteRows — null throws, empty=empty string, single row/column, tab-separated, multiple rows each on separate line, null=empty string, output contains tabs, 2 rows=2 newlines, WriteRowsToFile creates file, dogfood WriteRows->Load round-trip.",
       "test_files": [
         "tests/net/tsv/TsvR133WriteRowsDedicatedTests.cs"
       ],
@@ -21555,7 +21555,7 @@
       "capability_refs": [
         "commercial_net_products.TSV.dotnet_status.read_rows_from_file_dedicated"
       ],
-      "change_summary": "TsvR134ReadRowsFromFileDedicatedTests.cs: 10 tests for TsvReader.ReadRowsFromFile \u2014 null/empty/whitespace path throws TsvException, nonexistent path throws, valid file returns rows, single row splits by tab, empty trailing line skipped, multiple rows each correct, dogfood WriteRows->ReadRowsFromFile round-trip, dogfood ReadRowsFromFile->TsvDocument.LoadFile row counts match.",
+      "change_summary": "TsvR134ReadRowsFromFileDedicatedTests.cs: 10 tests for TsvReader.ReadRowsFromFile — null/empty/whitespace path throws TsvException, nonexistent path throws, valid file returns rows, single row splits by tab, empty trailing line skipped, multiple rows each correct, dogfood WriteRows->ReadRowsFromFile round-trip, dogfood ReadRowsFromFile->TsvDocument.LoadFile row counts match.",
       "test_files": [
         "tests/net/tsv/TsvR134ReadRowsFromFileDedicatedTests.cs"
       ],
@@ -21597,7 +21597,7 @@
       "capability_refs": [
         "commercial_net_products.CSV.dotnet_status.filter_dedicated"
       ],
-      "change_summary": "CsvR136FilterDedicatedTests.cs: 10 dedicated tests for CsvDocument.Filter \u2014 null predicate throws, all rows match, no rows match, filter by first/third column, original unchanged, headers preserved, numeric score filter, dogfood Filter->ToCsv, dogfood chained filters.",
+      "change_summary": "CsvR136FilterDedicatedTests.cs: 10 dedicated tests for CsvDocument.Filter — null predicate throws, all rows match, no rows match, filter by first/third column, original unchanged, headers preserved, numeric score filter, dogfood Filter->ToCsv, dogfood chained filters.",
       "test_files": [
         "tests/net/csv/CsvR136FilterDedicatedTests.cs"
       ],
@@ -21611,7 +21611,7 @@
       "capability_refs": [
         "commercial_net_products.ZST.dotnet_status.size_label_computed_properties"
       ],
-      "change_summary": "ZstR138SizeLabelAndComputedPropertiesTests.cs: 10 tests for ZstDocument computed properties \u2014 SizeLabel default=empty, FileSizeKB=0, HasMultipleFrames=false, IsValid=false, ContentTypeHint=unknown, IsEmptyContent=true; SizeLabel tiny/small boundary; dogfood compress->ParseStream->SizeLabel not empty; dogfood compress->ParseStream->IsValid=true.",
+      "change_summary": "ZstR138SizeLabelAndComputedPropertiesTests.cs: 10 tests for ZstDocument computed properties — SizeLabel default=empty, FileSizeKB=0, HasMultipleFrames=false, IsValid=false, ContentTypeHint=unknown, IsEmptyContent=true; SizeLabel tiny/small boundary; dogfood compress->ParseStream->SizeLabel not empty; dogfood compress->ParseStream->IsValid=true.",
       "test_files": [
         "tests/net/zst/ZstR138SizeLabelAndComputedPropertiesTests.cs"
       ],
@@ -21639,7 +21639,7 @@
       "capability_refs": [
         "commercial_net_products.FODS.dotnet_status.get_row_values_dedicated"
       ],
-      "change_summary": "FodsR155GetRowValuesDedicatedTests.cs: 10 tests for FodsDocument.GetRowValues \u2014 empty doc throws, negative row throws, nonexistent sheet throws, single-cell row, multi-column row, after SetCellValue update, named sheet, dogfood CreateNew->SetCellValue->GetRowValues, dogfood multi-row per-row correct.",
+      "change_summary": "FodsR155GetRowValuesDedicatedTests.cs: 10 tests for FodsDocument.GetRowValues — empty doc throws, negative row throws, nonexistent sheet throws, single-cell row, multi-column row, after SetCellValue update, named sheet, dogfood CreateNew->SetCellValue->GetRowValues, dogfood multi-row per-row correct.",
       "test_files": [
         "tests/net/fods/FodsR155GetRowValuesDedicatedTests.cs"
       ],
@@ -21653,7 +21653,7 @@
       "capability_refs": [
         "commercial_net_products.TSV.dotnet_status.get_column_values_dedicated"
       ],
-      "change_summary": "TsvR135GetColumnValuesDedicatedTests.cs: 10 dedicated tests for TsvDocument.GetColumnValues \u2014 negative index throws, first/second column values, empty doc=empty list, count matches rows, single-row, short rows return null, index beyond all rows=all nulls, dogfood Load->GetColumnValues, dogfood with headers data rows only.",
+      "change_summary": "TsvR135GetColumnValuesDedicatedTests.cs: 10 dedicated tests for TsvDocument.GetColumnValues — negative index throws, first/second column values, empty doc=empty list, count matches rows, single-row, short rows return null, index beyond all rows=all nulls, dogfood Load->GetColumnValues, dogfood with headers data rows only.",
       "test_files": [
         "tests/net/tsv/TsvR135GetColumnValuesDedicatedTests.cs"
       ],
@@ -21667,7 +21667,7 @@
       "capability_refs": [
         "commercial_net_products.FODT.dotnet_status.export_to_outline_json"
       ],
-      "change_summary": "FodtR158ExportToOutlineJsonTests.cs: 10 tests for FodtDocument.ExportToOutlineJson \u2014 empty doc=[], single paragraph index=0/level=0/text match, single heading level>0, multiple entries count/index sequential, valid parseable JSON, dogfood all-have-text-key, dogfood heading level vs paragraph level.",
+      "change_summary": "FodtR158ExportToOutlineJsonTests.cs: 10 tests for FodtDocument.ExportToOutlineJson — empty doc=[], single paragraph index=0/level=0/text match, single heading level>0, multiple entries count/index sequential, valid parseable JSON, dogfood all-have-text-key, dogfood heading level vs paragraph level.",
       "test_files": [
         "tests/net/fodt/FodtR158ExportToOutlineJsonTests.cs"
       ],
@@ -21681,7 +21681,7 @@
       "capability_refs": [
         "commercial_net_products.NDJSON.dotnet_status.record_fields_trygetvalue"
       ],
-      "change_summary": "NdjsonR142RecordFieldsAndTryGetValueTests.cs: 10 dedicated tests for NdjsonRecord.Fields/Keys/TryGetValue/RawElement \u2014 non-object returns empty/false; object fields/keys correct; TryGetValue present=true/absent=false/value correct; RawElement kind; dogfood TypedRecords->Fields->Keys pipeline; dogfood TryGetValue chain.",
+      "change_summary": "NdjsonR142RecordFieldsAndTryGetValueTests.cs: 10 dedicated tests for NdjsonRecord.Fields/Keys/TryGetValue/RawElement — non-object returns empty/false; object fields/keys correct; TryGetValue present=true/absent=false/value correct; RawElement kind; dogfood TypedRecords->Fields->Keys pipeline; dogfood TryGetValue chain.",
       "test_files": [
         "tests/net/ndjson/NdjsonR142RecordFieldsAndTryGetValueTests.cs"
       ],
@@ -21695,7 +21695,7 @@
       "capability_refs": [
         "commercial_net_products.CSV.dotnet_status.get_column_dedicated"
       ],
-      "change_summary": "CsvR137GetColumnDedicatedTests.cs: 10 dedicated tests for CsvDocument.GetColumn(int) and GetColumn(string) \u2014 negative/no-headers/missing-header guards; first/second col values; count matches rows; original unchanged; by-name values; dogfood Load->GetColumn; dogfood int and string return same values.",
+      "change_summary": "CsvR137GetColumnDedicatedTests.cs: 10 dedicated tests for CsvDocument.GetColumn(int) and GetColumn(string) — negative/no-headers/missing-header guards; first/second col values; count matches rows; original unchanged; by-name values; dogfood Load->GetColumn; dogfood int and string return same values.",
       "test_files": [
         "tests/net/csv/CsvR137GetColumnDedicatedTests.cs"
       ],
@@ -21709,7 +21709,7 @@
       "capability_refs": [
         "commercial_net_products.NETPBM.dotnet_status.threshold"
       ],
-      "change_summary": "NetpbmR145ThresholdTests.cs: 10 tests for NetpbmImage.Threshold \u2014 PBM_P1/PBM_P4 input throws, negative/above-MaxValue threshold throws; output format=PBM_P1, MaxValue=1, dimensions match; pixel above threshold=1, below=0; original unchanged; dogfood Create->SetPixel->Threshold->GetPixel pipeline.",
+      "change_summary": "NetpbmR145ThresholdTests.cs: 10 tests for NetpbmImage.Threshold — PBM_P1/PBM_P4 input throws, negative/above-MaxValue threshold throws; output format=PBM_P1, MaxValue=1, dimensions match; pixel above threshold=1, below=0; original unchanged; dogfood Create->SetPixel->Threshold->GetPixel pipeline.",
       "test_files": [
         "tests/net/netpbm/NetpbmR145ThresholdTests.cs"
       ],
@@ -21723,7 +21723,7 @@
       "capability_refs": [
         "commercial_net_products.FODS.dotnet_status.get_cell_count_dedicated"
       ],
-      "change_summary": "FodsR156GetCellCountDedicatedTests.cs: 10 tests for FodsDocument.GetCellCount \u2014 empty doc=0, empty sheet=0, single cell=1, 3 cells in row=3, 2x2 grid=4, increases after SetCellValue, multi-row sum, idempotent; dogfood CreateNew->AddSheet->SetCellValue->GetCellCount; dogfood multi-sheet counts first sheet.",
+      "change_summary": "FodsR156GetCellCountDedicatedTests.cs: 10 tests for FodsDocument.GetCellCount — empty doc=0, empty sheet=0, single cell=1, 3 cells in row=3, 2x2 grid=4, increases after SetCellValue, multi-row sum, idempotent; dogfood CreateNew->AddSheet->SetCellValue->GetCellCount; dogfood multi-sheet counts first sheet.",
       "test_files": [
         "tests/net/fods/FodsR156GetCellCountDedicatedTests.cs"
       ],
@@ -21737,7 +21737,7 @@
       "capability_refs": [
         "commercial_net_products.ZST.dotnet_status.document_frame_properties"
       ],
-      "change_summary": "ZstR139DocumentFramePropertiesTests.cs: 10 tests for ZstDocument frame properties \u2014 BytesPerFrame/IsMinimalFrame/SizeExceeds100K/IsHighlyCompressed/OverheadBytes/FrameHeaderDescriptor defaults; init boundary tests; dogfood compress-small->ParseStream->IsMinimalFrame=true; dogfood compress-large->ParseStream->FrameCount>0.",
+      "change_summary": "ZstR139DocumentFramePropertiesTests.cs: 10 tests for ZstDocument frame properties — BytesPerFrame/IsMinimalFrame/SizeExceeds100K/IsHighlyCompressed/OverheadBytes/FrameHeaderDescriptor defaults; init boundary tests; dogfood compress-small->ParseStream->IsMinimalFrame=true; dogfood compress-large->ParseStream->FrameCount>0.",
       "test_files": [
         "tests/net/zst/ZstR139DocumentFramePropertiesTests.cs"
       ],
@@ -21751,7 +21751,7 @@
       "capability_refs": [
         "commercial_net_products.NETPBM.dotnet_status.crop"
       ],
-      "change_summary": "NetpbmR146CropTests.cs: 10 tests for NetpbmImage.Crop \u2014 negative top/left/zero height/width/region exceeds bounds all throw; output dimensions match crop size; format preserved; original unchanged; top-left pixel correct; dogfood Create->SetPixel->Crop->GetPixel; dogfood crop full image same dims.",
+      "change_summary": "NetpbmR146CropTests.cs: 10 tests for NetpbmImage.Crop — negative top/left/zero height/width/region exceeds bounds all throw; output dimensions match crop size; format preserved; original unchanged; top-left pixel correct; dogfood Create->SetPixel->Crop->GetPixel; dogfood crop full image same dims.",
       "test_files": [
         "tests/net/netpbm/NetpbmR146CropTests.cs"
       ],
@@ -21765,7 +21765,7 @@
       "capability_refs": [
         "commercial_net_products.FODS.dotnet_status.get_column_count_dedicated"
       ],
-      "change_summary": "FodsR157GetColumnCountDedicatedTests.cs: 10 tests for FodsDocument.GetColumnCount \u2014 empty doc=0, empty sheet=0, nonexistent named sheet throws; single cell=1, 3 cols=3; max-across-rows (wider row determines); idempotent; named sheet correct; dogfood CreateNew pipeline; dogfood named==first-sheet when single sheet.",
+      "change_summary": "FodsR157GetColumnCountDedicatedTests.cs: 10 tests for FodsDocument.GetColumnCount — empty doc=0, empty sheet=0, nonexistent named sheet throws; single cell=1, 3 cols=3; max-across-rows (wider row determines); idempotent; named sheet correct; dogfood CreateNew pipeline; dogfood named==first-sheet when single sheet.",
       "test_files": [
         "tests/net/fods/FodsR157GetColumnCountDedicatedTests.cs"
       ],
@@ -21779,7 +21779,7 @@
       "capability_refs": [
         "commercial_net_products.FODT.dotnet_status.search_text_dedicated"
       ],
-      "change_summary": "FodtR159SearchTextDedicatedTests.cs: 10 dedicated tests for FodtDocument.SearchText \u2014 null/empty query throws, empty doc=empty, not found=empty, single match/paragraph-index/position, multiple matches in same paragraph, case-insensitive, dogfood AppendParagraph->SearchText, dogfood multi-para correct index.",
+      "change_summary": "FodtR159SearchTextDedicatedTests.cs: 10 dedicated tests for FodtDocument.SearchText — null/empty query throws, empty doc=empty, not found=empty, single match/paragraph-index/position, multiple matches in same paragraph, case-insensitive, dogfood AppendParagraph->SearchText, dogfood multi-para correct index.",
       "test_files": [
         "tests/net/fodt/FodtR159SearchTextDedicatedTests.cs"
       ],
@@ -22492,7 +22492,7 @@
       "id": "PC-NETPBM-R156",
       "format": "NETPBM",
       "classification": "NET_TEST_DEEPENING",
-      "description": "NetpbmImage.Rotate90Cw dedicated tests \u2014 dims swap, pixel transform r,c\u2192c,H-1-r, format/original preserved, four-rotation restore, non-square dogfood",
+      "description": "NetpbmImage.Rotate90Cw dedicated tests — dims swap, pixel transform r,c→c,H-1-r, format/original preserved, four-rotation restore, non-square dogfood",
       "evidence_path": "tests/net/netpbm/NetpbmR156Rotate90CwTests.cs",
       "sprint": "ff-sprint-s160-dotnet-deepening-20260628"
     },
@@ -22500,7 +22500,7 @@
       "id": "PC-FODS-R167",
       "format": "FODS",
       "classification": "NET_TEST_DEEPENING",
-      "description": "FodsDocument.MergeCells dedicated tests \u2014 null/whitespace/nonexistent guards, rowSpan/colSpan<1 guards, out-of-bounds guard, valid 1x1 identity, dogfood pipelines",
+      "description": "FodsDocument.MergeCells dedicated tests — null/whitespace/nonexistent guards, rowSpan/colSpan<1 guards, out-of-bounds guard, valid 1x1 identity, dogfood pipelines",
       "evidence_path": "tests/net/fods/FodsR167MergeCellsDedicatedTests.cs",
       "sprint": "ff-sprint-s160-dotnet-deepening-20260628"
     },
@@ -22508,7 +22508,7 @@
       "id": "PC-FODT-R169",
       "format": "FODT",
       "classification": "NET_TEST_DEEPENING",
-      "description": "FodtDocument.RemoveHeading dedicated tests \u2014 index guards, non-heading throws InvalidOperationException, count decreases, removed not in GetHeadingTexts, shift, dogfood pipelines",
+      "description": "FodtDocument.RemoveHeading dedicated tests — index guards, non-heading throws InvalidOperationException, count decreases, removed not in GetHeadingTexts, shift, dogfood pipelines",
       "evidence_path": "tests/net/fodt/FodtR169RemoveHeadingDedicatedTests.cs",
       "sprint": "ff-sprint-s160-dotnet-deepening-20260628"
     },
@@ -22516,7 +22516,7 @@
       "id": "PC-NETPBM-R157",
       "format": "NETPBM",
       "classification": "NET_TEST_DEEPENING",
-      "description": "NetpbmImage.Rotate270Cw dedicated tests \u2014 dims swap, pixel transform (r,c)\u2192(W-1-c,r), format/original preserved, four-rotation restore, non-square dogfood",
+      "description": "NetpbmImage.Rotate270Cw dedicated tests — dims swap, pixel transform (r,c)→(W-1-c,r), format/original preserved, four-rotation restore, non-square dogfood",
       "evidence_path": "tests/net/netpbm/NetpbmR157Rotate270CwTests.cs",
       "sprint": "ff-sprint-s161-dotnet-deepening-20260628"
     },
@@ -22524,7 +22524,7 @@
       "id": "PC-FODS-R168",
       "format": "FODS",
       "classification": "NET_TEST_DEEPENING",
-      "description": "FodsDocument.GetSheetByIndex dedicated tests \u2014 null for empty/negative/at-count/beyond, valid index returns sheet, name matches, SheetCount match, dogfood pipeline",
+      "description": "FodsDocument.GetSheetByIndex dedicated tests — null for empty/negative/at-count/beyond, valid index returns sheet, name matches, SheetCount match, dogfood pipeline",
       "evidence_path": "tests/net/fods/FodsR168GetSheetByIndexDedicatedTests.cs",
       "sprint": "ff-sprint-s161-dotnet-deepening-20260628"
     },
@@ -22532,7 +22532,7 @@
       "id": "PC-FODT-R170",
       "format": "FODT",
       "classification": "NET_TEST_DEEPENING",
-      "description": "FodtDocument.InsertHeading dedicated tests \u2014 level 0/7 guard, negative/beyond index guard, level 1/6 valid, count increases, appears in GetHeadingTexts, insert at 0, dogfood pipelines",
+      "description": "FodtDocument.InsertHeading dedicated tests — level 0/7 guard, negative/beyond index guard, level 1/6 valid, count increases, appears in GetHeadingTexts, insert at 0, dogfood pipelines",
       "evidence_path": "tests/net/fodt/FodtR170InsertHeadingDedicatedTests.cs",
       "sprint": "ff-sprint-s161-dotnet-deepening-20260628"
     },
@@ -22540,7 +22540,7 @@
       "id": "PC-NETPBM-R158",
       "format": "NETPBM",
       "classification": "NET_TEST_DEEPENING",
-      "description": "NetpbmImage.Rotate180 dedicated tests \u2014 dims unchanged, pixel reversal, top-left to bottom-right, double-rotate identity, format/original preserved, dogfood pipelines",
+      "description": "NetpbmImage.Rotate180 dedicated tests — dims unchanged, pixel reversal, top-left to bottom-right, double-rotate identity, format/original preserved, dogfood pipelines",
       "evidence_path": "tests/net/netpbm/NetpbmR158Rotate180Tests.cs",
       "sprint": "ff-sprint-s162-dotnet-deepening-20260628"
     },
@@ -22548,7 +22548,7 @@
       "id": "PC-FODS-R169",
       "format": "FODS",
       "classification": "NET_TEST_DEEPENING",
-      "description": "FodsDocument.GetSheetStats dedicated tests \u2014 null/whitespace guard, nonexistent returns zeros, RowCount/NonEmptyCellCount/CellCount/ColCount correct, dogfood pipelines",
+      "description": "FodsDocument.GetSheetStats dedicated tests — null/whitespace guard, nonexistent returns zeros, RowCount/NonEmptyCellCount/CellCount/ColCount correct, dogfood pipelines",
       "evidence_path": "tests/net/fods/FodsR169GetSheetStatsDedicatedTests.cs",
       "sprint": "ff-sprint-s162-dotnet-deepening-20260628"
     },
@@ -22556,7 +22556,7 @@
       "id": "PC-FODT-R171",
       "format": "FODT",
       "classification": "NET_TEST_DEEPENING",
-      "description": "FodtDocument.GetParagraphTexts dedicated tests \u2014 empty, single, text match, multiple in order, heading included, mixed content, count match, IReadOnlyList, dogfood pipelines",
+      "description": "FodtDocument.GetParagraphTexts dedicated tests — empty, single, text match, multiple in order, heading included, mixed content, count match, IReadOnlyList, dogfood pipelines",
       "evidence_path": "tests/net/fodt/FodtR171GetParagraphTextsDedicatedTests.cs",
       "sprint": "ff-sprint-s162-dotnet-deepening-20260628"
     },
@@ -22564,7 +22564,7 @@
       "id": "PC-NETPBM-R159",
       "format": "NETPBM",
       "classification": "NET_TEST_DEEPENING",
-      "description": "NetpbmImage.Crop dedicated tests \u2014 negative top/left guards, zero dim guards, bounds-exceeded guards, output dims match cropHeight/cropWidth, format preserved, dogfood pixel extraction",
+      "description": "NetpbmImage.Crop dedicated tests — negative top/left guards, zero dim guards, bounds-exceeded guards, output dims match cropHeight/cropWidth, format preserved, dogfood pixel extraction",
       "evidence_path": "tests/net/netpbm/NetpbmR159CropTests.cs",
       "sprint": "ff-sprint-s163-dotnet-deepening-20260628"
     },
@@ -22572,7 +22572,7 @@
       "id": "PC-FODS-R170",
       "format": "FODS",
       "classification": "NET_TEST_DEEPENING",
-      "description": "FodsDocument.HasSheet dedicated tests \u2014 null/whitespace/nonexistent/empty returns false, existing returns true, after AddSheet/RemoveSheet, case-sensitive, dogfood pipelines",
+      "description": "FodsDocument.HasSheet dedicated tests — null/whitespace/nonexistent/empty returns false, existing returns true, after AddSheet/RemoveSheet, case-sensitive, dogfood pipelines",
       "evidence_path": "tests/net/fods/FodsR170HasSheetDedicatedTests.cs",
       "sprint": "ff-sprint-s163-dotnet-deepening-20260628"
     },
@@ -22580,7 +22580,7 @@
       "id": "PC-FODT-R172",
       "format": "FODT",
       "classification": "NET_TEST_DEEPENING",
-      "description": "FodtDocument.GetHeadingParagraphs dedicated tests \u2014 empty, paras-only empty, single heading, IsHeading=true, multiple in order, paras excluded, count match, IReadOnlyList, dogfood pipelines",
+      "description": "FodtDocument.GetHeadingParagraphs dedicated tests — empty, paras-only empty, single heading, IsHeading=true, multiple in order, paras excluded, count match, IReadOnlyList, dogfood pipelines",
       "evidence_path": "tests/net/fodt/FodtR172GetHeadingParagraphsDedicatedTests.cs",
       "sprint": "ff-sprint-s163-dotnet-deepening-20260628"
     },
@@ -22588,7 +22588,7 @@
       "id": "PC-NETPBM-R160",
       "format": "NETPBM",
       "classification": "NET_TEST_DEEPENING",
-      "description": "NetpbmImage.MergeHorizontal dedicated tests \u2014 null/height-mismatch/format-mismatch guards, output width=sum, height preserved, format preserved, originals unchanged, dogfood left/right pixels",
+      "description": "NetpbmImage.MergeHorizontal dedicated tests — null/height-mismatch/format-mismatch guards, output width=sum, height preserved, format preserved, originals unchanged, dogfood left/right pixels",
       "evidence_path": "tests/net/netpbm/NetpbmR160MergeHorizontalTests.cs",
       "sprint": "ff-sprint-s164-dotnet-deepening-20260628"
     },
@@ -22596,7 +22596,7 @@
       "id": "PC-FODS-R171",
       "format": "FODS",
       "classification": "NET_TEST_DEEPENING",
-      "description": "FodsDocument.GetNumericColumnValues dedicated tests \u2014 null/whitespace/nonexistent/negative guards, empty sheet returns empty, string cells skipped, col-beyond-row skipped, IReadOnlyList, dogfood pipeline",
+      "description": "FodsDocument.GetNumericColumnValues dedicated tests — null/whitespace/nonexistent/negative guards, empty sheet returns empty, string cells skipped, col-beyond-row skipped, IReadOnlyList, dogfood pipeline",
       "evidence_path": "tests/net/fods/FodsR171GetNumericColumnValuesDedicatedTests.cs",
       "sprint": "ff-sprint-s164-dotnet-deepening-20260628"
     },
@@ -22604,7 +22604,7 @@
       "id": "PC-FODT-R173",
       "format": "FODT",
       "classification": "NET_TEST_DEEPENING",
-      "description": "FodtDocument.SearchText dedicated tests \u2014 null/empty query guard, empty doc, no match, single match, paragraph index, position, multiple occurrences, multi-paragraph, case-insensitive dogfood",
+      "description": "FodtDocument.SearchText dedicated tests — null/empty query guard, empty doc, no match, single match, paragraph index, position, multiple occurrences, multi-paragraph, case-insensitive dogfood",
       "evidence_path": "tests/net/fodt/FodtR173SearchTextDedicatedTests.cs",
       "sprint": "ff-sprint-s164-dotnet-deepening-20260628"
     },
@@ -22612,7 +22612,7 @@
       "id": "PC-NETPBM-R161",
       "format": "NETPBM",
       "classification": "NET_TEST_DEEPENING",
-      "description": "NetpbmImage.MergeVertical dedicated tests \u2014 null/width-mismatch/format-mismatch guards, output height=sum, width preserved, format preserved, originals unchanged, dogfood top/bottom pixels",
+      "description": "NetpbmImage.MergeVertical dedicated tests — null/width-mismatch/format-mismatch guards, output height=sum, width preserved, format preserved, originals unchanged, dogfood top/bottom pixels",
       "evidence_path": "tests/net/netpbm/NetpbmR161MergeVerticalTests.cs",
       "sprint": "ff-sprint-s165-dotnet-deepening-20260628"
     },
@@ -22620,7 +22620,7 @@
       "id": "PC-FODS-R172",
       "format": "FODS",
       "classification": "NET_TEST_DEEPENING",
-      "description": "FodsDocument.ExportSheetToMarkdown dedicated tests \u2014 no-sheets throws, nonexistent throws, non-null/non-empty result, pipe chars, cell value in output, separator line, named matches unnamed, dogfood pipeline",
+      "description": "FodsDocument.ExportSheetToMarkdown dedicated tests — no-sheets throws, nonexistent throws, non-null/non-empty result, pipe chars, cell value in output, separator line, named matches unnamed, dogfood pipeline",
       "evidence_path": "tests/net/fods/FodsR172ExportSheetToMarkdownDedicatedTests.cs",
       "sprint": "ff-sprint-s165-dotnet-deepening-20260628"
     },
@@ -22628,7 +22628,7 @@
       "id": "PC-FODT-R174",
       "format": "FODT",
       "classification": "NET_TEST_DEEPENING",
-      "description": "FodtDocument.ReplaceText dedicated tests \u2014 null/empty oldText guard, null newText guard, empty doc returns 0, no-match returns 0, single/multiple replacements, multi-paragraph, dogfood pipeline, case-insensitive",
+      "description": "FodtDocument.ReplaceText dedicated tests — null/empty oldText guard, null newText guard, empty doc returns 0, no-match returns 0, single/multiple replacements, multi-paragraph, dogfood pipeline, case-insensitive",
       "evidence_path": "tests/net/fodt/FodtR174ReplaceTextDedicatedTests.cs",
       "sprint": "ff-sprint-s165-dotnet-deepening-20260628"
     },
@@ -22636,7 +22636,7 @@
       "id": "PC-NETPBM-R162",
       "format": "NETPBM",
       "classification": "NET_TEST_DEEPENING",
-      "description": "NetpbmImage.Overlay dedicated tests \u2014 format-mismatch/negative-offset guards, format preserved, original unchanged, no-overlap same dims, pixel at origin, dogfood offset and clip",
+      "description": "NetpbmImage.Overlay dedicated tests — format-mismatch/negative-offset guards, format preserved, original unchanged, no-overlap same dims, pixel at origin, dogfood offset and clip",
       "evidence_path": "tests/net/netpbm/NetpbmR162OverlayTests.cs",
       "sprint": "ff-sprint-s166-dotnet-deepening-20260628"
     },
@@ -22644,7 +22644,7 @@
       "id": "PC-FODS-R173",
       "format": "FODS",
       "classification": "NET_TEST_DEEPENING",
-      "description": "FodsDocument.GetColumnValues dedicated tests \u2014 null/whitespace/nonexistent/negative guards, empty returns empty, single column values, count matches row count, IReadOnlyList, dogfood pipelines",
+      "description": "FodsDocument.GetColumnValues dedicated tests — null/whitespace/nonexistent/negative guards, empty returns empty, single column values, count matches row count, IReadOnlyList, dogfood pipelines",
       "evidence_path": "tests/net/fods/FodsR173GetColumnValuesDedicatedTests.cs",
       "sprint": "ff-sprint-s166-dotnet-deepening-20260628"
     },
@@ -22652,7 +22652,7 @@
       "id": "PC-FODT-R175",
       "format": "FODT",
       "classification": "NET_TEST_DEEPENING",
-      "description": "FodtDocument.InsertParagraph dedicated tests \u2014 negative/beyond-count guards, insert-at-0/count valid, count increases, text accessible, shifts existing, append-at-end, dogfood pipelines",
+      "description": "FodtDocument.InsertParagraph dedicated tests — negative/beyond-count guards, insert-at-0/count valid, count increases, text accessible, shifts existing, append-at-end, dogfood pipelines",
       "evidence_path": "tests/net/fodt/FodtR175InsertParagraphDedicatedTests.cs",
       "sprint": "ff-sprint-s166-dotnet-deepening-20260628"
     },
@@ -22660,7 +22660,7 @@
       "id": "PC-NETPBM-R163",
       "format": "NETPBM",
       "classification": "NET_TEST_DEEPENING",
-      "description": "NetpbmImage.FlipHorizontal dedicated tests \u2014 in-place void, width/height/format unchanged, left\u2194right pixel swap, center unchanged, double-flip restores, multi-row consistency, zero-pixel unaffected",
+      "description": "NetpbmImage.FlipHorizontal dedicated tests — in-place void, width/height/format unchanged, left↔right pixel swap, center unchanged, double-flip restores, multi-row consistency, zero-pixel unaffected",
       "evidence_path": "tests/net/netpbm/NetpbmR163FlipHorizontalTests.cs",
       "sprint": "ff-sprint-s167-dotnet-deepening-20260628"
     },
@@ -22668,7 +22668,7 @@
       "id": "PC-FODS-R174",
       "format": "FODS",
       "classification": "NET_TEST_DEEPENING",
-      "description": "FodsDocument.GetRowValues dedicated tests \u2014 no-sheet/nonexistent/negative/beyond guards, single cell, multiple cells, IReadOnlyList, count match, dogfood pipelines, named==unnamed for first row",
+      "description": "FodsDocument.GetRowValues dedicated tests — no-sheet/nonexistent/negative/beyond guards, single cell, multiple cells, IReadOnlyList, count match, dogfood pipelines, named==unnamed for first row",
       "evidence_path": "tests/net/fods/FodsR174GetRowValuesDedicatedTests.cs",
       "sprint": "ff-sprint-s167-dotnet-deepening-20260628"
     },
@@ -22676,9 +22676,33 @@
       "id": "PC-FODT-R176",
       "format": "FODT",
       "classification": "NET_TEST_DEEPENING",
-      "description": "FodtDocument.MimeType and OdfVersion dedicated tests \u2014 null-or-string, idempotent, AppendParagraph/Heading unchanged, dogfood CreateEmpty access, dogfood content stable",
+      "description": "FodtDocument.MimeType and OdfVersion dedicated tests — null-or-string, idempotent, AppendParagraph/Heading unchanged, dogfood CreateEmpty access, dogfood content stable",
       "evidence_path": "tests/net/fodt/FodtR176MimeTypeAndOdfVersionTests.cs",
       "sprint": "ff-sprint-s167-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-NETPBM-R164",
+      "format": "NETPBM",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "NetpbmImage.FlipVertical dedicated tests: in-place void, width/height/format unchanged, top↔bottom swap, center row unchanged (odd height), double-flip restores, multi-column consistency, dogfood pipeline",
+      "evidence_path": "tests/net/netpbm/NetpbmR164FlipVerticalTests.cs",
+      "sprint": "ff-sprint-s168-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-FODS-R175",
+      "format": "FODS",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "FodsDocument.GetCellDataType dedicated tests: null/whitespace throws, nonexistent sheet null, negative row/col null, row/col at-count null, string cell type, dogfood SetCellValue then GetCellDataType",
+      "evidence_path": "tests/net/fods/FodsR175GetCellDataTypeDedicatedTests.cs",
+      "sprint": "ff-sprint-s168-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-FODT-R177",
+      "format": "FODT",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "FodtDocument.GetParagraphStyleName dedicated tests: negative/at-count/beyond returns null, valid index null-or-string, string type when non-null, idempotent, heading style accessible, dogfood mixed content",
+      "evidence_path": "tests/net/fodt/FodtR177GetParagraphStyleNameTests.cs",
+      "sprint": "ff-sprint-s168-dotnet-deepening-20260628"
     }
   ],
   "total_entries": 1270,
