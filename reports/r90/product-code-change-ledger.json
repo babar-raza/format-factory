@@ -26564,9 +26564,93 @@
         }
       ],
       "format": "FODT"
+    },
+    {
+      "entry_id": "PC-NETPBM-R269",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s262-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "NETPBM .NET",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.normalize"
+      ],
+      "api_symbols": [
+        "Normalize"
+      ],
+      "api_behavior": "Normalize() rescales pixel values in-place to use the full [0, MaxValue] range (contrast stretching). Void. Width/height/format/MaxValue unchanged. All pixels remain in [0,MaxValue]. Uniform image no-exception. Idempotent.",
+      "changed_files": [
+        "tests/net/netpbm/NetpbmR269NormalizeDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR269NormalizeDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "tests/net/netpbm/NetpbmR269NormalizeDedicatedTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "NETPBM"
+    },
+    {
+      "entry_id": "PC-FODS-R285",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s262-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.get_cell_value"
+      ],
+      "api_symbols": [
+        "GetCellValue"
+      ],
+      "api_behavior": "GetCellValue(sheetName, row, col) returns the string value of a cell. Null/whitespace/nonexistent sheet throws. Negative row/col throws. After SetCellValue returns the set value. SheetCount unchanged. Idempotent.",
+      "changed_files": [
+        "tests/net/fods/FodsR285GetCellValueDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR285GetCellValueDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "tests/net/fods/FodsR285GetCellValueDedicatedTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "FODS"
+    },
+    {
+      "entry_id": "PC-FODT-R277",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s262-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.find_and_replace_text"
+      ],
+      "api_symbols": [
+        "FindAndReplaceText"
+      ],
+      "api_behavior": "FindAndReplaceText(find, replace) replaces all occurrences of find with replace across all paragraphs. Valid args no-exception. No-match no-exception. ParagraphCount unchanged. After replace, new text present and old text gone.",
+      "changed_files": [
+        "tests/net/fodt/FodtR277FindAndReplaceTextDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR277FindAndReplaceTextDedicatedTests.cs"
+      ],
+      "test_count": 9,
+      "source_files": [
+        {
+          "path": "tests/net/fodt/FodtR277FindAndReplaceTextDedicatedTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "FODT"
     }
   ],
-  "total_entries": 1288,
+  "total_entries": 1291,
   "changes": [
     {
       "file": "src/python/dif/models.py",
