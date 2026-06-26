@@ -25144,6 +25144,42 @@
         "tests/net/fodt/FodtR258GetParagraphsByStyleDedicatedTests.cs"
       ],
       "test_count": 10
+    },
+    {
+      "entry_id": "PC-NETPBM-R251",
+      "classification": "dotnet_test_coverage",
+      "sprint": "ff-sprint-s244-dotnet-deepening-20260629",
+      "format": "NETPBM",
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.draw_line",
+      "description": "R251: Dedicated tests for NetpbmImage.DrawLine \u2014 OOB throws, valid no-exception, line-pixels-have-value, outside-unchanged, format/MaxValue/dims preserved, horizontal/vertical line, dogfood two-lines both-visible",
+      "source_files": [
+        "tests/net/netpbm/NetpbmR251DrawLineDedicatedTests.cs"
+      ],
+      "test_count": 10
+    },
+    {
+      "entry_id": "PC-FODS-R263",
+      "classification": "dotnet_test_coverage",
+      "sprint": "ff-sprint-s244-dotnet-deepening-20260629",
+      "format": "FODS",
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.get_cell_value",
+      "description": "R263: Dedicated tests for FodsDocument.GetCellValue \u2014 null/whitespace/nonexistent/negative-row/negative-col throws, after-SetCellValue returns value, set-twice returns latest, SheetCount unchanged, dogfood multi-cell",
+      "source_files": [
+        "tests/net/fods/FodsR263GetCellValueDedicatedTests.cs"
+      ],
+      "test_count": 9
+    },
+    {
+      "entry_id": "PC-FODT-R259",
+      "classification": "dotnet_test_coverage",
+      "sprint": "ff-sprint-s244-dotnet-deepening-20260629",
+      "format": "FODT",
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.add_table",
+      "description": "R259: Dedicated tests for FodtDocument.AddTable \u2014 zero/negative throws, valid no-exception, TableCount increases, two-tables count=2, accessible via GetTableAt, cell-text retrievable, set-and-get-cell, dogfood",
+      "source_files": [
+        "tests/net/fodt/FodtR259AddTableDedicatedTests.cs"
+      ],
+      "test_count": 11
     }
   ],
   "total_entries": 1270,
