@@ -26310,9 +26310,93 @@
         }
       ],
       "format": "FODT"
+    },
+    {
+      "entry_id": "PC-NETPBM-R266",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s259-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "NETPBM .NET",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.get_histogram"
+      ],
+      "api_symbols": [
+        "GetHistogram"
+      ],
+      "api_behavior": "GetHistogram() returns a non-null array where index i = count of pixels with value i. All entries >= 0. Sum = Width*Height. Non-mutating: dims/format/MaxValue unchanged. Idempotent.",
+      "changed_files": [
+        "tests/net/netpbm/NetpbmR266GetHistogramDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR266GetHistogramDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "tests/net/netpbm/NetpbmR266GetHistogramDedicatedTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "NETPBM"
+    },
+    {
+      "entry_id": "PC-FODS-R282",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s259-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.get_column_count"
+      ],
+      "api_symbols": [
+        "GetColumnCount"
+      ],
+      "api_behavior": "GetColumnCount(sheetName) returns the number of columns in the sheet. Null/whitespace/nonexistent throws. Empty sheet returns 0+. Increases after AddColumn. SheetCount unchanged. Idempotent.",
+      "changed_files": [
+        "tests/net/fods/FodsR282GetColumnCountDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR282GetColumnCountDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "tests/net/fods/FodsR282GetColumnCountDedicatedTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "FODS"
+    },
+    {
+      "entry_id": "PC-FODT-R274",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s259-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.get_word_count"
+      ],
+      "api_symbols": [
+        "GetWordCount"
+      ],
+      "api_behavior": "GetWordCount() returns total word count across all paragraphs. Non-negative. Empty doc = 0. Grows with more paragraphs. ParagraphCount unchanged. Idempotent.",
+      "changed_files": [
+        "tests/net/fodt/FodtR274GetWordCountDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR274GetWordCountDedicatedTests.cs"
+      ],
+      "test_count": 9,
+      "source_files": [
+        {
+          "path": "tests/net/fodt/FodtR274GetWordCountDedicatedTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "FODT"
     }
   ],
-  "total_entries": 1279,
+  "total_entries": 1282,
   "changes": [
     {
       "file": "src/python/dif/models.py",
