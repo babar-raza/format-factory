@@ -23036,6 +23036,33 @@
       "evidence_path": "tests/net/fodt/FodtR190GetParagraphTextsTests.cs",
       "test_count": 10,
       "sprint": "ff-sprint-s181-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-NETPBM-R178",
+      "format": "NETPBM",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "NetpbmImage.Resize: zero width throws; negative width throws; zero height throws; negative height throws; returns new image; result width=newWidth; result height=newHeight; format preserved; MaxValue preserved; dogfood scale-up; dogfood scale-down",
+      "evidence_path": "tests/net/netpbm/NetpbmR178ResizeTests.cs",
+      "test_count": 11,
+      "sprint": "ff-sprint-s182-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-FODS-R189",
+      "format": "FODS",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "FodsDocument.GetColumnHeaders: empty first sheet empty; single cell; multiple columns; IReadOnlyList; named-sheet nonexistent empty; named-sheet empty empty; named-sheet single header; named-sheet multiple; dogfood set-headers-then-retrieve",
+      "evidence_path": "tests/net/fods/FodsR189GetColumnHeadersDedicatedTests.cs",
+      "test_count": 10,
+      "sprint": "ff-sprint-s182-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-FODT-R191",
+      "format": "FODT",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "FodtDocument.SetParagraphText: negative throws; at-count throws; valid set text retrievable; overwrites; null treated as empty; heading text settable; ParagraphCount unchanged; dogfood multiple set; dogfood set-then-GetWordCount",
+      "evidence_path": "tests/net/fodt/FodtR191SetParagraphTextTests.cs",
+      "test_count": 9,
+      "sprint": "ff-sprint-s182-dotnet-deepening-20260628"
     }
   ],
   "total_entries": 1270,
