@@ -21784,6 +21784,84 @@
         "tests/net/fodt/FodtR159SearchTextDedicatedTests.cs"
       ],
       "source_files": []
+    },
+    {
+      "entry_id": "PC-NETPBM-R147",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s151-dotnet-deepening-20260628",
+      "product": "Netpbm .NET Commercial",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.resize"
+      ],
+      "api_symbols": [
+        "Resize"
+      ],
+      "api_behavior": "NetpbmImage.Resize(newWidth, newHeight) scales image using nearest-neighbor interpolation. Throws ArgumentOutOfRangeException for zero/negative dimensions. Original unchanged; format preserved.",
+      "changed_files": [],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR147ResizeTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "src/net/netpbm/Transforms/NetpbmImageTransforms.cs",
+          "state": "present",
+          "sha256": ""
+        }
+      ],
+      "format": "Netpbm"
+    },
+    {
+      "entry_id": "PC-FODS-R158",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s151-dotnet-deepening-20260628",
+      "product": "FODS .NET Commercial",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.remove_sheet_dedicated"
+      ],
+      "api_symbols": [
+        "RemoveSheet"
+      ],
+      "api_behavior": "FodsDocument.RemoveSheet(string name) removes named sheet. Throws ArgumentException for null/whitespace. Throws InvalidOperationException for nonexistent sheet. Sheet count decreases; remaining sheets preserved.",
+      "changed_files": [],
+      "test_files": [
+        "tests/net/fods/FodsR158RemoveSheetDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "src/net/fods/FodsDocument.cs",
+          "state": "present",
+          "sha256": ""
+        }
+      ],
+      "format": "FODS"
+    },
+    {
+      "entry_id": "PC-FODT-R160",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s151-dotnet-deepening-20260628",
+      "product": "FODT .NET Commercial",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.get_word_frequency_dedicated"
+      ],
+      "api_symbols": [
+        "GetWordFrequency"
+      ],
+      "api_behavior": "FodtDocument.GetWordFrequency(int minLength=1) returns case-insensitive word-count IReadOnlyDictionary. Splits on whitespace+punctuation. Filters by minLength. Merges across paragraphs.",
+      "changed_files": [],
+      "test_files": [
+        "tests/net/fodt/FodtR160GetWordFrequencyDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "src/net/fodt/FodtDocumentAccessor.cs",
+          "state": "present",
+          "sha256": ""
+        }
+      ],
+      "format": "FODT"
     }
   ],
   "total_entries": 1201,
