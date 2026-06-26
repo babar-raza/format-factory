@@ -22823,6 +22823,30 @@
       "description": "FodtDocument.GetHeadingCount dedicated tests: empty=0, paras-only=0, single heading=1, multiple headings, paras excluded, mixed content, matches GetHeadingParagraphs().Count, AppendHeading increments, RemoveHeading decrements",
       "evidence_path": "tests/net/fodt/FodtR182GetHeadingCountTests.cs",
       "sprint": "ff-sprint-s173-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-NETPBM-R170",
+      "format": "NETPBM",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "NetpbmImage.Sharpen dedicated tests: PBM clone, new image, dims/format unchanged, original unchanged, edge pixel unmodified, result in bounds, uniform image sharpened=same, PGM dogfood pipeline",
+      "evidence_path": "tests/net/netpbm/NetpbmR170SharpenTests.cs",
+      "sprint": "ff-sprint-s174-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-FODS-R181",
+      "format": "FODS",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "FodsDocument.InsertRow dedicated tests: null/whitespace throws ArgumentException, nonexistent throws InvalidOperationException, negative/beyond-count throws ArgumentOutOfRangeException, valid insert increments count, shifts rows, dogfood pipeline",
+      "evidence_path": "tests/net/fods/FodsR181InsertRowDedicatedTests.cs",
+      "sprint": "ff-sprint-s174-dotnet-deepening-20260628"
+    },
+    {
+      "id": "PC-FODT-R183",
+      "format": "FODT",
+      "classification": "NET_TEST_DEEPENING",
+      "description": "FodtDocument.GetDocumentOutline dedicated tests: empty/paras-only empty, single heading, text match, multiple in order, body excluded, IReadOnlyList type, count matches GetHeadingCount, levels correct, dogfood mixed content",
+      "evidence_path": "tests/net/fodt/FodtR183GetDocumentOutlineTests.cs",
+      "sprint": "ff-sprint-s174-dotnet-deepening-20260628"
     }
   ],
   "total_entries": 1270,
