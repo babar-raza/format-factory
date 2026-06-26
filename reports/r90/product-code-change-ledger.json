@@ -27373,9 +27373,78 @@
       "test_count": 9,
       "source_files": [],
       "format": "FODT"
+    },
+    {
+      "entry_id": "PC-NETPBM-R279",
+      "classification": "dotnet_test_deepening",
+      "sprint": "ff-sprint-s271-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "commercial_net_products.NETPBM",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.invert"
+      ],
+      "api_symbols": [
+        "NetpbmImage.Invert"
+      ],
+      "api_behavior": "Void in-place; all-zero\u2192all-MaxValue; all-max\u2192all-zero; invert-twice restores; dims/format/MaxValue unchanged; dogfood pixel 100\u2192155; dogfood invert-twice pixel-for-pixel restored",
+      "changed_files": [
+        "tests/net/netpbm/NetpbmR279InvertDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR279InvertDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [],
+      "format": "NETPBM"
+    },
+    {
+      "entry_id": "PC-FODS-R297",
+      "classification": "dotnet_test_deepening",
+      "sprint": "ff-sprint-s271-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "commercial_net_products.FODS",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.set_cell_font"
+      ],
+      "api_symbols": [
+        "FodsDocument.SetCellFont"
+      ],
+      "api_behavior": "Void; null/whitespace/nonexistent/negative-row/col throws; valid no-exception; SheetCount unchanged; set-twice no-exception; dogfood multiple-cells; dogfood font+value both succeed",
+      "changed_files": [
+        "tests/net/fods/FodsR297SetCellFontDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR297SetCellFontDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [],
+      "format": "FODS"
+    },
+    {
+      "entry_id": "PC-FODT-R286",
+      "classification": "dotnet_test_deepening",
+      "sprint": "ff-sprint-s271-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "commercial_net_products.FODT",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.export_to_html"
+      ],
+      "api_symbols": [
+        "FodtDocument.ExportToHtml"
+      ],
+      "api_behavior": "Void; null/whitespace throws; valid no-exception; file exists after; non-empty content\u2192non-empty file; ParagraphCount/TableCount unchanged; dogfood paragraphs html-exists-nonEmpty; export-twice both exist",
+      "changed_files": [
+        "tests/net/fodt/FodtR286ExportToHtmlDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR286ExportToHtmlDedicatedTests.cs"
+      ],
+      "test_count": 9,
+      "source_files": [],
+      "format": "FODT"
     }
   ],
-  "total_entries": 1584,
+  "total_entries": 1587,
   "changes": [
     {
       "file": "src/python/dif/models.py",
