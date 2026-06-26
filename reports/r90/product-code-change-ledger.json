@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s125-dotnet-deepening-20260627",
+  "latest_sprint": "ff-sprint-s126-dotnet-deepening-20260627",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -20874,9 +20874,48 @@
         "tests/net/zst/ZstR129ExceptionHierarchyTests.cs"
       ],
       "description": "R129: 11 tests for ZstFileSizeException, ZstFileNotFoundException, ZstException hierarchy \u2014 IsAssignableFrom chain, message preserved, Parse non-existent throws, dogfood all types"
+    },
+    {
+      "entry_id": "PC-TSV-R127",
+      "classification": "GOVERNED_DOTNET_TEST",
+      "sprint": "ff-sprint-s126-dotnet-deepening-20260627",
+      "product": "TSV .NET",
+      "capability_refs": [
+        "commercial_net_products.TSV.dotnet_status.spec_tsv_record"
+      ],
+      "test_files": [
+        "tests/net/tsv/TsvR127SpecTsvRecordTests.cs"
+      ],
+      "description": "TSV R127: 10 tests for Spec.TsvRecord canonical spec-shaped model class \u2014 SpecQName constant, Fields init-only, FieldCount, dogfood pipeline"
+    },
+    {
+      "entry_id": "PC-NDJSON-R131",
+      "classification": "GOVERNED_DOTNET_TEST",
+      "sprint": "ff-sprint-s126-dotnet-deepening-20260627",
+      "product": "NDJSON .NET",
+      "capability_refs": [
+        "commercial_net_products.NDJSON.dotnet_status.record_try_get_value"
+      ],
+      "test_files": [
+        "tests/net/ndjson/NdjsonR131RecordTryGetValueTests.cs"
+      ],
+      "description": "NDJSON R131: 10 tests for NdjsonRecord.TryGetValue(key, out value) and NdjsonRecord.Keys \u2014 present/absent key, bool/numeric/string, Keys parity, dogfood pipeline"
+    },
+    {
+      "entry_id": "PC-ZST-R130",
+      "classification": "GOVERNED_DOTNET_TEST",
+      "sprint": "ff-sprint-s126-dotnet-deepening-20260627",
+      "product": "ZST .NET",
+      "capability_refs": [
+        "commercial_net_products.ZST.dotnet_status.compress_to_file"
+      ],
+      "test_files": [
+        "tests/net/zst/ZstR130CompressToFileTests.cs"
+      ],
+      "description": "ZST R130: 10 tests for ZstWriter.CompressToFile(data, destPath, level) \u2014 output file, magic bytes, null guards, compression levels, parseable output, dogfood roundtrip"
     }
   ],
-  "total_entries": 1144,
+  "total_entries": 1147,
   "changes": [
     {
       "file": "src/python/dif/models.py",
