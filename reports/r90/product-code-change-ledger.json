@@ -26733,9 +26733,93 @@
         }
       ],
       "format": "FODT"
+    },
+    {
+      "entry_id": "PC-NETPBM-R271",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s264-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "NETPBM .NET",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.get_pixel_count"
+      ],
+      "api_symbols": [
+        "GetPixelCount"
+      ],
+      "api_behavior": "GetPixelCount() returns int = Width * Height. Always positive for valid image. Non-mutating: dims/format unchanged. Idempotent. 1x1=1, 6x6=36.",
+      "changed_files": [
+        "tests/net/netpbm/NetpbmR271GetPixelCountDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR271GetPixelCountDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "tests/net/netpbm/NetpbmR271GetPixelCountDedicatedTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "NETPBM"
+    },
+    {
+      "entry_id": "PC-FODS-R288",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s264-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.export_to_json"
+      ],
+      "api_symbols": [
+        "ExportToJson"
+      ],
+      "api_behavior": "ExportToJson(sheetName, filePath) exports a sheet to a JSON file. Null/whitespace/nonexistent sheet throws. Valid export creates file. Data sheet produces non-empty file. SheetCount unchanged.",
+      "changed_files": [
+        "tests/net/fods/FodsR288ExportToJsonDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR288ExportToJsonDedicatedTests.cs"
+      ],
+      "test_count": 9,
+      "source_files": [
+        {
+          "path": "tests/net/fods/FodsR288ExportToJsonDedicatedTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "FODS"
+    },
+    {
+      "entry_id": "PC-FODT-R279",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s264-dotnet-deepening-20260630",
+      "skill": "add-dotnet-api",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.get_line_count"
+      ],
+      "api_symbols": [
+        "GetLineCount"
+      ],
+      "api_behavior": "GetLineCount() returns total text lines. Non-negative. More paragraphs do not decrease count. ParagraphCount unchanged. Idempotent. Single-line paragraph >= 1.",
+      "changed_files": [
+        "tests/net/fodt/FodtR279GetLineCountDedicatedTests.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR279GetLineCountDedicatedTests.cs"
+      ],
+      "test_count": 9,
+      "source_files": [
+        {
+          "path": "tests/net/fodt/FodtR279GetLineCountDedicatedTests.cs",
+          "state": "present"
+        }
+      ],
+      "format": "FODT"
     }
   ],
-  "total_entries": 1294,
+  "total_entries": 1297,
   "changes": [
     {
       "file": "src/python/dif/models.py",
