@@ -31297,9 +31297,45 @@
       "tests_added": 9,
       "capability_ref": "commercial_net_products.FODT.dotnet_status.get_character_count",
       "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-NETPBM-R336",
+      "sprint": "ff-sprint-s324-dotnet-deepening-20260630",
+      "format": "NETPBM",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/netpbm/NetpbmR336ApplySharpenDedicatedTests.cs",
+      "description": "Dedicated tests for NetpbmImage.ApplySharpen: valid no exception, dims/format/MaxValue unchanged, all pixels in range, all-zero ok, called-twice ok, dogfood mixed and uniform",
+      "tests_added": 10,
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.apply_sharpen",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-FODS-R357",
+      "sprint": "ff-sprint-s324-dotnet-deepening-20260630",
+      "format": "FODS",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fods/FodsR357GetCellStyleNameDedicatedTests.cs",
+      "description": "Dedicated tests for FodsDocument.GetCellStyleName: null/whitespace/nonexistent/negative throws, valid non-null, SheetCount unchanged, idempotent, dogfood SetCellStyle then Get, multiple cells",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.get_cell_style_name",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-FODT-R342",
+      "sprint": "ff-sprint-s324-dotnet-deepening-20260630",
+      "format": "FODT",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fodt/FodtR342GetSentenceCountDedicatedTests.cs",
+      "description": "Dedicated tests for FodtDocument.GetSentenceCount: non-negative, empty ok, increases after AddParagraph, counts unchanged, idempotent, dogfood multi-paragraph and multiple sentences in paragraph",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.get_sentence_count",
+      "date": "2026-07-01"
     }
   ],
-  "total_entries": 1790,
+  "total_entries": 1793,
   "changes": [
     {
       "file": "src/python/dif/models.py",
