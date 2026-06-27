@@ -32860,9 +32860,39 @@
       "api_method": "GetDocumentKeywords",
       "test_count": 9,
       "description": "Dedicated tests for FodtDocument.GetDocumentKeywords: valid non-null, counts unchanged, idempotent, non-empty, SetKeywords+Get, dogfood finance+legal keywords"
+    },
+    {
+      "entry_id": "PC-NETPBM-R379",
+      "sprint": "ff-sprint-s366-dotnet-deepening-20260630",
+      "format": "NETPBM",
+      "r_number": 379,
+      "test_file": "tests/net/netpbm/NetpbmR379GetBlackPixelCountDedicatedTests.cs",
+      "api_method": "GetBlackPixelCount",
+      "test_count": 10,
+      "description": "Dedicated tests for NetpbmImage.GetBlackPixelCount: non-negative, all-black=W*H, all-white=0, dims unchanged, idempotent, half-black in range, single black=1"
+    },
+    {
+      "entry_id": "PC-FODS-R408",
+      "sprint": "ff-sprint-s366-dotnet-deepening-20260630",
+      "format": "FODS",
+      "r_number": 408,
+      "test_file": "tests/net/fods/FodsR408GetCellStrikethroughDedicatedTests.cs",
+      "api_method": "GetCellStrikethrough",
+      "test_count": 9,
+      "description": "Dedicated tests for FodsDocument.GetCellStrikethrough: null/whitespace/nonexistent/negative throws, valid bool, SheetCount unchanged, idempotent, SetStrikethrough true+Get, false+Get"
+    },
+    {
+      "entry_id": "PC-FODT-R384",
+      "sprint": "ff-sprint-s366-dotnet-deepening-20260630",
+      "format": "FODT",
+      "r_number": 384,
+      "test_file": "tests/net/fodt/FodtR384GetDocumentSubjectDedicatedTests.cs",
+      "api_method": "GetDocumentSubject",
+      "test_count": 9,
+      "description": "Dedicated tests for FodtDocument.GetDocumentSubject: valid non-null, counts unchanged, idempotent, non-empty, SetSubject+Get, dogfood quarterly review+HR policy"
     }
   ],
-  "total_entries": 1924,
+  "total_entries": 1927,
   "changes": [
     {
       "file": "src/python/dif/models.py",
