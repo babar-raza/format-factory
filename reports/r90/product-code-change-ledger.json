@@ -30008,9 +30008,45 @@
         }
       ],
       "format": "fodp"
+    },
+    {
+      "entry_id": "PC-NETPBM-R308",
+      "sprint": "ff-sprint-s300-dotnet-deepening-20260630",
+      "format": "NETPBM",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/netpbm/NetpbmR308GetEntropyDedicatedTests.cs",
+      "description": "Dedicated tests for NetpbmImage.GetEntropy: non-negative double, dims/format/MaxValue unchanged, all-zero ok, idempotent, mixed image non-negative, dogfood standard and uniform",
+      "tests_added": 10,
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.get_entropy",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-FODS-R328",
+      "sprint": "ff-sprint-s300-dotnet-deepening-20260630",
+      "format": "FODS",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fods/FodsR328FilterRowsDedicatedTests.cs",
+      "description": "Dedicated tests for FodsDocument.FilterRows(sheetName,columnName,value): null-sheet/whitespace/nonexistent/null-col throws, valid ok, SheetCount unchanged, no-match ok, all-match ok, dogfood",
+      "tests_added": 10,
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.filter_rows",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-FODT-R315",
+      "sprint": "ff-sprint-s300-dotnet-deepening-20260630",
+      "format": "FODT",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fodt/FodtR315AppendTextDedicatedTests.cs",
+      "description": "Dedicated tests for FodtDocument.AppendText(text): valid ok, ParagraphCount increases or unchanged, TableCount/SectionCount unchanged, called-twice ok, empty-string ok, multiple appends ok, dogfood",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.append_text",
+      "date": "2026-07-01"
     }
   ],
-  "total_entries": 1700,
+  "total_entries": 1704,
   "changes": [
     {
       "file": "src/python/dif/models.py",
