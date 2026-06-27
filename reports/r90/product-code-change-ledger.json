@@ -32110,9 +32110,45 @@
       "tests_added": 9,
       "capability_ref": "commercial_net_products.FODT.dotnet_status.get_table_row_count",
       "date": "2026-07-02"
+    },
+    {
+      "entry_id": "PC-NETPBM-R357",
+      "sprint": "ff-sprint-s344-dotnet-deepening-20260630",
+      "format": "NETPBM",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/netpbm/NetpbmR357GetNoiseLevelEstimateDedicatedTests.cs",
+      "description": "Dedicated tests for NetpbmImage.GetNoiseLevelEstimate: valid ok, non-negative, dims/format/MaxValue unchanged, all-zero=0, uniform=0, idempotent, dogfood high-variance>0",
+      "tests_added": 10,
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.get_noise_level_estimate",
+      "date": "2026-07-02"
+    },
+    {
+      "entry_id": "PC-FODS-R382",
+      "sprint": "ff-sprint-s344-dotnet-deepening-20260630",
+      "format": "FODS",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fods/FodsR382GetCellBackgroundColorDedicatedTests.cs",
+      "description": "Dedicated tests for FodsDocument.GetCellBackgroundColor: null/whitespace/nonexistent/negative throws, valid non-null, SheetCount unchanged, idempotent, dogfood SetBgColor then Get, multiple cells",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.get_cell_background_color",
+      "date": "2026-07-02"
+    },
+    {
+      "entry_id": "PC-FODT-R362",
+      "sprint": "ff-sprint-s344-dotnet-deepening-20260630",
+      "format": "FODT",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fodt/FodtR362GetTableNameDedicatedTests.cs",
+      "description": "Dedicated tests for FodtDocument.GetTableName: index guards throw, valid non-null, counts unchanged, idempotent, after-AddTable exact name, dogfood multiple tables",
+      "tests_added": 8,
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.get_table_name",
+      "date": "2026-07-02"
     }
   ],
-  "total_entries": 1858,
+  "total_entries": 1861,
   "changes": [
     {
       "file": "src/python/dif/models.py",
