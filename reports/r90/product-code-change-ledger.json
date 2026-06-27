@@ -32146,9 +32146,45 @@
       "tests_added": 8,
       "capability_ref": "commercial_net_products.FODT.dotnet_status.get_table_name",
       "date": "2026-07-02"
+    },
+    {
+      "entry_id": "PC-NETPBM-R358",
+      "sprint": "ff-sprint-s345-dotnet-deepening-20260630",
+      "format": "NETPBM",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/netpbm/NetpbmR358GetBrightnessLevelDedicatedTests.cs",
+      "description": "Dedicated tests for NetpbmImage.GetBrightnessLevel: valid ok, in [0.0,1.0], dims/format/MaxValue unchanged, all-zero=0.0, full-brightness=1.0, idempotent, dogfood half-fill in [0.4,0.6]",
+      "tests_added": 10,
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.get_brightness_level",
+      "date": "2026-07-02"
+    },
+    {
+      "entry_id": "PC-FODS-R383",
+      "sprint": "ff-sprint-s345-dotnet-deepening-20260630",
+      "format": "FODS",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fods/FodsR383GetCellMergeStatusDedicatedTests.cs",
+      "description": "Dedicated tests for FodsDocument.GetCellMergeStatus: null/whitespace/nonexistent/negative throws, valid non-null, SheetCount unchanged, idempotent, dogfood unmerged cell non-null, MergeCells then Get non-null",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.get_cell_merge_status",
+      "date": "2026-07-02"
+    },
+    {
+      "entry_id": "PC-FODT-R363",
+      "sprint": "ff-sprint-s345-dotnet-deepening-20260630",
+      "format": "FODT",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fodt/FodtR363GetTableCellCountDedicatedTests.cs",
+      "description": "Dedicated tests for FodtDocument.GetTableCellCount: negative/out-of-range throws, valid positive, counts unchanged, idempotent, 2x3=6, 4x5=20, dogfood 3x3 with content=9",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.get_table_cell_count",
+      "date": "2026-07-02"
     }
   ],
-  "total_entries": 1861,
+  "total_entries": 1864,
   "changes": [
     {
       "file": "src/python/dif/models.py",
