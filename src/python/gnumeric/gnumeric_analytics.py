@@ -11,12 +11,10 @@ namespace_uri = "http://www.gnumeric.org/v10.dtd"
 from pathlib import Path
 from typing import Any
 
-from .gnumeric_codec import (
-    load,
+from .gnumeric_codec import load
+from .gnumeric_workbook_stats import (
     get_column_count,
     count_nonempty_cells,
-)
-from .gnumeric_workbook_stats import (
     row_count,
 )
 

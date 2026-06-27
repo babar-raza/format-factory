@@ -698,3 +698,29 @@ def probe_gnumeric_codec(source) -> dict:
         }
     except Exception as exc:
         return {"format": "gnumeric", "valid": False, "error": str(exc)}
+
+
+def gnumeric_installed_workflow(source: "str | bytes | Path") -> dict:
+    """Gnumeric installed-workflow proof: load source and return format metadata.
+
+    Named variant with explicit gnumeric_ prefix for API naming consistency
+    across the Format Factory FOSS track.
+
+    Args:
+        source: Gnumeric file path or bytes.
+
+    Returns:
+        dict with keys: format, loaded, sheet_count, cell_count.
+    """
+    model = load(source)
+    sheet_count = len(model.get("sheets", []))
+    cell_count = sum(
+        len(sheet.get("cell_grid", {}))
+        for sheet in model.get("sheets", [])
+    )
+    return {
+        "format": "gnumeric",
+        "loaded": True,
+        "sheet_count": sheet_count,
+        "cell_count": cell_count,
+    }

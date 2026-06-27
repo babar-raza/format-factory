@@ -16,19 +16,16 @@ from pathlib import Path
 _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO / "src" / "python"))
 
-import importlib.util as _ilu
-_spec = _ilu.spec_from_file_location("zst_codec", str(_REPO / "src" / "python" / "zst" / "zst_codec.py"))
-_zst = _ilu.module_from_spec(_spec)
-_spec.loader.exec_module(_zst)
-
-zst_frame_count_is_one = _zst.zst_frame_count_is_one
-zst_frame_size_variance = _zst.zst_frame_size_variance
-zst_has_multiple_frames = _zst.zst_has_multiple_frames
-zst_is_small_file = _zst.zst_is_small_file
-zst_largest_frame_ratio = _zst.zst_largest_frame_ratio
-zst_min_frame_size = _zst.zst_min_frame_size
-zst_smallest_frame_ratio = _zst.zst_smallest_frame_ratio
-zst_total_frame_size = _zst.zst_total_frame_size
+from zst.compression_metrics import (
+    zst_frame_count_is_one,
+    zst_frame_size_variance,
+    zst_has_multiple_frames,
+    zst_is_small_file,
+    zst_largest_frame_ratio,
+    zst_min_frame_size,
+    zst_smallest_frame_ratio,
+    zst_total_frame_size,
+)
 
 from ndjson.ndjson_codec import write_ndjson, load_ndjson
 

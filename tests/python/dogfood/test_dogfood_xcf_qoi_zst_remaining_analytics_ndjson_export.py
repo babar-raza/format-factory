@@ -7,7 +7,6 @@ ZST remaining (is_single_frame, max_frame_size, decompressed_to_compressed_ratio
 """
 from __future__ import annotations
 
-import importlib.util
 import json
 import sys
 from pathlib import Path
@@ -18,16 +17,11 @@ sys.path.insert(0, str(_REPO / "src" / "python"))
 from xcf.xcf_parser import xcf_is_tall
 from qoi.qoi_parser import qoi_is_small, qoi_megapixels
 from ndjson.ndjson_codec import write_ndjson, load_ndjson
-
-# Load ZST codec via importlib (zstandard may conflict)
-_zst_spec = importlib.util.spec_from_file_location(
-    "zst_codec", str(_REPO / "src" / "python" / "zst" / "zst_codec.py")
+from zst.compression_metrics import (
+    zst_is_single_frame,
+    zst_max_frame_size,
+    zst_decompressed_to_compressed_ratio,
 )
-_zst = importlib.util.module_from_spec(_zst_spec)
-_zst_spec.loader.exec_module(_zst)
-zst_is_single_frame = _zst.zst_is_single_frame
-zst_max_frame_size = _zst.zst_max_frame_size
-zst_decompressed_to_compressed_ratio = _zst.zst_decompressed_to_compressed_ratio
 
 _XCF = _REPO / "samples" / "by-format" / "xcf" / "valid"
 _QOI = _REPO / "samples" / "by-format" / "qoi" / "valid"
