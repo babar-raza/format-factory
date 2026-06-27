@@ -31498,9 +31498,45 @@
       "tests_added": 9,
       "capability_ref": "commercial_net_products.FODT.dotnet_status.get_page_count",
       "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-NETPBM-R339",
+      "sprint": "ff-sprint-s327-dotnet-deepening-20260630",
+      "format": "NETPBM",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/netpbm/NetpbmR339GetMeanDedicatedTests.cs",
+      "description": "Dedicated tests for NetpbmImage.GetMean: valid no exception, dims/format/MaxValue unchanged, returns in [0,MaxValue], all-zero zero, idempotent, uniform equals pixel, dogfood gradient",
+      "tests_added": 10,
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.get_mean",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-FODS-R360",
+      "sprint": "ff-sprint-s327-dotnet-deepening-20260630",
+      "format": "FODS",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fods/FodsR360GetNamedRangeCountDedicatedTests.cs",
+      "description": "Dedicated tests for FodsDocument.GetNamedRangeCount: non-negative, empty ok, increases after AddNamedRange, SheetCount unchanged, idempotent, dogfood single and multiple named ranges",
+      "tests_added": 7,
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.get_named_range_count",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-FODT-R345",
+      "sprint": "ff-sprint-s327-dotnet-deepening-20260630",
+      "format": "FODT",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fodt/FodtR345GetStyleNameDedicatedTests.cs",
+      "description": "Dedicated tests for FodtDocument.GetStyleName: no exception, non-null, counts unchanged, idempotent, after-AddParagraph non-null, dogfood styled and heading document",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.get_style_name",
+      "date": "2026-07-01"
     }
   ],
-  "total_entries": 1807,
+  "total_entries": 1810,
   "changes": [
     {
       "file": "src/python/dif/models.py",
