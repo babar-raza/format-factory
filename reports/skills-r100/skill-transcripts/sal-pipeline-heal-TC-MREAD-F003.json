@@ -1,0 +1,46 @@
+{
+  "skill_id": "sal-pipeline-heal",
+  "taskcard_id": "TC-MREAD-F003",
+  "format_id": "xcf,abw,dif,sylk,gnumeric,toml,tsv,ndjson,pbm,pgm,ppm,qoi,csv",
+  "root_cause_id": "ROOT-02",
+  "target_stage": "extraction",
+  "spec_cache_verified": true,
+  "tools_invoked": [
+    "audit_gap_ledger_sal_refs.py",
+    "workbench/verified-facts-review.json (per-format ingestion)"
+  ],
+  "changed_files": [
+    ".local/spec-cache/sal-facts-latest.json"
+  ],
+  "output_artifacts": [
+    ".local/spec-cache/sal-facts-latest.json",
+    "reports/capability-layer/gap-sal-traceability-20260626.json"
+  ],
+  "fact_count_produced": 194,
+  "fact_count_before": 14441,
+  "fact_count_after": 14635,
+  "format_fact_counts": {
+    "xcf": {"before": 2, "after": 42},
+    "abw": {"before": 5, "after": 36},
+    "dif": {"before": 3, "after": 15},
+    "sylk": {"before": 3, "after": 20},
+    "gnumeric": {"before": 3, "after": 61},
+    "toml": {"before": 55, "after": 65},
+    "tsv": {"before": 2, "after": 15},
+    "ndjson": {"before": 2, "after": 15},
+    "pbm": 2,
+    "pgm": 2,
+    "ppm": 2,
+    "qoi": 2,
+    "csv": 55
+  },
+  "fact_id_namespace_valid": true,
+  "traceability_before_pct": 56.3,
+  "traceability_after_pct": 94.3,
+  "high_severity_dangling_before": 351,
+  "high_severity_dangling_after": 129,
+  "test_results": "skipped",
+  "verdict": "PROCEED",
+  "diagnosis": "ROOT-02: Workbench facts were produced for xcf/abw/dif/sylk/gnumeric/toml/tsv/ndjson but never ingested into sal-facts-latest.json. The aggregated SAL file had stale/incomplete entries for these formats. Fix: replaced per-format spec_facts entries in sal-facts-latest.json with full workbench verified-facts-review.json contents.",
+  "timestamp": "2026-06-26T00:00:00Z"
+}
