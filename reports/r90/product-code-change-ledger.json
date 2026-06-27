@@ -31642,9 +31642,45 @@
       "tests_added": 9,
       "capability_ref": "commercial_net_products.FODT.dotnet_status.get_metadata_subject",
       "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-NETPBM-R343",
+      "sprint": "ff-sprint-s331-dotnet-deepening-20260630",
+      "format": "NETPBM",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/netpbm/NetpbmR343GetMaxPixelDedicatedTests.cs",
+      "description": "Dedicated tests for NetpbmImage.GetMaxPixel: valid no exception, dims/format/MaxValue unchanged, returns in [0,MaxValue], all-zero zero, idempotent, uniform equals pixel, dogfood all-max returns MaxValue",
+      "tests_added": 10,
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.get_max_pixel",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-FODS-R366",
+      "sprint": "ff-sprint-s331-dotnet-deepening-20260630",
+      "format": "FODS",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fods/FodsR366GetSheetProtectedDedicatedTests.cs",
+      "description": "Dedicated tests for FodsDocument.GetSheetProtected: null/whitespace/nonexistent throws, unprotected false, SheetCount unchanged, idempotent, dogfood SetSheetProtected then Get returns true, multiple sheets",
+      "tests_added": 8,
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.get_sheet_protected",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-FODT-R349",
+      "sprint": "ff-sprint-s331-dotnet-deepening-20260630",
+      "format": "FODT",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fodt/FodtR349GetMetadataKeywordsDedicatedTests.cs",
+      "description": "Dedicated tests for FodtDocument.GetMetadataKeywords: empty ok, non-null, counts unchanged, idempotent, after-SetKeywords returns keywords, dogfood keywords+content and keywords unchanged after AddParagraph",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.get_metadata_keywords",
+      "date": "2026-07-01"
     }
   ],
-  "total_entries": 1819,
+  "total_entries": 1822,
   "changes": [
     {
       "file": "src/python/dif/models.py",
