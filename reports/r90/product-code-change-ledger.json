@@ -30804,9 +30804,70 @@
       "tests_added": 9,
       "capability_ref": "commercial_net_products.FODT.dotnet_status.get_bookmark_count",
       "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-FODS-R316",
+      "sprint_id": "ff-sprint-s316-fods-cell-iterator-20260626",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "format": "fods",
+      "capability_refs": [
+        "CAP-FODS-ITER-CELLS"
+      ],
+      "api_symbols": [
+        "fods_iter_cells"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/fods/fods_cell_iterator.py",
+          "sha256": "5931a450738068d59b50aa8273ceb3f63e31db77d656266a322936f50c3f419e"
+        }
+      ],
+      "test_files": [
+        "tests/python/fods/test_r316_fods_iter_cells.py"
+      ],
+      "tests_passed": 10,
+      "tests_failed": 0,
+      "export_path_affected": false,
+      "notes": "fods_iter_cells() yields FodsCell objects (spec_qname=table:table-cell) for each cell in a FODS document"
+    },
+    {
+      "entry_id": "PC-NETPBM-R321",
+      "sprint": "ff-sprint-s311-dotnet-deepening-20260630",
+      "format": "NETPBM",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/netpbm/NetpbmR321ApplyEmbossDedicatedTests.cs",
+      "description": "Dedicated tests for NetpbmImage.ApplyEmboss: valid ok, all pixels in range, dims/format/MaxValue unchanged, called-twice ok, all-zero ok, dogfood mixed and gradient",
+      "tests_added": 10,
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.apply_emboss",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-FODS-R340",
+      "sprint": "ff-sprint-s311-dotnet-deepening-20260630",
+      "format": "FODS",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fods/FodsR340GetNamedRangeDedicatedTests.cs",
+      "description": "Dedicated tests for FodsDocument.GetNamedRange: null/whitespace/nonexistent throws, after AddNamedRange returns non-null, SheetCount unchanged, idempotent, NamedRangeCount non-negative, dogfood",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.get_named_range",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-FODT-R329",
+      "sprint": "ff-sprint-s311-dotnet-deepening-20260630",
+      "format": "FODT",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fodt/FodtR329GetRevisionCountDedicatedTests.cs",
+      "description": "Dedicated tests for FodtDocument.GetRevisionCount: non-negative, empty ok, ParagraphCount/TableCount/SectionCount unchanged, idempotent, dogfood single and two-document",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.get_revision_count",
+      "date": "2026-07-01"
     }
   ],
-  "total_entries": 1750,
+  "total_entries": 1754,
   "changes": [
     {
       "file": "src/python/dif/models.py",
