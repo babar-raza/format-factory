@@ -30707,9 +30707,70 @@
       "tests_failed": 0,
       "export_path_affected": false,
       "notes": "ods_iter_rows() yields TableRow objects (spec_qname=table:table-row, FACT-ODS-002) for every row across all sheets in an ODS document"
+    },
+    {
+      "entry_id": "PC-ODT-R315",
+      "sprint_id": "ff-sprint-s315-odt-heading-iterator-20260626",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "format": "odt",
+      "capability_refs": [
+        "CAP-ODT-ITER-HEADINGS"
+      ],
+      "api_symbols": [
+        "odt_iter_headings"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/odt/odt_heading_iterator.py",
+          "sha256": "ede48715732920a54103c654ee4724debefe65bb66e320414dfe1bc9a59fe7a7"
+        }
+      ],
+      "test_files": [
+        "tests/python/odt/test_r315_odt_iter_headings.py"
+      ],
+      "tests_passed": 9,
+      "tests_failed": 0,
+      "export_path_affected": false,
+      "notes": "odt_iter_headings() yields Heading objects (spec_qname=text:h, FACT-ODT-EX-0094) for each heading in an ODT document"
+    },
+    {
+      "entry_id": "PC-NETPBM-R318",
+      "sprint": "ff-sprint-s309-dotnet-deepening-20260630",
+      "format": "NETPBM",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/netpbm/NetpbmR318GetMedianDedicatedTests.cs",
+      "description": "Dedicated tests for NetpbmImage.GetMedian: returns in [0,MaxValue], dims/format/MaxValue unchanged, all-zero ok, idempotent, uniform in range, dogfood finite and two-value",
+      "tests_added": 10,
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.get_median",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-FODS-R337",
+      "sprint": "ff-sprint-s309-dotnet-deepening-20260630",
+      "format": "FODS",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fods/FodsR337GetRowHeightDedicatedTests.cs",
+      "description": "Dedicated tests for FodsDocument.GetRowHeight(sheetName, rowIndex): null/whitespace/nonexistent/negative throws, valid non-negative, SheetCount unchanged, idempotent, returns set value, dogfood multi-sheets",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.get_row_height",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-FODT-R324",
+      "sprint": "ff-sprint-s309-dotnet-deepening-20260630",
+      "format": "FODT",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fodt/FodtR324GetAnnotationCountDedicatedTests.cs",
+      "description": "Dedicated tests for FodtDocument.GetAnnotationCount: non-negative, empty ok, increases after AddAnnotation, ParagraphCount/TableCount/SectionCount unchanged, idempotent, dogfood",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.get_annotation_count",
+      "date": "2026-07-01"
     }
   ],
-  "total_entries": 1742,
+  "total_entries": 1747,
   "changes": [
     {
       "file": "src/python/dif/models.py",
