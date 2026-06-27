@@ -123,6 +123,8 @@ jobs:
           print(f'Governance validators: fail={result[\"fail_count\"]} warn={result[\"warn_count\"]} pass={result[\"pass_count\"]} blocks={result[\"blocks_sprint\"]}')
           sys.exit(1 if result['blocks_sprint'] else 0)
           "
+      - name: Capability parity source registry tests
+        run: pytest tests/governance/test_capability_parity.py -v
 
   dotnet-build:
     runs-on: ubuntu-latest
@@ -171,3 +173,21 @@ jobs:
         with:
           name: coverage-report
           path: coverage.xml
+
+  capability-parity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: pip install pyyaml jsonschema
+      - name: Detect capability registry drift
+        run: python tools/capability_sync/detect_drift.py --output capability-drift.json
+      - name: Upload drift report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: capability-drift-report
+          path: capability-drift.json

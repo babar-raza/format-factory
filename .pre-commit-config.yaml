@@ -31,3 +31,11 @@ repos:
         always_run: false
         files: ^src/python/
         stages: [pre-commit]
+      - id: capability-registry-drift-check
+        name: Capability registry drift check
+        entry: python tools/capability_sync/detect_drift.py
+        language: system
+        pass_filenames: false
+        always_run: false
+        files: ^(\.supervisor/skill-registry\.yaml|\.claude/commands/command-registry\.yaml|\.supervisor/capability-routing-registry\.yaml|\.claude/commands/.*\.md|\.governance/capabilities/.*)$
+        stages: [pre-commit]

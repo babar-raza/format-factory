@@ -694,6 +694,30 @@ commands:
   command_id: rollback-and-recovery
   skill_id: rollback-and-recovery
   status: active
+- command_file: .claude/commands/capability-status.md
+  command_id: capability-status
+  created: '2026-06-27'
+  description: Read and display capability parity status (read-only)
+  phase: all
+  skill_id: capability-status
+  skill_registry_ref: true
+  status: active
+- command_file: .claude/commands/sync-capabilities.md
+  command_id: sync-capabilities
+  created: '2026-06-27'
+  description: Run full capability registry sync pipeline
+  phase: all
+  skill_id: sync-capabilities
+  skill_registry_ref: true
+  status: active
+- command_file: .claude/commands/validate-capability-parity.md
+  command_id: validate-capability-parity
+  created: '2026-06-27'
+  description: Validate cross-agent capability parity (P1/P2 checks)
+  phase: all
+  skill_id: validate-capability-parity
+  skill_registry_ref: true
+  status: active
 generated_at: '2026-06-18'
 generated_by: TC-0004
 notes: 'v1.1 (2026-06-21): Added skill_registry_ref cross-references for commands

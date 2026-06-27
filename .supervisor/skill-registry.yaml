@@ -1911,6 +1911,54 @@ skills:
   spec_qname_required: false
   status: active
   test_paths: []
+- command: /capability-status
+  command_file: .claude/commands/capability-status.md
+  idempotency: read_only
+  implementation_paths: []
+  mandatory_validations: []
+  notes: Created CROSS-AGENT-PARITY-001 (2026-06-27). Read-only — reads compiled
+    capability registry and parity report; prints summary.
+  product_track: layer_governance
+  purpose: Read compiled capability registry and parity report; print summary (read-only).
+  required_handoff_fields: []
+  skill_id: capability-status
+  spec_qname_required: false
+  status: active
+  test_paths: []
+- command: /sync-capabilities
+  command_file: .claude/commands/sync-capabilities.md
+  idempotency: create_or_update
+  implementation_paths:
+  - tools/capability_sync/run_sync.py
+  mandatory_validations:
+  - capability_registry_drift_check
+  notes: Created CROSS-AGENT-PARITY-001 (2026-06-27). Full capability sync pipeline
+    — inventory + validate + update CLAUDE.md/AGENTS.md + drift check.
+  product_track: layer_governance
+  purpose: Run full capability sync (inventory + validate + generate + update CLAUDE.md/AGENTS.md
+    + drift check).
+  required_handoff_fields: []
+  skill_id: sync-capabilities
+  spec_qname_required: false
+  status: active
+  test_paths: []
+- command: /validate-capability-parity
+  command_file: .claude/commands/validate-capability-parity.md
+  idempotency: read_only
+  implementation_paths:
+  - tools/capability_sync/validate_parity.py
+  mandatory_validations: []
+  notes: Created CROSS-AGENT-PARITY-001 (2026-06-27). Validate parity between compiled
+    capability registry and source registries (P1/P2 checks).
+  product_track: layer_governance
+  purpose: Validate parity between compiled capability registry and source registries
+    (P1/P2 checks).
+  required_handoff_fields: []
+  skill_id: validate-capability-parity
+  spec_qname_required: false
+  status: active
+  test_paths:
+  - tests/governance/test_capability_parity.py
 sprint: FORMAT-FACTORY-R98-AUTONOMOUS-LOOP-TRUST-LAYER-ITERATION-SCALING-ACCELERATION-POC-MEGA-TRAIN-001
 version: '2.0'
 visibility: generated

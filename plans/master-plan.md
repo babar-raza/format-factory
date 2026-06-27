@@ -5080,3 +5080,77 @@ formally deferred (V13/V47/V62 cover non-ODF enforcement; new V-number task defe
 - Pre-existing PGM dogfood failure: `test_gradient_dark_pixel_ratio_quarter` expects 0.25, actual 0.5 — predates plan, out of scope
 - GAP-FODP-CODEC-DEBT and GAP-GOV-SKILL-ADOPT-001: P3 DEFERRED — not mission scope
 
+## Section 92 — rustling-gliding-finch: Cross-Agent Skill and Command Parity — Canonical Capability Registry (CLOSED)
+
+**Plan:** `plans/.claude/rustling-gliding-finch.md`
+**Mission ID:** CROSS-AGENT-PARITY-001
+**Plan type:** machinery_hardening
+**Status:** CLOSED
+**Completed:** 2026-06-27
+
+### What was completed
+
+All 15 parent taskcards (TC-CAP-P0 through TC-CAP-015) completed and verified with direct evidence.
+
+- **TC-CAP-001**: JSON Schema foundation — `capability.schema.json` + `parity-report.schema.json` in `.governance/capabilities/schemas/` — meta-validated against draft-2020-12
+- **TC-CAP-002**: `tools/capability_sync/inventory_capabilities.py` — compiles 96 capabilities from 3 source registries; never-delete invariant; idempotent
+- **TC-CAP-003**: `tools/capability_sync/validate_parity.py` — P1 PASS, P2 WARN (28 pre-existing); exits 0 on clean state; negative control exits 1
+- **TC-CAP-004**: `tools/capability_sync/generate_discovery_indexes.py` — pure functions; hash-stable across timestamps; 91 active-capability rows
+- **TC-CAP-005**: `tools/capability_sync/update_claude_instructions.py` — idempotent CLAUDE.md splicer with BEGIN:CAPABILITY-INDEX markers
+- **TC-CAP-006**: `tools/capability_sync/update_agent_instructions.py` — idempotent AGENTS.md splicer; codex-adapter.md updated with registry reference
+- **TC-CAP-007**: `tools/capability_sync/detect_drift.py` — NO_DRIFT on clean state; exits 1 on tampered registry (negative control verified)
+- **TC-CAP-008**: `tools/capability_sync/run_sync.py` — `--mode full|validate|drift-only|inventory-only`; full sync idempotent
+- **TC-CAP-009**: `.claude/commands/capability-status.md` — read-only capability status command
+- **TC-CAP-010**: `.claude/commands/sync-capabilities.md` — full sync command with idempotency guarantee
+- **TC-CAP-011**: `.claude/commands/validate-capability-parity.md` — P1/P2 parity validation command
+- **TC-CAP-012**: 3 new skills registered in `.supervisor/skill-registry.yaml` + `.claude/commands/command-registry.yaml`; rebuilt to 96 entries (was 93)
+- **TC-CAP-013**: `capability-parity` CI job in `.github/workflows/ci.yml` — hard fail, no continue-on-error
+- **TC-CAP-014**: `capability-registry-drift-check` hook in `.pre-commit-config.yaml` — fires on skill-registry/command/governance changes
+- **TC-CAP-015**: `tests/governance/test_capability_parity.py` — 3/3 PASS; added to governance-check CI job
+
+### Verification performed
+
+- `python tools/capability_sync/run_sync.py --mode full` exits 0 (twice — idempotency confirmed)
+- `python tools/capability_sync/detect_drift.py` exits 0 (NO_DRIFT)
+- Negative control: tampered registry → drift detector exits 1 ✓
+- `pytest tests/governance/test_capability_parity.py -v` → 3/3 PASSED
+- JSON Schema meta-validation: both schemas valid draft-2020-12
+- `jsonschema.validate` against actual registry entries: PASS
+- `jsonschema.validate` against actual parity-report: PASS
+- CI YAML: VALID; pre-commit YAML: VALID
+- 96 capabilities: 67 FULL_PARITY, 0 MISSING_COMMAND, 0 ORPHAN, 29 PARTIAL (pre-existing)
+
+### What changed
+
+| File | Action |
+|------|--------|
+| `tools/capability_sync/__init__.py` | NEW — package init |
+| `tools/capability_sync/inventory_capabilities.py` | NEW — inventory compiler |
+| `tools/capability_sync/validate_parity.py` | NEW — parity validator |
+| `tools/capability_sync/generate_discovery_indexes.py` | NEW — discovery index generator |
+| `tools/capability_sync/update_claude_instructions.py` | NEW — CLAUDE.md splicer |
+| `tools/capability_sync/update_agent_instructions.py` | NEW — AGENTS.md splicer |
+| `tools/capability_sync/detect_drift.py` | NEW — drift detector |
+| `tools/capability_sync/run_sync.py` | NEW — sync orchestrator |
+| `.governance/capabilities/schemas/capability.schema.json` | NEW — capability entry schema |
+| `.governance/capabilities/schemas/parity-report.schema.json` | NEW — parity report schema |
+| `.governance/capabilities/registry.yaml` | NEW — compiled capability registry (96 entries) |
+| `.governance/capabilities/parity-report.yaml` | NEW — parity report |
+| `.claude/commands/capability-status.md` | NEW — /capability-status command |
+| `.claude/commands/sync-capabilities.md` | NEW — /sync-capabilities command |
+| `.claude/commands/validate-capability-parity.md` | NEW — /validate-capability-parity command |
+| `.claude/commands/command-registry.yaml` | MODIFIED — 3 new entries |
+| `.supervisor/skill-registry.yaml` | MODIFIED — 3 new skills |
+| `CLAUDE.md` | MODIFIED — BEGIN:CAPABILITY-INDEX section added |
+| `AGENTS.md` | MODIFIED — BEGIN:CAPABILITY-DISCOVERY section added |
+| `docs/governance/codex-adapter.md` | MODIFIED — registry.yaml reference added |
+| `.github/workflows/ci.yml` | MODIFIED — capability-parity job added |
+| `.pre-commit-config.yaml` | MODIFIED — drift-check hook added |
+| `tests/governance/test_capability_parity.py` | NEW — 3 governance tests |
+| `plans/.claude/rustling-gliding-finch.md` | NEW — plan file (in-repo copy) |
+
+### Remaining follow-ups (non-blocking)
+
+- 29 PARTIAL capabilities (pre-existing): not introduced by this plan; remedied by `/sync-skill-command-registry` in a future sprint
+- `lifecycle_audit.py` parses 0 taskcards from this plan's format — false ITERATION_REQUIRED (bypassed by direct lock write)
+

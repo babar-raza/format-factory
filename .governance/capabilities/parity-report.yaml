@@ -1,0 +1,60 @@
+checks:
+- check_id: skill_has_command_file
+  failure_count: 0
+  failures: []
+  priority: P1
+  verdict: PASS
+- check_id: command_has_skill
+  failure_count: 0
+  failures: []
+  priority: P1
+  verdict: PASS
+- check_id: command_in_registry
+  failure_count: 28
+  failures:
+  - 'append-layer-verification-log: has command_file but missing from command-registry.yaml'
+  - 'append-layer-work-log: has command_file but missing from command-registry.yaml'
+  - 'audit-root-tools: has command_file but missing from command-registry.yaml'
+  - 'build-obligation-register: has command_file but missing from command-registry.yaml'
+  - 'check-source-loc: has command_file but missing from command-registry.yaml'
+  - 'close-layer-task: has command_file but missing from command-registry.yaml'
+  - 'create-consumer-roundtrip: has command_file but missing from command-registry.yaml'
+  - 'create-cross-layer-handoff: has command_file but missing from command-registry.yaml'
+  - 'create-permanent-layer-plan: has command_file but missing from command-registry.yaml'
+  - 'detect-stale-layer-state: has command_file but missing from command-registry.yaml'
+  - 'detect-unlogged-work: has command_file but missing from command-registry.yaml'
+  - 'identify-primary-layer: has command_file but missing from command-registry.yaml'
+  - 'ingest-spec-sal: has command_file but missing from command-registry.yaml'
+  - 'inventory-permanent-layer-plans: has command_file but missing from command-registry.yaml'
+  - 'migrate-temporary-agent-plan: has command_file but missing from command-registry.yaml'
+  - 'portfolio-reconcile: has command_file but missing from command-registry.yaml'
+  - 'reconcile-layer-index: has command_file but missing from command-registry.yaml'
+  - 'reconcile-layer-task-register: has command_file but missing from command-registry.yaml'
+  - 'register-layer-gap: has command_file but missing from command-registry.yaml'
+  - 'register-layer-task: has command_file but missing from command-registry.yaml'
+  - 'run-oracle: has command_file but missing from command-registry.yaml'
+  - 'select-next-layer-task: has command_file but missing from command-registry.yaml'
+  - 'update-layer-current-state: has command_file but missing from command-registry.yaml'
+  - 'update-layer-master-index: has command_file but missing from command-registry.yaml'
+  - 'update-layer-session-handoff: has command_file but missing from command-registry.yaml'
+  - 'update-obligation-entry: has command_file but missing from command-registry.yaml'
+  - 'validate-permanent-layer-plans: has command_file but missing from command-registry.yaml'
+  - 'verify-obligation-entry: has command_file but missing from command-registry.yaml'
+  priority: P2
+  verdict: WARN
+- check_id: routing_coverage
+  failure_count: 0
+  failures: []
+  priority: P2
+  verdict: PASS
+generated_at: '2026-06-27T02:20:48+00:00'
+generated_by: validate_parity.py
+overall_verdict: WARN
+parity_counts:
+  FULL_PARITY: 67
+  PARTIAL: 29
+source_versions:
+  command_registry: .claude\commands\command-registry.yaml
+  routing_registry: .supervisor\capability-routing-registry.yaml
+  skill_registry: r98-governed-skills-expanded
+total_capabilities: 96
