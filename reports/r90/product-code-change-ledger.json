@@ -30474,9 +30474,95 @@
       "tests_failed": 0,
       "export_path_affected": false,
       "notes": "toml_iter_tables() yields Table objects (spec_qname=toml:table, FACT-TOML-001) for each top-level table section in a TOML document"
+    },
+    {
+      "entry_id": "PC-NETPBM-R315",
+      "sprint": "ff-sprint-s306-dotnet-deepening-20260630",
+      "format": "NETPBM",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/netpbm/NetpbmR315GetStandardDeviationDedicatedTests.cs",
+      "description": "Dedicated tests for NetpbmImage.GetStandardDeviation: non-negative double, dims/format/MaxValue unchanged, all-zero ok, idempotent, mixed image ok, dogfood finite-or-NaN and uniform near-zero",
+      "tests_added": 10,
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.get_standard_deviation",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-FODS-R334",
+      "sprint": "ff-sprint-s306-dotnet-deepening-20260630",
+      "format": "FODS",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fods/FodsR334SetColumnWidthDedicatedTests.cs",
+      "description": "Dedicated tests for FodsDocument.SetColumnWidth(sheetName, columnIndex, width): null/whitespace/nonexistent/negative throws, valid ok, SheetCount unchanged, called-twice ok, multi-column ok, dogfood multi-sheets",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.set_column_width",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-FODT-R321",
+      "sprint": "ff-sprint-s306-dotnet-deepening-20260630",
+      "format": "FODT",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fodt/FodtR321GetCharCountDedicatedTests.cs",
+      "description": "Dedicated tests for FodtDocument.GetCharCount: non-negative, empty ok, increases after AddParagraph, ParagraphCount/TableCount/SectionCount unchanged, idempotent, larger content >= smaller, dogfood",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.get_char_count",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-SYLK-R310",
+      "sprint_id": "ff-sprint-s310-sylk-row-iterator-20260626",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "format": "sylk",
+      "capability_refs": [
+        "CAP-SYLK-ITER-ROWS"
+      ],
+      "api_symbols": [
+        "sylk_iter_rows"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/sylk/sylk_row_iterator.py",
+          "sha256": "2dfbf7a1ac0916565c1df33b00d23f39089166b036ee23e3e12d02622f11e70c"
+        }
+      ],
+      "test_files": [
+        "tests/python/sylk/test_r310_sylk_iter_rows.py"
+      ],
+      "tests_passed": 11,
+      "tests_failed": 0,
+      "export_path_affected": false,
+      "notes": "sylk_iter_rows() yields Row objects (spec_qname=sylk:row, FACT-SYLK-002) for each row in a SYLK document"
+    },
+    {
+      "entry_id": "PC-NDJSON-R311",
+      "sprint_id": "ff-sprint-s311-ndjson-field-iterator-20260626",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "format": "ndjson",
+      "capability_refs": [
+        "CAP-NDJSON-ITER-FIELDS"
+      ],
+      "api_symbols": [
+        "ndjson_iter_fields"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ndjson/ndjson_field_iterator.py",
+          "sha256": "d2a79a202936d741fd11599654cd31bff7f5a67f5a929f29c7c502d5a16b8969"
+        }
+      ],
+      "test_files": [
+        "tests/python/ndjson/test_r311_ndjson_iter_fields.py"
+      ],
+      "tests_passed": 11,
+      "tests_failed": 0,
+      "export_path_affected": false,
+      "notes": "ndjson_iter_fields() yields Field objects (spec_qname=ndjson:field, FACT-NDJSON-002) for every field in every record of an NDJSON document"
     }
   ],
-  "total_entries": 1728,
+  "total_entries": 1732,
   "changes": [
     {
       "file": "src/python/dif/models.py",
