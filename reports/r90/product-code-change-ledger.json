@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s284-ppm-installed-workflow-20260626",
+  "latest_sprint": "ff-sprint-s385-dotnet-deepening-20260630",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -33430,9 +33430,51 @@
       "description": "Dedicated tests for FodtDocument.EndnoteCount \u2014 new non-negative, counts unchanged, idempotent, is int, dogfood paragraphs/mixed/loop",
       "sprint_id": "ff-sprint-s384-dotnet-deepening-20260630",
       "worker_self_grade": "PASS"
+    },
+    {
+      "entry_id": "PC-NETPBM-R398",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s385-dotnet-deepening-20260630",
+      "product": "NETPBM .NET",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.get_color_channel_count"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR398GetColorChannelCountDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "description": "Dedicated tests for NetpbmImage.GetColorChannelCount: PBM=1, PGM=1, PPM=3, dims unchanged, idempotent, dogfood 2x2 PBM=1, 4x4 PPM=3"
+    },
+    {
+      "entry_id": "PC-FODS-R428",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s385-dotnet-deepening-20260630",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.get_document_keywords"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR428GetDocumentKeywordsDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "description": "Dedicated tests for FodsDocument.GetDocumentKeywords: non-null, is string, SheetCount unchanged, idempotent, SetKeywords+Get, long/empty/multi round-trips, dogfood overwrite"
+    },
+    {
+      "entry_id": "PC-FODT-R403",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s385-dotnet-deepening-20260630",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.get_comment_count"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR403GetCommentCountDedicatedTests.cs"
+      ],
+      "test_count": 9,
+      "description": "Dedicated tests for FodtDocument.CommentCount: new non-negative, counts unchanged, idempotent, is int, dogfood paragraphs/mixed/loop"
     }
   ],
-  "total_entries": 1981,
+  "total_entries": 1984,
   "changes": [
     {
       "file": "src/python/dif/models.py",
