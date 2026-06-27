@@ -1,0 +1,86 @@
+using System;
+using System.IO;
+using Xunit;
+namespace FormatFactory.Csv.Tests;
+public class CsvR282GetColumnRangeAndMeanDeepTests : IDisposable
+{
+    private readonly string _tempDir;
+    public CsvR282GetColumnRangeAndMeanDeepTests()
+    {
+        _tempDir = Path.Combine(Path.GetTempPath(), "CsvR282GetColumnRangeAndMeanDeepTests_" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(_tempDir);
+    }
+    public void Dispose() { if (Directory.Exists(_tempDir)) Directory.Delete(_tempDir, recursive: true); }
+    private string TempFile(string name) => Path.Combine(_tempDir, name);
+    private string CreateCsv(params string[] rows) => string.Join("\n", rows);
+    [Fact]
+    public void LoadFile_ValidCsv_ReturnsRowCount()
+    {
+        var content = CreateCsv("a,b", "1,2", "3,4");
+        var path = TempFile("test.csv");
+        File.WriteAllText(path, content);
+        var doc = CsvDocument.LoadFile(path);
+        Assert.Equal(3, doc.RowCount);
+    }
+    [Fact]
+    public void GetColumnRange_NumericColumn_ReturnsMaxMinusMin()
+    {
+        var content = CreateCsv("values", "10", "50", "30");
+        var path = TempFile("range.csv");
+        File.WriteAllText(path, content);
+        var doc = CsvDocument.LoadFile(path);
+        Assert.Equal(40, doc.GetColumnRange(0));
+    }
+    [Fact]
+    public void GetColumnMean_DecimalValues_ReturnsMean()
+    {
+        var content = CreateCsv("vals", "1.5", "2.5", "3.0");
+        var path = TempFile("mean.csv");
+        File.WriteAllText(path, content);
+        var doc = CsvDocument.LoadFile(path);
+        Assert.Equal(2.333, doc.GetColumnMean(0), 3);
+    }
+    [Fact]
+    public void GetColumnMinMax_MixedPositiveNegative_ReturnsCorrect()
+    {
+        var content = CreateCsv("data", "-100", "50", "200", "-50");
+        var path = TempFile("minmax.csv");
+        File.WriteAllText(path, content);
+        var doc = CsvDocument.LoadFile(path);
+        Assert.Equal(-100, doc.GetColumnMin(0));
+        Assert.Equal(200, doc.GetColumnMax(0));
+    }
+    [Fact]
+    public void SaveLoad_RoundTrip_PreservesAllStats()
+    {
+        var content = CreateCsv("col1,col2", "1,10", "2,20", "3,30");
+        var path = TempFile("roundtrip.csv");
+        File.WriteAllText(path, content);
+        var doc = CsvDocument.LoadFile(path);
+        var savePath = TempFile("saved.csv");
+        doc.SaveFile(savePath);
+        var reloaded = CsvDocument.LoadFile(savePath);
+        Assert.Equal(doc.RowCount, reloaded.RowCount);
+        Assert.Equal(doc.GetColumnRange(0), reloaded.GetColumnRange(0));
+        Assert.Equal(doc.GetColumnMean(1), reloaded.GetColumnMean(1), 5);
+    }
+    [Fact]
+    public void Dogfood_UkGovCsv_RangeAndMeanCorrect()
+    {
+        var ukContent = CreateCsv(
+            "Authority,Population,Budget_Billions",
+            "NHS England,56000000,150",
+            "HMRC,67000000,80",
+            "DVLA,48000000,5",
+            "ONS,67000000,3",
+            "DEFRA,5000000,8"
+        );
+        var path = TempFile("ukgov.csv");
+        File.WriteAllText(path, ukContent);
+        var doc = CsvDocument.LoadFile(path);
+        Assert.Equal(5, doc.RowCount);
+        Assert.Equal(62000000, doc.GetColumnRange(1));
+        Assert.Equal(48600000, doc.GetColumnMean(1));
+        Assert.Equal(49.4, doc.GetColumnMean(2), 2);
+    }
+}
