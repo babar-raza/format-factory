@@ -31714,9 +31714,45 @@
       "tests_added": 9,
       "capability_ref": "commercial_net_products.FODT.dotnet_status.get_metadata_description",
       "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-NETPBM-R346",
+      "sprint": "ff-sprint-s333-dotnet-deepening-20260630",
+      "format": "NETPBM",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/netpbm/NetpbmR346GetAspectRatioDedicatedTests.cs",
+      "description": "Dedicated tests for NetpbmImage.GetAspectRatio: valid ok, width/height/format/MaxValue unchanged, square=1.0, wide>1, tall<1, idempotent, dogfood 4x2=2.0 and 3x6=0.5",
+      "tests_added": 11,
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.get_aspect_ratio",
+      "date": "2026-07-02"
+    },
+    {
+      "entry_id": "PC-FODS-R368",
+      "sprint": "ff-sprint-s333-dotnet-deepening-20260630",
+      "format": "FODS",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fods/FodsR368GetSheetTabColorDedicatedTests.cs",
+      "description": "Dedicated tests for FodsDocument.GetSheetTabColor: null/whitespace/nonexistent throws, valid non-null, SheetCount unchanged, idempotent, dogfood SetSheetTabColor then Get, multiple sheets each have color",
+      "tests_added": 8,
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.get_sheet_tab_color",
+      "date": "2026-07-02"
+    },
+    {
+      "entry_id": "PC-FODT-R351",
+      "sprint": "ff-sprint-s333-dotnet-deepening-20260630",
+      "format": "FODT",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fodt/FodtR351GetMetadataCreatorDedicatedTests.cs",
+      "description": "Dedicated tests for FodtDocument.GetMetadataCreator: empty ok, non-null, counts unchanged, idempotent, after-SetCreator returns creator, dogfood creator+content and creator unchanged after AddParagraph",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.get_metadata_creator",
+      "date": "2026-07-02"
     }
   ],
-  "total_entries": 1825,
+  "total_entries": 1828,
   "changes": [
     {
       "file": "src/python/dif/models.py",
