@@ -31786,9 +31786,45 @@
       "tests_added": 9,
       "capability_ref": "commercial_net_products.FODT.dotnet_status.get_metadata_language",
       "date": "2026-07-02"
+    },
+    {
+      "entry_id": "PC-NETPBM-R348",
+      "sprint": "ff-sprint-s335-dotnet-deepening-20260630",
+      "format": "NETPBM",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/netpbm/NetpbmR348GetBitsPerPixelDedicatedTests.cs",
+      "description": "Dedicated tests for NetpbmImage.GetBitsPerPixel: valid ok, positive, dims/format/MaxValue unchanged, PBM=1, PGM-255=8, idempotent, dogfood PPM>=8",
+      "tests_added": 10,
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.get_bits_per_pixel",
+      "date": "2026-07-02"
+    },
+    {
+      "entry_id": "PC-FODS-R371",
+      "sprint": "ff-sprint-s335-dotnet-deepening-20260630",
+      "format": "FODS",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fods/FodsR371GetCellAlignmentDedicatedTests.cs",
+      "description": "Dedicated tests for FodsDocument.GetCellAlignment: null/whitespace/nonexistent/negative throws, valid non-null, SheetCount unchanged, idempotent, dogfood SetCellAlignment then Get, multiple cells",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.get_cell_alignment",
+      "date": "2026-07-02"
+    },
+    {
+      "entry_id": "PC-FODT-R353",
+      "sprint": "ff-sprint-s335-dotnet-deepening-20260630",
+      "format": "FODT",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fodt/FodtR353GetMetadataDateDedicatedTests.cs",
+      "description": "Dedicated tests for FodtDocument.GetMetadataDate: empty ok, non-null, counts unchanged, idempotent, after-SetDate returns date, dogfood date+content and date unchanged after AddParagraph",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.get_metadata_date",
+      "date": "2026-07-02"
     }
   ],
-  "total_entries": 1831,
+  "total_entries": 1834,
   "changes": [
     {
       "file": "src/python/dif/models.py",
