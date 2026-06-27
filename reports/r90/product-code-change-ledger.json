@@ -33130,9 +33130,39 @@
       "description": "Dedicated tests for FodtDocument.GetParagraphSpacing \u2014 neg/OOR/empty throws, valid non-negative, counts unchanged, idempotent, SetSpacing 1.5+Get, multiple paragraphs",
       "sprint_id": "ff-sprint-s374-dotnet-deepening-20260630",
       "worker_self_grade": "PASS"
+    },
+    {
+      "entry_id": "PC-NETPBM-R388",
+      "format": "NETPBM",
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.get_variance",
+      "change_type": "test_added",
+      "file_path": "tests/net/netpbm/NetpbmR388GetVarianceDedicatedTests.cs",
+      "description": "Dedicated tests for NetpbmImage.GetVariance \u2014 non-negative, uniform=0.0, dims unchanged, idempotent, two-value positive, gradient positive",
+      "sprint_id": "ff-sprint-s375-dotnet-deepening-20260630",
+      "worker_self_grade": "PASS"
+    },
+    {
+      "entry_id": "PC-FODS-R418",
+      "format": "FODS",
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.get_sheet_row_count",
+      "change_type": "test_added",
+      "file_path": "tests/net/fods/FodsR418GetSheetRowCountDedicatedTests.cs",
+      "description": "Dedicated tests for FodsDocument.GetSheetRowCount \u2014 guard throws, new non-negative, SheetCount unchanged, idempotent, after SetCellValues, multiple sheets",
+      "sprint_id": "ff-sprint-s375-dotnet-deepening-20260630",
+      "worker_self_grade": "PASS"
+    },
+    {
+      "entry_id": "PC-FODT-R393",
+      "format": "FODT",
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.get_section_count",
+      "change_type": "test_added",
+      "file_path": "tests/net/fodt/FodtR393GetSectionCountDedicatedTests.cs",
+      "description": "Dedicated tests for FodtDocument.SectionCount \u2014 new non-negative, counts unchanged, idempotent, is int, after paragraphs non-negative",
+      "sprint_id": "ff-sprint-s375-dotnet-deepening-20260630",
+      "worker_self_grade": "PASS"
     }
   ],
-  "total_entries": 1951,
+  "total_entries": 1954,
   "changes": [
     {
       "file": "src/python/dif/models.py",
