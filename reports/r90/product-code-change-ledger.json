@@ -31225,9 +31225,45 @@
       "tests_added": 9,
       "capability_ref": "commercial_net_products.FODT.dotnet_status.get_annotation_count",
       "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-NETPBM-R334",
+      "sprint": "ff-sprint-s322-dotnet-deepening-20260630",
+      "format": "NETPBM",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/netpbm/NetpbmR334GetVarianceDedicatedTests.cs",
+      "description": "Dedicated tests for NetpbmImage.GetVariance: valid no exception, dims/format/MaxValue unchanged, non-negative, all-zero zero-variance, idempotent, uniform zero-variance, dogfood gradient",
+      "tests_added": 10,
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.get_variance",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-FODS-R355",
+      "sprint": "ff-sprint-s322-dotnet-deepening-20260630",
+      "format": "FODS",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fods/FodsR355GetCellFormulaDedicatedTests.cs",
+      "description": "Dedicated tests for FodsDocument.GetCellFormula: null/whitespace/nonexistent/negative throws, valid non-null, SheetCount unchanged, idempotent, dogfood SetCellFormula then Get, multiple cells",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.get_cell_formula",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-FODT-R340",
+      "sprint": "ff-sprint-s322-dotnet-deepening-20260630",
+      "format": "FODT",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fodt/FodtR340GetWordCountDedicatedTests.cs",
+      "description": "Dedicated tests for FodtDocument.GetWordCount: non-negative, empty ok, increases after AddParagraph, ParagraphCount/TableCount/SectionCount unchanged, idempotent, dogfood multi-paragraph and heading+paragraph",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.get_word_count",
+      "date": "2026-07-01"
     }
   ],
-  "total_entries": 1784,
+  "total_entries": 1787,
   "changes": [
     {
       "file": "src/python/dif/models.py",
