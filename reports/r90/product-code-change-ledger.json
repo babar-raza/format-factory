@@ -32002,9 +32002,45 @@
       "tests_added": 9,
       "capability_ref": "commercial_net_products.FODT.dotnet_status.get_section_name",
       "date": "2026-07-02"
+    },
+    {
+      "entry_id": "PC-NETPBM-R354",
+      "sprint": "ff-sprint-s341-dotnet-deepening-20260630",
+      "format": "NETPBM",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/netpbm/NetpbmR354GetSaturationLevelDedicatedTests.cs",
+      "description": "Dedicated tests for NetpbmImage.GetSaturationLevel: valid ok, in [0,1], dims/format/MaxValue unchanged, all-zero=0.0, idempotent, dogfood uniform=0.0 and mixed=in-range",
+      "tests_added": 10,
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.get_saturation_level",
+      "date": "2026-07-02"
+    },
+    {
+      "entry_id": "PC-FODS-R379",
+      "sprint": "ff-sprint-s341-dotnet-deepening-20260630",
+      "format": "FODS",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fods/FodsR379GetCellFontItalicDedicatedTests.cs",
+      "description": "Dedicated tests for FodsDocument.GetCellFontItalic: null/whitespace/nonexistent/negative throws, valid bool, SheetCount unchanged, idempotent, dogfood SetFontItalic true and false",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.get_cell_font_italic",
+      "date": "2026-07-02"
+    },
+    {
+      "entry_id": "PC-FODT-R359",
+      "sprint": "ff-sprint-s341-dotnet-deepening-20260630",
+      "format": "FODT",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fodt/FodtR359GetAnnotationTextDedicatedTests.cs",
+      "description": "Dedicated tests for FodtDocument.GetAnnotationText: index guards throw, valid non-null, counts unchanged, idempotent, after-AddAnnotation exact text, dogfood multiple annotations",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.get_annotation_text",
+      "date": "2026-07-02"
     }
   ],
-  "total_entries": 1849,
+  "total_entries": 1852,
   "changes": [
     {
       "file": "src/python/dif/models.py",
