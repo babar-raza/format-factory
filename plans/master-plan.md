@@ -3969,7 +3969,7 @@ Covered 5 Python FOSS packages (fods, fodt, ndjson, toml, gnumeric) and 4 .NET p
 - MCT-FA-009/012 — SAL repair pilots + GNUMERIC masquerade (dedicated session)
 - MCT-PDL-006 — 17-format repair taskcards (scaffolding only)
 - MCT-PQ-WAVE0/1 — zany-riding-goblet (SUPERSEDED, recon required)
-- MCT-MREAD-ALL — serialized-tickling-bentley (stale assumptions)
+- MCT-MREAD-ALL — serialized-tickling-bentley ~~(stale assumptions)~~ → **CLOSED 2026-06-27** (see Section 91)
 
 ### Commits
 
@@ -5022,4 +5022,61 @@ formally deferred (V13/V47/V62 cover non-ODF enforcement; new V-number task defe
 - AI dead code cleanup: ai_product_brain.py, ai_learning_loop.py, ai_implementation_designer.py — delete in dedicated sprint
 - Grade-cache TTL: Add 7-day TTL to .local/supervisor/grade-cache.json (TBD-TASKCARD-LA-WIRE-060)
 - vivid-napping-kurzweil hardening addendum: ALL_CLOSED (32/32); others PARTIALLY_CLOSED
+
+## Section 91 — serialized-tickling-bentley: Format Factory Machinery Readiness R3 (CLOSED)
+
+**Plan:** `C:/Users/prora/.claude/plans/serialized-tickling-bentley.md` — TERMINAL_CLOSED
+**Mission:** FF-MREAD-20260626-R3
+**Type:** machinery_hardening | **Completed:** 2026-06-27
+**Verdict:** CONVERGENCE_COMPLETE_ALL_GREEN_AND_TASK_CLOSED
+
+### What was completed
+
+3 taskcards executed (TC-MREAD-F001 through TC-MREAD-F003):
+
+| Taskcard | Title | Proof Level | Result |
+|----------|-------|-------------|--------|
+| TC-MREAD-F001 | Fix 26 test collection errors (gnumeric circular import + ZST dogfood) | PL3 | PASS — 0 errors (was 26), 36,023 tests collected |
+| TC-MREAD-F002 | TOML `installed_workflow()` — close GAP-TOML-FOSS-INSTALLED_WO-001 | PL3 | PASS — 14/14 tests pass, wheel proof, gap.status=closed |
+| TC-MREAD-F003 | SAL facts for 13 zero-fact formats (ROOT-02 fix) | PL2 | PASS — traceability 94.4% (was 56.3%), high-sev dangling 129 (was 351) |
+
+### Key findings (post-sprint audit)
+
+- All 3 taskcards COMPLETED_AND_VERIFIED at target proof levels
+- AUD-001 (L1): Source changes uncommitted post-plan — consumed by controlled execution (two commits)
+- No material audit findings remaining after AUD-001 consumption
+
+### What changed
+
+| File | Action | Taskcard |
+|------|--------|----------|
+| `src/python/gnumeric/gnumeric_analytics.py` | Fix circular import (get_column_count/count_nonempty_cells from gnumeric_workbook_stats) | F001 |
+| `src/python/gnumeric/gnumeric_codec.py` | Add `gnumeric_installed_workflow()` | F001 |
+| `src/python/gnumeric/__init__.py` | Export update | F001 |
+| `tests/python/dogfood/test_dogfood_zst_remaining_analytics_ndjson_export.py` | Fix spec_from_file_location → direct import | F001 |
+| `tests/python/dogfood/test_dogfood_xcf_qoi_zst_remaining_analytics_ndjson_export.py` | Fix spec_from_file_location → direct import | F001 |
+| `src/python/toml/toml_codec.py` | Add `installed_workflow()` | F002 |
+| `src/python/toml/__init__.py` | Export update | F002 |
+| `tests/python/toml/test_gap_installed_workflow.py` | New: 14 tests (source + wheel) | F002 |
+| `reports/capability-layer/gap-sal-traceability-20260626.json` | SAL traceability audit (56.3% → 94.4%) | F003 |
+| `reports/skills-r100/skill-transcripts/sal-pipeline-heal-TC-MREAD-F003.json` | Skill transcript | F003 |
+
+### Verification performed
+
+- 43 targeted tests PASS (gnumeric, TOML installed_workflow, ZST dogfood, FODG/NDJSON/TSV wheel)
+- 0 collection errors (full suite: 36,023 tests collected)
+- GAP-TOML-FOSS-INSTALLED_WO-001 status: `closed` in gap ledger
+- SAL traceability 94.4%, high-sev dangling refs 129 — both within mission targets (>75%, <200)
+- All 13 previously zero-fact formats now have ≥15 SAL facts
+- Product-code ledger entries: PC-GNUMERIC-ANALYTICS-CIRCULAR-IMPORT-FIX-001, PC-TOML-INSTALLED-WORKFLOW-001
+
+### Commits
+
+- `4be97ea6` — fix(gnumeric,zst): resolve circular import in gnumeric_analytics.py; fix ZST dogfood spec_from_file_location pattern (TC-MREAD-F001)
+- `7df16443` — feat(toml,sal): TOML installed_workflow() + SAL facts seeding for 13 formats (TC-MREAD-F002, TC-MREAD-F003)
+
+### Remaining follow-ups (non-blocking)
+
+- Pre-existing PGM dogfood failure: `test_gradient_dark_pixel_ratio_quarter` expects 0.25, actual 0.5 — predates plan, out of scope
+- GAP-FODP-CODEC-DEBT and GAP-GOV-SKILL-ADOPT-001: P3 DEFERRED — not mission scope
 
