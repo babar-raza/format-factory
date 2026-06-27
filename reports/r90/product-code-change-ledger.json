@@ -32740,9 +32740,39 @@
       "api_method": "GetDocumentLanguage",
       "test_count": 9,
       "description": "Dedicated tests for FodtDocument.GetDocumentLanguage: valid non-null, counts unchanged, idempotent, non-empty, SetLanguage en-US+Get, dogfood English+French non-null"
+    },
+    {
+      "entry_id": "PC-NETPBM-R375",
+      "sprint": "ff-sprint-s362-dotnet-deepening-20260630",
+      "format": "NETPBM",
+      "r_number": 375,
+      "test_file": "tests/net/netpbm/NetpbmR375GetColorDepthDedicatedTests.cs",
+      "api_method": "GetColorDepth",
+      "test_count": 10,
+      "description": "Dedicated tests for NetpbmImage.GetColorDepth: valid positive, PBM/PGM/PPM positive, dims/format/MaxValue unchanged, idempotent, dogfood 1x1 PBM"
+    },
+    {
+      "entry_id": "PC-FODS-R404",
+      "sprint": "ff-sprint-s362-dotnet-deepening-20260630",
+      "format": "FODS",
+      "r_number": 404,
+      "test_file": "tests/net/fods/FodsR404GetCellFontSizeDedicatedTests.cs",
+      "api_method": "GetCellFontSize",
+      "test_count": 9,
+      "description": "Dedicated tests for FodsDocument.GetCellFontSize: null/whitespace/nonexistent/negative throws, valid non-negative, SheetCount unchanged, idempotent, SetFontSize14+Get, multiple cells"
+    },
+    {
+      "entry_id": "PC-FODT-R380",
+      "sprint": "ff-sprint-s362-dotnet-deepening-20260630",
+      "format": "FODT",
+      "r_number": 380,
+      "test_file": "tests/net/fodt/FodtR380GetDocumentAuthorDedicatedTests.cs",
+      "api_method": "GetDocumentAuthor",
+      "test_count": 9,
+      "description": "Dedicated tests for FodtDocument.GetDocumentAuthor: valid non-null, counts unchanged, idempotent, non-empty, SetAuthor Alice Johnson+Get, dogfood Jane Doe+Corp Legal Dept"
     }
   ],
-  "total_entries": 1912,
+  "total_entries": 1915,
   "changes": [
     {
       "file": "src/python/dif/models.py",
