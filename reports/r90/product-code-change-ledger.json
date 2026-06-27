@@ -30388,9 +30388,95 @@
       "tests_failed": 0,
       "export_path_affected": false,
       "notes": "pgm_iter_graymaps() yields Graymap objects (spec_qname=pgm:graymap, FACT-PGM-002) for the grayscale raster in a PGM image"
+    },
+    {
+      "entry_id": "PC-PPM-R308",
+      "sprint_id": "ff-sprint-s308-ppm-pixmap-iterator-20260626",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "format": "ppm",
+      "capability_refs": [
+        "CAP-PPM-ITER-PIXMAPS"
+      ],
+      "api_symbols": [
+        "ppm_iter_pixmaps"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ppm/ppm_pixmap_iterator.py",
+          "sha256": "6b0ff78c2277354f034679a7513a6ebbdfafb5ba5d74f964cbe89ed46a306186"
+        }
+      ],
+      "test_files": [
+        "tests/python/ppm/test_r308_ppm_iter_pixmaps.py"
+      ],
+      "tests_passed": 11,
+      "tests_failed": 0,
+      "export_path_affected": false,
+      "notes": "ppm_iter_pixmaps() yields Pixmap objects (spec_qname=ppm:pixmap, FACT-PPM-002) for the RGB raster in a PPM image"
+    },
+    {
+      "entry_id": "PC-NETPBM-R314",
+      "sprint": "ff-sprint-s305-dotnet-deepening-20260630",
+      "format": "NETPBM",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/netpbm/NetpbmR314FlipVerticalDedicatedTests.cs",
+      "description": "Dedicated tests for NetpbmImage.FlipVertical: valid ok, pixel mirrors to row Height-1-y, flip-twice restores, dims/format/MaxValue unchanged, all in range, called-twice ok, dogfood double flip",
+      "tests_added": 10,
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.flip_vertical",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-FODS-R333",
+      "sprint": "ff-sprint-s305-dotnet-deepening-20260630",
+      "format": "FODS",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fods/FodsR333GetCellCommentDedicatedTests.cs",
+      "description": "Dedicated tests for FodsDocument.GetCellComment(sheetName, row, col): null/whitespace/nonexistent/negative throws, valid non-null, SheetCount unchanged, idempotent, dogfood after AddComment",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.get_cell_comment",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-FODT-R320",
+      "sprint": "ff-sprint-s305-dotnet-deepening-20260630",
+      "format": "FODT",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fodt/FodtR320GetWordCountDedicatedTests.cs",
+      "description": "Dedicated tests for FodtDocument.GetWordCount: non-negative, empty ok, increases after AddParagraph, ParagraphCount/TableCount/SectionCount unchanged, idempotent, dogfood",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.get_word_count",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-TOML-R309",
+      "sprint_id": "ff-sprint-s309-toml-table-iterator-20260626",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "format": "toml",
+      "capability_refs": [
+        "CAP-TOML-ITER-TABLES"
+      ],
+      "api_symbols": [
+        "toml_iter_tables"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/toml/toml_table_iterator.py",
+          "sha256": "995ff9b88a2e42e83e51c12b7577c68ff87f7f47ee31cc03e2b343e57db517fa"
+        }
+      ],
+      "test_files": [
+        "tests/python/toml/test_r309_toml_iter_tables.py"
+      ],
+      "tests_passed": 10,
+      "tests_failed": 0,
+      "export_path_affected": false,
+      "notes": "toml_iter_tables() yields Table objects (spec_qname=toml:table, FACT-TOML-001) for each top-level table section in a TOML document"
     }
   ],
-  "total_entries": 1723,
+  "total_entries": 1728,
   "changes": [
     {
       "file": "src/python/dif/models.py",
