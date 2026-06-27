@@ -32326,9 +32326,45 @@
       "tests_added": 9,
       "capability_ref": "commercial_net_products.FODT.dotnet_status.get_paragraph_alignment",
       "date": "2026-07-02"
+    },
+    {
+      "entry_id": "PC-NETPBM-R363",
+      "sprint": "ff-sprint-s350-dotnet-deepening-20260630",
+      "format": "NETPBM",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/netpbm/NetpbmR363GetPixelValueRangeDedicatedTests.cs",
+      "description": "Dedicated tests for NetpbmImage.GetPixelValueRange: valid ok, non-negative, dims/format/MaxValue unchanged, uniform=0, idempotent, dogfood full-range=255, mixed>0",
+      "tests_added": 10,
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.get_pixel_value_range",
+      "date": "2026-07-02"
+    },
+    {
+      "entry_id": "PC-FODS-R388",
+      "sprint": "ff-sprint-s350-dotnet-deepening-20260630",
+      "format": "FODS",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fods/FodsR388GetCellTextRotationDedicatedTests.cs",
+      "description": "Dedicated tests for FodsDocument.GetCellTextRotation: null/whitespace/nonexistent/negative throws, valid in range, SheetCount unchanged, idempotent, dogfood Set45+Get=45, Set90+Get=90",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.get_cell_text_rotation",
+      "date": "2026-07-02"
+    },
+    {
+      "entry_id": "PC-FODT-R368",
+      "sprint": "ff-sprint-s350-dotnet-deepening-20260630",
+      "format": "FODT",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fodt/FodtR368GetParagraphStyleDedicatedTests.cs",
+      "description": "Dedicated tests for FodtDocument.GetParagraphStyle: negative/out-of-range/empty throws, valid non-null, counts unchanged, idempotent, SetStyle+Get, dogfood 3 styles",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.get_paragraph_style",
+      "date": "2026-07-02"
     }
   ],
-  "total_entries": 1876,
+  "total_entries": 1879,
   "changes": [
     {
       "file": "src/python/dif/models.py",
