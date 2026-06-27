@@ -33010,9 +33010,39 @@
       "api_method": "GetParagraphFontSize",
       "test_count": 9,
       "description": "Dedicated tests for FodtDocument.GetParagraphFontSize: neg/OOR/empty throws, valid non-negative, counts unchanged, idempotent, SetFontSize 18+Get, multiple paragraphs"
+    },
+    {
+      "entry_id": "PC-NETPBM-R384",
+      "sprint": "ff-sprint-s371-dotnet-deepening-20260630",
+      "format": "NETPBM",
+      "r_number": 384,
+      "test_file": "tests/net/netpbm/NetpbmR384GetMostCommonPixelValueDedicatedTests.cs",
+      "api_method": "GetMostCommonPixelValue",
+      "test_count": 10,
+      "description": "Dedicated tests for NetpbmImage.GetMostCommonPixelValue: non-negative, uniform returns uniform, dims unchanged, idempotent, dominant value returned, all-zero=0, all-max=max"
+    },
+    {
+      "entry_id": "PC-FODS-R413",
+      "sprint": "ff-sprint-s371-dotnet-deepening-20260630",
+      "format": "FODS",
+      "r_number": 413,
+      "test_file": "tests/net/fods/FodsR413GetCellBackgroundColorDedicatedTests.cs",
+      "api_method": "GetCellBackgroundColor",
+      "test_count": 9,
+      "description": "Dedicated tests for FodsDocument.GetCellBackgroundColor: null/whitespace/nonexistent/negative throws, valid non-null, SheetCount unchanged, idempotent, SetColor #FFFF00+Get, multiple cells"
+    },
+    {
+      "entry_id": "PC-FODT-R389",
+      "sprint": "ff-sprint-s371-dotnet-deepening-20260630",
+      "format": "FODT",
+      "r_number": 389,
+      "test_file": "tests/net/fodt/FodtR389GetParagraphColorDedicatedTests.cs",
+      "api_method": "GetParagraphColor",
+      "test_count": 9,
+      "description": "Dedicated tests for FodtDocument.GetParagraphColor: neg/OOR/empty throws, valid non-null, counts unchanged, idempotent, SetColor #0000FF+Get, multiple paragraphs"
     }
   ],
-  "total_entries": 1939,
+  "total_entries": 1942,
   "changes": [
     {
       "file": "src/python/dif/models.py",
