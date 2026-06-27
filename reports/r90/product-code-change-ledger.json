@@ -30901,9 +30901,45 @@
       "tests_added": 9,
       "capability_ref": "commercial_net_products.FODT.dotnet_status.get_section_count",
       "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-NETPBM-R324",
+      "sprint": "ff-sprint-s313-dotnet-deepening-20260630",
+      "format": "NETPBM",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/netpbm/NetpbmR324NormalizeDedicatedTests.cs",
+      "description": "Dedicated tests for NetpbmImage.Normalize: valid ok, all pixels in range, dims/format/MaxValue unchanged, called-twice ok, all-zero ok, dogfood gradient and alternating",
+      "tests_added": 10,
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.normalize",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-FODS-R344",
+      "sprint": "ff-sprint-s313-dotnet-deepening-20260630",
+      "format": "FODS",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fods/FodsR344SetCellBorderDedicatedTests.cs",
+      "description": "Dedicated tests for FodsDocument.SetCellBorder: null/whitespace/nonexistent/negative throws, valid ok, SheetCount unchanged, called-twice ok, dogfood multi-cell",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.set_cell_border",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-FODT-R331",
+      "sprint": "ff-sprint-s313-dotnet-deepening-20260630",
+      "format": "FODT",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fodt/FodtR331GetFootnoteCountDedicatedTests.cs",
+      "description": "Dedicated tests for FodtDocument.GetFootnoteCount: non-negative, empty ok, increases after AddFootnote, ParagraphCount/TableCount/SectionCount unchanged, idempotent, dogfood",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.get_footnote_count",
+      "date": "2026-07-01"
     }
   ],
-  "total_entries": 1757,
+  "total_entries": 1760,
   "changes": [
     {
       "file": "src/python/dif/models.py",
