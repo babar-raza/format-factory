@@ -31534,9 +31534,45 @@
       "tests_added": 9,
       "capability_ref": "commercial_net_products.FODT.dotnet_status.get_style_name",
       "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-NETPBM-R340",
+      "sprint": "ff-sprint-s328-dotnet-deepening-20260630",
+      "format": "NETPBM",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/netpbm/NetpbmR340GetMedianDedicatedTests.cs",
+      "description": "Dedicated tests for NetpbmImage.GetMedian: valid no exception, dims/format/MaxValue unchanged, returns in [0,MaxValue], all-zero zero, idempotent, uniform equals pixel, dogfood alternating",
+      "tests_added": 10,
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.get_median",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-FODS-R362",
+      "sprint": "ff-sprint-s328-dotnet-deepening-20260630",
+      "format": "FODS",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fods/FodsR362GetCellNumberFormatDedicatedTests.cs",
+      "description": "Dedicated tests for FodsDocument.GetCellNumberFormat: null/whitespace/nonexistent/negative throws, valid non-null, SheetCount unchanged, idempotent, dogfood SetCellNumberFormat then Get, multiple cells",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.get_cell_number_format",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-FODT-R346",
+      "sprint": "ff-sprint-s328-dotnet-deepening-20260630",
+      "format": "FODT",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fodt/FodtR346GetMetadataTitleDedicatedTests.cs",
+      "description": "Dedicated tests for FodtDocument.GetMetadataTitle: empty ok, non-null, counts unchanged, idempotent, after-SetTitle returns title, dogfood title+content and title unchanged after AddParagraph",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.get_metadata_title",
+      "date": "2026-07-01"
     }
   ],
-  "total_entries": 1810,
+  "total_entries": 1813,
   "changes": [
     {
       "file": "src/python/dif/models.py",
