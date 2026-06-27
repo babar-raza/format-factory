@@ -31009,9 +31009,45 @@
       "tests_added": 9,
       "capability_ref": "commercial_net_products.FODT.dotnet_status.get_comment_count",
       "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-NETPBM-R327",
+      "sprint": "ff-sprint-s316-dotnet-deepening-20260630",
+      "format": "NETPBM",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/netpbm/NetpbmR327Rotate90DedicatedTests.cs",
+      "description": "Dedicated tests for NetpbmImage.Rotate90: valid ok, all pixels in range, 4-rotations restores dims, format/MaxValue unchanged, called-twice ok, all-zero ok, 4-rotations pixel preserved, dogfood",
+      "tests_added": 10,
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.rotate_90",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-FODS-R347",
+      "sprint": "ff-sprint-s316-dotnet-deepening-20260630",
+      "format": "FODS",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fods/FodsR347RenameSheetDedicatedTests.cs",
+      "description": "Dedicated tests for FodsDocument.RenameSheet: null/whitespace/null-new/nonexistent throws, valid ok, SheetCount unchanged, rename-back ok, dogfood rename then SetCellValue",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.rename_sheet",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-FODT-R334",
+      "sprint": "ff-sprint-s316-dotnet-deepening-20260630",
+      "format": "FODT",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fodt/FodtR334GetImageCountDedicatedTests.cs",
+      "description": "Dedicated tests for FodtDocument.GetImageCount: non-negative, empty ok, ParagraphCount/TableCount/SectionCount unchanged, idempotent, no-throw with content, dogfood",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.get_image_count",
+      "date": "2026-07-01"
     }
   ],
-  "total_entries": 1766,
+  "total_entries": 1769,
   "changes": [
     {
       "file": "src/python/dif/models.py",
