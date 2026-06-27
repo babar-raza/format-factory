@@ -33100,9 +33100,39 @@
       "description": "Dedicated tests for FodtDocument.GetParagraphIndent \u2014 neg/OOR/empty throws, valid non-negative, counts unchanged, idempotent, SetIndent 2.0+Get, multiple paragraphs",
       "sprint_id": "ff-sprint-s373-dotnet-deepening-20260630",
       "worker_self_grade": "PASS"
+    },
+    {
+      "entry_id": "PC-NETPBM-R387",
+      "format": "NETPBM",
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.get_standard_deviation",
+      "change_type": "test_added",
+      "file_path": "tests/net/netpbm/NetpbmR387GetStandardDeviationDedicatedTests.cs",
+      "description": "Dedicated tests for NetpbmImage.GetStandardDeviation \u2014 non-negative, uniform=0.0, dims unchanged, idempotent, two-value positive, gradient positive",
+      "sprint_id": "ff-sprint-s374-dotnet-deepening-20260630",
+      "worker_self_grade": "PASS"
+    },
+    {
+      "entry_id": "PC-FODS-R417",
+      "format": "FODS",
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.get_cell_border_style",
+      "change_type": "test_added",
+      "file_path": "tests/net/fods/FodsR417GetCellBorderStyleDedicatedTests.cs",
+      "description": "Dedicated tests for FodsDocument.GetCellBorderStyle \u2014 guard throws, valid non-null, SheetCount unchanged, idempotent, SetBorder thin+Get, multiple cells thin/medium/thick",
+      "sprint_id": "ff-sprint-s374-dotnet-deepening-20260630",
+      "worker_self_grade": "PASS"
+    },
+    {
+      "entry_id": "PC-FODT-R392",
+      "format": "FODT",
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.get_paragraph_spacing",
+      "change_type": "test_added",
+      "file_path": "tests/net/fodt/FodtR392GetParagraphSpacingDedicatedTests.cs",
+      "description": "Dedicated tests for FodtDocument.GetParagraphSpacing \u2014 neg/OOR/empty throws, valid non-negative, counts unchanged, idempotent, SetSpacing 1.5+Get, multiple paragraphs",
+      "sprint_id": "ff-sprint-s374-dotnet-deepening-20260630",
+      "worker_self_grade": "PASS"
     }
   ],
-  "total_entries": 1948,
+  "total_entries": 1951,
   "changes": [
     {
       "file": "src/python/dif/models.py",
