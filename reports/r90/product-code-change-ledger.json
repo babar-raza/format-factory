@@ -33070,9 +33070,39 @@
       "description": "Dedicated tests for FodtDocument.GetParagraphAlignment \u2014 neg/OOR/empty throws, valid non-null, counts unchanged, idempotent, SetAlignment left+Get, multiple paragraphs non-null",
       "sprint_id": "ff-sprint-s372-dotnet-deepening-20260630",
       "worker_self_grade": "PASS"
+    },
+    {
+      "entry_id": "PC-NETPBM-R386",
+      "format": "NETPBM",
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.get_pixel_entropy",
+      "change_type": "test_added",
+      "file_path": "tests/net/netpbm/NetpbmR386GetPixelEntropyDedicatedTests.cs",
+      "description": "Dedicated tests for NetpbmImage.GetPixelEntropy \u2014 non-negative, uniform=0.0, dims unchanged, idempotent, two-value positive, gradient positive",
+      "sprint_id": "ff-sprint-s373-dotnet-deepening-20260630",
+      "worker_self_grade": "PASS"
+    },
+    {
+      "entry_id": "PC-FODS-R416",
+      "format": "FODS",
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.get_cell_number_format",
+      "change_type": "test_added",
+      "file_path": "tests/net/fods/FodsR416GetCellNumberFormatDedicatedTests.cs",
+      "description": "Dedicated tests for FodsDocument.GetCellNumberFormat \u2014 guard throws, valid non-null, SheetCount unchanged, idempotent, SetFormat+Get, multiple cells distinct",
+      "sprint_id": "ff-sprint-s373-dotnet-deepening-20260630",
+      "worker_self_grade": "PASS"
+    },
+    {
+      "entry_id": "PC-FODT-R391",
+      "format": "FODT",
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.get_paragraph_indent",
+      "change_type": "test_added",
+      "file_path": "tests/net/fodt/FodtR391GetParagraphIndentDedicatedTests.cs",
+      "description": "Dedicated tests for FodtDocument.GetParagraphIndent \u2014 neg/OOR/empty throws, valid non-negative, counts unchanged, idempotent, SetIndent 2.0+Get, multiple paragraphs",
+      "sprint_id": "ff-sprint-s373-dotnet-deepening-20260630",
+      "worker_self_grade": "PASS"
     }
   ],
-  "total_entries": 1945,
+  "total_entries": 1948,
   "changes": [
     {
       "file": "src/python/dif/models.py",
