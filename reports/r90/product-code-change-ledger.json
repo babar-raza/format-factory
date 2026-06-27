@@ -32770,9 +32770,39 @@
       "api_method": "GetDocumentAuthor",
       "test_count": 9,
       "description": "Dedicated tests for FodtDocument.GetDocumentAuthor: valid non-null, counts unchanged, idempotent, non-empty, SetAuthor Alice Johnson+Get, dogfood Jane Doe+Corp Legal Dept"
+    },
+    {
+      "entry_id": "PC-NETPBM-R376",
+      "sprint": "ff-sprint-s363-dotnet-deepening-20260630",
+      "format": "NETPBM",
+      "r_number": 376,
+      "test_file": "tests/net/netpbm/NetpbmR376GetChannelCountDedicatedTests.cs",
+      "api_method": "GetChannelCount",
+      "test_count": 10,
+      "description": "Dedicated tests for NetpbmImage.GetChannelCount: PBM=1, PGM=1, PPM=3, dims/format/MaxValue unchanged, idempotent, dogfood 2x2 PBM=1, 4x4 PPM=3"
+    },
+    {
+      "entry_id": "PC-FODS-R405",
+      "sprint": "ff-sprint-s363-dotnet-deepening-20260630",
+      "format": "FODS",
+      "r_number": 405,
+      "test_file": "tests/net/fods/FodsR405GetCellBoldDedicatedTests.cs",
+      "api_method": "GetCellBold",
+      "test_count": 9,
+      "description": "Dedicated tests for FodsDocument.GetCellBold: null/whitespace/nonexistent/negative throws, valid result, SheetCount unchanged, idempotent, SetBold true+Get, SetBold false+Get"
+    },
+    {
+      "entry_id": "PC-FODT-R381",
+      "sprint": "ff-sprint-s363-dotnet-deepening-20260630",
+      "format": "FODT",
+      "r_number": 381,
+      "test_file": "tests/net/fodt/FodtR381GetDocumentTitleDedicatedTests.cs",
+      "api_method": "GetDocumentTitle",
+      "test_count": 9,
+      "description": "Dedicated tests for FodtDocument.GetDocumentTitle: valid non-null, counts unchanged, idempotent, non-empty, SetTitle Annual Performance Review+Get, dogfood Q4 Report+Strategy Overview"
     }
   ],
-  "total_entries": 1915,
+  "total_entries": 1918,
   "changes": [
     {
       "file": "src/python/dif/models.py",
