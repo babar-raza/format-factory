@@ -29760,9 +29760,80 @@
         }
       ],
       "format": "abw"
+    },
+    {
+      "entry_id": "PC-NETPBM-R305",
+      "sprint": "ff-sprint-s297-dotnet-deepening-20260630",
+      "format": "NETPBM",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/netpbm/NetpbmR305ApplyGaussianBlurDedicatedTests.cs",
+      "description": "Dedicated tests for NetpbmImage.ApplyGaussianBlur(radius): valid ok, all pixels in range, dims/format/MaxValue unchanged, called-twice ok, radius-1 ok, dogfood blur and mixed image",
+      "tests_added": 10,
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.apply_gaussian_blur",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-FODS-R325",
+      "sprint": "ff-sprint-s297-dotnet-deepening-20260630",
+      "format": "FODS",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fods/FodsR325MergeSheetsDedicatedTests.cs",
+      "description": "Dedicated tests for FodsDocument.MergeSheets(sourceSheet,targetSheet): null/whitespace/nonexistent-source/null-target/nonexistent-target throws, valid ok, SheetCount unchanged or decreased, called-twice ok, dogfood",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.merge_sheets",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-FODT-R312",
+      "sprint": "ff-sprint-s297-dotnet-deepening-20260630",
+      "format": "FODT",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fodt/FodtR312RemoveSectionDedicatedTests.cs",
+      "description": "Dedicated tests for FodtDocument.RemoveSection(sectionIndex): negative/OOB/no-sections throws, valid ok, SectionCount decreases, ParagraphCount/TableCount unchanged, remove-last ok, dogfood add-remove",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.remove_section",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-ODS-R296",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s296-ods-sheet-iterator-20260626",
+      "skill": "add-python-api",
+      "product": "foss_python_products.ODS.python_status.sheet_iterator",
+      "capability_refs": [
+        "foss_python_products.ODS.python_status.sheet_iterator"
+      ],
+      "api_symbols": [
+        "ods_iter_sheets"
+      ],
+      "api_behavior": "Yield spec-shaped Table objects (table:table QName, FACT-ODS-001) for each sheet in an ODS document",
+      "changed_files": [
+        "src/python/ods/ods_sheet_iterator.py",
+        "src/python/ods/__init__.py"
+      ],
+      "test_files": [
+        "tests/python/ods/test_r296_ods_iter_sheets.py"
+      ],
+      "test_count": 9,
+      "source_files": [
+        {
+          "path": "src/python/ods/ods_sheet_iterator.py",
+          "state": "created",
+          "sha256": "bd08ef55bbda0f626541d98125cd67bdb3fd6867306008b88eed9167769181c6"
+        },
+        {
+          "path": "src/python/ods/__init__.py",
+          "state": "modified",
+          "sha256": "c73c9c306aa8b4e75e5e236b2abc8cd3ae1f88fb4061c75c1b3f08fa492cfb5a"
+        }
+      ],
+      "format": "ods"
     }
   ],
-  "total_entries": 1687,
+  "total_entries": 1691,
   "changes": [
     {
       "file": "src/python/dif/models.py",
