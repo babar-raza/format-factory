@@ -31822,9 +31822,45 @@
       "tests_added": 9,
       "capability_ref": "commercial_net_products.FODT.dotnet_status.get_metadata_date",
       "date": "2026-07-02"
+    },
+    {
+      "entry_id": "PC-NETPBM-R349",
+      "sprint": "ff-sprint-s336-dotnet-deepening-20260630",
+      "format": "NETPBM",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/netpbm/NetpbmR349GetColorDepthDedicatedTests.cs",
+      "description": "Dedicated tests for NetpbmImage.GetColorDepth: valid ok, positive, dims/format/MaxValue unchanged, PGM-255=256, PGM-15=16, idempotent, dogfood PPM-255=256",
+      "tests_added": 10,
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.get_color_depth",
+      "date": "2026-07-02"
+    },
+    {
+      "entry_id": "PC-FODS-R373",
+      "sprint": "ff-sprint-s336-dotnet-deepening-20260630",
+      "format": "FODS",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fods/FodsR373GetCellWrapTextDedicatedTests.cs",
+      "description": "Dedicated tests for FodsDocument.GetCellWrapText: null/whitespace/nonexistent/negative throws, valid returns bool, SheetCount unchanged, idempotent, dogfood SetWrapText true and false",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.get_cell_wrap_text",
+      "date": "2026-07-02"
+    },
+    {
+      "entry_id": "PC-FODT-R354",
+      "sprint": "ff-sprint-s336-dotnet-deepening-20260630",
+      "format": "FODT",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fodt/FodtR354GetMetadataGeneratorDedicatedTests.cs",
+      "description": "Dedicated tests for FodtDocument.GetMetadataGenerator: empty ok, non-null, counts unchanged, idempotent, after-SetGenerator returns generator, dogfood generator+content and generator unchanged after AddParagraph",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.get_metadata_generator",
+      "date": "2026-07-02"
     }
   ],
-  "total_entries": 1834,
+  "total_entries": 1837,
   "changes": [
     {
       "file": "src/python/dif/models.py",
