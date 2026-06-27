@@ -30044,9 +30044,70 @@
       "tests_added": 9,
       "capability_ref": "commercial_net_products.FODT.dotnet_status.append_text",
       "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-FODS-R300",
+      "sprint_id": "ff-sprint-s300-fods-sheet-iterator-20260626",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "format": "fods",
+      "capability_refs": [
+        "CAP-FODS-ITER-SHEETS"
+      ],
+      "api_symbols": [
+        "fods_iter_sheets"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/fods/fods_sheet_iterator.py",
+          "sha256": "6f7078431a708d43d6a5a51c8ce4ee03c20c326730844a697aa5eb80be9ded74"
+        }
+      ],
+      "test_files": [
+        "tests/python/fods/test_r300_fods_iter_sheets.py"
+      ],
+      "tests_passed": 11,
+      "tests_failed": 0,
+      "export_path_affected": false,
+      "notes": "fods_iter_sheets() yields FodsSheet objects (spec_qname=table:table, FACT-FODS-004) for each sheet in a FODS document"
+    },
+    {
+      "entry_id": "PC-NETPBM-R309",
+      "sprint": "ff-sprint-s301-dotnet-deepening-20260630",
+      "format": "NETPBM",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/netpbm/NetpbmR309GetSkewnessDedicatedTests.cs",
+      "description": "Dedicated tests for NetpbmImage.GetSkewness: finite or NaN double, dims/format/MaxValue unchanged, idempotent, all-zero ok, mixed ok, dogfood standard and symmetric",
+      "tests_added": 10,
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.get_skewness",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-FODS-R329",
+      "sprint": "ff-sprint-s301-dotnet-deepening-20260630",
+      "format": "FODS",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fods/FodsR329GetCellStyleDedicatedTests.cs",
+      "description": "Dedicated tests for FodsDocument.GetCellStyle(sheetName,row,col): null/whitespace/nonexistent/negative-row/negative-col throws, valid non-null, SheetCount unchanged, idempotent, returns SetCellStyle, dogfood",
+      "tests_added": 10,
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.get_cell_style",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-FODT-R316",
+      "sprint": "ff-sprint-s301-dotnet-deepening-20260630",
+      "format": "FODT",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fodt/FodtR316InsertImageDedicatedTests.cs",
+      "description": "Dedicated tests for FodtDocument.InsertImage(imagePath): null/whitespace throws, valid ok, ParagraphCount unchanged or increases, TableCount/SectionCount unchanged, insert-twice ok, dogfood insert and save",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.insert_image",
+      "date": "2026-07-01"
     }
   ],
-  "total_entries": 1704,
+  "total_entries": 1708,
   "changes": [
     {
       "file": "src/python/dif/models.py",
