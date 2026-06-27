@@ -33400,9 +33400,39 @@
       "description": "Dedicated tests for FodtDocument.FootnoteCount \u2014 new non-negative, counts unchanged, idempotent, is int, dogfood paragraphs/mixed/loop",
       "sprint_id": "ff-sprint-s383-dotnet-deepening-20260630",
       "worker_self_grade": "PASS"
+    },
+    {
+      "entry_id": "PC-NETPBM-R397",
+      "format": "NETPBM",
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.get_pixel_count",
+      "change_type": "test_added",
+      "file_path": "tests/net/netpbm/NetpbmR397GetPixelCountDedicatedTests.cs",
+      "description": "Dedicated tests for NetpbmImage.GetPixelCount \u2014 Width*Height, 1x1=1, dims unchanged, idempotent, 4x4=16, 3x7=21, matches W*H",
+      "sprint_id": "ff-sprint-s384-dotnet-deepening-20260630",
+      "worker_self_grade": "PASS"
+    },
+    {
+      "entry_id": "PC-FODS-R427",
+      "format": "FODS",
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.get_document_subject",
+      "change_type": "test_added",
+      "file_path": "tests/net/fods/FodsR427GetDocumentSubjectDedicatedTests.cs",
+      "description": "Dedicated tests for FodsDocument.GetDocumentSubject \u2014 non-null, SheetCount unchanged, idempotent, is string, SetSubject+Get, quarterly review, empty, round-trips",
+      "sprint_id": "ff-sprint-s384-dotnet-deepening-20260630",
+      "worker_self_grade": "PASS"
+    },
+    {
+      "entry_id": "PC-FODT-R402",
+      "format": "FODT",
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.get_endnote_count",
+      "change_type": "test_added",
+      "file_path": "tests/net/fodt/FodtR402GetEndnoteCountDedicatedTests.cs",
+      "description": "Dedicated tests for FodtDocument.EndnoteCount \u2014 new non-negative, counts unchanged, idempotent, is int, dogfood paragraphs/mixed/loop",
+      "sprint_id": "ff-sprint-s384-dotnet-deepening-20260630",
+      "worker_self_grade": "PASS"
     }
   ],
-  "total_entries": 1978,
+  "total_entries": 1981,
   "changes": [
     {
       "file": "src/python/dif/models.py",
