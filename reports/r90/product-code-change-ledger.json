@@ -32680,9 +32680,39 @@
       "api_method": "GetPageOrientation",
       "test_count": 9,
       "description": "Dedicated tests for FodtDocument.GetPageOrientation: valid non-null, counts unchanged, idempotent, non-empty, SetPageOrientation landscape+Get, dogfood portrait+landscape non-null"
+    },
+    {
+      "entry_id": "PC-NETPBM-R373",
+      "sprint": "ff-sprint-s360-dotnet-deepening-20260630",
+      "format": "NETPBM",
+      "r_number": 373,
+      "test_file": "tests/net/netpbm/NetpbmR373GetSaturationLevelDedicatedTests.cs",
+      "api_method": "GetSaturationLevel",
+      "test_count": 10,
+      "description": "Dedicated tests for NetpbmImage.GetSaturationLevel: valid ok, non-negative, dims/format/MaxValue unchanged, uniform=0.0, idempotent, color PPM non-negative, grayscale PGM non-negative"
+    },
+    {
+      "entry_id": "PC-FODS-R402",
+      "sprint": "ff-sprint-s360-dotnet-deepening-20260630",
+      "format": "FODS",
+      "r_number": 402,
+      "test_file": "tests/net/fods/FodsR402GetCellHyperlinkDedicatedTests.cs",
+      "api_method": "GetCellHyperlink",
+      "test_count": 9,
+      "description": "Dedicated tests for FodsDocument.GetCellHyperlink: null/whitespace/nonexistent/negative throws, valid non-null, SheetCount unchanged, idempotent, dogfood SetHyperlink+Get, multiple cells"
+    },
+    {
+      "entry_id": "PC-FODT-R378",
+      "sprint": "ff-sprint-s360-dotnet-deepening-20260630",
+      "format": "FODT",
+      "r_number": 378,
+      "test_file": "tests/net/fodt/FodtR378GetPageMarginsDedicatedTests.cs",
+      "api_method": "GetPageMargins",
+      "test_count": 9,
+      "description": "Dedicated tests for FodtDocument.GetPageMargins: valid non-null, counts unchanged, idempotent, non-empty, SetPageMargins 2cm+Get, dogfood default+custom non-null"
     }
   ],
-  "total_entries": 1906,
+  "total_entries": 1909,
   "changes": [
     {
       "file": "src/python/dif/models.py",
