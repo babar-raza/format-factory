@@ -31894,9 +31894,45 @@
       "tests_added": 9,
       "capability_ref": "commercial_net_products.FODT.dotnet_status.get_paragraph_text",
       "date": "2026-07-02"
+    },
+    {
+      "entry_id": "PC-NETPBM-R351",
+      "sprint": "ff-sprint-s338-dotnet-deepening-20260630",
+      "format": "NETPBM",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/netpbm/NetpbmR351GetMemoryUsageEstimateDedicatedTests.cs",
+      "description": "Dedicated tests for NetpbmImage.GetMemoryUsageEstimate: valid ok, positive, dims/format/MaxValue unchanged, larger image larger estimate, idempotent, dogfood 1x1 small and PPM>=PGM same dims",
+      "tests_added": 10,
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.get_memory_usage_estimate",
+      "date": "2026-07-02"
+    },
+    {
+      "entry_id": "PC-FODS-R376",
+      "sprint": "ff-sprint-s338-dotnet-deepening-20260630",
+      "format": "FODS",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fods/FodsR376GetCellFontSizeDedicatedTests.cs",
+      "description": "Dedicated tests for FodsDocument.GetCellFontSize: null/whitespace/nonexistent/negative throws, valid non-negative, SheetCount unchanged, idempotent, dogfood SetCellFontSize then Get, multiple cells",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.get_cell_font_size",
+      "date": "2026-07-02"
+    },
+    {
+      "entry_id": "PC-FODT-R356",
+      "sprint": "ff-sprint-s338-dotnet-deepening-20260630",
+      "format": "FODT",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fodt/FodtR356GetHeadingTextDedicatedTests.cs",
+      "description": "Dedicated tests for FodtDocument.GetHeadingText: negative/out-of-range/empty-doc throws, valid non-null, counts unchanged, idempotent, after-AddHeading exact text, dogfood multiple headings",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.get_heading_text",
+      "date": "2026-07-02"
     }
   ],
-  "total_entries": 1840,
+  "total_entries": 1843,
   "changes": [
     {
       "file": "src/python/dif/models.py",
