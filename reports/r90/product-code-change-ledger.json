@@ -32950,9 +32950,39 @@
       "api_method": "GetDocumentModifiedDate",
       "test_count": 9,
       "description": "Dedicated tests for FodtDocument.GetDocumentModifiedDate: valid non-null, counts unchanged, idempotent, non-empty, SetDate+Get, dogfood 2026-07-02+2026-01-01"
+    },
+    {
+      "entry_id": "PC-NETPBM-R382",
+      "sprint": "ff-sprint-s369-dotnet-deepening-20260630",
+      "format": "NETPBM",
+      "r_number": 382,
+      "test_file": "tests/net/netpbm/NetpbmR382GetLightPixelRatioDedicatedTests.cs",
+      "api_method": "GetLightPixelRatio",
+      "test_count": 10,
+      "description": "Dedicated tests for NetpbmImage.GetLightPixelRatio: in [0,1], all-black=0.0, all-white=1.0, dims unchanged, idempotent, half-light in range, single light small positive"
+    },
+    {
+      "entry_id": "PC-FODS-R411",
+      "sprint": "ff-sprint-s369-dotnet-deepening-20260630",
+      "format": "FODS",
+      "r_number": 411,
+      "test_file": "tests/net/fods/FodsR411GetSheetVisibilityDedicatedTests.cs",
+      "api_method": "GetSheetVisibility",
+      "test_count": 8,
+      "description": "Dedicated tests for FodsDocument.GetSheetVisibility: null/whitespace/nonexistent throws, new non-null, SheetCount unchanged, idempotent, HideSheet+Get, ShowSheet+Get"
+    },
+    {
+      "entry_id": "PC-FODT-R387",
+      "sprint": "ff-sprint-s369-dotnet-deepening-20260630",
+      "format": "FODT",
+      "r_number": 387,
+      "test_file": "tests/net/fodt/FodtR387GetParagraphFontDedicatedTests.cs",
+      "api_method": "GetParagraphFont",
+      "test_count": 9,
+      "description": "Dedicated tests for FodtDocument.GetParagraphFont: neg/OOR/empty throws, valid non-null, ParagraphCount/TableCount unchanged, idempotent, SetFont Arial+Get, multiple paragraphs"
     }
   ],
-  "total_entries": 1933,
+  "total_entries": 1936,
   "changes": [
     {
       "file": "src/python/dif/models.py",
