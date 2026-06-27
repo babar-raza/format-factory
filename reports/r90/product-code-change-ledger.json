@@ -32182,9 +32182,45 @@
       "tests_added": 9,
       "capability_ref": "commercial_net_products.FODT.dotnet_status.get_table_cell_count",
       "date": "2026-07-02"
+    },
+    {
+      "entry_id": "PC-NETPBM-R359",
+      "sprint": "ff-sprint-s346-dotnet-deepening-20260630",
+      "format": "NETPBM",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/netpbm/NetpbmR359GetEntropyLevelDedicatedTests.cs",
+      "description": "Dedicated tests for NetpbmImage.GetEntropyLevel: valid ok, non-negative, dims/format/MaxValue unchanged, all-zero=0.0, uniform=0.0, idempotent, dogfood varied pixels returns positive",
+      "tests_added": 10,
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.get_entropy_level",
+      "date": "2026-07-02"
+    },
+    {
+      "entry_id": "PC-FODS-R384",
+      "sprint": "ff-sprint-s346-dotnet-deepening-20260630",
+      "format": "FODS",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fods/FodsR384GetCellCommentDedicatedTests.cs",
+      "description": "Dedicated tests for FodsDocument.GetCellComment: null/whitespace/nonexistent/negative throws, valid non-null, SheetCount unchanged, idempotent, dogfood SetCellComment+Get, multiple cells",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.get_cell_comment",
+      "date": "2026-07-02"
+    },
+    {
+      "entry_id": "PC-FODT-R364",
+      "sprint": "ff-sprint-s346-dotnet-deepening-20260630",
+      "format": "FODT",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fodt/FodtR364GetTableColumnWidthDedicatedTests.cs",
+      "description": "Dedicated tests for FodtDocument.GetTableColumnWidth: negative/out-of-range table+col throws, valid non-negative, counts unchanged, idempotent, dogfood SetColumnWidth+Get",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.get_table_column_width",
+      "date": "2026-07-02"
     }
   ],
-  "total_entries": 1864,
+  "total_entries": 1867,
   "changes": [
     {
       "file": "src/python/dif/models.py",
