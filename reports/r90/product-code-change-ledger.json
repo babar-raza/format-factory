@@ -32800,9 +32800,39 @@
       "api_method": "GetDocumentTitle",
       "test_count": 9,
       "description": "Dedicated tests for FodtDocument.GetDocumentTitle: valid non-null, counts unchanged, idempotent, non-empty, SetTitle Annual Performance Review+Get, dogfood Q4 Report+Strategy Overview"
+    },
+    {
+      "entry_id": "PC-NETPBM-R377",
+      "sprint": "ff-sprint-s364-dotnet-deepening-20260630",
+      "format": "NETPBM",
+      "r_number": 377,
+      "test_file": "tests/net/netpbm/NetpbmR377GetHistogramBinCountDedicatedTests.cs",
+      "api_method": "GetHistogramBinCount",
+      "test_count": 10,
+      "description": "Dedicated tests for NetpbmImage.GetHistogramBinCount: valid positive, dims/format/MaxValue unchanged, idempotent, all-zero positive, all-max positive, PGM positive, PPM positive"
+    },
+    {
+      "entry_id": "PC-FODS-R406",
+      "sprint": "ff-sprint-s364-dotnet-deepening-20260630",
+      "format": "FODS",
+      "r_number": 406,
+      "test_file": "tests/net/fods/FodsR406GetCellItalicDedicatedTests.cs",
+      "api_method": "GetCellItalic",
+      "test_count": 9,
+      "description": "Dedicated tests for FodsDocument.GetCellItalic: null/whitespace/nonexistent/negative throws, valid bool, SheetCount unchanged, idempotent, SetItalic true+Get, SetItalic false+Get"
+    },
+    {
+      "entry_id": "PC-FODT-R382",
+      "sprint": "ff-sprint-s364-dotnet-deepening-20260630",
+      "format": "FODT",
+      "r_number": 382,
+      "test_file": "tests/net/fodt/FodtR382GetDocumentDescriptionDedicatedTests.cs",
+      "api_method": "GetDocumentDescription",
+      "test_count": 9,
+      "description": "Dedicated tests for FodtDocument.GetDocumentDescription: valid non-null, counts unchanged, idempotent, non-empty, SetDescription+Get, dogfood financial+policy descriptions"
     }
   ],
-  "total_entries": 1918,
+  "total_entries": 1921,
   "changes": [
     {
       "file": "src/python/dif/models.py",
