@@ -33190,9 +33190,39 @@
       "description": "Dedicated tests for FodtDocument.ListCount \u2014 new non-negative, counts unchanged, idempotent, is int, dogfood paragraphs never negative",
       "sprint_id": "ff-sprint-s376-dotnet-deepening-20260630",
       "worker_self_grade": "PASS"
+    },
+    {
+      "entry_id": "PC-NETPBM-R390",
+      "format": "NETPBM",
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.get_min_pixel_value",
+      "change_type": "test_added",
+      "file_path": "tests/net/netpbm/NetpbmR390GetMinPixelValueDedicatedTests.cs",
+      "description": "Dedicated tests for NetpbmImage.GetMinPixelValue \u2014 non-negative, uniform=uniform, dims unchanged, idempotent, all-zero=0, all-max=MaxValue",
+      "sprint_id": "ff-sprint-s377-dotnet-deepening-20260630",
+      "worker_self_grade": "PASS"
+    },
+    {
+      "entry_id": "PC-FODS-R420",
+      "format": "FODS",
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.get_sheet_zoom_level",
+      "change_type": "test_added",
+      "file_path": "tests/net/fods/FodsR420GetSheetZoomLevelDedicatedTests.cs",
+      "description": "Dedicated tests for FodsDocument.GetSheetZoomLevel \u2014 guard throws, new positive, SheetCount unchanged, idempotent, SetZoom 150+Get, multiple sheets distinct",
+      "sprint_id": "ff-sprint-s377-dotnet-deepening-20260630",
+      "worker_self_grade": "PASS"
+    },
+    {
+      "entry_id": "PC-FODT-R395",
+      "format": "FODT",
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.get_table_row_count",
+      "change_type": "test_added",
+      "file_path": "tests/net/fodt/FodtR395GetTableRowCountDedicatedTests.cs",
+      "description": "Dedicated tests for FodtDocument.GetTableRowCount \u2014 neg/OOR/no-tables throws, valid non-negative, counts unchanged, idempotent, multiple tables",
+      "sprint_id": "ff-sprint-s377-dotnet-deepening-20260630",
+      "worker_self_grade": "PASS"
     }
   ],
-  "total_entries": 1957,
+  "total_entries": 1960,
   "changes": [
     {
       "file": "src/python/dif/models.py",
