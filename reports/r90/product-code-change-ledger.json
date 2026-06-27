@@ -33310,9 +33310,39 @@
       "description": "Dedicated tests for FodtDocument.BookmarkCount \u2014 new non-negative, counts unchanged, idempotent, is int, dogfood paragraphs/tables/loop",
       "sprint_id": "ff-sprint-s380-dotnet-deepening-20260630",
       "worker_self_grade": "PASS"
+    },
+    {
+      "entry_id": "PC-NETPBM-R394",
+      "format": "NETPBM",
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.get_noise_level_estimate",
+      "change_type": "test_added",
+      "file_path": "tests/net/netpbm/NetpbmR394GetNoiseLevelEstimateDedicatedTests.cs",
+      "description": "Dedicated tests for NetpbmImage.GetNoiseLevelEstimate \u2014 non-negative, uniform=0.0, dims unchanged, idempotent, checkerboard positive, gradient non-negative",
+      "sprint_id": "ff-sprint-s381-dotnet-deepening-20260630",
+      "worker_self_grade": "PASS"
+    },
+    {
+      "entry_id": "PC-FODS-R424",
+      "format": "FODS",
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.get_document_title",
+      "change_type": "test_added",
+      "file_path": "tests/net/fods/FodsR424GetDocumentTitleDedicatedTests.cs",
+      "description": "Dedicated tests for FodsDocument.GetDocumentTitle \u2014 non-null, SheetCount unchanged, idempotent, is string, SetTitle+Get, long title, empty string, multiple round-trips",
+      "sprint_id": "ff-sprint-s381-dotnet-deepening-20260630",
+      "worker_self_grade": "PASS"
+    },
+    {
+      "entry_id": "PC-FODT-R399",
+      "format": "FODT",
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.get_heading_count",
+      "change_type": "test_added",
+      "file_path": "tests/net/fodt/FodtR399GetHeadingCountDedicatedTests.cs",
+      "description": "Dedicated tests for FodtDocument.HeadingCount \u2014 new non-negative, counts unchanged, idempotent, is int, dogfood paragraphs/tables/loop all non-negative",
+      "sprint_id": "ff-sprint-s381-dotnet-deepening-20260630",
+      "worker_self_grade": "PASS"
     }
   ],
-  "total_entries": 1969,
+  "total_entries": 1972,
   "changes": [
     {
       "file": "src/python/dif/models.py",
