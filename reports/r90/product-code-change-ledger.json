@@ -32830,9 +32830,39 @@
       "api_method": "GetDocumentDescription",
       "test_count": 9,
       "description": "Dedicated tests for FodtDocument.GetDocumentDescription: valid non-null, counts unchanged, idempotent, non-empty, SetDescription+Get, dogfood financial+policy descriptions"
+    },
+    {
+      "entry_id": "PC-NETPBM-R378",
+      "sprint": "ff-sprint-s365-dotnet-deepening-20260630",
+      "format": "NETPBM",
+      "r_number": 378,
+      "test_file": "tests/net/netpbm/NetpbmR378GetWhitePixelCountDedicatedTests.cs",
+      "api_method": "GetWhitePixelCount",
+      "test_count": 10,
+      "description": "Dedicated tests for NetpbmImage.GetWhitePixelCount: non-negative, all-black=0, all-white=W*H, dims unchanged, idempotent, half-white in range, single white=1"
+    },
+    {
+      "entry_id": "PC-FODS-R407",
+      "sprint": "ff-sprint-s365-dotnet-deepening-20260630",
+      "format": "FODS",
+      "r_number": 407,
+      "test_file": "tests/net/fods/FodsR407GetCellUnderlineDedicatedTests.cs",
+      "api_method": "GetCellUnderline",
+      "test_count": 9,
+      "description": "Dedicated tests for FodsDocument.GetCellUnderline: null/whitespace/nonexistent/negative throws, valid bool, SheetCount unchanged, idempotent, SetUnderline true+Get, SetUnderline false+Get"
+    },
+    {
+      "entry_id": "PC-FODT-R383",
+      "sprint": "ff-sprint-s365-dotnet-deepening-20260630",
+      "format": "FODT",
+      "r_number": 383,
+      "test_file": "tests/net/fodt/FodtR383GetDocumentKeywordsDedicatedTests.cs",
+      "api_method": "GetDocumentKeywords",
+      "test_count": 9,
+      "description": "Dedicated tests for FodtDocument.GetDocumentKeywords: valid non-null, counts unchanged, idempotent, non-empty, SetKeywords+Get, dogfood finance+legal keywords"
     }
   ],
-  "total_entries": 1921,
+  "total_entries": 1924,
   "changes": [
     {
       "file": "src/python/dif/models.py",
