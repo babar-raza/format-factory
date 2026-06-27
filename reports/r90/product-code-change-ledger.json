@@ -33220,9 +33220,39 @@
       "description": "Dedicated tests for FodtDocument.GetTableRowCount \u2014 neg/OOR/no-tables throws, valid non-negative, counts unchanged, idempotent, multiple tables",
       "sprint_id": "ff-sprint-s377-dotnet-deepening-20260630",
       "worker_self_grade": "PASS"
+    },
+    {
+      "entry_id": "PC-NETPBM-R391",
+      "format": "NETPBM",
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.get_max_pixel_value",
+      "change_type": "test_added",
+      "file_path": "tests/net/netpbm/NetpbmR391GetMaxPixelValueDedicatedTests.cs",
+      "description": "Dedicated tests for NetpbmImage.GetMaxPixelValue \u2014 non-negative, uniform=uniform, dims unchanged, idempotent, all-zero=0, mixed returns highest",
+      "sprint_id": "ff-sprint-s378-dotnet-deepening-20260630",
+      "worker_self_grade": "PASS"
+    },
+    {
+      "entry_id": "PC-FODS-R421",
+      "format": "FODS",
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.get_cell_text_rotation",
+      "change_type": "test_added",
+      "file_path": "tests/net/fods/FodsR421GetCellTextRotationDedicatedTests.cs",
+      "description": "Dedicated tests for FodsDocument.GetCellTextRotation \u2014 guard throws, in-range, SheetCount unchanged, idempotent, SetRotation 45+Get, multiple cells distinct",
+      "sprint_id": "ff-sprint-s378-dotnet-deepening-20260630",
+      "worker_self_grade": "PASS"
+    },
+    {
+      "entry_id": "PC-FODT-R396",
+      "format": "FODT",
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.get_table_column_count",
+      "change_type": "test_added",
+      "file_path": "tests/net/fodt/FodtR396GetTableColumnCountDedicatedTests.cs",
+      "description": "Dedicated tests for FodtDocument.GetTableColumnCount \u2014 neg/OOR/no-tables throws, valid non-negative, counts unchanged, idempotent, multiple tables",
+      "sprint_id": "ff-sprint-s378-dotnet-deepening-20260630",
+      "worker_self_grade": "PASS"
     }
   ],
-  "total_entries": 1960,
+  "total_entries": 1963,
   "changes": [
     {
       "file": "src/python/dif/models.py",
