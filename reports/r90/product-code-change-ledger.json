@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s387-dotnet-deepening-20260630",
+  "latest_sprint": "ff-sprint-s388-dotnet-deepening-20260630",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -33556,9 +33556,51 @@
       ],
       "test_count": 9,
       "description": "Dedicated tests for FodtDocument.CrossReferenceCount: new non-negative, counts unchanged, idempotent, is int, dogfood paragraphs/mixed/loop"
+    },
+    {
+      "entry_id": "PC-NETPBM-R401",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s388-dotnet-deepening-20260630",
+      "product": "NETPBM .NET",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.get_color_space"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR401GetColorSpaceDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "description": "Dedicated tests for NetpbmImage.GetColorSpace: PBM/PGM/PPM non-null, dims/format/MaxValue unchanged, idempotent, dogfood PBM/PPM non-null"
+    },
+    {
+      "entry_id": "PC-FODS-R431",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s388-dotnet-deepening-20260630",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.get_document_revision"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR431GetDocumentRevisionDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "description": "Dedicated tests for FodsDocument.GetDocumentRevision: non-null, is string, SheetCount unchanged, idempotent, SetRevision+Get, numeric/empty round-trips, dogfood version/overwrite"
+    },
+    {
+      "entry_id": "PC-FODT-R406",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s388-dotnet-deepening-20260630",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.get_hyperlink_count"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR406GetHyperlinkCountDedicatedTests.cs"
+      ],
+      "test_count": 9,
+      "description": "Dedicated tests for FodtDocument.HyperlinkCount: new non-negative, counts unchanged, idempotent, is int, dogfood paragraphs/mixed/loop"
     }
   ],
-  "total_entries": 1990,
+  "total_entries": 1993,
   "changes": [
     {
       "file": "src/python/dif/models.py",
