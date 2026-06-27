@@ -29831,9 +29831,80 @@
         }
       ],
       "format": "ods"
+    },
+    {
+      "entry_id": "PC-ODT-R297",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "ff-sprint-s297-odt-paragraph-iterator-20260626",
+      "skill": "add-python-api",
+      "product": "foss_python_products.ODT.python_status.paragraph_iterator",
+      "capability_refs": [
+        "foss_python_products.ODT.python_status.paragraph_iterator"
+      ],
+      "api_symbols": [
+        "odt_iter_paragraphs"
+      ],
+      "api_behavior": "Yield spec-shaped Paragraph objects (text:p QName, FACT-ODT-EX-0094) for each paragraph in an ODT document",
+      "changed_files": [
+        "src/python/odt/odt_paragraph_iterator.py",
+        "src/python/odt/__init__.py"
+      ],
+      "test_files": [
+        "tests/python/odt/test_r297_odt_iter_paragraphs.py"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "src/python/odt/odt_paragraph_iterator.py",
+          "state": "created",
+          "sha256": "f5225d1f14a0807ddab735503f352dbf0034110e2bd009e2672676516b827ab9"
+        },
+        {
+          "path": "src/python/odt/__init__.py",
+          "state": "modified",
+          "sha256": "3ffd8056e521340866a7be775fd65f08bfff05974dc46b429c6d8c3dce256566"
+        }
+      ],
+      "format": "odt"
+    },
+    {
+      "entry_id": "PC-NETPBM-R306",
+      "sprint": "ff-sprint-s298-dotnet-deepening-20260630",
+      "format": "NETPBM",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/netpbm/NetpbmR306ApplyEdgeDetectDedicatedTests.cs",
+      "description": "Dedicated tests for NetpbmImage.ApplyEdgeDetect: valid ok, all pixels in range, dims/format/MaxValue unchanged, called-twice ok, all-black ok, dogfood mixed and uniform image",
+      "tests_added": 10,
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.apply_edge_detect",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-FODS-R326",
+      "sprint": "ff-sprint-s298-dotnet-deepening-20260630",
+      "format": "FODS",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fods/FodsR326ExportToXmlDedicatedTests.cs",
+      "description": "Dedicated tests for FodsDocument.ExportToXml(filePath): null/whitespace throws, valid ok, file exists, non-empty, SheetCount unchanged, export-twice ok, dogfood with data and two paths",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.export_to_xml",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-FODT-R313",
+      "sprint": "ff-sprint-s298-dotnet-deepening-20260630",
+      "format": "FODT",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fodt/FodtR313GetParagraphTextDedicatedTests.cs",
+      "description": "Dedicated tests for FodtDocument.GetParagraphText(index): negative/OOB/no-paragraphs throws, valid non-null, returns AddParagraph text, ParagraphCount/TableCount unchanged, idempotent, dogfood",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.get_paragraph_text",
+      "date": "2026-07-01"
     }
   ],
-  "total_entries": 1691,
+  "total_entries": 1696,
   "changes": [
     {
       "file": "src/python/dif/models.py",
