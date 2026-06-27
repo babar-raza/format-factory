@@ -32398,9 +32398,45 @@
       "tests_added": 9,
       "capability_ref": "commercial_net_products.FODT.dotnet_status.get_heading_level",
       "date": "2026-07-02"
+    },
+    {
+      "entry_id": "PC-NETPBM-R365",
+      "sprint": "ff-sprint-s352-dotnet-deepening-20260630",
+      "format": "NETPBM",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/netpbm/NetpbmR365GetMeanAbsoluteDeviationDedicatedTests.cs",
+      "description": "Dedicated tests for NetpbmImage.GetMeanAbsoluteDeviation: valid ok, non-negative, dims/format/MaxValue unchanged, uniform=0.0, idempotent, dogfood high-contrast positive, all-zero=0.0",
+      "tests_added": 10,
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.get_mean_absolute_deviation",
+      "date": "2026-07-02"
+    },
+    {
+      "entry_id": "PC-FODS-R390",
+      "sprint": "ff-sprint-s352-dotnet-deepening-20260630",
+      "format": "FODS",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fods/FodsR390GetCellVerticalAlignDedicatedTests.cs",
+      "description": "Dedicated tests for FodsDocument.GetCellVerticalAlign: null/whitespace/nonexistent/negative throws, valid non-null, SheetCount unchanged, idempotent, dogfood Set+Get top, multiple top/middle/bottom",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.get_cell_vertical_align",
+      "date": "2026-07-02"
+    },
+    {
+      "entry_id": "PC-FODT-R370",
+      "sprint": "ff-sprint-s352-dotnet-deepening-20260630",
+      "format": "FODT",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fodt/FodtR370GetAnnotationAuthorDedicatedTests.cs",
+      "description": "Dedicated tests for FodtDocument.GetAnnotationAuthor: negative/out-of-range/empty throws, valid non-null, counts unchanged, idempotent, dogfood JohnSmith+Get, 3 annotations",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.get_annotation_author",
+      "date": "2026-07-02"
     }
   ],
-  "total_entries": 1882,
+  "total_entries": 1885,
   "changes": [
     {
       "file": "src/python/dif/models.py",
