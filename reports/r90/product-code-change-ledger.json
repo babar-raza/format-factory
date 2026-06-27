@@ -30191,9 +30191,95 @@
       "tests_failed": 0,
       "export_path_affected": false,
       "notes": "gnumeric_iter_sheets() yields Sheet objects (spec_qname=gnumeric:sheet, FACT-GNUMERIC-002) for each sheet in a Gnumeric document"
+    },
+    {
+      "entry_id": "PC-DIF-R303",
+      "sprint_id": "ff-sprint-s303-dif-vector-iterator-20260626",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "format": "dif",
+      "capability_refs": [
+        "CAP-DIF-ITER-VECTORS"
+      ],
+      "api_symbols": [
+        "dif_iter_vectors"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/dif/dif_vector_iterator.py",
+          "sha256": "cfd6ef11207ce735dba61131fb9091cb59a99f607900826e0b7ae72c0a1445b0"
+        }
+      ],
+      "test_files": [
+        "tests/python/dif/test_r303_dif_iter_vectors.py"
+      ],
+      "tests_passed": 10,
+      "tests_failed": 0,
+      "export_path_affected": false,
+      "notes": "dif_iter_vectors() yields Vector objects (spec_qname=dif:vector, FACT-DIF-002) for each data row in a DIF document"
+    },
+    {
+      "entry_id": "PC-NETPBM-R311",
+      "sprint": "ff-sprint-s303-dotnet-deepening-20260630",
+      "format": "NETPBM",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/netpbm/NetpbmR311ScaleBrightnessDedicatedTests.cs",
+      "description": "Dedicated tests for NetpbmImage.ScaleBrightness(factor): valid ok, all pixels in range, dims/format/MaxValue unchanged, called-twice ok, factor-1.0 unchanged, dogfood 0.5 dim and 2.0 brighten",
+      "tests_added": 10,
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.scale_brightness",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-FODS-R331",
+      "sprint": "ff-sprint-s303-dotnet-deepening-20260630",
+      "format": "FODS",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fods/FodsR331GetCellFormulaDedicatedTests.cs",
+      "description": "Additional dedicated tests for FodsDocument.GetCellFormula: non-formula cell, row0/col0, row2/col3, SheetCount unchanged, adjacent cells, idempotent, dogfood sum formula and multiple cells",
+      "tests_added": 8,
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.get_cell_formula",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-FODT-R318",
+      "sprint": "ff-sprint-s303-dotnet-deepening-20260630",
+      "format": "FODT",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fodt/FodtR318ExportToTxtDedicatedTests.cs",
+      "description": "Dedicated tests for FodtDocument.ExportToTxt(filePath): null/whitespace throws, valid ok, file exists, non-empty, ParagraphCount unchanged, export-twice ok, dogfood with paragraphs and two paths",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.export_to_txt",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-XCF-R304",
+      "sprint_id": "ff-sprint-s304-xcf-layer-iterator-20260626",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "format": "xcf",
+      "capability_refs": [
+        "CAP-XCF-ITER-LAYERS"
+      ],
+      "api_symbols": [
+        "xcf_iter_layers"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/xcf/xcf_layer_iterator.py",
+          "sha256": "d85d1adaf03f42d6222d9f72db4b4817c15d9ea175b068a9f71be51f6bc8dab9"
+        }
+      ],
+      "test_files": [
+        "tests/python/xcf/test_r304_xcf_iter_layers.py"
+      ],
+      "tests_passed": 10,
+      "tests_failed": 0,
+      "export_path_affected": false,
+      "notes": "xcf_iter_layers() yields Layer objects (spec_qname=xcf:layer, FACT-XCF-002) for each layer in an XCF document"
     }
   ],
-  "total_entries": 1712,
+  "total_entries": 1717,
   "changes": [
     {
       "file": "src/python/dif/models.py",
