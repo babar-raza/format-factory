@@ -225,7 +225,8 @@ def write_lock(plan_path: str, last_taskcard: str | None = None, complete: bool 
                track_type: str | None = "product", binding: bool = False,
                audit_gate: bool = False,
                completion_candidate: bool = False,
-               skip_audit: bool = False) -> None:
+               skip_audit: bool = False,
+               track: str | None = None) -> None:
     # TC-AMD-MACH-003: Clean up orphaned .tmp files from previously crashed atomic writes
     cleanup_orphaned_tmp_files()
     # B3: normalize path separators so Windows backslashes don't prevent matching
@@ -251,7 +252,7 @@ def write_lock(plan_path: str, last_taskcard: str | None = None, complete: bool 
         _gate_label = "--audit-gate" if audit_gate else "auto-audit (TC-TCF-003)"
         try:
             from lifecycle_audit import run_lifecycle_audit  # type: ignore[import]
-            audit_result = run_lifecycle_audit(repo_root=_repo_root, plan_path=plan_path)
+            audit_result = run_lifecycle_audit(repo_root=_repo_root, plan_path=plan_path, track=track)
             audit_verdict = audit_result.get("verdict", "AUDIT_PASS")
             if audit_verdict == "AUDIT_REQUIRES_ITERATION":
                 status = "ITERATION_REQUIRED"
@@ -581,6 +582,10 @@ def main(argv: list[str] | None = None) -> int:
                         help="TC-TCF-003: Emergency bypass — skip the mandatory auto-audit gate even when "
                              "plan contains TC-* taskcard entries. Use only when lifecycle_audit is "
                              "unavailable or the audit is known to be inapplicable.")
+    parser.add_argument("--track", default=None, choices=["machinery", "product"],
+                        help="Track to read continuation signal from when --audit-gate is used "
+                             "(default: legacy path). Use 'machinery' for machinery-track plans "
+                             "to avoid cross-track signal contamination.")
     args = parser.parse_args(argv)
 
     if args.clear:
@@ -605,7 +610,8 @@ def main(argv: list[str] | None = None) -> int:
                track_type=args.track_type, binding=args.binding,
                audit_gate=getattr(args, "audit_gate", False),
                completion_candidate=getattr(args, "completion_candidate", False),
-               skip_audit=getattr(args, "skip_audit", False))
+               skip_audit=getattr(args, "skip_audit", False),
+               track=getattr(args, "track", None))
     return 0
 
 

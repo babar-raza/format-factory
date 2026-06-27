@@ -312,3 +312,66 @@ class TestVacuousCallGuard:
         assert out_path.exists(), "lifecycle-audit-results.json must be written even for vacuous calls"
         data = json.loads(out_path.read_text(encoding="utf-8"))
         assert data["verdict"] == "AUDIT_PASS_VACUOUS"
+
+
+# ---------------------------------------------------------------------------
+# TC-RJO-NEW-001: READY status must be parsed as open (non-terminal)
+# ---------------------------------------------------------------------------
+
+
+class TestReadyStatusParsing:
+    """TC-RJO-NEW-001: READY tasks must be detected as open, not missed."""
+
+    def test_plan_with_ready_tasks_reports_open_taskcards(self, tmp_path):
+        """A plan using READY status must not produce all_taskcards_closed=True."""
+        from tools.supervisor.lifecycle_audit import _TERMINAL_STATUSES, parse_plan_taskcards
+
+        plan = tmp_path / "test-plan.md"
+        plan.write_text(
+            "### TC-TEST-001: Some Task\n"
+            "**Status:** READY\n"
+            "\n"
+            "### TC-TEST-002: Another Task\n"
+            "**Status:** CLOSED\n"
+        )
+        tcs = parse_plan_taskcards(plan)
+        tc_ids = {tc["tc_id"] for tc in tcs}
+        assert "TC-TEST-001" in tc_ids, "READY taskcard must be parsed"
+        assert "TC-TEST-002" in tc_ids, "CLOSED taskcard must be parsed"
+        ready_tc = next(tc for tc in tcs if tc["tc_id"] == "TC-TEST-001")
+        assert ready_tc["status"] == "READY"
+        assert ready_tc["status"].upper() not in _TERMINAL_STATUSES, (
+            "READY is not terminal — it must appear as open"
+        )
+
+
+# ---------------------------------------------------------------------------
+# TC-RJO-NEW-002: --track parameter selects correct signal path
+# ---------------------------------------------------------------------------
+
+
+class TestTrackParameter:
+    """TC-RJO-NEW-002: --track selects correct continuation signal path."""
+
+    def test_machinery_track_reads_machinery_signal(self, tmp_path):
+        """--track machinery must read from .local/supervisor/machinery/continuation-signal.json."""
+        from tools.supervisor.lifecycle_audit import run_lifecycle_audit
+
+        # Create a blocked legacy signal
+        legacy_dir = tmp_path / ".local" / "supervisor"
+        legacy_dir.mkdir(parents=True)
+        (legacy_dir / "continuation-signal.json").write_text(
+            json.dumps({"autonomous_continue": False, "stop_reason": "blocked", "rework_items": []})
+        )
+
+        # Create a clean machinery signal
+        mach_dir = legacy_dir / "machinery"
+        mach_dir.mkdir(parents=True)
+        (mach_dir / "continuation-signal.json").write_text(
+            json.dumps({"autonomous_continue": True, "rework_items": []})
+        )
+
+        result = run_lifecycle_audit(repo_root=tmp_path, track="machinery")
+        assert not any(f["type"] == "CONTINUATION_BLOCKED" for f in result["findings"]), (
+            "CONTINUATION_BLOCKED must not fire when machinery track signal is clean"
+        )

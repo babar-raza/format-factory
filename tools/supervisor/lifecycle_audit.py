@@ -42,6 +42,9 @@ _EVIDENCE_REVIEW_REL = "reports/supervisor/evidence-review.md"
 _PRODUCT_MISSION_LEDGER_REL = ".local/supervisor/product-mission-ledger.json"
 _OUTPUT_PATH_REL = ".local/supervisor/lifecycle-audit-results.json"
 
+_MACHINERY_SIGNAL_PATH_REL = ".local/supervisor/machinery/continuation-signal.json"
+_PRODUCT_SIGNAL_PATH_REL = ".local/supervisor/product/continuation-signal.json"
+
 _EXTERNAL_GATE_KEYWORDS = [
     "push_credentials",
     "gate_11",
@@ -49,6 +52,25 @@ _EXTERNAL_GATE_KEYWORDS = [
     "publication_credentials",
     "external_gate",
 ]
+
+
+def _resolve_signal_path(repo_root: Path, track: str | None = None) -> Path:
+    """Resolve continuation signal path based on --track parameter.
+
+    TC-RJO-NEW-002: Prevents cross-track signal contamination when running
+    lifecycle audit for machinery missions while product track is blocked.
+    """
+    if track == "machinery":
+        p = repo_root / _MACHINERY_SIGNAL_PATH_REL
+        if p.exists():
+            return p
+        return repo_root / _SIGNAL_PATH_REL
+    elif track == "product":
+        p = repo_root / _PRODUCT_SIGNAL_PATH_REL
+        if p.exists():
+            return p
+        return repo_root / _SIGNAL_PATH_REL
+    return repo_root / _SIGNAL_PATH_REL
 
 
 # ---------------------------------------------------------------------------
@@ -59,18 +81,21 @@ import re as _re
 
 _TC_TABLE_RE = _re.compile(
     r"\|\s*(TC-[A-Z0-9]+-[A-Z0-9-]+)\s*\|\s*"
-    r"(CLOSED|OPEN|IN_PROGRESS|PENDING|SUPERSEDED|EXCLUDED)\s*\|",
+    r"(CLOSED|OPEN|IN_PROGRESS|PENDING|SUPERSEDED|EXCLUDED"
+    r"|READY|PARTIALLY_COMPLETED|COMPLETED_BUT_WEAKLY_VERIFIED|FOLLOW_UP)\s*\|",
     _re.IGNORECASE,
 )
 _TC_BLOCK_RE = _re.compile(
     r"^#{1,4}\s+(TC-[A-Z0-9]+-[A-Z0-9-]+)\b[^\n]*\n"
     r"(?:[^\n]*\n){0,4}?"
-    r"[^\n]*\*{0,2}Status:?\*{0,2}\s*(CLOSED|OPEN|IN_PROGRESS|PENDING|SUPERSEDED|EXCLUDED)",
+    r"[^\n]*\*{0,2}Status:?\*{0,2}\s*(CLOSED|OPEN|IN_PROGRESS|PENDING|SUPERSEDED|EXCLUDED"
+    r"|READY|PARTIALLY_COMPLETED|COMPLETED_BUT_WEAKLY_VERIFIED|FOLLOW_UP)",
     _re.IGNORECASE | _re.MULTILINE,
 )
 _TC_INLINE_RE = _re.compile(
     "(TC-[A-Z0-9]+-[A-Z0-9-]+)\\s*(?:\u2014|:|-)\\s*\\*{0,2}"
-    "(CLOSED|OPEN|IN_PROGRESS|PENDING|SUPERSEDED|EXCLUDED)\\*{0,2}",
+    "(CLOSED|OPEN|IN_PROGRESS|PENDING|SUPERSEDED|EXCLUDED"
+    "|READY|PARTIALLY_COMPLETED|COMPLETED_BUT_WEAKLY_VERIFIED|FOLLOW_UP)\\*{0,2}",
     _re.IGNORECASE,
 )
 _TERMINAL_STATUSES = frozenset({"CLOSED", "SUPERSEDED", "EXCLUDED"})
@@ -350,6 +375,7 @@ def run_lifecycle_audit(
     mission_id: str | None = None,
     sprint_id: str | None = None,
     plan_path: str | Path | None = None,
+    track: str | None = None,
 ) -> dict:
     """Read current system state and produce a structured audit verdict.
 
@@ -376,7 +402,7 @@ def run_lifecycle_audit(
     # ------------------------------------------------------------------
     # 1. Read continuation signal
     # ------------------------------------------------------------------
-    signal_path = repo_root / _SIGNAL_PATH_REL
+    signal_path = _resolve_signal_path(repo_root, track)
     signal: dict = {}
     if signal_path.exists():
         try:
@@ -738,6 +764,8 @@ def _build_arg_parser() -> argparse.ArgumentParser:
     p.add_argument("--plan-path", default=None, help="Path to plan file for taskcard verification")
     p.add_argument("--check-mission-complete", action="store_true", help="Exit 0 if mission complete, 1 otherwise")
     p.add_argument("--json", dest="output_json", action="store_true", help="Print result JSON to stdout")
+    p.add_argument("--track", default=None, choices=["machinery", "product"],
+                   help="Track to read continuation signal from (default: legacy path)")
     return p
 
 
@@ -753,6 +781,7 @@ def main(argv: list[str] | None = None) -> int:
             mission_id=args.mission_id,
             sprint_id=args.sprint_id,
             plan_path=args.plan_path,
+            track=args.track,
         )
     except Exception as exc:
         print(f"ERROR: lifecycle_audit failed: {exc}", file=sys.stderr)
