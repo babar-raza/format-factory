@@ -30621,9 +30621,95 @@
       "tests_added": 9,
       "capability_ref": "commercial_net_products.FODT.dotnet_status.find_text",
       "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-TSV-R313",
+      "sprint_id": "ff-sprint-s313-tsv-field-iterator-20260626",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "format": "tsv",
+      "capability_refs": [
+        "CAP-TSV-ITER-FIELDS"
+      ],
+      "api_symbols": [
+        "tsv_iter_fields"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/tsv/tsv_field_iterator.py",
+          "sha256": "93f0e668fa08acaebc72c44865ad36609bb55b6a2d09b6b197668c4167225451"
+        }
+      ],
+      "test_files": [
+        "tests/python/tsv/test_r313_tsv_iter_fields.py"
+      ],
+      "tests_passed": 10,
+      "tests_failed": 0,
+      "export_path_affected": false,
+      "notes": "tsv_iter_fields() yields Field objects (spec_qname=tsv:field, FACT-TSV-002) for every field value (headers + data rows) in a TSV document"
+    },
+    {
+      "entry_id": "PC-NETPBM-R317",
+      "sprint": "ff-sprint-s308-dotnet-deepening-20260630",
+      "format": "NETPBM",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/netpbm/NetpbmR317GetMeanDedicatedTests.cs",
+      "description": "Dedicated tests for NetpbmImage.GetMean: returns in [0,MaxValue], dims/format/MaxValue unchanged, all-zero ok, idempotent, uniform returns near-uniform, dogfood finite and two-value",
+      "tests_added": 10,
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.get_mean",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-FODS-R336",
+      "sprint": "ff-sprint-s308-dotnet-deepening-20260630",
+      "format": "FODS",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fods/FodsR336SetRowHeightDedicatedTests.cs",
+      "description": "Dedicated tests for FodsDocument.SetRowHeight(sheetName, rowIndex, height): null/whitespace/nonexistent/negative throws, valid ok, SheetCount unchanged, called-twice ok, multi-row ok, dogfood multi-sheets",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.set_row_height",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-FODT-R323",
+      "sprint": "ff-sprint-s308-dotnet-deepening-20260630",
+      "format": "FODT",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fodt/FodtR323ReplaceTextDedicatedTests.cs",
+      "description": "Dedicated tests for FodtDocument.ReplaceText(searchText, replacement): null throws, not-found ok, valid ok, ParagraphCount/TableCount unchanged, called-twice ok, dogfood multi-paragraph",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.replace_text",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-ODS-R314",
+      "sprint_id": "ff-sprint-s314-ods-row-iterator-20260626",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "format": "ods",
+      "capability_refs": [
+        "CAP-ODS-ITER-ROWS"
+      ],
+      "api_symbols": [
+        "ods_iter_rows"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ods/ods_row_iterator.py",
+          "sha256": "6cfc53debba20c23e62ea5482a2aca28813f3022b59e4f61a228964b23694f16"
+        }
+      ],
+      "test_files": [
+        "tests/python/ods/test_r314_ods_iter_rows.py"
+      ],
+      "tests_passed": 9,
+      "tests_failed": 0,
+      "export_path_affected": false,
+      "notes": "ods_iter_rows() yields TableRow objects (spec_qname=table:table-row, FACT-ODS-002) for every row across all sheets in an ODS document"
     }
   ],
-  "total_entries": 1738,
+  "total_entries": 1742,
   "changes": [
     {
       "file": "src/python/dif/models.py",
