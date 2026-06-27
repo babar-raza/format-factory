@@ -32362,9 +32362,45 @@
       "tests_added": 9,
       "capability_ref": "commercial_net_products.FODT.dotnet_status.get_paragraph_style",
       "date": "2026-07-02"
+    },
+    {
+      "entry_id": "PC-NETPBM-R364",
+      "sprint": "ff-sprint-s351-dotnet-deepening-20260630",
+      "format": "NETPBM",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/netpbm/NetpbmR364GetStandardDeviationDedicatedTests.cs",
+      "description": "Dedicated tests for NetpbmImage.GetStandardDeviation: valid ok, non-negative, dims/format/MaxValue unchanged, uniform=0.0, idempotent, dogfood half-max positive, all-128=0.0",
+      "tests_added": 10,
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.get_standard_deviation",
+      "date": "2026-07-02"
+    },
+    {
+      "entry_id": "PC-FODS-R389",
+      "sprint": "ff-sprint-s351-dotnet-deepening-20260630",
+      "format": "FODS",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fods/FodsR389GetCellIndentDedicatedTests.cs",
+      "description": "Dedicated tests for FodsDocument.GetCellIndent: null/whitespace/nonexistent/negative throws, valid non-negative, SheetCount unchanged, idempotent, dogfood Set2+Get=2, multiple cells 0/1/2",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.get_cell_indent",
+      "date": "2026-07-02"
+    },
+    {
+      "entry_id": "PC-FODT-R369",
+      "sprint": "ff-sprint-s351-dotnet-deepening-20260630",
+      "format": "FODT",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fodt/FodtR369GetHeadingLevelDedicatedTests.cs",
+      "description": "Dedicated tests for FodtDocument.GetHeadingLevel: negative/out-of-range/empty throws, valid positive, counts unchanged, idempotent, dogfood level1=1, level3=3",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.get_heading_level",
+      "date": "2026-07-02"
     }
   ],
-  "total_entries": 1879,
+  "total_entries": 1882,
   "changes": [
     {
       "file": "src/python/dif/models.py",
