@@ -32890,9 +32890,39 @@
       "api_method": "GetDocumentSubject",
       "test_count": 9,
       "description": "Dedicated tests for FodtDocument.GetDocumentSubject: valid non-null, counts unchanged, idempotent, non-empty, SetSubject+Get, dogfood quarterly review+HR policy"
+    },
+    {
+      "entry_id": "PC-NETPBM-R380",
+      "sprint": "ff-sprint-s367-dotnet-deepening-20260630",
+      "format": "NETPBM",
+      "r_number": 380,
+      "test_file": "tests/net/netpbm/NetpbmR380GetGrayPixelCountDedicatedTests.cs",
+      "api_method": "GetGrayPixelCount",
+      "test_count": 10,
+      "description": "Dedicated tests for NetpbmImage.GetGrayPixelCount: non-negative, all-black=0, all-white=0, dims unchanged, idempotent, mid-gray positive, mixed non-negative"
+    },
+    {
+      "entry_id": "PC-FODS-R409",
+      "sprint": "ff-sprint-s367-dotnet-deepening-20260630",
+      "format": "FODS",
+      "r_number": 409,
+      "test_file": "tests/net/fods/FodsR409GetCellTextWrapDedicatedTests.cs",
+      "api_method": "GetCellTextWrap",
+      "test_count": 9,
+      "description": "Dedicated tests for FodsDocument.GetCellTextWrap: null/whitespace/nonexistent/negative throws, valid bool, SheetCount unchanged, idempotent, SetWrap true+Get, false+Get"
+    },
+    {
+      "entry_id": "PC-FODT-R385",
+      "sprint": "ff-sprint-s367-dotnet-deepening-20260630",
+      "format": "FODT",
+      "r_number": 385,
+      "test_file": "tests/net/fodt/FodtR385GetDocumentCreationDateDedicatedTests.cs",
+      "api_method": "GetDocumentCreationDate",
+      "test_count": 9,
+      "description": "Dedicated tests for FodtDocument.GetDocumentCreationDate: valid non-null, counts unchanged, idempotent, non-empty, SetDate+Get, dogfood 2026-07-01+2025-12-31"
     }
   ],
-  "total_entries": 1927,
+  "total_entries": 1930,
   "changes": [
     {
       "file": "src/python/dif/models.py",
