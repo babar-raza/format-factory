@@ -30105,9 +30105,95 @@
       "tests_added": 9,
       "capability_ref": "commercial_net_products.FODT.dotnet_status.insert_image",
       "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-FODT-R301",
+      "sprint_id": "ff-sprint-s301-fodt-paragraph-iterator-20260626",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "format": "fodt",
+      "capability_refs": [
+        "CAP-FODT-ITER-PARAGRAPHS"
+      ],
+      "api_symbols": [
+        "fodt_iter_paragraphs"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/fodt/fodt_paragraph_iterator.py",
+          "sha256": "3650b11512b232af8e6d180625694ed32c5eaa540c57e6faf1b2be7d0b6aac93"
+        }
+      ],
+      "test_files": [
+        "tests/python/fodt/test_r301_fodt_iter_paragraphs.py"
+      ],
+      "tests_passed": 10,
+      "tests_failed": 0,
+      "export_path_affected": false,
+      "notes": "fodt_iter_paragraphs() yields Paragraph objects (spec_qname=text:p, FACT-FODT-003) for each block in a FODT document"
+    },
+    {
+      "entry_id": "PC-NETPBM-R310",
+      "sprint": "ff-sprint-s302-dotnet-deepening-20260630",
+      "format": "NETPBM",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/netpbm/NetpbmR310GetKurtosisDedicatedTests.cs",
+      "description": "Dedicated tests for NetpbmImage.GetKurtosis: finite or NaN double, dims/format/MaxValue unchanged, same class twice, all-zero ok, mixed ok, dogfood standard and varying",
+      "tests_added": 10,
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.get_kurtosis",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-FODS-R330",
+      "sprint": "ff-sprint-s302-dotnet-deepening-20260630",
+      "format": "FODS",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fods/FodsR330GetCellNumberFormatDedicatedTests.cs",
+      "description": "Dedicated tests for FodsDocument.GetCellNumberFormat(sheetName,row,col): null/whitespace/nonexistent/negative-row/negative-col throws, valid non-null, SheetCount unchanged, idempotent, returns SetCellNumberFormat, dogfood",
+      "tests_added": 10,
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.get_cell_number_format",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-FODT-R317",
+      "sprint": "ff-sprint-s302-dotnet-deepening-20260630",
+      "format": "FODT",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fodt/FodtR317ExportToHtmlDedicatedTests.cs",
+      "description": "Dedicated tests for FodtDocument.ExportToHtml(filePath): null/whitespace throws, valid ok, file exists, non-empty, ParagraphCount unchanged, export-twice ok, dogfood with paragraphs and two paths",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.export_to_html",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-GNUMERIC-R302",
+      "sprint_id": "ff-sprint-s302-gnumeric-sheet-iterator-20260626",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "format": "gnumeric",
+      "capability_refs": [
+        "CAP-GNUMERIC-ITER-SHEETS"
+      ],
+      "api_symbols": [
+        "gnumeric_iter_sheets"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/gnumeric/gnumeric_sheet_iterator.py",
+          "sha256": "9302621cd7c5bd0ac1abce3fd8c78f40df2c2b966abd69fbb1995c9182098914"
+        }
+      ],
+      "test_files": [
+        "tests/python/gnumeric/test_r302_gnumeric_iter_sheets.py"
+      ],
+      "tests_passed": 10,
+      "tests_failed": 0,
+      "export_path_affected": false,
+      "notes": "gnumeric_iter_sheets() yields Sheet objects (spec_qname=gnumeric:sheet, FACT-GNUMERIC-002) for each sheet in a Gnumeric document"
     }
   ],
-  "total_entries": 1708,
+  "total_entries": 1712,
   "changes": [
     {
       "file": "src/python/dif/models.py",
