@@ -30277,9 +30277,120 @@
       "tests_failed": 0,
       "export_path_affected": false,
       "notes": "xcf_iter_layers() yields Layer objects (spec_qname=xcf:layer, FACT-XCF-002) for each layer in an XCF document"
+    },
+    {
+      "entry_id": "PC-QOI-R305",
+      "sprint_id": "ff-sprint-s305-qoi-chunk-iterator-20260626",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "format": "qoi",
+      "capability_refs": [
+        "CAP-QOI-ITER-CHUNKS"
+      ],
+      "api_symbols": [
+        "qoi_iter_chunks"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/qoi/qoi_chunk_iterator.py",
+          "sha256": "8ec62acf872a6d4a14ef766b95c33429adb0f4c49bada42c3d079646c6c982a1"
+        }
+      ],
+      "test_files": [
+        "tests/python/qoi/test_r305_qoi_iter_chunks.py"
+      ],
+      "tests_passed": 11,
+      "tests_failed": 0,
+      "export_path_affected": false,
+      "notes": "qoi_iter_chunks() yields Chunk objects (spec_qname=qoi:chunk, FACT-QOI-002) for each decoded pixel in a QOI image"
+    },
+    {
+      "entry_id": "PC-PBM-R306",
+      "sprint_id": "ff-sprint-s306-pbm-raster-iterator-20260626",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "format": "pbm",
+      "capability_refs": [
+        "CAP-PBM-ITER-RASTERS"
+      ],
+      "api_symbols": [
+        "pbm_iter_rasters"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/pbm/pbm_raster_iterator.py",
+          "sha256": "6a54560eaf8cae95568334ec736542bf9aec4863608672f5d352d43b679daaba"
+        }
+      ],
+      "test_files": [
+        "tests/python/pbm/test_r306_pbm_iter_rasters.py"
+      ],
+      "tests_passed": 11,
+      "tests_failed": 0,
+      "export_path_affected": false,
+      "notes": "pbm_iter_rasters() yields Raster objects (spec_qname=pbm:raster, FACT-PBM-002) for the bitmap raster in a PBM image"
+    },
+    {
+      "entry_id": "PC-NETPBM-R313",
+      "sprint": "ff-sprint-s304-dotnet-deepening-20260630",
+      "format": "NETPBM",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/netpbm/NetpbmR313ScaleContrastDedicatedTests.cs",
+      "description": "Dedicated tests for NetpbmImage.ScaleContrast(factor): valid ok, all pixels in range, dims/format/MaxValue unchanged, called-twice ok, factor-1.0 neutral, dogfood increase and decrease contrast",
+      "tests_added": 10,
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.scale_contrast",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-FODS-R332",
+      "sprint": "ff-sprint-s304-dotnet-deepening-20260630",
+      "format": "FODS",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fods/FodsR332SetCellFormulaDedicatedTests.cs",
+      "description": "Dedicated tests for FodsDocument.SetCellFormula(sheetName, row, col, formula): null/whitespace/nonexistent/negative throws, valid ok, SheetCount unchanged, GetCellFormula non-null after set, set-twice ok, dogfood SUM formula",
+      "tests_added": 10,
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.set_cell_formula",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-FODT-R319",
+      "sprint": "ff-sprint-s304-dotnet-deepening-20260630",
+      "format": "FODT",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fodt/FodtR319ExportToMarkdownDedicatedTests.cs",
+      "description": "Dedicated tests for FodtDocument.ExportToMarkdown(filePath): null/whitespace throws, valid ok, file exists, non-empty, ParagraphCount unchanged, export-twice ok, dogfood with paragraphs and two paths",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.export_to_markdown",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-PGM-R307",
+      "sprint_id": "ff-sprint-s307-pgm-graymap-iterator-20260626",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "format": "pgm",
+      "capability_refs": [
+        "CAP-PGM-ITER-GRAYMAPS"
+      ],
+      "api_symbols": [
+        "pgm_iter_graymaps"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/pgm/pgm_graymap_iterator.py",
+          "sha256": "d8049b6004afd85302079215ff7e76f2a241a1ae0ec1cc2cf91cae13335fa161"
+        }
+      ],
+      "test_files": [
+        "tests/python/pgm/test_r307_pgm_iter_graymaps.py"
+      ],
+      "tests_passed": 10,
+      "tests_failed": 0,
+      "export_path_affected": false,
+      "notes": "pgm_iter_graymaps() yields Graymap objects (spec_qname=pgm:graymap, FACT-PGM-002) for the grayscale raster in a PGM image"
     }
   ],
-  "total_entries": 1717,
+  "total_entries": 1723,
   "changes": [
     {
       "file": "src/python/dif/models.py",
