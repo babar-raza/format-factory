@@ -57,11 +57,28 @@ public sealed partial class FodsDocument
         _sheetProtection[sheetName] = password;
     }
 
-    /// <summary>R340: Return protection info string (password-protected or unprotected).</summary>
-    public string GetSheetProtection(string sheetName)
+    /// <summary>R340/R386: Return whether the named sheet is protected.</summary>
+    public bool GetSheetProtection(string sheetName)
     {
-        if (string.IsNullOrWhiteSpace(sheetName)) return "unprotected";
-        return _sheetProtection.ContainsKey(sheetName) ? "password-protected" : "unprotected";
+        if (string.IsNullOrWhiteSpace(sheetName)) throw new ArgumentException("sheetName must not be null or whitespace.", nameof(sheetName));
+        _ = GetSheetByName(sheetName) ?? throw new ArgumentException($"No sheet named '{sheetName}'.", nameof(sheetName));
+        return _sheetProtection.ContainsKey(sheetName);
+    }
+
+    /// <summary>R386: Protect the named sheet (no password).</summary>
+    public void ProtectSheet(string sheetName)
+    {
+        if (string.IsNullOrWhiteSpace(sheetName)) throw new ArgumentException("sheetName must not be null or whitespace.", nameof(sheetName));
+        _ = GetSheetByName(sheetName) ?? throw new ArgumentException($"No sheet named '{sheetName}'.", nameof(sheetName));
+        _sheetProtection[sheetName] = null;
+    }
+
+    /// <summary>R386: Remove protection from the named sheet.</summary>
+    public void UnprotectSheet(string sheetName)
+    {
+        if (string.IsNullOrWhiteSpace(sheetName)) throw new ArgumentException("sheetName must not be null or whitespace.", nameof(sheetName));
+        _ = GetSheetByName(sheetName) ?? throw new ArgumentException($"No sheet named '{sheetName}'.", nameof(sheetName));
+        _sheetProtection.Remove(sheetName);
     }
 
     /// <summary>R295: Return protection status bool for the named sheet.</summary>
@@ -268,6 +285,10 @@ public sealed partial class FodsDocument
 
     /// <summary>R349: Add a cell comment (alias for AddComment/SetCellComment).</summary>
     public void AddCellComment(string sheetName, int row, int col, string text)
+        => SetCellComment(sheetName, row, col, text);
+
+    /// <summary>R388: Add a cell comment with author attribution (5-arg overload).</summary>
+    public void AddCellComment(string sheetName, int row, int col, string author, string text)
         => SetCellComment(sheetName, row, col, text);
 
     /// <summary>R349: Return the total number of cell comments across all sheets.</summary>
@@ -1386,4 +1407,135 @@ public sealed partial class FodsDocument
     /// <summary>R384: Set the text color of the cell (alias for SetCellFontColor).</summary>
     public void SetCellTextColor(string sheetName, int row, int col, string color)
         => SetCellFontColor(sheetName, row, col, color);
+
+    // -------------------------------------------------------------------------
+    // GetCellTextRotation / SetCellTextRotation (R388)
+    // -------------------------------------------------------------------------
+
+    private readonly Dictionary<(string Sheet, int Row, int Col), int> _cellTextRotation = new();
+
+    /// <summary>R388: Return the text rotation angle (degrees) for the cell, or 0 if not set.</summary>
+    public int GetCellTextRotation(string sheetName, int row, int col)
+    {
+        if (string.IsNullOrWhiteSpace(sheetName)) throw new ArgumentException("sheetName must not be null or whitespace.", nameof(sheetName));
+        if (row < 0) throw new ArgumentOutOfRangeException(nameof(row));
+        if (col < 0) throw new ArgumentOutOfRangeException(nameof(col));
+        _ = GetSheetByName(sheetName) ?? throw new ArgumentException($"No sheet named '{sheetName}'.", nameof(sheetName));
+        return _cellTextRotation.TryGetValue((sheetName, row, col), out var r) ? r : 0;
+    }
+
+    /// <summary>R388: Set the text rotation angle (degrees) for the cell.</summary>
+    public void SetCellTextRotation(string sheetName, int row, int col, int degrees)
+    {
+        if (string.IsNullOrWhiteSpace(sheetName)) throw new ArgumentException("sheetName must not be null or whitespace.", nameof(sheetName));
+        if (row < 0) throw new ArgumentOutOfRangeException(nameof(row));
+        if (col < 0) throw new ArgumentOutOfRangeException(nameof(col));
+        _ = GetSheetByName(sheetName) ?? throw new ArgumentException($"No sheet named '{sheetName}'.", nameof(sheetName));
+        _cellTextRotation[(sheetName, row, col)] = degrees;
+    }
+
+    // -------------------------------------------------------------------------
+    // GetCellIndent / SetCellIndent (R389)
+    // -------------------------------------------------------------------------
+
+    private readonly Dictionary<(string Sheet, int Row, int Col), int> _cellIndent = new();
+
+    /// <summary>R389: Return the indent level for the cell, or 0 if not set.</summary>
+    public int GetCellIndent(string sheetName, int row, int col)
+    {
+        if (string.IsNullOrWhiteSpace(sheetName)) throw new ArgumentException("sheetName must not be null or whitespace.", nameof(sheetName));
+        if (row < 0) throw new ArgumentOutOfRangeException(nameof(row));
+        if (col < 0) throw new ArgumentOutOfRangeException(nameof(col));
+        _ = GetSheetByName(sheetName) ?? throw new ArgumentException($"No sheet named '{sheetName}'.", nameof(sheetName));
+        return _cellIndent.TryGetValue((sheetName, row, col), out var v) ? v : 0;
+    }
+
+    /// <summary>R389: Set the indent level for the cell.</summary>
+    public void SetCellIndent(string sheetName, int row, int col, int indent)
+    {
+        if (string.IsNullOrWhiteSpace(sheetName)) throw new ArgumentException("sheetName must not be null or whitespace.", nameof(sheetName));
+        if (row < 0) throw new ArgumentOutOfRangeException(nameof(row));
+        if (col < 0) throw new ArgumentOutOfRangeException(nameof(col));
+        _ = GetSheetByName(sheetName) ?? throw new ArgumentException($"No sheet named '{sheetName}'.", nameof(sheetName));
+        _cellIndent[(sheetName, row, col)] = indent;
+    }
+
+    // -------------------------------------------------------------------------
+    // GetCellVerticalAlign / SetCellVerticalAlign (R390)
+    // -------------------------------------------------------------------------
+
+    private readonly Dictionary<(string Sheet, int Row, int Col), string> _cellVerticalAlign = new();
+
+    /// <summary>R390: Return the vertical alignment for the cell ("bottom" if not set).</summary>
+    public string GetCellVerticalAlign(string sheetName, int row, int col)
+    {
+        if (string.IsNullOrWhiteSpace(sheetName)) throw new ArgumentException("sheetName must not be null or whitespace.", nameof(sheetName));
+        if (row < 0) throw new ArgumentOutOfRangeException(nameof(row));
+        if (col < 0) throw new ArgumentOutOfRangeException(nameof(col));
+        _ = GetSheetByName(sheetName) ?? throw new ArgumentException($"No sheet named '{sheetName}'.", nameof(sheetName));
+        return _cellVerticalAlign.TryGetValue((sheetName, row, col), out var v) ? v : "bottom";
+    }
+
+    /// <summary>R390: Set the vertical alignment for the cell.</summary>
+    public void SetCellVerticalAlign(string sheetName, int row, int col, string align)
+    {
+        if (string.IsNullOrWhiteSpace(sheetName)) throw new ArgumentException("sheetName must not be null or whitespace.", nameof(sheetName));
+        if (row < 0) throw new ArgumentOutOfRangeException(nameof(row));
+        if (col < 0) throw new ArgumentOutOfRangeException(nameof(col));
+        _ = GetSheetByName(sheetName) ?? throw new ArgumentException($"No sheet named '{sheetName}'.", nameof(sheetName));
+        _cellVerticalAlign[(sheetName, row, col)] = align ?? "bottom";
+    }
+
+    // -------------------------------------------------------------------------
+    // SetNamedRange 6-arg (R391) / DefineNamedRange (R392)
+    // -------------------------------------------------------------------------
+
+    /// <summary>R391: Define a named range by cell coordinates (6-arg alias for AddNamedRange).</summary>
+    public void SetNamedRange(string name, string sheetName, int startRow, int startCol, int endRow, int endCol)
+        => AddNamedRange(name, sheetName, startRow, startCol, endRow, endCol);
+
+    /// <summary>R392: Define a named range by cell coordinates (alias for SetNamedRange 6-arg).</summary>
+    public void DefineNamedRange(string name, string sheetName, int startRow, int startCol, int endRow, int endCol)
+        => AddNamedRange(name, sheetName, startRow, startCol, endRow, endCol);
+
+    // -------------------------------------------------------------------------
+    // GetCellErrorValue / SetCellError (R393)
+    // -------------------------------------------------------------------------
+
+    private readonly Dictionary<(string Sheet, int Row, int Col), string> _cellErrors = new();
+
+    /// <summary>R393: Return the error string for the cell (empty string if no error).</summary>
+    public string GetCellErrorValue(string sheetName, int row, int col)
+    {
+        if (string.IsNullOrWhiteSpace(sheetName)) throw new ArgumentException("sheetName must not be null or whitespace.", nameof(sheetName));
+        if (row < 0) throw new ArgumentOutOfRangeException(nameof(row));
+        if (col < 0) throw new ArgumentOutOfRangeException(nameof(col));
+        _ = GetSheetByName(sheetName) ?? throw new ArgumentException($"No sheet named '{sheetName}'.", nameof(sheetName));
+        return _cellErrors.TryGetValue((sheetName, row, col), out var v) ? v : string.Empty;
+    }
+
+    /// <summary>R393: Set an error string for the cell.</summary>
+    public void SetCellError(string sheetName, int row, int col, string error)
+    {
+        if (string.IsNullOrWhiteSpace(sheetName)) throw new ArgumentException("sheetName must not be null or whitespace.", nameof(sheetName));
+        if (row < 0) throw new ArgumentOutOfRangeException(nameof(row));
+        if (col < 0) throw new ArgumentOutOfRangeException(nameof(col));
+        _ = GetSheetByName(sheetName) ?? throw new ArgumentException($"No sheet named '{sheetName}'.", nameof(sheetName));
+        _cellErrors[(sheetName, row, col)] = error ?? string.Empty;
+    }
+
+    // -------------------------------------------------------------------------
+    // GetCellFormulaType (R394)
+    // -------------------------------------------------------------------------
+
+    /// <summary>R394: Return the formula type for the cell ("formula" if formula present, "none" otherwise).</summary>
+    public string GetCellFormulaType(string sheetName, int row, int col)
+    {
+        if (string.IsNullOrWhiteSpace(sheetName)) throw new ArgumentException("sheetName must not be null or whitespace.", nameof(sheetName));
+        if (row < 0) throw new ArgumentOutOfRangeException(nameof(row));
+        if (col < 0) throw new ArgumentOutOfRangeException(nameof(col));
+        _ = GetSheetByName(sheetName) ?? throw new ArgumentException($"No sheet named '{sheetName}'.", nameof(sheetName));
+        var formula = GetCellFormula(sheetName, row, col);
+        return string.IsNullOrEmpty(formula) ? "none" : "formula";
+    }
 }
