@@ -32650,9 +32650,39 @@
       "tests_added": 9,
       "capability_ref": "commercial_net_products.FODT.dotnet_status.get_page_size",
       "date": "2026-07-02"
+    },
+    {
+      "entry_id": "PC-NETPBM-R372",
+      "sprint": "ff-sprint-s359-dotnet-deepening-20260630",
+      "format": "NETPBM",
+      "r_number": 372,
+      "test_file": "tests/net/netpbm/NetpbmR372GetContrastLevelDedicatedTests.cs",
+      "api_method": "GetContrastLevel",
+      "test_count": 10,
+      "description": "Dedicated tests for NetpbmImage.GetContrastLevel: valid ok, non-negative, dims/format/MaxValue unchanged, uniform=0.0, idempotent, high-contrast positive, gradient positive"
+    },
+    {
+      "entry_id": "PC-FODS-R401",
+      "sprint": "ff-sprint-s359-dotnet-deepening-20260630",
+      "format": "FODS",
+      "r_number": 401,
+      "test_file": "tests/net/fods/FodsR401GetSheetColumnCountDedicatedTests.cs",
+      "api_method": "GetSheetColumnCount",
+      "test_count": 8,
+      "description": "Dedicated tests for FodsDocument.GetSheetColumnCount: null/whitespace/nonexistent throws, new non-negative, SheetCount unchanged, idempotent, dogfood after SetCellValues, multiple sheets"
+    },
+    {
+      "entry_id": "PC-FODT-R377",
+      "sprint": "ff-sprint-s359-dotnet-deepening-20260630",
+      "format": "FODT",
+      "r_number": 377,
+      "test_file": "tests/net/fodt/FodtR377GetPageOrientationDedicatedTests.cs",
+      "api_method": "GetPageOrientation",
+      "test_count": 9,
+      "description": "Dedicated tests for FodtDocument.GetPageOrientation: valid non-null, counts unchanged, idempotent, non-empty, SetPageOrientation landscape+Get, dogfood portrait+landscape non-null"
     }
   ],
-  "total_entries": 1903,
+  "total_entries": 1906,
   "changes": [
     {
       "file": "src/python/dif/models.py",
