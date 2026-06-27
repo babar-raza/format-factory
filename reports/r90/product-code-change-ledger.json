@@ -32710,9 +32710,39 @@
       "api_method": "GetPageMargins",
       "test_count": 9,
       "description": "Dedicated tests for FodtDocument.GetPageMargins: valid non-null, counts unchanged, idempotent, non-empty, SetPageMargins 2cm+Get, dogfood default+custom non-null"
+    },
+    {
+      "entry_id": "PC-NETPBM-R374",
+      "sprint": "ff-sprint-s361-dotnet-deepening-20260630",
+      "format": "NETPBM",
+      "r_number": 374,
+      "test_file": "tests/net/netpbm/NetpbmR374GetHueLevelDedicatedTests.cs",
+      "api_method": "GetHueLevel",
+      "test_count": 10,
+      "description": "Dedicated tests for NetpbmImage.GetHueLevel: valid ok, non-negative, dims/format/MaxValue unchanged, idempotent, uniform non-negative, PPM non-negative, PGM non-negative"
+    },
+    {
+      "entry_id": "PC-FODS-R403",
+      "sprint": "ff-sprint-s361-dotnet-deepening-20260630",
+      "format": "FODS",
+      "r_number": 403,
+      "test_file": "tests/net/fods/FodsR403GetCellFontNameDedicatedTests.cs",
+      "api_method": "GetCellFontName",
+      "test_count": 9,
+      "description": "Dedicated tests for FodsDocument.GetCellFontName: null/whitespace/nonexistent/negative throws, valid non-null, SheetCount unchanged, idempotent, dogfood SetFontName+Get, multiple cells"
+    },
+    {
+      "entry_id": "PC-FODT-R379",
+      "sprint": "ff-sprint-s361-dotnet-deepening-20260630",
+      "format": "FODT",
+      "r_number": 379,
+      "test_file": "tests/net/fodt/FodtR379GetDocumentLanguageDedicatedTests.cs",
+      "api_method": "GetDocumentLanguage",
+      "test_count": 9,
+      "description": "Dedicated tests for FodtDocument.GetDocumentLanguage: valid non-null, counts unchanged, idempotent, non-empty, SetLanguage en-US+Get, dogfood English+French non-null"
     }
   ],
-  "total_entries": 1909,
+  "total_entries": 1912,
   "changes": [
     {
       "file": "src/python/dif/models.py",
