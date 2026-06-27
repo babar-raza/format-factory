@@ -31678,9 +31678,45 @@
       "tests_added": 9,
       "capability_ref": "commercial_net_products.FODT.dotnet_status.get_metadata_keywords",
       "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-NETPBM-R344",
+      "sprint": "ff-sprint-s332-dotnet-deepening-20260630",
+      "format": "NETPBM",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/netpbm/NetpbmR344GetPixelCountDedicatedTests.cs",
+      "description": "Dedicated tests for NetpbmImage.GetPixelCount: valid no exception, returns width*height, dims/format/MaxValue unchanged, idempotent, larger image larger count, dogfood 1x1=1 and 8x8=64",
+      "tests_added": 10,
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.get_pixel_count",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-FODS-R367",
+      "sprint": "ff-sprint-s332-dotnet-deepening-20260630",
+      "format": "FODS",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fods/FodsR367GetSheetHiddenDedicatedTests.cs",
+      "description": "Dedicated tests for FodsDocument.GetSheetHidden: null/whitespace/nonexistent throws, visible false, SheetCount unchanged, idempotent, dogfood HideSheet then Get returns true, multiple sheets",
+      "tests_added": 8,
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.get_sheet_hidden",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-FODT-R350",
+      "sprint": "ff-sprint-s332-dotnet-deepening-20260630",
+      "format": "FODT",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fodt/FodtR350GetMetadataDescriptionDedicatedTests.cs",
+      "description": "Dedicated tests for FodtDocument.GetMetadataDescription: empty ok, non-null, counts unchanged, idempotent, after-SetDescription returns description, dogfood description+content and description unchanged after AddParagraph",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.get_metadata_description",
+      "date": "2026-07-01"
     }
   ],
-  "total_entries": 1822,
+  "total_entries": 1825,
   "changes": [
     {
       "file": "src/python/dif/models.py",
