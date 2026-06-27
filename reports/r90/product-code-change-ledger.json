@@ -32920,9 +32920,39 @@
       "api_method": "GetDocumentCreationDate",
       "test_count": 9,
       "description": "Dedicated tests for FodtDocument.GetDocumentCreationDate: valid non-null, counts unchanged, idempotent, non-empty, SetDate+Get, dogfood 2026-07-01+2025-12-31"
+    },
+    {
+      "entry_id": "PC-NETPBM-R381",
+      "sprint": "ff-sprint-s368-dotnet-deepening-20260630",
+      "format": "NETPBM",
+      "r_number": 381,
+      "test_file": "tests/net/netpbm/NetpbmR381GetDarkPixelRatioDedicatedTests.cs",
+      "api_method": "GetDarkPixelRatio",
+      "test_count": 10,
+      "description": "Dedicated tests for NetpbmImage.GetDarkPixelRatio: in [0,1], all-white=0.0, all-black=1.0, dims unchanged, idempotent, half-dark in range, single dark small positive"
+    },
+    {
+      "entry_id": "PC-FODS-R410",
+      "sprint": "ff-sprint-s368-dotnet-deepening-20260630",
+      "format": "FODS",
+      "r_number": 410,
+      "test_file": "tests/net/fods/FodsR410GetCellHorizontalAlignDedicatedTests.cs",
+      "api_method": "GetCellHorizontalAlign",
+      "test_count": 9,
+      "description": "Dedicated tests for FodsDocument.GetCellHorizontalAlign: null/whitespace/nonexistent/negative throws, valid non-null, SheetCount unchanged, idempotent, SetAlign center+Get, multiple cells left/center/right"
+    },
+    {
+      "entry_id": "PC-FODT-R386",
+      "sprint": "ff-sprint-s368-dotnet-deepening-20260630",
+      "format": "FODT",
+      "r_number": 386,
+      "test_file": "tests/net/fodt/FodtR386GetDocumentModifiedDateDedicatedTests.cs",
+      "api_method": "GetDocumentModifiedDate",
+      "test_count": 9,
+      "description": "Dedicated tests for FodtDocument.GetDocumentModifiedDate: valid non-null, counts unchanged, idempotent, non-empty, SetDate+Get, dogfood 2026-07-02+2026-01-01"
     }
   ],
-  "total_entries": 1930,
+  "total_entries": 1933,
   "changes": [
     {
       "file": "src/python/dif/models.py",
