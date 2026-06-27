@@ -31462,9 +31462,45 @@
       "description": "Fixed CreateNew()+AddSheet('Sheet1') pattern to CreateEmpty()+AddSheet('Sheet1') in 32 test files across R290-R357 range, resolving InvalidOperationException: A sheet named 'Sheet1' already exists runtime failures",
       "tests_fixed": 147,
       "date": "2026-06-27"
+    },
+    {
+      "entry_id": "PC-NETPBM-R338",
+      "sprint": "ff-sprint-s326-dotnet-deepening-20260630",
+      "format": "NETPBM",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/netpbm/NetpbmR338ApplyInvertDedicatedTests.cs",
+      "description": "Dedicated tests for NetpbmImage.ApplyInvert: valid no exception, dims/format/MaxValue unchanged, all pixels in range, invert-twice restores, all-zero becomes MaxValue, dogfood mixed and single pixel",
+      "tests_added": 10,
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.apply_invert",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-FODS-R359",
+      "sprint": "ff-sprint-s326-dotnet-deepening-20260630",
+      "format": "FODS",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fods/FodsR359GetSheetColumnCountDedicatedTests.cs",
+      "description": "Dedicated tests for FodsDocument.GetSheetColumnCount: null/whitespace/nonexistent throws, empty non-negative, after-columns non-negative, SheetCount unchanged, idempotent, dogfood multiple columns and sheets",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.get_sheet_column_count",
+      "date": "2026-07-01"
+    },
+    {
+      "entry_id": "PC-FODT-R344",
+      "sprint": "ff-sprint-s326-dotnet-deepening-20260630",
+      "format": "FODT",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fodt/FodtR344GetPageCountDedicatedTests.cs",
+      "description": "Dedicated tests for FodtDocument.GetPageCount: non-negative, empty ok, counts unchanged, idempotent, non-empty at-least-one, dogfood multi-paragraph and heading document",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.get_page_count",
+      "date": "2026-07-01"
     }
   ],
-  "total_entries": 1796,
+  "total_entries": 1807,
   "changes": [
     {
       "file": "src/python/dif/models.py",
