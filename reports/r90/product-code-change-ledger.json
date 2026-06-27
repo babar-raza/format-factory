@@ -32980,9 +32980,39 @@
       "api_method": "GetParagraphFont",
       "test_count": 9,
       "description": "Dedicated tests for FodtDocument.GetParagraphFont: neg/OOR/empty throws, valid non-null, ParagraphCount/TableCount unchanged, idempotent, SetFont Arial+Get, multiple paragraphs"
+    },
+    {
+      "entry_id": "PC-NETPBM-R383",
+      "sprint": "ff-sprint-s370-dotnet-deepening-20260630",
+      "format": "NETPBM",
+      "r_number": 383,
+      "test_file": "tests/net/netpbm/NetpbmR383GetPixelValueDistinctCountDedicatedTests.cs",
+      "api_method": "GetPixelValueDistinctCount",
+      "test_count": 10,
+      "description": "Dedicated tests for NetpbmImage.GetPixelValueDistinctCount: positive, uniform=1, dims unchanged, idempotent, two-value=2, gradient>1, mixed positive"
+    },
+    {
+      "entry_id": "PC-FODS-R412",
+      "sprint": "ff-sprint-s370-dotnet-deepening-20260630",
+      "format": "FODS",
+      "r_number": 412,
+      "test_file": "tests/net/fods/FodsR412GetSheetTabColorDedicatedTests.cs",
+      "api_method": "GetSheetTabColor",
+      "test_count": 8,
+      "description": "Dedicated tests for FodsDocument.GetSheetTabColor: null/whitespace/nonexistent throws, new non-null, SheetCount unchanged, idempotent, SetColor #FF0000+Get, multiple sheets"
+    },
+    {
+      "entry_id": "PC-FODT-R388",
+      "sprint": "ff-sprint-s370-dotnet-deepening-20260630",
+      "format": "FODT",
+      "r_number": 388,
+      "test_file": "tests/net/fodt/FodtR388GetParagraphFontSizeDedicatedTests.cs",
+      "api_method": "GetParagraphFontSize",
+      "test_count": 9,
+      "description": "Dedicated tests for FodtDocument.GetParagraphFontSize: neg/OOR/empty throws, valid non-negative, counts unchanged, idempotent, SetFontSize 18+Get, multiple paragraphs"
     }
   ],
-  "total_entries": 1936,
+  "total_entries": 1939,
   "changes": [
     {
       "file": "src/python/dif/models.py",
