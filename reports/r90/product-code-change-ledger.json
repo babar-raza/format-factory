@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s388-dotnet-deepening-20260630",
+  "latest_sprint": "ff-sprint-s389-dotnet-deepening-20260630",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -33598,9 +33598,51 @@
       ],
       "test_count": 9,
       "description": "Dedicated tests for FodtDocument.HyperlinkCount: new non-negative, counts unchanged, idempotent, is int, dogfood paragraphs/mixed/loop"
+    },
+    {
+      "entry_id": "PC-NETPBM-R402",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s389-dotnet-deepening-20260630",
+      "product": "NETPBM .NET",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.get_total_channel_values"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR402GetTotalChannelValuesDedicatedTests.cs"
+      ],
+      "test_count": 11,
+      "description": "Dedicated tests for NetpbmImage.GetTotalChannelValues: non-negative, dims/format/MaxValue unchanged, idempotent, PBM/PGM/PPM non-negative, dogfood 2x2/4x4"
+    },
+    {
+      "entry_id": "PC-FODS-R432",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s389-dotnet-deepening-20260630",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.get_cell_formula_result"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR432GetCellFormulaResultDedicatedTests.cs"
+      ],
+      "test_count": 9,
+      "description": "Dedicated tests for FodsDocument.GetCellFormulaResult: null/whitespace/nonexistent/neg throws; valid non-null; SheetCount unchanged; idempotent; dogfood SetCellValue+Get, multiple cells"
+    },
+    {
+      "entry_id": "PC-FODT-R407",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s389-dotnet-deepening-20260630",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.get_index_mark_count"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR407GetIndexMarkCountDedicatedTests.cs"
+      ],
+      "test_count": 9,
+      "description": "Dedicated tests for FodtDocument.IndexMarkCount: new non-negative, counts unchanged, idempotent, is int, dogfood paragraphs/mixed/loop"
     }
   ],
-  "total_entries": 1993,
+  "total_entries": 1996,
   "changes": [
     {
       "file": "src/python/dif/models.py",
