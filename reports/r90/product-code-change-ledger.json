@@ -31930,9 +31930,45 @@
       "tests_added": 9,
       "capability_ref": "commercial_net_products.FODT.dotnet_status.get_heading_text",
       "date": "2026-07-02"
+    },
+    {
+      "entry_id": "PC-NETPBM-R352",
+      "sprint": "ff-sprint-s339-dotnet-deepening-20260630",
+      "format": "NETPBM",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/netpbm/NetpbmR352GetPixelHistogramDedicatedTests.cs",
+      "description": "Dedicated tests for NetpbmImage.GetPixelHistogram: valid ok, non-null, dims/format/MaxValue unchanged, all-zero zero-bucket=pixel-count, idempotent, dogfood uniform=1bucket and mixed=multi-bucket",
+      "tests_added": 10,
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.get_pixel_histogram",
+      "date": "2026-07-02"
+    },
+    {
+      "entry_id": "PC-FODS-R377",
+      "sprint": "ff-sprint-s339-dotnet-deepening-20260630",
+      "format": "FODS",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fods/FodsR377GetCellFontNameDedicatedTests.cs",
+      "description": "Dedicated tests for FodsDocument.GetCellFontName: null/whitespace/nonexistent/negative throws, valid non-null, SheetCount unchanged, idempotent, dogfood SetCellFontName=Calibri then Get, multiple cells",
+      "tests_added": 9,
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.get_cell_font_name",
+      "date": "2026-07-02"
+    },
+    {
+      "entry_id": "PC-FODT-R357",
+      "sprint": "ff-sprint-s339-dotnet-deepening-20260630",
+      "format": "FODT",
+      "language": "dotnet",
+      "change_type": "test_added",
+      "file": "tests/net/fodt/FodtR357GetTableCellValueDedicatedTests.cs",
+      "description": "Dedicated tests for FodtDocument.GetTableCellValue: index guards throw, valid non-null, counts unchanged, idempotent, after-SetTableCellValue exact value match, dogfood multiple cells",
+      "tests_added": 10,
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.get_table_cell_value",
+      "date": "2026-07-02"
     }
   ],
-  "total_entries": 1843,
+  "total_entries": 1846,
   "changes": [
     {
       "file": "src/python/dif/models.py",
