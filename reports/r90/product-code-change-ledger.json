@@ -33040,9 +33040,39 @@
       "api_method": "GetParagraphColor",
       "test_count": 9,
       "description": "Dedicated tests for FodtDocument.GetParagraphColor: neg/OOR/empty throws, valid non-null, counts unchanged, idempotent, SetColor #0000FF+Get, multiple paragraphs"
+    },
+    {
+      "entry_id": "PC-NETPBM-R385",
+      "format": "NETPBM",
+      "capability_ref": "commercial_net_products.NETPBM.dotnet_status.get_average_luminance",
+      "change_type": "test_added",
+      "file_path": "tests/net/netpbm/NetpbmR385GetAverageLuminanceDedicatedTests.cs",
+      "description": "Dedicated tests for NetpbmImage.GetAverageLuminance \u2014 non-negative, uniform, dims/format/MaxValue unchanged, idempotent, all-zero=0.0, all-max positive",
+      "sprint_id": "ff-sprint-s372-dotnet-deepening-20260630",
+      "worker_self_grade": "PASS"
+    },
+    {
+      "entry_id": "PC-FODS-R414",
+      "format": "FODS",
+      "capability_ref": "commercial_net_products.FODS.dotnet_status.get_cell_comment",
+      "change_type": "test_added",
+      "file_path": "tests/net/fods/FodsR414GetCellCommentDedicatedTests.cs",
+      "description": "Dedicated tests for FodsDocument.GetCellComment \u2014 guard throws, valid non-null, SheetCount unchanged, idempotent, SetComment+Get, multiple cells distinct",
+      "sprint_id": "ff-sprint-s372-dotnet-deepening-20260630",
+      "worker_self_grade": "PASS"
+    },
+    {
+      "entry_id": "PC-FODT-R390",
+      "format": "FODT",
+      "capability_ref": "commercial_net_products.FODT.dotnet_status.get_paragraph_alignment",
+      "change_type": "test_added",
+      "file_path": "tests/net/fodt/FodtR390GetParagraphAlignmentDedicatedTests.cs",
+      "description": "Dedicated tests for FodtDocument.GetParagraphAlignment \u2014 neg/OOR/empty throws, valid non-null, counts unchanged, idempotent, SetAlignment left+Get, multiple paragraphs non-null",
+      "sprint_id": "ff-sprint-s372-dotnet-deepening-20260630",
+      "worker_self_grade": "PASS"
     }
   ],
-  "total_entries": 1942,
+  "total_entries": 1945,
   "changes": [
     {
       "file": "src/python/dif/models.py",
