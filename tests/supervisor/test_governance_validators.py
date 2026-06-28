@@ -13,6 +13,8 @@ import pytest
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(REPO_ROOT / "tools" / "supervisor"))
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
 
 
 # ---------------------------------------------------------------------------
@@ -450,6 +452,7 @@ class TestRunAllValidators:
             "validate_source_architecture",
             "validate_error_fallback_safety",
             "validate_spec_authority_class_completeness",  # V53: scans QName registry state, not declaration
+            "validate_readme_freshness",  # V87: scans README drift state, not declaration
         }
         failed = [
             v["validator"] for v in result["validators"]
@@ -504,6 +507,7 @@ class TestRunAllValidators:
             "validate_source_architecture",
             "validate_error_fallback_safety",
             "validate_spec_authority_class_completeness",  # V53: scans QName registry state, not declaration
+            "validate_readme_freshness",  # V87: scans README drift state, not declaration
         }
         failed = [
             v["validator"] for v in result["validators"]
@@ -1790,10 +1794,10 @@ class TestCanonicalValidatorCount:
         }
         result = run_all_governance_validators(decl, None)
         validator_count = len(result["validators"])
-        assert validator_count == 93, (
-            f"Expected 93 canonical validators, got {validator_count}. "
+        assert validator_count == 94, (
+            f"Expected 94 canonical validators, got {validator_count}. "
             "If validators were added/removed, update this test. "
-            "(93 = 89 prior + V83-V86 layer control plane + V-TCF-001/002/003 terminal closure validators)"
+            "(94 = 89 prior + V83-V86 layer control plane + V-TCF-001/002/003 terminal closure + V87 readme freshness)"
         )
 
 

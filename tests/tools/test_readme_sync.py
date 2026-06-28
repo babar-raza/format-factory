@@ -1,4 +1,9 @@
+import sys
 from pathlib import Path
+
+_REPO = Path(__file__).resolve().parents[2]
+if str(_REPO) not in sys.path:
+    sys.path.insert(0, str(_REPO))
 
 from tools.readme_sync.collector import REPO_ROOT, collect_all_formats, collect_format_state
 from tools.readme_sync.reconciler import (

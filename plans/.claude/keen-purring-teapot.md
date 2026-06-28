@@ -101,7 +101,7 @@ The `tools/capability_sync/` module provides a proven 6-module pattern:
 ### TC-README-W0-001: Section Schema and Heading Alias Map
 
 **Type:** PARENT
-**Status:** PROPOSED
+**Status:** CLOSED
 **Owner:** Worker Agent
 **Objective:** Create section schema definitions and heading alias map that support both Python FOSS and .NET commercial README structures.
 **Requirements:** REQ-RS-001, REQ-RS-002
@@ -116,14 +116,14 @@ The `tools/capability_sync/` module provides a proven 6-module pattern:
 **Child Taskcards:**
 
 #### TC-README-W0-001-01: Create package marker
-**Type:** CHILD | **Status:** TODO | **Parent:** TC-README-W0-001
+**Type:** CHILD | **Status:** CLOSED | **Parent:** TC-README-W0-001
 **Purpose:** Initialize `tools/readme_sync/` as a Python package.
 
 **Micro-steps:**
 - MS-W0-001-01-01: Create `tools/readme_sync/__init__.py` with docstring and empty body. **Target:** `tools/readme_sync/__init__.py`. **Expected output:** File exists, importable. **Completion check:** `python -c "import sys; sys.path.insert(0,'tools'); import readme_sync"` exits 0.
 
 #### TC-README-W0-001-02: Define SectionDef dataclass and section manifests
-**Type:** CHILD | **Status:** TODO | **Parent:** TC-README-W0-001
+**Type:** CHILD | **Status:** CLOSED | **Parent:** TC-README-W0-001
 **Depends on:** TC-README-W0-001-01
 **Purpose:** Define the data model for section classification.
 
@@ -152,7 +152,7 @@ The `tools/capability_sync/` module provides a proven 6-module pattern:
 ### TC-README-W0-002: Format State Collector
 
 **Type:** PARENT
-**Status:** PROPOSED
+**Status:** CLOSED
 **Owner:** Worker Agent
 **Objective:** Collect verified format metadata from repository data sources without importing format code.
 **Requirements:** REQ-RS-003
@@ -167,7 +167,7 @@ The `tools/capability_sync/` module provides a proven 6-module pattern:
 **Child Taskcards:**
 
 #### TC-README-W0-002-01: Implement collector module
-**Type:** CHILD | **Status:** TODO | **Parent:** TC-README-W0-002
+**Type:** CHILD | **Status:** CLOSED | **Parent:** TC-README-W0-002
 **Depends on:** TC-README-W0-001-01
 
 **Micro-steps:**
@@ -199,7 +199,7 @@ The `tools/capability_sync/` module provides a proven 6-module pattern:
 ### TC-README-W0-003: README Parser and Reconciler
 
 **Type:** PARENT
-**Status:** PROPOSED
+**Status:** CLOSED
 **Owner:** Worker Agent
 **Objective:** Parse existing READMEs into classified sections and reconcile with generated data, preserving maintained content.
 **Requirements:** REQ-RS-001, REQ-RS-002, REQ-RS-005, REQ-RS-010, REQ-RS-012
@@ -213,14 +213,14 @@ The `tools/capability_sync/` module provides a proven 6-module pattern:
 **Child Taskcards:**
 
 #### TC-README-W0-003-01: Implement Section and ClassifiedSection dataclasses
-**Type:** CHILD | **Status:** TODO | **Parent:** TC-README-W0-003
+**Type:** CHILD | **Status:** CLOSED | **Parent:** TC-README-W0-003
 
 **Micro-steps:**
 - MS-W0-003-01-01: Create `tools/readme_sync/reconciler.py`. Define `Section` dataclass: `heading: str` (the `##` line, empty for preamble), `body: str` (content between headings), `line_start: int`, `line_end: int`. **Target:** `tools/readme_sync/reconciler.py`.
 - MS-W0-003-01-02: Define `ClassifiedSection` dataclass extending Section: `section_id: str`, `classification: str` (MAINTAINED|GENERATED|HYBRID|UNKNOWN), `matched_def: SectionDef | None`, `has_markers: bool` (True if BEGIN/END markers present in body). **Target:** same file.
 
 #### TC-README-W0-003-02: Implement parse_readme
-**Type:** CHILD | **Status:** TODO | **Parent:** TC-README-W0-003
+**Type:** CHILD | **Status:** CLOSED | **Parent:** TC-README-W0-003
 **Depends on:** TC-README-W0-003-01
 
 **Micro-steps:**
@@ -234,7 +234,7 @@ The `tools/capability_sync/` module provides a proven 6-module pattern:
 - Preamble section for FODS Python contains all 13 frontmatter lines
 
 #### TC-README-W0-003-03: Implement classify_sections
-**Type:** CHILD | **Status:** TODO | **Parent:** TC-README-W0-003
+**Type:** CHILD | **Status:** CLOSED | **Parent:** TC-README-W0-003
 **Depends on:** TC-README-W0-003-02, TC-README-W0-001-02
 
 **Micro-steps:**
@@ -246,7 +246,7 @@ The `tools/capability_sync/` module provides a proven 6-module pattern:
 - FODS .NET: "DEC-033 Option B" classified MAINTAINED, "Status: Gate 11..." classified MAINTAINED
 
 #### TC-README-W0-003-04: Implement reconcile
-**Type:** CHILD | **Status:** TODO | **Parent:** TC-README-W0-003
+**Type:** CHILD | **Status:** CLOSED | **Parent:** TC-README-W0-003
 **Depends on:** TC-README-W0-003-03
 
 **Micro-steps:**
@@ -265,7 +265,7 @@ The `tools/capability_sync/` module provides a proven 6-module pattern:
 ### TC-README-W0-004: Content Generators (Renderer)
 
 **Type:** PARENT
-**Status:** PROPOSED
+**Status:** CLOSED
 **Owner:** Worker Agent
 **Objective:** Generate verified content blocks for GENERATED sections.
 **Requirements:** REQ-RS-004, REQ-RS-006
@@ -279,7 +279,7 @@ The `tools/capability_sync/` module provides a proven 6-module pattern:
 **Child Taskcards:**
 
 #### TC-README-W0-004-01: Implement renderer module with markers and generators
-**Type:** CHILD | **Status:** TODO | **Parent:** TC-README-W0-004
+**Type:** CHILD | **Status:** CLOSED | **Parent:** TC-README-W0-004
 **Depends on:** TC-README-W0-001-02, TC-README-W0-002-01
 
 **Micro-steps:**
@@ -305,7 +305,7 @@ The `tools/capability_sync/` module provides a proven 6-module pattern:
 ### TC-README-W0-005: Orchestrator, Validator, and Drift Detector
 
 **Type:** PARENT
-**Status:** PROPOSED
+**Status:** CLOSED
 **Owner:** Worker Agent
 **Objective:** CLI orchestrator with mode dispatch, README validation, and drift detection.
 **Requirements:** REQ-RS-007, REQ-RS-008, REQ-RS-009, REQ-RS-011
@@ -319,7 +319,7 @@ The `tools/capability_sync/` module provides a proven 6-module pattern:
 **Child Taskcards:**
 
 #### TC-README-W0-005-01: Implement validator
-**Type:** CHILD | **Status:** TODO | **Parent:** TC-README-W0-005
+**Type:** CHILD | **Status:** CLOSED | **Parent:** TC-README-W0-005
 
 **Micro-steps:**
 - MS-W0-005-01-01: Create `tools/readme_sync/validator.py`. Define `ValidationResult` dataclass: `readme_path: str`, `format_id: str`, `track: str`, `issues: list[str]` (warnings), `errors: list[str]` (blockers), `stale_sections: list[str]`. **Target:** `tools/readme_sync/validator.py`.
@@ -327,7 +327,7 @@ The `tools/capability_sync/` module provides a proven 6-module pattern:
 - MS-W0-005-01-03: Implement `validate_all() -> list[ValidationResult]`. Discovers all format READMEs, calls `validate_readme` for each, returns list. **Target:** same file.
 
 #### TC-README-W0-005-02: Implement drift detector
-**Type:** CHILD | **Status:** TODO | **Parent:** TC-README-W0-005
+**Type:** CHILD | **Status:** CLOSED | **Parent:** TC-README-W0-005
 
 **Micro-steps:**
 - MS-W0-005-02-01: Create `tools/readme_sync/drift_detector.py`. Implement `check_readme_drift(format_id: str, track: str) -> dict`. Reads existing README, runs full collect→reconcile→render pipeline in memory, compares `_strip_timestamps(rendered)` vs `_strip_timestamps(existing)`. Returns `{"drifted": bool, "format_id": str, "track": str, "reason": str}`. **Target:** `tools/readme_sync/drift_detector.py`.
@@ -335,7 +335,7 @@ The `tools/capability_sync/` module provides a proven 6-module pattern:
 - MS-W0-005-02-03: Implement `main() -> int`. CLI: `--output path` for JSON report. Exit 0 = no drift, exit 1 = drift detected. **Target:** same file.
 
 #### TC-README-W0-005-03: Implement orchestrator
-**Type:** CHILD | **Status:** TODO | **Parent:** TC-README-W0-005
+**Type:** CHILD | **Status:** CLOSED | **Parent:** TC-README-W0-005
 **Depends on:** TC-README-W0-005-01, TC-README-W0-005-02
 
 **Micro-steps:**
@@ -356,7 +356,7 @@ The `tools/capability_sync/` module provides a proven 6-module pattern:
 ### TC-README-W0-006: Unit Test Suite
 
 **Type:** PARENT
-**Status:** PROPOSED
+**Status:** CLOSED
 **Owner:** Worker Agent
 **Objective:** Comprehensive unit tests for all readme_sync modules.
 **Requirements:** REQ-RS-011
@@ -370,7 +370,7 @@ The `tools/capability_sync/` module provides a proven 6-module pattern:
 **Child Taskcards:**
 
 #### TC-README-W0-006-01: Write unit tests
-**Type:** CHILD | **Status:** TODO | **Parent:** TC-README-W0-006
+**Type:** CHILD | **Status:** CLOSED | **Parent:** TC-README-W0-006
 
 **Micro-steps:**
 - MS-W0-006-01-01: Create `tests/tools/test_readme_sync.py`. Test `section_schema`: schema lookups, heading matching (case-insensitive, alias, wildcard). **Target:** `tests/tools/test_readme_sync.py`.
@@ -394,7 +394,7 @@ The `tools/capability_sync/` module provides a proven 6-module pattern:
 ### TC-README-W1-001: Pilot — FODS Python (ODF-rich)
 
 **Type:** PARENT
-**Status:** PROPOSED
+**Status:** CLOSED
 **Owner:** Worker Agent
 **Objective:** Prove preservation-first sync on the most complex Python README.
 **Requirements:** REQ-RS-011, REQ-RS-012, REQ-RS-015
@@ -404,7 +404,7 @@ The `tools/capability_sync/` module provides a proven 6-module pattern:
 **Child Taskcards:**
 
 #### TC-README-W1-001-01: Execute sync and verify preservation
-**Type:** CHILD | **Status:** TODO | **Parent:** TC-README-W1-001
+**Type:** CHILD | **Status:** CLOSED | **Parent:** TC-README-W1-001
 
 **Micro-steps:**
 - MS-W1-001-01-01: Record SHA-256 of `src/python/fods/README.md` before sync. **Completion check:** hash captured.
@@ -425,7 +425,7 @@ The `tools/capability_sync/` module provides a proven 6-module pattern:
 ### TC-README-W1-002: Pilot — CSV Python (short-form)
 
 **Type:** PARENT
-**Status:** PROPOSED
+**Status:** CLOSED
 **Owner:** Worker Agent
 **Objective:** Prove sync on a minimal README without frontmatter.
 **Requirements:** REQ-RS-011, REQ-RS-012, REQ-RS-015
@@ -435,7 +435,7 @@ The `tools/capability_sync/` module provides a proven 6-module pattern:
 **Child Taskcards:**
 
 #### TC-README-W1-002-01: Execute sync and verify preservation
-**Type:** CHILD | **Status:** TODO | **Parent:** TC-README-W1-002
+**Type:** CHILD | **Status:** CLOSED | **Parent:** TC-README-W1-002
 
 **Micro-steps:**
 - MS-W1-002-01-01: Record SHA-256 of `src/python/csv/README.md` before sync.
@@ -451,7 +451,7 @@ The `tools/capability_sync/` module provides a proven 6-module pattern:
 ### TC-README-W1-003: Pilot — FODS .NET (commercial)
 
 **Type:** PARENT
-**Status:** PROPOSED
+**Status:** CLOSED
 **Owner:** Worker Agent
 **Objective:** Prove sync on a .NET commercial README with Gate 11 content.
 **Requirements:** REQ-RS-011, REQ-RS-012, REQ-RS-015
@@ -461,7 +461,7 @@ The `tools/capability_sync/` module provides a proven 6-module pattern:
 **Child Taskcards:**
 
 #### TC-README-W1-003-01: Execute sync and verify preservation
-**Type:** CHILD | **Status:** TODO | **Parent:** TC-README-W1-003
+**Type:** CHILD | **Status:** CLOSED | **Parent:** TC-README-W1-003
 
 **Micro-steps:**
 - MS-W1-003-01-01: Record SHA-256 of `src/net/fods/README.md` before sync.
@@ -481,7 +481,7 @@ The `tools/capability_sync/` module provides a proven 6-module pattern:
 ### TC-README-W2-001: Full Portfolio Sync
 
 **Type:** PARENT
-**Status:** PROPOSED
+**Status:** CLOSED
 **Owner:** Worker Agent
 **Objective:** Sync all 30 READMEs with verified generated data while preserving all maintained content.
 **Requirements:** REQ-RS-016
@@ -491,7 +491,7 @@ The `tools/capability_sync/` module provides a proven 6-module pattern:
 **Child Taskcards:**
 
 #### TC-README-W2-001-01: Execute full sync
-**Type:** CHILD | **Status:** TODO | **Parent:** TC-README-W2-001
+**Type:** CHILD | **Status:** CLOSED | **Parent:** TC-README-W2-001
 
 **Micro-steps:**
 - MS-W2-001-01-01: Run `python tools/readme_sync/run_sync.py --mode full --dry-run`. Review output for any unexpected deletions or errors. **Completion check:** no errors, no maintained content flagged for deletion.
@@ -513,7 +513,7 @@ The `tools/capability_sync/` module provides a proven 6-module pattern:
 ### TC-README-W3-001: Governance Validator
 
 **Type:** PARENT
-**Status:** PROPOSED
+**Status:** CLOSED
 **Owner:** Worker Agent
 **Objective:** Add README freshness validation to governance validators.
 **Requirements:** REQ-RS-013
@@ -527,7 +527,7 @@ The `tools/capability_sync/` module provides a proven 6-module pattern:
 **Child Taskcards:**
 
 #### TC-README-W3-001-01: Add validate_readme_freshness validator
-**Type:** CHILD | **Status:** TODO | **Parent:** TC-README-W3-001
+**Type:** CHILD | **Status:** CLOSED | **Parent:** TC-README-W3-001
 
 **Micro-steps:**
 - MS-W3-001-01-01: Read `tools/governance/governance_validators_ext2.py` to understand V82 pattern (latest validator). Identify insertion point and naming convention.
@@ -540,7 +540,7 @@ The `tools/capability_sync/` module provides a proven 6-module pattern:
 ### TC-README-W3-002: Skill Registration
 
 **Type:** PARENT
-**Status:** PROPOSED
+**Status:** CLOSED
 **Owner:** Worker Agent
 **Objective:** Register `/sync-readmes` as a discoverable skill.
 **Requirements:** REQ-RS-014
@@ -550,7 +550,7 @@ The `tools/capability_sync/` module provides a proven 6-module pattern:
 **Child Taskcards:**
 
 #### TC-README-W3-002-01: Create command file and register skill
-**Type:** CHILD | **Status:** TODO | **Parent:** TC-README-W3-002
+**Type:** CHILD | **Status:** CLOSED | **Parent:** TC-README-W3-002
 
 **Micro-steps:**
 - MS-W3-002-01-01: Create `.claude/commands/sync-readmes.md` with skill prompt that calls `python tools/readme_sync/run_sync.py --mode full`. Follow pattern of `.claude/commands/sync-capabilities.md`. **Target:** `.claude/commands/sync-readmes.md`.
@@ -563,7 +563,7 @@ The `tools/capability_sync/` module provides a proven 6-module pattern:
 ### TC-README-W3-003: Trigger Documentation
 
 **Type:** PARENT
-**Status:** PROPOSED
+**Status:** CLOSED
 **Owner:** Worker Agent
 **Objective:** Document when README sync should be triggered.
 **Requirements:** REQ-RS-008
@@ -571,7 +571,7 @@ The `tools/capability_sync/` module provides a proven 6-module pattern:
 **Child Taskcards:**
 
 #### TC-README-W3-003-01: Create trigger documentation
-**Type:** CHILD | **Status:** TODO | **Parent:** TC-README-W3-003
+**Type:** CHILD | **Status:** CLOSED | **Parent:** TC-README-W3-003
 
 **Micro-steps:**
 - MS-W3-003-01-01: Create `docs/automation/readme-sync-triggers.md`. Document: (1) After `pyproject.toml` or `.csproj` version bumps, (2) After QName registry changes, (3) After new test files added to `tests/{track}/{fmt}/`, (4) During sprint closeout (best-effort, non-blocking — same pattern as capability_sync), (5) Before release/package preparation. Include `python tools/readme_sync/run_sync.py --mode drift-only` as the CI check command. **Target:** `docs/automation/readme-sync-triggers.md`.
@@ -700,8 +700,8 @@ Acceptance threshold: all dimensions ≥ 4/5. Score < 4 → REROUTED.
 
 <!--plan_terminal_lock:
   status: ITERATION_REQUIRED
-  locked_at: "2026-06-28T08:05:56.409631+00:00"
-  locked_by: "035a61206c4d"
+  locked_at: "2026-06-28T16:01:28.102744+00:00"
+  locked_by: "b42c05efe582"
   successor_required_for_future_changes: true
   mutation_policy: "no further plan/hardening/execution writes"
 -->
