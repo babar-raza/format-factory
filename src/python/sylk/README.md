@@ -4,9 +4,11 @@ Parse and write SYLK (Symbolic Link Format) spreadsheet files with Format Factor
 
 ## Installation
 
+<!-- BEGIN:README-INSTALLATION generated=2026-06-28T08:14:27+00:00 source=package-metadata -->
+```bash
+pip install format-factory-sylk
 ```
-pip install aspose-format-factory-sylk
-```
+<!-- END:README-INSTALLATION -->
 
 ## Quick Start
 
@@ -30,4 +32,30 @@ set_cell_value("input.slk", "output.slk", row=1, col=1, value="Updated")
 
 ## License
 
+<!-- BEGIN:README-LICENSE generated=2026-06-28T08:14:27+00:00 source=package-metadata -->
 Apache-2.0
+<!-- END:README-LICENSE -->
+
+## Package Info
+
+<!-- BEGIN:README-PACKAGE_INFO generated=2026-06-28T08:14:27+00:00 source=repository-metadata -->
+| Field | Value |
+|---|---|
+| Format | Symbolic Link (SYLK) |
+| Track | python |
+| Package | format-factory-sylk |
+| Version | 0.1.0 |
+| License | Apache-2.0 |
+| Python | >=3.9 |
+| .NET | unknown |
+| Spec | Microsoft (1986) SYLK Format (1986) |
+| QName coverage | 4/4 implemented |
+| Source files | 17 |
+| Test files | 94 |
+<!-- END:README-PACKAGE_INFO -->
+
+## Public API
+
+<!-- BEGIN:README-PUBLIC_API generated=2026-06-28T08:14:27+00:00 source=src-python-init -->
+- `(dynamic)`
+<!-- END:README-PUBLIC_API -->

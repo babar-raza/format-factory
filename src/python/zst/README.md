@@ -50,3 +50,41 @@ src/python/zst/
     LICENSE              Apache-2.0 license
     README.md            This file
 ```
+
+## Installation
+
+<!-- BEGIN:README-INSTALLATION generated=2026-06-28T08:14:28+00:00 source=package-metadata -->
+```bash
+pip install format-factory-zst
+```
+<!-- END:README-INSTALLATION -->
+
+## Package Info
+
+<!-- BEGIN:README-PACKAGE_INFO generated=2026-06-28T08:14:28+00:00 source=repository-metadata -->
+| Field | Value |
+|---|---|
+| Format | Zstandard Compressed File |
+| Track | python |
+| Package | format-factory-zst |
+| Version | 0.1.0.dev0 |
+| License | Apache-2.0 |
+| Python | >=3.9 |
+| .NET | unknown |
+| Spec | IETF RFC 8878 |
+| QName coverage | 3/3 implemented |
+| Source files | 16 |
+| Test files | 86 |
+<!-- END:README-PACKAGE_INFO -->
+
+## Public API
+
+<!-- BEGIN:README-PUBLIC_API generated=2026-06-28T08:14:28+00:00 source=src-python-init -->
+- `(dynamic)`
+<!-- END:README-PUBLIC_API -->
+
+## License
+
+<!-- BEGIN:README-LICENSE generated=2026-06-28T08:14:28+00:00 source=package-metadata -->
+Apache-2.0
+<!-- END:README-LICENSE -->

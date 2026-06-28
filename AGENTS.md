@@ -20,7 +20,7 @@
 5. DEC-014 status: **activated** (2026-06-25). See `docs/governance/codex-adapter.md` for pilot results.
 
 
-<!-- BEGIN:CAPABILITY-DISCOVERY generated=2026-06-27T01:00:10+00:00 source=.governance/capabilities/registry.yaml -->
+<!-- BEGIN:CAPABILITY-DISCOVERY generated=2026-06-28T08:03:47+00:00 source=.governance/capabilities/registry.yaml -->
 
 ## A2b. Capability Discovery Index (generated — do not edit manually)
 
@@ -31,7 +31,7 @@ Run `/sync-capabilities` or `python tools/capability_sync/run_sync.py --mode ful
 **Skill contracts:** `.supervisor/skill-registry.yaml`
 **Capability routing:** `.supervisor/capability-routing-registry.yaml`
 
-Total active capabilities: 93
+Total active capabilities: 94
 
 | capability_id | product_track | parity_status | claude_code | codex | ci | routing_routes |
 |---|---|---|---|---|---|---|
@@ -90,6 +90,7 @@ Total active capabilities: 93
 | `register-layer-task` | layer_governance | PARTIAL | Y | Y | N | — |
 | `select-next-layer-task` | layer_governance | PARTIAL | Y | Y | N | — |
 | `sync-capabilities` | layer_governance | FULL_PARITY | Y | Y | N | — |
+| `sync-readmes` | layer_governance | FULL_PARITY | Y | Y | N | — |
 | `update-layer-current-state` | layer_governance | PARTIAL | Y | Y | N | — |
 | `update-layer-master-index` | layer_governance | PARTIAL | Y | Y | N | — |
 | `update-layer-session-handoff` | layer_governance | PARTIAL | Y | Y | N | — |

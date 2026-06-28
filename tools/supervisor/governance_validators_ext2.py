@@ -420,3 +420,51 @@ def validate_oracle_obligations(declaration: dict, repo_root: Path = None) -> di
             "summary": f"V82: Oracle obligation check skipped due to error: {e}",
             "blocks_sprint": False,
         }
+
+
+def validate_readme_freshness(declaration: dict, repo_root: Path = None) -> dict:
+    """V87: Per-format READMEs must have current generated blocks."""
+    if repo_root is None:
+        repo_root = Path(__file__).resolve().parents[2]
+    try:
+        import sys as _sys
+
+        if str(repo_root) not in _sys.path:
+            _sys.path.insert(0, str(repo_root))
+        import tools.readme_sync.collector as _collector
+        import tools.readme_sync.drift_detector as _drift
+
+        old_collector_root = _collector.REPO_ROOT
+        old_drift_root = _drift.REPO_ROOT
+        _collector.REPO_ROOT = repo_root
+        _drift.REPO_ROOT = repo_root
+        try:
+            report = _drift.check_all_drift()
+        finally:
+            _collector.REPO_ROOT = old_collector_root
+            _drift.REPO_ROOT = old_drift_root
+
+        stale = [item for item in report.get("checks", []) if item.get("drifted")]
+        if stale:
+            return {
+                "validator": "validate_readme_freshness",
+                "result": "FAIL",
+                "items": stale,
+                "summary": f"V87: {len(stale)} stale README(s) detected",
+                "blocks_sprint": True,
+            }
+        return {
+            "validator": "validate_readme_freshness",
+            "result": "PASS",
+            "items": [],
+            "summary": f"V87: README freshness clean ({len(report.get('checks', []))} checked)",
+            "blocks_sprint": False,
+        }
+    except Exception as e:
+        return {
+            "validator": "validate_readme_freshness",
+            "result": "FAIL",
+            "items": [{"error": str(e)}],
+            "summary": f"V87: README freshness check failed: {e}",
+            "blocks_sprint": True,
+        }

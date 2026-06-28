@@ -163,6 +163,7 @@ def run_all_governance_validators(
         validate_dotnet_loc_cap as _validate_dotnet_loc_cap,
         validate_healing_stall_detector as _validate_healing_stall_detector,
         validate_oracle_obligations as _validate_oracle_obligations,
+        validate_readme_freshness as _validate_readme_freshness,
     )
     results = [
         validate_execution_method_required(declaration),
@@ -302,6 +303,7 @@ def run_all_governance_validators(
         _validate_gate_transition(declaration, repo_root),
         # V82 (TC-ORC-003, ORACLE-LAYER-HARDENING-001): Oracle obligation registry completeness — WARN on missing
         _validate_oracle_obligations(declaration, repo_root),
+        _validate_readme_freshness(declaration, repo_root),
     ]
 
     # V-NEW-001 (SAL-VHIP-001): Capability-to-fact inflation ratio check (WARN only, advisory)

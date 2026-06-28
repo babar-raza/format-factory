@@ -2610,3 +2610,63 @@ class TestV86LayerTaskRegistered:
         }
         result = validator(declaration, repo_root=tmp_path)
         assert result["blocks_sprint"] is False
+
+
+class TestV87ReadmeFreshness:
+    """V87: Per-format README generated blocks must be current."""
+
+    def _get_validator(self):
+        import sys
+        sys.path.insert(0, "tools/supervisor")
+        from governance_validators_ext2 import validate_readme_freshness
+        return validate_readme_freshness
+
+    def _make_minimal_repo(self, tmp_path):
+        import yaml
+
+        (tmp_path / "src" / "python" / "csv").mkdir(parents=True)
+        (tmp_path / "tests" / "python" / "csv").mkdir(parents=True)
+        (tmp_path / "shared" / "qname-registry").mkdir(parents=True)
+        (tmp_path / "registry").mkdir(parents=True)
+        (tmp_path / "src" / "python" / "csv" / "pyproject.toml").write_text(
+            "[project]\nname='format-factory-csv'\nversion='1.0.0'\nlicense={text='Apache-2.0'}\nrequires-python='>=3.11'\n",
+            encoding="utf-8",
+        )
+        (tmp_path / "shared" / "qname-registry" / "csv.yaml").write_text(
+            "- qname: csv:row\n  status: implemented\n",
+            encoding="utf-8",
+        )
+        (tmp_path / "registry" / "format-registry.yaml").write_text(
+            yaml.dump({"formats": [{"format_id": "csv", "display_name": "CSV", "spec_body": "IETF", "spec_version": "RFC 4180"}]}),
+            encoding="utf-8",
+        )
+
+    def test_v87_passes_when_readme_current(self, tmp_path):
+        validator = self._get_validator()
+        self._make_minimal_repo(tmp_path)
+        import tools.readme_sync.collector as collector
+        from tools.readme_sync.collector import collect_format_state
+        from tools.readme_sync.reconciler import render_existing_with_generated
+        from tools.readme_sync.renderer import generate_blocks
+
+        old_root = collector.REPO_ROOT
+        collector.REPO_ROOT = tmp_path
+        base = "# CSV\n\n## Installation\n\nold\n"
+        try:
+            state = collect_format_state("csv", "python")
+            rendered = render_existing_with_generated(base, generate_blocks(state, "STRIPPED"))
+            rendered = render_existing_with_generated(rendered, generate_blocks(state, "STRIPPED"))
+        finally:
+            collector.REPO_ROOT = old_root
+        (tmp_path / "src" / "python" / "csv" / "README.md").write_text(rendered, encoding="utf-8")
+        result = validator({}, repo_root=tmp_path)
+        assert result["result"] == "PASS"
+        assert result["blocks_sprint"] is False
+
+    def test_v87_fails_when_readme_stale(self, tmp_path):
+        validator = self._get_validator()
+        self._make_minimal_repo(tmp_path)
+        (tmp_path / "src" / "python" / "csv" / "README.md").write_text("# CSV\n", encoding="utf-8")
+        result = validator({}, repo_root=tmp_path)
+        assert result["result"] == "FAIL"
+        assert result["blocks_sprint"] is True

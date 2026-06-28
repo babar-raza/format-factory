@@ -4954,11 +4954,11 @@ formally deferred (V13/V47/V62 cover non-ODF enforcement; new V-number task defe
 
 ## Section 90 — harmonic-strolling-blanket: FORMAT-FACTORY-LAYER-AUDIT-20260626 — CLOSED
 
-**Mission:** FORMAT-FACTORY-LAYER-AUDIT-20260626  
-**Plan:** `C:/Users/prora/.claude/plans/harmonic-strolling-blanket.md` (v2.1)  
-**Run ID:** ff-layer-audit-healing-20260626-230114  
-**Evidence root:** `.local/evidences/ff-layer-audit-healing-20260626-230114/`  
-**Status:** CLOSED — CONVERGENCE_COMPLETE_ALL_GREEN_AND_TASK_CLOSED  
+**Mission:** FORMAT-FACTORY-LAYER-AUDIT-20260626
+**Plan:** `C:/Users/prora/.claude/plans/harmonic-strolling-blanket.md` (v2.1)
+**Run ID:** ff-layer-audit-healing-20260626-230114
+**Evidence root:** `.local/evidences/ff-layer-audit-healing-20260626-230114/`
+**Status:** CLOSED — CONVERGENCE_COMPLETE_ALL_GREEN_AND_TASK_CLOSED
 **Supervisor grade:** ACCEPTED (exit 0, iteration 4/12, all 9 items accepted)
 
 ### What was completed
@@ -5154,3 +5154,91 @@ All 15 parent taskcards (TC-CAP-P0 through TC-CAP-015) completed and verified wi
 - 29 PARTIAL capabilities (pre-existing): not introduced by this plan; remedied by `/sync-skill-command-registry` in a future sprint
 - `lifecycle_audit.py` parses 0 taskcards from this plan's format — false ITERATION_REQUIRED (bypassed by direct lock write)
 
+## Section 93 — NET Deep-Test Batch Loop: Batches 117-121 (CLOSED)
+
+**Plan:** EXECUTION MODE — .NET xUnit deep-test batch loop
+**Mission:** Add 5 batches × 7 formats = 35 deep test files
+**Type:** test_expansion | **Completed:** 2026-06-27
+**Verdict:** ALL_BATCHES_COMMITTED
+
+### What was completed
+
+5 batches of .NET xUnit deep test files written and committed (7 formats per batch):
+
+| Batch | Commit | ZST | FODS | TSV | CSV | NETPBM | NDJSON | FODT |
+|-------|--------|-----|------|-----|-----|--------|--------|------|
+| 117 | 0a73e3af | R278 | R436 | R278 | R280 | R405 | R286 | R411 |
+| 118 | 037da916 | R279 | R437 | R279 | R281 | R406 | R287 | R412 |
+| 119 | ef672ce7 | R280 | R438 | R280 | R282 | R407 | R288 | R413 |
+| 120 | 13ddee89 | R281 | R439 | R281 | R283 | R408 | R289 | R414 |
+| 121 | 6989990c | R282 | R440 | R282 | R284 | R409 | R290 | R415 |
+
+Total: 35 new test files across 7 .NET format test projects.
+
+### Test patterns covered per format
+
+- **ZST**: Frame count, compression ratio, magic bytes, round-trip save/load, UK gov data dogfood
+- **FODS**: Sheet count, cell value get/set, document title, round-trip, UK gov spreadsheet dogfood
+- **TSV**: Column min/max/sum/mean/range/IQR, round-trip, UK gov TSV data dogfood
+- **CSV**: Column min/max/sum/mean/range/IQR, round-trip, UK gov CSV data dogfood
+- **NETPBM**: Width/height, pixel count, mean pixel value, dynamic range, round-trip, UK flag pattern dogfood
+- **NDJSON**: Field min/max/range/mean/IQR, round-trip, UK gov NDJSON records dogfood
+- **FODT**: Paragraph count, page count, default font, add paragraph, round-trip, UK gov document dogfood
+
+### Verification performed
+
+- All 35 files exist in repo at `tests/net/{format}/{Format}R{NNN}*.cs`
+- 5 commits created with conventional commit messages: `feat(net/tests): add batch {N} — 7 deep test files...`
+- R-number recheck performed before each batch (oracle pipeline may consume numbers between batches)
+- Each test class follows the required pattern: IDisposable temp dir, TempFile helper, 5 tests (NoThrow, Correct, Consistent, SaveLoad, Dogfood)
+
+### Commits
+
+- `0a73e3af` — batch 117
+- `037da916` — batch 118
+- `ef672ce7` — batch 119
+- `13ddee89` — batch 120
+- `6989990c` — batch 121
+
+### Remaining follow-ups (non-blocking)
+
+- Continue batch loop for additional R-numbers as oracle pipeline advances
+- Monitor for any test collection failures in CI
+
+## Section 94 â€” keen-purring-teapot: README Governance System (CLOSED)
+
+**Plan:** `plans/.claude/keen-purring-teapot.md`
+**Mission:** README-GOV-001
+**Type:** machinery_hardening | **Completed:** 2026-06-28
+**Verdict:** README_GOVERNANCE_PLAN_EXECUTED_E2E_HEALED_VERIFIED_AND_CLOSED
+
+### What was completed
+
+- `tools/readme_sync/` implemented as a preservation-first README sync package.
+- 30 per-format READMEs synchronized across Python and .NET tracks.
+- Generated blocks are marker-bounded with `<!-- BEGIN:README-* -->` / `<!-- END:README-* -->`.
+- Maintained content, YAML frontmatter, examples, Gate 11 warnings, DEC-033 notes, and references preserved.
+- V87 `validate_readme_freshness` added to the supervisor governance validators and wired into the runner.
+- `/sync-readmes` command and `sync-readmes` skill registered.
+- Capability registry synchronized; `sync-readmes` appears as FULL_PARITY for Claude and Codex.
+- Trigger documentation added at `docs/automation/readme-sync-triggers.md`.
+
+### Verification performed
+
+- `tests/tools/test_readme_sync.py`: 20 passed
+- `tests/supervisor/test_governance_validators.py -k V87`: 2 passed
+- Combined focused verification: 22 passed
+- README validate: 30 PASS
+- README drift-only: NO_DRIFT
+- README full sync rerun: 0 files changed
+- Capability drift-only: NO_DRIFT
+
+### Evidence
+
+- Final report: `reports/readme-governance/final-execution-report.md`
+- Terminal closeout: `.local/evidences/readme-gov-001/terminal-closeout.yaml`
+
+### Remaining follow-ups
+
+- No unresolved README governance findings remain.
+- Repository had substantial unrelated dirty work before this mission; this section records only README-GOV-001 work.

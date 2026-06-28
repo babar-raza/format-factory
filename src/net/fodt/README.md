@@ -62,3 +62,29 @@ See `acquisition-packs/fodt/gate11-commercial-licensing.md`.
 - Python FOSS source: `src/python/fodt/`
 - Tier map: `acquisition-packs/fodt/tier-map.yaml`
 - Gate 11 packaging plan: `acquisition-packs/fodt/gate11-packaging-plan.md`
+
+## Installation
+
+<!-- BEGIN:README-INSTALLATION generated=2026-06-28T08:14:29+00:00 source=package-metadata -->
+```bash
+dotnet add package FormatFactory.Fodt
+```
+<!-- END:README-INSTALLATION -->
+
+## Package Info
+
+<!-- BEGIN:README-PACKAGE_INFO generated=2026-06-28T08:14:29+00:00 source=repository-metadata -->
+| Field | Value |
+|---|---|
+| Format | Flat OpenDocument Text |
+| Track | dotnet |
+| Package | FormatFactory.Fodt |
+| Version | 0.1.0-tier0 |
+| License | unknown |
+| Python | unknown |
+| .NET | net10.0 |
+| Spec | OASIS ODF 1.3 |
+| QName coverage | 8/9 implemented |
+| Source files | 25 |
+| Test files | 507 |
+<!-- END:README-PACKAGE_INFO -->

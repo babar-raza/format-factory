@@ -16,7 +16,11 @@
 
 ## Installation
 
-Available as a NuGet package. Target framework: net10.0.
+<!-- BEGIN:README-INSTALLATION generated=2026-06-28T08:14:30+00:00 source=package-metadata -->
+```bash
+dotnet add package FormatFactory.Netpbm
+```
+<!-- END:README-INSTALLATION -->
 
 ## Quick Start
 
@@ -42,3 +46,21 @@ See `product-capability-matrix/poc-targets.yaml` for capability matrix entry.
 ## License
 
 Commercial — Format Factory product. See root LICENSE for terms.
+
+## Package Info
+
+<!-- BEGIN:README-PACKAGE_INFO generated=2026-06-28T08:14:30+00:00 source=repository-metadata -->
+| Field | Value |
+|---|---|
+| Format | NETPBM |
+| Track | dotnet |
+| Package | FormatFactory.Netpbm |
+| Version | 0.1.0-r85-poc |
+| License | unknown |
+| Python | unknown |
+| .NET | net10.0 |
+| Spec | unknown |
+| QName coverage | 0/0 implemented |
+| Source files | 11 |
+| Test files | 481 |
+<!-- END:README-PACKAGE_INFO -->

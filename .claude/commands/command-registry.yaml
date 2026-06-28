@@ -718,6 +718,14 @@ commands:
   skill_id: validate-capability-parity
   skill_registry_ref: true
   status: active
+- command_file: .claude/commands/sync-readmes.md
+  command_id: sync-readmes
+  created: '2026-06-28'
+  description: Run preservation-first generated-block sync for all per-format READMEs
+  phase: all
+  skill_id: sync-readmes
+  skill_registry_ref: true
+  status: active
 generated_at: '2026-06-18'
 generated_by: TC-0004
 notes: 'v1.1 (2026-06-21): Added skill_registry_ref cross-references for commands

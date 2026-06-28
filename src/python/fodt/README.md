@@ -39,8 +39,9 @@ else:
 
 ## Public API
 
-- `parse_fodt(file_path)` — streaming parser, never raises; returns error dict on failure
-- `parse_fodt_strict(file_path)` — raises `FodtInputError`, `FodtSizeError`, or `FodtParseError`
+<!-- BEGIN:README-PUBLIC_API generated=2026-06-28T08:14:25+00:00 source=src-python-init -->
+- `(dynamic)`
+<!-- END:README-PUBLIC_API -->
 
 ## Supported Scope (Tiers 0-2)
 
@@ -88,3 +89,35 @@ src/python/fodt/
 ```bash
 python -m pytest tests/python/fodt/ -q
 ```
+
+## Installation
+
+<!-- BEGIN:README-INSTALLATION generated=2026-06-28T08:14:25+00:00 source=package-metadata -->
+```bash
+pip install format-factory-fodt-python
+```
+<!-- END:README-INSTALLATION -->
+
+## Package Info
+
+<!-- BEGIN:README-PACKAGE_INFO generated=2026-06-28T08:14:25+00:00 source=repository-metadata -->
+| Field | Value |
+|---|---|
+| Format | Flat OpenDocument Text |
+| Track | python |
+| Package | format-factory-fodt-python |
+| Version | 0.1.0.dev0 |
+| License | Apache-2.0 |
+| Python | >=3.9 |
+| .NET | unknown |
+| Spec | OASIS ODF 1.3 |
+| QName coverage | 8/9 implemented |
+| Source files | 41 |
+| Test files | 134 |
+<!-- END:README-PACKAGE_INFO -->
+
+## License
+
+<!-- BEGIN:README-LICENSE generated=2026-06-28T08:14:25+00:00 source=package-metadata -->
+Apache-2.0
+<!-- END:README-LICENSE -->

@@ -50,3 +50,41 @@ src/python/abw/
     LICENSE              Apache-2.0 license
     README.md            This file
 ```
+
+## Installation
+
+<!-- BEGIN:README-INSTALLATION generated=2026-06-28T08:14:24+00:00 source=package-metadata -->
+```bash
+pip install format-factory-abw
+```
+<!-- END:README-INSTALLATION -->
+
+## Package Info
+
+<!-- BEGIN:README-PACKAGE_INFO generated=2026-06-28T08:14:24+00:00 source=repository-metadata -->
+| Field | Value |
+|---|---|
+| Format | AbiWord Word Processing Document |
+| Track | python |
+| Package | format-factory-abw |
+| Version | 0.1.0.dev0 |
+| License | Apache-2.0 |
+| Python | >=3.9 |
+| .NET | unknown |
+| Spec | AbiSource Project AWML 1.0 (outdated DTD) |
+| QName coverage | 0/3 implemented |
+| Source files | 19 |
+| Test files | 153 |
+<!-- END:README-PACKAGE_INFO -->
+
+## Public API
+
+<!-- BEGIN:README-PUBLIC_API generated=2026-06-28T08:14:24+00:00 source=src-python-init -->
+- `(dynamic)`
+<!-- END:README-PUBLIC_API -->
+
+## License
+
+<!-- BEGIN:README-LICENSE generated=2026-06-28T08:14:24+00:00 source=package-metadata -->
+Apache-2.0
+<!-- END:README-LICENSE -->

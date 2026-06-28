@@ -4,9 +4,11 @@ Parse and write TSV (tab-separated values) files with Format Factory.
 
 ## Installation
 
+<!-- BEGIN:README-INSTALLATION generated=2026-06-28T08:14:28+00:00 source=package-metadata -->
+```bash
+pip install format-factory-tsv
 ```
-pip install aspose-format-factory-tsv
-```
+<!-- END:README-INSTALLATION -->
 
 ## Quick Start
 
@@ -32,4 +34,30 @@ write_tsv(rows, "output.tsv", headers=model["headers"])
 
 ## License
 
+<!-- BEGIN:README-LICENSE generated=2026-06-28T08:14:28+00:00 source=package-metadata -->
 Apache-2.0
+<!-- END:README-LICENSE -->
+
+## Package Info
+
+<!-- BEGIN:README-PACKAGE_INFO generated=2026-06-28T08:14:28+00:00 source=repository-metadata -->
+| Field | Value |
+|---|---|
+| Format | Tab-Separated Values (TSV) |
+| Track | python |
+| Package | format-factory-tsv |
+| Version | 0.1.0.dev0 |
+| License | Apache-2.0 |
+| Python | >=3.9 |
+| .NET | unknown |
+| Spec | IANA IANA registration (1993) |
+| QName coverage | 3/3 implemented |
+| Source files | 16 |
+| Test files | 108 |
+<!-- END:README-PACKAGE_INFO -->
+
+## Public API
+
+<!-- BEGIN:README-PUBLIC_API generated=2026-06-28T08:14:28+00:00 source=src-python-init -->
+- `(dynamic)`
+<!-- END:README-PUBLIC_API -->

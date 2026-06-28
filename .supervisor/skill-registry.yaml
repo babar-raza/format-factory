@@ -1959,6 +1959,30 @@ skills:
   status: active
   test_paths:
   - tests/governance/test_capability_parity.py
+- command: /sync-readmes
+  command_file: .claude/commands/sync-readmes.md
+  created_at: '2026-06-28'
+  idempotency: create_or_update
+  implementation_paths:
+  - tools/readme_sync/run_sync.py
+  mandatory_validations:
+  - readme_sync_validate
+  - readme_sync_drift_check
+  mission_id: README-GOV-001
+  notes: Created by README-GOV-001. Preservation-first generated-block sync for
+    per-format README files; maintained content is preserved.
+  output_paths:
+  - src/python/*/README.md
+  - src/net/*/README.md
+  product_track: layer_governance
+  purpose: Synchronize generated metadata blocks in all per-format READMEs while
+    preserving maintained content.
+  required_handoff_fields: []
+  skill_id: sync-readmes
+  status: active
+  test_paths:
+  - tests/tools/test_readme_sync.py
+  version: '1.0'
 sprint: FORMAT-FACTORY-R98-AUTONOMOUS-LOOP-TRUST-LAYER-ITERATION-SCALING-ACCELERATION-POC-MEGA-TRAIN-001
 version: '2.0'
 visibility: generated

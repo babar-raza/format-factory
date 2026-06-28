@@ -4,9 +4,11 @@ Commercial .NET library for reading and writing NDJSON (Newline-Delimited JSON) 
 
 ## Installation
 
-```
+<!-- BEGIN:README-INSTALLATION generated=2026-06-28T08:14:30+00:00 source=package-metadata -->
+```bash
 dotnet add package FormatFactory.Ndjson
 ```
+<!-- END:README-INSTALLATION -->
 
 ## Quick Start
 
@@ -35,3 +37,21 @@ bool uniform = doc.IsUniformSchema();
 ## License
 
 Commercial — Format Factory product. See root LICENSE for terms.
+
+## Package Info
+
+<!-- BEGIN:README-PACKAGE_INFO generated=2026-06-28T08:14:30+00:00 source=repository-metadata -->
+| Field | Value |
+|---|---|
+| Format | Newline Delimited JSON |
+| Track | dotnet |
+| Package | FormatFactory.Ndjson |
+| Version | 0.1.0-mwp |
+| License | unknown |
+| Python | unknown |
+| .NET | net10.0 |
+| Spec | Informal (ndjson.org) v1 |
+| QName coverage | 2/2 implemented |
+| Source files | 7 |
+| Test files | 180 |
+<!-- END:README-PACKAGE_INFO -->
