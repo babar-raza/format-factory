@@ -1,0 +1,544 @@
+{
+  "metadata": {
+    "authoritative_plan": "plans/.claude/crispy-jingling-snail.md",
+    "mission_id": "CERT-EXHAUST-20260628",
+    "tool": "dotnet_assertion_scorer"
+  },
+  "target": "tests/net/txt",
+  "file_count": 5,
+  "total_test_functions": 51,
+  "score_distribution": {
+    "1": 5,
+    "2": 8,
+    "3": 2,
+    "4": 28,
+    "5": 8
+  },
+  "weak_assertion_count": 5,
+  "overall_avg_score": 3.51,
+  "overall_min_score": 1,
+  "files": [
+    {
+      "file": "tests/net/txt/TxtR117WriterTests.cs",
+      "function_count": 11,
+      "functions": [
+        {
+          "name": "WriteLines_SingleLine_ContentPresent",
+          "line": 22,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteLines_MultipleLines_AllPresent",
+          "line": 29,
+          "assertion_count": 3,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "WriteLines_MultipleLines_HasNewlines",
+          "line": 38,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteLines_EmptyList_DoesNotThrow",
+          "line": 45,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "WriteLines_NullEntriesHandled",
+          "line": 52,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "WriteParagraphs_SingleParagraph_ContentPresent",
+          "line": 63,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteParagraphs_MultipleParagraphs_AllContentPresent",
+          "line": 70,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "WriteParagraphs_MultipleParagraphs_SeparatedByNewlines",
+          "line": 78,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteLinesToFile_FileCreatedWithContent",
+          "line": 87,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "WriteLinesToFile_EmptyList_CreatesEmptyOrMinimalFile",
+          "line": 104,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "DogfoodPipeline_WriteLinesAndFile_ContentIntact",
+          "line": 122,
+          "assertion_count": 4,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4,
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.64,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/net/txt/TxtR118FileOutputAndExceptionTests.cs",
+      "function_count": 11,
+      "functions": [
+        {
+          "name": "WriteLinesToFile_ValidPath_CreatesFile",
+          "line": 26,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "WriteLinesToFile_MultipleLines_AllPresentInFile",
+          "line": 40,
+          "assertion_count": 3,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "WriteLinesToFile_NullEntry_BecomeEmptyLineInFile",
+          "line": 55,
+          "assertion_count": 3,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "WriteLinesToFile_EmptyList_CreatesFileWithNoContent",
+          "line": 71,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            4,
+            2
+          ]
+        },
+        {
+          "name": "WriteLinesToFile_Encoding_NoUtf8Bom",
+          "line": 86,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "WriteLinesToFile_LineEndings_LfNotCrLf",
+          "line": 100,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteLinesToFile_RoundTrip_ContentMatchesWriteLines",
+          "line": 116,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteLinesToFile_NullPath_ThrowsTxtWriterException",
+          "line": 133,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteLinesToFile_EmptyPath_ThrowsTxtWriterException",
+          "line": 140,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteLinesToFile_WhitespacePath_ThrowsTxtWriterException",
+          "line": 147,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "DogfoodPipeline_MultiSectionDocument_AllLinesVerified",
+          "line": 156,
+          "assertion_count": 6,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4,
+            4,
+            4,
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.55,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/net/txt/TxtR119WriteLinesEdgeCasesTests.cs",
+      "function_count": 11,
+      "functions": [
+        {
+          "name": "WriteLines_InputContainsCrLf_NormalizedToLf",
+          "line": 22,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteLines_InputContainsBareCarriageReturn_NormalizedToLf",
+          "line": 30,
+          "assertion_count": 0,
+          "min_score": 1,
+          "scores": []
+        },
+        {
+          "name": "WriteLines_AllCrLfInput_OutputContainsNoCarriageReturns",
+          "line": 37,
+          "assertion_count": 0,
+          "min_score": 1,
+          "scores": []
+        },
+        {
+          "name": "WriteLines_AllNullEntries_ProducesNewlineSeparators",
+          "line": 47,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "WriteLines_SingleNullEntry_ProducesEmptyString",
+          "line": 55,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteLines_EmptyStringEntry_PreservedAsSeparatorLine",
+          "line": 64,
+          "assertion_count": 3,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "WriteLines_HundredLines_NinetyNineNewlines",
+          "line": 76,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "WriteLines_HundredLines_AllLinesPresent",
+          "line": 85,
+          "assertion_count": 3,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "WriteLines_SingleNonEmptyLine_NoNewlineInResult",
+          "line": 97,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "WriteLines_UnicodeContent_PreservedInOutput",
+          "line": 107,
+          "assertion_count": 3,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "DogfoodPipeline_LogFileGeneration_AllEntriesAndFormatCorrect",
+          "line": 118,
+          "assertion_count": 5,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.73,
+      "file_min_score": 1
+    },
+    {
+      "file": "tests/net/txt/TxtR120ExceptionAndParentDirTests.cs",
+      "function_count": 10,
+      "functions": [
+        {
+          "name": "TxtWriterException_MessageConstructor_MessagePreserved",
+          "line": 24,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "TxtWriterException_MessageConstructor_IsException",
+          "line": 31,
+          "assertion_count": 0,
+          "min_score": 1,
+          "scores": []
+        },
+        {
+          "name": "TxtWriterException_MessageConstructor_InnerExceptionIsNull",
+          "line": 38,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "TxtWriterException_InnerConstructor_MessagePreserved",
+          "line": 47,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "TxtWriterException_InnerConstructor_InnerExceptionPreserved",
+          "line": 55,
+          "assertion_count": 0,
+          "min_score": 1,
+          "scores": []
+        },
+        {
+          "name": "TxtWriterException_InnerConstructor_IsException",
+          "line": 63,
+          "assertion_count": 0,
+          "min_score": 1,
+          "scores": []
+        },
+        {
+          "name": "WriteLines_NullLines_ThrowsArgumentNullException",
+          "line": 72,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteLinesToFile_NestedNonExistentDir_CreatesFileSuccessfully",
+          "line": 80,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "WriteLinesToFile_NestedDir_ContentCorrect",
+          "line": 96,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "DogfoodPipeline_ExceptionWrapsIoError_InnerPreservedAndOutputWritten",
+          "line": 116,
+          "assertion_count": 3,
+          "min_score": 2,
+          "scores": [
+            5,
+            4,
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 2.7,
+      "file_min_score": 1
+    },
+    {
+      "file": "tests/net/txt/TxtWriterTests.cs",
+      "function_count": 8,
+      "functions": [
+        {
+          "name": "WriteLines_SimpleLines_JoinedWithLf",
+          "line": 18,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "WriteLines_NullLine_TreatedAsEmpty",
+          "line": 25,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "WriteLines_EmptyList_ReturnsEmpty",
+          "line": 32,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteLines_SingleLine_NoTrailingLf",
+          "line": 39,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "WriteLines_CrLf_NormalizedToLf",
+          "line": 47,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteLinesToFile_CreatesFile",
+          "line": 59,
+          "assertion_count": 3,
+          "min_score": 2,
+          "scores": [
+            4,
+            4,
+            2
+          ]
+        },
+        {
+          "name": "WriteLinesToFile_NoUtf8Bom",
+          "line": 77,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "WriteLinesToFile_NullPath_Throws",
+          "line": 94,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 4.0,
+      "file_min_score": 2
+    }
+  ]
+}

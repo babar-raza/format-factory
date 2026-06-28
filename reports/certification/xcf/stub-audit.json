@@ -1,0 +1,43 @@
+{
+  "file_count": 17,
+  "files_scanned": [
+    "src/python/xcf/__init__.py",
+    "src/python/xcf/Compat/__init__.py",
+    "src/python/xcf/Compat/xcf_channel.py",
+    "src/python/xcf/Compat/xcf_header.py",
+    "src/python/xcf/Compat/xcf_layer.py",
+    "src/python/xcf/exceptions.py",
+    "src/python/xcf/image_document.py",
+    "src/python/xcf/models.py",
+    "src/python/xcf/spec/__init__.py",
+    "src/python/xcf/spec/layer/__init__.py",
+    "src/python/xcf/spec/layer/channel.py",
+    "src/python/xcf/spec/layer/header.py",
+    "src/python/xcf/spec/layer/layer.py",
+    "src/python/xcf/xcf_image_metrics.py",
+    "src/python/xcf/xcf_layer_iterator.py",
+    "src/python/xcf/xcf_parser.py",
+    "src/python/xcf/xcf_workflow.py"
+  ],
+  "finding_count": 1,
+  "findings": [
+    {
+      "classification_note": "Non-public or structural placeholder; not automatically material.",
+      "file": "src/python/xcf/xcf_parser.py",
+      "line": 288,
+      "reason": "pass_statement",
+      "scope": "<module>",
+      "severity": "advisory",
+      "source": "pass"
+    }
+  ],
+  "material_finding_count": 0,
+  "metadata": {
+    "authoritative_plan": "plans/.claude/crispy-jingling-snail.md",
+    "generated_by": "codex",
+    "mission_id": "CERT-EXHAUST-20260628",
+    "tool": "stub_detector",
+    "visibility": "internal"
+  },
+  "target": "src/python/xcf"
+}

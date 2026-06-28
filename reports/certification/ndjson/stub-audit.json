@@ -1,0 +1,52 @@
+{
+  "file_count": 17,
+  "files_scanned": [
+    "src/python/ndjson/__init__.py",
+    "src/python/ndjson/cli.py",
+    "src/python/ndjson/Compat/__init__.py",
+    "src/python/ndjson/Compat/ndjson_field.py",
+    "src/python/ndjson/Compat/ndjson_record.py",
+    "src/python/ndjson/exceptions.py",
+    "src/python/ndjson/json_stream.py",
+    "src/python/ndjson/models.py",
+    "src/python/ndjson/ndjson_codec.py",
+    "src/python/ndjson/ndjson_field_iterator.py",
+    "src/python/ndjson/ndjson_record_iterator.py",
+    "src/python/ndjson/ndjson_record_stats.py",
+    "src/python/ndjson/ndjson_workflow.py",
+    "src/python/ndjson/spec/__init__.py",
+    "src/python/ndjson/spec/record/__init__.py",
+    "src/python/ndjson/spec/record/field.py",
+    "src/python/ndjson/spec/record/record.py"
+  ],
+  "finding_count": 2,
+  "findings": [
+    {
+      "classification_note": "Non-public or structural placeholder; not automatically material.",
+      "file": "src/python/ndjson/ndjson_codec.py",
+      "line": 592,
+      "reason": "pass_statement",
+      "scope": "<module>",
+      "severity": "advisory",
+      "source": "pass"
+    },
+    {
+      "classification_note": "Non-public or structural placeholder; not automatically material.",
+      "file": "src/python/ndjson/ndjson_codec.py",
+      "line": 596,
+      "reason": "pass_statement",
+      "scope": "<module>",
+      "severity": "advisory",
+      "source": "pass"
+    }
+  ],
+  "material_finding_count": 0,
+  "metadata": {
+    "authoritative_plan": "plans/.claude/crispy-jingling-snail.md",
+    "generated_by": "codex",
+    "mission_id": "CERT-EXHAUST-20260628",
+    "tool": "stub_detector",
+    "visibility": "internal"
+  },
+  "target": "src/python/ndjson"
+}

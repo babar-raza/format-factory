@@ -1,0 +1,878 @@
+{
+  "metadata": {
+    "authoritative_plan": "plans/.claude/crispy-jingling-snail.md",
+    "mission_id": "CERT-EXHAUST-20260628",
+    "generated_at": "2026-06-28T17:16:00.454437+00:00",
+    "schema_version": "1.0.0"
+  },
+  "portfolio_summary": {
+    "total_formats": 20,
+    "certified": 12,
+    "certified_with_gaps": 8,
+    "not_certified": 0,
+    "in_progress": 0,
+    "not_started": 0
+  },
+  "formats": [
+    {
+      "format_id": "abw",
+      "overall_verdict": "CERTIFIED",
+      "dimensions": {
+        "api_contract": {
+          "status": "PASS",
+          "python_apis": 132,
+          "dotnet_apis": 0
+        },
+        "traceability": {
+          "status": "PASS",
+          "pass_count": 3,
+          "total": 3
+        },
+        "stubs": {
+          "status": "PASS",
+          "material_count": 0
+        },
+        "exceptions": {
+          "status": "PASS",
+          "uncovered": 0,
+          "total": 3
+        },
+        "oracle": {
+          "status": "PASS",
+          "pass_rate": "3/3"
+        },
+        "test_quality": {
+          "status": "PASS",
+          "avg_score": 3.29,
+          "weak_count": 0
+        },
+        "roundtrip": {
+          "status": "PASS"
+        },
+        "package": {
+          "status": "PASS"
+        },
+        "consumer": {
+          "status": "PASS"
+        }
+      }
+    },
+    {
+      "format_id": "csv",
+      "overall_verdict": "CERTIFIED",
+      "dimensions": {
+        "api_contract": {
+          "status": "PASS",
+          "python_apis": 97,
+          "dotnet_apis": 27
+        },
+        "traceability": {
+          "status": "PASS",
+          "pass_count": 3,
+          "total": 3
+        },
+        "stubs": {
+          "status": "PASS",
+          "material_count": 0
+        },
+        "exceptions": {
+          "status": "PASS",
+          "uncovered": 0,
+          "total": 5
+        },
+        "oracle": {
+          "status": "PASS",
+          "pass_rate": "5/5"
+        },
+        "test_quality": {
+          "status": "PASS",
+          "avg_score": 3.33,
+          "weak_count": 0
+        },
+        "roundtrip": {
+          "status": "PASS"
+        },
+        "package": {
+          "status": "PASS"
+        },
+        "consumer": {
+          "status": "PASS"
+        }
+      }
+    },
+    {
+      "format_id": "dif",
+      "overall_verdict": "CERTIFIED_WITH_KNOWN_GAPS",
+      "dimensions": {
+        "api_contract": {
+          "status": "PASS",
+          "python_apis": 107,
+          "dotnet_apis": 0
+        },
+        "traceability": {
+          "status": "PASS",
+          "pass_count": 6,
+          "total": 6
+        },
+        "stubs": {
+          "status": "PASS",
+          "material_count": 0
+        },
+        "exceptions": {
+          "status": "PASS",
+          "uncovered": 0,
+          "total": 5
+        },
+        "oracle": {
+          "status": "PASS",
+          "pass_rate": "3/3"
+        },
+        "test_quality": {
+          "status": "PASS",
+          "avg_score": 3.23,
+          "weak_count": 0
+        },
+        "roundtrip": {
+          "status": "NOT_APPLICABLE"
+        },
+        "package": {
+          "status": "PASS"
+        },
+        "consumer": {
+          "status": "PASS"
+        }
+      }
+    },
+    {
+      "format_id": "fodg",
+      "overall_verdict": "CERTIFIED",
+      "dimensions": {
+        "api_contract": {
+          "status": "PASS",
+          "python_apis": 137,
+          "dotnet_apis": 0
+        },
+        "traceability": {
+          "status": "PASS",
+          "pass_count": 3,
+          "total": 3
+        },
+        "stubs": {
+          "status": "PASS",
+          "material_count": 0
+        },
+        "exceptions": {
+          "status": "PASS",
+          "uncovered": 0,
+          "total": 3
+        },
+        "oracle": {
+          "status": "PASS",
+          "pass_rate": "3/3"
+        },
+        "test_quality": {
+          "status": "PASS",
+          "avg_score": 3.21,
+          "weak_count": 0
+        },
+        "roundtrip": {
+          "status": "PASS"
+        },
+        "package": {
+          "status": "PASS"
+        },
+        "consumer": {
+          "status": "PASS"
+        }
+      }
+    },
+    {
+      "format_id": "fodp",
+      "overall_verdict": "CERTIFIED",
+      "dimensions": {
+        "api_contract": {
+          "status": "PASS",
+          "python_apis": 79,
+          "dotnet_apis": 0
+        },
+        "traceability": {
+          "status": "PASS",
+          "pass_count": 3,
+          "total": 3
+        },
+        "stubs": {
+          "status": "PASS",
+          "material_count": 0
+        },
+        "exceptions": {
+          "status": "PASS",
+          "uncovered": 0,
+          "total": 3
+        },
+        "oracle": {
+          "status": "PASS",
+          "pass_rate": "3/3"
+        },
+        "test_quality": {
+          "status": "PASS",
+          "avg_score": 3.4,
+          "weak_count": 0
+        },
+        "roundtrip": {
+          "status": "PASS"
+        },
+        "package": {
+          "status": "PASS"
+        },
+        "consumer": {
+          "status": "PASS"
+        }
+      }
+    },
+    {
+      "format_id": "fods",
+      "overall_verdict": "CERTIFIED",
+      "dimensions": {
+        "api_contract": {
+          "status": "PASS",
+          "python_apis": 103,
+          "dotnet_apis": 481
+        },
+        "traceability": {
+          "status": "PASS",
+          "pass_count": 12,
+          "total": 12
+        },
+        "stubs": {
+          "status": "PASS",
+          "material_count": 0
+        },
+        "exceptions": {
+          "status": "PASS",
+          "uncovered": 0,
+          "total": 5
+        },
+        "oracle": {
+          "status": "PASS",
+          "pass_rate": "8/8"
+        },
+        "test_quality": {
+          "status": "PASS",
+          "avg_score": 3.18,
+          "weak_count": 0
+        },
+        "roundtrip": {
+          "status": "PASS"
+        },
+        "package": {
+          "status": "PASS"
+        },
+        "consumer": {
+          "status": "PASS"
+        }
+      }
+    },
+    {
+      "format_id": "fodt",
+      "overall_verdict": "CERTIFIED",
+      "dimensions": {
+        "api_contract": {
+          "status": "PASS",
+          "python_apis": 177,
+          "dotnet_apis": 432
+        },
+        "traceability": {
+          "status": "PASS",
+          "pass_count": 9,
+          "total": 9
+        },
+        "stubs": {
+          "status": "PASS",
+          "material_count": 0
+        },
+        "exceptions": {
+          "status": "PASS",
+          "uncovered": 0,
+          "total": 4
+        },
+        "oracle": {
+          "status": "PASS",
+          "pass_rate": "3/3"
+        },
+        "test_quality": {
+          "status": "PASS",
+          "avg_score": 3.18,
+          "weak_count": 0
+        },
+        "roundtrip": {
+          "status": "PASS"
+        },
+        "package": {
+          "status": "PASS"
+        },
+        "consumer": {
+          "status": "PASS"
+        }
+      }
+    },
+    {
+      "format_id": "gnumeric",
+      "overall_verdict": "CERTIFIED",
+      "dimensions": {
+        "api_contract": {
+          "status": "PASS",
+          "python_apis": 161,
+          "dotnet_apis": 0
+        },
+        "traceability": {
+          "status": "PASS",
+          "pass_count": 3,
+          "total": 3
+        },
+        "stubs": {
+          "status": "PASS",
+          "material_count": 0
+        },
+        "exceptions": {
+          "status": "PASS",
+          "uncovered": 0,
+          "total": 3
+        },
+        "oracle": {
+          "status": "PASS",
+          "pass_rate": "3/3"
+        },
+        "test_quality": {
+          "status": "PASS",
+          "avg_score": 3.33,
+          "weak_count": 0
+        },
+        "roundtrip": {
+          "status": "PASS"
+        },
+        "package": {
+          "status": "PASS"
+        },
+        "consumer": {
+          "status": "PASS"
+        }
+      }
+    },
+    {
+      "format_id": "ndjson",
+      "overall_verdict": "CERTIFIED",
+      "dimensions": {
+        "api_contract": {
+          "status": "PASS",
+          "python_apis": 122,
+          "dotnet_apis": 29
+        },
+        "traceability": {
+          "status": "PASS",
+          "pass_count": 2,
+          "total": 2
+        },
+        "stubs": {
+          "status": "PASS",
+          "material_count": 0
+        },
+        "exceptions": {
+          "status": "PASS",
+          "uncovered": 0,
+          "total": 3
+        },
+        "oracle": {
+          "status": "PASS",
+          "pass_rate": "4/4"
+        },
+        "test_quality": {
+          "status": "PASS",
+          "avg_score": 3.35,
+          "weak_count": 0
+        },
+        "roundtrip": {
+          "status": "PASS"
+        },
+        "package": {
+          "status": "PASS"
+        },
+        "consumer": {
+          "status": "PASS"
+        }
+      }
+    },
+    {
+      "format_id": "ods",
+      "overall_verdict": "CERTIFIED",
+      "dimensions": {
+        "api_contract": {
+          "status": "PASS",
+          "python_apis": 117,
+          "dotnet_apis": 0
+        },
+        "traceability": {
+          "status": "PASS",
+          "pass_count": 4,
+          "total": 4
+        },
+        "stubs": {
+          "status": "PASS",
+          "material_count": 0
+        },
+        "exceptions": {
+          "status": "PASS",
+          "uncovered": 0,
+          "total": 6
+        },
+        "oracle": {
+          "status": "PASS",
+          "pass_rate": "3/3"
+        },
+        "test_quality": {
+          "status": "PASS",
+          "avg_score": 3.28,
+          "weak_count": 0
+        },
+        "roundtrip": {
+          "status": "PASS"
+        },
+        "package": {
+          "status": "PASS"
+        },
+        "consumer": {
+          "status": "PASS"
+        }
+      }
+    },
+    {
+      "format_id": "odt",
+      "overall_verdict": "CERTIFIED",
+      "dimensions": {
+        "api_contract": {
+          "status": "PASS",
+          "python_apis": 83,
+          "dotnet_apis": 0
+        },
+        "traceability": {
+          "status": "PASS",
+          "pass_count": 3,
+          "total": 3
+        },
+        "stubs": {
+          "status": "PASS",
+          "material_count": 0
+        },
+        "exceptions": {
+          "status": "PASS",
+          "uncovered": 0,
+          "total": 5
+        },
+        "oracle": {
+          "status": "PASS",
+          "pass_rate": "3/3"
+        },
+        "test_quality": {
+          "status": "PASS",
+          "avg_score": 3.3,
+          "weak_count": 0
+        },
+        "roundtrip": {
+          "status": "PASS"
+        },
+        "package": {
+          "status": "PASS"
+        },
+        "consumer": {
+          "status": "PASS"
+        }
+      }
+    },
+    {
+      "format_id": "pbm",
+      "overall_verdict": "CERTIFIED_WITH_KNOWN_GAPS",
+      "dimensions": {
+        "api_contract": {
+          "status": "PASS",
+          "python_apis": 84,
+          "dotnet_apis": 86
+        },
+        "traceability": {
+          "status": "PASS",
+          "pass_count": 3,
+          "total": 3
+        },
+        "stubs": {
+          "status": "PASS",
+          "material_count": 0
+        },
+        "exceptions": {
+          "status": "PASS",
+          "uncovered": 0,
+          "total": 7
+        },
+        "oracle": {
+          "status": "PASS",
+          "pass_rate": "3/3"
+        },
+        "test_quality": {
+          "status": "PASS",
+          "avg_score": 3.28,
+          "weak_count": 0
+        },
+        "roundtrip": {
+          "status": "NOT_APPLICABLE"
+        },
+        "package": {
+          "status": "PASS"
+        },
+        "consumer": {
+          "status": "PASS"
+        }
+      }
+    },
+    {
+      "format_id": "pgm",
+      "overall_verdict": "CERTIFIED_WITH_KNOWN_GAPS",
+      "dimensions": {
+        "api_contract": {
+          "status": "PASS",
+          "python_apis": 90,
+          "dotnet_apis": 86
+        },
+        "traceability": {
+          "status": "PASS",
+          "pass_count": 3,
+          "total": 3
+        },
+        "stubs": {
+          "status": "PASS",
+          "material_count": 0
+        },
+        "exceptions": {
+          "status": "PASS",
+          "uncovered": 0,
+          "total": 7
+        },
+        "oracle": {
+          "status": "PASS",
+          "pass_rate": "3/3"
+        },
+        "test_quality": {
+          "status": "PASS",
+          "avg_score": 3.31,
+          "weak_count": 0
+        },
+        "roundtrip": {
+          "status": "NOT_APPLICABLE"
+        },
+        "package": {
+          "status": "PASS"
+        },
+        "consumer": {
+          "status": "PASS"
+        }
+      }
+    },
+    {
+      "format_id": "ppm",
+      "overall_verdict": "CERTIFIED_WITH_KNOWN_GAPS",
+      "dimensions": {
+        "api_contract": {
+          "status": "PASS",
+          "python_apis": 92,
+          "dotnet_apis": 86
+        },
+        "traceability": {
+          "status": "PASS",
+          "pass_count": 3,
+          "total": 3
+        },
+        "stubs": {
+          "status": "PASS",
+          "material_count": 0
+        },
+        "exceptions": {
+          "status": "PASS",
+          "uncovered": 0,
+          "total": 7
+        },
+        "oracle": {
+          "status": "PASS",
+          "pass_rate": "3/3"
+        },
+        "test_quality": {
+          "status": "PASS",
+          "avg_score": 3.31,
+          "weak_count": 0
+        },
+        "roundtrip": {
+          "status": "NOT_APPLICABLE"
+        },
+        "package": {
+          "status": "PASS"
+        },
+        "consumer": {
+          "status": "PASS"
+        }
+      }
+    },
+    {
+      "format_id": "qoi",
+      "overall_verdict": "CERTIFIED_WITH_KNOWN_GAPS",
+      "dimensions": {
+        "api_contract": {
+          "status": "PASS",
+          "python_apis": 90,
+          "dotnet_apis": 0
+        },
+        "traceability": {
+          "status": "PASS",
+          "pass_count": 3,
+          "total": 3
+        },
+        "stubs": {
+          "status": "PASS",
+          "material_count": 0
+        },
+        "exceptions": {
+          "status": "PASS",
+          "uncovered": 0,
+          "total": 8
+        },
+        "oracle": {
+          "status": "PASS",
+          "pass_rate": "3/3"
+        },
+        "test_quality": {
+          "status": "PASS",
+          "avg_score": 3.36,
+          "weak_count": 0
+        },
+        "roundtrip": {
+          "status": "NOT_APPLICABLE"
+        },
+        "package": {
+          "status": "PASS"
+        },
+        "consumer": {
+          "status": "PASS"
+        }
+      }
+    },
+    {
+      "format_id": "sylk",
+      "overall_verdict": "CERTIFIED_WITH_KNOWN_GAPS",
+      "dimensions": {
+        "api_contract": {
+          "status": "PASS",
+          "python_apis": 108,
+          "dotnet_apis": 0
+        },
+        "traceability": {
+          "status": "PASS",
+          "pass_count": 4,
+          "total": 4
+        },
+        "stubs": {
+          "status": "PASS",
+          "material_count": 0
+        },
+        "exceptions": {
+          "status": "PASS",
+          "uncovered": 0,
+          "total": 5
+        },
+        "oracle": {
+          "status": "PASS",
+          "pass_rate": "3/3"
+        },
+        "test_quality": {
+          "status": "PASS",
+          "avg_score": 3.25,
+          "weak_count": 0
+        },
+        "roundtrip": {
+          "status": "NOT_APPLICABLE"
+        },
+        "package": {
+          "status": "PASS"
+        },
+        "consumer": {
+          "status": "PASS"
+        }
+      }
+    },
+    {
+      "format_id": "toml",
+      "overall_verdict": "CERTIFIED",
+      "dimensions": {
+        "api_contract": {
+          "status": "PASS",
+          "python_apis": 141,
+          "dotnet_apis": 0
+        },
+        "traceability": {
+          "status": "PASS",
+          "pass_count": 3,
+          "total": 3
+        },
+        "stubs": {
+          "status": "PASS",
+          "material_count": 0
+        },
+        "exceptions": {
+          "status": "PASS",
+          "uncovered": 0,
+          "total": 4
+        },
+        "oracle": {
+          "status": "PASS",
+          "pass_rate": "4/4"
+        },
+        "test_quality": {
+          "status": "PASS",
+          "avg_score": 3.31,
+          "weak_count": 0
+        },
+        "roundtrip": {
+          "status": "PASS"
+        },
+        "package": {
+          "status": "PASS"
+        },
+        "consumer": {
+          "status": "PASS"
+        }
+      }
+    },
+    {
+      "format_id": "tsv",
+      "overall_verdict": "CERTIFIED_WITH_KNOWN_GAPS",
+      "dimensions": {
+        "api_contract": {
+          "status": "PASS",
+          "python_apis": 106,
+          "dotnet_apis": 23
+        },
+        "traceability": {
+          "status": "PASS",
+          "pass_count": 3,
+          "total": 3
+        },
+        "stubs": {
+          "status": "PASS",
+          "material_count": 0
+        },
+        "exceptions": {
+          "status": "PASS",
+          "uncovered": 0,
+          "total": 5
+        },
+        "oracle": {
+          "status": "PASS",
+          "pass_rate": "4/4"
+        },
+        "test_quality": {
+          "status": "PASS",
+          "avg_score": 3.29,
+          "weak_count": 0
+        },
+        "roundtrip": {
+          "status": "NOT_APPLICABLE"
+        },
+        "package": {
+          "status": "PASS"
+        },
+        "consumer": {
+          "status": "PASS"
+        }
+      }
+    },
+    {
+      "format_id": "xcf",
+      "overall_verdict": "CERTIFIED_WITH_KNOWN_GAPS",
+      "dimensions": {
+        "api_contract": {
+          "status": "PASS",
+          "python_apis": 128,
+          "dotnet_apis": 0
+        },
+        "traceability": {
+          "status": "PASS",
+          "pass_count": 4,
+          "total": 4
+        },
+        "stubs": {
+          "status": "PASS",
+          "material_count": 0
+        },
+        "exceptions": {
+          "status": "PASS",
+          "uncovered": 0,
+          "total": 6
+        },
+        "oracle": {
+          "status": "PASS",
+          "pass_rate": "3/3"
+        },
+        "test_quality": {
+          "status": "PASS",
+          "avg_score": 3.39,
+          "weak_count": 0
+        },
+        "roundtrip": {
+          "status": "NOT_APPLICABLE"
+        },
+        "package": {
+          "status": "PASS"
+        },
+        "consumer": {
+          "status": "PASS"
+        }
+      }
+    },
+    {
+      "format_id": "zst",
+      "overall_verdict": "CERTIFIED",
+      "dimensions": {
+        "api_contract": {
+          "status": "PASS",
+          "python_apis": 101,
+          "dotnet_apis": 27
+        },
+        "traceability": {
+          "status": "PASS",
+          "pass_count": 3,
+          "total": 3
+        },
+        "stubs": {
+          "status": "PASS",
+          "material_count": 0
+        },
+        "exceptions": {
+          "status": "PASS",
+          "uncovered": 0,
+          "total": 9
+        },
+        "oracle": {
+          "status": "PASS",
+          "pass_rate": "6/6"
+        },
+        "test_quality": {
+          "status": "PASS",
+          "avg_score": 3.14,
+          "weak_count": 0
+        },
+        "roundtrip": {
+          "status": "PASS"
+        },
+        "package": {
+          "status": "PASS"
+        },
+        "consumer": {
+          "status": "PASS"
+        }
+      }
+    }
+  ]
+}

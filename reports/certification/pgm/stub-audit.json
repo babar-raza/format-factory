@@ -1,0 +1,41 @@
+{
+  "file_count": 15,
+  "files_scanned": [
+    "src/python/pgm/__init__.py",
+    "src/python/pgm/Compat/__init__.py",
+    "src/python/pgm/Compat/pgm_graymap.py",
+    "src/python/pgm/Compat/pgm_header.py",
+    "src/python/pgm/exceptions.py",
+    "src/python/pgm/grayscale_image.py",
+    "src/python/pgm/models.py",
+    "src/python/pgm/pgm_graymap_iterator.py",
+    "src/python/pgm/pgm_parser.py",
+    "src/python/pgm/pgm_to_ppm.py",
+    "src/python/pgm/pgm_workflow.py",
+    "src/python/pgm/spec/__init__.py",
+    "src/python/pgm/spec/graymap/__init__.py",
+    "src/python/pgm/spec/graymap/graymap.py",
+    "src/python/pgm/spec/graymap/header.py"
+  ],
+  "finding_count": 1,
+  "findings": [
+    {
+      "classification_note": "Non-public or structural placeholder; not automatically material.",
+      "file": "src/python/pgm/pgm_parser.py",
+      "line": 651,
+      "reason": "pass_statement",
+      "scope": "<module>",
+      "severity": "advisory",
+      "source": "pass"
+    }
+  ],
+  "material_finding_count": 0,
+  "metadata": {
+    "authoritative_plan": "plans/.claude/crispy-jingling-snail.md",
+    "generated_by": "codex",
+    "mission_id": "CERT-EXHAUST-20260628",
+    "tool": "stub_detector",
+    "visibility": "internal"
+  },
+  "target": "src/python/pgm"
+}

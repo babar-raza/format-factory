@@ -1,0 +1,680 @@
+{
+  "metadata": {
+    "authoritative_plan": "plans/.claude/crispy-jingling-snail.md",
+    "mission_id": "CERT-EXHAUST-20260628",
+    "format_id": "odt"
+  },
+  "python": {
+    "contracts": [
+      {
+        "name": "odt_iter_headings",
+        "kind": "function",
+        "file": "src/python/odt/odt_heading_iterator.py",
+        "line": 16,
+        "role": "iterator",
+        "exported": true
+      },
+      {
+        "name": "odt_iter_paragraphs",
+        "kind": "function",
+        "file": "src/python/odt/odt_paragraph_iterator.py",
+        "line": 16,
+        "role": "iterator",
+        "exported": true
+      },
+      {
+        "name": "get_capabilities",
+        "kind": "function",
+        "file": "src/python/odt/odt_parser.py",
+        "line": 76,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "parse_odt_strict",
+        "kind": "function",
+        "file": "src/python/odt/odt_parser.py",
+        "line": 202,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "parse_odt",
+        "kind": "function",
+        "file": "src/python/odt/odt_parser.py",
+        "line": 222,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "probe_odt",
+        "kind": "function",
+        "file": "src/python/odt/odt_parser.py",
+        "line": 239,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "odt_installed_workflow",
+        "kind": "function",
+        "file": "src/python/odt/odt_workflow.py",
+        "line": 9,
+        "role": "workflow",
+        "exported": true
+      },
+      {
+        "name": "write_odt",
+        "kind": "function",
+        "file": "src/python/odt/odt_writer.py",
+        "line": 58,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "odt_from_text",
+        "kind": "function",
+        "file": "src/python/odt/odt_writer.py",
+        "line": 98,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "odt_from_model",
+        "kind": "function",
+        "file": "src/python/odt/odt_writer.py",
+        "line": 114,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "odt_word_count",
+        "kind": "function",
+        "file": "src/python/odt/text_document.py",
+        "line": 24,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "odt_heading_count",
+        "kind": "function",
+        "file": "src/python/odt/text_document.py",
+        "line": 35,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "odt_paragraph_count",
+        "kind": "function",
+        "file": "src/python/odt/text_document.py",
+        "line": 41,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "odt_char_count",
+        "kind": "function",
+        "file": "src/python/odt/text_document.py",
+        "line": 47,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "odt_list_count",
+        "kind": "function",
+        "file": "src/python/odt/text_document.py",
+        "line": 53,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "odt_table_count",
+        "kind": "function",
+        "file": "src/python/odt/text_document.py",
+        "line": 81,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "odt_sentence_count",
+        "kind": "function",
+        "file": "src/python/odt/text_document.py",
+        "line": 109,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "odt_average_word_length",
+        "kind": "function",
+        "file": "src/python/odt/text_document.py",
+        "line": 132,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "odt_unique_word_count",
+        "kind": "function",
+        "file": "src/python/odt/text_document.py",
+        "line": 152,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "odt_longest_paragraph",
+        "kind": "function",
+        "file": "src/python/odt/text_document.py",
+        "line": 170,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "odt_has_tables",
+        "kind": "function",
+        "file": "src/python/odt/text_document.py",
+        "line": 190,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "odt_avg_paragraph_length",
+        "kind": "function",
+        "file": "src/python/odt/text_document.py",
+        "line": 195,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "odt_words_per_sentence",
+        "kind": "function",
+        "file": "src/python/odt/text_document.py",
+        "line": 210,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "odt_vocabulary_richness",
+        "kind": "function",
+        "file": "src/python/odt/text_document.py",
+        "line": 225,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "odt_chars_per_word",
+        "kind": "function",
+        "file": "src/python/odt/text_document.py",
+        "line": 244,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "odt_has_headings",
+        "kind": "function",
+        "file": "src/python/odt/text_document.py",
+        "line": 259,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "odt_max_paragraph_length",
+        "kind": "function",
+        "file": "src/python/odt/text_document.py",
+        "line": 265,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "odt_min_paragraph_length",
+        "kind": "function",
+        "file": "src/python/odt/text_document.py",
+        "line": 273,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "odt_heading_to_paragraph_ratio",
+        "kind": "function",
+        "file": "src/python/odt/text_document.py",
+        "line": 281,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "odt_total_elements",
+        "kind": "function",
+        "file": "src/python/odt/text_document.py",
+        "line": 289,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "odt_is_empty",
+        "kind": "function",
+        "file": "src/python/odt/text_document.py",
+        "line": 295,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "odt_shortest_word",
+        "kind": "function",
+        "file": "src/python/odt/text_document.py",
+        "line": 301,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "odt_paragraph_density",
+        "kind": "function",
+        "file": "src/python/odt/text_document.py",
+        "line": 312,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "odt_heading_density",
+        "kind": "function",
+        "file": "src/python/odt/text_document.py",
+        "line": 322,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "odt_longest_word",
+        "kind": "function",
+        "file": "src/python/odt/text_document.py",
+        "line": 331,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "odt_list_to_paragraph_ratio",
+        "kind": "function",
+        "file": "src/python/odt/text_document.py",
+        "line": 342,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "odt_has_lists",
+        "kind": "function",
+        "file": "src/python/odt/text_document.py",
+        "line": 350,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "odt_has_unicode",
+        "kind": "function",
+        "file": "src/python/odt/text_document.py",
+        "line": 355,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "odt_max_words_per_paragraph",
+        "kind": "function",
+        "file": "src/python/odt/text_document.py",
+        "line": 361,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "odt_min_words_per_paragraph",
+        "kind": "function",
+        "file": "src/python/odt/text_document.py",
+        "line": 368,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "odt_word_density",
+        "kind": "function",
+        "file": "src/python/odt/text_document.py",
+        "line": 375,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "odt_sentence_density",
+        "kind": "function",
+        "file": "src/python/odt/text_document.py",
+        "line": 385,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "odt_table_density",
+        "kind": "function",
+        "file": "src/python/odt/text_document.py",
+        "line": 393,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "odt_nonempty_paragraph_count",
+        "kind": "function",
+        "file": "src/python/odt/text_document.py",
+        "line": 401,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "odt_char_density",
+        "kind": "function",
+        "file": "src/python/odt/text_document.py",
+        "line": 407,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "odt_empty_paragraph_count",
+        "kind": "function",
+        "file": "src/python/odt/text_document.py",
+        "line": 417,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "odt_words_per_heading",
+        "kind": "function",
+        "file": "src/python/odt/text_document.py",
+        "line": 423,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "odt_avg_words_per_sentence",
+        "kind": "function",
+        "file": "src/python/odt/text_document.py",
+        "line": 433,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "odt_shortest_paragraph_length",
+        "kind": "function",
+        "file": "src/python/odt/text_document.py",
+        "line": 443,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "odt_avg_chars_per_paragraph",
+        "kind": "function",
+        "file": "src/python/odt/text_document.py",
+        "line": 454,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "odt_paragraph_variance",
+        "kind": "function",
+        "file": "src/python/odt/text_document.py",
+        "line": 463,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "odt_is_single_paragraph",
+        "kind": "function",
+        "file": "src/python/odt/text_document.py",
+        "line": 473,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "odt_list_density",
+        "kind": "function",
+        "file": "src/python/odt/text_document.py",
+        "line": 480,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "odt_heading_per_paragraph",
+        "kind": "function",
+        "file": "src/python/odt/text_document.py",
+        "line": 488,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "odt_is_multi_paragraph",
+        "kind": "function",
+        "file": "src/python/odt/text_document.py",
+        "line": 496,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "odt_avg_chars_per_word",
+        "kind": "function",
+        "file": "src/python/odt/text_document.py",
+        "line": 503,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "odt_is_content_rich",
+        "kind": "function",
+        "file": "src/python/odt/text_document.py",
+        "line": 511,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "odt_whitespace_ratio",
+        "kind": "function",
+        "file": "src/python/odt/text_document.py",
+        "line": 516,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "odt_total_text_length",
+        "kind": "function",
+        "file": "src/python/odt/text_document.py",
+        "line": 526,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "odt_nonempty_paragraph_ratio",
+        "kind": "function",
+        "file": "src/python/odt/text_document.py",
+        "line": 532,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "odt_avg_sentence_length",
+        "kind": "function",
+        "file": "src/python/odt/text_document.py",
+        "line": 542,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "odt_longest_paragraph_index",
+        "kind": "function",
+        "file": "src/python/odt/text_document.py",
+        "line": 553,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "odt_has_numeric_content",
+        "kind": "function",
+        "file": "src/python/odt/text_document.py",
+        "line": 562,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "odt_numeric_value_sum",
+        "kind": "function",
+        "file": "src/python/odt/text_document.py",
+        "line": 568,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "odt_unique_char_count",
+        "kind": "function",
+        "file": "src/python/odt/text_document.py",
+        "line": 579,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "odt_nonspace_char_count",
+        "kind": "function",
+        "file": "src/python/odt/text_document.py",
+        "line": 586,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "OdtDocument",
+        "kind": "class",
+        "file": "src/python/odt/Compat/odt_document.py",
+        "line": 14,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "OdtHeading",
+        "kind": "class",
+        "file": "src/python/odt/Compat/odt_heading.py",
+        "line": 12,
+        "role": "api",
+        "exported": true
+      },
+      {
+        "name": "OdtParagraph",
+        "kind": "class",
+        "file": "src/python/odt/Compat/odt_paragraph.py",
+        "line": 12,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "OdtError",
+        "kind": "class",
+        "file": "src/python/odt/exceptions.py",
+        "line": 13,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "OdtParseError",
+        "kind": "class",
+        "file": "src/python/odt/exceptions.py",
+        "line": 17,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "OdtWriteError",
+        "kind": "class",
+        "file": "src/python/odt/exceptions.py",
+        "line": 21,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "OdtModelDocument",
+        "kind": "class",
+        "file": "src/python/odt/models.py",
+        "line": 19,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "OdtError",
+        "kind": "class",
+        "file": "src/python/odt/odt_parser.py",
+        "line": 89,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "OdtInvalidContainerError",
+        "kind": "class",
+        "file": "src/python/odt/odt_parser.py",
+        "line": 93,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "OdtSizeError",
+        "kind": "class",
+        "file": "src/python/odt/odt_parser.py",
+        "line": 97,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "OdtParagraph",
+        "kind": "class",
+        "file": "src/python/odt/odt_parser.py",
+        "line": 102,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "OdtHeading",
+        "kind": "class",
+        "file": "src/python/odt/odt_parser.py",
+        "line": 109,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "OdtListItem",
+        "kind": "class",
+        "file": "src/python/odt/odt_parser.py",
+        "line": 116,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "OdtDocument",
+        "kind": "class",
+        "file": "src/python/odt/odt_parser.py",
+        "line": 122,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "Document",
+        "kind": "class",
+        "file": "src/python/odt/spec/office/document.py",
+        "line": 15,
+        "role": "model",
+        "exported": false
+      },
+      {
+        "name": "Heading",
+        "kind": "class",
+        "file": "src/python/odt/spec/text/heading.py",
+        "line": 15,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "Paragraph",
+        "kind": "class",
+        "file": "src/python/odt/spec/text/paragraph.py",
+        "line": 15,
+        "role": "model",
+        "exported": false
+      }
+    ],
+    "export_count": 80
+  },
+  "dotnet": {
+    "contracts": [],
+    "public_member_count": 0
+  }
+}

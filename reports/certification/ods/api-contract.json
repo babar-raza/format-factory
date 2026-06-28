@@ -1,0 +1,952 @@
+{
+  "metadata": {
+    "authoritative_plan": "plans/.claude/crispy-jingling-snail.md",
+    "mission_id": "CERT-EXHAUST-20260628",
+    "format_id": "ods"
+  },
+  "python": {
+    "contracts": [
+      {
+        "name": "export_ods_to_csv",
+        "kind": "function",
+        "file": "src/python/ods/ods_csv_exporter.py",
+        "line": 64,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "export_ods_to_csv_file",
+        "kind": "function",
+        "file": "src/python/ods/ods_csv_exporter.py",
+        "line": 116,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "get_csv_export_capabilities",
+        "kind": "function",
+        "file": "src/python/ods/ods_csv_exporter.py",
+        "line": 149,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "get_capabilities",
+        "kind": "function",
+        "file": "src/python/ods/ods_parser.py",
+        "line": 76,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "parse_ods_strict",
+        "kind": "function",
+        "file": "src/python/ods/ods_parser.py",
+        "line": 248,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "parse_ods",
+        "kind": "function",
+        "file": "src/python/ods/ods_parser.py",
+        "line": 267,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "probe_ods",
+        "kind": "function",
+        "file": "src/python/ods/ods_parser.py",
+        "line": 291,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "get_cell_value",
+        "kind": "function",
+        "file": "src/python/ods/ods_parser.py",
+        "line": 315,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "get_sheet_names",
+        "kind": "function",
+        "file": "src/python/ods/ods_parser.py",
+        "line": 346,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "get_row_count",
+        "kind": "function",
+        "file": "src/python/ods/ods_parser.py",
+        "line": 362,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "get_column_count",
+        "kind": "function",
+        "file": "src/python/ods/ods_parser.py",
+        "line": 381,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "get_row_values",
+        "kind": "function",
+        "file": "src/python/ods/ods_parser.py",
+        "line": 403,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "count_sheets",
+        "kind": "function",
+        "file": "src/python/ods/ods_parser.py",
+        "line": 428,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "get_all_values",
+        "kind": "function",
+        "file": "src/python/ods/ods_parser.py",
+        "line": 434,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "get_cell_count",
+        "kind": "function",
+        "file": "src/python/ods/ods_parser.py",
+        "line": 447,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "ods_to_csv",
+        "kind": "function",
+        "file": "src/python/ods/ods_parser.py",
+        "line": 456,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "sum_column",
+        "kind": "function",
+        "file": "src/python/ods/ods_parser.py",
+        "line": 488,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "filter_rows_by_value",
+        "kind": "function",
+        "file": "src/python/ods/ods_parser.py",
+        "line": 509,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "get_column_values",
+        "kind": "function",
+        "file": "src/python/ods/ods_parser.py",
+        "line": 538,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "average_column",
+        "kind": "function",
+        "file": "src/python/ods/ods_parser.py",
+        "line": 562,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "max_column_value",
+        "kind": "function",
+        "file": "src/python/ods/ods_parser.py",
+        "line": 580,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "min_column_value",
+        "kind": "function",
+        "file": "src/python/ods/ods_parser.py",
+        "line": 598,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "ods_to_html",
+        "kind": "function",
+        "file": "src/python/ods/ods_parser.py",
+        "line": 616,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "get_sheet_as_dict_list",
+        "kind": "function",
+        "file": "src/python/ods/ods_parser.py",
+        "line": 653,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "count_nonempty_cells",
+        "kind": "function",
+        "file": "src/python/ods/ods_parser.py",
+        "line": 694,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "count_distinct_values",
+        "kind": "function",
+        "file": "src/python/ods/ods_parser.py",
+        "line": 720,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sum_row",
+        "kind": "function",
+        "file": "src/python/ods/ods_parser.py",
+        "line": 748,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "spreadsheet_stats",
+        "kind": "function",
+        "file": "src/python/ods/ods_stats.py",
+        "line": 17,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sheet_name_order",
+        "kind": "function",
+        "file": "src/python/ods/ods_stats.py",
+        "line": 62,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "ods_cell_type_distribution",
+        "kind": "function",
+        "file": "src/python/ods/ods_stats.py",
+        "line": 73,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "ods_sheet_name_list",
+        "kind": "function",
+        "file": "src/python/ods/ods_stats.py",
+        "line": 109,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "ods_formula_cell_count",
+        "kind": "function",
+        "file": "src/python/ods/ods_stats.py",
+        "line": 125,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "ods_data_validation_count",
+        "kind": "function",
+        "file": "src/python/ods/ods_stats.py",
+        "line": 148,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "document_to_ods_bytes",
+        "kind": "function",
+        "file": "src/python/ods/ods_writer.py",
+        "line": 80,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "write_ods",
+        "kind": "function",
+        "file": "src/python/ods/ods_writer.py",
+        "line": 95,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "set_cell_value",
+        "kind": "function",
+        "file": "src/python/ods/ods_writer.py",
+        "line": 101,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "add_sheet",
+        "kind": "function",
+        "file": "src/python/ods/ods_writer.py",
+        "line": 137,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "remove_sheet",
+        "kind": "function",
+        "file": "src/python/ods/ods_writer.py",
+        "line": 159,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "rename_sheet",
+        "kind": "function",
+        "file": "src/python/ods/ods_writer.py",
+        "line": 176,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "add_row",
+        "kind": "function",
+        "file": "src/python/ods/ods_writer.py",
+        "line": 197,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "delete_row",
+        "kind": "function",
+        "file": "src/python/ods/ods_writer.py",
+        "line": 228,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "ods_iter_rows",
+        "kind": "function",
+        "file": "src/python/ods/ods_row_iterator.py",
+        "line": 16,
+        "role": "iterator",
+        "exported": true
+      },
+      {
+        "name": "ods_iter_sheets",
+        "kind": "function",
+        "file": "src/python/ods/ods_sheet_iterator.py",
+        "line": 16,
+        "role": "iterator",
+        "exported": true
+      },
+      {
+        "name": "ods_installed_workflow",
+        "kind": "function",
+        "file": "src/python/ods/ods_workflow.py",
+        "line": 9,
+        "role": "workflow",
+        "exported": true
+      },
+      {
+        "name": "ods_max_row_length",
+        "kind": "function",
+        "file": "src/python/ods/spreadsheet_document.py",
+        "line": 18,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "ods_numeric_cell_count",
+        "kind": "function",
+        "file": "src/python/ods/spreadsheet_document.py",
+        "line": 40,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "ods_string_cell_count",
+        "kind": "function",
+        "file": "src/python/ods/spreadsheet_document.py",
+        "line": 66,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "ods_row_count",
+        "kind": "function",
+        "file": "src/python/ods/spreadsheet_document.py",
+        "line": 96,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "ods_empty_cell_count",
+        "kind": "function",
+        "file": "src/python/ods/spreadsheet_document.py",
+        "line": 112,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "ods_column_count",
+        "kind": "function",
+        "file": "src/python/ods/spreadsheet_document.py",
+        "line": 138,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "ods_empty_row_count",
+        "kind": "function",
+        "file": "src/python/ods/spreadsheet_document.py",
+        "line": 157,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "ods_total_cell_count",
+        "kind": "function",
+        "file": "src/python/ods/spreadsheet_document.py",
+        "line": 184,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "ods_sheet_count",
+        "kind": "function",
+        "file": "src/python/ods/spreadsheet_document.py",
+        "line": 201,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "ods_has_merged_cells",
+        "kind": "function",
+        "file": "src/python/ods/spreadsheet_document.py",
+        "line": 214,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "ods_numeric_density",
+        "kind": "function",
+        "file": "src/python/ods/spreadsheet_document.py",
+        "line": 229,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "ods_average_cells_per_row",
+        "kind": "function",
+        "file": "src/python/ods/spreadsheet_document.py",
+        "line": 248,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "ods_has_empty_rows",
+        "kind": "function",
+        "file": "src/python/ods/spreadsheet_document.py",
+        "line": 268,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "ods_merged_cell_count",
+        "kind": "function",
+        "file": "src/python/ods/spreadsheet_document.py",
+        "line": 294,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "ods_avg_cells_per_sheet",
+        "kind": "function",
+        "file": "src/python/ods/spreadsheet_document.py",
+        "line": 320,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "ods_data_density",
+        "kind": "function",
+        "file": "src/python/ods/spreadsheet_document.py",
+        "line": 336,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "ods_max_cell_value_length",
+        "kind": "function",
+        "file": "src/python/ods/spreadsheet_document.py",
+        "line": 363,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "ods_min_cell_value_length",
+        "kind": "function",
+        "file": "src/python/ods/spreadsheet_document.py",
+        "line": 386,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "ods_all_sheets_have_data",
+        "kind": "function",
+        "file": "src/python/ods/spreadsheet_document.py",
+        "line": 408,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "ods_is_single_sheet",
+        "kind": "function",
+        "file": "src/python/ods/spreadsheet_document.py",
+        "line": 427,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "ods_string_density",
+        "kind": "function",
+        "file": "src/python/ods/spreadsheet_document.py",
+        "line": 433,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "ods_max_numeric_value",
+        "kind": "function",
+        "file": "src/python/ods/spreadsheet_document.py",
+        "line": 442,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "ods_has_string_cells",
+        "kind": "function",
+        "file": "src/python/ods/spreadsheet_document.py",
+        "line": 455,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "ods_min_numeric_value",
+        "kind": "function",
+        "file": "src/python/ods/spreadsheet_document.py",
+        "line": 467,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "ods_has_numeric_cells",
+        "kind": "function",
+        "file": "src/python/ods/spreadsheet_document.py",
+        "line": 480,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "ods_nonempty_row_count",
+        "kind": "function",
+        "file": "src/python/ods/spreadsheet_document.py",
+        "line": 492,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "ods_is_empty",
+        "kind": "function",
+        "file": "src/python/ods/spreadsheet_document.py",
+        "line": 508,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "ods_is_single_row",
+        "kind": "function",
+        "file": "src/python/ods/spreadsheet_document.py",
+        "line": 521,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "ods_avg_row_length",
+        "kind": "function",
+        "file": "src/python/ods/spreadsheet_document.py",
+        "line": 526,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "ods_nonempty_cell_count",
+        "kind": "function",
+        "file": "src/python/ods/spreadsheet_document.py",
+        "line": 545,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "ods_cell_value_variance",
+        "kind": "function",
+        "file": "src/python/ods/spreadsheet_document.py",
+        "line": 557,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "ods_column_value_variance",
+        "kind": "function",
+        "file": "src/python/ods/spreadsheet_document.py",
+        "line": 577,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "ods_has_formulas",
+        "kind": "function",
+        "file": "src/python/ods/spreadsheet_document.py",
+        "line": 596,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "ods_row_value_variance",
+        "kind": "function",
+        "file": "src/python/ods/spreadsheet_document.py",
+        "line": 609,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "ods_is_multi_sheet",
+        "kind": "function",
+        "file": "src/python/ods/spreadsheet_document.py",
+        "line": 625,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "ods_is_single_cell",
+        "kind": "function",
+        "file": "src/python/ods/spreadsheet_document.py",
+        "line": 631,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "ods_max_sheet_row_count",
+        "kind": "function",
+        "file": "src/python/ods/spreadsheet_document.py",
+        "line": 636,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "ods_is_rectangular",
+        "kind": "function",
+        "file": "src/python/ods/spreadsheet_document.py",
+        "line": 644,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "ods_total_string_length",
+        "kind": "function",
+        "file": "src/python/ods/spreadsheet_document.py",
+        "line": 657,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "ods_is_all_numeric",
+        "kind": "function",
+        "file": "src/python/ods/spreadsheet_document.py",
+        "line": 670,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "ods_empty_sheet_count",
+        "kind": "function",
+        "file": "src/python/ods/spreadsheet_document.py",
+        "line": 688,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "ods_numeric_sum",
+        "kind": "function",
+        "file": "src/python/ods/spreadsheet_document.py",
+        "line": 706,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "ods_min_row_length",
+        "kind": "function",
+        "file": "src/python/ods/spreadsheet_document.py",
+        "line": 722,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "ods_avg_numeric_value",
+        "kind": "function",
+        "file": "src/python/ods/spreadsheet_document.py",
+        "line": 740,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "ods_nonempty_row_ratio",
+        "kind": "function",
+        "file": "src/python/ods/spreadsheet_document.py",
+        "line": 756,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "ods_longest_row_index",
+        "kind": "function",
+        "file": "src/python/ods/spreadsheet_document.py",
+        "line": 771,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "ods_numeric_sum_all",
+        "kind": "function",
+        "file": "src/python/ods/spreadsheet_document.py",
+        "line": 788,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "ods_empty_column_count",
+        "kind": "function",
+        "file": "src/python/ods/spreadsheet_document.py",
+        "line": 803,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "ods_max_numeric_sum",
+        "kind": "function",
+        "file": "src/python/ods/spreadsheet_document.py",
+        "line": 824,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "ods_cell_density",
+        "kind": "function",
+        "file": "src/python/ods/spreadsheet_document.py",
+        "line": 839,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "ods_numeric_ratio",
+        "kind": "function",
+        "file": "src/python/ods/spreadsheet_document.py",
+        "line": 855,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "ods_is_square",
+        "kind": "function",
+        "file": "src/python/ods/spreadsheet_document.py",
+        "line": 863,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "ods_numeric_column_count",
+        "kind": "function",
+        "file": "src/python/ods/spreadsheet_document.py",
+        "line": 868,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "ods_row_cell_variance",
+        "kind": "function",
+        "file": "src/python/ods/spreadsheet_document.py",
+        "line": 886,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "OdsCsvExportError",
+        "kind": "class",
+        "file": "src/python/ods/ods_csv_exporter.py",
+        "line": 27,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "OdsError",
+        "kind": "class",
+        "file": "src/python/ods/ods_parser.py",
+        "line": 91,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "OdsInvalidContainerError",
+        "kind": "class",
+        "file": "src/python/ods/ods_parser.py",
+        "line": 95,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "OdsSizeError",
+        "kind": "class",
+        "file": "src/python/ods/ods_parser.py",
+        "line": 99,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "OdsCell",
+        "kind": "class",
+        "file": "src/python/ods/ods_parser.py",
+        "line": 104,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "OdsRow",
+        "kind": "class",
+        "file": "src/python/ods/ods_parser.py",
+        "line": 112,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "OdsSheet",
+        "kind": "class",
+        "file": "src/python/ods/ods_parser.py",
+        "line": 118,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "OdsDocument",
+        "kind": "class",
+        "file": "src/python/ods/ods_parser.py",
+        "line": 125,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "OdsCell",
+        "kind": "class",
+        "file": "src/python/ods/Compat/ods_cell.py",
+        "line": 12,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "OdsDocument",
+        "kind": "class",
+        "file": "src/python/ods/Compat/ods_document.py",
+        "line": 13,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "OdsSheet",
+        "kind": "class",
+        "file": "src/python/ods/Compat/ods_sheet.py",
+        "line": 12,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "OdsError",
+        "kind": "class",
+        "file": "src/python/ods/exceptions.py",
+        "line": 13,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "OdsParseError",
+        "kind": "class",
+        "file": "src/python/ods/exceptions.py",
+        "line": 17,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "OdsWriteError",
+        "kind": "class",
+        "file": "src/python/ods/exceptions.py",
+        "line": 21,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "OdsModelDocument",
+        "kind": "class",
+        "file": "src/python/ods/models.py",
+        "line": 19,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "Document",
+        "kind": "class",
+        "file": "src/python/ods/spec/office/document.py",
+        "line": 15,
+        "role": "model",
+        "exported": false
+      },
+      {
+        "name": "Table",
+        "kind": "class",
+        "file": "src/python/ods/spec/table/table.py",
+        "line": 5,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "TableCell",
+        "kind": "class",
+        "file": "src/python/ods/spec/table/table_cell.py",
+        "line": 5,
+        "role": "model",
+        "exported": false
+      },
+      {
+        "name": "TableRow",
+        "kind": "class",
+        "file": "src/python/ods/spec/table/table_row.py",
+        "line": 5,
+        "role": "model",
+        "exported": false
+      }
+    ],
+    "export_count": 113
+  },
+  "dotnet": {
+    "contracts": [],
+    "public_member_count": 0
+  }
+}

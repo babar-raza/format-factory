@@ -1,0 +1,202 @@
+{
+  "exception_count": 6,
+  "exceptions": [
+    {
+      "coverage_status": "REFERENCED_BY_TEST",
+      "file": "src/python/ods/ods_csv_exporter.py",
+      "line": 27,
+      "name": "OdsCsvExportError",
+      "raised_in_source": true,
+      "test_reference_count": 1,
+      "test_references": [
+        {
+          "file": "tests/python/ods/test_ods_csv_exporter.py",
+          "match": "text_reference"
+        }
+      ]
+    },
+    {
+      "coverage_status": "REFERENCED_BY_TEST",
+      "file": "src/python/ods/ods_parser.py",
+      "line": 91,
+      "name": "OdsError",
+      "raised_in_source": true,
+      "test_reference_count": 6,
+      "test_references": [
+        {
+          "file": "tests/python/ods/test_exception_coverage.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/ods/test_ods_gap_closure_batch.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/ods/test_ods_gate7_fuzz_guard.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/ods/test_r165_ods_accessor_deepening.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/ods/test_r169_ods_count_distinct.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/ods/test_r169_ods_dogfood_chain.py",
+          "match": "text_reference"
+        }
+      ]
+    },
+    {
+      "coverage_status": "REFERENCED_BY_TEST",
+      "file": "src/python/ods/ods_parser.py",
+      "line": 95,
+      "name": "OdsInvalidContainerError",
+      "raised_in_source": true,
+      "test_reference_count": 5,
+      "test_references": [
+        {
+          "file": "tests/python/ods/test_ods_gap_closure_batch.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/ods/test_ods_gate5_neutral_model.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/ods/test_ods_gate7_fuzz_guard.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/ods/test_ods_parser.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/ods/test_r170_ods_count_nonempty.py",
+          "match": "text_reference"
+        }
+      ]
+    },
+    {
+      "coverage_status": "REFERENCED_BY_TEST",
+      "file": "src/python/ods/exceptions.py",
+      "line": 17,
+      "name": "OdsParseError",
+      "raised_in_source": false,
+      "test_reference_count": 1,
+      "test_references": [
+        {
+          "file": "tests/python/ods/test_exception_coverage.py",
+          "match": "text_reference"
+        }
+      ]
+    },
+    {
+      "coverage_status": "REFERENCED_BY_TEST",
+      "file": "src/python/ods/ods_parser.py",
+      "line": 99,
+      "name": "OdsSizeError",
+      "raised_in_source": true,
+      "test_reference_count": 2,
+      "test_references": [
+        {
+          "file": "tests/python/ods/test_ods_gap_closure_batch.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/ods/test_ods_gate7_fuzz_guard.py",
+          "match": "text_reference"
+        }
+      ]
+    },
+    {
+      "coverage_status": "REFERENCED_BY_TEST",
+      "file": "src/python/ods/exceptions.py",
+      "line": 21,
+      "name": "OdsWriteError",
+      "raised_in_source": false,
+      "test_reference_count": 1,
+      "test_references": [
+        {
+          "file": "tests/python/ods/test_exception_coverage.py",
+          "match": "text_reference"
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "authoritative_plan": "plans/.claude/crispy-jingling-snail.md",
+    "generated_by": "codex",
+    "mission_id": "CERT-EXHAUST-20260628",
+    "tool": "exception_coverage_checker",
+    "visibility": "internal"
+  },
+  "raise_site_count": 12,
+  "raise_sites": [
+    {
+      "exception": "OdsCsvExportError",
+      "file": "src/python/ods/ods_csv_exporter.py",
+      "line": 86
+    },
+    {
+      "exception": "OdsCsvExportError",
+      "file": "src/python/ods/ods_csv_exporter.py",
+      "line": 88
+    },
+    {
+      "exception": "OdsCsvExportError",
+      "file": "src/python/ods/ods_csv_exporter.py",
+      "line": 94
+    },
+    {
+      "exception": "OdsCsvExportError",
+      "file": "src/python/ods/ods_csv_exporter.py",
+      "line": 105
+    },
+    {
+      "exception": "OdsSizeError",
+      "file": "src/python/ods/ods_parser.py",
+      "line": 134
+    },
+    {
+      "exception": "OdsSizeError",
+      "file": "src/python/ods/ods_parser.py",
+      "line": 142
+    },
+    {
+      "exception": "OdsInvalidContainerError",
+      "file": "src/python/ods/ods_parser.py",
+      "line": 146
+    },
+    {
+      "exception": "OdsInvalidContainerError",
+      "file": "src/python/ods/ods_parser.py",
+      "line": 149
+    },
+    {
+      "exception": "OdsInvalidContainerError",
+      "file": "src/python/ods/ods_parser.py",
+      "line": 153
+    },
+    {
+      "exception": "OdsSizeError",
+      "file": "src/python/ods/ods_parser.py",
+      "line": 157
+    },
+    {
+      "exception": "OdsInvalidContainerError",
+      "file": "src/python/ods/ods_parser.py",
+      "line": 257
+    },
+    {
+      "exception": "OdsError",
+      "file": "src/python/ods/ods_parser.py",
+      "line": 261
+    }
+  ],
+  "source_path": "src/python/ods",
+  "test_path": "tests/python/ods",
+  "uncovered_exception_count": 0
+}

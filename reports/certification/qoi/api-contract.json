@@ -1,0 +1,736 @@
+{
+  "metadata": {
+    "authoritative_plan": "plans/.claude/crispy-jingling-snail.md",
+    "mission_id": "CERT-EXHAUST-20260628",
+    "format_id": "qoi"
+  },
+  "python": {
+    "contracts": [
+      {
+        "name": "qoi_dimensions",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 19,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "qoi_pixel_count",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 27,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "qoi_unique_color_count",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 35,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "qoi_channel_count",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 41,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "qoi_is_opaque",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 49,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "qoi_has_alpha",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 68,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "qoi_average_brightness",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 85,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "qoi_red_channel_average",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 104,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "qoi_dominant_channel",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 120,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "qoi_min_max_brightness",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 145,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "qoi_green_channel_average",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 164,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "qoi_blue_channel_average",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 179,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "qoi_is_grayscale",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 194,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "qoi_brightness_variance",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 209,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "qoi_total_brightness",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 228,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "qoi_avg_rgb_value",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 236,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "qoi_red_dominance_ratio",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 254,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "qoi_aspect_ratio",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 273,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "qoi_color_concentration",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 290,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "qoi_avg_rgb",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 309,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "qoi_red_dominant",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 328,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "qoi_blue_dominant",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 341,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "qoi_green_dominant",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 354,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "qoi_row_count",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 367,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "qoi_is_square",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 373,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "qoi_perimeter",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 379,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "qoi_color_variance",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 385,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "qoi_dimension_ratio",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 392,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "qoi_is_landscape",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 400,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "qoi_is_portrait",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 406,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "qoi_max_dimension",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 412,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "qoi_has_any_black",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 418,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "qoi_max_channel_average",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 424,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "qoi_min_channel_average",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 436,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "qoi_has_any_white",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 448,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "qoi_channel_range",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 454,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "qoi_diagonal",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 459,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "qoi_min_dimension",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 466,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "qoi_area",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 472,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "qoi_brightness_range",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 478,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "qoi_is_small",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 487,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "qoi_megapixels",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 493,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "qoi_channel_balance",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 499,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "qoi_is_tall",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 511,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "qoi_channel_entropy",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 517,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "qoi_is_monochrome",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 526,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "qoi_red_ratio",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 535,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "qoi_green_ratio",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 549,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "qoi_blue_ratio",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 563,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "qoi_pixel_density",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 577,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "qoi_is_dark",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 586,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "qoi_color_depth_estimate",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 595,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "qoi_is_bright",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 607,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "qoi_saturation_estimate",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 616,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "qoi_pixel_contrast",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 628,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "qoi_max_brightness",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 637,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "qoi_total_rgb_sum",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 645,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "qoi_channel_variance",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 651,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "qoi_red_blue_ratio",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 664,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "qoi_normalized_brightness",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 676,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "qoi_min_brightness",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 685,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "qoi_above_mean_ratio",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 693,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "qoi_green_blue_ratio",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 704,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "qoi_is_wide",
+        "kind": "function",
+        "file": "src/python/qoi/image_document.py",
+        "line": 716,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "qoi_iter_chunks",
+        "kind": "function",
+        "file": "src/python/qoi/qoi_chunk_iterator.py",
+        "line": 16,
+        "role": "iterator",
+        "exported": true
+      },
+      {
+        "name": "encode_qoi",
+        "kind": "function",
+        "file": "src/python/qoi/qoi_encoder.py",
+        "line": 69,
+        "role": "api",
+        "exported": true
+      },
+      {
+        "name": "encode_qoi_to_file",
+        "kind": "function",
+        "file": "src/python/qoi/qoi_encoder.py",
+        "line": 172,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "get_encoder_capabilities",
+        "kind": "function",
+        "file": "src/python/qoi/qoi_encoder.py",
+        "line": 191,
+        "role": "api",
+        "exported": true
+      },
+      {
+        "name": "get_capabilities",
+        "kind": "function",
+        "file": "src/python/qoi/qoi_parser.py",
+        "line": 75,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "parse_qoi_strict",
+        "kind": "function",
+        "file": "src/python/qoi/qoi_parser.py",
+        "line": 250,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "parse_qoi",
+        "kind": "function",
+        "file": "src/python/qoi/qoi_parser.py",
+        "line": 271,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "probe_qoi",
+        "kind": "function",
+        "file": "src/python/qoi/qoi_parser.py",
+        "line": 288,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "qoi_installed_workflow",
+        "kind": "function",
+        "file": "src/python/qoi/qoi_workflow.py",
+        "line": 9,
+        "role": "workflow",
+        "exported": true
+      },
+      {
+        "name": "QoiChunk",
+        "kind": "class",
+        "file": "src/python/qoi/Compat/qoi_chunk.py",
+        "line": 6,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "QoiEndMarker",
+        "kind": "class",
+        "file": "src/python/qoi/Compat/qoi_end_marker.py",
+        "line": 6,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "QoiHeader",
+        "kind": "class",
+        "file": "src/python/qoi/Compat/qoi_header.py",
+        "line": 6,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "QoiError",
+        "kind": "class",
+        "file": "src/python/qoi/exceptions.py",
+        "line": 13,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "QoiParseError",
+        "kind": "class",
+        "file": "src/python/qoi/exceptions.py",
+        "line": 17,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "QoiWriteError",
+        "kind": "class",
+        "file": "src/python/qoi/exceptions.py",
+        "line": 21,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "QoiDocument",
+        "kind": "class",
+        "file": "src/python/qoi/models.py",
+        "line": 16,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "QoiEncodeError",
+        "kind": "class",
+        "file": "src/python/qoi/qoi_encoder.py",
+        "line": 33,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "QoiError",
+        "kind": "class",
+        "file": "src/python/qoi/qoi_parser.py",
+        "line": 89,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "QoiInvalidMagicError",
+        "kind": "class",
+        "file": "src/python/qoi/qoi_parser.py",
+        "line": 93,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "QoiInvalidHeaderError",
+        "kind": "class",
+        "file": "src/python/qoi/qoi_parser.py",
+        "line": 97,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "QoiSizeError",
+        "kind": "class",
+        "file": "src/python/qoi/qoi_parser.py",
+        "line": 101,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "QoiDecodeError",
+        "kind": "class",
+        "file": "src/python/qoi/qoi_parser.py",
+        "line": 105,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "QoiImage",
+        "kind": "class",
+        "file": "src/python/qoi/qoi_parser.py",
+        "line": 110,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "Chunk",
+        "kind": "class",
+        "file": "src/python/qoi/spec/chunk/chunk.py",
+        "line": 14,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "EndMarker",
+        "kind": "class",
+        "file": "src/python/qoi/spec/chunk/end_marker.py",
+        "line": 14,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "Header",
+        "kind": "class",
+        "file": "src/python/qoi/spec/chunk/header.py",
+        "line": 14,
+        "role": "api",
+        "exported": false
+      }
+    ],
+    "export_count": 84
+  },
+  "dotnet": {
+    "contracts": [],
+    "public_member_count": 0
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "file_count": 18,
+  "files_scanned": [
+    "src/python/fodg/__init__.py",
+    "src/python/fodg/Compat/__init__.py",
+    "src/python/fodg/Compat/fodg_document.py",
+    "src/python/fodg/Compat/fodg_page.py",
+    "src/python/fodg/drawing_document.py",
+    "src/python/fodg/drawing_metrics.py",
+    "src/python/fodg/exceptions.py",
+    "src/python/fodg/fodg_analytics.py",
+    "src/python/fodg/fodg_codec.py",
+    "src/python/fodg/fodg_page_iterator.py",
+    "src/python/fodg/fodg_workflow.py",
+    "src/python/fodg/models.py",
+    "src/python/fodg/spec/__init__.py",
+    "src/python/fodg/spec/draw/__init__.py",
+    "src/python/fodg/spec/draw/frame.py",
+    "src/python/fodg/spec/draw/page.py",
+    "src/python/fodg/spec/office/__init__.py",
+    "src/python/fodg/spec/office/document.py"
+  ],
+  "finding_count": 2,
+  "findings": [
+    {
+      "classification_note": "Non-public or structural placeholder; not automatically material.",
+      "file": "src/python/fodg/drawing_document.py",
+      "line": 683,
+      "reason": "pass_statement",
+      "scope": "<module>",
+      "severity": "advisory",
+      "source": "pass"
+    },
+    {
+      "classification_note": "Non-public or structural placeholder; not automatically material.",
+      "file": "src/python/fodg/fodg_codec.py",
+      "line": 470,
+      "reason": "pass_statement",
+      "scope": "<module>",
+      "severity": "advisory",
+      "source": "pass"
+    }
+  ],
+  "material_finding_count": 0,
+  "metadata": {
+    "authoritative_plan": "plans/.claude/crispy-jingling-snail.md",
+    "generated_by": "codex",
+    "mission_id": "CERT-EXHAUST-20260628",
+    "tool": "stub_detector",
+    "visibility": "internal"
+  },
+  "target": "src/python/fodg"
+}

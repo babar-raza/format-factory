@@ -1,0 +1,124 @@
+{
+  "exception_count": 3,
+  "exceptions": [
+    {
+      "coverage_status": "REFERENCED_BY_TEST",
+      "file": "src/python/fodp/fodp_codec.py",
+      "line": 34,
+      "name": "FodpError",
+      "raised_in_source": true,
+      "test_reference_count": 3,
+      "test_references": [
+        {
+          "file": "tests/python/fodp/test_exception_coverage.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/fodp/test_r202_fodp_advanced_ops.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/fodp/test_rnext_fodp_master_page_count.py",
+          "match": "text_reference"
+        }
+      ]
+    },
+    {
+      "coverage_status": "REFERENCED_BY_TEST",
+      "file": "src/python/fodp/fodp_codec.py",
+      "line": 38,
+      "name": "FodpParseError",
+      "raised_in_source": true,
+      "test_reference_count": 5,
+      "test_references": [
+        {
+          "file": "tests/python/fodp/test_fodp_codec.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/fodp/test_fodp_conveyor_deepening.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/fodp/test_fodp_get_document_metadata.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/fodp/test_r202_fodp_advanced_ops.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/fodp/test_r220_fodp_slide_titles.py",
+          "match": "text_reference"
+        }
+      ]
+    },
+    {
+      "coverage_status": "REFERENCED_BY_TEST",
+      "file": "src/python/fodp/exceptions.py",
+      "line": 21,
+      "name": "FodpWriteError",
+      "raised_in_source": false,
+      "test_reference_count": 1,
+      "test_references": [
+        {
+          "file": "tests/python/fodp/test_exception_coverage.py",
+          "match": "text_reference"
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "authoritative_plan": "plans/.claude/crispy-jingling-snail.md",
+    "generated_by": "codex",
+    "mission_id": "CERT-EXHAUST-20260628",
+    "tool": "exception_coverage_checker",
+    "visibility": "internal"
+  },
+  "raise_site_count": 8,
+  "raise_sites": [
+    {
+      "exception": "FodpParseError",
+      "file": "src/python/fodp/fodp_codec.py",
+      "line": 138
+    },
+    {
+      "exception": "NotImplementedError",
+      "file": "src/python/fodp/fodp_codec.py",
+      "line": 216
+    },
+    {
+      "exception": "FodpError",
+      "file": "src/python/fodp/fodp_codec.py",
+      "line": 243
+    },
+    {
+      "exception": "FodpError",
+      "file": "src/python/fodp/fodp_codec.py",
+      "line": 246
+    },
+    {
+      "exception": "FodpParseError",
+      "file": "src/python/fodp/fodp_codec.py",
+      "line": 251
+    },
+    {
+      "exception": "FodpError",
+      "file": "src/python/fodp/fodp_codec.py",
+      "line": 254
+    },
+    {
+      "exception": "FodpParseError",
+      "file": "src/python/fodp/fodp_codec.py",
+      "line": 262
+    },
+    {
+      "exception": "FodpParseError",
+      "file": "src/python/fodp/fodp_codec.py",
+      "line": 269
+    }
+  ],
+  "source_path": "src/python/fodp",
+  "test_path": "tests/python/fodp",
+  "uncovered_exception_count": 0
+}

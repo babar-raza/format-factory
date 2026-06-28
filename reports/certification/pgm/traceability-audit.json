@@ -1,0 +1,30 @@
+{
+  "metadata": {
+    "authoritative_plan": "plans/.claude/crispy-jingling-snail.md",
+    "mission_id": "CERT-EXHAUST-20260628",
+    "format_id": "pgm"
+  },
+  "qname_count": 3,
+  "pass_count": 3,
+  "review_required_count": 0,
+  "entries": [
+    {
+      "qname": "pgm:header",
+      "status": "PASS",
+      "python_file": "src/python/pgm/spec/graymap/header.py",
+      "exists": true
+    },
+    {
+      "qname": "pgm:raster",
+      "status": "PASS",
+      "python_file": "src/python/pgm/pgm_parser.py",
+      "exists": true
+    },
+    {
+      "qname": "pgm:graymap",
+      "status": "PASS",
+      "python_file": "src/python/pgm/spec/graymap/graymap.py",
+      "exists": true
+    }
+  ]
+}

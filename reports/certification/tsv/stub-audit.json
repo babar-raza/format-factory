@@ -1,0 +1,42 @@
+{
+  "file_count": 16,
+  "files_scanned": [
+    "src/python/tsv/__init__.py",
+    "src/python/tsv/Compat/__init__.py",
+    "src/python/tsv/Compat/tsv_field.py",
+    "src/python/tsv/Compat/tsv_record.py",
+    "src/python/tsv/exceptions.py",
+    "src/python/tsv/models.py",
+    "src/python/tsv/spec/__init__.py",
+    "src/python/tsv/spec/record/__init__.py",
+    "src/python/tsv/spec/record/field.py",
+    "src/python/tsv/spec/record/record.py",
+    "src/python/tsv/spec/record/row.py",
+    "src/python/tsv/tabular_document.py",
+    "src/python/tsv/tsv_field_iterator.py",
+    "src/python/tsv/tsv_parser.py",
+    "src/python/tsv/tsv_row_iterator.py",
+    "src/python/tsv/tsv_workflow.py"
+  ],
+  "finding_count": 1,
+  "findings": [
+    {
+      "classification_note": "Non-public or structural placeholder; not automatically material.",
+      "file": "src/python/tsv/tsv_parser.py",
+      "line": 818,
+      "reason": "pass_statement",
+      "scope": "<module>",
+      "severity": "advisory",
+      "source": "pass"
+    }
+  ],
+  "material_finding_count": 0,
+  "metadata": {
+    "authoritative_plan": "plans/.claude/crispy-jingling-snail.md",
+    "generated_by": "codex",
+    "mission_id": "CERT-EXHAUST-20260628",
+    "tool": "stub_detector",
+    "visibility": "internal"
+  },
+  "target": "src/python/tsv"
+}

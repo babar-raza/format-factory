@@ -1,0 +1,1112 @@
+{
+  "metadata": {
+    "authoritative_plan": "plans/.claude/crispy-jingling-snail.md",
+    "mission_id": "CERT-EXHAUST-20260628",
+    "format_id": "fodg"
+  },
+  "python": {
+    "contracts": [
+      {
+        "name": "fodg_total_shape_count",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_document.py",
+        "line": 29,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodg_text_shape_count",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_document.py",
+        "line": 46,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodg_page_shape_count",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_document.py",
+        "line": 63,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodg_avg_shapes_per_page",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_document.py",
+        "line": 88,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodg_has_empty_pages",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_document.py",
+        "line": 106,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodg_page_count",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_document.py",
+        "line": 121,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodg_all_pages_have_shapes",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_document.py",
+        "line": 130,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodg_text_to_shape_ratio",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_document.py",
+        "line": 142,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "fodg_max_shapes_per_page",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_document.py",
+        "line": 155,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodg_min_shapes_per_page",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_document.py",
+        "line": 167,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodg_shape_density",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_document.py",
+        "line": 179,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodg_empty_page_count",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_document.py",
+        "line": 192,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodg_is_single_page",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_document.py",
+        "line": 202,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodg_total_text_length",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_document.py",
+        "line": 211,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodg_has_text",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_document.py",
+        "line": 224,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodg_is_empty_document",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_document.py",
+        "line": 232,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodg_non_text_shape_count",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_document.py",
+        "line": 240,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodg_avg_text_per_page",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_document.py",
+        "line": 248,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodg_has_multiple_pages",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_document.py",
+        "line": 261,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodg_shape_to_page_variance",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_document.py",
+        "line": 269,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "fodg_max_text_per_page",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_document.py",
+        "line": 283,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodg_text_per_shape",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_document.py",
+        "line": 296,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodg_nonempty_page_count",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_document.py",
+        "line": 307,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodg_text_density",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_document.py",
+        "line": 317,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodg_is_multi_page",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_document.py",
+        "line": 328,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodg_shape_count_variance",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_document.py",
+        "line": 336,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodg_is_text_only",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_document.py",
+        "line": 350,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodg_avg_shapes_per_nonempty_page",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_document.py",
+        "line": 361,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodg_has_single_shape",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_document.py",
+        "line": 374,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodg_page_text_variance",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_document.py",
+        "line": 382,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodg_total_text_chars",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_document.py",
+        "line": 401,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodg_avg_text_per_shape",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_document.py",
+        "line": 414,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodg_min_text_per_page",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_document.py",
+        "line": 429,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodg_total_text_items",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_document.py",
+        "line": 445,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodg_nonempty_shape_ratio",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_document.py",
+        "line": 455,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodg_max_shape_text_length",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_document.py",
+        "line": 468,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodg_shapes_with_text_count",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_document.py",
+        "line": 482,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodg_nonempty_page_ratio",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_document.py",
+        "line": 495,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodg_total_shapes_and_pages",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_document.py",
+        "line": 508,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodg_has_non_text_shapes",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_document.py",
+        "line": 519,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodg_has_no_shapes",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_document.py",
+        "line": 527,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodg_all_pages_have_text",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_document.py",
+        "line": 537,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodg_max_text_item_length",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_document.py",
+        "line": 557,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodg_file_size_bytes",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_document.py",
+        "line": 573,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodg_min_text_item_length",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_document.py",
+        "line": 582,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodg_avg_text_item_length",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_document.py",
+        "line": 593,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodg_unique_text_item_count",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_document.py",
+        "line": 604,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodg_text_item_count",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_document.py",
+        "line": 615,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodg_has_text_content",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_document.py",
+        "line": 625,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodg_max_shape_count",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_document.py",
+        "line": 638,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodg_min_shape_count",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_document.py",
+        "line": 650,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodg_is_empty_drawing",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_document.py",
+        "line": 662,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodg_has_multiple_shapes",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_document.py",
+        "line": 672,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodg_shapes_exceed_pages",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_metrics.py",
+        "line": 23,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "fodg_word_count",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_metrics.py",
+        "line": 36,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "fodg_shape_text_ratio",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_metrics.py",
+        "line": 52,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "fodg_unique_word_count",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_metrics.py",
+        "line": 68,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "fodg_text_and_shape_sum",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_metrics.py",
+        "line": 84,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "fodg_text_items_exceed_pages",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_metrics.py",
+        "line": 94,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "fodg_text_item_length_range",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_metrics.py",
+        "line": 104,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "fodg_text_items_per_shape",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_metrics.py",
+        "line": 119,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "fodg_shape_count_exceeds_text_count",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_metrics.py",
+        "line": 135,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "fodg_has_equal_shapes_and_text",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_metrics.py",
+        "line": 145,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "fodg_shape_count_equals_page_count",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_metrics.py",
+        "line": 155,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "fodg_non_text_shape_count_exceeds_page_count",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_metrics.py",
+        "line": 165,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "fodg_text_item_length_sum",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_metrics.py",
+        "line": 175,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "fodg_has_more_shapes_than_text_items",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_metrics.py",
+        "line": 186,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "fodg_has_exactly_one_text_item",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_metrics.py",
+        "line": 195,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "fodg_has_no_text_items",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_metrics.py",
+        "line": 204,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "fodg_has_at_least_two_shapes",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_metrics.py",
+        "line": 213,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "fodg_has_exactly_three_shapes",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_metrics.py",
+        "line": 222,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "fodg_has_exactly_two_text_items",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_metrics.py",
+        "line": 231,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "fodg_has_at_least_one_text_item",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_metrics.py",
+        "line": 240,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "fodg_has_more_text_than_pages",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_metrics.py",
+        "line": 249,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "fodg_has_more_shapes_than_text",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_metrics.py",
+        "line": 258,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "fodg_has_at_least_two_text_items",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_metrics.py",
+        "line": 267,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "fodg_has_only_one_shape",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_metrics.py",
+        "line": 276,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "fodg_has_more_pages_than_shapes",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_metrics.py",
+        "line": 285,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "fodg_has_at_least_three_shapes",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_metrics.py",
+        "line": 294,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "fodg_is_single_shape_drawing",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_metrics.py",
+        "line": 303,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "fodg_page_equals_shape_count",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_metrics.py",
+        "line": 312,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "fodg_has_zero_text_items",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_metrics.py",
+        "line": 321,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "fodg_text_count_equals_shape_count",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_metrics.py",
+        "line": 330,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "fodg_text_count_is_positive",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_metrics.py",
+        "line": 339,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "fodg_shape_count_is_three",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_metrics.py",
+        "line": 348,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "fodg_text_count_is_two",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_metrics.py",
+        "line": 357,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "fodg_page_count_equals_text_count",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_metrics.py",
+        "line": 366,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "fodg_shape_count_is_one",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_metrics.py",
+        "line": 375,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "fodg_page_count_equals_shape_count",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_metrics.py",
+        "line": 384,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "fodg_shape_count_equals_text_count",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_metrics.py",
+        "line": 393,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "fodg_text_count_not_equal_shape_count",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_metrics.py",
+        "line": 402,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "fodg_shape_count_not_equal_text_count",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_metrics.py",
+        "line": 411,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "fodg_is_text_heavy",
+        "kind": "function",
+        "file": "src/python/fodg/drawing_metrics.py",
+        "line": 420,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "get_all_text",
+        "kind": "function",
+        "file": "src/python/fodg/fodg_analytics.py",
+        "line": 12,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "get_page_text",
+        "kind": "function",
+        "file": "src/python/fodg/fodg_analytics.py",
+        "line": 28,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "count_shapes",
+        "kind": "function",
+        "file": "src/python/fodg/fodg_analytics.py",
+        "line": 50,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "export_to_json",
+        "kind": "function",
+        "file": "src/python/fodg/fodg_analytics.py",
+        "line": 55,
+        "role": "writer",
+        "exported": false
+      },
+      {
+        "name": "get_page_count",
+        "kind": "function",
+        "file": "src/python/fodg/fodg_analytics.py",
+        "line": 77,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "find_text",
+        "kind": "function",
+        "file": "src/python/fodg/fodg_analytics.py",
+        "line": 89,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "total_text_length",
+        "kind": "function",
+        "file": "src/python/fodg/fodg_analytics.py",
+        "line": 119,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "find_shapes_by_text_pattern",
+        "kind": "function",
+        "file": "src/python/fodg/fodg_analytics.py",
+        "line": 133,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "export_page_to_json",
+        "kind": "function",
+        "file": "src/python/fodg/fodg_analytics.py",
+        "line": 167,
+        "role": "writer",
+        "exported": false
+      },
+      {
+        "name": "load",
+        "kind": "function",
+        "file": "src/python/fodg/fodg_codec.py",
+        "line": 55,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "get_shape_count",
+        "kind": "function",
+        "file": "src/python/fodg/fodg_codec.py",
+        "line": 80,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "extract_text",
+        "kind": "function",
+        "file": "src/python/fodg/fodg_codec.py",
+        "line": 93,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "get_page_metadata",
+        "kind": "function",
+        "file": "src/python/fodg/fodg_codec.py",
+        "line": 109,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "create_fodg",
+        "kind": "function",
+        "file": "src/python/fodg/fodg_codec.py",
+        "line": 212,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "write_fodg",
+        "kind": "function",
+        "file": "src/python/fodg/fodg_codec.py",
+        "line": 249,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "get_shapes",
+        "kind": "function",
+        "file": "src/python/fodg/fodg_codec.py",
+        "line": 286,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "get_page_by_name",
+        "kind": "function",
+        "file": "src/python/fodg/fodg_codec.py",
+        "line": 326,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "add_page",
+        "kind": "function",
+        "file": "src/python/fodg/fodg_codec.py",
+        "line": 346,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "get_text_shapes",
+        "kind": "function",
+        "file": "src/python/fodg/fodg_codec.py",
+        "line": 385,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "remove_page",
+        "kind": "function",
+        "file": "src/python/fodg/fodg_codec.py",
+        "line": 411,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "rename_page",
+        "kind": "function",
+        "file": "src/python/fodg/fodg_codec.py",
+        "line": 430,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "duplicate_page",
+        "kind": "function",
+        "file": "src/python/fodg/fodg_codec.py",
+        "line": 477,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "get_page_index",
+        "kind": "function",
+        "file": "src/python/fodg/fodg_codec.py",
+        "line": 496,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "clear_page",
+        "kind": "function",
+        "file": "src/python/fodg/fodg_codec.py",
+        "line": 512,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "swap_pages",
+        "kind": "function",
+        "file": "src/python/fodg/fodg_codec.py",
+        "line": 532,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "page_names",
+        "kind": "function",
+        "file": "src/python/fodg/fodg_codec.py",
+        "line": 554,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "has_page",
+        "kind": "function",
+        "file": "src/python/fodg/fodg_codec.py",
+        "line": 559,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "export_to_txt",
+        "kind": "function",
+        "file": "src/python/fodg/fodg_codec.py",
+        "line": 575,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "probe_fodg",
+        "kind": "function",
+        "file": "src/python/fodg/fodg_codec.py",
+        "line": 597,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "export_to_csv",
+        "kind": "function",
+        "file": "src/python/fodg/fodg_codec.py",
+        "line": 617,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "roundtrip",
+        "kind": "function",
+        "file": "src/python/fodg/fodg_codec.py",
+        "line": 654,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "fodg_iter_pages",
+        "kind": "function",
+        "file": "src/python/fodg/fodg_page_iterator.py",
+        "line": 16,
+        "role": "iterator",
+        "exported": true
+      },
+      {
+        "name": "fodg_installed_workflow",
+        "kind": "function",
+        "file": "src/python/fodg/fodg_workflow.py",
+        "line": 9,
+        "role": "workflow",
+        "exported": true
+      },
+      {
+        "name": "FodgDocument",
+        "kind": "class",
+        "file": "src/python/fodg/Compat/fodg_document.py",
+        "line": 13,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "FodgPage",
+        "kind": "class",
+        "file": "src/python/fodg/Compat/fodg_page.py",
+        "line": 12,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "FodgError",
+        "kind": "class",
+        "file": "src/python/fodg/exceptions.py",
+        "line": 13,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "FodgParseError",
+        "kind": "class",
+        "file": "src/python/fodg/exceptions.py",
+        "line": 17,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "FodgWriteError",
+        "kind": "class",
+        "file": "src/python/fodg/exceptions.py",
+        "line": 21,
+        "role": "exception",
+        "exported": false
+      },
+      {
+        "name": "FodgError",
+        "kind": "class",
+        "file": "src/python/fodg/fodg_codec.py",
+        "line": 47,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "FodgParseError",
+        "kind": "class",
+        "file": "src/python/fodg/fodg_codec.py",
+        "line": 51,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "FodgDocument",
+        "kind": "class",
+        "file": "src/python/fodg/models.py",
+        "line": 16,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "Frame",
+        "kind": "class",
+        "file": "src/python/fodg/spec/draw/frame.py",
+        "line": 12,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "Page",
+        "kind": "class",
+        "file": "src/python/fodg/spec/draw/page.py",
+        "line": 13,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "Document",
+        "kind": "class",
+        "file": "src/python/fodg/spec/office/document.py",
+        "line": 13,
+        "role": "model",
+        "exported": false
+      }
+    ],
+    "export_count": 83
+  },
+  "dotnet": {
+    "contracts": [],
+    "public_member_count": 0
+  }
+}

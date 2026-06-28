@@ -1,0 +1,140 @@
+{
+  "exception_count": 5,
+  "exceptions": [
+    {
+      "coverage_status": "REFERENCED_BY_TEST",
+      "file": "src/python/odt/odt_parser.py",
+      "line": 89,
+      "name": "OdtError",
+      "raised_in_source": true,
+      "test_reference_count": 2,
+      "test_references": [
+        {
+          "file": "tests/python/odt/test_exception_coverage.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/odt/test_odt_gate7_fuzz_guard.py",
+          "match": "text_reference"
+        }
+      ]
+    },
+    {
+      "coverage_status": "REFERENCED_BY_TEST",
+      "file": "src/python/odt/odt_parser.py",
+      "line": 93,
+      "name": "OdtInvalidContainerError",
+      "raised_in_source": true,
+      "test_reference_count": 3,
+      "test_references": [
+        {
+          "file": "tests/python/odt/test_odt_gate5_neutral_model.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/odt/test_odt_gate7_fuzz_guard.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/odt/test_odt_parser.py",
+          "match": "text_reference"
+        }
+      ]
+    },
+    {
+      "coverage_status": "REFERENCED_BY_TEST",
+      "file": "src/python/odt/exceptions.py",
+      "line": 17,
+      "name": "OdtParseError",
+      "raised_in_source": false,
+      "test_reference_count": 1,
+      "test_references": [
+        {
+          "file": "tests/python/odt/test_exception_coverage.py",
+          "match": "text_reference"
+        }
+      ]
+    },
+    {
+      "coverage_status": "REFERENCED_BY_TEST",
+      "file": "src/python/odt/odt_parser.py",
+      "line": 97,
+      "name": "OdtSizeError",
+      "raised_in_source": true,
+      "test_reference_count": 1,
+      "test_references": [
+        {
+          "file": "tests/python/odt/test_odt_gate7_fuzz_guard.py",
+          "match": "text_reference"
+        }
+      ]
+    },
+    {
+      "coverage_status": "REFERENCED_BY_TEST",
+      "file": "src/python/odt/exceptions.py",
+      "line": 21,
+      "name": "OdtWriteError",
+      "raised_in_source": false,
+      "test_reference_count": 1,
+      "test_references": [
+        {
+          "file": "tests/python/odt/test_exception_coverage.py",
+          "match": "text_reference"
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "authoritative_plan": "plans/.claude/crispy-jingling-snail.md",
+    "generated_by": "codex",
+    "mission_id": "CERT-EXHAUST-20260628",
+    "tool": "exception_coverage_checker",
+    "visibility": "internal"
+  },
+  "raise_site_count": 8,
+  "raise_sites": [
+    {
+      "exception": "OdtSizeError",
+      "file": "src/python/odt/odt_parser.py",
+      "line": 133
+    },
+    {
+      "exception": "OdtSizeError",
+      "file": "src/python/odt/odt_parser.py",
+      "line": 141
+    },
+    {
+      "exception": "OdtInvalidContainerError",
+      "file": "src/python/odt/odt_parser.py",
+      "line": 145
+    },
+    {
+      "exception": "OdtInvalidContainerError",
+      "file": "src/python/odt/odt_parser.py",
+      "line": 148
+    },
+    {
+      "exception": "OdtInvalidContainerError",
+      "file": "src/python/odt/odt_parser.py",
+      "line": 152
+    },
+    {
+      "exception": "OdtSizeError",
+      "file": "src/python/odt/odt_parser.py",
+      "line": 155
+    },
+    {
+      "exception": "OdtInvalidContainerError",
+      "file": "src/python/odt/odt_parser.py",
+      "line": 211
+    },
+    {
+      "exception": "OdtError",
+      "file": "src/python/odt/odt_parser.py",
+      "line": 215
+    }
+  ],
+  "source_path": "src/python/odt",
+  "test_path": "tests/python/odt",
+  "uncovered_exception_count": 0
+}

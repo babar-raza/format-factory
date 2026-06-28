@@ -1,0 +1,30 @@
+{
+  "metadata": {
+    "authoritative_plan": "plans/.claude/crispy-jingling-snail.md",
+    "mission_id": "CERT-EXHAUST-20260628",
+    "format_id": "qoi"
+  },
+  "qname_count": 3,
+  "pass_count": 3,
+  "review_required_count": 0,
+  "entries": [
+    {
+      "qname": "qoi:header",
+      "status": "PASS",
+      "python_file": "src/python/qoi/spec/chunk/header.py",
+      "exists": true
+    },
+    {
+      "qname": "qoi:chunk",
+      "status": "PASS",
+      "python_file": "src/python/qoi/spec/chunk/chunk.py",
+      "exists": true
+    },
+    {
+      "qname": "qoi:end-marker",
+      "status": "PASS",
+      "python_file": "src/python/qoi/spec/chunk/end_marker.py",
+      "exists": true
+    }
+  ]
+}

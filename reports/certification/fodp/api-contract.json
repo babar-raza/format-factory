@@ -1,0 +1,648 @@
+{
+  "metadata": {
+    "authoritative_plan": "plans/.claude/crispy-jingling-snail.md",
+    "mission_id": "CERT-EXHAUST-20260628",
+    "format_id": "fodp"
+  },
+  "python": {
+    "contracts": [
+      {
+        "name": "load",
+        "kind": "function",
+        "file": "src/python/fodp/fodp_codec.py",
+        "line": 42,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "get_page_count",
+        "kind": "function",
+        "file": "src/python/fodp/fodp_codec.py",
+        "line": 67,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "extract_text",
+        "kind": "function",
+        "file": "src/python/fodp/fodp_codec.py",
+        "line": 80,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "get_page_metadata",
+        "kind": "function",
+        "file": "src/python/fodp/fodp_codec.py",
+        "line": 96,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "get_document_metadata",
+        "kind": "function",
+        "file": "src/python/fodp/fodp_codec.py",
+        "line": 111,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "export_to_txt",
+        "kind": "function",
+        "file": "src/python/fodp/fodp_codec.py",
+        "line": 148,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "export_to_csv",
+        "kind": "function",
+        "file": "src/python/fodp/fodp_codec.py",
+        "line": 163,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "export_to_json",
+        "kind": "function",
+        "file": "src/python/fodp/fodp_codec.py",
+        "line": 190,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "write_fodp",
+        "kind": "function",
+        "file": "src/python/fodp/fodp_codec.py",
+        "line": 207,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "fodp_iter_slides",
+        "kind": "function",
+        "file": "src/python/fodp/fodp_slide_iterator.py",
+        "line": 16,
+        "role": "iterator",
+        "exported": false
+      },
+      {
+        "name": "fodp_installed_workflow",
+        "kind": "function",
+        "file": "src/python/fodp/fodp_workflow.py",
+        "line": 9,
+        "role": "workflow",
+        "exported": false
+      },
+      {
+        "name": "fodp_slide_titles",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 38,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodp_master_page_count",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 54,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodp_text_per_slide",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 73,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodp_average_shapes_per_slide",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 93,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodp_slide_count",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 110,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodp_slide_shape_counts",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 115,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodp_notes_text",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 121,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodp_has_notes",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 150,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodp_image_count",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 155,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodp_max_text_per_slide",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 173,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodp_has_images",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 188,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodp_min_text_per_slide",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 200,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodp_total_notes_length",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 215,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodp_slide_text_density",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 228,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodp_nonempty_slide_count",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 236,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodp_text_to_slide_ratio",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 249,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "fodp_all_slides_have_text",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 267,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodp_average_text_per_slide",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 275,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodp_shape_to_slide_ratio",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 283,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "fodp_notes_to_slide_ratio",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 292,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "fodp_image_to_slide_ratio",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 301,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "fodp_has_empty_slides",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 309,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodp_title_coverage",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 314,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodp_is_single_slide",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 324,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodp_notes_density",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 329,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodp_has_titles",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 337,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodp_min_shapes_per_slide",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 343,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodp_has_multi_slide",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 351,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodp_max_shapes_per_slide",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 356,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodp_avg_notes_length",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 364,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodp_shape_variance",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 372,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodp_total_shape_count",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 380,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodp_avg_shapes_per_slide",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 385,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodp_empty_slide_count",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 393,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodp_max_text_length",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 399,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodp_text_length_variance",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 408,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodp_slide_text_lengths",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 419,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodp_avg_title_length",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 425,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodp_is_text_heavy",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 434,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodp_max_notes_length",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 439,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodp_slide_count_is_one",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 447,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodp_is_shape_heavy",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 452,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodp_has_zero_shapes",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 460,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodp_min_title_length",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 465,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodp_image_density",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 473,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodp_total_text_chars",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 481,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodp_avg_title_words",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 487,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodp_max_title_length",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 496,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodp_avg_text_length",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 505,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodp_total_text_length",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 518,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodp_nonempty_slide_ratio",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 528,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodp_has_numeric_content",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 541,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodp_longest_slide_index",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 552,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodp_avg_sentence_length",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 562,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodp_slide_text_variance",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 575,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodp_total_images",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 585,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodp_shortest_slide_index",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 590,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodp_shape_count_variance",
+        "kind": "function",
+        "file": "src/python/fodp/presentation_document.py",
+        "line": 602,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "FodpDocument",
+        "kind": "class",
+        "file": "src/python/fodp/Compat/fodp_document.py",
+        "line": 13,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "FodpPage",
+        "kind": "class",
+        "file": "src/python/fodp/Compat/fodp_page.py",
+        "line": 12,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "FodpError",
+        "kind": "class",
+        "file": "src/python/fodp/exceptions.py",
+        "line": 13,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "FodpParseError",
+        "kind": "class",
+        "file": "src/python/fodp/exceptions.py",
+        "line": 17,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "FodpWriteError",
+        "kind": "class",
+        "file": "src/python/fodp/exceptions.py",
+        "line": 21,
+        "role": "exception",
+        "exported": false
+      },
+      {
+        "name": "FodpError",
+        "kind": "class",
+        "file": "src/python/fodp/fodp_codec.py",
+        "line": 34,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "FodpParseError",
+        "kind": "class",
+        "file": "src/python/fodp/fodp_codec.py",
+        "line": 38,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "FodpDocument",
+        "kind": "class",
+        "file": "src/python/fodp/models.py",
+        "line": 16,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "Page",
+        "kind": "class",
+        "file": "src/python/fodp/spec/draw/page.py",
+        "line": 15,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "Document",
+        "kind": "class",
+        "file": "src/python/fodp/spec/office/document.py",
+        "line": 15,
+        "role": "model",
+        "exported": false
+      }
+    ],
+    "export_count": 73
+  },
+  "dotnet": {
+    "contracts": [],
+    "public_member_count": 0
+  }
+}

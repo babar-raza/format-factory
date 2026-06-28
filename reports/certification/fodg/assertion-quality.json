@@ -1,0 +1,8471 @@
+{
+  "metadata": {
+    "authoritative_plan": "plans/.claude/crispy-jingling-snail.md",
+    "mission_id": "CERT-EXHAUST-20260628",
+    "tool": "assertion_quality_scorer"
+  },
+  "target": "tests/python/fodg",
+  "file_count": 100,
+  "total_test_functions": 834,
+  "score_distribution": {
+    "1": 0,
+    "2": 262,
+    "3": 171,
+    "4": 364,
+    "5": 37
+  },
+  "weak_assertion_count": 0,
+  "overall_avg_score": 3.21,
+  "overall_min_score": 2,
+  "files": [
+    {
+      "file": "tests/python/fodg/test_cap_fodg_export_csv.py",
+      "function_count": 10,
+      "functions": [
+        {
+          "name": "test_export_to_csv_returns_string",
+          "line": 24,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            3
+          ]
+        },
+        {
+          "name": "test_export_to_csv_header_row",
+          "line": 32,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_export_to_csv_data_rows",
+          "line": 40,
+          "assertion_count": 3,
+          "min_score": 4,
+          "scores": [
+            4,
+            5,
+            5
+          ]
+        },
+        {
+          "name": "test_export_to_csv_multiple_pages",
+          "line": 50,
+          "assertion_count": 3,
+          "min_score": 3,
+          "scores": [
+            4,
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_export_to_csv_empty_document",
+          "line": 63,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            5
+          ]
+        },
+        {
+          "name": "test_export_to_csv_writes_file",
+          "line": 72,
+          "assertion_count": 3,
+          "min_score": 3,
+          "scores": [
+            3,
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_export_to_csv_commas_in_text_are_quoted",
+          "line": 83,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_export_to_csv_page_name_with_comma_is_quoted",
+          "line": 92,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_export_to_csv_from_bytes",
+          "line": 100,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_export_to_csv_shape_index_increments",
+          "line": 108,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.3,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_drawing_document.py",
+      "function_count": 24,
+      "functions": [
+        {
+          "name": "test_spec_qname_attribute",
+          "line": 54,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_spec_fact_ref_attribute",
+          "line": 58,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_namespace_uri_attribute",
+          "line": 62,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_page_count_empty",
+          "line": 70,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            4
+          ]
+        },
+        {
+          "name": "test_total_shape_count_empty_returns_int",
+          "line": 76,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            4
+          ]
+        },
+        {
+          "name": "test_is_empty_document_on_empty",
+          "line": 82,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            2
+          ]
+        },
+        {
+          "name": "test_has_text_returns_bool",
+          "line": 89,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_shapes_basic_has_shapes",
+          "line": 94,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            4
+          ]
+        },
+        {
+          "name": "test_page_count_shapes_basic",
+          "line": 100,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            4
+          ]
+        },
+        {
+          "name": "test_is_single_page",
+          "line": 106,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_avg_shapes_per_page_returns_float",
+          "line": 112,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            4
+          ]
+        },
+        {
+          "name": "test_has_empty_pages_returns_bool",
+          "line": 118,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_max_shape_count_gte_min",
+          "line": 123,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_text_item_count_non_negative",
+          "line": 129,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            4
+          ]
+        },
+        {
+          "name": "test_has_text_content_returns_bool",
+          "line": 135,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_file_size_bytes_positive",
+          "line": 140,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            4
+          ]
+        },
+        {
+          "name": "test_has_no_shapes_on_empty",
+          "line": 146,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_has_no_text_items_returns_bool",
+          "line": 151,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_has_more_shapes_than_text_consistent",
+          "line": 156,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_is_text_heavy_returns_bool",
+          "line": 163,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_is_empty_drawing_consistent_with_total_shapes",
+          "line": 168,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_functions_accessible_via_fodg_package",
+          "line": 179,
+          "assertion_count": 3,
+          "min_score": 3,
+          "scores": [
+            3,
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_fodg_total_shape_count_in_all",
+          "line": 186,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_drawing_document_functions_callable_via_package",
+          "line": 191,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 2.5,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_exception_coverage.py",
+      "function_count": 3,
+      "functions": [
+        {
+          "name": "test_fodgwriteerror_is_raisable",
+          "line": 12,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_fodgwriteerror_inherits_base",
+          "line": 17,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_fodgwriteerror_message",
+          "line": 21,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.33,
+      "file_min_score": 3
+    },
+    {
+      "file": "tests/python/fodg/test_fodg_add_page_metadata_pipeline.py",
+      "function_count": 5,
+      "functions": [
+        {
+          "name": "test_add_page_increases_count",
+          "line": 30,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_get_page_metadata_returns_list",
+          "line": 38,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_get_page_metadata_len",
+          "line": 46,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_add_page_returns_model_dict",
+          "line": 54,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_get_page_count_after_add",
+          "line": 60,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.0,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_fodg_all_text_pipeline.py",
+      "function_count": 5,
+      "functions": [
+        {
+          "name": "test_get_all_text_returns_list",
+          "line": 36,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_extract_text_returns_list",
+          "line": 41,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_clear_page_reduces_count",
+          "line": 47,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_get_page_count_after_add",
+          "line": 55,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_add_page_then_get_all_text",
+          "line": 61,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 2.6,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_fodg_all_text_probe_pipeline.py",
+      "function_count": 5,
+      "functions": [
+        {
+          "name": "test_get_all_text_returns_list",
+          "line": 31,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_add_page_then_get_all_text_list",
+          "line": 37,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_probe_fodg_true_from_file",
+          "line": 44,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_probe_fodg_returns_bool",
+          "line": 52,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_extract_text_returns_list_from_file",
+          "line": 60,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 2.4,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_fodg_batch_pages_pipeline.py",
+      "function_count": 5,
+      "functions": [
+        {
+          "name": "test_find_text_returns_list",
+          "line": 37,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_add_page_visible_in_names",
+          "line": 42,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_remove_then_add_page_count",
+          "line": 49,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_export_to_json_parseable",
+          "line": 56,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            3
+          ]
+        },
+        {
+          "name": "test_get_all_text_is_list",
+          "line": 63,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 2.6,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_fodg_clear_page_count_w109_pipeline.py",
+      "function_count": 5,
+      "functions": [
+        {
+          "name": "test_get_page_count_returns_int",
+          "line": 31,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_get_page_count_correct",
+          "line": 36,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_clear_page_returns_dict",
+          "line": 41,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_cleared_page_has_no_shapes",
+          "line": 47,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_page_count_unchanged_after_clear",
+          "line": 53,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.0,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_fodg_clear_roundtrip.py",
+      "function_count": 5,
+      "functions": [
+        {
+          "name": "test_clear_page_count_unchanged",
+          "line": 30,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_clear_page_write_reload",
+          "line": 35,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            4,
+            3
+          ]
+        },
+        {
+          "name": "test_create_fodg_page_names",
+          "line": 44,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_probe_fodg_written_file",
+          "line": 50,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_export_to_txt_is_string",
+          "line": 56,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 3.2,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_fodg_clear_swap_pages_pipeline.py",
+      "function_count": 5,
+      "functions": [
+        {
+          "name": "test_clear_page_returns_model",
+          "line": 31,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_clear_page_removes_shapes",
+          "line": 37,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_swap_pages_swaps_order",
+          "line": 45,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_swap_pages_returns_model",
+          "line": 55,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_page_count_unchanged_after_swap",
+          "line": 61,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 2.6,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_fodg_codec.py",
+      "function_count": 19,
+      "functions": [
+        {
+          "name": "test_load_minimal_returns_model",
+          "line": 32,
+          "assertion_count": 3,
+          "min_score": 2,
+          "scores": [
+            2,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_load_shapes_basic",
+          "line": 40,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_load_empty_page",
+          "line": 46,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_load_accepts_bytes",
+          "line": 53,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_load_all_corpus_samples",
+          "line": 60,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            4,
+            3
+          ]
+        },
+        {
+          "name": "test_load_missing_file_raises",
+          "line": 72,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_load_invalid_xml_raises",
+          "line": 78,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_load_wrong_root_raises",
+          "line": 84,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_get_page_count_minimal",
+          "line": 94,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_get_page_count_shapes_basic",
+          "line": 99,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_get_page_count_empty",
+          "line": 104,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_get_shape_count_minimal",
+          "line": 113,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_get_shape_count_shapes_basic",
+          "line": 118,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_get_shape_count_empty",
+          "line": 123,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_extract_text_empty",
+          "line": 132,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_get_page_metadata_structure",
+          "line": 142,
+          "assertion_count": 4,
+          "min_score": 3,
+          "scores": [
+            4,
+            3,
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_get_page_metadata_shapes_basic",
+          "line": 152,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_mime_type_constant",
+          "line": 163,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_load_mime_type",
+          "line": 167,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.74,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_fodg_domain_model.py",
+      "function_count": 8,
+      "functions": [
+        {
+          "name": "test_spec_qname_class_level_access",
+          "line": 14,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_spec_qname_is_classvar",
+          "line": 17,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_spec_qname_is_string",
+          "line": 21,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_spec_fact_ref_class_level",
+          "line": 24,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_from_file_returns_model",
+          "line": 27,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_from_file_spec_qname_on_instance",
+          "line": 31,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_from_file_page_count",
+          "line": 35,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_to_dict_page_count_key",
+          "line": 39,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.62,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_fodg_duplicate_page_names_pipeline.py",
+      "function_count": 5,
+      "functions": [
+        {
+          "name": "test_duplicate_page_increases_count",
+          "line": 29,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_duplicate_page_returns_model",
+          "line": 36,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_page_names_returns_list",
+          "line": 42,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_page_names_has_expected_names",
+          "line": 48,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_page_names_count_after_duplicate",
+          "line": 55,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 2.8,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_fodg_export_csv_pipeline.py",
+      "function_count": 5,
+      "functions": [
+        {
+          "name": "test_export_to_csv_has_header",
+          "line": 37,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_export_to_csv_with_dest",
+          "line": 43,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_roundtrip_preserves_page_count",
+          "line": 50,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_get_page_metadata_list",
+          "line": 57,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            4
+          ]
+        },
+        {
+          "name": "test_probe_fodg_roundtrip_output",
+          "line": 64,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.2,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_fodg_export_pipeline.py",
+      "function_count": 5,
+      "functions": [
+        {
+          "name": "test_export_to_json_is_string",
+          "line": 30,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_export_to_json_parseable",
+          "line": 35,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_count_shapes_returns_int",
+          "line": 41,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_get_text_shapes_returns_list",
+          "line": 46,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_get_page_count",
+          "line": 51,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 2.6,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_fodg_export_probe_pipeline.py",
+      "function_count": 5,
+      "functions": [
+        {
+          "name": "test_export_to_json_parseable",
+          "line": 36,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_export_to_json_page_count",
+          "line": 43,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_probe_fodg_file",
+          "line": 49,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_export_to_txt_string",
+          "line": 55,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_export_to_csv_string",
+          "line": 61,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 2.8,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_fodg_find_export_w110_pipeline.py",
+      "function_count": 5,
+      "functions": [
+        {
+          "name": "test_find_text_returns_list",
+          "line": 48,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_find_text_finds_match",
+          "line": 53,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            5
+          ]
+        },
+        {
+          "name": "test_find_text_no_match_empty",
+          "line": 59,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_export_to_json_returns_str",
+          "line": 64,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_export_to_json_has_page_count",
+          "line": 69,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.0,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_fodg_find_extract_pipeline.py",
+      "function_count": 5,
+      "functions": [
+        {
+          "name": "test_find_text_returns_list",
+          "line": 37,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_find_text_empty_no_match",
+          "line": 43,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_extract_text_list",
+          "line": 49,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_load_returns_dict",
+          "line": 55,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            3
+          ]
+        },
+        {
+          "name": "test_get_shape_count_int",
+          "line": 62,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 2.2,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_fodg_find_swap_pipeline.py",
+      "function_count": 5,
+      "functions": [
+        {
+          "name": "test_find_text_returns_list",
+          "line": 35,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_find_text_case_insensitive_returns_list",
+          "line": 41,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_swap_pages_changes_order",
+          "line": 46,
+          "assertion_count": 2,
+          "min_score": 5,
+          "scores": [
+            5,
+            5
+          ]
+        },
+        {
+          "name": "test_get_page_index_after_swap",
+          "line": 54,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_probe_fodg_after_swap_write",
+          "line": 61,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.4,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_fodg_gap_closure_batch.py",
+      "function_count": 19,
+      "functions": [
+        {
+          "name": "test_is_exception",
+          "line": 81,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_can_raise",
+          "line": 84,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_is_subclass",
+          "line": 91,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_can_raise",
+          "line": 94,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_basic",
+          "line": 101,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            3
+          ]
+        },
+        {
+          "name": "test_bytes",
+          "line": 106,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            3
+          ]
+        },
+        {
+          "name": "test_basic",
+          "line": 114,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            3
+          ]
+        },
+        {
+          "name": "test_basic",
+          "line": 122,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            2
+          ]
+        },
+        {
+          "name": "test_basic",
+          "line": 131,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            4
+          ]
+        },
+        {
+          "name": "test_page1",
+          "line": 139,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_page2",
+          "line": 143,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_basic",
+          "line": 150,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            4
+          ]
+        },
+        {
+          "name": "test_basic",
+          "line": 158,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            2
+          ]
+        },
+        {
+          "name": "test_basic",
+          "line": 167,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            4
+          ]
+        },
+        {
+          "name": "test_page1",
+          "line": 175,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            3
+          ]
+        },
+        {
+          "name": "test_find",
+          "line": 184,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            4
+          ]
+        },
+        {
+          "name": "test_page0",
+          "line": 192,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            2
+          ]
+        },
+        {
+          "name": "test_basic",
+          "line": 201,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            4
+          ]
+        },
+        {
+          "name": "test_basic",
+          "line": 209,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 2.53,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_fodg_load_gap_closure.py",
+      "function_count": 9,
+      "functions": [
+        {
+          "name": "test_load_from_bytes",
+          "line": 50,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_create_and_write_roundtrip",
+          "line": 55,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            3,
+            2
+          ]
+        },
+        {
+          "name": "test_export_to_json_is_valid",
+          "line": 64,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_count_shapes_from_bytes",
+          "line": 71,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            4
+          ]
+        },
+        {
+          "name": "test_page_names_from_bytes",
+          "line": 78,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_has_page_returns_bool",
+          "line": 84,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_get_all_text_from_bytes",
+          "line": 90,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_find_text_returns_list",
+          "line": 96,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_add_page_increases_count",
+          "line": 102,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 2.11,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_fodg_metadata_shape_pipeline.py",
+      "function_count": 5,
+      "functions": [
+        {
+          "name": "test_get_page_metadata_list",
+          "line": 40,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            4
+          ]
+        },
+        {
+          "name": "test_get_page_metadata_has_name",
+          "line": 47,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            5
+          ]
+        },
+        {
+          "name": "test_count_shapes_is_int",
+          "line": 54,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_export_to_txt_is_string",
+          "line": 59,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_page_names_list",
+          "line": 65,
+          "assertion_count": 3,
+          "min_score": 2,
+          "scores": [
+            2,
+            3,
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 2.2,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_fodg_page_lookup_pipeline.py",
+      "function_count": 5,
+      "functions": [
+        {
+          "name": "test_get_page_by_name_returns_dict",
+          "line": 27,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_get_page_by_name_none_on_missing",
+          "line": 32,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_get_page_index_int",
+          "line": 37,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            4
+          ]
+        },
+        {
+          "name": "test_has_page_true",
+          "line": 43,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_has_page_false",
+          "line": 48,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 2.8,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_fodg_page_manipulation.py",
+      "function_count": 5,
+      "functions": [
+        {
+          "name": "test_duplicate_page_increases_count",
+          "line": 30,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_swap_pages_changes_order",
+          "line": 35,
+          "assertion_count": 2,
+          "min_score": 5,
+          "scores": [
+            5,
+            5
+          ]
+        },
+        {
+          "name": "test_get_page_by_name_found",
+          "line": 42,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            5
+          ]
+        },
+        {
+          "name": "test_get_page_index",
+          "line": 48,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_has_page_true_and_false",
+          "line": 53,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.8,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_fodg_page_ops_pipeline.py",
+      "function_count": 5,
+      "functions": [
+        {
+          "name": "test_add_page_increases_count",
+          "line": 30,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_remove_page_decreases_count",
+          "line": 36,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_rename_page_changes_name",
+          "line": 42,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_duplicate_page_increases_count",
+          "line": 49,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_swap_pages_changes_order",
+          "line": 55,
+          "assertion_count": 2,
+          "min_score": 5,
+          "scores": [
+            5,
+            5
+          ]
+        }
+      ],
+      "file_avg_score": 4.0,
+      "file_min_score": 3
+    },
+    {
+      "file": "tests/python/fodg/test_fodg_pagetext_shapecount_w117_pipeline.py",
+      "function_count": 5,
+      "functions": [
+        {
+          "name": "test_get_shape_count_returns_int",
+          "line": 26,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_get_shape_count_positive",
+          "line": 31,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_get_page_text_returns_list",
+          "line": 36,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_get_page_text_has_content",
+          "line": 42,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_page_text_nonempty_when_shapes_present",
+          "line": 48,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 2.8,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_fodg_remove_page_index_pipeline.py",
+      "function_count": 5,
+      "functions": [
+        {
+          "name": "test_remove_page_decreases_count",
+          "line": 30,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_remove_page_returns_model",
+          "line": 37,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_get_page_index_int",
+          "line": 43,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_get_page_index_correct_value",
+          "line": 49,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_get_page_index_gamma",
+          "line": 55,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.0,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_fodg_rename_page_lookup_pipeline.py",
+      "function_count": 5,
+      "functions": [
+        {
+          "name": "test_rename_page_changes_name",
+          "line": 30,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_get_page_by_name_returns_dict",
+          "line": 38,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_get_page_by_name_not_found_none",
+          "line": 44,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_rename_page_returns_model",
+          "line": 50,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_page_count_unchanged_after_rename",
+          "line": 56,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 2.4,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_fodg_roundtrip_export_pipeline.py",
+      "function_count": 5,
+      "functions": [
+        {
+          "name": "test_roundtrip_returns_dict",
+          "line": 37,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_roundtrip_page_count",
+          "line": 44,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_probe_fodg_true",
+          "line": 51,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_export_to_json_string",
+          "line": 57,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            2
+          ]
+        },
+        {
+          "name": "test_export_to_csv_returns_string",
+          "line": 65,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 2.8,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_fodg_roundtrip_pipeline.py",
+      "function_count": 5,
+      "functions": [
+        {
+          "name": "test_roundtrip_returns_dict",
+          "line": 34,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_roundtrip_page_count_preserved",
+          "line": 40,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_write_fodg_creates_file",
+          "line": 46,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_roundtrip_is_fodg",
+          "line": 53,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_roundtrip_page_names",
+          "line": 59,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.2,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_fodg_shape_count_pipeline.py",
+      "function_count": 5,
+      "functions": [
+        {
+          "name": "test_get_shape_count_int",
+          "line": 38,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_count_shapes_int",
+          "line": 44,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_get_text_shapes_list",
+          "line": 50,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_get_page_metadata_list",
+          "line": 56,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            4
+          ]
+        },
+        {
+          "name": "test_export_to_txt_string",
+          "line": 63,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 2.0,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_fodg_shape_text_pipeline.py",
+      "function_count": 5,
+      "functions": [
+        {
+          "name": "test_get_shapes_returns_list",
+          "line": 39,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_get_text_shapes_returns_list",
+          "line": 44,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_extract_text_returns_list",
+          "line": 49,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_get_all_text_model",
+          "line": 55,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_probe_fodg_after_write",
+          "line": 60,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 2.4,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_fodg_shapes_count_pipeline.py",
+      "function_count": 5,
+      "functions": [
+        {
+          "name": "test_count_shapes_returns_int",
+          "line": 32,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_count_shapes_correct_value",
+          "line": 37,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_count_shapes_empty_model",
+          "line": 42,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_get_shapes_returns_list",
+          "line": 47,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_add_page_increases_shapes_total",
+          "line": 55,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.0,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_fodg_shapes_pipeline.py",
+      "function_count": 5,
+      "functions": [
+        {
+          "name": "test_get_shapes_returns_list",
+          "line": 36,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_count_shapes_int",
+          "line": 42,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_get_text_shapes_list",
+          "line": 47,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_get_page_count",
+          "line": 52,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_page_names_list",
+          "line": 57,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 2.4,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_fodg_spec_qname.py",
+      "function_count": 7,
+      "functions": [
+        {
+          "name": "test_spec_qname_defined",
+          "line": 21,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_spec_qname_matches_registry",
+          "line": 25,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_fodg_document_spec_qname",
+          "line": 40,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_fodg_document_spec_fact_ref",
+          "line": 44,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_fodg_page_spec_qname",
+          "line": 48,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_fodg_page_spec_fact_ref",
+          "line": 52,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_fodg_qnames_have_spec_fact_ref",
+          "line": 60,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.57,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_fodg_swap_rename_page_pipeline.py",
+      "function_count": 5,
+      "functions": [
+        {
+          "name": "test_swap_pages_returns_model",
+          "line": 31,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_swap_pages_changes_order",
+          "line": 37,
+          "assertion_count": 2,
+          "min_score": 5,
+          "scores": [
+            5,
+            5
+          ]
+        },
+        {
+          "name": "test_swap_pages_count_unchanged",
+          "line": 45,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_rename_page_changes_name",
+          "line": 52,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_rename_page_count_unchanged",
+          "line": 60,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.2,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_fodg_text_shape_extraction.py",
+      "function_count": 5,
+      "functions": [
+        {
+          "name": "test_extract_text_from_model_with_content",
+          "line": 28,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_find_text_returns_list_type",
+          "line": 37,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_find_text_no_match_returns_empty",
+          "line": 44,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_get_text_shapes_count",
+          "line": 50,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            5
+          ]
+        },
+        {
+          "name": "test_get_all_text_from_sample",
+          "line": 61,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.0,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_fodg_text_shapes_json_pipeline.py",
+      "function_count": 5,
+      "functions": [
+        {
+          "name": "test_get_text_shapes_returns_list",
+          "line": 32,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_get_text_shapes_has_pages_with_text",
+          "line": 38,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_export_to_json_returns_string",
+          "line": 46,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_export_to_json_parseable",
+          "line": 52,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_export_to_json_correct_page_count",
+          "line": 59,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 2.8,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_fodg_write_reload_roundtrip.py",
+      "function_count": 6,
+      "functions": [
+        {
+          "name": "test_add_page_persists_after_write_reload",
+          "line": 30,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_rename_page_persists_after_write_reload",
+          "line": 39,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_remove_page_persists_after_write_reload",
+          "line": 49,
+          "assertion_count": 3,
+          "min_score": 3,
+          "scores": [
+            4,
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_create_fodg_write_reload_page_count",
+          "line": 60,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_create_fodg_write_reload_page_names",
+          "line": 68,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_add_page_with_text_write_reload",
+          "line": 78,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.17,
+      "file_min_score": 3
+    },
+    {
+      "file": "tests/python/fodg/test_pfgi_fodg_get_page_count.py",
+      "function_count": 7,
+      "functions": [
+        {
+          "name": "test_empty_model_returns_zero",
+          "line": 14,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_single_page_returns_one",
+          "line": 19,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_two_pages_returns_two",
+          "line": 24,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_add_page_increments_count",
+          "line": 29,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_missing_pages_key_returns_zero",
+          "line": 35,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_int",
+          "line": 40,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_three_pages",
+          "line": 45,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.71,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_pige_fodg_find_text.py",
+      "function_count": 9,
+      "functions": [
+        {
+          "name": "test_find_exact_match",
+          "line": 33,
+          "assertion_count": 3,
+          "min_score": 4,
+          "scores": [
+            4,
+            5,
+            4
+          ]
+        },
+        {
+          "name": "test_find_across_pages",
+          "line": 41,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            5
+          ]
+        },
+        {
+          "name": "test_find_case_sensitive_no_match",
+          "line": 48,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_find_case_insensitive_match",
+          "line": 54,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_find_no_match",
+          "line": 60,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_find_in_empty_model",
+          "line": 66,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_result_has_required_keys",
+          "line": 72,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            4,
+            3
+          ]
+        },
+        {
+          "name": "test_returns_list",
+          "line": 81,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_available_from_package",
+          "line": 86,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.22,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_r122_fodg_probe.py",
+      "function_count": 9,
+      "functions": [
+        {
+          "name": "test_valid_fodg_returns_true",
+          "line": 35,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_non_fodg_xml_returns_false",
+          "line": 38,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_random_bytes_returns_false",
+          "line": 41,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_empty_bytes_returns_false",
+          "line": 44,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_does_not_raise",
+          "line": 47,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_bool",
+          "line": 54,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_graphics_mime_required",
+          "line": 58,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_import_from_package",
+          "line": 66,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_in_all",
+          "line": 70,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.56,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_r133_fodg_get_shapes.py",
+      "function_count": 11,
+      "functions": [
+        {
+          "name": "test_returns_list",
+          "line": 42,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_correct_count",
+          "line": 46,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_shape_has_required_keys",
+          "line": 50,
+          "assertion_count": 5,
+          "min_score": 3,
+          "scores": [
+            3,
+            3,
+            3,
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_page_names",
+          "line": 59,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_page_indices",
+          "line": 65,
+          "assertion_count": 3,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_shape_indices_reset_per_page",
+          "line": 71,
+          "assertion_count": 3,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_tag_names",
+          "line": 77,
+          "assertion_count": 3,
+          "min_score": 3,
+          "scores": [
+            3,
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_text_extracted_from_textbox",
+          "line": 84,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            5
+          ]
+        },
+        {
+          "name": "test_empty_document_returns_empty",
+          "line": 90,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_roundtrip_shape_count",
+          "line": 101,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_file_source",
+          "line": 108,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.45,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_r136_fodg_get_page_by_name.py",
+      "function_count": 10,
+      "functions": [
+        {
+          "name": "test_returns_correct_page",
+          "line": 20,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            5
+          ]
+        },
+        {
+          "name": "test_returns_first_page",
+          "line": 26,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            5
+          ]
+        },
+        {
+          "name": "test_returns_none_when_not_found",
+          "line": 32,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_empty_drawing_returns_none",
+          "line": 37,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_case_sensitive",
+          "line": 41,
+          "assertion_count": 3,
+          "min_score": 2,
+          "scores": [
+            2,
+            2,
+            2
+          ]
+        },
+        {
+          "name": "test_page_has_text_content",
+          "line": 47,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            3
+          ]
+        },
+        {
+          "name": "test_type_error_on_non_dict_model",
+          "line": 53,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_type_error_on_non_string_name",
+          "line": 57,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_dict",
+          "line": 62,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_shape_count_in_returned_page",
+          "line": 67,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 2.6,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_r138_fodg_add_page.py",
+      "function_count": 11,
+      "functions": [
+        {
+          "name": "test_adds_one_page",
+          "line": 20,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_new_page_at_end",
+          "line": 25,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_does_not_mutate_original",
+          "line": 30,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_default_page_name",
+          "line": 35,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_text_content_set",
+          "line": 40,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_shapes_total_updated",
+          "line": 45,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_empty_page_added",
+          "line": 50,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_type_error_non_dict_model",
+          "line": 56,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_type_error_non_dict_page",
+          "line": 60,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_dict",
+          "line": 65,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_multiple_additions",
+          "line": 69,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            4,
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.82,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_r138_fodg_text_shapes.py",
+      "function_count": 9,
+      "functions": [
+        {
+          "name": "test_returns_pages_with_text",
+          "line": 20,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            5
+          ]
+        },
+        {
+          "name": "test_text_content_present",
+          "line": 29,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_empty_texts_excluded",
+          "line": 34,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_multiple_pages_all_with_text",
+          "line": 39,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_page_index_set",
+          "line": 47,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_empty_model_empty_result",
+          "line": 55,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_type_error_on_non_dict",
+          "line": 59,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_list",
+          "line": 63,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_filters_empty_strings",
+          "line": 67,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            4,
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.33,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_r140_fodg_remove_page.py",
+      "function_count": 9,
+      "functions": [
+        {
+          "name": "test_remove_first_page",
+          "line": 20,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            5
+          ]
+        },
+        {
+          "name": "test_remove_last_page",
+          "line": 27,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            5
+          ]
+        },
+        {
+          "name": "test_remove_middle_page",
+          "line": 34,
+          "assertion_count": 3,
+          "min_score": 4,
+          "scores": [
+            4,
+            5,
+            5
+          ]
+        },
+        {
+          "name": "test_remove_does_not_mutate",
+          "line": 42,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_remove_out_of_range_raises",
+          "line": 49,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_remove_negative_index_raises",
+          "line": 59,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_remove_type_error",
+          "line": 69,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_remove_empty_pages_raises",
+          "line": 78,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_shapes_total_updated",
+          "line": 88,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.78,
+      "file_min_score": 3
+    },
+    {
+      "file": "tests/python/fodg/test_r140_fodg_rename_page.py",
+      "function_count": 9,
+      "functions": [
+        {
+          "name": "test_rename_first_page",
+          "line": 20,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_rename_last_page",
+          "line": 26,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_rename_does_not_affect_others",
+          "line": 32,
+          "assertion_count": 2,
+          "min_score": 5,
+          "scores": [
+            5,
+            5
+          ]
+        },
+        {
+          "name": "test_rename_does_not_mutate",
+          "line": 39,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_rename_out_of_range_raises",
+          "line": 46,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_rename_negative_index_raises",
+          "line": 56,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_rename_type_error_model",
+          "line": 66,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_rename_type_error_name",
+          "line": 75,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_rename_preserves_page_count",
+          "line": 85,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 4.22,
+      "file_min_score": 3
+    },
+    {
+      "file": "tests/python/fodg/test_r142_fodg_get_all_text.py",
+      "function_count": 8,
+      "functions": [
+        {
+          "name": "test_empty_model_returns_empty",
+          "line": 13,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_single_page_single_text",
+          "line": 18,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_multiple_texts_per_page",
+          "line": 24,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_multiple_pages",
+          "line": 31,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_empty_strings_skipped",
+          "line": 40,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            4
+          ]
+        },
+        {
+          "name": "test_type_error",
+          "line": 48,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_list",
+          "line": 57,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_page_with_no_texts",
+          "line": 62,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.0,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_r144_fodg_count_shapes.py",
+      "function_count": 5,
+      "functions": [
+        {
+          "name": "test_total_shape_count",
+          "line": 28,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_empty_model",
+          "line": 33,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_single_page",
+          "line": 38,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_int",
+          "line": 44,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_zero_shapes_page",
+          "line": 49,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.6,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_r144_fodg_export_json.py",
+      "function_count": 6,
+      "functions": [
+        {
+          "name": "test_returns_string",
+          "line": 14,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_valid_json",
+          "line": 20,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_contains_page_count",
+          "line": 27,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_contains_pages_key",
+          "line": 34,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_roundtrip_preserves_structure",
+          "line": 41,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            5
+          ]
+        },
+        {
+          "name": "test_pretty_printed",
+          "line": 50,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 2.83,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_r146_fodg_duplicate_page.py",
+      "function_count": 6,
+      "functions": [
+        {
+          "name": "test_page_count_increases",
+          "line": 26,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_copy_appended_at_end",
+          "line": 31,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_copy_has_same_content",
+          "line": 36,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_out_of_range_raises",
+          "line": 43,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_does_not_mutate_original",
+          "line": 52,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_dict",
+          "line": 58,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 3.67,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_r146_fodg_page_index.py",
+      "function_count": 5,
+      "functions": [
+        {
+          "name": "test_first_page",
+          "line": 28,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_second_page",
+          "line": 32,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_third_page",
+          "line": 36,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_not_found_raises",
+          "line": 40,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_int",
+          "line": 49,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 3.6,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_r148_fodg_clear_page.py",
+      "function_count": 6,
+      "functions": [
+        {
+          "name": "test_shapes_cleared",
+          "line": 26,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            4
+          ]
+        },
+        {
+          "name": "test_text_content_cleared",
+          "line": 32,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_other_page_unaffected",
+          "line": 37,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_out_of_range_raises",
+          "line": 42,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_does_not_mutate_original",
+          "line": 51,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_dict",
+          "line": 57,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 3.33,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_r148_fodg_swap_pages.py",
+      "function_count": 5,
+      "functions": [
+        {
+          "name": "test_swap_first_and_second",
+          "line": 27,
+          "assertion_count": 2,
+          "min_score": 5,
+          "scores": [
+            5,
+            5
+          ]
+        },
+        {
+          "name": "test_swap_first_and_last",
+          "line": 33,
+          "assertion_count": 2,
+          "min_score": 5,
+          "scores": [
+            5,
+            5
+          ]
+        },
+        {
+          "name": "test_out_of_range_raises",
+          "line": 39,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_does_not_mutate_original",
+          "line": 48,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_returns_dict",
+          "line": 54,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 4.2,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_r150_fodg_has_page.py",
+      "function_count": 5,
+      "functions": [
+        {
+          "name": "test_existing_page_returns_true",
+          "line": 26,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_another_existing_page",
+          "line": 30,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_missing_page_returns_false",
+          "line": 34,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_case_sensitive",
+          "line": 38,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_empty_pages_returns_false",
+          "line": 42,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 4.0,
+      "file_min_score": 4
+    },
+    {
+      "file": "tests/python/fodg/test_r150_fodg_page_names.py",
+      "function_count": 5,
+      "functions": [
+        {
+          "name": "test_returns_three_names",
+          "line": 27,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_empty_pages",
+          "line": 31,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_returns_list",
+          "line": 36,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_order_preserved",
+          "line": 40,
+          "assertion_count": 2,
+          "min_score": 5,
+          "scores": [
+            5,
+            5
+          ]
+        },
+        {
+          "name": "test_does_not_mutate_model",
+          "line": 46,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.4,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_r152_fodg_add_page.py",
+      "function_count": 6,
+      "functions": [
+        {
+          "name": "test_adds_page",
+          "line": 25,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_new_page_name",
+          "line": 30,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_page_count_updated",
+          "line": 35,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_new_page_is_blank",
+          "line": 40,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            4,
+            3
+          ]
+        },
+        {
+          "name": "test_does_not_mutate_original",
+          "line": 47,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_dict",
+          "line": 53,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 3.67,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_r152_fodg_rename_page.py",
+      "function_count": 5,
+      "functions": [
+        {
+          "name": "test_renames_first_page",
+          "line": 26,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_other_page_unchanged",
+          "line": 31,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_out_of_range_raises",
+          "line": 36,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_does_not_mutate_original",
+          "line": 45,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_returns_dict",
+          "line": 51,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 4.2,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_r157_fodg_load_capability.py",
+      "function_count": 6,
+      "functions": [
+        {
+          "name": "test_load_returns_dict",
+          "line": 29,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_load_has_page_count",
+          "line": 34,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_load_from_path",
+          "line": 39,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_load_has_pages",
+          "line": 46,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_load_page_structure",
+          "line": 51,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_load_bytes_input",
+          "line": 58,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 2.5,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_r167_fodg_coverage.py",
+      "function_count": 30,
+      "functions": [
+        {
+          "name": "test_fodg_error_is_exception",
+          "line": 44,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_fodg_parse_error_inherits",
+          "line": 47,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_returns_bool",
+          "line": 55,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_valid_file_returns_true",
+          "line": 59,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_nonexistent_returns_false",
+          "line": 62,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_shapes_file_detected",
+          "line": 65,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_dict",
+          "line": 73,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_has_page_count_key",
+          "line": 77,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_has_pages_key",
+          "line": 81,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_get_page_count_int",
+          "line": 90,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_get_page_count_positive",
+          "line": 94,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_page_names_returns_list",
+          "line": 98,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_page_names_not_empty",
+          "line": 102,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_page_names_strings",
+          "line": 106,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_returns_list",
+          "line": 116,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_missing_text_empty_list",
+          "line": 120,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_case_sensitive_flag_accepted",
+          "line": 125,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_get_shapes_returns_list",
+          "line": 135,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_get_shape_count_int",
+          "line": 139,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_shape_count_positive",
+          "line": 143,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_shapes_basic_has_shapes",
+          "line": 147,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_string",
+          "line": 156,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_contains_comma",
+          "line": 160,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_has_header_row",
+          "line": 164,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_writes_to_file",
+          "line": 169,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            4
+          ]
+        },
+        {
+          "name": "test_returns_string",
+          "line": 180,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_valid_json",
+          "line": 185,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_has_page_count",
+          "line": 192,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_create_returns_dict",
+          "line": 203,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_write_creates_file",
+          "line": 207,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 2.77,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_r167_fodg_load_coverage.py",
+      "function_count": 9,
+      "functions": [
+        {
+          "name": "test_load_returns_dict",
+          "line": 18,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_load_is_fodg_true",
+          "line": 22,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_load_has_page_count",
+          "line": 26,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            3,
+            2
+          ]
+        },
+        {
+          "name": "test_load_has_pages_list",
+          "line": 31,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            3,
+            2
+          ]
+        },
+        {
+          "name": "test_load_has_shapes_total",
+          "line": 36,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            3,
+            2
+          ]
+        },
+        {
+          "name": "test_load_minimal_drawing",
+          "line": 41,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_load_from_bytes",
+          "line": 45,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_load_from_str_path",
+          "line": 50,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_load_invalid_raises",
+          "line": 54,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.11,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_r168_fodg_content_verification.py",
+      "function_count": 22,
+      "functions": [
+        {
+          "name": "test_all_text_contains_hello_world",
+          "line": 59,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_all_text_contains_goodbye_world",
+          "line": 64,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_all_text_count",
+          "line": 69,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_all_text_empty_doc_is_empty_list",
+          "line": 74,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_find_text_hello_returns_match",
+          "line": 102,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_find_text_match_content",
+          "line": 107,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_find_text_no_match_returns_empty",
+          "line": 113,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_find_text_world_finds_multiple",
+          "line": 118,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_find_text_returns_page_info",
+          "line": 123,
+          "assertion_count": 3,
+          "min_score": 3,
+          "scores": [
+            3,
+            3,
+            5
+          ]
+        },
+        {
+          "name": "test_export_to_txt_contains_hello_world",
+          "line": 134,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            3
+          ]
+        },
+        {
+          "name": "test_export_to_txt_nonempty",
+          "line": 139,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_export_to_txt_has_page_header",
+          "line": 143,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_export_to_txt_from_file",
+          "line": 147,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_page_names_contains_main_slide",
+          "line": 157,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_has_page_true_for_main_slide",
+          "line": 162,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_has_page_false_for_missing",
+          "line": 166,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_export_to_json_parseable",
+          "line": 174,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_export_to_json_has_pages",
+          "line": 180,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_export_to_json_page_count",
+          "line": 186,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_probe_fodg_returns_true_for_valid",
+          "line": 196,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_probe_fodg_returns_false_for_invalid",
+          "line": 200,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_probe_fodg_from_file",
+          "line": 204,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.18,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_r169_fodg_page_text.py",
+      "function_count": 10,
+      "functions": [
+        {
+          "name": "test_returns_list",
+          "line": 24,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_returns_correct_texts",
+          "line": 29,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_empty_strings_excluded",
+          "line": 34,
+          "assertion_count": 3,
+          "min_score": 3,
+          "scores": [
+            3,
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_out_of_range_returns_empty",
+          "line": 41,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_negative_index_returns_empty",
+          "line": 46,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_empty_page_returns_empty",
+          "line": 51,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_second_page_text",
+          "line": 56,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_type_error_on_non_dict",
+          "line": 61,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_minimal_drawing_no_error",
+          "line": 67,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_shapes_basic_no_error",
+          "line": 72,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 2.8,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_r170_fodg_find_shapes_export_page.py",
+      "function_count": 16,
+      "functions": [
+        {
+          "name": "test_finds_simple_pattern",
+          "line": 25,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            5
+          ]
+        },
+        {
+          "name": "test_finds_multiple_matches",
+          "line": 31,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_no_match_returns_empty_list",
+          "line": 36,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_result_has_required_keys",
+          "line": 41,
+          "assertion_count": 5,
+          "min_score": 2,
+          "scores": [
+            2,
+            3,
+            3,
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_page_idx_correct",
+          "line": 51,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_invalid_regex_returns_empty",
+          "line": 57,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_non_dict_model_raises_type_error",
+          "line": 62,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_function_in_all",
+          "line": 66,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_returns_string",
+          "line": 72,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_returns_valid_json",
+          "line": 77,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_contains_page_name",
+          "line": 83,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_second_page",
+          "line": 89,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_out_of_range_returns_empty_json",
+          "line": 95,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_negative_idx_returns_empty_json",
+          "line": 100,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_non_dict_model_raises_type_error",
+          "line": 105,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_function_in_all",
+          "line": 109,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.62,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_r171_fodg_total_text_length.py",
+      "function_count": 7,
+      "functions": [
+        {
+          "name": "test_empty_model_has_zero_length",
+          "line": 16,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_single_text_length",
+          "line": 21,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_multiple_texts_summed",
+          "line": 27,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_multiple_pages_summed",
+          "line": 33,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_empty_text_strings_counted_as_zero",
+          "line": 40,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_int",
+          "line": 46,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_unicode_text_length",
+          "line": 52,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.43,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_r172_fodg_total_text_length.py",
+      "function_count": 4,
+      "functions": [
+        {
+          "name": "test_empty_model",
+          "line": 14,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_single_page_no_shapes",
+          "line": 18,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_int",
+          "line": 22,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_page_with_text_shapes",
+          "line": 27,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.0,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_r198_fodg_page_shape_count.py",
+      "function_count": 6,
+      "functions": [
+        {
+          "name": "test_import",
+          "line": 19,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_shapes_basic_has_three_shapes",
+          "line": 23,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_minimal_drawing_has_one_shape",
+          "line": 29,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_empty_page_returns_zero",
+          "line": 35,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_out_of_range_returns_zero",
+          "line": 41,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_int",
+          "line": 47,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 3.5,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_r211_fodg_total_and_text_shape_count.py",
+      "function_count": 12,
+      "functions": [
+        {
+          "name": "test_import_total",
+          "line": 19,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_empty_page_has_no_shapes",
+          "line": 23,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_minimal_drawing_has_one_shape",
+          "line": 28,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_shapes_basic_has_three_shapes",
+          "line": 33,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_import_text",
+          "line": 38,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_empty_page_has_no_text_shapes",
+          "line": 42,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_minimal_drawing_has_one_text_shape",
+          "line": 47,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_shapes_basic_text_shape_count",
+          "line": 52,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_total_returns_int",
+          "line": 57,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_text_returns_int",
+          "line": 62,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_total_nonnegative",
+          "line": 67,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_text_nonnegative",
+          "line": 72,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.5,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_r233_fodg_avg_shapes_empty_pages.py",
+      "function_count": 10,
+      "functions": [
+        {
+          "name": "test_return_type",
+          "line": 65,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_nonnegative",
+          "line": 70,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_empty_page_returns_zero",
+          "line": 75,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_one_shape",
+          "line": 80,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_two_shapes",
+          "line": 85,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_return_type",
+          "line": 92,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_empty_page_is_true",
+          "line": 97,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_nonempty_page_is_false",
+          "line": 101,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_two_shapes_page",
+          "line": 106,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_bool_not_truthy",
+          "line": 111,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 2.8,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_r246_fodg_page_count_all_shapes.py",
+      "function_count": 10,
+      "functions": [
+        {
+          "name": "test_return_type",
+          "line": 17,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_one_page_minimal",
+          "line": 21,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_one_page_empty",
+          "line": 24,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_nonnegative",
+          "line": 27,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_consistent_across_calls",
+          "line": 30,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_return_type",
+          "line": 35,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_true_for_minimal_with_shape",
+          "line": 39,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_false_for_empty_page",
+          "line": 42,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_true_for_shapes_basic",
+          "line": 45,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_consistent_across_calls",
+          "line": 48,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.4,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_r255_fodg_empty_doc_non_text_shapes.py",
+      "function_count": 12,
+      "functions": [
+        {
+          "name": "test_return_type",
+          "line": 17,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_true_for_empty_page",
+          "line": 20,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_false_for_minimal_drawing",
+          "line": 24,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_false_for_shapes_basic",
+          "line": 28,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_consistent_across_calls",
+          "line": 32,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_true_is_not_none",
+          "line": 35,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            4,
+            2
+          ]
+        },
+        {
+          "name": "test_return_type",
+          "line": 42,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_exact_0_for_empty",
+          "line": 45,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_exact_0_for_minimal",
+          "line": 49,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_exact_2_for_shapes_basic",
+          "line": 53,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_nonnegative",
+          "line": 57,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_consistent_across_calls",
+          "line": 60,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.33,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_r256_fodg_min_text_per_page.py",
+      "function_count": 6,
+      "functions": [
+        {
+          "name": "test_return_type",
+          "line": 21,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_zero_for_empty_page",
+          "line": 24,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_zero_for_minimal_drawing",
+          "line": 27,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_zero_for_shapes_basic",
+          "line": 30,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_nonnegative",
+          "line": 33,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_consistent_across_calls",
+          "line": 36,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.5,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_r257_fodg_total_shape_count.py",
+      "function_count": 6,
+      "functions": [
+        {
+          "name": "test_return_type",
+          "line": 21,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_zero_for_empty_page",
+          "line": 24,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_exact_1_for_minimal_drawing",
+          "line": 27,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_exact_3_for_shapes_basic",
+          "line": 30,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_nonnegative",
+          "line": 33,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_consistent_across_calls",
+          "line": 36,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.5,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_r258_fodg_sprint41_gaps.py",
+      "function_count": 5,
+      "functions": [
+        {
+          "name": "test_return_type",
+          "line": 21,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_false_for_empty_page",
+          "line": 24,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_false_for_minimal_drawing",
+          "line": 27,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_true_for_shapes_basic",
+          "line": 30,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_consistent_across_calls",
+          "line": 33,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.4,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_r259_fodg_load.py",
+      "function_count": 7,
+      "functions": [
+        {
+          "name": "test_return_type",
+          "line": 21,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_is_fodg_true",
+          "line": 25,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_page_count_1_for_empty",
+          "line": 29,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_shapes_total_0_for_empty",
+          "line": 33,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_shapes_total_3_for_shapes_basic",
+          "line": 37,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_mime_type_correct",
+          "line": 41,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_consistent_across_calls",
+          "line": 45,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.71,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_r260_fodg_sprint46_gaps.py",
+      "function_count": 21,
+      "functions": [
+        {
+          "name": "test_return_type",
+          "line": 29,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_exact_1053_for_empty",
+          "line": 32,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_exact_1473_for_minimal",
+          "line": 35,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_exact_1628_for_shapes",
+          "line": 38,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_positive",
+          "line": 41,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_consistent_across_calls",
+          "line": 44,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_return_type",
+          "line": 49,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_zero_for_empty",
+          "line": 52,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_exact_9_for_minimal",
+          "line": 55,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_exact_4_for_shapes",
+          "line": 58,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_nonnegative",
+          "line": 61,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_return_type",
+          "line": 66,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_zero_for_empty",
+          "line": 69,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_exact_1_for_minimal",
+          "line": 72,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_exact_2_for_shapes",
+          "line": 75,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_nonnegative",
+          "line": 78,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_return_type",
+          "line": 83,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_zero_for_empty",
+          "line": 86,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_exact_1_for_minimal",
+          "line": 89,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_exact_2_for_shapes",
+          "line": 92,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_nonnegative",
+          "line": 95,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.57,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_r266_fodg_avg_shapes_has_single.py",
+      "function_count": 10,
+      "functions": [
+        {
+          "name": "test_minimal_drawing",
+          "line": 14,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_shapes_basic",
+          "line": 17,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_empty_page",
+          "line": 20,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_float",
+          "line": 23,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_nonnegative",
+          "line": 27,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_minimal_drawing_has_single",
+          "line": 33,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_shapes_basic_not_single",
+          "line": 36,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_empty_page_not_single",
+          "line": 39,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_bool",
+          "line": 42,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_false_for_multiple_shapes",
+          "line": 46,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.6,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_r269_fodg_sprint57_gaps.py",
+      "function_count": 6,
+      "functions": [
+        {
+          "name": "test_return_type",
+          "line": 21,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_zero_for_empty",
+          "line": 24,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_zero_for_minimal",
+          "line": 27,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_zero_for_shapes",
+          "line": 30,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_nonnegative",
+          "line": 33,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_consistent_across_calls",
+          "line": 36,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.5,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_r274_fodg_installed_workflow.py",
+      "function_count": 11,
+      "functions": [
+        {
+          "name": "test_importable_from_fodg_workflow",
+          "line": 22,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_importable_from_package",
+          "line": 26,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_returns_dict",
+          "line": 34,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_format_field_is_fodg",
+          "line": 39,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_loaded_field_is_true",
+          "line": 44,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_page_count_is_integer",
+          "line": 49,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_shape_count_is_integer",
+          "line": 54,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_has_all_required_keys",
+          "line": 59,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_page_count_positive",
+          "line": 64,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_consistent_across_calls",
+          "line": 69,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_shapes_basic_doc",
+          "line": 76,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.18,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_r275_fodg_total_text_items_avg_shapes.py",
+      "function_count": 10,
+      "functions": [
+        {
+          "name": "test_minimal",
+          "line": 14,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_shapes_basic",
+          "line": 17,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_empty_page",
+          "line": 20,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_int",
+          "line": 23,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_nonnegative",
+          "line": 26,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_minimal",
+          "line": 32,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_shapes_basic",
+          "line": 35,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_empty_page",
+          "line": 38,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_float",
+          "line": 41,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_nonnegative",
+          "line": 44,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.6,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_r282_fodg_gap_closure.py",
+      "function_count": 1,
+      "functions": [
+        {
+          "name": "test_fodg_min_text_per_page_returns_number",
+          "line": 23,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 2.0,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_r283_fodg_analytics_gaps.py",
+      "function_count": 4,
+      "functions": [
+        {
+          "name": "test_returns_int",
+          "line": 21,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_nonnegative",
+          "line": 24,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_empty_page_returns_zero",
+          "line": 27,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_shapes_doc_nonnegative",
+          "line": 31,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.5,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_r284_fodg_has_non_text_shapes_has_no_shapes.py",
+      "function_count": 10,
+      "functions": [
+        {
+          "name": "test_has_non_text_shapes_minimal_false",
+          "line": 17,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_has_non_text_shapes_shapes_basic_true",
+          "line": 21,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_has_non_text_shapes_empty_page_false",
+          "line": 25,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_has_non_text_shapes_returns_bool",
+          "line": 29,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_has_non_text_shapes_differs_from_has_no_shapes",
+          "line": 33,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_has_no_shapes_minimal_false",
+          "line": 41,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_has_no_shapes_shapes_basic_false",
+          "line": 45,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_has_no_shapes_empty_page_true",
+          "line": 49,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_has_no_shapes_returns_bool",
+          "line": 53,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_has_no_shapes_empty_implies_no_non_text",
+          "line": 57,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.6,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_r286_fodg_gap_closure.py",
+      "function_count": 6,
+      "functions": [
+        {
+          "name": "test_returns_bool",
+          "line": 25,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_empty_page_has_no_shapes",
+          "line": 28,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_minimal_drawing_has_shapes",
+          "line": 31,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_shapes_basic_has_shapes",
+          "line": 34,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_all_return_bool",
+          "line": 37,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_no_shapes_is_inverse_of_has_shapes",
+          "line": 42,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.17,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_r288_fodg_text_analytics.py",
+      "function_count": 13,
+      "functions": [
+        {
+          "name": "test_returns_bool",
+          "line": 25,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_empty_page_is_false",
+          "line": 28,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_minimal_drawing_is_true",
+          "line": 32,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_shapes_basic_is_true",
+          "line": 36,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_empty_differs_from_shapes",
+          "line": 40,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_all_return_bool",
+          "line": 43,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_returns_int",
+          "line": 49,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_empty_page_returns_zero",
+          "line": 52,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_minimal_drawing_returns_nine",
+          "line": 55,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_shapes_basic_returns_seven",
+          "line": 59,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_nonnegative",
+          "line": 63,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_empty_lower_than_minimal",
+          "line": 67,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_all_return_int",
+          "line": 70,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 3.23,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_r290_fodg_analytics_deepening.py",
+      "function_count": 5,
+      "functions": [
+        {
+          "name": "test_returns_float",
+          "line": 28,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_nonnegative",
+          "line": 31,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_bool",
+          "line": 36,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_returns_int",
+          "line": 41,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_nonnegative",
+          "line": 44,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 2.8,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_r290j_fodg_analytics_deepening.py",
+      "function_count": 6,
+      "functions": [
+        {
+          "name": "test_returns_int",
+          "line": 36,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_nonnegative",
+          "line": 39,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_float",
+          "line": 44,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_between_zero_and_one",
+          "line": 47,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_int",
+          "line": 53,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_nonnegative",
+          "line": 56,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.0,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_r298_fodg_iter_pages.py",
+      "function_count": 10,
+      "functions": [
+        {
+          "name": "test_importable_from_fodg_page_iterator",
+          "line": 19,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_importable_from_package",
+          "line": 23,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_returns_iterator",
+          "line": 29,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_minimal_yields_pages",
+          "line": 34,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_page_type_is_spec_page",
+          "line": 39,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_page_has_spec_qname",
+          "line": 45,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_page_qname_value",
+          "line": 50,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_page_has_name",
+          "line": 55,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_page_has_shape_count",
+          "line": 61,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_consistent",
+          "line": 67,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 2.8,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_r299_fodg_new_analytics.py",
+      "function_count": 20,
+      "functions": [
+        {
+          "name": "test_nonempty_shape_ratio_minimal_is_float",
+          "line": 29,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_nonempty_shape_ratio_minimal_in_range",
+          "line": 34,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_nonempty_shape_ratio_shapes_is_float",
+          "line": 39,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_nonempty_shape_ratio_shapes_in_range",
+          "line": 44,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_nonempty_shape_ratio_empty_page_in_range",
+          "line": 49,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_max_shape_text_length_minimal_is_int",
+          "line": 56,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_max_shape_text_length_minimal_nonnegative",
+          "line": 61,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_max_shape_text_length_shapes_is_int",
+          "line": 66,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_max_shape_text_length_shapes_nonnegative",
+          "line": 71,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_max_shape_text_length_empty_is_zero",
+          "line": 76,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_shapes_with_text_count_minimal_is_int",
+          "line": 83,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_shapes_with_text_count_minimal_nonnegative",
+          "line": 88,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_shapes_with_text_count_shapes_is_int",
+          "line": 93,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_shapes_with_text_count_empty_is_zero",
+          "line": 98,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_nonempty_page_ratio_minimal_is_float",
+          "line": 105,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_nonempty_page_ratio_minimal_in_range",
+          "line": 110,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_nonempty_page_ratio_shapes_positive",
+          "line": 115,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_total_shapes_and_pages_minimal_is_int",
+          "line": 122,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_total_shapes_and_pages_minimal_positive",
+          "line": 127,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_total_shapes_and_pages_shapes_greater_than_minimal",
+          "line": 132,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.15,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_r301_fodg_shape_bounds.py",
+      "function_count": 12,
+      "functions": [
+        {
+          "name": "test_empty_page_has_min_zero",
+          "line": 16,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_minimal_drawing_has_min_one",
+          "line": 21,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_shapes_basic_has_min_three",
+          "line": 26,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_int",
+          "line": 31,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_nonnegative",
+          "line": 35,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_shapes_basic_min_more_than_minimal",
+          "line": 39,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_empty_page_is_empty_drawing",
+          "line": 48,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_minimal_drawing_is_not_empty",
+          "line": 53,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_shapes_basic_is_not_empty",
+          "line": 58,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_bool",
+          "line": 63,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_non_empty_drawings_return_false",
+          "line": 67,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_empty_true_minimal_false",
+          "line": 71,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 3.42,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_r304_fodg_shape_flags.py",
+      "function_count": 12,
+      "functions": [
+        {
+          "name": "test_empty_page_no_multiple",
+          "line": 16,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_minimal_drawing_no_multiple",
+          "line": 20,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_shapes_basic_has_multiple",
+          "line": 24,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_bool",
+          "line": 28,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_empty_and_minimal_both_false",
+          "line": 31,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_basic_true_empty_false",
+          "line": 35,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_empty_page_shapes_not_exceed",
+          "line": 44,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_minimal_drawing_shapes_not_exceed",
+          "line": 48,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_shapes_basic_exceeds",
+          "line": 52,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_bool",
+          "line": 56,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_two_files_not_exceed",
+          "line": 59,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_basic_exceeds_empty_does_not",
+          "line": 63,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 3.33,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_r306_fodg_sprint135_gaps.py",
+      "function_count": 6,
+      "functions": [
+        {
+          "name": "test_return_type",
+          "line": 21,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_exact_0_for_empty",
+          "line": 24,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_exact_2_for_minimal",
+          "line": 27,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_exact_5_for_shapes",
+          "line": 30,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_nonnegative",
+          "line": 33,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_consistent",
+          "line": 36,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.5,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_r321_fodg_textandshapesum_textitemsexceedpages_analytics.py",
+      "function_count": 12,
+      "functions": [
+        {
+          "name": "test_text_and_shape_sum_empty_page",
+          "line": 17,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_text_and_shape_sum_minimal_drawing",
+          "line": 20,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_text_and_shape_sum_shapes_basic",
+          "line": 23,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_text_and_shape_sum_returns_int",
+          "line": 26,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_text_and_shape_sum_shapes_greater_than_minimal",
+          "line": 30,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_text_and_shape_sum_all_distinct",
+          "line": 33,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_text_items_exceed_pages_empty_page_false",
+          "line": 44,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_text_items_exceed_pages_minimal_drawing_false",
+          "line": 47,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_text_items_exceed_pages_shapes_basic_true",
+          "line": 50,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_text_items_exceed_pages_returns_bool",
+          "line": 53,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_text_items_exceed_pages_minimal_is_bool",
+          "line": 57,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_text_items_exceed_pages_only_shapes_true",
+          "line": 61,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.42,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_r324_fodg_new_analytics.py",
+      "function_count": 25,
+      "functions": [
+        {
+          "name": "test_minimal_positive",
+          "line": 28,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_shapes_positive",
+          "line": 31,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_empty_positive",
+          "line": 34,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_int",
+          "line": 37,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_reasonable_size",
+          "line": 40,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_int",
+          "line": 47,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_minimal_non_negative",
+          "line": 50,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_shapes_non_negative",
+          "line": 53,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_empty_zero",
+          "line": 56,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_min_le_avg",
+          "line": 59,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_returns_float",
+          "line": 68,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_minimal_non_negative",
+          "line": 71,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_shapes_non_negative",
+          "line": 74,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_empty_zero",
+          "line": 77,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_non_negative",
+          "line": 80,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_int",
+          "line": 87,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_minimal_non_negative",
+          "line": 90,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_shapes_non_negative",
+          "line": 93,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_empty_zero",
+          "line": 96,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_unique_le_total",
+          "line": 99,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_returns_int",
+          "line": 106,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_minimal_non_negative",
+          "line": 109,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_shapes_non_negative",
+          "line": 112,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_empty_zero",
+          "line": 115,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_total_ge_unique",
+          "line": 118,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.48,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_r365_fodg_deepening.py",
+      "function_count": 12,
+      "functions": [
+        {
+          "name": "test_return_type",
+          "line": 21,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_zero_for_single_item",
+          "line": 24,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_exact_3_for_shapes_basic",
+          "line": 28,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_zero_for_empty_page",
+          "line": 32,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_nonnegative",
+          "line": 35,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_consistent",
+          "line": 38,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_return_type",
+          "line": 43,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_exact_1_0_for_minimal",
+          "line": 46,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_exact_ratio_for_shapes_basic",
+          "line": 50,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_zero_for_empty_page",
+          "line": 55,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_nonnegative",
+          "line": 59,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_consistent",
+          "line": 62,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.5,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_r371_fodg_sprint142_gap.py",
+      "function_count": 5,
+      "functions": [
+        {
+          "name": "test_return_type",
+          "line": 20,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_true_for_minimal",
+          "line": 23,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_false_for_shapes_basic",
+          "line": 27,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_true_for_empty_page",
+          "line": 31,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_consistent",
+          "line": 35,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.4,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_rnext2_fodg_roundtrip.py",
+      "function_count": 7,
+      "functions": [
+        {
+          "name": "test_roundtrip_preserves_page_count",
+          "line": 16,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_roundtrip_preserves_text",
+          "line": 26,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_roundtrip_creates_dest_file",
+          "line": 38,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            3
+          ]
+        },
+        {
+          "name": "test_roundtrip_returns_valid_model",
+          "line": 49,
+          "assertion_count": 3,
+          "min_score": 3,
+          "scores": [
+            4,
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_roundtrip_from_bytes",
+          "line": 61,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            4,
+            3
+          ]
+        },
+        {
+          "name": "test_roundtrip_empty_document",
+          "line": 73,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_roundtrip_multiple_pages",
+          "line": 83,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            4,
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.14,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_spec_compat_layer.py",
+      "function_count": 15,
+      "functions": [
+        {
+          "name": "test_spec_qname",
+          "line": 25,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_spec_fact_ref",
+          "line": 28,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_namespace_uri_present",
+          "line": 31,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_instantiation",
+          "line": 36,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_is_fodg_property",
+          "line": 40,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_page_count",
+          "line": 44,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_to_dict",
+          "line": 48,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_repr_nonempty",
+          "line": 53,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_inherits_spec_class",
+          "line": 57,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_instantiation",
+          "line": 63,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_spec_qname",
+          "line": 67,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_name_property",
+          "line": 70,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_shape_count",
+          "line": 74,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_inherits_spec_class",
+          "line": 78,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_repr_nonempty",
+          "line": 82,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.27,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/fodg/test_tc_5369be63_fodg_probe.py",
+      "function_count": 16,
+      "functions": [
+        {
+          "name": "test_probe_minimal_drawing_true",
+          "line": 34,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_probe_shapes_basic_true",
+          "line": 38,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_probe_empty_page_true",
+          "line": 42,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_probe_all_samples_true",
+          "line": 46,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_probe_string_path_returns_true",
+          "line": 56,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_probe_xml_string_with_mime_returns_true",
+          "line": 60,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_probe_non_fodg_xml_string_returns_false",
+          "line": 66,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_probe_empty_bytes_returns_false",
+          "line": 76,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_probe_empty_string_returns_false",
+          "line": 80,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_probe_nonexistent_path_returns_false",
+          "line": 84,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_return_is_bool_for_valid_file",
+          "line": 94,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_return_is_bool_for_invalid_bytes",
+          "line": 98,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_return_is_bool_for_missing_file",
+          "line": 102,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_probe_never_raises_on_random_bytes",
+          "line": 112,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_probe_never_raises_on_nonexistent_path",
+          "line": 116,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_probe_returns_false_for_non_fodg_content",
+          "line": 120,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.5,
+      "file_min_score": 2
+    }
+  ]
+}

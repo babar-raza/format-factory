@@ -1,0 +1,346 @@
+{
+  "exception_count": 3,
+  "exceptions": [
+    {
+      "coverage_status": "REFERENCED_BY_TEST",
+      "file": "src/python/gnumeric/gnumeric_codec.py",
+      "line": 30,
+      "name": "GnumericError",
+      "raised_in_source": true,
+      "test_reference_count": 17,
+      "test_references": [
+        {
+          "file": "tests/python/gnumeric/test_exception_coverage.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/gnumeric/test_gnumeric_gap_closure_batch2.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/gnumeric/test_r117_gnumeric_csv_export.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/gnumeric/test_r119_gnumeric_probe_create_write.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/gnumeric/test_r123_gnumeric_cell_accessor.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/gnumeric/test_r126_gnumeric_set_cell.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/gnumeric/test_r130_gnumeric_row_col_sheet_ops.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/gnumeric/test_r137_gnumeric_copy_sheet.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/gnumeric/test_r138_gnumeric_clear_cell.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/gnumeric/test_r138_gnumeric_row_count.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/gnumeric/test_r140_gnumeric_column_count.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/gnumeric/test_r140_gnumeric_read_cell.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/gnumeric/test_r142_gnumeric_count_nonempty.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/gnumeric/test_r167_gnumeric_coverage.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/gnumeric/test_r221_gnumeric_cell_count_file.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/gnumeric/test_rnext_gnumeric_nonempty_cell_count_file.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/gnumeric/test_rnext_gnumeric_set_cell_value.py",
+          "match": "text_reference"
+        }
+      ]
+    },
+    {
+      "coverage_status": "REFERENCED_BY_TEST",
+      "file": "src/python/gnumeric/gnumeric_codec.py",
+      "line": 34,
+      "name": "GnumericParseError",
+      "raised_in_source": true,
+      "test_reference_count": 4,
+      "test_references": [
+        {
+          "file": "tests/python/gnumeric/test_gnumeric_codec.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/gnumeric/test_gnumeric_gap_closure_batch2.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/gnumeric/test_r167_gnumeric_coverage.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/gnumeric/test_r167_gnumeric_load_coverage.py",
+          "match": "text_reference"
+        }
+      ]
+    },
+    {
+      "coverage_status": "REFERENCED_BY_TEST",
+      "file": "src/python/gnumeric/exceptions.py",
+      "line": 21,
+      "name": "GnumericWriteError",
+      "raised_in_source": false,
+      "test_reference_count": 1,
+      "test_references": [
+        {
+          "file": "tests/python/gnumeric/test_exception_coverage.py",
+          "match": "text_reference"
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "authoritative_plan": "plans/.claude/crispy-jingling-snail.md",
+    "generated_by": "codex",
+    "mission_id": "CERT-EXHAUST-20260628",
+    "tool": "exception_coverage_checker",
+    "visibility": "internal"
+  },
+  "raise_site_count": 42,
+  "raise_sites": [
+    {
+      "exception": "GnumericError",
+      "file": "src/python/gnumeric/gnumeric_codec.py",
+      "line": 117
+    },
+    {
+      "exception": "GnumericError",
+      "file": "src/python/gnumeric/gnumeric_codec.py",
+      "line": 248
+    },
+    {
+      "exception": "GnumericError",
+      "file": "src/python/gnumeric/gnumeric_codec.py",
+      "line": 278
+    },
+    {
+      "exception": "GnumericError",
+      "file": "src/python/gnumeric/gnumeric_codec.py",
+      "line": 302
+    },
+    {
+      "exception": "GnumericError",
+      "file": "src/python/gnumeric/gnumeric_codec.py",
+      "line": 305
+    },
+    {
+      "exception": "GnumericParseError",
+      "file": "src/python/gnumeric/gnumeric_codec.py",
+      "line": 310
+    },
+    {
+      "exception": "GnumericError",
+      "file": "src/python/gnumeric/gnumeric_codec.py",
+      "line": 313
+    },
+    {
+      "exception": "GnumericParseError",
+      "file": "src/python/gnumeric/gnumeric_codec.py",
+      "line": 321
+    },
+    {
+      "exception": "GnumericParseError",
+      "file": "src/python/gnumeric/gnumeric_codec.py",
+      "line": 330
+    },
+    {
+      "exception": "GnumericParseError",
+      "file": "src/python/gnumeric/gnumeric_codec.py",
+      "line": 337
+    },
+    {
+      "exception": "TypeError",
+      "file": "src/python/gnumeric/gnumeric_codec.py",
+      "line": 395
+    },
+    {
+      "exception": "GnumericError",
+      "file": "src/python/gnumeric/gnumeric_codec.py",
+      "line": 398
+    },
+    {
+      "exception": "TypeError",
+      "file": "src/python/gnumeric/gnumeric_codec.py",
+      "line": 412
+    },
+    {
+      "exception": "TypeError",
+      "file": "src/python/gnumeric/gnumeric_codec.py",
+      "line": 414
+    },
+    {
+      "exception": "GnumericError",
+      "file": "src/python/gnumeric/gnumeric_codec.py",
+      "line": 417
+    },
+    {
+      "exception": "TypeError",
+      "file": "src/python/gnumeric/gnumeric_codec.py",
+      "line": 463
+    },
+    {
+      "exception": "GnumericError",
+      "file": "src/python/gnumeric/gnumeric_codec.py",
+      "line": 466
+    },
+    {
+      "exception": "TypeError",
+      "file": "src/python/gnumeric/gnumeric_codec.py",
+      "line": 485
+    },
+    {
+      "exception": "GnumericError",
+      "file": "src/python/gnumeric/gnumeric_codec.py",
+      "line": 488
+    },
+    {
+      "exception": "TypeError",
+      "file": "src/python/gnumeric/gnumeric_codec.py",
+      "line": 505
+    },
+    {
+      "exception": "GnumericError",
+      "file": "src/python/gnumeric/gnumeric_codec.py",
+      "line": 508
+    },
+    {
+      "exception": "TypeError",
+      "file": "src/python/gnumeric/gnumeric_codec.py",
+      "line": 522
+    },
+    {
+      "exception": "TypeError",
+      "file": "src/python/gnumeric/gnumeric_codec.py",
+      "line": 524
+    },
+    {
+      "exception": "GnumericError",
+      "file": "src/python/gnumeric/gnumeric_codec.py",
+      "line": 527
+    },
+    {
+      "exception": "TypeError",
+      "file": "src/python/gnumeric/gnumeric_codec.py",
+      "line": 553
+    },
+    {
+      "exception": "TypeError",
+      "file": "src/python/gnumeric/gnumeric_codec.py",
+      "line": 576
+    },
+    {
+      "exception": "TypeError",
+      "file": "src/python/gnumeric/gnumeric_codec.py",
+      "line": 578
+    },
+    {
+      "exception": "TypeError",
+      "file": "src/python/gnumeric/gnumeric_codec.py",
+      "line": 595
+    },
+    {
+      "exception": "GnumericError",
+      "file": "src/python/gnumeric/gnumeric_codec.py",
+      "line": 598
+    },
+    {
+      "exception": "TypeError",
+      "file": "src/python/gnumeric/gnumeric_codec.py",
+      "line": 622
+    },
+    {
+      "exception": "GnumericError",
+      "file": "src/python/gnumeric/gnumeric_codec.py",
+      "line": 625
+    },
+    {
+      "exception": "TypeError",
+      "file": "src/python/gnumeric/gnumeric_codec.py",
+      "line": 654
+    },
+    {
+      "exception": "GnumericError",
+      "file": "src/python/gnumeric/gnumeric_codec.py",
+      "line": 657
+    },
+    {
+      "exception": "KeyError",
+      "file": "src/python/gnumeric/gnumeric_codec.py",
+      "line": 674
+    },
+    {
+      "exception": "IndexError",
+      "file": "src/python/gnumeric/gnumeric_workbook_stats.py",
+      "line": 181
+    },
+    {
+      "exception": "IndexError",
+      "file": "src/python/gnumeric/gnumeric_workbook_stats.py",
+      "line": 209
+    },
+    {
+      "exception": "TypeError",
+      "file": "src/python/gnumeric/gnumeric_workbook_stats.py",
+      "line": 326
+    },
+    {
+      "exception": "GnumericError",
+      "file": "src/python/gnumeric/gnumeric_workbook_stats.py",
+      "line": 329
+    },
+    {
+      "exception": "TypeError",
+      "file": "src/python/gnumeric/gnumeric_workbook_stats.py",
+      "line": 346
+    },
+    {
+      "exception": "GnumericError",
+      "file": "src/python/gnumeric/gnumeric_workbook_stats.py",
+      "line": 349
+    },
+    {
+      "exception": "TypeError",
+      "file": "src/python/gnumeric/gnumeric_workbook_stats.py",
+      "line": 366
+    },
+    {
+      "exception": "GnumericError",
+      "file": "src/python/gnumeric/gnumeric_workbook_stats.py",
+      "line": 369
+    }
+  ],
+  "source_path": "src/python/gnumeric",
+  "test_path": "tests/python/gnumeric",
+  "uncovered_exception_count": 0
+}

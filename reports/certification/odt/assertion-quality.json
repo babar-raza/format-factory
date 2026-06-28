@@ -1,0 +1,3458 @@
+{
+  "metadata": {
+    "authoritative_plan": "plans/.claude/crispy-jingling-snail.md",
+    "mission_id": "CERT-EXHAUST-20260628",
+    "tool": "assertion_quality_scorer"
+  },
+  "target": "tests/python/odt",
+  "file_count": 30,
+  "total_test_functions": 345,
+  "score_distribution": {
+    "1": 0,
+    "2": 92,
+    "3": 73,
+    "4": 166,
+    "5": 14
+  },
+  "weak_assertion_count": 0,
+  "overall_avg_score": 3.3,
+  "overall_min_score": 2,
+  "files": [
+    {
+      "file": "tests/python/odt/test_mdr10_odt_exports.py",
+      "function_count": 8,
+      "functions": [
+        {
+          "name": "test_parse_odt_returns_dict",
+          "line": 28,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_parse_odt_ok_flag",
+          "line": 33,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_parse_odt_has_paragraphs",
+          "line": 38,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_parse_odt_strict_returns_document",
+          "line": 47,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_probe_odt_returns_dict",
+          "line": 56,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_probe_odt_exists_flag",
+          "line": 61,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_get_capabilities_returns_dict",
+          "line": 70,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_get_capabilities_has_key",
+          "line": 75,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 2.38,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/odt/test_odt_conveyor_deepening.py",
+      "function_count": 10,
+      "functions": [
+        {
+          "name": "test_parse_odt_minimal",
+          "line": 26,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_parse_odt_strict_returns_document",
+          "line": 31,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_parse_odt_two_paragraphs",
+          "line": 36,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_parse_odt_unicode",
+          "line": 42,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_probe_odt_valid_container",
+          "line": 47,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            5
+          ]
+        },
+        {
+          "name": "test_probe_odt_nonexistent",
+          "line": 53,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_capabilities",
+          "line": 58,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            5,
+            3
+          ]
+        },
+        {
+          "name": "test_parse_odt_bad_file",
+          "line": 64,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_strict_parse_has_elements",
+          "line": 71,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_headings_extraction",
+          "line": 76,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 3.5,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/odt/test_odt_domain_model.py",
+      "function_count": 8,
+      "functions": [
+        {
+          "name": "test_spec_qname_class_level_access",
+          "line": 14,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_spec_qname_is_classvar",
+          "line": 17,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_spec_qname_is_string",
+          "line": 21,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_spec_fact_ref_class_level",
+          "line": 24,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_from_file_returns_model",
+          "line": 27,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_from_file_spec_qname_on_instance",
+          "line": 31,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_from_file_paragraph_count",
+          "line": 35,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_to_dict_paragraph_count_key",
+          "line": 39,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.62,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/odt/test_odt_gate5_neutral_model.py",
+      "function_count": 18,
+      "functions": [
+        {
+          "name": "test_get_capabilities_returns_dict",
+          "line": 30,
+          "assertion_count": 3,
+          "min_score": 2,
+          "scores": [
+            2,
+            5,
+            4
+          ]
+        },
+        {
+          "name": "test_commercial_product_ready_false",
+          "line": 36,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_supported_features_nonempty",
+          "line": 40,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_unsupported_features_nonempty",
+          "line": 45,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_no_overlap_supported_unsupported",
+          "line": 50,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_tables_explicitly_unsupported",
+          "line": 54,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_images_explicitly_unsupported",
+          "line": 57,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_macros_explicitly_unsupported",
+          "line": 60,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_encryption_explicitly_unsupported",
+          "line": 63,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_limits_in_capabilities",
+          "line": 66,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            4
+          ]
+        },
+        {
+          "name": "test_empty_document",
+          "line": 82,
+          "assertion_count": 3,
+          "min_score": 3,
+          "scores": [
+            3,
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_heading_levels",
+          "line": 98,
+          "assertion_count": 4,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_mixed_paragraphs_and_headings",
+          "line": 118,
+          "assertion_count": 4,
+          "min_score": 2,
+          "scores": [
+            4,
+            2,
+            2,
+            2
+          ]
+        },
+        {
+          "name": "test_missing_body_returns_empty",
+          "line": 138,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_wrong_mimetype_raises",
+          "line": 149,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_missing_content_xml_raises",
+          "line": 158,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_parse_odt_dict_error_has_error_type",
+          "line": 166,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            4,
+            3
+          ]
+        },
+        {
+          "name": "test_probe_returns_entries_list",
+          "line": 171,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            3,
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 3.06,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/odt/test_odt_gate6_oracle.py",
+      "function_count": 14,
+      "functions": [
+        {
+          "name": "test_known_minimal_document_oracle",
+          "line": 32,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            5
+          ]
+        },
+        {
+          "name": "test_known_two_paragraphs_oracle",
+          "line": 38,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_known_unicode_text_oracle",
+          "line": 43,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            4,
+            3
+          ]
+        },
+        {
+          "name": "test_synthetic_heading_oracle",
+          "line": 49,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            5,
+            4
+          ]
+        },
+        {
+          "name": "test_synthetic_list_oracle",
+          "line": 66,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_multi_paragraph_oracle",
+          "line": 86,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            4,
+            3
+          ]
+        },
+        {
+          "name": "test_heading_levels_oracle",
+          "line": 104,
+          "assertion_count": 3,
+          "min_score": 3,
+          "scores": [
+            4,
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_nested_list_oracle",
+          "line": 130,
+          "assertion_count": 3,
+          "min_score": 4,
+          "scores": [
+            4,
+            5,
+            5
+          ]
+        },
+        {
+          "name": "test_unicode_cjk_emoji_rtl_oracle",
+          "line": 155,
+          "assertion_count": 4,
+          "min_score": 3,
+          "scores": [
+            4,
+            3,
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_empty_document_oracle",
+          "line": 178,
+          "assertion_count": 3,
+          "min_score": 3,
+          "scores": [
+            3,
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_mixed_content_oracle",
+          "line": 195,
+          "assertion_count": 15,
+          "min_score": 2,
+          "scores": [
+            4,
+            5,
+            4,
+            5,
+            4,
+            4,
+            5,
+            5,
+            4,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2
+          ]
+        },
+        {
+          "name": "test_style_name_oracle",
+          "line": 236,
+          "assertion_count": 2,
+          "min_score": 5,
+          "scores": [
+            5,
+            5
+          ]
+        },
+        {
+          "name": "test_dict_api_oracle",
+          "line": 253,
+          "assertion_count": 6,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4,
+            5,
+            5,
+            4
+          ]
+        },
+        {
+          "name": "test_oracle_blocked_external_tool",
+          "line": 276,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.5,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/odt/test_odt_gate7_fuzz_guard.py",
+      "function_count": 14,
+      "functions": [
+        {
+          "name": "test_not_a_zip_file",
+          "line": 28,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_empty_file",
+          "line": 35,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_zip_bomb_entry_count",
+          "line": 41,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_malformed_xml_content",
+          "line": 51,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_binary_garbage_content_xml",
+          "line": 59,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_dict_api_never_raises",
+          "line": 67,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            4
+          ]
+        },
+        {
+          "name": "test_extremely_nested_xml",
+          "line": 72,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_path_traversal_in_zip_entry",
+          "line": 84,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_missing_styles_xml_graceful",
+          "line": 95,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_xml_with_processing_instructions",
+          "line": 116,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            4
+          ]
+        },
+        {
+          "name": "test_deeply_nested_odf_elements",
+          "line": 139,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_invalid_mimetype_content",
+          "line": 162,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_null_bytes_in_content_xml",
+          "line": 171,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_missing_content_xml",
+          "line": 190,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.14,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/odt/test_odt_parser.py",
+      "function_count": 20,
+      "functions": [
+        {
+          "name": "test_minimal_document",
+          "line": 25,
+          "assertion_count": 3,
+          "min_score": 2,
+          "scores": [
+            2,
+            4,
+            5
+          ]
+        },
+        {
+          "name": "test_two_paragraphs",
+          "line": 31,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_unicode_text",
+          "line": 35,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            4,
+            3
+          ]
+        },
+        {
+          "name": "test_elements_list",
+          "line": 42,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            4,
+            2
+          ]
+        },
+        {
+          "name": "test_truncated_zip",
+          "line": 51,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            4,
+            3
+          ]
+        },
+        {
+          "name": "test_truncated_raises_strict",
+          "line": 56,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_nonexistent_file",
+          "line": 61,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_probe_valid",
+          "line": 69,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            5
+          ]
+        },
+        {
+          "name": "test_probe_nonexistent",
+          "line": 74,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_empty_file",
+          "line": 82,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_empty_file_strict",
+          "line": 89,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_random_bytes_not_zip",
+          "line": 96,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_valid_zip_wrong_mimetype",
+          "line": 103,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            4,
+            2
+          ]
+        },
+        {
+          "name": "test_zip_missing_content_xml",
+          "line": 114,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_zip_missing_mimetype_entry",
+          "line": 125,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_truncated_zip_bytes",
+          "line": 135,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_xml_with_entity_declaration",
+          "line": 149,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            4
+          ]
+        },
+        {
+          "name": "test_content_xml_not_valid_xml",
+          "line": 170,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_content_xml_empty_body",
+          "line": 181,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_dict_output",
+          "line": 203,
+          "assertion_count": 3,
+          "min_score": 3,
+          "scores": [
+            4,
+            4,
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.45,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/odt/test_odt_spec_qname.py",
+      "function_count": 11,
+      "functions": [
+        {
+          "name": "test_odt_paragraph_spec_qname_class_access",
+          "line": 19,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_odt_heading_spec_qname_class_access",
+          "line": 22,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_odt_list_item_spec_qname_class_access",
+          "line": 25,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_odt_document_spec_qname_class_access",
+          "line": 28,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_odt_paragraph_spec_qname_is_string",
+          "line": 31,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_odt_heading_spec_qname_is_string",
+          "line": 34,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_odt_document_spec_qname_is_string",
+          "line": 37,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_odt_paragraph_spec_qname_matches_instance",
+          "line": 40,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_odt_heading_spec_qname_matches_instance",
+          "line": 44,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_odt_document_spec_qname_matches_instance",
+          "line": 48,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_odt_qnames_follow_odf_namespace",
+          "line": 52,
+          "assertion_count": 4,
+          "min_score": 3,
+          "scores": [
+            3,
+            3,
+            3,
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.45,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/odt/test_odt_writer.py",
+      "function_count": 19,
+      "functions": [
+        {
+          "name": "test_write_creates_file",
+          "line": 25,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_write_creates_valid_zip",
+          "line": 31,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_write_includes_mimetype",
+          "line": 36,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            5
+          ]
+        },
+        {
+          "name": "test_write_includes_content_xml",
+          "line": 43,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_write_content_contains_paragraph_text",
+          "line": 49,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_write_multiple_paragraphs",
+          "line": 56,
+          "assertion_count": 3,
+          "min_score": 3,
+          "scores": [
+            3,
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_write_with_heading",
+          "line": 65,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_write_empty_paragraphs",
+          "line": 73,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_write_returns_path",
+          "line": 79,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_write_string_path",
+          "line": 84,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_write_escapes_xml_special_chars",
+          "line": 89,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_from_text_creates_file",
+          "line": 99,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_from_text_splits_on_newlines",
+          "line": 104,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_from_text_skips_empty_lines",
+          "line": 110,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_from_text_round_trip",
+          "line": 116,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_from_list",
+          "line": 127,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_from_dict_with_paragraphs",
+          "line": 133,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_from_odt_document",
+          "line": 140,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            5
+          ]
+        },
+        {
+          "name": "test_from_empty_model",
+          "line": 151,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.21,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/odt/test_r176_odt_word_count.py",
+      "function_count": 6,
+      "functions": [
+        {
+          "name": "test_minimal_document_word_count",
+          "line": 21,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_two_paragraphs_word_count",
+          "line": 26,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_unicode_text_word_count",
+          "line": 31,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_int",
+          "line": 36,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_word_count_is_non_negative",
+          "line": 40,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_word_count_exported_from_init",
+          "line": 44,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.67,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/odt/test_r179_odt_heading_count.py",
+      "function_count": 6,
+      "functions": [
+        {
+          "name": "test_minimal_document_no_headings",
+          "line": 21,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_two_paragraphs_no_headings",
+          "line": 25,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_unicode_text_no_headings",
+          "line": 29,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_int",
+          "line": 33,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_non_negative",
+          "line": 37,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_exported_from_init",
+          "line": 41,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.67,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/odt/test_r185_odt_paragraph_count.py",
+      "function_count": 6,
+      "functions": [
+        {
+          "name": "test_minimal_document_one_paragraph",
+          "line": 21,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_two_paragraphs_returns_two",
+          "line": 25,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_unicode_text_one_paragraph",
+          "line": 29,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_int",
+          "line": 33,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_non_negative",
+          "line": 37,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_exported_from_init",
+          "line": 41,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.67,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/odt/test_r202_odt_advanced_ops.py",
+      "function_count": 25,
+      "functions": [
+        {
+          "name": "test_parse_odt_returns_dict",
+          "line": 34,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_parse_odt_ok_true",
+          "line": 38,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_parse_odt_minimal_paragraph_count",
+          "line": 42,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_parse_odt_two_paragraphs",
+          "line": 46,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_parse_odt_has_paragraphs_list",
+          "line": 50,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_parse_odt_paragraph_text",
+          "line": 54,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            3
+          ]
+        },
+        {
+          "name": "test_parse_odt_unicode_text",
+          "line": 60,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_parse_odt_has_headings_list",
+          "line": 65,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_parse_odt_strict_returns_odtdocument",
+          "line": 69,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_parse_odt_strict_paragraphs_attr",
+          "line": 73,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            3,
+            2
+          ]
+        },
+        {
+          "name": "test_parse_odt_strict_paragraph_type",
+          "line": 78,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            4,
+            2
+          ]
+        },
+        {
+          "name": "test_probe_odt_returns_dict",
+          "line": 83,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_probe_odt_valid_container",
+          "line": 87,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_probe_odt_exists",
+          "line": 91,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_probe_odt_mimetype",
+          "line": 95,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_get_capabilities_dict",
+          "line": 99,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            5
+          ]
+        },
+        {
+          "name": "test_get_capabilities_has_supported",
+          "line": 104,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            3
+          ]
+        },
+        {
+          "name": "test_odt_word_count_int",
+          "line": 113,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            4
+          ]
+        },
+        {
+          "name": "test_odt_word_count_minimal",
+          "line": 118,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_odt_word_count_two_paragraphs",
+          "line": 123,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_odt_heading_count_int",
+          "line": 128,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_odt_heading_count_zero_for_minimal",
+          "line": 132,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_odt_paragraph_count_int",
+          "line": 136,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            4
+          ]
+        },
+        {
+          "name": "test_odt_paragraph_count_minimal",
+          "line": 141,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_odt_paragraph_count_two",
+          "line": 145,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 2.84,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/odt/test_r216_odt_char_count.py",
+      "function_count": 6,
+      "functions": [
+        {
+          "name": "test_import",
+          "line": 19,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_minimal_document_char_count",
+          "line": 22,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_two_paragraphs_char_count",
+          "line": 25,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_unicode_text_char_count",
+          "line": 28,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_int",
+          "line": 31,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_nonnegative",
+          "line": 35,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.5,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/odt/test_r232_odt_avg_word_length.py",
+      "function_count": 12,
+      "functions": [
+        {
+          "name": "test_single_word",
+          "line": 39,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_two_words",
+          "line": 43,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_multiple_paragraphs",
+          "line": 48,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_empty_document",
+          "line": 54,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_empty_paragraph",
+          "line": 58,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_float",
+          "line": 62,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_single_word",
+          "line": 68,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_duplicate_words",
+          "line": 72,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_case_insensitive",
+          "line": 76,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_across_paragraphs",
+          "line": 80,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_empty_document",
+          "line": 84,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_int",
+          "line": 88,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 3.67,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/odt/test_r232_odt_longest_para_has_tables.py",
+      "function_count": 10,
+      "functions": [
+        {
+          "name": "test_single",
+          "line": 45,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            4
+          ]
+        },
+        {
+          "name": "test_multiple",
+          "line": 51,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_empty",
+          "line": 56,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_int",
+          "line": 61,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_non_negative",
+          "line": 65,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_no_tables",
+          "line": 71,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_with_table",
+          "line": 75,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_bool",
+          "line": 79,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_empty",
+          "line": 83,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_consistent",
+          "line": 87,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.3,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/odt/test_r234_odt_avg_para_words_per_sentence.py",
+      "function_count": 10,
+      "functions": [
+        {
+          "name": "test_return_type",
+          "line": 35,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_single_paragraph_exact",
+          "line": 40,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_empty_returns_zero",
+          "line": 45,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_two_equal_paragraphs",
+          "line": 49,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_nonnegative",
+          "line": 54,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_return_type",
+          "line": 60,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_two_sentences_exact",
+          "line": 65,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_empty_returns_zero",
+          "line": 70,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_nonnegative",
+          "line": 74,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_result_is_float",
+          "line": 78,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 3.4,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/odt/test_r238_odt_vocab_chars_per_word.py",
+      "function_count": 6,
+      "functions": [
+        {
+          "name": "test_returns_float",
+          "line": 23,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_range",
+          "line": 27,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_positive_for_document",
+          "line": 31,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_float",
+          "line": 37,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_positive",
+          "line": 41,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_reasonable_range",
+          "line": 45,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.33,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/odt/test_r242_odt_has_headings_max_para.py",
+      "function_count": 10,
+      "functions": [
+        {
+          "name": "test_return_type",
+          "line": 38,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_true_with_heading",
+          "line": 42,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_false_no_headings",
+          "line": 46,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_multiple_headings_true",
+          "line": 50,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_empty_doc_false",
+          "line": 54,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_return_type",
+          "line": 60,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_exact_length",
+          "line": 64,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_max_of_two",
+          "line": 68,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_empty_doc_zero",
+          "line": 73,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_nonnegative",
+          "line": 77,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.6,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/odt/test_r254_odt_unicode_max_words.py",
+      "function_count": 12,
+      "functions": [
+        {
+          "name": "test_return_type",
+          "line": 17,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_false_for_ascii_minimal",
+          "line": 20,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_false_for_ascii_two_paragraphs",
+          "line": 24,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_true_for_unicode",
+          "line": 28,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_consistent_across_calls",
+          "line": 32,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_false_is_not_none",
+          "line": 35,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            4,
+            2
+          ]
+        },
+        {
+          "name": "test_return_type",
+          "line": 42,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_exact_2_for_minimal",
+          "line": 45,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_exact_2_for_two_paragraphs",
+          "line": 49,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_exact_3_for_unicode",
+          "line": 53,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_nonnegative",
+          "line": 57,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_consistent_across_calls",
+          "line": 60,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.33,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/odt/test_r262_odt_max_para_avg_chars.py",
+      "function_count": 10,
+      "functions": [
+        {
+          "name": "test_max_para_len_minimal_is_13",
+          "line": 19,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_max_para_len_two_paragraphs_is_17",
+          "line": 23,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_max_para_len_unicode_nonnegative",
+          "line": 28,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_max_para_len_returns_int",
+          "line": 33,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_max_para_len_ge_shortest",
+          "line": 37,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_avg_chars_minimal_is_13",
+          "line": 44,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_avg_chars_two_paragraphs_is_16_5",
+          "line": 48,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_avg_chars_unicode_nonnegative",
+          "line": 54,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_avg_chars_returns_float",
+          "line": 59,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_avg_chars_consistent_with_max",
+          "line": 63,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.4,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/odt/test_r270_odt_avg_chars_is_content_rich.py",
+      "function_count": 10,
+      "functions": [
+        {
+          "name": "test_minimal_document",
+          "line": 14,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_two_paragraphs",
+          "line": 17,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_unicode_text",
+          "line": 20,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_float",
+          "line": 24,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_positive",
+          "line": 28,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_minimal_not_rich",
+          "line": 34,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_two_paragraphs_is_rich",
+          "line": 37,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_unicode_is_rich",
+          "line": 40,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_bool",
+          "line": 43,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_false_for_few_words",
+          "line": 47,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.6,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/odt/test_r275_odt_installed_workflow.py",
+      "function_count": 11,
+      "functions": [
+        {
+          "name": "test_importable_from_odt_workflow",
+          "line": 22,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_importable_from_package",
+          "line": 26,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_returns_dict",
+          "line": 34,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_format_field_is_odt",
+          "line": 39,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_loaded_field_is_true",
+          "line": 44,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_paragraph_count_is_integer",
+          "line": 49,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_heading_count_is_integer",
+          "line": 54,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_has_all_required_keys",
+          "line": 59,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_paragraph_count_positive",
+          "line": 64,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_consistent_across_calls",
+          "line": 69,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_two_paragraphs_doc",
+          "line": 75,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.18,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/odt/test_r276_odt_unique_char_count_nonspace.py",
+      "function_count": 10,
+      "functions": [
+        {
+          "name": "test_minimal",
+          "line": 14,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_two_paragraphs",
+          "line": 17,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_unicode",
+          "line": 20,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_int",
+          "line": 23,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_nonnegative",
+          "line": 26,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_minimal",
+          "line": 32,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_two_paragraphs",
+          "line": 35,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_unicode",
+          "line": 38,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_int",
+          "line": 41,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_nonnegative",
+          "line": 44,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.6,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/odt/test_r283_odt_new_analytics.py",
+      "function_count": 17,
+      "functions": [
+        {
+          "name": "test_returns_int",
+          "line": 32,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_positive_for_data",
+          "line": 36,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_two_para_longer_than_minimal",
+          "line": 40,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_returns_float",
+          "line": 47,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_in_range",
+          "line": 51,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_positive_for_data",
+          "line": 55,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_float",
+          "line": 61,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_nonnegative",
+          "line": 65,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_two_para",
+          "line": 69,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_returns_int",
+          "line": 75,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_nonneg_for_data",
+          "line": 79,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_two_para_valid_index",
+          "line": 83,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_bool",
+          "line": 89,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_consistent_type",
+          "line": 93,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_returns_float",
+          "line": 98,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_nonneg",
+          "line": 102,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_two_para",
+          "line": 106,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 2.88,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/odt/test_r297_odt_iter_paragraphs.py",
+      "function_count": 10,
+      "functions": [
+        {
+          "name": "test_importable_from_odt_paragraph_iterator",
+          "line": 20,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_importable_from_package",
+          "line": 24,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_returns_iterator",
+          "line": 30,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_minimal_yields_paragraphs",
+          "line": 35,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_paragraph_type_is_spec",
+          "line": 40,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_paragraph_has_spec_qname",
+          "line": 46,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_paragraph_qname_value",
+          "line": 51,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_paragraph_has_text",
+          "line": 56,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_two_paragraph_doc",
+          "line": 62,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_consistent",
+          "line": 67,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.0,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/odt/test_r315_odt_iter_headings.py",
+      "function_count": 9,
+      "functions": [
+        {
+          "name": "test_importable_from_odt_heading_iterator",
+          "line": 20,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_importable_from_package",
+          "line": 24,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_returns_iterator",
+          "line": 30,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_minimal_yields_list",
+          "line": 35,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_heading_type_is_spec_heading",
+          "line": 41,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_heading_spec_qname_attr_exists",
+          "line": 47,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            5
+          ]
+        },
+        {
+          "name": "test_heading_spec_fact_ref_attr_exists",
+          "line": 52,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_consistent",
+          "line": 56,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_heading_instance_properties",
+          "line": 62,
+          "assertion_count": 3,
+          "min_score": 4,
+          "scores": [
+            5,
+            4,
+            5
+          ]
+        }
+      ],
+      "file_avg_score": 2.89,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/odt/test_rnext_odt_list_count.py",
+      "function_count": 8,
+      "functions": [
+        {
+          "name": "test_no_lists",
+          "line": 53,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_single_list",
+          "line": 57,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_multiple_lists",
+          "line": 67,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_list_with_paragraphs",
+          "line": 87,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_empty_document",
+          "line": 106,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_empty_list",
+          "line": 110,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_nested_lists_count_only_top_level",
+          "line": 114,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_int",
+          "line": 132,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 3.75,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/odt/test_rnext_odt_table_count.py",
+      "function_count": 8,
+      "functions": [
+        {
+          "name": "test_no_tables",
+          "line": 52,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_one_table",
+          "line": 56,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_multiple_tables",
+          "line": 60,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_return_type",
+          "line": 64,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_non_negative",
+          "line": 68,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_real_sample_no_crash",
+          "line": 72,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            4
+          ]
+        },
+        {
+          "name": "test_tables_with_paragraphs",
+          "line": 79,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_importable_from_package",
+          "line": 83,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.38,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/odt/test_spec_compat_layer.py",
+      "function_count": 21,
+      "functions": [
+        {
+          "name": "test_spec_qname",
+          "line": 27,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_spec_fact_ref",
+          "line": 30,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_namespace_uri_present",
+          "line": 33,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_instantiation",
+          "line": 38,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_paragraph_count",
+          "line": 42,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_heading_count",
+          "line": 46,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_to_dict",
+          "line": 50,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_repr_nonempty",
+          "line": 55,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_inherits_spec_class",
+          "line": 59,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_instantiation",
+          "line": 65,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_spec_qname",
+          "line": 69,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_text_property",
+          "line": 72,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_word_count",
+          "line": 76,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_inherits_spec_class",
+          "line": 80,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_repr_nonempty",
+          "line": 84,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_instantiation",
+          "line": 90,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_spec_qname",
+          "line": 94,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_text_property",
+          "line": 97,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_level_property",
+          "line": 101,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_inherits_spec_class",
+          "line": 105,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_repr_nonempty",
+          "line": 109,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.33,
+      "file_min_score": 2
+    }
+  ]
+}

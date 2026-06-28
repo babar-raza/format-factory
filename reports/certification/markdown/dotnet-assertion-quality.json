@@ -1,0 +1,625 @@
+{
+  "metadata": {
+    "authoritative_plan": "plans/.claude/crispy-jingling-snail.md",
+    "mission_id": "CERT-EXHAUST-20260628",
+    "tool": "dotnet_assertion_scorer"
+  },
+  "target": "tests/net/markdown",
+  "file_count": 5,
+  "total_test_functions": 58,
+  "score_distribution": {
+    "1": 1,
+    "2": 4,
+    "3": 2,
+    "4": 40,
+    "5": 11
+  },
+  "weak_assertion_count": 1,
+  "overall_avg_score": 3.97,
+  "overall_min_score": 1,
+  "files": [
+    {
+      "file": "tests/net/markdown/MarkdownR117WriterTests.cs",
+      "function_count": 13,
+      "functions": [
+        {
+          "name": "WriteHeading_Level1_ContainsSingleHash",
+          "line": 21,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteHeading_Level2_ContainsTwoHashes",
+          "line": 28,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteHeading_Level3_ContainsThreeHashes",
+          "line": 35,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteHeading_Level6_ContainsSixHashes",
+          "line": 42,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteHeading_ContentPresent",
+          "line": 49,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteHeading_H1_DoesNotStartWithDoubleHash",
+          "line": 56,
+          "assertion_count": 0,
+          "min_score": 1,
+          "scores": []
+        },
+        {
+          "name": "WriteParagraphs_SingleLine_ContentPresent",
+          "line": 65,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteParagraphs_MultipleLines_AllPresent",
+          "line": 72,
+          "assertion_count": 3,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "WriteParagraphs_MultipleLines_ContainsNewlines",
+          "line": 81,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteLines_SingleLine_ContentPresent",
+          "line": 90,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteLines_MultipleLines_AllPresent",
+          "line": 97,
+          "assertion_count": 3,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "WriteLines_EmptyList_DoesNotThrow",
+          "line": 106,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "DogfoodPipeline_HeadingAndParagraphsAndLines_AllPresent",
+          "line": 115,
+          "assertion_count": 6,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4,
+            4,
+            4,
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.62,
+      "file_min_score": 1
+    },
+    {
+      "file": "tests/net/markdown/MarkdownR118WriteLinesToFileTests.cs",
+      "function_count": 11,
+      "functions": [
+        {
+          "name": "WriteLinesToFile_ValidArgs_CreatesFile",
+          "line": 25,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "WriteLinesToFile_SingleHeading_ContentPresentInFile",
+          "line": 39,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteLinesToFile_MultipleLines_AllPresentInFile",
+          "line": 52,
+          "assertion_count": 3,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "WriteLinesToFile_NullLine_BecomeEmptyLineInFile",
+          "line": 67,
+          "assertion_count": 3,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "WriteLinesToFile_EmptyList_CreatesFileWithEmptyContent",
+          "line": 83,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            4,
+            2
+          ]
+        },
+        {
+          "name": "WriteLinesToFile_Encoding_NoUtf8Bom",
+          "line": 99,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "WriteLinesToFile_LineEndings_UsesLfNotCrLf",
+          "line": 113,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteLinesToFile_NullPath_ThrowsMarkdownWriterException",
+          "line": 129,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteLinesToFile_EmptyPath_ThrowsMarkdownWriterException",
+          "line": 136,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteLinesToFile_RoundTrip_ContentMatchesInMemoryWriteParagraphs",
+          "line": 145,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "DogfoodPipeline_FodtStyleDocument_AllSectionsInFile",
+          "line": 163,
+          "assertion_count": 8,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.55,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/net/markdown/MarkdownR119ParagraphEdgeCasesTests.cs",
+      "function_count": 10,
+      "functions": [
+        {
+          "name": "WriteParagraphs_CrLfInInput_NormalizedToLf",
+          "line": 22,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteParagraphs_BareCarriageReturn_Handled",
+          "line": 30,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "WriteParagraphs_TenParagraphs_NineNewlinesPresent",
+          "line": 41,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "WriteParagraphs_AllNullEntries_ProducesNewlinesOnly",
+          "line": 50,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "WriteHeading_TextWithAmpersand_AmpersandPreservedVerbatim",
+          "line": 60,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteHeading_TextWithHashInBody_NotConfusedWithLevel",
+          "line": 69,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "WriteHeading_EmptyString_ProducesJustHashPrefix",
+          "line": 78,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "Combined_HeadingPlusParagraphs_OrderPreserved",
+          "line": 87,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "Combined_H2PlusBodyPlusH3_AllThreeSectionsPresent",
+          "line": 101,
+          "assertion_count": 4,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "DogfoodPipeline_TechSpecDocument_CorrectMarkdownStructure",
+          "line": 119,
+          "assertion_count": 7,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 4.3,
+      "file_min_score": 4
+    },
+    {
+      "file": "tests/net/markdown/MarkdownR120HeadingLevelsTests.cs",
+      "function_count": 13,
+      "functions": [
+        {
+          "name": "WriteHeading_Level1_StartsWithSingleHash",
+          "line": 22,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteHeading_Level1_ExactlyOneHash",
+          "line": 29,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteHeading_Level2_StartsWith2Hashes",
+          "line": 39,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteHeading_Level3_StartsWith3Hashes",
+          "line": 48,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteHeading_Level4_StartsWith4Hashes",
+          "line": 57,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteHeading_Level5_StartsWith5Hashes",
+          "line": 66,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteHeading_Level6_StartsWith6Hashes",
+          "line": 75,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteHeading_AllLevels_TextPreserved",
+          "line": 84,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteHeading_Level1_PrefixHasOneHash",
+          "line": 96,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "WriteHeading_Level6_PrefixHasSixHashes",
+          "line": 108,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "MultipleHeadings_Combined_PreserveOrder",
+          "line": 122,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "MultipleHeadings_Combined_AllLevelsPresent",
+          "line": 143,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "DogfoodPipeline_TechSpecDocument_AllHeadingsAndParagraphsPresent",
+          "line": 156,
+          "assertion_count": 7,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 4.15,
+      "file_min_score": 4
+    },
+    {
+      "file": "tests/net/markdown/MarkdownWriterTests.cs",
+      "function_count": 11,
+      "functions": [
+        {
+          "name": "WriteHeading_Level1_SingleHash",
+          "line": 18,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "WriteHeading_Level2_TwoHashes",
+          "line": 24,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "WriteHeading_Level6_SixHashes",
+          "line": 30,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "WriteHeading_LevelAbove6_ClampedTo6",
+          "line": 36,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteHeading_LevelBelow1_ClampedTo1",
+          "line": 43,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            4,
+            3
+          ]
+        },
+        {
+          "name": "WriteHeading_NullText_HandledGracefully",
+          "line": 51,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "WriteParagraphs_TwoParagraphs_JoinedWithLf",
+          "line": 62,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "WriteParagraphs_NullParagraph_TreatedAsEmpty",
+          "line": 69,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "WriteParagraphs_Empty_ReturnsEmpty",
+          "line": 76,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteLinesToFile_CreatesFile",
+          "line": 87,
+          "assertion_count": 3,
+          "min_score": 2,
+          "scores": [
+            4,
+            4,
+            2
+          ]
+        },
+        {
+          "name": "WriteLinesToFile_NullPath_Throws",
+          "line": 105,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 4.27,
+      "file_min_score": 2
+    }
+  ]
+}

@@ -1,0 +1,982 @@
+{
+  "metadata": {
+    "authoritative_plan": "plans/.claude/crispy-jingling-snail.md",
+    "mission_id": "CERT-EXHAUST-20260628",
+    "format_id": "csv"
+  },
+  "python": {
+    "contracts": [
+      {
+        "name": "csv_total_string_length",
+        "kind": "function",
+        "file": "src/python/csv/csv_analytics.py",
+        "line": 15,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "csv_min_row_field_count",
+        "kind": "function",
+        "file": "src/python/csv/csv_analytics.py",
+        "line": 22,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "csv_is_square",
+        "kind": "function",
+        "file": "src/python/csv/csv_analytics.py",
+        "line": 31,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "csv_column_value_variance",
+        "kind": "function",
+        "file": "src/python/csv/csv_analytics.py",
+        "line": 40,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "csv_is_multi_column",
+        "kind": "function",
+        "file": "src/python/csv/csv_analytics.py",
+        "line": 59,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "csv_field_type_variance",
+        "kind": "function",
+        "file": "src/python/csv/csv_analytics.py",
+        "line": 66,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "csv_header_length_sum",
+        "kind": "function",
+        "file": "src/python/csv/csv_analytics.py",
+        "line": 88,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "csv_row_length_sum",
+        "kind": "function",
+        "file": "src/python/csv/csv_analytics.py",
+        "line": 97,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "csv_empty_field_ratio",
+        "kind": "function",
+        "file": "src/python/csv/csv_analytics.py",
+        "line": 103,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "csv_string_cell_count",
+        "kind": "function",
+        "file": "src/python/csv/csv_analytics.py",
+        "line": 119,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "csv_nonempty_row_count",
+        "kind": "function",
+        "file": "src/python/csv/csv_analytics.py",
+        "line": 134,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "csv_avg_fields_per_row",
+        "kind": "function",
+        "file": "src/python/csv/csv_analytics.py",
+        "line": 143,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "csv_nonempty_cell_ratio",
+        "kind": "function",
+        "file": "src/python/csv/csv_analytics.py",
+        "line": 152,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "csv_numeric_cell_ratio",
+        "kind": "function",
+        "file": "src/python/csv/csv_analytics.py",
+        "line": 163,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "parse_csv_strict",
+        "kind": "function",
+        "file": "src/python/csv/csv_parser.py",
+        "line": 146,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "parse_csv",
+        "kind": "function",
+        "file": "src/python/csv/csv_parser.py",
+        "line": 227,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "probe_csv",
+        "kind": "function",
+        "file": "src/python/csv/csv_parser.py",
+        "line": 240,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "get_capabilities",
+        "kind": "function",
+        "file": "src/python/csv/csv_parser.py",
+        "line": 285,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "get_row_count",
+        "kind": "function",
+        "file": "src/python/csv/csv_parser.py",
+        "line": 296,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "get_column_names",
+        "kind": "function",
+        "file": "src/python/csv/csv_parser.py",
+        "line": 313,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "get_cell_value",
+        "kind": "function",
+        "file": "src/python/csv/csv_parser.py",
+        "line": 329,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "count_empty_cells",
+        "kind": "function",
+        "file": "src/python/csv/csv_parser.py",
+        "line": 353,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "table_stats",
+        "kind": "function",
+        "file": "src/python/csv/csv_stats.py",
+        "line": 17,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "column_value_counts",
+        "kind": "function",
+        "file": "src/python/csv/csv_stats.py",
+        "line": 53,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "csv_row_length_distribution",
+        "kind": "function",
+        "file": "src/python/csv/csv_stats.py",
+        "line": 71,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "csv_field_type_summary",
+        "kind": "function",
+        "file": "src/python/csv/csv_stats.py",
+        "line": 98,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "csv_empty_row_count",
+        "kind": "function",
+        "file": "src/python/csv/csv_stats.py",
+        "line": 131,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "csv_max_field_length",
+        "kind": "function",
+        "file": "src/python/csv/csv_stats.py",
+        "line": 161,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "csv_installed_workflow",
+        "kind": "function",
+        "file": "src/python/csv/csv_workflow.py",
+        "line": 18,
+        "role": "workflow",
+        "exported": true
+      },
+      {
+        "name": "write_csv",
+        "kind": "function",
+        "file": "src/python/csv/csv_writer.py",
+        "line": 37,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "write_csv_to_file",
+        "kind": "function",
+        "file": "src/python/csv/csv_writer.py",
+        "line": 65,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "parse_and_rewrite",
+        "kind": "function",
+        "file": "src/python/csv/csv_writer.py",
+        "line": 80,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "csv_to_dicts",
+        "kind": "function",
+        "file": "src/python/csv/tabular_document.py",
+        "line": 20,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "csv_column_count",
+        "kind": "function",
+        "file": "src/python/csv/tabular_document.py",
+        "line": 52,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "csv_has_header",
+        "kind": "function",
+        "file": "src/python/csv/tabular_document.py",
+        "line": 68,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "csv_numeric_row_count",
+        "kind": "function",
+        "file": "src/python/csv/tabular_document.py",
+        "line": 84,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "count_distinct_values",
+        "kind": "function",
+        "file": "src/python/csv/tabular_document.py",
+        "line": 113,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "csv_duplicate_row_count",
+        "kind": "function",
+        "file": "src/python/csv/tabular_document.py",
+        "line": 148,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "csv_empty_cell_count",
+        "kind": "function",
+        "file": "src/python/csv/tabular_document.py",
+        "line": 178,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "csv_row_count",
+        "kind": "function",
+        "file": "src/python/csv/tabular_document.py",
+        "line": 201,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "csv_average_field_length",
+        "kind": "function",
+        "file": "src/python/csv/tabular_document.py",
+        "line": 217,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "csv_numeric_density",
+        "kind": "function",
+        "file": "src/python/csv/tabular_document.py",
+        "line": 239,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "csv_unique_row_count",
+        "kind": "function",
+        "file": "src/python/csv/tabular_document.py",
+        "line": 257,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "csv_min_field_length",
+        "kind": "function",
+        "file": "src/python/csv/tabular_document.py",
+        "line": 267,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "csv_has_duplicates",
+        "kind": "function",
+        "file": "src/python/csv/tabular_document.py",
+        "line": 286,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "csv_all_rows_same_length",
+        "kind": "function",
+        "file": "src/python/csv/tabular_document.py",
+        "line": 306,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "csv_max_row_length",
+        "kind": "function",
+        "file": "src/python/csv/tabular_document.py",
+        "line": 323,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "csv_field_type_ratio",
+        "kind": "function",
+        "file": "src/python/csv/tabular_document.py",
+        "line": 339,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "csv_all_rows",
+        "kind": "function",
+        "file": "src/python/csv/tabular_document.py",
+        "line": 370,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "csv_distinct_value_count",
+        "kind": "function",
+        "file": "src/python/csv/tabular_document.py",
+        "line": 383,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "csv_empty_cell_ratio",
+        "kind": "function",
+        "file": "src/python/csv/tabular_document.py",
+        "line": 402,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "csv_total_cell_count",
+        "kind": "function",
+        "file": "src/python/csv/tabular_document.py",
+        "line": 426,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "csv_min_row_length",
+        "kind": "function",
+        "file": "src/python/csv/tabular_document.py",
+        "line": 432,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "csv_max_numeric_value",
+        "kind": "function",
+        "file": "src/python/csv/tabular_document.py",
+        "line": 441,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "csv_has_empty_rows",
+        "kind": "function",
+        "file": "src/python/csv/tabular_document.py",
+        "line": 454,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "csv_header_count",
+        "kind": "function",
+        "file": "src/python/csv/tabular_document.py",
+        "line": 463,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "csv_is_rectangular",
+        "kind": "function",
+        "file": "src/python/csv/tabular_document.py",
+        "line": 470,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "csv_nonempty_cell_count",
+        "kind": "function",
+        "file": "src/python/csv/tabular_document.py",
+        "line": 480,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "csv_string_density",
+        "kind": "function",
+        "file": "src/python/csv/tabular_document.py",
+        "line": 491,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "csv_min_numeric_value",
+        "kind": "function",
+        "file": "src/python/csv/tabular_document.py",
+        "line": 508,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "csv_data_density",
+        "kind": "function",
+        "file": "src/python/csv/tabular_document.py",
+        "line": 521,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "csv_avg_row_length",
+        "kind": "function",
+        "file": "src/python/csv/tabular_document.py",
+        "line": 530,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "csv_numeric_column_count",
+        "kind": "function",
+        "file": "src/python/csv/tabular_document.py",
+        "line": 539,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "csv_is_single_column",
+        "kind": "function",
+        "file": "src/python/csv/tabular_document.py",
+        "line": 569,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "csv_is_all_numeric",
+        "kind": "function",
+        "file": "src/python/csv/tabular_document.py",
+        "line": 578,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "csv_max_field_value_length",
+        "kind": "function",
+        "file": "src/python/csv/tabular_document.py",
+        "line": 595,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "csv_unique_value_count",
+        "kind": "function",
+        "file": "src/python/csv/tabular_document.py",
+        "line": 604,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "csv_column_type_counts",
+        "kind": "function",
+        "file": "src/python/csv/tabular_document.py",
+        "line": 617,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "csv_row_length_variance",
+        "kind": "function",
+        "file": "src/python/csv/tabular_document.py",
+        "line": 643,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "csv_is_empty",
+        "kind": "function",
+        "file": "src/python/csv/tabular_document.py",
+        "line": 654,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "csv_column_name_lengths",
+        "kind": "function",
+        "file": "src/python/csv/tabular_document.py",
+        "line": 660,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "csv_max_field_count",
+        "kind": "function",
+        "file": "src/python/csv/tabular_document.py",
+        "line": 667,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "csv_is_multi_row",
+        "kind": "function",
+        "file": "src/python/csv/tabular_document.py",
+        "line": 676,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "csv_column_count_variance",
+        "kind": "function",
+        "file": "src/python/csv/tabular_document.py",
+        "line": 682,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "csv_has_numeric_header",
+        "kind": "function",
+        "file": "src/python/csv/tabular_document.py",
+        "line": 693,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "csv_nonempty_row_ratio",
+        "kind": "function",
+        "file": "src/python/csv/tabular_document.py",
+        "line": 707,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "csv_avg_cell_length",
+        "kind": "function",
+        "file": "src/python/csv/tabular_document.py",
+        "line": 717,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "csv_numeric_sum",
+        "kind": "function",
+        "file": "src/python/csv/tabular_document.py",
+        "line": 732,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "csv_avg_numeric_value",
+        "kind": "function",
+        "file": "src/python/csv/tabular_document.py",
+        "line": 748,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "csv_is_single_row",
+        "kind": "function",
+        "file": "src/python/csv/tabular_document.py",
+        "line": 766,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "csv_empty_column_count",
+        "kind": "function",
+        "file": "src/python/csv/tabular_document.py",
+        "line": 772,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "csv_longest_row_index",
+        "kind": "function",
+        "file": "src/python/csv/tabular_document.py",
+        "line": 786,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "CsvField",
+        "kind": "class",
+        "file": "src/python/csv/Compat/csv_field.py",
+        "line": 12,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "CsvHeader",
+        "kind": "class",
+        "file": "src/python/csv/Compat/csv_header.py",
+        "line": 6,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "CsvRecord",
+        "kind": "class",
+        "file": "src/python/csv/Compat/csv_record.py",
+        "line": 12,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "CsvError",
+        "kind": "class",
+        "file": "src/python/csv/csv_parser.py",
+        "line": 33,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "CsvInputError",
+        "kind": "class",
+        "file": "src/python/csv/csv_parser.py",
+        "line": 37,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "CsvSizeError",
+        "kind": "class",
+        "file": "src/python/csv/csv_parser.py",
+        "line": 41,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "CsvParseError",
+        "kind": "class",
+        "file": "src/python/csv/csv_parser.py",
+        "line": 45,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "CsvWriteError",
+        "kind": "class",
+        "file": "src/python/csv/csv_writer.py",
+        "line": 20,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "CsvError",
+        "kind": "class",
+        "file": "src/python/csv/exceptions.py",
+        "line": 13,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "CsvParseError",
+        "kind": "class",
+        "file": "src/python/csv/exceptions.py",
+        "line": 17,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "CsvWriteError",
+        "kind": "class",
+        "file": "src/python/csv/exceptions.py",
+        "line": 21,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "CsvDocument",
+        "kind": "class",
+        "file": "src/python/csv/models.py",
+        "line": 16,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "Field",
+        "kind": "class",
+        "file": "src/python/csv/spec/record/field.py",
+        "line": 13,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "Header",
+        "kind": "class",
+        "file": "src/python/csv/spec/record/header.py",
+        "line": 14,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "Record",
+        "kind": "class",
+        "file": "src/python/csv/spec/record/record.py",
+        "line": 13,
+        "role": "api",
+        "exported": false
+      }
+    ],
+    "export_count": 91
+  },
+  "dotnet": {
+    "contracts": [
+      {
+        "name": "CsvDocument",
+        "kind": "class",
+        "file": "src/net/csv/CsvDocument.cs",
+        "line": 15,
+        "role": "model"
+      },
+      {
+        "name": "CsvReader",
+        "kind": "class",
+        "file": "src/net/csv/CsvReader.cs",
+        "line": 16,
+        "role": "parser"
+      },
+      {
+        "name": "CsvReaderException",
+        "kind": "class",
+        "file": "src/net/csv/CsvReader.cs",
+        "line": 138,
+        "role": "exception"
+      },
+      {
+        "name": "CsvWriter",
+        "kind": "class",
+        "file": "src/net/csv/CsvWriter.cs",
+        "line": 31,
+        "role": "writer"
+      },
+      {
+        "name": "CsvWriterException",
+        "kind": "class",
+        "file": "src/net/csv/CsvWriter.cs",
+        "line": 101,
+        "role": "exception"
+      },
+      {
+        "name": "CsvRecord",
+        "kind": "class",
+        "file": "src/net/csv/Spec/CsvRecord.cs",
+        "line": 16,
+        "role": "api"
+      },
+      {
+        "name": "Load",
+        "kind": "method",
+        "file": "src/net/csv/CsvDocument.cs",
+        "line": 39,
+        "role": "parser"
+      },
+      {
+        "name": "LoadFile",
+        "kind": "method",
+        "file": "src/net/csv/CsvDocument.cs",
+        "line": 52,
+        "role": "parser"
+      },
+      {
+        "name": "ToCsv",
+        "kind": "method",
+        "file": "src/net/csv/CsvDocument.cs",
+        "line": 65,
+        "role": "model"
+      },
+      {
+        "name": "SaveToFile",
+        "kind": "method",
+        "file": "src/net/csv/CsvDocument.cs",
+        "line": 76,
+        "role": "writer"
+      },
+      {
+        "name": "GetCellValue",
+        "kind": "method",
+        "file": "src/net/csv/CsvDocument.cs",
+        "line": 93,
+        "role": "model"
+      },
+      {
+        "name": "Filter",
+        "kind": "method",
+        "file": "src/net/csv/CsvDocument.cs",
+        "line": 105,
+        "role": "model"
+      },
+      {
+        "name": "HasColumn",
+        "kind": "method",
+        "file": "src/net/csv/CsvDocument.cs",
+        "line": 115,
+        "role": "model"
+      },
+      {
+        "name": "GetColumn",
+        "kind": "method",
+        "file": "src/net/csv/CsvDocument.cs",
+        "line": 119,
+        "role": "model"
+      },
+      {
+        "name": "GetColumn",
+        "kind": "method",
+        "file": "src/net/csv/CsvDocument.cs",
+        "line": 126,
+        "role": "model"
+      },
+      {
+        "name": "AddRow",
+        "kind": "method",
+        "file": "src/net/csv/CsvDocument.cs",
+        "line": 144,
+        "role": "model"
+      },
+      {
+        "name": "SetCell",
+        "kind": "method",
+        "file": "src/net/csv/CsvDocument.cs",
+        "line": 161,
+        "role": "model"
+      },
+      {
+        "name": "RemoveRow",
+        "kind": "method",
+        "file": "src/net/csv/CsvDocument.cs",
+        "line": 189,
+        "role": "model"
+      },
+      {
+        "name": "ReadRows",
+        "kind": "method",
+        "file": "src/net/csv/CsvReader.cs",
+        "line": 21,
+        "role": "parser"
+      },
+      {
+        "name": "ReadRows",
+        "kind": "method",
+        "file": "src/net/csv/CsvReader.cs",
+        "line": 34,
+        "role": "parser"
+      },
+      {
+        "name": "ReadRowsFromFile",
+        "kind": "method",
+        "file": "src/net/csv/CsvReader.cs",
+        "line": 45,
+        "role": "parser"
+      },
+      {
+        "name": "WriteRows",
+        "kind": "method",
+        "file": "src/net/csv/CsvWriter.cs",
+        "line": 42,
+        "role": "writer"
+      },
+      {
+        "name": "WriteRowsToFile",
+        "kind": "method",
+        "file": "src/net/csv/CsvWriter.cs",
+        "line": 61,
+        "role": "writer"
+      },
+      {
+        "name": "EscapeField",
+        "kind": "method",
+        "file": "src/net/csv/CsvWriter.cs",
+        "line": 86,
+        "role": "writer"
+      },
+      {
+        "name": "Headers",
+        "kind": "property",
+        "file": "src/net/csv/CsvDocument.cs",
+        "line": 18,
+        "role": "model"
+      },
+      {
+        "name": "Rows",
+        "kind": "property",
+        "file": "src/net/csv/CsvDocument.cs",
+        "line": 21,
+        "role": "model"
+      },
+      {
+        "name": "Fields",
+        "kind": "property",
+        "file": "src/net/csv/Spec/CsvRecord.cs",
+        "line": 22,
+        "role": "api"
+      }
+    ],
+    "public_member_count": 27
+  }
+}

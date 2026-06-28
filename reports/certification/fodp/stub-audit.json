@@ -1,0 +1,50 @@
+{
+  "file_count": 15,
+  "files_scanned": [
+    "src/python/fodp/__init__.py",
+    "src/python/fodp/Compat/__init__.py",
+    "src/python/fodp/Compat/fodp_document.py",
+    "src/python/fodp/Compat/fodp_page.py",
+    "src/python/fodp/exceptions.py",
+    "src/python/fodp/fodp_codec.py",
+    "src/python/fodp/fodp_slide_iterator.py",
+    "src/python/fodp/fodp_workflow.py",
+    "src/python/fodp/models.py",
+    "src/python/fodp/presentation_document.py",
+    "src/python/fodp/spec/__init__.py",
+    "src/python/fodp/spec/draw/__init__.py",
+    "src/python/fodp/spec/draw/page.py",
+    "src/python/fodp/spec/office/__init__.py",
+    "src/python/fodp/spec/office/document.py"
+  ],
+  "finding_count": 2,
+  "findings": [
+    {
+      "classification_note": "Non-public or structural placeholder; not automatically material.",
+      "file": "src/python/fodp/fodp_codec.py",
+      "line": 216,
+      "reason": "raises_not_implemented_error",
+      "scope": "_write_fodp_not_supported",
+      "severity": "advisory",
+      "source": "raise NotImplementedError("
+    },
+    {
+      "classification_note": "Non-public or structural placeholder; not automatically material.",
+      "file": "src/python/fodp/fodp_codec.py",
+      "line": 345,
+      "reason": "pass_statement",
+      "scope": "<module>",
+      "severity": "advisory",
+      "source": "pass"
+    }
+  ],
+  "material_finding_count": 0,
+  "metadata": {
+    "authoritative_plan": "plans/.claude/crispy-jingling-snail.md",
+    "generated_by": "codex",
+    "mission_id": "CERT-EXHAUST-20260628",
+    "tool": "stub_detector",
+    "visibility": "internal"
+  },
+  "target": "src/python/fodp"
+}

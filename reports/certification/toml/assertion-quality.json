@@ -1,0 +1,7164 @@
+{
+  "metadata": {
+    "authoritative_plan": "plans/.claude/crispy-jingling-snail.md",
+    "mission_id": "CERT-EXHAUST-20260628",
+    "tool": "assertion_quality_scorer"
+  },
+  "target": "tests/python/toml",
+  "file_count": 58,
+  "total_test_functions": 723,
+  "score_distribution": {
+    "1": 0,
+    "2": 182,
+    "3": 179,
+    "4": 318,
+    "5": 44
+  },
+  "weak_assertion_count": 0,
+  "overall_avg_score": 3.31,
+  "overall_min_score": 2,
+  "files": [
+    {
+      "file": "tests/python/toml/test_broad_rnext_toml_codec.py",
+      "function_count": 16,
+      "functions": [
+        {
+          "name": "test_probe_toml_from_bytes",
+          "line": 28,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_probe_toml_section_count",
+          "line": 35,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_load_toml_from_bytes",
+          "line": 41,
+          "assertion_count": 3,
+          "min_score": 4,
+          "scores": [
+            5,
+            5,
+            4
+          ]
+        },
+        {
+          "name": "test_load_toml_top_level_keys",
+          "line": 49,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_load_toml_key_count",
+          "line": 55,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_load_toml_from_file",
+          "line": 61,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            5,
+            3
+          ]
+        },
+        {
+          "name": "test_load_toml_invalid_raises",
+          "line": 70,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_load_toml_missing_file_raises",
+          "line": 78,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_write_toml_creates_file",
+          "line": 84,
+          "assertion_count": 3,
+          "min_score": 3,
+          "scores": [
+            3,
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_write_toml_bool_serialization",
+          "line": 94,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_write_toml_list_serialization",
+          "line": 103,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_get_keys_from_bytes",
+          "line": 111,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_roundtrip_preserves_data",
+          "line": 117,
+          "assertion_count": 3,
+          "min_score": 4,
+          "scores": [
+            5,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_roundtrip_creates_dest_file",
+          "line": 128,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            3
+          ]
+        },
+        {
+          "name": "test_roundtrip_from_bytes",
+          "line": 137,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            5,
+            4
+          ]
+        },
+        {
+          "name": "test_probe_toml_from_file",
+          "line": 146,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            4,
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.38,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/toml/test_frfh_toml_get_value_merge_json.py",
+      "function_count": 14,
+      "functions": [
+        {
+          "name": "test_get_value_top_level_key",
+          "line": 27,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            5
+          ]
+        },
+        {
+          "name": "test_get_value_nested_key",
+          "line": 34,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_get_value_numeric_nested",
+          "line": 40,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_get_value_missing_raises_key_error",
+          "line": 46,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_get_value_missing_nested_raises",
+          "line": 52,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_get_value_from_file",
+          "line": 58,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            5,
+            4
+          ]
+        },
+        {
+          "name": "test_merge_toml_base_values",
+          "line": 66,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            5,
+            4
+          ]
+        },
+        {
+          "name": "test_merge_toml_override_wins",
+          "line": 75,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            5,
+            4
+          ]
+        },
+        {
+          "name": "test_merge_toml_deep_merge",
+          "line": 84,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            5,
+            4
+          ]
+        },
+        {
+          "name": "test_merge_toml_returns_dict",
+          "line": 93,
+          "assertion_count": 3,
+          "min_score": 2,
+          "scores": [
+            2,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_to_json_str_returns_string",
+          "line": 103,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_to_json_str_valid_json",
+          "line": 109,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            5
+          ]
+        },
+        {
+          "name": "test_to_json_str_nested",
+          "line": 117,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            5,
+            4
+          ]
+        },
+        {
+          "name": "test_to_json_str_sorted_keys",
+          "line": 125,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.5,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/toml/test_gap_installed_workflow.py",
+      "function_count": 14,
+      "functions": [
+        {
+          "name": "test_importable_from_toml_codec",
+          "line": 40,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_importable_from_src",
+          "line": 44,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_returns_dict",
+          "line": 54,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_format_field",
+          "line": 59,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_loaded_field",
+          "line": 64,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_key_count_positive",
+          "line": 69,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_key_count_type",
+          "line": 74,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_result_keys_present",
+          "line": 79,
+          "assertion_count": 3,
+          "min_score": 3,
+          "scores": [
+            3,
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_inline_string",
+          "line": 90,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_empty_document",
+          "line": 99,
+          "assertion_count": 3,
+          "min_score": 4,
+          "scores": [
+            5,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_toml_wheel_exists",
+          "line": 116,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_toml_wheel_is_valid_zip",
+          "line": 119,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_toml_wheel_installs_cleanly",
+          "line": 122,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_toml_exposes_installed_workflow_from_wheel",
+          "line": 136,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.36,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/toml/test_mdr_toml_delete_key.py",
+      "function_count": 14,
+      "functions": [
+        {
+          "name": "test_delete_top_level_key",
+          "line": 23,
+          "assertion_count": 3,
+          "min_score": 3,
+          "scores": [
+            3,
+            5,
+            4
+          ]
+        },
+        {
+          "name": "test_delete_returns_new_dict",
+          "line": 31,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_delete_only_removes_target_key",
+          "line": 38,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_delete_nested_key",
+          "line": 48,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            4
+          ]
+        },
+        {
+          "name": "test_delete_nested_key_does_not_mutate_input",
+          "line": 55,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_delete_deeply_nested_key",
+          "line": 61,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_delete_entire_section",
+          "line": 67,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            5
+          ]
+        },
+        {
+          "name": "test_delete_sole_key",
+          "line": 78,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_delete_key_with_numeric_value",
+          "line": 84,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_delete_key_leaves_sibling_nested",
+          "line": 90,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_delete_missing_top_level_raises_key_error",
+          "line": 100,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_delete_missing_nested_key_raises_key_error",
+          "line": 106,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_delete_non_dict_intermediate_raises_type_error_b",
+          "line": 112,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_delete_non_dict_intermediate_raises_type_error",
+          "line": 118,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.36,
+      "file_min_score": 3
+    },
+    {
+      "file": "tests/python/toml/test_pd_toml_update_section.py",
+      "function_count": 10,
+      "functions": [
+        {
+          "name": "test_update_section_returns_dict",
+          "line": 22,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_update_section_merges_new_key",
+          "line": 28,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_update_section_overwrites_existing_key",
+          "line": 35,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_update_section_does_not_mutate_original",
+          "line": 42,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_update_section_creates_missing_section",
+          "line": 48,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_update_section_other_sections_unchanged",
+          "line": 55,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_update_section_empty_updates",
+          "line": 61,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_update_section_non_dict_section_raises",
+          "line": 67,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_update_section_multiple_keys",
+          "line": 73,
+          "assertion_count": 3,
+          "min_score": 4,
+          "scores": [
+            5,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_update_section_importable_from_package",
+          "line": 81,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.3,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/toml/test_ppr_toml_set_value_list_sections.py",
+      "function_count": 17,
+      "functions": [
+        {
+          "name": "test_set_value_top_level_existing",
+          "line": 28,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            5,
+            4
+          ]
+        },
+        {
+          "name": "test_set_value_top_level_new",
+          "line": 36,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            5,
+            4
+          ]
+        },
+        {
+          "name": "test_set_value_nested_existing",
+          "line": 44,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            5,
+            4
+          ]
+        },
+        {
+          "name": "test_set_value_creates_intermediate_sections",
+          "line": 52,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            5,
+            4
+          ]
+        },
+        {
+          "name": "test_set_value_does_not_mutate_input",
+          "line": 60,
+          "assertion_count": 2,
+          "min_score": 5,
+          "scores": [
+            5,
+            5
+          ]
+        },
+        {
+          "name": "test_set_value_numeric_value",
+          "line": 68,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_set_value_bool_value",
+          "line": 75,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_set_value_type_error_on_non_dict_intermediate",
+          "line": 82,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_set_value_roundtrip",
+          "line": 89,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            5
+          ]
+        },
+        {
+          "name": "test_set_value_nested_new_key",
+          "line": 100,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            5
+          ]
+        },
+        {
+          "name": "test_list_sections_basic",
+          "line": 110,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_list_sections_excludes_scalars",
+          "line": 117,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_list_sections_nested",
+          "line": 123,
+          "assertion_count": 3,
+          "min_score": 3,
+          "scores": [
+            3,
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_list_sections_sorted",
+          "line": 131,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_list_sections_from_file",
+          "line": 137,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_list_sections_empty_document",
+          "line": 146,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_list_sections_returns_list",
+          "line": 152,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 3.59,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/toml/test_r154_toml_section_keys.py",
+      "function_count": 16,
+      "functions": [
+        {
+          "name": "test_top_level_section",
+          "line": 42,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_nested_section",
+          "line": 47,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_section_with_subsections",
+          "line": 51,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_nonexistent_section_raises",
+          "line": 56,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_scalar_key_raises",
+          "line": 60,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_top_level_key_exists",
+          "line": 68,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_nested_key_exists",
+          "line": 71,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_deeply_nested_key_exists",
+          "line": 74,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_nonexistent_key",
+          "line": 77,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_nonexistent_nested_key",
+          "line": 80,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_section_itself_is_a_key",
+          "line": 83,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_top_level_count",
+          "line": 90,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_recursive_count",
+          "line": 94,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_simple_toml",
+          "line": 101,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_simple_toml_recursive_same_as_non_recursive",
+          "line": 105,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_empty_toml",
+          "line": 109,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.81,
+      "file_min_score": 3
+    },
+    {
+      "file": "tests/python/toml/test_r155_toml_flatten_env.py",
+      "function_count": 12,
+      "functions": [
+        {
+          "name": "test_top_level_keys",
+          "line": 40,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            5,
+            4
+          ]
+        },
+        {
+          "name": "test_nested_keys",
+          "line": 45,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            5,
+            4
+          ]
+        },
+        {
+          "name": "test_deeply_nested",
+          "line": 50,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_custom_separator",
+          "line": 54,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            4
+          ]
+        },
+        {
+          "name": "test_no_dict_values_in_output",
+          "line": 59,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_empty_toml",
+          "line": 64,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_basic_output",
+          "line": 72,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_nested_keys_use_underscore",
+          "line": 77,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_prefix",
+          "line": 82,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_no_uppercase",
+          "line": 87,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_empty_toml",
+          "line": 92,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_multiline_format",
+          "line": 96,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            4,
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.25,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/toml/test_r157_toml_roundtrip_capability.py",
+      "function_count": 7,
+      "functions": [
+        {
+          "name": "test_roundtrip_returns_dict",
+          "line": 31,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_roundtrip_preserves_string",
+          "line": 38,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_roundtrip_preserves_nested",
+          "line": 45,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            5,
+            4
+          ]
+        },
+        {
+          "name": "test_roundtrip_preserves_boolean",
+          "line": 53,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_roundtrip_creates_dest_file",
+          "line": 60,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            4
+          ]
+        },
+        {
+          "name": "test_roundtrip_from_bytes",
+          "line": 68,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_roundtrip_empty_doc",
+          "line": 73,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 3.57,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/toml/test_r160_toml_diff_rename.py",
+      "function_count": 11,
+      "functions": [
+        {
+          "name": "test_identical",
+          "line": 23,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_a_has_extra",
+          "line": 30,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_b_has_extra",
+          "line": 37,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_disjoint",
+          "line": 44,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_from_bytes",
+          "line": 51,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_empty_a",
+          "line": 55,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_basic_rename",
+          "line": 64,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_preserves_order",
+          "line": 70,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_missing_key_raises",
+          "line": 75,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_existing_new_key_raises",
+          "line": 79,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_rename_section",
+          "line": 83,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.18,
+      "file_min_score": 3
+    },
+    {
+      "file": "tests/python/toml/test_r162_toml_count_section.py",
+      "function_count": 6,
+      "functions": [
+        {
+          "name": "test_empty_section",
+          "line": 21,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_one_key",
+          "line": 25,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_three_keys",
+          "line": 29,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_missing_section_returns_zero",
+          "line": 33,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_top_level_key_not_counted_as_section",
+          "line": 37,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_int",
+          "line": 41,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 3.67,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/toml/test_r167_toml_roundtrip_coverage.py",
+      "function_count": 8,
+      "functions": [
+        {
+          "name": "test_roundtrip_returns_dict",
+          "line": 17,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_roundtrip_dest_file_created",
+          "line": 22,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_roundtrip_preserves_data",
+          "line": 27,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_roundtrip_from_bytes",
+          "line": 33,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_roundtrip_simple_content",
+          "line": 39,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_roundtrip_numeric_values",
+          "line": 46,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_roundtrip_nested_table",
+          "line": 53,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_roundtrip_idempotent",
+          "line": 60,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.25,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/toml/test_r168_toml_update_section.py",
+      "function_count": 8,
+      "functions": [
+        {
+          "name": "test_update_existing_section",
+          "line": 20,
+          "assertion_count": 3,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            5
+          ]
+        },
+        {
+          "name": "test_create_missing_section",
+          "line": 27,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_original_not_mutated",
+          "line": 33,
+          "assertion_count": 2,
+          "min_score": 5,
+          "scores": [
+            5,
+            5
+          ]
+        },
+        {
+          "name": "test_other_sections_unchanged",
+          "line": 39,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_empty_updates_returns_same_section",
+          "line": 44,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_type_error_on_non_dict_section",
+          "line": 49,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_updates_override_existing_keys",
+          "line": 54,
+          "assertion_count": 3,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_empty_data_creates_section",
+          "line": 61,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.62,
+      "file_min_score": 3
+    },
+    {
+      "file": "tests/python/toml/test_r169_toml_deep_coverage.py",
+      "function_count": 35,
+      "functions": [
+        {
+          "name": "test_returns_dict",
+          "line": 56,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_bytes_content_detected",
+          "line": 60,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_from_file",
+          "line": 64,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_returns_dict",
+          "line": 75,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_has_data_key",
+          "line": 79,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_data_contains_keys",
+          "line": 83,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_section_loaded",
+          "line": 87,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_top_level_string",
+          "line": 96,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_top_level_int",
+          "line": 99,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_nested_key",
+          "line": 102,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_missing_key_raises",
+          "line": 106,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_has_key_true",
+          "line": 116,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_has_key_false",
+          "line": 119,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_has_section_true",
+          "line": 122,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_has_section_false",
+          "line": 125,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_has_section_server",
+          "line": 128,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_list",
+          "line": 136,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_sections_found",
+          "line": 140,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_simple_has_no_sections",
+          "line": 145,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_returns_int",
+          "line": 154,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_simple_count",
+          "line": 157,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_sample_top_level",
+          "line": 160,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_dict",
+          "line": 170,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_simple_passthrough",
+          "line": 174,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_nested_keys_dotted",
+          "line": 178,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_values_preserved",
+          "line": 183,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            5,
+            4
+          ]
+        },
+        {
+          "name": "test_returns_string",
+          "line": 193,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_valid_json",
+          "line": 197,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_contains_values",
+          "line": 202,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_returns_dict",
+          "line": 212,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_updates_key",
+          "line": 217,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_preserves_other_keys",
+          "line": 222,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_dict",
+          "line": 232,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_value_updated",
+          "line": 237,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_other_keys_preserved",
+          "line": 242,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.31,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/toml/test_r169_toml_has_section.py",
+      "function_count": 8,
+      "functions": [
+        {
+          "name": "test_existing_section_returns_true",
+          "line": 13,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_missing_section_returns_false",
+          "line": 17,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_bool",
+          "line": 21,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_non_section_key_returns_false",
+          "line": 25,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_multiple_sections",
+          "line": 30,
+          "assertion_count": 3,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_string_source",
+          "line": 36,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_pyproject_has_project",
+          "line": 41,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_empty_toml_returns_false",
+          "line": 47,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.5,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/toml/test_r170_toml_get_all_keys.py",
+      "function_count": 5,
+      "functions": [
+        {
+          "name": "test_simple_keys",
+          "line": 17,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_nested_keys",
+          "line": 23,
+          "assertion_count": 3,
+          "min_score": 3,
+          "scores": [
+            3,
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_empty_toml",
+          "line": 30,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_deep_nesting",
+          "line": 35,
+          "assertion_count": 3,
+          "min_score": 3,
+          "scores": [
+            3,
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_sorted_output",
+          "line": 42,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.0,
+      "file_min_score": 3
+    },
+    {
+      "file": "tests/python/toml/test_r170_toml_section_dict.py",
+      "function_count": 12,
+      "functions": [
+        {
+          "name": "test_returns_existing_section",
+          "line": 33,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_returns_second_section",
+          "line": 37,
+          "assertion_count": 2,
+          "min_score": 5,
+          "scores": [
+            5,
+            5
+          ]
+        },
+        {
+          "name": "test_missing_section_returns_empty_dict",
+          "line": 42,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_non_dict_key_returns_empty",
+          "line": 46,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_empty_toml_returns_empty",
+          "line": 51,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_returns_dict_type",
+          "line": 55,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_function_in_all",
+          "line": 59,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_true_when_sections_exist",
+          "line": 65,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_false_when_only_scalars",
+          "line": 68,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_false_on_empty_toml",
+          "line": 71,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_bool",
+          "line": 74,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_function_in_all",
+          "line": 78,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.25,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/toml/test_r187_toml_count_sections_with_key.py",
+      "function_count": 10,
+      "functions": [
+        {
+          "name": "test_all_sections_have_key",
+          "line": 14,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_some_sections_have_key",
+          "line": 27,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_no_sections_have_key",
+          "line": 39,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_empty_toml",
+          "line": 50,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_no_sections_only_scalars",
+          "line": 55,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_single_section_with_key",
+          "line": 63,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_nested_key_not_counted",
+          "line": 71,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_key_absent_everywhere",
+          "line": 80,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_three_sections_all_match",
+          "line": 91,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_bytes_input",
+          "line": 105,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 4.0,
+      "file_min_score": 4
+    },
+    {
+      "file": "tests/python/toml/test_r191_toml_string_value_count.py",
+      "function_count": 6,
+      "functions": [
+        {
+          "name": "test_all_string_values",
+          "line": 19,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_no_string_values",
+          "line": 24,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_mixed_types",
+          "line": 29,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_section_values_not_counted",
+          "line": 34,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_empty_toml_returns_zero",
+          "line": 40,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_result_is_int",
+          "line": 44,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 3.67,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/toml/test_r198_toml_list_count.py",
+      "function_count": 6,
+      "functions": [
+        {
+          "name": "test_import",
+          "line": 38,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_two_top_level_lists",
+          "line": 42,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_no_lists_returns_zero",
+          "line": 47,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_one_list",
+          "line": 52,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_int",
+          "line": 57,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_result_nonnegative",
+          "line": 62,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.5,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/toml/test_r200_toml_advanced_ops.py",
+      "function_count": 43,
+      "functions": [
+        {
+          "name": "test_probe_toml_returns_dict",
+          "line": 60,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_probe_toml_exists_true",
+          "line": 68,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_probe_toml_section_count",
+          "line": 76,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_load_toml_returns_dict",
+          "line": 84,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_load_toml_has_data_key",
+          "line": 92,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_load_toml_data_has_top_level_keys",
+          "line": 100,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            5
+          ]
+        },
+        {
+          "name": "test_get_keys_returns_list",
+          "line": 114,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_get_keys_has_expected_keys",
+          "line": 122,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_get_all_keys_returns_list",
+          "line": 131,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            3
+          ]
+        },
+        {
+          "name": "test_get_all_keys_has_dotted_paths",
+          "line": 140,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_get_value_top_level",
+          "line": 148,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_get_value_nested",
+          "line": 156,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_list_sections_returns_list",
+          "line": 168,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_list_sections_has_expected",
+          "line": 176,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_has_section_existing",
+          "line": 185,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_has_section_missing",
+          "line": 192,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_has_any_section_true",
+          "line": 199,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_get_section_keys_returns_list",
+          "line": 206,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            3
+          ]
+        },
+        {
+          "name": "test_get_section_as_dict_returns_dict",
+          "line": 215,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            5
+          ]
+        },
+        {
+          "name": "test_has_key_existing",
+          "line": 228,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_has_key_missing",
+          "line": 235,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_count_keys_top_level",
+          "line": 242,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            4
+          ]
+        },
+        {
+          "name": "test_count_keys_recursive_greater",
+          "line": 251,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_count_values_in_section",
+          "line": 264,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            4
+          ]
+        },
+        {
+          "name": "test_toml_string_value_count",
+          "line": 273,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            4
+          ]
+        },
+        {
+          "name": "test_toml_list_count",
+          "line": 282,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            4
+          ]
+        },
+        {
+          "name": "test_count_sections_with_key",
+          "line": 291,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            4
+          ]
+        },
+        {
+          "name": "test_flatten_returns_dict",
+          "line": 300,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            3
+          ]
+        },
+        {
+          "name": "test_flatten_values_accessible",
+          "line": 309,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            5,
+            4
+          ]
+        },
+        {
+          "name": "test_to_json_str_returns_string",
+          "line": 322,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_to_json_str_valid_json",
+          "line": 330,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            3
+          ]
+        },
+        {
+          "name": "test_to_env_returns_string",
+          "line": 340,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            3
+          ]
+        },
+        {
+          "name": "test_to_env_uppercase_keys",
+          "line": 349,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_set_value_changes_value",
+          "line": 364,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            5
+          ]
+        },
+        {
+          "name": "test_delete_key_removes_key",
+          "line": 374,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            3
+          ]
+        },
+        {
+          "name": "test_rename_key_creates_new_key",
+          "line": 384,
+          "assertion_count": 3,
+          "min_score": 2,
+          "scores": [
+            2,
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_update_section_updates_values",
+          "line": 395,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            4
+          ]
+        },
+        {
+          "name": "test_diff_keys_returns_list",
+          "line": 405,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_diff_keys_detects_difference",
+          "line": 415,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_merge_toml_returns_dict",
+          "line": 426,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_merge_toml_combines_sections",
+          "line": 436,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_write_toml_produces_file",
+          "line": 448,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_roundtrip_produces_file",
+          "line": 460,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 2.72,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/toml/test_r200_toml_installed_workflow.py",
+      "function_count": 7,
+      "functions": [
+        {
+          "name": "test_load_returns_model_with_key_count",
+          "line": 39,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            4
+          ]
+        },
+        {
+          "name": "test_load_returns_data_dict",
+          "line": 46,
+          "assertion_count": 3,
+          "min_score": 2,
+          "scores": [
+            3,
+            3,
+            2
+          ]
+        },
+        {
+          "name": "test_domain_model_spec_qname",
+          "line": 55,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_domain_model_key_count",
+          "line": 63,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_write_roundtrip_preserves_key_count",
+          "line": 74,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_write_roundtrip_preserves_values",
+          "line": 89,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_domain_model_to_dict",
+          "line": 106,
+          "assertion_count": 3,
+          "min_score": 3,
+          "scores": [
+            5,
+            3,
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.0,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/toml/test_r202_toml_advanced_ops.py",
+      "function_count": 20,
+      "functions": [
+        {
+          "name": "test_load_toml_returns_dict",
+          "line": 38,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_load_toml_has_data",
+          "line": 46,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_load_toml_data_has_name",
+          "line": 54,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_probe_toml_dict",
+          "line": 62,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            4
+          ]
+        },
+        {
+          "name": "test_probe_toml_section_count",
+          "line": 71,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_probe_toml_top_level_keys",
+          "line": 79,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_get_value_name",
+          "line": 91,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_get_value_version",
+          "line": 98,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_has_key_true",
+          "line": 105,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_has_key_false",
+          "line": 112,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_has_section_true",
+          "line": 119,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_has_section_false",
+          "line": 126,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_list_sections_list",
+          "line": 133,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            3
+          ]
+        },
+        {
+          "name": "test_count_keys_int",
+          "line": 142,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            4
+          ]
+        },
+        {
+          "name": "test_get_section_as_dict",
+          "line": 151,
+          "assertion_count": 3,
+          "min_score": 2,
+          "scores": [
+            2,
+            5,
+            4
+          ]
+        },
+        {
+          "name": "test_get_all_keys_list",
+          "line": 161,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            3
+          ]
+        },
+        {
+          "name": "test_to_json_str_str",
+          "line": 174,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            3
+          ]
+        },
+        {
+          "name": "test_flatten_dict",
+          "line": 183,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            3
+          ]
+        },
+        {
+          "name": "test_flatten_has_nested_keys",
+          "line": 192,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_write_toml_creates_file",
+          "line": 201,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.2,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/toml/test_r233_toml_numeric_boolean_count.py",
+      "function_count": 10,
+      "functions": [
+        {
+          "name": "test_all_numerics",
+          "line": 20,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_mixed_types",
+          "line": 24,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_no_numerics",
+          "line": 28,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_bool_not_counted_as_numeric",
+          "line": 32,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_return_type",
+          "line": 36,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_all_booleans",
+          "line": 42,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_mixed",
+          "line": 46,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_no_booleans",
+          "line": 50,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_return_type",
+          "line": 54,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_numeric_not_counted_as_bool",
+          "line": 58,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.6,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/toml/test_r266_toml_installed_workflow.py",
+      "function_count": 12,
+      "functions": [
+        {
+          "name": "test_importable_from_toml_codec",
+          "line": 25,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_importable_from_package",
+          "line": 29,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_returns_dict",
+          "line": 38,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_format_field_is_toml",
+          "line": 43,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_loaded_field_is_true",
+          "line": 48,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_key_count_is_integer",
+          "line": 53,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_key_count_is_positive",
+          "line": 58,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_result_has_required_keys",
+          "line": 63,
+          "assertion_count": 3,
+          "min_score": 3,
+          "scores": [
+            3,
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_bytes_input_returns_dict",
+          "line": 74,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            4
+          ]
+        },
+        {
+          "name": "test_bytes_key_count_matches_file",
+          "line": 81,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_write_then_installed_workflow",
+          "line": 91,
+          "assertion_count": 3,
+          "min_score": 3,
+          "scores": [
+            4,
+            5,
+            3
+          ]
+        },
+        {
+          "name": "test_consistent_across_calls",
+          "line": 105,
+          "assertion_count": 3,
+          "min_score": 3,
+          "scores": [
+            3,
+            3,
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.08,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/toml/test_r275_toml_table_count_total_keys.py",
+      "function_count": 10,
+      "functions": [
+        {
+          "name": "test_returns_int",
+          "line": 21,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_two_tables",
+          "line": 24,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_zero_tables_for_flat",
+          "line": 27,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_zero_for_empty",
+          "line": 30,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_single_table",
+          "line": 33,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_int",
+          "line": 39,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_flat_three_keys",
+          "line": 42,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_zero_for_empty",
+          "line": 45,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_counts_section_headers_not_values",
+          "line": 48,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_more_keys_than_sections",
+          "line": 53,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.5,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/toml/test_r276_toml_has_tables_has_lists.py",
+      "function_count": 10,
+      "functions": [
+        {
+          "name": "test_returns_bool",
+          "line": 22,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_true_when_tables_present",
+          "line": 25,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_false_for_flat_toml",
+          "line": 28,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_false_for_empty",
+          "line": 31,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_true_for_single_table",
+          "line": 34,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_bool",
+          "line": 40,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_true_when_list_present",
+          "line": 43,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_false_for_no_list",
+          "line": 46,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_false_for_empty",
+          "line": 49,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_true_for_integer_list",
+          "line": 52,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.6,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/toml/test_r277_toml_is_empty_string_density.py",
+      "function_count": 10,
+      "functions": [
+        {
+          "name": "test_returns_bool",
+          "line": 22,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_true_for_empty",
+          "line": 25,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_false_for_content",
+          "line": 28,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_false_for_strings_only",
+          "line": 31,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_false_for_numeric_keys",
+          "line": 34,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_float",
+          "line": 39,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_zero_for_all_numeric",
+          "line": 42,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_nonzero_for_strings",
+          "line": 45,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_zero_for_empty",
+          "line": 50,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_between_zero_and_one",
+          "line": 53,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.6,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/toml/test_r278_toml_depth_avg_key_length.py",
+      "function_count": 10,
+      "functions": [
+        {
+          "name": "test_returns_int",
+          "line": 22,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_flat_has_depth_one",
+          "line": 25,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_one_level_table",
+          "line": 28,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_two_level_nested",
+          "line": 31,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_zero_or_one_for_empty",
+          "line": 35,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_float",
+          "line": 41,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_zero_for_empty",
+          "line": 44,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_positive_for_content",
+          "line": 47,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_correct_avg",
+          "line": 50,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_single_key",
+          "line": 54,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.4,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/toml/test_r279_toml_max_value_nested_table.py",
+      "function_count": 10,
+      "functions": [
+        {
+          "name": "test_returns_int",
+          "line": 22,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_zero_for_empty",
+          "line": 25,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_positive_for_content",
+          "line": 28,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_longest_string_wins",
+          "line": 31,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_flat_content",
+          "line": 35,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_int",
+          "line": 41,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_zero_for_flat",
+          "line": 44,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_zero_for_empty",
+          "line": 47,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_one_for_nested",
+          "line": 50,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_positive_for_multiple_tables",
+          "line": 54,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.6,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/toml/test_r280_toml_has_booleans_is_flat.py",
+      "function_count": 10,
+      "functions": [
+        {
+          "name": "test_returns_bool",
+          "line": 23,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_true_when_boolean_present",
+          "line": 26,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_false_when_no_boolean",
+          "line": 29,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_false_for_empty",
+          "line": 32,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_true_for_false_boolean",
+          "line": 35,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_bool",
+          "line": 41,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_true_for_flat",
+          "line": 44,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_false_for_tables",
+          "line": 47,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_true_for_empty",
+          "line": 50,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_false_for_single_table",
+          "line": 55,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.4,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/toml/test_r281_toml_key_count_per_table_total_value.py",
+      "function_count": 10,
+      "functions": [
+        {
+          "name": "test_returns_list",
+          "line": 22,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_empty_for_flat",
+          "line": 25,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_empty_for_empty",
+          "line": 29,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_two_tables_returns_two_counts",
+          "line": 32,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_counts_are_positive",
+          "line": 36,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_returns_int",
+          "line": 42,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_zero_for_empty",
+          "line": 45,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_three_for_three_keys",
+          "line": 48,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_positive_for_flat",
+          "line": 51,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_two_for_two_keys",
+          "line": 54,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.3,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/toml/test_r285_toml_list_analytics.py",
+      "function_count": 16,
+      "functions": [
+        {
+          "name": "test_returns_int",
+          "line": 23,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_empty_doc_returns_zero",
+          "line": 26,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_no_lists_returns_zero",
+          "line": 29,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_single_list",
+          "line": 32,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_multiple_lists_returns_max",
+          "line": 35,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_nonnegative",
+          "line": 39,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_longer_list",
+          "line": 42,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_empty_list_returns_zero",
+          "line": 46,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_bool",
+          "line": 52,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_empty_doc_is_true",
+          "line": 55,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_all_lowercase_returns_true",
+          "line": 59,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_uppercase_key_returns_false",
+          "line": 62,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_mixed_case_key_returns_false",
+          "line": 65,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_with_lists_lowercase_returns_true",
+          "line": 68,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_all_upper_returns_false",
+          "line": 71,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_numeric_and_underscore_keys_lowercase",
+          "line": 75,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.75,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/toml/test_r287_toml_analytics.py",
+      "function_count": 16,
+      "functions": [
+        {
+          "name": "test_returns_bool",
+          "line": 35,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_empty_doc_is_false",
+          "line": 38,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_text_only_is_false",
+          "line": 41,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_with_int_is_true",
+          "line": 44,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_bool_only_is_false",
+          "line": 47,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_with_float_is_true",
+          "line": 51,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_all_return_bool",
+          "line": 54,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_mixed_has_numeric",
+          "line": 59,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_float",
+          "line": 64,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_empty_doc_is_zero",
+          "line": 67,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_no_lists_is_zero",
+          "line": 70,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_single_list_avg",
+          "line": 73,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_two_lists_avg",
+          "line": 77,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_empty_list_avg_zero",
+          "line": 81,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_nonnegative",
+          "line": 84,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_all_return_float",
+          "line": 88,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 3.5,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/toml/test_r288_toml_numeric_analytics.py",
+      "function_count": 18,
+      "functions": [
+        {
+          "name": "test_returns_float",
+          "line": 28,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_empty_doc_returns_zero",
+          "line": 31,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_bool_only_returns_zero",
+          "line": 34,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_text_only_returns_zero",
+          "line": 38,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_single_int_returns_value",
+          "line": 41,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_multi_returns_max",
+          "line": 44,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_float_values",
+          "line": 48,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_max_gte_min",
+          "line": 52,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_all_return_float",
+          "line": 55,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_returns_float",
+          "line": 61,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_empty_doc_returns_zero",
+          "line": 64,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_bool_only_returns_zero",
+          "line": 67,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_text_only_returns_zero",
+          "line": 70,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_single_int_returns_value",
+          "line": 73,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_multi_returns_min",
+          "line": 76,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_float_values",
+          "line": 80,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_min_lte_max",
+          "line": 84,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_all_return_float",
+          "line": 87,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 3.28,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/toml/test_r289_toml_installed_workflow.py",
+      "function_count": 9,
+      "functions": [
+        {
+          "name": "test_importable_from_toml_workflow",
+          "line": 18,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_importable_from_package",
+          "line": 22,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_returns_dict",
+          "line": 28,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_format_field",
+          "line": 32,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_loaded_true",
+          "line": 36,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_key_count_integer",
+          "line": 40,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_section_count_integer",
+          "line": 44,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_has_required_keys",
+          "line": 48,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_consistent",
+          "line": 53,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.0,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/toml/test_r289_toml_ratio_sum.py",
+      "function_count": 16,
+      "functions": [
+        {
+          "name": "test_returns_float",
+          "line": 29,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_empty_is_zero",
+          "line": 32,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_all_bool_is_one",
+          "line": 35,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_no_bools_is_zero",
+          "line": 38,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_text_only_is_zero",
+          "line": 41,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_mixed_ratio",
+          "line": 44,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_bounded_zero_to_one",
+          "line": 49,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_all_return_float",
+          "line": 54,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_returns_float",
+          "line": 60,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_empty_is_zero",
+          "line": 63,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_bool_only_is_zero",
+          "line": 66,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_text_only_is_zero",
+          "line": 70,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_integer_sum",
+          "line": 73,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_float_sum",
+          "line": 77,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_mixed_sum_excludes_bool",
+          "line": 81,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_all_return_float",
+          "line": 85,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 3.38,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/toml/test_r290_toml_analytics_deepening.py",
+      "function_count": 11,
+      "functions": [
+        {
+          "name": "test_returns_int",
+          "line": 27,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_nonnegative",
+          "line": 31,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_distinct_values",
+          "line": 35,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_all_same",
+          "line": 39,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_int",
+          "line": 47,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_positive_for_file",
+          "line": 51,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_int",
+          "line": 59,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_simple_keys",
+          "line": 63,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_float",
+          "line": 71,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_nonnegative",
+          "line": 75,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_known_values",
+          "line": 79,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.27,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/toml/test_r292_toml_iter_keys.py",
+      "function_count": 10,
+      "functions": [
+        {
+          "name": "test_importable_from_toml_key_iterator",
+          "line": 18,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_importable_from_package",
+          "line": 22,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_returns_iterator",
+          "line": 28,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_minimal_yields_keys",
+          "line": 33,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_key_type_is_spec_key",
+          "line": 38,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_key_has_spec_qname",
+          "line": 44,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_key_qname_value",
+          "line": 49,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_key_name_is_string",
+          "line": 54,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_key_value_type",
+          "line": 59,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_consistent",
+          "line": 64,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.0,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/toml/test_r299_toml_key_analytics.py",
+      "function_count": 12,
+      "functions": [
+        {
+          "name": "test_mixed_returns_half",
+          "line": 18,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_all_numeric_returns_zero",
+          "line": 23,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_one_string_of_three_returns_third",
+          "line": 28,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_float",
+          "line": 33,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_nonnegative",
+          "line": 37,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_mixed_more_than_all_numeric",
+          "line": 41,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_mixed_min_key_is_5",
+          "line": 50,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_all_numeric_min_key_is_1",
+          "line": 55,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_one_string_min_key_is_1",
+          "line": 60,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_int",
+          "line": 65,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_nonnegative",
+          "line": 69,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_mixed_min_larger_than_single_char",
+          "line": 73,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.5,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/toml/test_r304_toml_table_analytics.py",
+      "function_count": 12,
+      "functions": [
+        {
+          "name": "test_two_lists_sum",
+          "line": 22,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_no_lists_returns_zero",
+          "line": 26,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_single_element_list",
+          "line": 30,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_int",
+          "line": 34,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_no_lists_is_zero",
+          "line": 37,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_with_lists_greater_than_single",
+          "line": 40,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_flat_is_single_table",
+          "line": 47,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_one_nested_table_is_false",
+          "line": 51,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_two_nested_tables_is_false",
+          "line": 55,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_bool",
+          "line": 59,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_nested_returns_false",
+          "line": 62,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_flat_true_nested_false",
+          "line": 65,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 3.42,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/toml/test_r309_toml_iter_tables.py",
+      "function_count": 10,
+      "functions": [
+        {
+          "name": "test_importable_from_toml_table_iterator",
+          "line": 18,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_importable_from_package",
+          "line": 22,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_returns_iterator",
+          "line": 28,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_minimal_yields_tables",
+          "line": 33,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_table_type_is_spec_table",
+          "line": 38,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_table_has_spec_qname",
+          "line": 44,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_table_qname_value",
+          "line": 49,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_table_has_keys",
+          "line": 54,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_table_has_key_count",
+          "line": 60,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_consistent",
+          "line": 66,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 2.8,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/toml/test_r311_toml_type_count_analytics.py",
+      "function_count": 12,
+      "functions": [
+        {
+          "name": "test_toml_string_count_s1_one",
+          "line": 20,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_toml_string_count_s2_two",
+          "line": 24,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_toml_string_count_s3_zero",
+          "line": 28,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_toml_string_count_returns_int_s1",
+          "line": 32,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_toml_string_count_returns_int_s2",
+          "line": 36,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_toml_string_count_all_three_distinct",
+          "line": 40,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_toml_numeric_count_s1_one",
+          "line": 47,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_toml_numeric_count_s2_one",
+          "line": 52,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_toml_numeric_count_s3_two",
+          "line": 57,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_toml_numeric_count_returns_int_s1",
+          "line": 62,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_toml_numeric_count_returns_int_s3",
+          "line": 66,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_toml_numeric_count_all_three",
+          "line": 70,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.17,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/toml/test_r315_toml_bool_analytics.py",
+      "function_count": 12,
+      "functions": [
+        {
+          "name": "test_toml_bool_count_t1_two",
+          "line": 20,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_toml_bool_count_t2_zero",
+          "line": 24,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_toml_bool_count_t3_one",
+          "line": 28,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_toml_bool_count_returns_int_t1",
+          "line": 32,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_toml_bool_count_returns_int_t2",
+          "line": 36,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_toml_bool_count_all_three_distinct",
+          "line": 40,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_toml_has_boolean_value_t1_true",
+          "line": 51,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_toml_has_boolean_value_t2_false",
+          "line": 55,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_toml_has_boolean_value_t3_true",
+          "line": 59,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_toml_has_boolean_value_returns_bool_t1",
+          "line": 63,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_toml_has_boolean_value_returns_bool_t2",
+          "line": 67,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_toml_has_boolean_value_all_three",
+          "line": 71,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.17,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/toml/test_rnext47_toml_probe_gap_closure.py",
+      "function_count": 11,
+      "functions": [
+        {
+          "name": "test_probe_toml_from_bytes_returns_dict",
+          "line": 23,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_probe_toml_format_key",
+          "line": 27,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_probe_toml_section_count",
+          "line": 31,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_probe_toml_key_count",
+          "line": 35,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_probe_toml_top_level_keys",
+          "line": 40,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_probe_toml_size_bytes",
+          "line": 46,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_probe_toml_empty_content",
+          "line": 51,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_load_toml_from_file",
+          "line": 59,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            5
+          ]
+        },
+        {
+          "name": "test_load_toml_data_accessible",
+          "line": 66,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_load_toml_from_bytes",
+          "line": 73,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_load_toml_missing_file_graceful",
+          "line": 77,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 2.91,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/toml/test_rnext_toml_section_analytics.py",
+      "function_count": 11,
+      "functions": [
+        {
+          "name": "test_with_sections",
+          "line": 46,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_without_sections",
+          "line": 49,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_database_section",
+          "line": 54,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_logging_section",
+          "line": 58,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_missing_section",
+          "line": 62,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_has_lists",
+          "line": 68,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_no_lists",
+          "line": 72,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_string_values",
+          "line": 78,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_mixed_values",
+          "line": 82,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_key_in_multiple_sections",
+          "line": 88,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_key_in_no_sections",
+          "line": 102,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 4.0,
+      "file_min_score": 4
+    },
+    {
+      "file": "tests/python/toml/test_spec_compat_layer.py",
+      "function_count": 19,
+      "functions": [
+        {
+          "name": "test_spec_qname",
+          "line": 18,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_spec_fact_ref",
+          "line": 21,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_namespace_uri_present",
+          "line": 24,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_instantiation",
+          "line": 29,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_keys_property",
+          "line": 33,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_key_count",
+          "line": 37,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_get_value",
+          "line": 41,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_to_dict",
+          "line": 45,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_repr_nonempty",
+          "line": 50,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_inherits_spec_class",
+          "line": 54,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_instantiation",
+          "line": 60,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_spec_qname",
+          "line": 64,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_spec_fact_ref",
+          "line": 67,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_name_property",
+          "line": 70,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_value_property",
+          "line": 74,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_value_type_str",
+          "line": 78,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_value_type_int",
+          "line": 82,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_inherits_spec_class",
+          "line": 86,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_repr_nonempty",
+          "line": 90,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.63,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/toml/test_toml_cli.py",
+      "function_count": 4,
+      "functions": [
+        {
+          "name": "test_main_is_callable",
+          "line": 10,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_main_no_args_exits_zero",
+          "line": 15,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_main_valid_file",
+          "line": 23,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_main_missing_file_exits_nonzero",
+          "line": 31,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.25,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/toml/test_toml_conveyor_deepening.py",
+      "function_count": 11,
+      "functions": [
+        {
+          "name": "test_flatten",
+          "line": 32,
+          "assertion_count": 4,
+          "min_score": 2,
+          "scores": [
+            2,
+            3,
+            5,
+            3
+          ]
+        },
+        {
+          "name": "test_to_env",
+          "line": 42,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            2
+          ]
+        },
+        {
+          "name": "test_diff_keys",
+          "line": 50,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_rename_key",
+          "line": 59,
+          "assertion_count": 3,
+          "min_score": 3,
+          "scores": [
+            3,
+            5,
+            3
+          ]
+        },
+        {
+          "name": "test_count_keys",
+          "line": 67,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            4
+          ]
+        },
+        {
+          "name": "test_count_keys_recursive",
+          "line": 75,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            4
+          ]
+        },
+        {
+          "name": "test_has_key",
+          "line": 83,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_list_sections",
+          "line": 90,
+          "assertion_count": 3,
+          "min_score": 2,
+          "scores": [
+            2,
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_get_section_keys",
+          "line": 99,
+          "assertion_count": 3,
+          "min_score": 2,
+          "scores": [
+            2,
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_to_json_str",
+          "line": 108,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            3
+          ]
+        },
+        {
+          "name": "test_merge_toml",
+          "line": 116,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 2.27,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/toml/test_toml_document_computed_props.py",
+      "function_count": 16,
+      "functions": [
+        {
+          "name": "test_empty_dict_returns_true",
+          "line": 26,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_one_key_returns_false",
+          "line": 29,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_nested_empty_still_not_empty_if_has_key",
+          "line": 32,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_no_tables_returns_false",
+          "line": 37,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_dict_value_returns_true",
+          "line": 40,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_empty_dict_value_returns_true",
+          "line": 43,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_only_scalars_returns_false",
+          "line": 46,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_mixed_table_and_scalar_returns_true",
+          "line": 49,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_no_arrays_returns_false",
+          "line": 54,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_list_value_returns_true",
+          "line": 57,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_empty_list_value_returns_true",
+          "line": 60,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_only_dicts_and_scalars_returns_false",
+          "line": 63,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_all_scalars_returns_total",
+          "line": 68,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_empty_doc_returns_zero",
+          "line": 71,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_only_tables_returns_zero",
+          "line": 74,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_mixed_counts_only_scalars",
+          "line": 77,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 2.5,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/toml/test_toml_document_model.py",
+      "function_count": 19,
+      "functions": [
+        {
+          "name": "test_spec_qname_is_class_attr",
+          "line": 32,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_spec_qname_accessible_without_instance",
+          "line": 35,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_spec_fact_ref",
+          "line": 38,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_namespace_uri",
+          "line": 41,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_local_name",
+          "line": 44,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_key_count",
+          "line": 53,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_key_count_empty",
+          "line": 57,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_keys_list",
+          "line": 61,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_get_existing_key",
+          "line": 65,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_get_missing_key_default",
+          "line": 69,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_get_custom_default",
+          "line": 73,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_has_key_true",
+          "line": 77,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_has_key_false",
+          "line": 81,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_data_returns_inner_dict",
+          "line": 85,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_data_returns_copy",
+          "line": 89,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_to_dict_returns_wrapper",
+          "line": 95,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_repr",
+          "line": 100,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_from_file_loads_keys",
+          "line": 112,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_from_file_flat_keys",
+          "line": 123,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            5
+          ]
+        }
+      ],
+      "file_avg_score": 3.84,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/toml/test_toml_gap_closure_batch.py",
+      "function_count": 36,
+      "functions": [
+        {
+          "name": "test_merge_two_files",
+          "line": 79,
+          "assertion_count": 3,
+          "min_score": 2,
+          "scores": [
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "name": "test_merge_bytes",
+          "line": 88,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_basic",
+          "line": 97,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            2
+          ]
+        },
+        {
+          "name": "test_bytes",
+          "line": 103,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            2
+          ]
+        },
+        {
+          "name": "test_is_exception",
+          "line": 112,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_can_raise",
+          "line": 115,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_is_subclass",
+          "line": 122,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_can_raise",
+          "line": 125,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_is_subclass",
+          "line": 132,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_bad_toml_raises",
+          "line": 135,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_is_subclass",
+          "line": 142,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_can_raise",
+          "line": 145,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_server_section",
+          "line": 152,
+          "assertion_count": 3,
+          "min_score": 2,
+          "scores": [
+            2,
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_database_section",
+          "line": 158,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_existing_key",
+          "line": 165,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_missing_key",
+          "line": 168,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_bytes_input",
+          "line": 171,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_count",
+          "line": 177,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            4
+          ]
+        },
+        {
+          "name": "test_from_file",
+          "line": 182,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_basic",
+          "line": 189,
+          "assertion_count": 3,
+          "min_score": 2,
+          "scores": [
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "name": "test_diff",
+          "line": 200,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_identical",
+          "line": 205,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_rename",
+          "line": 212,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            3
+          ]
+        },
+        {
+          "name": "test_rename_preserves_other_keys",
+          "line": 219,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_has_sections",
+          "line": 228,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_no_sections",
+          "line": 232,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_server",
+          "line": 242,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            4
+          ]
+        },
+        {
+          "name": "test_empty_section",
+          "line": 247,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_count_keys_is_three_sections",
+          "line": 255,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_has_any_section_true",
+          "line": 258,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_get_section_keys_server",
+          "line": 261,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_count_values_in_section_server",
+          "line": 265,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_to_json_str_server_host",
+          "line": 268,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            5,
+            4
+          ]
+        },
+        {
+          "name": "test_diff_keys_excludes_shared",
+          "line": 274,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_to_env_contains_server_keys",
+          "line": 281,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_flat_toml_section_count_is_zero",
+          "line": 285,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.03,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/toml/test_toml_getvalue_hassection_w117_pipeline.py",
+      "function_count": 5,
+      "functions": [
+        {
+          "name": "test_get_value_returns_string",
+          "line": 24,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_get_value_numeric",
+          "line": 29,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_has_section_returns_bool",
+          "line": 34,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_has_section_existing",
+          "line": 39,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_has_section_missing",
+          "line": 44,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.8,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/toml/test_toml_load_toml_write_toml.py",
+      "function_count": 13,
+      "functions": [
+        {
+          "name": "test_load_file_returns_dict",
+          "line": 24,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            5
+          ]
+        },
+        {
+          "name": "test_load_file_data_has_keys",
+          "line": 31,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            5
+          ]
+        },
+        {
+          "name": "test_load_missing_file_raises",
+          "line": 38,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_load_bytes_input",
+          "line": 42,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_load_top_level_keys",
+          "line": 48,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_load_section",
+          "line": 54,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            5
+          ]
+        },
+        {
+          "name": "test_load_malformed_raises",
+          "line": 61,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_write_creates_file",
+          "line": 69,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_write_roundtrip_scalar",
+          "line": 74,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            5
+          ]
+        },
+        {
+          "name": "test_write_roundtrip_bool",
+          "line": 81,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_write_nested_section",
+          "line": 88,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            5,
+            4
+          ]
+        },
+        {
+          "name": "test_write_empty_dict",
+          "line": 95,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_write_to_string_path",
+          "line": 102,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.38,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/toml/test_toml_probe_toml.py",
+      "function_count": 4,
+      "functions": [
+        {
+          "name": "test_probe_existing_file",
+          "line": 23,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            4
+          ]
+        },
+        {
+          "name": "test_probe_missing_file",
+          "line": 30,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            4
+          ]
+        },
+        {
+          "name": "test_probe_returns_path",
+          "line": 35,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_probe_empty_file",
+          "line": 41,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 2.25,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/toml/test_toml_roundtrip_gap_closure.py",
+      "function_count": 8,
+      "functions": [
+        {
+          "name": "test_set_value_modifies_key",
+          "line": 27,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_set_value_nested",
+          "line": 34,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_delete_key_removes_entry",
+          "line": 40,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_delete_nested_key",
+          "line": 47,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_roundtrip_produces_file",
+          "line": 54,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            3
+          ]
+        },
+        {
+          "name": "test_roundtrip_preserves_data",
+          "line": 63,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            5
+          ]
+        },
+        {
+          "name": "test_flatten_separator",
+          "line": 73,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_get_value_returns_correct",
+          "line": 83,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        }
+      ],
+      "file_avg_score": 3.5,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/toml/test_toml_sections_flatten_w113_pipeline.py",
+      "function_count": 5,
+      "functions": [
+        {
+          "name": "test_list_sections_returns_list",
+          "line": 24,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_list_sections_has_server",
+          "line": 29,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_list_sections_has_database",
+          "line": 34,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_flatten_returns_dict",
+          "line": 39,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_flatten_has_dotted_keys",
+          "line": 44,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            5
+          ]
+        }
+      ],
+      "file_avg_score": 2.6,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/toml/test_toml_spec_qname.py",
+      "function_count": 10,
+      "functions": [
+        {
+          "name": "test_spec_qname_defined",
+          "line": 20,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_spec_qname_matches_registry",
+          "line": 24,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_toml_table_spec_qname",
+          "line": 39,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_toml_table_spec_fact_ref",
+          "line": 43,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_toml_table_namespace_uri",
+          "line": 47,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            3
+          ]
+        },
+        {
+          "name": "test_toml_key_spec_qname",
+          "line": 52,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_toml_key_spec_fact_ref",
+          "line": 56,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_registry_python_file_exists",
+          "line": 64,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_all_toml_qnames_have_toml_prefix",
+          "line": 79,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_toml_qnames_have_spec_fact_ref",
+          "line": 91,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.8,
+      "file_min_score": 2
+    }
+  ]
+}

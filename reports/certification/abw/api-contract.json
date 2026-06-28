@@ -1,0 +1,1072 @@
+{
+  "metadata": {
+    "authoritative_plan": "plans/.claude/crispy-jingling-snail.md",
+    "mission_id": "CERT-EXHAUST-20260628",
+    "format_id": "abw"
+  },
+  "python": {
+    "contracts": [
+      {
+        "name": "load",
+        "kind": "function",
+        "file": "src/python/abw/build/lib/abw/abw_codec.py",
+        "line": 36,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "get_section_count",
+        "kind": "function",
+        "file": "src/python/abw/build/lib/abw/abw_codec.py",
+        "line": 61,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "get_paragraph_count",
+        "kind": "function",
+        "file": "src/python/abw/build/lib/abw/abw_codec.py",
+        "line": 66,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "extract_text",
+        "kind": "function",
+        "file": "src/python/abw/build/lib/abw/abw_codec.py",
+        "line": 71,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "create_abw",
+        "kind": "function",
+        "file": "src/python/abw/build/lib/abw/abw_codec.py",
+        "line": 77,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "write_abw",
+        "kind": "function",
+        "file": "src/python/abw/build/lib/abw/abw_codec.py",
+        "line": 94,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "abw_iter_paragraphs",
+        "kind": "function",
+        "file": "src/python/abw/abw_paragraph_iterator.py",
+        "line": 16,
+        "role": "iterator",
+        "exported": true
+      },
+      {
+        "name": "abw_iter_sections",
+        "kind": "function",
+        "file": "src/python/abw/abw_section_iterator.py",
+        "line": 16,
+        "role": "iterator",
+        "exported": true
+      },
+      {
+        "name": "word_frequency",
+        "kind": "function",
+        "file": "src/python/abw/abw_word_stats.py",
+        "line": 11,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "get_unique_words",
+        "kind": "function",
+        "file": "src/python/abw/abw_word_stats.py",
+        "line": 22,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "get_char_count",
+        "kind": "function",
+        "file": "src/python/abw/abw_word_stats.py",
+        "line": 33,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "paragraph_lengths",
+        "kind": "function",
+        "file": "src/python/abw/abw_word_stats.py",
+        "line": 40,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "count_words",
+        "kind": "function",
+        "file": "src/python/abw/abw_word_stats.py",
+        "line": 47,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "text_stats",
+        "kind": "function",
+        "file": "src/python/abw/abw_word_stats.py",
+        "line": 54,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "search_text",
+        "kind": "function",
+        "file": "src/python/abw/abw_word_stats.py",
+        "line": 84,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "get_words",
+        "kind": "function",
+        "file": "src/python/abw/abw_word_stats.py",
+        "line": 105,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "longest_paragraph",
+        "kind": "function",
+        "file": "src/python/abw/abw_word_stats.py",
+        "line": 127,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "is_empty",
+        "kind": "function",
+        "file": "src/python/abw/abw_word_stats.py",
+        "line": 146,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "average_paragraph_length",
+        "kind": "function",
+        "file": "src/python/abw/abw_word_stats.py",
+        "line": 164,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "shortest_paragraph",
+        "kind": "function",
+        "file": "src/python/abw/abw_word_stats.py",
+        "line": 182,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "contains_text",
+        "kind": "function",
+        "file": "src/python/abw/abw_word_stats.py",
+        "line": 202,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "count_paragraphs_matching",
+        "kind": "function",
+        "file": "src/python/abw/abw_word_stats.py",
+        "line": 226,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "abw_installed_workflow",
+        "kind": "function",
+        "file": "src/python/abw/abw_workflow.py",
+        "line": 9,
+        "role": "workflow",
+        "exported": true
+      },
+      {
+        "name": "abw_sentence_count",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 23,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "abw_longest_word",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 31,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "abw_total_char_count",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 50,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "abw_nonempty_paragraph_count",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 70,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "abw_word_count",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 86,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "abw_empty_paragraph_count",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 99,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "abw_average_word_length",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 115,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "abw_max_paragraph_length",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 137,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "abw_unique_word_count",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 153,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "get_paragraphs",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 170,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "abw_paragraph_count",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 187,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "abw_shortest_word",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 200,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "abw_has_sections",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 221,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "abw_has_metadata",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 234,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "abw_total_word_count",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 248,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "abw_char_count",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 259,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "abw_min_paragraph_length",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 277,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "abw_has_content",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 290,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "abw_heading_count",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 300,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "abw_vocabulary_richness",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 312,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "abw_average_paragraph_length",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 321,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "abw_is_empty",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 336,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "abw_sentence_density",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 349,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "abw_has_unicode",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 358,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "abw_is_single_paragraph",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 368,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "abw_avg_words_per_paragraph",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 373,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "abw_char_density",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 381,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "abw_longest_paragraph_length",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 389,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "abw_words_per_sentence",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 398,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "abw_paragraph_length_variance",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 410,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "abw_is_multi_paragraph",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 421,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "abw_heading_density",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 429,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "abw_is_content_rich",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 437,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "abw_avg_chars_per_word",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 442,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "abw_whitespace_ratio",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 450,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "abw_avg_sentence_length",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 462,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "abw_punctuation_count",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 475,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "abw_median_paragraph_length",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 485,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "abw_longest_paragraph_words",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 501,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "abw_distinct_word_ratio",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 513,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "abw_total_text_length",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 525,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "abw_nonempty_paragraph_ratio",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 535,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "abw_has_numeric_content",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 548,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "abw_longest_paragraph_index",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 558,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "abw_unique_char_count",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 568,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "abw_nonspace_char_count",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 576,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "abw_line_count",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 584,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "abw_uppercase_ratio",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 594,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "abw_section_count",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 607,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "abw_has_headings",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 622,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "abw_digit_count",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 653,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "abw_alpha_char_count",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 658,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "abw_alpha_ratio",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 663,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "abw_avg_paragraph_length",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 678,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "abw_avg_paragraph_words",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 683,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "abw_char_per_paragraph",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 697,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "abw_chars_per_word",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 702,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "abw_consonant_to_vowel_ratio",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 715,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "abw_empty_paragraph_ratio",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 725,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "abw_file_size_bytes",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 738,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "abw_has_multiple_paragraphs",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 746,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "abw_has_punctuation",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 751,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "abw_has_single_paragraph",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 757,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "abw_letter_ratio",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 762,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "abw_longest_paragraph_chars",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 767,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "abw_max_paragraph_word_count",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 779,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "abw_shortest_paragraph_chars",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 792,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "abw_vowel_count",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 804,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "abw_vowel_ratio",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 809,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "abw_word_length_variance",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 817,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "abw_words_per_char",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 830,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "abw_all_words_unique",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 839,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "abw_avg_word_length_per_para",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 847,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "abw_avg_word_per_paragraph",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 861,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "abw_capital_word_count",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 866,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "abw_consonant_ratio",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 872,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "abw_digit_ratio",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 881,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "abw_has_multi_para",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 889,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "abw_is_empty_document",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 894,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "abw_lowercase_ratio",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 899,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "abw_max_paragraph_words",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 908,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "abw_max_word_count_para",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 913,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "abw_short_paragraph_count",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 918,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "abw_short_word_count",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 928,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "abw_space_count",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 933,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "abw_total_word_length",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 942,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "abw_unique_words_per_paragraph",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 947,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "abw_min_word_count_para",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 960,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "abw_numeric_char_count",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 973,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "abw_para_char_variance",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 978,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "abw_text_density",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 989,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "abw_total_para_char_count",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 997,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "abw_uppercase_count",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 1005,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "abw_digit_char_count",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 1010,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "abw_nonempty_para_ratio",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 1015,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "abw_numeric_word_count",
+        "kind": "function",
+        "file": "src/python/abw/word_document.py",
+        "line": 1024,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "AbwError",
+        "kind": "class",
+        "file": "src/python/abw/build/lib/abw/abw_codec.py",
+        "line": 28,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "AbwParseError",
+        "kind": "class",
+        "file": "src/python/abw/build/lib/abw/abw_codec.py",
+        "line": 32,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "AbwDocument",
+        "kind": "class",
+        "file": "src/python/abw/Compat/abw_document.py",
+        "line": 15,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "AbwParagraph",
+        "kind": "class",
+        "file": "src/python/abw/Compat/abw_paragraph.py",
+        "line": 13,
+        "role": "model",
+        "exported": false
+      },
+      {
+        "name": "AbwError",
+        "kind": "class",
+        "file": "src/python/abw/exceptions.py",
+        "line": 13,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "AbwParseError",
+        "kind": "class",
+        "file": "src/python/abw/exceptions.py",
+        "line": 17,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "AbwWriteError",
+        "kind": "class",
+        "file": "src/python/abw/exceptions.py",
+        "line": 21,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "AbwDocument",
+        "kind": "class",
+        "file": "src/python/abw/models.py",
+        "line": 16,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "CharRun",
+        "kind": "class",
+        "file": "src/python/abw/spec/document/char_run.py",
+        "line": 10,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "Document",
+        "kind": "class",
+        "file": "src/python/abw/spec/document/document.py",
+        "line": 15,
+        "role": "model",
+        "exported": false
+      },
+      {
+        "name": "Field",
+        "kind": "class",
+        "file": "src/python/abw/spec/document/field.py",
+        "line": 10,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "Paragraph",
+        "kind": "class",
+        "file": "src/python/abw/spec/document/paragraph.py",
+        "line": 11,
+        "role": "model",
+        "exported": false
+      },
+      {
+        "name": "Section",
+        "kind": "class",
+        "file": "src/python/abw/spec/document/section.py",
+        "line": 16,
+        "role": "api",
+        "exported": false
+      }
+    ],
+    "export_count": 126
+  },
+  "dotnet": {
+    "contracts": [],
+    "public_member_count": 0
+  }
+}

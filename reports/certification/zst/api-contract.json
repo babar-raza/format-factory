@@ -1,0 +1,1014 @@
+{
+  "metadata": {
+    "authoritative_plan": "plans/.claude/crispy-jingling-snail.md",
+    "mission_id": "CERT-EXHAUST-20260628",
+    "format_id": "zst"
+  },
+  "python": {
+    "contracts": [
+      {
+        "name": "zst_size_exceeds_50",
+        "kind": "function",
+        "file": "src/python/zst/compressed_stream.py",
+        "line": 34,
+        "role": "api",
+        "exported": true
+      },
+      {
+        "name": "zst_frame_count_exceeds_one",
+        "kind": "function",
+        "file": "src/python/zst/compressed_stream.py",
+        "line": 42,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "zst_max_byte_value",
+        "kind": "function",
+        "file": "src/python/zst/compressed_stream.py",
+        "line": 50,
+        "role": "api",
+        "exported": true
+      },
+      {
+        "name": "zst_min_byte_value",
+        "kind": "function",
+        "file": "src/python/zst/compressed_stream.py",
+        "line": 65,
+        "role": "api",
+        "exported": true
+      },
+      {
+        "name": "zst_min_byte_exceeds_zero",
+        "kind": "function",
+        "file": "src/python/zst/compressed_stream.py",
+        "line": 80,
+        "role": "api",
+        "exported": true
+      },
+      {
+        "name": "zst_is_empty_decompressed",
+        "kind": "function",
+        "file": "src/python/zst/compressed_stream.py",
+        "line": 88,
+        "role": "api",
+        "exported": true
+      },
+      {
+        "name": "zst_is_trivial_compression",
+        "kind": "function",
+        "file": "src/python/zst/compressed_stream.py",
+        "line": 96,
+        "role": "api",
+        "exported": true
+      },
+      {
+        "name": "zst_byte_range",
+        "kind": "function",
+        "file": "src/python/zst/compressed_stream.py",
+        "line": 104,
+        "role": "api",
+        "exported": true
+      },
+      {
+        "name": "zst_is_single_byte",
+        "kind": "function",
+        "file": "src/python/zst/compressed_stream.py",
+        "line": 112,
+        "role": "api",
+        "exported": true
+      },
+      {
+        "name": "compress_bytes",
+        "kind": "function",
+        "file": "src/python/zst/zst_codec.py",
+        "line": 66,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "decompress_bytes",
+        "kind": "function",
+        "file": "src/python/zst/zst_codec.py",
+        "line": 88,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "probe_frame",
+        "kind": "function",
+        "file": "src/python/zst/zst_codec.py",
+        "line": 190,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "compress_file",
+        "kind": "function",
+        "file": "src/python/zst/zst_codec.py",
+        "line": 258,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "decompress_file",
+        "kind": "function",
+        "file": "src/python/zst/zst_codec.py",
+        "line": 322,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "validate_roundtrip",
+        "kind": "function",
+        "file": "src/python/zst/zst_codec.py",
+        "line": 388,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "get_frame_info",
+        "kind": "function",
+        "file": "src/python/zst/zst_codec.py",
+        "line": 443,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "estimate_ratio",
+        "kind": "function",
+        "file": "src/python/zst/zst_codec.py",
+        "line": 497,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "validate_file",
+        "kind": "function",
+        "file": "src/python/zst/zst_codec.py",
+        "line": 545,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "batch_compress",
+        "kind": "function",
+        "file": "src/python/zst/zst_codec.py",
+        "line": 608,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "batch_decompress",
+        "kind": "function",
+        "file": "src/python/zst/zst_codec.py",
+        "line": 640,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "compress_string",
+        "kind": "function",
+        "file": "src/python/zst/zst_codec.py",
+        "line": 677,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "decompress_to_string",
+        "kind": "function",
+        "file": "src/python/zst/zst_codec.py",
+        "line": 695,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "compress_string_to_file",
+        "kind": "function",
+        "file": "src/python/zst/zst_codec.py",
+        "line": 719,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "decompress_file_to_string",
+        "kind": "function",
+        "file": "src/python/zst/zst_codec.py",
+        "line": 763,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "get_frame_size_stats",
+        "kind": "function",
+        "file": "src/python/zst/zst_codec.py",
+        "line": 796,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "is_valid_frame",
+        "kind": "function",
+        "file": "src/python/zst/zst_codec.py",
+        "line": 840,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "compress_with_dict",
+        "kind": "function",
+        "file": "src/python/zst/zst_codec.py",
+        "line": 861,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "decompress_with_dict",
+        "kind": "function",
+        "file": "src/python/zst/zst_codec.py",
+        "line": 878,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "get_compression_summary",
+        "kind": "function",
+        "file": "src/python/zst/zst_codec.py",
+        "line": 902,
+        "role": "parser",
+        "exported": false
+      },
+      {
+        "name": "zst_compressed_size",
+        "kind": "function",
+        "file": "src/python/zst/compression_metrics.py",
+        "line": 21,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "zst_is_valid_file",
+        "kind": "function",
+        "file": "src/python/zst/compression_metrics.py",
+        "line": 43,
+        "role": "probe",
+        "exported": true
+      },
+      {
+        "name": "zst_decompressed_size",
+        "kind": "function",
+        "file": "src/python/zst/compression_metrics.py",
+        "line": 68,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "zst_frame_count",
+        "kind": "function",
+        "file": "src/python/zst/compression_metrics.py",
+        "line": 104,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "zst_frame_sizes",
+        "kind": "function",
+        "file": "src/python/zst/compression_metrics.py",
+        "line": 139,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "zst_file_info",
+        "kind": "function",
+        "file": "src/python/zst/compression_metrics.py",
+        "line": 183,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "zst_compression_ratio",
+        "kind": "function",
+        "file": "src/python/zst/compression_metrics.py",
+        "line": 226,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "zst_is_single_frame",
+        "kind": "function",
+        "file": "src/python/zst/compression_metrics.py",
+        "line": 247,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "zst_max_frame_size",
+        "kind": "function",
+        "file": "src/python/zst/compression_metrics.py",
+        "line": 252,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "zst_min_frame_size",
+        "kind": "function",
+        "file": "src/python/zst/compression_metrics.py",
+        "line": 260,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "zst_is_small_file",
+        "kind": "function",
+        "file": "src/python/zst/compression_metrics.py",
+        "line": 268,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "zst_total_frame_size",
+        "kind": "function",
+        "file": "src/python/zst/compression_metrics.py",
+        "line": 273,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "zst_has_multiple_frames",
+        "kind": "function",
+        "file": "src/python/zst/compression_metrics.py",
+        "line": 278,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "zst_frame_size_variance",
+        "kind": "function",
+        "file": "src/python/zst/compression_metrics.py",
+        "line": 283,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "zst_largest_frame_ratio",
+        "kind": "function",
+        "file": "src/python/zst/compression_metrics.py",
+        "line": 292,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "zst_smallest_frame_ratio",
+        "kind": "function",
+        "file": "src/python/zst/compression_metrics.py",
+        "line": 300,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "zst_frame_count_is_one",
+        "kind": "function",
+        "file": "src/python/zst/compression_metrics.py",
+        "line": 308,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "zst_decompressed_to_compressed_ratio",
+        "kind": "function",
+        "file": "src/python/zst/compression_metrics.py",
+        "line": 313,
+        "role": "writer",
+        "exported": false
+      },
+      {
+        "name": "zst_frame_median_size",
+        "kind": "function",
+        "file": "src/python/zst/compression_metrics.py",
+        "line": 334,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "zst_is_large_file",
+        "kind": "function",
+        "file": "src/python/zst/compression_metrics.py",
+        "line": 346,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "zst_frame_size_range",
+        "kind": "function",
+        "file": "src/python/zst/compression_metrics.py",
+        "line": 351,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "zst_is_multi_frame",
+        "kind": "function",
+        "file": "src/python/zst/compression_metrics.py",
+        "line": 359,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "zst_is_compressible",
+        "kind": "function",
+        "file": "src/python/zst/compression_metrics.py",
+        "line": 364,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "zst_compression_saving",
+        "kind": "function",
+        "file": "src/python/zst/compression_metrics.py",
+        "line": 369,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "zst_is_highly_compressed",
+        "kind": "function",
+        "file": "src/python/zst/compression_metrics.py",
+        "line": 375,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "zst_compression_efficiency",
+        "kind": "function",
+        "file": "src/python/zst/compression_metrics.py",
+        "line": 390,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "zst_savings_ratio",
+        "kind": "function",
+        "file": "src/python/zst/compression_metrics.py",
+        "line": 411,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "zst_is_rle_efficient",
+        "kind": "function",
+        "file": "src/python/zst/compression_metrics.py",
+        "line": 420,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "zst_avg_frame_size",
+        "kind": "function",
+        "file": "src/python/zst/compression_metrics.py",
+        "line": 428,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "zst_compressed_ratio",
+        "kind": "function",
+        "file": "src/python/zst/compression_metrics.py",
+        "line": 436,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "zst_file_size_bytes",
+        "kind": "function",
+        "file": "src/python/zst/compression_metrics.py",
+        "line": 444,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "zst_is_empty_content",
+        "kind": "function",
+        "file": "src/python/zst/compression_metrics.py",
+        "line": 450,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "zst_decompressed_per_frame",
+        "kind": "function",
+        "file": "src/python/zst/compression_metrics.py",
+        "line": 455,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "zst_density",
+        "kind": "function",
+        "file": "src/python/zst/compression_metrics.py",
+        "line": 463,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "zst_unique_frame_size_count",
+        "kind": "function",
+        "file": "src/python/zst/compression_metrics.py",
+        "line": 471,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "zst_is_uniform_frames",
+        "kind": "function",
+        "file": "src/python/zst/compression_metrics.py",
+        "line": 477,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "zst_content_type_hint",
+        "kind": "function",
+        "file": "src/python/zst/compression_metrics.py",
+        "line": 483,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "zst_frame_header_descriptor",
+        "kind": "function",
+        "file": "src/python/zst/compression_metrics.py",
+        "line": 499,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "zst_is_minimal_frame",
+        "kind": "function",
+        "file": "src/python/zst/compression_metrics.py",
+        "line": 508,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "zst_magic_valid",
+        "kind": "function",
+        "file": "src/python/zst/compression_metrics.py",
+        "line": 513,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "zst_ratio_vs_uncompressed",
+        "kind": "function",
+        "file": "src/python/zst/compression_metrics.py",
+        "line": 519,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "zst_bytes_saved",
+        "kind": "function",
+        "file": "src/python/zst/compression_metrics.py",
+        "line": 530,
+        "role": "writer",
+        "exported": false
+      },
+      {
+        "name": "zst_header_size",
+        "kind": "function",
+        "file": "src/python/zst/compression_metrics.py",
+        "line": 538,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "zst_frame_count_ratio",
+        "kind": "function",
+        "file": "src/python/zst/compression_metrics.py",
+        "line": 544,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "zst_overhead_bytes",
+        "kind": "function",
+        "file": "src/python/zst/compression_metrics.py",
+        "line": 552,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "zst_avg_compression_per_byte",
+        "kind": "function",
+        "file": "src/python/zst/compression_metrics.py",
+        "line": 559,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "zst_is_smaller_than_1kb",
+        "kind": "function",
+        "file": "src/python/zst/compression_metrics.py",
+        "line": 567,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "zst_size_exceeds_100k",
+        "kind": "function",
+        "file": "src/python/zst/compression_metrics.py",
+        "line": 572,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "zst_content_entropy",
+        "kind": "function",
+        "file": "src/python/zst/compression_metrics.py",
+        "line": 577,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "zst_avg_byte_value",
+        "kind": "function",
+        "file": "src/python/zst/compression_metrics.py",
+        "line": 596,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "zst_size_per_frame",
+        "kind": "function",
+        "file": "src/python/zst/compression_metrics.py",
+        "line": 610,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "zst_byte_ratio",
+        "kind": "function",
+        "file": "src/python/zst/compression_metrics.py",
+        "line": 618,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "zst_compression_savings_ratio",
+        "kind": "function",
+        "file": "src/python/zst/compression_metrics.py",
+        "line": 633,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "zst_size_exceeds_1k",
+        "kind": "function",
+        "file": "src/python/zst/compression_metrics.py",
+        "line": 649,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "zst_inspect_frame",
+        "kind": "function",
+        "file": "src/python/zst/zst_frame_inspector.py",
+        "line": 13,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "zst_installed_workflow",
+        "kind": "function",
+        "file": "src/python/zst/zst_workflow.py",
+        "line": 7,
+        "role": "workflow",
+        "exported": false
+      },
+      {
+        "name": "ZstError",
+        "kind": "class",
+        "file": "src/python/zst/zst_codec.py",
+        "line": 27,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "ZstInvalidFrameError",
+        "kind": "class",
+        "file": "src/python/zst/zst_codec.py",
+        "line": 31,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "ZstDecompressionError",
+        "kind": "class",
+        "file": "src/python/zst/zst_codec.py",
+        "line": 35,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "ZstOutputLimitExceeded",
+        "kind": "class",
+        "file": "src/python/zst/zst_codec.py",
+        "line": 39,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "ZstFileNotFoundError",
+        "kind": "class",
+        "file": "src/python/zst/zst_codec.py",
+        "line": 43,
+        "role": "exception",
+        "exported": false
+      },
+      {
+        "name": "ZstReadError",
+        "kind": "class",
+        "file": "src/python/zst/zst_codec.py",
+        "line": 47,
+        "role": "exception",
+        "exported": false
+      },
+      {
+        "name": "ZstDecompressError",
+        "kind": "class",
+        "file": "src/python/zst/zst_codec.py",
+        "line": 51,
+        "role": "exception",
+        "exported": false
+      },
+      {
+        "name": "ZstBlock",
+        "kind": "class",
+        "file": "src/python/zst/Compat/zst_block.py",
+        "line": 6,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "ZstFrame",
+        "kind": "class",
+        "file": "src/python/zst/Compat/zst_frame.py",
+        "line": 6,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "Block",
+        "kind": "class",
+        "file": "src/python/zst/spec/frame/block.py",
+        "line": 14,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "Frame",
+        "kind": "class",
+        "file": "src/python/zst/spec/frame/frame.py",
+        "line": 14,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "ZstError",
+        "kind": "class",
+        "file": "src/python/zst/exceptions.py",
+        "line": 13,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "ZstParseError",
+        "kind": "class",
+        "file": "src/python/zst/exceptions.py",
+        "line": 17,
+        "role": "exception",
+        "exported": false
+      },
+      {
+        "name": "ZstWriteError",
+        "kind": "class",
+        "file": "src/python/zst/exceptions.py",
+        "line": 21,
+        "role": "exception",
+        "exported": false
+      },
+      {
+        "name": "ZstDocument",
+        "kind": "class",
+        "file": "src/python/zst/models.py",
+        "line": 16,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "MagicNumber",
+        "kind": "class",
+        "file": "src/python/zst/spec/frame/magic_number.py",
+        "line": 12,
+        "role": "constant",
+        "exported": false
+      }
+    ],
+    "export_count": 43
+  },
+  "dotnet": {
+    "contracts": [
+      {
+        "name": "ZstException",
+        "kind": "class",
+        "file": "src/net/zst/Exceptions/ZstException.cs",
+        "line": 7,
+        "role": "exception"
+      },
+      {
+        "name": "ZstInvalidMagicException",
+        "kind": "class",
+        "file": "src/net/zst/Exceptions/ZstException.cs",
+        "line": 16,
+        "role": "exception"
+      },
+      {
+        "name": "ZstFileSizeException",
+        "kind": "class",
+        "file": "src/net/zst/Exceptions/ZstException.cs",
+        "line": 23,
+        "role": "exception"
+      },
+      {
+        "name": "ZstFileNotFoundException",
+        "kind": "class",
+        "file": "src/net/zst/Exceptions/ZstException.cs",
+        "line": 30,
+        "role": "exception"
+      },
+      {
+        "name": "ZstWriteException",
+        "kind": "class",
+        "file": "src/net/zst/Exceptions/ZstException.cs",
+        "line": 37,
+        "role": "exception"
+      },
+      {
+        "name": "ZstDocument",
+        "kind": "class",
+        "file": "src/net/zst/ZstDocument.cs",
+        "line": 12,
+        "role": "model"
+      },
+      {
+        "name": "ZstParser",
+        "kind": "class",
+        "file": "src/net/zst/ZstParser.cs",
+        "line": 24,
+        "role": "parser"
+      },
+      {
+        "name": "ZstWriter",
+        "kind": "class",
+        "file": "src/net/zst/ZstWriter.cs",
+        "line": 23,
+        "role": "writer"
+      },
+      {
+        "name": "Parse",
+        "kind": "method",
+        "file": "src/net/zst/ZstParser.cs",
+        "line": 42,
+        "role": "parser"
+      },
+      {
+        "name": "ParseStream",
+        "kind": "method",
+        "file": "src/net/zst/ZstParser.cs",
+        "line": 59,
+        "role": "parser"
+      },
+      {
+        "name": "Compress",
+        "kind": "method",
+        "file": "src/net/zst/ZstWriter.cs",
+        "line": 52,
+        "role": "writer"
+      },
+      {
+        "name": "Compress",
+        "kind": "method",
+        "file": "src/net/zst/ZstWriter.cs",
+        "line": 78,
+        "role": "writer"
+      },
+      {
+        "name": "CompressToFile",
+        "kind": "method",
+        "file": "src/net/zst/ZstWriter.cs",
+        "line": 102,
+        "role": "writer"
+      },
+      {
+        "name": "Decompress",
+        "kind": "method",
+        "file": "src/net/zst/ZstWriter.cs",
+        "line": 134,
+        "role": "writer"
+      },
+      {
+        "name": "Decompress",
+        "kind": "method",
+        "file": "src/net/zst/ZstWriter.cs",
+        "line": 169,
+        "role": "writer"
+      },
+      {
+        "name": "FilePath",
+        "kind": "property",
+        "file": "src/net/zst/ZstDocument.cs",
+        "line": 15,
+        "role": "model"
+      },
+      {
+        "name": "FileSizeBytes",
+        "kind": "property",
+        "file": "src/net/zst/ZstDocument.cs",
+        "line": 18,
+        "role": "model"
+      },
+      {
+        "name": "MagicValid",
+        "kind": "property",
+        "file": "src/net/zst/ZstDocument.cs",
+        "line": 21,
+        "role": "model"
+      },
+      {
+        "name": "FrameCount",
+        "kind": "property",
+        "file": "src/net/zst/ZstDocument.cs",
+        "line": 24,
+        "role": "analytics"
+      },
+      {
+        "name": "FrameHeaderDescriptor",
+        "kind": "property",
+        "file": "src/net/zst/ZstDocument.cs",
+        "line": 27,
+        "role": "model"
+      },
+      {
+        "name": "IsMinimalFrame",
+        "kind": "property",
+        "file": "src/net/zst/ZstDocument.cs",
+        "line": 33,
+        "role": "model"
+      },
+      {
+        "name": "SizeExceeds100K",
+        "kind": "property",
+        "file": "src/net/zst/ZstDocument.cs",
+        "line": 38,
+        "role": "model"
+      },
+      {
+        "name": "IsHighlyCompressed",
+        "kind": "property",
+        "file": "src/net/zst/ZstDocument.cs",
+        "line": 45,
+        "role": "model"
+      },
+      {
+        "name": "OverheadBytes",
+        "kind": "property",
+        "file": "src/net/zst/ZstDocument.cs",
+        "line": 48,
+        "role": "model"
+      },
+      {
+        "name": "BytesPerFrame",
+        "kind": "property",
+        "file": "src/net/zst/ZstDocument.cs",
+        "line": 51,
+        "role": "model"
+      },
+      {
+        "name": "ContentTypeHint",
+        "kind": "property",
+        "file": "src/net/zst/ZstDocument.cs",
+        "line": 57,
+        "role": "model"
+      },
+      {
+        "name": "IsEmptyContent",
+        "kind": "property",
+        "file": "src/net/zst/ZstDocument.cs",
+        "line": 60,
+        "role": "model"
+      }
+    ],
+    "public_member_count": 27
+  }
+}

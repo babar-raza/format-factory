@@ -1,0 +1,1144 @@
+{
+  "metadata": {
+    "authoritative_plan": "plans/.claude/crispy-jingling-snail.md",
+    "mission_id": "CERT-EXHAUST-20260628",
+    "format_id": "toml"
+  },
+  "python": {
+    "contracts": [
+      {
+        "name": "main",
+        "kind": "function",
+        "file": "src/python/toml/cli.py",
+        "line": 14,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "toml_string_value_count",
+        "kind": "function",
+        "file": "src/python/toml/build/lib/toml/config_document.py",
+        "line": 18,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_list_count",
+        "kind": "function",
+        "file": "src/python/toml/build/lib/toml/config_document.py",
+        "line": 35,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_numeric_value_count",
+        "kind": "function",
+        "file": "src/python/toml/build/lib/toml/config_document.py",
+        "line": 52,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_boolean_value_count",
+        "kind": "function",
+        "file": "src/python/toml/build/lib/toml/config_document.py",
+        "line": 66,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_table_count",
+        "kind": "function",
+        "file": "src/python/toml/build/lib/toml/config_document.py",
+        "line": 80,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_total_keys",
+        "kind": "function",
+        "file": "src/python/toml/build/lib/toml/config_document.py",
+        "line": 94,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "toml_has_tables",
+        "kind": "function",
+        "file": "src/python/toml/build/lib/toml/config_document.py",
+        "line": 108,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "toml_has_lists",
+        "kind": "function",
+        "file": "src/python/toml/build/lib/toml/config_document.py",
+        "line": 113,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "toml_is_empty",
+        "kind": "function",
+        "file": "src/python/toml/build/lib/toml/config_document.py",
+        "line": 118,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "toml_string_density",
+        "kind": "function",
+        "file": "src/python/toml/build/lib/toml/config_document.py",
+        "line": 123,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "toml_numeric_density",
+        "kind": "function",
+        "file": "src/python/toml/build/lib/toml/config_document.py",
+        "line": 138,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "toml_depth",
+        "kind": "function",
+        "file": "src/python/toml/build/lib/toml/config_document.py",
+        "line": 149,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "toml_avg_key_length",
+        "kind": "function",
+        "file": "src/python/toml/build/lib/toml/config_document.py",
+        "line": 168,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "toml_max_value_length",
+        "kind": "function",
+        "file": "src/python/toml/build/lib/toml/config_document.py",
+        "line": 178,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "toml_nested_table_count",
+        "kind": "function",
+        "file": "src/python/toml/build/lib/toml/config_document.py",
+        "line": 187,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_has_booleans",
+        "kind": "function",
+        "file": "src/python/toml/build/lib/toml/config_document.py",
+        "line": 194,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "toml_key_count_per_table",
+        "kind": "function",
+        "file": "src/python/toml/build/lib/toml/config_document.py",
+        "line": 201,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_is_flat",
+        "kind": "function",
+        "file": "src/python/toml/build/lib/toml/config_document.py",
+        "line": 208,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "toml_total_value_count",
+        "kind": "function",
+        "file": "src/python/toml/build/lib/toml/config_document.py",
+        "line": 215,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_max_list_length",
+        "kind": "function",
+        "file": "src/python/toml/build/lib/toml/config_document.py",
+        "line": 232,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "toml_all_keys_lowercase",
+        "kind": "function",
+        "file": "src/python/toml/build/lib/toml/config_document.py",
+        "line": 240,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "toml_has_numeric_values",
+        "kind": "function",
+        "file": "src/python/toml/build/lib/toml/config_document.py",
+        "line": 247,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "toml_avg_list_length",
+        "kind": "function",
+        "file": "src/python/toml/build/lib/toml/config_document.py",
+        "line": 254,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "toml_max_numeric_value",
+        "kind": "function",
+        "file": "src/python/toml/build/lib/toml/config_document.py",
+        "line": 264,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "toml_min_numeric_value",
+        "kind": "function",
+        "file": "src/python/toml/build/lib/toml/config_document.py",
+        "line": 272,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "toml_bool_ratio",
+        "kind": "function",
+        "file": "src/python/toml/build/lib/toml/config_document.py",
+        "line": 280,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_numeric_sum",
+        "kind": "function",
+        "file": "src/python/toml/build/lib/toml/config_document.py",
+        "line": 291,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_unique_value_count",
+        "kind": "function",
+        "file": "src/python/toml/build/lib/toml/config_document.py",
+        "line": 298,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_file_size_bytes",
+        "kind": "function",
+        "file": "src/python/toml/build/lib/toml/config_document.py",
+        "line": 306,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "toml_max_key_length",
+        "kind": "function",
+        "file": "src/python/toml/build/lib/toml/config_document.py",
+        "line": 315,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "toml_avg_value_length",
+        "kind": "function",
+        "file": "src/python/toml/build/lib/toml/config_document.py",
+        "line": 323,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "toml_string_key_ratio",
+        "kind": "function",
+        "file": "src/python/toml/build/lib/toml/config_document.py",
+        "line": 332,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_min_key_length",
+        "kind": "function",
+        "file": "src/python/toml/build/lib/toml/config_document.py",
+        "line": 343,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "toml_list_item_count",
+        "kind": "function",
+        "file": "src/python/toml/build/lib/toml/config_document.py",
+        "line": 351,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_is_single_table",
+        "kind": "function",
+        "file": "src/python/toml/build/lib/toml/config_document.py",
+        "line": 358,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "toml_string_count",
+        "kind": "function",
+        "file": "src/python/toml/build/lib/toml/config_document.py",
+        "line": 363,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_numeric_count",
+        "kind": "function",
+        "file": "src/python/toml/build/lib/toml/config_document.py",
+        "line": 368,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_bool_count",
+        "kind": "function",
+        "file": "src/python/toml/build/lib/toml/config_document.py",
+        "line": 373,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_has_boolean_value",
+        "kind": "function",
+        "file": "src/python/toml/build/lib/toml/config_document.py",
+        "line": 378,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "toml_has_exactly_two_keys",
+        "kind": "function",
+        "file": "src/python/toml/build/lib/toml/config_document.py",
+        "line": 384,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "toml_has_only_booleans",
+        "kind": "function",
+        "file": "src/python/toml/build/lib/toml/config_document.py",
+        "line": 389,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "toml_has_mixed_value_types",
+        "kind": "function",
+        "file": "src/python/toml/build/lib/toml/config_document.py",
+        "line": 398,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "toml_non_boolean_count",
+        "kind": "function",
+        "file": "src/python/toml/build/lib/toml/config_document.py",
+        "line": 406,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_has_no_booleans",
+        "kind": "function",
+        "file": "src/python/toml/build/lib/toml/config_document.py",
+        "line": 413,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "toml_has_at_least_one_numeric",
+        "kind": "function",
+        "file": "src/python/toml/build/lib/toml/config_document.py",
+        "line": 418,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "toml_has_arrays",
+        "kind": "function",
+        "file": "src/python/toml/build/lib/toml/config_document.py",
+        "line": 423,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "toml_has_nested_tables",
+        "kind": "function",
+        "file": "src/python/toml/build/lib/toml/config_document.py",
+        "line": 439,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "toml_scalar_key_count",
+        "kind": "function",
+        "file": "src/python/toml/build/lib/toml/config_document.py",
+        "line": 453,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "probe_toml",
+        "kind": "function",
+        "file": "src/python/toml/toml_codec.py",
+        "line": 91,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "load_toml",
+        "kind": "function",
+        "file": "src/python/toml/toml_codec.py",
+        "line": 122,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "write_toml",
+        "kind": "function",
+        "file": "src/python/toml/toml_codec.py",
+        "line": 174,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "get_keys",
+        "kind": "function",
+        "file": "src/python/toml/toml_codec.py",
+        "line": 197,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "roundtrip",
+        "kind": "function",
+        "file": "src/python/toml/toml_codec.py",
+        "line": 210,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "get_value",
+        "kind": "function",
+        "file": "src/python/toml/toml_codec.py",
+        "line": 225,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "merge_toml",
+        "kind": "function",
+        "file": "src/python/toml/toml_codec.py",
+        "line": 250,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "to_json_str",
+        "kind": "function",
+        "file": "src/python/toml/toml_codec.py",
+        "line": 277,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "set_value",
+        "kind": "function",
+        "file": "src/python/toml/toml_codec.py",
+        "line": 293,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "delete_key",
+        "kind": "function",
+        "file": "src/python/toml/toml_codec.py",
+        "line": 323,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "list_sections",
+        "kind": "function",
+        "file": "src/python/toml/toml_codec.py",
+        "line": 357,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "get_section_keys",
+        "kind": "function",
+        "file": "src/python/toml/toml_codec.py",
+        "line": 385,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "has_key",
+        "kind": "function",
+        "file": "src/python/toml/toml_codec.py",
+        "line": 412,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "count_keys",
+        "kind": "function",
+        "file": "src/python/toml/toml_codec.py",
+        "line": 436,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "flatten",
+        "kind": "function",
+        "file": "src/python/toml/toml_codec.py",
+        "line": 466,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "to_env",
+        "kind": "function",
+        "file": "src/python/toml/toml_codec.py",
+        "line": 496,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "diff_keys",
+        "kind": "function",
+        "file": "src/python/toml/toml_codec.py",
+        "line": 533,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "rename_key",
+        "kind": "function",
+        "file": "src/python/toml/toml_codec.py",
+        "line": 550,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "has_section",
+        "kind": "function",
+        "file": "src/python/toml/toml_codec.py",
+        "line": 576,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "update_section",
+        "kind": "function",
+        "file": "src/python/toml/toml_codec.py",
+        "line": 591,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "get_all_keys",
+        "kind": "function",
+        "file": "src/python/toml/toml_codec.py",
+        "line": 614,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "get_section_as_dict",
+        "kind": "function",
+        "file": "src/python/toml/toml_codec.py",
+        "line": 645,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "has_any_section",
+        "kind": "function",
+        "file": "src/python/toml/toml_codec.py",
+        "line": 666,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "count_values_in_section",
+        "kind": "function",
+        "file": "src/python/toml/toml_codec.py",
+        "line": 680,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "count_sections_with_key",
+        "kind": "function",
+        "file": "src/python/toml/toml_codec.py",
+        "line": 699,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "toml_installed_workflow",
+        "kind": "function",
+        "file": "src/python/toml/toml_codec.py",
+        "line": 725,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "installed_workflow",
+        "kind": "function",
+        "file": "src/python/toml/toml_codec.py",
+        "line": 746,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "toml_string_value_count",
+        "kind": "function",
+        "file": "src/python/toml/toml_analytics.py",
+        "line": 18,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_list_count",
+        "kind": "function",
+        "file": "src/python/toml/toml_analytics.py",
+        "line": 35,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_numeric_value_count",
+        "kind": "function",
+        "file": "src/python/toml/toml_analytics.py",
+        "line": 52,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_boolean_value_count",
+        "kind": "function",
+        "file": "src/python/toml/toml_analytics.py",
+        "line": 66,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_table_count",
+        "kind": "function",
+        "file": "src/python/toml/toml_analytics.py",
+        "line": 80,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_total_keys",
+        "kind": "function",
+        "file": "src/python/toml/toml_analytics.py",
+        "line": 94,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_has_tables",
+        "kind": "function",
+        "file": "src/python/toml/toml_analytics.py",
+        "line": 108,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_has_lists",
+        "kind": "function",
+        "file": "src/python/toml/toml_analytics.py",
+        "line": 113,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_is_empty",
+        "kind": "function",
+        "file": "src/python/toml/toml_analytics.py",
+        "line": 118,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_string_density",
+        "kind": "function",
+        "file": "src/python/toml/toml_analytics.py",
+        "line": 123,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_numeric_density",
+        "kind": "function",
+        "file": "src/python/toml/toml_analytics.py",
+        "line": 138,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_depth",
+        "kind": "function",
+        "file": "src/python/toml/toml_analytics.py",
+        "line": 149,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_avg_key_length",
+        "kind": "function",
+        "file": "src/python/toml/toml_analytics.py",
+        "line": 168,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_max_value_length",
+        "kind": "function",
+        "file": "src/python/toml/toml_analytics.py",
+        "line": 178,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_nested_table_count",
+        "kind": "function",
+        "file": "src/python/toml/toml_analytics.py",
+        "line": 187,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_has_booleans",
+        "kind": "function",
+        "file": "src/python/toml/toml_analytics.py",
+        "line": 194,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_key_count_per_table",
+        "kind": "function",
+        "file": "src/python/toml/toml_analytics.py",
+        "line": 201,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_is_flat",
+        "kind": "function",
+        "file": "src/python/toml/toml_analytics.py",
+        "line": 208,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_total_value_count",
+        "kind": "function",
+        "file": "src/python/toml/toml_analytics.py",
+        "line": 215,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_max_list_length",
+        "kind": "function",
+        "file": "src/python/toml/toml_analytics.py",
+        "line": 232,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_all_keys_lowercase",
+        "kind": "function",
+        "file": "src/python/toml/toml_analytics.py",
+        "line": 240,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_has_numeric_values",
+        "kind": "function",
+        "file": "src/python/toml/toml_analytics.py",
+        "line": 247,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_avg_list_length",
+        "kind": "function",
+        "file": "src/python/toml/toml_analytics.py",
+        "line": 254,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_max_numeric_value",
+        "kind": "function",
+        "file": "src/python/toml/toml_analytics.py",
+        "line": 264,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_min_numeric_value",
+        "kind": "function",
+        "file": "src/python/toml/toml_analytics.py",
+        "line": 272,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_bool_ratio",
+        "kind": "function",
+        "file": "src/python/toml/toml_analytics.py",
+        "line": 280,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_numeric_sum",
+        "kind": "function",
+        "file": "src/python/toml/toml_analytics.py",
+        "line": 291,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_unique_value_count",
+        "kind": "function",
+        "file": "src/python/toml/toml_analytics.py",
+        "line": 298,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_file_size_bytes",
+        "kind": "function",
+        "file": "src/python/toml/toml_analytics.py",
+        "line": 306,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_max_key_length",
+        "kind": "function",
+        "file": "src/python/toml/toml_analytics.py",
+        "line": 315,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_avg_value_length",
+        "kind": "function",
+        "file": "src/python/toml/toml_analytics.py",
+        "line": 323,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_string_key_ratio",
+        "kind": "function",
+        "file": "src/python/toml/toml_analytics.py",
+        "line": 332,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_min_key_length",
+        "kind": "function",
+        "file": "src/python/toml/toml_analytics.py",
+        "line": 343,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_list_item_count",
+        "kind": "function",
+        "file": "src/python/toml/toml_analytics.py",
+        "line": 351,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_is_single_table",
+        "kind": "function",
+        "file": "src/python/toml/toml_analytics.py",
+        "line": 358,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_string_count",
+        "kind": "function",
+        "file": "src/python/toml/toml_analytics.py",
+        "line": 363,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_numeric_count",
+        "kind": "function",
+        "file": "src/python/toml/toml_analytics.py",
+        "line": 368,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_bool_count",
+        "kind": "function",
+        "file": "src/python/toml/toml_analytics.py",
+        "line": 373,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_has_boolean_value",
+        "kind": "function",
+        "file": "src/python/toml/toml_analytics.py",
+        "line": 378,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_has_exactly_two_keys",
+        "kind": "function",
+        "file": "src/python/toml/toml_analytics.py",
+        "line": 384,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_has_only_booleans",
+        "kind": "function",
+        "file": "src/python/toml/toml_analytics.py",
+        "line": 389,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_has_mixed_value_types",
+        "kind": "function",
+        "file": "src/python/toml/toml_analytics.py",
+        "line": 398,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_non_boolean_count",
+        "kind": "function",
+        "file": "src/python/toml/toml_analytics.py",
+        "line": 406,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_has_no_booleans",
+        "kind": "function",
+        "file": "src/python/toml/toml_analytics.py",
+        "line": 413,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_has_at_least_one_numeric",
+        "kind": "function",
+        "file": "src/python/toml/toml_analytics.py",
+        "line": 418,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_has_arrays",
+        "kind": "function",
+        "file": "src/python/toml/toml_analytics.py",
+        "line": 423,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_has_nested_tables",
+        "kind": "function",
+        "file": "src/python/toml/toml_analytics.py",
+        "line": 439,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_scalar_key_count",
+        "kind": "function",
+        "file": "src/python/toml/toml_analytics.py",
+        "line": 453,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "toml_iter_keys",
+        "kind": "function",
+        "file": "src/python/toml/toml_key_iterator.py",
+        "line": 16,
+        "role": "iterator",
+        "exported": true
+      },
+      {
+        "name": "toml_iter_tables",
+        "kind": "function",
+        "file": "src/python/toml/toml_table_iterator.py",
+        "line": 16,
+        "role": "iterator",
+        "exported": true
+      },
+      {
+        "name": "toml_installed_workflow",
+        "kind": "function",
+        "file": "src/python/toml/toml_workflow.py",
+        "line": 9,
+        "role": "workflow",
+        "exported": true
+      },
+      {
+        "name": "TomlKey",
+        "kind": "class",
+        "file": "src/python/toml/Compat/toml_key.py",
+        "line": 6,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "TomlTable",
+        "kind": "class",
+        "file": "src/python/toml/Compat/toml_table.py",
+        "line": 6,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "TomlError",
+        "kind": "class",
+        "file": "src/python/toml/exceptions.py",
+        "line": 13,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "TomlParseError",
+        "kind": "class",
+        "file": "src/python/toml/exceptions.py",
+        "line": 17,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "TomlWriteError",
+        "kind": "class",
+        "file": "src/python/toml/exceptions.py",
+        "line": 21,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "TomlInputError",
+        "kind": "class",
+        "file": "src/python/toml/exceptions.py",
+        "line": 25,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "TomlDocument",
+        "kind": "class",
+        "file": "src/python/toml/models.py",
+        "line": 16,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "Key",
+        "kind": "class",
+        "file": "src/python/toml/spec/table/key.py",
+        "line": 14,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "Table",
+        "kind": "class",
+        "file": "src/python/toml/spec/table/table.py",
+        "line": 14,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "Value",
+        "kind": "class",
+        "file": "src/python/toml/spec/table/value.py",
+        "line": 10,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "TomlError",
+        "kind": "class",
+        "file": "src/python/toml/toml_codec.py",
+        "line": 22,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "TomlInputError",
+        "kind": "class",
+        "file": "src/python/toml/toml_codec.py",
+        "line": 26,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "TomlParseError",
+        "kind": "class",
+        "file": "src/python/toml/toml_codec.py",
+        "line": 30,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "TomlWriteError",
+        "kind": "class",
+        "file": "src/python/toml/toml_codec.py",
+        "line": 34,
+        "role": "exception",
+        "exported": true
+      }
+    ],
+    "export_count": 135
+  },
+  "dotnet": {
+    "contracts": [],
+    "public_member_count": 0
+  }
+}

@@ -1,0 +1,8097 @@
+{
+  "metadata": {
+    "authoritative_plan": "plans/.claude/crispy-jingling-snail.md",
+    "mission_id": "CERT-EXHAUST-20260628",
+    "tool": "assertion_quality_scorer"
+  },
+  "target": "tests/python/pgm",
+  "file_count": 58,
+  "total_test_functions": 824,
+  "score_distribution": {
+    "1": 0,
+    "2": 195,
+    "3": 196,
+    "4": 415,
+    "5": 18
+  },
+  "weak_assertion_count": 0,
+  "overall_avg_score": 3.31,
+  "overall_min_score": 2,
+  "files": [
+    {
+      "file": "tests/python/pgm/test_exception_coverage.py",
+      "function_count": 6,
+      "functions": [
+        {
+          "name": "test_pgmparseerror_is_raisable",
+          "line": 12,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_pgmparseerror_inherits_base",
+          "line": 17,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_pgmparseerror_message",
+          "line": 21,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_pgmwriteerror_is_raisable",
+          "line": 26,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_pgmwriteerror_inherits_base",
+          "line": 31,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_pgmwriteerror_message",
+          "line": 35,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.33,
+      "file_min_score": 3
+    },
+    {
+      "file": "tests/python/pgm/test_pgm_conveyor_deepening.py",
+      "function_count": 10,
+      "functions": [
+        {
+          "name": "test_parse_pgm_1x1",
+          "line": 24,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_parse_pgm_gradient",
+          "line": 29,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_probe_pgm",
+          "line": 35,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_pixel_count",
+          "line": 40,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_average_gray",
+          "line": 44,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            4
+          ]
+        },
+        {
+          "name": "test_min_max_gray",
+          "line": 50,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_get_dimensions",
+          "line": 55,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_write_and_reparse",
+          "line": 60,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_flip_horizontal",
+          "line": 68,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_histogram",
+          "line": 74,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 3.2,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/pgm/test_pgm_domain_model.py",
+      "function_count": 8,
+      "functions": [
+        {
+          "name": "test_spec_qname_class_level_access",
+          "line": 14,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_spec_qname_is_classvar",
+          "line": 17,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_spec_qname_is_string",
+          "line": 21,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_spec_fact_ref_class_level",
+          "line": 24,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_from_file_returns_model",
+          "line": 27,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_from_file_spec_qname_on_instance",
+          "line": 31,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_from_file_dimensions",
+          "line": 35,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_to_dict_width_key",
+          "line": 39,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.38,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/pgm/test_pgm_gap_closure_batch.py",
+      "function_count": 20,
+      "functions": [
+        {
+          "name": "test_is_exception",
+          "line": 54,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_subclass",
+          "line": 59,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_subclass",
+          "line": 64,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_subclass",
+          "line": 69,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_subclass",
+          "line": 74,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_has_fields",
+          "line": 79,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_creates_file",
+          "line": 86,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_returns_dict",
+          "line": 93,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            4
+          ]
+        },
+        {
+          "name": "test_returns_image",
+          "line": 100,
+          "assertion_count": 3,
+          "min_score": 2,
+          "scores": [
+            2,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_valid_file",
+          "line": 108,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            4
+          ]
+        },
+        {
+          "name": "test_nonexistent",
+          "line": 113,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_dict",
+          "line": 119,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_returns_dict",
+          "line": 125,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            4
+          ]
+        },
+        {
+          "name": "test_dimensions",
+          "line": 132,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_total",
+          "line": 139,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_average",
+          "line": 144,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_above_128",
+          "line": 151,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_min_max",
+          "line": 157,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_flip",
+          "line": 164,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_rotate",
+          "line": 171,
+          "assertion_count": 3,
+          "min_score": 3,
+          "scores": [
+            3,
+            4,
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.05,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/pgm/test_pgm_gap_closure_foss.py",
+      "function_count": 42,
+      "functions": [
+        {
+          "name": "test_white_not_high_contrast",
+          "line": 51,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_gradient_high_contrast",
+          "line": 54,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_bool",
+          "line": 57,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_returns_list",
+          "line": 62,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_white_all_255",
+          "line": 66,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_gradient_multiple_rows",
+          "line": 70,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_all_non_negative",
+          "line": 74,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_white_is_bright",
+          "line": 81,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_gradient_not_bright",
+          "line": 84,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_returns_bool",
+          "line": 89,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_white_zero_dark",
+          "line": 94,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_returns_numeric",
+          "line": 97,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_bounded_zero_to_one",
+          "line": 100,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_white_zero_variance",
+          "line": 107,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_gradient_positive_variance",
+          "line": 110,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_numeric",
+          "line": 113,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_non_negative",
+          "line": 116,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_white_zero_contrast",
+          "line": 122,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_gradient_full_contrast",
+          "line": 125,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_returns_numeric",
+          "line": 128,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_bounded_zero_to_one",
+          "line": 131,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_white_is_one",
+          "line": 138,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_gradient_half",
+          "line": 141,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_returns_numeric",
+          "line": 144,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_bounded_zero_to_one",
+          "line": 147,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_white_zero",
+          "line": 154,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_returns_numeric",
+          "line": 158,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_bounded_zero_to_one",
+          "line": 161,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_white_is_255",
+          "line": 168,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_gradient_is_255",
+          "line": 171,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_int",
+          "line": 174,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_positive",
+          "line": 177,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_numeric",
+          "line": 183,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_white_midpoint",
+          "line": 186,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_positive",
+          "line": 189,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_white_is_255",
+          "line": 195,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_returns_numeric",
+          "line": 198,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_non_negative",
+          "line": 201,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_white_zero_range",
+          "line": 207,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_gradient_full_range",
+          "line": 210,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_int",
+          "line": 213,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_non_negative",
+          "line": 216,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.14,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/pgm/test_pgm_gate5_neutral_model.py",
+      "function_count": 9,
+      "functions": [
+        {
+          "name": "test_capabilities_format",
+          "line": 11,
+          "assertion_count": 3,
+          "min_score": 4,
+          "scores": [
+            5,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_supported_nonempty",
+          "line": 17,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_unsupported_nonempty",
+          "line": 20,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_no_overlap",
+          "line": 23,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_supported_sorted_in_caps",
+          "line": 26,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_unsupported_sorted_in_caps",
+          "line": 30,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_key_supported_features",
+          "line": 34,
+          "assertion_count": 3,
+          "min_score": 3,
+          "scores": [
+            3,
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_key_unsupported_features",
+          "line": 39,
+          "assertion_count": 3,
+          "min_score": 3,
+          "scores": [
+            3,
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_features_are_frozensets",
+          "line": 45,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 3.0,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/pgm/test_pgm_gate6_oracle.py",
+      "function_count": 10,
+      "functions": [
+        {
+          "name": "test_1x1_white_oracle",
+          "line": 14,
+          "assertion_count": 5,
+          "min_score": 3,
+          "scores": [
+            4,
+            4,
+            4,
+            5,
+            3
+          ]
+        },
+        {
+          "name": "test_2x2_gradient_oracle",
+          "line": 22,
+          "assertion_count": 4,
+          "min_score": 3,
+          "scores": [
+            4,
+            4,
+            4,
+            3
+          ]
+        },
+        {
+          "name": "test_3x1_ramp_oracle",
+          "line": 29,
+          "assertion_count": 3,
+          "min_score": 3,
+          "scores": [
+            4,
+            4,
+            3
+          ]
+        },
+        {
+          "name": "test_synthetic_single_black_pixel",
+          "line": 35,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_synthetic_uniform_gray",
+          "line": 43,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_synthetic_low_maxval",
+          "line": 51,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            4,
+            3
+          ]
+        },
+        {
+          "name": "test_synthetic_with_comment",
+          "line": 60,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_dict_api_oracle",
+          "line": 68,
+          "assertion_count": 5,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4,
+            4,
+            5
+          ]
+        },
+        {
+          "name": "test_probe_parse_consistency",
+          "line": 76,
+          "assertion_count": 3,
+          "min_score": 3,
+          "scores": [
+            3,
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_capabilities_oracle",
+          "line": 84,
+          "assertion_count": 4,
+          "min_score": 4,
+          "scores": [
+            5,
+            4,
+            4,
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.2,
+      "file_min_score": 3
+    },
+    {
+      "file": "tests/python/pgm/test_pgm_gate7_fuzz_guard.py",
+      "function_count": 11,
+      "functions": [
+        {
+          "name": "test_empty_file",
+          "line": 23,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_wrong_magic",
+          "line": 29,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_truncated_header",
+          "line": 35,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_huge_dimensions",
+          "line": 41,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_negative_dimensions",
+          "line": 47,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_zero_maxval",
+          "line": 53,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_truncated_pixel_data",
+          "line": 59,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_dict_api_safety",
+          "line": 65,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_binary_garbage",
+          "line": 71,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_out_of_range_pixel",
+          "line": 79,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_non_numeric_pixel",
+          "line": 85,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 4.0,
+      "file_min_score": 4
+    },
+    {
+      "file": "tests/python/pgm/test_pgm_malformed_and_security.py",
+      "function_count": 16,
+      "functions": [
+        {
+          "name": "test_wrong_magic_sample_raises",
+          "line": 35,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_p6_magic_rejected",
+          "line": 40,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_empty_file_raises",
+          "line": 47,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_binary_garbage_raises",
+          "line": 54,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_zero_width_raises",
+          "line": 67,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_zero_height_raises",
+          "line": 74,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_missing_maxval_raises",
+          "line": 81,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_non_numeric_dimensions_raises",
+          "line": 88,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_truncated_pixel_data",
+          "line": 101,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_pixel_value_exceeds_maxval",
+          "line": 109,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_valid_small_file_parsed",
+          "line": 122,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_probe_does_not_raise_on_valid",
+          "line": 128,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_get_capabilities_present",
+          "line": 133,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            3
+          ]
+        },
+        {
+          "name": "test_p1_magic_rejected",
+          "line": 145,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_p4_magic_rejected",
+          "line": 152,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_html_payload_rejected",
+          "line": 159,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.88,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/pgm/test_pgm_parser.py",
+      "function_count": 10,
+      "functions": [
+        {
+          "name": "test_parse_1x1_white",
+          "line": 17,
+          "assertion_count": 4,
+          "min_score": 3,
+          "scores": [
+            4,
+            4,
+            4,
+            3
+          ]
+        },
+        {
+          "name": "test_parse_2x2_gradient",
+          "line": 24,
+          "assertion_count": 3,
+          "min_score": 3,
+          "scores": [
+            4,
+            4,
+            3
+          ]
+        },
+        {
+          "name": "test_parse_3x1_ramp",
+          "line": 30,
+          "assertion_count": 3,
+          "min_score": 3,
+          "scores": [
+            4,
+            4,
+            3
+          ]
+        },
+        {
+          "name": "test_invalid_magic",
+          "line": 36,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_file_not_found",
+          "line": 40,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_dict_api_success",
+          "line": 44,
+          "assertion_count": 4,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_dict_api_failure",
+          "line": 51,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            4,
+            3
+          ]
+        },
+        {
+          "name": "test_probe_valid",
+          "line": 56,
+          "assertion_count": 4,
+          "min_score": 4,
+          "scores": [
+            4,
+            5,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_probe_invalid",
+          "line": 63,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_probe_nonexistent",
+          "line": 67,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.6,
+      "file_min_score": 3
+    },
+    {
+      "file": "tests/python/pgm/test_pgm_spec_qname.py",
+      "function_count": 12,
+      "functions": [
+        {
+          "name": "test_spec_qname_class_attribute",
+          "line": 20,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            5
+          ]
+        },
+        {
+          "name": "test_spec_qname_instance_accessible",
+          "line": 25,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_spec_qname_defined",
+          "line": 38,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_spec_qname_matches_registry",
+          "line": 42,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_pgm_header_spec_qname",
+          "line": 58,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_pgm_header_spec_fact_ref",
+          "line": 62,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_pgm_header_namespace_uri",
+          "line": 66,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            2
+          ]
+        },
+        {
+          "name": "test_pgm_graymap_spec_qname",
+          "line": 71,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_pgm_graymap_spec_fact_ref",
+          "line": 75,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_registry_python_file_exists",
+          "line": 83,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_all_pgm_qnames_have_pgm_prefix",
+          "line": 98,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_pgm_qnames_have_spec_fact_ref",
+          "line": 110,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.58,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/pgm/test_r105_pgm_write_hardening.py",
+      "function_count": 12,
+      "functions": [
+        {
+          "name": "test_1x1_roundtrip",
+          "line": 17,
+          "assertion_count": 3,
+          "min_score": 3,
+          "scores": [
+            4,
+            4,
+            3
+          ]
+        },
+        {
+          "name": "test_gradient_roundtrip",
+          "line": 25,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_maxval_15",
+          "line": 32,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            4,
+            3
+          ]
+        },
+        {
+          "name": "test_maxval_1",
+          "line": 40,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            4,
+            3
+          ]
+        },
+        {
+          "name": "test_all_zeros",
+          "line": 48,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_all_max",
+          "line": 55,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_comment_in_file",
+          "line": 62,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_wide_image",
+          "line": 70,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            4,
+            3
+          ]
+        },
+        {
+          "name": "test_tall_image",
+          "line": 78,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_128x128_roundtrip",
+          "line": 85,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_pixel_count_mismatch",
+          "line": 97,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_dimension_exceeds_max",
+          "line": 101,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.25,
+      "file_min_score": 3
+    },
+    {
+      "file": "tests/python/pgm/test_r106_pgm_strict_errors.py",
+      "function_count": 9,
+      "functions": [
+        {
+          "name": "test_empty_file",
+          "line": 17,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_invalid_magic",
+          "line": 23,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_nonexistent_file",
+          "line": 29,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_safe_mode_on_garbage",
+          "line": 33,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            2
+          ]
+        },
+        {
+          "name": "test_valid_minimal",
+          "line": 40,
+          "assertion_count": 3,
+          "min_score": 3,
+          "scores": [
+            4,
+            4,
+            3
+          ]
+        },
+        {
+          "name": "test_with_comment",
+          "line": 48,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_extra_whitespace",
+          "line": 54,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_multiple_comments",
+          "line": 60,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_maxval_boundary",
+          "line": 66,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            4,
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.22,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/pgm/test_r154_pgm_dimensions_normalize.py",
+      "function_count": 11,
+      "functions": [
+        {
+          "name": "test_basic_dimensions",
+          "line": 33,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_single_pixel",
+          "line": 38,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_square_image",
+          "line": 42,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_nonexistent_file_raises",
+          "line": 47,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_normalize_same_maxval_preserves",
+          "line": 55,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            4,
+            3
+          ]
+        },
+        {
+          "name": "test_normalize_upscale",
+          "line": 64,
+          "assertion_count": 5,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_normalize_downscale",
+          "line": 76,
+          "assertion_count": 3,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_normalize_result_keys",
+          "line": 86,
+          "assertion_count": 6,
+          "min_score": 3,
+          "scores": [
+            3,
+            3,
+            3,
+            3,
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_normalize_preserves_dimensions",
+          "line": 98,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_normalize_invalid_maxval_raises",
+          "line": 106,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_normalize_nonexistent_source_raises",
+          "line": 112,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.45,
+      "file_min_score": 3
+    },
+    {
+      "file": "tests/python/pgm/test_r155_pgm_histogram_threshold.py",
+      "function_count": 11,
+      "functions": [
+        {
+          "name": "test_basic_histogram",
+          "line": 32,
+          "assertion_count": 4,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_unique_values_count",
+          "line": 41,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_uniform_image",
+          "line": 47,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_result_keys",
+          "line": 54,
+          "assertion_count": 6,
+          "min_score": 3,
+          "scores": [
+            3,
+            3,
+            3,
+            3,
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_nonexistent_raises",
+          "line": 64,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_threshold_basic",
+          "line": 72,
+          "assertion_count": 3,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_threshold_output_binary",
+          "line": 81,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            4
+          ]
+        },
+        {
+          "name": "test_threshold_all_above",
+          "line": 90,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_threshold_all_below",
+          "line": 98,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_threshold_preserves_dimensions",
+          "line": 106,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_threshold_nonexistent_raises",
+          "line": 115,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.82,
+      "file_min_score": 3
+    },
+    {
+      "file": "tests/python/pgm/test_r158_pgm_accessors.py",
+      "function_count": 10,
+      "functions": [
+        {
+          "name": "test_1x1",
+          "line": 25,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_2x2",
+          "line": 28,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_3x1",
+          "line": 31,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_nonexistent_file",
+          "line": 34,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_written_file",
+          "line": 38,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_1x1_white",
+          "line": 45,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_uniform_value",
+          "line": 49,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_gradient",
+          "line": 54,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_nonexistent_file",
+          "line": 59,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_float",
+          "line": 63,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 3.8,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/pgm/test_r159_pgm_threshold_minmax.py",
+      "function_count": 10,
+      "functions": [
+        {
+          "name": "test_all_above",
+          "line": 25,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_none_above",
+          "line": 30,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_mixed",
+          "line": 35,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_boundary",
+          "line": 40,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_nonexistent_file",
+          "line": 45,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_uniform",
+          "line": 51,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_range",
+          "line": 56,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_single_pixel",
+          "line": 61,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_1x1_white_sample",
+          "line": 66,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_nonexistent_file",
+          "line": 69,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.6,
+      "file_min_score": 3
+    },
+    {
+      "file": "tests/python/pgm/test_r161_pgm_flip.py",
+      "function_count": 5,
+      "functions": [
+        {
+          "name": "test_2x1",
+          "line": 23,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            4,
+            3
+          ]
+        },
+        {
+          "name": "test_1x1",
+          "line": 32,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_2x2",
+          "line": 40,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_preserves_dimensions",
+          "line": 48,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_nonexistent_file",
+          "line": 56,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.4,
+      "file_min_score": 3
+    },
+    {
+      "file": "tests/python/pgm/test_r165_pgm_pixel_stats.py",
+      "function_count": 8,
+      "functions": [
+        {
+          "name": "test_uniform_zero",
+          "line": 30,
+          "assertion_count": 5,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_uniform_max",
+          "line": 39,
+          "assertion_count": 3,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_mixed_values",
+          "line": 46,
+          "assertion_count": 4,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_single_pixel",
+          "line": 54,
+          "assertion_count": 4,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_has_maxval",
+          "line": 62,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_has_magic",
+          "line": 67,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            4
+          ]
+        },
+        {
+          "name": "test_dimensions_in_result",
+          "line": 73,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_nonexistent_file",
+          "line": 79,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 3.62,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/pgm/test_r170_pgm_rotate90.py",
+      "function_count": 8,
+      "functions": [
+        {
+          "name": "test_rotate_dimensions_swap",
+          "line": 32,
+          "assertion_count": 5,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_rotate_pixel_values_correct",
+          "line": 51,
+          "assertion_count": 4,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_rotate_four_times_roundtrip",
+          "line": 70,
+          "assertion_count": 3,
+          "min_score": 3,
+          "scores": [
+            4,
+            4,
+            3
+          ]
+        },
+        {
+          "name": "test_rotate_single_pixel",
+          "line": 92,
+          "assertion_count": 3,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_rotate_row_becomes_column",
+          "line": 108,
+          "assertion_count": 3,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_rotate_all_black",
+          "line": 125,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_rotate_invalid_file",
+          "line": 140,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_rotate_nonexistent_file",
+          "line": 156,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.75,
+      "file_min_score": 3
+    },
+    {
+      "file": "tests/python/pgm/test_r171_pgm_grayscale_variance.py",
+      "function_count": 6,
+      "functions": [
+        {
+          "name": "test_uniform_image_zero_variance",
+          "line": 25,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_two_value_image",
+          "line": 33,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_simple_values",
+          "line": 42,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_single_pixel",
+          "line": 50,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_float",
+          "line": 58,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            4
+          ]
+        },
+        {
+          "name": "test_nonexistent_raises",
+          "line": 67,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.67,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/pgm/test_r187_pgm_contrast_range.py",
+      "function_count": 10,
+      "functions": [
+        {
+          "name": "test_full_range_0_to_255",
+          "line": 20,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_uniform_image_range_zero",
+          "line": 27,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_two_pixel_values",
+          "line": 34,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_single_pixel",
+          "line": 40,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_all_black",
+          "line": 46,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_all_white_at_maxval",
+          "line": 52,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_small_range",
+          "line": 58,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_maxval_16_range",
+          "line": 64,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_int",
+          "line": 71,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_large_image_range",
+          "line": 78,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.8,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/pgm/test_r188_pgm_bright_pixel_ratio.py",
+      "function_count": 6,
+      "functions": [
+        {
+          "name": "test_all_dark_pixels_returns_zero",
+          "line": 17,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_all_bright_pixels_returns_one",
+          "line": 23,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_half_bright_pixels",
+          "line": 29,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_custom_threshold",
+          "line": 35,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_threshold_zero_all_positive_bright",
+          "line": 42,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_result_is_float",
+          "line": 49,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 3.33,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/pgm/test_r199_pgm_dark_pixel_count.py",
+      "function_count": 6,
+      "functions": [
+        {
+          "name": "test_import",
+          "line": 19,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_white_image_has_no_dark_pixels",
+          "line": 23,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_gradient_has_one_dark_pixel",
+          "line": 28,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_ramp_has_one_dark_pixel",
+          "line": 33,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_int",
+          "line": 38,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_result_nonnegative",
+          "line": 43,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.5,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/pgm/test_r202_pgm_average_brightness.py",
+      "function_count": 6,
+      "functions": [
+        {
+          "name": "test_import",
+          "line": 19,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_white_image_is_255",
+          "line": 23,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_gradient_is_127_5",
+          "line": 28,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_ramp_is_approx_127_67",
+          "line": 33,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_float",
+          "line": 38,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_result_nonnegative",
+          "line": 43,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.5,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/pgm/test_r208_pgm_max_pixel_value.py",
+      "function_count": 6,
+      "functions": [
+        {
+          "name": "test_import",
+          "line": 19,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_white_pixel_has_max_255",
+          "line": 23,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_gradient_max_is_255",
+          "line": 28,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_ramp_max_is_255",
+          "line": 33,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_int",
+          "line": 38,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_result_nonnegative",
+          "line": 43,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.5,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/pgm/test_r212_pgm_min_pixel_value.py",
+      "function_count": 6,
+      "functions": [
+        {
+          "name": "test_import",
+          "line": 19,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_white_image_min_is_255",
+          "line": 22,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_gradient_min_is_zero",
+          "line": 26,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_ramp_min_is_zero",
+          "line": 30,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_int",
+          "line": 34,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_nonnegative",
+          "line": 38,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.5,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/pgm/test_r232_pgm_dynamic_range_pixel_sum.py",
+      "function_count": 10,
+      "functions": [
+        {
+          "name": "test_uniform",
+          "line": 16,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_full_range",
+          "line": 20,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_partial_range",
+          "line": 24,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_return_type",
+          "line": 28,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_non_negative",
+          "line": 32,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_zeros",
+          "line": 38,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_known_sum",
+          "line": 42,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_single_pixel",
+          "line": 46,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_return_type",
+          "line": 50,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_max_values",
+          "line": 54,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.6,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/pgm/test_r232_pgm_total_pixel_and_quartiles.py",
+      "function_count": 11,
+      "functions": [
+        {
+          "name": "test_1x1",
+          "line": 25,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_2x3",
+          "line": 29,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_4x4",
+          "line": 34,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_int",
+          "line": 39,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_large_image",
+          "line": 43,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_uniform_image",
+          "line": 50,
+          "assertion_count": 3,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_gradient",
+          "line": 58,
+          "assertion_count": 3,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_returns_dict",
+          "line": 66,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            2
+          ]
+        },
+        {
+          "name": "test_ordering",
+          "line": 72,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_all_zeros",
+          "line": 78,
+          "assertion_count": 3,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_returns_ints",
+          "line": 86,
+          "assertion_count": 3,
+          "min_score": 2,
+          "scores": [
+            2,
+            2,
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 3.36,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/pgm/test_r232_pgm_uniform_nonzero.py",
+      "function_count": 10,
+      "functions": [
+        {
+          "name": "test_uniform",
+          "line": 21,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_not_uniform",
+          "line": 25,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_bool",
+          "line": 29,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_single_pixel",
+          "line": 33,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_all_zero",
+          "line": 37,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_all_nonzero",
+          "line": 43,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_half_zero",
+          "line": 47,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_all_zero",
+          "line": 51,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_float",
+          "line": 55,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_bounded",
+          "line": 59,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.6,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/pgm/test_r235_pgm_zero_saturated.py",
+      "function_count": 10,
+      "functions": [
+        {
+          "name": "test_no_zeros",
+          "line": 20,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_all_zeros",
+          "line": 24,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_one_zero",
+          "line": 28,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_return_type",
+          "line": 32,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_two_zeros",
+          "line": 36,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_all_saturated",
+          "line": 42,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_none_saturated",
+          "line": 46,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_one_saturated",
+          "line": 50,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_return_type",
+          "line": 54,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_two_saturated",
+          "line": 58,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.6,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/pgm/test_r238_pgm_stddev_brightness_ratio.py",
+      "function_count": 6,
+      "functions": [
+        {
+          "name": "test_returns_float",
+          "line": 23,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_nonnegative",
+          "line": 26,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_reasonable",
+          "line": 29,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_float",
+          "line": 34,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_range",
+          "line": 37,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_positive",
+          "line": 41,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.33,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/pgm/test_r243_pgm_saturated_all_dark.py",
+      "function_count": 10,
+      "functions": [
+        {
+          "name": "test_return_type",
+          "line": 18,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_true_when_maxval_present",
+          "line": 22,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_false_no_saturated",
+          "line": 26,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_all_saturated_true",
+          "line": 30,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_custom_maxval",
+          "line": 34,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_return_type",
+          "line": 41,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_true_all_below_midpoint",
+          "line": 45,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_false_one_above_midpoint",
+          "line": 50,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_false_all_bright",
+          "line": 55,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_zero_pixels_all_dark",
+          "line": 59,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.6,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/pgm/test_r252_pgm_any_zero_all_bright.py",
+      "function_count": 12,
+      "functions": [
+        {
+          "name": "test_return_type",
+          "line": 17,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_false_for_all_bright",
+          "line": 20,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_true_for_gradient",
+          "line": 24,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_true_for_ramp",
+          "line": 28,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_consistent_across_calls",
+          "line": 32,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_false_is_not_none",
+          "line": 35,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            4,
+            2
+          ]
+        },
+        {
+          "name": "test_return_type",
+          "line": 42,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_true_for_all_white",
+          "line": 45,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_false_for_gradient",
+          "line": 49,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_false_for_ramp",
+          "line": 53,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_consistent_across_calls",
+          "line": 57,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_true_is_not_none",
+          "line": 60,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            4,
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 3.17,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/pgm/test_r254_pgm_brightness_geometry_analytics.py",
+      "function_count": 49,
+      "functions": [
+        {
+          "name": "test_return_type",
+          "line": 39,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_true_for_1x1_white",
+          "line": 42,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_true_for_2x2_gradient",
+          "line": 46,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_true_for_3x1_ramp",
+          "line": 50,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_consistent_across_calls",
+          "line": 54,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_return_type",
+          "line": 59,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_false_for_1x1_white",
+          "line": 62,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_false_for_2x2_gradient",
+          "line": 66,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_false_for_3x1_ramp",
+          "line": 70,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_consistent_across_calls",
+          "line": 73,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_return_type",
+          "line": 78,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_exact_4_for_1x1",
+          "line": 81,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_exact_8_for_2x2",
+          "line": 84,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_exact_8_for_3x1",
+          "line": 87,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_nonnegative",
+          "line": 91,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_consistent_across_calls",
+          "line": 94,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_return_type",
+          "line": 99,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_exact_1_for_1x1_white",
+          "line": 102,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_exact_4_for_2x2_gradient",
+          "line": 106,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_exact_3_for_3x1_ramp",
+          "line": 110,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_nonnegative",
+          "line": 114,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_consistent_across_calls",
+          "line": 117,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_return_type",
+          "line": 122,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_exact_1_0_for_1x1",
+          "line": 125,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_exact_1_0_for_2x2",
+          "line": 128,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_exact_3_0_for_3x1",
+          "line": 131,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_positive",
+          "line": 135,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_consistent_across_calls",
+          "line": 138,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_return_type",
+          "line": 143,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_true_for_1x1",
+          "line": 146,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_true_for_2x2",
+          "line": 149,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_false_for_3x1",
+          "line": 152,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_consistent_across_calls",
+          "line": 155,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_return_type",
+          "line": 160,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_false_for_1x1_square",
+          "line": 163,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_false_for_2x2_square",
+          "line": 166,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_true_for_3x1",
+          "line": 169,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_consistent_across_calls",
+          "line": 173,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_return_type",
+          "line": 178,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_exact_1_for_1x1",
+          "line": 181,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_exact_2_for_2x2",
+          "line": 184,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_exact_3_for_3x1",
+          "line": 187,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_nonnegative",
+          "line": 191,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_consistent_across_calls",
+          "line": 194,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_return_type",
+          "line": 199,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_true_for_1x1_white",
+          "line": 202,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_false_for_2x2_gradient",
+          "line": 206,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_false_for_3x1_ramp",
+          "line": 210,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_consistent_across_calls",
+          "line": 214,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.45,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/pgm/test_r255_pgm_diagonal_aspect_ratio.py",
+      "function_count": 12,
+      "functions": [
+        {
+          "name": "test_return_type",
+          "line": 23,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_approx_sqrt2_for_1x1",
+          "line": 26,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_approx_2sqrt2_for_2x2",
+          "line": 30,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_approx_sqrt10_for_3x1",
+          "line": 34,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_positive",
+          "line": 38,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_consistent_across_calls",
+          "line": 41,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_return_type",
+          "line": 46,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_exact_1_0_for_1x1",
+          "line": 49,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_exact_1_0_for_2x2",
+          "line": 53,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_exact_3_0_for_3x1",
+          "line": 57,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_positive",
+          "line": 61,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_consistent_across_calls",
+          "line": 64,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.25,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/pgm/test_r256_pgm_brightness_contrast_analytics.py",
+      "function_count": 60,
+      "functions": [
+        {
+          "name": "test_return_type",
+          "line": 45,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_false_for_1x1_white",
+          "line": 48,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_true_for_2x2_gradient",
+          "line": 52,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_true_for_3x1_ramp",
+          "line": 56,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_consistent_across_calls",
+          "line": 59,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_return_type",
+          "line": 64,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_exact_for_1x1_white",
+          "line": 68,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_two_rows_for_2x2_gradient",
+          "line": 73,
+          "assertion_count": 3,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_consistent_across_calls",
+          "line": 79,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_return_type",
+          "line": 84,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_true_for_1x1_white",
+          "line": 87,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_false_for_2x2_gradient",
+          "line": 91,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_consistent_across_calls",
+          "line": 95,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_return_type",
+          "line": 100,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_zero_for_1x1_white",
+          "line": 103,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_exact_0_5_for_2x2_gradient",
+          "line": 106,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_between_0_and_1",
+          "line": 110,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_consistent_across_calls",
+          "line": 114,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_return_type",
+          "line": 119,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_zero_for_1x1_white",
+          "line": 122,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_exact_7225_for_2x2_gradient",
+          "line": 126,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_nonnegative",
+          "line": 129,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_consistent_across_calls",
+          "line": 132,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_return_type",
+          "line": 137,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_zero_for_1x1_white",
+          "line": 140,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_exact_1_0_for_2x2_gradient",
+          "line": 144,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_between_0_and_1",
+          "line": 147,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_consistent_across_calls",
+          "line": 151,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_return_type",
+          "line": 156,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_exact_1_0_for_1x1_white",
+          "line": 159,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_exact_0_5_for_2x2_gradient",
+          "line": 163,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_between_0_and_1",
+          "line": 166,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_consistent_across_calls",
+          "line": 170,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_return_type",
+          "line": 175,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_zero_for_1x1_white",
+          "line": 178,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_exact_0_5_for_2x2_gradient",
+          "line": 182,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_between_0_and_1",
+          "line": 185,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_consistent_across_calls",
+          "line": 189,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_return_type",
+          "line": 194,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_exact_255_for_1x1_white",
+          "line": 197,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_exact_255_for_2x2_gradient",
+          "line": 200,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_exact_255_for_3x1_ramp",
+          "line": 203,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_positive",
+          "line": 206,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_consistent_across_calls",
+          "line": 209,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_return_type",
+          "line": 214,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_exact_127_for_maxval_255",
+          "line": 217,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_exact_127_for_2x2_gradient",
+          "line": 221,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_nonnegative",
+          "line": 224,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_consistent_across_calls",
+          "line": 227,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_return_type",
+          "line": 232,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_exact_255_for_1x1_white",
+          "line": 235,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_exact_127_5_for_2x2_gradient",
+          "line": 238,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_nonnegative",
+          "line": 241,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_consistent_across_calls",
+          "line": 244,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_return_type",
+          "line": 249,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_zero_for_1x1_white",
+          "line": 252,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_exact_255_for_2x2_gradient",
+          "line": 256,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_exact_255_for_3x1_ramp",
+          "line": 260,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_nonnegative",
+          "line": 263,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_consistent_across_calls",
+          "line": 266,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.38,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/pgm/test_r258_pgm_bright_pixel_ratio.py",
+      "function_count": 6,
+      "functions": [
+        {
+          "name": "test_return_type",
+          "line": 21,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_exact_1_0_for_1x1_white",
+          "line": 24,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_exact_0_5_for_2x2_gradient",
+          "line": 28,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_between_0_and_1",
+          "line": 32,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_nonnegative",
+          "line": 36,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_consistent_across_calls",
+          "line": 39,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.5,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/pgm/test_r262_pgm_column_count_is_uniform.py",
+      "function_count": 10,
+      "functions": [
+        {
+          "name": "test_column_count_1x1_is_1",
+          "line": 19,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_column_count_2x2_is_2",
+          "line": 23,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_column_count_3x1_is_3",
+          "line": 27,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_column_count_returns_int",
+          "line": 31,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_column_count_positive",
+          "line": 35,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_is_uniform_white_returns_true",
+          "line": 42,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_is_uniform_gradient_returns_false",
+          "line": 47,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_is_uniform_ramp_returns_false",
+          "line": 52,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_is_uniform_returns_bool_white",
+          "line": 56,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_is_uniform_returns_bool_gradient",
+          "line": 60,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 3.4,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/pgm/test_r272_pgm_min_brightness_is_bright.py",
+      "function_count": 10,
+      "functions": [
+        {
+          "name": "test_1x1_white",
+          "line": 14,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_2x2_gradient",
+          "line": 17,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_3x1_ramp",
+          "line": 20,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_int",
+          "line": 23,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_nonnegative",
+          "line": 26,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_1x1_white_is_bright",
+          "line": 32,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_2x2_gradient_not_bright",
+          "line": 35,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_3x1_ramp_not_bright",
+          "line": 38,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_bool",
+          "line": 41,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_true_for_all_white",
+          "line": 44,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.6,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/pgm/test_r282_pgm_gap_closure.py",
+      "function_count": 5,
+      "functions": [
+        {
+          "name": "test_pgm_is_high_contrast_returns_bool",
+          "line": 27,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_pgm_avg_row_brightness_returns_list",
+          "line": 32,
+          "assertion_count": 4,
+          "min_score": 2,
+          "scores": [
+            2,
+            4,
+            3,
+            3
+          ]
+        },
+        {
+          "name": "test_pgm_avg_row_brightness_dark",
+          "line": 40,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            3
+          ]
+        },
+        {
+          "name": "test_pgm_is_bright_true",
+          "line": 46,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_pgm_is_bright_false",
+          "line": 51,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 2.8,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/pgm/test_r283_pgm_analytics_gaps.py",
+      "function_count": 14,
+      "functions": [
+        {
+          "name": "test_returns_bool",
+          "line": 26,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_single_pixel_not_high_contrast",
+          "line": 29,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_ramp_is_high_contrast",
+          "line": 33,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_gradient_result_is_bool",
+          "line": 37,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_list",
+          "line": 43,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_list_length_equals_height",
+          "line": 47,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_single_row_for_3x1",
+          "line": 52,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_values_are_floats",
+          "line": 57,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_ramp_avg_row_value",
+          "line": 62,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_white_pixel_row_brightness_is_255",
+          "line": 67,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            4,
+            3
+          ]
+        },
+        {
+          "name": "test_returns_bool",
+          "line": 75,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_white_pixel_is_bright",
+          "line": 78,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_ramp_is_not_bright",
+          "line": 82,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_consistent_result",
+          "line": 86,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.21,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/pgm/test_r283_pgm_installed_workflow.py",
+      "function_count": 11,
+      "functions": [
+        {
+          "name": "test_importable_from_pgm_workflow",
+          "line": 19,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_importable_from_package",
+          "line": 23,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_returns_dict",
+          "line": 29,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_format_field",
+          "line": 33,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_loaded_true",
+          "line": 37,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_width_integer",
+          "line": 41,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_height_integer",
+          "line": 45,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_has_required_keys",
+          "line": 49,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_1x1_dimensions",
+          "line": 54,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_2x2_image",
+          "line": 59,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_consistent",
+          "line": 64,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 2.82,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/pgm/test_r284_pgm_additional_gaps.py",
+      "function_count": 36,
+      "functions": [
+        {
+          "name": "test_returns_float",
+          "line": 32,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_white_is_not_dark",
+          "line": 35,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_ramp_has_dark_pixels",
+          "line": 39,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_bounded",
+          "line": 43,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_float",
+          "line": 48,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_nonnegative",
+          "line": 51,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_single_row_zero_variance",
+          "line": 54,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_multirow_nonnegative",
+          "line": 58,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_float",
+          "line": 64,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_white_zero_contrast",
+          "line": 67,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_ramp_high_contrast",
+          "line": 71,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_bounded",
+          "line": 75,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_float",
+          "line": 80,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_white_is_one",
+          "line": 83,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_bounded",
+          "line": 86,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_ramp_near_half",
+          "line": 89,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_returns_float",
+          "line": 95,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_white_zero_above_mean",
+          "line": 98,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_bounded",
+          "line": 102,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_ramp_has_some_above_mean",
+          "line": 105,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_returns_int",
+          "line": 111,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_white_maxval_255",
+          "line": 114,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_ramp_maxval_255",
+          "line": 117,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_positive",
+          "line": 120,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_int",
+          "line": 125,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_white_midpoint_127",
+          "line": 128,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_ramp_midpoint_127",
+          "line": 132,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_nonnegative",
+          "line": 135,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_float",
+          "line": 140,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_white_median_255",
+          "line": 143,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_ramp_median",
+          "line": 146,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_nonnegative",
+          "line": 150,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_int",
+          "line": 155,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_white_zero_range",
+          "line": 158,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_ramp_full_range",
+          "line": 162,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_nonnegative",
+          "line": 166,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.22,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/pgm/test_r292_pgm_new_analytics.py",
+      "function_count": 20,
+      "functions": [
+        {
+          "name": "test_returns_float",
+          "line": 31,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_in_range",
+          "line": 35,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_white_image_saturated",
+          "line": 40,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_gradient_less_than_one",
+          "line": 44,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_float",
+          "line": 50,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_in_range",
+          "line": 54,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_white_image_close_to_one",
+          "line": 59,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_gradient_positive",
+          "line": 63,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_float",
+          "line": 69,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_in_range",
+          "line": 73,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_uniform_image_zero_above_mean",
+          "line": 78,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_ramp_has_some_above_mean",
+          "line": 83,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_int",
+          "line": 89,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_positive",
+          "line": 93,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_within_netpbm_range",
+          "line": 98,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_common_maxval",
+          "line": 103,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_returns_int",
+          "line": 110,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_nonneg",
+          "line": 114,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_less_than_maxval",
+          "line": 119,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_equals_maxval_over_two",
+          "line": 125,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.3,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/pgm/test_r307_pgm_iter_graymaps.py",
+      "function_count": 10,
+      "functions": [
+        {
+          "name": "test_importable_from_pgm_graymap_iterator",
+          "line": 20,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_importable_from_package",
+          "line": 24,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_returns_iterator",
+          "line": 30,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_minimal_yields_one_graymap",
+          "line": 35,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_graymap_type_is_spec_graymap",
+          "line": 40,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_graymap_has_spec_qname",
+          "line": 46,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_graymap_qname_value",
+          "line": 51,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_graymap_dimensions",
+          "line": 56,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_gradient_dimensions",
+          "line": 62,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_consistent",
+          "line": 68,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 2.8,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/pgm/test_r374_pgm_analytics.py",
+      "function_count": 106,
+      "functions": [
+        {
+          "name": "test_area_returns_int",
+          "line": 38,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_gradient_area_is_4",
+          "line": 41,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_ramp_area_is_3",
+          "line": 44,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_white1_area_is_1",
+          "line": 47,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_row_count_returns_int",
+          "line": 52,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_gradient_rows_is_2",
+          "line": 55,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_ramp_rows_is_1",
+          "line": 58,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_column_count_returns_int",
+          "line": 63,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_gradient_cols_is_2",
+          "line": 66,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_ramp_cols_is_3",
+          "line": 69,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_maxval_returns_int",
+          "line": 74,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_gradient_maxval_is_255",
+          "line": 77,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_white1_maxval_is_255",
+          "line": 80,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_max_pixel_value_matches_maxval",
+          "line": 83,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_max_pixel_value_returns_int",
+          "line": 88,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_min_pixel_value_returns_int",
+          "line": 91,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_min_lte_max_pixel_value",
+          "line": 94,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_gradient_has_zero_min",
+          "line": 97,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_gradient_has_255_max",
+          "line": 100,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_median_pixel_value_returns_int",
+          "line": 103,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_pixel_value_range_returns_int",
+          "line": 106,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_pixel_value_range_is_max_minus_min",
+          "line": 109,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_mean_brightness_returns_float",
+          "line": 116,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_average_brightness_returns_float",
+          "line": 119,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_mean_equals_average",
+          "line": 122,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_gradient_mean_is_127_5",
+          "line": 125,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_median_brightness_returns_float",
+          "line": 128,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_min_brightness_returns_numeric",
+          "line": 131,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_brightness_range_returns_numeric",
+          "line": 135,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_gradient_brightness_range_is_255",
+          "line": 139,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_pixel_sum_returns_int",
+          "line": 144,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_gradient_pixel_sum_is_510",
+          "line": 147,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_white1_pixel_sum_is_255",
+          "line": 150,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_dynamic_range_returns_int",
+          "line": 155,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_gradient_dynamic_range_is_255",
+          "line": 158,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_white1_dynamic_range_is_0",
+          "line": 161,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_contrast_range_returns_numeric",
+          "line": 164,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_contrast_ratio_returns_float",
+          "line": 167,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_has_any_zero_returns_bool",
+          "line": 172,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_gradient_has_zero",
+          "line": 175,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_white1_no_zero",
+          "line": 178,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_has_any_saturated_returns_bool",
+          "line": 181,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_gradient_has_saturated",
+          "line": 184,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_is_all_bright_returns_bool",
+          "line": 189,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_is_all_dark_returns_bool",
+          "line": 192,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_gradient_not_all_bright",
+          "line": 195,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_gradient_not_all_dark",
+          "line": 198,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_white1_is_all_bright",
+          "line": 201,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_is_bright_returns_bool",
+          "line": 206,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_is_uniform_returns_bool",
+          "line": 209,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_gradient_not_uniform",
+          "line": 212,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_white1_is_uniform",
+          "line": 215,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_is_high_contrast_returns_bool",
+          "line": 218,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_gradient_is_high_contrast",
+          "line": 221,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_zero_pixel_count_returns_int",
+          "line": 226,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_gradient_has_one_zero",
+          "line": 229,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_saturated_pixel_count_returns_int",
+          "line": 232,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_saturated_pixel_ratio_returns_float",
+          "line": 235,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_nonzero_pixel_ratio_returns_float",
+          "line": 238,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_nonzero_ratio_in_0_to_1",
+          "line": 241,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_dark_pixel_count_returns_int",
+          "line": 246,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_dark_pixel_ratio_returns_float",
+          "line": 249,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_dark_ratio_in_0_to_1",
+          "line": 252,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_bright_pixel_ratio_returns_float",
+          "line": 255,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_above_mean_ratio_returns_float",
+          "line": 258,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_above_mean_ratio_in_0_to_1",
+          "line": 261,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_is_square_returns_bool",
+          "line": 266,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_gradient_is_square",
+          "line": 269,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_ramp_not_square",
+          "line": 272,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_is_landscape_returns_bool",
+          "line": 275,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_ramp_is_landscape",
+          "line": 278,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_is_portrait_returns_bool",
+          "line": 281,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_is_tall_returns_bool",
+          "line": 284,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_is_wide_returns_bool",
+          "line": 287,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_aspect_ratio_returns_float",
+          "line": 292,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_gradient_aspect_1_0",
+          "line": 295,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_dimension_ratio_returns_float",
+          "line": 298,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_max_dimension_returns_int",
+          "line": 301,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_min_dimension_returns_int",
+          "line": 304,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_max_gte_min_dimension",
+          "line": 307,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_diagonal_returns_float",
+          "line": 312,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_diagonal_positive",
+          "line": 315,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_perimeter_returns_int",
+          "line": 318,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_perimeter_positive",
+          "line": 321,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_megapixels_returns_float",
+          "line": 324,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_megapixels_positive",
+          "line": 327,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_pixel_density_returns_float",
+          "line": 330,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_normalized_mean_returns_float",
+          "line": 335,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_normalized_mean_in_0_to_1",
+          "line": 338,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_gradient_normalized_mean_0_5",
+          "line": 341,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_brightness_ratio_returns_float",
+          "line": 344,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_standard_deviation_returns_float",
+          "line": 347,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_standard_deviation_nonneg",
+          "line": 350,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_midpoint_gray_returns_int",
+          "line": 353,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_brightness_histogram_returns_list",
+          "line": 358,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_brightness_histogram_nonempty",
+          "line": 361,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_brightness_quartiles_returns_dict",
+          "line": 364,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_brightness_quartiles_has_q25_q50_q75",
+          "line": 368,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_avg_row_brightness_returns_list",
+          "line": 374,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_avg_row_brightness_length_equals_rows",
+          "line": 377,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_row_brightness_variance_returns_float",
+          "line": 381,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_total_pixel_count_returns_int",
+          "line": 386,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_gradient_total_is_4",
+          "line": 389,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_unique_value_count_returns_int",
+          "line": 392,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_unique_value_count_positive",
+          "line": 395,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_unique_lte_total",
+          "line": 398,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 2.83,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/pgm/test_r43_gate9_deepening.py",
+      "function_count": 7,
+      "functions": [
+        {
+          "name": "test_all_valid_pixel_count_matches",
+          "line": 28,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_all_valid_magic_is_p2",
+          "line": 40,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_all_valid_maxval_in_range",
+          "line": 48,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_all_valid_dimensions_positive",
+          "line": 58,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_valid_sample_has_all_fields",
+          "line": 74,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_gradient_2x2_field_completeness",
+          "line": 83,
+          "assertion_count": 5,
+          "min_score": 2,
+          "scores": [
+            2,
+            4,
+            4,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_invalid_samples_all_fail",
+          "line": 99,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.0,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/pgm/test_r55_pgm_p5_binary.py",
+      "function_count": 9,
+      "functions": [
+        {
+          "name": "test_p5_feature_in_supported",
+          "line": 40,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_p5_not_in_unsupported",
+          "line": 44,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_p5_1x1_pixel",
+          "line": 48,
+          "assertion_count": 4,
+          "min_score": 3,
+          "scores": [
+            5,
+            4,
+            4,
+            3
+          ]
+        },
+        {
+          "name": "test_p5_2x2_pixels",
+          "line": 57,
+          "assertion_count": 3,
+          "min_score": 3,
+          "scores": [
+            3,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_p5_pixel_count_matches_wh",
+          "line": 65,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_p5_maxval_boundary",
+          "line": 71,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_p5_zero_pixel",
+          "line": 77,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_p5_truncated_data_raises",
+          "line": 85,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_p2_still_parses",
+          "line": 95,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            5,
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.44,
+      "file_min_score": 3
+    },
+    {
+      "file": "tests/python/pgm/test_r58_pgm_deepening.py",
+      "function_count": 17,
+      "functions": [
+        {
+          "name": "test_1x1_white_pixels",
+          "line": 30,
+          "assertion_count": 4,
+          "min_score": 3,
+          "scores": [
+            4,
+            4,
+            4,
+            3
+          ]
+        },
+        {
+          "name": "test_2x2_gradient_dimensions",
+          "line": 38,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_2x2_gradient_pixel_count",
+          "line": 44,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_2x2_gradient_pixel_values",
+          "line": 49,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_3x1_ramp_dimensions",
+          "line": 54,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_3x1_ramp_pixel_values",
+          "line": 60,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_magic_is_p2_for_ascii",
+          "line": 65,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_single_black_pixel",
+          "line": 81,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            3,
+            4
+          ]
+        },
+        {
+          "name": "test_custom_maxval_16",
+          "line": 88,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            4,
+            3
+          ]
+        },
+        {
+          "name": "test_comment_line_skipped",
+          "line": 95,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            4,
+            3
+          ]
+        },
+        {
+          "name": "test_pixel_values_in_range",
+          "line": 103,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_path_attribute_set",
+          "line": 110,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_p5_binary_in_supported",
+          "line": 120,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_p2_ascii_in_supported",
+          "line": 123,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_size_guard_in_supported",
+          "line": 126,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_encoding_to_pgm_unsupported",
+          "line": 129,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_16bit_unsupported",
+          "line": 132,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.18,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/pgm/test_r73_pgm_advancement.py",
+      "function_count": 10,
+      "functions": [
+        {
+          "name": "test_returns_ok_true_on_valid_file",
+          "line": 36,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_min_value",
+          "line": 41,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_returns_max_value",
+          "line": 46,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_mean_approx",
+          "line": 51,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_total_pixels",
+          "line": 57,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_uniform_image",
+          "line": 62,
+          "assertion_count": 3,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_width_height_maxval_returned",
+          "line": 69,
+          "assertion_count": 3,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_returns_ok_false_on_missing_file",
+          "line": 76,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            4,
+            3
+          ]
+        },
+        {
+          "name": "test_magic_field_present",
+          "line": 81,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_corpus_valid_sample",
+          "line": 86,
+          "assertion_count": 3,
+          "min_score": 3,
+          "scores": [
+            4,
+            3,
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.9,
+      "file_min_score": 3
+    },
+    {
+      "file": "tests/python/pgm/test_r84_pgm_write.py",
+      "function_count": 9,
+      "functions": [
+        {
+          "name": "test_write_1x1_black",
+          "line": 13,
+          "assertion_count": 4,
+          "min_score": 3,
+          "scores": [
+            4,
+            4,
+            3,
+            5
+          ]
+        },
+        {
+          "name": "test_write_1x1_white",
+          "line": 26,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_roundtrip_2x2",
+          "line": 36,
+          "assertion_count": 4,
+          "min_score": 3,
+          "scores": [
+            3,
+            4,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_custom_maxval",
+          "line": 50,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            4,
+            3
+          ]
+        },
+        {
+          "name": "test_write_with_comment",
+          "line": 62,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_wrong_pixel_count_raises_value_error",
+          "line": 72,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_invalid_maxval_raises_value_error",
+          "line": 82,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_oversized_dimension_raises_pgm_size_error",
+          "line": 92,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_output_file_is_p2",
+          "line": 102,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        }
+      ],
+      "file_avg_score": 3.56,
+      "file_min_score": 3
+    },
+    {
+      "file": "tests/python/pgm/test_r87_pgm_to_ppm_dogfood.py",
+      "function_count": 11,
+      "functions": [
+        {
+          "name": "test_gray_maps_to_equal_rgb",
+          "line": 26,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_black_maps_to_black_rgb",
+          "line": 30,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_white_maps_to_white_rgb",
+          "line": 34,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_gradient",
+          "line": 38,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            4,
+            3
+          ]
+        },
+        {
+          "name": "test_invalid_maxval_raises",
+          "line": 43,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_roundtrip_2x2",
+          "line": 51,
+          "assertion_count": 7,
+          "min_score": 3,
+          "scores": [
+            5,
+            4,
+            4,
+            4,
+            4,
+            4,
+            3
+          ]
+        },
+        {
+          "name": "test_single_pixel",
+          "line": 70,
+          "assertion_count": 2,
+          "min_score": 3,
+          "scores": [
+            5,
+            3
+          ]
+        },
+        {
+          "name": "test_output_has_dogfood_comment",
+          "line": 82,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_pgm_to_ppm_uses_ff_write_ppm",
+          "line": 97,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            3,
+            2
+          ]
+        },
+        {
+          "name": "test_pbm_to_ppm_uses_ff_write_ppm",
+          "line": 105,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_pbm_to_pgm_uses_ff_write_pgm",
+          "line": 112,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.0,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/pgm/test_r96_pgm_write_read.py",
+      "function_count": 8,
+      "functions": [
+        {
+          "name": "test_write_creates_file",
+          "line": 20,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_roundtrip_dimensions",
+          "line": 26,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_roundtrip_pixel_count",
+          "line": 34,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_single_pixel",
+          "line": 42,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_all_zeros",
+          "line": 50,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_all_max",
+          "line": 57,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_parse_returns_dict",
+          "line": 64,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_maxval_preserved",
+          "line": 71,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 3.38,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/pgm/test_rnext47_pgm_probe_gap_closure.py",
+      "function_count": 7,
+      "functions": [
+        {
+          "name": "test_probe_pgm_returns_dict",
+          "line": 25,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_probe_pgm_exists_true",
+          "line": 31,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_probe_pgm_exists_false_for_missing",
+          "line": 37,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_probe_pgm_valid_header",
+          "line": 41,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_probe_pgm_magic_p2",
+          "line": 47,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_probe_pgm_dimensions",
+          "line": 53,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_probe_pgm_maxval",
+          "line": 60,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.86,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/pgm/test_rnext_pgm_median_pixel_value.py",
+      "function_count": 8,
+      "functions": [
+        {
+          "name": "test_uniform_image",
+          "line": 24,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_odd_count_returns_middle",
+          "line": 28,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_even_count_returns_lower_middle",
+          "line": 32,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_all_black",
+          "line": 37,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_all_white",
+          "line": 41,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_two_values_returns_lower",
+          "line": 45,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_single_pixel",
+          "line": 49,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_importable_from_package",
+          "line": 53,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.88,
+      "file_min_score": 3
+    },
+    {
+      "file": "tests/python/pgm/test_spec_compat_layer.py",
+      "function_count": 15,
+      "functions": [
+        {
+          "name": "test_spec_qname",
+          "line": 19,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_spec_fact_ref",
+          "line": 22,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_namespace_uri_present",
+          "line": 25,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_instantiation",
+          "line": 30,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_magic_property",
+          "line": 34,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_width_property",
+          "line": 38,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_maxval",
+          "line": 42,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_to_dict",
+          "line": 46,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_repr_nonempty",
+          "line": 51,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_inherits_spec_class",
+          "line": 55,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_instantiation",
+          "line": 61,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_spec_qname",
+          "line": 65,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_pixel_count",
+          "line": 68,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_inherits_spec_class",
+          "line": 72,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_repr_nonempty",
+          "line": 76,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        }
+      ],
+      "file_avg_score": 3.33,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/python/pgm/test_tc_51cbbcb4_pgm_probe.py",
+      "function_count": 21,
+      "functions": [
+        {
+          "name": "test_probe_1x1_white_valid_header",
+          "line": 36,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_probe_1x1_width_height_maxval",
+          "line": 40,
+          "assertion_count": 3,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_probe_2x2_gradient_valid",
+          "line": 46,
+          "assertion_count": 3,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_probe_3x1_ramp_dimensions",
+          "line": 52,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "test_probe_magic_is_p2",
+          "line": 57,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "test_probe_invalid_magic_valid_header_false",
+          "line": 61,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_probe_accepts_string_path",
+          "line": 71,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_probe_string_path_exists_true",
+          "line": 75,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_probe_string_path_valid_header",
+          "line": 79,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_probe_nonexistent_returns_dict",
+          "line": 89,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_probe_nonexistent_exists_false",
+          "line": 93,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "test_probe_empty_file_no_valid_header",
+          "line": 97,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            4,
+            2
+          ]
+        },
+        {
+          "name": "test_return_is_dict_for_valid_file",
+          "line": 110,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_return_has_exists_key",
+          "line": 114,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_return_has_path_key",
+          "line": 118,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_return_has_valid_header_key",
+          "line": 122,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "test_return_has_maxval_for_valid_p2",
+          "line": 126,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            3,
+            2
+          ]
+        },
+        {
+          "name": "test_return_is_dict_for_missing_file",
+          "line": 131,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_probe_never_raises_on_nonexistent_path",
+          "line": 141,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "test_probe_wrong_magic_has_error_or_false_header",
+          "line": 145,
+          "assertion_count": 2,
+          "min_score": 2,
+          "scores": [
+            2,
+            2
+          ]
+        },
+        {
+          "name": "test_probe_binary_garbage_does_not_raise",
+          "line": 150,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        }
+      ],
+      "file_avg_score": 3.05,
+      "file_min_score": 2
+    }
+  ]
+}

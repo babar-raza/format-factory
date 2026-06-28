@@ -1,0 +1,252 @@
+{
+  "exception_count": 5,
+  "exceptions": [
+    {
+      "coverage_status": "REFERENCED_BY_TEST",
+      "file": "src/python/dif/exceptions.py",
+      "line": 13,
+      "name": "DifError",
+      "raised_in_source": true,
+      "test_reference_count": 13,
+      "test_references": [
+        {
+          "file": "tests/python/dif/test_dif_gap_closure_batch.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/dif/test_exception_coverage.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/dif/test_r116_dif_probe_csv_pipeline.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/dif/test_r156_dif_cell_accessors.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/dif/test_r156_dif_column_values.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/dif/test_r157_dif_metadata_accessors.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/dif/test_r158_dif_all_values.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/dif/test_r160_dif_min_max_column.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/dif/test_r165_dif_csv_edge_cases.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/dif/test_r170_dif_count_distinct.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/dif/test_r84_dif_to_csv.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/dif/test_rnext_dif_error_classes.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/dif/test_swarm_dif_probe_tc0287a024.py",
+          "match": "text_reference"
+        }
+      ]
+    },
+    {
+      "coverage_status": "REFERENCED_BY_TEST",
+      "file": "src/python/dif/dif_parser.py",
+      "line": 34,
+      "name": "DifInvalidFormatError",
+      "raised_in_source": true,
+      "test_reference_count": 4,
+      "test_references": [
+        {
+          "file": "tests/python/dif/test_dif_gap_closure_batch.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/dif/test_dif_gate7_fuzz_guard.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/dif/test_dif_parser.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/dif/test_rnext_dif_error_classes.py",
+          "match": "text_reference"
+        }
+      ]
+    },
+    {
+      "coverage_status": "REFERENCED_BY_TEST",
+      "file": "src/python/dif/exceptions.py",
+      "line": 17,
+      "name": "DifParseError",
+      "raised_in_source": false,
+      "test_reference_count": 1,
+      "test_references": [
+        {
+          "file": "tests/python/dif/test_exception_coverage.py",
+          "match": "text_reference"
+        }
+      ]
+    },
+    {
+      "coverage_status": "REFERENCED_BY_TEST",
+      "file": "src/python/dif/dif_parser.py",
+      "line": 38,
+      "name": "DifSizeError",
+      "raised_in_source": true,
+      "test_reference_count": 2,
+      "test_references": [
+        {
+          "file": "tests/python/dif/test_dif_gap_closure_batch.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/dif/test_rnext_dif_error_classes.py",
+          "match": "text_reference"
+        }
+      ]
+    },
+    {
+      "coverage_status": "REFERENCED_BY_TEST",
+      "file": "src/python/dif/exceptions.py",
+      "line": 21,
+      "name": "DifWriteError",
+      "raised_in_source": false,
+      "test_reference_count": 1,
+      "test_references": [
+        {
+          "file": "tests/python/dif/test_exception_coverage.py",
+          "match": "text_reference"
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "authoritative_plan": "plans/.claude/crispy-jingling-snail.md",
+    "generated_by": "codex",
+    "mission_id": "CERT-EXHAUST-20260628",
+    "tool": "exception_coverage_checker",
+    "visibility": "internal"
+  },
+  "raise_site_count": 20,
+  "raise_sites": [
+    {
+      "exception": "DifSizeError",
+      "file": "src/python/dif/dif_parser.py",
+      "line": 62
+    },
+    {
+      "exception": "DifInvalidFormatError",
+      "file": "src/python/dif/dif_parser.py",
+      "line": 70
+    },
+    {
+      "exception": "DifInvalidFormatError",
+      "file": "src/python/dif/dif_parser.py",
+      "line": 72
+    },
+    {
+      "exception": "DifInvalidFormatError",
+      "file": "src/python/dif/dif_parser.py",
+      "line": 84
+    },
+    {
+      "exception": "DifInvalidFormatError",
+      "file": "src/python/dif/dif_parser.py",
+      "line": 92
+    },
+    {
+      "exception": "DifInvalidFormatError",
+      "file": "src/python/dif/dif_parser.py",
+      "line": 100
+    },
+    {
+      "exception": "DifError",
+      "file": "src/python/dif/dif_parser.py",
+      "line": 115
+    },
+    {
+      "exception": "DifInvalidFormatError",
+      "file": "src/python/dif/dif_parser.py",
+      "line": 119
+    },
+    {
+      "exception": "DifInvalidFormatError",
+      "file": "src/python/dif/dif_parser.py",
+      "line": 127
+    },
+    {
+      "exception": "DifInvalidFormatError",
+      "file": "src/python/dif/dif_parser.py",
+      "line": 133
+    },
+    {
+      "exception": "DifSizeError",
+      "file": "src/python/dif/dif_parser.py",
+      "line": 136
+    },
+    {
+      "exception": "DifInvalidFormatError",
+      "file": "src/python/dif/dif_parser.py",
+      "line": 141
+    },
+    {
+      "exception": "DifSizeError",
+      "file": "src/python/dif/dif_parser.py",
+      "line": 144
+    },
+    {
+      "exception": "DifInvalidFormatError",
+      "file": "src/python/dif/dif_parser.py",
+      "line": 151
+    },
+    {
+      "exception": "DifInvalidFormatError",
+      "file": "src/python/dif/dif_parser.py",
+      "line": 163
+    },
+    {
+      "exception": "DifInvalidFormatError",
+      "file": "src/python/dif/dif_parser.py",
+      "line": 169
+    },
+    {
+      "exception": "DifSizeError",
+      "file": "src/python/dif/dif_parser.py",
+      "line": 176
+    },
+    {
+      "exception": "DifError",
+      "file": "src/python/dif/dif_parser.py",
+      "line": 439
+    },
+    {
+      "exception": "DifError",
+      "file": "src/python/dif/dif_parser.py",
+      "line": 442
+    },
+    {
+      "exception": "ImportError",
+      "file": "src/python/dif/interchange_document.py",
+      "line": 41
+    }
+  ],
+  "source_path": "src/python/dif",
+  "test_path": "tests/python/dif",
+  "uncovered_exception_count": 0
+}

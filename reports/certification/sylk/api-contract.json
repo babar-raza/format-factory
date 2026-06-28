@@ -1,0 +1,880 @@
+{
+  "metadata": {
+    "authoritative_plan": "plans/.claude/crispy-jingling-snail.md",
+    "mission_id": "CERT-EXHAUST-20260628",
+    "format_id": "sylk"
+  },
+  "python": {
+    "contracts": [
+      {
+        "name": "parse_sylk_strict",
+        "kind": "function",
+        "file": "src/python/sylk/sylk_parser.py",
+        "line": 67,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "parse_sylk",
+        "kind": "function",
+        "file": "src/python/sylk/sylk_parser.py",
+        "line": 172,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "probe_sylk",
+        "kind": "function",
+        "file": "src/python/sylk/sylk_parser.py",
+        "line": 188,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "get_capabilities",
+        "kind": "function",
+        "file": "src/python/sylk/sylk_parser.py",
+        "line": 238,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "write_sylk",
+        "kind": "function",
+        "file": "src/python/sylk/sylk_parser.py",
+        "line": 257,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "sylk_to_csv",
+        "kind": "function",
+        "file": "src/python/sylk/sylk_parser.py",
+        "line": 292,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "get_cell_value",
+        "kind": "function",
+        "file": "src/python/sylk/sylk_parser.py",
+        "line": 330,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "get_row_values",
+        "kind": "function",
+        "file": "src/python/sylk/sylk_parser.py",
+        "line": 353,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "get_row_count",
+        "kind": "function",
+        "file": "src/python/sylk/sylk_parser.py",
+        "line": 380,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "get_column_count",
+        "kind": "function",
+        "file": "src/python/sylk/sylk_parser.py",
+        "line": 398,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "get_cell_count",
+        "kind": "function",
+        "file": "src/python/sylk/sylk_parser.py",
+        "line": 416,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "get_all_values",
+        "kind": "function",
+        "file": "src/python/sylk/sylk_parser.py",
+        "line": 432,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "set_cell_value",
+        "kind": "function",
+        "file": "src/python/sylk/sylk_parser.py",
+        "line": 438,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "get_column_values",
+        "kind": "function",
+        "file": "src/python/sylk/sylk_parser.py",
+        "line": 493,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "add_row",
+        "kind": "function",
+        "file": "src/python/sylk/sylk_parser.py",
+        "line": 521,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "delete_row",
+        "kind": "function",
+        "file": "src/python/sylk/sylk_parser.py",
+        "line": 541,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "count_nonempty_cells",
+        "kind": "function",
+        "file": "src/python/sylk/sylk_parser.py",
+        "line": 566,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sum_column",
+        "kind": "function",
+        "file": "src/python/sylk/sylk_parser.py",
+        "line": 575,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_to_html",
+        "kind": "function",
+        "file": "src/python/sylk/sylk_parser.py",
+        "line": 588,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "min_column_value",
+        "kind": "function",
+        "file": "src/python/sylk/sylk_parser.py",
+        "line": 631,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "max_column_value",
+        "kind": "function",
+        "file": "src/python/sylk/sylk_parser.py",
+        "line": 641,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "average_column",
+        "kind": "function",
+        "file": "src/python/sylk/sylk_parser.py",
+        "line": 651,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "find_value",
+        "kind": "function",
+        "file": "src/python/sylk/sylk_parser.py",
+        "line": 668,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "count_distinct_values",
+        "kind": "function",
+        "file": "src/python/sylk/sylk_parser.py",
+        "line": 693,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "find_rows_by_value",
+        "kind": "function",
+        "file": "src/python/sylk/sylk_parser.py",
+        "line": 716,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_nonempty_rows",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 18,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_string_cell_count",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 29,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_max_column_index",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 49,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_row_count",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 69,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_total_sum",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 86,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_column_count",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 109,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_unique_values",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 123,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_cell_type_distribution",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 145,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_has_header",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 174,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_average_numeric_value",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 194,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_max_row_length",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 216,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_numeric_density",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 234,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_total_cell_count",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 243,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_string_density",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 249,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_nonempty_cell_count",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 258,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_avg_row_length",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 264,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_min_col_index",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 282,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_data_sparsity",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 297,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_max_cell_value_length",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 321,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_empty_cell_count",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 338,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_min_cell_value_length",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 355,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_max_numeric_value",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 376,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_min_numeric_value",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 399,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_numeric_range",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 422,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_is_rectangular",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 438,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_min_row_length",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 450,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_has_string_cells",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 461,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_unique_row_count",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 474,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_unique_column_count",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 487,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_has_numeric_cells",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 493,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_data_density",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 499,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_avg_cell_value_length",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 508,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_is_single_row",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 516,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_max_string_length",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 525,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_column_variance",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 532,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_is_empty",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 544,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_has_empty_rows",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 550,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_avg_numeric_cell_length",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 566,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_unique_value_count",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 582,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_is_multi_row",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 588,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_is_single_column",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 595,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_cell_count_variance",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 602,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_is_all_numeric",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 616,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_row_span",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 631,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_numeric_cell_count",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 640,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_is_square",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 655,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_avg_cell_length",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 665,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_column_span",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 674,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_numeric_sum",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 683,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_avg_numeric_value",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 696,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_total_string_length",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 711,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_nonempty_row_ratio",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 717,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_longest_row_index",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 732,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_numeric_variance",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 742,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_max_row_cell_count",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 758,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_string_value_count",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 768,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_has_empty_cells",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 774,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_total_cells",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 783,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_nonempty_cell_ratio",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 789,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_min_row_index",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 802,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_max_row_index",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 810,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_numeric_cell_ratio",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 818,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_value_length_sum",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 828,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_avg_row_density",
+        "kind": "function",
+        "file": "src/python/sylk/spreadsheet_document.py",
+        "line": 834,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sylk_iter_cells",
+        "kind": "function",
+        "file": "src/python/sylk/sylk_cell_iterator.py",
+        "line": 16,
+        "role": "iterator",
+        "exported": true
+      },
+      {
+        "name": "sylk_iter_rows",
+        "kind": "function",
+        "file": "src/python/sylk/sylk_row_iterator.py",
+        "line": 16,
+        "role": "iterator",
+        "exported": true
+      },
+      {
+        "name": "sylk_installed_workflow",
+        "kind": "function",
+        "file": "src/python/sylk/sylk_workflow.py",
+        "line": 10,
+        "role": "workflow",
+        "exported": true
+      },
+      {
+        "name": "SylkError",
+        "kind": "class",
+        "file": "src/python/sylk/sylk_parser.py",
+        "line": 32,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "SylkInvalidFormatError",
+        "kind": "class",
+        "file": "src/python/sylk/sylk_parser.py",
+        "line": 36,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "SylkSizeError",
+        "kind": "class",
+        "file": "src/python/sylk/sylk_parser.py",
+        "line": 40,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "SylkParseError",
+        "kind": "class",
+        "file": "src/python/sylk/sylk_parser.py",
+        "line": 44,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "SylkCell",
+        "kind": "class",
+        "file": "src/python/sylk/sylk_parser.py",
+        "line": 49,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "SylkDocument",
+        "kind": "class",
+        "file": "src/python/sylk/sylk_parser.py",
+        "line": 58,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "SylkCell",
+        "kind": "class",
+        "file": "src/python/sylk/Compat/sylk_cell.py",
+        "line": 6,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "SylkHeader",
+        "kind": "class",
+        "file": "src/python/sylk/Compat/sylk_header.py",
+        "line": 6,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "SylkRow",
+        "kind": "class",
+        "file": "src/python/sylk/Compat/sylk_row.py",
+        "line": 6,
+        "role": "model",
+        "exported": false
+      },
+      {
+        "name": "SylkError",
+        "kind": "class",
+        "file": "src/python/sylk/exceptions.py",
+        "line": 13,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "SylkParseError",
+        "kind": "class",
+        "file": "src/python/sylk/exceptions.py",
+        "line": 17,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "SylkWriteError",
+        "kind": "class",
+        "file": "src/python/sylk/exceptions.py",
+        "line": 21,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "SylkModelDocument",
+        "kind": "class",
+        "file": "src/python/sylk/models.py",
+        "line": 20,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "Cell",
+        "kind": "class",
+        "file": "src/python/sylk/spec/row/cell.py",
+        "line": 14,
+        "role": "model",
+        "exported": false
+      },
+      {
+        "name": "Header",
+        "kind": "class",
+        "file": "src/python/sylk/spec/row/header.py",
+        "line": 14,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "Row",
+        "kind": "class",
+        "file": "src/python/sylk/spec/row/row.py",
+        "line": 14,
+        "role": "model",
+        "exported": false
+      }
+    ],
+    "export_count": 103
+  },
+  "dotnet": {
+    "contracts": [],
+    "public_member_count": 0
+  }
+}

@@ -1,0 +1,1304 @@
+{
+  "metadata": {
+    "authoritative_plan": "plans/.claude/crispy-jingling-snail.md",
+    "mission_id": "CERT-EXHAUST-20260628",
+    "format_id": "gnumeric"
+  },
+  "python": {
+    "contracts": [
+      {
+        "name": "main",
+        "kind": "function",
+        "file": "src/python/gnumeric/cli.py",
+        "line": 14,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "load",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_codec.py",
+        "line": 38,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "get_sheet_count",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_codec.py",
+        "line": 63,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "get_cell_count",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_codec.py",
+        "line": 68,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "extract_values",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_codec.py",
+        "line": 73,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "get_sheet_metadata",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_codec.py",
+        "line": 82,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "export_to_csv",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_codec.py",
+        "line": 90,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "export_to_json",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_codec.py",
+        "line": 135,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "probe_gnumeric",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_codec.py",
+        "line": 173,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "create_gnumeric",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_codec.py",
+        "line": 197,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "write_gnumeric",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_codec.py",
+        "line": 235,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "get_cell_value",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_codec.py",
+        "line": 385,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "set_cell_value",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_codec.py",
+        "line": 402,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "get_sheet_names",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_codec.py",
+        "line": 436,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "get_row",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_codec.py",
+        "line": 453,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "get_column",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_codec.py",
+        "line": 475,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "delete_sheet",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_codec.py",
+        "line": 497,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "rename_sheet",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_codec.py",
+        "line": 514,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "add_sheet",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_codec.py",
+        "line": 539,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "get_sheet_by_name",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_codec.py",
+        "line": 569,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "copy_sheet",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_codec.py",
+        "line": 585,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "clear_cell",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_codec.py",
+        "line": 612,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "read_cell",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_codec.py",
+        "line": 644,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "get_sheet_index",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_codec.py",
+        "line": 665,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "probe_gnumeric_codec",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_codec.py",
+        "line": 690,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_installed_workflow",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_codec.py",
+        "line": 703,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sum_column",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_workbook_stats.py",
+        "line": 16,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fill_column",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_workbook_stats.py",
+        "line": 35,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "sum_row",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_workbook_stats.py",
+        "line": 51,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "get_all_values",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_workbook_stats.py",
+        "line": 70,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "clear_sheet",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_workbook_stats.py",
+        "line": 82,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "get_sheet_as_rows",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_workbook_stats.py",
+        "line": 100,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fill_row",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_workbook_stats.py",
+        "line": 119,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "sheet_names",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_workbook_stats.py",
+        "line": 135,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "row_count",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_workbook_stats.py",
+        "line": 147,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "get_row_values",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_workbook_stats.py",
+        "line": 162,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "get_column_values",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_workbook_stats.py",
+        "line": 190,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "min_column_value",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_workbook_stats.py",
+        "line": 218,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "max_column_value",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_workbook_stats.py",
+        "line": 233,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "average_column",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_workbook_stats.py",
+        "line": 248,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "average_row",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_workbook_stats.py",
+        "line": 263,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "correlation_columns",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_workbook_stats.py",
+        "line": 278,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "get_row_count",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_workbook_stats.py",
+        "line": 316,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "get_column_count",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_workbook_stats.py",
+        "line": 336,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "count_nonempty_cells",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_workbook_stats.py",
+        "line": 356,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_sheet_summary",
+        "kind": "function",
+        "file": "src/python/gnumeric/build/lib/gnumeric/workbook_document.py",
+        "line": 24,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_numeric_cell_count",
+        "kind": "function",
+        "file": "src/python/gnumeric/build/lib/gnumeric/workbook_document.py",
+        "line": 33,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_column_count",
+        "kind": "function",
+        "file": "src/python/gnumeric/build/lib/gnumeric/workbook_document.py",
+        "line": 58,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_row_count_file",
+        "kind": "function",
+        "file": "src/python/gnumeric/build/lib/gnumeric/workbook_document.py",
+        "line": 80,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_column_count_file",
+        "kind": "function",
+        "file": "src/python/gnumeric/build/lib/gnumeric/workbook_document.py",
+        "line": 97,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_cell_count_file",
+        "kind": "function",
+        "file": "src/python/gnumeric/build/lib/gnumeric/workbook_document.py",
+        "line": 113,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_string_cell_count",
+        "kind": "function",
+        "file": "src/python/gnumeric/build/lib/gnumeric/workbook_document.py",
+        "line": 129,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_empty_cell_count",
+        "kind": "function",
+        "file": "src/python/gnumeric/build/lib/gnumeric/workbook_document.py",
+        "line": 154,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_nonempty_cell_count_file",
+        "kind": "function",
+        "file": "src/python/gnumeric/build/lib/gnumeric/workbook_document.py",
+        "line": 175,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_total_cell_count",
+        "kind": "function",
+        "file": "src/python/gnumeric/build/lib/gnumeric/workbook_document.py",
+        "line": 193,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_sheet_count",
+        "kind": "function",
+        "file": "src/python/gnumeric/build/lib/gnumeric/workbook_document.py",
+        "line": 213,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_has_multiple_sheets",
+        "kind": "function",
+        "file": "src/python/gnumeric/build/lib/gnumeric/workbook_document.py",
+        "line": 226,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_average_cells_per_sheet",
+        "kind": "function",
+        "file": "src/python/gnumeric/build/lib/gnumeric/workbook_document.py",
+        "line": 238,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_numeric_density",
+        "kind": "function",
+        "file": "src/python/gnumeric/build/lib/gnumeric/workbook_document.py",
+        "line": 255,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_string_density",
+        "kind": "function",
+        "file": "src/python/gnumeric/build/lib/gnumeric/workbook_document.py",
+        "line": 280,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_max_cell_length",
+        "kind": "function",
+        "file": "src/python/gnumeric/build/lib/gnumeric/workbook_document.py",
+        "line": 304,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_min_cell_length",
+        "kind": "function",
+        "file": "src/python/gnumeric/build/lib/gnumeric/workbook_document.py",
+        "line": 321,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_all_sheets_have_data",
+        "kind": "function",
+        "file": "src/python/gnumeric/build/lib/gnumeric/workbook_document.py",
+        "line": 340,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_has_any_string_cell",
+        "kind": "function",
+        "file": "src/python/gnumeric/build/lib/gnumeric/workbook_document.py",
+        "line": 360,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_cell_count_all_sheets",
+        "kind": "function",
+        "file": "src/python/gnumeric/build/lib/gnumeric/workbook_document.py",
+        "line": 377,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_is_single_sheet",
+        "kind": "function",
+        "file": "src/python/gnumeric/build/lib/gnumeric/workbook_document.py",
+        "line": 390,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_empty_sheet_count",
+        "kind": "function",
+        "file": "src/python/gnumeric/build/lib/gnumeric/workbook_document.py",
+        "line": 396,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_data_density",
+        "kind": "function",
+        "file": "src/python/gnumeric/build/lib/gnumeric/workbook_document.py",
+        "line": 407,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_max_row_count",
+        "kind": "function",
+        "file": "src/python/gnumeric/build/lib/gnumeric/workbook_document.py",
+        "line": 421,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_min_row_count",
+        "kind": "function",
+        "file": "src/python/gnumeric/build/lib/gnumeric/workbook_document.py",
+        "line": 430,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_has_empty_sheets",
+        "kind": "function",
+        "file": "src/python/gnumeric/build/lib/gnumeric/workbook_document.py",
+        "line": 439,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_avg_row_count",
+        "kind": "function",
+        "file": "src/python/gnumeric/build/lib/gnumeric/workbook_document.py",
+        "line": 444,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_nonempty_density",
+        "kind": "function",
+        "file": "src/python/gnumeric/build/lib/gnumeric/workbook_document.py",
+        "line": 453,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_is_empty",
+        "kind": "function",
+        "file": "src/python/gnumeric/build/lib/gnumeric/workbook_document.py",
+        "line": 467,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_max_column_count",
+        "kind": "function",
+        "file": "src/python/gnumeric/build/lib/gnumeric/workbook_document.py",
+        "line": 472,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_total_string_length",
+        "kind": "function",
+        "file": "src/python/gnumeric/build/lib/gnumeric/workbook_document.py",
+        "line": 485,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_avg_cell_length",
+        "kind": "function",
+        "file": "src/python/gnumeric/build/lib/gnumeric/workbook_document.py",
+        "line": 496,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_column_variance",
+        "kind": "function",
+        "file": "src/python/gnumeric/build/lib/gnumeric/workbook_document.py",
+        "line": 510,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_is_rectangular",
+        "kind": "function",
+        "file": "src/python/gnumeric/build/lib/gnumeric/workbook_document.py",
+        "line": 521,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_min_column_count",
+        "kind": "function",
+        "file": "src/python/gnumeric/build/lib/gnumeric/workbook_document.py",
+        "line": 531,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_avg_column_count",
+        "kind": "function",
+        "file": "src/python/gnumeric/build/lib/gnumeric/workbook_document.py",
+        "line": 546,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_has_empty_cells",
+        "kind": "function",
+        "file": "src/python/gnumeric/build/lib/gnumeric/workbook_document.py",
+        "line": 562,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_total_row_count",
+        "kind": "function",
+        "file": "src/python/gnumeric/build/lib/gnumeric/workbook_document.py",
+        "line": 573,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_is_all_numeric",
+        "kind": "function",
+        "file": "src/python/gnumeric/build/lib/gnumeric/workbook_document.py",
+        "line": 584,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_nonempty_cell_ratio",
+        "kind": "function",
+        "file": "src/python/gnumeric/build/lib/gnumeric/workbook_document.py",
+        "line": 601,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_row_count_variance",
+        "kind": "function",
+        "file": "src/python/gnumeric/build/lib/gnumeric/workbook_document.py",
+        "line": 617,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_sheet_name_lengths",
+        "kind": "function",
+        "file": "src/python/gnumeric/build/lib/gnumeric/workbook_document.py",
+        "line": 628,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_max_cell_value_length",
+        "kind": "function",
+        "file": "src/python/gnumeric/build/lib/gnumeric/workbook_document.py",
+        "line": 634,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_is_multi_sheet",
+        "kind": "function",
+        "file": "src/python/gnumeric/build/lib/gnumeric/workbook_document.py",
+        "line": 646,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_avg_numeric_value",
+        "kind": "function",
+        "file": "src/python/gnumeric/build/lib/gnumeric/workbook_document.py",
+        "line": 652,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_nonempty_row_ratio",
+        "kind": "function",
+        "file": "src/python/gnumeric/build/lib/gnumeric/workbook_document.py",
+        "line": 666,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_longest_row_index",
+        "kind": "function",
+        "file": "src/python/gnumeric/build/lib/gnumeric/workbook_document.py",
+        "line": 687,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_numeric_sum_all",
+        "kind": "function",
+        "file": "src/python/gnumeric/build/lib/gnumeric/workbook_document.py",
+        "line": 706,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_empty_column_count",
+        "kind": "function",
+        "file": "src/python/gnumeric/build/lib/gnumeric/workbook_document.py",
+        "line": 720,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_cell_count_variance",
+        "kind": "function",
+        "file": "src/python/gnumeric/build/lib/gnumeric/workbook_document.py",
+        "line": 740,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_max_row_length",
+        "kind": "function",
+        "file": "src/python/gnumeric/build/lib/gnumeric/workbook_document.py",
+        "line": 751,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_cell_to_row_ratio",
+        "kind": "function",
+        "file": "src/python/gnumeric/build/lib/gnumeric/workbook_document.py",
+        "line": 765,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_sheet_summary",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_analytics.py",
+        "line": 22,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_numeric_cell_count",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_analytics.py",
+        "line": 31,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_column_count",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_analytics.py",
+        "line": 56,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_row_count_file",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_analytics.py",
+        "line": 78,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_column_count_file",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_analytics.py",
+        "line": 95,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_cell_count_file",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_analytics.py",
+        "line": 111,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_string_cell_count",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_analytics.py",
+        "line": 127,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_empty_cell_count",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_analytics.py",
+        "line": 152,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_nonempty_cell_count_file",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_analytics.py",
+        "line": 173,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_total_cell_count",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_analytics.py",
+        "line": 191,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_sheet_count",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_analytics.py",
+        "line": 211,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_has_multiple_sheets",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_analytics.py",
+        "line": 224,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_average_cells_per_sheet",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_analytics.py",
+        "line": 236,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_numeric_density",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_analytics.py",
+        "line": 253,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_string_density",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_analytics.py",
+        "line": 278,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_max_cell_length",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_analytics.py",
+        "line": 302,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_min_cell_length",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_analytics.py",
+        "line": 319,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_all_sheets_have_data",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_analytics.py",
+        "line": 338,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_has_any_string_cell",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_analytics.py",
+        "line": 358,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_cell_count_all_sheets",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_analytics.py",
+        "line": 375,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_is_single_sheet",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_analytics.py",
+        "line": 388,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_empty_sheet_count",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_analytics.py",
+        "line": 394,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_data_density",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_analytics.py",
+        "line": 405,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_max_row_count",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_analytics.py",
+        "line": 419,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_min_row_count",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_analytics.py",
+        "line": 428,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_has_empty_sheets",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_analytics.py",
+        "line": 437,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_avg_row_count",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_analytics.py",
+        "line": 442,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_nonempty_density",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_analytics.py",
+        "line": 451,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_is_empty",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_analytics.py",
+        "line": 465,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_max_column_count",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_analytics.py",
+        "line": 470,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_total_string_length",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_analytics.py",
+        "line": 483,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_avg_cell_length",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_analytics.py",
+        "line": 494,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_column_variance",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_analytics.py",
+        "line": 508,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_is_rectangular",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_analytics.py",
+        "line": 519,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_min_column_count",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_analytics.py",
+        "line": 529,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_avg_column_count",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_analytics.py",
+        "line": 544,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_has_empty_cells",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_analytics.py",
+        "line": 560,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_total_row_count",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_analytics.py",
+        "line": 571,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_is_all_numeric",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_analytics.py",
+        "line": 582,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_nonempty_cell_ratio",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_analytics.py",
+        "line": 599,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_row_count_variance",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_analytics.py",
+        "line": 615,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_sheet_name_lengths",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_analytics.py",
+        "line": 626,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_max_cell_value_length",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_analytics.py",
+        "line": 632,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_is_multi_sheet",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_analytics.py",
+        "line": 644,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_avg_numeric_value",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_analytics.py",
+        "line": 650,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_nonempty_row_ratio",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_analytics.py",
+        "line": 664,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_longest_row_index",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_analytics.py",
+        "line": 685,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_numeric_sum_all",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_analytics.py",
+        "line": 704,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_empty_column_count",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_analytics.py",
+        "line": 718,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_cell_count_variance",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_analytics.py",
+        "line": 738,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_max_row_length",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_analytics.py",
+        "line": 749,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_cell_to_row_ratio",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_analytics.py",
+        "line": 763,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "gnumeric_iter_sheets",
+        "kind": "function",
+        "file": "src/python/gnumeric/gnumeric_sheet_iterator.py",
+        "line": 16,
+        "role": "iterator",
+        "exported": true
+      },
+      {
+        "name": "GnumericError",
+        "kind": "class",
+        "file": "src/python/gnumeric/exceptions.py",
+        "line": 13,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "GnumericParseError",
+        "kind": "class",
+        "file": "src/python/gnumeric/exceptions.py",
+        "line": 17,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "GnumericWriteError",
+        "kind": "class",
+        "file": "src/python/gnumeric/exceptions.py",
+        "line": 21,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "GnumericError",
+        "kind": "class",
+        "file": "src/python/gnumeric/gnumeric_codec.py",
+        "line": 30,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "GnumericParseError",
+        "kind": "class",
+        "file": "src/python/gnumeric/gnumeric_codec.py",
+        "line": 34,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "GnumericDocument",
+        "kind": "class",
+        "file": "src/python/gnumeric/models.py",
+        "line": 16,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "GnumericSheet",
+        "kind": "class",
+        "file": "src/python/gnumeric/Compat/gnumeric_sheet.py",
+        "line": 12,
+        "role": "model",
+        "exported": false
+      },
+      {
+        "name": "GnumericWorkbook",
+        "kind": "class",
+        "file": "src/python/gnumeric/Compat/gnumeric_workbook.py",
+        "line": 13,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "Cell",
+        "kind": "class",
+        "file": "src/python/gnumeric/spec/workbook/cell.py",
+        "line": 12,
+        "role": "model",
+        "exported": false
+      },
+      {
+        "name": "Sheet",
+        "kind": "class",
+        "file": "src/python/gnumeric/spec/workbook/sheet.py",
+        "line": 15,
+        "role": "model",
+        "exported": false
+      },
+      {
+        "name": "Workbook",
+        "kind": "class",
+        "file": "src/python/gnumeric/spec/workbook/workbook.py",
+        "line": 15,
+        "role": "api",
+        "exported": false
+      }
+    ],
+    "export_count": 155
+  },
+  "dotnet": {
+    "contracts": [],
+    "public_member_count": 0
+  }
+}

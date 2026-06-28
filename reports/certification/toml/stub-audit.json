@@ -1,0 +1,43 @@
+{
+  "file_count": 17,
+  "files_scanned": [
+    "src/python/toml/__init__.py",
+    "src/python/toml/cli.py",
+    "src/python/toml/Compat/__init__.py",
+    "src/python/toml/Compat/toml_key.py",
+    "src/python/toml/Compat/toml_table.py",
+    "src/python/toml/exceptions.py",
+    "src/python/toml/models.py",
+    "src/python/toml/spec/__init__.py",
+    "src/python/toml/spec/table/__init__.py",
+    "src/python/toml/spec/table/key.py",
+    "src/python/toml/spec/table/table.py",
+    "src/python/toml/spec/table/value.py",
+    "src/python/toml/toml_analytics.py",
+    "src/python/toml/toml_codec.py",
+    "src/python/toml/toml_key_iterator.py",
+    "src/python/toml/toml_table_iterator.py",
+    "src/python/toml/toml_workflow.py"
+  ],
+  "finding_count": 1,
+  "findings": [
+    {
+      "classification_note": "Non-public or structural placeholder; not automatically material.",
+      "file": "src/python/toml/toml_codec.py",
+      "line": 773,
+      "reason": "pass_statement",
+      "scope": "<module>",
+      "severity": "advisory",
+      "source": "pass"
+    }
+  ],
+  "material_finding_count": 0,
+  "metadata": {
+    "authoritative_plan": "plans/.claude/crispy-jingling-snail.md",
+    "generated_by": "codex",
+    "mission_id": "CERT-EXHAUST-20260628",
+    "tool": "stub_detector",
+    "visibility": "internal"
+  },
+  "target": "src/python/toml"
+}

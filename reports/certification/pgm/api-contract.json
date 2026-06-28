@@ -1,0 +1,1339 @@
+{
+  "metadata": {
+    "authoritative_plan": "plans/.claude/crispy-jingling-snail.md",
+    "mission_id": "CERT-EXHAUST-20260628",
+    "format_id": "pgm"
+  },
+  "python": {
+    "contracts": [
+      {
+        "name": "parse_pgm_strict",
+        "kind": "function",
+        "file": "src/python/pgm/pgm_parser.py",
+        "line": 171,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "parse_pgm",
+        "kind": "function",
+        "file": "src/python/pgm/pgm_parser.py",
+        "line": 249,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "probe_pgm",
+        "kind": "function",
+        "file": "src/python/pgm/pgm_parser.py",
+        "line": 266,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "image_pixel_stats",
+        "kind": "function",
+        "file": "src/python/pgm/pgm_parser.py",
+        "line": 296,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "get_capabilities",
+        "kind": "function",
+        "file": "src/python/pgm/pgm_parser.py",
+        "line": 364,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "write_pgm",
+        "kind": "function",
+        "file": "src/python/pgm/pgm_parser.py",
+        "line": 375,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "pixel_count",
+        "kind": "function",
+        "file": "src/python/pgm/pgm_parser.py",
+        "line": 429,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "average_gray",
+        "kind": "function",
+        "file": "src/python/pgm/pgm_parser.py",
+        "line": 435,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "count_above_threshold",
+        "kind": "function",
+        "file": "src/python/pgm/pgm_parser.py",
+        "line": 443,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "min_max_gray",
+        "kind": "function",
+        "file": "src/python/pgm/pgm_parser.py",
+        "line": 449,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "flip_horizontal",
+        "kind": "function",
+        "file": "src/python/pgm/pgm_parser.py",
+        "line": 457,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "get_dimensions",
+        "kind": "function",
+        "file": "src/python/pgm/pgm_parser.py",
+        "line": 469,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "normalize",
+        "kind": "function",
+        "file": "src/python/pgm/pgm_parser.py",
+        "line": 487,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "histogram",
+        "kind": "function",
+        "file": "src/python/pgm/pgm_parser.py",
+        "line": 524,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "threshold",
+        "kind": "function",
+        "file": "src/python/pgm/pgm_parser.py",
+        "line": 554,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "rotate_90",
+        "kind": "function",
+        "file": "src/python/pgm/pgm_parser.py",
+        "line": 594,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "grayscale_variance",
+        "kind": "function",
+        "file": "src/python/pgm/pgm_parser.py",
+        "line": 625,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "pgm_pixels_to_ppm_pixels",
+        "kind": "function",
+        "file": "src/python/pgm/pgm_to_ppm.py",
+        "line": 17,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "convert_pgm_to_ppm",
+        "kind": "function",
+        "file": "src/python/pgm/pgm_to_ppm.py",
+        "line": 27,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "pgm_bright_pixel_ratio",
+        "kind": "function",
+        "file": "src/python/pgm/grayscale_image.py",
+        "line": 18,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "pgm_dark_pixel_count",
+        "kind": "function",
+        "file": "src/python/pgm/grayscale_image.py",
+        "line": 39,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "pgm_max_pixel_value",
+        "kind": "function",
+        "file": "src/python/pgm/grayscale_image.py",
+        "line": 56,
+        "role": "api",
+        "exported": true
+      },
+      {
+        "name": "pgm_min_pixel_value",
+        "kind": "function",
+        "file": "src/python/pgm/grayscale_image.py",
+        "line": 74,
+        "role": "api",
+        "exported": true
+      },
+      {
+        "name": "pgm_average_brightness",
+        "kind": "function",
+        "file": "src/python/pgm/grayscale_image.py",
+        "line": 92,
+        "role": "api",
+        "exported": true
+      },
+      {
+        "name": "pgm_contrast_range",
+        "kind": "function",
+        "file": "src/python/pgm/grayscale_image.py",
+        "line": 110,
+        "role": "api",
+        "exported": true
+      },
+      {
+        "name": "pgm_median_pixel_value",
+        "kind": "function",
+        "file": "src/python/pgm/grayscale_image.py",
+        "line": 132,
+        "role": "api",
+        "exported": true
+      },
+      {
+        "name": "pgm_total_pixel_count",
+        "kind": "function",
+        "file": "src/python/pgm/grayscale_image.py",
+        "line": 157,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "pgm_brightness_quartiles",
+        "kind": "function",
+        "file": "src/python/pgm/grayscale_image.py",
+        "line": 173,
+        "role": "api",
+        "exported": true
+      },
+      {
+        "name": "pgm_is_uniform",
+        "kind": "function",
+        "file": "src/python/pgm/grayscale_image.py",
+        "line": 197,
+        "role": "api",
+        "exported": true
+      },
+      {
+        "name": "pgm_nonzero_pixel_ratio",
+        "kind": "function",
+        "file": "src/python/pgm/grayscale_image.py",
+        "line": 206,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "pgm_dynamic_range",
+        "kind": "function",
+        "file": "src/python/pgm/grayscale_image.py",
+        "line": 215,
+        "role": "api",
+        "exported": true
+      },
+      {
+        "name": "pgm_pixel_sum",
+        "kind": "function",
+        "file": "src/python/pgm/grayscale_image.py",
+        "line": 223,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "pgm_zero_pixel_count",
+        "kind": "function",
+        "file": "src/python/pgm/grayscale_image.py",
+        "line": 231,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "pgm_saturated_pixel_count",
+        "kind": "function",
+        "file": "src/python/pgm/grayscale_image.py",
+        "line": 244,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "pgm_standard_deviation",
+        "kind": "function",
+        "file": "src/python/pgm/grayscale_image.py",
+        "line": 259,
+        "role": "api",
+        "exported": true
+      },
+      {
+        "name": "pgm_brightness_ratio",
+        "kind": "function",
+        "file": "src/python/pgm/grayscale_image.py",
+        "line": 277,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "pgm_has_any_saturated",
+        "kind": "function",
+        "file": "src/python/pgm/grayscale_image.py",
+        "line": 293,
+        "role": "api",
+        "exported": true
+      },
+      {
+        "name": "pgm_is_all_dark",
+        "kind": "function",
+        "file": "src/python/pgm/grayscale_image.py",
+        "line": 299,
+        "role": "api",
+        "exported": true
+      },
+      {
+        "name": "pgm_perimeter",
+        "kind": "function",
+        "file": "src/python/pgm/grayscale_image.py",
+        "line": 308,
+        "role": "api",
+        "exported": true
+      },
+      {
+        "name": "pgm_unique_value_count",
+        "kind": "function",
+        "file": "src/python/pgm/grayscale_image.py",
+        "line": 321,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "pgm_dimension_ratio",
+        "kind": "function",
+        "file": "src/python/pgm/grayscale_image.py",
+        "line": 336,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "pgm_is_square",
+        "kind": "function",
+        "file": "src/python/pgm/grayscale_image.py",
+        "line": 344,
+        "role": "api",
+        "exported": true
+      },
+      {
+        "name": "pgm_is_landscape",
+        "kind": "function",
+        "file": "src/python/pgm/grayscale_image.py",
+        "line": 350,
+        "role": "api",
+        "exported": true
+      },
+      {
+        "name": "pgm_max_dimension",
+        "kind": "function",
+        "file": "src/python/pgm/grayscale_image.py",
+        "line": 356,
+        "role": "api",
+        "exported": true
+      },
+      {
+        "name": "pgm_has_any_zero",
+        "kind": "function",
+        "file": "src/python/pgm/grayscale_image.py",
+        "line": 362,
+        "role": "api",
+        "exported": true
+      },
+      {
+        "name": "pgm_is_all_bright",
+        "kind": "function",
+        "file": "src/python/pgm/grayscale_image.py",
+        "line": 368,
+        "role": "api",
+        "exported": true
+      },
+      {
+        "name": "pgm_diagonal",
+        "kind": "function",
+        "file": "src/python/pgm/grayscale_image.py",
+        "line": 377,
+        "role": "api",
+        "exported": true
+      },
+      {
+        "name": "pgm_aspect_ratio",
+        "kind": "function",
+        "file": "src/python/pgm/grayscale_image.py",
+        "line": 384,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "pgm_min_dimension",
+        "kind": "function",
+        "file": "src/python/pgm/grayscale_image.py",
+        "line": 392,
+        "role": "api",
+        "exported": true
+      },
+      {
+        "name": "pgm_brightness_range",
+        "kind": "function",
+        "file": "src/python/pgm/grayscale_image.py",
+        "line": 398,
+        "role": "api",
+        "exported": true
+      },
+      {
+        "name": "pgm_area",
+        "kind": "function",
+        "file": "src/python/pgm/grayscale_image.py",
+        "line": 406,
+        "role": "api",
+        "exported": true
+      },
+      {
+        "name": "pgm_mean_brightness",
+        "kind": "function",
+        "file": "src/python/pgm/grayscale_image.py",
+        "line": 412,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "pgm_megapixels",
+        "kind": "function",
+        "file": "src/python/pgm/grayscale_image.py",
+        "line": 420,
+        "role": "api",
+        "exported": true
+      },
+      {
+        "name": "pgm_is_tall",
+        "kind": "function",
+        "file": "src/python/pgm/grayscale_image.py",
+        "line": 426,
+        "role": "api",
+        "exported": true
+      },
+      {
+        "name": "pgm_column_count",
+        "kind": "function",
+        "file": "src/python/pgm/grayscale_image.py",
+        "line": 432,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "pgm_is_wide",
+        "kind": "function",
+        "file": "src/python/pgm/grayscale_image.py",
+        "line": 440,
+        "role": "api",
+        "exported": true
+      },
+      {
+        "name": "pgm_pixel_density",
+        "kind": "function",
+        "file": "src/python/pgm/grayscale_image.py",
+        "line": 446,
+        "role": "api",
+        "exported": true
+      },
+      {
+        "name": "pgm_row_count",
+        "kind": "function",
+        "file": "src/python/pgm/grayscale_image.py",
+        "line": 455,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "pgm_is_portrait",
+        "kind": "function",
+        "file": "src/python/pgm/grayscale_image.py",
+        "line": 461,
+        "role": "api",
+        "exported": true
+      },
+      {
+        "name": "pgm_is_high_contrast",
+        "kind": "function",
+        "file": "src/python/pgm/grayscale_image.py",
+        "line": 467,
+        "role": "api",
+        "exported": true
+      },
+      {
+        "name": "pgm_avg_row_brightness",
+        "kind": "function",
+        "file": "src/python/pgm/grayscale_image.py",
+        "line": 477,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "pgm_dark_pixel_ratio",
+        "kind": "function",
+        "file": "src/python/pgm/grayscale_image.py",
+        "line": 490,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "pgm_row_brightness_variance",
+        "kind": "function",
+        "file": "src/python/pgm/grayscale_image.py",
+        "line": 500,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "pgm_min_brightness",
+        "kind": "function",
+        "file": "src/python/pgm/grayscale_image.py",
+        "line": 509,
+        "role": "api",
+        "exported": true
+      },
+      {
+        "name": "pgm_is_bright",
+        "kind": "function",
+        "file": "src/python/pgm/grayscale_image.py",
+        "line": 517,
+        "role": "api",
+        "exported": true
+      },
+      {
+        "name": "pgm_brightness_histogram",
+        "kind": "function",
+        "file": "src/python/pgm/grayscale_image.py",
+        "line": 525,
+        "role": "api",
+        "exported": true
+      },
+      {
+        "name": "pgm_contrast_ratio",
+        "kind": "function",
+        "file": "src/python/pgm/grayscale_image.py",
+        "line": 537,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "pgm_saturated_pixel_ratio",
+        "kind": "function",
+        "file": "src/python/pgm/grayscale_image.py",
+        "line": 545,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "pgm_normalized_mean",
+        "kind": "function",
+        "file": "src/python/pgm/grayscale_image.py",
+        "line": 554,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "pgm_above_mean_ratio",
+        "kind": "function",
+        "file": "src/python/pgm/grayscale_image.py",
+        "line": 562,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "pgm_maxval",
+        "kind": "function",
+        "file": "src/python/pgm/grayscale_image.py",
+        "line": 572,
+        "role": "api",
+        "exported": true
+      },
+      {
+        "name": "pgm_midpoint_gray",
+        "kind": "function",
+        "file": "src/python/pgm/grayscale_image.py",
+        "line": 578,
+        "role": "api",
+        "exported": true
+      },
+      {
+        "name": "pgm_median_brightness",
+        "kind": "function",
+        "file": "src/python/pgm/grayscale_image.py",
+        "line": 584,
+        "role": "api",
+        "exported": true
+      },
+      {
+        "name": "pgm_pixel_value_range",
+        "kind": "function",
+        "file": "src/python/pgm/grayscale_image.py",
+        "line": 596,
+        "role": "api",
+        "exported": true
+      },
+      {
+        "name": "pgm_iter_graymaps",
+        "kind": "function",
+        "file": "src/python/pgm/pgm_graymap_iterator.py",
+        "line": 16,
+        "role": "iterator",
+        "exported": true
+      },
+      {
+        "name": "pgm_installed_workflow",
+        "kind": "function",
+        "file": "src/python/pgm/pgm_workflow.py",
+        "line": 9,
+        "role": "workflow",
+        "exported": true
+      },
+      {
+        "name": "PgmError",
+        "kind": "class",
+        "file": "src/python/pgm/pgm_parser.py",
+        "line": 38,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "PgmInvalidMagicError",
+        "kind": "class",
+        "file": "src/python/pgm/pgm_parser.py",
+        "line": 42,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "PgmInvalidHeaderError",
+        "kind": "class",
+        "file": "src/python/pgm/pgm_parser.py",
+        "line": 46,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "PgmSizeError",
+        "kind": "class",
+        "file": "src/python/pgm/pgm_parser.py",
+        "line": 50,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "PgmDecodeError",
+        "kind": "class",
+        "file": "src/python/pgm/pgm_parser.py",
+        "line": 54,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "PgmImage",
+        "kind": "class",
+        "file": "src/python/pgm/pgm_parser.py",
+        "line": 59,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "PgmGraymap",
+        "kind": "class",
+        "file": "src/python/pgm/Compat/pgm_graymap.py",
+        "line": 6,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "PgmHeader",
+        "kind": "class",
+        "file": "src/python/pgm/Compat/pgm_header.py",
+        "line": 6,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "PgmError",
+        "kind": "class",
+        "file": "src/python/pgm/exceptions.py",
+        "line": 13,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "PgmParseError",
+        "kind": "class",
+        "file": "src/python/pgm/exceptions.py",
+        "line": 17,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "PgmWriteError",
+        "kind": "class",
+        "file": "src/python/pgm/exceptions.py",
+        "line": 21,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "PgmDocument",
+        "kind": "class",
+        "file": "src/python/pgm/models.py",
+        "line": 16,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "Graymap",
+        "kind": "class",
+        "file": "src/python/pgm/spec/graymap/graymap.py",
+        "line": 14,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "Header",
+        "kind": "class",
+        "file": "src/python/pgm/spec/graymap/header.py",
+        "line": 14,
+        "role": "api",
+        "exported": false
+      }
+    ],
+    "export_count": 86
+  },
+  "dotnet": {
+    "contracts": [
+      {
+        "name": "NetpbmException",
+        "kind": "class",
+        "file": "src/net/netpbm/Exceptions/NetpbmException.cs",
+        "line": 9,
+        "role": "exception"
+      },
+      {
+        "name": "NetpbmFormatException",
+        "kind": "class",
+        "file": "src/net/netpbm/Exceptions/NetpbmException.cs",
+        "line": 18,
+        "role": "exception"
+      },
+      {
+        "name": "NetpbmSizeException",
+        "kind": "class",
+        "file": "src/net/netpbm/Exceptions/NetpbmException.cs",
+        "line": 25,
+        "role": "exception"
+      },
+      {
+        "name": "NetpbmImage",
+        "kind": "class",
+        "file": "src/net/netpbm/Model/NetpbmImage.cs",
+        "line": 32,
+        "role": "api"
+      },
+      {
+        "name": "NetpbmImage",
+        "kind": "class",
+        "file": "src/net/netpbm/Model/NetpbmImageAnalyzer.cs",
+        "line": 8,
+        "role": "api"
+      },
+      {
+        "name": "NetpbmImage",
+        "kind": "class",
+        "file": "src/net/netpbm/Model/NetpbmImageFilters.cs",
+        "line": 9,
+        "role": "api"
+      },
+      {
+        "name": "NetpbmImage",
+        "kind": "class",
+        "file": "src/net/netpbm/Model/NetpbmImageTransforms.cs",
+        "line": 9,
+        "role": "api"
+      },
+      {
+        "name": "NetpbmDocument",
+        "kind": "class",
+        "file": "src/net/netpbm/NetpbmDocument.cs",
+        "line": 17,
+        "role": "model"
+      },
+      {
+        "name": "NetpbmExporter",
+        "kind": "class",
+        "file": "src/net/netpbm/NetpbmExporter.cs",
+        "line": 33,
+        "role": "writer"
+      },
+      {
+        "name": "NetpbmParser",
+        "kind": "class",
+        "file": "src/net/netpbm/NetpbmParser.cs",
+        "line": 23,
+        "role": "parser"
+      },
+      {
+        "name": "NetpbmWriter",
+        "kind": "class",
+        "file": "src/net/netpbm/NetpbmWriter.cs",
+        "line": 17,
+        "role": "writer"
+      },
+      {
+        "name": "NetpbmImage",
+        "kind": "class",
+        "file": "src/net/netpbm/Spec/NetpbmImage.cs",
+        "line": 16,
+        "role": "api"
+      },
+      {
+        "name": "GetPixel",
+        "kind": "method",
+        "file": "src/net/netpbm/Model/NetpbmImage.cs",
+        "line": 76,
+        "role": "api"
+      },
+      {
+        "name": "SetPixel",
+        "kind": "method",
+        "file": "src/net/netpbm/Model/NetpbmImage.cs",
+        "line": 88,
+        "role": "api"
+      },
+      {
+        "name": "SetPixelColor",
+        "kind": "method",
+        "file": "src/net/netpbm/Model/NetpbmImage.cs",
+        "line": 116,
+        "role": "api"
+      },
+      {
+        "name": "FillRegion",
+        "kind": "method",
+        "file": "src/net/netpbm/Model/NetpbmImage.cs",
+        "line": 144,
+        "role": "api"
+      },
+      {
+        "name": "CopyRegion",
+        "kind": "method",
+        "file": "src/net/netpbm/Model/NetpbmImage.cs",
+        "line": 196,
+        "role": "api"
+      },
+      {
+        "name": "ToGrayscale",
+        "kind": "method",
+        "file": "src/net/netpbm/Model/NetpbmImage.cs",
+        "line": 247,
+        "role": "api"
+      },
+      {
+        "name": "ToColor",
+        "kind": "method",
+        "file": "src/net/netpbm/Model/NetpbmImage.cs",
+        "line": 279,
+        "role": "api"
+      },
+      {
+        "name": "ExtractChannel",
+        "kind": "method",
+        "file": "src/net/netpbm/Model/NetpbmImage.cs",
+        "line": 315,
+        "role": "api"
+      },
+      {
+        "name": "SaveToFile",
+        "kind": "method",
+        "file": "src/net/netpbm/Model/NetpbmImage.cs",
+        "line": 351,
+        "role": "writer"
+      },
+      {
+        "name": "Clone",
+        "kind": "method",
+        "file": "src/net/netpbm/Model/NetpbmImage.cs",
+        "line": 362,
+        "role": "api"
+      },
+      {
+        "name": "ConvertFormat",
+        "kind": "method",
+        "file": "src/net/netpbm/Model/NetpbmImage.cs",
+        "line": 393,
+        "role": "api"
+      },
+      {
+        "name": "Pipeline",
+        "kind": "method",
+        "file": "src/net/netpbm/Model/NetpbmImage.cs",
+        "line": 437,
+        "role": "api"
+      },
+      {
+        "name": "Create",
+        "kind": "method",
+        "file": "src/net/netpbm/Model/NetpbmImage.cs",
+        "line": 459,
+        "role": "api"
+      },
+      {
+        "name": "DrawRectangle",
+        "kind": "method",
+        "file": "src/net/netpbm/Model/NetpbmImage.cs",
+        "line": 530,
+        "role": "api"
+      },
+      {
+        "name": "DrawLine",
+        "kind": "method",
+        "file": "src/net/netpbm/Model/NetpbmImage.cs",
+        "line": 556,
+        "role": "api"
+      },
+      {
+        "name": "GetBrightness",
+        "kind": "method",
+        "file": "src/net/netpbm/Model/NetpbmImageAnalyzer.cs",
+        "line": 65,
+        "role": "api"
+      },
+      {
+        "name": "GetHistogram",
+        "kind": "method",
+        "file": "src/net/netpbm/Model/NetpbmImageAnalyzer.cs",
+        "line": 94,
+        "role": "api"
+      },
+      {
+        "name": "GetBrightnessMap",
+        "kind": "method",
+        "file": "src/net/netpbm/Model/NetpbmImageAnalyzer.cs",
+        "line": 134,
+        "role": "api"
+      },
+      {
+        "name": "Invert",
+        "kind": "method",
+        "file": "src/net/netpbm/Model/NetpbmImageFilters.cs",
+        "line": 16,
+        "role": "api"
+      },
+      {
+        "name": "AdjustBrightness",
+        "kind": "method",
+        "file": "src/net/netpbm/Model/NetpbmImageFilters.cs",
+        "line": 47,
+        "role": "api"
+      },
+      {
+        "name": "AdjustContrast",
+        "kind": "method",
+        "file": "src/net/netpbm/Model/NetpbmImageFilters.cs",
+        "line": 76,
+        "role": "api"
+      },
+      {
+        "name": "Equalize",
+        "kind": "method",
+        "file": "src/net/netpbm/Model/NetpbmImageFilters.cs",
+        "line": 109,
+        "role": "api"
+      },
+      {
+        "name": "Threshold",
+        "kind": "method",
+        "file": "src/net/netpbm/Model/NetpbmImageFilters.cs",
+        "line": 165,
+        "role": "api"
+      },
+      {
+        "name": "ApplyGamma",
+        "kind": "method",
+        "file": "src/net/netpbm/Model/NetpbmImageFilters.cs",
+        "line": 207,
+        "role": "api"
+      },
+      {
+        "name": "Posterize",
+        "kind": "method",
+        "file": "src/net/netpbm/Model/NetpbmImageFilters.cs",
+        "line": 241,
+        "role": "api"
+      },
+      {
+        "name": "Solarize",
+        "kind": "method",
+        "file": "src/net/netpbm/Model/NetpbmImageFilters.cs",
+        "line": 279,
+        "role": "api"
+      },
+      {
+        "name": "Sepia",
+        "kind": "method",
+        "file": "src/net/netpbm/Model/NetpbmImageFilters.cs",
+        "line": 312,
+        "role": "api"
+      },
+      {
+        "name": "Sharpen",
+        "kind": "method",
+        "file": "src/net/netpbm/Model/NetpbmImageFilters.cs",
+        "line": 332,
+        "role": "api"
+      },
+      {
+        "name": "BlurBox",
+        "kind": "method",
+        "file": "src/net/netpbm/Model/NetpbmImageFilters.cs",
+        "line": 373,
+        "role": "api"
+      },
+      {
+        "name": "MedianFilter",
+        "kind": "method",
+        "file": "src/net/netpbm/Model/NetpbmImageFilters.cs",
+        "line": 434,
+        "role": "api"
+      },
+      {
+        "name": "FlipHorizontal",
+        "kind": "method",
+        "file": "src/net/netpbm/Model/NetpbmImageTransforms.cs",
+        "line": 15,
+        "role": "api"
+      },
+      {
+        "name": "FlipVertical",
+        "kind": "method",
+        "file": "src/net/netpbm/Model/NetpbmImageTransforms.cs",
+        "line": 49,
+        "role": "api"
+      },
+      {
+        "name": "Rotate90Cw",
+        "kind": "method",
+        "file": "src/net/netpbm/Model/NetpbmImageTransforms.cs",
+        "line": 83,
+        "role": "api"
+      },
+      {
+        "name": "Rotate270Cw",
+        "kind": "method",
+        "file": "src/net/netpbm/Model/NetpbmImageTransforms.cs",
+        "line": 141,
+        "role": "api"
+      },
+      {
+        "name": "Rotate180",
+        "kind": "method",
+        "file": "src/net/netpbm/Model/NetpbmImageTransforms.cs",
+        "line": 199,
+        "role": "api"
+      },
+      {
+        "name": "Crop",
+        "kind": "method",
+        "file": "src/net/netpbm/Model/NetpbmImageTransforms.cs",
+        "line": 244,
+        "role": "api"
+      },
+      {
+        "name": "Resize",
+        "kind": "method",
+        "file": "src/net/netpbm/Model/NetpbmImageTransforms.cs",
+        "line": 294,
+        "role": "api"
+      },
+      {
+        "name": "FlipDiagonal",
+        "kind": "method",
+        "file": "src/net/netpbm/Model/NetpbmImageTransforms.cs",
+        "line": 350,
+        "role": "api"
+      },
+      {
+        "name": "MergeHorizontal",
+        "kind": "method",
+        "file": "src/net/netpbm/Model/NetpbmImageTransforms.cs",
+        "line": 405,
+        "role": "api"
+      },
+      {
+        "name": "MergeVertical",
+        "kind": "method",
+        "file": "src/net/netpbm/Model/NetpbmImageTransforms.cs",
+        "line": 471,
+        "role": "api"
+      },
+      {
+        "name": "Overlay",
+        "kind": "method",
+        "file": "src/net/netpbm/Model/NetpbmImageTransforms.cs",
+        "line": 522,
+        "role": "api"
+      },
+      {
+        "name": "Tile",
+        "kind": "method",
+        "file": "src/net/netpbm/Model/NetpbmImageTransforms.cs",
+        "line": 573,
+        "role": "api"
+      },
+      {
+        "name": "Load",
+        "kind": "method",
+        "file": "src/net/netpbm/NetpbmDocument.cs",
+        "line": 65,
+        "role": "parser"
+      },
+      {
+        "name": "LoadStream",
+        "kind": "method",
+        "file": "src/net/netpbm/NetpbmDocument.cs",
+        "line": 74,
+        "role": "parser"
+      },
+      {
+        "name": "FromImage",
+        "kind": "method",
+        "file": "src/net/netpbm/NetpbmDocument.cs",
+        "line": 83,
+        "role": "model"
+      },
+      {
+        "name": "Save",
+        "kind": "method",
+        "file": "src/net/netpbm/NetpbmDocument.cs",
+        "line": 93,
+        "role": "writer"
+      },
+      {
+        "name": "GetPixel",
+        "kind": "method",
+        "file": "src/net/netpbm/NetpbmDocument.cs",
+        "line": 99,
+        "role": "model"
+      },
+      {
+        "name": "ToAsciiString",
+        "kind": "method",
+        "file": "src/net/netpbm/NetpbmDocument.cs",
+        "line": 105,
+        "role": "model"
+      },
+      {
+        "name": "ToBinaryBytes",
+        "kind": "method",
+        "file": "src/net/netpbm/NetpbmDocument.cs",
+        "line": 108,
+        "role": "model"
+      },
+      {
+        "name": "PbmToPgm",
+        "kind": "method",
+        "file": "src/net/netpbm/NetpbmExporter.cs",
+        "line": 41,
+        "role": "writer"
+      },
+      {
+        "name": "PbmToPpm",
+        "kind": "method",
+        "file": "src/net/netpbm/NetpbmExporter.cs",
+        "line": 74,
+        "role": "writer"
+      },
+      {
+        "name": "PgmToPpm",
+        "kind": "method",
+        "file": "src/net/netpbm/NetpbmExporter.cs",
+        "line": 113,
+        "role": "writer"
+      },
+      {
+        "name": "PpmToPgm",
+        "kind": "method",
+        "file": "src/net/netpbm/NetpbmExporter.cs",
+        "line": 156,
+        "role": "writer"
+      },
+      {
+        "name": "Parse",
+        "kind": "method",
+        "file": "src/net/netpbm/NetpbmParser.cs",
+        "line": 35,
+        "role": "parser"
+      },
+      {
+        "name": "ParseStream",
+        "kind": "method",
+        "file": "src/net/netpbm/NetpbmParser.cs",
+        "line": 53,
+        "role": "parser"
+      },
+      {
+        "name": "Write",
+        "kind": "method",
+        "file": "src/net/netpbm/NetpbmWriter.cs",
+        "line": 23,
+        "role": "writer"
+      },
+      {
+        "name": "ToAsciiString",
+        "kind": "method",
+        "file": "src/net/netpbm/NetpbmWriter.cs",
+        "line": 41,
+        "role": "writer"
+      },
+      {
+        "name": "ToBinaryBytes",
+        "kind": "method",
+        "file": "src/net/netpbm/NetpbmWriter.cs",
+        "line": 55,
+        "role": "writer"
+      },
+      {
+        "name": "Format",
+        "kind": "property",
+        "file": "src/net/netpbm/Model/NetpbmImage.cs",
+        "line": 35,
+        "role": "api"
+      },
+      {
+        "name": "Width",
+        "kind": "property",
+        "file": "src/net/netpbm/Model/NetpbmImage.cs",
+        "line": 38,
+        "role": "api"
+      },
+      {
+        "name": "Height",
+        "kind": "property",
+        "file": "src/net/netpbm/Model/NetpbmImage.cs",
+        "line": 41,
+        "role": "api"
+      },
+      {
+        "name": "MaxValue",
+        "kind": "property",
+        "file": "src/net/netpbm/Model/NetpbmImage.cs",
+        "line": 46,
+        "role": "api"
+      },
+      {
+        "name": "Pixels",
+        "kind": "property",
+        "file": "src/net/netpbm/Model/NetpbmImage.cs",
+        "line": 52,
+        "role": "api"
+      },
+      {
+        "name": "RedChannel",
+        "kind": "property",
+        "file": "src/net/netpbm/Model/NetpbmImage.cs",
+        "line": 56,
+        "role": "api"
+      },
+      {
+        "name": "GreenChannel",
+        "kind": "property",
+        "file": "src/net/netpbm/Model/NetpbmImage.cs",
+        "line": 58,
+        "role": "api"
+      },
+      {
+        "name": "BlueChannel",
+        "kind": "property",
+        "file": "src/net/netpbm/Model/NetpbmImage.cs",
+        "line": 60,
+        "role": "api"
+      },
+      {
+        "name": "Comments",
+        "kind": "property",
+        "file": "src/net/netpbm/Model/NetpbmImage.cs",
+        "line": 63,
+        "role": "api"
+      },
+      {
+        "name": "SourcePath",
+        "kind": "property",
+        "file": "src/net/netpbm/Model/NetpbmImage.cs",
+        "line": 66,
+        "role": "api"
+      },
+      {
+        "name": "Image",
+        "kind": "property",
+        "file": "src/net/netpbm/NetpbmDocument.cs",
+        "line": 20,
+        "role": "model"
+      },
+      {
+        "name": "SourcePath",
+        "kind": "property",
+        "file": "src/net/netpbm/NetpbmDocument.cs",
+        "line": 53,
+        "role": "model"
+      },
+      {
+        "name": "MagicNumber",
+        "kind": "property",
+        "file": "src/net/netpbm/Spec/NetpbmImage.cs",
+        "line": 25,
+        "role": "constant"
+      },
+      {
+        "name": "Width",
+        "kind": "property",
+        "file": "src/net/netpbm/Spec/NetpbmImage.cs",
+        "line": 28,
+        "role": "api"
+      },
+      {
+        "name": "Height",
+        "kind": "property",
+        "file": "src/net/netpbm/Spec/NetpbmImage.cs",
+        "line": 31,
+        "role": "api"
+      },
+      {
+        "name": "MaxVal",
+        "kind": "property",
+        "file": "src/net/netpbm/Spec/NetpbmImage.cs",
+        "line": 34,
+        "role": "api"
+      }
+    ],
+    "public_member_count": 86
+  }
+}

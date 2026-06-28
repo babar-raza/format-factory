@@ -1,0 +1,1040 @@
+{
+  "metadata": {
+    "authoritative_plan": "plans/.claude/crispy-jingling-snail.md",
+    "mission_id": "CERT-EXHAUST-20260628",
+    "format_id": "xcf"
+  },
+  "python": {
+    "contracts": [
+      {
+        "name": "xcf_is_landscape",
+        "kind": "function",
+        "file": "src/python/xcf/image_document.py",
+        "line": 43,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "xcf_layer_count",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 18,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_image_dimensions",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 24,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_version",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 30,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_image_type_name",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 46,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_pixel_count",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 62,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_file_size",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 68,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_is_indexed",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 76,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_summary",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 82,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_width",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 111,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_megapixels",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 117,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_has_alpha",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 133,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_canvas_size_bytes",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 155,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_height",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 175,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_layer_to_canvas_ratio",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 188,
+        "role": "writer",
+        "exported": false
+      },
+      {
+        "name": "xcf_total_layers_area",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 207,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_average_layer_size",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 223,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_layer_count_per_megapixel",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 238,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_compression_ratio",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 254,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_layers_per_dimension",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 272,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_dimension_ratio",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 290,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_total_layer_pixels",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 298,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_is_single_layer",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 304,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_canvas_area",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 310,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_max_layer_dimension",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 323,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_min_layer_dimension",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 336,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_has_multiple_layers",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 342,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_max_dimension",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 348,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_min_dimension",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 354,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_diagonal",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 360,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_layer_to_pixel_ratio",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 367,
+        "role": "writer",
+        "exported": false
+      },
+      {
+        "name": "xcf_is_tall",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 376,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_column_count",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 382,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_is_wide",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 388,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_pixel_density",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 394,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_layer_area_variance",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 403,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_is_multi_pixel",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 416,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_row_count",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 421,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_file_bytes_per_layer",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 427,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_average_dimension",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 436,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_file_size_per_pixel",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 442,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_is_multi_layer",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 452,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_color_mode_name",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 458,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_layer_size_variance",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 465,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_total_pixels",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 475,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_is_square",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 481,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_layers_per_pixel",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 487,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_image_type_code",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 494,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_file_header_overhead",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 500,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_version_number",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 508,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_dimension_sum",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 522,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_pixel_per_layer_avg",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 528,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_canvas_aspect_ratio",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 536,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_bytes_per_pixel",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 544,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_is_high_res",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 553,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_megapixel_count",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 559,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_layer_area_sum",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 565,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_diagonal_length",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 572,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_dimension_product",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 579,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_is_square_canvas",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 585,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_total_layer_area",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 591,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_width_to_height_ratio",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 597,
+        "role": "writer",
+        "exported": false
+      },
+      {
+        "name": "xcf_canvas_perimeter",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 605,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_layer_density",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 611,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_is_portrait",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 620,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_file_size_kb",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 626,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_has_single_layer",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 632,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_aspect_ratio_string",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 638,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_min_layer_area",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 648,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_layer_width_sum",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 656,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_perimeter_length",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 662,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_max_side_length",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 668,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_area_to_layer_ratio",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 674,
+        "role": "writer",
+        "exported": false
+      },
+      {
+        "name": "xcf_min_side_length",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 682,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_canvas_half_perimeter",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 688,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_layer_count_ratio",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 694,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_width_height_sum",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 701,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_canvas_diagonal",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 707,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_height_squared",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 714,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_width_squared",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 720,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_layer_count_squared",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 726,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_total_canvas_pixels",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 732,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_layer_pixel_count",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 738,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_total_pixel_count",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 744,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_layer_name_list",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 750,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_color_depth",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 760,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_file_size_bytes",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 771,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_is_rgb",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 777,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_is_grayscale",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 783,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_aspect_ratio",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 789,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_max_layer_area",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 797,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_is_color",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 805,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_pixels_exceed_layers",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 811,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_canvas_fill_ratio",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 817,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_is_tiny",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 824,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_avg_layer_area",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 830,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_layer_name_count",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 838,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_width_to_layer_ratio",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 844,
+        "role": "writer",
+        "exported": false
+      },
+      {
+        "name": "xcf_height_to_layer_ratio",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 852,
+        "role": "writer",
+        "exported": false
+      },
+      {
+        "name": "xcf_perimeter",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 860,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_image_type_id",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 868,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_layer_count_exceeds_one",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 874,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_file_size_per_layer",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 879,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_is_landscape",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 887,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "xcf_pixel_count_per_layer",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_image_metrics.py",
+        "line": 893,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "xcf_iter_layers",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_layer_iterator.py",
+        "line": 16,
+        "role": "iterator",
+        "exported": true
+      },
+      {
+        "name": "parse_xcf_strict",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_parser.py",
+        "line": 164,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "parse_xcf",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_parser.py",
+        "line": 194,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "get_capabilities",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_parser.py",
+        "line": 243,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "probe_xcf",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_parser.py",
+        "line": 259,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "xcf_installed_workflow",
+        "kind": "function",
+        "file": "src/python/xcf/xcf_workflow.py",
+        "line": 9,
+        "role": "workflow",
+        "exported": true
+      },
+      {
+        "name": "XcfChannel",
+        "kind": "class",
+        "file": "src/python/xcf/Compat/xcf_channel.py",
+        "line": 6,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "XcfHeader",
+        "kind": "class",
+        "file": "src/python/xcf/Compat/xcf_header.py",
+        "line": 6,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "XcfLayer",
+        "kind": "class",
+        "file": "src/python/xcf/Compat/xcf_layer.py",
+        "line": 6,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "XcfError",
+        "kind": "class",
+        "file": "src/python/xcf/exceptions.py",
+        "line": 13,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "XcfParseError",
+        "kind": "class",
+        "file": "src/python/xcf/exceptions.py",
+        "line": 17,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "XcfWriteError",
+        "kind": "class",
+        "file": "src/python/xcf/exceptions.py",
+        "line": 21,
+        "role": "exception",
+        "exported": false
+      },
+      {
+        "name": "XcfImageSpec",
+        "kind": "class",
+        "file": "src/python/xcf/image_document.py",
+        "line": 29,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "XcfDocument",
+        "kind": "class",
+        "file": "src/python/xcf/models.py",
+        "line": 16,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "Channel",
+        "kind": "class",
+        "file": "src/python/xcf/spec/layer/channel.py",
+        "line": 14,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "Header",
+        "kind": "class",
+        "file": "src/python/xcf/spec/layer/header.py",
+        "line": 14,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "Layer",
+        "kind": "class",
+        "file": "src/python/xcf/spec/layer/layer.py",
+        "line": 14,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "XcfError",
+        "kind": "class",
+        "file": "src/python/xcf/xcf_parser.py",
+        "line": 39,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "XcfInvalidMagicError",
+        "kind": "class",
+        "file": "src/python/xcf/xcf_parser.py",
+        "line": 42,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "XcfInvalidHeaderError",
+        "kind": "class",
+        "file": "src/python/xcf/xcf_parser.py",
+        "line": 45,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "XcfSizeError",
+        "kind": "class",
+        "file": "src/python/xcf/xcf_parser.py",
+        "line": 48,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "XcfParseError",
+        "kind": "class",
+        "file": "src/python/xcf/xcf_parser.py",
+        "line": 51,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "XcfImage",
+        "kind": "class",
+        "file": "src/python/xcf/xcf_parser.py",
+        "line": 56,
+        "role": "parser",
+        "exported": true
+      }
+    ],
+    "export_count": 18
+  },
+  "dotnet": {
+    "contracts": [],
+    "public_member_count": 0
+  }
+}

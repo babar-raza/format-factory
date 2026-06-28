@@ -1,0 +1,45 @@
+{
+  "file_count": 19,
+  "files_scanned": [
+    "src/python/odt/__init__.py",
+    "src/python/odt/Compat/__init__.py",
+    "src/python/odt/Compat/odt_document.py",
+    "src/python/odt/Compat/odt_heading.py",
+    "src/python/odt/Compat/odt_paragraph.py",
+    "src/python/odt/exceptions.py",
+    "src/python/odt/models.py",
+    "src/python/odt/odt_heading_iterator.py",
+    "src/python/odt/odt_paragraph_iterator.py",
+    "src/python/odt/odt_parser.py",
+    "src/python/odt/odt_workflow.py",
+    "src/python/odt/odt_writer.py",
+    "src/python/odt/spec/__init__.py",
+    "src/python/odt/spec/office/__init__.py",
+    "src/python/odt/spec/office/document.py",
+    "src/python/odt/spec/text/__init__.py",
+    "src/python/odt/spec/text/heading.py",
+    "src/python/odt/spec/text/paragraph.py",
+    "src/python/odt/text_document.py"
+  ],
+  "finding_count": 1,
+  "findings": [
+    {
+      "classification_note": "Non-public or structural placeholder; not automatically material.",
+      "file": "src/python/odt/odt_parser.py",
+      "line": 262,
+      "reason": "pass_statement",
+      "scope": "<module>",
+      "severity": "advisory",
+      "source": "pass"
+    }
+  ],
+  "material_finding_count": 0,
+  "metadata": {
+    "authoritative_plan": "plans/.claude/crispy-jingling-snail.md",
+    "generated_by": "codex",
+    "mission_id": "CERT-EXHAUST-20260628",
+    "tool": "stub_detector",
+    "visibility": "internal"
+  },
+  "target": "src/python/odt"
+}

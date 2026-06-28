@@ -1,0 +1,43 @@
+{
+  "file_count": 17,
+  "files_scanned": [
+    "src/python/qoi/__init__.py",
+    "src/python/qoi/Compat/__init__.py",
+    "src/python/qoi/Compat/qoi_chunk.py",
+    "src/python/qoi/Compat/qoi_end_marker.py",
+    "src/python/qoi/Compat/qoi_header.py",
+    "src/python/qoi/exceptions.py",
+    "src/python/qoi/image_document.py",
+    "src/python/qoi/models.py",
+    "src/python/qoi/qoi_chunk_iterator.py",
+    "src/python/qoi/qoi_encoder.py",
+    "src/python/qoi/qoi_parser.py",
+    "src/python/qoi/qoi_workflow.py",
+    "src/python/qoi/spec/__init__.py",
+    "src/python/qoi/spec/chunk/__init__.py",
+    "src/python/qoi/spec/chunk/chunk.py",
+    "src/python/qoi/spec/chunk/end_marker.py",
+    "src/python/qoi/spec/chunk/header.py"
+  ],
+  "finding_count": 1,
+  "findings": [
+    {
+      "classification_note": "Non-public or structural placeholder; not automatically material.",
+      "file": "src/python/qoi/qoi_parser.py",
+      "line": 320,
+      "reason": "pass_statement",
+      "scope": "<module>",
+      "severity": "advisory",
+      "source": "pass"
+    }
+  ],
+  "material_finding_count": 0,
+  "metadata": {
+    "authoritative_plan": "plans/.claude/crispy-jingling-snail.md",
+    "generated_by": "codex",
+    "mission_id": "CERT-EXHAUST-20260628",
+    "tool": "stub_detector",
+    "visibility": "internal"
+  },
+  "target": "src/python/qoi"
+}

@@ -1983,6 +1983,25 @@ skills:
   test_paths:
   - tests/tools/test_readme_sync.py
   version: '1.0'
+- command: /generate-root-status
+  command_file: .claude/commands/generate-root-status.md
+  created_at: '2026-06-28'
+  idempotency: create_or_update
+  implementation_paths:
+  - tools/readme_sync/generate_root_status.py
+  mandatory_validations:
+  - drift_detection_pass
+  output_paths:
+  - README.md
+  - reports/system-status-review.md
+  product_track: layer_governance
+  purpose: Detect root README drift against canonical sources and regenerate system
+    status summary block.
+  required_handoff_fields: []
+  skill_id: generate-root-status
+  status: active
+  test_paths: []
+  version: '1.0'
 sprint: FORMAT-FACTORY-R98-AUTONOMOUS-LOOP-TRUST-LAYER-ITERATION-SCALING-ACCELERATION-POC-MEGA-TRAIN-001
 version: '2.0'
 visibility: generated

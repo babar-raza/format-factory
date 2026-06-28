@@ -1,0 +1,1196 @@
+{
+  "metadata": {
+    "authoritative_plan": "plans/.claude/crispy-jingling-snail.md",
+    "mission_id": "CERT-EXHAUST-20260628",
+    "format_id": "ndjson"
+  },
+  "python": {
+    "contracts": [
+      {
+        "name": "main",
+        "kind": "function",
+        "file": "src/python/ndjson/cli.py",
+        "line": 14,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "ndjson_max_field_count",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 19,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "ndjson_average_field_count",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 25,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "ndjson_null_field_count",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 41,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "ndjson_min_field_count",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 63,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "ndjson_record_count",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 77,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "ndjson_field_exists",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 90,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "ndjson_max_record_size",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 104,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "ndjson_total_field_count",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 120,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "ndjson_unique_field_names",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 136,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "ndjson_nested_field_count",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 155,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "ndjson_boolean_field_count",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 174,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "ndjson_has_nested_objects",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 191,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "ndjson_empty_record_count",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 209,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "ndjson_numeric_field_count",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 222,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "ndjson_average_record_size",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 241,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "ndjson_string_field_count",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 260,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "ndjson_all_records_nonempty",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 272,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "ndjson_max_field_name_length",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 289,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "ndjson_min_field_name_length",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 308,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "ndjson_field_type_distribution",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 327,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "ndjson_is_homogeneous",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 362,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "ndjson_unique_field_count",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 371,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "ndjson_has_null_fields",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 381,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "ndjson_max_numeric_value",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 392,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "ndjson_min_numeric_value",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 404,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "ndjson_has_string_fields",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 416,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "ndjson_has_boolean_fields",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 427,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "ndjson_max_string_length",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 438,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "ndjson_avg_field_name_length",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 450,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "ndjson_record_size_variance",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 462,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "ndjson_is_empty",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 472,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "ndjson_avg_string_length",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 478,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "ndjson_list_field_count",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 492,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "ndjson_field_count_variance",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 502,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "ndjson_max_nesting_depth",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 512,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "ndjson_avg_numeric_value",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 530,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "ndjson_total_string_length",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 544,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "ndjson_numeric_density",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 556,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "ndjson_min_record_size",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 572,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "ndjson_has_numeric_fields",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 582,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "ndjson_has_lists",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 593,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "ndjson_schema_consistency",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 604,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "ndjson_total_numeric_sum",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 615,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "ndjson_is_single_record",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 627,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "ndjson_boolean_density",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 633,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "ndjson_max_field_value_length",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 649,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "ndjson_string_density",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 661,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "ndjson_avg_list_length",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 677,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "ndjson_nested_count",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 691,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "ndjson_min_record_fields",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 703,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "ndjson_has_uniform_types",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 721,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "ndjson_value_variance",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 730,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "ndjson_file_size_bytes",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 745,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "ndjson_avg_record_depth",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 755,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "ndjson_nonempty_record_count",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 775,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "ndjson_nonempty_record_ratio",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 781,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "ndjson_has_all_same_keys",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 789,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "ndjson_max_list_length",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 799,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "ndjson_null_ratio",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 813,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "ndjson_string_value_count",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 829,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "ndjson_string_value_count_minus_record_count",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 838,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "ndjson_string_value_count_exceeds_record_count",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 848,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "ndjson_all_records_are_dicts",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 853,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "ndjson_bool_value_count",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 861,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "ndjson_null_value_count",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 870,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "ndjson_numeric_range",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 879,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "ndjson_avg_key_length",
+        "kind": "function",
+        "file": "src/python/ndjson/json_stream.py",
+        "line": 903,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "probe_ndjson",
+        "kind": "function",
+        "file": "src/python/ndjson/ndjson_codec.py",
+        "line": 47,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "load_ndjson",
+        "kind": "function",
+        "file": "src/python/ndjson/ndjson_codec.py",
+        "line": 72,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "write_ndjson",
+        "kind": "function",
+        "file": "src/python/ndjson/ndjson_codec.py",
+        "line": 105,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "append_record",
+        "kind": "function",
+        "file": "src/python/ndjson/ndjson_codec.py",
+        "line": 133,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "filter_records",
+        "kind": "function",
+        "file": "src/python/ndjson/ndjson_codec.py",
+        "line": 159,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "get_field_names",
+        "kind": "function",
+        "file": "src/python/ndjson/ndjson_codec.py",
+        "line": 181,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "export_to_csv",
+        "kind": "function",
+        "file": "src/python/ndjson/ndjson_codec.py",
+        "line": 206,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "get_record_count",
+        "kind": "function",
+        "file": "src/python/ndjson/ndjson_codec.py",
+        "line": 232,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "count_records",
+        "kind": "function",
+        "file": "src/python/ndjson/ndjson_codec.py",
+        "line": 237,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "validate_schema",
+        "kind": "function",
+        "file": "src/python/ndjson/ndjson_codec.py",
+        "line": 256,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sort_records",
+        "kind": "function",
+        "file": "src/python/ndjson/ndjson_codec.py",
+        "line": 319,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "merge_ndjson",
+        "kind": "function",
+        "file": "src/python/ndjson/ndjson_codec.py",
+        "line": 344,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "to_jsonl_str",
+        "kind": "function",
+        "file": "src/python/ndjson/ndjson_codec.py",
+        "line": 364,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "roundtrip",
+        "kind": "function",
+        "file": "src/python/ndjson/ndjson_codec.py",
+        "line": 378,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "rename_field",
+        "kind": "function",
+        "file": "src/python/ndjson/ndjson_codec.py",
+        "line": 399,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "write_csv",
+        "kind": "function",
+        "file": "src/python/ndjson/ndjson_codec.py",
+        "line": 423,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "to_tsv",
+        "kind": "function",
+        "file": "src/python/ndjson/ndjson_codec.py",
+        "line": 468,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "to_markdown_table",
+        "kind": "function",
+        "file": "src/python/ndjson/ndjson_codec.py",
+        "line": 512,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "ndjson_installed_workflow",
+        "kind": "function",
+        "file": "src/python/ndjson/ndjson_codec.py",
+        "line": 564,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "group_by",
+        "kind": "function",
+        "file": "src/python/ndjson/ndjson_record_stats.py",
+        "line": 16,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "deduplicate",
+        "kind": "function",
+        "file": "src/python/ndjson/ndjson_record_stats.py",
+        "line": 48,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "min_value",
+        "kind": "function",
+        "file": "src/python/ndjson/ndjson_record_stats.py",
+        "line": 84,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "zip_records",
+        "kind": "function",
+        "file": "src/python/ndjson/ndjson_record_stats.py",
+        "line": 103,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "count_by",
+        "kind": "function",
+        "file": "src/python/ndjson/ndjson_record_stats.py",
+        "line": 127,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "max_value",
+        "kind": "function",
+        "file": "src/python/ndjson/ndjson_record_stats.py",
+        "line": 155,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "pick",
+        "kind": "function",
+        "file": "src/python/ndjson/ndjson_record_stats.py",
+        "line": 174,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "distinct_values",
+        "kind": "function",
+        "file": "src/python/ndjson/ndjson_record_stats.py",
+        "line": 198,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "sort_by",
+        "kind": "function",
+        "file": "src/python/ndjson/ndjson_record_stats.py",
+        "line": 232,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "aggregate",
+        "kind": "function",
+        "file": "src/python/ndjson/ndjson_record_stats.py",
+        "line": 262,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "tail",
+        "kind": "function",
+        "file": "src/python/ndjson/ndjson_record_stats.py",
+        "line": 298,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "pluck",
+        "kind": "function",
+        "file": "src/python/ndjson/ndjson_record_stats.py",
+        "line": 319,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "head",
+        "kind": "function",
+        "file": "src/python/ndjson/ndjson_record_stats.py",
+        "line": 337,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "sum_field",
+        "kind": "function",
+        "file": "src/python/ndjson/ndjson_record_stats.py",
+        "line": 357,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "average_value",
+        "kind": "function",
+        "file": "src/python/ndjson/ndjson_record_stats.py",
+        "line": 382,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "field_stats",
+        "kind": "function",
+        "file": "src/python/ndjson/ndjson_record_stats.py",
+        "line": 409,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "flatten_records",
+        "kind": "function",
+        "file": "src/python/ndjson/ndjson_record_stats.py",
+        "line": 446,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "count_unique_values",
+        "kind": "function",
+        "file": "src/python/ndjson/ndjson_record_stats.py",
+        "line": 488,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "zip_with_index",
+        "kind": "function",
+        "file": "src/python/ndjson/ndjson_record_stats.py",
+        "line": 513,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "omit",
+        "kind": "function",
+        "file": "src/python/ndjson/ndjson_record_stats.py",
+        "line": 537,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "batch_update",
+        "kind": "function",
+        "file": "src/python/ndjson/ndjson_record_stats.py",
+        "line": 561,
+        "role": "analytics",
+        "exported": false
+      },
+      {
+        "name": "ndjson_iter_fields",
+        "kind": "function",
+        "file": "src/python/ndjson/ndjson_field_iterator.py",
+        "line": 16,
+        "role": "iterator",
+        "exported": true
+      },
+      {
+        "name": "ndjson_iter_records",
+        "kind": "function",
+        "file": "src/python/ndjson/ndjson_record_iterator.py",
+        "line": 16,
+        "role": "iterator",
+        "exported": true
+      },
+      {
+        "name": "ndjson_installed_workflow",
+        "kind": "function",
+        "file": "src/python/ndjson/ndjson_workflow.py",
+        "line": 9,
+        "role": "workflow",
+        "exported": true
+      },
+      {
+        "name": "NdjsonField",
+        "kind": "class",
+        "file": "src/python/ndjson/Compat/ndjson_field.py",
+        "line": 6,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "NdjsonRecord",
+        "kind": "class",
+        "file": "src/python/ndjson/Compat/ndjson_record.py",
+        "line": 6,
+        "role": "api",
+        "exported": true
+      },
+      {
+        "name": "NdjsonError",
+        "kind": "class",
+        "file": "src/python/ndjson/exceptions.py",
+        "line": 13,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "NdjsonParseError",
+        "kind": "class",
+        "file": "src/python/ndjson/exceptions.py",
+        "line": 17,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "NdjsonWriteError",
+        "kind": "class",
+        "file": "src/python/ndjson/exceptions.py",
+        "line": 21,
+        "role": "exception",
+        "exported": false
+      },
+      {
+        "name": "NdjsonDocument",
+        "kind": "class",
+        "file": "src/python/ndjson/models.py",
+        "line": 16,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "NdjsonError",
+        "kind": "class",
+        "file": "src/python/ndjson/ndjson_codec.py",
+        "line": 24,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "NdjsonParseError",
+        "kind": "class",
+        "file": "src/python/ndjson/ndjson_codec.py",
+        "line": 28,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "NdjsonRecord",
+        "kind": "class",
+        "file": "src/python/ndjson/ndjson_codec.py",
+        "line": 32,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "Field",
+        "kind": "class",
+        "file": "src/python/ndjson/spec/record/field.py",
+        "line": 14,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "Record",
+        "kind": "class",
+        "file": "src/python/ndjson/spec/record/record.py",
+        "line": 14,
+        "role": "api",
+        "exported": false
+      }
+    ],
+    "export_count": 29
+  },
+  "dotnet": {
+    "contracts": [
+      {
+        "name": "NdjsonCsvExporter",
+        "kind": "class",
+        "file": "src/net/ndjson/NdjsonCsvExporter.cs",
+        "line": 19,
+        "role": "writer"
+      },
+      {
+        "name": "NdjsonDocument",
+        "kind": "class",
+        "file": "src/net/ndjson/NdjsonDocument.cs",
+        "line": 16,
+        "role": "model"
+      },
+      {
+        "name": "NdjsonException",
+        "kind": "class",
+        "file": "src/net/ndjson/NdjsonException.cs",
+        "line": 9,
+        "role": "exception"
+      },
+      {
+        "name": "NdjsonReader",
+        "kind": "class",
+        "file": "src/net/ndjson/NdjsonReader.cs",
+        "line": 19,
+        "role": "parser"
+      },
+      {
+        "name": "NdjsonRecord",
+        "kind": "class",
+        "file": "src/net/ndjson/NdjsonRecord.cs",
+        "line": 13,
+        "role": "api"
+      },
+      {
+        "name": "NdjsonWriter",
+        "kind": "class",
+        "file": "src/net/ndjson/NdjsonWriter.cs",
+        "line": 18,
+        "role": "writer"
+      },
+      {
+        "name": "NdjsonRecord",
+        "kind": "class",
+        "file": "src/net/ndjson/Spec/NdjsonRecord.cs",
+        "line": 16,
+        "role": "api"
+      },
+      {
+        "name": "Export",
+        "kind": "method",
+        "file": "src/net/ndjson/NdjsonCsvExporter.cs",
+        "line": 24,
+        "role": "writer"
+      },
+      {
+        "name": "LoadFromContent",
+        "kind": "method",
+        "file": "src/net/ndjson/NdjsonDocument.cs",
+        "line": 38,
+        "role": "parser"
+      },
+      {
+        "name": "Load",
+        "kind": "method",
+        "file": "src/net/ndjson/NdjsonDocument.cs",
+        "line": 51,
+        "role": "parser"
+      },
+      {
+        "name": "Load",
+        "kind": "method",
+        "file": "src/net/ndjson/NdjsonDocument.cs",
+        "line": 55,
+        "role": "parser"
+      },
+      {
+        "name": "LoadFile",
+        "kind": "method",
+        "file": "src/net/ndjson/NdjsonDocument.cs",
+        "line": 62,
+        "role": "parser"
+      },
+      {
+        "name": "ToNdjson",
+        "kind": "method",
+        "file": "src/net/ndjson/NdjsonDocument.cs",
+        "line": 72,
+        "role": "model"
+      },
+      {
+        "name": "GetAllKeys",
+        "kind": "method",
+        "file": "src/net/ndjson/NdjsonDocument.cs",
+        "line": 88,
+        "role": "model"
+      },
+      {
+        "name": "Filter",
+        "kind": "method",
+        "file": "src/net/ndjson/NdjsonDocument.cs",
+        "line": 103,
+        "role": "model"
+      },
+      {
+        "name": "GetFieldValues",
+        "kind": "method",
+        "file": "src/net/ndjson/NdjsonDocument.cs",
+        "line": 114,
+        "role": "model"
+      },
+      {
+        "name": "IsUniformSchema",
+        "kind": "method",
+        "file": "src/net/ndjson/NdjsonDocument.cs",
+        "line": 131,
+        "role": "model"
+      },
+      {
+        "name": "GetTypedRecord",
+        "kind": "method",
+        "file": "src/net/ndjson/NdjsonDocument.cs",
+        "line": 156,
+        "role": "model"
+      },
+      {
+        "name": "LoadContent",
+        "kind": "method",
+        "file": "src/net/ndjson/NdjsonDocument.cs",
+        "line": 163,
+        "role": "parser"
+      },
+      {
+        "name": "SaveToFile",
+        "kind": "method",
+        "file": "src/net/ndjson/NdjsonDocument.cs",
+        "line": 168,
+        "role": "writer"
+      },
+      {
+        "name": "ReadRecords",
+        "kind": "method",
+        "file": "src/net/ndjson/NdjsonReader.cs",
+        "line": 27,
+        "role": "parser"
+      },
+      {
+        "name": "ReadRecords",
+        "kind": "method",
+        "file": "src/net/ndjson/NdjsonReader.cs",
+        "line": 41,
+        "role": "parser"
+      },
+      {
+        "name": "ReadRecordsFromFile",
+        "kind": "method",
+        "file": "src/net/ndjson/NdjsonReader.cs",
+        "line": 58,
+        "role": "parser"
+      },
+      {
+        "name": "TryGetValue",
+        "kind": "method",
+        "file": "src/net/ndjson/NdjsonRecord.cs",
+        "line": 42,
+        "role": "api"
+      },
+      {
+        "name": "WriteRecords",
+        "kind": "method",
+        "file": "src/net/ndjson/NdjsonWriter.cs",
+        "line": 29,
+        "role": "writer"
+      },
+      {
+        "name": "WriteRecordsToFile",
+        "kind": "method",
+        "file": "src/net/ndjson/NdjsonWriter.cs",
+        "line": 47,
+        "role": "writer"
+      },
+      {
+        "name": "Records",
+        "kind": "property",
+        "file": "src/net/ndjson/NdjsonDocument.cs",
+        "line": 19,
+        "role": "model"
+      },
+      {
+        "name": "RawJson",
+        "kind": "property",
+        "file": "src/net/ndjson/Spec/NdjsonRecord.cs",
+        "line": 22,
+        "role": "api"
+      },
+      {
+        "name": "LineIndex",
+        "kind": "property",
+        "file": "src/net/ndjson/Spec/NdjsonRecord.cs",
+        "line": 25,
+        "role": "api"
+      }
+    ],
+    "public_member_count": 29
+  }
+}

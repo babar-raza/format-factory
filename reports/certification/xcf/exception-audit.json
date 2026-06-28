@@ -1,0 +1,221 @@
+{
+  "exception_count": 6,
+  "exceptions": [
+    {
+      "coverage_status": "REFERENCED_BY_TEST",
+      "file": "src/python/xcf/xcf_parser.py",
+      "line": 39,
+      "name": "XcfError",
+      "raised_in_source": true,
+      "test_reference_count": 12,
+      "test_references": [
+        {
+          "file": "tests/python/xcf/test_exception_coverage.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/xcf/test_pff_xcf_helpers.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/xcf/test_r156_xcf_helpers.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/xcf/test_r157_xcf_pixel_file.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/xcf/test_r159_xcf_is_rgb.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/xcf/test_r161_xcf_is_grayscale.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/xcf/test_r165_xcf_probe_layer_dims.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/xcf/test_xcf_gap_closure_batch.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/xcf/test_xcf_layer_count_image_dimensions.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/xcf/test_xcf_parser.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/xcf/test_xcf_summary.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/xcf/test_xcf_version_pixel_count.py",
+          "match": "text_reference"
+        }
+      ]
+    },
+    {
+      "coverage_status": "REFERENCED_BY_TEST",
+      "file": "src/python/xcf/xcf_parser.py",
+      "line": 45,
+      "name": "XcfInvalidHeaderError",
+      "raised_in_source": true,
+      "test_reference_count": 2,
+      "test_references": [
+        {
+          "file": "tests/python/xcf/test_xcf_gap_closure_batch.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/xcf/test_xcf_gate7_fuzz_guard.py",
+          "match": "text_reference"
+        }
+      ]
+    },
+    {
+      "coverage_status": "REFERENCED_BY_TEST",
+      "file": "src/python/xcf/xcf_parser.py",
+      "line": 42,
+      "name": "XcfInvalidMagicError",
+      "raised_in_source": true,
+      "test_reference_count": 3,
+      "test_references": [
+        {
+          "file": "tests/python/xcf/test_xcf_gap_closure_batch.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/xcf/test_xcf_gate7_fuzz_guard.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/xcf/test_xcf_parser.py",
+          "match": "text_reference"
+        }
+      ]
+    },
+    {
+      "coverage_status": "REFERENCED_BY_TEST",
+      "file": "src/python/xcf/xcf_parser.py",
+      "line": 51,
+      "name": "XcfParseError",
+      "raised_in_source": true,
+      "test_reference_count": 2,
+      "test_references": [
+        {
+          "file": "tests/python/xcf/test_xcf_gap_closure_batch.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/xcf/test_xcf_gate7_fuzz_guard.py",
+          "match": "text_reference"
+        }
+      ]
+    },
+    {
+      "coverage_status": "REFERENCED_BY_TEST",
+      "file": "src/python/xcf/xcf_parser.py",
+      "line": 48,
+      "name": "XcfSizeError",
+      "raised_in_source": true,
+      "test_reference_count": 2,
+      "test_references": [
+        {
+          "file": "tests/python/xcf/test_xcf_gap_closure_batch.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/xcf/test_xcf_gate7_fuzz_guard.py",
+          "match": "text_reference"
+        }
+      ]
+    },
+    {
+      "coverage_status": "REFERENCED_BY_TEST",
+      "file": "src/python/xcf/exceptions.py",
+      "line": 21,
+      "name": "XcfWriteError",
+      "raised_in_source": false,
+      "test_reference_count": 1,
+      "test_references": [
+        {
+          "file": "tests/python/xcf/test_exception_coverage.py",
+          "match": "text_reference"
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "authoritative_plan": "plans/.claude/crispy-jingling-snail.md",
+    "generated_by": "codex",
+    "mission_id": "CERT-EXHAUST-20260628",
+    "tool": "exception_coverage_checker",
+    "visibility": "internal"
+  },
+  "raise_site_count": 11,
+  "raise_sites": [
+    {
+      "exception": "XcfError",
+      "file": "src/python/xcf/xcf_image_metrics.py",
+      "line": 72
+    },
+    {
+      "exception": "XcfParseError",
+      "file": "src/python/xcf/xcf_parser.py",
+      "line": 78
+    },
+    {
+      "exception": "XcfInvalidMagicError",
+      "file": "src/python/xcf/xcf_parser.py",
+      "line": 83
+    },
+    {
+      "exception": "XcfInvalidHeaderError",
+      "file": "src/python/xcf/xcf_parser.py",
+      "line": 93
+    },
+    {
+      "exception": "XcfInvalidHeaderError",
+      "file": "src/python/xcf/xcf_parser.py",
+      "line": 101
+    },
+    {
+      "exception": "XcfSizeError",
+      "file": "src/python/xcf/xcf_parser.py",
+      "line": 103
+    },
+    {
+      "exception": "XcfInvalidHeaderError",
+      "file": "src/python/xcf/xcf_parser.py",
+      "line": 107
+    },
+    {
+      "exception": "XcfParseError",
+      "file": "src/python/xcf/xcf_parser.py",
+      "line": 129
+    },
+    {
+      "exception": "XcfParseError",
+      "file": "src/python/xcf/xcf_parser.py",
+      "line": 135
+    },
+    {
+      "exception": "XcfError",
+      "file": "src/python/xcf/xcf_parser.py",
+      "line": 168
+    },
+    {
+      "exception": "XcfSizeError",
+      "file": "src/python/xcf/xcf_parser.py",
+      "line": 171
+    }
+  ],
+  "source_path": "src/python/xcf",
+  "test_path": "tests/python/xcf",
+  "uncovered_exception_count": 0
+}

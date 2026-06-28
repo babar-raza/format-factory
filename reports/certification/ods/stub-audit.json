@@ -1,0 +1,48 @@
+{
+  "file_count": 22,
+  "files_scanned": [
+    "src/python/ods/__init__.py",
+    "src/python/ods/Compat/__init__.py",
+    "src/python/ods/Compat/ods_cell.py",
+    "src/python/ods/Compat/ods_document.py",
+    "src/python/ods/Compat/ods_sheet.py",
+    "src/python/ods/exceptions.py",
+    "src/python/ods/models.py",
+    "src/python/ods/ods_csv_exporter.py",
+    "src/python/ods/ods_parser.py",
+    "src/python/ods/ods_row_iterator.py",
+    "src/python/ods/ods_sheet_iterator.py",
+    "src/python/ods/ods_stats.py",
+    "src/python/ods/ods_workflow.py",
+    "src/python/ods/ods_writer.py",
+    "src/python/ods/spec/__init__.py",
+    "src/python/ods/spec/office/__init__.py",
+    "src/python/ods/spec/office/document.py",
+    "src/python/ods/spec/table/__init__.py",
+    "src/python/ods/spec/table/table.py",
+    "src/python/ods/spec/table/table_cell.py",
+    "src/python/ods/spec/table/table_row.py",
+    "src/python/ods/spreadsheet_document.py"
+  ],
+  "finding_count": 1,
+  "findings": [
+    {
+      "classification_note": "Non-public or structural placeholder; not automatically material.",
+      "file": "src/python/ods/ods_parser.py",
+      "line": 788,
+      "reason": "pass_statement",
+      "scope": "<module>",
+      "severity": "advisory",
+      "source": "pass"
+    }
+  ],
+  "material_finding_count": 0,
+  "metadata": {
+    "authoritative_plan": "plans/.claude/crispy-jingling-snail.md",
+    "generated_by": "codex",
+    "mission_id": "CERT-EXHAUST-20260628",
+    "tool": "stub_detector",
+    "visibility": "internal"
+  },
+  "target": "src/python/ods"
+}

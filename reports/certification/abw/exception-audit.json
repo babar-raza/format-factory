@@ -1,0 +1,351 @@
+{
+  "exception_count": 3,
+  "exceptions": [
+    {
+      "coverage_status": "REFERENCED_BY_TEST",
+      "file": "src/python/abw/exceptions.py",
+      "line": 13,
+      "name": "AbwError",
+      "raised_in_source": true,
+      "test_reference_count": 6,
+      "test_references": [
+        {
+          "file": "tests/python/abw/test_abw_gap_closure_batch.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/abw/test_abw_gap_closure_batch2.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/abw/test_exception_coverage.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/abw/test_r117_abw_write_roundtrip.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/abw/test_r168_abw_text_stats_coverage.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/abw/test_r169_abw_dogfood_load_regression.py",
+          "match": "text_reference"
+        }
+      ]
+    },
+    {
+      "coverage_status": "REFERENCED_BY_TEST",
+      "file": "src/python/abw/exceptions.py",
+      "line": 17,
+      "name": "AbwParseError",
+      "raised_in_source": true,
+      "test_reference_count": 5,
+      "test_references": [
+        {
+          "file": "tests/python/abw/test_abw_codec.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/abw/test_abw_gap_closure_batch.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/abw/test_abw_gap_closure_batch2.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/abw/test_r167_abw_load_coverage.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/abw/test_r168_abw_text_stats_coverage.py",
+          "match": "text_reference"
+        }
+      ]
+    },
+    {
+      "coverage_status": "REFERENCED_BY_TEST",
+      "file": "src/python/abw/exceptions.py",
+      "line": 21,
+      "name": "AbwWriteError",
+      "raised_in_source": false,
+      "test_reference_count": 1,
+      "test_references": [
+        {
+          "file": "tests/python/abw/test_exception_coverage.py",
+          "match": "text_reference"
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "authoritative_plan": "plans/.claude/crispy-jingling-snail.md",
+    "generated_by": "codex",
+    "mission_id": "CERT-EXHAUST-20260628",
+    "tool": "exception_coverage_checker",
+    "visibility": "internal"
+  },
+  "raise_site_count": 51,
+  "raise_sites": [
+    {
+      "exception": "AbwError",
+      "file": "src/python/abw/abw_codec.py",
+      "line": 109
+    },
+    {
+      "exception": "AbwError",
+      "file": "src/python/abw/abw_codec.py",
+      "line": 134
+    },
+    {
+      "exception": "AbwError",
+      "file": "src/python/abw/abw_codec.py",
+      "line": 254
+    },
+    {
+      "exception": "AbwError",
+      "file": "src/python/abw/abw_codec.py",
+      "line": 257
+    },
+    {
+      "exception": "AbwParseError",
+      "file": "src/python/abw/abw_codec.py",
+      "line": 262
+    },
+    {
+      "exception": "AbwError",
+      "file": "src/python/abw/abw_codec.py",
+      "line": 265
+    },
+    {
+      "exception": "AbwParseError",
+      "file": "src/python/abw/abw_codec.py",
+      "line": 281
+    },
+    {
+      "exception": "AbwParseError",
+      "file": "src/python/abw/abw_codec.py",
+      "line": 287
+    },
+    {
+      "exception": "TypeError",
+      "file": "src/python/abw/abw_codec.py",
+      "line": 312
+    },
+    {
+      "exception": "TypeError",
+      "file": "src/python/abw/abw_codec.py",
+      "line": 314
+    },
+    {
+      "exception": "TypeError",
+      "file": "src/python/abw/abw_codec.py",
+      "line": 325
+    },
+    {
+      "exception": "TypeError",
+      "file": "src/python/abw/abw_codec.py",
+      "line": 334
+    },
+    {
+      "exception": "TypeError",
+      "file": "src/python/abw/abw_codec.py",
+      "line": 336
+    },
+    {
+      "exception": "TypeError",
+      "file": "src/python/abw/abw_codec.py",
+      "line": 338
+    },
+    {
+      "exception": "TypeError",
+      "file": "src/python/abw/abw_codec.py",
+      "line": 353
+    },
+    {
+      "exception": "IndexError",
+      "file": "src/python/abw/abw_codec.py",
+      "line": 356
+    },
+    {
+      "exception": "TypeError",
+      "file": "src/python/abw/abw_codec.py",
+      "line": 402
+    },
+    {
+      "exception": "TypeError",
+      "file": "src/python/abw/abw_codec.py",
+      "line": 404
+    },
+    {
+      "exception": "IndexError",
+      "file": "src/python/abw/abw_codec.py",
+      "line": 407
+    },
+    {
+      "exception": "TypeError",
+      "file": "src/python/abw/abw_codec.py",
+      "line": 443
+    },
+    {
+      "exception": "TypeError",
+      "file": "src/python/abw/abw_codec.py",
+      "line": 445
+    },
+    {
+      "exception": "TypeError",
+      "file": "src/python/abw/abw_codec.py",
+      "line": 453
+    },
+    {
+      "exception": "ValueError",
+      "file": "src/python/abw/abw_codec.py",
+      "line": 455
+    },
+    {
+      "exception": "TypeError",
+      "file": "src/python/abw/abw_codec.py",
+      "line": 463
+    },
+    {
+      "exception": "TypeError",
+      "file": "src/python/abw/abw_codec.py",
+      "line": 465
+    },
+    {
+      "exception": "TypeError",
+      "file": "src/python/abw/abw_codec.py",
+      "line": 473
+    },
+    {
+      "exception": "ValueError",
+      "file": "src/python/abw/abw_codec.py",
+      "line": 475
+    },
+    {
+      "exception": "TypeError",
+      "file": "src/python/abw/abw_codec.py",
+      "line": 493
+    },
+    {
+      "exception": "TypeError",
+      "file": "src/python/abw/abw_codec.py",
+      "line": 500
+    },
+    {
+      "exception": "TypeError",
+      "file": "src/python/abw/abw_codec.py",
+      "line": 502
+    },
+    {
+      "exception": "TypeError",
+      "file": "src/python/abw/abw_codec.py",
+      "line": 504
+    },
+    {
+      "exception": "TypeError",
+      "file": "src/python/abw/abw_codec.py",
+      "line": 516
+    },
+    {
+      "exception": "TypeError",
+      "file": "src/python/abw/abw_codec.py",
+      "line": 526
+    },
+    {
+      "exception": "IndexError",
+      "file": "src/python/abw/abw_codec.py",
+      "line": 529
+    },
+    {
+      "exception": "TypeError",
+      "file": "src/python/abw/abw_codec.py",
+      "line": 536
+    },
+    {
+      "exception": "TypeError",
+      "file": "src/python/abw/abw_codec.py",
+      "line": 551
+    },
+    {
+      "exception": "TypeError",
+      "file": "src/python/abw/abw_codec.py",
+      "line": 566
+    },
+    {
+      "exception": "TypeError",
+      "file": "src/python/abw/abw_codec.py",
+      "line": 577
+    },
+    {
+      "exception": "TypeError",
+      "file": "src/python/abw/abw_codec.py",
+      "line": 585
+    },
+    {
+      "exception": "TypeError",
+      "file": "src/python/abw/abw_codec.py",
+      "line": 600
+    },
+    {
+      "exception": "IndexError",
+      "file": "src/python/abw/abw_codec.py",
+      "line": 603
+    },
+    {
+      "exception": "TypeError",
+      "file": "src/python/abw/abw_codec.py",
+      "line": 624
+    },
+    {
+      "exception": "TypeError",
+      "file": "src/python/abw/abw_word_stats.py",
+      "line": 14
+    },
+    {
+      "exception": "TypeError",
+      "file": "src/python/abw/abw_word_stats.py",
+      "line": 25
+    },
+    {
+      "exception": "TypeError",
+      "file": "src/python/abw/abw_word_stats.py",
+      "line": 36
+    },
+    {
+      "exception": "TypeError",
+      "file": "src/python/abw/abw_word_stats.py",
+      "line": 43
+    },
+    {
+      "exception": "TypeError",
+      "file": "src/python/abw/abw_word_stats.py",
+      "line": 50
+    },
+    {
+      "exception": "TypeError",
+      "file": "src/python/abw/abw_word_stats.py",
+      "line": 70
+    },
+    {
+      "exception": "TypeError",
+      "file": "src/python/abw/word_document.py",
+      "line": 26
+    },
+    {
+      "exception": "TypeError",
+      "file": "src/python/abw/word_document.py",
+      "line": 42
+    },
+    {
+      "exception": "TypeError",
+      "file": "src/python/abw/word_document.py",
+      "line": 183
+    }
+  ],
+  "source_path": "src/python/abw",
+  "test_path": "tests/python/abw",
+  "uncovered_exception_count": 0
+}

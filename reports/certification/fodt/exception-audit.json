@@ -1,0 +1,150 @@
+{
+  "exception_count": 4,
+  "exceptions": [
+    {
+      "coverage_status": "REFERENCED_BY_TEST",
+      "file": "src/python/fodt/exceptions.py",
+      "line": 12,
+      "name": "FodtError",
+      "raised_in_source": false,
+      "test_reference_count": 2,
+      "test_references": [
+        {
+          "file": "tests/python/fodt/test_fodt_gap_closure_batch.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/fodt/test_r43_deepening.py",
+          "match": "text_reference"
+        }
+      ]
+    },
+    {
+      "coverage_status": "REFERENCED_BY_TEST",
+      "file": "src/python/fodt/exceptions.py",
+      "line": 16,
+      "name": "FodtInputError",
+      "raised_in_source": true,
+      "test_reference_count": 7,
+      "test_references": [
+        {
+          "file": "tests/python/fodt/test_fodt_gap_closure_batch.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/fodt/test_fodt_pywrite_deepening.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/fodt/test_parser_malformed.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/fodt/test_r42_deepening.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/fodt/test_r46_write_capability.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/fodt/test_r47_writer_hardening.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/fodt/test_traceability.py",
+          "match": "text_reference"
+        }
+      ]
+    },
+    {
+      "coverage_status": "REFERENCED_BY_TEST",
+      "file": "src/python/fodt/exceptions.py",
+      "line": 33,
+      "name": "FodtParseError",
+      "raised_in_source": false,
+      "test_reference_count": 2,
+      "test_references": [
+        {
+          "file": "tests/python/fodt/test_fodt_gap_closure_batch.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/fodt/test_parser_malformed.py",
+          "match": "text_reference"
+        }
+      ]
+    },
+    {
+      "coverage_status": "REFERENCED_BY_TEST",
+      "file": "src/python/fodt/exceptions.py",
+      "line": 25,
+      "name": "FodtSizeError",
+      "raised_in_source": true,
+      "test_reference_count": 2,
+      "test_references": [
+        {
+          "file": "tests/python/fodt/test_fodt_gap_closure_batch.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/fodt/test_security.py",
+          "match": "text_reference"
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "authoritative_plan": "plans/.claude/crispy-jingling-snail.md",
+    "generated_by": "codex",
+    "mission_id": "CERT-EXHAUST-20260628",
+    "tool": "exception_coverage_checker",
+    "visibility": "internal"
+  },
+  "raise_site_count": 8,
+  "raise_sites": [
+    {
+      "exception": "FodtInputError",
+      "file": "src/python/fodt/parser.py",
+      "line": 113
+    },
+    {
+      "exception": "FodtInputError",
+      "file": "src/python/fodt/parser.py",
+      "line": 115
+    },
+    {
+      "exception": "FodtSizeError",
+      "file": "src/python/fodt/parser.py",
+      "line": 120
+    },
+    {
+      "exception": "err",
+      "file": "src/python/fodt/parser.py",
+      "line": 163
+    },
+    {
+      "exception": "err",
+      "file": "src/python/fodt/parser.py",
+      "line": 215
+    },
+    {
+      "exception": "err",
+      "file": "src/python/fodt/parser.py",
+      "line": 220
+    },
+    {
+      "exception": "FodtInputError",
+      "file": "src/python/fodt/writer.py",
+      "line": 245
+    },
+    {
+      "exception": "FodtInputError",
+      "file": "src/python/fodt/writer.py",
+      "line": 252
+    }
+  ],
+  "source_path": "src/python/fodt",
+  "test_path": "tests/python/fodt",
+  "uncovered_exception_count": 0
+}

@@ -1701,6 +1701,17 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
     except Exception as _mt_err:
         print(f"  WARNING: Maturity trend skipped (non-blocking): {_mt_err}")
 
+    # Step 7e: Root README drift detection (non-blocking)
+    try:
+        from tools.readme_sync.generate_root_status import detect_root_readme_drift
+        _root_drift = detect_root_readme_drift(repo_root)
+        if _root_drift.get("drifted"):
+            print(f"  ROOT README DRIFT: {_root_drift['drifted_fields']}")
+        else:
+            print(f"  Root README: no drift detected")
+    except Exception as _rd_err:
+        print(f"  WARNING: root README drift check failed (non-blocking): {_rd_err}")
+
     # Step 7b: Track P Ledger Enforcement (TC-P2-008 — REQ-LED-001/LED-002/LED-003)
     # For Track P sprints, validate that at least one ledger entry exists in
     # product-code-change-ledger.json for this sprint_id before writing signal.

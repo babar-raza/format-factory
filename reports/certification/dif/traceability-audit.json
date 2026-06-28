@@ -1,0 +1,48 @@
+{
+  "metadata": {
+    "authoritative_plan": "plans/.claude/crispy-jingling-snail.md",
+    "mission_id": "CERT-EXHAUST-20260628",
+    "format_id": "dif"
+  },
+  "qname_count": 6,
+  "pass_count": 6,
+  "review_required_count": 0,
+  "entries": [
+    {
+      "qname": "dif:header",
+      "status": "PASS",
+      "python_file": "src/python/dif/spec/table/header.py",
+      "exists": true
+    },
+    {
+      "qname": "dif:data",
+      "status": "PASS",
+      "python_file": "src/python/dif/interchange_document.py",
+      "exists": true
+    },
+    {
+      "qname": "dif:document",
+      "status": "PASS",
+      "python_file": "src/python/dif/dif_parser.py",
+      "exists": true
+    },
+    {
+      "qname": "dif:cell",
+      "status": "PASS",
+      "python_file": "src/python/dif/dif_parser.py",
+      "exists": true
+    },
+    {
+      "qname": "dif:datum",
+      "status": "PASS",
+      "python_file": "src/python/dif/spec/table/datum.py",
+      "exists": true
+    },
+    {
+      "qname": "dif:vector",
+      "status": "PASS",
+      "python_file": "src/python/dif/spec/table/vector.py",
+      "exists": true
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "metadata": {
+    "mission_id": "CERT-EXHAUST-20260628",
+    "tool": "manual_audit"
+  },
+  "format": "fodp",
+  "status": "PASS",
+  "roundtrip_type": "export_roundtrip",
+  "note": "FODP is read-only (no writer). Roundtrip = load -> export_to_json -> json.loads -> verify structural equality.",
+  "test_file": "tests/python/fodp/test_fodp_roundtrip.py",
+  "test_count": 6,
+  "evidence": "6 tests pass: json roundtrip (3 samples), txt export, csv export, double-load consistency"
+}

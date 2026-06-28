@@ -1,0 +1,669 @@
+{
+  "metadata": {
+    "authoritative_plan": "plans/.claude/crispy-jingling-snail.md",
+    "mission_id": "CERT-EXHAUST-20260628",
+    "tool": "dotnet_assertion_scorer"
+  },
+  "target": "tests/net/html",
+  "file_count": 5,
+  "total_test_functions": 61,
+  "score_distribution": {
+    "1": 0,
+    "2": 3,
+    "3": 1,
+    "4": 51,
+    "5": 6
+  },
+  "weak_assertion_count": 0,
+  "overall_avg_score": 3.98,
+  "overall_min_score": 2,
+  "files": [
+    {
+      "file": "tests/net/html/HtmlR117WriterTests.cs",
+      "function_count": 14,
+      "functions": [
+        {
+          "name": "EscapeHtml_PlainText_ReturnsUnchanged",
+          "line": 21,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "EscapeHtml_Ampersand_EscapesToAmp",
+          "line": 28,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "EscapeHtml_LessThan_EscapesToLt",
+          "line": 36,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "EscapeHtml_GreaterThan_EscapesToGt",
+          "line": 43,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "EscapeHtml_NullInput_DoesNotThrow",
+          "line": 50,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "WriteHeading_Level1_ProducesH1Tag",
+          "line": 59,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "WriteHeading_Level2_ProducesH2Tag",
+          "line": 67,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteHeading_ContentInTag",
+          "line": 74,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteParagraphs_SingleString_ContainsPTag",
+          "line": 83,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteParagraphs_MultipleStrings_AllContentPresent",
+          "line": 90,
+          "assertion_count": 3,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "WriteTable_ProducesTableTag",
+          "line": 101,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteTable_HeadersInThTags",
+          "line": 110,
+          "assertion_count": 3,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "WriteTable_DataInTdTags",
+          "line": 121,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "DogfoodPipeline_HeadingParagraphsTable_AllPresent",
+          "line": 133,
+          "assertion_count": 6,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4,
+            4,
+            4,
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.93,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/net/html/HtmlR118WriteTableToFileTests.cs",
+      "function_count": 13,
+      "functions": [
+        {
+          "name": "WriteTableToFile_ValidArgs_CreatesFile",
+          "line": 34,
+          "assertion_count": 1,
+          "min_score": 2,
+          "scores": [
+            2
+          ]
+        },
+        {
+          "name": "WriteTableToFile_Output_ContainsDoctype",
+          "line": 48,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteTableToFile_Output_ContainsHtmlElement",
+          "line": 61,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteTableToFile_DefaultTitle_AppearsInTitleTag",
+          "line": 76,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "WriteTableToFile_CustomTitle_AppearsInTitleTag",
+          "line": 90,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteTableToFile_Output_ContainsBodyElement",
+          "line": 105,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteTableToFile_Output_ContainsTableElement",
+          "line": 118,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteTableToFile_FirstRowIsHeader_UsesThForFirstRow",
+          "line": 133,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "WriteTableToFile_FirstRowIsHeader_DataRowsUseTd",
+          "line": 147,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "WriteTableToFile_NoHeader_AllRowsUseTd",
+          "line": 161,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteTableToFile_Encoding_NoUtf8Bom",
+          "line": 177,
+          "assertion_count": 1,
+          "min_score": 3,
+          "scores": [
+            3
+          ]
+        },
+        {
+          "name": "WriteTableToFile_NullOrEmptyPath_ThrowsHtmlWriterException",
+          "line": 194,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "DogfoodPipeline_InvoiceTable_AllFieldsInFile",
+          "line": 203,
+          "assertion_count": 9,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.77,
+      "file_min_score": 2
+    },
+    {
+      "file": "tests/net/html/HtmlR119TableEdgeCasesTests.cs",
+      "function_count": 11,
+      "functions": [
+        {
+          "name": "WriteTable_CellWithAmpersand_EscapedInTd",
+          "line": 20,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteTable_CellWithLessThan_EscapedInTd",
+          "line": 29,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteTable_CellWithGreaterThan_EscapedInTd",
+          "line": 38,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteTable_CellWithDoubleQuote_EscapedInTd",
+          "line": 46,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteTable_NullCell_RendersEmptyTd",
+          "line": 56,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteTable_MixedNullAndValue_BothRendered",
+          "line": 64,
+          "assertion_count": 3,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "WriteTable_EmptyRowList_StillContainsTableTag",
+          "line": 76,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteTable_SingleCellSingleRow_RendersCorrectly",
+          "line": 86,
+          "assertion_count": 3,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "WriteTable_FiveColumnRow_AllCellsPresent",
+          "line": 98,
+          "assertion_count": 5,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "WriteTable_HeaderRowWithSpecialChar_EscapedInTh",
+          "line": 115,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "DogfoodPipeline_SpreadsheetWithSpecialChars_AllEscapedCorrectly",
+          "line": 131,
+          "assertion_count": 7,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 4.0,
+      "file_min_score": 4
+    },
+    {
+      "file": "tests/net/html/HtmlR120EscapeIntegrationTests.cs",
+      "function_count": 11,
+      "functions": [
+        {
+          "name": "WriteTable_ApostropheInCell_EscapedOrPreserved",
+          "line": 20,
+          "assertion_count": 2,
+          "min_score": 4,
+          "scores": [
+            4,
+            4
+          ]
+        },
+        {
+          "name": "WriteTable_MultipleSpecialCharsInOneCell_AllEscaped",
+          "line": 33,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteTable_MixedCleanAndSpecialCells_EachHandledCorrectly",
+          "line": 44,
+          "assertion_count": 4,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "EscapeHtml_SoloAmpersand_EscapesCorrectly",
+          "line": 60,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "EscapeHtml_SoloLessThan_EscapesCorrectly",
+          "line": 66,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "EscapeHtml_SoloGreaterThan_EscapesCorrectly",
+          "line": 72,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "EscapeHtml_SoloDoubleQuote_EscapesCorrectly",
+          "line": 78,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteTable_TenRows_TenTrElements",
+          "line": 87,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "WriteTable_TenRows_AllValuesPresent",
+          "line": 105,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteTable_HeaderPlusData_HeaderIsThDataIsT",
+          "line": 119,
+          "assertion_count": 4,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "DogfoodPipeline_SecurityReportTable_AllInputsSanitized",
+          "line": 135,
+          "assertion_count": 9,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 4.36,
+      "file_min_score": 4
+    },
+    {
+      "file": "tests/net/html/HtmlWriterTests.cs",
+      "function_count": 12,
+      "functions": [
+        {
+          "name": "EscapeHtml_Null_ReturnsEmpty",
+          "line": 18,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "EscapeHtml_Ampersand_Escaped",
+          "line": 24,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "EscapeHtml_LessThan_Escaped",
+          "line": 30,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "EscapeHtml_GreaterThan_Escaped",
+          "line": 36,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "EscapeHtml_DoubleQuote_Escaped",
+          "line": 42,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "EscapeHtml_PlainText_Unchanged",
+          "line": 48,
+          "assertion_count": 1,
+          "min_score": 5,
+          "scores": [
+            5
+          ]
+        },
+        {
+          "name": "WriteTable_SingleRow_ContainsTableAndTd",
+          "line": 58,
+          "assertion_count": 3,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "WriteTable_FirstRowIsHeader_UsesTh",
+          "line": 68,
+          "assertion_count": 3,
+          "min_score": 4,
+          "scores": [
+            4,
+            4,
+            4
+          ]
+        },
+        {
+          "name": "WriteTable_HtmlSpecialChars_Escaped",
+          "line": 82,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteTable_NullCell_EmptyTd",
+          "line": 92,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        },
+        {
+          "name": "WriteTableToFile_CreatesFile",
+          "line": 104,
+          "assertion_count": 3,
+          "min_score": 2,
+          "scores": [
+            4,
+            4,
+            2
+          ]
+        },
+        {
+          "name": "WriteTableToFile_NullPath_Throws",
+          "line": 123,
+          "assertion_count": 1,
+          "min_score": 4,
+          "scores": [
+            4
+          ]
+        }
+      ],
+      "file_avg_score": 3.92,
+      "file_min_score": 2
+    }
+  ]
+}

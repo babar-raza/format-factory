@@ -1,0 +1,42 @@
+{
+  "file_count": 16,
+  "files_scanned": [
+    "src/python/ppm/__init__.py",
+    "src/python/ppm/color_image.py",
+    "src/python/ppm/Compat/__init__.py",
+    "src/python/ppm/Compat/ppm_header.py",
+    "src/python/ppm/Compat/ppm_pixmap.py",
+    "src/python/ppm/exceptions.py",
+    "src/python/ppm/models.py",
+    "src/python/ppm/ppm_parser.py",
+    "src/python/ppm/ppm_pixmap_iterator.py",
+    "src/python/ppm/ppm_stats.py",
+    "src/python/ppm/ppm_to_pgm.py",
+    "src/python/ppm/ppm_workflow.py",
+    "src/python/ppm/spec/__init__.py",
+    "src/python/ppm/spec/pixmap/__init__.py",
+    "src/python/ppm/spec/pixmap/header.py",
+    "src/python/ppm/spec/pixmap/pixmap.py"
+  ],
+  "finding_count": 1,
+  "findings": [
+    {
+      "classification_note": "Non-public or structural placeholder; not automatically material.",
+      "file": "src/python/ppm/ppm_parser.py",
+      "line": 638,
+      "reason": "pass_statement",
+      "scope": "<module>",
+      "severity": "advisory",
+      "source": "pass"
+    }
+  ],
+  "material_finding_count": 0,
+  "metadata": {
+    "authoritative_plan": "plans/.claude/crispy-jingling-snail.md",
+    "generated_by": "codex",
+    "mission_id": "CERT-EXHAUST-20260628",
+    "tool": "stub_detector",
+    "visibility": "internal"
+  },
+  "target": "src/python/ppm"
+}

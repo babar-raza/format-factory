@@ -1,0 +1,44 @@
+{
+  "file_count": 18,
+  "files_scanned": [
+    "src/python/pbm/__init__.py",
+    "src/python/pbm/bitmap_image.py",
+    "src/python/pbm/Compat/__init__.py",
+    "src/python/pbm/Compat/pbm_bitmap.py",
+    "src/python/pbm/Compat/pbm_header.py",
+    "src/python/pbm/Compat/pbm_raster.py",
+    "src/python/pbm/exceptions.py",
+    "src/python/pbm/models.py",
+    "src/python/pbm/pbm_parser.py",
+    "src/python/pbm/pbm_raster_iterator.py",
+    "src/python/pbm/pbm_to_pgm.py",
+    "src/python/pbm/pbm_to_ppm.py",
+    "src/python/pbm/pbm_workflow.py",
+    "src/python/pbm/spec/__init__.py",
+    "src/python/pbm/spec/bitmap/__init__.py",
+    "src/python/pbm/spec/bitmap/bitmap.py",
+    "src/python/pbm/spec/bitmap/header.py",
+    "src/python/pbm/spec/bitmap/raster.py"
+  ],
+  "finding_count": 1,
+  "findings": [
+    {
+      "classification_note": "Non-public or structural placeholder; not automatically material.",
+      "file": "src/python/pbm/pbm_parser.py",
+      "line": 615,
+      "reason": "pass_statement",
+      "scope": "<module>",
+      "severity": "advisory",
+      "source": "pass"
+    }
+  ],
+  "material_finding_count": 0,
+  "metadata": {
+    "authoritative_plan": "plans/.claude/crispy-jingling-snail.md",
+    "generated_by": "codex",
+    "mission_id": "CERT-EXHAUST-20260628",
+    "tool": "stub_detector",
+    "visibility": "internal"
+  },
+  "target": "src/python/pbm"
+}

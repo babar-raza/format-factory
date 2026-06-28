@@ -1,0 +1,4457 @@
+{
+  "metadata": {
+    "authoritative_plan": "plans/.claude/crispy-jingling-snail.md",
+    "mission_id": "CERT-EXHAUST-20260628",
+    "format_id": "fodt"
+  },
+  "python": {
+    "contracts": [
+      {
+        "name": "main",
+        "kind": "function",
+        "file": "src/python/fodt/cli.py",
+        "line": 14,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "fodt_to_txt",
+        "kind": "function",
+        "file": "src/python/fodt/exporters.py",
+        "line": 41,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "fodt_to_markdown",
+        "kind": "function",
+        "file": "src/python/fodt/exporters.py",
+        "line": 64,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "fodt_to_html",
+        "kind": "function",
+        "file": "src/python/fodt/exporters.py",
+        "line": 93,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "document_section_summary",
+        "kind": "function",
+        "file": "src/python/fodt/fodt_document_edit.py",
+        "line": 15,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "document_change_tracking_summary",
+        "kind": "function",
+        "file": "src/python/fodt/fodt_document_edit.py",
+        "line": 80,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "document_paragraph_style_distribution",
+        "kind": "function",
+        "file": "src/python/fodt/fodt_document_edit.py",
+        "line": 148,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "document_language_list",
+        "kind": "function",
+        "file": "src/python/fodt/fodt_document_edit.py",
+        "line": 189,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "document_set_block_text",
+        "kind": "function",
+        "file": "src/python/fodt/fodt_document_edit.py",
+        "line": 243,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "document_warnings_for_unsupported_edit",
+        "kind": "function",
+        "file": "src/python/fodt/fodt_document_edit.py",
+        "line": 318,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "document_append_paragraph",
+        "kind": "function",
+        "file": "src/python/fodt/fodt_document_edit.py",
+        "line": 367,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "document_remove_paragraph",
+        "kind": "function",
+        "file": "src/python/fodt/fodt_document_edit.py",
+        "line": 414,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "document_to_text",
+        "kind": "function",
+        "file": "src/python/fodt/fodt_document_edit.py",
+        "line": 467,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "document_get_paragraph_text",
+        "kind": "function",
+        "file": "src/python/fodt/fodt_document_edit.py",
+        "line": 510,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "document_search_text",
+        "kind": "function",
+        "file": "src/python/fodt/fodt_document_edit.py",
+        "line": 540,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "document_replace_text",
+        "kind": "function",
+        "file": "src/python/fodt/fodt_document_edit.py",
+        "line": 595,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "document_to_html",
+        "kind": "function",
+        "file": "src/python/fodt/fodt_document_edit.py",
+        "line": 657,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "document_extract_headings",
+        "kind": "function",
+        "file": "src/python/fodt/fodt_document_edit.py",
+        "line": 689,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "document_total_words",
+        "kind": "function",
+        "file": "src/python/fodt/fodt_document_query.py",
+        "line": 14,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "document_list_item_count",
+        "kind": "function",
+        "file": "src/python/fodt/fodt_document_query.py",
+        "line": 37,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "document_block_type_count",
+        "kind": "function",
+        "file": "src/python/fodt/fodt_document_query.py",
+        "line": 56,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "document_max_paragraph_length",
+        "kind": "function",
+        "file": "src/python/fodt/fodt_document_query.py",
+        "line": 75,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "document_has_tables",
+        "kind": "function",
+        "file": "src/python/fodt/fodt_document_query.py",
+        "line": 99,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "document_paragraph_texts",
+        "kind": "function",
+        "file": "src/python/fodt/fodt_document_query.py",
+        "line": 117,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "document_heading_texts",
+        "kind": "function",
+        "file": "src/python/fodt/fodt_document_query.py",
+        "line": 149,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "document_table_row_count",
+        "kind": "function",
+        "file": "src/python/fodt/fodt_document_query.py",
+        "line": 181,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "document_empty_paragraph_count",
+        "kind": "function",
+        "file": "src/python/fodt/fodt_document_query.py",
+        "line": 205,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodt_total_block_count",
+        "kind": "function",
+        "file": "src/python/fodt/fodt_document_query.py",
+        "line": 225,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "document_stats",
+        "kind": "function",
+        "file": "src/python/fodt/fodt_neutral_ops.py",
+        "line": 14,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "document_heading_outline",
+        "kind": "function",
+        "file": "src/python/fodt/fodt_neutral_ops.py",
+        "line": 110,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "document_word_count",
+        "kind": "function",
+        "file": "src/python/fodt/fodt_neutral_ops.py",
+        "line": 145,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "document_table_summary",
+        "kind": "function",
+        "file": "src/python/fodt/fodt_neutral_ops.py",
+        "line": 204,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "document_text_content",
+        "kind": "function",
+        "file": "src/python/fodt/fodt_neutral_ops.py",
+        "line": 240,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "document_list_stats",
+        "kind": "function",
+        "file": "src/python/fodt/fodt_neutral_ops.py",
+        "line": 307,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "document_reading_level",
+        "kind": "function",
+        "file": "src/python/fodt/fodt_neutral_ops.py",
+        "line": 356,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "document_hyperlink_count",
+        "kind": "function",
+        "file": "src/python/fodt/fodt_neutral_ops.py",
+        "line": 410,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "document_footnote_count",
+        "kind": "function",
+        "file": "src/python/fodt/fodt_neutral_ops.py",
+        "line": 436,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "document_heading_level_distribution",
+        "kind": "function",
+        "file": "src/python/fodt/fodt_neutral_ops.py",
+        "line": 475,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "document_table_cell_count",
+        "kind": "function",
+        "file": "src/python/fodt/fodt_neutral_ops.py",
+        "line": 509,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "document_table_cell_span_summary",
+        "kind": "function",
+        "file": "src/python/fodt/fodt_neutral_ops.py",
+        "line": 549,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "document_text_field_warnings",
+        "kind": "function",
+        "file": "src/python/fodt/fodt_neutral_ops.py",
+        "line": 605,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "document_footnote_endnote_summary",
+        "kind": "function",
+        "file": "src/python/fodt/fodt_neutral_ops.py",
+        "line": 667,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "document_image_frame_list",
+        "kind": "function",
+        "file": "src/python/fodt/fodt_neutral_ops.py",
+        "line": 718,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "document_paragraph_count",
+        "kind": "function",
+        "file": "src/python/fodt/fodt_neutral_ops.py",
+        "line": 770,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "document_count_tables",
+        "kind": "function",
+        "file": "src/python/fodt/fodt_neutral_ops.py",
+        "line": 784,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodt_to_ndjson",
+        "kind": "function",
+        "file": "src/python/fodt/fodt_to_ndjson.py",
+        "line": 29,
+        "role": "writer",
+        "exported": false
+      },
+      {
+        "name": "collect_list_items",
+        "kind": "function",
+        "file": "src/python/fodt/list_traversal.py",
+        "line": 25,
+        "role": "api",
+        "exported": true
+      },
+      {
+        "name": "from_file",
+        "kind": "function",
+        "file": "src/python/fodt/models.py",
+        "line": 140,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "odf_version",
+        "kind": "function",
+        "file": "src/python/fodt/models.py",
+        "line": 147,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "paragraphs",
+        "kind": "function",
+        "file": "src/python/fodt/models.py",
+        "line": 152,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "to_dict",
+        "kind": "function",
+        "file": "src/python/fodt/models.py",
+        "line": 157,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "kind",
+        "kind": "function",
+        "file": "src/python/fodt/models.py",
+        "line": 164,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "style_name",
+        "kind": "function",
+        "file": "src/python/fodt/models.py",
+        "line": 169,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "outline_level",
+        "kind": "function",
+        "file": "src/python/fodt/models.py",
+        "line": 174,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "collect_list_items",
+        "kind": "function",
+        "file": "src/python/fodt/models.py",
+        "line": 179,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "make_warning",
+        "kind": "function",
+        "file": "src/python/fodt/neutral_model.py",
+        "line": 27,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "build_document",
+        "kind": "function",
+        "file": "src/python/fodt/neutral_model.py",
+        "line": 39,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "validate_document",
+        "kind": "function",
+        "file": "src/python/fodt/neutral_model.py",
+        "line": 82,
+        "role": "probe",
+        "exported": true
+      },
+      {
+        "name": "parse_fodt",
+        "kind": "function",
+        "file": "src/python/fodt/parser.py",
+        "line": 72,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "parse_fodt_strict",
+        "kind": "function",
+        "file": "src/python/fodt/parser.py",
+        "line": 95,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "fodt_paragraph_count",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 16,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodt_word_count",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 30,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodt_heading_count",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 50,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodt_has_tables",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 64,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodt_average_paragraph_length",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 78,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodt_max_paragraph_length",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 89,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodt_list_count",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 99,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodt_empty_paragraph_count",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 113,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodt_table_count",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 131,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodt_min_paragraph_length",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 145,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodt_has_lists",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 164,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodt_char_count",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 178,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodt_vocabulary_richness",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 189,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodt_is_empty",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 202,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodt_has_headings",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 215,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodt_is_single_paragraph",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 220,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodt_avg_words_per_paragraph",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 225,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodt_nonempty_paragraph_count",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 233,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodt_char_density",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 238,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodt_sentence_count",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 246,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodt_words_per_sentence",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 258,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodt_unique_word_count",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 266,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodt_avg_chars_per_word",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 279,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodt_heading_ratio",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 287,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodt_is_multi_paragraph",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 295,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodt_whitespace_ratio",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 308,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodt_longest_word",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 322,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodt_avg_heading_length",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 336,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodt_table_density",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 349,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodt_heading_to_paragraph_ratio",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 358,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "fodt_total_table_cells",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 367,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodt_total_text_length",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 379,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodt_nonempty_paragraph_ratio",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 390,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodt_has_numeric_content",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 404,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodt_avg_sentence_length",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 416,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodt_longest_paragraph_index",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 432,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodt_paragraph_length_range",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 445,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodt_max_heading_depth",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 458,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodt_total_char_count",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 471,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodt_heading_to_para_ratio",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 482,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "fodt_words_per_paragraph",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 499,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodt_is_text_heavy",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 507,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodt_lowercase_ratio",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 518,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodt_word_count_variance",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 537,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodt_paragraph_to_heading_ratio",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 552,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "fodt_digit_count",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 563,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodt_max_run_count",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 574,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodt_numeric_word_count",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 582,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodt_heading_char_sum",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 593,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodt_paragraph_char_sum",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 604,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodt_max_words_in_heading",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 615,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodt_short_paragraph_count",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 627,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodt_vowel_count",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 658,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodt_space_count",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 666,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodt_inline_count",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 673,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodt_max_block_word_count",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 685,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodt_punctuation_count",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 693,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodt_list_block_count",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 702,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodt_file_size_bytes",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 709,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodt_has_more_words_than_unique",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 715,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodt_all_words_unique",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 726,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodt_uppercase_char_count",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 737,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodt_lowercase_char_count",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 744,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodt_uppercase_ratio",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 751,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodt_min_heading_length",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 761,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodt_char_per_word",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 769,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodt_avg_block_length",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 783,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodt_max_block_text_length",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 793,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodt_min_block_text_length",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 801,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodt_word_per_heading",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 809,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodt_block_text_sum",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 820,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodt_consonant_ratio",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 827,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodt_avg_run_count",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 842,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodt_empty_block_count",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 852,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodt_has_multiple_block_types",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 859,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodt_punctuation_density",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 867,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodt_total_character_count",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 883,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodt_avg_word_length",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 890,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodt_block_type_count",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 903,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodt_nonempty_block_count",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 910,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodt_is_text_only",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 917,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodt_total_content_blocks",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 924,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodt_avg_word_count_per_paragraph",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 931,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodt_word_density",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 943,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodt_avg_paragraph_length",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 953,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodt_unique_block_type_count",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 963,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "fodt_section_depth_max",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 970,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "fodt_text_block_ratio",
+        "kind": "function",
+        "file": "src/python/fodt/text_document.py",
+        "line": 981,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "document_to_xml",
+        "kind": "function",
+        "file": "src/python/fodt/writer.py",
+        "line": 224,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "write_fodt",
+        "kind": "function",
+        "file": "src/python/fodt/writer.py",
+        "line": 295,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "fodt_iter_paragraphs",
+        "kind": "function",
+        "file": "src/python/fodt/fodt_paragraph_iterator.py",
+        "line": 16,
+        "role": "iterator",
+        "exported": true
+      },
+      {
+        "name": "fodt_installed_workflow",
+        "kind": "function",
+        "file": "src/python/fodt/fodt_workflow.py",
+        "line": 9,
+        "role": "workflow",
+        "exported": true
+      },
+      {
+        "name": "FodtError",
+        "kind": "class",
+        "file": "src/python/fodt/exceptions.py",
+        "line": 12,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "FodtInputError",
+        "kind": "class",
+        "file": "src/python/fodt/exceptions.py",
+        "line": 16,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "FodtSizeError",
+        "kind": "class",
+        "file": "src/python/fodt/exceptions.py",
+        "line": 25,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "FodtParseError",
+        "kind": "class",
+        "file": "src/python/fodt/exceptions.py",
+        "line": 33,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "FodtSpan",
+        "kind": "class",
+        "file": "src/python/fodt/models.py",
+        "line": 18,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "FodtParagraph",
+        "kind": "class",
+        "file": "src/python/fodt/models.py",
+        "line": 42,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "FodtDocument",
+        "kind": "class",
+        "file": "src/python/fodt/models.py",
+        "line": 78,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "FodtDocument",
+        "kind": "class",
+        "file": "src/python/fodt/Compat/fodt_document.py",
+        "line": 16,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "FodtHeading",
+        "kind": "class",
+        "file": "src/python/fodt/Compat/fodt_heading.py",
+        "line": 13,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "FodtList",
+        "kind": "class",
+        "file": "src/python/fodt/Compat/fodt_list.py",
+        "line": 14,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "FodtListItem",
+        "kind": "class",
+        "file": "src/python/fodt/Compat/fodt_list_item.py",
+        "line": 14,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "FodtParagraph",
+        "kind": "class",
+        "file": "src/python/fodt/Compat/fodt_paragraph.py",
+        "line": 13,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "FodtSpan",
+        "kind": "class",
+        "file": "src/python/fodt/Compat/fodt_span.py",
+        "line": 13,
+        "role": "api",
+        "exported": true
+      },
+      {
+        "name": "FodtTable",
+        "kind": "class",
+        "file": "src/python/fodt/Compat/fodt_table.py",
+        "line": 14,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "FodtTableCell",
+        "kind": "class",
+        "file": "src/python/fodt/Compat/fodt_table_cell.py",
+        "line": 13,
+        "role": "model",
+        "exported": false
+      },
+      {
+        "name": "FodtTableRow",
+        "kind": "class",
+        "file": "src/python/fodt/Compat/fodt_table_row.py",
+        "line": 14,
+        "role": "model",
+        "exported": false
+      },
+      {
+        "name": "Document",
+        "kind": "class",
+        "file": "src/python/fodt/spec/office/document.py",
+        "line": 13,
+        "role": "model",
+        "exported": false
+      },
+      {
+        "name": "Table",
+        "kind": "class",
+        "file": "src/python/fodt/spec/table/table.py",
+        "line": 5,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "TableCell",
+        "kind": "class",
+        "file": "src/python/fodt/spec/table/table_cell.py",
+        "line": 5,
+        "role": "model",
+        "exported": false
+      },
+      {
+        "name": "TableRow",
+        "kind": "class",
+        "file": "src/python/fodt/spec/table/table_row.py",
+        "line": 5,
+        "role": "model",
+        "exported": false
+      },
+      {
+        "name": "Heading",
+        "kind": "class",
+        "file": "src/python/fodt/spec/text/heading.py",
+        "line": 12,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "List",
+        "kind": "class",
+        "file": "src/python/fodt/spec/text/list_.py",
+        "line": 5,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "ListItem",
+        "kind": "class",
+        "file": "src/python/fodt/spec/text/list_item.py",
+        "line": 5,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "Paragraph",
+        "kind": "class",
+        "file": "src/python/fodt/spec/text/paragraph.py",
+        "line": 12,
+        "role": "model",
+        "exported": false
+      },
+      {
+        "name": "Span",
+        "kind": "class",
+        "file": "src/python/fodt/spec/text/span.py",
+        "line": 10,
+        "role": "api",
+        "exported": false
+      }
+    ],
+    "export_count": 160
+  },
+  "dotnet": {
+    "contracts": [
+      {
+        "name": "FodtDocumentException",
+        "kind": "class",
+        "file": "src/net/fodt/Exceptions/FodtDocumentException.cs",
+        "line": 9,
+        "role": "exception"
+      },
+      {
+        "name": "FodtDocument",
+        "kind": "class",
+        "file": "src/net/fodt/FodtDocument.cs",
+        "line": 33,
+        "role": "model"
+      },
+      {
+        "name": "FodtDocument",
+        "kind": "class",
+        "file": "src/net/fodt/FodtDocumentAccessor.cs",
+        "line": 11,
+        "role": "model"
+      },
+      {
+        "name": "FodtDocument",
+        "kind": "class",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 15,
+        "role": "model"
+      },
+      {
+        "name": "FodtDocumentMetadata",
+        "kind": "class",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 2268,
+        "role": "model"
+      },
+      {
+        "name": "FodtHtmlExporter",
+        "kind": "class",
+        "file": "src/net/fodt/FodtHtmlExporter.cs",
+        "line": 43,
+        "role": "writer"
+      },
+      {
+        "name": "FodtHtmlExportResult",
+        "kind": "class",
+        "file": "src/net/fodt/FodtHtmlExporter.cs",
+        "line": 178,
+        "role": "writer"
+      },
+      {
+        "name": "FodtHtmlExportException",
+        "kind": "class",
+        "file": "src/net/fodt/FodtHtmlExporter.cs",
+        "line": 193,
+        "role": "exception"
+      },
+      {
+        "name": "FodtMarkdownExporter",
+        "kind": "class",
+        "file": "src/net/fodt/FodtMarkdownExporter.cs",
+        "line": 45,
+        "role": "writer"
+      },
+      {
+        "name": "FodtMarkdownExportResult",
+        "kind": "class",
+        "file": "src/net/fodt/FodtMarkdownExporter.cs",
+        "line": 170,
+        "role": "writer"
+      },
+      {
+        "name": "FodtMarkdownExportException",
+        "kind": "class",
+        "file": "src/net/fodt/FodtMarkdownExporter.cs",
+        "line": 185,
+        "role": "exception"
+      },
+      {
+        "name": "FodtParser",
+        "kind": "class",
+        "file": "src/net/fodt/FodtParser.cs",
+        "line": 21,
+        "role": "parser"
+      },
+      {
+        "name": "FodtParseResult",
+        "kind": "class",
+        "file": "src/net/fodt/FodtParser.cs",
+        "line": 253,
+        "role": "parser"
+      },
+      {
+        "name": "FodtTableInfo",
+        "kind": "class",
+        "file": "src/net/fodt/FodtParser.cs",
+        "line": 299,
+        "role": "parser"
+      },
+      {
+        "name": "FodtParseException",
+        "kind": "class",
+        "file": "src/net/fodt/FodtParser.cs",
+        "line": 316,
+        "role": "exception"
+      },
+      {
+        "name": "FodtPdfExportResult",
+        "kind": "class",
+        "file": "src/net/fodt/FodtPdfExporter.cs",
+        "line": 22,
+        "role": "writer"
+      },
+      {
+        "name": "FodtPdfExporter",
+        "kind": "class",
+        "file": "src/net/fodt/FodtPdfExporter.cs",
+        "line": 58,
+        "role": "writer"
+      },
+      {
+        "name": "FodtPngExportResult",
+        "kind": "class",
+        "file": "src/net/fodt/FodtPngExporter.cs",
+        "line": 24,
+        "role": "writer"
+      },
+      {
+        "name": "FodtPngExporter",
+        "kind": "class",
+        "file": "src/net/fodt/FodtPngExporter.cs",
+        "line": 61,
+        "role": "writer"
+      },
+      {
+        "name": "FodtTxtExporter",
+        "kind": "class",
+        "file": "src/net/fodt/FodtTxtExporter.cs",
+        "line": 44,
+        "role": "writer"
+      },
+      {
+        "name": "FodtTxtExportResult",
+        "kind": "class",
+        "file": "src/net/fodt/FodtTxtExporter.cs",
+        "line": 140,
+        "role": "writer"
+      },
+      {
+        "name": "FodtTxtExportException",
+        "kind": "class",
+        "file": "src/net/fodt/FodtTxtExporter.cs",
+        "line": 163,
+        "role": "exception"
+      },
+      {
+        "name": "FodtBody",
+        "kind": "class",
+        "file": "src/net/fodt/Model/FodtBody.cs",
+        "line": 16,
+        "role": "api"
+      },
+      {
+        "name": "FodtParagraph",
+        "kind": "class",
+        "file": "src/net/fodt/Model/FodtParagraph.cs",
+        "line": 23,
+        "role": "model"
+      },
+      {
+        "name": "FodtTable",
+        "kind": "class",
+        "file": "src/net/fodt/Model/FodtTable.cs",
+        "line": 18,
+        "role": "api"
+      },
+      {
+        "name": "FodtTableCell",
+        "kind": "class",
+        "file": "src/net/fodt/Model/FodtTableCell.cs",
+        "line": 19,
+        "role": "model"
+      },
+      {
+        "name": "FodtTableRow",
+        "kind": "class",
+        "file": "src/net/fodt/Model/FodtTableRow.cs",
+        "line": 18,
+        "role": "model"
+      },
+      {
+        "name": "Body",
+        "kind": "class",
+        "file": "src/net/fodt/Spec/Office/Body.cs",
+        "line": 15,
+        "role": "api"
+      },
+      {
+        "name": "Table",
+        "kind": "class",
+        "file": "src/net/fodt/Spec/Table/Table.cs",
+        "line": 15,
+        "role": "api"
+      },
+      {
+        "name": "TableCell",
+        "kind": "class",
+        "file": "src/net/fodt/Spec/Table/TableCell.cs",
+        "line": 14,
+        "role": "model"
+      },
+      {
+        "name": "TableRow",
+        "kind": "class",
+        "file": "src/net/fodt/Spec/Table/TableRow.cs",
+        "line": 14,
+        "role": "model"
+      },
+      {
+        "name": "Heading",
+        "kind": "class",
+        "file": "src/net/fodt/Spec/Text/Heading.cs",
+        "line": 14,
+        "role": "api"
+      },
+      {
+        "name": "List",
+        "kind": "class",
+        "file": "src/net/fodt/Spec/Text/List.cs",
+        "line": 14,
+        "role": "api"
+      },
+      {
+        "name": "ListItem",
+        "kind": "class",
+        "file": "src/net/fodt/Spec/Text/ListItem.cs",
+        "line": 14,
+        "role": "api"
+      },
+      {
+        "name": "Paragraph",
+        "kind": "class",
+        "file": "src/net/fodt/Spec/Text/Paragraph.cs",
+        "line": 16,
+        "role": "model"
+      },
+      {
+        "name": "Span",
+        "kind": "class",
+        "file": "src/net/fodt/Spec/Text/Span.cs",
+        "line": 14,
+        "role": "api"
+      },
+      {
+        "name": "CreateEmpty",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocument.cs",
+        "line": 68,
+        "role": "model"
+      },
+      {
+        "name": "Load",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocument.cs",
+        "line": 93,
+        "role": "parser"
+      },
+      {
+        "name": "Load",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocument.cs",
+        "line": 134,
+        "role": "parser"
+      },
+      {
+        "name": "Load",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocument.cs",
+        "line": 158,
+        "role": "parser"
+      },
+      {
+        "name": "Save",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocument.cs",
+        "line": 195,
+        "role": "writer"
+      },
+      {
+        "name": "SaveToFile",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocument.cs",
+        "line": 206,
+        "role": "writer"
+      },
+      {
+        "name": "GetPlainText",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocument.cs",
+        "line": 248,
+        "role": "model"
+      },
+      {
+        "name": "GetPlainTextRange",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocument.cs",
+        "line": 267,
+        "role": "model"
+      },
+      {
+        "name": "ReplaceText",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocument.cs",
+        "line": 348,
+        "role": "model"
+      },
+      {
+        "name": "GetHeadingParagraphs",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocument.cs",
+        "line": 413,
+        "role": "model"
+      },
+      {
+        "name": "GetParagraphTexts",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocument.cs",
+        "line": 430,
+        "role": "model"
+      },
+      {
+        "name": "AppendParagraph",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocument.cs",
+        "line": 444,
+        "role": "model"
+      },
+      {
+        "name": "InsertParagraph",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocument.cs",
+        "line": 463,
+        "role": "model"
+      },
+      {
+        "name": "RemoveParagraph",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocument.cs",
+        "line": 483,
+        "role": "model"
+      },
+      {
+        "name": "SetParagraphText",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocument.cs",
+        "line": 498,
+        "role": "model"
+      },
+      {
+        "name": "ExportToMarkdown",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocument.cs",
+        "line": 522,
+        "role": "writer"
+      },
+      {
+        "name": "ExportToHtml",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocument.cs",
+        "line": 553,
+        "role": "writer"
+      },
+      {
+        "name": "GetParagraphText",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocument.cs",
+        "line": 582,
+        "role": "model"
+      },
+      {
+        "name": "RemoveAllParagraphs",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocument.cs",
+        "line": 595,
+        "role": "model"
+      },
+      {
+        "name": "GetTextBetweenParagraphs",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocument.cs",
+        "line": 611,
+        "role": "model"
+      },
+      {
+        "name": "GetHeadingTexts",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocument.cs",
+        "line": 631,
+        "role": "model"
+      },
+      {
+        "name": "ExportToPlainTextFile",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocument.cs",
+        "line": 648,
+        "role": "writer"
+      },
+      {
+        "name": "ExportToMarkdownFile",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocument.cs",
+        "line": 661,
+        "role": "writer"
+      },
+      {
+        "name": "ExportToHtmlFile",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocument.cs",
+        "line": 674,
+        "role": "writer"
+      },
+      {
+        "name": "InsertHeading",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocument.cs",
+        "line": 688,
+        "role": "model"
+      },
+      {
+        "name": "RemoveHeading",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocument.cs",
+        "line": 724,
+        "role": "model"
+      },
+      {
+        "name": "SetParagraphStyle",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocument.cs",
+        "line": 746,
+        "role": "model"
+      },
+      {
+        "name": "GetWordCount",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentAccessor.cs",
+        "line": 19,
+        "role": "analytics"
+      },
+      {
+        "name": "GetCharCount",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentAccessor.cs",
+        "line": 38,
+        "role": "analytics"
+      },
+      {
+        "name": "GetHeadingCount",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentAccessor.cs",
+        "line": 55,
+        "role": "analytics"
+      },
+      {
+        "name": "GetParagraphCount",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentAccessor.cs",
+        "line": 71,
+        "role": "analytics"
+      },
+      {
+        "name": "GetDocumentStats",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentAccessor.cs",
+        "line": 78,
+        "role": "analytics"
+      },
+      {
+        "name": "GetParagraphStyleName",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentAccessor.cs",
+        "line": 101,
+        "role": "model"
+      },
+      {
+        "name": "GetDocumentMetadata",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentAccessor.cs",
+        "line": 135,
+        "role": "model"
+      },
+      {
+        "name": "GetParagraphStyles",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentAccessor.cs",
+        "line": 170,
+        "role": "model"
+      },
+      {
+        "name": "ExportToOutlineJson",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentAccessor.cs",
+        "line": 185,
+        "role": "writer"
+      },
+      {
+        "name": "FindParagraphsByStyle",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentAccessor.cs",
+        "line": 224,
+        "role": "model"
+      },
+      {
+        "name": "AppendHeading",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 22,
+        "role": "model"
+      },
+      {
+        "name": "ExportToPlainText",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 30,
+        "role": "writer"
+      },
+      {
+        "name": "ExportToText",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 33,
+        "role": "writer"
+      },
+      {
+        "name": "ExportToTxt",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 40,
+        "role": "writer"
+      },
+      {
+        "name": "ExportToFile",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 43,
+        "role": "writer"
+      },
+      {
+        "name": "SaveToStream",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 46,
+        "role": "writer"
+      },
+      {
+        "name": "GetTableCount",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 57,
+        "role": "analytics"
+      },
+      {
+        "name": "AddTable",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 62,
+        "role": "model"
+      },
+      {
+        "name": "AddTable",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 70,
+        "role": "model"
+      },
+      {
+        "name": "AddTable",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 84,
+        "role": "model"
+      },
+      {
+        "name": "InsertTable",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 92,
+        "role": "model"
+      },
+      {
+        "name": "InsertTable",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 95,
+        "role": "model"
+      },
+      {
+        "name": "GetTableRowCount",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 98,
+        "role": "analytics"
+      },
+      {
+        "name": "GetTableColumnCount",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 110,
+        "role": "analytics"
+      },
+      {
+        "name": "GetTableCellText",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 123,
+        "role": "model"
+      },
+      {
+        "name": "SetTableCellText",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 139,
+        "role": "model"
+      },
+      {
+        "name": "GetTableCellValue",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 158,
+        "role": "model"
+      },
+      {
+        "name": "SetTableCell",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 162,
+        "role": "model"
+      },
+      {
+        "name": "GetTableAt",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 166,
+        "role": "model"
+      },
+      {
+        "name": "GetTableCell",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 190,
+        "role": "model"
+      },
+      {
+        "name": "GetBookmarkCount",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 200,
+        "role": "analytics"
+      },
+      {
+        "name": "AddBookmark",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 203,
+        "role": "model"
+      },
+      {
+        "name": "GetBookmarkName",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 210,
+        "role": "model"
+      },
+      {
+        "name": "GetBookmarkNames",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 218,
+        "role": "model"
+      },
+      {
+        "name": "GetBookmarkPosition",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 222,
+        "role": "model"
+      },
+      {
+        "name": "GetSectionCount",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 236,
+        "role": "analytics"
+      },
+      {
+        "name": "AddSection",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 242,
+        "role": "model"
+      },
+      {
+        "name": "AddSection",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 249,
+        "role": "model"
+      },
+      {
+        "name": "AddSection",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 256,
+        "role": "model"
+      },
+      {
+        "name": "AppendSection",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 263,
+        "role": "model"
+      },
+      {
+        "name": "InsertSection",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 266,
+        "role": "model"
+      },
+      {
+        "name": "InsertSection",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 273,
+        "role": "model"
+      },
+      {
+        "name": "InsertSection",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 282,
+        "role": "model"
+      },
+      {
+        "name": "GetSectionNames",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 291,
+        "role": "model"
+      },
+      {
+        "name": "GetSectionName",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 294,
+        "role": "model"
+      },
+      {
+        "name": "GetSectionTitle",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 302,
+        "role": "model"
+      },
+      {
+        "name": "RenameSection",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 305,
+        "role": "model"
+      },
+      {
+        "name": "GetCommentCount",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 318,
+        "role": "analytics"
+      },
+      {
+        "name": "AddComment",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 321,
+        "role": "model"
+      },
+      {
+        "name": "AddComment",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 328,
+        "role": "model"
+      },
+      {
+        "name": "AddComment",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 335,
+        "role": "model"
+      },
+      {
+        "name": "AddComment",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 342,
+        "role": "model"
+      },
+      {
+        "name": "AddComment",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 349,
+        "role": "model"
+      },
+      {
+        "name": "GetComments",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 356,
+        "role": "model"
+      },
+      {
+        "name": "GetCommentText",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 359,
+        "role": "model"
+      },
+      {
+        "name": "GetFootnoteCount",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 373,
+        "role": "analytics"
+      },
+      {
+        "name": "AddFootnote",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 376,
+        "role": "model"
+      },
+      {
+        "name": "AddFootnote",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 383,
+        "role": "model"
+      },
+      {
+        "name": "GetFootnoteText",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 390,
+        "role": "model"
+      },
+      {
+        "name": "GetEndnoteCount",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 404,
+        "role": "analytics"
+      },
+      {
+        "name": "AddEndnote",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 407,
+        "role": "model"
+      },
+      {
+        "name": "AddEndnote",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 414,
+        "role": "model"
+      },
+      {
+        "name": "GetEndnoteText",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 421,
+        "role": "model"
+      },
+      {
+        "name": "GetHyperlinkCount",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 435,
+        "role": "analytics"
+      },
+      {
+        "name": "AddHyperlink",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 438,
+        "role": "model"
+      },
+      {
+        "name": "AddHyperlink",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 446,
+        "role": "model"
+      },
+      {
+        "name": "GetHyperlinkUrl",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 453,
+        "role": "model"
+      },
+      {
+        "name": "InsertHyperlink",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 461,
+        "role": "model"
+      },
+      {
+        "name": "GetListCount",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 474,
+        "role": "analytics"
+      },
+      {
+        "name": "AddList",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 477,
+        "role": "model"
+      },
+      {
+        "name": "AddBulletList",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 484,
+        "role": "model"
+      },
+      {
+        "name": "AddNumberedList",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 487,
+        "role": "model"
+      },
+      {
+        "name": "AppendList",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 490,
+        "role": "model"
+      },
+      {
+        "name": "InsertList",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 493,
+        "role": "model"
+      },
+      {
+        "name": "InsertList",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 502,
+        "role": "model"
+      },
+      {
+        "name": "AddListItem",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 511,
+        "role": "model"
+      },
+      {
+        "name": "AddListItem",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 519,
+        "role": "model"
+      },
+      {
+        "name": "GetListItemCount",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 528,
+        "role": "analytics"
+      },
+      {
+        "name": "GetListItemCount",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 531,
+        "role": "analytics"
+      },
+      {
+        "name": "GetListItems",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 539,
+        "role": "model"
+      },
+      {
+        "name": "GetListItemText",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 547,
+        "role": "model"
+      },
+      {
+        "name": "GetListItemText",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 558,
+        "role": "model"
+      },
+      {
+        "name": "GetImageCount",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 576,
+        "role": "analytics"
+      },
+      {
+        "name": "AddImage",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 579,
+        "role": "model"
+      },
+      {
+        "name": "InsertImage",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 586,
+        "role": "model"
+      },
+      {
+        "name": "GetImagePath",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 595,
+        "role": "model"
+      },
+      {
+        "name": "AddImage",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 603,
+        "role": "model"
+      },
+      {
+        "name": "GetImageCaption",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 610,
+        "role": "model"
+      },
+      {
+        "name": "GetDocumentTitle",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 634,
+        "role": "model"
+      },
+      {
+        "name": "SetDocumentTitle",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 637,
+        "role": "model"
+      },
+      {
+        "name": "GetAuthor",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 643,
+        "role": "model"
+      },
+      {
+        "name": "SetAuthor",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 646,
+        "role": "model"
+      },
+      {
+        "name": "GetCreator",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 652,
+        "role": "model"
+      },
+      {
+        "name": "SetCreator",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 655,
+        "role": "model"
+      },
+      {
+        "name": "GetLanguage",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 658,
+        "role": "model"
+      },
+      {
+        "name": "SetLanguage",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 661,
+        "role": "model"
+      },
+      {
+        "name": "GetDocumentDescription",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 664,
+        "role": "model"
+      },
+      {
+        "name": "SetDocumentDescription",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 667,
+        "role": "model"
+      },
+      {
+        "name": "GetDocumentSubject",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 670,
+        "role": "model"
+      },
+      {
+        "name": "SetDocumentSubject",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 673,
+        "role": "model"
+      },
+      {
+        "name": "GetDocumentKeywords",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 676,
+        "role": "model"
+      },
+      {
+        "name": "SetDocumentKeywords",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 679,
+        "role": "model"
+      },
+      {
+        "name": "GetCreationDate",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 682,
+        "role": "model"
+      },
+      {
+        "name": "GetLastModifiedDate",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 685,
+        "role": "model"
+      },
+      {
+        "name": "SetMetadata",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 697,
+        "role": "model"
+      },
+      {
+        "name": "GetMetadata",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 704,
+        "role": "model"
+      },
+      {
+        "name": "SetMetadata",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 711,
+        "role": "model"
+      },
+      {
+        "name": "GetDocumentSummary",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 719,
+        "role": "analytics"
+      },
+      {
+        "name": "GetMimeType",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 726,
+        "role": "model"
+      },
+      {
+        "name": "GetFormat",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 729,
+        "role": "model"
+      },
+      {
+        "name": "GetOdfVersion",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 732,
+        "role": "model"
+      },
+      {
+        "name": "GetParagraphAt",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 744,
+        "role": "model"
+      },
+      {
+        "name": "DeleteParagraphAt",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 753,
+        "role": "model"
+      },
+      {
+        "name": "RemoveParagraphAt",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 756,
+        "role": "model"
+      },
+      {
+        "name": "InsertParagraphAt",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 759,
+        "role": "model"
+      },
+      {
+        "name": "MoveParagraph",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 763,
+        "role": "model"
+      },
+      {
+        "name": "TrimParagraph",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 787,
+        "role": "model"
+      },
+      {
+        "name": "ReplaceParagraphText",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 800,
+        "role": "model"
+      },
+      {
+        "name": "GetHeadingText",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 813,
+        "role": "model"
+      },
+      {
+        "name": "GetHeadingLevel",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 822,
+        "role": "model"
+      },
+      {
+        "name": "SetHeadingLevel",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 832,
+        "role": "model"
+      },
+      {
+        "name": "GetOutlineLevel",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 843,
+        "role": "model"
+      },
+      {
+        "name": "GetParagraphStyle",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 858,
+        "role": "model"
+      },
+      {
+        "name": "SetStyle",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 867,
+        "role": "model"
+      },
+      {
+        "name": "GetStyles",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 876,
+        "role": "model"
+      },
+      {
+        "name": "SetFontStyle",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 880,
+        "role": "model"
+      },
+      {
+        "name": "GetParagraphsByStyle",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 883,
+        "role": "model"
+      },
+      {
+        "name": "CountWords",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 891,
+        "role": "analytics"
+      },
+      {
+        "name": "CountSentences",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 894,
+        "role": "analytics"
+      },
+      {
+        "name": "GetBodyParagraphs",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 920,
+        "role": "model"
+      },
+      {
+        "name": "ExtractPlainParagraphs",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 924,
+        "role": "model"
+      },
+      {
+        "name": "FindParagraph",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 928,
+        "role": "model"
+      },
+      {
+        "name": "GetPageCount",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 949,
+        "role": "analytics"
+      },
+      {
+        "name": "GetReadingTimeMinutes",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 952,
+        "role": "parser"
+      },
+      {
+        "name": "GetChangeCount",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 969,
+        "role": "analytics"
+      },
+      {
+        "name": "GetPageOrientation",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 995,
+        "role": "model"
+      },
+      {
+        "name": "SetPageOrientation",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 998,
+        "role": "model"
+      },
+      {
+        "name": "GetRevisionCount",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1006,
+        "role": "analytics"
+      },
+      {
+        "name": "GetTrackedChangeSummary",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1009,
+        "role": "analytics"
+      },
+      {
+        "name": "AcceptAllChanges",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1012,
+        "role": "model"
+      },
+      {
+        "name": "SetHeader",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1022,
+        "role": "model"
+      },
+      {
+        "name": "SetHeaderText",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1025,
+        "role": "model"
+      },
+      {
+        "name": "GetHeaderText",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1028,
+        "role": "model"
+      },
+      {
+        "name": "GetHeaderContent",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1031,
+        "role": "model"
+      },
+      {
+        "name": "SetFooterText",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1034,
+        "role": "model"
+      },
+      {
+        "name": "GetFooterText",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1037,
+        "role": "model"
+      },
+      {
+        "name": "GetFooterContent",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1040,
+        "role": "model"
+      },
+      {
+        "name": "GetAnnotationCount",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1049,
+        "role": "analytics"
+      },
+      {
+        "name": "AddAnnotation",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1052,
+        "role": "model"
+      },
+      {
+        "name": "AddAnnotation",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1059,
+        "role": "model"
+      },
+      {
+        "name": "AddAnnotation",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1067,
+        "role": "model"
+      },
+      {
+        "name": "AddAnnotation",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1074,
+        "role": "model"
+      },
+      {
+        "name": "GetAnnotationText",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1081,
+        "role": "model"
+      },
+      {
+        "name": "GetCrossReferenceCount",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1095,
+        "role": "analytics"
+      },
+      {
+        "name": "AddCrossReference",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1098,
+        "role": "model"
+      },
+      {
+        "name": "AddCrossReference",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1105,
+        "role": "model"
+      },
+      {
+        "name": "AddCrossReference",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1112,
+        "role": "model"
+      },
+      {
+        "name": "GetCrossReferenceTarget",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1119,
+        "role": "model"
+      },
+      {
+        "name": "GetTextBoxCount",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1133,
+        "role": "analytics"
+      },
+      {
+        "name": "AddTextBox",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1136,
+        "role": "model"
+      },
+      {
+        "name": "AddTextBox",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1143,
+        "role": "model"
+      },
+      {
+        "name": "GetTextBoxContent",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1150,
+        "role": "model"
+      },
+      {
+        "name": "SplitByHeading",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1162,
+        "role": "model"
+      },
+      {
+        "name": "SplitDocument",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1180,
+        "role": "model"
+      },
+      {
+        "name": "ConvertAll",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1216,
+        "role": "model"
+      },
+      {
+        "name": "Exists",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1223,
+        "role": "model"
+      },
+      {
+        "name": "CreateNew",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1251,
+        "role": "model"
+      },
+      {
+        "name": "LoadFile",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1254,
+        "role": "parser"
+      },
+      {
+        "name": "ExportToFile",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1261,
+        "role": "writer"
+      },
+      {
+        "name": "ExportToHtml",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1280,
+        "role": "writer"
+      },
+      {
+        "name": "ExportToMarkdown",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1287,
+        "role": "writer"
+      },
+      {
+        "name": "ExportToText",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1294,
+        "role": "writer"
+      },
+      {
+        "name": "GetHeadingTexts",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1305,
+        "role": "model"
+      },
+      {
+        "name": "SplitByHeading",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1322,
+        "role": "model"
+      },
+      {
+        "name": "GetTableCellCount",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1350,
+        "role": "analytics"
+      },
+      {
+        "name": "SetTitle",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1368,
+        "role": "model"
+      },
+      {
+        "name": "GetCharacterCount",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1371,
+        "role": "analytics"
+      },
+      {
+        "name": "AddParagraph",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1378,
+        "role": "model"
+      },
+      {
+        "name": "AppendText",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1381,
+        "role": "model"
+      },
+      {
+        "name": "AddHeading",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1384,
+        "role": "model"
+      },
+      {
+        "name": "GetTableName",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1398,
+        "role": "model"
+      },
+      {
+        "name": "SetTableCellValue",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1414,
+        "role": "model"
+      },
+      {
+        "name": "SetTableCellStyle",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1418,
+        "role": "model"
+      },
+      {
+        "name": "AddTable",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1435,
+        "role": "model"
+      },
+      {
+        "name": "InsertTable",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1447,
+        "role": "model"
+      },
+      {
+        "name": "GetTableCellCount",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1454,
+        "role": "analytics"
+      },
+      {
+        "name": "SetSectionStyle",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1468,
+        "role": "model"
+      },
+      {
+        "name": "GetLineCount",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1475,
+        "role": "analytics"
+      },
+      {
+        "name": "GetWordFrequency",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1482,
+        "role": "model"
+      },
+      {
+        "name": "GetTextDensity",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1495,
+        "role": "model"
+      },
+      {
+        "name": "GetReadabilityScore",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1504,
+        "role": "parser"
+      },
+      {
+        "name": "AddBookmark",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1532,
+        "role": "model"
+      },
+      {
+        "name": "AddListItem",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1543,
+        "role": "model"
+      },
+      {
+        "name": "AddHyperlink",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1554,
+        "role": "model"
+      },
+      {
+        "name": "InsertTable",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1565,
+        "role": "model"
+      },
+      {
+        "name": "InsertTable",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1578,
+        "role": "model"
+      },
+      {
+        "name": "InsertImage",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1599,
+        "role": "model"
+      },
+      {
+        "name": "GetSectionType",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1611,
+        "role": "model"
+      },
+      {
+        "name": "GetSectionContent",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1614,
+        "role": "model"
+      },
+      {
+        "name": "GetParagraphLength",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1617,
+        "role": "model"
+      },
+      {
+        "name": "GetParagraphAlignment",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1626,
+        "role": "model"
+      },
+      {
+        "name": "GetAnnotationDate",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1635,
+        "role": "model"
+      },
+      {
+        "name": "GetAnnotationAuthor",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1643,
+        "role": "model"
+      },
+      {
+        "name": "DuplicateParagraph",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1651,
+        "role": "model"
+      },
+      {
+        "name": "AddTableRow",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1660,
+        "role": "model"
+      },
+      {
+        "name": "AddTableRow",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1679,
+        "role": "model"
+      },
+      {
+        "name": "AddTableColumn",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1685,
+        "role": "model"
+      },
+      {
+        "name": "AddTableColumn",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1704,
+        "role": "model"
+      },
+      {
+        "name": "GetTableStyle",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1707,
+        "role": "model"
+      },
+      {
+        "name": "SetTableStyle",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1717,
+        "role": "model"
+      },
+      {
+        "name": "GetTableRowHeight",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1726,
+        "role": "model"
+      },
+      {
+        "name": "GetTableColumnWidth",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1736,
+        "role": "model"
+      },
+      {
+        "name": "SetTableColumnWidth",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1746,
+        "role": "model"
+      },
+      {
+        "name": "GetTableCellStyle",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1755,
+        "role": "model"
+      },
+      {
+        "name": "GetStyleName",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1769,
+        "role": "model"
+      },
+      {
+        "name": "GetSectionStyle",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1772,
+        "role": "model"
+      },
+      {
+        "name": "GetPageSize",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1778,
+        "role": "model"
+      },
+      {
+        "name": "SetPageSize",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1781,
+        "role": "model"
+      },
+      {
+        "name": "GetPageMargins",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1784,
+        "role": "model"
+      },
+      {
+        "name": "SetPageMargins",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1787,
+        "role": "model"
+      },
+      {
+        "name": "GetDocumentLanguage",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1790,
+        "role": "model"
+      },
+      {
+        "name": "GetDocumentAuthor",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1793,
+        "role": "model"
+      },
+      {
+        "name": "FindText",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1796,
+        "role": "model"
+      },
+      {
+        "name": "FindAndReplaceText",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1803,
+        "role": "model"
+      },
+      {
+        "name": "ExportToPdf",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1821,
+        "role": "writer"
+      },
+      {
+        "name": "ClearParagraph",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1831,
+        "role": "model"
+      },
+      {
+        "name": "RemoveTable",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1840,
+        "role": "model"
+      },
+      {
+        "name": "RemoveSection",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1852,
+        "role": "model"
+      },
+      {
+        "name": "GetSentenceCount",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1858,
+        "role": "analytics"
+      },
+      {
+        "name": "GetMetadataTitle",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1861,
+        "role": "model"
+      },
+      {
+        "name": "GetMetadataSubject",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1864,
+        "role": "model"
+      },
+      {
+        "name": "GetMetadataLanguage",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1867,
+        "role": "model"
+      },
+      {
+        "name": "GetMetadataKeywords",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1870,
+        "role": "model"
+      },
+      {
+        "name": "GetMetadataGenerator",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1873,
+        "role": "model"
+      },
+      {
+        "name": "GetMetadataDescription",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1876,
+        "role": "model"
+      },
+      {
+        "name": "GetMetadataDate",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1879,
+        "role": "model"
+      },
+      {
+        "name": "GetMetadataCreator",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1882,
+        "role": "model"
+      },
+      {
+        "name": "GetMetadataAuthor",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1885,
+        "role": "model"
+      },
+      {
+        "name": "SetTableName",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1888,
+        "role": "model"
+      },
+      {
+        "name": "SetSubject",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1898,
+        "role": "model"
+      },
+      {
+        "name": "GetCrossReferenceTarget",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1901,
+        "role": "model"
+      },
+      {
+        "name": "AddTable",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1913,
+        "role": "model"
+      },
+      {
+        "name": "InsertTable",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1925,
+        "role": "model"
+      },
+      {
+        "name": "InsertBookmark",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1946,
+        "role": "model"
+      },
+      {
+        "name": "AddBookmark",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1957,
+        "role": "model"
+      },
+      {
+        "name": "GetStyleName",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1968,
+        "role": "model"
+      },
+      {
+        "name": "GetCharFrequency",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1975,
+        "role": "model"
+      },
+      {
+        "name": "GetUniqueWordCount",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1989,
+        "role": "analytics"
+      },
+      {
+        "name": "GetAverageSentenceLength",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 1996,
+        "role": "model"
+      },
+      {
+        "name": "GetLinkCount",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 2004,
+        "role": "analytics"
+      },
+      {
+        "name": "GetDocumentCreationDate",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 2011,
+        "role": "model"
+      },
+      {
+        "name": "GetDocumentModifiedDate",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 2014,
+        "role": "model"
+      },
+      {
+        "name": "GetParagraphFont",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 2027,
+        "role": "model"
+      },
+      {
+        "name": "SetParagraphFont",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 2036,
+        "role": "model"
+      },
+      {
+        "name": "GetParagraphFontSize",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 2045,
+        "role": "model"
+      },
+      {
+        "name": "SetParagraphFontSize",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 2054,
+        "role": "model"
+      },
+      {
+        "name": "GetParagraphColor",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 2063,
+        "role": "model"
+      },
+      {
+        "name": "SetParagraphColor",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 2072,
+        "role": "model"
+      },
+      {
+        "name": "GetParagraphIndent",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 2081,
+        "role": "model"
+      },
+      {
+        "name": "SetParagraphIndent",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 2090,
+        "role": "model"
+      },
+      {
+        "name": "GetParagraphSpacing",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 2099,
+        "role": "model"
+      },
+      {
+        "name": "SetParagraphSpacing",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 2108,
+        "role": "model"
+      },
+      {
+        "name": "SetDate",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 2134,
+        "role": "model"
+      },
+      {
+        "name": "SetDescription",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 2137,
+        "role": "model"
+      },
+      {
+        "name": "SetDocumentAuthor",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 2140,
+        "role": "model"
+      },
+      {
+        "name": "SetDocumentCreationDate",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 2143,
+        "role": "model"
+      },
+      {
+        "name": "SetDocumentLanguage",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 2146,
+        "role": "model"
+      },
+      {
+        "name": "SetDocumentModifiedDate",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 2149,
+        "role": "model"
+      },
+      {
+        "name": "SetGenerator",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 2152,
+        "role": "model"
+      },
+      {
+        "name": "SetKeywords",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 2155,
+        "role": "model"
+      },
+      {
+        "name": "SetParagraphAlignment",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 2162,
+        "role": "model"
+      },
+      {
+        "name": "SetTableRowHeight",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 2175,
+        "role": "model"
+      },
+      {
+        "name": "GetSectionType",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 2182,
+        "role": "model"
+      },
+      {
+        "name": "GetSectionContent",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 2190,
+        "role": "model"
+      },
+      {
+        "name": "GetSectionTitle",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 2198,
+        "role": "model"
+      },
+      {
+        "name": "GetSectionStyle",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 2206,
+        "role": "model"
+      },
+      {
+        "name": "SetSectionStyle",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 2214,
+        "role": "model"
+      },
+      {
+        "name": "RenameSection",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 2221,
+        "role": "model"
+      },
+      {
+        "name": "RemoveSection",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 2229,
+        "role": "model"
+      },
+      {
+        "name": "Deconstruct",
+        "kind": "method",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 2255,
+        "role": "model"
+      },
+      {
+        "name": "ExportToHtml",
+        "kind": "method",
+        "file": "src/net/fodt/FodtHtmlExporter.cs",
+        "line": 52,
+        "role": "writer"
+      },
+      {
+        "name": "ExportToHtml",
+        "kind": "method",
+        "file": "src/net/fodt/FodtHtmlExporter.cs",
+        "line": 78,
+        "role": "writer"
+      },
+      {
+        "name": "HtmlEscape",
+        "kind": "method",
+        "file": "src/net/fodt/FodtHtmlExporter.cs",
+        "line": 169,
+        "role": "writer"
+      },
+      {
+        "name": "ExportToMarkdown",
+        "kind": "method",
+        "file": "src/net/fodt/FodtMarkdownExporter.cs",
+        "line": 54,
+        "role": "writer"
+      },
+      {
+        "name": "ExportToMarkdown",
+        "kind": "method",
+        "file": "src/net/fodt/FodtMarkdownExporter.cs",
+        "line": 80,
+        "role": "writer"
+      },
+      {
+        "name": "FormatParagraphAsMarkdown",
+        "kind": "method",
+        "file": "src/net/fodt/FodtMarkdownExporter.cs",
+        "line": 156,
+        "role": "writer"
+      },
+      {
+        "name": "Parse",
+        "kind": "method",
+        "file": "src/net/fodt/FodtParser.cs",
+        "line": 37,
+        "role": "parser"
+      },
+      {
+        "name": "GetParagraphCount",
+        "kind": "method",
+        "file": "src/net/fodt/FodtParser.cs",
+        "line": 106,
+        "role": "parser"
+      },
+      {
+        "name": "ExportToPdf",
+        "kind": "method",
+        "file": "src/net/fodt/FodtPdfExporter.cs",
+        "line": 77,
+        "role": "writer"
+      },
+      {
+        "name": "ExportToPdf",
+        "kind": "method",
+        "file": "src/net/fodt/FodtPdfExporter.cs",
+        "line": 94,
+        "role": "writer"
+      },
+      {
+        "name": "ExportToPdfBytes",
+        "kind": "method",
+        "file": "src/net/fodt/FodtPdfExporter.cs",
+        "line": 113,
+        "role": "writer"
+      },
+      {
+        "name": "WriteHeader",
+        "kind": "method",
+        "file": "src/net/fodt/FodtPdfExporter.cs",
+        "line": 323,
+        "role": "writer"
+      },
+      {
+        "name": "WriteRaw",
+        "kind": "method",
+        "file": "src/net/fodt/FodtPdfExporter.cs",
+        "line": 329,
+        "role": "writer"
+      },
+      {
+        "name": "ExportToPng",
+        "kind": "method",
+        "file": "src/net/fodt/FodtPngExporter.cs",
+        "line": 80,
+        "role": "writer"
+      },
+      {
+        "name": "ExportToPng",
+        "kind": "method",
+        "file": "src/net/fodt/FodtPngExporter.cs",
+        "line": 97,
+        "role": "writer"
+      },
+      {
+        "name": "ExportToPngBytes",
+        "kind": "method",
+        "file": "src/net/fodt/FodtPngExporter.cs",
+        "line": 121,
+        "role": "writer"
+      },
+      {
+        "name": "ExportTxt",
+        "kind": "method",
+        "file": "src/net/fodt/FodtTxtExporter.cs",
+        "line": 58,
+        "role": "writer"
+      },
+      {
+        "name": "ExportTxt",
+        "kind": "method",
+        "file": "src/net/fodt/FodtTxtExporter.cs",
+        "line": 84,
+        "role": "writer"
+      },
+      {
+        "name": "SetText",
+        "kind": "method",
+        "file": "src/net/fodt/Model/FodtParagraph.cs",
+        "line": 55,
+        "role": "model"
+      },
+      {
+        "name": "GetCellText",
+        "kind": "method",
+        "file": "src/net/fodt/Model/FodtTable.cs",
+        "line": 59,
+        "role": "model"
+      },
+      {
+        "name": "GetPlainText",
+        "kind": "method",
+        "file": "src/net/fodt/Model/FodtTableCell.cs",
+        "line": 54,
+        "role": "model"
+      },
+      {
+        "name": "MaxFileSizeBytes",
+        "kind": "property",
+        "file": "src/net/fodt/FodtDocument.cs",
+        "line": 50,
+        "role": "model"
+      },
+      {
+        "name": "WordCount",
+        "kind": "property",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 2244,
+        "role": "analytics"
+      },
+      {
+        "name": "CharCount",
+        "kind": "property",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 2246,
+        "role": "analytics"
+      },
+      {
+        "name": "ParagraphCount",
+        "kind": "property",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 2250,
+        "role": "analytics"
+      },
+      {
+        "name": "HeadingCount",
+        "kind": "property",
+        "file": "src/net/fodt/FodtDocumentExtendedApis.cs",
+        "line": 2252,
+        "role": "analytics"
+      },
+      {
+        "name": "SourcePath",
+        "kind": "property",
+        "file": "src/net/fodt/FodtHtmlExporter.cs",
+        "line": 180,
+        "role": "writer"
+      },
+      {
+        "name": "OutputPath",
+        "kind": "property",
+        "file": "src/net/fodt/FodtHtmlExporter.cs",
+        "line": 181,
+        "role": "writer"
+      },
+      {
+        "name": "HeadingsExported",
+        "kind": "property",
+        "file": "src/net/fodt/FodtHtmlExporter.cs",
+        "line": 182,
+        "role": "writer"
+      },
+      {
+        "name": "ParagraphsExported",
+        "kind": "property",
+        "file": "src/net/fodt/FodtHtmlExporter.cs",
+        "line": 183,
+        "role": "writer"
+      },
+      {
+        "name": "Status",
+        "kind": "property",
+        "file": "src/net/fodt/FodtHtmlExporter.cs",
+        "line": 184,
+        "role": "writer"
+      },
+      {
+        "name": "Warnings",
+        "kind": "property",
+        "file": "src/net/fodt/FodtHtmlExporter.cs",
+        "line": 185,
+        "role": "writer"
+      },
+      {
+        "name": "SourcePath",
+        "kind": "property",
+        "file": "src/net/fodt/FodtMarkdownExporter.cs",
+        "line": 172,
+        "role": "writer"
+      },
+      {
+        "name": "OutputPath",
+        "kind": "property",
+        "file": "src/net/fodt/FodtMarkdownExporter.cs",
+        "line": 173,
+        "role": "writer"
+      },
+      {
+        "name": "HeadingsExported",
+        "kind": "property",
+        "file": "src/net/fodt/FodtMarkdownExporter.cs",
+        "line": 174,
+        "role": "writer"
+      },
+      {
+        "name": "ParagraphsExported",
+        "kind": "property",
+        "file": "src/net/fodt/FodtMarkdownExporter.cs",
+        "line": 175,
+        "role": "writer"
+      },
+      {
+        "name": "Status",
+        "kind": "property",
+        "file": "src/net/fodt/FodtMarkdownExporter.cs",
+        "line": 176,
+        "role": "writer"
+      },
+      {
+        "name": "Warnings",
+        "kind": "property",
+        "file": "src/net/fodt/FodtMarkdownExporter.cs",
+        "line": 177,
+        "role": "writer"
+      },
+      {
+        "name": "MaxFileSizeBytes",
+        "kind": "property",
+        "file": "src/net/fodt/FodtParser.cs",
+        "line": 30,
+        "role": "parser"
+      },
+      {
+        "name": "MimeType",
+        "kind": "property",
+        "file": "src/net/fodt/FodtParser.cs",
+        "line": 256,
+        "role": "parser"
+      },
+      {
+        "name": "OdfVersion",
+        "kind": "property",
+        "file": "src/net/fodt/FodtParser.cs",
+        "line": 259,
+        "role": "parser"
+      },
+      {
+        "name": "Title",
+        "kind": "property",
+        "file": "src/net/fodt/FodtParser.cs",
+        "line": 262,
+        "role": "parser"
+      },
+      {
+        "name": "Creator",
+        "kind": "property",
+        "file": "src/net/fodt/FodtParser.cs",
+        "line": 265,
+        "role": "parser"
+      },
+      {
+        "name": "Subject",
+        "kind": "property",
+        "file": "src/net/fodt/FodtParser.cs",
+        "line": 268,
+        "role": "parser"
+      },
+      {
+        "name": "InitialCreator",
+        "kind": "property",
+        "file": "src/net/fodt/FodtParser.cs",
+        "line": 271,
+        "role": "parser"
+      },
+      {
+        "name": "FileSizeBytes",
+        "kind": "property",
+        "file": "src/net/fodt/FodtParser.cs",
+        "line": 274,
+        "role": "parser"
+      },
+      {
+        "name": "ParagraphCount",
+        "kind": "property",
+        "file": "src/net/fodt/FodtParser.cs",
+        "line": 277,
+        "role": "parser"
+      },
+      {
+        "name": "HeadingCount",
+        "kind": "property",
+        "file": "src/net/fodt/FodtParser.cs",
+        "line": 280,
+        "role": "parser"
+      },
+      {
+        "name": "ListCount",
+        "kind": "property",
+        "file": "src/net/fodt/FodtParser.cs",
+        "line": 283,
+        "role": "parser"
+      },
+      {
+        "name": "Tables",
+        "kind": "property",
+        "file": "src/net/fodt/FodtParser.cs",
+        "line": 286,
+        "role": "parser"
+      },
+      {
+        "name": "Errors",
+        "kind": "property",
+        "file": "src/net/fodt/FodtParser.cs",
+        "line": 289,
+        "role": "exception"
+      },
+      {
+        "name": "Warnings",
+        "kind": "property",
+        "file": "src/net/fodt/FodtParser.cs",
+        "line": 292,
+        "role": "parser"
+      },
+      {
+        "name": "Name",
+        "kind": "property",
+        "file": "src/net/fodt/FodtParser.cs",
+        "line": 302,
+        "role": "parser"
+      },
+      {
+        "name": "RowCount",
+        "kind": "property",
+        "file": "src/net/fodt/FodtParser.cs",
+        "line": 305,
+        "role": "parser"
+      },
+      {
+        "name": "CellCount",
+        "kind": "property",
+        "file": "src/net/fodt/FodtParser.cs",
+        "line": 310,
+        "role": "parser"
+      },
+      {
+        "name": "OutputPath",
+        "kind": "property",
+        "file": "src/net/fodt/FodtPdfExporter.cs",
+        "line": 25,
+        "role": "writer"
+      },
+      {
+        "name": "PageCount",
+        "kind": "property",
+        "file": "src/net/fodt/FodtPdfExporter.cs",
+        "line": 28,
+        "role": "writer"
+      },
+      {
+        "name": "TotalParagraphsWritten",
+        "kind": "property",
+        "file": "src/net/fodt/FodtPdfExporter.cs",
+        "line": 31,
+        "role": "writer"
+      },
+      {
+        "name": "Text",
+        "kind": "property",
+        "file": "src/net/fodt/FodtPdfExporter.cs",
+        "line": 127,
+        "role": "writer"
+      },
+      {
+        "name": "IsHeading",
+        "kind": "property",
+        "file": "src/net/fodt/FodtPdfExporter.cs",
+        "line": 128,
+        "role": "writer"
+      },
+      {
+        "name": "OutputPath",
+        "kind": "property",
+        "file": "src/net/fodt/FodtPngExporter.cs",
+        "line": 27,
+        "role": "writer"
+      },
+      {
+        "name": "WidthPx",
+        "kind": "property",
+        "file": "src/net/fodt/FodtPngExporter.cs",
+        "line": 30,
+        "role": "writer"
+      },
+      {
+        "name": "HeightPx",
+        "kind": "property",
+        "file": "src/net/fodt/FodtPngExporter.cs",
+        "line": 33,
+        "role": "writer"
+      },
+      {
+        "name": "ParagraphsRendered",
+        "kind": "property",
+        "file": "src/net/fodt/FodtPngExporter.cs",
+        "line": 36,
+        "role": "writer"
+      },
+      {
+        "name": "IsHeading",
+        "kind": "property",
+        "file": "src/net/fodt/FodtPngExporter.cs",
+        "line": 134,
+        "role": "writer"
+      },
+      {
+        "name": "WordCount",
+        "kind": "property",
+        "file": "src/net/fodt/FodtPngExporter.cs",
+        "line": 135,
+        "role": "writer"
+      },
+      {
+        "name": "SourcePath",
+        "kind": "property",
+        "file": "src/net/fodt/FodtTxtExporter.cs",
+        "line": 143,
+        "role": "writer"
+      },
+      {
+        "name": "OutputPath",
+        "kind": "property",
+        "file": "src/net/fodt/FodtTxtExporter.cs",
+        "line": 146,
+        "role": "writer"
+      },
+      {
+        "name": "ParagraphsExported",
+        "kind": "property",
+        "file": "src/net/fodt/FodtTxtExporter.cs",
+        "line": 149,
+        "role": "writer"
+      },
+      {
+        "name": "Status",
+        "kind": "property",
+        "file": "src/net/fodt/FodtTxtExporter.cs",
+        "line": 152,
+        "role": "writer"
+      },
+      {
+        "name": "Warnings",
+        "kind": "property",
+        "file": "src/net/fodt/FodtTxtExporter.cs",
+        "line": 155,
+        "role": "writer"
+      },
+      {
+        "name": "ChildCount",
+        "kind": "property",
+        "file": "src/net/fodt/Spec/Office/Body.cs",
+        "line": 24,
+        "role": "analytics"
+      },
+      {
+        "name": "Name",
+        "kind": "property",
+        "file": "src/net/fodt/Spec/Table/Table.cs",
+        "line": 24,
+        "role": "api"
+      },
+      {
+        "name": "RowCount",
+        "kind": "property",
+        "file": "src/net/fodt/Spec/Table/Table.cs",
+        "line": 27,
+        "role": "analytics"
+      },
+      {
+        "name": "Content",
+        "kind": "property",
+        "file": "src/net/fodt/Spec/Table/TableCell.cs",
+        "line": 23,
+        "role": "model"
+      },
+      {
+        "name": "IsCovered",
+        "kind": "property",
+        "file": "src/net/fodt/Spec/Table/TableCell.cs",
+        "line": 26,
+        "role": "model"
+      },
+      {
+        "name": "CellCount",
+        "kind": "property",
+        "file": "src/net/fodt/Spec/Table/TableRow.cs",
+        "line": 23,
+        "role": "analytics"
+      },
+      {
+        "name": "StyleName",
+        "kind": "property",
+        "file": "src/net/fodt/Spec/Table/TableRow.cs",
+        "line": 26,
+        "role": "model"
+      },
+      {
+        "name": "OutlineLevel",
+        "kind": "property",
+        "file": "src/net/fodt/Spec/Text/Heading.cs",
+        "line": 26,
+        "role": "api"
+      },
+      {
+        "name": "Content",
+        "kind": "property",
+        "file": "src/net/fodt/Spec/Text/Heading.cs",
+        "line": 29,
+        "role": "api"
+      },
+      {
+        "name": "StyleName",
+        "kind": "property",
+        "file": "src/net/fodt/Spec/Text/Heading.cs",
+        "line": 32,
+        "role": "api"
+      },
+      {
+        "name": "ItemCount",
+        "kind": "property",
+        "file": "src/net/fodt/Spec/Text/List.cs",
+        "line": 23,
+        "role": "analytics"
+      },
+      {
+        "name": "StyleName",
+        "kind": "property",
+        "file": "src/net/fodt/Spec/Text/List.cs",
+        "line": 26,
+        "role": "api"
+      },
+      {
+        "name": "Content",
+        "kind": "property",
+        "file": "src/net/fodt/Spec/Text/ListItem.cs",
+        "line": 23,
+        "role": "api"
+      },
+      {
+        "name": "StyleName",
+        "kind": "property",
+        "file": "src/net/fodt/Spec/Text/Paragraph.cs",
+        "line": 25,
+        "role": "model"
+      },
+      {
+        "name": "Content",
+        "kind": "property",
+        "file": "src/net/fodt/Spec/Text/Paragraph.cs",
+        "line": 28,
+        "role": "model"
+      },
+      {
+        "name": "Spans",
+        "kind": "property",
+        "file": "src/net/fodt/Spec/Text/Paragraph.cs",
+        "line": 31,
+        "role": "model"
+      },
+      {
+        "name": "StyleName",
+        "kind": "property",
+        "file": "src/net/fodt/Spec/Text/Span.cs",
+        "line": 23,
+        "role": "api"
+      },
+      {
+        "name": "Content",
+        "kind": "property",
+        "file": "src/net/fodt/Spec/Text/Span.cs",
+        "line": 26,
+        "role": "api"
+      }
+    ],
+    "public_member_count": 432
+  }
+}

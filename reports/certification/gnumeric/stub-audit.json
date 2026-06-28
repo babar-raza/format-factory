@@ -1,0 +1,51 @@
+{
+  "file_count": 16,
+  "files_scanned": [
+    "src/python/gnumeric/__init__.py",
+    "src/python/gnumeric/cli.py",
+    "src/python/gnumeric/Compat/__init__.py",
+    "src/python/gnumeric/Compat/gnumeric_sheet.py",
+    "src/python/gnumeric/Compat/gnumeric_workbook.py",
+    "src/python/gnumeric/exceptions.py",
+    "src/python/gnumeric/gnumeric_analytics.py",
+    "src/python/gnumeric/gnumeric_codec.py",
+    "src/python/gnumeric/gnumeric_sheet_iterator.py",
+    "src/python/gnumeric/gnumeric_workbook_stats.py",
+    "src/python/gnumeric/models.py",
+    "src/python/gnumeric/spec/__init__.py",
+    "src/python/gnumeric/spec/workbook/__init__.py",
+    "src/python/gnumeric/spec/workbook/cell.py",
+    "src/python/gnumeric/spec/workbook/sheet.py",
+    "src/python/gnumeric/spec/workbook/workbook.py"
+  ],
+  "finding_count": 2,
+  "findings": [
+    {
+      "classification_note": "Non-public or structural placeholder; not automatically material.",
+      "file": "src/python/gnumeric/gnumeric_codec.py",
+      "line": 683,
+      "reason": "pass_statement",
+      "scope": "<module>",
+      "severity": "advisory",
+      "source": "pass"
+    },
+    {
+      "classification_note": "Non-public or structural placeholder; not automatically material.",
+      "file": "src/python/gnumeric/gnumeric_codec.py",
+      "line": 687,
+      "reason": "pass_statement",
+      "scope": "<module>",
+      "severity": "advisory",
+      "source": "pass"
+    }
+  ],
+  "material_finding_count": 0,
+  "metadata": {
+    "authoritative_plan": "plans/.claude/crispy-jingling-snail.md",
+    "generated_by": "codex",
+    "mission_id": "CERT-EXHAUST-20260628",
+    "tool": "stub_detector",
+    "visibility": "internal"
+  },
+  "target": "src/python/gnumeric"
+}

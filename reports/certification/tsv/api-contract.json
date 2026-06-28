@@ -1,0 +1,1026 @@
+{
+  "metadata": {
+    "authoritative_plan": "plans/.claude/crispy-jingling-snail.md",
+    "mission_id": "CERT-EXHAUST-20260628",
+    "format_id": "tsv"
+  },
+  "python": {
+    "contracts": [
+      {
+        "name": "tsv_numeric_cell_count",
+        "kind": "function",
+        "file": "src/python/tsv/tabular_document.py",
+        "line": 19,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "tsv_nonempty_cell_count",
+        "kind": "function",
+        "file": "src/python/tsv/tabular_document.py",
+        "line": 58,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "tsv_empty_row_count",
+        "kind": "function",
+        "file": "src/python/tsv/tabular_document.py",
+        "line": 79,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "tsv_row_count",
+        "kind": "function",
+        "file": "src/python/tsv/tabular_document.py",
+        "line": 102,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "tsv_max_cell_length",
+        "kind": "function",
+        "file": "src/python/tsv/tabular_document.py",
+        "line": 118,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "tsv_column_count",
+        "kind": "function",
+        "file": "src/python/tsv/tabular_document.py",
+        "line": 137,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "count_distinct_values",
+        "kind": "function",
+        "file": "src/python/tsv/tabular_document.py",
+        "line": 150,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "tsv_has_header",
+        "kind": "function",
+        "file": "src/python/tsv/tabular_document.py",
+        "line": 171,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "tsv_duplicate_row_count",
+        "kind": "function",
+        "file": "src/python/tsv/tabular_document.py",
+        "line": 187,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "tsv_total_cell_count",
+        "kind": "function",
+        "file": "src/python/tsv/tabular_document.py",
+        "line": 213,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "tsv_average_cell_length",
+        "kind": "function",
+        "file": "src/python/tsv/tabular_document.py",
+        "line": 227,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "tsv_numeric_density",
+        "kind": "function",
+        "file": "src/python/tsv/tabular_document.py",
+        "line": 244,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "tsv_unique_row_count",
+        "kind": "function",
+        "file": "src/python/tsv/tabular_document.py",
+        "line": 269,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "tsv_header_count",
+        "kind": "function",
+        "file": "src/python/tsv/tabular_document.py",
+        "line": 286,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "tsv_min_cell_length",
+        "kind": "function",
+        "file": "src/python/tsv/tabular_document.py",
+        "line": 293,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "tsv_all_rows_same_length",
+        "kind": "function",
+        "file": "src/python/tsv/tabular_document.py",
+        "line": 313,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "tsv_all_rows",
+        "kind": "function",
+        "file": "src/python/tsv/tabular_document.py",
+        "line": 330,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "tsv_max_numeric_value",
+        "kind": "function",
+        "file": "src/python/tsv/tabular_document.py",
+        "line": 343,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "tsv_has_empty_rows",
+        "kind": "function",
+        "file": "src/python/tsv/tabular_document.py",
+        "line": 356,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "tsv_is_rectangular",
+        "kind": "function",
+        "file": "src/python/tsv/tabular_document.py",
+        "line": 365,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "tsv_empty_cell_count",
+        "kind": "function",
+        "file": "src/python/tsv/tabular_document.py",
+        "line": 375,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "tsv_data_density",
+        "kind": "function",
+        "file": "src/python/tsv/tabular_document.py",
+        "line": 386,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "tsv_min_numeric_value",
+        "kind": "function",
+        "file": "src/python/tsv/tabular_document.py",
+        "line": 395,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "tsv_is_single_column",
+        "kind": "function",
+        "file": "src/python/tsv/tabular_document.py",
+        "line": 408,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "tsv_is_all_numeric",
+        "kind": "function",
+        "file": "src/python/tsv/tabular_document.py",
+        "line": 417,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "tsv_max_field_length",
+        "kind": "function",
+        "file": "src/python/tsv/tabular_document.py",
+        "line": 434,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "tsv_unique_value_count",
+        "kind": "function",
+        "file": "src/python/tsv/tabular_document.py",
+        "line": 443,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "tsv_row_length_variance",
+        "kind": "function",
+        "file": "src/python/tsv/tabular_document.py",
+        "line": 456,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "tsv_column_type_counts",
+        "kind": "function",
+        "file": "src/python/tsv/tabular_document.py",
+        "line": 467,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "tsv_string_density",
+        "kind": "function",
+        "file": "src/python/tsv/tabular_document.py",
+        "line": 493,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "tsv_avg_row_length",
+        "kind": "function",
+        "file": "src/python/tsv/tabular_document.py",
+        "line": 513,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "tsv_max_field_count",
+        "kind": "function",
+        "file": "src/python/tsv/tabular_document.py",
+        "line": 522,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "tsv_is_multi_row",
+        "kind": "function",
+        "file": "src/python/tsv/tabular_document.py",
+        "line": 531,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "tsv_min_field_count",
+        "kind": "function",
+        "file": "src/python/tsv/tabular_document.py",
+        "line": 537,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "tsv_nonempty_row_ratio",
+        "kind": "function",
+        "file": "src/python/tsv/tabular_document.py",
+        "line": 546,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "tsv_numeric_sum",
+        "kind": "function",
+        "file": "src/python/tsv/tabular_document.py",
+        "line": 556,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "tsv_avg_numeric_value",
+        "kind": "function",
+        "file": "src/python/tsv/tabular_document.py",
+        "line": 572,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "tsv_has_duplicates",
+        "kind": "function",
+        "file": "src/python/tsv/tabular_document.py",
+        "line": 590,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "tsv_empty_column_count",
+        "kind": "function",
+        "file": "src/python/tsv/tabular_document.py",
+        "line": 603,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "tsv_is_single_row",
+        "kind": "function",
+        "file": "src/python/tsv/tabular_document.py",
+        "line": 617,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "tsv_longest_row_index",
+        "kind": "function",
+        "file": "src/python/tsv/tabular_document.py",
+        "line": 623,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "tsv_max_row_cell_count",
+        "kind": "function",
+        "file": "src/python/tsv/tabular_document.py",
+        "line": 632,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "tsv_distinct_value_ratio",
+        "kind": "function",
+        "file": "src/python/tsv/tabular_document.py",
+        "line": 641,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "tsv_empty_cell_ratio",
+        "kind": "function",
+        "file": "src/python/tsv/tabular_document.py",
+        "line": 653,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "tsv_column_value_variance",
+        "kind": "function",
+        "file": "src/python/tsv/tabular_document.py",
+        "line": 669,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "tsv_field_length_sum",
+        "kind": "function",
+        "file": "src/python/tsv/tabular_document.py",
+        "line": 688,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "tsv_numeric_field_ratio",
+        "kind": "function",
+        "file": "src/python/tsv/tabular_document.py",
+        "line": 695,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "tsv_is_square",
+        "kind": "function",
+        "file": "src/python/tsv/tabular_document.py",
+        "line": 716,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "tsv_cell_to_row_ratio",
+        "kind": "function",
+        "file": "src/python/tsv/tabular_document.py",
+        "line": 721,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "tsv_string_cell_count",
+        "kind": "function",
+        "file": "src/python/tsv/tabular_document.py",
+        "line": 729,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "tsv_total_string_length",
+        "kind": "function",
+        "file": "src/python/tsv/tabular_document.py",
+        "line": 745,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "tsv_nonempty_row_count",
+        "kind": "function",
+        "file": "src/python/tsv/tabular_document.py",
+        "line": 756,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "tsv_avg_fields_per_row",
+        "kind": "function",
+        "file": "src/python/tsv/tabular_document.py",
+        "line": 766,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "tsv_nonempty_cell_ratio",
+        "kind": "function",
+        "file": "src/python/tsv/tabular_document.py",
+        "line": 775,
+        "role": "analytics",
+        "exported": true
+      },
+      {
+        "name": "parse_tsv_strict",
+        "kind": "function",
+        "file": "src/python/tsv/tsv_parser.py",
+        "line": 50,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "parse_tsv",
+        "kind": "function",
+        "file": "src/python/tsv/tsv_parser.py",
+        "line": 136,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "probe_tsv",
+        "kind": "function",
+        "file": "src/python/tsv/tsv_parser.py",
+        "line": 149,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "get_capabilities",
+        "kind": "function",
+        "file": "src/python/tsv/tsv_parser.py",
+        "line": 196,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "write_tsv",
+        "kind": "function",
+        "file": "src/python/tsv/tsv_parser.py",
+        "line": 226,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "load_tsv",
+        "kind": "function",
+        "file": "src/python/tsv/tsv_parser.py",
+        "line": 249,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "get_headers",
+        "kind": "function",
+        "file": "src/python/tsv/tsv_parser.py",
+        "line": 264,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "get_column",
+        "kind": "function",
+        "file": "src/python/tsv/tsv_parser.py",
+        "line": 274,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "write_tsv_strict",
+        "kind": "function",
+        "file": "src/python/tsv/tsv_parser.py",
+        "line": 283,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "get_row",
+        "kind": "function",
+        "file": "src/python/tsv/tsv_parser.py",
+        "line": 307,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "validate_headers",
+        "kind": "function",
+        "file": "src/python/tsv/tsv_parser.py",
+        "line": 318,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "count_rows",
+        "kind": "function",
+        "file": "src/python/tsv/tsv_parser.py",
+        "line": 339,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "to_csv",
+        "kind": "function",
+        "file": "src/python/tsv/tsv_parser.py",
+        "line": 345,
+        "role": "writer",
+        "exported": true
+      },
+      {
+        "name": "deduplicate_rows",
+        "kind": "function",
+        "file": "src/python/tsv/tsv_parser.py",
+        "line": 363,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "get_row_by_key",
+        "kind": "function",
+        "file": "src/python/tsv/tsv_parser.py",
+        "line": 376,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "merge_tsv",
+        "kind": "function",
+        "file": "src/python/tsv/tsv_parser.py",
+        "line": 395,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "min_column_tsv",
+        "kind": "function",
+        "file": "src/python/tsv/tsv_parser.py",
+        "line": 405,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sample_rows",
+        "kind": "function",
+        "file": "src/python/tsv/tsv_parser.py",
+        "line": 421,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sum_column_tsv",
+        "kind": "function",
+        "file": "src/python/tsv/tsv_parser.py",
+        "line": 428,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "sort_rows",
+        "kind": "function",
+        "file": "src/python/tsv/tsv_parser.py",
+        "line": 444,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "drop_column",
+        "kind": "function",
+        "file": "src/python/tsv/tsv_parser.py",
+        "line": 454,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "add_column",
+        "kind": "function",
+        "file": "src/python/tsv/tsv_parser.py",
+        "line": 465,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "rename_column",
+        "kind": "function",
+        "file": "src/python/tsv/tsv_parser.py",
+        "line": 477,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "get_column_values",
+        "kind": "function",
+        "file": "src/python/tsv/tsv_parser.py",
+        "line": 490,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "max_column_tsv",
+        "kind": "function",
+        "file": "src/python/tsv/tsv_parser.py",
+        "line": 499,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "column_count",
+        "kind": "function",
+        "file": "src/python/tsv/tsv_parser.py",
+        "line": 519,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "average_column_tsv",
+        "kind": "function",
+        "file": "src/python/tsv/tsv_parser.py",
+        "line": 532,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "median_column_tsv",
+        "kind": "function",
+        "file": "src/python/tsv/tsv_parser.py",
+        "line": 563,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "std_column_tsv",
+        "kind": "function",
+        "file": "src/python/tsv/tsv_parser.py",
+        "line": 601,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "filter_rows",
+        "kind": "function",
+        "file": "src/python/tsv/tsv_parser.py",
+        "line": 638,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "append_row",
+        "kind": "function",
+        "file": "src/python/tsv/tsv_parser.py",
+        "line": 680,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "roundtrip",
+        "kind": "function",
+        "file": "src/python/tsv/tsv_parser.py",
+        "line": 693,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "append_rows",
+        "kind": "function",
+        "file": "src/python/tsv/tsv_parser.py",
+        "line": 701,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "find_rows_containing",
+        "kind": "function",
+        "file": "src/python/tsv/tsv_parser.py",
+        "line": 733,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "get_numeric_columns",
+        "kind": "function",
+        "file": "src/python/tsv/tsv_parser.py",
+        "line": 761,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "unique_column_values",
+        "kind": "function",
+        "file": "src/python/tsv/tsv_parser.py",
+        "line": 806,
+        "role": "parser",
+        "exported": true
+      },
+      {
+        "name": "tsv_iter_fields",
+        "kind": "function",
+        "file": "src/python/tsv/tsv_field_iterator.py",
+        "line": 16,
+        "role": "iterator",
+        "exported": true
+      },
+      {
+        "name": "tsv_iter_records",
+        "kind": "function",
+        "file": "src/python/tsv/tsv_row_iterator.py",
+        "line": 16,
+        "role": "iterator",
+        "exported": true
+      },
+      {
+        "name": "tsv_installed_workflow",
+        "kind": "function",
+        "file": "src/python/tsv/tsv_workflow.py",
+        "line": 16,
+        "role": "workflow",
+        "exported": true
+      },
+      {
+        "name": "TsvField",
+        "kind": "class",
+        "file": "src/python/tsv/Compat/tsv_field.py",
+        "line": 12,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "TsvRecord",
+        "kind": "class",
+        "file": "src/python/tsv/Compat/tsv_record.py",
+        "line": 12,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "TsvError",
+        "kind": "class",
+        "file": "src/python/tsv/exceptions.py",
+        "line": 13,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "TsvParseError",
+        "kind": "class",
+        "file": "src/python/tsv/exceptions.py",
+        "line": 17,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "TsvWriteError",
+        "kind": "class",
+        "file": "src/python/tsv/exceptions.py",
+        "line": 21,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "TsvDocument",
+        "kind": "class",
+        "file": "src/python/tsv/models.py",
+        "line": 16,
+        "role": "model",
+        "exported": true
+      },
+      {
+        "name": "Field",
+        "kind": "class",
+        "file": "src/python/tsv/spec/record/field.py",
+        "line": 13,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "Record",
+        "kind": "class",
+        "file": "src/python/tsv/spec/record/record.py",
+        "line": 13,
+        "role": "api",
+        "exported": false
+      },
+      {
+        "name": "Row",
+        "kind": "class",
+        "file": "src/python/tsv/spec/record/row.py",
+        "line": 10,
+        "role": "model",
+        "exported": false
+      },
+      {
+        "name": "TsvError",
+        "kind": "class",
+        "file": "src/python/tsv/tsv_parser.py",
+        "line": 34,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "TsvInputError",
+        "kind": "class",
+        "file": "src/python/tsv/tsv_parser.py",
+        "line": 38,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "TsvSizeError",
+        "kind": "class",
+        "file": "src/python/tsv/tsv_parser.py",
+        "line": 42,
+        "role": "exception",
+        "exported": true
+      },
+      {
+        "name": "TsvParseError",
+        "kind": "class",
+        "file": "src/python/tsv/tsv_parser.py",
+        "line": 46,
+        "role": "exception",
+        "exported": true
+      }
+    ],
+    "export_count": 101
+  },
+  "dotnet": {
+    "contracts": [
+      {
+        "name": "TsvRecord",
+        "kind": "class",
+        "file": "src/net/tsv/Spec/TsvRecord.cs",
+        "line": 16,
+        "role": "api"
+      },
+      {
+        "name": "TsvCsvExporter",
+        "kind": "class",
+        "file": "src/net/tsv/TsvCsvExporter.cs",
+        "line": 16,
+        "role": "writer"
+      },
+      {
+        "name": "TsvDocument",
+        "kind": "class",
+        "file": "src/net/tsv/TsvDocument.cs",
+        "line": 20,
+        "role": "model"
+      },
+      {
+        "name": "TsvException",
+        "kind": "class",
+        "file": "src/net/tsv/TsvException.cs",
+        "line": 7,
+        "role": "exception"
+      },
+      {
+        "name": "TsvReader",
+        "kind": "class",
+        "file": "src/net/tsv/TsvReader.cs",
+        "line": 19,
+        "role": "parser"
+      },
+      {
+        "name": "TsvWriter",
+        "kind": "class",
+        "file": "src/net/tsv/TsvWriter.cs",
+        "line": 19,
+        "role": "writer"
+      },
+      {
+        "name": "Export",
+        "kind": "method",
+        "file": "src/net/tsv/TsvCsvExporter.cs",
+        "line": 19,
+        "role": "writer"
+      },
+      {
+        "name": "Load",
+        "kind": "method",
+        "file": "src/net/tsv/TsvDocument.cs",
+        "line": 51,
+        "role": "parser"
+      },
+      {
+        "name": "LoadFile",
+        "kind": "method",
+        "file": "src/net/tsv/TsvDocument.cs",
+        "line": 60,
+        "role": "parser"
+      },
+      {
+        "name": "ToTsv",
+        "kind": "method",
+        "file": "src/net/tsv/TsvDocument.cs",
+        "line": 67,
+        "role": "model"
+      },
+      {
+        "name": "SaveToFile",
+        "kind": "method",
+        "file": "src/net/tsv/TsvDocument.cs",
+        "line": 81,
+        "role": "writer"
+      },
+      {
+        "name": "GetCellValue",
+        "kind": "method",
+        "file": "src/net/tsv/TsvDocument.cs",
+        "line": 101,
+        "role": "model"
+      },
+      {
+        "name": "GetColumnValues",
+        "kind": "method",
+        "file": "src/net/tsv/TsvDocument.cs",
+        "line": 113,
+        "role": "model"
+      },
+      {
+        "name": "Filter",
+        "kind": "method",
+        "file": "src/net/tsv/TsvDocument.cs",
+        "line": 123,
+        "role": "model"
+      },
+      {
+        "name": "ReadRows",
+        "kind": "method",
+        "file": "src/net/tsv/TsvReader.cs",
+        "line": 24,
+        "role": "parser"
+      },
+      {
+        "name": "ReadRows",
+        "kind": "method",
+        "file": "src/net/tsv/TsvReader.cs",
+        "line": 39,
+        "role": "parser"
+      },
+      {
+        "name": "ReadRowsFromFile",
+        "kind": "method",
+        "file": "src/net/tsv/TsvReader.cs",
+        "line": 56,
+        "role": "parser"
+      },
+      {
+        "name": "WriteRows",
+        "kind": "method",
+        "file": "src/net/tsv/TsvWriter.cs",
+        "line": 27,
+        "role": "writer"
+      },
+      {
+        "name": "WriteRowsToFile",
+        "kind": "method",
+        "file": "src/net/tsv/TsvWriter.cs",
+        "line": 51,
+        "role": "writer"
+      },
+      {
+        "name": "Fields",
+        "kind": "property",
+        "file": "src/net/tsv/Spec/TsvRecord.cs",
+        "line": 22,
+        "role": "api"
+      },
+      {
+        "name": "Headers",
+        "kind": "property",
+        "file": "src/net/tsv/TsvDocument.cs",
+        "line": 23,
+        "role": "model"
+      },
+      {
+        "name": "Rows",
+        "kind": "property",
+        "file": "src/net/tsv/TsvDocument.cs",
+        "line": 26,
+        "role": "model"
+      },
+      {
+        "name": "HasHeaders",
+        "kind": "property",
+        "file": "src/net/tsv/TsvDocument.cs",
+        "line": 29,
+        "role": "model"
+      }
+    ],
+    "public_member_count": 23
+  }
+}

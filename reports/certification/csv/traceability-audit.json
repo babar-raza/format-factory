@@ -1,0 +1,36 @@
+{
+  "metadata": {
+    "authoritative_plan": "plans/.claude/crispy-jingling-snail.md",
+    "mission_id": "CERT-EXHAUST-20260628",
+    "format_id": "csv"
+  },
+  "qname_count": 3,
+  "pass_count": 3,
+  "review_required_count": 0,
+  "entries": [
+    {
+      "qname": "csv:record",
+      "python_file": "src/python/csv/spec/record/record.py",
+      "python_file_exists": true,
+      "dotnet_file": "src/net/csv/Spec/CsvRecord.cs",
+      "dotnet_file_exists": true,
+      "status": "PASS"
+    },
+    {
+      "qname": "csv:field",
+      "python_file": "src/python/csv/spec/record/field.py",
+      "python_file_exists": true,
+      "dotnet_file": null,
+      "dotnet_file_exists": null,
+      "status": "PASS"
+    },
+    {
+      "qname": "csv:header",
+      "python_file": "src/python/csv/spec/record/header.py",
+      "python_file_exists": true,
+      "dotnet_file": null,
+      "dotnet_file_exists": null,
+      "status": "PASS"
+    }
+  ]
+}

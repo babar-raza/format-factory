@@ -1,0 +1,43 @@
+{
+  "file_count": 17,
+  "files_scanned": [
+    "src/python/dif/__init__.py",
+    "src/python/dif/Compat/__init__.py",
+    "src/python/dif/Compat/dif_datum.py",
+    "src/python/dif/Compat/dif_header.py",
+    "src/python/dif/Compat/dif_vector.py",
+    "src/python/dif/dif_parser.py",
+    "src/python/dif/dif_stats.py",
+    "src/python/dif/dif_vector_iterator.py",
+    "src/python/dif/dif_workflow.py",
+    "src/python/dif/exceptions.py",
+    "src/python/dif/interchange_document.py",
+    "src/python/dif/models.py",
+    "src/python/dif/spec/__init__.py",
+    "src/python/dif/spec/table/__init__.py",
+    "src/python/dif/spec/table/datum.py",
+    "src/python/dif/spec/table/header.py",
+    "src/python/dif/spec/table/vector.py"
+  ],
+  "finding_count": 1,
+  "findings": [
+    {
+      "classification_note": "Non-public or structural placeholder; not automatically material.",
+      "file": "src/python/dif/dif_parser.py",
+      "line": 661,
+      "reason": "pass_statement",
+      "scope": "<module>",
+      "severity": "advisory",
+      "source": "pass"
+    }
+  ],
+  "material_finding_count": 0,
+  "metadata": {
+    "authoritative_plan": "plans/.claude/crispy-jingling-snail.md",
+    "generated_by": "codex",
+    "mission_id": "CERT-EXHAUST-20260628",
+    "tool": "stub_detector",
+    "visibility": "internal"
+  },
+  "target": "src/python/dif"
+}
