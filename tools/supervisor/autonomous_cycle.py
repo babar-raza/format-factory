@@ -200,29 +200,13 @@ _PRODUCT_SOURCE_TYPES = frozenset({
 })
 
 
-def _sync_hard_stops_after_repair(
-    hard_stops: list,
-    rework_items: list,
-    prior_structural_blocks: list,
-) -> list:
-    """Sync hard_stops after TC-REPAIR-VERIFY-001 resolves GOV_BLOCK items (TC-SIGNAL-001).
+def _sync_hard_stops_after_repair(hard_stops, rework_items, prior_structural_blocks):
+    from autonomous_cycle_extensions import sync_hard_stops_after_repair
+    return sync_hard_stops_after_repair(hard_stops, rework_items, prior_structural_blocks)
 
-    Only clears 'critical_rework_blocks_continuation' when:
-    1. prior_structural_blocks was non-empty (GOV_BLOCK items existed before repair)
-    2. rework_items is now empty (ALL GOV_BLOCK items resolved)
-    3. 'critical_rework_blocks_continuation' is in hard_stops
-
-    Safety: if REJECTED/OVERCLAIMED items also caused exit_code==3, they remain in
-    rework_items → condition 2 fails → hard_stop is preserved.
-    """
-    if (prior_structural_blocks
-            and not rework_items
-            and "critical_rework_blocks_continuation" in hard_stops):
-        updated = [h for h in hard_stops if h != "critical_rework_blocks_continuation"]
-        print("  [SIGNAL-SYNC] critical_rework_blocks_continuation cleared: "
-              "all GOV_BLOCK items resolved by TC-REPAIR-VERIFY-001")
-        return updated
-    return hard_stops
+def _update_lane_counters(declaration, ledger_path):
+    from autonomous_cycle_extensions import update_lane_counters
+    update_lane_counters(declaration, ledger_path)
 
 
 def _compute_exit_code(review: dict, decl: dict, gov_result: dict | None) -> int:
@@ -1113,6 +1097,21 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
     print(f"  Accepted: {len(review['accepted_items'])}")
     print(f"  Rework: {len(review['rework_items'])}")
     print(f"  Overclaimed: {len(review['overclaimed_items'])}")
+    # Overclaim detection added by TC-W0-001
+    overclaim_issues = []
+    for idx, item in enumerate(review.get('overclaimed_items', [])):
+        paths = item.get('evidence_paths', [])
+        missing = [p for p in paths if not Path(p).exists()]
+        if missing:
+            overclaim_issues.append({'item_index': idx, 'missing_paths': missing})
+    if overclaim_issues:
+        import json
+        out_path = repo_root / 'reports' / 'supervisor' / 'overclaim-detections.json'
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+        out_path.write_text(json.dumps(overclaim_issues, indent=2), encoding='utf-8')
+        print(f"  Overclaim detection: {len(overclaim_issues)} issues logged to {out_path}")
+    else:
+        print("  Overclaim detection: no issues")
     print(f"  Autonomous Continue: {review['autonomous_continue']}")
 
     # Step 3a-pre: Merge gap_ledger_ref from work items into declaration (TC-C7-005)
@@ -1638,26 +1637,18 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
     )
     print(f"  Manifest: {manifest_path}")
 
+    # TC-DL-011: Update dual-lane counters in product-deepening ledger after accepted sprint
+    if manifest.get("exit_code", 1) == 0:
+        try:
+            _update_lane_counters(decl, repo_root / "registry" / "product-deepening-ledger.yaml")
+        except Exception as _lane_exc:
+            print(f"  WARNING: lane counter update failed (non-blocking): {_lane_exc}")
+
     # TC-H5-001: Append grading history BEFORE overwriting latest-review
+    # TC-HIST-DEDUP-001: Dedup check — delegated to autonomous_cycle_extensions
     try:
-        import json as _json
-        grading_history_path = repo_root / "reports" / "supervisor" / "grading-history.jsonl"
-        grading_history_path.parent.mkdir(parents=True, exist_ok=True)
-        _history_record = {
-            "sprint_id": sprint_id,
-            "run_id": run_id,
-            "timestamp": timestamp,
-            "verdict": review.get("overall_verdict", ""),
-            "accepted_count": len(review["accepted_items"]),
-            "rework_count": len(review.get("rework_items", [])),
-            "overclaimed_count": len(review.get("overclaimed_items", [])),
-            "rework_items": list(review.get("rework_items", [])),
-            "continuation_state": manifest.get("autonomous_continue", False),
-            "exit_code": manifest.get("exit_code", 0),
-        }
-        with grading_history_path.open("a", encoding="utf-8") as _gf:
-            _gf.write(_json.dumps(_history_record) + "\n")
-        print(f"  [HISTORY] Appended to grading-history.jsonl (total lines: {sum(1 for _ in grading_history_path.open())})")
+        from autonomous_cycle_extensions import append_grading_history
+        append_grading_history(repo_root, sprint_id, run_id, timestamp, review, manifest)
     except Exception as _hist_err:
         print(f"  [WARN] grading-history.jsonl append failed: {_hist_err}")
 

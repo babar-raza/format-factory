@@ -81,6 +81,16 @@ class FodsSheet:
             return FodsCell(self.rows[row][col])
         return None
 
+    def find_cells_by_value(self, value: Any) -> list[FodsCell]:
+        """Find all cells whose value matches the given value."""
+        return [c for c in self.cells() if c.value == value]
+
+    def iter_rows(self) -> Iterator[list[FodsCell]]:
+        """Iterate rows, yielding each as a list of typed FodsCell objects."""
+        for row in self.rows:
+            row_cells = row.get("cells", []) if isinstance(row, dict) else row
+            yield [FodsCell(c) for c in row_cells]
+
     def to_dict(self) -> dict[str, Any]:
         return dict(self._data)
 
@@ -127,6 +137,13 @@ class FodsDocument:
         for s in self._data.get("sheets", []):
             if s.get("name") == name:
                 return FodsSheet(s)
+        return None
+
+    def find_sheet_by_index(self, index: int) -> FodsSheet | None:
+        """Get sheet by zero-based index, or None if out of range."""
+        sheets = self._data.get("sheets", [])
+        if 0 <= index < len(sheets):
+            return FodsSheet(sheets[index])
         return None
 
     def to_dict(self) -> dict[str, Any]:

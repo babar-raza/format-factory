@@ -13,7 +13,73 @@ Note: The name OdsModelDocument avoids collision with OdsDocument in ods_parser.
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any, ClassVar
+from typing import Any, ClassVar, Iterator
+
+
+class OdsCellModel:
+    """Typed wrapper for ODS cell."""
+
+    spec_qname: ClassVar[str] = "table:table-cell"
+    spec_fact_ref: ClassVar[str] = "FACT-ODS-003"
+
+    def __init__(self, cell: Any) -> None:
+        self._cell = cell
+
+    @property
+    def value(self) -> Any:
+        return self._cell.value
+
+    @property
+    def value_type(self) -> str:
+        return self._cell.value_type
+
+    @property
+    def text(self) -> str:
+        return self._cell.text
+
+    def to_dict(self) -> dict[str, Any]:
+        return {"value": self.value, "value_type": self.value_type, "text": self.text}
+
+    def __repr__(self) -> str:
+        return f"OdsCellModel(type={self.value_type!r}, value={self.value!r})"
+
+
+class OdsSheetModel:
+    """Typed wrapper for ODS sheet with cell access."""
+
+    spec_qname: ClassVar[str] = "table:table"
+    spec_fact_ref: ClassVar[str] = "FACT-ODS-002"
+
+    def __init__(self, sheet: Any) -> None:
+        self._sheet = sheet
+
+    @property
+    def name(self) -> str:
+        return self._sheet.name
+
+    @property
+    def row_count(self) -> int:
+        return len(self._sheet.rows)
+
+    def cells(self) -> Iterator[OdsCellModel]:
+        """Iterate all cells as OdsCellModel objects."""
+        for row in self._sheet.rows:
+            for cell in row.cells:
+                yield OdsCellModel(cell)
+
+    def cell_at(self, row: int, col: int) -> OdsCellModel | None:
+        """Get cell at (row, col) or None."""
+        if 0 <= row < len(self._sheet.rows):
+            cells = self._sheet.rows[row].cells
+            if 0 <= col < len(cells):
+                return OdsCellModel(cells[col])
+        return None
+
+    def to_dict(self) -> dict[str, Any]:
+        return {"name": self.name, "row_count": self.row_count}
+
+    def __repr__(self) -> str:
+        return f"OdsSheetModel(name={self.name!r}, rows={self.row_count})"
 
 
 class OdsModelDocument:
@@ -53,9 +119,15 @@ class OdsModelDocument:
         """Path to the source ODS file."""
         return str(self._parsed.path)
 
-    def get_sheet(self, index: int) -> Any:
-        """Return the OdsSheet at the given index."""
-        return self._parsed.sheets[index]
+    def get_sheet(self, index: int) -> OdsSheetModel | None:
+        """Return typed OdsSheetModel at index, or None."""
+        if 0 <= index < len(self._parsed.sheets):
+            return OdsSheetModel(self._parsed.sheets[index])
+        return None
+
+    def sheets(self) -> list[OdsSheetModel]:
+        """Return all sheets as typed OdsSheetModel objects."""
+        return [OdsSheetModel(s) for s in self._parsed.sheets]
 
     def to_dict(self) -> dict[str, Any]:
         """Return document summary as a dict."""

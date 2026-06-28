@@ -52,6 +52,11 @@ Per DEC-033 resolution (Babar Raza, 2026-05-12), this project is **commercial-on
 5. DEC-034 independent verification
 6. Explicit Gate 11 human approval (G11-A through G11-G sub-gates)
 
+## Product Maturity (Dual-Lane)
+- **Lane A (Features):** A1 — Load + basic query
+- **Lane B (DOM):** D4 — Editable XDocument DOM with mutation
+- **DOM Applicable:** Yes (FULL — hierarchical XML spreadsheet)
+
 ## Commercial Licensing
 
 See `acquisition-packs/fods/gate11-commercial-licensing.md`.

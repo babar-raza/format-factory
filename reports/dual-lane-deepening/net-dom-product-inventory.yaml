@@ -1,0 +1,114 @@
+- product_id: FODS-NET
+  format_id: fods
+  source_root: src/net/fods/
+  test_root: tests/net/fods/
+  active: true
+  format_category: SPREADSHEET
+  dom_applicability: FULL
+  required_dom_ceiling: D5
+  current_dom_maturity: D4
+  evidence: Editable XDocument DOM with FodsSheet/FodsRow/FodsCell models, mutation
+    API, export to ODS/CSV/PNG/PDF. 519 tests.
+  final_disposition: null
+- product_id: FODT-NET
+  format_id: fodt
+  source_root: src/net/fodt/
+  test_root: tests/net/fodt/
+  active: true
+  format_category: TEXT_DOC
+  dom_applicability: FULL
+  required_dom_ceiling: D5
+  current_dom_maturity: D4
+  evidence: Editable XDocument DOM with FodtBody/FodtParagraph/FodtTable/FodtRow/FodtCell
+    models, extensive mutation. 514 tests.
+  final_disposition: null
+- product_id: NETPBM-NET
+  format_id: netpbm
+  source_root: src/net/netpbm/
+  test_root: tests/net/netpbm/
+  active: true
+  format_category: IMAGE
+  dom_applicability: PARTIAL
+  required_dom_ceiling: D2
+  current_dom_maturity: D2
+  evidence: NetpbmFormat/NetpbmImage/NetpbmAnalyzer/NetpbmFilters/NetpbmTransforms
+    raster model. 488 tests.
+  final_disposition: null
+- product_id: CSV-NET
+  format_id: csv
+  source_root: src/net/csv/
+  test_root: tests/net/csv/
+  active: true
+  format_category: TABULAR_STREAM
+  dom_applicability: FLAT
+  required_dom_ceiling: D1
+  current_dom_maturity: D1
+  evidence: CsvDocument/CsvReader/CsvWriter/CsvRecord record stream model. 178 tests.
+  final_disposition: null
+- product_id: TSV-NET
+  format_id: tsv
+  source_root: src/net/tsv/
+  test_root: tests/net/tsv/
+  active: true
+  format_category: TABULAR_STREAM
+  dom_applicability: FLAT
+  required_dom_ceiling: D1
+  current_dom_maturity: D1
+  evidence: TsvDocument/TsvReader/TsvWriter/TsvRecord stream model. 179 tests.
+  final_disposition: null
+- product_id: NDJSON-NET
+  format_id: ndjson
+  source_root: src/net/ndjson/
+  test_root: tests/net/ndjson/
+  active: true
+  format_category: RECORD_STREAM
+  dom_applicability: FLAT
+  required_dom_ceiling: D1
+  current_dom_maturity: D1
+  evidence: NdjsonDocument/NdjsonReader/NdjsonWriter/NdjsonRecord sequential model.
+    186 tests.
+  final_disposition: null
+- product_id: ZST-NET
+  format_id: zst
+  source_root: src/net/zst/
+  test_root: tests/net/zst/
+  active: true
+  format_category: CODEC
+  dom_applicability: METRICS_ONLY
+  required_dom_ceiling: D1
+  current_dom_maturity: D1
+  evidence: ZstDocument/ZstParser/ZstWriter/ZstException codec handler. 174 tests.
+  final_disposition: null
+- product_id: HTML-NET
+  format_id: html
+  source_root: src/net/html/
+  test_root: tests/net/html/
+  active: true
+  format_category: EXPORT_TARGET
+  dom_applicability: NOT_APPLICABLE
+  required_dom_ceiling: N/A
+  current_dom_maturity: D0
+  evidence: Export-only HtmlWriter. No input parsing, no document model.
+  final_disposition: null
+- product_id: MARKDOWN-NET
+  format_id: markdown
+  source_root: src/net/markdown/
+  test_root: tests/net/markdown/
+  active: true
+  format_category: EXPORT_TARGET
+  dom_applicability: NOT_APPLICABLE
+  required_dom_ceiling: N/A
+  current_dom_maturity: D0
+  evidence: Export-only MarkdownWriter. No input parsing, no document model.
+  final_disposition: null
+- product_id: TXT-NET
+  format_id: txt
+  source_root: src/net/txt/
+  test_root: tests/net/txt/
+  active: true
+  format_category: EXPORT_TARGET
+  dom_applicability: NOT_APPLICABLE
+  required_dom_ceiling: N/A
+  current_dom_maturity: D0
+  evidence: Export-only TxtWriter. No input parsing, no document model.
+  final_disposition: null

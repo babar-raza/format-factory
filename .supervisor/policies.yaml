@@ -328,3 +328,28 @@ product_factory_gates:
     condition: "Product POC deepening work (load/edit/save/export/dogfood) with no gate approval needed"
     action: "Proceed autonomously"
     who_unblocks: null
+
+# ============================================================
+# Section 10: Dual-Lane Product Deepening
+# ============================================================
+dual_lane_deepening:
+  enabled: true
+  default_execution_mode: AUTO
+  default_starvation_threshold: 3
+  dom_classification:
+    full: [fods, fodt, ods, odt, abw, fodg, fodp, gnumeric]
+    partial: [dif, sylk, xcf, toml]
+    flat: [csv, tsv, ndjson]
+    metrics_only: [zst, pbm, pgm, ppm, qoi]
+  dom_ceiling_by_tier:
+    full: D5
+    partial: D3
+    flat: D1
+    metrics_only: D1
+  dom_d2_contract:
+    required_classes_minimum: 2
+    spec_qname_required: true
+    from_file_factory_required: true
+    child_accessor_required: true
+    to_dict_required: true
+    behavioral_method_minimum: 1

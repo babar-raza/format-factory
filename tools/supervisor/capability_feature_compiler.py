@@ -84,7 +84,11 @@ def _blocker_bonus(gap: dict) -> int:
 
 
 def _score(gap: dict) -> int:
-    return _base_priority(gap) + _impact_penalty(gap) + _blocker_bonus(gap)
+    base = _base_priority(gap) + _impact_penalty(gap) + _blocker_bonus(gap)
+    fmt = gap.get("format", gap.get("product_id", "")).split("-")[0].lower()
+    dl = _classify_deepening_lane(gap)
+    base += _lane_balance_penalty(dl, fmt)
+    return base
 
 
 def _lane(gap: dict) -> str:
@@ -94,6 +98,43 @@ def _lane(gap: dict) -> str:
     except (TypeError, ValueError):
         lane_int = 1
     return "product" if lane_int <= _MAX_PRODUCT_LANE else "machinery"
+
+
+def _classify_deepening_lane(gap: dict) -> str:
+    """Classify gap as feature or dom deepening work."""
+    gap_type = gap.get("gap_type", "")
+    cap = gap.get("capability_name", "").lower()
+    if gap_type in ("spec_parity_gap", "architecture_only", "missing_qname_registration"):
+        return "dom"
+    if any(kw in cap for kw in ("object_model", "dom_", "navigation", "mutation", "spec_class")):
+        return "dom"
+    return "feature"
+
+
+def _lane_balance_penalty(lane: str, format_name: str) -> int:
+    """Soft penalty for overrepresented lane (starvation prevention)."""
+    import yaml
+    ledger_path = Path("registry/product-deepening-ledger.yaml")
+    if not ledger_path.exists():
+        return 0
+    try:
+        ledger = yaml.safe_load(ledger_path.read_text(encoding="utf-8")) or []
+    except Exception:
+        return 0
+    entry = next((e for e in ledger if e.get("format") == format_name.lower()), {})
+    mode = entry.get("execution_mode", "AUTO")
+    if mode == "FEATURE_ONLY" and lane == "dom":
+        return 999
+    if mode == "DOM_ONLY" and lane == "feature":
+        return 999
+    a = entry.get("lane_a_consecutive", 0)
+    b = entry.get("lane_b_consecutive", 0)
+    threshold = entry.get("lane_starvation_threshold", 3)
+    if lane == "feature" and a - b >= threshold:
+        return 15
+    if lane == "dom" and b - a >= threshold:
+        return 15
+    return 0
 
 
 def _evidence_expected(gap: dict) -> str:
@@ -149,6 +190,7 @@ def _gap_to_work_item(gap: dict, score: int) -> dict:
         "gap_ref": gap_id,
         "gap_ledger_ref": gap_id,
         "spec_facts": gap.get("spec_facts") or [],
+        "deepening_lane": _classify_deepening_lane(gap),
     }
 
 

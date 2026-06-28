@@ -387,6 +387,22 @@ Phases 0–6 executed. Post-audit evidence review identified 6 unresolved gaps �
 **Product Deepening Mission COMPLETE (product-deepening-mission-complete-2026-06-25):**
 14 Python FOSS formats all at PROOF_LEVEL_4+. consumer_roundtrip.py examples created for 11 formats; all verified CONSUMER_PROOF: PASS. 14,498 tests passing, 0 failures. Evidence bundle: 51 artifacts. ACCEPTED verdict. Formats verified: ODS, ODT, FODS, FODT, ZST, PBM, PGM, PPM, SYLK, DIF, CSV, TSV, ABW, Gnumeric, FODG, NDJSON, TOML, XCF, QOI. Evidence root: `.local/supervisor/reviews/product-deepening-mission-complete-2026-06-25-001/`.
 
+## Dual-Lane Product Deepening
+
+Product deepening operates in two governed lanes:
+- **Lane A (Features):** Capability expansion, export, consumer proof (A0-A5)
+- **Lane B (DOM):** Specification-aligned typed object model (D0-D5)
+
+Lane maturity tracked independently. DOM applicable for FULL/PARTIAL formats only.
+Policy: `.supervisor/policies.yaml` → `dual_lane_deepening`
+Ledger: `registry/product-deepening-ledger.yaml` (dom_applicability, lane_*_maturity fields)
+Machinery plan: `plans/.claude/gleaming-napping-pebble.md` — **CLOSED (2026-06-28)**
+  - 20/20 taskcards CLOSED, audit ACCEPTED_VERIFIED
+  - Machinery phase: gate extension, lane-aware selection, lane counters, policy section, idempotency
+  - .NET portfolio: 7/10 at ceiling, 3 validly excluded, 0 unresolved gaps
+  - FODS D3 (6 tests), ODS D2 (10 tests) — all PASS
+  - Encoding fix: 3x Windows-1252 bytes in ledger repaired to UTF-8
+
 **QName hardening TC-QHARD-POST-001/002/004/005 CLOSED (2026-06-25):**
 - TC-QHARD-POST-001: XcfImage.spec_qname="xcf:image" confirmed; real XCF layer names implemented; 6 V53 tests pass.
 - TC-QHARD-POST-002: NdjsonRecord authority class (spec_qname="ndjson:record") added; 12 V53 compliance tests pass.

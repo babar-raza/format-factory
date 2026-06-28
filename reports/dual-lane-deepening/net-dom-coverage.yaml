@@ -1,0 +1,88 @@
+- product_id: FODS-NET
+  format_id: fods
+  dom_applicability: FULL
+  current_maturity: D4
+  target_ceiling: D5
+  gaps_count: 1
+  disposition: DOM_CEILING_ALREADY_MET_VERIFIED
+  evidence: 'Editable XDocument DOM with FodsSheet/FodsRow/FodsCell models, mutation
+    API, export to ODS/CSV/PNG/PDF. 519 tests. Roundtrip tests: 14 PASS (FodsR201ToFodsXml).
+    D4 maturity proven. D5 requires test suite green. Roundtrip tests: 14 PASS (FodsR201ToFodsXml).
+    D4 maturity proven.'
+- product_id: FODT-NET
+  format_id: fodt
+  dom_applicability: FULL
+  current_maturity: D4
+  target_ceiling: D5
+  gaps_count: 1
+  disposition: DOM_CEILING_ALREADY_MET_VERIFIED
+  evidence: Editable XDocument DOM with FodtBody/FodtParagraph/FodtTable/FodtRow/FodtCell
+    models, extensive mutation. 514 tests. D4 maturity proven with extensive mutation.
+    D5 requires test suite green (367/5519 pre-existing failures). D4 maturity proven
+    with extensive mutation.
+- product_id: NETPBM-NET
+  format_id: netpbm
+  dom_applicability: PARTIAL
+  current_maturity: D2
+  target_ceiling: D2
+  gaps_count: 0
+  disposition: DOM_CEILING_ALREADY_MET_VERIFIED
+  evidence: NetpbmFormat/NetpbmImage/NetpbmAnalyzer/NetpbmFilters/NetpbmTransforms
+    raster model. 488 tests.
+- product_id: CSV-NET
+  format_id: csv
+  dom_applicability: FLAT
+  current_maturity: D1
+  target_ceiling: D1
+  gaps_count: 0
+  disposition: DOM_CEILING_ALREADY_MET_VERIFIED
+  evidence: CsvDocument/CsvReader/CsvWriter/CsvRecord record stream model. 178 tests.
+- product_id: TSV-NET
+  format_id: tsv
+  dom_applicability: FLAT
+  current_maturity: D1
+  target_ceiling: D1
+  gaps_count: 0
+  disposition: DOM_CEILING_ALREADY_MET_VERIFIED
+  evidence: TsvDocument/TsvReader/TsvWriter/TsvRecord stream model. 179 tests.
+- product_id: NDJSON-NET
+  format_id: ndjson
+  dom_applicability: FLAT
+  current_maturity: D1
+  target_ceiling: D1
+  gaps_count: 0
+  disposition: DOM_CEILING_ALREADY_MET_VERIFIED
+  evidence: NdjsonDocument/NdjsonReader/NdjsonWriter/NdjsonRecord sequential model.
+    186 tests.
+- product_id: ZST-NET
+  format_id: zst
+  dom_applicability: METRICS_ONLY
+  current_maturity: D1
+  target_ceiling: D1
+  gaps_count: 0
+  disposition: DOM_CEILING_ALREADY_MET_VERIFIED
+  evidence: ZstDocument/ZstParser/ZstWriter/ZstException codec handler. 174 tests.
+- product_id: HTML-NET
+  format_id: html
+  dom_applicability: NOT_APPLICABLE
+  current_maturity: D0
+  target_ceiling: N/A
+  gaps_count: 0
+  disposition: DOM_NOT_APPLICABLE_VERIFIED
+  evidence: Export-only HtmlWriter. No input parsing, no document model.
+- product_id: MARKDOWN-NET
+  format_id: markdown
+  dom_applicability: NOT_APPLICABLE
+  current_maturity: D0
+  target_ceiling: N/A
+  gaps_count: 0
+  disposition: DOM_NOT_APPLICABLE_VERIFIED
+  evidence: Export-only MarkdownWriter. No input parsing, no document model.
+- product_id: TXT-NET
+  format_id: txt
+  dom_applicability: NOT_APPLICABLE
+  current_maturity: D0
+  target_ceiling: N/A
+  gaps_count: 0
+  disposition: DOM_NOT_APPLICABLE_VERIFIED
+  evidence: Export-only TxtWriter. No input parsing, no document model.

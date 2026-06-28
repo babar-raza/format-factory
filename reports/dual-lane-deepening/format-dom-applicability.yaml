@@ -1,0 +1,199 @@
+- format_id: fods
+  product_id: FODS-PYTHON
+  language: python
+  format_category: SPREADSHEET
+  hierarchical_structure: true
+  dom_applicability: FULL
+  current_lane_b_maturity: D2
+  lane_b_ceiling: D5
+  decision_evidence: "Hierarchical XML spreadsheet with office:document > table:table > table:table-row > table:table-cell. Models.py has FodsDocument, FodsSheet, FodsCell with spec_qname."
+
+- format_id: fodt
+  product_id: FODT-PYTHON
+  language: python
+  format_category: TEXT_DOC
+  hierarchical_structure: true
+  dom_applicability: FULL
+  current_lane_b_maturity: D2
+  lane_b_ceiling: D5
+  decision_evidence: "Hierarchical XML text document with office:document > text:p, text:h, text:list, table:table. Paragraph/heading classes with spec_qname."
+
+- format_id: ods
+  product_id: ODS-PYTHON
+  language: python
+  format_category: SPREADSHEET
+  hierarchical_structure: true
+  dom_applicability: FULL
+  current_lane_b_maturity: D1
+  lane_b_ceiling: D5
+  decision_evidence: "ODF spreadsheet package with table:table > table:table-row > table:table-cell. Parser has typed OdsSheet/OdsRow/OdsCell dataclasses but models.py exposes only OdsModelDocument wrapper."
+
+- format_id: odt
+  product_id: ODT-PYTHON
+  language: python
+  format_category: TEXT_DOC
+  hierarchical_structure: true
+  dom_applicability: FULL
+  current_lane_b_maturity: D1
+  lane_b_ceiling: D5
+  decision_evidence: "ODF text document package with text:p, text:h, text:list, table:table. Single wrapper class in models.py (83 LOC)."
+
+- format_id: abw
+  product_id: ABW-PYTHON
+  language: python
+  format_category: TEXT_DOC
+  hierarchical_structure: true
+  dom_applicability: FULL
+  current_lane_b_maturity: D1
+  lane_b_ceiling: D4
+  decision_evidence: "AbiWord XML format with section > paragraph structure. Single wrapper class (74 LOC)."
+
+- format_id: fodg
+  product_id: FODG-PYTHON
+  language: python
+  format_category: DRAWING
+  hierarchical_structure: true
+  dom_applicability: FULL
+  current_lane_b_maturity: D1
+  lane_b_ceiling: D4
+  decision_evidence: "Flat ODF drawing with draw:page > draw:frame > draw:image hierarchy. Single wrapper (68 LOC)."
+
+- format_id: fodp
+  product_id: FODP-PYTHON
+  language: python
+  format_category: PRESENTATION
+  hierarchical_structure: true
+  dom_applicability: FULL
+  current_lane_b_maturity: D1
+  lane_b_ceiling: D4
+  decision_evidence: "Flat ODF presentation with draw:page (slides) > draw:frame > text content. Single wrapper (68 LOC)."
+
+- format_id: gnumeric
+  product_id: GNUMERIC-PYTHON
+  language: python
+  format_category: SPREADSHEET
+  hierarchical_structure: true
+  dom_applicability: FULL
+  current_lane_b_maturity: D1
+  lane_b_ceiling: D4
+  decision_evidence: "Gnumeric XML spreadsheet with gnm:Workbook > gnm:Sheet > gnm:Cell hierarchy. Single wrapper (86 LOC)."
+
+- format_id: dif
+  product_id: DIF-PYTHON
+  language: python
+  format_category: TABULAR
+  hierarchical_structure: false
+  dom_applicability: PARTIAL
+  current_lane_b_maturity: D1
+  lane_b_ceiling: D3
+  decision_evidence: "Data Interchange Format with VECTORS > TUPLES > BOT/EOD structure. Some typed structure but not deeply hierarchical."
+
+- format_id: sylk
+  product_id: SYLK-PYTHON
+  language: python
+  format_category: TABULAR
+  hierarchical_structure: false
+  dom_applicability: PARTIAL
+  current_lane_b_maturity: D1
+  lane_b_ceiling: D3
+  decision_evidence: "Symbolic Link format with record-oriented structure (ID, C, F records). Limited hierarchy but meaningful typed cells."
+
+- format_id: xcf
+  product_id: XCF-PYTHON
+  language: python
+  format_category: IMAGE
+  hierarchical_structure: false
+  dom_applicability: PARTIAL
+  current_lane_b_maturity: D1
+  lane_b_ceiling: D3
+  decision_evidence: "GIMP native format with image > layer structure. Some hierarchy (layers, channels) but not document-like."
+
+- format_id: toml
+  product_id: TOML-PYTHON
+  language: python
+  format_category: CONFIG
+  hierarchical_structure: false
+  dom_applicability: PARTIAL
+  current_lane_b_maturity: D1
+  lane_b_ceiling: D3
+  decision_evidence: "Configuration format with nested table > key-value structure. Some hierarchy but limited DOM scope."
+
+- format_id: csv
+  product_id: CSV-PYTHON
+  language: python
+  format_category: TABULAR_STREAM
+  hierarchical_structure: false
+  dom_applicability: FLAT
+  current_lane_b_maturity: D1
+  lane_b_ceiling: D1
+  decision_evidence: "Flat tabular stream with no hierarchical structure. Document + records is the meaningful model ceiling."
+
+- format_id: tsv
+  product_id: TSV-PYTHON
+  language: python
+  format_category: TABULAR_STREAM
+  hierarchical_structure: false
+  dom_applicability: FLAT
+  current_lane_b_maturity: D1
+  lane_b_ceiling: D1
+  decision_evidence: "Tab-separated values — flat tabular stream like CSV. No hierarchical structure."
+
+- format_id: ndjson
+  product_id: NDJSON-PYTHON
+  language: python
+  format_category: RECORD_STREAM
+  hierarchical_structure: false
+  dom_applicability: FLAT
+  current_lane_b_maturity: D1
+  lane_b_ceiling: D1
+  decision_evidence: "Newline-delimited JSON — sequential record stream. No hierarchical document structure."
+
+- format_id: zst
+  product_id: ZST-PYTHON
+  language: python
+  format_category: CODEC
+  hierarchical_structure: false
+  dom_applicability: METRICS_ONLY
+  current_lane_b_maturity: D1
+  lane_b_ceiling: D1
+  decision_evidence: "Zstandard compression codec. Binary archive handler exposing compression metrics only."
+
+- format_id: pbm
+  product_id: PBM-PYTHON
+  language: python
+  format_category: IMAGE
+  hierarchical_structure: false
+  dom_applicability: METRICS_ONLY
+  current_lane_b_maturity: D1
+  lane_b_ceiling: D1
+  decision_evidence: "Portable Bitmap — binary raster image. Model exposes image dimensions and pixel data, not a document tree."
+
+- format_id: pgm
+  product_id: PGM-PYTHON
+  language: python
+  format_category: IMAGE
+  hierarchical_structure: false
+  dom_applicability: METRICS_ONLY
+  current_lane_b_maturity: D1
+  lane_b_ceiling: D1
+  decision_evidence: "Portable Graymap — grayscale raster image. Model exposes dimensions and gray values, not a document tree."
+
+- format_id: ppm
+  product_id: PPM-PYTHON
+  language: python
+  format_category: IMAGE
+  hierarchical_structure: false
+  dom_applicability: METRICS_ONLY
+  current_lane_b_maturity: D1
+  lane_b_ceiling: D1
+  decision_evidence: "Portable Pixmap — color raster image. Model exposes dimensions and pixel data, not a document tree."
+
+- format_id: qoi
+  product_id: QOI-PYTHON
+  language: python
+  format_category: IMAGE
+  hierarchical_structure: false
+  dom_applicability: METRICS_ONLY
+  current_lane_b_maturity: D1
+  lane_b_ceiling: D1
+  decision_evidence: "Quite OK Image format — lossless image codec. Model exposes header/dimensions, not a document tree."

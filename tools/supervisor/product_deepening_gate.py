@@ -142,6 +142,8 @@ def check_product_readiness(format_name: str, ledger_path: Path | None = None) -
 
     reason = "all_gates_pass" if allowed else "; ".join(reasons) if reasons else "blocked"
 
+    dom_readiness = check_dom_readiness(format_name, ledger_path)
+
     return {
         "format": fmt,
         "allowed": allowed,
@@ -153,6 +155,7 @@ def check_product_readiness(format_name: str, ledger_path: Path | None = None) -
         "forbidden_bucket_gate": forbidden_bucket_gate,
         "taskcard_gate": taskcard_gate,
         "evidence_gate": evidence_gate,
+        "dom_readiness_gate": dom_readiness,
         "ledger_entry": entry,
     }
 
@@ -172,6 +175,32 @@ def check_formats_in_gaps(selected_gaps: list, ledger_path: Path | None = None) 
         seen.add(fmt)
         results.append(check_product_readiness(fmt, ledger_path))
     return results
+
+
+def check_dom_readiness(format_name: str, ledger_path: Path | None = None) -> dict:
+    """Advisory DOM readiness check. Never blocks continuation."""
+    ledger = load_ledger(ledger_path)
+    entry = ledger.get(format_name.lower(), {})
+    dom_app = entry.get("dom_applicability", "FLAT")
+    lane_b = entry.get("lane_b_maturity", "D0")
+    ceiling = entry.get("lane_b_ceiling", "D1")
+    # Count qnames from registry
+    qname_path = _REPO_ROOT / "shared" / "qname-registry" / f"{format_name.lower()}.yaml"
+    qname_count = 0
+    if qname_path.exists():
+        try:
+            qname_count = len(yaml.safe_load(qname_path.read_text(encoding="utf-8")) or [])
+        except Exception:
+            pass
+    return {
+        "dom_applicability": dom_app,
+        "current_maturity": lane_b,
+        "ceiling": ceiling,
+        "qname_count": qname_count,
+        "ready_for_dom_sprint": dom_app in ("FULL", "PARTIAL") and lane_b < ceiling,
+        "dom_lane_at_ceiling": lane_b >= ceiling,
+        "advisory": True,
+    }
 
 
 def emit_continuation_signal_gates(selected_gaps: list, ledger_path: Path | None = None) -> dict:
