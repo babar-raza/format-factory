@@ -1,0 +1,27 @@
+mission_id: README-GOV-001
+prompt: .supervisor/prompts/close-task.md
+verdict: CLOSE_TASK_ACCEPTED
+accepted_at: 2026-06-28T08:16:00Z
+plan:
+  path: plans/.claude/keen-purring-teapot.md
+  sha256: C3DDA4BC60437515DF930C0519017E5471E126C279EE7164F31113D37C379C58
+all_green_candidate: .supervisor/state/convergence-loop-readme-gov-001/final-all-green-candidate.yaml
+implementation_commit:
+  hash: dcf52fb265e927c2e8939c1ecdb60f856495f738
+  message: "feat(readme): add governed README sync"
+closure_commit:
+  hash: recorded_externally
+  note: "A commit cannot contain its own final hash; use the final reported HEAD for the closure commit."
+checks:
+  no_open_findings: true
+  no_open_mandatory_tasks: true
+  readme_validate_passed: true
+  readme_drift_clean: true
+  readme_idempotent: true
+  focused_tests_passed: true
+  capability_drift_clean: true
+  relevant_changes_committed: true
+  unrelated_dirty_work_excluded: true
+notes:
+  - Extensive unrelated dirty work existed before closure and remains outside the accepted scope.
+  - The plan lock is terminal closed in local plan-closure evidence.

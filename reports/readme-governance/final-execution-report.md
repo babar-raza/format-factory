@@ -5,7 +5,7 @@
 - mission_id: README-GOV-001
 - plan_path: plans/.claude/keen-purring-teapot.md
 - starting_revision: 6989990c83918a01fdfa73c5c77afe9c8590ec7e
-- ending_revision: 6989990c83918a01fdfa73c5c77afe9c8590ec7e
+- ending_revision: dcf52fb265e927c2e8939c1ecdb60f856495f738
 - completed_at: 2026-06-28T13:04:25+05:00
 - total_autonomous_cycles: 1
 
@@ -73,7 +73,8 @@
 - No unresolved README governance findings remain.
 - The repository had substantial unrelated dirty work before this mission; those files were not reverted or normalized by this sprint.
 - `lifecycle_audit.py --audit-gate` returned ITERATION_REQUIRED because it parsed 0 taskcards from the markdown plan and read pre-existing continuation-signal state unrelated to README-GOV-001. README-specific verification and evidence are clean.
-- No commit or push was performed.
+- Implementation commit: dcf52fb265e927c2e8939c1ecdb60f856495f738 (`feat(readme): add governed README sync`).
+- No push was performed.
 
 ## Final Verdict
 

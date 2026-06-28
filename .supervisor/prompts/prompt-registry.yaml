@@ -93,6 +93,34 @@ prompts:
       - "must include evidence_bundle_path"
       - "rerouted items cannot be accepted without rescoring"
 
+  - id: PSL-PROMPT-4
+    name: close-task
+    file: .supervisor/prompts/close-task.md
+    description: "Governed final task closure with all-green validation, commit, state reconciliation, and terminal closure"
+    stage: 4
+    mode: closure
+    inputs:
+      - final_all_green_candidate.yaml
+      - final clean audit
+      - taskcard registry or accepted taskcard list
+      - proof-level matrix
+      - evidence root
+    outputs:
+      - close-task-result.yaml
+      - closure record
+      - terminal state
+    output_schema: null
+    successor_rules:
+      - condition: "verdict == CLOSE_TASK_ACCEPTED"
+        next: null
+      - condition: "verdict == CLOSE_TASK_REJECTED"
+        next: PSL-PROMPT-2
+    validation_rules:
+      - "must reject closure when material findings remain"
+      - "must reject closure when generated outputs are stale"
+      - "must verify relevant completed changes are committed"
+      - "must write terminal state only after successful closure"
+
   - id: PSL-LOOP-CTRL
     name: prompt-loop-controller
     file: .supervisor/prompts/prompt-loop-controller.md

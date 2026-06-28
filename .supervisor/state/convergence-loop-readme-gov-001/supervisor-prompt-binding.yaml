@@ -1,0 +1,21 @@
+mission_id: README-GOV-001
+plan:
+  path: plans/.claude/keen-purring-teapot.md
+  sha256: C3DDA4BC60437515DF930C0519017E5471E126C279EE7164F31113D37C379C58
+bound_prompts:
+  post_sprint_audit:
+    path: .supervisor/prompts/prompt1-post-sprint-audit.md
+    sha256: 263DAB3DADAD6845F5DD2874FE22CD860403151156CADB2DFFEDEF5258103099
+  plan_hardening:
+    path: .supervisor/prompts/prompt2-plan-hardening.md
+    sha256: 4FE227B68C0E58E08381F89F5381BB8D29EEBD89CBA328EA3FB33C957C5D3D00
+  controlled_execution:
+    path: .supervisor/prompts/prompt3-controlled-execution.md
+    sha256: 5246D218A39A8464CDC32C542D5411D2F29AD034F3E867651C0F731E1269EDD9
+  close_task:
+    path: .supervisor/prompts/close-task.md
+    sha256: 47F2CBF61AE4CB10DAD4DADAC438932CF255B51A58E0CE887ABD7A7CBEE3E133
+binding_status: COMPLETE
+notes:
+  - close_task canonical prompt was created because the expected .supervisor/prompts/close-task.md was absent.
+  - PSL-PROMPT-4 registry binding was added for close-task.

@@ -1,0 +1,27 @@
+mission_id: README-GOV-001
+plan_path: plans/.claude/keen-purring-teapot.md
+plan_sha256: C3DDA4BC60437515DF930C0519017E5471E126C279EE7164F31113D37C379C58
+candidate_status: ALL_GREEN
+iterations: 1
+findings_open: 0
+mandatory_tasks_open: 0
+proof:
+  readme_validate:
+    command: ".venv\\Scripts\\python.exe tools/readme_sync/run_sync.py --mode validate"
+    result: "30 PASS"
+  readme_drift:
+    command: ".venv\\Scripts\\python.exe tools/readme_sync/run_sync.py --mode drift-only"
+    result: "NO_DRIFT"
+  readme_idempotency:
+    command: ".venv\\Scripts\\python.exe tools/readme_sync/run_sync.py --mode full"
+    result: "0 files changed"
+  focused_tests:
+    command: ".venv\\Scripts\\python.exe -m pytest tests/tools/test_readme_sync.py tests/supervisor/test_governance_validators.py -k \"readme_sync or V87\" -q"
+    result: "22 passed, 151 deselected"
+  capability_drift:
+    command: ".venv\\Scripts\\python.exe tools/capability_sync/run_sync.py --mode drift-only"
+    result: "NO_DRIFT"
+taskcards:
+  created: []
+  closed: []
+closure_ready: true
