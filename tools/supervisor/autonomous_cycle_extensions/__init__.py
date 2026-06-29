@@ -69,6 +69,11 @@ def check_lane_conflicts(
 
 
 _TERMINAL_TASK_STATUSES = frozenset({"CLOSED", "SUPERSEDED", "EXCLUDED"})
+_DOM_MATURITY_ORDER = {"D0": 0, "D1": 1, "D2": 2, "D3": 3, "D4": 4, "D5": 5}
+
+
+def _dom_maturity_value(level: object) -> int:
+    return _DOM_MATURITY_ORDER.get(str(level or "D0").upper(), 0)
 
 
 def find_next_eligible_task_in_plan(plan_path: str) -> "dict | None":
@@ -165,6 +170,82 @@ def scan_closure_evidence_invalidation(repo_root: "Path | None" = None) -> "list
     except Exception as exc:
         print(f"  [TCF-005] scan_closure_evidence_invalidation warning: {exc}")
     return result
+
+
+def update_lane_counters(declaration: dict, ledger_path: "Path | str") -> None:
+    """Update dual-lane consecutive counters in the product-deepening ledger.
+
+    For each completed work item with a deepening_lane field:
+    - feature lane: increment lane_a_consecutive, reset lane_b_consecutive
+    - dom lane: increment lane_b_consecutive, reset lane_a_consecutive
+    - rejected/non-completed items: no change
+
+    Args:
+        declaration: Sprint declaration dict with planned_work_items list.
+        ledger_path: Path to registry/product-deepening-ledger.yaml.
+    """
+    import yaml as _yaml
+
+    ledger_path = Path(ledger_path)
+    if not ledger_path.exists():
+        return
+
+    raw = ledger_path.read_text(encoding="utf-8")
+    data = _yaml.safe_load(raw)
+    if not isinstance(data, list):
+        if isinstance(data, dict):
+            data = data.get("entries", data.get("formats", [data]))
+        if not isinstance(data, list):
+            return
+
+    # Build index by format
+    by_format: dict[str, dict] = {}
+    for entry in data:
+        fmt = entry.get("format") or entry.get("format_id", "")
+        if fmt:
+            by_format[fmt.lower()] = entry
+
+    # Replay protection (TC-DL2-021): skip if same sprint_id already applied
+    sprint_id = declaration.get("sprint_id")
+
+    items = declaration.get("planned_work_items", [])
+    seen_formats: set[str] = set()
+    for item in items:
+        if not isinstance(item, dict):
+            continue
+        status = str(item.get("status", "")).lower()
+        if status != "completed":
+            continue
+        lane = str(item.get("deepening_lane", "")).lower()
+        fmt = str(item.get("format", "")).lower()
+        if not fmt or not lane or fmt not in by_format:
+            continue
+        if fmt in seen_formats:
+            continue  # multiple items for same format in one declaration
+        seen_formats.add(fmt)
+        entry = by_format[fmt]
+        # Replay guard: skip if this sprint_id was already applied to this entry
+        if sprint_id and entry.get("last_applied_sprint_id") == sprint_id:
+            continue
+        if lane == "feature":
+            entry["lane_a_consecutive"] = entry.get("lane_a_consecutive", 0) + 1
+            entry["lane_b_consecutive"] = 0
+        elif lane == "dom":
+            current = _dom_maturity_value(entry.get("lane_b_maturity", "D0"))
+            ceiling = _dom_maturity_value(entry.get("lane_b_ceiling", "D0"))
+            if current >= ceiling:
+                if sprint_id:
+                    entry["last_applied_sprint_id"] = sprint_id
+                continue
+            entry["lane_b_consecutive"] = entry.get("lane_b_consecutive", 0) + 1
+            entry["lane_a_consecutive"] = 0
+        if sprint_id:
+            entry["last_applied_sprint_id"] = sprint_id
+
+    ledger_path.write_text(
+        _yaml.dump(data, default_flow_style=False, allow_unicode=True),
+        encoding="utf-8",
+    )
 
 
 def enrich_goals_with_compiled_taskcards(all_goals: list, repo_root: Path) -> None:
