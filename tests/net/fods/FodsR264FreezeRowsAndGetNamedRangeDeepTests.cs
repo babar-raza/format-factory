@@ -30,7 +30,7 @@ public class FodsR264FreezeRowsAndGetNamedRangeDeepTests : IDisposable
 
     public FodsR264FreezeRowsAndGetNamedRangeDeepTests()
     {
-        _tempDir = Path.Combine(Path.GetTempPath(), "FodsR264_\" + Guid.NewGuid().ToString(\"N\"));
+        _tempDir = Path.Combine(Path.GetTempPath(), "FodsR264_" + Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(_tempDir);
     }
 

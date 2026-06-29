@@ -44,8 +44,6 @@ public class FodsR183ExportSheetToCsvFileAndHtmlTests : IDisposable
 
     private string TempFile(string name) => Path.Combine(_tempDir, name);
 
-    private FodtDocument? _unused; // suppress warning
-
     private FodsDocument LoadFixture()
     {
         var path = Path.GetFullPath(FodsFixturePath);

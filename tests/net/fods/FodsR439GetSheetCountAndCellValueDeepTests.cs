@@ -50,7 +50,7 @@ public class FodsR439GetSheetCountAndCellValueDeepTests : IDisposable
         var doc = FodsDocument.LoadFile(path);
         Assert.Equal(3, doc.GetSheetCount());
     }
-    }
+
     [Fact]
     public void GetCellValue_EdgeCoordinates_ReturnsValue()
     {

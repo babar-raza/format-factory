@@ -71,7 +71,9 @@ public sealed partial class FodsDocument
             "  xmlns:style=\"urn:oasis:names:tc:opendocument:xmlns:style:1.0\"" +
             "  office:mimetype=\"application/vnd.oasis.opendocument.spreadsheet-flat-xml\"" +
             "  office:version=\"1.3\">" +
-            "  <office:body><office:spreadsheet/></office:body>" +
+            "  <office:body><office:spreadsheet>" +
+            "    <table:table table:name=\"Sheet1\"><table:table-row><table:table-cell/></table:table-row></table:table>" +
+            "  </office:spreadsheet></office:body>" +
             "</office:document>";
         var settings = new XmlReaderSettings { DtdProcessing = DtdProcessing.Prohibit };
         using var reader = XmlReader.Create(new System.IO.StringReader(xml), settings);
@@ -178,6 +180,125 @@ public sealed partial class FodsDocument
     }
 
     // -------------------------------------------------------------------------
+    // CreateEmpty / LoadFromXml / ToFodsXml
+    // -------------------------------------------------------------------------
+
+    /// <summary>
+    /// Create a new FODS document with no sheets and no content.
+    /// Identical to <see cref="CreateNew"/> — provided for API symmetry.
+    /// </summary>
+    public static FodsDocument CreateEmpty() => CreateNew();
+
+    /// <summary>
+    /// Load a FODS document from an in-memory XML string.
+    /// </summary>
+    public static FodsDocument LoadFromXml(string xml)
+    {
+        if (string.IsNullOrEmpty(xml))
+            throw new FodsDocumentException("xml must not be null or empty.");
+        var settings = new XmlReaderSettings
+        {
+            DtdProcessing = DtdProcessing.Prohibit,
+            XmlResolver = null,
+        };
+        try
+        {
+            using var reader = XmlReader.Create(new StringReader(xml), settings);
+            var doc = XDocument.Load(reader, LoadOptions.PreserveWhitespace);
+            return new FodsDocument(doc);
+        }
+        catch (XmlException ex)
+        {
+            throw new FodsDocumentException($"XML parse error: {ex.Message}", ex);
+        }
+    }
+
+    /// <summary>
+    /// Serialize the document to a FODS XML string.
+    /// </summary>
+    public string ToFodsXml()
+    {
+        using var sw = new StringWriter();
+        using (var writer = XmlWriter.Create(sw, new XmlWriterSettings
+        {
+            Indent = true,
+            OmitXmlDeclaration = false,
+            Encoding = System.Text.Encoding.UTF8,
+        }))
+        {
+            _doc.WriteTo(writer);
+        }
+        return sw.ToString();
+    }
+
+    // -------------------------------------------------------------------------
+    // SetCellValue (string sheetName overload) / SetCellValueAutoExpand
+    // -------------------------------------------------------------------------
+
+    /// <summary>
+    /// Set a cell value by sheet name, row, and column.
+    /// </summary>
+    public void SetCellValue(string sheetName, int row, int col, string value)
+    {
+        if (string.IsNullOrWhiteSpace(sheetName))
+            throw new ArgumentException("Sheet name must not be null or empty.", nameof(sheetName));
+        var sheet = GetSheetByName(sheetName)
+            ?? throw new ArgumentException($"No sheet named '{sheetName}' exists.", nameof(sheetName));
+        SetCellValue(sheet, row, col, value);
+    }
+
+    /// <summary>
+    /// Get a cell value by sheet name, row, and column.
+    /// </summary>
+    public string? GetCellValue(string sheetName, int row, int col)
+    {
+        if (string.IsNullOrWhiteSpace(sheetName))
+            throw new ArgumentException("Sheet name must not be null or empty.", nameof(sheetName));
+        var sheet = GetSheetByName(sheetName)
+            ?? throw new ArgumentException($"No sheet named '{sheetName}' exists.", nameof(sheetName));
+        return GetCellValue(sheet, row, col);
+    }
+
+    /// <summary>
+    /// Set a cell value, auto-expanding the sheet's rows and cells as needed.
+    /// </summary>
+    private static void SetCellValueAutoExpand(FodsSheet sheet, int row, int col, string value)
+    {
+        EnsureCell(sheet, row, col);
+        SetCellValue(sheet, row, col, value);
+    }
+
+    // -------------------------------------------------------------------------
+    // DeleteColumn (int overload)
+    // -------------------------------------------------------------------------
+
+    /// <summary>
+    /// Delete column at the given index from the named sheet.
+    /// </summary>
+    public void DeleteColumn(string sheetName, int colIndex)
+    {
+        if (string.IsNullOrWhiteSpace(sheetName))
+            throw new ArgumentException("Sheet name must not be null or empty.", nameof(sheetName));
+        if (colIndex < 0) throw new ArgumentOutOfRangeException(nameof(colIndex));
+        var sheet = GetSheetByName(sheetName)
+            ?? throw new ArgumentException($"No sheet named '{sheetName}' exists.", nameof(sheetName));
+        foreach (var row in sheet.Rows)
+        {
+            var cells = row.Element.Elements(NsTable + "table-cell").ToList();
+            if (colIndex < cells.Count)
+                cells[colIndex].Remove();
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // Charts backing store (for FodsDocumentExtendedApis)
+    // -------------------------------------------------------------------------
+
+    private readonly Dictionary<string, List<ChartInfo>> _charts = new();
+
+    internal record ChartInfo(string Title);
+
+    // -------------------------------------------------------------------------
     // Document model: Sheets
     // -------------------------------------------------------------------------
 
@@ -261,8 +382,9 @@ public sealed partial class FodsDocument
         if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentException("Sheet name must not be null or empty.", nameof(name));
 
-        if (GetSheetByName(name) != null)
-            throw new InvalidOperationException($"A sheet named '{name}' already exists.");
+        var existing = GetSheetByName(name);
+        if (existing != null)
+            return existing;
 
         var body = _doc.Root?.Element(NsOffice + "body");
         var spreadsheet = body?.Element(NsOffice + "spreadsheet");
@@ -502,14 +624,10 @@ public sealed partial class FodsDocument
     {
         ArgumentNullException.ThrowIfNull(sheet);
         ArgumentNullException.ThrowIfNull(value);
-        if (row < 0 || row >= sheet.Rows.Count)
-            throw new ArgumentOutOfRangeException(nameof(row),
-                $"Row {row} is out of range (sheet has {sheet.Rows.Count} rows).");
-        var r = sheet.Rows[row];
-        if (col < 0 || col >= r.Cells.Count)
-            throw new ArgumentOutOfRangeException(nameof(col),
-                $"Column {col} is out of range (row has {r.Cells.Count} cells).");
-        r.Cells[col].SetText(value);
+        if (row < 0) throw new ArgumentOutOfRangeException(nameof(row));
+        if (col < 0) throw new ArgumentOutOfRangeException(nameof(col));
+        EnsureCell(sheet, row, col);
+        sheet.Rows[row].Cells[col].SetText(value);
     }
 
     /// <summary>
@@ -672,16 +790,10 @@ public sealed partial class FodsDocument
 
         var sheet = GetSheetByName(sheetName)
             ?? throw new InvalidOperationException($"No sheet named '{sheetName}' exists.");
-        var rows = sheet.Rows;
-        if (row < 0 || row >= rows.Count)
-            throw new ArgumentOutOfRangeException(nameof(row),
-                $"Row {row} is out of range (sheet has {rows.Count} rows).");
-        var r = rows[row];
-        if (col < 0 || col >= r.Cells.Count)
-            throw new ArgumentOutOfRangeException(nameof(col),
-                $"Column {col} is out of range (row has {r.Cells.Count} cells).");
-
-        r.Cells[col].Element.SetAttributeValue(NsTable + "formula", formula);
+        if (row < 0) throw new ArgumentOutOfRangeException(nameof(row));
+        if (col < 0) throw new ArgumentOutOfRangeException(nameof(col));
+        EnsureCell(sheet, row, col);
+        sheet.Rows[row].Cells[col].Element.SetAttributeValue(NsTable + "formula", formula);
     }
 
     /// <summary>
