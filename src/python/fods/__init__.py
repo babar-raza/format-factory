@@ -20,6 +20,9 @@ from .spreadsheet_model_document import *  # noqa: F401, F403
 from .models import *  # noqa: F401, F403
 from .csv_exporter import *  # noqa: F401, F403
 from .fods_to_tsv import *  # noqa: F401, F403
+from .fods_workflow import *  # noqa: F401, F403
+from .fods_sheet_iterator import *  # noqa: F401, F403
+from .fods_cell_iterator import *  # noqa: F401, F403
 from .constants import *  # noqa: F401, F403
 from .exceptions import *  # noqa: F401, F403
 
