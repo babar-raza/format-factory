@@ -1,0 +1,121 @@
+product_verdict_review:
+  mission_id: CERT-INTEGRATION-HEALING-20260628
+  wave: 4
+  taskcard: TC-CERT-I-005
+
+  claimed_verdicts:
+    certified: 12
+    certified_with_gaps: 8
+    not_certified: 0
+    in_progress: 0
+    not_started: 0
+
+  independent_review:
+    certified_formats:
+      - format_id: abw
+        all_dimensions_pass: true
+        verdict_justified: true
+      - format_id: csv
+        all_dimensions_pass: true
+        verdict_justified: true
+      - format_id: fodg
+        all_dimensions_pass: true
+        verdict_justified: true
+      - format_id: fodp
+        all_dimensions_pass: true
+        verdict_justified: true
+      - format_id: fods
+        all_dimensions_pass: true
+        verdict_justified: true
+      - format_id: fodt
+        all_dimensions_pass: true
+        verdict_justified: true
+      - format_id: gnumeric
+        all_dimensions_pass: true
+        verdict_justified: true
+      - format_id: ndjson
+        all_dimensions_pass: true
+        verdict_justified: true
+      - format_id: ods
+        all_dimensions_pass: true
+        verdict_justified: true
+      - format_id: odt
+        all_dimensions_pass: true
+        verdict_justified: true
+      - format_id: toml
+        all_dimensions_pass: true
+        verdict_justified: true
+      - format_id: zst
+        all_dimensions_pass: true
+        verdict_justified: true
+
+    certified_with_gaps_formats:
+      - format_id: dif
+        gap_dimensions: [roundtrip]
+        gap_reason: "roundtrip=NOT_APPLICABLE (read-only format)"
+        should_be_certified: true
+        verdict_justified: false
+        finding: CERT-DASHBOARD-001
+      - format_id: pbm
+        gap_dimensions: [roundtrip]
+        gap_reason: "roundtrip=NOT_APPLICABLE (binary image format)"
+        should_be_certified: true
+        verdict_justified: false
+        finding: CERT-DASHBOARD-001
+      - format_id: pgm
+        gap_dimensions: [roundtrip]
+        gap_reason: "roundtrip=NOT_APPLICABLE (binary image format)"
+        should_be_certified: true
+        verdict_justified: false
+        finding: CERT-DASHBOARD-001
+      - format_id: ppm
+        gap_dimensions: [roundtrip]
+        gap_reason: "roundtrip=NOT_APPLICABLE (binary image format)"
+        should_be_certified: true
+        verdict_justified: false
+        finding: CERT-DASHBOARD-001
+      - format_id: qoi
+        gap_dimensions: [roundtrip]
+        gap_reason: "roundtrip=NOT_APPLICABLE (binary image format)"
+        should_be_certified: true
+        verdict_justified: false
+        finding: CERT-DASHBOARD-001
+      - format_id: sylk
+        gap_dimensions: [roundtrip]
+        gap_reason: "roundtrip=NOT_APPLICABLE (read-only format)"
+        should_be_certified: true
+        verdict_justified: false
+        finding: CERT-DASHBOARD-001
+      - format_id: tsv
+        gap_dimensions: [roundtrip]
+        gap_reason: "roundtrip=NOT_APPLICABLE (no write support)"
+        should_be_certified: true
+        verdict_justified: false
+        finding: CERT-DASHBOARD-001
+      - format_id: xcf
+        gap_dimensions: [roundtrip]
+        gap_reason: "roundtrip=NOT_APPLICABLE (binary image format)"
+        should_be_certified: true
+        verdict_justified: false
+        finding: CERT-DASHBOARD-001
+
+  findings:
+    - finding_id: CERT-DASHBOARD-001
+      severity: P2_SYSTEMIC
+      tool: certification_dashboard.py
+      line: 109
+      symptom: "8 formats incorrectly classified as CERTIFIED_WITH_KNOWN_GAPS"
+      root_cause: "Verdict logic requires ALL dimensions == PASS for CERTIFIED, but NOT_APPLICABLE is a valid non-gap status"
+      fix: "Change line 109 to: all(s in {'PASS', 'NOT_APPLICABLE'} for s in statuses)"
+      affected_formats: [dif, pbm, pgm, ppm, qoi, sylk, tsv, xcf]
+      correct_verdicts:
+        before: "12 CERTIFIED, 8 CERTIFIED_WITH_KNOWN_GAPS"
+        after: "20 CERTIFIED, 0 CERTIFIED_WITH_KNOWN_GAPS"
+
+  material_findings_summary:
+    material_stubs_across_all_formats: 0
+    uncovered_exceptions_across_all_formats: 0
+    weak_assertions_across_all_formats: 0
+    oracle_failures_across_all_formats: 0
+    false_certifications_detected: 0
+    incorrect_downgrades_detected: 8

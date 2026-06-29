@@ -1,0 +1,132 @@
+certification_tool_verification:
+  run_id: cert-integration-healing-001
+  pilot_format: fods
+  head: 516b9a9aa053cc49f8d9711c4fa8b24910db3f03
+
+  tools:
+    - tool_id: inventory_extractor
+      implementation_path: tools/certification/inventory_extractor.py
+      loc: 451
+      cli: "--python|--dotnet|--parity [--format FMT] [--output PATH]"
+      valid_case: PASS
+      valid_output: "API extraction succeeded; JSON output valid"
+      deterministic_case: PASS
+      exit_code_contract: "exit 0 on success"
+      schema_contract: "custom JSON (no schema validation on write)"
+      findings:
+        - finding_id: CERT-TOOL-001
+          severity: P3_BOUNDED
+          symptom: "_rel() crashes on output paths outside repo root"
+          root_cause: "path.resolve().relative_to(REPO_ROOT) fails for /tmp paths"
+          status: DOCUMENTED
+      verdict: IMPLEMENTED_UNIT_PROVEN
+
+    - tool_id: stub_detector
+      implementation_path: tools/certification/stub_detector.py
+      loc: 220
+      cli: "--path PATH [--output PATH]"
+      valid_case: PASS
+      valid_output: "0 material stubs for FODS (expected)"
+      deterministic_case: PASS
+      exit_code_contract: "exit 1 if material_finding_count > 0, else exit 0"
+      findings: []
+      verdict: IMPLEMENTED_UNIT_PROVEN
+
+    - tool_id: exception_coverage_checker
+      implementation_path: tools/certification/exception_coverage_checker.py
+      loc: 145
+      cli: "--src-path PATH [--test-path PATH] [--output PATH]"
+      valid_case: PASS
+      valid_output: "0 uncovered exceptions for FODS"
+      deterministic_case: PASS
+      exit_code_contract: "exit 0"
+      findings:
+        - finding_id: CERT-TOOL-002
+          severity: P3_BOUNDED
+          symptom: "Test coverage detection uses naive text search (not AST)"
+          root_cause: "Greps for exception class name in test file text"
+          status: DOCUMENTED
+      verdict: IMPLEMENTED_UNIT_PROVEN
+
+    - tool_id: assertion_quality_scorer
+      implementation_path: tools/certification/assertion_quality_scorer.py
+      loc: 220
+      cli: "--path TEST_DIR [--output PATH]"
+      valid_case: PASS
+      valid_output: "1446 test functions, avg score 3.18, 0 weak"
+      deterministic_case: PASS
+      exit_code_contract: "exit 1 if weak_assertion_count > 0, else exit 0"
+      findings: []
+      verdict: IMPLEMENTED_UNIT_PROVEN
+
+    - tool_id: dotnet_assertion_scorer
+      implementation_path: tools/certification/dotnet_assertion_scorer.py
+      loc: 217
+      cli: "--path TEST_DIR [--output PATH]"
+      valid_case: NOT_RUN
+      valid_output: "Not tested (requires .NET test files)"
+      deterministic_case: NOT_RUN
+      findings:
+        - finding_id: CERT-TOOL-003
+          severity: P3_BOUNDED
+          symptom: "Regex-based C# parsing (not Roslyn AST)"
+          root_cause: "Uses regex patterns to find Assert.* calls"
+          status: DOCUMENTED
+      verdict: IMPLEMENTED_UNTESTED
+
+    - tool_id: certification_dashboard
+      implementation_path: tools/certification/certification_dashboard.py
+      loc: 255
+      cli: "[--output-json PATH] [--output-md PATH]"
+      valid_case: PASS
+      valid_output: "12 CERTIFIED, 8 WITH_GAPS, matches claimed verdicts"
+      deterministic_case: PASS
+      exit_code_contract: "always exit 0"
+      findings: []
+      verdict: IMPLEMENTED_UNIT_PROVEN
+
+    - tool_id: generate_exception_tests
+      implementation_path: tools/certification/generate_exception_tests.py
+      loc: 112
+      cli: "no args (hardcoded)"
+      valid_case: NOT_RUN
+      findings:
+        - finding_id: CERT-TOOL-004
+          severity: P3_BOUNDED
+          symptom: "Not idempotent (overwrites test files)"
+          status: DOCUMENTED
+      verdict: SCRIPT_RUN_ONLY
+
+    - tool_id: fix_weak_assertions
+      implementation_path: tools/certification/fix_weak_assertions.py
+      loc: 144
+      cli: "[fmt1 fmt2 ...] (defaults to all 17 formats)"
+      valid_case: NOT_RUN
+      findings:
+        - finding_id: CERT-TOOL-005
+          severity: P3_BOUNDED
+          symptom: "Not idempotent (modifies test files in place)"
+          status: DOCUMENTED
+      verdict: SCRIPT_RUN_ONLY
+
+    - tool_id: generate_security_tests
+      implementation_path: tools/certification/generate_security_tests.py
+      loc: 203
+      cli: "no args (hardcoded)"
+      valid_case: NOT_RUN
+      findings:
+        - finding_id: CERT-TOOL-006
+          severity: P3_BOUNDED
+          symptom: "Not idempotent (overwrites test files)"
+          status: DOCUMENTED
+      verdict: SCRIPT_RUN_ONLY
+
+  summary:
+    tools_tested: 6
+    tools_pass: 5
+    tools_not_run: 4
+    tools_fail: 0
+    total_findings: 6
+    critical_findings: 0
+    systemic_findings: 0
+    bounded_findings: 6

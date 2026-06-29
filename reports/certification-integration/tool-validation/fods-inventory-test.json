@@ -1,0 +1,1688 @@
+{
+  "format_count": 1,
+  "formats": [
+    {
+      "dynamic_all": true,
+      "export_count": 103,
+      "export_sources": [
+        "constants.py",
+        "csv_exporter.py",
+        "exceptions.py",
+        "fods_cell_iterator.py",
+        "fods_sheet_iterator.py",
+        "fods_to_tsv.py",
+        "fods_workflow.py",
+        "models.py",
+        "neutral_model.py",
+        "parser.py",
+        "spreadsheet_document.py",
+        "spreadsheet_model_document.py",
+        "writer.py"
+      ],
+      "exports": [
+        "FodsCell",
+        "FodsCsvExportError",
+        "FodsDocument",
+        "FodsError",
+        "FodsInputError",
+        "FodsParseError",
+        "FodsSheet",
+        "FodsSizeError",
+        "build_workbook",
+        "cell_at",
+        "export_fods_to_csv",
+        "export_fods_to_csv_file",
+        "find_sheet_by_name",
+        "fods_all_sheets_have_data",
+        "fods_avg_cells_per_sheet",
+        "fods_avg_col_count",
+        "fods_avg_numeric_value",
+        "fods_avg_string_length",
+        "fods_cell_to_sheet_ratio",
+        "fods_col_count_variance",
+        "fods_data_density",
+        "fods_empty_cell_count",
+        "fods_empty_column_count",
+        "fods_empty_sheet_count",
+        "fods_formula_cell_count",
+        "fods_formula_count",
+        "fods_has_empty_sheets",
+        "fods_has_formulas",
+        "fods_has_string_cells",
+        "fods_installed_workflow",
+        "fods_is_multi_sheet",
+        "fods_is_single_cell",
+        "fods_is_single_sheet",
+        "fods_iter_cells",
+        "fods_iter_sheets",
+        "fods_longest_row_index",
+        "fods_max_col_count",
+        "fods_max_row_cell_count",
+        "fods_max_row_count",
+        "fods_max_string_length",
+        "fods_min_row_count",
+        "fods_nonempty_row_ratio",
+        "fods_nonempty_sheet_count",
+        "fods_numeric_cell_count",
+        "fods_numeric_cell_ratio",
+        "fods_numeric_density",
+        "fods_numeric_sum_all",
+        "fods_row_count_variance",
+        "fods_sheet_count",
+        "fods_sheet_names",
+        "fods_sheet_row_variance",
+        "fods_string_cell_count",
+        "fods_string_density",
+        "fods_to_tsv",
+        "fods_total_cell_count",
+        "fods_total_row_count",
+        "from_file",
+        "make_warning",
+        "odf_version",
+        "parse_fods",
+        "parse_fods_strict",
+        "repeated",
+        "text",
+        "to_dict",
+        "validate_workbook",
+        "value_type",
+        "workbook_add_sheet",
+        "workbook_cell_range",
+        "workbook_cell_text_at",
+        "workbook_cell_type_matrix",
+        "workbook_column_count",
+        "workbook_column_style_summary",
+        "workbook_column_width_summary",
+        "workbook_count_matching_cells",
+        "workbook_count_nonempty_cells",
+        "workbook_data_validation_summary",
+        "workbook_empty_rows",
+        "workbook_find_cells",
+        "workbook_formula_edit_policy",
+        "workbook_formula_list",
+        "workbook_get_cell_value",
+        "workbook_get_column_values",
+        "workbook_max_column_count",
+        "workbook_merged_cell_summary",
+        "workbook_named_range_list",
+        "workbook_numeric_density",
+        "workbook_numeric_summary",
+        "workbook_remove_sheet",
+        "workbook_rename_sheet",
+        "workbook_row_count",
+        "workbook_row_style_summary",
+        "workbook_set_cell_value",
+        "workbook_sheet_order",
+        "workbook_sheet_summary",
+        "workbook_stats",
+        "workbook_style_family_list",
+        "workbook_to_csv",
+        "workbook_to_html",
+        "workbook_to_xml",
+        "workbook_total_numeric_value",
+        "workbook_type_distribution",
+        "workbook_warnings_for_unsupported_edit",
+        "write_fods"
+      ],
+      "file_count": 123,
+      "files": [
+        {
+          "line_count": 46,
+          "path": "src/python/fods/__init__.py",
+          "role": "api"
+        },
+        {
+          "line_count": 43,
+          "path": "src/python/fods/build/lib/fods/__init__.py",
+          "role": "api"
+        },
+        {
+          "line_count": 43,
+          "path": "src/python/fods/build/lib/fods/build/lib/fods/__init__.py",
+          "role": "api"
+        },
+        {
+          "line_count": 43,
+          "path": "src/python/fods/build/lib/fods/build/lib/fods/build/lib/fods/__init__.py",
+          "role": "api"
+        },
+        {
+          "line_count": 43,
+          "path": "src/python/fods/build/lib/fods/build/lib/fods/build/lib/fods/build/lib/fods/__init__.py",
+          "role": "api"
+        },
+        {
+          "line_count": 43,
+          "path": "src/python/fods/build/lib/fods/build/lib/fods/build/lib/fods/build/lib/fods/build/lib/fods/__init__.py",
+          "role": "api"
+        },
+        {
+          "line_count": 108,
+          "path": "src/python/fods/build/lib/fods/build/lib/fods/build/lib/fods/build/lib/fods/build/lib/fods/constants.py",
+          "role": "constant"
+        },
+        {
+          "line_count": 124,
+          "path": "src/python/fods/build/lib/fods/build/lib/fods/build/lib/fods/build/lib/fods/build/lib/fods/csv_exporter.py",
+          "role": "writer"
+        },
+        {
+          "line_count": 40,
+          "path": "src/python/fods/build/lib/fods/build/lib/fods/build/lib/fods/build/lib/fods/build/lib/fods/exceptions.py",
+          "role": "exception"
+        },
+        {
+          "line_count": 1231,
+          "path": "src/python/fods/build/lib/fods/build/lib/fods/build/lib/fods/build/lib/fods/build/lib/fods/neutral_model.py",
+          "role": "model"
+        },
+        {
+          "line_count": 475,
+          "path": "src/python/fods/build/lib/fods/build/lib/fods/build/lib/fods/build/lib/fods/build/lib/fods/parser.py",
+          "role": "parser"
+        },
+        {
+          "line_count": 182,
+          "path": "src/python/fods/build/lib/fods/build/lib/fods/build/lib/fods/build/lib/fods/build/lib/fods/writer.py",
+          "role": "writer"
+        },
+        {
+          "line_count": 108,
+          "path": "src/python/fods/build/lib/fods/build/lib/fods/build/lib/fods/build/lib/fods/constants.py",
+          "role": "constant"
+        },
+        {
+          "line_count": 124,
+          "path": "src/python/fods/build/lib/fods/build/lib/fods/build/lib/fods/build/lib/fods/csv_exporter.py",
+          "role": "writer"
+        },
+        {
+          "line_count": 40,
+          "path": "src/python/fods/build/lib/fods/build/lib/fods/build/lib/fods/build/lib/fods/exceptions.py",
+          "role": "exception"
+        },
+        {
+          "line_count": 1231,
+          "path": "src/python/fods/build/lib/fods/build/lib/fods/build/lib/fods/build/lib/fods/neutral_model.py",
+          "role": "model"
+        },
+        {
+          "line_count": 475,
+          "path": "src/python/fods/build/lib/fods/build/lib/fods/build/lib/fods/build/lib/fods/parser.py",
+          "role": "parser"
+        },
+        {
+          "line_count": 182,
+          "path": "src/python/fods/build/lib/fods/build/lib/fods/build/lib/fods/build/lib/fods/writer.py",
+          "role": "writer"
+        },
+        {
+          "line_count": 108,
+          "path": "src/python/fods/build/lib/fods/build/lib/fods/build/lib/fods/constants.py",
+          "role": "constant"
+        },
+        {
+          "line_count": 124,
+          "path": "src/python/fods/build/lib/fods/build/lib/fods/build/lib/fods/csv_exporter.py",
+          "role": "writer"
+        },
+        {
+          "line_count": 40,
+          "path": "src/python/fods/build/lib/fods/build/lib/fods/build/lib/fods/exceptions.py",
+          "role": "exception"
+        },
+        {
+          "line_count": 1231,
+          "path": "src/python/fods/build/lib/fods/build/lib/fods/build/lib/fods/neutral_model.py",
+          "role": "model"
+        },
+        {
+          "line_count": 475,
+          "path": "src/python/fods/build/lib/fods/build/lib/fods/build/lib/fods/parser.py",
+          "role": "parser"
+        },
+        {
+          "line_count": 182,
+          "path": "src/python/fods/build/lib/fods/build/lib/fods/build/lib/fods/writer.py",
+          "role": "writer"
+        },
+        {
+          "line_count": 108,
+          "path": "src/python/fods/build/lib/fods/build/lib/fods/constants.py",
+          "role": "constant"
+        },
+        {
+          "line_count": 124,
+          "path": "src/python/fods/build/lib/fods/build/lib/fods/csv_exporter.py",
+          "role": "writer"
+        },
+        {
+          "line_count": 40,
+          "path": "src/python/fods/build/lib/fods/build/lib/fods/exceptions.py",
+          "role": "exception"
+        },
+        {
+          "line_count": 1231,
+          "path": "src/python/fods/build/lib/fods/build/lib/fods/neutral_model.py",
+          "role": "model"
+        },
+        {
+          "line_count": 475,
+          "path": "src/python/fods/build/lib/fods/build/lib/fods/parser.py",
+          "role": "parser"
+        },
+        {
+          "line_count": 182,
+          "path": "src/python/fods/build/lib/fods/build/lib/fods/writer.py",
+          "role": "writer"
+        },
+        {
+          "line_count": 41,
+          "path": "src/python/fods/build/lib/fods/cli.py",
+          "role": "api"
+        },
+        {
+          "line_count": 26,
+          "path": "src/python/fods/build/lib/fods/Compat/__init__.py",
+          "role": "api"
+        },
+        {
+          "line_count": 26,
+          "path": "src/python/fods/build/lib/fods/Compat/fods_automatic_styles.py",
+          "role": "api"
+        },
+        {
+          "line_count": 25,
+          "path": "src/python/fods/build/lib/fods/Compat/fods_body.py",
+          "role": "api"
+        },
+        {
+          "line_count": 25,
+          "path": "src/python/fods/build/lib/fods/Compat/fods_cell.py",
+          "role": "model"
+        },
+        {
+          "line_count": 26,
+          "path": "src/python/fods/build/lib/fods/Compat/fods_covered_cell.py",
+          "role": "model"
+        },
+        {
+          "line_count": 26,
+          "path": "src/python/fods/build/lib/fods/Compat/fods_date_style.py",
+          "role": "api"
+        },
+        {
+          "line_count": 25,
+          "path": "src/python/fods/build/lib/fods/Compat/fods_document.py",
+          "role": "model"
+        },
+        {
+          "line_count": 26,
+          "path": "src/python/fods/build/lib/fods/Compat/fods_paragraph.py",
+          "role": "model"
+        },
+        {
+          "line_count": 25,
+          "path": "src/python/fods/build/lib/fods/Compat/fods_sheet.py",
+          "role": "model"
+        },
+        {
+          "line_count": 26,
+          "path": "src/python/fods/build/lib/fods/Compat/fods_span.py",
+          "role": "api"
+        },
+        {
+          "line_count": 25,
+          "path": "src/python/fods/build/lib/fods/Compat/fods_spreadsheet.py",
+          "role": "parser"
+        },
+        {
+          "line_count": 26,
+          "path": "src/python/fods/build/lib/fods/Compat/fods_style.py",
+          "role": "api"
+        },
+        {
+          "line_count": 25,
+          "path": "src/python/fods/build/lib/fods/Compat/fods_table_row.py",
+          "role": "model"
+        },
+        {
+          "line_count": 108,
+          "path": "src/python/fods/build/lib/fods/constants.py",
+          "role": "constant"
+        },
+        {
+          "line_count": 124,
+          "path": "src/python/fods/build/lib/fods/csv_exporter.py",
+          "role": "writer"
+        },
+        {
+          "line_count": 40,
+          "path": "src/python/fods/build/lib/fods/exceptions.py",
+          "role": "exception"
+        },
+        {
+          "line_count": 90,
+          "path": "src/python/fods/build/lib/fods/fods_to_tsv.py",
+          "role": "writer"
+        },
+        {
+          "line_count": 235,
+          "path": "src/python/fods/build/lib/fods/models.py",
+          "role": "model"
+        },
+        {
+          "line_count": 1231,
+          "path": "src/python/fods/build/lib/fods/neutral_model.py",
+          "role": "model"
+        },
+        {
+          "line_count": 475,
+          "path": "src/python/fods/build/lib/fods/parser.py",
+          "role": "parser"
+        },
+        {
+          "line_count": 14,
+          "path": "src/python/fods/build/lib/fods/spec/__init__.py",
+          "role": "api"
+        },
+        {
+          "line_count": 4,
+          "path": "src/python/fods/build/lib/fods/spec/number/__init__.py",
+          "role": "api"
+        },
+        {
+          "line_count": 23,
+          "path": "src/python/fods/build/lib/fods/spec/number/date_style.py",
+          "role": "api"
+        },
+        {
+          "line_count": 8,
+          "path": "src/python/fods/build/lib/fods/spec/office/__init__.py",
+          "role": "api"
+        },
+        {
+          "line_count": 28,
+          "path": "src/python/fods/build/lib/fods/spec/office/annotation.py",
+          "role": "api"
+        },
+        {
+          "line_count": 23,
+          "path": "src/python/fods/build/lib/fods/spec/office/automatic_styles.py",
+          "role": "api"
+        },
+        {
+          "line_count": 22,
+          "path": "src/python/fods/build/lib/fods/spec/office/body.py",
+          "role": "api"
+        },
+        {
+          "line_count": 44,
+          "path": "src/python/fods/build/lib/fods/spec/office/document.py",
+          "role": "model"
+        },
+        {
+          "line_count": 23,
+          "path": "src/python/fods/build/lib/fods/spec/office/spreadsheet.py",
+          "role": "parser"
+        },
+        {
+          "line_count": 4,
+          "path": "src/python/fods/build/lib/fods/spec/style/__init__.py",
+          "role": "api"
+        },
+        {
+          "line_count": 23,
+          "path": "src/python/fods/build/lib/fods/spec/style/style.py",
+          "role": "api"
+        },
+        {
+          "line_count": 9,
+          "path": "src/python/fods/build/lib/fods/spec/table/__init__.py",
+          "role": "api"
+        },
+        {
+          "line_count": 27,
+          "path": "src/python/fods/build/lib/fods/spec/table/covered_table_cell.py",
+          "role": "model"
+        },
+        {
+          "line_count": 26,
+          "path": "src/python/fods/build/lib/fods/spec/table/table.py",
+          "role": "api"
+        },
+        {
+          "line_count": 26,
+          "path": "src/python/fods/build/lib/fods/spec/table/table_cell.py",
+          "role": "model"
+        },
+        {
+          "line_count": 27,
+          "path": "src/python/fods/build/lib/fods/spec/table/table_column.py",
+          "role": "api"
+        },
+        {
+          "line_count": 27,
+          "path": "src/python/fods/build/lib/fods/spec/table/table_header_rows.py",
+          "role": "model"
+        },
+        {
+          "line_count": 23,
+          "path": "src/python/fods/build/lib/fods/spec/table/table_row.py",
+          "role": "model"
+        },
+        {
+          "line_count": 5,
+          "path": "src/python/fods/build/lib/fods/spec/text/__init__.py",
+          "role": "api"
+        },
+        {
+          "line_count": 22,
+          "path": "src/python/fods/build/lib/fods/spec/text/paragraph.py",
+          "role": "model"
+        },
+        {
+          "line_count": 22,
+          "path": "src/python/fods/build/lib/fods/spec/text/span.py",
+          "role": "api"
+        },
+        {
+          "line_count": 1035,
+          "path": "src/python/fods/build/lib/fods/spreadsheet_document.py",
+          "role": "parser"
+        },
+        {
+          "line_count": 524,
+          "path": "src/python/fods/build/lib/fods/spreadsheet_model_document.py",
+          "role": "parser"
+        },
+        {
+          "line_count": 182,
+          "path": "src/python/fods/build/lib/fods/writer.py",
+          "role": "writer"
+        },
+        {
+          "line_count": 41,
+          "path": "src/python/fods/cli.py",
+          "role": "api"
+        },
+        {
+          "line_count": 26,
+          "path": "src/python/fods/Compat/__init__.py",
+          "role": "api"
+        },
+        {
+          "line_count": 26,
+          "path": "src/python/fods/Compat/fods_automatic_styles.py",
+          "role": "api"
+        },
+        {
+          "line_count": 25,
+          "path": "src/python/fods/Compat/fods_body.py",
+          "role": "api"
+        },
+        {
+          "line_count": 25,
+          "path": "src/python/fods/Compat/fods_cell.py",
+          "role": "model"
+        },
+        {
+          "line_count": 26,
+          "path": "src/python/fods/Compat/fods_covered_cell.py",
+          "role": "model"
+        },
+        {
+          "line_count": 26,
+          "path": "src/python/fods/Compat/fods_date_style.py",
+          "role": "api"
+        },
+        {
+          "line_count": 25,
+          "path": "src/python/fods/Compat/fods_document.py",
+          "role": "model"
+        },
+        {
+          "line_count": 26,
+          "path": "src/python/fods/Compat/fods_paragraph.py",
+          "role": "model"
+        },
+        {
+          "line_count": 25,
+          "path": "src/python/fods/Compat/fods_sheet.py",
+          "role": "model"
+        },
+        {
+          "line_count": 26,
+          "path": "src/python/fods/Compat/fods_span.py",
+          "role": "api"
+        },
+        {
+          "line_count": 25,
+          "path": "src/python/fods/Compat/fods_spreadsheet.py",
+          "role": "parser"
+        },
+        {
+          "line_count": 26,
+          "path": "src/python/fods/Compat/fods_style.py",
+          "role": "api"
+        },
+        {
+          "line_count": 25,
+          "path": "src/python/fods/Compat/fods_table_row.py",
+          "role": "model"
+        },
+        {
+          "line_count": 108,
+          "path": "src/python/fods/constants.py",
+          "role": "constant"
+        },
+        {
+          "line_count": 124,
+          "path": "src/python/fods/csv_exporter.py",
+          "role": "writer"
+        },
+        {
+          "line_count": 40,
+          "path": "src/python/fods/exceptions.py",
+          "role": "exception"
+        },
+        {
+          "line_count": 34,
+          "path": "src/python/fods/fods_cell_iterator.py",
+          "role": "iterator"
+        },
+        {
+          "line_count": 27,
+          "path": "src/python/fods/fods_sheet_iterator.py",
+          "role": "iterator"
+        },
+        {
+          "line_count": 90,
+          "path": "src/python/fods/fods_to_tsv.py",
+          "role": "writer"
+        },
+        {
+          "line_count": 23,
+          "path": "src/python/fods/fods_workflow.py",
+          "role": "workflow"
+        },
+        {
+          "line_count": 252,
+          "path": "src/python/fods/models.py",
+          "role": "model"
+        },
+        {
+          "line_count": 717,
+          "path": "src/python/fods/neutral_model.py",
+          "role": "model"
+        },
+        {
+          "line_count": 475,
+          "path": "src/python/fods/parser.py",
+          "role": "parser"
+        },
+        {
+          "line_count": 14,
+          "path": "src/python/fods/spec/__init__.py",
+          "role": "api"
+        },
+        {
+          "line_count": 4,
+          "path": "src/python/fods/spec/number/__init__.py",
+          "role": "api"
+        },
+        {
+          "line_count": 23,
+          "path": "src/python/fods/spec/number/date_style.py",
+          "role": "api"
+        },
+        {
+          "line_count": 8,
+          "path": "src/python/fods/spec/office/__init__.py",
+          "role": "api"
+        },
+        {
+          "line_count": 28,
+          "path": "src/python/fods/spec/office/annotation.py",
+          "role": "api"
+        },
+        {
+          "line_count": 23,
+          "path": "src/python/fods/spec/office/automatic_styles.py",
+          "role": "api"
+        },
+        {
+          "line_count": 22,
+          "path": "src/python/fods/spec/office/body.py",
+          "role": "api"
+        },
+        {
+          "line_count": 44,
+          "path": "src/python/fods/spec/office/document.py",
+          "role": "model"
+        },
+        {
+          "line_count": 23,
+          "path": "src/python/fods/spec/office/spreadsheet.py",
+          "role": "parser"
+        },
+        {
+          "line_count": 4,
+          "path": "src/python/fods/spec/style/__init__.py",
+          "role": "api"
+        },
+        {
+          "line_count": 23,
+          "path": "src/python/fods/spec/style/style.py",
+          "role": "api"
+        },
+        {
+          "line_count": 9,
+          "path": "src/python/fods/spec/table/__init__.py",
+          "role": "api"
+        },
+        {
+          "line_count": 27,
+          "path": "src/python/fods/spec/table/covered_table_cell.py",
+          "role": "model"
+        },
+        {
+          "line_count": 26,
+          "path": "src/python/fods/spec/table/table.py",
+          "role": "api"
+        },
+        {
+          "line_count": 26,
+          "path": "src/python/fods/spec/table/table_cell.py",
+          "role": "model"
+        },
+        {
+          "line_count": 27,
+          "path": "src/python/fods/spec/table/table_column.py",
+          "role": "api"
+        },
+        {
+          "line_count": 27,
+          "path": "src/python/fods/spec/table/table_header_rows.py",
+          "role": "model"
+        },
+        {
+          "line_count": 23,
+          "path": "src/python/fods/spec/table/table_row.py",
+          "role": "model"
+        },
+        {
+          "line_count": 5,
+          "path": "src/python/fods/spec/text/__init__.py",
+          "role": "api"
+        },
+        {
+          "line_count": 22,
+          "path": "src/python/fods/spec/text/paragraph.py",
+          "role": "model"
+        },
+        {
+          "line_count": 22,
+          "path": "src/python/fods/spec/text/span.py",
+          "role": "api"
+        },
+        {
+          "line_count": 1035,
+          "path": "src/python/fods/spreadsheet_document.py",
+          "role": "parser"
+        },
+        {
+          "line_count": 524,
+          "path": "src/python/fods/spreadsheet_model_document.py",
+          "role": "parser"
+        },
+        {
+          "line_count": 182,
+          "path": "src/python/fods/writer.py",
+          "role": "writer"
+        }
+      ],
+      "format_id": "fods",
+      "package_path": "src/python/fods",
+      "public_class_count": 35,
+      "public_classes": [
+        {
+          "file": "src/python/fods/csv_exporter.py",
+          "kind": "class",
+          "line": 34,
+          "name": "FodsCsvExportError",
+          "role": "exception"
+        },
+        {
+          "file": "src/python/fods/exceptions.py",
+          "kind": "class",
+          "line": 12,
+          "name": "FodsError",
+          "role": "exception"
+        },
+        {
+          "file": "src/python/fods/exceptions.py",
+          "kind": "class",
+          "line": 16,
+          "name": "FodsInputError",
+          "role": "exception"
+        },
+        {
+          "file": "src/python/fods/exceptions.py",
+          "kind": "class",
+          "line": 25,
+          "name": "FodsSizeError",
+          "role": "exception"
+        },
+        {
+          "file": "src/python/fods/exceptions.py",
+          "kind": "class",
+          "line": 33,
+          "name": "FodsParseError",
+          "role": "exception"
+        },
+        {
+          "file": "src/python/fods/Compat/fods_automatic_styles.py",
+          "kind": "class",
+          "line": 14,
+          "name": "FodsAutomaticStyles",
+          "role": "api"
+        },
+        {
+          "file": "src/python/fods/Compat/fods_body.py",
+          "kind": "class",
+          "line": 14,
+          "name": "FodsBody",
+          "role": "api"
+        },
+        {
+          "file": "src/python/fods/Compat/fods_cell.py",
+          "kind": "class",
+          "line": 14,
+          "name": "FodsCell",
+          "role": "model"
+        },
+        {
+          "file": "src/python/fods/Compat/fods_covered_cell.py",
+          "kind": "class",
+          "line": 14,
+          "name": "FodsCoveredCell",
+          "role": "model"
+        },
+        {
+          "file": "src/python/fods/Compat/fods_date_style.py",
+          "kind": "class",
+          "line": 14,
+          "name": "FodsDateStyle",
+          "role": "api"
+        },
+        {
+          "file": "src/python/fods/Compat/fods_document.py",
+          "kind": "class",
+          "line": 14,
+          "name": "FodsDocument",
+          "role": "model"
+        },
+        {
+          "file": "src/python/fods/Compat/fods_paragraph.py",
+          "kind": "class",
+          "line": 14,
+          "name": "FodsParagraph",
+          "role": "model"
+        },
+        {
+          "file": "src/python/fods/Compat/fods_sheet.py",
+          "kind": "class",
+          "line": 14,
+          "name": "FodsSheet",
+          "role": "model"
+        },
+        {
+          "file": "src/python/fods/Compat/fods_span.py",
+          "kind": "class",
+          "line": 14,
+          "name": "FodsSpan",
+          "role": "api"
+        },
+        {
+          "file": "src/python/fods/Compat/fods_spreadsheet.py",
+          "kind": "class",
+          "line": 14,
+          "name": "FodsSpreadsheet",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/Compat/fods_style.py",
+          "kind": "class",
+          "line": 14,
+          "name": "FodsStyle",
+          "role": "api"
+        },
+        {
+          "file": "src/python/fods/Compat/fods_table_row.py",
+          "kind": "class",
+          "line": 14,
+          "name": "FodsTableRow",
+          "role": "model"
+        },
+        {
+          "file": "src/python/fods/models.py",
+          "kind": "class",
+          "line": 16,
+          "name": "FodsCell",
+          "role": "model"
+        },
+        {
+          "file": "src/python/fods/models.py",
+          "kind": "class",
+          "line": 51,
+          "name": "FodsSheet",
+          "role": "model"
+        },
+        {
+          "file": "src/python/fods/models.py",
+          "kind": "class",
+          "line": 101,
+          "name": "FodsDocument",
+          "role": "model"
+        },
+        {
+          "file": "src/python/fods/spec/number/date_style.py",
+          "kind": "class",
+          "line": 12,
+          "name": "DateStyle",
+          "role": "api"
+        },
+        {
+          "file": "src/python/fods/spec/office/annotation.py",
+          "kind": "class",
+          "line": 12,
+          "name": "Annotation",
+          "role": "api"
+        },
+        {
+          "file": "src/python/fods/spec/office/automatic_styles.py",
+          "kind": "class",
+          "line": 12,
+          "name": "AutomaticStyles",
+          "role": "api"
+        },
+        {
+          "file": "src/python/fods/spec/office/body.py",
+          "kind": "class",
+          "line": 12,
+          "name": "Body",
+          "role": "api"
+        },
+        {
+          "file": "src/python/fods/spec/office/document.py",
+          "kind": "class",
+          "line": 15,
+          "name": "Document",
+          "role": "model"
+        },
+        {
+          "file": "src/python/fods/spec/office/spreadsheet.py",
+          "kind": "class",
+          "line": 12,
+          "name": "Spreadsheet",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spec/style/style.py",
+          "kind": "class",
+          "line": 12,
+          "name": "Style",
+          "role": "api"
+        },
+        {
+          "file": "src/python/fods/spec/table/covered_table_cell.py",
+          "kind": "class",
+          "line": 12,
+          "name": "CoveredTableCell",
+          "role": "model"
+        },
+        {
+          "file": "src/python/fods/spec/table/table.py",
+          "kind": "class",
+          "line": 12,
+          "name": "Table",
+          "role": "api"
+        },
+        {
+          "file": "src/python/fods/spec/table/table_cell.py",
+          "kind": "class",
+          "line": 12,
+          "name": "TableCell",
+          "role": "model"
+        },
+        {
+          "file": "src/python/fods/spec/table/table_column.py",
+          "kind": "class",
+          "line": 12,
+          "name": "TableColumn",
+          "role": "api"
+        },
+        {
+          "file": "src/python/fods/spec/table/table_header_rows.py",
+          "kind": "class",
+          "line": 12,
+          "name": "TableHeaderRows",
+          "role": "model"
+        },
+        {
+          "file": "src/python/fods/spec/table/table_row.py",
+          "kind": "class",
+          "line": 12,
+          "name": "TableRow",
+          "role": "model"
+        },
+        {
+          "file": "src/python/fods/spec/text/paragraph.py",
+          "kind": "class",
+          "line": 12,
+          "name": "Paragraph",
+          "role": "model"
+        },
+        {
+          "file": "src/python/fods/spec/text/span.py",
+          "kind": "class",
+          "line": 12,
+          "name": "Span",
+          "role": "api"
+        }
+      ],
+      "public_function_count": 97,
+      "public_functions": [
+        {
+          "file": "src/python/fods/csv_exporter.py",
+          "kind": "function",
+          "line": 55,
+          "name": "export_fods_to_csv",
+          "role": "writer"
+        },
+        {
+          "file": "src/python/fods/csv_exporter.py",
+          "kind": "function",
+          "line": 111,
+          "name": "export_fods_to_csv_file",
+          "role": "writer"
+        },
+        {
+          "file": "src/python/fods/neutral_model.py",
+          "kind": "function",
+          "line": 28,
+          "name": "make_warning",
+          "role": "model"
+        },
+        {
+          "file": "src/python/fods/neutral_model.py",
+          "kind": "function",
+          "line": 40,
+          "name": "build_workbook",
+          "role": "model"
+        },
+        {
+          "file": "src/python/fods/neutral_model.py",
+          "kind": "function",
+          "line": 83,
+          "name": "validate_workbook",
+          "role": "probe"
+        },
+        {
+          "file": "src/python/fods/neutral_model.py",
+          "kind": "function",
+          "line": 176,
+          "name": "find_sheet_by_name",
+          "role": "model"
+        },
+        {
+          "file": "src/python/fods/neutral_model.py",
+          "kind": "function",
+          "line": 195,
+          "name": "workbook_set_cell_value",
+          "role": "model"
+        },
+        {
+          "file": "src/python/fods/neutral_model.py",
+          "kind": "function",
+          "line": 273,
+          "name": "workbook_warnings_for_unsupported_edit",
+          "role": "model"
+        },
+        {
+          "file": "src/python/fods/neutral_model.py",
+          "kind": "function",
+          "line": 328,
+          "name": "workbook_add_sheet",
+          "role": "model"
+        },
+        {
+          "file": "src/python/fods/neutral_model.py",
+          "kind": "function",
+          "line": 368,
+          "name": "workbook_rename_sheet",
+          "role": "model"
+        },
+        {
+          "file": "src/python/fods/neutral_model.py",
+          "kind": "function",
+          "line": 404,
+          "name": "workbook_remove_sheet",
+          "role": "model"
+        },
+        {
+          "file": "src/python/fods/neutral_model.py",
+          "kind": "function",
+          "line": 437,
+          "name": "workbook_to_csv",
+          "role": "writer"
+        },
+        {
+          "file": "src/python/fods/neutral_model.py",
+          "kind": "function",
+          "line": 493,
+          "name": "workbook_get_cell_value",
+          "role": "model"
+        },
+        {
+          "file": "src/python/fods/neutral_model.py",
+          "kind": "function",
+          "line": 538,
+          "name": "workbook_find_cells",
+          "role": "model"
+        },
+        {
+          "file": "src/python/fods/neutral_model.py",
+          "kind": "function",
+          "line": 598,
+          "name": "workbook_count_matching_cells",
+          "role": "analytics"
+        },
+        {
+          "file": "src/python/fods/neutral_model.py",
+          "kind": "function",
+          "line": 622,
+          "name": "workbook_to_html",
+          "role": "writer"
+        },
+        {
+          "file": "src/python/fods/neutral_model.py",
+          "kind": "function",
+          "line": 656,
+          "name": "workbook_get_column_values",
+          "role": "model"
+        },
+        {
+          "file": "src/python/fods/neutral_model.py",
+          "kind": "function",
+          "line": 687,
+          "name": "workbook_max_column_count",
+          "role": "analytics"
+        },
+        {
+          "file": "src/python/fods/parser.py",
+          "kind": "function",
+          "line": 74,
+          "name": "parse_fods",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/parser.py",
+          "kind": "function",
+          "line": 105,
+          "name": "parse_fods_strict",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/writer.py",
+          "kind": "function",
+          "line": 127,
+          "name": "workbook_to_xml",
+          "role": "writer"
+        },
+        {
+          "file": "src/python/fods/writer.py",
+          "kind": "function",
+          "line": 173,
+          "name": "write_fods",
+          "role": "writer"
+        },
+        {
+          "file": "src/python/fods/cli.py",
+          "kind": "function",
+          "line": 14,
+          "name": "main",
+          "role": "api"
+        },
+        {
+          "file": "src/python/fods/fods_to_tsv.py",
+          "kind": "function",
+          "line": 30,
+          "name": "fods_to_tsv",
+          "role": "writer"
+        },
+        {
+          "file": "src/python/fods/models.py",
+          "kind": "function",
+          "line": 161,
+          "name": "value_type",
+          "role": "model"
+        },
+        {
+          "file": "src/python/fods/models.py",
+          "kind": "function",
+          "line": 166,
+          "name": "text",
+          "role": "model"
+        },
+        {
+          "file": "src/python/fods/models.py",
+          "kind": "function",
+          "line": 172,
+          "name": "repeated",
+          "role": "model"
+        },
+        {
+          "file": "src/python/fods/models.py",
+          "kind": "function",
+          "line": 181,
+          "name": "from_file",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/models.py",
+          "kind": "function",
+          "line": 188,
+          "name": "odf_version",
+          "role": "model"
+        },
+        {
+          "file": "src/python/fods/models.py",
+          "kind": "function",
+          "line": 193,
+          "name": "cell_at",
+          "role": "model"
+        },
+        {
+          "file": "src/python/fods/models.py",
+          "kind": "function",
+          "line": 216,
+          "name": "to_dict",
+          "role": "writer"
+        },
+        {
+          "file": "src/python/fods/models.py",
+          "kind": "function",
+          "line": 226,
+          "name": "export_fods_to_csv",
+          "role": "writer"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_document.py",
+          "kind": "function",
+          "line": 30,
+          "name": "workbook_stats",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_document.py",
+          "kind": "function",
+          "line": 88,
+          "name": "workbook_type_distribution",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_document.py",
+          "kind": "function",
+          "line": 133,
+          "name": "workbook_sheet_summary",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_document.py",
+          "kind": "function",
+          "line": 178,
+          "name": "workbook_empty_rows",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_document.py",
+          "kind": "function",
+          "line": 218,
+          "name": "workbook_formula_list",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_document.py",
+          "kind": "function",
+          "line": 257,
+          "name": "workbook_cell_range",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_document.py",
+          "kind": "function",
+          "line": 303,
+          "name": "workbook_merged_cell_summary",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_document.py",
+          "kind": "function",
+          "line": 341,
+          "name": "workbook_sheet_order",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_document.py",
+          "kind": "function",
+          "line": 364,
+          "name": "workbook_numeric_summary",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_document.py",
+          "kind": "function",
+          "line": 420,
+          "name": "workbook_column_count",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_document.py",
+          "kind": "function",
+          "line": 462,
+          "name": "workbook_row_style_summary",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_document.py",
+          "kind": "function",
+          "line": 495,
+          "name": "workbook_formula_edit_policy",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_document.py",
+          "kind": "function",
+          "line": 548,
+          "name": "workbook_named_range_list",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_document.py",
+          "kind": "function",
+          "line": 597,
+          "name": "workbook_column_style_summary",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_document.py",
+          "kind": "function",
+          "line": 650,
+          "name": "workbook_style_family_list",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_document.py",
+          "kind": "function",
+          "line": 708,
+          "name": "workbook_data_validation_summary",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_document.py",
+          "kind": "function",
+          "line": 772,
+          "name": "workbook_column_width_summary",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_document.py",
+          "kind": "function",
+          "line": 812,
+          "name": "workbook_cell_type_matrix",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_document.py",
+          "kind": "function",
+          "line": 873,
+          "name": "workbook_numeric_density",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_document.py",
+          "kind": "function",
+          "line": 903,
+          "name": "workbook_count_nonempty_cells",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_document.py",
+          "kind": "function",
+          "line": 933,
+          "name": "workbook_total_numeric_value",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_document.py",
+          "kind": "function",
+          "line": 962,
+          "name": "fods_sheet_count",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_document.py",
+          "kind": "function",
+          "line": 976,
+          "name": "workbook_row_count",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_document.py",
+          "kind": "function",
+          "line": 996,
+          "name": "workbook_cell_text_at",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_model_document.py",
+          "kind": "function",
+          "line": 15,
+          "name": "fods_formula_count",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_model_document.py",
+          "kind": "function",
+          "line": 30,
+          "name": "fods_total_cell_count",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_model_document.py",
+          "kind": "function",
+          "line": 48,
+          "name": "fods_empty_cell_count",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_model_document.py",
+          "kind": "function",
+          "line": 67,
+          "name": "fods_has_formulas",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_model_document.py",
+          "kind": "function",
+          "line": 77,
+          "name": "fods_sheet_names",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_model_document.py",
+          "kind": "function",
+          "line": 89,
+          "name": "fods_string_cell_count",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_model_document.py",
+          "kind": "function",
+          "line": 109,
+          "name": "fods_numeric_cell_count",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_model_document.py",
+          "kind": "function",
+          "line": 127,
+          "name": "fods_max_row_count",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_model_document.py",
+          "kind": "function",
+          "line": 142,
+          "name": "fods_avg_cells_per_sheet",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_model_document.py",
+          "kind": "function",
+          "line": 158,
+          "name": "fods_has_empty_sheets",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_model_document.py",
+          "kind": "function",
+          "line": 178,
+          "name": "fods_all_sheets_have_data",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_model_document.py",
+          "kind": "function",
+          "line": 204,
+          "name": "fods_max_string_length",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_model_document.py",
+          "kind": "function",
+          "line": 222,
+          "name": "fods_numeric_density",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_model_document.py",
+          "kind": "function",
+          "line": 231,
+          "name": "fods_data_density",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_model_document.py",
+          "kind": "function",
+          "line": 240,
+          "name": "fods_string_density",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_model_document.py",
+          "kind": "function",
+          "line": 249,
+          "name": "fods_is_single_sheet",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_model_document.py",
+          "kind": "function",
+          "line": 254,
+          "name": "fods_is_multi_sheet",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_model_document.py",
+          "kind": "function",
+          "line": 259,
+          "name": "fods_min_row_count",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_model_document.py",
+          "kind": "function",
+          "line": 267,
+          "name": "fods_max_col_count",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_model_document.py",
+          "kind": "function",
+          "line": 281,
+          "name": "fods_empty_sheet_count",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_model_document.py",
+          "kind": "function",
+          "line": 287,
+          "name": "fods_total_row_count",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_model_document.py",
+          "kind": "function",
+          "line": 293,
+          "name": "fods_avg_col_count",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_model_document.py",
+          "kind": "function",
+          "line": 305,
+          "name": "fods_is_single_cell",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_model_document.py",
+          "kind": "function",
+          "line": 310,
+          "name": "fods_nonempty_sheet_count",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_model_document.py",
+          "kind": "function",
+          "line": 315,
+          "name": "fods_has_string_cells",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_model_document.py",
+          "kind": "function",
+          "line": 330,
+          "name": "fods_row_count_variance",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_model_document.py",
+          "kind": "function",
+          "line": 340,
+          "name": "fods_avg_string_length",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_model_document.py",
+          "kind": "function",
+          "line": 356,
+          "name": "fods_col_count_variance",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_model_document.py",
+          "kind": "function",
+          "line": 373,
+          "name": "fods_cell_to_sheet_ratio",
+          "role": "writer"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_model_document.py",
+          "kind": "function",
+          "line": 385,
+          "name": "fods_avg_numeric_value",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_model_document.py",
+          "kind": "function",
+          "line": 401,
+          "name": "fods_nonempty_row_ratio",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_model_document.py",
+          "kind": "function",
+          "line": 419,
+          "name": "fods_longest_row_index",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_model_document.py",
+          "kind": "function",
+          "line": 439,
+          "name": "fods_numeric_sum_all",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_model_document.py",
+          "kind": "function",
+          "line": 455,
+          "name": "fods_empty_column_count",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_model_document.py",
+          "kind": "function",
+          "line": 477,
+          "name": "fods_numeric_cell_ratio",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_model_document.py",
+          "kind": "function",
+          "line": 493,
+          "name": "fods_max_row_cell_count",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_model_document.py",
+          "kind": "function",
+          "line": 504,
+          "name": "fods_formula_cell_count",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/spreadsheet_model_document.py",
+          "kind": "function",
+          "line": 517,
+          "name": "fods_sheet_row_variance",
+          "role": "parser"
+        },
+        {
+          "file": "src/python/fods/fods_cell_iterator.py",
+          "kind": "function",
+          "line": 16,
+          "name": "fods_iter_cells",
+          "role": "iterator"
+        },
+        {
+          "file": "src/python/fods/fods_sheet_iterator.py",
+          "kind": "function",
+          "line": 16,
+          "name": "fods_iter_sheets",
+          "role": "iterator"
+        },
+        {
+          "file": "src/python/fods/fods_workflow.py",
+          "kind": "function",
+          "line": 9,
+          "name": "fods_installed_workflow",
+          "role": "workflow"
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "authoritative_plan": "plans/.claude/crispy-jingling-snail.md",
+    "generated_by": "codex",
+    "inventory_type": "python",
+    "mission_id": "CERT-EXHAUST-20260628",
+    "visibility": "internal"
+  },
+  "total_export_count": 103,
+  "total_file_count": 123
+}

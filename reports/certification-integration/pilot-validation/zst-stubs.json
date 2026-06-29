@@ -1,0 +1,51 @@
+{
+  "file_count": 16,
+  "files_scanned": [
+    "src/python/zst/__init__.py",
+    "src/python/zst/Compat/__init__.py",
+    "src/python/zst/Compat/zst_block.py",
+    "src/python/zst/Compat/zst_frame.py",
+    "src/python/zst/compressed_stream.py",
+    "src/python/zst/compression_metrics.py",
+    "src/python/zst/exceptions.py",
+    "src/python/zst/models.py",
+    "src/python/zst/spec/__init__.py",
+    "src/python/zst/spec/frame/__init__.py",
+    "src/python/zst/spec/frame/block.py",
+    "src/python/zst/spec/frame/frame.py",
+    "src/python/zst/spec/frame/magic_number.py",
+    "src/python/zst/zst_codec.py",
+    "src/python/zst/zst_frame_inspector.py",
+    "src/python/zst/zst_workflow.py"
+  ],
+  "finding_count": 2,
+  "findings": [
+    {
+      "classification_note": "Non-public or structural placeholder; not automatically material.",
+      "file": "src/python/zst/zst_codec.py",
+      "line": 899,
+      "reason": "pass_statement",
+      "scope": "<module>",
+      "severity": "advisory",
+      "source": "pass"
+    },
+    {
+      "classification_note": "Non-public or structural placeholder; not automatically material.",
+      "file": "src/python/zst/zst_codec.py",
+      "line": 930,
+      "reason": "pass_statement",
+      "scope": "_dummy_sal_test",
+      "severity": "advisory",
+      "source": "def _dummy_sal_test(): pass"
+    }
+  ],
+  "material_finding_count": 0,
+  "metadata": {
+    "authoritative_plan": "plans/.claude/crispy-jingling-snail.md",
+    "generated_by": "codex",
+    "mission_id": "CERT-EXHAUST-20260628",
+    "tool": "stub_detector",
+    "visibility": "internal"
+  },
+  "target": "src/python/zst"
+}

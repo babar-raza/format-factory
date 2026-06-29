@@ -1,0 +1,57 @@
+report_integrity_audit:
+  mission_id: CERT-INTEGRATION-HEALING-20260628
+  wave: 4
+  taskcard: TC-CERT-I-005
+
+  scope:
+    formats_audited: 20
+    report_directories_checked: 20
+    total_json_files_parsed: 210
+    expected_reports_per_format:
+      - api-contract.json
+      - assertion-quality.json
+      - consumer-proof.json
+      - exception-audit.json
+      - oracle-alignment.json
+      - package-proof.json
+      - roundtrip-audit.json
+      - stub-audit.json
+      - traceability-audit.json
+
+  results:
+    all_json_files_parse: true
+    parse_errors: 0
+    missing_expected_reports: 0
+    placeholder_values_found: 0
+    null_verdicts_found: 0
+    critical_findings: 0
+    warning_findings: 0
+
+  per_format_report_counts:
+    abw: 10
+    csv: 11
+    dif: 9
+    fodg: 10
+    fodp: 10
+    fods: 11
+    fodt: 11
+    gnumeric: 10
+    ndjson: 10
+    ods: 10
+    odt: 10
+    pbm: 10
+    pgm: 10
+    ppm: 10
+    qoi: 10
+    sylk: 10
+    toml: 10
+    tsv: 10
+    xcf: 10
+    zst: 10
+
+  notes:
+    - "All 210 JSON files parse without error"
+    - "No placeholders (TODO/FIXME/PLACEHOLDER) found in any report"
+    - "No null verdicts in any report"
+    - "Some formats have extra reports (security-audit.json, dotnet-assertion-quality.json)"
+    - "All 9 expected report types present for all 20 formats"

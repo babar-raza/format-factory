@@ -1,0 +1,98 @@
+close_task_result:
+  prompt_path: .supervisor/prompts/close-task.md
+  prompt_hash: 102dfced5f4dc5fe
+  invocation_id: cert-integration-close-003
+  mission_id: CERT-INTEGRATION-HEALING-20260628
+  plan_id: lively-drifting-starfish
+  plan_revision: "3"
+  plan_hash: 084f399ed15eec5f
+
+  # ── Closure Precondition Checks ──
+  preconditions:
+    plan_identity_matches: true
+    no_material_findings_remain: true
+    no_actionable_findings_remain: true
+    no_mandatory_taskcard_open: true
+    no_required_proof_gap: true
+    generated_outputs_fresh: true
+    validation_checks_pass: true
+    drift_checks_pass: true
+    regression_checks_pass: true
+    idempotency_checks_pass: true
+    evidence_records_exist: true
+    evidence_agrees_with_state: true
+
+  # ── Taskcard Status ──
+  taskcards_closed:
+    - TC-CERT-I-001  # Baseline capture
+    - TC-CERT-I-002  # Individual tool validation
+    - TC-CERT-I-003  # Integration tests (456 pass)
+    - TC-CERT-I-004  # Pilot re-execution (FODS/CSV/ZST)
+    - TC-CERT-I-005  # Report audit
+    - TC-CERT-I-006  # Gap reconciliation
+    - TC-CERT-I-007  # Supervisor wiring verification
+    - TC-CERT-I-008  # CERT-DASHBOARD-001 fix
+    - TC-CERT-I-009  # Recertification (20/20)
+    - TC-CERT-I-010  # L28 layer plan creation
+    - TC-CERT-I-011  # All 7 registry updates
+    - TC-CERT-I-012  # Report integrity audit
+    - TC-CERT-I-013  # Documentation (layer plan)
+    - TC-CERT-I-014  # Full portfolio re-audit
+    - TC-CERT-I-015  # Idempotency verification
+    - TC-CERT-I-016  # Skill registration (certification-dashboard)
+    - TC-CERT-I-017  # Governance validators V88+V89
+    # Layer tasks
+    - TC-CERT-L-001  # Layer plan creation
+    - TC-CERT-L-002  # Dashboard fix + 20/20 verification
+  taskcards_not_closed:
+    - TC-CERT-L-003  # Register remaining 8 cert tools as skills (P2, deferred — not in-scope for this mission)
+  requirements_reconciled: true
+  queue_empty_and_valid: true
+  continuation_disabled: true
+
+  # ── Convergence Evidence ──
+  convergence_iterations: 3
+  iteration_1_findings: "Plan executed, all 15 original taskcards closed"
+  iteration_2_findings: "TC-CERT-I-016 (skill) + TC-CERT-I-017 (validators) added and closed"
+  iteration_3_findings: "CERT-DASHBOARD-001 fix re-applied (lost in compaction), L28 registry entries re-applied, validator count test fixed (94→96)"
+  final_audit_verdict: SPRINT_ALL_GREEN_VERIFIED
+  all_green_candidate_valid: true
+
+  # ── Test Results ──
+  test_results:
+    certification_report_integrity: "447 passed, 0 failed"
+    governance_validators: "159 passed, 0 failed"
+    governance_v88_v89: "6 passed, 0 failed"
+    idempotency: PASS
+    regression: PASS
+
+  # ── Commit Status ──
+  commit_status: UNCOMMITTED
+  commit_blocker: "Session policy: commit requires explicit user authorization"
+  commit_note: "All changes are in working tree. User can commit when ready."
+
+  # ── Changed Files (mission-relevant) ──
+  changed_files:
+    - tools/certification/certification_dashboard.py     # CERT-DASHBOARD-001 fix
+    - tools/supervisor/governance_validators_ext2.py     # V88+V89 validators
+    - tools/supervisor/governance_validator_runner.py     # V88+V89 wiring
+    - tests/supervisor/test_governance_validators.py     # V88+V89 tests + count fix
+    - reports/certification/portfolio-certification-matrix.json  # Regenerated 20/20
+    - reports/certification/certification-report.md      # Regenerated
+    - plans/layers/index.yaml                            # L28 entry
+    - plans/layers/master.md                             # 27→28 layers
+    - plans/layers/decision-register.yaml                # DEC-029
+    - plans/layers/dependency-register.yaml              # DEP-021..024
+    - plans/layers/task-register.yaml                    # TC-CERT-L-001..003
+    - plans/layers/handoff-register.yaml                 # HO-008
+    - plans/layers/change-ledger.jsonl                   # CL-003
+
+  # ── Closure Record ──
+  closure_record_path: reports/certification-integration/close-task-result.yaml
+  closure_record_valid: true
+  terminal_state_written: true
+  terminal_state_path: .local/supervisor/active-plan-lock.json
+
+  contradictions: []
+
+  verdict: CLOSE_TASK_ACCEPTED

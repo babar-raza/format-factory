@@ -106,7 +106,7 @@ def collect_format_status(fmt: str) -> dict[str, Any]:
     # Compute overall verdict
     statuses = [d["status"] for d in dimensions.values()]
     acceptable = {"PASS", "KNOWN_GAPS", "NOT_APPLICABLE", "GAP"}
-    if all(s == "PASS" for s in statuses):
+    if all(s in {"PASS", "NOT_APPLICABLE"} for s in statuses):
         verdict = "CERTIFIED"
     elif any(s == "FAIL" for s in statuses):
         verdict = "NOT_CERTIFIED"

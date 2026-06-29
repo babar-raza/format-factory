@@ -1,0 +1,207 @@
+{
+  "exception_count": 5,
+  "exceptions": [
+    {
+      "coverage_status": "REFERENCED_BY_TEST",
+      "file": "src/python/csv/exceptions.py",
+      "line": 13,
+      "name": "CsvError",
+      "raised_in_source": false,
+      "test_reference_count": 8,
+      "test_references": [
+        {
+          "file": "tests/python/csv/test_csv_gap_closure_batch.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/csv/test_csv_gate6_oracle.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/csv/test_r165_csv_coverage.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/csv/test_r168_csv_row_column_accessors.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/csv/test_r210_csv_count_distinct.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/csv/test_r55_csv_parser.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/csv/test_r59_csv_gate7_fuzz.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/csv/test_rnext_csv_error_classes.py",
+          "match": "text_reference"
+        }
+      ]
+    },
+    {
+      "coverage_status": "REFERENCED_BY_TEST",
+      "file": "src/python/csv/csv_parser.py",
+      "line": 37,
+      "name": "CsvInputError",
+      "raised_in_source": true,
+      "test_reference_count": 7,
+      "test_references": [
+        {
+          "file": "tests/python/csv/test_csv_gap_closure_batch.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/csv/test_csv_to_dicts.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/csv/test_r165_csv_coverage.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/csv/test_r55_csv_parser.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/csv/test_r59_csv_gate7_fuzz.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/csv/test_rnext47_csv_count_empty_cells.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/csv/test_rnext_csv_error_classes.py",
+          "match": "text_reference"
+        }
+      ]
+    },
+    {
+      "coverage_status": "REFERENCED_BY_TEST",
+      "file": "src/python/csv/exceptions.py",
+      "line": 17,
+      "name": "CsvParseError",
+      "raised_in_source": false,
+      "test_reference_count": 3,
+      "test_references": [
+        {
+          "file": "tests/python/csv/test_csv_gap_closure_batch.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/csv/test_r165_csv_coverage.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/csv/test_rnext_csv_error_classes.py",
+          "match": "text_reference"
+        }
+      ]
+    },
+    {
+      "coverage_status": "REFERENCED_BY_TEST",
+      "file": "src/python/csv/csv_parser.py",
+      "line": 41,
+      "name": "CsvSizeError",
+      "raised_in_source": true,
+      "test_reference_count": 4,
+      "test_references": [
+        {
+          "file": "tests/python/csv/test_csv_gap_closure_batch.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/csv/test_r165_csv_coverage.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/csv/test_r59_csv_gate7_fuzz.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/csv/test_rnext_csv_error_classes.py",
+          "match": "text_reference"
+        }
+      ]
+    },
+    {
+      "coverage_status": "REFERENCED_BY_TEST",
+      "file": "src/python/csv/exceptions.py",
+      "line": 21,
+      "name": "CsvWriteError",
+      "raised_in_source": true,
+      "test_reference_count": 4,
+      "test_references": [
+        {
+          "file": "tests/python/csv/test_csv_gap_closure_batch.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/csv/test_mainstream_csv_writer.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/csv/test_r165_csv_coverage.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/csv/test_rnext_csv_error_classes.py",
+          "match": "text_reference"
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "authoritative_plan": "plans/.claude/crispy-jingling-snail.md",
+    "generated_by": "codex",
+    "mission_id": "CERT-EXHAUST-20260628",
+    "tool": "exception_coverage_checker",
+    "visibility": "internal"
+  },
+  "raise_site_count": 7,
+  "raise_sites": [
+    {
+      "exception": "CsvInputError",
+      "file": "src/python/csv/csv_parser.py",
+      "line": 168
+    },
+    {
+      "exception": "CsvInputError",
+      "file": "src/python/csv/csv_parser.py",
+      "line": 170
+    },
+    {
+      "exception": "CsvSizeError",
+      "file": "src/python/csv/csv_parser.py",
+      "line": 174
+    },
+    {
+      "exception": "CsvInputError",
+      "file": "src/python/csv/csv_parser.py",
+      "line": 179
+    },
+    {
+      "exception": "CsvSizeError",
+      "file": "src/python/csv/csv_parser.py",
+      "line": 190
+    },
+    {
+      "exception": "CsvWriteError",
+      "file": "src/python/csv/csv_writer.py",
+      "line": 53
+    },
+    {
+      "exception": "CsvWriteError",
+      "file": "src/python/csv/csv_writer.py",
+      "line": 73
+    }
+  ],
+  "source_path": "src/python/csv",
+  "test_path": "tests/python/csv",
+  "uncovered_exception_count": 0
+}

@@ -1,0 +1,42 @@
+gap_reconciliation_map:
+  mission_id: CERT-INTEGRATION-HEALING-20260628
+  wave: 5
+  taskcard: TC-CERT-I-006
+
+  direction_a_certification_to_gaps:
+    total_material_certification_findings: 0
+    findings_without_canonical_gap: 0
+    invariant_met: true
+    note: "MATERIAL_CERTIFICATION_FINDINGS_WITHOUT_CANONICAL_GAPS = 0 (invariant satisfied)"
+
+  direction_b_gaps_to_certification:
+    total_open_canonical_gaps: 4
+    gaps_confirmed_by_certification: 0
+    gaps_closed_by_certification: 0
+    gaps_unrelated_to_certification: 4
+    open_gaps:
+      - gap_id: GAP-FODS-FOSS-FIND_CELLS_B-001
+        type: capability_gap
+        certification_relevance: none
+        note: "Missing feature (Find Cells By Value), not a certification quality gap"
+      - gap_id: GAP-FODS-FOSS-ITER_ROWS-001
+        type: capability_gap
+        certification_relevance: none
+        note: "Missing feature (Iter Rows), not a certification quality gap"
+      - gap_id: GAP-FODS-FOSS-FIND_SHEET_B-001
+        type: capability_gap
+        certification_relevance: none
+        note: "Missing feature (Find Sheet By Index), not a certification quality gap"
+      - gap_id: GAP-ODS-FOSS-CELL_AT-001
+        type: capability_gap
+        certification_relevance: none
+        note: "Missing feature (Cell At), not a certification quality gap"
+
+  tool_findings_for_gap_creation:
+    - finding_id: CERT-DASHBOARD-001
+      gap_action: no_gap_needed
+      reason: "Dashboard bug, not a product gap — fix is in the tool, not the product"
+
+  reconciliation_verdict: CLEAN
+  parallel_gap_ledger_created: false
+  canonical_gap_ledger_modified: false

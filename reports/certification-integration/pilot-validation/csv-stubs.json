@@ -1,0 +1,53 @@
+{
+  "file_count": 18,
+  "files_scanned": [
+    "src/python/csv/__init__.py",
+    "src/python/csv/Compat/__init__.py",
+    "src/python/csv/Compat/csv_field.py",
+    "src/python/csv/Compat/csv_header.py",
+    "src/python/csv/Compat/csv_record.py",
+    "src/python/csv/csv_analytics.py",
+    "src/python/csv/csv_parser.py",
+    "src/python/csv/csv_stats.py",
+    "src/python/csv/csv_workflow.py",
+    "src/python/csv/csv_writer.py",
+    "src/python/csv/exceptions.py",
+    "src/python/csv/models.py",
+    "src/python/csv/spec/__init__.py",
+    "src/python/csv/spec/record/__init__.py",
+    "src/python/csv/spec/record/field.py",
+    "src/python/csv/spec/record/header.py",
+    "src/python/csv/spec/record/record.py",
+    "src/python/csv/tabular_document.py"
+  ],
+  "finding_count": 2,
+  "findings": [
+    {
+      "classification_note": "Non-public or structural placeholder; not automatically material.",
+      "file": "src/python/csv/csv_parser.py",
+      "line": 382,
+      "reason": "pass_statement",
+      "scope": "<module>",
+      "severity": "advisory",
+      "source": "pass"
+    },
+    {
+      "classification_note": "Non-public or structural placeholder; not automatically material.",
+      "file": "src/python/csv/tabular_document.py",
+      "line": 799,
+      "reason": "pass_statement",
+      "scope": "<module>",
+      "severity": "advisory",
+      "source": "pass"
+    }
+  ],
+  "material_finding_count": 0,
+  "metadata": {
+    "authoritative_plan": "plans/.claude/crispy-jingling-snail.md",
+    "generated_by": "codex",
+    "mission_id": "CERT-EXHAUST-20260628",
+    "tool": "stub_detector",
+    "visibility": "internal"
+  },
+  "target": "src/python/csv"
+}

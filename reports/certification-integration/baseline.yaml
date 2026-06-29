@@ -1,0 +1,75 @@
+certification_integration_baseline:
+  mission_id: CERT-INTEGRATION-HEALING-20260628
+  verification_run_id: cert-integration-healing-001
+  repository_root: "c:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory"
+  branch: main
+  head: 516b9a9aa053cc49f8d9711c4fa8b24910db3f03
+  worktree: clean (certification paths have 2 modified, 2 untracked)
+  authoritative_plan: plans/.claude/crispy-jingling-snail.md
+  plan_hash: b8773c2c417a96f60d9b53c244edd1fc
+  certification_report_root: reports/certification/
+  certification_report_count: 212
+  certification_product_directories:
+    - abw
+    - csv
+    - dif
+    - fodg
+    - fodp
+    - fods
+    - fodt
+    - gnumeric
+    - ndjson
+    - ods
+    - odt
+    - pbm
+    - pgm
+    - ppm
+    - qoi
+    - sylk
+    - toml
+    - tsv
+    - xcf
+    - zst
+  stub_directories:
+    - html
+    - markdown
+    - netpbm
+    - pam
+    - txt
+    - xpm
+    - mutation
+    - pbt
+  certification_tool_root: tools/certification/
+  certification_tools:
+    - __init__.py
+    - assertion_quality_scorer.py
+    - certification_dashboard.py
+    - dotnet_assertion_scorer.py
+    - exception_coverage_checker.py
+    - fix_weak_assertions.py
+    - generate_exception_tests.py
+    - generate_security_tests.py
+    - inventory_extractor.py
+    - stub_detector.py
+  certification_tool_count: 10
+  all_tools_parse_valid_python: true
+  certification_tests: []
+  certification_commands: []
+  certification_skills: []
+  certification_layer_plan: null
+  certification_layer_status: MISSING
+  canonical_gap_ledgers:
+    - reports/capability-layer/gap-ledger.json
+  reported_verdict_counts:
+    CERTIFIED: 12
+    CERTIFIED_WITH_KNOWN_GAPS: 8
+    NOT_CERTIFIED: 0
+    IN_PROGRESS: 0
+    NOT_STARTED: 0
+  uncommitted_certification_changes:
+    modified:
+      - reports/certification/certification-report.md
+      - reports/certification/portfolio-certification-matrix.json
+    untracked:
+      - reports/certification/mutation/
+      - reports/certification/pbt/

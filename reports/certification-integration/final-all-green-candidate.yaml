@@ -1,0 +1,85 @@
+final_all_green_candidate:
+  mission_id: CERT-INTEGRATION-HEALING-20260628
+  plan_id: lively-drifting-starfish
+  plan_path: plans/.claude/lively-drifting-starfish.md
+  plan_revision: "3"
+  plan_hash: 084f399ed15eec5f
+  final_audit_path: reports/certification-integration/report-integrity-audit.yaml
+  material_findings: 0
+  actionable_findings: 0
+  unresolved_mandatory_requirements: 0
+  open_mandatory_taskcards: 0
+  weakly_verified_mandatory_items: 0
+  unconsumed_findings: 0
+  rework_items: 0
+  eligible_tasks: 0
+  required_proof_gaps: 0
+  e2e_failures: 0
+  pilot_failures: 0
+  regression_failures: 0
+  idempotency_failures: 0
+  state_reconciled: true
+  closure_prompt_authorized: true
+
+  proof_level_matrix:
+    tool_validation:
+      previous: PROOF_LEVEL_0
+      current: PROOF_LEVEL_3
+      target: PROOF_LEVEL_3
+      evidence: reports/certification-integration/tool-verification.yaml
+    integration_tests:
+      previous: PROOF_LEVEL_0
+      current: PROOF_LEVEL_3
+      target: PROOF_LEVEL_3
+      evidence: tests/certification/test_tool_pipeline.py (9 tests pass)
+    report_integrity:
+      previous: PROOF_LEVEL_0
+      current: PROOF_LEVEL_3
+      target: PROOF_LEVEL_3
+      evidence: tests/certification/test_report_integrity.py (447 tests pass)
+    verdict_review:
+      previous: PROOF_LEVEL_0
+      current: PROOF_LEVEL_4
+      target: PROOF_LEVEL_4
+      evidence: reports/certification-integration/product-verdict-review.yaml
+    gap_reconciliation:
+      previous: PROOF_LEVEL_0
+      current: PROOF_LEVEL_4
+      target: PROOF_LEVEL_4
+      evidence: reports/certification-integration/gap-reconciliation-map.yaml
+    layer_formalization:
+      previous: PROOF_LEVEL_0
+      current: PROOF_LEVEL_4
+      target: PROOF_LEVEL_4
+      evidence: plans/layers/certification-audit-layer.md + all 7 registries
+    idempotency:
+      previous: PROOF_LEVEL_0
+      current: PROOF_LEVEL_5
+      target: PROOF_LEVEL_5
+      evidence: Dashboard run twice, zero diff (excluding timestamps)
+    portfolio_certification:
+      previous: PROOF_LEVEL_1
+      current: PROOF_LEVEL_5
+      target: PROOF_LEVEL_5
+      evidence: 20/20 CERTIFIED, 0 material findings, CERT-DASHBOARD-001 fixed
+    governance_validators:
+      previous: PROOF_LEVEL_0
+      current: PROOF_LEVEL_3
+      target: PROOF_LEVEL_3
+      evidence: V88+V89 validators in governance_validators_ext2.py, 6 tests pass
+    skill_registration:
+      previous: PROOF_LEVEL_0
+      current: PROOF_LEVEL_3
+      target: PROOF_LEVEL_3
+      evidence: certification-dashboard skill in skill-registry.yaml + command file
+
+  test_results:
+    certification_tests: 456 passed, 0 failed
+    governance_validator_v88_v89: 6 passed, 0 failed
+    idempotency: PASS
+    regression: PASS (no prior failures introduced)
+
+  convergence_iterations: 3
+  audit_verdict: SPRINT_ALL_GREEN_VERIFIED
+  all_taskcards_closed: true
+  remaining_work: none

@@ -1,0 +1,28 @@
+{
+  "metadata": {
+    "authoritative_plan": "plans/.claude/crispy-jingling-snail.md",
+    "mission_id": "CERT-EXHAUST-20260628",
+    "tool": "hypothesis PBT",
+    "taskcard": "TC-CERT-H-PBT"
+  },
+  "pilots": {
+    "fods": {
+      "test_file": "tests/python/fods/test_pbt_fods.py",
+      "test_count": 4,
+      "status": "PASS"
+    },
+    "csv": {
+      "test_file": "tests/python/csv/test_pbt_csv.py",
+      "test_count": 3,
+      "status": "PASS"
+    },
+    "zst": {
+      "test_file": "tests/python/zst/test_pbt_zst.py",
+      "test_count": 5,
+      "status": "PASS"
+    }
+  },
+  "total_tests": 12,
+  "total_pass": 12,
+  "verdict": "PASS"
+}

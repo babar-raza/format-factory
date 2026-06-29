@@ -1,0 +1,210 @@
+{
+  "exception_count": 5,
+  "exceptions": [
+    {
+      "coverage_status": "REFERENCED_BY_TEST",
+      "file": "src/python/fods/csv_exporter.py",
+      "line": 34,
+      "name": "FodsCsvExportError",
+      "raised_in_source": true,
+      "test_reference_count": 1,
+      "test_references": [
+        {
+          "file": "tests/python/fods/test_r50_fods_csv_export.py",
+          "match": "text_reference"
+        }
+      ]
+    },
+    {
+      "coverage_status": "REFERENCED_BY_TEST",
+      "file": "src/python/fods/exceptions.py",
+      "line": 12,
+      "name": "FodsError",
+      "raised_in_source": false,
+      "test_reference_count": 3,
+      "test_references": [
+        {
+          "file": "tests/python/fods/test_fods_gap_closure_batch.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/fods/test_public_api.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/fods/test_r43_deepening.py",
+          "match": "text_reference"
+        }
+      ]
+    },
+    {
+      "coverage_status": "REFERENCED_BY_TEST",
+      "file": "src/python/fods/exceptions.py",
+      "line": 16,
+      "name": "FodsInputError",
+      "raised_in_source": true,
+      "test_reference_count": 8,
+      "test_references": [
+        {
+          "file": "tests/python/fods/test_fods_gap_closure_batch.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/fods/test_fods_pywrite_deepening.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/fods/test_parser_malformed.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/fods/test_public_api.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/fods/test_r42_deepening.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/fods/test_r46_write_capability.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/fods/test_r47_writer_hardening.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/fods/test_rnext_fods_workbook_to_xml.py",
+          "match": "text_reference"
+        }
+      ]
+    },
+    {
+      "coverage_status": "REFERENCED_BY_TEST",
+      "file": "src/python/fods/exceptions.py",
+      "line": 33,
+      "name": "FodsParseError",
+      "raised_in_source": false,
+      "test_reference_count": 3,
+      "test_references": [
+        {
+          "file": "tests/python/fods/test_fods_gap_closure_batch.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/fods/test_parser_malformed.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/fods/test_public_api.py",
+          "match": "text_reference"
+        }
+      ]
+    },
+    {
+      "coverage_status": "REFERENCED_BY_TEST",
+      "file": "src/python/fods/exceptions.py",
+      "line": 25,
+      "name": "FodsSizeError",
+      "raised_in_source": true,
+      "test_reference_count": 3,
+      "test_references": [
+        {
+          "file": "tests/python/fods/test_fods_gap_closure_batch.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/fods/test_parser_security.py",
+          "match": "text_reference"
+        },
+        {
+          "file": "tests/python/fods/test_public_api.py",
+          "match": "text_reference"
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "authoritative_plan": "plans/.claude/crispy-jingling-snail.md",
+    "generated_by": "codex",
+    "mission_id": "CERT-EXHAUST-20260628",
+    "tool": "exception_coverage_checker",
+    "visibility": "internal"
+  },
+  "raise_site_count": 14,
+  "raise_sites": [
+    {
+      "exception": "FodsCsvExportError",
+      "file": "src/python/fods/csv_exporter.py",
+      "line": 76
+    },
+    {
+      "exception": "FodsCsvExportError",
+      "file": "src/python/fods/csv_exporter.py",
+      "line": 80
+    },
+    {
+      "exception": "FodsCsvExportError",
+      "file": "src/python/fods/csv_exporter.py",
+      "line": 83
+    },
+    {
+      "exception": "FodsCsvExportError",
+      "file": "src/python/fods/csv_exporter.py",
+      "line": 86
+    },
+    {
+      "exception": "FodsCsvExportError",
+      "file": "src/python/fods/csv_exporter.py",
+      "line": 94
+    },
+    {
+      "exception": "FodsCsvExportError",
+      "file": "src/python/fods/csv_exporter.py",
+      "line": 102
+    },
+    {
+      "exception": "FodsInputError",
+      "file": "src/python/fods/parser.py",
+      "line": 123
+    },
+    {
+      "exception": "FodsInputError",
+      "file": "src/python/fods/parser.py",
+      "line": 125
+    },
+    {
+      "exception": "FodsSizeError",
+      "file": "src/python/fods/parser.py",
+      "line": 130
+    },
+    {
+      "exception": "err",
+      "file": "src/python/fods/parser.py",
+      "line": 173
+    },
+    {
+      "exception": "err",
+      "file": "src/python/fods/parser.py",
+      "line": 256
+    },
+    {
+      "exception": "err",
+      "file": "src/python/fods/parser.py",
+      "line": 261
+    },
+    {
+      "exception": "FodsInputError",
+      "file": "src/python/fods/writer.py",
+      "line": 139
+    },
+    {
+      "exception": "FodsInputError",
+      "file": "src/python/fods/writer.py",
+      "line": 143
+    }
+  ],
+  "source_path": "src/python/fods",
+  "test_path": "tests/python/fods",
+  "uncovered_exception_count": 0
+}
