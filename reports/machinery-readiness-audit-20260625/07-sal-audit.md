@@ -14,7 +14,7 @@
 
 ## Component Inventory (Direct Evidence from Plan §2)
 
-Source: plans/spec-to-feature-radical-correction-plan.md lines 190–214
+Source: plans/strategic/spec-to-feature-radical-correction-plan.md lines 190–214
 
 | Component | File | Status | Downstream Consumer |
 |---|---|---|---|

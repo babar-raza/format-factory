@@ -31,7 +31,7 @@ prompt/governance rules.
 
 ## Lane Separation Assessment
 
-### Current Lane Separation (from plans/spec-to-feature-radical-correction-plan.md)
+### Current Lane Separation (from plans/strategic/spec-to-feature-radical-correction-plan.md)
 
 The plan defines Lanes 1-15:
 - Lanes 1-6, 14, 15: System healing (MUST complete first)

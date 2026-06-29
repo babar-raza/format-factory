@@ -1,0 +1,182 @@
+portfolio_recon_baseline:
+  mission_id: PORTFOLIO-RECON-HEAL-20260627
+  repository_root: c:\Users\prora\OneDrive\Documents\GitHub\format-factory
+  branch: main
+  head: 6989990c83918a01fdfa73c5c77afe9c8590ec7e
+  worktree_changed_files: 302
+  active_plan: plans/.claude/precious-launching-pebble.md
+  authoritative_master_plan: plans/master-plan.md
+
+  loc_summary:
+    python_product_source: 45375
+    dotnet_product_source: 18333
+    total_product_source: 63708
+    python_tests: 223152
+    dotnet_tests: 441611
+    total_tests: 664763
+    tools_machinery: 147602
+    tools_file_count: 450
+    machinery_to_product_ratio: "2.32:1"
+    test_to_product_ratio: "10.43:1"
+
+  source_roots:
+    - src/python (21 format packages + _shared)
+    - src/net (10 format projects)
+
+  product_roots:
+    - src/python/fods
+    - src/python/fodt
+    - src/python/fodg
+    - src/python/fodp
+    - src/python/csv
+    - src/python/tsv
+    - src/python/ndjson
+    - src/python/abw
+    - src/python/ods
+    - src/python/odt
+    - src/python/dif
+    - src/python/sylk
+    - src/python/gnumeric
+    - src/python/toml
+    - src/python/pbm
+    - src/python/pgm
+    - src/python/ppm
+    - src/python/qoi
+    - src/python/xcf
+    - src/python/zst
+    - src/net/fods
+    - src/net/fodt
+    - src/net/csv
+    - src/net/tsv
+    - src/net/ndjson
+    - src/net/netpbm
+    - src/net/zst
+    - src/net/html (export helper)
+    - src/net/markdown (export helper)
+    - src/net/txt (export helper)
+
+  format_registry: registry/format-registry.yaml
+  product_registry: registry/parity-matrix.yaml
+  qname_registry_root: shared/qname-registry
+  capability_registry: .governance/capabilities/registry.yaml
+  gap_ledger: reports/capability-layer/gap-ledger.json
+  source_structure_baseline: registry/source-structure-baseline.json
+  skill_registry: .supervisor/skill-registry.yaml
+
+  test_roots:
+    - tests/python (30 format dirs, 2145 files)
+    - tests/net (10 format dirs, 2271 files)
+
+  test_file_counts:
+    python:
+      dogfood: 317
+      abw: 153
+      ndjson: 147
+      fodt: 135
+      gnumeric: 114
+      tsv: 108
+      ods: 105
+      fods: 99
+      fodg: 99
+      sylk: 94
+      dif: 89
+      zst: 87
+      ppm: 76
+      deepening: 67
+      xcf: 65
+      pbm: 64
+      toml: 58
+      pgm: 57
+      csv: 54
+      qoi: 39
+      odt: 30
+      fodp: 30
+      supervisor: 23
+    dotnet:
+      fods: 519
+      fodt: 514
+      netpbm: 488
+      ndjson: 186
+      tsv: 179
+      csv: 178
+      zst: 174
+      txt: 11
+      markdown: 11
+      html: 11
+
+  python_files_over_800_loc:
+    - path: src/python/fods/spreadsheet_document.py
+      loc: 1036
+      functions: 24
+    - path: src/python/fodt/text_document.py
+      loc: 991
+      functions: 90
+    - path: src/python/abw/word_document.py
+      loc: 1027
+      functions: 98
+    - path: src/python/dif/interchange_document.py
+      loc: 995
+      functions: 65
+    - path: src/python/zst/zst_codec.py
+      loc: 931
+      functions: 22
+    - path: src/python/ndjson/json_stream.py
+      loc: 927
+      functions: 69
+    - path: src/python/xcf/xcf_image_metrics.py
+      loc: 899
+      functions: 104
+    - path: src/python/ods/spreadsheet_document.py
+      loc: 897
+      functions: 54
+    - path: src/python/sylk/spreadsheet_document.py
+      loc: 842
+      functions: 64
+    - path: src/python/tsv/tsv_parser.py
+      loc: 819
+      functions: 42
+
+  python_files_at_boundary_700_800:
+    - path: src/python/csv/tabular_document.py
+      loc: 800
+      functions: 50
+    - path: src/python/fodt/fodt_neutral_ops.py
+      loc: 797
+      functions: 18
+    - path: src/python/ods/ods_parser.py
+      loc: 789
+      functions: 29
+    - path: src/python/tsv/tabular_document.py
+      loc: 787
+      functions: 55
+    - path: src/python/toml/toml_codec.py
+      loc: 774
+      functions: 34
+    - path: src/python/gnumeric/gnumeric_analytics.py
+      loc: 770
+      functions: 52
+    - path: src/python/sylk/sylk_parser.py
+      loc: 741
+      functions: 25
+    - path: src/python/fodt/fodt_document_edit.py
+      loc: 730
+      functions: 15
+    - path: src/python/gnumeric/gnumeric_codec.py
+      loc: 727
+      functions: 32
+    - path: src/python/qoi/image_document.py
+      loc: 720
+      functions: 64
+    - path: src/python/fods/neutral_model.py
+      loc: 718
+      functions: 18
+
+  dotnet_files_over_800_loc:
+    - path: src/net/fods/FodsDocumentAccessor.cs
+      loc: 2627
+    - path: src/net/fodt/FodtDocumentExtendedApis.cs
+      loc: 2293
+    - path: src/net/fods/FodsDocumentExtendedApis.cs
+      loc: 1541
+    - path: src/net/fods/FodsDocument.cs
+      loc: 1100

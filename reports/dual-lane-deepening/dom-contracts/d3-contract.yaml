@@ -1,0 +1,19 @@
+level: D3
+description: "D2 + deterministic traversal, navigation, query, no parser-internal leakage"
+criteria:
+  - id: D3-C1
+    name: d2_contract_passes
+    description: "All D2 criteria must pass"
+    check: d2_passes
+  - id: D3-C2
+    name: traversal_api
+    description: "Iterator or traversal function (iter_*, cells(), paragraphs(), etc.)"
+    check: has_traversal_api
+  - id: D3-C3
+    name: navigation_method
+    description: "Navigation by index or name (get_sheet, find_by_value, cell_at)"
+    check: has_navigation_method
+  - id: D3-C4
+    name: no_parser_leakage
+    description: "Public API does not expose raw XML/parse trees directly"
+    check: no_parser_leakage

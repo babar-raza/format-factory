@@ -18,7 +18,7 @@ This verdict is based on direct inspection of:
 - reports/specification-authority-layer-mwp/qname-ontology/ (design documents)
 - reports/capability-layer/unified-capability-map.json (3,166 entries)
 - reports/capability-layer/gap-ledger.json (932 entries)
-- plans/snoopy-juggling-seal.md (SAL forensic investigation)
+- plans/strategic/snoopy-juggling-seal.md (SAL forensic investigation)
 - reports/gate11/fods-gate11-readiness-packet.md
 - .local/supervisor/continuation-signal.json (manual reset)
 - .local/supervisor/active-plan-lock.json (IN_PROGRESS blocker)

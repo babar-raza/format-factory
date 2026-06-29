@@ -42,7 +42,7 @@ All 8 pilots: **PASS**
 **Objective:** Verify only native plan changed; snoopy unchanged; readiness passes.
 
 **Evidence:**
-- `plans/snoopy-juggling-seal.md` identity: `plan_id=snoopy-juggling-seal`, `ownership_status=ACTIVE`, `terminal_lock=False`
+- `plans/strategic/snoopy-juggling-seal.md` identity: `plan_id=snoopy-juggling-seal`, `ownership_status=ACTIVE`, `terminal_lock=False`
 - `FF-PLAN-GOV-001` NOT present in snoopy body (no cross-mission content injection)
 - `validate_plan_readiness(keen-snacking-quiche.md)` → `execution_may_start=True`
 

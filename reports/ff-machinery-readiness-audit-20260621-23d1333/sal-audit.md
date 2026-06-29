@@ -4,10 +4,10 @@
 ## Summary
 
 **The SAL is split into two disconnected, parallel pipelines. Neither is end-to-end functional.**
-This is not a new finding — it is documented exhaustively in plans/snoopy-juggling-seal.md.
+This is not a new finding — it is documented exhaustively in plans/strategic/snoopy-juggling-seal.md.
 The SAL is the most critical infrastructure gap blocking QName-governed product deepening.
 
-## Evidence (primary source: plans/snoopy-juggling-seal.md, version 3.0 2026-06-18)
+## Evidence (primary source: plans/strategic/snoopy-juggling-seal.md, version 3.0 2026-06-18)
 
 ### Pipeline A — Real Spec Cache (partially complete, consumer integration BROKEN)
 

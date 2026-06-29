@@ -10,7 +10,7 @@ gaps:
     layer: SAL
     area: Pipeline Integration
     severity: Blocker
-    evidence: "plans/snoopy-juggling-seal.md; SAL test failure: 'No FODS facts in sal-facts-latest.json'"
+    evidence: "plans/strategic/snoopy-juggling-seal.md; SAL test failure: 'No FODS facts in sal-facts-latest.json'"
     current_behavior: "sal_master_runner.py emits 128 hardcoded template facts, never reads spec files"
     expected_behavior: "sal_master_runner.py loads verified-facts-review.yaml and emits FACT-FORMAT-NNN IDs"
     root_cause: "sal_master_runner.py was built with placeholder templates; real pipeline was never connected"

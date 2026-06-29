@@ -65,7 +65,7 @@
 | `registry/format-registry.yaml` | FODS entry |
 | `reports/supervisor/session-resume.md` | Full read |
 | `reports/supervisor/approval-gates.md` | Full read |
-| `plans/spec-to-feature-radical-correction-plan.md` | Summary doc read (120 lines) |
+| `plans/strategic/spec-to-feature-radical-correction-plan.md` | Summary doc read (120 lines) |
 | `.claude/commands/` | Full directory listing (40+ files) |
 | AST class audit | All 135 Python classes in src/python/ enumerated |
 | LOC audit | Per-package LOC counted using line iteration |

@@ -1,0 +1,94 @@
+format: fods
+node_types:
+- FodsAutomaticStyles
+- FodsBody
+- FodsCell
+- FodsCoveredCell
+- FodsDateStyle
+- FodsDocument
+- FodsParagraph
+- FodsSheet
+- FodsSpan
+- FodsSpreadsheet
+- FodsStyle
+- FodsTableRow
+- FodsCell
+- FodsSheet
+- FodsDocument
+- DateStyle
+- Annotation
+- AutomaticStyles
+- Body
+- Document
+- Spreadsheet
+- Style
+- CoveredTableCell
+- Table
+- TableCell
+- TableColumn
+- TableHeaderRows
+- TableRow
+- Paragraph
+- Span
+qname_count: 30
+factory_methods:
+- FodsDocument.from_file
+child_accessors:
+- FodsSheet.rows
+- FodsSheet.rows
+- FodsSheet.cells
+- FodsSheet.find_cells_by_value
+- FodsSheet.iter_rows
+- FodsDocument.sheets
+- FodsDocument.sheet_by_name
+- FodsDocument.find_sheet_by_index
+- Document.has_sheets
+traversal_methods:
+- FodsSheet.cells
+- FodsSheet.find_cells_by_value
+- FodsSheet.iter_rows
+navigation_methods:
+- FodsSheet.cell_at
+- FodsSheet.find_cells_by_value
+- FodsDocument.sheet_by_name
+- FodsDocument.find_sheet_by_index
+mutation_methods: []
+serialization_methods:
+- FodsCell.to_dict
+- FodsSheet.to_dict
+- FodsDocument.to_dict
+- Document.to_dict
+iterator_files:
+- fods_cell_iterator.py
+- fods_sheet_iterator.py
+behavioral_method_count: 21
+hierarchy_depth: 4
+roundtrip_capability: false
+spec_qname_coverage:
+  FodsAutomaticStyles: fods_automatic_styles.py
+  FodsBody: fods_body.py
+  FodsCell: models.py
+  FodsCoveredCell: fods_covered_cell.py
+  FodsDateStyle: fods_date_style.py
+  FodsDocument: models.py
+  FodsParagraph: fods_paragraph.py
+  FodsSheet: models.py
+  FodsSpan: fods_span.py
+  FodsSpreadsheet: fods_spreadsheet.py
+  FodsStyle: fods_style.py
+  FodsTableRow: fods_table_row.py
+  DateStyle: date_style.py
+  Annotation: annotation.py
+  AutomaticStyles: automatic_styles.py
+  Body: body.py
+  Document: document.py
+  Spreadsheet: spreadsheet.py
+  Style: style.py
+  CoveredTableCell: covered_table_cell.py
+  Table: table.py
+  TableCell: table_cell.py
+  TableColumn: table_column.py
+  TableHeaderRows: table_header_rows.py
+  TableRow: table_row.py
+  Paragraph: paragraph.py
+  Span: span.py

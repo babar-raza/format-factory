@@ -17,11 +17,11 @@
 
 ## Plans Found
 - plans/master-plan.md
-- plans/spec-to-feature-radical-correction-plan.md
-- plans/snoopy-juggling-seal.md
-- plans/continuation-isolation-plan.md
-- plans/product-code-healing-plan.md
-- plans/capability-fact-to-feature-production-plan.md
+- plans/strategic/spec-to-feature-radical-correction-plan.md
+- plans/strategic/snoopy-juggling-seal.md
+- plans/strategic/continuation-isolation-plan.md
+- plans/healing/product-code-healing-plan.md
+- plans/strategic/capability-fact-to-feature-production-plan.md
 
 ## Taskcards Found (count by prefix)
 - TC-SRC-REVIEW-*: 8 files

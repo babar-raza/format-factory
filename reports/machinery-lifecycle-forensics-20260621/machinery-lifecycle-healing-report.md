@@ -31,7 +31,7 @@
 - Repository: `C:/Users/prora/OneDrive/Documents/GitHub/format-factory`
 - Branch: `main`
 - HEAD (start): `23d1333f`; HEAD (end): `b3be88bf`
-- Governing plan: `plans/snoopy-juggling-seal.md` v3.1
+- Governing plan: `plans/strategic/snoopy-juggling-seal.md` v3.1
 - Failed run: `ff-arch-20260621-001` (investigation output unconsumed)
 - Selected controller: `tools/supervisor/check_continuation.py --track machinery`
 - Evidence root: `.local/evidences/machinery-lifecycle-forensics-20260621/`
@@ -127,7 +127,7 @@ USER AUTHORIZATION (explicit, via prompt or plan)
     └─ writes: system-gap-matrix.yaml, taskcards.yaml, next-agent-execution-prompt.md
     └─ updates: .local/supervisor/machinery/mission-ledger.json (stop_status=EXECUTION_REQUIRED)
 → PLAN RECONCILIATION
-    └─ updates: plans/snoopy-juggling-seal.md with new repair taskcards
+    └─ updates: plans/strategic/snoopy-juggling-seal.md with new repair taskcards
 → PLAN HARDENING
     └─ converts findings to governed taskcards with gap_ledger_ref
 → EXECUTION (Phase 1: source hygiene, governance validators, skills)
@@ -160,7 +160,7 @@ USER AUTHORIZATION (explicit, via prompt or plan)
 
 ## 11. Plan Changes
 
-**plans/snoopy-juggling-seal.md**: No changes made (authoritative plan was already v3.1 with repair phases). New taskcards from this sprint should be added in next session.
+**plans/strategic/snoopy-juggling-seal.md**: No changes made (authoritative plan was already v3.1 with repair phases). New taskcards from this sprint should be added in next session.
 
 **Sections requiring update in next session:**
 - Add TC-PLAN-LOCK-TRACK-TYPE-001 (GAP-WF-004 fix)
@@ -229,7 +229,7 @@ USER AUTHORIZATION (explicit, via prompt or plan)
 | LIF-16: Idempotent Rerun Proven | **PASS_WITH_LIMITATIONS** | Baseline update and continuation reset are idempotent |
 | LIF-17: Autonomous Unattended Loop Proven | **NOT_RUN** | Blocked by plan lock (legitimate) |
 | LIF-18: Mission-Aware Stop Proven | **PASS_WITH_LIMITATIONS** | mission-ledger.json stop_status field; not yet enforced in check_continuation |
-| LIF-19: Authoritative Plan Ready | **PASS** | plans/snoopy-juggling-seal.md |
+| LIF-19: Authoritative Plan Ready | **PASS** | plans/strategic/snoopy-juggling-seal.md |
 | LIF-20: Execution Handoff Ready | **PASS** | reports/machinery-lifecycle-forensics-20260621/execution-handoff.yaml |
 
 ---

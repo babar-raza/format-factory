@@ -1,0 +1,23 @@
+level: D2
+description: "Root + typed children with spec_qname, factory, child accessor, behavioral method, serializable"
+criteria:
+  - id: D2-C1
+    name: typed_child_classes
+    description: "At least 2 classes with spec_qname ClassVar beyond the Document root"
+    check: class_count_with_spec_qname >= 2
+  - id: D2-C2
+    name: factory_method
+    description: "from_file() or load() class method on Document class"
+    check: has_factory_method
+  - id: D2-C3
+    name: child_accessor
+    description: "Property or method to access typed children (e.g., sheets, paragraphs)"
+    check: has_child_accessor
+  - id: D2-C4
+    name: serializable_projection
+    description: "to_dict() or equivalent serialization method"
+    check: has_to_dict_or_equivalent
+  - id: D2-C5
+    name: behavioral_method
+    description: "At least 1 method beyond accessors (e.g., count, filter, search)"
+    check: behavioral_method_count >= 1

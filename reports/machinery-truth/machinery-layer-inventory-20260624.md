@@ -54,7 +54,7 @@ FEATURES / WORK ITEMS
         └─► .local/supervisor/next-work-items.json
 
 PRODUCT DESIGN / ARCHITECTURE
-  └─► plans/spec-to-feature-radical-correction-plan.md (Lane 7-8: architecture blueprints)
+  └─► plans/strategic/spec-to-feature-radical-correction-plan.md (Lane 7-8: architecture blueprints)
   └─► shared/qname-registry/ (canonical class hierarchy)
   └─► tools/spec/generate_canonical_stubs.py
         └─► src/python/{format}/spec/ (architecture_only spec skeleton stubs)

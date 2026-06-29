@@ -205,7 +205,7 @@ This packet is agent-prepared. The following decisions require **human authoriza
 
 **Assessment method:** Direct codebase inspection as of commit 1320e557.
 **Classification legend:** `evidence_verified` | `partial` | `not_started` | `blocked_external`
-**Authority:** plans/spec-to-feature-radical-correction-plan.md Section 13
+**Authority:** plans/strategic/spec-to-feature-radical-correction-plan.md Section 13
 
 ### 9A. .NET Commercial Criteria (C1-C20)
 

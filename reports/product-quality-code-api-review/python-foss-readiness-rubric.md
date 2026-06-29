@@ -20,7 +20,7 @@ Date: 2026-06-25
 
 ## Gate P1–P11 FOSS Readiness Criteria
 
-Per `plans/spec-to-feature-radical-correction-plan.md`:
+Per `plans/strategic/spec-to-feature-radical-correction-plan.md`:
 
 | Criterion | Category | Description |
 |-----------|----------|-------------|

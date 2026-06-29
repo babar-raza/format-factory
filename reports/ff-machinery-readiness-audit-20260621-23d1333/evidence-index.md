@@ -42,7 +42,7 @@
 | Gate 11 FODS | reports/gate11/fods-gate11-readiness-packet.md | G11-G APPROVED, needs final sign-off |
 | XCF analytics | src/python/xcf/xcf_analytics.py | 5725 LOC monolith |
 | FODS .NET | src/net/fods/FodsDocument.cs | 1293 LOC, working, format-prefixed not qname |
-| SAL plan | plans/snoopy-juggling-seal.md | Two broken pipelines, forensic analysis |
+| SAL plan | plans/strategic/snoopy-juggling-seal.md | Two broken pipelines, forensic analysis |
 | Spec cache | .local/spec-cache/fods/1.3/workbench/verified-facts-review.yaml | 78 verified FODS facts |
 | Skill registry | .supervisor/skill-registry.yaml | qname_ontology_generator.py referenced but missing |
 

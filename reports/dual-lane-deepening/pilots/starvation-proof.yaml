@@ -1,0 +1,19 @@
+pilot_date: '2026-06-28'
+taskcard: TC-DL2-012
+scenarios:
+- scenario: lane_a_starved_3_consec
+  expected: dom
+  actual: dom
+  reason: starvation_override_dom
+  correct: true
+- scenario: lane_b_starved_3_consec
+  expected: feature
+  actual: feature
+  reason: starvation_override_feature
+  correct: true
+- scenario: feature_only_mode_starved
+  expected: feature
+  actual: feature
+  reason: mode_feature_only
+  correct: true
+all_correct: true

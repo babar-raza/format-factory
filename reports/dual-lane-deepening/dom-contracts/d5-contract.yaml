@@ -1,0 +1,15 @@
+level: D5
+description: "D4 + full roundtrip proof, unknown-content preservation, package/consumer proof"
+criteria:
+  - id: D5-C1
+    name: d4_contract_passes
+    description: "All D4 criteria must pass"
+    check: d4_passes
+  - id: D5-C2
+    name: roundtrip_proof
+    description: "Parse→mutate→serialize→reparse produces equivalent DOM"
+    check: has_roundtrip_test
+  - id: D5-C3
+    name: unknown_content_preservation
+    description: "Elements not in the model are preserved through roundtrip"
+    check: has_preservation_test

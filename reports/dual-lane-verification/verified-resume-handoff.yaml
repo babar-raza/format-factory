@@ -1,0 +1,45 @@
+---
+# Verified Resume Handoff — TC-DL2-015
+# Exact next action for the dual-lane system.
+
+verified_resume_handoff:
+  mission_id: DUAL-LANE-PHASE2-001
+  repository_revision: "HEAD (2026-06-28)"
+  plan_path: plans/.claude/agile-rolling-marshmallow.md
+
+  ready_lane_a_items:
+    - GAP-FODS-FOSS-FIND_CELLS_B-001
+    - GAP-FODS-FOSS-ITER_ROWS-001
+    - GAP-FODS-FOSS-FIND_SHEET_B-001
+    - GAP-ODS-FOSS-CELL_AT-001
+
+  ready_lane_b_items: []
+  # 21 material DOM gaps documented in dom-gap-reconciliation.yaml
+  # but NOT yet in gap-ledger.json (see BYPASS-001)
+
+  weighted_lane_a_backlog: 4
+  weighted_lane_b_backlog: 0
+
+  selected_lane: feature
+  selected_gap_id: GAP-FODS-FOSS-FIND_CELLS_B-001
+  selected_taskcard_id: null
+  selected_product_id: FODS-PYTHON
+  selection_reason: "auto_feature_gap_larger (a_gap=4 > b_gap=2). No DOM gaps in canonical gap ledger."
+
+  exact_next_action: >
+    The dual-lane machinery is operational. The immediate gap is that 21 material DOM gaps
+    (documented in reports/dual-lane-verification/dom-gap-reconciliation.yaml) are not yet
+    in reports/capability-layer/gap-ledger.json. When these are added, the lane selector
+    and starvation enforcer will begin routing DOM work automatically every 3rd sprint.
+
+  machinery_status:
+    lane_selector: operational
+    dom_contract_checker: operational
+    dom_baseline_scanner: operational
+    dom_maturity_promoter: operational
+    lane_dependency_checker: operational
+    starvation_enforcer: operational
+    compiler_lane_scoring: integrated
+    check_continuation_lane: integrated
+    total_tests: 84
+    tests_passing: 84

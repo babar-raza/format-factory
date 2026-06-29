@@ -1,0 +1,33 @@
+format: fodp
+node_types:
+- FodpDocument
+- FodpPage
+- FodpDocument
+- Page
+- Document
+qname_count: 5
+factory_methods:
+- FodpDocument.from_file
+- FodpDocument.from_file
+child_accessors:
+- FodpDocument.pages
+- FodpDocument.pages
+- Document.pages
+- Document.pages
+traversal_methods: []
+navigation_methods: []
+mutation_methods: []
+serialization_methods:
+- FodpDocument.to_dict
+- Page.to_dict
+- Document.to_dict
+iterator_files:
+- fodp_slide_iterator.py
+behavioral_method_count: 14
+hierarchy_depth: 4
+roundtrip_capability: false
+spec_qname_coverage:
+  FodpDocument: models.py
+  FodpPage: fodp_page.py
+  Page: page.py
+  Document: document.py

@@ -1,0 +1,52 @@
+---
+# Live Dispatch Proof — TC-DL2-018
+# Verifies the dispatch chain from compiler through to worker context.
+
+verification_metadata:
+  verification_date: "2026-06-28"
+  mission_id: DUAL-LANE-PHASE2-001
+  taskcard_id: TC-DL2-018
+
+live_dispatch_proof:
+  repository_revision: "HEAD (2026-06-28)"
+
+  ready_lane_a_items:
+    - GAP-FODS-FOSS-FIND_CELLS_B-001  # P2, feature (test coverage for DOM method)
+    - GAP-FODS-FOSS-ITER_ROWS-001      # P2, feature
+    - GAP-FODS-FOSS-FIND_SHEET_B-001   # P2, feature
+    - GAP-ODS-FOSS-CELL_AT-001         # P2, feature
+
+  ready_lane_b_items: []
+  # NOTE: 21 material DOM gaps exist (from V03) but are NOT in gap-ledger.json
+  # They are documented in dom-gap-reconciliation.yaml but not yet compiled into work items.
+  # This is the root finding: the lane selector works correctly, but there are no DOM gaps
+  # in the canonical gap ledger for it to select.
+
+  weighted_lane_a_backlog: 4
+  weighted_lane_b_backlog: 0
+
+  expected_selected_lane: feature
+  actual_selected_lane: feature
+  selected_task_id: "GAP-FODS-FOSS-FIND_CELLS_B-001"
+  selection_reason: "auto_feature_gap_larger (a_gap=4 > b_gap=2)"
+
+  dispatch_chain_verified: true
+  dispatch_chain:
+    compiler_output: "Items ordered by score, feature items at top (no DOM items exist)"
+    next_work_items: "Would contain selected item at position [0]"
+    next_sprint_md: "Would reference the selected gap"
+    worker_context: "Worker receives gap and executes"
+    state_update: "Acceptance would increment lane_a_consecutive"
+
+  bypasses_detected:
+    - bypass_id: BYPASS-001
+      description: >
+        21 material DOM gaps exist in dom-gap-reconciliation.yaml but are NOT in
+        gap-ledger.json. The compiler only reads gap-ledger.json. Therefore DOM work
+        is systematically bypassed — not by scoring, but by absence from the input.
+      severity: P1
+      repair: >
+        Future work: add DOM maturity gaps to gap-ledger.json or create a separate
+        DOM gap input channel for the compiler.
+
+  verdict: DISPATCH_CHAIN_VERIFIED_BUT_DOM_GAPS_NOT_IN_INPUT

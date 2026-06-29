@@ -3,7 +3,7 @@
 Created: 2026-06-23
 Updated: 2026-06-23 (convergence loop — file naming correction)
 Source: vivid-napping-kurzweil sprint audit + TC-VNK-H-006
-Plan: plans/vivid-napping-kurzweil-hardening-addendum.md
+Plan: plans/secondary/vivid-napping-kurzweil-hardening-addendum.md
 
 ## Current State (post-VNK sprint + convergence)
 

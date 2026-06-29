@@ -1,0 +1,64 @@
+format: ods
+node_types:
+- OdsCell
+- OdsDocument
+- OdsSheet
+- OdsCellModel
+- OdsSheetModel
+- OdsModelDocument
+- OdsCell
+- OdsRow
+- OdsSheet
+- OdsDocument
+- Document
+- Table
+- TableCell
+- TableRow
+qname_count: 14
+factory_methods:
+- OdsDocument.from_file
+- OdsModelDocument.from_file
+child_accessors:
+- OdsSheetModel.cells
+- OdsModelDocument.get_sheet
+- OdsModelDocument.sheets
+- Document.sheets
+- Document.sheets
+- Table.rows
+- Table.rows
+- TableRow.cells
+- TableRow.cells
+traversal_methods:
+- OdsSheetModel.cells
+- TableRow.cells
+- TableRow.cells
+navigation_methods:
+- OdsSheetModel.cell_at
+- OdsModelDocument.get_sheet
+mutation_methods: []
+serialization_methods:
+- OdsCellModel.to_dict
+- OdsSheetModel.to_dict
+- OdsModelDocument.to_dict
+- Document.to_dict
+- Table.to_dict
+- TableCell.to_dict
+- TableRow.to_dict
+iterator_files:
+- ods_row_iterator.py
+- ods_sheet_iterator.py
+behavioral_method_count: 22
+hierarchy_depth: 4
+roundtrip_capability: false
+spec_qname_coverage:
+  OdsCell: ods_parser.py
+  OdsDocument: ods_parser.py
+  OdsSheet: ods_parser.py
+  OdsCellModel: models.py
+  OdsSheetModel: models.py
+  OdsModelDocument: models.py
+  OdsRow: ods_parser.py
+  Document: document.py
+  Table: table.py
+  TableCell: table_cell.py
+  TableRow: table_row.py

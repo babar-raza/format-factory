@@ -1,0 +1,237 @@
+source_professionalism_matrix:
+  generated: 2026-06-27
+  mission_id: PORTFOLIO-RECON-HEAL-20260627
+  assessment_method: "Full source inventory with LOC, function counts, layer classification, anti-pattern sweep"
+
+  overall_verdict: CORRECT_BUT_INCOMPLETELY_EXECUTED
+  overall_score: 3.6 # out of 5.0
+
+  strengths:
+    - "100% structural completeness: all 20 Python formats have pyproject.toml, __init__.py, Compat/, spec/, qname registry, tests, exceptions"
+    - "Zero TODO/FIXME in production source"
+    - "Only 1 intentional NotImplementedError (FODP write)"
+    - "Security hardening: XXE protection, defusedxml, file-size guards for all XML formats"
+    - "Proper exception hierarchies for all 20 formats"
+    - "Spec QName alignment: 65/66 entries (99.4%), all mapped to source files"
+    - "Writers for 6 most important formats (fods, fodt, csv, ods, odt, qoi)"
+    - "1,503 test files exercise roundtrip/save-load patterns"
+    - "All 20 formats have domain model classes (not just dicts)"
+
+  systemic_issues:
+    - issue: "Mixed-responsibility files"
+      severity: P2
+      detail: "14 codec/parser files classified as mixed_model_analytics in baseline"
+      affected: "abw, csv, dif, fodg, fodp, fods, fodt, gnumeric, ndjson, ods, pbm, pgm, ppm, qoi, sylk, toml, tsv, xcf, zst"
+    - issue: "Files exceeding 800 LOC policy"
+      severity: P2
+      detail: "10 Python product files exceed 800 LOC, 4 .NET files exceed 800 LOC"
+      affected_python:
+        - "fods/spreadsheet_document.py: 1036 LOC"
+        - "fodt/text_document.py: 991 LOC"
+        - "abw/word_document.py: 1027 LOC"
+        - "dif/interchange_document.py: 995 LOC"
+        - "zst/zst_codec.py: 931 LOC"
+        - "ndjson/json_stream.py: 927 LOC"
+        - "xcf/xcf_image_metrics.py: 899 LOC"
+        - "ods/spreadsheet_document.py: 897 LOC"
+        - "sylk/spreadsheet_document.py: 842 LOC"
+        - "tsv/tsv_parser.py: 819 LOC"
+      affected_dotnet:
+        - "fods/FodsDocumentAccessor.cs: 2627 LOC"
+        - "fodt/FodtDocumentExtendedApis.cs: 2293 LOC"
+        - "fods/FodsDocumentExtendedApis.cs: 1541 LOC"
+        - "fods/FodsDocument.cs: 1100 LOC"
+    - issue: "Analytics separation incomplete"
+      severity: P2
+      detail: "Only 4/20 formats have dedicated _analytics.py files"
+      formats_with_analytics: ["csv", "fodg", "gnumeric", "toml"]
+      formats_with_stats_metrics: ["abw", "dif", "ndjson", "ods", "ppm", "xcf", "zst"]
+      formats_with_none: ["fodp", "fods", "fodt", "odt", "pbm", "pgm", "qoi", "sylk", "tsv"]
+    - issue: "Baseline data staleness"
+      severity: P1
+      detail: "baseline_functions_cap values are implausible for some files (e.g., csv_parser.py: cap=350 but actual=12)"
+      root_cause: "baseline_functions_cap was set from stale data, and write-once policy prevents correction"
+    - issue: "14/20 formats lack same-format writer"
+      severity: P3
+      detail: "Only fods, fodt, csv, ods, odt, qoi have writers. Others are read-only."
+    - issue: "Weak test assertions"
+      severity: P3
+      detail: "18 .NET Assert.True(true) placeholders in fodt and zst tests"
+
+  per_format_scores:
+    # Scored on 0-5 scale across dimensions: spec_fidelity, decomposition, api_design,
+    # error_handling, writer, testing, package_readiness
+
+    fods:
+      language: "Python + .NET"
+      python_loc: 3701
+      dotnet_loc: 7978
+      score: 4.2
+      disposition: PROFESSIONAL_WITH_BOUNDED_GAPS
+      strengths: ["Most mature format", "Full parser/writer/export chain", "Spec/Compat/QName complete", "12 QName entries"]
+      weaknesses: ["spreadsheet_document.py over 800 LOC (1036)", "neutral_model.py at 718 LOC approaching limit"]
+
+    fodt:
+      language: "Python + .NET"
+      python_loc: 4558
+      dotnet_loc: 5564
+      score: 4.0
+      disposition: PROFESSIONAL_WITH_BOUNDED_GAPS
+      strengths: ["Full parser/writer/export chain", "Rich editing API", "9 QName entries", "Comprehensive Compat facades"]
+      weaknesses: ["text_document.py over 800 LOC (991, 90 functions)", "fodt_neutral_ops.py at boundary (797)"]
+
+    csv:
+      language: "Python + .NET"
+      python_loc: 1850
+      dotnet_loc: 540
+      score: 3.8
+      disposition: PROFESSIONAL_WITH_BOUNDED_GAPS
+      strengths: ["Dedicated writer", "Analytics separated to csv_analytics.py", "tabular_document.py at exactly 800 LOC"]
+      weaknesses: ["tabular_document.py at exact limit, needs monitoring"]
+
+    tsv:
+      language: "Python + .NET"
+      python_loc: 1847
+      dotnet_loc: 506
+      score: 3.5
+      disposition: FUNCTIONAL_BUT_NOT_PROFESSIONAL
+      strengths: ["Full parser with field/row iterators"]
+      weaknesses: ["tsv_parser.py over 800 LOC (819)", "No dedicated writer", "tabular_document.py at 787 LOC"]
+
+    ndjson:
+      language: "Python + .NET"
+      python_loc: 2364
+      dotnet_loc: 603
+      score: 3.4
+      disposition: FUNCTIONAL_BUT_NOT_PROFESSIONAL
+      strengths: ["Comprehensive codec", "Record stats", "Field/record iterators"]
+      weaknesses: ["json_stream.py over 800 LOC (927)", "ndjson_codec.py at 597 but baseline says 1081 (stale cap)", "No writer in Python"]
+
+    ods:
+      language: Python
+      python_loc: 2505
+      score: 3.6
+      disposition: FUNCTIONAL_BUT_NOT_PROFESSIONAL
+      strengths: ["Writer present (ods_writer.py)", "CSV exporter", "Row/sheet iterators"]
+      weaknesses: ["spreadsheet_document.py over 800 LOC (897)", "ods_parser.py approaching limit (789)"]
+
+    odt:
+      language: Python
+      python_loc: 1216
+      score: 3.5
+      disposition: FUNCTIONAL_BUT_NOT_PROFESSIONAL
+      strengths: ["Writer present", "Heading/paragraph iterators"]
+      weaknesses: ["No analytics separation", "Smallest format by LOC - may be undertested"]
+
+    abw:
+      language: Python
+      python_loc: 2153
+      score: 3.3
+      disposition: FUNCTIONAL_BUT_NOT_PROFESSIONAL
+      strengths: ["Rich domain model (word_document.py)", "Stats file", "Section/paragraph iterators"]
+      weaknesses: ["word_document.py massively over limit (1027 LOC, 98 functions)", "No writer"]
+
+    dif:
+      language: Python
+      python_loc: 2062
+      score: 3.3
+      disposition: FUNCTIONAL_BUT_NOT_PROFESSIONAL
+      strengths: ["Domain model", "Stats file", "Vector iterator"]
+      weaknesses: ["interchange_document.py over limit (995 LOC, 65 functions)", "No writer"]
+
+    sylk:
+      language: Python
+      python_loc: 1836
+      score: 3.3
+      disposition: FUNCTIONAL_BUT_NOT_PROFESSIONAL
+      strengths: ["Cell/row iterators", "Domain model"]
+      weaknesses: ["spreadsheet_document.py over limit (842 LOC, 64 fn)", "sylk_parser.py at 741", "No writer", "No analytics separation"]
+
+    gnumeric:
+      language: Python
+      python_loc: 2077
+      score: 3.5
+      disposition: FUNCTIONAL_BUT_NOT_PROFESSIONAL
+      strengths: ["Analytics separated", "CLI entry point", "Sheet iterator"]
+      weaknesses: ["gnumeric_codec.py at 727 LOC approaching limit", "gnumeric_analytics.py at 770", "No writer"]
+
+    fodg:
+      language: Python
+      python_loc: 2150
+      score: 3.5
+      disposition: FUNCTIONAL_BUT_NOT_PROFESSIONAL
+      strengths: ["Analytics separated (fodg_analytics.py)", "Separate drawing_metrics.py", "Page iterator"]
+      weaknesses: ["fodg_codec.py at 674", "drawing_document.py at 684", "No writer"]
+
+    fodp:
+      language: Python
+      python_loc: 1193
+      score: 3.0
+      disposition: FUNCTIONAL_BUT_NOT_PROFESSIONAL
+      strengths: ["Slide iterator", "Domain model"]
+      weaknesses: ["Intentional NotImplementedError for write", "No analytics separation", "No writer", "Smallest ODF format"]
+
+    toml:
+      language: Python
+      python_loc: 1520
+      score: 3.6
+      disposition: FUNCTIONAL_BUT_NOT_PROFESSIONAL
+      strengths: ["Analytics separated (toml_analytics.py)", "CLI", "Key/table iterators"]
+      weaknesses: ["toml_codec.py at 774 LOC approaching limit", "No writer"]
+
+    pbm:
+      language: Python
+      python_loc: 1516
+      score: 3.4
+      disposition: FUNCTIONAL_BUT_NOT_PROFESSIONAL
+      strengths: ["Cross-format export (to PGM, PPM)", "Domain model (bitmap_image.py)", "Raster iterator"]
+      weaknesses: ["No analytics separation", "pbm_parser.py at 616"]
+
+    pgm:
+      language: Python
+      python_loc: 1511
+      score: 3.3
+      disposition: FUNCTIONAL_BUT_NOT_PROFESSIONAL
+      strengths: ["Cross-format export (to PPM)", "Domain model (grayscale_image.py)"]
+      weaknesses: ["pgm_parser.py at 652", "No analytics separation", "No writer"]
+
+    ppm:
+      language: Python
+      python_loc: 1711
+      score: 3.4
+      disposition: FUNCTIONAL_BUT_NOT_PROFESSIONAL
+      strengths: ["Cross-format export (to PGM)", "Stats file", "Domain model", "Pixmap iterator"]
+      weaknesses: ["ppm_parser.py at 639", "No writer"]
+
+    qoi:
+      language: Python
+      python_loc: 1468
+      score: 3.6
+      disposition: FUNCTIONAL_BUT_NOT_PROFESSIONAL
+      strengths: ["Has encoder (qoi_encoder.py - functions as writer)", "Chunk iterator", "Domain model"]
+      weaknesses: ["image_document.py at 720 LOC, 64 functions", "No analytics separation"]
+
+    xcf:
+      language: Python
+      python_loc: 1447
+      score: 3.2
+      disposition: FUNCTIONAL_BUT_NOT_PROFESSIONAL
+      strengths: ["Image metrics separated (xcf_image_metrics.py)", "Layer iterator"]
+      weaknesses: ["xcf_image_metrics.py over limit (899 LOC, 104 functions!)", "Read-only", "No writer"]
+
+    zst:
+      language: "Python + .NET"
+      python_loc: 1981
+      dotnet_loc: 535
+      score: 3.5
+      disposition: FUNCTIONAL_BUT_NOT_PROFESSIONAL
+      strengths: ["Compression metrics separated", "Domain model (compressed_stream.py)", "Frame inspector"]
+      weaknesses: ["zst_codec.py over limit (931 LOC)", "No same-format writer in Python"]
+
+    netpbm_dotnet:
+      language: .NET
+      dotnet_loc: 2843
+      score: 3.7
+      disposition: PROFESSIONAL_WITH_BOUNDED_GAPS
+      strengths: ["Rich model (NetpbmImage, Analyzer, Filters, Transforms)", "Parser/writer/exporter complete"]
+      weaknesses: ["NetpbmImage.cs at 580 LOC"]

@@ -145,7 +145,7 @@ SHA-256: `e2ad5a06ba4e166d1785d78125e1bf9120392dd993430381f3c82416cc86e30a`
 | P11: Examples | PASS | PASS | Quick-start in API reference |
 
 **Note on P1/P10 blockers**: These are tracked in TC-FODT-COMPAT-001 and TC-FODT-BOOT-001 in
-`plans/snoopy-juggling-seal.md`. They do not block Gate 11 .NET commercial readiness.
+`plans/strategic/snoopy-juggling-seal.md`. They do not block Gate 11 .NET commercial readiness.
 
 ---
 

@@ -186,7 +186,7 @@ gaps:
     layer: "Supervisor"
     lane: "SUPERVISOR-LANES"
     severity: "HIGH"
-    evidence: "Lane separation defined in plans/spec-to-feature-radical-correction-plan.md; not enforced in check_continuation.py"
+    evidence: "Lane separation defined in plans/strategic/spec-to-feature-radical-correction-plan.md; not enforced in check_continuation.py"
     current_behavior: "check_continuation.py does not verify healing lanes are complete before allowing product deepening"
     expected_behavior: "check_continuation.py checks system healing gate before routing to product deepening"
     root_cause: "Lane enforcement is prompt-based only; code doesn't enforce order"

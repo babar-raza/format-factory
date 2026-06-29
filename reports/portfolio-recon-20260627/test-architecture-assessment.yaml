@@ -1,0 +1,96 @@
+test_architecture_assessment:
+  generated: 2026-06-27
+  mission_id: PORTFOLIO-RECON-HEAL-20260627
+
+  inventory:
+    python_test_files: 2145
+    dotnet_test_files: 2271
+    total_test_files: 4416
+    python_test_loc: 223152
+    dotnet_test_loc: 441611
+    total_test_loc: 664763
+    test_to_product_ratio: "10.43:1"
+    sprint_numbered_files_python: 2961
+    sprint_numbered_files_dotnet: 2112
+    roundtrip_test_files: 1503
+
+  organization:
+    current_structure: "By format, sprint-numbered (R100-R355 pattern)"
+    naming_pattern: "Sprint-ID prefix (e.g., FodsR100AddSheetTests.cs, test_r53_formula_preservation.py)"
+    behavior_naming_present: true
+    behavior_naming_example: "AddSheet_CreatesNewSheet, test_parser_captures_formula_attribute"
+    test_levels_present:
+      unit: true
+      component: true
+      integration: true
+      roundtrip: true
+      conformance: "via oracle layer"
+      package: "partial (dogfood tests)"
+      consumer: "partial (dogfood tests)"
+      performance: false
+      security: "minimal (2 files)"
+      negative: "present in behavior tests"
+
+  quality_assessment:
+    assertion_quality:
+      verdict: STRONG
+      python_bare_assert_true: 1
+      dotnet_assert_true_true: 18
+      dotnet_weak_locations: "12 in fodt (R292-R314), 6 in zst (R120, R165, R176, R196)"
+      analysis: "18 weak assertions out of ~50,000+ total assertions is statistically negligible"
+    behavior_focus:
+      verdict: GOOD
+      sprint_naming_dominant: true
+      behavior_descriptions_within_files: true
+      analysis: "Test methods use behavior names but files use sprint numbers"
+    roundtrip_coverage:
+      verdict: STRONG
+      files_with_roundtrip_patterns: 1503
+      percentage_of_tests: "34%"
+    fixture_quality:
+      verdict: ADEQUATE
+      samples_directory: "samples/by-format/ (22 formats)"
+      fixture_provenance: "Mix of generated and manually created"
+    negative_testing:
+      verdict: PARTIAL
+      has_error_tests: true
+      has_boundary_tests: true
+      has_malformed_input: true
+      security_tests: "2 files (tests/python/security/)"
+
+  strengths:
+    - "1,503 files exercise roundtrip/save-load patterns — strong behavior validation"
+    - "Zero TODO/FIXME in tests — actively maintained"
+    - "Minimal weak assertions (18+1 out of thousands)"
+    - "Behavior-focused test method naming within sprint-numbered files"
+    - "Oracle layer covers all 20 Python formats (73/73 PASS)"
+    - "317 dogfood tests validate cross-format consumer behavior"
+    - "Dedicated fixtures in samples/by-format/ for 22 formats"
+
+  weaknesses:
+    - issue: "Sprint-numbered file organization"
+      severity: P4
+      detail: "5,073 sprint-numbered test files (R100-R355). Successive deepening sprints may create overlapping coverage."
+      recommendation: "Do NOT mass-rename. Instead, add behavior-categorized test index for traceability."
+    - issue: "10.43:1 test-to-product LOC ratio"
+      severity: P4
+      detail: "664K test LOC for 64K product LOC suggests possible test redundancy from iterative deepening"
+      recommendation: "Audit for duplicate coverage in R-series tests. Focus on deduplication, not deletion."
+    - issue: "18 Assert.True(true) in .NET"
+      severity: P3
+      detail: "12 in fodt (R292-R314), 6 in zst (R120-R196). All are 'reached without exception' placeholders."
+      recommendation: "Replace with meaningful assertions (verify output content, not just survival)."
+    - issue: "No performance test suite"
+      severity: P4
+      detail: "No dedicated performance/benchmark tests"
+    - issue: "Minimal security tests"
+      severity: P3
+      detail: "Only 2 security test files"
+
+  target_structure:
+    note: "Do NOT reorganize 5,000+ test files. Instead, add metadata layer."
+    proposed_additions:
+      - "tests/conformance/ — Oracle-based conformance tests"
+      - "tests/performance/ — Benchmark suite"
+      - "tests/security/ — Expand from 2 files"
+      - "registry/test-coverage-index.yaml — Map test files to features"

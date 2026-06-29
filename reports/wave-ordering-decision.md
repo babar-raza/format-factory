@@ -4,7 +4,7 @@ Status: FORMAL_DEFERRAL
 
 ## Context
 
-The spec-to-feature radical correction plan (`plans/spec-to-feature-radical-correction-plan.md`)
+The spec-to-feature radical correction plan (`plans/strategic/spec-to-feature-radical-correction-plan.md`)
 requires **system healing Lanes 1-6, 14, 15 to complete before product regeneration Lanes 7-13**.
 
 Swarm sprints 1-31+ have been executing product gap-closure work while Lanes 2, 3, and 6 remain

@@ -2,7 +2,7 @@
 
 ## Current State
 
-Lane separation is DEFINED in `plans/spec-to-feature-radical-correction-plan.md` but
+Lane separation is DEFINED in `plans/strategic/spec-to-feature-radical-correction-plan.md` but
 NOT mechanically enforced. Collision between machinery and product lanes has occurred
 historically and can occur again.
 

@@ -1,0 +1,35 @@
+format: fodg
+node_types:
+- FodgDocument
+- FodgPage
+- FodgDocument
+- Frame
+- Page
+- Document
+qname_count: 6
+factory_methods:
+- FodgDocument.from_file
+- FodgDocument.from_file
+child_accessors:
+- FodgDocument.pages
+- FodgDocument.pages
+- Document.pages
+- Document.pages
+traversal_methods: []
+navigation_methods: []
+mutation_methods: []
+serialization_methods:
+- FodgDocument.to_dict
+- Page.to_dict
+- Document.to_dict
+iterator_files:
+- fodg_page_iterator.py
+behavioral_method_count: 13
+hierarchy_depth: 4
+roundtrip_capability: false
+spec_qname_coverage:
+  FodgDocument: models.py
+  FodgPage: fodg_page.py
+  Frame: frame.py
+  Page: page.py
+  Document: document.py

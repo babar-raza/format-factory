@@ -1,0 +1,57 @@
+format: abw
+node_types:
+- AbwDocument
+- AbwParagraph
+- AbwDocument
+- CharRun
+- Document
+- Field
+- Paragraph
+- Section
+qname_count: 8
+factory_methods:
+- AbwDocument.from_file
+- AbwDocument.from_file
+child_accessors:
+- AbwDocument.paragraphs
+- AbwDocument.non_empty_paragraphs
+- AbwDocument.paragraphs
+- AbwDocument.paragraphs
+- AbwDocument.get_paragraph
+- Document.paragraphs
+- Document.paragraphs
+- Section.paragraphs
+- Section.paragraphs
+traversal_methods:
+- AbwDocument.paragraphs
+- AbwDocument.non_empty_paragraphs
+- AbwDocument.paragraphs
+- AbwDocument.paragraphs
+- Document.paragraphs
+- Document.paragraphs
+- Section.paragraphs
+- Section.paragraphs
+navigation_methods:
+- AbwDocument.get_paragraph
+mutation_methods: []
+serialization_methods:
+- AbwDocument.to_dict
+- CharRun.to_dict
+- Document.to_dict
+- Field.to_dict
+- Paragraph.to_dict
+- Section.to_dict
+iterator_files:
+- abw_paragraph_iterator.py
+- abw_section_iterator.py
+behavioral_method_count: 33
+hierarchy_depth: 4
+roundtrip_capability: false
+spec_qname_coverage:
+  AbwDocument: models.py
+  AbwParagraph: abw_paragraph.py
+  CharRun: char_run.py
+  Document: document.py
+  Field: field.py
+  Paragraph: paragraph.py
+  Section: section.py

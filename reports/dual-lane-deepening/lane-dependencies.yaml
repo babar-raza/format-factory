@@ -1,0 +1,34 @@
+---
+# Feature/DOM Lane Dependency Graph — TC-DL2-009
+# Maps feature capabilities to required DOM maturity levels.
+
+dependencies:
+  - feature_capability: sheet_mutation
+    requires_dom_level: D4
+    applicable_formats: [fods, ods, gnumeric]
+    rationale: "Mutation requires typed DOM nodes with setters"
+
+  - feature_capability: paragraph_insertion
+    requires_dom_level: D4
+    applicable_formats: [fodt, odt, abw]
+    rationale: "Inserting paragraphs requires navigable typed DOM"
+
+  - feature_capability: roundtrip_save
+    requires_dom_level: D5
+    applicable_formats: [fods, fodt, ods, odt]
+    rationale: "Roundtrip requires full serialization and preservation"
+
+  - feature_capability: typed_cell_access
+    requires_dom_level: D2
+    applicable_formats: [fods, ods, gnumeric]
+    rationale: "Cell access requires typed children beyond wrapper"
+
+  - feature_capability: document_traversal
+    requires_dom_level: D3
+    applicable_formats: [fods, fodt, ods, odt, abw, fodg, fodp, gnumeric]
+    rationale: "Traversal requires deterministic iteration API"
+
+  - feature_capability: shape_manipulation
+    requires_dom_level: D4
+    applicable_formats: [fodg, fodp]
+    rationale: "Shape manipulation requires mutation on typed DOM nodes"

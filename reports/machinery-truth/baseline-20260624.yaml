@@ -28,21 +28,21 @@ current_state_baseline:
 
   machinery_claims:
     - claim: SAL is ghost infrastructure (3/20 tools active)
-      source: plans/spec-to-feature-radical-correction-plan.md (written 2026-06-12)
+      source: plans/strategic/spec-to-feature-radical-correction-plan.md (written 2026-06-12)
       verdict: CONTRADICTED
       evidence: 22 SAL tools exist in tools/specification-authority-layer/; sal-facts-latest.json
         has 14,309 facts across 23 formats, generated 2026-06-21; sal_master_runner.py
         and run_spec_pipeline.py are functional entry points
 
     - claim: Capability Layer generates output nobody consumes
-      source: plans/spec-to-feature-radical-correction-plan.md (written 2026-06-12)
+      source: plans/strategic/spec-to-feature-radical-correction-plan.md (written 2026-06-12)
       verdict: SUPERSEDED
       evidence: autonomous_cycle.py line 1481 imports capability_feature_compiler and
         calls compile_gaps; gap_ledger_ref is injected into work items (Step 3a-pre);
         gap-ledger.json is the source for next-work-items generation
 
     - claim: No capability-to-feature compiler exists
-      source: plans/spec-to-feature-radical-correction-plan.md (written 2026-06-12)
+      source: plans/strategic/spec-to-feature-radical-correction-plan.md (written 2026-06-12)
       verdict: CONTRADICTED
       evidence: tools/capability_layer/capability_to_feature_compiler.py exists;
         tools/feature_compiler/gap_to_work_item.py exists
@@ -61,7 +61,7 @@ current_state_baseline:
         actual .NET product source is at src/net/ (fods/, fodt/, netpbm/ + shared libs)
 
     - claim: Autonomous healing/learning is prompt-only; ZERO durable learning
-      source: plans/spec-to-feature-radical-correction-plan.md
+      source: plans/strategic/spec-to-feature-radical-correction-plan.md
       verdict: CURRENT
       evidence: No failure-memory.json found; MEMORY.md is prose (200-line limit);
         ai_learning_loop outputs are non_authoritative=True; no auto-propagation system

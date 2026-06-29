@@ -1,0 +1,15 @@
+level: D4
+description: "D3 + mutation API, ownership invariants, writer consuming mutated DOM"
+criteria:
+  - id: D4-C1
+    name: d3_contract_passes
+    description: "All D3 criteria must pass"
+    check: d3_passes
+  - id: D4-C2
+    name: mutation_api
+    description: "At least one mutation method (set_value, add_child, remove_child, insert)"
+    check: has_mutation_api
+  - id: D4-C3
+    name: writer_consumes_dom
+    description: "Writer/serializer can accept and output mutated DOM"
+    check: has_writer_consuming_dom

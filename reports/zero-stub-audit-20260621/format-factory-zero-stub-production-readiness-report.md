@@ -49,7 +49,7 @@ Verdict: **`PRODUCTION_STUBS_REMAIN`** (spec architecture layer) + **`GOVERNANCE
 - **Repository:** c:/Users/prora/OneDrive/Documents/GitHub/format-factory
 - **Branch:** main
 - **HEAD:** ed51041f
-- **Authoritative plan:** plans/spec-to-feature-radical-correction-plan.md + plans/snoopy-juggling-seal.md
+- **Authoritative plan:** plans/strategic/spec-to-feature-radical-correction-plan.md + plans/strategic/snoopy-juggling-seal.md
 - **Mission ID:** ZERO-STUB-AUDIT-20260621
 - **Evidence root:** reports/zero-stub-audit-20260621/
 
@@ -354,12 +354,12 @@ Immediate required actions (in priority order):
 
 ## 15. Authoritative Plan
 
-- **Absolute path:** c:/Users/prora/OneDrive/Documents/GitHub/format-factory/plans/spec-to-feature-radical-correction-plan.md
+- **Absolute path:** c:/Users/prora/OneDrive/Documents/GitHub/format-factory/plans/strategic/spec-to-feature-radical-correction-plan.md
 - **Updated or created:** Not modified — audit findings are additive inputs
 - **Evidence path:** c:/Users/prora/OneDrive/Documents/GitHub/format-factory/reports/zero-stub-audit-20260621/
 - **Competing plans created:** no
 
-Recommended plan amendment: Add TC-ZS-001 through TC-ZS-004 taskcards to plans/snoopy-juggling-seal.md
+Recommended plan amendment: Add TC-ZS-001 through TC-ZS-004 taskcards to plans/strategic/snoopy-juggling-seal.md
 or the master plan for: V48 implementation, V44 repair, xcf_layer_name_list healing,
 and architecture_only_stub_gate enforcement.
 

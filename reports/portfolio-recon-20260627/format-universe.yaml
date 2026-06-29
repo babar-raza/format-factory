@@ -1,0 +1,183 @@
+format_universe:
+  generated: 2026-06-27
+  mission_id: PORTFOLIO-RECON-HEAL-20260627
+  total_python_formats: 20
+  total_dotnet_formats: 7
+  total_dotnet_export_helpers: 3
+
+  structural_completeness:
+    all_20_python_have_pyproject_toml: true
+    all_20_python_have_init_py: true
+    all_20_python_have_compat_dir: true
+    all_20_python_have_spec_dir: true
+    all_20_python_have_qname_registry: true
+    all_20_python_have_tests: true
+    all_20_python_have_exceptions: true
+
+  anti_pattern_sweep:
+    not_implemented_error_count: 1
+    not_implemented_error_location: src/python/fodp/fodp_codec.py:214 (intentional - FODP write not supported)
+    todo_fixme_count: 0
+    empty_pass_count: 31
+    empty_pass_analysis: All 31 are legitimate except-ImportError-pass for optional module imports
+    python_assert_true_count: 1
+    dotnet_assert_true_true_count: 18
+    dotnet_assert_true_analysis: 12 in fodt (default element tests), 6 in zst (no-exception tests) - weak pattern
+
+  python_writer_status:
+    has_writer:
+      - csv (csv_writer.py)
+      - fods (writer.py)
+      - fodt (writer.py)
+      - ods (ods_writer.py)
+      - odt (odt_writer.py)
+      - qoi (qoi_encoder.py)
+    no_writer:
+      - abw
+      - dif
+      - fodg
+      - fodp
+      - gnumeric
+      - ndjson
+      - pbm
+      - pgm
+      - ppm
+      - sylk
+      - toml
+      - tsv
+      - xcf
+      - zst
+    writer_coverage: "6/20 (30%)"
+
+  python_export_status:
+    has_cross_format_export:
+      - fods (csv_exporter.py, fods_to_tsv.py)
+      - fodt (exporters.py, fodt_to_ndjson.py)
+      - ods (ods_csv_exporter.py)
+      - pbm (pbm_to_pgm.py, pbm_to_ppm.py)
+      - pgm (pgm_to_ppm.py)
+      - ppm (ppm_to_pgm.py)
+    export_coverage: "6/20 (30%)"
+
+  python_analytics_status:
+    has_dedicated_analytics_file:
+      - csv (csv_analytics.py + csv_stats.py)
+      - fodg (fodg_analytics.py + drawing_metrics.py)
+      - gnumeric (gnumeric_analytics.py + gnumeric_workbook_stats.py)
+      - toml (toml_analytics.py)
+    has_stats_metrics_only:
+      - abw (abw_word_stats.py)
+      - dif (dif_stats.py)
+      - ndjson (ndjson_record_stats.py)
+      - ods (ods_stats.py)
+      - ppm (ppm_stats.py)
+      - xcf (xcf_image_metrics.py)
+      - zst (compression_metrics.py)
+    no_analytics_separation:
+      - fodp
+      - fods
+      - fodt
+      - odt
+      - pbm
+      - pgm
+      - qoi
+      - sylk
+      - tsv
+    analytics_separation_coverage: "4/20 have _analytics.py, 7/20 have _stats/_metrics, 9/20 have none"
+
+  dotnet_formats:
+    - format: fods
+      csproj: FormatFactory.Fods.csproj
+      has_spec: true
+      has_model: true
+      has_parser: true
+      has_writer: true
+      has_exporters: true (CSV, JSON, HTML, ODS, PDF, PNG)
+      tests: 519
+    - format: fodt
+      csproj: FormatFactory.Fodt.csproj
+      has_spec: true
+      has_model: true
+      has_parser: true
+      has_writer: true
+      has_exporters: true (HTML, Markdown, PDF, PNG, TXT)
+      tests: 514
+    - format: csv
+      csproj: FormatFactory.Csv.csproj
+      has_spec: true
+      has_model: false
+      has_parser: true (CsvReader)
+      has_writer: true
+      tests: 178
+    - format: tsv
+      csproj: FormatFactory.Tsv.csproj
+      has_spec: true
+      has_model: false
+      has_parser: true (TsvReader)
+      has_writer: true
+      has_exporters: true (TsvCsvExporter)
+      tests: 179
+    - format: ndjson
+      csproj: FormatFactory.Ndjson.csproj
+      has_spec: true
+      has_model: false
+      has_parser: true (NdjsonReader)
+      has_writer: true
+      has_exporters: true (NdjsonCsvExporter)
+      tests: 186
+    - format: netpbm
+      csproj: FormatFactory.Netpbm.csproj
+      has_spec: true
+      has_model: true (NetpbmImage, NetpbmImageAnalyzer, NetpbmImageFilters, NetpbmImageTransforms)
+      has_parser: true
+      has_writer: true
+      has_exporters: true
+      tests: 488
+    - format: zst
+      csproj: FormatFactory.Zst.csproj
+      has_spec: false
+      has_model: false
+      has_parser: true
+      has_writer: true
+      tests: 174
+
+  dotnet_export_helpers:
+    - format: html
+      csproj: FormatFactory.Html.csproj
+      purpose: HTML output writer
+      tests: 11
+    - format: markdown
+      csproj: FormatFactory.Markdown.csproj
+      purpose: Markdown output writer
+      tests: 11
+    - format: txt
+      csproj: FormatFactory.Txt.csproj
+      purpose: Plain text output writer
+      tests: 11
+
+  python_dotnet_parity:
+    both_python_and_dotnet:
+      - fods
+      - fodt
+      - csv
+      - tsv
+      - ndjson
+      - netpbm (Python: pbm+pgm+ppm separately, .NET: combined)
+      - zst
+    python_only:
+      - abw
+      - dif
+      - fodg
+      - fodp
+      - gnumeric
+      - ods
+      - odt
+      - qoi
+      - sylk
+      - toml
+      - xcf
+    dotnet_only: [] # html/markdown/txt are export helpers, not standalone formats
+
+  python_files_over_800_loc_count: 10
+  python_files_at_boundary_count: 11
+  dotnet_files_over_800_loc_count: 4

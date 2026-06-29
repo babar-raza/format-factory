@@ -8,18 +8,18 @@ updated_at: "2026-06-21"
 
 execution_handoff:
   mission_id: "machinery-lifecycle-healing-20260621"
-  authoritative_plan_path: "plans/snoopy-juggling-seal.md"
+  authoritative_plan_path: "plans/strategic/snoopy-juggling-seal.md"
   plan_revision: "3.1"
-  plan_hash: "see plans/snoopy-juggling-seal.md git log"
+  plan_hash: "see plans/strategic/snoopy-juggling-seal.md git log"
   repository: "C:/Users/prora/OneDrive/Documents/GitHub/format-factory"
   branch: "main"
 
   selected_controller: "tools/supervisor/check_continuation.py --track machinery"
   lifecycle_entry_point: "python tools/supervisor/check_continuation.py --track machinery"
   sprint_audit_entry_point: "python tools/supervisor/supervisor_loop.py autonomous-cycle --declaration <declaration.yaml>"
-  plan_reconciliation_entry_point: "read plans/snoopy-juggling-seal.md and update taskcards"
-  plan_hardening_entry_point: "update plans/snoopy-juggling-seal.md Section 4+ with new taskcards"
-  taskcard_generation_entry_point: "write taskcards to plans/snoopy-juggling-seal.md"
+  plan_reconciliation_entry_point: "read plans/strategic/snoopy-juggling-seal.md and update taskcards"
+  plan_hardening_entry_point: "update plans/strategic/snoopy-juggling-seal.md Section 4+ with new taskcards"
+  taskcard_generation_entry_point: "write taskcards to plans/strategic/snoopy-juggling-seal.md"
   execution_entry_point: "execute sprint based on next-sprint.md or mission-ledger.json"
   verification_entry_point: ".venv/Scripts/pytest tests/ -x --tb=short -q"
   post_execution_audit_entry_point: "re-run forensics prompt or read archaeology reports"
@@ -50,7 +50,7 @@ execution_handoff:
     - "LIF-16: Idempotent Rerun — PASS (zesty-moseying-whale sprint; 3 new gaps found and resolved)"
     - "LIF-17: Autonomous Unattended Loop — NOT_RUN (blocked by PLAN_TERMINAL)"
     - "LIF-18: Mission-Aware Stop — PASS_WITH_LIMITATIONS (mission-ledger stop_status implemented)"
-    - "LIF-19: Authoritative Plan Ready — PASS (plans/snoopy-juggling-seal.md)"
+    - "LIF-19: Authoritative Plan Ready — PASS (plans/strategic/snoopy-juggling-seal.md)"
     - "LIF-20: Execution Handoff Ready — PASS (this file)"
 
   required_pilots:

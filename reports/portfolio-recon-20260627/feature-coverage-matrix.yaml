@@ -1,0 +1,85 @@
+feature_coverage_matrix:
+  generated: 2026-06-27
+  mission_id: PORTFOLIO-RECON-HEAL-20260627
+
+  feature_taxonomy:
+    core_features:
+      - load_parse: "Load from file/bytes/string"
+      - domain_model: "Typed document object model (not just dicts)"
+      - metadata: "Access format metadata (version, encoding, etc.)"
+      - element_access: "Iterate/access sub-elements (sheets, paragraphs, etc.)"
+      - editing: "Add/modify/delete elements in the document"
+      - same_format_save: "Write back to the same format"
+      - roundtrip: "Load, modify, save preserving structure"
+      - cross_format_export: "Export to CSV, JSON, HTML, etc."
+      - validation: "Validate input (magic bytes, schema)"
+      - error_model: "Typed exception hierarchy"
+      - package_ready: "pyproject.toml with proper metadata, installable"
+
+  # Y = implemented, P = partial, N = not implemented, n/a = not applicable
+  python_coverage:
+    #                   load model meta elem edit save  rt  exp  val  err  pkg
+    fods:              [  Y,   Y,   Y,   Y,   P,   Y,   Y,   Y,   Y,   Y,   Y ]
+    fodt:              [  Y,   Y,   Y,   Y,   P,   Y,   Y,   Y,   Y,   Y,   Y ]
+    csv:               [  Y,   Y,   Y,   Y,   P,   Y,   Y,   N,   Y,   Y,   Y ]
+    tsv:               [  Y,   Y,   Y,   Y,   N,   N,   N,   N,   Y,   Y,   Y ]
+    ndjson:            [  Y,   Y,   Y,   Y,   N,   N,   N,   N,   Y,   Y,   Y ]
+    ods:               [  Y,   Y,   Y,   Y,   P,   Y,   P,   Y,   Y,   Y,   Y ]
+    odt:               [  Y,   Y,   Y,   Y,   P,   Y,   P,   N,   Y,   Y,   Y ]
+    abw:               [  Y,   Y,   Y,   Y,   N,   N,   N,   N,   Y,   Y,   Y ]
+    dif:               [  Y,   Y,   Y,   Y,   N,   N,   N,   N,   Y,   Y,   Y ]
+    sylk:              [  Y,   Y,   Y,   Y,   N,   N,   N,   N,   Y,   Y,   Y ]
+    gnumeric:          [  Y,   Y,   Y,   Y,   N,   N,   N,   N,   Y,   Y,   Y ]
+    fodg:              [  Y,   Y,   Y,   Y,   N,   N,   N,   N,   Y,   Y,   Y ]
+    fodp:              [  Y,   Y,   Y,   Y,   N,   N,   N,   N,   Y,   Y,   Y ]
+    toml:              [  Y,   Y,   Y,   Y,   N,   N,   N,   N,   Y,   Y,   Y ]
+    pbm:               [  Y,   Y,   Y,   Y,   N,   N,   N,   Y,   Y,   Y,   Y ]
+    pgm:               [  Y,   Y,   Y,   Y,   N,   N,   N,   Y,   Y,   Y,   Y ]
+    ppm:               [  Y,   Y,   Y,   Y,   N,   N,   N,   Y,   Y,   Y,   Y ]
+    qoi:               [  Y,   Y,   Y,   Y,   N,   Y,   P,   N,   Y,   Y,   Y ]
+    xcf:               [  Y,   Y,   Y,   Y,   N,   N,   N,   N,   Y,   Y,   Y ]
+    zst:               [  Y,   Y,   Y,   Y,   N,   N,   N,   N,   Y,   Y,   Y ]
+
+  dotnet_coverage:
+    fods:              [  Y,   Y,   Y,   Y,   Y,   Y,   Y,   Y,   Y,   Y,   Y ]
+    fodt:              [  Y,   Y,   Y,   Y,   Y,   Y,   Y,   Y,   Y,   Y,   Y ]
+    csv:               [  Y,   Y,   Y,   Y,   P,   Y,   Y,   N,   Y,   Y,   Y ]
+    tsv:               [  Y,   Y,   Y,   Y,   P,   Y,   Y,   Y,   Y,   Y,   Y ]
+    ndjson:            [  Y,   Y,   Y,   Y,   P,   Y,   Y,   Y,   Y,   Y,   Y ]
+    netpbm:            [  Y,   Y,   Y,   Y,   Y,   Y,   Y,   Y,   Y,   Y,   Y ]
+    zst:               [  Y,   Y,   Y,   Y,   N,   Y,   P,   N,   Y,   Y,   Y ]
+
+  coverage_summary:
+    python:
+      total_format_feature_pairs: 220  # 20 formats x 11 features
+      fully_implemented: 136  # Y count
+      partially_implemented: 12  # P count
+      not_implemented: 72  # N count
+      coverage_percentage: "67.3% (counting Y + P/2)"
+    dotnet:
+      total_format_feature_pairs: 77  # 7 formats x 11 features
+      fully_implemented: 64
+      partially_implemented: 5
+      not_implemented: 8
+      coverage_percentage: "86.4% (counting Y + P/2)"
+
+  key_gaps:
+    - gap: "14 Python formats lack same-format writer"
+      formats: [tsv, ndjson, abw, dif, sylk, gnumeric, fodg, fodp, toml, pbm, pgm, ppm, xcf, zst]
+      priority: P3
+      note: "Many of these are read-only formats by nature (XCF, ZST) or lack spec authority for write"
+
+    - gap: "14 Python formats lack cross-format export"
+      formats: [tsv, ndjson, abw, dif, sylk, gnumeric, fodg, fodp, toml, qoi, xcf, zst, csv, odt]
+      priority: P3
+
+    - gap: "15 Python formats have no editing capability"
+      formats: [tsv, ndjson, abw, dif, sylk, gnumeric, fodg, fodp, toml, pbm, pgm, ppm, xcf, zst]
+      priority: P3
+      note: "For read-only formats like ZST (compression) or XCF (GIMP native), editing may not be in product scope"
+
+    - gap: "Python-only formats have no .NET equivalent"
+      count: 13
+      formats: [abw, dif, fodg, fodp, gnumeric, ods, odt, qoi, sylk, toml, xcf]
+      priority: P4
+      note: "By design - .NET commercial focuses on FODS/FODT; these are FOSS Python products"

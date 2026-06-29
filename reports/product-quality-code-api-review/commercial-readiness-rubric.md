@@ -15,7 +15,7 @@ backed by documentation, and not carry contradictions or false claims.
 
 ## Commercial Readiness Gate 11 Criteria (C1–C20)
 
-These criteria come from `plans/spec-to-feature-radical-correction-plan.md`. Gate 11 requires
+These criteria come from `plans/strategic/spec-to-feature-radical-correction-plan.md`. Gate 11 requires
 ALL C1–C20 to pass. Status: NOT approved. Approver: Babar Raza only.
 
 | Criterion | Description | Required |

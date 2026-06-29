@@ -92,7 +92,7 @@ Current `git status --short` output (28 files):
 
 ### Plans (read at session start per CLAUDE.md)
 - plans/master-plan.md — v6.0 (multiple sprints confirmed ACCEPTED 2026-06-25)
-- plans/spec-to-feature-radical-correction-plan.md — BINDING AUTHORITY; 27 sections; 6 systemic failures documented
+- plans/strategic/spec-to-feature-radical-correction-plan.md — BINDING AUTHORITY; 27 sections; 6 systemic failures documented
 - No per-chat plan loaded for this session (audit sprint)
 
 ### Evidence Directories

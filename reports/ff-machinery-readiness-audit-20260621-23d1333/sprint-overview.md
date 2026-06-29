@@ -27,7 +27,7 @@ product-deepening sprint MUST NOT proceed until targeted machinery repairs are c
 | Area | Evidence Location |
 |------|------------------|
 | QName ontology | reports/specification-authority-layer-mwp/qname-ontology/ |
-| SAL pipeline | plans/snoopy-juggling-seal.md, .local/spec-cache/fods/1.3/ |
+| SAL pipeline | plans/strategic/snoopy-juggling-seal.md, .local/spec-cache/fods/1.3/ |
 | Capability map | reports/capability-layer/unified-capability-map.json (3,166 entries) |
 | Gap ledger | reports/capability-layer/gap-ledger.json (932 entries) |
 | Gate 11 status | reports/gate11/fods-gate11-readiness-packet.md |

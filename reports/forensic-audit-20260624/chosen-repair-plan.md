@@ -10,7 +10,7 @@
 **Authorized by:** Explicit user instruction — "Format Factory All-Format Specification-to-Code Forensic Audit"
 **Evidence root:** `reports/forensic-audit-20260624/`
 
-This plan coordinates repair of the Format Factory specification-to-product pipeline. It does not replace `plans/spec-to-feature-radical-correction-plan.md` (the master plan) but adds the forensic traceability layer it requires.
+This plan coordinates repair of the Format Factory specification-to-product pipeline. It does not replace `plans/strategic/spec-to-feature-radical-correction-plan.md` (the master plan) but adds the forensic traceability layer it requires.
 
 ---
 

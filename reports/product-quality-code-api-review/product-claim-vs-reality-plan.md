@@ -46,7 +46,7 @@ Autonomous development systems can drift between what they claim and what is act
 
 **Assessment:** CLAIM_CONTRADICTED — the source header explicitly says "NOT approved" while the NuGet package description claims approval.
 
-**Also confirmed from plan:** `plans/spec-to-feature-radical-correction-plan.md` states:
+**Also confirmed from plan:** `plans/strategic/spec-to-feature-radical-correction-plan.md` states:
 > "Gate 11: NOT approved. Babar Raza is the only approver. Criteria: C1-C20 (.NET), P1-P11 (Python)."
 
 **Severity:** HIGH — NuGet consumers reading the package description would be misled.

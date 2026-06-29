@@ -95,7 +95,7 @@ Since it primarily reads _EXPANSION_GOALS, most work items lack actual gap backi
 
 **Planned location:** tools/supervisor/capability_feature_compiler.py
 **Design document:** docs/capability-feature-compiler-spec.md (if exists)
-**Planned in:** plans/capability-fact-to-feature-production-plan.md
+**Planned in:** plans/strategic/capability-fact-to-feature-production-plan.md
 
 From MEMORY.md (2026-06-23):
 > Capability-to-feature compiler spec (2026-06-23): Design at docs/capability-feature-compiler-spec.md.

@@ -56,7 +56,7 @@ The machinery is operational. The product output is real. The gaps are targeted 
 PARTIAL. HEAD c6b24706 is stable. ~130 dirty files are classified sprint artifacts and evidence files, not corrupted state. No data loss risk. Continuation signal is GREEN (autonomous_continue=true). Working tree has no uncommitted merge conflicts or broken state. Verdict: ACCEPTABLE for continued sprint work.
 
 **Q2: Are all plan files and governance docs consistent?**
-YES. `plans/master-plan.md`, `plans/spec-to-feature-radical-correction-plan.md`, `approval-gates.md`, `session-resume.md` all reflect consistent state (iteration 1/12, last sprint c6b24706, AUTONOMOUS_CONTINUE YES). No contradictions detected in `reports/supervisor/contradictions.json` at audit time.
+YES. `plans/master-plan.md`, `plans/strategic/spec-to-feature-radical-correction-plan.md`, `approval-gates.md`, `session-resume.md` all reflect consistent state (iteration 1/12, last sprint c6b24706, AUTONOMOUS_CONTINUE YES). No contradictions detected in `reports/supervisor/contradictions.json` at audit time.
 
 **Q3: Is the continuation signal authentic and current?**
 YES. `continuation-signal.json` contains `session_id: f9145814a1ee`, `autonomous_continue: true`, `iteration: 1`, 0 rework_items, 0 hard_stops. CCI-MVP enforces session_id matching. Signal is not stale (matches HEAD commit).

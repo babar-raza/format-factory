@@ -1,0 +1,119 @@
+machinery_readiness:
+  generated: 2026-06-27
+  mission_id: PORTFOLIO-RECON-HEAL-20260627
+
+  summary:
+    total_tool_files: 450
+    total_tool_loc: 147602
+    machinery_to_product_ratio: "2.32:1"
+    supervisor_files: 95
+    supervisor_loc: 69693
+    governance_validator_count: "85+"
+    governance_test_count: 138
+    capability_count: 93
+    skill_count: "98+"
+
+  layer_assessment:
+    specification_authority:
+      status: OPERATIONAL_WITH_GAPS
+      components: ["tools/spec/", "tools/specification-authority-layer/"]
+      maturity: 3
+      gaps: ["SAL facts scattered, no centralized directory", "14 formats have SAL facts, 4 have zero"]
+      product_impact: "Limits capability-to-feature compilation accuracy"
+
+    qname_hierarchy:
+      status: PRODUCTION_GRADE
+      components: ["shared/qname-registry/ (20 files)"]
+      maturity: 5
+      gaps: ["1 intentional gap (fodt:office:body)"]
+      product_impact: "None — 99.4% complete"
+
+    capability_authority:
+      status: GOVERNED
+      components: [".governance/capabilities/registry.yaml", "reports/capability-layer/"]
+      maturity: 4
+      gaps: ["28 capabilities missing from command-registry", "Gap ledger has 1,277 entries — accuracy unverified for closed items"]
+      product_impact: "28 capabilities unreachable via commands"
+
+    oracle_conformance:
+      status: PRODUCTION_GRADE
+      components: ["tools/oracle/execute_oracle.py (1428 LOC)"]
+      maturity: 5
+      gaps: ["None — all 20 formats at VERIFIED (73/73 PASS)"]
+      product_impact: "None"
+
+    supervisor:
+      status: GOVERNED
+      components: ["tools/supervisor/ (95 files, 69.7K LOC)"]
+      maturity: 4
+      gaps:
+        - "Overclaim detector exists but never called"
+        - "failure-memory.json exists but static (no durable learning)"
+        - "Lane ownership not code-enforced (prompt-only)"
+        - "governance_validators.py at 3183 LOC"
+      product_impact: "False completeness claims possible without overclaim detection"
+
+    skills_commands:
+      status: OPERATIONAL_WITH_GAPS
+      components: [".supervisor/skill-registry.yaml", ".claude/commands/"]
+      maturity: 3
+      gaps: ["28 missing command-registry entries", "Skill transcript verification not in CI"]
+      product_impact: "28 capabilities unreachable via slash commands"
+
+    evidence:
+      status: GOVERNED
+      components: [".local/evidences/", "tools/evidence/"]
+      maturity: 4
+      gaps: ["Evidence sprint_writers (run046-050) are 2.7-4.1K LOC each — excessive"]
+      product_impact: "None functional, but LOC bloat in tools/"
+
+    state_continuation:
+      status: GOVERNED
+      components: ["tools/supervisor/check_continuation.py (745 LOC)"]
+      maturity: 4
+      gaps: ["Stale plan locks recur (known issue)", "MAX_ITERATIONS requires manual reset"]
+      product_impact: "Occasional sprint stoppage requiring manual intervention"
+
+    package_consumer:
+      status: PARTIAL
+      maturity: 2
+      gaps: ["No automated package-build-install-test pipeline", "Non-editable installs need manual site-packages sync"]
+      product_impact: "Package readiness unproven at scale"
+
+  machinery_proportionality:
+    verdict: DISPROPORTIONATE
+    ratio: "2.32:1 (147K tools vs 64K product)"
+    analysis: |
+      The machinery is more than twice the size of the product it governs. While governance
+      rigor is valuable, several areas contribute to LOC inflation:
+      - Evidence sprint_writers (run046-050): 15,535 LOC for 5 files (2.7-4.1K each)
+      - Governance validators: 5,548 LOC across 7 files
+      - Autonomous cycle + extensions: 3,580 LOC
+      - Embedding retrieval: 838 LOC (vector search infrastructure)
+      Most machinery serves real purposes, but the evidence sprint_writers and some
+      specialized tools could be consolidated. The ratio should target <2.0:1.
+    recommendations:
+      - "Consolidate evidence sprint_writers into a template-based generator"
+      - "Archive unused tool scripts after classification audit"
+      - "Target machinery:product ratio < 2.0:1"
+
+  root_causes:
+    - finding: "Overclaim detector not wired"
+      first_failing_boundary: "tools/supervisor/autonomous_cycle.py does not call overclaim detection"
+      blast_radius: "All formats — false completion claims can persist in gap ledger"
+      repair: "Wire overclaim detector into autonomous-cycle post-sprint audit"
+
+    - finding: "Failure memory static"
+      first_failing_boundary: ".local/supervisor/failure-memory.json written but never read back by autonomous_cycle"
+      blast_radius: "Same failure patterns recur across sprints without learning"
+      repair: "Add failure-memory lookup to autonomous_task_generator.py gap selection"
+
+    - finding: "Lane ownership prompt-only"
+      first_failing_boundary: "No code validates lane ownership — only CLAUDE.md/AGENTS.md prompt rules"
+      blast_radius: "Parallel execution could conflict on shared files"
+      repair: "Add lane-ownership.yaml with code validation in check_continuation.py"
+
+    - finding: "28 capabilities missing from command-registry"
+      first_failing_boundary: ".governance/capabilities/parity-report.yaml identifies but does not auto-fix"
+      blast_radius: "28 capabilities cannot be invoked via slash commands"
+      repair: "Run /sync-capabilities or manually add entries"

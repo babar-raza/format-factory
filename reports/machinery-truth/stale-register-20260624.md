@@ -20,7 +20,7 @@ or made stale by current HEAD state. Do not overwrite history — mark as stale 
 - **Fix Applied:** Phase 4+ Current State addendum appended (2026-06-24)
 - **Action Required:** Full architecture.md rewrite to reflect Phase 4 reality
 
-### plans/spec-to-feature-radical-correction-plan.md
+### plans/strategic/spec-to-feature-radical-correction-plan.md
 - **Status:** PARTIALLY_STALE (written 2026-06-12; many failure items since addressed)
 - **Stale Claims:**
   - "SAL is ghost infrastructure (3/20 tools active)" — CONTRADICTED (14,309 facts, 22 tools)

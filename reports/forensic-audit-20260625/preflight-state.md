@@ -95,7 +95,7 @@ c6b24706 feat(knowledge): Phase 3 — TC-P3-001/002/003/004 all-green
 - `shared/qname-registry/*.yaml` — 19 format YAML files modified
 
 ### Plans — Modified
-- `plans/capability-fact-to-feature-production-plan.md`
+- `plans/strategic/capability-fact-to-feature-production-plan.md`
 - `plans/master-plan-memory.md`
 
 ### Tests — Modified/Untracked
@@ -141,9 +141,9 @@ c6b24706 feat(knowledge): Phase 3 — TC-P3-001/002/003/004 all-green
 | Plan File | Status |
 |-----------|--------|
 | `plans/master-plan.md` | Active (v4.1+, Section 54+ closed) |
-| `plans/spec-to-feature-radical-correction-plan.md` | Active (27 sections, master authority) |
+| `plans/strategic/spec-to-feature-radical-correction-plan.md` | Active (27 sections, master authority) |
 | `plans/master-plan-memory.md` | Active ledger (LEDGER-001 through LEDGER-021) |
-| `plans/capability-fact-to-feature-production-plan.md` | Modified (capability gap closure) |
+| `plans/strategic/capability-fact-to-feature-production-plan.md` | Modified (capability gap closure) |
 
 ---
 

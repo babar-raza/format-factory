@@ -80,11 +80,11 @@ format-factory/
 | Plan File | Status |
 |-----------|--------|
 | `plans/master-plan.md` | Active master authority |
-| `plans/spec-to-feature-radical-correction-plan.md` | Active correction authority (27 sections, ~3200 lines) |
-| `plans/snoopy-juggling-seal.md` | Active plan context |
-| `plans/capability-fact-to-feature-production-plan.md` | Supporting plan |
-| `plans/continuation-isolation-plan.md` | Supporting plan |
-| `plans/product-code-healing-plan.md` | Supporting plan |
+| `plans/strategic/spec-to-feature-radical-correction-plan.md` | Active correction authority (27 sections, ~3200 lines) |
+| `plans/strategic/snoopy-juggling-seal.md` | Active plan context |
+| `plans/strategic/capability-fact-to-feature-production-plan.md` | Supporting plan |
+| `plans/strategic/continuation-isolation-plan.md` | Supporting plan |
+| `plans/healing/product-code-healing-plan.md` | Supporting plan |
 
 ---
 
@@ -116,7 +116,7 @@ reports/forensics-archaeology-20260621/  — THIS REPORT
 
 - `CLAUDE.md` — supreme directive and session instructions
 - `AGENTS.md` — agent protocol and governance rules
-- `plans/spec-to-feature-radical-correction-plan.md` — master correction authority
+- `plans/strategic/spec-to-feature-radical-correction-plan.md` — master correction authority
 - `docs/spec-to-feature-correction-plan-summary.md` — quick reference
 - `registry/gate11-criteria.yaml` — gate 11 criteria
 - `registry/format-registry.yaml` — format authority

@@ -192,7 +192,7 @@ This is **heavy manual work per format**, and the pipeline to automate it is bro
 ### Phase E: Specification Authority Layer (SAL)
 
 **What it does (in theory):** Acquires format specifications (PDFs, RFCs), extracts verifiable facts, stores them in a workbench, publishes them to downstream systems.
-**Evidence:** [snoopy-juggling-seal.md](plans/snoopy-juggling-seal.md), `.local/spec-cache/` (FODS: 78 facts, ZST: 15 facts, FODT: 27 facts), [sal_master_runner.py](tools/specification-authority-layer/sal_master_runner.py)
+**Evidence:** [snoopy-juggling-seal.md](plans/strategic/snoopy-juggling-seal.md), `.local/spec-cache/` (FODS: 78 facts, ZST: 15 facts, FODT: 27 facts), [sal_master_runner.py](tools/specification-authority-layer/sal_master_runner.py)
 **What works well:** Real specification documents are acquired and verified (FODS ODF Part 3, ZST RFC 8878). 120 verified facts exist in workbenches.
 **What is broken:** The production runner (`sal_master_runner.py`) generates 268 template facts from hardcoded Python dicts. It NEVER reads the 120 real verified facts. The real facts are stranded in workbench files with no downstream consumer.
 **Repeatable:** Fact extraction was done once for FODS. The process is documented but not automated.
@@ -305,7 +305,7 @@ This is **heavy manual work per format**, and the pipeline to automate it is bro
    - 120 verified facts exist but are stranded in workbench files.
    - The production runner generates 268 fake template facts.
    - The Snoopy plan diagnosed this thoroughly but NO implementation has started.
-   - Evidence: [snoopy-juggling-seal.md](plans/snoopy-juggling-seal.md), Section 1.1
+   - Evidence: [snoopy-juggling-seal.md](plans/strategic/snoopy-juggling-seal.md), Section 1.1
 
 2. **No .NET commercial product.** (Red)
    - Gate 11 readiness packets are preparation documents only.
@@ -381,7 +381,7 @@ After that: execute the system healing lanes (at least Lanes 1-6) before continu
 ## 16. Evidence Used
 
 ### Plans and Governance
-- [snoopy-juggling-seal.md](plans/snoopy-juggling-seal.md) — The SAL pipeline redesign plan (737 lines)
+- [snoopy-juggling-seal.md](plans/strategic/snoopy-juggling-seal.md) — The SAL pipeline redesign plan (737 lines)
 - [spec-to-feature-correction-plan-summary.md](docs/spec-to-feature-correction-plan-summary.md) — System healing plan summary (171 lines)
 - [master-plan.md](plans/master-plan.md) — Project master plan (488 lines, v3.1)
 - [gates.md](docs/gates.md) — Gate definitions (283 lines, 11 gates)

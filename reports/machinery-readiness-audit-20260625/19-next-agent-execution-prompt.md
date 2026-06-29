@@ -14,7 +14,7 @@ acting. Do not resume prior product deepening until you have read the audit find
 
 Read ALL of the following before any work:
 1. `plans/master-plan.md` — strategic authority
-2. `plans/spec-to-feature-radical-correction-plan.md` — binding correction plan
+2. `plans/strategic/spec-to-feature-radical-correction-plan.md` — binding correction plan
 3. `reports/machinery-readiness-audit-20260625/21-final-verdict.md` — audit result
 4. `reports/machinery-readiness-audit-20260625/17-machinery-repair-plan.md` — repair sequence
 5. `reports/machinery-readiness-audit-20260625/15-system-gap-matrix.yaml` — 19 gaps
