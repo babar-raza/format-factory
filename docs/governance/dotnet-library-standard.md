@@ -402,7 +402,7 @@ public static class FodsCsvExporter
 - Gate 11 approval is required before any .NET library is published to NuGet.
 - Gate 11 approval authority: Babar Raza (TRUE_EXTERNAL_GATE).
 - Gate preparation (evidence, tests, readiness assessment) is agent-owned.
-- Criteria C1-C20 in `plans/spec-to-feature-radical-correction-plan.md` define
+- Criteria C1-C20 in `plans/strategic/spec-to-feature-radical-correction-plan.md` define
   the .NET readiness checklist.
 - DEC-033 (Option B): .NET libraries are commercial-only, not FOSS.
   The Python FOSS track is separate (`src/python/{format}/`).

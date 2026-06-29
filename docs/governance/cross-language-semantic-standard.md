@@ -10,7 +10,7 @@ implementations of the same format.
 **Cross-references:**
 - `docs/code-quality/production-readiness-standard.md` — root code-quality contract
 - `registry/gate11-criteria.yaml` — Gate 11 thresholds
-- `plans/spec-to-feature-radical-correction-plan.md` — criteria C1-C20 (.NET), P1-P11 (Python)
+- `plans/strategic/spec-to-feature-radical-correction-plan.md` — criteria C1-C20 (.NET), P1-P11 (Python)
 
 ---
 
@@ -227,7 +227,7 @@ Gate 11 (commercial release) requires Babar Raza's approval. Parity criteria inc
 - No unintentional API divergence documented.
 - QName registry entries have both `python_file` and `dotnet_file` populated.
 - Criteria C1-C20 (.NET) and P1-P11 (Python) from
-  `plans/spec-to-feature-radical-correction-plan.md` are satisfied.
+  `plans/strategic/spec-to-feature-radical-correction-plan.md` are satisfied.
 
 ---
 

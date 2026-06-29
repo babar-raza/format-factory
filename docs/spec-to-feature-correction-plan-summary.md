@@ -1,6 +1,6 @@
 # Spec-to-Feature Radical Correction Plan — Agent Quick Reference
 
-**Full plan:** `plans/spec-to-feature-radical-correction-plan.md` (27 sections, ~3200 lines)
+**Full plan:** `plans/strategic/spec-to-feature-radical-correction-plan.md` (27 sections, ~3200 lines)
 **Run ID:** `spec-to-feature-radical-correction-plan-20260612-8e45224`
 **Gate 11:** NOT APPROVED. Babar Raza is the only approver.
 

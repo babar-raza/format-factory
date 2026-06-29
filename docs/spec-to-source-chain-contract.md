@@ -106,7 +106,7 @@ Breaking at SAL is EXPECTED for non-XML non-ODF formats. The chain from registry
 - **Root cause:** SAL pipeline has 21 tools; only 3 are regularly invoked
 - **Affects:** `spec_fact_ref` values may point to stale FACT IDs
 - **Mitigation:** `shared/qname-registry/*.yaml` `spec_fact_ref` fields are manually curated
-- **Resolution tracked in:** `plans/spec-to-feature-radical-correction-plan.md` Lane 1
+- **Resolution tracked in:** `plans/strategic/spec-to-feature-radical-correction-plan.md` Lane 1
 
 ### Gap 2: FeatureFactory no pre-insertion spec_qname check
 - **Impact:** FeatureFactory can insert functions without verifying the target class has spec_qname

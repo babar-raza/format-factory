@@ -161,7 +161,7 @@ Cross-cutting concerns must NOT be re-implemented per format module:
 This rule is enforced starting from the first new format module added after
 `src/python/core/` is created. Existing 20 modules are grandfathered until their
 individual decomposition sprints. Creating `src/python/core/` is tracked in
-`plans/product-code-healing-plan.md`.
+`plans/healing/product-code-healing-plan.md`.
 
 ## 16. Cross-Language Architecture (RULE-CHECKLIST-CL-001 — added 2026-06-25)
 

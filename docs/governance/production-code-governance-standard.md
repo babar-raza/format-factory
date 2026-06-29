@@ -66,7 +66,7 @@ Governed by **PRS Section 1.1** (Python), **PRS Section 1.2** (.NET), and **PRS 
 (No Orphan Files).
 
 - Target directory layout per format: see also
-  [`plans/product-code-healing-plan.md`](../../plans/product-code-healing-plan.md) SS "Target
+  [`plans/healing/product-code-healing-plan.md`](../../plans/healing/product-code-healing-plan.md) SS "Target
   Architecture Per Python Format Module".
 - Every `.py` file under `src/` must have a recognized owning purpose: PRS SS3.4.
 
@@ -287,7 +287,7 @@ under the `cross_language_parity` field. Values: `full`, `partial`, `python_only
 
 Gate 11 (commercial release) requires cross-language parity for all formats included in
 the release. This is assessed via criteria C1-C20 (.NET) and P1-P11 (Python) in
-`plans/spec-to-feature-radical-correction-plan.md`.
+`plans/strategic/spec-to-feature-radical-correction-plan.md`.
 
 ---
 
@@ -429,8 +429,8 @@ caps. Rules:
 ## Reference Documents
 
 - **Production Readiness Standard (PRS):** [`docs/code-quality/production-readiness-standard.md`](../code-quality/production-readiness-standard.md)
-- **Product Code Healing Plan:** [`plans/product-code-healing-plan.md`](../../plans/product-code-healing-plan.md)
-- **Spec-to-Feature Correction Plan:** [`plans/spec-to-feature-radical-correction-plan.md`](../../plans/spec-to-feature-radical-correction-plan.md)
+- **Product Code Healing Plan:** [`plans/healing/product-code-healing-plan.md`](../../plans/healing/product-code-healing-plan.md)
+- **Spec-to-Feature Correction Plan:** [`plans/strategic/spec-to-feature-radical-correction-plan.md`](../../plans/strategic/spec-to-feature-radical-correction-plan.md)
 - **Source Structure Baseline:** `registry/source-structure-baseline.json`
 - **Format Registry:** `registry/format-registry.yaml`
 - **Governance Validators:** `tools/supervisor/governance_validators.py`

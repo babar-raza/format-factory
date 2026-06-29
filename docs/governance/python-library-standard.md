@@ -12,8 +12,8 @@ Automated validators enforce these rules.
 
 **Companion documents:**
 - `docs/code-quality/production-readiness-standard.md` — root architecture contract
-- `plans/product-code-healing-plan.md` — decomposition tracker and priority queue
-- `plans/spec-to-feature-radical-correction-plan.md` — canonical naming and spec parity
+- `plans/healing/product-code-healing-plan.md` — decomposition tracker and priority queue
+- `plans/strategic/spec-to-feature-radical-correction-plan.md` — canonical naming and spec parity
 
 ---
 

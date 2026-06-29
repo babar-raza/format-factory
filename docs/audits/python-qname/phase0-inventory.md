@@ -1,6 +1,6 @@
 # Python QName Architecture — Phase 0 Baseline Inventory
 Generated: 2026-06-21
-Plan: plans/enhanced-qname-python-governed-plan.md
+Plan: plans/healing/enhanced-qname-python-governed-plan.md
 
 ## QName Compliance Matrix
 
