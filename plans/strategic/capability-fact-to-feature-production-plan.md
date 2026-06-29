@@ -2,7 +2,7 @@
   schema_version: "1.0"
   plan_id: "capability-fact-to-feature-production-plan"
   mission_id: "FF-CAPABILITY-LAYER-001"
-  native_plan_path: "plans/capability-fact-to-feature-production-plan.md"
+  native_plan_path: "plans/strategic/capability-fact-to-feature-production-plan.md"
   native_plan_filename: "capability-fact-to-feature-production-plan.md"
   created_by_agent: "autonomous-agent"
   created_during_plan_mode: false
@@ -20,7 +20,7 @@
   terminal_locked_at: null
   run_id: "capability-fact-to-feature-forensics-20260616-f607c78"
   notes: >
-    Governed supplement to plans/spec-to-feature-radical-correction-plan.md.
+    Governed supplement to plans/strategic/spec-to-feature-radical-correction-plan.md.
     Lives in the repository plans/ directory. Not in .claude/plans/.
 -->
 # Capability Layer — Fact-to-Feature Production Plan
@@ -28,7 +28,7 @@
 ## Authority Declaration
 
 - **Plan type:** Focused Capability Layer production plan (Lane 2, 3, 6 execution supplement)
-- **Upstream authority:** `plans/spec-to-feature-radical-correction-plan.md` (master plan)
+- **Upstream authority:** `plans/strategic/spec-to-feature-radical-correction-plan.md` (master plan)
 - **Related authoritative docs:**
   - `docs/commercial-product-capability-model.md` — defines C0-C10 capability levels and Gate 11 requirements (normative)
   - `docs/governance/requirement-capability-authority-layer.md` — RCAL proof graph design (18 node types, 19 edge types, 8 invariants) — status: PLAN_HEALED_READY_FOR_MWP_EXECUTION
@@ -906,7 +906,7 @@ The following work from prior sessions is confirmed complete and must NOT be re-
 - **Why it matters:** All 3 graded items OVERCLAIMED because evidence_artifacts only tag sub-item IDs (e.g., TC-VHL-001-02) not parent IDs (TC-VHL-001). The grader cannot match evidence to planned items. Continuation signal has `hard_stops_detected: [critical_rework_blocks_continuation]`.
 - **Required work:**
   1. Add a new evidence artifact entry for TC-VHL-001 directly: path=`recon-intake.md`, description="Evidence directory exists and session context established", `related_work_items: [TC-VHL-001]`
-  2. Add a new evidence artifact for TC-VHL-006: path=`plans/capability-fact-to-feature-production-plan.md`, type=source_change, description="11 surgical corrections applied — counts corrected, RC-2/RC-4/RC-8 updated", `related_work_items: [TC-VHL-006]`
+  2. Add a new evidence artifact for TC-VHL-006: path=`plans/strategic/capability-fact-to-feature-production-plan.md`, type=source_change, description="11 surgical corrections applied — counts corrected, RC-2/RC-4/RC-8 updated", `related_work_items: [TC-VHL-006]`
   3. Add a new evidence artifact for TC-VHL-010: path=`evidence-declaration.yaml`, description="Evidence declaration written and validated with sprint_executor_validate.py", `related_work_items: [TC-VHL-010]`
   4. Re-run supervisor pipeline: `python tools/supervisor/supervisor_loop.py autonomous-cycle --declaration .local/evidences/capability-fact-to-feature-forensics-20260623-06f0ea05/capability-fact-to-feature/evidence-declaration.yaml`
 - **Required verification:** Supervisor output shows 0 OVERCLAIMED, 3 accepted; `autonomous_continue` returns to true
@@ -926,11 +926,11 @@ The following work from prior sessions is confirmed complete and must NOT be re-
 - **Priority:** P0 — plan modifications at risk; required before TC-VHL-REWORK-001
 - **Lane:** capability_layer_forensics
 - **Source finding:** FIND-VHL-002
-- **Why it matters:** 11 corrections to `plans/capability-fact-to-feature-production-plan.md` (including this Appendix D) exist only in the working tree. A `git clean -f` or rebase would destroy them. The plan file is referenced as evidence artifact for TC-VHL-006 — it must be committed before the evidence resubmission.
+- **Why it matters:** 11 corrections to `plans/strategic/capability-fact-to-feature-production-plan.md` (including this Appendix D) exist only in the working tree. A `git clean -f` or rebase would destroy them. The plan file is referenced as evidence artifact for TC-VHL-006 — it must be committed before the evidence resubmission.
 - **Required work:**
-  1. `git add plans/capability-fact-to-feature-production-plan.md`
+  1. `git add plans/strategic/capability-fact-to-feature-production-plan.md`
   2. `git commit -m "docs(plans): velvet-hatching-lark forensic corrections + plan hardening (11 corrections + Appendix D)"`
-- **Required verification:** `git log --oneline -1 -- plans/capability-fact-to-feature-production-plan.md` shows the commit; `git diff HEAD -- plans/...` returns empty
+- **Required verification:** `git log --oneline -1 -- plans/strategic/capability-fact-to-feature-production-plan.md` shows the commit; `git diff HEAD -- plans/...` returns empty
 - **Required evidence:** Git commit hash; `git show --stat HEAD` confirming the plan file
 - **Acceptance criteria:** Plan file committed; working tree clean for this file
 - **Forbidden actions:** Do NOT use `--no-verify`; do NOT amend a prior commit
@@ -1169,7 +1169,7 @@ The following claims from this sprint must not be repeated as-is:
 
 This plan may proceed to Stage 1+ execution only when ALL of the following are true:
 
-1. `plans/capability-fact-to-feature-production-plan.md` is committed to git (TC-VHL-REWORK-002)
+1. `plans/strategic/capability-fact-to-feature-production-plan.md` is committed to git (TC-VHL-REWORK-002)
 2. Supervisor accepts TC-VHL-001, TC-VHL-006, TC-VHL-010 — 0 OVERCLAIMED — and `autonomous_continue=true` (TC-VHL-REWORK-001)
 3. Gap-ledger regeneration behavior is verified (either generator preserves closures, or a snapshot/merge mechanism is implemented and tested) (TC-VHL-REWORK-003)
 4. CAP-GEN-011 references removed from all execution queues (TC-VHL-REWORK-005)
@@ -1423,7 +1423,7 @@ Execute in order. STOP at each step on failure before proceeding:
 This plan may proceed to Stage 1+ autonomous execution only when ALL are true:
 
 1. TC-SIGNAL-RESET-001 resolved — check_continuation.py returns CONTINUE, 0 GOV_BLOCKs
-2. plans/capability-fact-to-feature-production-plan.md committed to git (TC-VHL-REWORK-002)
+2. plans/strategic/capability-fact-to-feature-production-plan.md committed to git (TC-VHL-REWORK-002)
 3. Supervisor accepts TC-VHL-001, TC-VHL-006, TC-VHL-010 with 0 OVERCLAIMED (TC-VHL-REWORK-001)
 4. Gap-ledger regeneration behavior verified (TC-VHL-REWORK-003)
 5. Evidence contract updated with FSE-001 fix-sprint rule (TC-EVIDENCE-QUAL-001)

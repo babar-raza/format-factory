@@ -28,7 +28,7 @@ layer_metadata:
   skill_ids: [ingest-spec-sal, sal-pipeline-heal]
   command_ids: [ingest-spec-sal, sal-pipeline-heal]
   evidence_paths:
-    - plans/snoopy-juggling-seal.md
+    - plans/strategic/snoopy-juggling-seal.md
     - reports/layer-audit-2026-06-26/forensic-layer-discovery-report.md
   last_started_at: "2026-05-06"
   last_progress_at: "2026-06-26"
@@ -61,7 +61,7 @@ Python FOSS formats have real spec facts. The chain
 EXTERNAL SPEC → LOCAL SNAPSHOT → PARSED FACTS → QNAME → CAPABILITY → FEATURE
 is broken at the first link for 14+ formats.
 
-**Active plan:** `plans/snoopy-juggling-seal.md` (SAL forensics plan — do NOT use
+**Active plan:** `plans/strategic/snoopy-juggling-seal.md` (SAL forensics plan — do NOT use
 for general plan amendments; it is the SAL forensics plan specifically)
 
 ## 3. Scope
@@ -321,7 +321,7 @@ TC-SAL-001 — READY (no dependencies).
 |----------|------|-----------|
 | Tier 2 formats use exception_classification | Pre-existing | No public spec available |
 | SAL facts use FACT-{FORMAT}-NNN naming | Pre-existing | Consistent with V13 convention |
-| plans/snoopy-juggling-seal.md is SAL forensics plan | Pre-existing | Do NOT use for general amendments |
+| plans/strategic/snoopy-juggling-seal.md is SAL forensics plan | Pre-existing | Do NOT use for general amendments |
 
 ## 34. Work Log
 
@@ -394,7 +394,7 @@ layer_session_handoff:
     - "All 20 formats have ≥1 entry in sal-facts-latest.json"
     - "V13 passes for all PRODUCT_SOURCE items (or has valid exception_classification)"
   important_decisions:
-    - "plans/snoopy-juggling-seal.md is SAL FORENSICS PLAN — do not use for general amendments"
+    - "plans/strategic/snoopy-juggling-seal.md is SAL FORENSICS PLAN — do not use for general amendments"
     - "Tier 2 formats (ABW/SYLK/DIF/GNUMERIC/TSV) use exception_classification permanently"
   unresolved_findings:
     - "SAL-GAP-001: 14 formats have 0 facts"

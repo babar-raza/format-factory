@@ -299,7 +299,7 @@ No remaining blockers. All addendum taskcards CLOSED.
 next_execution_handoff:
   sprint_target: floating-stargazing-globe-addendum-cleanup
   updated_at: "2026-06-23"
-  authority: plans/floating-stargazing-globe-hardening-addendum-20260623.md
+  authority: plans/secondary/floating-stargazing-globe-hardening-addendum-20260623.md
 
   immediate_tasks:
     - task_id: TC-HARD-012

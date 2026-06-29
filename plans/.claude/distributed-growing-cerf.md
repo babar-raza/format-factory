@@ -136,7 +136,7 @@ Create full 39-section Markdown files for the 4 most operationally active layers
 - Most critical gap layer (only 5/20 formats have real SAL facts)
 - Current: `tools/specification-authority-layer/` (24 tools, 17 dormant)
 - Key gap: Fact extraction ran once (2026-05-06), then stopped
-- Active plan: `plans/snoopy-juggling-seal.md` (SAL forensics)
+- Active plan: `plans/strategic/snoopy-juggling-seal.md` (SAL forensics)
 
 ### Phase 3 — Product and QName Layers (TC-LP-006 through TC-LP-009)
 
@@ -335,7 +335,7 @@ c:\Users\prora\OneDrive\Documents\GitHub\format-factory\plans\layers\format-lang
 | Reference | Purpose |
 |-----------|---------|
 | `plans/master-plan.md` | Source of truth for project tasks, gate status |
-| `plans/spec-to-feature-radical-correction-plan.md` | Lane architecture, system healing sequence |
+| `plans/strategic/spec-to-feature-radical-correction-plan.md` | Lane architecture, system healing sequence |
 | `.supervisor/skill-registry.yaml` | Existing skill registrations (add to, never replace) |
 | `tools/supervisor/governance_validators.py` | Add new validators here or in new module |
 | `tools/supervisor/governance_validator_runner.py` | Register new validators V83-V86 |

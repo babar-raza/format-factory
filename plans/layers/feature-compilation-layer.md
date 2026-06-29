@@ -26,7 +26,7 @@ layer_metadata:
   skill_ids: []
   command_ids: []
   evidence_paths:
-    - plans/spec-to-feature-radical-correction-plan.md
+    - plans/strategic/spec-to-feature-radical-correction-plan.md
   last_updated_at: "2026-06-26"
   last_verified_at: null
   next_task_id: TC-FEAT-001
@@ -121,7 +121,7 @@ layer_session_handoff:
     - "This layer creates a NEW tools/feature_compilation/ directory"
   resume_instructions: >
     Feature compiler does not exist. BLOCKED until TC-CAP-001 wires gap-ledger to task generator.
-    READ plans/spec-to-feature-radical-correction-plan.md Lane 3 for full design spec.
+    READ plans/strategic/spec-to-feature-radical-correction-plan.md Lane 3 for full design spec.
     DESIGN the 9-phase compiler architecture first. Then implement.
 ```
 

@@ -27,7 +27,7 @@ layer_metadata:
   command_ids: [plan-hardening, build-context-pack, export-plan-context]
   evidence_paths:
     - plans/master-plan.md
-    - plans/spec-to-feature-radical-correction-plan.md
+    - plans/strategic/spec-to-feature-radical-correction-plan.md
   last_updated_at: "2026-06-26"
   last_verified_at: null
   next_task_id: TC-PLAN-001
@@ -40,7 +40,7 @@ layer_metadata:
 
 Owns all plan files and prompt authority:
 - `plans/master-plan.md` (v6.0) — strategic authority
-- `plans/spec-to-feature-radical-correction-plan.md` — lane architecture (27 sections, ~3200 lines)
+- `plans/strategic/spec-to-feature-radical-correction-plan.md` — lane architecture (27 sections, ~3200 lines)
 - `plans/.claude/` — per-chat plan files (migrated from external)
 - `CLAUDE.md` — session instructions (highest authority)
 - `AGENTS.md` — agent governance
@@ -70,7 +70,7 @@ Owns all plan files and prompt authority:
 - `plans/.claude/.gitkeep` + `glistening-leaping-chipmunk.md` in per-chat directory
 - CLAUDE.md: comprehensive session instructions (Step 0 through §39)
 - AGENTS.md: agent governance (§AG1-AG4)
-- `plans/spec-to-feature-radical-correction-plan.md`: master correction authority
+- `plans/strategic/spec-to-feature-radical-correction-plan.md`: master correction authority
 - `plans/master-plan.md` v6.0: project master plan
 - `plans/layers/` — NEW (this session)
 
@@ -135,7 +135,7 @@ layer_session_handoff:
   allowed_paths: [plans/]
   forbidden_paths: [src/python/, src/net/]
   important_decisions:
-    - "plans/snoopy-juggling-seal.md is SAL FORENSICS PLAN — do NOT use for general amendments"
+    - "plans/strategic/snoopy-juggling-seal.md is SAL FORENSICS PLAN — do NOT use for general amendments"
     - "Per-chat plans: use --terminal (NOT --complete) for in-session closure"
     - "plans/layers/ is now the permanent layer control plane — owned by this layer (L10)"
     - "taskcard-work-queue-layer MERGED into this layer (DEC-015)"

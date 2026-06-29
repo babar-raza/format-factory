@@ -816,3 +816,33 @@ layers:
     last_verified_revision: null
     handoff_id: null
     evidence_paths: []
+
+  - layer_id: L28
+    canonical_name: Certification Audit Layer
+    permanent_plan_path: plans/layers/certification-audit-layer.md
+    plane: GOVERNANCE
+    status: GOVERNED_OPERATIONAL
+    health: GREEN
+    current_stage: OPERATIONAL
+    maturity_current: 3
+    maturity_target: 4
+    current_owner: null
+    session_id: null
+    active_task_count: 0
+    ready_task_count: 0
+    blocked_task_count: 0
+    completed_task_count: 2
+    next_task_id: TC-CERT-L-003
+    next_action: "Register certification tools as skills"
+    dependencies: [L05, L06, L07]
+    upstream_layers: [L05, L06, L07]
+    downstream_layers: [L18]
+    skill_ids: [certification-dashboard]
+    command_ids: [certification-dashboard]
+    last_started_at: "2026-06-28"
+    last_progress_at: "2026-06-28"
+    last_updated_at: "2026-06-29"
+    last_verified_at: "2026-06-29"
+    last_verified_revision: null
+    handoff_id: HO-008
+    evidence_paths: ["reports/certification/portfolio-certification-matrix.json"]

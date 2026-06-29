@@ -5,7 +5,7 @@
 # Authority: Successor plan for vivid-napping-kurzweil per terminal lock's
 #   successor_required_for_future_changes: true
 
-authoritative_plan: plans/vivid-napping-kurzweil-hardening-addendum.md
+authoritative_plan: plans/secondary/vivid-napping-kurzweil-hardening-addendum.md
 artifact_role: plan_hardening_successor
 execution_authority: true
 parent_plan: C:/Users/prora/.claude/plans/vivid-napping-kurzweil.md
@@ -601,7 +601,7 @@ Required evidence per taskcard:
 
 Every evidence artifact must include:
 ```yaml
-authoritative_plan: plans/vivid-napping-kurzweil-hardening-addendum.md
+authoritative_plan: plans/secondary/vivid-napping-kurzweil-hardening-addendum.md
 artifact_role: analysis_or_evidence_only
 execution_authority: false
 ```

@@ -193,7 +193,7 @@ decisions:
       capability layer (L03 generates capability records) or product layer (L06
       receives feature specs). The compiler is the missing bridge. Currently
       NOT IMPLEMENTED (SKILL-GAP-003). Distinct enough for independent ownership.
-    evidence: ["plans/spec-to-feature-radical-correction-plan.md"]
+    evidence: ["plans/strategic/spec-to-feature-radical-correction-plan.md"]
     decider: "distributed-growing-cerf plan"
 
   - decision_id: DEC-015
@@ -384,3 +384,16 @@ decisions:
       tracks WHAT must be implemented per spec.
     evidence: ["oracle/registry/format-oracle-registry.yaml"]
     decider: "distributed-growing-cerf plan"
+
+  - decision_id: DEC-029
+    timestamp: "2026-06-29T00:00:00Z"
+    title: "Accept certification-audit-layer as independent layer L28"
+    candidate_slug: certification-audit-layer
+    decision: ACCEPT
+    layer_id: L28
+    rationale: >
+      Certification audit (portfolio matrix, 9 tools, 210 reports, dashboard verdicts)
+      is a distinct governance concern from oracle verification (L05) and product source (L06).
+      L28 consumes L05/L06/L07 outputs and produces portfolio-certification-matrix.json.
+    evidence: ["reports/certification/portfolio-certification-matrix.json", "plans/layers/certification-audit-layer.md"]
+    decider: "lively-drifting-starfish plan (CERT-INTEGRATION-HEALING-20260628)"

@@ -9,7 +9,7 @@
 
 ## 1. Authority Declaration
 
-This plan governs all continuation state isolation work. It enhances (does not replace) the existing autonomous supervision architecture defined in `plans/spec-to-feature-radical-correction-plan.md`. No competing continuation isolation plan may be created.
+This plan governs all continuation state isolation work. It enhances (does not replace) the existing autonomous supervision architecture defined in `plans/strategic/spec-to-feature-radical-correction-plan.md`. No competing continuation isolation plan may be created.
 
 ## 2. Incident Summary
 

@@ -141,3 +141,22 @@ handoffs:
       - "Skills are reusable and idempotent"
     evidence_paths: [".supervisor/skill-registry.yaml"]
     status: NOT_STARTED
+
+  - handoff_id: HO-008
+    task_id: TC-CERT-L-002
+    producer_layer: L28
+    producer_plan: plans/layers/certification-audit-layer.md
+    consumer_layer: L18
+    consumer_plan: plans/layers/release-pipeline-layer.md
+    artifact: "reports/certification/portfolio-certification-matrix.json"
+    schema: "reports/certification/certification-report-schema.json"
+    authority: L28
+    version: null
+    producer_skill: certification-dashboard
+    validator_skill: null
+    consumer_skill: null
+    acceptance_criteria:
+      - "20/20 CERTIFIED in portfolio matrix"
+      - "No CERTIFIED format has material stubs or uncovered exceptions"
+    evidence_paths: ["reports/certification/portfolio-certification-matrix.json"]
+    status: COMPLETE

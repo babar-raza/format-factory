@@ -84,7 +84,7 @@ ledger_entry_id: LEDGER-001
 mission_id: snoopy-juggling-seal
 repository: format-factory
 branch: main
-plan_path: plans/snoopy-juggling-seal.md
+plan_path: plans/strategic/snoopy-juggling-seal.md
 plan_hash: unknown
 plan_status: ACTIVE
 created_at: "2026-06-16 (approximate — version 3.0)"
@@ -693,7 +693,7 @@ what_was_completed:
   - Compiler injection confirmed working (blocked only by 0 open gaps)
   - TC-C1-EXTEND-001 confirmed COMPLETE (stream guard removed)
 what_changed:
-  - plans/capability-fact-to-feature-production-plan.md: 9 surgical edits (RC-9, TC-C5-TRACE-001, Appendix H, statistics 14309→14872, 1779→2009, queue 24→64)
+  - plans/strategic/capability-fact-to-feature-production-plan.md: 9 surgical edits (RC-9, TC-C5-TRACE-001, Appendix H, statistics 14309→14872, 1779→2009, queue 24→64)
   - All changes committed in 49ab2fc6
 remaining_followups:
   - TC-GAP-REGEN-001: Generate new open FOSS gaps (B-001 — BLOCKING)

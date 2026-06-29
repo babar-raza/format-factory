@@ -204,5 +204,27 @@ execution_waves:
 
   wave_4_governance:
     description: "Cross-cutting governance"
-    layers: [L08, L09, L10, L11, L20, L21, L22, L23, L24, L25, L26, L27]
+    layers: [L08, L09, L10, L11, L20, L21, L22, L23, L24, L25, L26, L27, L28]
     rationale: "These can run in parallel with all waves"
+
+  # L28 Certification Audit Layer dependencies
+  - dependency_id: DEP-021
+    producer_layer: L05
+    consumer_layer: L28
+    type: DATA_FLOW
+    description: "L28 consumes oracle results from L05"
+  - dependency_id: DEP-022
+    producer_layer: L06
+    consumer_layer: L28
+    type: DATA_FLOW
+    description: "L28 audits product source from L06"
+  - dependency_id: DEP-023
+    producer_layer: L07
+    consumer_layer: L28
+    type: DATA_FLOW
+    description: "L28 audits test quality from L07"
+  - dependency_id: DEP-024
+    producer_layer: L28
+    consumer_layer: L18
+    type: DATA_FLOW
+    description: "L28 produces certification matrix consumed by release pipeline L18"

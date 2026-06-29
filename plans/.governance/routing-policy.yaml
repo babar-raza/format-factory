@@ -1,0 +1,29 @@
+# Plans folder routing policy
+# Defines which plan types belong in which subfolders
+# Machine-readable policy for plan_placement.py and governance validators
+
+root_allowed:
+  - master-plan.md
+  - master-plan-memory.md
+
+routes:
+  strategic:
+    folder: plans/strategic/
+    types: [strategic, governance, forensic]
+    description: "High-authority strategic and governance plans"
+  healing:
+    folder: plans/healing/
+    types: [healing, hardening, backfill, repair]
+    description: "Repair, hardening, and backfill execution plans"
+  secondary:
+    folder: plans/secondary/
+    types: [historical, superseded, archived, addendum]
+    description: "Historical, superseded, and archived plans"
+  per_chat:
+    folder: plans/.claude/
+    types: [per_chat, execution]
+    description: "Per-chat execution plans from plan mode"
+  layer:
+    folder: plans/layers/
+    types: [layer_definition, layer_registry]
+    description: "Layer governance definitions and registries"

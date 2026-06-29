@@ -1,6 +1,6 @@
 # Plan Hardening Addendum: cap-fact-forensics-repair-20260623
 
-**Parent plan:** `plans/capability-fact-to-feature-production-plan.md` (TERMINAL_CLOSED)
+**Parent plan:** `plans/strategic/capability-fact-to-feature-production-plan.md` (TERMINAL_CLOSED)
 **Audit source:** Evidence-based sprint review of `cap-fact-forensics-repair-20260623-4a35f9` + post-audit iteration 1
 **Addendum date:** 2026-06-23
 **Reason for addendum:** Parent plan has `plan_terminal_lock` with `successor_required_for_future_changes: true`

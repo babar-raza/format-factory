@@ -17,8 +17,8 @@ control_plane_binding:
   bootstrap_session: "923e237958c1"
   bootstrap_sprint: "lp-bootstrap"
   bootstrap_date: "2026-06-26"
-  total_layers: 27
-  total_permanent_files: 34
+  total_layers: 28
+  total_permanent_files: 35
 ```
 
 ---
@@ -33,7 +33,7 @@ autonomous agent, and supervisor that needs to understand the system.
 1. `CLAUDE.md` — session instructions (highest authority)
 2. `AGENTS.md` — agent governance
 3. `plans/master-plan.md` — strategic project plan
-4. `plans/spec-to-feature-radical-correction-plan.md` — lane architecture authority
+4. `plans/strategic/spec-to-feature-radical-correction-plan.md` — lane architecture authority
 5. `plans/layers/master.md` (this file) — layer architecture and execution state
 6. Individual layer files — detailed per-layer state and tasks
 7. `reports/supervisor/next-sprint.md` — current sprint prompt (advisory)

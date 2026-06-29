@@ -645,7 +645,7 @@ for that format must be a secondary split, not new analytics additions. Growth b
 
 - Baseline: `registry/source-structure-baseline.json`
 - Checklist: `docs/code-quality/production-library-checklist.md`
-- Correction plan: `plans/spec-to-feature-radical-correction-plan.md`
+- Correction plan: `plans/strategic/spec-to-feature-radical-correction-plan.md`
 
 ---
 
@@ -722,7 +722,7 @@ for that format must be a secondary split, not new analytics additions. Growth b
 - TC-FODT-AUDIT-001: `reports/forensics-archaeology-20260621/fodt-ex-facts-audit.md` created
   — 4,936 FODT facts classified: 27 tier1_section MANUALLY_VERIFIED; 4,271 AUTO_ONLY; 635 NEEDS_REVIEW; 3 PENDING
   — Confirmed: only FACT-FODT-001..027 qualify for Gate 11 declarations; EX facts are product-level only
-- TC-FODT-AUDIT-002: §17 Gate D3 corrected in `plans/snoopy-juggling-seal.md` v3.11
+- TC-FODT-AUDIT-002: §17 Gate D3 corrected in `plans/strategic/snoopy-juggling-seal.md` v3.11
   — Previous overclaim "D3 COMPLETE (4,940 facts)" → "PARTIAL — 27 verified + 4,909 automated extraction"
 - FODT Compat/ layer: `src/python/fodt/Compat/` committed (5 production facades + `__init__.py`)
   — FodtDocument, FodtParagraph, FodtHeading, FodtSpan, FodtTableCell all inherit from spec/
@@ -802,7 +802,7 @@ for that format must be a secondary split, not new analytics additions. Growth b
 
 **Status:** MISSION_COMPLETE — all 13 agent-resolvable gaps closed; TC-MACH-WF-001/003 completed_verified; MISSION_COMPLETE gate fires
 
-**Plan file:** `plans/snoopy-juggling-seal.md` v3.5 (TC-MACH-WF-001/003 completed_verified, GAP table updated, §18 change log v3.5 entry added)
+**Plan file:** `plans/strategic/snoopy-juggling-seal.md` v3.5 (TC-MACH-WF-001/003 completed_verified, GAP table updated, §18 change log v3.5 entry added)
 
 **Mission ledger:** `.local/supervisor/machinery/mission-ledger.json` — `stage: MISSION_COMPLETE`, `open_gaps: []`, `completion_audit_pending: false`, `closed_gaps: 13`
 
@@ -853,7 +853,7 @@ for that format must be a secondary split, not new analytics additions. Growth b
 
 **Status:** COMPLETED — 14/14 §26 taskcards completed_verified; TC-GATE11-SUBMIT-001 remains waiting_external_gate
 
-**Plan file:** `plans/snoopy-juggling-seal.md` v3.12 (§26 register table updated)
+**Plan file:** `plans/strategic/snoopy-juggling-seal.md` v3.12 (§26 register table updated)
 
 **Commits:** `495c4bb4` (governance), `c8f01b38` (plan+capability), `890dbeb7` (supervisor state)
 
@@ -947,7 +947,7 @@ TC-FODT-GAP-001, TC-FODT-AUDIT-001, TC-FODT-AUDIT-002, TC-RCAL-001
 - `docs/automation/autonomous-supervision-replication-guide.md`: Added Section 12 "Pre-Sprint Screening Rule" — previously-ACCEPTED items must not be re-included as sprint work
 
 *CLAUDE.md fix (same plan scope):*
-- Line 101: Removed hardcoded `plans/snoopy-juggling-seal.md` from "Mandatory Plan Files"; replaced with dynamic reference to current chat's plan mode file (detected from system message)
+- Line 101: Removed hardcoded `plans/strategic/snoopy-juggling-seal.md` from "Mandatory Plan Files"; replaced with dynamic reference to current chat's plan mode file (detected from system message)
 
 **Verification performed:**
 - 4/4 rework items ACCEPTED: confirmed from `.local/supervisor/reviews/polished-hopping-glacier-rework-001/supervisor-review.md`
@@ -1200,7 +1200,7 @@ TC-FODT-GAP-001, TC-FODT-AUDIT-001, TC-FODT-AUDIT-002, TC-RCAL-001
 - TC-SRC-001-REPAIR: `src/python/fods/fods/fods/` triple nesting removed
 - TC-NET-BUILD: `dotnet build src/net/fods/` exit 0, 0 errors, 39 warnings
 - TC-V45-WIRING: `validate_qname_class_names` at line 154 of `governance_validator_runner.py`
-- TC-SNOOPY-COUNT: "14,428" reference removed from `plans/snoopy-juggling-seal.md`
+- TC-SNOOPY-COUNT: "14,428" reference removed from `plans/strategic/snoopy-juggling-seal.md`
 
 *Fixed in this session:*
 - TC-SAL-HEAL-001: `bootstrap_only`/`verified` fact_status separation — code was already in `sal_master_runner.py` (lines 759-762); regenerated `sal-facts-latest.json`: 24 formats, 14,463 facts (150 `bootstrap_only` + 14,313 `verified`)
@@ -1315,7 +1315,7 @@ TC-FODT-GAP-001, TC-FODT-AUDIT-001, TC-FODT-AUDIT-002, TC-RCAL-001
 - Verdict: `IDEMPOTENT_NEW_GAPS_FOUND_AND_TASKCARDED` (GAP-WHALE-001/002/003 found and resolved)
 
 *TC-WHALE-HANDOFF-001 — Authoritative plan + final report:*
-- `plans/snoopy-juggling-seal.md`: Lifecycle Stage Contracts added (Stages 0–5 with stop rule)
+- `plans/strategic/snoopy-juggling-seal.md`: Lifecycle Stage Contracts added (Stages 0–5 with stop rule)
 - `reports/machinery-lifecycle-forensics-20260621/machinery-lifecycle-healing-report.md`: verdict = `LIFECYCLE_HEALED_AND_MULTI_ITERATION_PROVEN`
 - `reports/machinery-lifecycle-forensics-20260621/execution-handoff.yaml`: Pilot H=COMPLETE, LIF-8/13/16=PASS
 
@@ -1616,7 +1616,7 @@ Any audit script searching for top-level `facts` key will incorrectly return 0 f
 
 **Sprint ID:** UNIFIED-FF-FINAL-20260623
 **Source Plans:** squishy-chasing-marshmallow v2.0, agile-munching-quasar v2.0, majestic-cooking-waffle v2.0
-**Plan file:** `plans/unified-multi-plan-execution.md` (committed 66bc1e7b)
+**Plan file:** `plans/secondary/unified-multi-plan-execution.md` (committed 66bc1e7b)
 **Status:** CLOSED
 
 ### Completed and Verified
@@ -2224,7 +2224,7 @@ Three deferred items from the parent skill-governance-sync mission:
 
 **Mission ID:** FF-FORENSIC-AUDIT-20260623-HARDEN
 **Parent:** Section 35 (misty-hopping-token)
-**Plan file:** `plans/misty-hopping-token-hardening-addendum.md`
+**Plan file:** `plans/secondary/misty-hopping-token-hardening-addendum.md`
 **Status:** CLOSED — CONVERGENCE_COMPLETE_ALL_GREEN (2 iterations, 12 taskcards)
 
 ### What was completed
@@ -2364,11 +2364,11 @@ Convergence iteration (H10-H12):
 
 **TC-PG-001 — Ledger Reconciliation:** Added LEDGER-007 through LEDGER-016 to `plans/master-plan-memory.md` (was 6 entries, now 16). All lock files with missing ledger entries reconciled.
 
-**TC-PG-002 — Plan Identity Front-Matter:** Added `<!--plan_identity:-->` HTML comment blocks to `plans/snoopy-juggling-seal.md` and `plans/capability-fact-to-feature-production-plan.md`. Created `docs/governance/plan-identity-schema.md` documenting the required fields and 9-step discovery algorithm.
+**TC-PG-002 — Plan Identity Front-Matter:** Added `<!--plan_identity:-->` HTML comment blocks to `plans/strategic/snoopy-juggling-seal.md` and `plans/strategic/capability-fact-to-feature-production-plan.md`. Created `docs/governance/plan-identity-schema.md` documenting the required fields and 9-step discovery algorithm.
 
 **TC-PG-003 — plan_identity.py Module (NEW, 489 LOC):** Created `tools/supervisor/plan_identity.py` with 5 public functions: `extract_plan_identity()`, `resolve_native_plan_path()`, `validate_plan_ownership()`, `validate_plan_mutability()`, `build_plan_write_event()`. Added YAML code block regex fallback (`_IDENTITY_CODEBLOCK_RE`) for Claude plan-mode files alongside HTML comment parsing.
 
-**TC-PG-004 — Snoopy Exclusion Removal:** Removed hardcoded `"plans/snoopy-juggling-seal.md"` from `forbidden_mutation_paths` in `write_plan_lock.py`. Protection now dynamic via `validate_plan_binding()` TERMINAL_CLOSED scan.
+**TC-PG-004 — Snoopy Exclusion Removal:** Removed hardcoded `"plans/strategic/snoopy-juggling-seal.md"` from `forbidden_mutation_paths` in `write_plan_lock.py`. Protection now dynamic via `validate_plan_binding()` TERMINAL_CLOSED scan.
 
 **TC-PG-005 — Pre-Execution Plan Validation (NEW, 219 LOC):** Created `tools/supervisor/validate_plan_readiness.py`. Wired into `autonomous_cycle.py` Step 0b. Checks: plan_exists, plan_parseable, terminal_lock_blocked, plan_materially_complete, taskcards_present.
 
@@ -2609,7 +2609,7 @@ Two compounding problems: (1) 2 PGM test failures triggered `AUTONOMOUS_CONTINUE
 - **TC-PSC-003 CLOSED**: `continuation_ledger.py` wired into `check_continuation.py` — every STOP/CONTINUE verdict appended to `.local/supervisor/continuation-ledger.jsonl`. Product track `check_continuation` output now includes `product_chat_id` via new `get_or_create_product_chat_id()` in `continuation_identity.py`.
 - **TC-PSC-004 CLOSED**: 7 integration tests in `tests/supervisor/test_plan_scoped_continuation.py` — all pass.
 - **TC-PSC-005 CLOSED**: Representative pilot — 6 steps proving binding blocks, unblocks, cross-session safe, ledger captured.
-- **TC-PSC-006 CLOSED**: Final reconciliation — 129 supervisor tests pass, 66 PGM tests pass, `plans/continuation-isolation-plan.md` Section 26 added, terminal lock written.
+- **TC-PSC-006 CLOSED**: Final reconciliation — 129 supervisor tests pass, 66 PGM tests pass, `plans/strategic/continuation-isolation-plan.md` Section 26 added, terminal lock written.
 
 ### Verification performed
 
@@ -2627,7 +2627,7 @@ Two compounding problems: (1) 2 PGM test failures triggered `AUTONOMOUS_CONTINUE
 | `tools/supervisor/check_continuation.py` | ADD Check 0c + `_log_verdict` helper |
 | `tools/supervisor/continuation_identity.py` | ADD `get_or_create_product_chat_id()` |
 | `tests/supervisor/test_plan_scoped_continuation.py` | NEW — 7 integration tests |
-| `plans/continuation-isolation-plan.md` | ADD Section 26 (RC-001/TC-CCI-009 partial) |
+| `plans/strategic/continuation-isolation-plan.md` | ADD Section 26 (RC-001/TC-CCI-009 partial) |
 
 ### Evidence
 
@@ -2640,7 +2640,7 @@ Two compounding problems: (1) 2 PGM test failures triggered `AUTONOMOUS_CONTINUE
 
 **Mission:** FF-SAL-FORENSICS-001 — SAL Source-to-Consumption Pipeline Forensics
 **Execution plan:** `C:/Users/prora/.claude/plans/dazzling-purring-kernighan.md` (v3.0, sha256 prefix: 52453a2a2548dbf7)
-**Target plan:** `plans/snoopy-juggling-seal.md` (v3.16 → 4.0, sha256 prefix: 2accb583f5943a04, 3625 lines)
+**Target plan:** `plans/strategic/snoopy-juggling-seal.md` (v3.16 → 4.0, sha256 prefix: 2accb583f5943a04, 3625 lines)
 **Mode:** DIAGNOSTICS_ONLY — no production code changes
 **Convergence:** ALL-GREEN (1 iteration, FIND-MASTER-001 resolved)
 **Closed:** 2026-06-24
@@ -2677,7 +2677,7 @@ Two compounding problems: (1) 2 PGM test failures triggered `AUTONOMOUS_CONTINUE
 
 ### What Changed
 
-- `plans/snoopy-juggling-seal.md`: §33 appended (10 subsections, §33.1–§33.10); 5 inline CONTRADICTED notes; version header updated to 4.0 (commits 838a4c98, 06bff8c5)
+- `plans/strategic/snoopy-juggling-seal.md`: §33 appended (10 subsections, §33.1–§33.10); 5 inline CONTRADICTED notes; version header updated to 4.0 (commits 838a4c98, 06bff8c5)
 - Evidence artifacts (18 files) in `.local/evidences/sal-source-to-consumption-forensics-20260623-001/` (gitignored)
 - Plan locked TERMINAL_CLOSED (session 7da28319645c, lock file 7da28319645c-9236531f.json)
 
@@ -2690,8 +2690,8 @@ TC-SAL-WIRE-001 through TC-SAL-WIRE-008 documented in snoopy §33.9. Highest pri
 
 ### Verification
 
-- §33 structure: `grep "^## §33" plans/snoopy-juggling-seal.md` → line 3455 ✓
-- 10 subsections: `grep "^### 33\." plans/snoopy-juggling-seal.md | wc -l` → 10 ✓
+- §33 structure: `grep "^## §33" plans/strategic/snoopy-juggling-seal.md` → line 3455 ✓
+- 10 subsections: `grep "^### 33\." plans/strategic/snoopy-juggling-seal.md | wc -l` → 10 ✓
 - No src/ changes: `git diff src/` → 0 lines ✓
 - Working tree clean: `git status` → "nothing to commit" ✓
 - Plan lock: `7da28319645c-9236531f.json` → TERMINAL_CLOSED ✓
@@ -4354,12 +4354,12 @@ The oracle layer provides an independent, spec-backed test oracle infrastructure
 | TC-ORC-004 | Comparator registry implementation_status | CLOSED — all 6 entries annotated |
 | TC-ORC-005 | Oracle obligation CI step | CLOSED — oracle-obligations stage in .gitlab-ci.yml |
 | TC-ORC-006 | Runtime schema validation in executor | CLOSED — _validate_oracle_package_schema() wired |
-| TC-ORC-007 | Wave 6 backfill sprint plan | CLOSED — plans/oracle-backfill-wave6.md; 4 GAP-ORC-BACKFILL-* in gap-ledger.json |
+| TC-ORC-007 | Wave 6 backfill sprint plan | CLOSED — plans/healing/oracle-backfill-wave6.md; 4 GAP-ORC-BACKFILL-* in gap-ledger.json |
 
 ### Open Backfill (Wave 6)
 
 - 18 formats still need oracle packages (OBLIGATION_CREATED_BACKFILL_REQUIRED)
-- Wave 6 plan at `plans/oracle-backfill-wave6.md` with 4 batches (A: cells, B: words/draw, C: imaging, D: data)
+- Wave 6 plan at `plans/healing/oracle-backfill-wave6.md` with 4 batches (A: cells, B: words/draw, C: imaging, D: data)
 - 4 GAP-ORC-BACKFILL-* entries in gap-ledger.json (total: 1246 gaps)
 - Estimated Wave 6 backfill: 5 sprints (4-5 formats per sprint)
 
