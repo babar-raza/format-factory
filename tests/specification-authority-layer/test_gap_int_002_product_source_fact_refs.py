@@ -6,7 +6,7 @@ Proves that:
 2. Every cited fact ID is present in the published sal-facts-latest.json output
 3. The wiring between spec authority (SAL) and product implementation is non-empty
 
-This test file addresses GAP-INT-002 as documented in plans/snoopy-juggling-seal.md.
+This test file addresses GAP-INT-002 as documented in plans/strategic/snoopy-juggling-seal.md.
 Evidence: these tests pass = product source is traceable to spec authority.
 """
 

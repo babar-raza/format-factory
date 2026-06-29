@@ -9,7 +9,7 @@ goals, causing _expansion_goal_fallback to evaluate to False (wrong).
 The correct behavior: only open gaps generate goals.
 
 See: plans/velvet-hatching-lark.md FINDING-021
-See: plans/capability-fact-to-feature-production-plan.md Appendix G.5
+See: plans/strategic/capability-fact-to-feature-production-plan.md Appendix G.5
 """
 from __future__ import annotations
 

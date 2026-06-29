@@ -2081,6 +2081,25 @@ skills:
   test_paths:
   - tests/supervisor/test_dom_contract_checker.py
   version: '1.0'
+- command: /query-control-index
+  command_file: null
+  idempotency: read_only
+  implementation_paths:
+  - tools/supervisor/control_index/__main__.py
+  - tools/supervisor/control_index/query.py
+  - tools/supervisor/control_index/search.py
+  notes: Created TC-CI-006-03 (2026-06-29). SQLite+FTS5 operational overlay index.
+    Non-destructive, disposable, reconstructible from source files. Zero new dependencies.
+  product_track: infrastructure
+  purpose: Query the operational control index for gaps, sprints, failures, search,
+    format dashboards, chain traversal, and staleness detection. Read-only overlay
+    on existing JSON/YAML/JSONL source files.
+  required_handoff_fields: []
+  skill_id: query-control-index
+  status: active
+  test_paths:
+  - tests/supervisor/test_control_index_db.py
+  - tests/supervisor/test_control_index_sync.py
 sprint: FORMAT-FACTORY-R98-AUTONOMOUS-LOOP-TRUST-LAYER-ITERATION-SCALING-ACCELERATION-POC-MEGA-TRAIN-001
 version: '2.0'
 visibility: generated

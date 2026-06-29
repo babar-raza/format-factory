@@ -11,7 +11,7 @@ These tests verify the code-level invariants for C4 gate advancement (PL1 → PL
 Note: _group_allowed and _product_groups_allowed are nested locals in build_next_work_items;
 behavioral tests use source-code verification and integration through _run_capability_consumer.
 
-See: plans/capability-fact-to-feature-production-plan.md G.5 TC-C1-EXTEND-BEHAVIORAL-001
+See: plans/strategic/capability-fact-to-feature-production-plan.md G.5 TC-C1-EXTEND-BEHAVIORAL-001
 See: plans/velvet-hatching-lark.md TC-C1-EXTEND-BEHAVIORAL-001
 """
 from __future__ import annotations

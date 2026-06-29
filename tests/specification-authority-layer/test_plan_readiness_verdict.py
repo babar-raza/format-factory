@@ -1,7 +1,7 @@
 """
 Verification test for SAL-PLAN-READINESS-UPDATE rework item.
 
-Proves that plans/snoopy-juggling-seal.md Section 17 contains the expected
+Proves that plans/strategic/snoopy-juggling-seal.md Section 17 contains the expected
 plan readiness verdict: ODF_FAMILY_COMPLETE_NON_ODF_PENDING_SPEC_ACQUISITION
 
 This test closes the REWORK-SAL-PLAN-READINESS-UPDATE rework item from iter8.

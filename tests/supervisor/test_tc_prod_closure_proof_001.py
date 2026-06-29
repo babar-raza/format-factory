@@ -16,7 +16,7 @@ CORRECT C9 EVIDENCE CHAIN (corrected from old spec):
   NOTE: _append_closure_log does NOT write closed_by_engine to the LOG.
         closed_by_engine is set by _apply_closures on the GAP DICT in gap-ledger.json.
 
-See: plans/capability-fact-to-feature-production-plan.md Appendix G.5
+See: plans/strategic/capability-fact-to-feature-production-plan.md Appendix G.5
 See: plans/velvet-hatching-lark.md FINDING-004, FINDING-006, TC-V4-004
 """
 from __future__ import annotations

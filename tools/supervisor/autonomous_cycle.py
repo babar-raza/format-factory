@@ -2587,6 +2587,10 @@ def main() -> int:
     )
     parser.add_argument("--repo-root", type=Path, default=REPO_ROOT)
     parser.add_argument(
+        "--sync-index", action="store_true", default=False,
+        help="After cycle completes, sync the control index (non-blocking)."
+    )
+    parser.add_argument(
         "--track", type=str, choices=["product", "machinery"], default=None,
         help=(
             "TC-P2-002: Track type for two-track separation. "
@@ -2642,6 +2646,17 @@ def main() -> int:
             print(f"  [FAILURE_MEMORY] Recorded exit-3 failure for sprint {sprint_id}")
         except Exception as _fm_err:  # noqa: BLE001
             print(f"  [FAILURE_MEMORY] Warning: could not record failure: {_fm_err}")
+
+    # Optional control-index sync (non-blocking, best-effort)
+    if args.sync_index:
+        try:
+            from control_index.sync import sync_all as _ci_sync
+            from control_index import DEFAULT_DB_PATH
+            _ci_report = _ci_sync(DEFAULT_DB_PATH, args.repo_root)
+            _ci_inserted = sum(r.inserted for r in _ci_report.results)
+            print(f"  [CONTROL_INDEX] Synced ({_ci_inserted} rows updated)")
+        except Exception as _ci_err:  # noqa: BLE001
+            print(f"  [CONTROL_INDEX] Sync skipped: {_ci_err}")
 
     print()
     print("=" * 60)
