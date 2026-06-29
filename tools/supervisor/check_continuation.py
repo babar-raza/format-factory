@@ -561,6 +561,33 @@ def check(repo_root: Path, *, session_id: str | None = None,
             # Non-blocking: gate failures must not crash continuation
             print(f"WARNING [Check9]: product_deepening_gate error: {_pd_err}", file=sys.stderr)
 
+    # --- Check 10: Lane Balance Advisory (TC-DL2-006) ---
+    # Advisory only — never returns STOP, only adds lane_starvation_warnings
+    lane_starvation_warnings = []
+    try:
+        from lane_selector import check_starvation
+        _ledger_path = repo_root / "registry" / "product-deepening-ledger.yaml"
+        if _ledger_path.exists():
+            import yaml as _ls_yaml
+            _ledger_data = _ls_yaml.safe_load(_ledger_path.read_text(encoding="utf-8")) or []
+            for _entry in _ledger_data:
+                _fmt = _entry.get("format", "")
+                if not _fmt:
+                    continue
+                try:
+                    _starv = check_starvation(_fmt, _ledger_path)
+                    if _starv.get("must_switch"):
+                        _warn = (f"WARNING: {_fmt} lane {_starv.get('starved_lane', '?')} "
+                                 f"starved ({_starv.get('consecutive_count', '?')} consecutive)")
+                        lane_starvation_warnings.append(_warn)
+                        print(_warn, file=sys.stderr)
+                except Exception:
+                    pass
+    except ImportError:
+        pass
+    except Exception as _lane_err:
+        print(f"WARNING [Check10]: lane balance check error: {_lane_err}", file=sys.stderr)
+
     # --- All checks passed ---
     # Resolve product chat_id (advisory — TC-PSC-003 Part A)
     _product_chat_id = None
@@ -582,6 +609,7 @@ def check(repo_root: Path, *, session_id: str | None = None,
         "next_work_items_path": work_items_rel,
         "next_sprint_path": "reports/supervisor/next-sprint.md",
         "rework_items": rework_items,
+        "lane_starvation_warnings": lane_starvation_warnings,
         "resume_command": f"python tools/supervisor/check_continuation.py{' --track ' + track if track else ''}",
     }
     if signal.get("evidence_continuation_failed"):
