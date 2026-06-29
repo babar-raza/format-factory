@@ -440,7 +440,7 @@ def test_validate_plan_binding_blocks_forbidden_path(tmp_path):
         "session_id": "test-validate-001",
         "binding_contract": {
             "active_plan_path": "C:/plans/my-active-plan.md",
-            "forbidden_mutation_paths": ["plans/snoopy-juggling-seal.md"],
+            "forbidden_mutation_paths": ["plans/strategic/snoopy-juggling-seal.md"],
         },
     }
     (keyed_dir / "test-validate-001.json").write_text(
@@ -448,7 +448,7 @@ def test_validate_plan_binding_blocks_forbidden_path(tmp_path):
     )
     wpl._plan_locks_dir = keyed_dir
     try:
-        allowed, reason = validate_plan_binding("plans/snoopy-juggling-seal.md")
+        allowed, reason = validate_plan_binding("plans/strategic/snoopy-juggling-seal.md")
         assert allowed is False, f"Expected blocked, got allowed=True reason={reason}"
         assert "forbidden_mutation_path" in reason, f"Expected reason to mention forbidden, got: {reason}"
     finally:

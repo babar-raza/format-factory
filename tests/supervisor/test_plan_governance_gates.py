@@ -48,14 +48,14 @@ class TestPG0RepositoryBound:
 class TestPG1NativePlanIdentity:
     def test_snoopy_has_plan_identity(self):
         """PG-1: snoopy-juggling-seal.md must have plan_identity: front-matter."""
-        snoopy = _REPO_ROOT / "plans" / "snoopy-juggling-seal.md"
+        snoopy = _REPO_ROOT / "plans" / "strategic" / "snoopy-juggling-seal.md"
         assert snoopy.exists(), "snoopy-juggling-seal.md not found"
         text = snoopy.read_text(encoding="utf-8")
         assert "plan_identity:" in text, "snoopy-juggling-seal.md lacks plan_identity: block"
 
     def test_capability_plan_has_plan_identity(self):
         """PG-1: capability-fact-to-feature-production-plan.md must have plan_identity: block."""
-        cap = _REPO_ROOT / "plans" / "capability-fact-to-feature-production-plan.md"
+        cap = _REPO_ROOT / "plans" / "strategic" / "capability-fact-to-feature-production-plan.md"
         assert cap.exists(), "capability-fact-to-feature-production-plan.md not found"
         text = cap.read_text(encoding="utf-8")
         assert "plan_identity:" in text, "capability plan lacks plan_identity: block"
@@ -73,7 +73,7 @@ class TestPG1NativePlanIdentity:
     def test_snoopy_identity_fields(self):
         """PG-1: snoopy's plan_identity block must have required fields."""
         from plan_identity import extract_plan_identity
-        snoopy = _REPO_ROOT / "plans" / "snoopy-juggling-seal.md"
+        snoopy = _REPO_ROOT / "plans" / "strategic" / "snoopy-juggling-seal.md"
         identity = extract_plan_identity(snoopy)
         assert identity is not None, "extract_plan_identity returned None for snoopy"
         assert identity.get("plan_id") == "snoopy-juggling-seal"
@@ -340,18 +340,33 @@ class TestPG11SamePlanHardening:
             f"Summary: {result['summary']}"
         )
 
-    def test_v56_fail_for_snoopy_as_wrong_target(self):
-        """PG-11: V56 FAIL when snoopy-juggling-seal.md is cited while not active."""
+    def test_v56_fail_for_snoopy_as_wrong_target(self, tmp_path):
+        """PG-11: V56 FAIL when snoopy-juggling-seal.md is cited while not active.
+
+        V56 only flags snoopy as wrong-target when an IN_PROGRESS lock exists
+        for a DIFFERENT plan. Without an active lock, V56 returns PASS (no-op).
+        """
+        import json
         from governance_validators_ext import validate_hardening_target_identity
+        # Set up a fake active lock for a different plan
+        locks_dir = tmp_path / ".local" / "supervisor" / "plan-locks"
+        locks_dir.mkdir(parents=True)
+        lock_data = {
+            "plan_path": "plans/.claude/some-other-plan.md",
+            "status": "IN_PROGRESS",
+            "session_id": "test123",
+        }
+        (locks_dir / "test123-abcd1234.json").write_text(
+            json.dumps(lock_data), encoding="utf-8"
+        )
         decl = {
             "planned_work_items": [{
                 "item_id": "TC-WRONG-001",
                 "item_type": "GOVERNANCE_TASKCARD",
-                "evidence_paths": ["plans/snoopy-juggling-seal.md"],
+                "evidence_paths": ["plans/strategic/snoopy-juggling-seal.md"],
             }]
         }
-        result = validate_hardening_target_identity(decl)
-        # If keen-snacking-quiche is active, snoopy should FAIL
+        result = validate_hardening_target_identity(decl, repo_root=tmp_path)
         assert result["result"] == "FAIL"
         assert result["blocks_sprint"] is True
 

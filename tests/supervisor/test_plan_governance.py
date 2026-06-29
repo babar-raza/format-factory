@@ -56,7 +56,7 @@ def test_validate_plan_binding_allows_unbound(monkeypatch, tmp_path):
     empty_dir = tmp_path / "plan-locks-nonexistent"
     monkeypatch.setattr(wpl, "_plan_locks_dir", empty_dir)
 
-    allowed, reason = validate_plan_binding("plans/snoopy-juggling-seal.md")
+    allowed, reason = validate_plan_binding("plans/strategic/snoopy-juggling-seal.md")
     assert allowed is True
     assert reason == "no_lock_dir"
 
@@ -76,13 +76,13 @@ def test_validate_plan_binding_blocks_forbidden_mutation(monkeypatch, tmp_path):
         "binding_contract": {
             "active_plan_path": "C:/Users/prora/.claude/plans/some-plan.md",
             "forbidden_mutation_paths": [
-                "plans/snoopy-juggling-seal.md",
+                "plans/strategic/snoopy-juggling-seal.md",
                 "plans/master-plan-memory.md",
             ],
         },
     })
 
-    allowed, reason = validate_plan_binding("plans/snoopy-juggling-seal.md")
+    allowed, reason = validate_plan_binding("plans/strategic/snoopy-juggling-seal.md")
     assert allowed is False
     assert "forbidden_mutation_path" in reason
 
@@ -103,12 +103,12 @@ def test_snoopy_not_fallback_when_different_plan_active(monkeypatch, tmp_path):
             "active_plan_path": "C:/Users/prora/.claude/plans/other-plan.md",
             "forbidden_mutation_paths": [
                 "plans/master-plan-memory.md",
-                "plans/snoopy-juggling-seal.md",
+                "plans/strategic/snoopy-juggling-seal.md",
             ],
         },
     })
 
-    allowed, reason = validate_plan_binding("plans/snoopy-juggling-seal.md", intent="harden")
+    allowed, reason = validate_plan_binding("plans/strategic/snoopy-juggling-seal.md", intent="harden")
     assert allowed is False, "snoopy must be blocked when listed in forbidden_mutation_paths"
 
 
@@ -179,6 +179,6 @@ def test_validate_plan_binding_allows_when_no_binding_contract(monkeypatch, tmp_
         # no binding_contract key
     })
 
-    allowed, reason = validate_plan_binding("plans/snoopy-juggling-seal.md")
+    allowed, reason = validate_plan_binding("plans/strategic/snoopy-juggling-seal.md")
     assert allowed is True
     assert reason == "allowed"

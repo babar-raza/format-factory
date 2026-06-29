@@ -112,7 +112,7 @@ Do NOT derive plan identity from:
 - Most recently modified `.md` file
 - Most popular or most referenced plan filename
 - Global default plan configured in any settings file
-- `plans/snoopy-juggling-seal.md` (unless its `plan_id` matches the current mission)
+- `plans/strategic/snoopy-juggling-seal.md` (unless its `plan_id` matches the current mission)
 - Another chat's active plan
 - Another mission's plan
 
@@ -129,7 +129,7 @@ Returns `None` if no block is found (backward-compatible).
   schema_version: "1.0"
   plan_id: "snoopy-juggling-seal"
   mission_id: "FF-SAL-FORENSICS-001"
-  native_plan_path: "plans/snoopy-juggling-seal.md"
+  native_plan_path: "plans/strategic/snoopy-juggling-seal.md"
   native_plan_filename: "snoopy-juggling-seal.md"
   created_by_agent: "autonomous-agent"
   created_during_plan_mode: true

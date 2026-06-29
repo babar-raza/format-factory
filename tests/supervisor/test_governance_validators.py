@@ -1794,10 +1794,10 @@ class TestCanonicalValidatorCount:
         }
         result = run_all_governance_validators(decl, None)
         validator_count = len(result["validators"])
-        assert validator_count == 94, (
-            f"Expected 94 canonical validators, got {validator_count}. "
+        assert validator_count == 98, (
+            f"Expected 98 canonical validators, got {validator_count}. "
             "If validators were added/removed, update this test. "
-            "(94 = 89 prior + V83-V86 layer control plane + V-TCF-001/002/003 terminal closure + V87 readme freshness)"
+            "(98 = 89 prior + V83-V86 layer control plane + V-TCF-001/002/003 terminal closure + V87 readme freshness + V88-V91 governance)"
         )
 
 
@@ -2674,3 +2674,141 @@ class TestV87ReadmeFreshness:
         result = validator({}, repo_root=tmp_path)
         assert result["result"] == "FAIL"
         assert result["blocks_sprint"] is True
+
+
+class TestV88CertificationReportsExist:
+    """V88: Certification report directories must exist for all registered formats."""
+
+    @staticmethod
+    def _get_validator():
+        from governance_validators_ext2 import validate_certification_reports_exist
+        return validate_certification_reports_exist
+
+    _ALL_FORMATS = [
+        "abw", "csv", "dif", "fodg", "fodp", "fods", "fodt", "gnumeric",
+        "ndjson", "ods", "odt", "pbm", "pgm", "ppm", "qoi", "sylk",
+        "toml", "tsv", "xcf", "zst",
+    ]
+
+    def test_v88_passes_when_all_dirs_present(self, tmp_path):
+        validator = self._get_validator()
+        for fmt in self._ALL_FORMATS:
+            d = tmp_path / "reports" / "certification" / fmt
+            d.mkdir(parents=True)
+            (d / "api-contract.json").write_text("{}", encoding="utf-8")
+        result = validator({}, repo_root=tmp_path)
+        assert result["result"] == "PASS"
+        assert result["blocks_sprint"] is False
+
+    def test_v88_warns_when_dir_missing(self, tmp_path):
+        validator = self._get_validator()
+        for fmt in self._ALL_FORMATS[:-1]:
+            d = tmp_path / "reports" / "certification" / fmt
+            d.mkdir(parents=True)
+            (d / "api-contract.json").write_text("{}", encoding="utf-8")
+        result = validator({}, repo_root=tmp_path)
+        assert result["result"] == "WARN"
+        assert result["blocks_sprint"] is False
+
+    def test_v88_warns_when_no_dirs(self, tmp_path):
+        validator = self._get_validator()
+        result = validator({}, repo_root=tmp_path)
+        assert result["result"] == "WARN"
+        assert result["blocks_sprint"] is False
+
+
+class TestV89CertificationMatrixConsistent:
+    """V89: Portfolio certification matrix must be internally consistent."""
+
+    @staticmethod
+    def _get_validator():
+        from governance_validators_ext2 import validate_certification_matrix_consistent
+        return validate_certification_matrix_consistent
+
+    def test_v89_passes_when_consistent(self, tmp_path):
+        import json
+        validator = self._get_validator()
+        matrix = tmp_path / "reports" / "certification" / "portfolio-certification-matrix.json"
+        matrix.parent.mkdir(parents=True)
+        matrix.write_text(json.dumps({"formats": [
+            {"format_id": "csv", "overall_verdict": "CERTIFIED", "dimensions": {
+                "api": {"status": "PASS"}, "stubs": {"status": "PASS", "material_count": 0},
+                "exceptions": {"status": "PASS", "uncovered": 0}}},
+        ]}), encoding="utf-8")
+        result = validator({}, repo_root=tmp_path)
+        assert result["result"] == "PASS"
+        assert result["blocks_sprint"] is False
+
+    def test_v89_warns_on_certified_with_stubs(self, tmp_path):
+        import json
+        validator = self._get_validator()
+        matrix = tmp_path / "reports" / "certification" / "portfolio-certification-matrix.json"
+        matrix.parent.mkdir(parents=True)
+        matrix.write_text(json.dumps({"formats": [
+            {"format_id": "csv", "overall_verdict": "CERTIFIED", "dimensions": {
+                "stubs": {"status": "PASS", "material_count": 3},
+                "exceptions": {"status": "PASS", "uncovered": 0}}},
+        ]}), encoding="utf-8")
+        result = validator({}, repo_root=tmp_path)
+        assert result["result"] == "WARN"
+        assert result["blocks_sprint"] is False
+
+    def test_v89_warns_when_matrix_missing(self, tmp_path):
+        validator = self._get_validator()
+        result = validator({}, repo_root=tmp_path)
+        assert result["result"] == "WARN"
+        assert result["blocks_sprint"] is False
+
+
+class TestPlansRootPolicy:
+    """V90: validate_plans_root_policy — plans/ root must only contain master-plan.md and master-plan-memory.md."""
+
+    @staticmethod
+    def _get_validator():
+        from governance_validators_ext2 import validate_plans_root_policy
+        return validate_plans_root_policy
+
+    def test_pass_clean_root(self, tmp_path):
+        """PASS when only allowed files at plans/ root."""
+        plans = tmp_path / "plans"
+        plans.mkdir()
+        (plans / "master-plan.md").write_text("# Master")
+        (plans / "master-plan-memory.md").write_text("# Memory")
+        (plans / "strategic").mkdir()
+        (plans / "strategic" / "some-plan.md").write_text("# Plan")
+        validator = self._get_validator()
+        result = validator({}, repo_root=tmp_path)
+        assert result["result"] == "PASS"
+        assert result["blocks_sprint"] is False
+        assert len(result["items"]) == 0
+
+    def test_warn_extra_file(self, tmp_path):
+        """WARN when extra .md file at plans/ root."""
+        plans = tmp_path / "plans"
+        plans.mkdir()
+        (plans / "master-plan.md").write_text("# Master")
+        (plans / "rogue-plan.md").write_text("# Rogue")
+        validator = self._get_validator()
+        result = validator({}, repo_root=tmp_path)
+        assert result["result"] == "WARN"
+        assert len(result["items"]) == 1
+        assert "rogue-plan" in result["items"][0]
+
+    def test_subdirectories_ignored(self, tmp_path):
+        """Subdirectories at plans/ root are not flagged."""
+        plans = tmp_path / "plans"
+        plans.mkdir()
+        (plans / "master-plan.md").write_text("# Master")
+        (plans / "master-plan-memory.md").write_text("# Memory")
+        (plans / "strategic").mkdir()
+        (plans / "healing").mkdir()
+        (plans / "secondary").mkdir()
+        validator = self._get_validator()
+        result = validator({}, repo_root=tmp_path)
+        assert result["result"] == "PASS"
+
+    def test_no_plans_dir(self, tmp_path):
+        """PASS when plans/ directory does not exist."""
+        validator = self._get_validator()
+        result = validator({}, repo_root=tmp_path)
+        assert result["result"] == "PASS"

@@ -1,4 +1,4 @@
-"""governance_validator_runner.py — Runs all governance validators (V1-V86).
+"""governance_validator_runner.py — Runs all governance validators (V1-V89).
 
 Extracted from governance_validators.py to keep that file within its LOC cap.
 This module imports validators from governance_validators LAZILY (inside the function
@@ -164,6 +164,9 @@ def run_all_governance_validators(
         validate_healing_stall_detector as _validate_healing_stall_detector,
         validate_oracle_obligations as _validate_oracle_obligations,
         validate_readme_freshness as _validate_readme_freshness,
+        validate_certification_reports_exist as _validate_certification_reports_exist,
+        validate_certification_matrix_consistent as _validate_certification_matrix_consistent,
+        validate_plans_root_policy as _validate_plans_root_policy,
     )
     results = [
         validate_execution_method_required(declaration),
@@ -304,6 +307,12 @@ def run_all_governance_validators(
         # V82 (TC-ORC-003, ORACLE-LAYER-HARDENING-001): Oracle obligation registry completeness — WARN on missing
         _validate_oracle_obligations(declaration, repo_root),
         _validate_readme_freshness(declaration, repo_root),
+        # V88 (TC-CERT-I-017): Certification report directories exist for all formats — WARN-only
+        _validate_certification_reports_exist(declaration, repo_root),
+        # V89 (TC-CERT-I-017): Portfolio certification matrix internal consistency — WARN-only
+        _validate_certification_matrix_consistent(declaration, repo_root),
+        # V90 (FF-PLAN-GOV-002): plans/ root policy — only master-plan.md + master-plan-memory.md
+        _validate_plans_root_policy(declaration, repo_root),
     ]
 
     # V-NEW-001 (SAL-VHIP-001): Capability-to-fact inflation ratio check (WARN only, advisory)
@@ -359,6 +368,15 @@ def run_all_governance_validators(
             _vtcf2(declaration, repo_root),  # V-TCF-002
             _vtcf3(declaration, repo_root),  # V-TCF-003
         ])
+    except Exception:
+        pass  # Non-blocking on import failure
+
+    # V91 (TC-ROOT-005): Root structure architecture governance (FAIL for unregistered dirs, WARN for missing READMEs)
+    try:
+        from governance_validators_root_struct import (  # noqa: PLC0415
+            validate_root_structure as _validate_root_structure,
+        )
+        results.append(_validate_root_structure(declaration, repo_root))
     except Exception:
         pass  # Non-blocking on import failure
 

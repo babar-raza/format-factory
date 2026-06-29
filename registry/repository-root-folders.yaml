@@ -1,0 +1,732 @@
+# Repository Root Folder Registry
+# Canonical catalog of all top-level directories in the format-factory repository.
+# Produced by TC-ROOT-001. Validated by V87 (validate_root_structure).
+# 51 entries — one per top-level directory at initial census.
+schema_version: "1.0"
+created: "2026-06-29"
+
+folders:
+
+  # ============================================================
+  # CORE_PRODUCT — primary product source, tests, samples, oracle
+  # ============================================================
+
+  - folder_path: "src/"
+    display_name: "Source Code"
+    classification: CORE_PRODUCT
+    git_tracked: true
+    gitignored: false
+    tracked_files: 509
+    format_scoped: true
+    format_scope_paths:
+      - "src/python/{format_id}"
+      - "src/net/{format_id}"
+    format_coverage_basis: ALL_ACTIVE_PRODUCTS
+    readme_required: true
+    readme_convention: README.md
+    retention: RETAIN
+    purpose: "Python and .NET product source code for all format libraries"
+    layer_id: L06
+    producers: ["developers", "source generators", "spec-parity tools"]
+    consumers: ["tests", "packaging", "oracle", "supervisor", "examples"]
+
+  - folder_path: "tests/"
+    display_name: "Tests"
+    classification: CORE_PRODUCT
+    git_tracked: true
+    gitignored: false
+    tracked_files: 5173
+    format_scoped: true
+    format_scope_paths:
+      - "tests/python/{format_id}"
+      - "tests/net/{format_id}"
+    format_coverage_basis: ALL_ACTIVE_PRODUCTS
+    readme_required: true
+    readme_convention: _readme.md
+    readme_exists: true
+    retention: RETAIN
+    purpose: "All test suites — format-specific, governance, supervisor, certification"
+    layer_id: L07
+    producers: ["developers", "test generators", "oracle"]
+    consumers: ["CI", "supervisor", "governance validators"]
+
+  - folder_path: "samples/"
+    display_name: "Samples"
+    classification: CORE_PRODUCT
+    git_tracked: true
+    gitignored: false
+    tracked_files: 128
+    format_scoped: true
+    format_scope_paths:
+      - "samples/by-format/{format_id}"
+    format_coverage_basis: ALL_WITH_SAMPLES
+    readme_required: true
+    readme_convention: README.md
+    retention: RETAIN
+    purpose: "Test and reference sample files for each format"
+    producers: ["developers", "acquisition workflow"]
+    consumers: ["tests", "oracle", "examples"]
+
+  - folder_path: "oracle/"
+    display_name: "Oracle"
+    classification: CORE_PRODUCT
+    git_tracked: true
+    gitignored: false
+    tracked_files: 48
+    format_scoped: true
+    format_scope_paths:
+      - "oracle/formats/{format_id}"
+    format_coverage_basis: ALL_WITH_PRODUCTS
+    readme_required: true
+    readme_convention: README.md
+    retention: RETAIN
+    purpose: "Oracle test execution framework — canonical test case definitions per format"
+    layer_id: L05
+    producers: ["developers", "oracle tools"]
+    consumers: ["tests", "supervisor", "certification"]
+
+  - folder_path: "examples/"
+    display_name: "Examples"
+    classification: CORE_PRODUCT
+    git_tracked: true
+    gitignored: false
+    tracked_files: 97
+    format_scoped: true
+    format_scope_paths:
+      - "examples/python/{format_id}"
+      - "examples/net/{format_id}"
+    format_coverage_basis: ALL_ACTIVE_PRODUCTS
+    readme_required: true
+    readme_convention: README.md
+    retention: RETAIN
+    purpose: "Code examples demonstrating library usage for each format"
+    producers: ["developers"]
+    consumers: ["documentation", "publication readiness"]
+
+  # ============================================================
+  # GOVERNANCE_INFRA — plans, registry, tools, supervisor, reports
+  # ============================================================
+
+  - folder_path: ".claude/"
+    display_name: "Claude Code Configuration"
+    classification: GOVERNANCE_INFRA
+    git_tracked: true
+    gitignored: false
+    tracked_files: 100
+    format_scoped: false
+    readme_required: true
+    readme_convention: README.md
+    retention: RETAIN
+    purpose: "Claude Code agent configuration, commands, and settings"
+    producers: ["developers", "agent configuration"]
+    consumers: ["Claude Code agent"]
+
+  - folder_path: ".github/"
+    display_name: "GitHub Configuration"
+    classification: GOVERNANCE_INFRA
+    git_tracked: true
+    gitignored: false
+    tracked_files: 4
+    format_scoped: false
+    readme_required: true
+    readme_convention: README.md
+    retention: RETAIN
+    purpose: "GitHub CI/CD workflows, issue templates, and repository configuration"
+    producers: ["developers"]
+    consumers: ["GitHub Actions", "CI/CD"]
+
+  - folder_path: ".governance/"
+    display_name: "Governance Registry"
+    classification: GOVERNANCE_INFRA
+    git_tracked: true
+    gitignored: false
+    tracked_files: 4
+    format_scoped: false
+    readme_required: true
+    readme_convention: README.md
+    retention: RETAIN
+    purpose: "Capability registry and parity reports for governance tracking"
+    producers: ["sync-capabilities tool"]
+    consumers: ["CLAUDE.md capability index", "supervisor"]
+
+  - folder_path: ".hooks/"
+    display_name: "Git Hooks"
+    classification: GOVERNANCE_INFRA
+    git_tracked: true
+    gitignored: false
+    tracked_files: 1
+    format_scoped: false
+    readme_required: true
+    readme_convention: README.md
+    retention: RETAIN
+    purpose: "Pre-commit hooks (skill guard enforcement)"
+    producers: ["developers"]
+    consumers: ["git pre-commit"]
+
+  - folder_path: ".supervisor/"
+    display_name: "Supervisor Control Plane"
+    classification: GOVERNANCE_INFRA
+    git_tracked: true
+    gitignored: false
+    tracked_files: 100
+    format_scoped: false
+    readme_required: true
+    readme_convention: README.md
+    retention: RETAIN
+    purpose: "Supervisor configuration, policies, schemas, prompts, skill registry, project memory"
+    layer_id: L11
+    producers: ["supervisor tools", "developers"]
+    consumers: ["supervisor loop", "governance validators", "sprint executor"]
+    notes: ".supervisor/state/ is gitignored (runtime state only)"
+
+  - folder_path: "plans/"
+    display_name: "Plans"
+    classification: GOVERNANCE_INFRA
+    git_tracked: true
+    gitignored: false
+    tracked_files: 80
+    format_scoped: false
+    readme_required: true
+    readme_convention: README.md
+    retention: RETAIN
+    purpose: "Master plan, permanent layer plans, per-chat plans, healing plans"
+    producers: ["developers", "plan tools", "supervisor"]
+    consumers: ["supervisor", "sprint executor", "agents"]
+
+  - folder_path: "registry/"
+    display_name: "Registry"
+    classification: GOVERNANCE_INFRA
+    git_tracked: true
+    gitignored: false
+    tracked_files: 32
+    format_scoped: false
+    readme_required: true
+    readme_convention: README.md
+    retention: RETAIN
+    purpose: "Format registry, source baselines, product-deepening ledger, capability matrices"
+    producers: ["developers", "sync tools", "governance validators"]
+    consumers: ["all tools", "supervisor", "validators", "agents"]
+
+  - folder_path: "reports/"
+    display_name: "Reports"
+    classification: GOVERNANCE_INFRA
+    git_tracked: true
+    gitignored: false
+    tracked_files: 6371
+    format_scoped: false
+    readme_required: true
+    readme_convention: _readme.md
+    readme_exists: true
+    retention: RETAIN
+    purpose: "Sprint evidence, audit reports, certification reports, supervisor output"
+    layer_id: L08
+    producers: ["supervisor", "certification tools", "sprint executor"]
+    consumers: ["agents", "supervisor", "governance"]
+
+  - folder_path: "schemas/"
+    display_name: "Schemas"
+    classification: GOVERNANCE_INFRA
+    git_tracked: true
+    gitignored: false
+    tracked_files: 47
+    format_scoped: false
+    readme_required: true
+    readme_convention: _readme.md
+    readme_exists: true
+    retention: RETAIN
+    purpose: "JSON and YAML schema definitions for evidence, governance, capability, and neutral models"
+    producers: ["developers"]
+    consumers: ["validators", "supervisor", "evidence tools"]
+
+  - folder_path: "tools/"
+    display_name: "Tools"
+    classification: GOVERNANCE_INFRA
+    git_tracked: true
+    gitignored: false
+    tracked_files: 665
+    format_scoped: false
+    readme_required: true
+    readme_convention: _readme.md
+    readme_exists: true
+    retention: RETAIN
+    purpose: "All automation — supervisor, governance validators, evidence, packaging, oracle, certification"
+    producers: ["developers"]
+    consumers: ["supervisor", "CI", "agents", "sprint executor"]
+
+  # ============================================================
+  # DOCUMENTATION — docs, memory, taskcards, reviews, templates, playbooks
+  # ============================================================
+
+  - folder_path: "docs/"
+    display_name: "Documentation"
+    classification: DOCUMENTATION
+    git_tracked: true
+    gitignored: false
+    tracked_files: 261
+    format_scoped: false
+    readme_required: true
+    readme_convention: README.md
+    retention: RETAIN
+    purpose: "Project documentation — API reference, governance standards, automation guides, publication procedures"
+    producers: ["developers", "agents"]
+    consumers: ["developers", "agents", "publication workflow"]
+
+  - folder_path: "memory/"
+    display_name: "Project Memory"
+    classification: DOCUMENTATION
+    git_tracked: true
+    gitignored: false
+    tracked_files: 73
+    format_scoped: false
+    readme_required: true
+    readme_convention: README.md
+    readme_exists: true
+    retention: RETAIN
+    purpose: "Project decision history and memory files — context, not operational authority"
+    producers: ["developers", "agents"]
+    consumers: ["agents", "developers"]
+
+  - folder_path: "taskcards/"
+    display_name: "Taskcards"
+    classification: DOCUMENTATION
+    git_tracked: true
+    gitignored: false
+    tracked_files: 333
+    format_scoped: false
+    readme_required: true
+    readme_convention: README.md
+    retention: RETAIN
+    purpose: "Sprint taskcard definitions for work tracking"
+    producers: ["supervisor", "plan tools", "agents"]
+    consumers: ["supervisor", "sprint executor"]
+
+  - folder_path: "reviews/"
+    display_name: "Reviews"
+    classification: DOCUMENTATION
+    git_tracked: true
+    gitignored: false
+    tracked_files: 14
+    format_scoped: false
+    readme_required: true
+    readme_convention: _readme.md
+    retention: RETAIN
+    purpose: "Portfolio assessment reviews and capability analysis"
+    producers: ["developers", "agents"]
+    consumers: ["developers", "governance"]
+
+  - folder_path: "templates/"
+    display_name: "Templates"
+    classification: DOCUMENTATION
+    git_tracked: true
+    gitignored: false
+    tracked_files: 5
+    format_scoped: false
+    readme_required: true
+    readme_convention: _readme.md
+    retention: RETAIN
+    purpose: "Template files for evidence declarations, format onboarding, and commercial sprints"
+    producers: ["developers"]
+    consumers: ["sprint executor", "evidence tools"]
+
+  - folder_path: "playbooks/"
+    display_name: "Playbooks"
+    classification: DOCUMENTATION
+    git_tracked: true
+    gitignored: false
+    tracked_files: 3
+    format_scoped: false
+    readme_required: true
+    readme_convention: _readme.md
+    retention: RETAIN
+    purpose: "Operational playbook templates for format acquisition and feature expansion"
+    producers: ["developers"]
+    consumers: ["developers", "agents"]
+
+  # ============================================================
+  # PIPELINE_ARTIFACT — acquisition, migration, gate, packaging
+  # ============================================================
+
+  - folder_path: "acquisition-packs/"
+    display_name: "Acquisition Packs"
+    classification: PIPELINE_ARTIFACT
+    git_tracked: true
+    gitignored: false
+    tracked_files: 165
+    format_scoped: true
+    format_scope_paths:
+      - "acquisition-packs/{format_id}"
+    format_coverage_basis: ALL_REGISTERED_AND_CANDIDATES
+    readme_required: true
+    readme_convention: _readme.md
+    retention: RETAIN
+    purpose: "Format onboarding packs — specification summaries, scoring, readiness assessments"
+    producers: ["acquisition tools", "score-format skill"]
+    consumers: ["gate checks", "developers"]
+
+  - folder_path: "migration-maps/"
+    display_name: "Migration Maps"
+    classification: PIPELINE_ARTIFACT
+    git_tracked: true
+    gitignored: false
+    tracked_files: 21
+    format_scoped: true
+    format_scope_paths:
+      - "migration-maps/{format_id}"
+    format_coverage_basis: ALL_WITH_QNAME_MAPS
+    readme_required: true
+    readme_convention: _readme.md
+    retention: RETAIN
+    purpose: "QName-to-source location verification mappings for spec migration"
+    producers: ["tools/backfill/audit_qname_vs_src.py"]
+    consumers: ["spec-parity verification", "developers"]
+
+  - folder_path: "product-capability-matrix/"
+    display_name: "Product Capability Matrix"
+    classification: PIPELINE_ARTIFACT
+    git_tracked: true
+    gitignored: false
+    tracked_files: 5
+    format_scoped: false
+    readme_required: true
+    readme_convention: _readme.md
+    retention: RETAIN
+    purpose: "System of record for POC capability tracking — 90+ tool references across supervisor"
+    producers: ["developers", "capability tools"]
+    consumers: ["supervisor", "sprint executor", "task generators", "evidence tools"]
+
+  - folder_path: "generated-requirements/"
+    display_name: "Generated Requirements"
+    classification: PIPELINE_ARTIFACT
+    git_tracked: true
+    gitignored: false
+    tracked_files: 17
+    format_scoped: true
+    format_scope_paths:
+      - "generated-requirements/{format_id}"
+    format_coverage_basis: FORMATS_WITH_REQUIREMENTS
+    readme_required: true
+    readme_convention: _readme.md
+    retention: RETAIN
+    purpose: "Requirements auto-generated from spec ingestion (FODS, FODT, PBM)"
+    producers: ["requirements generation tools"]
+    consumers: ["evidence validators", "gate checks"]
+
+  - folder_path: "gate-readiness/"
+    display_name: "Gate Readiness"
+    classification: PIPELINE_ARTIFACT
+    git_tracked: true
+    gitignored: false
+    tracked_files: 2
+    format_scoped: false
+    readme_required: true
+    readme_convention: _readme.md
+    retention: RETAIN
+    purpose: "Gate 8 and Gate 11 readiness matrices"
+    producers: ["gate assessment tools", "developers"]
+    consumers: ["publication workflow", "gate checks"]
+
+  - folder_path: "publication-readiness/"
+    display_name: "Publication Readiness"
+    classification: PIPELINE_ARTIFACT
+    git_tracked: true
+    gitignored: false
+    tracked_files: 1
+    format_scoped: false
+    readme_required: true
+    readme_convention: _readme.md
+    retention: RETAIN
+    purpose: "Publication status tracking for package releases"
+    producers: ["publication tools"]
+    consumers: ["gate checks", "release workflow"]
+
+  - folder_path: "release-manifests/"
+    display_name: "Release Manifests"
+    classification: PIPELINE_ARTIFACT
+    git_tracked: true
+    gitignored: false
+    tracked_files: 15
+    format_scoped: false
+    readme_required: true
+    readme_convention: _readme.md
+    retention: RETAIN
+    purpose: "Release manifest and publication readiness tracking per format"
+    producers: ["release tools", "developers"]
+    consumers: ["publication workflow"]
+
+  - folder_path: "packaging/"
+    display_name: "Packaging"
+    classification: PIPELINE_ARTIFACT
+    git_tracked: true
+    gitignored: false
+    tracked_files: 4
+    format_scoped: false
+    readme_required: true
+    readme_convention: _readme.md
+    retention: RETAIN
+    purpose: "Package definitions for Python FOSS and .NET distributions"
+    producers: ["developers"]
+    consumers: ["packaging tools", "CI"]
+
+  - folder_path: "requirements-authority/"
+    display_name: "Requirements Authority"
+    classification: PIPELINE_ARTIFACT
+    git_tracked: true
+    gitignored: false
+    tracked_files: 28
+    format_scoped: false
+    readme_required: true
+    readme_convention: README.md
+    readme_exists: true
+    retention: RETAIN
+    purpose: "Specification authority layer — fixtures, schemas, and requirement definitions"
+    producers: ["developers", "spec ingestion tools"]
+    consumers: ["validators", "evidence tools"]
+
+  # ============================================================
+  # SHARED_LIBRARY — shared utilities, scripts
+  # ============================================================
+
+  - folder_path: "shared/"
+    display_name: "Shared Resources"
+    classification: SHARED_LIBRARY
+    git_tracked: true
+    gitignored: false
+    tracked_files: 24
+    format_scoped: false
+    readme_required: true
+    readme_convention: _readme.md
+    retention: RETAIN
+    purpose: "Shared QName registry (active authority, 21 format files) and generation rules"
+    producers: ["developers", "qname tools"]
+    consumers: ["supervisor", "spec-parity tools", "validators"]
+    notes: "generation-rules/ and spec-manifests/ subdirs are stale (zero consumers) — targeted for deletion in TC-ROOT-002"
+
+  - folder_path: "scripts/"
+    display_name: "Scripts"
+    classification: SHARED_LIBRARY
+    git_tracked: true
+    gitignored: false
+    tracked_files: 6
+    format_scoped: false
+    readme_required: true
+    readme_convention: _readme.md
+    retention: RETAIN
+    purpose: "Orchestration scripts (PowerShell and Bash) for format-factory runtime"
+    producers: ["developers"]
+    consumers: ["developers", "CI"]
+
+  # ============================================================
+  # STATE_TRACKING — dependency artifacts, evidence staging
+  # ============================================================
+
+  - folder_path: "dependency-artifacts/"
+    display_name: "Dependency Artifacts"
+    classification: STATE_TRACKING
+    git_tracked: true
+    gitignored: false
+    tracked_files: 1
+    format_scoped: false
+    readme_required: true
+    readme_convention: README.md
+    readme_exists: true
+    retention: RETAIN
+    purpose: "Documents ZST package external dependency blocker (zstandard >= 0.21.0)"
+    producers: ["developers"]
+    consumers: ["publication workflow", "developers"]
+
+  # ============================================================
+  # HISTORICAL_REQUIRED — prototypes
+  # ============================================================
+
+  - folder_path: "prototypes/"
+    display_name: "Prototypes"
+    classification: HISTORICAL_REQUIRED
+    git_tracked: true
+    gitignored: false
+    tracked_files: 17
+    format_scoped: true
+    format_scope_paths:
+      - "prototypes/by-format/{format_id}"
+    format_coverage_basis: PROTOTYPE_FORMATS
+    readme_required: true
+    readme_convention: _readme.md
+    readme_exists: true
+    retention: RETAIN
+    purpose: "Gate 4 proof-of-concept parsers — referenced by evidence tools as architecture proof"
+    producers: ["developers (historical)"]
+    consumers: ["tools/evidence/run046_sprint_writer.py", "tools/evidence/run047_sprint_writer.py"]
+
+  # ============================================================
+  # EXEMPT — ephemeral caches, platform-managed, local runtime
+  # ============================================================
+
+  - folder_path: ".git/"
+    display_name: "Git Internals"
+    classification: PLATFORM_MANAGED
+    git_tracked: false
+    gitignored: false
+    readme_required: false
+    readme_exempt_reason: "Git internals — never modify"
+    retention: EXEMPT
+
+  - folder_path: ".venv/"
+    display_name: "Python Virtual Environment"
+    classification: PLATFORM_MANAGED
+    git_tracked: false
+    gitignored: true
+    readme_required: false
+    readme_exempt_reason: "Gitignored virtualenv"
+    retention: EXEMPT
+
+  - folder_path: ".vscode/"
+    display_name: "VSCode Settings"
+    classification: PLATFORM_MANAGED
+    git_tracked: true
+    gitignored: false
+    tracked_files: 3
+    readme_required: false
+    readme_exempt_reason: "Platform-managed IDE settings — minimal tracked files"
+    retention: EXEMPT
+
+  - folder_path: ".kilo/"
+    display_name: "Kilo Editor"
+    classification: PLATFORM_MANAGED
+    git_tracked: false
+    gitignored: false
+    readme_required: false
+    readme_exempt_reason: "Untracked node tool metadata"
+    retention: EXEMPT
+
+  - folder_path: ".benchmarks/"
+    display_name: "Benchmarks Cache"
+    classification: EPHEMERAL_CACHE
+    git_tracked: false
+    gitignored: false
+    tracked_files: 0
+    readme_required: false
+    readme_exempt_reason: "Benchmark results cache — ephemeral"
+    retention: EXEMPT
+
+  - folder_path: ".hypothesis/"
+    display_name: "Hypothesis Cache"
+    classification: EPHEMERAL_CACHE
+    git_tracked: false
+    gitignored: true
+    readme_required: false
+    readme_exempt_reason: "Hypothesis PBT cache — gitignored ephemeral"
+    retention: EXEMPT
+
+  - folder_path: ".mypy_cache/"
+    display_name: "MyPy Cache"
+    classification: EPHEMERAL_CACHE
+    git_tracked: false
+    gitignored: true
+    readme_required: false
+    readme_exempt_reason: "MyPy type-checking cache — gitignored ephemeral"
+    retention: EXEMPT
+
+  - folder_path: ".pytest_cache/"
+    display_name: "Pytest Cache"
+    classification: EPHEMERAL_CACHE
+    git_tracked: false
+    gitignored: true
+    readme_required: false
+    readme_exempt_reason: "Pytest cache — has platform-generated README.md, keep as-is"
+    retention: EXEMPT
+
+  - folder_path: ".ruff_cache/"
+    display_name: "Ruff Cache"
+    classification: EPHEMERAL_CACHE
+    git_tracked: false
+    gitignored: true
+    readme_required: false
+    readme_exempt_reason: "Ruff linter cache — gitignored ephemeral"
+    retention: EXEMPT
+
+  - folder_path: "build/"
+    display_name: "Build Output"
+    classification: EPHEMERAL_CACHE
+    git_tracked: false
+    gitignored: true
+    readme_required: false
+    readme_exempt_reason: "Build artifacts — gitignored ephemeral"
+    retention: EXEMPT
+
+  - folder_path: ".local/"
+    display_name: "Local Runtime State"
+    classification: LOCAL_RUNTIME
+    git_tracked: false
+    gitignored: true
+    tracked_files: 0
+    readme_required: false
+    readme_exempt_reason: "Runtime state (330+ files) — gitignored, never committed"
+    retention: EXEMPT
+
+  - folder_path: "bundle-metadata/"
+    display_name: "Bundle Metadata"
+    classification: EPHEMERAL_CACHE
+    git_tracked: false
+    gitignored: true
+    readme_required: false
+    readme_exempt_reason: "Sprint bundle metadata staging — gitignored"
+    retention: EXEMPT
+
+  - folder_path: "evidence-bundles/"
+    display_name: "Evidence Bundles"
+    classification: EPHEMERAL_CACHE
+    git_tracked: false
+    gitignored: false
+    tracked_files: 0
+    readme_required: false
+    readme_exempt_reason: "Evidence ZIP staging — .zip files gitignored, directory kept as staging area"
+    retention: EXEMPT
+
+  # ============================================================
+  # DELETED / CONSOLIDATED — proven redundant or abandoned
+  # ============================================================
+
+  - folder_path: "drivers/"
+    display_name: "Test Drivers"
+    classification: SHARED_LIBRARY
+    git_tracked: true
+    gitignored: false
+    tracked_files: 5
+    format_scoped: false
+    readme_required: true
+    readme_convention: _readme.md
+    retention: RETAIN
+    purpose: "Test generation templates (.py.tmpl) consumed by tools/supervisor/test_drivers.py"
+    producers: ["developers"]
+    consumers: ["tools/supervisor/test_drivers.py", "tools/supervisor/libforge_pattern_registry.py"]
+
+  - folder_path: "skills/"
+    display_name: "Skills (relocated)"
+    classification: STALE_ARTIFACT
+    git_tracked: true
+    gitignored: false
+    tracked_files: 1
+    retention: DELETED
+    deletion_reason: "1 file (format-factory-authority-closeout.md). Redundant with .supervisor/skill-registry.yaml. Zero tool references. Content relocated to docs/procedures/."
+    deletion_taskcard: TC-ROOT-002
+    relocated_to: "docs/procedures/format-factory-authority-closeout.md"
+
+  - folder_path: "examples-docs-readiness/"
+    display_name: "Examples Docs Readiness (consolidated)"
+    classification: STALE_ARTIFACT
+    git_tracked: true
+    gitignored: false
+    tracked_files: 1
+    retention: DELETED
+    deletion_reason: "1 file (summary.yaml). R83 snapshot with zero tool references. Consolidated into examples/."
+    deletion_taskcard: TC-ROOT-002
+    relocated_to: "examples/docs-readiness-summary.yaml"
+
+  - folder_path: "state/"
+    display_name: "State (deleted)"
+    classification: STALE_ARTIFACT
+    git_tracked: true
+    gitignored: false
+    tracked_files: 2
+    retention: DELETED
+    deletion_reason: "2 files (current-state.json 27 days stale, current-state.md). Redundant with .supervisor/state/current-run.json which is the active runtime authority."
+    deletion_taskcard: TC-ROOT-002

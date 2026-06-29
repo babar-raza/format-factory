@@ -126,7 +126,7 @@ def resolve_native_plan_path(
     Forbidden resolution sources (never used):
       - Newest/most-recently-modified .md file
       - Global default plan name
-      - plans/snoopy-juggling-seal.md unless its plan_id matches the mission
+      - plans/strategic/snoopy-juggling-seal.md unless its plan_id matches the mission
       - Another session's lock that belongs to a different mission
     """
     candidates: list[tuple[Path, str]] = []  # (path, source)

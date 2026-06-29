@@ -99,7 +99,7 @@ def validate_hardening_target_identity(
 
     Scans evidence_paths in all work items for .md files under plans/ or .claude/plans/.
     If any cited plan file is:
-      - plans/snoopy-juggling-seal.md AND snoopy is NOT the active plan → FAIL
+      - plans/strategic/snoopy-juggling-seal.md AND snoopy is NOT the active plan → FAIL
       - any plan file other than the active plan → WARN
 
     Active plan is resolved from .local/supervisor/plan-locks/ (IN_PROGRESS locks).
@@ -153,7 +153,7 @@ def validate_hardening_target_identity(
 
     # Scan all work item evidence_paths for .md files in plans/ or .claude/plans/
     _PLAN_PATTERNS = _re.compile(
-        r"((?:plans/|\.claude/plans/|C:[/\\]Users[/\\][^/\\]+[/\\]\.claude[/\\]plans[/\\])[^/\s]+\.md)"
+        r"((?:plans/|\.claude/plans/|C:[/\\]Users[/\\][^/\\]+[/\\]\.claude[/\\]plans[/\\])(?:[^/\s]+/)?[^/\s]+\.md)"
     )
     fail_items = []
     warn_items = []

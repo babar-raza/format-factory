@@ -422,6 +422,105 @@ def validate_oracle_obligations(declaration: dict, repo_root: Path = None) -> di
         }
 
 
+def validate_certification_reports_exist(declaration: dict, repo_root: Path = None) -> dict:
+    """V88: Certification report directories must exist for all 20 formats."""
+    if repo_root is None:
+        repo_root = Path(__file__).resolve().parents[2]
+    cert_root = repo_root / "reports" / "certification"
+    all_formats = [
+        "abw", "csv", "dif", "fodg", "fodp", "fods", "fodt", "gnumeric",
+        "ndjson", "ods", "odt", "pbm", "pgm", "ppm", "qoi", "sylk",
+        "toml", "tsv", "xcf", "zst",
+    ]
+    missing = [fmt for fmt in all_formats if not (cert_root / fmt).is_dir()]
+    if missing:
+        return {
+            "validator": "validate_certification_reports_exist",
+            "result": "WARN",
+            "items": [{"missing_format_dirs": missing}],
+            "summary": f"V88: {len(missing)} format(s) missing certification report dirs: {missing}",
+            "blocks_sprint": False,
+        }
+    # Verify each has at least api-contract.json
+    incomplete = []
+    for fmt in all_formats:
+        if not (cert_root / fmt / "api-contract.json").exists():
+            incomplete.append(fmt)
+    if incomplete:
+        return {
+            "validator": "validate_certification_reports_exist",
+            "result": "WARN",
+            "items": [{"incomplete_formats": incomplete}],
+            "summary": f"V88: {len(incomplete)} format(s) missing api-contract.json: {incomplete}",
+            "blocks_sprint": False,
+        }
+    return {
+        "validator": "validate_certification_reports_exist",
+        "result": "PASS",
+        "items": [],
+        "summary": f"V88: All {len(all_formats)} format certification report dirs present",
+        "blocks_sprint": False,
+    }
+
+
+def validate_certification_matrix_consistent(declaration: dict, repo_root: Path = None) -> dict:
+    """V89: Portfolio certification matrix must be internally consistent."""
+    if repo_root is None:
+        repo_root = Path(__file__).resolve().parents[2]
+    matrix_path = repo_root / "reports" / "certification" / "portfolio-certification-matrix.json"
+    if not matrix_path.exists():
+        return {
+            "validator": "validate_certification_matrix_consistent",
+            "result": "WARN",
+            "items": [{"error": "portfolio-certification-matrix.json not found"}],
+            "summary": "V89: Portfolio certification matrix not found",
+            "blocks_sprint": False,
+        }
+    try:
+        import json
+        data = json.loads(matrix_path.read_text(encoding="utf-8"))
+        formats = data.get("formats", [])
+        violations = []
+        for entry in formats:
+            fmt_id = entry.get("format_id", "?")
+            verdict = entry.get("overall_verdict", "?")
+            dims = entry.get("dimensions", {})
+            if verdict == "CERTIFIED":
+                for dim_name, dim_data in dims.items():
+                    status = dim_data.get("status", "?")
+                    if status not in ("PASS", "NOT_APPLICABLE"):
+                        violations.append(f"{fmt_id}: CERTIFIED but {dim_name}={status}")
+                stubs = dims.get("stubs", {}).get("material_count", 0)
+                if stubs > 0:
+                    violations.append(f"{fmt_id}: CERTIFIED but {stubs} material stubs")
+                uncov = dims.get("exceptions", {}).get("uncovered", 0)
+                if uncov > 0:
+                    violations.append(f"{fmt_id}: CERTIFIED but {uncov} uncovered exceptions")
+        if violations:
+            return {
+                "validator": "validate_certification_matrix_consistent",
+                "result": "WARN",
+                "items": [{"violations": violations}],
+                "summary": f"V89: {len(violations)} consistency violation(s) in certification matrix",
+                "blocks_sprint": False,
+            }
+        return {
+            "validator": "validate_certification_matrix_consistent",
+            "result": "PASS",
+            "items": [],
+            "summary": f"V89: Certification matrix consistent ({len(formats)} formats, no violations)",
+            "blocks_sprint": False,
+        }
+    except Exception as e:
+        return {
+            "validator": "validate_certification_matrix_consistent",
+            "result": "WARN",
+            "items": [{"error": str(e)}],
+            "summary": f"V89: Certification matrix check failed: {e}",
+            "blocks_sprint": False,
+        }
+
+
 def validate_readme_freshness(declaration: dict, repo_root: Path = None) -> dict:
     """V87: Per-format READMEs must have current generated blocks."""
     if repo_root is None:
@@ -468,3 +567,53 @@ def validate_readme_freshness(declaration: dict, repo_root: Path = None) -> dict
             "summary": f"V87: README freshness check failed: {e}",
             "blocks_sprint": True,
         }
+
+
+def validate_plans_root_policy(
+    declaration: dict, repo_root: "Path | None" = None
+) -> dict:
+    """V90 (FF-PLAN-GOV-002): Only master-plan.md and master-plan-memory.md at plans/ root.
+
+    Scans the direct contents of plans/ and reports any .md or other files
+    that are not in the approved root set. WARN level (does not block sprints).
+    """
+    from pathlib import Path as _Path
+
+    _r = repo_root or _Path(__file__).parent.parent.parent
+    _allowed = {"master-plan.md", "master-plan-memory.md"}
+
+    plans_root = _r / "plans"
+    if not plans_root.exists():
+        return {
+            "validator": "validate_plans_root_policy",
+            "result": "PASS",
+            "blocks_sprint": False,
+            "items": [],
+            "summary": "V90: plans/ directory not found (nothing to check)",
+        }
+
+    violations = []
+    for f in plans_root.iterdir():
+        if f.is_dir():
+            continue
+        if f.name not in _allowed:
+            violations.append(str(f.relative_to(_r)))
+
+    if violations:
+        return {
+            "validator": "validate_plans_root_policy",
+            "result": "WARN",
+            "blocks_sprint": False,
+            "items": violations,
+            "summary": (
+                f"V90: {len(violations)} file(s) at plans/ root outside allowed set: "
+                + ", ".join(violations[:5])
+            ),
+        }
+    return {
+        "validator": "validate_plans_root_policy",
+        "result": "PASS",
+        "blocks_sprint": False,
+        "items": [],
+        "summary": "V90: plans/ root contains only master-plan.md and master-plan-memory.md",
+    }
