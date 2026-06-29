@@ -1006,7 +1006,7 @@ skills:
     Added 2026-06-21 (SKILL-GAP-011, TC-SAL-SKILL-001).
   product_track: sal_infrastructure
   purpose: 'Govern execution of one SAL pipeline healing sprint. Covers all root causes
-    (ROOT-01..ROOT-08) in plans/snoopy-juggling-seal.md. Produces a skill transcript
+    (ROOT-01..ROOT-08) in plans/strategic/snoopy-juggling-seal.md. Produces a skill transcript
     proving governed invocation. Required for all TC-SAL-IMPL-* and TC-SAL-DIAG-*
     taskcards that are NOT STARTED.
 
@@ -2001,6 +2001,85 @@ skills:
   skill_id: generate-root-status
   status: active
   test_paths: []
+  version: '1.0'
+- command: /certification-dashboard
+  command_file: .claude/commands/certification-dashboard.md
+  created_at: '2026-06-28'
+  idempotency: create_or_update
+  implementation_paths:
+  - tools/certification/certification_dashboard.py
+  mandatory_validations:
+  - certification_reports_exist
+  - portfolio_matrix_consistent
+  output_paths:
+  - reports/certification/portfolio-certification-matrix.json
+  - reports/certification/certification-report.md
+  product_track: governance
+  purpose: Run the certification dashboard to regenerate portfolio certification matrix
+    across all 20 Python FOSS formats.
+  required_handoff_fields: []
+  skill_id: certification-dashboard
+  status: active
+  test_paths:
+  - tests/certification/test_tool_pipeline.py
+  - tests/certification/test_report_integrity.py
+  version: '1.0'
+- command: /select-deepening-lane
+  command_file: .claude/commands/select-deepening-lane.md
+  created_at: '2026-06-28'
+  idempotency: read_only
+  implementation_paths:
+  - tools/supervisor/lane_selector.py
+  mandatory_validations:
+  - ledger_entry_exists
+  output_paths: []
+  product_track: governance
+  purpose: Select the next deepening lane (feature or DOM) for a format based on ledger
+    state, starvation counters, and execution mode.
+  required_handoff_fields:
+  - format_id
+  skill_id: select-deepening-lane
+  status: active
+  test_paths:
+  - tests/supervisor/test_lane_selector.py
+  version: '1.0'
+- command: /inventory-format-dom
+  command_file: .claude/commands/inventory-format-dom.md
+  created_at: '2026-06-28'
+  idempotency: read_only
+  implementation_paths:
+  - tools/supervisor/dom_baseline_scanner.py
+  mandatory_validations: []
+  output_paths:
+  - reports/dual-lane-verification/
+  product_track: governance
+  purpose: Scan a format's source tree to inventory DOM node types, typed classes,
+    and compute a baseline DOM maturity level.
+  required_handoff_fields:
+  - format_id
+  skill_id: inventory-format-dom
+  status: active
+  test_paths:
+  - tests/supervisor/test_dom_baseline_scanner.py
+  version: '1.0'
+- command: /check-dom-contract
+  command_file: .claude/commands/check-dom-contract.md
+  created_at: '2026-06-28'
+  idempotency: read_only
+  implementation_paths:
+  - tools/supervisor/dom_contract_checker.py
+  mandatory_validations: []
+  output_paths: []
+  product_track: governance
+  purpose: Check whether a format meets the DOM contract requirements for a specific
+    maturity level (D0-D5).
+  required_handoff_fields:
+  - format_id
+  - dom_level
+  skill_id: check-dom-contract
+  status: active
+  test_paths:
+  - tests/supervisor/test_dom_contract_checker.py
   version: '1.0'
 sprint: FORMAT-FACTORY-R98-AUTONOMOUS-LOOP-TRUST-LAYER-ITERATION-SCALING-ACCELERATION-POC-MEGA-TRAIN-001
 version: '2.0'

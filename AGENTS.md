@@ -20,7 +20,7 @@
 5. DEC-014 status: **activated** (2026-06-25). See `docs/governance/codex-adapter.md` for pilot results.
 
 
-<!-- BEGIN:CAPABILITY-DISCOVERY generated=2026-06-28T08:03:47+00:00 source=.governance/capabilities/registry.yaml -->
+<!-- BEGIN:CAPABILITY-DISCOVERY generated=2026-06-29T09:48:51+00:00 source=.governance/capabilities/registry.yaml -->
 
 ## A2b. Capability Discovery Index (generated — do not edit manually)
 
@@ -31,7 +31,7 @@ Run `/sync-capabilities` or `python tools/capability_sync/run_sync.py --mode ful
 **Skill contracts:** `.supervisor/skill-registry.yaml`
 **Capability routing:** `.supervisor/capability-routing-registry.yaml`
 
-Total active capabilities: 94
+Total active capabilities: 99
 
 | capability_id | product_track | parity_status | claude_code | codex | ci | routing_routes |
 |---|---|---|---|---|---|---|
@@ -68,10 +68,14 @@ Total active capabilities: 94
 | `add-python-object-model-feature` | foss_python | FULL_PARITY | Y | Y | Y | product_deepening |
 | `python-reduced-spec-parity-model` | foss_python | FULL_PARITY | Y | Y | N | — |
 | `create-consumer-roundtrip` | foss_python_consumer | PARTIAL | Y | Y | N | — |
+| `certification-dashboard` | governance | FULL_PARITY | Y | Y | N | — |
+| `check-dom-contract` | governance | FULL_PARITY | Y | Y | N | — |
 | `check-skill-coverage` | governance | FULL_PARITY | Y | Y | Y | capability_audit |
+| `inventory-format-dom` | governance | FULL_PARITY | Y | Y | N | — |
 | `post-sprint-audit` | governance | FULL_PARITY | Y | Y | Y | forensic_audit, integration_verification, sprint_audit |
 | `post-sprint-loop` | governance | FULL_PARITY | Y | Y | Y | sprint_audit |
 | `preflight-skill-entry` | governance | FULL_PARITY | Y | Y | N | — |
+| `select-deepening-lane` | governance | FULL_PARITY | Y | Y | N | — |
 | `autonomous-loop` | infrastructure | FULL_PARITY | Y | Y | Y | taskcard_execution |
 | `append-layer-verification-log` | layer_governance | PARTIAL | Y | Y | N | — |
 | `append-layer-work-log` | layer_governance | PARTIAL | Y | Y | N | — |
@@ -81,6 +85,7 @@ Total active capabilities: 94
 | `create-permanent-layer-plan` | layer_governance | PARTIAL | Y | Y | N | — |
 | `detect-stale-layer-state` | layer_governance | PARTIAL | Y | Y | N | — |
 | `detect-unlogged-work` | layer_governance | PARTIAL | Y | Y | N | — |
+| `generate-root-status` | layer_governance | FULL_PARITY | Y | Y | N | — |
 | `identify-primary-layer` | layer_governance | PARTIAL | Y | Y | N | — |
 | `inventory-permanent-layer-plans` | layer_governance | PARTIAL | Y | Y | N | — |
 | `migrate-temporary-agent-plan` | layer_governance | PARTIAL | Y | Y | N | — |
@@ -141,7 +146,7 @@ Total active capabilities: 94
 
 **B2.** Before any format-specific work, read `plans/master-plan.md` and verify the current active format and gate status.
 
-**B2a.** Before any product architecture, source generation, or spec-parity work, read `docs/spec-to-feature-correction-plan-summary.md` (quick reference) or the full plan at `plans/spec-to-feature-radical-correction-plan.md`. This plan defines the 16-lane remediation structure, canonical naming rules (spec QName → canonical class → facade), 8 spec-parity validators, Gate 11 criteria (C1-C20, P1-P11), and the binding constraint that system healing lanes (1-6, 14, 15) must complete before product regeneration lanes (7-13).
+**B2a.** Before any product architecture, source generation, or spec-parity work, read `docs/spec-to-feature-correction-plan-summary.md` (quick reference) or the full plan at `plans/strategic/spec-to-feature-radical-correction-plan.md`. This plan defines the 16-lane remediation structure, canonical naming rules (spec QName → canonical class → facade), 8 spec-parity validators, Gate 11 criteria (C1-C20, P1-P11), and the binding constraint that system healing lanes (1-6, 14, 15) must complete before product regeneration lanes (7-13).
 
 **B2b.** Before modifying any `src/python/` source file or creating new model, spec, or analytics classes: (1) read `.supervisor/knowledge/registry.yaml`; (2) load applicable contracts from `.supervisor/knowledge/contracts/`; (3) verify contract `status: VERIFIED_CURRENT`; (4) follow the contract — do not infer structure from nearby implementations; (5) if knowledge is missing, stale, or contradicted: add an entry to `.supervisor/knowledge/gaps.yaml`, investigate authority, write or repair the contract, then resume the original task. This rule runs before Step 5 of any product skill that says "inspect existing conventions."
 

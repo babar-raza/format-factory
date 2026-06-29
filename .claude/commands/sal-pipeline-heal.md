@@ -11,7 +11,7 @@ product_track: sal_infrastructure
 
 Execute one governed sprint of SAL (Specification Authority Layer) pipeline healing work.
 This skill governs all implementation work against ROOT-01..ROOT-08 root causes documented
-in `plans/snoopy-juggling-seal.md`.
+in `plans/strategic/snoopy-juggling-seal.md`.
 
 **This is the REQUIRED skill for all TC-SAL-IMPL-* and TC-SAL-DIAG-* taskcards that are
 NOT STARTED. No agent may modify SAL implementation files without first invoking this skill.**
@@ -62,7 +62,7 @@ Do NOT run for read-only recon or evidence reviews.
 
 ## Pre-Execution Checks (MANDATORY — stop if any fail)
 
-1. Read `plans/snoopy-juggling-seal.md` to confirm taskcard status and dependencies.
+1. Read `plans/strategic/snoopy-juggling-seal.md` to confirm taskcard status and dependencies.
 2. Confirm the taskcard is NOT already COMPLETE.
 3. Confirm all taskcard dependencies are met (per Section 11 DAG in the plan).
 4. Confirm the spec cache path exists and contains a SHA-256 verified source file.
@@ -73,7 +73,7 @@ Do NOT run for read-only recon or evidence reviews.
 
 ## Steps
 
-1. **Read the governing plan** (`plans/snoopy-juggling-seal.md`) for the taskcard spec,
+1. **Read the governing plan** (`plans/strategic/snoopy-juggling-seal.md`) for the taskcard spec,
    allowed paths, forbidden paths, and acceptance criteria.
 2. **Inventory current state** of the target stage:
    - What files exist in spec_cache_path?
@@ -91,7 +91,7 @@ Do NOT run for read-only recon or evidence reviews.
 5. **Run focused tests** if test files exist for the modified tool.
 6. **Write skill transcript** to `reports/skills-r<N>/skill-transcripts/sal-pipeline-heal-<taskcard_id>.json`
    with schema: `{skill_id, taskcard_id, format_id, root_cause_id, changed_files, output_artifacts, test_results, verdict}`.
-7. **Update plan** status for this taskcard in `plans/snoopy-juggling-seal.md`.
+7. **Update plan** status for this taskcard in `plans/strategic/snoopy-juggling-seal.md`.
 
 ## Mandatory Validations
 
@@ -106,7 +106,7 @@ Do NOT run for read-only recon or evidence reviews.
 - `tools/specification-authority-layer/` (read + targeted repair)
 - `.local/spec-cache/<format>/<version>/workbench/` (write fact artifacts)
 - `.local/sal-output/` (write runner output)
-- `plans/snoopy-juggling-seal.md` (update taskcard status only)
+- `plans/strategic/snoopy-juggling-seal.md` (update taskcard status only)
 - `reports/skills-r<N>/skill-transcripts/sal-pipeline-heal-<taskcard_id>.json` (write transcript)
 
 ## Forbidden Paths

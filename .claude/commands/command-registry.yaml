@@ -734,6 +734,38 @@ commands:
   skill_id: generate-root-status
   skill_registry_ref: true
   status: active
+- command_file: .claude/commands/certification-dashboard.md
+  command_id: certification-dashboard
+  created: '2026-06-28'
+  description: Run certification dashboard to regenerate portfolio certification matrix
+  phase: all
+  skill_id: certification-dashboard
+  skill_registry_ref: true
+  status: active
+- command_file: .claude/commands/select-deepening-lane.md
+  command_id: select-deepening-lane
+  created: '2026-06-29'
+  description: Select the next deepening lane for a format from ledger state and starvation counters
+  phase: all
+  skill_id: select-deepening-lane
+  skill_registry_ref: true
+  status: active
+- command_file: .claude/commands/inventory-format-dom.md
+  command_id: inventory-format-dom
+  created: '2026-06-29'
+  description: Scan a format source tree and emit a DOM baseline inventory
+  phase: all
+  skill_id: inventory-format-dom
+  skill_registry_ref: true
+  status: active
+- command_file: .claude/commands/check-dom-contract.md
+  command_id: check-dom-contract
+  created: '2026-06-29'
+  description: Validate a format against a machine-checkable DOM maturity contract
+  phase: all
+  skill_id: check-dom-contract
+  skill_registry_ref: true
+  status: active
 generated_at: '2026-06-18'
 generated_by: TC-0004
 notes: 'v1.1 (2026-06-21): Added skill_registry_ref cross-references for commands

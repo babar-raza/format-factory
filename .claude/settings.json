@@ -125,7 +125,10 @@
       "Bash(git status -u)",
       "Bash(for f in .local/supervisor/plan-locks/*.json)",
       "Bash(grep -rn \"compile_gap\\\\|capability_compiler\" /c/Users/prora/OneDrive/Documents/GitHub/format-factory/tools/supervisor/*.py)",
-      "Bash(.venv/Scripts/pytest tests/supervisor/test_no_stub_scan.py -v --tb=short)"
+      "Bash(.venv/Scripts/pytest tests/supervisor/test_no_stub_scan.py -v --tb=short)",
+      "Bash(.venv/Scripts/pytest tests/supervisor/test_dual_lane_regression.py tests/supervisor/test_lane_counter_replay.py tests/supervisor/test_starvation_prevention.py tests/supervisor/test_lane_selector.py tests/supervisor/test_dom_contract_checker.py tests/supervisor/test_dom_baseline_scanner.py tests/supervisor/test_dom_maturity_promoter.py tests/supervisor/test_lane_dependency_checker.py tests/supervisor/test_compiler_lane_scoring.py tests/supervisor/test_check_continuation_lane.py tests/supervisor/test_auto_mode_pilot.py -v --tb=short)",
+      "Bash(.venv/Scripts/pytest tests/certification/ -v --tb=short)",
+      "Bash(.venv/Scripts/python -m tools.supervisor.control_index init)"
     ],
     "deny": [
       "Write(.env)",
@@ -158,7 +161,8 @@
       "Bash(iwr *)"
     ],
     "additionalDirectories": [
-      "c:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\reports"
+      "c:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\reports",
+      "c:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tools\\supervisor\\control_index"
     ]
   },
   "model": "claude-opus-4-6",
