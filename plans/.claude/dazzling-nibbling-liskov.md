@@ -1620,3 +1620,56 @@ TC-CI-006 (enhanced + parity + integration)
 10. Use `tools/supervisor/atomic_io.py` as a reference pattern but do not import it — SQLite handles its own atomicity.
 
 **First action:** Execute TC-CI-001-01 (create package __init__.py).
+
+---
+
+## Taskcard Status Summary
+
+| Taskcard | Status |
+|---|---|
+| TC-CI-001 | CLOSED |
+| TC-CI-001-01 | CLOSED |
+| TC-CI-001-02 | CLOSED |
+| TC-CI-001-03 | CLOSED |
+| TC-CI-001-04 | CLOSED |
+| TC-CI-001-05 | CLOSED |
+| TC-CI-002 | CLOSED |
+| TC-CI-002-01 | CLOSED |
+| TC-CI-002-02 | CLOSED |
+| TC-CI-002-03 | CLOSED |
+| TC-CI-002-04 | CLOSED |
+| TC-CI-002-05 | CLOSED |
+| TC-CI-003 | CLOSED |
+| TC-CI-003-01 | CLOSED |
+| TC-CI-003-02 | CLOSED |
+| TC-CI-003-03 | CLOSED |
+| TC-CI-003-04 | CLOSED |
+| TC-CI-003-05 | CLOSED |
+| TC-CI-003-06 | CLOSED |
+| TC-CI-003-07 | CLOSED |
+| TC-CI-003-08 | CLOSED |
+| TC-CI-003-09 | CLOSED |
+| TC-CI-004 | CLOSED |
+| TC-CI-004-01 | CLOSED |
+| TC-CI-004-02 | CLOSED |
+| TC-CI-004-03 | CLOSED |
+| TC-CI-004-04 | CLOSED |
+| TC-CI-004-05 | CLOSED |
+| TC-CI-005 | CLOSED |
+| TC-CI-005-01 | CLOSED |
+| TC-CI-005-02 | CLOSED |
+| TC-CI-005-03 | CLOSED |
+| TC-CI-006 | CLOSED |
+| TC-CI-006-01 | CLOSED |
+| TC-CI-006-02 | CLOSED |
+| TC-CI-006-03 | CLOSED |
+
+
+
+<!--plan_terminal_lock:
+  status: TERMINAL_CLOSED
+  locked_at: "2026-06-29T14:00:20.638121+00:00"
+  locked_by: "dbc1a484a2fb"
+  successor_required_for_future_changes: true
+  mutation_policy: "no further plan/hardening/execution writes"
+-->
