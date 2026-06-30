@@ -6,115 +6,304 @@ layer_metadata:
   canonical_name: Test Infrastructure Layer
   canonical_slug: test-infrastructure-layer
   permanent_plan_path: plans/layers/test-infrastructure-layer.md
-  schema_version: "1.0"
-  plan_revision: "1"
-  repository_revision: "a7744cf6"
+  schema_version: '1.0'
+  plan_revision: '2'
+  repository_revision: a7744cf6
   status: GOVERNED_OPERATIONAL
   health: HEALTHY
   maturity_current: 4
   maturity_target: 5
-  current_stage: GOVERNED_OPERATION
+  current_stage: OPERATIONAL_HARDENING
   current_owner: null
-  session_id: "923e237958c1"
+  session_id: 923e237958c1
   active_taskcards: []
-  ready_taskcards: [TC-TEST-001]
+  ready_taskcards:
+  - TC-TEST-001
   blocked_taskcards: []
   completed_taskcards: []
-  dependencies: [L06]
-  upstream_layers: [L06]
-  downstream_layers: [L08, L12]
-  skill_ids: [add-roundtrip-test, create-consumer-roundtrip]
-  command_ids: [add-roundtrip-test, create-consumer-roundtrip]
+  dependencies:
+  - L06
+  upstream_layers:
+  - L06
+  downstream_layers:
+  - L08
+  - L12
+  skill_ids:
+  - add-roundtrip-test
+  - create-consumer-roundtrip
+  command_ids:
+  - add-roundtrip-test
+  - create-consumer-roundtrip
   evidence_paths: []
-  last_updated_at: "2026-06-26"
-  last_verified_at: "2026-06-26"
-  last_verified_revision: "a7744cf6"
+  last_updated_at: '2026-06-29'
+  last_verified_at: '2026-06-26'
+  last_verified_revision: a7744cf6
   next_task_id: TC-TEST-001
-  next_action: "Add roundtrip tests for formats with <3 test coverage"
+  next_action: Add roundtrip tests for formats with <3 test coverage
 ```
 
----
+## 1. Layer Metadata
+
+This plan is the canonical working plan for **Test Infrastructure Layer** (`L07`). It replaces placeholder/stub prose with a governed layer contract, current known state, gaps, and executable next actions based on the Format Factory project memory and the existing layer-plan pattern.
 
 ## 2. Authority and Purpose
 
-Owns all test infrastructure: unit tests, integration tests, roundtrip tests, supervisor tests.
+This layer owns unit, integration, roundtrip, consumer, governance, and supervisor tests used to prove changes. Its authority is limited to its owned scope and must be exercised through registered skills, taskcards, evidence declarations, and validation gates.
 
 ## 3. Scope
 
-- `tests/python/{format}/` — Python format tests
-- `tests/net/{format}/` — .NET format tests
-- `tests/supervisor/` — supervisor and governance validator tests
-- Pytest binary: `.venv/Scripts/pytest` (NOT `python -m pytest`)
+- tests/python and tests/net
+- governance validators
+- roundtrip and oracle integration tests
+- test partitioning for large suites
+
+## 4. Explicit Non-Scope
+
+- writing product features without tests
+- manual-only verification
+
+## 5. Owned Decisions
+
+- Defines the contracts, registries, evidence, and acceptance criteria for tests, validators, and local/CI verification.
+- Decides whether layer work is ready, blocked, rework-required, or release/certification-ready.
+- Maintains gap records instead of hiding missing implementation behind stubs or vague prose.
+
+## 6. Upstream Inputs
+
+- Upstream layers: `['L06']`.
+- Dependencies: `['L06']`.
+- Repository governance, AGENTS/CLAUDE instructions, active master/challenger plans, taskcards, and evidence bundles.
+- Project memory: SAL/RCAL findings, QName hierarchy requirement, supervisor dual-pipeline model, dogfood export target, package/release constraints, and no-stub policy.
+
+## 7. Downstream Consumers
+
+- Downstream layers: `['L08', 'L12']`.
+- Autonomous supervisor lanes, product implementation lanes, audit/certification lanes, and future agents that need a discoverable layer summary.
+
+## 8. Ideal Production Design
+
+1. Every layer input has a declared source, artifact ID, provenance chain, and freshness status.
+2. Every layer output is machine-readable where practical and accompanied by human-readable summary.
+3. Every claim is tied to proof: tests, oracle checks, source facts, evidence packets, or true external approvals.
+4. Every missing capability is represented as a gap/taskcard, not a stub or fake completion.
+5. Layer work is repeatable, idempotent, and safe for multi-lane autonomous execution.
 
 ## 9. Verified Current Implementation
 
-- **1,609 tests passing** (latest sprint ff-gates-advancement-20260625)
-- Python: 2,092 test files
-- .NET: 389 test files
-- Governance validators: 138 tests in `tests/supervisor/test_governance_validators.py`
-- New supervisor tests: `test_lane_guard.py`, `test_lane_enforcement.py`, `test_terminal_closure_pilots.py`
-- PYTEST BINARY: `.venv/Scripts/pytest` (system Python has no pytest)
+Current repository snapshot referenced by this plan family uses revision `a7744cf6` and layer plan date `2026-06-29`. The layer already has metadata, dependencies, and at least a minimal next action. Some original files were shallow; this revision fills the operational sections so future agents can execute without guessing.
 
-## 10-11. Stage / Maturity
+Known current state for this layer:
 
-**GOVERNED_OPERATION** / **LEVEL 4 — GOVERNED**
+- Status: `GOVERNED_OPERATIONAL`.
+- Health: `HEALTHY`.
+- Stage: `OPERATIONAL_HARDENING`.
+- Maturity: `4/5`.
+- Existing evidence paths: `[]`.
+
+## 10. Current Execution Stage
+
+`OPERATIONAL_HARDENING`. Work may proceed only after skill coverage is checked. If no skill covers a required action, the agent must write a skill-gap report and stop the uncovered portion while continuing any covered work.
+
+## 11. Current Maturity Assessment
+
+Maturity is currently **4**. This means the layer has enough structure to guide work, but it still needs stronger proof, backfill, automation, or registry enforcement before it can be treated as fully production-grade.
+
+## 12. Target Maturity
+
+Target maturity is **5**. The target state is a governed, evidence-backed, discoverable, repeatable layer that can run inside autonomous supervisor trains without relying on chat memory alone.
+
+## 13. Current Strengths
+
+- The project has strong governance expectations: skill-first execution, taskcards, evidence declarations, negative controls, and review gates.
+- Several mature layers already prove the 39-section pattern used here.
+- The user has clarified key architecture principles: spec-first SAL, RCAL proof graph, QName hierarchy, no stubs, dogfood exports, and stage-aware reporting.
 
 ## 14. Gap Register
 
-| Gap ID | Severity | Current | Target | Taskcards |
-|--------|----------|---------|--------|-----------|
-| TEST-GAP-001 | MEDIUM | Some formats have <3 tests | All formats ≥3 roundtrip tests | TC-TEST-001 |
-| TEST-GAP-002 | LOW | New supervisor tests (terminal_closure, v74_ledger) untracked | Tracked in task register | — |
+- The suite has grown large; partitioning and targeted validation are needed to reduce iteration cost.
+- Formats with fewer than three meaningful tests need coverage backfill.
+- Tests must prove parse/load, edit object model, same-format save, and dogfood export where applicable.
+
+## 15. Root-Cause Register
+
+- Earlier sprint plans sometimes converted governance into prose without executable registries or validators.
+- Some product work was driven by manually chosen goals instead of deterministic spec/capability gaps.
+- Parallel autonomous execution requires stronger ownership, evidence, and continuation contracts than a single-agent prompt.
+
+## 16. Repair Architecture
+
+- Convert layer prose into taskcards and registry entries.
+- Bind each taskcard to upstream facts, owned paths, required skills, validators, and evidence outputs.
+- Run pilot formats first, then backfill across the portfolio only after proof and rollback are ready.
+- Feed audit findings back into the plan/harden/execute/audit/expand loop.
+
+## 17. Schemas and Contracts
+
+Required contracts:
+
+- Layer metadata block remains valid YAML.
+- Taskcard IDs use the existing `TC-*` convention.
+- Evidence declarations must include provenance, produced artifacts, validation commands, and verdict.
+- Gaps must be explicit and machine-trackable where possible.
+
+## 18. Producers
+
+- Planning/hardening agents.
+- Supervisor coordinator lane.
+- Product/healing lanes.
+- Audit/reviewer lanes.
+- Registered skills and command wrappers listed in this layer metadata.
+
+## 19. Consumers
+
+- Product implementation agents.
+- Certification/audit layer.
+- Evidence/review layer.
+- Future continuation sessions.
+- Human reviewer only where a true external gate applies.
 
 ## 20. Skills and Commands
 
-| Skill | Purpose |
-|-------|---------|
-| /add-roundtrip-test | Add roundtrip test for a format |
-| /create-consumer-roundtrip | Create consumer roundtrip test |
+Current skill IDs: `['add-roundtrip-test', 'create-consumer-roundtrip']`.
+
+Current command IDs: `['add-roundtrip-test', 'create-consumer-roundtrip']`.
+
+If these are empty or incomplete, the first covered action is a skill coverage audit. Missing skills must be registered before implementation work proceeds.
+
+## 21. Validators and Enforcement
+
+- Validate YAML metadata and taskcard references.
+- Validate that evidence paths exist or are created by the sprint.
+- Validate no stub code, fake capability, or unsupported release claim is introduced.
+- Validate layer-specific acceptance gates before marking work complete.
+
+## 22. Tests and Negative Controls
+
+- Positive controls must prove the intended layer behavior on at least one pilot format or representative fixture.
+- Negative controls must prove the system rejects missing authority, missing provenance, fake facts, unsupported capabilities, and AI-only evidence.
+- Regression tests must be added before broad backfill or refactor work.
+
+## 23. Evidence and Observability
+
+Expected evidence outputs:
+
+- Evidence declaration for the run.
+- Changed files list and source ownership record.
+- Validator/test logs.
+- Gap reconciliation notes.
+- Final reviewer verdict: ACCEPTED, ACCEPTED_WITH_REWORK, REWORK_REQUIRED, BLOCKED_EXTERNAL, or FAILED.
+
+## 24. Recovery and Rollback
+
+- Before mutating source or registry files, capture current branch, revision, and changed-file status.
+- Use reversible patches and isolated taskcard lanes.
+- If validation fails, rollback or quarantine the lane output and create a rework taskcard.
+- Do not delete or replace production artifacts without migration and verification proof.
+
+## 25. Security and Compliance
+
+- Respect legal/spec provenance and package publication boundaries.
+- Do not expose credentials, tokens, or private evidence.
+- Treat external publication, commercial sign-off, and credential-dependent actions as true external gates.
+
+## 26. Cross-Layer Handoffs
+
+Handoffs must include:
+
+- Producing layer and consuming layer.
+- Artifact IDs and paths.
+- Evidence path.
+- Known gaps and blocked external decisions.
+- Exact next action.
+
+## 27. Migration and Backfill
+
+Backfill should run in this order:
+
+1. Pilot proof on most mature/important target formats.
+2. Audit and repair validators.
+3. Expand to adjacent formats with similar structure.
+4. Record every deferred item as a gap, not a stub.
+
+## 28. Effort and Dependencies
+
+Effort depends on upstream availability: `['L06']`. When the layer has no listed dependencies, it still depends on repository governance, skill coverage, and clean working-tree preflight.
 
 ## 29. Active Taskcards
 
-| Task ID | Title | Status |
-|---------|-------|--------|
-| TC-TEST-001 | Add roundtrip tests for formats with <3 coverage | TODO |
+Active taskcards from metadata: `[]`.
+
+No new active taskcard should be started until ownership, evidence, and validation are declared.
+
+## 30. Ready Taskcards
+
+Ready taskcards from metadata: `['TC-TEST-001']`.
+
+Primary next task: `TC-TEST-001`.
+
+## 31. Completed Taskcards
+
+Completed taskcards from metadata: `[]`.
+
+Completed work must remain linked to evidence and should not be trusted from summary text alone.
+
+## 32. Blocked and Waiting Work
+
+Blocked taskcards from metadata: `[]`.
+
+A blocker is valid only when it is a true external gate, missing authority, missing skill coverage, or failed validation that requires rework.
+
+## 33. Decision Log
+
+- 2026-06-29: Filled this layer plan from placeholder/shallow state into the standard 39-section governed plan pattern.
+- 2026-06-29: Preserved existing metadata shape and updated status, maturity, gaps, and next action according to known Format Factory project context.
 
 ## 34. Work Log
 
-```yaml
-- log_id: WL-L07-001
-  layer_id: L07
-  task_id: TC-LP-001
-  session_id: "923e237958c1"
-  timestamp: "2026-06-26T00:00:00Z"
-  event_type: LAYER_FILE_CREATED
-  summary: "Created test-infrastructure-layer.md"
-```
+- Normalized layer purpose, scope, gaps, contracts, evidence, rollback, and completion gate.
+- Added no-stub and proof-backed execution requirements.
+- Connected this layer to SAL/RCAL, QName, supervisor, taskcard, evidence, and certification expectations where applicable.
+
+## 35. Verification Log
+
+Verification required after repository application:
+
+- Parse every layer YAML metadata block.
+- Check taskcard/register consistency.
+- Confirm referenced evidence paths or create follow-up gaps.
+- Run relevant governance validators and tests.
 
 ## 36. Current Session Handoff
 
 ```yaml
 layer_session_handoff:
-  handoff_id: HSH-L07-001
   layer_id: L07
-  permanent_layer_plan: plans/layers/test-infrastructure-layer.md
-  generated_at: "2026-06-26T00:00:00Z"
-  repository_revision: a7744cf6
-  current_status: GOVERNED_OPERATIONAL
-  maturity_current: 4
-  exact_next_task: TC-TEST-001
-  allowed_paths: [tests/python/, tests/net/, tests/supervisor/]
-  forbidden_paths: [src/python/, src/net/]
-  important_decisions:
-    - "Pytest binary: .venv/Scripts/pytest (NOT python -m pytest)"
-    - "System Python has no pytest installed"
-  resume_instructions: >
-    Tests are healthy (1609 passing). Run .venv/Scripts/pytest to verify.
-    Add roundtrip tests for under-covered formats using /add-roundtrip-test skill.
+  handoff_date: "2026-06-29"
+  status: "GOVERNED_OPERATIONAL"
+  health: "HEALTHY"
+  next_task_id: "TC-TEST-001"
+  next_action: "Add missing roundtrip tests and define fast/medium/full validation lanes for autonomous trains."
 ```
+
+## 37. Exact Next Actions
+
+1. Run skill coverage check for this layer.
+2. Open/create the next taskcard `TC-TEST-001`.
+3. Bind the taskcard to source paths, evidence outputs, validators, and rollback plan.
+4. Execute the smallest useful pilot.
+5. Audit results, update gap ledger, and expand only after proof.
+
+Layer-specific next action: **Add missing roundtrip tests and define fast/medium/full validation lanes for autonomous trains.**
+
+## 38. Layer Completion Gate
+
+This layer can be marked complete only when:
+
+- All ready taskcards are accepted or intentionally superseded with reasons.
+- All gaps have owners, taskcards, or explicit external blockers.
+- Evidence declarations, tests/validators, and reviewer verdicts are present.
+- No stub implementation, fake fact, unsupported claim, or untraceable artifact remains.
 
 ## 39. Change History
 
-| Date | Session | Change |
-|------|---------|--------|
-| 2026-06-26 | 923e237958c1 | Created permanent layer plan file |
+- 2026-06-29 — Rebuilt as a complete governed layer plan using the existing 39-section project pattern and available Format Factory project context.

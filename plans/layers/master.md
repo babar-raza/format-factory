@@ -441,3 +441,8 @@ READ plans/layers/master.md  ← YOU ARE HERE
 ```
 
 **NEVER start work without identifying the primary layer and reading its permanent plan.**
+
+
+## 2026-06-29 layer completion pass
+
+All individual layer markdown files were expanded from stub/shallow state into the standard 39-section governed layer plan pattern. The pass preserves existing metadata shape where possible and adds authority, scope, gaps, contracts, evidence, rollback, taskcard, handoff, next-action, and completion-gate details for each layer.

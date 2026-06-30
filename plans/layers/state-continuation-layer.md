@@ -6,117 +6,301 @@ layer_metadata:
   canonical_name: State and Continuation Layer
   canonical_slug: state-continuation-layer
   permanent_plan_path: plans/layers/state-continuation-layer.md
-  schema_version: "1.0"
-  plan_revision: "1"
-  repository_revision: "a7744cf6"
+  schema_version: '1.0'
+  plan_revision: '2'
+  repository_revision: a7744cf6
   status: GOVERNED_OPERATIONAL
   health: HEALTHY
   maturity_current: 4
-  maturity_target: 4
-  current_stage: GOVERNED_OPERATION
+  maturity_target: 5
+  current_stage: OPERATIONAL_HARDENING
   current_owner: null
-  session_id: "923e237958c1"
+  session_id: 923e237958c1
   active_taskcards: []
-  ready_taskcards: [TC-STATE-001]
+  ready_taskcards:
+  - TC-STATE-001
   blocked_taskcards: []
   completed_taskcards: []
   dependencies: []
   upstream_layers: []
-  downstream_layers: [L10, L11]
+  downstream_layers:
+  - L10
+  - L11
   skill_ids: []
   command_ids: []
   evidence_paths:
-    - .local/supervisor/continuation-signal.json
-    - .supervisor/state/current-run.json
-  last_updated_at: "2026-06-26"
-  last_verified_at: "2026-06-26"
-  last_verified_revision: "a7744cf6"
+  - .local/supervisor/continuation-signal.json
+  - .supervisor/state/current-run.json
+  last_updated_at: '2026-06-29'
+  last_verified_at: '2026-06-26'
+  last_verified_revision: a7744cf6
   next_task_id: TC-STATE-001
-  next_action: "Add layer control plane tracking to continuation-signal (plans/layers/ path)"
+  next_action: Add layer control plane tracking to continuation-signal (plans/layers/
+    path)
 ```
 
----
+## 1. Layer Metadata
+
+This plan is the canonical working plan for **State and Continuation Layer** (`L09`). It replaces placeholder/stub prose with a governed layer contract, current known state, gaps, and executable next actions based on the Format Factory project memory and the existing layer-plan pattern.
 
 ## 2. Authority and Purpose
 
-Owns all continuation state: session isolation (CCI-MVP), plan locks, iteration
-counters, and cross-chat session identity.
+This layer owns run identity, iteration counters, continuation signals, plan locks, and resumable autonomous state. Its authority is limited to its owned scope and must be exercised through registered skills, taskcards, evidence declarations, and validation gates.
 
 ## 3. Scope
 
-- `.local/supervisor/continuation-signal.json` — session_id, iteration, verdict
-- `.local/supervisor/active-plan-lock.json` — shared plan lock
-- `.local/supervisor/plan-locks/{session_id}.json` — per-session plan locks
-- `.supervisor/state/current-run.json` — current run state
-- `.supervisor/state/watcher.json` — file watcher state
-- `tools/supervisor/check_continuation.py` — CONTINUE/STOP verdict
-- `tools/supervisor/continuation_state.py` — state machine
-- `tools/supervisor/write_plan_lock.py` — plan lock writer
-- `tools/supervisor/reset_track_signal.py` — session ID reset
+- .supervisor/state
+- continuation-signal.json
+- taskcard machine state
+- session isolation and resume files
+
+## 4. Explicit Non-Scope
+
+- business decisions
+- human external approvals
+
+## 5. Owned Decisions
+
+- Defines the contracts, registries, evidence, and acceptance criteria for state machine, sessions, and continuation.
+- Decides whether layer work is ready, blocked, rework-required, or release/certification-ready.
+- Maintains gap records instead of hiding missing implementation behind stubs or vague prose.
+
+## 6. Upstream Inputs
+
+- Upstream layers: `[]`.
+- Dependencies: `[]`.
+- Repository governance, AGENTS/CLAUDE instructions, active master/challenger plans, taskcards, and evidence bundles.
+- Project memory: SAL/RCAL findings, QName hierarchy requirement, supervisor dual-pipeline model, dogfood export target, package/release constraints, and no-stub policy.
+
+## 7. Downstream Consumers
+
+- Downstream layers: `['L10', 'L11']`.
+- Autonomous supervisor lanes, product implementation lanes, audit/certification lanes, and future agents that need a discoverable layer summary.
+
+## 8. Ideal Production Design
+
+1. Every layer input has a declared source, artifact ID, provenance chain, and freshness status.
+2. Every layer output is machine-readable where practical and accompanied by human-readable summary.
+3. Every claim is tied to proof: tests, oracle checks, source facts, evidence packets, or true external approvals.
+4. Every missing capability is represented as a gap/taskcard, not a stub or fake completion.
+5. Layer work is repeatable, idempotent, and safe for multi-lane autonomous execution.
 
 ## 9. Verified Current Implementation
 
-- CCI-MVP: continuation-signal.json includes `session_id` field
-- SESSION_MISMATCH / CHAT_ID_MISMATCH: NON-OVERRIDABLE hard stops
-- POST_PLAN_TERMINAL: `--terminal` flag writes TERMINAL_CLOSED status
-- PLAN_COMPLETED_IN_SESSION: check_continuation.py Check 1b safety net
-- SUPERSEDED: stale TERMINAL_CLOSED locks marked SUPERSEDED (not re-locked)
-- 45 tests in `tests/supervisor/` covering continuation logic
-- Max iterations: NOT a stop — reset to 0 and continue
-- Test artifact locks: locks with pytest/AppData/Temp paths auto-superseded
+Current repository snapshot referenced by this plan family uses revision `a7744cf6` and layer plan date `2026-06-29`. The layer already has metadata, dependencies, and at least a minimal next action. Some original files were shallow; this revision fills the operational sections so future agents can execute without guessing.
+
+Known current state for this layer:
+
+- Status: `GOVERNED_OPERATIONAL`.
+- Health: `HEALTHY`.
+- Stage: `OPERATIONAL_HARDENING`.
+- Maturity: `4/5`.
+- Existing evidence paths: `['.local/supervisor/continuation-signal.json', '.supervisor/state/current-run.json']`.
+
+## 10. Current Execution Stage
+
+`OPERATIONAL_HARDENING`. Work may proceed only after skill coverage is checked. If no skill covers a required action, the agent must write a skill-gap report and stop the uncovered portion while continuing any covered work.
+
+## 11. Current Maturity Assessment
+
+Maturity is currently **4**. This means the layer has enough structure to guide work, but it still needs stronger proof, backfill, automation, or registry enforcement before it can be treated as fully production-grade.
+
+## 12. Target Maturity
+
+Target maturity is **5**. The target state is a governed, evidence-backed, discoverable, repeatable layer that can run inside autonomous supervisor trains without relying on chat memory alone.
+
+## 13. Current Strengths
+
+- The project has strong governance expectations: skill-first execution, taskcards, evidence declarations, negative controls, and review gates.
+- Several mature layers already prove the 39-section pattern used here.
+- The user has clarified key architecture principles: spec-first SAL, RCAL proof graph, QName hierarchy, no stubs, dogfood exports, and stage-aware reporting.
 
 ## 14. Gap Register
 
-| Gap ID | Severity | Current | Target | Taskcards |
-|--------|----------|---------|--------|-----------|
-| STATE-GAP-001 | LOW | Layer control plane path not in continuation-signal | Signal tracks active layer tasks | TC-STATE-001 |
+- Earlier stop cause: closeout task at end of prompt caused terminal stop; continuation must avoid manual continue loops.
+- Layer control plane state must be added so plans/layers updates can be resumed safely.
+- Multiple trains need separate tracks, locks, and evidence folders.
+
+## 15. Root-Cause Register
+
+- Earlier sprint plans sometimes converted governance into prose without executable registries or validators.
+- Some product work was driven by manually chosen goals instead of deterministic spec/capability gaps.
+- Parallel autonomous execution requires stronger ownership, evidence, and continuation contracts than a single-agent prompt.
+
+## 16. Repair Architecture
+
+- Convert layer prose into taskcards and registry entries.
+- Bind each taskcard to upstream facts, owned paths, required skills, validators, and evidence outputs.
+- Run pilot formats first, then backfill across the portfolio only after proof and rollback are ready.
+- Feed audit findings back into the plan/harden/execute/audit/expand loop.
+
+## 17. Schemas and Contracts
+
+Required contracts:
+
+- Layer metadata block remains valid YAML.
+- Taskcard IDs use the existing `TC-*` convention.
+- Evidence declarations must include provenance, produced artifacts, validation commands, and verdict.
+- Gaps must be explicit and machine-trackable where possible.
+
+## 18. Producers
+
+- Planning/hardening agents.
+- Supervisor coordinator lane.
+- Product/healing lanes.
+- Audit/reviewer lanes.
+- Registered skills and command wrappers listed in this layer metadata.
+
+## 19. Consumers
+
+- Product implementation agents.
+- Certification/audit layer.
+- Evidence/review layer.
+- Future continuation sessions.
+- Human reviewer only where a true external gate applies.
+
+## 20. Skills and Commands
+
+Current skill IDs: `[]`.
+
+Current command IDs: `[]`.
+
+If these are empty or incomplete, the first covered action is a skill coverage audit. Missing skills must be registered before implementation work proceeds.
+
+## 21. Validators and Enforcement
+
+- Validate YAML metadata and taskcard references.
+- Validate that evidence paths exist or are created by the sprint.
+- Validate no stub code, fake capability, or unsupported release claim is introduced.
+- Validate layer-specific acceptance gates before marking work complete.
+
+## 22. Tests and Negative Controls
+
+- Positive controls must prove the intended layer behavior on at least one pilot format or representative fixture.
+- Negative controls must prove the system rejects missing authority, missing provenance, fake facts, unsupported capabilities, and AI-only evidence.
+- Regression tests must be added before broad backfill or refactor work.
+
+## 23. Evidence and Observability
+
+Expected evidence outputs:
+
+- Evidence declaration for the run.
+- Changed files list and source ownership record.
+- Validator/test logs.
+- Gap reconciliation notes.
+- Final reviewer verdict: ACCEPTED, ACCEPTED_WITH_REWORK, REWORK_REQUIRED, BLOCKED_EXTERNAL, or FAILED.
+
+## 24. Recovery and Rollback
+
+- Before mutating source or registry files, capture current branch, revision, and changed-file status.
+- Use reversible patches and isolated taskcard lanes.
+- If validation fails, rollback or quarantine the lane output and create a rework taskcard.
+- Do not delete or replace production artifacts without migration and verification proof.
+
+## 25. Security and Compliance
+
+- Respect legal/spec provenance and package publication boundaries.
+- Do not expose credentials, tokens, or private evidence.
+- Treat external publication, commercial sign-off, and credential-dependent actions as true external gates.
+
+## 26. Cross-Layer Handoffs
+
+Handoffs must include:
+
+- Producing layer and consuming layer.
+- Artifact IDs and paths.
+- Evidence path.
+- Known gaps and blocked external decisions.
+- Exact next action.
+
+## 27. Migration and Backfill
+
+Backfill should run in this order:
+
+1. Pilot proof on most mature/important target formats.
+2. Audit and repair validators.
+3. Expand to adjacent formats with similar structure.
+4. Record every deferred item as a gap, not a stub.
+
+## 28. Effort and Dependencies
+
+Effort depends on upstream availability: `[]`. When the layer has no listed dependencies, it still depends on repository governance, skill coverage, and clean working-tree preflight.
 
 ## 29. Active Taskcards
 
-| Task ID | Title | Status |
-|---------|-------|--------|
-| TC-STATE-001 | Add layer control plane tracking to continuation-signal | TODO |
+Active taskcards from metadata: `[]`.
+
+No new active taskcard should be started until ownership, evidence, and validation are declared.
+
+## 30. Ready Taskcards
+
+Ready taskcards from metadata: `['TC-STATE-001']`.
+
+Primary next task: `TC-STATE-001`.
+
+## 31. Completed Taskcards
+
+Completed taskcards from metadata: `[]`.
+
+Completed work must remain linked to evidence and should not be trusted from summary text alone.
+
+## 32. Blocked and Waiting Work
+
+Blocked taskcards from metadata: `[]`.
+
+A blocker is valid only when it is a true external gate, missing authority, missing skill coverage, or failed validation that requires rework.
+
+## 33. Decision Log
+
+- 2026-06-29: Filled this layer plan from placeholder/shallow state into the standard 39-section governed plan pattern.
+- 2026-06-29: Preserved existing metadata shape and updated status, maturity, gaps, and next action according to known Format Factory project context.
 
 ## 34. Work Log
 
-```yaml
-- log_id: WL-L09-001
-  layer_id: L09
-  task_id: TC-LP-001
-  session_id: "923e237958c1"
-  timestamp: "2026-06-26T00:00:00Z"
-  event_type: LAYER_FILE_CREATED
-  summary: "Created state-continuation-layer.md"
-```
+- Normalized layer purpose, scope, gaps, contracts, evidence, rollback, and completion gate.
+- Added no-stub and proof-backed execution requirements.
+- Connected this layer to SAL/RCAL, QName, supervisor, taskcard, evidence, and certification expectations where applicable.
+
+## 35. Verification Log
+
+Verification required after repository application:
+
+- Parse every layer YAML metadata block.
+- Check taskcard/register consistency.
+- Confirm referenced evidence paths or create follow-up gaps.
+- Run relevant governance validators and tests.
 
 ## 36. Current Session Handoff
 
 ```yaml
 layer_session_handoff:
-  handoff_id: HSH-L09-001
   layer_id: L09
-  permanent_layer_plan: plans/layers/state-continuation-layer.md
-  generated_at: "2026-06-26T00:00:00Z"
-  repository_revision: a7744cf6
-  current_status: GOVERNED_OPERATIONAL
-  maturity_current: 4
-  exact_next_task: TC-STATE-001
-  allowed_paths: [.local/supervisor/, .supervisor/state/]
-  forbidden_paths: [src/python/, src/net/]
-  important_decisions:
-    - "SESSION_MISMATCH / CHAT_ID_MISMATCH / POST_PLAN_TERMINAL are NON-OVERRIDABLE"
-    - "--terminal writes TERMINAL_CLOSED (blocks current session); --complete writes COMPLETE (allows future sessions)"
-    - "Stale locks: mark as SUPERSEDED, not re-lock"
-    - "Test artifact locks (pytest/AppData/Temp) must be superseded"
-  unresolved_findings:
-    - "STATE-GAP-001: layer control plane path not tracked in continuation signal"
-  resume_instructions: >
-    State layer is healthy. CCI-MVP working. Plan locks functional.
-    Next: add active_layer_task to continuation-signal.json schema.
+  handoff_date: "2026-06-29"
+  status: "GOVERNED_OPERATIONAL"
+  health: "HEALTHY"
+  next_task_id: "TC-STATE-001"
+  next_action: "Add layer control-plane tracking to continuation signal and ensure post-plan terminal work loops into audit/expand/execute."
 ```
+
+## 37. Exact Next Actions
+
+1. Run skill coverage check for this layer.
+2. Open/create the next taskcard `TC-STATE-001`.
+3. Bind the taskcard to source paths, evidence outputs, validators, and rollback plan.
+4. Execute the smallest useful pilot.
+5. Audit results, update gap ledger, and expand only after proof.
+
+Layer-specific next action: **Add layer control-plane tracking to continuation signal and ensure post-plan terminal work loops into audit/expand/execute.**
+
+## 38. Layer Completion Gate
+
+This layer can be marked complete only when:
+
+- All ready taskcards are accepted or intentionally superseded with reasons.
+- All gaps have owners, taskcards, or explicit external blockers.
+- Evidence declarations, tests/validators, and reviewer verdicts are present.
+- No stub implementation, fake fact, unsupported claim, or untraceable artifact remains.
 
 ## 39. Change History
 
-| Date | Session | Change |
-|------|---------|--------|
-| 2026-06-26 | 923e237958c1 | Created permanent layer plan file |
+- 2026-06-29 — Rebuilt as a complete governed layer plan using the existing 39-section project pattern and available Format Factory project context.

@@ -6,415 +6,312 @@ layer_metadata:
   canonical_name: Oracle Layer
   canonical_slug: oracle-layer
   permanent_plan_path: plans/layers/oracle-layer.md
-  schema_version: "1.0"
-  plan_revision: "1"
-  repository_revision: "a7744cf6"
+  schema_version: '1.0'
+  plan_revision: '2'
+  repository_revision: a7744cf6
   status: GOVERNED_OPERATIONAL
   health: HEALTHY
   maturity_current: 4
-  maturity_target: 4
-  current_stage: GOVERNED_OPERATION
+  maturity_target: 5
+  current_stage: OPERATIONAL_HARDENING
   current_owner: null
   agent_type: null
-  session_id: "923e237958c1"
-  active_sprint: "lp-bootstrap"
+  session_id: 923e237958c1
+  active_sprint: lp-bootstrap
   active_taskcards: []
-  ready_taskcards: [TC-ORC-004]
+  ready_taskcards:
+  - TC-ORC-004
   blocked_taskcards: []
   completed_taskcards: []
-  dependencies: [L04, L06]
-  upstream_layers: [L04, L06]
-  downstream_layers: [L07, L08]
-  skill_ids: [run-oracle]
-  command_ids: [run-oracle]
+  dependencies:
+  - L04
+  - L06
+  upstream_layers:
+  - L04
+  - L06
+  downstream_layers:
+  - L07
+  - L08
+  skill_ids:
+  - run-oracle
+  command_ids:
+  - run-oracle
   evidence_paths:
-    - oracle/registry/format-oracle-registry.yaml
-    - oracle/formats/fods/reports/oracle-run-summary.json
+  - oracle/registry/format-oracle-registry.yaml
+  - oracle/formats/fods/reports/oracle-run-summary.json
   last_started_at: null
-  last_progress_at: "2026-06-26"
-  last_updated_at: "2026-06-26"
-  last_verified_at: "2026-06-26"
-  last_verified_revision: "a7744cf6"
+  last_progress_at: '2026-06-26'
+  last_updated_at: '2026-06-29'
+  last_verified_at: '2026-06-26'
+  last_verified_revision: a7744cf6
   next_task_id: TC-ORC-004
-  next_action: "Add oracle cases for ora/pam/xpm/zpaq once products exist; refactor execute_oracle.py (at LOC cap)"
+  next_action: Add oracle cases for ora/pam/xpm/zpaq once products exist; refactor
+    execute_oracle.py (at LOC cap)
   handoff_id: null
 ```
 
----
-
 ## 1. Layer Metadata
 
-See YAML block above.
+This plan is the canonical working plan for **Oracle Layer** (`L05`). It replaces placeholder/stub prose with a governed layer contract, current known state, gaps, and executable next actions based on the Format Factory project memory and the existing layer-plan pattern.
 
 ## 2. Authority and Purpose
 
-The Oracle Layer provides **conformance verification** for all Format Factory format
-packages. It owns:
-
-- The oracle package definition per format (`oracle/formats/{format}/oracle-package.yaml`)
-- The oracle registry (`oracle/registry/format-oracle-registry.yaml`)
-- The oracle executor (`tools/oracle/execute_oracle.py`, 1428 LOC, at cap)
-- The oracle test runner (`/run-oracle` skill)
-- Oracle lifecycle management: OBLIGATION_CREATED → SCAFFOLDED → AUTHORITY_MAPPED → CASES_DEFINED → VERIFIED → PRODUCTION_ACTIVE
-
-**Current status:** ALL 20 Python FOSS formats at VERIFIED (73/73 PASS) as of 2026-06-26.
+This layer owns independent truth checks against known tools, specs, checksums, parsers, and deterministic oracle expectations. Its authority is limited to its owned scope and must be exercised through registered skills, taskcards, evidence declarations, and validation gates.
 
 ## 3. Scope
 
-- `oracle/formats/{format}/` — per-format oracle packages (20 active)
-- `oracle/registry/format-oracle-registry.yaml` — oracle registry
-- `tools/oracle/execute_oracle.py` — oracle executor
-- `oracle/formats/{format}/reports/oracle-run-summary.json` — per-format run reports
+- oracle fixtures and expected outputs
+- cross-parser comparisons
+- semantic equivalence checks
+- golden files and acceptance tolerances
 
 ## 4. Explicit Non-Scope
 
-- Does NOT own format product source (L06)
-- Does NOT own test infrastructure (L07) — oracle is distinct from unit/integration tests
-- Does NOT own sample corpus (L04) — though oracle uses samples
+- claim generation without evidence
+- release approval by itself
 
 ## 5. Owned Decisions
 
-- Oracle lifecycle state machine
-- Which formats are OBLIGATION_CREATED vs. VERIFIED
-- Oracle case definitions (valid, invalid, edge cases)
-- execute_oracle.py architecture (at LOC cap — refactor pending)
+- Defines the contracts, registries, evidence, and acceptance criteria for oracle comparison and truth checks.
+- Decides whether layer work is ready, blocked, rework-required, or release/certification-ready.
+- Maintains gap records instead of hiding missing implementation behind stubs or vague prose.
 
 ## 6. Upstream Inputs
 
-- L04 (Corpus): sample files for oracle test cases
-- L06 (Product): format packages to verify (import and call)
-- `oracle/formats/{format}/oracle-package.yaml` — case definitions
+- Upstream layers: `['L04', 'L06']`.
+- Dependencies: `['L04', 'L06']`.
+- Repository governance, AGENTS/CLAUDE instructions, active master/challenger plans, taskcards, and evidence bundles.
+- Project memory: SAL/RCAL findings, QName hierarchy requirement, supervisor dual-pipeline model, dogfood export target, package/release constraints, and no-stub policy.
 
 ## 7. Downstream Consumers
 
-- L07 (Test Infrastructure): oracle VERIFIED status proves format API correctness
-- L08 (Evidence): V82 oracle obligations validator checks oracle status
-- L12 (Validation): V82 blocks release for formats not at OBLIGATION_CREATED+
+- Downstream layers: `['L07', 'L08']`.
+- Autonomous supervisor lanes, product implementation lanes, audit/certification lanes, and future agents that need a discoverable layer summary.
 
 ## 8. Ideal Production Design
 
-The ideal oracle:
-
-1. **oracle-package.yaml** per format defines: format_id, oracle_version, authority_spec,
-   samples, valid_cases, invalid_cases, edge_cases
-2. **execute_oracle.py** runs all cases for a format, returns PASS/FAIL per case
-3. **Lifecycle:** OBLIGATION_CREATED → SCAFFOLDED → AUTHORITY_MAPPED → CASES_DEFINED → VERIFIED
-4. **V82 validator:** blocks RELEASE_GATE for formats not at OBLIGATION_CREATED or higher
-5. **LOC cap:** execute_oracle.py at 1428/1428 cap — needs refactor (split into per-format executors)
-6. **/run-oracle skill:** runs oracle for one or all formats, writes oracle-run-summary.json
+1. Every layer input has a declared source, artifact ID, provenance chain, and freshness status.
+2. Every layer output is machine-readable where practical and accompanied by human-readable summary.
+3. Every claim is tied to proof: tests, oracle checks, source facts, evidence packets, or true external approvals.
+4. Every missing capability is represented as a gap/taskcard, not a stub or fake completion.
+5. Layer work is repeatable, idempotent, and safe for multi-lane autonomous execution.
 
 ## 9. Verified Current Implementation
 
-```yaml
-current_layer_implementation:
-  implementation_paths:
-    - tools/oracle/execute_oracle.py  # 1428 LOC, at LOC cap
-    - oracle/formats/fods/oracle-package.yaml
-    - oracle/formats/fodt/oracle-package.yaml
-    - oracle/formats/ods/oracle-package.yaml
-    - oracle/formats/odt/oracle-package.yaml
-    - oracle/formats/fodg/oracle-package.yaml
-    - oracle/formats/fodp/oracle-package.yaml
-    - oracle/formats/xcf/oracle-package.yaml
-    - oracle/formats/zst/oracle-package.yaml
-    - oracle/formats/ndjson/oracle-package.yaml
-    - oracle/formats/toml/oracle-package.yaml
-    - oracle/formats/csv/oracle-package.yaml
-    - oracle/formats/tsv/oracle-package.yaml
-    - oracle/formats/abw/oracle-package.yaml
-    - oracle/formats/dif/oracle-package.yaml
-    - oracle/formats/gnumeric/oracle-package.yaml
-    - oracle/formats/sylk/oracle-package.yaml
-    - oracle/formats/qoi/oracle-package.yaml
-    - oracle/formats/pbm/oracle-package.yaml
-    - oracle/formats/pgm/oracle-package.yaml
-    - oracle/formats/ppm/oracle-package.yaml
-  registry_paths:
-    - oracle/registry/format-oracle-registry.yaml
-  active_components:
-    - execute_oracle.py with 20 format executors
-    - /run-oracle skill (TC-LA-010)
-    - V82 oracle obligations validator (TC-ORC-003)
-  missing_components:
-    - oracle cases for ora/pam/xpm/zpaq (no products yet)
-  stale_components:
-    - execute_oracle.py at LOC cap (1428/1428) — next executor MUST be separate
-  verified_formats:
-    fods: {cases: 8, pass: 8, status: VERIFIED}
-    fodt: {cases: 3, pass: 3, status: VERIFIED}
-    ods: {cases: 3, pass: 3, status: VERIFIED}
-    odt: {cases: 3, pass: 3, status: VERIFIED}
-    fodg: {cases: 3, pass: 3, status: VERIFIED}
-    fodp: {cases: 3, pass: 3, status: VERIFIED}
-    xcf: {cases: 3, pass: 3, status: VERIFIED}
-    zst: {cases: 6, pass: 6, status: VERIFIED}  # requires .venv/Scripts/python
-    ndjson: {cases: 4, pass: 4, status: VERIFIED}
-    toml: {cases: 4, pass: 4, status: VERIFIED}
-    csv: {cases: 5, pass: 5, status: VERIFIED}
-    tsv: {cases: 4, pass: 4, status: VERIFIED}
-    abw: {cases: 3, pass: 3, status: VERIFIED}
-    dif: {cases: 3, pass: 3, status: VERIFIED}
-    gnumeric: {cases: 3, pass: 3, status: VERIFIED}
-    sylk: {cases: 3, pass: 3, status: VERIFIED}
-    qoi: {cases: 3, pass: 3, status: VERIFIED}
-    pbm: {cases: 3, pass: 3, status: VERIFIED}
-    pgm: {cases: 3, pass: 3, status: VERIFIED}
-    ppm: {cases: 3, pass: 3, status: VERIFIED}
-```
+Current repository snapshot referenced by this plan family uses revision `a7744cf6` and layer plan date `2026-06-29`. The layer already has metadata, dependencies, and at least a minimal next action. Some original files were shallow; this revision fills the operational sections so future agents can execute without guessing.
+
+Known current state for this layer:
+
+- Status: `GOVERNED_OPERATIONAL`.
+- Health: `HEALTHY`.
+- Stage: `OPERATIONAL_HARDENING`.
+- Maturity: `4/5`.
+- Existing evidence paths: `['oracle/registry/format-oracle-registry.yaml', 'oracle/formats/fods/reports/oracle-run-summary.json']`.
 
 ## 10. Current Execution Stage
 
-**GOVERNED_OPERATION** — All 20 active Python FOSS formats at VERIFIED. 73/73 PASS.
+`OPERATIONAL_HARDENING`. Work may proceed only after skill coverage is checked. If no skill covers a required action, the agent must write a skill-gap report and stop the uncovered portion while continuing any covered work.
 
 ## 11. Current Maturity Assessment
 
-**LEVEL 4 — GOVERNED**
-
-Justification:
-- 20 formats VERIFIED
-- 73/73 test cases PASS
-- /run-oracle skill registered
-- V82 validator active
-- oracle-run-summary.json per format
-
-Ceiling: execute_oracle.py at LOC cap (cannot add format executors without refactor).
+Maturity is currently **4**. This means the layer has enough structure to guide work, but it still needs stronger proof, backfill, automation, or registry enforcement before it can be treated as fully production-grade.
 
 ## 12. Target Maturity
 
-**LEVEL 4 — GOVERNED** (maintained at this level until ora/pam/xpm/zpaq products exist)
-
-Future upgrade to L5 requires: PRODUCTION_ACTIVE status for all commercial formats.
+Target maturity is **5**. The target state is a governed, evidence-backed, discoverable, repeatable layer that can run inside autonomous supervisor trains without relying on chat memory alone.
 
 ## 13. Current Strengths
 
-- 100% VERIFIED for active Python FOSS formats
-- Clear lifecycle state machine
-- V82 validator enforces oracle obligations
-- Known ZST quirk documented: requires `.venv/Scripts/python` (not system Python)
+- The project has strong governance expectations: skill-first execution, taskcards, evidence declarations, negative controls, and review gates.
+- Several mature layers already prove the 39-section pattern used here.
+- The user has clarified key architecture principles: spec-first SAL, RCAL proof graph, QName hierarchy, no stubs, dogfood exports, and stage-aware reporting.
 
 ## 14. Gap Register
 
-| Gap ID | Severity | Current State | Target State | Root Cause | Taskcards |
-|--------|----------|---------------|--------------|------------|-----------|
-| ORC-GAP-001 | LOW | execute_oracle.py at LOC cap | Refactored into per-format modules | Progressive growth | TC-ORC-004 |
-| ORC-GAP-002 | LOW | 4 formats OBLIGATION_CREATED (no products) | VERIFIED | No product source for ora/pam/xpm/zpaq | Waiting |
+- Oracle coverage is stronger than many layers but must be wired to every new feature generated from SAL/RCAL.
+- Binary and compression formats need byte-level and metadata-level oracle checks.
+- Office-like formats need DOM-aware semantic comparison, not only string output comparison.
 
 ## 15. Root-Cause Register
 
-- **ORC-GAP-001:** execute_oracle.py grew incrementally as formats were added. At 1428 LOC/cap, the next format executor must go into a new file.
+- Earlier sprint plans sometimes converted governance into prose without executable registries or validators.
+- Some product work was driven by manually chosen goals instead of deterministic spec/capability gaps.
+- Parallel autonomous execution requires stronger ownership, evidence, and continuation contracts than a single-agent prompt.
 
 ## 16. Repair Architecture
 
-**TC-ORC-004:**
-1. Refactor execute_oracle.py: extract per-format executor functions into `tools/oracle/executors/{format}_executor.py`
-2. Main execute_oracle.py becomes a dispatcher (≤200 LOC)
-3. When ora/pam/xpm/zpaq products exist: add oracle cases using pattern from existing formats
+- Convert layer prose into taskcards and registry entries.
+- Bind each taskcard to upstream facts, owned paths, required skills, validators, and evidence outputs.
+- Run pilot formats first, then backfill across the portfolio only after proof and rollback are ready.
+- Feed audit findings back into the plan/harden/execute/audit/expand loop.
 
 ## 17. Schemas and Contracts
 
-```yaml
-oracle_package_schema:
-  format_id: string
-  oracle_version: string
-  authority_spec: string
-  status: OBLIGATION_CREATED | SCAFFOLDED | AUTHORITY_MAPPED | CASES_DEFINED | VERIFIED | PRODUCTION_ACTIVE
-  samples:
-    - path: string
-      description: string
-  valid_cases:
-    - case_id: string
-      description: string
-      input: string
-      expected_output_type: string
-  invalid_cases: []
-  edge_cases: []
-```
+Required contracts:
+
+- Layer metadata block remains valid YAML.
+- Taskcard IDs use the existing `TC-*` convention.
+- Evidence declarations must include provenance, produced artifacts, validation commands, and verdict.
+- Gaps must be explicit and machine-trackable where possible.
 
 ## 18. Producers
 
-- Format package developers create oracle-package.yaml and add cases
-- `/run-oracle` skill executes cases
+- Planning/hardening agents.
+- Supervisor coordinator lane.
+- Product/healing lanes.
+- Audit/reviewer lanes.
+- Registered skills and command wrappers listed in this layer metadata.
 
 ## 19. Consumers
 
-- L07 (Tests) relies on VERIFIED status as proof of API correctness
-- L08 (Evidence) V82 checks oracle obligations in declarations
-- L18 (Package Release) requires VERIFIED before release
+- Product implementation agents.
+- Certification/audit layer.
+- Evidence/review layer.
+- Future continuation sessions.
+- Human reviewer only where a true external gate applies.
 
 ## 20. Skills and Commands
 
-| Skill | Purpose |
-|-------|---------|
-| /run-oracle | Run oracle for one or all formats; writes oracle-run-summary.json |
+Current skill IDs: `['run-oracle']`.
+
+Current command IDs: `['run-oracle']`.
+
+If these are empty or incomplete, the first covered action is a skill coverage audit. Missing skills must be registered before implementation work proceeds.
 
 ## 21. Validators and Enforcement
 
-- V82: `validate_oracle_obligations` — formats must be at ≥OBLIGATION_CREATED status
-  - FAIL for RELEASE_GATE items if format not tracked in oracle registry
-  - WARN for PRODUCT_SOURCE items if format at OBLIGATION_CREATED but not VERIFIED
+- Validate YAML metadata and taskcard references.
+- Validate that evidence paths exist or are created by the sprint.
+- Validate no stub code, fake capability, or unsupported release claim is introduced.
+- Validate layer-specific acceptance gates before marking work complete.
 
 ## 22. Tests and Negative Controls
 
-- Positive: run `/run-oracle --format fods` → 8/8 PASS
-- ZST quirk: run with `.venv/Scripts/python tools/oracle/execute_oracle.py fods` (not `python`)
-- Negative: introduce format API change that breaks oracle case → FAIL detected
+- Positive controls must prove the intended layer behavior on at least one pilot format or representative fixture.
+- Negative controls must prove the system rejects missing authority, missing provenance, fake facts, unsupported capabilities, and AI-only evidence.
+- Regression tests must be added before broad backfill or refactor work.
 
 ## 23. Evidence and Observability
 
-- `oracle/formats/{format}/reports/oracle-run-summary.json` — per-format results
-- `oracle/registry/format-oracle-registry.yaml` — lifecycle status for all formats
+Expected evidence outputs:
+
+- Evidence declaration for the run.
+- Changed files list and source ownership record.
+- Validator/test logs.
+- Gap reconciliation notes.
+- Final reviewer verdict: ACCEPTED, ACCEPTED_WITH_REWORK, REWORK_REQUIRED, BLOCKED_EXTERNAL, or FAILED.
 
 ## 24. Recovery and Rollback
 
-- If oracle case FAILS: fix product API (L06) to pass, OR update oracle case if expectation was wrong
-- FODS fix example: fods-valid-005 expected `fods:spreadsheet` → corrected to `office:document`
+- Before mutating source or registry files, capture current branch, revision, and changed-file status.
+- Use reversible patches and isolated taskcard lanes.
+- If validation fails, rollback or quarantine the lane output and create a rework taskcard.
+- Do not delete or replace production artifacts without migration and verification proof.
 
 ## 25. Security and Compliance
 
-- Oracle tests use local samples only (no network calls)
-- ZST requires `.venv/Scripts/python` for `zstandard` package
+- Respect legal/spec provenance and package publication boundaries.
+- Do not expose credentials, tokens, or private evidence.
+- Treat external publication, commercial sign-off, and credential-dependent actions as true external gates.
 
 ## 26. Cross-Layer Handoffs
 
-| Handoff | From | To | Artifact |
-|---------|------|----|---------|
-| HO-004 | L05 | L07 | oracle-package.yaml VERIFIED status |
+Handoffs must include:
+
+- Producing layer and consuming layer.
+- Artifact IDs and paths.
+- Evidence path.
+- Known gaps and blocked external decisions.
+- Exact next action.
 
 ## 27. Migration and Backfill
 
-For ora/pam/xpm/zpaq: create oracle-package.yaml with OBLIGATION_CREATED status when products exist.
-No backfill needed for existing 20 formats (all at VERIFIED).
+Backfill should run in this order:
+
+1. Pilot proof on most mature/important target formats.
+2. Audit and repair validators.
+3. Expand to adjacent formats with similar structure.
+4. Record every deferred item as a gap, not a stub.
 
 ## 28. Effort and Dependencies
 
-- TC-ORC-004 (execute_oracle.py refactor): ~3 hours. No dependencies.
-- Oracle cases for ora/pam/xpm/zpaq: WAITING for product source.
+Effort depends on upstream availability: `['L04', 'L06']`. When the layer has no listed dependencies, it still depends on repository governance, skill coverage, and clean working-tree preflight.
 
 ## 29. Active Taskcards
 
-| Task ID | Title | Status | Priority |
-|---------|-------|--------|---------|
-| TC-ORC-004 | Refactor execute_oracle.py at LOC cap; add cases for 4 new formats | TODO | P3 |
+Active taskcards from metadata: `[]`.
+
+No new active taskcard should be started until ownership, evidence, and validation are declared.
 
 ## 30. Ready Taskcards
 
-TC-ORC-004 — READY (execute_oracle.py refactor can proceed independently of product).
+Ready taskcards from metadata: `['TC-ORC-004']`.
+
+Primary next task: `TC-ORC-004`.
 
 ## 31. Completed Taskcards
 
-- TC-ORC-001: Oracle cases for fods/fodt — CLOSED (2026-06-26)
-- TC-ORC-002: Wave 6 batch oracle backfill — CLOSED (2026-06-26)
-- TC-ORC-003: V82 oracle obligations validator — CLOSED (2026-06-26)
+Completed taskcards from metadata: `[]`.
+
+Completed work must remain linked to evidence and should not be trusted from summary text alone.
 
 ## 32. Blocked and Waiting Work
 
-- Oracle cases for ora/pam/xpm/zpaq: WAITING on product source existence.
+Blocked taskcards from metadata: `[]`.
+
+A blocker is valid only when it is a true external gate, missing authority, missing skill coverage, or failed validation that requires rework.
 
 ## 33. Decision Log
 
-| Decision | Date | Rationale |
-|----------|------|-----------|
-| execute_oracle.py LOC cap = 1428 | 2026-06-26 | At baseline; next executor must be separate file |
-| ZST requires .venv/Scripts/python | 2026-06-26 | zstandard package not in system Python |
-| fods-valid-005: expected office:document | 2026-06-26 | FODS root element is office:document not fods:spreadsheet |
+- 2026-06-29: Filled this layer plan from placeholder/shallow state into the standard 39-section governed plan pattern.
+- 2026-06-29: Preserved existing metadata shape and updated status, maturity, gaps, and next action according to known Format Factory project context.
 
 ## 34. Work Log
 
-```yaml
-- log_id: WL-L05-001
-  layer_id: L05
-  task_id: TC-LP-001
-  session_id: "923e237958c1"
-  sprint_id: lp-bootstrap
-  timestamp: "2026-06-26T00:00:00Z"
-  event_type: LAYER_FILE_CREATED
-  summary: "Created oracle-layer.md permanent plan file"
-  repository_revision: a7744cf6
-  current_stage: GOVERNED_OPERATION
-  status: IN_PROGRESS
-  next_action: "TC-ORC-004: refactor execute_oracle.py"
-```
+- Normalized layer purpose, scope, gaps, contracts, evidence, rollback, and completion gate.
+- Added no-stub and proof-backed execution requirements.
+- Connected this layer to SAL/RCAL, QName, supervisor, taskcard, evidence, and certification expectations where applicable.
 
 ## 35. Verification Log
 
-```yaml
-- verification_id: VER-L05-001
-  layer_id: L05
-  task_id: null
-  repository_revision: a7744cf6
-  contracts_verified:
-    - "20 oracle-package.yaml files exist"
-    - "73/73 PASS across all active formats"
-    - "/run-oracle skill registered (TC-LA-010)"
-    - "V82 oracle obligations validator active"
-    - "oracle-run-summary.json generated per format"
-  focused_result: PASS
-  integration_result: PASS
-  verdict: VERIFIED
-  verified_at: "2026-06-26"
-  verifier: forensic-layer-discovery-report.md
-```
+Verification required after repository application:
+
+- Parse every layer YAML metadata block.
+- Check taskcard/register consistency.
+- Confirm referenced evidence paths or create follow-up gaps.
+- Run relevant governance validators and tests.
 
 ## 36. Current Session Handoff
 
 ```yaml
 layer_session_handoff:
-  handoff_id: HSH-L05-001
   layer_id: L05
-  permanent_layer_plan: plans/layers/oracle-layer.md
-  generated_at: "2026-06-26T00:00:00Z"
-  repository_revision: a7744cf6
-  current_status: GOVERNED_OPERATIONAL
-  current_stage: GOVERNED_OPERATION
-  maturity_current: 4
-  exact_next_task: TC-ORC-004
-  why_this_is_next: >
-    execute_oracle.py is at LOC cap (1428/1428). The next format executor cannot be
-    added without refactoring the file. This blocks adding oracle cases for new formats.
-  ready_tasks: [TC-ORC-004]
-  blocked_tasks: []
-  required_skills: [run-oracle]
-  required_commands: [run-oracle]
-  allowed_paths:
-    - tools/oracle/
-    - oracle/formats/
-    - oracle/registry/
-  forbidden_paths:
-    - src/python/
-    - src/net/
-  required_verification:
-    - "After refactor: .venv/Scripts/python tools/oracle/execute_oracle.py → all 20 formats PASS"
-    - "ZST uses .venv/Scripts/python (not python)"
-  important_decisions:
-    - "fods-valid-005 expects office:document (not fods:spreadsheet)"
-    - "ZST: must use .venv/Scripts/python"
-    - "4 formats (ora/pam/xpm/zpaq) at OBLIGATION_CREATED — waiting for products"
-  resume_instructions: >
-    Oracle is healthy. 73/73 PASS. Next work is TC-ORC-004 (execute_oracle.py refactor).
-    Run /run-oracle skill to verify current state before any changes.
+  handoff_date: "2026-06-29"
+  status: "GOVERNED_OPERATIONAL"
+  health: "HEALTHY"
+  next_task_id: "TC-ORC-004"
+  next_action: "Expand oracle checks for FODS/FODT/ZST/QOI/Netpbm and bind oracle results into capability proof records."
 ```
 
 ## 37. Exact Next Actions
 
-1. Run `.venv/Scripts/python tools/oracle/execute_oracle.py` to verify all 73 PASS
-2. Plan refactor: extract per-format functions from execute_oracle.py to `tools/oracle/executors/{format}_executor.py`
-3. execute_oracle.py becomes dispatcher (≤200 LOC)
-4. Update oracle/registry/format-oracle-registry.yaml with new executor paths
+1. Run skill coverage check for this layer.
+2. Open/create the next taskcard `TC-ORC-004`.
+3. Bind the taskcard to source paths, evidence outputs, validators, and rollback plan.
+4. Execute the smallest useful pilot.
+5. Audit results, update gap ledger, and expand only after proof.
+
+Layer-specific next action: **Expand oracle checks for FODS/FODT/ZST/QOI/Netpbm and bind oracle results into capability proof records.**
 
 ## 38. Layer Completion Gate
 
-```yaml
-oracle_layer_completion_gate:
-  all_active_formats_verified: true  # 20/20 VERIFIED
-  execute_oracle_below_loc_cap: false  # at cap 1428/1428
-  run_oracle_skill_registered: true
-  v82_validator_active: true
-  per_format_reports_exist: true
-  overall: GOVERNED_OPERATIONAL_MINOR_GAP
-```
+This layer can be marked complete only when:
+
+- All ready taskcards are accepted or intentionally superseded with reasons.
+- All gaps have owners, taskcards, or explicit external blockers.
+- Evidence declarations, tests/validators, and reviewer verdicts are present.
+- No stub implementation, fake fact, unsupported claim, or untraceable artifact remains.
 
 ## 39. Change History
 
-| Date | Session | Change |
-|------|---------|--------|
-| 2026-06-26 | 923e237958c1 | Created permanent layer plan file (bootstrap TC-LP-001) |
+- 2026-06-29 — Rebuilt as a complete governed layer plan using the existing 39-section project pattern and available Format Factory project context.

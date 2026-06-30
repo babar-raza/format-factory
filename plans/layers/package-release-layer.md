@@ -6,78 +6,302 @@ layer_metadata:
   canonical_name: Package Release Layer
   canonical_slug: package-release-layer
   permanent_plan_path: plans/layers/package-release-layer.md
-  schema_version: "1.0"
-  plan_revision: "1"
-  repository_revision: "a7744cf6"
-  status: NOT_ASSESSED
-  health: UNKNOWN
-  maturity_current: 1
-  maturity_target: 3
-  current_stage: DISCOVERY
+  schema_version: '1.0'
+  plan_revision: '2'
+  repository_revision: a7744cf6
+  status: HARDENING_REQUIRED
+  health: DEGRADED
+  maturity_current: 2
+  maturity_target: 4
+  current_stage: RELEASE_HARDENING
   current_owner: null
-  session_id: "923e237958c1"
-  dependencies: [L06, L17, L21]
-  upstream_layers: [L06, L17, L21]
-  downstream_layers: [L19]
-  skill_ids: [package-install-proof, check-release-boundary, check-gate]
-  command_ids: [package-install-proof, check-release-boundary, check-gate]
-  last_updated_at: "2026-06-26"
+  session_id: 923e237958c1
+  dependencies:
+  - L06
+  - L17
+  - L21
+  upstream_layers:
+  - L06
+  - L17
+  - L21
+  downstream_layers:
+  - L19
+  skill_ids:
+  - package-install-proof
+  - check-release-boundary
+  - check-gate
+  command_ids:
+  - package-install-proof
+  - check-release-boundary
+  - check-gate
+  last_updated_at: '2026-06-29'
   next_task_id: TC-PKG-001
-  next_action: "BLOCKED_EXTERNAL: Gate 11 execution requires Babar Raza approval before PyPI/NuGet release"
+  next_action: 'BLOCKED_EXTERNAL: Gate 11 execution requires Babar Raza approval before
+    PyPI/NuGet release'
 ```
+
+## 1. Layer Metadata
+
+This plan is the canonical working plan for **Package Release Layer** (`L18`). It replaces placeholder/stub prose with a governed layer contract, current known state, gaps, and executable next actions based on the Format Factory project memory and the existing layer-plan pattern.
 
 ## 2. Authority and Purpose
 
-Owns the package release pipeline: PyPI (Python) and NuGet (.NET) publication.
-Currently BLOCKED on Gate 11 execution (Babar Raza commercial sign-off).
+This layer owns package manager publication, CI release workflows, credentials, versioning, icons/metadata, and release evidence. Its authority is limited to its owned scope and must be exercised through registered skills, taskcards, evidence declarations, and validation gates.
 
 ## 3. Scope
 
-- PyPI publication: `src/python/{format}/setup.py` or `pyproject.toml`
-- NuGet publication: `src/net/{format}/*.csproj`
-- Release workflow: `.github/workflows/` (if exists)
-- Gate authority: `registry/format-registry.yaml` — legal_safety, spec_availability scores
+- NuGet/PyPI/npm/Maven workflows
+- release secrets and external gates
+- package metadata and icons
+- local runner and remote Actions verification
 
-## 9. Current Implementation
+## 4. Explicit Non-Scope
 
-- `/package-install-proof` skill registered
-- `/check-release-boundary` skill registered
-- `/check-gate` skill registered
-- Gate 11 G11-G APPROVED by Babar Raza for FODS/FODT/Netpbm
-- Gate 11 EXECUTION (commercial release) NOT yet approved
+- publishing without external credentials/approval
+- release claims without artifacts
+
+## 5. Owned Decisions
+
+- Defines the contracts, registries, evidence, and acceptance criteria for package publication and release workflows.
+- Decides whether layer work is ready, blocked, rework-required, or release/certification-ready.
+- Maintains gap records instead of hiding missing implementation behind stubs or vague prose.
+
+## 6. Upstream Inputs
+
+- Upstream layers: `['L06', 'L17', 'L21']`.
+- Dependencies: `['L06', 'L17', 'L21']`.
+- Repository governance, AGENTS/CLAUDE instructions, active master/challenger plans, taskcards, and evidence bundles.
+- Project memory: SAL/RCAL findings, QName hierarchy requirement, supervisor dual-pipeline model, dogfood export target, package/release constraints, and no-stub policy.
+
+## 7. Downstream Consumers
+
+- Downstream layers: `['L19']`.
+- Autonomous supervisor lanes, product implementation lanes, audit/certification lanes, and future agents that need a discoverable layer summary.
+
+## 8. Ideal Production Design
+
+1. Every layer input has a declared source, artifact ID, provenance chain, and freshness status.
+2. Every layer output is machine-readable where practical and accompanied by human-readable summary.
+3. Every claim is tied to proof: tests, oracle checks, source facts, evidence packets, or true external approvals.
+4. Every missing capability is represented as a gap/taskcard, not a stub or fake completion.
+5. Layer work is repeatable, idempotent, and safe for multi-lane autonomous execution.
+
+## 9. Verified Current Implementation
+
+Current repository snapshot referenced by this plan family uses revision `a7744cf6` and layer plan date `2026-06-29`. The layer already has metadata, dependencies, and at least a minimal next action. Some original files were shallow; this revision fills the operational sections so future agents can execute without guessing.
+
+Known current state for this layer:
+
+- Status: `HARDENING_REQUIRED`.
+- Health: `DEGRADED`.
+- Stage: `RELEASE_HARDENING`.
+- Maturity: `2/4`.
+- Existing evidence paths: `[]`.
+
+## 10. Current Execution Stage
+
+`RELEASE_HARDENING`. Work may proceed only after skill coverage is checked. If no skill covers a required action, the agent must write a skill-gap report and stop the uncovered portion while continuing any covered work.
+
+## 11. Current Maturity Assessment
+
+Maturity is currently **2**. This means the layer has enough structure to guide work, but it still needs stronger proof, backfill, automation, or registry enforcement before it can be treated as fully production-grade.
+
+## 12. Target Maturity
+
+Target maturity is **4**. The target state is a governed, evidence-backed, discoverable, repeatable layer that can run inside autonomous supervisor trains without relying on chat memory alone.
+
+## 13. Current Strengths
+
+- The project has strong governance expectations: skill-first execution, taskcards, evidence declarations, negative controls, and review gates.
+- Several mature layers already prove the 39-section pattern used here.
+- The user has clarified key architecture principles: spec-first SAL, RCAL proof graph, QName hierarchy, no stubs, dogfood exports, and stage-aware reporting.
 
 ## 14. Gap Register
 
-| Gap ID | Severity | Current | Target | Status |
-|--------|----------|---------|--------|--------|
-| PKG-GAP-001 | CRITICAL | Gate 11 execution not approved | Babar Raza sign-off received | BLOCKED_EXTERNAL |
+- NuGet asposefoss has several products but some missed icons in first release.
+- PyPI org remains pending; Maven Central workflow has a Java pilot.
+- Local runner/act distinction must be clear and repeatable.
+
+## 15. Root-Cause Register
+
+- Earlier sprint plans sometimes converted governance into prose without executable registries or validators.
+- Some product work was driven by manually chosen goals instead of deterministic spec/capability gaps.
+- Parallel autonomous execution requires stronger ownership, evidence, and continuation contracts than a single-agent prompt.
+
+## 16. Repair Architecture
+
+- Convert layer prose into taskcards and registry entries.
+- Bind each taskcard to upstream facts, owned paths, required skills, validators, and evidence outputs.
+- Run pilot formats first, then backfill across the portfolio only after proof and rollback are ready.
+- Feed audit findings back into the plan/harden/execute/audit/expand loop.
+
+## 17. Schemas and Contracts
+
+Required contracts:
+
+- Layer metadata block remains valid YAML.
+- Taskcard IDs use the existing `TC-*` convention.
+- Evidence declarations must include provenance, produced artifacts, validation commands, and verdict.
+- Gaps must be explicit and machine-trackable where possible.
+
+## 18. Producers
+
+- Planning/hardening agents.
+- Supervisor coordinator lane.
+- Product/healing lanes.
+- Audit/reviewer lanes.
+- Registered skills and command wrappers listed in this layer metadata.
+
+## 19. Consumers
+
+- Product implementation agents.
+- Certification/audit layer.
+- Evidence/review layer.
+- Future continuation sessions.
+- Human reviewer only where a true external gate applies.
+
+## 20. Skills and Commands
+
+Current skill IDs: `['package-install-proof', 'check-release-boundary', 'check-gate']`.
+
+Current command IDs: `['package-install-proof', 'check-release-boundary', 'check-gate']`.
+
+If these are empty or incomplete, the first covered action is a skill coverage audit. Missing skills must be registered before implementation work proceeds.
+
+## 21. Validators and Enforcement
+
+- Validate YAML metadata and taskcard references.
+- Validate that evidence paths exist or are created by the sprint.
+- Validate no stub code, fake capability, or unsupported release claim is introduced.
+- Validate layer-specific acceptance gates before marking work complete.
+
+## 22. Tests and Negative Controls
+
+- Positive controls must prove the intended layer behavior on at least one pilot format or representative fixture.
+- Negative controls must prove the system rejects missing authority, missing provenance, fake facts, unsupported capabilities, and AI-only evidence.
+- Regression tests must be added before broad backfill or refactor work.
+
+## 23. Evidence and Observability
+
+Expected evidence outputs:
+
+- Evidence declaration for the run.
+- Changed files list and source ownership record.
+- Validator/test logs.
+- Gap reconciliation notes.
+- Final reviewer verdict: ACCEPTED, ACCEPTED_WITH_REWORK, REWORK_REQUIRED, BLOCKED_EXTERNAL, or FAILED.
+
+## 24. Recovery and Rollback
+
+- Before mutating source or registry files, capture current branch, revision, and changed-file status.
+- Use reversible patches and isolated taskcard lanes.
+- If validation fails, rollback or quarantine the lane output and create a rework taskcard.
+- Do not delete or replace production artifacts without migration and verification proof.
+
+## 25. Security and Compliance
+
+- Respect legal/spec provenance and package publication boundaries.
+- Do not expose credentials, tokens, or private evidence.
+- Treat external publication, commercial sign-off, and credential-dependent actions as true external gates.
+
+## 26. Cross-Layer Handoffs
+
+Handoffs must include:
+
+- Producing layer and consuming layer.
+- Artifact IDs and paths.
+- Evidence path.
+- Known gaps and blocked external decisions.
+- Exact next action.
+
+## 27. Migration and Backfill
+
+Backfill should run in this order:
+
+1. Pilot proof on most mature/important target formats.
+2. Audit and repair validators.
+3. Expand to adjacent formats with similar structure.
+4. Record every deferred item as a gap, not a stub.
+
+## 28. Effort and Dependencies
+
+Effort depends on upstream availability: `['L06', 'L17', 'L21']`. When the layer has no listed dependencies, it still depends on repository governance, skill coverage, and clean working-tree preflight.
+
+## 29. Active Taskcards
+
+Active taskcards from metadata: `[]`.
+
+No new active taskcard should be started until ownership, evidence, and validation are declared.
+
+## 30. Ready Taskcards
+
+Ready taskcards from metadata: `[]`.
+
+Primary next task: `TC-PKG-001`.
+
+## 31. Completed Taskcards
+
+Completed taskcards from metadata: `[]`.
+
+Completed work must remain linked to evidence and should not be trusted from summary text alone.
+
+## 32. Blocked and Waiting Work
+
+Blocked taskcards from metadata: `[]`.
+
+A blocker is valid only when it is a true external gate, missing authority, missing skill coverage, or failed validation that requires rework.
+
+## 33. Decision Log
+
+- 2026-06-29: Filled this layer plan from placeholder/shallow state into the standard 39-section governed plan pattern.
+- 2026-06-29: Preserved existing metadata shape and updated status, maturity, gaps, and next action according to known Format Factory project context.
+
+## 34. Work Log
+
+- Normalized layer purpose, scope, gaps, contracts, evidence, rollback, and completion gate.
+- Added no-stub and proof-backed execution requirements.
+- Connected this layer to SAL/RCAL, QName, supervisor, taskcard, evidence, and certification expectations where applicable.
+
+## 35. Verification Log
+
+Verification required after repository application:
+
+- Parse every layer YAML metadata block.
+- Check taskcard/register consistency.
+- Confirm referenced evidence paths or create follow-up gaps.
+- Run relevant governance validators and tests.
 
 ## 36. Current Session Handoff
 
 ```yaml
 layer_session_handoff:
-  handoff_id: HSH-L18-001
   layer_id: L18
-  permanent_layer_plan: plans/layers/package-release-layer.md
-  generated_at: "2026-06-26T00:00:00Z"
-  current_status: NOT_ASSESSED
-  maturity_current: 1
-  exact_next_task: TC-PKG-001
-  why_this_is_next: >
-    BLOCKED_EXTERNAL: Gate 11 execution requires Babar Raza commercial sign-off.
-    This is a TRUE_EXTERNAL_GATE — agent preparation is done; only human authority needed.
-  blocked_tasks: [TC-PKG-001]
-  important_decisions:
-    - "Gate 11 G11-G is APPROVED for FODS/FODT/Netpbm — but only G11 EXECUTION is gated"
-    - "Agent PREPARATION (release packet) is always agent-owned"
-    - "Actual PyPI/NuGet registration requires credentials + Babar Raza sign-off"
-  resume_instructions: >
-    Package release is blocked on Gate 11 execution. Prepare release packets.
-    Run /check-gate to verify readiness. Await Babar Raza sign-off for actual publication.
+  handoff_date: "2026-06-29"
+  status: "HARDENING_REQUIRED"
+  health: "DEGRADED"
+  next_task_id: "TC-PKG-001"
+  next_action: "Standardize package metadata and release checklists for NuGet, Maven, PyPI, and npm with true external gates marked."
 ```
+
+## 37. Exact Next Actions
+
+1. Run skill coverage check for this layer.
+2. Open/create the next taskcard `TC-PKG-001`.
+3. Bind the taskcard to source paths, evidence outputs, validators, and rollback plan.
+4. Execute the smallest useful pilot.
+5. Audit results, update gap ledger, and expand only after proof.
+
+Layer-specific next action: **Standardize package metadata and release checklists for NuGet, Maven, PyPI, and npm with true external gates marked.**
+
+## 38. Layer Completion Gate
+
+This layer can be marked complete only when:
+
+- All ready taskcards are accepted or intentionally superseded with reasons.
+- All gaps have owners, taskcards, or explicit external blockers.
+- Evidence declarations, tests/validators, and reviewer verdicts are present.
+- No stub implementation, fake fact, unsupported claim, or untraceable artifact remains.
 
 ## 39. Change History
 
-| Date | Session | Change |
-|------|---------|--------|
-| 2026-06-26 | 923e237958c1 | Created permanent layer plan file (stub) |
+- 2026-06-29 — Rebuilt as a complete governed layer plan using the existing 39-section project pattern and available Format Factory project context.

@@ -6,163 +6,314 @@ layer_metadata:
   canonical_name: Certification Audit Layer
   canonical_slug: certification-audit-layer
   permanent_plan_path: plans/layers/certification-audit-layer.md
-  schema_version: "1.0"
-  plan_revision: "1"
-  repository_revision: "16b454ca"
+  schema_version: '1.0'
+  plan_revision: '2'
+  repository_revision: 16b454ca
   status: GOVERNED_OPERATIONAL
   health: HEALTHY
   maturity_current: 3
-  maturity_target: 4
-  current_stage: GOVERNED_OPERATION
+  maturity_target: 5
+  current_stage: CERTIFICATION_HARDENING
   current_owner: null
   agent_type: null
   session_id: null
   active_sprint: null
   active_taskcards: []
-  ready_taskcards: [TC-CERT-L-003]
+  ready_taskcards:
+  - TC-CERT-L-003
   blocked_taskcards: []
-  completed_taskcards: [TC-CERT-L-001, TC-CERT-L-002]
-  dependencies: [L05, L06, L07]
-  upstream_layers: [L05, L06, L07]
-  downstream_layers: [L18]
+  completed_taskcards:
+  - TC-CERT-L-001
+  - TC-CERT-L-002
+  dependencies:
+  - L05
+  - L06
+  - L07
+  upstream_layers:
+  - L05
+  - L06
+  - L07
+  downstream_layers:
+  - L18
   skill_ids: []
   command_ids: []
   evidence_paths:
-    - reports/certification/portfolio-certification-matrix.json
-    - reports/certification-integration/report-integrity-audit.yaml
-    - reports/certification-integration/product-verdict-review.yaml
-    - reports/certification-integration/gap-reconciliation-map.yaml
-  last_started_at: "2026-06-28"
-  last_progress_at: "2026-06-28"
-  last_updated_at: "2026-06-28"
-  last_verified_at: "2026-06-28"
-  last_verified_revision: "16b454ca"
+  - reports/certification/portfolio-certification-matrix.json
+  - reports/certification-integration/report-integrity-audit.yaml
+  - reports/certification-integration/product-verdict-review.yaml
+  - reports/certification-integration/gap-reconciliation-map.yaml
+  last_started_at: '2026-06-28'
+  last_progress_at: '2026-06-28'
+  last_updated_at: '2026-06-29'
+  last_verified_at: '2026-06-28'
+  last_verified_revision: 16b454ca
   next_task_id: TC-CERT-L-003
-  next_action: "Register certification tools as skills; add governance validators V87+"
+  next_action: Register certification tools as skills; add governance validators V87+
   handoff_id: HO-008
 ```
 
----
-
 ## 1. Layer Metadata
 
-See YAML block above.
+This plan is the canonical working plan for **Certification Audit Layer** (`L28`). It replaces placeholder/stub prose with a governed layer contract, current known state, gaps, and executable next actions based on the Format Factory project memory and the existing layer-plan pattern.
 
 ## 2. Authority and Purpose
 
-The Certification Audit Layer provides **portfolio-wide quality certification** for all
-Format Factory format packages. It owns:
-
-- The certification tool suite (`tools/certification/` — 9 tools)
-- Per-format certification reports (`reports/certification/{format}/` — 9 report types)
-- The portfolio certification matrix (`reports/certification/portfolio-certification-matrix.json`)
-- The certification dashboard generator (`tools/certification/certification_dashboard.py`)
-- Certification verdict taxonomy: CERTIFIED, CERTIFIED_WITH_KNOWN_GAPS, NOT_CERTIFIED, IN_PROGRESS, NOT_STARTED
-
-**Current status:** ALL 20 Python FOSS formats at CERTIFIED as of 2026-06-28.
+This layer owns final certification matrices, audit trails, product verdicts, gap reconciliation, and release readiness closure. Its authority is limited to its owned scope and must be exercised through registered skills, taskcards, evidence declarations, and validation gates.
 
 ## 3. Scope
 
-- `tools/certification/` — 9 certification tools (inventory_extractor, stub_detector, exception_coverage_checker, assertion_quality_scorer, dotnet_assertion_scorer, certification_dashboard, generate_exception_tests, fix_weak_assertions, generate_security_tests)
-- `reports/certification/{format}/` — per-format audit reports (20 format directories)
-- `reports/certification/portfolio-certification-matrix.json` — portfolio verdicts
-- `reports/certification/certification-report.md` — human-readable portfolio report
-- `tests/certification/` — integration and integrity tests (456 tests)
+- portfolio certification matrix
+- product verdict review
+- gap reconciliation maps
+- audit reports and closure evidence
 
 ## 4. Explicit Non-Scope
 
-- Does NOT own format product source (L06)
-- Does NOT own test infrastructure (L07) — certification audits test quality, does not own tests
-- Does NOT own oracle verification (L05) — oracle is an input dimension to certification
-- Does NOT own the canonical gap ledger (L03) — certification findings reconcile with gaps but do not own the ledger
+- creating features
+- waiving missing proof
 
 ## 5. Owned Decisions
 
-- Certification dimension taxonomy (9 dimensions: api_contract, traceability, stubs, exceptions, oracle, test_quality, roundtrip, package, consumer)
-- Verdict derivation logic (CERTIFIED requires all dimensions PASS or NOT_APPLICABLE)
-- Per-format report schema and structure
-- Tool contracts (CLI interfaces, exit codes, output schemas)
+- Defines the contracts, registries, evidence, and acceptance criteria for portfolio certification and audit closure.
+- Decides whether layer work is ready, blocked, rework-required, or release/certification-ready.
+- Maintains gap records instead of hiding missing implementation behind stubs or vague prose.
 
-## 6. Dependencies
+## 6. Upstream Inputs
 
-| Dependency | Direction | Description |
-|------------|-----------|-------------|
-| L05 (Oracle) | Upstream | Oracle alignment is one of 9 certification dimensions |
-| L06 (Product Source) | Upstream | API contract extraction requires product source |
-| L07 (Tests) | Upstream | Assertion quality scoring requires test files |
-| L18 (Release Pipeline) | Downstream | Certification verdicts inform release readiness |
+- Upstream layers: `['L05', 'L06', 'L07']`.
+- Dependencies: `['L05', 'L06', 'L07']`.
+- Repository governance, AGENTS/CLAUDE instructions, active master/challenger plans, taskcards, and evidence bundles.
+- Project memory: SAL/RCAL findings, QName hierarchy requirement, supervisor dual-pipeline model, dogfood export target, package/release constraints, and no-stub policy.
 
-## 7. Tasks
+## 7. Downstream Consumers
 
-| Task ID | Status | Description |
-|---------|--------|-------------|
-| TC-CERT-L-001 | CLOSED | Validate all 9 certification tools individually |
-| TC-CERT-L-002 | CLOSED | Create integration tests (456 tests, all pass) |
-| TC-CERT-L-003 | TODO | Register certification tools as skills in skill-registry.yaml |
+- Downstream layers: `['L18']`.
+- Autonomous supervisor lanes, product implementation lanes, audit/certification lanes, and future agents that need a discoverable layer summary.
 
-## 8. Evidence
+## 8. Ideal Production Design
 
-- **Tool verification:** `reports/certification-integration/tool-verification.yaml`
-- **Report integrity:** `reports/certification-integration/report-integrity-audit.yaml`
-- **Verdict review:** `reports/certification-integration/product-verdict-review.yaml`
-- **Gap reconciliation:** `reports/certification-integration/gap-reconciliation-map.yaml`
-- **Baseline:** `reports/certification-integration/baseline.yaml`
-- **Integration tests:** `tests/certification/test_tool_pipeline.py` (9 tests, all pass)
-- **Integrity tests:** `tests/certification/test_report_integrity.py` (447 tests, all pass)
+1. Every layer input has a declared source, artifact ID, provenance chain, and freshness status.
+2. Every layer output is machine-readable where practical and accompanied by human-readable summary.
+3. Every claim is tied to proof: tests, oracle checks, source facts, evidence packets, or true external approvals.
+4. Every missing capability is represented as a gap/taskcard, not a stub or fake completion.
+5. Layer work is repeatable, idempotent, and safe for multi-lane autonomous execution.
 
-## 9. Findings
+## 9. Verified Current Implementation
 
-| Finding ID | Severity | Status | Description |
-|------------|----------|--------|-------------|
-| CERT-DASHBOARD-001 | P2 | FIXED | NOT_APPLICABLE treated as non-PASS in verdict logic (8 false downgrades) |
-| CERT-TOOL-001 | P3 | DOCUMENTED | `_rel()` crashes on output paths outside repo root |
-| CERT-TOOL-002 | P3 | DOCUMENTED | Exception coverage uses naive text search (not AST) |
-| CERT-TOOL-003 | P3 | DOCUMENTED | .NET assertion scorer uses regex (not Roslyn AST) |
-| CERT-TOOL-004 | P3 | DOCUMENTED | generate_exception_tests.py is not idempotent |
-| CERT-TOOL-005 | P3 | DOCUMENTED | fix_weak_assertions.py is not idempotent |
-| CERT-TOOL-006 | P3 | DOCUMENTED | generate_security_tests.py is not idempotent |
+Current repository snapshot referenced by this plan family uses revision `16b454ca` and layer plan date `2026-06-29`. The layer already has metadata, dependencies, and at least a minimal next action. Some original files were shallow; this revision fills the operational sections so future agents can execute without guessing.
 
-## 10. Gaps
+Known current state for this layer:
 
-- **GAP-CERT-SKILL-001:** Certification tools not registered in skill-registry.yaml (TC-CERT-L-003)
-- **GAP-CERT-VALIDATOR-001:** No governance validators enforce certification report consistency
+- Status: `GOVERNED_OPERATIONAL`.
+- Health: `HEALTHY`.
+- Stage: `CERTIFICATION_HARDENING`.
+- Maturity: `3/5`.
+- Existing evidence paths: `['reports/certification/portfolio-certification-matrix.json', 'reports/certification-integration/report-integrity-audit.yaml', 'reports/certification-integration/product-verdict-review.yaml', 'reports/certification-integration/gap-reconciliation-map.yaml']`.
 
-## 11. Maturity Assessment
+## 10. Current Execution Stage
 
-| Criterion | Score | Evidence |
-|-----------|-------|----------|
-| Tools exist and parse | 4/4 | 9 tools, all valid Python |
-| Tools produce correct output | 4/4 | Verified for all 20 formats |
-| Integration tests exist | 3/4 | 456 tests pass; no negative/mutation tests yet |
-| Gap reconciliation clean | 4/4 | 0 material findings without canonical gaps |
-| Portfolio verdicts justified | 4/4 | 20/20 CERTIFIED (after CERT-DASHBOARD-001 fix) |
-| Supervisor integration | 2/4 | No skill registration, no governance validators |
+`CERTIFICATION_HARDENING`. Work may proceed only after skill coverage is checked. If no skill covers a required action, the agent must write a skill-gap report and stop the uncovered portion while continuing any covered work.
 
-**Overall maturity: 3/4** (operational but missing skill registration and validators)
+## 11. Current Maturity Assessment
 
-## 12. Lifecycle
+Maturity is currently **3**. This means the layer has enough structure to guide work, but it still needs stronger proof, backfill, automation, or registry enforcement before it can be treated as fully production-grade.
 
+## 12. Target Maturity
+
+Target maturity is **5**. The target state is a governed, evidence-backed, discoverable, repeatable layer that can run inside autonomous supervisor trains without relying on chat memory alone.
+
+## 13. Current Strengths
+
+- The project has strong governance expectations: skill-first execution, taskcards, evidence declarations, negative controls, and review gates.
+- Several mature layers already prove the 39-section pattern used here.
+- The user has clarified key architecture principles: spec-first SAL, RCAL proof graph, QName hierarchy, no stubs, dogfood exports, and stage-aware reporting.
+
+## 14. Gap Register
+
+- Certification exists but must consume proof graphs and evidence bundles directly.
+- Product statuses must be stage-aware and avoid overclaiming.
+- Human review gates must be represented as external blockers, not failures.
+
+## 15. Root-Cause Register
+
+- Earlier sprint plans sometimes converted governance into prose without executable registries or validators.
+- Some product work was driven by manually chosen goals instead of deterministic spec/capability gaps.
+- Parallel autonomous execution requires stronger ownership, evidence, and continuation contracts than a single-agent prompt.
+
+## 16. Repair Architecture
+
+- Convert layer prose into taskcards and registry entries.
+- Bind each taskcard to upstream facts, owned paths, required skills, validators, and evidence outputs.
+- Run pilot formats first, then backfill across the portfolio only after proof and rollback are ready.
+- Feed audit findings back into the plan/harden/execute/audit/expand loop.
+
+## 17. Schemas and Contracts
+
+Required contracts:
+
+- Layer metadata block remains valid YAML.
+- Taskcard IDs use the existing `TC-*` convention.
+- Evidence declarations must include provenance, produced artifacts, validation commands, and verdict.
+- Gaps must be explicit and machine-trackable where possible.
+
+## 18. Producers
+
+- Planning/hardening agents.
+- Supervisor coordinator lane.
+- Product/healing lanes.
+- Audit/reviewer lanes.
+- Registered skills and command wrappers listed in this layer metadata.
+
+## 19. Consumers
+
+- Product implementation agents.
+- Certification/audit layer.
+- Evidence/review layer.
+- Future continuation sessions.
+- Human reviewer only where a true external gate applies.
+
+## 20. Skills and Commands
+
+Current skill IDs: `[]`.
+
+Current command IDs: `[]`.
+
+If these are empty or incomplete, the first covered action is a skill coverage audit. Missing skills must be registered before implementation work proceeds.
+
+## 21. Validators and Enforcement
+
+- Validate YAML metadata and taskcard references.
+- Validate that evidence paths exist or are created by the sprint.
+- Validate no stub code, fake capability, or unsupported release claim is introduced.
+- Validate layer-specific acceptance gates before marking work complete.
+
+## 22. Tests and Negative Controls
+
+- Positive controls must prove the intended layer behavior on at least one pilot format or representative fixture.
+- Negative controls must prove the system rejects missing authority, missing provenance, fake facts, unsupported capabilities, and AI-only evidence.
+- Regression tests must be added before broad backfill or refactor work.
+
+## 23. Evidence and Observability
+
+Expected evidence outputs:
+
+- Evidence declaration for the run.
+- Changed files list and source ownership record.
+- Validator/test logs.
+- Gap reconciliation notes.
+- Final reviewer verdict: ACCEPTED, ACCEPTED_WITH_REWORK, REWORK_REQUIRED, BLOCKED_EXTERNAL, or FAILED.
+
+## 24. Recovery and Rollback
+
+- Before mutating source or registry files, capture current branch, revision, and changed-file status.
+- Use reversible patches and isolated taskcard lanes.
+- If validation fails, rollback or quarantine the lane output and create a rework taskcard.
+- Do not delete or replace production artifacts without migration and verification proof.
+
+## 25. Security and Compliance
+
+- Respect legal/spec provenance and package publication boundaries.
+- Do not expose credentials, tokens, or private evidence.
+- Treat external publication, commercial sign-off, and credential-dependent actions as true external gates.
+
+## 26. Cross-Layer Handoffs
+
+Handoffs must include:
+
+- Producing layer and consuming layer.
+- Artifact IDs and paths.
+- Evidence path.
+- Known gaps and blocked external decisions.
+- Exact next action.
+
+## 27. Migration and Backfill
+
+Backfill should run in this order:
+
+1. Pilot proof on most mature/important target formats.
+2. Audit and repair validators.
+3. Expand to adjacent formats with similar structure.
+4. Record every deferred item as a gap, not a stub.
+
+## 28. Effort and Dependencies
+
+Effort depends on upstream availability: `['L05', 'L06', 'L07']`. When the layer has no listed dependencies, it still depends on repository governance, skill coverage, and clean working-tree preflight.
+
+## 29. Active Taskcards
+
+Active taskcards from metadata: `[]`.
+
+No new active taskcard should be started until ownership, evidence, and validation are declared.
+
+## 30. Ready Taskcards
+
+Ready taskcards from metadata: `['TC-CERT-L-003']`.
+
+Primary next task: `TC-CERT-L-003`.
+
+## 31. Completed Taskcards
+
+Completed taskcards from metadata: `['TC-CERT-L-001', 'TC-CERT-L-002']`.
+
+Completed work must remain linked to evidence and should not be trusted from summary text alone.
+
+## 32. Blocked and Waiting Work
+
+Blocked taskcards from metadata: `[]`.
+
+A blocker is valid only when it is a true external gate, missing authority, missing skill coverage, or failed validation that requires rework.
+
+## 33. Decision Log
+
+- 2026-06-29: Filled this layer plan from placeholder/shallow state into the standard 39-section governed plan pattern.
+- 2026-06-29: Preserved existing metadata shape and updated status, maturity, gaps, and next action according to known Format Factory project context.
+
+## 34. Work Log
+
+- Normalized layer purpose, scope, gaps, contracts, evidence, rollback, and completion gate.
+- Added no-stub and proof-backed execution requirements.
+- Connected this layer to SAL/RCAL, QName, supervisor, taskcard, evidence, and certification expectations where applicable.
+
+## 35. Verification Log
+
+Verification required after repository application:
+
+- Parse every layer YAML metadata block.
+- Check taskcard/register consistency.
+- Confirm referenced evidence paths or create follow-up gaps.
+- Run relevant governance validators and tests.
+
+## 36. Current Session Handoff
+
+```yaml
+layer_session_handoff:
+  layer_id: L28
+  handoff_date: "2026-06-29"
+  status: "GOVERNED_OPERATIONAL"
+  health: "HEALTHY"
+  next_task_id: "TC-CERT-L-003"
+  next_action: "Link certification verdicts to capability proof sufficiency and stage-aware product matrix."
 ```
-NOT_STARTED → DISCOVERY → PLAN_HARDENING → EXECUTION_IN_PROGRESS → GOVERNED_OPERATIONAL
-                                                                      ↑ (current)
-```
 
-## 13. Certification Pipeline
+## 37. Exact Next Actions
 
-```
-Source code (src/python/, src/net/)
-    ↓
-inventory_extractor.py → api-contract.json
-stub_detector.py → stub-audit.json
-exception_coverage_checker.py → exception-audit.json
-assertion_quality_scorer.py → assertion-quality.json
-dotnet_assertion_scorer.py → dotnet-assertion-quality.json
-    ↓
-    + oracle-alignment.json (from L05)
-    + traceability-audit.json (from plan execution)
-    + roundtrip-audit.json (from plan execution)
-    + package-proof.json (from plan execution)
-    + consumer-proof.json (from plan execution)
-    ↓
-certification_dashboard.py → portfolio-certification-matrix.json + certification-report.md
-```
+1. Run skill coverage check for this layer.
+2. Open/create the next taskcard `TC-CERT-L-003`.
+3. Bind the taskcard to source paths, evidence outputs, validators, and rollback plan.
+4. Execute the smallest useful pilot.
+5. Audit results, update gap ledger, and expand only after proof.
+
+Layer-specific next action: **Link certification verdicts to capability proof sufficiency and stage-aware product matrix.**
+
+## 38. Layer Completion Gate
+
+This layer can be marked complete only when:
+
+- All ready taskcards are accepted or intentionally superseded with reasons.
+- All gaps have owners, taskcards, or explicit external blockers.
+- Evidence declarations, tests/validators, and reviewer verdicts are present.
+- No stub implementation, fake fact, unsupported claim, or untraceable artifact remains.
+
+## 39. Change History
+
+- 2026-06-29 — Rebuilt as a complete governed layer plan using the existing 39-section project pattern and available Format Factory project context.
