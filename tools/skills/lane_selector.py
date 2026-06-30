@@ -36,10 +36,21 @@ Authority: AGENTS.md Section B, AF9-AF15 | GOVERNANCE.md 26.8-26.13
 from __future__ import annotations
 
 import json
+import importlib.util
 import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
+# Backward compatibility: expose select_lane and check_starvation from the supervisor implementation
+_SUPERVISOR_LANE_SELECTOR_PATH = REPO_ROOT / "tools" / "supervisor" / "lane_selector.py"
+_spec = importlib.util.spec_from_file_location("supervisor_lane_selector", str(_SUPERVISOR_LANE_SELECTOR_PATH))
+if _spec is None or _spec.loader is None:
+    raise ImportError(f"Unable to load supervisor lane selector from {_SUPERVISOR_LANE_SELECTOR_PATH}")
+_supervisor_lane_selector = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(_supervisor_lane_selector)
+select_lane = _supervisor_lane_selector.select_lane
+check_starvation = _supervisor_lane_selector.check_starvation
+
 LANE_LIBRARY_PATH = REPO_ROOT / "templates" / "commercial-sprint" / "lane-library.yaml"
 
 # ---------------------------------------------------------------------------
