@@ -101,7 +101,7 @@ The format-factory repository has **51 top-level directories**. There is no mach
 | Folder | Evidence | Proposed Action |
 |---|---|---|
 | `state/` | 2 files (`current-state.json` 27 days stale, `current-state.md`). `.supervisor/state/current-run.json` is the active runtime authority (updated June 29). `check_repo_invariants.py` references `state/` but only as snapshot. | **CONSOLIDATE** into `.supervisor/` or **DELETE** — redundant |
-| `drivers/` | 5 `.tmpl` test template files. **Zero tool references** across entire codebase. No imports. Last meaningful commit June 10. | **DELETE** — orphaned Phase 0 artifact with zero consumers |
+| `drivers/` | 5 `.tmpl` test template files. ~~**Zero tool references** across entire codebase. No imports.~~ **CORRECTION (TC-DRV-002, 2026-07-01):** Finding was REFUTED. Two direct runtime consumers proven: `tools/supervisor/test_drivers.py` (uses `Path(__file__).resolve().parents[2] / "drivers" / "python"` — path construction, not Python import, which is why grep missed it) and `tools/supervisor/product_feature_factory.py` (imports all 5 `render_*` functions). See `reports/drivers/drivers-finding-validation.yaml` F-001. | ~~**DELETE**~~ **RETAIN** — active subsystem with 2 direct runtime consumers |
 | `skills/` | 1 file (`format-factory-authority-closeout.md`). `.supervisor/skill-registry.yaml` is the actual authority. **Zero tool references.** | **DELETE** or move to `docs/procedures/` — redundant |
 | `examples-docs-readiness/` | 1 file (`summary.yaml`). R83 snapshot. **Zero tool references.** Not consumed by any automation. | **CONSOLIDATE** content into `examples/` or **DELETE** |
 | `shared/generation-rules/` | 2 files. **Zero tool references.** Historical. | **DELETE** stale subdirectory (keep `shared/qname-registry/` which is active) |
@@ -180,7 +180,7 @@ The format-factory repository has **51 top-level directories**. There is no mach
 
 | Folder | Action | Detail | Rollback |
 |---|---|---|---|
-| `drivers/` | DELETE | `git rm -r drivers/` — zero consumers proven | `git checkout HEAD -- drivers/` |
+| `drivers/` | ~~DELETE~~ **RETAIN** | Finding REFUTED — 2 direct runtime consumers proven. See TC-DRV-002. | N/A |
 | `skills/` | RELOCATE | Move `skills/format-factory-authority-closeout.md` → `docs/procedures/format-factory-authority-closeout.md`, then `git rm -r skills/` | `git checkout HEAD -- skills/` |
 | `examples-docs-readiness/` | CONSOLIDATE | Move `summary.yaml` → `examples/docs-readiness-summary.yaml`, then `git rm -r examples-docs-readiness/` | `git checkout HEAD -- examples-docs-readiness/` |
 | `state/` | DELETE | `git rm -r state/` — `.supervisor/state/` is the active authority. Update `check_repo_invariants.py` if it references `state/` | `git checkout HEAD -- state/` |

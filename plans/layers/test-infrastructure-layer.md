@@ -7,20 +7,20 @@ layer_metadata:
   canonical_slug: test-infrastructure-layer
   permanent_plan_path: plans/layers/test-infrastructure-layer.md
   schema_version: '1.0'
-  plan_revision: '2'
+  plan_revision: '3'
   repository_revision: a7744cf6
   status: GOVERNED_OPERATIONAL
   health: HEALTHY
-  maturity_current: 4
+  maturity_current: 5
   maturity_target: 5
   current_stage: OPERATIONAL_HARDENING
   current_owner: null
   session_id: 923e237958c1
   active_taskcards: []
-  ready_taskcards:
-  - TC-TEST-001
+  ready_taskcards: []
   blocked_taskcards: []
-  completed_taskcards: []
+  completed_taskcards:
+  - TC-TEST-001
   dependencies:
   - L06
   upstream_layers:
@@ -38,8 +38,8 @@ layer_metadata:
   last_updated_at: '2026-06-29'
   last_verified_at: '2026-06-26'
   last_verified_revision: a7744cf6
-  next_task_id: TC-TEST-001
-  next_action: Add roundtrip tests for formats with <3 test coverage
+  next_task_id: null
+  next_action: "TC-TEST-001 COMPLETE. All 4 roundtrip tests added (odt/pgm/qoi/xcf). named_lanes (fast/medium/full) defined in registry/test-layer-manifest.yaml. Layer maturity promoted to 5/5."
 ```
 
 ## 1. Layer Metadata
@@ -56,6 +56,7 @@ This layer owns unit, integration, roundtrip, consumer, governance, and supervis
 - governance validators
 - roundtrip and oracle integration tests
 - test partitioning for large suites
+- drivers/ subsystem — test scaffold templates (.py.tmpl), driver-contracts.yaml, promotion lifecycle (DRIVERS-SUBSYSTEM-HEALING-001, TC-DRV-002)
 
 ## 4. Explicit Non-Scope
 

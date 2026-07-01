@@ -501,6 +501,31 @@ folders:
     consumers: ["supervisor", "spec-parity tools", "validators"]
     notes: "generation-rules/ and spec-manifests/ subdirs are stale (zero consumers) — targeted for deletion in TC-ROOT-002"
 
+  - folder_path: "drivers/"
+    display_name: "Test Drivers"
+    classification: SHARED_LIBRARY
+    git_tracked: true
+    gitignored: false
+    tracked_files: 5
+    format_scoped: false
+    readme_required: true
+    readme_convention: _readme.md
+    retention: RETAIN
+    language_scope: PYTHON_ONLY_BY_DESIGN
+    correction_note: "Moved from DELETED/CONSOLIDATED to SHARED_LIBRARY/TOOLING — TC-DRV-002. Entry had retention=RETAIN but sat under wrong section header. Two direct runtime consumers proven."
+    purpose: "Test generation templates (.py.tmpl) consumed at runtime by test_drivers.py and product_feature_factory.py"
+    producers: ["developers"]
+    consumers:
+      - path: "tools/supervisor/test_drivers.py"
+        type: DIRECT_RUNTIME_CONSUMER
+        evidence: "_DRIVERS_DIR / 'python' path construction + _load_template() reads .tmpl files"
+      - path: "tools/supervisor/product_feature_factory.py"
+        type: DIRECT_RUNTIME_CONSUMER
+        evidence: "imports all 5 render_* functions, calls at runtime"
+      - path: "tools/supervisor/libforge_pattern_registry.py"
+        type: DECLARATIVE_REFERENCE
+        evidence: "PatternRecord metadata only — no runtime coupling, no Path access to drivers/"
+
   - folder_path: "scripts/"
     display_name: "Scripts"
     classification: SHARED_LIBRARY
@@ -684,20 +709,6 @@ folders:
   # ============================================================
   # DELETED / CONSOLIDATED — proven redundant or abandoned
   # ============================================================
-
-  - folder_path: "drivers/"
-    display_name: "Test Drivers"
-    classification: SHARED_LIBRARY
-    git_tracked: true
-    gitignored: false
-    tracked_files: 5
-    format_scoped: false
-    readme_required: true
-    readme_convention: _readme.md
-    retention: RETAIN
-    purpose: "Test generation templates (.py.tmpl) consumed by tools/supervisor/test_drivers.py"
-    producers: ["developers"]
-    consumers: ["tools/supervisor/test_drivers.py", "tools/supervisor/libforge_pattern_registry.py"]
 
   - folder_path: "skills/"
     display_name: "Skills (relocated)"
