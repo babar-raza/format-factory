@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s401-dotnet-deepening-20260701",
+  "latest_sprint": "ff-sprint-s402-dotnet-deepening-20260701",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -34132,9 +34132,45 @@
         "tests/net/fodt/FodtR425GetInputFieldCountDedicatedTests.cs"
       ],
       "test_count": 9
+    },
+    {
+      "entry_id": "PC-NETPBM-R420",
+      "sprint": "ff-sprint-s402-dotnet-deepening-20260701",
+      "classification": "TEST_COVERAGE",
+      "format": "NETPBM",
+      "capability": "GetTotalPixels",
+      "description": "Dedicated tests for NetpbmImage.GetTotalPixels: positive; equals Width*Height; dims/format/MaxValue unchanged; idempotent; PBM/PGM/PPM positive; dogfood 4x4 PGM=16, 2x8 PPM=16.",
+      "source_files": [
+        "tests/net/netpbm/NetpbmR420GetTotalPixelsDedicatedTests.cs"
+      ],
+      "test_count": 12
+    },
+    {
+      "entry_id": "PC-FODS-R451",
+      "sprint": "ff-sprint-s402-dotnet-deepening-20260701",
+      "classification": "TEST_COVERAGE",
+      "format": "FODS",
+      "capability": "GetSheetPrintArea",
+      "description": "Dedicated tests for FodsDocument.GetSheetPrintArea: null/whitespace/nonexistent throws; valid non-null; SheetCount unchanged; idempotent; is string; SetPrintArea+Get round-trip; dogfood default/multiple sheets.",
+      "source_files": [
+        "tests/net/fods/FodsR451GetSheetPrintAreaDedicatedTests.cs"
+      ],
+      "test_count": 9
+    },
+    {
+      "entry_id": "PC-FODT-R426",
+      "sprint": "ff-sprint-s402-dotnet-deepening-20260701",
+      "classification": "TEST_COVERAGE",
+      "format": "FODT",
+      "capability": "GetScriptCount",
+      "description": "Dedicated tests for FodtDocument.GetScriptCount: new non-negative, ParagraphCount/TableCount unchanged, idempotent, is int, dogfood after paragraphs/mixed content/loop all non-negative.",
+      "source_files": [
+        "tests/net/fodt/FodtR426GetScriptCountDedicatedTests.cs"
+      ],
+      "test_count": 9
     }
   ],
-  "total_entries": 2032,
+  "total_entries": 2035,
   "changes": [
     {
       "file": "src/python/dif/models.py",
