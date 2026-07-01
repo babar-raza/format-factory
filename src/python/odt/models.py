@@ -86,6 +86,23 @@ class OdtModelDocument:
         """True if the document has at least one heading."""
         return self.heading_count > 0
 
+    # Additional structural properties (FACT-ODT-001)
+
+    @property
+    def is_multi_paragraph(self) -> bool:
+        """True if the document has more than one paragraph."""
+        return self.paragraph_count > 1
+
+    @property
+    def has_multiple_headings(self) -> bool:
+        """True if the document has more than one heading."""
+        return self.heading_count > 1
+
+    @property
+    def total_block_count(self) -> int:
+        """Total number of text blocks (paragraphs + headings)."""
+        return self.paragraph_count + self.heading_count
+
     def to_dict(self) -> dict[str, Any]:
         """Return document summary as a dict."""
         return {

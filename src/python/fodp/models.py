@@ -72,6 +72,25 @@ class FodpDocument:
         """True if the presentation has more than one slide."""
         return self.page_count > 1
 
+    # Additional presentation analysis properties (FACT-FODP-001)
+
+    @property
+    def has_styles(self) -> bool:
+        """True if the presentation has at least one defined style."""
+        return self.styles_count > 0
+
+    @property
+    def total_shape_count(self) -> int:
+        """Total number of shapes across all slides."""
+        return sum(p.get("shape_count", 0) for p in self.pages)
+
+    @property
+    def avg_shapes_per_slide(self) -> float:
+        """Average number of shapes per slide. Returns 0.0 if no slides."""
+        if self.page_count == 0:
+            return 0.0
+        return self.total_shape_count / self.page_count
+
     def to_dict(self) -> dict[str, Any]:
         """Return document summary as a dict."""
         return {

@@ -55,7 +55,7 @@ src/python/fodg/
 
 ## Installation
 
-<!-- BEGIN:README-INSTALLATION generated=2026-07-01T12:16:26+00:00 source=package-metadata -->
+<!-- BEGIN:README-INSTALLATION generated=2026-07-01T23:12:18+00:00 source=package-metadata -->
 ```bash
 pip install format-factory-fodg
 ```
@@ -63,7 +63,7 @@ pip install format-factory-fodg
 
 ## Package Info
 
-<!-- BEGIN:README-PACKAGE_INFO generated=2026-07-01T12:16:26+00:00 source=repository-metadata -->
+<!-- BEGIN:README-PACKAGE_INFO generated=2026-07-01T23:12:18+00:00 source=repository-metadata -->
 | Field | Value |
 |---|---|
 | Format | Flat OpenDocument Drawing |
@@ -76,17 +76,17 @@ pip install format-factory-fodg
 | Spec | OASIS ODF 1.3 |
 | QName coverage | 3/3 implemented |
 | Source files | 18 |
-| Test files | 101 |
+| Test files | 103 |
 <!-- END:README-PACKAGE_INFO -->
 
 ## Public API
 
-<!-- BEGIN:README-PUBLIC_API generated=2026-07-01T12:16:26+00:00 source=src-python-init -->
+<!-- BEGIN:README-PUBLIC_API generated=2026-07-01T23:12:18+00:00 source=src-python-init -->
 - `(dynamic)`
 <!-- END:README-PUBLIC_API -->
 
 ## License
 
-<!-- BEGIN:README-LICENSE generated=2026-07-01T12:16:26+00:00 source=package-metadata -->
+<!-- BEGIN:README-LICENSE generated=2026-07-01T23:12:18+00:00 source=package-metadata -->
 Apache-2.0
 <!-- END:README-LICENSE -->

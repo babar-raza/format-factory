@@ -72,6 +72,25 @@ class FodgDocument:
         """True if the drawing contains at least one shape."""
         return self.shapes_total > 0
 
+    # Additional drawing analysis properties (FACT-FODG-001)
+
+    @property
+    def is_multi_page(self) -> bool:
+        """True if the drawing has more than one page."""
+        return self.page_count > 1
+
+    @property
+    def has_multiple_shapes(self) -> bool:
+        """True if the drawing contains more than one shape."""
+        return self.shapes_total > 1
+
+    @property
+    def shapes_per_page(self) -> float:
+        """Average number of shapes per page. Returns 0.0 if no pages."""
+        if self.page_count == 0:
+            return 0.0
+        return self.shapes_total / self.page_count
+
     def to_dict(self) -> dict[str, Any]:
         """Return document summary as a dict."""
         return {
