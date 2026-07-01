@@ -580,7 +580,7 @@ def validate_plans_root_policy(
     from pathlib import Path as _Path
 
     _r = repo_root or _Path(__file__).parent.parent.parent
-    _allowed = {"master-plan.md", "master-plan-memory.md"}
+    _allowed = {"master-plan.md", "master-plan-memory.md", "README.md"}
 
     plans_root = _r / "plans"
     if not plans_root.exists():

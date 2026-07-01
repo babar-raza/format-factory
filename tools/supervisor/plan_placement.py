@@ -12,7 +12,7 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).parent.parent.parent
 
-PLAN_ROOT_ALLOWED = frozenset({"master-plan.md", "master-plan-memory.md"})
+PLAN_ROOT_ALLOWED = frozenset({"master-plan.md", "master-plan-memory.md", "README.md"})
 
 ROUTING_TABLE = {
     "strategic": "plans/strategic/",
