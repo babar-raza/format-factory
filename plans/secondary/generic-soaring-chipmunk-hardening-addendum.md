@@ -511,6 +511,20 @@ Permitted repair actions:
 
 ---
 
+## Taskcard Status Summary
+
+| Taskcard ID | Status | Notes |
+|-------------|--------|-------|
+| TC-SAL-CARRY-WIRE-001 | CLOSED | completed_verified 2026-06-26 commit 5e0f5cf6 |
+| TC-SAL-CARRY-WIRE-006 | CLOSED | completed_verified 2026-06-26 commit 5e0f5cf6 |
+| TC-SAL-CARRY-BACKFILL-001 | CLOSED | completed_verified 2026-06-26 FODS 45 unique sets |
+| TC-SAL-CARRY-NON-ODF-001 | BLOCKED_LOCAL | external spec acquisition required — advisory |
+| TC-SAL-DEBT-001 | CLOSED | completed_verified 2026-07-01 commit 1da40302 LOC 2673→2399 |
+| TC-SAL-BACKFILL-002 | CLOSED | completed_verified 2026-07-01 FODS=47 ODS=37 ODT=40 FODG=39 FODP=34 |
+| TC-SAL-CARRY-NON-ODF-UNBLOCK-001 | CLOSED | completed_verified 2026-07-01 TOML 65 facts |
+
+---
+
 ## Closeout Criteria
 
 This addendum is CLOSED when:
@@ -556,3 +570,12 @@ If any new failure is introduced, it is a regression — revert immediately.
 *End of hardening addendum — generic-soaring-chipmunk-hardening-addendum.md v1.2 — 2026-07-01*
 *Phase 1 (2026-06-26): TC-WIRE-001/006/BACKFILL-001 completed_verified. NON-ODF-001 blocked_local.*
 *Phase 2 (2026-07-01): TC-SAL-DEBT-001/BACKFILL-002/NON-ODF-UNBLOCK-001 completed_verified.*
+
+
+<!--plan_terminal_lock:
+  status: ITERATION_REQUIRED
+  locked_at: "2026-07-01T18:04:33.369110+00:00"
+  locked_by: "22efecc290b9"
+  successor_required_for_future_changes: true
+  mutation_policy: "no further plan/hardening/execution writes"
+-->
