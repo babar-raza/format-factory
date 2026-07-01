@@ -28,11 +28,11 @@ Audit completed. Repository is clean. ZIP creation policy documented.
 
 ## Deliverables
 
-- `docs/source-package-hygiene.md` — ZIP creation policy
+- `docs/code-quality/source-package-hygiene.md` — ZIP creation policy
 - `reports/audit/source-package-hygiene-audit-20260513.md`
 - `reports/audit/source-package-hygiene-audit-20260513.yaml`
 
 ## Next Action
 
 When creating source review ZIPs in future, use `git archive` or explicit exclusion filters.
-See docs/source-package-hygiene.md for recommended patterns.
+See docs/code-quality/source-package-hygiene.md for recommended patterns.

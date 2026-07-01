@@ -51,7 +51,7 @@ Candidates are NOT entered in the registry at this stage. They are informal note
 1. Read the scoring model in `registry/scoring/_scoring-model.md`.
 2. Apply the scoring criteria to the candidate format on all seven dimensions.
 3. Compute the weighted total score (out of 100).
-4. Classify the format into a legal category (see `docs/legal-and-licensing.md`).
+4. Classify the format into a legal category (see `docs/governance/legal-and-licensing.md`).
 5. Create a registry entry in `registry/format-registry.yaml`. Set `gate_1.status: scored_pending_human_approval`. Leave `approved_by: null` and `approved_date: null` — these are human-only fields. If score is in the reject band or legal category is 5 or 6, set `gate_1.status: rejected` instead.
 6. Record scoring rationale per dimension and weighted total in the `scoring_notes` field.
 7. **Do NOT set `gate_1.status: passed` autonomously.** Gate 1 is NOT passed by the agent without authorization. The agent produces scoring evidence and requests human review — or, if the human has explicitly delegated the decision via an execution prompt, the agent records the decision under the delegated execution path (GOVERNANCE.md §2.1a, AGENTS.md §D1a). In a delegated execution, `approved_by` must identify the human principal and `approval_method` must be set to `delegated_agent_decision_under_<human>_instruction`.
@@ -77,13 +77,13 @@ Candidates are NOT entered in the registry at this stage. They are informal note
 
 **Trigger:** Gate 1 passed.
 
-**Spec cache check:** Before beginning evidence drafting, verify that a cached copy of the relevant specification exists at `.local/spec-cache/<format-id>/<version>/`. If the cache is missing, the agent must stop, log the missing-spec condition as a gap, and proceed only if the current execution prompt explicitly authorizes spec acquisition. A missing cache does not automatically authorize download. See `docs/specification-cache.md` for the full authorization model. Gate 2 evidence must either cite a cached spec with its metadata (SHA-256, version, source URL) or include an explicit documented rationale for why no official specification exists.
+**Spec cache check:** Before beginning evidence drafting, verify that a cached copy of the relevant specification exists at `.local/spec-cache/<format-id>/<version>/`. If the cache is missing, the agent must stop, log the missing-spec condition as a gap, and proceed only if the current execution prompt explicitly authorizes spec acquisition. A missing cache does not automatically authorize download. See `docs/python-foss/specification-cache.md` for the full authorization model. Gate 2 evidence must either cite a cached spec with its metadata (SHA-256, version, source URL) or include an explicit documented rationale for why no official specification exists.
 
 **Steps:**
-1. Check spec cache. If missing and acquisition is authorized by the current prompt, acquire the spec per the authorization model in `docs/specification-cache.md`. If not authorized, log the gap and stop.
+1. Check spec cache. If missing and acquisition is authorized by the current prompt, acquire the spec per the authorization model in `docs/python-foss/specification-cache.md`. If not authorized, log the gap and stop.
 2. Create an acquisition pack directory at `acquisition-packs/<format-id>/` from the template in `acquisition-packs/_template/`.
 3. Write `spec-evidence.md`: primary source URL, specification version (from cached spec), sections relevant to parsing, key data structures, encoding rules. Must cite the official specification (cached copy), not secondary sources. Record the cached spec's SHA-256 in the front matter.
-4. Write `legal-notes.md`: confirm legal category, cite the specific permission grant or standard body publication, document any patent risk assessment. For Category 1 fast-path, follow the fast-path rules in `docs/legal-and-licensing.md`. Note that local caching does not imply redistribution rights.
+4. Write `legal-notes.md`: confirm legal category, cite the specific permission grant or standard body publication, document any patent risk assessment. For Category 1 fast-path, follow the fast-path rules in `docs/governance/legal-and-licensing.md`. Note that local caching does not imply redistribution rights.
 5. Verify spec evidence: record the canonical URL, version, download date, and SHA-256 in `spec-evidence.md`.
 6. Mark Gate 2 passed after human review of legal-notes.md.
 7. Update `plans/master-plan.md`.
@@ -194,7 +194,7 @@ Candidates are NOT entered in the registry at this stage. They are informal note
 **Trigger:** Gate 8 passed.
 
 **Steps:**
-1. Map all format features to the tier model (Tiers 0-6) defined in `docs/product-tracks.md`.
+1. Map all format features to the tier model (Tiers 0-6) defined in `docs/product-factory/product-tracks.md`.
 2. Assign features to tracks: Tiers 0-4 to open-source; Tiers 5-6 to commercial (if applicable).
 3. Create a delivery plan: which features ship in the first OSS release, which are deferred.
 4. Record tier assignments and delivery plan in the format's acquisition pack.
@@ -299,10 +299,10 @@ authorization via S-F2F-01 execution.
 ## Relationship to Other Documents
 
 - `docs/gates.md` — detailed pass criteria for each gate
-- `docs/legal-and-licensing.md` — legal category model and fast-path rules
+- `docs/governance/legal-and-licensing.md` — legal category model and fast-path rules
 - `docs/security.md` — threat categories and mitigations (Stage 4, 7, 8)
-- `docs/product-tracks.md` — tier model and track definitions (Stage 9, 10, 11)
-- `docs/release-control.md` — artifact visibility and release manifest rules
+- `docs/product-factory/product-tracks.md` — tier model and track definitions (Stage 9, 10, 11)
+- `docs/governance/release-control.md` — artifact visibility and release manifest rules
 - `acquisition-packs/_template/` — templates for all acquisition pack artifacts
 - `registry/scoring/_scoring-model.md` — Gate 1 scoring criteria
 - `docs/ai/ai-assisted-acquisition-pipeline.md` — AI platform integration points per gate

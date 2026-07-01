@@ -37,9 +37,9 @@ The following files contain binding rules — reference them, do not restate:
 | AGENTS.md §V | Independent verification (DEC-034) — AI output must be verified |
 | AGENTS.md §W | Spec normalization layer rules |
 | AGENTS.md §X | Hybrid spec retrieval — deterministic-first hierarchy |
-| docs/llm-endpoint-strategy.md | Endpoint config, model selection, spec content in prompts, secrets |
-| docs/llm-and-embedding-strategy.md | Allowed/prohibited LLM/embedding uses, secret policy |
-| docs/spec-retrieval-strategy.md | Three-tier retrieval (deterministic → lexical → vector) |
+| docs/ai/llm-endpoint-strategy.md | Endpoint config, model selection, spec content in prompts, secrets |
+| docs/ai/llm-and-embedding-strategy.md | Allowed/prohibited LLM/embedding uses, secret policy |
+| docs/ai/spec-retrieval-strategy.md | Three-tier retrieval (deterministic → lexical → vector) |
 | docs/planning-methodology.md §8 | LLMs under governance; verified facts remain authority |
 | docs/agent-execution-handoff-standard.md §17-18 | LLM run records, declarations |
 
@@ -50,7 +50,7 @@ The following files contain binding rules — reference them, do not restate:
 AI may be used for all of the following (subject to validation):
 
 **Retrieval and analysis:**
-- Local spec search and retrieval (Tier 1-3 per docs/spec-retrieval-strategy.md)
+- Local spec search and retrieval (Tier 1-3 per docs/ai/spec-retrieval-strategy.md)
 - Embeddings over normalized local artifacts
 - Requirement extraction from spec sections
 - Gap analysis against capability model or neutral model
@@ -103,7 +103,7 @@ AI must NOT be used for:
 
 ## Model and Endpoint Policy
 
-Full policy: `docs/llm-endpoint-strategy.md`. Summary:
+Full policy: `docs/ai/llm-endpoint-strategy.md`. Summary:
 
 | Task Risk | Model Guidance |
 |-----------|---------------|
@@ -134,7 +134,7 @@ For any sprint using AI for repo-changing work, maintain:
   "tool_model": "claude-sonnet-4-6",
   "endpoint_category": "remote_claude",
   "purpose": "draft commercial object model for FODS",
-  "input_artifacts": ["docs/commercial-product-capability-model.md"],
+  "input_artifacts": ["docs/product-factory/commercial-product-capability-model.md"],
   "output_artifacts": ["src/net/fods/Model/FodsSheet.cs"],
   "token_usage": {"input": 1200, "output": 800},
   "status": "ACCEPTED_AFTER_VALIDATION",
@@ -177,7 +177,7 @@ No AI output may be cited as authority without completing this workflow.
 
 ## Capability Model Alignment
 
-All AI-assisted implementation work for `src/net/{format}/` must target the capability model defined in `docs/commercial-product-capability-model.md`:
+All AI-assisted implementation work for `src/net/{format}/` must target the capability model defined in `docs/product-factory/commercial-product-capability-model.md`:
 
 - AI must not claim C-level advancement without test evidence
 - AI-generated code at C4+ must demonstrate: load → object model → edit → save
@@ -201,10 +201,10 @@ All AI-assisted implementation work for `src/net/{format}/` must target the capa
 
 ## Cross-References
 
-- Capability model: `docs/commercial-product-capability-model.md`
-- Architecture: `docs/commercial-dotnet-architecture.md`
-- Retrieval/RAG: `docs/spec-retrieval-and-rag-policy.md`
-- Commercial patterns: `docs/ai-assisted-commercial-development.md`
-- Swarm orchestration: `docs/agent-swarm-ai-orchestration.md`
-- Full endpoint policy: `docs/llm-endpoint-strategy.md`
-- Embedding strategy: `docs/llm-and-embedding-strategy.md`
+- Capability model: `docs/product-factory/commercial-product-capability-model.md`
+- Architecture: `docs/product-factory/commercial-dotnet-architecture.md`
+- Retrieval/RAG: `docs/ai/spec-retrieval-and-rag-policy.md`
+- Commercial patterns: `docs/ai/ai-assisted-commercial-development.md`
+- Swarm orchestration: `docs/ai/agent-swarm-ai-orchestration.md`
+- Full endpoint policy: `docs/ai/llm-endpoint-strategy.md`
+- Embedding strategy: `docs/ai/llm-and-embedding-strategy.md`

@@ -10,8 +10,8 @@ Define how AI supports commercial .NET implementation of load-edit-save-convert 
 
 ## Scope
 
-- Create `docs/ai-assisted-commercial-development.md` (Patterns A-F)
-- Create `docs/ai-assisted-commercial-development.yaml` (machine-readable)
+- Create `docs/ai/ai-assisted-commercial-development.md` (Patterns A-F)
+- Create `docs/ai/ai-assisted-commercial-development.yaml` (machine-readable)
 - Define spec-to-requirements, requirements-to-model, model-to-code, test generation, adversarial review, evidence summarization patterns
 - Define commercial direction guard checklist
 
@@ -23,8 +23,8 @@ Define how AI supports commercial .NET implementation of load-edit-save-convert 
 
 ## Acceptance Criteria
 
-- [x] docs/ai-assisted-commercial-development.md exists
-- [x] docs/ai-assisted-commercial-development.yaml exists
+- [x] docs/ai/ai-assisted-commercial-development.md exists
+- [x] docs/ai/ai-assisted-commercial-development.yaml exists
 - [x] Pattern A (spec extraction) documented
 - [x] Pattern B (object model draft) documented
 - [x] Pattern C (code draft) documented
@@ -41,8 +41,8 @@ Define how AI supports commercial .NET implementation of load-edit-save-convert 
 
 ## Files Allowed
 
-- docs/ai-assisted-commercial-development.md (create)
-- docs/ai-assisted-commercial-development.yaml (create)
+- docs/ai/ai-assisted-commercial-development.md (create)
+- docs/ai/ai-assisted-commercial-development.yaml (create)
 
 ## Prohibited Actions
 
@@ -51,8 +51,8 @@ Define how AI supports commercial .NET implementation of load-edit-save-convert 
 
 ## Validation Required
 
-- Consistency with docs/commercial-product-capability-model.md
-- Consistency with docs/commercial-dotnet-architecture.md
+- Consistency with docs/product-factory/commercial-product-capability-model.md
+- Consistency with docs/product-factory/commercial-dotnet-architecture.md
 
 ## Next Dependency
 

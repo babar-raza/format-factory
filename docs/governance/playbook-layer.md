@@ -47,7 +47,7 @@ Review queue items are inputs to evidence review, not replacements for evidence 
 
 The authoritative record of gate state is: registry/format-registry.yaml (approved by human).
 The authoritative record of run state is: bundle-metadata/git-log.txt and git-status-final.txt
-in the evidence bundle (see docs/current-state-and-evidence-authority.md).
+in the evidence bundle (see docs/governance/current-state-and-evidence-authority.md).
 
 Playbooks and replay reports are DERIVED ARTIFACTS. They are informational. They are NOT
 authority for any gate state, run state, or compliance claim. plans/master-plan.md remains
@@ -302,12 +302,55 @@ The following uses of playbooks, review queues, and replay reports are explicitl
 | S-F2F-02 | Playbook Validation Tool | **COMPLETE** | tools/playbook/validate_playbook.py, tests/playbook/ |
 | S-F2F-03 | Dry-Run Replay + Review Queue | **COMPLETE** | tools/playbook/replay_acquisition_playbook.py, diff_playbook_outputs.py, export_review_queue.py |
 | S-F2F-04 | Golden Dry-Run Tests | **COMPLETE** | tests/playbook/golden/ (7 fixtures), test_replay_golden.py, test_diff_golden.py, test_review_queue_golden.py, create_golden_case.py |
-| S-F2F-05 | ODF-Flat Family Playbook | proposed | acquisition-packs/_families/odf-flat/ |
+| S-F2F-05 | ODF-Flat Family Playbook | **COMPLETE** | acquisition-packs/_families/odf-flat/playbook.yaml (status: active) |
 | S-F2F-06 | Apply-Mode Risk Review | proposed | Risk review doc only; apply mode NOT authorized |
 | S-F2F-07 | Product Dependency Closure | proposed | docs/product-dependency-closure.md (design only) |
 | S-F2F-08 | Product Skeleton/Stub Design | proposed | docs/product-skeleton-generator.md (design only) |
 
 All phases after S-F2F-01 require separate human authorization prompts naming the taskcard.
+
+---
+
+## 24. Model C — Separate Scoped Layers (FF-PLAYBOOK-SYSTEM-001, 2026-07-01)
+
+**Decision:** The repository uses Model C — two separate scoped layers.
+
+| Layer | Term | What | Authority |
+|-------|------|------|-----------|
+| Layer A | Sprint Task Templates | Markdown guides in `playbooks/format-factory/` | TASK_TEMPLATE — guides only |
+| Layer B | Acquisition Playbooks | YAML in `schemas/playbook/`, `tools/playbook/`, `acquisition-packs/` | Governed YAML schema |
+
+### Layer A — Sprint Task Templates
+
+Files in `playbooks/format-factory/` are **Sprint Task Templates**, not "playbooks" in the
+Layer B sense. They:
+- Provide structured guidance for bounded sprint tasks (format feature expansion, kickstart, etc.)
+- Are NOT runtime-executed by the supervisor pipeline
+- Are NOT evidence contracts
+- Are NOT gate approval mechanisms
+- Are NOT YAML acquisition playbooks
+
+Registered in `playbooks/playbook-registry.yaml`. Authority: `TASK_TEMPLATE` only.
+Piloted and verified: FF-PLAYBOOK-SYSTEM-001 pilots 1-8 (2026-07-01).
+
+### Layer B — Acquisition Playbooks
+
+YAML documents following `schemas/playbook/acquisition-playbook.schema.json`. This is the
+canonical "Playbook" system. All Layer B rules from Sections 1-23 apply to Layer B only.
+
+The word "playbook" going forward refers to Layer B YAML acquisition playbooks.
+"Sprint Task Templates" refers to Layer A Markdown guides.
+
+### Playbook Selector (FF-PLAYBOOK-SYSTEM-001)
+
+`tools/playbook/playbook_selector.py` routes work item types to sprint task templates (Layer A):
+- `FORMAT_FEATURE_EXPANSION` → `playbooks/format-factory/format-feature-expansion.md`
+- `NEW_FORMAT_KICKSTART` → `playbooks/format-factory/new-format-kickstart-template.md`
+- `PRODUCT_SOURCE_PATCH_BOUNDED` → `playbooks/format-factory/product-source-task-template.md`
+- Unknown types → `None` (never raises, never blocks sprint)
+
+The selector is integrated into `tools/supervisor/autonomous_cycle.py` as a best-effort
+non-blocking hook. Missing skills create gaps, not hard failures.
 
 ---
 

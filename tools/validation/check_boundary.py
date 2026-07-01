@@ -6,7 +6,7 @@ Verifies that:
 2. No FOSS source file (src/python/{format}/ or src/net/{format}/) references
    any commercial namespace, class, or tier-5/6 identifier
 
-Policy source: docs/release-control.md §Commercial Exclusion Rules
+Policy source: docs/governance/release-control.md §Commercial Exclusion Rules
 
 Usage:
     python tools/validation/check_boundary.py

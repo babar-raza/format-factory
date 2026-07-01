@@ -124,7 +124,7 @@ def section_b_run046_verification():
         ("B.37", "PASS", "No spec downloads in run046 — spec already cached from run021"),
         ("B.38", "PASS", "AGENTS.md Section Z (run-state authority model) present"),
         ("B.39", "PASS", "GOVERNANCE.md Section 19 (run-state authority) present"),
-        ("B.40", "PASS", "docs/current-state-and-evidence-authority.md exists"),
+        ("B.40", "PASS", "docs/governance/current-state-and-evidence-authority.md exists"),
     ]
     lines = [
         "# run046 Independent Verification Report",
@@ -2098,7 +2098,7 @@ implementation execution prompt AFTER Gate 10 planning is approved.
 ## References
 
 - `acquisition-packs/fods/tier-map.yaml` — Tier assignments
-- `docs/product-tracks.md` — Python FOSS track definition
+- `docs/product-factory/product-tracks.md` — Python FOSS track definition
 - `docs/gates.md` — Gate 10 criteria
 - `taskcards/TC-0044-fods-gate10-product-planning.md` — Execution taskcard
 """
@@ -2273,7 +2273,7 @@ def section_n_docs_update():
         "TC-0037 COMPLETED. Gate 6 oracle planning_ready (TC-0042 not_started). "
         "No product source. last_completed_run: run046 — f659307. "
         "Exact final HEAD in bundle-metadata/git-log.txt "
-        "(see docs/current-state-and-evidence-authority.md)."
+        "(see docs/governance/current-state-and-evidence-authority.md)."
     )
     new_status = (
         "**Current status:** FODS: Gates 1-9 PASSED. Gate 9 APPROVED Babar Raza 2026-05-08 "
@@ -2285,7 +2285,7 @@ def section_n_docs_update():
         "Evidence metadata floor RESTORED to 30 (run047 repair). "
         "No product source. last_completed_run: run047. "
         "Exact final HEAD in bundle-metadata/git-log.txt "
-        "(see docs/current-state-and-evidence-authority.md)."
+        "(see docs/governance/current-state-and-evidence-authority.md)."
     )
     patch("plans/master-plan.md", old_status, new_status)
 

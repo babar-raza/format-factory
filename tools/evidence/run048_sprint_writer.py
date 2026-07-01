@@ -529,8 +529,8 @@ def section_e() -> None:
         "README.md",
         (
             "FODT Gate 6 oracle planning_ready (TC-0042 not_started). "
-            "ODF reuse strategy: docs/odf-flat-family-reuse-strategy.md. "
-            "ODF reuse strategy: docs/odf-flat-family-reuse-strategy.md."
+            "ODF reuse strategy: docs/python-foss/odf-flat-family-reuse-strategy.md. "
+            "ODF reuse strategy: docs/python-foss/odf-flat-family-reuse-strategy.md."
         ),
         (
             "FODT Gates 1-6 ALL PASSED (Babar Raza, run041-run047). "
@@ -539,7 +539,7 @@ def section_e() -> None:
             "FODT Gate 7 PASSED (Babar Raza, 2026-05-08, run048; FODT_GATE7_FUZZ_TEST PASS 18/18). "
             "FODT Gate 8 PASSED (Babar Raza, 2026-05-08, run048). "
             "FODT Gate 9 product-mapping planning_ready. "
-            "ODF reuse strategy: docs/odf-flat-family-reuse-strategy.md."
+            "ODF reuse strategy: docs/python-foss/odf-flat-family-reuse-strategy.md."
         ),
     )
     repairs.append(("README stale FODT Gate 6 paragraph", ok1))
@@ -2465,7 +2465,7 @@ Define the product tier map for FODT:
 
 ## Reuse from FODS
 
-FODT Gate 9 can reuse the FODS tier-map.yaml v1.0 template (docs/odf-flat-family-reuse-strategy.md).
+FODT Gate 9 can reuse the FODS tier-map.yaml v1.0 template (docs/python-foss/odf-flat-family-reuse-strategy.md).
 Adapt tier names for text/words domain vs spreadsheet/cells domain.
 
 ---
@@ -2663,11 +2663,11 @@ def section_t() -> None:
     )
     patch_file(
         "plans/master-plan.md",
-        "**Current status:** FODS: Gates 1-9 PASSED. Gate 9 APPROVED Babar Raza 2026-05-08 (tier-map.yaml v1.0; first_oss_release_tiers [0,1,2]; TC-0040 COMPLETED). Gate 10 planning_ready (TC-0044 not_started). FODT: Gates 1-6 PASSED. Gate 6 APPROVED Babar Raza 2026-05-08 (FODT_ORACLE_RUN PASS 4/4; FODT_ORACLE_COMPARE PASS; TC-0042/0043 COMPLETED). Gate 7 fuzz planning_ready (TC-0045 not_started). Evidence metadata floor RESTORED to 30 (run047 repair). No product source. last_completed_run: run047. Exact final HEAD in bundle-metadata/git-log.txt (see docs/current-state-and-evidence-authority.md).",
+        "**Current status:** FODS: Gates 1-9 PASSED. Gate 9 APPROVED Babar Raza 2026-05-08 (tier-map.yaml v1.0; first_oss_release_tiers [0,1,2]; TC-0040 COMPLETED). Gate 10 planning_ready (TC-0044 not_started). FODT: Gates 1-6 PASSED. Gate 6 APPROVED Babar Raza 2026-05-08 (FODT_ORACLE_RUN PASS 4/4; FODT_ORACLE_COMPARE PASS; TC-0042/0043 COMPLETED). Gate 7 fuzz planning_ready (TC-0045 not_started). Evidence metadata floor RESTORED to 30 (run047 repair). No product source. last_completed_run: run047. Exact final HEAD in bundle-metadata/git-log.txt (see docs/governance/current-state-and-evidence-authority.md).",
         (
             "**Current status:** FODS: Gates 1-10 ALL PASSED. Gate 10 APPROVED Babar Raza 2026-05-08 (run048; Tiers 0-2, 12 features; format-factory-fods v0.1.0; TC-0044 COMPLETED). Gate 11 planning_ready (TC-0047 not_started, blocked DEC-033). "
             "FODT: Gates 1-8 ALL PASSED. Gate 7 APPROVED Babar Raza 2026-05-08 (run048; FODT_GATE7_FUZZ_TEST PASS 18/18; TC-0045 COMPLETED). Gate 8 APPROVED Babar Raza 2026-05-08 (run048; GATE8_SECURITY_REVIEW PASS; TC-7 partially mitigated deferred Gate 10; TC-0046 COMPLETED). Gate 9 planning_ready (TC-0048 not_started). "
-            "REQUIRED_METADATA_DEPTH check added (run048; min 10 named files for high-count contracts). No product source. last_completed_run: run048. Exact final HEAD in bundle-metadata/git-log.txt (see docs/current-state-and-evidence-authority.md)."
+            "REQUIRED_METADATA_DEPTH check added (run048; min 10 named files for high-count contracts). No product source. last_completed_run: run048. Exact final HEAD in bundle-metadata/git-log.txt (see docs/governance/current-state-and-evidence-authority.md)."
         ),
     )
     patch_file(

@@ -9,7 +9,7 @@ PURPOSE:
 
     IMPORTANT: This checker does NOT require committed files to contain the exact
     final Git HEAD hash. That was a flawed "self-referential commit-hash loop" model
-    fixed in run041. See docs/current-state-and-evidence-authority.md.
+    fixed in run041. See docs/governance/current-state-and-evidence-authority.md.
 
     The exact final Git HEAD is authoritative only in evidence bundle metadata
     (bundle-metadata/git-log.txt and bundle-metadata/git-status-final.txt).
@@ -81,7 +81,7 @@ def check_no_pending_markers(text: str, context: str,
             issues.append(
                 f"{context}: contains sprint-in-progress marker: {m.group(0)!r} "
                 f"(line: {line.strip()[:80]!r}) — must be removed after final commit. "
-                f"See docs/current-state-and-evidence-authority.md"
+                f"See docs/governance/current-state-and-evidence-authority.md"
             )
 
 
@@ -297,7 +297,7 @@ def main() -> int:
     print("=" * 60)
     print("CURRENT STATE CONSISTENCY CHECK")
     print("Model: run-state authority (run041+)")
-    print("See: docs/current-state-and-evidence-authority.md")
+    print("See: docs/governance/current-state-and-evidence-authority.md")
     print("=" * 60)
 
     # --- Check 1+2: master-plan no PENDING markers ---

@@ -1,6 +1,6 @@
 # FORMAT-FACTORY-RNEXT-MEGA-TRAIN-001
-# Generated: 2026-06-24T15:02:01.593373
-# Source: Supervisor autonomous-cycle review of forensic-healing-20260624-dwp
+# Generated: 2026-07-01T17:10:16.467070
+# Source: Supervisor autonomous-cycle review of system-healing-product-acquisition-unblock-20260625
 # Stream: supervisor
 # ADVISORY ONLY -- not a Format Factory authority document
 
@@ -27,10 +27,10 @@ Read these files before writing any code:
 ## Sprint Identity
 
 - Sprint ID: FORMAT-FACTORY-RNEXT-MEGA-TRAIN-001
-- Prior sprint: forensic-healing-20260624-dwp
-- Prior verdict: ACCEPTED
+- Prior sprint: system-healing-product-acquisition-unblock-20260625
+- Prior verdict: ACCEPTED_WITH_REWORK
 - Prior tests: 0 passed, 0 failed, 0 skipped
-- Autonomous continue: True
+- Autonomous continue: False
 
 ---
 
@@ -234,25 +234,33 @@ END OF SUPERVISOR-GENERATED MEGA-TRAIN EXECUTION PROMPT
 The following failures have been recorded in durable failure memory.
 Address escalated failures with priority.
 
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_execution_method_required_validator_failed (seen 143x, last: effervescent-wandering-blossom)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_source_diff_required_validator_failed (seen 113x, last: effervescent-wandering-blossom)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_idempotency_key_required_validator_failed (seen 78x, last: effervescent-wandering-blossom)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_execution_method_required_validator_failed (seen 158x, last: product-deepening-ledger-healing-20260626)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_source_diff_required_validator_failed (seen 127x, last: product-deepening-ledger-healing-20260626)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_idempotency_key_required_validator_failed (seen 92x, last: product-deepening-ledger-healing-20260626)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_claim_classification_validator_failed (seen 7x, last: IDEMPOTENT-SWARM-EXECUTION-20260615-E31FA98)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_route_decision_required_validator_failed (seen 112x, last: effervescent-wandering-blossom)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_spec_fact_refs_validator_failed (seen 195x, last: effervescent-wandering-blossom)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_governed_direct_execution_validator_failed (seen 3x, last: product-deepening-session-2026-06-22)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_monolith_detection_validator_failed (seen 298x, last: agentic-maturity-wave1-20260624-3f98f85d)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): exit_code_3_rework_required (seen 227x, last: cap-convergence-iter3-20260624-c22c1651)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_route_decision_required_validator_failed (seen 126x, last: product-deepening-ledger-healing-20260626)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_spec_fact_refs_validator_failed (seen 209x, last: product-deepening-ledger-healing-20260626)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_governed_direct_execution_validator_failed (seen 4x, last: ff-toml-r120-20260625)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_monolith_detection_validator_failed (seen 338x, last: system-healing-product-acquisition-unblock-20260625)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): exit_code_3_rework_required (seen 291x, last: ff-sprint-s406-dotnet-deepening-20260701)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_source_architecture_failed (seen 19x, last: capability-convergence-iteration-3-20260624)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_skill_transcript_present_failed (seen 8x, last: effervescent-wandering-blossom)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_skill_transcript_present_failed (seen 23x, last: product-deepening-ledger-healing-20260626)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_qname_class_names_failed (seen 4x, last: FORMAT-FACTORY-SPRINT-R118-20260625)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_error_fallback_safety_failed (seen 7x, last: convergence-test-repair-20260624-999bb7)
-- WARNING: 14 unresolved failures in failure memory
+- ESCALATED FAILURE (GRADING_FALSE_POSITIVE): Item declared completed but no evidence found. Provide evidence at declared paths. (seen 110x, last: FORMAT-FACTORY-LAYER-AUDIT-20260626)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_forbidden_module_names_failed (seen 3x, last: PROD-GOVERNANCE-001)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_spec_fact_refs_in_sal_output_failed (seen 4x, last: FORMAT-FACTORY-PQ-EXECUTE-001)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_ledger_continuation_gate_failed (seen 6x, last: product-deepening-ledger-healing-20260626)
+- ESCALATED FAILURE (OVERCLAIM_FAILURE):  (seen 26x, last: system-healing-product-acquisition-unblock-20260625)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_readme_freshness_failed (seen 18x, last: system-healing-product-acquisition-unblock-20260625)
+- WARNING: 23 unresolved failures in failure memory
 
 
 
 ## Learning-Based Governance Advisories
 
-- **SPRINT_CLOSEOUT_PATTERN** (seen 49x): Sprint declaration validated PASS with sprint_executor_validate.py — *Action:* Continue using sprint_executor_validate.py --repair before closeout
+- **SPRINT_CLOSEOUT_PATTERN** (seen 462x): Sprint declaration validated PASS with sprint_executor_validate.py — *Action:* Continue using sprint_executor_validate.py --repair before closeout
+- **TEST_FAILURE** (seen 317x): Sprint ended with 1 test failures (0 new) — *Action:* Fix test failures before closing sprint; never carry forward new failures
 
 ## Spec-Parity Requirements (from skill registry)
 
@@ -260,18 +268,18 @@ The following skills require `spec_qname` mapping when invoked for product model
 Any product model task using these skills MUST declare which spec QNames are addressed
 and MUST NOT invent arbitrary flat class names without spec authority.
 
+- **add-analytics-function**: spec_qname_required=true
 - **add-dotnet-api**: spec_qname_required=true
-- **add-python-api**: spec_qname_required=true
 - **add-dotnet-object-model-feature**: spec_qname_required=true
+- **add-python-api**: spec_qname_required=true
 - **add-python-object-model-feature**: spec_qname_required=true
 - **add-same-format-writer-feature**: spec_qname_required=true
-- **spec-literal-qname-to-code-mapping**: spec_qname_required=true
-- **spec-shaped-product-architecture-blueprint**: spec_qname_required=true
-- **spec-parity-source-regeneration-and-migration**: spec_qname_required=true
-- **python-reduced-spec-parity-model**: spec_qname_required=true
-- **add-analytics-function**: spec_qname_required=true
 - **implement-spec-stub**: spec_qname_required=true
 - **python-qname-code-reviewer**: spec_qname_required=true
+- **python-reduced-spec-parity-model**: spec_qname_required=true
+- **spec-literal-qname-to-code-mapping**: spec_qname_required=true
+- **spec-parity-source-regeneration-and-migration**: spec_qname_required=true
+- **spec-shaped-product-architecture-blueprint**: spec_qname_required=true
 
 **Enforcement:** If a product model change is made without citing spec_fact_refs,
 governance validator V8 (spec_fact_references) will FAIL the item.

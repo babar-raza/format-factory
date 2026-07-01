@@ -45,7 +45,7 @@ Decide and document the schema language to be used for neutral-model schemas in 
 
 ## Context
 
-Decision DEC-008 (schema language for neutral model) was marked "Tentative" in Phase 0. The architecture (`docs/architecture.md`) says "YAML or JSON Schema" but does not commit. This needs to be resolved before Gate 5 (neutral model design) begins, so the schema work is done in a consistent format from the first format.
+Decision DEC-008 (schema language for neutral model) was marked "Tentative" in Phase 0. The architecture (`docs/code-quality/architecture.md`) says "YAML or JSON Schema" but does not commit. This needs to be resolved before Gate 5 (neutral model design) begins, so the schema work is done in a consistent format from the first format.
 
 Factors to consider: tooling support in Python and .NET, human readability, validation library availability, round-trip fidelity for complex data structures.
 
@@ -91,7 +91,7 @@ Factors to consider: tooling support in Python and .NET, human readability, vali
 
 | Artifact | Path | Required? |
 |---|---|---|
-| Architecture doc | `docs/architecture.md` | Required |
+| Architecture doc | `docs/code-quality/architecture.md` | Required |
 | Schemas readme | `schemas/_readme.md` | Required |
 | Master plan decisions | `plans/master-plan.md` (Decision DEC-008) | Required |
 
@@ -99,7 +99,7 @@ Factors to consider: tooling support in Python and .NET, human readability, vali
 
 ## Steps
 
-1. Review `docs/architecture.md` and `docs/product-tracks.md` for constraints on schema language.
+1. Review `docs/code-quality/architecture.md` and `docs/product-factory/product-tracks.md` for constraints on schema language.
 2. Evaluate options: YAML with custom schema, JSON Schema, LinkML, Avro IDL, Protocol Buffers, plain Python dataclasses.
 3. For each option, note: Python library availability, .NET library availability, human readability, tooling maturity.
 4. Select the primary language. Document rationale.

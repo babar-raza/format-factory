@@ -77,6 +77,6 @@ before Gate 10 can be approved.
 ## References
 
 - `acquisition-packs/fods/tier-map.yaml` — Tier assignments
-- `docs/product-tracks.md` — Python FOSS track definition
+- `docs/product-factory/product-tracks.md` — Python FOSS track definition
 - `docs/gates.md` — Gate 10 criteria
 - `taskcards/TC-0044-fods-gate10-product-planning.md` — Execution taskcard

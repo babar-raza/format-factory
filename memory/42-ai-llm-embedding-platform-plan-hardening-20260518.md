@@ -96,10 +96,10 @@ Implementation requires:
 - ROADMAP.md — Infrastructure milestones updated; Architecture Backlog LLM section updated
 - GOVERNANCE.md — Section 26.14 added
 - AGENTS.md — Section AF16 added
-- docs/specification-normalization.md — AI platform cross-references added
-- docs/acquisition-workflow.md — AI pipeline cross-references added
-- docs/format-expansion-roadmap.md — AI platform cross-references added
-- docs/current-state-and-evidence-authority.md — Section 8.4 AI artifact authority added
+- docs/python-foss/specification-normalization.md — AI platform cross-references added
+- docs/python-foss/acquisition-workflow.md — AI pipeline cross-references added
+- docs/python-foss/format-expansion-roadmap.md — AI platform cross-references added
+- docs/governance/current-state-and-evidence-authority.md — Section 8.4 AI artifact authority added
 
 ### Reports
 - reports/ai/ai-plan-hardening-preflight.md

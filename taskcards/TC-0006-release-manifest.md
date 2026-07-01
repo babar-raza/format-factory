@@ -45,7 +45,7 @@ Build the release manifest generator tool in `tools/` that: (1) validates artifa
 
 ## Context
 
-Phase 0 defined the artifact visibility schema in `docs/release-control.md` and noted that front matter validation tooling was deferred (DEC-023, TC-0006 scope). Until Gate 9, release manifests are created manually. Once FODS approaches Gate 10, the tool must exist to automate manifest generation and run the boundary check that the open-source release contains no commercial artifacts.
+Phase 0 defined the artifact visibility schema in `docs/governance/release-control.md` and noted that front matter validation tooling was deferred (DEC-023, TC-0006 scope). Until Gate 9, release manifests are created manually. Once FODS approaches Gate 10, the tool must exist to automate manifest generation and run the boundary check that the open-source release contains no commercial artifacts.
 
 Gap G-008 requires front matter validation to be available at Gate 3 at the latest (samples need confirmed visibility). In practice, a lightweight validator should be available early in Phase 3 to catch front matter errors before Gate 7/8.
 
@@ -55,7 +55,7 @@ Gap G-008 requires front matter validation to be available at Gate 3 at the late
 
 ### In scope
 
-1. `tools/validation/validate_frontmatter.py` — Validates artifact front matter against the schema in `docs/release-control.md`. Must handle all committed artifact types.
+1. `tools/validation/validate_frontmatter.py` — Validates artifact front matter against the schema in `docs/governance/release-control.md`. Must handle all committed artifact types.
 2. `tools/validation/generate_manifest.py` — Generates a release manifest YAML from the artifact index, filtered by release type (oss | commercial).
 3. `tools/validation/check_boundary.py` — Verifies that no commercial artifact appears in the OSS manifest and that no file in `src/python/{format}/` or `src/net/{format}/` (FOSS tiers) references any commercial namespace.
 4. Integration with the artifact index (`tools/llm/artifact_index.py` from TC-0005).
@@ -94,7 +94,7 @@ Gap G-008 requires front matter validation to be available at Gate 3 at the late
 
 | Artifact | Path | Required? |
 |---|---|---|
-| Release control policy | `docs/release-control.md` | Required |
+| Release control policy | `docs/governance/release-control.md` | Required |
 | Artifact index module | `tools/llm/artifact_index.py` | Required (TC-0005) |
 | Format registry | `registry/format-registry.yaml` | Required |
 
@@ -102,7 +102,7 @@ Gap G-008 requires front matter validation to be available at Gate 3 at the late
 
 ## Steps
 
-1. Read `docs/release-control.md` for the artifact visibility schema and eligibility rules.
+1. Read `docs/governance/release-control.md` for the artifact visibility schema and eligibility rules.
 2. Implement `validate_frontmatter.py`: scan all committed artifacts, parse front matter YAML, validate all required fields.
 3. Implement `generate_manifest.py`: read artifact index, filter by `publish_allowed: true` and release type, output manifest YAML.
 4. Implement `check_boundary.py`: scan `src/python/{format}/` and `src/net/{format}/` FOSS tiers for commercial namespace references; scan release manifest for `visibility: commercial` entries.

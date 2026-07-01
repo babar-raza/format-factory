@@ -69,7 +69,7 @@ notes: Gate 2 legal artifact. Always evidence-only. Never released. Sign-off req
 
 [For Category 1 on the pre-approved fast-path list: State that no known patents encumber parser implementation of this format based on fast-path eligibility.]
 
-[For all other categories: Address the four questions from docs/legal-and-licensing.md Section "Patent Risk Framework":]
+[For all other categories: Address the four questions from docs/governance/legal-and-licensing.md Section "Patent Risk Framework":]
 
 1. Are there known patents that cover parsing, reading, or writing this format?
 2. Has the format been involved in patent litigation?
@@ -80,7 +80,7 @@ notes: Gate 2 legal artifact. Always evidence-only. Never released. Sign-off req
 
 ## Fast-Path Checklist (Category 1 only)
 
-If using the fast-path process from `docs/legal-and-licensing.md`:
+If using the fast-path process from `docs/governance/legal-and-licensing.md`:
 
 - [ ] Format is on the Pre-Approved Fast-Path List, OR manually verified as OASIS/W3C/ISO/ECMA/IETF with documented RF terms
 - [ ] At least two independent open-source implementations exist

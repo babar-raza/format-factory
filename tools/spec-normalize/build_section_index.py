@@ -23,7 +23,7 @@ Algorithm:
     5. Output sections.jsonl and page-map.yaml.
 
 See also:
-    docs/specification-normalization.md — full policy
+    docs/python-foss/specification-normalization.md — full policy
     tools/spec-normalize/build_chunk_index.py — chunking tool (next step)
     tools/spec-normalize/query_normalized_spec.py — query tool
 """

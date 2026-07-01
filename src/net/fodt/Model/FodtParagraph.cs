@@ -64,6 +64,9 @@ public sealed class FodtParagraph
     /// <summary>Whether this is a heading element (text:h) rather than a paragraph (text:p).</summary>
     public bool IsHeading => Element.Name.LocalName == "h";
 
+    /// <summary>Heading outline level (alias for <see cref="OutlineLevel"/>).</summary>
+    public int Level => OutlineLevel;
+
     /// <summary>
     /// Heading outline level from text:outline-level attribute, or 0 if not a heading or
     /// the attribute is absent.

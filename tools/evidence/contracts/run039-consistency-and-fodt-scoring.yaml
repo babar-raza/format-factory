@@ -10,7 +10,7 @@
 # No product source. No embeddings. No LLM endpoint calls. No spec downloads.
 
 contract_id: run039-consistency-and-fodt-scoring
-current_state_authority: bundle-metadata  # run049: patched per docs/current-state-and-evidence-authority.md Section 6
+current_state_authority: bundle-metadata  # run049: patched per docs/governance/current-state-and-evidence-authority.md Section 6
 run: run039
 created: "2026-05-07"
 purpose: >
@@ -25,7 +25,7 @@ purpose: >
   independently verified (10/10 checks PASS), FODT Gate 1 scoring package created
   (registry/candidates/fodt-gate1-scoring-package.yaml — 88/100, Accept band, candidate-only,
   gate_1_approved: false), TC-0029 created (not_started — FODT Gate 1 scoring preparation),
-  ODF flat family reuse strategy created (docs/odf-flat-family-reuse-strategy.md — FODT ~40-50%
+  ODF flat family reuse strategy created (docs/python-foss/odf-flat-family-reuse-strategy.md — FODT ~40-50%
   FODS effort), registry gate_6 updated (5th FAIL, run039 additions), settings.json updated,
   README/ROADMAP updated, master-plan v2.35, memory files updated,
   TC-0028 status updated (in_progress — shortlist verified, FODT scoring package created),
@@ -70,8 +70,8 @@ required_repo_files:
   - path: acquisition-packs/fods/oracle-harness-self-test-report.md
   - path: acquisition-packs/fods/pack.yaml
   - path: acquisition-packs/_candidate-shortlists/odf-flat-family-next-candidates.md
-  - path: docs/odf-flat-family-reuse-strategy.md
-  - path: docs/oracle-provider-strategy.md
+  - path: docs/python-foss/odf-flat-family-reuse-strategy.md
+  - path: docs/ai/oracle-provider-strategy.md
   - path: schemas/neutral-model/fods/README.md
   - path: schemas/neutral-model/fods/model.yaml
   - path: schemas/neutral-model/fods/field-map.yaml
@@ -181,7 +181,7 @@ validation_checks:
     expected: PASS
   - description: "TC-0029 created: not_started, candidate-only, no Gate 1 approval"
     expected: PASS
-  - description: "docs/odf-flat-family-reuse-strategy.md created (8 sections, FODT ~40-50% effort)"
+  - description: "docs/python-foss/odf-flat-family-reuse-strategy.md created (8 sections, FODT ~40-50% effort)"
     expected: PASS
   - description: "master-plan version: 2.35"
     expected: PASS

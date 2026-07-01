@@ -26,7 +26,7 @@ Chunking strategy:
     4. Chunk IDs are stable: {format_id}-chunk-{start_page:04d}-{end_page:04d}
 
 See also:
-    docs/specification-normalization.md — full policy
+    docs/python-foss/specification-normalization.md — full policy
     tools/spec-normalize/build_section_index.py — section index (run first)
     tools/spec-normalize/query_normalized_spec.py — query tool
 """

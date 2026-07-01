@@ -5,7 +5,7 @@ Created: R32 (2026-05-19)
 Lane: I — Evidence Quality Validators
 
 These tests validate that gate claims in the completion matrix are supported
-by actual source/test evidence, per docs/gate-quality-criteria.md.
+by actual source/test evidence, per docs/governance/gate-quality-criteria.md.
 """
 import os
 

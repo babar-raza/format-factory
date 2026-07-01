@@ -19,7 +19,7 @@ Aspose tooling.
 
 ## Scope
 
-- Design YAML schema for non-aspose-format-candidates.yaml (see docs/non-aspose-format-candidate-registry-plan.md)
+- Design YAML schema for non-aspose-format-candidates.yaml (see docs/python-foss/non-aspose-format-candidate-registry-plan.md)
 - Define verification workflow (how to confirm Aspose overlap status)
 - Define candidate evaluation criteria (complexity, product potential, spec availability)
 - Create empty template registry file with 2-3 example entries clearly marked as unverified
@@ -35,7 +35,7 @@ Aspose tooling.
 
 - registry/non-aspose-format-candidates.yaml (new — template only, entries marked unverified)
 - registry/_readme.md (update to reference new file)
-- docs/non-aspose-format-candidate-registry-plan.md (update with schema reference)
+- docs/python-foss/non-aspose-format-candidate-registry-plan.md (update with schema reference)
 
 ## Forbidden Files
 

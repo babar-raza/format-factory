@@ -52,7 +52,7 @@ Current state (run027):
 
 ## Objective
 
-Implement the FODS Tier 3 vector index as defined in `docs/spec-retrieval-strategy.md`.
+Implement the FODS Tier 3 vector index as defined in `docs/ai/spec-retrieval-strategy.md`.
 The pilot creates:
 1. A production embedding tool: `tools/spec-normalize/build_vector_index.py`
 2. A FODS vector index stored locally: `.local/spec-cache/fods/1.3/normalized/vector-index/`
@@ -64,7 +64,7 @@ The pilot creates:
 ## Prerequisites
 
 - [x] Spec Navigation Layer complete — `chunks.jsonl` (940 chunks) (run026)
-- [x] `docs/spec-retrieval-strategy.md` — Hybrid Retrieval Strategy (run027)
+- [x] `docs/ai/spec-retrieval-strategy.md` — Hybrid Retrieval Strategy (run027)
 - [ ] TC-0015 evaluation completed and recommendation is YES
 - [ ] Human review and approval of TC-0015 evaluation report
 - [ ] Explicit TC-0016 execution prompt issued by human
@@ -162,7 +162,7 @@ do_not_commit: true
 
 ## Related Files
 
-- `docs/spec-retrieval-strategy.md` — strategy (includes Tier 3 design)
+- `docs/ai/spec-retrieval-strategy.md` — strategy (includes Tier 3 design)
 - `taskcards/TC-0015-spec-retrieval-strategy-evaluation.md` — prerequisite evaluation
 - `.local/spec-cache/fods/1.3/normalized/chunks.jsonl` — chunk metadata (local-only)
 - `.local/spec-cache/fods/1.3/normalized/text.txt` — full spec text (local-only)

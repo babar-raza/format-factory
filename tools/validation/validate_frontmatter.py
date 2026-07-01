@@ -4,7 +4,7 @@ validate_frontmatter.py — Artifact front matter validator for format-factory.
 Scans all committed artifacts for YAML front matter (between --- delimiters),
 validates required fields, and reports violations.
 
-Policy source: docs/release-control.md
+Policy source: docs/governance/release-control.md
 
 Usage:
     python tools/validation/validate_frontmatter.py

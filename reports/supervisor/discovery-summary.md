@@ -1,8 +1,8 @@
 # Evidence Bundle Discovery Summary
-Timestamp: 2026-06-28T23:05:08.834000
+Timestamp: 2026-07-01T17:07:07.597254
 Status: found
-Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\fodt-net-deepening-s122-20260627095014\declaration-review-package.zip
+Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\system-healing-unblock-20260625\declaration-review-package.zip
 Sprint ID: unknown
 Entry count: 63
-Bundle mtime: 2026-06-27T09:57:21.080438
-Bundle size: 320133 bytes
+Bundle mtime: 2026-07-01T16:59:49.677211
+Bundle size: 280445 bytes

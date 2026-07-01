@@ -73,7 +73,7 @@ FODS is the pilot format. Gate 3 requires a minimum sample corpus covering:
 - File with all core data structures present
 - At least one edge-case file
 
-Every sample needs a `_provenance.yaml` entry with `provenance_status: confirmed`. All sample licenses must be on the acceptable licenses list in `docs/legal-and-licensing.md`.
+Every sample needs a `_provenance.yaml` entry with `provenance_status: confirmed`. All sample licenses must be on the acceptable licenses list in `docs/governance/legal-and-licensing.md`.
 
 See `docs/gates.md` Gate 3 for full pass criteria.
 See `samples/_policy.md` for the sample acquisition policy.
@@ -118,7 +118,7 @@ See `samples/_policy.md` for the sample acquisition policy.
 ## Steps (to be executed after Gate 2 passes and Gate 3 execution prompt is issued)
 
 1. Review `docs/gates.md` Gate 3 criteria (including normalization dependency note).
-2. Review `docs/legal-and-licensing.md` sample license requirements.
+2. Review `docs/governance/legal-and-licensing.md` sample license requirements.
 3. Review `samples/_policy.md`.
 4. Verify TC-0012 normalization dry-run is complete (source-manifest.yaml present and SHA-256 MATCH).
 5. Review any available normalized artifacts (sections.jsonl, page-map.yaml) to inform sample categories.

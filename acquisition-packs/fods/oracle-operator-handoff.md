@@ -169,4 +169,4 @@ The oracle harness will:
 | `tools/oracle/validate_oracle_environment.py` | Environment readiness check |
 | `tools/oracle/preflight_oracle.py --verbose` | Detailed preflight with candidate output |
 | `taskcards/TC-0026-fods-gate6-oracle-execution.md` | TC-0026 execution taskcard |
-| `docs/oracle-provider-strategy.md` | Oracle provider architecture |
+| `docs/ai/oracle-provider-strategy.md` | Oracle provider architecture |

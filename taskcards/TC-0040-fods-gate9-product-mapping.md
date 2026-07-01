@@ -69,5 +69,5 @@ The tier map assigns each FODS feature to a product tier (0–4 for Python FOSS)
 
 - `acquisition-packs/fods/gate9-product-mapping-plan.md` — Planning document
 - `acquisition-packs/fods/tier-map-draft.yaml` — Draft tier map
-- `docs/product-tracks.md` — Tier definitions
+- `docs/product-factory/product-tracks.md` — Tier definitions
 - `docs/gates.md` — Gate 9 criteria

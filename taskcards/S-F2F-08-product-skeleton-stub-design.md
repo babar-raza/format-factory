@@ -42,7 +42,7 @@ NO tool files. NO stub files. NO placeholder implementations. NO src/python/ or 
 - docs/python-product-closure-strategy.md (output of S-F2F-07)
 - docs/dotnet-product-closure-strategy.md (output of S-F2F-07)
 - plans/master-plan.md (Section 4: Feature Tier Model)
-- docs/release-control.md (FOSS/commercial boundary policy)
+- docs/governance/release-control.md (FOSS/commercial boundary policy)
 
 ## 8. Outputs
 - docs/product-skeleton-generator.md

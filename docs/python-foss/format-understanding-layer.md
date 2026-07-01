@@ -43,7 +43,7 @@ Immediate scope:
 
 Deferred scope:
 
-- Non-XML formats. See [docs/format-representation-model.md](format-representation-model.md).
+- Non-XML formats. See [docs/python-foss/format-representation-model.md](format-representation-model.md).
 
 ---
 

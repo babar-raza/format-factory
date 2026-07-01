@@ -125,7 +125,7 @@ This settings update must occur in an authorized sprint before TC-0004 execution
 |---|---|---|
 | Commands readme | `.claude/commands/_readme.md` | Required |
 | Gates doc | `docs/gates.md` | Required |
-| Acquisition workflow | `docs/acquisition-workflow.md` | Required |
+| Acquisition workflow | `docs/python-foss/acquisition-workflow.md` | Required |
 | Scoring model | `registry/scoring/_scoring-model.md` | Required |
 | Template taskcard | `taskcards/_template.md` | Required |
 | Acquisition pack template | `acquisition-packs/_template/` | Required |

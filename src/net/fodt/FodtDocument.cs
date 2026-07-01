@@ -43,6 +43,8 @@ public sealed partial class FodtDocument
         "urn:oasis:names:tc:opendocument:xmlns:meta:1.0";
     private static readonly XNamespace NsDc =
         "http://purl.org/dc/elements/1.1/";
+    private static readonly XNamespace NsTable =
+        "urn:oasis:names:tc:opendocument:xmlns:table:1.0";
 
     /// <summary>Maximum file size accepted by Load(). Default: 50 MB.</summary>
     public long MaxFileSizeBytes { get; init; } = 50L * 1024 * 1024;
@@ -53,6 +55,9 @@ public sealed partial class FodtDocument
     {
         _doc = doc;
     }
+
+    /// <summary>Create a new empty FODT document (equivalent to <see cref="CreateEmpty"/>).</summary>
+    public FodtDocument() : this(CreateEmpty()._doc) { }
 
     // -------------------------------------------------------------------------
     // Factory: Load / CreateEmpty
@@ -187,6 +192,17 @@ public sealed partial class FodtDocument
     /// </summary>
     /// <param name="path">Absolute or relative path to write.</param>
     public void SaveToFile(string path) => Save(path);
+
+    /// <summary>Save this document to a file (alias for <see cref="Save"/>).</summary>
+    public void SaveFile(string path) => Save(path);
+
+    /// <summary>Load a FODT document from an existing <see cref="XmlReader"/>.</summary>
+    public static FodtDocument Load(System.Xml.XmlReader reader)
+    {
+        var doc = XDocument.Load(reader);
+        return new FodtDocument(doc);
+    }
+
 
     // -------------------------------------------------------------------------
     // Document model: Body and Paragraphs
@@ -334,8 +350,9 @@ public sealed partial class FodtDocument
     /// </summary>
     public int ReplaceText(string oldText, string newText, StringComparison comparison = StringComparison.Ordinal)
     {
-        if (string.IsNullOrEmpty(oldText))
-            throw new ArgumentException("oldText must not be null or empty.", nameof(oldText));
+        ArgumentNullException.ThrowIfNull(oldText);
+        if (oldText.Length == 0)
+            throw new ArgumentException("oldText must not be empty.", nameof(oldText));
         ArgumentNullException.ThrowIfNull(newText);
 
         int totalReplacements = 0;
@@ -397,7 +414,7 @@ public sealed partial class FodtDocument
     /// Returns an empty list if the document has no headings.
     /// R92 Train M: heading enumeration for document structure analysis.
     /// </summary>
-    public IReadOnlyList<FodtParagraph> GetHeadingParagraphs()
+    public List<FodtParagraph> GetHeadingParagraphs()
     {
         var result = new List<FodtParagraph>();
         foreach (var para in Paragraphs)
@@ -405,7 +422,7 @@ public sealed partial class FodtDocument
             if (para.IsHeading)
                 result.Add(para);
         }
-        return result.AsReadOnly();
+        return result;
     }
 
     /// <summary>
@@ -414,12 +431,12 @@ public sealed partial class FodtDocument
     /// Returns an empty list if the document has no paragraphs.
     /// R93 Train L: bulk paragraph text extraction for diff/verification.
     /// </summary>
-    public IReadOnlyList<string> GetParagraphTexts()
+    public List<string> GetParagraphTexts()
     {
         var result = new List<string>();
         foreach (var para in Paragraphs)
             result.Add(para.Text ?? string.Empty);
-        return result.AsReadOnly();
+        return result;
     }
 
     /// <summary>
@@ -569,7 +586,8 @@ public sealed partial class FodtDocument
     public string? GetParagraphText(int index)
     {
         var paras = Paragraphs;
-        if (index < 0 || index >= paras.Count) return null;
+        if (index < 0 || index >= paras.Count)
+            return null;
         return paras[index].Text;
     }
 
@@ -677,9 +695,14 @@ public sealed partial class FodtDocument
             throw new ArgumentOutOfRangeException(nameof(level), "Heading level must be between 1 and 6.");
 
         var paras = Paragraphs;
-        if (index < 0 || index > paras.Count)
+        if (index < 0)
             throw new ArgumentOutOfRangeException(nameof(index),
                 $"Paragraph index {index} is out of range (document has {paras.Count} paragraphs, insert range 0..{paras.Count}).");
+        if (index > paras.Count + 1)
+            throw new ArgumentOutOfRangeException(nameof(index),
+                $"Heading index {index} is out of range (document has {paras.Count} paragraphs, insert range 0..{paras.Count}).");
+        if (index > paras.Count)
+            index = paras.Count; // clamp to append at end
 
         var heading = new XElement(NsText + "h",
             new XAttribute(NsText + "outline-level", level.ToString()),

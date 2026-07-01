@@ -152,7 +152,7 @@ LibreOffice has not been discovered on the dev machine across six consecutive ru
 When a new format reaches its oracle gate:
 
 1. Identify the reference oracle tool (the authoritative implementation).
-2. Confirm the tool is open-source or its use is clearly authorized (see `docs/legal-and-licensing.md`).
+2. Confirm the tool is open-source or its use is clearly authorized (see `docs/governance/legal-and-licensing.md`).
 3. Add it to `provider_registry.yaml` with `status: experimental`.
 4. Create a format-specific preflight, run, compare, and summarize script (following the FODS oracle tools as templates).
 5. Run the preflight in a dedicated verification sprint (DEC-034 requirement: independent verification before human gate review).

@@ -85,7 +85,7 @@ Human contributors should review [`GOVERNANCE.md`](GOVERNANCE.md) for:
 
 ## Legal Requirements
 
-Before working on any format, review [`docs/legal-and-licensing.md`](docs/legal-and-licensing.md). All formats must be legally classified before any prototype work begins. Category 5 (reverse-engineered binary) and Category 6 (blocked) formats are automatic rejects.
+Before working on any format, review [`docs/governance/legal-and-licensing.md`](docs/governance/legal-and-licensing.md). All formats must be legally classified before any prototype work begins. Category 5 (reverse-engineered binary) and Category 6 (blocked) formats are automatic rejects.
 
 ## License
 

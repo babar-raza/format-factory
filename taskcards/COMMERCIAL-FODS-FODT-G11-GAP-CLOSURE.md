@@ -38,7 +38,7 @@
 - FODT Markdown: special characters not escaped
 
 ### G11-G Packet
-- Comprehensive feature matrix per docs/format-feature-matrix-template.md
+- Comprehensive feature matrix per docs/python-foss/format-feature-matrix-template.md
 - Security review updated for .NET implementation
 - Performance test (parse/save time for representative documents)
 - Babar Raza review and approval

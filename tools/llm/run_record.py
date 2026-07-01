@@ -3,7 +3,7 @@ tools/llm/run_record.py — LLM Run Record Writer
 TC-0005 (Phase 1, 2026-06-18)
 
 Writes JSONL run records to .local/llm-logs/ for every LLM-assisted execution.
-See docs/llm-endpoint-strategy.md and AGENTS.md Section B8.
+See docs/ai/llm-endpoint-strategy.md and AGENTS.md Section B8.
 
 Safety invariants:
 - Secrets are NEVER written to run records (use secret_redacted=True)

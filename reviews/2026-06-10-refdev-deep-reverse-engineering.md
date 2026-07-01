@@ -475,7 +475,7 @@ The project is tightly coupled to the Aspose.PDF FOSS pipeline. Adopting it whol
 | **Code quality** | 7/10 | Good naming, good error messages, defensive patterns. Loses points for global side effects (`load_dotenv`, `stdout.reconfigure`), private cross-module imports, duplicate `_to_pascal`, and the `capabilities_dir` bug. |
 | **Operational maturity** | 4/10 | No packaging, no structured logging, no parallelism, no atomic writes, no lock files, no rate limiting. Single-threaded, single-operator tool. macOS-only for C++ linking. |
 | **Test confidence** | 6/10 | ~60 tests covering pure helpers and one integration test (C# pipeline). No tests for the LLM call path. No tests for cpp/typescript/python/java verify paths. |
-| **Documentation trustworthiness** | 9/10 | Unusually honest and accurate. `docs/architecture.md` matches code. README matches CLI. Only minor discrepancy (`__init__.py` says "cpp, csharp" when 5 targets exist). |
+| **Documentation trustworthiness** | 9/10 | Unusually honest and accurate. `docs/code-quality/architecture.md` matches code. README matches CLI. Only minor discrepancy (`__init__.py` says "cpp, csharp" when 5 targets exist). |
 | **Security confidence** | 5/10 | No credential management, plaintext tokens in .env files, metrics token as query param. Subprocess calls use list-form (good). YAML uses `safe_load` (good). No user input reaches exec/eval. |
 | **Integration fitness** | 4/10 | Tightly coupled to Aspose.PDF FOSS methodology. No packaging. macOS-only for some paths. Would require significant adaptation for other workflows. High value as reference architecture. |
 | **Maintainability** | 7/10 | Good structure, good docs, good tests for a solo project. Plugin system makes adding targets mechanical. Giant modules and private cross-module imports are the main maintenance risks. |
@@ -550,5 +550,5 @@ The project is tightly coupled to the Aspose.PDF FOSS pipeline. Adopting it whol
 | `CHANGELOG.md` | Version history |
 | `CODEOWNERS` | All code owned by @dmitry.letuchy |
 | `SECURITY.md` | Security disclosure policy |
-| `docs/architecture.md` | System layers, config split, target plugins, pipeline flow |
+| `docs/code-quality/architecture.md` | System layers, config split, target plugins, pipeline flow |
 | `docs/methodology.md` | LibForge positioning, two-tier LLM workflow |

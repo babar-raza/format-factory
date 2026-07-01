@@ -58,7 +58,7 @@ See `docs/ai/ai-technology-decision-record.md` for full technology evaluation.
 
 ### 3.1 Index Creation
 
-1. Source documents identified (normalized spec artifacts per `docs/specification-normalization.md`)
+1. Source documents identified (normalized spec artifacts per `docs/python-foss/specification-normalization.md`)
 2. Chunk manifest generated — lists every chunk with:
    - chunk_id
    - source_path
@@ -204,6 +204,6 @@ For any retrieval-dependent pipeline:
 | `docs/ai/ai-platform-operating-model.md` | Parent platform model, Type C |
 | `docs/ai/model-routing-and-discovery-policy.md` | Embedding model routing |
 | `docs/ai/ai-technology-decision-record.md` | LanceDB selection rationale |
-| `docs/specification-normalization.md` | Source artifacts for embedding |
-| `docs/spec-retrieval-and-rag-policy.md` | Existing RAG tier policy |
+| `docs/python-foss/specification-normalization.md` | Source artifacts for embedding |
+| `docs/ai/spec-retrieval-and-rag-policy.md` | Existing RAG tier policy |
 | `docs/ai/ai-risk-register.md` | RISK-AI-008 through RISK-AI-012 |

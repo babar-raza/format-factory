@@ -62,8 +62,8 @@ The AI requirements pipeline was established during COMMERCIAL-LOAD-SAVE-VERTICA
 - `generated-requirements/fodt/` — 6 artifacts (same structure)
 - `tools/requirements/validate_generated_requirements.py` — schema validator
 - `schemas/generated-requirements/` — 4 JSON schemas
-- `docs/ai-generated-format-requirements-pipeline.md` — normative design doc
-- `docs/ai-generated-format-requirements-pipeline.yaml` — machine-readable design
+- `docs/ai/ai-generated-format-requirements-pipeline.md` — normative design doc
+- `docs/ai/ai-generated-format-requirements-pipeline.yaml` — machine-readable design
 
 Pipeline validated: REQUIREMENTS_SCHEMA_VALIDATION: PASS (all 8 files, 0 errors).
 AI_PROPOSAL count: 0 (no unverified AI proposals accepted).
@@ -108,7 +108,7 @@ AI_PROPOSAL count: 0 (no unverified AI proposals accepted).
 
 ## Acceptance Criteria
 
-- [x] `docs/ai-generated-format-requirements-pipeline.md` is in AGENTS.md as a referenced section
+- [x] `docs/ai/ai-generated-format-requirements-pipeline.md` is in AGENTS.md as a referenced section
       → Added to AGENTS.md AF13 (sprint GENERATED-REQUIREMENTS-DEC034-IV-AND-GOVERNANCE-STABILIZATION-001)
 - [x] `GOVERNANCE.md` references the pipeline governance rules
       → GOVERNANCE.md 26.11 updated with pipeline doc reference and authority chain (same sprint)
@@ -129,11 +129,11 @@ AI_PROPOSAL count: 0 (no unverified AI proposals accepted).
 
 ## References
 
-- Pipeline design: `docs/ai-generated-format-requirements-pipeline.md`
-- Pipeline YAML: `docs/ai-generated-format-requirements-pipeline.yaml`
+- Pipeline design: `docs/ai/ai-generated-format-requirements-pipeline.md`
+- Pipeline YAML: `docs/ai/ai-generated-format-requirements-pipeline.yaml`
 - Validator: `tools/requirements/validate_generated_requirements.py`
 - Schemas: `schemas/generated-requirements/`
 - Generated artifacts: `generated-requirements/{fods,fodt}/`
 - Test suite: `tests/requirements/test_validate_generated_requirements.py`
-- Product goals: `docs/commercial-product-capability-model.md`
+- Product goals: `docs/product-factory/commercial-product-capability-model.md`
 - DEC-034 policy: `AGENTS.md` Section V

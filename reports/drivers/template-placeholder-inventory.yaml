@@ -1,0 +1,108 @@
+---
+# Template Placeholder Inventory
+# Generated: TC-DRV-006
+# Plan: plans/.claude/abstract-moseying-donut.md
+# Mission: DRIVERS-SUBSYSTEM-HEALING-001
+
+placeholders:
+  - template: getter_test.py.tmpl
+    original_placeholder: "# TODO: provide a real model or input"
+    original_code: "result = ${function_name}(None)"
+    classification: FORBIDDEN_COMPLETION_PLACEHOLDER
+    action_taken: "Replaced with '# FIXTURE_REQUIRED: replace None with a real model or valid input object'"
+    status: HARDENED
+
+  - template: getter_test.py.tmpl
+    original_placeholder: "assert result is not None"
+    classification: FORBIDDEN_COMPLETION_PLACEHOLDER
+    action_taken: "Replaced with '# EXPECTED_VALUE_REQUIRED: replace with a meaningful assertion'"
+    status: HARDENED
+
+  - template: getter_test.py.tmpl
+    original_placeholder: "assert isinstance(result, object)"
+    classification: FORBIDDEN_COMPLETION_PLACEHOLDER
+    action_taken: "Replaced with '# ORACLE_REQUIRED: assert spec-derived expected value, not isinstance(result, object)'"
+    status: HARDENED
+
+  - template: export_csv_test.py.tmpl
+    original_placeholder: "# TODO: provide real source bytes"
+    original_code: "result = ${function_name}(b\"\")"
+    classification: FORBIDDEN_COMPLETION_PLACEHOLDER
+    action_taken: "Replaced TODO with '# FIXTURE_REQUIRED: replace b\"\" with real ${format_cap} format bytes'"
+    status: HARDENED
+
+  - template: export_csv_test.py.tmpl
+    original_placeholder: "assert isinstance(result, str)"
+    classification: FORBIDDEN_COMPLETION_PLACEHOLDER
+    action_taken: "Replaced with '# EXPECTED_VALUE_REQUIRED: assert meaningful behavior'"
+    status: HARDENED
+
+  - template: export_csv_test.py.tmpl
+    original_placeholder: "assert dest.exists()"
+    classification: FORBIDDEN_COMPLETION_PLACEHOLDER
+    action_taken: "Kept existence check but added '# EXPECTED_VALUE_REQUIRED: assert file content validity'"
+    status: HARDENED
+
+  - template: roundtrip_test.py.tmpl
+    original_placeholder: "# TODO: Replace with a real fixture or minimal bytes for this format"
+    original_code: "source_bytes = b\"\"  # ADD FORMAT-SPECIFIC MINIMAL BYTES HERE"
+    classification: FORBIDDEN_COMPLETION_PLACEHOLDER
+    action_taken: "Replaced with '# FIXTURE_REQUIRED' comment and '# TEST_SCAFFOLD_INCOMPLETE' inline marker"
+    status: HARDENED
+
+  - template: roundtrip_test.py.tmpl
+    original_placeholder: "source_bytes = b\"\"  # ADD FORMAT-SPECIFIC MINIMAL BYTES HERE"
+    classification: PRODUCT_FIXTURE_REQUIRED
+    action_taken: "b\"\" retained (actual bytes) but marked with TEST_SCAFFOLD_INCOMPLETE — scan_for_forbidden_placeholders() will detect this"
+    status: HARDENED
+
+  - template: append_test.py.tmpl
+    original_placeholder: "# TODO: provide real source bytes"
+    original_code: "result = ${function_name}(b\"\", [])"
+    classification: FORBIDDEN_COMPLETION_PLACEHOLDER
+    action_taken: "Replaced with '# FIXTURE_REQUIRED: replace b\"\" with real format bytes'"
+    status: HARDENED
+
+  - template: append_test.py.tmpl
+    original_placeholder: "assert isinstance(result, dict)"
+    classification: FORBIDDEN_COMPLETION_PLACEHOLDER
+    action_taken: "Replaced with '# EXPECTED_VALUE_REQUIRED: assert count increased by exactly 1'"
+    status: HARDENED
+
+  - template: probe_test.py.tmpl
+    original_placeholder: "result = ${function_name}(b\"\")"
+    classification: PRODUCT_FIXTURE_REQUIRED
+    action_taken: "b\"\" retained but preceded by '# FIXTURE_REQUIRED: replace b\"\" with real format bytes'"
+    status: HARDENED
+
+  - template: probe_test.py.tmpl
+    original_placeholder: "assert isinstance(result, dict)"
+    classification: FORBIDDEN_COMPLETION_PLACEHOLDER
+    action_taken: "Replaced with '# EXPECTED_VALUE_REQUIRED: assert specific probe fields'"
+    status: HARDENED
+
+scanner:
+  function: "tools/supervisor/test_drivers.scan_for_forbidden_placeholders()"
+  detects:
+    - "regex: assert\\s+\\w+\\s+is\\s+not\\s+None\\b"
+    - "regex: isinstance\\(\\w+,\\s*object\\)"
+    - "regex: #\\s*TODO"
+    - "regex: #\\s*FIXTURE_REQUIRED"
+    - "regex: #\\s*EXPECTED_VALUE_REQUIRED"
+    - "regex: #\\s*ORACLE_REQUIRED"
+    - "regex: #\\s*TEST_SCAFFOLD_INCOMPLETE"
+    - "regex: #\\s*FORMAT_ADAPTATION_REQUIRED"
+    - "literal: # TODO: provide a real model or input"
+    - "literal: # TODO: provide real source bytes"
+    - "literal: # TODO: Replace with a real fixture"
+    - "literal: ADD FORMAT-SPECIFIC MINIMAL BYTES HERE"
+  gate: "is_maintained_test() returns False while any marker remains"
+
+summary:
+  total_placeholders_found: 12
+  hardened: 12
+  remaining_forbidden: 0
+  FORBIDDEN_PLACEHOLDERS_IN_MAINTAINED_TESTS: 0
+  note: >
+    All original forbidden placeholders replaced with machine-readable markers.
+    scan_for_forbidden_placeholders() detects them so scaffolds cannot count as maintained.

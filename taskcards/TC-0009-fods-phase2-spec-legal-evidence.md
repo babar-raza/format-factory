@@ -58,7 +58,7 @@ Plan and execute Phase 2 Gate 2 evidence for FODS: spec source verification, leg
 
 FODS is the pilot format (DEC-001). Gate 1 was approved by Babar Raza on 2026-05-04 with score 93/100. Gate 2 requires spec and legal evidence before sample acquisition (Gate 3) may begin.
 
-The ODF 1.3 specification is published by OASIS at https://docs.oasis-open.org/office/OpenDocument/v1.3/. It is Legal Category 1 (royalty-free). Spec acquisition requires authorization per AGENTS.md Section T3 and `docs/specification-cache.md`.
+The ODF 1.3 specification is published by OASIS at https://docs.oasis-open.org/office/OpenDocument/v1.3/. It is Legal Category 1 (royalty-free). Spec acquisition requires authorization per AGENTS.md Section T3 and `docs/python-foss/specification-cache.md`.
 
 ---
 
@@ -125,9 +125,9 @@ The ODF 1.3 specification is published by OASIS at https://docs.oasis-open.org/o
 | Artifact | Path | Required? |
 |---|---|---|
 | Registry FODS entry | `registry/format-registry.yaml` | Required |
-| Legal and licensing policy | `docs/legal-and-licensing.md` | Required |
+| Legal and licensing policy | `docs/governance/legal-and-licensing.md` | Required |
 | Gate 2 criteria | `docs/gates.md` | Required |
-| Spec-cache policy | `docs/specification-cache.md` | Required |
+| Spec-cache policy | `docs/python-foss/specification-cache.md` | Required |
 | AGENTS.md Section T3 | `AGENTS.md` | Required |
 | Scoring model (for context) | `registry/scoring/_scoring-model.md` | Optional |
 
@@ -136,8 +136,8 @@ The ODF 1.3 specification is published by OASIS at https://docs.oasis-open.org/o
 ## Steps (to be executed when Phase 2 prompt is issued)
 
 1. Read `docs/gates.md` Gate 2 criteria.
-2. Read `docs/legal-and-licensing.md` for Category 1 fast-path rules.
-3. Read `docs/specification-cache.md` for spec acquisition authorization model.
+2. Read `docs/governance/legal-and-licensing.md` for Category 1 fast-path rules.
+3. Read `docs/python-foss/specification-cache.md` for spec acquisition authorization model.
 4. Identify canonical OASIS ODF 1.3 spec URL.
 5. Complete legal-notes.md fast-path checklist (no spec download required for legal work).
 6. Update spec-evidence.md primary source section with URL, version, and spec summary.

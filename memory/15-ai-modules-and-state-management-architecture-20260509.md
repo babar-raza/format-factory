@@ -12,8 +12,8 @@ must_cross_check:
   - registry/format-registry.yaml
   - taskcards/
   - evidence bundles
-  - docs/llm-and-embedding-strategy.md
-  - docs/current-state-and-evidence-authority.md
+  - docs/ai/llm-and-embedding-strategy.md
+  - docs/governance/current-state-and-evidence-authority.md
 ---
 
 # 15 - AI Modules and State Management Architecture, 2026-05-09

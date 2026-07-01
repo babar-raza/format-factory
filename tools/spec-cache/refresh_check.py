@@ -28,7 +28,7 @@ Exit codes:
     2 — argument or configuration error
 
 See also:
-    docs/specification-cache.md — full policy and authorization model
+    docs/python-foss/specification-cache.md — full policy and authorization model
     tools/spec-cache/spec_index.py — spec-index.yaml library
     tools/spec-cache/acquire_spec.py — download and index a spec file
 """
@@ -148,7 +148,7 @@ def _cmd_scan(args: argparse.Namespace) -> int:
             print(f"  {reason:20} : {count}")
         print()
         print("STALE entries found. Remediation required before Gate 2.")
-        print("See: docs/specification-cache.md for T3 authorization steps.")
+        print("See: docs/python-foss/specification-cache.md for T3 authorization steps.")
         return 1
     else:
         if not args.verbose:

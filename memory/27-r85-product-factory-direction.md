@@ -116,6 +116,6 @@ Success = product POC criteria met + evidence validates the product work.
 
 - product-capability-matrix/poc-targets.yaml — authoritative POC matrix
 - docs/export/dogfood-export-strategy.md — export dogfooding strategy
-- docs/commercial-product-capability-model.md — C0-C10 capability model
+- docs/product-factory/commercial-product-capability-model.md — C0-C10 capability model
 - reports/r85/poc-target-matrix.md — R85 POC status snapshot
 - plans/master-plan.md Section 38 — POC target plan section

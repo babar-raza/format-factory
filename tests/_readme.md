@@ -69,4 +69,4 @@ All files in `tests/` are `visibility: internal`. Test fixtures derived from CC-
 - `docs/security.md` — fuzz testing requirements (Gate 7) and minimum iteration counts
 - `docs/gates.md` — Gate 4 (prototype), Gate 6 (oracle), Gate 7 (fuzz) pass criteria
 - `samples/_provenance.yaml` — license records for sample-derived fixtures
-- `docs/acquisition-workflow.md` — Stages 4, 6, 7 describe how these directories are used
+- `docs/python-foss/acquisition-workflow.md` — Stages 4, 6, 7 describe how these directories are used

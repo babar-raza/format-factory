@@ -1,0 +1,144 @@
+---
+# drivers/ Subsystem Real Consumer Graph
+# Generated: TC-DRV-003
+# Plan: plans/.claude/abstract-moseying-donut.md
+# Mission: DRIVERS-SUBSYSTEM-HEALING-001
+# Classification methodology: direct code inspection (not grep-only)
+
+consumers:
+  - path: tools/supervisor/test_drivers.py
+    classification: DIRECT_RUNTIME_CONSUMER
+    description: >
+      Primary loader of drivers/ templates. Constructs filesystem path to drivers/python/
+      and reads .py.tmpl files at runtime via _load_template().
+    code_evidence:
+      - "line 14: _DRIVERS_DIR = Path(__file__).resolve().parents[2] / 'drivers' / 'python'"
+      - "line 17-22: _load_template(name) — constructs tmpl_path = _DRIVERS_DIR / name, reads file"
+      - "line 53: _load_template('getter_test.py.tmpl')"
+      - "line 68: _load_template('export_csv_test.py.tmpl')"
+      - "line 85: _load_template('roundtrip_test.py.tmpl')"
+      - "line 106: _load_template('append_test.py.tmpl')"
+      - "line 119: _load_template('probe_test.py.tmpl')"
+    dependency_type: FILESYSTEM_READ
+    access_method: PATH_CONSTRUCTION
+    runtime_call_chain: "test_drivers._load_template() → Path.read_text() → drivers/python/<name>.py.tmpl"
+    note: >
+      The PATH_CONSTRUCTION access pattern is why a grep for "from drivers" or "import drivers"
+      returns zero results. This was the root cause of the false zero-consumer finding
+      in idempotent-snuggling-wombat.md TC-ROOT-002.
+
+  - path: tools/supervisor/product_feature_factory.py
+    classification: DIRECT_RUNTIME_CONSUMER
+    description: >
+      Secondary consumer. Imports all 5 render_* functions from test_drivers.py and calls
+      them at runtime to generate test skeletons for each pattern.
+    code_evidence:
+      - "lines 37-43: from tools.supervisor.test_drivers import (render_getter_test, render_export_csv_test, render_roundtrip_test, render_append_test, render_probe_test)"
+      - "line ~105: self._getter_test_skeleton() calls render_getter_test()"
+      - "line ~156: self._export_csv_test_skeleton() calls render_export_csv_test()"
+      - "line ~220: self._append_test_skeleton() calls render_append_test()"
+      - "line ~267: self._probe_test_skeleton() calls render_probe_test()"
+    dependency_type: FUNCTION_IMPORT_THEN_CALL
+    access_method: PYTHON_IMPORT
+    runtime_call_chain: "product_feature_factory.apply_*() → _*_test_skeleton() → render_*_test() → test_drivers._load_template() → drivers/python/*.py.tmpl"
+    note: >
+      This is a TRANSITIVE consumer of drivers/ files — it does not directly read .py.tmpl
+      files but drives the rendering pipeline that does. Classified as DIRECT_RUNTIME_CONSUMER
+      because it owns the call chain that reaches the templates.
+
+  - path: tests/supervisor/test_test_drivers.py
+    classification: TEST_ONLY_CONSUMER
+    description: >
+      Imports render_* functions from test_drivers and calls them in test methods to verify
+      golden baseline match between template rendering and FeatureFactory inline generation.
+      Only executed under pytest, never at product runtime.
+    code_evidence:
+      - "imports: from tools.supervisor.test_drivers import (render_getter_test, ..., _load_template)"
+      - "imports: from tools.supervisor.product_feature_factory import FeatureFactory"
+      - "TestLoadTemplate.test_all_templates_exist — calls _load_template() for each of 5 templates"
+      - "TestGetterGoldenMatch.test_* — compares render_getter_test() output with FeatureFactory"
+    dependency_type: TEST_EXECUTION
+    access_method: PYTHON_IMPORT
+    runtime_call_chain: "pytest → test_test_drivers → render_*_test() → _load_template() → drivers/python/*.py.tmpl"
+
+  - path: tests/supervisor/test_product_feature_factory.py
+    classification: TEST_ONLY_CONSUMER
+    description: >
+      Tests FeatureFactory patterns. Indirectly exercises test_drivers.py and drivers/ templates
+      via FeatureFactory._*_test_skeleton() methods. No direct import of test_drivers.
+    code_evidence:
+      - "imports: from tools.supervisor.product_feature_factory import FeatureFactory, FeatureFactoryError"
+      - "TestApplyGetter.test_* — calls apply_getter() which internally calls render_getter_test()"
+    dependency_type: TEST_EXECUTION_INDIRECT
+    access_method: PYTHON_IMPORT_INDIRECT
+
+  - path: tools/supervisor/libforge_pattern_registry.py
+    classification: DECLARATIVE_REFERENCE
+    description: >
+      Documents test_drivers.py as a LibForge pattern integration point in a PatternRecord.
+      No runtime import or file access to drivers/ templates. No code coupling.
+    code_evidence:
+      - "lines 291-306: PatternRecord for SPECDEV-TEMPLATE-DRIVER"
+      - "FFMapping(component='test_drivers.py', path='tools/supervisor/test_drivers.py', ...)"
+      - "No import of test_drivers or drivers/ path construction"
+    dependency_type: METADATA_ONLY
+    access_method: NONE
+    note: >
+      libforge_pattern_registry.py is a DECLARATIVE_REFERENCE only. It cannot be classified
+      as a direct consumer. The registry entry has been updated to reflect this classification.
+
+  - path: registry/repository-root-folders.yaml
+    classification: DECLARATIVE_REFERENCE
+    description: >
+      Lists drivers/ as a registered folder with purpose and consumers. No runtime loading.
+    code_evidence:
+      - "lines 688-718 (after fix): folder_path: drivers/ with consumers list"
+    dependency_type: METADATA_ONLY
+    access_method: NONE
+
+  - path: tools/supervisor/compose_verify_loop.py
+    classification: DOCUMENTATION_REFERENCE
+    description: >
+      Contains a docstring mentioning FeatureFactory templates, but no import of test_drivers
+      or drivers/ path construction. No code-level dependency.
+    code_evidence:
+      - "docstring ~line 98: mentions FeatureFactory templates (string reference only)"
+      - "No import of test_drivers or drivers/ path"
+    dependency_type: DOCUMENTATION_ONLY
+    access_method: NONE
+
+non_consumers:
+  - "All src/python/ format implementations — no dependency"
+  - "tools/supervisor/autonomous_cycle.py — no dependency"
+  - "tools/supervisor/governance_validators.py — no dependency"
+  - "tools/supervisor/product_source_executor.py — no dependency"
+  - "tools/supervisor/capability_verifier.py — no dependency"
+  - "All .governance/ registries — no runtime coupling"
+  - "tools/oracle/execute_oracle.py — no dependency"
+
+data_flow_chain:
+  description: "Complete data flow from template file to test skeleton string"
+  chain:
+    - step: 1
+      actor: "drivers/python/*.py.tmpl"
+      action: "Static template file on disk"
+    - step: 2
+      actor: "test_drivers._load_template()"
+      action: "Reads file via Path.read_text(), returns string.Template object"
+    - step: 3
+      actor: "test_drivers.render_*_test()"
+      action: "Calls tmpl.substitute(**kwargs), returns rendered Python code string"
+    - step: 4
+      actor: "product_feature_factory._*_test_skeleton()"
+      action: "Calls render_*_test() with format-specific args, returns string"
+    - step: 5
+      actor: "product_feature_factory.apply_*()"
+      action: "Uses skeleton string for display or file write (caller decides)"
+
+summary:
+  total_classified: 7
+  DIRECT_RUNTIME_CONSUMER: 2
+  TEST_ONLY_CONSUMER: 2
+  DECLARATIVE_REFERENCE: 2
+  DOCUMENTATION_REFERENCE: 1
+  FALSE_DIRECT_CONSUMER_CLAIMS: 0

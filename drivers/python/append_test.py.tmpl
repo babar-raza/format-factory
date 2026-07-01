@@ -1,3 +1,5 @@
+# SCAFFOLD_STATUS: FORMAT_ADAPTATION_REQUIRED
+# PROVENANCE: template=append_test, pattern=D, language=python
 """Test skeleton for ${function_name}() — Pattern D (Append)."""
 import sys
 from pathlib import Path
@@ -8,7 +10,7 @@ from ${module} import ${function_name}
 
 class Test${format_cap}Append:
     def test_append_increases_count(self):
-        # TODO: provide real source bytes
+        # FIXTURE_REQUIRED: replace b"" with real ${format_cap} format bytes
         result = ${function_name}(b"", [])
-        assert isinstance(result, dict)
+        # EXPECTED_VALUE_REQUIRED: assert count increased by exactly 1, not just key presence
         assert "${collection_key}" in result

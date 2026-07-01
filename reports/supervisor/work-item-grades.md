@@ -1,22 +1,17 @@
 # Work Item Grades
-Sprint: FORMAT-FACTORY-LAYER-AUDIT-20260626
-Generated: 2026-06-26T23:17:33.301806
-Global Status: ACCEPTED
+Sprint: system-healing-product-acquisition-unblock-20260625
+Generated: 2026-07-01T17:09:37.673609
+Global Status: ACCEPTED_WITH_REWORK
 
 | Item ID | Grade | Rework Required |
 |---------|-------|-----------------|
-| TC-LA-PRE-000 | ACCEPTED_WITH_LIMITATIONS |  |
-| TC-LA-AUDIT-001 | ACCEPTED_WITH_LIMITATIONS |  |
-| TC-LA-AUDIT-002 | ACCEPTED_WITH_LIMITATIONS |  |
-| TC-LA-AUDIT-003 | ACCEPTED_WITH_LIMITATIONS |  |
-| TC-LA-PILOT-004 | ACCEPTED_WITH_LIMITATIONS |  |
-| TC-LA-PILOT-005 | ACCEPTED_VERIFIED |  |
-| TC-LA-PILOT-006 | ACCEPTED_WITH_LIMITATIONS |  |
-| TC-LA-HEAL-007 | ACCEPTED_WITH_LIMITATIONS |  |
-| TC-LA-HEAL-008 | ACCEPTED_WITH_LIMITATIONS |  |
+| WI-TC-SHR-CAP | ACCEPTED_WITH_LIMITATIONS |  |
+| WI-TC-SHR-002 | ACCEPTED_VERIFIED |  |
+| WI-TC-SHR-003 | ACCEPTED_VERIFIED |  |
+| WI-TC-SHR-004 | ACCEPTED_VERIFIED |  |
 
 ## Summary
-- Accepted: 9
-- Rework: 0
+- Accepted: 4
+- Rework: 2
 - Overclaimed: 0
-- Autonomous Continue: True
+- Autonomous Continue: False

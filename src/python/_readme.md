@@ -14,7 +14,7 @@
 src/python/{format}/     e.g. src/python/fods/
 ```
 
-`src/python/open-source/` is an **obsolete path** — it must never be created. The old layout has been superseded by the format-first model described in `docs/product-tracks.md` and `docs/architecture.md`.
+`src/python/open-source/` is an **obsolete path** — it must never be created. The old layout has been superseded by the format-first model described in `docs/product-factory/product-tracks.md` and `docs/code-quality/architecture.md`.
 
 `src/python/` subdirectories will be created in Phase 4+ when the first format's Python product implementation begins (Gate 9 passed + Python implementation taskcards + explicit Phase 4 Python implementation execution prompt).
 
@@ -22,7 +22,7 @@ src/python/{format}/     e.g. src/python/fods/
 
 ## Purpose
 
-This directory contains the Python open-source product: production-quality parsers, converters, validators, and importers/exporters for all formats that have reached Gate 10. This is Track 1 of the four product tracks defined in `docs/product-tracks.md`.
+This directory contains the Python open-source product: production-quality parsers, converters, validators, and importers/exporters for all formats that have reached Gate 10. This is Track 1 of the four product tracks defined in `docs/product-factory/product-tracks.md`.
 
 ---
 
@@ -94,7 +94,7 @@ All production source files are `visibility: public` after Gate 10 approval. Bef
 
 ## Relationship to Other Documents
 
-- `docs/product-tracks.md` — Track 1 definition, technology baseline, license policy
+- `docs/product-factory/product-tracks.md` — Track 1 definition, technology baseline, license policy
 - `docs/security.md` — parser security requirements
 - `docs/gates.md` — Gate 10 (OSS readiness) pass criteria
 - `taskcards/TC-0003-sdk-baseline.md` — SDK baseline confirmation

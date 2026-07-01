@@ -12,7 +12,7 @@ authority: standards
 # Format Factory — Project Execution Standards
 
 This document provides a concise reference for how every execution sprint in Format Factory
-must be conducted. Read it alongside `docs/assistant-supervision-methodology.md`.
+must be conducted. Read it alongside `docs/automation/assistant-supervision-methodology.md`.
 
 ---
 
@@ -135,7 +135,7 @@ When any of these events occur, sync local memory before the sprint ends:
 | Gate interpretation changes | Update gate-related memory and 00-index.md |
 | Workflow methodology changes | Create new memory file and update 00-index.md |
 | Major sprint accepted | Update session continuity memory (most recent NN-*.md) |
-| New chat bootstrap needed | Update `docs/fresh-chat-project-bootstrap.md` |
+| New chat bootstrap needed | Update `docs/automation/fresh-chat-project-bootstrap.md` |
 
 Memory files must not duplicate AGENTS.md or GOVERNANCE.md. Reference those; don't repeat them.
 
@@ -188,17 +188,17 @@ Before any sprint, read in this order:
 
 | # | File | Purpose |
 |---|------|---------|
-| 1 | `docs/fresh-chat-project-bootstrap.md` | Current session entry point |
+| 1 | `docs/automation/fresh-chat-project-bootstrap.md` | Current session entry point |
 | 2 | `plans/master-plan.md` Section 33 | Current state and next action |
 | 3 | `AGENTS.md` | All agent rules |
 | 4 | `GOVERNANCE.md` | Human governance rules |
 | 5 | `memory/00-index.md` | Index of all memory files |
 | 6 | Most recent `memory/NN-*.md` | Most recent session continuity |
 | 7 | `registry/format-registry.yaml` | Gate status and capability levels |
-| 8 | `docs/commercial-product-capability-model.md` | C-level definitions |
-| 9 | `docs/current-state-and-evidence-authority.md` | Run-state authority model |
-| 10 | `docs/assistant-supervision-methodology.md` | This project's supervision standards |
-| 11 | `docs/project-execution-standards.md` | This document |
+| 8 | `docs/product-factory/commercial-product-capability-model.md` | C-level definitions |
+| 9 | `docs/governance/current-state-and-evidence-authority.md` | Run-state authority model |
+| 10 | `docs/automation/assistant-supervision-methodology.md` | This project's supervision standards |
+| 11 | `docs/governance/project-execution-standards.md` | This document |
 
 For implementation sprints, also read:
 - `generated-requirements/{format}/` — accepted requirement IDs

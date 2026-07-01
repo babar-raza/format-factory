@@ -225,7 +225,7 @@ CLI (cli.py:main)
 
 3. **`__version__ = "0.0.1"`** in [`specdev/__init__.py`][specdev/__init__.py] — never bumped despite 106 commits. Not a real version.
 
-4. **`docs/architecture.md` mentions `body_extension` and `header_extension`** on TargetPlugin, but the actual dataclass uses `source_extension` and `header_for` callable. Minor doc drift.
+4. **`docs/code-quality/architecture.md` mentions `body_extension` and `header_extension`** on TargetPlugin, but the actual dataclass uses `source_extension` and `header_for` callable. Minor doc drift.
 
 ---
 
@@ -288,7 +288,7 @@ CLI (cli.py:main)
 
 | Claim | Reality |
 |---|---|
-| `docs/architecture.md` mentions `body_extension`, `header_extension` on TargetPlugin | Actual fields are `source_extension` and callable `header_for` |
+| `docs/code-quality/architecture.md` mentions `body_extension`, `header_extension` on TargetPlugin | Actual fields are `source_extension` and callable `header_for` |
 | `__init__.py` docstring says "two built-in target-language plugins (cpp, csharp)" | Six are registered (cpp, csharp, typescript, python, rust, java) |
 | README claims "Production status: cpp and csharp tracks have growing set of frozen primitives" | Cannot verify — no frozen primitives exist in this repo; requires external Feedstock repos |
 

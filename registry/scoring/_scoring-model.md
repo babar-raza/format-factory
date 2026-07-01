@@ -234,7 +234,7 @@ not_started
 ## Relationship to Other Documents
 
 - `docs/gates.md` — Gate 1 pass criteria and authorization rules
-- `docs/legal-and-licensing.md` — legal category definitions and fast-path rules
+- `docs/governance/legal-and-licensing.md` — legal category definitions and fast-path rules
 - `registry/format-registry.yaml` — where scoring results are recorded
 - `acquisition-packs/_template/pack.yaml` — where detailed scoring sheets are stored (Phase 2+)
-- `docs/acquisition-workflow.md` — Stage 1 scoring workflow steps
+- `docs/python-foss/acquisition-workflow.md` — Stage 1 scoring workflow steps

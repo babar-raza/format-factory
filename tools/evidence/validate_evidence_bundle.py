@@ -254,7 +254,7 @@ METADATA_DEPTH_EXEMPT_FILES = frozenset({
 
 # Current-state PENDING patterns — sprint-in-progress markers that must NOT appear
 # in committed repo files (master-plan.md, memory/09) in their final state.
-# See docs/current-state-and-evidence-authority.md.
+# See docs/governance/current-state-and-evidence-authority.md.
 REPO_STATE_PENDING_PATTERNS = [
     r"Latest commit:\s*PENDING",
     r"changes pending commit",
@@ -319,7 +319,7 @@ def check_repo_current_state_pending(zf):
 
     Checks the header sections (first 3000 chars) of CURRENT_STATE_REPO_FILES.
     Returns a list of (filename, pattern_found) tuples for any hits.
-    See docs/current-state-and-evidence-authority.md.
+    See docs/governance/current-state-and-evidence-authority.md.
     """
     hits = []
     all_entries = set(zf.namelist())
@@ -1857,7 +1857,7 @@ def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=Fals
             for repo_file, pattern in repo_pending_hits:
                 errors.append(
                     f"Sprint-in-progress PENDING marker in repo file '{repo_file}': {pattern!r} "
-                    f"— see docs/current-state-and-evidence-authority.md"
+                    f"— see docs/governance/current-state-and-evidence-authority.md"
                 )
             repo_reports_pending_hits = check_repo_reports_pending(zf)
             for zip_path, pattern in repo_reports_pending_hits:

@@ -39,7 +39,7 @@ notes: "Spec Workbench core taskcard. Created run030 (2026-05-06). Governs the r
 
 This taskcard governs the reusable Spec Consumption Workbench layer. The workbench converts large spec documents into structured, agent-consumable knowledge artifacts. It is format-independent infrastructure used by every gate that requires spec consultation.
 
-The workbench architecture is documented in `docs/spec-consumption-workbench.md` (created run030).
+The workbench architecture is documented in `docs/python-foss/spec-consumption-workbench.md` (created run030).
 
 ---
 
@@ -47,13 +47,13 @@ The workbench architecture is documented in `docs/spec-consumption-workbench.md`
 
 This taskcard covers the **generic** (cross-format) workbench infrastructure:
 
-1. Workbench architecture document (`docs/spec-consumption-workbench.md`)
+1. Workbench architecture document (`docs/python-foss/spec-consumption-workbench.md`)
 2. Core tooling (`tools/spec-normalize/`):
    - `build_spec_workbench.py` — builds workbench from normalized artifacts
    - `build_requirement_pack.py` — builds requirement packs (parser/sample/model)
    - `validate_requirement_pack.py` — validates provenance completeness
    - `export_task_packet.py` — exports concise gate-scoped task packets
-3. Provenance schema (embedded in `docs/spec-consumption-workbench.md`)
+3. Provenance schema (embedded in `docs/python-foss/spec-consumption-workbench.md`)
 4. Size rules for task packets (<200 lines per packet)
 5. Refresh policy (re-seed from normalized artifacts on spec version change)
 6. Gate mapping table (Gates 2-9 each have a packet type)
@@ -77,7 +77,7 @@ The following generic workbench infrastructure was created in run030 as part of 
 
 | Artifact | Status |
 |---|---|
-| `docs/spec-consumption-workbench.md` | CREATED — run030 |
+| `docs/python-foss/spec-consumption-workbench.md` | CREATED — run030 |
 | `tools/spec-normalize/build_spec_workbench.py` | CREATED — run030 |
 | `tools/spec-normalize/build_requirement_pack.py` | CREATED — run030 |
 | `tools/spec-normalize/validate_requirement_pack.py` | CREATED — run030 |

@@ -10,7 +10,7 @@ Document the expected .NET commercial architecture (API shape, object model, sav
 
 ## Scope
 
-- Create `docs/commercial-dotnet-architecture.md`
+- Create `docs/product-factory/commercial-dotnet-architecture.md`
 - Define expected API shape (Load/Edit/Save/Export)
 - Define expected object model for FODS and FODT
 - Define expected save pipeline (collect, validate, merge, serialize, verify)
@@ -27,7 +27,7 @@ Document the expected .NET commercial architecture (API shape, object model, sav
 
 ## Acceptance Criteria
 
-- [x] `docs/commercial-dotnet-architecture.md` exists
+- [x] `docs/product-factory/commercial-dotnet-architecture.md` exists
 - [x] API shape documented with code examples
 - [x] FODS and FODT object models defined
 - [x] Save pipeline documented
@@ -43,7 +43,7 @@ Document the expected .NET commercial architecture (API shape, object model, sav
 
 ## Files Allowed
 
-- docs/commercial-dotnet-architecture.md (create)
+- docs/product-factory/commercial-dotnet-architecture.md (create)
 
 ## Prohibited Actions
 

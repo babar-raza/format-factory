@@ -66,7 +66,7 @@ Step 3: For each prose instruction, convert to an executable form:
 
 | Prose | Execution Form |
 |---|---|
-| "Check if the format is documented" | "Read docs/format-understanding-layer.md lines 1-50. If it does not exist, stop with MISSING_FILE." |
+| "Check if the format is documented" | "Read docs/python-foss/format-understanding-layer.md lines 1-50. If it does not exist, stop with MISSING_FILE." |
 | "Update the registry" | "Edit registry/format-registry.yaml: set gate_X.status to Y. Verify with grep." |
 | "Validate the bundle" | "Run: python tools/evidence/validate_evidence_bundle.py --bundle <path> --contract <path>. Expected: BUNDLE_VALIDATION: PASS." |
 | "Make sure the tests pass" | "Run: python -m pytest tests/evidence/ -v. Expected: all tests PASS." |

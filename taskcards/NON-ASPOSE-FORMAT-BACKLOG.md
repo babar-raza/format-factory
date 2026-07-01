@@ -94,8 +94,8 @@ Vendor CAD binaries, BIM, camera RAW, proprietary DTP, game/3D scene, email PIM.
 5. AI can assist with classification and spec research — cannot be authority.
 6. New candidates may be added to this backlog by recording them in:
    - `memory/26-format-expansion-roadmap-and-non-aspose-backlog-20260514.md`
-   - `docs/format-expansion-roadmap.md` Section 7
-   - `docs/format-expansion-roadmap.yaml` tier lists
+   - `docs/python-foss/format-expansion-roadmap.md` Section 7
+   - `docs/python-foss/format-expansion-roadmap.yaml` tier lists
 
 ---
 
@@ -104,8 +104,8 @@ Vendor CAD binaries, BIM, camera RAW, proprietary DTP, game/3D scene, email PIM.
 | File | Purpose |
 |------|---------|
 | memory/26-format-expansion-roadmap-and-non-aspose-backlog-20260514.md | Full backlog by category |
-| docs/format-expansion-roadmap.md | Tier A/B/C candidates with notes |
-| docs/format-expansion-roadmap.yaml | Machine-readable candidate list |
+| docs/python-foss/format-expansion-roadmap.md | Tier A/B/C candidates with notes |
+| docs/python-foss/format-expansion-roadmap.yaml | Machine-readable candidate list |
 | plans/master-plan.md Section 38 | Authority |
 | taskcards/FORMAT-EXPANSION-ROADMAP.md | Roadmap governance |
 | taskcards/PUBLIC-SPEC-FORMAT-EXPANSION.md | Public-spec expansion planning |

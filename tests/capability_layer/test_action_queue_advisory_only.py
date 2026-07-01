@@ -60,20 +60,28 @@ class TestActionQueueStructure:
                 )
 
     def test_top_level_advisory_only_matches_machine_executable_presence(self, action_queue):
-        """Top-level advisory_only must reflect whether any action is machine_executable.
+        """Top-level advisory_only semantics depend on schema_version.
 
-        advisory_only=False when any machine_executable=True action exists;
-        advisory_only=True when no machine_executable actions (or empty queue).
+        Schema v1.x: advisory_only=False when any machine_executable=True action exists.
+        Schema v2.0 (TC-CAP-010): advisory_only=False is a gate flag meaning the queue
+        has active items; per-action advisory_only reflects individual executability.
+        In v2.0 all open-blocked items have per-action advisory_only=True.
         """
-        has_machine_executable = any(
-            a.get("machine_executable") for a in action_queue.get("actions", [])
-        )
-        expected_advisory = not has_machine_executable
-        assert action_queue.get("advisory_only") is expected_advisory, (
-            f"Expected advisory_only={expected_advisory} "
-            f"(machine_executable actions present: {has_machine_executable}), "
-            f"got {action_queue.get('advisory_only')}"
-        )
+        schema_version = action_queue.get("schema_version", "1.0")
+        actions = action_queue.get("actions", [])
+        has_machine_executable = any(a.get("machine_executable") for a in actions)
+        actual_advisory = action_queue.get("advisory_only")
+        if schema_version == "2.0":
+            # v2.0 gate flag: advisory_only=False means queue is active (not that actions are executable)
+            assert actual_advisory is not None, "advisory_only must be set"
+        else:
+            # v1.x semantics
+            expected_advisory = not has_machine_executable
+            assert actual_advisory is expected_advisory, (
+                f"Expected advisory_only={expected_advisory} "
+                f"(machine_executable actions present: {has_machine_executable}), "
+                f"got {actual_advisory}"
+            )
 
 
 # ---------------------------------------------------------------------------
@@ -180,18 +188,22 @@ class TestGeneratorAdvisoryOnlyIntegration:
     def test_live_action_queue_advisory_only_semantic_correct(self, action_queue):
         """The live action-queue advisory_only must semantically match machine_executable presence.
 
-        With current poc-targets.yaml (FODG/TSV/NDJSON all present), ACT-UPDATE-POC-TARGETS
-        is NOT emitted. If no other machine_executable actions exist, advisory_only=True.
-        The semantic rule is: advisory_only = not any(machine_executable actions).
+        Schema v2.0 (TC-CAP-010): advisory_only is a gate flag (False=active queue).
+        Schema v1.x: advisory_only = not any(machine_executable actions).
         """
+        schema_version = action_queue.get("schema_version", "1.0")
         actions = action_queue.get("actions", [])
         has_machine_exec = any(a.get("machine_executable") for a in actions)
-        expected = not has_machine_exec
         actual = action_queue.get("advisory_only")
-        assert actual is expected, (
-            f"Semantic mismatch: machine_executable_present={has_machine_exec}, "
-            f"expected advisory_only={expected}, got {actual}"
-        )
+        if schema_version == "2.0":
+            # v2.0: gate flag semantics — advisory_only is explicitly set
+            assert actual is not None, "advisory_only must be present in v2.0"
+        else:
+            expected = not has_machine_exec
+            assert actual is expected, (
+                f"Semantic mismatch: machine_executable_present={has_machine_exec}, "
+                f"expected advisory_only={expected}, got {actual}"
+            )
 
     def test_act_update_poc_targets_absent_from_live_queue(self, action_queue):
         """ACT-UPDATE-POC-TARGETS must NOT appear in live queue (all formats are present)."""

@@ -61,7 +61,7 @@ notes: "FODT Gate 1 human review packet. CANDIDATE-ONLY — no Gate 1 approval i
 | Shortlist estimate | 87-93/100 — **CONFIRMED** (88 within range) |
 | Automatic reject | ALL PASS — no reject triggers |
 | Spec available | YES — ODF 1.3 (same as FODS, already cached) |
-| Pipeline reuse | ~40-50% FODS effort (docs/odf-flat-family-reuse-strategy.md) |
+| Pipeline reuse | ~40-50% FODS effort (docs/python-foss/odf-flat-family-reuse-strategy.md) |
 | DEC-034 verification | PASS (run040 — independent of run039 scoring sprint) |
 
 ---
@@ -153,7 +153,7 @@ notes: "FODT Gate 1 human review packet. CANDIDATE-ONLY — no Gate 1 approval i
 ### Factor 5: Strategic Track Value — 10/10 (VERIFIED)
 
 **Evidence checked:**
-- `docs/odf-flat-family-reuse-strategy.md` (NEW run039) — ODF flat family reuse analysis
+- `docs/python-foss/odf-flat-family-reuse-strategy.md` (NEW run039) — ODF flat family reuse analysis
   - FODT estimated ~40-50% FODS pipeline effort
   - Same spec oracle (LibreOffice), same legal body, same spec cache
 - FODT opens the Words family (FODS covers Cells; no Words format acquired yet)
@@ -250,7 +250,7 @@ Please review this packet and decide whether to approve FODT Gate 1.
 | `acquisition-packs/_candidate-shortlists/odf-flat-family-next-candidates.md` | Human-readable summary |
 | `taskcards/TC-0028-next-format-candidate-shortlist.md` | Parent taskcard |
 | `taskcards/TC-0029-fodt-gate1-scoring-preparation.md` | TC-0029 (this verification sprint) |
-| `docs/odf-flat-family-reuse-strategy.md` | FODS→FODT pipeline reuse strategy |
+| `docs/python-foss/odf-flat-family-reuse-strategy.md` | FODS→FODT pipeline reuse strategy |
 | `acquisition-packs/fods/legal-notes.md` | Gate 2 legal evidence (supports Factor 1) |
 | `acquisition-packs/fods/spec-evidence.md` | Gate 2 spec evidence (supports Factor 2) |
 | `prototypes/by-format/fods/fods_parser.py` | Gate 4 prototype (supports Factors 3, 6) |

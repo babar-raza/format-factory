@@ -238,7 +238,7 @@ python tools/supervisor/capability_feature_compiler.py \
 ## 12. Implementation Sequence (Phased)
 
 **Phase 1 (this design — TC-CAPABILITY-REPAIR-001):**
-- [x] Design document at `docs/capability-feature-compiler-spec.md`
+- [x] Design document at `docs/code-quality/capability-feature-compiler-spec.md`
 - [x] Input/output schema fully specified
 - [x] Priority scoring algorithm documented
 

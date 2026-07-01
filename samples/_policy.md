@@ -93,6 +93,6 @@ Sample refresh creates a new file with a version suffix or replaces the original
 ## Relationship to Other Documents
 
 - `samples/_provenance.yaml` — per-sample license records
-- `docs/legal-and-licensing.md` — acceptable license list and provenance policy
+- `docs/governance/legal-and-licensing.md` — acceptable license list and provenance policy
 - `docs/gates.md` — Gate 3 requires all samples to have confirmed provenance
 - `acquisition-packs/_template/sample-sources.md` — sample candidate research

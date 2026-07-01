@@ -1,0 +1,56 @@
+---
+# Driver Language Scope Decision
+# Generated: TC-DRV-004
+# Plan: plans/.claude/abstract-moseying-donut.md
+# Mission: DRIVERS-SUBSYSTEM-HEALING-001
+
+decision:
+  selected_model: PYTHON_ONLY_BY_DESIGN
+  decided_at: "2026-07-01"
+  decided_by: DRIVERS-SUBSYSTEM-HEALING-001
+
+rationale:
+  - "Only Python templates exist (5 .py.tmpl files under drivers/python/)"
+  - "Only Python consumers exist (test_drivers.py, product_feature_factory.py)"
+  - "No .NET driver infrastructure exists or is planned in current sprints"
+  - "No other language driver templates, renderers, or test frameworks are registered"
+  - "Explicit rejection is cleaner than an extension registry for a single-language system"
+  - "PYTHON_CURRENT_WITH_EXTENSION_CONTRACT would add complexity without current need"
+  - "MULTI_LANGUAGE_DRIVER_FRAMEWORK is premature — no .NET test generation requirement exists"
+
+rejected_alternatives:
+  - model: PYTHON_CURRENT_WITH_EXTENSION_CONTRACT
+    reason: "Adds language-driver registry complexity with no current need. No other language is planned."
+  - model: MULTI_LANGUAGE_DRIVER_FRAMEWORK
+    reason: "Premature generalization. No .NET test generation requirement exists in current plans."
+
+enforcement:
+  - location: "tools/supervisor/test_drivers.py"
+    mechanism: "_SUPPORTED_LANGUAGE = 'python' constant"
+    code: "_SUPPORTED_LANGUAGE = 'python'"
+  - location: "tools/supervisor/test_drivers.py"
+    mechanism: "_validate_language(language: str) function"
+    code: "raises ValueError if language.lower() != _SUPPORTED_LANGUAGE"
+  - location: "drivers/_readme.md"
+    mechanism: "Language Scope section — PYTHON_ONLY_BY_DESIGN declaration"
+  - location: "registry/repository-root-folders.yaml"
+    mechanism: "language_scope: PYTHON_ONLY_BY_DESIGN field in drivers/ entry"
+  - location: "tests/supervisor/test_test_drivers.py"
+    mechanism: "TestLanguagePolicy class — tests unsupported rejection and Python acceptance"
+
+future_extension_path:
+  description: >
+    If another language is needed in the future, the extension path is:
+    1. Create drivers/<language>/ subdirectory with .tmpl files
+    2. Create tools/supervisor/test_drivers_<language>.py renderer module
+    3. Update _SUPPORTED_LANGUAGE to a list or create a driver registry
+    4. Register the new language in drivers/<language>/driver-contracts.yaml
+    No changes to the current Python driver are needed.
+
+verification:
+  command: "python -c \"from tools.supervisor.test_drivers import _validate_language; _validate_language('python'); print('Python OK')\""
+  expected_output: "Python OK"
+  rejection_command: "python -c \"from tools.supervisor.test_drivers import _validate_language; _validate_language('csharp')\""
+  expected_error: "ValueError: Unsupported language 'csharp'"
+
+IMPLICIT_LANGUAGE_SCOPE: 0

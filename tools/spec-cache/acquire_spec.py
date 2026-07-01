@@ -7,7 +7,7 @@ Purpose:
     and record a spec-index.yaml entry using spec_index.py. By default runs
     in DRY-RUN mode and does NOT perform network access. Pass --allow-network
     to enable actual download. Network access requires explicit T3 authorization
-    (see docs/specification-cache.md).
+    (see docs/python-foss/specification-cache.md).
 
 Policy:
     - Default mode: DRY-RUN (no network, no disk write, prints what would happen).
@@ -21,7 +21,7 @@ Policy:
     - This tool does NOT approve gates.
 
 Authorization model:
-    Before passing --allow-network, all six conditions in docs/specification-cache.md
+    Before passing --allow-network, all six conditions in docs/python-foss/specification-cache.md
     must be satisfied:
       T3-1: Format has passed Gate 1
       T3-2: Legal category confirmed as 1 or 2 (Open Standard or Permissive OSS)
@@ -31,7 +31,7 @@ Authorization model:
       T3-6: Human operator records authorization in acquisition pack
 
 See also:
-    docs/specification-cache.md — full policy and authorization model
+    docs/python-foss/specification-cache.md — full policy and authorization model
     tools/spec-cache/spec_index.py — spec-index.yaml library
     tools/spec-cache/refresh_check.py — check for stale entries
 """
@@ -209,7 +209,7 @@ def _run_dry(args: argparse.Namespace) -> int:
     print(f"  Index file : {spec_index.get_index_path(args.format_id, args.version)}")
     print()
     print("To perform live download, add: --allow-network")
-    print("Network download requires T3 authorization (see docs/specification-cache.md).")
+    print("Network download requires T3 authorization (see docs/python-foss/specification-cache.md).")
     return 0
 
 
@@ -349,7 +349,7 @@ def _build_parser() -> argparse.ArgumentParser:
         default=False,
         help=(
             "Enable live network download. Requires T3 authorization "
-            "(docs/specification-cache.md). Default: dry-run."
+            "(docs/python-foss/specification-cache.md). Default: dry-run."
         ),
     )
 

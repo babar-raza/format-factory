@@ -186,7 +186,7 @@ Files: [AGENTS.md](AGENTS.md)
 
 Files:
 - [docs/spec-to-feature-correction-plan-summary.md](docs/spec-to-feature-correction-plan-summary.md)
-- [docs/spec-to-source-chain-contract.md](docs/spec-to-source-chain-contract.md)
+- [docs/python-foss/spec-to-source-chain-contract.md](docs/python-foss/spec-to-source-chain-contract.md)
 - [docs/governance/dotnet-library-standard.md](docs/governance/dotnet-library-standard.md)
 - [docs/governance/cross-language-semantic-standard.md](docs/governance/cross-language-semantic-standard.md)
 - [docs/governance/production-code-governance-rules.yaml](docs/governance/production-code-governance-rules.yaml)

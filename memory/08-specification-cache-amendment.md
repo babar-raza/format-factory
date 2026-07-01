@@ -131,7 +131,7 @@ Local LLMs may be preferred for private/local spec analysis, but endpoint use is
 
 Phase 0 added policy only:
 
-- `docs/specification-cache.md`
+- `docs/python-foss/specification-cache.md`
 - `tools/spec-cache/_readme.md`
 - `taskcards/TC-0007-specification-cache.md`
 
@@ -145,7 +145,7 @@ TC-0007 implemented in run019 (2026-05-04). Independently verified and fixed in 
 - `acquire_spec.py` — download + hash + index; dry-run by default; `--allow-network` required for live download; legal metadata required. **run020 fix:** Removed spurious WARNING when redistribution_permitted=False (False is the correct default for local-only caching of standards-body documents; not a warning condition).
 - `refresh_check.py` — scan/validate/show; no auto-download. **run020 fix:** Windows cp1252 encoding bug fixed — U+2500 box-drawing character replaced with ASCII hyphen.
 
-**docs/specification-cache.md run020 updates:** Schema expanded to include canonical_url, publisher, local_only, and new metadata fields. Stage 2 lifecycle text corrected: draft phase from recorded URLs is allowed; Gate 2 cannot pass without cache-backed evidence or explicit rationale.
+**docs/python-foss/specification-cache.md run020 updates:** Schema expanded to include canonical_url, publisher, local_only, and new metadata fields. Stage 2 lifecycle text corrected: draft phase from recorded URLs is allowed; Gate 2 cannot pass without cache-backed evidence or explicit rationale.
 
 **Spec download attempt (run020):** --allow-network was invoked but denied by in-session permission check (settings.json deny rule: `Bash(python *acquire_spec*)`). A pre-download metadata-only spec-index.yaml entry was created at `.local/spec-cache/fods/1.3/spec-index.yaml` with all file-content fields null.
 

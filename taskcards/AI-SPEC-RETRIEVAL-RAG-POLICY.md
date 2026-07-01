@@ -10,9 +10,9 @@ Define embeddings/RAG use over local specs and normalized artifacts, extending t
 
 ## Scope
 
-- Create `docs/spec-retrieval-and-rag-policy.md` (RAG guardrails, provenance requirements, embedding policy)
-- Create `docs/spec-retrieval-and-rag-policy.yaml` (machine-readable)
-- Extend (not replace) docs/spec-retrieval-strategy.md
+- Create `docs/ai/spec-retrieval-and-rag-policy.md` (RAG guardrails, provenance requirements, embedding policy)
+- Create `docs/ai/spec-retrieval-and-rag-policy.yaml` (machine-readable)
+- Extend (not replace) docs/ai/spec-retrieval-strategy.md
 - Document Tier 3 vector/RAG as NOT YET AUTHORIZED for gate evidence
 
 ## Non-Goals
@@ -23,8 +23,8 @@ Define embeddings/RAG use over local specs and normalized artifacts, extending t
 
 ## Acceptance Criteria
 
-- [x] docs/spec-retrieval-and-rag-policy.md exists
-- [x] docs/spec-retrieval-and-rag-policy.yaml exists
+- [x] docs/ai/spec-retrieval-and-rag-policy.md exists
+- [x] docs/ai/spec-retrieval-and-rag-policy.yaml exists
 - [x] Tier authorization table documented (T1 YES, T2 YES, T3 NO for gate evidence)
 - [x] Local spec artifacts documented (path, provenance, immutability)
 - [x] RAG guardrails documented (7 rules)
@@ -34,13 +34,13 @@ Define embeddings/RAG use over local specs and normalized artifacts, extending t
 
 ## Evidence Requirements
 
-- Files exist and consistent with docs/spec-retrieval-strategy.md
+- Files exist and consistent with docs/ai/spec-retrieval-strategy.md
 - No contradiction with AGENTS.md §T9
 
 ## Files Allowed
 
-- docs/spec-retrieval-and-rag-policy.md (create)
-- docs/spec-retrieval-and-rag-policy.yaml (create)
+- docs/ai/spec-retrieval-and-rag-policy.md (create)
+- docs/ai/spec-retrieval-and-rag-policy.yaml (create)
 
 ## Prohibited Actions
 
@@ -51,7 +51,7 @@ Define embeddings/RAG use over local specs and normalized artifacts, extending t
 ## Validation Required
 
 - Consistency check with AGENTS.md §T9 (no spec to remote without authorization)
-- Consistency check with docs/spec-retrieval-strategy.md (tier hierarchy preserved)
+- Consistency check with docs/ai/spec-retrieval-strategy.md (tier hierarchy preserved)
 
 ## Next Dependency
 

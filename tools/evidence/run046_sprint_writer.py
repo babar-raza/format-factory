@@ -1784,7 +1784,7 @@ The executing agent must review and finalize it.
 
 ## Tier Model Reference
 
-From `docs/product-tracks.md`, Tier 0–4 for Python FOSS:
+From `docs/product-factory/product-tracks.md`, Tier 0–4 for Python FOSS:
 
 | Tier | Scope |
 |---|---|
@@ -1823,7 +1823,7 @@ From `docs/product-tracks.md`, Tier 0–4 for Python FOSS:
 
 Gate 9 execution is blocked until:
 1. A human issues an explicit Gate 9 execution prompt naming "FODS Gate 9 product mapping"
-2. The executing agent reviews docs/product-tracks.md and docs/gates.md Section Gate 9
+2. The executing agent reviews docs/product-factory/product-tracks.md and docs/gates.md Section Gate 9
 3. The executing agent finalizes tier-map.yaml from the draft
 4. A human approves the tier map
 
@@ -1831,7 +1831,7 @@ Gate 9 execution is blocked until:
 
 ## References
 
-- `docs/product-tracks.md` — Tier 0–6 definitions
+- `docs/product-factory/product-tracks.md` — Tier 0–6 definitions
 - `docs/gates.md` — Gate 9 pass criteria
 - `acquisition-packs/fods/tier-map-draft.yaml` — Draft tier map
 - `taskcards/TC-0040-fods-gate9-product-mapping.md` — Execution taskcard
@@ -2009,7 +2009,7 @@ The tier map assigns each FODS feature to a product tier (0–4 for Python FOSS)
 
 - `acquisition-packs/fods/gate9-product-mapping-plan.md` — Planning document
 - `acquisition-packs/fods/tier-map-draft.yaml` — Draft tier map
-- `docs/product-tracks.md` — Tier definitions
+- `docs/product-factory/product-tracks.md` — Tier definitions
 - `docs/gates.md` — Gate 9 criteria
 """
 write("taskcards/TC-0040-fods-gate9-product-mapping.md", TC0040)
@@ -2694,7 +2694,7 @@ readme = read("README.md")
 # Update the FODS pilot section
 readme = readme.replace(
     "Gate 8 security review planning_ready (TC-0036 not_started — requires explicit Gate 8 prompt). FODT Gates 1-4 ALL PASSED (Babar Raza): Gate 1 run041, Gate 2 run043, Gate 3 run044, Gate 4 run045. Gate 5 neutral model planning_ready (TC-0037 not_started — requires explicit Gate 5 prompt).",
-    "Gate 8 (Security Review) PASSED (Babar Raza, 2026-05-08, run046). GATE8_SECURITY_REVIEW: PASS. TC-0038 DEC-034 PASS 20/20. FODT Gates 1-5 ALL PASSED (Babar Raza): Gates 1-4 run041/043/044/045; Gate 5 run046 (FODT_NEUTRAL_MODEL_VALIDATION PASS 4/4). FODT Gate 6 oracle planning_ready (TC-0042 not_started). ODF reuse strategy: docs/odf-flat-family-reuse-strategy.md."
+    "Gate 8 (Security Review) PASSED (Babar Raza, 2026-05-08, run046). GATE8_SECURITY_REVIEW: PASS. TC-0038 DEC-034 PASS 20/20. FODT Gates 1-5 ALL PASSED (Babar Raza): Gates 1-4 run041/043/044/045; Gate 5 run046 (FODT_NEUTRAL_MODEL_VALIDATION PASS 4/4). FODT Gate 6 oracle planning_ready (TC-0042 not_started). ODF reuse strategy: docs/python-foss/odf-flat-family-reuse-strategy.md."
 )
 
 # Update Current phase
@@ -2806,8 +2806,8 @@ mp = mp.replace(
 )
 
 mp = mp.replace(
-    "**Current status:** FODS: Gates 1-7 PASSED. Gate 7 APPROVED Babar Raza 2026-05-08 (GATE7_FUZZ_TEST PASS 18/18 CRASH 0/18); TC-0033 COMPLETED. Gate 8 planning_ready (TC-0036 not_started). FODT: Gates 1-4 PASSED; Gate 4 APPROVED Babar Raza 2026-05-08 (FODT_PROTOTYPE_VALIDATION PASS 4/4); TC-0034/TC-0035 COMPLETED. Gate 5 planning_ready (TC-0037 not_started). No product source. last_completed_run: run045 — ff47169 (final: contract YAML fix). Exact final HEAD in bundle-metadata/git-log.txt (see docs/current-state-and-evidence-authority.md).",
-    f"**Current status:** FODS: Gates 1-8 PASSED. Gate 8 APPROVED Babar Raza 2026-05-08 (GATE8_SECURITY_REVIEW: PASS; TC-0038 DEC-034 PASS 20/20); TC-0036 COMPLETED. Gate 9 planning_ready (TC-0040 not_started). FODT: Gates 1-5 PASSED; Gate 5 APPROVED Babar Raza 2026-05-08 (FODT_NEUTRAL_MODEL_VALIDATION PASS 4/4 {VALIDATOR_CHECKS} checks; TC-0039 DEC-034 PASS); TC-0037 COMPLETED. Gate 6 oracle planning_ready (TC-0042 not_started). No product source. last_completed_run: run046 — RUN046_COMMIT_PENDING. Exact final HEAD in bundle-metadata/git-log.txt (see docs/current-state-and-evidence-authority.md)."
+    "**Current status:** FODS: Gates 1-7 PASSED. Gate 7 APPROVED Babar Raza 2026-05-08 (GATE7_FUZZ_TEST PASS 18/18 CRASH 0/18); TC-0033 COMPLETED. Gate 8 planning_ready (TC-0036 not_started). FODT: Gates 1-4 PASSED; Gate 4 APPROVED Babar Raza 2026-05-08 (FODT_PROTOTYPE_VALIDATION PASS 4/4); TC-0034/TC-0035 COMPLETED. Gate 5 planning_ready (TC-0037 not_started). No product source. last_completed_run: run045 — ff47169 (final: contract YAML fix). Exact final HEAD in bundle-metadata/git-log.txt (see docs/governance/current-state-and-evidence-authority.md).",
+    f"**Current status:** FODS: Gates 1-8 PASSED. Gate 8 APPROVED Babar Raza 2026-05-08 (GATE8_SECURITY_REVIEW: PASS; TC-0038 DEC-034 PASS 20/20); TC-0036 COMPLETED. Gate 9 planning_ready (TC-0040 not_started). FODT: Gates 1-5 PASSED; Gate 5 APPROVED Babar Raza 2026-05-08 (FODT_NEUTRAL_MODEL_VALIDATION PASS 4/4 {VALIDATOR_CHECKS} checks; TC-0039 DEC-034 PASS); TC-0037 COMPLETED. Gate 6 oracle planning_ready (TC-0042 not_started). No product source. last_completed_run: run046 — RUN046_COMMIT_PENDING. Exact final HEAD in bundle-metadata/git-log.txt (see docs/governance/current-state-and-evidence-authority.md)."
 )
 
 mp = mp.replace(

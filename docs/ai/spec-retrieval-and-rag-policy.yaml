@@ -2,7 +2,7 @@
 document_id: spec-retrieval-and-rag-policy
 version: "1.0"
 created: "2026-05-13"
-extends: docs/spec-retrieval-strategy.md
+extends: docs/ai/spec-retrieval-strategy.md
 
 retrieval_tier_authorization:
   tier_1_deterministic: {authorized: true, gate_evidence: true}
@@ -53,8 +53,8 @@ embedding_policy:
   rebuild_triggers: [spec_update, normalization_change, schema_change]
 
 cross_references:
-  retrieval_strategy: docs/spec-retrieval-strategy.md
-  embedding_strategy: docs/llm-and-embedding-strategy.md
+  retrieval_strategy: docs/ai/spec-retrieval-strategy.md
+  embedding_strategy: docs/ai/llm-and-embedding-strategy.md
   llm_spec_rules: AGENTS.md §T9
-  ai_operating_model: docs/ai-usage-operating-model.md
-  normalization: docs/specification-normalization.md
+  ai_operating_model: docs/ai/ai-usage-operating-model.md
+  normalization: docs/python-foss/specification-normalization.md

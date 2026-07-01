@@ -30,8 +30,8 @@ notes: Place this folder at repo root as /memory. These files are for agent cont
 | `AGENTS.md` | Agent operating contract |
 | `GOVERNANCE.md` | Human/release/legal governance |
 | `docs/gates.md` | Gate requirements |
-| `docs/release-control.md` | Visibility and release policy |
-| `docs/specification-cache.md` | Spec-cache policy |
+| `docs/governance/release-control.md` | Visibility and release policy |
+| `docs/python-foss/specification-cache.md` | Spec-cache policy |
 | `memory/` | Historical context and rationale |
 
 ## Agent startup checklist

@@ -1,23 +1,26 @@
 schema_version: '1.0'
-generated_at: '2026-06-26T23:19:10.068343'
+generated_at: '2026-07-01T18:13:08.855011'
 repo_root: C:\Users\prora\OneDrive\Documents\GitHub\format-factory
 git:
-  head: 2addaa63
+  head: e3886da3
   status:
-    modified_count: 99
-    untracked_count: 13
+    modified_count: 293
+    untracked_count: 108
     staged_count: 1
-    total_changed: 113
+    total_changed: 402
     clean: false
 supervisor_mode: 4
 latest_sprint:
-  sprint_id: FORMAT-FACTORY-LAYER-AUDIT-20260626
+  sprint_id: ff-sprint-s427-dotnet-deepening-20260701
   run_id: unknown
-  autonomous_continue: true
-  iteration: 4
+  autonomous_continue: false
+  iteration: 15
   max_iterations: 12
-  hard_stops: []
-  rework_items: []
+  hard_stops:
+  - critical_rework_blocks_continuation
+  - max_iterations_reached
+  rework_items:
+  - GOV_BLOCK:validate_readme_freshness
 poc_matrix:
   sprint: poc-promotion-qoi-dif-xcf-ods-20260625
   last_updated: '2026-06-25'
@@ -36,8 +39,8 @@ poc_matrix:
       commercial_ready: false
   foss_python_products: {}
 skill_registry:
-  total_skills: 93
-  active_skills: 90
+  total_skills: 103
+  active_skills: 100
   skill_ids:
   - add-dogfood-export
   - add-dotnet-api
@@ -129,11 +132,21 @@ skill_registry:
   - select-next-layer-task
   - validate-permanent-layer-plans
   - reconcile-layer-task-register
+  - capability-status
+  - sync-capabilities
+  - validate-capability-parity
+  - sync-readmes
+  - generate-root-status
+  - certification-dashboard
+  - select-deepening-lane
+  - inventory-format-dom
+  - check-dom-contract
+  - query-control-index
   source_edits_require_handoff: true
   ledger_required: true
 product_code_ledger:
-  total_entries: 1365
-  governed_changes: 793
+  total_entries: 2113
+  governed_changes: 899
   backfilled: 4
   ledger_path: reports\r90\product-code-change-ledger.json
 mcp_status:

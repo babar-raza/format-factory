@@ -20,7 +20,7 @@ active — Initial documents created. Standards are in force. Update when any st
 ## Purpose
 
 Maintain the concise execution standards reference for Format Factory sprints. Agents and humans
-should use `docs/project-execution-standards.md` as the quickref for how every sprint must be run.
+should use `docs/governance/project-execution-standards.md` as the quickref for how every sprint must be run.
 
 ## Scope
 
@@ -44,21 +44,21 @@ should use `docs/project-execution-standards.md` as the quickref for how every s
 
 ## Acceptance Criteria
 
-- `docs/project-execution-standards.md` exists with all 10 sections.
-- `docs/project-execution-standards.yaml` exists as machine-readable version.
+- `docs/governance/project-execution-standards.md` exists with all 10 sections.
+- `docs/governance/project-execution-standards.yaml` exists as machine-readable version.
 - Sprint lifecycle is clearly defined with no skippable steps.
 - Safety prohibitions section matches AGENTS.md AE and GOVERNANCE.md Section 25.
 - "Standard local files to read first" matches the bootstrap and methodology docs.
 
 ## Evidence Requirements
 
-- `docs/project-execution-standards.md` reviewed and consistent with AGENTS.md
+- `docs/governance/project-execution-standards.md` reviewed and consistent with AGENTS.md
 - `reports/governance/assistant-supervision-methodology-sync-20260513.yaml` semantic checks all true
 
 ## Allowed Files
 
-- `docs/project-execution-standards.md`
-- `docs/project-execution-standards.yaml`
+- `docs/governance/project-execution-standards.md`
+- `docs/governance/project-execution-standards.yaml`
 - `taskcards/PROJECT-EXECUTION-STANDARDS.md`
 
 ## Prohibited Actions
@@ -69,8 +69,8 @@ should use `docs/project-execution-standards.md` as the quickref for how every s
 
 ## Validation Requirements
 
-- Confirm `docs/project-execution-standards.md` exists with 10 sections
-- Confirm `docs/project-execution-standards.yaml` exists with machine-readable fields
+- Confirm `docs/governance/project-execution-standards.md` exists with 10 sections
+- Confirm `docs/governance/project-execution-standards.yaml` exists with machine-readable fields
 - Confirm no contradiction between this document and AGENTS.md AE + GOVERNANCE.md 25
 
 ## Next Dependency

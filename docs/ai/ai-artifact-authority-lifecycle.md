@@ -114,7 +114,7 @@ Generated requirements (`generated-requirements/{format}/`) already follow a rev
 
 ### 6.2 AI Usage Ledger
 
-The existing AI usage ledger (`docs/ai-usage-operating-model.md` Section 6) defines 8 status values. These map to the lifecycle:
+The existing AI usage ledger (`docs/ai/ai-usage-operating-model.md` Section 6) defines 8 status values. These map to the lifecycle:
 - `ai_generated` → `ai_draft`
 - `schema_valid` → `schema_validated`
 - `citation_verified` → `source_verified`
@@ -129,7 +129,7 @@ The existing AI usage ledger (`docs/ai-usage-operating-model.md` Section 6) defi
 | Document | Relationship |
 |----------|-------------|
 | `docs/ai/ai-platform-operating-model.md` | Parent platform model |
-| `docs/ai-usage-operating-model.md` | Existing status values (mapped) |
+| `docs/ai/ai-usage-operating-model.md` | Existing status values (mapped) |
 | `docs/ai/ai-risk-register.md` | RISK-AI-020 (AI output becoming authority) |
 | `AGENTS.md` AF13 | Generated requirements discipline |
 | `GOVERNANCE.md` 26.11 | AI-generated requirements rules |

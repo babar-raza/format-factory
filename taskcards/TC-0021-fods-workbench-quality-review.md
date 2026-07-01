@@ -116,7 +116,7 @@ For each of SR-001..SR-004:
 1. Updated `requirement-packs/parser-requirements.yaml` — verification_status upgraded from `draft` to `verified_against_spec` for confirmed requirements (local-only).
 2. Updated `requirement-packs/sample-requirements.yaml` — verification_status upgraded similarly.
 3. `coverage/gap-analysis.md` (local-only) — list of uncovered spec sections and proposed remediation.
-4. Run030 (or later) update to `docs/spec-consumption-workbench.md` noting quality review complete.
+4. Run030 (or later) update to `docs/python-foss/spec-consumption-workbench.md` noting quality review complete.
 
 ---
 

@@ -4,7 +4,7 @@ generate_manifest.py — Release manifest generator for format-factory.
 Scans all artifact files with front matter, filters by release type (oss | commercial),
 and outputs a release manifest YAML listing all eligible artifacts.
 
-Policy source: docs/release-control.md
+Policy source: docs/governance/release-control.md
 
 Usage:
     python tools/validation/generate_manifest.py

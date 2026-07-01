@@ -30,9 +30,9 @@
 - **Plan type:** Focused Capability Layer production plan (Lane 2, 3, 6 execution supplement)
 - **Upstream authority:** `plans/strategic/spec-to-feature-radical-correction-plan.md` (master plan)
 - **Related authoritative docs:**
-  - `docs/commercial-product-capability-model.md` — defines C0-C10 capability levels and Gate 11 requirements (normative)
+  - `docs/product-factory/commercial-product-capability-model.md` — defines C0-C10 capability levels and Gate 11 requirements (normative)
   - `docs/governance/requirement-capability-authority-layer.md` — RCAL proof graph design (18 node types, 19 edge types, 8 invariants) — status: PLAN_HEALED_READY_FOR_MWP_EXECUTION
-  - `docs/capability-layer-design.md` — Operational capability layer design (18-state taxonomy, validator suite)
+  - `docs/code-quality/capability-layer-design.md` — Operational capability layer design (18-state taxonomy, validator suite)
 - **Relationship:** Governed supplement — does not replace master plan; provides detailed diagnostic evidence, root causes, stage-by-stage architecture, and executable taskcards for Capability Layer work
 - **Run ID:** `capability-fact-to-feature-forensics-20260616-f607c78`
 - **Evidence root:** `.local/evidences/capability-fact-to-feature-forensics-20260616-f607c78/capability-fact-to-feature/`

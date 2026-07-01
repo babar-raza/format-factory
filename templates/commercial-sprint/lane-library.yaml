@@ -4,7 +4,7 @@
 # Purpose: Define all available lanes, their contracts, ownership, required evidence,
 #   prompt quality gates, and forbidden behaviors.
 #   This is a DEFINITION file only -- does not generate prompts or execute lanes.
-# Authority: AGENTS.md AF9-AF15 | GOVERNANCE.md 26.8-26.13 | docs/agent-swarm-ai-orchestration.md
+# Authority: AGENTS.md AF9-AF15 | GOVERNANCE.md 26.8-26.13 | docs/ai/agent-swarm-ai-orchestration.md
 # Visibility: internal
 
 library_version: "1.0"
@@ -13,8 +13,8 @@ authority_files:
   - AGENTS.md
   - GOVERNANCE.md
   - plans/master-plan.md
-  - docs/agent-swarm-ai-orchestration.md
-  - docs/commercial-product-capability-model.md
+  - docs/ai/agent-swarm-ai-orchestration.md
+  - docs/product-factory/commercial-product-capability-model.md
 
 # ============================================================
 # LANE OWNERSHIP RULES
@@ -52,7 +52,7 @@ lanes:
       - "acquisition-packs/{format_id}/verified-facts.yaml"
       - "acquisition-packs/{format_id}/pack.yaml"
       - "schemas/neutral-model/{format_id}/model.yaml"
-      - "docs/commercial-product-capability-model.md"
+      - "docs/product-factory/commercial-product-capability-model.md"
       - "registry/format-registry.yaml"
     outputs:
       - "generated-requirements/{format_id}/commercial-requirements.yaml"
@@ -187,7 +187,7 @@ lanes:
     name: AI Orchestration
     type: orchestration
     phase: all
-    ref: docs/agent-swarm-ai-orchestration.md
+    ref: docs/ai/agent-swarm-ai-orchestration.md
     constraints:
       - "AI is accelerator, NOT authority (AGENTS.md AF12)"
       - "Generated requirements must be AUTHORITATIVE before consumption"

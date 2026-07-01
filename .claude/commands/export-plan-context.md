@@ -46,14 +46,14 @@ files = [
     # Single operational authority
     "plans/master-plan.md",
     # Core docs
-    "docs/architecture.md",
+    "docs/code-quality/architecture.md",
     "docs/gates.md",
-    "docs/product-tracks.md",
-    "docs/format-expansion-roadmap.md",
-    "docs/commercial-product-capability-model.md",
-    "docs/ai-usage-operating-model.md",
-    "docs/acquisition-workflow.md",
-    "docs/assistant-supervision-methodology.md",
+    "docs/product-factory/product-tracks.md",
+    "docs/python-foss/format-expansion-roadmap.md",
+    "docs/product-factory/commercial-product-capability-model.md",
+    "docs/ai/ai-usage-operating-model.md",
+    "docs/python-foss/acquisition-workflow.md",
+    "docs/automation/assistant-supervision-methodology.md",
     # Root governance
     "README.md",
     "GOVERNANCE.md",

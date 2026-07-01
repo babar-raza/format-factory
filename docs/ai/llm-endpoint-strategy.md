@@ -161,7 +161,7 @@ Phase 0 creates the following to avoid redesign:
 
 | File | Purpose | Status |
 |---|---|---|
-| `docs/llm-endpoint-strategy.md` | This document — strategy and policy | Created |
+| `docs/ai/llm-endpoint-strategy.md` | This document — strategy and policy | Created |
 | `tools/llm/endpoints.yaml` | Endpoint config template, no secrets | Phase 0 |
 | `.env.example` | Required variable name list | Created |
 | TC-0005 taskcard | Governs Phase 1 implementation | Phase 0 |

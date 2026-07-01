@@ -39,15 +39,15 @@ notes: Implements LLM endpoint client. Resolves G-005, G-006, G-007, G-010, DEC-
 
 ## Objective
 
-Implement the LLM endpoint client in `tools/llm/` as specified in `docs/llm-endpoint-strategy.md`. This includes: the endpoint discovery probe, model selection reader, run record writer, artifact index bootstrapper, and a simple prompt/response cache writer. This resolves Gaps G-005 (endpoint discovery), G-006 (model selection), G-007 (artifact index), and G-010 (reuse tooling), and updates Decision DEC-022 to "implemented."
+Implement the LLM endpoint client in `tools/llm/` as specified in `docs/ai/llm-endpoint-strategy.md`. This includes: the endpoint discovery probe, model selection reader, run record writer, artifact index bootstrapper, and a simple prompt/response cache writer. This resolves Gaps G-005 (endpoint discovery), G-006 (model selection), G-007 (artifact index), and G-010 (reuse tooling), and updates Decision DEC-022 to "implemented."
 
 ---
 
 ## Context
 
-Phase 0 defined the LLM endpoint strategy (`docs/llm-endpoint-strategy.md`) and created the endpoint configuration template (`tools/llm/endpoints.yaml`). No client code was written in Phase 0 — that was explicitly deferred here via DEC-022. Before any Phase 2 LLM-assisted evidence gathering, the client must exist.
+Phase 0 defined the LLM endpoint strategy (`docs/ai/llm-endpoint-strategy.md`) and created the endpoint configuration template (`tools/llm/endpoints.yaml`). No client code was written in Phase 0 — that was explicitly deferred here via DEC-022. Before any Phase 2 LLM-assisted evidence gathering, the client must exist.
 
-The key requirement from `docs/llm-endpoint-strategy.md`: agents must read `tools/llm/endpoints.yaml` and `tools/llm/model-selection.yaml` before any LLM API call, and must persist a run record in `.local/llm-logs/` for every LLM-assisted execution.
+The key requirement from `docs/ai/llm-endpoint-strategy.md`: agents must read `tools/llm/endpoints.yaml` and `tools/llm/model-selection.yaml` before any LLM API call, and must persist a run record in `.local/llm-logs/` for every LLM-assisted execution.
 
 ---
 
@@ -103,9 +103,9 @@ The key requirement from `docs/llm-endpoint-strategy.md`: agents must read `tool
 
 | Artifact | Path | Required? |
 |---|---|---|
-| LLM endpoint strategy | `docs/llm-endpoint-strategy.md` | Required |
+| LLM endpoint strategy | `docs/ai/llm-endpoint-strategy.md` | Required |
 | Endpoint config | `tools/llm/endpoints.yaml` | Required |
-| Release control schema | `docs/release-control.md` | Required (artifact-index schema) |
+| Release control schema | `docs/governance/release-control.md` | Required (artifact-index schema) |
 
 ---
 
@@ -120,7 +120,7 @@ The key requirement from `docs/llm-endpoint-strategy.md`: agents must read `tool
 
 ## Steps
 
-1. Read `docs/llm-endpoint-strategy.md` Sections D1-D9 thoroughly.
+1. Read `docs/ai/llm-endpoint-strategy.md` Sections D1-D9 thoroughly.
 2. Create `tools/llm/model-selection.yaml` with task-type → model priority mappings.
 3. Implement `tools/llm/endpoint_client.py`:
    - Read `endpoints.yaml`

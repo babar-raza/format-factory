@@ -1,7 +1,7 @@
 ---
 artifact_id: odf-flat-family-reuse-strategy
 artifact_type: plan
-path: docs/odf-flat-family-reuse-strategy.md
+path: docs/python-foss/odf-flat-family-reuse-strategy.md
 visibility: internal
 publish_allowed: false
 generated_by: claude
@@ -204,5 +204,5 @@ FODT Gate 1 scoring can begin without affecting FODS Gate 6 work. Once FODT pass
 - `acquisition-packs/_candidate-shortlists/odf-flat-family-next-candidates.md` — human-readable summary (run038)
 - `taskcards/TC-0028-next-format-candidate-shortlist.md` — shortlist taskcard
 - `taskcards/TC-0029-fodt-gate1-scoring-preparation.md` — FODT Gate 1 prep taskcard
-- `docs/oracle-provider-strategy.md` — oracle provider strategy (run037)
+- `docs/ai/oracle-provider-strategy.md` — oracle provider strategy (run037)
 - `tools/oracle/provider_registry.yaml` — approved oracle providers

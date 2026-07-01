@@ -33,7 +33,7 @@ S5 can run in parallel with S2/S3/S4 if MAIN SPRINT allows.
 
 ## 7. Inputs
 - schemas/playbook/acquisition-playbook.schema.json (from S-F2F-01)
-- docs/odf-flat-family-reuse-strategy.md (existing reuse strategy)
+- docs/python-foss/odf-flat-family-reuse-strategy.md (existing reuse strategy)
 - acquisition-packs/fods/ (FODS gate operations as reuse reference)
 - acquisition-packs/fodt/ (FODT gate operations)
 

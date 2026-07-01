@@ -28,7 +28,7 @@ Before any task, read:
 - GOVERNANCE.md (Sections 26.8-26.13)
 - plans/master-plan.md
 - registry/format-registry.yaml
-- docs/commercial-product-capability-model.md
+- docs/product-factory/commercial-product-capability-model.md
 - docs/agent-execution-handoff-standard.md
 - generated-requirements/fods/commercial-requirements.yaml
 - generated-requirements/fods/object-model-requirements.yaml

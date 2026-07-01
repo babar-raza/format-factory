@@ -35,7 +35,7 @@ authority model, update rules, and invalidation conditions.
 
 ## Inputs
 
-- docs/format-understanding-layer.md (this sprint)
+- docs/python-foss/format-understanding-layer.md (this sprint)
 - plans/master-plan.md
 - AGENTS.md and GOVERNANCE.md
 - Existing gate evidence as reference for schema design
@@ -49,13 +49,13 @@ authority model, update rules, and invalidation conditions.
   - parser-strategy.schema.yaml
   - security-surface.schema.yaml
   - product-readiness.schema.yaml
-- docs/format-understanding-layer.md (updated with schema references)
+- docs/python-foss/format-understanding-layer.md (updated with schema references)
 - evidence bundle
 
 ## Exact Allowed Files
 
 - schemas/format-understanding/*.schema.yaml (new)
-- docs/format-understanding-layer.md (update only)
+- docs/python-foss/format-understanding-layer.md (update only)
 - plans/master-plan.md (update only)
 - memory/ (update only)
 - tools/evidence/contracts/FUL-001-*.yaml (evidence contract)
@@ -85,7 +85,7 @@ authority model, update rules, and invalidation conditions.
 
 ## Future Trigger
 
-Human authorizes FUL-001 execution after reviewing docs/format-understanding-layer.md.
+Human authorizes FUL-001 execution after reviewing docs/python-foss/format-understanding-layer.md.
 
 ## Status
 

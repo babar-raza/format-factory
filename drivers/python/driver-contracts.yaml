@@ -1,0 +1,142 @@
+---
+# Driver Contracts - drivers/python/
+# Schema: DRIVERS-SUBSYSTEM-HEALING-001
+# Validated by: tools/supervisor/test_drivers.validate_template_renderer_compatibility()
+
+driver_language:
+  language_id: python
+  status: active
+  driver_root: "drivers/python/"
+  renderer: "tools/supervisor/test_drivers.py"
+  file_extension: ".py"
+  test_framework: pytest
+  syntax_validator: "ast.parse"
+  test_runner: ".venv/Scripts/pytest"
+  supported_patterns:
+    - getter
+    - export_csv
+    - roundtrip
+    - append
+    - probe
+
+driver_templates:
+  - template_id: getter_test
+    pattern_id: A
+    pattern_name: Getter
+    source_path: "drivers/python/getter_test.py.tmpl"
+    renderer_id: render_getter_test
+    required_arguments:
+      - function_name
+      - module
+      - class_name
+      - return_type_safe
+    placeholder_policy: scaffold_markers_required
+    assertion_requirements:
+      - meaningful_behavioral_assertion
+    status: active
+
+  - template_id: export_csv_test
+    pattern_id: B
+    pattern_name: ExportCsv
+    source_path: "drivers/python/export_csv_test.py.tmpl"
+    renderer_id: render_export_csv_test
+    required_arguments:
+      - function_name
+      - module
+      - format_cap
+    placeholder_policy: scaffold_markers_required
+    assertion_requirements:
+      - meaningful_behavioral_assertion
+    status: active
+
+  - template_id: roundtrip_test
+    pattern_id: C
+    pattern_name: Roundtrip
+    source_path: "drivers/python/roundtrip_test.py.tmpl"
+    renderer_id: render_roundtrip_test
+    required_arguments:
+      - format_upper
+      - format_cap
+      - format_name
+      - test_import
+      - load_function
+      - write_function
+      - compare_field
+    placeholder_policy: scaffold_markers_required
+    assertion_requirements:
+      - field_preservation_assertion
+      - real_fixture_bytes
+    status: active
+
+  - template_id: append_test
+    pattern_id: D
+    pattern_name: Append
+    source_path: "drivers/python/append_test.py.tmpl"
+    renderer_id: render_append_test
+    required_arguments:
+      - function_name
+      - module
+      - format_cap
+      - collection_key
+    placeholder_policy: scaffold_markers_required
+    assertion_requirements:
+      - meaningful_behavioral_assertion
+    status: active
+
+  - template_id: probe_test
+    pattern_id: E
+    pattern_name: Probe
+    source_path: "drivers/python/probe_test.py.tmpl"
+    renderer_id: render_probe_test
+    required_arguments:
+      - function_name
+      - module
+      - format_cap
+      - format_lower
+    placeholder_policy: scaffold_markers_required
+    assertion_requirements:
+      - meaningful_behavioral_assertion
+    status: active
+
+driver_renderers:
+  - renderer_id: render_getter_test
+    function: "test_drivers.render_getter_test"
+    provided_arguments:
+      - function_name
+      - module
+      - class_name
+      - return_type_safe
+
+  - renderer_id: render_export_csv_test
+    function: "test_drivers.render_export_csv_test"
+    provided_arguments:
+      - function_name
+      - module
+      - format_cap
+
+  - renderer_id: render_roundtrip_test
+    function: "test_drivers.render_roundtrip_test"
+    provided_arguments:
+      - format_upper
+      - format_cap
+      - format_name
+      - test_import
+      - load_function
+      - write_function
+      - compare_field
+
+  - renderer_id: render_append_test
+    function: "test_drivers.render_append_test"
+    provided_arguments:
+      - function_name
+      - module
+      - format_cap
+      - collection_key
+
+  - renderer_id: render_probe_test
+    function: "test_drivers.render_probe_test"
+    provided_arguments:
+      - function_name
+      - module
+      - format_cap
+      - format_lower

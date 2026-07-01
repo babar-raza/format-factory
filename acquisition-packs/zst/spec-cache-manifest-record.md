@@ -10,7 +10,7 @@ Date: 2026-05-15
 
 This file is the committed evidence proxy for the local-only spec cache.
 Full RFC text is stored under `.local/spec-cache/zst/` which is gitignored per
-`docs/specification-cache.md`. This record captures all provenance needed for
+`docs/python-foss/specification-cache.md`. This record captures all provenance needed for
 audit and independent verification without committing copyrighted RFC text.
 
 ---

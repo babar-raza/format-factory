@@ -32,8 +32,8 @@ C:\Users\prora\OneDrive\Documents\GitHub\format-factory
 4. `memory/00-index.md` — index of all memory files
 5. `memory/24-chatgpt-session-memory-sync-20260513.md` — THIS session continuity
 6. `registry/format-registry.yaml` — FODS/FODT gate status and capability levels
-7. `docs/commercial-product-capability-model.md` — C-level definitions (C0-C10)
-8. `docs/current-state-and-evidence-authority.md` — run-state authority model
+7. `docs/product-factory/commercial-product-capability-model.md` — C-level definitions (C0-C10)
+8. `docs/governance/current-state-and-evidence-authority.md` — run-state authority model
 
 ---
 
@@ -48,7 +48,7 @@ The .NET commercial product (`src/net/{format}/`) is NOT a thin parser.
 - Save back to same format with or without edits
 - Export/convert to PDF, PNG, HTML, and related formats (later phases)
 
-**Commercial readiness requires C7+ capability** (see `docs/commercial-product-capability-model.md`).
+**Commercial readiness requires C7+ capability** (see `docs/product-factory/commercial-product-capability-model.md`).
 
 **Current .NET capability:** C4-C6-vertical-slice (load/save/edit DOM, basic entities only).
 FODS: 42/42 PASS. FODT: 43/43 PASS.
@@ -130,7 +130,7 @@ python tools/evidence/validate_evidence_bundle.py \
 3. Read `memory/24-chatgpt-session-memory-sync-20260513.md` Section 16 (next recommended sprint)
 4. Check `generated-requirements/` for requirement status
 5. Check `taskcards/` for active taskcards (status: not_started or in_progress)
-6. Use `docs/fresh-chat-project-bootstrap.yaml` for machine-readable state
+6. Use `docs/automation/fresh-chat-project-bootstrap.yaml` for machine-readable state
 
 ### Next Recommended Sprint (as of 2026-05-13)
 
@@ -165,14 +165,14 @@ Enables systematic scaling to future formats.
 
 | Document | Purpose |
 |----------|---------|
-| docs/commercial-product-capability-model.md | C0-C10 capability definitions |
-| docs/commercial-dotnet-architecture.md | .NET architecture target |
-| docs/ai-usage-operating-model.md | AI usage policy |
-| docs/ai-assisted-commercial-development.md | AI patterns A-F for implementation |
-| docs/spec-retrieval-and-rag-policy.md | RAG and retrieval policy |
-| docs/agent-swarm-ai-orchestration.md | Swarm lane governance |
-| docs/current-state-and-evidence-authority.md | Run-state authority model |
-| docs/fresh-chat-project-bootstrap.yaml | Machine-readable version of this doc |
+| docs/product-factory/commercial-product-capability-model.md | C0-C10 capability definitions |
+| docs/product-factory/commercial-dotnet-architecture.md | .NET architecture target |
+| docs/ai/ai-usage-operating-model.md | AI usage policy |
+| docs/ai/ai-assisted-commercial-development.md | AI patterns A-F for implementation |
+| docs/ai/spec-retrieval-and-rag-policy.md | RAG and retrieval policy |
+| docs/ai/agent-swarm-ai-orchestration.md | Swarm lane governance |
+| docs/governance/current-state-and-evidence-authority.md | Run-state authority model |
+| docs/automation/fresh-chat-project-bootstrap.yaml | Machine-readable version of this doc |
 
 ---
 
@@ -195,7 +195,7 @@ Key examples (starter list only):
 - .gnumeric, .abw — open source formats
 - Plus: archives, images, CAD, GIS, email, page layout, 3D, and more
 
-**Read:** `docs/format-expansion-roadmap.md` and `memory/26-format-expansion-roadmap-and-non-aspose-backlog-20260514.md`
+**Read:** `docs/python-foss/format-expansion-roadmap.md` and `memory/26-format-expansion-roadmap-and-non-aspose-backlog-20260514.md`
 
 ---
 
@@ -203,8 +203,8 @@ Key examples (starter list only):
 
 Read these methodology files before reviewing evidence, planning sprints, or generating prompts:
 
-1. `docs/assistant-supervision-methodology.md` — primary supervision methodology (15 sections)
-2. `docs/project-execution-standards.md` — execution standards reference
+1. `docs/automation/assistant-supervision-methodology.md` — primary supervision methodology (15 sections)
+2. `docs/governance/project-execution-standards.md` — execution standards reference
 3. `memory/25-assistant-supervision-methodology-20260513.md` — compact memory version
 
 ### What this means in practice

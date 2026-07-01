@@ -89,7 +89,7 @@ A file is open-source eligible if ALL of the following are true:
 2. `publish_allowed: true`
 3. `open_source_allowed: true`
 4. `release_blockers` list is empty
-5. License is compatible with the project's declared open-source license (Apache 2.0 or MIT, per `docs/product-tracks.md`)
+5. License is compatible with the project's declared open-source license (Apache 2.0 or MIT, per `docs/product-factory/product-tracks.md`)
 6. `provenance_status: confirmed` (if `provenance_required: true`)
 7. No commercial namespace, class, or configuration reference is present in the file
 
@@ -109,7 +109,7 @@ The following must never appear in any open-source release:
 
 **Note:** `src/dotnet/commercial/` is an obsolete path and must not be created. Commercial-tier source lives within `src/net/{format}/`.
 
-The CI boundary check (Phase 4+, per `docs/product-tracks.md`) enforces commercial exclusion automatically. Until CI exists, manual inspection is required at Gate 10.
+The CI boundary check (Phase 4+, per `docs/product-factory/product-tracks.md`) enforces commercial exclusion automatically. Until CI exists, manual inspection is required at Gate 10.
 
 ---
 
@@ -118,7 +118,7 @@ The CI boundary check (Phase 4+, per `docs/product-tracks.md`) enforces commerci
 Specification documents downloaded to `.local/spec-cache/` are `evidence-only` with `publish_allowed: false`. The following rules apply:
 
 1. **Cached spec files are never included in release manifests.** They are local-only evidence inputs, not release artifacts.
-2. **Default `redistribution_permitted: false`.** Most standards body publications prohibit redistribution even when reading and implementing are freely permitted. See `docs/legal-and-licensing.md` for the four permissions distinction.
+2. **Default `redistribution_permitted: false`.** Most standards body publications prohibit redistribution even when reading and implementing are freely permitted. See `docs/governance/legal-and-licensing.md` for the four permissions distinction.
 3. **Spec-index.yaml metadata** (source URL, version, SHA-256, download date, legal category, redistribution status) may be included in evidence bundles as citation metadata, without including the spec document content.
 4. **Committing a spec document** requires confirmed redistribution permission plus explicit human approval documented in the gap register. This is exceptional and must be explicitly authorized.
 5. **Spec citations in committed artifacts** must be minimal: cite the spec version, section reference, and source URL. Do not quote substantial spec text in committed files.

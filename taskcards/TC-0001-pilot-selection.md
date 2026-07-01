@@ -49,7 +49,7 @@ Apply the seven-factor scoring model to FODS (Flat OpenDocument Spreadsheet) and
 
 FODS is the pre-selected pilot format (Decision DEC-001). It was selected in Phase 0 based on qualitative review as a strong candidate. No pre-score is authoritative — the formal Gate 1 score is computed in this taskcard using the seven-factor 100-point scoring model.
 
-The scoring model is defined in `registry/scoring/_scoring-model.md`. The legal classification fast-path for OASIS Category 1 formats is defined in `docs/legal-and-licensing.md`.
+The scoring model is defined in `registry/scoring/_scoring-model.md`. The legal classification fast-path for OASIS Category 1 formats is defined in `docs/governance/legal-and-licensing.md`.
 
 ---
 
@@ -104,7 +104,7 @@ The scoring model is defined in `registry/scoring/_scoring-model.md`. The legal 
 | Artifact | Path | Required? |
 |---|---|---|
 | Scoring model | `registry/scoring/_scoring-model.md` | Required |
-| Legal and licensing policy | `docs/legal-and-licensing.md` | Required |
+| Legal and licensing policy | `docs/governance/legal-and-licensing.md` | Required |
 | Gate 1 criteria | `docs/gates.md` | Required |
 | Registry template | `registry/format-registry.yaml` (schema comments) | Required |
 
@@ -113,7 +113,7 @@ The scoring model is defined in `registry/scoring/_scoring-model.md`. The legal 
 ## Steps
 
 1. Read `registry/scoring/_scoring-model.md` to understand all seven scoring dimensions and 100-point weights.
-2. Read `docs/legal-and-licensing.md` to confirm OASIS ODF 1.3 Category 1 classification and fast-path eligibility.
+2. Read `docs/governance/legal-and-licensing.md` to confirm OASIS ODF 1.3 Category 1 classification and fast-path eligibility.
 3. Score FODS on each of the seven dimensions. For each dimension, write a one-sentence rationale.
 4. Compute the weighted total (out of 100). Confirm the acceptance band.
 5. Check all automatic-reject rules: legal safety > 0, Category not 5 or 6, no DRM/access-control bypass evidence.

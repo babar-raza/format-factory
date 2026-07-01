@@ -20,7 +20,7 @@ stale: false
 open_source_allowed: false
 commercial_allowed: false
 release_blockers: []
-notes: "Hybrid Spec Retrieval Strategy evaluation taskcard. Evaluates Tier 3 vector search design. Created run027 (2026-05-05). NOT_STARTED — blocked by human review of TC-0015 scope and docs/spec-retrieval-strategy.md."
+notes: "Hybrid Spec Retrieval Strategy evaluation taskcard. Evaluates Tier 3 vector search design. Created run027 (2026-05-05). NOT_STARTED — blocked by human review of TC-0015 scope and docs/ai/spec-retrieval-strategy.md."
 ---
 
 # TC-0015: Hybrid Spec Retrieval Strategy Evaluation
@@ -32,14 +32,14 @@ notes: "Hybrid Spec Retrieval Strategy evaluation taskcard. Evaluates Tier 3 vec
 **Created:** 2026-05-05 (run027)
 **Created by:** claude-sonnet-4-6 (run027)
 **Blocking:** TC-0016 (FODS vector index pilot)
-**Blocked by:** Human review and approval of `docs/spec-retrieval-strategy.md` + explicit TC-0015 execution prompt
+**Blocked by:** Human review and approval of `docs/ai/spec-retrieval-strategy.md` + explicit TC-0015 execution prompt
 
 ---
 
 ## STOP — Authorization Required
 
 **This taskcard must not be executed until:**
-1. A human reviews `docs/spec-retrieval-strategy.md` and issues an explicit TC-0015 execution prompt.
+1. A human reviews `docs/ai/spec-retrieval-strategy.md` and issues an explicit TC-0015 execution prompt.
 2. TC-0015 is explicitly assigned to an agent in the execution prompt.
 
 Current state (run027):
@@ -63,8 +63,8 @@ This report is the prerequisite for TC-0016 (FODS vector index pilot implementat
 ## Prerequisites
 
 - [x] Spec Navigation Layer complete — `chunks.jsonl` (940 chunks), `sections.jsonl` (884 sections) (run026)
-- [x] `docs/spec-retrieval-strategy.md` drafted — Hybrid Retrieval Strategy (run027)
-- [ ] Human review and approval of `docs/spec-retrieval-strategy.md`
+- [x] `docs/ai/spec-retrieval-strategy.md` drafted — Hybrid Retrieval Strategy (run027)
+- [ ] Human review and approval of `docs/ai/spec-retrieval-strategy.md`
 - [ ] Explicit TC-0015 execution prompt issued by human
 
 ---
@@ -125,7 +125,7 @@ This report is the prerequisite for TC-0016 (FODS vector index pilot implementat
 
 ## Steps (to be executed after explicit TC-0015 prompt)
 
-1. Read `AGENTS.md` and `docs/spec-retrieval-strategy.md`.
+1. Read `AGENTS.md` and `docs/ai/spec-retrieval-strategy.md`.
 2. Read `plans/master-plan.md` to confirm TC-0015 execution is authorized.
 3. For EQ-001 to EQ-010, run Tier 1 and Tier 2 queries using existing tools. Record results.
 4. Select candidate embedding model: prefer `nomic-embed-text` (local Ollama) or `all-MiniLM-L6-v2` (sentence-transformers, no Ollama required).
@@ -155,7 +155,7 @@ This report is the prerequisite for TC-0016 (FODS vector index pilot implementat
 | Dependency | Status | Notes |
 |---|---|---|
 | Spec Navigation Layer | DONE (run026) | chunks.jsonl, sections.jsonl, text.txt |
-| `docs/spec-retrieval-strategy.md` | DONE (run027) | Human review pending |
+| `docs/ai/spec-retrieval-strategy.md` | DONE (run027) | Human review pending |
 | Local embedding model available | NOT CHECKED | Requires local Ollama or pip install sentence-transformers |
 | TC-0016 | not_started | Blocked by this taskcard |
 
@@ -163,7 +163,7 @@ This report is the prerequisite for TC-0016 (FODS vector index pilot implementat
 
 ## Related Files
 
-- `docs/spec-retrieval-strategy.md` — retrieval strategy design (prerequisite)
+- `docs/ai/spec-retrieval-strategy.md` — retrieval strategy design (prerequisite)
 - `.local/spec-cache/fods/1.3/normalized/chunks.jsonl` — 940 FODS chunks (local-only)
 - `.local/spec-cache/fods/1.3/normalized/text.txt` — full spec text (local-only)
 - `tools/spec-normalize/query_normalized_spec.py` — Tier 1 + Tier 2 query tool

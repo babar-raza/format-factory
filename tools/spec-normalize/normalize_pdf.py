@@ -16,8 +16,8 @@ Policy:
     - Does NOT commit normalized artifacts.
 
 See also:
-    docs/specification-normalization.md — full policy
-    docs/specification-cache.md        — source cache policy
+    docs/python-foss/specification-normalization.md — full policy
+    docs/python-foss/specification-cache.md        — source cache policy
     tools/spec-normalize/_readme.md    — directory orientation
 """
 

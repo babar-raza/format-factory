@@ -29,7 +29,7 @@ This document captures the repo-local standard for:
 4. If a missing architecture layer is discovered, it must be implemented (if authorized) or captured in backlog, roadmap, taskcards, and memory.
 5. Every sprint must have exact scope boundaries: allowed paths, forbidden paths, allowed actions, stop conditions.
 6. Every prompt must distinguish authorized work from prohibited work. Hard prohibitions are non-negotiable.
-7. Product source must not start from scattered evidence when a compiled Format Understanding Layer is required (see docs/format-understanding-layer.md).
+7. Product source must not start from scattered evidence when a compiled Format Understanding Layer is required (see docs/python-foss/format-understanding-layer.md).
 8. LLMs may assist under governance, but verified facts, citations, DEC-034, oracle results, and human approvals remain the authority.
 9. No cleanup commands (`git stash`, `git reset`, `git restore`, `git checkout --`, `git clean`) as a default or catch-all. If unrelated dirty work exists, classify it and stop or produce a blocker bundle; do not hide it to satisfy clean-tree pressure.
 10. No pushing without SCM Agent policy authorization (AGENTS.md §AG4.2) — execute when credentials and branch policy allow; classify EXTERNAL_BLOCKER otherwise.

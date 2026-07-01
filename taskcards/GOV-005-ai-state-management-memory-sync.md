@@ -39,7 +39,7 @@ This is a MEMORY SPRINT. It documents, indexes, and makes discoverable the agree
 - `docs/fresh-chat-continuity-brief.md`
 - `docs/agent-methodology-index.md`
 - `docs/prompts/README.md`
-- `docs/llm-and-embedding-strategy.md`
+- `docs/ai/llm-and-embedding-strategy.md`
 - `ROADMAP.md`
 
 ## Boundaries

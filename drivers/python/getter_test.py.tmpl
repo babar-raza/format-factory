@@ -1,3 +1,5 @@
+# SCAFFOLD_STATUS: FORMAT_ADAPTATION_REQUIRED
+# PROVENANCE: template=getter_test, pattern=A, language=python
 """Test skeleton for ${function_name}() — Pattern A (Getter)."""
 import sys
 from pathlib import Path
@@ -8,10 +10,11 @@ from ${module} import ${function_name}
 
 class Test${class_name}:
     def test_basic(self):
-        # TODO: provide a real model or input
+        # FIXTURE_REQUIRED: replace None with a real model or valid input object
         result = ${function_name}(None)
-        assert result is not None
+        # EXPECTED_VALUE_REQUIRED: replace with a meaningful assertion
 
     def test_returns_${return_type_safe}(self):
+        # FIXTURE_REQUIRED: replace None with a real model or valid input object
         result = ${function_name}(None)
-        assert isinstance(result, object)
+        # ORACLE_REQUIRED: assert spec-derived expected value, not isinstance(result, object)

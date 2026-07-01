@@ -33,7 +33,7 @@ NO schemas, NO tools, NO placeholder files.
 
 ## 7. Inputs
 - plans/secondary/full2foss-inspired-system-strengthening-plan-v2.md (Layer 7 design notes)
-- docs/release-control.md (FOSS/commercial boundary policy)
+- docs/governance/release-control.md (FOSS/commercial boundary policy)
 - plans/master-plan.md (Section 4: Feature Tier Model)
 
 ## 8. Outputs

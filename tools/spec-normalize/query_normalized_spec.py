@@ -23,7 +23,7 @@ Policy:
     - Returns short, cited excerpts — not the full spec.
 
 See also:
-    docs/specification-normalization.md
+    docs/python-foss/specification-normalization.md
     tools/spec-normalize/build_section_index.py
     tools/spec-normalize/build_chunk_index.py
     tools/spec-normalize/export_sample_requirements.py

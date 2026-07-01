@@ -114,11 +114,11 @@ it drives product source decisions.
 
 ### 8. Architecture and policy files
 
-- Format Understanding Layer plan: `docs/format-understanding-layer.md`
-- LLM and embedding strategy: `docs/llm-and-embedding-strategy.md`
-- Format representation model: `docs/format-representation-model.md`
-- Non-XML adaptability backlog: covered in `docs/format-representation-model.md`
-- Non-Aspose candidate registry plan: `docs/non-aspose-format-candidate-registry-plan.md`
+- Format Understanding Layer plan: `docs/python-foss/format-understanding-layer.md`
+- LLM and embedding strategy: `docs/ai/llm-and-embedding-strategy.md`
+- Format representation model: `docs/python-foss/format-representation-model.md`
+- Non-XML adaptability backlog: covered in `docs/python-foss/format-representation-model.md`
+- Non-Aspose candidate registry plan: `docs/python-foss/non-aspose-format-candidate-registry-plan.md`
 
 ## 2026-05-09 AI direction refinement
 

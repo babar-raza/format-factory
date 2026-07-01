@@ -25,7 +25,7 @@ S0 — Plan Repair
 - Append master-plan.md Section 34 (secondary roadmap)
 - Append AGENTS.md Section AA (proposed-only governance note)
 - Append GOVERNANCE.md Section 20 (proposed-only governance note)
-- Append one-paragraph notes to docs/acquisition-workflow.md and docs/current-state-and-evidence-authority.md
+- Append one-paragraph notes to docs/python-foss/acquisition-workflow.md and docs/governance/current-state-and-evidence-authority.md
 - Create tools/evidence/contracts/secondary-full2foss-plan-repair.yaml
 - Create 39 staging metadata files and evidence bundle
 
@@ -41,8 +41,8 @@ S0 — Plan Repair
 - iridescent-coalescing-stearns.md (plan file, defective original)
 - plans/master-plan.md (current master plan)
 - registry/format-registry.yaml (current gate states)
-- AGENTS.md, GOVERNANCE.md, docs/acquisition-workflow.md,
-  docs/current-state-and-evidence-authority.md (governance files to append)
+- AGENTS.md, GOVERNANCE.md, docs/python-foss/acquisition-workflow.md,
+  docs/governance/current-state-and-evidence-authority.md (governance files to append)
 - tools/evidence/contracts/base-run.yaml (contract baseline)
 
 ## 8. Outputs
@@ -52,8 +52,8 @@ S0 — Plan Repair
 - plans/master-plan.md (Section 34 appended)
 - AGENTS.md (Section AA appended)
 - GOVERNANCE.md (Section 20 appended)
-- docs/acquisition-workflow.md (note appended)
-- docs/current-state-and-evidence-authority.md (note appended)
+- docs/python-foss/acquisition-workflow.md (note appended)
+- docs/governance/current-state-and-evidence-authority.md (note appended)
 - tools/evidence/contracts/secondary-full2foss-plan-repair.yaml
 - Evidence bundle zip
 
@@ -63,8 +63,8 @@ S0 — Plan Repair
 - plans/master-plan.md (append Section 34 only)
 - AGENTS.md (append Section AA only)
 - GOVERNANCE.md (append Section 20 only)
-- docs/acquisition-workflow.md (append note only)
-- docs/current-state-and-evidence-authority.md (append note only)
+- docs/python-foss/acquisition-workflow.md (append note only)
+- docs/governance/current-state-and-evidence-authority.md (append note only)
 - tools/evidence/contracts/secondary-full2foss-plan-repair.yaml
 - memory/ (if updated)
 - .local/evidence-bundles/secondary-full2foss-plan-repair-staging/** (staging)

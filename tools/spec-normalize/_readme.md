@@ -4,7 +4,7 @@
 
 **Phase availability:** Phase 2+
 
-**Policy document:** `docs/specification-normalization.md`
+**Policy document:** `docs/python-foss/specification-normalization.md`
 
 ---
 

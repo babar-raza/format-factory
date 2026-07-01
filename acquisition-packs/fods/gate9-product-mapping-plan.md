@@ -57,7 +57,7 @@ The executing agent must review and finalize it.
 
 ## Tier Model Reference
 
-From `docs/product-tracks.md`, Tier 0–4 for Python FOSS:
+From `docs/product-factory/product-tracks.md`, Tier 0–4 for Python FOSS:
 
 | Tier | Scope |
 |---|---|
@@ -96,7 +96,7 @@ From `docs/product-tracks.md`, Tier 0–4 for Python FOSS:
 
 Gate 9 execution is blocked until:
 1. A human issues an explicit Gate 9 execution prompt naming "FODS Gate 9 product mapping"
-2. The executing agent reviews docs/product-tracks.md and docs/gates.md Section Gate 9
+2. The executing agent reviews docs/product-factory/product-tracks.md and docs/gates.md Section Gate 9
 3. The executing agent finalizes tier-map.yaml from the draft
 4. A human approves the tier map
 
@@ -104,7 +104,7 @@ Gate 9 execution is blocked until:
 
 ## References
 
-- `docs/product-tracks.md` — Tier 0–6 definitions
+- `docs/product-factory/product-tracks.md` — Tier 0–6 definitions
 - `docs/gates.md` — Gate 9 pass criteria
 - `acquisition-packs/fods/tier-map-draft.yaml` — Draft tier map
 - `taskcards/TC-0040-fods-gate9-product-mapping.md` — Execution taskcard

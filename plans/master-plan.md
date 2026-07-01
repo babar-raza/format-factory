@@ -550,7 +550,7 @@ All format expansion requires explicit human authorization and the full 11-gate 
 - CAD/3D/GIS/media/project/email formats where public technical material exists
 - Non-Aspose formats: these require a pre-acquisition audit before gate 1 scoring
 
-**Non-Aspose candidate backlog:** ~200+ format extensions across 13 categories — all marked `unsupported_by_aspose: needs_audit`. See `docs/format-expansion-roadmap.md` for Tier A candidates.
+**Non-Aspose candidate backlog:** ~200+ format extensions across 13 categories — all marked `unsupported_by_aspose: needs_audit`. See `docs/python-foss/format-expansion-roadmap.md` for Tier A candidates.
 
 ---
 
@@ -903,7 +903,7 @@ TC-FODT-GAP-001, TC-FODT-AUDIT-001, TC-FODT-AUDIT-002, TC-RCAL-001
 **Status:** COMPLETED (Phase 1: run024; Phase 2: run025; Phase 3: 2026-06-18)
 
 **What was built:**
-- `docs/specification-normalization.md` — 15-section governing policy
+- `docs/python-foss/specification-normalization.md` — 15-section governing policy
 - `tools/spec-normalize/normalize_pdf.py` — PDF → text.txt + pages.jsonl extraction
 - `tools/spec-normalize/build_citation_map.py` — citations.yaml from pages.jsonl
 - `tools/spec-normalize/validate_normalized_spec.py` — gate readiness validation
@@ -911,7 +911,7 @@ TC-FODT-GAP-001, TC-FODT-AUDIT-001, TC-FODT-AUDIT-002, TC-RCAL-001
 - AGENTS.md Section W — 10 normalization rules
 - GOVERNANCE.md Section 16 — 6 normalization governance rules
 - `docs/gates.md` Gate 3/4 normalization dependency notes
-- `docs/specification-cache.md` Normalization Layer section
+- `docs/python-foss/specification-cache.md` Normalization Layer section
 
 **Local artifacts produced (non-committed):**
 - `.local/spec-cache/fods/1.3/normalized/text.txt` — 2,160,370 chars (782 pages)
@@ -1231,7 +1231,7 @@ TC-FODT-GAP-001, TC-FODT-AUDIT-001, TC-FODT-AUDIT-002, TC-RCAL-001
 
 **Plan file:** `C:/Users/prora/.claude/plans/snappy-wobbling-gadget.md` (authorization gate: Babar Raza plan-mode approval)
 
-**Authorization:** `reports/authorizations/AUT-20260622-0001.yaml` excluded spec acquisition from autonomous scope; plan-mode approval by Babar Raza constitutes explicit execution-prompt authorization per `docs/specification-cache.md` §Authorization Model condition 5.
+**Authorization:** `reports/authorizations/AUT-20260622-0001.yaml` excluded spec acquisition from autonomous scope; plan-mode approval by Babar Raza constitutes explicit execution-prompt authorization per `docs/python-foss/specification-cache.md` §Authorization Model condition 5.
 
 **What was completed:**
 
@@ -1636,7 +1636,7 @@ Any audit script searching for top-level `facts` key will incorrectly return 0 f
 | TC-UNIFIED-031 | Map validation — passed with advisory warnings (action-queue advisory_only=true gap) | Validation warnings noted; non-blocking | — |
 | TC-UNIFIED-032 | FODS commercial pilot: PASS_VERIFIED (1339 tests pass) | `reports/capability-layer/pilots/fods-mcw-pilot.json` | b27b691a |
 | TC-UNIFIED-033 | FOSS pilots: SYLK PASS_VERIFIED (1008 tests); NDJSON/TSV PASS_WITH_LIMITATIONS (2017 pass, 11 pre-existing fail) | Pilot JSON files written | b27b691a |
-| TC-UNIFIED-034 | `tools/capability_layer/capability_to_feature_compiler.py` (166 LOC): gap-ledger → advisory taskcard YAML stubs | Generated 2 P0 stubs; `docs/capability-feature-compiler-spec.md` written | b27b691a |
+| TC-UNIFIED-034 | `tools/capability_layer/capability_to_feature_compiler.py` (166 LOC): gap-ledger → advisory taskcard YAML stubs | Generated 2 P0 stubs; `docs/code-quality/capability-feature-compiler-spec.md` written | b27b691a |
 
 ### What Was NOT Done
 
@@ -1768,7 +1768,7 @@ No content has been deleted — only moved to archive files with pointers.
 
 - `tools/supervisor/autonomous_cycle_extensions.py` (283 LOC) — extracted helper module
 - `.local/embedding-index/fods-index.json` + `fods-embeddings.bin` (15.4 MB) — first semantic index
-- `docs/spec-retrieval-tier3-evaluation.md` — TC-0015 evaluation report
+- `docs/ai/spec-retrieval-tier3-evaluation.md` — TC-0015 evaluation report
 - `.local/supervisor/compiled-gap-taskcards.json` — persistent gap-to-task pipeline
 - `.local/supervisor/pre-pass-advisory.json` — sprint learnings output
 
@@ -2730,8 +2730,8 @@ TC-SAL-WIRE-001 through TC-SAL-WIRE-008 documented in snoopy §33.9. Highest pri
 
 **Tier 4 — Audit-discovered live docs (iteration 2):**
 - `plans/master-plan.md` — Lines 41, 232
-- `docs/format-expansion-roadmap.md` — Line 209
-- `docs/llm-and-embedding-strategy.md` — Line 90
+- `docs/python-foss/format-expansion-roadmap.md` — Line 209
+- `docs/ai/llm-and-embedding-strategy.md` — Line 90
 - `docs/planning-methodology.md` — Lines 35-36
 
 ### Verification
@@ -3651,7 +3651,7 @@ All 5 taskcards closed. Key deliverables:
 | 5 — PUBLICATION | TC-PUB-001..003 | CLOSED | FormatFactory.Fods/Fodt/Netpbm .nupkg packets built |
 | 5 — PUBLICATION | TC-PUB-004 | EXTERNAL_GATE | Gate 11 sign-off request prepared for Babar Raza |
 | 6 — INFRA | TC-INF-001 | CLOSED | LLM grader active — openai 2.37.0 installed; llm_used=True, confidence=0.32 (2026-06-25) |
-| 6 — INFRA | TC-INF-002 | CLOSED | `docs/format-onboarding-guide.md` — 20-step playbook |
+| 6 — INFRA | TC-INF-002 | CLOSED | `docs/python-foss/format-onboarding-guide.md` — 20-step playbook |
 | 6 — INFRA | TC-INF-003 | CLOSED | GOV_BLOCK audit: 17% rate, top-2 causes, 2 repair TCs |
 | 6 — INFRA | TC-INF-004 | CLOSED | Decomposition plan: governance_validators + autonomous_cycle |
 
@@ -3660,7 +3660,7 @@ All 5 taskcards closed. Key deliverables:
 | Artifact | Description |
 |----------|-------------|
 | `docs/publication/gate11-final-signoff-request.md` | Gate 11 NuGet sign-off request (FODS/FODT/Netpbm) |
-| `docs/format-onboarding-guide.md` | Step-by-step guide for adding format 21+ |
+| `docs/python-foss/format-onboarding-guide.md` | Step-by-step guide for adding format 21+ |
 | `.local/publication-packets/*/gate11-evidence.yaml` | SHA-256 verified evidence bundles (3 products) |
 | `tests/python/{pbm,pgm,ppm}/test_*_malformed_and_security.py` | 48 security tests, all PASS |
 | `docs/api/{pbm,pgm,ppm}.md` | Netpbm API reference docs |
@@ -3954,7 +3954,7 @@ Covered 5 Python FOSS packages (fods, fodt, ndjson, toml, gnumeric) and 4 .NET p
 | MCT-SFE2-002 | SKILL-GAP-011 removed from missing_skill_gap_ids → 30/30 routes ACTIVE |
 | MCT-WYS-ALL | SAL investigation — 11 artifacts in reports/spec-authority/spec-auth-inv-20260625-001/ |
 | MCT-TDL-007 | Severity backfilled for 1,197 gaps (1,209 total, 0 missing) |
-| MCT-TDL-012 | Current State (2026-06-25) addendum added to docs/architecture.md |
+| MCT-TDL-012 | Current State (2026-06-25) addendum added to docs/code-quality/architecture.md |
 | MCT-SHR-000 | System healing gate PASSED — all 9 lanes |
 
 ### What Changed
@@ -3965,7 +3965,7 @@ Covered 5 Python FOSS packages (fods, fodt, ndjson, toml, gnumeric) and 4 .NET p
 - tools/supervisor/lifecycle_audit.py — AUDIT_PASS_VACUOUS vacuous-call guard
 - tools/supervisor/write_plan_lock.py — --completion-candidate flag
 - .supervisor/capability-routing-registry.yaml — SKILL-GAP-011 removed from missing list
-- docs/architecture.md — Current State 2026-06-25 addendum
+- docs/code-quality/architecture.md — Current State 2026-06-25 addendum
 - reports/capability-layer/gap-ledger.json — severity backfilled for all 1,209 gaps
 - registry/source-structure-baseline.json — governance_validators_ledger.py registered (cap=126)
 - tests/supervisor/test_lifecycle_audit.py — 2 vacuous-call guard tests added
@@ -4404,9 +4404,18 @@ The SAL Verification, Hardening, and Integration Sprint executed 8 lanes (A/B/D/
 - `tools/supervisor/governance_validators_ext.py` — V-NEW-001 import stub
 - `tools/supervisor/governance_validator_runner.py` — V-NEW-001 wiring
 
-### Deferred Items (Carry-Forward to Next SAL Sprint)
-- **TC-SAL-WIRE-001:** Wire requirement_extractor into sal_master_runner.py (regression risk — requires careful review)
-- **TC-SAL-WIRE-006:** REQ-to-FACT mapping / context pack bridge (requires extractor_to_workbench_adapter.py changes)
+### Phase 1 Deferred Items → Completed in Phase 2 (commit 5e0f5cf6, 2026-06-26)
+- **TC-SAL-WIRE-001:** COMPLETED_VERIFIED — requirement_extractor wired into sal_master_runner.py; ZST extracts 58 REQ-* entries; artifact written
+- **TC-SAL-WIRE-006:** COMPLETED_VERIFIED — req_to_fact_bridge.py created; FODS 99/100 links (99%), ZST 96/96 (100%)
+
+### Phase 2 — Hardening Addendum (commit 1da40302, 2026-07-01)
+Addendum: `plans/secondary/generic-soaring-chipmunk-hardening-addendum.md` v1.2
+
+| Taskcard | Result | Commit |
+|----------|--------|--------|
+| TC-SAL-DEBT-001: autonomous_cycle.py LOC debt | LOC 2673→2399 (274 lines extracted to autonomous_cycle_utils.py) | 1da40302 |
+| TC-SAL-BACKFILL-002: ODF semantic match extension | ODS=37, ODT=40, FODG=39, FODP=34 unique spec_fact sets (4/5 formats ≥10) | 1da40302 |
+| TC-SAL-CARRY-NON-ODF-UNBLOCK-001: TOML spec facts | TOML precondition MET; 70 facts in sal-facts-latest.json | 1da40302 |
 
 ### Pre-existing Failures (Not Caused by This Sprint)
 - `test_registered_formats_have_bootstrap_level_1` — bootstrap level 1 gap
@@ -4422,6 +4431,8 @@ The SAL Verification, Hardening, and Integration Sprint executed 8 lanes (A/B/D/
 6. Format check tightened — PASS (canonical + legacy regex)
 7. All pilots F1/F2/F3/F4 PASS — PASS
 8. 0 new governance validator regressions — PASS
+9. [Phase 2] autonomous_cycle.py LOC ≤ cap — PASS (2399 ≤ 2673)
+10. [Phase 2] ODF semantic match ≥10 unique sets (≥3/5 formats) — PASS (4/5)
 
 ---
 
@@ -4684,7 +4695,7 @@ lifecycle audit gate, and end-to-end proof of the governed reopening lifecycle. 
 | Taskcard | Status | Evidence |
 |----------|--------|---------|
 | TC-TCF-001 (investigation artifacts) | CLOSED | `generate_closure_artifacts.py`; 5 artifacts in `.local/supervisor/`; idempotency verified |
-| TC-TCF-002 (COMPLETION_CANDIDATE) | CLOSED (prior) | `write_plan_lock.py` lines 211-215, 493-496; `docs/terminal-closure-state-machine.md` |
+| TC-TCF-002 (COMPLETION_CANDIDATE) | CLOSED (prior) | `write_plan_lock.py` lines 211-215, 493-496; `docs/automation/terminal-closure-state-machine.md` |
 | TC-TCF-003 (mandatory audit gate) | CLOSED | `_should_require_audit()` + `--skip-audit` + 4 guards (G1-G4) in `lifecycle_audit.py` |
 | TC-TCF-004 (closure evidence artifact) | CLOSED | `_write_terminal_closure_record()` → `.local/evidences/plan-closures/{hash}/terminal_closure_record.json` |
 | TC-TCF-005 (strengthen reopening) | CLOSED | `find_next_eligible_task_in_plan()`, `scan_closed_plan_test_regression()`, `scan_closure_evidence_invalidation()` in extensions package; 4-line wiring in `autonomous_cycle.py` |
@@ -4726,7 +4737,7 @@ violations); `test_lane_guard.py` expectations updated to match.
 - `tests/supervisor/test_terminal_closure_pilots.py` — new file: 16-pilot regression suite
 - `tests/supervisor/test_lane_guard.py` — updated assertions for LaneEnforcementValidator behavior
 - `tests/supervisor/test_governance_validators.py` — count updated 85→88
-- `docs/terminal-closure-state-machine.md` — new doc: plan lock state machine + reopening policy
+- `docs/automation/terminal-closure-state-machine.md` — new doc: plan lock state machine + reopening policy
 - `reports/terminal-closure-forensics/INVESTIGATION_REPORT.md` — new: TC-0 through TC-20 gate evidence
 
 ### Verification Performed
@@ -4936,7 +4947,7 @@ formally deferred (V13/V47/V62 cover non-ODF enforcement; new V-number task defe
 - Cross-format index in correct state: 20 formats, 999 entries (new formats pbm/pgm/ppm/xcf/zst/qoi)
 - Adequacy validator + hardening tests: 43/43 PASS (escalation date, grader downgrade, shard ledger, exit-code masking)
 - Slow-test ledger updated: `measured_at: 2026-06-25`, 30 slow tests catalogued
-- docs/test-layering.md: +18 lines (cross-format escalation, test count 14,500→46,500)
+- docs/code-quality/test-layering.md: +18 lines (cross-format escalation, test count 14,500→46,500)
 - L0 timing confirmed: 4.17s, 15 tests — stable baseline
 - L1/CSV timing confirmed: 9.49s, 754 tests
 

@@ -33,7 +33,7 @@ Four tracks receive output from the acquisition pipeline:
 
 **Format-first source layout:** Every format that reaches Phase 4 gets its own source directory within `src/python/` and `src/net/`. Example: `src/python/fods/`, `src/net/fods/`. There is no shared `open-source/` or `commercial/` subdirectory — the format subdirectory IS the product workspace.
 
-The .NET commercial tiers (5-6) within `src/net/{format}/` are not created until Gate 10 has passed, Decision DD3 is resolved, commercial implementation taskcards exist, and an explicit commercial implementation execution prompt has been issued. Gate 11 is commercial release readiness, not creation authorization. The .NET FOSS packaging question is deferred (DEC-033). See `docs/product-tracks.md` for full track definitions.
+The .NET commercial tiers (5-6) within `src/net/{format}/` are not created until Gate 10 has passed, Decision DD3 is resolved, commercial implementation taskcards exist, and an explicit commercial implementation execution prompt has been issued. Gate 11 is commercial release readiness, not creation authorization. The .NET FOSS packaging question is deferred (DEC-033). See `docs/product-factory/product-tracks.md` for full track definitions.
 
 **Obsolete paths (must not be created):** `src/python/open-source/`, `src/dotnet/open-source/`, `src/dotnet/commercial/` — these were the old layout and are replaced by the format-first structure above.
 
@@ -179,7 +179,7 @@ If `.local/` is lost (fresh clone, machine migration):
 3. `llm-logs/` and `llm-cache/` — these contain session-specific data. They cannot be fully rebuilt, but their loss does not block work. New sessions create new run records.
 4. `evidence-bundles/` — bundles were already uploaded or handed off. They can be recreated by re-bundling committed artifacts.
 
-The `.local/` directory is documented in Section F of the master plan and in `docs/llm-endpoint-strategy.md`.
+The `.local/` directory is documented in Section F of the master plan and in `docs/ai/llm-endpoint-strategy.md`.
 
 ---
 
@@ -224,7 +224,7 @@ AGENTS.md (non-negotiable rules)
 
 ## Acquisition Pipeline Summary
 
-Every format progresses through 11 gates before any product code is written. See `docs/gates.md` for full gate definitions and `docs/acquisition-workflow.md` for the stage-by-stage workflow.
+Every format progresses through 11 gates before any product code is written. See `docs/gates.md` for full gate definitions and `docs/python-foss/acquisition-workflow.md` for the stage-by-stage workflow.
 
 | Gate | Name | Key Artifact |
 |---|---|---|
@@ -266,11 +266,11 @@ Every format progresses through 11 gates before any product code is written. See
 
 ### Artifact Visibility
 
-Every committed artifact must carry a YAML front matter block with a `visibility` field. Six classes: `public`, `internal`, `commercial`, `evidence-only`, `generated`, `blocked`. Default when uncertain: `internal`. Never default to `public`. See `docs/release-control.md` for the full schema and classification rules.
+Every committed artifact must carry a YAML front matter block with a `visibility` field. Six classes: `public`, `internal`, `commercial`, `evidence-only`, `generated`, `blocked`. Default when uncertain: `internal`. Never default to `public`. See `docs/governance/release-control.md` for the full schema and classification rules.
 
 ### Reuse-Before-Regenerate
 
-Before creating any artifact, an agent checks `.local/artifact-index.yaml` for an existing entry. If the artifact exists and is current (source hash unchanged, not manually marked stale), the agent reuses it and logs `ARTIFACT_REUSED` in the run record. Only missing or stale artifacts are regenerated. See `docs/acquisition-workflow.md` for the full reuse policy.
+Before creating any artifact, an agent checks `.local/artifact-index.yaml` for an existing entry. If the artifact exists and is current (source hash unchanged, not manually marked stale), the agent reuses it and logs `ARTIFACT_REUSED` in the run record. Only missing or stale artifacts are regenerated. See `docs/python-foss/acquisition-workflow.md` for the full reuse policy.
 
 ---
 
@@ -282,13 +282,13 @@ All parsers produced by this system must conform to the threat model in `docs/se
 
 ## Legal Architecture
 
-All formats must be classified into one of six legal categories defined in `docs/legal-and-licensing.md`. Category 5 (reverse-engineered binary without permission) and Category 6 (blocked) are automatic rejects at Gate 1. All other categories require Gate 2 evidence review. Open-standard formats (Category 1) qualify for fast-path Gate 2 approval.
+All formats must be classified into one of six legal categories defined in `docs/governance/legal-and-licensing.md`. Category 5 (reverse-engineered binary without permission) and Category 6 (blocked) are automatic rejects at Gate 1. All other categories require Gate 2 evidence review. Open-standard formats (Category 1) qualify for fast-path Gate 2 approval.
 
 ---
 
 ## LLM Architecture
 
-Claude (VS Code) is the primary executor. `llm.professionalize.com`, local discoverable LLMs (Ollama, LM Studio), and Codex are secondary. All endpoint configuration is in `tools/llm/endpoints.yaml` (committed, no secrets). Secrets live in `.env` (gitignored). No LLM API calls are made in Phase 0. See `docs/llm-endpoint-strategy.md` for the full endpoint and model selection strategy.
+Claude (VS Code) is the primary executor. `llm.professionalize.com`, local discoverable LLMs (Ollama, LM Studio), and Codex are secondary. All endpoint configuration is in `tools/llm/endpoints.yaml` (committed, no secrets). Secrets live in `.env` (gitignored). No LLM API calls are made in Phase 0. See `docs/ai/llm-endpoint-strategy.md` for the full endpoint and model selection strategy.
 
 ---
 
@@ -393,13 +393,13 @@ Generates ~80% of evidence-declaration.yaml automatically from the lane-executio
 
 - `plans/master-plan.md` — operational state (current phase, gate history, WIP)
 - `docs/gates.md` — gate pass criteria and artifacts required
-- `docs/acquisition-workflow.md` — stage-by-stage acquisition process
-- `docs/product-tracks.md` — four track definitions, contamination prevention
+- `docs/python-foss/acquisition-workflow.md` — stage-by-stage acquisition process
+- `docs/product-factory/product-tracks.md` — four track definitions, contamination prevention
 - `docs/security.md` — parser threat model
-- `docs/legal-and-licensing.md` — format legal classification
-- `docs/release-control.md` — artifact visibility and release policy
-- `docs/llm-endpoint-strategy.md` — LLM endpoint and credentials policy
-- `docs/specification-cache.md` — specification cache policy and schema
+- `docs/governance/legal-and-licensing.md` — format legal classification
+- `docs/governance/release-control.md` — artifact visibility and release policy
+- `docs/ai/llm-endpoint-strategy.md` — LLM endpoint and credentials policy
+- `docs/python-foss/specification-cache.md` — specification cache policy and schema
 - `AGENTS.md` — agent operating contract
 
 ---

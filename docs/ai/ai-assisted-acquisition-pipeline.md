@@ -92,7 +92,7 @@ Define how the AI platform integrates with the existing 11-gate format acquisiti
 
 ## 3. Spec Normalization is Mandatory
 
-AI consumption of specifications requires normalization. The spec normalization layer (`docs/specification-normalization.md`) produces:
+AI consumption of specifications requires normalization. The spec normalization layer (`docs/python-foss/specification-normalization.md`) produces:
 - Immutable raw spec manifest
 - Normalized text
 - Page/section maps
@@ -138,7 +138,7 @@ Enforcement: Static import analysis via `tools/ai/validators/runtime_guard.py`.
 | Document | Relationship |
 |----------|-------------|
 | `docs/ai/ai-platform-operating-model.md` | Parent platform model |
-| `docs/acquisition-workflow.md` | Existing acquisition pipeline |
-| `docs/specification-normalization.md` | Spec normalization requirements |
+| `docs/python-foss/acquisition-workflow.md` | Existing acquisition pipeline |
+| `docs/python-foss/specification-normalization.md` | Spec normalization requirements |
 | `docs/ai/gpt-oss-synthesis-control-policy.md` | Synthesis controls at each gate |
 | `docs/ai/embedding-and-vector-store-policy.md` | Retrieval at gates 4-5 |

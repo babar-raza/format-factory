@@ -301,8 +301,8 @@ Proprietary or reverse-engineered formats must be carefully classified.
 
 | File | Purpose |
 |------|---------|
-| docs/format-expansion-roadmap.md | Full format expansion roadmap (human-readable) |
-| docs/format-expansion-roadmap.yaml | Machine-readable format expansion roadmap |
+| docs/python-foss/format-expansion-roadmap.md | Full format expansion roadmap (human-readable) |
+| docs/python-foss/format-expansion-roadmap.yaml | Machine-readable format expansion roadmap |
 | taskcards/FORMAT-EXPANSION-ROADMAP.md | Roadmap governance taskcard |
 | taskcards/NON-ASPOSE-FORMAT-BACKLOG.md | Non-Aspose candidate backlog taskcard |
 | taskcards/PUBLIC-SPEC-FORMAT-EXPANSION.md | Public-spec expansion taskcard |
@@ -318,7 +318,7 @@ All format expansion work requires explicit human authorization and must follow 
 
 **Next agent checklist:**
 - [ ] Read plans/master-plan.md Section 38 (format expansion roadmap)
-- [ ] Read docs/format-expansion-roadmap.md for full roadmap
+- [ ] Read docs/python-foss/format-expansion-roadmap.md for full roadmap
 - [ ] Check taskcards/FORMAT-EXPANSION-ROADMAP.md for status
 - [ ] Check taskcards/NON-ASPOSE-FORMAT-BACKLOG.md for backlog status
 - [ ] Confirm Conway Phase R1-R9 completion before adding new formats

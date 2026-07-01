@@ -39,7 +39,7 @@ notes: Infrastructure taskcard. Resolves G-003 (SDK baselines not CI-verified).
 
 ## Objective
 
-Confirm that the Python and .NET SDK baselines defined in `docs/product-tracks.md` are correct, available in the development environment, and that a minimal project setup is achievable. Produce a confirmed baseline record in `tools/_readme.md` and update `src/python/_readme.md` and `src/dotnet/_readme.md` with verified SDK details. This resolves Gap G-003 (SDK baselines not CI-verified).
+Confirm that the Python and .NET SDK baselines defined in `docs/product-factory/product-tracks.md` are correct, available in the development environment, and that a minimal project setup is achievable. Produce a confirmed baseline record in `tools/_readme.md` and update `src/python/_readme.md` and `src/dotnet/_readme.md` with verified SDK details. This resolves Gap G-003 (SDK baselines not CI-verified).
 
 ---
 
@@ -99,7 +99,7 @@ Phase 0 declared baselines: Python 3.11+ and .NET net8.0/net10.0 (no net9.0, whi
 
 | Artifact | Path | Required? |
 |---|---|---|
-| Product tracks doc | `docs/product-tracks.md` | Required |
+| Product tracks doc | `docs/product-factory/product-tracks.md` | Required |
 | Security policy | `docs/security.md` | Required (defusedxml reference) |
 
 ---

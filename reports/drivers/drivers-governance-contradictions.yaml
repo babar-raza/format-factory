@@ -1,0 +1,99 @@
+---
+# drivers/ Subsystem Governance Contradictions
+# Generated: TC-DRV-002
+# Plan: plans/.claude/abstract-moseying-donut.md
+# Mission: DRIVERS-SUBSYSTEM-HEALING-001
+
+contradictions:
+  - contradiction_id: GC-001
+    file: plans/.claude/idempotent-snuggling-wombat.md
+    section: "TC-ROOT-002 table row — drivers/ action"
+    what_was_wrong: >
+      TC-ROOT-002 listed drivers/ for DELETE with the justification "zero consumers proven".
+      The grep-based discovery missed the Path-construction consumer in test_drivers.py
+      (uses `Path(...) / "drivers" / "python"`, not `from drivers import ...`).
+      Two direct runtime consumers were proven by code inspection.
+    what_was_corrected: >
+      Added a correction block before the TC-ROOT-002 table documenting both proven consumers
+      with exact file:line evidence. Changed the table row from DELETE to RETAIN with a
+      cross-reference to reports/drivers/drivers-finding-validation.yaml F-001.
+      Historical context preserved; finding marked superseded_by_evidence.
+    evidence_path: reports/drivers/drivers-finding-validation.yaml
+    finding_ref: F-001
+    status: RESOLVED
+
+  - contradiction_id: GC-002
+    file: registry/repository-root-folders.yaml
+    section: "Section heading at line 684-686"
+    what_was_wrong: >
+      The drivers/ entry (retention: RETAIN) was placed under the section heading
+      "# DELETED / CONSOLIDATED — proven redundant or abandoned". This implied the
+      folder was scheduled for deletion, contradicting its RETAIN status. Any agent
+      reading the registry could reasonably conclude drivers/ should be deleted.
+    what_was_corrected: >
+      Moved the drivers/ entry to a new section "# SHARED LIBRARY / TOOLING — active,
+      retained subsystems" placed above the DELETED/CONSOLIDATED section. Added
+      language_scope: PYTHON_ONLY_BY_DESIGN, expanded purpose field, restructured
+      consumers list with type classification (DIRECT_RUNTIME_CONSUMER vs
+      DECLARATIVE_REFERENCE), and added correction_note field.
+    evidence_path: registry/repository-root-folders.yaml
+    finding_ref: F-002
+    status: RESOLVED
+
+  - contradiction_id: GC-003
+    file: registry/repository-root-folders.yaml
+    section: "drivers/ consumers list"
+    what_was_wrong: >
+      The consumer list only had: ["tools/supervisor/test_drivers.py",
+      "tools/supervisor/libforge_pattern_registry.py"]. This omitted
+      tools/supervisor/product_feature_factory.py (direct runtime consumer,
+      imports all 5 render_* functions). libforge_pattern_registry.py was
+      listed without classification, implying it is a runtime consumer when
+      it is actually a declarative reference only.
+    what_was_corrected: >
+      Expanded consumers to a list of objects with path, type, and evidence fields.
+      Added product_feature_factory.py as DIRECT_RUNTIME_CONSUMER.
+      Reclassified libforge_pattern_registry.py as DECLARATIVE_REFERENCE.
+    evidence_path: registry/repository-root-folders.yaml
+    finding_ref: F-007
+    status: RESOLVED
+
+  - contradiction_id: GC-004
+    file: drivers/_readme.md
+    section: "Governance — Consumers"
+    what_was_wrong: >
+      The README listed only two consumers: test_drivers.py and
+      libforge_pattern_registry.py. product_feature_factory.py (direct consumer)
+      was absent. No language scope policy was declared. No placeholder policy,
+      promotion lifecycle, fixture requirements, or validation commands were documented.
+    what_was_corrected: >
+      Fully rewrote _readme.md to include: Language Scope (PYTHON_ONLY_BY_DESIGN),
+      classified consumer table (DIRECT_RUNTIME_CONSUMER / DECLARATIVE_REFERENCE),
+      Non-Consumers section, Template/Renderer Contracts section, Placeholder Policy,
+      Format-Promotion Lifecycle, Fixture and Assertion Requirements, Validation
+      Commands, How to Add a Driver/Template, and Known Gaps.
+    evidence_path: drivers/_readme.md
+    finding_ref: F-007
+    status: RESOLVED
+
+  - contradiction_id: GC-005
+    file: plans/layers/test-infrastructure-layer.md
+    section: "Section 3 — Scope"
+    what_was_wrong: >
+      The L07 Test Infrastructure Layer scope did not mention drivers/ or the
+      test generation template subsystem. The drivers/ subsystem (templates,
+      renderer, promotion lifecycle) logically belongs under test infrastructure
+      ownership but had no layer assignment.
+    what_was_corrected: >
+      Added drivers/ subsystem to L07 scope with specific paths: drivers/python/*.py.tmpl,
+      tools/supervisor/test_drivers.py, tools/supervisor/drivers_promotion.py,
+      and reports/drivers/.
+    evidence_path: plans/layers/test-infrastructure-layer.md
+    finding_ref: F-005
+    status: RESOLVED
+
+summary:
+  total_contradictions: 5
+  resolved: 5
+  unresolved: 0
+  UNRESOLVED_DRIVERS_GOVERNANCE_CONTRADICTIONS: 0

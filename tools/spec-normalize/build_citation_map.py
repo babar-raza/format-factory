@@ -16,7 +16,7 @@ Policy:
     - Does NOT commit citation artifacts.
 
 See also:
-    docs/specification-normalization.md — full policy
+    docs/python-foss/specification-normalization.md — full policy
     tools/spec-normalize/_readme.md    — directory orientation
 """
 

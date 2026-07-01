@@ -1,7 +1,8 @@
+# SCAFFOLD_STATUS: FORMAT_ADAPTATION_REQUIRED
+# PROVENANCE: template=roundtrip_test, pattern=C, language=python
 """Roundtrip test for ${format_upper}.
 
-Sprint: FORMAT-FACTORY-AUTONOMY-ACCELERATION-SPRINT-3-001
-Pattern C: Load → write → reload → compare
+Pattern C: Load -> write -> reload -> compare
 """
 from __future__ import annotations
 
@@ -17,18 +18,22 @@ ${test_import}
 
 class TestRoundtrip${format_cap}:
     def test_roundtrip_preserves_${compare_field}(self, tmp_path):
-        # TODO: Replace with a real fixture or minimal bytes for this format
-        source_bytes = b""  # ADD FORMAT-SPECIFIC MINIMAL BYTES HERE
+        # FIXTURE_REQUIRED: replace with real minimal valid ${format_name} bytes
+        # (not b"" -- use samples/by-format/${format_name}/ or a deterministic builder)
+        source_bytes = b""  # TEST_SCAFFOLD_INCOMPLETE
         model = ${load_function}(source_bytes)
         dest = tmp_path / "out.${format_name}"
         ${write_function}(model, dest)
         model2 = ${load_function}(dest)
+        # ORACLE_REQUIRED: verify spec-derived field equality
         assert model2["${compare_field}"] == model["${compare_field}"]
 
     def test_roundtrip_file_exists(self, tmp_path):
-        source_bytes = b""  # ADD FORMAT-SPECIFIC MINIMAL BYTES HERE
+        # FIXTURE_REQUIRED: replace with real minimal valid ${format_name} bytes
+        source_bytes = b""  # TEST_SCAFFOLD_INCOMPLETE
         model = ${load_function}(source_bytes)
         dest = tmp_path / "out.${format_name}"
         ${write_function}(model, dest)
+        # EXPECTED_VALUE_REQUIRED: assert file content validity, not just existence
         assert dest.exists()
         assert dest.stat().st_size > 0

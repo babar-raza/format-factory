@@ -450,7 +450,7 @@ The root README contains values derived from canonical registries and reports. T
 
 ## Contributing
 
-See [GOVERNANCE.md](GOVERNANCE.md) for human contributor rules and gate approval processes. See [AGENTS.md](AGENTS.md) for agent operating rules. See [docs/legal-and-licensing.md](docs/legal-and-licensing.md) before working on any format.
+See [GOVERNANCE.md](GOVERNANCE.md) for human contributor rules and gate approval processes. See [AGENTS.md](AGENTS.md) for agent operating rules. See [docs/governance/legal-and-licensing.md](docs/governance/legal-and-licensing.md) before working on any format.
 
 All samples must have confirmed open-source licenses before being committed. All format work must pass the required gates before moving to later phases.
 

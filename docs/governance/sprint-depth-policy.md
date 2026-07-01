@@ -37,7 +37,7 @@ No format may advance through gates G5+ unless:
 - The completion matrix entry is current
 - The DRIFT taskcard (if any) has been reviewed
 - The evidence-backed gate matches or is higher than the target gate
-- The gate criteria in docs/gate-quality-criteria.md are satisfied
+- The gate criteria in docs/governance/gate-quality-criteria.md are satisfied
 
 ### 6. Probe-Only Formats Are Capped
 
@@ -50,6 +50,6 @@ Sprint reports describe work done. They do not substitute for source code, tests
 ## Enforcement
 
 - Evidence validators in tests/evidence/ check matrix consistency
-- Gate quality criteria in docs/gate-quality-criteria.md define minimum requirements
+- Gate quality criteria in docs/governance/gate-quality-criteria.md define minimum requirements
 - Completion matrix in registry/format-completion-matrix.yaml is the authority
 - DRIFT taskcards track overclaim review outcomes

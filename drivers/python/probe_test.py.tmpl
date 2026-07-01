@@ -1,3 +1,5 @@
+# SCAFFOLD_STATUS: FORMAT_ADAPTATION_REQUIRED
+# PROVENANCE: template=probe_test, pattern=E, language=python
 """Test skeleton for ${function_name}() — Pattern E (Probe)."""
 import sys
 from pathlib import Path
@@ -8,9 +10,11 @@ from ${module} import ${function_name}
 
 class Test${format_cap}Probe:
     def test_returns_dict(self):
+        # FIXTURE_REQUIRED: replace b"" with real ${format_cap} format bytes
         result = ${function_name}(b"")
-        assert isinstance(result, dict)
+        # ORACLE_REQUIRED: assert specific probe fields, not isinstance(result, dict)
 
     def test_format_field(self):
+        # FIXTURE_REQUIRED: replace b"" with real ${format_cap} format bytes
         result = ${function_name}(b"")
         assert result.get("format") == "${format_lower}"

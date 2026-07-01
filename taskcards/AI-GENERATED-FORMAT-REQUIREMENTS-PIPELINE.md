@@ -8,8 +8,8 @@
 Design and document the AI-generated format requirements pipeline for producing per-format commercial requirements from local evidence sources.
 
 ## Deliverables
-- [x] `docs/ai-generated-format-requirements-pipeline.md` — Pipeline design (10 stages, input sources, validation rules)
-- [x] `docs/ai-generated-format-requirements-pipeline.yaml` — Machine-readable pipeline spec
+- [x] `docs/ai/ai-generated-format-requirements-pipeline.md` — Pipeline design (10 stages, input sources, validation rules)
+- [x] `docs/ai/ai-generated-format-requirements-pipeline.yaml` — Machine-readable pipeline spec
 
 ## Key Decisions
 - Pipeline consumes ONLY local evidence (no spec downloads, no external URLs)

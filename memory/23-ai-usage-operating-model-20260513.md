@@ -28,21 +28,21 @@ The following already exists and is binding:
 - AGENTS.md §H (LLM endpoint rules, credential security, run records)
 - AGENTS.md §T (spec content in LLM prompts — restricted)
 - AGENTS.md §V (DEC-034 independent verification)
-- docs/llm-endpoint-strategy.md (full endpoint policy)
-- docs/llm-and-embedding-strategy.md (allowed/prohibited uses, secrets)
-- docs/spec-retrieval-strategy.md (three-tier retrieval)
+- docs/ai/llm-endpoint-strategy.md (full endpoint policy)
+- docs/ai/llm-and-embedding-strategy.md (allowed/prohibited uses, secrets)
+- docs/ai/spec-retrieval-strategy.md (three-tier retrieval)
 
 ## New Files Created in LANE K
 
 | File | Purpose |
 |------|---------|
-| docs/ai-usage-operating-model.md | Core philosophy, allowed/prohibited uses, ledger, workflow, gate safeguards |
-| docs/ai-usage-operating-model.yaml | Machine-readable policy |
-| docs/ai-assisted-commercial-development.md | Patterns A-F for `src/net/{format}/` implementation |
-| docs/ai-assisted-commercial-development.yaml | Machine-readable patterns |
-| docs/spec-retrieval-and-rag-policy.md | RAG guardrails, provenance, embedding policy |
-| docs/spec-retrieval-and-rag-policy.yaml | Machine-readable |
-| docs/agent-swarm-ai-orchestration.md | AI lane governance in controlled swarms |
+| docs/ai/ai-usage-operating-model.md | Core philosophy, allowed/prohibited uses, ledger, workflow, gate safeguards |
+| docs/ai/ai-usage-operating-model.yaml | Machine-readable policy |
+| docs/ai/ai-assisted-commercial-development.md | Patterns A-F for `src/net/{format}/` implementation |
+| docs/ai/ai-assisted-commercial-development.yaml | Machine-readable patterns |
+| docs/ai/spec-retrieval-and-rag-policy.md | RAG guardrails, provenance, embedding policy |
+| docs/ai/spec-retrieval-and-rag-policy.yaml | Machine-readable |
+| docs/ai/agent-swarm-ai-orchestration.md | AI lane governance in controlled swarms |
 | 5 AI taskcards (AI-USAGE-OPERATING-MODEL, AI-SPEC-RETRIEVAL-RAG-POLICY, AI-COMMERCIAL-DEVELOPMENT-PATTERNS, AI-USAGE-LEDGER-AND-METRICS, AI-VALIDATION-GATES) | Implementation taskcards |
 
 ## Updates to Existing Files
@@ -53,7 +53,7 @@ The following already exists and is binding:
 
 ## AI Patterns for Future Implementation Sprints
 
-Use Pattern A-F from `docs/ai-assisted-commercial-development.md`:
+Use Pattern A-F from `docs/ai/ai-assisted-commercial-development.md`:
 - A: spec-to-requirements extraction (local RAG → validated YAML)
 - B: requirements-to-object-model (typed C# classes)
 - C: object-model-to-code (implementation drafting)

@@ -189,7 +189,7 @@ Total active capabilities: 99
 
 **E1.** Before creating any artifact, check `.local/artifact-index.yaml` for an existing entry with the same `artifact_id` or the same (`format_id`, `artifact_type`) combination.
 
-**E2.** If the artifact exists and is current (all validity conditions met per `docs/acquisition-workflow.md` Section "Rule 2: Validity Conditions"), reuse it. Log `ARTIFACT_REUSED: <artifact_id>` in the run record.
+**E2.** If the artifact exists and is current (all validity conditions met per `docs/python-foss/acquisition-workflow.md` Section "Rule 2: Validity Conditions"), reuse it. Log `ARTIFACT_REUSED: <artifact_id>` in the run record.
 
 **E3.** If the artifact is stale (any validity condition fails), refresh only the stale artifact. Do not regenerate all artifacts from scratch.
 
@@ -201,7 +201,7 @@ Total active capabilities: 99
 
 ## F. Visibility Classification Requirement
 
-**F1.** Every artifact produced must have a visibility classification conforming to the schema in `docs/release-control.md`. Classification may be provided either (a) as YAML front matter in the file itself, or (b) as an entry in `.local/artifact-index.yaml`. See the Hybrid Classification Policy in `docs/release-control.md` for which files require which approach.
+**F1.** Every artifact produced must have a visibility classification conforming to the schema in `docs/governance/release-control.md`. Classification may be provided either (a) as YAML front matter in the file itself, or (b) as an entry in `.local/artifact-index.yaml`. See the Hybrid Classification Policy in `docs/governance/release-control.md` for which files require which approach.
 
 **F2.** Phase 0 governance files (docs, AGENTS.md, GOVERNANCE.md, ROADMAP.md, README.md, registry skeleton, `_readme.md` files, config files) are classified via `.local/artifact-index.yaml`. This is explicitly permitted; these files are not required to carry inline front matter.
 
@@ -283,7 +283,7 @@ The agent must answer "no" to questions 4, 5, 6, 7, 8, and 10, and "yes" to ques
 
 ## K. Persistence Requirements
 
-**K1.** Every artifact produced must be registered in `.local/artifact-index.yaml` with full schema fields from `docs/release-control.md`.
+**K1.** Every artifact produced must be registered in `.local/artifact-index.yaml` with full schema fields from `docs/governance/release-control.md`.
 
 **K2.** LLM run records must be written to `.local/llm-logs/` in JSONL format. See Section L for the format.
 
@@ -399,7 +399,7 @@ An agent must never create the following in Phase 0:
 
 ## S. What This Document Does Not Cover
 
-This document governs agent behavior. For human contributor rules, see `GOVERNANCE.md`. For gate pass criteria, see `docs/gates.md`. For legal classification, see `docs/legal-and-licensing.md`. For artifact visibility and release rules, see `docs/release-control.md`. For LLM endpoint configuration, see `docs/llm-endpoint-strategy.md`. For specification cache policy, see `docs/specification-cache.md`. For specification normalization policy, see `docs/specification-normalization.md`. For historical project context, decision rationale, and phase evolution, see `memory/README.md` and `memory/00-index.md`.
+This document governs agent behavior. For human contributor rules, see `GOVERNANCE.md`. For gate pass criteria, see `docs/gates.md`. For legal classification, see `docs/governance/legal-and-licensing.md`. For artifact visibility and release rules, see `docs/governance/release-control.md`. For LLM endpoint configuration, see `docs/ai/llm-endpoint-strategy.md`. For specification cache policy, see `docs/python-foss/specification-cache.md`. For specification normalization policy, see `docs/python-foss/specification-normalization.md`. For historical project context, decision rationale, and phase evolution, see `memory/README.md` and `memory/00-index.md`.
 
 ---
 
@@ -412,7 +412,7 @@ This document governs agent behavior. For human contributor rules, see `GOVERNAN
 **T3 (Authorization Required for Download).** A spec download requires ALL of the following to be satisfied before any download may occur:
   - The current phase permits spec acquisition (Phase 1+; Phase 0 prohibits all downloads).
   - An explicit taskcard exists authorizing acquisition for this format.
-  - The format's legal category has been reviewed and confirmed (Legal Categories 1-3 only; see `docs/legal-and-licensing.md`).
+  - The format's legal category has been reviewed and confirmed (Legal Categories 1-3 only; see `docs/governance/legal-and-licensing.md`).
   - A canonical source URL has been identified and approved (standards body official page or stable archival URL; no mirrors).
   - The current execution prompt explicitly authorizes the download (the prompt must name the format, version, canonical URL, and state that acquisition is permitted).
   - Storage will be local-only under `.local/spec-cache/` (gitignored, never committed).
@@ -567,7 +567,7 @@ A future `/sync-memory` command or taskcard (`TC-0008`) should be created (Phase
 
 **W7. Evidence Pack Citations.** When making a claim in a committed evidence file (e.g., `spec-evidence.md`), cite the source spec (source_url, sha256, page, section), not just the normalized artifact. Short excerpts (≤ 3 sentences) are acceptable under fair use. Full text is not.
 
-**W8. Gate 4 Normalization Dependency.** `parser-requirements.yaml` (or an explicit human-approved waiver) is required before Gate 4 (Prototype) may begin. If normalization tooling is unavailable, log gap G-NORM-004 and document the waiver condition. See `docs/specification-normalization.md` for the full gate relationship model.
+**W8. Gate 4 Normalization Dependency.** `parser-requirements.yaml` (or an explicit human-approved waiver) is required before Gate 4 (Prototype) may begin. If normalization tooling is unavailable, log gap G-NORM-004 and document the waiver condition. See `docs/python-foss/specification-normalization.md` for the full gate relationship model.
 
 **W9. Evidence Classification.** Normalized artifacts support the following evidence classifications:
 - `[SUPPORTED_BY_NORMALIZED_ARTIFACT]` — claim extracted from spec with citation (normalized artifact exists)
@@ -577,7 +577,7 @@ A future `/sync-memory` command or taskcard (`TC-0008`) should be created (Phase
 
 **W10. No LLM Calls With Spec Text to Remote Endpoints.** Full specification documents must not be sent to remote LLM endpoints. This extends T9 of this document. Spec text may be used with local-only LLM endpoints if redistribution is not implicated and explicit authorization is in the execution prompt.
 
-See `docs/specification-normalization.md` for the complete policy. See `tools/spec-normalize/` for normalization tooling.
+See `docs/python-foss/specification-normalization.md` for the complete policy. See `tools/spec-normalize/` for normalization tooling.
 
 ---
 
@@ -600,7 +600,7 @@ See `docs/specification-normalization.md` for the complete policy. See `tools/sp
 
 **X7. Evaluation Before Implementation.** Tier 3 vector search must be evaluated (TC-0015) before it is implemented (TC-0016). TC-0016 must not proceed without TC-0015 evaluation report reviewed and approved by a human.
 
-See `docs/spec-retrieval-strategy.md` for the complete strategy. See `taskcards/TC-0015-spec-retrieval-strategy-evaluation.md` and `taskcards/TC-0016-fods-vector-index-pilot.md` for evaluation and implementation taskcards.
+See `docs/ai/spec-retrieval-strategy.md` for the complete strategy. See `taskcards/TC-0015-spec-retrieval-strategy-evaluation.md` and `taskcards/TC-0016-fods-vector-index-pilot.md` for evaluation and implementation taskcards.
 
 ---
 
@@ -634,17 +634,23 @@ See `tools/evidence/_readme.md` for tooling documentation. See `tools/evidence/c
 
 **Z3. PENDING Markers Must Be Absent After Final Commit.** Sprint-in-progress PENDING markers (`Latest commit: PENDING`, `changes pending commit`, `run\d+ changes pending`) must be removed before the final commit of each sprint. The consistency checker (`tools/evidence/check_current_state_consistency.py`) and evidence bundle validator (`--check-no-pending` flag) enforce this rule.
 
-**Z4. Current-State Authority.** See `docs/current-state-and-evidence-authority.md` for the complete policy. See Section Y for evidence bundle contract rules.
+**Z4. Current-State Authority.** See `docs/governance/current-state-and-evidence-authority.md` for the complete policy. See Section Y for evidence bundle contract rules.
 
 ---
 
-## AA. Playbook Layer Rules (S-F2F-01 and S-F2F-02 Complete; Replay/Apply Not Yet Authorized)
+## AA. Playbook Layer Rules (S-F2F-01 through S-F2F-05 Complete; MODEL C Authority Active)
 
-**STATUS: Schema, policy, and read-only validation tool ACTIVE after S-F2F-02 (2026-05-08).
-schemas/playbook/, docs/playbook-layer.md, and tools/playbook/validate_playbook.py exist.
-validate_playbook.py is READ-ONLY — it writes nothing, has no replay behavior, no apply mode,
-and no review queue output. Replay tools, apply mode, acquisition-pack playbooks, and family
-playbooks remain unauthorized — see S-F2F-03 through S-F2F-06 for those phases.**
+**STATUS: S-F2F-01 through S-F2F-05 complete as of FF-PLAYBOOK-SYSTEM-001 (2026-07-01).
+S-F2F-01: schemas/playbook/ + docs/governance/playbook-layer.md ACTIVE.
+S-F2F-02: tools/playbook/validate_playbook.py READ-ONLY validator ACTIVE.
+S-F2F-03: replay_acquisition_playbook.py EXECUTED (dry-run only, no file writes, no gate authority).
+S-F2F-04: export_review_queue.py, diff_playbook_outputs.py EXECUTED (informational, no gate authority).
+S-F2F-05: acquisition-packs/_families/odf-flat/playbook.yaml status=active, verified Pilot 4 (2026-07-01).
+MODEL C (Separate Scoped Layers) is the canonical authority model — see reports/playbooks/playbook-authority-decision.yaml.
+Sprint Task Templates (playbooks/format-factory/) are distinct from acquisition playbooks (YAML layer).
+All 7 playbook skills registered in .supervisor/skill-registry.yaml.
+Playbook selector (tools/playbook/playbook_selector.py) routes work items to sprint task templates;
+returns None for unknown types, never raises, never blocks sprint. Best-effort hook in autonomous_cycle.py.**
 
 **AA0. Validation Tool Is Read-Only.** tools/playbook/validate_playbook.py validates YAML
 files against schema and reports PASS/FAIL. It writes NO files, creates NO review queues,
@@ -710,7 +716,7 @@ backlog taskcards are considered undocumented gaps — a governance violation eq
 
 **AC1. Format Understanding Layer is a Required Backlog Layer.** Before Phase 4 product source
 begins for any format, a compiled Format Understanding Layer should exist (or be explicitly
-waived). See `docs/format-understanding-layer.md`. The six per-format files are:
+waived). See `docs/python-foss/format-understanding-layer.md`. The six per-format files are:
 format-profile.yaml, verified-facts.yaml, implementation-requirements.yaml,
 parser-strategy.yaml, security-surface.yaml, product-readiness.yaml.
 
@@ -720,7 +726,7 @@ requires explicit human waiver recorded in the decision register.
 
 **AC3. LLM Use is Authorized for Future Governed Work (backlog).** Controlled use of LLMs
 and embeddings via `llm.professionalize.com` is authorized for future sprints under governance.
-Model families: GPT OSS, Qwen Next, embedding models. See `docs/llm-and-embedding-strategy.md`.
+Model families: GPT OSS, Qwen Next, embedding models. See `docs/ai/llm-and-embedding-strategy.md`.
 No production LLM calls in this memory sprint.
 
 **AC4. LLMs Are Not Authority.** LLMs may propose facts, summaries, draft code, and suggest
@@ -737,7 +743,7 @@ Environment variables only. Redact all credentials from logs and evidence bundle
 
 **AC7. Non-XML Formats Are Backlog.** The immediate focus is XML-type formats (text_xml).
 Non-XML adaptability (zip_container, binary_records, compound_document, delimited_text, json_like)
-is backlog only. See `docs/format-representation-model.md`. The architecture must avoid
+is backlog only. See `docs/python-foss/format-representation-model.md`. The architecture must avoid
 hardcoding XML-only assumptions, but non-XML implementation is not authorized without explicit
 human prompt.
 
@@ -811,7 +817,7 @@ recording: sprint_id, blocked_file, blocking_stream, propagation_content, follow
 **AF6. Authority Level Hierarchy.** When sources conflict, higher authority wins:
 Level 1 (registry) > Level 2 (master-plan) > Level 3 (taskcards) > Level 4 (evidence bundles)
 > Level 5 (ROADMAP/README) > Level 6 (session hints) > Level 7 (derived mirrors).
-See docs/current-state-and-evidence-authority.md Section 8 for the full hierarchy.
+See docs/governance/current-state-and-evidence-authority.md Section 8 for the full hierarchy.
 
 **AF7. No Memory/16+ Without GOV-006.** No new memory/NN files may be created beyond memory/15
 without GOV-006 authorization. See taskcards/GOV-006-documentation-information-architecture-standardization.md.
@@ -856,17 +862,17 @@ beyond memory/15 without explicit authorization from the documentation standard 
 explicit human sprint prompt. This prevents memory sprawl.
 
 **AF8. FFSM Is Design Only.** The Format Factory State Manager (FFSM) described in memory/15 and
-docs/current-state-and-evidence-authority.md Section 8 is design direction only. No tools/state/ code
+docs/governance/current-state-and-evidence-authority.md Section 8 is design direction only. No tools/state/ code
 exists. Do not create FFSM code without an explicit authorized taskcard and sprint prompt.
 
 **AF9. Commercial Product Readiness Requires Capability Model.** Agents must not claim commercial
 product readiness from Tier 0 parser success alone. Current `src/net/fods/` and `src/net/fodt/` are
 Tier 0 streaming parsers (capability level C2). Commercial readiness requires C7+ (load-edit-save-convert)
-per `docs/commercial-product-capability-model.md`. Gate 11 approval or release readiness must be tied
+per `docs/product-factory/commercial-product-capability-model.md`. Gate 11 approval or release readiness must be tied
 to the capability model, not parser test pass counts.
 
 **AF10. Gate Approval Tied to Capability Model.** Gate 11 human review packets must reference
-`docs/commercial-product-capability-model.md` and state the achieved capability level (C0-C10).
+`docs/product-factory/commercial-product-capability-model.md` and state the achieved capability level (C0-C10).
 If user requirements conflict with current plan/gate status, agents must pause approval/publish work
 and run a direction rebaseline sprint before proceeding.
 
@@ -877,11 +883,11 @@ Controlled swarm execution is preferred for larger work, but must preserve produ
 
 **AF12. AI Is Permitted and Encouraged — Within Governance.** AI (LLMs, agents, embeddings) may be
 used to accelerate implementation when it improves speed and quality. AI output is not authority
-until validated per `docs/ai-usage-operating-model.md`. Embeddings and RAG are retrieval aids,
-not truth — see `docs/spec-retrieval-and-rag-policy.md`. LLM calls must be logged in
+until validated per `docs/ai/ai-usage-operating-model.md`. Embeddings and RAG are retrieval aids,
+not truth — see `docs/ai/spec-retrieval-and-rag-policy.md`. LLM calls must be logged in
 `.local/llm-logs/` (AGENTS.md §H5) when used for repo-changing work. AI-generated code, tests,
 and documentation must pass the same validation gates as human/agent work. No secrets may be sent
-to AI. No gate approval may be delegated to AI. Full AI operating model: `docs/ai-usage-operating-model.md`.
+to AI. No gate approval may be delegated to AI. Full AI operating model: `docs/ai/ai-usage-operating-model.md`.
 
 **AF13. Generated Requirements Are Mandatory Before Implementation.** For format-specific commercial
 implementation work, AI-generated requirements (in `generated-requirements/{format}/`) must exist,
@@ -893,7 +899,7 @@ steps and may not be collapsed into a single unreviewed AI output. The skill sys
 implemented) must generate and validate requirements before producing an implementation prompt.
 Generated requirements become authoritative only after both verifier review (verifier-review.yaml
 LANE_R5_PASS) and DEC-034 independent verification. Prior to that, they are proposals.
-Pipeline design: `docs/ai-generated-format-requirements-pipeline.md`. Governance rules: `taskcards/TC-0053-ai-requirements-pipeline-governance.md`.
+Pipeline design: `docs/ai/ai-generated-format-requirements-pipeline.md`. Governance rules: `taskcards/TC-0053-ai-requirements-pipeline-governance.md`.
 
 **AF14. Local Repo Authority Over External Memory.** Local repo files are the authoritative source
 of truth for project state. ChatGPT saved memory, conversation summaries, and external AI memory
@@ -901,16 +907,16 @@ are supplementary and may be stale or incomplete. When local repo files contradi
 local repo wins. A new chat or agent session must read local authority files
 (`plans/master-plan.md`, `AGENTS.md`, `GOVERNANCE.md`, `memory/00-index.md`,
 `registry/format-registry.yaml`) before acting. The fresh-chat bootstrap document at
-`docs/fresh-chat-project-bootstrap.md` provides the intended entry point for new sessions.
+`docs/automation/fresh-chat-project-bootstrap.md` provides the intended entry point for new sessions.
 
 **AF15. Ready-to-Send Prompts Are Required for Next Steps.** When an agent completes a sprint
 review, plan review, or evidence review and the output includes a recommended next step, that
 recommendation must include a complete ready-to-send execution prompt — not vague advice such
 as "you should ask the agent to check X." The prompt must include: mode label, sprint ID, repo
 path, current accepted state, scope, non-goals, safety rules, allowed files, validation commands,
-evidence contract requirements, and final response format. See `docs/assistant-supervision-methodology.md`
-Section 6 and `docs/project-execution-standards.md` Section 4 for the full prompt standard.
-Supervision methodology reference: `docs/assistant-supervision-methodology.md`.
+evidence contract requirements, and final response format. See `docs/automation/assistant-supervision-methodology.md`
+Section 6 and `docs/governance/project-execution-standards.md` Section 4 for the full prompt standard.
+Supervision methodology reference: `docs/automation/assistant-supervision-methodology.md`.
 
 **AF16. AI Platform Layer Required.** All AI usage (agentic, LLM synthesis, embeddings) must flow
 through the governed AI platform layer defined in `docs/ai/ai-platform-operating-model.md`. Direct
@@ -1163,7 +1169,7 @@ It DOES:
 **Sprint:** TC-0020-spec-workbench-core
 **Date:** 2026-06-18
 **Authority:** These rules govern how agents consume the Spec Workbench layer
-(see `docs/spec-consumption-workbench.md` and `tools/spec-normalize/`).
+(see `docs/python-foss/spec-consumption-workbench.md` and `tools/spec-normalize/`).
 
 The Spec Workbench converts large specification PDFs into structured, agent-consumable
 knowledge artifacts. The following rules govern correct consumption.
@@ -1205,6 +1211,6 @@ remove it from staging before the commit.
 consumption. Section W governs the normalization step that produces the workbench inputs.
 Both sections apply whenever spec consultation is required.
 
-See `docs/spec-consumption-workbench.md` for the full workbench architecture.
+See `docs/python-foss/spec-consumption-workbench.md` for the full workbench architecture.
 See `tools/spec-normalize/` for all workbench tools.
-See `docs/specification-normalization.md` for the normalization policy (TC-0012).
+See `docs/python-foss/specification-normalization.md` for the normalization policy (TC-0012).

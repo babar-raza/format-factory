@@ -102,7 +102,17 @@ public sealed partial class FodtDocument
     {
         var paras = Paragraphs;
         if (index < 0 || index >= paras.Count) return null;
-        return paras[index].Element.Attribute(NsText + "style-name")?.Value;
+        var el = paras[index].Element;
+        var styleName = el.Attribute(NsText + "style-name")?.Value;
+        if (styleName != null) return styleName;
+        // For heading elements, synthesize a style name from the outline level
+        if (el.Name.LocalName == "h")
+        {
+            var lvl = el.Attribute(NsText + "outline-level")?.Value ?? "1";
+            return $"Heading {lvl}";
+        }
+        // For body paragraphs without explicit style, return default
+        return "Default Paragraph Style";
     }
 
     /// <summary>
@@ -111,7 +121,7 @@ public sealed partial class FodtDocument
     /// Useful for generating table-of-contents or structural summaries.
     /// R111 Wave 5: object-model depth for document structure analysis.
     /// </summary>
-    public IReadOnlyList<(int Level, string Text)> GetDocumentOutline()
+    public List<(int Level, string Text)> GetDocumentOutline()
     {
         var result = new List<(int, string)>();
         var paras = Paragraphs;
@@ -171,8 +181,8 @@ public sealed partial class FodtDocument
     {
         var paras = Paragraphs;
         var styles = new List<string>(paras.Count);
-        foreach (var p in paras)
-            styles.Add(p.Element.Attribute(NsText + "style-name")?.Value ?? string.Empty);
+        for (int i = 0; i < paras.Count; i++)
+            styles.Add(GetParagraphStyleName(i) ?? string.Empty);
         return styles.AsReadOnly();
     }
 
@@ -185,6 +195,7 @@ public sealed partial class FodtDocument
     public string ExportToOutlineJson()
     {
         var paragraphs = Paragraphs;
+        if (paragraphs.Count == 0) return "[]";
         var sb = new System.Text.StringBuilder();
         sb.AppendLine("[");
         for (int i = 0; i < paragraphs.Count; i++)
@@ -228,10 +239,19 @@ public sealed partial class FodtDocument
         var paragraphs = Paragraphs;
         for (int i = 0; i < paragraphs.Count; i++)
         {
+            var el = paragraphs[i].Element;
             var explicitStyle = GetParagraphStyleName(i) ?? "";
-            var isHeadingElement = paragraphs[i].Element.Name.LocalName == "h";
-            var effectiveStyle = explicitStyle.Length > 0 ? explicitStyle
-                                 : isHeadingElement ? "Heading" : "";
+            var isHeadingElement = el.Name.LocalName == "h";
+            string effectiveStyle;
+            if (explicitStyle.Length > 0)
+                effectiveStyle = explicitStyle;
+            else if (isHeadingElement)
+            {
+                var lvl = el.Attribute(NsText + "outline-level")?.Value ?? "1";
+                effectiveStyle = $"Heading {lvl}";
+            }
+            else
+                effectiveStyle = "";
             if (effectiveStyle.Contains(stylePattern, StringComparison.OrdinalIgnoreCase))
                 result.Add(i);
         }

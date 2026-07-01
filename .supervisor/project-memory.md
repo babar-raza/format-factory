@@ -16120,3 +16120,16 @@ Contract: C:\Users\prora\OneDrive\Documents\
 - bundle_validation_pass: True
 - test_delta: +576
 - test_delta_from: 12
+
+## Entry: system-healing-product-acquisition-unblock-20260625
+- timestamp: 2026-07-01T17:07:08.351679
+- verdict: ACCEPTED
+- test_count: 205
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\system-healing-unblock-20260625\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 63
+- bundle_validation_pass: True
+- test_delta: -383
+- test_delta_from: 588

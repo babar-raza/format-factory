@@ -7,7 +7,7 @@ updates it when new artifacts are created.
 
 The artifact index provides reuse tooling: before generating any artifact,
 check if a compatible artifact already exists using this index.
-See docs/llm-endpoint-strategy.md Section G (artifact reuse).
+See docs/ai/llm-endpoint-strategy.md Section G (artifact reuse).
 """
 from __future__ import annotations
 

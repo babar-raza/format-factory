@@ -249,7 +249,7 @@ Do not authorize new format work until Conway R8 IV is complete.
 |------|---------|
 | plans/master-plan.md Section 38 | Master plan format expansion section |
 | memory/26-format-expansion-roadmap-and-non-aspose-backlog-20260514.md | Memory file (this session) |
-| docs/format-expansion-roadmap.yaml | Machine-readable version of this doc |
+| docs/python-foss/format-expansion-roadmap.yaml | Machine-readable version of this doc |
 | taskcards/FORMAT-EXPANSION-ROADMAP.md | Format expansion roadmap governance taskcard |
 | taskcards/NON-ASPOSE-FORMAT-BACKLOG.md | Non-Aspose candidate backlog taskcard |
 | taskcards/PUBLIC-SPEC-FORMAT-EXPANSION.md | Public-spec expansion taskcard |

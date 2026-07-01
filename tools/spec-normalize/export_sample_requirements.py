@@ -19,7 +19,7 @@ Policy:
     - All requirements are cited (section ID + page number + source hash).
 
 See also:
-    docs/specification-normalization.md
+    docs/python-foss/specification-normalization.md
     tools/spec-normalize/build_section_index.py
     tools/spec-normalize/query_normalized_spec.py
 """

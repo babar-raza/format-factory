@@ -97,7 +97,7 @@ Patent search note: A formal patent search is not required for Category 1 fast-p
 
 Status as of run021 (2026-05-04):
 
-- [x] Format is published by OASIS, which is on the Category 1 Pre-Approved Fast-Path List per `docs/legal-and-licensing.md` [CONFIRMED_INDEPENDENTLY]
+- [x] Format is published by OASIS, which is on the Category 1 Pre-Approved Fast-Path List per `docs/governance/legal-and-licensing.md` [CONFIRMED_INDEPENDENTLY]
 - [x] OASIS ODF 1.3 is published under the OASIS IPR Mode RF on Limited Terms [SUPPORTED_BY_CACHED_SOURCE — confirmed from spec download; OASIS copyright notice visible in PDF header]
 - [x] At least two independent open-source implementations exist: LibreOffice Calc (MPL-2.0), Apache OpenOffice Calc (Apache-2.0) [CONFIRMED_INDEPENDENTLY]
 - [x] `spec-evidence.md` contains primary source URL, exact version (ODF 1.3), date accessed, and source hash (SHA-256) [CONFIRMED_INDEPENDENTLY]

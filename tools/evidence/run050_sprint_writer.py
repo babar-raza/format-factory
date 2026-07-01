@@ -3701,7 +3701,7 @@ sm("llm-embedding-policy-preservation-report.md", """# LLM/Embedding Policy Pres
 Sprint: run050 | Date: 2026-05-08
 
 Policy preserved:
-- docs/llm-and-embedding-strategy.md: unchanged
+- docs/ai/llm-and-embedding-strategy.md: unchanged
 - memory/11-format-understanding-and-llm-strategy.md: unchanged
 - No LLM calls made in this sprint
 - No embeddings created
@@ -3713,8 +3713,8 @@ sm("non-xml-backlog-preservation-report.md", """# Non-XML Backlog Preservation R
 Sprint: run050 | Date: 2026-05-08
 
 Non-XML adaptability remains backlog only.
-docs/format-representation-model.md: unchanged
-docs/non-aspose-format-candidate-registry-plan.md: unchanged
+docs/python-foss/format-representation-model.md: unchanged
+docs/python-foss/non-aspose-format-candidate-registry-plan.md: unchanged
 taskcards/REP-003-non-xml-adaptability-backlog.md: unchanged
 No non-XML formats added to registry.
 XML-first focus maintained for run050.
@@ -3893,9 +3893,9 @@ fodt:
 sm("files-reviewed.txt", """Files reviewed in Section A:
 plans/master-plan.md
 README.md ROADMAP.md AGENTS.md GOVERNANCE.md
-docs/current-state-and-evidence-authority.md
-docs/acquisition-workflow.md docs/gates.md docs/product-tracks.md
-docs/format-understanding-layer.md docs/llm-and-embedding-strategy.md
+docs/governance/current-state-and-evidence-authority.md
+docs/python-foss/acquisition-workflow.md docs/gates.md docs/product-factory/product-tracks.md
+docs/python-foss/format-understanding-layer.md docs/ai/llm-and-embedding-strategy.md
 registry/format-registry.yaml
 acquisition-packs/fods/*.yaml (6 FUL files + tier-map + gate10 reports)
 acquisition-packs/fodt/*.yaml (6 FUL files + gate reports)

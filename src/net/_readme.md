@@ -14,7 +14,7 @@
 src/net/{format}/     e.g. src/net/fods/
 ```
 
-`src/dotnet/open-source/` and `src/dotnet/commercial/` are **obsolete paths** — they must never be created. The old layout has been superseded by the format-first model described in `docs/product-tracks.md` and `docs/architecture.md`.
+`src/dotnet/open-source/` and `src/dotnet/commercial/` are **obsolete paths** — they must never be created. The old layout has been superseded by the format-first model described in `docs/product-factory/product-tracks.md` and `docs/code-quality/architecture.md`.
 
 `src/net/` will be created in Phase 4+ when the first format's .NET product implementation begins (Gate 9 passed + .NET implementation taskcards + explicit Phase 4 .NET implementation execution prompt).
 
@@ -93,7 +93,7 @@ Never use `XDocument.Load()` or `XmlDocument.Load()` with default settings on un
 
 ## Relationship to Other Documents
 
-- `docs/product-tracks.md` — Track 2 (.NET product) definition and format-first layout
+- `docs/product-factory/product-tracks.md` — Track 2 (.NET product) definition and format-first layout
 - `docs/security.md` — .NET parser security requirements
 - `docs/gates.md` — Gate 10 (OSS) and Gate 11 (commercial) criteria
 - `taskcards/TC-0003-sdk-baseline.md` — SDK baseline confirmation

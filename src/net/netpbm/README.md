@@ -16,7 +16,7 @@
 
 ## Installation
 
-<!-- BEGIN:README-INSTALLATION generated=2026-06-28T08:14:30+00:00 source=package-metadata -->
+<!-- BEGIN:README-INSTALLATION generated=2026-07-01T15:33:06+00:00 source=package-metadata -->
 ```bash
 dotnet add package FormatFactory.Netpbm
 ```
@@ -49,7 +49,7 @@ Commercial — Format Factory product. See root LICENSE for terms.
 
 ## Package Info
 
-<!-- BEGIN:README-PACKAGE_INFO generated=2026-06-28T08:14:30+00:00 source=repository-metadata -->
+<!-- BEGIN:README-PACKAGE_INFO generated=2026-07-01T15:33:06+00:00 source=repository-metadata -->
 | Field | Value |
 |---|---|
 | Format | NETPBM |
@@ -62,5 +62,5 @@ Commercial — Format Factory product. See root LICENSE for terms.
 | Spec | unknown |
 | QName coverage | 0/0 implemented |
 | Source files | 11 |
-| Test files | 481 |
+| Test files | 620 |
 <!-- END:README-PACKAGE_INFO -->

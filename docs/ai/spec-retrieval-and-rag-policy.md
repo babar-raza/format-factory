@@ -1,20 +1,20 @@
 # Spec Retrieval and RAG Policy
 
 **Document type:** Normative retrieval policy
-**Authority level:** Normative (extends docs/spec-retrieval-strategy.md)
+**Authority level:** Normative (extends docs/ai/spec-retrieval-strategy.md)
 **Created:** 2026-05-13
 
 ---
 
 ## Purpose
 
-This document extends `docs/spec-retrieval-strategy.md` with specific RAG (Retrieval-Augmented Generation) governance for commercial implementation work. The existing three-tier retrieval strategy remains authoritative; this document adds AI-specific guardrails.
+This document extends `docs/ai/spec-retrieval-strategy.md` with specific RAG (Retrieval-Augmented Generation) governance for commercial implementation work. The existing three-tier retrieval strategy remains authoritative; this document adds AI-specific guardrails.
 
 ---
 
 ## Existing Policy (Read First)
 
-Full retrieval strategy: `docs/spec-retrieval-strategy.md`
+Full retrieval strategy: `docs/ai/spec-retrieval-strategy.md`
 
 Summary of existing three-tier hierarchy:
 - **Tier 1 (Deterministic):** Direct index lookup by section/element name → authoritative
@@ -82,7 +82,7 @@ provenance:
 
 ---
 
-## Embedding Policy (Extends docs/llm-and-embedding-strategy.md)
+## Embedding Policy (Extends docs/ai/llm-and-embedding-strategy.md)
 
 - Embeddings may be created over: normalized spec text, verified facts, requirements YAML
 - Embeddings must NOT be created over: raw LLM transcripts, uncommitted drafts
@@ -112,8 +112,8 @@ Spec chunk retrieved
 
 ## Cross-References
 
-- Three-tier retrieval hierarchy: `docs/spec-retrieval-strategy.md`
-- LLM and embedding strategy: `docs/llm-and-embedding-strategy.md`
+- Three-tier retrieval hierarchy: `docs/ai/spec-retrieval-strategy.md`
+- LLM and embedding strategy: `docs/ai/llm-and-embedding-strategy.md`
 - Spec content in prompts (LLM rules): `AGENTS.md §T9`
-- AI operating model: `docs/ai-usage-operating-model.md`
-- Spec normalization: `tools/spec-normalize/` + `docs/specification-normalization.md`
+- AI operating model: `docs/ai/ai-usage-operating-model.md`
+- Spec normalization: `tools/spec-normalize/` + `docs/python-foss/specification-normalization.md`

@@ -112,7 +112,7 @@ WIP limit for Gates 1-3: maximum 3 formats. Currently 0 in Gates 1-3. Three slot
 - `acquisition-packs/_candidate-shortlists/odf-flat-family-next-candidates.md`
 - `registry/format-registry.yaml` — authoritative (FODT not yet in registry)
 - `registry/scoring/_scoring-model.md` — scoring model for Gate 1
-- `docs/acquisition-workflow.md` — Stage 1: Candidate Identification
+- `docs/python-foss/acquisition-workflow.md` — Stage 1: Candidate Identification
 
 ---
 

@@ -216,7 +216,7 @@ The key planned module layouts (design only -- no code exists):
 - transitions.py: Validated state transition logic
 - schema/: State schemas
 
-The FFSM authority hierarchy is in docs/current-state-and-evidence-authority.md Section 8.
+The FFSM authority hierarchy is in docs/governance/current-state-and-evidence-authority.md Section 8.
 
 **Current status:** DESIGN ONLY. No code exists in tools/llm/, tools/retrieval/, or tools/state/.
 No LangGraph, Prefect, Temporal, or Dagster is installed or imported. Implementation requires

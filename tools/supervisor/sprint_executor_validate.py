@@ -152,7 +152,7 @@ def _check_test_layer_adequacy(doc: dict) -> tuple[list[str], list[str]]:
         warnings.append(
             "ADVISORY: test_layer not declared in evidence. "
             "Include test_layer (int 0-6) for layer adequacy checking. "
-            "See docs/test-layering.md."
+            "See docs/code-quality/test-layering.md."
         )
         return adequacy_errors, warnings
 

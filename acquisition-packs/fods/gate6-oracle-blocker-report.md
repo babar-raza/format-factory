@@ -168,7 +168,7 @@ Despite the oracle tool still being unavailable, the following harness improveme
 |---|---|---|
 | `tools/oracle/provider_registry.yaml` | **NEW** | Oracle provider registry: LibreOffice entry + FODS assignment |
 | `tools/oracle/validate_oracle_environment.py` | **NEW** | Environment check tool (reads registry, discovers providers) |
-| `docs/oracle-provider-strategy.md` | **NEW** | Oracle provider architecture, governance rules, future-format guide |
+| `docs/ai/oracle-provider-strategy.md` | **NEW** | Oracle provider architecture, governance rules, future-format guide |
 | `acquisition-packs/fods/oracle-provider-options.md` | **NEW** | Provider evaluation: LibreOffice APPROVED; others rejected/deferred |
 | `tools/evidence/validate_evidence_bundle.py` | **HARDENED** | --check-no-pending flag: fails if any metadata file has PENDING marker |
 | `tests/evidence/test_negative_bundle_validation.py` | **NEW** | 4 negative tests: thin bundle FAIL, PENDING marker FAIL, clean PASS |
@@ -217,7 +217,7 @@ Despite the oracle tool still being unavailable, the following harness improveme
 | `tests/evidence/test_current_state_consistency.py` | **NEW** | 4 negative tests for consistency checker — all PASS |
 | `registry/candidates/fodt-gate1-scoring-package.yaml` | **NEW** | FODT Gate 1 7-factor scoring: 88/100, Accept band (candidate-only, gate_1_approved: false) |
 | `taskcards/TC-0029-fodt-gate1-scoring-preparation.md` | **NEW** | TC for FODT Gate 1 scoring preparation and independent verification |
-| `docs/odf-flat-family-reuse-strategy.md` | **NEW** | ODF flat family pipeline reuse strategy (FODS→FODT~40-50% effort) |
+| `docs/python-foss/odf-flat-family-reuse-strategy.md` | **NEW** | ODF flat family pipeline reuse strategy (FODS→FODT~40-50% effort) |
 | master-plan stale commit bc2bdf8 | **FIXED** | Was showing 998412c (stale run038 reference); corrected to bc2bdf8 |
 | preflight re-run 5 | **CONFIRMED** | ORACLE_ENV: BLOCKED — 5 consecutive FAIL (run035–run039) |
 

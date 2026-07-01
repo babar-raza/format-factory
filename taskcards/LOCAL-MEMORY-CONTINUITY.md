@@ -13,7 +13,7 @@ chat sessions or local agents can continue the project from disk without relying
 - Update memory index (memory/00-index.md)
 - Create continuity map (reports/planning/current-project-continuity-map-20260513.md)
 - Ensure AGENTS.md and GOVERNANCE.md have the minimal required durable rules
-- Create fresh-chat bootstrap entry point (docs/fresh-chat-project-bootstrap.md)
+- Create fresh-chat bootstrap entry point (docs/automation/fresh-chat-project-bootstrap.md)
 - Confirm that all key project direction decisions are present in local files
 
 ## Key Memory Invariants (must be true at all times)
@@ -24,7 +24,7 @@ chat sessions or local agents can continue the project from disk without relying
 5. Commercial product direction (C7+ load-edit-save-convert) is documented in local files
 6. AI policy (accelerator not authority) is documented in AGENTS.md and GOVERNANCE.md
 7. Generated requirements mandate is documented in AGENTS.md §AF13 and GOVERNANCE.md §26.11
-8. Fresh-chat bootstrap doc exists at docs/fresh-chat-project-bootstrap.md
+8. Fresh-chat bootstrap doc exists at docs/automation/fresh-chat-project-bootstrap.md
 
 ## Non-Goals
 - Do NOT implement product source
@@ -42,7 +42,7 @@ Part of CHATGPT-MEMORY-LOCAL-SYNC sprint evidence bundle.
 - Verify memory/00-index.md contains memory/24 entry
 - Verify AGENTS.md contains AF13 and AF14
 - Verify GOVERNANCE.md contains 26.11 and 26.12
-- Verify docs/fresh-chat-project-bootstrap.md exists
+- Verify docs/automation/fresh-chat-project-bootstrap.md exists
 - Verify registry gate_11 approved: false for FODS and FODT
 
 ## Next Dependency

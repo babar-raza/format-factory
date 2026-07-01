@@ -3421,15 +3421,15 @@ Does NOT require Gate 11 approval.
 (spec/ → Compat/ → models.py → __init__.py) is observed in all 20 packages but is undocumented.
 New format authors have no specification to follow.
 
-**Resolution:** `docs/architecture-contract.md` written (2026-06-25).
-Also: `docs/spec-to-source-chain-contract.md` documenting the spec → source authority chain.
+**Resolution:** `docs/code-quality/architecture-contract.md` written (2026-06-25).
+Also: `docs/python-foss/spec-to-source-chain-contract.md` documenting the spec → source authority chain.
 
 **Acceptance criteria:**
-1. `docs/architecture-contract.md` exists and covers 10+ architectural conventions
-2. `docs/spec-to-source-chain-contract.md` maps chain integrity status for all 20 formats
+1. `docs/code-quality/architecture-contract.md` exists and covers 10+ architectural conventions
+2. `docs/python-foss/spec-to-source-chain-contract.md` maps chain integrity status for all 20 formats
 3. New contributors can implement a new format by following these documents alone
 
-**Evidence:** `docs/architecture-contract.md`, `docs/spec-to-source-chain-contract.md`
+**Evidence:** `docs/code-quality/architecture-contract.md`, `docs/python-foss/spec-to-source-chain-contract.md`
 **Blocking gate:** None (documentation debt)
 
 ---

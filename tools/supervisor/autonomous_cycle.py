@@ -9,6 +9,14 @@ Exit codes:
   0 — cycle complete, autonomous continue possible
   3 — cycle complete, critical rework exists
   9 — unexpected error
+
+Playbook Integration (FF-PLAYBOOK-SYSTEM-001, 2026-07-01):
+  After the next work item is selected, this cycle optionally invokes
+  tools/playbook/playbook_selector.py to route the work item type to an applicable
+  Sprint Task Template (Layer A). If found: log path and extract constraints.
+  If not found or validation fails: log warning and continue (never blocks sprint).
+  Missing skills → CREATE_SKILL_GAP action (gap, not hard failure).
+  See docs/governance/playbook-layer.md Section 24 for Model C architecture.
 """
 # ruff: noqa: F821  # complex control flow causes false-positive undefined-name in try/except blocks
 
@@ -963,7 +971,6 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
         if missing:
             overclaim_issues.append({'item_index': idx, 'missing_paths': missing})
     if overclaim_issues:
-        import json
         out_path = repo_root / 'reports' / 'supervisor' / 'overclaim-detections.json'
         out_path.parent.mkdir(parents=True, exist_ok=True)
         out_path.write_text(json.dumps(overclaim_issues, indent=2), encoding='utf-8')

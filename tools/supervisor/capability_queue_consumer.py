@@ -29,7 +29,8 @@ from typing import Any
 SCRIPT_DIR = Path(__file__).parent
 REPO_ROOT = SCRIPT_DIR.parent.parent
 
-sys.path.insert(0, str(SCRIPT_DIR))
+# TC-CAP-011: capability_compiler is in tools/capability_layer, not tools/supervisor
+sys.path.insert(0, str(REPO_ROOT / "tools" / "capability_layer"))
 from capability_compiler import compile_gap, compile_gap_to_feature_ir, compile_feature_ir_to_taskcard
 
 
@@ -37,8 +38,11 @@ from capability_compiler import compile_gap, compile_gap_to_feature_ir, compile_
 # Constants
 # ---------------------------------------------------------------------------
 
-_GAP_LEDGER_PATH = REPO_ROOT / "reports" / "capability-layer" / "gap-ledger.json"
-_FOSS_CAPABILITY_MAP = REPO_ROOT / "reports" / "capability-layer" / "foss-reduced-capability-map.json"
+# TC-CAP-008/TC-CAP-011: Prefer active split; fall back to full ledger if not yet created
+_GAP_LEDGER_ACTIVE = REPO_ROOT / "reports" / "capability-layer" / "gap-ledger-active.json"
+_GAP_LEDGER_FULL = REPO_ROOT / "reports" / "capability-layer" / "gap-ledger.json"
+_GAP_LEDGER_PATH = _GAP_LEDGER_ACTIVE if _GAP_LEDGER_ACTIVE.exists() else _GAP_LEDGER_FULL
+# TC-CAP-011: Removed dead _FOSS_CAPABILITY_MAP load — map was loaded but never used
 
 # Only consume FOSS gaps (not commercial) — commercial requires Gate 11
 _ELIGIBLE_PRODUCT_TYPES = {"foss", "foss_reduced", "open_source", "both"}

@@ -46,11 +46,11 @@ without access to the original ChatGPT session.
 
 ## Acceptance Criteria
 
-- `docs/assistant-supervision-methodology.md` exists with all 15 sections.
-- `docs/assistant-supervision-methodology.yaml` exists as machine-readable version.
+- `docs/automation/assistant-supervision-methodology.md` exists with all 15 sections.
+- `docs/automation/assistant-supervision-methodology.yaml` exists as machine-readable version.
 - `memory/25-assistant-supervision-methodology-20260513.md` exists with compact summary.
-- `docs/fresh-chat-project-bootstrap.md` references the methodology.
-- `docs/fresh-chat-project-bootstrap.yaml` has `assistant_working_style_summary` fields.
+- `docs/automation/fresh-chat-project-bootstrap.md` references the methodology.
+- `docs/automation/fresh-chat-project-bootstrap.yaml` has `assistant_working_style_summary` fields.
 - AGENTS.md has AF15 (ready-to-send prompts required).
 - GOVERNANCE.md has 26.13 (supervision methodology reference).
 - Governance sync report exists in `reports/governance/`.
@@ -63,14 +63,14 @@ without access to the original ChatGPT session.
 
 ## Allowed Files
 
-- `docs/assistant-supervision-methodology.md`
-- `docs/assistant-supervision-methodology.yaml`
-- `docs/project-execution-standards.md`
-- `docs/project-execution-standards.yaml`
+- `docs/automation/assistant-supervision-methodology.md`
+- `docs/automation/assistant-supervision-methodology.yaml`
+- `docs/governance/project-execution-standards.md`
+- `docs/governance/project-execution-standards.yaml`
 - `memory/25-assistant-supervision-methodology-20260513.md`
 - `memory/00-index.md`
-- `docs/fresh-chat-project-bootstrap.md`
-- `docs/fresh-chat-project-bootstrap.yaml`
+- `docs/automation/fresh-chat-project-bootstrap.md`
+- `docs/automation/fresh-chat-project-bootstrap.yaml`
 - `AGENTS.md`
 - `GOVERNANCE.md`
 - `reports/governance/`
@@ -94,6 +94,6 @@ without access to the original ChatGPT session.
 ## Next Dependency
 
 - When the methodology is updated (direction change), create a new versioned memory file and
-  update `docs/assistant-supervision-methodology.md`.
+  update `docs/automation/assistant-supervision-methodology.md`.
 - When GOV-006 is executed, migrate methodology docs into the formal taxonomy if applicable.
 - Reference this taskcard when onboarding future agents to the project.

@@ -23,7 +23,7 @@ ChatGPT memory may be stale or incomplete. Always cross-check against:
 - GOVERNANCE.md
 - registry/format-registry.yaml
 - memory/ files (most recent numbered file)
-- docs/fresh-chat-project-bootstrap.md (start here for new chats)
+- docs/automation/fresh-chat-project-bootstrap.md (start here for new chats)
 
 ---
 
@@ -52,7 +52,7 @@ The target product must:
 4. **Save** back to the same format with or without edits
 5. **Export/convert** to PDF, PNG, HTML, and related family/type formats (later phases)
 
-### Capability Model (docs/commercial-product-capability-model.md)
+### Capability Model (docs/product-factory/commercial-product-capability-model.md)
 | Level | Description |
 |-------|-------------|
 | C0 | Nothing |
@@ -174,7 +174,7 @@ Current status: commercial_readiness_in_progress (both FODS and FODT). NOT APPRO
 
 ### AI Usage Logging
 All AI usage for repo-changing work must be logged in .local/llm-logs/ (JSONL).
-Reference: docs/ai-usage-operating-model.md, docs/ai-assisted-commercial-development.md
+Reference: docs/ai/ai-usage-operating-model.md, docs/ai/ai-assisted-commercial-development.md
 
 ---
 
@@ -187,7 +187,7 @@ The system must generate detailed per-format requirements from:
 - Format understanding artifacts (schemas/neutral-model/, generated-requirements/)
 - Acquisition packs (acquisition-packs/{format}/)
 - Existing source/tests
-- Product goals (docs/commercial-product-capability-model.md)
+- Product goals (docs/product-factory/commercial-product-capability-model.md)
 - AI retrieval and synthesis
 - Schema validation
 - Verifier challenge (verifier-review.yaml)
@@ -331,19 +331,19 @@ Key local authority files (read in this order for a new session):
 1. plans/master-plan.md
 2. AGENTS.md
 3. GOVERNANCE.md
-4. docs/fresh-chat-project-bootstrap.md
+4. docs/automation/fresh-chat-project-bootstrap.md
 5. memory/00-index.md
 6. memory/24-chatgpt-session-memory-sync-20260513.md (this file)
 7. registry/format-registry.yaml
-8. docs/commercial-product-capability-model.md
-9. docs/current-state-and-evidence-authority.md
+8. docs/product-factory/commercial-product-capability-model.md
+9. docs/governance/current-state-and-evidence-authority.md
 
 ---
 
 ## 15. Fresh-Chat Bootstrap Instructions
 
 A new chat should:
-1. Read docs/fresh-chat-project-bootstrap.md FIRST
+1. Read docs/automation/fresh-chat-project-bootstrap.md FIRST
 2. Read plans/master-plan.md (especially Section 33 — current state)
 3. Read AGENTS.md (all sections, especially AF9-AF12, §T, §V, §Z)
 4. Read GOVERNANCE.md (especially Sections 15, 18, 19, 26)
@@ -352,8 +352,8 @@ A new chat should:
 7. Read registry/format-registry.yaml for gate status
 8. NOT assume anything from ChatGPT saved memory without cross-checking local files
 
-docs/fresh-chat-project-bootstrap.md is designed to be pasteable into a new chat as context.
-docs/fresh-chat-project-bootstrap.yaml is the machine-readable version.
+docs/automation/fresh-chat-project-bootstrap.md is designed to be pasteable into a new chat as context.
+docs/automation/fresh-chat-project-bootstrap.yaml is the machine-readable version.
 
 ---
 
@@ -400,10 +400,10 @@ After this sync sprint, the next recommended work path is:
 ## 18. What Future Agents Should Inspect First
 
 Before any sprint, inspect:
-1. docs/fresh-chat-project-bootstrap.md — overview
+1. docs/automation/fresh-chat-project-bootstrap.md — overview
 2. plans/master-plan.md §33 — current state and next action
 3. registry/format-registry.yaml — FODS/FODT gate state and capability level
-4. docs/commercial-product-capability-model.md — C-level definitions
+4. docs/product-factory/commercial-product-capability-model.md — C-level definitions
 5. memory/24-chatgpt-session-memory-sync-20260513.md (this file) — session continuity
 6. tools/evidence/contracts/ — most recent evidence contract for current sprint state
 7. .local/artifact-index.yaml — most recent bundle path

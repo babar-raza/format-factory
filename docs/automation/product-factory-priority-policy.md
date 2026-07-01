@@ -49,4 +49,4 @@ Do NOT add new formats until Conway R9 is proven. Current focus is finishing the
 - `plans/master-plan.md` — full product roadmap
 - `.supervisor/policies.yaml` — product_factory section
 - `tools/evidence/contracts/r85-poc-direction-local-supervisor-autonomous-product-factory.yaml` — R85 POC contract
-- `docs/format-expansion-roadmap.md` — format expansion backlog
+- `docs/python-foss/format-expansion-roadmap.md` — format expansion backlog

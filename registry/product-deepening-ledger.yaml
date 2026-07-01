@@ -1,1714 +1,1714 @@
-- product_id: ABW-PYTHON
+- blocked_formats: &id001 []
+  blockers: []
+  capability_to_feature_linkage: partial
+  consumer_proof_level: 0
+  continuation_allowed: true
+  continuation_reason: All gates pass. QName verified, src_layout compliant (grandfathered),
+    SAL present, forbidden clean.
+  dom_applicability: FULL
+  e2e_proof: null
+  execution_mode: AUTO
+  focused_validation: null
+  forbidden_bucket_scan_evidence: []
+  forbidden_bucket_scan_status: clean
   format: abw
-  runtime: python
-  qname_schema_version: '1.0'
+  healing_sprint_id: null
+  integration_validation: null
+  lane_a_consecutive: 0
+  lane_a_maturity: A1
+  lane_b_ceiling: D4
+  lane_b_consecutive: 0
+  lane_b_maturity: D1
+  lane_starvation_threshold: 3
+  last_deepening_sprint: null
+  last_lane_a_sprint: null
+  last_lane_b_sprint: null
+  last_verified_at: '2026-06-24'
+  ledger_entry_hash: convergence-audit-20260624
+  ledger_entry_version: 2
+  next_required_action: Continue product deepening
+  pilot_proof: null
+  product_id: ABW-PYTHON
+  proof_level_target: 4
   qname_compliance_status: verified
   qname_evidence: shared/qname-registry/abw.yaml
   qname_note: Promoted from implementing to verified. 3 spec files verified on disk
     (document.py 63 LOC, section.py 55 LOC, paragraph.py 50 LOC). All have spec_qname
     + spec_fact_ref. Convergence audit 2026-06-24.
+  qname_schema_version: '1.0'
+  rcal_capability_linkage: null
+  runtime: python
+  sal_fact_count: 0
+  sal_fact_linkage: present
+  schema_version: '2.0'
   spec_authority_source: shared/qname-registry/abw.yaml
   spec_hierarchy_mapping: present
-  src_layout_status: compliant
+  spec_parity_status: not_assessed
   src_layout_evidence: registry/source-structure-baseline.json
   src_layout_note: All violations grandfathered at frozen caps (abw_codec.py=897/898,
     word_document.py=1026). source_structure_validator blocks_sprint=False. Convergence
     audit 2026-06-24.
-  forbidden_bucket_scan_status: clean
-  forbidden_bucket_scan_evidence: []
-  sal_fact_linkage: present
-  sal_fact_count: 0
-  rcal_capability_linkage: null
+  src_layout_status: compliant
   taskcards: []
-  continuation_allowed: true
-  continuation_reason: All gates pass. QName verified, src_layout compliant (grandfathered),
-    SAL present, forbidden clean.
-  blockers: []
-  next_required_action: Continue product deepening
-  last_verified_at: '2026-06-24'
-  ledger_entry_hash: convergence-audit-20260624
-  spec_parity_status: not_assessed
-  consumer_proof_level: 0
-  proof_level_target: 4
-  blocked_formats: &id001 []
-  healing_sprint_id: null
-  schema_version: '2.0'
-  ledger_entry_version: 2
-  last_deepening_sprint: null
-  capability_to_feature_linkage: partial
   verification_commands:
   - python -m pytest tests/python/abw/ -v
   - python tools/validators/source_structure_validator.py src/python/abw/
-  focused_validation: null
-  integration_validation: null
-  e2e_proof: null
-  pilot_proof: null
-  dom_applicability: FULL
-  lane_a_maturity: A1
-  lane_b_maturity: D1
-  lane_b_ceiling: D4
-  execution_mode: AUTO
-  last_lane_a_sprint: null
-  last_lane_b_sprint: null
-  lane_starvation_threshold: 3
-  lane_a_consecutive: 0
-  lane_b_consecutive: 0
-- product_id: CSV-PYTHON
-  format: csv
-  runtime: python
-  qname_schema_version: '1.0'
-  qname_compliance_status: verified
-  qname_evidence: shared/qname-registry/csv.yaml
-  spec_authority_source: shared/qname-registry/csv.yaml
-  spec_hierarchy_mapping: present
-  src_layout_status: mixed_model
-  src_layout_evidence: registry/source-structure-baseline.json
-  forbidden_bucket_scan_status: clean
-  forbidden_bucket_scan_evidence: []
-  sal_fact_linkage: present
-  sal_fact_count: 2
-  rcal_capability_linkage: null
-  taskcards:
-  - task_id: TC-PDL-REPAIR-CSV-001
-    source_plan: sunny-crunching-galaxy
-    sprint_id: product-deepening-ledger-repair-csv
-    status: DEFERRED
-    priority: P3
-    skill: extract-analytics-from-monolith
-    action: '[IMPROVEMENT ONLY] Extract analytics functions to csv_analytics.py. tabular_document.py
-      must be ≤800 LOC.'
-    acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
-    created_at: '2026-06-25'
-    created_by: multi-plan-intake-MCT-PDL-006
-    target_file: src/python/csv/tabular_document.py
-    current_loc: 960
+- blocked_formats: *id001
+  blockers: []
+  capability_to_feature_linkage: partial
+  consumer_proof_level: 0
   continuation_allowed: true
   continuation_reason: Gen4 library verified. QName compliant. Governance passes.
     LOC violations grandfathered (blocks_sprint=False). Ready for product deepening.
-  blockers: []
-  next_required_action: Continue product deepening (select gap from gap-ledger.json)
+  dom_applicability: FLAT
+  e2e_proof: null
+  execution_mode: AUTO
+  focused_validation: null
+  forbidden_bucket_scan_evidence: []
+  forbidden_bucket_scan_status: clean
+  format: csv
+  healing_sprint_id: null
+  integration_validation: null
+  lane_a_consecutive: 0
+  lane_a_maturity: A1
+  lane_b_ceiling: D1
+  lane_b_consecutive: 0
+  lane_b_maturity: D1
+  lane_starvation_threshold: 3
+  last_deepening_sprint: null
+  last_lane_a_sprint: null
+  last_lane_b_sprint: null
   last_verified_at: '2026-06-23'
   ledger_entry_hash: 5447bae75dee7a46
+  ledger_entry_version: 2
+  next_required_action: Continue product deepening (select gap from gap-ledger.json)
+  pilot_proof: null
+  product_id: CSV-PYTHON
+  proof_level_target: 4
+  qname_compliance_status: verified
+  qname_evidence: shared/qname-registry/csv.yaml
   qname_note: Promoted from implementing to verified. Spec files verified on disk
     with spec_qname + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
-  spec_parity_status: not_assessed
-  consumer_proof_level: 0
-  proof_level_target: 4
-  blocked_formats: *id001
-  healing_sprint_id: null
+  qname_schema_version: '1.0'
+  rcal_capability_linkage: null
+  runtime: python
+  sal_fact_count: 2
+  sal_fact_linkage: present
   schema_version: '2.0'
-  ledger_entry_version: 2
-  last_deepening_sprint: null
-  capability_to_feature_linkage: partial
+  spec_authority_source: shared/qname-registry/csv.yaml
+  spec_hierarchy_mapping: present
+  spec_parity_status: not_assessed
+  src_layout_evidence: registry/source-structure-baseline.json
+  src_layout_status: mixed_model
+  taskcards:
+  - acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
+    action: '[IMPROVEMENT ONLY] Extract analytics functions to csv_analytics.py. tabular_document.py
+      must be ≤800 LOC.'
+    created_at: '2026-06-25'
+    created_by: multi-plan-intake-MCT-PDL-006
+    current_loc: 960
+    priority: P3
+    skill: extract-analytics-from-monolith
+    source_plan: sunny-crunching-galaxy
+    sprint_id: product-deepening-ledger-repair-csv
+    status: DEFERRED
+    target_file: src/python/csv/tabular_document.py
+    task_id: TC-PDL-REPAIR-CSV-001
   verification_commands:
   - python -m pytest tests/python/csv_format/ -v
   - python tools/validators/source_structure_validator.py src/python/csv/
-  focused_validation: null
-  integration_validation: null
-  e2e_proof: null
-  pilot_proof: null
-  dom_applicability: FLAT
-  lane_a_maturity: A1
-  lane_b_maturity: D1
-  lane_b_ceiling: D1
-  execution_mode: AUTO
-  last_lane_a_sprint: null
-  last_lane_b_sprint: null
-  lane_starvation_threshold: 3
-  lane_a_consecutive: 0
-  lane_b_consecutive: 0
-- product_id: DIF-PYTHON
-  format: dif
-  runtime: python
-  qname_schema_version: '1.0'
-  qname_compliance_status: verified
-  qname_evidence: shared/qname-registry/dif.yaml
-  spec_authority_source: shared/qname-registry/dif.yaml
-  spec_hierarchy_mapping: present
-  src_layout_status: mixed_model
-  src_layout_evidence: registry/source-structure-baseline.json
-  forbidden_bucket_scan_status: clean
-  forbidden_bucket_scan_evidence: []
-  sal_fact_linkage: present
-  sal_fact_count: 0
-  rcal_capability_linkage: null
-  taskcards:
-  - task_id: TC-PDL-REPAIR-DIF-001
-    source_plan: sunny-crunching-galaxy
-    sprint_id: product-deepening-ledger-repair-dif
-    status: CLOSED
-    priority: P1
-    skill: extract-analytics-from-monolith
-    action: 'Verify all dif: qnames in shared/qname-registry/dif.yaml have ClassVar[str]
-      in dif_parser.py. Fix any missing ones.'
-    acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
-    created_at: '2026-06-25'
-    created_by: multi-plan-intake-MCT-PDL-006
-    closed_at: '2026-06-26'
-    closed_by: TC-R13/TC-R14 (sunny-crunching-galaxy)
+- blocked_formats: *id001
+  blockers: []
+  capability_to_feature_linkage: null
+  consumer_proof_level: 0
   continuation_allowed: true
   continuation_reason: 'DIF: all 6 qnames verified (dif:header, dif:data, dif:document,
     dif:cell, dif:datum, dif:vector). Registry aligned: dif:data→interchange_document.py,
     dif:document→dif_parser.py. ClassVar fixed in spec/table/*.py. 997 tests pass.
     TC-R13/TC-R14/TC-R15 complete.'
-  blockers: []
-  next_required_action: Continue product deepening (select gap from gap-ledger.json)
+  dom_applicability: PARTIAL
+  e2e_proof: null
+  execution_mode: AUTO
+  focused_validation: null
+  forbidden_bucket_scan_evidence: []
+  forbidden_bucket_scan_status: clean
+  format: dif
+  healing_sprint_id: null
+  integration_validation: null
+  lane_a_consecutive: 0
+  lane_a_maturity: A1
+  lane_b_ceiling: D3
+  lane_b_consecutive: 0
+  lane_b_maturity: D1
+  lane_starvation_threshold: 3
+  last_deepening_sprint: null
+  last_lane_a_sprint: null
+  last_lane_b_sprint: null
   last_verified_at: '2026-06-26'
   ledger_entry_hash: d773b999d0a90f6d
+  ledger_entry_version: 2
+  next_required_action: Continue product deepening (select gap from gap-ledger.json)
+  pilot_proof: null
+  product_id: DIF-PYTHON
+  proof_level_target: 4
+  qname_compliance_status: verified
+  qname_evidence: shared/qname-registry/dif.yaml
   qname_note: 'All 6 DIF qnames verified. TC-R13: dif:data registry fixed (interchange_document.py).
     TC-R14: 997 tests pass, V53 pass. TC-R15: promoted to continuation_allowed=true
     2026-06-26.'
-  spec_parity_status: not_assessed
-  consumer_proof_level: 0
-  proof_level_target: 4
-  blocked_formats: *id001
-  healing_sprint_id: null
+  qname_schema_version: '1.0'
+  rcal_capability_linkage: null
+  runtime: python
+  sal_fact_count: 0
+  sal_fact_linkage: present
   schema_version: '2.0'
-  ledger_entry_version: 2
-  last_deepening_sprint: null
-  capability_to_feature_linkage: null
+  spec_authority_source: shared/qname-registry/dif.yaml
+  spec_hierarchy_mapping: present
+  spec_parity_status: not_assessed
+  src_layout_evidence: registry/source-structure-baseline.json
+  src_layout_status: mixed_model
+  taskcards:
+  - acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
+    action: 'Verify all dif: qnames in shared/qname-registry/dif.yaml have ClassVar[str]
+      in dif_parser.py. Fix any missing ones.'
+    closed_at: '2026-06-26'
+    closed_by: TC-R13/TC-R14 (sunny-crunching-galaxy)
+    created_at: '2026-06-25'
+    created_by: multi-plan-intake-MCT-PDL-006
+    priority: P1
+    skill: extract-analytics-from-monolith
+    source_plan: sunny-crunching-galaxy
+    sprint_id: product-deepening-ledger-repair-dif
+    status: CLOSED
+    task_id: TC-PDL-REPAIR-DIF-001
   verification_commands:
   - python -m pytest tests/python/dif/ -v
   - python tools/validators/source_structure_validator.py src/python/dif/
-  focused_validation: null
-  integration_validation: null
-  e2e_proof: null
-  pilot_proof: null
-  dom_applicability: PARTIAL
-  lane_a_maturity: A1
-  lane_b_maturity: D1
-  lane_b_ceiling: D3
-  execution_mode: AUTO
-  last_lane_a_sprint: null
-  last_lane_b_sprint: null
-  lane_starvation_threshold: 3
-  lane_a_consecutive: 0
-  lane_b_consecutive: 0
-- product_id: FODG-PYTHON
-  format: fodg
-  runtime: python
-  qname_schema_version: '1.0'
-  qname_compliance_status: verified
-  qname_evidence: shared/qname-registry/fodg.yaml
-  spec_authority_source: shared/qname-registry/fodg.yaml
-  spec_hierarchy_mapping: present
-  src_layout_status: mixed_model
-  src_layout_evidence: registry/source-structure-baseline.json
-  forbidden_bucket_scan_status: clean
-  forbidden_bucket_scan_evidence: []
-  sal_fact_linkage: present
-  sal_fact_count: 1066
-  rcal_capability_linkage: null
-  taskcards:
-  - task_id: TC-PDL-REPAIR-FODG-001
-    source_plan: sunny-crunching-galaxy
-    sprint_id: product-deepening-ledger-repair-fodg
-    status: OPEN
-    priority: P1
-    skill: extract-analytics-from-monolith
-    action: Add ClassVar[str] type annotations to spec_qname and spec_fact_ref in
-      src/python/fodg/spec/draw/frame.py. Verify V53 passes for Frame class.
-    acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
-    created_at: '2026-06-25'
-    created_by: multi-plan-intake-MCT-PDL-006
-    target_file: src/python/fodg/spec/draw/frame.py
+- blocked_formats: *id001
+  blockers:
+  - qname_compliance_gap
+  capability_to_feature_linkage: null
+  consumer_proof_level: 0
   continuation_allowed: false
   continuation_reason: 'qname_compliance_gap: spec/draw/frame.py Frame.spec_qname
     is instance field not ClassVar[str]. Fix FODG-CLASSVAR-001 then re-evaluate.'
-  blockers:
-  - qname_compliance_gap
-  next_required_action: Heal LOC violations in src/python/fodg/ below 800 LOC
+  dom_applicability: FULL
+  e2e_proof: null
+  execution_mode: AUTO
+  focused_validation: null
+  forbidden_bucket_scan_evidence: []
+  forbidden_bucket_scan_status: clean
+  format: fodg
+  healing_sprint_id: null
+  integration_validation: null
+  lane_a_consecutive: 0
+  lane_a_maturity: A0
+  lane_b_ceiling: D4
+  lane_b_consecutive: 0
+  lane_b_maturity: D1
+  lane_starvation_threshold: 3
+  last_deepening_sprint: null
+  last_lane_a_sprint: null
+  last_lane_b_sprint: null
   last_verified_at: '2026-06-23'
   ledger_entry_hash: 8e7bd0892c2643b4
+  ledger_entry_version: 2
+  next_required_action: Heal LOC violations in src/python/fodg/ below 800 LOC
+  pilot_proof: null
+  product_id: FODG-PYTHON
+  proof_level_target: 4
+  qname_compliance_status: verified
+  qname_evidence: shared/qname-registry/fodg.yaml
   qname_note: Promoted from seeded to verified. Spec files verified on disk with spec_qname
     + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
-  spec_parity_status: not_assessed
-  consumer_proof_level: 0
-  proof_level_target: 4
-  blocked_formats: *id001
-  healing_sprint_id: null
+  qname_schema_version: '1.0'
+  rcal_capability_linkage: null
+  runtime: python
+  sal_fact_count: 1066
+  sal_fact_linkage: present
   schema_version: '2.0'
-  ledger_entry_version: 2
-  last_deepening_sprint: null
-  capability_to_feature_linkage: null
+  spec_authority_source: shared/qname-registry/fodg.yaml
+  spec_hierarchy_mapping: present
+  spec_parity_status: not_assessed
+  src_layout_evidence: registry/source-structure-baseline.json
+  src_layout_status: mixed_model
+  taskcards:
+  - acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
+    action: Add ClassVar[str] type annotations to spec_qname and spec_fact_ref in
+      src/python/fodg/spec/draw/frame.py. Verify V53 passes for Frame class.
+    created_at: '2026-06-25'
+    created_by: multi-plan-intake-MCT-PDL-006
+    priority: P1
+    skill: extract-analytics-from-monolith
+    source_plan: sunny-crunching-galaxy
+    sprint_id: product-deepening-ledger-repair-fodg
+    status: OPEN
+    target_file: src/python/fodg/spec/draw/frame.py
+    task_id: TC-PDL-REPAIR-FODG-001
   verification_commands:
   - python -m pytest tests/python/fodg/ -v
   - python tools/validators/source_structure_validator.py src/python/fodg/
-  focused_validation: null
-  integration_validation: null
-  e2e_proof: null
-  pilot_proof: null
-  dom_applicability: FULL
-  lane_a_maturity: A0
-  lane_b_maturity: D1
-  lane_b_ceiling: D4
-  execution_mode: AUTO
-  last_lane_a_sprint: null
-  last_lane_b_sprint: null
-  lane_starvation_threshold: 3
-  lane_a_consecutive: 0
-  lane_b_consecutive: 0
-- product_id: FODP-PYTHON
-  format: fodp
-  runtime: python
-  qname_schema_version: '1.0'
-  qname_compliance_status: verified
-  qname_evidence: shared/qname-registry/fodp.yaml
-  spec_authority_source: shared/qname-registry/fodp.yaml
-  spec_hierarchy_mapping: present
-  src_layout_status: mixed_model
-  src_layout_evidence: registry/source-structure-baseline.json
-  forbidden_bucket_scan_status: clean
-  forbidden_bucket_scan_evidence: []
-  sal_fact_linkage: present
-  sal_fact_count: 1066
-  rcal_capability_linkage: null
-  taskcards:
-  - task_id: TC-PDL-REPAIR-FODP-001
-    source_plan: sunny-crunching-galaxy
-    sprint_id: product-deepening-ledger-repair-fodp
-    status: OPEN
-    priority: P1
-    skill: decompose-monolithic-codec
-    action: 'Implement write_fodp() support: add write() method to FodpDocument. Add
-      same-format-save round-trip test.'
-    acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
-    created_at: '2026-06-25'
-    created_by: multi-plan-intake-MCT-PDL-006
+- blocked_formats: *id001
+  blockers:
+  - write_support_missing
+  capability_to_feature_linkage: null
+  consumer_proof_level: 0
   continuation_allowed: false
   continuation_reason: 'write_support_missing: FODP is read-only (no write_fodp).
     Domain model is dict-based (orange rating). Implement write support first.'
-  blockers:
-  - write_support_missing
-  next_required_action: Heal LOC violations in src/python/fodp/ below 800 LOC
+  dom_applicability: FULL
+  e2e_proof: null
+  execution_mode: AUTO
+  focused_validation: null
+  forbidden_bucket_scan_evidence: []
+  forbidden_bucket_scan_status: clean
+  format: fodp
+  healing_sprint_id: null
+  integration_validation: null
+  lane_a_consecutive: 0
+  lane_a_maturity: A0
+  lane_b_ceiling: D4
+  lane_b_consecutive: 0
+  lane_b_maturity: D1
+  lane_starvation_threshold: 3
+  last_deepening_sprint: null
+  last_lane_a_sprint: null
+  last_lane_b_sprint: null
   last_verified_at: '2026-06-23'
   ledger_entry_hash: 7dba6d87bb2643a7
+  ledger_entry_version: 2
+  next_required_action: Heal LOC violations in src/python/fodp/ below 800 LOC
+  pilot_proof: null
+  product_id: FODP-PYTHON
+  proof_level_target: 4
+  qname_compliance_status: verified
+  qname_evidence: shared/qname-registry/fodp.yaml
   qname_note: Promoted from seeded to verified. Spec files verified on disk with spec_qname
     + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
-  spec_parity_status: not_assessed
-  consumer_proof_level: 0
-  proof_level_target: 4
-  blocked_formats: *id001
-  healing_sprint_id: null
+  qname_schema_version: '1.0'
+  rcal_capability_linkage: null
+  runtime: python
+  sal_fact_count: 1066
+  sal_fact_linkage: present
   schema_version: '2.0'
-  ledger_entry_version: 2
-  last_deepening_sprint: null
-  capability_to_feature_linkage: null
+  spec_authority_source: shared/qname-registry/fodp.yaml
+  spec_hierarchy_mapping: present
+  spec_parity_status: not_assessed
+  src_layout_evidence: registry/source-structure-baseline.json
+  src_layout_status: mixed_model
+  taskcards:
+  - acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
+    action: 'Implement write_fodp() support: add write() method to FodpDocument. Add
+      same-format-save round-trip test.'
+    created_at: '2026-06-25'
+    created_by: multi-plan-intake-MCT-PDL-006
+    priority: P1
+    skill: decompose-monolithic-codec
+    source_plan: sunny-crunching-galaxy
+    sprint_id: product-deepening-ledger-repair-fodp
+    status: OPEN
+    task_id: TC-PDL-REPAIR-FODP-001
   verification_commands:
   - python -m pytest tests/python/fodp/ -v
   - python tools/validators/source_structure_validator.py src/python/fodp/
-  focused_validation: null
-  integration_validation: null
-  e2e_proof: null
-  pilot_proof: null
+- blocked_formats: *id001
+  blockers: []
+  capability_to_feature_linkage: present
+  consumer_proof_level: 0
+  continuation_allowed: true
+  continuation_reason: All gates pass. QName verified, src_layout grandfathered compliant,
+    SAL present, forbidden clean.
   dom_applicability: FULL
-  lane_a_maturity: A0
-  lane_b_maturity: D1
-  lane_b_ceiling: D4
+  e2e_proof: null
   execution_mode: AUTO
-  last_lane_a_sprint: null
-  last_lane_b_sprint: null
-  lane_starvation_threshold: 3
-  lane_a_consecutive: 0
-  lane_b_consecutive: 0
-- product_id: FODS-PYTHON
+  focused_validation: null
+  forbidden_bucket_scan_evidence: []
+  forbidden_bucket_scan_status: clean
   format: fods
-  runtime: python
-  qname_schema_version: '1.0'
+  healing_sprint_id: null
+  integration_validation: null
+  lane_a_consecutive: 0
+  lane_a_maturity: A1
+  lane_b_ceiling: D5
+  lane_b_consecutive: 1
+  lane_b_maturity: D3
+  lane_starvation_threshold: 3
+  last_deepening_sprint: null
+  last_lane_a_sprint: null
+  last_lane_b_sprint: dual-lane-deepening-001-fods-d3
+  last_verified_at: '2026-06-24'
+  ledger_entry_hash: convergence-audit-20260624
+  ledger_entry_version: 2
+  next_required_action: Continue product deepening
+  pilot_proof: null
+  product_id: FODS-PYTHON
+  proof_level_target: 4
   qname_compliance_status: verified
   qname_evidence: shared/qname-registry/fods.yaml
+  qname_schema_version: '1.0'
+  rcal_capability_linkage: null
+  runtime: python
+  sal_fact_count: 4987
+  sal_fact_linkage: present
+  schema_version: '2.0'
   spec_authority_source: shared/qname-registry/fods.yaml
   spec_hierarchy_mapping: present
-  src_layout_status: compliant
+  spec_parity_status: not_assessed
   src_layout_evidence: registry/source-structure-baseline.json
   src_layout_note: All violations grandfathered at frozen caps (neutral_model.py=1231,
     spreadsheet_document.py=1035). source_structure_validator blocks_sprint=False.
     Convergence audit 2026-06-24.
-  forbidden_bucket_scan_status: clean
-  forbidden_bucket_scan_evidence: []
-  sal_fact_linkage: present
-  sal_fact_count: 4987
-  rcal_capability_linkage: null
+  src_layout_status: compliant
   taskcards: []
-  continuation_allowed: true
-  continuation_reason: All gates pass. QName verified, src_layout grandfathered compliant,
-    SAL present, forbidden clean.
-  blockers: []
-  next_required_action: Continue product deepening
-  last_verified_at: '2026-06-24'
-  ledger_entry_hash: convergence-audit-20260624
-  spec_parity_status: not_assessed
-  consumer_proof_level: 0
-  proof_level_target: 4
-  blocked_formats: *id001
-  healing_sprint_id: null
-  schema_version: '2.0'
-  ledger_entry_version: 2
-  last_deepening_sprint: null
-  capability_to_feature_linkage: present
   verification_commands:
   - python -m pytest tests/python/fods/ -v
   - python tools/validators/source_structure_validator.py src/python/fods/
-  focused_validation: null
-  integration_validation: null
-  e2e_proof: null
-  pilot_proof: null
+- blocked_formats: *id001
+  blockers: []
+  capability_to_feature_linkage: present
+  consumer_proof_level: 0
+  continuation_allowed: true
+  continuation_reason: All gates pass. QName verified, src_layout grandfathered compliant,
+    SAL present, forbidden clean.
   dom_applicability: FULL
-  lane_a_maturity: A1
-  lane_b_maturity: D3
-  lane_b_ceiling: D5
+  e2e_proof: null
   execution_mode: AUTO
-  last_lane_a_sprint: null
-  last_lane_b_sprint: dual-lane-deepening-001-fods-d3
-  lane_starvation_threshold: 3
-  lane_a_consecutive: 0
-  lane_b_consecutive: 1
-- product_id: FODT-PYTHON
+  focused_validation: null
+  forbidden_bucket_scan_evidence: []
+  forbidden_bucket_scan_status: clean
   format: fodt
-  runtime: python
-  qname_schema_version: '1.0'
+  healing_sprint_id: null
+  integration_validation: null
+  lane_a_consecutive: 0
+  lane_a_maturity: A1
+  lane_b_ceiling: D5
+  lane_b_consecutive: 0
+  lane_b_maturity: D2
+  lane_starvation_threshold: 3
+  last_deepening_sprint: null
+  last_lane_a_sprint: null
+  last_lane_b_sprint: null
+  last_verified_at: '2026-06-24'
+  ledger_entry_hash: convergence-audit-20260624
+  ledger_entry_version: 2
+  next_required_action: Continue product deepening
+  pilot_proof: null
+  product_id: FODT-PYTHON
+  proof_level_target: 4
   qname_compliance_status: verified
   qname_evidence: shared/qname-registry/fodt.yaml
+  qname_schema_version: '1.0'
+  rcal_capability_linkage: null
+  runtime: python
+  sal_fact_count: 4933
+  sal_fact_linkage: present
+  schema_version: '2.0'
   spec_authority_source: shared/qname-registry/fodt.yaml
   spec_hierarchy_mapping: present
-  src_layout_status: compliant
+  spec_parity_status: not_assessed
   src_layout_evidence: registry/source-structure-baseline.json
   src_layout_note: All violations grandfathered at frozen caps (neutral_model.py=1916,
     text_document.py=992/996). source_structure_validator blocks_sprint=False. Convergence
     audit 2026-06-24.
-  forbidden_bucket_scan_status: clean
-  forbidden_bucket_scan_evidence: []
-  sal_fact_linkage: present
-  sal_fact_count: 4933
-  rcal_capability_linkage: null
+  src_layout_status: compliant
   taskcards: []
-  continuation_allowed: true
-  continuation_reason: All gates pass. QName verified, src_layout grandfathered compliant,
-    SAL present, forbidden clean.
-  blockers: []
-  next_required_action: Continue product deepening
-  last_verified_at: '2026-06-24'
-  ledger_entry_hash: convergence-audit-20260624
-  spec_parity_status: not_assessed
-  consumer_proof_level: 0
-  proof_level_target: 4
-  blocked_formats: *id001
-  healing_sprint_id: null
-  schema_version: '2.0'
-  ledger_entry_version: 2
-  last_deepening_sprint: null
-  capability_to_feature_linkage: present
   verification_commands:
   - python -m pytest tests/python/fodt/ -v
   - python tools/validators/source_structure_validator.py src/python/fodt/
-  focused_validation: null
-  integration_validation: null
-  e2e_proof: null
-  pilot_proof: null
+- blocked_formats: *id001
+  blockers: []
+  capability_to_feature_linkage: partial
+  consumer_proof_level: 0
+  continuation_allowed: true
+  continuation_reason: Gen4 library verified. QName compliant. Governance passes.
+    LOC violations grandfathered (blocks_sprint=False). Ready for product deepening.
   dom_applicability: FULL
-  lane_a_maturity: A1
-  lane_b_maturity: D2
-  lane_b_ceiling: D5
+  e2e_proof: null
   execution_mode: AUTO
+  focused_validation: null
+  forbidden_bucket_scan_evidence: []
+  forbidden_bucket_scan_status: clean
+  format: gnumeric
+  healing_sprint_id: null
+  integration_validation: null
+  lane_a_consecutive: 0
+  lane_a_maturity: A1
+  lane_b_ceiling: D4
+  lane_b_consecutive: 0
+  lane_b_maturity: D1
+  lane_starvation_threshold: 3
+  last_deepening_sprint: null
   last_lane_a_sprint: null
   last_lane_b_sprint: null
-  lane_starvation_threshold: 3
-  lane_a_consecutive: 0
-  lane_b_consecutive: 0
-- product_id: GNUMERIC-PYTHON
-  format: gnumeric
-  runtime: python
-  qname_schema_version: '1.0'
+  last_verified_at: '2026-06-23'
+  ledger_entry_hash: e9e3741c3e1b6643
+  ledger_entry_version: 2
+  next_required_action: Continue product deepening (select gap from gap-ledger.json)
+  pilot_proof: null
+  product_id: GNUMERIC-PYTHON
+  proof_level_target: 4
   qname_compliance_status: verified
   qname_evidence: shared/qname-registry/gnumeric.yaml
+  qname_note: Promoted from seeded to verified. Spec files verified on disk with spec_qname
+    + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
+  qname_schema_version: '1.0'
+  rcal_capability_linkage: null
+  runtime: python
+  sal_fact_count: 0
+  sal_fact_linkage: present
+  schema_version: '2.0'
   spec_authority_source: shared/qname-registry/gnumeric.yaml
   spec_hierarchy_mapping: present
-  src_layout_status: mixed_model
+  spec_parity_status: not_assessed
   src_layout_evidence: registry/source-structure-baseline.json
-  forbidden_bucket_scan_status: clean
-  forbidden_bucket_scan_evidence: []
-  sal_fact_linkage: present
-  sal_fact_count: 0
-  rcal_capability_linkage: null
+  src_layout_status: mixed_model
   taskcards:
-  - task_id: TC-PDL-REPAIR-GNUMERIC-001
+  - acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
+    action: '[IMPROVEMENT ONLY] Audit src_layout in src/python/gnumeric/. Identify
+      mixed_model violation and repair directory layout.'
+    created_at: '2026-06-25'
+    created_by: multi-plan-intake-MCT-PDL-006
+    priority: P3
+    skill: decompose-monolithic-codec
     source_plan: sunny-crunching-galaxy
     sprint_id: product-deepening-ledger-repair-gnumeric
     status: DEFERRED
-    priority: P3
-    skill: decompose-monolithic-codec
-    action: '[IMPROVEMENT ONLY] Audit src_layout in src/python/gnumeric/. Identify
-      mixed_model violation and repair directory layout.'
-    acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
-    created_at: '2026-06-25'
-    created_by: multi-plan-intake-MCT-PDL-006
-  continuation_allowed: true
-  continuation_reason: Gen4 library verified. QName compliant. Governance passes.
-    LOC violations grandfathered (blocks_sprint=False). Ready for product deepening.
-  blockers: []
-  next_required_action: Continue product deepening (select gap from gap-ledger.json)
-  last_verified_at: '2026-06-23'
-  ledger_entry_hash: e9e3741c3e1b6643
-  qname_note: Promoted from seeded to verified. Spec files verified on disk with spec_qname
-    + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
-  spec_parity_status: not_assessed
-  consumer_proof_level: 0
-  proof_level_target: 4
-  blocked_formats: *id001
-  healing_sprint_id: null
-  schema_version: '2.0'
-  ledger_entry_version: 2
-  last_deepening_sprint: null
-  capability_to_feature_linkage: partial
+    task_id: TC-PDL-REPAIR-GNUMERIC-001
   verification_commands:
   - python -m pytest tests/python/gnumeric/ -v
   - python tools/validators/source_structure_validator.py src/python/gnumeric/
-  focused_validation: null
-  integration_validation: null
+- blocked_formats: *id001
+  blockers: []
+  capability_to_feature_linkage: partial
+  consumer_proof_level: 0
+  continuation_allowed: true
+  continuation_reason: Gen4 library verified. QName compliant. Governance passes.
+    LOC violations grandfathered (blocks_sprint=False). Ready for product deepening.
+  dom_applicability: FLAT
   e2e_proof: null
-  pilot_proof: null
-  dom_applicability: FULL
-  lane_a_maturity: A1
-  lane_b_maturity: D1
-  lane_b_ceiling: D4
   execution_mode: AUTO
+  focused_validation: null
+  forbidden_bucket_scan_evidence: []
+  forbidden_bucket_scan_status: clean
+  format: ndjson
+  healing_sprint_id: null
+  integration_validation: null
+  lane_a_consecutive: 0
+  lane_a_maturity: A1
+  lane_b_ceiling: D1
+  lane_b_consecutive: 0
+  lane_b_maturity: D1
+  lane_starvation_threshold: 3
+  last_deepening_sprint: null
   last_lane_a_sprint: null
   last_lane_b_sprint: null
-  lane_starvation_threshold: 3
-  lane_a_consecutive: 0
-  lane_b_consecutive: 0
-- product_id: NDJSON-PYTHON
-  format: ndjson
-  runtime: python
-  qname_schema_version: '1.0'
+  last_verified_at: '2026-06-23'
+  ledger_entry_hash: cc017ad87a378463
+  ledger_entry_version: 2
+  next_required_action: Continue product deepening (select gap from gap-ledger.json)
+  pilot_proof: null
+  product_id: NDJSON-PYTHON
+  proof_level_target: 4
   qname_compliance_status: verified
   qname_evidence: shared/qname-registry/ndjson.yaml
+  qname_note: Promoted from implementing to verified. Spec files verified on disk
+    with spec_qname + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
+  qname_schema_version: '1.0'
+  rcal_capability_linkage: null
+  runtime: python
+  sal_fact_count: 2
+  sal_fact_linkage: present
+  schema_version: '2.0'
   spec_authority_source: shared/qname-registry/ndjson.yaml
   spec_hierarchy_mapping: present
-  src_layout_status: mixed_model
+  spec_parity_status: not_assessed
   src_layout_evidence: registry/source-structure-baseline.json
-  forbidden_bucket_scan_status: clean
-  forbidden_bucket_scan_evidence: []
-  sal_fact_linkage: present
-  sal_fact_count: 2
-  rcal_capability_linkage: null
+  src_layout_status: mixed_model
   taskcards:
-  - task_id: TC-PDL-REPAIR-NDJSON-001
+  - acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
+    action: '[IMPROVEMENT ONLY] Extract analytics functions to ndjson_analytics.py.
+      json_stream.py must be ≤800 LOC.'
+    created_at: '2026-06-25'
+    created_by: multi-plan-intake-MCT-PDL-006
+    current_loc: 928
+    priority: P3
+    skill: extract-analytics-from-monolith
     source_plan: sunny-crunching-galaxy
     sprint_id: product-deepening-ledger-repair-ndjson
     status: DEFERRED
-    priority: P3
-    skill: extract-analytics-from-monolith
-    action: '[IMPROVEMENT ONLY] Extract analytics functions to ndjson_analytics.py.
-      json_stream.py must be ≤800 LOC.'
-    acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
-    created_at: '2026-06-25'
-    created_by: multi-plan-intake-MCT-PDL-006
     target_file: src/python/ndjson/json_stream.py
-    current_loc: 928
-  continuation_allowed: true
-  continuation_reason: Gen4 library verified. QName compliant. Governance passes.
-    LOC violations grandfathered (blocks_sprint=False). Ready for product deepening.
-  blockers: []
-  next_required_action: Continue product deepening (select gap from gap-ledger.json)
-  last_verified_at: '2026-06-23'
-  ledger_entry_hash: cc017ad87a378463
-  qname_note: Promoted from implementing to verified. Spec files verified on disk
-    with spec_qname + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
-  spec_parity_status: not_assessed
-  consumer_proof_level: 0
-  proof_level_target: 4
-  blocked_formats: *id001
-  healing_sprint_id: null
-  schema_version: '2.0'
-  ledger_entry_version: 2
-  last_deepening_sprint: null
-  capability_to_feature_linkage: partial
+    task_id: TC-PDL-REPAIR-NDJSON-001
   verification_commands:
   - python -m pytest tests/python/ndjson/ -v
   - python tools/validators/source_structure_validator.py src/python/ndjson/
-  focused_validation: null
-  integration_validation: null
-  e2e_proof: null
-  pilot_proof: null
-  dom_applicability: FLAT
-  lane_a_maturity: A1
-  lane_b_maturity: D1
-  lane_b_ceiling: D1
-  execution_mode: AUTO
-  last_lane_a_sprint: null
-  last_lane_b_sprint: null
-  lane_starvation_threshold: 3
-  lane_a_consecutive: 0
-  lane_b_consecutive: 0
-- product_id: ODS-PYTHON
-  format: ods
-  runtime: python
-  qname_schema_version: '1.0'
-  qname_compliance_status: verified
-  qname_evidence: shared/qname-registry/ods.yaml
-  spec_authority_source: shared/qname-registry/ods.yaml
-  spec_hierarchy_mapping: present
-  src_layout_status: mixed_model
-  src_layout_evidence: registry/source-structure-baseline.json
-  forbidden_bucket_scan_status: clean
-  forbidden_bucket_scan_evidence: []
-  sal_fact_linkage: present
-  sal_fact_count: 1066
-  rcal_capability_linkage: null
-  taskcards:
-  - task_id: TC-PDL-REPAIR-ODS-001
-    source_plan: sunny-crunching-galaxy
-    sprint_id: product-deepening-ledger-repair-ods
-    status: OPEN
-    priority: P1
-    skill: extract-analytics-from-monolith
-    action: 'Create Gen4 domain model in src/python/ods/models.py. Add ODSDocument
-      class with spec_qname: ClassVar[str], from_file() factory, to_dict().'
-    acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
-    created_at: '2026-06-25'
-    created_by: multi-plan-intake-MCT-PDL-006
-    target_file: src/python/ods/neutral_model.py
-    current_loc: 1231
+- blocked_formats: *id001
+  blockers:
+  - domain_model_missing
+  capability_to_feature_linkage: null
+  consumer_proof_level: 0
   continuation_allowed: false
   continuation_reason: ODS is Gen3 -- no typed domain model class. Upgrade to Gen4
     (add models.py with ODSDocument) first.
-  blockers:
-  - domain_model_missing
-  next_required_action: 'Create Gen4 domain model: add src/python/ods/models.py with
-    ODSDocument class'
+  dom_applicability: FULL
+  e2e_proof: null
+  execution_mode: AUTO
+  focused_validation: null
+  forbidden_bucket_scan_evidence: []
+  forbidden_bucket_scan_status: clean
+  format: ods
+  healing_sprint_id: null
+  integration_validation: null
+  lane_a_consecutive: 0
+  lane_a_maturity: A1
+  lane_b_ceiling: D5
+  lane_b_consecutive: 1
+  lane_b_maturity: D2
+  lane_starvation_threshold: 3
+  last_deepening_sprint: null
+  last_lane_a_sprint: null
+  last_lane_b_sprint: dual-lane-deepening-001-ods-d2
   last_verified_at: '2026-06-23'
   ledger_entry_hash: 593c48d668d65ef1
+  ledger_entry_version: 2
+  next_required_action: 'Create Gen4 domain model: add src/python/ods/models.py with
+    ODSDocument class'
+  pilot_proof: null
+  product_id: ODS-PYTHON
+  proof_level_target: 4
+  qname_compliance_status: verified
+  qname_evidence: shared/qname-registry/ods.yaml
   qname_note: Promoted from seeded to verified. Spec files verified on disk with spec_qname
     + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
-  spec_parity_status: not_assessed
-  consumer_proof_level: 0
-  proof_level_target: 4
-  blocked_formats: *id001
-  healing_sprint_id: null
+  qname_schema_version: '1.0'
+  rcal_capability_linkage: null
+  runtime: python
+  sal_fact_count: 1066
+  sal_fact_linkage: present
   schema_version: '2.0'
-  ledger_entry_version: 2
-  last_deepening_sprint: null
-  capability_to_feature_linkage: null
+  spec_authority_source: shared/qname-registry/ods.yaml
+  spec_hierarchy_mapping: present
+  spec_parity_status: not_assessed
+  src_layout_evidence: registry/source-structure-baseline.json
+  src_layout_status: mixed_model
+  taskcards:
+  - acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
+    action: 'Create Gen4 domain model in src/python/ods/models.py. Add ODSDocument
+      class with spec_qname: ClassVar[str], from_file() factory, to_dict().'
+    created_at: '2026-06-25'
+    created_by: multi-plan-intake-MCT-PDL-006
+    current_loc: 1231
+    priority: P1
+    skill: extract-analytics-from-monolith
+    source_plan: sunny-crunching-galaxy
+    sprint_id: product-deepening-ledger-repair-ods
+    status: OPEN
+    target_file: src/python/ods/neutral_model.py
+    task_id: TC-PDL-REPAIR-ODS-001
   verification_commands:
   - python -m pytest tests/python/ods/ -v
   - python tools/validators/source_structure_validator.py src/python/ods/
-  focused_validation: null
-  integration_validation: null
-  e2e_proof: null
-  pilot_proof: null
-  dom_applicability: FULL
-  lane_a_maturity: A1
-  lane_b_maturity: D2
-  lane_b_ceiling: D5
-  execution_mode: AUTO
-  last_lane_a_sprint: null
-  last_lane_b_sprint: dual-lane-deepening-001-ods-d2
-  lane_starvation_threshold: 3
-  lane_a_consecutive: 0
-  lane_b_consecutive: 1
-- product_id: ODT-PYTHON
-  format: odt
-  runtime: python
-  qname_schema_version: '1.0'
-  qname_compliance_status: verified
-  qname_evidence: shared/qname-registry/odt.yaml
-  spec_authority_source: shared/qname-registry/odt.yaml
-  spec_hierarchy_mapping: present
-  src_layout_status: mixed_model
-  src_layout_evidence: registry/source-structure-baseline.json
-  forbidden_bucket_scan_status: clean
-  forbidden_bucket_scan_evidence: []
-  sal_fact_linkage: present
-  sal_fact_count: 1066
-  rcal_capability_linkage: null
-  taskcards:
-  - task_id: TC-PDL-REPAIR-ODT-001
-    source_plan: sunny-crunching-galaxy
-    sprint_id: product-deepening-ledger-repair-odt
-    status: OPEN
-    priority: P1
-    skill: extract-analytics-from-monolith
-    action: 'Create Gen4 domain model in src/python/odt/models.py. Add ODTDocument
-      class with spec_qname: ClassVar[str], from_file() factory, to_dict().'
-    acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
-    created_at: '2026-06-25'
-    created_by: multi-plan-intake-MCT-PDL-006
-    target_file: src/python/odt/text_document.py
-    current_loc: 992
+- blocked_formats: *id001
+  blockers:
+  - domain_model_missing
+  capability_to_feature_linkage: null
+  consumer_proof_level: 0
   continuation_allowed: false
   continuation_reason: ODT is Gen3 -- no typed domain model class. Upgrade to Gen4
     (add models.py with ODTDocument) first.
-  blockers:
-  - domain_model_missing
-  next_required_action: 'Create Gen4 domain model: add src/python/odt/models.py with
-    ODTDocument class'
+  dom_applicability: FULL
+  e2e_proof: null
+  execution_mode: AUTO
+  focused_validation: null
+  forbidden_bucket_scan_evidence: []
+  forbidden_bucket_scan_status: clean
+  format: odt
+  healing_sprint_id: null
+  integration_validation: null
+  lane_a_consecutive: 0
+  lane_a_maturity: A1
+  lane_b_ceiling: D5
+  lane_b_consecutive: 0
+  lane_b_maturity: D1
+  lane_starvation_threshold: 3
+  last_deepening_sprint: null
+  last_lane_a_sprint: null
+  last_lane_b_sprint: null
   last_verified_at: '2026-06-23'
   ledger_entry_hash: e0daa28351b1127f
+  ledger_entry_version: 2
+  next_required_action: 'Create Gen4 domain model: add src/python/odt/models.py with
+    ODTDocument class'
+  pilot_proof: null
+  product_id: ODT-PYTHON
+  proof_level_target: 4
+  qname_compliance_status: verified
+  qname_evidence: shared/qname-registry/odt.yaml
   qname_note: Promoted from seeded to verified. Spec files verified on disk with spec_qname
     + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
-  spec_parity_status: not_assessed
-  consumer_proof_level: 0
-  proof_level_target: 4
-  blocked_formats: *id001
-  healing_sprint_id: null
+  qname_schema_version: '1.0'
+  rcal_capability_linkage: null
+  runtime: python
+  sal_fact_count: 1066
+  sal_fact_linkage: present
   schema_version: '2.0'
-  ledger_entry_version: 2
-  last_deepening_sprint: null
-  capability_to_feature_linkage: null
+  spec_authority_source: shared/qname-registry/odt.yaml
+  spec_hierarchy_mapping: present
+  spec_parity_status: not_assessed
+  src_layout_evidence: registry/source-structure-baseline.json
+  src_layout_status: mixed_model
+  taskcards:
+  - acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
+    action: 'Create Gen4 domain model in src/python/odt/models.py. Add ODTDocument
+      class with spec_qname: ClassVar[str], from_file() factory, to_dict().'
+    created_at: '2026-06-25'
+    created_by: multi-plan-intake-MCT-PDL-006
+    current_loc: 992
+    priority: P1
+    skill: extract-analytics-from-monolith
+    source_plan: sunny-crunching-galaxy
+    sprint_id: product-deepening-ledger-repair-odt
+    status: OPEN
+    target_file: src/python/odt/text_document.py
+    task_id: TC-PDL-REPAIR-ODT-001
   verification_commands:
   - python -m pytest tests/python/odt/ -v
   - python tools/validators/source_structure_validator.py src/python/odt/
-  focused_validation: null
-  integration_validation: null
-  e2e_proof: null
-  pilot_proof: null
-  dom_applicability: FULL
-  lane_a_maturity: A1
-  lane_b_maturity: D1
-  lane_b_ceiling: D5
-  execution_mode: AUTO
-  last_lane_a_sprint: null
-  last_lane_b_sprint: null
-  lane_starvation_threshold: 3
-  lane_a_consecutive: 0
-  lane_b_consecutive: 0
-- product_id: PBM-PYTHON
-  format: pbm
-  runtime: python
-  qname_schema_version: '1.0'
-  qname_compliance_status: verified
-  qname_evidence: shared/qname-registry/pbm.yaml
-  spec_authority_source: shared/qname-registry/pbm.yaml
-  spec_hierarchy_mapping: present
-  src_layout_status: mixed_model
-  src_layout_evidence: registry/source-structure-baseline.json
-  forbidden_bucket_scan_status: clean
-  forbidden_bucket_scan_evidence: []
-  sal_fact_linkage: present
-  sal_fact_count: 2
-  rcal_capability_linkage: null
-  taskcards:
-  - task_id: TC-PDL-REPAIR-PBM-001
-    source_plan: sunny-crunching-galaxy
-    sprint_id: product-deepening-ledger-repair-pbm
-    status: OPEN
-    priority: P1
-    skill: decompose-monolithic-codec
-    action: 'Create Gen4 domain model in src/python/pbm/models.py. Add PBMDocument
-      class with spec_qname: ClassVar[str], from_file() factory, to_dict().'
-    acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
-    created_at: '2026-06-25'
-    created_by: multi-plan-intake-MCT-PDL-006
+- blocked_formats: *id001
+  blockers:
+  - domain_model_missing
+  capability_to_feature_linkage: null
+  consumer_proof_level: 0
   continuation_allowed: false
   continuation_reason: PBM is Gen3 -- no typed domain model class. Upgrade to Gen4
     (add models.py with PBMDocument) first.
-  blockers:
-  - domain_model_missing
-  next_required_action: 'Create Gen4 domain model: add src/python/pbm/models.py with
-    PBMDocument class'
+  dom_applicability: METRICS_ONLY
+  e2e_proof: null
+  execution_mode: AUTO
+  focused_validation: null
+  forbidden_bucket_scan_evidence: []
+  forbidden_bucket_scan_status: clean
+  format: pbm
+  healing_sprint_id: null
+  integration_validation: null
+  lane_a_consecutive: 0
+  lane_a_maturity: A1
+  lane_b_ceiling: D1
+  lane_b_consecutive: 0
+  lane_b_maturity: D1
+  lane_starvation_threshold: 3
+  last_deepening_sprint: null
+  last_lane_a_sprint: null
+  last_lane_b_sprint: null
   last_verified_at: '2026-06-23'
   ledger_entry_hash: a3b2c8369a2c4a2d
+  ledger_entry_version: 2
+  next_required_action: 'Create Gen4 domain model: add src/python/pbm/models.py with
+    PBMDocument class'
+  pilot_proof: null
+  product_id: PBM-PYTHON
+  proof_level_target: 4
+  qname_compliance_status: verified
+  qname_evidence: shared/qname-registry/pbm.yaml
   qname_note: Promoted from seeded to verified. Spec files verified on disk with spec_qname
     + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
-  spec_parity_status: not_assessed
-  consumer_proof_level: 0
-  proof_level_target: 4
-  blocked_formats: *id001
-  healing_sprint_id: null
+  qname_schema_version: '1.0'
+  rcal_capability_linkage: null
+  runtime: python
+  sal_fact_count: 2
+  sal_fact_linkage: present
   schema_version: '2.0'
-  ledger_entry_version: 2
-  last_deepening_sprint: null
-  capability_to_feature_linkage: null
+  spec_authority_source: shared/qname-registry/pbm.yaml
+  spec_hierarchy_mapping: present
+  spec_parity_status: not_assessed
+  src_layout_evidence: registry/source-structure-baseline.json
+  src_layout_status: mixed_model
+  taskcards:
+  - acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
+    action: 'Create Gen4 domain model in src/python/pbm/models.py. Add PBMDocument
+      class with spec_qname: ClassVar[str], from_file() factory, to_dict().'
+    created_at: '2026-06-25'
+    created_by: multi-plan-intake-MCT-PDL-006
+    priority: P1
+    skill: decompose-monolithic-codec
+    source_plan: sunny-crunching-galaxy
+    sprint_id: product-deepening-ledger-repair-pbm
+    status: OPEN
+    task_id: TC-PDL-REPAIR-PBM-001
   verification_commands:
   - python -m pytest tests/python/pbm/ -v
   - python tools/validators/source_structure_validator.py src/python/pbm/
-  focused_validation: null
-  integration_validation: null
-  e2e_proof: null
-  pilot_proof: null
-  dom_applicability: METRICS_ONLY
-  lane_a_maturity: A1
-  lane_b_maturity: D1
-  lane_b_ceiling: D1
-  execution_mode: AUTO
-  last_lane_a_sprint: null
-  last_lane_b_sprint: null
-  lane_starvation_threshold: 3
-  lane_a_consecutive: 0
-  lane_b_consecutive: 0
-- product_id: PGM-PYTHON
-  format: pgm
-  runtime: python
-  qname_schema_version: '1.0'
-  qname_compliance_status: verified
-  qname_evidence: shared/qname-registry/pgm.yaml
-  spec_authority_source: shared/qname-registry/pgm.yaml
-  spec_hierarchy_mapping: present
-  src_layout_status: mixed_model
-  src_layout_evidence: registry/source-structure-baseline.json
-  forbidden_bucket_scan_status: clean
-  forbidden_bucket_scan_evidence: []
-  sal_fact_linkage: present
-  sal_fact_count: 2
-  rcal_capability_linkage: null
-  taskcards:
-  - task_id: TC-PDL-REPAIR-PGM-001
-    source_plan: sunny-crunching-galaxy
-    sprint_id: product-deepening-ledger-repair-pgm
-    status: OPEN
-    priority: P1
-    skill: decompose-monolithic-codec
-    action: 'Create Gen4 domain model in src/python/pgm/models.py. Add PGMDocument
-      class with spec_qname: ClassVar[str], from_file() factory, to_dict().'
-    acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
-    created_at: '2026-06-25'
-    created_by: multi-plan-intake-MCT-PDL-006
+- blocked_formats: *id001
+  blockers:
+  - domain_model_missing
+  capability_to_feature_linkage: null
+  consumer_proof_level: 0
   continuation_allowed: false
   continuation_reason: PGM is Gen3 -- no typed domain model class. Upgrade to Gen4
     (add models.py with PGMDocument) first.
-  blockers:
-  - domain_model_missing
-  next_required_action: 'Create Gen4 domain model: add src/python/pgm/models.py with
-    PGMDocument class'
+  dom_applicability: METRICS_ONLY
+  e2e_proof: null
+  execution_mode: AUTO
+  focused_validation: null
+  forbidden_bucket_scan_evidence: []
+  forbidden_bucket_scan_status: clean
+  format: pgm
+  healing_sprint_id: null
+  integration_validation: null
+  lane_a_consecutive: 0
+  lane_a_maturity: A1
+  lane_b_ceiling: D1
+  lane_b_consecutive: 0
+  lane_b_maturity: D1
+  lane_starvation_threshold: 3
+  last_deepening_sprint: null
+  last_lane_a_sprint: null
+  last_lane_b_sprint: null
   last_verified_at: '2026-06-23'
   ledger_entry_hash: 17d4627d74238ffa
+  ledger_entry_version: 2
+  next_required_action: 'Create Gen4 domain model: add src/python/pgm/models.py with
+    PGMDocument class'
+  pilot_proof: null
+  product_id: PGM-PYTHON
+  proof_level_target: 4
+  qname_compliance_status: verified
+  qname_evidence: shared/qname-registry/pgm.yaml
   qname_note: Promoted from seeded to verified. Spec files verified on disk with spec_qname
     + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
-  spec_parity_status: not_assessed
-  consumer_proof_level: 0
-  proof_level_target: 4
-  blocked_formats: *id001
-  healing_sprint_id: null
+  qname_schema_version: '1.0'
+  rcal_capability_linkage: null
+  runtime: python
+  sal_fact_count: 2
+  sal_fact_linkage: present
   schema_version: '2.0'
-  ledger_entry_version: 2
-  last_deepening_sprint: null
-  capability_to_feature_linkage: null
+  spec_authority_source: shared/qname-registry/pgm.yaml
+  spec_hierarchy_mapping: present
+  spec_parity_status: not_assessed
+  src_layout_evidence: registry/source-structure-baseline.json
+  src_layout_status: mixed_model
+  taskcards:
+  - acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
+    action: 'Create Gen4 domain model in src/python/pgm/models.py. Add PGMDocument
+      class with spec_qname: ClassVar[str], from_file() factory, to_dict().'
+    created_at: '2026-06-25'
+    created_by: multi-plan-intake-MCT-PDL-006
+    priority: P1
+    skill: decompose-monolithic-codec
+    source_plan: sunny-crunching-galaxy
+    sprint_id: product-deepening-ledger-repair-pgm
+    status: OPEN
+    task_id: TC-PDL-REPAIR-PGM-001
   verification_commands:
   - python -m pytest tests/python/pgm/ -v
   - python tools/validators/source_structure_validator.py src/python/pgm/
-  focused_validation: null
-  integration_validation: null
-  e2e_proof: null
-  pilot_proof: null
-  dom_applicability: METRICS_ONLY
-  lane_a_maturity: A1
-  lane_b_maturity: D1
-  lane_b_ceiling: D1
-  execution_mode: AUTO
-  last_lane_a_sprint: null
-  last_lane_b_sprint: null
-  lane_starvation_threshold: 3
-  lane_a_consecutive: 0
-  lane_b_consecutive: 0
-- product_id: PPM-PYTHON
-  format: ppm
-  runtime: python
-  qname_schema_version: '1.0'
-  qname_compliance_status: verified
-  qname_evidence: shared/qname-registry/ppm.yaml
-  spec_authority_source: shared/qname-registry/ppm.yaml
-  spec_hierarchy_mapping: present
-  src_layout_status: mixed_model
-  src_layout_evidence: registry/source-structure-baseline.json
-  forbidden_bucket_scan_status: clean
-  forbidden_bucket_scan_evidence: []
-  sal_fact_linkage: present
-  sal_fact_count: 2
-  rcal_capability_linkage: null
-  taskcards:
-  - task_id: TC-PDL-REPAIR-PPM-001
-    source_plan: sunny-crunching-galaxy
-    sprint_id: product-deepening-ledger-repair-ppm
-    status: OPEN
-    priority: P1
-    skill: decompose-monolithic-codec
-    action: 'Create Gen4 domain model in src/python/ppm/models.py. Add PPMDocument
-      class with spec_qname: ClassVar[str], from_file() factory, to_dict().'
-    acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
-    created_at: '2026-06-25'
-    created_by: multi-plan-intake-MCT-PDL-006
+- blocked_formats: *id001
+  blockers:
+  - domain_model_missing
+  capability_to_feature_linkage: null
+  consumer_proof_level: 0
   continuation_allowed: false
   continuation_reason: PPM is Gen3 -- no typed domain model class. Upgrade to Gen4
     (add models.py with PPMDocument) first.
-  blockers:
-  - domain_model_missing
-  next_required_action: 'Create Gen4 domain model: add src/python/ppm/models.py with
-    PPMDocument class'
+  dom_applicability: METRICS_ONLY
+  e2e_proof: null
+  execution_mode: AUTO
+  focused_validation: null
+  forbidden_bucket_scan_evidence: []
+  forbidden_bucket_scan_status: clean
+  format: ppm
+  healing_sprint_id: null
+  integration_validation: null
+  lane_a_consecutive: 0
+  lane_a_maturity: A1
+  lane_b_ceiling: D1
+  lane_b_consecutive: 0
+  lane_b_maturity: D1
+  lane_starvation_threshold: 3
+  last_deepening_sprint: null
+  last_lane_a_sprint: null
+  last_lane_b_sprint: null
   last_verified_at: '2026-06-23'
   ledger_entry_hash: 21b715f3b9265adf
+  ledger_entry_version: 2
+  next_required_action: 'Create Gen4 domain model: add src/python/ppm/models.py with
+    PPMDocument class'
+  pilot_proof: null
+  product_id: PPM-PYTHON
+  proof_level_target: 4
+  qname_compliance_status: verified
+  qname_evidence: shared/qname-registry/ppm.yaml
   qname_note: Promoted from seeded to verified. Spec files verified on disk with spec_qname
     + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
-  spec_parity_status: not_assessed
-  consumer_proof_level: 0
-  proof_level_target: 4
-  blocked_formats: *id001
-  healing_sprint_id: null
+  qname_schema_version: '1.0'
+  rcal_capability_linkage: null
+  runtime: python
+  sal_fact_count: 2
+  sal_fact_linkage: present
   schema_version: '2.0'
-  ledger_entry_version: 2
-  last_deepening_sprint: null
-  capability_to_feature_linkage: null
+  spec_authority_source: shared/qname-registry/ppm.yaml
+  spec_hierarchy_mapping: present
+  spec_parity_status: not_assessed
+  src_layout_evidence: registry/source-structure-baseline.json
+  src_layout_status: mixed_model
+  taskcards:
+  - acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
+    action: 'Create Gen4 domain model in src/python/ppm/models.py. Add PPMDocument
+      class with spec_qname: ClassVar[str], from_file() factory, to_dict().'
+    created_at: '2026-06-25'
+    created_by: multi-plan-intake-MCT-PDL-006
+    priority: P1
+    skill: decompose-monolithic-codec
+    source_plan: sunny-crunching-galaxy
+    sprint_id: product-deepening-ledger-repair-ppm
+    status: OPEN
+    task_id: TC-PDL-REPAIR-PPM-001
   verification_commands:
   - python -m pytest tests/python/ppm/ -v
   - python tools/validators/source_structure_validator.py src/python/ppm/
-  focused_validation: null
-  integration_validation: null
-  e2e_proof: null
-  pilot_proof: null
-  dom_applicability: METRICS_ONLY
-  lane_a_maturity: A1
-  lane_b_maturity: D1
-  lane_b_ceiling: D1
-  execution_mode: AUTO
-  last_lane_a_sprint: null
-  last_lane_b_sprint: null
-  lane_starvation_threshold: 3
-  lane_a_consecutive: 0
-  lane_b_consecutive: 0
-- product_id: QOI-PYTHON
-  format: qoi
-  runtime: python
-  qname_schema_version: '1.0'
-  qname_compliance_status: verified
-  qname_evidence: shared/qname-registry/qoi.yaml
-  spec_authority_source: shared/qname-registry/qoi.yaml
-  spec_hierarchy_mapping: present
-  src_layout_status: mixed_model
-  src_layout_evidence: registry/source-structure-baseline.json
-  forbidden_bucket_scan_status: clean
-  forbidden_bucket_scan_evidence: []
-  sal_fact_linkage: present
-  sal_fact_count: 0
-  rcal_capability_linkage: null
-  taskcards:
-  - task_id: TC-PDL-REPAIR-QOI-001
-    source_plan: sunny-crunching-galaxy
-    sprint_id: product-deepening-ledger-repair-qoi
-    status: OPEN
-    priority: P1
-    skill: decompose-monolithic-codec
-    action: 'Create Gen4 domain model in src/python/qoi/models.py. Add QOIDocument
-      class with spec_qname: ClassVar[str], from_file() factory, to_dict().'
-    acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
-    created_at: '2026-06-25'
-    created_by: multi-plan-intake-MCT-PDL-006
+- blocked_formats: *id001
+  blockers:
+  - domain_model_missing
+  capability_to_feature_linkage: null
+  consumer_proof_level: 0
   continuation_allowed: false
   continuation_reason: QOI is Gen3 -- no typed domain model class. Upgrade to Gen4
     (add models.py with QOIDocument) first.
-  blockers:
-  - domain_model_missing
-  next_required_action: 'Create Gen4 domain model: add src/python/qoi/models.py with
-    QOIDocument class'
+  dom_applicability: METRICS_ONLY
+  e2e_proof: null
+  execution_mode: AUTO
+  focused_validation: null
+  forbidden_bucket_scan_evidence: []
+  forbidden_bucket_scan_status: clean
+  format: qoi
+  healing_sprint_id: null
+  integration_validation: null
+  lane_a_consecutive: 0
+  lane_a_maturity: A1
+  lane_b_ceiling: D1
+  lane_b_consecutive: 0
+  lane_b_maturity: D1
+  lane_starvation_threshold: 3
+  last_deepening_sprint: null
+  last_lane_a_sprint: null
+  last_lane_b_sprint: null
   last_verified_at: '2026-06-23'
   ledger_entry_hash: 904d8dc8c26b4cff
+  ledger_entry_version: 2
+  next_required_action: 'Create Gen4 domain model: add src/python/qoi/models.py with
+    QOIDocument class'
+  pilot_proof: null
+  product_id: QOI-PYTHON
+  proof_level_target: 4
+  qname_compliance_status: verified
+  qname_evidence: shared/qname-registry/qoi.yaml
   qname_note: Promoted from seeded to verified. Spec files verified on disk with spec_qname
     + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
-  spec_parity_status: not_assessed
-  consumer_proof_level: 0
-  proof_level_target: 4
-  blocked_formats: *id001
-  healing_sprint_id: null
+  qname_schema_version: '1.0'
+  rcal_capability_linkage: null
+  runtime: python
+  sal_fact_count: 0
+  sal_fact_linkage: present
   schema_version: '2.0'
-  ledger_entry_version: 2
-  last_deepening_sprint: null
-  capability_to_feature_linkage: null
+  spec_authority_source: shared/qname-registry/qoi.yaml
+  spec_hierarchy_mapping: present
+  spec_parity_status: not_assessed
+  src_layout_evidence: registry/source-structure-baseline.json
+  src_layout_status: mixed_model
+  taskcards:
+  - acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
+    action: 'Create Gen4 domain model in src/python/qoi/models.py. Add QOIDocument
+      class with spec_qname: ClassVar[str], from_file() factory, to_dict().'
+    created_at: '2026-06-25'
+    created_by: multi-plan-intake-MCT-PDL-006
+    priority: P1
+    skill: decompose-monolithic-codec
+    source_plan: sunny-crunching-galaxy
+    sprint_id: product-deepening-ledger-repair-qoi
+    status: OPEN
+    task_id: TC-PDL-REPAIR-QOI-001
   verification_commands:
   - python -m pytest tests/python/qoi/ -v
   - python tools/validators/source_structure_validator.py src/python/qoi/
-  focused_validation: null
-  integration_validation: null
-  e2e_proof: null
-  pilot_proof: null
-  dom_applicability: METRICS_ONLY
-  lane_a_maturity: A1
-  lane_b_maturity: D1
-  lane_b_ceiling: D1
-  execution_mode: AUTO
-  last_lane_a_sprint: null
-  last_lane_b_sprint: null
-  lane_starvation_threshold: 3
-  lane_a_consecutive: 0
-  lane_b_consecutive: 0
-- product_id: SYLK-PYTHON
-  format: sylk
-  runtime: python
-  qname_schema_version: '1.0'
-  qname_compliance_status: verified
-  qname_evidence: shared/qname-registry/sylk.yaml
-  spec_authority_source: shared/qname-registry/sylk.yaml
-  spec_hierarchy_mapping: present
-  src_layout_status: mixed_model
-  src_layout_evidence: registry/source-structure-baseline.json
-  forbidden_bucket_scan_status: clean
-  forbidden_bucket_scan_evidence: []
-  sal_fact_linkage: present
-  sal_fact_count: 0
-  rcal_capability_linkage: null
-  taskcards:
-  - task_id: TC-PDL-REPAIR-SYLK-001
-    source_plan: sunny-crunching-galaxy
-    sprint_id: product-deepening-ledger-repair-sylk
-    status: OPEN
-    priority: P1
-    skill: extract-analytics-from-monolith
-    action: 'Create Gen4 domain model in src/python/sylk/models.py. Add SYLKDocument
-      class with spec_qname: ClassVar[str], from_file() factory, to_dict().'
-    acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
-    created_at: '2026-06-25'
-    created_by: multi-plan-intake-MCT-PDL-006
-    target_file: src/python/sylk/spreadsheet_document.py
-    current_loc: 857
+- blocked_formats: *id001
+  blockers:
+  - domain_model_missing
+  capability_to_feature_linkage: null
+  consumer_proof_level: 0
   continuation_allowed: false
   continuation_reason: SYLK is Gen3 -- no typed domain model class. Upgrade to Gen4
     (add models.py with SYLKDocument) first.
-  blockers:
-  - domain_model_missing
-  next_required_action: 'Create Gen4 domain model: add src/python/sylk/models.py with
-    SYLKDocument class'
+  dom_applicability: PARTIAL
+  e2e_proof: null
+  execution_mode: AUTO
+  focused_validation: null
+  forbidden_bucket_scan_evidence: []
+  forbidden_bucket_scan_status: clean
+  format: sylk
+  healing_sprint_id: null
+  integration_validation: null
+  lane_a_consecutive: 0
+  lane_a_maturity: A1
+  lane_b_ceiling: D3
+  lane_b_consecutive: 0
+  lane_b_maturity: D1
+  lane_starvation_threshold: 3
+  last_deepening_sprint: null
+  last_lane_a_sprint: null
+  last_lane_b_sprint: null
   last_verified_at: '2026-06-23'
   ledger_entry_hash: ae688e6dc74fe2af
+  ledger_entry_version: 2
+  next_required_action: 'Create Gen4 domain model: add src/python/sylk/models.py with
+    SYLKDocument class'
+  pilot_proof: null
+  product_id: SYLK-PYTHON
+  proof_level_target: 4
+  qname_compliance_status: verified
+  qname_evidence: shared/qname-registry/sylk.yaml
   qname_note: Promoted from seeded to verified. Spec files verified on disk with spec_qname
     + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
-  spec_parity_status: not_assessed
-  consumer_proof_level: 0
-  proof_level_target: 4
-  blocked_formats: *id001
-  healing_sprint_id: null
+  qname_schema_version: '1.0'
+  rcal_capability_linkage: null
+  runtime: python
+  sal_fact_count: 0
+  sal_fact_linkage: present
   schema_version: '2.0'
-  ledger_entry_version: 2
-  last_deepening_sprint: null
-  capability_to_feature_linkage: null
+  spec_authority_source: shared/qname-registry/sylk.yaml
+  spec_hierarchy_mapping: present
+  spec_parity_status: not_assessed
+  src_layout_evidence: registry/source-structure-baseline.json
+  src_layout_status: mixed_model
+  taskcards:
+  - acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
+    action: 'Create Gen4 domain model in src/python/sylk/models.py. Add SYLKDocument
+      class with spec_qname: ClassVar[str], from_file() factory, to_dict().'
+    created_at: '2026-06-25'
+    created_by: multi-plan-intake-MCT-PDL-006
+    current_loc: 857
+    priority: P1
+    skill: extract-analytics-from-monolith
+    source_plan: sunny-crunching-galaxy
+    sprint_id: product-deepening-ledger-repair-sylk
+    status: OPEN
+    target_file: src/python/sylk/spreadsheet_document.py
+    task_id: TC-PDL-REPAIR-SYLK-001
   verification_commands:
   - python -m pytest tests/python/sylk/ -v
   - python tools/validators/source_structure_validator.py src/python/sylk/
-  focused_validation: null
-  integration_validation: null
-  e2e_proof: null
-  pilot_proof: null
+- blocked_formats: *id001
+  blockers: []
+  capability_to_feature_linkage: partial
+  consumer_proof_level: 0
+  continuation_allowed: true
+  continuation_reason: Gen4 library verified. QName compliant. Governance passes.
+    LOC violations grandfathered (blocks_sprint=False). Ready for product deepening.
   dom_applicability: PARTIAL
-  lane_a_maturity: A1
-  lane_b_maturity: D1
-  lane_b_ceiling: D3
+  e2e_proof: null
   execution_mode: AUTO
+  focused_validation: null
+  forbidden_bucket_scan_evidence: []
+  forbidden_bucket_scan_status: clean
+  format: toml
+  healing_sprint_id: null
+  integration_validation: null
+  lane_a_consecutive: 0
+  lane_a_maturity: A1
+  lane_b_ceiling: D3
+  lane_b_consecutive: 0
+  lane_b_maturity: D1
+  lane_starvation_threshold: 3
+  last_deepening_sprint: null
   last_lane_a_sprint: null
   last_lane_b_sprint: null
-  lane_starvation_threshold: 3
-  lane_a_consecutive: 0
-  lane_b_consecutive: 0
-- product_id: TOML-PYTHON
-  format: toml
-  runtime: python
-  qname_schema_version: '1.0'
+  last_verified_at: '2026-06-23'
+  ledger_entry_hash: 039d07997df00bc7
+  ledger_entry_version: 2
+  next_required_action: Continue product deepening (select gap from gap-ledger.json)
+  pilot_proof: null
+  product_id: TOML-PYTHON
+  proof_level_target: 4
   qname_compliance_status: verified
   qname_evidence: shared/qname-registry/toml.yaml
+  qname_note: Promoted from seeded to verified. Spec files verified on disk with spec_qname
+    + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
+  qname_schema_version: '1.0'
+  rcal_capability_linkage: null
+  runtime: python
+  sal_fact_count: 0
+  sal_fact_linkage: present
+  schema_version: '2.0'
   spec_authority_source: shared/qname-registry/toml.yaml
   spec_hierarchy_mapping: present
-  src_layout_status: mixed_model
+  spec_parity_status: not_assessed
   src_layout_evidence: registry/source-structure-baseline.json
-  forbidden_bucket_scan_status: clean
-  forbidden_bucket_scan_evidence: []
-  sal_fact_linkage: present
-  sal_fact_count: 0
-  rcal_capability_linkage: null
+  src_layout_status: mixed_model
   taskcards:
-  - task_id: TC-PDL-REPAIR-TOML-001
+  - acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
+    action: '[IMPROVEMENT ONLY] Audit src_layout in src/python/toml/. Identify mixed_model
+      violation and repair.'
+    created_at: '2026-06-25'
+    created_by: multi-plan-intake-MCT-PDL-006
+    priority: P3
+    skill: decompose-monolithic-codec
     source_plan: sunny-crunching-galaxy
     sprint_id: product-deepening-ledger-repair-toml
     status: DEFERRED
-    priority: P3
-    skill: decompose-monolithic-codec
-    action: '[IMPROVEMENT ONLY] Audit src_layout in src/python/toml/. Identify mixed_model
-      violation and repair.'
-    acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
-    created_at: '2026-06-25'
-    created_by: multi-plan-intake-MCT-PDL-006
-  continuation_allowed: true
-  continuation_reason: Gen4 library verified. QName compliant. Governance passes.
-    LOC violations grandfathered (blocks_sprint=False). Ready for product deepening.
-  blockers: []
-  next_required_action: Continue product deepening (select gap from gap-ledger.json)
-  last_verified_at: '2026-06-23'
-  ledger_entry_hash: 039d07997df00bc7
-  qname_note: Promoted from seeded to verified. Spec files verified on disk with spec_qname
-    + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
-  spec_parity_status: not_assessed
-  consumer_proof_level: 0
-  proof_level_target: 4
-  blocked_formats: *id001
-  healing_sprint_id: null
-  schema_version: '2.0'
-  ledger_entry_version: 2
-  last_deepening_sprint: null
-  capability_to_feature_linkage: partial
+    task_id: TC-PDL-REPAIR-TOML-001
   verification_commands:
   - python -m pytest tests/python/toml/ -v
   - python tools/validators/source_structure_validator.py src/python/toml/
-  focused_validation: null
-  integration_validation: null
+- blocked_formats: *id001
+  blockers: []
+  capability_to_feature_linkage: partial
+  consumer_proof_level: 0
+  continuation_allowed: true
+  continuation_reason: Gen4 library verified. QName compliant. Governance passes.
+    LOC violations grandfathered (blocks_sprint=False). Ready for product deepening.
+  dom_applicability: FLAT
   e2e_proof: null
-  pilot_proof: null
-  dom_applicability: PARTIAL
-  lane_a_maturity: A1
-  lane_b_maturity: D1
-  lane_b_ceiling: D3
   execution_mode: AUTO
+  focused_validation: null
+  forbidden_bucket_scan_evidence: []
+  forbidden_bucket_scan_status: clean
+  format: tsv
+  healing_sprint_id: null
+  integration_validation: null
+  lane_a_consecutive: 0
+  lane_a_maturity: A1
+  lane_b_ceiling: D1
+  lane_b_consecutive: 0
+  lane_b_maturity: D1
+  lane_starvation_threshold: 3
+  last_deepening_sprint: null
   last_lane_a_sprint: null
   last_lane_b_sprint: null
-  lane_starvation_threshold: 3
-  lane_a_consecutive: 0
-  lane_b_consecutive: 0
-- product_id: TSV-PYTHON
-  format: tsv
-  runtime: python
-  qname_schema_version: '1.0'
+  last_verified_at: '2026-06-23'
+  ledger_entry_hash: 244842eb03e7a5cb
+  ledger_entry_version: 2
+  next_required_action: Continue product deepening (select gap from gap-ledger.json)
+  pilot_proof: null
+  product_id: TSV-PYTHON
+  proof_level_target: 4
   qname_compliance_status: verified
   qname_evidence: shared/qname-registry/tsv.yaml
+  qname_note: Promoted from seeded to verified. Spec files verified on disk with spec_qname
+    + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
+  qname_schema_version: '1.0'
+  rcal_capability_linkage: null
+  runtime: python
+  sal_fact_count: 2
+  sal_fact_linkage: present
+  schema_version: '2.0'
   spec_authority_source: shared/qname-registry/tsv.yaml
   spec_hierarchy_mapping: present
-  src_layout_status: mixed_model
+  spec_parity_status: not_assessed
   src_layout_evidence: registry/source-structure-baseline.json
-  forbidden_bucket_scan_status: clean
-  forbidden_bucket_scan_evidence: []
-  sal_fact_linkage: present
-  sal_fact_count: 2
-  rcal_capability_linkage: null
+  src_layout_status: mixed_model
   taskcards:
-  - task_id: TC-PDL-REPAIR-TSV-001
+  - acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
+    action: '[IMPROVEMENT ONLY] Extract analytics functions to tsv_analytics.py. tsv_parser.py
+      must be ≤800 LOC.'
+    created_at: '2026-06-25'
+    created_by: multi-plan-intake-MCT-PDL-006
+    current_loc: 818
+    priority: P3
+    skill: extract-analytics-from-monolith
     source_plan: sunny-crunching-galaxy
     sprint_id: product-deepening-ledger-repair-tsv
     status: DEFERRED
-    priority: P3
-    skill: extract-analytics-from-monolith
-    action: '[IMPROVEMENT ONLY] Extract analytics functions to tsv_analytics.py. tsv_parser.py
-      must be ≤800 LOC.'
-    acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
-    created_at: '2026-06-25'
-    created_by: multi-plan-intake-MCT-PDL-006
     target_file: src/python/tsv/tsv_parser.py
-    current_loc: 818
-  continuation_allowed: true
-  continuation_reason: Gen4 library verified. QName compliant. Governance passes.
-    LOC violations grandfathered (blocks_sprint=False). Ready for product deepening.
-  blockers: []
-  next_required_action: Continue product deepening (select gap from gap-ledger.json)
-  last_verified_at: '2026-06-23'
-  ledger_entry_hash: 244842eb03e7a5cb
-  qname_note: Promoted from seeded to verified. Spec files verified on disk with spec_qname
-    + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
-  spec_parity_status: not_assessed
-  consumer_proof_level: 0
-  proof_level_target: 4
-  blocked_formats: *id001
-  healing_sprint_id: null
-  schema_version: '2.0'
-  ledger_entry_version: 2
-  last_deepening_sprint: null
-  capability_to_feature_linkage: partial
+    task_id: TC-PDL-REPAIR-TSV-001
   verification_commands:
   - python -m pytest tests/python/tsv/ -v
   - python tools/validators/source_structure_validator.py src/python/tsv/
-  focused_validation: null
-  integration_validation: null
+- blocked_formats: *id001
+  blockers: []
+  capability_to_feature_linkage: partial
+  consumer_proof_level: 0
+  continuation_allowed: true
+  continuation_reason: Gen4 library verified. QName compliant. Governance passes.
+    LOC violations grandfathered (blocks_sprint=False). Ready for product deepening.
+  dom_applicability: PARTIAL
   e2e_proof: null
-  pilot_proof: null
-  dom_applicability: FLAT
-  lane_a_maturity: A1
-  lane_b_maturity: D1
-  lane_b_ceiling: D1
   execution_mode: AUTO
+  focused_validation: null
+  forbidden_bucket_scan_evidence: []
+  forbidden_bucket_scan_status: clean
+  format: xcf
+  healing_sprint_id: null
+  integration_validation: null
+  lane_a_consecutive: 0
+  lane_a_maturity: A1
+  lane_b_ceiling: D3
+  lane_b_consecutive: 0
+  lane_b_maturity: D1
+  lane_starvation_threshold: 3
+  last_deepening_sprint: null
   last_lane_a_sprint: null
   last_lane_b_sprint: null
-  lane_starvation_threshold: 3
-  lane_a_consecutive: 0
-  lane_b_consecutive: 0
-- product_id: XCF-PYTHON
-  format: xcf
-  runtime: python
-  qname_schema_version: '1.0'
+  last_verified_at: '2026-06-23'
+  ledger_entry_hash: 930b0b2bc1cff1bd
+  ledger_entry_version: 2
+  next_required_action: Continue product deepening (select gap from gap-ledger.json)
+  pilot_proof: null
+  product_id: XCF-PYTHON
+  proof_level_target: 4
   qname_compliance_status: verified
   qname_evidence: shared/qname-registry/xcf.yaml
+  qname_note: Promoted from implementing to verified. Spec files verified on disk
+    with spec_qname + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
+  qname_schema_version: '1.0'
+  rcal_capability_linkage: null
+  runtime: python
+  sal_fact_count: 0
+  sal_fact_linkage: present
+  schema_version: '2.0'
   spec_authority_source: shared/qname-registry/xcf.yaml
   spec_hierarchy_mapping: present
-  src_layout_status: mixed_model
+  spec_parity_status: not_assessed
   src_layout_evidence: registry/source-structure-baseline.json
-  forbidden_bucket_scan_status: clean
-  forbidden_bucket_scan_evidence: []
-  sal_fact_linkage: present
-  sal_fact_count: 0
-  rcal_capability_linkage: null
+  src_layout_status: mixed_model
   taskcards:
-  - task_id: TC-PDL-REPAIR-XCF-001
+  - acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
+    action: '[IMPROVEMENT ONLY] Extract analytics functions to xcf_analytics.py (already
+      exists). xcf_parser.py must be ≤800 LOC.'
+    created_at: '2026-06-25'
+    created_by: multi-plan-intake-MCT-PDL-006
+    current_loc: 1272
+    priority: P3
+    skill: extract-analytics-from-monolith
     source_plan: sunny-crunching-galaxy
     sprint_id: product-deepening-ledger-repair-xcf
     status: DEFERRED
-    priority: P3
-    skill: extract-analytics-from-monolith
-    action: '[IMPROVEMENT ONLY] Extract analytics functions to xcf_analytics.py (already
-      exists). xcf_parser.py must be ≤800 LOC.'
-    acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
-    created_at: '2026-06-25'
-    created_by: multi-plan-intake-MCT-PDL-006
     target_file: src/python/xcf/xcf_parser.py
-    current_loc: 1272
-  continuation_allowed: true
-  continuation_reason: Gen4 library verified. QName compliant. Governance passes.
-    LOC violations grandfathered (blocks_sprint=False). Ready for product deepening.
-  blockers: []
-  next_required_action: Continue product deepening (select gap from gap-ledger.json)
-  last_verified_at: '2026-06-23'
-  ledger_entry_hash: 930b0b2bc1cff1bd
-  qname_note: Promoted from implementing to verified. Spec files verified on disk
-    with spec_qname + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
-  spec_parity_status: not_assessed
-  consumer_proof_level: 0
-  proof_level_target: 4
-  blocked_formats: *id001
-  healing_sprint_id: null
-  schema_version: '2.0'
-  ledger_entry_version: 2
-  last_deepening_sprint: null
-  capability_to_feature_linkage: partial
+    task_id: TC-PDL-REPAIR-XCF-001
   verification_commands:
   - python -m pytest tests/python/xcf/ -v
   - python tools/validators/source_structure_validator.py src/python/xcf/
-  focused_validation: null
-  integration_validation: null
-  e2e_proof: null
-  pilot_proof: null
-  dom_applicability: PARTIAL
-  lane_a_maturity: A1
-  lane_b_maturity: D1
-  lane_b_ceiling: D3
-  execution_mode: AUTO
-  last_lane_a_sprint: null
-  last_lane_b_sprint: null
-  lane_starvation_threshold: 3
-  lane_a_consecutive: 0
-  lane_b_consecutive: 0
-- product_id: ZST-PYTHON
-  format: zst
-  runtime: python
-  qname_schema_version: '1.0'
-  qname_compliance_status: verified
-  qname_evidence: shared/qname-registry/zst.yaml
-  spec_authority_source: shared/qname-registry/zst.yaml
-  spec_hierarchy_mapping: present
-  src_layout_status: mixed_model
-  src_layout_evidence: registry/source-structure-baseline.json
-  forbidden_bucket_scan_status: clean
-  forbidden_bucket_scan_evidence: []
-  sal_fact_linkage: present
-  sal_fact_count: 94
-  rcal_capability_linkage: null
-  taskcards:
-  - task_id: TC-PDL-REPAIR-ZST-001
-    source_plan: sunny-crunching-galaxy
-    sprint_id: product-deepening-ledger-repair-zst
-    status: DEFERRED
-    priority: P3
-    skill: extract-analytics-from-monolith
-    action: '[IMPROVEMENT ONLY] Route analytics functions to zst_analytics.py (already
-      exists). zst_codec.py must be ≤800 LOC.'
-    acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
-    created_at: '2026-06-25'
-    created_by: multi-plan-intake-MCT-PDL-006
-    target_file: src/python/zst/zst_codec.py
-    current_loc: 1549
+- blocked_formats: *id001
+  blockers: []
+  capability_to_feature_linkage: partial
+  consumer_proof_level: 0
   continuation_allowed: true
   continuation_reason: Gen4 library verified. QName compliant. Governance passes.
     LOC violations grandfathered (blocks_sprint=False). Ready for product deepening.
-  blockers: []
-  next_required_action: Continue product deepening (select gap from gap-ledger.json)
+  dom_applicability: METRICS_ONLY
+  e2e_proof: null
+  execution_mode: AUTO
+  focused_validation: null
+  forbidden_bucket_scan_evidence: []
+  forbidden_bucket_scan_status: clean
+  format: zst
+  healing_sprint_id: null
+  integration_validation: null
+  lane_a_consecutive: 0
+  lane_a_maturity: A1
+  lane_b_ceiling: D1
+  lane_b_consecutive: 0
+  lane_b_maturity: D1
+  lane_starvation_threshold: 3
+  last_deepening_sprint: null
+  last_lane_a_sprint: null
+  last_lane_b_sprint: null
   last_verified_at: '2026-06-23'
   ledger_entry_hash: 04587a06df67ede5
+  ledger_entry_version: 2
+  next_required_action: Continue product deepening (select gap from gap-ledger.json)
+  pilot_proof: null
+  product_id: ZST-PYTHON
+  proof_level_target: 4
+  qname_compliance_status: verified
+  qname_evidence: shared/qname-registry/zst.yaml
   qname_note: Promoted from implementing to verified. Spec files verified on disk
     with spec_qname + spec_fact_ref. BATCH-2 forensic audit advancement 2026-06-24.
-  spec_parity_status: not_assessed
-  consumer_proof_level: 0
-  proof_level_target: 4
-  blocked_formats: *id001
-  healing_sprint_id: null
+  qname_schema_version: '1.0'
+  rcal_capability_linkage: null
+  runtime: python
+  sal_fact_count: 94
+  sal_fact_linkage: present
   schema_version: '2.0'
-  ledger_entry_version: 2
-  last_deepening_sprint: null
-  capability_to_feature_linkage: partial
+  spec_authority_source: shared/qname-registry/zst.yaml
+  spec_hierarchy_mapping: present
+  spec_parity_status: not_assessed
+  src_layout_evidence: registry/source-structure-baseline.json
+  src_layout_status: mixed_model
+  taskcards:
+  - acceptance_criteria: src_layout_status=compliant AND continuation_allowed=true
+    action: '[IMPROVEMENT ONLY] Route analytics functions to zst_analytics.py (already
+      exists). zst_codec.py must be ≤800 LOC.'
+    created_at: '2026-06-25'
+    created_by: multi-plan-intake-MCT-PDL-006
+    current_loc: 1549
+    priority: P3
+    skill: extract-analytics-from-monolith
+    source_plan: sunny-crunching-galaxy
+    sprint_id: product-deepening-ledger-repair-zst
+    status: DEFERRED
+    target_file: src/python/zst/zst_codec.py
+    task_id: TC-PDL-REPAIR-ZST-001
   verification_commands:
   - python -m pytest tests/python/zst/ -v
   - python tools/validators/source_structure_validator.py src/python/zst/
-  focused_validation: null
-  integration_validation: null
-  e2e_proof: null
-  pilot_proof: null
-  dom_applicability: METRICS_ONLY
-  lane_a_maturity: A1
-  lane_b_maturity: D1
-  lane_b_ceiling: D1
-  execution_mode: AUTO
-  last_lane_a_sprint: null
-  last_lane_b_sprint: null
-  lane_starvation_threshold: 3
-  lane_a_consecutive: 0
-  lane_b_consecutive: 0
-- product_id: FODS-NET
-  format: fods
-  runtime: dotnet
-  qname_schema_version: '1.0'
-  qname_compliance_status: verified
-  qname_evidence: shared/qname-registry/fods.yaml
-  spec_authority_source: null
-  spec_hierarchy_mapping: present
-  src_layout_status: compliant
-  src_layout_evidence: registry/source-structure-baseline.json
-  forbidden_bucket_scan_status: clean
-  forbidden_bucket_scan_evidence: []
-  sal_fact_linkage: not_applicable
-  sal_fact_count: 0
-  rcal_capability_linkage: null
-  taskcards: []
+- blocked_formats: []
+  blockers: []
+  capability_to_feature_linkage: null
+  consumer_proof_level: 0
   continuation_allowed: true
   continuation_reason: Active .NET product ready for product deepening
-  blockers: []
-  next_required_action: Continue product deepening
+  dom_applicability: FULL
+  e2e_proof: null
+  execution_mode: AUTO
+  focused_validation: null
+  forbidden_bucket_scan_evidence: []
+  forbidden_bucket_scan_status: clean
+  format: fods
+  healing_sprint_id: null
+  integration_validation: null
+  lane_a_consecutive: 0
+  lane_a_maturity: A3
+  lane_b_ceiling: D5
+  lane_b_consecutive: 0
+  lane_b_maturity: D4
+  lane_starvation_threshold: 3
+  last_deepening_sprint: null
+  last_lane_a_sprint: null
+  last_lane_b_sprint: null
   last_verified_at: '2026-06-28'
   ledger_entry_hash: net-inventory-fods-20260628
-  spec_parity_status: not_assessed
-  consumer_proof_level: 0
-  proof_level_target: 4
-  blocked_formats: []
-  healing_sprint_id: null
-  schema_version: '2.0'
   ledger_entry_version: 2
-  last_deepening_sprint: null
-  capability_to_feature_linkage: null
-  verification_commands: []
-  focused_validation: null
-  integration_validation: null
-  e2e_proof: null
+  next_required_action: Continue product deepening
   pilot_proof: null
-  dom_applicability: FULL
-  lane_a_maturity: A3
-  lane_b_maturity: D4
-  lane_b_ceiling: D5
-  execution_mode: AUTO
-  last_lane_a_sprint: null
-  last_lane_b_sprint: null
-  lane_starvation_threshold: 3
-  lane_a_consecutive: 0
-  lane_b_consecutive: 0
-- product_id: FODT-NET
-  format: fodt
-  runtime: dotnet
-  qname_schema_version: '1.0'
+  product_id: FODS-NET
+  proof_level_target: 4
   qname_compliance_status: verified
-  qname_evidence: shared/qname-registry/fodt.yaml
+  qname_evidence: shared/qname-registry/fods.yaml
+  qname_schema_version: '1.0'
+  rcal_capability_linkage: null
+  runtime: dotnet
+  sal_fact_count: 0
+  sal_fact_linkage: not_applicable
+  schema_version: '2.0'
   spec_authority_source: null
   spec_hierarchy_mapping: present
-  src_layout_status: compliant
+  spec_parity_status: not_assessed
   src_layout_evidence: registry/source-structure-baseline.json
-  forbidden_bucket_scan_status: clean
-  forbidden_bucket_scan_evidence: []
-  sal_fact_linkage: not_applicable
-  sal_fact_count: 0
-  rcal_capability_linkage: null
+  src_layout_status: compliant
   taskcards: []
+  verification_commands: []
+- blocked_formats: []
+  blockers: []
+  capability_to_feature_linkage: null
+  consumer_proof_level: 0
   continuation_allowed: true
   continuation_reason: Active .NET product ready for product deepening
-  blockers: []
-  next_required_action: Continue product deepening
+  dom_applicability: FULL
+  e2e_proof: null
+  execution_mode: AUTO
+  focused_validation: null
+  forbidden_bucket_scan_evidence: []
+  forbidden_bucket_scan_status: clean
+  format: fodt
+  healing_sprint_id: null
+  integration_validation: null
+  lane_a_consecutive: 0
+  lane_a_maturity: A3
+  lane_b_ceiling: D5
+  lane_b_consecutive: 0
+  lane_b_maturity: D4
+  lane_starvation_threshold: 3
+  last_deepening_sprint: null
+  last_lane_a_sprint: null
+  last_lane_b_sprint: null
   last_verified_at: '2026-06-28'
   ledger_entry_hash: net-inventory-fodt-20260628
-  spec_parity_status: not_assessed
-  consumer_proof_level: 0
-  proof_level_target: 4
-  blocked_formats: []
-  healing_sprint_id: null
-  schema_version: '2.0'
   ledger_entry_version: 2
-  last_deepening_sprint: null
-  capability_to_feature_linkage: null
-  verification_commands: []
-  focused_validation: null
-  integration_validation: null
-  e2e_proof: null
+  next_required_action: Continue product deepening
   pilot_proof: null
-  dom_applicability: FULL
-  lane_a_maturity: A3
-  lane_b_maturity: D4
-  lane_b_ceiling: D5
-  execution_mode: AUTO
-  last_lane_a_sprint: null
-  last_lane_b_sprint: null
-  lane_starvation_threshold: 3
-  lane_a_consecutive: 0
-  lane_b_consecutive: 0
-- product_id: NETPBM-NET
-  format: netpbm
-  runtime: dotnet
+  product_id: FODT-NET
+  proof_level_target: 4
+  qname_compliance_status: verified
+  qname_evidence: shared/qname-registry/fodt.yaml
   qname_schema_version: '1.0'
-  qname_compliance_status: not_applicable
-  qname_evidence: null
-  spec_authority_source: null
-  spec_hierarchy_mapping: not_applicable
-  src_layout_status: compliant
-  src_layout_evidence: registry/source-structure-baseline.json
-  forbidden_bucket_scan_status: clean
-  forbidden_bucket_scan_evidence: []
-  sal_fact_linkage: not_applicable
-  sal_fact_count: 0
   rcal_capability_linkage: null
+  runtime: dotnet
+  sal_fact_count: 0
+  sal_fact_linkage: not_applicable
+  schema_version: '2.0'
+  spec_authority_source: null
+  spec_hierarchy_mapping: present
+  spec_parity_status: not_assessed
+  src_layout_evidence: registry/source-structure-baseline.json
+  src_layout_status: compliant
   taskcards: []
+  verification_commands: []
+- blocked_formats: []
+  blockers: []
+  capability_to_feature_linkage: null
+  consumer_proof_level: 0
   continuation_allowed: true
   continuation_reason: Active .NET product ready for product deepening
-  blockers: []
-  next_required_action: Continue product deepening
+  dom_applicability: PARTIAL
+  e2e_proof: null
+  execution_mode: AUTO
+  focused_validation: null
+  forbidden_bucket_scan_evidence: []
+  forbidden_bucket_scan_status: clean
+  format: netpbm
+  healing_sprint_id: null
+  integration_validation: null
+  lane_a_consecutive: 0
+  lane_a_maturity: A2
+  lane_b_ceiling: D2
+  lane_b_consecutive: 0
+  lane_b_maturity: D2
+  lane_starvation_threshold: 3
+  last_deepening_sprint: null
+  last_lane_a_sprint: null
+  last_lane_b_sprint: null
   last_verified_at: '2026-06-28'
   ledger_entry_hash: net-inventory-netpbm-20260628
-  spec_parity_status: not_assessed
-  consumer_proof_level: 0
-  proof_level_target: 4
-  blocked_formats: []
-  healing_sprint_id: null
-  schema_version: '2.0'
   ledger_entry_version: 2
-  last_deepening_sprint: null
-  capability_to_feature_linkage: null
-  verification_commands: []
-  focused_validation: null
-  integration_validation: null
-  e2e_proof: null
+  next_required_action: Continue product deepening
   pilot_proof: null
-  dom_applicability: PARTIAL
-  lane_a_maturity: A2
-  lane_b_maturity: D2
-  lane_b_ceiling: D2
-  execution_mode: AUTO
-  last_lane_a_sprint: null
-  last_lane_b_sprint: null
-  lane_starvation_threshold: 3
-  lane_a_consecutive: 0
-  lane_b_consecutive: 0
-- product_id: CSV-NET
-  format: csv
-  runtime: dotnet
-  qname_schema_version: '1.0'
+  product_id: NETPBM-NET
+  proof_level_target: 4
   qname_compliance_status: not_applicable
-  qname_evidence: shared/qname-registry/csv.yaml
+  qname_evidence: null
+  qname_schema_version: '1.0'
+  rcal_capability_linkage: null
+  runtime: dotnet
+  sal_fact_count: 0
+  sal_fact_linkage: not_applicable
+  schema_version: '2.0'
   spec_authority_source: null
   spec_hierarchy_mapping: not_applicable
-  src_layout_status: compliant
+  spec_parity_status: not_assessed
   src_layout_evidence: registry/source-structure-baseline.json
-  forbidden_bucket_scan_status: clean
-  forbidden_bucket_scan_evidence: []
-  sal_fact_linkage: not_applicable
-  sal_fact_count: 0
-  rcal_capability_linkage: null
+  src_layout_status: compliant
   taskcards: []
+  verification_commands: []
+- blocked_formats: []
+  blockers: []
+  capability_to_feature_linkage: null
+  consumer_proof_level: 0
   continuation_allowed: true
   continuation_reason: Active .NET product ready for product deepening
-  blockers: []
-  next_required_action: Continue product deepening
+  dom_applicability: FLAT
+  e2e_proof: null
+  execution_mode: AUTO
+  focused_validation: null
+  forbidden_bucket_scan_evidence: []
+  forbidden_bucket_scan_status: clean
+  format: csv
+  healing_sprint_id: null
+  integration_validation: null
+  lane_a_consecutive: 0
+  lane_a_maturity: A2
+  lane_b_ceiling: D1
+  lane_b_consecutive: 0
+  lane_b_maturity: D1
+  lane_starvation_threshold: 3
+  last_deepening_sprint: null
+  last_lane_a_sprint: null
+  last_lane_b_sprint: null
   last_verified_at: '2026-06-28'
   ledger_entry_hash: net-inventory-csv-20260628
-  spec_parity_status: not_assessed
-  consumer_proof_level: 0
-  proof_level_target: 4
-  blocked_formats: []
-  healing_sprint_id: null
-  schema_version: '2.0'
   ledger_entry_version: 2
-  last_deepening_sprint: null
-  capability_to_feature_linkage: null
-  verification_commands: []
-  focused_validation: null
-  integration_validation: null
-  e2e_proof: null
+  next_required_action: Continue product deepening
   pilot_proof: null
-  dom_applicability: FLAT
-  lane_a_maturity: A2
-  lane_b_maturity: D1
-  lane_b_ceiling: D1
-  execution_mode: AUTO
-  last_lane_a_sprint: null
-  last_lane_b_sprint: null
-  lane_starvation_threshold: 3
-  lane_a_consecutive: 0
-  lane_b_consecutive: 0
-- product_id: TSV-NET
-  format: tsv
-  runtime: dotnet
-  qname_schema_version: '1.0'
+  product_id: CSV-NET
+  proof_level_target: 4
   qname_compliance_status: not_applicable
-  qname_evidence: shared/qname-registry/tsv.yaml
+  qname_evidence: shared/qname-registry/csv.yaml
+  qname_schema_version: '1.0'
+  rcal_capability_linkage: null
+  runtime: dotnet
+  sal_fact_count: 0
+  sal_fact_linkage: not_applicable
+  schema_version: '2.0'
   spec_authority_source: null
   spec_hierarchy_mapping: not_applicable
-  src_layout_status: compliant
+  spec_parity_status: not_assessed
   src_layout_evidence: registry/source-structure-baseline.json
-  forbidden_bucket_scan_status: clean
-  forbidden_bucket_scan_evidence: []
-  sal_fact_linkage: not_applicable
-  sal_fact_count: 0
-  rcal_capability_linkage: null
+  src_layout_status: compliant
   taskcards: []
+  verification_commands: []
+- blocked_formats: []
+  blockers: []
+  capability_to_feature_linkage: null
+  consumer_proof_level: 0
   continuation_allowed: true
   continuation_reason: Active .NET product ready for product deepening
-  blockers: []
-  next_required_action: Continue product deepening
+  dom_applicability: FLAT
+  e2e_proof: null
+  execution_mode: AUTO
+  focused_validation: null
+  forbidden_bucket_scan_evidence: []
+  forbidden_bucket_scan_status: clean
+  format: tsv
+  healing_sprint_id: null
+  integration_validation: null
+  lane_a_consecutive: 0
+  lane_a_maturity: A2
+  lane_b_ceiling: D1
+  lane_b_consecutive: 0
+  lane_b_maturity: D1
+  lane_starvation_threshold: 3
+  last_deepening_sprint: null
+  last_lane_a_sprint: null
+  last_lane_b_sprint: null
   last_verified_at: '2026-06-28'
   ledger_entry_hash: net-inventory-tsv-20260628
-  spec_parity_status: not_assessed
-  consumer_proof_level: 0
-  proof_level_target: 4
-  blocked_formats: []
-  healing_sprint_id: null
-  schema_version: '2.0'
   ledger_entry_version: 2
-  last_deepening_sprint: null
-  capability_to_feature_linkage: null
-  verification_commands: []
-  focused_validation: null
-  integration_validation: null
-  e2e_proof: null
+  next_required_action: Continue product deepening
   pilot_proof: null
-  dom_applicability: FLAT
-  lane_a_maturity: A2
-  lane_b_maturity: D1
-  lane_b_ceiling: D1
-  execution_mode: AUTO
-  last_lane_a_sprint: null
-  last_lane_b_sprint: null
-  lane_starvation_threshold: 3
-  lane_a_consecutive: 0
-  lane_b_consecutive: 0
-- product_id: NDJSON-NET
-  format: ndjson
-  runtime: dotnet
-  qname_schema_version: '1.0'
+  product_id: TSV-NET
+  proof_level_target: 4
   qname_compliance_status: not_applicable
-  qname_evidence: shared/qname-registry/ndjson.yaml
+  qname_evidence: shared/qname-registry/tsv.yaml
+  qname_schema_version: '1.0'
+  rcal_capability_linkage: null
+  runtime: dotnet
+  sal_fact_count: 0
+  sal_fact_linkage: not_applicable
+  schema_version: '2.0'
   spec_authority_source: null
   spec_hierarchy_mapping: not_applicable
-  src_layout_status: compliant
+  spec_parity_status: not_assessed
   src_layout_evidence: registry/source-structure-baseline.json
-  forbidden_bucket_scan_status: clean
-  forbidden_bucket_scan_evidence: []
-  sal_fact_linkage: not_applicable
-  sal_fact_count: 0
-  rcal_capability_linkage: null
+  src_layout_status: compliant
   taskcards: []
+  verification_commands: []
+- blocked_formats: []
+  blockers: []
+  capability_to_feature_linkage: null
+  consumer_proof_level: 0
   continuation_allowed: true
   continuation_reason: Active .NET product ready for product deepening
-  blockers: []
-  next_required_action: Continue product deepening
+  dom_applicability: FLAT
+  e2e_proof: null
+  execution_mode: AUTO
+  focused_validation: null
+  forbidden_bucket_scan_evidence: []
+  forbidden_bucket_scan_status: clean
+  format: ndjson
+  healing_sprint_id: null
+  integration_validation: null
+  lane_a_consecutive: 0
+  lane_a_maturity: A2
+  lane_b_ceiling: D1
+  lane_b_consecutive: 0
+  lane_b_maturity: D1
+  lane_starvation_threshold: 3
+  last_deepening_sprint: null
+  last_lane_a_sprint: null
+  last_lane_b_sprint: null
   last_verified_at: '2026-06-28'
   ledger_entry_hash: net-inventory-ndjson-20260628
-  spec_parity_status: not_assessed
-  consumer_proof_level: 0
-  proof_level_target: 4
-  blocked_formats: []
-  healing_sprint_id: null
-  schema_version: '2.0'
   ledger_entry_version: 2
-  last_deepening_sprint: null
-  capability_to_feature_linkage: null
-  verification_commands: []
-  focused_validation: null
-  integration_validation: null
-  e2e_proof: null
+  next_required_action: Continue product deepening
   pilot_proof: null
-  dom_applicability: FLAT
-  lane_a_maturity: A2
-  lane_b_maturity: D1
-  lane_b_ceiling: D1
-  execution_mode: AUTO
-  last_lane_a_sprint: null
-  last_lane_b_sprint: null
-  lane_starvation_threshold: 3
-  lane_a_consecutive: 0
-  lane_b_consecutive: 0
-- product_id: ZST-NET
-  format: zst
-  runtime: dotnet
-  qname_schema_version: '1.0'
+  product_id: NDJSON-NET
+  proof_level_target: 4
   qname_compliance_status: not_applicable
-  qname_evidence: shared/qname-registry/zst.yaml
+  qname_evidence: shared/qname-registry/ndjson.yaml
+  qname_schema_version: '1.0'
+  rcal_capability_linkage: null
+  runtime: dotnet
+  sal_fact_count: 0
+  sal_fact_linkage: not_applicable
+  schema_version: '2.0'
   spec_authority_source: null
   spec_hierarchy_mapping: not_applicable
-  src_layout_status: compliant
+  spec_parity_status: not_assessed
   src_layout_evidence: registry/source-structure-baseline.json
-  forbidden_bucket_scan_status: clean
-  forbidden_bucket_scan_evidence: []
-  sal_fact_linkage: not_applicable
-  sal_fact_count: 0
-  rcal_capability_linkage: null
+  src_layout_status: compliant
   taskcards: []
+  verification_commands: []
+- blocked_formats: []
+  blockers: []
+  capability_to_feature_linkage: null
+  consumer_proof_level: 0
   continuation_allowed: true
   continuation_reason: Active .NET product ready for product deepening
-  blockers: []
-  next_required_action: Continue product deepening
+  dom_applicability: METRICS_ONLY
+  e2e_proof: null
+  execution_mode: AUTO
+  focused_validation: null
+  forbidden_bucket_scan_evidence: []
+  forbidden_bucket_scan_status: clean
+  format: zst
+  healing_sprint_id: null
+  integration_validation: null
+  lane_a_consecutive: 0
+  lane_a_maturity: A1
+  lane_b_ceiling: D1
+  lane_b_consecutive: 0
+  lane_b_maturity: D1
+  lane_starvation_threshold: 3
+  last_deepening_sprint: null
+  last_lane_a_sprint: null
+  last_lane_b_sprint: null
   last_verified_at: '2026-06-28'
   ledger_entry_hash: net-inventory-zst-20260628
-  spec_parity_status: not_assessed
-  consumer_proof_level: 0
-  proof_level_target: 4
-  blocked_formats: []
-  healing_sprint_id: null
-  schema_version: '2.0'
   ledger_entry_version: 2
-  last_deepening_sprint: null
-  capability_to_feature_linkage: null
-  verification_commands: []
-  focused_validation: null
-  integration_validation: null
-  e2e_proof: null
+  next_required_action: Continue product deepening
   pilot_proof: null
-  dom_applicability: METRICS_ONLY
-  lane_a_maturity: A1
-  lane_b_maturity: D1
-  lane_b_ceiling: D1
-  execution_mode: AUTO
-  last_lane_a_sprint: null
-  last_lane_b_sprint: null
-  lane_starvation_threshold: 3
-  lane_a_consecutive: 0
-  lane_b_consecutive: 0
-- product_id: HTML-NET
-  format: html
-  runtime: dotnet
-  qname_schema_version: '1.0'
+  product_id: ZST-NET
+  proof_level_target: 4
   qname_compliance_status: not_applicable
-  qname_evidence: null
+  qname_evidence: shared/qname-registry/zst.yaml
+  qname_schema_version: '1.0'
+  rcal_capability_linkage: null
+  runtime: dotnet
+  sal_fact_count: 0
+  sal_fact_linkage: not_applicable
+  schema_version: '2.0'
   spec_authority_source: null
   spec_hierarchy_mapping: not_applicable
-  src_layout_status: compliant
+  spec_parity_status: not_assessed
   src_layout_evidence: registry/source-structure-baseline.json
-  forbidden_bucket_scan_status: clean
-  forbidden_bucket_scan_evidence: []
-  sal_fact_linkage: not_applicable
-  sal_fact_count: 0
-  rcal_capability_linkage: null
+  src_layout_status: compliant
   taskcards: []
-  continuation_allowed: false
-  continuation_reason: Export-only writer, no document model
+  verification_commands: []
+- blocked_formats: []
   blockers:
   - export_only_no_document_model
-  next_required_action: None — export only
+  capability_to_feature_linkage: null
+  consumer_proof_level: 0
+  continuation_allowed: false
+  continuation_reason: Export-only writer, no document model
+  dom_applicability: NOT_APPLICABLE
+  e2e_proof: null
+  execution_mode: AUTO
+  focused_validation: null
+  forbidden_bucket_scan_evidence: []
+  forbidden_bucket_scan_status: clean
+  format: html
+  healing_sprint_id: null
+  integration_validation: null
+  lane_a_consecutive: 0
+  lane_a_maturity: A0
+  lane_b_ceiling: D0
+  lane_b_consecutive: 0
+  lane_b_maturity: D0
+  lane_starvation_threshold: 3
+  last_deepening_sprint: null
+  last_lane_a_sprint: null
+  last_lane_b_sprint: null
   last_verified_at: '2026-06-28'
   ledger_entry_hash: net-inventory-html-20260628
-  spec_parity_status: not_assessed
-  consumer_proof_level: 0
-  proof_level_target: 4
-  blocked_formats: []
-  healing_sprint_id: null
-  schema_version: '2.0'
   ledger_entry_version: 2
-  last_deepening_sprint: null
-  capability_to_feature_linkage: null
-  verification_commands: []
-  focused_validation: null
-  integration_validation: null
-  e2e_proof: null
+  next_required_action: None — export only
   pilot_proof: null
-  dom_applicability: NOT_APPLICABLE
-  lane_a_maturity: A0
-  lane_b_maturity: D0
-  lane_b_ceiling: D0
-  execution_mode: AUTO
-  last_lane_a_sprint: null
-  last_lane_b_sprint: null
-  lane_starvation_threshold: 3
-  lane_a_consecutive: 0
-  lane_b_consecutive: 0
-- product_id: MARKDOWN-NET
-  format: markdown
-  runtime: dotnet
-  qname_schema_version: '1.0'
+  product_id: HTML-NET
+  proof_level_target: 4
   qname_compliance_status: not_applicable
   qname_evidence: null
+  qname_schema_version: '1.0'
+  rcal_capability_linkage: null
+  runtime: dotnet
+  sal_fact_count: 0
+  sal_fact_linkage: not_applicable
+  schema_version: '2.0'
   spec_authority_source: null
   spec_hierarchy_mapping: not_applicable
-  src_layout_status: compliant
+  spec_parity_status: not_assessed
   src_layout_evidence: registry/source-structure-baseline.json
-  forbidden_bucket_scan_status: clean
-  forbidden_bucket_scan_evidence: []
-  sal_fact_linkage: not_applicable
-  sal_fact_count: 0
-  rcal_capability_linkage: null
+  src_layout_status: compliant
   taskcards: []
-  continuation_allowed: false
-  continuation_reason: Export-only writer, no document model
+  verification_commands: []
+- blocked_formats: []
   blockers:
   - export_only_no_document_model
-  next_required_action: None — export only
+  capability_to_feature_linkage: null
+  consumer_proof_level: 0
+  continuation_allowed: false
+  continuation_reason: Export-only writer, no document model
+  dom_applicability: NOT_APPLICABLE
+  e2e_proof: null
+  execution_mode: AUTO
+  focused_validation: null
+  forbidden_bucket_scan_evidence: []
+  forbidden_bucket_scan_status: clean
+  format: markdown
+  healing_sprint_id: null
+  integration_validation: null
+  lane_a_consecutive: 0
+  lane_a_maturity: A0
+  lane_b_ceiling: D0
+  lane_b_consecutive: 0
+  lane_b_maturity: D0
+  lane_starvation_threshold: 3
+  last_deepening_sprint: null
+  last_lane_a_sprint: null
+  last_lane_b_sprint: null
   last_verified_at: '2026-06-28'
   ledger_entry_hash: net-inventory-markdown-20260628
-  spec_parity_status: not_assessed
-  consumer_proof_level: 0
-  proof_level_target: 4
-  blocked_formats: []
-  healing_sprint_id: null
-  schema_version: '2.0'
   ledger_entry_version: 2
-  last_deepening_sprint: null
-  capability_to_feature_linkage: null
-  verification_commands: []
-  focused_validation: null
-  integration_validation: null
-  e2e_proof: null
+  next_required_action: None — export only
   pilot_proof: null
-  dom_applicability: NOT_APPLICABLE
-  lane_a_maturity: A0
-  lane_b_maturity: D0
-  lane_b_ceiling: D0
-  execution_mode: AUTO
-  last_lane_a_sprint: null
-  last_lane_b_sprint: null
-  lane_starvation_threshold: 3
-  lane_a_consecutive: 0
-  lane_b_consecutive: 0
-- product_id: TXT-NET
-  format: txt
-  runtime: dotnet
-  qname_schema_version: '1.0'
+  product_id: MARKDOWN-NET
+  proof_level_target: 4
   qname_compliance_status: not_applicable
   qname_evidence: null
+  qname_schema_version: '1.0'
+  rcal_capability_linkage: null
+  runtime: dotnet
+  sal_fact_count: 0
+  sal_fact_linkage: not_applicable
+  schema_version: '2.0'
   spec_authority_source: null
   spec_hierarchy_mapping: not_applicable
-  src_layout_status: compliant
+  spec_parity_status: not_assessed
   src_layout_evidence: registry/source-structure-baseline.json
-  forbidden_bucket_scan_status: clean
-  forbidden_bucket_scan_evidence: []
-  sal_fact_linkage: not_applicable
-  sal_fact_count: 0
-  rcal_capability_linkage: null
+  src_layout_status: compliant
   taskcards: []
-  continuation_allowed: false
-  continuation_reason: Export-only writer, no document model
+  verification_commands: []
+- blocked_formats: []
   blockers:
   - export_only_no_document_model
-  next_required_action: None — export only
-  last_verified_at: '2026-06-28'
-  ledger_entry_hash: net-inventory-txt-20260628
-  spec_parity_status: not_assessed
-  consumer_proof_level: 0
-  proof_level_target: 4
-  blocked_formats: []
-  healing_sprint_id: null
-  schema_version: '2.0'
-  ledger_entry_version: 2
-  last_deepening_sprint: null
   capability_to_feature_linkage: null
-  verification_commands: []
-  focused_validation: null
-  integration_validation: null
-  e2e_proof: null
-  pilot_proof: null
+  consumer_proof_level: 0
+  continuation_allowed: false
+  continuation_reason: Export-only writer, no document model
   dom_applicability: NOT_APPLICABLE
-  lane_a_maturity: A0
-  lane_b_maturity: D0
-  lane_b_ceiling: D0
+  e2e_proof: null
   execution_mode: AUTO
+  focused_validation: null
+  forbidden_bucket_scan_evidence: []
+  forbidden_bucket_scan_status: clean
+  format: txt
+  healing_sprint_id: null
+  integration_validation: null
+  lane_a_consecutive: 0
+  lane_a_maturity: A0
+  lane_b_ceiling: D0
+  lane_b_consecutive: 0
+  lane_b_maturity: D0
+  lane_starvation_threshold: 3
+  last_deepening_sprint: null
   last_lane_a_sprint: null
   last_lane_b_sprint: null
-  lane_starvation_threshold: 3
-  lane_a_consecutive: 0
-  lane_b_consecutive: 0
+  last_verified_at: '2026-06-28'
+  ledger_entry_hash: net-inventory-txt-20260628
+  ledger_entry_version: 2
+  next_required_action: None — export only
+  pilot_proof: null
+  product_id: TXT-NET
+  proof_level_target: 4
+  qname_compliance_status: not_applicable
+  qname_evidence: null
+  qname_schema_version: '1.0'
+  rcal_capability_linkage: null
+  runtime: dotnet
+  sal_fact_count: 0
+  sal_fact_linkage: not_applicable
+  schema_version: '2.0'
+  spec_authority_source: null
+  spec_hierarchy_mapping: not_applicable
+  spec_parity_status: not_assessed
+  src_layout_evidence: registry/source-structure-baseline.json
+  src_layout_status: compliant
+  taskcards: []
+  verification_commands: []

@@ -158,7 +158,7 @@ calls are made during spec retrieval. This applies to all three tiers.
 - Spec content must be pinned to a specific version (ODF 1.3 for FODS).
 - SHA-256 verification requires the local file to be unchanged.
 
-**Re-download policy:** Spec re-download is governed by `docs/specification-cache.md` and
+**Re-download policy:** Spec re-download is governed by `docs/python-foss/specification-cache.md` and
 requires explicit execution prompt authorization. It is not triggered by retrieval queries.
 
 ---

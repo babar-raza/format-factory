@@ -49,19 +49,19 @@ Before Phase 4 product source begins, each format should produce compiled unders
 - `security-surface.yaml`
 - `product-readiness.yaml`
 
-FUL-001, FUL-002, and FUL-003 are complete for the current FODS/FODT track. See [docs/format-understanding-layer.md](format-understanding-layer.md).
+FUL-001, FUL-002, and FUL-003 are complete for the current FODS/FODT track. See [docs/python-foss/format-understanding-layer.md](format-understanding-layer.md).
 
 ### Non-XML Adaptability
 
-The pipeline architecture must avoid hardcoding XML-only assumptions. Non-XML adaptability is backlog only until explicitly authorized. See [docs/format-representation-model.md](format-representation-model.md).
+The pipeline architecture must avoid hardcoding XML-only assumptions. Non-XML adaptability is backlog only until explicitly authorized. See [docs/python-foss/format-representation-model.md](format-representation-model.md).
 
 ### Controlled LLM and Embedding Strategy
 
-Future governed use of LLMs via `llm.professionalize.com` is planned. LLMs are not gate authority. Embeddings are retrieval tools, not truth authority. See [docs/llm-and-embedding-strategy.md](llm-and-embedding-strategy.md).
+Future governed use of LLMs via `llm.professionalize.com` is planned. LLMs are not gate authority. Embeddings are retrieval tools, not truth authority. See [docs/ai/llm-and-embedding-strategy.md](llm-and-embedding-strategy.md).
 
 ### Non-Aspose Candidate Registry
 
-A registry of formats underserved by Aspose products is planned but not created. See [docs/non-aspose-format-candidate-registry-plan.md](non-aspose-format-candidate-registry-plan.md).
+A registry of formats underserved by Aspose products is planned but not created. See [docs/python-foss/non-aspose-format-candidate-registry-plan.md](non-aspose-format-candidate-registry-plan.md).
 
 ---
 
@@ -89,7 +89,7 @@ Ask the agent to read these files before producing any prompt:
 6. `docs/agent-methodology-index.md`
 7. `docs/planning-methodology.md`
 8. `docs/agent-execution-handoff-standard.md`
-9. `docs/format-understanding-layer.md`
+9. `docs/python-foss/format-understanding-layer.md`
 10. `memory/00-index.md`
 11. `memory/09-current-state-before-phase1.md`
 12. Latest evidence bundle, if relevant

@@ -15,7 +15,7 @@ Policy:
     - This module does NOT call LLM endpoints.
 
 See also:
-    docs/specification-cache.md — full policy and schema reference
+    docs/python-foss/specification-cache.md — full policy and schema reference
     tools/spec-cache/acquire_spec.py — download and index a spec file
     tools/spec-cache/refresh_check.py — check for stale entries
 """

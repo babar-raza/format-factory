@@ -23,7 +23,7 @@ model and avoids XML-only hardcoding in pipeline infrastructure.
 - Define allowed values for physical_representation (text_xml, zip_container, binary_records, etc.)
 - Define per-representation parser strategy stubs (for future adaptation)
 - Document how each representation category affects: oracle strategy, fuzz surface, sample creation
-- Update docs/format-representation-model.md with schema references
+- Update docs/python-foss/format-representation-model.md with schema references
 
 ## Blocked On
 

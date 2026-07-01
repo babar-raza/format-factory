@@ -92,6 +92,6 @@ See: reports/r85/dogfood-export-map.md for the authoritative per-format matrix.
 
 ## Reference
 
-- Product track doc: docs/product-object-model-edit-save-export-strategy.md
+- Product track doc: docs/product-factory/product-object-model-edit-save-export-strategy.md
 - POC targets: product-capability-matrix/poc-targets.yaml
 - Export map: reports/r85/dogfood-export-map.md

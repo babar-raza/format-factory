@@ -25,7 +25,7 @@ Prior: FORMAT-FACTORY-R13B-DELEGATED-ZST-GATE1-REAL-SUPPORT-AUDIT-AND-GOVERNANCE
 | redistribution_permitted | false (IETF RFC text copyright; local-only caching permitted) |
 
 **IETF BCP 78 compliance:** This file does not reproduce or redistribute RFC text.
-The cached RFC text is local-only per docs/specification-cache.md. All citations use
+The cached RFC text is local-only per docs/python-foss/specification-cache.md. All citations use
 section numbers and line references; no substantial excerpting.
 
 ---

@@ -136,7 +136,7 @@ Every sample must have a provenance entry in `samples/_provenance.yaml` confirmi
 | Neutral model schemas | Apache 2.0 (same as OSS product) |
 | Prototypes | Internal only (not released) |
 
-The exact open-source license (Apache 2.0 vs MIT) is confirmed in `docs/product-tracks.md`. The default assumption is Apache 2.0 unless changed by an explicit project decision.
+The exact open-source license (Apache 2.0 vs MIT) is confirmed in `docs/product-factory/product-tracks.md`. The default assumption is Apache 2.0 unless changed by an explicit project decision.
 
 ---
 
@@ -184,8 +184,8 @@ The right to copy, distribute, or include the specification document in a reposi
 
 ## Relationship to Other Documents
 
-- See `docs/release-control.md` for visibility classification of legal evidence artifacts.
-- See `docs/specification-cache.md` for spec acquisition authorization model and storage policy.
+- See `docs/governance/release-control.md` for visibility classification of legal evidence artifacts.
+- See `docs/python-foss/specification-cache.md` for spec acquisition authorization model and storage policy.
 - See `docs/gates.md` for Gate 2 pass criteria and authorization rules.
 - See `registry/scoring/_scoring-model.md` for how legal category affects Gate 1 scoring.
 - See `acquisition-packs/_template/legal-notes.md` for the legal notes template.

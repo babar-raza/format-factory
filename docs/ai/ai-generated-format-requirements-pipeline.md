@@ -17,7 +17,7 @@ Human product goals define the target. The system generates detailed per-format 
 - Format understanding layer (acquisition-packs/{format}/)
 - Neutral model schemas (schemas/neutral-model/{format}/)
 - Existing source and tests (src/net/{format}/, tests/net/{format}/)
-- Product goals (docs/commercial-product-capability-model.md)
+- Product goals (docs/product-factory/commercial-product-capability-model.md)
 
 ---
 
@@ -163,9 +163,9 @@ If gate fails: `REQUIREMENTS_GENERATION_NOT_READY_FOR_IMPLEMENTATION`
 
 ## Cross-References
 
-- Capability model: docs/commercial-product-capability-model.md
-- Architecture: docs/commercial-dotnet-architecture.md
-- AI operating model: docs/ai-usage-operating-model.md
-- RAG policy: docs/spec-retrieval-and-rag-policy.md
+- Capability model: docs/product-factory/commercial-product-capability-model.md
+- Architecture: docs/product-factory/commercial-dotnet-architecture.md
+- AI operating model: docs/ai/ai-usage-operating-model.md
+- RAG policy: docs/ai/spec-retrieval-and-rag-policy.md
 - Schemas: schemas/generated-requirements/
 - Validator: tools/requirements/validate_generated_requirements.py

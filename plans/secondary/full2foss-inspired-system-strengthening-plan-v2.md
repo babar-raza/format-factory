@@ -56,8 +56,8 @@ The execution prompt for this sprint authorizes creating:
 - plans/master-plan.md Section 34 (append only)
 - AGENTS.md Section AA (append only, marked proposed-only)
 - GOVERNANCE.md Section 20 (append only, marked proposed-only)
-- docs/acquisition-workflow.md one-paragraph note (append only)
-- docs/current-state-and-evidence-authority.md one-paragraph note (append only)
+- docs/python-foss/acquisition-workflow.md one-paragraph note (append only)
+- docs/governance/current-state-and-evidence-authority.md one-paragraph note (append only)
 - tools/evidence/contracts/secondary-full2foss-plan-repair.yaml
 - Staging metadata (39 files) and evidence bundle
 
@@ -160,7 +160,7 @@ Missing: Structured review items linking replay failure to specific operation an
 Borrowing: Conflict review queue.
 
 ### Gap 4: Format-Family Reuse Playbooks
-Current: docs/odf-flat-family-reuse-strategy.md documents reuse informally. No machine-
+Current: docs/python-foss/odf-flat-family-reuse-strategy.md documents reuse informally. No machine-
 readable family playbook or override model.
 Missing: acquisition-packs/_families/odf-flat/ with machine-readable reuse classification.
 Borrowing: Source format → derived format with per-format overrides.

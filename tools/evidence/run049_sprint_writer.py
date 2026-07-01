@@ -13,7 +13,7 @@ Sections:
   E: FUL-001 schema design execution (6 schemas in schemas/format-understanding/)
   F-K: FODS Format Understanding Package compilation (6 FUL files)
   L-Q: FODT Format Understanding Package compilation (6 FUL files, partial)
-  R: XML-first consolidation (update docs/format-understanding-layer.md)
+  R: XML-first consolidation (update docs/python-foss/format-understanding-layer.md)
   S: LLM/embedding policy preservation check
   T: State document updates (master-plan v2.45, README, ROADMAP, settings.json, memory/09)
   U: Evidence contract (run049-combined-sprint.yaml)
@@ -391,7 +391,7 @@ def section_c_contract_closure():
                 result = patch_file(
                     f"tools/evidence/contracts/{yaml_path.name}",
                     "created_by: claude-sonnet-4-6\n",
-                    f"created_by: claude-sonnet-4-6\n{closure_field}  # run049: patched per docs/current-state-and-evidence-authority.md Section 6\n",
+                    f"created_by: claude-sonnet-4-6\n{closure_field}  # run049: patched per docs/governance/current-state-and-evidence-authority.md Section 6\n",
                     "Add current_state_authority field"
                 )
                 if result:
@@ -402,7 +402,7 @@ def section_c_contract_closure():
                 result = patch_file(
                     f"tools/evidence/contracts/{yaml_path.name}",
                     contract_id_line + "\n",
-                    contract_id_line + "\n" + closure_field + "  # run049: patched per docs/current-state-and-evidence-authority.md Section 6\n",
+                    contract_id_line + "\n" + closure_field + "  # run049: patched per docs/governance/current-state-and-evidence-authority.md Section 6\n",
                     "Add current_state_authority field (fallback)"
                 )
                 if result:
@@ -413,7 +413,7 @@ def section_c_contract_closure():
 
 ## Policy Reference
 
-docs/current-state-and-evidence-authority.md Section 6 requires:
+docs/governance/current-state-and-evidence-authority.md Section 6 requires:
 All run contracts from run041 forward must include:
   current_state_authority: bundle-metadata
 
@@ -526,8 +526,8 @@ def section_d_stale_state_repair():
         # Fix Final HEAD authority line
         r = patch_file(
             "memory/09-current-state-before-phase1.md",
-            "| Final HEAD authority | bundle-metadata/git-log.txt (see docs/current-state-and-evidence-authority.md) |",
-            "| Final HEAD authority | bundle-metadata/git-log.txt (see docs/current-state-and-evidence-authority.md). last_completed_run: run049 |",
+            "| Final HEAD authority | bundle-metadata/git-log.txt (see docs/governance/current-state-and-evidence-authority.md) |",
+            "| Final HEAD authority | bundle-metadata/git-log.txt (see docs/governance/current-state-and-evidence-authority.md). last_completed_run: run049 |",
             "Final HEAD authority updated"
         )
         if r: issues_fixed.append("memory/09: Final HEAD authority updated")
@@ -602,7 +602,7 @@ def section_e_ful001_schemas():
 # Format Profile Schema — Format Understanding Layer
 # schema_id: format-profile
 # Part of FUL-001 (run049, 2026-05-08)
-# Authority: docs/format-understanding-layer.md Section 3-4
+# Authority: docs/python-foss/format-understanding-layer.md Section 3-4
 
 schema_id: format-profile
 version: "1.0"
@@ -667,7 +667,7 @@ notes: >
 # Verified Facts Schema — Format Understanding Layer
 # schema_id: verified-facts
 # Part of FUL-001 (run049, 2026-05-08)
-# Authority: docs/format-understanding-layer.md Section 4.2
+# Authority: docs/python-foss/format-understanding-layer.md Section 4.2
 
 schema_id: verified-facts
 version: "1.0"
@@ -718,7 +718,7 @@ required_facts_per_format:
 # Implementation Requirements Schema — Format Understanding Layer
 # schema_id: implementation-requirements
 # Part of FUL-001 (run049, 2026-05-08)
-# Authority: docs/format-understanding-layer.md Section 4.3
+# Authority: docs/python-foss/format-understanding-layer.md Section 4.3
 
 schema_id: implementation-requirements
 version: "1.0"
@@ -2189,10 +2189,10 @@ product-readiness.yaml is intentionally partial:
 # ============================================================
 
 def section_r_xml_first_update():
-    print("\n  Updating docs/format-understanding-layer.md (XML-first consolidation)...")
+    print("\n  Updating docs/python-foss/format-understanding-layer.md (XML-first consolidation)...")
 
     # Patch FUL doc to reference schemas and update status
-    ful_path = "docs/format-understanding-layer.md"
+    ful_path = "docs/python-foss/format-understanding-layer.md"
 
     # Update status section
     patch_file(
@@ -2244,12 +2244,12 @@ Both formats share:
 - Expat/ElementTree parser base
 - Legal category 1 (OASIS RF)
 
-Non-XML formats remain deferred backlog (docs/format-representation-model.md).
+Non-XML formats remain deferred backlog (docs/python-foss/format-representation-model.md).
 
 ## Changes Made
 
-1. docs/format-understanding-layer.md: Status updated to ACTIVE with schema table
-2. docs/format-understanding-layer.md: Section 3.1 updated with run049 state
+1. docs/python-foss/format-understanding-layer.md: Status updated to ACTIVE with schema table
+2. docs/python-foss/format-understanding-layer.md: Section 3.1 updated with run049 state
 
 ## XML-First Policy Confirmed
 
@@ -2260,7 +2260,7 @@ This is consistent with "XML-first" consolidation scope.
 ## XML_FIRST_CONSOLIDATION: PASS
 """
     stage_meta("xml-first-consolidation-report.md", xml_first_report)
-    print("  XML-FIRST CONSOLIDATION: docs/format-understanding-layer.md updated")
+    print("  XML-FIRST CONSOLIDATION: docs/python-foss/format-understanding-layer.md updated")
 
 
 # ============================================================
@@ -2270,12 +2270,12 @@ This is consistent with "XML-first" consolidation scope.
 def section_s_llm_policy():
     print("\n  Checking LLM/embedding policy preservation...")
 
-    llm_doc_path = REPO / "docs/llm-and-embedding-strategy.md"
+    llm_doc_path = REPO / "docs/ai/llm-and-embedding-strategy.md"
     llm_exists = llm_doc_path.exists()
     llm_content = llm_doc_path.read_text(encoding="utf-8") if llm_exists else ""
 
     checks = [
-        ("doc_exists", "docs/llm-and-embedding-strategy.md exists", llm_exists),
+        ("doc_exists", "docs/ai/llm-and-embedding-strategy.md exists", llm_exists),
         ("no_production_calls", "No LLM API calls in this sprint", True),
         ("no_embeddings", "No embedding indexes created", True),
         ("no_vector_db", "No vector DB created", not (REPO / ".local/vector").exists() and not (REPO / ".local/embeddings").exists()),
@@ -2293,8 +2293,8 @@ def section_s_llm_policy():
 
 ## Policy Source
 
-docs/llm-and-embedding-strategy.md (memory sprint, 2026-05-08)
-docs/llm-endpoint-strategy.md (Phase 0 foundation)
+docs/ai/llm-and-embedding-strategy.md (memory sprint, 2026-05-08)
+docs/ai/llm-endpoint-strategy.md (Phase 0 foundation)
 
 ## Preservation Checks
 
@@ -2353,8 +2353,8 @@ def section_t_state_updates():
 
     r = patch_file(
         mp_path,
-        "**Last updated:** 2026-05-08\n**Current phase:** Phase 3: FODS Gates 1-10 ALL PASSED; Gate 11 planning_ready. FODT Gates 1-8 ALL PASSED; Gate 9 product-mapping planning_ready.\n**Current status:** FODS: Gates 1-10 ALL PASSED. Gate 10 APPROVED Babar Raza 2026-05-08 (run048; Tiers 0-2, 12 features; format-factory-fods v0.1.0; TC-0044 COMPLETED). Gate 11 planning_ready (TC-0047 not_started, blocked DEC-033). FODT: Gates 1-8 ALL PASSED. Gate 7 APPROVED Babar Raza 2026-05-08 (run048; FODT_GATE7_FUZZ_TEST PASS 18/18; TC-0045 COMPLETED). Gate 8 APPROVED Babar Raza 2026-05-08 (run048; GATE8_SECURITY_REVIEW PASS; TC-7 partially mitigated deferred Gate 10; TC-0046 COMPLETED). Gate 9 planning_ready (TC-0048 not_started). REQUIRED_METADATA_DEPTH check added (run048; min 10 named files for high-count contracts). No product source. last_completed_run: run048. Exact final HEAD in bundle-metadata/git-log.txt (see docs/current-state-and-evidence-authority.md).",
-        "**Last updated:** 2026-05-08\n**Current phase:** Phase 3: FODS Gates 1-10 ALL PASSED; Gate 11 planning_ready. FODT Gates 1-8 ALL PASSED; Gate 9 product-mapping planning_ready.\n**Current status:** FODS: Gates 1-10 ALL PASSED. Gate 10 APPROVED Babar Raza 2026-05-08 (run048; Tiers 0-2, 12 features; format-factory-fods v0.1.0; TC-0044 COMPLETED). Gate 11 planning_ready (TC-0047 not_started, blocked DEC-033). FODT: Gates 1-8 ALL PASSED. Gate 9 planning_ready (TC-0048 not_started). Format Understanding Layer: FUL-001 schemas (run049; 6 schemas in schemas/format-understanding/); FUL-002 FODS package COMPLETED (run049; 6 files in acquisition-packs/fods/); FUL-003 FODT package partial (run049; 6 files in acquisition-packs/fodt/, product-readiness.yaml partial Gate 9 required). Stale state repaired (memory/09, master-plan Section 6). Contract closure policy patched. No product source. last_completed_run: run049. Exact final HEAD in bundle-metadata/git-log.txt (see docs/current-state-and-evidence-authority.md).",
+        "**Last updated:** 2026-05-08\n**Current phase:** Phase 3: FODS Gates 1-10 ALL PASSED; Gate 11 planning_ready. FODT Gates 1-8 ALL PASSED; Gate 9 product-mapping planning_ready.\n**Current status:** FODS: Gates 1-10 ALL PASSED. Gate 10 APPROVED Babar Raza 2026-05-08 (run048; Tiers 0-2, 12 features; format-factory-fods v0.1.0; TC-0044 COMPLETED). Gate 11 planning_ready (TC-0047 not_started, blocked DEC-033). FODT: Gates 1-8 ALL PASSED. Gate 7 APPROVED Babar Raza 2026-05-08 (run048; FODT_GATE7_FUZZ_TEST PASS 18/18; TC-0045 COMPLETED). Gate 8 APPROVED Babar Raza 2026-05-08 (run048; GATE8_SECURITY_REVIEW PASS; TC-7 partially mitigated deferred Gate 10; TC-0046 COMPLETED). Gate 9 planning_ready (TC-0048 not_started). REQUIRED_METADATA_DEPTH check added (run048; min 10 named files for high-count contracts). No product source. last_completed_run: run048. Exact final HEAD in bundle-metadata/git-log.txt (see docs/governance/current-state-and-evidence-authority.md).",
+        "**Last updated:** 2026-05-08\n**Current phase:** Phase 3: FODS Gates 1-10 ALL PASSED; Gate 11 planning_ready. FODT Gates 1-8 ALL PASSED; Gate 9 product-mapping planning_ready.\n**Current status:** FODS: Gates 1-10 ALL PASSED. Gate 10 APPROVED Babar Raza 2026-05-08 (run048; Tiers 0-2, 12 features; format-factory-fods v0.1.0; TC-0044 COMPLETED). Gate 11 planning_ready (TC-0047 not_started, blocked DEC-033). FODT: Gates 1-8 ALL PASSED. Gate 9 planning_ready (TC-0048 not_started). Format Understanding Layer: FUL-001 schemas (run049; 6 schemas in schemas/format-understanding/); FUL-002 FODS package COMPLETED (run049; 6 files in acquisition-packs/fods/); FUL-003 FODT package partial (run049; 6 files in acquisition-packs/fodt/, product-readiness.yaml partial Gate 9 required). Stale state repaired (memory/09, master-plan Section 6). Contract closure policy patched. No product source. last_completed_run: run049. Exact final HEAD in bundle-metadata/git-log.txt (see docs/governance/current-state-and-evidence-authority.md).",
         "master-plan current status updated for run049"
     )
     if r: updates_made.append("master-plan.md: current status updated for run049")
@@ -2499,7 +2499,7 @@ def section_u_evidence_contract():
 #   E: FUL-001 schema design execution (6 schemas in schemas/format-understanding/)
 #   F-K: FODS Format Understanding Package (6 files in acquisition-packs/fods/)
 #   L-Q: FODT Format Understanding Package (6 files in acquisition-packs/fodt/, partial)
-#   R: XML-first consolidation (docs/format-understanding-layer.md updated)
+#   R: XML-first consolidation (docs/python-foss/format-understanding-layer.md updated)
 #   S: LLM/embedding policy preservation check
 #   T: State document updates (master-plan v2.45, README, ROADMAP, settings.json, memory/09)
 #   U: This contract
@@ -2518,7 +2518,7 @@ contract_repo_path: tools/evidence/contracts/run049-combined-sprint.yaml
 require_manifest: true
 min_metadata_count: 70
 normal_pass_min_metadata: 70
-current_state_authority: bundle-metadata  # docs/current-state-and-evidence-authority.md Section 6
+current_state_authority: bundle-metadata  # docs/governance/current-state-and-evidence-authority.md Section 6
 
 required_metadata_files:
   - git-log.txt

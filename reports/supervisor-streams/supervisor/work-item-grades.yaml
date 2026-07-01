@@ -1,172 +1,35 @@
-- item_id: GOVBLOCK-INVESTIGATION
-  item_title: Investigate and resolve stale GOV_BLOCK in continuation signal
+- item_id: WI-TC-SHR-CAP
+  item_title: Verify autonomous_cycle.py baseline_loc_cap within actual LOC
   declared_status: completed
-  supervisor_grade: ACCEPTED_VERIFIED
+  supervisor_grade: ACCEPTED_WITH_LIMITATIONS
   evidence_found: true
   evidence_paths:
-  - tools/validators/validate_source_architecture.py
-  - .local/supervisor/continuation-signal.json
+  - .local/evidences/system-healing-unblock-20260625/system-healing-gate-verdict-20260701.md
   tests_supporting: []
   tests_missing: []
   acceptance_criteria_met:
   - Evidence found
   - No missing paths
   - 'Governance item: file-content validated (test coverage N/A by design)'
-  acceptance_criteria_failed: []
+  acceptance_criteria_failed:
+  - Evidence does not include any measurement of the actual lines of code (LOC) for
+    autonomous_cycle.py.
+  - No test or script asserts that actual LOC is less than or equal to the baseline_loc_cap
+    value in source-structure-baseline.json.
+  - Provided gate verdict and test results pertain to unrelated functionality (lane
+    guard, sal staleness, etc.) and do not verify the LOC constraint.
+  - 'Scope mismatch: the evidence addresses baseline_loc_cap update but not the verification
+    that actual LOC meets the constraint.'
   required_rework: ''
   can_autonomously_repair: false
-  next_prompt_instruction: ''
-  purpose_check:
-    item_type: GOVERNANCE_TASKCARD
-    has_gap_ref: null
-    verdict: NOT_APPLICABLE
-    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
-  test_layer_check:
-    inadequate: false
-    note: non-product item, skip
-  semantic_verification:
-    adequate: true
-    confidence: 0.7
-    stub_detected: false
-    deficiencies: []
-    llm_used: false
-    intermediate_verified: true
-    source: intermediate_content_check
-    checks:
-    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\tools\validators\validate_source_architecture.py
-      exists: true
-      content_ok: true
-      detail: 'non-empty (17053 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\tools\validators\validate_source_architecture.py'
-      check_type: nonzero_existence
-    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\continuation-signal.json
-      exists: true
-      content_ok: true
-      detail: JSON object with 14 keys
-      check_type: json_content
-    summary: 2/2 evidence files passed content check
-- item_id: TC-HEAL-ABW-001
-  item_title: Promote ABW qname entries from implementing to verified
-  declared_status: completed
-  supervisor_grade: ACCEPTED_VERIFIED
-  evidence_found: true
-  evidence_paths:
-  - shared/qname-registry/abw.yaml
-  - registry/product-deepening-ledger.yaml
-  - src/python/abw/spec/document/document.py
-  - src/python/abw/spec/document/section.py
-  - src/python/abw/spec/document/paragraph.py
-  tests_supporting: []
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  - 'Governance item: file-content validated (test coverage N/A by design)'
-  acceptance_criteria_failed: []
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: ''
-  purpose_check:
-    item_type: GOVERNANCE_TASKCARD
-    has_gap_ref: null
-    verdict: NOT_APPLICABLE
-    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
-  test_layer_check:
-    inadequate: false
-    note: non-product item, skip
-  semantic_verification:
-    adequate: true
-    confidence: 0.42
-    stub_detected: false
-    deficiencies:
-    - 'few key fields found: [] (expected >=3)'
-    - 'few key fields found: [] (expected >=3)'
-    llm_used: false
-    intermediate_verified: true
-    source: intermediate_content_check
-    checks:
-    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\shared\qname-registry\abw.yaml
-      exists: true
-      content_ok: false
-      detail: 'few key fields found: [] (expected >=3)'
-      check_type: yaml_content
-    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\registry\product-deepening-ledger.yaml
-      exists: true
-      content_ok: false
-      detail: 'few key fields found: [] (expected >=3)'
-      check_type: yaml_content
-    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\abw\spec\document\document.py
-      exists: true
-      content_ok: true
-      detail: 'non-empty (1907 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\abw\spec\document\document.py'
-      check_type: nonzero_existence
-    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\abw\spec\document\section.py
-      exists: true
-      content_ok: true
-      detail: 'non-empty (1617 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\abw\spec\document\section.py'
-      check_type: nonzero_existence
-    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\abw\spec\document\paragraph.py
-      exists: true
-      content_ok: true
-      detail: 'non-empty (1373 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\abw\spec\document\paragraph.py'
-      check_type: nonzero_existence
-    summary: 3/5 evidence files passed content check
-- item_id: TC-GAP-TRIAGE-001
-  item_title: Triage all 32 open gaps to zero open
-  declared_status: completed
-  supervisor_grade: ACCEPTED_VERIFIED
-  evidence_found: true
-  evidence_paths:
-  - reports/capability-layer/gap-ledger.json
-  tests_supporting: []
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  - 'Governance item: file-content validated (test coverage N/A by design)'
-  acceptance_criteria_failed: []
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: ''
-  purpose_check:
-    item_type: GOVERNANCE_TASKCARD
-    has_gap_ref: null
-    verdict: NOT_APPLICABLE
-    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
-  test_layer_check:
-    inadequate: false
-    note: non-product item, skip
-  semantic_verification:
-    adequate: true
-    confidence: 0.7
-    stub_detected: false
-    deficiencies: []
-    llm_used: false
-    intermediate_verified: true
-    source: intermediate_content_check
-    checks:
-    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\reports\capability-layer\gap-ledger.json
-      exists: true
-      content_ok: true
-      detail: JSON object with 6 keys
-      check_type: json_content
-    summary: 1/1 evidence files passed content check
-- item_id: TC-LOCK-HYGIENE-001
-  item_title: Verify plan locks are clean
-  declared_status: completed
-  supervisor_grade: ACCEPTED_VERIFIED
-  evidence_found: true
-  evidence_paths:
-  - .local/supervisor/plan-locks/
-  tests_supporting: []
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  - 'Governance item: file-content validated (test coverage N/A by design)'
-  acceptance_criteria_failed: []
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: ''
+  next_prompt_instruction: 'Semantic verification downgraded ACCEPTED_VERIFIED ->
+    ACCEPTED_WITH_LIMITATIONS: Evidence does not include any measurement of the actual
+    lines of code (LOC) for autonomous_cycle.py.; No test or script asserts that actual
+    LOC is less than or equal to the baseline_loc_cap value in source-structure-baseline.json.;
+    Provided gate verdict and test results pertain to unrelated functionality (lane
+    guard, sal staleness, etc.) and do not verify the LOC constraint.; Scope mismatch:
+    the evidence addresses baseline_loc_cap update but not the verification that actual
+    LOC meets the constraint.'
   purpose_check:
     item_type: GOVERNANCE_TASKCARD
     has_gap_ref: null
@@ -177,18 +40,60 @@
     note: non-product item, skip
   semantic_verification:
     adequate: false
-    confidence: 0.0
+    confidence: 0.9
     stub_detected: false
     deficiencies:
-    - evidence_files_unreadable
-    llm_used: false
-- item_id: QOI-LOC-FIX
-  item_title: Fix QOI image_document.py LOC cap violation
+    - Evidence does not include any measurement of the actual lines of code (LOC)
+      for autonomous_cycle.py.
+    - No test or script asserts that actual LOC is less than or equal to the baseline_loc_cap
+      value in source-structure-baseline.json.
+    - Provided gate verdict and test results pertain to unrelated functionality (lane
+      guard, sal staleness, etc.) and do not verify the LOC constraint.
+    - 'Scope mismatch: the evidence addresses baseline_loc_cap update but not the
+      verification that actual LOC meets the constraint.'
+    llm_used: true
+    _cached_at: '2026-07-01T11:41:18.564920+00:00'
+    _from_cache: true
+- item_id: WI-TC-SHR-002
+  item_title: Write system-healing gate verdict document
   declared_status: completed
   supervisor_grade: ACCEPTED_VERIFIED
   evidence_found: true
   evidence_paths:
-  - src/python/qoi/image_document.py
+  - .local/evidences/system-healing-unblock-20260625/system-healing-gate-verdict-20260701.md
+  tests_supporting: []
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  - 'Acceptance criteria verified: PASS'
+  acceptance_criteria_failed: []
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: ''
+  purpose_check:
+    item_type: GOVERNANCE_TASKCARD
+    has_gap_ref: null
+    verdict: NOT_APPLICABLE
+    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
+  test_layer_check:
+    inadequate: false
+    note: non-product item, skip
+  semantic_verification:
+    adequate: true
+    confidence: 0.97
+    stub_detected: false
+    deficiencies: []
+    llm_used: true
+    _cached_at: '2026-07-01T11:41:28.691708+00:00'
+    _from_cache: true
+- item_id: WI-TC-SHR-003
+  item_title: Update sprint-safety-lock to CONDITIONALLY_UNBLOCKED
+  declared_status: completed
+  supervisor_grade: ACCEPTED_VERIFIED
+  evidence_found: true
+  evidence_paths:
+  - .local/evidences/pre-product-acquisition-item-recon-20260625-32bf5c04/sprint-safety-lock.md
   tests_supporting: []
   tests_missing: []
   acceptance_criteria_met:
@@ -209,16 +114,53 @@
     note: non-product item, skip
   semantic_verification:
     adequate: true
-    confidence: 0.7
+    confidence: 0.95
     stub_detected: false
     deficiencies: []
-    llm_used: false
-    intermediate_verified: true
-    source: intermediate_content_check
-    checks:
-    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\qoi\image_document.py
-      exists: true
-      content_ok: true
-      detail: 'non-empty (23670 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\qoi\image_document.py'
-      check_type: nonzero_existence
-    summary: 1/1 evidence files passed content check
+    llm_used: true
+    _cached_at: '2026-07-01T11:41:32.924898+00:00'
+    _from_cache: true
+- item_id: WI-TC-SHR-004
+  item_title: Full supervisor validation suite
+  declared_status: completed
+  supervisor_grade: ACCEPTED_VERIFIED
+  evidence_found: true
+  evidence_paths:
+  - .local/evidences/system-healing-unblock-20260625/system-healing-gate-verdict-20260701.md
+  tests_supporting: []
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  - 'Governance item: file-content validated (test coverage N/A by design)'
+  acceptance_criteria_failed: []
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: ''
+  purpose_check:
+    item_type: GOVERNANCE_TASKCARD
+    has_gap_ref: null
+    verdict: NOT_APPLICABLE
+    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
+  test_layer_check:
+    inadequate: false
+    note: non-product item, skip
+  semantic_verification:
+    adequate: true
+    confidence: 0.73
+    stub_detected: false
+    deficiencies:
+    - Evidence consists only of a markdown gate verdict summary; actual test code
+      files are not provided for review.
+    - No visibility into the contents of the listed test files (e.g., test_lane_guard.py,
+      test_sal_staleness.py, test_r113_odf_spec_linkage_detector.py) to verify they
+      contain meaningful assertions rather than stubs or trivial checks.
+    - 'Potential thin coverage: the supervisor suite likely includes many validation
+      aspects, yet only aggregate pass counts are shown without detail on test scope
+      or depth.'
+    - Reliance on external gate output without independent verification of test implementation
+      or coverage metrics.
+    llm_used: true
+    low_confidence_override: true
+    _cached_at: '2026-07-01T11:41:41.772900+00:00'
+    _from_cache: true

@@ -10,8 +10,8 @@ Define durable repo rules for using AI safely and effectively as an accelerator 
 
 ## Scope
 
-- Create `docs/ai-usage-operating-model.md` (philosophy, allowed/prohibited uses, ledger, acceptance workflow, gate safeguards)
-- Create `docs/ai-usage-operating-model.yaml` (machine-readable policy)
+- Create `docs/ai/ai-usage-operating-model.md` (philosophy, allowed/prohibited uses, ledger, acceptance workflow, gate safeguards)
+- Create `docs/ai/ai-usage-operating-model.yaml` (machine-readable policy)
 - Ensure rules reference existing AGENTS.md §H/T/V/W/X and llm-endpoint-strategy.md without duplication
 - Ensure capability model alignment (C0-C10)
 
@@ -23,8 +23,8 @@ Define durable repo rules for using AI safely and effectively as an accelerator 
 
 ## Acceptance Criteria
 
-- [x] docs/ai-usage-operating-model.md exists
-- [x] docs/ai-usage-operating-model.yaml exists
+- [x] docs/ai/ai-usage-operating-model.md exists
+- [x] docs/ai/ai-usage-operating-model.yaml exists
 - [x] AI-as-accelerator philosophy documented
 - [x] Allowed uses documented (12+ categories)
 - [x] Prohibited uses documented (12+ categories)
@@ -42,8 +42,8 @@ Define durable repo rules for using AI safely and effectively as an accelerator 
 
 ## Files Allowed
 
-- docs/ai-usage-operating-model.md (create)
-- docs/ai-usage-operating-model.yaml (create)
+- docs/ai/ai-usage-operating-model.md (create)
+- docs/ai/ai-usage-operating-model.yaml (create)
 
 ## Prohibited Actions
 

@@ -77,7 +77,7 @@ All schemas in this directory are `visibility: internal` until Gate 9 (product m
 
 ## Relationship to Other Documents
 
-- `docs/architecture.md` — context for neutral model in the system architecture
+- `docs/code-quality/architecture.md` — context for neutral model in the system architecture
 - `docs/gates.md` — Gate 5 (neutral model) pass criteria
-- `docs/acquisition-workflow.md` — Stage 5: Neutral Model Design
+- `docs/python-foss/acquisition-workflow.md` — Stage 5: Neutral Model Design
 - `taskcards/TC-0002-schema-language.md` — schema language selection decision

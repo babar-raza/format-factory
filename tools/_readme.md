@@ -80,10 +80,10 @@ All tools are `visibility: internal`. Tools are acquisition-layer artifacts — 
 
 ## Relationship to Other Documents
 
-- `docs/llm-endpoint-strategy.md` — endpoint configuration policy and credential rules
-- `docs/specification-cache.md` — specification cache policy and schema
-- `docs/release-control.md` — visibility classification (tools are always internal)
-- `docs/acquisition-workflow.md` — where tools are invoked in the pipeline
+- `docs/ai/llm-endpoint-strategy.md` — endpoint configuration policy and credential rules
+- `docs/python-foss/specification-cache.md` — specification cache policy and schema
+- `docs/governance/release-control.md` — visibility classification (tools are always internal)
+- `docs/python-foss/acquisition-workflow.md` — where tools are invoked in the pipeline
 - `taskcards/TC-0005-llm-endpoint-impl.md` — LLM tool implementation scope
 - `taskcards/TC-0006-release-manifest.md` — validation tool implementation scope
 - `taskcards/TC-0007-specification-cache.md` — spec-cache tool implementation scope

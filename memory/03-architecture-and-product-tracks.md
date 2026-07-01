@@ -33,7 +33,7 @@ Python OSS Product Track
 
 ## Hybrid Spec Retrieval Strategy (added run027)
 
-Agents query the normalized spec using a 3-tier hierarchy. See `docs/spec-retrieval-strategy.md` for full policy.
+Agents query the normalized spec using a 3-tier hierarchy. See `docs/ai/spec-retrieval-strategy.md` for full policy.
 
 | Tier | Method | Tool invocation | When to use |
 |---|---|---|---|
@@ -45,7 +45,7 @@ Rules:
 - Always attempt Tier 1 before Tier 2 or Tier 3.
 - Every query must specify `--format-id fods` (format isolation — no cross-format bleed).
 - All retrieval is local-only (`.local/spec-cache/`). No remote calls during retrieval.
-- Every result cited in Gate evidence must include `spec_citation` provenance block (see `docs/spec-retrieval-strategy.md` §6).
+- Every result cited in Gate evidence must include `spec_citation` provenance block (see `docs/ai/spec-retrieval-strategy.md` §6).
 - Tier 3 vector search is NOT yet available. TC-0015 evaluates it; TC-0016 implements it (both blocked by human review).
 
 ## Product-neutral acquisition layer

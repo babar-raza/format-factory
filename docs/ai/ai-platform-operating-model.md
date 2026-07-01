@@ -16,7 +16,7 @@ The platform is designed once and hardened deeply. It is not a collection of iso
 
 ## 2. Core Principle
 
-**AI is accelerator, not authority.** This principle from `docs/ai-usage-operating-model.md` remains the foundation. The platform layer enforces this structurally, not just by policy.
+**AI is accelerator, not authority.** This principle from `docs/ai/ai-usage-operating-model.md` remains the foundation. The platform layer enforces this structurally, not just by policy.
 
 ## 3. AI Usage Categories
 
@@ -283,9 +283,9 @@ No model names, endpoints, or credentials may be hardcoded in pipeline tools. Th
 | `docs/ai/ai-assisted-acquisition-pipeline.md` | Acquisition pipeline integration |
 | `docs/ai/ai-technology-decision-record.md` | Technology selection decisions |
 | `docs/ai/deferred-ai-features-review.md` | Deferred feature classification |
-| `docs/ai-usage-operating-model.md` | Existing AI operating model (preserved) |
-| `docs/spec-retrieval-and-rag-policy.md` | Existing RAG policy (preserved) |
-| `docs/llm-and-embedding-strategy.md` | Existing strategy (superseded by this platform model) |
+| `docs/ai/ai-usage-operating-model.md` | Existing AI operating model (preserved) |
+| `docs/ai/spec-retrieval-and-rag-policy.md` | Existing RAG policy (preserved) |
+| `docs/ai/llm-and-embedding-strategy.md` | Existing strategy (superseded by this platform model) |
 | `plans/master-plan.md` | Section 14, 37, 39 |
 | `AGENTS.md` | Sections H, AF12, AF16 |
 | `GOVERNANCE.md` | Sections 26.10, 26.14 |

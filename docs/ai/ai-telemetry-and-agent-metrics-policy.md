@@ -132,5 +132,5 @@ Raw JSONL is NOT included in evidence bundles (too verbose). Summary statistics 
 |----------|-------------|
 | `docs/ai/ai-platform-operating-model.md` | Parent platform model |
 | `AGENTS.md` Section H5, Section L | Existing run record requirements |
-| `docs/ai-usage-operating-model.md` | AI usage ledger format (existing) |
+| `docs/ai/ai-usage-operating-model.md` | AI usage ledger format (existing) |
 | `docs/ai/ai-risk-register.md` | RISK-AI-016, RISK-AI-017, RISK-AI-023 |

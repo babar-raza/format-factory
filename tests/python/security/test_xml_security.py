@@ -232,7 +232,7 @@ class TestXmlSecurityDocumentIntegrity:
         )
 
     def test_compliance_posture_exists(self):
-        """docs/compliance-posture.md must exist (governance audit artifact)."""
+        """docs/governance/compliance-posture.md must exist (governance audit artifact)."""
         compliance_doc = _REPO / "docs" / "compliance-posture.md"
         assert compliance_doc.exists(), f"Compliance posture doc missing: {compliance_doc}"
 

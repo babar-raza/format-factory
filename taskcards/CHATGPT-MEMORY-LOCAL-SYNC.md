@@ -11,7 +11,7 @@ governance files. Ensure future chats/agents can continue from disk without rely
 ## Scope
 - Memory file creation (memory/24-chatgpt-session-memory-sync-20260513.md)
 - Memory index update (memory/00-index.md)
-- Fresh-chat bootstrap docs (docs/fresh-chat-project-bootstrap.md, .yaml)
+- Fresh-chat bootstrap docs (docs/automation/fresh-chat-project-bootstrap.md, .yaml)
 - Continuity map (reports/planning/current-project-continuity-map-20260513.md, .yaml)
 - Governance gap check and updates (AGENTS.md AF13-AF14, GOVERNANCE.md 26.11-26.12)
 - Governance reports (reports/governance/chatgpt-memory-local-sync-20260513.md, .yaml)
@@ -30,7 +30,7 @@ governance files. Ensure future chats/agents can continue from disk without rely
 
 ## Acceptance Criteria
 - memory/24-chatgpt-session-memory-sync-20260513.md created with 18 required sections
-- docs/fresh-chat-project-bootstrap.md and .yaml created and pasteable
+- docs/automation/fresh-chat-project-bootstrap.md and .yaml created and pasteable
 - reports/planning/current-project-continuity-map-20260513.md and .yaml created
 - reports/governance/chatgpt-memory-local-sync-20260513.md and .yaml created
 - AGENTS.md §AF13 and §AF14 added

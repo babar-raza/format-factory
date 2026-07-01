@@ -68,7 +68,7 @@ spec_cache_entry:
   source_url: string             # URL where file was downloaded from
   canonical_url: string          # Official canonical URL for this spec version
   publisher: string              # Standards body name, e.g. "OASIS"
-  legal_category: integer        # 1-4 per docs/legal-and-licensing.md
+  legal_category: integer        # 1-4 per docs/governance/legal-and-licensing.md
   license: string|null           # SPDX or descriptive (e.g. "OASIS RF on Limited Terms")
   redistribution_permitted: boolean  # Whether this file may be redistributed to third parties.
                                  # false is the correct default for local-only caching of most
@@ -131,7 +131,7 @@ A re-check confirms whether the source URL still serves the same content. A re-c
 
 ### Rule 3: Legal Classification Before Acquisition
 
-Before acquiring any specification file, confirm the format's legal category (see `docs/legal-and-licensing.md`). Only specifications in Legal Categories 1-3 may be cached. Legal Category 5 or 6 formats may not enter the cache.
+Before acquiring any specification file, confirm the format's legal category (see `docs/governance/legal-and-licensing.md`). Only specifications in Legal Categories 1-3 may be cached. Legal Category 5 or 6 formats may not enter the cache.
 
 Set `redistribution_permitted: true` only if the standards body's publication terms explicitly permit redistribution. For most OASIS, W3C, and ECMA standards, the document is publicly accessible but redistribution restrictions may apply. When uncertain, set `redistribution_permitted: false` and note the concern in the `notes` field.
 
@@ -191,7 +191,7 @@ The specification cache may be refreshed on the following triggers. **Refresh ch
 2. **Staleness detected:** When `stale: true` or `last_verified` is more than 90 days old, the agent runs a re-check of the source URL metadata. If content has changed, the entry is marked `stale: true` and a gap is logged. Re-download is not automatic.
 3. **Hash mismatch:** If the SHA-256 of the file on disk does not match `spec-index.yaml`, the entry is marked `stale: true` and a gap is logged. The file must be re-acquired only with explicit authorization.
 4. **Explicit refresh request:** A human or agent may set `stale: true` to flag an entry for re-acquisition. Actual re-download requires a subsequent authorized execution prompt.
-5. **Monthly refresh scan:** During the monthly refresh process described in `docs/acquisition-workflow.md`, spec cache entries are verified for staleness. The scan sets `stale: true` where warranted and creates refresh taskcards; it does not automatically re-download.
+5. **Monthly refresh scan:** During the monthly refresh process described in `docs/python-foss/acquisition-workflow.md`, spec cache entries are verified for staleness. The scan sets `stale: true` where warranted and creates refresh taskcards; it does not automatically re-download.
 
 Old versions are never automatically deleted. Deletion requires explicit human decision and is recorded in the gap register.
 
@@ -236,7 +236,7 @@ Cached specification files are `visibility: evidence-only`. They are local-only 
 If a specification document contains content with copyright restrictions that may affect how it is handled:
 - Note this in the `notes` field of `spec-index.yaml`.
 - Set `redistribution_permitted: false`.
-- Do not quote substantial spec text in committed artifacts (applies to LLM prompts and evidence docs — see `docs/llm-endpoint-strategy.md`).
+- Do not quote substantial spec text in committed artifacts (applies to LLM prompts and evidence docs — see `docs/ai/llm-endpoint-strategy.md`).
 
 ---
 
@@ -246,7 +246,7 @@ Cached specification files are immutable source artifacts. The **Specification N
 
 The normalization layer is a separate concern from the cache layer. The cache layer governs acquisition and storage of source files. The normalization layer governs conversion of cached source files into structured working materials. The cache must exist before normalization can run. Hash verification is required before normalization begins.
 
-See `docs/specification-normalization.md` for the complete normalization policy, tool list, and gate dependencies.
+See `docs/python-foss/specification-normalization.md` for the complete normalization policy, tool list, and gate dependencies.
 
 ---
 
@@ -256,23 +256,23 @@ See `docs/specification-normalization.md` for the complete normalization policy,
 
 | Component | Phase | Path | Description | Status |
 |---|---|---|---|---|
-| Cache policy (this doc) | Phase 0 | `docs/specification-cache.md` | Policy and schema | Complete |
+| Cache policy (this doc) | Phase 0 | `docs/python-foss/specification-cache.md` | Policy and schema | Complete |
 | Cache directory orientation | Phase 0 | `tools/spec-cache/_readme.md` | Directory orientation file | Complete |
 | Cache implementation taskcard | Phase 0 | `taskcards/TC-0007-specification-cache.md` | Phase 1 implementation scope | completed |
 | Index library | Phase 1 | `tools/spec-cache/spec_index.py` | Read/write/validate spec-index.yaml | Implemented run019 |
 | Acquisition script | Phase 1 | `tools/spec-cache/acquire_spec.py` | Download, hash, index; dry-run default; --allow-network for live download | Implemented run019 |
 | Refresh script | Phase 1 | `tools/spec-cache/refresh_check.py` | Staleness checking; never downloads | Implemented run019 |
-| Normalization policy | Phase 2+ | `docs/specification-normalization.md` | Policy for derived artifacts | Created run024 |
+| Normalization policy | Phase 2+ | `docs/python-foss/specification-normalization.md` | Policy for derived artifacts | Created run024 |
 | Normalization tools | Phase 2+ | `tools/spec-normalize/` | normalize_pdf.py, build_citation_map.py, validate_normalized_spec.py | Created run024 |
 
 ---
 
 ## Relationship to Other Documents
 
-- `docs/acquisition-workflow.md` — Stage 2 requires a cached spec before `spec-evidence.md` is drafted
-- `docs/legal-and-licensing.md` — legal category governs which specs may be cached
-- `docs/release-control.md` — cached specs are `visibility: evidence-only`, never released
-- `docs/specification-normalization.md` — normalization layer policy (companion document)
+- `docs/python-foss/acquisition-workflow.md` — Stage 2 requires a cached spec before `spec-evidence.md` is drafted
+- `docs/governance/legal-and-licensing.md` — legal category governs which specs may be cached
+- `docs/governance/release-control.md` — cached specs are `visibility: evidence-only`, never released
+- `docs/python-foss/specification-normalization.md` — normalization layer policy (companion document)
 - `AGENTS.md` Section T — spec-cache acquisition rules for agents
 - `AGENTS.md` Section W — normalization layer rules for agents
 - `taskcards/TC-0007-specification-cache.md` — Phase 1 implementation scope

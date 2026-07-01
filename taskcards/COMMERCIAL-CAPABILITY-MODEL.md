@@ -10,7 +10,7 @@ Document the commercial product capability model (C0-C10) so all agents and gate
 
 ## Scope
 
-- Create `docs/commercial-product-capability-model.md`
+- Create `docs/product-factory/commercial-product-capability-model.md`
 - Define capability levels C0 through C10
 - Establish that Tier 0 parser success (C0-C2) is NOT commercial readiness
 - Define load-edit-save-convert as the commercial requirement (C7+)
@@ -20,11 +20,11 @@ Document the commercial product capability model (C0-C10) so all agents and gate
 
 - Implementing any commercial code
 - Changing gate pass/fail status
-- Modifying tier-map definitions (those remain in docs/product-tracks.md)
+- Modifying tier-map definitions (those remain in docs/product-factory/product-tracks.md)
 
 ## Acceptance Criteria
 
-- [x] `docs/commercial-product-capability-model.md` exists with C0-C10 levels
+- [x] `docs/product-factory/commercial-product-capability-model.md` exists with C0-C10 levels
 - [x] Load-edit-save-convert requirement explicitly stated
 - [x] Object model requirement explicitly stated
 - [x] Same-format save requirement explicitly stated
@@ -40,7 +40,7 @@ Document the commercial product capability model (C0-C10) so all agents and gate
 
 ## Files Allowed
 
-- docs/commercial-product-capability-model.md (create)
+- docs/product-factory/commercial-product-capability-model.md (create)
 
 ## Prohibited Actions
 

@@ -1,6 +1,6 @@
 # FORMAT-FACTORY-RNEXT-MEGA-TRAIN-001
-# Generated: 2026-06-26T23:19:08.849971
-# Source: Supervisor autonomous-cycle review of ff-sprint-s198-dotnet-deepening-20260629
+# Generated: 2026-07-01T18:13:07.144317
+# Source: Supervisor autonomous-cycle review of ff-sprint-s428-dotnet-deepening-20260701
 # Stream: mainstream
 # ADVISORY ONLY -- not a Format Factory authority document
 
@@ -27,8 +27,8 @@ Read these files before writing any code:
 ## Sprint Identity
 
 - Sprint ID: FORMAT-FACTORY-RNEXT-MEGA-TRAIN-001
-- Prior sprint: ff-sprint-s198-dotnet-deepening-20260629
-- Prior verdict: ACCEPTED
+- Prior sprint: ff-sprint-s428-dotnet-deepening-20260701
+- Prior verdict: ACCEPTED_WITH_REWORK
 - Prior tests: 0 passed, 0 failed, 0 skipped
 - Autonomous continue: False
 
@@ -606,8 +606,8 @@ Address escalated failures with priority.
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_route_decision_required_validator_failed (seen 126x, last: product-deepening-ledger-healing-20260626)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_spec_fact_refs_validator_failed (seen 209x, last: product-deepening-ledger-healing-20260626)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_governed_direct_execution_validator_failed (seen 4x, last: ff-toml-r120-20260625)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_monolith_detection_validator_failed (seen 329x, last: ff-sprint-oracle-commits-20260626)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): exit_code_3_rework_required (seen 284x, last: ff-layer-audit-healing-20260626-230114)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_monolith_detection_validator_failed (seen 338x, last: system-healing-product-acquisition-unblock-20260625)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): exit_code_3_rework_required (seen 311x, last: ff-sprint-s427-dotnet-deepening-20260701)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_source_architecture_failed (seen 19x, last: capability-convergence-iteration-3-20260624)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_skill_transcript_present_failed (seen 23x, last: product-deepening-ledger-healing-20260626)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_qname_class_names_failed (seen 4x, last: FORMAT-FACTORY-SPRINT-R118-20260625)
@@ -616,15 +616,16 @@ Address escalated failures with priority.
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_forbidden_module_names_failed (seen 3x, last: PROD-GOVERNANCE-001)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_spec_fact_refs_in_sal_output_failed (seen 4x, last: FORMAT-FACTORY-PQ-EXECUTE-001)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_ledger_continuation_gate_failed (seen 6x, last: product-deepening-ledger-healing-20260626)
-- ESCALATED FAILURE (OVERCLAIM_FAILURE):  (seen 25x, last: ff-sprint-dotnet-final-20260626)
-- WARNING: 21 unresolved failures in failure memory
+- ESCALATED FAILURE (OVERCLAIM_FAILURE):  (seen 26x, last: system-healing-product-acquisition-unblock-20260625)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_readme_freshness_failed (seen 38x, last: ff-sprint-s428-dotnet-deepening-20260701)
+- WARNING: 23 unresolved failures in failure memory
 
 
 
 ## Learning-Based Governance Advisories
 
-- **SPRINT_CLOSEOUT_PATTERN** (seen 259x): Sprint declaration validated PASS with sprint_executor_validate.py — *Action:* Continue using sprint_executor_validate.py --repair before closeout
-- **TEST_FAILURE** (seen 117x): Sprint ended with 1 test failures (0 new) — *Action:* Fix test failures before closing sprint; never carry forward new failures
+- **SPRINT_CLOSEOUT_PATTERN** (seen 484x): Sprint declaration validated PASS with sprint_executor_validate.py — *Action:* Continue using sprint_executor_validate.py --repair before closeout
+- **TEST_FAILURE** (seen 339x): Sprint ended with 1 test failures (0 new) — *Action:* Fix test failures before closing sprint; never carry forward new failures
 
 ## Spec-Parity Requirements (from skill registry)
 

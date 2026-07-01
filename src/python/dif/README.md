@@ -4,7 +4,7 @@ Parse and write DIF (Data Interchange Format) files with Format Factory.
 
 ## Installation
 
-<!-- BEGIN:README-INSTALLATION generated=2026-06-28T08:14:24+00:00 source=package-metadata -->
+<!-- BEGIN:README-INSTALLATION generated=2026-07-01T12:16:25+00:00 source=package-metadata -->
 ```bash
 pip install format-factory-dif
 ```
@@ -32,13 +32,13 @@ write_dif(model, "output.dif")
 
 ## License
 
-<!-- BEGIN:README-LICENSE generated=2026-06-28T08:14:24+00:00 source=package-metadata -->
+<!-- BEGIN:README-LICENSE generated=2026-07-01T12:16:25+00:00 source=package-metadata -->
 Apache-2.0
 <!-- END:README-LICENSE -->
 
 ## Package Info
 
-<!-- BEGIN:README-PACKAGE_INFO generated=2026-06-28T08:14:24+00:00 source=repository-metadata -->
+<!-- BEGIN:README-PACKAGE_INFO generated=2026-07-01T12:16:25+00:00 source=repository-metadata -->
 | Field | Value |
 |---|---|
 | Format | Data Interchange Format |
@@ -51,11 +51,11 @@ Apache-2.0
 | Spec | Software Arts (Bob Frankston, 1981) DIF Technical Specification (1981, public domain) |
 | QName coverage | 6/6 implemented |
 | Source files | 17 |
-| Test files | 89 |
+| Test files | 90 |
 <!-- END:README-PACKAGE_INFO -->
 
 ## Public API
 
-<!-- BEGIN:README-PUBLIC_API generated=2026-06-28T08:14:24+00:00 source=src-python-init -->
+<!-- BEGIN:README-PUBLIC_API generated=2026-07-01T12:16:25+00:00 source=src-python-init -->
 - `(dynamic)`
 <!-- END:README-PUBLIC_API -->

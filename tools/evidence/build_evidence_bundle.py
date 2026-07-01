@@ -164,7 +164,7 @@ def auto_generate_git_metadata(repo_root, metadata_dir):
     """Auto-generate git-log.txt and git-status-final.txt in the metadata directory.
 
     These are the authoritative records of the exact final Git HEAD at bundle build time.
-    See docs/current-state-and-evidence-authority.md — the exact Git HEAD is recorded here,
+    See docs/governance/current-state-and-evidence-authority.md — the exact Git HEAD is recorded here,
     not in committed repo files like master-plan.md.
     """
     metadata_path = Path(metadata_dir)

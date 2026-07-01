@@ -166,8 +166,8 @@ Release manifests list all artifacts included in the release with their visibili
 
 ## Relationship to Other Documents
 
-- `docs/architecture.md` — overall system structure and folder layout
-- `docs/release-control.md` — visibility classification and release policy
-- `docs/legal-and-licensing.md` — license requirements and format legal categories
+- `docs/code-quality/architecture.md` — overall system structure and folder layout
+- `docs/governance/release-control.md` — visibility classification and release policy
+- `docs/governance/legal-and-licensing.md` — license requirements and format legal categories
 - `docs/gates.md` — Gate 10 and Gate 11 pass criteria
-- `docs/acquisition-workflow.md` — how formats move through the pipeline to product
+- `docs/python-foss/acquisition-workflow.md` — how formats move through the pipeline to product

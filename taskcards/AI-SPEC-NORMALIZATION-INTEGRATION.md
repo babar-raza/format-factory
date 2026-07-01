@@ -7,7 +7,7 @@ Integrate spec normalization with the AI platform so that all AI and embedding c
 `implemented_fixture_mode` — adapter.py with NormalizedChunk, provenance tracking, chunk loader, and fail-closed NormalizationNotAvailable implemented in R27 (cb7e05c). 8 tests pass.
 
 ## Prerequisites
-- Spec normalization layer operational (`docs/specification-normalization.md`)
+- Spec normalization layer operational (`docs/python-foss/specification-normalization.md`)
 - At least one format has normalized spec artifacts (FODS has partial normalization)
 
 ## Allowed Scope

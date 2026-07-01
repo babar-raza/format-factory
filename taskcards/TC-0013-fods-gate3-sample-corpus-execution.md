@@ -177,7 +177,7 @@ All executed samples: project-owned, Apache-2.0, reproducible from `tools/sample
 - `samples/_policy.md` — sample acquisition policy
 - `samples/_provenance.yaml` — provenance registry (to be created/updated during execution)
 - `docs/gates.md` Gate 3 — gate criteria
-- `docs/legal-and-licensing.md` — license acceptability rules
+- `docs/governance/legal-and-licensing.md` — license acceptability rules
 - `taskcards/TC-0010-fods-gate3-sample-corpus-planning.md` — planning parent
 - `taskcards/TC-0012-specification-normalization-layer.md` — normalization (Phase 2 done)
 - `.local/spec-cache/fods/1.3/normalized/` — normalized spec artifacts (local-only)

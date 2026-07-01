@@ -2,7 +2,7 @@
 
 **Document type:** Policy — Phase 2+ Foundation
 **Last reviewed:** 2026-05-05 (run026: Spec Navigation Layer complete)
-**Authority:** This document governs the conversion of cached specification source files into local-only machine-readable derived artifacts. It is a companion to `docs/specification-cache.md`.
+**Authority:** This document governs the conversion of cached specification source files into local-only machine-readable derived artifacts. It is a companion to `docs/python-foss/specification-cache.md`.
 
 ---
 
@@ -149,7 +149,7 @@ This provenance enables:
 2. `redistribution_permitted: false` in `spec-index.yaml` means extracted text from that document should not be committed, included in bundles, or shared externally.
 3. Short cited excerpts (≤ 3 sentences) in evidence files are generally acceptable under fair use / reasonable reliance principles, but this is not a legal opinion. When in doubt, cite the section reference only.
 4. Full text extraction (`text.txt`, `pages.jsonl`) is local-only by default regardless of `redistribution_permitted` value.
-5. An agent must not include spec text in LLM prompts that are sent to remote endpoints. Spec text may be used with local-only LLM endpoints if redistribution is not implicated. See `docs/llm-endpoint-strategy.md`.
+5. An agent must not include spec text in LLM prompts that are sent to remote endpoints. Spec text may be used with local-only LLM endpoints if redistribution is not implicated. See `docs/ai/llm-endpoint-strategy.md`.
 
 ---
 
@@ -217,7 +217,7 @@ This provenance enables:
 
 | Component | Phase | Path | Status |
 |---|---|---|---|
-| This policy document | Phase 2+ | `docs/specification-normalization.md` | Created run024; updated run026 |
+| This policy document | Phase 2+ | `docs/python-foss/specification-normalization.md` | Created run024; updated run026 |
 | Tool orientation | Phase 2+ | `tools/spec-normalize/_readme.md` | Created run024 |
 | PDF normalization tool | Phase 2+ | `tools/spec-normalize/normalize_pdf.py` | Created run024; functional run025 |
 | Citation map tool | Phase 2+ | `tools/spec-normalize/build_citation_map.py` | Created run024; functional run025 |
@@ -250,12 +250,12 @@ The Spec Navigation Layer is a set of four tools built on top of the normalized 
 
 ## 15. Relationship to Other Documents
 
-- `docs/specification-cache.md` — source spec acquisition policy (companion document)
-- `docs/acquisition-workflow.md` — how normalization fits the acquisition pipeline
+- `docs/python-foss/specification-cache.md` — source spec acquisition policy (companion document)
+- `docs/python-foss/acquisition-workflow.md` — how normalization fits the acquisition pipeline
 - `docs/gates.md` — gate requirements referencing normalization
-- `docs/legal-and-licensing.md` — redistribution rules that limit normalized text commits
-- `docs/release-control.md` — visibility classification for normalized artifacts (evidence-only)
-- `docs/llm-endpoint-strategy.md` — rules about spec text in LLM prompts
+- `docs/governance/legal-and-licensing.md` — redistribution rules that limit normalized text commits
+- `docs/governance/release-control.md` — visibility classification for normalized artifacts (evidence-only)
+- `docs/ai/llm-endpoint-strategy.md` — rules about spec text in LLM prompts
 - `docs/ai/ai-assisted-acquisition-pipeline.md` — AI platform consumes normalized artifacts (mandatory input)
 - `docs/ai/ai-platform-operating-model.md` — AI platform requires spec normalization for all AI/embedding use
 - `AGENTS.md` — agent rules for using normalized artifacts

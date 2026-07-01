@@ -79,7 +79,7 @@ Define the product tier map for FODT:
 
 ## Reuse from FODS
 
-FODT Gate 9 can reuse the FODS tier-map.yaml v1.0 template (docs/odf-flat-family-reuse-strategy.md).
+FODT Gate 9 can reuse the FODS tier-map.yaml v1.0 template (docs/python-foss/odf-flat-family-reuse-strategy.md).
 Adapt tier names for text/words domain vs spreadsheet/cells domain.
 
 ---

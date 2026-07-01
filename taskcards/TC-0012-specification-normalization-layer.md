@@ -73,7 +73,7 @@ The normalization layer adds a derived working material layer:
 
 ## Scope
 
-1. **Policy document** (`docs/specification-normalization.md`) — 15-section governing policy.
+1. **Policy document** (`docs/python-foss/specification-normalization.md`) — 15-section governing policy.
 2. **Tool: `normalize_pdf.py`** — PDF → text.txt + pages.jsonl extraction with hash verification; graceful fallback to metadata-only if no extraction library installed.
 3. **Tool: `build_citation_map.py`** — citations.yaml from pages.jsonl or text.txt (section refs + external refs).
 4. **Tool: `validate_normalized_spec.py`** — validates normalized directory for gate readiness, checks source hash currency.
@@ -84,7 +84,7 @@ The normalization layer adds a derived working material layer:
 
 ## Acceptance Criteria
 
-- [x] `docs/specification-normalization.md` exists with full 15-section policy
+- [x] `docs/python-foss/specification-normalization.md` exists with full 15-section policy
 - [x] `tools/spec-normalize/_readme.md` exists with tool orientation
 - [x] `tools/spec-normalize/normalize_pdf.py` exists — graceful fallback to metadata-only
 - [x] `tools/spec-normalize/build_citation_map.py` exists
@@ -92,7 +92,7 @@ The normalization layer adds a derived working material layer:
 - [x] AGENTS.md Section W exists with 10 normalization rules
 - [x] GOVERNANCE.md Section 16 exists with 6 normalization governance rules
 - [x] `docs/gates.md` Gate 3 and Gate 4 updated with normalization dependencies
-- [x] `docs/specification-cache.md` references normalization layer
+- [x] `docs/python-foss/specification-cache.md` references normalization layer
 - [x] Local normalization run completed on `.local/spec-cache/fods/1.3/` — full extraction with pdfminer.six (run025)
 - [x] `source-manifest.yaml` present under `.local/spec-cache/fods/1.3/normalized/` showing SHA-256 MATCH
 - [x] `extraction-report.md` present in normalized directory
@@ -106,7 +106,7 @@ The normalization layer adds a derived working material layer:
 
 | Item | Status | Notes |
 |---|---|---|
-| `docs/specification-normalization.md` | DONE | 15 sections, created run024 |
+| `docs/python-foss/specification-normalization.md` | DONE | 15 sections, created run024 |
 | `tools/spec-normalize/_readme.md` | DONE | Created run024 |
 | `tools/spec-normalize/normalize_pdf.py` | DONE | Full skeleton with graceful fallback |
 | `tools/spec-normalize/build_citation_map.py` | DONE | Section + external ref extraction |
@@ -161,8 +161,8 @@ The normalization layer adds a derived working material layer:
 
 ## Related Files
 
-- `docs/specification-normalization.md`
-- `docs/specification-cache.md`
+- `docs/python-foss/specification-normalization.md`
+- `docs/python-foss/specification-cache.md`
 - `tools/spec-normalize/` (normalize_pdf.py, build_citation_map.py, validate_normalized_spec.py, _readme.md)
 - `AGENTS.md` Section W
 - `GOVERNANCE.md` Section 16

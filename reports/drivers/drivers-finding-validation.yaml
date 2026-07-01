@@ -1,0 +1,219 @@
+---
+# drivers/ Subsystem Finding Validation
+# Generated: TC-DRV-001
+# Plan: plans/.claude/abstract-moseying-donut.md
+# Mission: DRIVERS-SUBSYSTEM-HEALING-001
+
+findings:
+  - finding_id: F-001
+    reported_claim: >
+      A stale plan (idempotent-snuggling-wombat.md TC-ROOT-002) says drivers/ has
+      zero consumers and should be deleted via `git rm -r drivers/`.
+    repository_truth: >
+      drivers/ has TWO direct runtime consumers proven by code inspection:
+      (1) tools/supervisor/test_drivers.py line 14 constructs _DRIVERS_DIR path to
+          drivers/python/ and reads .py.tmpl files at runtime via _load_template().
+      (2) tools/supervisor/product_feature_factory.py lines 37-43 imports all 5
+          render_* functions from test_drivers, which transitively reads the templates.
+      The plan's finding was a false negative — grep for "from drivers" or "import drivers"
+      returns 0 results because test_drivers.py uses Path construction, not module import.
+      The plan status is ITERATION_REQUIRED (not executed). drivers/ must NOT be deleted.
+    evidence:
+      - "tools/supervisor/test_drivers.py:14 — _DRIVERS_DIR = Path(__file__).resolve().parents[2] / 'drivers' / 'python'"
+      - "tools/supervisor/product_feature_factory.py:37-43 — from tools.supervisor.test_drivers import (render_getter_test, ...)"
+      - "tests/supervisor/test_test_drivers.py — 30 tests all PASS verifying template rendering"
+    severity: CRITICAL
+    systemic: true
+    required_action: >
+      Correct TC-ROOT-002 in idempotent-snuggling-wombat.md. Mark drivers/ finding as
+      superseded_by_evidence. Document both direct consumers. Do NOT delete drivers/.
+    verdict: REFUTED
+
+  - finding_id: F-002
+    reported_claim: >
+      The root-folder registry (repository-root-folders.yaml) places drivers/ under a
+      misleading "DELETED / CONSOLIDATED" section heading despite its retention: RETAIN status.
+    repository_truth: >
+      Confirmed. Line 684-686 of registry/repository-root-folders.yaml:
+        # ============================================================
+        # DELETED / CONSOLIDATED — proven redundant or abandoned
+        # ============================================================
+      The drivers/ entry at line 688 has retention: RETAIN but sits directly under
+      this "DELETED/CONSOLIDATED" section heading. This is a governance contradiction —
+      the section implies deletion but the entry is retained.
+    evidence:
+      - "registry/repository-root-folders.yaml:684-700 — drivers/ entry with retention: RETAIN sits under DELETED/CONSOLIDATED section"
+    severity: HIGH
+    systemic: true
+    required_action: >
+      Move the drivers/ registry entry to the correct section (e.g., "SHARED_LIBRARY /
+      TOOLING" or "RETAINED — active libraries"). The DELETED/CONSOLIDATED section
+      should only contain entries with retention: DELETED or retention: CONSOLIDATED.
+    verdict: CONFIRMED
+
+  - finding_id: F-003
+    reported_claim: >
+      test_drivers.py hardcodes the path `drivers/python` with no explicit language policy.
+    repository_truth: >
+      Confirmed. Line 14: `_DRIVERS_DIR = Path(__file__).resolve().parents[2] / "drivers" / "python"`
+      The "python" path segment is hardcoded as a string literal. There is no
+      _SUPPORTED_LANGUAGE constant, no _validate_language() function, and no module
+      docstring declaring Python-only scope. The hardcoding itself is acceptable for
+      PYTHON_ONLY_BY_DESIGN, but the policy must be made explicit.
+    evidence:
+      - "tools/supervisor/test_drivers.py:14 — hardcoded 'python' path segment"
+      - "No _SUPPORTED_LANGUAGE constant exists in test_drivers.py"
+      - "No _validate_language() function exists in test_drivers.py"
+    severity: MEDIUM
+    systemic: false
+    required_action: >
+      Add _SUPPORTED_LANGUAGE = "python" constant and _validate_language() helper.
+      Add module docstring declaring PYTHON_ONLY_BY_DESIGN. This is TC-DRV-004.
+    verdict: CONFIRMED
+
+  - finding_id: F-004
+    reported_claim: >
+      Language scope is implicit; no registry or explicit Python-only policy exists.
+    repository_truth: >
+      Confirmed. Neither drivers/_readme.md nor test_drivers.py nor any registry file
+      contains an explicit "Python only" policy declaration. The _readme.md lists
+      "python/" as a subdirectory but does not state PYTHON_ONLY_BY_DESIGN.
+      libforge_pattern_registry.py notes "Missing: gate-kind enumeration, multi-language support"
+      but this is a gap note, not a policy decision.
+    evidence:
+      - "drivers/_readme.md — no language policy section"
+      - "tools/supervisor/test_drivers.py — no language constant or docstring"
+      - "tools/supervisor/libforge_pattern_registry.py:291-306 — notes multi-language as missing, not as excluded"
+    severity: MEDIUM
+    systemic: true
+    required_action: >
+      Select and enforce PYTHON_ONLY_BY_DESIGN. Add explicit rejection of other languages.
+      Document in _readme.md and test_drivers.py. This is TC-DRV-004.
+    verdict: CONFIRMED
+
+  - finding_id: F-005
+    reported_claim: >
+      No governed lifecycle promotes templates into meaningful tests under
+      tests/{language}/{format}. Generated syntax-valid tests are not completed product tests.
+    repository_truth: >
+      Confirmed. The system generates test skeletons (render_* functions return strings)
+      but there is no:
+      (1) Promotion task creation — no YAML task file is written on render
+      (2) Status tracking — no SCAFFOLD → MAINTAINED state machine
+      (3) Incomplete marker enforcement — no scan_for_forbidden_placeholders() function
+      (4) Maintained gate — no is_maintained_test() gate that blocks false completion
+      FeatureFactory._*_test_skeleton() returns a string but never emits provenance or
+      creates a promotion task. Scaffolds can be written to disk and considered "done"
+      with no tracking of their promotion status.
+    evidence:
+      - "tools/supervisor/product_feature_factory.py — _getter_test_skeleton() returns str, no task emitted"
+      - "tools/supervisor/test_drivers.py — render_* return str, no promotion tracking"
+      - "No tools/supervisor/drivers_promotion.py exists"
+      - "No reports/drivers/promotion-tasks/ directory exists"
+    severity: HIGH
+    systemic: true
+    required_action: >
+      Implement format-test promotion lifecycle. Create drivers_promotion.py with
+      GeneratedTestPromotionTask, create_promotion_task(), write_promotion_task(),
+      scan_incomplete_markers(), is_maintained_test(). Modify FeatureFactory to
+      emit promotion tasks on render. This is TC-DRV-007.
+    verdict: CONFIRMED
+
+  - finding_id: F-006
+    reported_claim: >
+      Templates contain weak placeholders: None, b"", TODO, compile-only assertions
+      (assert isinstance(result, object), assert result is not None).
+    repository_truth: >
+      Confirmed per template inspection:
+      - getter_test.py.tmpl lines 11-13: "# TODO: provide a real model or input",
+        `result = ${function_name}(None)`, `assert result is not None`
+      - getter_test.py.tmpl line 17: `assert isinstance(result, object)` (always True)
+      - append_test.py.tmpl line 12: `result = ${function_name}(b"", [])` (empty bytes fixture)
+      - append_test.py.tmpl line 11: "# TODO: provide real source bytes"
+      - probe_test.py.tmpl lines 11,15: `result = ${function_name}(b"")` (empty bytes fixture)
+      - roundtrip_test.py.tmpl lines 20-21: "# TODO: Replace with a real fixture ...", `source_bytes = b""`
+      - export_csv_test.py.tmpl lines 11-12: "# TODO: provide real source bytes", `${function_name}(b"")`
+      All 5 templates contain at least one forbidden placeholder.
+    evidence:
+      - "drivers/python/getter_test.py.tmpl:11-17 — TODO, None input, assert result is not None, isinstance(result, object)"
+      - "drivers/python/append_test.py.tmpl:11-12 — TODO, b'' fixture"
+      - "drivers/python/probe_test.py.tmpl:11,15 — b'' fixture"
+      - "drivers/python/roundtrip_test.py.tmpl:20-21 — TODO, b'' fixture"
+      - "drivers/python/export_csv_test.py.tmpl:11-12 — TODO, b'' fixture"
+    severity: HIGH
+    systemic: true
+    required_action: >
+      Replace all forbidden placeholders with machine-readable incomplete markers
+      (FIXTURE_REQUIRED, EXPECTED_VALUE_REQUIRED, ORACLE_REQUIRED, TEST_SCAFFOLD_INCOMPLETE).
+      Add scan_for_forbidden_placeholders() and is_maintained_test() to test_drivers.py.
+      This is TC-DRV-006.
+    verdict: CONFIRMED
+
+  - finding_id: F-007
+    reported_claim: >
+      Consumer documentation may incorrectly describe declarative or indirect references
+      as direct consumers of drivers/.
+    repository_truth: >
+      PARTIAL CONFIRMATION. The registry entry for drivers/ lists:
+        consumers: ["tools/supervisor/test_drivers.py", "tools/supervisor/libforge_pattern_registry.py"]
+      - tools/supervisor/test_drivers.py IS a direct consumer (CORRECT).
+      - tools/supervisor/libforge_pattern_registry.py is NOT a direct consumer — it is a
+        DECLARATIVE_REFERENCE (PatternRecord documents test_drivers.py but has no runtime
+        coupling to drivers/ templates). Listing it as a consumer is misleading but not
+        catastrophically wrong.
+      - The registry OMITS tools/supervisor/product_feature_factory.py which IS a direct
+        runtime consumer (imports all 5 render_* functions).
+      So: one consumer is over-classified (libforge_pattern_registry = declarative, not direct),
+      and one direct consumer is missing (product_feature_factory).
+    evidence:
+      - "registry/repository-root-folders.yaml:700 — libforge_pattern_registry listed as consumer"
+      - "tools/supervisor/libforge_pattern_registry.py:291-306 — PatternRecord, no import of drivers/ files"
+      - "tools/supervisor/product_feature_factory.py:37-43 — missing from consumer list"
+    severity: MEDIUM
+    systemic: false
+    required_action: >
+      Add product_feature_factory.py to consumer list. Classify libforge_pattern_registry.py
+      as DECLARATIVE_REFERENCE in consumer-graph.yaml (it can remain in registry consumers
+      list for breadth, but its type must be clear). This is TC-DRV-002 and TC-DRV-003.
+    verdict: PARTIAL_CONFIRMATION
+
+  - finding_id: F-008
+    reported_claim: >
+      No broad renderer/template argument drift guard exists to detect when arguments
+      are added, removed, or renamed between templates and renderer function signatures.
+    repository_truth: >
+      Confirmed. There is no machine-readable template contract, no
+      validate_template_renderer_compatibility() function, no driver-contracts.yaml,
+      and no test that would fail if a render_* function's signature diverged from
+      its template's ${variable} substitutions. A template variable rename would
+      silently produce corrupted output (string.Template would leave the placeholder
+      unreplaced or raise KeyError at render time — no pre-generation gate).
+    evidence:
+      - "tools/supervisor/test_drivers.py — no validate_template_renderer_compatibility() function"
+      - "drivers/python/ — no driver-contracts.yaml exists"
+      - "tests/supervisor/test_test_drivers.py — no TestContractValidation class"
+    severity: HIGH
+    systemic: true
+    required_action: >
+      Create driver-contracts.yaml. Add validate_template_renderer_compatibility().
+      Add TestContractValidation tests. This is TC-DRV-005.
+    verdict: CONFIRMED
+
+summary:
+  total_findings: 8
+  verdicts:
+    REFUTED: 1
+    CONFIRMED: 6
+    PARTIAL_CONFIRMATION: 1
+  severity_counts:
+    CRITICAL: 1
+    HIGH: 4
+    MEDIUM: 3
+  systemic_count: 6
+  required_taskcards:
+    - TC-DRV-002  # F-001, F-002, F-007: governance corrections
+    - TC-DRV-003  # F-007: consumer graph
+    - TC-DRV-004  # F-003, F-004: language scope
+    - TC-DRV-005  # F-008: contracts + drift validators
+    - TC-DRV-006  # F-006: placeholder hardening
+    - TC-DRV-007  # F-005: promotion lifecycle

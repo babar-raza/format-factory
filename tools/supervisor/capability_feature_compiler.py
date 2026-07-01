@@ -1,6 +1,6 @@
 """capability_feature_compiler.py — Translate gap-ledger.json gaps into next-work-items.json.
 
-Implements the design spec in docs/capability-feature-compiler-spec.md (TC-CAPABILITY-REPAIR-001).
+Implements the design spec in docs/code-quality/capability-feature-compiler-spec.md (TC-CAPABILITY-REPAIR-001).
 TC-CAPABILITY-REPAIR-002 (cheerful-floating-glade): Phase 2 implementation.
 
 CLI:

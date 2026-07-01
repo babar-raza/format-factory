@@ -242,5 +242,5 @@ The near-term proof goal is three XML-style format pilots with different feature
 - `plans/master-plan.md`: current operational state and decisions
 - `registry/format-registry.yaml`: authoritative gate status per format
 - `docs/gates.md`: gate pass criteria
-- `docs/acquisition-workflow.md`: stage-by-stage workflow
+- `docs/python-foss/acquisition-workflow.md`: stage-by-stage workflow
 - `taskcards/`: work units for current and upcoming phases

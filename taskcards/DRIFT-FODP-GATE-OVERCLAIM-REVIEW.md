@@ -19,7 +19,7 @@
 - Extracts: page_count, per-page name/text/shape_count
 - **No write, no export, no round-trip**
 - Only 16 tests prove page counting works
-- Does not meet Gate 10 criteria under docs/gate-quality-criteria.md
+- Does not meet Gate 10 criteria under docs/governance/gate-quality-criteria.md
 
 ## Likely Maturity Class
 **probe_only** — reads slide metadata but cannot process presentation content

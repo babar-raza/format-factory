@@ -33,7 +33,7 @@ Design and implement the FODS document object model and same-format save capabil
 - [ ] Edit test: load, modify cell value, save, verify modification
 - [ ] Opaque nodes preserved on round-trip
 - [ ] Security guards maintained (DTD prohibition, size limits)
-- [ ] Capability level reaches C7 per docs/commercial-product-capability-model.md
+- [ ] Capability level reaches C7 per docs/product-factory/commercial-product-capability-model.md
 
 ## Evidence Requirements
 

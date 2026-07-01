@@ -55,7 +55,7 @@ must STILL create or update at least one durable local artifact:
 
 - Update AGENTS.md with the discovered-gap capture rule (Section AB or next available section)
 - Update GOVERNANCE.md with the corresponding human governance rule (Section 20 or next)
-- Update docs/acquisition-workflow.md if applicable
+- Update docs/python-foss/acquisition-workflow.md if applicable
 - Add a gap register entry format to plans/master-plan.md if not already present
 - Verify that the existing Gap Register in master-plan.md is sufficient
 
@@ -76,7 +76,7 @@ must STILL create or update at least one durable local artifact:
 ## Future Trigger
 
 Human authorizes GOV-001 as part of a governance update sprint.
-The rule in docs/acquisition-workflow.md is already partially documented — this taskcard formalizes it.
+The rule in docs/python-foss/acquisition-workflow.md is already partially documented — this taskcard formalizes it.
 
 ## Note
 

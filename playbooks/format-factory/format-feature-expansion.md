@@ -1,3 +1,53 @@
+<!--
+playbook_contract:
+  playbook_id: format-feature-expansion
+  title: "Add Feature to Existing Python FOSS Format Codec"
+  version: "1.1"
+  status: ACTIVE
+  category: sprint_task_template
+  owner_layer: product_source
+  authority: TASK_TEMPLATE
+  required_inputs:
+    - format_name
+    - function_name
+  required_skills:
+    - add-python-api
+    - add-roundtrip-test
+  allowed_paths:
+    - "src/python/<format>/"
+    - "tests/python/<format>/"
+    - "examples/python/<format>/"
+    - "reports/"
+  forbidden_paths:
+    - "src/net/"
+    - "poc-targets.yaml"
+    - "registry/"
+    - "AGENTS.md"
+    - "GOVERNANCE.md"
+  validation:
+    - min_tests_per_function
+    - governance_validators_pass
+  evidence_requirements:
+    - test_results
+    - changed_files
+    - import_proof
+  rollback: "Revert source change; remove test; update __all__ and __init__.py"
+  stop_conditions:
+    - no_stdlib_only
+    - external_dep_required
+    - installed_format_breaks
+  limitations:
+    - "No gate approval authority"
+    - "No evidence contract replacement"
+    - "Sprint task templates only"
+  phases:
+    - read_codec
+    - draft_function
+    - write_tests
+    - verify_import
+    - verify_tests_pass
+    - update_exports
+-->
 # Playbook: Format Feature Expansion
 
 **Skill ID**: format-feature-expansion

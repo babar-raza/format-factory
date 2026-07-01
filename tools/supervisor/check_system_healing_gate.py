@@ -141,7 +141,11 @@ def check_lane_2_capability() -> dict:
     - action queue advisory_only is false (TC-C3-001 fix active)
     """
     # File-existence checks (original)
-    gap_ledger_exists = _file_exists("reports/capability-layer/gap-ledger.json")
+    # TC-CAP-008: prefer active split; fall back to full ledger
+    gap_ledger_exists = (
+        _file_exists("reports/capability-layer/gap-ledger-active.json")
+        or _file_exists("reports/capability-layer/gap-ledger.json")
+    )
     unified_map_exists = _file_exists("reports/capability-layer/unified-capability-map.json")
     action_queue_exists = _file_exists("reports/capability-layer/action-queue.json")
     cap_verifier_exists = _file_exists("tools/supervisor/capability_verifier.py")
@@ -156,10 +160,24 @@ def check_lane_2_capability() -> dict:
             pass
 
     action_queue_not_advisory = False
+    action_queue_hash_fresh = False
     if action_queue_exists:
         try:
+            import hashlib
             aq = json.loads((REPO_ROOT / "reports/capability-layer/action-queue.json").read_text(encoding="utf-8"))
             action_queue_not_advisory = not aq.get("advisory_only", True)
+            # TC-CAP-010: Verify source_ledger_hash matches current active ledger
+            stored_hash = aq.get("source_ledger_hash", "")
+            if stored_hash:
+                # Check against active ledger first, then full ledger
+                for ledger_rel in ("reports/capability-layer/gap-ledger-active.json",
+                                   "reports/capability-layer/gap-ledger.json"):
+                    ledger_path = REPO_ROOT / ledger_rel
+                    if ledger_path.is_file():
+                        current_hash = hashlib.sha256(ledger_path.read_bytes()).hexdigest()
+                        if current_hash == stored_hash:
+                            action_queue_hash_fresh = True
+                        break
         except (json.JSONDecodeError, OSError):
             pass
 
@@ -183,6 +201,7 @@ def check_lane_2_capability() -> dict:
         "cap_map_record_count": cap_map_record_count,
         "cap_map_has_records": cap_map_record_count > 0,
         "action_queue_not_advisory": action_queue_not_advisory,
+        "action_queue_hash_fresh": action_queue_hash_fresh,
         "consumer_wired_in_autonomous_cycle": consumer_wired_in_cycle,
         "consumer_output_dir_exists": consumer_output_exists,
     }
@@ -307,7 +326,10 @@ def check_lane_7_byp001_authority_depth() -> dict:
     Added by spec-authority-healing sprint (BYP-001 repair, 2026-06-22).
     Advisory-only: always passes (does not block sprint) but surfaces authority gaps.
     """
-    gap_ledger_path = REPO_ROOT / "reports" / "capability-layer" / "gap-ledger.json"
+    # TC-CAP-008: prefer active split for Lane 7 gap analysis
+    _gl_active = REPO_ROOT / "reports" / "capability-layer" / "gap-ledger-active.json"
+    _gl_full = REPO_ROOT / "reports" / "capability-layer" / "gap-ledger.json"
+    gap_ledger_path = _gl_active if _gl_active.is_file() else _gl_full
     sal_latest = REPO_ROOT / ".local" / "sal-output" / "sal-facts-latest.json"
 
     if not gap_ledger_path.is_file() or not sal_latest.is_file():

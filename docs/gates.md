@@ -63,7 +63,7 @@ Gates are mandatory checkpoints that a format must pass before work at the next 
 - `acquisition-packs/<format-id>/legal-notes.md` (with sign-off)
 
 **Fast-path (Category 1 only):**
-If the format is on the Pre-Approved Fast-Path List in `docs/legal-and-licensing.md`, the project lead may self-approve Gate 2 with a brief rationale in `legal-notes.md`. No external legal review required. The fast-path requires: (1) documented RF license citation, (2) named standard body, (3) date reviewed, (4) project lead sign-off.
+If the format is on the Pre-Approved Fast-Path List in `docs/governance/legal-and-licensing.md`, the project lead may self-approve Gate 2 with a brief rationale in `legal-notes.md`. No external legal review required. The fast-path requires: (1) documented RF license citation, (2) named standard body, (3) date reviewed, (4) project lead sign-off.
 
 ---
 
@@ -74,7 +74,7 @@ If the format is on the Pre-Approved Fast-Path List in `docs/legal-and-licensing
 **Pass criteria:**
 1. A minimum sample corpus exists in `samples/by-format/<format-id>/` covering: minimal valid file, empty/trivial file, file with all core data structures present, at least one edge-case file.
 2. Every sample in the corpus has a `_provenance.yaml` entry with `provenance_status: confirmed`.
-3. Every sample's license is in the acceptable licenses list in `docs/legal-and-licensing.md`.
+3. Every sample's license is in the acceptable licenses list in `docs/governance/legal-and-licensing.md`.
 4. No sample has `visibility: blocked` (blocked samples may not be used in the corpus).
 5. All provenance entries have been human-reviewed.
 
@@ -184,7 +184,7 @@ If the format is on the Pre-Approved Fast-Path List in `docs/legal-and-licensing
 **Stage:** Product Mapping
 
 **Pass criteria:**
-1. All features of the format have been assigned to tiers 0-6 using the model in `docs/product-tracks.md`.
+1. All features of the format have been assigned to tiers 0-6 using the model in `docs/product-factory/product-tracks.md`.
 2. A delivery plan exists in the acquisition pack specifying which features ship in the first OSS release and which are deferred.
 3. Tier assignments are recorded in `registry/format-registry.yaml`.
 4. Any features assigned to Tier 5-6 (commercial) are explicitly noted with a deferral condition (Gate 10 + DD3 + explicit commercial implementation prompt).
@@ -272,11 +272,11 @@ An agent must update `gate_N.status` to `passed` only after human approval has b
 
 ## Relationship to Other Documents
 
-- `docs/acquisition-workflow.md` — stage-by-stage workflow with reuse rules
+- `docs/python-foss/acquisition-workflow.md` — stage-by-stage workflow with reuse rules
 - `docs/security.md` — Gate 7 and Gate 8 criteria detail
-- `docs/legal-and-licensing.md` — Gate 2 fast-path rules and legal categories
-- `docs/product-tracks.md` — Gate 9, 10, 11 tier model and boundary check
-- `docs/release-control.md` — release manifest requirements for Gate 10 and 11
-- `docs/specification-normalization.md` — normalization gate dependencies (Gate 3 optional, Gate 4 required)
+- `docs/governance/legal-and-licensing.md` — Gate 2 fast-path rules and legal categories
+- `docs/product-factory/product-tracks.md` — Gate 9, 10, 11 tier model and boundary check
+- `docs/governance/release-control.md` — release manifest requirements for Gate 10 and 11
+- `docs/python-foss/specification-normalization.md` — normalization gate dependencies (Gate 3 optional, Gate 4 required)
 - `registry/scoring/_scoring-model.md` — Gate 1 scoring criteria
 - `plans/master-plan.md` — gate history for all in-flight formats

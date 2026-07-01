@@ -20,13 +20,13 @@ existing_governance_references:
   - file: AGENTS.md
     sections: [H, T, V, W, X, AF]
     do_not_duplicate: true
-  - file: docs/llm-endpoint-strategy.md
+  - file: docs/ai/llm-endpoint-strategy.md
     covers: [endpoint_config, model_selection, spec_content_policy, secrets]
     do_not_duplicate: true
-  - file: docs/llm-and-embedding-strategy.md
+  - file: docs/ai/llm-and-embedding-strategy.md
     covers: [allowed_uses, prohibited_uses, secret_policy, embedding_controls]
     do_not_duplicate: true
-  - file: docs/spec-retrieval-strategy.md
+  - file: docs/ai/spec-retrieval-strategy.md
     covers: [three_tier_retrieval, format_isolation, local_first_policy, provenance]
     do_not_duplicate: true
 
@@ -108,10 +108,10 @@ gate_safeguards:
   minimum_for_gate11_review: C7
 
 cross_references:
-  capability_model: docs/commercial-product-capability-model.md
-  architecture: docs/commercial-dotnet-architecture.md
-  retrieval_rag: docs/spec-retrieval-and-rag-policy.md
-  commercial_patterns: docs/ai-assisted-commercial-development.md
-  swarm_orchestration: docs/agent-swarm-ai-orchestration.md
-  endpoint_policy: docs/llm-endpoint-strategy.md
-  embedding_strategy: docs/llm-and-embedding-strategy.md
+  capability_model: docs/product-factory/commercial-product-capability-model.md
+  architecture: docs/product-factory/commercial-dotnet-architecture.md
+  retrieval_rag: docs/ai/spec-retrieval-and-rag-policy.md
+  commercial_patterns: docs/ai/ai-assisted-commercial-development.md
+  swarm_orchestration: docs/ai/agent-swarm-ai-orchestration.md
+  endpoint_policy: docs/ai/llm-endpoint-strategy.md
+  embedding_strategy: docs/ai/llm-and-embedding-strategy.md

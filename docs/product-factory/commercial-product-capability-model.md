@@ -123,7 +123,7 @@ Export fidelity levels and supported feature subsets must be documented per form
 
 ## Relationship to Tier Model
 
-The existing tier model (Tier 0-6 in docs/product-tracks.md) describes feature scope. This capability model describes architectural capability. Both must be satisfied:
+The existing tier model (Tier 0-6 in docs/product-factory/product-tracks.md) describes feature scope. This capability model describes architectural capability. Both must be satisfied:
 
 - Tier 5-6 features at C7+ capability = commercial readiness
 - Tier 0 features at C2 capability = technical baseline only

@@ -1,7 +1,7 @@
 ---
 artifact_id: spec-consumption-workbench-v1
 artifact_type: documentation
-path: docs/spec-consumption-workbench.md
+path: docs/python-foss/spec-consumption-workbench.md
 format_id: null
 product_family: null
 visibility: internal
@@ -175,7 +175,7 @@ All requirement packs and task packets must include per-requirement provenance i
 
 ## 7. Retrieval Rules
 
-See `docs/spec-retrieval-strategy.md` for the full hybrid retrieval hierarchy.
+See `docs/ai/spec-retrieval-strategy.md` for the full hybrid retrieval hierarchy.
 Summary:
 
 1. **Deterministic first (Tier 1):** `--section`, `--element`, `--page`

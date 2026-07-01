@@ -1,0 +1,55 @@
+---
+# Template/Renderer Compatibility Report
+# Generated: TC-DRV-005
+# Plan: plans/.claude/abstract-moseying-donut.md
+# Mission: DRIVERS-SUBSYSTEM-HEALING-001
+
+compatibility_checks:
+  - template_id: getter_test
+    renderer_id: render_getter_test
+    required_arguments: [function_name, module, class_name, return_type_safe]
+    provided_arguments: [function_name, module, class_name, return_type_safe]
+    missing_from_renderer: []
+    extra_in_renderer: []
+    result: PASS
+
+  - template_id: export_csv_test
+    renderer_id: render_export_csv_test
+    required_arguments: [function_name, module, format_cap]
+    provided_arguments: [function_name, module, format_cap]
+    missing_from_renderer: []
+    extra_in_renderer: []
+    result: PASS
+
+  - template_id: roundtrip_test
+    renderer_id: render_roundtrip_test
+    required_arguments: [format_upper, format_cap, format_name, test_import, load_function, write_function, compare_field]
+    provided_arguments: [format_upper, format_cap, format_name, test_import, load_function, write_function, compare_field]
+    missing_from_renderer: []
+    extra_in_renderer: []
+    result: PASS
+
+  - template_id: append_test
+    renderer_id: render_append_test
+    required_arguments: [function_name, module, format_cap, collection_key]
+    provided_arguments: [function_name, module, format_cap, collection_key]
+    missing_from_renderer: []
+    extra_in_renderer: []
+    result: PASS
+
+  - template_id: probe_test
+    renderer_id: render_probe_test
+    required_arguments: [function_name, module, format_cap, format_lower]
+    provided_arguments: [function_name, module, format_cap, format_lower]
+    missing_from_renderer: []
+    extra_in_renderer: []
+    result: PASS
+
+summary:
+  total_templates: 5
+  passed: 5
+  failed: 0
+  ACTIVE_TEMPLATE_RENDERER_MISMATCHES: 0
+
+validation_function: "tools/supervisor/test_drivers.validate_template_renderer_compatibility()"
+contracts_file: "drivers/python/driver-contracts.yaml"

@@ -25,8 +25,8 @@ public class FodtR412GetParagraphCountAndDefaultFontDeepTests : IDisposable
                  xmlns:style=""urn:oasis:names:tc:opendocument:xmlns:style:1.0""
                  xmlns:fo=""urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0"">
   <office:styles>
-    <style:style style:name=\"Standard\" style:family=\"paragraph\">
-      <style:text-properties fo:font-name=\"{fontName}\" fo:font-size=\"12pt\"/>
+    <style:style style:name=""Standard"" style:family=""paragraph"">
+      <style:text-properties fo:font-name=""{fontName}"" fo:font-size=""12pt""/>
     </style:style>
   </office:styles>
   <office:body>

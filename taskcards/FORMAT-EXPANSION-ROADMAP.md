@@ -35,7 +35,7 @@ Do NOT add new formats until Conway R9 is proven.
 ### Phase 2 — Public-Spec XML/Package Expansion (SHORT-TERM)
 **Status:** PENDING — blocked on Conway R9
 
-Add Tier A candidates from `docs/format-expansion-roadmap.md`.
+Add Tier A candidates from `docs/python-foss/format-expansion-roadmap.md`.
 Prefer formats with public specifications and open test material.
 Every format must pass all 11 gates with human approval.
 
@@ -51,10 +51,10 @@ Not limited to Aspose-supported formats.
 
 | Checkpoint | Requirement | Status |
 |-----------|-------------|--------|
-| Roadmap synced to repo | docs/format-expansion-roadmap.md created | DONE |
+| Roadmap synced to repo | docs/python-foss/format-expansion-roadmap.md created | DONE |
 | Memory file created | memory/26-... created | DONE |
 | Master plan Section 38 | plans/master-plan.md Section 38 | DONE |
-| Bootstrap updated | docs/fresh-chat-project-bootstrap.md/.yaml | DONE |
+| Bootstrap updated | docs/automation/fresh-chat-project-bootstrap.md/.yaml | DONE |
 | Conway R9 complete | First new format rollout proven | NOT STARTED |
 | Tier A support-matrix audit | All Tier A candidates audited against Aspose | NOT STARTED |
 | First new format Gates 1-11 | Human-approved gate progression | NOT STARTED |
@@ -76,8 +76,8 @@ Not limited to Aspose-supported formats.
 
 | File | Purpose |
 |------|---------|
-| docs/format-expansion-roadmap.md | Full human-readable roadmap |
-| docs/format-expansion-roadmap.yaml | Machine-readable roadmap |
+| docs/python-foss/format-expansion-roadmap.md | Full human-readable roadmap |
+| docs/python-foss/format-expansion-roadmap.yaml | Machine-readable roadmap |
 | memory/26-format-expansion-roadmap-and-non-aspose-backlog-20260514.md | Memory file |
 | plans/master-plan.md Section 38 | Authority section |
 

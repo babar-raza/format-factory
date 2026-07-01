@@ -16,10 +16,10 @@ This document defines specific patterns for using AI to accelerate commercial .N
 ## Governing Requirements
 
 All AI-assisted commercial development must remain aligned with:
-- **Capability model:** `docs/commercial-product-capability-model.md` (target C7+)
-- **Architecture:** `docs/commercial-dotnet-architecture.md`
-- **AI operating model:** `docs/ai-usage-operating-model.md`
-- **Spec retrieval:** `docs/spec-retrieval-and-rag-policy.md`
+- **Capability model:** `docs/product-factory/commercial-product-capability-model.md` (target C7+)
+- **Architecture:** `docs/product-factory/commercial-dotnet-architecture.md`
+- **AI operating model:** `docs/ai/ai-usage-operating-model.md`
+- **Spec retrieval:** `docs/ai/spec-retrieval-and-rag-policy.md`
 
 ---
 
@@ -46,7 +46,7 @@ All AI-assisted commercial development must remain aligned with:
 **Purpose:** Translate validated requirements into a C# object model skeleton.
 
 **Steps:**
-1. Feed validated requirements YAML + `docs/commercial-dotnet-architecture.md` to AI
+1. Feed validated requirements YAML + `docs/product-factory/commercial-dotnet-architecture.md` to AI
 2. AI produces: C# class/record definitions (properties, constructors, relationships)
 3. Validate: model compiles with `dotnet build`
 4. Validate: model structure matches architecture document expectations
@@ -135,7 +135,7 @@ All AI-assisted commercial development must remain aligned with:
 Before each AI-assisted implementation sprint, verify:
 
 1. **Target capability level:** What C-level is this sprint moving toward?
-2. **Architecture alignment:** Does the proposed code match `docs/commercial-dotnet-architecture.md`?
+2. **Architecture alignment:** Does the proposed code match `docs/product-factory/commercial-dotnet-architecture.md`?
 3. **No premature claims:** Does any AI output claim `commercial_product_ready: true` without C7+ evidence?
 4. **Load-edit-save-convert:** Does the sprint advance at least one axis of the load-edit-save-convert pipeline?
 5. **Test coverage:** Are there deterministic tests for every new API surface?

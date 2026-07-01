@@ -60,5 +60,5 @@ All prototype files are `visibility: internal`. Prototypes are never released to
 
 - `docs/security.md` — threat categories that must be addressed in prototype README
 - `docs/gates.md` — Gate 4 (prototype) pass criteria
-- `docs/acquisition-workflow.md` — Stage 4: Prototype Development
+- `docs/python-foss/acquisition-workflow.md` — Stage 4: Prototype Development
 - `acquisition-packs/_template/parser-notes.md` — parser strategy document that informs prototype design

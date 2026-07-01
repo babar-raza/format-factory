@@ -11,7 +11,7 @@ Ensure AI calls are logged, summarized, and auditable for every sprint that uses
 
 - Establish `.local/llm-logs/` JSONL logging convention (local only)
 - Create sprint summary report template at `reports/ai/ai-usage-summary-<sprint-id>.md`
-- Define required JSONL fields (per docs/ai-usage-operating-model.md)
+- Define required JSONL fields (per docs/ai/ai-usage-operating-model.md)
 - Create tooling or template for log generation (optional, if useful)
 - Review and validate existing log format in `.local/llm-logs/` (if any)
 
@@ -23,7 +23,7 @@ Ensure AI calls are logged, summarized, and auditable for every sprint that uses
 
 ## Acceptance Criteria
 
-- [ ] JSONL log format documented and consistent with AGENTS.md §H5 and docs/ai-usage-operating-model.md
+- [ ] JSONL log format documented and consistent with AGENTS.md §H5 and docs/ai/ai-usage-operating-model.md
 - [ ] Sprint summary report template created at `reports/ai/ai-usage-summary-template.md`
 - [ ] Log fields validated: timestamp, sprint_id, lane_id, model, endpoint, purpose, inputs, outputs, status, validation, secret_safety, provenance_cited
 - [ ] `.local/llm-logs/` confirmed in .gitignore

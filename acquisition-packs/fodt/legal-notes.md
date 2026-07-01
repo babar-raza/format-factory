@@ -110,4 +110,4 @@ Patent search waived for FODT Gate 2 on the following basis:
 | `acquisition-packs/fods/legal-notes.md` | Source Gate 2 legal determination (Category 1 RF, PASSED Babar Raza 2026-05-05) |
 | `registry/candidates/fodt-gate1-scoring-package.yaml` | Factor 1 evidence (AR checks + 30/30 legal safety) |
 | `acquisition-packs/fodt/spec-evidence.md` | Spec evidence (spec cache reuse) |
-| `docs/odf-flat-family-reuse-strategy.md` | ODF flat family reuse rationale |
+| `docs/python-foss/odf-flat-family-reuse-strategy.md` | ODF flat family reuse rationale |

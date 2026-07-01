@@ -50,10 +50,10 @@ Each AI lane must follow these rules:
 **Purpose:** Document all durable AI goals, expectations, patterns, and boundaries
 
 **Allowed files for LANE K:**
-- docs/ai-usage-operating-model.md + .yaml
-- docs/ai-assisted-commercial-development.md + .yaml
-- docs/spec-retrieval-and-rag-policy.md + .yaml
-- docs/agent-swarm-ai-orchestration.md
+- docs/ai/ai-usage-operating-model.md + .yaml
+- docs/ai/ai-assisted-commercial-development.md + .yaml
+- docs/ai/spec-retrieval-and-rag-policy.md + .yaml
+- docs/ai/agent-swarm-ai-orchestration.md
 - taskcards/AI-*.md
 - memory/23-ai-usage-operating-model-20260513.md
 - reports/governance/ai-usage-local-documentation-sync-20260513.*
@@ -116,7 +116,7 @@ Before accepting AI lane outputs:
 ## Cross-References
 
 - Controlled swarm policy: taskcards/ACCEL-001-controlled-parallel-lanes.md, ACCEL-002-larger-sprint-policy.md
-- AI operating model: docs/ai-usage-operating-model.md
-- AI commercial patterns: docs/ai-assisted-commercial-development.md
+- AI operating model: docs/ai/ai-usage-operating-model.md
+- AI commercial patterns: docs/ai/ai-assisted-commercial-development.md
 - Gate integrity: docs/gates.md
 - Evidence bundle policy: AGENTS.md §Y, GOVERNANCE.md §18

@@ -176,6 +176,6 @@ src/net/{format}/
 ## Binding Authority
 
 This document is referenced by:
-- docs/commercial-product-capability-model.md
+- docs/product-factory/commercial-product-capability-model.md
 - plans/master-plan.md (Gate 11 implementation expectations)
 - Future implementation taskcards (FODS-COMMERCIAL-LOAD-SAVE-MODEL, FODT-COMMERCIAL-LOAD-SAVE-MODEL, etc.)

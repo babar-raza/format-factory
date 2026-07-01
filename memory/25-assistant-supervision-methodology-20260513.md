@@ -18,8 +18,8 @@ stay honest, and catch problems before they compounded.
 That working style should not be lost when a chat session ends or when a new agent starts.
 This memory file captures it in a compact, durable form.
 
-The full methodology is in `docs/assistant-supervision-methodology.md`.
-The execution standards are in `docs/project-execution-standards.md`.
+The full methodology is in `docs/automation/assistant-supervision-methodology.md`.
+The execution standards are in `docs/governance/project-execution-standards.md`.
 
 ---
 
@@ -179,11 +179,11 @@ Evidence:
 ## 10. New-Chat Behavior
 
 When starting a new chat, read these in order:
-1. `docs/fresh-chat-project-bootstrap.md`
+1. `docs/automation/fresh-chat-project-bootstrap.md`
 2. `memory/24-chatgpt-session-memory-sync-20260513.md`
 3. `memory/25-assistant-supervision-methodology-20260513.md` (this file)
-4. `docs/assistant-supervision-methodology.md`
-5. `docs/project-execution-standards.md`
+4. `docs/automation/assistant-supervision-methodology.md`
+5. `docs/governance/project-execution-standards.md`
 6. `plans/master-plan.md` Section 33
 
 Then:
@@ -198,7 +198,7 @@ Then:
 
 Before starting any sprint, confirm:
 
-- [ ] Read all files in "Standard Local Files to Read First" (docs/project-execution-standards.md §10)
+- [ ] Read all files in "Standard Local Files to Read First" (docs/governance/project-execution-standards.md §10)
 - [ ] Checked registry/format-registry.yaml for current gate status
 - [ ] Checked plans/master-plan.md §33 for current state
 - [ ] Reviewed most recent memory file for session continuity

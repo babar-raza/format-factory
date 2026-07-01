@@ -8,8 +8,8 @@ Create a fresh-chat bootstrap document that a new ChatGPT or Claude session can 
 project context from local disk, without relying on external memory.
 
 ## Scope
-- docs/fresh-chat-project-bootstrap.md — human-readable, pasteable into new chat
-- docs/fresh-chat-project-bootstrap.yaml — machine-readable version with structured fields
+- docs/automation/fresh-chat-project-bootstrap.md — human-readable, pasteable into new chat
+- docs/automation/fresh-chat-project-bootstrap.yaml — machine-readable version with structured fields
 
 ## Non-Goals
 - Do NOT implement product source
@@ -18,8 +18,8 @@ project context from local disk, without relying on external memory.
 - Do NOT store raw LLM transcripts
 
 ## Acceptance Criteria
-- docs/fresh-chat-project-bootstrap.md exists and is pasteable into new chat context
-- docs/fresh-chat-project-bootstrap.yaml exists with all required structured fields:
+- docs/automation/fresh-chat-project-bootstrap.md exists and is pasteable into new chat context
+- docs/automation/fresh-chat-project-bootstrap.yaml exists with all required structured fields:
   - repo_path
   - read_first_files
   - current_decisions
@@ -37,8 +37,8 @@ project context from local disk, without relying on external memory.
 Part of CHATGPT-MEMORY-LOCAL-SYNC sprint evidence bundle.
 
 ## Allowed Files
-- docs/fresh-chat-project-bootstrap.md
-- docs/fresh-chat-project-bootstrap.yaml
+- docs/automation/fresh-chat-project-bootstrap.md
+- docs/automation/fresh-chat-project-bootstrap.yaml
 
 ## Prohibited Actions
 - No product source

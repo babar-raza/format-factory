@@ -129,7 +129,7 @@ evidence, and validation gates.
 
 The main gap is that AI is currently acknowledged, but not yet part of the critical execution path.
 
-The project has `docs/llm-and-embedding-strategy.md`, but the strategy is still largely backlog-only.
+The project has `docs/ai/llm-and-embedding-strategy.md`, but the strategy is still largely backlog-only.
 It defines good future uses for LLMs and embeddings, but those uses are not yet implemented.
 
 The project has `tools/llm/endpoints.yaml`, but the active client layer is absent or incomplete.

@@ -40,8 +40,8 @@ deferred with phase labels.
 
 **Location:** Section "Governance Updates (approved in this planning sprint)"
 
-**Defect:** AGENTS.md Section AA, GOVERNANCE.md Section 20, docs/acquisition-workflow.md,
-and docs/current-state-and-evidence-authority.md are listed as "approved in this planning
+**Defect:** AGENTS.md Section AA, GOVERNANCE.md Section 20, docs/python-foss/acquisition-workflow.md,
+and docs/governance/current-state-and-evidence-authority.md are listed as "approved in this planning
 sprint." The plan as a whole is PROPOSED_PENDING_HUMAN_APPROVAL. Nothing in a proposed plan
 is self-authorized. The plan cannot approve its own execution.
 

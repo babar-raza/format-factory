@@ -134,8 +134,8 @@ This table will be updated as audits complete and expansion begins.
 
 | File | Purpose |
 |------|---------|
-| docs/format-expansion-roadmap.md | Full expansion roadmap |
-| docs/format-expansion-roadmap.yaml | Machine-readable roadmap |
+| docs/python-foss/format-expansion-roadmap.md | Full expansion roadmap |
+| docs/python-foss/format-expansion-roadmap.yaml | Machine-readable roadmap |
 | taskcards/FORMAT-EXPANSION-ROADMAP.md | Strategic governance |
 | taskcards/NON-ASPOSE-FORMAT-BACKLOG.md | Full candidate backlog |
 | reports/planning/conway-rebaseline-roadmap-20260513.md | Conway R1-R9 dependency |

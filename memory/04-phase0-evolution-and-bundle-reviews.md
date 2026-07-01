@@ -144,7 +144,7 @@ The human added a major requirement:
 
 run008 added:
 
-- `docs/specification-cache.md`
+- `docs/python-foss/specification-cache.md`
 - `tools/spec-cache/_readme.md`
 - `taskcards/TC-0007-specification-cache.md`
 - spec-cache architecture in master plan and docs
@@ -205,8 +205,8 @@ run011 propagated the format-first source layout expectation into `plans/master-
 Changes applied in run011:
 
 - `plans/master-plan.md` updated to v2.8: product source layout section updated to `src/net/{format}/` and `src/python/{format}/`. Old paths (`src/dotnet/`, `src/python/open-source/`) marked obsolete.
-- `docs/architecture.md` updated: source layout section updated.
-- `docs/product-tracks.md` updated: track descriptions updated to use format-first layout.
+- `docs/code-quality/architecture.md` updated: source layout section updated.
+- `docs/product-factory/product-tracks.md` updated: track descriptions updated to use format-first layout.
 - `AGENTS.md` updated: forbidden path rules reflect format-first layout.
 - `GOVERNANCE.md` updated: source layout references updated.
 - DEC-033 recorded: .NET FOSS packaging deferred — whether `src/net/{format}/` produces a separate Apache 2.0-licensed NuGet package is not yet decided; must resolve before Gate 10 .NET release.
@@ -218,8 +218,8 @@ run013 verified that run011's propagation was complete and removed stale "pendin
 Changes applied in run013:
 
 - `plans/master-plan.md` updated to v2.9: run012 (memory stream) and run013 recorded in run history.
-- `docs/release-control.md` Last reviewed date updated to 2026-05-04.
-- `docs/llm-endpoint-strategy.md` Last reviewed date updated; Repeatable Agentic Workflow section added (5 rules).
+- `docs/governance/release-control.md` Last reviewed date updated to 2026-05-04.
+- `docs/ai/llm-endpoint-strategy.md` Last reviewed date updated; Repeatable Agentic Workflow section added (5 rules).
 - `/memory` files 03, 05, 06, 07, 09, 10, 00-index updated: stale "pending propagation" notes removed; run011 propagation status recorded.
 
 ## run014 Phase 0 closure-readiness sprint (main execution stream)

@@ -13,7 +13,7 @@ All tools in this directory are `visibility: internal`. They are acquisition-lay
 
 **Phase 0 scope:** In Phase 0, only `_readme.md` exists. No scripts are created in Phase 0.
 
-**Phase 1 scope (TC-0007):** TC-0007 implements generic tooling only. TC-0007 does NOT require or perform any real specification download. TC-0007 completion proves the tooling works via a local dry-run synthetic test. Real spec acquisition for any format requires a separate explicit execution prompt that names the format, confirms the legal category, and authorizes the download. See `docs/specification-cache.md` for the full authorization model.
+**Phase 1 scope (TC-0007):** TC-0007 implements generic tooling only. TC-0007 does NOT require or perform any real specification download. TC-0007 completion proves the tooling works via a local dry-run synthetic test. Real spec acquisition for any format requires a separate explicit execution prompt that names the format, confirms the legal category, and authorizes the download. See `docs/python-foss/specification-cache.md` for the full authorization model.
 
 ---
 
@@ -84,14 +84,14 @@ Tools in this directory handle specification file downloads. Security and legal 
 - **No redistribution without clearance:** Do not copy cached spec files into committed directories. Set `redistribution_permitted` correctly based on the standards body's terms. Local caching does not imply redistribution rights.
 - **No API keys needed:** Specification downloads are public HTTP/HTTPS requests. No credentials are required. If a standards body requires login or payment for access, flag the spec as requiring human action and do not attempt automated download.
 - **Copyright:** Specification documents are copyrighted. They may only be used for the purposes covered by the standards body's publication terms (typically: reading and implementing, not redistribution). Quote only minimal necessary excerpts in committed artifacts.
-- **Remote LLM restriction:** Full spec documents must not be sent to remote LLM endpoints by default. See `docs/llm-endpoint-strategy.md` for the spec content in prompts rules.
+- **Remote LLM restriction:** Full spec documents must not be sent to remote LLM endpoints by default. See `docs/ai/llm-endpoint-strategy.md` for the spec content in prompts rules.
 
 ---
 
 ## Relationship to Other Documents
 
-- `docs/specification-cache.md` — full specification cache policy and authorization model (this directory's governing document)
-- `docs/acquisition-workflow.md` — Stage 2 requires a cached spec before evidence drafting begins; authorization required
-- `docs/legal-and-licensing.md` — legal category and four permissions (read, implement, store, redistribute)
-- `docs/llm-endpoint-strategy.md` — LLM content quoting spec text must be handled carefully; remote restrictions
+- `docs/python-foss/specification-cache.md` — full specification cache policy and authorization model (this directory's governing document)
+- `docs/python-foss/acquisition-workflow.md` — Stage 2 requires a cached spec before evidence drafting begins; authorization required
+- `docs/governance/legal-and-licensing.md` — legal category and four permissions (read, implement, store, redistribute)
+- `docs/ai/llm-endpoint-strategy.md` — LLM content quoting spec text must be handled carefully; remote restrictions
 - `taskcards/TC-0007-specification-cache.md` — Phase 1 generic tooling implementation scope (no real download required)

@@ -55,7 +55,7 @@ def make_document(reqs: list = None, overrides: dict = None) -> dict:
         "generation_timestamp": "2026-05-13T00:00:00Z",
         "model_tool": "test",
         "ai_available": False,
-        "product_goals_ref": "docs/commercial-product-capability-model.md",
+        "product_goals_ref": "docs/product-factory/commercial-product-capability-model.md",
         "input_source_hashes": {},
         "requirements": reqs if reqs is not None else [make_requirement()],
     }

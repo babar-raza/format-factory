@@ -331,7 +331,7 @@ with correct IDs, replacing the 15 FODS template facts.
 - Part 2 (Packages): required for package format validation facts
 - Part 4 (OpenFormula): required for formula/cell facts in FODS
 
-Requires authorization per acquisition policy (`docs/specification-cache.md`).
+Requires authorization per acquisition policy (`docs/python-foss/specification-cache.md`).
 
 #### Phase 5 — Semantic Census and Coverage Gates
 

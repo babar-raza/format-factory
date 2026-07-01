@@ -149,6 +149,6 @@ The security reviewer may be the project lead in Phase 3. A dedicated security r
 ## Relationship to Other Documents
 
 - See `docs/gates.md` for Gate 7 and Gate 8 pass criteria.
-- See `docs/acquisition-workflow.md` for where fuzzing and security review fit in the workflow.
+- See `docs/python-foss/acquisition-workflow.md` for where fuzzing and security review fit in the workflow.
 - See `acquisition-packs/_template/parser-notes.md` for the template that documents parser strategy (which informs security design).
 - See `reports/_readme.md` for where security reports are stored.

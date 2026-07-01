@@ -134,7 +134,7 @@ See `acquisition-packs/fods/gate6-oracle-blocker-report.md` for full diagnostic 
 ## 5. References
 
 - `tools/oracle/provider_registry.yaml` — canonical provider registry
-- `docs/oracle-provider-strategy.md` — oracle provider architecture
+- `docs/ai/oracle-provider-strategy.md` — oracle provider architecture
 - `acquisition-packs/fods/oracle-installation-checklist.md` — installation guide
 - `acquisition-packs/fods/gate6-oracle-blocker-report.md` — diagnostic evidence
 - `taskcards/TC-0026-fods-gate6-oracle-execution.md` — execution taskcard (blocked)

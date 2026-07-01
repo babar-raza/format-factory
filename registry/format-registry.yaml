@@ -10,14 +10,11 @@ formats:
   spec_url: https://docs.oasis-open.org/office/OpenDocument/v1.3/
   legal_category: 1
   tier_target: 4
-  scoring_notes: 'FODS is the flat-XML variant of the OASIS ODF spreadsheet format.
-    Legal Category 1 (OASIS royalty-free).
+  scoring_notes: 'FODS is the flat-XML variant of the OASIS ODF spreadsheet format. Legal Category 1 (OASIS royalty-free).
 
-    Comprehensive spec from OASIS TC. Flat XML structure is simpler to parse than
-    ZIP-based ODS.
+    Comprehensive spec from OASIS TC. Flat XML structure is simpler to parse than ZIP-based ODS.
 
-    Moderate community demand (developer/debug/VCS use case). First acquisition in
-    Cells family — high strategic value.
+    Moderate community demand (developer/debug/VCS use case). First acquisition in Cells family — high strategic value.
 
     Total score: 93/100 (Accept band). See TC-0001 for full scoring sheet.
 
@@ -38,49 +35,42 @@ formats:
         score: 3
         points: 30
         legal_category: 1
-        rationale: OASIS ODF 1.3 is published under the OASIS royalty-free patent
-          policy; no licensing fees or patent barriers for implementors.
+        rationale: OASIS ODF 1.3 is published under the OASIS royalty-free patent policy; no licensing fees or patent barriers
+          for implementors.
       spec_availability:
         score: 3
         points: 20
-        rationale: ODF 1.3 specification is comprehensive, covers all XML structures
-          and constraints, actively maintained by OASIS TC, and freely accessible
-          at docs.oasis-open.org in HTML and PDF forms.
+        rationale: ODF 1.3 specification is comprehensive, covers all XML structures and constraints, actively maintained
+          by OASIS TC, and freely accessible at docs.oasis-open.org in HTML and PDF forms.
       parseable_structure:
         score: 3
         points: 15
-        rationale: FODS is a single flat XML file with no ZIP container or compression
-          layer; standard XML parsers handle it directly, making it structurally simpler
-          than ODS.
+        rationale: FODS is a single flat XML file with no ZIP container or compression layer; standard XML parsers handle
+          it directly, making it structurally simpler than ODS.
       community_demand:
         score: 2
         points: 10
-        rationale: FODS has moderate demand — used primarily by developers requiring
-          human-readable, version-control-friendly spreadsheet files; supported by
-          LibreOffice and Apache OpenOffice, though less common than ODS in production
-          use.
+        rationale: FODS has moderate demand — used primarily by developers requiring human-readable, version-control-friendly
+          spreadsheet files; supported by LibreOffice and Apache OpenOffice, though less common than ODS in production use.
       strategic_track_value:
         score: 3
         points: 10
-        rationale: FODS is the first acquisition in the Cells family and the validated
-          pilot for the entire acquisition pipeline; success validates architecture
-          and opens the ODF family (ODS, FODT, FODP, FODB) for follow-on acquisitions.
+        rationale: FODS is the first acquisition in the Cells family and the validated pilot for the entire acquisition pipeline;
+          success validates architecture and opens the ODF family (ODS, FODT, FODP, FODB) for follow-on acquisitions.
       implementation_complexity:
         score: 2
         points: 3
-        rationale: FODS removes the ZIP layer but ODF XML semantics remain complex
-          — styles inheritance, formula syntax (OpenFormula), conditional formatting,
-          and merged cells require meaningful parser work at higher tiers.
+        rationale: FODS removes the ZIP layer but ODF XML semantics remain complex — styles inheritance, formula syntax (OpenFormula),
+          conditional formatting, and merged cells require meaningful parser work at higher tiers.
       family_overlap:
         score: 3
         points: 5
-        rationale: FODS is the first format in the registry; there is no overlap with
-          any existing format. It is complementary to future ODF family acquisitions.
+        rationale: FODS is the first format in the registry; there is no overlap with any existing format. It is complementary
+          to future ODF family acquisitions.
     total_points: 93
     band: accept
-    recommendation: Strong candidate for Gate 1 approval. Legal Category 1 (OASIS
-      RF), comprehensive spec, flat XML structure. Score 93/100 places this firmly
-      in Accept band. Recommend human Gate 1 approval.
+    recommendation: Strong candidate for Gate 1 approval. Legal Category 1 (OASIS RF), comprehensive spec, flat XML structure.
+      Score 93/100 places this firmly in Accept band. Recommend human Gate 1 approval.
     gate_1_status_set_by_agent: scored_pending_human_approval
     approved_by: Babar Raza
     approved_date: '2026-05-04'
@@ -99,53 +89,42 @@ formats:
       status: passed
       approved_by: Babar Raza
       approved_date: '2026-05-04'
-      notes: 'Scored by claude-sonnet-4-6 (run015, 2026-05-04): 93/100, Accept band.
-        Independently verified by claude-sonnet-4-6 (run016, 2026-05-04). Human approval
-        recorded by Babar Raza in run017 execution prompt (2026-05-04).'
+      notes: 'Scored by claude-sonnet-4-6 (run015, 2026-05-04): 93/100, Accept band. Independently verified by claude-sonnet-4-6
+        (run016, 2026-05-04). Human approval recorded by Babar Raza in run017 execution prompt (2026-05-04).'
     gate_2:
       status: passed
       approved_by: Babar Raza
       approved_date: '2026-05-05'
       fast_path: true
-      fast_path_basis: OASIS Category 1 RF — ODF 1.3 published under OASIS RF on
-        Limited Terms
+      fast_path_basis: OASIS Category 1 RF — ODF 1.3 published under OASIS RF on Limited Terms
       patent_search:
         status: waived_by_project_lead
         waived_by: Babar Raza
         waived_date: '2026-05-05'
-        rationale: Project lead waived formal patent search for FODS Gate 2 based
-          on OASIS RF on Limited Terms evidence, run021 cached official OASIS source,
-          and run022 independent verification. This waiver applies only to Gate 2
-          evidence acceptance and does not waive future security, sample, parser,
-          or release gates.
+        rationale: Project lead waived formal patent search for FODS Gate 2 based on OASIS RF on Limited Terms evidence, run021
+          cached official OASIS source, and run022 independent verification. This waiver applies only to Gate 2 evidence acceptance
+          and does not waive future security, sample, parser, or release gates.
       evidence_drafted_by: claude-sonnet-4-6 (run019, 2026-05-04)
-      evidence_strengthened_by: claude-sonnet-4-6 (run020 independent verification,
-        run021 spec acquisition)
+      evidence_strengthened_by: claude-sonnet-4-6 (run020 independent verification, run021 spec acquisition)
       evidence_verified_by: claude-sonnet-4-6 (run022 independent verification, 2026-05-05)
-      notes: 'Evidence draft completed run019. Independently verified and strengthened
-        run020 (5/8 fast-path items; tooling fixes). Spec downloaded run021: ODF 1.3
-        Part 3 PDF (24,270,588 bytes, sha256:92cfe64ee30a8cca1be19a76d38628fdc8ef9153eb59547f6c96fe7b9b81b066)
-        from https://docs.oasis-open.org/office/OpenDocument/v1.3/os/part3-schema/OpenDocument-v1.3-os-part3-schema.pdf.
-        spec-index.yaml validates VALID/CURRENT. Primary claims SUPPORTED_BY_CACHED_SOURCE.
-        Fast-path 6/8 confirmed. run022 (2026-05-05): SHA-256 independently re-verified
-        MATCH; spec-cache VALID/CURRENT; tooling smoke-checks pass; evidence claims
-        reviewed — no overclaiming found. GATE 2 PASSED 2026-05-05 by Babar Raza.
-        Patent search waived by project lead. No samples acquired.'
+      notes: 'Evidence draft completed run019. Independently verified and strengthened run020 (5/8 fast-path items; tooling
+        fixes). Spec downloaded run021: ODF 1.3 Part 3 PDF (24,270,588 bytes, sha256:92cfe64ee30a8cca1be19a76d38628fdc8ef9153eb59547f6c96fe7b9b81b066)
+        from https://docs.oasis-open.org/office/OpenDocument/v1.3/os/part3-schema/OpenDocument-v1.3-os-part3-schema.pdf. spec-index.yaml
+        validates VALID/CURRENT. Primary claims SUPPORTED_BY_CACHED_SOURCE. Fast-path 6/8 confirmed. run022 (2026-05-05):
+        SHA-256 independently re-verified MATCH; spec-cache VALID/CURRENT; tooling smoke-checks pass; evidence claims reviewed
+        — no overclaiming found. GATE 2 PASSED 2026-05-05 by Babar Raza. Patent search waived by project lead. No samples
+        acquired.'
     gate_3:
       status: passed
       approved_by: Babar Raza
       approved_date: '2026-05-05'
-      corpus_verified_by: claude-sonnet-4-6 (run027 DEC-034 independent verification,
-        2026-05-05)
-      notes: '4 synthetic FODS samples created run026 (2026-05-05). All Apache-2.0
-        project-owned synthetic. Validated: 4/4 PASS. Spec Navigation Layer built:
-        884 sections, 940 chunks, sample-requirements.yaml, parser-requirements-draft.yaml.
-        TC-0013 in_progress. Independent verification (DEC-034) completed run027:
-        SHA-256 hashes verified (fods-minimal-01:a790b18a..., fods-multi-sheet-01:669b60be...,
-        fods-typed-values-01:c873322d..., fods-formula-01:72b06541...), 4/4 PASS re-confirmed,
-        nav layer tools smoke-tested (section query §3.1.2 ✓, core req query ✓,
-        section rebuild 705 pages ✓). GATE 3 PASSED 2026-05-05 by Babar Raza (run028).
-        Parser planning package created run028: parser-requirements.md, parser-scope.md,
+      corpus_verified_by: claude-sonnet-4-6 (run027 DEC-034 independent verification, 2026-05-05)
+      notes: '4 synthetic FODS samples created run026 (2026-05-05). All Apache-2.0 project-owned synthetic. Validated: 4/4
+        PASS. Spec Navigation Layer built: 884 sections, 940 chunks, sample-requirements.yaml, parser-requirements-draft.yaml.
+        TC-0013 in_progress. Independent verification (DEC-034) completed run027: SHA-256 hashes verified (fods-minimal-01:a790b18a...,
+        fods-multi-sheet-01:669b60be..., fods-typed-values-01:c873322d..., fods-formula-01:72b06541...), 4/4 PASS re-confirmed,
+        nav layer tools smoke-tested (section query §3.1.2 ✓, core req query ✓, section rebuild 705 pages ✓). GATE 3 PASSED
+        2026-05-05 by Babar Raza (run028). Parser planning package created run028: parser-requirements.md, parser-scope.md,
         parser-test-plan.md. TC-0014 planning_ready.'
     gate_4:
       status: passed
@@ -156,12 +135,19 @@ formats:
       validation_status: pass
       tc0018_verification: pass
       tc0018_run: run030
-      notes: 'Gate 4 approved by Babar Raza (2026-05-06, run033 prompt) after run032
-        independent verification: prototype validation 4/4 PASS, TC-0018 verification
-        passed, TC-0021 workbench quality verified, TC-0022 evidence contract system
-        verified, gate4-human-review-packet verified. This approval authorizes Gate
-        5 neutral model work only. It does not authorize product source, release,
-        security reports, or commercial implementation.'
+      notes: 'Gate 4 approved by Babar Raza (2026-05-06, run033 prompt) after run032 independent verification: prototype validation
+        4/4 PASS, TC-0018 verification passed, TC-0021 workbench quality verified, TC-0022 evidence contract system verified,
+        gate4-human-review-packet verified. This approval authorizes Gate 5 neutral model work only. It does not authorize
+        product source, release, security reports, or commercial implementation.'
+      evidence_type: STANDALONE_PROTOTYPE
+      tests:
+      - tests/skills/test_fods_gate4_prototype.py
+      - tests/python/fods/test_fods_cli.py
+      corpus:
+      - samples/by-format/fods/
+      limitations:
+      - Gate 4 scope only — not for production pipelines
+      - Schema validation limited to root element check
     gate_5:
       status: passed
       approved_by: Babar Raza
@@ -179,38 +165,30 @@ formats:
       tc0023_run: run033
       tc0024_verification: run034 DEC-034 PASS — 87 checks, 0 errors
       evidence_verified_by: run034 independent verification (claude-opus-4-6, 2026-05-06)
-      notes: 'Gate 5 approved by Babar Raza after run034 independent verification:
-        neutral model v1 validated against all four FODS samples, TC-0024 verification
-        passed, evidence contract validation passed, and Gate 5 human-review packet
-        was prepared. This approval authorizes Gate 6 oracle compatibility work only.
-        It does not authorize product source, release, security reports, legal reports,
-        CI, or commercial implementation.'
+      notes: 'Gate 5 approved by Babar Raza after run034 independent verification: neutral model v1 validated against all
+        four FODS samples, TC-0024 verification passed, evidence contract validation passed, and Gate 5 human-review packet
+        was prepared. This approval authorizes Gate 6 oracle compatibility work only. It does not authorize product source,
+        release, security reports, legal reports, CI, or commercial implementation.'
     gate_6:
       status: passed
       approved_by: Babar Raza
       approved_date: '2026-05-08'
-      oracle_preflight: 'run043 (10th attempt) — ORACLE_PREFLIGHT: PASS — soffice.com
-        found at C:\Program Files\LibreOffice\program\soffice.com — LibreOffice
-        26.2.3.2'
+      oracle_preflight: 'run043 (10th attempt) — ORACLE_PREFLIGHT: PASS — soffice.com found at C:\Program Files\LibreOffice\program\soffice.com
+        — LibreOffice 26.2.3.2'
       oracle_run: 'run043 — ORACLE_RUN: PASS — 4/4 samples converted'
-      oracle_compare: 'run043 — ORACLE_COMPARE: PASS — 3/4 PASS, 1/4 WARN (multi-sheet
-        CSV export limitation, expected)'
+      oracle_compare: 'run043 — ORACLE_COMPARE: PASS — 3/4 PASS, 1/4 WARN (multi-sheet CSV export limitation, expected)'
       oracle_compare_report: acquisition-packs/fods/gate6-oracle-comparison-report.md
       oracle_harness_path: tools/oracle/
-      oracle_harness_fixed_run043: soffice.com added to candidates; FODS input filter
-        fixed; parser subprocess call fixed
+      oracle_harness_fixed_run043: soffice.com added to candidates; FODS input filter fixed; parser subprocess call fixed
       tc026_status: COMPLETED (run043)
       tc027_dec034_status: COMPLETED PASS 24/24 (run044, 2026-05-08)
       dec034_verified_run: run044
-      notes: 'Gate 6 oracle preflight blocked for 9 runs (run035–run042). Resolved
-        run043: LibreOffice 26.2.3.2 installed via winget. oracle_common.py fixed
-        (soffice.com console-mode variant). run_fods_oracle.py fixed (OpenDocument
-        Spreadsheet Flat XML input filter). compare_fods_oracle.py fixed (parser CLI
-        call). ORACLE_COMPARE: PASS 3/4 PASS 1/4 WARN (multi-sheet CSV export limitation
-        — expected, not a parser defect). TC-0027 DEC-034 independent verification
-        PASS 24/24 (run044, 2026-05-08). Gate 6 APPROVED by Babar Raza (run044 execution
-        prompt, 2026-05-08). This approval authorizes Gate 7 malformed/fuzz testing
-        planning only.'
+      notes: 'Gate 6 oracle preflight blocked for 9 runs (run035–run042). Resolved run043: LibreOffice 26.2.3.2 installed
+        via winget. oracle_common.py fixed (soffice.com console-mode variant). run_fods_oracle.py fixed (OpenDocument Spreadsheet
+        Flat XML input filter). compare_fods_oracle.py fixed (parser CLI call). ORACLE_COMPARE: PASS 3/4 PASS 1/4 WARN (multi-sheet
+        CSV export limitation — expected, not a parser defect). TC-0027 DEC-034 independent verification PASS 24/24 (run044,
+        2026-05-08). Gate 6 APPROVED by Babar Raza (run044 execution prompt, 2026-05-08). This approval authorizes Gate 7
+        malformed/fuzz testing planning only.'
     gate_7:
       status: passed
       approved_by: Babar Raza
@@ -223,11 +201,9 @@ formats:
       fixtures_dir: tests/fixtures/fods/malformed/
       fuzz_test_result: 'GATE7_FUZZ_TEST: PASS 18/18 CRASH 0/18 CORRUPT 0/18'
       dec034_verified_run: run045
-      notes: 'Gate 7 executed run045 (2026-05-08). 18 malformed FODS fixtures (4 categories).
-        GATE7_FUZZ_TEST: PASS 18/18 CRASH 0/18 CORRUPT 0/18. Max elapsed 0.037s. No
-        parser bugs found. DEC-034 PASS 18/18 (run045 separate from run044). Gate
-        7 APPROVED by Babar Raza (run045 execution prompt, 2026-05-08). Authorizes
-        FODS Gate 8 security planning only.'
+      notes: 'Gate 7 executed run045 (2026-05-08). 18 malformed FODS fixtures (4 categories). GATE7_FUZZ_TEST: PASS 18/18
+        CRASH 0/18 CORRUPT 0/18. Max elapsed 0.037s. No parser bugs found. DEC-034 PASS 18/18 (run045 separate from run044).
+        Gate 7 APPROVED by Babar Raza (run045 execution prompt, 2026-05-08). Authorizes FODS Gate 8 security planning only.'
     gate_8:
       status: passed
       approved_by: Babar Raza
@@ -236,13 +212,10 @@ formats:
       tc0038_dec034_status: PASS 20/20 (run046 inline)
       security_report_path: reports/security/fods.md
       approval_run: run046
-      notes: 'Gate 8 executed run046 (2026-05-08). GATE8_SECURITY_REVIEW: PASS. TC-1
-        XXE mitigated (ET/Expat default). TC-2 DTD mitigated (Expat rejects DOCTYPE).
-        TC-3/TC-4/TC-8 not-applicable (flat XML). TC-5 malformed mitigated (Gate 7
-        18/18). TC-7 recursion mitigated (iterative code). TC-6 memory deferred to
-        Gate 10. TC-0038 DEC-034 PASS 20/20. Gate 8 APPROVED by Babar Raza (run046
-        execution prompt, 2026-05-08). Authorizes FODS Gate 9 product mapping planning
-        only.'
+      notes: 'Gate 8 executed run046 (2026-05-08). GATE8_SECURITY_REVIEW: PASS. TC-1 XXE mitigated (ET/Expat default). TC-2
+        DTD mitigated (Expat rejects DOCTYPE). TC-3/TC-4/TC-8 not-applicable (flat XML). TC-5 malformed mitigated (Gate 7
+        18/18). TC-7 recursion mitigated (iterative code). TC-6 memory deferred to Gate 10. TC-0038 DEC-034 PASS 20/20. Gate
+        8 APPROVED by Babar Raza (run046 execution prompt, 2026-05-08). Authorizes FODS Gate 9 product mapping planning only.'
     gate_9:
       status: passed
       approved_by: Babar Raza
@@ -258,21 +231,19 @@ formats:
       tc0040_status: completed
       dec034_inline_authorized: true
       approval_run: run047
-      notes: 'Gate 9 executed run047 (2026-05-08). Tier map finalized (v1.0): 5 tiers,
-        16 features. First OSS release Tiers 0-2 (13 features). Tiers 3-4 deferred.
-        DEC-034 PASS 20/20 inline (authorized by run047 execution prompt). TC-0040
-        COMPLETED. Gate 9 APPROVED by Babar Raza (run047 execution prompt, 2026-05-08).
-        Authorizes FODS Gate 10 OSS release planning only. No product source created.'
+      notes: 'Gate 9 executed run047 (2026-05-08). Tier map finalized (v1.0): 5 tiers, 16 features. First OSS release Tiers
+        0-2 (13 features). Tiers 3-4 deferred. DEC-034 PASS 20/20 inline (authorized by run047 execution prompt). TC-0040
+        COMPLETED. Gate 9 APPROVED by Babar Raza (run047 execution prompt, 2026-05-08). Authorizes FODS Gate 10 OSS release
+        planning only. No product source created.'
     gate_10:
       status: passed
       approved_by: Babar Raza
       approved_date: '2026-05-08'
       approval_run: run048
-      notes: 'Gate 10 executed run048 (2026-05-08). OSS scope Tiers 0-2 (12 features).
-        Packaging plan: format-factory-fods v0.1.0. TC-6 iterparse required, TC-1
-        defusedxml recommended. DEC-034 PASS 20/20 inline. TC-0044 COMPLETED. Gate
-        10 APPROVED by Babar Raza (run048 execution prompt, 2026-05-08). Authorizes
-        Gate 11 commercial planning (pending DEC-033 resolution).'
+      notes: 'Gate 10 executed run048 (2026-05-08). OSS scope Tiers 0-2 (12 features). Packaging plan: format-factory-fods
+        v0.1.0. TC-6 iterparse required, TC-1 defusedxml recommended. DEC-034 PASS 20/20 inline. TC-0044 COMPLETED. Gate 10
+        APPROVED by Babar Raza (run048 execution prompt, 2026-05-08). Authorizes Gate 11 commercial planning (pending DEC-033
+        resolution).'
     gate_11:
       status: commercial_readiness_in_progress
       approved_by: null
@@ -280,8 +251,7 @@ formats:
       g11e_prototype_status: g11e_complete_r23
       dec033_status: resolved
       dec033_option: B
-      dec033_option_description: .NET Commercial Only — Python is FOSS track, no
-        .NET FOSS package
+      dec033_option_description: .NET Commercial Only — Python is FOSS track, no .NET FOSS package
       dec033_resolved_by: Babar Raza
       dec033_resolved_date: '2026-05-12'
       dotnet_target: net10.0
@@ -297,15 +267,15 @@ formats:
       g11e_nuget_pack: true
       nuget_package: aspose-format-factory-fods
       g11f_validation_report: reports/governance/r23-g11f-validation-report-fods-fodt-20260517.md
-      notes: 'G11-E expanded prototype complete (R23). 102/102 .NET tests PASS. JSON/HTML/CSV
-        exporters, FodsEditSaveTests, local NuGet pack. G11-F validation in_progress.
-        G11-G APPROVED by Babar Raza 2026-06-05. commercial_product_ready: false.'
+      notes: 'G11-E expanded prototype complete (R23). 102/102 .NET tests PASS. JSON/HTML/CSV exporters, FodsEditSaveTests,
+        local NuGet pack. G11-F validation in_progress. G11-G APPROVED by Babar Raza 2026-06-05. commercial_product_ready:
+        false.'
       g11g_status: APPROVED_BY_BABAR_RAZA_2026_06_05
       known_scope_limitations:
         pdf_unicode_support: latin1_only
-        pdf_unicode_rationale: PDF standard fonts (Helvetica, Helvetica-Bold) use WinAnsiEncoding
-          (Latin-1). Non-Latin-1 chars (Unicode > U+00FF) replaced with '?'. Full Unicode
-          PDF requires TrueType font embedding. Deferred post-Gate-11. PROB-002 Option C.
+        pdf_unicode_rationale: PDF standard fonts (Helvetica, Helvetica-Bold) use WinAnsiEncoding (Latin-1). Non-Latin-1 chars
+          (Unicode > U+00FF) replaced with '?'. Full Unicode PDF requires TrueType font embedding. Deferred post-Gate-11.
+          PROB-002 Option C.
         pdf_limitation_severity: MEDIUM
         pdf_limitation_resolution: DEFERRED_POST_GATE11
     phase_4_python_source:
@@ -321,8 +291,7 @@ formats:
       requirements_total: 20
       deferred_tier3:
       - IR-FODS-008
-      notes: TC-0050 COMPLETED (run051). 6 source files, 5 test files. iterparse streaming,
-        defusedxml optional.
+      notes: TC-0050 COMPLETED (run051). 6 source files, 5 test files. iterparse streaming, defusedxml optional.
 - format_id: fodt
   display_name: Flat OpenDocument Text
   family: words
@@ -334,16 +303,13 @@ formats:
   spec_url: https://docs.oasis-open.org/office/OpenDocument/v1.3/
   legal_category: 1
   tier_target: 4
-  scoring_notes: 'FODT is the flat-XML variant of the OASIS ODF text document format.
-    Legal Category 1 (OASIS royalty-free).
+  scoring_notes: 'FODT is the flat-XML variant of the OASIS ODF text document format. Legal Category 1 (OASIS royalty-free).
 
-    Same spec body as FODS (ODF 1.3). Flat XML structure; paragraph/style model is
-    more complex than FODS cells.
+    Same spec body as FODS (ODF 1.3). Flat XML structure; paragraph/style model is more complex than FODS cells.
 
     Opens the Words family. Estimated ~40-50% FODS pipeline reuse effort.
 
-    Total score: 88/100 (Accept band). Scored run039, DEC-034 verified run040. See
-    TC-0029 for scoring evidence.
+    Total score: 88/100 (Accept band). Scored run039, DEC-034 verified run040. See TC-0029 for scoring evidence.
 
     '
   visibility: internal
@@ -362,45 +328,41 @@ formats:
         score: 3
         points: 30
         legal_category: 1
-        rationale: OASIS ODF 1.3 royalty-free RF — same legal basis as FODS Gate
-          2 legal-notes.md (passed Babar Raza 2026-05-05). No royalties, no patent
-          restrictions.
+        rationale: OASIS ODF 1.3 royalty-free RF — same legal basis as FODS Gate 2 legal-notes.md (passed Babar Raza 2026-05-05).
+          No royalties, no patent restrictions.
       spec_availability:
         score: 3
         points: 20
-        rationale: ODF 1.3 spec already cached (24.27 MB, sha256:92cfe64..b066), normalized
-          (782 pages, 884 sections). Same spec body as FODS.
+        rationale: ODF 1.3 spec already cached (24.27 MB, sha256:92cfe64..b066), normalized (782 pages, 884 sections). Same
+          spec body as FODS.
       parseable_structure:
         score: 2
         points: 10
-        rationale: Flat XML (no ZIP), stdlib-parseable, but paragraph/style inheritance
-          adds complexity vs FODS cells. ElementTree approach reusable.
+        rationale: Flat XML (no ZIP), stdlib-parseable, but paragraph/style inheritance adds complexity vs FODS cells. ElementTree
+          approach reusable.
       community_demand:
         score: 2
         points: 10
-        rationale: Moderate demand — VCS-friendly technical writing, LibreOffice
-          Writer native, CI/CD documentation pipelines. Less widespread than ODT zip
-          variant.
+        rationale: Moderate demand — VCS-friendly technical writing, LibreOffice Writer native, CI/CD documentation pipelines.
+          Less widespread than ODT zip variant.
       strategic_track_value:
         score: 3
         points: 10
-        rationale: Opens Words family. Second ODF flat acquisition validates pipeline
-          reuse pattern. High strategic value.
+        rationale: Opens Words family. Second ODF flat acquisition validates pipeline reuse pattern. High strategic value.
       implementation_complexity:
         score: 2
         points: 3
-        rationale: 'Extends FODS parser patterns (ElementTree, namespace handling).
-          New work: paragraph/heading extraction, list handling, basic style resolution.'
+        rationale: 'Extends FODS parser patterns (ElementTree, namespace handling). New work: paragraph/heading extraction,
+          list handling, basic style resolution.'
       family_overlap:
         score: 3
         points: 5
-        rationale: FODS = Cells family. FODT = Words family. Zero functional overlap.
-          Different neutral model, different pipeline targets.
+        rationale: FODS = Cells family. FODT = Words family. Zero functional overlap. Different neutral model, different pipeline
+          targets.
     total_points: 88
     band: accept
-    recommendation: Accept. Legal Category 1, comprehensive spec already cached and
-      normalized, moderate complexity, opens Words family. Score 88/100 in Accept
-      band.
+    recommendation: Accept. Legal Category 1, comprehensive spec already cached and normalized, moderate complexity, opens
+      Words family. Score 88/100 in Accept band.
     gate_1_status_set_by_agent: scored_pending_human_approval
     approved_by: Babar Raza
     approved_date: '2026-05-07'
@@ -419,12 +381,10 @@ formats:
       status: passed
       approved_by: Babar Raza
       approved_date: '2026-05-07'
-      notes: 'Scored by claude-sonnet-4-6 (run039, 2026-05-07): 88/100, Accept band.
-        DEC-034 independently verified by claude-sonnet-4-6 (run040, 2026-05-07):
-        7/7 factors verified, 88/100 confirmed. Human approval recorded by Babar Raza
-        in run041 execution prompt (2026-05-07). This approval authorizes FODT Gate
-        2 spec/legal evidence work and creation of acquisition-packs/fodt/ skeleton.
-        It does not authorize FODT samples, parser, neutral model, or product source.'
+      notes: 'Scored by claude-sonnet-4-6 (run039, 2026-05-07): 88/100, Accept band. DEC-034 independently verified by claude-sonnet-4-6
+        (run040, 2026-05-07): 7/7 factors verified, 88/100 confirmed. Human approval recorded by Babar Raza in run041 execution
+        prompt (2026-05-07). This approval authorizes FODT Gate 2 spec/legal evidence work and creation of acquisition-packs/fodt/
+        skeleton. It does not authorize FODT samples, parser, neutral model, or product source.'
     gate_2:
       status: passed
       approved_by: Babar Raza
@@ -436,11 +396,9 @@ formats:
       evidence_executed_date: '2026-05-08'
       dec034_verified_run: run043
       approval_run: run043
-      notes: Gate 2 evidence executed run042 (2026-05-08). 8/8 fast-path items confirmed.
-        OASIS RF Category 1. Patent search waived (same as FODS Gate 2, Babar Raza,
-        2026-05-05). DEC-034 independently verified run043 (20/20 checks PASS). Gate
-        2 approved by Babar Raza in run043 execution prompt (2026-05-08). This approval
-        authorizes Gate 3 sample corpus acquisition.
+      notes: Gate 2 evidence executed run042 (2026-05-08). 8/8 fast-path items confirmed. OASIS RF Category 1. Patent search
+        waived (same as FODS Gate 2, Babar Raza, 2026-05-05). DEC-034 independently verified run043 (20/20 checks PASS). Gate
+        2 approved by Babar Raza in run043 execution prompt (2026-05-08). This approval authorizes Gate 3 sample corpus acquisition.
     gate_3:
       status: passed
       approved_by: Babar Raza
@@ -456,13 +414,11 @@ formats:
       validation_status: 4/4 PASS (run043 + run044 re-verification)
       dec034_verified_run: run044
       tc032_status: COMPLETED PASS 27/27 (run044, 2026-05-08)
-      notes: 'Gate 3 sample corpus created run043 (2026-05-08). 4 synthetic FODT samples,
-        all Apache-2.0 project-owned synthetic. XML well-formed, ODF 1.3 structure
-        4/4 PASS. TC-0032 DEC-034 independent verification PASS 27/27 (run044, 2026-05-08):
-        SHA-256 hashes verified (fodt-minimal-01:ed118bba..., fodt-headings-01:c3c14633...,
-        fodt-list-01:5a32987e..., fodt-table-01:0996d75e...). Gate 3 APPROVED by Babar
-        Raza (run044 execution prompt, 2026-05-08). This approval authorizes Gate
-        4 parser prototype planning.'
+      notes: 'Gate 3 sample corpus created run043 (2026-05-08). 4 synthetic FODT samples, all Apache-2.0 project-owned synthetic.
+        XML well-formed, ODF 1.3 structure 4/4 PASS. TC-0032 DEC-034 independent verification PASS 27/27 (run044, 2026-05-08):
+        SHA-256 hashes verified (fodt-minimal-01:ed118bba..., fodt-headings-01:c3c14633..., fodt-list-01:5a32987e..., fodt-table-01:0996d75e...).
+        Gate 3 APPROVED by Babar Raza (run044 execution prompt, 2026-05-08). This approval authorizes Gate 4 parser prototype
+        planning.'
     gate_4:
       status: passed
       approved_by: Babar Raza
@@ -474,11 +430,18 @@ formats:
       validation_status: 'FODT_PROTOTYPE_VALIDATION: PASS 4/4 (PT-001..PT-004)'
       dec034_verified_run: run045
       dec034_checks: 20/20 PASS
-      notes: 'Gate 4 executed run045 (2026-05-08). fodt_parser.py created (stdlib
-        ElementTree, FR-001..FR-007). FODT_PROTOTYPE_VALIDATION: PASS 4/4. DEC-034
-        PASS 20/20 (run045 separate from run044). Gate 4 APPROVED by Babar Raza (run045
-        execution prompt, 2026-05-08). Authorizes FODT Gate 5 neutral model planning
-        only.'
+      notes: 'Gate 4 executed run045 (2026-05-08). fodt_parser.py created (stdlib ElementTree, FR-001..FR-007). FODT_PROTOTYPE_VALIDATION:
+        PASS 4/4. DEC-034 PASS 20/20 (run045 separate from run044). Gate 4 APPROVED by Babar Raza (run045 execution prompt,
+        2026-05-08). Authorizes FODT Gate 5 neutral model planning only.'
+      evidence_type: STANDALONE_PROTOTYPE
+      tests:
+      - tests/skills/test_fodt_gate4_prototype.py
+      - tests/python/fodt/test_fodt_cli.py
+      corpus:
+      - samples/by-format/fodt/
+      limitations:
+      - Gate 4 scope only — not for production pipelines
+      - ODF namespace prefix handling only
     gate_5:
       status: passed
       approved_by: Babar Raza
@@ -487,8 +450,7 @@ formats:
       tc0039_dec034_status: PASS (run046 inline)
       model_path: schemas/neutral-model/fodt/
       model_version: '1.0'
-      validation_result: 4/4 PASS, 109 checks, 0 errors (validate_fodt_neutral_model.py,
-        run046)
+      validation_result: 4/4 PASS, 109 checks, 0 errors (validate_fodt_neutral_model.py, run046)
       entities:
       - Document
       - Block
@@ -498,30 +460,24 @@ formats:
       - TableRow
       - TableCell
       approval_run: run046
-      notes: 'Gate 5 executed run046 (2026-05-08). 7 entities, 26 field mappings,
-        19 validation rules. FODT_NEUTRAL_MODEL_VALIDATION: PASS 4/4 (109 checks,
-        0 errors). TC-0039 DEC-034 PASS inline. Gate 5 APPROVED by Babar Raza (run046
-        execution prompt, 2026-05-08). Authorizes FODT Gate 6 oracle comparison planning
-        only.'
+      notes: 'Gate 5 executed run046 (2026-05-08). 7 entities, 26 field mappings, 19 validation rules. FODT_NEUTRAL_MODEL_VALIDATION:
+        PASS 4/4 (109 checks, 0 errors). TC-0039 DEC-034 PASS inline. Gate 5 APPROVED by Babar Raza (run046 execution prompt,
+        2026-05-08). Authorizes FODT Gate 6 oracle comparison planning only.'
     gate_6:
       status: passed
       approved_by: Babar Raza
       approved_date: '2026-05-08'
       oracle_tool: LibreOffice 26.2.3.2 (soffice.com)
       oracle_run: 'run047 — FODT_ORACLE_RUN: PASS 4/4'
-      oracle_compare: 'run047 — FODT_ORACLE_COMPARE: PASS (with 2 WARN) 2/4 PASS
-        2/4 WARN'
+      oracle_compare: 'run047 — FODT_ORACLE_COMPARE: PASS (with 2 WARN) 2/4 PASS 2/4 WARN'
       oracle_compare_report: acquisition-packs/fodt/gate6-oracle-comparison-report.md
       tc0042_status: COMPLETED (run047)
-      tc0043_dec034_status: PASS 10/10 (run047 inline — authorized by execution
-        prompt)
+      tc0043_dec034_status: PASS 10/10 (run047 inline — authorized by execution prompt)
       approval_run: run047
-      notes: 'Gate 6 oracle scripts created run047: tools/oracle/run_fodt_oracle.py,
-        compare_fodt_oracle.py. LibreOffice text export (--convert-to txt:Text). FODT_ORACLE_RUN:
-        PASS 4/4. FODT_ORACLE_COMPARE: PASS (with 2 WARN) 2/4 PASS 2/4 WARN. TC-0043
-        DEC-034 PASS 10/10 inline (authorized by run047 execution prompt). Gate 6
-        APPROVED by Babar Raza (run047 execution prompt, 2026-05-08). Authorizes FODT
-        Gate 7 malformed/fuzz testing planning.'
+      notes: 'Gate 6 oracle scripts created run047: tools/oracle/run_fodt_oracle.py, compare_fodt_oracle.py. LibreOffice text
+        export (--convert-to txt:Text). FODT_ORACLE_RUN: PASS 4/4. FODT_ORACLE_COMPARE: PASS (with 2 WARN) 2/4 PASS 2/4 WARN.
+        TC-0043 DEC-034 PASS 10/10 inline (authorized by run047 execution prompt). Gate 6 APPROVED by Babar Raza (run047 execution
+        prompt, 2026-05-08). Authorizes FODT Gate 7 malformed/fuzz testing planning.'
     gate_7:
       status: passed
       approved_by: Babar Raza
@@ -530,11 +486,9 @@ formats:
       dec034_inline: true
       dec034_checks: 18/18 PASS
       approval_run: run048
-      notes: 'Gate 7 executed run048 (2026-05-08). 18 malformed FODT fixtures (4 categories).
-        FODT_GATE7_FUZZ_TEST: PASS 18/18 CRASH 0/18 CORRUPT 0/18. DEC-034 PASS 18/18
-        inline (authorized by run048 execution prompt). TC-0045 COMPLETED. Gate 7
-        APPROVED by Babar Raza (run048 execution prompt, 2026-05-08). Authorizes FODT
-        Gate 8 security review.'
+      notes: 'Gate 7 executed run048 (2026-05-08). 18 malformed FODT fixtures (4 categories). FODT_GATE7_FUZZ_TEST: PASS 18/18
+        CRASH 0/18 CORRUPT 0/18. DEC-034 PASS 18/18 inline (authorized by run048 execution prompt). TC-0045 COMPLETED. Gate
+        7 APPROVED by Babar Raza (run048 execution prompt, 2026-05-08). Authorizes FODT Gate 8 security review.'
     gate_8:
       status: passed
       approved_by: Babar Raza
@@ -542,13 +496,10 @@ formats:
       dec034_verified_run: run048
       dec034_inline: true
       approval_run: run048
-      notes: 'Gate 8 executed run048 (2026-05-08). GATE8_SECURITY_REVIEW: PASS. TC-1
-        XXE MITIGATED (Expat default). TC-2 file size MITIGATED (100MB). TC-5 malformed
-        MITIGATED (Gate 7 18/18). TC-6 memory DEFERRED to Gate 10. TC-7 recursion
-        (_collect_list_items) PARTIALLY MITIGATED deferred to Gate 10. TC-0046 DEC-034
-        PASS inline (authorized by run048 prompt). Gate 8 APPROVED by Babar Raza (run048
-        execution prompt, 2026-05-08). Authorizes FODT Gate 9 product mapping planning
-        only.'
+      notes: 'Gate 8 executed run048 (2026-05-08). GATE8_SECURITY_REVIEW: PASS. TC-1 XXE MITIGATED (Expat default). TC-2 file
+        size MITIGATED (100MB). TC-5 malformed MITIGATED (Gate 7 18/18). TC-6 memory DEFERRED to Gate 10. TC-7 recursion (_collect_list_items)
+        PARTIALLY MITIGATED deferred to Gate 10. TC-0046 DEC-034 PASS inline (authorized by run048 prompt). Gate 8 APPROVED
+        by Babar Raza (run048 execution prompt, 2026-05-08). Authorizes FODT Gate 9 product mapping planning only.'
     gate_9:
       status: passed
       approved_by: Babar Raza
@@ -560,9 +511,8 @@ formats:
       - 2
       dec034_inline_authorized: true
       approval_run: run050
-      notes: 'Gate 9 executed run050 (2026-05-08). Tier map v1.0: 5 tiers 16 features.
-        First OSS Tiers 0-2 (12 features). DEC-034 PASS 10/10 inline (authorized by
-        run050 prompt). TC-0048 COMPLETED. Approves FODT Gate 10 OSS readiness planning
+      notes: 'Gate 9 executed run050 (2026-05-08). Tier map v1.0: 5 tiers 16 features. First OSS Tiers 0-2 (12 features).
+        DEC-034 PASS 10/10 inline (authorized by run050 prompt). TC-0048 COMPLETED. Approves FODT Gate 10 OSS readiness planning
         only. No product source created.'
     gate_10:
       status: passed
@@ -573,11 +523,10 @@ formats:
       tc0049_completed: '2026-05-09'
       tc0052_status: completed
       tc0052_completed: '2026-05-09'
-      notes: 'Gate 10 APPROVED by Babar Raza (2026-05-11). Manual review verdict:
-        RECOMMEND_GATE10_APPROVAL (0 blockers, 0 repairs). TC-0052 Phase 4 Python
-        source: 7 modules, 115/115 PASS, 15/15 IR-FODT. Evidence: gate10-review-packet-20260511.md,
-        gate10-manual-review-judgment-20260511.md. Authorizes Gate 11 commercial readiness
-        planning only. Does NOT authorize .NET source (DEC-033 unresolved).'
+      notes: 'Gate 10 APPROVED by Babar Raza (2026-05-11). Manual review verdict: RECOMMEND_GATE10_APPROVAL (0 blockers, 0
+        repairs). TC-0052 Phase 4 Python source: 7 modules, 115/115 PASS, 15/15 IR-FODT. Evidence: gate10-review-packet-20260511.md,
+        gate10-manual-review-judgment-20260511.md. Authorizes Gate 11 commercial readiness planning only. Does NOT authorize
+        .NET source (DEC-033 unresolved).'
     gate_11:
       status: commercial_readiness_in_progress
       approved_by: null
@@ -585,8 +534,7 @@ formats:
       g11e_prototype_status: g11e_complete_r23
       dec033_status: resolved
       dec033_option: B
-      dec033_option_description: .NET Commercial Only — Python is FOSS track, no
-        .NET FOSS package
+      dec033_option_description: .NET Commercial Only — Python is FOSS track, no .NET FOSS package
       dec033_resolved_by: Babar Raza
       dec033_resolved_date: '2026-05-12'
       dotnet_target: net10.0
@@ -602,9 +550,9 @@ formats:
       g11e_nuget_pack: true
       nuget_package: aspose-format-factory-fodt
       g11f_validation_report: reports/governance/r23-g11f-validation-report-fods-fodt-20260517.md
-      notes: 'G11-E expanded prototype complete (R23). 92/92 .NET tests PASS. Markdown/HTML/TXT
-        exporters, FodtEditSaveTests, local NuGet pack. G11-F validation in_progress.
-        G11-G APPROVED by Babar Raza 2026-06-05. commercial_product_ready: false.'
+      notes: 'G11-E expanded prototype complete (R23). 92/92 .NET tests PASS. Markdown/HTML/TXT exporters, FodtEditSaveTests,
+        local NuGet pack. G11-F validation in_progress. G11-G APPROVED by Babar Raza 2026-06-05. commercial_product_ready:
+        false.'
       g11g_status: APPROVED_BY_BABAR_RAZA_2026_06_05
 - format_id: zst
   display_name: Zstandard Compressed File
@@ -618,24 +566,19 @@ formats:
   spec_url: https://www.rfc-editor.org/info/rfc8878
   legal_category: 2
   tier_target: 4
-  scoring_notes: 'ZST ranked #1 at 8.95/10 in R12 cross-category validation (ACQUISITION_READY
-    band).
+  scoring_notes: 'ZST ranked #1 at 8.95/10 in R12 cross-category validation (ACQUISITION_READY band).
 
     IETF RFC 8878 (Informational, 2021-02-01) is authoritative public spec.
 
-    Upstream reference implementation: BSD/GPLv2 dual-license (Meta/Facebook). Patent
-    grant in ADDITIONAL_GRANT.
+    Upstream reference implementation: BSD/GPLv2 dual-license (Meta/Facebook). Patent grant in ADDITIONAL_GRANT.
 
     Python library: python-zstandard (zstandard) BSD-3-Clause. No IP risk identified.
 
-    Aspose.ZIP for .NET: ZstandardArchive class, full round-trip, TarArchive.SaveZstandard
-    for .tar.zst.
+    Aspose.ZIP for .NET: ZstandardArchive class, full round-trip, TarArchive.SaveZstandard for .tar.zst.
 
-    Product value: decompression/extraction (archive handler), fixture/oracle pipeline
-    validation.
+    Product value: decompression/extraction (archive handler), fixture/oracle pipeline validation.
 
-    Limitation: no document DOM; commercial value is archive handling, not document
-    conversion.
+    Limitation: no document DOM; commercial value is archive handling, not document conversion.
 
     '
   visibility: internal
@@ -645,8 +588,7 @@ formats:
     model_version: R12-acquisition-planning-runtime-v1
     total_points: 8.95
     band: ACQUISITION_READY
-    recommendation: Gate 1 approved under delegated authority. Real audit completed
-      R13B.
+    recommendation: Gate 1 approved under delegated authority. Real audit completed R13B.
     gate_1_status_set_by_agent: delegated_decision_executed
     approved_by: Babar Raza
     approved_date: '2026-05-15'
@@ -656,9 +598,8 @@ formats:
   acquisition_pack_created: true
   aspose_supported: true
   aspose_support_level: FULL_ROUND_TRIP
-  aspose_evidence: 'Aspose.Zip.Zstandard namespace; ZstandardArchive class (compress+decompress);
-    TarArchive.SaveZstandard (.tar.zst). Source: docs.aspose.com/zip/net/supported-file-formats/
-    accessed 2026-05-15.'
+  aspose_evidence: 'Aspose.Zip.Zstandard namespace; ZstandardArchive class (compress+decompress); TarArchive.SaveZstandard
+    (.tar.zst). Source: docs.aspose.com/zip/net/supported-file-formats/ accessed 2026-05-15.'
   spec_retrieval_authorized: true
   spec_retrieval_completed: true
   spec_cache_path: .local/spec-cache/zst/
@@ -675,11 +616,9 @@ formats:
   implementation_authorized_date: '2026-05-16'
   implementation_authorized_notes: 'R20 sprint prompt (FORMAT-FACTORY-R20-PRODUCTIZATION-TRAIN-ZST-FODP-FODG-GNUMERIC-ABW-SOURCE-AND-GATE11-ARCHITECTURE-SWARM-001)
 
-    explicitly authorizes ZST Python FOSS source after verification that Gates 1-7
-    are passed.
+    explicitly authorizes ZST Python FOSS source after verification that Gates 1-7 are passed.
 
-    Python FOSS track only. No commercial implementation authorized. commercial_product_ready:
-    false.
+    Python FOSS track only. No commercial implementation authorized. commercial_product_ready: false.
 
     Source: src/python/zst/ Tests: tests/python/zst/
 
@@ -697,22 +636,17 @@ formats:
       approved_by: Babar Raza
       approved_date: '2026-05-15'
       approval_method: delegated_agent_decision_under_babar_instruction
-      notes: 'Gate 1 approved under delegated authority per R13B execution prompt
-        (FORMAT-FACTORY-R13B-DELEGATED-ZST-GATE1-REAL-SUPPORT-AUDIT-AND-GOVERNANCE-NORMALIZATION-SWARM-001).
+      notes: 'Gate 1 approved under delegated authority per R13B execution prompt (FORMAT-FACTORY-R13B-DELEGATED-ZST-GATE1-REAL-SUPPORT-AUDIT-AND-GOVERNANCE-NORMALIZATION-SWARM-001).
 
         ZST scored 8.95/10 (ACQUISITION_READY) in R12 acquisition_planning_runtime.py.
 
-        Real Aspose audit: aspose_supported=true; ZstandardArchive + TarArchive.SaveZstandard
-        (accessed 2026-05-15).
+        Real Aspose audit: aspose_supported=true; ZstandardArchive + TarArchive.SaveZstandard (accessed 2026-05-15).
 
-        Legal audit: RFC 8878 IETF Informational (2021-02-01); BSD+patent grant; python-zstandard
-        BSD-3-Clause.
+        Legal audit: RFC 8878 IETF Informational (2021-02-01); BSD+patent grant; python-zstandard BSD-3-Clause.
 
-        Product alignment: PASS_WITH_LIMITATIONS (archive handling value; no document
-        DOM).
+        Product alignment: PASS_WITH_LIMITATIONS (archive handling value; no document DOM).
 
-        This is a delegated execution, not autonomous self-approval. See GOVERNANCE.md
-        §2.1a.
+        This is a delegated execution, not autonomous self-approval. See GOVERNANCE.md §2.1a.
 
         '
     gate_2:
@@ -731,8 +665,7 @@ formats:
 
         RFC 8878 retrieved from rfc-editor.org (112,425 bytes, sha256 recorded).
 
-        RFC 9659 retrieved from rfc-editor.org (6,599 bytes, sha256 recorded; updates
-        RFC 8878 HTTP window size only).
+        RFC 9659 retrieved from rfc-editor.org (6,599 bytes, sha256 recorded; updates RFC 8878 HTTP window size only).
 
         Both RFCs IETF Informational. 7 RFC 8878 errata noted (implementation-level).
 
@@ -771,18 +704,15 @@ formats:
 
         Gate 3B corpus acquisition COMPLETE (R16, 2026-05-15).
 
-        11 files acquired: 8 valid + 3 invalid. All SHA-256 verified. 57/57 corpus
-        tests PASS.
+        11 files acquired: 8 valid + 3 invalid. All SHA-256 verified. 57/57 corpus tests PASS.
 
         Pinned commit: 5233c58e6ca0b1c4c6b353ad79649191ed195bdc (facebook/zstd).
 
-        SOURCE-002 (decodecorpus) replaced with python-zstandard level=19 structural
-        variant.
+        SOURCE-002 (decodecorpus) replaced with python-zstandard level=19 structural variant.
 
         DEC-034 IV PASS (R16, 2026-05-15). 10/10 IV checks PASS.
 
-        Gate 3 APPROVED under delegated authority (R16 execution prompt, Babar Raza
-        instruction).
+        Gate 3 APPROVED under delegated authority (R16 execution prompt, Babar Raza instruction).
 
         Gate 4 (Parser Prototype Planning) is now authorized.
 
@@ -805,19 +735,25 @@ formats:
       iv_result: PASS
       iv_report: reports/verification/r17-zst-gate4-independent-verification-20260515.md
       r19_approval_sprint: FORMAT-FACTORY-R19-HIGH-THROUGHPUT-ACQUISITION-TRAIN-001
-      r19_approval_evidence: 'Gate 4 delegated approval: 95/95 tests PASS (38 gate4
-        + 57 gate3b corpus). Prototype IV: 10/10 PASS (R18). Gate 4 IV: 10/10 PASS
-        (R17). Evidence fully supports Gate 4 PASS. Delegated per R19 execution prompt
-        governance policy. implementation_authorized: false. generated_requirements_authorized:
-        false.
+      r19_approval_evidence: 'Gate 4 delegated approval: 95/95 tests PASS (38 gate4 + 57 gate3b corpus). Prototype IV: 10/10
+        PASS (R18). Gate 4 IV: 10/10 PASS (R17). Evidence fully supports Gate 4 PASS. Delegated per R19 execution prompt governance
+        policy. implementation_authorized: false. generated_requirements_authorized: false.
 
         '
-      notes: 'Gate 4 parser notes created R17 (2026-05-16). Prototype created R18
-        (2026-05-16). Gate 4 PASSED R19 (delegated, 2026-05-16). 38/38 Gate 4 tests
-        PASS. 15/15 corpus PASS. implementation_authorized: false. generated_requirements_authorized:
+      notes: 'Gate 4 parser notes created R17 (2026-05-16). Prototype created R18 (2026-05-16). Gate 4 PASSED R19 (delegated,
+        2026-05-16). 38/38 Gate 4 tests PASS. 15/15 corpus PASS. implementation_authorized: false. generated_requirements_authorized:
         false. Report: reports/governance/r19-zst-gate4-delegated-approval-report-20260516.md
 
         '
+      evidence_type: STANDALONE_PROTOTYPE
+      tests:
+      - tests/skills/test_zst_gate4_prototype.py
+      corpus:
+      - samples/by-format/zst/
+      limitations:
+      - No decompression bomb guard (prototype only)
+      - Window size not enforced
+      - Gate 4 scope only — not for production pipelines
     gate_5:
       status: waived_not_applicable
       approved_by: delegated_agent_execution_under_r19_prompt
@@ -825,13 +761,11 @@ formats:
       approval_method: delegated_agent_execution_under_r19_prompt
       waiver_id: G-NORM-004
       neutral_model_required: false
-      waiver_reason: Pure codec format. No document object model. No named fields.
-        No structured content.
+      waiver_reason: Pure codec format. No document object model. No named fields. No structured content.
       generated_requirements_authorized: false
       implementation_authorized: false
-      notes: 'ZST is a pure compression codec (RFC 8878). No DOM. Gate 5 neutral model
-        N/A. G-NORM-004 waiver applied. Gate 5 status: waived_not_applicable. Delegated
-        per R19 execution prompt. Evidence: acquisition-packs/zst/gate5-requirements-readiness.md.
+      notes: 'ZST is a pure compression codec (RFC 8878). No DOM. Gate 5 neutral model N/A. G-NORM-004 waiver applied. Gate
+        5 status: waived_not_applicable. Delegated per R19 execution prompt. Evidence: acquisition-packs/zst/gate5-requirements-readiness.md.
         Report: reports/governance/r19-zst-gate5-waiver-delegated-approval-report-20260516.md
 
         '
@@ -845,11 +779,9 @@ formats:
       oracle_plan: acquisition-packs/zst/gate6-oracle-plan.md
       oracle_tests: tests/skills/test_zst_gate6_oracle.py
       oracle_test_result: 27/27 PASS, 1 SKIP (CLI zstd not on PATH)
-      notes: 'Gate 6 oracle: python-zstandard SHA-256 round-trip + corpus validity
-        oracle. 27/27 tests PASS. Valid corpus (8 files): all decompress. Invalid
-        corpus (3 files): handled safely. Bomb guard (max_window_size=2**31) documented.
-        dict-compressed behavior documented. .tar.zst risk documented. No production
-        code. R19 delegated. Report: reports/verification/r19-zst-gate6-oracle-verification-20260516.md
+      notes: 'Gate 6 oracle: python-zstandard SHA-256 round-trip + corpus validity oracle. 27/27 tests PASS. Valid corpus
+        (8 files): all decompress. Invalid corpus (3 files): handled safely. Bomb guard (max_window_size=2**31) documented.
+        dict-compressed behavior documented. .tar.zst risk documented. No production code. R19 delegated. Report: reports/verification/r19-zst-gate6-oracle-verification-20260516.md
 
         '
     gate_7:
@@ -862,30 +794,27 @@ formats:
       fuzz_report: acquisition-packs/zst/gate7-malformed-fuzz-report.md
       fuzz_tests: tests/skills/test_zst_gate7_security_fuzz.py
       fuzz_test_result: 27/27 PASS
-      notes: 'Gate 7 security/fuzz: 5 generated malformed variants + 3 existing invalid
-        corpus. All handled safely. Bomb guard (max_window_size=2**31) documented.
-        .tar.zst risk documented. No production code. R19 delegated. Report: reports/security/r19-zst-gate7-security-fuzz-report-20260516.md
+      notes: 'Gate 7 security/fuzz: 5 generated malformed variants + 3 existing invalid corpus. All handled safely. Bomb guard
+        (max_window_size=2**31) documented. .tar.zst risk documented. No production code. R19 delegated. Report: reports/security/r19-zst-gate7-security-fuzz-report-20260516.md
 
         '
     gate_8:
       status: passed_python_foss
       approved_by: delegated_agent_r21
       approved_date: '2026-05-17'
-      notes: 'R21: source exists, tests pass, examples created, release manifest created.
-        Python FOSS track only.'
+      notes: 'R21: source exists, tests pass, examples created, release manifest created. Python FOSS track only.'
     gate_9:
       status: passed_oss_readiness
       approved_by: delegated_agent_r21
       approved_date: '2026-05-17'
       tier_map: null
-      notes: 'R21: Apache-2.0 license, no commercial dep, no network, security guard
-        documented, examples smoke pass.'
+      notes: 'R21: Apache-2.0 license, no commercial dep, no network, security guard documented, examples smoke pass.'
     gate_10:
       status: local_release_candidate_ready_verified
       approved_by: delegated_agent_r22
       approved_date: '2026-05-17'
-      notes: 'R22: local wheel+sdist built and verified (5/5 packages, 0 errors).
-        Import smoke tests pass. publish_authorized=false. No PyPI publication.'
+      notes: 'R22: local wheel+sdist built and verified (5/5 packages, 0 errors). Import smoke tests pass. publish_authorized=false.
+        No PyPI publication.'
     gate_11:
       status: not_started
       approved_by: null
@@ -903,8 +832,7 @@ formats:
   commercial_product_ready: false
   aspose_supported: true
   aspose_support_level: FULL_ROUND_TRIP
-  aspose_evidence: Aspose.Slides LoadFormat.Fodp + SaveFormat.Fodp. FULL_ROUND_TRIP
-    confirmed since Java 20.4.
+  aspose_evidence: Aspose.Slides LoadFormat.Fodp + SaveFormat.Fodp. FULL_ROUND_TRIP confirmed since Java 20.4.
   acquisition_pack_created: true
   implementation_authorized: true
   implementation_authorized_track: python_foss_only
@@ -924,9 +852,8 @@ formats:
       band: Accept
       iv_result: PASS
       iv_report: reports/verification/r18-fodp-fodg-gate1-iv-20260516.md
-      notes: 'Gate 1 approved under delegated authority (R18 execution prompt, Babar
-        Raza instruction). OASIS RF Category 1 — identical legal basis to FODS/FODT.
-        Aspose.Slides FULL_ROUND_TRIP confirmed. Score ~8.7. DEC-034 IV PASS (20/20).
+      notes: 'Gate 1 approved under delegated authority (R18 execution prompt, Babar Raza instruction). OASIS RF Category
+        1 — identical legal basis to FODS/FODT. Aspose.Slides FULL_ROUND_TRIP confirmed. Score ~8.7. DEC-034 IV PASS (20/20).
         Gate 2 fast-path eligible.
 
         '
@@ -943,9 +870,8 @@ formats:
       legal_gap: none
       spec_evidence: acquisition-packs/fodp/spec-evidence.md
       legal_notes: acquisition-packs/fodp/legal-notes.md
-      notes: 'Gate 2 fast-path: ODF 1.3 spec already cached from FODS/FODT Gate 2.
-        Same spec, same legal category (1), same OASIS RF license. No new download.
-        R19 delegated. Report: reports/governance/r19-fodp-fodg-gate2-fastpath-20260516.md
+      notes: 'Gate 2 fast-path: ODF 1.3 spec already cached from FODS/FODT Gate 2. Same spec, same legal category (1), same
+        OASIS RF license. No new download. R19 delegated. Report: reports/governance/r19-fodp-fodg-gate2-fastpath-20260516.md
 
         '
     gate_3:
@@ -957,8 +883,7 @@ formats:
       sample_sources: acquisition-packs/fodp/sample-sources.md
       provenance: project-owned synthetic
       license: Apache-2.0
-      notes: 'Gate 3: 3 synthetic project-owned FODP samples (minimal, basic, edge-case).
-        Apache-2.0. R19 delegated.
+      notes: 'Gate 3: 3 synthetic project-owned FODP samples (minimal, basic, edge-case). Apache-2.0. R19 delegated.
 
         '
     gate_4:
@@ -969,21 +894,26 @@ formats:
       prototype_tests: tests/skills/test_fodp_gate4_prototype.py
       prototype_test_count: 16
       prototype_test_result: 16 passed, 0 failed
-      notes: 'Gate 4: ODF flat presentation prototype using xml.etree.ElementTree.
-        parse_fodp() returns mime_type, is_fodp, page_count, pages, styles_count.
-        16/16 prototype skills tests pass. R20 delegated.
+      notes: 'Gate 4: ODF flat presentation prototype using xml.etree.ElementTree. parse_fodp() returns mime_type, is_fodp,
+        page_count, pages, styles_count. 16/16 prototype skills tests pass. R20 delegated.
 
         '
+      evidence_type: STANDALONE_PROTOTYPE
+      tests:
+      - tests/skills/test_fodp_gate4_prototype.py
+      corpus:
+      - samples/by-format/fodp/
+      limitations:
+      - Gate 4 scope only — not for production pipelines
+      - ODF presentation namespace handling only
     gate_5:
       status: passed_fast_path
       approved_by: delegated_agent_execution_under_r20_prompt
       approved_date: '2026-05-17'
       model_basis: ODF 1.3 neutral model (same spec family as FODS/FODT)
-      fast_path_basis: ODF namespace/element model validated for FODS Gate 5; FODP
-        inherits same model
-      notes: 'Gate 5 fast-path: FODP shares ODF 1.3 spec with FODS/FODT (Gates 5 passed).
-        Neutral model: office:document root, draw:page pages, draw:frame shapes, text:p
-        text. No new model validation required. R20 delegated.
+      fast_path_basis: ODF namespace/element model validated for FODS Gate 5; FODP inherits same model
+      notes: 'Gate 5 fast-path: FODP shares ODF 1.3 spec with FODS/FODT (Gates 5 passed). Neutral model: office:document root,
+        draw:page pages, draw:frame shapes, text:p text. No new model validation required. R20 delegated.
 
         '
     gate_6:
@@ -992,45 +922,41 @@ formats:
       approved_date: '2026-05-17'
       oracle_type: LibreOffice export (--headless --convert-to pptx/pdf)
       oracle_basis: Same LibreOffice oracle used for FODS/FODT Gate 6
-      notes: 'Gate 6 oracle plan: LibreOffice 26.2.3.2 can convert .fodp to .pptx
-        or .pdf. Round-trip comparison via LibreOffice export. Execution deferred
-        pending Gate 8+. Oracle strategy validated by existing FODS/FODT Gate 6 precedent.
-        R20 delegated.
+      notes: 'Gate 6 oracle plan: LibreOffice 26.2.3.2 can convert .fodp to .pptx or .pdf. Round-trip comparison via LibreOffice
+        export. Execution deferred pending Gate 8+. Oracle strategy validated by existing FODS/FODT Gate 6 precedent. R20
+        delegated.
 
         '
     gate_7:
       status: passed
       approved_by: delegated_agent_execution_under_r20_prompt
       approved_date: '2026-05-17'
-      security_analysis: 'XXE-safe: xml.etree.ElementTree (no external entity resolution).
-        File size guard: 64 MiB MAX_FILE_SIZE. No network access. No subprocess calls.
-        No code execution. ODF XML namespace validation (root element check). Memory
+      security_analysis: 'XXE-safe: xml.etree.ElementTree (no external entity resolution). File size guard: 64 MiB MAX_FILE_SIZE.
+        No network access. No subprocess calls. No code execution. ODF XML namespace validation (root element check). Memory
         safety: stdlib only, no C extensions beyond ET.
 
         '
-      notes: 'Gate 7: Security review passed. FODP is well-bounded flat XML. Same
-        threat model as FODS/FODT (ODF family). R20 delegated.
+      notes: 'Gate 7: Security review passed. FODP is well-bounded flat XML. Same threat model as FODS/FODT (ODF family).
+        R20 delegated.
 
         '
     gate_8:
       status: passed_python_foss
       approved_by: delegated_agent_r21
       approved_date: '2026-05-17'
-      notes: 'R21: source exists, tests pass, examples created, release manifest created.
-        Python FOSS track only.'
+      notes: 'R21: source exists, tests pass, examples created, release manifest created. Python FOSS track only.'
     gate_9:
       status: passed_oss_readiness
       approved_by: delegated_agent_r21
       approved_date: '2026-05-17'
       tier_map: null
-      notes: 'R21: Apache-2.0 license, no commercial dep, no network, security guard
-        documented, examples smoke pass.'
+      notes: 'R21: Apache-2.0 license, no commercial dep, no network, security guard documented, examples smoke pass.'
     gate_10:
       status: local_release_candidate_ready_verified
       approved_by: delegated_agent_r22
       approved_date: '2026-05-17'
-      notes: 'R22: local wheel+sdist built and verified (5/5 packages, 0 errors).
-        Import smoke tests pass. publish_authorized=false. No PyPI publication.'
+      notes: 'R22: local wheel+sdist built and verified (5/5 packages, 0 errors). Import smoke tests pass. publish_authorized=false.
+        No PyPI publication.'
     gate_correction:
       status: corrected
       applied: true
@@ -1039,9 +965,8 @@ formats:
       previous_claimed_gate: G10 (local_release_candidate_ready_verified)
       evidence_backed_gate: G4
       maturity_class: probe_only
-      correction_reason: 'R33 overclaim expert review found format at probe_only maturity.
-        Shallow page/slide extractor (page_count, per-page name/text/shape_count).
-        No neutral model, no write/export, no round-trip.
+      correction_reason: 'R33 overclaim expert review found format at probe_only maturity. Shallow page/slide extractor (page_count,
+        per-page name/text/shape_count). No neutral model, no write/export, no round-trip.
 
         '
       correction_artifact: reports/r33/overclaim-expert-review-outcomes.md
@@ -1063,8 +988,8 @@ formats:
   commercial_product_ready: false
   aspose_supported: true
   aspose_support_level: LOAD_ONLY
-  aspose_evidence: Aspose.Imaging supports ODG (OpenDocument Graphics) as import/load
-    format. Full round-trip (save as FODG) not confirmed. LOAD_ONLY.
+  aspose_evidence: Aspose.Imaging supports ODG (OpenDocument Graphics) as import/load format. Full round-trip (save as FODG)
+    not confirmed. LOAD_ONLY.
   acquisition_pack_created: true
   implementation_authorized: true
   implementation_authorized_track: python_foss_only
@@ -1084,11 +1009,9 @@ formats:
       band: Accept
       iv_result: PASS
       iv_report: reports/verification/r18-fodp-fodg-gate1-iv-20260516.md
-      notes: 'Gate 1 approved under delegated authority (R18 execution prompt, Babar
-        Raza instruction). OASIS RF Category 1 — identical legal basis to FODS/FODT.
-        Aspose.Imaging LOAD_ONLY (round-trip not confirmed). Score ~8.1. DEC-034 IV
-        PASS (20/20). Gate 2 fast-path eligible. Commercial track requires round-trip
-        solution investigation (Gate 6+).
+      notes: 'Gate 1 approved under delegated authority (R18 execution prompt, Babar Raza instruction). OASIS RF Category
+        1 — identical legal basis to FODS/FODT. Aspose.Imaging LOAD_ONLY (round-trip not confirmed). Score ~8.1. DEC-034 IV
+        PASS (20/20). Gate 2 fast-path eligible. Commercial track requires round-trip solution investigation (Gate 6+).
 
         '
     gate_2:
@@ -1104,9 +1027,8 @@ formats:
       legal_gap: none
       spec_evidence: acquisition-packs/fodg/spec-evidence.md
       legal_notes: acquisition-packs/fodg/legal-notes.md
-      notes: 'Gate 2 fast-path: ODF 1.3 spec already cached from FODS/FODT Gate 2.
-        Same spec, same legal category (1), same OASIS RF license. No new download.
-        R19 delegated. Report: reports/governance/r19-fodp-fodg-gate2-fastpath-20260516.md
+      notes: 'Gate 2 fast-path: ODF 1.3 spec already cached from FODS/FODT Gate 2. Same spec, same legal category (1), same
+        OASIS RF license. No new download. R19 delegated. Report: reports/governance/r19-fodp-fodg-gate2-fastpath-20260516.md
 
         '
     gate_3:
@@ -1118,8 +1040,7 @@ formats:
       sample_sources: acquisition-packs/fodg/sample-sources.md
       provenance: project-owned synthetic
       license: Apache-2.0
-      notes: 'Gate 3: 3 synthetic project-owned FODG samples (minimal, basic, edge-case).
-        Apache-2.0. R19 delegated.
+      notes: 'Gate 3: 3 synthetic project-owned FODG samples (minimal, basic, edge-case). Apache-2.0. R19 delegated.
 
         '
     gate_4:
@@ -1130,22 +1051,27 @@ formats:
       prototype_tests: tests/skills/test_fodg_gate4_prototype.py
       prototype_test_count: 12
       prototype_test_result: 12 passed, 0 failed
-      notes: 'Gate 4: ODF flat graphics prototype using xml.etree.ElementTree. parse_fodg()
-        returns mime_type, is_fodg, page_count, pages, shapes_total. Shape detection
-        via SHAPE_TAGS set (rect, ellipse, circle, line, path, etc.). 12/12 prototype
+      notes: 'Gate 4: ODF flat graphics prototype using xml.etree.ElementTree. parse_fodg() returns mime_type, is_fodg, page_count,
+        pages, shapes_total. Shape detection via SHAPE_TAGS set (rect, ellipse, circle, line, path, etc.). 12/12 prototype
         skills tests pass. R20 delegated.
 
         '
+      evidence_type: STANDALONE_PROTOTYPE
+      tests:
+      - tests/skills/test_fodg_gate4_prototype.py
+      corpus:
+      - samples/by-format/fodg/
+      limitations:
+      - Gate 4 scope only — not for production pipelines
+      - ODF drawing namespace handling only
     gate_5:
       status: passed_fast_path
       approved_by: delegated_agent_execution_under_r20_prompt
       approved_date: '2026-05-17'
       model_basis: ODF 1.3 neutral model (same spec family as FODS/FODT)
-      fast_path_basis: ODF namespace/element model validated for FODS Gate 5; FODG
-        inherits same model
-      notes: 'Gate 5 fast-path: FODG shares ODF 1.3 spec with FODS/FODT (Gates 5 passed).
-        Neutral model: office:document root, draw:page pages, draw:* shapes, text:p
-        text. No new model validation required. R20 delegated.
+      fast_path_basis: ODF namespace/element model validated for FODS Gate 5; FODG inherits same model
+      notes: 'Gate 5 fast-path: FODG shares ODF 1.3 spec with FODS/FODT (Gates 5 passed). Neutral model: office:document root,
+        draw:page pages, draw:* shapes, text:p text. No new model validation required. R20 delegated.
 
         '
     gate_6:
@@ -1154,45 +1080,40 @@ formats:
       approved_date: '2026-05-17'
       oracle_type: LibreOffice export (--headless --convert-to svg/pdf)
       oracle_basis: Same LibreOffice oracle used for FODS/FODT Gate 6
-      notes: 'Gate 6 oracle plan: LibreOffice 26.2.3.2 can convert .fodg to .svg or
-        .pdf. Shape comparison via exported SVG. Execution deferred pending Gate 8+.
-        Oracle strategy validated by existing FODS/FODT Gate 6 precedent. R20 delegated.
+      notes: 'Gate 6 oracle plan: LibreOffice 26.2.3.2 can convert .fodg to .svg or .pdf. Shape comparison via exported SVG.
+        Execution deferred pending Gate 8+. Oracle strategy validated by existing FODS/FODT Gate 6 precedent. R20 delegated.
 
         '
     gate_7:
       status: passed
       approved_by: delegated_agent_execution_under_r20_prompt
       approved_date: '2026-05-17'
-      security_analysis: 'XXE-safe: xml.etree.ElementTree (no external entity resolution).
-        File size guard: 64 MiB MAX_FILE_SIZE. No network access. No subprocess calls.
-        No code execution. Shape counting via tag set membership (no recursion overflow
-        risk — direct children only). ODF XML namespace validation (root element
-        check).
+      security_analysis: 'XXE-safe: xml.etree.ElementTree (no external entity resolution). File size guard: 64 MiB MAX_FILE_SIZE.
+        No network access. No subprocess calls. No code execution. Shape counting via tag set membership (no recursion overflow
+        risk — direct children only). ODF XML namespace validation (root element check).
 
         '
-      notes: 'Gate 7: Security review passed. FODG is well-bounded flat XML (drawing
-        format). Same threat model as FODS/FODT (ODF family). R20 delegated.
+      notes: 'Gate 7: Security review passed. FODG is well-bounded flat XML (drawing format). Same threat model as FODS/FODT
+        (ODF family). R20 delegated.
 
         '
     gate_8:
       status: passed_python_foss
       approved_by: delegated_agent_r21
       approved_date: '2026-05-17'
-      notes: 'R21: source exists, tests pass, examples created, release manifest created.
-        Python FOSS track only.'
+      notes: 'R21: source exists, tests pass, examples created, release manifest created. Python FOSS track only.'
     gate_9:
       status: passed_oss_readiness
       approved_by: delegated_agent_r21
       approved_date: '2026-05-17'
       tier_map: null
-      notes: 'R21: Apache-2.0 license, no commercial dep, no network, security guard
-        documented, examples smoke pass.'
+      notes: 'R21: Apache-2.0 license, no commercial dep, no network, security guard documented, examples smoke pass.'
     gate_10:
       status: local_release_candidate_ready_verified
       approved_by: delegated_agent_r22
       approved_date: '2026-05-17'
-      notes: 'R22: local wheel+sdist built and verified (5/5 packages, 0 errors).
-        Import smoke tests pass. publish_authorized=false. No PyPI publication.'
+      notes: 'R22: local wheel+sdist built and verified (5/5 packages, 0 errors). Import smoke tests pass. publish_authorized=false.
+        No PyPI publication.'
     gate_correction:
       status: corrected
       applied: true
@@ -1201,9 +1122,8 @@ formats:
       previous_claimed_gate: G10 (local_release_candidate_ready_verified)
       evidence_backed_gate: G4
       maturity_class: probe_only
-      correction_reason: 'R33 overclaim expert review found format at probe_only maturity.
-        Shallow shape counter (shape_count, per-shape tag/text). No neutral model,
-        no write/export, no round-trip.
+      correction_reason: 'R33 overclaim expert review found format at probe_only maturity. Shallow shape counter (shape_count,
+        per-shape tag/text). No neutral model, no write/export, no round-trip.
 
         '
       correction_artifact: reports/r33/overclaim-expert-review-outcomes.md
@@ -1247,9 +1167,8 @@ formats:
       band: Accept
       iv_result: PASS
       iv_report: reports/verification/r18-gnumeric-abw-gate1-iv-20260516.md
-      notes: 'Gate 1 approved under delegated authority (R18 execution prompt, Babar
-        Raza instruction). Legal Cat 2 (permissive OSS). Aspose.Cells NOT SUPPORTED
-        (positive differentiation). Score ~8.2. DEC-034 IV PASS (20/20).
+      notes: 'Gate 1 approved under delegated authority (R18 execution prompt, Babar Raza instruction). Legal Cat 2 (permissive
+        OSS). Aspose.Cells NOT SUPPORTED (positive differentiation). Score ~8.2. DEC-034 IV PASS (20/20).
 
         '
     gate_2:
@@ -1265,9 +1184,9 @@ formats:
       legal_gap: minor
       spec_evidence: acquisition-packs/gnumeric/spec-evidence.md
       legal_notes: acquisition-packs/gnumeric/legal-notes.md
-      notes: 'Gate 2: XSD schema retrieved from GNOME GitLab. Namespace http://www.gnumeric.org/v10.dtd.
-        Root Workbook. Key elements: Version/Sheets/Sheet/Cells/Styles/PrintInformation/Objects.
-        Legal Cat 2 (minor gap). R19 delegated. Report: reports/governance/r19-gnumeric-gate2-spec-retrieval-20260516.md
+      notes: 'Gate 2: XSD schema retrieved from GNOME GitLab. Namespace http://www.gnumeric.org/v10.dtd. Root Workbook. Key
+        elements: Version/Sheets/Sheet/Cells/Styles/PrintInformation/Objects. Legal Cat 2 (minor gap). R19 delegated. Report:
+        reports/governance/r19-gnumeric-gate2-spec-retrieval-20260516.md
 
         '
     gate_3:
@@ -1279,8 +1198,7 @@ formats:
       sample_sources: acquisition-packs/gnumeric/sample-sources.md
       provenance: project-owned synthetic
       license: Apache-2.0
-      notes: 'Gate 3: 3 synthetic Gnumeric samples (minimal, basic, edge-case). Gzip+XML,
-        gnm: v10. Apache-2.0. R19 delegated.
+      notes: 'Gate 3: 3 synthetic Gnumeric samples (minimal, basic, edge-case). Gzip+XML, gnm: v10. Apache-2.0. R19 delegated.
 
         '
     gate_4:
@@ -1291,21 +1209,27 @@ formats:
       prototype_tests: tests/skills/test_gnumeric_gate4_prototype.py
       prototype_test_count: 13
       prototype_test_result: 13 passed, 0 failed
-      notes: 'Gate 4: Gnumeric gzip+XML prototype using gzip + xml.etree.ElementTree.
-        parse_gnumeric() returns is_gnumeric, sheet_count, sheets, cell_count. Gzip
-        decompression + gnm:Workbook/Sheet/Cell parsing. 13/13 prototype skills tests
+      notes: 'Gate 4: Gnumeric gzip+XML prototype using gzip + xml.etree.ElementTree. parse_gnumeric() returns is_gnumeric,
+        sheet_count, sheets, cell_count. Gzip decompression + gnm:Workbook/Sheet/Cell parsing. 13/13 prototype skills tests
         pass. R20 delegated.
 
         '
+      evidence_type: STANDALONE_PROTOTYPE
+      tests:
+      - tests/skills/test_gnumeric_gate4_prototype.py
+      corpus:
+      - samples/by-format/gnumeric/
+      limitations:
+      - Gate 4 scope only — not for production pipelines
+      - Requires gzip magic \x1f\x8b — non-gzip rejected
     gate_5:
       status: passed
       approved_by: delegated_agent_execution_under_r20_prompt
       approved_date: '2026-05-17'
       model_entities: Workbook, Sheet, Cell, Value
       model_field_count: 8
-      notes: 'Gate 5: Neutral model documented. Workbook → Sheets[] → Cells[].
-        Cell: Row, Col, ValueType, Value. Sheet: Name, Visibility, MaxCol, MaxRow.
-        Straightforward hierarchical data model. No ambiguities. R20 delegated.
+      notes: 'Gate 5: Neutral model documented. Workbook → Sheets[] → Cells[]. Cell: Row, Col, ValueType, Value. Sheet: Name,
+        Visibility, MaxCol, MaxRow. Straightforward hierarchical data model. No ambiguities. R20 delegated.
 
         '
     gate_6:
@@ -1313,45 +1237,40 @@ formats:
       approved_by: delegated_agent_execution_under_r20_prompt
       approved_date: '2026-05-17'
       oracle_type: CSV export via Gnumeric CLI (ssconvert) or LibreOffice
-      notes: 'Gate 6 oracle plan: ssconvert (Gnumeric CLI) or LibreOffice can convert
-        .gnumeric to .csv. Cell value comparison via CSV export. Execution deferred
-        pending Gate 8+. R20 delegated.
+      notes: 'Gate 6 oracle plan: ssconvert (Gnumeric CLI) or LibreOffice can convert .gnumeric to .csv. Cell value comparison
+        via CSV export. Execution deferred pending Gate 8+. R20 delegated.
 
         '
     gate_7:
       status: passed
       approved_by: delegated_agent_execution_under_r20_prompt
       approved_date: '2026-05-17'
-      security_analysis: 'Gzip decompression guard: 64 MiB MAX_FILE_SIZE (protects
-        against gzip bombs). XXE-safe: xml.etree.ElementTree (no external entity resolution).
-        No network access. No subprocess calls. No code execution. XML namespace validation
+      security_analysis: 'Gzip decompression guard: 64 MiB MAX_FILE_SIZE (protects against gzip bombs). XXE-safe: xml.etree.ElementTree
+        (no external entity resolution). No network access. No subprocess calls. No code execution. XML namespace validation
         (root element must be gnm:Workbook).
 
         '
-      notes: 'Gate 7: Security review passed. Gzip decompression is the primary attack
-        surface; 64 MiB guard prevents decompression bomb. ElementTree prevents XXE.
-        R20 delegated.
+      notes: 'Gate 7: Security review passed. Gzip decompression is the primary attack surface; 64 MiB guard prevents decompression
+        bomb. ElementTree prevents XXE. R20 delegated.
 
         '
     gate_8:
       status: passed_python_foss
       approved_by: delegated_agent_r21
       approved_date: '2026-05-17'
-      notes: 'R21: source exists, tests pass, examples created, release manifest created.
-        Python FOSS track only.'
+      notes: 'R21: source exists, tests pass, examples created, release manifest created. Python FOSS track only.'
     gate_9:
       status: passed_oss_readiness
       approved_by: delegated_agent_r21
       approved_date: '2026-05-17'
       tier_map: null
-      notes: 'R21: Apache-2.0 license, no commercial dep, no network, security guard
-        documented, examples smoke pass.'
+      notes: 'R21: Apache-2.0 license, no commercial dep, no network, security guard documented, examples smoke pass.'
     gate_10:
       status: local_release_candidate_ready_verified
       approved_by: delegated_agent_r22
       approved_date: '2026-05-17'
-      notes: 'R22: local wheel+sdist built and verified (5/5 packages, 0 errors).
-        Import smoke tests pass. publish_authorized=false. No PyPI publication.'
+      notes: 'R22: local wheel+sdist built and verified (5/5 packages, 0 errors). Import smoke tests pass. publish_authorized=false.
+        No PyPI publication.'
     gate_correction:
       status: corrected
       applied: true
@@ -1360,9 +1279,8 @@ formats:
       previous_claimed_gate: G10 (local_release_candidate_ready_verified)
       evidence_backed_gate: G4
       maturity_class: probe_only
-      correction_reason: 'R33 overclaim expert review found format at probe_only maturity.
-        Shallow cell counter (gzip+XML, cell_count). No neutral model, no write/export,
-        no round-trip.
+      correction_reason: 'R33 overclaim expert review found format at probe_only maturity. Shallow cell counter (gzip+XML,
+        cell_count). No neutral model, no write/export, no round-trip.
 
         '
       correction_artifact: reports/r33/overclaim-expert-review-outcomes.md
@@ -1389,8 +1307,7 @@ formats:
   aspose_evidence: Aspose.Words does not support .abw format. NOT_SUPPORTED confirmed.
   acquisition_pack_created: true
   acquisition_risk_classification: MEDIUM
-  acquisition_risk_notes: Outdated AWML 1.0 DTD; reference implementation (AbiWord
-    source) required
+  acquisition_risk_notes: Outdated AWML 1.0 DTD; reference implementation (AbiWord source) required
   implementation_authorized: true
   implementation_authorized_track: python_foss_only
   implementation_authorized_by: delegated_agent_execution_under_r20_prompt
@@ -1409,9 +1326,8 @@ formats:
       band: Accept
       iv_result: PASS
       iv_report: reports/verification/r18-gnumeric-abw-gate1-iv-20260516.md
-      notes: 'Gate 1 approved under delegated authority (R18 execution prompt, Babar
-        Raza instruction). Legal Cat 2. Aspose.Words NOT SUPPORTED (positive differentiation).
-        Outdated AWML 1.0 DTD is primary risk factor — acquisition_risk_classification
+      notes: 'Gate 1 approved under delegated authority (R18 execution prompt, Babar Raza instruction). Legal Cat 2. Aspose.Words
+        NOT SUPPORTED (positive differentiation). Outdated AWML 1.0 DTD is primary risk factor — acquisition_risk_classification
         elevated to MEDIUM. Score ~7.8. DEC-034 IV PASS (20/20).
 
         '
@@ -1429,9 +1345,8 @@ formats:
       legal_gap: minor
       spec_evidence: acquisition-packs/abw/spec-evidence.md
       legal_notes: acquisition-packs/abw/legal-notes.md
-      notes: 'Gate 2: AWML DTD at abisource.com unreachable (ECONNREFUSED). Spec structure
-        documented from secondary sources. Key elements: abiword root, section, p,
-        c, image, table. Legal Cat 2 (minor gap). R19 delegated. Report: reports/governance/r19-abw-gate2-spec-retrieval-20260516.md
+      notes: 'Gate 2: AWML DTD at abisource.com unreachable (ECONNREFUSED). Spec structure documented from secondary sources.
+        Key elements: abiword root, section, p, c, image, table. Legal Cat 2 (minor gap). R19 delegated. Report: reports/governance/r19-abw-gate2-spec-retrieval-20260516.md
 
         '
     gate_3:
@@ -1443,8 +1358,7 @@ formats:
       sample_sources: acquisition-packs/abw/sample-sources.md
       provenance: project-owned synthetic
       license: Apache-2.0
-      notes: 'Gate 3: 3 synthetic ABW samples (minimal, basic, edge-case). Plain XML,
-        AWML 1.0. Apache-2.0. R19 delegated.
+      notes: 'Gate 3: 3 synthetic ABW samples (minimal, basic, edge-case). Plain XML, AWML 1.0. Apache-2.0. R19 delegated.
 
         '
     gate_4:
@@ -1455,21 +1369,27 @@ formats:
       prototype_tests: tests/skills/test_abw_gate4_prototype.py
       prototype_test_count: 14
       prototype_test_result: 14 passed, 0 failed
-      notes: 'Gate 4: ABW plain XML prototype using xml.etree.ElementTree. parse_abw()
-        returns is_abw, section_count, paragraph_count, paragraphs. DOCTYPE declaration
-        stripped before parsing (DTD server down; XXE-safe by default). 14/14 prototype
-        skills tests pass. R20 delegated.
+      notes: 'Gate 4: ABW plain XML prototype using xml.etree.ElementTree. parse_abw() returns is_abw, section_count, paragraph_count,
+        paragraphs. DOCTYPE declaration stripped before parsing (DTD server down; XXE-safe by default). 14/14 prototype skills
+        tests pass. R20 delegated.
 
         '
+      evidence_type: STANDALONE_PROTOTYPE
+      tests:
+      - tests/skills/test_abw_gate4_prototype.py
+      corpus:
+      - samples/by-format/abw/
+      limitations:
+      - Gate 4 scope only — not for production pipelines
+      - Supports plain .abw and gzip'd .abw.gz
     gate_5:
       status: passed
       approved_by: delegated_agent_execution_under_r20_prompt
       approved_date: '2026-05-17'
       model_entities: Document (abiword), Section, Paragraph (p)
       model_field_count: 6
-      notes: 'Gate 5: Neutral model documented. Document → Sections[] → Paragraphs[].
-        Paragraph: text content, props attribute (alignment, etc.). Simple linear
-        document model. AWML 1.0 structure confirmed from secondary sources. R20 delegated.
+      notes: 'Gate 5: Neutral model documented. Document → Sections[] → Paragraphs[]. Paragraph: text content, props attribute
+        (alignment, etc.). Simple linear document model. AWML 1.0 structure confirmed from secondary sources. R20 delegated.
 
         '
     gate_6:
@@ -1477,46 +1397,40 @@ formats:
       approved_by: delegated_agent_execution_under_r20_prompt
       approved_date: '2026-05-17'
       oracle_type: LibreOffice or AbiWord CLI text export
-      notes: 'Gate 6 oracle plan: LibreOffice can convert .abw to .txt or .odt. Text
-        extraction comparison via exported .txt. Execution deferred pending Gate 8+.
-        R20 delegated.
+      notes: 'Gate 6 oracle plan: LibreOffice can convert .abw to .txt or .odt. Text extraction comparison via exported .txt.
+        Execution deferred pending Gate 8+. R20 delegated.
 
         '
     gate_7:
       status: passed
       approved_by: delegated_agent_execution_under_r20_prompt
       approved_date: '2026-05-17'
-      security_analysis: 'DOCTYPE stripping: all <!DOCTYPE ...> lines removed before
-        parsing. XXE-safe: xml.etree.ElementTree (no external entity resolution).
-        File size guard: 64 MiB MAX_FILE_SIZE. No network access. No subprocess calls.
-        No code execution. DTD server unreachable (abisource.com ECONNREFUSED) —
-        stripping is defensive redundancy.
+      security_analysis: 'DOCTYPE stripping: all <!DOCTYPE ...> lines removed before parsing. XXE-safe: xml.etree.ElementTree
+        (no external entity resolution). File size guard: 64 MiB MAX_FILE_SIZE. No network access. No subprocess calls. No
+        code execution. DTD server unreachable (abisource.com ECONNREFUSED) — stripping is defensive redundancy.
 
         '
-      notes: 'Gate 7: Security review passed. DOCTYPE stripping prevents any DOCTYPE-based
-        attacks. ElementTree prevents XXE. File size guard prevents resource exhaustion.
-        R20 delegated.
+      notes: 'Gate 7: Security review passed. DOCTYPE stripping prevents any DOCTYPE-based attacks. ElementTree prevents XXE.
+        File size guard prevents resource exhaustion. R20 delegated.
 
         '
     gate_8:
       status: passed_python_foss
       approved_by: delegated_agent_r21
       approved_date: '2026-05-17'
-      notes: 'R21: source exists, tests pass, examples created, release manifest created.
-        Python FOSS track only.'
+      notes: 'R21: source exists, tests pass, examples created, release manifest created. Python FOSS track only.'
     gate_9:
       status: passed_oss_readiness
       approved_by: delegated_agent_r21
       approved_date: '2026-05-17'
       tier_map: null
-      notes: 'R21: Apache-2.0 license, no commercial dep, no network, security guard
-        documented, examples smoke pass.'
+      notes: 'R21: Apache-2.0 license, no commercial dep, no network, security guard documented, examples smoke pass.'
     gate_10:
       status: local_release_candidate_ready_verified
       approved_by: delegated_agent_r22
       approved_date: '2026-05-17'
-      notes: 'R22: local wheel+sdist built and verified (5/5 packages, 0 errors).
-        Import smoke tests pass. publish_authorized=false. No PyPI publication.'
+      notes: 'R22: local wheel+sdist built and verified (5/5 packages, 0 errors). Import smoke tests pass. publish_authorized=false.
+        No PyPI publication.'
     gate_correction:
       status: corrected
       applied: true
@@ -1525,9 +1439,8 @@ formats:
       previous_claimed_gate: G10 (local_release_candidate_ready_verified)
       evidence_backed_gate: G4
       maturity_class: probe_only
-      correction_reason: 'R33 overclaim expert review found format at probe_only maturity.
-        Shallow paragraph extractor with DOCTYPE strip for XXE safety. No neutral
-        model, no write/export, no round-trip.
+      correction_reason: 'R33 overclaim expert review found format at probe_only maturity. Shallow paragraph extractor with
+        DOCTYPE strip for XXE safety. No neutral model, no write/export, no round-trip.
 
         '
       correction_artifact: reports/r33/overclaim-expert-review-outcomes.md
@@ -1562,9 +1475,8 @@ formats:
       score_estimate: 6.8
       accept_threshold: 7.0
       band: Borderline
-      notes: 'ORA scored 6.8 (Borderline — below 7.0 Accept threshold). No new evidence
-        changes score. Delegated DEFER per R19 execution prompt. Community demand
-        limited (Krita/MyPaint only). Spec informal. R19 delegated decision. Report:
+      notes: 'ORA scored 6.8 (Borderline — below 7.0 Accept threshold). No new evidence changes score. Delegated DEFER per
+        R19 execution prompt. Community demand limited (Krita/MyPaint only). Spec informal. R19 delegated decision. Report:
         reports/governance/r19-ora-gate1-deferred-decision-20260516.md
 
         '
@@ -1579,10 +1491,14 @@ formats:
       approved_date: null
       notes: null
     gate_4:
-      status: not_started
+      status: blocked
       approved_by: null
       approved_date: null
       notes: null
+      evidence_type: BLOCKED_BEFORE_GATE4
+      reason: gate1_not_passed
+      blocker: Score 6.8/10 below 7.0 threshold
+      next_gate: gate_1_rescore_or_defer
     gate_5:
       status: not_started
       approved_by: null
@@ -1643,9 +1559,8 @@ formats:
       awaiting_human_iv: true
       score_normalized: 8.8
       band: Accept
-      notes: 'ODS Gate 1 passed 8.8/10 (R23 delegated). OASIS ODF 1.3 RF Cat 1. ODF
-        spec already cached from FODS/FODT. Awaiting human IV per DEC-034. Report:
-        reports/planning/r23-ods-gate1-gate3-acquisition-report-20260517.md
+      notes: 'ODS Gate 1 passed 8.8/10 (R23 delegated). OASIS ODF 1.3 RF Cat 1. ODF spec already cached from FODS/FODT. Awaiting
+        human IV per DEC-034. Report: reports/planning/r23-ods-gate1-gate3-acquisition-report-20260517.md
 
         '
     gate_2:
@@ -1654,8 +1569,7 @@ formats:
       approved_date: '2026-05-17'
       fast_path: true
       fast_path_basis: ODF 1.3 spec cached from FODS Gate 2 (2026-05-05)
-      notes: 'Gate 2 fast-path: ODF 1.3 spec already in .local/spec-cache/fods/1.3/.
-        R23 delegated.
+      notes: 'Gate 2 fast-path: ODF 1.3 spec already in .local/spec-cache/fods/1.3/. R23 delegated.
 
         '
     gate_3:
@@ -1667,10 +1581,9 @@ formats:
       generation_method: deterministic_synthetic_python_zipfile
       gate_3_iv_status: verified
       gate_3_iv_sprint: R25
-      notes: Gate 3 PASS (R24). 3 valid + 1 invalid. Python stdlib zipfile. IV verified
-        R25.
+      notes: Gate 3 PASS (R24). 3 valid + 1 invalid. Python stdlib zipfile. IV verified R25.
     gate_4:
-      status: prototype_complete
+      status: passed
       approved_by: delegated_agent_r27
       approved_date: '2026-05-19'
       source_path: src/python/ods/ods_parser.py
@@ -1680,6 +1593,13 @@ formats:
       commercial_product_ready: false
       production_source_authorized: true
       notes: Gate 4 prototype complete (R27). ZIP+XML ODS parser. 9/9 tests PASS.
+      evidence_type: SOURCE_TRACK_EQUIVALENT
+      delegated_source_path: src/python/ods/ods_parser.py
+      corpus:
+      - samples/by-format/ods/
+      tests:
+      - tests/python/ods/test_dogfood_ods_csv_pipeline.py
+      - tests/python/ods/test_exception_coverage.py
     gate_5:
       status: neutral_model_complete
       approved_by: delegated_agent_r28
@@ -1689,8 +1609,7 @@ formats:
       new_tests: 17
       test_result: 17/17 PASS
       commercial_product_ready: false
-      notes: Gate 5 neutral model (R28). Explicit unsupported feature declarations.
-        17 edge-case tests PASS.
+      notes: Gate 5 neutral model (R28). Explicit unsupported feature declarations. 17 edge-case tests PASS.
     gate_6:
       status: pass
       approved_by: delegated_agent_r29
@@ -1713,8 +1632,7 @@ formats:
       approved_date: '2026-05-19'
       approval_method: delegated_expert_agent_review_requested_by_babar
       commercial_product_ready: false
-      notes: Gate 8 security review (R31). Delegated expert approved. No critical/high
-        findings.
+      notes: Gate 8 security review (R31). Delegated expert approved. No critical/high findings.
     gate_9:
       status: pass
       approved_by: delegated_agent_r31
@@ -1754,9 +1672,8 @@ formats:
       awaiting_human_iv: true
       score_normalized: 8.8
       band: Accept
-      notes: 'ODT Gate 1 passed 8.8/10 (R23 delegated). OASIS ODF 1.3 RF Cat 1. ODF
-        spec already cached from FODT/FODS. Awaiting human IV per DEC-034. Report:
-        reports/planning/r23-odt-gate1-gate3-acquisition-report-20260517.md
+      notes: 'ODT Gate 1 passed 8.8/10 (R23 delegated). OASIS ODF 1.3 RF Cat 1. ODF spec already cached from FODT/FODS. Awaiting
+        human IV per DEC-034. Report: reports/planning/r23-odt-gate1-gate3-acquisition-report-20260517.md
 
         '
     gate_2:
@@ -1765,8 +1682,7 @@ formats:
       approved_date: '2026-05-17'
       fast_path: true
       fast_path_basis: ODF 1.3 spec cached from FODT Gate 2 (2026-05-08)
-      notes: 'Gate 2 fast-path: ODF 1.3 spec already in .local/spec-cache/fods/1.3/.
-        R23 delegated.
+      notes: 'Gate 2 fast-path: ODF 1.3 spec already in .local/spec-cache/fods/1.3/. R23 delegated.
 
         '
     gate_3:
@@ -1778,10 +1694,9 @@ formats:
       generation_method: deterministic_synthetic_python_zipfile
       gate_3_iv_status: verified
       gate_3_iv_sprint: R25
-      notes: Gate 3 PASS (R24). 3 valid + 1 invalid. Python stdlib zipfile. IV verified
-        R25.
+      notes: Gate 3 PASS (R24). 3 valid + 1 invalid. Python stdlib zipfile. IV verified R25.
     gate_4:
-      status: prototype_complete
+      status: passed
       approved_by: delegated_agent_r27
       approved_date: '2026-05-19'
       source_path: src/python/odt/odt_parser.py
@@ -1791,6 +1706,12 @@ formats:
       commercial_product_ready: false
       production_source_authorized: true
       notes: Gate 4 prototype complete (R27). ZIP+XML ODT parser. 10/10 tests PASS.
+      evidence_type: SOURCE_TRACK_EQUIVALENT
+      delegated_source_path: src/python/odt/odt_parser.py
+      corpus:
+      - samples/by-format/odt/
+      tests:
+      - tests/python/odt/test_odt_codec.py
     gate_5:
       status: neutral_model_complete
       approved_by: delegated_agent_r28
@@ -1800,8 +1721,7 @@ formats:
       new_tests: 18
       test_result: 18/18 PASS
       commercial_product_ready: false
-      notes: Gate 5 neutral model (R28). Explicit unsupported feature declarations.
-        18 edge-case tests PASS.
+      notes: Gate 5 neutral model (R28). Explicit unsupported feature declarations. 18 edge-case tests PASS.
     gate_6:
       status: pass
       approved_by: delegated_agent_r29
@@ -1864,9 +1784,8 @@ formats:
       awaiting_human_iv: true
       score_normalized: 8.1
       band: Accept
-      notes: 'QOI Gate 1 passed 8.1/10 (R23 delegated). MIT license. IANA-registered
-        MIME. NOT_SUPPORTED by Aspose (positive differentiation). First imaging-family
-        format. Awaiting human IV per DEC-034. Report: reports/planning/r23-non-odf-candidate-acceleration-report-20260517.md
+      notes: 'QOI Gate 1 passed 8.1/10 (R23 delegated). MIT license. IANA-registered MIME. NOT_SUPPORTED by Aspose (positive
+        differentiation). First imaging-family format. Awaiting human IV per DEC-034. Report: reports/planning/r23-non-odf-candidate-acceleration-report-20260517.md
 
         '
     gate_2:
@@ -1874,9 +1793,8 @@ formats:
       approved_by: delegated_agent_r23
       approved_date: '2026-05-17'
       spec_source: https://qoi.phoboslab.org/
-      notes: 'Gate 2: Single-page spec at qoi.phoboslab.org. MIT reference impl. No
-        patent claims. Header: 14 bytes (magic qoif + width + height + channels +
-        colorspace). End marker: 8 bytes. R23 delegated.
+      notes: 'Gate 2: Single-page spec at qoi.phoboslab.org. MIT reference impl. No patent claims. Header: 14 bytes (magic
+        qoif + width + height + channels + colorspace). End marker: 8 bytes. R23 delegated.
 
         '
     gate_3:
@@ -1888,10 +1806,9 @@ formats:
       generation_method: deterministic_synthetic_python_struct
       gate_3_iv_status: verified
       gate_3_iv_sprint: R25
-      notes: Gate 3 PASS (R24). 3 valid + 1 invalid. Python stdlib struct. IV verified
-        R25.
+      notes: Gate 3 PASS (R24). 3 valid + 1 invalid. Python stdlib struct. IV verified R25.
     gate_4:
-      status: prototype_complete
+      status: passed
       approved_by: delegated_agent_r27
       approved_date: '2026-05-19'
       source_path: src/python/qoi/qoi_parser.py
@@ -1901,6 +1818,12 @@ formats:
       commercial_product_ready: false
       production_source_authorized: true
       notes: Gate 4 prototype complete (R27). Full 6-op QOI decoder. 10/10 tests PASS.
+      evidence_type: SOURCE_TRACK_EQUIVALENT
+      delegated_source_path: src/python/qoi/qoi_parser.py
+      corpus:
+      - samples/by-format/qoi/
+      tests:
+      - tests/python/qoi/test_qoi_codec.py
     gate_5:
       status: neutral_model_complete
       approved_by: delegated_agent_r28
@@ -1910,8 +1833,7 @@ formats:
       new_tests: 17
       test_result: 17/17 PASS
       commercial_product_ready: false
-      notes: Gate 5 neutral model (R28). Explicit unsupported feature declarations.
-        17 edge-case tests PASS.
+      notes: Gate 5 neutral model (R28). Explicit unsupported feature declarations. 17 edge-case tests PASS.
     gate_6:
       status: pass
       approved_by: delegated_agent_r29
@@ -1974,15 +1896,13 @@ formats:
       awaiting_human_iv: true
       score_normalized: 7.8
       band: Accept
-      notes: XCF Gate 1 passed 7.8/10 (R27). GPLv3 source but format open. NOT_SUPPORTED
-        by Aspose.
+      notes: XCF Gate 1 passed 7.8/10 (R27). GPLv3 source but format open. NOT_SUPPORTED by Aspose.
     gate_2:
       status: passed
       approved_by: delegated_agent_r27
       approved_date: '2026-05-19'
       spec_source: https://developer.gimp.org/core/xcf/
-      notes: 'Gate 2: GIMP developer wiki + source code. XCF v011. No patent claims.
-        R27 delegated.'
+      notes: 'Gate 2: GIMP developer wiki + source code. XCF v011. No patent claims. R27 delegated.'
     gate_3:
       status: pass
       approved_by: delegated_agent_r27
@@ -1991,10 +1911,9 @@ formats:
       invalid_count: 1
       generation_method: deterministic_synthetic_python_struct
       awaiting_human_iv: true
-      notes: Gate 3 PASS (R27). 3 valid + 1 invalid XCF samples. Python struct. Awaiting
-        IV.
+      notes: Gate 3 PASS (R27). 3 valid + 1 invalid XCF samples. Python struct. Awaiting IV.
     gate_4:
-      status: prototype_complete
+      status: passed
       approved_by: delegated_agent_r28
       approved_date: '2026-05-19'
       source_path: src/python/xcf/xcf_parser.py
@@ -2003,8 +1922,13 @@ formats:
       test_result: 17/17 PASS
       commercial_product_ready: false
       production_source_authorized: true
-      notes: Gate 4 prototype complete (R28). Header+property+layer parse (no pixel
-        decode). 17/17 tests PASS.
+      notes: Gate 4 prototype complete (R28). Header+property+layer parse (no pixel decode). 17/17 tests PASS.
+      evidence_type: SOURCE_TRACK_EQUIVALENT
+      delegated_source_path: src/python/xcf/xcf_parser.py
+      corpus:
+      - samples/by-format/xcf/
+      tests:
+      - tests/python/xcf/test_xcf_codec.py
     gate_5:
       status: neutral_model_complete
       approved_by: delegated_agent_r29
@@ -2035,8 +1959,7 @@ formats:
       approved_date: '2026-05-19'
       approval_method: delegated_expert_agent_review_requested_by_babar
       commercial_product_ready: false
-      notes: Gate 8 security review (R31). Delegated expert approved. Metadata-only
-        parser.
+      notes: Gate 8 security review (R31). Delegated expert approved. Metadata-only parser.
     gate_9:
       status: pass
       approved_by: delegated_agent_r31
@@ -2057,8 +1980,8 @@ formats:
       finalization_date: '2026-05-20'
       finalization_sprint: R36
       scope: header_and_metadata_only
-      scope_description: 'XCF parser reads header, property list, and layer offset
-        table. Does NOT decode pixel/tile data. Metadata-inspector scope.
+      scope_description: 'XCF parser reads header, property list, and layer offset table. Does NOT decode pixel/tile data.
+        Metadata-inspector scope.
 
         '
       deepening_required: true
@@ -2087,20 +2010,24 @@ formats:
       awaiting_human_iv: true
       score_normalized: 6.2
       band: Review
-      notes: ZPAQ Gate 1 passed 6.2/10 (R27, Review band). Public domain. ZPAQL VM
-        complexity.
+      notes: ZPAQ Gate 1 passed 6.2/10 (R27, Review band). Public domain. ZPAQL VM complexity.
     gate_2:
       status: passed
       approved_by: delegated_agent_r27
       approved_date: '2026-05-19'
       spec_source: http://mattmahoney.net/dc/zpaq206.pdf
-      notes: 'Gate 2: Full PDF spec + public domain reference impl. No patent claims.
-        R27 delegated.'
+      notes: 'Gate 2: Full PDF spec + public domain reference impl. No patent claims. R27 delegated.'
     gate_3:
       status: blocked_sample_generation_requires_tool
-      notes: 'Gate 3 BLOCKED (R27+R28). ZPAQ requires embedded ZPAQL bytecode —
-        cannot generate with Python struct alone. R28 recovery attempted: zpaq CLI
-        not available. Recommended: Path A (install zpaq CLI). See reports/planning/r28-zpaq-gate3-recovery-or-blocker-report-20260519.md.'
+      notes: 'Gate 3 BLOCKED (R27+R28). ZPAQ requires embedded ZPAQL bytecode — cannot generate with Python struct alone.
+        R28 recovery attempted: zpaq CLI not available. Recommended: Path A (install zpaq CLI). See reports/planning/r28-zpaq-gate3-recovery-or-blocker-report-20260519.md.'
+    gate_4:
+      status: blocked
+      evidence_type: BLOCKED_BEFORE_GATE4
+      reason: gate3_prerequisite_incomplete
+      blocker: ZPAQL VM / zpaq CLI unavailable; cannot create corpus samples
+      next_gate: gate_3_recovery
+      mission_id: FF-G4-BACKFILL-001
 - format_id: dif
   display_name: Data Interchange Format
   family: cells
@@ -2125,15 +2052,13 @@ formats:
       awaiting_human_iv: true
       score_normalized: 8.7
       band: Accept
-      notes: DIF Gate 1 passed 8.7/10 (R28). Public domain 1981. NOT_SUPPORTED by
-        Aspose. Simple text format.
+      notes: DIF Gate 1 passed 8.7/10 (R28). Public domain 1981. NOT_SUPPORTED by Aspose. Simple text format.
     gate_2:
       status: passed
       approved_by: delegated_agent_r28
       approved_date: '2026-05-19'
       spec_access: public
-      notes: 'Gate 2: DIF spec publicly documented (Wikipedia, archived PDF). No patents.
-        R28 delegated.'
+      notes: 'Gate 2: DIF spec publicly documented (Wikipedia, archived PDF). No patents. R28 delegated.'
     gate_3:
       status: pass
       approved_by: delegated_agent_r28
@@ -2142,18 +2067,22 @@ formats:
       invalid_count: 1
       generation_method: deterministic_synthetic_python_text
       awaiting_human_iv: true
-      notes: Gate 3 PASS (R28). 3 valid + 1 invalid DIF samples. Python open/write
-        text. Awaiting IV.
+      notes: Gate 3 PASS (R28). 3 valid + 1 invalid DIF samples. Python open/write text. Awaiting IV.
     gate_4:
-      status: prototype_complete
+      status: passed
       approved_by: delegated_agent_r29
       approved_date: '2026-05-19'
       source_path: src/python/dif/dif_parser.py
       test_count: 10
       test_result: 10/10 PASS
       commercial_product_ready: false
-      notes: Gate 4 prototype (R29). TABLE/VECTORS/TUPLES/DATA parser. 10/10 tests
-        PASS.
+      notes: Gate 4 prototype (R29). TABLE/VECTORS/TUPLES/DATA parser. 10/10 tests PASS.
+      evidence_type: SOURCE_TRACK_EQUIVALENT
+      delegated_source_path: src/python/dif/dif_parser.py
+      corpus:
+      - samples/by-format/dif/
+      tests:
+      - tests/python/dif/test_dif_codec.py
     gate_5:
       status: neutral_model_complete
       approved_by: delegated_agent_r29
@@ -2226,8 +2155,7 @@ formats:
       awaiting_human_iv: true
       score_normalized: 9.1
       band: Accept
-      notes: PPM Gate 1 passed 9.1/10 (R28). Public domain. NOT_SUPPORTED by Aspose.
-        Trivially simple format.
+      notes: PPM Gate 1 passed 9.1/10 (R28). Public domain. NOT_SUPPORTED by Aspose. Trivially simple format.
     gate_2:
       status: passed
       approved_by: delegated_agent_r28
@@ -2242,10 +2170,9 @@ formats:
       invalid_count: 1
       generation_method: deterministic_synthetic_python_text
       awaiting_human_iv: true
-      notes: Gate 3 PASS (R28). 3 valid P3 + 1 invalid PPM samples. Python open/write.
-        Awaiting IV.
+      notes: Gate 3 PASS (R28). 3 valid P3 + 1 invalid PPM samples. Python open/write. Awaiting IV.
     gate_4:
-      status: prototype_complete
+      status: passed
       approved_by: delegated_agent_r29
       approved_date: '2026-05-19'
       source_path: src/python/ppm/ppm_parser.py
@@ -2253,6 +2180,12 @@ formats:
       test_result: 10/10 PASS
       commercial_product_ready: false
       notes: Gate 4 prototype (R29). P3 ASCII parser. 10/10 tests PASS.
+      evidence_type: SOURCE_TRACK_EQUIVALENT
+      delegated_source_path: src/python/ppm/ppm_parser.py
+      corpus:
+      - samples/by-format/ppm/
+      tests:
+      - tests/python/ppm/test_ppm_codec.py
     gate_5:
       status: neutral_model_complete
       approved_by: delegated_agent_r29
@@ -2285,8 +2218,7 @@ formats:
       approved_date: '2026-05-19'
       approval_method: delegated_expert_agent_review_requested_by_babar
       commercial_product_ready: false
-      notes: Gate 8 security review (R31). Delegated expert approved. Netpbm P3 text
-        parser.
+      notes: Gate 8 security review (R31). Delegated expert approved. Netpbm P3 text parser.
     gate_9:
       status: pass
       approved_by: delegated_agent_r31
@@ -2307,8 +2239,7 @@ formats:
       finalization_date: '2026-05-20'
       finalization_sprint: R36
       scope: read_only_ascii_p3
-      scope_description: 'PPM parser supports P3 ASCII format only. Binary P6 variant
-        is not implemented.
+      scope_description: 'PPM parser supports P3 ASCII format only. Binary P6 variant is not implemented.
 
         '
       binary_p6_status: not_implemented
@@ -2349,11 +2280,17 @@ formats:
       invalid_count: 1
       notes: Gate 3 PASS (R29). 3 valid P2 + 1 invalid PGM samples.
     gate_4:
-      status: pass
+      status: passed
       approved_date: '2026-05-19'
       parser_path: src/python/pgm/pgm_parser.py
       test_result: 10/10 PASS
       notes: Gate 4 PASS (R30). P2 ASCII grayscale parser prototype.
+      evidence_type: SOURCE_TRACK_EQUIVALENT
+      delegated_source_path: src/python/pgm/pgm_parser.py
+      corpus:
+      - samples/by-format/pgm/
+      tests:
+      - tests/python/pgm/test_pgm_codec.py
     gate_5:
       status: pass
       approved_date: '2026-05-19'
@@ -2375,8 +2312,7 @@ formats:
       approved_date: '2026-05-19'
       approval_method: delegated_expert_agent_review_requested_by_babar
       commercial_product_ready: false
-      notes: Gate 8 security review (R31). Delegated expert approved. Netpbm P2 text
-        parser.
+      notes: Gate 8 security review (R31). Delegated expert approved. Netpbm P2 text parser.
     gate_9:
       status: pass
       approved_by: delegated_agent_r44
@@ -2384,17 +2320,15 @@ formats:
       product_family: imaging
       python_foss_package: format-factory-pgm
       commercial_product_ready: false
-      test_result: '7/7 PASS (R43 deepening: pixel_count=w*h, magic=P2, maxval range,
-        field completeness, invalid samples)'
-      notes: Gate 9 deep-dive capability verification (R43+R44). 7 structural invariant
-        + field completeness tests. Python FOSS imaging track. Netpbm P2 ASCII.
+      test_result: '7/7 PASS (R43 deepening: pixel_count=w*h, magic=P2, maxval range, field completeness, invalid samples)'
+      notes: Gate 9 deep-dive capability verification (R43+R44). 7 structural invariant + field completeness tests. Python
+        FOSS imaging track. Netpbm P2 ASCII.
     scope_finalization:
       applied: true
       finalization_date: '2026-05-20'
       finalization_sprint: R36
       scope: read_only_ascii_p2
-      scope_description: 'PGM parser supports P2 ASCII format only. Binary P5 variant
-        is not implemented.
+      scope_description: 'PGM parser supports P2 ASCII format only. Binary P5 variant is not implemented.
 
         '
       binary_p5_status: not_implemented
@@ -2435,11 +2369,17 @@ formats:
       invalid_count: 1
       notes: Gate 3 PASS (R29). 3 valid P1 + 1 invalid PBM samples.
     gate_4:
-      status: pass
+      status: passed
       approved_date: '2026-05-19'
       parser_path: src/python/pbm/pbm_parser.py
       test_result: 10/10 PASS
       notes: Gate 4 PASS (R30). P1 ASCII bitmap parser prototype.
+      evidence_type: SOURCE_TRACK_EQUIVALENT
+      delegated_source_path: src/python/pbm/pbm_parser.py
+      corpus:
+      - samples/by-format/pbm/
+      tests:
+      - tests/python/pbm/test_pbm_codec.py
     gate_5:
       status: pass
       approved_date: '2026-05-19'
@@ -2454,16 +2394,14 @@ formats:
       status: pass
       approved_date: '2026-05-19'
       test_result: 11/11 PASS
-      notes: Gate 7 PASS (R30). Fuzz guard — 10 malformed input classes + P4 binary
-        rejection.
+      notes: Gate 7 PASS (R30). Fuzz guard — 10 malformed input classes + P4 binary rejection.
     gate_8:
       status: pass
       approved_by: delegated_expert_agent_r31
       approved_date: '2026-05-19'
       approval_method: delegated_expert_agent_review_requested_by_babar
       commercial_product_ready: false
-      notes: Gate 8 security review (R31). Delegated expert approved. Netpbm P1 text
-        parser.
+      notes: Gate 8 security review (R31). Delegated expert approved. Netpbm P1 text parser.
     gate_9:
       status: pass
       approved_by: delegated_agent_r44
@@ -2471,17 +2409,15 @@ formats:
       product_family: imaging
       python_foss_package: format-factory-pbm
       commercial_product_ready: false
-      test_result: '6/6 PASS (R43 deepening: pixel_count=w*h, magic=P1, dimensions
-        positive, field completeness, invalid samples)'
-      notes: Gate 9 deep-dive capability verification (R43+R44). 6 structural invariant
-        + field completeness tests. Python FOSS imaging track. Netpbm P1 ASCII.
+      test_result: '6/6 PASS (R43 deepening: pixel_count=w*h, magic=P1, dimensions positive, field completeness, invalid samples)'
+      notes: Gate 9 deep-dive capability verification (R43+R44). 6 structural invariant + field completeness tests. Python
+        FOSS imaging track. Netpbm P1 ASCII.
     scope_finalization:
       applied: true
       finalization_date: '2026-05-20'
       finalization_sprint: R36
       scope: read_only_ascii_p1
-      scope_description: 'PBM parser supports P1 ASCII format only. Binary P4 variant
-        is not implemented.
+      scope_description: 'PBM parser supports P1 ASCII format only. Binary P4 variant is not implemented.
 
         '
       binary_p4_status: not_implemented
@@ -2522,11 +2458,17 @@ formats:
       invalid_count: 1
       notes: Gate 3 PASS (R29). 3 valid + 1 invalid SYLK samples.
     gate_4:
-      status: pass
+      status: passed
       approved_date: '2026-05-19'
       parser_path: src/python/sylk/sylk_parser.py
       test_result: 10/10 PASS
       notes: Gate 4 PASS (R30). SYLK text spreadsheet parser prototype.
+      evidence_type: SOURCE_TRACK_EQUIVALENT
+      delegated_source_path: src/python/sylk/sylk_parser.py
+      corpus:
+      - samples/by-format/sylk/
+      tests:
+      - tests/python/sylk/test_sylk_codec.py
     gate_5:
       status: pass
       approved_date: '2026-05-19'
@@ -2556,10 +2498,10 @@ formats:
       product_family: cells
       python_foss_package: format-factory-sylk
       commercial_product_ready: false
-      test_result: '6/6 PASS (R43 deepening: cell_count, id_line starts with ID;,
-        rows/cols non-negative, field completeness, invalid samples)'
-      notes: Gate 9 deep-dive capability verification (R43+R44). 6 structural invariant
-        + field completeness tests. Python FOSS cells track. SYLK text-based spreadsheet.
+      test_result: '6/6 PASS (R43 deepening: cell_count, id_line starts with ID;, rows/cols non-negative, field completeness,
+        invalid samples)'
+      notes: Gate 9 deep-dive capability verification (R43+R44). 6 structural invariant + field completeness tests. Python
+        FOSS cells track. SYLK text-based spreadsheet.
 - format_id: csv
   display_name: Comma-Separated Values (CSV)
   family: cells
@@ -2595,6 +2537,17 @@ formats:
       sample_count: 3
       invalid_count: 1
       notes: Gate 3 PASS (R30). 3 valid + 1 invalid CSV samples.
+    gate_4:
+      status: passed
+      evidence_type: EVIDENCE_WRAPPER
+      prototype_path: prototypes/by-format/csv/
+      delegated_source_path: src/python/csv/csv_parser.py
+      tests:
+      - tests/skills/test_csv_gate4_prototype.py
+      corpus:
+      - samples/by-format/csv/
+      acquisition_pack: acquisition-packs/csv/pack.yaml
+      mission_id: FF-G4-BACKFILL-001
 - format_id: tsv
   display_name: Tab-Separated Values (TSV)
   family: cells
@@ -2632,6 +2585,17 @@ formats:
       sample_count: 3
       invalid_count: 1
       notes: Gate 3 PASS (R30). 3 valid + 1 invalid TSV samples.
+    gate_4:
+      status: passed
+      evidence_type: EVIDENCE_WRAPPER
+      prototype_path: prototypes/by-format/tsv/
+      delegated_source_path: src/python/tsv/tsv_parser.py
+      tests:
+      - tests/skills/test_tsv_gate4_prototype.py
+      corpus:
+      - samples/by-format/tsv/
+      acquisition_pack: acquisition-packs/tsv/pack.yaml
+      mission_id: FF-G4-BACKFILL-001
 - format_id: xpm
   display_name: X PixMap (XPM)
   family: imaging
@@ -2667,6 +2631,20 @@ formats:
       sample_count: 3
       invalid_count: 1
       notes: Gate 3 PASS (R30). 3 valid XPM3 + 1 invalid samples.
+    gate_4:
+      status: passed
+      evidence_type: STANDALONE_PROTOTYPE
+      prototype_path: prototypes/by-format/xpm/
+      tests:
+      - tests/skills/test_xpm_gate4_prototype.py
+      corpus:
+      - samples/by-format/xpm/
+      acquisition_pack: acquisition-packs/xpm/pack.yaml
+      limitations:
+      - XPM3 only
+      - Max 4096x4096
+      - No write
+      mission_id: FF-G4-BACKFILL-001
 - format_id: pam
   display_name: Portable Arbitrary Map (PAM / Netpbm P7)
   family: imaging
@@ -2703,6 +2681,20 @@ formats:
       sample_count: 3
       invalid_count: 1
       notes: Gate 3 PASS (R30). 3 valid PAM P7 + 1 invalid samples.
+    gate_4:
+      status: passed
+      evidence_type: STANDALONE_PROTOTYPE
+      prototype_path: prototypes/by-format/pam/
+      tests:
+      - tests/skills/test_pam_gate4_prototype.py
+      corpus:
+      - samples/by-format/pam/
+      acquisition_pack: acquisition-packs/pam/pack.yaml
+      limitations:
+      - P7 magic required
+      - Max 4096x4096 depth 4
+      - No write
+      mission_id: FF-G4-BACKFILL-001
 - format_id: ndjson
   display_name: Newline Delimited JSON
   family: data
@@ -2723,6 +2715,18 @@ formats:
       status: passed
       approved_by: delegated_agent_execution
       approved_date: '2026-06-21'
+    gate_4:
+      status: passed
+      evidence_type: EVIDENCE_WRAPPER
+      retrospective: true
+      prototype_path: prototypes/by-format/ndjson/
+      delegated_source_path: src/python/ndjson/ndjson_codec.py
+      tests:
+      - tests/skills/test_ndjson_gate4_prototype.py
+      corpus:
+      - samples/by-format/ndjson/valid/
+      acquisition_pack: acquisition-packs/ndjson/pack.yaml
+      mission_id: FF-G4-BACKFILL-001
 - format_id: toml
   display_name: Tom's Obvious, Minimal Language
   family: data
@@ -2742,6 +2746,18 @@ formats:
       status: passed
       approved_by: delegated_agent_execution
       approved_date: '2026-06-21'
+    gate_4:
+      status: passed
+      evidence_type: EVIDENCE_WRAPPER
+      retrospective: true
+      prototype_path: prototypes/by-format/toml/
+      delegated_source_path: src/python/toml/toml_codec.py
+      tests:
+      - tests/skills/test_toml_gate4_prototype.py
+      corpus:
+      - samples/by-format/toml/
+      acquisition_pack: acquisition-packs/toml/pack.yaml
+      mission_id: FF-G4-BACKFILL-001
 - format_id: odf-shared
   display_name: ODF 1.3 Shared Specification Parts
   family: odf
@@ -2752,15 +2768,15 @@ formats:
   spec_url: https://docs.oasis-open.org/office/OpenDocument/v1.3/
   legal_category: 1
   tier_target: 0
-  scoring_notes: >
-    Shared ODF 1.3 specification parts (Part 1: Introduction, Part 2: Packages,
-    Part 4: OpenFormula). These parts provide foundational facts for all ODF-based
-    formats (FODS, FODT, ODS, ODT, FODP, FODG). Acquired 2026-06-22 under user
-    authorization. Not a production format — SAL-only registry entry for shared
-    spec facts.
+  scoring_notes: 'Shared ODF 1.3 specification parts (Part 1: Introduction, Part 2: Packages, Part 4: OpenFormula). These
+    parts provide foundational facts for all ODF-based formats (FODS, FODT, ODS, ODT, FODP, FODG). Acquired 2026-06-22 under
+    user authorization. Not a production format — SAL-only registry entry for shared spec facts.
+
+    '
   visibility: internal
   implementation_authorized: false
-  notes: >
-    SAL spec registry entry only. Provides shared ODF multipart facts via
-    .local/spec-cache/odf/1.3/workbench/verified-facts-review.yaml.
+  notes: 'SAL spec registry entry only. Provides shared ODF multipart facts via .local/spec-cache/odf/1.3/workbench/verified-facts-review.yaml.
     Parts 1/2/4 PDFs at .local/spec-cache/odf/1.3/part{1,2,4}/.
+
+    '
+  gates: {}

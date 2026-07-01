@@ -93,7 +93,7 @@ When evidence is missing, the agent must:
 | "complete" claim | Taskcards with status=completed; evidence files created |
 | "Gate passed" claim | registry/format-registry.yaml gate entry; human approver name and date |
 | "no scope drift" claim | no-scope-drift-report.md; git status against allowed paths |
-| "commercial ready" claim | docs/commercial-product-capability-model.md level; Gate 11 sub-gates |
+| "commercial ready" claim | docs/product-factory/commercial-product-capability-model.md level; Gate 11 sub-gates |
 | "AI verified" claim | Verifier review YAML; schema validation output |
 | "tests passed" claim | Actual test runner output; specific counts |
 | "bundle validated" claim | BUNDLE_VALIDATION: PASS line in metadata |
@@ -303,7 +303,7 @@ Future agents must use precise language about readiness.
 
 ### Current state (as of 2026-05-13)
 Both FODS and FODT are at C4-C6-vertical-slice capability. Gate 11 is in progress, not approved.
-Commercial product readiness requires C7+ per `docs/commercial-product-capability-model.md`.
+Commercial product readiness requires C7+ per `docs/product-factory/commercial-product-capability-model.md`.
 
 ---
 

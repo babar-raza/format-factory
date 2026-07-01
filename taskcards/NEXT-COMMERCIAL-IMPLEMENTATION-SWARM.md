@@ -81,5 +81,5 @@ Coordinate the next implementation swarm for commercial .NET products, ensuring 
 At each stage transition, verify:
 - Current capability level matches expected C-level
 - No premature "commercial ready" claims
-- Architecture matches docs/commercial-dotnet-architecture.md
-- Product direction preserved per docs/commercial-product-capability-model.md
+- Architecture matches docs/product-factory/commercial-dotnet-architecture.md
+- Product direction preserved per docs/product-factory/commercial-product-capability-model.md

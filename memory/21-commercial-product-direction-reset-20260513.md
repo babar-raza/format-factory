@@ -17,8 +17,8 @@ Human (Babar Raza) clarified full commercial product requirements for the .NET p
 
 ## Actions Taken
 
-- Created `docs/commercial-product-capability-model.md` — C0-C10 capability levels; commercial = C7+
-- Created `docs/commercial-dotnet-architecture.md` — expected API, object model, save/export pipelines
+- Created `docs/product-factory/commercial-product-capability-model.md` — C0-C10 capability levels; commercial = C7+
+- Created `docs/product-factory/commercial-dotnet-architecture.md` — expected API, object model, save/export pipelines
 - Updated `plans/master-plan.md` — Rule 12 references capability model; next-action states Gate 11 deferred
 - Updated `registry/format-registry.yaml` — FODS/FODT gate_11: commercial_capability_level: C2, commercial_product_ready: false
 - Updated `AGENTS.md` — AF9-AF11 (commercial readiness rules)
@@ -34,14 +34,14 @@ Human (Babar Raza) clarified full commercial product requirements for the .NET p
 - **Agents must NOT equate parser/count extraction with commercial product readiness.**
 - **Next implementation direction:** load-edit-save-convert vertical slices, not packaging/publishing.
 - **Controlled swarm execution** is preferred for larger work, but product direction must be preserved.
-- **docs/commercial-product-capability-model.md** is the authoritative reference for C-levels.
+- **docs/product-factory/commercial-product-capability-model.md** is the authoritative reference for C-levels.
 
 ## Files Created/Updated
 
 | File | Action |
 |------|--------|
-| docs/commercial-product-capability-model.md | CREATED |
-| docs/commercial-dotnet-architecture.md | CREATED |
+| docs/product-factory/commercial-product-capability-model.md | CREATED |
+| docs/product-factory/commercial-dotnet-architecture.md | CREATED |
 | plans/master-plan.md | UPDATED (Rule 12, next-action) |
 | registry/format-registry.yaml | UPDATED (gate_11 for FODS + FODT) |
 | AGENTS.md | UPDATED (AF9-AF11) |
