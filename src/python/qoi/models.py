@@ -93,6 +93,23 @@ class QoiDocument:
         """True if height is greater than width."""
         return self.height > self.width
 
+    # Additional channel and colorspace properties (FACT-QOI-001)
+
+    @property
+    def is_rgb(self) -> bool:
+        """True if the image has 3 channels (RGB, no alpha)."""
+        return self.channels == 3
+
+    @property
+    def is_srgb(self) -> bool:
+        """True if the colorspace is sRGB (colorspace == 0)."""
+        return self.colorspace == 0
+
+    @property
+    def is_linear(self) -> bool:
+        """True if the colorspace is linear light (colorspace == 1)."""
+        return self.colorspace == 1
+
     def to_dict(self) -> dict[str, Any]:
         """Return image metrics as a dict."""
         return {

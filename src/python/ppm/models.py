@@ -93,6 +93,23 @@ class PpmDocument:
         """True if height is greater than width."""
         return self.height > self.width
 
+    # Additional image analysis properties (FACT-PPM-001)
+
+    @property
+    def is_high_depth(self) -> bool:
+        """True if the image uses more than 8-bit depth per channel (maxval > 255)."""
+        return self.maxval > 255
+
+    @property
+    def is_tiny(self) -> bool:
+        """True if both width and height are at most 64 pixels."""
+        return self.width <= 64 and self.height <= 64
+
+    @property
+    def megapixels(self) -> float:
+        """Image size in megapixels (pixel_count / 1,000,000)."""
+        return self.pixel_count / 1_000_000.0
+
     def to_dict(self) -> dict[str, Any]:
         """Return image metrics as a dict."""
         return {

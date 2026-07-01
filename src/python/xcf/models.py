@@ -101,6 +101,23 @@ class XcfDocument:
         """True if the image has more than one layer."""
         return self.layer_count > 1
 
+    # Additional layer and type properties (FACT-XCF-001)
+
+    @property
+    def is_flat(self) -> bool:
+        """True if the image has at most one layer (not multilayer)."""
+        return self.layer_count <= 1
+
+    @property
+    def has_layers(self) -> bool:
+        """True if the image has at least one layer."""
+        return self.layer_count > 0
+
+    @property
+    def is_rgb_type(self) -> bool:
+        """True if the image type is RGB (image_type == 0)."""
+        return self.image_type == 0
+
     def to_dict(self) -> dict[str, Any]:
         """Return image metrics as a dict."""
         return {
