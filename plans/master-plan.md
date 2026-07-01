@@ -5258,3 +5258,38 @@ Total: 35 new test files across 7 .NET format test projects.
 
 - No unresolved README governance findings remain.
 - Repository had substantial unrelated dirty work before this mission; this section records only README-GOV-001 work.
+
+## Section 95 — dapper-bouncing-scott: Plans Folder Organization and Governance (CLOSED)
+
+**Mission ID:** FF-PLAN-GOV-002
+**Plan file:** `plans/.claude/dapper-bouncing-scott.md`
+**Date:** 2026-06-29 through 2026-07-01
+
+### What was completed
+
+- Relocated 17 plan files from `plans/` root to governed subdirectories (`strategic/`, `healing/`, `secondary/`)
+- Updated 100+ cross-references across CLAUDE.md, AGENTS.md, docs/, tools/, tests/, plans/, reports/
+- Built V90 governance validator (`validate_plans_root_policy`) for permanent root policy enforcement
+- Created plan placement tool (`plan_placement.py`) with routing table and migration support
+- Created routing policy YAML and path migration map in `plans/.governance/`
+- Fixed V56 regex to support subdirectory plan paths
+- Added 4 V90 tests (all pass), verified 45 plan governance tests (all pass)
+- Proved idempotency (two consecutive validation runs produce identical results)
+- Post-sprint convergence audit found and fixed 1 finding: `plans/README.md` added to V90 allowed set
+
+### Verification performed
+
+- V90 validator: PASS (plans root contains only allowed files)
+- Plan placement: compliant=True, violations=[]
+- Stale reference sweep: 0 across all critical directories
+- Full test suite: 208 tests pass (V90 + plan governance gates)
+- Idempotency: confirmed (identical results across 2 runs)
+
+### Commits
+
+- `be7e4cdb` — fix(governance): add README.md to V90 plans root allowed set
+
+### Remaining follow-ups (non-blocking)
+
+- Full producer wiring (making all plan-creation skills call placement tool) is out-of-scope
+- Report at `reports/plans-governance/plans-folder-organization-report.md`
