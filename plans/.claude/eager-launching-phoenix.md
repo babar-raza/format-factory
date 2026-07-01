@@ -104,7 +104,7 @@ taskcard:
     sal-facts-latest.json uses informal IDs (odf-1.3-part3). The mismatch causes
     quality_level() to return 0 for ALL facts on fresh checkout. This means V47
     and RELEASE_GATE enforcement is silently broken without .local/ data.
-  current_status: not_attempted
+  current_status: CLOSED
   priority: HIGH
   lane_owner: L01 (specification-authority-layer) + L09 (state)
   dependencies: []
@@ -134,7 +134,7 @@ taskcard:
   required_evidence:
     - "shared/sal-source-id-aliases.yaml path and entry count"
     - "Focused pytest output showing PASSED"
-  proof_level_current: 0
+  proof_level_current: 4
   proof_level_target: 2
   acceptance_criteria:
     - "test_registered_formats_have_bootstrap_level_1 PASSES"
@@ -161,7 +161,7 @@ taskcard:
     GAP-INT-002 requires product source files to cite SAL fact IDs, proving traceability
     from implementation back to spec authority. fodt/neutral_model.py has no FACT- refs.
     FACT-FODT-001 is confirmed present in SAL workbench_verified — no SAL changes needed.
-  current_status: not_attempted
+  current_status: CLOSED
   priority: HIGH
   lane_owner: L06 (product-source-layer)
   dependencies: []
@@ -183,7 +183,7 @@ taskcard:
   required_evidence:
     - "Focused pytest output showing both tests PASSED"
     - "grep FACT-FODT src/python/fodt/neutral_model.py output"
-  proof_level_current: 0
+  proof_level_current: 4
   proof_level_target: 2
   acceptance_criteria:
     - "test_fodt_neutral_model_cites_fact_refs PASSES"
@@ -210,7 +210,7 @@ taskcard:
     The test reads sal-facts-latest.json directly and only checks workbench_verified entries.
     Our existing shared/sal-fact-overrides.yaml overlay is not consumed by this test.
     Without a durable committed fix, fresh checkout always fails this test.
-  current_status: not_attempted
+  current_status: CLOSED
   priority: HIGH
   lane_owner: L01 (specification-authority-layer) + L07 (test-infrastructure)
   dependencies: [TC-FIX-001]
@@ -253,7 +253,7 @@ taskcard:
     - "Focused pytest output showing PASSED"
     - "Full test_gap_int_002 suite output showing 0 failures"
     - "Count of new entries in shared/sal-fact-overrides.yaml (should be 9 + 7 = 16)"
-  proof_level_current: 0
+  proof_level_current: 4
   proof_level_target: 2
   acceptance_criteria:
     - "test_total_fact_refs_across_product_source PASSES"
