@@ -1,0 +1,54 @@
+{
+  "skill_id": "add-python-object-model-feature",
+  "sprint_id": "r564-zst-abw-dif-gnumeric",
+  "formats": [
+    "zst",
+    "abw",
+    "dif",
+    "gnumeric"
+  ],
+  "features_added": {
+    "zst": [
+      "is_single_frame",
+      "decompressed_size_kb",
+      "is_large"
+    ],
+    "abw": [
+      "has_sections",
+      "has_multiple_paragraphs",
+      "is_multi_section"
+    ],
+    "dif": [
+      "is_single_col",
+      "has_title",
+      "is_multi_row"
+    ],
+    "gnumeric": [
+      "has_cells",
+      "avg_cells_per_sheet",
+      "is_sparse"
+    ]
+  },
+  "tests_created": 81,
+  "tests_passed": 81,
+  "spec_refs": {
+    "zst": [
+      "FACT-ZST-001",
+      "FACT-ZST-002"
+    ],
+    "abw": [
+      "FACT-ABW-001"
+    ],
+    "dif": [
+      "FACT-DIF-001",
+      "FACT-DIF-002"
+    ],
+    "gnumeric": [
+      "FACT-GNUMERIC-001",
+      "FACT-GNUMERIC-002",
+      "FACT-GNUMERIC-003"
+    ]
+  },
+  "execution_method": "SKILL_GUIDED_AGENT_EXECUTION",
+  "outcome": "PASS"
+}

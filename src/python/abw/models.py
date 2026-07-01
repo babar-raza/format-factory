@@ -80,6 +80,21 @@ class AbwDocument:
         """True if the document has exactly one paragraph."""
         return self.paragraph_count == 1
 
+    @property
+    def has_sections(self) -> bool:
+        """True if the document contains at least one section."""
+        return self.section_count > 0
+
+    @property
+    def has_multiple_paragraphs(self) -> bool:
+        """True if the document contains more than one paragraph."""
+        return self.paragraph_count > 1
+
+    @property
+    def is_multi_section(self) -> bool:
+        """True if the document contains more than one section."""
+        return self.section_count > 1
+
     def to_dict(self) -> dict[str, Any]:
         """Return the underlying neutral model dict."""
         return dict(self._data)

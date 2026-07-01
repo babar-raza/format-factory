@@ -93,6 +93,23 @@ class ZstDocument:
             return 0.0
         return self.decompressed_size / self.compressed_size
 
+    # Additional frame properties (FACT-ZST-001, FACT-ZST-002)
+
+    @property
+    def is_single_frame(self) -> bool:
+        """True if the stream contains exactly one Zstandard frame."""
+        return self.frame_count == 1
+
+    @property
+    def decompressed_size_kb(self) -> float:
+        """Decompressed content size in kilobytes."""
+        return self.decompressed_size / 1024.0
+
+    @property
+    def is_large(self) -> bool:
+        """True if the compressed size is >= 1 MB (1,048,576 bytes)."""
+        return self.compressed_size >= 1_048_576
+
     def to_dict(self) -> dict[str, Any]:
         """Return frame metrics as a dict."""
         return {

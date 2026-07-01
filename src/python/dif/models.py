@@ -78,6 +78,21 @@ class DifModelDocument:
         """True if the document has exactly one data row."""
         return self.row_count == 1
 
+    @property
+    def is_single_col(self) -> bool:
+        """True if the document has exactly one data column (vector)."""
+        return self.vectors == 1
+
+    @property
+    def has_title(self) -> bool:
+        """True if the document has a non-empty title."""
+        return bool(self.title)
+
+    @property
+    def is_multi_row(self) -> bool:
+        """True if the document has more than one data row."""
+        return self.row_count > 1
+
     def to_dict(self) -> dict[str, Any]:
         """Return document summary as a dict."""
         return {

@@ -92,6 +92,23 @@ class GnumericDocument:
         """True if the workbook has more than one sheet."""
         return self.sheet_count > 1
 
+    @property
+    def has_cells(self) -> bool:
+        """True if the workbook contains at least one cell."""
+        return self.cell_count > 0
+
+    @property
+    def avg_cells_per_sheet(self) -> float:
+        """Average number of cells per sheet. Returns 0.0 if no sheets."""
+        if self.sheet_count == 0:
+            return 0.0
+        return self.cell_count / self.sheet_count
+
+    @property
+    def is_sparse(self) -> bool:
+        """True if the workbook has sheets but no cells."""
+        return self.sheet_count > 0 and self.cell_count == 0
+
     def to_dict(self) -> dict[str, Any]:
         """Return the underlying neutral model dict."""
         return dict(self._data)
