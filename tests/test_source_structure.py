@@ -246,6 +246,8 @@ class TestNoOrphanSourceFiles:
         "__init__", "parser", "writer", "codec", "stats", "constants",
         "exceptions", "models", "neutral_model", "list_traversal",
         "csv_exporter", "conftest", "compat",
+        # CLI and exporter entry points
+        "cli", "exporters",
         # Spec-derived domain module names (ODF canonical element names)
         "drawing_document", "word_document", "tabular_document",
         "interchange_document", "spreadsheet_document", "spreadsheet_model_document",
@@ -260,6 +262,8 @@ class TestNoOrphanSourceFiles:
         "word_stats", "workbook_stats", "record_stats",
         "neutral_ops", "document_edit", "document_query", "drawing_metrics",
         "image_metrics", "compression_metrics",
+        # Workflow and iterator modules added by product deepening sprints
+        "workflow",
     }
     _CONVERTER_PATTERNS = {"_to_", "_exporter", "_encoder"}
 
@@ -275,6 +279,9 @@ class TestNoOrphanSourceFiles:
                 return True
             # Secondary analytics split: {format}_analytics_{category}.py (master-plan.md §24.11)
             if suffix.startswith("analytics_"):
+                return True
+            # Iterator and inspector modules: {format}_{type}_{iterator|inspector}.py
+            if suffix.endswith("_iterator") or suffix.endswith("_inspector"):
                 return True
         for pat in self._CONVERTER_PATTERNS:
             if pat in stem:

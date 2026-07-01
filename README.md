@@ -4,7 +4,7 @@ A File Format Acquisition System that produces legal parsers, converters, import
 
 **Target users:** Developers building file-format support, document processing tool builders, and teams evaluating format libraries for their products.
 
-**Current state (as of June 2026):** 20 formats supported across Python FOSS and .NET commercial tracks. 20 installable Python packages. 92 governance validators across 10 modules. 840+ autonomous sprint cycles completed through the formal pipeline. Gate 11 G11-G sub-gate approved by Babar Raza 2026-06-05 (FODS, FODT, Netpbm). All 20 Python FOSS formats oracle-verified. See [PROJECT_STATUS.md](PROJECT_STATUS.md) for the full auto-generated status.
+**Current state (as of July 2026):** 20 formats supported across Python FOSS and .NET commercial tracks. 20 installable Python packages. 101 governance validators across 11 modules. 840 autonomous sprint cycles completed through the formal pipeline. Gate 11 G11-G sub-gate approved by Babar Raza 2026-06-05 (FODS, FODT, Netpbm). All 20 Python FOSS formats oracle-verified (73/73 PASS). See [PROJECT_STATUS.md](PROJECT_STATUS.md) for the full auto-generated status.
 
 ---
 
@@ -42,8 +42,8 @@ The system is organized into 11 independent layers, each with defined boundaries
 | L08 | Evidence | `.local/evidences/` | Sprint evidence declarations and proof bundles |
 | L09 | State | `.local/supervisor/`, `reports/supervisor/` | Continuation signals, plan locks, session state |
 | L11 | Supervisor | `tools/supervisor/` | Sprint orchestration, grading, next-work generation |
-| L12 | Governance | `tools/supervisor/governance_validators*.py` | 92 programmatic validators |
-| L13 | Skills | `.supervisor/skill-registry.yaml`, `.claude/commands/` | Registered skill definitions and routing |
+| L12 | Governance | `tools/supervisor/governance_validators*.py` | 101 programmatic validators |
+| L13 | Skills | `.supervisor/skill-registry.yaml`, `.claude/commands/` | 104 registered skill definitions and routing |
 
 Layer contracts and audit results: `reports/layer-audit-2026-06-26/`.
 
@@ -196,9 +196,9 @@ Gates 1-10 are agent-owned policy gates with evidence, validators, and acceptanc
 
 ## Engineering Practices
 
-- **Test Suite:** 4,300+ test files across Python and .NET tracks (0 failures required for sprint acceptance). Tests span unit, integration, roundtrip, analytics, spec-fact traceability, and installed-package workflow proofs. See `reports/supervisor/session-resume.md` for current counts.
+- **Test Suite:** 1,609+ tests passing (0 failures) across Python and .NET tracks as of last sprint 2026-06-25. Tests span unit, integration, roundtrip, analytics, spec-fact traceability, and installed-package workflow proofs. See `reports/supervisor/session-resume.md` for current counts.
 - **Test Framework:** pytest with `--import-mode=importlib` and 120-second per-test timeout. Dual conftest pattern handles stdlib module shadowing (`csv`, `html`).
-- **Quality Gates:** 91 programmatic governance validators across 10 modules (`tools/supervisor/governance_validators*.py`) block sprints on policy violations. Validators enforce: declaration schema compliance, evidence artifact existence, anti-skip checks, skill-first execution, spec-fact references, QName compliance, architecture stub detection, analytics separation, lane enforcement, package manifest completeness, oracle obligations, and README freshness.
+- **Quality Gates:** 101 programmatic governance validators across 11 modules (`tools/supervisor/governance_validators*.py`) block sprints on policy violations. Validators enforce: declaration schema compliance, evidence artifact existence, anti-skip checks, skill-first execution, spec-fact references, QName compliance, architecture stub detection, analytics separation, lane enforcement, package manifest completeness, oracle obligations, and README freshness.
 - **Source Size Policy:** Maximum 800 LOC and 60 functions per production file, tracked in `registry/source-structure-baseline.json`. Violations are frozen at `baseline_loc_cap` (write-once).
 - **Security:** Gate 8 requires security review before any format reaches product. Parser threat model covers XXE, billion laughs, zip bombs, path traversal, malformed input handling, memory limits, recursion limits, and binary parser safety (`docs/security.md`).
 - **QName Compliance:** Every exported Python class carries a `spec_qname` class attribute mapping to its canonical ODF/format specification element (enforced by V51-V53). Spec authority classes live in `{format}/spec/`; Compat/ facades expose simplified names.
@@ -219,7 +219,7 @@ The oracle layer (`oracle/`) provides deterministic, specification-grounded test
 
 The SAL (`tools/spec/`) extracts and indexes machine-readable facts from official format specifications. These facts serve as the ground truth for QName registries, oracle expected values, and spec-parity verification.
 
-- **Scope:** 14,441+ indexed spec facts across all supported formats (see `shared/qname-registry/` for per-format registries).
+- **Scope:** 14,635+ indexed spec facts across all supported formats (see `shared/qname-registry/` for per-format registries).
 - **Tools:** `tools/spec/merge_sal_facts.py` merges per-format SAL caches; `tools/spec/validate_spec_registry.py` validates registry consistency.
 - **Integration:** Governance validators V51-V53 enforce that exported classes reference valid SAL-indexed spec QNames.
 
@@ -240,7 +240,7 @@ format-factory distinguishes between deterministic code and agent-assisted orche
 | **Code generation** | Agent-assisted | Initial source file creation uses Claude Code; output is reviewed and tested |
 | **Plan hardening** | Agent-assisted | Audit classification and taskcard creation involve LLM reasoning |
 
-All shipped product code is deterministic. Agent-assisted workflows govern the development process but do not execute at runtime.
+All shipped product code is deterministic with no LLM calls or AI runtime dependencies. The development pipeline itself is agent-orchestrated — AI agents perform sprint planning, code generation, test writing, and governance validation. Human oversight applies at defined gates, primarily commercial release authorization.
 
 ---
 
@@ -248,10 +248,10 @@ All shipped product code is deterministic. Agent-assisted workflows govern the d
 
 format-factory enforces quality through layered governance:
 
-- **89 programmatic validators** across 10 modules (`tools/supervisor/governance_validators*.py`) — deterministic checks on every sprint declaration. They enforce declaration schema, evidence existence, spec-fact references, QName compliance, architecture rules, analytics separation, lane ownership, package manifests, oracle obligations, and README freshness.
+- **101 programmatic validators** across 11 modules (`tools/supervisor/governance_validators*.py`) — deterministic checks on every sprint declaration. They enforce declaration schema, evidence existence, spec-fact references, QName compliance, architecture rules, analytics separation, lane ownership, package manifests, oracle obligations, and README freshness.
 - **Gate contracts** (`registry/gate-contract-registry.yaml`) — each of the 11 gates has formal acceptance criteria. Gates 1-10 are policy-based (agent can satisfy with evidence). Gate 11 G11-G requires human business authority (Babar Raza).
 - **Source size policy** — maximum 800 LOC / 60 functions per production file, tracked in `registry/source-structure-baseline.json` with write-once `baseline_loc_cap` ceilings.
-- **Skill-first execution** — all agent work must route through registered skills (`.supervisor/skill-registry.yaml`, 72+ skills). Ad-hoc execution is detected and flagged.
+- **Skill-first execution** — all agent work must route through registered skills (`.supervisor/skill-registry.yaml`, 104 skills). Ad-hoc execution is detected and flagged.
 - **Contradiction detection** — the supervisor pipeline detects contradictions between declared state and repository truth (`reports/supervisor/contradictions.json`). Critical contradictions block autonomous continuation.
 
 See [GOVERNANCE.md](GOVERNANCE.md) for human contributor rules and [AGENTS.md](AGENTS.md) for agent operating contracts.
@@ -260,18 +260,18 @@ See [GOVERNANCE.md](GOVERNANCE.md) for human contributor rules and [AGENTS.md](A
 
 ## Autonomous Supervision Architecture
 
-format-factory uses an autonomous supervisor pipeline that manages multi-sprint execution with bounded repair and evidence materialization. Over 840 autonomous sprint cycles have been completed through the formal evidence pipeline.
+format-factory uses an autonomous supervisor pipeline that manages multi-sprint execution with bounded repair and evidence materialization. 840 autonomous sprint cycles have been completed through the formal evidence pipeline (53% ACCEPTED first pass, 47% ACCEPTED_WITH_REWORK, average quality score 0.756).
 
 - **State Management:** Session state persisted in `reports/supervisor/session-resume.md` and `.local/supervisor/continuation-signal.json`. Cross-window recovery restores full operational context without requiring prior conversation history.
-- **Flow Orchestration:** 4-stream architecture (Mainstream Product, Acceleration, Skills/Governed Execution, Supervisor/Autonomous Continuation) with a 15-state taskcard machine governing work item lifecycle. Pipeline: sprint start → execute work items → write evidence declaration → validate with 91 governance validators → grade work items → generate next sprint → check continuation signal.
-- **Boundary Enforcement:** `AGENTS.md` (~60KB operating contract) defines non-negotiable rules for all automated executors. 91 governance validators across 10 modules programmatically block sprints on policy violations. Gate 11 G11-G approval requires explicit human business authority.
+- **Flow Orchestration:** 4-stream architecture (Mainstream Product, Acceleration, Skills/Governed Execution, Supervisor/Autonomous Continuation) with a 15-state taskcard machine governing work item lifecycle. Pipeline: sprint start → execute work items → write evidence declaration → validate with 101 governance validators → grade work items → generate next sprint → check continuation signal.
+- **Boundary Enforcement:** `AGENTS.md` (~60KB operating contract) defines non-negotiable rules for all automated executors. 101 governance validators across 11 modules programmatically block sprints on policy violations. Gate 11 G11-G approval requires explicit human business authority.
 - **Adaptive Repair:** `tools/supervisor/bounded_repair_engine.py` classifies test and build failures into 6 categories (IMPORT, SYNTAX, ATTRIBUTE, NAME, ASSERTION, TIMEOUT) and applies targeted repairs with automatic rollback on failure.
 - **CCI (Cross-Chat Continuation Isolation):** `session_id` field in continuation signals prevents cross-chat state contamination. SESSION_MISMATCH is a non-overridable hard stop.
 
 Key implementation files:
 
 - `tools/supervisor/autonomous_cycle.py` — Sprint execution and evidence pipeline
-- `tools/supervisor/governance_validators*.py` — 89 programmatic quality gates across 10 modules
+- `tools/supervisor/governance_validators*.py` — 101 programmatic quality gates across 11 modules
 - `tools/supervisor/lane_enforcement_validator.py` — Cross-lane file ownership enforcement
 - `tools/supervisor/bounded_repair_engine.py` — Error classification and bounded repair
 - `tools/supervisor/check_continuation.py` — Autonomous loop continuation gate
@@ -287,8 +287,8 @@ Key implementation files:
 | .NET commercial formats | FODS, FODT, Netpbm; G11-G sub-gate approved; not commercially released |
 | Gate 11 G11-G | APPROVED by Babar Raza 2026-06-05 (sub-gate); G11-G EXECUTION pending |
 | commercial_product_ready | false (all entries) |
-| Tests | 4,300+ test files across Python + .NET (0 failures required). See `reports/supervisor/session-resume.md` |
-| Governance validators | 91 across 10 modules |
+| Tests | 1,609+ passing (0 failures) as of last sprint 2026-06-25. See `reports/supervisor/session-resume.md` |
+| Governance validators | 101 across 11 modules |
 | Oracle verification | All 20 Python FOSS formats VERIFIED (73/73 cases PASS) |
 | Spec parity (FODS) | PARTIAL — 3/12 qnames have Compat/ facades |
 | Spec parity (FODT) | BLOCKED — SAL cache missing FODT ODF 1.3 facts |
@@ -389,6 +389,8 @@ Agents must read `CLAUDE.md` and `AGENTS.md` before starting any work. Fresh cha
 | [plans/master-plan.md](plans/master-plan.md) | Single operational authority (42 sections) |
 | [reports/supervisor/session-resume.md](reports/supervisor/session-resume.md) | Last sprint outcome and next action |
 | [docs/agent-methodology-index.md](docs/agent-methodology-index.md) | Methodology index for plan and prompt work |
+| [docs/fresh-chat-continuity-brief.md](docs/fresh-chat-continuity-brief.md) | Cross-chat continuity brief |
+| [docs/prompts/README.md](docs/prompts/README.md) | Agent prompt templates |
 | [docs/automation/supervisor-worker-contract.md](docs/automation/supervisor-worker-contract.md) | Evidence declaration schema |
 
 ---
@@ -411,18 +413,18 @@ For a plain-English assessment of where the project stands — what works, what 
 - **Full review:** [reports/system-status-review.md](reports/system-status-review.md)
 - **Regenerate:** `python tools/readme_sync/generate_root_status.py`
 
-<!-- BEGIN:SYSTEM-STATUS-SUMMARY generated=2026-06-28 source=reports/system-status-review.md -->
+<!-- BEGIN:SYSTEM-STATUS-SUMMARY generated=2026-07-01 source=reports/system-status-review.md -->
 **Scorecard (out of 10):** Overall 7.5 | Repeatability 9 | Genericness 8 | Evidence 8 | Testability 8 | Future Readiness 7 | Production Readiness 4 | Source Quality 7 | Autonomy 8 | Governance 9
 
 **Phase ratings:** 7 Green (governance, QName, product implementation, testing, evidence, autonomy, onboarding) | 7 Yellow (discovery, SAL, capability, feature planning, code generation, healing, docs) | 1 Orange (packaging/publication) | 0 Red
 
-**Verdict:** Working, repeatable, well-governed system. Not commercially released. 20 formats prove the pipeline works. Strongest: governance enforcement (91 validators), repeatability (1,050 sprints), evidence tracking (3,167 evidence runs). Weakest: production readiness (no published packages, no external users).
+**Verdict:** Working, repeatable, well-governed system. Not commercially released. 20 formats prove the pipeline works. Strongest: governance enforcement (101 validators), repeatability (840 sprints, 3,232 evidence bundles), oracle verification (73/73 PASS). Weakest: production readiness (no published packages, no external users). Pipeline is agent-orchestrated — AI agents perform the engineering work; human oversight applies only at commercial release gates.
 <!-- END:SYSTEM-STATUS-SUMMARY -->
 
 ---
 
 <!-- BEGIN:PROJECT-STATUS-REF generated=2026-06-29 source=PROJECT_STATUS.md -->
-**Quick numbers:** 20 active formats | 73/73 oracle cases | 92 validators | 102 skills | 840+ sprints | 20/20 certified
+**Quick numbers:** 20 active formats | 73/73 oracle cases | 101 validators | 104 skills | 840 sprints | 14,635 SAL facts | 3,232 evidence bundles
 
 For the full auto-generated project status with per-format details, see [PROJECT_STATUS.md](PROJECT_STATUS.md).
 Re-generate: `python tools/docs/generate_project_status.py`

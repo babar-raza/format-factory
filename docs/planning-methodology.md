@@ -32,7 +32,7 @@ This document captures the repo-local standard for:
 7. Product source must not start from scattered evidence when a compiled Format Understanding Layer is required (see docs/python-foss/format-understanding-layer.md).
 8. LLMs may assist under governance, but verified facts, citations, DEC-034, oracle results, and human approvals remain the authority.
 9. No cleanup commands (`git stash`, `git reset`, `git restore`, `git checkout --`, `git clean`) as a default or catch-all. If unrelated dirty work exists, classify it and stop or produce a blocker bundle; do not hide it to satisfy clean-tree pressure.
-10. No pushing without SCM Agent policy authorization (AGENTS.md §AG4.2) — execute when credentials and branch policy allow; classify EXTERNAL_BLOCKER otherwise.
+10. No pushing without SCM Agent policy authorization (AGENTS.md §AG4.2) - execute when credentials and branch policy allow; classify EXTERNAL_BLOCKER otherwise.
 11. No gate self-approval without evidence. Gates 1-10: agent-owned policy gates (AGENTS.md §AG5). Gate 11 G11-G: Babar Raza only.
 
 ### Git Safety Requirements

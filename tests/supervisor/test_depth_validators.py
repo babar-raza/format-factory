@@ -201,11 +201,11 @@ class TestValidateClassCountMinimum:
         result = validate_class_count_minimum(decl, REPO_ROOT)
         assert result["result"] == "PASS"
 
-    def test_warn_fods_below_minimum(self):
+    def test_pass_fods_meets_minimum(self):
+        # FODS now has 20 .cs files (>= minimum of 15) after product deepening sprints
         item = _base_item(item_id="FODS-REBUILD", title="FODS rebuild")
         result = validate_class_count_minimum(_decl([item]), REPO_ROOT)
-        assert result["result"] == "WARN"
-        assert "fods" in result["detail"].lower()
+        assert result["result"] == "PASS"
 
     def test_pass_non_complex_format(self):
         item = _base_item(item_id="ZST-WORK", title="ZST compression")

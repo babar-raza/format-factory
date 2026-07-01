@@ -2260,7 +2260,7 @@ skills:
   - tests/supervisor/test_dom_contract_checker.py
   version: '1.0'
 - command: /query-control-index
-  command_file: null
+  command_file: .claude/commands/query-control-index.md
   idempotency: read_only
   implementation_paths:
   - tools/supervisor/control_index/__main__.py
@@ -2279,7 +2279,7 @@ skills:
   - tests/supervisor/test_control_index_db.py
   - tests/supervisor/test_control_index_sync.py
 - command: /validate-playbook
-  command_file: null
+  command_file: .claude/commands/validate-playbook.md
   idempotency: read_only
   implementation_paths:
   - tools/playbook/validate_playbook.py
@@ -2298,7 +2298,7 @@ skills:
   test_paths:
   - tests/playbook/test_playbook_schema.py
 - command: /replay-acquisition-playbook
-  command_file: null
+  command_file: .claude/commands/replay-acquisition-playbook.md
   idempotency: read_only
   implementation_paths:
   - tools/playbook/replay_acquisition_playbook.py
@@ -2321,7 +2321,7 @@ skills:
   test_paths:
   - tests/playbook/test_replay_dry_run.py
 - command: /export-review-queue
-  command_file: null
+  command_file: .claude/commands/export-review-queue.md
   idempotency: read_only
   implementation_paths:
   - tools/playbook/export_review_queue.py
@@ -2340,7 +2340,7 @@ skills:
   test_paths:
   - tests/playbook/test_review_queue_export.py
 - command: /diff-playbook-outputs
-  command_file: null
+  command_file: .claude/commands/diff-playbook-outputs.md
   idempotency: read_only
   implementation_paths:
   - tools/playbook/diff_playbook_outputs.py
