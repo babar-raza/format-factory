@@ -5524,3 +5524,47 @@ docs/python-foss/ (14), docs/code-quality/ (7), docs/product-factory/ (6)
 
 **Final Verdict:** DOCS_ROOT_REORGANIZED_REFERENCES_PRESERVED_GOVERNANCE_HEALED_AND_IDEMPOTENT
 
+## §98 — FF-G4-BACKFILL-001: Gate 4 Prototype Coverage Normalization (atomic-stargazing-nest, TERMINAL_CLOSED 2026-07-01)
+
+**Mission:** Normalize all 24 tracked formats to a canonical Gate 4 evidence disposition.
+
+**Plan:** `plans/.claude/atomic-stargazing-nest.md`
+**Commits:** `81253bf1` (core, 44 files, 6182 insertions), `666a4f78` (plan closure), `32d7ff97` (convergence gaps)
+
+### Evidence Types Assigned
+
+| Classification | Count | Formats |
+|---------------|-------|---------|
+| STANDALONE_PROTOTYPE | 9 | fods, fodt, zst, fodp, fodg, gnumeric, abw, xpm, pam |
+| EVIDENCE_WRAPPER | 4 | csv, tsv, ndjson, toml |
+| SOURCE_TRACK_EQUIVALENT | 9 | ods, odt, qoi, xcf, dif, ppm, pgm, pbm, sylk |
+| BLOCKED_BEFORE_GATE4 | 2 | zpaq, ora |
+
+### Artifacts Delivered
+
+- `prototypes/by-format/{csv,tsv,ndjson,toml}/` — evidence wrappers with delegated probes
+- `prototypes/by-format/{xpm,pam}/` — minimal parsers (XPM3 header, PAM P7 raster)
+- `prototypes/by-format/{abw,fodp,fodg,gnumeric}/README.md` — gate4_wrapper manifests
+- `acquisition-packs/{ndjson,toml}/pack.yaml` — retrospective acquisition packs
+- `tools/gates/validate_gate4_evidence.py` — 25/25 PASS validator
+- `docs/governance/gate4-evidence-contract.yaml` — evidence contract schema
+- 6 skill test files (66 tests PASS), 2 governance/contract test files (28 tests PASS)
+- `reports/prototypes/gate4-{inventory,drift-root-cause,gap-ledger,backfill-report}.*`
+
+### Completion Gate Counters
+
+| Counter | Value |
+|---------|-------|
+| UNCLASSIFIED_SUPPORTED_FORMATS | 0 |
+| GATE4_PASS_WITHOUT_EXECUTABLE_EVIDENCE | 0 |
+| GATE4_REGISTRY_ACQUISITION_MISMATCHES | 0 |
+| DUPLICATED_PARSER_IMPLEMENTATIONS_CREATED | 0 |
+| READY_GATE4_GAPS_WITHOUT_TASKCARDS | 0 |
+| FALSE_GATE4_PASSES_FOR_BLOCKED_FORMATS | 0 |
+| FAILED_REQUIRED_PILOTS | 0 |
+| MATERIAL_SECOND_RUN_CHANGES | 0 |
+
+**Convergence gaps resolved:** gate_4_status column added to format-completion-matrix.yaml (24 rows); backfill-gate4-prototype-evidence skill added to .supervisor/skill-registry.yaml.
+
+**Final Verdict:** GATE4_COVERAGE_NORMALIZED_BACKFILLED_PROVEN_AND_IDEMPOTENT
+
