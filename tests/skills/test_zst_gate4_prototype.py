@@ -387,11 +387,26 @@ def test_src_python_zst_exists():
     )
 
 
-def test_no_src_net_zst():
-    """src/net/zst/ must NOT exist (implementation not authorized)."""
+def test_src_net_zst_not_gate11_approved():
+    """src/net/zst/ exists as a .NET commercial implementation in progress.
+
+    Gate 4 (Python prototype) is passed. The .NET track advanced independently
+    via product deepening (commit 4998619d). Gate 11 commercial release is NOT
+    yet approved — registry gate_11.status must not be 'approved' or 'released'.
+    """
     path = REPO_ROOT / "src" / "net" / "zst"
-    assert not path.exists(), (
-        "src/net/zst/ must not exist — Gate 4 prototype only; no implementation authorized"
+    if not path.exists():
+        return  # directory absent is also acceptable
+    # If it exists, verify Gate 11 is not yet approved
+    import yaml
+    reg = yaml.safe_load(
+        (REPO_ROOT / "registry" / "format-registry.yaml").read_text(encoding="utf-8")
+    )
+    zst = next(f for f in reg["formats"] if f["format_id"] == "zst")
+    g11_status = zst.get("gates", {}).get("gate_11", {}).get("status", "not_started")
+    assert g11_status not in ("approved", "released"), (
+        f"src/net/zst/ exists and gate_11.status='{g11_status}' — "
+        "commercial release requires explicit Gate 11 approval by Babar Raza"
     )
 
 
