@@ -5624,3 +5624,39 @@ docs/python-foss/ (14), docs/code-quality/ (7), docs/product-factory/ (6)
 
 **Final Verdict:** SAL_TEST_FAILURES_FIXED_SOURCE_ID_ALIASES_COMMITTED_OVERLAY_EXTENDED_IDEMPOTENT
 
+
+## §100 — llm-grader-timeout-hardening: LLM Grader Network Timeout Reliability (quiet-percolating-deer, TERMINAL_CLOSED 2026-07-02)
+
+**Mission:** Harden the LLM grader pipeline (used in `grade_declared_work._sv_llm_call`) against SSL/network read timeouts that caused indefinite hangs. Implement a shared reliability layer, cover all 16 error classes with deterministic tests, and prove the solution through fault-injection pilots.
+
+**Plan:** `plans/.claude/quiet-percolating-deer.md`
+**Commit:** `7febd5bc` (13 files, 7627 insertions, 53659 deletions)
+
+### Root Causes Fixed
+
+| RC | Location | Gap | Fix |
+|----|----------|-----|-----|
+| RC-1 | `tools/ai/control_plane/gateway.py:79` | `litellm.completion()` had no timeout — indefinite hang possible | `_DEFAULT_LLM_TIMEOUT=30.0` passed to `litellm.completion()` |
+| RC-2 | `tools/supervisor/grade_declared_work.py:277` | `except Exception` catches all — no error classification | Replaced with `call_with_retry()` + `classify_exception()` from shared module |
+| RC-3 | `tools/supervisor/grade_declared_work.py:268` | New `OpenAI()` client created per retry — wasted connection setup | Client created once before retry loop with `httpx.Timeout(connect=10, read=30)` |
+| RC-4 | `tools/supervisor/grade_declared_work.py:260` | Fixed linear backoff, no jitter, no overall deadline | `RetryPolicy(max_attempts=3, base_backoff=2.0, jitter=True, overall_deadline=95.0)` |
+| RC-5 | `tools/supervisor/backends/llm_api_backend.py:118` | `urlopen(timeout=15)` — single attempt, no retry | Hardened with `call_with_retry()` and `classify_exception()` |
+
+### Artifacts Created
+
+| File | Purpose |
+|------|---------|
+| `tools/supervisor/grader_reliability.py` | 16-class taxonomy, classifier, retry policy, observer |
+| `tests/supervisor/test_grader_reliability.py` | 33 tests (REL-001..020) |
+| `tests/supervisor/test_gateway_timeout.py` | 5 gateway tests (GW-001..005) |
+| `tests/supervisor/pilots/pilot_llm_grader_timeout.py` | 8 fault-injection pilots |
+
+### Completion Gate Counters
+
+| Counter | Value |
+|---------|-------|
+| LLM_TIMEOUT_ERRORS_CLASSIFIED | 16 |
+| TEST_CASES_COVERING_RETRY_BEHAVIOR | 52 |
+| PILOTS_PASSED | 8/8 |
+
+**Final Verdict:** LLM_GRADER_TIMEOUT_HEALED_AND_PILOT_PROVEN
