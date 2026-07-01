@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s393-dotnet-deepening-20260701",
+  "latest_sprint": "ff-sprint-s394-dotnet-deepening-20260701",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -33808,9 +33808,51 @@
       ],
       "test_count": 9,
       "description": "Dedicated tests for FodtDocument.MacroCount: new non-negative, counts unchanged, idempotent, is int, dogfood paragraphs/mixed/loop"
+    },
+    {
+      "entry_id": "PC-NETPBM-R412",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s394-dotnet-deepening-20260701",
+      "product": "NETPBM .NET",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.is_binary"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR412GetIsBinaryDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "description": "Dedicated tests for NetpbmImage.IsBinary: PBM=true, PGM=false, PPM=false, dims/format/MaxValue unchanged, idempotent, dogfood PBM=true PGM=false"
+    },
+    {
+      "entry_id": "PC-FODS-R443",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s394-dotnet-deepening-20260701",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.get_row_height"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR443GetRowHeightDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "description": "Dedicated tests for FodsDocument.GetRowHeight: null/whitespace/nonexistent/neg throws; valid non-negative; SheetCount unchanged; idempotent; SetHeight+Get; dogfood default/multiple rows"
+    },
+    {
+      "entry_id": "PC-FODT-R418",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s394-dotnet-deepening-20260701",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.get_variable_count"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR418GetVariableCountDedicatedTests.cs"
+      ],
+      "test_count": 9,
+      "description": "Dedicated tests for FodtDocument.VariableCount: new non-negative, counts unchanged, idempotent, is int, dogfood paragraphs/mixed/loop"
     }
   ],
-  "total_entries": 2008,
+  "total_entries": 2011,
   "changes": [
     {
       "file": "src/python/dif/models.py",
