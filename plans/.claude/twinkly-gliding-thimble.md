@@ -457,7 +457,8 @@ transcript. This is documented as EP-002-GAP in `tools/governance/pre_mutation_g
 | v1.0 | 2026-07-01 | Initial plan (third pass) | 6 taskcards, 3 gaps |
 | v1.1 | 2026-07-01 | Post-execution + convergence | Taskcard table added; all 6 TCs CLOSED; TERMINAL_CLOSED |
 | v1.2 | 2026-07-01 | Pilot rerun (before/after comparison) | 3 findings surfaced; 2 fixed in pilot; 1 follow-up open |
-| **v1.3** | **2026-07-01** | **Plan File Hardening pass** | **3 new taskcards (TC-SFE2-H001–H003); claim audit; gate contract; closeout rules hardened** |
+| v1.3 | 2026-07-01 | Plan File Hardening pass | 3 new taskcards (TC-SFE2-H001–H003); claim audit; gate contract; closeout rules hardened |
+| **v1.4** | **2026-07-01** | **All H-taskcards CLOSED** | **TC-SFE2-H001/H002/H003 all CLOSED (commit c61b1c1f); 0 WARN; idempotency proven; TERMINAL_CLOSED** |
 
 ---
 
@@ -603,7 +604,9 @@ taskcard:
     The execution report step 3 row reads "PASS (0 FAIL, 0 WARN, 65 skills)" which is
     SKILL-FIRST-001 data. Post-pilot the artifact covers 117 skills. The row is factually
     misleading.
-  current_status: not_attempted
+  current_status: CLOSED
+  closed_at: '2026-07-01'
+  commit: c61b1c1f
   priority: LOW
   lane_owner: governance_lane
   dependencies: [TC-SFE2-000-HOOK, TC-SFE2-000]  # parent TCs already closed
@@ -652,7 +655,10 @@ taskcard:
     but the command file .claude/commands/backfill-gate4-prototype-evidence.md does not exist.
     This produces 1 persistent WARN in every contract validation run. Not from SFE2 — from
     FF-G4-BACKFILL-001 sprint.
-  current_status: not_attempted
+  current_status: CLOSED
+  closed_at: '2026-07-01'
+  commit: c61b1c1f
+  note: "Command file .claude/commands/backfill-gate4-prototype-evidence.md already existed; artifact refreshed to 0 WARN"
   priority: LOW
   lane_owner: ff_g4_backfill_sprint_or_agent
   dependencies: []
@@ -701,7 +707,9 @@ taskcard:
     run is required to confirm no side effects: duplicate count stays 0, FAIL count stays 0,
     skill count stays 117. This also validates any new skills added after 33a13b4e have correct
     command fields.
-  current_status: not_attempted
+  current_status: CLOSED
+  closed_at: '2026-07-01'
+  commit: c61b1c1f
   priority: MEDIUM
   lane_owner: governance_lane
   dependencies: [TC-SFE2-H001, TC-SFE2-H002]
@@ -746,19 +754,19 @@ taskcard:
 
 ---
 
-## Taskcard Status Summary (v1.3 — Updated)
+## Taskcard Status Summary (v1.4 — ALL CLOSED)
 
 | TC-ID | Title | Status | Proof Level |
 |-------|-------|--------|-------------|
 | TC-SFE2-000-HOOK | Verify Pre-Commit Hook (SKILL-GAP-008 Closure) | CLOSED | 3 (live CI check) |
-| TC-SFE2-000 | Refresh Stale Artifacts (baseline, duplicate scan, report fix) | completed_but_weakly_verified | 2 (step 3 row stale) |
+| TC-SFE2-000 | Refresh Stale Artifacts (baseline, duplicate scan, report fix) | CLOSED | 2 (step 3 row fixed in H001) |
 | TC-SFE2-002 | Run /audit-root-tools (Pilot C completion) | CLOSED | 2 (artifact exists, 202 scripts) |
 | TC-SFE2-003 | Write adhoc-migration-register.yaml | CLOSED | 1 (artifact exists) |
 | TC-SFE2-005 | Update skill-quality-matrix.yaml for 4 new skills | CLOSED | 1 (artifact exists) |
 | TC-SFE2-006 | Final Report and Closeout | CLOSED | 2 (committed at HEAD) |
-| **TC-SFE2-H001** | **Fix stale step-3 row in execution report** | **not_attempted** | 0 |
-| **TC-SFE2-H002** | **Resolve backfill-gate4 missing command file** | **not_attempted** | 0 |
-| **TC-SFE2-H003** | **Idempotency second-run for pilot fixes** | **not_attempted** | 0 |
+| TC-SFE2-H001 | Fix stale step-3 row in execution report | CLOSED | 2 (grep confirmed 0 occurrences of 65 skills) |
+| TC-SFE2-H002 | Resolve backfill-gate4 missing command file | CLOSED | 2 (0 WARN on live re-run) |
+| TC-SFE2-H003 | Idempotency second-run for pilot fixes | CLOSED | 3 (run-2 + negative control both PASS) |
 
 ---
 
@@ -826,16 +834,16 @@ EXECUTE TC-SFE2-H001 (fix step 3 row)
 
 ---
 
-## Closeout Criteria (v1.3 — Hardened)
+## Closeout Criteria (v1.4 — ALL SATISFIED)
 
-**All conditions must be true before TERMINAL_CLOSED:**
+**All conditions met (commit c61b1c1f, 2026-07-01):**
 
-- [ ] TC-SFE2-H001: Execution report step 3 row shows current skill count (not 65)
-- [ ] TC-SFE2-H002: WARN count = 0 in contract validation (backfill-gate4 resolved)
-- [ ] TC-SFE2-H003: Idempotency second-run PASS (both metrics stable)
-- [ ] skill-contract-validation-results.yaml `mission_id: SKILL-FIRST-002`
-- [ ] All taskcards in this table show CLOSED or completed_verified
-- [ ] Final audit returns 0 material findings, 0 actionable findings
+- [x] TC-SFE2-H001: Execution report step 3 row shows "117 skills, 0 FAIL, 0 WARN" (not 65)
+- [x] TC-SFE2-H002: WARN count = 0 in contract validation (command file existed; artifact refreshed)
+- [x] TC-SFE2-H003: Idempotency second-run PASS — run-2 + negative control both PASS
+- [x] skill-contract-validation-results.yaml `mission_id: SKILL-FIRST-002` (117 skills, 0 FAIL, 0 WARN)
+- [x] All taskcards in this table show CLOSED
+- [x] Final audit: 0 material findings, 0 actionable findings
 
 **Prohibited premature closures:**
 - Must not write TERMINAL_CLOSED while any hardening taskcard shows not_attempted
@@ -866,19 +874,20 @@ plan_hardening_validation:
 
 ---
 
-## Exact Next Action
+## Final Status (v1.4)
 
-Execute `TC-SFE2-H001`: edit `.supervisor/skill-first-execution-report.md` step 3 row to replace
-"65 skills" with "117 skills, 0 FAIL, 1 WARN" (or 0 WARN after TC-SFE2-H002). Commit.
-Then execute `TC-SFE2-H002` and `TC-SFE2-H003` in order.
+All 9 taskcards CLOSED. Commit `c61b1c1f` (H001/H002/H003). Plan TERMINAL_CLOSED.
 
 ---
 
 <!--plan_terminal_lock:
-  status: ITERATION_REQUIRED
-  locked_at: "2026-07-01T11:51:03.902836+00:00"
-  locked_by: "34c4217ef0bd"
+  status: TERMINAL_CLOSED
+  locked_at: "2026-07-01"
+  locked_by: "current_session"
+  final_commit: c61b1c1f
+  total_taskcards: 9
+  all_closed: true
   successor_required_for_future_changes: false
-  mutation_policy: "hardening addendum added v1.3; TC-SFE2-H001/H002/H003 open"
-  hardening_applied: "2026-07-01 — 3 taskcards added by plan-file-hardening pass"
+  mutation_policy: "ALL TASKCARDS CLOSED — plan complete"
+  hardening_applied: "2026-07-01 — v1.3 (3 taskcards added), v1.4 (all 3 closed)"
 -->
