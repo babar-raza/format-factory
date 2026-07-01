@@ -5477,3 +5477,50 @@ All 12 taskcards (TC-PB-001 through TC-PB-012) CLOSED. Key deliverables:
 | FAILED_REQUIRED_PILOTS | 0 |
 | MATERIAL_SECOND_RUN_CHANGES | 0 |
 
+## §97 — DOCS-REORG-001: docs/ Root Reorganization — Physical Migration (cheerful-napping-minsky, TERMINAL_CLOSED 2026-07-01)
+
+**Mission:** DOCS-REORG-001
+**Plan:** `plans/.claude/cheerful-napping-minsky.md`
+**Status:** TERMINAL_CLOSED
+**Commit:** `438286c0` (bundled in capability-layer rebuild)
+
+### Summary
+
+Physical migration of 62 of 70 docs/ root files into 6 topical subfolders, with complete
+active-reference repair, historical-reference preservation, governance healing, and idempotency proof.
+
+### Results
+
+| Metric | Before | After |
+|--------|--------|-------|
+| Files at docs/ root | 70 | 15 (8 retained + 7 stubs) |
+| Files in topical subfolders | ~195 | ~257 |
+| Broken active references | 0 | 0 |
+
+**Destinations:** docs/ai/ (14), docs/automation/ (8), docs/governance/ (13),
+docs/python-foss/ (14), docs/code-quality/ (7), docs/product-factory/ (6)
+
+### Governance Artifacts
+
+- `tools/docs/migration_engine.py` — migration engine (inventory, scan-refs, manifest, move, validate, rollback)
+- `tools/governance/check_docs_placement.py` — placement policy validator (PASS)
+- `docs/governance/documentation-placement-policy.yaml` — formal placement policy
+- `.claude/commands/documentation-structure-migration.md` — registered capability command
+- `reports/documentation/docs-root-post-migration-audit.yaml` — post-migration audit
+- 7 compatibility stubs: security, architecture, acquisition-workflow, specification-cache,
+  release-control, legal-and-licensing, current-state-and-evidence-authority
+
+### Completion Gate Counters
+
+| Counter | Value |
+|---------|-------|
+| MISPLACED_MOVABLE_DOCS_REMAINING_AT_ROOT | 0 |
+| BROKEN_ACTIVE_REFERENCES | 0 |
+| UNEXPLAINED_OLD_PATH_REFERENCES | 0 |
+| ACTIVE_INTERNAL_REFERENCES_USING_DEPRECATED_STUBS | 0 |
+| DUPLICATE_AUTHORITATIVE_DOCS | 0 |
+| GENERATED_PRODUCERS_EMITTING_OLD_PATHS | 0 |
+| MATERIAL_SECOND_RUN_CHANGES | 0 |
+
+**Final Verdict:** DOCS_ROOT_REORGANIZED_REFERENCES_PRESERVED_GOVERNANCE_HEALED_AND_IDEMPOTENT
+
