@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s394-dotnet-deepening-20260701",
+  "latest_sprint": "ff-sprint-s395-dotnet-deepening-20260701",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -33850,9 +33850,51 @@
       ],
       "test_count": 9,
       "description": "Dedicated tests for FodtDocument.VariableCount: new non-negative, counts unchanged, idempotent, is int, dogfood paragraphs/mixed/loop"
+    },
+    {
+      "entry_id": "PC-NETPBM-R413",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s395-dotnet-deepening-20260701",
+      "product": "NETPBM .NET",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.is_color"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR413GetIsColorDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "description": "Dedicated tests for NetpbmImage.IsColor: PBM=false, PGM=false, PPM=true, dims/format/MaxValue unchanged, idempotent, dogfood PPM=true PGM=false"
+    },
+    {
+      "entry_id": "PC-FODS-R444",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s395-dotnet-deepening-20260701",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.get_sheet_column_count"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR444GetSheetColumnCountDedicatedTests.cs"
+      ],
+      "test_count": 9,
+      "description": "Dedicated tests for FodsDocument.GetSheetColumnCount: null/whitespace/nonexistent throws; valid non-negative; SheetCount unchanged; idempotent; is int; dogfood default/multiple sheets"
+    },
+    {
+      "entry_id": "PC-FODT-R419",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s395-dotnet-deepening-20260701",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.get_user_field_count"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR419GetUserFieldCountDedicatedTests.cs"
+      ],
+      "test_count": 9,
+      "description": "Dedicated tests for FodtDocument.UserFieldCount: new non-negative, counts unchanged, idempotent, is int, dogfood paragraphs/mixed/loop"
     }
   ],
-  "total_entries": 2011,
+  "total_entries": 2014,
   "changes": [
     {
       "file": "src/python/dif/models.py",
