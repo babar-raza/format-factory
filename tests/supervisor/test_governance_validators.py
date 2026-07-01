@@ -1794,10 +1794,10 @@ class TestCanonicalValidatorCount:
         }
         result = run_all_governance_validators(decl, None)
         validator_count = len(result["validators"])
-        assert validator_count == 98, (
-            f"Expected 98 canonical validators, got {validator_count}. "
+        assert validator_count == 106, (
+            f"Expected 106 canonical validators, got {validator_count}. "
             "If validators were added/removed, update this test. "
-            "(98 = 89 prior + V83-V86 layer control plane + V-TCF-001/002/003 terminal closure + V87 readme freshness + V88-V91 governance)"
+            "(106 = 98 prior + V92-V99 playbook governance drift guards (TC-PB-009, FF-PLAYBOOK-SYSTEM-001))"
         )
 
 

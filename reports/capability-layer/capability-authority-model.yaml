@@ -1,0 +1,268 @@
+schema_version: "1.0"
+generated_at: "2026-07-01T00:00:00+00:00"
+generated_by: "TC-CAP-003 (moonlit-squishing-sonnet)"
+mission_id: "capability-layer-healing"
+
+# AMBIGUOUS_CAPABILITY_AUTHORITIES = 0 (all ambiguities explicitly resolved below)
+ambiguous_authority_count: 0
+
+# ── CANONICAL AUTHORITY CHAIN ─────────────────────────────────────────────────
+
+canonical_authority_chain:
+  description: |
+    The CORRECT derivation chain for capability truth. All capability state claims
+    must be traceable back to step 1 (SAL/spec fact). No capability may be created
+    from prose, field names, or dashboard goals alone.
+
+  steps:
+    - step: 1
+      name: "SAL / Spec Fact"
+      description: "Atomic, verified statement about format structure/behavior extracted from public spec"
+      authority_level: HIGHEST
+      source: ".local/spec-cache/sal-facts-latest.json (14,635 facts)"
+      schema_fields: [qname, claim, section, authority, verification_status, fact_status, source_id]
+      constraints:
+        - must be verified (fact_status=verified)
+        - must reference a public spec (odf-1.3, etc.)
+        - must have a FACT-{FORMAT}-{N} identifier
+
+    - step: 2
+      name: "Product/Format Obligation"
+      description: "Derived obligation: if format has this SAL fact, implementing product MUST support it"
+      authority_level: HIGH
+      source: "reports/all-format-deepening/all-format-obligation-register.yaml"
+      schema_fields: [obligation_id, format_id, language, proof_level, current_state, evidence_paths]
+      derivation_rule: |
+        For each (format_id, operation_kind) group of SAL facts:
+        → One obligation per (format, language, track) triple
+        e.g., ALLF-FODS-PY = Python obligation to support all FODS SAL facts
+
+    - step: 3
+      name: "Capability Identity"
+      description: "Specific, bounded capability that an obligation requires the product to provide"
+      authority_level: HIGH
+      source: "reports/capability-layer/commercial-capability-map.json, foss-reduced-capability-map.json"
+      schema_fields: [capability_id, subject_id, obligation_ids, source_fact_ids, category, applicability]
+      derivation_rule: |
+        Each obligation decomposes into N capability records (one per operation_kind):
+        obligation ALLF-FODS-PY → capabilities: fods:python:load, fods:python:write, fods:python:export, etc.
+        Capability ID MUST include: format_id, language, operation_kind, sequence number.
+      constraints:
+        - MUST have obligation_ids[] non-empty (no provenance-free capability)
+        - MUST have source_fact_ids[] tracing to SAL FACT-* identifiers
+        - MUST NOT be derived from dashboard field names or poc-targets.yaml prose alone
+
+    - step: 4
+      name: "Implementation Evidence"
+      description: "Proof that the implementation exists (source code, package installation)"
+      authority_level: MEDIUM
+      source: "src/python/{format}/*.py, src/net/{format}/*.cs, .venv/Lib/site-packages/{format}/"
+      schema_fields: [implementation_refs, package_refs]
+      constraints:
+        - Source file existence alone → state=IMPLEMENTED_UNVERIFIED (NOT verified)
+        - Package installation → state=PACKAGE_VERIFIED (supplemental)
+        - Implementation evidence alone CANNOT produce state=VERIFIED
+
+    - step: 5
+      name: "Verification Evidence"
+      description: "Proof that the implementation behaves correctly (tests, oracle, examples)"
+      authority_level: HIGH
+      source: "tests/python/{format}/*, tests/net/{format}/*, oracle results"
+      schema_fields: [test_refs, oracle_evidence, example_refs, certification_evidence]
+      state_levels:
+        test_verified: "≥1 passing test covers the capability function — MINIMUM for VERIFIED"
+        example_verified: "≥1 working example demonstrates capability — WEAKER than test_verified"
+        dogfood_verified: "format factory products consume each other — STRONG export evidence"
+        oracle_verified: "oracle case covers capability — STRONGEST atomic verification"
+        certification_evidence: "gate-level certification — RELEASE READY"
+      constraints:
+        - example_verified alone: confidence < 0.8 (not fully verified)
+        - implementation_verified alone: NOT verified; strong state but requires test evidence to upgrade
+        - test_verified: MINIMUM acceptable evidence for VERIFIED claim
+
+    - step: 6
+      name: "Gap or Verified State"
+      description: "Current capability state assignment based on evidence evaluation"
+      authority_level: HIGH
+      source: "reports/capability-layer/gap-ledger.json (for gaps), capability maps (for verified)"
+      states:
+        VERIFIED: "test_verified, dogfood_verified, oracle_verified, certification_verified"
+        PARTIAL: "implementation_verified, example_verified (NOT fully verified)"
+        MISSING: "no implementation evidence found"
+        BLOCKED: "external dependency blocks implementation"
+        NOT_APPLICABLE: "capability not required for this format/track"
+        STALE_EVIDENCE: "evidence existed but source changed; re-verification required"
+      constraints:
+        - VERIFIED requires test_verified as MINIMUM (or stronger)
+        - implementation_verified and example_verified are PARTIAL states (misleadingly named)
+        - gap_id MUST be created when state != VERIFIED and requirement exists
+        - gap_id MUST NOT be created for NOT_APPLICABLE capabilities
+
+    - step: 7
+      name: "Taskcard (when actionable)"
+      description: "Bounded execution authority for resolving a gap"
+      authority_level: MEDIUM
+      source: "reports/capability-layer/taskcards/*.yaml"
+      schema_fields: [task_id, gap_id, capability_id, required_skills, allowed_paths, validation_steps, closeout_rules]
+      eligibility_rules:
+        - gap status = OPEN_ACTIONABLE
+        - dependencies resolved
+        - required skill exists (or skill gap must be created)
+        - allowed paths and forbidden paths are known
+      constraints:
+        - CLOSED gaps MUST NOT have active taskcards
+        - BLOCKED gaps MUST NOT generate executable taskcards
+        - Taskcard closure MUST update: capability state, gap status, action queue
+
+# ── ARTIFACT ROLES (EXPLICIT ASSIGNMENT) ────────────────────────────────────
+
+artifact_roles:
+
+  - artifact: "product-capability-matrix/poc-targets.yaml"
+    authority: SCOPE_AND_PRIORITY_INPUT
+    allowed_to:
+      - Define which formats are in POC scope
+      - Record commercial vs FOSS product grouping
+      - Record priority and business intent
+      - Record explicit exclusions and deferred formats
+      - Record links to gates, publication packets
+    forbidden_from:
+      - Being the sole or primary source of capability truth
+      - Marking capabilities as verified without evidence
+      - Creating capability records without SAL/obligation derivation
+      - Generating gap entries based on missing dashboard fields alone
+    current_violations:
+      - Used as PRIMARY input in capability_map_generator.py — VIOLATION of authority model
+
+  - artifact: ".local/spec-cache/sal-facts-latest.json"
+    authority: PRIMARY_OBLIGATION_SOURCE
+    allowed_to:
+      - Serve as the PRIMARY driver for capability derivation
+      - Define what operations a format must support
+      - Provide traceability chain for all capability claims
+    forbidden_from:
+      - Being used only as enrichment after poc-targets.yaml has already set capabilities
+    current_violations:
+      - Used as ENRICHMENT only; poc-targets.yaml is PRIMARY — VIOLATION of authority model
+
+  - artifact: "registry/format-registry.yaml"
+    authority: CANONICAL_IDENTITY_SOURCE
+    allowed_to:
+      - Define canonical format IDs (25 formats)
+      - Define families, MIME types, spec references
+      - Define tier targets and gate status
+    forbidden_from:
+      - Defining capability requirements (SAL's role)
+    current_violations: []
+
+  - artifact: "reports/capability-layer/commercial-capability-map.json"
+    authority: GENERATED_CURRENT_STATE_PROJECTION
+    allowed_to:
+      - Report current capability state for commercial .NET products
+      - Drive dashboard summaries and portfolio reporting
+    forbidden_from:
+      - Serving as the capability authority (it is a projection, not the source)
+      - Being modified manually (generated artifact)
+    current_violations:
+      - Lacks obligation_ids[] provenance chain
+      - PARTIAL states (implementation_verified) mislabeled as suggesting completion
+
+  - artifact: "reports/capability-layer/foss-reduced-capability-map.json"
+    authority: GENERATED_CURRENT_STATE_PROJECTION
+    allowed_to:
+      - Report current capability state for Python FOSS products
+      - Drive dashboard summaries and portfolio reporting
+    forbidden_from:
+      - Serving as the capability authority
+      - Being modified manually
+    current_violations:
+      - 1,295/1,962 records are implementation_verified (partial evidence only)
+      - 554/1,962 records are example_verified (weaker evidence)
+      - No obligation_ids[] provenance chain
+      - State "example_verified" counted as equivalent to "test_verified" in portfolio claims
+
+  - artifact: "reports/capability-layer/gap-ledger.json"
+    authority: ACTIVE_DISCREPANCY_RECORD
+    allowed_to:
+      - Record all known capability discrepancies (open and historical)
+      - Drive autonomous task generation via capability_feature_compiler.py
+      - Serve as the authoritative gap list for action queue generation
+    forbidden_from:
+      - Containing DEFERRED_BY_DESIGN entries with no capability_name or gap_type
+        (they exist but are semantically incomplete)
+    current_violations:
+      - 30 DEFERRED_BY_DESIGN entries have no capability_name, no gap_type, no obligation trace
+      - No active/historical split; 97.7% closed gaps pollute the file
+
+  - artifact: "reports/capability-layer/action-queue.json"
+    authority: CURRENT_EXECUTABLE_WORK
+    allowed_to:
+      - List bounded, actionable work items derived from open gaps and taskcards
+      - Include hash validation against gap-ledger for staleness detection
+    forbidden_from:
+      - Listing CLOSED gaps as action items
+      - Operating without hash-based staleness detection
+    current_violations:
+      - ALL 84 items reference CLOSED gaps — complete staleness
+      - No source_ledger_hash field
+      - No staleness detection mechanism
+
+  - artifact: "reports/capability-layer/taskcards/*.yaml"
+    authority: BOUNDED_EXECUTION_AUTHORITY
+    allowed_to:
+      - Authorize agent execution of one bounded work unit
+      - Reference exactly one gap and one capability
+    forbidden_from:
+      - Existing without a corresponding open gap
+      - Persisting after their gap is closed (must be invalidated)
+    current_violations:
+      - No taskcards directory exists yet (to be created in TC-CAP-009)
+
+# ── CURRENT VIOLATIONS REGISTER ──────────────────────────────────────────────
+
+violations:
+  - id: V-AUTH-001
+    severity: P1
+    category: AUTHORITY_AMBIGUITY
+    description: "poc-targets.yaml used as PRIMARY capability authority; SAL facts demoted to enrichment"
+    affected: [capability-map-generator, commercial-capability-map, foss-reduced-capability-map]
+    resolution: "TC-CAP-006 — implement SAL-driven compiler; relegate poc-targets to scope/priority"
+    status: OPEN
+
+  - id: V-AUTH-002
+    severity: P1
+    category: SAL_DERIVATION_GAP
+    description: "No obligation_ids[] field in any capability record; no formal provenance chain"
+    affected: [commercial-capability-map, foss-reduced-capability-map, unified-capability-map]
+    resolution: "TC-CAP-006 — add obligation_ids[] derivation from all-format-obligation-register.yaml"
+    status: OPEN
+
+  - id: V-AUTH-003
+    severity: P0
+    category: STALE_ACTION_QUEUE
+    description: "ALL 84 action-queue items reference CLOSED gaps"
+    affected: [action-queue]
+    resolution: "TC-CAP-010 — regenerate queue from reconciled active ledger with hash tracking"
+    status: OPEN
+
+  - id: V-AUTH-004
+    severity: P1
+    category: FALSE_VERIFIED_CAPABILITY
+    description: |
+      implementation_verified (1328 records) and example_verified (554 records) counted as
+      proof of verified capability. Only 205/2087 (9.8%) are test_verified.
+      Portfolio claim of '2087 verified' is misleadingly strong.
+    affected: [unified-capability-map, foss-reduced-capability-map]
+    resolution: "TC-CAP-007 — capability proof audit; TC-CAP-006 — reclassify evidence levels"
+    status: OPEN
+
+  - id: V-AUTH-005
+    severity: P2
+    category: DOCUMENTATION_DRIFT
+    description: "30 DEFERRED_BY_DESIGN gaps in gap-ledger lack capability_name, gap_type, obligation trace"
+    affected: [gap-ledger]
+    resolution: "TC-CAP-008 — add obligation_ids and semantic fields to deferred gaps during reconciliation"
+    status: OPEN
+
+required_counters:
+  AMBIGUOUS_CAPABILITY_AUTHORITIES: 0  # All authorities explicitly assigned with roles and constraints

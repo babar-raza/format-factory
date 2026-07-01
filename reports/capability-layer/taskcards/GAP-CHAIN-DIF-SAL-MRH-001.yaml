@@ -1,0 +1,36 @@
+schema_version: "1.0"
+taskcard_id: "TC-GAP-CHAIN-DIF-SAL-MRH-001"
+generated_at: "2026-07-01T00:00:00+00:00"
+generated_by: "TC-CAP-009 (moonlit-squishing-sonnet)"
+mission_id: "capability-layer-healing"
+
+gap_id: "GAP-CHAIN-DIF-SAL-MRH-001"
+format: "DIF"
+product_type: "foss_reduced"
+capability_name: ""
+gap_type: ""
+priority: "P3"
+severity: "LOW"
+
+taskcard_status: "BLOCKED"
+active_classification: "OPEN_BLOCKED"
+
+blocker: |
+  SAL pipeline (sal_master_runner.py) does not have a spec parser for DIF. Only ODF variants and some image formats have SAL-generated facts.
+
+exact_next_action: |
+  run /ingest-spec-sal for DIF to add SAL facts and repair authority chain
+
+required_skill: "/ingest-spec-sal"
+dependencies: []
+
+validation: |
+  After blocker is resolved and skill is executed:
+  - Verify capability state transitions to test_verified or implementation_verified
+  - Verify gap_id is removed from gap-ledger-active.json
+  - Verify gap_id appears in gap-ledger-archive.json with closure_evidence
+
+evidence_target: "reports/capability-layer/taskcards/GAP-CHAIN-DIF-SAL-MRH-001-evidence.yaml"
+
+triage_note: "SAL spec parser not available for non-ODF formats; chain integrity verified for ODF formats (FODS/FODT/FODG/FODP/ODS/ODT/PBM/PGM/PPM/QOI). TC-GAP-TRIAGE-001."
+triaged_at: "2026-06-24"

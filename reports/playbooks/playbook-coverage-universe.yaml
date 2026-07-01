@@ -1,0 +1,218 @@
+---
+# Playbook Coverage Universe
+# Mission: FF-PLAYBOOK-SYSTEM-001 (bright-marinating-map)
+# Generated: 2026-07-01
+# TC-PB-006
+
+meta:
+  HIGH_VALUE_RECURRING_WORKFLOWS_WITHOUT_DISPOSITION: 0
+  total_workflows_assessed: 14
+  covered_proven: 0
+  covered_unproven: 3
+  partial: 0
+  missing_high_value: 0  # All 3 backfilled in this TC
+  not_worth_playbook: 3
+  replace_with_skill: 7
+  replace_with_policy: 1
+
+coverage_universe:
+
+  - workflow_id: WF-001
+    name: new_format_acquisition
+    description: Starting a brand-new Python FOSS format codec from scratch
+    recurring: true
+    frequency: occasional (every 5-10 sprints when new format added)
+    risk: medium (new module, new test patterns, easy to misclaim capabilities)
+    existing_playbook: playbooks/format-factory/new-format-kickstart-template.md
+    existing_playbook_id: new-format-kickstart
+    quality: good_but_unproven_at_runtime
+    coverage_status: COVERED_UNPROVEN
+    recommended_action: PROVE_VIA_PILOT
+    justification: >
+      Template exists with proven pattern from NDJSON/FODG/TSV. Now registered as skill.
+      Needs Pilot 2 to prove end-to-end taskcard generation and execution.
+    pilot_target: Pilot 2
+
+  - workflow_id: WF-002
+    name: format_feature_expansion
+    description: Adding export/transform/accessor function to existing codec
+    recurring: true
+    frequency: high (multiple per sprint in product deepening rotation)
+    risk: medium (installed vs non-installed import path confusion, capability overclaiming)
+    existing_playbook: playbooks/format-factory/format-feature-expansion.md
+    existing_playbook_id: format-feature-expansion
+    quality: good_but_unproven_at_runtime
+    coverage_status: COVERED_UNPROVEN
+    recommended_action: PROVE_VIA_PILOT
+    justification: >
+      Template exists with proven pattern from R119-R122. Now registered as skill.
+      Needs Pilot 1 to prove end-to-end taskcard generation and execution.
+    pilot_target: Pilot 1
+
+  - workflow_id: WF-003
+    name: product_source_implementation
+    description: Any bounded product source change to existing Python FOSS codec
+    recurring: true
+    frequency: very_high (most common sprint task type)
+    risk: medium (scope creep, missing __all__ update, wrong import path)
+    existing_playbook: playbooks/format-factory/product-source-task-template.md
+    existing_playbook_id: product-source-task
+    quality: good_but_unproven_at_runtime
+    coverage_status: COVERED_UNPROVEN
+    recommended_action: PROVE_VIA_PILOT
+    justification: >
+      Template exists with proven patterns. Now registered as skill.
+      Needs Pilot 3 to prove end-to-end taskcard generation and execution.
+    pilot_target: Pilot 3
+
+  - workflow_id: WF-004
+    name: spec_sal_ingestion
+    description: Ingesting spec/SAL facts for a format
+    recurring: true
+    frequency: occasional
+    risk: low (tool handles it)
+    existing_playbook: null
+    coverage_status: REPLACE_WITH_SKILL
+    recommended_action: REPLACE_WITH_SKILL
+    justification: >
+      /ingest-spec-sal skill already registered. Skill alone is sufficient.
+      A playbook would duplicate the skill documentation without adding value.
+      No separate playbook needed.
+    existing_skill: /ingest-spec-sal
+
+  - workflow_id: WF-005
+    name: capability_gap_closure
+    description: Closing a capability gap by implementing missing feature
+    recurring: true
+    frequency: continuous
+    risk: medium
+    existing_playbook: null
+    coverage_status: REPLACE_WITH_POLICY
+    recommended_action: REPLACE_WITH_POLICY
+    justification: >
+      The gap-ledger system, next-work-items.json, and supervisor pipeline handle this.
+      A playbook would need to duplicate the gap system's logic without adding value.
+      Policy (CLAUDE.md, AGENTS.md) governs this workflow adequately.
+
+  - workflow_id: WF-006
+    name: test_promotion
+    description: Adding roundtrip or integration tests to a format
+    recurring: true
+    frequency: occasional
+    risk: low
+    existing_playbook: null
+    coverage_status: REPLACE_WITH_SKILL
+    recommended_action: REPLACE_WITH_SKILL
+    justification: >
+      /add-roundtrip-test skill already registered. Sufficient alone.
+
+  - workflow_id: WF-007
+    name: package_release_readiness
+    description: Preparing a format package for PyPI/NuGet release
+    recurring: true
+    frequency: milestone-driven (when gate thresholds met)
+    risk: HIGH (irreversible public release, credential requirements, version management)
+    existing_playbook: null
+    coverage_status: BACKFILLED
+    recommended_action: BACKFILL_HIGH_VALUE
+    justification: >
+      Recurring workflow with stable sequence: checklist → validators → evidence bundle →
+      gate status check → release packet. High failure risk (version mismatch, missing
+      evidence, wrong visibility class). Parameterizable across formats.
+      A playbook prevents skipped validation and ensures rollback path documented.
+    backfill_path: playbooks/format-factory/package-release-readiness.md
+
+  - workflow_id: WF-008
+    name: documentation_content_generation
+    description: Generating or syncing documentation (READMEs, capability matrix, etc.)
+    recurring: true
+    frequency: high
+    risk: low
+    existing_playbook: null
+    coverage_status: REPLACE_WITH_SKILL
+    recommended_action: REPLACE_WITH_SKILL
+    justification: >
+      /sync-readmes skill handles README sync. /update-capability-matrix, /sync-capabilities
+      handle other doc generation. Skills alone are sufficient.
+
+  - workflow_id: WF-009
+    name: pipeline_incident_response
+    description: Responding to governance validator failures, test baseline failures, GOV_BLOCK events
+    recurring: true
+    frequency: occasional (every few sprints)
+    risk: HIGH (can block autonomous continuation, time-sensitive, easy to make wrong fix)
+    existing_playbook: null
+    coverage_status: BACKFILLED
+    recommended_action: BACKFILL_HIGH_VALUE
+    justification: >
+      Recurring workflow with stable diagnosis sequence: identify failing validator →
+      classify (GOV_BLOCK vs non-blocking) → apply remediation → verify → resume.
+      High risk if wrong remediation applied (e.g., bypassing with --no-verify).
+      Encodes known failure modes and proven remediation patterns.
+    backfill_path: playbooks/format-factory/pipeline-incident-response.md
+
+  - workflow_id: WF-010
+    name: dependency_resolution
+    description: Resolving Python package dependency conflicts or version issues
+    recurring: false
+    frequency: rare
+    risk: medium
+    existing_playbook: null
+    coverage_status: NOT_WORTH_PLAYBOOK
+    recommended_action: NOT_WORTH_PLAYBOOK
+    justification: >
+      Too varied — each dependency conflict is different. Policy (stdlib-only requirement)
+      prevents most cases. Not worth a playbook.
+
+  - workflow_id: WF-011
+    name: cross_language_parity
+    description: Achieving spec parity between Python and .NET implementations
+    recurring: true
+    frequency: milestone-driven
+    risk: medium
+    existing_playbook: null
+    coverage_status: REPLACE_WITH_SKILL
+    recommended_action: REPLACE_WITH_SKILL
+    justification: >
+      /spec-parity-verification, /spec-literal-qname-to-code-mapping, and
+      /python-reduced-spec-parity-model skills handle this. Sufficient.
+
+  - workflow_id: WF-012
+    name: product_hardening
+    description: Hardening a sprint plan with audit findings and taskcard conversion
+    recurring: true
+    frequency: every sprint
+    risk: low
+    existing_playbook: null
+    coverage_status: REPLACE_WITH_SKILL
+    recommended_action: REPLACE_WITH_SKILL
+    justification: >
+      /plan-hardening skill handles this. Sufficient.
+
+  - workflow_id: WF-013
+    name: backfill_migration
+    description: Migrating or backfilling format-specific data
+    recurring: false
+    frequency: rare
+    risk: low-medium
+    existing_playbook: null
+    coverage_status: NOT_WORTH_PLAYBOOK
+    recommended_action: NOT_WORTH_PLAYBOOK
+    justification: >
+      Too format-specific. Policy and ad-hoc sprints handle this adequately.
+
+  - workflow_id: WF-014
+    name: audit_healing_sprint
+    description: Running a structured audit-find-heal-verify sprint cycle
+    recurring: true
+    frequency: occasional (after drift detection or GOV_BLOCK events)
+    risk: HIGH (complex multi-step workflow, easy to skip healing steps, easy to miss re-verification)
+    existing_playbook: null
+    coverage_status: BACKFILLED
+    recommended_action: BACKFILL_HIGH_VALUE
+    justification: >
+      Recurring workflow with stable sequence: audit → classify findings → create gaps →
+      execute repairs → verify → close tasks → update coverage report.
+      High risk if healing steps are skipped or re-verification is omitted.
+      Encodes known failure modes (claiming fix without re-running validators).
+    backfill_path: playbooks/format-factory/audit-healing-sprint.md

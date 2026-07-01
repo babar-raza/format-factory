@@ -1,0 +1,63 @@
+schema: playbook-idempotency-report/1.0
+generated_at: "2026-07-01"
+verified_at: "2026-07-01T00:00:00Z"
+mission_id: FF-PLAYBOOK-SYSTEM-001
+plan_id: bright-marinating-map
+run_id: TC-PB-012
+verified_head_revision: "f88c884ed22db2432d346c642b71e4d9197487e1"
+
+operations:
+  - operation: contract_front_matter_parsing
+    first_run_hash: 013bd59bd5938457c49e841ad11166eb
+    second_run_hash: 013bd59bd5938457c49e841ad11166eb
+    material_change: false
+    description: "parse_contract(format-feature-expansion.md)"
+
+  - operation: taskcard_generation
+    first_run_hash: 259ce21ceaf368c4ea183835ca801907
+    second_run_hash: 259ce21ceaf368c4ea183835ca801907
+    material_change: false
+    description: "generate_taskcards() with same params produces same phase/path output"
+    taskcard_count: 6
+
+  - operation: playbook_selector
+    first_run_result: playbooks/format-factory/format-feature-expansion.md
+    second_run_result: playbooks/format-factory/format-feature-expansion.md
+    material_change: false
+    description: "select_playbook('FORMAT_FEATURE_EXPANSION') stable across runs"
+
+  - operation: coverage_universe_parse
+    first_run_hash: fcfde6d4059d41452e5c4a9f9c2169de
+    second_run_hash: fcfde6d4059d41452e5c4a9f9c2169de
+    material_change: false
+    description: "Coverage universe YAML parse is stable"
+
+  - operation: registry_parse
+    first_run_hash: f5e25e856e9edfd9e5e64240eab2352a
+    second_run_hash: f5e25e856e9edfd9e5e64240eab2352a
+    material_change: false
+    description: "playbook-registry.yaml parse is stable"
+
+  - operation: playbook_test_suite
+    first_run_result: "217 passed, 1 skipped"
+    second_run_result: "217 passed, 1 skipped"
+    material_change: false
+    description: "Full tests/playbook/ suite produces same pass count (TC-PB-012 verified 2026-07-01)"
+    file_checksums:
+      playbooks/playbook-registry.yaml: "c5e878059072d4b93a40..."
+      playbooks/format-factory/format-feature-expansion.md: "9b984cc173b69413315a..."
+      playbooks/format-factory/new-format-kickstart-template.md: "066485914d43c5c3c3e8..."
+      playbooks/format-factory/product-source-task-template.md: "50abbba5e5ea6c4e4839..."
+      playbooks/format-factory/package-release-readiness.md: "80dc075e68db978ce1e7..."
+      playbooks/format-factory/pipeline-incident-response.md: "29366ba457bb6fbdbc64..."
+      playbooks/format-factory/audit-healing-sprint.md: "f99c0b6a4b386f22de54..."
+      reports/playbooks/playbook-coverage-universe.yaml: "1d6baff5364acc6e058b..."
+      reports/playbooks/playbook-authority-decision.yaml: "20f117ab811e4acd3203..."
+
+counters:
+  MATERIAL_SECOND_RUN_CHANGES: 0
+
+verdict: IDEMPOTENCY_CONFIRMED
+authority_note: >
+  Idempotency report is informational. Does NOT approve gates, does NOT mark work complete,
+  does NOT replace evidence contracts.

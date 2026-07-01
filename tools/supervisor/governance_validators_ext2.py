@@ -1,4 +1,4 @@
-"""governance_validators_ext2.py — V75/V76/V77/V78/V79/V82: Governance validators overflow.
+"""governance_validators_ext2.py — V75/V76/V77/V78/V79/V82/V92-V99: Governance validators overflow.
 
 Extracted to keep governance_validators_ext.py within its baseline_loc_cap (1423 LOC).
 
@@ -617,3 +617,381 @@ def validate_plans_root_policy(
         "items": [],
         "summary": "V90: plans/ root contains only master-plan.md and master-plan-memory.md",
     }
+
+
+# V92-V99 (TC-PB-009): Playbook system governance validators (WARN-only)
+# All validators are non-blocking: blocks_sprint=False
+# ---------------------------------------------------------------------------
+
+_PLAYBOOKS_DIR_REL = "playbooks/format-factory"
+_PLAYBOOK_REGISTRY_REL = "playbooks/playbook-registry.yaml"
+_PLAYBOOK_COVERAGE_REL = "reports/playbooks/playbook-coverage-universe.yaml"
+
+
+def _load_playbook_contracts(repo_root: "Path") -> "list[dict]":
+    """Parse playbook_contract YAML front-matter from all Markdown templates."""
+    import re as _re
+    import yaml as _yaml
+    from pathlib import Path as _Path
+
+    contracts = []
+    pb_dir = repo_root / _PLAYBOOKS_DIR_REL
+    if not pb_dir.exists():
+        return contracts
+    for md_file in pb_dir.glob("*.md"):
+        try:
+            text = md_file.read_text(encoding="utf-8")
+            m = _re.search(r"<!--\s*\n(playbook_contract:.*?)-->", text, _re.DOTALL)
+            if m:
+                data = _yaml.safe_load(m.group(1))
+                if isinstance(data, dict) and "playbook_contract" in data:
+                    entry = data["playbook_contract"]
+                    entry["_source_path"] = str(md_file.relative_to(repo_root))
+                    contracts.append(entry)
+        except Exception:
+            continue
+    return contracts
+
+
+def validate_playbook_registry_entries(
+    declaration: dict, repo_root: "Path | None" = None
+) -> dict:
+    """V92 (TC-PB-009): Active playbook registry entries must resolve to files on disk."""
+    from pathlib import Path as _Path
+    import yaml as _yaml
+
+    _r = repo_root or _Path(__file__).parent.parent.parent
+    registry_path = _r / _PLAYBOOK_REGISTRY_REL
+    if not registry_path.exists():
+        return {
+            "validator": "validate_playbook_registry_entries",
+            "result": "WARN",
+            "blocks_sprint": False,
+            "items": [],
+            "summary": "V92: playbooks/playbook-registry.yaml not found — skipping (WARN)",
+        }
+    try:
+        registry = _yaml.safe_load(registry_path.read_text(encoding="utf-8"))
+        entries = registry.get("playbook_registry", {}).get("entries", [])
+        missing = [
+            f"{e.get('playbook_id', '?')}: {e.get('canonical_path', '')}"
+            for e in entries
+            if e.get("status", "").upper() == "ACTIVE"
+            and e.get("canonical_path")
+            and not (_r / e["canonical_path"]).exists()
+        ]
+        if missing:
+            return {
+                "validator": "validate_playbook_registry_entries",
+                "result": "WARN",
+                "blocks_sprint": False,
+                "items": missing,
+                "summary": f"V92: {len(missing)} active registry entry(ies) point to missing files",
+            }
+        return {
+            "validator": "validate_playbook_registry_entries",
+            "result": "PASS",
+            "blocks_sprint": False,
+            "items": [],
+            "summary": f"V92: All {len(entries)} registry entries resolve to files",
+        }
+    except Exception as e:
+        return {
+            "validator": "validate_playbook_registry_entries",
+            "result": "WARN",
+            "blocks_sprint": False,
+            "items": [],
+            "summary": f"V92: Registry check skipped due to error: {e}",
+        }
+
+
+def validate_playbook_has_version(
+    declaration: dict, repo_root: "Path | None" = None
+) -> dict:
+    """V93 (TC-PB-009): Active playbook contract must have a version field."""
+    from pathlib import Path as _Path
+
+    _r = repo_root or _Path(__file__).parent.parent.parent
+    contracts = _load_playbook_contracts(_r)
+    if not contracts:
+        return {
+            "validator": "validate_playbook_has_version",
+            "result": "WARN",
+            "blocks_sprint": False,
+            "items": [],
+            "summary": "V93: No playbook contracts found to check",
+        }
+    missing = [
+        c.get("_source_path", c.get("playbook_id", "?"))
+        for c in contracts
+        if c.get("status", "").upper() == "ACTIVE" and not c.get("version")
+    ]
+    if missing:
+        return {
+            "validator": "validate_playbook_has_version",
+            "result": "WARN",
+            "blocks_sprint": False,
+            "items": missing,
+            "summary": f"V93: {len(missing)} active playbook(s) missing version field",
+        }
+    return {
+        "validator": "validate_playbook_has_version",
+        "result": "PASS",
+        "blocks_sprint": False,
+        "items": [],
+        "summary": f"V93: All {len(contracts)} playbook contracts have version field",
+    }
+
+
+def validate_playbook_has_owner(
+    declaration: dict, repo_root: "Path | None" = None
+) -> dict:
+    """V94 (TC-PB-009): Active playbook contract must have owner_layer field."""
+    from pathlib import Path as _Path
+
+    _r = repo_root or _Path(__file__).parent.parent.parent
+    contracts = _load_playbook_contracts(_r)
+    if not contracts:
+        return {
+            "validator": "validate_playbook_has_owner",
+            "result": "WARN",
+            "blocks_sprint": False,
+            "items": [],
+            "summary": "V94: No playbook contracts found to check",
+        }
+    missing = [
+        c.get("_source_path", c.get("playbook_id", "?"))
+        for c in contracts
+        if c.get("status", "").upper() == "ACTIVE" and not c.get("owner_layer")
+    ]
+    if missing:
+        return {
+            "validator": "validate_playbook_has_owner",
+            "result": "WARN",
+            "blocks_sprint": False,
+            "items": missing,
+            "summary": f"V94: {len(missing)} active playbook(s) missing owner_layer field",
+        }
+    return {
+        "validator": "validate_playbook_has_owner",
+        "result": "PASS",
+        "blocks_sprint": False,
+        "items": [],
+        "summary": f"V94: All {len(contracts)} playbook contracts have owner_layer field",
+    }
+
+
+def validate_playbook_has_evidence_contract(
+    declaration: dict, repo_root: "Path | None" = None
+) -> dict:
+    """V95 (TC-PB-009): Active playbook must have evidence_requirements field."""
+    from pathlib import Path as _Path
+
+    _r = repo_root or _Path(__file__).parent.parent.parent
+    contracts = _load_playbook_contracts(_r)
+    if not contracts:
+        return {
+            "validator": "validate_playbook_has_evidence_contract",
+            "result": "WARN",
+            "blocks_sprint": False,
+            "items": [],
+            "summary": "V95: No playbook contracts found to check",
+        }
+    missing = [
+        c.get("_source_path", c.get("playbook_id", "?"))
+        for c in contracts
+        if c.get("status", "").upper() == "ACTIVE" and not c.get("evidence_requirements")
+    ]
+    if missing:
+        return {
+            "validator": "validate_playbook_has_evidence_contract",
+            "result": "WARN",
+            "blocks_sprint": False,
+            "items": missing,
+            "summary": f"V95: {len(missing)} active playbook(s) missing evidence_requirements",
+        }
+    return {
+        "validator": "validate_playbook_has_evidence_contract",
+        "result": "PASS",
+        "blocks_sprint": False,
+        "items": [],
+        "summary": f"V95: All {len(contracts)} playbook contracts have evidence_requirements",
+    }
+
+
+def validate_playbook_has_rollback(
+    declaration: dict, repo_root: "Path | None" = None
+) -> dict:
+    """V96 (TC-PB-009): Active playbook must have rollback field."""
+    from pathlib import Path as _Path
+
+    _r = repo_root or _Path(__file__).parent.parent.parent
+    contracts = _load_playbook_contracts(_r)
+    if not contracts:
+        return {
+            "validator": "validate_playbook_has_rollback",
+            "result": "WARN",
+            "blocks_sprint": False,
+            "items": [],
+            "summary": "V96: No playbook contracts found to check",
+        }
+    missing = [
+        c.get("_source_path", c.get("playbook_id", "?"))
+        for c in contracts
+        if c.get("status", "").upper() == "ACTIVE" and not c.get("rollback")
+    ]
+    if missing:
+        return {
+            "validator": "validate_playbook_has_rollback",
+            "result": "WARN",
+            "blocks_sprint": False,
+            "items": missing,
+            "summary": f"V96: {len(missing)} active playbook(s) missing rollback field",
+        }
+    return {
+        "validator": "validate_playbook_has_rollback",
+        "result": "PASS",
+        "blocks_sprint": False,
+        "items": [],
+        "summary": f"V96: All {len(contracts)} playbook contracts have rollback field",
+    }
+
+
+def validate_playbook_not_overriding_gate(
+    declaration: dict, repo_root: "Path | None" = None
+) -> dict:
+    """V97 (TC-PB-009): Playbook limitations must include gate-override prohibition."""
+    from pathlib import Path as _Path
+
+    _r = repo_root or _Path(__file__).parent.parent.parent
+    contracts = _load_playbook_contracts(_r)
+    if not contracts:
+        return {
+            "validator": "validate_playbook_not_overriding_gate",
+            "result": "WARN",
+            "blocks_sprint": False,
+            "items": [],
+            "summary": "V97: No playbook contracts found to check",
+        }
+    violations = [
+        c.get("_source_path", c.get("playbook_id", "?"))
+        for c in contracts
+        if c.get("status", "").upper() == "ACTIVE"
+        and not any(
+            "gate approval" in str(lim).lower() for lim in c.get("limitations", [])
+        )
+    ]
+    if violations:
+        return {
+            "validator": "validate_playbook_not_overriding_gate",
+            "result": "WARN",
+            "blocks_sprint": False,
+            "items": violations,
+            "summary": (
+                f"V97: {len(violations)} active playbook(s) missing gate-override prohibition"
+            ),
+        }
+    return {
+        "validator": "validate_playbook_not_overriding_gate",
+        "result": "PASS",
+        "blocks_sprint": False,
+        "items": [],
+        "summary": f"V97: All {len(contracts)} playbook contracts prohibit gate approval",
+    }
+
+
+def validate_playbook_has_no_deprecated_paths(
+    declaration: dict, repo_root: "Path | None" = None
+) -> dict:
+    """V98 (TC-PB-009): Playbook allowed_paths must not reference non-existent directories.
+
+    Parameterized paths (containing < >) are skipped — they need concrete values.
+    """
+    from pathlib import Path as _Path
+
+    _r = repo_root or _Path(__file__).parent.parent.parent
+    contracts = _load_playbook_contracts(_r)
+    if not contracts:
+        return {
+            "validator": "validate_playbook_has_no_deprecated_paths",
+            "result": "WARN",
+            "blocks_sprint": False,
+            "items": [],
+            "summary": "V98: No playbook contracts found to check",
+        }
+    stale = [
+        f"{c.get('_source_path', c.get('playbook_id', '?'))}: {p}"
+        for c in contracts
+        if c.get("status", "").upper() == "ACTIVE"
+        for p in c.get("allowed_paths", [])
+        if "<" not in p and ">" not in p and not (_r / p.rstrip("/")).exists()
+    ]
+    if stale:
+        return {
+            "validator": "validate_playbook_has_no_deprecated_paths",
+            "result": "WARN",
+            "blocks_sprint": False,
+            "items": stale,
+            "summary": f"V98: {len(stale)} allowed_path(s) reference missing directories",
+        }
+    return {
+        "validator": "validate_playbook_has_no_deprecated_paths",
+        "result": "PASS",
+        "blocks_sprint": False,
+        "items": [],
+        "summary": "V98: All non-parameterized allowed_paths exist in repository",
+    }
+
+
+def validate_playbook_coverage_report_current(
+    declaration: dict, repo_root: "Path | None" = None
+) -> dict:
+    """V99 (TC-PB-009): Coverage universe report must be newer than playbook template files."""
+    import os as _os
+    from pathlib import Path as _Path
+
+    _r = repo_root or _Path(__file__).parent.parent.parent
+    coverage_path = _r / _PLAYBOOK_COVERAGE_REL
+    if not coverage_path.exists():
+        return {
+            "validator": "validate_playbook_coverage_report_current",
+            "result": "WARN",
+            "blocks_sprint": False,
+            "items": [],
+            "summary": "V99: playbook-coverage-universe.yaml not found — run coverage audit",
+        }
+    pb_dir = _r / _PLAYBOOKS_DIR_REL
+    if not pb_dir.exists():
+        return {
+            "validator": "validate_playbook_coverage_report_current",
+            "result": "PASS",
+            "blocks_sprint": False,
+            "items": [],
+            "summary": "V99: No playbook templates directory — coverage report current",
+        }
+    coverage_mtime = _os.path.getmtime(str(coverage_path))
+    stale_templates = [
+        str(f.relative_to(_r))
+        for f in pb_dir.glob("*.md")
+        if _os.path.getmtime(str(f)) > coverage_mtime
+    ]
+    if stale_templates:
+        return {
+            "validator": "validate_playbook_coverage_report_current",
+            "result": "WARN",
+            "blocks_sprint": False,
+            "items": stale_templates,
+            "summary": (
+                f"V99: {len(stale_templates)} template(s) newer than coverage report "
+                f"— re-run coverage audit"
+            ),
+        }
+    return {
+        "validator": "validate_playbook_coverage_report_current",
+        "result": "PASS",
+        "blocks_sprint": False,
+        "items": [],
+        "summary": "V99: Coverage universe report is current (newer than all templates)",
+    }
+
+

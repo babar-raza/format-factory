@@ -1,0 +1,36 @@
+schema_version: "1.0"
+taskcard_id: "TC-GAP-FODP-CODEC-DEBT"
+generated_at: "2026-07-01T00:00:00+00:00"
+generated_by: "TC-CAP-009 (moonlit-squishing-sonnet)"
+mission_id: "capability-layer-healing"
+
+gap_id: "GAP-FODP-CODEC-DEBT"
+format: "FODP"
+product_type: "foss_reduced"
+capability_name: "codec_quality"
+gap_type: "code_quality_debt"
+priority: "P3"
+severity: "LOW"
+
+taskcard_status: "BLOCKED"
+active_classification: "OPEN_BLOCKED"
+
+blocker: |
+  FODP codec debt requires dedicated refactoring sprint. Not actionable in current healing scope. TC-GAP-TRIAGE-001.
+
+exact_next_action: |
+  run dedicated FODP codec refactoring sprint: fix 3 buggy functions, remove 4 duplicate pairs, remove orphaned presentation_document.py
+
+required_skill: "/add-python-api"
+dependencies: []
+
+validation: |
+  After blocker is resolved and skill is executed:
+  - Verify capability state transitions to test_verified or implementation_verified
+  - Verify gap_id is removed from gap-ledger-active.json
+  - Verify gap_id appears in gap-ledger-archive.json with closure_evidence
+
+evidence_target: "reports/capability-layer/taskcards/GAP-FODP-CODEC-DEBT-evidence.yaml"
+
+triage_note: "FODP codec debt requires dedicated refactoring sprint. Not actionable in current healing scope. TC-GAP-TRIAGE-001."
+triaged_at: "2026-06-24"

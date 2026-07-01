@@ -380,6 +380,27 @@ def run_all_governance_validators(
     except Exception:
         pass  # Non-blocking on import failure
 
+    # V92-V99 (TC-PB-009, FF-PLAYBOOK-SYSTEM-001): Playbook governance drift guards (WARN-only)
+    try:
+        from governance_validators_ext2 import (  # noqa: PLC0415
+            validate_playbook_registry_entries as _v92,
+            validate_playbook_has_version as _v93,
+            validate_playbook_has_owner as _v94,
+            validate_playbook_has_evidence_contract as _v95,
+            validate_playbook_has_rollback as _v96,
+            validate_playbook_not_overriding_gate as _v97,
+            validate_playbook_has_no_deprecated_paths as _v98,
+            validate_playbook_coverage_report_current as _v99,
+        )
+        results.extend([
+            _v92(declaration, repo_root), _v93(declaration, repo_root),
+            _v94(declaration, repo_root), _v95(declaration, repo_root),
+            _v96(declaration, repo_root), _v97(declaration, repo_root),
+            _v98(declaration, repo_root), _v99(declaration, repo_root),
+        ])
+    except Exception:
+        pass  # Non-blocking on import failure
+
     # SAL format advisory (non-blocking, Lane E integration)
     try:
         from sal_format_advisory import build_advisory, _load_sal_facts

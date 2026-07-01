@@ -1,0 +1,36 @@
+schema_version: "1.0"
+taskcard_id: "TC-GAP-GOV-SKILL-ADOPT-001"
+generated_at: "2026-07-01T00:00:00+00:00"
+generated_by: "TC-CAP-009 (moonlit-squishing-sonnet)"
+mission_id: "capability-layer-healing"
+
+gap_id: "GAP-GOV-SKILL-ADOPT-001"
+format: "ALL"
+product_type: "governance"
+capability_name: "skill_adoption_compliance"
+gap_type: "governance_debt"
+priority: "P3"
+severity: "LOW"
+
+taskcard_status: "BLOCKED"
+active_classification: "OPEN_BLOCKED"
+
+blocker: |
+  P3 governance debt: skill adoption compliance. Sprint self-exemption from governance/review sprints is a known pattern. V49 validator creation deferred to Lane 14 system healing. TC-RECON-W1-001 added to backlog. PSL-controlled-execution triage 2026-06-25.
+
+exact_next_action: |
+  run governance enforcement sprint: activate /enforce-skill-first-execution for all product deepening lanes
+
+required_skill: "/enforce-skill-first-execution"
+dependencies: []
+
+validation: |
+  After blocker is resolved and skill is executed:
+  - Verify capability state transitions to test_verified or implementation_verified
+  - Verify gap_id is removed from gap-ledger-active.json
+  - Verify gap_id appears in gap-ledger-archive.json with closure_evidence
+
+evidence_target: "reports/capability-layer/taskcards/GAP-GOV-SKILL-ADOPT-001-evidence.yaml"
+
+triage_note: "P3 governance debt: skill adoption compliance. Sprint self-exemption from governance/review sprints is a known pattern. V49 validator creation deferred to Lane 14 system healing. TC-RECON-W1-001 added to backlog. PSL-controlled-execution triage 2026-06-25."
+triaged_at: "2026-06-25"

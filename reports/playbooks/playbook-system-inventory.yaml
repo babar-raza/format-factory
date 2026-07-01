@@ -1,0 +1,614 @@
+---
+# Playbook System Inventory
+# Mission: FF-PLAYBOOK-SYSTEM-001 (bright-marinating-map)
+# Generated: 2026-07-01
+# TC-PB-001
+
+meta:
+  total_artifacts: 20
+  uninventoried_artifacts: 0
+  UNINVENTORIED_PLAYBOOK_ARTIFACTS: 0
+
+# ─────────────────────────────────────────────────────────
+# LAYER A — MARKDOWN SPRINT TEMPLATES (playbooks/format-factory/)
+# These are agent guidance documents, NOT acquisition playbooks.
+# They declare skill_id fields but are not in the skill registry.
+# ─────────────────────────────────────────────────────────
+
+playbook_artifacts:
+
+  - artifact_id: PB-MD-001
+    path: playbooks/format-factory/format-feature-expansion.md
+    format: markdown
+    title: "Format Feature Expansion"
+    purpose: >
+      Operational template for adding a new export, transform, or accessor function
+      to an existing Python FOSS format codec. Declares skill_id: format-feature-expansion v1.0.
+    owner_layer: product_source
+    status: active
+    version: "1.0"
+    producer: developers
+    consumers: []
+    referenced_by:
+      - path: registry/repository-root-folders.yaml
+        classification: DOCUMENTATION_REFERENCE
+        note: "playbooks/ listed as root folder with purpose 'Operational playbook templates'"
+      - path: reports/expanded-multilane-product-first-train/
+        classification: REPORT_OR_EVIDENCE_REFERENCE
+        note: "Cited as one of 3 reusable playbooks covering main task types"
+    validated_by: []
+    executed_by: []
+    generated_outputs: []
+    active: true
+    stale: false
+    findings:
+      - "skill_id declared in Markdown but NOT registered in .supervisor/skill-registry.yaml"
+      - "No machine-readable contract fields (version, inputs, rollback, stop_conditions are prose only)"
+      - "No automated validation by any tool"
+      - "Overlapping scope with product-source-task-template.md for bounded source changes"
+      - "All consumer claims are documentation/report references — no runtime consumption"
+
+  - artifact_id: PB-MD-002
+    path: playbooks/format-factory/new-format-kickstart-template.md
+    format: markdown
+    title: "New Format Kickstart Template"
+    purpose: >
+      Template for starting a brand-new Python FOSS format codec from scratch.
+      Proven from NDJSON, FODG, TSV acquisitions. Declares skill_id: new-format-kickstart v1.0.
+    owner_layer: product_source
+    status: active
+    version: "1.0"
+    producer: developers
+    consumers: []
+    referenced_by:
+      - path: registry/repository-root-folders.yaml
+        classification: DOCUMENTATION_REFERENCE
+      - path: reports/expanded-multilane-product-first-train/
+        classification: REPORT_OR_EVIDENCE_REFERENCE
+    validated_by: []
+    executed_by: []
+    generated_outputs: []
+    active: true
+    stale: false
+    findings:
+      - "skill_id declared in Markdown but NOT registered in .supervisor/skill-registry.yaml"
+      - "No machine-readable contract fields"
+      - "No automated validation"
+      - "Known pitfalls section is valuable — must be preserved in hardening"
+
+  - artifact_id: PB-MD-003
+    path: playbooks/format-factory/product-source-task-template.md
+    format: markdown
+    title: "Product Source Task Template"
+    purpose: >
+      Template for executing single bounded product source changes to existing Python FOSS codec.
+      Derived from ABW, Gnumeric, TSV, NDJSON sprint patterns.
+      Declares skill_id: product-source-task v1.0.
+    owner_layer: product_source
+    status: active
+    version: "1.0"
+    producer: developers
+    consumers: []
+    referenced_by:
+      - path: registry/repository-root-folders.yaml
+        classification: DOCUMENTATION_REFERENCE
+      - path: reports/expanded-multilane-product-first-train/
+        classification: REPORT_OR_EVIDENCE_REFERENCE
+    validated_by: []
+    executed_by: []
+    generated_outputs: []
+    active: true
+    stale: false
+    findings:
+      - "skill_id declared in Markdown but NOT registered in .supervisor/skill-registry.yaml"
+      - "Import status table may be stale (abw/gnumeric/tsv/ndjson/fodg — needs verification)"
+      - "Overlapping scope with format-feature-expansion.md — boundary must be explicit"
+      - "No machine-readable contract fields"
+
+  - artifact_id: PB-MD-004
+    path: playbooks/_readme.md
+    format: markdown
+    title: "Playbooks Directory Orientation"
+    purpose: >
+      Directory orientation document for playbooks/. Registered in registry/repository-root-folders.yaml.
+      Describes the 3 Markdown templates as "operational playbooks."
+    owner_layer: documentation
+    status: active
+    version: null
+    producer: developers
+    consumers: []
+    referenced_by:
+      - path: registry/repository-root-folders.yaml
+        classification: GOVERNANCE_REFERENCE
+    validated_by: []
+    executed_by: []
+    generated_outputs: []
+    active: true
+    stale: false
+    findings:
+      - "Calls Markdown templates 'playbooks' — ambiguous with YAML acquisition playbooks"
+      - "Does not point to canonical playbook registry (none exists yet)"
+      - "Needs reclassification: Markdown templates are Sprint Task Templates, not acquisition playbooks"
+
+# ─────────────────────────────────────────────────────────
+# LAYER B — YAML ACQUISITION PLAYBOOK SYSTEM
+# schemas/playbook/, tools/playbook/, tests/playbook/
+# This is the governed playbook system with strict authority boundaries.
+# ─────────────────────────────────────────────────────────
+
+  - artifact_id: PB-SCHEMA-001
+    path: schemas/playbook/acquisition-playbook.schema.json
+    format: json_schema
+    title: "Acquisition Playbook JSON Schema"
+    purpose: >
+      JSON Schema (S-F2F-01) defining structure and authority boundaries for YAML acquisition
+      playbooks. Enforces forbidden_uses including automatic_gate_approval, spec_or_legal_authority,
+      replacing_dec034, replacing_human_approval. Requires 26 top-level fields.
+    owner_layer: playbook_governance
+    status: active
+    version: "1.0"
+    producer: S-F2F-01
+    consumers:
+      - path: tools/playbook/validate_playbook.py
+        classification: VALIDATION_CONSUMER
+        runtime_proof: "jsonschema engine loads and validates against this schema"
+      - path: tests/playbook/test_playbook_schema.py
+        classification: VALIDATION_CONSUMER
+        runtime_proof: "schema validation tests load this file"
+    referenced_by:
+      - path: docs/playbook-layer.md
+        classification: DOCUMENTATION_REFERENCE
+      - path: AGENTS.md
+        classification: GOVERNANCE_REFERENCE
+      - path: GOVERNANCE.md
+        classification: GOVERNANCE_REFERENCE
+    validated_by:
+      - tests/playbook/test_playbook_schema.py
+    executed_by:
+      - tools/playbook/validate_playbook.py
+    generated_outputs: []
+    active: true
+    stale: false
+    findings: []
+
+  - artifact_id: PB-SCHEMA-002
+    path: schemas/playbook/review-queue.schema.json
+    format: json_schema
+    title: "Playbook Review Queue JSON Schema"
+    purpose: >
+      JSON Schema for review queues capturing conflicts when replay doesn't match expected state.
+      Items with severity high/blocker must block apply mode. Cannot approve gates or replace DEC-034.
+    owner_layer: playbook_governance
+    status: active
+    version: "1.0"
+    producer: S-F2F-01
+    consumers:
+      - path: tools/playbook/validate_playbook.py
+        classification: VALIDATION_CONSUMER
+      - path: tests/playbook/test_playbook_schema.py
+        classification: VALIDATION_CONSUMER
+    referenced_by:
+      - path: docs/playbook-layer.md
+        classification: DOCUMENTATION_REFERENCE
+    validated_by:
+      - tests/playbook/test_playbook_schema.py
+    executed_by:
+      - tools/playbook/validate_playbook.py
+    generated_outputs: []
+    active: true
+    stale: false
+    findings: []
+
+  - artifact_id: PB-TOOL-001
+    path: tools/playbook/validate_playbook.py
+    format: python
+    title: "Playbook Schema Validator (READ-ONLY)"
+    purpose: >
+      READ-ONLY tool (S-F2F-02 CLOSED) that validates playbook YAML against acquisition-playbook
+      or review-queue schema. Writes NOTHING to disk. Exit codes: 0=PASS, 1=FAIL, 2=ERROR.
+      Supports jsonschema and structural fallback engines. Evidence aid only — PASS does NOT approve gates.
+    owner_layer: playbook_governance
+    status: active
+    version: "S-F2F-02"
+    producer: S-F2F-02
+    consumers:
+      - path: tests/playbook/test_playbook_schema.py
+        classification: VALIDATION_CONSUMER
+        runtime_proof: "test_playbook_schema.py invokes validate_playbook.py directly"
+    referenced_by:
+      - path: AGENTS.md
+        classification: GOVERNANCE_REFERENCE
+        lines: "641-676 §AA"
+      - path: GOVERNANCE.md
+        classification: GOVERNANCE_REFERENCE
+        lines: "288-316 §20"
+    validated_by:
+      - tests/playbook/test_playbook_schema.py
+    executed_by: []
+    generated_outputs: []
+    active: true
+    stale: false
+    findings:
+      - "NOT registered in .supervisor/skill-registry.yaml — no /validate-playbook skill command"
+      - "No supervisor pipeline integration"
+
+  - artifact_id: PB-TOOL-002
+    path: tools/playbook/replay_acquisition_playbook.py
+    format: python
+    title: "Acquisition Playbook Dry-Run Replay Engine"
+    purpose: >
+      Dry-run replay engine (S-F2F-03 target). Modes: validate, dry-run, explain, export-review-queue.
+      No file writes in dry-run/explain modes. Replay does NOT satisfy DEC-034 or approve gates.
+      Apply mode is NOT implemented and MUST NOT BE ADDED without S-F2F-06 risk review.
+    owner_layer: playbook_governance
+    status: exists_but_policy_stale
+    version: "S-F2F-03"
+    producer: S-F2F-03
+    consumers:
+      - path: tests/playbook/test_replay_dry_run.py
+        classification: VALIDATION_CONSUMER
+      - path: tests/playbook/test_replay_golden.py
+        classification: VALIDATION_CONSUMER
+    referenced_by:
+      - path: AGENTS.md
+        classification: GOVERNANCE_REFERENCE
+        note: "Listed as 'unauthorized' in §AA — but code EXISTS with tests — stale policy state"
+      - path: GOVERNANCE.md
+        classification: GOVERNANCE_REFERENCE
+    validated_by:
+      - tests/playbook/test_replay_dry_run.py
+      - tests/playbook/test_replay_golden.py
+    executed_by: []
+    generated_outputs: []
+    active: true
+    stale: false
+    findings:
+      - "CRITICAL STALE STATE: Code and tests exist but AGENTS.md §AA says 'unauthorized'"
+      - "S-F2F-03 evidence contract exists: tools/evidence/contracts/secondary-sf2f03-dry-run-replay-review-queue.yaml"
+      - "S-F2F-04 golden test contracts also exist: secondary-sf2f04-golden-dry-run-tests.yaml"
+      - "Policy documents are lagging behind code reality — needs reconciliation"
+      - "NOT registered in .supervisor/skill-registry.yaml"
+
+  - artifact_id: PB-TOOL-003
+    path: tools/playbook/export_review_queue.py
+    format: python
+    title: "Review Queue Exporter"
+    purpose: >
+      Exports review queue YAML from dry-run replay report. Read-only transformation.
+      Writes output only to --output path.
+    owner_layer: playbook_governance
+    status: active
+    version: "S-F2F-03"
+    producer: S-F2F-03
+    consumers:
+      - path: tests/playbook/test_review_queue_export.py
+        classification: VALIDATION_CONSUMER
+      - path: tests/playbook/test_review_queue_golden.py
+        classification: VALIDATION_CONSUMER
+    referenced_by: []
+    validated_by:
+      - tests/playbook/test_review_queue_export.py
+      - tests/playbook/test_review_queue_golden.py
+    executed_by: []
+    generated_outputs: []
+    active: true
+    stale: false
+    findings:
+      - "NOT registered in .supervisor/skill-registry.yaml"
+
+  - artifact_id: PB-TOOL-004
+    path: tools/playbook/create_golden_case.py
+    format: python
+    title: "Golden Case Creator"
+    purpose: >
+      Captures current replay engine output as golden test fixture.
+      Writes golden fixtures to tests/playbook/golden/ only.
+      Modes: dry-run, explain, review-queue.
+    owner_layer: playbook_governance
+    status: active
+    version: "S-F2F-04"
+    producer: S-F2F-04
+    consumers: []
+    referenced_by: []
+    validated_by: []
+    executed_by: []
+    generated_outputs:
+      - tests/playbook/golden/
+    active: true
+    stale: false
+    findings:
+      - "NOT registered in .supervisor/skill-registry.yaml"
+      - "No runtime consumer beyond golden fixture creation"
+
+  - artifact_id: PB-TOOL-005
+    path: tools/playbook/diff_playbook_outputs.py
+    format: python
+    title: "Playbook Output Diff Tool"
+    purpose: >
+      Compare two dry-run replay reports (read-only diff). Informational only.
+    owner_layer: playbook_governance
+    status: active
+    version: "S-F2F-03"
+    producer: S-F2F-03
+    consumers:
+      - path: tests/playbook/test_diff_playbook_outputs.py
+        classification: VALIDATION_CONSUMER
+      - path: tests/playbook/test_diff_golden.py
+        classification: VALIDATION_CONSUMER
+    referenced_by: []
+    validated_by:
+      - tests/playbook/test_diff_playbook_outputs.py
+      - tests/playbook/test_diff_golden.py
+    executed_by: []
+    generated_outputs: []
+    active: true
+    stale: false
+    findings:
+      - "NOT registered in .supervisor/skill-registry.yaml"
+
+  - artifact_id: PB-DATA-001
+    path: acquisition-packs/_families/odf-flat/playbook.yaml
+    format: yaml
+    title: "ODF-Flat Family Acquisition Playbook"
+    purpose: >
+      Family-level playbook covering shared ODF-flat acquisition patterns (FODS, FODT, FODP, FODG, FODB).
+      Status: proposed. Does NOT approve any gate. No gate status passes between formats.
+      Validates against acquisition-playbook.schema.json.
+    owner_layer: playbook_governance
+    status: proposed
+    version: "1.0"
+    producer: POST-FODT-GATE10-CONTROLLED-SWARM-001 (S-F2F-05)
+    consumers:
+      - path: tests/playbook/test_odf_flat_family_playbook.py
+        classification: VALIDATION_CONSUMER
+    referenced_by:
+      - path: reports/gate-review/fodt/gate10-review-packet-20260511.md
+        classification: REPORT_OR_EVIDENCE_REFERENCE
+      - path: reports/acceleration/controlled-parallel-lanes-20260511.md
+        classification: REPORT_OR_EVIDENCE_REFERENCE
+      - path: AGENTS.md
+        classification: GOVERNANCE_REFERENCE
+    validated_by:
+      - tests/playbook/test_odf_flat_family_playbook.py
+    executed_by: []
+    generated_outputs: []
+    active: true
+    stale: false
+    findings:
+      - "Status is 'proposed' — should advance to 'active' after Pilot 4 proves it"
+      - "Missing last_verified_revision field"
+      - "Missing pilot proof reference"
+
+  - artifact_id: PB-DATA-002
+    path: docs/examples/acquisition-playbook-fods-documentation-example.yaml
+    format: yaml
+    title: "FODS Acquisition Playbook Documentation Example"
+    purpose: >
+      Non-executable documentation example showing full FODS acquisition playbook structure.
+      Status: documentation_example_only. Not for execution. Used as schema validation test fixture.
+    owner_layer: documentation
+    status: documentation_example_only
+    version: null
+    producer: S-F2F-01
+    consumers:
+      - path: tests/playbook/test_playbook_schema.py
+        classification: VALIDATION_CONSUMER
+        note: "Used as positive test fixture for schema validation"
+    referenced_by:
+      - path: docs/playbook-layer.md
+        classification: DOCUMENTATION_REFERENCE
+    validated_by:
+      - tests/playbook/test_playbook_schema.py
+    executed_by: []
+    generated_outputs: []
+    active: false
+    stale: false
+    findings:
+      - "Correctly marked not_for_execution — retain as-is"
+
+  - artifact_id: PB-POLICY-001
+    path: docs/playbook-layer.md
+    format: markdown
+    title: "Playbook Layer Governance Policy"
+    purpose: >
+      Master governance policy document (478 lines) defining what playbooks are and are not.
+      Defines 7 S-F2F phases, authority boundaries, lifecycle, schema overview, review queue lifecycle.
+    owner_layer: playbook_governance
+    status: active
+    version: "S-F2F-02"
+    producer: S-F2F-01/S-F2F-02
+    consumers: []
+    referenced_by:
+      - path: AGENTS.md
+        classification: GOVERNANCE_REFERENCE
+        lines: "641-676 §AA"
+      - path: GOVERNANCE.md
+        classification: GOVERNANCE_REFERENCE
+        lines: "288-316 §20"
+    validated_by: []
+    executed_by: []
+    generated_outputs: []
+    active: true
+    stale: true
+    findings:
+      - "STALE: S-F2F-03 phase still listed as 'future' but code and tests exist"
+      - "STALE: S-F2F-04 phase still listed as 'future' but golden tests exist"
+      - "STALE: S-F2F-05 status not reflected (odf-flat playbook.yaml exists as 'proposed')"
+      - "Does not describe Sprint Task Templates layer (Markdown templates in playbooks/)"
+      - "Needs Model C disambiguation section"
+
+  - artifact_id: PB-POLICY-002
+    path: AGENTS.md
+    format: markdown
+    title: "AGENTS.md §AA — Playbook Layer Rules"
+    purpose: >
+      Governance rules for agent behavior re: playbooks. Lines 641-676.
+      §AA0: validate_playbook.py is READ-ONLY.
+      §AA1: Playbooks are execution aids, not authority.
+      §AA2-AA5: Replay, review queue, family, and product tool rules.
+    owner_layer: playbook_governance
+    status: active
+    version: null
+    producer: S-F2F-01/S-F2F-02
+    consumers: []
+    referenced_by: []
+    validated_by: []
+    executed_by: []
+    generated_outputs: []
+    active: true
+    stale: true
+    findings:
+      - "STALE: §AA says 'Replay tools, apply mode, acquisition-pack playbooks, and family playbooks remain unauthorized'"
+      - "REALITY: replay_acquisition_playbook.py EXISTS with tests and evidence contracts"
+      - "Evidence contracts secondary-sf2f03-dry-run-replay-review-queue.yaml and secondary-sf2f04-* exist"
+      - "Sprint Task Templates (playbooks/format-factory/) not mentioned as separate layer"
+
+  - artifact_id: PB-POLICY-003
+    path: GOVERNANCE.md
+    format: markdown
+    title: "GOVERNANCE.md §20 — Playbook Layer Governance"
+    purpose: >
+      Governance constraints on playbook authority. Lines 288-316.
+      §20.0: Validation tool is evidence-eligible input only.
+      §20.5: No gate can pass purely through automated playbook replay.
+    owner_layer: playbook_governance
+    status: active
+    version: null
+    producer: S-F2F-01/S-F2F-02
+    consumers: []
+    referenced_by: []
+    validated_by: []
+    executed_by: []
+    generated_outputs: []
+    active: true
+    stale: true
+    findings:
+      - "STALE: Describes replay/apply as 'unauthorized' but evidence contracts for S-F2F-03/04 exist"
+      - "No description of Sprint Task Templates layer"
+
+  - artifact_id: PB-CONTRACT-001
+    path: tools/evidence/contracts/secondary-sf2f01-playbook-schema-policy.yaml
+    format: yaml
+    title: "S-F2F-01 Evidence Contract"
+    purpose: "Evidence contract for playbook schema and policy work (CLOSED_VERIFIED)"
+    owner_layer: evidence
+    status: closed_verified
+    version: null
+    producer: S-F2F-01
+    consumers: []
+    referenced_by: []
+    validated_by: []
+    executed_by: []
+    generated_outputs: []
+    active: false
+    stale: false
+    findings: []
+
+  - artifact_id: PB-CONTRACT-002
+    path: tools/evidence/contracts/secondary-sf2f02-playbook-validation.yaml
+    format: yaml
+    title: "S-F2F-02 Evidence Contract"
+    purpose: "Evidence contract for playbook validation tool (CLOSED_VERIFIED)"
+    owner_layer: evidence
+    status: closed_verified
+    version: null
+    producer: S-F2F-02
+    consumers: []
+    referenced_by: []
+    validated_by: []
+    executed_by: []
+    generated_outputs: []
+    active: false
+    stale: false
+    findings: []
+
+  - artifact_id: PB-CONTRACT-003
+    path: tools/evidence/contracts/secondary-sf2f03-dry-run-replay-review-queue.yaml
+    format: yaml
+    title: "S-F2F-03 Evidence Contract"
+    purpose: "Evidence contract for dry-run replay and review queue — EXISTS (policy says unauthorized but contract exists)"
+    owner_layer: evidence
+    status: unknown
+    version: null
+    producer: S-F2F-03
+    consumers: []
+    referenced_by: []
+    validated_by: []
+    executed_by: []
+    generated_outputs: []
+    active: false
+    stale: true
+    findings:
+      - "Contract exists — implies S-F2F-03 was executed — conflicts with AGENTS.md 'unauthorized' claim"
+      - "Policy documents need reconciliation with evidence reality"
+
+  - artifact_id: PB-CONTRACT-004
+    path: tools/evidence/contracts/secondary-sf2f04-golden-dry-run-tests.yaml
+    format: yaml
+    title: "S-F2F-04 Evidence Contract (Golden Tests)"
+    purpose: "Evidence contract for golden dry-run tests — EXISTS (implies S-F2F-04 executed)"
+    owner_layer: evidence
+    status: unknown
+    version: null
+    producer: S-F2F-04
+    consumers: []
+    referenced_by: []
+    validated_by: []
+    executed_by: []
+    generated_outputs: []
+    active: false
+    stale: true
+    findings:
+      - "Contract exists with closure normalization variants — S-F2F-04 was executed"
+      - "Policy documents still say 'future' for S-F2F-03/04 — CRITICAL STALE STATE"
+
+  - artifact_id: PB-TEST-SUITE
+    path: tests/playbook/
+    format: python_test_suite
+    title: "Playbook Test Suite (8 modules + fixtures + golden)"
+    purpose: >
+      8 test modules covering schema validation, replay, review queue export, diff tools, and
+      ODF-flat family playbook. 8 fixture YAML files. 8 golden expected output files.
+      All assigned Layer 5 (broad tests) in conftest.py.
+    owner_layer: playbook_governance
+    status: active
+    version: null
+    producer: S-F2F-02/S-F2F-03/S-F2F-04
+    consumers: []
+    referenced_by:
+      - path: registry/test-layer-manifest.yaml
+        classification: GOVERNANCE_REFERENCE
+    validated_by: []
+    executed_by: []
+    generated_outputs: []
+    active: true
+    stale: false
+    findings:
+      - "No supervisor pipeline integration (Layer 5 only)"
+      - "Missing: test_authority_constraints.py, test_registry.py, test_rendering.py"
+      - "Missing: test_supervisor_integration.py, test_coverage.py, test_idempotency.py"
+
+# ─────────────────────────────────────────────────────────
+# REGISTRY ENTRIES
+# ─────────────────────────────────────────────────────────
+
+  - artifact_id: PB-REGISTRY-001
+    path: registry/repository-root-folders.yaml
+    format: yaml
+    title: "Root Folder Registry — playbooks/ entry"
+    purpose: >
+      Registers playbooks/ as a root folder with purpose
+      'Operational playbook templates for format acquisition and feature expansion'
+    owner_layer: registry
+    status: active
+    version: null
+    producer: developers
+    consumers: []
+    referenced_by: []
+    validated_by: []
+    executed_by: []
+    generated_outputs: []
+    active: true
+    stale: false
+    findings:
+      - "No separate canonical playbook registry exists (playbooks/playbook-registry.yaml missing)"

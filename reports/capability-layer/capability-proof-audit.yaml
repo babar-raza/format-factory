@@ -1,0 +1,235 @@
+schema_version: "1.0"
+generated_at: "2026-07-01T00:00:00+00:00"
+generated_by: "TC-CAP-007 (moonlit-squishing-sonnet)"
+mission_id: "capability-layer-healing"
+
+# FALSE_VERIFIED_CAPABILITIES = 393 (documented and reclassified below)
+# MISSING_CAPABILITIES_HIDDEN_BY_SCOPE = 0
+false_verified_count: 393  # example_verified with empty example_refs — mislabeled state
+missing_hidden_by_scope: 0
+
+# ── OVERVIEW ──────────────────────────────────────────────────────────────────
+
+overview:
+  claim_under_audit: "2,087 verified capabilities, zero missing"
+  audit_verdict: MISLEADINGLY_STRONG
+  explanation: |
+    The "2,087 verified" claim is technically true only if one accepts that
+    implementation_verified and example_verified are equivalent to test_verified.
+    The actual evidence quality breakdown reveals a much weaker picture:
+
+    - test_verified: 205 (9.8%) — STRONG: specific test evidence exists
+    - implementation_verified: 1,328 (63.6%) — PARTIAL: source + general format tests;
+      no test specifically targeting this capability function
+    - example_verified: 554 (26.5%) — PARTIAL or MISLABELED:
+      * 161 records have actual example_refs (weak but real evidence)
+      * 393 records have empty example_refs (state assigned because FORMAT has examples,
+        not because THIS capability has examples — MISLABELED)
+
+    Additionally:
+    - 0/2,087 records have obligation_ids (no SAL provenance chain)
+    - 1,266/2,087 records with non-zero spec_refs — but many derived from keyword matching
+      rather than formal obligation derivation
+
+  validator_result:
+    exit_code: 1
+    hard_errors: 74  # VAL-009: action queue items missing advisory_only=true
+    warnings: 1183  # VAL-008: gaps without suggested_taskcard
+    passes: [VAL-001, VAL-002, VAL-003, VAL-004, VAL-005, VAL-006, VAL-010]
+    fails: [VAL-009]
+
+# ── VALIDATOR RESULTS ─────────────────────────────────────────────────────────
+
+validator_results:
+  - validator: VAL-001
+    description: Schema / required fields
+    result: PASS
+    details: All 2087 records have required fields (capability_id, format, product_type, capability_name, current_state, confidence_level)
+
+  - validator: VAL-002
+    description: No ai_draft/inferred_unverified/human_goal counted as verified
+    result: PASS
+    details: No records with unverified states; all 2087 are in VERIFIED_STATES
+
+  - validator: VAL-003
+    description: Verified records have at least one reference
+    result: PASS
+    details: All 2087 records have at least one ref (test_refs or implementation_refs)
+
+  - validator: VAL-004
+    description: implementation_refs file paths exist on disk
+    result: PASS
+    details: All 2077 records with implementation_refs point to files that exist
+
+  - validator: VAL-005
+    description: test_verified records have test_refs
+    result: PASS
+    details: All 205 test_verified records have non-empty test_refs
+
+  - validator: VAL-006
+    description: Commercial/FOSS separation
+    result: PASS
+    details: commercial-capability-map.json has no FOSS records; foss-reduced-capability-map.json has no commercial records
+
+  - validator: VAL-007
+    description: Pilot artifacts present (advisory)
+    result: WARN
+    details: "No pilot artifacts found at expected paths (CAP-PILOT-C001—C003, F001—F003)"
+
+  - validator: VAL-008
+    description: Gap-taskcard links (advisory)
+    result: WARN
+    details: "1,183+ gaps lack suggested_taskcard; all non-closed, non-deferred gaps lack taskcard"
+
+  - validator: VAL-009
+    description: Action queue advisory_only flags
+    result: FAIL
+    hard_error_count: 74
+    details: |
+      74 of 84 action items have advisory_only=false. VAL-009 requires advisory_only=true
+      for all action items (actions must never be treated as authoritative commands).
+      CONFLICT: check_system_healing_gate.py Lane 2 gate REQUIRES advisory_only=false
+      (root level) to PASS. This creates a design contradiction between VAL-009 and
+      the Lane 2 gate requirement.
+      RESOLUTION: The root-level advisory_only=False is a gate flag; per-item advisory_only
+      should reflect whether the item is locally executable. VAL-009 needs to be updated
+      to check root-level only (or vice versa). The current stale queue (all 84 items
+      reference CLOSED gaps) makes this moot — queue must be regenerated (TC-CAP-010).
+
+  - validator: VAL-010
+    description: Evidence declaration includes capability (advisory)
+    result: WARN
+    details: No current sprint evidence declaration references capability-layer artifacts
+
+# ── FALSE VERIFIED CAPABILITY FINDINGS ───────────────────────────────────────
+
+false_verified_findings:
+
+  - finding_id: FV-001
+    count: 393
+    severity: P1
+    category: MISLABELED_STATE
+    state_claimed: example_verified
+    actual_state: implementation_verified
+    description: |
+      393 records have current_state="example_verified" but example_refs=[].
+      The generator assigns example_verified when the FORMAT has any example files,
+      regardless of whether the specific capability function is referenced in examples.
+      These records have: impl_refs (source file exists) + test_refs (general format tests)
+      but NO specific example evidence for the function.
+      Correct state: implementation_verified (or test_verified if tests specifically cover
+      the function — this requires targeted audit).
+    formats_affected:
+      ABW: 31
+      CSV: 32
+      DIF: 47
+      FODG: 11
+      FODP: 5
+      Gnumeric: 21
+      NDJSON: 52
+      ODS: 39
+      ODT: 15
+      QOI: 17
+      SYLK: 29
+      TOML: 25
+      TSV: 31
+      XCF: 19
+      ZST: 19
+    reclassification: "example_verified → implementation_verified (no example evidence for this function)"
+    action: "TC-CAP-006 SAL-driven compiler does not create example_verified without actual example_refs"
+
+  - finding_id: FV-002
+    count: 2087
+    severity: P1
+    category: NO_OBLIGATION_PROVENANCE
+    state_claimed: various (verified)
+    actual_state: "verified but without SAL obligation trace"
+    description: |
+      ALL 2,087 records lack obligation_ids[] field. This means no capability
+      record can be traced to a formal SAL fact obligation. The authority chain
+      is broken at step 3 (Capability Identity) for every record in the map.
+      The SAL-driven compiler (TC-CAP-006) produces 169 records with proper
+      obligation_ids. The remaining ~1,918 capability records in the existing
+      maps cannot be SAL-grounded until more SAL facts are ingested for each format.
+    reclassification: "All records need obligation_ids added; those without SAL support should be flagged as PROSE_DERIVED"
+    action: "TC-CAP-006 SAL-driven compiler — 169 records now have obligation_ids; full migration pending SAL fact ingestion"
+
+  - finding_id: FV-003
+    count: 1328
+    severity: P2
+    category: MISLEADING_STATE_NAME
+    state_claimed: implementation_verified
+    actual_state: "source exists + format tests exist; no targeted function test"
+    description: |
+      1,328 "implementation_verified" records have test_refs pointing to general
+      format test files (e.g., test_ppm_conveyor_deepening.py) but these tests
+      test the format broadly, not this specific capability function.
+      The state "implementation_verified" suggests the implementation is verified,
+      but the actual verification is generic, not function-specific.
+      This is a naming/semantics issue, not a fabrication. The evidence EXISTS
+      (tests run, format works) but is not targeted to this specific function.
+    reclassification: "State is not false — evidence exists. But confidence should be 'medium' not 'high'"
+    action: "Document in reports; future improvement: targeted per-function tests"
+
+# ── COVERAGE AUDIT ────────────────────────────────────────────────────────────
+
+coverage_audit:
+  claim: "zero missing capabilities"
+  audit_verdict: SCOPE_DEPENDENT
+  explanation: |
+    "Zero missing" is true within the scope of poc-targets.yaml (19 formats).
+    But the SAL-driven compiler reveals that:
+    - 169 SAL-grounded capability requirements exist (vs 2,087 source-introspected)
+    - For formats with few SAL facts (TSV=2, PBM=2, PGM=2, PPM=2), only 2-4
+      SAL-grounded capabilities can be derived (vs 46-96 from source introspection)
+    - The "zero missing" claim is actually "zero missing FROM CAPABILITIES DERIVED
+      FROM SOURCE INTROSPECTION" — which is circular (all implemented functions
+      are considered capabilities, so by definition none are missing)
+
+  sal_driven_vs_source_introspected:
+    sal_driven_map: "169 records with obligation provenance"
+    source_introspected_map: "2,087 records without obligation provenance"
+    delta: "1,918 additional records from source introspection without SAL grounding"
+    missing_in_sal_driven: "Capabilities with SAL support but no implementation — see state=missing in sal-driven-capability-map.json"
+
+  grouped_format_audit:
+    netpbm_commercial: "56 records in unified map for Netpbm (commercial aggregate)"
+    netpbm_python_total: "PBM(74) + PGM(83) + PPM(84) = 241 FOSS records"
+    total_netpbm: "241 FOSS + 56 commercial = 297 records"
+    duplicate_risk: "If dashboard sums Netpbm(56) + PBM(74) + PGM(83) + PPM(84), it triple-counts FOSS"
+    verdict: DOUBLE_COUNT_RISK_IDENTIFIED
+
+# ── COMPARISON: EXISTING VS SAL-DRIVEN ───────────────────────────────────────
+
+comparison:
+  existing_generator:
+    records: 2087
+    with_obligation_ids: 0
+    with_test_verified: 205
+    with_example_verified: 554
+    with_implementation_verified: 1328
+    sal_grounded: 821  # have spec_refs (keyword-matched, not formally obligated)
+    authority_source: poc-targets.yaml + source introspection + SAL enrichment
+
+  sal_driven_compiler:
+    records: 169
+    with_obligation_ids: 169  # ALL
+    with_test_verified: 168
+    with_implementation_verified: 1
+    sal_grounded: 169  # ALL
+    authority_source: SAL facts → obligations (poc-targets.yaml scope/priority only)
+    note: "169 represents MINIMUM verifiable capabilities grounded in spec facts"
+
+  interpretation: |
+    The 2,087 existing records represent "everything the product does" (source introspection).
+    The 169 SAL-grounded records represent "what the spec says the product must do."
+    The gap between 169 and 2,087 consists of:
+      - Extra functions implemented beyond spec requirements (product extensions)
+      - Analytics functions, utility helpers, internal tools
+      - Functions derived from format-specific domain knowledge (not in SAL yet)
+    These extra functions are LEGITIMATE implementations — they just lack SAL grounding.
+    The fix is to ingest more SAL facts for each format (via /ingest-spec-sal).
+
+required_counters:
+  FALSE_VERIFIED_CAPABILITIES: 393  # documented and reclassified; not hidden
+  MISSING_CAPABILITIES_HIDDEN_BY_SCOPE: 0  # all exclusions are explicit

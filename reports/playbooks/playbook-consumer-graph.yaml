@@ -1,0 +1,308 @@
+---
+# Playbook Consumer Graph
+# Mission: FF-PLAYBOOK-SYSTEM-001 (bright-marinating-map)
+# Generated: 2026-07-01
+# TC-PB-001
+
+meta:
+  FALSE_DIRECT_PLAYBOOK_CONSUMER_CLAIMS: 0
+  # Explanation: No consumer falsely CLAIMS to be a runtime consumer.
+  # Sprint reports that cite playbooks/format-factory/ are REPORT_OR_EVIDENCE_REFERENCE
+  # and DOCUMENTATION_REFERENCE — these are honest indirect references, not false claims.
+  # The classification FALSE_OR_INFLATED_CONSUMER_CLAIM applies only where a consumer
+  # asserts runtime consumption that does not occur. None found.
+  ACTIVE_PLAYBOOKS_WITHOUT_DISPOSITIONED_CONSUMERS: 0
+  # All active playbooks (Markdown templates, YAML layer) have explicit consumer disposition below.
+
+consumers:
+
+  # ─────────────────────────────────────────────────────────
+  # SUPERVISOR PIPELINE — NO PLAYBOOK INTEGRATION
+  # ─────────────────────────────────────────────────────────
+
+  - consumer_id: CONS-SUPERVISOR-001
+    path: tools/supervisor/supervisor_loop.py
+    classification: NO_PLAYBOOK_REFERENCE
+    playbooks_used: []
+    invocation_method: none
+    inputs: []
+    outputs: []
+    runtime_proof: "grep found zero references to 'playbook' in supervisor_loop.py"
+    current: true
+    failure_behavior: not_applicable
+    findings:
+      - "Supervisor pipeline has NO playbook integration whatsoever"
+
+  - consumer_id: CONS-SUPERVISOR-002
+    path: tools/supervisor/autonomous_cycle.py
+    classification: NO_PLAYBOOK_REFERENCE
+    playbooks_used: []
+    invocation_method: none
+    inputs: []
+    outputs: []
+    runtime_proof: "grep found zero references to 'playbook' in autonomous_cycle.py"
+    current: true
+    failure_behavior: not_applicable
+    findings:
+      - "Autonomous cycle has NO playbook integration — planned in TC-PB-008"
+
+  - consumer_id: CONS-SUPERVISOR-003
+    path: tools/supervisor/check_continuation.py
+    classification: NO_PLAYBOOK_REFERENCE
+    playbooks_used: []
+    invocation_method: none
+    inputs: []
+    outputs: []
+    runtime_proof: "grep found zero references to 'playbook' in check_continuation.py"
+    current: true
+    failure_behavior: not_applicable
+    findings: []
+
+  - consumer_id: CONS-SUPERVISOR-004
+    path: tools/supervisor/sprint_executor.py
+    classification: NO_PLAYBOOK_REFERENCE
+    playbooks_used: []
+    invocation_method: none
+    inputs: []
+    outputs: []
+    runtime_proof: "grep found zero references to 'playbook' in sprint_executor.py"
+    current: true
+    failure_behavior: not_applicable
+    findings: []
+
+  # ─────────────────────────────────────────────────────────
+  # SKILL REGISTRY — NO PLAYBOOK SKILLS REGISTERED
+  # ─────────────────────────────────────────────────────────
+
+  - consumer_id: CONS-SKILL-REGISTRY
+    path: .supervisor/skill-registry.yaml
+    classification: NO_PLAYBOOK_REFERENCE
+    playbooks_used: []
+    invocation_method: none
+    inputs: []
+    outputs: []
+    runtime_proof: "grep found zero playbook-related skill entries in skill-registry.yaml"
+    current: true
+    failure_behavior: not_applicable
+    findings:
+      - "No /validate-playbook, /replay-acquisition-playbook, /export-review-queue, /diff-playbook-outputs skills"
+      - "No /format-feature-expansion, /new-format-kickstart, /product-source-task skills"
+      - "All 7 playbook skills are unregistered — planned in TC-PB-005"
+
+  # ─────────────────────────────────────────────────────────
+  # VALIDATION CONSUMERS (RUNTIME — PROVEN)
+  # These actually load and execute against playbook files
+  # ─────────────────────────────────────────────────────────
+
+  - consumer_id: CONS-TEST-SCHEMA
+    path: tests/playbook/test_playbook_schema.py
+    classification: VALIDATION_CONSUMER
+    playbooks_used:
+      - schemas/playbook/acquisition-playbook.schema.json
+      - schemas/playbook/review-queue.schema.json
+      - tools/playbook/validate_playbook.py
+      - docs/examples/acquisition-playbook-fods-documentation-example.yaml
+      - tests/playbook/fixtures/valid-acquisition-playbook.yaml
+      - tests/playbook/fixtures/invalid-forbidden-authority.yaml
+      - tests/playbook/fixtures/invalid-missing-required-field.yaml
+      - tests/playbook/fixtures/valid-review-queue.yaml
+      - tests/playbook/fixtures/invalid-review-queue-missing-items.yaml
+    invocation_method: pytest
+    inputs: [schema files, fixture YAMLs, validate_playbook.py]
+    outputs: [test pass/fail results]
+    runtime_proof: "test_playbook_schema.py imports validate_playbook and loads schemas directly"
+    current: true
+    failure_behavior: test_fails_on_schema_change
+    findings: []
+
+  - consumer_id: CONS-TEST-REPLAY-DRY-RUN
+    path: tests/playbook/test_replay_dry_run.py
+    classification: VALIDATION_CONSUMER
+    playbooks_used:
+      - tools/playbook/replay_acquisition_playbook.py
+      - tests/playbook/fixtures/replay-valid-acquisition-playbook.yaml
+      - tests/playbook/fixtures/replay-fodt-valid.yaml
+      - tests/playbook/fixtures/replay-with-missing-inputs.yaml
+    invocation_method: pytest
+    inputs: [replay engine, fixture YAMLs]
+    outputs: [test pass/fail results]
+    runtime_proof: "Imports replay_acquisition_playbook and exercises dry-run, explain, export-review-queue modes"
+    current: true
+    failure_behavior: test_fails_on_replay_engine_change
+    findings:
+      - "PROVES replay_acquisition_playbook.py IS functional — conflicts with AGENTS.md 'unauthorized' claim"
+
+  - consumer_id: CONS-TEST-REPLAY-GOLDEN
+    path: tests/playbook/test_replay_golden.py
+    classification: VALIDATION_CONSUMER
+    playbooks_used:
+      - tools/playbook/replay_acquisition_playbook.py
+      - tests/playbook/golden/replay-valid-dry-run.expected.yaml
+      - tests/playbook/golden/replay-fodt-valid-dry-run.expected.yaml
+      - tests/playbook/golden/replay-missing-inputs-dry-run.expected.yaml
+      - tests/playbook/golden/replay-explain-fods.expected.txt
+    invocation_method: pytest
+    inputs: [replay engine, golden fixtures]
+    outputs: [golden comparison pass/fail]
+    runtime_proof: "Golden tests compare replay output against expected output files"
+    current: true
+    failure_behavior: golden_mismatch_fails_test
+    findings: []
+
+  - consumer_id: CONS-TEST-REVIEW-QUEUE
+    path: tests/playbook/test_review_queue_export.py
+    classification: VALIDATION_CONSUMER
+    playbooks_used:
+      - tools/playbook/export_review_queue.py
+      - tools/playbook/replay_acquisition_playbook.py
+    invocation_method: pytest
+    inputs: [export tool, replay engine]
+    outputs: [review queue YAML validation]
+    runtime_proof: "Tests export_review_queue invocation and validates output structure"
+    current: true
+    failure_behavior: test_fails_on_export_change
+    findings: []
+
+  - consumer_id: CONS-TEST-REVIEW-QUEUE-GOLDEN
+    path: tests/playbook/test_review_queue_golden.py
+    classification: VALIDATION_CONSUMER
+    playbooks_used:
+      - tools/playbook/export_review_queue.py
+      - tests/playbook/golden/review-queue-missing-inputs.expected.yaml
+    invocation_method: pytest
+    inputs: [export tool, golden fixture]
+    outputs: [golden comparison]
+    runtime_proof: "Compares review queue output against golden expected file"
+    current: true
+    failure_behavior: golden_mismatch_fails_test
+    findings: []
+
+  - consumer_id: CONS-TEST-DIFF
+    path: tests/playbook/test_diff_playbook_outputs.py
+    classification: VALIDATION_CONSUMER
+    playbooks_used:
+      - tools/playbook/diff_playbook_outputs.py
+      - tools/playbook/replay_acquisition_playbook.py
+    invocation_method: pytest
+    inputs: [diff tool, replay engine]
+    outputs: [diff validation results]
+    runtime_proof: "Tests diff tool against two replay outputs"
+    current: true
+    failure_behavior: test_fails_on_diff_change
+    findings: []
+
+  - consumer_id: CONS-TEST-DIFF-GOLDEN
+    path: tests/playbook/test_diff_golden.py
+    classification: VALIDATION_CONSUMER
+    playbooks_used:
+      - tools/playbook/diff_playbook_outputs.py
+      - tests/playbook/golden/diff-improvement.expected.yaml
+      - tests/playbook/golden/diff-regression.expected.yaml
+      - tests/playbook/golden/diff-unchanged.expected.yaml
+    invocation_method: pytest
+    inputs: [diff tool, golden files]
+    outputs: [golden comparison]
+    runtime_proof: "Golden diff comparison tests"
+    current: true
+    failure_behavior: golden_mismatch_fails_test
+    findings: []
+
+  - consumer_id: CONS-TEST-ODF-FAMILY
+    path: tests/playbook/test_odf_flat_family_playbook.py
+    classification: VALIDATION_CONSUMER
+    playbooks_used:
+      - acquisition-packs/_families/odf-flat/playbook.yaml
+      - tools/playbook/validate_playbook.py
+    invocation_method: pytest
+    inputs: [family playbook YAML, validate_playbook.py]
+    outputs: [validation pass/fail]
+    runtime_proof: "Validates odf-flat family playbook against schema"
+    current: true
+    failure_behavior: test_fails_if_family_playbook_invalid
+    findings: []
+
+  # ─────────────────────────────────────────────────────────
+  # GOVERNANCE REFERENCES (not runtime consumers)
+  # ─────────────────────────────────────────────────────────
+
+  - consumer_id: CONS-AGENTS-MD
+    path: AGENTS.md
+    classification: GOVERNANCE_REFERENCE
+    playbooks_used:
+      - schemas/playbook/ (referenced by path)
+      - docs/playbook-layer.md (referenced by path)
+      - tools/playbook/validate_playbook.py (referenced by path)
+    invocation_method: agent_reads_document
+    inputs: []
+    outputs: [agent behavioral constraints]
+    runtime_proof: "None — AGENTS.md is read by agents but does not execute playbooks"
+    current: true
+    failure_behavior: agent_ignores_constraints
+    findings:
+      - "AGENTS.md §AA is stale: says S-F2F-03/04 'unauthorized' but evidence contracts exist"
+
+  - consumer_id: CONS-GOVERNANCE-MD
+    path: GOVERNANCE.md
+    classification: GOVERNANCE_REFERENCE
+    playbooks_used:
+      - schemas/playbook/ (referenced by path)
+      - docs/playbook-layer.md (referenced by path)
+    invocation_method: agent_reads_document
+    inputs: []
+    outputs: [governance constraints]
+    runtime_proof: "None — GOVERNANCE.md is read but does not execute playbooks"
+    current: true
+    failure_behavior: governance_constraints_unenforced
+    findings:
+      - "GOVERNANCE.md §20 is stale: says replay/apply 'unauthorized' but S-F2F-03/04 contracts exist"
+
+  - consumer_id: CONS-MASTER-PLAN
+    path: plans/master-plan.md
+    classification: DOCUMENTATION_REFERENCE
+    playbooks_used:
+      - docs/format-onboarding-guide.md (called "20-step playbook" in TC-INF-002)
+    invocation_method: none
+    inputs: []
+    outputs: []
+    runtime_proof: "None — master-plan.md only mentions 'playbook' in reference to the onboarding guide"
+    current: true
+    failure_behavior: not_applicable
+    findings:
+      - "Only 1 reference to 'playbook' — the onboarding guide (TC-INF-002 CLOSED)"
+      - "No acquisition playbook or Sprint Task Template references"
+
+  # ─────────────────────────────────────────────────────────
+  # REPORT/EVIDENCE REFERENCES (documentation only)
+  # ─────────────────────────────────────────────────────────
+
+  - consumer_id: CONS-REPORTS-MULTILANE
+    path: reports/expanded-multilane-product-first-train/
+    classification: REPORT_OR_EVIDENCE_REFERENCE
+    playbooks_used:
+      - playbooks/format-factory/format-feature-expansion.md
+      - playbooks/format-factory/new-format-kickstart-template.md
+      - playbooks/format-factory/product-source-task-template.md
+    invocation_method: cited_in_report
+    inputs: []
+    outputs: []
+    runtime_proof: "None — reports cite playbooks by name but do not load or execute them"
+    current: true
+    failure_behavior: not_applicable
+    findings:
+      - "Reports describe Markdown templates as useful but do not prove runtime consumption"
+      - "This is the primary source of inflated consumer claims for Markdown templates"
+      - "Classification: REPORT_OR_EVIDENCE_REFERENCE (not FALSE_OR_INFLATED — honest indirect reference)"
+
+  - consumer_id: CONS-REGISTRY-ROOT-FOLDERS
+    path: registry/repository-root-folders.yaml
+    classification: GOVERNANCE_REFERENCE
+    playbooks_used:
+      - playbooks/ (folder registered)
+    invocation_method: registry_entry
+    inputs: []
+    outputs: []
+    runtime_proof: "None — registry entry describes the folder but no tool reads it to find playbooks"
+    current: true
+    failure_behavior: not_applicable
+    findings:
+      - "Root folder registry has no runtime consumer that uses it to locate playbook files"

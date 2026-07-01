@@ -1,0 +1,174 @@
+playbook_registry:
+  version: "1.0"
+  generated_at: "2026-07-01"
+  last_verified_revision: "f88c884ed22db2432d346c642b71e4d9197487e1"
+  authority: >
+    Registry is canonical machine-readable index. Entry ACTIVE status does NOT approve gates,
+    does NOT mark work complete, does NOT replace plan authority or evidence contracts.
+    All playbooks are TASK_TEMPLATE authority only.
+
+  entries:
+    # ─── Sprint Task Templates (Markdown layer) ──────────────────────────────
+    - playbook_id: format-feature-expansion
+      title: "Add Feature to Existing Python FOSS Format Codec"
+      version: "1.1"
+      status: ACTIVE
+      category: sprint_task_template
+      canonical_path: playbooks/format-factory/format-feature-expansion.md
+      owner_layer: product_source
+      authority: TASK_TEMPLATE
+      supported_work_item_types:
+        - FORMAT_FEATURE_EXPANSION
+        - PRODUCT_SOURCE_PATCH_BOUNDED
+      required_skills:
+        - add-python-api
+        - add-roundtrip-test
+      tests:
+        - tests/playbook/test_task_generation.py
+      pilots:
+        - pilot-1
+      last_verified_revision: "d733e908"
+      superseded_by: null
+      scope_boundary: >
+        SPECIALIZATION of product-source-task for export/transform/accessor additions.
+        Use product-source-task for any other bounded source change.
+
+    - playbook_id: new-format-kickstart
+      title: "Start Brand-New Python FOSS Format from Scratch"
+      version: "1.1"
+      status: ACTIVE
+      category: sprint_task_template
+      canonical_path: playbooks/format-factory/new-format-kickstart-template.md
+      owner_layer: product_source
+      authority: TASK_TEMPLATE
+      supported_work_item_types:
+        - NEW_FORMAT_KICKSTART
+        - PRODUCT_SOURCE_PATCH_BOUNDED
+      required_skills:
+        - add-python-api
+        - add-roundtrip-test
+      tests:
+        - tests/playbook/test_task_generation.py
+      pilots:
+        - pilot-2
+      last_verified_revision: "d733e908"
+      superseded_by: null
+
+    - playbook_id: product-source-task
+      title: "Execute Bounded Product Source Change to Existing Python FOSS Codec"
+      version: "1.1"
+      status: ACTIVE
+      category: sprint_task_template
+      canonical_path: playbooks/format-factory/product-source-task-template.md
+      owner_layer: product_source
+      authority: TASK_TEMPLATE
+      supported_work_item_types:
+        - PRODUCT_SOURCE_PATCH_BOUNDED
+        - FORMAT_FEATURE_EXPANSION
+        - VERTICAL_SLICE_ADVANCEMENT
+      required_skills:
+        - add-python-api
+        - add-roundtrip-test
+      tests:
+        - tests/playbook/test_task_generation.py
+      pilots:
+        - pilot-3
+      last_verified_revision: "d733e908"
+      superseded_by: null
+      scope_boundary: >
+        GENERAL template for any bounded source change. Use format-feature-expansion
+        specifically for export/transform/accessor additions.
+
+    - playbook_id: package-release-readiness
+      title: "Prepare Format Package for PyPI/NuGet Release"
+      version: "1.0"
+      status: ACTIVE
+      category: sprint_task_template
+      canonical_path: playbooks/format-factory/package-release-readiness.md
+      owner_layer: packaging
+      authority: TASK_TEMPLATE
+      supported_work_item_types:
+        - PACKAGE_RELEASE_READINESS
+        - PRODUCT_SOURCE_PATCH_BOUNDED
+      required_skills: []
+      tests: []
+      pilots: []
+      last_verified_revision: "d733e908"
+      superseded_by: null
+
+    - playbook_id: pipeline-incident-response
+      title: "Pipeline Incident Response"
+      version: "1.0"
+      status: ACTIVE
+      category: sprint_task_template
+      canonical_path: playbooks/format-factory/pipeline-incident-response.md
+      owner_layer: infrastructure
+      authority: TASK_TEMPLATE
+      supported_work_item_types:
+        - PIPELINE_INCIDENT_RESPONSE
+        - MACHINERY_REPAIR
+      required_skills: []
+      tests: []
+      pilots: []
+      last_verified_revision: "d733e908"
+      superseded_by: null
+
+    - playbook_id: audit-healing-sprint
+      title: "Structured Audit-Find-Heal-Verify Sprint"
+      version: "1.0"
+      status: ACTIVE
+      category: sprint_task_template
+      canonical_path: playbooks/format-factory/audit-healing-sprint.md
+      owner_layer: infrastructure
+      authority: TASK_TEMPLATE
+      supported_work_item_types:
+        - AUDIT_HEALING_SPRINT
+        - MACHINERY_REPAIR
+      required_skills: []
+      tests: []
+      pilots:
+        - pilot-7
+      last_verified_revision: "d733e908"
+      superseded_by: null
+
+    # ─── Playbook Tools (skill registry entries) ─────────────────────────────
+    - playbook_id: validate-playbook-tool
+      title: "YAML Acquisition Playbook Validator"
+      version: "1.0"
+      status: ACTIVE
+      category: tool
+      canonical_path: tools/playbook/validate_playbook.py
+      owner_layer: governance
+      authority: TOOL
+      supported_work_item_types: []
+      required_skills: []
+      tests:
+        - tests/playbook/test_playbook_schema.py
+      pilots:
+        - pilot-4
+      last_verified_revision: "d733e908"
+      superseded_by: null
+
+    - playbook_id: replay-acquisition-playbook-tool
+      title: "YAML Acquisition Playbook Dry-Run Replay"
+      version: "1.0"
+      status: ACTIVE
+      category: tool
+      canonical_path: tools/playbook/replay_acquisition_playbook.py
+      owner_layer: governance
+      authority: TOOL
+      supported_work_item_types: []
+      required_skills: []
+      tests:
+        - tests/playbook/test_replay_dry_run.py
+      pilots:
+        - pilot-4
+      last_verified_revision: "d733e908"
+      superseded_by: null
+      note: "S-F2F-03 EXECUTED 2026-05-09. AGENTS.md 'unauthorized' text is stale — see authority-decision.yaml"
+
+counters:
+  ACTIVE_ENTRIES: 8
+  SPRINT_TASK_TEMPLATES: 6
+  TOOLS: 2
+  DEPRECATED_ENTRIES: 0

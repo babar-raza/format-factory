@@ -1,0 +1,176 @@
+---
+# Playbook Authority Model Decision
+# Mission: FF-PLAYBOOK-SYSTEM-001 (bright-marinating-map)
+# Generated: 2026-07-01
+# TC-PB-002
+
+decision:
+  AMBIGUOUS_PLAYBOOK_AUTHORITIES: 0
+
+  model_selected: MODEL_C_SEPARATE_SCOPED_LAYERS
+  decision_date: "2026-07-01"
+  binding: true
+
+  rationale: >
+    Two distinct layers exist that both use the word "playbook."
+    Merging them (MODEL A or B) would require reconciling fundamentally different
+    authority models: the YAML acquisition layer has strict schema enforcement,
+    authority boundaries, forbidden_uses, and DEC-034 integration; the Markdown
+    templates are agent skill execution guides with no machine-readable contract.
+    Keeping them as MODEL C with EXPLICIT DISAMBIGUATION removes all ambiguity
+    without destructive merging or loss of either layer's value.
+
+  ambiguity_resolution: >
+    The word "playbook" is RESERVED for the governed YAML acquisition layer only.
+    Markdown templates in playbooks/format-factory/ are reclassified as
+    "Sprint Task Templates." All future documentation, AGENTS.md, GOVERNANCE.md,
+    and registry entries MUST use "Sprint Task Template" when referring to the
+    Markdown files. No new documentation may call them "playbooks."
+
+# ─────────────────────────────────────────────────────────
+# LAYER A: SPRINT TASK TEMPLATES
+# ─────────────────────────────────────────────────────────
+sprint_task_template_layer:
+  location: playbooks/format-factory/
+  canonical_name: Sprint Task Templates
+  former_name: "Playbooks (incorrect — now deprecated for this layer)"
+  authority: TASK_TEMPLATE
+  machine_authority: false  # Markdown; no executable schema
+  purpose: >
+    Agent skill execution guides that standardize how agents implement recurring
+    sprint tasks (new format acquisition, feature expansion, bounded source patches).
+    They declare allowed/forbidden paths, minimum tests, known pitfalls, and rollback.
+    They generate bounded governed taskcards when invoked through the taskcard
+    integration model (tools/playbook/generate_playbook_taskcards.py).
+  what_they_are:
+    - Agent skill execution guides
+    - Skill invocation templates (registered as skills in .supervisor/skill-registry.yaml)
+    - Taskcard generation sources (via generate_playbook_taskcards.py)
+    - Known-pitfall encyclopedias for recurring sprint tasks
+  what_they_are_not:
+    - NOT "playbooks" in the acquisition-playbook sense
+    - NOT gate approval mechanisms
+    - NOT evidence contracts
+    - NOT DEC-034 substitutes
+    - NOT spec or legal authority
+    - NOT supervisor pipeline authority (best-effort reference only)
+  consumers_authorized:
+    - Agent invocation via skill registry
+    - generate_playbook_taskcards.py (reads YAML front-matter)
+    - playbook_selector.py (matches work item type to template)
+  consumers_forbidden:
+    - Any tool that uses these files to approve gates
+    - Any tool that marks work complete based on template existence
+    - Any tool that replaces evidence contracts with template references
+
+# ─────────────────────────────────────────────────────────
+# LAYER B: ACQUISITION PLAYBOOKS (YAML)
+# ─────────────────────────────────────────────────────────
+acquisition_playbook_layer:
+  location:
+    - schemas/playbook/
+    - tools/playbook/
+    - tests/playbook/
+    - acquisition-packs/_families/
+    - docs/playbook-layer.md
+  canonical_name: Acquisition Playbooks
+  authority: ACQUISITION_REPLAY
+  machine_authority: true  # JSON Schema validated YAML
+  purpose: >
+    Structured YAML documents (conforming to acquisition-playbook.schema.json) that record
+    what acquisition operations were performed in prior sprints. They enable deterministic
+    dry-run replay, conflict detection via review queues, and format-family reuse proposals.
+    They have strict authority boundaries enforced by schema (forbidden_uses fields).
+  what_they_are:
+    - Structured YAML with JSON Schema validation
+    - Execution reference memory for acquisition sprints
+    - Conflict detectors (export to review queue when replay mismatches)
+    - Format-family reuse guides (family_playbook kind)
+    - Non-authoritative documentation of acquisition workflows
+  what_they_are_not:
+    - NOT gate approval mechanisms
+    - NOT evidence contracts
+    - NOT DEC-034 substitutes
+    - NOT human approval substitutes
+    - NOT Sprint Task Templates (those are Markdown in playbooks/format-factory/)
+
+# ─────────────────────────────────────────────────────────
+# CRITICAL RECONCILIATION FINDINGS
+# ─────────────────────────────────────────────────────────
+stale_policy_reconciliation:
+  finding: >
+    AGENTS.md §AA and GOVERNANCE.md §20 both state that
+    "Replay tools, apply mode, acquisition-pack playbooks, and family playbooks remain unauthorized."
+    This is FACTUALLY INCORRECT as of 2026-07-01.
+
+  evidence_of_execution:
+    - contract_id: secondary-sf2f03-dry-run-replay-review-queue
+      executed: "2026-05-09"
+      status: evidence_contract_exists
+      deliverables:
+        - tools/playbook/replay_acquisition_playbook.py (EXISTS)
+        - tools/playbook/diff_playbook_outputs.py (EXISTS)
+        - tools/playbook/export_review_queue.py (EXISTS)
+        - tests/playbook/test_replay_dry_run.py (EXISTS, PASSES)
+    - contract_id: secondary-sf2f04-golden-dry-run-tests
+      executed: "2026-05-09"
+      status: evidence_contract_exists
+      deliverables:
+        - tests/playbook/golden/ (8 golden files EXISTS)
+        - tools/playbook/create_golden_case.py (EXISTS)
+        - tests/playbook/test_replay_golden.py (EXISTS, PASSES)
+        - tests/playbook/test_diff_golden.py (EXISTS, PASSES)
+        - tests/playbook/test_review_queue_golden.py (EXISTS, PASSES)
+    - contract_id: odf-flat family playbook
+      executed: "POST-FODT-GATE10-CONTROLLED-SWARM-001"
+      status: exists_as_proposed
+      path: acquisition-packs/_families/odf-flat/playbook.yaml
+
+  required_policy_updates:
+    - file: AGENTS.md
+      section: "§AA (lines 641-676)"
+      action: >
+        Update to reflect S-F2F-03 and S-F2F-04 as COMPLETE (executed 2026-05-09).
+        Clarify that replay_acquisition_playbook.py dry-run mode IS authorized.
+        Apply mode remains NOT authorized (correct — not implemented).
+        Add Sprint Task Template layer description.
+    - file: GOVERNANCE.md
+      section: "§20 (lines 288-316)"
+      action: >
+        Update to reflect S-F2F-03/04 as complete.
+        Clarify replay tools are authorized for dry-run/validate/explain modes only.
+        Add Sprint Task Templates as separate layer with clear scope.
+    - file: docs/playbook-layer.md
+      action: >
+        Update S-F2F phase status table: S-F2F-03 → COMPLETE, S-F2F-04 → COMPLETE.
+        Add section on Sprint Task Template layer (Model C disambiguation).
+
+# ─────────────────────────────────────────────────────────
+# AUTHORITY BOUNDARY SUMMARY
+# ─────────────────────────────────────────────────────────
+authority_boundaries:
+  what_playbooks_may_do:
+    - Standardize recurring task decomposition
+    - Define required checks and validation
+    - Define evidence expectations
+    - Define rollback procedures
+    - Encode known failure modes
+    - Generate bounded taskcards with provenance (via generate_playbook_taskcards.py)
+    - Select applicable execution template for work item type (via playbook_selector.py)
+
+  what_playbooks_may_not_do:
+    - Create product requirements without source authority
+    - Override plans or taskcards
+    - Approve gates (any gate, any format)
+    - Mark work complete
+    - Replace evidence contracts
+    - Replace DEC-034 independent verification
+    - Replace human approval for Gate 11 execution
+    - Substitute for master-plan.md authority
+    - Encode one-off workaround noise as reusable lessons
+
+  forbidden_at_all_times:
+    - Using "playbook" terminology to describe Sprint Task Templates in new documentation
+    - Creating per-format acquisition playbooks without separate sprint authorization
+    - Calling templates "execution authority"
+    - Treating playbook validation PASS as gate approval

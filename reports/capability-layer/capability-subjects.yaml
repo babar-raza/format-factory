@@ -1,0 +1,515 @@
+schema_version: "1.0"
+generated_at: "2026-07-01T00:00:00+00:00"
+generated_by: "TC-CAP-004 (moonlit-squishing-sonnet)"
+mission_id: "capability-layer-healing"
+
+# UNRESOLVED_PRODUCT_FORMAT_IDENTITIES = 0
+# DUPLICATE_CAPABILITY_SUBJECTS = 0
+unresolved_count: 0
+duplicate_count: 0
+
+# ── IDENTITY NORMALIZATION RULES ─────────────────────────────────────────────
+
+normalization_rules:
+  canonical_format_id_source: "registry/format-registry.yaml"
+  canonical_format_count: 24  # proper formats (odf-shared is a shared lib, not a product format)
+  poc_target_count: 19
+  non_poc_formats: [ora, pam, xpm, zpaq]  # No products exist; excluded from POC
+  shared_libs: [odf-shared]  # Not a standalone product format
+
+  grouping_rules:
+    - name: "Netpbm aggregate (commercial .NET only)"
+      aggregate_id: "netpbm"
+      aggregate_children: [pbm, pgm, ppm]
+      product_path: "src/net/netpbm/"
+      rule: |
+        The commercial .NET product 'Netpbm' handles all three formats (PBM/PGM/PPM)
+        in a single library. For commercial capability subjects, use 'netpbm' as the
+        aggregate subject. For FOSS Python, use individual subjects (pbm, pgm, ppm)
+        because each has its own Python package.
+      capability_counting:
+        commercial: "Count once per (operation, Netpbm) — do NOT triple-count for PBM+PGM+PPM"
+        foss: "Count once per (operation, format) — three separate counts"
+
+    - name: "ODF flat formats (NOT grouped)"
+      formats: [fods, fodt, fodp, fodg]
+      rule: |
+        FODS, FODT, FODP, FODG are related ODF formats but are NOT a grouped family.
+        Each has its own Python package and its own commercial product (FODS, FODT only for commercial).
+        Treat as SEPARATE subjects; do NOT aggregate.
+
+    - name: "Language track split (Python vs .NET)"
+      rule: |
+        For formats with both Python FOSS and .NET commercial products,
+        create two subjects: one per language track.
+        FODS: subject fods:python (FOSS) + subject fods:dotnet (commercial)
+        FODT: subject fodt:python (FOSS) + subject fodt:dotnet (commercial)
+        ZST: subject zst:python (FOSS) + subject zst:dotnet (commercial)
+        CSV/TSV/NDJSON: dotnet is export-target helper only; no commercial product; python:FOSS only
+        Netpbm: subject netpbm:python (FOSS, 3 individual pkgs) + subject netpbm:dotnet (commercial, aggregate)
+
+# ── CANONICAL CAPABILITY SUBJECTS ────────────────────────────────────────────
+
+capability_subjects:
+
+  # ── COMMERCIAL .NET SUBJECTS ──────────────────────────────────────────────
+
+  - subject_id: "fods:dotnet"
+    format_id: fods
+    product_id: "FormatFactory.Fods"
+    language: dotnet
+    track: commercial
+    aggregate_parent: null
+    aggregate_children: []
+    aliases: ["FODS-COMMERCIAL", "FODS-dotnet"]
+    active: true
+    in_poc: true
+    gate_status: "Gate 1-11 PASSED; G11-G APPROVED by Babar Raza"
+    evidence_roots:
+      - src/net/fods/
+      - tests/net/fods/
+      - product-capability-matrix/fods.yaml
+
+  - subject_id: "fodt:dotnet"
+    format_id: fodt
+    product_id: "FormatFactory.Fodt"
+    language: dotnet
+    track: commercial
+    aggregate_parent: null
+    aggregate_children: []
+    aliases: ["FODT-COMMERCIAL", "FODT-dotnet"]
+    active: true
+    in_poc: true
+    gate_status: "Gate 1-11 PASSED; G11-G APPROVED by Babar Raza"
+    evidence_roots:
+      - src/net/fodt/
+      - tests/net/fodt/
+      - product-capability-matrix/fodt.yaml
+
+  - subject_id: "netpbm:dotnet"
+    format_id: netpbm
+    product_id: "FormatFactory.Netpbm"
+    language: dotnet
+    track: commercial
+    aggregate_parent: null
+    aggregate_children: [pbm, pgm, ppm]
+    aliases: ["NETPBM-COMMERCIAL", "Netpbm-dotnet", "PBM/PGM/PPM-commercial"]
+    active: true
+    in_poc: true
+    gate_status: "Gate 1-10 PASSED; G11-G APPROVED"
+    capability_count_rule: "Count once per operation (NOT three times for PBM+PGM+PPM)"
+    evidence_roots:
+      - src/net/netpbm/
+      - tests/net/netpbm/
+      - product-capability-matrix/netpbm.yaml
+
+  # ── FOSS PYTHON SUBJECTS ───────────────────────────────────────────────────
+
+  - subject_id: "fods:python"
+    format_id: fods
+    product_id: "format-factory-fods"
+    language: python
+    track: foss_reduced
+    aggregate_parent: null
+    aggregate_children: []
+    aliases: ["FODS-FOSS", "FODS-python", "fods_python"]
+    active: true
+    in_poc: true
+    gate_status: "Gates 1-10 PASSED; Oracle VERIFIED 8/8"
+    evidence_roots:
+      - src/python/fods/
+      - tests/python/fods/
+      - .venv/Lib/site-packages/fods/
+
+  - subject_id: "fodt:python"
+    format_id: fodt
+    product_id: "format-factory-fodt"
+    language: python
+    track: foss_reduced
+    aggregate_parent: null
+    aggregate_children: []
+    aliases: ["FODT-FOSS", "FODT-python"]
+    active: true
+    in_poc: true
+    gate_status: "Gates 1-10 PASSED; Oracle VERIFIED 3/3"
+    evidence_roots:
+      - src/python/fodt/
+      - tests/python/fodt/
+      - .venv/Lib/site-packages/fodt/
+
+  - subject_id: "zst:python"
+    format_id: zst
+    product_id: "format-factory-zst"
+    language: python
+    track: foss_reduced
+    aggregate_parent: null
+    aggregate_children: []
+    aliases: ["ZST-FOSS", "ZST-python"]
+    active: true
+    in_poc: true
+    gate_status: "Gates 1-10 PASSED; Oracle VERIFIED 6/6"
+    evidence_roots:
+      - src/python/zst/
+      - tests/python/zst/
+      - .venv/Lib/site-packages/zst/
+
+  - subject_id: "zst:dotnet"
+    format_id: zst
+    product_id: "FormatFactory.Zst (helper)"
+    language: dotnet
+    track: commercial_helper
+    aggregate_parent: null
+    aggregate_children: []
+    aliases: ["ZST-dotnet"]
+    active: true
+    in_poc: false
+    gate_status: "Helper only; not a standalone commercial product"
+    evidence_roots:
+      - src/net/zst/
+
+  - subject_id: "csv:python"
+    format_id: csv
+    product_id: "format-factory-csv"
+    language: python
+    track: foss_reduced
+    aggregate_parent: null
+    aggregate_children: []
+    aliases: ["CSV-FOSS", "CSV-python"]
+    active: true
+    in_poc: true
+    gate_status: "Gates 1-10 PASSED; Oracle VERIFIED 5/5"
+    evidence_roots:
+      - src/python/csv/
+      - tests/python/csv/
+      - .venv/Lib/site-packages/csv/ (may use stdlib)
+
+  - subject_id: "tsv:python"
+    format_id: tsv
+    product_id: "format-factory-tsv"
+    language: python
+    track: foss_reduced
+    aggregate_parent: null
+    aggregate_children: []
+    aliases: ["TSV-FOSS", "TSV-python"]
+    active: true
+    in_poc: true
+    gate_status: "Gates 1-10 PASSED; Oracle VERIFIED 4/4"
+    evidence_roots:
+      - src/python/tsv/
+      - tests/python/tsv/
+
+  - subject_id: "ndjson:python"
+    format_id: ndjson
+    product_id: "format-factory-ndjson"
+    language: python
+    track: foss_reduced
+    aggregate_parent: null
+    aggregate_children: []
+    aliases: ["NDJSON-FOSS", "NDJSON-python"]
+    active: true
+    in_poc: true
+    gate_status: "Gates 1-10 PASSED; Oracle VERIFIED 4/4"
+    evidence_roots:
+      - src/python/ndjson/
+      - tests/python/ndjson/
+
+  - subject_id: "toml:python"
+    format_id: toml
+    product_id: "format-factory-toml"
+    language: python
+    track: foss_reduced
+    aggregate_parent: null
+    aggregate_children: []
+    aliases: ["TOML-FOSS", "TOML-python"]
+    active: true
+    in_poc: true
+    gate_status: "Gates 1-10 PASSED; Oracle VERIFIED 4/4"
+    evidence_roots:
+      - src/python/toml/
+      - tests/python/toml/
+
+  - subject_id: "abw:python"
+    format_id: abw
+    product_id: "format-factory-abw"
+    language: python
+    track: foss_reduced
+    aggregate_parent: null
+    aggregate_children: []
+    aliases: ["ABW-FOSS", "ABW-python"]
+    active: true
+    in_poc: true
+    gate_status: "Gates 1-10 PASSED; Oracle VERIFIED 3/3"
+    evidence_roots:
+      - src/python/abw/
+      - tests/python/abw/
+
+  - subject_id: "dif:python"
+    format_id: dif
+    product_id: "format-factory-dif"
+    language: python
+    track: foss_reduced
+    aggregate_parent: null
+    aggregate_children: []
+    aliases: ["DIF-FOSS", "DIF-python"]
+    active: true
+    in_poc: true
+    gate_status: "Gates 1-10 PASSED; Oracle VERIFIED 3/3"
+    evidence_roots:
+      - src/python/dif/
+      - tests/python/dif/
+
+  - subject_id: "gnumeric:python"
+    format_id: gnumeric
+    product_id: "format-factory-gnumeric"
+    language: python
+    track: foss_reduced
+    aggregate_parent: null
+    aggregate_children: []
+    aliases: ["GNUMERIC-FOSS", "GNUMERIC-python"]
+    active: true
+    in_poc: true
+    gate_status: "Gates 1-10 PASSED; Oracle VERIFIED 3/3"
+    evidence_roots:
+      - src/python/gnumeric/
+      - tests/python/gnumeric/
+
+  - subject_id: "sylk:python"
+    format_id: sylk
+    product_id: "format-factory-sylk"
+    language: python
+    track: foss_reduced
+    aggregate_parent: null
+    aggregate_children: []
+    aliases: ["SYLK-FOSS", "SYLK-python"]
+    active: true
+    in_poc: true
+    gate_status: "Gates 1-10 PASSED; Oracle VERIFIED 3/3"
+    evidence_roots:
+      - src/python/sylk/
+      - tests/python/sylk/
+
+  - subject_id: "ods:python"
+    format_id: ods
+    product_id: "format-factory-ods"
+    language: python
+    track: foss_reduced
+    aggregate_parent: null
+    aggregate_children: []
+    aliases: ["ODS-FOSS", "ODS-python"]
+    active: true
+    in_poc: true
+    gate_status: "Gates 1-10 PASSED; Oracle VERIFIED 3/3"
+    evidence_roots:
+      - src/python/ods/
+      - tests/python/ods/
+
+  - subject_id: "odt:python"
+    format_id: odt
+    product_id: "format-factory-odt"
+    language: python
+    track: foss_reduced
+    aggregate_parent: null
+    aggregate_children: []
+    aliases: ["ODT-FOSS", "ODT-python"]
+    active: true
+    in_poc: true
+    gate_status: "Gates 1-10 PASSED; Oracle VERIFIED 3/3"
+    evidence_roots:
+      - src/python/odt/
+      - tests/python/odt/
+
+  - subject_id: "fodp:python"
+    format_id: fodp
+    product_id: "format-factory-fodp"
+    language: python
+    track: foss_reduced
+    aggregate_parent: null
+    aggregate_children: []
+    aliases: ["FODP-FOSS", "FODP-python"]
+    active: true
+    in_poc: true
+    gate_status: "Gates 1-10 PASSED; Oracle VERIFIED 2/2"
+    evidence_roots:
+      - src/python/fodp/
+      - tests/python/fodp/
+
+  - subject_id: "fodg:python"
+    format_id: fodg
+    product_id: "format-factory-fodg"
+    language: python
+    track: foss_reduced
+    aggregate_parent: null
+    aggregate_children: []
+    aliases: ["FODG-FOSS", "FODG-python"]
+    active: true
+    in_poc: true
+    gate_status: "Gates 1-10 PASSED; Oracle VERIFIED 3/3"
+    evidence_roots:
+      - src/python/fodg/
+      - tests/python/fodg/
+
+  - subject_id: "qoi:python"
+    format_id: qoi
+    product_id: "format-factory-qoi"
+    language: python
+    track: foss_reduced
+    aggregate_parent: null
+    aggregate_children: []
+    aliases: ["QOI-FOSS", "QOI-python"]
+    active: true
+    in_poc: true
+    gate_status: "Gates 1-10 PASSED; Oracle VERIFIED 3/3"
+    evidence_roots:
+      - src/python/qoi/
+      - tests/python/qoi/
+
+  - subject_id: "xcf:python"
+    format_id: xcf
+    product_id: "format-factory-xcf"
+    language: python
+    track: foss_reduced
+    aggregate_parent: null
+    aggregate_children: []
+    aliases: ["XCF-FOSS", "XCF-python"]
+    active: true
+    in_poc: true
+    gate_status: "Gates 1-10 PASSED; Oracle VERIFIED 3/3"
+    evidence_roots:
+      - src/python/xcf/
+      - tests/python/xcf/
+
+  - subject_id: "pbm:python"
+    format_id: pbm
+    product_id: "format-factory-pbm"
+    language: python
+    track: foss_reduced
+    aggregate_parent: "netpbm:python"
+    aggregate_children: []
+    aliases: ["PBM-FOSS", "PBM-python"]
+    active: true
+    in_poc: true
+    gate_status: "Part of Netpbm FOSS; Oracle VERIFIED 3/3"
+    evidence_roots:
+      - src/python/pbm/
+      - tests/python/pbm/
+
+  - subject_id: "pgm:python"
+    format_id: pgm
+    product_id: "format-factory-pgm"
+    language: python
+    track: foss_reduced
+    aggregate_parent: "netpbm:python"
+    aggregate_children: []
+    aliases: ["PGM-FOSS", "PGM-python"]
+    active: true
+    in_poc: true
+    gate_status: "Part of Netpbm FOSS; Oracle VERIFIED 3/3"
+    evidence_roots:
+      - src/python/pgm/
+      - tests/python/pgm/
+
+  - subject_id: "ppm:python"
+    format_id: ppm
+    product_id: "format-factory-ppm"
+    language: python
+    track: foss_reduced
+    aggregate_parent: "netpbm:python"
+    aggregate_children: []
+    aliases: ["PPM-FOSS", "PPM-python"]
+    active: true
+    in_poc: true
+    gate_status: "Part of Netpbm FOSS; Oracle VERIFIED 3/3"
+    evidence_roots:
+      - src/python/ppm/
+      - tests/python/ppm/
+
+  # Netpbm Python aggregate view (roll-up for dashboard; not a separate product)
+  - subject_id: "netpbm:python"
+    format_id: netpbm
+    product_id: "format-factory-netpbm (aggregate)"
+    language: python
+    track: foss_reduced
+    aggregate_parent: null
+    aggregate_children: [pbm, pgm, ppm]
+    aliases: ["NETPBM-FOSS", "Netpbm-python"]
+    active: true
+    in_poc: true
+    gate_status: "Aggregate of pbm:python + pgm:python + ppm:python"
+    capability_count_rule: |
+      Dashboard uses netpbm:python as aggregate parent.
+      Do NOT sum pbm+pgm+ppm capability counts; use the aggregate count (Netpbm = 1 product).
+      Individual subjects (pbm:python, pgm:python, ppm:python) exist for per-format tracking.
+
+  # ── EXCLUDED SUBJECTS (no products) ──────────────────────────────────────
+
+  - subject_id: "ora:python"
+    format_id: ora
+    product_id: null
+    language: python
+    track: excluded
+    aggregate_parent: null
+    aggregate_children: []
+    aliases: []
+    active: false
+    in_poc: false
+    gate_status: "OBLIGATION_CREATED — no products exist; 0 SAL facts"
+    exclusion_reason: "No Python package, no source, no SAL facts; deferred until products created"
+
+  - subject_id: "pam:python"
+    format_id: pam
+    product_id: null
+    language: python
+    track: excluded
+    aggregate_parent: null
+    aggregate_children: []
+    aliases: []
+    active: false
+    in_poc: false
+    gate_status: "OBLIGATION_CREATED — no products exist; 0 SAL facts"
+    exclusion_reason: "No Python package, no source, no SAL facts; deferred until products created"
+
+  - subject_id: "xpm:python"
+    format_id: xpm
+    product_id: null
+    language: python
+    track: excluded
+    aggregate_parent: null
+    aggregate_children: []
+    aliases: []
+    active: false
+    in_poc: false
+    gate_status: "OBLIGATION_CREATED — no products exist; 0 SAL facts"
+    exclusion_reason: "No Python package, no source, no SAL facts; deferred until products created"
+
+  - subject_id: "zpaq:python"
+    format_id: zpaq
+    product_id: null
+    language: python
+    track: excluded
+    aggregate_parent: null
+    aggregate_children: []
+    aliases: []
+    active: false
+    in_poc: false
+    gate_status: "OBLIGATION_CREATED — no products exist; 0 SAL facts"
+    exclusion_reason: "No Python package, no source, no SAL facts; deferred until products created"
+
+# ── SUBJECT COUNT SUMMARY ────────────────────────────────────────────────────
+
+summary:
+  total_subjects: 28
+  active_subjects: 24  # 3 commercial + 20 FOSS python + 1 zst:dotnet helper
+  excluded_subjects: 4  # ora, pam, xpm, zpaq
+  commercial_dotnet: 3  # fods:dotnet, fodt:dotnet, netpbm:dotnet
+  foss_python_individual: 20  # all FOSS formats (pbm/pgm/ppm as individual)
+  foss_python_aggregate: 1  # netpbm:python (dashboard aggregate)
+  dotnet_helpers: 1  # zst:dotnet
+  duplicate_check: PASS  # All subject_ids are unique
+
+  duplicate_detection:
+    method: "Visual inspection + unique subject_id naming convention"
+    result: "No duplicates found; subject_id format = '{format_id}:{language}' is unique"
+
+required_counters:
+  UNRESOLVED_PRODUCT_FORMAT_IDENTITIES: 0
+  DUPLICATE_CAPABILITY_SUBJECTS: 0

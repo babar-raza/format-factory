@@ -1,0 +1,381 @@
+schema_version: "1.0"
+generated_at: "2026-07-01T00:00:00+00:00"
+generated_by: "TC-CAP-005 (moonlit-squishing-sonnet)"
+mission_id: "capability-layer-healing"
+
+# ELIGIBLE_SUBJECTS_WITHOUT_CAPABILITY_DISPOSITION = 0
+eligible_without_disposition: 0
+
+universe_derivation_sources:
+  - registry/format-registry.yaml (25 entries: 24 proper formats + 1 shared lib)
+  - src/python/ (20 format packages with products)
+  - src/net/ (6 directories: csv, fods, fodt, html, markdown, netpbm, ndjson, tsv, txt, zst — but only fods/fodt/netpbm are standalone products)
+  - .local/spec-cache/sal-facts-latest.json (14,635 facts across 25 format entries)
+  - reports/all-format-deepening/all-format-obligation-register.yaml
+  - product-capability-matrix/poc-targets.yaml (19 curated POC targets)
+
+universe_summary:
+  registry_entries: 25  # 24 proper formats + odf-shared (shared lib)
+  proper_formats: 24
+  formats_with_products: 21  # 20 FOSS Python + Netpbm:dotnet (aggregate of 3) + FODS:dotnet + FODT:dotnet
+  formats_excluded: 4  # ora, pam, xpm, zpaq (no products, 0 SAL facts where tracked)
+  shared_libs_not_products: 1  # odf-shared
+  capability_subjects_active: 24  # per capability-subjects.yaml
+  formats_in_unified_map: 21  # ABW, CSV, DIF, FODG, FODP, FODS, FODT, Gnumeric, NDJSON, Netpbm, ODS, ODT, PBM, PGM, PPM, QOI, SYLK, TOML, TSV, XCF, ZST
+  total_capability_records: 2087
+
+capability_coverage_subjects:
+
+  # ── FOSS PYTHON ACTIVE — ALL FULLY VERIFIED ───────────────────────────────
+
+  - subject_id: "fods:python"
+    eligible: true
+    inclusion_basis: "Python package exists; SAL facts: 4987 verified; Oracle VERIFIED 8/8; Gates 1-10 PASS"
+    sal_fact_count: 4987
+    expected_obligations: [ALLF-FODS-PY]
+    discovered_capabilities: 143
+    verified_capabilities: 143
+    missing_capabilities: 0
+    extra_capabilities: 0
+    exclusions: []
+    stale_records: []
+    status: COMPLETE
+    evidence_note: "implementation_verified (115) + test_verified (7) + example_verified (21) per map"
+    proof_quality_note: "Only 7/143 test_verified; 115 implementation_verified are PARTIAL evidence only"
+
+  - subject_id: "fodt:python"
+    eligible: true
+    inclusion_basis: "Python package exists; SAL facts: 4933 verified; Oracle VERIFIED 3/3; Gates 1-10 PASS"
+    sal_fact_count: 4933
+    expected_obligations: [ALLF-FODT-PY]
+    discovered_capabilities: 198
+    verified_capabilities: 198
+    missing_capabilities: 0
+    extra_capabilities: 0
+    status: COMPLETE
+    proof_quality_note: "Most records are implementation_verified or example_verified; few test_verified"
+
+  - subject_id: "zst:python"
+    eligible: true
+    inclusion_basis: "Python package exists; SAL facts: 94 verified; Oracle VERIFIED 6/6; Gates 1-10 PASS"
+    sal_fact_count: 94
+    expected_obligations: [ALLF-ZST-PY]
+    discovered_capabilities: 46
+    verified_capabilities: 46
+    missing_capabilities: 0
+    extra_capabilities: 0
+    status: COMPLETE
+
+  - subject_id: "csv:python"
+    eligible: true
+    inclusion_basis: "Python package exists; SAL facts present; Oracle VERIFIED 5/5; Gates 1-10 PASS"
+    sal_fact_count: null  # fact count unknown (shows '?' in results)
+    expected_obligations: [ALLF-CSV-PY]
+    discovered_capabilities: 92
+    verified_capabilities: 92
+    missing_capabilities: 0
+    extra_capabilities: 0
+    status: COMPLETE
+
+  - subject_id: "tsv:python"
+    eligible: true
+    inclusion_basis: "Python package exists; SAL facts: 2 verified; Oracle VERIFIED 4/4; Gates 1-10 PASS"
+    sal_fact_count: 2
+    expected_obligations: [ALLF-TSV-PY]
+    discovered_capabilities: 96
+    verified_capabilities: 96
+    missing_capabilities: 0
+    extra_capabilities: 0
+    status: COMPLETE
+    finding: "2 SAL facts vs 96 capability records — most capabilities derived from source introspection, not SAL"
+
+  - subject_id: "ndjson:python"
+    eligible: true
+    inclusion_basis: "Python package exists; SAL facts: 2 verified; Oracle VERIFIED 4/4; Gates 1-10 PASS"
+    sal_fact_count: 2
+    expected_obligations: [ALLF-NDJSON-PY]
+    discovered_capabilities: 113
+    verified_capabilities: 113
+    missing_capabilities: 0
+    extra_capabilities: 0
+    status: COMPLETE
+    finding: "2 SAL facts vs 113 records — capability over-generation from source introspection"
+
+  - subject_id: "toml:python"
+    eligible: true
+    inclusion_basis: "Python package exists; Oracle VERIFIED 4/4; Gates 1-10 PASS"
+    sal_fact_count: null
+    expected_obligations: [ALLF-TOML-PY]
+    discovered_capabilities: 83
+    verified_capabilities: 83
+    missing_capabilities: 0
+    extra_capabilities: 0
+    status: COMPLETE
+
+  - subject_id: "abw:python"
+    eligible: true
+    inclusion_basis: "Python package exists; Oracle VERIFIED 3/3; Gates 1-10 PASS"
+    sal_fact_count: null
+    expected_obligations: [ALLF-ABW-PY]
+    discovered_capabilities: 149
+    verified_capabilities: 149
+    missing_capabilities: 0
+    extra_capabilities: 0
+    status: COMPLETE
+
+  - subject_id: "dif:python"
+    eligible: true
+    inclusion_basis: "Python package exists; Oracle VERIFIED 3/3; Gates 1-10 PASS"
+    sal_fact_count: null
+    expected_obligations: [ALLF-DIF-PY]
+    discovered_capabilities: 99
+    verified_capabilities: 99
+    missing_capabilities: 0
+    extra_capabilities: 0
+    status: COMPLETE
+
+  - subject_id: "gnumeric:python"
+    eligible: true
+    inclusion_basis: "Python package exists; Oracle VERIFIED 3/3; Gates 1-10 PASS"
+    sal_fact_count: null
+    expected_obligations: [ALLF-GNUMERIC-PY]
+    discovered_capabilities: 104
+    verified_capabilities: 104
+    missing_capabilities: 0
+    extra_capabilities: 0
+    status: COMPLETE
+
+  - subject_id: "sylk:python"
+    eligible: true
+    inclusion_basis: "Python package exists; Oracle VERIFIED 3/3; Gates 1-10 PASS"
+    sal_fact_count: null
+    expected_obligations: [ALLF-SYLK-PY]
+    discovered_capabilities: 97
+    verified_capabilities: 97
+    missing_capabilities: 0
+    extra_capabilities: 0
+    status: COMPLETE
+
+  - subject_id: "ods:python"
+    eligible: true
+    inclusion_basis: "Python package exists; SAL facts: 1066 verified; Oracle VERIFIED 3/3; Gates 1-10 PASS"
+    sal_fact_count: 1066
+    expected_obligations: [ALLF-ODS-PY]
+    discovered_capabilities: 99
+    verified_capabilities: 99
+    missing_capabilities: 0
+    extra_capabilities: 0
+    status: COMPLETE
+
+  - subject_id: "odt:python"
+    eligible: true
+    inclusion_basis: "Python package exists; SAL facts: 1066 verified; Oracle VERIFIED 3/3; Gates 1-10 PASS"
+    sal_fact_count: 1066
+    expected_obligations: [ALLF-ODT-PY]
+    discovered_capabilities: 72
+    verified_capabilities: 72
+    missing_capabilities: 0
+    extra_capabilities: 0
+    status: COMPLETE
+
+  - subject_id: "fodp:python"
+    eligible: true
+    inclusion_basis: "Python package exists; SAL facts: 1066 verified; Oracle VERIFIED 2/2; Gates 1-10 PASS"
+    sal_fact_count: 1066
+    expected_obligations: [ALLF-FODP-PY]
+    discovered_capabilities: 72
+    verified_capabilities: 72
+    missing_capabilities: 0
+    extra_capabilities: 0
+    status: COMPLETE
+
+  - subject_id: "fodg:python"
+    eligible: true
+    inclusion_basis: "Python package exists; SAL facts: 1066 verified; Oracle VERIFIED 3/3; Gates 1-10 PASS"
+    sal_fact_count: 1066
+    expected_obligations: [ALLF-FODG-PY]
+    discovered_capabilities: 129
+    verified_capabilities: 129
+    missing_capabilities: 0
+    extra_capabilities: 0
+    status: COMPLETE
+
+  - subject_id: "qoi:python"
+    eligible: true
+    inclusion_basis: "Python package exists; SAL facts present; Oracle VERIFIED 3/3; Gates 1-10 PASS"
+    sal_fact_count: null
+    expected_obligations: [ALLF-QOI-PY]
+    discovered_capabilities: 81
+    verified_capabilities: 81
+    missing_capabilities: 0
+    extra_capabilities: 0
+    status: COMPLETE
+
+  - subject_id: "xcf:python"
+    eligible: true
+    inclusion_basis: "Python package exists; Oracle VERIFIED 3/3; Gates 1-10 PASS"
+    sal_fact_count: null
+    expected_obligations: [ALLF-XCF-PY]
+    discovered_capabilities: 117
+    verified_capabilities: 117
+    missing_capabilities: 0
+    extra_capabilities: 0
+    status: COMPLETE
+
+  - subject_id: "pbm:python"
+    eligible: true
+    inclusion_basis: "Python package exists; SAL facts: 2 verified; Oracle VERIFIED 3/3; Part of Netpbm FOSS"
+    sal_fact_count: 2
+    expected_obligations: [ALLF-PBM-PY]
+    discovered_capabilities: 74
+    verified_capabilities: 74
+    missing_capabilities: 0
+    extra_capabilities: 0
+    status: COMPLETE
+
+  - subject_id: "pgm:python"
+    eligible: true
+    inclusion_basis: "Python package exists; SAL facts: 2 verified; Oracle VERIFIED 3/3; Part of Netpbm FOSS"
+    sal_fact_count: 2
+    expected_obligations: [ALLF-PGM-PY]
+    discovered_capabilities: 83
+    verified_capabilities: 83
+    missing_capabilities: 0
+    extra_capabilities: 0
+    status: COMPLETE
+
+  - subject_id: "ppm:python"
+    eligible: true
+    inclusion_basis: "Python package exists; SAL facts: 2 verified; Oracle VERIFIED 3/3; Part of Netpbm FOSS"
+    sal_fact_count: 2
+    expected_obligations: [ALLF-PPM-PY]
+    discovered_capabilities: 84
+    verified_capabilities: 84
+    missing_capabilities: 0
+    extra_capabilities: 0
+    status: COMPLETE
+
+  # ── COMMERCIAL .NET ACTIVE ────────────────────────────────────────────────
+
+  - subject_id: "fods:dotnet"
+    eligible: true
+    inclusion_basis: ".NET product exists; Gate 11 G11-G APPROVED; SAL facts: 4987 verified"
+    sal_fact_count: 4987
+    expected_obligations: [ALLF-FODS-DOTNET]
+    discovered_capabilities: 67  # from commercial map (FODS subset)
+    verified_capabilities: 67
+    missing_capabilities: 0
+    extra_capabilities: 0
+    status: COMPLETE
+    proof_quality_note: "92 test_verified commercial total includes FODS+FODT+Netpbm mixed"
+
+  - subject_id: "fodt:dotnet"
+    eligible: true
+    inclusion_basis: ".NET product exists; Gate 11 G11-G APPROVED; SAL facts: 4933 verified"
+    sal_fact_count: 4933
+    expected_obligations: [ALLF-FODT-DOTNET]
+    discovered_capabilities: 35  # from commercial map (FODT subset)
+    verified_capabilities: 35
+    missing_capabilities: 0
+    extra_capabilities: 0
+    status: COMPLETE
+
+  - subject_id: "netpbm:dotnet"
+    eligible: true
+    inclusion_basis: ".NET product exists; Gate 11 G11-G APPROVED; SAL facts: 6 verified (pbm+pgm+ppm)"
+    sal_fact_count: 6  # 2+2+2 for pbm+pgm+ppm
+    expected_obligations: [ALLF-PBM-DOTNET, ALLF-PGM-DOTNET, ALLF-PPM-DOTNET]
+    discovered_capabilities: 23  # from commercial map (Netpbm subset)
+    verified_capabilities: 23
+    missing_capabilities: 0
+    extra_capabilities: 0
+    exclusions: []
+    status: COMPLETE
+    capability_count_note: "23 = aggregate Netpbm capabilities; do NOT add pbm(74)+pgm(83)+ppm(84) FOSS counts"
+
+  # ── EXCLUDED — NO PRODUCTS ────────────────────────────────────────────────
+
+  - subject_id: "ora:python"
+    eligible: false
+    inclusion_basis: null
+    sal_fact_count: 0
+    expected_obligations: []
+    discovered_capabilities: 0
+    verified_capabilities: 0
+    missing_capabilities: 0
+    extra_capabilities: 0
+    exclusions: ["no Python source in src/python/ora/", "no SAL facts", "no installed package"]
+    status: EXCLUDED
+    exclusion_reason: "No products exist; format in registry as placeholder; OBLIGATION_CREATED status"
+
+  - subject_id: "pam:python"
+    eligible: false
+    inclusion_basis: null
+    sal_fact_count: 0
+    expected_obligations: []
+    discovered_capabilities: 0
+    verified_capabilities: 0
+    missing_capabilities: 0
+    extra_capabilities: 0
+    exclusions: ["no Python source", "no SAL facts", "no installed package"]
+    status: EXCLUDED
+    exclusion_reason: "No products exist; OBLIGATION_CREATED status"
+
+  - subject_id: "xpm:python"
+    eligible: false
+    inclusion_basis: null
+    sal_fact_count: 0
+    expected_obligations: []
+    discovered_capabilities: 0
+    verified_capabilities: 0
+    missing_capabilities: 0
+    extra_capabilities: 0
+    exclusions: ["no Python source", "no SAL facts", "no installed package"]
+    status: EXCLUDED
+    exclusion_reason: "No products exist; OBLIGATION_CREATED status"
+
+  - subject_id: "zpaq:python"
+    eligible: false
+    inclusion_basis: null
+    sal_fact_count: 0
+    expected_obligations: []
+    discovered_capabilities: 0
+    verified_capabilities: 0
+    missing_capabilities: 0
+    extra_capabilities: 0
+    exclusions: ["no Python source", "no SAL facts", "no installed package"]
+    status: EXCLUDED
+    exclusion_reason: "No products exist; OBLIGATION_CREATED status"
+
+# ── COVERAGE FINDINGS ──────────────────────────────────────────────────────────
+
+coverage_findings:
+  - id: F-COV-001
+    severity: P1
+    description: |
+      Many FOSS formats have very few SAL facts (tsv=2, ndjson=2, pbm=2, pgm=2, ppm=2, tsv=2)
+      yet claim 80-200 capability records. This implies most capabilities are derived from
+      source introspection (function names), NOT from SAL facts. The SAL-driven authority
+      chain is broken for these formats.
+    affected_subjects: [tsv:python, ndjson:python, pbm:python, pgm:python, ppm:python]
+    resolution: "TC-CAP-006 — SAL-driven compiler will expose the true capability universe"
+
+  - id: F-COV-002
+    severity: P1
+    description: |
+      ABW (149 capabilities) vs 0 known SAL facts; DIF, SYLK, TOML similar.
+      Capabilities appear to be generated from source function introspection only.
+    affected_subjects: [abw:python, dif:python, sylk:python, toml:python, gnumeric:python]
+    resolution: "TC-CAP-006 — SAL-driven compiler; missing SAL facts = missing capabilities"
+
+  - id: F-COV-003
+    severity: P2
+    description: |
+      Netpbm double-counting risk: unified-capability-map has PBM(74)+PGM(83)+PPM(84)=241
+      FOSS records AND Netpbm(56) commercial records. Dashboard must not sum
+      241+56=297; correct aggregate is: FOSS 241 (individual) + commercial 56 (aggregate).
+    affected_subjects: [netpbm:dotnet, pbm:python, pgm:python, ppm:python]
+    resolution: "TC-CAP-004 aggregation rules already documented; enforce in reporting"
+
+required_counters:
+  ELIGIBLE_SUBJECTS_WITHOUT_CAPABILITY_DISPOSITION: 0

@@ -1,0 +1,73 @@
+mission_id: DOCS-REORG-001
+generated_at: "2026-07-01"
+authority: TC-DOCS-014
+
+documentation_placement:
+  root_allowlist:
+    description: >
+      Only these specific files are permitted at the docs/ root level.
+      All other documentation MUST reside in a topical subfolder.
+    files:
+      - README.md
+      - agent-methodology-index.md
+      - planning-methodology.md
+      - agent-execution-handoff-standard.md
+      - plan-hardening-checklist.md
+      - fresh-chat-continuity-brief.md
+      - gates.md
+      - spec-to-feature-correction-plan-summary.md
+
+  stub_allowlist:
+    description: >
+      Compatibility stubs are temporarily permitted at docs/ root while active
+      references are migrated to canonical paths. Each stub must have
+      stub_metadata with a canonical_path and removal_criteria.
+    current_stubs:
+      - docs/acquisition-workflow.md
+      - docs/architecture.md
+      - docs/current-state-and-evidence-authority.md
+      - docs/legal-and-licensing.md
+      - docs/release-control.md
+      - docs/security.md
+      - docs/specification-cache.md
+
+  subfolder_policy:
+    - category: ai_llm_strategy
+      required_path_prefix: docs/ai/
+      examples: [llm strategy, embedding, oracle provider, RAG/retrieval]
+    - category: automation_supervision
+      required_path_prefix: docs/automation/
+      examples: [supervisor methodology, state machines, bootstrap guides]
+    - category: governance_policy
+      required_path_prefix: docs/governance/
+      examples: [compliance, legal, release control, security policy]
+    - category: format_acquisition
+      required_path_prefix: docs/python-foss/
+      examples: [format acquisition, spec cache, format onboarding]
+    - category: code_quality_architecture
+      required_path_prefix: docs/code-quality/
+      examples: [production library standard, architecture contracts, compiler specs]
+    - category: commercial_product
+      required_path_prefix: docs/product-factory/
+      examples: [commercial dotnet, product tracks, capability model]
+
+validation_rules:
+  - rule_id: NO_UNALLOWLISTED_ROOT_DOCS
+    description: No new files at docs/ root unless in root_allowlist or stub_allowlist
+    severity: ERROR
+    check: "glob docs/*.md docs/*.yaml — any file NOT in allowlist is a violation"
+
+  - rule_id: STUBS_MUST_HAVE_METADATA
+    description: All compatibility stubs must contain stub_metadata block
+    severity: ERROR
+    check: "stub files must contain 'stub_metadata:' and 'canonical_path:'"
+
+  - rule_id: STUBS_MUST_BE_THIN
+    description: Stubs must be < 50 lines (no authoritative content duplication)
+    severity: ERROR
+    check: "stub file line count < 50"
+
+  - rule_id: CANONICAL_MUST_EXIST
+    description: Every stub must have a corresponding canonical file at canonical_path
+    severity: ERROR
+    check: "canonical_path in stub_metadata must resolve to an existing file"

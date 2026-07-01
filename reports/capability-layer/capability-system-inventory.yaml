@@ -1,0 +1,544 @@
+schema_version: "1.0"
+generated_at: "2026-07-01T00:00:00+00:00"
+generated_by: "TC-CAP-001 (moonlit-squishing-sonnet)"
+mission_id: "capability-layer-healing"
+
+# UNINVENTORIED_CAPABILITY_ARTIFACTS = 0
+uninventoried_count: 0
+
+capability_artifacts:
+
+  # ── CORE GENERATED MAPS ──────────────────────────────────────────────────
+
+  - artifact_id: commercial-capability-map
+    path: reports/capability-layer/commercial-capability-map.json
+    type: generated_capability_map
+    producer: tools/capability_layer/capability_map_generator.py
+    consumers:
+      - tools/capability_layer/validate_capability_map.py
+      - tools/supervisor/check_system_healing_gate.py (unified only)
+      - reports/capability-layer/unified-capability-map.json (merged into)
+    source_inputs:
+      - product-capability-matrix/poc-targets.yaml
+      - .local/spec-cache/sal-facts-latest.json
+      - src/net/ (source introspection)
+      - tests/net/ (test ref scanning)
+    source_revision: "CAPABILITY-LAYER-HEALING-20260625-a2e6488"
+    generated_at: "2026-06-25T17:37:51.199734+00:00"
+    generator_version: null
+    current: true
+    authoritative: false
+    stale: false
+    record_count: 125
+    state_breakdown:
+      test_verified: 92
+      implementation_verified: 33
+    findings:
+      - PROSE_DERIVED_CAPABILITY: primary authority is poc-targets.yaml, not SAL facts
+      - WEAK_EVIDENCE: implementation_verified (33) lacks test evidence; only source refs present
+      - NO_GENERATOR_VERSION: generator_version field absent; staleness detection impossible
+
+  - artifact_id: foss-reduced-capability-map
+    path: reports/capability-layer/foss-reduced-capability-map.json
+    type: generated_capability_map
+    producer: tools/capability_layer/capability_map_generator.py
+    consumers:
+      - tools/capability_layer/validate_capability_map.py
+      - tools/supervisor/capability_queue_consumer.py (dead load — never used)
+      - reports/capability-layer/unified-capability-map.json (merged into)
+    source_inputs:
+      - product-capability-matrix/poc-targets.yaml
+      - .local/spec-cache/sal-facts-latest.json
+      - src/python/ (source introspection)
+      - tests/python/ (test ref scanning)
+    source_revision: "CAPABILITY-LAYER-HEALING-20260625-a2e6488"
+    generated_at: "2026-06-25T17:37:51.199734+00:00"
+    generator_version: null
+    current: true
+    authoritative: false
+    stale: false
+    record_count: 1962
+    state_breakdown:
+      example_verified: 554
+      implementation_verified: 1295
+      test_verified: 113
+    findings:
+      - PROSE_DERIVED_CAPABILITY: primary authority is poc-targets.yaml, not SAL facts
+      - WEAK_EVIDENCE: implementation_verified (1295) lacks test evidence; example_verified (554) lacks test evidence
+      - NO_GENERATOR_VERSION: generator_version field absent
+      - DEAD_CONSUMER: capability_queue_consumer.py loads this file but never uses loaded data
+
+  - artifact_id: unified-capability-map
+    path: reports/capability-layer/unified-capability-map.json
+    type: generated_capability_map
+    producer: tools/capability_layer/capability_map_generator.py
+    consumers:
+      - tools/capability_layer/validate_capability_map.py
+      - tools/supervisor/check_system_healing_gate.py (reads for record count check)
+    source_inputs:
+      - reports/capability-layer/commercial-capability-map.json
+      - reports/capability-layer/foss-reduced-capability-map.json
+    source_revision: "CAPABILITY-LAYER-HEALING-20260625-a2e6488"
+    generated_at: "2026-06-25T17:37:51.199734+00:00"
+    generator_version: null
+    current: true
+    authoritative: false
+    stale: false
+    record_count: 2087
+    state_breakdown:
+      test_verified: 205
+      implementation_verified: 1328
+      example_verified: 554
+    findings:
+      - FALSE_VERIFIED_CLAIM: "2087 verified" claim misleading; 1328 implementation_verified + 554 example_verified
+        have no test evidence; only 205 (9.8%) are test_verified
+      - NO_OBLIGATION_PROVENANCE: no capability record contains obligation_ids[] field
+      - NO_GENERATOR_VERSION: generator_version field absent
+
+  # ── GAP LEDGER ───────────────────────────────────────────────────────────
+
+  - artifact_id: gap-ledger
+    path: reports/capability-layer/gap-ledger.json
+    type: gap_ledger
+    producer: tools/capability_layer/capability_map_generator.py
+    consumers:
+      - tools/supervisor/capability_feature_compiler.py (DIRECT_RUNTIME — reads open gaps)
+      - tools/supervisor/capability_queue_consumer.py (DIRECT_RUNTIME — reads for task compilation)
+      - tools/supervisor/autonomous_cycle.py Step 4a (DIRECT_RUNTIME)
+      - tools/supervisor/check_system_healing_gate.py (DIRECT_RUNTIME — file existence check)
+      - tools/supervisor/gap_ledger_to_work_items.py (ORPHANED — dead code)
+    source_inputs:
+      - reports/capability-layer/commercial-capability-map.json
+      - reports/capability-layer/foss-reduced-capability-map.json
+    source_revision: "CAPABILITY-LAYER-HEALING-20260627-91c3375"
+    generated_at: "2026-06-27T03:05:26.066918+00:00"
+    generator_version: null
+    current: true
+    authoritative: true
+    stale: false
+    record_count: 1277
+    status_breakdown:
+      closed: 1245
+      DEFERRED_BY_DESIGN: 30
+      DEFERRED: 2
+    open_actionable_count: 0
+    findings:
+      - NO_ACTIVE_HISTORICAL_SPLIT: 28MB file; 97.7% closed gaps; no active/archive separation
+      - ALL_DEFERRED_LACK_CAPABILITY: 30 DEFERRED_BY_DESIGN gaps have no capability_name or gap_type
+      - DEFERRED_GAP_PATTERN_1: GAP-CHAIN-{FORMAT}-SAL-MRH-001 (10 gaps) — SAL/machinery chain tracking
+      - DEFERRED_GAP_PATTERN_2: GAP-{FORMAT}-ARCH-STUB-001 (20 gaps) — architecture stub acceptance tracking
+      - NO_GENERATOR_VERSION: generator_version field absent
+
+  # ── ACTION QUEUE ─────────────────────────────────────────────────────────
+
+  - artifact_id: action-queue
+    path: reports/capability-layer/action-queue.json
+    type: action_queue
+    producer: tools/capability_layer/capability_map_generator.py
+    consumers:
+      - tools/supervisor/check_system_healing_gate.py (advisory_only flag check for Lane 2 gate)
+    source_inputs:
+      - reports/capability-layer/gap-ledger.json (at generation time)
+    source_revision: "CAPABILITY-LAYER-HEALING-20260625-a2e6488"
+    generated_at: "2026-06-25T17:37:51.199734+00:00"
+    generator_version: null
+    current: false
+    authoritative: false
+    stale: true
+    record_count: 84
+    findings:
+      - CLOSED_GAPS_IN_QUEUE: ALL 84 action items reference gaps now marked closed=1245 in ledger
+      - NO_HASH_DETECTION: no source_ledger_hash field; consumers cannot detect staleness
+      - GENERATION_DATE_MISMATCH: action-queue generated 2026-06-25; gap-ledger last updated 2026-06-27
+
+  # ── TOOLS ────────────────────────────────────────────────────────────────
+
+  - artifact_id: capability-map-generator
+    path: tools/capability_layer/capability_map_generator.py
+    type: generator_tool
+    producer: null
+    consumers:
+      - Called by: /update-capability-matrix skill, manual invocation
+    source_inputs:
+      - product-capability-matrix/poc-targets.yaml (PRIMARY — inverted authority)
+      - .local/spec-cache/sal-facts-latest.json (enrichment only)
+      - src/python/ (source introspection)
+      - src/net/ (source introspection)
+    source_revision: null
+    generated_at: null
+    generator_version: "1.0 (inferred)"
+    current: true
+    authoritative: true
+    stale: false
+    loc: 1505
+    findings:
+      - INVERTED_AUTHORITY: poc-targets.yaml is PRIMARY; SAL facts are enrichment only; should be reversed
+      - NO_OBLIGATION_LINK: capability records lack obligation_ids[]; no formal obligation provenance chain
+      - NO_ATOMIC_WRITE: generates 5 JSON files sequentially; no rollback if any step fails
+      - NO_HASH_OUTPUT: does not emit source_ledger_hash in queue
+
+  - artifact_id: validate-capability-map
+    path: tools/capability_layer/validate_capability_map.py
+    type: validator_tool
+    producer: null
+    consumers:
+      - Called by: capability_map_generator.py post-generation, /update-capability-matrix skill
+    source_inputs:
+      - reports/capability-layer/*.json
+    source_revision: null
+    generated_at: null
+    generator_version: null
+    current: true
+    authoritative: true
+    stale: false
+    loc: 466
+    validators: [VAL-001, VAL-002, VAL-003, VAL-004, VAL-005, VAL-006, VAL-007, VAL-008, VAL-009, VAL-010]
+    findings:
+      - MISSING_VALIDATORS: no validator for obligation_ids provenance (gap for VAL-011)
+      - MISSING_VALIDATORS: no queue staleness hash check (gap for VAL-013)
+      - MISSING_VALIDATORS: no duplicate subject check (gap for VAL-012)
+      - VAL-008_ADVISORY: taskcard linkage check is advisory; should be mandatory
+
+  - artifact_id: capability-to-feature-compiler
+    path: tools/capability_layer/capability_to_feature_compiler.py
+    type: planning_stub
+    producer: null
+    consumers:
+      - NOT connected to runtime pipeline (planning stub only)
+    source_inputs:
+      - reports/capability-layer/gap-ledger.json
+    source_revision: null
+    generated_at: null
+    generator_version: null
+    current: true
+    authoritative: false
+    stale: false
+    findings:
+      - PLANNING_STUB_ONLY: generates advisory YAML stubs; not wired to autonomous pipeline
+      - SUPERSEDED_BY: tools/supervisor/capability_feature_compiler.py is the canonical pipeline tool
+
+  - artifact_id: write-pilots
+    path: tools/capability_layer/_write_pilots.py
+    type: support_tool
+    producer: null
+    consumers:
+      - tools/capability_layer/capability_map_generator.py (imported)
+    source_revision: null
+    generated_at: null
+    generator_version: null
+    current: true
+    authoritative: false
+    stale: false
+    findings: []
+
+  # ── DASHBOARD / POC TARGETS ──────────────────────────────────────────────
+
+  - artifact_id: poc-targets
+    path: product-capability-matrix/poc-targets.yaml
+    type: poc_dashboard
+    producer: "Manual / skill: /update-capability-matrix"
+    consumers:
+      - tools/capability_layer/capability_map_generator.py (PRIMARY input — inverted authority)
+      - tools/supervisor/select_poc_gaps.py (vestigial path reference; actual logic uses hardcoded dict)
+    source_inputs: []
+    source_revision: "2026-06-25 (last_updated)"
+    generated_at: null
+    generator_version: null
+    current: true
+    authoritative: false
+    stale: false
+    target_count: 19
+    findings:
+      - INVERTED_AUTHORITY: used as primary capability authority; should be scope/priority input only
+      - VESTIGIAL_CONSUMER: select_poc_gaps.py references path but uses hardcoded dict instead
+
+  - artifact_id: fods-extended-matrix
+    path: product-capability-matrix/fods.yaml
+    type: poc_detail_matrix
+    producer: manual
+    consumers:
+      - tools/capability_layer/capability_map_generator.py (supplemental data)
+    source_revision: null
+    generated_at: null
+    generator_version: null
+    current: true
+    authoritative: false
+    stale: false
+    findings: []
+
+  - artifact_id: fodt-extended-matrix
+    path: product-capability-matrix/fodt.yaml
+    type: poc_detail_matrix
+    producer: manual
+    consumers:
+      - tools/capability_layer/capability_map_generator.py (supplemental data)
+    source_revision: null
+    generated_at: null
+    generator_version: null
+    current: true
+    authoritative: false
+    stale: false
+    findings: []
+
+  - artifact_id: netpbm-extended-matrix
+    path: product-capability-matrix/netpbm.yaml
+    type: poc_detail_matrix
+    producer: manual
+    consumers:
+      - tools/capability_layer/capability_map_generator.py (supplemental data)
+    source_revision: null
+    generated_at: null
+    generator_version: null
+    current: true
+    authoritative: false
+    stale: false
+    findings: []
+
+  - artifact_id: dotnet-fods-fodt-matrix
+    path: product-capability-matrix/dotnet-fods-fodt.yaml
+    type: poc_detail_matrix
+    producer: manual
+    consumers:
+      - tools/capability_layer/capability_map_generator.py (supplemental data)
+    source_revision: null
+    generated_at: null
+    generator_version: null
+    current: true
+    authoritative: false
+    stale: false
+    findings: []
+
+  # ── SAL FACTS ────────────────────────────────────────────────────────────
+
+  - artifact_id: sal-facts-latest
+    path: .local/spec-cache/sal-facts-latest.json
+    type: sal_facts_database
+    producer: tools/spec/merge_sal_facts.py
+    consumers:
+      - tools/capability_layer/capability_map_generator.py (enrichment)
+    source_inputs:
+      - .local/spec-cache/sal-facts-{format}.json (26 per-format files)
+    source_revision: "2026-06-26T18:23:09"
+    generated_at: "2026-06-26T18:23:09"
+    generator_version: null
+    current: true
+    authoritative: true
+    stale: false
+    fact_count: 14635
+    formats_with_zero_facts: [ora, pam, xpm, zpaq]
+    findings:
+      - ZERO_FACT_FORMATS: 4 formats (ora/pam/xpm/zpaq) have no SAL facts; no products exist for them
+      - NOT_PRIMARY_AUTHORITY: used as enrichment only in generator; should be the primary capability driver
+
+  # ── CLASSIFICATION / SUMMARY ─────────────────────────────────────────────
+
+  - artifact_id: capability-summary
+    path: reports/capability-layer/capability_summary.json
+    type: portfolio_summary
+    producer: tools/capability_layer/capability_map_generator.py
+    consumers:
+      - Dashboard / reporting only
+    source_revision: null
+    generated_at: null
+    generator_version: null
+    current: unknown
+    authoritative: false
+    stale: unknown
+    findings:
+      - UNKNOWN_FRESHNESS: no generated_at field found to determine currency
+
+  - artifact_id: capability-classification
+    path: reports/capability-layer/capability-classification.json
+    type: classification_index
+    producer: tools/capability_layer/capability_map_generator.py
+    consumers:
+      - Reporting only
+    source_revision: null
+    generated_at: null
+    generator_version: null
+    current: unknown
+    authoritative: false
+    stale: unknown
+    findings: []
+
+  - artifact_id: analytics-classification
+    path: reports/capability-layer/analytics-classification.json
+    type: analytics_classification
+    producer: unknown
+    consumers:
+      - Reporting only
+    source_revision: null
+    generated_at: null
+    generator_version: null
+    current: false
+    authoritative: false
+    stale: true
+    findings:
+      - SUSPENDED_FEATURE: analytics rotation (mod_prime_times_multiplier) suspended 2026-06-18
+
+  # ── AUDIT ARTIFACTS ──────────────────────────────────────────────────────
+
+  - artifact_id: gap-sal-traceability-20260623
+    path: reports/capability-layer/gap-sal-traceability-20260623.json
+    type: traceability_snapshot
+    producer: unknown
+    consumers: []
+    source_revision: null
+    generated_at: "2026-06-23"
+    generator_version: null
+    current: false
+    authoritative: false
+    stale: true
+    findings:
+      - HISTORICAL_SNAPSHOT: superseded by 2026-06-27 version
+
+  - artifact_id: gap-sal-traceability-20260627
+    path: reports/capability-layer/gap-sal-traceability-20260627.json
+    type: traceability_snapshot
+    producer: unknown
+    consumers: []
+    source_revision: null
+    generated_at: "2026-06-27"
+    generator_version: null
+    current: true
+    authoritative: false
+    stale: false
+    findings: []
+
+  - artifact_id: gap-audit-20260621
+    path: reports/capability-layer/gap-audit-2026-06-21.json
+    type: audit_snapshot
+    producer: unknown
+    consumers: []
+    source_revision: null
+    generated_at: "2026-06-21"
+    generator_version: null
+    current: false
+    authoritative: false
+    stale: true
+    findings:
+      - HISTORICAL_SNAPSHOT: pre-dates current gap-ledger by 6 days
+
+  - artifact_id: gap-closure-log
+    path: reports/capability-layer/gap-closure-log.json
+    type: closure_log
+    producer: unknown
+    consumers: []
+    source_revision: null
+    generated_at: null
+    generator_version: null
+    current: unknown
+    authoritative: false
+    stale: unknown
+    findings:
+      - MINIMAL_CONTENT: only 215 bytes; may be incomplete
+
+  - artifact_id: manual-artifact-verification
+    path: reports/capability-layer/manual-artifact-verification.json
+    type: manual_verification
+    producer: manual
+    consumers: []
+    source_revision: null
+    generated_at: null
+    generator_version: null
+    current: unknown
+    authoritative: false
+    stale: unknown
+    findings: []
+
+  # ── LAYER PLAN ───────────────────────────────────────────────────────────
+
+  - artifact_id: capability-layer-plan
+    path: plans/layers/capability-layer.md
+    type: layer_plan
+    producer: manual
+    consumers:
+      - plans/layers/index.yaml (status reference)
+    source_revision: null
+    generated_at: null
+    generator_version: null
+    current: true
+    authoritative: true
+    stale: false
+    layer_status: HARDENING_REQUIRED
+    layer_health: DEGRADED
+    layer_maturity: "3/5"
+    findings:
+      - KNOWN_ISSUE_DOCUMENTED: gap-ledger.json must drive autonomous task generation
+      - KNOWN_ISSUE_DOCUMENTED: hardcoded _EXPANSION_GOALS must be replaced by ledger-driven work selection
+
+  # ── BACKUPS ──────────────────────────────────────────────────────────────
+
+  - artifact_id: gap-ledger-backup-20260625
+    path: reports/capability-layer/gap-ledger.json.backup-20260625
+    type: backup
+    producer: manual
+    consumers: []
+    current: false
+    authoritative: false
+    stale: true
+    findings:
+      - BACKUP_ARTIFACT: not an active capability artifact; preserve for audit history
+
+  - artifact_id: gap-ledger-backup-pre-backfill2
+    path: reports/capability-layer/gap-ledger.json.backup-pre-backfill2
+    type: backup
+    producer: manual
+    consumers: []
+    current: false
+    authoritative: false
+    stale: true
+    findings:
+      - BACKUP_ARTIFACT: not an active capability artifact; preserve for audit history
+
+  - artifact_id: gap-ledger-backfill-backup
+    path: reports/capability-layer/gap-ledger.json.backfill-backup
+    type: backup
+    producer: manual
+    consumers: []
+    current: false
+    authoritative: false
+    stale: true
+    findings:
+      - BACKUP_ARTIFACT: not an active capability artifact; preserve for audit history
+
+# ── SUMMARY ──────────────────────────────────────────────────────────────────
+
+findings_summary:
+  total_artifacts_inventoried: 24
+  uninventoried_artifacts: 0
+  stale_artifacts: [action-queue, analytics-classification, gap-sal-traceability-20260623, gap-audit-20260621, gap-ledger-backup-20260625, gap-ledger-backup-pre-backfill2, gap-ledger-backfill-backup]
+  material_findings:
+    - id: F-INV-001
+      category: PROSE_DERIVED_CAPABILITY
+      severity: P1
+      description: capability_map_generator.py uses poc-targets.yaml as PRIMARY authority; SAL facts are enrichment only
+      affected_artifacts: [commercial-capability-map, foss-reduced-capability-map, unified-capability-map]
+    - id: F-INV-002
+      category: FALSE_VERIFIED_CAPABILITY
+      severity: P1
+      description: 1328 implementation_verified + 554 example_verified records lack test evidence (only 205/2087 are test_verified)
+      affected_artifacts: [unified-capability-map]
+    - id: F-INV-003
+      category: STALE_ACTION_QUEUE
+      severity: P0
+      description: ALL 84 action-queue items reference gaps now marked closed; CLOSED_GAPS_IN_ACTION_QUEUE=84
+      affected_artifacts: [action-queue]
+    - id: F-INV-004
+      category: PIPELINE_ATOMICITY
+      severity: P1
+      description: No atomic generation; no hash-based staleness detection; no generator version tracking
+      affected_artifacts: [capability-map-generator, action-queue]
+    - id: F-INV-005
+      category: SAL_DERIVATION_GAP
+      severity: P1
+      description: No obligation_ids[] field in any capability record; capabilities lack formal obligation provenance
+      affected_artifacts: [commercial-capability-map, foss-reduced-capability-map, unified-capability-map]
+    - id: F-INV-006
+      category: DOCUMENTATION_DRIFT
+      severity: P2
+      description: 30 DEFERRED_BY_DESIGN gaps lack capability_name and gap_type; semantically incomplete entries
+      affected_artifacts: [gap-ledger]
+
+required_counters:
+  UNINVENTORIED_CAPABILITY_ARTIFACTS: 0

@@ -1,0 +1,36 @@
+schema_version: "1.0"
+taskcard_id: "TC-GAP-ODS-ARCH-STUB-001"
+generated_at: "2026-07-01T00:00:00+00:00"
+generated_by: "TC-CAP-009 (moonlit-squishing-sonnet)"
+mission_id: "capability-layer-healing"
+
+gap_id: "GAP-ODS-ARCH-STUB-001"
+format: "ods"
+product_type: "commercial"
+capability_name: ""
+gap_type: "implementation_missing"
+priority: "P4"
+severity: "LOW"
+
+taskcard_status: "BLOCKED"
+active_classification: "OPEN_BLOCKED"
+
+blocker: |
+  Design scope constraint
+
+exact_next_action: |
+  deferred — run /add-python-api for ods when scope expands beyond POC targets
+
+required_skill: "/add-python-api"
+dependencies: []
+
+validation: |
+  After blocker is resolved and skill is executed:
+  - Verify capability state transitions to test_verified or implementation_verified
+  - Verify gap_id is removed from gap-ledger-active.json
+  - Verify gap_id appears in gap-ledger-archive.json with closure_evidence
+
+evidence_target: "reports/capability-layer/taskcards/GAP-ODS-ARCH-STUB-001-evidence.yaml"
+
+triage_note: "Architecture-only spec skeleton stubs are intentional markers per spec-to-feature correction plan. V48 governance validator blocks false RELEASE_GATE claims. No action needed until spec parity implementation begins. TC-GAP-TRIAGE-001."
+triaged_at: "2026-06-24"

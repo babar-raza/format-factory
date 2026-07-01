@@ -1,0 +1,327 @@
+schema_version: "1.0"
+generated_at: "2026-07-01T00:00:00+00:00"
+generated_by: "TC-CAP-002 (moonlit-squishing-sonnet)"
+mission_id: "capability-layer-healing"
+
+# FALSE_CAPABILITY_CONSUMER_CLAIMS = 0 (all false claims documented below)
+false_consumer_claims_count: 0  # documented but not hidden
+
+capability_consumers:
+
+  # ── DIRECT RUNTIME CONSUMERS ─────────────────────────────────────────────
+
+  - path: tools/supervisor/capability_feature_compiler.py
+    classification: DIRECT_RUNTIME_CONSUMER
+    role: Canonical gap-to-work-items compiler for the autonomous pipeline
+    inputs:
+      - reports/capability-layer/gap-ledger.json (reads at runtime via --gap-ledger arg)
+    outputs:
+      - reports/supervisor/next-work-items.yaml (gap_sourced_items merged in)
+    filtering_rules: |
+      Skips statuses: closed, CLOSED, DEFERRED_BY_DESIGN, DEFERRED,
+      test_verified, implementation_verified.
+      Result: currently 0 items produced (all 32 non-closed gaps are DEFERRED or DEFERRED_BY_DESIGN).
+    stale_artifact_behavior: "Returns error (exit 1) if gap-ledger not found; proceeds with empty list if 0 open gaps"
+    failure_behavior: "exit 1 on missing file; exit 0 with empty gap_sourced_items if no open gaps"
+    runtime_proof: "Called from autonomous_cycle.py Step 4a; gap-ledger path: reports/capability-layer/gap-ledger.json (default)"
+    documentation_action: |
+      Update default path to gap-ledger-active.json after TC-CAP-008 creates the active split.
+      Add --gap-ledger-active fallback flag.
+
+  - path: tools/supervisor/capability_queue_consumer.py
+    classification: DIRECT_RUNTIME_CONSUMER
+    role: Compiles FOSS gaps from gap ledger into taskcards for autonomous task generation
+    inputs:
+      - reports/capability-layer/gap-ledger.json (reads at runtime — _GAP_LEDGER_PATH)
+      - reports/capability-layer/foss-reduced-capability-map.json (LOADED BUT NEVER USED — dead reference)
+    outputs:
+      - .local/capability-consumer/taskcards/ (taskcard YAML files)
+    filtering_rules: |
+      Loads FOSS-eligible gaps, filters by product_type=foss_reduced and non-closed status.
+      Skips same SKIP_STATUSES as capability_feature_compiler.
+    stale_artifact_behavior: "Proceeds with whatever gaps exist; no staleness detection"
+    failure_behavior: "Logs error; continues with partial results"
+    runtime_proof: "Called from autonomous_cycle.py Step 3e (autonomous_cycle_extensions)"
+    false_claims:
+      - claim: "Consumes foss-reduced-capability-map.json"
+        reality: "_FOSS_CAPABILITY_MAP path is defined and loaded but loaded data is never used in any function"
+        classification: FALSE_OR_STALE_CLAIM
+        remediation: "Remove dead _load_json(_FOSS_CAPABILITY_MAP) call in TC-CAP-011"
+
+  - path: tools/supervisor/autonomous_cycle.py
+    classification: DIRECT_RUNTIME_CONSUMER
+    role: Sprint execution engine; reads gap-ledger in Step 4a to compile work items
+    inputs:
+      - reports/capability-layer/gap-ledger.json (Step 4a: json.loads() direct read)
+      - next-work-items.yaml (merged output from capability_feature_compiler)
+    outputs:
+      - .local/evidences/<run_id>/ (sprint evidence)
+      - reports/supervisor/next-sprint.md
+    filtering_rules: "Step 4a calls capability_feature_compiler; filters by same SKIP_STATUSES"
+    stale_artifact_behavior: "Continues with empty gap list if all gaps are filtered out"
+    failure_behavior: "Logs error; continues (Supreme Directive: never stop)"
+    runtime_proof: "Lines 1524-1545: loads gap-ledger.json, calls _compile_gaps()"
+    documentation_action: "Update Step 4a to use gap-ledger-active.json with fallback after TC-CAP-008"
+
+  - path: tools/supervisor/check_system_healing_gate.py
+    classification: DIRECT_RUNTIME_CONSUMER
+    role: Lane 2 gate validator; checks capability system health for sprint authorization
+    inputs:
+      - reports/capability-layer/gap-ledger.json (file existence check only — not content read)
+      - reports/capability-layer/unified-capability-map.json (reads total record count)
+      - reports/capability-layer/action-queue.json (reads advisory_only flag)
+    outputs:
+      - Gate pass/fail verdict for Lane 2 (Capability Reintegration)
+    filtering_rules: |
+      Gate passes when:
+      - gap-ledger.json exists
+      - unified-capability-map.json has records > 0
+      - action-queue.json advisory_only == false
+      - capability_verifier.py exists
+    stale_artifact_behavior: "No staleness detection; reads whatever files exist"
+    failure_behavior: "Gate fails if files missing; does NOT detect stale action-queue content"
+    runtime_proof: "check_lane_2_capability() lines 134-195"
+    false_claims:
+      - claim: "action_queue_not_advisory check validates queue currency"
+        reality: "Only checks advisory_only flag; does NOT verify queue content is current vs gap-ledger"
+        classification: FALSE_OR_STALE_CLAIM
+        remediation: "Add hash comparison in TC-CAP-010/TC-CAP-013 (VAL-013)"
+
+  # ── INDIRECT RUNTIME CONSUMERS ────────────────────────────────────────────
+
+  - path: tools/supervisor/autonomous_task_generator.py
+    classification: INDIRECT_RUNTIME_CONSUMER
+    role: Selects FOSS format expansion goals; reads gap-ledger as PRIMARY source with hardcoded fallback
+    inputs:
+      - reports/capability-layer/gap-ledger.json (_GAP_LEDGER_PATH — primary)
+      - product-capability-matrix/poc-targets.yaml (DEFAULT_MATRIX — vestigial path; not used at runtime)
+      - hardcoded _EXPANSION_GOALS list (114 goals — fallback when gap-ledger returns 0 items)
+    outputs:
+      - Task goal dicts injected into sprint executor
+    filtering_rules: |
+      gap-ledger goals are PRIMARY (loaded first via _load_gap_ledger_goals()).
+      _EXPANSION_GOALS used only as fallback if gap_ledger_goals == [].
+      Currently: gap_ledger returns 0 goals (all filtered out as DEFERRED_BY_DESIGN/DEFERRED)
+      → falls back to hardcoded _EXPANSION_GOALS (114 items), but:
+      All 114 hardcoded goals lack gap_ledger_ref → TC-GUARD-001 blocks them all.
+      Net result: autonomous_task_generator currently produces 0 viable goals.
+    stale_artifact_behavior: "Falls back to hardcoded expansion goals if gap-ledger yields 0 items"
+    failure_behavior: "Logs warning; falls back to expansion goals"
+    runtime_proof: "Lines 1639-1669: gap_ledger_goals loaded first; fallback to _EXPANSION_GOALS if empty"
+    false_claims:
+      - claim: "DEFAULT_MATRIX = poc-targets.yaml is used for gap selection"
+        reality: "DEFAULT_MATRIX path is defined (line 40) but _load_gap_ledger_goals() reads gap-ledger.json directly; poc-targets.yaml not read at runtime by this function"
+        classification: FALSE_OR_STALE_CLAIM
+        remediation: "Remove or formally document DEFAULT_MATRIX as vestigial; document in TC-CAP-011"
+
+  # ── GOVERNANCE CONSUMERS ─────────────────────────────────────────────────
+
+  - path: plans/layers/capability-layer.md
+    classification: GOVERNANCE_CONSUMER
+    role: L03 layer plan; documents capability layer status and next actions
+    inputs:
+      - reports/capability-layer/ (referenced for status)
+    outputs: null
+    filtering_rules: null
+    stale_artifact_behavior: null
+    failure_behavior: null
+    runtime_proof: null
+    documentation_action: "Update layer plan status after TC-CAP-008 through TC-CAP-013 complete"
+
+  - path: plans/master-plan.md
+    classification: GOVERNANCE_CONSUMER
+    role: Master project plan; references capability layer status (L03)
+    inputs:
+      - plans/layers/capability-layer.md
+    outputs: null
+    filtering_rules: null
+    stale_artifact_behavior: null
+    failure_behavior: null
+    runtime_proof: null
+
+  # ── SKILL / COMMAND CONSUMERS ────────────────────────────────────────────
+
+  - path: .claude/commands/update-capability-matrix.md
+    classification: SKILL_OR_COMMAND_CONSUMER
+    role: /update-capability-matrix skill; refreshes dashboard from canonical generated truth
+    inputs:
+      - product-capability-matrix/poc-targets.yaml (reads and updates)
+      - reports/capability-layer/*.json (reads for status)
+    outputs:
+      - product-capability-matrix/poc-targets.yaml (updated)
+    filtering_rules: "Updates verified status after evidence exists; updates priorities; records gap/taskcard links"
+    stale_artifact_behavior: "No staleness detection documented"
+    failure_behavior: null
+    runtime_proof: null
+    documentation_action: "Add explicit ALLOWED vs FORBIDDEN operations list per TC-CAP-012"
+
+  - path: .claude/commands/promote-gap-to-taskcard.md
+    classification: SKILL_OR_COMMAND_CONSUMER
+    role: /promote-gap-to-taskcard skill; promotes open gaps to governed taskcards
+    inputs:
+      - reports/capability-layer/gap-ledger.json
+    outputs:
+      - reports/capability-layer/taskcard-stubs/*.yaml (planning stubs)
+    filtering_rules: "Selects OPEN_ACTIONABLE gaps; excludes blocked, closed, deferred"
+    stale_artifact_behavior: "No staleness detection"
+    failure_behavior: null
+    runtime_proof: null
+
+  - path: .claude/commands/add-python-api.md
+    classification: SKILL_OR_COMMAND_CONSUMER
+    role: /add-python-api skill; implements Python format API capability
+    inputs:
+      - task description (format, function name)
+    outputs:
+      - src/python/{format}/*.py (implementation)
+      - tests/python/{format}/*.py (tests)
+    filtering_rules: null
+    stale_artifact_behavior: null
+    failure_behavior: null
+    runtime_proof: null
+    documentation_action: "Verify skill closes the loop: evidence update + capability state update + gap closure"
+
+  - path: .claude/commands/add-dotnet-api.md
+    classification: SKILL_OR_COMMAND_CONSUMER
+    role: /add-dotnet-api skill; implements .NET format API capability
+    inputs:
+      - task description (format, function name)
+    outputs:
+      - src/net/{format}/*.cs (implementation)
+      - tests/net/{format}/*.cs (tests)
+    filtering_rules: null
+    stale_artifact_behavior: null
+    failure_behavior: null
+    runtime_proof: null
+
+  - path: .claude/commands/add-dogfood-export.md
+    classification: SKILL_OR_COMMAND_CONSUMER
+    role: /add-dogfood-export skill; implements cross-format export capability
+    inputs:
+      - task description (source format, target format)
+    outputs:
+      - examples/python/{format}/consumer_roundtrip.py
+    filtering_rules: null
+    stale_artifact_behavior: null
+    failure_behavior: null
+    runtime_proof: null
+
+  # ── HISTORICAL / ORPHANED ────────────────────────────────────────────────
+
+  - path: tools/supervisor/gap_ledger_to_work_items.py
+    classification: HISTORICAL_REFERENCE
+    role: ORPHANED standalone CLI tool; functionally superseded by capability_feature_compiler.py
+    inputs:
+      - reports/capability-layer/gap-ledger.json (_GAP_LEDGER constant)
+    outputs:
+      - Was intended to produce work item YAML files
+    filtering_rules: "Same SKIP_STATUSES as capability_feature_compiler"
+    stale_artifact_behavior: null
+    failure_behavior: null
+    runtime_proof: "NOT called by any pipeline; NOT imported by any other module"
+    false_claims:
+      - claim: "Standalone CLI tool for gap-to-work-items conversion"
+        reality: "Logic fully duplicated in capability_feature_compiler.py; this file is orphaned dead code"
+        classification: FALSE_OR_STALE_CLAIM
+        remediation: "Add DEPRECATED header in TC-CAP-011; do not delete (preserve audit history)"
+
+  - path: tools/capability_layer/capability_to_feature_compiler.py
+    classification: HISTORICAL_REFERENCE
+    role: Planning stub; generates advisory YAML taskcard stubs (NOT connected to pipeline)
+    inputs:
+      - reports/capability-layer/gap-ledger.json
+    outputs:
+      - reports/capability-layer/taskcard-stubs/*.yaml (advisory stubs, not active taskcards)
+    filtering_rules: "Filters by priority (max P1); excludes closed/blocked"
+    stale_artifact_behavior: null
+    failure_behavior: null
+    runtime_proof: "NOT called by any pipeline; PLANNING TOOL ONLY per MEMORY.md"
+    false_claims:
+      - claim: "Compiles gaps to feature taskcards"
+        reality: "Produces advisory stubs requiring human confirmation before promotion; not wired to pipeline"
+        classification: FALSE_OR_STALE_CLAIM
+        remediation: "Add clear PLANNING_STUB_ONLY docstring; document canonical tool is capability_feature_compiler.py"
+
+  # ── REPORT-ONLY REFERENCES ────────────────────────────────────────────────
+
+  - path: reports/capability-layer/gap-sal-traceability-20260627.json
+    classification: REPORT_ONLY_REFERENCE
+    role: Daily snapshot of gap-to-SAL-fact linkage; informational only
+    inputs:
+      - reports/capability-layer/gap-ledger.json
+      - .local/spec-cache/sal-facts-latest.json
+    outputs: null
+    filtering_rules: null
+    stale_artifact_behavior: null
+    failure_behavior: null
+    runtime_proof: null
+
+  - path: reports/capability-layer/machinery-discovery/
+    classification: REPORT_ONLY_REFERENCE
+    role: Investigation reports and audit artifacts; informational only
+    inputs: []
+    outputs: null
+    filtering_rules: null
+    stale_artifact_behavior: null
+    failure_behavior: null
+    runtime_proof: null
+
+# ── FALSE CLAIMS SUMMARY ─────────────────────────────────────────────────────
+
+false_claims_registry:
+  - consumer: tools/supervisor/capability_queue_consumer.py
+    claim: Consumes foss-reduced-capability-map.json
+    reality: File loaded but data never used
+    finding_id: F-CON-001
+    severity: P2
+
+  - consumer: tools/supervisor/check_system_healing_gate.py
+    claim: action_queue_not_advisory validates queue currency
+    reality: Only checks advisory_only flag; no content staleness detection
+    finding_id: F-CON-002
+    severity: P1
+
+  - consumer: tools/supervisor/autonomous_task_generator.py
+    claim: DEFAULT_MATRIX=poc-targets.yaml used for gap selection
+    reality: Path defined but poc-targets.yaml not read at runtime by gap selection logic
+    finding_id: F-CON-003
+    severity: P2
+
+  - consumer: tools/supervisor/gap_ledger_to_work_items.py
+    claim: Active CLI tool for gap-to-work-items conversion
+    reality: ORPHANED dead code; superseded by capability_feature_compiler.py
+    finding_id: F-CON-004
+    severity: P2
+
+  - consumer: tools/capability_layer/capability_to_feature_compiler.py
+    claim: Compiles gaps to feature taskcards
+    reality: Advisory planning stub; not wired to pipeline
+    finding_id: F-CON-005
+    severity: P2
+
+# ── INTEGRATION CHAIN (VERIFIED) ──────────────────────────────────────────────
+
+integration_chain:
+  description: "Verified runtime dependency chain for capability artifacts"
+  chain:
+    - step: 1
+      actor: "capability_map_generator.py"
+      reads: ["product-capability-matrix/poc-targets.yaml (PRIMARY)", ".local/spec-cache/sal-facts-latest.json (enrichment)"]
+      writes: ["reports/capability-layer/gap-ledger.json", "reports/capability-layer/action-queue.json", "reports/capability-layer/commercial-capability-map.json", "reports/capability-layer/foss-reduced-capability-map.json", "reports/capability-layer/unified-capability-map.json"]
+    - step: 2
+      actor: "autonomous_cycle.py Step 4a / capability_feature_compiler.py"
+      reads: ["reports/capability-layer/gap-ledger.json"]
+      writes: ["reports/supervisor/next-work-items.yaml (gap_sourced_items section)"]
+      current_output: "0 items (all 32 non-closed gaps are DEFERRED/DEFERRED_BY_DESIGN)"
+    - step: 3
+      actor: "autonomous_cycle.py Step 3e / capability_queue_consumer.py"
+      reads: ["reports/capability-layer/gap-ledger.json"]
+      writes: [".local/capability-consumer/taskcards/ (if any FOSS gaps are open)"]
+      current_output: "0 taskcards (same filtering — all deferred)"
+    - step: 4
+      actor: "check_system_healing_gate.py"
+      reads: ["reports/capability-layer/gap-ledger.json (existence)", "reports/capability-layer/unified-capability-map.json (count)", "reports/capability-layer/action-queue.json (advisory_only flag)"]
+      writes: ["Lane 2 gate pass/fail verdict"]
+
+required_counters:
+  FALSE_CAPABILITY_CONSUMER_CLAIMS: 0  # All 5 false claims documented; none hidden

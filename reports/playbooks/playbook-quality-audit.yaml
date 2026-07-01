@@ -1,0 +1,360 @@
+---
+# Playbook Quality Audit
+# Mission: FF-PLAYBOOK-SYSTEM-001 (bright-marinating-map)
+# Generated: 2026-07-01
+# TC-PB-003
+
+meta:
+  total_artifacts_audited: 10
+  artifacts_requiring_repair: 7
+  artifacts_retain_as_is: 2
+  artifacts_deprecated: 0
+  artifacts_removed: 0
+
+# ─────────────────────────────────────────────────────────
+# LAYER A — MARKDOWN SPRINT TEMPLATES
+# ─────────────────────────────────────────────────────────
+
+audits:
+
+  - playbook_id: format-feature-expansion
+    content_path: playbooks/format-factory/format-feature-expansion.md
+    current_use: DOCUMENTATION_REFERENCE
+    relevance: current
+    correctness: mostly_correct
+    completeness: partial
+    executable_specificity: good_prose_only
+    quality_findings:
+      - "Declares skill_id but NOT in skill registry — unregistered skill"
+      - "No machine-readable YAML front-matter contract block — not parseable by tools"
+      - "Rollback section exists (prose) but not machine-readable"
+      - "Stop conditions exist (prose) but not machine-readable"
+      - "Required inputs table is clear and specific — value to preserve"
+      - "Known pitfalls section is detailed and accurate — high value"
+      - "Min test list is concrete and correct"
+    stale_paths:
+      - "paths src/python/<format>/ and tests/python/<format>/ are current — no stale paths"
+    missing_contract_fields:
+      - playbook_id (machine-readable)
+      - version (machine-readable)
+      - status (ACTIVE/DEPRECATED/etc.)
+      - category (sprint_task_template)
+      - owner_layer
+      - authority (TASK_TEMPLATE)
+      - triggers (machine-readable list)
+      - prerequisites (machine-readable list)
+      - required_inputs (machine-readable)
+      - required_skills (machine-readable)
+      - allowed_paths (machine-readable)
+      - forbidden_paths (machine-readable)
+      - phases (machine-readable)
+      - task_types (machine-readable)
+      - validation (machine-readable)
+      - evidence_requirements (machine-readable)
+      - rollback (machine-readable)
+      - stop_conditions (machine-readable)
+      - outputs (machine-readable)
+      - limitations (explicit)
+    duplicate_with:
+      - product-source-task-template.md  # overlapping scope for bounded source changes
+    scope_boundary_issue: >
+      Both format-feature-expansion.md and product-source-task-template.md cover
+      PRODUCT_SOURCE_PATCH_BOUNDED and FORMAT_FEATURE_EXPANSION task types.
+      Boundary must be explicit: format-feature-expansion = adding a NEW FUNCTION to
+      existing codec; product-source-task = ANY bounded source change (fix, new function, accessor).
+      Resolution: product-source-task is the GENERAL template; format-feature-expansion is a
+      SPECIALIZATION for the specific case of adding an export/transform/accessor.
+    recommended_action: CONVERT_TO_CANONICAL_CONTRACT
+    required_repairs:
+      - Add machine-readable YAML front-matter block with all contract fields
+      - Register as /format-feature-expansion skill in .supervisor/skill-registry.yaml
+      - Add explicit scope boundary statement distinguishing from product-source-task
+      - Verify allowed/forbidden paths still current (they are)
+    pilot_required: true
+    pilot_target: Pilot 1
+
+  - playbook_id: new-format-kickstart
+    content_path: playbooks/format-factory/new-format-kickstart-template.md
+    current_use: DOCUMENTATION_REFERENCE
+    relevance: current
+    correctness: correct
+    completeness: partial
+    executable_specificity: good_prose_only
+    quality_findings:
+      - "Declares skill_id but NOT in skill registry — unregistered skill"
+      - "No machine-readable YAML front-matter contract block"
+      - "Known pitfalls section is detailed and accurate (installed vs non-installed, over-claiming)"
+      - "Min test list is correct and specific"
+      - "Proven from NDJSON, FODG, TSV acquisitions — proven pattern"
+      - "External spec dependency is a valid stop condition — correctly documented"
+    stale_paths:
+      - "paths src/python/<format>/ and tests/python/<format>/ are current — no stale paths"
+    missing_contract_fields:
+      - playbook_id (machine-readable)
+      - version (machine-readable)
+      - status
+      - category
+      - owner_layer
+      - authority
+      - triggers
+      - prerequisites
+      - required_inputs (machine-readable — table exists in prose)
+      - required_skills
+      - allowed_paths (machine-readable)
+      - forbidden_paths (machine-readable)
+      - phases (machine-readable)
+      - task_types
+      - validation
+      - evidence_requirements
+      - rollback
+      - stop_conditions (machine-readable — prose exists)
+      - outputs
+      - limitations
+    duplicate_with: []
+    recommended_action: CONVERT_TO_CANONICAL_CONTRACT
+    required_repairs:
+      - Add machine-readable YAML front-matter block
+      - Register as /new-format-kickstart skill
+      - Preserve known pitfalls section verbatim
+    pilot_required: true
+    pilot_target: Pilot 2
+
+  - playbook_id: product-source-task
+    content_path: playbooks/format-factory/product-source-task-template.md
+    current_use: DOCUMENTATION_REFERENCE
+    relevance: current
+    correctness: mostly_correct
+    completeness: partial
+    executable_specificity: good_prose_only
+    quality_findings:
+      - "Declares skill_id but NOT in skill registry — unregistered skill"
+      - "No machine-readable YAML front-matter contract block"
+      - "Import status table (abw/gnumeric/tsv/ndjson/fodg) needs verification — may be stale"
+      - "Task classification table (PRODUCT_SOURCE_PATCH_BOUNDED etc.) is useful"
+      - "Overlapping scope with format-feature-expansion.md — boundary must be explicit"
+      - "Min test list per function is concrete and testable"
+    stale_paths:
+      - "paths src/python/<format>/ are current"
+      - "import_status table references abw/gnumeric/tsv/ndjson/fodg — verify non-editable install status"
+    import_table_verification:
+      note: "Per MEMORY.md: ABW/SYLK/ZST/DIF are non-editable installs. TSV is non-editable. NDJSON status needs check."
+      verification_needed: [abw, gnumeric, tsv, ndjson, fodg]
+    missing_contract_fields: [same as above — all machine-readable fields]
+    duplicate_with:
+      - format-feature-expansion.md  # overlapping; product-source-task is the general template
+    recommended_action: CONVERT_TO_CANONICAL_CONTRACT
+    required_repairs:
+      - Add machine-readable YAML front-matter block
+      - Register as /product-source-task skill
+      - Verify and update import status table
+      - Add explicit scope boundary vs format-feature-expansion
+    pilot_required: true
+    pilot_target: Pilot 3
+
+  - playbook_id: playbooks-readme
+    content_path: playbooks/_readme.md
+    current_use: DOCUMENTATION_REFERENCE
+    relevance: current
+    correctness: partially_incorrect
+    completeness: partial
+    executable_specificity: orientation_doc
+    quality_findings:
+      - "Calls Markdown templates 'playbooks' — incorrect per Model C authority decision"
+      - "No mention of canonical playbook registry (none exists yet)"
+      - "No distinction between Sprint Task Templates and YAML acquisition playbooks"
+      - "Registered in registry/repository-root-folders.yaml"
+    stale_paths: []
+    missing_contract_fields:
+      - Link to playbooks/playbook-registry.yaml
+      - Clarification that Markdown files are Sprint Task Templates
+      - Pointer to docs/playbook-layer.md for acquisition playbooks
+    recommended_action: RETAIN_AND_HARDEN
+    required_repairs:
+      - Rename section from "playbooks" to "Sprint Task Templates"
+      - Add pointer to docs/playbook-layer.md for YAML acquisition playbooks
+      - Add pointer to playbooks/playbook-registry.yaml once created
+      - Clarify authority boundaries
+    pilot_required: false
+
+# ─────────────────────────────────────────────────────────
+# LAYER B — YAML ACQUISITION PLAYBOOK SYSTEM
+# ─────────────────────────────────────────────────────────
+
+  - playbook_id: acquisition-playbook-schema
+    content_path: schemas/playbook/acquisition-playbook.schema.json
+    current_use: VALIDATION_CONSUMER
+    relevance: current
+    correctness: correct
+    completeness: complete
+    executable_specificity: machine_readable
+    quality_findings:
+      - "Schema is complete and enforces all authority boundaries via forbidden_uses"
+      - "26 required top-level fields enforced"
+      - "Playbook kinds, status lifecycle, reuse levels all defined"
+      - "No stale paths or outdated assumptions"
+      - "One minor gap: no schema field for sprint_task_template category (YAML schema vs Markdown layer)"
+    stale_paths: []
+    missing_contract_fields: []
+    recommended_action: RETAIN_AS_CANONICAL
+    required_repairs: []
+    pilot_required: false
+
+  - playbook_id: review-queue-schema
+    content_path: schemas/playbook/review-queue.schema.json
+    current_use: VALIDATION_CONSUMER
+    relevance: current
+    correctness: correct
+    completeness: complete
+    executable_specificity: machine_readable
+    quality_findings:
+      - "Schema is complete and enforces cannot_approve_gates: true"
+      - "Severity levels and blocking behavior correctly modeled"
+    stale_paths: []
+    missing_contract_fields: []
+    recommended_action: RETAIN_AS_CANONICAL
+    required_repairs: []
+    pilot_required: false
+
+  - playbook_id: validate-playbook-tool
+    content_path: tools/playbook/validate_playbook.py
+    current_use: VALIDATION_CONSUMER
+    relevance: current
+    correctness: correct
+    completeness: complete
+    executable_specificity: machine_readable
+    quality_findings:
+      - "READ-ONLY, writes nothing — correctly bounded"
+      - "jsonschema + structural fallback engines work"
+      - "NOT registered as /validate-playbook skill — gap"
+      - "No supervisor pipeline integration"
+    stale_paths: []
+    missing_contract_fields: []
+    recommended_action: RETAIN_AND_HARDEN
+    required_repairs:
+      - Register as /validate-playbook skill in .supervisor/skill-registry.yaml
+    pilot_required: false
+
+  - playbook_id: replay-acquisition-playbook-tool
+    content_path: tools/playbook/replay_acquisition_playbook.py
+    current_use: VALIDATION_CONSUMER
+    relevance: current
+    correctness: correct
+    completeness: complete
+    executable_specificity: machine_readable
+    quality_findings:
+      - "Code COMPLETE and TESTED (S-F2F-03, executed 2026-05-09)"
+      - "CRITICAL: AGENTS.md §AA wrongly calls this 'unauthorized' — STALE POLICY"
+      - "Evidence contract secondary-sf2f03-dry-run-replay-review-queue.yaml PROVES execution"
+      - "Dry-run/explain/export-review-queue modes all functional"
+      - "Apply mode correctly NOT implemented — prohibition correct"
+      - "NOT registered as /replay-acquisition-playbook skill"
+    stale_paths: []
+    missing_contract_fields: []
+    recommended_action: RECONCILE_AND_AUTHORIZE
+    required_repairs:
+      - Update AGENTS.md §AA to reflect S-F2F-03 as COMPLETE
+      - Update GOVERNANCE.md §20 to reflect S-F2F-03 as COMPLETE
+      - Register as /replay-acquisition-playbook skill
+    authorization_decision: >
+      AUTHORIZED for dry-run, validate, explain, export-review-queue modes.
+      Apply mode remains NOT authorized (not implemented — correct).
+      Replay does NOT approve gates, does NOT satisfy DEC-034, does NOT replace human approval.
+    pilot_required: true
+    pilot_target: Pilot 4
+
+  - playbook_id: odf-flat-family-playbook
+    content_path: acquisition-packs/_families/odf-flat/playbook.yaml
+    current_use: VALIDATION_CONSUMER
+    relevance: current
+    correctness: correct
+    completeness: mostly_complete
+    executable_specificity: machine_readable_yaml
+    quality_findings:
+      - "Status is 'proposed' — should advance to 'active' after Pilot 4"
+      - "Missing last_verified_revision field"
+      - "Missing pilot proof reference"
+      - "Authority boundaries correctly stated in YAML (non_authority_statement present)"
+      - "Validates against acquisition-playbook.schema.json (test_odf_flat_family_playbook.py PASSES)"
+      - "not_for_execution: false — correct (this is a family_playbook, not documentation_example)"
+    stale_paths: []
+    missing_contract_fields:
+      - last_verified_revision
+      - pilots_completed
+    recommended_action: RETAIN_AND_HARDEN
+    required_repairs:
+      - Advance status from proposed to active (after Pilot 4)
+      - Add last_verified_revision: "2026-07-01"
+      - Add pilots_completed: [pilot-4] after Pilot 4 executes
+    pilot_required: true
+    pilot_target: Pilot 4
+
+  - playbook_id: fods-documentation-example
+    content_path: docs/examples/acquisition-playbook-fods-documentation-example.yaml
+    current_use: VALIDATION_CONSUMER
+    relevance: current
+    correctness: correct
+    completeness: complete
+    executable_specificity: not_applicable_documentation_only
+    quality_findings:
+      - "Correctly marked not_for_execution: true"
+      - "Correctly has status: documentation_example_only"
+      - "Used as positive schema validation test fixture"
+      - "No changes needed"
+    stale_paths: []
+    missing_contract_fields: []
+    recommended_action: RETAIN_AS_IS
+    required_repairs: []
+    pilot_required: false
+
+# ─────────────────────────────────────────────────────────
+# POLICY DOCUMENTS — STALE
+# ─────────────────────────────────────────────────────────
+
+  - playbook_id: agents-md-section-aa
+    content_path: AGENTS.md
+    section: "§AA (lines 641-676)"
+    current_use: GOVERNANCE_REFERENCE
+    relevance: current
+    correctness: incorrect_stale
+    quality_findings:
+      - "STALE: Says 'Replay tools remain unauthorized' — FALSE as of 2026-05-09"
+      - "STALE: Says 'Family playbooks remain unauthorized' — odf-flat playbook EXISTS"
+      - "STALE: No description of Sprint Task Templates layer"
+    recommended_action: REPAIR_STALE_POLICY
+    required_repairs:
+      - Update §AA status to reflect S-F2F-03/04 as COMPLETE
+      - Add /replay-acquisition-playbook authorized for dry-run modes
+      - Add Sprint Task Template layer description
+      - Keep apply mode prohibition (correctly stated)
+    pilot_required: false
+
+  - playbook_id: governance-md-section-20
+    content_path: GOVERNANCE.md
+    section: "§20 (lines 288-316)"
+    current_use: GOVERNANCE_REFERENCE
+    relevance: current
+    correctness: incorrect_stale
+    quality_findings:
+      - "STALE: Same issues as AGENTS.md §AA"
+      - "Replay/apply described as 'unauthorized' — false"
+    recommended_action: REPAIR_STALE_POLICY
+    required_repairs:
+      - Same as AGENTS.md repairs above
+    pilot_required: false
+
+  - playbook_id: docs-playbook-layer
+    content_path: docs/playbook-layer.md
+    current_use: DOCUMENTATION_REFERENCE
+    relevance: current
+    correctness: partially_stale
+    quality_findings:
+      - "S-F2F-03 phase listed as future — stale (executed 2026-05-09)"
+      - "S-F2F-04 phase listed as future — stale (executed 2026-05-09)"
+      - "S-F2F-05 family playbook listed as future — stale (exists as proposed)"
+      - "No description of Sprint Task Templates layer (Model C disambiguation)"
+    recommended_action: RETAIN_AND_HARDEN
+    required_repairs:
+      - Update S-F2F phase status table
+      - Add Model C disambiguation section
+      - Add Sprint Task Template layer description
+    pilot_required: false
