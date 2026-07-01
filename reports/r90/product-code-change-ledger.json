@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s398-dotnet-deepening-20260701",
+  "latest_sprint": "ff-sprint-s399-dotnet-deepening-20260701",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -34018,9 +34018,51 @@
       ],
       "test_count": 9,
       "description": "Dedicated tests for FodtDocument.ReferenceMarkCount: new non-negative, counts unchanged, idempotent, is int, dogfood paragraphs/mixed/loop"
+    },
+    {
+      "entry_id": "PC-NETPBM-R417",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s399-dotnet-deepening-20260701",
+      "product": "NETPBM .NET",
+      "capability_refs": [
+        "commercial_net_products.NETPBM.dotnet_status.get_magic_number"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR417GetMagicNumberDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "description": "Dedicated tests for NetpbmImage.GetMagicNumber: PBM=P1/P4, PGM=P2/P5, PPM=P3/P6, dims/format/MaxValue unchanged, idempotent, dogfood starts with P, non-null/non-empty"
+    },
+    {
+      "entry_id": "PC-FODS-R448",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s399-dotnet-deepening-20260701",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.get_cell_indent"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR448GetCellIndentDedicatedTests.cs"
+      ],
+      "test_count": 10,
+      "description": "Dedicated tests for FodsDocument.GetCellIndent: null/whitespace/nonexistent/neg throws; valid non-negative; SheetCount unchanged; idempotent; SetIndent+Get; dogfood default/multiple cells"
+    },
+    {
+      "entry_id": "PC-FODT-R423",
+      "classification": "NET_TEST_DEEPENING",
+      "sprint": "ff-sprint-s399-dotnet-deepening-20260701",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.get_embedded_object_count"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR423GetEmbeddedObjectCountDedicatedTests.cs"
+      ],
+      "test_count": 9,
+      "description": "Dedicated tests for FodtDocument.EmbeddedObjectCount: new non-negative, counts unchanged, idempotent, is int, dogfood paragraphs/mixed/loop"
     }
   ],
-  "total_entries": 2023,
+  "total_entries": 2026,
   "changes": [
     {
       "file": "src/python/dif/models.py",
