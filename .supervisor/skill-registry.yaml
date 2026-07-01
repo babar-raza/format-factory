@@ -266,6 +266,40 @@ skills:
   status: active
   test_paths: []
   advisory_only: true
+- command: /backfill-gate4-prototype-evidence
+  command_file: .claude/commands/backfill-gate4-prototype-evidence.md
+  idempotency: idempotent
+  implementation_paths:
+  - tools/gates/validate_gate4_evidence.py
+  - tools/gates/update_gate4_registry.py
+  - tools/gates/patch_gate4_registry_fields.py
+  notes: Registered FF-G4-BACKFILL-001 (2026-07-01). Normalizes Gate 4 evidence disposition
+    for all tracked formats. Idempotent — safe to re-run.
+  product_track: acquisition
+  purpose: Inventory Gate 4 status, classify evidence strategy, create evidence wrappers,
+    create minimal prototypes only when allowed, update registries and acquisition packs,
+    run focused validation, emit resumable evidence.
+  skill_id: backfill-gate4-prototype-evidence
+  spec_qname_required: false
+  status: active
+  task_types:
+  - GATE4_INVENTORY
+  - GATE4_REGISTRY_REPAIR
+  - GATE4_EVIDENCE_WRAPPER
+  - GATE4_RETROSPECTIVE_ACQUISITION
+  - GATE4_MINIMAL_PROTOTYPE
+  - GATE4_PREREQUISITE_BLOCKER
+  - GATE4_TEST_BACKFILL
+  - GATE4_PIPELINE_HEALING
+  - GATE4_IDEMPOTENCY
+  test_paths:
+  - tests/python/test_gate4_contract.py
+  - tests/python/test_gate4_governance.py
+  - tests/skills/test_xpm_gate4_prototype.py
+  - tests/skills/test_pam_gate4_prototype.py
+  - tests/skills/test_fods_gate4_prototype.py
+  - tests/skills/test_fodt_gate4_prototype.py
+
 - command: /autonomous-loop
   command_file: .claude/commands/autonomous-loop.md
   idempotency: state_mutating
@@ -2023,6 +2057,143 @@ skills:
   test_paths:
   - tests/certification/test_tool_pipeline.py
   - tests/certification/test_report_integrity.py
+  version: '1.0'
+- command: /certification-inventory-extractor
+  command_file: .claude/commands/certification-inventory-extractor.md
+  created_at: '2026-07-01'
+  idempotency: deterministic
+  implementation_paths:
+  - tools/certification/inventory_extractor.py
+  mandatory_validations: []
+  output_paths:
+  - reports/certification/{fmt}/api-contract.json
+  product_track: governance
+  purpose: Extract API contracts (exports, functions, classes) for one or more formats
+    and write per-format api-contract.json evidence files.
+  required_handoff_fields: []
+  skill_id: certification-inventory-extractor
+  status: active
+  test_paths:
+  - tests/certification/test_tool_pipeline.py
+  version: '1.0'
+- command: /certification-stub-detector
+  command_file: .claude/commands/certification-stub-detector.md
+  created_at: '2026-07-01'
+  idempotency: deterministic
+  implementation_paths:
+  - tools/certification/stub_detector.py
+  mandatory_validations: []
+  output_paths:
+  - reports/certification/{fmt}/stub-report.json
+  product_track: governance
+  purpose: Detect material stub functions (pass-only, raise NotImplementedError, etc.)
+    in source files and write a stub-report.json evidence file.
+  required_handoff_fields: []
+  skill_id: certification-stub-detector
+  status: active
+  test_paths:
+  - tests/certification/test_tool_pipeline.py
+  version: '1.0'
+- command: /certification-exception-checker
+  command_file: .claude/commands/certification-exception-checker.md
+  created_at: '2026-07-01'
+  idempotency: deterministic
+  implementation_paths:
+  - tools/certification/exception_coverage_checker.py
+  mandatory_validations: []
+  output_paths:
+  - reports/certification/{fmt}/exception-coverage.json
+  product_track: governance
+  purpose: Check that each exception raised in source is exercised in tests and write
+    an exception-coverage.json evidence file.
+  required_handoff_fields: []
+  skill_id: certification-exception-checker
+  status: active
+  test_paths:
+  - tests/certification/test_tool_pipeline.py
+  version: '1.0'
+- command: /certification-assertion-scorer
+  command_file: .claude/commands/certification-assertion-scorer.md
+  created_at: '2026-07-01'
+  idempotency: deterministic
+  implementation_paths:
+  - tools/certification/assertion_quality_scorer.py
+  mandatory_validations: []
+  output_paths:
+  - reports/certification/{fmt}/assertion-quality.json
+  product_track: governance
+  purpose: Score the quality of assertions in Python test files and write an assertion-quality.json
+    evidence file. Exits 1 when weak assertions are found.
+  required_handoff_fields: []
+  skill_id: certification-assertion-scorer
+  status: active
+  test_paths:
+  - tests/certification/test_tool_pipeline.py
+  version: '1.0'
+- command: /certification-dotnet-assertion-scorer
+  command_file: .claude/commands/certification-dotnet-assertion-scorer.md
+  created_at: '2026-07-01'
+  idempotency: deterministic
+  implementation_paths:
+  - tools/certification/dotnet_assertion_scorer.py
+  mandatory_validations: []
+  output_paths:
+  - reports/certification/{fmt}/dotnet-assertion-quality.json
+  product_track: governance
+  purpose: Score the quality of assertions in .NET (C#) test files and write a
+    dotnet-assertion-quality.json evidence file.
+  required_handoff_fields: []
+  skill_id: certification-dotnet-assertion-scorer
+  status: active
+  test_paths: []
+  version: '1.0'
+- command: /certification-generate-exception-tests
+  command_file: .claude/commands/certification-generate-exception-tests.md
+  created_at: '2026-07-01'
+  idempotency: non_deterministic
+  implementation_paths:
+  - tools/certification/generate_exception_tests.py
+  mandatory_validations: []
+  output_paths: []
+  product_track: governance
+  purpose: "Generate missing exception-coverage test stubs for a format. WARNING:\
+    \ Mutates test files in place \u2014 use with caution."
+  required_handoff_fields: []
+  skill_id: certification-generate-exception-tests
+  status: active
+  test_paths: []
+  version: '1.0'
+- command: /certification-fix-weak-assertions
+  command_file: .claude/commands/certification-fix-weak-assertions.md
+  created_at: '2026-07-01'
+  idempotency: non_deterministic
+  implementation_paths:
+  - tools/certification/fix_weak_assertions.py
+  mandatory_validations: []
+  output_paths: []
+  product_track: governance
+  purpose: "Strengthen weak assertions in Python test files for a format. WARNING:\
+    \ Mutates test files in place \u2014 use with caution."
+  required_handoff_fields: []
+  skill_id: certification-fix-weak-assertions
+  status: active
+  test_paths: []
+  version: '1.0'
+- command: /certification-generate-security-tests
+  command_file: .claude/commands/certification-generate-security-tests.md
+  created_at: '2026-07-01'
+  idempotency: non_deterministic
+  implementation_paths:
+  - tools/certification/generate_security_tests.py
+  mandatory_validations: []
+  output_paths: []
+  product_track: governance
+  purpose: "Generate security test stubs (path traversal, malformed input, etc.) for\
+    \ a format. WARNING: Mutates test files in place \u2014 use with caution."
+  required_handoff_fields: []
+  skill_id: certification-generate-security-tests
+  status: active
+  test_paths: []
   version: '1.0'
 - command: /select-deepening-lane
   command_file: .claude/commands/select-deepening-lane.md
