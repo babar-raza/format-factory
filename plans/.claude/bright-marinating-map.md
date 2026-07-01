@@ -62,6 +62,9 @@ The format-factory repository contains two overlapping systems both called "play
 | TC-PB-010 | CLOSED |
 | TC-PB-011 | CLOSED |
 | TC-PB-012 | CLOSED |
+| TC-PB-013 | CLOSED |
+| TC-PB-014 | CLOSED |
+| TC-PB-015 | CLOSED |
 
 ---
 
@@ -684,10 +687,14 @@ playbook_registry:
 12. TC-PB-012 (second-pass idempotency)
 
 
+<!-- Stale lock from session 34c4217ef0bd (ITERATION_REQUIRED) — superseded.
+     All 15 taskcards CLOSED. TC-PB-015 runs lifecycle_audit + write_plan_lock --terminal. -->
+
+
 <!--plan_terminal_lock:
-  status: ITERATION_REQUIRED
-  locked_at: "2026-07-01T12:10:50.774127+00:00"
-  locked_by: "34c4217ef0bd"
+  status: TERMINAL_CLOSED
+  locked_at: "2026-07-01T19:17:41.883964+00:00"
+  locked_by: "22efecc290b9"
   successor_required_for_future_changes: true
   mutation_policy: "no further plan/hardening/execution writes"
 -->

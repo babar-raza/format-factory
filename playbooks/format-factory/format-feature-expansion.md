@@ -2,9 +2,18 @@
 playbook_contract:
   playbook_id: format-feature-expansion
   title: "Add Feature to Existing Python FOSS Format Codec"
-  version: "1.1"
+  version: "1.2"
   status: ACTIVE
   category: sprint_task_template
+  changelog:
+    - version: "1.2"
+      date: "2026-07-02"
+      change: "TC-PB-004 hardening — phase list updated to canonical 6 phases (read_codec,
+        draft_function, write_tests, verify_import, verify_tests_pass, update_exports).
+        Version bumped from 1.1 to signal content change (TC-PB-013)."
+    - version: "1.1"
+      date: "2026-07-01"
+      change: "TC-PB-004 — added machine-readable YAML front-matter contract block."
   owner_layer: product_source
   authority: TASK_TEMPLATE
   required_inputs:
