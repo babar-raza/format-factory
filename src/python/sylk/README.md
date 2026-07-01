@@ -4,7 +4,7 @@ Parse and write SYLK (Symbolic Link Format) spreadsheet files with Format Factor
 
 ## Installation
 
-<!-- BEGIN:README-INSTALLATION generated=2026-07-01T12:16:30+00:00 source=package-metadata -->
+<!-- BEGIN:README-INSTALLATION generated=2026-07-01T21:01:42+00:00 source=package-metadata -->
 ```bash
 pip install format-factory-sylk
 ```
@@ -32,13 +32,13 @@ set_cell_value("input.slk", "output.slk", row=1, col=1, value="Updated")
 
 ## License
 
-<!-- BEGIN:README-LICENSE generated=2026-07-01T12:16:30+00:00 source=package-metadata -->
+<!-- BEGIN:README-LICENSE generated=2026-07-01T21:01:42+00:00 source=package-metadata -->
 Apache-2.0
 <!-- END:README-LICENSE -->
 
 ## Package Info
 
-<!-- BEGIN:README-PACKAGE_INFO generated=2026-07-01T12:16:30+00:00 source=repository-metadata -->
+<!-- BEGIN:README-PACKAGE_INFO generated=2026-07-01T21:01:42+00:00 source=repository-metadata -->
 | Field | Value |
 |---|---|
 | Format | Symbolic Link (SYLK) |
@@ -51,11 +51,11 @@ Apache-2.0
 | Spec | Microsoft (1986) SYLK Format (1986) |
 | QName coverage | 4/4 implemented |
 | Source files | 17 |
-| Test files | 95 |
+| Test files | 96 |
 <!-- END:README-PACKAGE_INFO -->
 
 ## Public API
 
-<!-- BEGIN:README-PUBLIC_API generated=2026-07-01T12:16:30+00:00 source=src-python-init -->
+<!-- BEGIN:README-PUBLIC_API generated=2026-07-01T21:01:42+00:00 source=src-python-init -->
 - `(dynamic)`
 <!-- END:README-PUBLIC_API -->

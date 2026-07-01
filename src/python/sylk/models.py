@@ -70,6 +70,28 @@ class SylkModelDocument:
         """List of SylkCell objects."""
         return list(self._parsed.cells)
 
+    # Document dimension properties (FACT-SYLK-014, FACT-SYLK-003)
+
+    @property
+    def is_empty(self) -> bool:
+        """True if the document has no populated cells."""
+        return self.cell_count == 0
+
+    @property
+    def is_single_cell(self) -> bool:
+        """True if the document has exactly one populated cell."""
+        return self.cell_count == 1
+
+    @property
+    def is_wide(self) -> bool:
+        """True if there are more columns than rows."""
+        return self.col_count > self.row_count
+
+    @property
+    def is_tall(self) -> bool:
+        """True if there are more rows than columns."""
+        return self.row_count > self.col_count
+
     def to_dict(self) -> dict[str, Any]:
         """Return document summary as a dict."""
         return {

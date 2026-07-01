@@ -4,7 +4,7 @@ Parse QOI (Quite OK Image Format) files with Format Factory.
 
 ## Installation
 
-<!-- BEGIN:README-INSTALLATION generated=2026-07-01T15:36:53+00:00 source=package-metadata -->
+<!-- BEGIN:README-INSTALLATION generated=2026-07-01T21:01:42+00:00 source=package-metadata -->
 ```bash
 pip install format-factory-qoi
 ```
@@ -32,13 +32,13 @@ print(model["width"], model["height"])
 
 ## License
 
-<!-- BEGIN:README-LICENSE generated=2026-07-01T15:36:53+00:00 source=package-metadata -->
+<!-- BEGIN:README-LICENSE generated=2026-07-01T21:01:42+00:00 source=package-metadata -->
 Apache-2.0
 <!-- END:README-LICENSE -->
 
 ## Package Info
 
-<!-- BEGIN:README-PACKAGE_INFO generated=2026-07-01T15:36:53+00:00 source=repository-metadata -->
+<!-- BEGIN:README-PACKAGE_INFO generated=2026-07-01T21:01:42+00:00 source=repository-metadata -->
 | Field | Value |
 |---|---|
 | Format | Quite OK Image Format |
@@ -51,11 +51,11 @@ Apache-2.0
 | Spec | Dominic Szablewski / phoboslab QOI 1.0 (November 2021) |
 | QName coverage | 3/3 implemented |
 | Source files | 17 |
-| Test files | 41 |
+| Test files | 42 |
 <!-- END:README-PACKAGE_INFO -->
 
 ## Public API
 
-<!-- BEGIN:README-PUBLIC_API generated=2026-07-01T15:36:53+00:00 source=src-python-init -->
+<!-- BEGIN:README-PUBLIC_API generated=2026-07-01T21:01:42+00:00 source=src-python-init -->
 - `(dynamic)`
 <!-- END:README-PUBLIC_API -->
