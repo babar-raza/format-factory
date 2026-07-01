@@ -7,11 +7,16 @@ Secrets are never logged. Every call produces a telemetry record.
 from __future__ import annotations
 
 import hashlib
+import os
 from typing import Any
 
 import tools.ai.control_plane.config as _ai_config
 from tools.ai.control_plane.config import AIConfig
 from tools.ai.schemas.models import AIUsageRecord, CallStatus
+
+# Default per-call timeout in seconds. Override via GRADER_LLM_TIMEOUT env var.
+# Prevents indefinite hang on SSL read / TCP stall (RC-1 in LLM-GRADER-TIMEOUT-001).
+_DEFAULT_LLM_TIMEOUT = 30.0
 
 
 def _get_litellm():
@@ -74,6 +79,7 @@ def gateway_chat(
         record.error_class_redacted = "missing_api_key"
         return {"content": "", "usage": {}}, record
 
+    _timeout = float(os.environ.get("GRADER_LLM_TIMEOUT", str(_DEFAULT_LLM_TIMEOUT)))
     try:
         litellm = _get_litellm()
         response = litellm.completion(
@@ -82,6 +88,7 @@ def gateway_chat(
             api_key=api_key,
             api_base=config.endpoint,
             temperature=0,
+            timeout=_timeout,  # bounded per RC-1: LLM-GRADER-TIMEOUT-001
         )
         content = response.choices[0].message.content or ""
         usage = getattr(response, "usage", None)
@@ -94,6 +101,12 @@ def gateway_chat(
         return {"content": content, "usage": record.model_dump(include={"input_tokens", "output_tokens", "total_tokens"})}, record
 
     except Exception as exc:
+        # Classify to canonical error class for structured telemetry
+        try:
+            from tools.supervisor.grader_reliability import classify_exception
+            error_cls = classify_exception(exc).value
+        except Exception:
+            error_cls = type(exc).__name__
         record.status = CallStatus.error
-        record.error_class_redacted = type(exc).__name__
+        record.error_class_redacted = error_cls
         return {"content": "", "usage": {}}, record

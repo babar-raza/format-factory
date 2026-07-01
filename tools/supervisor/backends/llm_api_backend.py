@@ -91,72 +91,138 @@ class LlmApiBackend(ExecutionBackend):
                 errors=[f"Credential {auth_env} absent at runtime"],
             )
 
-        # Bounded call — attempt HTTP request
+        # Bounded call — attempt HTTP request with retry + error classification
         prompt = action.get("prompt", _BOUNDED_TEST_PROMPT)
         model = action.get("model", ep.get("default_model", "recommended"))
 
+        import urllib.request
+        import urllib.error
+
+        payload = {
+            "model": model,
+            "messages": [{"role": "user", "content": prompt}],
+            "max_tokens": 64,
+            "temperature": 0,
+        }
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {api_key}",
+        }
+        req = urllib.request.Request(
+            f"{ep_url}/chat/completions",
+            data=json.dumps(payload).encode("utf-8"),
+            headers=headers,
+            method="POST",
+        )
+
+        # Load shared reliability layer for error classification + retry
         try:
-            import urllib.request
-            import urllib.error
-
-            payload = {
-                "model": model,
-                "messages": [{"role": "user", "content": prompt}],
-                "max_tokens": 64,
-                "temperature": 0,
-            }
-            headers = {
-                "Content-Type": "application/json",
-                "Authorization": f"Bearer {api_key}",
-            }
-            req = urllib.request.Request(
-                f"{ep_url}/chat/completions",
-                data=json.dumps(payload).encode("utf-8"),
-                headers=headers,
-                method="POST",
+            from tools.supervisor.grader_reliability import (
+                RetryPolicy, GradingObserver, call_with_retry,
+                GraderRetryExhausted, GraderPermanentFailure, classify_exception,
             )
-            with urllib.request.urlopen(req, timeout=15) as resp:
-                body = resp.read().decode("utf-8")
-
-            resp_data = json.loads(body)
-            content = resp_data["choices"][0]["message"]["content"] or ""
-            if len(content) > _MAX_CONTENT_LEN:
-                content = content[:_MAX_CONTENT_LEN] + "...[truncated]"
-
-            # Try to parse content as JSON (bounded test expects JSON)
-            try:
-                parsed = json.loads(content.strip())
-            except Exception:
-                parsed = {"raw": content}
-
-            result_record = {
-                "status": "SUCCESS",
-                "action_id": action_id,
-                "backend_used": "LLM_API",
-                "proof_level": "H5",
-                "endpoint_id": ep_id,
-                "model": model,
-                "response": parsed,
-                "executed_at": datetime.now(timezone.utc).isoformat(),
-            }
-
+            _rel_ok = True
         except ImportError:
+            _rel_ok = False
+
+        body: str | None = None
+        _last_error_class = "UNKNOWN_PROVIDER_FAILURE"
+
+        def _do_http() -> str:
+            with urllib.request.urlopen(req, timeout=15) as resp:
+                return resp.read().decode("utf-8")
+
+        if _rel_ok:
+            policy = RetryPolicy(max_attempts=2, overall_deadline=40.0, read_timeout=15.0)
+            observer = GradingObserver()
+            try:
+                body = call_with_retry(
+                    _do_http, policy=policy, observer=observer,
+                    item_id=action_id, provider=ep_id, model=model,
+                )
+            except GraderPermanentFailure as exc:
+                _last_error_class = exc.error_class.value
+                return BackendResult(
+                    action_id=action_id,
+                    backend_used=BackendType.LLM_API,
+                    status="FAILED",
+                    exit_code=1,
+                    errors=[f"LLM call permanent failure ({_last_error_class}): {type(exc.exc).__name__}"],
+                    warnings=[f"Endpoint: {ep_id} ({ep_url})", "Not retried — permanent error class"],
+                )
+            except GraderRetryExhausted as exc:
+                _last_error_class = exc.error_class.value
+                return BackendResult(
+                    action_id=action_id,
+                    backend_used=BackendType.LLM_API,
+                    status="FAILED",
+                    exit_code=1,
+                    errors=[f"LLM call retries exhausted ({_last_error_class}): {type(exc.last_exc).__name__}"],
+                    warnings=[f"Endpoint: {ep_id} ({ep_url})", "Retried per RetryPolicy; all attempts failed"],
+                )
+            except Exception as exc:
+                return BackendResult(
+                    action_id=action_id,
+                    backend_used=BackendType.LLM_API,
+                    status="FAILED",
+                    exit_code=1,
+                    errors=[f"LLM call failed: {type(exc).__name__}"],
+                    warnings=[f"Endpoint: {ep_id} ({ep_url})"],
+                )
+        else:
+            # Fallback: single attempt (original behaviour) when reliability module unavailable
+            try:
+                body = _do_http()
+            except Exception as exc:
+                return BackendResult(
+                    action_id=action_id,
+                    backend_used=BackendType.LLM_API,
+                    status="FAILED",
+                    exit_code=1,
+                    errors=[f"LLM call failed: {type(exc).__name__}: {exc}"],
+                    warnings=[f"Endpoint: {ep_id} ({ep_url})"],
+                )
+
+        if body is None:
             return BackendResult(
                 action_id=action_id,
                 backend_used=BackendType.LLM_API,
-                status="BLOCKED",
-                exit_code=3,
-                errors=["urllib not available (unexpected)"],
+                status="FAILED",
+                exit_code=1,
+                errors=["LLM call returned no body"],
             )
+
+        try:
+            resp_data = json.loads(body)
+            content = resp_data["choices"][0]["message"]["content"] or ""
         except Exception as exc:
             return BackendResult(
                 action_id=action_id,
                 backend_used=BackendType.LLM_API,
                 status="FAILED",
                 exit_code=1,
-                errors=[f"LLM call failed: {type(exc).__name__}: {exc}"],
-                warnings=[f"Endpoint: {ep_id} ({ep_url})"],
+                errors=[f"LLM response parse failed: {type(exc).__name__}"],
             )
+
+        if len(content) > _MAX_CONTENT_LEN:
+            content = content[:_MAX_CONTENT_LEN] + "...[truncated]"
+
+        # Try to parse content as JSON (bounded test expects JSON)
+        try:
+            parsed = json.loads(content.strip())
+        except Exception:
+            parsed = {"raw": content}
+
+        result_record = {
+            "status": "SUCCESS",
+            "action_id": action_id,
+            "backend_used": "LLM_API",
+            "proof_level": "H5",
+            "endpoint_id": ep_id,
+            "model": model,
+            "response": parsed,
+            "executed_at": datetime.now(timezone.utc).isoformat(),
+        }
 
         # Write result
         if result_path:

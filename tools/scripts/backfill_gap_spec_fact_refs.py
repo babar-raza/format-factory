@@ -7,12 +7,61 @@ from sal-facts-latest.json for the matching format.
 
 Idempotent: skips gaps that already have non-empty spec_facts.
 """
+import hashlib
 import json
 import argparse
+import subprocess
 import sys
 from pathlib import Path
 
 REPO = Path(__file__).parent.parent.parent
+
+
+def _get_head_sha256(gap_path: Path) -> str | None:
+    """Return SHA256 of gap-ledger at HEAD, or None if unavailable."""
+    try:
+        rel = gap_path.relative_to(REPO)
+    except ValueError:
+        return None
+    try:
+        blob = subprocess.run(
+            ["git", "show", f"HEAD:{rel.as_posix()}"],
+            capture_output=True,
+            cwd=str(REPO),
+            timeout=10,
+        )
+        if blob.returncode != 0:
+            return None
+        return hashlib.sha256(blob.stdout).hexdigest()
+    except Exception:
+        return None
+
+
+def _check_working_tree_vs_head(gap_path: Path, force_from_stale: bool) -> None:
+    """TC-POST-GAP-GUARD-001: Warn/error if working tree gap-ledger differs from HEAD.
+
+    When another session has uncommitted changes in the working tree, the backfill
+    would silently operate on stale data. This guard detects the divergence and
+    requires --force-from-stale to proceed.
+    """
+    head_sha = _get_head_sha256(gap_path)
+    if head_sha is None:
+        return  # Can't compare — allow proceed (git unavailable or new file)
+    wt_sha = hashlib.sha256(gap_path.read_bytes()).hexdigest()
+    if head_sha == wt_sha:
+        return  # Clean — working tree matches HEAD
+    msg = (
+        f"GAP-GUARD: working tree gap-ledger differs from HEAD.\n"
+        f"  HEAD SHA256:         {head_sha}\n"
+        f"  Working tree SHA256: {wt_sha}\n"
+        f"  Another session may have uncommitted changes.\n"
+        f"  Re-read gap-ledger from HEAD or pass --force-from-stale to proceed anyway."
+    )
+    if force_from_stale:
+        print(f"WARNING: {msg}", file=sys.stderr)
+    else:
+        print(f"ERROR: {msg}", file=sys.stderr)
+        sys.exit(2)
 
 
 def _load_sal_facts(sal_facts_path: Path) -> dict:
@@ -106,6 +155,7 @@ def backfill(
     top_n: int = 10,
     semantic_match: bool = False,
     force_overwrite: bool = False,
+    force_from_stale: bool = False,
 ) -> dict:
     gap_path = Path(gap_ledger_path)
     sal_path = Path(sal_facts_path)
@@ -116,6 +166,9 @@ def backfill(
     if not sal_path.exists():
         print(f"ERROR: sal-facts not found: {sal_path}", file=sys.stderr)
         sys.exit(1)
+
+    if not dry_run:
+        _check_working_tree_vs_head(gap_path, force_from_stale)
 
     gaps_data = json.loads(gap_path.read_text(encoding="utf-8", errors="replace"))
     format_facts = _load_sal_facts(sal_path)
@@ -242,6 +295,11 @@ if __name__ == "__main__":
         action="store_true",
         help="Overwrite existing spec_facts (default: skip already-populated gaps)"
     )
+    parser.add_argument(
+        "--force-from-stale",
+        action="store_true",
+        help="TC-POST-GAP-GUARD-001: proceed even if working tree gap-ledger differs from HEAD (prints WARNING instead of ERROR)"
+    )
 
     args = parser.parse_args()
     fmts = [f.strip() for f in args.formats.split(",") if f.strip()] if args.formats else []
@@ -255,4 +313,5 @@ if __name__ == "__main__":
         top_n=args.top_n,
         semantic_match=args.semantic_match,
         force_overwrite=args.force_overwrite,
+        force_from_stale=args.force_from_stale,
     )

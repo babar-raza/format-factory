@@ -31,6 +31,10 @@ from pathlib import Path
 
 from atomic_io import atomic_write_json
 
+# Shared reliability layer: error classification, retry policy, observability.
+# Imported lazily inside _sv_sdk_fallback to avoid hard dep when grader runs offline.
+_grader_reliability_available: bool | None = None  # None = not yet checked
+
 # Grade cache for LLM semantic verification results
 # Key: "{item_id}:{evidence_hash}" → cached verification result
 _GRADE_CACHE_PATH = Path(__file__).resolve().parent.parent.parent / ".local" / "supervisor" / "grade-cache.json"
@@ -220,7 +224,7 @@ def _get_sv_gateway():
     return None, None
 
 
-def _sv_llm_call(messages: list[dict], operation: str) -> str | None:
+def _sv_llm_call(messages: list[dict], operation: str, item_id: str = "") -> str | None:
     """Single LLM call for semantic verification. Returns content or None.
 
     Tries gateway (litellm) first, falls back to direct SDK if litellm unavailable.
@@ -244,7 +248,7 @@ def _sv_llm_call(messages: list[dict], operation: str) -> str | None:
         # Gateway returned empty — may be litellm import failure; try direct SDK
         if _record and getattr(_record, "status", None) and "error" in str(_record.status).lower():
             print(f"  [LLM] gateway_chat failed for {operation}, trying SDK fallback...")
-            return _sv_sdk_fallback(messages, cfg)
+            return _sv_sdk_fallback(messages, cfg, item_id=item_id)
         print(f"  [LLM] gateway_chat returned empty for {operation}")
         return None
     except Exception as exc:
@@ -252,34 +256,107 @@ def _sv_llm_call(messages: list[dict], operation: str) -> str | None:
         return None
 
 
-def _sv_sdk_fallback(messages: list[dict], cfg) -> str | None:
-    """Fallback: call endpoint directly via SDK when litellm fails."""  # policy-allowed
+def _sv_sdk_fallback(messages: list[dict], cfg, item_id: str = "") -> str | None:
+    """Fallback: call endpoint directly via SDK when litellm fails.
+
+    Hardened (LLM-GRADER-TIMEOUT-001):
+    - Single OpenAI client created once (not per attempt)
+    - httpx.Timeout(connect=10, read=30) on the client constructor
+    - call_with_retry() with exponential backoff + jitter + overall deadline
+    - Permanent errors (auth, invalid request) abort immediately — no useless retry
+    - Structured observability via GradingObserver
+    """  # policy-allowed
     import os
-    import time
-    _max_attempts = 3
-    _backoff = [1, 2, 4]
+
     key = os.environ.get("GPT_OSS_API_KEY", "").strip()
     if not key or not cfg.endpoint:
         return None
-    for attempt in range(_max_attempts):
+
+    # Try to load the shared reliability layer (optional — graceful fallback on import error)
+    try:
+        from grader_reliability import (
+            RetryPolicy, GradingObserver, call_with_retry,
+            GraderRetryExhausted, GraderPermanentFailure,
+        )
+        _reliability_ok = True
+    except ImportError:
         try:
-            _sdk = __import__("openai")  # policy-approved endpoint only
-            _Client = _sdk.OpenAI  # policy-approved
-            client = _Client(base_url=cfg.endpoint, api_key=key)
-            resp = client.chat.completions.create(
-                model="recommended",
-                messages=messages,
-                max_tokens=500,
-                temperature=0,
-                timeout=30,  # 30s per attempt; 3 attempts = 90s max (TC-GRADE-002)
+            from tools.supervisor.grader_reliability import (
+                RetryPolicy, GradingObserver, call_with_retry,
+                GraderRetryExhausted, GraderPermanentFailure,
             )
-            return resp.choices[0].message.content or None
+            _reliability_ok = True
+        except ImportError:
+            _reliability_ok = False
+
+    # Build client once with explicit connect+read timeouts
+    try:
+        _sdk = __import__("openai")  # policy-approved endpoint only
+        _Client = _sdk.OpenAI  # policy-approved
+        # Use httpx.Timeout for separate connect and read bounds (RC-3)
+        try:
+            import httpx as _httpx
+            _timeout = _httpx.Timeout(connect=10.0, read=30.0, write=30.0, pool=10.0)
+        except ImportError:
+            _timeout = 30  # scalar fallback (TC-GRADE-002 compatible)
+        client = _Client(base_url=cfg.endpoint, api_key=key, timeout=_timeout)
+    except Exception as exc:
+        print(f"  [LLM] SDK fallback: client construction failed: {type(exc).__name__}")
+        return None
+
+    def _do_call() -> str:
+        resp = client.chat.completions.create(
+            model="recommended",
+            messages=messages,
+            max_tokens=500,
+            temperature=0,
+        )
+        return resp.choices[0].message.content or ""
+
+    if _reliability_ok:
+        policy = RetryPolicy(
+            max_attempts=3,
+            base_backoff=2.0,
+            jitter=True,
+            overall_deadline=95.0,
+            connect_timeout=10.0,
+            read_timeout=30.0,
+        )
+        observer = GradingObserver()
+        try:
+            result = call_with_retry(
+                _do_call,
+                policy=policy,
+                observer=observer,
+                item_id=item_id,
+                provider=getattr(cfg, "endpoint_identity", ""),
+                model="recommended",
+            )
+            return result or None
+        except GraderPermanentFailure as exc:
+            print(f"  [LLM] SDK fallback permanent failure ({exc.error_class.value}): not retrying")
+            return None
+        except GraderRetryExhausted as exc:
+            print(f"  [LLM] SDK fallback retries exhausted ({exc.error_class.value})")
+            return None
         except Exception as exc:
-            print(f"  [LLM] SDK fallback attempt {attempt + 1}/{_max_attempts} failed: {type(exc).__name__}")
-            if attempt < _max_attempts - 1:
-                time.sleep(_backoff[attempt])
-    print("  [LLM] All SDK fallback attempts exhausted")
-    return None
+            print(f"  [LLM] SDK fallback unexpected error: {type(exc).__name__}")
+            return None
+    else:
+        # Legacy path: reliability module not importable (e.g. during tests that patch sys.path)
+        import time as _time
+        _max_attempts = 3
+        _backoff = [1, 2, 4]
+        for attempt in range(_max_attempts):
+            try:
+                result = _do_call()
+                return result or None
+            except Exception as exc:
+                print(f"  [LLM] SDK fallback attempt {attempt + 1}/{_max_attempts} failed: {type(exc).__name__}")
+                if attempt < _max_attempts - 1:
+                    _time.sleep(_backoff[attempt])
+        print("  [LLM] All SDK fallback attempts exhausted")
+        return None
 
 
 def semantic_verify_item(
