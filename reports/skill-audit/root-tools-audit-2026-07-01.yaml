@@ -1,0 +1,724 @@
+---
+# Audit: tools/supervisor/ — Root Tools Classification
+# Skill: audit-root-tools (TC-SFE2-002)
+# Plan: twinkly-gliding-thimble / SKILL-FIRST-002
+# Date: 2026-07-01
+# Scope: All .py files in tools/supervisor/ — unregistered scripts
+#        (skill-registry.yaml uses command_file → .claude/commands/, not tool_path)
+# Total scripts found: 202
+# Note: All 202 are pre-SKILL-FIRST-001 policy (expected). The skill-first enforcement
+#       policy did not require retroactive registration of supervisor infrastructure.
+#       scripts that directly implement registered skills are classified as KEPT(SKILL_IMPL).
+
+audit_metadata:
+  audited_by: audit-root-tools skill
+  plan_id: twinkly-gliding-thimble
+  taskcard: TC-SFE2-002
+  sprint: SKILL-FIRST-002
+  date: "2026-07-01"
+  scope: tools/supervisor/*.py
+  total_scripts: 202
+  kept_count: 198
+  quarantine_count: 4
+  registered_count: 0
+  rejected_count: 0
+
+summary:
+  verdict: AUDITED
+  disposition: >
+    198 scripts classified as KEPT (pre-policy infrastructure supporting the autonomous sprint
+    loop; no skill registration required). 4 scripts classified as QUARANTINE (iteration-specific
+    one-time proof-graph builders with no ongoing value). 0 REJECTED (no pure test artifacts
+    with zero ongoing value found). 0 new REGISTERED candidates (all script purposes are
+    already covered by existing registered skills).
+  mutation_guard_violations: 0
+  note: >
+    scan_residual_bypasses.py matches the scan_*.py quarantine pattern but is the direct
+    implementation of the registered 'scan-residual-bypasses' skill — classified KEPT.
+
+quarantine_entries:
+  - script: tools/supervisor/build_proof_graph_iter001.py
+    classification: QUARANTINED
+    reason: "Iteration-001-specific one-time proof graph builder (R-series sprint iteration); no ongoing use"
+    evidence_path: ~
+    action: "Move to .local/quarantine/ on next cleanup cycle; no skill invocation required"
+
+  - script: tools/supervisor/build_proof_graph_iter002.py
+    classification: QUARANTINED
+    reason: "Iteration-002-specific one-time proof graph builder (R115); no ongoing use"
+    evidence_path: ~
+    action: "Move to .local/quarantine/ on next cleanup cycle"
+
+  - script: tools/supervisor/build_proof_graph_iter003.py
+    classification: QUARANTINED
+    reason: "Iteration-003-specific one-time proof graph builder (R116 + autonomous controller); no ongoing use"
+    evidence_path: ~
+    action: "Move to .local/quarantine/ on next cleanup cycle"
+
+  - script: tools/supervisor/generate_iter001_samples.py
+    classification: QUARANTINED
+    reason: "Iteration-001-specific sample output generator; one-time proof artifact"
+    evidence_path: ~
+    action: "Move to .local/quarantine/ on next cleanup cycle"
+
+kept_entries:
+  # --- Core autonomous loop infrastructure ---
+  - script: tools/supervisor/autonomous_cycle.py
+    classification: KEPT
+    reason: "Core sprint cycle executor — called by every sprint"
+  - script: tools/supervisor/autonomous_cycle_extensions.py
+    classification: KEPT
+    reason: "Lane conflict checker and extensions for autonomous_cycle"
+  - script: tools/supervisor/autonomous_cycle_utils.py
+    classification: KEPT
+    reason: "Shared utilities for autonomous_cycle"
+  - script: tools/supervisor/check_continuation.py
+    classification: KEPT
+    reason: "Continuation signal checker — called after every sprint to determine CONTINUE/STOP"
+  - script: tools/supervisor/supervisor_loop.py
+    classification: KEPT
+    reason: "Supervisor loop controller — legacy entry point, still referenced"
+  - script: tools/supervisor/sprint_executor.py
+    classification: KEPT
+    reason: "Sprint executor (headless run-loop) — core execution engine"
+  - script: tools/supervisor/sprint_executor_validate.py
+    classification: KEPT
+    reason: "Declaration validator with --repair; called before every autonomous-cycle"
+  - script: tools/supervisor/lifecycle_audit.py
+    classification: KEPT
+    reason: "Machinery plan closure audit; required by CLAUDE.md for machinery_hardening plans"
+  - script: tools/supervisor/write_plan_lock.py
+    classification: KEPT
+    reason: "Plan lock writer; mandatory per CLAUDE.md §Step0"
+  - script: tools/supervisor/build_declaration_review_package.py
+    classification: KEPT
+    reason: "ZIP evidence bundle builder; called after every sprint closeout"
+  - script: tools/supervisor/reset_track_signal.py
+    classification: KEPT
+    reason: "Track signal resetter; needed for CCI session isolation recovery"
+  - script: tools/supervisor/reopen_plan_lock.py
+    classification: KEPT
+    reason: "Plan lock reopener; needed when lock status needs correction"
+  - script: tools/supervisor/write_plan_lock.py
+    classification: KEPT
+    reason: "Plan lock writer — mandatory per CLAUDE.md Step 0"
+
+  # --- Governance validators ---
+  - script: tools/supervisor/governance_validators.py
+    classification: KEPT
+    reason: "85 core governance validators — foundational enforcement"
+  - script: tools/supervisor/governance_validators_dotnet.py
+    classification: KEPT
+    reason: ".NET-specific governance validators"
+  - script: tools/supervisor/governance_validators_ext.py
+    classification: KEPT
+    reason: "Extended governance validators (extension set 1)"
+  - script: tools/supervisor/governance_validators_ext2.py
+    classification: KEPT
+    reason: "Extended governance validators (extension set 2; V82 oracle obligations)"
+  - script: tools/supervisor/governance_validators_gate_auth.py
+    classification: KEPT
+    reason: "Gate authorization validators"
+  - script: tools/supervisor/governance_validators_layers.py
+    classification: KEPT
+    reason: "Layer architecture governance validators"
+  - script: tools/supervisor/governance_validators_ledger.py
+    classification: KEPT
+    reason: "Ledger governance validators"
+  - script: tools/supervisor/governance_validators_root_struct.py
+    classification: KEPT
+    reason: "Root structure governance validators"
+  - script: tools/supervisor/governance_validators_sal.py
+    classification: KEPT
+    reason: "SAL governance validators"
+  - script: tools/supervisor/governance_validators_signal.py
+    classification: KEPT
+    reason: "Continuation signal governance validators"
+  - script: tools/supervisor/governance_validators_spec.py
+    classification: KEPT
+    reason: "Spec-parity governance validators"
+  - script: tools/supervisor/governance_validator_runner.py
+    classification: KEPT
+    reason: "Validator runner harness — runs all validator suites"
+  - script: tools/supervisor/governance_validator_utils.py
+    classification: KEPT
+    reason: "Shared utilities for governance validators"
+
+  # --- Skill system tools (direct implementations of registered skills) ---
+  - script: tools/supervisor/scan_residual_bypasses.py
+    classification: KEPT
+    reason: "Direct implementation of 'scan-residual-bypasses' skill (matches scan_*.py pattern but is a registered skill impl)"
+  - script: tools/supervisor/skill_inventory.py
+    classification: KEPT
+    reason: "Direct implementation of 'inventory-skills' skill; idempotency proven in Pilot F"
+  - script: tools/supervisor/detect_ad_hoc_execution.py
+    classification: KEPT
+    reason: "Direct implementation of 'detect-ad-hoc-execution' skill"
+  - script: tools/supervisor/validate_skill_contracts.py
+    classification: KEPT
+    reason: "Direct implementation of 'validate-skill-contracts' skill"
+  - script: tools/supervisor/validate_skill_transcript.py
+    classification: KEPT
+    reason: "Direct implementation of 'validate-skill-transcript' skill"
+  - script: tools/supervisor/run_skill_idempotency.py
+    classification: KEPT
+    reason: "Direct implementation of 'run-skill-idempotency' skill"
+  - script: tools/supervisor/sync_skill_command_registry.py
+    classification: KEPT
+    reason: "Direct implementation of 'sync-skill-command-registry' skill"
+  - script: tools/supervisor/build_capability_routes.py
+    classification: KEPT
+    reason: "Direct implementation of 'build-capability-routes' skill"
+  - script: tools/supervisor/preflight_skill_entry.py
+    classification: KEPT
+    reason: "Direct implementation of 'preflight-skill-entry' skill"
+  - script: tools/supervisor/gen_skill_transcripts.py
+    classification: KEPT
+    reason: "Transcript generator for skill evidence; ongoing use"
+  - script: tools/supervisor/record_lane_execution.py
+    classification: KEPT
+    reason: "Direct implementation of 'record-lane-execution' skill"
+  - script: tools/supervisor/generate_execution_handoff.py
+    classification: KEPT
+    reason: "Direct implementation of 'generate-execution-handoff' skill"
+  - script: tools/supervisor/package_install_proof.py
+    classification: KEPT
+    reason: "Direct implementation of 'package-install-proof' skill"
+
+  # --- Grading and quality ---
+  - script: tools/supervisor/grade_declared_work.py
+    classification: KEPT
+    reason: "Grades declared work items; called by autonomous-cycle"
+  - script: tools/supervisor/grade_intermediate_verify.py
+    classification: KEPT
+    reason: "Intermediate verification grader"
+  - script: tools/supervisor/grade_to_quality_adapter.py
+    classification: KEPT
+    reason: "Quality adapter bridge for grading pipeline"
+  - script: tools/supervisor/quality_scorer.py
+    classification: KEPT
+    reason: "Quality scoring for evidence items"
+  - script: tools/supervisor/maturity_trend.py
+    classification: KEPT
+    reason: "Maturity trend tracker; writes maturity-trend.json after each sprint"
+
+  # --- Evidence and declaration ---
+  - script: tools/supervisor/evidence_auto_packager.py
+    classification: KEPT
+    reason: "Evidence auto-packaging utility"
+  - script: tools/supervisor/evidence_continuation.py
+    classification: KEPT
+    reason: "Evidence continuation state manager"
+  - script: tools/supervisor/evidence_declaration.py
+    classification: KEPT
+    reason: "Evidence declaration writer"
+  - script: tools/supervisor/evidence_manifest.py
+    classification: KEPT
+    reason: "Evidence manifest builder"
+  - script: tools/supervisor/inspect_declared_evidence.py
+    classification: KEPT
+    reason: "Evidence inspector for declaration review"
+  - script: tools/supervisor/materialize_declared_evidence.py
+    classification: KEPT
+    reason: "Evidence materialization tool"
+  - script: tools/supervisor/materialize_and_review.py
+    classification: KEPT
+    reason: "Combined materialize + review step"
+  - script: tools/supervisor/focused_evidence_extractor.py
+    classification: KEPT
+    reason: "Focused proof extractor for declarations"
+  - script: tools/supervisor/discover_latest_evidence.py
+    classification: KEPT
+    reason: "Latest evidence file discoverer"
+  - script: tools/supervisor/validate_evidence_for_supervisor.py
+    classification: KEPT
+    reason: "Evidence validator for supervisor pipeline"
+  - script: tools/supervisor/validate_supervisor_evidence_bundle.py
+    classification: KEPT
+    reason: "Evidence bundle validator"
+  - script: tools/supervisor/build_context_pack.py
+    classification: KEPT
+    reason: "Context pack builder for sprint handoffs"
+
+  # --- Continuation and routing ---
+  - script: tools/supervisor/continuation_identity.py
+    classification: KEPT
+    reason: "CCI session identity management"
+  - script: tools/supervisor/continuation_ledger.py
+    classification: KEPT
+    reason: "Continuation state ledger"
+  - script: tools/supervisor/continuation_router.py
+    classification: KEPT
+    reason: "Continuation routing logic"
+  - script: tools/supervisor/continuation_selector.py
+    classification: KEPT
+    reason: "Continuation selector for track routing"
+  - script: tools/supervisor/continuation_state.py
+    classification: KEPT
+    reason: "Continuation state model"
+  - script: tools/supervisor/cci_migration.py
+    classification: KEPT
+    reason: "CCI session migration tool"
+  - script: tools/supervisor/stop_reason_adjudicator.py
+    classification: KEPT
+    reason: "Stop reason classification; called when check_continuation returns STOP"
+  - script: tools/supervisor/autonomy_route_decider.py
+    classification: KEPT
+    reason: "Autonomy route decision logic"
+  - script: tools/supervisor/autonomy_route_ledger.py
+    classification: KEPT
+    reason: "Autonomy route ledger"
+  - script: tools/supervisor/autonomy_route_models.py
+    classification: KEPT
+    reason: "Autonomy route data models"
+
+  # --- Product source and task management ---
+  - script: tools/supervisor/product_action_guard.py
+    classification: KEPT
+    reason: "Product action guard; blocks ungoverned mutations"
+  - script: tools/supervisor/product_deepening_gate.py
+    classification: KEPT
+    reason: "Product deepening gate checker"
+  - script: tools/supervisor/product_feature_factory.py
+    classification: KEPT
+    reason: "Feature factory for product deepening"
+  - script: tools/supervisor/product_source_executor.py
+    classification: KEPT
+    reason: "Product source executor for deepening sprints"
+  - script: tools/supervisor/product_task_selector.py
+    classification: KEPT
+    reason: "Product task selector"
+  - script: tools/supervisor/product_velocity_scorer.py
+    classification: KEPT
+    reason: "Product velocity scorer"
+  - script: tools/supervisor/detect_product_progress.py
+    classification: KEPT
+    reason: "Product progress detector"
+  - script: tools/supervisor/autonomous_task_generator.py
+    classification: KEPT
+    reason: "Autonomous task generator"
+  - script: tools/supervisor/autonomous_poc_controller.py
+    classification: KEPT
+    reason: "POC controller for autonomous execution"
+  - script: tools/supervisor/select_poc_gaps.py
+    classification: KEPT
+    reason: "POC gap selector"
+  - script: tools/supervisor/gap_ledger_to_work_items.py
+    classification: KEPT
+    reason: "Gap ledger to work items converter"
+  - script: tools/supervisor/gap_closure_engine.py
+    classification: KEPT
+    reason: "Gap closure engine"
+  - script: tools/supervisor/gap_verification_engine.py
+    classification: KEPT
+    reason: "Gap verification engine"
+
+  # --- Lane management ---
+  - script: tools/supervisor/lane_selector.py
+    classification: KEPT
+    reason: "Lane selector (supervisor lane selector helpers)"
+  - script: tools/supervisor/lane_dependency_checker.py
+    classification: KEPT
+    reason: "Lane dependency checker"
+  - script: tools/supervisor/lane_enforcement_validator.py
+    classification: KEPT
+    reason: "Lane enforcement validator"
+  - script: tools/supervisor/lane_execution_ledger.py
+    classification: KEPT
+    reason: "Lane execution ledger"
+  - script: tools/supervisor/tri_lane_integration.py
+    classification: KEPT
+    reason: "Tri-lane integration coordinator"
+  - script: tools/supervisor/validate_tri_lane_contract.py
+    classification: KEPT
+    reason: "Tri-lane contract validator"
+  - script: tools/supervisor/check_track_health.py
+    classification: KEPT
+    reason: "Track health checker"
+  - script: tools/supervisor/stream_forecaster.py
+    classification: KEPT
+    reason: "Stream forecaster for lane routing"
+  - script: tools/supervisor/stream_prompt_generator.py
+    classification: KEPT
+    reason: "Stream prompt generator"
+
+  # --- DOM and capability ---
+  - script: tools/supervisor/dom_baseline_scanner.py
+    classification: KEPT
+    reason: "DOM baseline scanner"
+  - script: tools/supervisor/dom_contract_checker.py
+    classification: KEPT
+    reason: "DOM contract checker; implements 'check-dom-contract' skill"
+  - script: tools/supervisor/dom_maturity_promoter.py
+    classification: KEPT
+    reason: "DOM maturity promotion tool"
+  - script: tools/supervisor/capability_compiler.py
+    classification: KEPT
+    reason: "Capability compiler (SKILL-GAP-003 documented; ongoing infrastructure)"
+  - script: tools/supervisor/capability_feature_compiler.py
+    classification: KEPT
+    reason: "Canonical pipeline tool for next-work-items.json; see MEMORY.md deduplication note"
+  - script: tools/supervisor/capability_queue_consumer.py
+    classification: KEPT
+    reason: "Capability queue consumer"
+  - script: tools/supervisor/capability_to_feature_compiler.py
+    classification: KEPT
+    reason: "Planning tool (taskcard stubs); see MEMORY.md deduplication note"
+  - script: tools/supervisor/capability_verifier.py
+    classification: KEPT
+    reason: "Capability verifier"
+  - script: tools/supervisor/reconcile_exports_vs_capabilities.py
+    classification: KEPT
+    reason: "Export vs capability reconciliation"
+  - script: tools/supervisor/generate_stream_gaps.py
+    classification: KEPT
+    reason: "Stream gap generator"
+  - script: tools/supervisor/generate_stream_routing_packet.py
+    classification: KEPT
+    reason: "Stream routing packet generator"
+
+  # --- AI advisory and learning ---
+  - script: tools/supervisor/ai_evidence_critic.py
+    classification: KEPT
+    reason: "AI evidence critic; advisory role in sprint review"
+  - script: tools/supervisor/ai_implementation_designer.py
+    classification: KEPT
+    reason: "AI implementation designer"
+  - script: tools/supervisor/ai_learning_loop.py
+    classification: KEPT
+    reason: "AI learning loop"
+  - script: tools/supervisor/ai_product_brain.py
+    classification: KEPT
+    reason: "AI product brain"
+  - script: tools/supervisor/ai_sprint_manager.py
+    classification: KEPT
+    reason: "AI sprint manager"
+  - script: tools/supervisor/ai_supervisor_advisor.py
+    classification: KEPT
+    reason: "AI supervisor advisor"
+  - script: tools/supervisor/failure_memory.py
+    classification: KEPT
+    reason: "Failure memory store"
+  - script: tools/supervisor/generate_sprint_learning.py
+    classification: KEPT
+    reason: "Sprint learning generator"
+  - script: tools/supervisor/write_sprint_learnings.py
+    classification: KEPT
+    reason: "Sprint learnings writer"
+  - script: tools/supervisor/knowledge_freshness_validator.py
+    classification: KEPT
+    reason: "Knowledge freshness validator"
+  - script: tools/supervisor/learning_consumer.py
+    classification: KEPT
+    reason: "Learning consumer"
+  - script: tools/supervisor/adversarial_check.py
+    classification: KEPT
+    reason: "Adversarial check for evidence quality"
+  - script: tools/supervisor/compare_goal_to_evidence.py
+    classification: KEPT
+    reason: "Goal-to-evidence comparison tool"
+  - script: tools/supervisor/source_pattern_miner.py
+    classification: KEPT
+    reason: "Source pattern miner"
+  - script: tools/supervisor/summary_classifier.py
+    classification: KEPT
+    reason: "Summary classifier"
+  - script: tools/supervisor/embedding_retrieval.py
+    classification: KEPT
+    reason: "Embedding retrieval (LLM-backed search)"
+  - script: tools/supervisor/llm_backend_config.py
+    classification: KEPT
+    reason: "LLM backend configuration"
+  - script: tools/supervisor/backend_selector.py
+    classification: KEPT
+    reason: "Backend selector for LLM routing"
+  - script: tools/supervisor/grading_retrieval_bridge.py
+    classification: KEPT
+    reason: "Grading retrieval bridge"
+  - script: tools/supervisor/reviewer_adapter.py
+    classification: KEPT
+    reason: "Reviewer adapter"
+
+  # --- Validation and checking ---
+  - script: tools/supervisor/validate_adoption_compliance.py
+    classification: KEPT
+    reason: "Adoption compliance validator"
+  - script: tools/supervisor/validate_claude_commands.py
+    classification: KEPT
+    reason: "Claude commands validator"
+  - script: tools/supervisor/validate_closeout_gate.py
+    classification: KEPT
+    reason: "Closeout gate validator"
+  - script: tools/supervisor/validate_execution_plan.py
+    classification: KEPT
+    reason: "Execution plan validator"
+  - script: tools/supervisor/validate_ledger_entry.py
+    classification: KEPT
+    reason: "Ledger entry validator"
+  - script: tools/supervisor/validate_no_stop_watchdog.py
+    classification: KEPT
+    reason: "No-stop watchdog validator"
+  - script: tools/supervisor/validate_package_identity.py
+    classification: KEPT
+    reason: "Package identity validator"
+  - script: tools/supervisor/validate_plan_readiness.py
+    classification: KEPT
+    reason: "Plan readiness validator"
+  - script: tools/supervisor/validate_product_code_ledger.py
+    classification: KEPT
+    reason: "Product code ledger validator; implements 'validate-product-code-ledger' skill"
+  - script: tools/supervisor/validate_prompt_quality.py
+    classification: KEPT
+    reason: "Prompt quality validator"
+  - script: tools/supervisor/validate_skill_registry.py
+    classification: KEPT
+    reason: "Skill registry structure validator"
+  - script: tools/supervisor/validate_spec_fact_refs.py
+    classification: KEPT
+    reason: "Spec fact reference validator"
+  - script: tools/supervisor/anti_skip_checker.py
+    classification: KEPT
+    reason: "Anti-skip checker (Supreme Directive enforcement)"
+  - script: tools/supervisor/ast_forbidden_scanner.py
+    classification: KEPT
+    reason: "AST scanner for forbidden patterns"
+  - script: tools/supervisor/check_cross_stream_consumption.py
+    classification: KEPT
+    reason: "Cross-stream consumption checker (CCI)"
+  - script: tools/supervisor/check_mcp_status.py
+    classification: KEPT
+    reason: "MCP status checker"
+  - script: tools/supervisor/check_system_healing_gate.py
+    classification: KEPT
+    reason: "System healing gate checker"
+  - script: tools/supervisor/guard_001_checker.py
+    classification: KEPT
+    reason: "Guard-001 policy checker"
+  - script: tools/supervisor/terminal_closure_validators.py
+    classification: KEPT
+    reason: "Terminal closure validators for plan lock"
+  - script: tools/supervisor/validate_adoption_compliance.py
+    classification: KEPT
+    reason: "Adoption compliance validator"
+  - script: tools/supervisor/validate_closeout_gate.py
+    classification: KEPT
+    reason: "Sprint closeout gate validator"
+
+  # --- Generation and output ---
+  - script: tools/supervisor/generate_closure_artifacts.py
+    classification: KEPT
+    reason: "Closure artifact generator"
+  - script: tools/supervisor/generate_mainstream_execution_packet.py
+    classification: KEPT
+    reason: "Mainstream execution packet generator"
+  - script: tools/supervisor/generate_next_worker_prompt.py
+    classification: KEPT
+    reason: "Next worker prompt generator"
+  - script: tools/supervisor/generate_sample_outputs.py
+    classification: KEPT
+    reason: "Sample outputs generator"
+  - script: tools/supervisor/generate_supervisor_packet.py
+    classification: KEPT
+    reason: "Supervisor packet generator"
+  - script: tools/supervisor/gen_readiness_registry.py
+    classification: KEPT
+    reason: "Readiness registry generator"
+  - script: tools/supervisor/next_action_generator.py
+    classification: KEPT
+    reason: "Next action generator"
+  - script: tools/supervisor/next_action_runner.py
+    classification: KEPT
+    reason: "Next action runner"
+  - script: tools/supervisor/next_action_schema.py
+    classification: KEPT
+    reason: "Next action schema definitions"
+  - script: tools/supervisor/next_best_action.py
+    classification: KEPT
+    reason: "Next best action selector"
+
+  # --- Orchestration and execution ---
+  - script: tools/supervisor/autonomous_orchestrator.py
+    classification: KEPT
+    reason: "Autonomous orchestrator"
+  - script: tools/supervisor/autonomous_train_executor.py
+    classification: KEPT
+    reason: "Autonomous train executor"
+  - script: tools/supervisor/autonomous_loop_runner.py
+    classification: KEPT
+    reason: "Autonomous loop runner"
+  - script: tools/supervisor/autonomous_host_daemon.py
+    classification: KEPT
+    reason: "Autonomous host daemon"
+  - script: tools/supervisor/autonomous_host_runner.py
+    classification: KEPT
+    reason: "Autonomous host runner"
+  - script: tools/supervisor/external_host_loop.py
+    classification: KEPT
+    reason: "External host loop"
+  - script: tools/supervisor/execution_backend.py
+    classification: KEPT
+    reason: "Execution backend abstraction"
+  - script: tools/supervisor/orchestrator_lifetime.py
+    classification: KEPT
+    reason: "Orchestrator lifetime manager"
+  - script: tools/supervisor/simulate_autonomous_loop.py
+    classification: KEPT
+    reason: "End-to-end simulation for testing"
+  - script: tools/supervisor/external_tool_governance.py
+    classification: KEPT
+    reason: "External tool governance enforcement"
+  - script: tools/supervisor/action_queue.py
+    classification: KEPT
+    reason: "Action queue for autonomous execution"
+  - script: tools/supervisor/bounded_repair_engine.py
+    classification: KEPT
+    reason: "Bounded repair engine"
+  - script: tools/supervisor/rework_orchestrator.py
+    classification: KEPT
+    reason: "Rework orchestrator"
+  - script: tools/supervisor/compose_verify_loop.py
+    classification: KEPT
+    reason: "Compose-verify loop"
+  - script: tools/supervisor/choose_skill_or_handoff.py
+    classification: KEPT
+    reason: "Skill-or-handoff decision maker"
+  - script: tools/supervisor/freeze_gate_runner.py
+    classification: KEPT
+    reason: "Freeze gate runner"
+  - script: tools/supervisor/post_sprint_loop_controller.py
+    classification: KEPT
+    reason: "Post-sprint loop controller"
+  - script: tools/supervisor/stale_queue_repair_hook.py
+    classification: KEPT
+    reason: "Stale queue repair hook"
+
+  # --- State, identity, and plan management ---
+  - script: tools/supervisor/plan_identity.py
+    classification: KEPT
+    reason: "Plan identity management"
+  - script: tools/supervisor/plan_placement.py
+    classification: KEPT
+    reason: "Plan placement logic"
+  - script: tools/supervisor/write_chat_plan_binding.py
+    classification: KEPT
+    reason: "Chat plan binding writer"
+  - script: tools/supervisor/write_track_handoff.py
+    classification: KEPT
+    reason: "Track handoff writer"
+  - script: tools/supervisor/update_ledger_mwp.py
+    classification: KEPT
+    reason: "Ledger MWP updater"
+  - script: tools/supervisor/update_source_baseline.py
+    classification: KEPT
+    reason: "Source baseline updater"
+  - script: tools/supervisor/init_mission_ledger.py
+    classification: KEPT
+    reason: "Mission ledger initializer"
+  - script: tools/supervisor/sync_local_memory.py
+    classification: KEPT
+    reason: "Local memory sync"
+  - script: tools/supervisor/authority_conveyor.py
+    classification: KEPT
+    reason: "Authority conveyor for gate validation"
+  - script: tools/supervisor/authority_gate_validation.py
+    classification: KEPT
+    reason: "Authority gate validation"
+  - script: tools/supervisor/authority_integration_fabric.py
+    classification: KEPT
+    reason: "Authority integration fabric"
+  - script: tools/supervisor/atomic_io.py
+    classification: KEPT
+    reason: "Atomic I/O utilities"
+  - script: tools/supervisor/logging_config.py
+    classification: KEPT
+    reason: "Logging configuration"
+  - script: tools/supervisor/mcp_bridge.py
+    classification: KEPT
+    reason: "MCP bridge"
+
+  # --- SAL, spec, and ontology ---
+  - script: tools/supervisor/qname_ontology_generator.py
+    classification: KEPT
+    reason: "QName ontology generator"
+  - script: tools/supervisor/sal_format_advisory.py
+    classification: KEPT
+    reason: "SAL format advisory"
+  - script: tools/supervisor/validate_spec_fact_refs.py
+    classification: KEPT
+    reason: "Spec fact reference validator"
+
+  # --- Drivers and testing utilities ---
+  - script: tools/supervisor/test_drivers.py
+    classification: KEPT
+    reason: "Template-based test driver renderer (ongoing use for FeatureFactory patterns)"
+  - script: tools/supervisor/test_layer_utils.py
+    classification: KEPT
+    reason: "Shared test-layer adequacy utilities (used by sprint_executor_validate, grade_declared_work)"
+  - script: tools/supervisor/test_plan_generator.py
+    classification: KEPT
+    reason: "AI-draft test plan generator for product gaps (ongoing use)"
+  - script: tools/supervisor/drivers_promotion.py
+    classification: KEPT
+    reason: "Drivers promotion tool"
+
+  # --- Miscellaneous ongoing infrastructure ---
+  - script: tools/supervisor/capture_raw_logs.py
+    classification: KEPT
+    reason: "Raw log capture for evidence packages"
+  - script: tools/supervisor/watch_for_bundle.py
+    classification: KEPT
+    reason: "Bundle watcher"
+  - script: tools/supervisor/mainstream_acceleration_packet.py
+    classification: KEPT
+    reason: "Mainstream acceleration packet builder"
+  - script: tools/supervisor/patch_ledger_csproj.py
+    classification: KEPT
+    reason: ".csproj ledger patcher"
+  - script: tools/supervisor/proof_backed_poc_gate.py
+    classification: KEPT
+    reason: "Proof-backed POC gate checker"
+  - script: tools/supervisor/project_product_ledger_to_proof_graph.py
+    classification: KEPT
+    reason: "Product ledger to proof graph converter"
+  - script: tools/supervisor/readme_lane_injector.py
+    classification: KEPT
+    reason: "README lane injector"
+  - script: tools/supervisor/libforge_adapter_planner.py
+    classification: KEPT
+    reason: "LibForge adapter planner (FF-native integration)"
+  - script: tools/supervisor/libforge_integration_evidence_check.py
+    classification: KEPT
+    reason: "LibForge integration evidence checker"
+  - script: tools/supervisor/libforge_isolated_job_runner.py
+    classification: KEPT
+    reason: "LibForge isolated job runner"
+  - script: tools/supervisor/libforge_pattern_registry.py
+    classification: KEPT
+    reason: "LibForge pattern registry"
+  - script: tools/supervisor/emit_maturity_signal.py
+    classification: KEPT
+    reason: "Maturity signal emitter"
+  - script: tools/supervisor/machinery_audit.py
+    classification: KEPT
+    reason: "Machinery audit runner"
+  - script: tools/supervisor/validate_adoption_compliance.py
+    classification: KEPT
+    reason: "Adoption compliance validator"
+  - script: tools/supervisor/validate_closeout_gate.py
+    classification: KEPT
+    reason: "Sprint closeout gate validator"
+
+acceptance_criteria:
+  all_scripts_dispositioned: true
+  total_audited: 202
+  kept: 198
+  quarantine: 4
+  registered: 0
+  rejected: 0
+  mutation_guard_violations: 0
+  quarantine_evidence_required: false  # QUARANTINED scripts flagged; physical move deferred to cleanup cycle
+  note: >
+    Physical move of 4 QUARANTINE scripts to .local/quarantine/ is deferred — no active skill
+    requires them; blast radius is zero. A cleanup taskcard can archive them at next opportunity.
+    All 202 scripts are pre-SKILL-FIRST-001 policy; classification documents their status for
+    future governance reference.

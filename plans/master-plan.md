@@ -5304,3 +5304,43 @@ Total: 35 new test files across 7 .NET format test projects.
 
 - Full producer wiring (making all plan-creation skills call placement tool) is out-of-scope
 - Report at `reports/plans-governance/plans-folder-organization-report.md`
+
+---
+
+## Mission Completion: DRIVERS-SUBSYSTEM-HEALING-001
+
+**Plan:** plans/.claude/abstract-moseying-donut.md (12 taskcards, all CLOSED)
+**Date:** 2026-07-01
+**Final verdict:** DRIVERS_SUBSYSTEM_RECONCILED_HARDENED_AND_IDEMPOTENT
+
+### What was completed
+
+- **TC-DRV-001:** Verified 8 findings — F-001 (false zero-consumer claim) REFUTED, F-002 through F-008 CONFIRMED
+- **TC-DRV-002:** Resolved 5 governance contradictions — drivers/ moved from DELETED to SHARED_LIBRARY in registry; idempotent-snuggling-wombat TC-ROOT-002 corrected; test-infrastructure-layer.md updated
+- **TC-DRV-003:** 7 consumers classified (DIRECT_RUNTIME_CONSUMER ×2, DECLARATIVE_REFERENCE ×1, TEST_ONLY ×2, DOCUMENTATION_REFERENCE ×1)
+- **TC-DRV-004:** PYTHON_ONLY_BY_DESIGN language policy enforced via `_validate_language()` in test_drivers.py
+- **TC-DRV-005:** `driver-contracts.yaml` created; `validate_template_renderer_compatibility()` drift guard added — ACTIVE_TEMPLATE_RENDERER_MISMATCHES = 0
+- **TC-DRV-006:** All 5 templates hardened with SCAFFOLD_STATUS header + machine-readable markers (FIXTURE_REQUIRED, EXPECTED_VALUE_REQUIRED, ORACLE_REQUIRED, TEST_SCAFFOLD_INCOMPLETE)
+- **TC-DRV-007:** `drivers_promotion.py` created — SCAFFOLD→MAINTAINED 7-state lifecycle; `write_promotion_task()` implemented
+- **TC-DRV-008:** 30 new test classes added to test_test_drivers.py (TestLanguagePolicy, TestContractValidation, TestPlaceholderScanner, TestMaintainedGate, TestFixtureContract, TestDocumentationDrift)
+- **TC-DRV-009:** `validate_fixture_contract()`, `VALID_FIXTURE_SOURCES`, `WEAK_ASSERTION_PATTERNS` added; drivers/_readme.md fully updated
+- **TC-DRV-010:** Generated-test audit — 0 driver scaffolds in tests/python/ (UNTRACKED_FORMAT_PROMOTION_OBLIGATIONS = 0)
+- **TC-DRV-011:** 8/8 pilots PASS (rendering, placeholder rejection, format promotion, drift detection, consumer classification, language policy, idempotency)
+- **TC-DRV-012:** Final validation — all 11 counters = 0; 79/79 tests PASS; MATERIAL_SECOND_RUN_CHANGES = 0
+
+### Verification performed
+
+- 79/79 tests pass (tests/supervisor/test_test_drivers.py + tests/supervisor/test_drivers_promotion.py)
+- validate_template_renderer_compatibility(): PASS — 5/5 templates match renderers
+- _validate_language('python'): PASS; _validate_language('csharp'): ValueError (PASS)
+- 5 render checksums identical across 2 runs (idempotency)
+- Lifecycle audit: AUDIT_PASS, 0 findings, mission_complete=true
+
+### Commits
+
+- `dfe0ae8f` — mission source, test, template, and report files
+- `e877502c` — fix(governance): correct drivers/ subsystem classification — TC-DRV-002
+
+### All required counters = 0
+
+UNRESOLVED_DRIVERS_GOVERNANCE_CONTRADICTIONS=0, FALSE_DIRECT_CONSUMER_CLAIMS=0, IMPLICIT_LANGUAGE_SCOPE=0, ACTIVE_TEMPLATE_RENDERER_MISMATCHES=0, FORBIDDEN_PLACEHOLDERS_IN_MAINTAINED_TESTS=0, FALSELY_COMPLETE_GENERATED_SCAFFOLDS=0, UNTRACKED_FORMAT_PROMOTION_OBLIGATIONS=0, MATERIAL_DRIVERS_FINDINGS_WITHOUT_GAPS=0, READY_DRIVERS_GAPS_WITHOUT_TASKCARDS=0, FAILED_REQUIRED_PILOTS=0, MATERIAL_SECOND_RUN_CHANGES=0

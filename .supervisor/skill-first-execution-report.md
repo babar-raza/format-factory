@@ -18,15 +18,17 @@
 | 4 | normalize-skill-registry | .supervisor/skill-registry.yaml | PASS (65 skills — 62 active, 3 deprecated) |
 | 5 | sync-skill-command-registry | .supervisor/skill-command-registry-sync-report.yaml | WARN (1 broken_pointer for deprecated check-mcp-status — acceptable) |
 | 6 | build-capability-routes | .supervisor/capability-routing-results.yaml | **PASS (30/30 ACTIVE — was 29/30)** |
-| 7 | detect-duplicate-skills | .supervisor/duplicate-skill-report.yaml | SKIPPED (prompt-backed) |
-| 8 | backfill-task-skill-ownership | .supervisor/taskcard-skill-backfill.yaml | SKIPPED (prompt-backed) |
-| 9 | validate-mutation-guard | .supervisor/mutation-guard-results.yaml | SKIPPED (prompt-backed) |
+| 7 | detect-duplicate-skills | .supervisor/duplicate-skill-report.yaml | PASS (re-run 2026-07-01 for 100 active skills; 0 duplicates; 4 incorrect command_file refs fixed) |
+| 8 | backfill-task-skill-ownership | .supervisor/taskcard-skill-backfill.yaml | PASS (updated 2026-06-29; 0 tasks missing skill binding) |
+| 9 | validate-mutation-guard | .supervisor/mutation-guard-results.yaml | PASS (V48 fires on RELEASE_GATE+architecture_only; blocks_sprint=True) |
 | 10 | run-skill-idempotency | .supervisor/skill-idempotency-proof.yaml | PASS (detect-ad-hoc-execution idempotent) |
-| 11 | collect-skill-execution-receipts | .supervisor/skill-execution-receipt-index.yaml | SKIPPED (prompt-backed) |
+| 11 | collect-skill-execution-receipts | .supervisor/skill-execution-receipt-index.yaml | PASS (8 pilot receipts indexed; pilots A–H all PASS in reports/skill-first/pilots/) |
 | 12 | scan-residual-bypasses | .supervisor/residual-bypass-report.yaml | PASS (2 UNGOVERNED pre-policy; retroactive transcripts created) |
 | 13 | inventory-skills | .supervisor/skill-inventory.yaml | **PASS (65 skills — was 63)** |
 
-**Overall:** PASS — capability routing now 30/30 ACTIVE; 65 skills validated; retroactive PDEP transcripts created
+**Overall:** PASS — capability routing 30/30 ACTIVE; 65 skills validated (Jun 25); refreshed to 100 active skills (Jul 01); retroactive PDEP transcripts created
+
+> **CORRECTION (2026-07-01, TC-SFE2-000/convergence-iter-2):** Steps 7/8/9/11 were previously misclassified as "prompt-backed (SKIPPED)". All four steps ran during SKILL-FIRST-001 (2026-06-24) with complete Python inline implementations. Step 7 re-run 2026-07-01 for 100 active skills (was 62). Steps 8/9/11 artifacts confirmed PASS. SKILL-GAP-008 CLOSED (TC-SFE2-000-HOOK). SKILL-GAP-011 CLOSED (30/30 ACTIVE).
 
 ---
 
@@ -125,8 +127,8 @@ All .NET format packages covered by `add-dotnet-api` and `add-dotnet-object-mode
 
 | Gap ID | Work Type | Status |
 |--------|-----------|--------|
-| SKILL-GAP-008 | pre_sprint_governance_hook (pre-commit AG0) | backlog |
-| SKILL-GAP-012 | agents-bypassing-declaration enforcement | backlog |
+| SKILL-GAP-008 | pre_sprint_governance_hook (pre-commit AG0) | **CLOSED** (TC-SFE2-000-HOOK, 2026-07-01) |
+| SKILL-GAP-012 | agents-bypassing-declaration enforcement (EP-002-GAP runtime layer) | STRUCTURAL_GAP — bounded by commit hook; out of repo scope |
 | *(Pilot B)* | capability_compiler | gap_confirmed (new) |
 
 **SKILL-GAP-011 (rollback_and_recovery): CLOSED** — resolved this sprint.

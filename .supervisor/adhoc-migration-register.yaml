@@ -1,0 +1,115 @@
+---
+# Ad-Hoc Migration Register — Root-Level tools/*.py Scripts
+# Skill: audit-root-tools / TC-SFE2-003
+# Plan: twinkly-gliding-thimble / SKILL-FIRST-002
+# Date: 2026-07-01
+# Scope: tools/*.py (root level; NOT tools/supervisor/)
+# Note: tools/supervisor/ is handled separately in reports/skill-audit/root-tools-audit-2026-07-01.yaml
+#
+# Prior work: Pilot G (skill-first-89e03009, 2026-06-24) archived _test_xcf_tmp.py → .local/archive/
+
+adhoc_migration_register:
+  mission_id: SKILL-FIRST-002
+  plan_id: twinkly-gliding-thimble
+  generated: "2026-07-01"
+  scope: "tools/*.py (root level, not tools/supervisor/)"
+  prior_work: "Pilot G (skill-first-89e03009) archived _test_xcf_tmp.py → .local/archive/"
+  total_scripts: 11
+
+  disposition_records:
+    # --- QUARANTINED: One-time gap closers (gaps already closed) ---
+    - path: tools/close_xcf_zst_gaps.py
+      disposition: QUARANTINED_PENDING_AUTHORITY
+      reason: >
+        One-time gap closer for XCF/ZST format gaps. Gaps confirmed closed per MEMORY.md
+        2026-06-25 sprint. Script has no ongoing purpose; running again would be a no-op
+        or could create duplicate entries. Physical move deferred until user authorizes.
+      verified_gaps_closed: true
+      evidence: "MEMORY.md 2026-06-25 entry; gap-ledger.json"
+
+    - path: tools/close_fods_fodt_ppm_gaps.py
+      disposition: QUARANTINED_PENDING_AUTHORITY
+      reason: >
+        One-time gap closer for FODS/FODT/PPM format gaps. Gaps confirmed closed per
+        MEMORY.md 2026-06-25 sprint. No ongoing purpose. Physical move deferred.
+      verified_gaps_closed: true
+      evidence: "MEMORY.md 2026-06-25 entry; gap-ledger.json"
+
+    - path: tools/close_comm_gaps.py
+      disposition: QUARANTINED_PENDING_AUTHORITY
+      reason: >
+        One-time gap closer for communications format gaps. Gaps confirmed closed per
+        MEMORY.md 2026-06-25 sprint. No ongoing purpose. Physical move deferred.
+      verified_gaps_closed: true
+      evidence: "MEMORY.md 2026-06-25 entry; gap-ledger.json"
+
+    # --- RETAINED: Read-only audit diagnostics with ongoing utility ---
+    - path: tools/audit_qname_coverage.py
+      disposition: RETAINED_AS_GOVERNED_DIAGNOSTIC
+      reason: >
+        Read-only audit of QName coverage across format implementations. Ongoing utility
+        for parity verification sprints. 99.4% coverage tracked (65/66 active entries as
+        of 2026-06-26). Called as part of spec-parity verification workflow.
+
+    - path: tools/audit_deepening_tests.py
+      disposition: RETAINED_AS_GOVERNED_DIAGNOSTIC
+      reason: >
+        Read-only audit of deepening test coverage. Ongoing utility for product deepening
+        governance. Tracks test adequacy per format.
+
+    - path: tools/audit_gap_ledger_sal_refs.py
+      disposition: RETAINED_AS_GOVERNED_DIAGNOSTIC
+      reason: >
+        Read-only audit of gap ledger entries for SAL fact references. Ongoing utility
+        for SAL ingestion and gap closure verification.
+
+    - path: tools/audit_parity_compliance.py
+      disposition: RETAINED_AS_GOVERNED_DIAGNOSTIC
+      reason: >
+        Read-only parity compliance audit. Ongoing utility for spec-parity governance
+        and CLAUDE.md "no fake progress" enforcement.
+
+    - path: tools/audit_sal_to_qname.py
+      disposition: RETAINED_AS_GOVERNED_DIAGNOSTIC
+      reason: >
+        Read-only SAL-to-QName mapping audit. Ongoing utility for SAL pipeline validation
+        and QName backfill tracking.
+
+    - path: tools/health_check.py
+      disposition: RETAINED_AS_GOVERNED_DIAGNOSTIC
+      reason: >
+        System health check tool. Ongoing utility for pre-sprint health verification
+        and session recovery. Called by autonomous loop for environment validation.
+
+    - path: tools/test_runner.py
+      disposition: RETAINED_AS_GOVERNED_DIAGNOSTIC
+      reason: >
+        Test runner utility. Ongoing utility for format test execution coordination.
+        Wraps pytest with format-factory-specific configuration.
+
+    - path: tools/build_cross_format_index.py
+      disposition: RETAINED_AS_GOVERNED_DIAGNOSTIC
+      reason: >
+        Cross-format index builder. Ongoing utility for capability indexing and
+        format discovery. Produces registry/cross-format-index.yaml.
+
+  quarantine_action:
+    deferred: true
+    reason: >
+      Physical move of 3 QUARANTINED scripts to .local/quarantine/ requires user authorization
+      (per TC-SFE2-003 protocol). Scripts are inert (one-time only; gaps already closed).
+      Blast radius of leaving them in place: zero — they have no automated callers.
+    target_path: .local/quarantine/
+    requires_authority: true
+    scripts_to_move:
+      - tools/close_xcf_zst_gaps.py
+      - tools/close_fods_fodt_ppm_gaps.py
+      - tools/close_comm_gaps.py
+
+  acceptance_criteria:
+    all_scripts_dispositioned: true
+    total: 11
+    quarantined: 3
+    retained: 8
+    move_deferred: true
+    evidence_confirmed: true

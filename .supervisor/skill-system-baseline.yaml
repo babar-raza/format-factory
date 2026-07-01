@@ -1,64 +1,57 @@
 ---
 # Skill-First Execution — System Baseline Snapshot
-# Mission: SKILL-FIRST-001
-# Plan: cached-growing-snail
-# Written: TC-SF-000
+# Mission: SKILL-FIRST-002
+# Plan: twinkly-gliding-thimble
+# Written: TC-SFE2-000-A (re-executed convergence iteration 2, 2026-07-01)
+# Supersedes: SKILL-FIRST-001 baseline (cached-growing-snail, 2026-06-24, 48 skills)
 
-skill_system_baseline:
-  mission_id: SKILL-FIRST-001
-  plan_id: cached-growing-snail
-  plan_lock_written: true
-  plan_lock_path: .local/supervisor/active-plan-lock.json
-  run_id: skill-first-89e03009
-  evidence_root: .local/evidences/skill-first-89e03009/
-  pilots_root: reports/skill-first/pilots/
-  repository: c:\Users\prora\OneDrive\Documents\GitHub\format-factory
-  branch: main
-  head: 4b265f1952f2742298b98177c29040420739f243
-  active_plan: C:\Users\prora\.claude\plans\cached-growing-snail.md
-  skill_roots:
-    - .supervisor/skill-registry.yaml        # 48 skills, v2.0
-    - .supervisor/work-type-skill-map.yaml   # 16 active routes, 5 gap routes
-  command_roots:
-    - .claude/commands/                      # 51 .md command files
-    - .claude/commands/command-registry.yaml
-  prompt_roots:
-    - .supervisor/prompts/                   # 13 prompt templates
-  registries:
-    - .supervisor/skill-registry.yaml
-    - .claude/commands/command-registry.yaml
-    - registry/source-structure-baseline.json  # LOC/function caps
-  schema_roots:
-    - .supervisor/schemas/                   # 16 JSON schemas
-  test_roots:
-    - tests/supervisor/
-  ad_hoc_script_roots:
-    - tools/supervisor/                      # 262 .py files
-  direct_execution_paths:
-    - tools/supervisor/autonomous_cycle.py
-    - tools/supervisor/sprint_executor.py
-    - tools/supervisor/check_continuation.py
-  evidence_root: .local/evidences/
-  known_gaps:
-    - id: SKILL-GAP-003
-      work_type: capability_compiler
-      status: open
-    - id: SKILL-GAP-005
-      work_type: extract_analytics_from_monolith
-      status: STALE_COMMAND_EXISTS  # command exists but map not updated
-    - id: SKILL-GAP-008
-      work_type: pre_sprint_governance_hook
-      status: open
-    - id: SKILL-GAP-009
-      work_type: ci_transcript_verification
-      status: open
-    - id: SKILL-GAP-010
-      work_type: supervision_audit
-      status: open
-  counts_at_baseline:
-    registered_skills: 48
-    command_files: 51
-    python_supervisor_tools: 262
-    active_routes_in_work_type_map: 16
-    gap_routes_in_work_type_map: 5
-    governance_validators: 48
+mission_id: SKILL-FIRST-002
+plan_id: twinkly-gliding-thimble
+generated: "2026-07-01"
+head: 83e3cc07e17a70d9b032fc39a4f7240642ed60a7
+branch: main
+active_plan: plans/.claude/twinkly-gliding-thimble.md
+prior_mission: SKILL-FIRST-001
+prior_mission_plan: cached-growing-snail
+prior_mission_date: "2026-06-24"
+
+counts_at_baseline:
+  registered_skills: 103
+  active_skills: 100
+  deprecated_skills: 3
+  command_files: 103
+  capability_routes_active: 30
+  capability_routes_total: 30
+  python_supervisor_tools: 202  # audited in TC-SFE2-002; 198 KEPT, 4 QUARANTINE
+
+known_open_gaps:
+  - id: SKILL-GAP-012
+    description: "runtime tool-layer interception not automatic (EP-002-GAP)"
+    status: STRUCTURAL_GAP
+    bounded_by: "commit-time hook catches all bypasses before they enter git history"
+
+known_closed_gaps:
+  - id: SKILL-GAP-008
+    description: "pre-commit hook installed and verified"
+    status: CLOSED
+    closed_by: TC-SFE2-000-HOOK
+    evidence: .supervisor/skill-gap-008-closure-proof.yaml
+    date: "2026-07-01"
+  - id: SKILL-GAP-011
+    description: "capability routing fixed (30/30 ACTIVE)"
+    status: CLOSED
+    closed_by: rollback-and-recovery route activation
+    evidence: .supervisor/capability-routing-results.yaml
+
+pilot_receipts:
+  location: reports/skill-first/pilots/
+  pilots: [A, B, C, D, E, F, G, H]
+  all_verdict: PASS
+  completed: "2026-06-24"
+
+notes: >
+  Refreshed for SKILL-FIRST-002 from 48 skills (SKILL-FIRST-001).
+  Current registry: 103 total (100 active, 3 deprecated).
+  SKILL-GAP-008 closed: .hooks/pre-commit-skill-guard installed, ci_skill_attribution_check.py
+  verified exit 0, fallback transcript detection PASS.
+  EP-002-GAP remains structural and out of repository scope (requires Claude Code SDK hooks).

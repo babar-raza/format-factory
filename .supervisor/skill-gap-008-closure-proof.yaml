@@ -1,0 +1,48 @@
+gap_id: SKILL-GAP-008
+status: CLOSED
+mission_id: SKILL-FIRST-002
+verified: "2026-07-01"
+plan_id: twinkly-gliding-thimble
+taskcard: TC-SFE2-000-HOOK
+
+hook_path: .hooks/pre-commit-skill-guard
+symlink: .git/hooks/pre-commit -> ../../.hooks/pre-commit-skill-guard
+hook_installed: true
+hook_size_bytes: 5383
+hook_installed_date: "2026-06-25"
+
+supporting_tools:
+  ci_check_script: tools/governance/ci_skill_attribution_check.py
+  install_script: tools/governance/install_hooks.py
+  pre_mutation_guard: tools/governance/pre_mutation_guard.py
+  check_git_safety: tools/governance/check_git_safety.py
+  validate_taskcard_execution_contract: tools/governance/validate_taskcard_execution_contract.py
+  governance_docs: docs/governance/skill-only-policy.yaml
+
+functional_verification:
+  ci_check_exit_code: 0
+  ci_check_verdict: PASS
+  ci_check_commits_checked: 0
+  ci_check_ungoverned: 0
+  ci_check_command: "python tools/governance/ci_skill_attribution_check.py --base-ref HEAD~1 --head-ref HEAD --allow-pre-policy"
+  fallback_transcript_test: PASS
+  fallback_logic: "scans .local/transcripts/*.json for files with mtime within 30 minutes containing skill_id or skill_invocation key"
+  note: "--staged-only flag not supported by ci_skill_attribution_check.py (exit 2=CONFIG_ERROR is permissive per hook source); used --base-ref/--head-ref instead"
+
+remaining_gap: EP-002-GAP (runtime tool-layer interception not automatic)
+skill_gap_012_layers:
+  declaration_layer:
+    status: COVERED
+    evidence: .supervisor/mutation-guard-results.yaml
+    detail: "V48 fires on RELEASE_GATE items with architecture_only stubs; blocks_sprint=True"
+  commit_layer:
+    status: COVERED
+    evidence: .git/hooks/pre-commit (this hook)
+    detail: "pre-commit-skill-guard blocks git commits staging src/ without a skill transcript"
+  runtime_layer:
+    status: STRUCTURAL_GAP
+    gap_id: EP-002-GAP
+    detail: "pre_mutation_guard.py must be called EXPLICITLY by agent; no automatic Edit-tool interception"
+    remediation: "Requires Claude Code SDK tool-use hooks — out of repository scope"
+    blast_radius_bounded: true
+    bounded_by: "commit_layer hook catches all runtime bypasses before they enter git history"

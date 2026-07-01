@@ -665,10 +665,77 @@ skills:
     grade_rationale: "COMPOSITE_SKILL; 13-step orchestration; steps individually proven; composite never executed end-to-end; proof level 1"
 
 
+  # ============================================================
+  # NEW SKILLS — SKILL-FIRST-002 additions (TC-SFE2-005, re-executed 2026-07-01)
+  # ============================================================
+
+  - skill_id: rollback-and-recovery
+    grade_basis: summary
+    source_plan: "SKILL-GOVERNANCE-REPAIR-001 (Section 56)"
+    notes: "Registered to close SKILL-GAP-011. Route ACTIVE (30/30). No prior execution evidence."
+    dimensions_summary:
+      responsibility_cohesion: 4
+      contract_clarity: 3
+      idempotency: 3
+      evidence: 2
+      discoverability: 4
+    overall_grade: 3.2
+    weak_flag: false
+    repair_required: false
+    repair_taskcard_id: null
+    first_execution: pending
+
+  - skill_id: preflight-skill-entry
+    grade_basis: summary
+    source_plan: "SKILL-GOVERNANCE-REPAIR-001 (Section 56, TC-R008)"
+    notes: "Python-backed (tools/supervisor/preflight_skill_entry.py). GH-001 enforcement."
+    dimensions_summary:
+      responsibility_cohesion: 5
+      contract_clarity: 4
+      idempotency: 5
+      evidence: 3
+      discoverability: 4
+    overall_grade: 4.0
+    weak_flag: false
+    repair_required: false
+    repair_taskcard_id: null
+
+  - skill_id: audit-root-tools
+    grade_basis: summary
+    source_plan: "twinkly-gliding-thimble (TC-SFE2-002/003)"
+    notes: "First execution TC-SFE2-002 (2026-07-01). 202 scripts classified; 4 QUARANTINE, 198 KEPT."
+    dimensions_summary:
+      responsibility_cohesion: 4
+      contract_clarity: 4
+      idempotency: 4
+      evidence: 3
+      discoverability: 4
+    overall_grade: 3.8
+    weak_flag: false
+    repair_required: false
+    repair_taskcard_id: null
+    first_execution: "TC-SFE2-002 (2026-07-01)"
+
+  - skill_id: documentation-structure-migration
+    grade_basis: summary
+    source_plan: "DOCS-REORG-001"
+    notes: "CLI: tools/docs/migration_engine.py. 6 subcommands. Not yet executed on live docs."
+    dimensions_summary:
+      responsibility_cohesion: 4
+      contract_clarity: 4
+      idempotency: 4
+      evidence: 2
+      discoverability: 3
+    overall_grade: 3.4
+    weak_flag: false
+    repair_required: false
+    repair_taskcard_id: null
+    first_execution: pending
+
 summary:
-  total_skills_graded: 63
+  total_skills_graded: 67
   detailed_grades: 8
-  summary_grades: 55
+  summary_grades: 59
   weak_skills:
     - post-sprint-audit       # overall_grade: 2 → repair required
     - export-plan-context     # overall_grade: 2 → repair required
