@@ -200,7 +200,7 @@ Gates 1-10 are agent-owned policy gates with evidence, validators, and acceptanc
 - **Test Framework:** pytest with `--import-mode=importlib` and 120-second per-test timeout. Dual conftest pattern handles stdlib module shadowing (`csv`, `html`).
 - **Quality Gates:** 101 programmatic governance validators across 11 modules (`tools/supervisor/governance_validators*.py`) block sprints on policy violations. Validators enforce: declaration schema compliance, evidence artifact existence, anti-skip checks, skill-first execution, spec-fact references, QName compliance, architecture stub detection, analytics separation, lane enforcement, package manifest completeness, oracle obligations, and README freshness.
 - **Source Size Policy:** Maximum 800 LOC and 60 functions per production file, tracked in `registry/source-structure-baseline.json`. Violations are frozen at `baseline_loc_cap` (write-once).
-- **Security:** Gate 8 requires security review before any format reaches product. Parser threat model covers XXE, billion laughs, zip bombs, path traversal, malformed input handling, memory limits, recursion limits, and binary parser safety (`docs/security.md`).
+- **Security:** Gate 8 requires security review before any format reaches product. Parser threat model covers XXE, billion laughs, zip bombs, path traversal, malformed input handling, memory limits, recursion limits, and binary parser safety (`docs/governance/security.md`).
 - **QName Compliance:** Every exported Python class carries a `spec_qname` class attribute mapping to its canonical ODF/format specification element (enforced by V51-V53). Spec authority classes live in `{format}/spec/`; Compat/ facades expose simplified names.
 
 ---

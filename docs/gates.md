@@ -95,7 +95,7 @@ If the format is on the Pre-Approved Fast-Path List in `docs/governance/legal-an
 **Pass criteria:**
 1. A working prototype parser exists in `prototypes/by-format/<format-id>/`.
 2. The prototype correctly parses all samples in the corpus from Gate 3 without crashing.
-3. The prototype README documents: parsing approach, key decisions, known limitations, and security mitigations applied (per `docs/security.md`).
+3. The prototype README documents: parsing approach, key decisions, known limitations, and security mitigations applied (per `docs/governance/security.md`).
 4. The prototype demonstrates that XXE and entity expansion mitigations are in place (for XML-based formats).
 5. The prototype has been human-reviewed for correctness and security baseline.
 
@@ -166,7 +166,7 @@ If the format is on the Pre-Approved Fast-Path List in `docs/governance/legal-an
 **Stage:** Security Review
 
 **Pass criteria:**
-1. The security report in `reports/security/<format-id>.md` covers all applicable threat categories from `docs/security.md`.
+1. The security report in `reports/security/<format-id>.md` covers all applicable threat categories from `docs/governance/security.md`.
 2. Each threat category is marked as: mitigated (with implementation notes), explicitly deferred (with rationale), or not applicable (with rationale).
 3. A human security reviewer has signed off on the security report by populating the `sign-off` field with their name and the review date.
 4. No residual risks are classified as "unacceptable." Accepted residual risks are documented.
@@ -273,7 +273,7 @@ An agent must update `gate_N.status` to `passed` only after human approval has b
 ## Relationship to Other Documents
 
 - `docs/python-foss/acquisition-workflow.md` — stage-by-stage workflow with reuse rules
-- `docs/security.md` — Gate 7 and Gate 8 criteria detail
+- `docs/governance/security.md` — Gate 7 and Gate 8 criteria detail
 - `docs/governance/legal-and-licensing.md` — Gate 2 fast-path rules and legal categories
 - `docs/product-factory/product-tracks.md` — Gate 9, 10, 11 tier model and boundary check
 - `docs/governance/release-control.md` — release manifest requirements for Gate 10 and 11

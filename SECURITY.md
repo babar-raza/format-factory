@@ -29,7 +29,7 @@ We aim to:
 
 ## Security Architecture
 
-All parsers produced by this project conform to the threat model defined in [`docs/security.md`](docs/security.md). The threat model covers eight categories:
+All parsers produced by this project conform to the threat model defined in [`docs/governance/security.md`](docs/governance/security.md). The threat model covers eight categories:
 
 1. **XXE (XML External Entity)** — External entity injection via XML parsers
 2. **DTD Entity Expansion** — Billion laughs and related amplification attacks

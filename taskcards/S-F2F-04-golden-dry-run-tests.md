@@ -30,7 +30,7 @@ No apply mode. No production file mutations.
 ## 7. Inputs
 - tools/playbook/replay_acquisition_playbook.py (from S-F2F-03)
 - schemas/playbook/acquisition-playbook.schema.json (from S-F2F-01)
-- docs/playbook-layer.md (example YAML as test fixture basis)
+- docs/governance/playbook-layer.md (example YAML as test fixture basis)
 
 ## 8. Outputs
 - tests/playbook/test_replay_dry_run.py

@@ -1,7 +1,7 @@
 ---
 artifact_id: spec-retrieval-strategy-v1
 artifact_type: documentation
-path: docs/spec-retrieval-strategy.md
+path: docs/ai/spec-retrieval-strategy.md
 format_id: null
 product_family: null
 visibility: internal

@@ -55,7 +55,7 @@ No replay engine. No review queue. No apply mode. No golden tests yet.
 ## 7. Inputs
 - schemas/playbook/acquisition-playbook.schema.json (from S-F2F-01)
 - schemas/playbook/review-queue.schema.json (from S-F2F-01)
-- Example YAML from docs/playbook-layer.md (test fixture)
+- Example YAML from docs/governance/playbook-layer.md (test fixture)
 
 ## 8. Outputs
 - tools/playbook/validate_playbook.py

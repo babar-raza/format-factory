@@ -13,7 +13,7 @@ dec034_verification: S-F2F-01B independent verification sprint
 artifacts_created:
   - schemas/playbook/acquisition-playbook.schema.json
   - schemas/playbook/review-queue.schema.json
-  - docs/playbook-layer.md
+  - docs/governance/playbook-layer.md
   - docs/examples/acquisition-playbook-fods-documentation-example.yaml
 
 ## 3. Purpose
@@ -28,8 +28,8 @@ S1 — Playbook Schema and Policy
 ## 5. Scope
 - schemas/playbook/acquisition-playbook.schema.json (JSON schema draft-7)
 - schemas/playbook/review-queue.schema.json (JSON schema draft-7)
-- docs/playbook-layer.md (policy document)
-- Example YAML snippet (embedded in docs/playbook-layer.md; NOT in acquisition-packs/)
+- docs/governance/playbook-layer.md (policy document)
+- Example YAML snippet (embedded in docs/governance/playbook-layer.md; NOT in acquisition-packs/)
 No tools. No replay engine. No actual playbook.yaml files in acquisition-packs/.
 
 ## 6. Out of Scope
@@ -50,15 +50,15 @@ No tools. No replay engine. No actual playbook.yaml files in acquisition-packs/.
 ## 8. Outputs
 - schemas/playbook/acquisition-playbook.schema.json
 - schemas/playbook/review-queue.schema.json
-- docs/playbook-layer.md
+- docs/governance/playbook-layer.md
 
 ## 9. Exact Files Allowed
 - schemas/playbook/acquisition-playbook.schema.json
 - schemas/playbook/review-queue.schema.json
-- docs/playbook-layer.md
+- docs/governance/playbook-layer.md
 - tools/evidence/contracts/s-f2f-01-playbook-schema.yaml (sprint contract)
 - memory/ (if updated)
-- .claude/settings.json (allow-list add: schemas/playbook/**, docs/playbook-layer.md)
+- .claude/settings.json (allow-list add: schemas/playbook/**, docs/governance/playbook-layer.md)
 
 ## 10. Exact Files Forbidden
 - tools/playbook/**
@@ -78,7 +78,7 @@ No tools. No replay engine. No actual playbook.yaml files in acquisition-packs/.
 python -c "import json; json.load(open('schemas/playbook/acquisition-playbook.schema.json'))"
 python -c "import json; json.load(open('schemas/playbook/review-queue.schema.json'))"
 # Validate example YAML validates against schema
-python -c "import jsonschema, yaml, json; jsonschema.validate(yaml.safe_load(open('docs/playbook-layer.md').read().split('```yaml')[1].split('```')[0]), json.load(open('schemas/playbook/acquisition-playbook.schema.json')))"
+python -c "import jsonschema, yaml, json; jsonschema.validate(yaml.safe_load(open('docs/governance/playbook-layer.md').read().split('```yaml')[1].split('```')[0]), json.load(open('schemas/playbook/acquisition-playbook.schema.json')))"
 python tools/evidence/validate_evidence_bundle.py \
   --bundle .local/evidence-bundles/s-f2f-01-*.zip \
   --contract tools/evidence/contracts/s-f2f-01-playbook-schema.yaml \
@@ -92,7 +92,7 @@ BUNDLE_VALIDATION: PASS required
 
 ## 13. Rollback
 Delete schemas/playbook/ (directory and all files).
-Delete docs/playbook-layer.md.
+Delete docs/governance/playbook-layer.md.
 Revert commit: `git revert <hash>`. No other changes to undo.
 
 ## 14. MAIN SPRINT Non-Deviation Rule
@@ -119,7 +119,7 @@ Generic continuation prompts are not sufficient.
 DONE when:
 - schemas/playbook/acquisition-playbook.schema.json: valid JSON, validates example YAML
 - schemas/playbook/review-queue.schema.json: valid JSON, validates example review item YAML
-- docs/playbook-layer.md: present, >= 4 sections, example YAML embedded
+- docs/governance/playbook-layer.md: present, >= 4 sections, example YAML embedded
 - ZERO tool files in tools/playbook/
 - ZERO playbook.yaml in acquisition-packs/
 - BUNDLE_VALIDATION: PASS

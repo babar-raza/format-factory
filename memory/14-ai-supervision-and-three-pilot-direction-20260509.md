@@ -190,7 +190,7 @@ ChatGPT inspection found the bundle validates and the implementation is real:
 
 However, documentation drift remained:
 
-- `docs/playbook-layer.md` still had stale S-F2F-02 pending/future/30-test references.
+- `docs/governance/playbook-layer.md` still had stale S-F2F-02 pending/future/30-test references.
 - `plans/master-plan.md` had an outdated 30/30 test count in one row.
 - `plans/secondary/full2foss-inspired-system-strengthening-plan-v2.md` had a stale future heading.
 - `taskcards/S-F2F-03-dry-run-replay-and-review-queue.md` had outdated validator command examples.

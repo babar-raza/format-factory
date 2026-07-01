@@ -4,7 +4,7 @@
 S-F2F-03: Dry-Run Replay Engine and Review Queue Export
 
 ## 2. Status
-CLOSED_VERIFIED — executed 2026-05-09; 3 tools created; 96 tests PASS, 1 skip; no apply mode;
+CLOSED_VERIFIED ï¿½ executed 2026-05-09; 3 tools created; 96 tests PASS, 1 skip; no apply mode;
 no repo mutations from dry-run execution; no MAIN SPRINT deviation; BUNDLE_VALIDATION: PASS
 
 ## 3. Purpose
@@ -35,7 +35,7 @@ No apply mode. No LLM fallback. No file mutations to repo/acquisition-packs/.
 - schemas/playbook/acquisition-playbook.schema.json (from S-F2F-01)
 - schemas/playbook/review-queue.schema.json (from S-F2F-01)
 - tools/playbook/validate_playbook.py (from S-F2F-02)
-- Example playbook YAML from docs/playbook-layer.md
+- Example playbook YAML from docs/governance/playbook-layer.md
 
 ## 8. Outputs
 - tools/playbook/replay_acquisition_playbook.py (dry-run + review-queue modes only)
@@ -66,7 +66,7 @@ No apply mode. No LLM fallback. No file mutations to repo/acquisition-packs/.
 ```bash
 # Dry-run produces report without file mutations
 python tools/playbook/replay_acquisition_playbook.py --mode dry-run \
-  --format-id fods --playbook docs/playbook-layer.md --output /tmp/test-report.yaml
+  --format-id fods --playbook docs/governance/playbook-layer.md --output /tmp/test-report.yaml
 # Confirm no repo files were modified
 git status
 # Review queue exports correctly

@@ -77,7 +77,7 @@ S0 — Plan Repair
 - acquisition-packs/_families/**
 - tests/playbook/**
 - plans/review-queues/**
-- docs/playbook-layer.md
+- docs/governance/playbook-layer.md
 - docs/product-dependency-closure.md
 - src/python/**
 - src/net/**

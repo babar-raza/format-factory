@@ -377,7 +377,7 @@ An agent must never create the following in Phase 0:
 
 **Q1.** Never introduce security vulnerabilities: no command injection, no XSS, no SQL injection, no path traversal, no hard-coded credentials.
 
-**Q2.** Any code that parses untrusted file input must implement the mitigations in `docs/security.md` for all applicable threat categories.
+**Q2.** Any code that parses untrusted file input must implement the mitigations in `docs/governance/security.md` for all applicable threat categories.
 
 **Q3.** For XML parsing: use `defusedxml` (Python) or `XmlReaderSettings` with `DtdProcessing.Prohibit` and `XmlResolver = null` (.NET). Never use default XML parser settings on untrusted input.
 
@@ -655,7 +655,7 @@ returns None for unknown types, never raises, never blocks sprint. Best-effort h
 **AA0. Validation Tool Is Read-Only.** tools/playbook/validate_playbook.py validates YAML
 files against schema and reports PASS/FAIL. It writes NO files, creates NO review queues,
 does NOT replay operations, does NOT approve gates, does NOT replace DEC-034, and does NOT
-replace human approval. Validation PASS is an evidence aid only. See docs/playbook-layer.md
+replace human approval. Validation PASS is an evidence aid only. See docs/governance/playbook-layer.md
 Section 21 for full tool policy.
 
 **AA1. Playbooks Are Execution Aids, Not Authority.** Playbook YAML files record what

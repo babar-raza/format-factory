@@ -110,7 +110,7 @@ Then it should read only the memory files relevant to the task.
 | AI/LLM/embedding strategy | memory/43-ai-platform-phase1-control-plane-foundation-20260518.md (LATEST), memory/42-ai-llm-embedding-platform-plan-hardening-20260518.md, docs/ai/ai-platform-operating-model.md, plans/master-plan.md Section 39, docs/ai/ai-risk-register.md, memory/14-ai-supervision-and-three-pilot-direction-20260509.md |
 | State management and no-drift work | memory/15-ai-modules-and-state-management-architecture-20260509.md, memory/12-planning-and-agent-handoff-methodology.md, docs/governance/current-state-and-evidence-authority.md |
 | Agent workflow design | memory/15-ai-modules-and-state-management-architecture-20260509.md, memory/12-planning-and-agent-handoff-methodology.md, docs/agent-execution-handoff-standard.md |
-| Playbook replay and review queue design | memory/15-ai-modules-and-state-management-architecture-20260509.md, docs/playbook-layer.md, memory/14-ai-supervision-and-three-pilot-direction-20260509.md |
+| Playbook replay and review queue design | memory/15-ai-modules-and-state-management-architecture-20260509.md, docs/governance/playbook-layer.md, memory/14-ai-supervision-and-three-pilot-direction-20260509.md |
 | Phase 4 product source planning | memory/13-chatgpt-initial-project-analysis-20260509.md, memory/14-ai-supervision-and-three-pilot-direction-20260509.md |
 | Phase 4 source generation | memory/15-ai-modules-and-state-management-architecture-20260509.md, memory/11-format-understanding-and-llm-strategy.md, docs/python-foss/format-understanding-layer.md |
 | Three-pilot proof planning | memory/14-ai-supervision-and-three-pilot-direction-20260509.md |
