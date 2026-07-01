@@ -5568,3 +5568,30 @@ docs/python-foss/ (14), docs/code-quality/ (7), docs/product-factory/ (6)
 
 **Final Verdict:** GATE4_COVERAGE_NORMALIZED_BACKFILLED_PROVEN_AND_IDEMPOTENT
 
+## §99 — sal-test-failure-triage: SAL Integration Test Gap Fixes (eager-launching-phoenix, TERMINAL_CLOSED 2026-07-02)
+
+**Mission:** Fix 3 pre-existing test failures in `tests/specification-authority-layer/` — source-ID namespace mismatch, missing FODT spec fact ref, and SAL EX-NNNN naming scheme mismatch.
+
+**Plan:** `plans/.claude/eager-launching-phoenix.md`
+**Commit:** `8f9784b5` (5 files, 570 insertions)
+
+### Root Causes Fixed
+
+| Failure | Root Cause | Fix |
+|---------|-----------|-----|
+| `test_registered_formats_have_bootstrap_level_1` | `load_registered_source_ids()` reads only gitignored formal IDs; SAL pipeline uses informal IDs (`odf-1.3-part3`) — namespace mismatch causes `quality_level()=0` for all facts | Created `shared/sal-source-id-aliases.yaml` (35 IDs); updated `fact_quality.py` to merge committed aliases |
+| `test_fodt_neutral_model_cites_fact_refs` | `fodt/neutral_model.py` had no `FACT-FODT-NNN` comment; GAP-INT-002 traceability check failed | Added `# Spec fact ref: FACT-FODT-001` to docstring |
+| `test_total_fact_refs_across_product_source` | Product source cites 7 short-form IDs while SAL uses EX-NNNN scheme; `_load_sal_facts()` didn't read committed overlay | Extended `shared/sal-fact-overrides.yaml` with 7 alias entries; updated `_load_sal_facts()` to merge overlay |
+
+### Completion Gate Counters
+
+| Counter | Value |
+|---------|-------|
+| SAL_INTEGRATION_TEST_FAILURES | 0 |
+| MISSING_COMMITTED_SOURCE_ID_ALIASES | 0 |
+| PRODUCT_SOURCE_FACT_REFS_NOT_IN_SAL | 0 |
+
+**Test results:** 42/42 SAL integration tests PASS (was 39/42, 3 failures).
+
+**Final Verdict:** SAL_TEST_FAILURES_FIXED_SOURCE_ID_ALIASES_COMMITTED_OVERLAY_EXTENDED_IDEMPOTENT
+
