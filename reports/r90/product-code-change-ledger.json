@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s405-dotnet-deepening-20260701",
+  "latest_sprint": "ff-sprint-s407-dotnet-deepening-20260701",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -34276,9 +34276,81 @@
         "tests/net/fodt/FodtR429GetStyleNameCountDedicatedTests.cs"
       ],
       "test_count": 9
+    },
+    {
+      "entry_id": "PC-NETPBM-R424",
+      "sprint": "ff-sprint-s406-dotnet-deepening-20260701",
+      "classification": "TEST_COVERAGE",
+      "format": "NETPBM",
+      "capability": "GetMinPixelValue",
+      "description": "Dedicated tests for NetpbmImage.GetMinPixelValue: non-negative; <= MaxValue; dims/format/MaxValue unchanged; idempotent; PBM/PGM/PPM non-negative; dogfood 4x4 PGM/PPM.",
+      "source_files": [
+        "tests/net/netpbm/NetpbmR424GetMinPixelValueDedicatedTests.cs"
+      ],
+      "test_count": 12
+    },
+    {
+      "entry_id": "PC-FODS-R455",
+      "sprint": "ff-sprint-s406-dotnet-deepening-20260701",
+      "classification": "TEST_COVERAGE",
+      "format": "FODS",
+      "capability": "GetCellHorizontalAlignment",
+      "description": "Dedicated tests for FodsDocument.GetCellHorizontalAlignment: null/whitespace/nonexistent/negative throws; valid non-null; SheetCount unchanged; idempotent; is string; SetAlignment+Get round-trip; dogfood default/multiple cells.",
+      "source_files": [
+        "tests/net/fods/FodsR455GetCellHorizontalAlignmentDedicatedTests.cs"
+      ],
+      "test_count": 10
+    },
+    {
+      "entry_id": "PC-FODT-R430",
+      "sprint": "ff-sprint-s406-dotnet-deepening-20260701",
+      "classification": "TEST_COVERAGE",
+      "format": "FODT",
+      "capability": "GetPageStyleCount",
+      "description": "Dedicated tests for FodtDocument.GetPageStyleCount: new non-negative, ParagraphCount/TableCount unchanged, idempotent, is int, dogfood after paragraphs/mixed content/loop all non-negative.",
+      "source_files": [
+        "tests/net/fodt/FodtR430GetPageStyleCountDedicatedTests.cs"
+      ],
+      "test_count": 9
+    },
+    {
+      "entry_id": "PC-NETPBM-R425",
+      "sprint": "ff-sprint-s407-dotnet-deepening-20260701",
+      "classification": "TEST_COVERAGE",
+      "format": "NETPBM",
+      "capability": "GetMaxPixelValue",
+      "description": "Dedicated tests for NetpbmImage.GetMaxPixelValue: non-negative; <= MaxValue; dims/format/MaxValue unchanged; idempotent; PBM/PGM/PPM non-negative; dogfood 4x4 PGM/PPM <= MaxValue.",
+      "source_files": [
+        "tests/net/netpbm/NetpbmR425GetMaxPixelValueDedicatedTests.cs"
+      ],
+      "test_count": 12
+    },
+    {
+      "entry_id": "PC-FODS-R456",
+      "sprint": "ff-sprint-s407-dotnet-deepening-20260701",
+      "classification": "TEST_COVERAGE",
+      "format": "FODS",
+      "capability": "GetCellVerticalAlignment",
+      "description": "Dedicated tests for FodsDocument.GetCellVerticalAlignment: null/whitespace/nonexistent/negative throws; valid non-null; SheetCount unchanged; idempotent; is string; SetVerticalAlignment+Get round-trip; dogfood default/multiple cells.",
+      "source_files": [
+        "tests/net/fods/FodsR456GetCellVerticalAlignmentDedicatedTests.cs"
+      ],
+      "test_count": 10
+    },
+    {
+      "entry_id": "PC-FODT-R431",
+      "sprint": "ff-sprint-s407-dotnet-deepening-20260701",
+      "classification": "TEST_COVERAGE",
+      "format": "FODT",
+      "capability": "GetFrameStyleCount",
+      "description": "Dedicated tests for FodtDocument.GetFrameStyleCount: new non-negative, ParagraphCount/TableCount unchanged, idempotent, is int, dogfood after paragraphs/mixed content/loop all non-negative.",
+      "source_files": [
+        "tests/net/fodt/FodtR431GetFrameStyleCountDedicatedTests.cs"
+      ],
+      "test_count": 9
     }
   ],
-  "total_entries": 2044,
+  "total_entries": 2050,
   "changes": [
     {
       "file": "src/python/dif/models.py",
