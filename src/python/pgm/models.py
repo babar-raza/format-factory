@@ -71,6 +71,28 @@ class PgmDocument:
         """Path to the source PGM file."""
         return str(self._parsed.path)
 
+    # Dimension geometry properties (FACT-PGM-001, FACT-PGM-002)
+
+    @property
+    def aspect_ratio(self) -> float:
+        """Width-to-height ratio. Returns 0.0 for zero-height images."""
+        return self.width / self.height if self.height > 0 else 0.0
+
+    @property
+    def is_square(self) -> bool:
+        """True if width equals height."""
+        return self.width == self.height
+
+    @property
+    def is_landscape(self) -> bool:
+        """True if width is greater than height."""
+        return self.width > self.height
+
+    @property
+    def is_portrait(self) -> bool:
+        """True if height is greater than width."""
+        return self.height > self.width
+
     def to_dict(self) -> dict[str, Any]:
         """Return image metrics as a dict."""
         return {
