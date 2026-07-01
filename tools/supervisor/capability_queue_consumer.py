@@ -209,6 +209,12 @@ def compile_gaps_to_taskcards(
             taskcard["gap_priority"] = compiler_input.get("priority", "P2")
             taskcard["compiled_at"] = _now_iso()
             taskcard["compiled_by"] = "capability_queue_consumer"
+            taskcard["status"] = "READY_TO_EXECUTE"
+            taskcard["test_obligations"] = {
+                "min_test_count": 5,
+                "required_test_types": ["unit", "integration"],
+                "test_dir": f"tests/python/{compiler_input.get('format_id', '').lower()}/",
+            }
 
             # TC-SH-004: Set advisory_only based on priority + spec_facts.
             # FOSS P0-P1 with spec_facts -> advisory_only=false (executable).

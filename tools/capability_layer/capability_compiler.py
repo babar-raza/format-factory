@@ -344,11 +344,13 @@ def compile_format_capabilities(
 
         cap_id = f"{fmt.upper()}-FOSS-{op_kind.upper()}-SAL-001"
         subject_id = f"{fmt}:python"
+        # TC-HARDEN-006: Use uppercase format_id (canonical — matches unified map and format-registry.yaml)
+        fmt_upper = fmt.upper()
 
         record: dict[str, Any] = {
             "capability_id": cap_id,
             "subject_id": subject_id,
-            "format_id": fmt,
+            "format_id": fmt_upper,
             "product_type": "foss_reduced",
             "language": "python",
             "capability_name": f"{fmt.upper()} {op_kind.replace('_', ' ').title()}",
@@ -384,7 +386,7 @@ def compile_format_capabilities(
             record = {
                 "capability_id": f"{fmt.upper()}-FOSS-LOAD-SOURCE-001",
                 "subject_id": f"{fmt}:python",
-                "format_id": fmt,
+                "format_id": fmt.upper(),  # TC-HARDEN-006: canonical uppercase
                 "product_type": "foss_reduced",
                 "language": "python",
                 "capability_name": f"{fmt.upper()} Source Implementation (no SAL facts)",
@@ -485,7 +487,23 @@ def compile_all(
 
     out = output_path or _DEFAULT_OUTPUT
     out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(json.dumps(output, indent=2), encoding="utf-8")
+
+    # TC-HARDEN-004: Content-normalized write — skip if only generated_at changed.
+    # This prevents SHA churn in git and in idempotency checks when inputs are unchanged.
+    new_content = json.dumps(output, indent=2)
+    if out.exists():
+        import hashlib as _hashlib
+        existing = json.loads(out.read_text(encoding="utf-8"))
+        existing.pop("generated_at", None)
+        candidate = {k: v for k, v in output.items() if k != "generated_at"}
+        existing_sig = _hashlib.sha256(json.dumps(existing, sort_keys=True).encode()).hexdigest()
+        candidate_sig = _hashlib.sha256(json.dumps(candidate, sort_keys=True).encode()).hexdigest()
+        if existing_sig == candidate_sig:
+            # Content unchanged — preserve existing file (stable SHA, no git churn)
+            print("[capability_compiler] Content unchanged — skipping write (stable SHA)", file=sys.stderr)
+            return 0 if len(no_obligation) == 0 else 2
+
+    out.write_text(new_content, encoding="utf-8")
 
     print(f"[capability_compiler] Written {len(all_records)} records to {out}", file=sys.stderr)
     print(f"[capability_compiler] State breakdown: {dict(stats)}", file=sys.stderr)

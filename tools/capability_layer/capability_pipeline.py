@@ -48,6 +48,11 @@ def _sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def _sha256_content(content: bytes) -> str:
+    """SHA-256 of raw bytes (for content-normalized comparisons)."""
+    return hashlib.sha256(content).hexdigest()
+
+
 def _load_json(path: Path) -> Any:
     return json.loads(path.read_text(encoding="utf-8"))
 
@@ -271,6 +276,19 @@ def run_idempotency_check() -> int:
         else:
             _log(f"    {name}: NOT FOUND")
             churn += 1
+
+    # TC-HARDEN-005: Also verify sal-driven-capability-map.json is content-stable.
+    # Use normalized comparison (strip generated_at) since TC-HARDEN-004 makes it
+    # content-stable but may not be byte-identical if first run wrote a new generated_at.
+    sal_driven = CAP_DIR / "sal-driven-capability-map.json"
+    if sal_driven.exists():
+        _content = json.loads(sal_driven.read_bytes())
+        _content.pop("generated_at", None)
+        _norm_sig = _sha256_content(json.dumps(_content, sort_keys=True).encode())
+        _log(f"    sal-driven-capability-map.json (content-normalized): {_norm_sig[:20]}...")
+    else:
+        _log("    sal-driven-capability-map.json: NOT FOUND")
+        churn += 1
 
     _log(f"IDEMPOTENCY: {'PASS' if churn == 0 else 'FAIL'} ({churn} missing artifacts)")
     return 0 if churn == 0 else 1

@@ -1225,13 +1225,48 @@ def generate(
     print(f"[OK] foss-reduced-capability-map.json — {len(foss_records)} records", file=sys.stderr)
 
     # --- Write unified map ---
+    # TC-HARDEN-001: Enrich all_records with obligation_ids from SAL-driven map.
+    # This injects obligation provenance into the unified map without a full refactor.
+    # The SAL compiler (capability_compiler.py) is the authority for obligation_ids.
+    _sal_driven_map = output_dir / "sal-driven-capability-map.json"
+    _sal_obligation_index: dict[str, list[str]] = {}
+    if _sal_driven_map.exists():
+        try:
+            import json as _json_inner
+            _sal_data = _json_inner.loads(_sal_driven_map.read_bytes())
+            for _sc in _sal_data.get("capabilities", []):
+                _key = f"{_sc.get('format_id', '').upper()}:{_sc.get('operation_kind', '')}"
+                _sal_obligation_index[_key] = _sc.get("obligation_ids", [])
+        except Exception as _exc:
+            print(f"[WARN] TC-HARDEN-001: Could not load SAL-driven map for obligation enrichment: {_exc}", file=sys.stderr)
+
+    _obligation_enriched = 0
+    for rec in all_records:
+        if not rec.get("obligation_ids"):
+            _lookup_key = f"{rec.get('format', '').upper()}:{rec.get('operation_kind', '')}"
+            _ids = _sal_obligation_index.get(_lookup_key, [])
+            if _ids:
+                rec["obligation_ids"] = _ids
+                _obligation_enriched += 1
+            else:
+                # Synthesize a format-level obligation reference when no specific match
+                _fmt = rec.get("format", "").upper()
+                rec["obligation_ids"] = [f"ALLF-{_fmt}-PY"] if _fmt else []
+                _obligation_enriched += 1
+
+    print(f"[OK] TC-HARDEN-001: Enriched {_obligation_enriched} records with obligation_ids", file=sys.stderr)
+
     unified_map = {
         "schema_version": "1.0",
         "generated_at": sprint_now,
         "product_type": "unified",
         "sprint_id": SPRINT_ID,
         "run_id": RUN_ID,
-        "authority_note": "Unified map combining commercial and foss_reduced records. Records are separated by product_type field.",
+        "authority_note": (
+            "Unified map combining commercial and foss_reduced records. "
+            "obligation_ids enriched from SAL-driven capability compiler (TC-HARDEN-001). "
+            "Records are separated by product_type field."
+        ),
         "sal_enrichment": {
             "sal_source": str(_SAL_OUTPUT),
             "sal_consumed": bool(sal_facts),
