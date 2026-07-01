@@ -71,6 +71,11 @@ __all__ = [
     "zst_is_single_byte",
     # Domain model class
     "ZstDocument",
+    # Skippable frame support (FACT-ZST-002, FACT-ZST-004)
+    "is_skippable_frame",
+    "has_skippable_frames",
+    "get_skippable_frame_count",
+    "extract_skippable_frames",
 ]
 
 from .models import ZstDocument  # noqa: F401

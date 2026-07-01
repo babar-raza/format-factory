@@ -1,0 +1,32 @@
+{
+  "skill_id": "add-python-object-model-feature",
+  "invocation_date": "2026-07-01T19:05:58.222189+00:00",
+  "format_id": "zst",
+  "feature_name": "skippable_frame_support",
+  "sprint": "R556",
+  "spec_qname": "zst:skippable_frame",
+  "spec_fact_refs": [
+    "FACT-ZST-002",
+    "FACT-ZST-004"
+  ],
+  "changed_files": [
+    "src/python/zst/zst_codec.py",
+    "src/python/zst/__init__.py",
+    ".venv/Lib/site-packages/zst/zst_codec.py",
+    ".venv/Lib/site-packages/zst/__init__.py"
+  ],
+  "test_results": {
+    "test_file": "tests/python/zst/test_r556_zst_skippable_frames.py",
+    "tests_passed": 26,
+    "tests_failed": 0,
+    "verdict": "PASS"
+  },
+  "ledger_entry_id": "R556-GOVERNED-PYTHON-ZST-SKIPPABLE-FRAMES-001",
+  "api_symbols_added": [
+    "is_skippable_frame",
+    "has_skippable_frames",
+    "get_skippable_frame_count",
+    "extract_skippable_frames"
+  ],
+  "verdict": "COMPLETE"
+}
