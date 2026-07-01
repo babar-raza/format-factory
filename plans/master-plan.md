@@ -5434,3 +5434,46 @@ composable skill-first execution framework as fully operational:
 - `.supervisor/skill-quality-matrix.yaml` — 67 skills graded
 - `reports/skill-audit/root-tools-audit-2026-07-01.yaml` — 202 tools classified
 - `reports/supervisor/skill-first-execution-sfe2-report.md` — final SFE2 report
+
+---
+
+## §76 — FF-PLAYBOOK-SYSTEM-001: Playbook System Healing, Integration, and Idempotent Closure (TERMINAL_CLOSED 2026-07-01)
+
+**Plan:** `plans/.claude/bright-marinating-map.md` | **Lifecycle audit:** AUDIT_PASS | **Verdict:** PLAYBOOK_SYSTEM_RECONCILED_INTEGRATED_PROVEN_AND_IDEMPOTENT
+
+### What Was Completed
+
+All 12 taskcards (TC-PB-001 through TC-PB-012) CLOSED. Key deliverables:
+
+- **Authority model:** MODEL C (Separate Scoped Layers) — Markdown templates reclassified as Sprint Task Templates; YAML layer is canonical acquisition playbook system. Decision at `reports/playbooks/playbook-authority-decision.yaml`.
+- **Inventory + consumer graph:** `reports/playbooks/playbook-system-inventory.yaml`, `playbook-consumer-graph.yaml` — 14 artifacts inventoried, FALSE_OR_INFLATED_CONSUMER_CLAIM items identified.
+- **Contract hardening:** All 3 Markdown templates (`format-feature-expansion.md`, `new-format-kickstart-template.md`, `product-source-task-template.md`) hardened with machine-readable YAML `playbook_contract` front-matter.
+- **Skill registry:** 7 new skills registered in `.supervisor/skill-registry.yaml` — `/validate-playbook`, `/replay-acquisition-playbook`, `/export-review-queue`, `/diff-playbook-outputs`, `/format-feature-expansion`, `/new-format-kickstart`, `/product-source-task`.
+- **Coverage universe:** `reports/playbooks/playbook-coverage-universe.yaml` — 3 backfill templates created: `audit-healing-sprint.md`, `package-release-readiness.md`, `pipeline-incident-response.md`. HIGH_VALUE_RECURRING_WORKFLOWS_WITHOUT_DISPOSITION=0.
+- **Taskcard generation:** `tools/playbook/generate_playbook_taskcards.py` — generates bounded, provenance-linked taskcards from Markdown contracts. `schemas/playbook/playbook-task-binding.schema.json`.
+- **Supervisor integration:** `tools/playbook/playbook_selector.py`, `tools/playbook/playbook_execution_log.py` — best-effort, non-blocking hook in `autonomous_cycle.py`.
+- **Governance validators:** V92-V99 (8 WARN-only playbook drift guards) added to `governance_validators_ext2.py` + `governance_validator_runner.py`. Total validators: 106.
+- **Tests:** 7 new test modules in `tests/playbook/` — 217 tests pass (+ governance validator count updated to 106).
+- **Pilots 1-8:** All 8 pilots PASS. Evidence at `.local/evidences/playbook-pilots-r001/`.
+- **Registry + docs:** `playbooks/playbook-registry.yaml`, `playbooks/_readme.md`, `AGENTS.md §AA`, `GOVERNANCE.md`, `docs/governance/playbook-layer.md` — S-F2F-03/04 status corrected to EXECUTED.
+- **Idempotency:** MATERIAL_SECOND_RUN_CHANGES=0 confirmed. `reports/playbooks/idempotency-report.yaml`.
+
+### Verification Performed
+
+- Lifecycle audit: AUDIT_PASS, mission_complete=true, all 12 taskcards CLOSED, closure_authorized=true
+- Test suite: 380 passed, 1 skipped (tests/playbook/ + tests/supervisor/test_governance_validators.py)
+- README drift: 0 stale READMEs after sync
+- Plan lock: TERMINAL_CLOSED (FF-PLAYBOOK-SYSTEM-001, 2026-07-01)
+
+### Completion Gate Counters
+
+| Counter | Result |
+|---|---|
+| UNINVENTORIED_PLAYBOOK_ARTIFACTS | 0 |
+| AMBIGUOUS_PLAYBOOK_AUTHORITIES | 0 |
+| ACTIVE_PLAYBOOKS_WITHOUT_COMPLETE_CONTRACTS | 0 |
+| HIGH_VALUE_RECURRING_WORKFLOWS_WITHOUT_DISPOSITION | 0 |
+| PLAYBOOK_GENERATED_TASKS_WITHOUT_PROVENANCE | 0 |
+| FAILED_REQUIRED_PILOTS | 0 |
+| MATERIAL_SECOND_RUN_CHANGES | 0 |
+
