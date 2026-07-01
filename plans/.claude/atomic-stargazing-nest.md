@@ -60,14 +60,14 @@ idempotency.
 
 | TC-ID | Status |
 |-------|--------|
-| TC-G4-001 | OPEN |
-| TC-G4-002 | OPEN |
-| TC-G4-003 | OPEN |
-| TC-G4-004 | OPEN |
-| TC-G4-005 | OPEN |
-| TC-G4-006 | OPEN |
-| TC-G4-007 | OPEN |
-| TC-G4-008 | OPEN |
+| TC-G4-001 | CLOSED |
+| TC-G4-002 | CLOSED |
+| TC-G4-003 | CLOSED |
+| TC-G4-004 | CLOSED |
+| TC-G4-005 | CLOSED |
+| TC-G4-006 | CLOSED |
+| TC-G4-007 | CLOSED |
+| TC-G4-008 | CLOSED |
 
 ---
 
