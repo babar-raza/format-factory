@@ -5423,15 +5423,22 @@ composable skill-first execution framework as fully operational:
 | TC-SFE2-003 | Write adhoc-migration-register.yaml | CLOSED |
 | TC-SFE2-005 | Update skill-quality-matrix.yaml for 4 new skills | CLOSED |
 | TC-SFE2-006 | Final Report and Closeout | CLOSED |
+| TC-SFE2-H001 | Fix stale step-3 row in execution report (65→117 skills) | CLOSED |
+| TC-SFE2-H002 | Resolve backfill-gate4 missing command file (0 WARN) | CLOSED |
+| TC-SFE2-H003 | Idempotency second-run for pilot fixes | CLOSED |
+
+**Hardening pass (plan v1.3→v1.4):** Post-pilot audit surfaced 3 additional findings (stale row, missing command file, no idempotency rerun). All 3 H-taskcards resolved in commit `c61b1c1f`. Final plan closure committed `af2d0f29`.
 
 ### Key Artifacts
 
 - `.supervisor/skill-gap-008-closure-proof.yaml` — SKILL-GAP-008 closure proof
 - `.supervisor/skill-system-baseline.yaml` — SKILL-FIRST-002 baseline (100 active skills)
 - `.supervisor/duplicate-skill-report.yaml` — 0 duplicates (100 skills verified)
-- `.supervisor/skill-first-execution-report.md` — corrected (0 SKIPPED rows)
+- `.supervisor/skill-contract-validation-results.yaml` — 117 skills validated; 0 FAIL, 0 WARN
+- `.supervisor/skill-first-execution-report.md` — corrected (0 SKIPPED rows, step 3 row: 117 skills)
 - `.supervisor/adhoc-migration-register.yaml` — 11 root tools dispositioned
 - `.supervisor/skill-quality-matrix.yaml` — 67 skills graded
+- `.supervisor/skill-first-pilot-idempotency.yaml` — IDEMPOTENCY_PROVEN (run-2 + negative control)
 - `reports/skill-audit/root-tools-audit-2026-07-01.yaml` — 202 tools classified
 - `reports/supervisor/skill-first-execution-sfe2-report.md` — final SFE2 report
 

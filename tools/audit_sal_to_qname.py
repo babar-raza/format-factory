@@ -22,6 +22,9 @@ except ImportError:
     _HAS_YAML = False
 
 _REPO = Path(__file__).parent.parent
+# NOTE: reads from .local/spec-cache/sal-facts-latest.json (NOT .local/sal-output/)
+# These are two different files. The spec-cache path is the canonical audit source.
+# sal-output/ is populated by the SAL ingestion pipeline; spec-cache/ is the merged/resolved copy.
 _SAL_PATH = _REPO / ".local/spec-cache/sal-facts-latest.json"
 _REGISTRY_DIR = _REPO / "shared/qname-registry"
 _OVERRIDES_PATH = _REPO / "shared/sal-fact-overrides.yaml"
