@@ -4,7 +4,7 @@ Parse and write ODS (OpenDocument Spreadsheet) files with Format Factory.
 
 ## Installation
 
-<!-- BEGIN:README-INSTALLATION generated=2026-07-01T22:08:57+00:00 source=package-metadata -->
+<!-- BEGIN:README-INSTALLATION generated=2026-07-01T23:03:45+00:00 source=package-metadata -->
 ```bash
 pip install format-factory-ods
 ```
@@ -31,13 +31,13 @@ write_ods(doc.to_dict(), "output.ods")
 
 ## License
 
-<!-- BEGIN:README-LICENSE generated=2026-07-01T22:08:57+00:00 source=package-metadata -->
+<!-- BEGIN:README-LICENSE generated=2026-07-01T23:03:45+00:00 source=package-metadata -->
 Apache-2.0
 <!-- END:README-LICENSE -->
 
 ## Package Info
 
-<!-- BEGIN:README-PACKAGE_INFO generated=2026-07-01T22:08:57+00:00 source=repository-metadata -->
+<!-- BEGIN:README-PACKAGE_INFO generated=2026-07-01T23:03:45+00:00 source=repository-metadata -->
 | Field | Value |
 |---|---|
 | Format | OpenDocument Spreadsheet |
@@ -50,11 +50,11 @@ Apache-2.0
 | Spec | OASIS Open Document Format TC ODF 1.3 (ISO/IEC 26300-3:2021) |
 | QName coverage | 4/4 implemented |
 | Source files | 22 |
-| Test files | 109 |
+| Test files | 110 |
 <!-- END:README-PACKAGE_INFO -->
 
 ## Public API
 
-<!-- BEGIN:README-PUBLIC_API generated=2026-07-01T22:08:57+00:00 source=src-python-init -->
+<!-- BEGIN:README-PUBLIC_API generated=2026-07-01T23:03:45+00:00 source=src-python-init -->
 - `(dynamic)`
 <!-- END:README-PUBLIC_API -->

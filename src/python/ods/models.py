@@ -145,6 +145,22 @@ class OdsModelDocument:
         """True if the workbook has more than one sheet."""
         return self.sheet_count > 1
 
+    @property
+    def has_sheets(self) -> bool:
+        """True if the workbook has at least one sheet."""
+        return self.sheet_count > 0
+
+    @property
+    def total_row_count(self) -> int:
+        """Total number of rows across all sheets."""
+        return sum(s.row_count for s in self.sheets())
+
+    @property
+    def max_sheet_rows(self) -> int:
+        """Maximum row count in any single sheet. Returns 0 if no sheets."""
+        counts = [s.row_count for s in self.sheets()]
+        return max(counts) if counts else 0
+
     def to_dict(self) -> dict[str, Any]:
         """Return document summary as a dict."""
         return {

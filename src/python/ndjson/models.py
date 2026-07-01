@@ -75,6 +75,21 @@ class NdjsonDocument:
         """True if the document has at least one record."""
         return self.record_count > 0
 
+    @property
+    def is_multi_record(self) -> bool:
+        """True if the document has more than one record."""
+        return self.record_count > 1
+
+    @property
+    def all_objects(self) -> bool:
+        """True if all records are JSON objects (dicts)."""
+        return bool(self._records) and all(isinstance(r, dict) for r in self._records)
+
+    @property
+    def all_arrays(self) -> bool:
+        """True if all records are JSON arrays (lists)."""
+        return bool(self._records) and all(isinstance(r, list) for r in self._records)
+
     def to_list(self) -> list[Any]:
         """Return the underlying records list."""
         return list(self._records)

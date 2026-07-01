@@ -95,6 +95,21 @@ class TsvDocument:
         """True if there are more data rows than columns."""
         return self.row_count > self.column_count
 
+    @property
+    def is_multi_row(self) -> bool:
+        """True if the document has more than one data row."""
+        return self.row_count > 1
+
+    @property
+    def is_single_column(self) -> bool:
+        """True if the document has exactly one column."""
+        return self.column_count == 1
+
+    @property
+    def has_multiple_columns(self) -> bool:
+        """True if the document has more than one column."""
+        return self.column_count > 1
+
     def to_dict(self) -> dict[str, Any]:
         """Return the underlying neutral model dict."""
         return dict(self._data)
