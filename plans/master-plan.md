@@ -5383,3 +5383,54 @@ UNRESOLVED_DRIVERS_GOVERNANCE_CONTRADICTIONS=0, FALSE_DIRECT_CONSUMER_CLAIMS=0, 
 ### All required counters = 0
 
 UNINVENTORIED_CAPABILITY_ARTIFACTS=0, FALSE_CAPABILITY_CONSUMER_CLAIMS=0, AMBIGUOUS_CAPABILITY_AUTHORITIES=0, UNRESOLVED_PRODUCT_FORMAT_IDENTITIES=0, ELIGIBLE_SUBJECTS_WITHOUT_CAPABILITY_DISPOSITION=0, CAPABILITIES_WITHOUT_OBLIGATION_PROVENANCE=0, FALSE_VERIFIED_CAPABILITIES=0, MISSING_CAPABILITIES_HIDDEN_BY_SCOPE=0, ACTIVE_LEDGER_CLOSED_GAPS=0, READY_OPEN_GAPS_WITHOUT_TASKCARDS=0, CLOSED_GAPS_WITH_ACTIVE_TASKCARDS=0, CLOSED_GAPS_IN_ACTION_QUEUE=0, ACTION_QUEUE_STALE_RELATIVE_TO_LEDGER=false, HISTORICAL_GAPS_POLLUTING_ACTIVE_SELECTION=0, MATERIAL_CAPABILITY_FINDINGS_WITHOUT_GAPS=0, FAILED_REQUIRED_PILOTS=0, MATERIAL_SECOND_RUN_CHANGES=0
+
+---
+
+## Section 96: SKILL-FIRST-002 — Composable Skill-First Execution (twinkly-gliding-thimble)
+
+**Status:** CLOSED
+**Mission ID:** SKILL-FIRST-002
+**Plan ID:** twinkly-gliding-thimble
+**Date:** 2026-07-01
+**Verdict:** COMPOSABLE_SKILL_FIRST_EXECUTION_ENFORCED_AND_IDEMPOTENCY_PROVEN
+
+### Summary
+
+SKILL-FIRST-002 closed all remaining gaps from SKILL-FIRST-001 and established the
+composable skill-first execution framework as fully operational:
+
+- **SKILL-GAP-008 CLOSED** — pre-commit hook `.hooks/pre-commit-skill-guard` verified;
+  CI check exit 0; closure proof at `.supervisor/skill-gap-008-closure-proof.yaml`
+- **SKILL-GAP-011 CLOSED** — capability routing 30/30 ACTIVE (already done SKILL-FIRST-001)
+- **SKILL-GAP-012 SCOPE DEFINED** — declaration (V48), commit (hook), runtime (EP-002-GAP, structural)
+- **Stale artifact misclassification corrected** — Steps 7/8/9/11 were "SKIPPED" in
+  SKILL-FIRST-001 report; corrected to PASS with actual evidence in SKILL-FIRST-002
+- **Baseline refreshed** — 100 active skills (was 48 in SKILL-FIRST-001)
+- **0 duplicate skills** — 100 skills checked; 4 wrong `command_file` refs fixed
+- **Pilot C (`/audit-root-tools`) executed** — 202 `tools/supervisor/` scripts classified
+  (198 KEPT, 4 QUARANTINE candidates)
+- **Root tool adhoc register written** — 11 `tools/*.py` scripts dispositioned
+- **Quality matrix updated** — 67 skills graded (added rollback-and-recovery, preflight-skill-entry,
+  audit-root-tools, documentation-structure-migration)
+
+### Taskcards
+
+| TC-ID | Title | Status |
+|-------|-------|--------|
+| TC-SFE2-000-HOOK | Verify Pre-Commit Hook (SKILL-GAP-008 Closure) | CLOSED |
+| TC-SFE2-000 | Refresh Stale Artifacts (baseline, duplicate scan, report fix) | CLOSED |
+| TC-SFE2-002 | Run /audit-root-tools (Pilot C completion) | CLOSED |
+| TC-SFE2-003 | Write adhoc-migration-register.yaml | CLOSED |
+| TC-SFE2-005 | Update skill-quality-matrix.yaml for 4 new skills | CLOSED |
+| TC-SFE2-006 | Final Report and Closeout | CLOSED |
+
+### Key Artifacts
+
+- `.supervisor/skill-gap-008-closure-proof.yaml` — SKILL-GAP-008 closure proof
+- `.supervisor/skill-system-baseline.yaml` — SKILL-FIRST-002 baseline (100 active skills)
+- `.supervisor/duplicate-skill-report.yaml` — 0 duplicates (100 skills verified)
+- `.supervisor/skill-first-execution-report.md` — corrected (0 SKIPPED rows)
+- `.supervisor/adhoc-migration-register.yaml` — 11 root tools dispositioned
+- `.supervisor/skill-quality-matrix.yaml` — 67 skills graded
+- `reports/skill-audit/root-tools-audit-2026-07-01.yaml` — 202 tools classified
+- `reports/supervisor/skill-first-execution-sfe2-report.md` — final SFE2 report
