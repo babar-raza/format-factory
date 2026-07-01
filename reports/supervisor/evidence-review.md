@@ -1,17 +1,17 @@
 # Evidence Review — Supervisor
-Sprint ID: system-healing-product-acquisition-unblock-20260625
-Timestamp: 2026-07-01T17:07:07.732380
+Sprint ID: ff-heal-qname-20260701-181500
+Timestamp: 2026-07-01T23:59:09.228330
 Verdict: ACCEPTED
-Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\system-healing-unblock-20260625\declaration-review-package.zip
+Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\ff-heal-qname-20260701-181500\declaration-review-package.zip
 
 ## Facts
-- Tests: 205 passed, 0 failed, 0 skipped
+- Tests: 7 passed, 0 failed, 0 skipped
 - Git HEAD: see-declaration
-- Bundle entries: 63
+- Bundle entries: 55
 - PENDING markers: 0
 
 ## Gate States
 (none extracted)
 
 ## Limitation Notes
-None
+- No cycle-manifest found in declaration-review package

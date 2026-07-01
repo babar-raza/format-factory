@@ -1,19 +1,42 @@
 {
   "schema": "format-factory-maturity-signal/v1",
   "project_id": "format-factory",
-  "run_id": "ff-sprint-s428-dotnet-deepening-20260701",
-  "timestamp": "2026-07-01T13:13:09.881307+00:00",
+  "run_id": "r557-pbm-geometry",
+  "timestamp": "2026-07-01T20:22:16.518370+00:00",
   "sprint_verdict": "ACCEPTED_WITH_REWORK",
-  "autonomous_continue": false,
-  "iteration": 16,
+  "autonomous_continue": "true_with_rework",
+  "iteration": 11,
   "test_results": {
     "total": 0,
     "passed": 0,
     "failed": 0
   },
-  "work_items": [],
+  "work_items": [
+    {
+      "id": "CLOSE-ZST-GAPS",
+      "grade": "ACCEPTED_WITH_LIMITATIONS",
+      "confidence": 0.0,
+      "llm_used": false,
+      "rework_reason": null
+    },
+    {
+      "id": "CLOSE-FODS-ODS-GAPS",
+      "grade": "REWORK_REQUIRED",
+      "confidence": 0.0,
+      "llm_used": false,
+      "rework_reason": "Stub evidence detected (was ACCEPTED_VERIFIED): ['Test file contains no actual test functions or assertions – appears to be a stub.', 'Only a single gap entry is shown in the JSON report; the work item requires closing four gaps.', 'The JSON report does not provide evidence that the other three gaps are closed or that test coverage exists for them.', 'The test file is truncated and does not demonstrate execution of any traversal logic.', 'No verification steps (e.g., pytest run output) are included to confirm that tests passed.']"
+    },
+    {
+      "id": "R557-FOSS-PBM-GEOMETRY-PROPS",
+      "grade": "ACCEPTED_VERIFIED",
+      "confidence": 0.0,
+      "llm_used": false,
+      "rework_reason": null
+    }
+  ],
   "rework_items": [
-    "GOV_BLOCK:validate_readme_freshness"
+    "CLOSE-FODS-ODS-GAPS",
+    "LANE_ENFORCEMENT:1_violations"
   ],
   "agentic_maturity_score": 4.4,
   "active_gaps": [],

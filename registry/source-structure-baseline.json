@@ -2645,7 +2645,16 @@
       "baseline_loc_cap": 2944,
       "functions": 0,
       "baseline_functions_cap": 0,
-      "category": "net_extended_apis_new_violation_detected"
+      "category": "net_extended_apis_new_violation_detected",
+      "comment": "Created at 2,944 LOC in .NET FODT deepening sprint S507-S530 without prior baseline registration. Registered as new_violation_detected at cap=2944 on 2026-07-01. V35 monolith_detection_validator returns WARN (non-blocking) until \u00a78.1 decomposition sprint completes. Root cause: code extracted from FodtDocument.cs (977\u2192778 LOC) into this new file without baseline pre-registration. Decomposition sprint staged as GAP-NET-FODT-MONOLITH-001 in reports/capability-layer/gap-ledger.json."
+    },
+    "src/python/pbm/models.py": {
+      "loc": 102,
+      "baseline_loc_cap": 102,
+      "functions": 14,
+      "baseline_functions_cap": 14,
+      "category": "dependency_direction_known_pattern",
+      "note": "models.py uses lazy parser import in from_file() \u2014 governed pattern across all format models"
     }
   },
   "qname_ownership_baseline": {

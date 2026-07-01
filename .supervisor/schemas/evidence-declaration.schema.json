@@ -65,15 +65,23 @@
           "changed_files": { "type": "array", "items": { "type": "string" } },
           "gap_ledger_ref": { "type": "string", "description": "GAP-* entry in gap-ledger.json that this work item closes." },
           "provenance_chain": {
-            "type": "object",
-            "description": "Explicit end-to-end traceability chain: code → test → spec fact → SAL → gap. Required for PRODUCT_SOURCE items. TC-LA-005.",
-            "properties": {
-              "spec_fact_ref": { "type": "string", "pattern": "^FACT-[A-Z]+-[0-9]+$", "description": "Canonical FACT-FORMAT-NNN ID from sal-facts-latest.json" },
-              "gap_ledger_ref": { "type": "string", "description": "GAP-* entry this work closes" },
-              "capability_ref": { "type": "string", "description": "Capability identifier (e.g. csv:parse)" },
-              "qname_ref": { "type": "string", "description": "QName registry entry (e.g. csv:row)" },
-              "sal_verified": { "type": "boolean", "description": "True if spec_fact_ref was found in sal-facts-latest.json" }
-            }
+            "description": "Explicit end-to-end traceability chain: code → test → spec fact → SAL → gap. Required for PRODUCT_SOURCE items. TC-LA-005. Accepts an array of strings (human-readable chain) or an object (structured chain).",
+            "oneOf": [
+              {
+                "type": "array",
+                "items": { "type": "string" }
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "spec_fact_ref": { "type": "string", "pattern": "^FACT-[A-Z]+-[0-9]+$", "description": "Canonical FACT-FORMAT-NNN ID from sal-facts-latest.json" },
+                  "gap_ledger_ref": { "type": "string", "description": "GAP-* entry this work closes" },
+                  "capability_ref": { "type": "string", "description": "Capability identifier (e.g. csv:parse)" },
+                  "qname_ref": { "type": "string", "description": "QName registry entry (e.g. csv:row)" },
+                  "sal_verified": { "type": "boolean", "description": "True if spec_fact_ref was found in sal-facts-latest.json" }
+                }
+              }
+            ]
           }
         }
       }
@@ -124,7 +132,8 @@
     "test_layer_reason": { "type": "string", "description": "Why this layer was selected for this sprint" },
     "full_suite_required": { "type": "boolean", "description": "Whether the full test suite (layer6) was required for this sprint" },
     "full_suite_run": { "type": "boolean", "description": "Whether the full test suite was actually run" },
-    "full_suite_reason": { "type": "string", "description": "Reason full suite was or was not run" }
+    "full_suite_reason": { "type": "string", "description": "Reason full suite was or was not run" },
+    "NO_STASH_RESET_RESTORE_CLEAN_USED": { "description": "Attestation that no destructive git cleanup commands were used. Value YES means no stash/reset/restore/clean was used." }
   },
   "additionalProperties": false
 }

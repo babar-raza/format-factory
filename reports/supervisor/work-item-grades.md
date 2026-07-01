@@ -1,17 +1,16 @@
 # Work Item Grades
-Sprint: system-healing-product-acquisition-unblock-20260625
-Generated: 2026-07-01T17:09:37.673609
+Sprint: r557-pbm-geometry
+Generated: 2026-07-02T01:19:05.406562
 Global Status: ACCEPTED_WITH_REWORK
 
 | Item ID | Grade | Rework Required |
 |---------|-------|-----------------|
-| WI-TC-SHR-CAP | ACCEPTED_WITH_LIMITATIONS |  |
-| WI-TC-SHR-002 | ACCEPTED_VERIFIED |  |
-| WI-TC-SHR-003 | ACCEPTED_VERIFIED |  |
-| WI-TC-SHR-004 | ACCEPTED_VERIFIED |  |
+| CLOSE-ZST-GAPS | ACCEPTED_WITH_LIMITATIONS |  |
+| CLOSE-FODS-ODS-GAPS | REWORK_REQUIRED | Stub evidence detected (was ACCEPTED_VERIFIED): ['Test file contains no actual t |
+| R557-FOSS-PBM-GEOMETRY-PROPS | ACCEPTED_VERIFIED |  |
 
 ## Summary
-- Accepted: 4
+- Accepted: 2
 - Rework: 2
 - Overclaimed: 0
-- Autonomous Continue: False
+- Autonomous Continue: true_with_rework
