@@ -5472,6 +5472,18 @@ All 12 taskcards (TC-PB-001 through TC-PB-012) CLOSED. Key deliverables:
 - README drift: 0 stale READMEs after sync
 - Plan lock: TERMINAL_CLOSED (FF-PLAYBOOK-SYSTEM-001, 2026-07-01)
 
+### Hardening Follow-up Taskcards (TC-PB-013/014/015 — CLOSED 2026-07-02)
+
+Post-closure plan hardening identified and closed 3 follow-up items:
+
+- **TC-PB-013:** `format-feature-expansion.md` version bumped 1.1→1.2 (phases changed in TC-PB-004 without version increment). `playbooks/playbook-registry.yaml` synced to 1.2. `test_registry.py` version-match test now passes.
+- **TC-PB-014:** `reports/playbooks/playbook-coverage-universe.yaml` refreshed; V99 (`validate_playbook_coverage_report_current`) now PASS (was WARN).
+- **TC-PB-015:** Plan lock repaired from ITERATION_REQUIRED → TERMINAL_CLOSED. Lifecycle audit with `--plan-path` parsed all 15 taskcards (12 original + 3 followups), returned AUDIT_PASS.
+
+**Commit:** `5b2bca4a` — "fix(playbooks): close TC-PB-013/014/015"
+**Tests after followup close:** 380 passed, 1 skipped (unchanged)
+**V92-V99:** 8/8 PASS, 0 FAIL (V99 now PASS, no longer WARN)
+
 ### Completion Gate Counters
 
 | Counter | Result |
