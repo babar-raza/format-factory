@@ -108,6 +108,25 @@ class SylkModelDocument:
         """Number of cells with non-empty values (numeric or string)."""
         return sum(1 for c in self._parsed.cells if c.value_type != "empty")
 
+    # Additional cell analysis properties (FACT-SYLK-001)
+
+    @property
+    def has_numeric_cells(self) -> bool:
+        """True if the document contains at least one numeric cell."""
+        return self.numeric_cell_count > 0
+
+    @property
+    def has_string_cells(self) -> bool:
+        """True if the document contains at least one string cell."""
+        return self.string_cell_count > 0
+
+    @property
+    def fill_ratio(self) -> float:
+        """Ratio of non-empty cells to total cells. Returns 0.0 if no cells."""
+        if self.cell_count == 0:
+            return 0.0
+        return self.nonempty_cell_count / self.cell_count
+
     def to_dict(self) -> dict[str, Any]:
         """Return document summary as a dict."""
         return {

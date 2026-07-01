@@ -95,6 +95,23 @@ class TomlDocument:
         """Number of top-level keys whose value is a table (dict)."""
         return sum(1 for v in self._doc().values() if isinstance(v, dict))
 
+    # Additional key analysis properties (FACT-TOML-001)
+
+    @property
+    def has_scalars(self) -> bool:
+        """True if the document has at least one top-level scalar key."""
+        return self.scalar_key_count > 0
+
+    @property
+    def is_single_key(self) -> bool:
+        """True if the document has exactly one top-level key."""
+        return self.key_count == 1
+
+    @property
+    def is_nested(self) -> bool:
+        """True if the document has nested tables or arrays."""
+        return self.has_nested_tables or self.has_arrays
+
     def to_dict(self) -> dict[str, Any]:
         """Return the underlying neutral model dict."""
         return dict(self._data)

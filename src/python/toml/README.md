@@ -4,7 +4,7 @@ Parse and write TOML (Tom's Obvious Minimal Language) configuration files with F
 
 ## Installation
 
-<!-- BEGIN:README-INSTALLATION generated=2026-07-01T22:24:44+00:00 source=package-metadata -->
+<!-- BEGIN:README-INSTALLATION generated=2026-07-01T23:47:31+00:00 source=package-metadata -->
 ```bash
 pip install format-factory-toml
 ```
@@ -34,13 +34,13 @@ write_toml(model, "output.toml")
 
 ## License
 
-<!-- BEGIN:README-LICENSE generated=2026-07-01T22:24:44+00:00 source=package-metadata -->
+<!-- BEGIN:README-LICENSE generated=2026-07-01T23:47:31+00:00 source=package-metadata -->
 Apache-2.0
 <!-- END:README-LICENSE -->
 
 ## Package Info
 
-<!-- BEGIN:README-PACKAGE_INFO generated=2026-07-01T22:24:44+00:00 source=repository-metadata -->
+<!-- BEGIN:README-PACKAGE_INFO generated=2026-07-01T23:47:31+00:00 source=repository-metadata -->
 | Field | Value |
 |---|---|
 | Format | Tom's Obvious, Minimal Language |
@@ -53,11 +53,11 @@ Apache-2.0
 | Spec | TOML Project v1.0.0 |
 | QName coverage | 3/3 implemented |
 | Source files | 17 |
-| Test files | 59 |
+| Test files | 60 |
 <!-- END:README-PACKAGE_INFO -->
 
 ## Public API
 
-<!-- BEGIN:README-PUBLIC_API generated=2026-07-01T22:24:44+00:00 source=src-python-init -->
+<!-- BEGIN:README-PUBLIC_API generated=2026-07-01T23:47:31+00:00 source=src-python-init -->
 - `(dynamic)`
 <!-- END:README-PUBLIC_API -->

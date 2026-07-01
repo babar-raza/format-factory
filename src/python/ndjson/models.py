@@ -90,6 +90,26 @@ class NdjsonDocument:
         """True if all records are JSON arrays (lists)."""
         return bool(self._records) and all(isinstance(r, list) for r in self._records)
 
+    # Additional record analysis properties (FACT-NDJSON-001)
+
+    @property
+    def has_mixed_types(self) -> bool:
+        """True if records contain a mix of objects, arrays, or other types."""
+        return bool(self._records) and not self.all_objects and not self.all_arrays
+
+    @property
+    def all_scalars(self) -> bool:
+        """True if all records are scalar values (not objects or arrays)."""
+        return bool(self._records) and all(
+            not isinstance(r, (dict, list)) for r in self._records
+        )
+
+    @property
+    def max_keys(self) -> int:
+        """Maximum number of keys in any object record. Returns 0 if no object records."""
+        key_counts = [len(r) for r in self._records if isinstance(r, dict)]
+        return max(key_counts) if key_counts else 0
+
     def to_list(self) -> list[Any]:
         """Return the underlying records list."""
         return list(self._records)
