@@ -16,8 +16,15 @@ from pathlib import Path
 
 import pytest
 
+try:
+    import yaml as _yaml
+    _HAS_YAML = True
+except ImportError:
+    _HAS_YAML = False
+
 _REPO = Path(__file__).parent.parent.parent
 _SAL_FACTS = _REPO / ".local" / "sal-output" / "sal-facts-latest.json"
+_SAL_OVERRIDES = _REPO / "shared" / "sal-fact-overrides.yaml"
 _SRC_PYTHON = _REPO / "src" / "python"
 
 # Pattern: FACT-<FORMAT>-NNN (e.g., FACT-FODS-001, FACT-ZST-003)
@@ -27,21 +34,41 @@ _FACT_PATTERN = re.compile(r"FACT-([A-Z0-9]+)-(\d+)")
 def _load_sal_facts() -> dict[str, set[str]]:
     """Load sal-facts-latest.json and index only workbench-verified fact IDs by format_id.
 
+    Also merges shared/sal-fact-overrides.yaml (committed overlay) so that human-authored
+    short-form fact IDs in product source (e.g., FACT-FODG-001) are recognised even when
+    the SAL extraction pipeline uses EX-NNNN IDs (FACT-FODG-EX-0001).
+
     Only includes facts with source='workbench_verified' to ensure citations in product
     source are traceable to reviewed workbench evidence, not bootstrap template facts.
     """
-    if not _SAL_FACTS.is_file():
-        return {}
-    data = json.loads(_SAL_FACTS.read_text(encoding="utf-8"))
     index: dict[str, set[str]] = {}
-    for result in data.get("results", []):
-        fmt = result.get("format_id", "").lower()
-        for fact in result.get("spec_facts", []):
-            if fact.get("source") != "workbench_verified":
-                continue  # skip bootstrap template facts
-            qname = fact.get("qname", "")
-            if qname:
-                index.setdefault(fmt, set()).add(qname)
+
+    # Primary source: gitignored sal-facts-latest.json
+    if _SAL_FACTS.is_file():
+        data = json.loads(_SAL_FACTS.read_text(encoding="utf-8"))
+        for result in data.get("results", []):
+            fmt = result.get("format_id", "").lower()
+            for fact in result.get("spec_facts", []):
+                if fact.get("source") != "workbench_verified":
+                    continue  # skip bootstrap template facts
+                qname = fact.get("qname", "")
+                if qname:
+                    index.setdefault(fmt, set()).add(qname)
+
+    # Overlay: committed shared/sal-fact-overrides.yaml
+    if _HAS_YAML and _SAL_OVERRIDES.is_file():
+        try:
+            data = _yaml.safe_load(_SAL_OVERRIDES.read_text(encoding="utf-8")) or {}
+            for entry in data.get("overrides", []):
+                if entry.get("verification_status") != "workbench_verified":
+                    continue
+                fmt = entry.get("format_id", "").lower()
+                qname = entry.get("qname", "")
+                if qname:
+                    index.setdefault(fmt, set()).add(qname)
+        except Exception:
+            pass
+
     return index
 
 

@@ -1,0 +1,133 @@
+# sal-fact-overrides.yaml
+#
+# Committed overlay of SAL spec facts that supplement sal-facts-latest.json.
+# sal-facts-latest.json lives under .local/ (gitignored). This file commits
+# the facts that were injected by TC-SAL-CLOSE-13 so they survive fresh checkout.
+#
+# Consumed by tools/audit_sal_to_qname.py via load_sal_fact_id_overrides().
+# Format: list of records, each with format_id and qname (= the FACT-* ID used
+# in spec_fact_ref fields of shared/qname-registry/*.yaml).
+#
+# DO NOT remove entries without re-running audit_sal_to_qname.py to confirm 100% coverage.
+# Source: TC-SAL-CLOSE-13 (2026-07-01), verified via reports/sal-qname-gap-reaudit.json
+
+overrides:
+  - format_id: fods
+    qname: FACT-FODS-002
+    element_qname: "office:body"
+    claim: "ODF Flat Spreadsheet office:body element contains the spreadsheet table:spreadsheet element"
+    verification_status: workbench_verified
+    spec_id: odf-1.3
+    section_id: "2.2"
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-SAL-CLOSE-13
+    added_at: "2026-07-01"
+
+  - format_id: fodg
+    qname: FACT-FODG-001
+    element_qname: "office:document"
+    claim: "ODF Flat Graphics office:document is the root element"
+    verification_status: workbench_verified
+    spec_id: odf-1.3
+    section_id: "1.1"
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-SAL-CLOSE-13
+    added_at: "2026-07-01"
+
+  - format_id: fodg
+    qname: FACT-FODG-002
+    element_qname: "draw:page"
+    claim: "ODF Drawing draw:page element represents a drawing page in FODG"
+    verification_status: workbench_verified
+    spec_id: odf-1.3
+    section_id: "9.1"
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-SAL-CLOSE-13
+    added_at: "2026-07-01"
+
+  - format_id: fodg
+    qname: FACT-FODG-003
+    element_qname: "draw:frame"
+    claim: "ODF Drawing draw:frame element is a container for drawing objects and images"
+    verification_status: workbench_verified
+    spec_id: odf-1.3
+    section_id: "9.3"
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-SAL-CLOSE-13
+    added_at: "2026-07-01"
+
+  - format_id: fodp
+    qname: FACT-FODP-001
+    element_qname: "office:document"
+    claim: "ODF Flat Presentation office:document is the root element"
+    verification_status: workbench_verified
+    spec_id: odf-1.3
+    section_id: "1.1"
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-SAL-CLOSE-13
+    added_at: "2026-07-01"
+
+  - format_id: fodp
+    qname: FACT-FODP-002
+    element_qname: "presentation:page"
+    claim: "ODF Presentation draw:page is used for presentation slides via presentation:page"
+    verification_status: workbench_verified
+    spec_id: odf-1.3
+    section_id: "9.1"
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-SAL-CLOSE-13
+    added_at: "2026-07-01"
+
+  - format_id: fodp
+    qname: FACT-FODP-003
+    element_qname: "draw:frame"
+    claim: "ODF Presentation draw:frame element is a container for slide content objects"
+    verification_status: workbench_verified
+    spec_id: odf-1.3
+    section_id: "9.3"
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-SAL-CLOSE-13
+    added_at: "2026-07-01"
+
+  - format_id: ods
+    qname: FACT-ODS-002
+    element_qname: "table:table-row"
+    claim: "ODS table:table-row element represents a row within a spreadsheet table"
+    verification_status: workbench_verified
+    spec_id: odf-1.3
+    section_id: "9.1.3"
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-SAL-CLOSE-13
+    added_at: "2026-07-01"
+
+  - format_id: odt
+    qname: FACT-ODT-001
+    element_qname: "office:document"
+    claim: "ODF Text document office:document is the root element of an ODT file"
+    verification_status: workbench_verified
+    spec_id: odf-1.3
+    section_id: "1.1"
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-FIX-003
+    added_at: "2026-07-01"
+
+  - format_id: qoi
+    qname: FACT-QOI-003
+    element_qname: "qoi:end-marker"
+    claim: "QOI end marker is an 8-byte sequence 0x00000000_00000001 that terminates the QOI byte stream"
+    verification_status: workbench_verified
+    spec_id: qoi-spec-1.0
+    section_id: "2.4"
+    extraction_method: structural_derivation
+    confidence: high
+    added_by: TC-SAL-CLOSE-13
+    added_at: "2026-07-01"

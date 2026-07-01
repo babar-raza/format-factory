@@ -63,23 +63,43 @@ def quality_level(fact: dict, registered_source_ids: Set[str]) -> int:
 def load_registered_source_ids(
     repo_root: Optional[Path] = None,
 ) -> Set[str]:
-    """Load all source_ids from spec-source-registry/sources.jsonl."""
+    """Load all source_ids from spec-source-registry/sources.jsonl and committed aliases.
+
+    Merges two sources:
+    1. .local/spec-source-registry/sources.jsonl — formal SPEC-* IDs (gitignored, may be absent)
+    2. shared/sal-source-id-aliases.yaml — informal IDs used by the SAL extraction pipeline
+       (committed, always present, ensures quality level computation works on fresh checkout)
+    """
     root = repo_root or _REPO_ROOT
-    sources_path = root / ".local" / "spec-source-registry" / "sources.jsonl"
     ids: Set[str] = set()
-    if not sources_path.exists():
-        return ids
-    try:
-        for line in sources_path.read_text(encoding="utf-8").splitlines():
-            line = line.strip()
-            if not line:
-                continue
-            entry = json.loads(line)
-            sid = entry.get("source_id", "")
-            if sid:
-                ids.add(sid)
-    except Exception:
-        pass
+
+    # Source 1: gitignored formal registry (SPEC-FODS-1_3, SPEC-ZST-RFC8878, etc.)
+    sources_path = root / ".local" / "spec-source-registry" / "sources.jsonl"
+    if sources_path.exists():
+        try:
+            for line in sources_path.read_text(encoding="utf-8").splitlines():
+                line = line.strip()
+                if not line:
+                    continue
+                entry = json.loads(line)
+                sid = entry.get("source_id", "")
+                if sid:
+                    ids.add(sid)
+        except Exception:
+            pass
+
+    # Source 2: committed aliases (odf-1.3-part3, fods-normalized, etc.)
+    aliases_path = root / "shared" / "sal-source-id-aliases.yaml"
+    if aliases_path.exists():
+        try:
+            import yaml as _yaml  # type: ignore[import]
+            data = _yaml.safe_load(aliases_path.read_text(encoding="utf-8")) or {}
+            for sid in data.get("source_ids", []):
+                if sid:
+                    ids.add(str(sid))
+        except Exception:
+            pass
+
     return ids
 
 
