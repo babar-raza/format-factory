@@ -9,6 +9,8 @@ Gate 5 neutral model: schemas/neutral-model/fodt/ (7 entities, 26 mappings, 19 r
 Gate 5 PASSED: Babar Raza, 2026-05-08, run046.
 IR-FODT-015: validate against neutral model before returning.
 
+# Spec fact ref: FACT-FODT-001 (ODF 1.3 office:body text content root element)
+
 License: Apache-2.0
 Package: format-factory-fodt v0.1.0
 """

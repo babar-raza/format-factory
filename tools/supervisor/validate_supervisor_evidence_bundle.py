@@ -108,7 +108,7 @@ def validate_bundle(bundle_path: str, contract_path: str | None = None) -> Bundl
     current_run_number = None
     if contract_path and YAML_AVAILABLE:
         try:
-            with open(contract_path) as f:
+            with open(contract_path, encoding="utf-8") as f:
                 contract_data = yaml.safe_load(f)
             current_run_number = contract_data.get("run_number")
         except Exception:

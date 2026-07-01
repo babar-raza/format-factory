@@ -10,7 +10,7 @@ This test closes the REWORK-SAL-PLAN-READINESS-UPDATE rework item from iter8.
 from pathlib import Path
 
 _REPO = Path(__file__).parent.parent.parent
-_PLAN = _REPO / "plans" / "snoopy-juggling-seal.md"
+_PLAN = _REPO / "plans" / "strategic" / "snoopy-juggling-seal.md"
 
 EXPECTED_VERDICT = "ALL_AGENT_EXECUTABLE_TASKS_COMPLETE_NON_ODF_PENDING_SPEC_ACQUISITION"
 

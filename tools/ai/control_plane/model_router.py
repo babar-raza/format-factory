@@ -32,7 +32,7 @@ def load_role_requirements(contracts_dir: Path | None = None) -> dict[str, dict]
     roles_path = contracts_dir / "roles.yaml"
     if not roles_path.exists():
         return {}
-    with open(roles_path) as f:
+    with open(roles_path, encoding="utf-8") as f:
         data = yaml.safe_load(f)
     return data.get("roles", {})
 

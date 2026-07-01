@@ -10,6 +10,8 @@ from .grayscale_image import *  # noqa: F401, F403
 from .pgm_to_ppm import *  # noqa: F401, F403
 from .exceptions import *  # noqa: F401, F403
 from .models import PgmDocument  # noqa: F401
+from .pgm_workflow import pgm_installed_workflow  # noqa: F401
+from .pgm_graymap_iterator import pgm_iter_graymaps  # noqa: F401
 
 import sys as _sys
 import types as _types

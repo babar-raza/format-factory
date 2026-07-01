@@ -21,7 +21,7 @@ def _load_forbidden_patterns(contracts_dir: Path) -> dict:
             "forbidden_env_references": [],
             "forbidden_url_references": [],
         }
-    with open(contract_path) as f:
+    with open(contract_path, encoding="utf-8") as f:
         return yaml.safe_load(f)
 
 

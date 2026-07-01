@@ -2,6 +2,29 @@
 # Machine-readable mapping: layers, format families, and change-impact rules.
 # Consumed by tools/test_runner.py for auto-detection and layer selection.
 
+# Named validation lanes for autonomous trains (fast/medium/full).
+# These are aliases over the layer0-6 system for CI lane selection.
+# Consumed by agent policy and tools/test_runner.py --lane <name>.
+named_lanes:
+  fast:
+    description: "Unit tests only — no file I/O, no network, no oracle"
+    max_time_seconds: 30
+    includes_layers: [0, 1]
+    pytest_marks: "not slow and not roundtrip and not oracle"
+    use_case: "Per-commit gate; autonomous trains between sprints"
+  medium:
+    description: "Unit + roundtrip tests on minimal samples"
+    max_time_seconds: 120
+    includes_layers: [0, 1, 2, 4]
+    pytest_marks: "not oracle and not property_based and not security"
+    use_case: "Pre-closeout validation; format-specific deepening"
+  full:
+    description: "Entire test suite including oracle, property-based, security"
+    max_time_seconds: null
+    includes_layers: [0, 1, 2, 3, 4, 5, 6]
+    pytest_marks: ""
+    use_case: "Release gates; certification; sprint acceptance"
+
 layers:
   layer0:
     name: structural

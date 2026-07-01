@@ -24,32 +24,61 @@ except ImportError:
 _REPO = Path(__file__).parent.parent
 _SAL_PATH = _REPO / ".local/spec-cache/sal-facts-latest.json"
 _REGISTRY_DIR = _REPO / "shared/qname-registry"
+_OVERRIDES_PATH = _REPO / "shared/sal-fact-overrides.yaml"
 
 
-def load_sal_fact_ids() -> dict[str, set[str]]:
-    """Load SAL facts from sal-facts-latest.json.
+def load_sal_fact_id_overrides() -> dict[str, set[str]]:
+    """Load committed SAL fact overrides from shared/sal-fact-overrides.yaml.
+
+    This file commits facts that supplement the gitignored sal-facts-latest.json,
+    ensuring 100% coverage survives a fresh checkout (TC-HRD-001).
 
     Returns:
         dict mapping format_id (lowercase) → set of FACT-* qname IDs
     """
-    if not _SAL_PATH.exists():
+    if not _HAS_YAML or not _OVERRIDES_PATH.exists():
         return {}
     try:
-        data = json.loads(_SAL_PATH.read_text(encoding="utf-8", errors="replace"))
+        data = _yaml.safe_load(_OVERRIDES_PATH.read_text(encoding="utf-8")) or {}
     except Exception:
         return {}
 
+    overrides: dict[str, set[str]] = {}
+    for entry in data.get("overrides", []):
+        fmt = entry.get("format_id", "").lower()
+        qname = entry.get("qname", "")
+        if qname.startswith("FACT-"):
+            overrides.setdefault(fmt, set()).add(qname)
+    return overrides
+
+
+def load_sal_fact_ids() -> dict[str, set[str]]:
+    """Load SAL facts from sal-facts-latest.json plus committed overrides.
+
+    Returns:
+        dict mapping format_id (lowercase) → set of FACT-* qname IDs
+    """
     fact_ids: dict[str, set[str]] = {}
-    results = data.get("results", [])
-    for result in results:
-        fmt = result.get("format_id", "").lower()
-        facts = result.get("spec_facts", [])
-        ids: set[str] = set()
-        for fact in facts:
-            qname = fact.get("qname", "")
-            if qname.startswith("FACT-"):
-                ids.add(qname)
-        fact_ids[fmt] = ids
+
+    if _SAL_PATH.exists():
+        try:
+            data = json.loads(_SAL_PATH.read_text(encoding="utf-8", errors="replace"))
+        except Exception:
+            data = {}
+        results = data.get("results", [])
+        for result in results:
+            fmt = result.get("format_id", "").lower()
+            facts = result.get("spec_facts", [])
+            ids: set[str] = set()
+            for fact in facts:
+                qname = fact.get("qname", "")
+                if qname.startswith("FACT-"):
+                    ids.add(qname)
+            fact_ids[fmt] = ids
+
+    # Merge committed overrides (survive fresh checkout without .local/)
+    for fmt, ids in load_sal_fact_id_overrides().items():
+        fact_ids.setdefault(fmt, set()).update(ids)
 
     return fact_ids
 

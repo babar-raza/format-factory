@@ -33,6 +33,10 @@ markers = [
     "network: Test makes real network calls (LLM, HTTP endpoints)",
     "arithmetic_deepening: Arithmetic-formula deepening test with no spec backing (generated, suspended)",
     "slow: Test consistently exceeds 5s measured duration (from registry/slow-test-ledger.yaml)",
+    "roundtrip: Test performs a load-edit-save-reload cycle proving format round-trip fidelity",
+    "oracle: Test executes oracle-package cases to verify spec-literal correctness",
+    "property_based: Test uses Hypothesis or similar property-based strategy",
+    "security: Test validates malformed input, injection, or boundary security behavior",
 ]
 filterwarnings = [
     "ignore::DeprecationWarning",

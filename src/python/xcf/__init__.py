@@ -14,6 +14,8 @@ from .xcf_parser import *  # noqa: F401, F403
 # and other spec-level functions are part of the public API.
 from .image_document import *  # noqa: F401, F403
 from .models import XcfDocument  # noqa: F401
+from .xcf_workflow import xcf_installed_workflow  # noqa: F401
+from .xcf_layer_iterator import xcf_iter_layers  # noqa: F401
 
 # Compute public API: all non-private names loaded so far
 import sys as _sys

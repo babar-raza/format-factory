@@ -128,7 +128,7 @@ class NamespaceManager:
         manifest_path = self.get_namespace_path(format_id) / "manifest.json"
         if not manifest_path.exists():
             return None
-        with open(manifest_path) as f:
+        with open(manifest_path, encoding="utf-8") as f:
             data = json.load(f)
         manifest = IndexManifest(**data)
         self._manifests[format_id] = manifest

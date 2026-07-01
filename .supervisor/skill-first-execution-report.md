@@ -14,7 +14,7 @@
 |------|-------|--------|---------|
 | 1 | inventory-commands | .supervisor/command-inventory.yaml | PASS (prompt-backed) |
 | 2 | detect-ad-hoc-execution | .supervisor/ad-hoc-execution-inventory.yaml | PASS (174 AD_HOC pre-policy, 7 GOVERNED) |
-| 3 | validate-skill-contracts | .supervisor/skill-contract-validation-results.yaml | **PASS** (0 FAIL, 0 WARN, 65 skills) |
+| 3 | validate-skill-contracts | .supervisor/skill-contract-validation-results.yaml | **PASS** (0 FAIL, 0 WARN, 117 skills; re-run 2026-07-01 for full registry) |
 | 4 | normalize-skill-registry | .supervisor/skill-registry.yaml | PASS (65 skills — 62 active, 3 deprecated) |
 | 5 | sync-skill-command-registry | .supervisor/skill-command-registry-sync-report.yaml | WARN (1 broken_pointer for deprecated check-mcp-status — acceptable) |
 | 6 | build-capability-routes | .supervisor/capability-routing-results.yaml | **PASS (30/30 ACTIVE — was 29/30)** |
@@ -26,7 +26,7 @@
 | 12 | scan-residual-bypasses | .supervisor/residual-bypass-report.yaml | PASS (2 UNGOVERNED pre-policy; retroactive transcripts created) |
 | 13 | inventory-skills | .supervisor/skill-inventory.yaml | **PASS (65 skills — was 63)** |
 
-**Overall:** PASS — capability routing 30/30 ACTIVE; 65 skills validated (Jun 25); refreshed to 100 active skills (Jul 01); retroactive PDEP transcripts created
+**Overall:** PASS — capability routing 30/30 ACTIVE; 117 skills validated (Jul 01, 0 FAIL, 0 WARN); retroactive PDEP transcripts created
 
 > **CORRECTION (2026-07-01, TC-SFE2-000/convergence-iter-2):** Steps 7/8/9/11 were previously misclassified as "prompt-backed (SKIPPED)". All four steps ran during SKILL-FIRST-001 (2026-06-24) with complete Python inline implementations. Step 7 re-run 2026-07-01 for 100 active skills (was 62). Steps 8/9/11 artifacts confirmed PASS. SKILL-GAP-008 CLOSED (TC-SFE2-000-HOOK). SKILL-GAP-011 CLOSED (30/30 ACTIVE).
 

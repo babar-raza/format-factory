@@ -120,7 +120,7 @@ def check_contradictions(
 
     try:
         import yaml
-        with open(verified_facts_path) as f:
+        with open(verified_facts_path, encoding="utf-8") as f:
             facts = yaml.safe_load(f) or {}
     except Exception:
         return "blocked_invalid_verified_facts"

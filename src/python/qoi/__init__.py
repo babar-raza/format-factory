@@ -10,6 +10,8 @@ from .qoi_encoder import *  # noqa: F401, F403
 from .image_document import *  # noqa: F401, F403
 from .exceptions import *  # noqa: F401, F403
 from .models import QoiDocument  # noqa: F401
+from .qoi_workflow import qoi_installed_workflow  # noqa: F401
+from .qoi_chunk_iterator import qoi_iter_chunks  # noqa: F401
 
 import sys as _sys
 import types as _types

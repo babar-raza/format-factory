@@ -58,7 +58,7 @@ def load_verified_facts(path: Path) -> tuple[list[dict[str, Any]], list[str]]:
         return [], ["verified_facts_file_not_found"]
     try:
         import yaml
-        with open(path) as f:
+        with open(path, encoding="utf-8") as f:
             data = yaml.safe_load(f) or {}
     except ImportError:
         return [], ["yaml_not_available"]
