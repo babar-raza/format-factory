@@ -1,0 +1,155 @@
+# Gate 4 Evidence Contract
+# Defines required fields and validation rules for Gate 4 (Parsing Feasibility Prototype)
+# Version: 1.0
+# Mission: FF-G4-BACKFILL-001
+
+schema_version: "1.0"
+gate: 4
+gate_name: "Parsing Feasibility Prototype"
+description: >
+  Gate 4 proves that a format can be parsed in Python. Every supported format must
+  have exactly one canonical Gate 4 evidence disposition: STANDALONE_PROTOTYPE,
+  EVIDENCE_WRAPPER, BLOCKED_BEFORE_GATE4, or NOT_APPLICABLE.
+
+# ── Required fields for all Gate 4 blocks ──────────────────────────────────────
+
+required_fields:
+  - field: status
+    type: enum
+    values: [passed, blocked, not_applicable]
+    description: "Current Gate 4 disposition"
+
+  - field: evidence_type
+    type: enum
+    values:
+      - STANDALONE_PROTOTYPE    # New parser in prototypes/by-format/
+      - EVIDENCE_WRAPPER        # Thin adapter delegating to src/python/ (with prototype dir)
+      - SOURCE_TRACK_EQUIVALENT # Format has src/python/ implementation; no separate prototype dir
+      - BLOCKED_BEFORE_GATE4    # Prerequisite gates not satisfied
+      - NOT_APPLICABLE          # Shared/meta entries (e.g. odf-shared)
+    description: "Classification of Gate 4 evidence artifact"
+
+# ── Conditional required fields by evidence_type ───────────────────────────────
+
+conditional_required:
+  STANDALONE_PROTOTYPE:
+    required:
+      - prototype_path       # Path to prototypes/by-format/{format}/
+      - tests                # List of at least one test file path
+      - corpus               # List of at least one corpus directory
+      - limitations          # List of known constraints
+    prohibited:
+      - delegated_source_path  # Must NOT delegate to src/python/
+
+  EVIDENCE_WRAPPER:
+    required:
+      - prototype_path           # Path to prototypes/by-format/{format}/
+      - delegated_source_path    # Path to src/python/{format}/{module}.py
+      - delegated_symbols        # List of symbols imported from delegated source
+      - tests                    # List of at least one test file path
+      - corpus                   # List of at least one corpus directory
+    prohibited:
+      - limitations              # Evidence wrappers have no implementation to limit
+
+  BLOCKED_BEFORE_GATE4:
+    required:
+      - reason     # Machine-readable reason (gate1_not_passed | gate3_prerequisite_incomplete)
+      - blocker    # Human-readable blocker description
+      - next_gate  # Recovery path identifier
+    prohibited:
+      - prototype_path        # MUST NOT have prototype when blocked
+      - delegated_source_path # MUST NOT claim delegation when blocked
+      - tests                 # MUST NOT have tests when blocked
+
+  NOT_APPLICABLE:
+    required:
+      - reason  # Why Gate 4 is not applicable
+    prohibited:
+      - prototype_path
+      - delegated_source_path
+      - tests
+
+# ── Invariants (always enforced across all types) ─────────────────────────────
+
+invariants:
+  - id: INV-G4-001
+    description: "Every tracked format must have exactly one gate_4 disposition"
+    check: "format_id in registry has gates.gate_4 key"
+    violation_class: MISSING_GATE4_DISPOSITION
+
+  - id: INV-G4-002
+    description: "A format cannot have status=passed with no executable evidence"
+    check: "if gate_4.status == passed: prototype_path or delegated_source_path must exist on disk"
+    violation_class: PASS_WITHOUT_EXECUTABLE_EVIDENCE
+
+  - id: INV-G4-003
+    description: "Evidence wrapper cannot duplicate parser logic"
+    check: "prototypes/by-format/{format}/*_gate4_probe.py must not define parse_ functions"
+    violation_class: DUPLICATE_PARSER_LOGIC
+
+  - id: INV-G4-004
+    description: "Gate 4 cannot pass when prerequisite gates failed"
+    check: "if gate_4.status == passed: gate_3.status == passed"
+    violation_class: PREREQUISITE_GATE_NOT_SATISFIED
+
+  - id: INV-G4-005
+    description: "Blocked formats must not have status=passed"
+    check: "if evidence_type == BLOCKED_BEFORE_GATE4: status != passed"
+    violation_class: BLOCKED_MARKED_PASSED
+
+  - id: INV-G4-006
+    description: "STANDALONE_PROTOTYPE must not delegate to src/python/"
+    check: "if evidence_type == STANDALONE_PROTOTYPE: delegated_source_path is null"
+    violation_class: STANDALONE_WITH_DELEGATION
+
+# ── Prohibited patterns ────────────────────────────────────────────────────────
+
+prohibited_patterns:
+  - id: PROHIBITED-001
+    description: "Gate 4 pass with path_only (no tests, no corpus)"
+    pattern: "gate_4.status == passed AND gate_4.tests is null AND gate_4.corpus is null"
+
+  - id: PROHIBITED-002
+    description: "Prototype code promoted to src/python/ without Gate 5+ approval"
+    pattern: "prototypes/by-format/{fmt}/ code duplicated into src/python/{fmt}/"
+
+  - id: PROHIBITED-003
+    description: "Supported format with no gate_4 disposition"
+    pattern: "format not in [odf-shared] AND gate_4 key absent from registry"
+
+  - id: PROHIBITED-004
+    description: "Evidence_type field absent from gate_4 block"
+    pattern: "gate_4 block exists AND evidence_type key absent"
+
+# ── Evidence artifact structure ────────────────────────────────────────────────
+
+evidence_artifact_structure:
+  STANDALONE_PROTOTYPE:
+    required_files:
+      - prototypes/by-format/{format}/README.md    # must contain gate4_wrapper manifest block
+      - prototypes/by-format/{format}/{parser}.py  # must NOT be in src/python/
+
+  EVIDENCE_WRAPPER:
+    required_files:
+      - prototypes/by-format/{format}/README.md          # gate4_wrapper manifest
+      - prototypes/by-format/{format}/{format}_gate4_probe.py  # thin adapter only
+      - prototypes/by-format/{format}/gate4-evidence.yaml      # evidence record
+
+  BLOCKED_BEFORE_GATE4:
+    required_files: []  # No prototype allowed
+    required_registry_fields: [reason, blocker, next_gate]
+
+# ── Validation commands ────────────────────────────────────────────────────────
+
+validation_commands:
+  - description: "Run Gate 4 evidence validator for all formats"
+    command: "python tools/gates/validate_gate4_evidence.py"
+
+  - description: "Run Gate 4 contract tests"
+    command: ".venv/Scripts/pytest tests/python/test_gate4_contract.py -q"
+
+  - description: "Run Gate 4 governance tests"
+    command: ".venv/Scripts/pytest tests/python/test_gate4_governance.py -q"
+
+  - description: "Run all Gate 4 skill tests"
+    command: ".venv/Scripts/pytest tests/skills/test_*gate4* -q"
