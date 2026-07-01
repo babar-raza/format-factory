@@ -4,7 +4,7 @@ Parse and write PPM (Portable Pixmap) color image files with Format Factory.
 
 ## Installation
 
-<!-- BEGIN:README-INSTALLATION generated=2026-07-01T12:16:29+00:00 source=package-metadata -->
+<!-- BEGIN:README-INSTALLATION generated=2026-07-01T20:48:07+00:00 source=package-metadata -->
 ```bash
 pip install format-factory-ppm
 ```
@@ -33,13 +33,13 @@ write_ppm(model, "output.ppm")
 
 ## License
 
-<!-- BEGIN:README-LICENSE generated=2026-07-01T12:16:29+00:00 source=package-metadata -->
+<!-- BEGIN:README-LICENSE generated=2026-07-01T20:48:07+00:00 source=package-metadata -->
 Apache-2.0
 <!-- END:README-LICENSE -->
 
 ## Package Info
 
-<!-- BEGIN:README-PACKAGE_INFO generated=2026-07-01T12:16:29+00:00 source=repository-metadata -->
+<!-- BEGIN:README-PACKAGE_INFO generated=2026-07-01T20:48:07+00:00 source=repository-metadata -->
 | Field | Value |
 |---|---|
 | Format | Portable Pixmap (PPM / Netpbm) |
@@ -52,11 +52,11 @@ Apache-2.0
 | Spec | Jef Poskanzer (Netpbm project) Netpbm PPM specification (1988, public domain) |
 | QName coverage | 3/3 implemented |
 | Source files | 16 |
-| Test files | 77 |
+| Test files | 78 |
 <!-- END:README-PACKAGE_INFO -->
 
 ## Public API
 
-<!-- BEGIN:README-PUBLIC_API generated=2026-07-01T12:16:29+00:00 source=src-python-init -->
+<!-- BEGIN:README-PUBLIC_API generated=2026-07-01T20:48:07+00:00 source=src-python-init -->
 - `(dynamic)`
 <!-- END:README-PUBLIC_API -->

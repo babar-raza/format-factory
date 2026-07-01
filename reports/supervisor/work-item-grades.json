@@ -1,12 +1,12 @@
 [
   {
-    "item_id": "CLOSE-ZST-GAPS",
-    "item_title": "Close 4 open ZST gaps (R556 implementation was committed but gaps not closed)",
+    "item_id": "UNBLOCK-PGM-PPM-PDL",
+    "item_title": "Unblock PGM and PPM in product-deepening-ledger (domain models exist)",
     "declared_status": "completed",
     "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
     "evidence_found": true,
     "evidence_paths": [
-      "reports/capability-layer/gap-ledger.json"
+      "registry/product-deepening-ledger.yaml"
     ],
     "tests_supporting": [],
     "tests_missing": [],
@@ -16,69 +16,14 @@
       "Governance item: file-content validated (test coverage N/A by design)"
     ],
     "acceptance_criteria_failed": [
-      "Evidence consists only of a generated JSON report; no test code, execution logs, or verification artifacts are provided.",
-      "The report lists a large number of gaps (total_gaps: 1286) without explicitly highlighting the four ZST gaps that were supposed to be closed.",
-      "There is no indication that the R556 implementation was exercised or that the gaps were validated as closed by tests.",
-      "Scope mismatch: the acceptance criteria target closing four specific gaps, but the evidence shows a generic snapshot of many gaps, making it unclear whether the required ones are addressed.",
-      "Missing concrete verification steps (e.g., pytest output, CI job results) to prove the gaps are truly closed."
+      "Evidence does not include any ledger entries for the PGM or PPM formats, which are the target of the work item.",
+      "No test code, validation results, or verification commands are provided for PGM/PPM, so there is no proof that they have been unblocked.",
+      "The supplied YAML only covers formats abw, csv, and dif, indicating a scope mismatch with the claimed work.",
+      "Absence of domain model artifacts or references that would demonstrate the existence of required models for PGM/PPM."
     ],
     "required_rework": "",
     "can_autonomously_repair": false,
-    "next_prompt_instruction": "Semantic verification downgraded ACCEPTED_VERIFIED -> ACCEPTED_WITH_LIMITATIONS: Evidence consists only of a generated JSON report; no test code, execution logs, or verification artifacts are provided.; The report lists a large number of gaps (total_gaps: 1286) without explicitly highlighting the four ZST gaps that were supposed to be closed.; There is no indication that the R556 implementation was exercised or that the gaps were validated as closed by tests.; Scope mismatch: the acceptance criteria target closing four specific gaps, but the evidence shows a generic snapshot of many gaps, making it unclear whether the required ones are addressed.; Missing concrete verification steps (e.g., pytest output, CI job results) to prove the gaps are truly closed.",
-    "purpose_check": {
-      "item_type": "GOVERNANCE_DOC",
-      "has_gap_ref": null,
-      "verdict": "NOT_APPLICABLE",
-      "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items"
-    },
-    "test_layer_check": {
-      "inadequate": false,
-      "note": "non-product item, skip"
-    },
-    "semantic_verification": {
-      "adequate": false,
-      "confidence": 0.92,
-      "stub_detected": false,
-      "deficiencies": [
-        "Evidence consists only of a generated JSON report; no test code, execution logs, or verification artifacts are provided.",
-        "The report lists a large number of gaps (total_gaps: 1286) without explicitly highlighting the four ZST gaps that were supposed to be closed.",
-        "There is no indication that the R556 implementation was exercised or that the gaps were validated as closed by tests.",
-        "Scope mismatch: the acceptance criteria target closing four specific gaps, but the evidence shows a generic snapshot of many gaps, making it unclear whether the required ones are addressed.",
-        "Missing concrete verification steps (e.g., pytest output, CI job results) to prove the gaps are truly closed."
-      ],
-      "llm_used": true,
-      "_cached_at": "2026-07-01T20:16:57.087914+00:00",
-      "_from_cache": true
-    }
-  },
-  {
-    "item_id": "CLOSE-FODS-ODS-GAPS",
-    "item_title": "Close 4 FODS/ODS gaps (existing test coverage confirmed)",
-    "declared_status": "completed",
-    "supervisor_grade": "REWORK_REQUIRED",
-    "evidence_found": true,
-    "evidence_paths": [
-      "reports/capability-layer/gap-ledger.json",
-      "tests/python/fods/test_fods_dom_d3_traversal.py",
-      "tests/python/ods/test_ods_dom_d2.py"
-    ],
-    "tests_supporting": [
-      "tests/python/fods/test_fods_dom_d3_traversal.py",
-      "tests/python/ods/test_ods_dom_d2.py"
-    ],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths"
-    ],
-    "acceptance_criteria_failed": [],
-    "required_rework": "Stub evidence detected (was ACCEPTED_VERIFIED): ['Test file contains no actual test functions or assertions \u2013 appears to be a stub.', 'Only a single gap entry is shown in the JSON report; the work item requires closing four gaps.', 'The JSON report does not provide evidence that the other three gaps are closed or that test coverage exists for them.', 'The test file is truncated and does not demonstrate execution of any traversal logic.', 'No verification steps (e.g., pytest run output) are included to confirm that tests passed.']",
-    "can_autonomously_repair": true,
-    "next_prompt_instruction": "REWORK: Evidence contains stub code. Provide real tests/evidence for CLOSE-FODS-ODS-GAPS.",
-    "tests_evidence_verified": [
-      "tests/python/fods/test_fods_dom_d3_traversal.py",
-      "tests/python/ods/test_ods_dom_d2.py"
-    ],
+    "next_prompt_instruction": "Semantic verification downgraded ACCEPTED_VERIFIED -> ACCEPTED_WITH_LIMITATIONS: Evidence does not include any ledger entries for the PGM or PPM formats, which are the target of the work item.; No test code, validation results, or verification commands are provided for PGM/PPM, so there is no proof that they have been unblocked.; The supplied YAML only covers formats abw, csv, and dif, indicating a scope mismatch with the claimed work.; Absence of domain model artifacts or references that would demonstrate the existence of required models for PGM/PPM.",
     "purpose_check": {
       "item_type": "GOVERNANCE_DOC",
       "has_gap_ref": null,
@@ -92,33 +37,32 @@
     "semantic_verification": {
       "adequate": false,
       "confidence": 0.95,
-      "stub_detected": true,
+      "stub_detected": false,
       "deficiencies": [
-        "Test file contains no actual test functions or assertions \u2013 appears to be a stub.",
-        "Only a single gap entry is shown in the JSON report; the work item requires closing four gaps.",
-        "The JSON report does not provide evidence that the other three gaps are closed or that test coverage exists for them.",
-        "The test file is truncated and does not demonstrate execution of any traversal logic.",
-        "No verification steps (e.g., pytest run output) are included to confirm that tests passed."
+        "Evidence does not include any ledger entries for the PGM or PPM formats, which are the target of the work item.",
+        "No test code, validation results, or verification commands are provided for PGM/PPM, so there is no proof that they have been unblocked.",
+        "The supplied YAML only covers formats abw, csv, and dif, indicating a scope mismatch with the claimed work.",
+        "Absence of domain model artifacts or references that would demonstrate the existence of required models for PGM/PPM."
       ],
       "llm_used": true,
-      "_cached_at": "2026-07-01T20:17:00.273928+00:00",
+      "_cached_at": "2026-07-01T20:39:56.392888+00:00",
       "_from_cache": true
     }
   },
   {
-    "item_id": "R557-FOSS-PBM-GEOMETRY-PROPS",
-    "item_title": "FOSS-NETPBM: Add geometry properties to PbmDocument (aspect_ratio, is_square, is_landscape, is_portrait)",
+    "item_id": "R558-FOSS-PGM-GEOMETRY-PROPS",
+    "item_title": "FOSS-NETPBM: Add geometry properties to PgmDocument (aspect_ratio, is_square, is_landscape, is_portrait)",
     "declared_status": "completed",
     "supervisor_grade": "ACCEPTED_VERIFIED",
     "evidence_found": true,
     "evidence_paths": [
-      "reports/skills-r1083/skill-transcripts/r557-pbm-geometry-properties.json",
-      "src/python/pbm/models.py",
-      "tests/python/pbm/test_r557_pbm_geometry_properties.py",
+      "reports/skills-r1083/skill-transcripts/r558-pgm-geometry-properties.json",
+      "src/python/pgm/models.py",
+      "tests/python/pgm/test_r558_pgm_geometry_properties.py",
       "reports/r90/product-code-change-ledger.json"
     ],
     "tests_supporting": [
-      "tests/python/pbm/test_r557_pbm_geometry_properties.py"
+      "tests/python/pgm/test_r558_pgm_geometry_properties.py"
     ],
     "tests_missing": [],
     "acceptance_criteria_met": [
@@ -130,19 +74,19 @@
     "can_autonomously_repair": false,
     "next_prompt_instruction": "",
     "tests_evidence_verified": [
-      "tests/python/pbm/test_r557_pbm_geometry_properties.py"
+      "tests/python/pgm/test_r558_pgm_geometry_properties.py"
     ],
     "product_source_check": {
       "source_exists": true,
       "test_content_valid": true,
       "details": [
-        "test content valid: tests/python/pbm/test_r557_pbm_geometry_properties.py"
+        "test content valid: tests/python/pgm/test_r558_pgm_geometry_properties.py"
       ]
     },
     "purpose_check": {
       "item_type": "PRODUCT_SOURCE",
       "has_gap_ref": true,
-      "gap_ref": "GAP-PBM-FOSS-IS_SQUARE-001",
+      "gap_ref": "GAP-PGM-FOSS-IS_SQUARE-001",
       "spec_fact_count": 2,
       "verdict": "PURPOSEFUL",
       "note": ""
@@ -153,14 +97,67 @@
     },
     "semantic_verification": {
       "adequate": true,
-      "confidence": 0.9,
+      "confidence": 0.93,
       "stub_detected": false,
-      "deficiencies": [
-        "No explicit test for zero\u2011height images (aspect_ratio guard).",
-        "Potential lack of a portrait\u2011only sample; if not present, is_portrait may be under\u2011tested."
-      ],
+      "deficiencies": [],
       "llm_used": true,
-      "_cached_at": "2026-07-01T20:17:03.741168+00:00",
+      "_cached_at": "2026-07-01T20:39:58.442276+00:00",
+      "_from_cache": true
+    }
+  },
+  {
+    "item_id": "R558-FOSS-PPM-GEOMETRY-PROPS",
+    "item_title": "FOSS-NETPBM: Add geometry properties to PpmDocument (aspect_ratio, is_square, is_landscape, is_portrait)",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_VERIFIED",
+    "evidence_found": true,
+    "evidence_paths": [
+      "reports/skills-r1083/skill-transcripts/r558-ppm-geometry-properties.json",
+      "src/python/ppm/models.py",
+      "tests/python/ppm/test_r558_ppm_geometry_properties.py",
+      "reports/r90/product-code-change-ledger.json"
+    ],
+    "tests_supporting": [
+      "tests/python/ppm/test_r558_ppm_geometry_properties.py"
+    ],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths"
+    ],
+    "acceptance_criteria_failed": [],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "",
+    "tests_evidence_verified": [
+      "tests/python/ppm/test_r558_ppm_geometry_properties.py"
+    ],
+    "product_source_check": {
+      "source_exists": true,
+      "test_content_valid": true,
+      "details": [
+        "test content valid: tests/python/ppm/test_r558_ppm_geometry_properties.py"
+      ]
+    },
+    "purpose_check": {
+      "item_type": "PRODUCT_SOURCE",
+      "has_gap_ref": true,
+      "gap_ref": "GAP-PPM-FOSS-IS_SQUARE-001",
+      "spec_fact_count": 2,
+      "verdict": "PURPOSEFUL",
+      "note": ""
+    },
+    "test_layer_check": {
+      "inadequate": false,
+      "note": "test_layer not declared or invalid"
+    },
+    "semantic_verification": {
+      "adequate": true,
+      "confidence": 0.93,
+      "stub_detected": false,
+      "deficiencies": [],
+      "llm_used": true,
+      "_cached_at": "2026-07-01T20:40:00.867976+00:00",
       "_from_cache": true
     }
   }

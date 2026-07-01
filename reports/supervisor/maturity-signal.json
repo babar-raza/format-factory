@@ -1,11 +1,11 @@
 {
   "schema": "format-factory-maturity-signal/v1",
   "project_id": "format-factory",
-  "run_id": "r557-pbm-geometry",
-  "timestamp": "2026-07-01T20:22:16.518370+00:00",
-  "sprint_verdict": "ACCEPTED_WITH_REWORK",
+  "run_id": "r558-pgm-ppm-geometry",
+  "timestamp": "2026-07-01T20:52:04.177499+00:00",
+  "sprint_verdict": "ACCEPTED",
   "autonomous_continue": "true_with_rework",
-  "iteration": 11,
+  "iteration": 0,
   "test_results": {
     "total": 0,
     "passed": 0,
@@ -13,21 +13,21 @@
   },
   "work_items": [
     {
-      "id": "CLOSE-ZST-GAPS",
+      "id": "UNBLOCK-PGM-PPM-PDL",
       "grade": "ACCEPTED_WITH_LIMITATIONS",
       "confidence": 0.0,
       "llm_used": false,
       "rework_reason": null
     },
     {
-      "id": "CLOSE-FODS-ODS-GAPS",
-      "grade": "REWORK_REQUIRED",
+      "id": "R558-FOSS-PGM-GEOMETRY-PROPS",
+      "grade": "ACCEPTED_VERIFIED",
       "confidence": 0.0,
       "llm_used": false,
-      "rework_reason": "Stub evidence detected (was ACCEPTED_VERIFIED): ['Test file contains no actual test functions or assertions – appears to be a stub.', 'Only a single gap entry is shown in the JSON report; the work item requires closing four gaps.', 'The JSON report does not provide evidence that the other three gaps are closed or that test coverage exists for them.', 'The test file is truncated and does not demonstrate execution of any traversal logic.', 'No verification steps (e.g., pytest run output) are included to confirm that tests passed.']"
+      "rework_reason": null
     },
     {
-      "id": "R557-FOSS-PBM-GEOMETRY-PROPS",
+      "id": "R558-FOSS-PPM-GEOMETRY-PROPS",
       "grade": "ACCEPTED_VERIFIED",
       "confidence": 0.0,
       "llm_used": false,
@@ -35,7 +35,6 @@
     }
   ],
   "rework_items": [
-    "CLOSE-FODS-ODS-GAPS",
     "LANE_ENFORCEMENT:1_violations"
   ],
   "agentic_maturity_score": 4.4,

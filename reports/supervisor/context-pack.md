@@ -1,22 +1,22 @@
 # Supervisor Context Pack
 # Format Factory — Machine-Readable State Snapshot
-# Generated: 2026-07-02T01:22:14.251007
+# Generated: 2026-07-02T01:52:02.379589
 # ADVISORY ONLY — not a gate approval or authority document
 
 ## Current State
 
 | Item | Value |
 |------|-------|
-| Git HEAD | 5772120a |
+| Git HEAD | d888d93f |
 | Working tree clean | False |
 | Supervisor mode | MODE 4 |
-| Latest sprint | R557 |
-| Sprint ID | r557-pbm-geometry... |
+| Latest sprint | R558 |
+| Sprint ID | r558-pgm-ppm-geometry... |
 | Autonomous continue | False |
-| Iteration | 10/12 |
+| Iteration | 13/12 |
 | MCP status | MCP_CONFIG_PRESENT_MODE4_ACTIVE |
 | Active skills | 117 |
-| Ledger entries | 2421 total (901 governed) |
+| Ledger entries | 2423 total (901 governed) |
 
 ## .NET Test Counts (POC Matrix)
 

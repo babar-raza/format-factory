@@ -1,16 +1,16 @@
 # Work Item Grades
-Sprint: r557-pbm-geometry
-Generated: 2026-07-02T01:19:05.406562
-Global Status: ACCEPTED_WITH_REWORK
+Sprint: r558-pgm-ppm-geometry
+Generated: 2026-07-02T01:48:53.588232
+Global Status: ACCEPTED
 
 | Item ID | Grade | Rework Required |
 |---------|-------|-----------------|
-| CLOSE-ZST-GAPS | ACCEPTED_WITH_LIMITATIONS |  |
-| CLOSE-FODS-ODS-GAPS | REWORK_REQUIRED | Stub evidence detected (was ACCEPTED_VERIFIED): ['Test file contains no actual t |
-| R557-FOSS-PBM-GEOMETRY-PROPS | ACCEPTED_VERIFIED |  |
+| UNBLOCK-PGM-PPM-PDL | ACCEPTED_WITH_LIMITATIONS |  |
+| R558-FOSS-PGM-GEOMETRY-PROPS | ACCEPTED_VERIFIED |  |
+| R558-FOSS-PPM-GEOMETRY-PROPS | ACCEPTED_VERIFIED |  |
 
 ## Summary
-- Accepted: 2
-- Rework: 2
+- Accepted: 3
+- Rework: 1
 - Overclaimed: 0
 - Autonomous Continue: true_with_rework
