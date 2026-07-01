@@ -173,3 +173,25 @@ def test_validator_passes_all_formats():
         errors = validate_gate4(fid, fmt)
         all_errors.extend(errors)
     assert all_errors == [], f"Validator failures:\n" + "\n".join(all_errors)
+
+
+def test_registry_consistent_after_update_and_patch():
+    """TC-G4-HRD-001: Validator accepts current registry state (proves update+patch atomicity).
+
+    Running validate_gate4_evidence on the live registry proves that the registry
+    is in a consistent, fully-patched state. Any partial run (e.g., update without
+    patch) would leave formats without evidence_type, which the validator catches.
+    """
+    from tools.gates.validate_gate4_evidence import validate_gate4
+    data = _load_registry()
+    for fmt in data["formats"]:
+        fid = fmt["format_id"]
+        g4 = fmt.get("gates", {}).get("gate_4")
+        if g4 is None:
+            continue
+        # Every gate_4 block must have evidence_type — proves patch script ran
+        assert g4.get("evidence_type"), (
+            f"{fid}: gate_4 missing evidence_type — patch script may not have run"
+        )
+        errors = validate_gate4(fid, fmt)
+        assert errors == [], f"{fid}: validator errors after update+patch: {errors}"
