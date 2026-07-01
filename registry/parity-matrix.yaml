@@ -1,171 +1,322 @@
-# Python/.NET Feature Parity Matrix
-# Generated: 2026-06-14 (Pre-Product-Acquisition Readiness Recon Sprint)
-# Purpose: Track which Python formats have .NET counterparts and vice versa
-
-version: "1.0"
-generated_by: "pre-product-acquisition-readiness-recon-20260614-915cfd2"
-
-# Format parity status
+version: '1.0'
+generated_by: pre-product-acquisition-readiness-recon-20260614-915cfd2
 formats:
-  # --- Formats with BOTH Python and .NET ---
   csv:
-    python: {exists: true, module: "src/python/csv/"}
-    dotnet: {exists: true, project: "src/net/csv/FormatFactory.Csv.csproj"}
+    python:
+      exists: true
+      module: src/python/csv/
+    dotnet:
+      exists: true
+      project: src/net/csv/FormatFactory.Csv.csproj
     parity: both
-
+    spec_parity_status: VERIFIED
+    qname_implemented: 3
+    qname_total: 3
+    parity_refresh_date: '2026-07-01'
   fods:
-    python: {exists: true, module: "src/python/fods/"}
-    dotnet: {exists: true, project: "src/net/fods/FormatFactory.Fods.csproj"}
+    python:
+      exists: true
+      module: src/python/fods/
+    dotnet:
+      exists: true
+      project: src/net/fods/FormatFactory.Fods.csproj
     parity: both
     spec_parity_status: PARTIAL
     spec_qname_registry_coverage: COMPLETE
     behavioral_parity: PARTIAL
-    spec_parity_evidence: "sal-facts-fods.json (4988 facts, verified). All 12/12 registry qnames have Compat/ facades. TC-SP-002 (2026-06-25): 9 new facades created. 45/45 V53 compliance tests pass. HOWEVER: behavioral parity is PARTIAL — .NET has 23 mutation methods (SetCellValue, InsertRow, DeleteRows, etc.); Python is read-only with CSV export only. TC-SRFA-026 (2026-06-25)."
-    parity_notes: ".NET is full editing suite (23 mutation methods, 6 export formats); Python is read+CSV-export only. spec_qname on classes: Python has ClassVar[str]; .NET is comment-only (TC-SRFA-016)."
-    missing_python: ["set_cell_value", "insert_row", "delete_rows", "merge_cells", "export_to_html", "export_to_json", "export_to_markdown", "load_from_stream"]
-    spec_parity_assessed_at: "2026-06-25"
+    spec_parity_evidence: 'sal-facts-fods.json (4988 facts, verified). All 12/12 registry
+      qnames have Compat/ facades. TC-SP-002 (2026-06-25): 9 new facades created.
+      45/45 V53 compliance tests pass. HOWEVER: behavioral parity is PARTIAL — .NET
+      has 23 mutation methods (SetCellValue, InsertRow, DeleteRows, etc.); Python
+      is read-only with CSV export only. TC-SRFA-026 (2026-06-25).'
+    parity_notes: '.NET is full editing suite (23 mutation methods, 6 export formats);
+      Python is read+CSV-export only. spec_qname on classes: Python has ClassVar[str];
+      .NET is comment-only (TC-SRFA-016).'
+    missing_python:
+    - set_cell_value
+    - insert_row
+    - delete_rows
+    - merge_cells
+    - export_to_html
+    - export_to_json
+    - export_to_markdown
+    - load_from_stream
+    spec_parity_assessed_at: '2026-06-25'
     spec_parity_blocks_gate11: false
-    unblock_condition: "TC-SRFA-024 (mutation API) + TC-SRFA-025 (export parity) must be resolved for behavioral COMPLETE"
-
+    unblock_condition: TC-SRFA-024 (mutation API) + TC-SRFA-025 (export parity) must
+      be resolved for behavioral COMPLETE
   fodt:
-    python: {exists: true, module: "src/python/fodt/"}
-    dotnet: {exists: true, project: "src/net/fodt/FormatFactory.Fodt.csproj"}
+    python:
+      exists: true
+      module: src/python/fodt/
+    dotnet:
+      exists: true
+      project: src/net/fodt/FormatFactory.Fodt.csproj
     parity: both
     spec_parity_status: VERIFIED
-    spec_parity_evidence: "TC-SP-004+005 (2026-06-25): SAL cache repaired (4936 FODT facts from workbench). All 8 behavioral qnames (text:p, text:h, text:span, text:list, text:list-item, table:table, table:table-row, table:table-cell) have Compat/ facades. office:body is .NET-only (intentional). 40/40 V53 compliance tests pass."
-    spec_parity_assessed_at: "2026-06-25"
+    spec_parity_evidence: 'TC-SP-004+005 (2026-06-25): SAL cache repaired (4936 FODT
+      facts from workbench). All 8 behavioral qnames (text:p, text:h, text:span, text:list,
+      text:list-item, table:table, table:table-row, table:table-cell) have Compat/
+      facades. office:body is .NET-only (intentional). 40/40 V53 compliance tests
+      pass.'
+    spec_parity_assessed_at: '2026-06-25'
     spec_parity_blocks_gate11: false
     unblock_condition: null
-
   ndjson:
-    python: {exists: true, module: "src/python/ndjson/"}
-    dotnet: {exists: true, project: "src/net/ndjson/FormatFactory.Ndjson.csproj"}
+    python:
+      exists: true
+      module: src/python/ndjson/
+    dotnet:
+      exists: true
+      project: src/net/ndjson/FormatFactory.Ndjson.csproj
     parity: both
-
+    spec_parity_status: VERIFIED
+    qname_implemented: 2
+    qname_total: 2
+    parity_refresh_date: '2026-07-01'
   tsv:
-    python: {exists: true, module: "src/python/tsv/"}
-    dotnet: {exists: true, project: "src/net/tsv/FormatFactory.Tsv.csproj"}
+    python:
+      exists: true
+      module: src/python/tsv/
+    dotnet:
+      exists: true
+      project: src/net/tsv/FormatFactory.Tsv.csproj
     parity: both
-
-  # --- Formats with .NET ONLY ---
+    spec_parity_status: VERIFIED
+    qname_implemented: 3
+    qname_total: 3
+    parity_refresh_date: '2026-07-01'
   html:
-    python: {exists: false}
-    dotnet: {exists: true, project: "src/net/html/FormatFactory.Html.csproj"}
+    python:
+      exists: false
+    dotnet:
+      exists: true
+      project: src/net/html/FormatFactory.Html.csproj
     parity: dotnet_only
     classification: export_helper_only
     standalone_product: false
-    classification_note: "Output-only export target. Not a parseable input format. Used internally by FODS/FODT/NetPBM exporters. Not intended as a standalone product format."
-
+    classification_note: Output-only export target. Not a parseable input format.
+      Used internally by FODS/FODT/NetPBM exporters. Not intended as a standalone
+      product format.
+    spec_parity_status: NO_REGISTRY
+    parity_refresh_date: '2026-07-01'
   markdown:
-    python: {exists: false}
-    dotnet: {exists: true, project: "src/net/markdown/FormatFactory.Markdown.csproj"}
+    python:
+      exists: false
+    dotnet:
+      exists: true
+      project: src/net/markdown/FormatFactory.Markdown.csproj
     parity: dotnet_only
     classification: export_helper_only
     standalone_product: false
-    classification_note: "Output-only export target. Not a parseable input format. Used internally by FODT/FODS exporters to produce Markdown renditions."
-
+    classification_note: Output-only export target. Not a parseable input format.
+      Used internally by FODT/FODS exporters to produce Markdown renditions.
+    spec_parity_status: NO_REGISTRY
+    parity_refresh_date: '2026-07-01'
   txt:
-    python: {exists: false}
-    dotnet: {exists: true, project: "src/net/txt/FormatFactory.Txt.csproj"}
+    python:
+      exists: false
+    dotnet:
+      exists: true
+      project: src/net/txt/FormatFactory.Txt.csproj
     parity: dotnet_only
     classification: export_helper_only
     standalone_product: false
-    classification_note: "Output-only export target. Plain text extraction helper used by FODT/FODS/NetPBM exporters. Not a standalone parseable format."
-
+    classification_note: Output-only export target. Plain text extraction helper used
+      by FODT/FODS/NetPBM exporters. Not a standalone parseable format.
+    spec_parity_status: NO_REGISTRY
+    parity_refresh_date: '2026-07-01'
   netpbm:
-    python: {exists: true, module: "src/python/pbm/ + src/python/pgm/ + src/python/ppm/", note: "Split into PBM/PGM/PPM"}
-    dotnet: {exists: true, project: "src/net/netpbm/FormatFactory.Netpbm.csproj"}
+    python:
+      exists: true
+      module: src/python/pbm/ + src/python/pgm/ + src/python/ppm/
+      note: Split into PBM/PGM/PPM
+    dotnet:
+      exists: true
+      project: src/net/netpbm/FormatFactory.Netpbm.csproj
     parity: both_different_structure
-
-  # --- Formats with Python ONLY ---
+    spec_parity_status: NO_REGISTRY
+    parity_refresh_date: '2026-07-01'
   abw:
-    python: {exists: true, module: "src/python/abw/"}
-    dotnet: {exists: false}
+    python:
+      exists: true
+      module: src/python/abw/
+    dotnet:
+      exists: false
     parity: python_only
-    decision: "FOSS Python only"
-
+    decision: FOSS Python only
+    spec_parity_status: ARCHITECTURE_ONLY
+    qname_implemented: 0
+    qname_total: 3
+    parity_refresh_date: '2026-07-01'
   dif:
-    python: {exists: true, module: "src/python/dif/"}
-    dotnet: {exists: false}
+    python:
+      exists: true
+      module: src/python/dif/
+    dotnet:
+      exists: false
     parity: python_only
-    decision: "FOSS Python only"
-
+    decision: FOSS Python only
+    spec_parity_status: VERIFIED
+    qname_implemented: 6
+    qname_total: 6
+    parity_refresh_date: '2026-07-01'
   fodg:
-    python: {exists: true, module: "src/python/fodg/"}
-    dotnet: {exists: false}
+    python:
+      exists: true
+      module: src/python/fodg/
+    dotnet:
+      exists: false
     parity: python_only
-
+    spec_parity_status: VERIFIED
+    qname_implemented: 3
+    qname_total: 3
+    parity_refresh_date: '2026-07-01'
   fodp:
-    python: {exists: true, module: "src/python/fodp/"}
-    dotnet: {exists: false}
+    python:
+      exists: true
+      module: src/python/fodp/
+    dotnet:
+      exists: false
     parity: python_only
-
+    spec_parity_status: VERIFIED
+    qname_implemented: 3
+    qname_total: 3
+    parity_refresh_date: '2026-07-01'
   gnumeric:
-    python: {exists: true, module: "src/python/gnumeric/"}
-    dotnet: {exists: false}
+    python:
+      exists: true
+      module: src/python/gnumeric/
+    dotnet:
+      exists: false
     parity: python_only
-    decision: "FOSS Python only"
-    analytics_naming_compliant: true  # workbook_document.py renamed → gnumeric_analytics.py (PROD-GOVERNANCE-001)
-
+    decision: FOSS Python only
+    analytics_naming_compliant: true
+    spec_parity_status: VERIFIED
+    qname_implemented: 3
+    qname_total: 3
+    parity_refresh_date: '2026-07-01'
   ods:
-    python: {exists: true, module: "src/python/ods/"}
-    dotnet: {exists: false}
+    python:
+      exists: true
+      module: src/python/ods/
+    dotnet:
+      exists: false
     parity: python_only
-
+    spec_parity_status: VERIFIED
+    qname_implemented: 4
+    qname_total: 4
+    parity_refresh_date: '2026-07-01'
   odt:
-    python: {exists: true, module: "src/python/odt/"}
-    dotnet: {exists: false}
+    python:
+      exists: true
+      module: src/python/odt/
+    dotnet:
+      exists: false
     parity: python_only
-
+    spec_parity_status: VERIFIED
+    qname_implemented: 3
+    qname_total: 3
+    parity_refresh_date: '2026-07-01'
   qoi:
-    python: {exists: true, module: "src/python/qoi/"}
-    dotnet: {exists: false}
+    python:
+      exists: true
+      module: src/python/qoi/
+    dotnet:
+      exists: false
     parity: python_only
-    decision: "FOSS Python only"
-
+    decision: FOSS Python only
+    spec_parity_status: VERIFIED
+    qname_implemented: 3
+    qname_total: 3
+    parity_refresh_date: '2026-07-01'
   sylk:
-    python: {exists: true, module: "src/python/sylk/"}
-    dotnet: {exists: false}
+    python:
+      exists: true
+      module: src/python/sylk/
+    dotnet:
+      exists: false
     parity: python_only
-    decision: "FOSS Python only"
-
+    decision: FOSS Python only
+    spec_parity_status: VERIFIED
+    qname_implemented: 4
+    qname_total: 4
+    parity_refresh_date: '2026-07-01'
   toml:
-    python: {exists: true, module: "src/python/toml/"}
-    dotnet: {exists: false}
+    python:
+      exists: true
+      module: src/python/toml/
+    dotnet:
+      exists: false
     parity: python_only
-    analytics_naming_compliant: true  # config_document.py renamed → toml_analytics.py (PROD-GOVERNANCE-001)
-
+    analytics_naming_compliant: true
+    spec_parity_status: VERIFIED
+    qname_implemented: 3
+    qname_total: 3
+    parity_refresh_date: '2026-07-01'
   xcf:
-    python: {exists: true, module: "src/python/xcf/"}
-    dotnet: {exists: false}
+    python:
+      exists: true
+      module: src/python/xcf/
+    dotnet:
+      exists: false
     parity: python_only
-    decision: "FOSS Python only"
-
+    decision: FOSS Python only
+    spec_parity_status: VERIFIED
+    qname_implemented: 4
+    qname_total: 4
+    parity_refresh_date: '2026-07-01'
   zst:
-    python: {exists: true, module: "src/python/zst/"}
-    dotnet: {exists: false}
+    python:
+      exists: true
+      module: src/python/zst/
+    dotnet:
+      exists: false
     parity: python_only
-    decision: "Python-only FOSS — .NET intentionally absent"
-
+    decision: Python-only FOSS — .NET intentionally absent
+    spec_parity_status: VERIFIED
+    qname_implemented: 3
+    qname_total: 3
+    parity_refresh_date: '2026-07-01'
   pbm:
-    python: {exists: true, module: "src/python/pbm/"}
-    dotnet: {exists: false, note: "Covered by netpbm .NET project"}
+    python:
+      exists: true
+      module: src/python/pbm/
+    dotnet:
+      exists: false
+      note: Covered by netpbm .NET project
     parity: python_only_dotnet_grouped
-
+    spec_parity_status: VERIFIED
+    qname_implemented: 3
+    qname_total: 3
+    parity_refresh_date: '2026-07-01'
   pgm:
-    python: {exists: true, module: "src/python/pgm/"}
-    dotnet: {exists: false, note: "Covered by netpbm .NET project"}
+    python:
+      exists: true
+      module: src/python/pgm/
+    dotnet:
+      exists: false
+      note: Covered by netpbm .NET project
     parity: python_only_dotnet_grouped
-
+    spec_parity_status: VERIFIED
+    qname_implemented: 3
+    qname_total: 3
+    parity_refresh_date: '2026-07-01'
   ppm:
-    python: {exists: true, module: "src/python/ppm/"}
-    dotnet: {exists: false, note: "Covered by netpbm .NET project"}
+    python:
+      exists: true
+      module: src/python/ppm/
+    dotnet:
+      exists: false
+      note: Covered by netpbm .NET project
     parity: python_only_dotnet_grouped
-
-# Summary
+    spec_parity_status: VERIFIED
+    qname_implemented: 3
+    qname_total: 3
+    parity_refresh_date: '2026-07-01'
 summary:
-  both_python_and_dotnet: 5  # csv, fods, fodt, ndjson, tsv
-  both_different_structure: 1  # netpbm (pbm+pgm+ppm in Python)
-  dotnet_only: 3  # html, markdown, txt
-  python_only: 14  # abw, dif, fodg, fodp, gnumeric, ods, odt, qoi, sylk, toml, xcf, zst, pbm, pgm, ppm (minus grouped)
-  intentionally_absent_dotnet: 5  # zst, abw, dif, sylk, qoi (FOSS-only decision)
+  both_python_and_dotnet: 5
+  both_different_structure: 1
+  dotnet_only: 3
+  python_only: 14
+  intentionally_absent_dotnet: 5
