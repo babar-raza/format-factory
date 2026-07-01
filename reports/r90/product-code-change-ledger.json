@@ -34717,9 +34717,36 @@
       "description": "FodtR443GetIndexMarkCountDedicatedTests: 9 tests for FodtDocument.GetIndexMarkCount \u2014 new non-negative, counts unchanged, idempotent, is int, dogfood paragraphs/mixed/loop",
       "file_path": "tests/net/fodt/FodtR443GetIndexMarkCountDedicatedTests.cs",
       "timestamp": "2026-07-01T22:00:00Z"
+    },
+    {
+      "entry_id": "PC-NETPBM-R438",
+      "sprint_id": "ff-sprint-s420-dotnet-deepening-20260701",
+      "format": "NETPBM",
+      "change_type": "test_added",
+      "description": "NetpbmR438GetMedianPixelValueDedicatedTests: 11 tests for NetpbmImage.GetMedianPixelValue \u2014 non-negative, within MaxValue, dims/format/MaxValue unchanged, idempotent, PBM/PGM/PPM, dogfood 4x4 PGM",
+      "file_path": "tests/net/netpbm/NetpbmR438GetMedianPixelValueDedicatedTests.cs",
+      "timestamp": "2026-07-01T22:30:00Z"
+    },
+    {
+      "entry_id": "PC-FODS-R469",
+      "sprint_id": "ff-sprint-s420-dotnet-deepening-20260701",
+      "format": "FODS",
+      "change_type": "test_added",
+      "description": "FodsR469GetSheetProtectionPasswordDedicatedTests: 10 tests for FodsDocument.GetSheetProtectionPassword \u2014 guard throws, valid non-null, SheetCount unchanged, idempotent, is string, SetPassword+Get, dogfood default/multiple",
+      "file_path": "tests/net/fods/FodsR469GetSheetProtectionPasswordDedicatedTests.cs",
+      "timestamp": "2026-07-01T22:30:00Z"
+    },
+    {
+      "entry_id": "PC-FODT-R444",
+      "sprint_id": "ff-sprint-s420-dotnet-deepening-20260701",
+      "format": "FODT",
+      "change_type": "test_added",
+      "description": "FodtR444GetTableOfContentsCountDedicatedTests: 9 tests for FodtDocument.GetTableOfContentsCount \u2014 new non-negative, counts unchanged, idempotent, is int, dogfood paragraphs/mixed/loop",
+      "file_path": "tests/net/fodt/FodtR444GetTableOfContentsCountDedicatedTests.cs",
+      "timestamp": "2026-07-01T22:30:00Z"
     }
   ],
-  "total_entries": 2086,
+  "total_entries": 2089,
   "changes": [
     {
       "file": "src/python/dif/models.py",
