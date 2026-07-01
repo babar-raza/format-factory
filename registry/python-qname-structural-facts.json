@@ -6,8 +6,8 @@
       "fact_id": "FACT-CSV-001",
       "qname": "csv:record",
       "format": "csv",
-      "authority": "RFC 4180 §2.1",
-      "claim": "A record consists of one or more fields, separated by commas (RFC 4180 §2.1)",
+      "authority": "RFC 4180 \u00c2\u00a72.1",
+      "claim": "A record consists of one or more fields, separated by commas (RFC 4180 \u00c2\u00a72.1)",
       "approved_date": "2026-06-22",
       "approved_by": "indexed-crafting-peacock-plan"
     },
@@ -15,8 +15,8 @@
       "fact_id": "FACT-CSV-002",
       "qname": "csv:field",
       "format": "csv",
-      "authority": "RFC 4180 §2.4",
-      "claim": "Each record contains the same number of fields; fields may or may not be contained within double quotes (RFC 4180 §2.4)",
+      "authority": "RFC 4180 \u00c2\u00a72.4",
+      "claim": "Each record contains the same number of fields; fields may or may not be contained within double quotes (RFC 4180 \u00c2\u00a72.4)",
       "approved_date": "2026-06-22",
       "approved_by": "indexed-crafting-peacock-plan"
     },
@@ -231,7 +231,7 @@
       "fact_id": "FACT-ZST-002",
       "qname": "zst:block",
       "format": "zst",
-      "authority": "Zstandard frame format specification (RFC 8878 §3.1.1.2)",
+      "authority": "Zstandard frame format specification (RFC 8878 \u00c2\u00a73.1.1.2)",
       "claim": "A Zstandard block has a 3-byte header encoding Last_Block, Block_Type, and Block_Size",
       "approved_date": "2026-06-22",
       "approved_by": "indexed-crafting-peacock-plan"
@@ -262,6 +262,60 @@
       "claim": "A gnm:Cell element represents a single cell with row, column, and optional type/value attributes",
       "approved_date": "2026-06-22",
       "approved_by": "indexed-crafting-peacock-plan"
+    },
+    {
+      "fact_id": "FACT-ODT-001",
+      "qname": "office:document",
+      "format": "odt",
+      "authority": "ODF 1.3 Specification (ISO/IEC 26300-1:2021) \u00a73.1",
+      "claim": "An ODT document is an XML element office:document containing text:p (paragraph) and text:h (heading) elements within the document body",
+      "approved_date": "2026-07-02",
+      "approved_by": "r567-odt-fodg-fodp-20260702"
+    },
+    {
+      "fact_id": "FACT-FODG-001",
+      "qname": "office:document",
+      "format": "fodg",
+      "authority": "ODF 1.3 Specification (ISO/IEC 26300-1:2021) \u00a79 \u2014 Drawing Documents",
+      "claim": "A FODG flat drawing document is a single XML file rooted at office:document containing draw:page elements with draw:custom-shape children",
+      "approved_date": "2026-07-02",
+      "approved_by": "r567-odt-fodg-fodp-20260702"
+    },
+    {
+      "fact_id": "FACT-FODP-001",
+      "qname": "office:document",
+      "format": "fodp",
+      "authority": "ODF 1.3 Specification (ISO/IEC 26300-1:2021) \u00a710 \u2014 Presentation Documents",
+      "claim": "A FODP flat presentation document is a single XML file rooted at office:document containing draw:page slide elements with presentation shapes",
+      "approved_date": "2026-07-02",
+      "approved_by": "r567-odt-fodg-fodp-20260702"
+    },
+    {
+      "fact_id": "FACT-ABW-001",
+      "qname": "abiword:document",
+      "format": "abw",
+      "authority": "AbiWord document format specification (AbiWord 2.x DTD)",
+      "claim": "An AbiWord document is an XML file with root element abiword:document containing section and paragraph elements",
+      "approved_date": "2026-07-02",
+      "approved_by": "r567-odt-fodg-fodp-20260702"
+    },
+    {
+      "fact_id": "FACT-ODS-001",
+      "qname": "office:document",
+      "format": "ods",
+      "authority": "ODF 1.3 Specification (ISO/IEC 26300-1:2021) \u00a77 \u2014 Spreadsheet Documents",
+      "claim": "An ODS document is an XML-based spreadsheet rooted at office:document containing table:table sheet elements",
+      "approved_date": "2026-07-02",
+      "approved_by": "r567-odt-fodg-fodp-20260702"
+    },
+    {
+      "fact_id": "FACT-ODS-002",
+      "qname": "table:table",
+      "format": "ods",
+      "authority": "ODF 1.3 Specification (ISO/IEC 26300-1:2021) \u00a79.1.2",
+      "claim": "An ODS sheet is a table:table element containing table:table-row elements each containing table:table-cell elements",
+      "approved_date": "2026-07-02",
+      "approved_by": "r567-odt-fodg-fodp-20260702"
     }
   ]
 }
