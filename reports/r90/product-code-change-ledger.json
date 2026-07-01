@@ -34879,9 +34879,36 @@
       "description": "FodtR449GetSpellCheckErrorCountDedicatedTests: 9 tests for FodtDocument.GetSpellCheckErrorCount \u2014 new non-negative, counts unchanged, idempotent, is int, dogfood paragraphs/mixed/loop",
       "file_path": "tests/net/fodt/FodtR449GetSpellCheckErrorCountDedicatedTests.cs",
       "timestamp": "2026-07-02T01:00:00Z"
+    },
+    {
+      "entry_id": "PC-NETPBM-R444",
+      "sprint_id": "ff-sprint-s426-dotnet-deepening-20260701",
+      "format": "NETPBM",
+      "change_type": "test_added",
+      "description": "NetpbmR444GetLuminanceDedicatedTests: 11 tests for NetpbmImage.GetLuminance \u2014 non-negative, dims/format/MaxValue unchanged, idempotent, PBM/PGM/PPM, dogfood 4x4 PGM/PPM",
+      "file_path": "tests/net/netpbm/NetpbmR444GetLuminanceDedicatedTests.cs",
+      "timestamp": "2026-07-02T01:30:00Z"
+    },
+    {
+      "entry_id": "PC-FODS-R475",
+      "sprint_id": "ff-sprint-s426-dotnet-deepening-20260701",
+      "format": "FODS",
+      "change_type": "test_added",
+      "description": "FodsR475GetCellMergeSpanDedicatedTests: 11 tests for FodsDocument.GetCellMergeSpan \u2014 guard throws, valid positive, SheetCount unchanged, idempotent, is int, SetMergeSpan+Get, dogfood default/multiple",
+      "file_path": "tests/net/fods/FodsR475GetCellMergeSpanDedicatedTests.cs",
+      "timestamp": "2026-07-02T01:30:00Z"
+    },
+    {
+      "entry_id": "PC-FODT-R450",
+      "sprint_id": "ff-sprint-s426-dotnet-deepening-20260701",
+      "format": "FODT",
+      "change_type": "test_added",
+      "description": "FodtR450GetShapeCountDedicatedTests: 9 tests for FodtDocument.GetShapeCount \u2014 new non-negative, counts unchanged, idempotent, is int, dogfood paragraphs/mixed/loop",
+      "file_path": "tests/net/fodt/FodtR450GetShapeCountDedicatedTests.cs",
+      "timestamp": "2026-07-02T01:30:00Z"
     }
   ],
-  "total_entries": 2104,
+  "total_entries": 2107,
   "changes": [
     {
       "file": "src/python/dif/models.py",
