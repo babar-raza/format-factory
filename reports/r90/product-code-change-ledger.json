@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s404-dotnet-deepening-20260701",
+  "latest_sprint": "ff-sprint-s405-dotnet-deepening-20260701",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -34240,9 +34240,45 @@
         "tests/net/fodt/FodtR428GetChangeTrackingCountDedicatedTests.cs"
       ],
       "test_count": 9
+    },
+    {
+      "entry_id": "PC-NETPBM-R423",
+      "sprint": "ff-sprint-s405-dotnet-deepening-20260701",
+      "classification": "TEST_COVERAGE",
+      "format": "NETPBM",
+      "capability": "GetPixelIntensity",
+      "description": "Dedicated tests for NetpbmImage.GetPixelIntensity: neg x/y and OOR x/y throws; valid non-negative; within MaxValue; dims/format unchanged; idempotent; dogfood 4x4 PGM corner non-negative.",
+      "source_files": [
+        "tests/net/netpbm/NetpbmR423GetPixelIntensityDedicatedTests.cs"
+      ],
+      "test_count": 11
+    },
+    {
+      "entry_id": "PC-FODS-R454",
+      "sprint": "ff-sprint-s405-dotnet-deepening-20260701",
+      "classification": "TEST_COVERAGE",
+      "format": "FODS",
+      "capability": "GetSheetZoomLevel",
+      "description": "Dedicated tests for FodsDocument.GetSheetZoomLevel: null/whitespace/nonexistent throws; valid positive; SheetCount unchanged; idempotent; is int; SetZoomLevel+Get round-trip; dogfood default/multiple sheets.",
+      "source_files": [
+        "tests/net/fods/FodsR454GetSheetZoomLevelDedicatedTests.cs"
+      ],
+      "test_count": 9
+    },
+    {
+      "entry_id": "PC-FODT-R429",
+      "sprint": "ff-sprint-s405-dotnet-deepening-20260701",
+      "classification": "TEST_COVERAGE",
+      "format": "FODT",
+      "capability": "GetStyleNameCount",
+      "description": "Dedicated tests for FodtDocument.GetStyleNameCount: new non-negative, ParagraphCount/TableCount unchanged, idempotent, is int, dogfood after paragraphs/mixed content/loop all non-negative.",
+      "source_files": [
+        "tests/net/fodt/FodtR429GetStyleNameCountDedicatedTests.cs"
+      ],
+      "test_count": 9
     }
   ],
-  "total_entries": 2041,
+  "total_entries": 2044,
   "changes": [
     {
       "file": "src/python/dif/models.py",
