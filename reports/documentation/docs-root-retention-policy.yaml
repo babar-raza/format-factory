@@ -1,0 +1,117 @@
+mission_id: DOCS-REORG-001
+generated_at: "2026-07-01"
+version: "1.0"
+authority: documentation-structure-migration capability (TC-DOCS-003)
+
+# Root Retention Policy
+# A document may remain directly under docs/ only when one of these
+# retention_reasons is proven. "Many references" alone is NOT sufficient.
+
+valid_retention_reasons:
+  - id: canonical_entry_point
+    description: The primary entry point for all project documentation navigation
+    applies_to: [README.md]
+
+  - id: repository_wide_navigation_index
+    description: Cross-cutting navigation document read by all agents as a first step
+    applies_to: [agent-methodology-index.md]
+
+  - id: cross_cutting_policy_root_convention
+    description: >
+      Cross-cutting policy document whose established convention and reference
+      patterns require root placement. High reference count alone is not sufficient —
+      the document must genuinely span ALL tracks/layers without a natural topical home.
+    applies_to: [gates.md]
+    notes: >
+      security.md does NOT qualify here — it belongs in docs/governance/ with a
+      compatibility stub. gates.md qualifies because it is literally the authority
+      for ALL 11 acquisition gates across FOSS/commercial/spec tracks.
+
+  - id: validator_enforced_root_location
+    description: >
+      Path is hardcoded in tools/governance/check_methodology_links.py and moving
+      the file would require updating the validator. The validator is an operational
+      gate — changing its paths is a separate governed task. Documents in this
+      category remain at root until the validator is updated.
+    applies_to:
+      - agent-methodology-index.md
+      - planning-methodology.md
+      - agent-execution-handoff-standard.md
+      - plan-hardening-checklist.md
+      - fresh-chat-continuity-brief.md
+    enforced_by: tools/governance/check_methodology_links.py
+
+  - id: mandatory_agent_pre_read
+    description: >
+      Document is explicitly referenced in CLAUDE.md or AGENTS.md as a mandatory
+      pre-read that MUST be completed before any work in the session begins.
+      Changing the path requires coordinated updates to both CLAUDE.md and AGENTS.md.
+    applies_to: [spec-to-feature-correction-plan-summary.md]
+    references:
+      - file: CLAUDE.md
+        line: 160
+        text: "Quick reference: docs/spec-to-feature-correction-plan-summary.md"
+
+retained_files:
+  - filename: README.md
+    retention_reason: canonical_entry_point
+    validation: "File is the docs/ directory entry point referenced by root README.md"
+
+  - filename: agent-methodology-index.md
+    retention_reason: validator_enforced_root_location
+    validation: "Hardcoded in check_methodology_links.py REQUIRED_FILES list"
+
+  - filename: planning-methodology.md
+    retention_reason: validator_enforced_root_location
+    validation: "Hardcoded in check_methodology_links.py cross-link assertions"
+
+  - filename: agent-execution-handoff-standard.md
+    retention_reason: validator_enforced_root_location
+    validation: "Hardcoded in check_methodology_links.py cross-link assertions"
+
+  - filename: plan-hardening-checklist.md
+    retention_reason: validator_enforced_root_location
+    validation: "Hardcoded in check_methodology_links.py cross-link assertions"
+
+  - filename: fresh-chat-continuity-brief.md
+    retention_reason: validator_enforced_root_location
+    validation: "Hardcoded in check_methodology_links.py REQUIRED_FILES list"
+
+  - filename: gates.md
+    retention_reason: cross_cutting_policy_root_convention
+    validation: >
+      829 estimated references; single source of truth for all 11 acquisition gates
+      spanning FOSS/commercial/spec tracks. Genuinely cross-cutting with no natural
+      topical subfolder home (docs/governance/ would be misleading — gates govern
+      ALL documentation layers, not just governance artifacts).
+
+  - filename: spec-to-feature-correction-plan-summary.md
+    retention_reason: mandatory_agent_pre_read
+    validation: "Explicitly listed in CLAUDE.md line 160 as mandatory quick-reference"
+
+invalid_retention_justifications:
+  - justification: "Many references exist"
+    verdict: INVALID
+    reason: >
+      Reference count is not a retention criterion. Files with high reference counts
+      (security.md, release-control.md, acquisition-workflow.md) are MOVABLE and
+      use compatibility stubs to handle reference migration gracefully.
+
+  - justification: "It has always been there"
+    verdict: INVALID
+    reason: Historical placement without a documented governance reason is not sufficient.
+
+  - justification: "Moving would require updating many files"
+    verdict: INVALID
+    reason: >
+      Reference updates are the work of the migration — they are not a blocker.
+      TEMPORARY_COMPATIBILITY_STUB strategy handles high-reference moves safely.
+
+policy_statement: >
+  All docs/ root files without a valid retention_reason from the list above MUST be
+  moved to a canonical topical subfolder. New files created directly under docs/ after
+  this reorganization must be registered and justified against this policy.
+  Validation: tools/governance/check_docs_placement.py --full
+
+counters:
+  ROOT_DOCS_WITHOUT_VALID_RETENTION_REASON: 0

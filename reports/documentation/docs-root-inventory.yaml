@@ -1,0 +1,1189 @@
+mission_id: DOCS-REORG-001
+generated_at: "2026-07-01"
+total_root_files: 70
+retained_at_root: 8
+movable: 62
+unclassified: 0
+
+# Classification: UNCLASSIFIED_DOCS_ROOT_FILES = 0
+
+docs_root_documents:
+
+# ============================================================
+# RETAINED AT ROOT (8 files)
+# ============================================================
+
+- document_id: DOC-ROOT-001
+  current_path: docs/README.md
+  title: Documentation Index
+  purpose: Entry point and navigation index for all project documentation
+  primary_topic: navigation
+  document_type: entry_point
+  authority_level: canonical
+  remain_at_root: true
+  root_retention_reason: canonical_entry_point
+  recommended_destination: docs/README.md
+  active: true
+  generated: false
+  historical: false
+  migration_risk: N/A
+
+- document_id: DOC-ROOT-002
+  current_path: docs/agent-methodology-index.md
+  title: Agent Methodology Index
+  purpose: Local planning and execution entry point for agents and fresh chat sessions
+  primary_topic: agent_methodology
+  document_type: entry_point
+  authority_level: canonical
+  remain_at_root: true
+  root_retention_reason: validator_enforced_root_location
+  recommended_destination: docs/agent-methodology-index.md
+  active: true
+  generated: false
+  historical: false
+  migration_risk: N/A
+  enforced_by: tools/governance/check_methodology_links.py
+
+- document_id: DOC-ROOT-003
+  current_path: docs/planning-methodology.md
+  title: Planning Methodology
+  purpose: Methodology for plan creation, structure, and execution governance
+  primary_topic: planning
+  document_type: governance_policy
+  authority_level: canonical
+  remain_at_root: true
+  root_retention_reason: validator_enforced_root_location
+  recommended_destination: docs/planning-methodology.md
+  active: true
+  generated: false
+  historical: false
+  migration_risk: N/A
+  enforced_by: tools/governance/check_methodology_links.py
+
+- document_id: DOC-ROOT-004
+  current_path: docs/agent-execution-handoff-standard.md
+  title: Agent Execution Handoff Standard
+  purpose: Contract defining agent execution handoff in task transitions
+  primary_topic: agent_methodology
+  document_type: governance_policy
+  authority_level: canonical
+  remain_at_root: true
+  root_retention_reason: validator_enforced_root_location
+  recommended_destination: docs/agent-execution-handoff-standard.md
+  active: true
+  generated: false
+  historical: false
+  migration_risk: N/A
+  enforced_by: tools/governance/check_methodology_links.py
+
+- document_id: DOC-ROOT-005
+  current_path: docs/plan-hardening-checklist.md
+  title: Plan Hardening Checklist
+  purpose: Checklist for hardening plans before execution authorization
+  primary_topic: planning
+  document_type: governance_policy
+  authority_level: canonical
+  remain_at_root: true
+  root_retention_reason: validator_enforced_root_location
+  recommended_destination: docs/plan-hardening-checklist.md
+  active: true
+  generated: false
+  historical: false
+  migration_risk: N/A
+  enforced_by: tools/governance/check_methodology_links.py
+
+- document_id: DOC-ROOT-006
+  current_path: docs/fresh-chat-continuity-brief.md
+  title: Fresh Chat Continuity Brief
+  purpose: Continuity guide for fresh chat sessions resuming autonomous work
+  primary_topic: agent_methodology
+  document_type: entry_point
+  authority_level: canonical
+  remain_at_root: true
+  root_retention_reason: validator_enforced_root_location
+  recommended_destination: docs/fresh-chat-continuity-brief.md
+  active: true
+  generated: false
+  historical: false
+  migration_risk: N/A
+  enforced_by: tools/governance/check_methodology_links.py
+
+- document_id: DOC-ROOT-007
+  current_path: docs/gates.md
+  title: Acquisition Gates
+  purpose: Definition of all 11 acquisition gates — pass criteria, required artifacts, authorization rules
+  primary_topic: gates_acquisition
+  document_type: cross_cutting_policy
+  authority_level: canonical
+  remain_at_root: true
+  root_retention_reason: cross_cutting_policy_root_convention
+  recommended_destination: docs/gates.md
+  active: true
+  generated: false
+  historical: false
+  migration_risk: N/A
+  note: 829 estimated raw references — single source of truth for gate definitions
+
+- document_id: DOC-ROOT-008
+  current_path: docs/spec-to-feature-correction-plan-summary.md
+  title: Spec-to-Feature Correction Plan Summary
+  purpose: Executive summary of spec-to-feature radical correction plan
+  primary_topic: strategic_planning
+  document_type: cross_cutting_policy
+  authority_level: mandatory_pre_read
+  remain_at_root: true
+  root_retention_reason: mandatory_agent_pre_read
+  recommended_destination: docs/spec-to-feature-correction-plan-summary.md
+  active: true
+  generated: false
+  historical: false
+  migration_risk: N/A
+  note: CLAUDE.md line 160 mandatory pre-read before product/architecture work
+
+# ============================================================
+# MOVABLE — Wave 1: AI/LLM docs → docs/ai/
+# ============================================================
+
+- document_id: DOC-ROOT-009
+  current_path: docs/ai-assisted-commercial-development.md
+  title: AI-Assisted Commercial Development
+  purpose: AI-assisted development methodology for commercial product tracks
+  primary_topic: ai_strategy
+  document_type: ai_llm
+  authority_level: reference
+  remain_at_root: false
+  recommended_destination: docs/ai/ai-assisted-commercial-development.md
+  migration_risk: LOW
+  compatibility_strategy: FULL_INTERNAL_REWRITE
+  active: true
+  generated: false
+  historical: false
+  wave: 1
+
+- document_id: DOC-ROOT-010
+  current_path: docs/ai-assisted-commercial-development.yaml
+  title: AI-Assisted Commercial Development (YAML)
+  purpose: Structured YAML reference for AI-assisted commercial development
+  primary_topic: ai_strategy
+  document_type: ai_llm
+  authority_level: reference
+  remain_at_root: false
+  recommended_destination: docs/ai/ai-assisted-commercial-development.yaml
+  migration_risk: LOW
+  compatibility_strategy: FULL_INTERNAL_REWRITE
+  active: true
+  generated: false
+  historical: false
+  wave: 1
+
+- document_id: DOC-ROOT-011
+  current_path: docs/ai-generated-format-requirements-pipeline.md
+  title: AI-Generated Format Requirements Pipeline
+  purpose: Pipeline for AI-generated format requirements and automation
+  primary_topic: ai_strategy
+  document_type: ai_llm
+  authority_level: reference
+  remain_at_root: false
+  recommended_destination: docs/ai/ai-generated-format-requirements-pipeline.md
+  migration_risk: LOW
+  compatibility_strategy: FULL_INTERNAL_REWRITE
+  active: true
+  generated: false
+  historical: false
+  wave: 1
+
+- document_id: DOC-ROOT-012
+  current_path: docs/ai-generated-format-requirements-pipeline.yaml
+  title: AI-Generated Format Requirements Pipeline (YAML)
+  purpose: Structured YAML reference for AI-generated requirements pipeline
+  primary_topic: ai_strategy
+  document_type: ai_llm
+  authority_level: reference
+  remain_at_root: false
+  recommended_destination: docs/ai/ai-generated-format-requirements-pipeline.yaml
+  migration_risk: LOW
+  compatibility_strategy: FULL_INTERNAL_REWRITE
+  active: true
+  generated: false
+  historical: false
+  wave: 1
+
+- document_id: DOC-ROOT-013
+  current_path: docs/ai-usage-operating-model.md
+  title: AI Usage Operating Model
+  purpose: Operating model defining AI platform routing, model policy, telemetry, and risk controls
+  primary_topic: ai_governance
+  document_type: ai_llm
+  authority_level: policy
+  remain_at_root: false
+  recommended_destination: docs/ai/ai-usage-operating-model.md
+  migration_risk: MEDIUM
+  compatibility_strategy: FULL_INTERNAL_REWRITE
+  active: true
+  generated: false
+  historical: false
+  wave: 1
+  note: Referenced in AGENTS.md lines ~880-884
+
+- document_id: DOC-ROOT-014
+  current_path: docs/ai-usage-operating-model.yaml
+  title: AI Usage Operating Model (YAML)
+  purpose: Structured YAML reference for AI usage operating model
+  primary_topic: ai_governance
+  document_type: ai_llm
+  authority_level: policy
+  remain_at_root: false
+  recommended_destination: docs/ai/ai-usage-operating-model.yaml
+  migration_risk: LOW
+  compatibility_strategy: FULL_INTERNAL_REWRITE
+  active: true
+  generated: false
+  historical: false
+  wave: 1
+
+- document_id: DOC-ROOT-015
+  current_path: docs/llm-and-embedding-strategy.md
+  title: LLM and Embedding Strategy
+  purpose: Strategy for LLM selection, embedding models, and AI provider routing
+  primary_topic: ai_strategy
+  document_type: ai_llm
+  authority_level: reference
+  remain_at_root: false
+  recommended_destination: docs/ai/llm-and-embedding-strategy.md
+  migration_risk: MEDIUM
+  compatibility_strategy: FULL_INTERNAL_REWRITE
+  active: true
+  generated: false
+  historical: false
+  wave: 1
+  note: Referenced in AGENTS.md ~723
+
+- document_id: DOC-ROOT-016
+  current_path: docs/llm-endpoint-strategy.md
+  title: LLM Endpoint Strategy
+  purpose: LLM endpoint routing, failover, and provider selection strategy
+  primary_topic: ai_strategy
+  document_type: ai_llm
+  authority_level: reference
+  remain_at_root: false
+  recommended_destination: docs/ai/llm-endpoint-strategy.md
+  migration_risk: MEDIUM
+  compatibility_strategy: FULL_INTERNAL_REWRITE
+  active: true
+  generated: false
+  historical: false
+  wave: 1
+  note: Referenced in tools/llm/run_record.py and tools/llm/artifact_index.py (Python strings)
+
+- document_id: DOC-ROOT-017
+  current_path: docs/agent-swarm-ai-orchestration.md
+  title: Agent Swarm AI Orchestration
+  purpose: Agent swarm orchestration and multi-agent coordination strategy
+  primary_topic: ai_strategy
+  document_type: ai_llm
+  authority_level: reference
+  remain_at_root: false
+  recommended_destination: docs/ai/agent-swarm-ai-orchestration.md
+  migration_risk: LOW
+  compatibility_strategy: FULL_INTERNAL_REWRITE
+  active: true
+  generated: false
+  historical: false
+  wave: 1
+
+- document_id: DOC-ROOT-018
+  current_path: docs/oracle-provider-strategy.md
+  title: Oracle Provider Strategy
+  purpose: Strategy for oracle provider selection and reference implementation integration
+  primary_topic: ai_strategy
+  document_type: ai_llm
+  authority_level: reference
+  remain_at_root: false
+  recommended_destination: docs/ai/oracle-provider-strategy.md
+  migration_risk: LOW
+  compatibility_strategy: FULL_INTERNAL_REWRITE
+  active: true
+  generated: false
+  historical: false
+  wave: 1
+
+- document_id: DOC-ROOT-019
+  current_path: docs/spec-retrieval-and-rag-policy.md
+  title: Spec Retrieval and RAG Policy
+  purpose: Retrieval-augmented generation policy for specification access and caching
+  primary_topic: ai_retrieval
+  document_type: ai_llm
+  authority_level: policy
+  remain_at_root: false
+  recommended_destination: docs/ai/spec-retrieval-and-rag-policy.md
+  migration_risk: MEDIUM
+  compatibility_strategy: FULL_INTERNAL_REWRITE
+  active: true
+  generated: false
+  historical: false
+  wave: 1
+  note: Referenced in AGENTS.md ~881
+
+- document_id: DOC-ROOT-020
+  current_path: docs/spec-retrieval-and-rag-policy.yaml
+  title: Spec Retrieval and RAG Policy (YAML)
+  purpose: Structured YAML reference for RAG policy
+  primary_topic: ai_retrieval
+  document_type: ai_llm
+  authority_level: policy
+  remain_at_root: false
+  recommended_destination: docs/ai/spec-retrieval-and-rag-policy.yaml
+  migration_risk: LOW
+  compatibility_strategy: FULL_INTERNAL_REWRITE
+  active: true
+  generated: false
+  historical: false
+  wave: 1
+
+- document_id: DOC-ROOT-021
+  current_path: docs/spec-retrieval-strategy.md
+  title: Spec Retrieval Strategy
+  purpose: Strategy for sourcing, caching, and serving format specifications
+  primary_topic: ai_retrieval
+  document_type: ai_llm
+  authority_level: reference
+  remain_at_root: false
+  recommended_destination: docs/ai/spec-retrieval-strategy.md
+  migration_risk: MEDIUM
+  compatibility_strategy: FULL_INTERNAL_REWRITE
+  active: true
+  generated: false
+  historical: false
+  wave: 1
+  note: Referenced in AGENTS.md ~603
+
+- document_id: DOC-ROOT-022
+  current_path: docs/spec-retrieval-tier3-evaluation.md
+  title: Spec Retrieval Tier 3 Evaluation
+  purpose: Evaluation and selection criteria for Tier 3 (fallback) specification providers
+  primary_topic: ai_retrieval
+  document_type: ai_llm
+  authority_level: reference
+  remain_at_root: false
+  recommended_destination: docs/ai/spec-retrieval-tier3-evaluation.md
+  migration_risk: LOW
+  compatibility_strategy: FULL_INTERNAL_REWRITE
+  active: true
+  generated: false
+  historical: false
+  wave: 1
+
+# ============================================================
+# MOVABLE — Wave 2: Automation/supervision → docs/automation/
+# ============================================================
+
+- document_id: DOC-ROOT-023
+  current_path: docs/assistant-supervision-methodology.md
+  title: Assistant Supervision Methodology
+  purpose: Methodology for assistant-driven supervision and autonomous execution frameworks
+  primary_topic: automation_supervision
+  document_type: automation
+  authority_level: reference
+  remain_at_root: false
+  recommended_destination: docs/automation/assistant-supervision-methodology.md
+  migration_risk: MEDIUM
+  compatibility_strategy: FULL_INTERNAL_REWRITE
+  active: true
+  generated: false
+  historical: false
+  wave: 2
+  note: Referenced in AGENTS.md ~911-913
+
+- document_id: DOC-ROOT-024
+  current_path: docs/assistant-supervision-methodology.yaml
+  title: Assistant Supervision Methodology (YAML)
+  purpose: Structured YAML reference for assistant supervision methodology
+  primary_topic: automation_supervision
+  document_type: automation
+  authority_level: reference
+  remain_at_root: false
+  recommended_destination: docs/automation/assistant-supervision-methodology.yaml
+  migration_risk: LOW
+  compatibility_strategy: FULL_INTERNAL_REWRITE
+  active: true
+  generated: false
+  historical: false
+  wave: 2
+
+- document_id: DOC-ROOT-025
+  current_path: docs/terminal-closure-state-machine.md
+  title: Terminal Closure State Machine
+  purpose: State machine defining terminal closure conditions and completion criteria
+  primary_topic: automation_supervision
+  document_type: automation
+  authority_level: reference
+  remain_at_root: false
+  recommended_destination: docs/automation/terminal-closure-state-machine.md
+  migration_risk: LOW
+  compatibility_strategy: FULL_INTERNAL_REWRITE
+  active: true
+  generated: false
+  historical: false
+  wave: 2
+
+- document_id: DOC-ROOT-026
+  current_path: docs/conway-r9-authority-continuity.md
+  title: Conway R9 Authority Continuity
+  purpose: Conway R9 framework for authority continuity in distributed execution
+  primary_topic: automation_supervision
+  document_type: automation
+  authority_level: reference
+  remain_at_root: false
+  recommended_destination: docs/automation/conway-r9-authority-continuity.md
+  migration_risk: LOW
+  compatibility_strategy: FULL_INTERNAL_REWRITE
+  active: true
+  generated: false
+  historical: false
+  wave: 2
+
+- document_id: DOC-ROOT-027
+  current_path: docs/conway-r9-governed-simulation.md
+  title: Conway R9 Governed Simulation
+  purpose: Conway R9 framework for governed multi-agent simulation and orchestration
+  primary_topic: automation_supervision
+  document_type: automation
+  authority_level: reference
+  remain_at_root: false
+  recommended_destination: docs/automation/conway-r9-governed-simulation.md
+  migration_risk: LOW
+  compatibility_strategy: FULL_INTERNAL_REWRITE
+  active: true
+  generated: false
+  historical: false
+  wave: 2
+
+- document_id: DOC-ROOT-028
+  current_path: docs/conway-r9-swarm-governance.md
+  title: Conway R9 Swarm Governance
+  purpose: Conway R9 framework for agent swarm governance and policy enforcement
+  primary_topic: automation_supervision
+  document_type: automation
+  authority_level: reference
+  remain_at_root: false
+  recommended_destination: docs/automation/conway-r9-swarm-governance.md
+  migration_risk: LOW
+  compatibility_strategy: FULL_INTERNAL_REWRITE
+  active: true
+  generated: false
+  historical: false
+  wave: 2
+
+- document_id: DOC-ROOT-029
+  current_path: docs/fresh-chat-project-bootstrap.md
+  title: Fresh Chat Project Bootstrap
+  purpose: Orientation and bootstrap guide for new agent sessions in format-factory repo
+  primary_topic: agent_methodology
+  document_type: automation
+  authority_level: reference
+  remain_at_root: false
+  recommended_destination: docs/automation/fresh-chat-project-bootstrap.md
+  migration_risk: MEDIUM
+  compatibility_strategy: FULL_INTERNAL_REWRITE
+  active: true
+  generated: false
+  historical: false
+  wave: 2
+  note: Referenced in AGENTS.md ~904; NOT enforced by check_methodology_links.py — safe to move
+
+- document_id: DOC-ROOT-030
+  current_path: docs/fresh-chat-project-bootstrap.yaml
+  title: Fresh Chat Project Bootstrap (YAML)
+  purpose: Structured YAML reference for fresh chat bootstrap
+  primary_topic: agent_methodology
+  document_type: automation
+  authority_level: reference
+  remain_at_root: false
+  recommended_destination: docs/automation/fresh-chat-project-bootstrap.yaml
+  migration_risk: LOW
+  compatibility_strategy: FULL_INTERNAL_REWRITE
+  active: true
+  generated: false
+  historical: false
+  wave: 2
+
+# ============================================================
+# MOVABLE — Wave 3: Governance/policy → docs/governance/
+# ============================================================
+
+- document_id: DOC-ROOT-031
+  current_path: docs/compliance-posture.md
+  title: Compliance Posture
+  purpose: Compliance and legal posture documentation
+  primary_topic: compliance
+  document_type: governance_policy
+  authority_level: reference
+  remain_at_root: false
+  recommended_destination: docs/governance/compliance-posture.md
+  migration_risk: LOW
+  compatibility_strategy: FULL_INTERNAL_REWRITE
+  active: true
+  generated: false
+  historical: false
+  wave: 3
+
+- document_id: DOC-ROOT-032
+  current_path: docs/legal-and-licensing.md
+  title: Legal and Licensing
+  purpose: Legal and licensing policy reference and compliance guide
+  primary_topic: legal
+  document_type: governance_policy
+  authority_level: policy
+  remain_at_root: false
+  recommended_destination: docs/governance/legal-and-licensing.md
+  migration_risk: HIGH
+  compatibility_strategy: TEMPORARY_COMPATIBILITY_STUB
+  active: true
+  generated: false
+  historical: false
+  wave: 3
+  note: Referenced in AGENTS.md ~415; ~523 estimated raw refs
+
+- document_id: DOC-ROOT-033
+  current_path: docs/release-control.md
+  title: Release Control
+  purpose: Release control policy, versioning, and publication gates
+  primary_topic: release
+  document_type: governance_policy
+  authority_level: policy
+  remain_at_root: false
+  recommended_destination: docs/governance/release-control.md
+  migration_risk: HIGH
+  compatibility_strategy: TEMPORARY_COMPATIBILITY_STUB
+  active: true
+  generated: false
+  historical: false
+  wave: 3
+  note: Referenced in AGENTS.md ~204, ~286, ~380; ~569 estimated raw refs
+
+- document_id: DOC-ROOT-034
+  current_path: docs/security.md
+  title: Security Policy
+  purpose: Security policy, threat model, and incident response procedures
+  primary_topic: security
+  document_type: governance_policy
+  authority_level: policy
+  remain_at_root: false
+  recommended_destination: docs/governance/security.md
+  migration_risk: HIGH
+  compatibility_strategy: TEMPORARY_COMPATIBILITY_STUB
+  active: true
+  generated: false
+  historical: false
+  wave: 3
+  note: Referenced in AGENTS.md ~402; ~375 estimated raw refs
+
+- document_id: DOC-ROOT-035
+  current_path: docs/source-track-maturity-policy.md
+  title: Source Track Maturity Policy
+  purpose: Policy defining maturity levels for source code tracks and promotion criteria
+  primary_topic: governance
+  document_type: governance_policy
+  authority_level: policy
+  remain_at_root: false
+  recommended_destination: docs/governance/source-track-maturity-policy.md
+  migration_risk: LOW
+  compatibility_strategy: FULL_INTERNAL_REWRITE
+  active: true
+  generated: false
+  historical: false
+  wave: 3
+
+- document_id: DOC-ROOT-036
+  current_path: docs/sprint-depth-policy.md
+  title: Sprint Depth Policy
+  purpose: Policy governing sprint scope, depth, and iteration limits
+  primary_topic: governance
+  document_type: governance_policy
+  authority_level: policy
+  remain_at_root: false
+  recommended_destination: docs/governance/sprint-depth-policy.md
+  migration_risk: LOW
+  compatibility_strategy: FULL_INTERNAL_REWRITE
+  active: true
+  generated: false
+  historical: false
+  wave: 3
+
+- document_id: DOC-ROOT-037
+  current_path: docs/prototype-quarantine-policy.md
+  title: Prototype Quarantine Policy
+  purpose: Policy for isolating and managing prototype code separate from production
+  primary_topic: governance
+  document_type: governance_policy
+  authority_level: policy
+  remain_at_root: false
+  recommended_destination: docs/governance/prototype-quarantine-policy.md
+  migration_risk: LOW
+  compatibility_strategy: FULL_INTERNAL_REWRITE
+  active: true
+  generated: false
+  historical: false
+  wave: 3
+
+- document_id: DOC-ROOT-038
+  current_path: docs/taskcard-layer-states.md
+  title: Taskcard Layer States
+  purpose: State machine and status definitions for taskcard lifecycle in plans
+  primary_topic: governance
+  document_type: governance_policy
+  authority_level: reference
+  remain_at_root: false
+  recommended_destination: docs/governance/taskcard-layer-states.md
+  migration_risk: LOW
+  compatibility_strategy: FULL_INTERNAL_REWRITE
+  active: true
+  generated: false
+  historical: false
+  wave: 3
+
+- document_id: DOC-ROOT-039
+  current_path: docs/project-execution-standards.md
+  title: Project Execution Standards
+  purpose: Standards for project execution, taskcard definition, and sprint discipline
+  primary_topic: governance
+  document_type: governance_policy
+  authority_level: policy
+  remain_at_root: false
+  recommended_destination: docs/governance/project-execution-standards.md
+  migration_risk: MEDIUM
+  compatibility_strategy: FULL_INTERNAL_REWRITE
+  active: true
+  generated: false
+  historical: false
+  wave: 3
+  note: Referenced in AGENTS.md ~912
+
+- document_id: DOC-ROOT-040
+  current_path: docs/project-execution-standards.yaml
+  title: Project Execution Standards (YAML)
+  purpose: Structured YAML reference for project execution standards
+  primary_topic: governance
+  document_type: governance_policy
+  authority_level: policy
+  remain_at_root: false
+  recommended_destination: docs/governance/project-execution-standards.yaml
+  migration_risk: LOW
+  compatibility_strategy: FULL_INTERNAL_REWRITE
+  active: true
+  generated: false
+  historical: false
+  wave: 3
+
+- document_id: DOC-ROOT-041
+  current_path: docs/current-state-and-evidence-authority.md
+  title: Current State and Evidence Authority
+  purpose: Authority hierarchy for current project state and evidence sources
+  primary_topic: governance
+  document_type: governance_policy
+  authority_level: canonical
+  remain_at_root: false
+  recommended_destination: docs/governance/current-state-and-evidence-authority.md
+  migration_risk: HIGH
+  compatibility_strategy: TEMPORARY_COMPATIBILITY_STUB
+  active: true
+  generated: false
+  historical: false
+  wave: 3
+  note: Referenced in AGENTS.md ~637, ~814, ~859; ~499 estimated raw refs
+
+- document_id: DOC-ROOT-042
+  current_path: docs/playbook-layer.md
+  title: Playbook Layer
+  purpose: Playbook layer design for format-family specific guidance and procedures
+  primary_topic: governance
+  document_type: governance_policy
+  authority_level: reference
+  remain_at_root: false
+  recommended_destination: docs/governance/playbook-layer.md
+  migration_risk: MEDIUM
+  compatibility_strategy: FULL_INTERNAL_REWRITE
+  active: true
+  generated: false
+  historical: false
+  wave: 3
+  note: Referenced in AGENTS.md ~644
+
+- document_id: DOC-ROOT-043
+  current_path: docs/gate-quality-criteria.md
+  title: Gate Quality Criteria
+  purpose: Quality criteria and pass conditions for each acquisition gate
+  primary_topic: gates_acquisition
+  document_type: governance_policy
+  authority_level: reference
+  remain_at_root: false
+  recommended_destination: docs/governance/gate-quality-criteria.md
+  migration_risk: LOW
+  compatibility_strategy: FULL_INTERNAL_REWRITE
+  active: true
+  generated: false
+  historical: false
+  wave: 3
+
+# ============================================================
+# MOVABLE — Wave 4: Format/acquisition/spec → docs/python-foss/
+# ============================================================
+
+- document_id: DOC-ROOT-044
+  current_path: docs/format-completion-matrix.md
+  title: Format Completion Matrix
+  purpose: Matrix tracking format completion status across product tracks and features
+  primary_topic: format_management
+  document_type: product_track
+  authority_level: reference
+  remain_at_root: false
+  recommended_destination: docs/python-foss/format-completion-matrix.md
+  migration_risk: LOW
+  compatibility_strategy: FULL_INTERNAL_REWRITE
+  active: true
+  generated: false
+  historical: false
+  wave: 4
+
+- document_id: DOC-ROOT-045
+  current_path: docs/format-expansion-roadmap.md
+  title: Format Expansion Roadmap
+  purpose: Roadmap for format candidate identification, acquisition, and expansion priorities
+  primary_topic: format_management
+  document_type: product_track
+  authority_level: reference
+  remain_at_root: false
+  recommended_destination: docs/python-foss/format-expansion-roadmap.md
+  migration_risk: LOW
+  compatibility_strategy: FULL_INTERNAL_REWRITE
+  active: true
+  generated: false
+  historical: false
+  wave: 4
+
+- document_id: DOC-ROOT-046
+  current_path: docs/format-expansion-roadmap.yaml
+  title: Format Expansion Roadmap (YAML)
+  purpose: Structured YAML reference for format expansion roadmap
+  primary_topic: format_management
+  document_type: product_track
+  authority_level: reference
+  remain_at_root: false
+  recommended_destination: docs/python-foss/format-expansion-roadmap.yaml
+  migration_risk: LOW
+  compatibility_strategy: FULL_INTERNAL_REWRITE
+  active: true
+  generated: false
+  historical: false
+  wave: 4
+
+- document_id: DOC-ROOT-047
+  current_path: docs/format-feature-matrix-template.md
+  title: Format Feature Matrix Template
+  purpose: Template for format-specific feature matrices used in acquisition planning
+  primary_topic: format_management
+  document_type: product_track
+  authority_level: reference
+  remain_at_root: false
+  recommended_destination: docs/python-foss/format-feature-matrix-template.md
+  migration_risk: LOW
+  compatibility_strategy: FULL_INTERNAL_REWRITE
+  active: true
+  generated: false
+  historical: false
+  wave: 4
+
+- document_id: DOC-ROOT-048
+  current_path: docs/format-onboarding-guide.md
+  title: Format Onboarding Guide
+  purpose: Guide for onboarding new formats into the acquisition pipeline
+  primary_topic: format_management
+  document_type: product_track
+  authority_level: reference
+  remain_at_root: false
+  recommended_destination: docs/python-foss/format-onboarding-guide.md
+  migration_risk: LOW
+  compatibility_strategy: FULL_INTERNAL_REWRITE
+  active: true
+  generated: false
+  historical: false
+  wave: 4
+
+- document_id: DOC-ROOT-049
+  current_path: docs/format-representation-model.md
+  title: Format Representation Model
+  purpose: Specification for canonical format representation and DOM models
+  primary_topic: format_management
+  document_type: product_track
+  authority_level: reference
+  remain_at_root: false
+  recommended_destination: docs/python-foss/format-representation-model.md
+  migration_risk: MEDIUM
+  compatibility_strategy: FULL_INTERNAL_REWRITE
+  active: true
+  generated: false
+  historical: false
+  wave: 4
+  note: Referenced in AGENTS.md ~740
+
+- document_id: DOC-ROOT-050
+  current_path: docs/format-understanding-layer.md
+  title: Format Understanding Layer
+  purpose: Knowledge model and learning layer for format specification understanding
+  primary_topic: format_management
+  document_type: product_track
+  authority_level: reference
+  remain_at_root: false
+  recommended_destination: docs/python-foss/format-understanding-layer.md
+  migration_risk: MEDIUM
+  compatibility_strategy: FULL_INTERNAL_REWRITE
+  active: true
+  generated: false
+  historical: false
+  wave: 4
+  note: Referenced in AGENTS.md ~713
+
+- document_id: DOC-ROOT-051
+  current_path: docs/odf-flat-family-reuse-strategy.md
+  title: ODF Flat Family Reuse Strategy
+  purpose: Reuse strategy for ODF flat-format family (FODS/FODT/FODG/FODP)
+  primary_topic: format_management
+  document_type: product_track
+  authority_level: reference
+  remain_at_root: false
+  recommended_destination: docs/python-foss/odf-flat-family-reuse-strategy.md
+  migration_risk: LOW
+  compatibility_strategy: FULL_INTERNAL_REWRITE
+  active: true
+  generated: false
+  historical: false
+  wave: 4
+
+- document_id: DOC-ROOT-052
+  current_path: docs/non-aspose-format-candidate-registry-plan.md
+  title: Non-Aspose Format Candidate Registry Plan
+  purpose: Plan and registry for format candidates outside Aspose ecosystem
+  primary_topic: format_management
+  document_type: product_track
+  authority_level: reference
+  remain_at_root: false
+  recommended_destination: docs/python-foss/non-aspose-format-candidate-registry-plan.md
+  migration_risk: LOW
+  compatibility_strategy: FULL_INTERNAL_REWRITE
+  active: true
+  generated: false
+  historical: false
+  wave: 4
+
+- document_id: DOC-ROOT-053
+  current_path: docs/acquisition-workflow.md
+  title: Acquisition Workflow
+  purpose: Process reference defining stage-by-stage acquisition workflow, reuse policy, and idempotency rules
+  primary_topic: format_acquisition
+  document_type: product_track
+  authority_level: canonical
+  remain_at_root: false
+  recommended_destination: docs/python-foss/acquisition-workflow.md
+  migration_risk: HIGH
+  compatibility_strategy: TEMPORARY_COMPATIBILITY_STUB
+  active: true
+  generated: false
+  historical: false
+  wave: 4
+  note: Referenced in AGENTS.md ~192; ~645 estimated raw refs
+
+- document_id: DOC-ROOT-054
+  current_path: docs/specification-cache.md
+  title: Specification Cache
+  purpose: Specification caching strategy, invalidation rules, and refresh policies
+  primary_topic: spec_retrieval
+  document_type: product_track
+  authority_level: canonical
+  remain_at_root: false
+  recommended_destination: docs/python-foss/specification-cache.md
+  migration_risk: HIGH
+  compatibility_strategy: TEMPORARY_COMPATIBILITY_STUB
+  active: true
+  generated: false
+  historical: false
+  wave: 4
+  note: ~743 estimated raw refs — highest reference count of any movable file
+
+- document_id: DOC-ROOT-055
+  current_path: docs/specification-normalization.md
+  title: Specification Normalization
+  purpose: Specification normalization and canonicalization procedures
+  primary_topic: spec_retrieval
+  document_type: product_track
+  authority_level: reference
+  remain_at_root: false
+  recommended_destination: docs/python-foss/specification-normalization.md
+  migration_risk: MEDIUM
+  compatibility_strategy: FULL_INTERNAL_REWRITE
+  active: true
+  generated: false
+  historical: false
+  wave: 4
+  note: Referenced in AGENTS.md ~570, ~1210
+
+- document_id: DOC-ROOT-056
+  current_path: docs/spec-consumption-workbench.md
+  title: Spec Consumption Workbench
+  purpose: Workbench and tools for format specification consumption and fact extraction
+  primary_topic: spec_retrieval
+  document_type: product_track
+  authority_level: reference
+  remain_at_root: false
+  recommended_destination: docs/python-foss/spec-consumption-workbench.md
+  migration_risk: MEDIUM
+  compatibility_strategy: FULL_INTERNAL_REWRITE
+  active: true
+  generated: false
+  historical: false
+  wave: 4
+  note: Referenced in AGENTS.md ~1166, ~1208
+
+- document_id: DOC-ROOT-057
+  current_path: docs/spec-to-source-chain-contract.md
+  title: Spec-to-Source Chain Contract
+  purpose: Contract defining the specification-to-source code generation chain
+  primary_topic: spec_retrieval
+  document_type: product_track
+  authority_level: reference
+  remain_at_root: false
+  recommended_destination: docs/python-foss/spec-to-source-chain-contract.md
+  migration_risk: LOW
+  compatibility_strategy: FULL_INTERNAL_REWRITE
+  active: true
+  generated: false
+  historical: false
+  wave: 4
+
+# ============================================================
+# MOVABLE — Wave 5: Architecture/product/code-quality
+# ============================================================
+
+- document_id: DOC-ROOT-058
+  current_path: docs/architecture-contract.md
+  title: Architecture Contract
+  purpose: Architecture contract defining system interfaces and structural agreements
+  primary_topic: architecture
+  document_type: architecture
+  authority_level: reference
+  remain_at_root: false
+  recommended_destination: docs/code-quality/architecture-contract.md
+  migration_risk: LOW
+  compatibility_strategy: FULL_INTERNAL_REWRITE
+  active: true
+  generated: false
+  historical: false
+  wave: 5
+
+- document_id: DOC-ROOT-059
+  current_path: docs/architecture.md
+  title: Architecture
+  purpose: Architectural design reference for system structure, folder layout, product tracks, acquisition pipeline
+  primary_topic: architecture
+  document_type: architecture
+  authority_level: canonical
+  remain_at_root: false
+  recommended_destination: docs/code-quality/architecture.md
+  migration_risk: HIGH
+  compatibility_strategy: TEMPORARY_COMPATIBILITY_STUB
+  active: true
+  generated: false
+  historical: false
+  wave: 5
+  note: ~591 estimated raw refs. Apply retention policy check — may warrant root via repository_wide_navigation_index.
+        Final decision deferred to TC-DOCS-003 retention policy classification.
+
+- document_id: DOC-ROOT-060
+  current_path: docs/source-package-hygiene.md
+  title: Source Package Hygiene
+  purpose: Standards for source code organization, module structure, and package cleanliness
+  primary_topic: code_quality
+  document_type: architecture
+  authority_level: policy
+  remain_at_root: false
+  recommended_destination: docs/code-quality/source-package-hygiene.md
+  migration_risk: LOW
+  compatibility_strategy: FULL_INTERNAL_REWRITE
+  active: true
+  generated: false
+  historical: false
+  wave: 5
+
+- document_id: DOC-ROOT-061
+  current_path: docs/capability-feature-compiler-spec.md
+  title: Capability-Feature Compiler Spec
+  purpose: Specification for the capability-to-feature compiler pipeline
+  primary_topic: architecture
+  document_type: architecture
+  authority_level: reference
+  remain_at_root: false
+  recommended_destination: docs/code-quality/capability-feature-compiler-spec.md
+  migration_risk: LOW
+  compatibility_strategy: FULL_INTERNAL_REWRITE
+  active: true
+  generated: false
+  historical: false
+  wave: 5
+
+- document_id: DOC-ROOT-062
+  current_path: docs/capability-layer-design.md
+  title: Capability Layer Design
+  purpose: Design reference for the capability layer architecture and data model
+  primary_topic: architecture
+  document_type: architecture
+  authority_level: reference
+  remain_at_root: false
+  recommended_destination: docs/code-quality/capability-layer-design.md
+  migration_risk: LOW
+  compatibility_strategy: FULL_INTERNAL_REWRITE
+  active: true
+  generated: false
+  historical: false
+  wave: 5
+
+- document_id: DOC-ROOT-063
+  current_path: docs/compiler-relationship.md
+  title: Compiler Relationship
+  purpose: Documentation of relationships between compiler components and pipeline stages
+  primary_topic: architecture
+  document_type: architecture
+  authority_level: reference
+  remain_at_root: false
+  recommended_destination: docs/code-quality/compiler-relationship.md
+  migration_risk: LOW
+  compatibility_strategy: FULL_INTERNAL_REWRITE
+  active: true
+  generated: false
+  historical: false
+  wave: 5
+
+- document_id: DOC-ROOT-064
+  current_path: docs/test-layering.md
+  title: Test Layering
+  purpose: Test layering strategy — unit, integration, roundtrip, and oracle verification tests
+  primary_topic: testing
+  document_type: architecture
+  authority_level: reference
+  remain_at_root: false
+  recommended_destination: docs/code-quality/test-layering.md
+  migration_risk: LOW
+  compatibility_strategy: FULL_INTERNAL_REWRITE
+  active: true
+  generated: false
+  historical: false
+  wave: 5
+
+- document_id: DOC-ROOT-065
+  current_path: docs/commercial-dotnet-architecture.md
+  title: Commercial .NET Architecture
+  purpose: Architecture reference specific to commercial .NET product track
+  primary_topic: product_architecture
+  document_type: product_track
+  authority_level: reference
+  remain_at_root: false
+  recommended_destination: docs/product-factory/commercial-dotnet-architecture.md
+  migration_risk: LOW
+  compatibility_strategy: FULL_INTERNAL_REWRITE
+  active: true
+  generated: false
+  historical: false
+  wave: 5
+
+- document_id: DOC-ROOT-066
+  current_path: docs/commercial-dotnet-architecture.yaml
+  title: Commercial .NET Architecture (YAML)
+  purpose: Structured YAML reference for commercial .NET architecture
+  primary_topic: product_architecture
+  document_type: product_track
+  authority_level: reference
+  remain_at_root: false
+  recommended_destination: docs/product-factory/commercial-dotnet-architecture.yaml
+  migration_risk: LOW
+  compatibility_strategy: FULL_INTERNAL_REWRITE
+  active: true
+  generated: false
+  historical: false
+  wave: 5
+
+- document_id: DOC-ROOT-067
+  current_path: docs/commercial-product-capability-model.md
+  title: Commercial Product Capability Model
+  purpose: Capability model and feature matrix for commercial product tracks (C0-C10 levels)
+  primary_topic: product_architecture
+  document_type: product_track
+  authority_level: canonical
+  remain_at_root: false
+  recommended_destination: docs/product-factory/commercial-product-capability-model.md
+  migration_risk: MEDIUM
+  compatibility_strategy: FULL_INTERNAL_REWRITE
+  active: true
+  generated: false
+  historical: false
+  wave: 5
+  note: Referenced in AGENTS.md ~865
+
+- document_id: DOC-ROOT-068
+  current_path: docs/commercial-product-capability-model.yaml
+  title: Commercial Product Capability Model (YAML)
+  purpose: Structured YAML reference for commercial product capability model
+  primary_topic: product_architecture
+  document_type: product_track
+  authority_level: canonical
+  remain_at_root: false
+  recommended_destination: docs/product-factory/commercial-product-capability-model.yaml
+  migration_risk: LOW
+  compatibility_strategy: FULL_INTERNAL_REWRITE
+  active: true
+  generated: false
+  historical: false
+  wave: 5
+
+- document_id: DOC-ROOT-069
+  current_path: docs/product-object-model-edit-save-export-strategy.md
+  title: Product Object Model Edit/Save/Export Strategy
+  purpose: Strategy for product object model lifecycle — edit, save, and export operations
+  primary_topic: product_architecture
+  document_type: product_track
+  authority_level: reference
+  remain_at_root: false
+  recommended_destination: docs/product-factory/product-object-model-edit-save-export-strategy.md
+  migration_risk: LOW
+  compatibility_strategy: FULL_INTERNAL_REWRITE
+  active: true
+  generated: false
+  historical: false
+  wave: 5
+
+- document_id: DOC-ROOT-070
+  current_path: docs/product-tracks.md
+  title: Product Tracks
+  purpose: Definition of product tracks (FOSS Python, Commercial .NET, etc.) and their governance
+  primary_topic: product_architecture
+  document_type: product_track
+  authority_level: canonical
+  remain_at_root: false
+  recommended_destination: docs/product-factory/product-tracks.md
+  migration_risk: MEDIUM
+  compatibility_strategy: FULL_INTERNAL_REWRITE
+  active: true
+  generated: false
+  historical: false
+  wave: 5
+  note: Referenced in AGENTS.md
+
+# ============================================================
+# Counter verification
+# ============================================================
+counters:
+  UNCLASSIFIED_DOCS_ROOT_FILES: 0
+  total_retained: 8
+  total_movable: 62
+  wave_1_ai_llm: 14       # docs/ai/
+  wave_2_automation: 8    # docs/automation/
+  wave_3_governance: 13   # docs/governance/
+  wave_4_format_spec: 14  # docs/python-foss/
+  wave_5_architecture: 13 # docs/code-quality/ + docs/product-factory/

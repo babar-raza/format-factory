@@ -1749,3 +1749,60 @@ convergence_audit:
   mutation_policy: "no further plan/hardening/execution writes"
   note: "Lifecycle audit found open taskcards in unrelated plan (gleaming-napping-pebble TC-DL-001/002), not in this plan. All certification plan taskcards are CLOSED."
 -->
+
+---
+
+## E. Convergence Hardening Amendment (2026-07-01 — Authorized by User)
+
+### Amendment Context
+
+Post-plan convergence audit (crispy-jingling-snail convergence-loop-crispy-jingling-snail)
+identified that all implementation artifacts were produced and verified but not committed.
+close-task.md requires a commit. Three taskcards added.
+
+### Hardening Taskcards
+
+**TC-CLOSE-001: Commit all certification artifacts** [PRIORITY: P1, BLOCKER]
+- Status: OPEN
+- Scope: Add and commit 12 new files: 4 test files, 2 tools, 6 report files
+- Files:
+  - tests/python/zst/test_zst_security.py
+  - tests/python/zst/test_zst_property_based.py
+  - tests/python/fods/test_fods_property_based.py
+  - tests/python/csv/test_csv_property_based.py
+  - tools/certification/mutation_tester.py
+  - tools/certification/performance_benchmark.py
+  - reports/certification/fods/mutation-baseline.json
+  - reports/certification/csv/mutation-baseline.json
+  - reports/certification/zst/mutation-baseline.json
+  - reports/certification/fods/performance-baseline.json
+  - reports/certification/csv/performance-baseline.json
+  - reports/certification/zst/performance-baseline.json
+- Verification: git log shows new commit with these files; tests pass post-commit
+- Finding consumed: F-001
+
+**TC-CLOSE-002: Verify pre-commit hook passes** [PRIORITY: P1, PREREQUISITE to TC-CLOSE-001]
+- Status: OPEN
+- Scope: Confirm governance validators do not block commit of new test/tool/report files
+- Verification: pre-commit hook exits 0 OR commit succeeds
+- Finding consumed: F-003
+
+**TC-CLOSE-003: Document FODS mutation gap** [PRIORITY: P2, NON-BLOCKING]
+- Status: OPEN
+- Scope: Record FODS 50% kill rate as known gap in mutation-baseline.json (already present)
+- Finding consumed: F-002
+- Verification: mutation-baseline.json contains "verdict": "NEEDS_HARDENING" — CONFIRMED
+
+### Amendment Proof Matrix
+
+| Taskcard | Proof Current | Proof Required | Gap |
+|----------|---------------|----------------|-----|
+| TC-CLOSE-001 | 1 (artifacts exist) | 3 (committed) | YES |
+| TC-CLOSE-002 | 0 (not tested) | 3 (hook passes) | YES |
+| TC-CLOSE-003 | 2 (baseline exists) | 2 (documented) | NO — CLOSED |
+
+### Hardened Plan Verdict
+
+Material open blockers: TC-CLOSE-001, TC-CLOSE-002
+Non-blocking gaps: TC-CLOSE-003 (CLOSED — already documented)
+

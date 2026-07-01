@@ -1,0 +1,639 @@
+mission_id: DOCS-REORG-001
+generated_at: "2026-07-01"
+version: "1.0"
+authority: documentation-structure-migration capability (TC-DOCS-003)
+
+summary:
+  total_movable: 62
+  destinations:
+    docs/ai/: 14
+    docs/automation/: 8
+    docs/governance/: 13
+    docs/python-foss/: 14
+    docs/code-quality/: 7
+    docs/product-factory/: 6
+  new_subfolders_required: 0
+  existing_subfolders_sufficient: true
+
+new_subfolder_decision:
+  docs/architecture/: DO_NOT_CREATE
+  reason: >
+    docs/code-quality/ already contains architectural standards (production-library-standard-v2.md,
+    production-readiness-standard.md, etc.). Architecture contract files fit there semantically.
+    Creating docs/architecture/ would add an empty-feeling category with only ~3-4 files when
+    docs/code-quality/ already exists and is the canonical home for source structure and design.
+  docs/security/: DO_NOT_CREATE
+  reason: >
+    docs/governance/ already contains security-adjacent policy files. Security policy (security.md)
+    belongs there alongside legal-and-licensing.md and compliance-posture.md — all are governance
+    policy artifacts.
+  docs/planning/: DO_NOT_CREATE
+  reason: >
+    Planning methodology docs (planning-methodology.md, plan-hardening-checklist.md) are retained
+    at root (validator-enforced). Remaining planning docs (sprint-depth-policy.md, etc.) fit in
+    docs/governance/ as policy documents.
+  docs/formats/: DO_NOT_CREATE
+  reason: >
+    docs/python-foss/ already covers the FOSS Python format track. Format-specific docs fit there.
+    A separate docs/formats/ would split related content unnecessarily.
+
+# ============================================================
+# Wave 1: AI/LLM Strategy → docs/ai/
+# ============================================================
+
+wave_1_docs_ai:
+  destination: docs/ai/
+  destination_reason: >
+    docs/ai/ already contains 19 files covering AI platform, routing, model policy, telemetry,
+    and risk controls. The 14 root-level AI/LLM/retrieval documents are semantically identical
+    and belong here.
+  moves:
+
+  - current_path: docs/ai-assisted-commercial-development.md
+    destination_path: docs/ai/ai-assisted-commercial-development.md
+    compatibility_strategy: FULL_INTERNAL_REWRITE
+    alternatives_rejected:
+      - docs/automation/: "AI strategy, not supervision automation"
+      - docs/product-factory/: "AI methodology, not product factory"
+    reference_count_estimate: LOW
+    owner: ai_governance_layer
+
+  - current_path: docs/ai-assisted-commercial-development.yaml
+    destination_path: docs/ai/ai-assisted-commercial-development.yaml
+    compatibility_strategy: FULL_INTERNAL_REWRITE
+    alternatives_rejected: []
+    reference_count_estimate: LOW
+    owner: ai_governance_layer
+
+  - current_path: docs/ai-generated-format-requirements-pipeline.md
+    destination_path: docs/ai/ai-generated-format-requirements-pipeline.md
+    compatibility_strategy: FULL_INTERNAL_REWRITE
+    alternatives_rejected:
+      - docs/python-foss/: "AI pipeline design, not format-specific FOSS docs"
+    reference_count_estimate: LOW
+    owner: ai_governance_layer
+
+  - current_path: docs/ai-generated-format-requirements-pipeline.yaml
+    destination_path: docs/ai/ai-generated-format-requirements-pipeline.yaml
+    compatibility_strategy: FULL_INTERNAL_REWRITE
+    alternatives_rejected: []
+    reference_count_estimate: LOW
+    owner: ai_governance_layer
+
+  - current_path: docs/ai-usage-operating-model.md
+    destination_path: docs/ai/ai-usage-operating-model.md
+    compatibility_strategy: FULL_INTERNAL_REWRITE
+    alternatives_rejected:
+      - docs/governance/: "AI-specific operating model belongs in docs/ai/"
+    reference_count_estimate: MEDIUM
+    owner: ai_governance_layer
+    active_ref_locations:
+      - AGENTS.md (~line 880-884)
+      - AGENTS.md (~line 916)
+
+  - current_path: docs/ai-usage-operating-model.yaml
+    destination_path: docs/ai/ai-usage-operating-model.yaml
+    compatibility_strategy: FULL_INTERNAL_REWRITE
+    alternatives_rejected: []
+    reference_count_estimate: LOW
+    owner: ai_governance_layer
+
+  - current_path: docs/llm-and-embedding-strategy.md
+    destination_path: docs/ai/llm-and-embedding-strategy.md
+    compatibility_strategy: FULL_INTERNAL_REWRITE
+    alternatives_rejected:
+      - docs/governance/: "LLM strategy is an AI-layer concern"
+    reference_count_estimate: MEDIUM
+    owner: ai_governance_layer
+    active_ref_locations:
+      - AGENTS.md (~line 723)
+
+  - current_path: docs/llm-endpoint-strategy.md
+    destination_path: docs/ai/llm-endpoint-strategy.md
+    compatibility_strategy: FULL_INTERNAL_REWRITE
+    alternatives_rejected:
+      - docs/governance/: "LLM endpoint routing is an AI-layer concern"
+    reference_count_estimate: MEDIUM
+    owner: ai_governance_layer
+    active_ref_locations:
+      - AGENTS.md (~line 880)
+      - tools/llm/run_record.py (Python string)
+      - tools/llm/artifact_index.py (Python string)
+
+  - current_path: docs/agent-swarm-ai-orchestration.md
+    destination_path: docs/ai/agent-swarm-ai-orchestration.md
+    compatibility_strategy: FULL_INTERNAL_REWRITE
+    alternatives_rejected:
+      - docs/automation/: "Swarm architecture is AI-orchestration, not supervision workflow"
+    reference_count_estimate: LOW
+    owner: ai_governance_layer
+
+  - current_path: docs/oracle-provider-strategy.md
+    destination_path: docs/ai/oracle-provider-strategy.md
+    compatibility_strategy: FULL_INTERNAL_REWRITE
+    alternatives_rejected:
+      - docs/python-foss/: "Oracle provider selection is AI strategy, not format FOSS doc"
+    reference_count_estimate: LOW
+    owner: ai_governance_layer
+
+  - current_path: docs/spec-retrieval-and-rag-policy.md
+    destination_path: docs/ai/spec-retrieval-and-rag-policy.md
+    compatibility_strategy: FULL_INTERNAL_REWRITE
+    alternatives_rejected:
+      - docs/python-foss/: "RAG policy is AI-retrieval, not format acquisition"
+    reference_count_estimate: MEDIUM
+    owner: ai_governance_layer
+    active_ref_locations:
+      - AGENTS.md (~line 881)
+
+  - current_path: docs/spec-retrieval-and-rag-policy.yaml
+    destination_path: docs/ai/spec-retrieval-and-rag-policy.yaml
+    compatibility_strategy: FULL_INTERNAL_REWRITE
+    alternatives_rejected: []
+    reference_count_estimate: LOW
+    owner: ai_governance_layer
+
+  - current_path: docs/spec-retrieval-strategy.md
+    destination_path: docs/ai/spec-retrieval-strategy.md
+    compatibility_strategy: FULL_INTERNAL_REWRITE
+    alternatives_rejected:
+      - docs/python-foss/: "Retrieval strategy covers AI/RAG mechanism, not format specifics"
+    reference_count_estimate: MEDIUM
+    owner: ai_governance_layer
+    active_ref_locations:
+      - AGENTS.md (~line 603)
+
+  - current_path: docs/spec-retrieval-tier3-evaluation.md
+    destination_path: docs/ai/spec-retrieval-tier3-evaluation.md
+    compatibility_strategy: FULL_INTERNAL_REWRITE
+    alternatives_rejected: []
+    reference_count_estimate: LOW
+    owner: ai_governance_layer
+
+# ============================================================
+# Wave 2: Automation/Supervision → docs/automation/
+# ============================================================
+
+wave_2_docs_automation:
+  destination: docs/automation/
+  destination_reason: >
+    docs/automation/ already contains 18 files on supervisor pipeline, evidence contracts,
+    and continuation policy. Supervision methodology, state machines, and bootstrap guides
+    belong here.
+  moves:
+
+  - current_path: docs/assistant-supervision-methodology.md
+    destination_path: docs/automation/assistant-supervision-methodology.md
+    compatibility_strategy: FULL_INTERNAL_REWRITE
+    alternatives_rejected:
+      - docs/governance/: "Supervision methodology is an automation concern"
+    reference_count_estimate: MEDIUM
+    owner: automation_layer
+    active_ref_locations:
+      - AGENTS.md (~line 911, 913)
+
+  - current_path: docs/assistant-supervision-methodology.yaml
+    destination_path: docs/automation/assistant-supervision-methodology.yaml
+    compatibility_strategy: FULL_INTERNAL_REWRITE
+    alternatives_rejected: []
+    reference_count_estimate: LOW
+    owner: automation_layer
+
+  - current_path: docs/terminal-closure-state-machine.md
+    destination_path: docs/automation/terminal-closure-state-machine.md
+    compatibility_strategy: FULL_INTERNAL_REWRITE
+    alternatives_rejected:
+      - docs/governance/: "Terminal closure is an automation/supervisor concept"
+    reference_count_estimate: LOW
+    owner: automation_layer
+
+  - current_path: docs/conway-r9-authority-continuity.md
+    destination_path: docs/automation/conway-r9-authority-continuity.md
+    compatibility_strategy: FULL_INTERNAL_REWRITE
+    alternatives_rejected: []
+    reference_count_estimate: LOW
+    owner: automation_layer
+
+  - current_path: docs/conway-r9-governed-simulation.md
+    destination_path: docs/automation/conway-r9-governed-simulation.md
+    compatibility_strategy: FULL_INTERNAL_REWRITE
+    alternatives_rejected: []
+    reference_count_estimate: LOW
+    owner: automation_layer
+
+  - current_path: docs/conway-r9-swarm-governance.md
+    destination_path: docs/automation/conway-r9-swarm-governance.md
+    compatibility_strategy: FULL_INTERNAL_REWRITE
+    alternatives_rejected: []
+    reference_count_estimate: LOW
+    owner: automation_layer
+
+  - current_path: docs/fresh-chat-project-bootstrap.md
+    destination_path: docs/automation/fresh-chat-project-bootstrap.md
+    compatibility_strategy: FULL_INTERNAL_REWRITE
+    alternatives_rejected:
+      - docs/ root: "NOT enforced by check_methodology_links.py — safe to move"
+    reference_count_estimate: MEDIUM
+    owner: automation_layer
+    active_ref_locations:
+      - AGENTS.md (~line 904)
+
+  - current_path: docs/fresh-chat-project-bootstrap.yaml
+    destination_path: docs/automation/fresh-chat-project-bootstrap.yaml
+    compatibility_strategy: FULL_INTERNAL_REWRITE
+    alternatives_rejected: []
+    reference_count_estimate: LOW
+    owner: automation_layer
+
+# ============================================================
+# Wave 3: Governance/Policy → docs/governance/
+# ============================================================
+
+wave_3_docs_governance:
+  destination: docs/governance/
+  destination_reason: >
+    docs/governance/ already contains 44 policy files including authorization policy,
+    execution contracts, and quality standards. Compliance, legal, release control,
+    security, and execution standards belong here.
+  moves:
+
+  - current_path: docs/compliance-posture.md
+    destination_path: docs/governance/compliance-posture.md
+    compatibility_strategy: FULL_INTERNAL_REWRITE
+    alternatives_rejected: []
+    reference_count_estimate: LOW
+    owner: governance_layer
+
+  - current_path: docs/legal-and-licensing.md
+    destination_path: docs/governance/legal-and-licensing.md
+    compatibility_strategy: TEMPORARY_COMPATIBILITY_STUB
+    alternatives_rejected:
+      - docs/release/: "Legal policy is broader than release; governance is the right home"
+    reference_count_estimate: HIGH
+    owner: governance_layer
+    active_ref_locations:
+      - AGENTS.md (~line 415)
+    stub_reason: HIGH reference count; possible external consumer dependencies
+
+  - current_path: docs/release-control.md
+    destination_path: docs/governance/release-control.md
+    compatibility_strategy: TEMPORARY_COMPATIBILITY_STUB
+    alternatives_rejected:
+      - docs/release/: "docs/release/ contains per-format release notes, not policy"
+    reference_count_estimate: HIGH
+    owner: governance_layer
+    active_ref_locations:
+      - AGENTS.md (~line 204, 286, 380)
+    stub_reason: HIGH reference count (~569 estimated)
+
+  - current_path: docs/security.md
+    destination_path: docs/governance/security.md
+    compatibility_strategy: TEMPORARY_COMPATIBILITY_STUB
+    alternatives_rejected:
+      - docs/ root: "Does not qualify for cross_cutting_policy_root_convention — governance fits"
+    reference_count_estimate: HIGH
+    owner: governance_layer
+    active_ref_locations:
+      - AGENTS.md (~line 402)
+      - tools/ai/validators/risk_controls.py (possible reference)
+    stub_reason: HIGH reference count (~375 estimated)
+
+  - current_path: docs/source-track-maturity-policy.md
+    destination_path: docs/governance/source-track-maturity-policy.md
+    compatibility_strategy: FULL_INTERNAL_REWRITE
+    alternatives_rejected: []
+    reference_count_estimate: LOW
+    owner: governance_layer
+
+  - current_path: docs/sprint-depth-policy.md
+    destination_path: docs/governance/sprint-depth-policy.md
+    compatibility_strategy: FULL_INTERNAL_REWRITE
+    alternatives_rejected: []
+    reference_count_estimate: LOW
+    owner: governance_layer
+
+  - current_path: docs/prototype-quarantine-policy.md
+    destination_path: docs/governance/prototype-quarantine-policy.md
+    compatibility_strategy: FULL_INTERNAL_REWRITE
+    alternatives_rejected: []
+    reference_count_estimate: LOW
+    owner: governance_layer
+
+  - current_path: docs/taskcard-layer-states.md
+    destination_path: docs/governance/taskcard-layer-states.md
+    compatibility_strategy: FULL_INTERNAL_REWRITE
+    alternatives_rejected: []
+    reference_count_estimate: LOW
+    owner: governance_layer
+
+  - current_path: docs/project-execution-standards.md
+    destination_path: docs/governance/project-execution-standards.md
+    compatibility_strategy: FULL_INTERNAL_REWRITE
+    alternatives_rejected: []
+    reference_count_estimate: MEDIUM
+    owner: governance_layer
+    active_ref_locations:
+      - AGENTS.md (~line 912)
+
+  - current_path: docs/project-execution-standards.yaml
+    destination_path: docs/governance/project-execution-standards.yaml
+    compatibility_strategy: FULL_INTERNAL_REWRITE
+    alternatives_rejected: []
+    reference_count_estimate: LOW
+    owner: governance_layer
+
+  - current_path: docs/current-state-and-evidence-authority.md
+    destination_path: docs/governance/current-state-and-evidence-authority.md
+    compatibility_strategy: TEMPORARY_COMPATIBILITY_STUB
+    alternatives_rejected: []
+    reference_count_estimate: HIGH
+    owner: governance_layer
+    active_ref_locations:
+      - AGENTS.md (~line 637, 814, 859)
+    stub_reason: HIGH reference count (~499 estimated)
+
+  - current_path: docs/playbook-layer.md
+    destination_path: docs/governance/playbook-layer.md
+    compatibility_strategy: FULL_INTERNAL_REWRITE
+    alternatives_rejected: []
+    reference_count_estimate: MEDIUM
+    owner: governance_layer
+    active_ref_locations:
+      - AGENTS.md (~line 644)
+
+  - current_path: docs/gate-quality-criteria.md
+    destination_path: docs/governance/gate-quality-criteria.md
+    compatibility_strategy: FULL_INTERNAL_REWRITE
+    alternatives_rejected:
+      - docs/ root: "gate-quality-criteria is supporting detail for gates.md; gates.md stays at root"
+    reference_count_estimate: LOW
+    owner: governance_layer
+
+# ============================================================
+# Wave 4: Format/Acquisition/Spec → docs/python-foss/
+# ============================================================
+
+wave_4_docs_python_foss:
+  destination: docs/python-foss/
+  destination_reason: >
+    docs/python-foss/ contains format API guidelines, release process, and format support matrix.
+    Format acquisition, onboarding, specification, and roadmap documents are natural extensions.
+  moves:
+
+  - current_path: docs/format-completion-matrix.md
+    destination_path: docs/python-foss/format-completion-matrix.md
+    compatibility_strategy: FULL_INTERNAL_REWRITE
+    alternatives_rejected:
+      - docs/product-factory/: "Format completion is FOSS Python track tracking, not commercial factory"
+    reference_count_estimate: LOW
+    owner: format_layer
+
+  - current_path: docs/format-expansion-roadmap.md
+    destination_path: docs/python-foss/format-expansion-roadmap.md
+    compatibility_strategy: FULL_INTERNAL_REWRITE
+    alternatives_rejected: []
+    reference_count_estimate: LOW
+    owner: format_layer
+
+  - current_path: docs/format-expansion-roadmap.yaml
+    destination_path: docs/python-foss/format-expansion-roadmap.yaml
+    compatibility_strategy: FULL_INTERNAL_REWRITE
+    alternatives_rejected: []
+    reference_count_estimate: LOW
+    owner: format_layer
+
+  - current_path: docs/format-feature-matrix-template.md
+    destination_path: docs/python-foss/format-feature-matrix-template.md
+    compatibility_strategy: FULL_INTERNAL_REWRITE
+    alternatives_rejected: []
+    reference_count_estimate: LOW
+    owner: format_layer
+
+  - current_path: docs/format-onboarding-guide.md
+    destination_path: docs/python-foss/format-onboarding-guide.md
+    compatibility_strategy: FULL_INTERNAL_REWRITE
+    alternatives_rejected: []
+    reference_count_estimate: LOW
+    owner: format_layer
+
+  - current_path: docs/format-representation-model.md
+    destination_path: docs/python-foss/format-representation-model.md
+    compatibility_strategy: FULL_INTERNAL_REWRITE
+    alternatives_rejected:
+      - docs/code-quality/: "Format DOM/representation is format-layer, not code quality"
+    reference_count_estimate: MEDIUM
+    owner: format_layer
+    active_ref_locations:
+      - AGENTS.md (~line 740)
+
+  - current_path: docs/format-understanding-layer.md
+    destination_path: docs/python-foss/format-understanding-layer.md
+    compatibility_strategy: FULL_INTERNAL_REWRITE
+    alternatives_rejected: []
+    reference_count_estimate: MEDIUM
+    owner: format_layer
+    active_ref_locations:
+      - AGENTS.md (~line 713)
+
+  - current_path: docs/odf-flat-family-reuse-strategy.md
+    destination_path: docs/python-foss/odf-flat-family-reuse-strategy.md
+    compatibility_strategy: FULL_INTERNAL_REWRITE
+    alternatives_rejected: []
+    reference_count_estimate: LOW
+    owner: format_layer
+
+  - current_path: docs/non-aspose-format-candidate-registry-plan.md
+    destination_path: docs/python-foss/non-aspose-format-candidate-registry-plan.md
+    compatibility_strategy: FULL_INTERNAL_REWRITE
+    alternatives_rejected: []
+    reference_count_estimate: LOW
+    owner: format_layer
+
+  - current_path: docs/acquisition-workflow.md
+    destination_path: docs/python-foss/acquisition-workflow.md
+    compatibility_strategy: TEMPORARY_COMPATIBILITY_STUB
+    alternatives_rejected:
+      - docs/governance/: "Acquisition workflow is format-layer process, not cross-cutting governance"
+    reference_count_estimate: HIGH
+    owner: format_layer
+    active_ref_locations:
+      - AGENTS.md (~line 192)
+    stub_reason: HIGH reference count (~645 estimated)
+
+  - current_path: docs/specification-cache.md
+    destination_path: docs/python-foss/specification-cache.md
+    compatibility_strategy: TEMPORARY_COMPATIBILITY_STUB
+    alternatives_rejected:
+      - docs/ai/: "Spec caching is format/spec layer, not AI/LLM strategy"
+    reference_count_estimate: HIGH
+    owner: format_layer
+    stub_reason: HIGHEST reference count (~743 estimated) of any movable file
+
+  - current_path: docs/specification-normalization.md
+    destination_path: docs/python-foss/specification-normalization.md
+    compatibility_strategy: FULL_INTERNAL_REWRITE
+    alternatives_rejected: []
+    reference_count_estimate: MEDIUM
+    owner: format_layer
+    active_ref_locations:
+      - AGENTS.md (~line 570, 1210)
+
+  - current_path: docs/spec-consumption-workbench.md
+    destination_path: docs/python-foss/spec-consumption-workbench.md
+    compatibility_strategy: FULL_INTERNAL_REWRITE
+    alternatives_rejected: []
+    reference_count_estimate: MEDIUM
+    owner: format_layer
+    active_ref_locations:
+      - AGENTS.md (~line 1166, 1208)
+
+  - current_path: docs/spec-to-source-chain-contract.md
+    destination_path: docs/python-foss/spec-to-source-chain-contract.md
+    compatibility_strategy: FULL_INTERNAL_REWRITE
+    alternatives_rejected: []
+    reference_count_estimate: LOW
+    owner: format_layer
+
+# ============================================================
+# Wave 5: Architecture/Code-Quality → docs/code-quality/
+#         Product Architecture → docs/product-factory/
+# ============================================================
+
+wave_5_docs_code_quality:
+  destination: docs/code-quality/
+  destination_reason: >
+    docs/code-quality/ contains production library standards, healing validation matrices,
+    and source architecture gap inventories. Architecture contracts, compiler design,
+    test layering, and source hygiene naturally belong here.
+  moves:
+
+  - current_path: docs/architecture-contract.md
+    destination_path: docs/code-quality/architecture-contract.md
+    compatibility_strategy: FULL_INTERNAL_REWRITE
+    alternatives_rejected: []
+    reference_count_estimate: LOW
+    owner: code_quality_layer
+
+  - current_path: docs/architecture.md
+    destination_path: docs/code-quality/architecture.md
+    compatibility_strategy: TEMPORARY_COMPATIBILITY_STUB
+    alternatives_rejected:
+      - docs/ root: >
+          Does not qualify for repository_wide_navigation_index — architecture.md describes
+          system internals, not navigation. README.md and agent-methodology-index.md are
+          the navigation documents. architecture.md is a reference, not an entry point.
+    reference_count_estimate: HIGH
+    owner: code_quality_layer
+    stub_reason: HIGH reference count (~591 estimated)
+    active_ref_locations:
+      - AGENTS.md (multiple locations)
+
+  - current_path: docs/source-package-hygiene.md
+    destination_path: docs/code-quality/source-package-hygiene.md
+    compatibility_strategy: FULL_INTERNAL_REWRITE
+    alternatives_rejected: []
+    reference_count_estimate: LOW
+    owner: code_quality_layer
+
+  - current_path: docs/capability-feature-compiler-spec.md
+    destination_path: docs/code-quality/capability-feature-compiler-spec.md
+    compatibility_strategy: FULL_INTERNAL_REWRITE
+    alternatives_rejected: []
+    reference_count_estimate: LOW
+    owner: code_quality_layer
+
+  - current_path: docs/capability-layer-design.md
+    destination_path: docs/code-quality/capability-layer-design.md
+    compatibility_strategy: FULL_INTERNAL_REWRITE
+    alternatives_rejected: []
+    reference_count_estimate: LOW
+    owner: code_quality_layer
+
+  - current_path: docs/compiler-relationship.md
+    destination_path: docs/code-quality/compiler-relationship.md
+    compatibility_strategy: FULL_INTERNAL_REWRITE
+    alternatives_rejected: []
+    reference_count_estimate: LOW
+    owner: code_quality_layer
+
+  - current_path: docs/test-layering.md
+    destination_path: docs/code-quality/test-layering.md
+    compatibility_strategy: FULL_INTERNAL_REWRITE
+    alternatives_rejected: []
+    reference_count_estimate: LOW
+    owner: code_quality_layer
+
+wave_5_docs_product_factory:
+  destination: docs/product-factory/
+  destination_reason: >
+    docs/product-factory/ contains the product factory acceleration layer doc.
+    Commercial architecture, product tracks, and product model lifecycle fit here.
+  moves:
+
+  - current_path: docs/commercial-dotnet-architecture.md
+    destination_path: docs/product-factory/commercial-dotnet-architecture.md
+    compatibility_strategy: FULL_INTERNAL_REWRITE
+    alternatives_rejected:
+      - docs/code-quality/: "Commercial .NET is product factory concern, not Python code quality"
+    reference_count_estimate: LOW
+    owner: product_factory_layer
+
+  - current_path: docs/commercial-dotnet-architecture.yaml
+    destination_path: docs/product-factory/commercial-dotnet-architecture.yaml
+    compatibility_strategy: FULL_INTERNAL_REWRITE
+    alternatives_rejected: []
+    reference_count_estimate: LOW
+    owner: product_factory_layer
+
+  - current_path: docs/commercial-product-capability-model.md
+    destination_path: docs/product-factory/commercial-product-capability-model.md
+    compatibility_strategy: FULL_INTERNAL_REWRITE
+    alternatives_rejected: []
+    reference_count_estimate: MEDIUM
+    owner: product_factory_layer
+    active_ref_locations:
+      - AGENTS.md (~line 865)
+
+  - current_path: docs/commercial-product-capability-model.yaml
+    destination_path: docs/product-factory/commercial-product-capability-model.yaml
+    compatibility_strategy: FULL_INTERNAL_REWRITE
+    alternatives_rejected: []
+    reference_count_estimate: LOW
+    owner: product_factory_layer
+
+  - current_path: docs/product-object-model-edit-save-export-strategy.md
+    destination_path: docs/product-factory/product-object-model-edit-save-export-strategy.md
+    compatibility_strategy: FULL_INTERNAL_REWRITE
+    alternatives_rejected: []
+    reference_count_estimate: LOW
+    owner: product_factory_layer
+
+  - current_path: docs/product-tracks.md
+    destination_path: docs/product-factory/product-tracks.md
+    compatibility_strategy: FULL_INTERNAL_REWRITE
+    alternatives_rejected: []
+    reference_count_estimate: MEDIUM
+    owner: product_factory_layer
+
+# ============================================================
+# Compatibility Stub Template
+# ============================================================
+stub_template: |
+  # {title} — MOVED
+
+  > **DEPRECATED PATH.** This document has been relocated to its canonical location.
+  > Canonical path: `{destination_path}`
+  >
+  > Update your references to use the canonical path.
+  > This stub will be removed once all active references are updated.
+  >
+  > deprecation_date: {date}
+  > canonical_path: {destination_path}
+  > removal_criteria: all_active_internal_references_updated
+
+counters:
+  ROOT_DOCS_WITHOUT_VALID_RETENTION_REASON: 0
+  total_moves_planned: 62
+  high_risk_moves: 6
+  stub_required: 6
+  full_rewrite_moves: 56

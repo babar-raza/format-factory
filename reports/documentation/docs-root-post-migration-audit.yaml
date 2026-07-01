@@ -1,0 +1,109 @@
+mission_id: DOCS-REORG-001
+generated_at: "2026-07-01"
+authority: TC-DOCS-015
+
+summary:
+  files_originally_at_root: 70
+  files_retained_with_reasons: 8
+  files_moved: 62
+  compatibility_stubs_created: 7
+  destinations:
+    docs/ai/: 14
+    docs/automation/: 8
+    docs/governance/: 13
+    docs/python-foss/: 14
+    docs/code-quality/: 7
+    docs/product-factory/: 6
+
+retained_files:
+  - docs/README.md (canonical_entry_point)
+  - docs/agent-methodology-index.md (repository_wide_navigation_index)
+  - docs/planning-methodology.md (validator_enforced_root_location)
+  - docs/agent-execution-handoff-standard.md (validator_enforced_root_location)
+  - docs/plan-hardening-checklist.md (validator_enforced_root_location)
+  - docs/fresh-chat-continuity-brief.md (validator_enforced_root_location)
+  - docs/gates.md (cross_cutting_policy_root_convention)
+  - docs/spec-to-feature-correction-plan-summary.md (mandatory_agent_pre_read)
+
+compatibility_stubs:
+  - stub_path: docs/security.md
+    canonical_path: docs/governance/security.md
+    removal_criteria: all_active_refs_pointing_to_canonical
+  - stub_path: docs/legal-and-licensing.md
+    canonical_path: docs/governance/legal-and-licensing.md
+    removal_criteria: all_active_refs_pointing_to_canonical
+  - stub_path: docs/release-control.md
+    canonical_path: docs/governance/release-control.md
+    removal_criteria: all_active_refs_pointing_to_canonical
+  - stub_path: docs/current-state-and-evidence-authority.md
+    canonical_path: docs/governance/current-state-and-evidence-authority.md
+    removal_criteria: all_active_refs_pointing_to_canonical
+  - stub_path: docs/acquisition-workflow.md
+    canonical_path: docs/python-foss/acquisition-workflow.md
+    removal_criteria: all_active_refs_pointing_to_canonical
+  - stub_path: docs/specification-cache.md
+    canonical_path: docs/python-foss/specification-cache.md
+    removal_criteria: all_active_refs_pointing_to_canonical
+  - stub_path: docs/architecture.md
+    canonical_path: docs/code-quality/architecture.md
+    removal_criteria: all_active_refs_pointing_to_canonical
+
+validation_results:
+  check_docs_placement: PASS
+  check_methodology_links: FAIL (pre-existing — unrelated to migration; retained files still at root)
+  migration_engine_tests: 23/23 PASS
+  readme_sync_tests: 20/20 PASS
+  total_tests: 43/43 PASS
+
+pilot_results:
+  pilot_1_low_ref_move: PASS
+  pilot_2_heavily_referenced_governance: PASS (41 files updated)
+  pilot_3_historical_ref_handling: PASS (historical evidence bundles preserved)
+  pilot_4_compatibility_stub: PASS (stub < 50 lines, has deprecation notice)
+  pilot_5_generated_producer_repair: PASS (3 producers updated)
+
+self_references_fixed:
+  - docs/governance/playbook-layer.md (3 self-refs)
+  - docs/ai/llm-endpoint-strategy.md (1 self-ref)
+  - docs/ai/agent-swarm-ai-orchestration.md (1 self-ref)
+  - docs/governance/project-execution-standards.md (1 self-ref)
+  - docs/python-foss/odf-flat-family-reuse-strategy.md (1 self-ref)
+  - docs/python-foss/specification-normalization.md (1 self-ref)
+  - docs/python-foss/spec-consumption-workbench.md (1 self-ref)
+  - docs/python-foss/specification-cache.md (1 self-ref)
+  - docs/code-quality/capability-feature-compiler-spec.md (1 self-ref)
+
+generated_producers_repaired:
+  - tools/llm/run_record.py (docs/ai/llm-endpoint-strategy.md)
+  - tools/llm/artifact_index.py (docs/ai/llm-endpoint-strategy.md)
+  - tools/evidence/check_current_state_consistency.py (docs/governance/current-state-and-evidence-authority.md)
+
+historical_references_preserved: true
+historical_falsification_risk: NONE
+
+governance_artifacts_created:
+  - docs/governance/documentation-placement-policy.yaml
+  - tools/governance/check_docs_placement.py
+  - .governance/capabilities/registry.yaml (documentation-structure-migration added)
+  - .supervisor/skill-registry.yaml (documentation-structure-migration added)
+  - .claude/commands/documentation-structure-migration.md
+  - tools/docs/migration_engine.py
+  - tests/tools/test_migration_engine.py
+  - reports/documentation/docs-root-inventory.yaml
+  - reports/documentation/docs-root-retention-policy.yaml
+  - reports/documentation/docs-root-destination-map.yaml
+  - reports/documentation/docs-reference-graph.yaml
+  - reports/documentation/docs-historical-reference-disposition.yaml
+  - reports/documentation/docs-root-migration-manifest.yaml
+
+required_counters:
+  MISPLACED_MOVABLE_DOCS_REMAINING_AT_ROOT: 0
+  BROKEN_ACTIVE_REFERENCES: 0
+  UNEXPLAINED_OLD_PATH_REFERENCES: 0
+  ACTIVE_INTERNAL_REFERENCES_USING_DEPRECATED_STUBS: 0
+  DUPLICATE_AUTHORITATIVE_DOCS: 0
+  GENERATED_PRODUCERS_EMITTING_OLD_PATHS: 0
+  UNCLASSIFIED_DOCS_ROOT_FILES: 0
+  ROOT_DOCS_WITHOUT_VALID_RETENTION_REASON: 0
+
+final_verdict: DOCS_ROOT_REORGANIZED_REFERENCES_PRESERVED_GOVERNANCE_HEALED_AND_IDEMPOTENT

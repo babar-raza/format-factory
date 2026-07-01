@@ -1,0 +1,94 @@
+mission_id: DOCS-REORG-001
+generated_at: "2026-07-01"
+authority: TC-DOCS-004
+
+# Historical references are found primarily in:
+# 1. .local/evidence-bundles/ — sprint evidence snapshots (gitignored, reconstructible)
+# 2. .local/evidences/ — evidence declarations for closed sprints
+# 3. docs/history/ — archived master-plan snapshots
+# 4. docs/_audit/ — audit traceability documents
+# 5. bundle-metadata/ — per-sprint evidence bundle metadata
+# 6. reports/certification/ — certification reports (immutable evidence)
+# 7. reports/snoopy*, reports/forensics*, reports/layer-audit* — historical analyses
+
+# Total historical references scanned across all 62 movable files:
+# > 100,000 individual references found in historical artifacts
+# These are ALL preserved as-is (PRESERVE_AS_IS disposition)
+
+global_disposition_policy:
+  ACTIVE_DOCUMENTATION_LINK: UPDATE_TO_CANONICAL_PATH
+  ACTIVE_RUNTIME_REFERENCE: UPDATE_TO_CANONICAL_PATH
+  ACTIVE_GOVERNANCE_REFERENCE: UPDATE_TO_CANONICAL_PATH
+  ACTIVE_TEST_REFERENCE: UPDATE_TO_CANONICAL_PATH
+  ACTIVE_REGISTRY_REFERENCE: UPDATE_TO_CANONICAL_PATH
+  ACTIVE_COMMAND_REFERENCE: UPDATE_TO_CANONICAL_PATH
+  ACTIVE_PLAN_OR_TASKCARD: UPDATE_TO_CANONICAL_PATH
+  HISTORICAL_EVIDENCE: PRESERVE_AS_IS
+  OBSOLETE_REFERENCE: PRESERVE_AS_IS
+  GENERATED_REFERENCE: UPDATE_PRODUCER_THEN_REGENERATE
+
+historical_reference_sources:
+  - source_type: local_evidence_bundles
+    path_pattern: ".local/evidence-bundles/**"
+    count_estimate: "50,000+ references across all 62 files"
+    disposition: PRESERVE_AS_IS
+    reason: >
+      Evidence bundles are immutable sprint evidence. Changing historical paths
+      would falsify the evidence chain. These are gitignored and reconstructible
+      from source — they do not need updating.
+
+  - source_type: local_evidences
+    path_pattern: ".local/evidences/**"
+    count_estimate: "10,000+ references across all 62 files"
+    disposition: PRESERVE_AS_IS
+    reason: >
+      Evidence declaration files record what existed at the time of sprint execution.
+      Historical evidence declarations must not be modified.
+
+  - source_type: docs_history
+    path_pattern: "docs/history/**"
+    count_estimate: "~2,000 references across all 62 files"
+    disposition: PRESERVE_AS_IS
+    reason: >
+      docs/history/ contains archived master-plan snapshots from before healing sprints.
+      These are historical records — the old paths are accurate for their time.
+
+  - source_type: docs_audit
+    path_pattern: "docs/_audit/**"
+    count_estimate: "~500 references"
+    disposition: PRESERVE_AS_IS
+    reason: Audit traceability documents reference historical state.
+
+  - source_type: bundle_metadata
+    path_pattern: "bundle-metadata/**"
+    count_estimate: "~1,000 references"
+    disposition: PRESERVE_AS_IS
+    reason: Sprint bundle metadata is immutable evidence.
+
+  - source_type: reports_historical
+    path_pattern: "reports/certification/**,reports/snoopy*,reports/forensics*,reports/layer-audit*"
+    count_estimate: "~5,000 references"
+    disposition: PRESERVE_AS_IS
+    reason: Historical reports record state at time of analysis.
+
+generated_reference_producers:
+  - file: tools/llm/run_record.py
+    references: [docs/llm-endpoint-strategy.md]
+    action: UPDATE_PRODUCER
+    note: Contains Python string constant referencing the old path
+
+  - file: tools/llm/artifact_index.py
+    references: [docs/llm-endpoint-strategy.md]
+    action: UPDATE_PRODUCER
+    note: Contains Python string constant referencing the old path
+
+  - file: tools/evidence/check_current_state_consistency.py
+    references: [docs/current-state-and-evidence-authority.md]
+    action: UPDATE_PRODUCER
+    note: May contain validation reference to old path
+
+summary:
+  total_active_refs_to_update: ~574  # sum of active_references across all 62 files
+  total_historical_refs_to_preserve: ">100,000"
+  historical_falsification_risk: NONE  # all historical refs preserved as-is
+  generated_producers_to_update: 3

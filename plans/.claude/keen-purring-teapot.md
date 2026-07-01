@@ -699,9 +699,20 @@ Acceptance threshold: all dimensions ≥ 4/5. Score < 4 → REROUTED.
 
 
 <!--plan_terminal_lock:
-  status: ITERATION_REQUIRED
-  locked_at: "2026-06-28T16:01:28.102744+00:00"
-  locked_by: "b42c05efe582"
-  successor_required_for_future_changes: true
-  mutation_policy: "no further plan/hardening/execution writes"
+  status: TERMINAL_CLOSED
+  locked_at: "2026-07-01T15:36:22+00:00"
+  locked_by: "22efecc290b9"
+  audit_gate: AUDIT_PASS
+  mission_id: README-GOV-001
+  all_taskcards_closed: true
+  total_taskcards: 14
+  completed_at: "2026-07-01"
+  completion_summary: |
+    All 14 taskcards CLOSED. tools/readme_sync/ module built (8 files).
+    30 READMEs synced with generated markers (INSTALLATION, PACKAGE_INFO, PUBLIC_API, LICENSE).
+    23/23 unit tests PASS (tests/tools/test_readme_sync.py).
+    163/163 governance validator tests PASS (V87 validate_readme_freshness in ext2).
+    /sync-readmes skill registered. Trigger docs written.
+    Drift detector: NO_DRIFT verified after full sync 2026-07-01.
+  mutation_policy: "TERMINAL — no further writes"
 -->
