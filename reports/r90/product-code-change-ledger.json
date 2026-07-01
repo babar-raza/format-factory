@@ -34528,9 +34528,36 @@
         "tests/net/fodt/FodtR436GetGraphicObjectCountDedicatedTests.cs"
       ],
       "test_count": 9
+    },
+    {
+      "entry_id": "PC-NETPBM-R431",
+      "sprint_id": "ff-sprint-s413-dotnet-deepening-20260701",
+      "format": "NETPBM",
+      "change_type": "test_added",
+      "description": "NetpbmR431GetBinaryThresholdDedicatedTests: 11 tests for NetpbmImage.GetBinaryThreshold \u2014 non-negative, within MaxValue, dims/format/MaxValue unchanged, idempotent, PBM/PGM/PPM, dogfood 4x4 PGM",
+      "file_path": "tests/net/netpbm/NetpbmR431GetBinaryThresholdDedicatedTests.cs",
+      "timestamp": "2026-07-01T19:00:00Z"
+    },
+    {
+      "entry_id": "PC-FODS-R462",
+      "sprint_id": "ff-sprint-s413-dotnet-deepening-20260701",
+      "format": "FODS",
+      "change_type": "test_added",
+      "description": "FodsR462GetCellNumberFormatDedicatedTests: 11 tests for FodsDocument.GetCellNumberFormat \u2014 guard throws, valid non-null, SheetCount unchanged, idempotent, is string, SetNumberFormat+Get, dogfood default/multiple",
+      "file_path": "tests/net/fods/FodsR462GetCellNumberFormatDedicatedTests.cs",
+      "timestamp": "2026-07-01T19:00:00Z"
+    },
+    {
+      "entry_id": "PC-FODT-R437",
+      "sprint_id": "ff-sprint-s413-dotnet-deepening-20260701",
+      "format": "FODT",
+      "change_type": "test_added",
+      "description": "FodtR437GetMasterPageCountDedicatedTests: 9 tests for FodtDocument.GetMasterPageCount \u2014 new non-negative, counts unchanged, idempotent, is int, dogfood paragraphs/mixed/loop",
+      "file_path": "tests/net/fodt/FodtR437GetMasterPageCountDedicatedTests.cs",
+      "timestamp": "2026-07-01T19:00:00Z"
     }
   ],
-  "total_entries": 2065,
+  "total_entries": 2068,
   "changes": [
     {
       "file": "src/python/dif/models.py",
