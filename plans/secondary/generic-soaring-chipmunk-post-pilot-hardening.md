@@ -921,12 +921,12 @@ Then update governance records (TC-POST-COUNT-001) with confirmed counts.
 
 | Taskcard ID | Status | Priority |
 |-------------|--------|----------|
-| TC-POST-COUNT-001 | completed_verified | HIGH |
-| TC-POST-GAP-GUARD-001 | completed_verified | HIGH |
-| TC-POST-FODT-001 | completed_verified | MEDIUM |
-| TC-POST-CTRL-IDX-001 | completed_verified | LOW |
-| TC-POST-POC-TARGETS-001 | completed_verified | LOW |
-| TC-POST-IDEMPOTENCY-001 | completed_verified | LOW |
+| TC-POST-COUNT-001 | CLOSED | HIGH |
+| TC-POST-GAP-GUARD-001 | CLOSED | HIGH |
+| TC-POST-FODT-001 | CLOSED | MEDIUM |
+| TC-POST-CTRL-IDX-001 | CLOSED | LOW |
+| TC-POST-POC-TARGETS-001 | CLOSED | LOW |
+| TC-POST-IDEMPOTENCY-001 | CLOSED | LOW |
 
 ---
 
@@ -959,3 +959,14 @@ plan_hardening_validation:
 *End of post-pilot hardening addendum — 2026-07-02*
 *Parent: generic-soaring-chipmunk-hardening-addendum.md v1.2 (TERMINAL_CLOSED 2026-07-01)*
 *6 taskcards | 4 gates | Highest priority: TC-POST-COUNT-001 + TC-POST-GAP-GUARD-001*
+
+
+
+
+<!--plan_terminal_lock:
+  status: TERMINAL_CLOSED
+  locked_at: "2026-07-01T20:56:39.094701+00:00"
+  locked_by: "df3c9d31692b"
+  successor_required_for_future_changes: true
+  mutation_policy: "no further plan/hardening/execution writes"
+-->
