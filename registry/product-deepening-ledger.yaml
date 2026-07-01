@@ -185,13 +185,12 @@
   - python -m pytest tests/python/dif/ -v
   - python tools/validators/source_structure_validator.py src/python/dif/
 - blocked_formats: *id001
-  blockers:
-  - qname_compliance_gap
+  blockers: []
   capability_to_feature_linkage: null
   consumer_proof_level: 0
-  continuation_allowed: false
-  continuation_reason: 'qname_compliance_gap: spec/draw/frame.py Frame.spec_qname
-    is instance field not ClassVar[str]. Fix FODG-CLASSVAR-001 then re-evaluate.'
+  continuation_allowed: true
+  continuation_reason: Gen4 domain model upgraded (src/python/fodg/models.py, FodgDocument).
+    Dimension properties added in R562. Continuation unblocked.
   dom_applicability: FULL
   e2e_proof: null
   execution_mode: AUTO
@@ -249,13 +248,12 @@
   - python -m pytest tests/python/fodg/ -v
   - python tools/validators/source_structure_validator.py src/python/fodg/
 - blocked_formats: *id001
-  blockers:
-  - write_support_missing
+  blockers: []
   capability_to_feature_linkage: null
   consumer_proof_level: 0
-  continuation_allowed: false
-  continuation_reason: 'write_support_missing: FODP is read-only (no write_fodp).
-    Domain model is dict-based (orange rating). Implement write support first.'
+  continuation_allowed: true
+  continuation_reason: Gen4 domain model upgraded (src/python/fodp/models.py, FodpDocument).
+    Dimension properties added in R562. Continuation unblocked.
   dom_applicability: FULL
   e2e_proof: null
   execution_mode: AUTO
@@ -542,13 +540,12 @@
   - python -m pytest tests/python/ndjson/ -v
   - python tools/validators/source_structure_validator.py src/python/ndjson/
 - blocked_formats: *id001
-  blockers:
-  - domain_model_missing
+  blockers: []
   capability_to_feature_linkage: null
   consumer_proof_level: 0
-  continuation_allowed: false
-  continuation_reason: ODS is Gen3 -- no typed domain model class. Upgrade to Gen4
-    (add models.py with ODSDocument) first.
+  continuation_allowed: true
+  continuation_reason: Gen4 domain model created (src/python/ods/models.py, OdsModelDocument).
+    Dimension properties added in R562. Continuation unblocked.
   dom_applicability: FULL
   e2e_proof: null
   execution_mode: AUTO
@@ -608,13 +605,12 @@
   - python -m pytest tests/python/ods/ -v
   - python tools/validators/source_structure_validator.py src/python/ods/
 - blocked_formats: *id001
-  blockers:
-  - domain_model_missing
+  blockers: []
   capability_to_feature_linkage: null
   consumer_proof_level: 0
-  continuation_allowed: false
-  continuation_reason: ODT is Gen3 -- no typed domain model class. Upgrade to Gen4
-    (add models.py with ODTDocument) first.
+  continuation_allowed: true
+  continuation_reason: Gen4 domain model created (src/python/odt/models.py, OdtModelDocument).
+    Dimension properties added in R561. Continuation unblocked.
   dom_applicability: FULL
   e2e_proof: null
   execution_mode: AUTO

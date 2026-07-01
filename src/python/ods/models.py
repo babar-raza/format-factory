@@ -129,6 +129,22 @@ class OdsModelDocument:
         """Return all sheets as typed OdsSheetModel objects."""
         return [OdsSheetModel(s) for s in self._parsed.sheets]
 
+    # Workbook dimension properties (FACT-ODS-001)
+    @property
+    def is_empty(self) -> bool:
+        """True if the workbook has no sheets."""
+        return self.sheet_count == 0
+
+    @property
+    def is_single_sheet(self) -> bool:
+        """True if the workbook has exactly one sheet."""
+        return self.sheet_count == 1
+
+    @property
+    def is_multi_sheet(self) -> bool:
+        """True if the workbook has more than one sheet."""
+        return self.sheet_count > 1
+
     def to_dict(self) -> dict[str, Any]:
         """Return document summary as a dict."""
         return {

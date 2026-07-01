@@ -56,6 +56,22 @@ class FodgDocument:
         """True if the file was recognised as a valid FODG document."""
         return bool(self._data.get("is_fodg", False))
 
+    # Drawing dimension properties (FACT-FODG-001)
+    @property
+    def is_empty(self) -> bool:
+        """True if the drawing has no pages."""
+        return self.page_count == 0
+
+    @property
+    def is_single_page(self) -> bool:
+        """True if the drawing has exactly one page."""
+        return self.page_count == 1
+
+    @property
+    def has_shapes(self) -> bool:
+        """True if the drawing contains at least one shape."""
+        return self.shapes_total > 0
+
     def to_dict(self) -> dict[str, Any]:
         """Return document summary as a dict."""
         return {

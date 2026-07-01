@@ -56,6 +56,22 @@ class FodpDocument:
         """True if the file was recognised as a valid FODP document."""
         return bool(self._data.get("is_fodp", False))
 
+    # Presentation dimension properties (FACT-FODP-001)
+    @property
+    def is_empty(self) -> bool:
+        """True if the presentation has no slides."""
+        return self.page_count == 0
+
+    @property
+    def is_single_page(self) -> bool:
+        """True if the presentation has exactly one slide."""
+        return self.page_count == 1
+
+    @property
+    def is_multi_page(self) -> bool:
+        """True if the presentation has more than one slide."""
+        return self.page_count > 1
+
     def to_dict(self) -> dict[str, Any]:
         """Return document summary as a dict."""
         return {

@@ -146,6 +146,22 @@ class FodsDocument:
             return FodsSheet(sheets[index])
         return None
 
+    # Workbook dimension properties (FACT-FODS-001)
+    @property
+    def is_empty(self) -> bool:
+        """True if the workbook has no sheets."""
+        return self.sheet_count == 0
+
+    @property
+    def is_single_sheet(self) -> bool:
+        """True if the workbook has exactly one sheet."""
+        return self.sheet_count == 1
+
+    @property
+    def is_multi_sheet(self) -> bool:
+        """True if the workbook has more than one sheet."""
+        return self.sheet_count > 1
+
     def to_dict(self) -> dict[str, Any]:
         """Return the underlying workbook dict."""
         return self._data

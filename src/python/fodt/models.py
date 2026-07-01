@@ -125,6 +125,27 @@ class FodtDocument:
     def list_count(self) -> int:
         return len(self._data.get("lists", []))
 
+    # Document dimension properties (FACT-FODT-001)
+    @property
+    def is_empty(self) -> bool:
+        """True if the document has no content blocks."""
+        return self.block_count == 0
+
+    @property
+    def has_content(self) -> bool:
+        """True if the document has at least one content block."""
+        return self.block_count > 0
+
+    @property
+    def is_single_block(self) -> bool:
+        """True if the document has exactly one content block."""
+        return self.block_count == 1
+
+    @property
+    def has_headings(self) -> bool:
+        """True if the document contains at least one heading block."""
+        return any(b.get("kind") == "heading" for b in self._data.get("blocks", []))
+
     def to_dict(self) -> dict[str, Any]:
         """Return the underlying document dict."""
         return self._data
