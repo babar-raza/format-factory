@@ -4,7 +4,7 @@
 **Authority level:** Single Operational Authority
 **Project:** format-factory
 **Version:** 6.0
-**Last updated:** 2026-06-26 (v6.2: woolly-yawning-stream SAL Healing Sprint CLOSED — V13 hard-fail, V-NEW-002 provenance advisory wired, xpm/pam/NetPBM SAL facts, spec_fact_provenance contract; Section 80 added)
+**Last updated:** 2026-07-01 (v6.3: CERT-EXHAUST-20260628 crispy-jingling-snail CLOSED — security tests, property-based tests, mutation baselines, performance baselines committed as 63ad451a; 12/12 certification tests pass)
 **Last verified:** 2026-06-24
 
 **Current phase:** Multi-format POC — 11 targets (3 commercial .NET, 8 FOSS Python). Gate 11 G11-G sub-gate approved by Babar Raza 2026-06-05 (FODS, FODT, Netpbm). Registry gate_11.status: commercial_readiness_in_progress; g11g_status: APPROVED_BY_BABAR_RAZA_2026_06_05 (G11-G sub-gate approved). commercial_product_ready: false (all entries). Full Gate 11 requires Babar Raza final commercial authorization.
