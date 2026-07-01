@@ -34582,9 +34582,36 @@
       "description": "FodtR438GetDrawingObjectCountDedicatedTests: 9 tests for FodtDocument.GetDrawingObjectCount \u2014 new non-negative, counts unchanged, idempotent, is int, dogfood paragraphs/mixed/loop",
       "file_path": "tests/net/fodt/FodtR438GetDrawingObjectCountDedicatedTests.cs",
       "timestamp": "2026-07-01T19:30:00Z"
+    },
+    {
+      "entry_id": "PC-NETPBM-R433",
+      "sprint_id": "ff-sprint-s415-dotnet-deepening-20260701",
+      "format": "NETPBM",
+      "change_type": "test_added",
+      "description": "NetpbmR433GetChannelCountDedicatedTests: 11 tests for NetpbmImage.GetChannelCount \u2014 PBM/PGM/PPM positive, dims/format/MaxValue unchanged, idempotent, PPM>=PGM, dogfood 4x4 PGM/PPM",
+      "file_path": "tests/net/netpbm/NetpbmR433GetChannelCountDedicatedTests.cs",
+      "timestamp": "2026-07-01T20:00:00Z"
+    },
+    {
+      "entry_id": "PC-FODS-R464",
+      "sprint_id": "ff-sprint-s415-dotnet-deepening-20260701",
+      "format": "FODS",
+      "change_type": "test_added",
+      "description": "FodsR464GetSheetTabColorDedicatedTests: 10 tests for FodsDocument.GetSheetTabColor \u2014 guard throws, valid non-null, SheetCount unchanged, idempotent, is string, SetSheetTabColor+Get, dogfood default/multiple",
+      "file_path": "tests/net/fods/FodsR464GetSheetTabColorDedicatedTests.cs",
+      "timestamp": "2026-07-01T20:00:00Z"
+    },
+    {
+      "entry_id": "PC-FODT-R439",
+      "sprint_id": "ff-sprint-s415-dotnet-deepening-20260701",
+      "format": "FODT",
+      "change_type": "test_added",
+      "description": "FodtR439GetHyperlinkCountDedicatedTests: 9 tests for FodtDocument.GetHyperlinkCount \u2014 new non-negative, counts unchanged, idempotent, is int, dogfood paragraphs/mixed/loop",
+      "file_path": "tests/net/fodt/FodtR439GetHyperlinkCountDedicatedTests.cs",
+      "timestamp": "2026-07-01T20:00:00Z"
     }
   ],
-  "total_entries": 2071,
+  "total_entries": 2074,
   "changes": [
     {
       "file": "src/python/dif/models.py",
