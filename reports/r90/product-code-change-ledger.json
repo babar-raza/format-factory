@@ -34555,9 +34555,36 @@
       "description": "FodtR437GetMasterPageCountDedicatedTests: 9 tests for FodtDocument.GetMasterPageCount \u2014 new non-negative, counts unchanged, idempotent, is int, dogfood paragraphs/mixed/loop",
       "file_path": "tests/net/fodt/FodtR437GetMasterPageCountDedicatedTests.cs",
       "timestamp": "2026-07-01T19:00:00Z"
+    },
+    {
+      "entry_id": "PC-NETPBM-R432",
+      "sprint_id": "ff-sprint-s414-dotnet-deepening-20260701",
+      "format": "NETPBM",
+      "change_type": "test_added",
+      "description": "NetpbmR432GetColorDepthDedicatedTests: 11 tests for NetpbmImage.GetColorDepth \u2014 positive, PBM/PGM/PPM positive, dims/format/MaxValue unchanged, idempotent, PPM>=PGM, dogfood 4x4 PGM",
+      "file_path": "tests/net/netpbm/NetpbmR432GetColorDepthDedicatedTests.cs",
+      "timestamp": "2026-07-01T19:30:00Z"
+    },
+    {
+      "entry_id": "PC-FODS-R463",
+      "sprint_id": "ff-sprint-s414-dotnet-deepening-20260701",
+      "format": "FODS",
+      "change_type": "test_added",
+      "description": "FodsR463GetCellCommentDedicatedTests: 11 tests for FodsDocument.GetCellComment \u2014 guard throws, valid non-null, SheetCount unchanged, idempotent, is string, SetCellComment+Get, dogfood default/multiple",
+      "file_path": "tests/net/fods/FodsR463GetCellCommentDedicatedTests.cs",
+      "timestamp": "2026-07-01T19:30:00Z"
+    },
+    {
+      "entry_id": "PC-FODT-R438",
+      "sprint_id": "ff-sprint-s414-dotnet-deepening-20260701",
+      "format": "FODT",
+      "change_type": "test_added",
+      "description": "FodtR438GetDrawingObjectCountDedicatedTests: 9 tests for FodtDocument.GetDrawingObjectCount \u2014 new non-negative, counts unchanged, idempotent, is int, dogfood paragraphs/mixed/loop",
+      "file_path": "tests/net/fodt/FodtR438GetDrawingObjectCountDedicatedTests.cs",
+      "timestamp": "2026-07-01T19:30:00Z"
     }
   ],
-  "total_entries": 2068,
+  "total_entries": 2071,
   "changes": [
     {
       "file": "src/python/dif/models.py",
