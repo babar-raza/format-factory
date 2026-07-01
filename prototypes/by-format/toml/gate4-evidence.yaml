@@ -1,0 +1,50 @@
+---
+# Gate 4 Evidence Record — TOML (RETROSPECTIVE)
+# Generated: 2026-07-01
+# Mission: FF-G4-BACKFILL-001
+
+format_id: toml
+language: python
+evidence_type: EVIDENCE_WRAPPER
+retrospective: true
+retrospective_reason: >
+  TOML Gate 1 approved then implemented directly in src/python/toml/ without
+  formally recording Gates 2-4 in the registry. This record reconstructs evidence
+  from existing artifacts at HEAD.
+implementation_authority: src/python/toml/toml_codec.py
+prototype_or_wrapper_path: prototypes/by-format/toml/toml_gate4_probe.py
+delegated_source_path: src/python/toml/toml_codec.py
+gate2_retrospective:
+  spec_source: TOML v1.0.0 — https://toml.io/en/v1.0.0
+  spec_summary: Key-value config format with tables, arrays, dates, inline tables
+  status: retrospectively_confirmed
+gate3_retrospective:
+  corpus_location: samples/by-format/toml/
+  samples_found: minimal.toml
+  status: retrospectively_confirmed
+gate3_corpus:
+  - samples/by-format/toml/minimal.toml
+valid_sample_results:
+  - sample: samples/by-format/toml/minimal.toml
+    result: >
+      load_toml returns dict with format='toml', data dict with parsed content,
+      top_level_keys list. probe_toml returns metadata dict. Delegation confirmed.
+invalid_sample_results:
+  - sample: /nonexistent.toml
+    result: >
+      load_toml raises TomlInputError. Handled by probe_invalid() which returns
+      ok=False dict.
+security_notes: >
+  toml_codec.py enforces MAX_FILE_SIZE limit. Uses tomllib (stdlib Python 3.11+)
+  or tomli for parsing. No XXE or decompression risk.
+limitations:
+  - Retrospective evidence — not contemporaneous with implementation
+  - Sample corpus is minimal (1 sample found)
+  - Gate 4 does not claim release readiness
+tests:
+  - tests/skills/test_toml_gate4_prototype.py
+acquisition_pack: acquisition-packs/toml/pack.yaml
+registry_links:
+  - registry/format-registry.yaml#toml
+  - registry/format-completion-matrix.yaml#toml
+verdict: GATE4_PASSED

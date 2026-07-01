@@ -1,0 +1,94 @@
+# TOML Acquisition Pack
+# Tom's Obvious Minimal Language
+# Retrospective acquisition — source implementation predates formal acquisition tracking
+# FF-G4-BACKFILL-001
+
+format_id: toml
+display_name: "TOML Configuration File"
+extensions:
+  - .toml
+mime_type: "application/toml"
+family: data
+spec_body: "Tom Preston-Werner / TOML authors"
+spec_version: "TOML v1.0.0"
+legal_category: 2
+legal_description: "MIT License. TOML spec is MIT. No royalty claims."
+aspose_supported: false
+aspose_support_level: NOT_SUPPORTED
+aspose_notes: "NOT_SUPPORTED — differentiation opportunity."
+python_library: "stdlib tomllib (Python 3.11+) for reading; tomli_w for writing"
+oracle_strategy: "Round-trip: parse TOML, re-serialize with tomli_w, parse again, compare dicts"
+acquisition_risk_classification: LOW
+acquisition_risk_notes: "Well-specified format (TOML v1.0.0). MIT licensed spec. stdlib tomllib available in Python 3.11+."
+sprint_created: RETROSPECTIVE
+created_date: "2026-07-01"
+retrospective: true
+commercial_product_ready: false
+retrospective_notes: >
+  TOML source implementation (src/python/toml/) predates formal acquisition tracking.
+  This pack was created retrospectively as part of FF-G4-BACKFILL-001 to record the
+  acquisition history and Gate 4 evidence for an already-implemented format.
+
+stages:
+  identity:
+    status: confirmed
+    format_id: toml
+    display_name: "TOML Configuration File"
+    mime_type: "application/toml"
+    extensions: [".toml"]
+    structure: "Text file. Key-value pairs with typed values (string, int, float, bool, datetime, array, table)."
+    spec_body: "TOML authors (Tom Preston-Werner)"
+    spec_version: "TOML v1.0.0"
+
+  gate_1:
+    status: passed
+    retrospective: true
+    approved_by: "retrospective_reconstruction_FF-G4-BACKFILL-001"
+    approved_date: "2026-07-01"
+    score_estimate: 8.5
+    band: Accept
+    legal_category: 2
+    aspose_support_level: NOT_SUPPORTED
+    notes: >
+      Retrospective Gate 1. TOML accepted on strong spec (v1.0.0 formal), MIT license,
+      stdlib tomllib availability (Python 3.11+), and wide ecosystem adoption.
+
+  gate_2:
+    status: passed
+    retrospective: true
+    approved_by: "retrospective_reconstruction_FF-G4-BACKFILL-001"
+    approved_date: "2026-07-01"
+    spec_source: "https://toml.io/en/v1.0.0"
+    spec_version_confirmed: "TOML v1.0.0"
+    spec_access: public
+    patent_search_required: false
+    patent_notes: "MIT spec. No patents."
+    notes: "Gate 2 retrospective. TOML v1.0.0 is a complete formal spec. stdlib tomllib implements it."
+
+  gate_3:
+    status: passed
+    retrospective: true
+    sprint: RETROSPECTIVE
+    date: "2026-07-01"
+    sample_corpus_path: samples/by-format/toml/
+    notes: "Corpus samples exist at samples/by-format/toml/ from prior sprint work."
+
+  gate_4:
+    status: passed
+    evidence_type: EVIDENCE_WRAPPER
+    retrospective: true
+    blocked_date: null
+    passed_date: "2026-07-01"
+    mission_id: FF-G4-BACKFILL-001
+    prototype_path: prototypes/by-format/toml/
+    delegated_source_path: src/python/toml/toml_codec.py
+    delegated_symbols: [load_toml, probe_toml, TomlParseError, TomlInputError]
+    tests:
+      - tests/skills/test_toml_gate4_prototype.py
+    corpus:
+      - samples/by-format/toml/
+    acquisition_pack: acquisition-packs/toml/pack.yaml
+    notes: >
+      Gate 4 evidence wrapper delegates 100% to src/python/toml/toml_codec.py.
+      Retrospective acquisition — source predates formal gate tracking.
+      Backfilled FF-G4-BACKFILL-001.

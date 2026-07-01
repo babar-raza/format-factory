@@ -1,0 +1,649 @@
+---
+# Gate 4 Format Inventory
+# Generated: 2026-07-01
+# Mission: FF-G4-BACKFILL-001
+# Total formats assessed: 25 (24 supported + 1 shared family entry)
+# UNCLASSIFIED_SUPPORTED_FORMATS: 0
+
+meta:
+  generated_date: '2026-07-01'
+  mission_id: FF-G4-BACKFILL-001
+  total_formats: 25
+  unclassified_supported_formats: 0
+  gate_4_representations:
+    CANONICAL_PROTOTYPE: 7
+    SOURCE_TRACK_EQUIVALENT: 9
+    MISSING: 6
+    BLOCKED_BEFORE_GATE4: 2
+    NOT_APPLICABLE: 1
+
+formats:
+
+- format_id: fods
+  supported: true
+  language_tracks: [python, dotnet]
+  gate_1_status: passed
+  gate_2_status: passed
+  gate_3_status: passed
+  gate_4_claim: passed
+  gate_4_representation: CANONICAL_PROTOTYPE
+  prototype_path: prototypes/by-format/fods/
+  source_path: src/python/fods/
+  parser_path: prototypes/by-format/fods/fods_parser.py
+  acquisition_pack: acquisition-packs/fods/pack.yaml
+  sample_paths:
+    - samples/by-format/fods/minimal-spreadsheet.fods
+    - samples/by-format/fods/formula-basic.fods
+    - samples/by-format/fods/multi-sheet-basic.fods
+    - samples/by-format/fods/typed-values-basic.fods
+  gate4_tests:
+    - tests/skills/test_fods_gate4_prototype.py
+  registry_entries:
+    - registry/format-registry.yaml#fods
+    - registry/format-completion-matrix.yaml#fods
+  current_truth: Standalone prototype exists; README.md present; 4/4 samples pass. Needs manifest
+    block verified against new contract.
+  gap_type: CONTRACT_NORMALIZATION
+  required_action: Verify README.md has gate4_wrapper manifest block; confirm valid + invalid
+    corpus coverage; no further parser duplication.
+
+- format_id: fodt
+  supported: true
+  language_tracks: [python, dotnet]
+  gate_1_status: passed
+  gate_2_status: passed
+  gate_3_status: passed
+  gate_4_claim: passed
+  gate_4_representation: CANONICAL_PROTOTYPE
+  prototype_path: prototypes/by-format/fodt/
+  source_path: src/python/fodt/
+  parser_path: prototypes/by-format/fodt/fodt_parser.py
+  acquisition_pack: acquisition-packs/fodt/pack.yaml
+  sample_paths:
+    - samples/by-format/fodt/minimal-document.fodt
+  gate4_tests: []
+  registry_entries:
+    - registry/format-registry.yaml#fodt
+    - registry/format-completion-matrix.yaml#fodt
+  current_truth: Standalone prototype exists; README.md present; validate_against_samples.py
+    exists. Needs manifest block verification.
+  gap_type: CONTRACT_NORMALIZATION
+  required_action: Verify README.md has gate4_wrapper manifest block; confirm valid + invalid
+    corpus coverage.
+
+- format_id: zst
+  supported: true
+  language_tracks: [python]
+  gate_1_status: passed
+  gate_2_status: passed
+  gate_3_status: passed
+  gate_4_claim: passed
+  gate_4_representation: CANONICAL_PROTOTYPE
+  prototype_path: prototypes/by-format/zst/
+  source_path: src/python/zst/
+  parser_path: prototypes/by-format/zst/zst_probe.py
+  acquisition_pack: acquisition-packs/zst/pack.yaml
+  sample_paths:
+    - samples/by-format/zst/
+  gate4_tests:
+    - tests/skills/test_zst_gate4_prototype.py
+  registry_entries:
+    - registry/format-registry.yaml#zst
+    - registry/format-completion-matrix.yaml#zst
+  current_truth: Standalone prototype exists; README.md present; tests pass. Needs manifest
+    block verification against new contract.
+  gap_type: CONTRACT_NORMALIZATION
+  required_action: Verify README.md has gate4_wrapper manifest block; confirm valid + invalid
+    corpus coverage.
+
+- format_id: fodp
+  supported: true
+  language_tracks: [python]
+  gate_1_status: passed
+  gate_2_status: passed_fast_path
+  gate_3_status: passed
+  gate_4_claim: passed
+  gate_4_representation: CANONICAL_PROTOTYPE
+  prototype_path: prototypes/by-format/fodp/
+  source_path: src/python/fodp/
+  parser_path: prototypes/by-format/fodp/fodp_parser.py
+  acquisition_pack: acquisition-packs/fodp/pack.yaml
+  sample_paths:
+    - samples/by-format/fodp/
+  gate4_tests:
+    - tests/skills/test_fodp_gate4_prototype.py
+  registry_entries:
+    - registry/format-registry.yaml#fodp
+    - registry/format-completion-matrix.yaml#fodp
+  current_truth: Parser exists; tests pass (12/12). README.md MISSING. No manifest block.
+  gap_type: README_MISSING
+  required_action: Add README.md with gate4_wrapper manifest block, Gate 3 corpus reference,
+    limitations, no-release-readiness disclaimer.
+
+- format_id: fodg
+  supported: true
+  language_tracks: [python]
+  gate_1_status: passed
+  gate_2_status: passed_fast_path
+  gate_3_status: passed
+  gate_4_claim: passed
+  gate_4_representation: CANONICAL_PROTOTYPE
+  prototype_path: prototypes/by-format/fodg/
+  source_path: src/python/fodg/
+  parser_path: prototypes/by-format/fodg/fodg_parser.py
+  acquisition_pack: acquisition-packs/fodg/pack.yaml
+  sample_paths:
+    - samples/by-format/fodg/
+  gate4_tests:
+    - tests/skills/test_fodg_gate4_prototype.py
+  registry_entries:
+    - registry/format-registry.yaml#fodg
+    - registry/format-completion-matrix.yaml#fodg
+  current_truth: Parser exists; tests pass (12/12). README.md MISSING. No manifest block.
+  gap_type: README_MISSING
+  required_action: Add README.md with gate4_wrapper manifest block, Gate 3 corpus reference,
+    limitations, no-release-readiness disclaimer.
+
+- format_id: gnumeric
+  supported: true
+  language_tracks: [python]
+  gate_1_status: passed
+  gate_2_status: passed
+  gate_3_status: passed
+  gate_4_claim: passed
+  gate_4_representation: CANONICAL_PROTOTYPE
+  prototype_path: prototypes/by-format/gnumeric/
+  source_path: src/python/gnumeric/
+  parser_path: prototypes/by-format/gnumeric/gnumeric_parser.py
+  acquisition_pack: acquisition-packs/gnumeric/pack.yaml
+  sample_paths:
+    - samples/by-format/gnumeric/
+  gate4_tests:
+    - tests/skills/test_gnumeric_gate4_prototype.py
+  registry_entries:
+    - registry/format-registry.yaml#gnumeric
+    - registry/format-completion-matrix.yaml#gnumeric
+  current_truth: Parser exists; tests pass (13/13). README.md MISSING. No manifest block.
+  gap_type: README_MISSING
+  required_action: Add README.md with gate4_wrapper manifest block, Gate 3 corpus reference,
+    limitations, no-release-readiness disclaimer.
+
+- format_id: abw
+  supported: true
+  language_tracks: [python]
+  gate_1_status: passed
+  gate_2_status: passed_with_notes
+  gate_3_status: passed
+  gate_4_claim: passed
+  gate_4_representation: CANONICAL_PROTOTYPE
+  prototype_path: prototypes/by-format/abw/
+  source_path: src/python/abw/
+  parser_path: prototypes/by-format/abw/abw_parser.py
+  acquisition_pack: acquisition-packs/abw/pack.yaml
+  sample_paths:
+    - samples/by-format/abw/
+  gate4_tests:
+    - tests/skills/test_abw_gate4_prototype.py
+  registry_entries:
+    - registry/format-registry.yaml#abw
+    - registry/format-completion-matrix.yaml#abw
+  current_truth: Parser exists; README.md present; tests pass (14/14). Needs manifest block
+    verification against new contract.
+  gap_type: CONTRACT_NORMALIZATION
+  required_action: Verify README.md has gate4_wrapper manifest block; confirm valid + invalid
+    corpus coverage.
+
+- format_id: ods
+  supported: true
+  language_tracks: [python]
+  gate_1_status: passed
+  gate_2_status: passed_fast_path
+  gate_3_status: pass
+  gate_4_claim: prototype_complete
+  gate_4_representation: SOURCE_TRACK_EQUIVALENT
+  prototype_path: null
+  source_path: src/python/ods/
+  parser_path: src/python/ods/ods_parser.py
+  acquisition_pack: acquisition-packs/ods/pack.yaml
+  sample_paths:
+    - samples/by-format/ods/
+  gate4_tests: []
+  registry_entries:
+    - registry/format-registry.yaml#ods
+    - registry/format-completion-matrix.yaml#ods
+  current_truth: Full source track at src/python/ods/ (450 LOC, 69 tests). Gate 4 marked
+    prototype_complete in registry with no evidence_type or canonical artifact. No evidence
+    wrapper exists.
+  gap_type: EVIDENCE_WRAPPER_GAP
+  required_action: Create evidence wrapper in prototypes/by-format/ods/ delegating to
+    src/python/ods/; add gate_4.evidence_type to registry.
+
+- format_id: odt
+  supported: true
+  language_tracks: [python]
+  gate_1_status: passed
+  gate_2_status: passed_fast_path
+  gate_3_status: pass
+  gate_4_claim: prototype_complete
+  gate_4_representation: SOURCE_TRACK_EQUIVALENT
+  prototype_path: null
+  source_path: src/python/odt/
+  parser_path: src/python/odt/odt_parser.py
+  acquisition_pack: acquisition-packs/odt/pack.yaml
+  sample_paths:
+    - samples/by-format/odt/
+  gate4_tests: []
+  registry_entries:
+    - registry/format-registry.yaml#odt
+    - registry/format-completion-matrix.yaml#odt
+  current_truth: Full source track at src/python/odt/ (250 LOC, 66 tests). Gate 4 marked
+    prototype_complete with no evidence_type. No evidence wrapper.
+  gap_type: EVIDENCE_WRAPPER_GAP
+  required_action: Create evidence wrapper in prototypes/by-format/odt/ delegating to
+    src/python/odt/; add gate_4.evidence_type to registry.
+
+- format_id: qoi
+  supported: true
+  language_tracks: [python]
+  gate_1_status: passed
+  gate_2_status: passed
+  gate_3_status: pass
+  gate_4_claim: prototype_complete
+  gate_4_representation: SOURCE_TRACK_EQUIVALENT
+  prototype_path: null
+  source_path: src/python/qoi/
+  parser_path: src/python/qoi/qoi_parser.py
+  acquisition_pack: acquisition-packs/qoi/pack.yaml
+  sample_paths:
+    - samples/by-format/qoi/
+  gate4_tests: []
+  registry_entries:
+    - registry/format-registry.yaml#qoi
+    - registry/format-completion-matrix.yaml#qoi
+  current_truth: Full source track at src/python/qoi/. Gate 4 marked prototype_complete.
+    No evidence wrapper.
+  gap_type: EVIDENCE_WRAPPER_GAP
+  required_action: Create evidence wrapper in prototypes/by-format/qoi/ delegating to
+    src/python/qoi/; add gate_4.evidence_type to registry.
+
+- format_id: xcf
+  supported: true
+  language_tracks: [python]
+  gate_1_status: passed
+  gate_2_status: passed
+  gate_3_status: pass
+  gate_4_claim: prototype_complete
+  gate_4_representation: SOURCE_TRACK_EQUIVALENT
+  prototype_path: null
+  source_path: src/python/xcf/
+  parser_path: src/python/xcf/xcf_parser.py
+  acquisition_pack: acquisition-packs/xcf/pack.yaml
+  sample_paths:
+    - samples/by-format/xcf/
+  gate4_tests: []
+  registry_entries:
+    - registry/format-registry.yaml#xcf
+    - registry/format-completion-matrix.yaml#xcf
+  current_truth: Source track at src/python/xcf/ (header+property+layer parse, probe_only
+    maturity). Gate 4 marked prototype_complete. No evidence wrapper.
+  gap_type: EVIDENCE_WRAPPER_GAP
+  required_action: Create evidence wrapper in prototypes/by-format/xcf/ delegating to
+    src/python/xcf/; add gate_4.evidence_type to registry.
+
+- format_id: dif
+  supported: true
+  language_tracks: [python]
+  gate_1_status: passed
+  gate_2_status: passed
+  gate_3_status: pass
+  gate_4_claim: prototype_complete
+  gate_4_representation: SOURCE_TRACK_EQUIVALENT
+  prototype_path: null
+  source_path: src/python/dif/
+  parser_path: src/python/dif/dif_parser.py
+  acquisition_pack: acquisition-packs/dif/pack.yaml
+  sample_paths:
+    - samples/by-format/dif/
+  gate4_tests: []
+  registry_entries:
+    - registry/format-registry.yaml#dif
+    - registry/format-completion-matrix.yaml#dif
+  current_truth: Full source track at src/python/dif/. Gate 4 marked prototype_complete.
+    No evidence wrapper.
+  gap_type: EVIDENCE_WRAPPER_GAP
+  required_action: Create evidence wrapper in prototypes/by-format/dif/ delegating to
+    src/python/dif/; add gate_4.evidence_type to registry.
+
+- format_id: ppm
+  supported: true
+  language_tracks: [python]
+  gate_1_status: passed
+  gate_2_status: passed
+  gate_3_status: pass
+  gate_4_claim: prototype_complete
+  gate_4_representation: SOURCE_TRACK_EQUIVALENT
+  prototype_path: null
+  source_path: src/python/ppm/
+  parser_path: src/python/ppm/ppm_parser.py
+  acquisition_pack: acquisition-packs/ppm/pack.yaml
+  sample_paths:
+    - samples/by-format/ppm/
+  gate4_tests: []
+  registry_entries:
+    - registry/format-registry.yaml#ppm
+    - registry/format-completion-matrix.yaml#ppm
+  current_truth: Source track at src/python/ppm/ (P3 ASCII parser). Gate 4 marked
+    prototype_complete. No evidence wrapper.
+  gap_type: EVIDENCE_WRAPPER_GAP
+  required_action: Create evidence wrapper in prototypes/by-format/ppm/ delegating to
+    src/python/ppm/; add gate_4.evidence_type to registry.
+
+- format_id: pgm
+  supported: true
+  language_tracks: [python]
+  gate_1_status: passed
+  gate_2_status: passed
+  gate_3_status: pass
+  gate_4_claim: pass
+  gate_4_representation: SOURCE_TRACK_EQUIVALENT
+  prototype_path: null
+  source_path: src/python/pgm/
+  parser_path: src/python/pgm/pgm_parser.py
+  acquisition_pack: acquisition-packs/pgm/pack.yaml
+  sample_paths:
+    - samples/by-format/pgm/
+  gate4_tests: []
+  registry_entries:
+    - registry/format-registry.yaml#pgm
+    - registry/format-completion-matrix.yaml#pgm
+  current_truth: Source track at src/python/pgm/. Gate 4 marked pass. No evidence wrapper.
+  gap_type: EVIDENCE_WRAPPER_GAP
+  required_action: Create evidence wrapper in prototypes/by-format/pgm/ delegating to
+    src/python/pgm/; add gate_4.evidence_type to registry.
+
+- format_id: pbm
+  supported: true
+  language_tracks: [python]
+  gate_1_status: passed
+  gate_2_status: passed
+  gate_3_status: pass
+  gate_4_claim: pass
+  gate_4_representation: SOURCE_TRACK_EQUIVALENT
+  prototype_path: null
+  source_path: src/python/pbm/
+  parser_path: src/python/pbm/pbm_parser.py
+  acquisition_pack: acquisition-packs/pbm/pack.yaml
+  sample_paths:
+    - samples/by-format/pbm/
+  gate4_tests: []
+  registry_entries:
+    - registry/format-registry.yaml#pbm
+    - registry/format-completion-matrix.yaml#pbm
+  current_truth: Source track at src/python/pbm/. Gate 4 marked pass. No evidence wrapper.
+  gap_type: EVIDENCE_WRAPPER_GAP
+  required_action: Create evidence wrapper in prototypes/by-format/pbm/ delegating to
+    src/python/pbm/; add gate_4.evidence_type to registry.
+
+- format_id: sylk
+  supported: true
+  language_tracks: [python]
+  gate_1_status: passed
+  gate_2_status: passed
+  gate_3_status: pass
+  gate_4_claim: pass
+  gate_4_representation: SOURCE_TRACK_EQUIVALENT
+  prototype_path: null
+  source_path: src/python/sylk/
+  parser_path: src/python/sylk/sylk_parser.py
+  acquisition_pack: acquisition-packs/sylk/pack.yaml
+  sample_paths:
+    - samples/by-format/sylk/
+  gate4_tests: []
+  registry_entries:
+    - registry/format-registry.yaml#sylk
+    - registry/format-completion-matrix.yaml#sylk
+  current_truth: Full source track at src/python/sylk/. Gate 4 marked pass. No evidence
+    wrapper.
+  gap_type: EVIDENCE_WRAPPER_GAP
+  required_action: Create evidence wrapper in prototypes/by-format/sylk/ delegating to
+    src/python/sylk/; add gate_4.evidence_type to registry.
+
+- format_id: csv
+  supported: true
+  language_tracks: [python]
+  gate_1_status: passed
+  gate_2_status: passed
+  gate_3_status: pass
+  gate_4_claim: MISSING
+  gate_4_representation: MISSING
+  prototype_path: null
+  source_path: src/python/csv/
+  parser_path: src/python/csv/csv_parser.py
+  acquisition_pack: acquisition-packs/csv/pack.yaml
+  sample_paths:
+    - samples/by-format/csv/minimal-2x2.csv
+    - samples/by-format/csv/quoted-fields.csv
+    - samples/by-format/csv/single-cell.csv
+    - samples/by-format/csv/invalid-unterminated-quote.csv
+  gate4_tests: []
+  registry_entries:
+    - registry/format-registry.yaml#csv
+    - registry/format-completion-matrix.yaml#csv
+  current_truth: Full source track at src/python/csv/ (csv_parser.py, csv_writer.py,
+    models.py). Gate 3 passed. Gate 4 field ABSENT from registry. Completion matrix uses
+    src path as prototype_location (incorrect). Evidence type never declared.
+  gap_type: EVIDENCE_WRAPPER_GAP
+  required_action: Create evidence wrapper in prototypes/by-format/csv/ delegating to
+    src/python/csv/; add gate_4 block to registry with evidence_type=EVIDENCE_WRAPPER.
+
+- format_id: tsv
+  supported: true
+  language_tracks: [python]
+  gate_1_status: passed
+  gate_2_status: passed
+  gate_3_status: pass
+  gate_4_claim: MISSING
+  gate_4_representation: MISSING
+  prototype_path: null
+  source_path: src/python/tsv/
+  parser_path: src/python/tsv/tsv_parser.py
+  acquisition_pack: acquisition-packs/tsv/pack.yaml
+  sample_paths:
+    - samples/by-format/tsv/minimal-2x2.tsv
+    - samples/by-format/tsv/multi-column.tsv
+    - samples/by-format/tsv/single-cell.tsv
+    - samples/by-format/tsv/invalid-binary-garbage.tsv
+  gate4_tests: []
+  registry_entries:
+    - registry/format-registry.yaml#tsv
+    - registry/format-completion-matrix.yaml#tsv
+  current_truth: Full source track at src/python/tsv/. Gate 3 passed. Gate 4 ABSENT
+    from registry. Completion matrix uses src path as prototype_location (incorrect).
+  gap_type: EVIDENCE_WRAPPER_GAP
+  required_action: Create evidence wrapper in prototypes/by-format/tsv/ delegating to
+    src/python/tsv/; add gate_4 block to registry.
+
+- format_id: ndjson
+  supported: true
+  language_tracks: [python]
+  gate_1_status: passed
+  gate_2_status: absent
+  gate_3_status: absent
+  gate_4_claim: MISSING
+  gate_4_representation: MISSING
+  prototype_path: null
+  source_path: src/python/ndjson/
+  parser_path: src/python/ndjson/ndjson_codec.py
+  acquisition_pack: acquisition-packs/ndjson/pack.yaml
+  sample_paths:
+    - samples/by-format/ndjson/valid/minimal.ndjson
+  gate4_tests: []
+  registry_entries:
+    - registry/format-registry.yaml#ndjson
+    - registry/format-completion-matrix.yaml#ndjson
+  current_truth: Full source track at src/python/ndjson/ (roundtrip_capable_library).
+    Only Gate 1 recorded in registry. Gates 2-4 never formally recorded despite implementation
+    existing. Evidence type never declared. Completion matrix lists src codec as prototype
+    path (incorrect).
+  gap_type: RETROSPECTIVE_ACQUISITION_GAP
+  required_action: Reconstruct Gate 2-4 evidence retrospectively from existing source +
+    samples; create evidence wrapper in prototypes/by-format/ndjson/; add gate_2, gate_3,
+    gate_4 blocks to registry labeled retrospective.
+
+- format_id: toml
+  supported: true
+  language_tracks: [python]
+  gate_1_status: passed
+  gate_2_status: absent
+  gate_3_status: absent
+  gate_4_claim: MISSING
+  gate_4_representation: MISSING
+  prototype_path: null
+  source_path: src/python/toml/
+  parser_path: src/python/toml/toml_codec.py
+  acquisition_pack: acquisition-packs/toml/pack.yaml
+  sample_paths:
+    - samples/by-format/toml/minimal.toml
+  gate4_tests: []
+  registry_entries:
+    - registry/format-registry.yaml#toml
+    - registry/format-completion-matrix.yaml#toml
+  current_truth: Full source track at src/python/toml/ (roundtrip_capable_library).
+    Only Gate 1 recorded in registry. Gates 2-4 never formally recorded. Completion matrix
+    lists src codec as prototype path (incorrect).
+  gap_type: RETROSPECTIVE_ACQUISITION_GAP
+  required_action: Reconstruct Gate 2-4 evidence retrospectively from existing source +
+    samples; create evidence wrapper in prototypes/by-format/toml/; add gate_2, gate_3,
+    gate_4 blocks to registry labeled retrospective.
+
+- format_id: xpm
+  supported: true
+  language_tracks: [python]
+  gate_1_status: passed
+  gate_2_status: passed
+  gate_3_status: pass
+  gate_4_claim: MISSING
+  gate_4_representation: MISSING
+  prototype_path: null
+  source_path: null
+  parser_path: null
+  acquisition_pack: acquisition-packs/xpm/pack.yaml
+  sample_paths:
+    - samples/by-format/xpm/1x1-red.xpm
+    - samples/by-format/xpm/2x2-checker.xpm
+    - samples/by-format/xpm/3x1-rgb.xpm
+    - samples/by-format/xpm/invalid-no-magic.xpm
+  gate4_tests: []
+  registry_entries:
+    - registry/format-registry.yaml#xpm
+    - registry/format-completion-matrix.yaml#xpm
+  current_truth: Gates 1-3 complete. No src/python/ directory. No prototype. Completion
+    matrix shows maturity=acquisition_only, evidence_backed_gate=G3. Ready for Gate 4.
+  gap_type: NEW_GATE4_PROTOTYPE_REQUIRED
+  required_action: Create minimal XPM3 prototype at prototypes/by-format/xpm/xpm_parser.py;
+    parse signature/dimensions/color-table/pixels; reject invalid magic; add tests.
+
+- format_id: pam
+  supported: true
+  language_tracks: [python]
+  gate_1_status: passed
+  gate_2_status: passed
+  gate_3_status: pass
+  gate_4_claim: MISSING
+  gate_4_representation: MISSING
+  prototype_path: null
+  source_path: null
+  parser_path: null
+  acquisition_pack: acquisition-packs/pam/pack.yaml
+  sample_paths:
+    - samples/by-format/pam/1x1-gray.pam
+    - samples/by-format/pam/1x1-rgb.pam
+    - samples/by-format/pam/2x2-bw.pam
+    - samples/by-format/pam/invalid-wrong-magic.pam
+  gate4_tests: []
+  registry_entries:
+    - registry/format-registry.yaml#pam
+    - registry/format-completion-matrix.yaml#pam
+  current_truth: Gates 1-3 complete. No src/python/ directory. No prototype. Completion
+    matrix shows maturity=acquisition_only, evidence_backed_gate=G3. Ready for Gate 4.
+  gap_type: NEW_GATE4_PROTOTYPE_REQUIRED
+  required_action: Create minimal PAM prototype at prototypes/by-format/pam/pam_parser.py;
+    parse P7 header/WIDTH/HEIGHT/DEPTH/MAXVAL/TUPLTYPE; verify raster length; add tests.
+
+- format_id: zpaq
+  supported: false
+  language_tracks: []
+  gate_1_status: passed
+  gate_2_status: passed
+  gate_3_status: blocked_sample_generation_requires_tool
+  gate_4_claim: MISSING
+  gate_4_representation: BLOCKED_BEFORE_GATE4
+  prototype_path: null
+  source_path: null
+  parser_path: null
+  acquisition_pack: acquisition-packs/zpaq/pack.yaml
+  sample_paths: []
+  gate4_tests: []
+  registry_entries:
+    - registry/format-registry.yaml#zpaq
+    - registry/format-completion-matrix.yaml#zpaq
+  current_truth: Gate 3 blocked — creating valid ZPAQ samples requires ZPAQL VM or zpaq
+    CLI, neither available in CI. No corpus samples exist. Cannot prove parsing feasibility
+    without samples. Gate 4 must not be claimed.
+  gap_type: BLOCKED_BEFORE_GATE4
+  required_action: Record explicit blocker in registry gate_4 block (status=blocked,
+    reason=gate3_prerequisite_incomplete). Document recovery path (acquire zpaq CLI).
+    Do NOT create prototype.
+
+- format_id: ora
+  supported: false
+  language_tracks: []
+  gate_1_status: deferred_borderline
+  gate_2_status: not_started
+  gate_3_status: not_started
+  gate_4_claim: not_started
+  gate_4_representation: BLOCKED_BEFORE_GATE4
+  prototype_path: null
+  source_path: null
+  parser_path: null
+  acquisition_pack: acquisition-packs/ora/pack.yaml
+  sample_paths: []
+  gate4_tests: []
+  registry_entries:
+    - registry/format-registry.yaml#ora
+    - registry/format-completion-matrix.yaml#ora
+  current_truth: Gate 1 deferred — acquisition score 6.8/10 below 7.0 threshold. Gates
+    2-4 not started. No samples. Cannot proceed to Gate 4 without Gate 1 approval.
+  gap_type: BLOCKED_BEFORE_GATE4
+  required_action: Record explicit blocker in registry gate_4 block (status=blocked,
+    reason=gate1_not_passed). Do NOT create prototype.
+
+- format_id: odf-shared
+  supported: false
+  language_tracks: []
+  gate_1_status: absent
+  gate_2_status: absent
+  gate_3_status: absent
+  gate_4_claim: MISSING
+  gate_4_representation: NOT_APPLICABLE
+  prototype_path: null
+  source_path: null
+  parser_path: null
+  acquisition_pack: null
+  sample_paths: []
+  gate4_tests: []
+  registry_entries:
+    - registry/format-registry.yaml#odf-shared
+  current_truth: Shared family concept entry in registry. Not a standalone format. Not
+    present in format-completion-matrix.yaml. No gate progression applies.
+  gap_type: NOT_APPLICABLE
+  required_action: No Gate 4 action required. Retain as family metadata only.
+
+# Final counters
+counters:
+  UNCLASSIFIED_SUPPORTED_FORMATS: 0
+  total_canonical_prototypes: 7
+  total_source_track_equivalents: 9
+  total_missing: 6
+  total_blocked_before_gate4: 2
+  total_not_applicable: 1

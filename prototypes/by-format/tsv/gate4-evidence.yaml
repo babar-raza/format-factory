@@ -1,0 +1,41 @@
+---
+# Gate 4 Evidence Record — TSV
+# Generated: 2026-07-01
+# Mission: FF-G4-BACKFILL-001
+
+format_id: tsv
+language: python
+evidence_type: EVIDENCE_WRAPPER
+retrospective: false
+implementation_authority: src/python/tsv/tsv_parser.py
+prototype_or_wrapper_path: prototypes/by-format/tsv/tsv_gate4_probe.py
+delegated_source_path: src/python/tsv/tsv_parser.py
+gate3_corpus:
+  - samples/by-format/tsv/minimal-2x2.tsv
+  - samples/by-format/tsv/multi-column.tsv
+  - samples/by-format/tsv/single-cell.tsv
+  - samples/by-format/tsv/invalid-binary-garbage.tsv
+valid_sample_results:
+  - sample: samples/by-format/tsv/minimal-2x2.tsv
+    result: >
+      parse_tsv returns dict with format='tsv', row_count=2, column_count=2,
+      delimiter='\t'. Delegation confirmed.
+invalid_sample_results:
+  - sample: samples/by-format/tsv/invalid-binary-garbage.tsv
+    result: >
+      parse_tsv handles binary content gracefully (no crash). For missing file,
+      TsvInputError raised or ok=False returned.
+security_notes: >
+  src/python/tsv/tsv_parser.py enforces MAX_FILE_SIZE and MAX_ROWS limits.
+  Plain text format — no XXE or decompression risk.
+limitations:
+  - Tab delimiter assumed
+  - No write at Gate 4
+  - Gate 4 does not claim release readiness
+tests:
+  - tests/skills/test_tsv_gate4_prototype.py
+acquisition_pack: acquisition-packs/tsv/pack.yaml
+registry_links:
+  - registry/format-registry.yaml#tsv
+  - registry/format-completion-matrix.yaml#tsv
+verdict: GATE4_PASSED

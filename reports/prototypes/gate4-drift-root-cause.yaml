@@ -1,0 +1,189 @@
+---
+# Gate 4 Drift Root Cause Analysis
+# Generated: 2026-07-01
+# Mission: FF-G4-BACKFILL-001
+# GATE4_REPRESENTATION_ROOT_CAUSES_IDENTIFIED: true
+
+meta:
+  generated_date: '2026-07-01'
+  mission_id: FF-G4-BACKFILL-001
+  gate4_representation_root_causes_identified: true
+  chronology_summary: |
+    Gate 4 prototyping began in acquisition-pipeline-first phase (R23-R30) where FODS
+    was the pilot. Early formats (fods, fodt, zst, fodp, fodg, gnumeric, abw) received
+    standalone prototypes. Later formats were onboarded directly into src/python/ via a
+    product-deepening sprint track, bypassing the prototypes/by-format/ folder entirely.
+    No registry field enforced that every format must declare a gate_4.evidence_type.
+    CSV and TSV received Gate 3 evidence but their gate_4 block was never written.
+    NDJSON and TOML received Gate 1 approval then jumped straight to src/python/
+    production code without formally recording Gates 2-4. XPM and PAM completed Gates 1-3
+    but have no parser yet. ZPAQ has a Gate 3 blocker that prevents Gate 4.
+
+root_causes:
+
+- id: RC-001
+  classification: GOVERNANCE_EVOLUTION
+  title: Prototype-first workflow replaced by direct src-onboarding without gate update
+  description: |
+    The original acquisition workflow (acquisition-workflow.md) specified that every format
+    pass through Gate 4 (prototype) before Gate 5+ (neutral model / production). Early formats
+    (fods, fodt, zst, fodp, fodg, gnumeric, abw) followed this path. Starting around sprint
+    R27-R29, formats were onboarded directly into src/python/ as production-grade code without
+    first creating a standalone prototype under prototypes/by-format/. This was a pragmatic
+    efficiency shortcut — format implementors recognized that writing a prototype and then
+    reimplementing it in src/python/ was redundant when the format was simple.
+  affected_formats: [ods, odt, qoi, xcf, dif, ppm, pgm, pbm, sylk]
+  evidence: |
+    registry/format-completion-matrix.yaml shows prototype_location=None for all 9 of these
+    formats while src_python_path is populated. evidence_backed_gate shows G7-G8 (above G4),
+    implying Gate 4 was considered implicitly passed.
+  remediation: Create evidence wrappers for all 9 formats, delegating to existing src/python/
+    parsers. No parser duplication. Update registry evidence_type field.
+
+- id: RC-002
+  classification: REGISTRY_SCHEMA_GAP
+  title: gate_4 block lacked required evidence_type field
+  description: |
+    The registry format-registry.yaml allowed a gate_4 block to be recorded with just
+    status=passed/prototype_complete without requiring an evidence_type (STANDALONE_PROTOTYPE,
+    EVIDENCE_WRAPPER, SOURCE_TRACK_EQUIVALENT, etc.). This made it impossible to distinguish
+    "prototype exists in prototypes/" from "source track accepted as implicit Gate 4 evidence"
+    from "Gate 4 was never done but registry was updated anyway."
+  affected_formats: [fods, fodt, zst, fodp, fodg, gnumeric, abw, ods, odt, qoi, xcf, dif,
+    ppm, pgm, pbm, sylk]
+  evidence: |
+    Python audit of format-registry.yaml: every gate_4.evidence_type field returned 'none'
+    (field absent) for all 25 formats despite gate_4 status ranging from passed to
+    prototype_complete.
+  remediation: Define gate4-evidence-contract.yaml schema with required evidence_type field.
+    Add evidence_type to all gate_4 blocks in registry. Write validate_gate4_evidence.py to
+    enforce this going forward.
+
+- id: RC-003
+  classification: SOURCE_TRACK_SHORTCUT
+  title: CSV and TSV gate_3 passed but gate_4 block never written
+  description: |
+    CSV and TSV received Gate 1-3 evidence (acquisition scores, specs, samples). Production
+    parsers exist in src/python/csv/ and src/python/tsv/. However, the gate_4 block was
+    never added to format-registry.yaml for either format. The format-completion-matrix.yaml
+    used the src/python parser file path as the prototype_location field — an incorrect
+    conflation of source path with prototype path.
+  affected_formats: [csv, tsv]
+  evidence: |
+    Python audit of format-registry.yaml: gate_4 field absent (MISSING) for csv and tsv.
+    format-completion-matrix.yaml prototype_location fields: csv=src/python/csv/csv_parser.py,
+    tsv=src/python/tsv/tsv_parser.py (source files used as surrogate prototype references).
+  remediation: Create evidence wrappers; update registry with gate_4 block; correct
+    prototype_location in completion matrix.
+
+- id: RC-004
+  classification: WORKFLOW_BYPASS
+  title: NDJSON and TOML skipped Gate 2-4 formal recording despite full implementation
+  description: |
+    NDJSON and TOML were authorized for python_foss_only implementation (Gate 1 passed)
+    and immediately received full production-quality src/python/ implementations. However,
+    Gates 2-4 were never formally recorded in the registry. The format-completion-matrix.yaml
+    shows evidence_backed_gate=G4 and actual_maturity_class=roundtrip_capable_library,
+    implying the work was done, but no gate artifacts trail exists.
+  affected_formats: [ndjson, toml]
+  evidence: |
+    registry/format-registry.yaml: ndjson and toml have only gate_1 block. Gates 2/3/4
+    absent from registry. format-completion-matrix.yaml shows roundtrip_capable_library
+    maturity with evidence_backed_gate=G4 — contradicting the registry.
+  remediation: Reconstruct Gates 2-4 as retrospective evidence from existing source + samples.
+    Label explicitly as retrospective. Create evidence wrappers.
+
+- id: RC-005
+  classification: MISSING_PREREQUISITES
+  title: XPM and PAM blocked at Gate 4 boundary — no parser yet created
+  description: |
+    XPM and PAM completed Gates 1-3 (acquisition score, spec evidence, sample corpus).
+    Both have valid sample corpora in samples/by-format/{xpm,pam}/. However, no Gate 4
+    prototype or parser was ever created. These formats were likely queued for a future
+    sprint that did not yet execute.
+  affected_formats: [xpm, pam]
+  evidence: |
+    registry/format-registry.yaml: gate_4=MISSING for both. samples/by-format/xpm/ has
+    4 files (3 valid XPM3 + 1 invalid). samples/by-format/pam/ has 4 files (3 valid P7
+    + 1 invalid). Acquisition packs exist. No src/python/{xpm,pam}/ directories.
+  remediation: Create minimal Gate 4 prototypes for XPM (XPM3 parser) and PAM (P7 parser).
+    Gate 4 scope only — no production API, no neutral model, bounded input.
+
+- id: RC-006
+  classification: FORMAT_SCOPE_EXCEPTION
+  title: ZPAQ Gate 3 blocked by tool unavailability
+  description: |
+    ZPAQ's Gate 3 (sample acquisition) is formally blocked because creating valid ZPAQ
+    archives requires the zpaq CLI or a ZPAQL VM implementation, neither of which is
+    available in the repository environment. Without Gate 3 corpus, Gate 4 cannot be
+    proven. Registry correctly records gate_3 as blocked but gate_4 was never given an
+    explicit disposition.
+  affected_formats: [zpaq]
+  evidence: |
+    registry/format-registry.yaml: gate_3.status=blocked_sample_generation_requires_tool.
+    samples/by-format/zpaq/ directory does not exist. gate_4 absent.
+  remediation: Add explicit gate_4 block to registry with status=blocked and blocker
+    documentation. Do not create prototype.
+
+- id: RC-007
+  classification: FORMAT_SCOPE_EXCEPTION
+  title: ORA acquisition deferred below threshold
+  description: |
+    ORA received Gate 1 scoring (6.8/10) but fell below the 7.0 acceptance threshold.
+    Gate 1 is recorded as deferred_borderline. All downstream gates are not_started.
+    No corpus, no samples. Gate 4 cannot proceed.
+  affected_formats: [ora]
+  evidence: |
+    registry/format-registry.yaml: gate_1.status=deferred_borderline. Gates 2-4=not_started.
+    format-completion-matrix.yaml: actual_maturity_class=stale_or_contaminated.
+  remediation: Add explicit gate_4 block to registry with status=blocked and reason.
+    Do not create prototype.
+
+- id: RC-008
+  classification: README_MISSING
+  title: Three canonical prototypes lack README.md contract documentation
+  description: |
+    fodp, fodg, and gnumeric have prototype parsers in prototypes/by-format/ with passing
+    tests but no README.md file. Without README.md, the gate4_wrapper manifest block cannot
+    exist, Gate 3 corpus references are not declared, and limitations are undocumented.
+    This means the prototypes satisfy the gate_4 intent but not the formal contract.
+  affected_formats: [fodp, fodg, gnumeric]
+  evidence: |
+    Directory listing: prototypes/by-format/fodp/ has only fodp_parser.py and __pycache__/.
+    prototypes/by-format/fodg/ has only fodg_parser.py and __pycache__/. prototypes/by-format/
+    gnumeric/ has only gnumeric_parser.py and __pycache__/.
+  remediation: Add README.md with gate4_wrapper manifest block to fodp, fodg, gnumeric.
+
+- id: RC-009
+  classification: TEST_COVERAGE_GAP
+  title: Nine source-track equivalents have no Gate 4 focused tests
+  description: |
+    Formats onboarded directly to src/python/ (ods, odt, qoi, xcf, dif, ppm, pgm, pbm,
+    sylk) have production test suites but no focused Gate 4 contract tests (valid probe,
+    invalid probe, source API drift detection). The existing tests verify production behavior
+    but not the Gate 4 evidence contract specifically.
+  affected_formats: [ods, odt, qoi, xcf, dif, ppm, pgm, pbm, sylk]
+  evidence: |
+    tests/skills/ contains test_*_gate4_prototype.py only for fods, fodt (implicit), zst,
+    fodp, fodg, gnumeric, abw. No gate4 test files exist for any of the 9 source-track
+    formats.
+  remediation: Create evidence wrappers with focused test coverage (valid probe + invalid
+    probe) for each source-track format.
+
+# Summary
+summary:
+  GATE4_REPRESENTATION_ROOT_CAUSES_IDENTIFIED: true
+  total_root_causes: 9
+  by_classification:
+    GOVERNANCE_EVOLUTION: 1
+    REGISTRY_SCHEMA_GAP: 1
+    SOURCE_TRACK_SHORTCUT: 1
+    WORKFLOW_BYPASS: 1
+    MISSING_PREREQUISITES: 1
+    FORMAT_SCOPE_EXCEPTION: 2
+    README_MISSING: 1
+    TEST_COVERAGE_GAP: 1
+  primary_systemic_cause: |
+    No schema or validator enforced that every supported format must declare a gate_4
+    evidence_type in the registry. This single gap allowed all other drift patterns to
+    accumulate without detection.

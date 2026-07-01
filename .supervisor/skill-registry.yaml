@@ -2100,6 +2100,192 @@ skills:
   test_paths:
   - tests/supervisor/test_control_index_db.py
   - tests/supervisor/test_control_index_sync.py
+- command: /validate-playbook
+  command_file: null
+  idempotency: read_only
+  implementation_paths:
+  - tools/playbook/validate_playbook.py
+  mandatory_validations:
+  - no_file_writes
+  - exit_code_0_pass_1_fail_2_error
+  notes: 'Registered FF-PLAYBOOK-SYSTEM-001 (2026-07-01). READ-ONLY schema validator.
+    S-F2F-02 CLOSED (2026-05-08). PASS does NOT approve gates. Evidence aid only.'
+  product_track: playbook_governance
+  purpose: Validate YAML acquisition playbook or review queue against its JSON Schema.
+    Read-only, no file writes, no apply mode. PASS is not gate approval.
+  required_handoff_fields:
+  - playbook_path
+  skill_id: validate-playbook
+  status: active
+  test_paths:
+  - tests/playbook/test_playbook_schema.py
+- command: /replay-acquisition-playbook
+  command_file: null
+  idempotency: read_only
+  implementation_paths:
+  - tools/playbook/replay_acquisition_playbook.py
+  mandatory_validations:
+  - no_apply_mode
+  - no_file_writes_in_dry_run
+  - replay_does_not_satisfy_dec034
+  - replay_does_not_approve_gates
+  notes: 'Registered FF-PLAYBOOK-SYSTEM-001 (2026-07-01). S-F2F-03 COMPLETE (2026-05-09).
+    Authorized for dry-run, validate, explain, export-review-queue modes ONLY. Apply
+    mode NOT implemented. Replay does not approve gates or satisfy DEC-034.'
+  product_track: playbook_governance
+  purpose: 'Dry-run replay of YAML acquisition playbook. Modes: validate, dry-run,
+    explain, export-review-queue. Informational only. Does not approve gates.'
+  required_handoff_fields:
+  - playbook_path
+  - mode
+  skill_id: replay-acquisition-playbook
+  status: active
+  test_paths:
+  - tests/playbook/test_replay_dry_run.py
+- command: /export-review-queue
+  command_file: null
+  idempotency: read_only
+  implementation_paths:
+  - tools/playbook/export_review_queue.py
+  mandatory_validations:
+  - output_written_to_specified_path_only
+  notes: 'Registered FF-PLAYBOOK-SYSTEM-001 (2026-07-01). S-F2F-03 COMPLETE (2026-05-09).
+    Read-only transformation. Review queue cannot approve gates.'
+  product_track: playbook_governance
+  purpose: Export review queue YAML from dry-run replay report. Read-only. Writes
+    output only to --output path.
+  required_handoff_fields:
+  - replay_report_path
+  - output_path
+  skill_id: export-review-queue
+  status: active
+  test_paths:
+  - tests/playbook/test_review_queue_export.py
+- command: /diff-playbook-outputs
+  command_file: null
+  idempotency: read_only
+  implementation_paths:
+  - tools/playbook/diff_playbook_outputs.py
+  mandatory_validations:
+  - no_file_writes_unless_output_specified
+  notes: 'Registered FF-PLAYBOOK-SYSTEM-001 (2026-07-01). S-F2F-03 COMPLETE (2026-05-09).
+    Read-only diff of two dry-run replay reports. Informational only.'
+  product_track: playbook_governance
+  purpose: Compare two dry-run replay reports. Read-only, no file writes unless --output
+    specified. Diff output is informational only.
+  required_handoff_fields:
+  - report_a
+  - report_b
+  skill_id: diff-playbook-outputs
+  status: active
+  test_paths:
+  - tests/playbook/test_diff_playbook_outputs.py
+- command: /format-feature-expansion
+  command_file: playbooks/format-factory/format-feature-expansion.md
+  idempotency: create_or_update
+  implementation_paths:
+  - src/python/<format>/<codec>.py
+  - src/python/<format>/__init__.py
+  - tests/python/<format>/
+  mandatory_validations:
+  - governance_validators_pass
+  - min_7_tests_per_function
+  - no_new_external_imports
+  - init_all_export_updated
+  notes: 'Registered FF-PLAYBOOK-SYSTEM-001 (2026-07-01). Sprint Task Template (NOT
+    an acquisition playbook). Proven from R119-R122 sprints.'
+  product_track: foss_python
+  purpose: Add a new export, transform, or accessor function to existing Python FOSS
+    codec. Generates bounded taskcards via tools/playbook/generate_playbook_taskcards.py.
+  required_handoff_fields:
+  - format_name
+  - codec_file
+  - init_file
+  - test_dir
+  - function_name
+  - function_signature
+  - capability_label
+  skill_id: format-feature-expansion
+  status: active
+  test_paths:
+  - tests/playbook/test_task_generation.py
+- command: /new-format-kickstart
+  command_file: playbooks/format-factory/new-format-kickstart-template.md
+  idempotency: create_or_update
+  implementation_paths:
+  - src/python/<format>/
+  - tests/python/<format>/
+  mandatory_validations:
+  - governance_validators_pass
+  - min_7_tests
+  - no_new_external_imports
+  - probe_never_raises
+  notes: 'Registered FF-PLAYBOOK-SYSTEM-001 (2026-07-01). Sprint Task Template (NOT
+    an acquisition playbook). Proven from NDJSON, FODG, TSV acquisitions.'
+  product_track: foss_python
+  purpose: Start a brand-new Python FOSS format codec from scratch. Produces minimum
+    slice probe, load, write, tests. Uses canonical contract in playbook_contract front-matter.
+  required_handoff_fields:
+  - format_name
+  - file_extensions
+  - format_spec_ref
+  - detection_signature
+  - stdlib_module
+  skill_id: new-format-kickstart
+  status: active
+  test_paths:
+  - tests/playbook/test_task_generation.py
+- command: /product-source-task
+  command_file: playbooks/format-factory/product-source-task-template.md
+  idempotency: create_or_update
+  implementation_paths:
+  - src/python/<format>/<codec>.py
+  - src/python/<format>/__init__.py
+  - tests/python/<format>/
+  mandatory_validations:
+  - governance_validators_pass
+  - min_9_tests_per_function
+  - no_new_external_imports
+  - init_all_export_updated
+  notes: 'Registered FF-PLAYBOOK-SYSTEM-001 (2026-07-01). Sprint Task Template (NOT
+    an acquisition playbook). General template for any bounded source change.'
+  product_track: foss_python
+  purpose: Execute single bounded product source change to existing Python FOSS codec.
+    General template; format-feature-expansion specializes for export/transform.
+  required_handoff_fields:
+  - format_name
+  - function_name
+  - codec_file
+  - init_file
+  - test_sprint
+  skill_id: product-source-task
+  status: active
+  test_paths:
+  - tests/playbook/test_task_generation.py
+- command: /documentation-structure-migration
+  command_file: .claude/commands/documentation-structure-migration.md
+  idempotency: idempotent
+  implementation_paths:
+  - tools/docs/migration_engine.py
+  - tools/governance/check_docs_placement.py
+  mandatory_validations:
+  - check_docs_placement_pass
+  - zero_broken_active_references
+  - idempotency_second_pass_zero_changes
+  notes: Created DOCS-REORG-001 (2026-07-01). Physically relocates docs/ root files
+    into topical subfolders with full reference repair, historical preservation,
+    compatibility stubs, and governance healing.
+  product_track: layer_governance
+  purpose: Inventory, classify, and physically migrate docs/ root files to topical
+    subfolders. Updates all active references across YAML/Markdown/Python/JSON.
+    Creates compatibility stubs for high-ref files. Proves idempotency.
+  required_handoff_fields:
+  - mission_id
+  - destination_subfolders
+  skill_id: documentation-structure-migration
+  status: active
+  test_paths:
+  - tests/tools/test_migration_engine.py
 sprint: FORMAT-FACTORY-R98-AUTONOMOUS-LOOP-TRUST-LAYER-ITERATION-SCALING-ACCELERATION-POC-MEGA-TRAIN-001
 version: '2.0'
 visibility: generated

@@ -1,0 +1,95 @@
+# NDJSON Acquisition Pack
+# Newline-Delimited JSON
+# Retrospective acquisition — source implementation predates formal acquisition tracking
+# FF-G4-BACKFILL-001
+
+format_id: ndjson
+display_name: "Newline-Delimited JSON"
+extensions:
+  - .ndjson
+  - .jsonl
+mime_type: "application/x-ndjson"
+family: data
+spec_body: "ndjson.org (community)"
+spec_version: "NDJSON 1.0 (informal spec)"
+legal_category: 2
+legal_description: "Informal community spec — ndjson.org. No royalty claims. Public domain convention."
+aspose_supported: false
+aspose_support_level: NOT_SUPPORTED
+aspose_notes: "NOT_SUPPORTED — differentiation opportunity."
+python_library: "Custom implementation using stdlib json"
+oracle_strategy: "Round-trip: parse each line as JSON, re-serialize, compare"
+acquisition_risk_classification: LOW
+acquisition_risk_notes: "Format is a trivial extension of JSON (one JSON value per line). No legal risk. No binary complexity."
+sprint_created: RETROSPECTIVE
+created_date: "2026-07-01"
+retrospective: true
+commercial_product_ready: false
+retrospective_notes: >
+  NDJSON source implementation (src/python/ndjson/) predates formal acquisition tracking.
+  This pack was created retrospectively as part of FF-G4-BACKFILL-001 to record the
+  acquisition history and Gate 4 evidence for an already-implemented format.
+
+stages:
+  identity:
+    status: confirmed
+    format_id: ndjson
+    display_name: "Newline-Delimited JSON"
+    mime_type: "application/x-ndjson"
+    extensions: [".ndjson", ".jsonl"]
+    structure: "Text file. Each line is a complete, valid JSON value. Lines separated by \\n."
+    spec_body: "ndjson.org community spec"
+    spec_version: "NDJSON 1.0"
+
+  gate_1:
+    status: passed
+    retrospective: true
+    approved_by: "retrospective_reconstruction_FF-G4-BACKFILL-001"
+    approved_date: "2026-07-01"
+    score_estimate: 7.5
+    band: Accept
+    legal_category: 2
+    aspose_support_level: NOT_SUPPORTED
+    notes: >
+      Retrospective Gate 1. NDJSON accepted on low legal risk, simple structure,
+      and practical utility for streaming JSON data. stdlib json as implementation base.
+
+  gate_2:
+    status: passed
+    retrospective: true
+    approved_by: "retrospective_reconstruction_FF-G4-BACKFILL-001"
+    approved_date: "2026-07-01"
+    spec_source: "http://ndjson.org/"
+    spec_version_confirmed: "NDJSON 1.0"
+    spec_access: public
+    patent_search_required: false
+    patent_notes: "Community spec. No patents."
+    notes: "Gate 2 retrospective. Spec is one page: each line is a JSON value."
+
+  gate_3:
+    status: passed
+    retrospective: true
+    sprint: RETROSPECTIVE
+    date: "2026-07-01"
+    sample_corpus_path: samples/by-format/ndjson/
+    notes: "Corpus samples exist at samples/by-format/ndjson/valid/ from prior sprint work."
+
+  gate_4:
+    status: passed
+    evidence_type: EVIDENCE_WRAPPER
+    retrospective: true
+    blocked_date: null
+    passed_date: "2026-07-01"
+    mission_id: FF-G4-BACKFILL-001
+    prototype_path: prototypes/by-format/ndjson/
+    delegated_source_path: src/python/ndjson/ndjson_codec.py
+    delegated_symbols: [load_ndjson, probe_ndjson, NdjsonParseError]
+    tests:
+      - tests/skills/test_ndjson_gate4_prototype.py
+    corpus:
+      - samples/by-format/ndjson/valid/
+    acquisition_pack: acquisition-packs/ndjson/pack.yaml
+    notes: >
+      Gate 4 evidence wrapper delegates 100% to src/python/ndjson/ndjson_codec.py.
+      Retrospective acquisition — source predates formal gate tracking.
+      Backfilled FF-G4-BACKFILL-001.

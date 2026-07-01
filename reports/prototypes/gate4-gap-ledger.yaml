@@ -1,0 +1,385 @@
+---
+# Gate 4 Gap Ledger
+# Generated: 2026-07-01
+# Mission: FF-G4-BACKFILL-001
+# MATERIAL_GATE4_GAPS_WITHOUT_CANONICAL_ENTRIES: 0
+# READY_GATE4_GAPS_WITHOUT_TASKCARDS: 0
+
+meta:
+  generated_date: '2026-07-01'
+  mission_id: FF-G4-BACKFILL-001
+  material_gate4_gaps_without_canonical_entries: 0
+  ready_gate4_gaps_without_taskcards: 0
+  gap_type_counts:
+    A_REGISTRY_ONLY_GAP: 0
+    B_EVIDENCE_WRAPPER_GAP: 11
+    C_RETROSPECTIVE_ACQUISITION_GAP: 2
+    D_NEW_GATE4_PROTOTYPE_REQUIRED: 2
+    E_BLOCKED_BEFORE_GATE4: 2
+    F_VALID_SCOPE_EXCEPTION: 1
+
+# Gap type legend:
+# A = REGISTRY_ONLY_GAP: Gate 4 ran, registry/completion matrix incomplete
+# B = EVIDENCE_WRAPPER_GAP: Parser/source proves G4, but no canonical evidence artifact
+# C = RETROSPECTIVE_ACQUISITION_GAP: Source + samples exist, G2-G4 acquisition trace absent
+# D = NEW_GATE4_PROTOTYPE_REQUIRED: G1-G3 complete, no parser/prototype exists
+# E = BLOCKED_BEFORE_GATE4: Prerequisites (samples/G3/spec) missing
+# F = VALID_SCOPE_EXCEPTION: Format does not require this Gate 4 track
+
+gaps:
+
+# --- TYPE B: EVIDENCE_WRAPPER_GAP (canonical prototypes needing README/manifest) ---
+
+- gap_id: GAP-G4-B-001
+  format_id: fodp
+  gap_type: B
+  subtype: README_MISSING
+  ready_for_action: true
+  taskcard_id: TC-G4-002
+  description: Prototype parser exists in prototypes/by-format/fodp/ with 12/12 tests passing.
+    README.md absent — gate4_wrapper manifest block not declared.
+  required_artifacts:
+    - prototypes/by-format/fodp/README.md (with gate4_wrapper manifest)
+  registry_update_needed: false
+  acquisition_pack_update_needed: false
+
+- gap_id: GAP-G4-B-002
+  format_id: fodg
+  gap_type: B
+  subtype: README_MISSING
+  ready_for_action: true
+  taskcard_id: TC-G4-002
+  description: Prototype parser exists in prototypes/by-format/fodg/ with 12/12 tests passing.
+    README.md absent — gate4_wrapper manifest block not declared.
+  required_artifacts:
+    - prototypes/by-format/fodg/README.md (with gate4_wrapper manifest)
+  registry_update_needed: false
+  acquisition_pack_update_needed: false
+
+- gap_id: GAP-G4-B-003
+  format_id: gnumeric
+  gap_type: B
+  subtype: README_MISSING
+  ready_for_action: true
+  taskcard_id: TC-G4-002
+  description: Prototype parser exists in prototypes/by-format/gnumeric/ with 13/13 tests
+    passing. README.md absent — gate4_wrapper manifest block not declared.
+  required_artifacts:
+    - prototypes/by-format/gnumeric/README.md (with gate4_wrapper manifest)
+  registry_update_needed: false
+  acquisition_pack_update_needed: false
+
+- gap_id: GAP-G4-B-004
+  format_id: ods
+  gap_type: B
+  subtype: NO_EVIDENCE_WRAPPER
+  ready_for_action: true
+  taskcard_id: TC-G4-003
+  description: src/python/ods/ is a mature production track. Gate 4 marked prototype_complete
+    in registry but no canonical evidence artifact or wrapper exists. No evidence_type field.
+  required_artifacts:
+    - prototypes/by-format/ods/README.md
+    - prototypes/by-format/ods/ods_gate4_probe.py
+    - prototypes/by-format/ods/gate4-evidence.yaml
+  registry_update_needed: true
+  acquisition_pack_update_needed: true
+
+- gap_id: GAP-G4-B-005
+  format_id: odt
+  gap_type: B
+  subtype: NO_EVIDENCE_WRAPPER
+  ready_for_action: true
+  taskcard_id: TC-G4-003
+  description: src/python/odt/ is a production track. Gate 4 marked prototype_complete.
+    No canonical evidence artifact. No evidence_type field.
+  required_artifacts:
+    - prototypes/by-format/odt/README.md
+    - prototypes/by-format/odt/odt_gate4_probe.py
+    - prototypes/by-format/odt/gate4-evidence.yaml
+  registry_update_needed: true
+  acquisition_pack_update_needed: true
+
+- gap_id: GAP-G4-B-006
+  format_id: qoi
+  gap_type: B
+  subtype: NO_EVIDENCE_WRAPPER
+  ready_for_action: true
+  taskcard_id: TC-G4-003
+  description: src/python/qoi/ is a production track. Gate 4 marked prototype_complete.
+    No canonical evidence artifact.
+  required_artifacts:
+    - prototypes/by-format/qoi/README.md
+    - prototypes/by-format/qoi/qoi_gate4_probe.py
+    - prototypes/by-format/qoi/gate4-evidence.yaml
+  registry_update_needed: true
+  acquisition_pack_update_needed: true
+
+- gap_id: GAP-G4-B-007
+  format_id: xcf
+  gap_type: B
+  subtype: NO_EVIDENCE_WRAPPER
+  ready_for_action: true
+  taskcard_id: TC-G4-003
+  description: src/python/xcf/ is a production track (probe_only maturity). Gate 4 marked
+    prototype_complete. No canonical evidence artifact.
+  required_artifacts:
+    - prototypes/by-format/xcf/README.md
+    - prototypes/by-format/xcf/xcf_gate4_probe.py
+    - prototypes/by-format/xcf/gate4-evidence.yaml
+  registry_update_needed: true
+  acquisition_pack_update_needed: true
+
+- gap_id: GAP-G4-B-008
+  format_id: dif
+  gap_type: B
+  subtype: NO_EVIDENCE_WRAPPER
+  ready_for_action: true
+  taskcard_id: TC-G4-003
+  description: src/python/dif/ is a production track. Gate 4 marked prototype_complete.
+    No canonical evidence artifact.
+  required_artifacts:
+    - prototypes/by-format/dif/README.md
+    - prototypes/by-format/dif/dif_gate4_probe.py
+    - prototypes/by-format/dif/gate4-evidence.yaml
+  registry_update_needed: true
+  acquisition_pack_update_needed: true
+
+- gap_id: GAP-G4-B-009
+  format_id: ppm
+  gap_type: B
+  subtype: NO_EVIDENCE_WRAPPER
+  ready_for_action: true
+  taskcard_id: TC-G4-003
+  description: src/python/ppm/ is a production track. Gate 4 marked prototype_complete.
+    No canonical evidence artifact.
+  required_artifacts:
+    - prototypes/by-format/ppm/README.md
+    - prototypes/by-format/ppm/ppm_gate4_probe.py
+    - prototypes/by-format/ppm/gate4-evidence.yaml
+  registry_update_needed: true
+  acquisition_pack_update_needed: true
+
+- gap_id: GAP-G4-B-010
+  format_id: pgm
+  gap_type: B
+  subtype: NO_EVIDENCE_WRAPPER
+  ready_for_action: true
+  taskcard_id: TC-G4-003
+  description: src/python/pgm/ is a production track. Gate 4 marked pass. No canonical
+    evidence artifact.
+  required_artifacts:
+    - prototypes/by-format/pgm/README.md
+    - prototypes/by-format/pgm/pgm_gate4_probe.py
+    - prototypes/by-format/pgm/gate4-evidence.yaml
+  registry_update_needed: true
+  acquisition_pack_update_needed: true
+
+- gap_id: GAP-G4-B-011
+  format_id: pbm
+  gap_type: B
+  subtype: NO_EVIDENCE_WRAPPER
+  ready_for_action: true
+  taskcard_id: TC-G4-003
+  description: src/python/pbm/ is a production track. Gate 4 marked pass. No canonical
+    evidence artifact.
+  required_artifacts:
+    - prototypes/by-format/pbm/README.md
+    - prototypes/by-format/pbm/pbm_gate4_probe.py
+    - prototypes/by-format/pbm/gate4-evidence.yaml
+  registry_update_needed: true
+  acquisition_pack_update_needed: true
+
+- gap_id: GAP-G4-B-012
+  format_id: sylk
+  gap_type: B
+  subtype: NO_EVIDENCE_WRAPPER
+  ready_for_action: true
+  taskcard_id: TC-G4-003
+  description: src/python/sylk/ is a production track. Gate 4 marked pass. No canonical
+    evidence artifact.
+  required_artifacts:
+    - prototypes/by-format/sylk/README.md
+    - prototypes/by-format/sylk/sylk_gate4_probe.py
+    - prototypes/by-format/sylk/gate4-evidence.yaml
+  registry_update_needed: true
+  acquisition_pack_update_needed: true
+
+- gap_id: GAP-G4-B-013
+  format_id: csv
+  gap_type: B
+  subtype: NO_EVIDENCE_WRAPPER
+  ready_for_action: true
+  taskcard_id: TC-G4-003
+  description: src/python/csv/ is a production track. Gate 4 field ABSENT from registry
+    entirely. Completion matrix incorrectly uses src parser path as prototype_location.
+  required_artifacts:
+    - prototypes/by-format/csv/README.md
+    - prototypes/by-format/csv/csv_gate4_probe.py
+    - prototypes/by-format/csv/gate4-evidence.yaml
+  registry_update_needed: true
+  acquisition_pack_update_needed: true
+
+- gap_id: GAP-G4-B-014
+  format_id: tsv
+  gap_type: B
+  subtype: NO_EVIDENCE_WRAPPER
+  ready_for_action: true
+  taskcard_id: TC-G4-003
+  description: src/python/tsv/ is a production track. Gate 4 field ABSENT from registry
+    entirely. Completion matrix incorrectly uses src parser path as prototype_location.
+  required_artifacts:
+    - prototypes/by-format/tsv/README.md
+    - prototypes/by-format/tsv/tsv_gate4_probe.py
+    - prototypes/by-format/tsv/gate4-evidence.yaml
+  registry_update_needed: true
+  acquisition_pack_update_needed: true
+
+# --- TYPE C: RETROSPECTIVE_ACQUISITION_GAP ---
+
+- gap_id: GAP-G4-C-001
+  format_id: ndjson
+  gap_type: C
+  subtype: GATES_2_3_4_ABSENT
+  ready_for_action: true
+  taskcard_id: TC-G4-003
+  description: src/python/ndjson/ is a mature roundtrip-capable production track. Only
+    Gate 1 recorded in registry. Gates 2, 3, and 4 never formally recorded despite full
+    implementation and samples existing. Registry and matrix are inconsistent.
+  required_artifacts:
+    - prototypes/by-format/ndjson/README.md
+    - prototypes/by-format/ndjson/ndjson_gate4_probe.py
+    - prototypes/by-format/ndjson/gate4-evidence.yaml (retrospective=true)
+  registry_update_needed: true
+  acquisition_pack_update_needed: true
+  retrospective: true
+  note: Gate 2-4 entries must be labeled retrospective and reconstruct evidence from existing
+    source + samples. Do not backdate as if they were contemporaneous.
+
+- gap_id: GAP-G4-C-002
+  format_id: toml
+  gap_type: C
+  subtype: GATES_2_3_4_ABSENT
+  ready_for_action: true
+  taskcard_id: TC-G4-003
+  description: src/python/toml/ is a mature roundtrip-capable production track. Only
+    Gate 1 recorded in registry. Gates 2, 3, and 4 never formally recorded.
+  required_artifacts:
+    - prototypes/by-format/toml/README.md
+    - prototypes/by-format/toml/toml_gate4_probe.py
+    - prototypes/by-format/toml/gate4-evidence.yaml (retrospective=true)
+  registry_update_needed: true
+  acquisition_pack_update_needed: true
+  retrospective: true
+  note: Same as GAP-G4-C-001. Reconstruct from existing artifacts; label retrospective.
+
+# --- TYPE D: NEW_GATE4_PROTOTYPE_REQUIRED ---
+
+- gap_id: GAP-G4-D-001
+  format_id: xpm
+  gap_type: D
+  subtype: NO_PARSER_NO_PROTOTYPE
+  ready_for_action: true
+  taskcard_id: TC-G4-004
+  prerequisites_met: true
+  description: Gate 1-3 complete. Sample corpus exists (3 valid XPM3 + 1 invalid). No
+    src/python/xpm/ directory. No prototype. Ready for minimal Gate 4 prototype.
+  required_artifacts:
+    - prototypes/by-format/xpm/xpm_parser.py
+    - prototypes/by-format/xpm/README.md
+    - tests/skills/test_xpm_gate4_prototype.py
+  scope_limits:
+    - Parse XPM3 signature, dimensions, color table, pixel rows only
+    - Max 4096x4096, max 256 colors, max 16 chars/pixel
+    - No production namespace
+    - No neutral model at this gate
+    - No writer or exporter
+  registry_update_needed: true
+  acquisition_pack_update_needed: true
+
+- gap_id: GAP-G4-D-002
+  format_id: pam
+  gap_type: D
+  subtype: NO_PARSER_NO_PROTOTYPE
+  ready_for_action: true
+  taskcard_id: TC-G4-004
+  prerequisites_met: true
+  description: Gate 1-3 complete. Sample corpus exists (3 valid P7 + 1 invalid). No
+    src/python/pam/ directory. No prototype. Ready for minimal Gate 4 prototype.
+  required_artifacts:
+    - prototypes/by-format/pam/pam_parser.py
+    - prototypes/by-format/pam/README.md
+    - tests/skills/test_pam_gate4_prototype.py
+  scope_limits:
+    - Parse P7 header fields (WIDTH/HEIGHT/DEPTH/MAXVAL/TUPLTYPE) and validate raster length
+    - Max 4096x4096, max depth 4
+    - No production namespace
+    - No neutral model at this gate
+    - No writer or exporter
+  registry_update_needed: true
+  acquisition_pack_update_needed: true
+
+# --- TYPE E: BLOCKED_BEFORE_GATE4 ---
+
+- gap_id: GAP-G4-E-001
+  format_id: zpaq
+  gap_type: E
+  subtype: GATE3_BLOCKED
+  ready_for_action: false
+  taskcard_id: TC-G4-005
+  blocker: gate3_prerequisite_incomplete
+  blocker_detail: Creating valid ZPAQ archives requires ZPAQL VM bytecode generation or
+    zpaq CLI binary. Neither is available in the repository CI environment. No corpus samples
+    exist. Gate 4 cannot be proven without samples.
+  next_gate: gate_3_recovery
+  recovery_path: Acquire zpaq CLI (e.g. via system package manager or pre-built binary),
+    or implement a minimal ZPAQL VM capable of creating test archives.
+  required_artifacts:
+    - registry/format-registry.yaml gate_4 block (status=blocked, blocker documented)
+  registry_update_needed: true
+  acquisition_pack_update_needed: true
+  do_not_create_prototype: true
+
+- gap_id: GAP-G4-E-002
+  format_id: ora
+  gap_type: E
+  subtype: GATE1_NOT_PASSED
+  ready_for_action: false
+  taskcard_id: TC-G4-005
+  blocker: gate1_not_passed
+  blocker_detail: Acquisition score 6.8/10 falls below 7.0 acceptance threshold. Gate 1
+    is deferred_borderline. All downstream gates are not_started. No samples exist.
+  next_gate: gate_1_rescore_or_defer
+  recovery_path: Re-score ORA format with updated criteria, or formally defer indefinitely.
+    If score reaches 7.0+, proceed to Gate 2-4 in a future sprint.
+  required_artifacts:
+    - registry/format-registry.yaml gate_4 block (status=blocked, blocker documented)
+  registry_update_needed: true
+  acquisition_pack_update_needed: true
+  do_not_create_prototype: true
+
+# --- TYPE F: VALID_SCOPE_EXCEPTION ---
+
+- gap_id: GAP-G4-F-001
+  format_id: odf-shared
+  gap_type: F
+  subtype: SHARED_FAMILY_METADATA
+  ready_for_action: false
+  taskcard_id: null
+  description: odf-shared is a shared family concept entry in format-registry.yaml. It is
+    not a standalone format and does not appear in format-completion-matrix.yaml. No gate
+    progression applies. Gate 4 is not applicable.
+  required_artifacts: []
+  registry_update_needed: false
+  acquisition_pack_update_needed: false
+
+# Final counters
+counters:
+  MATERIAL_GATE4_GAPS_WITHOUT_CANONICAL_ENTRIES: 0
+  READY_GATE4_GAPS_WITHOUT_TASKCARDS: 0
+  total_gaps: 18
+  type_B_evidence_wrapper: 11
+  type_B_readme_missing: 3
+  type_C_retrospective: 2
+  type_D_new_prototype: 2
+  type_E_blocked: 2
+  type_F_exception: 1
