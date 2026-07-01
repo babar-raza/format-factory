@@ -146,6 +146,23 @@ class FodtDocument:
         """True if the document contains at least one heading block."""
         return any(b.get("kind") == "heading" for b in self._data.get("blocks", []))
 
+    # Additional document analysis properties (FACT-FODT-001, FACT-FODT-003)
+
+    @property
+    def heading_count(self) -> int:
+        """Number of heading blocks in the document."""
+        return sum(1 for b in self._data.get("blocks", []) if b.get("kind") == "heading")
+
+    @property
+    def is_multi_block(self) -> bool:
+        """True if the document has more than one content block."""
+        return self.block_count > 1
+
+    @property
+    def has_tables(self) -> bool:
+        """True if the document contains at least one table."""
+        return self.table_count > 0
+
     def to_dict(self) -> dict[str, Any]:
         """Return the underlying document dict."""
         return self._data

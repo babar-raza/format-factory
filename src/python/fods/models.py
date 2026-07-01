@@ -162,6 +162,24 @@ class FodsDocument:
         """True if the workbook has more than one sheet."""
         return self.sheet_count > 1
 
+    # Additional workbook analysis properties (FACT-FODS-001, FACT-FODS-002)
+
+    @property
+    def has_sheets(self) -> bool:
+        """True if the workbook contains at least one sheet."""
+        return self.sheet_count > 0
+
+    @property
+    def total_row_count(self) -> int:
+        """Total number of rows across all sheets."""
+        return sum(s.row_count for s in self.sheets())
+
+    @property
+    def max_sheet_rows(self) -> int:
+        """Maximum row count in any single sheet. Returns 0 if no sheets."""
+        counts = [s.row_count for s in self.sheets()]
+        return max(counts) if counts else 0
+
     def to_dict(self) -> dict[str, Any]:
         """Return the underlying workbook dict."""
         return self._data
