@@ -74,6 +74,33 @@ class XcfDocument:
         """Path to the source XCF file."""
         return str(self._parsed.path or "")
 
+    # Dimension geometry properties (FACT-XCF-001)
+
+    @property
+    def aspect_ratio(self) -> float:
+        """Canvas width-to-height ratio. Returns 0.0 for zero-height images."""
+        return self.width / self.height if self.height > 0 else 0.0
+
+    @property
+    def is_square(self) -> bool:
+        """True if canvas width equals height."""
+        return self.width == self.height
+
+    @property
+    def is_landscape(self) -> bool:
+        """True if canvas width is greater than height."""
+        return self.width > self.height
+
+    @property
+    def is_portrait(self) -> bool:
+        """True if canvas height is greater than width."""
+        return self.height > self.width
+
+    @property
+    def is_multilayer(self) -> bool:
+        """True if the image has more than one layer."""
+        return self.layer_count > 1
+
     def to_dict(self) -> dict[str, Any]:
         """Return image metrics as a dict."""
         return {

@@ -61,6 +61,23 @@ class DifModelDocument:
         """Total number of cells across all rows."""
         return sum(len(row) for row in self._parsed.rows)
 
+    # Document dimension properties (FACT-DIF-001)
+
+    @property
+    def col_count(self) -> int:
+        """Number of data columns (alias for vectors)."""
+        return self.vectors
+
+    @property
+    def is_empty(self) -> bool:
+        """True if the document has no data rows."""
+        return self.row_count == 0
+
+    @property
+    def is_single_row(self) -> bool:
+        """True if the document has exactly one data row."""
+        return self.row_count == 1
+
     def to_dict(self) -> dict[str, Any]:
         """Return document summary as a dict."""
         return {

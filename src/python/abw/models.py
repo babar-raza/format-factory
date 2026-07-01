@@ -63,6 +63,23 @@ class AbwDocument:
             return paras[index]
         return ""
 
+    # Document dimension properties (FACT-ABW-001)
+
+    @property
+    def is_empty(self) -> bool:
+        """True if the document has no paragraphs."""
+        return self.paragraph_count == 0
+
+    @property
+    def has_content(self) -> bool:
+        """True if the document has at least one paragraph."""
+        return self.paragraph_count > 0
+
+    @property
+    def is_single_paragraph(self) -> bool:
+        """True if the document has exactly one paragraph."""
+        return self.paragraph_count == 1
+
     def to_dict(self) -> dict[str, Any]:
         """Return the underlying neutral model dict."""
         return dict(self._data)

@@ -75,6 +75,23 @@ class GnumericDocument:
         grid = sheet.get("cell_grid", {})
         return str(grid.get((row, col), ""))
 
+    # Workbook dimension properties (FACT-GNUMERIC-001)
+
+    @property
+    def is_empty(self) -> bool:
+        """True if the workbook has no cells."""
+        return self.cell_count == 0
+
+    @property
+    def is_single_sheet(self) -> bool:
+        """True if the workbook has exactly one sheet."""
+        return self.sheet_count == 1
+
+    @property
+    def is_multi_sheet(self) -> bool:
+        """True if the workbook has more than one sheet."""
+        return self.sheet_count > 1
+
     def to_dict(self) -> dict[str, Any]:
         """Return the underlying neutral model dict."""
         return dict(self._data)

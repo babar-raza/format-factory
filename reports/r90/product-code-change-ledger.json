@@ -38142,6 +38142,88 @@
       ],
       "idempotency_key": "ea41da9c4d709a0e5012d62a1493ac6bec783e237a31edfbcf4f7400092657be",
       "status": "committed"
+    },
+    {
+      "entry_id": "R560-GOVERNED-PYTHON-XCF-DIMENSION-PROPS-001",
+      "sprint_id": "R560",
+      "format": "xcf",
+      "runtime": "python",
+      "feature_name": "dimension_geometry_properties",
+      "source_file": "src/python/xcf/models.py",
+      "test_file": "tests/python/xcf/test_r560_xcf_multilayer_property.py",
+      "spec_fact_refs": [
+        "FACT-XCF-001"
+      ],
+      "gap_ledger_ref": "GAP-XCF-FOSS-XCF_IS_LANDS-001",
+      "properties_added": [
+        "aspect_ratio",
+        "is_square",
+        "is_landscape",
+        "is_portrait",
+        "is_multilayer"
+      ],
+      "tests_added": 20,
+      "status": "committed"
+    },
+    {
+      "entry_id": "R560-GOVERNED-PYTHON-GNUMERIC-DIMENSION-PROPS-001",
+      "sprint_id": "R560",
+      "format": "gnumeric",
+      "runtime": "python",
+      "feature_name": "dimension_properties",
+      "source_file": "src/python/gnumeric/models.py",
+      "test_file": "tests/python/gnumeric/test_r560_gnumeric_dimension_properties.py",
+      "spec_fact_refs": [
+        "FACT-GNUMERIC-001"
+      ],
+      "gap_ledger_ref": "GAP-Gnumeric-FOSS-GNUMERIC_EMP-001",
+      "properties_added": [
+        "is_empty",
+        "is_single_sheet",
+        "is_multi_sheet"
+      ],
+      "tests_added": 15,
+      "status": "committed"
+    },
+    {
+      "entry_id": "R560-GOVERNED-PYTHON-ABW-DIMENSION-PROPS-001",
+      "sprint_id": "R560",
+      "format": "abw",
+      "runtime": "python",
+      "feature_name": "dimension_properties",
+      "source_file": "src/python/abw/models.py",
+      "test_file": "tests/python/abw/test_r560_abw_dimension_properties.py",
+      "spec_fact_refs": [
+        "FACT-ABW-001"
+      ],
+      "gap_ledger_ref": "GAP-ABW-FOSS-GET_PARAGRAP-001",
+      "properties_added": [
+        "is_empty",
+        "has_content",
+        "is_single_paragraph"
+      ],
+      "tests_added": 16,
+      "status": "committed"
+    },
+    {
+      "entry_id": "R560-GOVERNED-PYTHON-DIF-DIMENSION-PROPS-001",
+      "sprint_id": "R560",
+      "format": "dif",
+      "runtime": "python",
+      "feature_name": "dimension_properties",
+      "source_file": "src/python/dif/models.py",
+      "test_file": "tests/python/dif/test_r560_dif_dimension_properties.py",
+      "spec_fact_refs": [
+        "FACT-DIF-001"
+      ],
+      "gap_ledger_ref": "GAP-DIF-FOSS-DIF_INSTALLE-001",
+      "properties_added": [
+        "col_count",
+        "is_empty",
+        "is_single_row"
+      ],
+      "tests_added": 16,
+      "status": "committed"
     }
   ],
   "total_entries": 2419,
