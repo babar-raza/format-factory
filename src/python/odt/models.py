@@ -64,6 +64,28 @@ class OdtModelDocument:
         """List of OdtHeading objects."""
         return list(self._parsed.headings)
 
+    # Document dimension properties (FACT-ODT-001)
+
+    @property
+    def is_empty(self) -> bool:
+        """True if the document has no paragraphs."""
+        return self.paragraph_count == 0
+
+    @property
+    def has_content(self) -> bool:
+        """True if the document has at least one paragraph."""
+        return self.paragraph_count > 0
+
+    @property
+    def is_single_paragraph(self) -> bool:
+        """True if the document has exactly one paragraph."""
+        return self.paragraph_count == 1
+
+    @property
+    def has_headings(self) -> bool:
+        """True if the document has at least one heading."""
+        return self.heading_count > 0
+
     def to_dict(self) -> dict[str, Any]:
         """Return document summary as a dict."""
         return {

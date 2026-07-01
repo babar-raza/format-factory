@@ -78,6 +78,28 @@ class CsvDocument:
                 return row[col_index]
         return ""
 
+    # Tabular dimension properties (FACT-CSV-001)
+
+    @property
+    def is_empty(self) -> bool:
+        """True if the document has no data rows."""
+        return self.row_count == 0
+
+    @property
+    def is_single_row(self) -> bool:
+        """True if the document has exactly one data row."""
+        return self.row_count == 1
+
+    @property
+    def is_wide(self) -> bool:
+        """True if there are more columns than data rows."""
+        return self.column_count > self.row_count
+
+    @property
+    def is_tall(self) -> bool:
+        """True if there are more data rows than columns."""
+        return self.row_count > self.column_count
+
     def to_dict(self) -> dict[str, Any]:
         """Return the underlying neutral model dict."""
         return dict(self._data)

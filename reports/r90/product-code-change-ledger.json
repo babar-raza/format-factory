@@ -38224,6 +38224,89 @@
       ],
       "tests_added": 16,
       "status": "committed"
+    },
+    {
+      "entry_id": "R561-GOVERNED-PYTHON-CSV-DIMENSION-PROPS-001",
+      "sprint_id": "R561",
+      "format": "csv",
+      "runtime": "python",
+      "feature_name": "dimension_properties",
+      "source_file": "src/python/csv/models.py",
+      "test_file": "tests/python/csv/test_r561_csv_dimension_properties.py",
+      "spec_fact_refs": [
+        "FACT-CSV-001"
+      ],
+      "gap_ledger_ref": "GAP-CSV-FOSS-INSTALLED_WO-001",
+      "properties_added": [
+        "is_empty",
+        "is_single_row",
+        "is_wide",
+        "is_tall"
+      ],
+      "tests_added": 17,
+      "status": "committed"
+    },
+    {
+      "entry_id": "R561-GOVERNED-PYTHON-TSV-DIMENSION-PROPS-001",
+      "sprint_id": "R561",
+      "format": "tsv",
+      "runtime": "python",
+      "feature_name": "dimension_properties",
+      "source_file": "src/python/tsv/models.py",
+      "test_file": "tests/python/tsv/test_r561_tsv_dimension_properties.py",
+      "spec_fact_refs": [
+        "FACT-TSV-001"
+      ],
+      "gap_ledger_ref": "GAP-TSV-FOSS-INSTALLED_WO-001",
+      "properties_added": [
+        "is_empty",
+        "is_single_row",
+        "is_wide",
+        "is_tall"
+      ],
+      "tests_added": 17,
+      "status": "committed"
+    },
+    {
+      "entry_id": "R561-GOVERNED-PYTHON-NDJSON-DIMENSION-PROPS-001",
+      "sprint_id": "R561",
+      "format": "ndjson",
+      "runtime": "python",
+      "feature_name": "dimension_properties",
+      "source_file": "src/python/ndjson/models.py",
+      "test_file": "tests/python/ndjson/test_r561_ndjson_dimension_properties.py",
+      "spec_fact_refs": [
+        "FACT-NDJSON-001"
+      ],
+      "gap_ledger_ref": "GAP-NDJSON-FOSS-INSTALLED_WO-001",
+      "properties_added": [
+        "is_empty",
+        "is_single_record",
+        "has_records"
+      ],
+      "tests_added": 15,
+      "status": "committed"
+    },
+    {
+      "entry_id": "R561-GOVERNED-PYTHON-ODT-DIMENSION-PROPS-001",
+      "sprint_id": "R561",
+      "format": "odt",
+      "runtime": "python",
+      "feature_name": "dimension_properties",
+      "source_file": "src/python/odt/models.py",
+      "test_file": "tests/python/odt/test_r561_odt_dimension_properties.py",
+      "spec_fact_refs": [
+        "FACT-ODT-001"
+      ],
+      "gap_ledger_ref": "GAP-ODT-FOSS-INSTALLED_WO-001",
+      "properties_added": [
+        "is_empty",
+        "has_content",
+        "is_single_paragraph",
+        "has_headings"
+      ],
+      "tests_added": 20,
+      "status": "committed"
     }
   ],
   "total_entries": 2419,

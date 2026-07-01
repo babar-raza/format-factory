@@ -1,0 +1,36 @@
+{
+  "skill_id": "add-python-object-model-feature",
+  "invocation_id": "r561-csv-tsv-ndjson-odt-properties-001",
+  "sprint_id": "R561",
+  "formats": ["csv", "tsv", "ndjson", "odt"],
+  "feature_names": {
+    "csv": ["is_empty", "is_single_row", "is_wide", "is_tall"],
+    "tsv": ["is_empty", "is_single_row", "is_wide", "is_tall"],
+    "ndjson": ["is_empty", "is_single_record", "has_records"],
+    "odt": ["is_empty", "has_content", "is_single_paragraph", "has_headings"]
+  },
+  "spec_fact_refs": ["FACT-CSV-001", "FACT-TSV-001", "FACT-NDJSON-001", "FACT-ODT-001"],
+  "source_files": [
+    "src/python/csv/models.py",
+    "src/python/tsv/models.py",
+    "src/python/ndjson/models.py",
+    "src/python/odt/models.py"
+  ],
+  "test_files": [
+    "tests/python/csv/test_r561_csv_dimension_properties.py",
+    "tests/python/tsv/test_r561_tsv_dimension_properties.py",
+    "tests/python/ndjson/test_r561_ndjson_dimension_properties.py",
+    "tests/python/odt/test_r561_odt_dimension_properties.py"
+  ],
+  "test_count": 69,
+  "test_result": "69 passed, 0 failed",
+  "ledger_entries": [
+    "R561-GOVERNED-PYTHON-CSV-DIMENSION-PROPS-001",
+    "R561-GOVERNED-PYTHON-TSV-DIMENSION-PROPS-001",
+    "R561-GOVERNED-PYTHON-NDJSON-DIMENSION-PROPS-001",
+    "R561-GOVERNED-PYTHON-ODT-DIMENSION-PROPS-001"
+  ],
+  "site_packages_synced": true,
+  "idempotency_key": "r561-csv-tsv-ndjson-odt-dimension-properties-20260702",
+  "invoked_at": "2026-07-02T00:00:00Z"
+}

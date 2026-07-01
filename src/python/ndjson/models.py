@@ -58,6 +58,23 @@ class NdjsonDocument:
             return record.get(field, default)
         return default
 
+    # Document dimension properties (FACT-NDJSON-001)
+
+    @property
+    def is_empty(self) -> bool:
+        """True if the document has no records."""
+        return self.record_count == 0
+
+    @property
+    def is_single_record(self) -> bool:
+        """True if the document has exactly one record."""
+        return self.record_count == 1
+
+    @property
+    def has_records(self) -> bool:
+        """True if the document has at least one record."""
+        return self.record_count > 0
+
     def to_list(self) -> list[Any]:
         """Return the underlying records list."""
         return list(self._records)
