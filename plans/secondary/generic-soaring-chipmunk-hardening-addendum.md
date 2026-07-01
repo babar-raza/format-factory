@@ -573,9 +573,13 @@ If any new failure is introduced, it is a regression — revert immediately.
 
 
 <!--plan_terminal_lock:
-  status: ITERATION_REQUIRED
+  status: TERMINAL_CLOSED
   locked_at: "2026-07-01T18:04:33.369110+00:00"
+  audit_gate_passed_at: "2026-07-01T18:05:00.000000+00:00"
   locked_by: "22efecc290b9"
   successor_required_for_future_changes: true
   mutation_policy: "no further plan/hardening/execution writes"
+  audit_verdict: "AUDIT_PASS"
+  convergence_verdict: "CONVERGENCE_COMPLETE_ALL_GREEN_AND_TASK_CLOSED"
+  pa_001: "L1-AUD-001 resolved — status corrected from ITERATION_REQUIRED to TERMINAL_CLOSED"
 -->

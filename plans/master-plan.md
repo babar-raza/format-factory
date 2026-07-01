@@ -4414,8 +4414,8 @@ Addendum: `plans/secondary/generic-soaring-chipmunk-hardening-addendum.md` v1.2
 | Taskcard | Result | Commit |
 |----------|--------|--------|
 | TC-SAL-DEBT-001: autonomous_cycle.py LOC debt | LOC 2673→2399 (274 lines extracted to autonomous_cycle_utils.py) | 1da40302 |
-| TC-SAL-BACKFILL-002: ODF semantic match extension | ODS=37, ODT=40, FODG=39, FODP=34 unique spec_fact sets (4/5 formats ≥10) | 1da40302 |
-| TC-SAL-CARRY-NON-ODF-UNBLOCK-001: TOML spec facts | TOML precondition MET; 70 facts in sal-facts-latest.json | 1da40302 |
+| TC-SAL-BACKFILL-002: ODF semantic match extension | FODS=47, ODS=37, ODT=40, FODG=39, FODP=34 unique sets (5/5 improved; FODT=4 advisory) | 4217bbe5, 403c261f |
+| TC-SAL-CARRY-NON-ODF-UNBLOCK-001: TOML spec facts | TOML precondition MET; 65 facts in workbench | 1da40302 |
 
 ### Pre-existing Failures (Not Caused by This Sprint)
 - `test_registered_formats_have_bootstrap_level_1` — bootstrap level 1 gap
@@ -4431,8 +4431,8 @@ Addendum: `plans/secondary/generic-soaring-chipmunk-hardening-addendum.md` v1.2
 6. Format check tightened — PASS (canonical + legacy regex)
 7. All pilots F1/F2/F3/F4 PASS — PASS
 8. 0 new governance validator regressions — PASS
-9. [Phase 2] autonomous_cycle.py LOC ≤ cap — PASS (2399 ≤ 2673)
-10. [Phase 2] ODF semantic match ≥10 unique sets (≥3/5 formats) — PASS (4/5)
+9. [Phase 2] autonomous_cycle.py LOC ≤ cap — PASS (2442 ≤ 2673, after subsequent session additions)
+10. [Phase 2] ODF semantic match ≥10 unique sets (≥3/5 formats) — PASS (5/5: FODS=47, ODS=37, ODT=40, FODG=39, FODP=34; FODT=4 advisory)
 
 ---
 
