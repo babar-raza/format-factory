@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s399-dotnet-deepening-20260701",
+  "latest_sprint": "ff-sprint-s400-dotnet-deepening-20260701",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -34060,9 +34060,45 @@
       ],
       "test_count": 9,
       "description": "Dedicated tests for FodtDocument.EmbeddedObjectCount: new non-negative, counts unchanged, idempotent, is int, dogfood paragraphs/mixed/loop"
+    },
+    {
+      "entry_id": "PC-NETPBM-R418",
+      "sprint": "ff-sprint-s400-dotnet-deepening-20260701",
+      "classification": "TEST_COVERAGE",
+      "format": "NETPBM",
+      "capability": "GetSupportedMaxValue",
+      "description": "Dedicated tests for NetpbmImage.GetSupportedMaxValue: PBM=1, PGM/PPM positive, dims/format/MaxValue unchanged, idempotent, dogfood all formats positive and supported max >= actual MaxValue.",
+      "source_files": [
+        "tests/net/netpbm/NetpbmR418GetSupportedMaxValueDedicatedTests.cs"
+      ],
+      "test_count": 10
+    },
+    {
+      "entry_id": "PC-FODS-R449",
+      "sprint": "ff-sprint-s400-dotnet-deepening-20260701",
+      "classification": "TEST_COVERAGE",
+      "format": "FODS",
+      "capability": "GetCellTextRotation",
+      "description": "Dedicated tests for FodsDocument.GetCellTextRotation: null/whitespace/nonexistent/negative throws, valid non-negative, SheetCount unchanged, idempotent, SetTextRotation+Get round-trip, dogfood default and multiple cells.",
+      "source_files": [
+        "tests/net/fods/FodsR449GetCellTextRotationDedicatedTests.cs"
+      ],
+      "test_count": 10
+    },
+    {
+      "entry_id": "PC-FODT-R424",
+      "sprint": "ff-sprint-s400-dotnet-deepening-20260701",
+      "classification": "TEST_COVERAGE",
+      "format": "FODT",
+      "capability": "GetFormFieldCount",
+      "description": "Dedicated tests for FodtDocument.GetFormFieldCount: new non-negative, ParagraphCount/TableCount unchanged, idempotent, is int, dogfood after paragraphs/mixed content/loop all non-negative.",
+      "source_files": [
+        "tests/net/fodt/FodtR424GetFormFieldCountDedicatedTests.cs"
+      ],
+      "test_count": 9
     }
   ],
-  "total_entries": 2026,
+  "total_entries": 2029,
   "changes": [
     {
       "file": "src/python/dif/models.py",
