@@ -53,7 +53,7 @@ This document records parser design decisions, implementation strategy, and secu
 
 ## Security Design
 
-Reference: `docs/security.md`. Address each applicable threat category.
+Reference: `docs/governance/security.md`. Address each applicable threat category.
 
 ### XXE (XML External Entities)
 

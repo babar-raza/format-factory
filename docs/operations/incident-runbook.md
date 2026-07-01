@@ -4,7 +4,7 @@
 
 This runbook covers operational incidents for the Format Factory format acquisition pipeline.
 All incident handling follows the authority model defined in [AGENTS.md](../../AGENTS.md) and
-the security threat model in [docs/security.md](../security.md).
+the security threat model in [docs/governance/security.md](../governance/security.md).
 
 ---
 
@@ -29,12 +29,12 @@ the security threat model in [docs/security.md](../security.md).
 2. **Identify** — Determine if `defusedxml` is active (check `parser.py` import: `try: import defusedxml.ElementTree`).
 3. **Verify** — Run security tests: `python -m pytest tests/python/security/ -v`
 4. **Escalate** — Open a Gate 8 security review (requires human approval per [AGENTS.md](../../AGENTS.md)).
-5. **Reference** — See [docs/security.md](../security.md) for full threat model and mitigations.
+5. **Reference** — See [docs/governance/security.md](../governance/security.md) for full threat model and mitigations.
 
 **Key files:**
 - `src/python/fods/parser.py` — FODS XML parser with defusedxml protection
 - `src/python/fodt/fodt_parser.py` — FODT XML parser with defusedxml protection
-- `docs/security.md` — Threat categories and mitigations
+- `docs/governance/security.md` — Threat categories and mitigations
 - `tests/python/security/test_xml_security.py` — Behavioral security tests
 
 **Gate 8 authority:** Human approval required before production release of any format that

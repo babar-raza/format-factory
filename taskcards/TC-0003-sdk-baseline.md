@@ -100,7 +100,7 @@ Phase 0 declared baselines: Python 3.11+ and .NET net8.0/net10.0 (no net9.0, whi
 | Artifact | Path | Required? |
 |---|---|---|
 | Product tracks doc | `docs/product-factory/product-tracks.md` | Required |
-| Security policy | `docs/security.md` | Required (defusedxml reference) |
+| Security policy | `docs/governance/security.md` | Required (defusedxml reference) |
 
 ---
 

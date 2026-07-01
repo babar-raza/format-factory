@@ -4414,7 +4414,7 @@ Addendum: `plans/secondary/generic-soaring-chipmunk-hardening-addendum.md` v1.2
 | Taskcard | Result | Commit |
 |----------|--------|--------|
 | TC-SAL-DEBT-001: autonomous_cycle.py LOC debt | LOC 2673→2399 (274 lines extracted to autonomous_cycle_utils.py) | 1da40302 |
-| TC-SAL-BACKFILL-002: ODF semantic match extension | FODS=47, ODS=37, ODT=40, FODG=39, FODP=34 unique sets (5/5 improved; FODT=4 advisory) | 4217bbe5, 403c261f |
+| TC-SAL-BACKFILL-002: ODF semantic match extension | FODS=46, ODS=36, ODT=39, FODG=38, FODP=33 unique sets (5/5 improved; FODT=84 via post-closure spec-cache ingestion) | 4217bbe5, 403c261f |
 | TC-SAL-CARRY-NON-ODF-UNBLOCK-001: TOML spec facts | TOML precondition MET; 65 facts in workbench | 1da40302 |
 
 ### Pre-existing Failures (Not Caused by This Sprint)
@@ -4432,7 +4432,7 @@ Addendum: `plans/secondary/generic-soaring-chipmunk-hardening-addendum.md` v1.2
 7. All pilots F1/F2/F3/F4 PASS — PASS
 8. 0 new governance validator regressions — PASS
 9. [Phase 2] autonomous_cycle.py LOC ≤ cap — PASS (2442 ≤ 2673, after subsequent session additions)
-10. [Phase 2] ODF semantic match ≥10 unique sets (≥3/5 formats) — PASS (5/5: FODS=47, ODS=37, ODT=40, FODG=39, FODP=34; FODT=4 advisory)
+10. [Phase 2] ODF semantic match ≥10 unique sets (≥3/5 formats) — PASS (5/5: FODS=46, ODS=36, ODT=39, FODG=38, FODP=33; FODT=84 post-closure via spec-cache — counts corrected 2026-07-02 per PA-002)
 
 ---
 
@@ -5496,25 +5496,31 @@ Post-closure plan hardening identified and closed 3 follow-up items:
 | FAILED_REQUIRED_PILOTS | 0 |
 | MATERIAL_SECOND_RUN_CHANGES | 0 |
 
-## §97 — DOCS-REORG-001: docs/ Root Reorganization — Physical Migration (cheerful-napping-minsky, TERMINAL_CLOSED 2026-07-01)
+## §97 — DOCS-REORG-001: docs/ Root Reorganization — Physical Migration (cheerful-napping-minsky, TERMINAL_CLOSED 2026-07-02)
 
 **Mission:** DOCS-REORG-001
 **Plan:** `plans/.claude/cheerful-napping-minsky.md`
 **Status:** TERMINAL_CLOSED
-**Commit:** `438286c0` (bundled in capability-layer rebuild)
+**Commits:**
+- `438286c0` — initial migration (TC-DOCS-001 through TC-DOCS-017)
+- `78e658de` — hardening addendum (TC-DOCS-018/019/020): fix broken refs to playbook-layer.md, retire 4 governance files from security.md stub, fix spec-retrieval frontmatter
+- This session — hardening addendum v1.2 (TC-DOCS-021/022/023): complete security.md stub retirement (15 files), delete stub, fix playbook-layer.md self-refs, fix fixture
 
 ### Summary
 
 Physical migration of 62 of 70 docs/ root files into 6 topical subfolders, with complete
 active-reference repair, historical-reference preservation, governance healing, and idempotency proof.
+Three pilot reruns surfaced and closed 6 additional taskcards (TC-DOCS-018 through TC-DOCS-023)
+after initial closure. docs/security.md compatibility stub fully retired and deleted.
 
 ### Results
 
 | Metric | Before | After |
 |--------|--------|-------|
-| Files at docs/ root | 70 | 15 (8 retained + 7 stubs) |
+| Files at docs/ root | 70 | 14 (8 retained + 6 stubs; security.md stub deleted) |
 | Files in topical subfolders | ~195 | ~257 |
 | Broken active references | 0 | 0 |
+| Stub ref users updated (security.md) | 0 | 15 active files updated; stub deleted |
 
 **Destinations:** docs/ai/ (14), docs/automation/ (8), docs/governance/ (13),
 docs/python-foss/ (14), docs/code-quality/ (7), docs/product-factory/ (6)
@@ -5523,13 +5529,13 @@ docs/python-foss/ (14), docs/code-quality/ (7), docs/product-factory/ (6)
 
 - `tools/docs/migration_engine.py` — migration engine (inventory, scan-refs, manifest, move, validate, rollback)
 - `tools/governance/check_docs_placement.py` — placement policy validator (PASS)
-- `docs/governance/documentation-placement-policy.yaml` — formal placement policy
+- `docs/governance/documentation-placement-policy.yaml` — formal placement policy (security.md removed from stub_allowlist)
 - `.claude/commands/documentation-structure-migration.md` — registered capability command
 - `reports/documentation/docs-root-post-migration-audit.yaml` — post-migration audit
-- 7 compatibility stubs: security, architecture, acquisition-workflow, specification-cache,
+- 6 remaining compatibility stubs: architecture, acquisition-workflow, specification-cache,
   release-control, legal-and-licensing, current-state-and-evidence-authority
 
-### Completion Gate Counters
+### Completion Gate Counters (Final)
 
 | Counter | Value |
 |---------|-------|
@@ -5540,6 +5546,10 @@ docs/python-foss/ (14), docs/code-quality/ (7), docs/product-factory/ (6)
 | DUPLICATE_AUTHORITATIVE_DOCS | 0 |
 | GENERATED_PRODUCERS_EMITTING_OLD_PATHS | 0 |
 | MATERIAL_SECOND_RUN_CHANGES | 0 |
+| STUB_DELETION_BLOCKED | 0 (security.md stub deleted) |
+
+**Tests:** 260/260 PASS (1 skip unrelated)
+**Placement validator:** PASS
 
 **Final Verdict:** DOCS_ROOT_REORGANIZED_REFERENCES_PRESERVED_GOVERNANCE_HEALED_AND_IDEMPOTENT
 

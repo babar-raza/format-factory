@@ -41,7 +41,7 @@ notes: "FODS Gate 8 security review planning document. Created run045 (2026-05-0
 | GATE7_FUZZ_TEST 18/18 | PASS — TC-0033 COMPLETED |
 | DEC-034 Gate 7 verified | PASS — run045 inline (18/18) |
 | Parser prototype available | YES — prototypes/by-format/fods/fods_parser.py |
-| docs/security.md present | YES — 8 threat categories defined |
+| docs/governance/security.md present | YES — 8 threat categories defined |
 | reports/security/ directory | Exists (created Phase 0) |
 
 ---
@@ -49,7 +49,7 @@ notes: "FODS Gate 8 security review planning document. Created run045 (2026-05-0
 ## Threat Category Assessment Plan
 
 The FODS parser uses Python `xml.etree.ElementTree` (stdlib). The security assessment
-must evaluate each threat category from `docs/security.md` against the actual prototype code.
+must evaluate each threat category from `docs/governance/security.md` against the actual prototype code.
 
 ### Pre-assessment summary
 
@@ -100,7 +100,7 @@ sign-off: <name> — <date>
 
 Gate 8 execution is blocked until:
 1. A human issues an explicit Gate 8 execution prompt naming "FODS Gate 8 security review"
-2. The executing agent reads this plan and `docs/security.md` before producing the report
+2. The executing agent reads this plan and `docs/governance/security.md` before producing the report
 3. After producing the report, TC-0038 DEC-034 independent verification must be run
 4. A human signs off on `reports/security/fods.md`
 
@@ -108,7 +108,7 @@ Gate 8 execution is blocked until:
 
 ## References
 
-- `docs/security.md` — threat model and Gate 8 criteria
+- `docs/governance/security.md` — threat model and Gate 8 criteria
 - `docs/gates.md` Section "Gate 8: Security Review Complete"
 - `prototypes/by-format/fods/fods_parser.py` — prototype under review
 - `acquisition-packs/fods/gate7-malformed-fuzz-report.md` — Gate 7 fuzz evidence

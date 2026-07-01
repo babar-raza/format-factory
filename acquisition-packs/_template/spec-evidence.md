@@ -102,7 +102,7 @@ notes: Gate 2 evidence artifact. Remains evidence-only unless explicitly release
 
 ## Security Considerations
 
-[List the security threat categories from docs/security.md that apply to this format, and the initial assessment of how they apply.]
+[List the security threat categories from docs/governance/security.md that apply to this format, and the initial assessment of how they apply.]
 
 | Threat Category | Applicable? | Notes |
 |---|---|---|

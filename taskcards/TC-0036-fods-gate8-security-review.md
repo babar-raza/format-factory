@@ -51,7 +51,7 @@ Gate 8 requires a human security reviewer sign-off — it cannot be self-approve
 ## Objective
 
 Execute a security review of the FODS parser prototype against all applicable threat categories
-from `docs/security.md`. Produce `reports/security/fods.md` with each threat category assessed
+from `docs/governance/security.md`. Produce `reports/security/fods.md` with each threat category assessed
 as mitigated, deferred, or not applicable. Request human sign-off on the completed report.
 
 ---
@@ -61,7 +61,7 @@ as mitigated, deferred, or not applicable. Request human sign-off on the complet
 ### In scope
 
 1. **Threat category assessment** — evaluate the FODS parser (`prototypes/by-format/fods/fods_parser.py`)
-   against all threat categories in `docs/security.md`:
+   against all threat categories in `docs/governance/security.md`:
    - TC-1: XML External Entities (XXE) — applicable (FODS is XML)
    - TC-2: DTD and Entity Expansion (Billion Laughs) — applicable (FODS is XML)
    - TC-3: Zip Bombs / Decompression Limits — not applicable (FODS is flat XML, no ZIP)
@@ -82,7 +82,7 @@ as mitigated, deferred, or not applicable. Request human sign-off on the complet
 3. **DEC-034 independent verification** — separate sprint required before human sign-off:
    - All 8 threat categories assessed
    - No unacceptable residual risks present
-   - Report structure conforms to `docs/security.md` requirements
+   - Report structure conforms to `docs/governance/security.md` requirements
 
 ### Out of scope — FORBIDDEN
 
@@ -102,7 +102,7 @@ as mitigated, deferred, or not applicable. Request human sign-off on the complet
 
 ### Step 1: Read parser prototype
 - Read `prototypes/by-format/fods/fods_parser.py` in full
-- Read `docs/security.md` threat categories
+- Read `docs/governance/security.md` threat categories
 - Read `acquisition-packs/fods/gate7-malformed-fuzz-report.md` (Gate 7 evidence)
 
 ### Step 2: Assess each threat category
@@ -130,7 +130,7 @@ For each of TC-1 through TC-8:
 
 ## Related Files
 
-- `docs/security.md` — threat categories TC-1 through TC-8
+- `docs/governance/security.md` — threat categories TC-1 through TC-8
 - `acquisition-packs/fods/gate8-security-plan.md` — execution plan detail (run045)
 - `prototypes/by-format/fods/fods_parser.py` — prototype to review
 - `acquisition-packs/fods/gate7-malformed-fuzz-report.md` — Gate 7 fuzz evidence

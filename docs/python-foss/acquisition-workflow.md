@@ -120,7 +120,7 @@ Candidates are NOT entered in the registry at this stage. They are informal note
 **Steps:**
 1. Create a prototype directory at `prototypes/by-format/<format-id>/`.
 2. Implement a minimal working parser in Python. The prototype does not need to be production-quality, but it must correctly parse the sample corpus from Stage 3.
-3. Write a prototype README that documents: the approach taken, key parsing decisions, known limitations, security mitigations applied (per `docs/security.md`), and a self-assessment against the threat model.
+3. Write a prototype README that documents: the approach taken, key parsing decisions, known limitations, security mitigations applied (per `docs/governance/security.md`), and a self-assessment against the threat model.
 4. The prototype must pass a basic correctness test: parse each sample in the corpus and produce a structured output without crashing.
 5. Mark Gate 4 passed after human review of the prototype and README.
 6. Update `plans/master-plan.md`.
@@ -180,7 +180,7 @@ Candidates are NOT entered in the registry at this stage. They are informal note
 **Trigger:** Gate 7 passed.
 
 **Steps:**
-1. Review the prototype and prototype README against all applicable threat categories in `docs/security.md`.
+1. Review the prototype and prototype README against all applicable threat categories in `docs/governance/security.md`.
 2. Verify that each threat category is addressed: mitigated, explicitly deferred with rationale, or not applicable with rationale.
 3. Complete the security report in `reports/security/<format-id>.md`.
 4. A human security reviewer signs off by populating the `sign-off` field in the security report.
@@ -300,7 +300,7 @@ authorization via S-F2F-01 execution.
 
 - `docs/gates.md` — detailed pass criteria for each gate
 - `docs/governance/legal-and-licensing.md` — legal category model and fast-path rules
-- `docs/security.md` — threat categories and mitigations (Stage 4, 7, 8)
+- `docs/governance/security.md` — threat categories and mitigations (Stage 4, 7, 8)
 - `docs/product-factory/product-tracks.md` — tier model and track definitions (Stage 9, 10, 11)
 - `docs/governance/release-control.md` — artifact visibility and release manifest rules
 - `acquisition-packs/_template/` — templates for all acquisition pack artifacts

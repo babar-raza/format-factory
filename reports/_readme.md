@@ -31,7 +31,7 @@ All subdirectories under `reports/` are created in Phase 2+ as formats progress 
 Security reports (`reports/security/<format-id>.md`) must contain:
 
 1. **Fuzz results section** (Gate 7): fuzz seed list, iteration count, all crashes with input characterization, stack traces, root cause analysis, and mitigations applied.
-2. **Threat category review section** (Gate 8): for each threat category in `docs/security.md`, a statement of: applicable/not applicable, mitigation implemented, or explicitly deferred with rationale.
+2. **Threat category review section** (Gate 8): for each threat category in `docs/governance/security.md`, a statement of: applicable/not applicable, mitigation implemented, or explicitly deferred with rationale.
 3. **Sign-off section** (Gate 8): reviewer name, review date, and list of any residual accepted risks.
 
 No format passes Gate 8 without a human sign-off in the security report.
@@ -57,7 +57,7 @@ Release manifests (`release-manifest-<version>.yaml`) are also stored in `report
 
 ## Relationship to Other Documents
 
-- `docs/security.md` — threat categories that security reports must address
+- `docs/governance/security.md` — threat categories that security reports must address
 - `docs/legal-and-licensing.md` — legal categories and review requirements
 - `docs/gates.md` — Gate 7 (fuzz) and Gate 8 (security review) pass criteria
 - `docs/release-control.md` — visibility classification and redaction policy

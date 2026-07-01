@@ -1,12 +1,12 @@
 """XML security behavioral tests for Format Factory parsers.
 
 Verifies that FODS and FODT parsers resist XML-based attack vectors
-documented in docs/security.md (Threat Categories 1-2):
+documented in docs/governance/security.md (Threat Categories 1-2):
   - XXE injection (Threat 1)
   - DTD entity expansion / Billion Laughs (Threat 2)
 
 These tests prove defusedxml protection is active, not just configured.
-See: docs/security.md, src/python/fods/parser.py (IR-FODS-004)
+See: docs/governance/security.md, src/python/fods/parser.py (IR-FODS-004)
 """
 from __future__ import annotations
 
@@ -217,15 +217,15 @@ class TestXmlSecurityDocumentIntegrity:
     """Verify security documentation and policy files are in place."""
 
     def test_security_md_exists(self):
-        """docs/security.md must exist (security policy documentation)."""
-        security_doc = _REPO / "docs" / "security.md"
+        """docs/governance/security.md must exist (security policy documentation)."""
+        security_doc = _REPO / "docs" / "governance" / "security.md"
         assert security_doc.exists(), f"Security policy missing: {security_doc}"
 
     def test_security_md_covers_xxe(self):
-        """docs/security.md must document XXE threat mitigation."""
-        security_doc = _REPO / "docs" / "security.md"
+        """docs/governance/security.md must document XXE threat mitigation."""
+        security_doc = _REPO / "docs" / "governance" / "security.md"
         if not security_doc.exists():
-            pytest.skip("docs/security.md not found")
+            pytest.skip("docs/governance/security.md not found")
         content = security_doc.read_text(encoding="utf-8")
         assert "XXE" in content or "xml external" in content.lower(), (
             "security.md must document XXE (XML External Entity) threat"

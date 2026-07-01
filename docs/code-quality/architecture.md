@@ -276,7 +276,7 @@ Before creating any artifact, an agent checks `.local/artifact-index.yaml` for a
 
 ## Security Architecture
 
-All parsers produced by this system must conform to the threat model in `docs/security.md`. Eight threat categories apply: XXE, DTD entity expansion (billion laughs), zip bombs, path traversal, malformed file handling, memory limits, recursion limits, and binary parser safety. Security review (Gate 8) is mandatory before any format reaches product.
+All parsers produced by this system must conform to the threat model in `docs/governance/security.md`. Eight threat categories apply: XXE, DTD entity expansion (billion laughs), zip bombs, path traversal, malformed file handling, memory limits, recursion limits, and binary parser safety. Security review (Gate 8) is mandatory before any format reaches product.
 
 ---
 
@@ -395,7 +395,7 @@ Generates ~80% of evidence-declaration.yaml automatically from the lane-executio
 - `docs/gates.md` — gate pass criteria and artifacts required
 - `docs/python-foss/acquisition-workflow.md` — stage-by-stage acquisition process
 - `docs/product-factory/product-tracks.md` — four track definitions, contamination prevention
-- `docs/security.md` — parser threat model
+- `docs/governance/security.md` — parser threat model
 - `docs/governance/legal-and-licensing.md` — format legal classification
 - `docs/governance/release-control.md` — artifact visibility and release policy
 - `docs/ai/llm-endpoint-strategy.md` — LLM endpoint and credentials policy

@@ -78,7 +78,7 @@ Product code in `src/python/{format}/` is written from scratch in Phase 4+. It d
 
 ## Security Requirements
 
-All parsers in this directory must comply with the threat model in `docs/security.md`. For XML-based formats:
+All parsers in this directory must comply with the threat model in `docs/governance/security.md`. For XML-based formats:
 - Use `defusedxml` for any XML parsing of untrusted input.
 - Never use `xml.etree.ElementTree` with default settings on untrusted file input.
 - Set `huge_tree=False` and `resolve_entities=False` if using `lxml` directly.
@@ -95,6 +95,6 @@ All production source files are `visibility: public` after Gate 10 approval. Bef
 ## Relationship to Other Documents
 
 - `docs/product-factory/product-tracks.md` — Track 1 definition, technology baseline, license policy
-- `docs/security.md` — parser security requirements
+- `docs/governance/security.md` — parser security requirements
 - `docs/gates.md` — Gate 10 (OSS readiness) pass criteria
 - `taskcards/TC-0003-sdk-baseline.md` — SDK baseline confirmation

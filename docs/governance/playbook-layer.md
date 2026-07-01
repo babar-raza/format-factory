@@ -269,7 +269,7 @@ Playbook-related artifacts that may appear in evidence bundles:
 - `bundle-metadata/playbook-replay-report.md` — informational replay summary.
 - `bundle-metadata/review-queue-export.yaml` — open review items.
 - `repo/schemas/playbook/*.json` — the schemas (committed to repo).
-- `repo/docs/playbook-layer.md` — this policy document.
+- `repo/docs/governance/playbook-layer.md` — this policy document.
 - `repo/docs/examples/*.yaml` — documentation-only examples.
 
 These are informational inputs. They do not replace any required_metadata_files
@@ -298,7 +298,7 @@ The following uses of playbooks, review queues, and replay reports are explicitl
 
 | Phase | Taskcard | Status | Creates |
 |-------|----------|--------|---------|
-| S-F2F-01 | Playbook Schema and Policy | **COMPLETE** | schemas/playbook/, docs/playbook-layer.md, docs/examples/ |
+| S-F2F-01 | Playbook Schema and Policy | **COMPLETE** | schemas/playbook/, docs/governance/playbook-layer.md, docs/examples/ |
 | S-F2F-02 | Playbook Validation Tool | **COMPLETE** | tools/playbook/validate_playbook.py, tests/playbook/ |
 | S-F2F-03 | Dry-Run Replay + Review Queue | **COMPLETE** | tools/playbook/replay_acquisition_playbook.py, diff_playbook_outputs.py, export_review_queue.py |
 | S-F2F-04 | Golden Dry-Run Tests | **COMPLETE** | tests/playbook/golden/ (7 fixtures), test_replay_golden.py, test_diff_golden.py, test_review_queue_golden.py, create_golden_case.py |
@@ -360,7 +360,7 @@ S-F2F-01 is DONE when:
 
 1. schemas/playbook/acquisition-playbook.schema.json — valid JSON, all required fields present.
 2. schemas/playbook/review-queue.schema.json — valid JSON, all required fields present.
-3. docs/playbook-layer.md — this document, 20 sections, all mandatory policy text present.
+3. docs/governance/playbook-layer.md — this document, 20 sections, all mandatory policy text present.
 4. docs/examples/acquisition-playbook-fods-documentation-example.yaml — documentation only,
    status=documentation_example_only, not_for_execution=true.
 5. ZERO tool files in tools/playbook/ — it must NOT exist.

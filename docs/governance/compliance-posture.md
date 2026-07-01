@@ -59,7 +59,7 @@ Validators run automatically in every supervisor cycle and in CI (`governance-ch
 
 Defined in `.github/workflows/ci.yml`:
 - **Lint gate:** `ruff check` hard-fail (no `continue-on-error`)
-- **Security scan:** `bandit -r src/ -ll` (B314 intentionally skipped; see `docs/security.md`)
+- **Security scan:** `bandit -r src/ -ll` (B314 intentionally skipped; see `docs/governance/security.md`)
 - **Test coverage gate:** `coverage report --fail-under=85` (hard-fail)
 - **Governance smoke test:** imports `governance_validators` and validates the module loads
 
@@ -115,7 +115,7 @@ Defined in `AGENTS.md`:
 
 ## Security Controls
 
-### Parser Security (Threat Model in `docs/security.md`)
+### Parser Security (Threat Model in `docs/governance/security.md`)
 
 | Threat | Mitigation | Verified By |
 |--------|------------|-------------|
@@ -128,7 +128,7 @@ Defined in `AGENTS.md`:
 ### CI Security Scanning
 
 - `bandit -r src/ -ll -q` runs on every push/PR
-- B314 (xml.etree): intentionally skipped; see `docs/security.md` for justification
+- B314 (xml.etree): intentionally skipped; see `docs/governance/security.md` for justification
 - Security gate (Gate 8): human review required before production
 
 ---

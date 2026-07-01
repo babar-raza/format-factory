@@ -87,13 +87,13 @@ All .NET parsers must use `XmlReaderSettings` with:
 - `XmlResolver = null`
 - `MaxCharactersFromEntities = 10000` (for DTD entity expansion protection)
 
-Never use `XDocument.Load()` or `XmlDocument.Load()` with default settings on untrusted input. See `docs/security.md` for the full threat model.
+Never use `XDocument.Load()` or `XmlDocument.Load()` with default settings on untrusted input. See `docs/governance/security.md` for the full threat model.
 
 ---
 
 ## Relationship to Other Documents
 
 - `docs/product-factory/product-tracks.md` — Track 2 (.NET product) definition and format-first layout
-- `docs/security.md` — .NET parser security requirements
+- `docs/governance/security.md` — .NET parser security requirements
 - `docs/gates.md` — Gate 10 (OSS) and Gate 11 (commercial) criteria
 - `taskcards/TC-0003-sdk-baseline.md` — SDK baseline confirmation

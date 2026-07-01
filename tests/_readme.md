@@ -54,7 +54,7 @@ Fuzz seeds are the starting inputs for the fuzz harness. They must include:
 - A file with illegal values in key fields (e.g., negative cell index, invalid encoding).
 - A file with oversized length fields (e.g., a cell count field set to INT_MAX).
 
-The minimum fuzz iteration counts are defined in `docs/security.md`: 10,000 for XML formats; 100,000 for binary formats.
+The minimum fuzz iteration counts are defined in `docs/governance/security.md`: 10,000 for XML formats; 100,000 for binary formats.
 
 ---
 
@@ -66,7 +66,7 @@ All files in `tests/` are `visibility: internal`. Test fixtures derived from CC-
 
 ## Relationship to Other Documents
 
-- `docs/security.md` — fuzz testing requirements (Gate 7) and minimum iteration counts
+- `docs/governance/security.md` — fuzz testing requirements (Gate 7) and minimum iteration counts
 - `docs/gates.md` — Gate 4 (prototype), Gate 6 (oracle), Gate 7 (fuzz) pass criteria
 - `samples/_provenance.yaml` — license records for sample-derived fixtures
 - `docs/python-foss/acquisition-workflow.md` — Stages 4, 6, 7 describe how these directories are used
