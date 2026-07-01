@@ -92,6 +92,22 @@ class SylkModelDocument:
         """True if there are more rows than columns."""
         return self.row_count > self.col_count
 
+    # Cell type analysis properties (FACT-SYLK-008, FACT-SYLK-016)
+    @property
+    def numeric_cell_count(self) -> int:
+        """Number of cells with numeric values."""
+        return sum(1 for c in self._parsed.cells if c.value_type == "numeric")
+
+    @property
+    def string_cell_count(self) -> int:
+        """Number of cells with string values."""
+        return sum(1 for c in self._parsed.cells if c.value_type == "string")
+
+    @property
+    def nonempty_cell_count(self) -> int:
+        """Number of cells with non-empty values (numeric or string)."""
+        return sum(1 for c in self._parsed.cells if c.value_type != "empty")
+
     def to_dict(self) -> dict[str, Any]:
         """Return document summary as a dict."""
         return {

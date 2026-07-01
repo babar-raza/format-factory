@@ -79,6 +79,22 @@ class TomlDocument:
         """Number of top-level keys whose value is a scalar (not a dict or list)."""
         return sum(1 for v in self._doc().values() if not isinstance(v, (dict, list)))
 
+    # Additional structural properties (FACT-TOML-002, FACT-TOML-004)
+    @property
+    def is_flat(self) -> bool:
+        """True if the document has no nested tables."""
+        return not self.has_nested_tables
+
+    @property
+    def has_booleans(self) -> bool:
+        """True if any top-level value is a boolean."""
+        return any(isinstance(v, bool) for v in self._doc().values())
+
+    @property
+    def table_count(self) -> int:
+        """Number of top-level keys whose value is a table (dict)."""
+        return sum(1 for v in self._doc().values() if isinstance(v, dict))
+
     def to_dict(self) -> dict[str, Any]:
         """Return the underlying neutral model dict."""
         return dict(self._data)
