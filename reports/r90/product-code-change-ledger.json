@@ -34825,9 +34825,36 @@
       "description": "FodtR447GetEmbeddedObjectCountDedicatedTests: 9 tests for FodtDocument.GetEmbeddedObjectCount \u2014 new non-negative, counts unchanged, idempotent, is int, dogfood paragraphs/mixed/loop",
       "file_path": "tests/net/fodt/FodtR447GetEmbeddedObjectCountDedicatedTests.cs",
       "timestamp": "2026-07-02T00:00:00Z"
+    },
+    {
+      "entry_id": "PC-NETPBM-R442",
+      "sprint_id": "ff-sprint-s424-dotnet-deepening-20260701",
+      "format": "NETPBM",
+      "change_type": "test_added",
+      "description": "NetpbmR442GetSaturationDedicatedTests: 11 tests for NetpbmImage.GetSaturation \u2014 non-negative, dims/format/MaxValue unchanged, idempotent, PBM/PGM/PPM, dogfood 4x4 PGM/PPM",
+      "file_path": "tests/net/netpbm/NetpbmR442GetSaturationDedicatedTests.cs",
+      "timestamp": "2026-07-02T00:30:00Z"
+    },
+    {
+      "entry_id": "PC-FODS-R473",
+      "sprint_id": "ff-sprint-s424-dotnet-deepening-20260701",
+      "format": "FODS",
+      "change_type": "test_added",
+      "description": "FodsR473GetCellColumnWidthDedicatedTests: 11 tests for FodsDocument.GetCellColumnWidth \u2014 guard throws, valid positive, SheetCount unchanged, idempotent, is double, SetColumnWidth+Get, dogfood default/multiple",
+      "file_path": "tests/net/fods/FodsR473GetCellColumnWidthDedicatedTests.cs",
+      "timestamp": "2026-07-02T00:30:00Z"
+    },
+    {
+      "entry_id": "PC-FODT-R448",
+      "sprint_id": "ff-sprint-s424-dotnet-deepening-20260701",
+      "format": "FODT",
+      "change_type": "test_added",
+      "description": "FodtR448GetMacroCountDedicatedTests: 9 tests for FodtDocument.GetMacroCount \u2014 new non-negative, counts unchanged, idempotent, is int, dogfood paragraphs/mixed/loop",
+      "file_path": "tests/net/fodt/FodtR448GetMacroCountDedicatedTests.cs",
+      "timestamp": "2026-07-02T00:30:00Z"
     }
   ],
-  "total_entries": 2098,
+  "total_entries": 2101,
   "changes": [
     {
       "file": "src/python/dif/models.py",
