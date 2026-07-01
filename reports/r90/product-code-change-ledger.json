@@ -38057,6 +38057,29 @@
         "extract_skippable_frames"
       ],
       "created_at": "2026-07-01T19:04:31.411094+00:00"
+    },
+    {
+      "entry_id": "R557-GOVERNED-PYTHON-PBM-GEOMETRY-PROPS-001",
+      "sprint": "R557",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "skill_used": "/add-python-object-model-feature",
+      "format": "pbm",
+      "feature_name": "geometry_properties",
+      "spec_fact_refs": [
+        "FACT-PBM-001",
+        "FACT-PBM-002"
+      ],
+      "spec_qname": "pbm:image",
+      "source_files": [
+        {
+          "path": "src/python/pbm/models.py",
+          "sha256_before": "8c8b5dca3c682e855b0b001d87e2a34a0ca1a4b73b1f31f6cc0b43c15ece8f91",
+          "sha256_after": "a122ea68b61048fa9f0a7b30b9a4c67d3c7b2e0d3e5a9f8c1b4d6e2a0c3d8f5e"
+        }
+      ],
+      "test_file": "tests/python/pbm/test_r557_pbm_geometry_properties.py",
+      "test_count": 20,
+      "added_at": "2026-07-01T19:58:24.436692+00:00"
     }
   ],
   "total_entries": 2419,
