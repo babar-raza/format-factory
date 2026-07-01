@@ -34609,9 +34609,36 @@
       "description": "FodtR439GetHyperlinkCountDedicatedTests: 9 tests for FodtDocument.GetHyperlinkCount \u2014 new non-negative, counts unchanged, idempotent, is int, dogfood paragraphs/mixed/loop",
       "file_path": "tests/net/fodt/FodtR439GetHyperlinkCountDedicatedTests.cs",
       "timestamp": "2026-07-01T20:00:00Z"
+    },
+    {
+      "entry_id": "PC-NETPBM-R434",
+      "sprint_id": "ff-sprint-s416-dotnet-deepening-20260701",
+      "format": "NETPBM",
+      "change_type": "test_added",
+      "description": "NetpbmR434GetPixelValueRangeDedicatedTests: 11 tests for NetpbmImage.GetPixelValueRange \u2014 non-negative, within MaxValue, dims/format/MaxValue unchanged, idempotent, PBM/PGM/PPM, dogfood 4x4 PGM",
+      "file_path": "tests/net/netpbm/NetpbmR434GetPixelValueRangeDedicatedTests.cs",
+      "timestamp": "2026-07-01T20:30:00Z"
+    },
+    {
+      "entry_id": "PC-FODS-R465",
+      "sprint_id": "ff-sprint-s416-dotnet-deepening-20260701",
+      "format": "FODS",
+      "change_type": "test_added",
+      "description": "FodsR465GetSheetVisibilityDedicatedTests: 10 tests for FodsDocument.GetSheetVisibility \u2014 guard throws, valid non-null, SheetCount unchanged, idempotent, is string, SetSheetVisibility+Get, dogfood default/multiple",
+      "file_path": "tests/net/fods/FodsR465GetSheetVisibilityDedicatedTests.cs",
+      "timestamp": "2026-07-01T20:30:00Z"
+    },
+    {
+      "entry_id": "PC-FODT-R440",
+      "sprint_id": "ff-sprint-s416-dotnet-deepening-20260701",
+      "format": "FODT",
+      "change_type": "test_added",
+      "description": "FodtR440GetBookmarkCountDedicatedTests: 9 tests for FodtDocument.GetBookmarkCount \u2014 new non-negative, counts unchanged, idempotent, is int, dogfood paragraphs/mixed/loop",
+      "file_path": "tests/net/fodt/FodtR440GetBookmarkCountDedicatedTests.cs",
+      "timestamp": "2026-07-01T20:30:00Z"
     }
   ],
-  "total_entries": 2074,
+  "total_entries": 2077,
   "changes": [
     {
       "file": "src/python/dif/models.py",
