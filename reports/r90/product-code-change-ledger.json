@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "ff-sprint-s403-dotnet-deepening-20260701",
+  "latest_sprint": "ff-sprint-s404-dotnet-deepening-20260701",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -34204,9 +34204,45 @@
         "tests/net/fodt/FodtR427GetTextSectionCountDedicatedTests.cs"
       ],
       "test_count": 9
+    },
+    {
+      "entry_id": "PC-NETPBM-R422",
+      "sprint": "ff-sprint-s404-dotnet-deepening-20260701",
+      "classification": "TEST_COVERAGE",
+      "format": "NETPBM",
+      "capability": "GetImageSizeInBytes",
+      "description": "Dedicated tests for NetpbmImage.GetImageSizeInBytes: positive; dims/format/MaxValue unchanged; idempotent; PBM/PGM/PPM positive; dogfood 4x4 PGM/PPM positive.",
+      "source_files": [
+        "tests/net/netpbm/NetpbmR422GetImageSizeInBytesDedicatedTests.cs"
+      ],
+      "test_count": 11
+    },
+    {
+      "entry_id": "PC-FODS-R453",
+      "sprint": "ff-sprint-s404-dotnet-deepening-20260701",
+      "classification": "TEST_COVERAGE",
+      "format": "FODS",
+      "capability": "GetSheetFreezeColumns",
+      "description": "Dedicated tests for FodsDocument.GetSheetFreezeColumns: null/whitespace/nonexistent throws; valid non-negative; SheetCount unchanged; idempotent; is int; SetFreezeColumns+Get round-trip; dogfood default/multiple sheets.",
+      "source_files": [
+        "tests/net/fods/FodsR453GetSheetFreezeColumnsDedicatedTests.cs"
+      ],
+      "test_count": 9
+    },
+    {
+      "entry_id": "PC-FODT-R428",
+      "sprint": "ff-sprint-s404-dotnet-deepening-20260701",
+      "classification": "TEST_COVERAGE",
+      "format": "FODT",
+      "capability": "GetChangeTrackingCount",
+      "description": "Dedicated tests for FodtDocument.GetChangeTrackingCount: new non-negative, ParagraphCount/TableCount unchanged, idempotent, is int, dogfood after paragraphs/mixed content/loop all non-negative.",
+      "source_files": [
+        "tests/net/fodt/FodtR428GetChangeTrackingCountDedicatedTests.cs"
+      ],
+      "test_count": 9
     }
   ],
-  "total_entries": 2038,
+  "total_entries": 2041,
   "changes": [
     {
       "file": "src/python/dif/models.py",
