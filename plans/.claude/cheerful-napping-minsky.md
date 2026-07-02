@@ -1680,8 +1680,8 @@ git ls-files validation of bundle-metadata/ gitignore status.
 
 | TC-ID | Title | Status | Priority |
 |-------|-------|--------|----------|
-| TC-DOCS-024 | Retire 4 Group A stubs (0 committed refs) | OPEN | HIGH |
-| TC-DOCS-025 | Fix 4 stale refs in traceability.md + retire 2 Group B stubs | OPEN | HIGH |
+| TC-DOCS-024 | Retire 4 Group A stubs (0 committed refs) | CLOSED | HIGH |
+| TC-DOCS-025 | Fix 4 stale refs in traceability.md + retire 2 Group B stubs | CLOSED | HIGH |
 
 ---
 
@@ -1692,7 +1692,7 @@ taskcard:
   id: TC-DOCS-024
   title: "Retire 4 Group A stubs (acquisition-workflow, architecture, legal-and-licensing, release-control)"
   priority: HIGH
-  status: OPEN
+  status: CLOSED
   stubs_to_retire:
     - path: docs/acquisition-workflow.md
       canonical: docs/python-foss/acquisition-workflow.md
@@ -1730,7 +1730,7 @@ taskcard:
   id: TC-DOCS-025
   title: "Fix 4 stale refs in docs/_audit/traceability.md + retire 2 Group B stubs"
   priority: HIGH
-  status: OPEN
+  status: CLOSED
   stale_refs_to_fix:
     - file: docs/_audit/traceability.md
       line: 11
@@ -1795,5 +1795,5 @@ plan_hardening_validation_rev13:
 | TC-DOCS-021 | Complete docs/security.md stub retirement (15 files + delete) | CLOSED |
 | TC-DOCS-022 | Fix 3 self-refs in docs/governance/playbook-layer.md body | CLOSED |
 | TC-DOCS-023 | Fix stale policy_doc_reference in test fixture | CLOSED |
-| TC-DOCS-024 | Retire 4 Group A stubs (0 committed refs) | OPEN |
-| TC-DOCS-025 | Fix 4 stale refs in traceability.md + retire 2 Group B stubs | OPEN |
+| TC-DOCS-024 | Retire 4 Group A stubs (0 committed refs) | CLOSED |
+| TC-DOCS-025 | Fix 4 stale refs in traceability.md + retire 2 Group B stubs | CLOSED |
