@@ -132,6 +132,84 @@ class CsvDocument:
         """Total number of cells (row_count * column_count)."""
         return self.row_count * self.column_count
 
+    # Scale classification properties (FACT-CSV-001 R1233)
+
+    @property
+    def is_large(self) -> bool:
+        """True if row_count > 10000."""
+        return self.row_count > 10000
+
+    @property
+    def is_tiny(self) -> bool:
+        """True if row_count <= 5."""
+        return self.row_count <= 5
+
+    @property
+    def has_uniform_rows(self) -> bool:
+        """True if all rows have column_count columns; True for empty docs."""
+        rows = self.rows
+        if not rows:
+            return True
+        expected = self.column_count
+        return all(len(r) == expected for r in rows)
+
+    # Density and shape properties (FACT-CSV-001 R1253)
+
+    @property
+    def fill_density(self) -> float:
+        """Fraction of non-empty cells; 0.0 if no cells."""
+        total = self.total_cell_count
+        if total == 0:
+            return 0.0
+        non_empty = sum(1 for row in self.rows for cell in row if cell != "")
+        return non_empty / total
+
+    @property
+    def has_empty_cells(self) -> bool:
+        """True if any cell in rows is an empty string."""
+        return any(cell == "" for row in self.rows for cell in row)
+
+    @property
+    def aspect_ratio(self) -> float:
+        """column_count / row_count; 0.0 if no rows."""
+        if self.row_count == 0:
+            return 0.0
+        return self.column_count / self.row_count
+
+    # Extended grid analysis properties (FACT-CSV-001 R1273)
+
+    @property
+    def is_narrow_grid(self) -> bool:
+        """True if row_count > 3 * column_count and column_count > 0."""
+        return self.column_count > 0 and self.row_count > 3 * self.column_count
+
+    @property
+    def is_flat_grid(self) -> bool:
+        """True if column_count > 3 * row_count and row_count > 0."""
+        return self.row_count > 0 and self.column_count > 3 * self.row_count
+
+    @property
+    def is_sparse_data(self) -> bool:
+        """True if fill_density < 0.5 and total_cell_count > 0."""
+        return self.total_cell_count > 0 and self.fill_density < 0.5
+
+    # Grid shape and fill completeness properties (FACT-CSV-001 R1289)
+
+    @property
+    def is_square_grid(self) -> bool:
+        """True if row_count == column_count and both positive."""
+        return self.row_count > 0 and self.row_count == self.column_count
+
+    @property
+    def is_dense_data(self) -> bool:
+        """True if fill_density > 0.8."""
+        return self.fill_density > 0.8
+
+    @property
+    def empty_cell_count(self) -> int:
+        """Number of empty cells: round((1 - fill_density) * total_cell_count)."""
+        return round((1.0 - self.fill_density) * self.total_cell_count)
+
     def to_dict(self) -> dict[str, Any]:
         """Return the underlying neutral model dict."""
         return dict(self._data)

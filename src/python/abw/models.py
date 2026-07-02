@@ -95,6 +95,80 @@ class AbwDocument:
         """True if the document contains more than one section."""
         return self.section_count > 1
 
+    # Text content analysis properties (FACT-ABW-001 R1229)
+
+    @property
+    def total_text_length(self) -> int:
+        """Sum of character lengths of all paragraphs."""
+        return sum(len(p) for p in self.paragraphs)
+
+    @property
+    def avg_paragraph_length(self) -> float:
+        """Average characters per paragraph; 0.0 if no paragraphs."""
+        if self.paragraph_count == 0:
+            return 0.0
+        return self.total_text_length / self.paragraph_count
+
+    @property
+    def has_long_paragraphs(self) -> bool:
+        """True if any paragraph exceeds 200 characters."""
+        return any(len(p) > 200 for p in self.paragraphs)
+
+    # Scale and density properties (FACT-ABW-001 R1251)
+
+    @property
+    def is_large(self) -> bool:
+        """True if paragraph_count > 50."""
+        return self.paragraph_count > 50
+
+    @property
+    def is_text_heavy(self) -> bool:
+        """True if total_text_length > 5000."""
+        return self.total_text_length > 5000
+
+    @property
+    def paragraphs_per_section(self) -> float:
+        """paragraph_count / section_count; 0.0 if no sections."""
+        if self.section_count == 0:
+            return 0.0
+        return self.paragraph_count / self.section_count
+
+    # Content balance properties (FACT-ABW-001 R1271)
+
+    @property
+    def avg_section_length(self) -> float:
+        """total_text_length / section_count; 0.0 if no sections."""
+        if self.section_count == 0:
+            return 0.0
+        return self.total_text_length / self.section_count
+
+    @property
+    def is_dense_text(self) -> bool:
+        """True if avg_paragraph_length > 200."""
+        return self.avg_paragraph_length > 200
+
+    @property
+    def is_sparse_text(self) -> bool:
+        """True if avg_paragraph_length < 50 and paragraph_count > 0."""
+        return self.paragraph_count > 0 and self.avg_paragraph_length < 50
+
+    # Document structure properties (FACT-ABW-001 R1287)
+
+    @property
+    def is_moderate_text(self) -> bool:
+        """True if 50 <= avg_paragraph_length <= 200."""
+        return 50 <= self.avg_paragraph_length <= 200
+
+    @property
+    def has_rich_sections(self) -> bool:
+        """True if paragraphs_per_section > 5."""
+        return self.paragraphs_per_section > 5
+
+    @property
+    def is_long_document(self) -> bool:
+        """True if total_text_length > 10000."""
+        return self.total_text_length > 10000
+
     def to_dict(self) -> dict[str, Any]:
         """Return the underlying neutral model dict."""
         return dict(self._data)

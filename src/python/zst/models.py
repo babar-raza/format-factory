@@ -127,6 +127,76 @@ class ZstDocument:
         """True if the compressed size is less than 1 KB (1,024 bytes)."""
         return self.compressed_size < 1_024
 
+    # Compression quality properties (FACT-ZST-001, FACT-ZST-002)
+
+    @property
+    def compressed_size_mb(self) -> float:
+        """Compressed file size in megabytes."""
+        return self.compressed_size / 1_048_576.0
+
+    @property
+    def savings_ratio(self) -> float:
+        """Fraction of space saved by compression (0.0 if no decompressed data).
+
+        Computed as 1 - (compressed_size / decompressed_size).
+        Returns 0.0 when decompressed_size is 0.
+        May be negative if compressed file is larger than decompressed.
+        """
+        if self.decompressed_size == 0:
+            return 0.0
+        return 1.0 - (self.compressed_size / self.decompressed_size)
+
+    @property
+    def is_lossless_verified(self) -> bool:
+        """True if compressed_size > 0 and compressed_size < decompressed_size."""
+        return self.compressed_size > 0 and self.compressed_size < self.decompressed_size
+
+    @property
+    def space_saved_bytes(self) -> int:
+        """Bytes saved by compression (0 if no savings or expansion)."""
+        return max(0, self.decompressed_size - self.compressed_size)
+
+    @property
+    def is_highly_compressible(self) -> bool:
+        """True if savings_ratio > 0.9 (more than 90% space saved)."""
+        return self.savings_ratio > 0.9
+
+    @property
+    def frames_per_mb(self) -> float:
+        """Frame count per decompressed MB (0.0 if no decompressed data)."""
+        if self.decompressed_size == 0:
+            return 0.0
+        return self.frame_count / self.decompressed_size_mb
+
+    @property
+    def is_multi_frame(self) -> bool:
+        """True if the stream contains more than one Zstandard frame."""
+        return self.frame_count > 1
+
+    @property
+    def compression_class(self) -> str:
+        """Classify compression level from savings_ratio.
+
+        Returns one of: 'none', 'low', 'moderate', 'high', 'very_high'.
+        """
+        r = self.savings_ratio
+        if r <= 0.0:
+            return "none"
+        if r <= 0.5:
+            return "low"
+        if r <= 0.8:
+            return "moderate"
+        if r <= 0.9:
+            return "high"
+        return "very_high"
+
+    @property
+    def avg_frame_size_kb(self) -> float:
+        """Average compressed bytes per frame in KB (0.0 if no frames)."""
+        if self.frame_count == 0:
+            return 0.0
+        return (self.compressed_size / self.frame_count) / 1024.0
+
     def to_dict(self) -> dict[str, Any]:
         """Return frame metrics as a dict."""
         return {

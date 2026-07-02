@@ -161,6 +161,70 @@ class OdsModelDocument:
         counts = [s.row_count for s in self.sheets()]
         return max(counts) if counts else 0
 
+    # Workbook scale properties (FACT-ODS-001 R1236)
+
+    @property
+    def is_large_workbook(self) -> bool:
+        """True if total_row_count > 10000."""
+        return self.total_row_count > 10000
+
+    @property
+    def has_many_sheets(self) -> bool:
+        """True if sheet_count > 5."""
+        return self.sheet_count > 5
+
+    @property
+    def avg_rows_per_sheet(self) -> float:
+        """total_row_count / sheet_count; 0.0 if no sheets."""
+        if self.sheet_count == 0:
+            return 0.0
+        return self.total_row_count / self.sheet_count
+
+    # Workbook density and shape properties (FACT-ODS-001 R1256)
+
+    @property
+    def is_uniform_sheet_size(self) -> bool:
+        """True if all sheets have the same row count."""
+        counts = [s.row_count for s in self.sheets()]
+        if not counts:
+            return True
+        return len(set(counts)) == 1
+
+    @property
+    def min_sheet_rows(self) -> int:
+        """Minimum row count in any single sheet; 0 if no sheets."""
+        counts = [s.row_count for s in self.sheets()]
+        return min(counts) if counts else 0
+
+    @property
+    def sheet_row_range(self) -> int:
+        """max_sheet_rows - min_sheet_rows; 0 if no sheets."""
+        sheets = self.sheets()
+        if not sheets:
+            return 0
+        counts = [s.row_count for s in sheets]
+        return max(counts) - min(counts)
+
+    # Workbook structure analysis properties (FACT-ODS-001 R1276)
+
+    @property
+    def has_data_sheets(self) -> bool:
+        """True if at least one sheet has rows."""
+        return any(s.row_count > 0 for s in self.sheets())
+
+    @property
+    def largest_sheet_fraction(self) -> float:
+        """max_sheet_rows / total_row_count; 0.0 if no rows."""
+        total = self.total_row_count
+        if total == 0:
+            return 0.0
+        return self.max_sheet_rows / total
+
+    @property
+    def is_single_sheet_dominant(self) -> bool:
+        """True if largest_sheet_fraction > 0.8."""
+        return self.largest_sheet_fraction > 0.8
+
     def to_dict(self) -> dict[str, Any]:
         """Return document summary as a dict."""
         return {
