@@ -4,7 +4,7 @@
 **Authority level:** Single Operational Authority
 **Project:** format-factory
 **Version:** 6.0
-**Last updated:** 2026-07-03 (v6.6: GI-FODS-NET-001 TERMINAL_CLOSED — Category D purge (67 methods, 574 tests), Category B ODF-grounded, FodsStyleEditor.cs, 14 RT4 roundtrip tests, Gate 11 evidence v2, GI-FODT-NET-001 opened; §104 added)
+**Last updated:** 2026-07-03 (v6.7: gleaming-rolling-hammock TERMINAL_CLOSED — FODS .csproj exclusion repair, V90/V91/V92 validators, FODT healing verified (0 violations), 7/7 pilots PASS, 4210/4210 tests; §106 added)
 **Last verified:** 2026-06-24
 
 **Current phase:** Multi-format POC — 11 targets (3 commercial .NET, 8 FOSS Python). Gate 11 G11-G sub-gate approved by Babar Raza 2026-06-05 (FODS, FODT, Netpbm). Registry gate_11.status: commercial_readiness_in_progress; g11g_status: APPROVED_BY_BABAR_RAZA_2026_06_05 (G11-G sub-gate approved). commercial_product_ready: false (all entries). Full Gate 11 requires Babar Raza final commercial authorization.
@@ -5874,3 +5874,43 @@ Idempotency: migrate_command_sections — 0 migrated (run 2)
 - `reports/skills-commands/governance-gap-ledger.yaml` — 5 gaps, all CLOSED
 
 **Final Verdict:** GOVERNANCE_GAP_REPAIR_COMPLETE — 7/7 failures eliminated, 32/32 R106/R107 tests pass, 26797/26797 full suite pass, idempotency proven
+
+## §106 — gleaming-rolling-hammock: GI-FODS-NET-001 Convergence Closure (TERMINAL_CLOSED 2026-07-03)
+
+**Mission:** Absorb all residual GI-FODS-NET-001 work from buzzing-wiggling-whistle and agile-rolling-marshmallow. 26 taskcards (TC-GHH-A001 through TC-GHH-CONV-001). Final FODS .NET governance convergence.
+
+**Plan:** `plans/.claude/gleaming-rolling-hammock.md`
+
+### Taskcard Groups Closed
+
+| Group | Scope | Taskcards | Status |
+|-------|-------|-----------|--------|
+| A — Fixture & API wiring | fods-cell-styles/column-widths/sheet-view registered in .csproj; R441-R484 ODF-fixture verified | TC-GHH-A001–A007 | CLOSED |
+| B — Architecture docs | 8 files, 1191 LOC: incident-baseline, problem-taxonomy, runtime-map, systemic-cause, target-arch, quality-gap-ledger, fodt-review, professional-verdict | TC-GHH-B001–B004 | CLOSED |
+| C — Validators & skills | V90 (setter-without-xml-write), V91 (getter-without-xml-read), V92 (ExtendedApis LOC cap); /add-dotnet-api pre_execution_requirements | TC-GHH-C001–C004 | CLOSED |
+| D — Gate 11 | Gate 11 impact assessment updated; evidence v2 references | TC-GHH-D001 | CLOSED |
+| E — FODT healing | GI-FODT-NET-001 VERIFIED_NEGATIVE: V87 scan = 0 violations at HEAD (b947eeac already resolved) | TC-GHH-E001–E003 | CLOSED |
+| F — Pilots & closure | 7/7 pilots PASS; taxonomy updated; excluded-file triage (139 Class B); TERMINAL_CLOSED | TC-GHH-F001–F004 | CLOSED |
+| CONV — Post-audit repair | .csproj exclusion list restored (139 entries); 4210/4210 from HEAD | TC-GHH-CONV-001 | CLOSED |
+
+### Test State at Closure
+
+| Metric | Value |
+|--------|-------|
+| Total passing | 4210 |
+| Failures | 0 |
+| Idempotency runs | 2 × 4210/4210 PASS |
+| Excluded test files | 139 (Class B — compilation failures or semantic failures) |
+
+### Governance Validators at Closure
+
+| Validator | Status |
+|-----------|--------|
+| V87 — constant-return public API | REGISTERED, 0 violations in src/net/ |
+| V88 — detached dictionary fields | REGISTERED |
+| V89 — MissingMethods filename | REGISTERED |
+| V90 — setter without xml write | REGISTERED |
+| V91 — getter without xml read | REGISTERED |
+| V92 — FodsDocumentExtendedApis LOC cap | REGISTERED |
+
+**Final Verdict:** GHH_CONVERGENCE_COMPLETE_ALL_GREEN_AND_TASK_CLOSED — 26/26 taskcards closed, 4210/4210 tests pass, 7/7 pilots pass, TERMINAL_CLOSED
