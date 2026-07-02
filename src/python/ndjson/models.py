@@ -110,6 +110,24 @@ class NdjsonDocument:
         key_counts = [len(r) for r in self._records if isinstance(r, dict)]
         return max(key_counts) if key_counts else 0
 
+    # Record count classification properties (FACT-NDJSON-001)
+
+    @property
+    def is_small(self) -> bool:
+        """True if the document has 10 or fewer records."""
+        return self.record_count <= 10
+
+    @property
+    def is_large(self) -> bool:
+        """True if the document has more than 1000 records."""
+        return self.record_count > 1000
+
+    @property
+    def min_keys(self) -> int:
+        """Minimum number of keys in any object record. Returns 0 if no object records."""
+        key_counts = [len(r) for r in self._records if isinstance(r, dict)]
+        return min(key_counts) if key_counts else 0
+
     def to_list(self) -> list[Any]:
         """Return the underlying records list."""
         return list(self._records)

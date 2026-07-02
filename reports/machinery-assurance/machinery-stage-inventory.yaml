@@ -1,0 +1,467 @@
+---
+# Machinery Stage Inventory
+# Mission: MA-2026-07-02-R1227-NDJSON-TOML
+# Scope: Python FOSS product deepening pipeline + supervisor automation loop
+# Generated: 2026-07-02
+# Required: UNINVENTORIED_MACHINERY_STAGES = 0, UNCLASSIFIED_BYPASS_PATHS = 0
+
+machinery_stages:
+
+  - stage_id: "S01-GAP-SELECTION"
+    name: "Product Gap Selection"
+    purpose: "Select the next governed product gap from the ledger to implement"
+    scope: "Python FOSS product track"
+    owner: "Autonomous supervisor / agent"
+    entry_points:
+      - "python tools/supervisor/check_continuation.py  (reads next-work-items.json)"
+      - "/select-poc-gap skill"
+      - ".local/supervisor/selected-product-gaps.json (consumed by sprint)"
+    inputs:
+      - ".local/supervisor/next-work-items.json"
+      - "reports/supervisor/next-sprint.md"
+      - ".local/supervisor/selected-product-gaps-mainstream.json"
+    outputs:
+      - ".local/supervisor/selected-product-gaps.json"
+    producers:
+      - "tools/supervisor/check_continuation.py"
+      - "tools/supervisor/capability_feature_compiler.py"
+    consumers:
+      - "Agent (reads selected gaps for implementation)"
+    state_read:
+      - ".local/supervisor/continuation-signal.json"
+      - "reports/supervisor/next-sprint.md"
+    state_written:
+      - ".local/supervisor/selected-product-gaps.json"
+    schemas:
+      - "docs/schemas/selected-product-gaps.schema.json (if exists)"
+    validators: []
+    failure_modes:
+      - "Stale next-work-items.json from crashed prior sprint"
+      - "No gaps available (zero-task-counter triggered)"
+    retry_behavior: "Manual reset via reset_track_signal.py"
+    rollback_behavior: "Reset continuation-signal.json"
+    current_tests:
+      - "tests/supervisor/ (continuation signal tests)"
+    current_evidence:
+      - ".local/supervisor/selected-product-gaps.json (current state)"
+    bypass_paths:
+      - "Agent reads next-sprint.md directly without checking continuation"
+    findings:
+      - "BYPASSED: next-sprint.md can be read without check_continuation.py — no mechanical enforcement"
+
+  - stage_id: "S02-FEATURE-IMPLEMENTATION"
+    name: "Python Object Model Feature Implementation"
+    purpose: "Add properties/methods to domain model class (NdjsonDocument, TomlDocument, etc.)"
+    scope: "src/python/{format}/models.py"
+    owner: "Agent (governed by /add-python-object-model-feature skill)"
+    entry_points:
+      - "/add-python-object-model-feature skill"
+      - "Direct Edit tool (governed via product-code-change-ledger)"
+    inputs:
+      - "Spec QName reference (e.g. FACT-NDJSON-001)"
+      - "Selected gap from S01"
+      - "src/python/{format}/models.py (existing source)"
+    outputs:
+      - "src/python/{format}/models.py (modified with new properties)"
+    producers:
+      - "Agent (Claude) via Edit tool"
+      - "/add-python-object-model-feature skill"
+    consumers:
+      - "S03 (test writing)"
+      - "S04 (site-packages sync)"
+      - "tests/python/{format}/*.py (import models)"
+    state_read:
+      - "reports/r90/product-code-change-ledger.json"
+      - ".supervisor/skill-registry.yaml"
+    state_written:
+      - "reports/r90/product-code-change-ledger.json (new entry)"
+    schemas:
+      - "ClassVar spec_qname pattern required"
+      - "Property naming: snake_case, returns bool or int"
+    validators:
+      - "registry/source-structure-baseline.json (LOC/function caps)"
+      - "tools/supervisor/validate_product_code_ledger.py"
+    failure_modes:
+      - "LOC cap exceeded (baseline_loc_cap)"
+      - "spec_qname missing on class"
+      - "Property added without ledger entry"
+      - "Non-editable install not synced after change"
+    retry_behavior: "Fix source and re-sync"
+    rollback_behavior: "git checkout -- src/python/{format}/models.py"
+    current_tests:
+      - "tests/python/ndjson/test_r1227_ndjson_size_classification_properties.py (R1227 — 21 PASS)"
+    current_evidence:
+      - "git diff HEAD shows is_small, is_large, min_keys added to NdjsonDocument"
+      - "git diff HEAD shows has_only_scalars, is_mixed, array_count added to TomlDocument"
+    bypass_paths:
+      - "Direct Edit without ledger entry (if agent skips skill)"
+    findings:
+      - "R1227 implementation VERIFIED — 21/21 tests pass"
+      - "R1226 TOML properties implemented in prior commit ae504376"
+      - "Site-packages SYNCED (diff src vs .venv shows no delta)"
+      - "Ledger entry R1227-GOVERNED-PYTHON-NDJSON-SIZE-PROPS-001 present"
+
+  - stage_id: "S03-TEST-WRITING"
+    name: "Test File Creation for New Properties"
+    purpose: "Write focused pytest tests covering new properties with positive/negative/edge cases"
+    scope: "tests/python/{format}/test_r{N}_{format}_{feature}.py"
+    owner: "Agent"
+    entry_points:
+      - "/add-roundtrip-test skill"
+      - "Direct Write tool (governed)"
+    inputs:
+      - "src/python/{format}/models.py (new properties)"
+      - "samples/by-format/{format}/valid/*.{fmt} (sample files for from_file tests)"
+    outputs:
+      - "tests/python/{format}/test_r1227_ndjson_size_classification_properties.py"
+    producers:
+      - "Agent (Claude) via Write tool"
+    consumers:
+      - ".venv/Scripts/pytest (test runner)"
+      - "Supervisor (reads test counts from evidence declaration)"
+    state_read:
+      - "samples/by-format/ndjson/valid/minimal.ndjson (sample)"
+    state_written:
+      - "tests/python/ndjson/test_r1227_ndjson_size_classification_properties.py (new file)"
+    schemas:
+      - "pytest test format (classes + methods)"
+      - "from_file tests using samples/by-format/ paths"
+    validators:
+      - ".venv/Scripts/pytest (execution)"
+    failure_modes:
+      - "Sample file missing → FileNotFoundError"
+      - "Wrong import path"
+      - "Test uses sys.path trick (non-standard) → works but fragile"
+    retry_behavior: "Fix test and re-run"
+    rollback_behavior: "Delete test file"
+    current_tests:
+      - "test_r1227_ndjson_size_classification_properties.py (21 tests, 21 PASS)"
+    current_evidence:
+      - "pytest run output: 21 passed in 2.09s"
+    bypass_paths:
+      - "None — tests are created separately from implementation"
+    findings:
+      - "FINDING: Test file uses sys.path.insert(0, str(_REPO / 'src' / 'python')) for import"
+      - "This bypasses the installed non-editable package — tests test repo source, not installed"
+      - "FINDING: from_file tests use relative path SAMPLES = Path('samples/by-format/ndjson/valid')"
+      - "This requires tests to be run from repo root — pwd-sensitive"
+      - "FINDING: test_from_file (TestIsLarge) checks is_large is False on minimal.ndjson (3 records) — correct"
+
+  - stage_id: "S04-SITE-PACKAGES-SYNC"
+    name: "Non-Editable Package Synchronization"
+    purpose: "Sync modified .py files to .venv/Lib/site-packages/{format}/ after source changes"
+    scope: ".venv/Lib/site-packages/ndjson/, .venv/Lib/site-packages/toml/"
+    owner: "Agent (manual step — no automated hook)"
+    entry_points:
+      - "cp src/python/{format}/*.py .venv/Lib/site-packages/{format}/"
+    inputs:
+      - "src/python/{format}/models.py (modified)"
+    outputs:
+      - ".venv/Lib/site-packages/{format}/models.py (updated)"
+    producers:
+      - "Agent (manual cp)"
+    consumers:
+      - "Installed package tests that import from installed path"
+      - "Any dogfood scripts using installed package"
+    state_read: []
+    state_written:
+      - ".venv/Lib/site-packages/{format}/models.py"
+    schemas: []
+    validators:
+      - "diff src vs site-packages (manual)"
+    failure_modes:
+      - "Sync forgotten → tests pass via sys.path but installed package is stale"
+      - "Different property behavior between installed vs repo source"
+    retry_behavior: "Re-run cp command"
+    rollback_behavior: "cp prior version from git"
+    current_tests:
+      - "No dedicated test for sync integrity"
+    current_evidence:
+      - "diff src/python/ndjson/models.py .venv/Lib/site-packages/ndjson/models.py: NO OUTPUT (identical)"
+      - "diff src/python/toml/models.py .venv/Lib/site-packages/toml/models.py: NO OUTPUT (identical)"
+    bypass_paths:
+      - "tests use sys.path.insert — they bypass site-packages entirely"
+    findings:
+      - "FINDING: Sync is MANUAL with no hook or validator — easy to forget"
+      - "FINDING: Test isolation via sys.path means sync failures are invisible to tests"
+      - "VERIFIED: Both ndjson and toml site-packages are currently in sync with source"
+
+  - stage_id: "S05-README-SYNC"
+    name: "Package README Update"
+    purpose: "Update test file counts and timestamps in package README.md"
+    scope: "src/python/{format}/README.md"
+    owner: "Agent via /sync-readmes skill"
+    entry_points:
+      - "/sync-readmes skill"
+      - "python tools/docs/sync_readmes.py (if exists)"
+    inputs:
+      - "Package metadata from pyproject.toml"
+      - "Test file count (ls tests/python/{format}/*.py | wc -l)"
+    outputs:
+      - "src/python/{format}/README.md (timestamp + count updated)"
+    producers:
+      - "/sync-readmes skill"
+    consumers:
+      - "Documentation readers"
+      - "GitHub repository view"
+    state_read: []
+    state_written:
+      - "src/python/ndjson/README.md"
+      - "src/python/toml/README.md"
+    schemas:
+      - "BEGIN:README-* / END:README-* block format"
+    validators: []
+    failure_modes:
+      - "Count mismatch if README updated before test file is created"
+      - "Stale timestamp"
+    retry_behavior: "Re-run sync-readmes"
+    rollback_behavior: "git checkout -- src/python/{format}/README.md"
+    current_tests: []
+    current_evidence:
+      - "ndjson README: Test files updated from 151 to 152 (correct — R1227 is 152nd .py file)"
+      - "toml README: Test files updated from 60 to 61"
+    bypass_paths: []
+    findings:
+      - "README sync is automated and correct for current counts"
+
+  - stage_id: "S06-LEDGER-ENTRY"
+    name: "Product Code Change Ledger Registration"
+    purpose: "Register every governed src/ change with spec reference, files, and test count"
+    scope: "reports/r90/product-code-change-ledger.json"
+    owner: "Agent (governed by CLAUDE.md Rule 10)"
+    entry_points:
+      - "Direct JSON edit"
+      - "tools/supervisor/validate_product_code_ledger.py (validator)"
+    inputs:
+      - "Implementation details (feature name, files, tests, spec refs)"
+    outputs:
+      - "reports/r90/product-code-change-ledger.json (new entry)"
+    producers:
+      - "Agent"
+    consumers:
+      - "supervisor_loop.py (reads ledger for grading)"
+      - "tools/supervisor/validate_product_code_ledger.py (validator)"
+    state_read:
+      - "reports/r90/product-code-change-ledger.json (total_entries counter)"
+    state_written:
+      - "reports/r90/product-code-change-ledger.json"
+    schemas:
+      - "entry_id, sprint_id, format, runtime, feature_name, source_file, test_file"
+      - "spec_fact_refs[], gap_ledger_ref, properties_added[], tests_added, status"
+    validators:
+      - "tools/supervisor/validate_product_code_ledger.py"
+    failure_modes:
+      - "Duplicate entry_id"
+      - "Missing spec_fact_refs"
+      - "total_entries counter mismatch"
+    retry_behavior: "Fix entry and re-validate"
+    rollback_behavior: "Remove entry, decrement total_entries"
+    current_tests: []
+    current_evidence:
+      - "R1227-GOVERNED-PYTHON-NDJSON-SIZE-PROPS-001 present in ledger"
+      - "total_entries: 2419"
+    bypass_paths: []
+    findings:
+      - "R1227 ledger entry is COMPLETE and correct"
+      - "gap_ledger_ref: null — no formal gap ledger entry for this feature"
+
+  - stage_id: "S07-EVIDENCE-DECLARATION"
+    name: "Evidence Declaration Writing"
+    purpose: "Write a structured YAML declaring all sprint work items with evidence paths"
+    scope: ".local/evidences/{run_id}/evidence-declaration.yaml"
+    owner: "Agent"
+    entry_points:
+      - "Manual YAML write"
+      - "tools/supervisor/sprint_executor_validate.py --repair (validator)"
+    inputs:
+      - "Sprint work items (implemented features, test results)"
+      - "docs/automation/supervisor-worker-contract.md (schema)"
+    outputs:
+      - ".local/evidences/{run_id}/evidence-declaration.yaml"
+    producers:
+      - "Agent"
+    consumers:
+      - "tools/supervisor/supervisor_loop.py autonomous-cycle"
+      - "tools/supervisor/build_declaration_review_package.py"
+    state_read:
+      - ".local/supervisor/continuation-signal.json (iteration)"
+    state_written:
+      - ".local/evidences/{run_id}/evidence-declaration.yaml"
+    schemas:
+      - ".local/evidences/evidence-declaration.schema.json"
+    validators:
+      - "tools/supervisor/sprint_executor_validate.py"
+      - "tools/supervisor/validate_evidence_for_supervisor.py"
+    failure_modes:
+      - "Missing required fields"
+      - "Markdown fences in YAML fields (--repair fixes)"
+      - "Invalid status values"
+    retry_behavior: "Fix YAML and re-validate"
+    rollback_behavior: "Delete declaration file"
+    current_tests:
+      - "tests/supervisor/ (declaration schema tests)"
+    current_evidence:
+      - "PENDING — not yet written for R1227 sprint"
+    bypass_paths:
+      - "Direct autonomous-cycle without declaration (skips grading)"
+    findings:
+      - "PENDING: Evidence declaration NOT yet written for R1227 + R1226 TOML work"
+
+  - stage_id: "S08-SUPERVISOR-CYCLE"
+    name: "Autonomous Supervisor Cycle"
+    purpose: "Grade evidence declaration, generate next sprint prompt, update approval gates"
+    scope: "tools/supervisor/autonomous_cycle.py (supervisor_loop.py wraps it)"
+    owner: "Supervisor pipeline"
+    entry_points:
+      - "python tools/supervisor/supervisor_loop.py autonomous-cycle --declaration <path>"
+      - "python tools/supervisor/autonomous_cycle.py (direct)"
+    inputs:
+      - ".local/evidences/{run_id}/evidence-declaration.yaml"
+    outputs:
+      - "reports/supervisor/evidence-review.json"
+      - "reports/supervisor/work-item-grades.json"
+      - "reports/supervisor/next-sprint.md"
+      - "reports/supervisor/approval-gates.md"
+      - "reports/supervisor/session-resume.md"
+      - ".local/supervisor/continuation-signal.json (updated)"
+    producers:
+      - "tools/supervisor/autonomous_cycle.py"
+    consumers:
+      - "tools/supervisor/check_continuation.py (reads continuation-signal.json)"
+      - "Agent (reads next-sprint.md and approval-gates.md)"
+    state_read:
+      - ".local/evidences/{run_id}/evidence-declaration.yaml"
+      - ".local/supervisor/continuation-signal.json"
+    state_written:
+      - "reports/supervisor/*.json, *.md, *.yaml"
+      - ".local/supervisor/continuation-signal.json"
+    schemas:
+      - "evidence-declaration.schema.json"
+      - "work-item-grades.schema.json"
+    validators:
+      - "tools/supervisor/validate_evidence_for_supervisor.py"
+      - "Governance validators (85 validators)"
+    failure_modes:
+      - "supervisor_loop.py timeout (120s) → use autonomous_cycle.py directly"
+      - "Exit 3 (rework items) — not a stop"
+      - "Exit 1 (declaration error)"
+    retry_behavior: "Fix declaration and retry"
+    rollback_behavior: "Restore prior reports from git"
+    current_tests:
+      - "tests/supervisor/ (supervisor pipeline tests)"
+    current_evidence:
+      - "Last run: ff-gates-advancement-20260625 (ACCEPTED, 1609 tests)"
+    bypass_paths: []
+    findings:
+      - "PENDING: Supervisor cycle not yet run for R1227 sprint"
+
+  - stage_id: "S09-CONTINUATION-CHECK"
+    name: "Autonomous Continuation Signal Check"
+    purpose: "Determine whether autonomous loop should continue or stop"
+    scope: "tools/supervisor/check_continuation.py"
+    owner: "Supervisor pipeline"
+    entry_points:
+      - "python tools/supervisor/check_continuation.py"
+    inputs:
+      - ".local/supervisor/continuation-signal.json"
+      - ".local/supervisor/active-plan-lock.json"
+      - ".local/supervisor/plan-locks/ (session-keyed locks)"
+    outputs:
+      - "JSON stdout: {verdict, iteration, reason, next_work_items_path, rework_items}"
+      - "Exit code: 0=CONTINUE, 1=STOP"
+    producers:
+      - "tools/supervisor/check_continuation.py"
+    consumers:
+      - "Agent (reads verdict and acts accordingly)"
+    state_read:
+      - ".local/supervisor/continuation-signal.json"
+      - ".local/supervisor/active-plan-lock.json"
+    state_written: []
+    schemas:
+      - "continuation-signal.json format"
+    validators: []
+    failure_modes:
+      - "Stale plan lock (TERMINAL_CLOSED) blocks CONTINUE → fix: mark SUPERSEDED"
+      - "SESSION_MISMATCH (different chat) → non-overridable"
+      - "MAX_ITERATIONS → reset to 0 and continue"
+    retry_behavior: "Fix stale locks or reset iteration"
+    rollback_behavior: "python tools/supervisor/reset_track_signal.py"
+    current_tests:
+      - "tests/supervisor/test_check_continuation.py (if exists)"
+    current_evidence:
+      - "Current state: verdict=CONTINUE, iteration=6, session=e832837e0867"
+    bypass_paths:
+      - "Agent can read next-sprint.md directly if check_continuation fails"
+    findings:
+      - "HEALTHY: check_continuation returns CONTINUE with no rework items"
+      - "Active plan lock is SUPERSEDED — no blocking"
+
+  - stage_id: "S10-SCM-COMMIT"
+    name: "Git Commit (SCM Agent Task)"
+    purpose: "Commit all sprint changes when sprint policy authorizes"
+    scope: "git repository"
+    owner: "SCM Agent (requires sprint policy authorization)"
+    entry_points:
+      - "git add <files> && git commit -m <msg>"
+    inputs:
+      - "All modified/untracked files"
+      - "Sprint policy (exit 0, AUTONOMOUS_CONTINUE=YES, governance validators pass)"
+    outputs:
+      - "Git commit with all sprint changes"
+    producers:
+      - "Agent (git commit)"
+    consumers:
+      - "CI/CD pipeline"
+      - "GitHub repository"
+    state_read:
+      - "reports/supervisor/approval-gates.md"
+      - ".local/supervisor/continuation-signal.json"
+    state_written:
+      - "git history"
+    schemas: []
+    validators:
+      - "pre-commit hooks"
+      - "Governance validators (run in pre-commit)"
+    failure_modes:
+      - "Pre-commit hook failure"
+      - "Untracked files not staged"
+      - "LOC violation in new files"
+    retry_behavior: "Fix hook failures and retry"
+    rollback_behavior: "git reset HEAD~1"
+    current_tests: []
+    current_evidence:
+      - "PENDING: Commit not yet made for R1227 + associated files"
+    bypass_paths:
+      - "--no-verify (explicitly forbidden)"
+    findings:
+      - "PENDING: R1227 test file is untracked, models.py modified, ledger updated"
+      - "Commit blocked pending evidence declaration + supervisor cycle (S07-S08)"
+
+bypass_paths_summary:
+  - id: "BP-01"
+    path: "Agent reads next-sprint.md directly without check_continuation.py"
+    stage: "S01"
+    classification: "GOVERNED_FALLBACK — explicitly allowed in CLAUDE.md when check_continuation fails"
+    risk: "LOW — policy-bounded"
+
+  - id: "BP-02"
+    path: "Test sys.path bypass of installed site-packages"
+    stage: "S03 / S04"
+    classification: "ARCHITECTURAL_PATTERN — tests intentionally test repo source, not installed"
+    risk: "MEDIUM — site-packages sync failures are invisible to tests"
+
+  - id: "BP-03"
+    path: "Direct Edit tool for src/ without skill invocation"
+    stage: "S02"
+    classification: "GOVERNED — allowed when skill outputs are equivalent, ledger entry required"
+    risk: "LOW — ledger enforces traceability"
+
+  - id: "BP-04"
+    path: "--no-verify on git commit"
+    stage: "S10"
+    classification: "FORBIDDEN — CLAUDE.md explicitly prohibits"
+    risk: "HIGH — blocked by policy"
+
+counters:
+  UNINVENTORIED_MACHINERY_STAGES: 0
+  UNCLASSIFIED_BYPASS_PATHS: 0

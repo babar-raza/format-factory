@@ -1,0 +1,70 @@
+assurance_mission:
+  mission_id: "MA-2026-07-02-R1227-NDJSON-TOML"
+  repository: "format-factory"
+  branch: "main"
+  head: "ae504376531758fd5d365faa615798cfaf8bea56"
+  plan_path: "reports/supervisor/next-sprint.md"
+  plan_revision: "ff-gates-advancement-20260625 (sprint 761, avg quality 0.748)"
+
+  machinery_roots:
+    - "tools/supervisor/"           # supervisor pipeline (autonomous cycle, check_continuation, etc.)
+    - "tools/capability_layer/"     # capability compilation pipeline
+    - "src/python/ndjson/"         # NDJSON product source (R1227 in-progress)
+    - "src/python/toml/"           # TOML product source (R1226 completed)
+    - ".supervisor/skill-registry.yaml"  # skill dispatch registry
+    - "tests/python/ndjson/"       # NDJSON product tests
+    - "tests/python/toml/"         # TOML product tests
+
+  official_entry_points:
+    - "python tools/supervisor/check_continuation.py"
+    - "python tools/supervisor/supervisor_loop.py autonomous-cycle"
+    - "python tools/supervisor/autonomous_cycle.py"
+    - ".venv/Scripts/pytest tests/"
+    - "/add-python-object-model-feature (skill)"
+    - "/add-roundtrip-test (skill)"
+
+  state_stores:
+    - ".local/supervisor/continuation-signal.json"
+    - ".local/supervisor/active-plan-lock.json"
+    - ".local/supervisor/next-work-items.json"
+    - "reports/supervisor/next-sprint.md"
+    - "reports/supervisor/approval-gates.md"
+    - "reports/r90/product-code-change-ledger.json"
+    - "registry/source-structure-baseline.json"
+
+  output_roots:
+    - "src/python/ndjson/"         # NDJSON model, codec, __init__
+    - "src/python/toml/"           # TOML model, codec, __init__
+    - "tests/python/ndjson/"       # NDJSON tests
+    - "tests/python/toml/"         # TOML tests
+    - "reports/supervisor/"        # supervisor reports
+    - ".local/evidences/"          # evidence declarations
+
+  consumer_roots:
+    - "tests/python/ndjson/"       # tests consume ndjson package
+    - "tests/python/toml/"         # tests consume toml package
+    - ".venv/Lib/site-packages/ndjson/"  # installed non-editable package
+    - ".venv/Lib/site-packages/toml/"   # installed non-editable package
+
+  governing_skills:
+    - "/add-python-object-model-feature"
+    - "/add-roundtrip-test"
+    - "/add-python-api"
+    - "/post-sprint-audit"
+    - "/plan-hardening"
+
+  evidence_roots:
+    - ".local/evidences/"
+    - "reports/supervisor/evidence-review.json"
+    - "reports/supervisor/work-item-grades.json"
+
+  explicit_non_goals:
+    - ".NET commercial track"
+    - "Gate 11 execution approval"
+    - "PyPI/NuGet publication"
+    - "Other format packages (fods, csv, tsv, etc.) unless they surface defects"
+
+  current_work_in_progress:
+    - "R1227: NDJSON size classification properties (is_small, is_large, min_keys)"
+    - "Status: models.py modified, test file untracked, site-packages sync PENDING"
+    - "R1226: TOML classification properties — committed in ae504376 (preceding sprint)"

@@ -1,0 +1,214 @@
+---
+# Gap Ledger
+# Mission: MA-2026-07-02-R1227-NDJSON-TOML
+# Generated: 2026-07-02
+# Required: MATERIAL_FINDINGS_WITHOUT_GAPS = 0, DUPLICATE_ACTIVE_GAPS = 0
+
+gaps:
+
+  - gap_id: "GAP-MA-001"
+    semantic_key: "site_packages_sync_no_enforcement"
+    source_stage_ids: ["S04-SITE-PACKAGES-SYNC"]
+    affected_output_classes: ["OC-03"]
+    source_claim_ids: []
+    category: "WEAK_VERIFICATION"
+    severity: "MEDIUM"
+    symptom: |
+      Non-editable package sync (cp src/ → site-packages/) has no automated hook,
+      validator, or test. If sync is skipped, tests pass (via sys.path) but the
+      installed package serves stale behavior.
+    evidence:
+      - "MEMORY.md: 'Non-editable installs: Copy .py files to .venv/Lib/site-packages/{pkg}/'"
+      - "No pre-commit hook that checks diff(src/, site-packages/)"
+      - "Test fixture uses sys.path.insert — bypasses installed package"
+    first_failing_boundary: "S04-SITE-PACKAGES-SYNC (no automated enforcement)"
+    root_cause: |
+      Python non-editable install is a design constraint (pip install -e not used).
+      Manual sync step is required but has no machine-enforced validation.
+    blast_radius: "Any consumer using installed package (not repo source) gets stale behavior"
+    current_risk: |
+      LOW for current sprint — sync verified manually (diff shows no delta).
+      MEDIUM for future sprints — easy to forget, invisible to tests.
+    permanent_solution: |
+      Add a pre-commit hook that diffs src/python/{format}/*.py vs
+      .venv/Lib/site-packages/{format}/*.py and fails if stale.
+      OR switch to editable installs (pip install -e src/python/{format}/).
+    machinery_repair_required: false
+    output_backfill_required: false
+    verification:
+      - "diff src/python/ndjson/models.py .venv/Lib/site-packages/ndjson/models.py: NO OUTPUT ✓"
+      - "diff src/python/toml/models.py .venv/Lib/site-packages/toml/models.py: NO OUTPUT ✓"
+    negative_controls: []
+    regression_tests: []
+    pilot_required: true
+    dependencies: []
+    taskcard_ids: ["TC-MA-001"]
+    status: "OPEN"
+    exact_next_action: "Add pre-commit sync check OR accept as process risk (current sprint OK)"
+
+  - gap_id: "GAP-MA-002"
+    semantic_key: "test_working_directory_sensitivity"
+    source_stage_ids: ["S03-TEST-WRITING"]
+    affected_output_classes: ["OC-02"]
+    source_claim_ids: []
+    category: "WEAK_VERIFICATION"
+    severity: "LOW"
+    symptom: |
+      R1227 from_file tests use relative Path('samples/by-format/ndjson/valid').
+      Tests must be run from repo root; will fail with FileNotFoundError
+      if invoked from a different working directory.
+    evidence:
+      - "test_r1227_ndjson_size_classification_properties.py line 18: SAMPLES = Path('samples/by-format/ndjson/valid')"
+      - "Pattern identical to prior test files in ndjson test suite"
+    first_failing_boundary: "S03-TEST-WRITING (relative path in test)"
+    root_cause: |
+      Consistent pattern across ndjson test suite — all from_file tests use
+      relative paths from repo root. Not unique to R1227. pyproject.toml
+      or conftest.py should set testpaths and rootdir correctly.
+    blast_radius: |
+      Limited — pytest is always run from repo root per project convention.
+      CI/CD runs from repo root. Not a real blocker.
+    current_risk: "LOW — tests pass in all observed invocations"
+    permanent_solution: |
+      Use Path(__file__).resolve().parents[N] / 'samples/...' instead of
+      relative paths. Matches SAMPLES path to test file location.
+    machinery_repair_required: false
+    output_backfill_required: false
+    verification:
+      - "21/21 tests pass when run from repo root ✓"
+    negative_controls:
+      - "cd /tmp && pytest ... would fail (not tested, not standard usage)"
+    regression_tests: []
+    pilot_required: false
+    dependencies: []
+    taskcard_ids: ["TC-MA-002"]
+    status: "ACCEPTED_RISK"
+    exact_next_action: |
+      Accept as known pattern (consistent with existing 151 test files).
+      Document in assurance report. No fix required this sprint.
+
+  - gap_id: "GAP-MA-003"
+    semantic_key: "evidence_declaration_pending"
+    source_stage_ids: ["S07-EVIDENCE-DECLARATION", "S08-SUPERVISOR-CYCLE"]
+    affected_output_classes: ["OC-06", "OC-07"]
+    source_claim_ids: []
+    category: "MISSING_REGENERATION"
+    severity: "HIGH"
+    symptom: |
+      R1227 sprint work (models.py + test file) is complete but evidence
+      declaration has not been written and supervisor cycle has not run.
+      The untracked test file and uncommitted models.py will not be graded
+      until closeout is executed.
+    evidence:
+      - "git status: ?? tests/python/ndjson/test_r1227_ndjson_size_classification_properties.py"
+      - "git status: M src/python/ndjson/models.py (and toml, READMEs, ledger, supervisor reports)"
+      - "No .local/evidences/R1227/ directory found"
+    first_failing_boundary: "S07-EVIDENCE-DECLARATION (not yet executed)"
+    root_cause: |
+      Sprint work was completed (R1227 + R1226 TOML) but closeout steps have
+      not been run in this session. This is normal — closeout runs at sprint end.
+    blast_radius: |
+      All modified files remain uncommitted. No supervisor grading of this work.
+      check_continuation iteration counter is stale relative to work done.
+    current_risk: |
+      MEDIUM — uncommitted changes risk being lost in context exhaustion or
+      crash before closeout.
+    permanent_solution: |
+      Execute S07 (evidence declaration) and S08 (supervisor cycle) immediately
+      as part of this assurance sprint. Then commit all changes.
+    machinery_repair_required: false
+    output_backfill_required: true
+    verification:
+      - "Evidence declaration writes .local/evidences/R1227/evidence-declaration.yaml"
+      - "supervisor_loop.py exits 0 (ACCEPTED)"
+      - "work-item-grades.json shows all items graded"
+    negative_controls: []
+    regression_tests: []
+    pilot_required: true
+    dependencies: []
+    taskcard_ids: ["TC-MA-003"]
+    status: "OPEN"
+    exact_next_action: "Write evidence declaration and run supervisor cycle (next in sprint)"
+
+  - gap_id: "GAP-MA-004"
+    semantic_key: "baseline_loc_stale_for_known_violations"
+    source_stage_ids: ["S02-FEATURE-IMPLEMENTATION"]
+    affected_output_classes: ["OC-08"]
+    source_claim_ids: []
+    category: "STALE_ARTIFACT"
+    severity: "LOW"
+    symptom: |
+      known_violations in source-structure-baseline.json shows stale loc values:
+      ndjson/models.py: loc=118 (actual 136), toml/models.py: loc=124 (actual 141).
+      This is by design (sprint closeout script never updates known_violations loc).
+    evidence:
+      - "registry/source-structure-baseline.json: ndjson loc=118, toml loc=124"
+      - "Actual LOC: ndjson=136, toml=141"
+    first_failing_boundary: "None — by design (CLAUDE.md: loc field never updated for known_violations)"
+    root_cause: |
+      Sprint closeout script intentionally skips known_violations entries.
+      The loc field is frozen at first-recording time. This is documented policy.
+    blast_radius: |
+      NONE — governance validator (monolith_detection_validator) only checks files
+      with LOC > 800 threshold. Both files at 136/141 LOC are exempt from monolith check.
+    current_risk: "LOW — no governance impact; files well below 800 LOC threshold"
+    permanent_solution: |
+      Accept as-is (by design per CLAUDE.md). If desired: periodically update
+      loc/functions fields in known_violations for informational accuracy.
+      Note: baseline_loc_cap must NEVER be increased.
+    machinery_repair_required: false
+    output_backfill_required: false
+    verification:
+      - "Governance validator skips files <= 800 LOC ✓ (confirmed by code review)"
+    negative_controls: []
+    regression_tests: []
+    pilot_required: false
+    dependencies: []
+    taskcard_ids: []
+    status: "CLOSED_BY_DESIGN"
+    exact_next_action: "No action required. Document in assurance report."
+
+  - gap_id: "GAP-MA-005"
+    semantic_key: "test_coverage_no_malformed_input"
+    source_stage_ids: ["S03-TEST-WRITING"]
+    affected_output_classes: ["OC-02"]
+    source_claim_ids: []
+    category: "MISSING_NEGATIVE_CONTROL"
+    severity: "LOW"
+    symptom: |
+      R1227 tests cover positive/boundary/from_file cases but have no test
+      for malformed input to NdjsonDocument (e.g., passing a non-list, None,
+      passing a dict instead of list[Any]).
+    evidence:
+      - "test_r1227_ndjson_size_classification_properties.py: no test for invalid constructor args"
+    first_failing_boundary: "S03-TEST-WRITING (negative cases not written)"
+    root_cause: |
+      The spec for R1227 (FACT-NDJSON-001) focuses on record count and key analysis.
+      Constructor validation is not part of the R1227 requirement.
+      NdjsonDocument.__init__ does list(records) which would work with any iterable.
+    blast_radius: |
+      LOW — NdjsonDocument(None) would raise TypeError (list(None) fails).
+      This is acceptable Python behavior.
+    current_risk: "LOW — constructor validation is not a spec requirement for R1227"
+    permanent_solution: |
+      Accept as-is for R1227. If formal validation of constructor args is needed,
+      add a separate R-numbered requirement with its own test file.
+    machinery_repair_required: false
+    output_backfill_required: false
+    verification: []
+    negative_controls:
+      - "NdjsonDocument(None) → TypeError from list(None)"
+      - "NdjsonDocument({'a':1}) → TypeError from list({'a':1}) gives ['a'] — unexpected but legal"
+    regression_tests: []
+    pilot_required: false
+    dependencies: []
+    taskcard_ids: []
+    status: "ACCEPTED_RISK"
+    exact_next_action: "No action. Constructor validation out of scope for R1227."
+
+counters:
+  MATERIAL_FINDINGS_WITHOUT_GAPS: 0
+  DUPLICATE_ACTIVE_GAPS: 0
+  GAPS_WITHOUT_ROOT_CAUSE_OR_NEXT_ACTION: 0
+  OPEN_GAPS_REQUIRING_REPAIR: 1
+  OPEN_GAPS_GAPS: ["GAP-MA-003 (evidence declaration + closeout)"]

@@ -1,0 +1,126 @@
+---
+# Plan Taskcards — Machinery Assurance Sprint
+# Mission: MA-2026-07-02-R1227-NDJSON-TOML
+# Generated: 2026-07-02
+# All actionable gaps must map to a bounded taskcard
+
+taskcards:
+
+  - task_id: "TC-MA-001"
+    gap_ids: ["GAP-MA-001"]
+    stage_ids: ["S04-SITE-PACKAGES-SYNC"]
+    output_classes: ["OC-03"]
+    title: "Add pre-commit sync verification for non-editable packages"
+    priority: "LOW"
+    lane: "machinery_governance"
+    owner: "Agent"
+    dependencies: []
+    objective: |
+      Create a pre-commit hook or CI check that diffs src/python/{format}/
+      against .venv/Lib/site-packages/{format}/ and fails if stale, ensuring
+      sync failures are caught before commit.
+    allowed_paths:
+      - ".pre-commit-config.yaml"
+      - "tools/checks/check_site_packages_sync.py"
+    forbidden_paths:
+      - "src/python/"
+      - "tests/"
+    machinery_repairs:
+      - "Add check_site_packages_sync.py tool"
+      - "Register in pre-commit or CI"
+    output_repairs: []
+    verification:
+      - "Introduce a deliberate stale file and verify check catches it"
+      - "Verify check passes when in sync"
+    negative_controls:
+      - "Stale site-packages → check fails with diagnostic message"
+    evidence:
+      - "check_site_packages_sync.py exists"
+      - "Test run shows FAIL on stale and PASS on sync"
+    rollback: "Remove check if it causes false positives"
+    acceptance_criteria:
+      - "Check is automated (not manual)"
+      - "Stale detection has clear error message"
+      - "Zero performance impact on normal test runs"
+    closeout_rules:
+      - "Check must run in pre-commit or CI"
+      - "Pilot 5 (regression injection) must pass"
+    status: "DEFERRED"
+    rationale: |
+      Current sprint: sync is verified manually and is correct.
+      This is a future hardening task. Current risk is LOW.
+
+  - task_id: "TC-MA-002"
+    gap_ids: ["GAP-MA-002"]
+    stage_ids: ["S03-TEST-WRITING"]
+    output_classes: ["OC-02"]
+    title: "Document relative-path convention for from_file tests"
+    priority: "LOW"
+    lane: "documentation"
+    owner: "Agent"
+    dependencies: []
+    objective: |
+      Add a comment or conftest.py configuration documenting that from_file tests
+      use relative paths and require invocation from repo root.
+    allowed_paths:
+      - "tests/python/conftest.py"
+      - "tests/python/ndjson/conftest.py"
+    forbidden_paths: []
+    machinery_repairs: []
+    output_repairs: []
+    verification:
+      - "pytest tests/python/ndjson/ -v passes from repo root"
+    negative_controls: []
+    evidence:
+      - "conftest.py with rootdir documentation"
+    rollback: "Remove conftest comment"
+    acceptance_criteria:
+      - "Convention documented"
+    closeout_rules:
+      - "Tests still pass after change"
+    status: "DEFERRED"
+    rationale: "Low severity. Accepted risk per gap assessment."
+
+  - task_id: "TC-MA-003"
+    gap_ids: ["GAP-MA-003"]
+    stage_ids: ["S07-EVIDENCE-DECLARATION", "S08-SUPERVISOR-CYCLE", "S10-SCM-COMMIT"]
+    output_classes: ["OC-06", "OC-07"]
+    title: "Execute sprint closeout for R1227 + R1226 TOML work"
+    priority: "HIGH"
+    lane: "sprint_closeout"
+    owner: "Agent"
+    dependencies: []
+    objective: |
+      Write evidence declaration for R1227 + R1226 TOML + associated supervisor
+      report changes. Run supervisor_loop.py autonomous-cycle. Verify ACCEPTED.
+      Stage and commit all modified/untracked files.
+    allowed_paths:
+      - ".local/evidences/R1227/"
+      - "reports/supervisor/"
+      - ".local/supervisor/"
+    forbidden_paths: []
+    machinery_repairs: []
+    output_repairs:
+      - "Write .local/evidences/R1227/evidence-declaration.yaml"
+      - "Run supervisor_loop.py autonomous-cycle"
+      - "Stage and commit all changes"
+    verification:
+      - "supervisor_loop.py exits 0 (ACCEPTED)"
+      - "work-item-grades.json exists and has grades"
+      - "git status shows clean working tree after commit"
+    negative_controls:
+      - "Run supervisor cycle without declaration → should fail gracefully"
+    evidence:
+      - ".local/evidences/R1227/evidence-declaration.yaml"
+      - "reports/supervisor/work-item-grades.json"
+      - "Git commit hash"
+    rollback: "git reset HEAD~1 if commit causes issues"
+    acceptance_criteria:
+      - "Evidence declaration validates against schema"
+      - "Supervisor exits 0 or 3 (not 1 or 9)"
+      - "All tests still pass after closeout"
+    closeout_rules:
+      - "Commit must include test file, models.py, ledger, READMEs"
+      - "Commit message must reference R1226 + R1227"
+    status: "IN_PROGRESS"
+    rationale: "Active — execute immediately as next step"
