@@ -36,3 +36,25 @@ python tools/certification/stub_detector.py --path src/python/fods \
 ## Layer
 
 L28 Certification Audit Layer (`plans/layers/certification-audit-layer.md`)
+
+## Allowed Paths
+
+- `tools/certification/stub_detector.py`
+- `reports/` — evidence output (write)
+
+## Forbidden Paths
+
+- `src/net/**` — no .NET product source mutation
+- `src/python/**` — no Python product source mutation
+- `plans/strategic/**` — strategic plans are read-only
+
+## Stop Conditions
+
+- Stop if the stub detection report cannot be written
+- Stop if the execution would modify any file under src/
+
+## Output Format
+
+- PASS / FAIL / PARTIAL verdict printed to stdout
+- Per-item findings list with skill_id, issue, and severity
+- Report file at `reports/` with structured YAML findings

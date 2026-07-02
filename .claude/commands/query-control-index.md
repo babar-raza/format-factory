@@ -39,3 +39,27 @@ python -m tools.supervisor.control_index.query stale
 ## Layer
 
 Infrastructure — Operational Control Index (TC-CI-006-03)
+
+## Allowed Paths
+
+- `tools/supervisor/control_index/__main__.py`
+- `tools/supervisor/control_index/query.py`
+- `tools/supervisor/control_index/search.py`
+- `reports/` — evidence output (write)
+
+## Forbidden Paths
+
+- `src/net/**` — no product source mutation
+- `src/python/**` — no product source mutation
+- `plans/strategic/**` — strategic plans are read-only
+
+## Stop Conditions
+
+- Stop if the control index SQLite database is not available
+- Stop if the query produces no results and no error is expected
+
+## Output Format
+
+- PASS / FAIL / PARTIAL verdict printed to stdout
+- Per-item findings list with skill_id, issue, and severity
+- Report file at `reports/` with structured YAML findings

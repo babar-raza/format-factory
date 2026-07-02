@@ -87,3 +87,31 @@ Add to `reports/r90/product-code-change-ledger.json`:
 ```json
 {"sprint": "TC-B-002", "action": "build_obligation_register", "files": ["reports/all-format-deepening/all-format-obligation-register.yaml"]}
 ```
+
+## Required Inputs
+
+- `mission_id` — value for `mission_id`
+- `output_path` — file path where the output report should be written
+
+## Allowed Paths
+
+- `registry/ — format and obligation registries (read/write)`
+- `reports/ — deepening reports (write)`
+- `plans/ — deepening plans (read/write)`
+
+## Forbidden Paths
+
+- `src/net/**` — no product source mutation in deepening skills
+- `src/python/**` — no product source mutation in deepening skills
+- `plans/strategic/**` — strategic plans are read-only
+
+## Stop Conditions
+
+- Stop if the obligation register cannot be written
+- Stop if the execution would modify any file under src/
+
+## Output Format
+
+- Generated artifact written to the configured output path
+- Confirmation message: file path and size
+- Validation result confirming the output is well-formed

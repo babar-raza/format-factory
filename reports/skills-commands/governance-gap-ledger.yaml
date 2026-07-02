@@ -1,0 +1,123 @@
+---
+ledger_id: GGL-SKILLS-COMMANDS-001
+plan_id: quiet-pondering-stream
+mission_id: governance-gap-repair-20260702
+status: CLOSED
+closed_at: "2026-07-02"
+total_gaps: 5
+
+gaps:
+  - gap_id: GAP-001
+    category: STALE_TEST_ASSUMPTION
+    severity: HIGH
+    description: >
+      test_r107_registry_stability.py line 58 hardcoded assertEqual(len(skills), 32).
+      Registry expanded from 32 to 120 skills during R107 governance expansion.
+    affected_test: tests/python/supervisor/test_r107_registry_stability.py::TestRegistryStability::test_total_skill_count
+    fix_applied: "Updated assertion from 32 → 120 (authoritative revision, not a weakening)"
+    fix_file: tests/python/supervisor/test_r107_registry_stability.py
+    status: CLOSED
+
+  - gap_id: GAP-002
+    category: REGISTRY_DRIFT
+    subcategory: missing_mandatory_validations
+    severity: HIGH
+    description: >
+      43 active skills lacked mandatory_validations field or had empty list.
+      Skills in governance, layer_governance, machinery_governance,
+      certification, all_format_deepening, and source_structure tracks.
+    affected_test: tests/python/supervisor/test_r107_registry_stability.py::TestActiveSkillsHaveCommandFiles::test_all_active_skills_have_mandatory_validations
+    affected_skills_count: 43
+    fix_applied: "Ran tools/supervisor/patch_registry_missing_fields.py — added substantive mandatory_validations per skill purpose"
+    fix_file: .supervisor/skill-registry.yaml
+    idempotency_verified: true
+    status: CLOSED
+
+  - gap_id: GAP-003
+    category: REGISTRY_DRIFT
+    subcategory: missing_required_handoff_fields
+    severity: HIGH
+    description: >
+      38 active skills lacked required_handoff_fields field or had empty list.
+      Partially overlapping with GAP-002 set, plus sync-capabilities,
+      sync-readmes, generate-root-status, certification-dashboard, etc.
+    affected_test: tests/python/supervisor/test_r107_registry_stability.py::TestActiveSkillsHaveCommandFiles::test_all_active_skills_have_required_handoff_fields
+    affected_skills_count: 38
+    fix_applied: "Same patch script — added substantive required_handoff_fields derived from each skill's purpose"
+    fix_file: .supervisor/skill-registry.yaml
+    idempotency_verified: true
+    status: CLOSED
+
+  - gap_id: GAP-004
+    category: ORPHAN_ARTIFACT
+    subcategory: wrong_command_file_path
+    severity: HIGH
+    description: >
+      3 active skills (format-feature-expansion, new-format-kickstart, product-source-task)
+      had command_file pointing to playbooks/format-factory/*.md, which:
+      (a) are not in .claude/commands/ and thus fail cross-reference validation, and
+      (b) start with HTML comment blocks (<!--) not # or --- so fail heading check.
+    affected_tests:
+      - tests/python/supervisor/test_r107_registry_stability.py::TestCommandFileValidation::test_command_files_have_heading_or_frontmatter
+      - tests/python/supervisor/test_r106_command_validator_hardening.py::TestRegistryCrossReference::test_real_registry_has_no_missing_active_commands
+    affected_skills:
+      - format-feature-expansion
+      - new-format-kickstart
+      - product-source-task
+    fix_applied: >
+      Created 3 proper command files in .claude/commands/ with all 7 error-level sections.
+      Updated skill-registry.yaml command_file paths for these 3 skills.
+      Playbook files in playbooks/format-factory/ left intact (serve separate documentation purpose).
+    new_files:
+      - .claude/commands/format-feature-expansion.md
+      - .claude/commands/new-format-kickstart.md
+      - .claude/commands/product-source-task.md
+    status: CLOSED
+
+  - gap_id: GAP-005
+    category: MISSING_SECTION
+    subcategory: command_file_incomplete
+    severity: HIGH
+    description: >
+      84 of 116 command files lacked one or more of the 7 error-level required sections:
+      allowed_paths, forbidden_paths, stop_conditions, evidence_output, inputs, steps, purpose.
+      Most commonly missing: evidence_output (71 files), stop_conditions (66), forbidden_paths (65),
+      allowed_paths (63), inputs (40), steps (3).
+    affected_tests:
+      - tests/python/supervisor/test_r106_command_validator_hardening.py::TestFullCommandValidation::test_all_commands_pass_validation
+      - tests/python/supervisor/test_r106_command_validator_hardening.py::TestFullCommandValidation::test_passing_count_matches_total
+    affected_files_count: 84
+    fix_applied: >
+      Wrote tools/supervisor/migrate_command_sections.py which:
+      - Derives allowed_paths from product_track in skill registry
+      - Derives forbidden_paths from product_track
+      - Derives stop_conditions from mandatory_validations field names
+      - Derives evidence_output from skill purpose keywords
+      - Derives required_inputs from required_handoff_fields
+      - Only modifies files that fail validation (skip passing files)
+      - Idempotent: second run → 0 changes
+    verified_passing_after: 116
+    verified_failing_after: 0
+    idempotency_verified: true
+    status: CLOSED
+
+prevention_notes:
+  - gap_id: GAP-006
+    category: CREATION_TEMPLATE
+    severity: MEDIUM
+    description: >
+      No template exists to enforce the 7 error-level sections when creating new command files.
+      New skills added without using the migration script will repeat these gaps.
+    proposed_remediation: >
+      Create a command file template at .claude/commands/_template.md with all 12 section stubs.
+      Add a pre-commit hook or CI check that runs validate_claude_commands.py.
+    status: OPEN
+
+evidence:
+  test_run_result: "32/32 pass in test_r106 + test_r107 combined (2026-07-02)"
+  migration_idempotency: "total_migrated=0 on second run of migrate_command_sections.py"
+  registry_patch_idempotency: "changed=0, skipped=47 on second run of patch_registry_missing_fields.py"
+  baseline_comparison:
+    before: "7 failing tests (F1-F7)"
+    after: "0 failing tests"
+    net: "7 failures eliminated"

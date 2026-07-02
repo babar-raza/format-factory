@@ -73,3 +73,20 @@ Complete when:
 - `reports/release-boundary-check-<date>.md` exists
 - All paths scanned (no UNKNOWN status)
 - Violations listed (even if zero)
+
+## Allowed Paths
+
+- `registry/ — format registry (read-only unless updating registry)`
+- `reports/ — acquisition reports (write)`
+- `plans/ — acquisition plans (read/write)`
+
+## Forbidden Paths
+
+- `src/net/**` — no product source mutation during acquisition
+- `src/python/**` — no product source mutation during acquisition
+- `plans/strategic/**` — strategic plans are read-only
+
+## Stop Conditions
+
+- Stop if the skill's mandatory validations cannot be completed
+- Stop if any required input field is missing or invalid

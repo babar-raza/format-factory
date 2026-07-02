@@ -44,3 +44,31 @@ unlogged_work:
 
 - This skill is read-only — no writes occur
 - Output is advisory only; unlogged work emits WARN, not FAIL
+
+## Required Inputs
+
+- `layer_id` — layer identifier from the permanent layer plan
+- `scan_scope` — scope to scan: `all`, `tools/supervisor/`, or a specific path
+
+## Allowed Paths
+
+- `plans/layers/`
+- `reports/` — evidence output (write)
+
+## Forbidden Paths
+
+- `src/net/**` — no product source mutation
+- `src/python/**` — no product source mutation
+- `plans/strategic/**` — strategic plans are read-only
+- `.supervisor/skill-registry.yaml` — skill registry is read-only here
+
+## Stop Conditions
+
+- Stop if the unlogged work report file cannot be written
+- Stop if the execution would modify any file under src/
+
+## Output Format
+
+- Layer task register updated with the result of this operation
+- Work log entry appended to the permanent layer plan
+- Structured verdict: PASS / FAIL with supporting evidence

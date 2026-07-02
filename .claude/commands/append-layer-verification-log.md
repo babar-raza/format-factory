@@ -36,3 +36,36 @@ Called after completing verification that a task's acceptance criteria are met.
 - `section_exists`: §35 must exist in the layer plan file
 - `verdict_valid`: verdict must be PASS, FAIL, or PARTIAL
 - `entry_appended`: new entry must appear in §35 after update
+
+## Required Inputs
+
+- `layer_id` — layer identifier from the permanent layer plan
+- `permanent_plan_path` — path to the permanent layer plan file
+- `task_id` — task identifier from the layer task register
+- `verdict` — closure verdict: PASS, FAIL, PARTIAL, or BLOCKED
+- `verification_summary` — one-paragraph human-readable verification summary
+- `evidence_paths` — list of evidence file paths supporting this action
+
+## Allowed Paths
+
+- `plans/layers/`
+- `reports/` — evidence output (write)
+
+## Forbidden Paths
+
+- `src/net/**` — no product source mutation
+- `src/python/**` — no product source mutation
+- `plans/strategic/**` — strategic plans are read-only
+- `.supervisor/skill-registry.yaml` — skill registry is read-only here
+
+## Stop Conditions
+
+- Stop if the target section does not exist in the permanent plan
+- Stop if the verdict is not one of PASS, FAIL, PARTIAL, BLOCKED
+- Stop if the log entry cannot be appended to the plan
+
+## Output Format
+
+- PASS / FAIL / PARTIAL verdict printed to stdout
+- Per-item findings list with skill_id, issue, and severity
+- Report file at `reports/` with structured YAML findings

@@ -76,3 +76,26 @@ Only these documents may remain at docs/ root:
 8. `spec-to-feature-correction-plan-summary.md` — CLAUDE.md mandatory pre-read
 
 All other files must have a canonical destination in a topical subfolder.
+
+## Required Inputs
+
+- `mission_id` — value for `mission_id`
+- `destination_subfolders` — value for `destination_subfolders`
+
+## Allowed Paths
+
+- `tools/docs/migration_engine.py`
+- `tools/governance/check_docs_placement.py`
+- `reports/` — evidence output (write)
+
+## Forbidden Paths
+
+- `src/net/**` — no product source mutation
+- `src/python/**` — no product source mutation
+- `plans/strategic/**` — strategic plans are read-only
+- `.supervisor/skill-registry.yaml` — skill registry is read-only here
+
+## Stop Conditions
+
+- Stop if the skill's mandatory validations cannot be completed
+- Stop if the output file path is not writable

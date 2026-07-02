@@ -40,3 +40,25 @@ python tools/certification/inventory_extractor.py --python \
 ## Layer
 
 L28 Certification Audit Layer (`plans/layers/certification-audit-layer.md`)
+
+## Allowed Paths
+
+- `tools/certification/inventory_extractor.py`
+- `reports/` — evidence output (write)
+
+## Forbidden Paths
+
+- `src/net/**` — no .NET product source mutation
+- `src/python/**` — no Python product source mutation
+- `plans/strategic/**` — strategic plans are read-only
+
+## Stop Conditions
+
+- Stop if the API contract cannot be extracted for the target format
+- Stop if the execution would modify any file under src/
+
+## Output Format
+
+- Certification report JSON written to `reports/certification/<format_id>/`
+- Summary: total items, passing, failing, score
+- Actionable findings for any failing items

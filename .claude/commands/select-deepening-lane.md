@@ -50,3 +50,29 @@ python -m pytest tests/supervisor/test_lane_selector.py tests/supervisor/test_st
 ## skill_id
 
 select-deepening-lane
+
+## Required Inputs
+
+- `format_id` — format identifier from the format registry
+
+## Allowed Paths
+
+- `tools/supervisor/lane_selector.py`
+- `reports/` — evidence output (write)
+
+## Forbidden Paths
+
+- `src/net/**` — no .NET product source mutation
+- `src/python/**` — no Python product source mutation
+- `plans/strategic/**` — strategic plans are read-only
+
+## Stop Conditions
+
+- Stop if the skill's mandatory validations cannot be completed
+- Stop if any required input field is missing or invalid
+
+## Output Format
+
+- Structured result written to `reports/` in YAML or JSON format
+- Human-readable summary printed to stdout
+- Verdict: PASS / FAIL with per-item evidence

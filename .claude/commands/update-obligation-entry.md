@@ -37,3 +37,26 @@ Updates specific fields of a single entry in `reports/all-format-deepening/all-f
 ## After Update
 
 Run `/portfolio-reconcile` if `terminal_state` changed to verify counts still reconcile.
+
+## Allowed Paths
+
+- `registry/ — format and obligation registries (read/write)`
+- `reports/ — deepening reports (write)`
+- `plans/ — deepening plans (read/write)`
+
+## Forbidden Paths
+
+- `src/net/**` — no product source mutation in deepening skills
+- `src/python/**` — no product source mutation in deepening skills
+- `plans/strategic/**` — strategic plans are read-only
+
+## Stop Conditions
+
+- Stop if the obligation entry cannot be updated
+- Stop if the execution would modify any file under src/
+
+## Output Format
+
+- Summary of items synced, added, removed, or unchanged
+- Report file at `reports/` confirming final state
+- Exit code 0 on success; non-zero with error message on failure

@@ -61,3 +61,32 @@ This command is **read-only** — it never modifies any file.
 ## skill_id
 
 capability-status
+
+## Required Inputs
+
+- `capability_id` — capability identifier from the capability registry
+
+## Allowed Paths
+
+- `plans/layers/ — permanent layer plans (read/write)`
+- `.governance/layers/ — layer governance config (read-only)`
+- `reports/layers/ — layer governance reports (write)`
+- `.local/supervisor/ — continuation and state files (read-only)`
+
+## Forbidden Paths
+
+- `src/net/**` — no product source mutation
+- `src/python/**` — no product source mutation
+- `plans/strategic/**` — strategic plans are read-only
+- `.supervisor/skill-registry.yaml` — skill registry is read-only here
+
+## Stop Conditions
+
+- Stop if the capability status report cannot be produced
+- Stop if the execution would modify any file under src/
+
+## Output Format
+
+- Layer task register updated with the result of this operation
+- Work log entry appended to the permanent layer plan
+- Structured verdict: PASS / FAIL with supporting evidence

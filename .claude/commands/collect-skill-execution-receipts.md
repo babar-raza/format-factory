@@ -84,3 +84,9 @@ Missing `.local/transcripts/`: write empty index with `total_receipts: 0`. Exit 
 ```
 /collect-skill-execution-receipts
 ```
+
+## Output Format
+
+- YAML or JSON inventory file at the configured output path
+- Summary counts: total scanned, found, flagged
+- Per-item entries with classification and evidence

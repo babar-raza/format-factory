@@ -41,3 +41,30 @@ This skill enforces the mutation guard: any modification to `tools/supervisor/*.
 **Skill ID:** audit-root-tools
 **Source Plan:** twinkly-gliding-thimble / TC-SFE2-003
 **Sprint:** SKILL-FIRST-002
+
+## Required Inputs
+
+- `audit_scope` — value for `audit_scope`
+- `output_path` — file path where the output report should be written
+
+## Allowed Paths
+
+- `tools/supervisor/ — supervisor tools (read-only)`
+- `.local/supervisor/ — supervisor state (read-only)`
+- `reports/ — audit reports (write)`
+
+## Forbidden Paths
+
+- `src/**` — no product source mutation
+- `plans/strategic/**` — strategic plans are read-only
+
+## Stop Conditions
+
+- Stop if the root tools audit report cannot be written
+- Stop if the execution would modify any file under src/
+
+## Output Format
+
+- Structured result written to `reports/` in YAML or JSON format
+- Human-readable summary printed to stdout
+- Verdict: PASS / FAIL with per-item evidence

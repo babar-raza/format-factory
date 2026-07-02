@@ -47,3 +47,32 @@ next_layer_task:
 
 - This skill is read-only — no writes occur
 - If no eligible task found, return `next_layer_task: null` with explanation
+
+## Required Inputs
+
+- `layer_id` — layer identifier from the permanent layer plan
+- `current_state` — JSON or YAML snapshot of the current layer state
+
+## Allowed Paths
+
+- `plans/layers/index.yaml`
+- `plans/layers/task-register.yaml`
+- `reports/` — evidence output (write)
+
+## Forbidden Paths
+
+- `src/net/**` — no product source mutation
+- `src/python/**` — no product source mutation
+- `plans/strategic/**` — strategic plans are read-only
+- `.supervisor/skill-registry.yaml` — skill registry is read-only here
+
+## Stop Conditions
+
+- Stop if no eligible next task can be identified in the current state
+- Stop if the execution would modify any file under src/
+
+## Output Format
+
+- Layer task register updated with the result of this operation
+- Work log entry appended to the permanent layer plan
+- Structured verdict: PASS / FAIL with supporting evidence

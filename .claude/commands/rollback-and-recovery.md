@@ -40,3 +40,33 @@ This command file enables the skill to pass `validate_skill_contracts`. Full cap
 route activation requires resolving SKILL-GAP-011.
 
 All rollback actions must be captured in evidence with before/after state comparison.
+
+## Required Inputs
+
+- `rollback_target` — value for `rollback_target`
+- `backup_path_or_stash_ref` — value for `backup_path_or_stash_ref`
+- `before_state_description` — value for `before_state_description`
+- `after_state_expected` — value for `after_state_expected`
+
+## Allowed Paths
+
+- `.local/ — local state files (read/write)`
+- `tools/ — repair scripts (read-only)`
+- `reports/ — repair reports (write)`
+
+## Forbidden Paths
+
+- `src/net/**` — .NET product source is out of scope for machinery repair
+- `src/python/**` — Python product source is out of scope for machinery repair
+- `plans/strategic/**` — strategic plans are read-only
+
+## Stop Conditions
+
+- Stop if the skill's mandatory validations cannot be completed
+- Stop if any required input field is missing or invalid
+
+## Output Format
+
+- Structured result written to `reports/` in YAML or JSON format
+- Human-readable summary printed to stdout
+- Verdict: PASS / FAIL with per-item evidence

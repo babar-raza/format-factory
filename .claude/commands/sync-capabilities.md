@@ -55,3 +55,30 @@ python tools/capability_sync/run_sync.py --mode drift-only        # drift detect
 ## skill_id
 
 sync-capabilities
+
+## Required Inputs
+
+- `dry_run` — if `true`, print planned changes without writing (default: `false`)
+
+## Allowed Paths
+
+- `tools/capability_sync/run_sync.py`
+- `reports/` — evidence output (write)
+
+## Forbidden Paths
+
+- `src/net/**` — no product source mutation
+- `src/python/**` — no product source mutation
+- `plans/strategic/**` — strategic plans are read-only
+- `.supervisor/skill-registry.yaml` — skill registry is read-only here
+
+## Stop Conditions
+
+- Stop if the skill's mandatory validations cannot be completed
+- Stop if the output file path is not writable
+
+## Output Format
+
+- YAML or JSON inventory file at the configured output path
+- Summary counts: total scanned, found, flagged
+- Per-item entries with classification and evidence

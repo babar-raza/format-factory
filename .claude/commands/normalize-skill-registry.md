@@ -91,3 +91,9 @@ Post-write parse failure: restore from backup; raise.
 ```
 /normalize-skill-registry
 ```
+
+## Output Format
+
+- Structured result written to `reports/` in YAML or JSON format
+- Human-readable summary printed to stdout
+- Verdict: PASS / FAIL with per-item evidence

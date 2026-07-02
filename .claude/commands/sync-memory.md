@@ -69,3 +69,21 @@ When memory contradicts any authority document, the authority document wins.
 
 ---
 *TC-0008 | Phase 1+ | Created 2026-06-18*
+
+## Allowed Paths
+
+- `C:/Users/prora/.claude/projects/.../memory/MEMORY.md — auto-memory (write)`
+- `reports/ — maintenance reports (write)`
+- `.supervisor/ — supervisor config (read-only)`
+
+## Forbidden Paths
+
+- `src/net/**` — no product source mutation
+- `src/python/**` — no product source mutation
+- `plans/strategic/**` — strategic plans are read-only
+
+## Output Format
+
+- PASS / FAIL / PARTIAL verdict printed to stdout
+- Per-item findings list with skill_id, issue, and severity
+- Report file at `reports/` with structured YAML findings

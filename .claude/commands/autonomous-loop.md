@@ -299,3 +299,14 @@ Read the updated continuation-signal.json and repeat from Step 1.
 ```
 /autonomous-loop
 ```
+
+## Stop Conditions
+
+- Stop if the skill's mandatory validations cannot be completed
+- Stop if any required input field is missing or invalid
+
+## Output Format
+
+- PASS / FAIL / PARTIAL verdict printed to stdout
+- Per-item findings list with skill_id, issue, and severity
+- Report file at `reports/` with structured YAML findings

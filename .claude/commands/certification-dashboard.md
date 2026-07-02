@@ -55,3 +55,19 @@ Expected: 456 tests pass.
 ## Layer
 
 L28 Certification Audit Layer (`plans/layers/certification-audit-layer.md`)
+
+## Allowed Paths
+
+- `tools/certification/certification_dashboard.py`
+- `reports/` — evidence output (write)
+
+## Forbidden Paths
+
+- `src/net/**` — no .NET product source mutation
+- `src/python/**` — no Python product source mutation
+- `plans/strategic/**` — strategic plans are read-only
+
+## Stop Conditions
+
+- Stop if required certification report files do not exist
+- Stop if the portfolio matrix is inconsistent

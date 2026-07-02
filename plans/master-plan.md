@@ -5829,3 +5829,48 @@ Phase 3b/4b infrastructure for the governance incident remediation plan (buzzing
 - Completion gate counters: all zero
 
 **Final Verdict:** GI_FODS_NET_001_TERMINAL_CLOSED — 4161/4161 tests pass, 33/33 taskcards closed, all governance artifacts committed
+## §105 — quiet-pondering-stream: Skill and Command Governance Repair (TERMINAL_CLOSED 2026-07-03)
+
+**Mission:** Resolve all 7 remaining test failures in `tests/python/supervisor/` (R106/R107 suite) after the fix-448-failures sprint. All failures were repository-local governance drift — no external blockers.
+
+**Plan:** `quiet-pondering-stream` (session plan, governance-gap-repair-20260702)
+
+### Root Cause Register
+
+| Gap | Category | Affected Tests | Root Cause | Status |
+|-----|----------|----------------|------------|--------|
+| GAP-001 | STALE_TEST_ASSUMPTION | F1 | `test_total_skill_count` hardcoded 32; registry expanded to 120 | CLOSED |
+| GAP-002 | REGISTRY_DRIFT | F2 | 43 active skills missing `mandatory_validations` | CLOSED |
+| GAP-003 | REGISTRY_DRIFT | F3 | 38 active skills missing `required_handoff_fields` | CLOSED |
+| GAP-004 | ORPHAN_ARTIFACT | F4/F5 | 3 skills: `command_file` pointed to `playbooks/` not `.claude/commands/` | CLOSED |
+| GAP-005 | MISSING_SECTION | F6/F7 | 84 of 116 command files missing 1-5 error-level sections | CLOSED |
+
+### Taskcards (6/6 CLOSED)
+
+| TC | Description | Result |
+|----|-------------|--------|
+| TC-QPS-1 | Fix test_total_skill_count assertion (32→120) | CLOSED |
+| TC-QPS-2 | Patch 43/38 skills in skill-registry.yaml | CLOSED |
+| TC-QPS-3 | Create 3 command files in .claude/commands/ | CLOSED |
+| TC-QPS-4 | Migrate 84 failing command files | CLOSED |
+| TC-QPS-5 | Idempotency verification | CLOSED |
+| TC-QPS-6 | Gap ledger + plan terminal lock | CLOSED |
+
+### Verification
+
+```
+.venv/Scripts/python -m pytest tests/python/supervisor/test_r107_registry_stability.py tests/python/supervisor/test_r106_command_validator_hardening.py -v
+32 passed in 4.11s
+
+Full suite: 26797 passed, 45 skipped, 0 failed
+Idempotency: patch_registry — 0 changed, 47 skipped (run 2)
+Idempotency: migrate_command_sections — 0 migrated (run 2)
+```
+
+### Key Artifacts
+
+- `tools/supervisor/patch_registry_missing_fields.py` — registry field patcher (idempotent)
+- `tools/supervisor/migrate_command_sections.py` — command file section migrator (idempotent)
+- `reports/skills-commands/governance-gap-ledger.yaml` — 5 gaps, all CLOSED
+
+**Final Verdict:** GOVERNANCE_GAP_REPAIR_COMPLETE — 7/7 failures eliminated, 32/32 R106/R107 tests pass, 26797/26797 full suite pass, idempotency proven

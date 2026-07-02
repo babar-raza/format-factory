@@ -34,3 +34,33 @@ observed state from the codebase.
 - `layer_plan_exists`: `permanent_plan_path` must exist
 - `section_updated`: §9 must contain post-update content
 - `change_logged`: change-ledger.jsonl must have new entry
+
+## Required Inputs
+
+- `layer_id` — layer identifier from the permanent layer plan
+- `permanent_plan_path` — path to the permanent layer plan file
+- `current_state_summary` — value for `current_state_summary`
+- `key_metrics` — value for `key_metrics`
+
+## Allowed Paths
+
+- `plans/layers/`
+- `reports/` — evidence output (write)
+
+## Forbidden Paths
+
+- `src/net/**` — no product source mutation
+- `src/python/**` — no product source mutation
+- `plans/strategic/**` — strategic plans are read-only
+- `.supervisor/skill-registry.yaml` — skill registry is read-only here
+
+## Stop Conditions
+
+- Stop if the skill's mandatory validations cannot be completed
+- Stop if any required input field is missing or invalid
+
+## Output Format
+
+- Summary of items synced, added, removed, or unchanged
+- Report file at `reports/` confirming final state
+- Exit code 0 on success; non-zero with error message on failure

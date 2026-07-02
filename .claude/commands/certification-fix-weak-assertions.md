@@ -31,3 +31,25 @@ python tools/certification/fix_weak_assertions.py \
 ## Layer
 
 L28 Certification Audit Layer (`plans/layers/certification-audit-layer.md`)
+
+## Allowed Paths
+
+- `tools/certification/fix_weak_assertions.py`
+- `reports/` — evidence output (write)
+
+## Forbidden Paths
+
+- `src/net/**` — no .NET product source mutation
+- `src/python/**` — no Python product source mutation
+- `plans/strategic/**` — strategic plans are read-only
+
+## Stop Conditions
+
+- Stop if weak assertion fixes cannot be validated
+- Stop if focused tests do not pass after changes
+
+## Output Format
+
+- Certification report JSON written to `reports/certification/<format_id>/`
+- Summary: total items, passing, failing, score
+- Actionable findings for any failing items

@@ -60,3 +60,30 @@ final_verdict: ALL_FORMATS_AND_PRODUCT_SURFACES_DEEPENED_AND_RECONCILED | ALL_FO
 
 If `counts_reconcile: false`: STOP. Find the missing entry. Add it to the obligation register. Re-run.
 If any `deferred > 0` or `unknown > 0`: STOP. Resolve the entry. Re-run.
+
+## Required Inputs
+
+- `mission_id` — value for `mission_id`
+
+## Allowed Paths
+
+- `registry/ — format and obligation registries (read/write)`
+- `reports/ — deepening reports (write)`
+- `plans/ — deepening plans (read/write)`
+
+## Forbidden Paths
+
+- `src/net/**` — no product source mutation in deepening skills
+- `src/python/**` — no product source mutation in deepening skills
+- `plans/strategic/**` — strategic plans are read-only
+
+## Stop Conditions
+
+- Stop if the portfolio reconciliation report cannot be written
+- Stop if the execution would modify any file under src/
+
+## Output Format
+
+- Structured result written to `reports/` in YAML or JSON format
+- Human-readable summary printed to stdout
+- Verdict: PASS / FAIL with per-item evidence

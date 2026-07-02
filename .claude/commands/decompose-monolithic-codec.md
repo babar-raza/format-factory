@@ -159,3 +159,22 @@ Write transcript to: `reports/skills-r<N>/skill-transcripts/decompose-monolithic
 | FODG | `fodg_codec.py` | 3176 | 3176 | `fodg_analytics.py` | AT CAP — monitor |
 | XCF | `xcf_parser.py` | 1301 | 3997 | `xcf_analytics.py` | HEALED (2026-06-18) |
 | ZST | `zst_codec.py` | 1558 | 4210 | `zst_analytics.py` | HEALED (2026-06-18) |
+
+## Allowed Paths
+
+- `.supervisor/ — skill registry and governance config (read/write as needed)`
+- `.governance/ — governance rules and policies (read-only)`
+- `.claude/commands/ — command files (read-only unless updating commands)`
+- `reports/ — governance reports (write)`
+
+## Forbidden Paths
+
+- `src/net/**` — no .NET product source mutation
+- `src/python/**` — no Python product source mutation
+- `plans/strategic/**` — strategic plans are read-only
+
+## Output Format
+
+- PASS / FAIL / PARTIAL verdict printed to stdout
+- Per-item findings list with skill_id, issue, and severity
+- Report file at `reports/` with structured YAML findings

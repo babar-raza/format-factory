@@ -33,3 +33,25 @@ python tools/certification/generate_security_tests.py \
 ## Layer
 
 L28 Certification Audit Layer (`plans/layers/certification-audit-layer.md`)
+
+## Allowed Paths
+
+- `tools/certification/generate_security_tests.py`
+- `reports/` — evidence output (write)
+
+## Forbidden Paths
+
+- `src/net/**` — no .NET product source mutation
+- `src/python/**` — no Python product source mutation
+- `plans/strategic/**` — strategic plans are read-only
+
+## Stop Conditions
+
+- Stop if security tests cannot be generated
+- Stop if focused tests do not pass after changes
+
+## Output Format
+
+- Generated artifact written to the configured output path
+- Confirmation message: file path and size
+- Validation result confirming the output is well-formed

@@ -38,3 +38,30 @@ stale_layers:
 
 - This skill is read-only — no writes occur
 - Stale detection is advisory only — WARN output, never FAIL
+
+## Required Inputs
+
+- `layer_id` — layer identifier from the permanent layer plan
+
+## Allowed Paths
+
+- `plans/layers/`
+- `reports/` — evidence output (write)
+
+## Forbidden Paths
+
+- `src/net/**` — no product source mutation
+- `src/python/**` — no product source mutation
+- `plans/strategic/**` — strategic plans are read-only
+- `.supervisor/skill-registry.yaml` — skill registry is read-only here
+
+## Stop Conditions
+
+- Stop if the stale state report file cannot be written
+- Stop if the execution would modify any file under src/
+
+## Output Format
+
+- Layer task register updated with the result of this operation
+- Work log entry appended to the permanent layer plan
+- Structured verdict: PASS / FAIL with supporting evidence

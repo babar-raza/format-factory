@@ -36,3 +36,36 @@ Gaps represent the delta between current state and target design.
 
 - `gap_id_unique`: gap_id must not already exist in the gap table
 - `change_logged`: change-ledger.jsonl must have new entry
+
+## Required Inputs
+
+- `layer_id` — layer identifier from the permanent layer plan
+- `permanent_plan_path` — path to the permanent layer plan file
+- `gap_id` — value for `gap_id`
+- `severity` — value for `severity`
+- `current_state` — JSON or YAML snapshot of the current layer state
+- `target_state` — value for `target_state`
+- `task_id` — task identifier from the layer task register
+
+## Allowed Paths
+
+- `plans/layers/`
+- `reports/` — evidence output (write)
+
+## Forbidden Paths
+
+- `src/net/**` — no product source mutation
+- `src/python/**` — no product source mutation
+- `plans/strategic/**` — strategic plans are read-only
+- `.supervisor/skill-registry.yaml` — skill registry is read-only here
+
+## Stop Conditions
+
+- Stop if the skill's mandatory validations cannot be completed
+- Stop if any required input field is missing or invalid
+
+## Output Format
+
+- Layer task register updated with the result of this operation
+- Work log entry appended to the permanent layer plan
+- Structured verdict: PASS / FAIL with supporting evidence

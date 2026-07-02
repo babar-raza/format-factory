@@ -31,3 +31,25 @@ python tools/playbook/export_review_queue.py \
 ## Layer
 
 Playbook Governance (FF-PLAYBOOK-SYSTEM-001, S-F2F-03)
+
+## Allowed Paths
+
+- `tools/playbook/export_review_queue.py`
+- `reports/` — evidence output (write)
+
+## Forbidden Paths
+
+- `src/net/**` — no .NET product source mutation
+- `src/python/**` — no Python product source mutation
+- `plans/strategic/**` — strategic plans are read-only
+
+## Stop Conditions
+
+- Stop if the skill's mandatory validations cannot be completed
+- Stop if the output file path is not writable
+
+## Output Format
+
+- Structured result written to `reports/` in YAML or JSON format
+- Human-readable summary printed to stdout
+- Verdict: PASS / FAIL with per-item evidence

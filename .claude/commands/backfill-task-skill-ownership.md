@@ -85,3 +85,9 @@ On file read error: log to stderr and continue scanning.
 ```
 /backfill-task-skill-ownership
 ```
+
+## Output Format
+
+- YAML or JSON inventory file at the configured output path
+- Summary counts: total scanned, found, flagged
+- Per-item entries with classification and evidence

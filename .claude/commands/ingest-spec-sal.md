@@ -89,3 +89,27 @@ The following 14 formats have zero spec_facts and are candidates for this skill:
 SAL extraction tools may not yet support all spec formats. For stdlib-backed formats
 (CSV, TSV, NDJSON, ZST), see `/run-oracle` for an alternative approach using Python
 reference implementations.
+
+## Required Inputs
+
+- `format_id` — format identifier from the format registry
+- `spec_source_uri` — value for `spec_source_uri`
+- `spec_version` — value for `spec_version`
+- `spec_body` — value for `spec_body`
+- `target_fact_count_min` — value for `target_fact_count_min`
+
+## Allowed Paths
+
+- `tools/spec/extract_sal_facts.py`
+- `tools/spec/merge_sal_facts.py`
+- `reports/` — evidence output (write)
+
+## Forbidden Paths
+
+- `src/**` — no product source mutation during SAL ingestion
+- `plans/strategic/**` — strategic plans are read-only
+
+## Stop Conditions
+
+- Stop if the skill's mandatory validations cannot be completed
+- Stop if any required input field is missing or invalid

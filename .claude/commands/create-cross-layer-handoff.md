@@ -37,3 +37,36 @@ reference it in both the producer and consumer layer plan files.
 - `handoff_id_unique`: handoff_id must not exist in handoff-register.yaml
 - `both_layers_exist`: producer and consumer layer plan files must exist on disk
 - `register_updated`: handoff-register.yaml must contain new entry after execution
+
+## Required Inputs
+
+- `handoff_id` — value for `handoff_id`
+- `producer_layer_id` — value for `producer_layer_id`
+- `consumer_layer_id` — value for `consumer_layer_id`
+- `artifact` — value for `artifact`
+- `task_id` — task identifier from the layer task register
+- `acceptance_criteria` — value for `acceptance_criteria`
+
+## Allowed Paths
+
+- `plans/layers/handoff-register.yaml`
+- `plans/layers/`
+- `reports/` — evidence output (write)
+
+## Forbidden Paths
+
+- `src/net/**` — no product source mutation
+- `src/python/**` — no product source mutation
+- `plans/strategic/**` — strategic plans are read-only
+- `.supervisor/skill-registry.yaml` — skill registry is read-only here
+
+## Stop Conditions
+
+- Stop if the task register cannot be updated
+- Stop if any required input field is missing or invalid
+
+## Output Format
+
+- Generated artifact written to the configured output path
+- Confirmation message: file path and size
+- Validation result confirming the output is well-formed

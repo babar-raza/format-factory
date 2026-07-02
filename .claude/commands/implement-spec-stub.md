@@ -140,3 +140,20 @@ Lowest complexity first:
 8. `spec/table/` stubs (table, row, cell)
 9. `spec/drawing.py`
 10. `spec/formula.py`
+
+## Allowed Paths
+
+- `src/python/<format_id>/ — spec literal source (read/write)`
+- `tools/spec/ — healing tools (read-only)`
+- `reports/spec/ — healing reports (write)`
+
+## Forbidden Paths
+
+- `src/net/**` — .NET source is out of scope for Python spec healing
+- `plans/strategic/**` — strategic plans are read-only
+
+## Output Format
+
+- Structured result written to `reports/` in YAML or JSON format
+- Human-readable summary printed to stdout
+- Verdict: PASS / FAIL with per-item evidence

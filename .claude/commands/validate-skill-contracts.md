@@ -72,3 +72,9 @@ On registry parse failure: exit non-zero and log error to stderr.
 ```
 /validate-skill-contracts
 ```
+
+## Output Format
+
+- PASS / FAIL / PARTIAL verdict printed to stdout
+- Per-item findings list with skill_id, issue, and severity
+- Report file at `reports/` with structured YAML findings

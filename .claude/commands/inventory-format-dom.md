@@ -39,3 +39,29 @@ python -m pytest tests/supervisor/test_dom_baseline_scanner.py -q
 ## skill_id
 
 inventory-format-dom
+
+## Required Inputs
+
+- `format_id` — format identifier from the format registry
+
+## Allowed Paths
+
+- `tools/supervisor/dom_baseline_scanner.py`
+- `reports/` — evidence output (write)
+
+## Forbidden Paths
+
+- `src/net/**` — no .NET product source mutation
+- `src/python/**` — no Python product source mutation
+- `plans/strategic/**` — strategic plans are read-only
+
+## Stop Conditions
+
+- Stop if the DOM inventory cannot be produced for the format
+- Stop if the execution would modify any file under src/
+
+## Output Format
+
+- YAML or JSON inventory file at the configured output path
+- Summary counts: total scanned, found, flagged
+- Per-item entries with classification and evidence

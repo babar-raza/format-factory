@@ -56,3 +56,24 @@ If a file exceeds its cap:
 ## Known Safe Files (pre-confirmed below cap)
 
 - `src/python/xcf/xcf_parser.py`: 288 LOC — well under cap (confirmed 2026-06-25)
+
+## Required Inputs
+
+- `formats_to_check` — value for `formats_to_check`
+
+## Allowed Paths
+
+- `registry/source-structure-baseline.json — source baseline (read/write)`
+- `tools/ — tool scripts (read-only)`
+- `reports/ — structure reports (write)`
+
+## Forbidden Paths
+
+- `src/net/**` — no product source mutation
+- `src/python/**` — no product source mutation
+- `plans/strategic/**` — strategic plans are read-only
+
+## Stop Conditions
+
+- Stop if the LOC check report cannot be written
+- Stop if the execution would modify any file under src/

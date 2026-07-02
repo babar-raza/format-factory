@@ -48,3 +48,36 @@ Every skill-registry entry MUST have:
 **GH-001 (SKILL-GOVERNANCE-REPAIR-001):** Before adding any entry to
 `skill-registry.yaml`, run this preflight validator. A passing preflight
 is a prerequisite for taskcard closure on any skill-adding work.
+
+## Steps
+
+1. Read the incoming skill entry from the handoff
+2. Validate all required fields are present and non-empty
+3. Check the skill_id does not already exist in the skill registry
+4. Verify the command_file path references a valid `.md` file format
+5. Confirm the product_track is a valid enumerated value
+6. Write a preflight check result: PASS or FAIL with details
+
+## Allowed Paths
+
+- `.supervisor/ — skill registry and governance config (read/write as needed)`
+- `.governance/ — governance rules and policies (read-only)`
+- `.claude/commands/ — command files (read-only unless updating commands)`
+- `reports/ — governance reports (write)`
+
+## Forbidden Paths
+
+- `src/net/**` — no .NET product source mutation
+- `src/python/**` — no Python product source mutation
+- `plans/strategic/**` — strategic plans are read-only
+
+## Stop Conditions
+
+- Stop if the skill's mandatory validations cannot be completed
+- Stop if the registry file cannot be parsed
+
+## Output Format
+
+- PASS / FAIL / PARTIAL verdict printed to stdout
+- Per-item findings list with skill_id, issue, and severity
+- Report file at `reports/` with structured YAML findings

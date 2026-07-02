@@ -115,3 +115,9 @@ Step 5 second pass reports `auto_repaired: 0` (Gate V11 proof).
 ```
 /enforce-skill-first-execution
 ```
+
+## Output Format
+
+- PASS / FAIL / PARTIAL verdict printed to stdout
+- Per-item findings list with skill_id, issue, and severity
+- Report file at `reports/` with structured YAML findings

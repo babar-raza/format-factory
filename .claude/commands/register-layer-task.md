@@ -38,3 +38,38 @@ AND add a corresponding entry to `plans/layers/task-register.yaml`.
 - `task_id_unique`: task_id must not already exist in task-register.yaml
 - `layer_plan_has_task`: §29 must contain the new task_id after update
 - `change_logged`: change-ledger.jsonl must have new entry
+
+## Required Inputs
+
+- `layer_id` — layer identifier from the permanent layer plan
+- `permanent_plan_path` — path to the permanent layer plan file
+- `task_id` — task identifier from the layer task register
+- `title` — value for `title`
+- `task_type` — value for `task_type`
+- `severity` — value for `severity`
+- `priority` — value for `priority`
+- `next_action` — value for `next_action`
+
+## Allowed Paths
+
+- `plans/layers/`
+- `plans/layers/task-register.yaml`
+- `reports/` — evidence output (write)
+
+## Forbidden Paths
+
+- `src/net/**` — no product source mutation
+- `src/python/**` — no product source mutation
+- `plans/strategic/**` — strategic plans are read-only
+- `.supervisor/skill-registry.yaml` — skill registry is read-only here
+
+## Stop Conditions
+
+- Stop if the skill's mandatory validations cannot be completed
+- Stop if any required input field is missing or invalid
+
+## Output Format
+
+- Layer task register updated with the result of this operation
+- Work log entry appended to the permanent layer plan
+- Structured verdict: PASS / FAIL with supporting evidence

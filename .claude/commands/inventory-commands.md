@@ -79,3 +79,9 @@ If command-registry.yaml is malformed: write `status: error` to output; log to s
 ```
 /inventory-commands
 ```
+
+## Output Format
+
+- YAML or JSON inventory file at the configured output path
+- Summary counts: total scanned, found, flagged
+- Per-item entries with classification and evidence

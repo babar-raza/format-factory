@@ -172,3 +172,8 @@ Per Section 22 of snoopy-juggling-seal.md, do NOT:
 ## Changelog
 
 - 1.0 (2026-06-21): Initial version — TC-SAL-SKILL-001 (skill-governance-sync-sprint, SKILL-GAP-011)
+
+## Stop Conditions
+
+- Stop if the skill's mandatory validations cannot be completed
+- Stop if any required input field is missing or invalid

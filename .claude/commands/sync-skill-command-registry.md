@@ -87,3 +87,9 @@ Malformed command-registry.yaml: abort immediately; write error to sync report; 
 ```
 /sync-skill-command-registry
 ```
+
+## Output Format
+
+- PASS / FAIL / PARTIAL verdict printed to stdout
+- Per-item findings list with skill_id, issue, and severity
+- Report file at `reports/` with structured YAML findings

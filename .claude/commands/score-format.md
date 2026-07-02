@@ -59,3 +59,20 @@ Complete when:
 - `reports/scoring/<format_id>-scoring-sheet.md` exists
 - Score and tier are recorded in `registry/format-registry.yaml`
 - All scoring dimensions have justification text
+
+## Allowed Paths
+
+- `registry/ — format registry (read-only unless updating registry)`
+- `reports/ — acquisition reports (write)`
+- `plans/ — acquisition plans (read/write)`
+
+## Forbidden Paths
+
+- `src/net/**` — no product source mutation during acquisition
+- `src/python/**` — no product source mutation during acquisition
+- `plans/strategic/**` — strategic plans are read-only
+
+## Stop Conditions
+
+- Stop if a scoring sheet cannot be produced
+- Stop if any required input field is missing or invalid

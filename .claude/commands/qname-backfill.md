@@ -123,3 +123,28 @@ spec_fact_refs:
   - {FACT-FORMAT-NNN}
 skill_used: qname-backfill
 ```
+
+## Required Inputs
+
+- `format_id` — format identifier from the format registry
+- `spec_qname` — spec QName string to use for backfill (e.g. `table:table-row`)
+
+## Steps
+
+1. Read the target format's source files from `src/python/<format>/`
+2. Identify model classes and codec functions lacking `spec_qname` annotations
+3. Look up the correct QName for each item in the SAL fact registry
+4. Add `spec_qname: ClassVar[str] = "<namespace>:<element>"` to each model class
+5. Add QName docstring comments to codec functions where applicable
+6. Verify the format's test suite still passes after the additions
+
+## Stop Conditions
+
+- Stop if any gate or release state would be modified
+- Stop if spec_qname fields cannot be populated for the target format
+
+## Output Format
+
+- Structured result written to `reports/` in YAML or JSON format
+- Human-readable summary printed to stdout
+- Verdict: PASS / FAIL with per-item evidence

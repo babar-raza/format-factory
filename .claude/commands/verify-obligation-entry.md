@@ -46,3 +46,30 @@ Update the YAML entry fields: `current_state`, `current_proof_level`, `terminal_
 ## Rollback
 
 No rollback needed — read-only verification + YAML field updates in obligation register only (not source code).
+
+## Required Inputs
+
+- `obligation_id` — identifier of the obligation entry to verify or update
+
+## Allowed Paths
+
+- `registry/ — format and obligation registries (read/write)`
+- `reports/ — deepening reports (write)`
+- `plans/ — deepening plans (read/write)`
+
+## Forbidden Paths
+
+- `src/net/**` — no product source mutation in deepening skills
+- `src/python/**` — no product source mutation in deepening skills
+- `plans/strategic/**` — strategic plans are read-only
+
+## Stop Conditions
+
+- Stop if the obligation entry cannot be verified
+- Stop if the execution would modify any file under src/
+
+## Output Format
+
+- Summary of items synced, added, removed, or unchanged
+- Report file at `reports/` confirming final state
+- Exit code 0 on success; non-zero with error message on failure

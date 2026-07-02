@@ -115,3 +115,20 @@ notes: <title>
 Complete when:
 - `taskcards/<taskcard_id>.md` exists with front-matter and all sections
 - Entry appears in `taskcards/index.yaml`
+
+## Allowed Paths
+
+- `plans/ — plan files (read/write)`
+- `reports/ — evidence reports (write)`
+- `.local/evidences/ — evidence declarations (write)`
+
+## Forbidden Paths
+
+- `src/net/**` — no product source mutation during planning
+- `src/python/**` — no product source mutation during planning
+- `registry/format-registry.yaml` — format registry is read-only here
+
+## Stop Conditions
+
+- Stop if the skill's mandatory validations cannot be completed
+- Stop if any required input field is missing or invalid

@@ -67,3 +67,31 @@ python tools/capability_sync/validate_parity.py
 ## skill_id
 
 validate-capability-parity
+
+## Required Inputs
+
+- `capability_id` — capability identifier from the capability registry
+- `target_language` — language target: `python` or `dotnet`
+
+## Allowed Paths
+
+- `tools/capability_sync/validate_parity.py`
+- `reports/` — evidence output (write)
+
+## Forbidden Paths
+
+- `src/net/**` — no product source mutation
+- `src/python/**` — no product source mutation
+- `plans/strategic/**` — strategic plans are read-only
+- `.supervisor/skill-registry.yaml` — skill registry is read-only here
+
+## Stop Conditions
+
+- Stop if the parity report cannot be produced
+- Stop if the execution would modify any file under src/
+
+## Output Format
+
+- PASS / FAIL / PARTIAL verdict printed to stdout
+- Per-item findings list with skill_id, issue, and severity
+- Report file at `reports/` with structured YAML findings

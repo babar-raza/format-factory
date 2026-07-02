@@ -43,3 +43,31 @@ reconcile_result:
 
 - This skill is read-only — no writes occur
 - If mismatches found, emit WARN (never FAIL) and list all discrepancies
+
+## Required Inputs
+
+- `layer_id` — layer identifier from the permanent layer plan
+
+## Allowed Paths
+
+- `plans/layers/index.yaml`
+- `plans/layers/`
+- `reports/` — evidence output (write)
+
+## Forbidden Paths
+
+- `src/net/**` — no product source mutation
+- `src/python/**` — no product source mutation
+- `plans/strategic/**` — strategic plans are read-only
+- `.supervisor/skill-registry.yaml` — skill registry is read-only here
+
+## Stop Conditions
+
+- Stop if the layer index is inconsistent after reconciliation
+- Stop if the execution would modify any file under src/
+
+## Output Format
+
+- PASS / FAIL / PARTIAL verdict printed to stdout
+- Per-item findings list with skill_id, issue, and severity
+- Report file at `reports/` with structured YAML findings

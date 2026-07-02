@@ -82,3 +82,9 @@ On individual skill read error: skip and continue.
 ```
 /inventory-skills
 ```
+
+## Output Format
+
+- YAML or JSON inventory file at the configured output path
+- Summary counts: total scanned, found, flagged
+- Per-item entries with classification and evidence

@@ -42,3 +42,32 @@ rationale: "changed_paths includes src/python/ — owned by L06"
 
 - `layer_plan_exists`: `permanent_plan_path` must exist on disk
 - `layer_in_index`: `layer_id` must appear in `plans/layers/index.yaml`
+
+## Required Inputs
+
+- `task_id` — task identifier from the layer task register
+- `work_type` — value for `work_type`
+- `changed_paths` — value for `changed_paths`
+
+## Allowed Paths
+
+- `plans/layers/index.yaml`
+- `reports/` — evidence output (write)
+
+## Forbidden Paths
+
+- `src/net/**` — no product source mutation
+- `src/python/**` — no product source mutation
+- `plans/strategic/**` — strategic plans are read-only
+- `.supervisor/skill-registry.yaml` — skill registry is read-only here
+
+## Stop Conditions
+
+- Stop if the skill's mandatory validations cannot be completed
+- Stop if any required input field is missing or invalid
+
+## Output Format
+
+- Layer task register updated with the result of this operation
+- Work log entry appended to the permanent layer plan
+- Structured verdict: PASS / FAIL with supporting evidence

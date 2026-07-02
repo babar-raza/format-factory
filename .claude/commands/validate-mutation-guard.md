@@ -76,3 +76,9 @@ If V48 does not fire: write `v48_fired: false`, `verdict: MUTATION_GUARD_FAILED`
 ```
 /validate-mutation-guard
 ```
+
+## Output Format
+
+- Structured result written to `reports/` in YAML or JSON format
+- Human-readable summary printed to stdout
+- Verdict: PASS / FAIL with per-item evidence

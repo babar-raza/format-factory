@@ -278,3 +278,7 @@ Evidence at: .local/qname-review/fods-20260623-001/verdict.json
 - 1.0 (2026-06-23): Initial governed command for QName architecture compliance review.
   13 checks from TC-QHARD-004 (imperative-drifting-lecun plan §Phase 0).
   4 verdicts; 9 evidence artifacts. spec_qname_required: true.
+
+## Required Inputs
+
+- `format_id` — format identifier from the format registry

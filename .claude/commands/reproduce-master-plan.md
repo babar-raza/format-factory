@@ -63,3 +63,20 @@ Complete when:
 - `reports/master-plan-snapshot-<date>.md` exists
 - All formats from format-registry.yaml appear in the report
 - All gate statuses are either PASS, OPEN, or NOT_STARTED (no UNKNOWN)
+
+## Allowed Paths
+
+- `plans/ — plan files (read/write)`
+- `reports/ — evidence reports (write)`
+- `.local/evidences/ — evidence declarations (write)`
+
+## Forbidden Paths
+
+- `src/net/**` — no product source mutation during planning
+- `src/python/**` — no product source mutation during planning
+- `registry/format-registry.yaml` — format registry is read-only here
+
+## Stop Conditions
+
+- Stop if the skill's mandatory validations cannot be completed
+- Stop if any required input field is missing or invalid

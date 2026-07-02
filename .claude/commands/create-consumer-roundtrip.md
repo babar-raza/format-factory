@@ -130,3 +130,40 @@ After PASS: run `/update-obligation-entry` for ALLF-{FORMAT}-PY:
 - `current_proof_level: PROOF_LEVEL_4`
 - `terminal_state: COMPLETED_AND_VERIFIED`
 - `evidence_paths: ["examples/python/{format}/consumer_roundtrip.py"]`
+
+## Required Inputs
+
+- `format_id` — format identifier from the format registry
+- `fixture_path` — value for `fixture_path`
+
+## Steps
+
+1. Verify the target format package is installed and importable
+2. Load a sample file using the format's `load()` function
+3. Write the loaded model back using the format's `write()`/`create()` function
+4. Re-load the written output and compare with the original model
+5. Assert round-trip fidelity: all key fields must match
+6. Record the test as a focused test file in the format's test directory
+
+## Allowed Paths
+
+- `tests/python/<format_id>/ — consumer round-trip tests (write)`
+- `docs/examples/ — consumer examples (write)`
+- `reports/ — consumer test evidence (write)`
+
+## Forbidden Paths
+
+- `src/python/**` — consumer roundtrips are test-only; no codec changes
+- `src/net/**` — .NET source is out of scope
+- `plans/strategic/**` — strategic plans are read-only
+
+## Stop Conditions
+
+- Stop if the round-trip test file cannot be created
+- Stop if focused tests do not pass after changes
+
+## Output Format
+
+- Structured result written to `reports/` in YAML or JSON format
+- Human-readable summary printed to stdout
+- Verdict: PASS / FAIL with per-item evidence

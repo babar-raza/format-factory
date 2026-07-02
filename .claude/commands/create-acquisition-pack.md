@@ -68,3 +68,26 @@ Example: `/create-acquisition-pack fods`
 Complete when:
 - `acquisitions/<format_id>/` directory exists with all 4 required files
 - `registry/format-registry.yaml` shows `acquisition_status: IN_PROGRESS`
+
+## Allowed Paths
+
+- `registry/ — format registry (read-only unless updating registry)`
+- `reports/ — acquisition reports (write)`
+- `plans/ — acquisition plans (read/write)`
+
+## Forbidden Paths
+
+- `src/net/**` — no product source mutation during acquisition
+- `src/python/**` — no product source mutation during acquisition
+- `plans/strategic/**` — strategic plans are read-only
+
+## Stop Conditions
+
+- Stop if the skill's mandatory validations cannot be completed
+- Stop if any required input field is missing or invalid
+
+## Output Format
+
+- Structured result written to `reports/` in YAML or JSON format
+- Human-readable summary printed to stdout
+- Verdict: PASS / FAIL with per-item evidence

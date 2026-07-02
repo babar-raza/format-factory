@@ -88,3 +88,21 @@ skill_used: extract-analytics-from-monolith
 lane_crossing_authorized: false
 gap_ledger_ref: <GOV_BLOCK gap ID from gap-ledger.json>
 ```
+
+## Required Inputs
+
+- `format_id` — format identifier from the format registry
+- `source_file` — value for `source_file`
+- `analytics_target_file` — value for `analytics_target_file`
+- `functions_to_move` — value for `functions_to_move`
+
+## Stop Conditions
+
+- Stop if the skill's mandatory validations cannot be completed
+- Stop if any required input field is missing or invalid
+
+## Output Format
+
+- PASS / FAIL / PARTIAL verdict printed to stdout
+- Per-item findings list with skill_id, issue, and severity
+- Report file at `reports/` with structured YAML findings

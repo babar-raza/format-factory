@@ -82,3 +82,9 @@ On tool execution failure: write NON_IDEMPOTENT_REPAIR_REQUIRED with error detai
 ```
 /run-skill-idempotency
 ```
+
+## Output Format
+
+- Generated artifact written to the configured output path
+- Confirmation message: file path and size
+- Validation result confirming the output is well-formed

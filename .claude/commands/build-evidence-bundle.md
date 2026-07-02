@@ -63,3 +63,14 @@ Complete when:
 - Bundle ZIP exists at listed path
 - SHA-256 printed
 - `check_continuation.py` verdict reported
+
+## Forbidden Paths
+
+- `src/net/**` — no product source mutation during planning
+- `src/python/**` — no product source mutation during planning
+- `registry/format-registry.yaml` — format registry is read-only here
+
+## Stop Conditions
+
+- Stop if the skill's mandatory validations cannot be completed
+- Stop if any required input field is missing or invalid

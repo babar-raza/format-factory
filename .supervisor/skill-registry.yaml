@@ -128,6 +128,8 @@ skills:
   - exact_test_paths
   - ledger_entry_path
   - focused_test_command
+  - spec_qname
+  - odf_xml_location
   sal_aware: true
   sal_note: Handoff must include FACT-{FORMAT}-* spec_fact_refs from sal-facts-latest.json
     before execution
@@ -137,6 +139,37 @@ skills:
   status: active
   test_paths: []
   advisory_only: true
+  pre_execution_requirements:
+  - name: qname_authority
+    description: >
+      Identify the ODF/format QName or spec fact that authorizes this API.
+      If no QName exists, the API may not be created.
+    required: true
+  - name: owning_type
+    description: >
+      Confirm the API belongs on the listed type (not root document if it is
+      a cell/row/column property).
+    required: true
+  - name: parser_connection
+    description: >
+      Identify where in the parser/XDocument the value is read.
+      The getter must read from XDocument via Attribute()/FodsStyleResolver.
+    required: true
+  - name: writer_obligation
+    description: >
+      If the API mutates state, identify how the mutation reaches XML.
+      Setter must call SetAttributeValue/FodsStyleEditor.
+    required: true
+  - name: roundtrip_test
+    description: >
+      A Type 4 test (Set -> ToFodsXml -> LoadFromXml -> Get -> Assert)
+      must be planned before the setter task closes.
+    required: true
+  forbidden_patterns:
+  - implementing a method that returns a constant (0, false, empty) as sole body
+  - creating a private dictionary field to back a persistent document property
+  - adding a public API whose only consumer is a test
+  - using TODO implement later as sole method body
 - command: /add-dotnet-object-model-feature
   command_file: .claude/commands/add-dotnet-object-model-feature.md
   idempotency: create_or_update
@@ -277,8 +310,8 @@ skills:
     for all tracked formats. Idempotent — safe to re-run.
   product_track: acquisition
   purpose: Inventory Gate 4 status, classify evidence strategy, create evidence wrappers,
-    create minimal prototypes only when allowed, update registries and acquisition packs,
-    run focused validation, emit resumable evidence.
+    create minimal prototypes only when allowed, update registries and acquisition
+    packs, run focused validation, emit resumable evidence.
   skill_id: backfill-gate4-prototype-evidence
   spec_qname_required: false
   status: active
@@ -299,7 +332,13 @@ skills:
   - tests/skills/test_pam_gate4_prototype.py
   - tests/skills/test_fods_gate4_prototype.py
   - tests/skills/test_fodt_gate4_prototype.py
-
+  mandatory_validations:
+  - evidence_declaration_exists
+  - taskcard_id_valid
+  required_handoff_fields:
+  - taskcard_id
+  - evidence_path
+  - sprint_id
 - command: /autonomous-loop
   command_file: .claude/commands/autonomous-loop.md
   idempotency: state_mutating
@@ -314,18 +353,15 @@ skills:
     that touches src/. Added to registry 2026-06-21 (SKILL-GAP-001). TC-CONC-007b
     adds mission lock preflight.
   preflight:
-    mission_lock_check: |
-      PREFLIGHT — MISSION LOCK (mandatory, run before any sprint work):
-      1. Check for an active mission lock:
-         python tools/supervisor/sprint_executor.py status
-         Look for "mission_lock": {"status": "ACTIVE", ...} in the output.
-      2. If an ACTIVE lock exists and controller_type is "headless":
-         Print: "BLOCKED: Headless run-loop holds mission lock. Stop it first."
-         STOP. Do not proceed.
-      3. If no active lock or the active lock belongs to an interactive session:
-         proceed with sprint work.
-      Note: Machine enforcement exists in sprint_executor.py run-loop.
-      Interactive sessions use this advisory preflight (TC-CONC-007b).
+    mission_lock_check: "PREFLIGHT — MISSION LOCK (mandatory, run before any sprint\
+      \ work):\n1. Check for an active mission lock:\n   python tools/supervisor/sprint_executor.py\
+      \ status\n   Look for \"mission_lock\": {\"status\": \"ACTIVE\", ...} in the\
+      \ output.\n2. If an ACTIVE lock exists and controller_type is \"headless\":\n\
+      \   Print: \"BLOCKED: Headless run-loop holds mission lock. Stop it first.\"\
+      \n   STOP. Do not proceed.\n3. If no active lock or the active lock belongs\
+      \ to an interactive session:\n   proceed with sprint work.\nNote: Machine enforcement\
+      \ exists in sprint_executor.py run-loop.\nInteractive sessions use this advisory\
+      \ preflight (TC-CONC-007b).\n"
   product_track: infrastructure
   purpose: 'Execute the autonomous sprint loop: check continuation → skill coverage
     → execute sprint → closeout → repeat.'
@@ -350,6 +386,12 @@ skills:
   test_paths: []
   version: '1.0'
   advisory_only: true
+  product_track: governance
+  mandatory_validations:
+  - no_product_source_mutation
+  - task_ownership_report_produced
+  required_handoff_fields:
+  - target_sprint_id
 - command: /build-capability-routes
   command_file: .claude/commands/build-capability-routes.md
   created_at: '2026-06-24'
@@ -365,6 +407,12 @@ skills:
   status: active
   test_paths: []
   version: '1.0'
+  product_track: governance
+  mandatory_validations:
+  - no_product_source_mutation
+  - capability_routes_evaluated
+  required_handoff_fields:
+  - output_path
 - command: /build-context-pack
   command_file: .claude/commands/build-context-pack.md
   idempotency: idempotent
@@ -486,6 +534,12 @@ skills:
   test_paths: []
   version: '1.0'
   advisory_only: true
+  product_track: governance
+  mandatory_validations:
+  - no_product_source_mutation
+  - receipts_inventory_produced
+  required_handoff_fields:
+  - sprint_id
 - command: /create-acquisition-pack
   command_file: .claude/commands/create-acquisition-pack.md
   idempotency: create_or_update
@@ -573,6 +627,12 @@ skills:
   status: active
   test_paths: []
   version: '1.0'
+  product_track: governance
+  mandatory_validations:
+  - no_product_source_mutation
+  - ad_hoc_inventory_written
+  required_handoff_fields:
+  - report_output_path
 - command: /detect-duplicate-skills
   command_file: .claude/commands/detect-duplicate-skills.md
   created_at: '2026-06-24'
@@ -588,6 +648,12 @@ skills:
   test_paths: []
   version: '1.0'
   advisory_only: true
+  product_track: governance
+  mandatory_validations:
+  - no_product_source_mutation
+  - duplicate_report_produced
+  required_handoff_fields:
+  - output_path
 - command: /enforce-skill-first-execution
   command_file: .claude/commands/enforce-skill-first-execution.md
   created_at: '2026-06-24'
@@ -605,6 +671,12 @@ skills:
   status: active
   test_paths: []
   version: '1.0'
+  product_track: governance
+  mandatory_validations:
+  - no_product_source_mutation
+  - enforcement_report_produced
+  required_handoff_fields:
+  - report_output_path
 - command: /evidence-review-next-prompt
   command_file: .claude/commands/evidence-review-next-prompt.md
   idempotency: idempotent
@@ -754,6 +826,12 @@ skills:
   test_paths: []
   version: '1.0'
   advisory_only: true
+  product_track: governance
+  mandatory_validations:
+  - no_product_source_mutation
+  - commands_inventory_produced
+  required_handoff_fields:
+  - output_format
 - command: /inventory-skills
   command_file: .claude/commands/inventory-skills.md
   created_at: '2026-06-24'
@@ -771,6 +849,12 @@ skills:
   test_paths:
   - tests/supervisor/test_skill_inventory.py
   version: '1.0'
+  product_track: governance
+  mandatory_validations:
+  - no_product_source_mutation
+  - skills_inventory_produced
+  required_handoff_fields:
+  - output_format
 - command: /materialize-declaration-review
   command_file: .claude/commands/materialize-declaration-review.md
   idempotency: idempotent
@@ -820,6 +904,12 @@ skills:
   test_paths: []
   version: '1.0'
   advisory_only: true
+  product_track: governance
+  mandatory_validations:
+  - registry_backup_created
+  - registry_parse_validates_post_write
+  required_handoff_fields:
+  - backup_path
 - command: /package-install-proof
   command_file: .claude/commands/package-install-proof.md
   idempotency: create_or_update
@@ -974,6 +1064,13 @@ skills:
   status: active
   test_paths: []
   advisory_only: true
+  product_track: governance
+  mandatory_validations:
+  - no_gate_or_release_state_change
+  - qname_fields_populated
+  required_handoff_fields:
+  - format_id
+  - spec_qname
 - command: /preflight-skill-entry
   command_file: .claude/commands/preflight-skill-entry.md
   created_at: '2026-06-25'
@@ -1041,6 +1138,13 @@ skills:
   status: active
   test_paths: []
   version: '1.0'
+  product_track: governance
+  mandatory_validations:
+  - idempotency_verified
+  - no_product_source_mutation
+  required_handoff_fields:
+  - skill_id
+  - test_inputs
 - command: /sal-pipeline-heal
   command_file: .claude/commands/sal-pipeline-heal.md
   idempotency: create_or_update
@@ -1055,8 +1159,8 @@ skills:
     Added 2026-06-21 (SKILL-GAP-011, TC-SAL-SKILL-001).
   product_track: sal_infrastructure
   purpose: 'Govern execution of one SAL pipeline healing sprint. Covers all root causes
-    (ROOT-01..ROOT-08) in plans/strategic/snoopy-juggling-seal.md. Produces a skill transcript
-    proving governed invocation. Required for all TC-SAL-IMPL-* and TC-SAL-DIAG-*
+    (ROOT-01..ROOT-08) in plans/strategic/snoopy-juggling-seal.md. Produces a skill
+    transcript proving governed invocation. Required for all TC-SAL-IMPL-* and TC-SAL-DIAG-*
     taskcards that are NOT STARTED.
 
     '
@@ -1085,6 +1189,12 @@ skills:
   status: active
   test_paths: []
   version: '1.0'
+  product_track: governance
+  mandatory_validations:
+  - no_product_source_mutation
+  - bypass_scan_report_produced
+  required_handoff_fields:
+  - scan_scope
 - command: /score-format
   command_file: .claude/commands/score-format.md
   idempotency: idempotent
@@ -1251,6 +1361,12 @@ skills:
   status: active
   test_paths: []
   version: '1.0'
+  product_track: governance
+  mandatory_validations:
+  - registry_consistency_verified
+  - no_orphan_commands_after_sync
+  required_handoff_fields:
+  - dry_run
 - command: /update-capability-matrix
   command_file: .claude/commands/update-capability-matrix.md
   idempotency: create_or_update
@@ -1288,6 +1404,12 @@ skills:
   test_paths: []
   version: '1.0'
   advisory_only: true
+  product_track: governance
+  mandatory_validations:
+  - no_product_source_mutation
+  - mutation_guard_report_produced
+  required_handoff_fields:
+  - target_path
 - command: /validate-product-code-ledger
   command_file: .claude/commands/validate-product-code-ledger.md
   idempotency: not_applicable
@@ -1322,6 +1444,12 @@ skills:
   status: active
   test_paths: []
   version: '1.0'
+  product_track: governance
+  mandatory_validations:
+  - no_product_source_mutation
+  - all_contracts_evaluated
+  required_handoff_fields:
+  - skill_id
 - command: /validate-skill-transcript
   command_file: .claude/commands/validate-skill-transcript.md
   idempotency: not_applicable
@@ -1394,8 +1522,8 @@ skills:
     all tools/supervisor/ scripts have skill attribution. Outputs audit register to
     reports/skill-audit/.
   product_track: machinery_governance
-  purpose: Enforce mutation guard on tools/supervisor/ scripts. Every script must be
-    either registered in skill-registry.yaml or have a documented disposition.
+  purpose: Enforce mutation guard on tools/supervisor/ scripts. Every script must
+    be either registered in skill-registry.yaml or have a documented disposition.
   required_handoff_fields:
   - audit_scope
   - output_path
@@ -1404,15 +1532,20 @@ skills:
   spec_qname_required: false
   status: active
   test_paths: []
+  mandatory_validations:
+  - root_tools_report_produced
+  - no_product_source_mutation
 - advisory_only: false
   command_file: .claude/commands/build-obligation-register.md
   created_at: '2026-06-25'
   description: Scans all discovery sources and creates the all-format obligation register
     (all-format-universe.yaml, all-format-obligation-register.yaml, format-accounting-gate.yaml)
     in reports/all-format-deepening/. Verifies counts reconcile with zero omissions.
-  notes: Created TC-B-001 / transient-finding-clover (2026-06-25). Core of ALLFORMAT-DEEPENING-20260625 mission.
+  notes: Created TC-B-001 / transient-finding-clover (2026-06-25). Core of ALLFORMAT-DEEPENING-20260625
+    mission.
   product_track: all_format_deepening
-  purpose: Build authoritative all-format obligation register ensuring no format is omitted.
+  purpose: Build authoritative all-format obligation register ensuring no format is
+    omitted.
   required_handoff_fields:
   - mission_id
   - output_path
@@ -1421,14 +1554,18 @@ skills:
   spec_qname_required: false
   status: active
   test_paths: []
+  mandatory_validations:
+  - obligation_register_produced
+  - no_product_source_mutation
 - advisory_only: false
   command_file: .claude/commands/create-consumer-roundtrip.md
   created_at: '2026-06-25'
-  description: "Generates examples/python/{format}/consumer_roundtrip.py for a given\
-    \ format using the load\u2192inspect\u2192modify\u2192save\u2192reload\u2192verify\
-    \ pattern. Prints CONSUMER_PROOF: PASS."
+  description: 'Generates examples/python/{format}/consumer_roundtrip.py for a given
+    format using the load→inspect→modify→save→reload→verify pattern. Prints CONSUMER_PROOF:
+    PASS.'
   notes: Created TC-B-001 / transient-finding-clover (2026-06-25). Targets 10 Python
-    formats missing consumer_roundtrip.py (fodp fods fodt ods odt pbm pgm ppm qoi xcf).
+    formats missing consumer_roundtrip.py (fodp fods fodt ods odt pbm pgm ppm qoi
+    xcf).
   product_track: foss_python_consumer
   purpose: Advance 10 Python formats from PROOF_LEVEL_3 to PROOF_LEVEL_4.
   required_handoff_fields:
@@ -1439,6 +1576,9 @@ skills:
   spec_qname_required: false
   status: active
   test_paths: []
+  mandatory_validations:
+  - roundtrip_test_created
+  - focused_tests_pass
 - advisory_only: false
   command_file: .claude/commands/verify-obligation-entry.md
   created_at: '2026-06-25'
@@ -1455,6 +1595,9 @@ skills:
   spec_qname_required: false
   status: active
   test_paths: []
+  mandatory_validations:
+  - obligation_verified
+  - no_product_source_mutation
 - advisory_only: false
   command_file: .claude/commands/portfolio-reconcile.md
   created_at: '2026-06-25'
@@ -1472,6 +1615,9 @@ skills:
   spec_qname_required: false
   status: active
   test_paths: []
+  mandatory_validations:
+  - portfolio_report_produced
+  - no_product_source_mutation
 - advisory_only: false
   command_file: .claude/commands/update-obligation-entry.md
   created_at: '2026-06-25'
@@ -1489,6 +1635,9 @@ skills:
   spec_qname_required: false
   status: active
   test_paths: []
+  mandatory_validations:
+  - obligation_updated
+  - no_product_source_mutation
 - advisory_only: false
   command_file: .claude/commands/check-source-loc.md
   created_at: '2026-06-25'
@@ -1506,6 +1655,9 @@ skills:
   spec_qname_required: false
   status: active
   test_paths: []
+  mandatory_validations:
+  - loc_check_report_produced
+  - no_product_source_mutation
 - command: /ingest-spec-sal
   command_file: .claude/commands/ingest-spec-sal.md
   idempotency: create_or_update
@@ -1718,8 +1870,8 @@ skills:
   notes: Created TC-LP-023 (2026-06-26). Layer governance maintenance skill. Appends
     verification log entries to section 35 of a permanent layer plan.
   product_track: layer_governance
-  purpose: Append a verification log entry to section 35 (Verification Log) of a
-    permanent layer plan file. Called after verifying task acceptance criteria.
+  purpose: Append a verification log entry to section 35 (Verification Log) of a permanent
+    layer plan file. Called after verifying task acceptance criteria.
   required_handoff_fields:
   - layer_id
   - permanent_plan_path
@@ -1810,13 +1962,16 @@ skills:
   implementation_paths:
   - plans/layers/index.yaml
   - plans/layers/
-  mandatory_validations: []
+  mandatory_validations:
+  - layer_index_consistent
+  - no_product_source_mutation
   notes: Created TC-LP-023 (2026-06-26). Layer governance maintenance skill. Read-only
     audit — verifies index.yaml consistency with all layer plan files.
   product_track: layer_governance
   purpose: Verify that plans/layers/index.yaml is consistent with all layer plan files.
     Reports discrepancies without auto-fixing.
-  required_handoff_fields: []
+  required_handoff_fields:
+  - layer_id
   skill_id: reconcile-layer-index
   spec_qname_required: false
   status: active
@@ -1826,13 +1981,16 @@ skills:
   idempotency: read_only
   implementation_paths:
   - plans/layers/
-  mandatory_validations: []
+  mandatory_validations:
+  - layer_plan_inventory_produced
+  - no_product_source_mutation
   notes: Created TC-LP-023 (2026-06-26). Layer governance maintenance skill. Read-only
     audit — lists all layer plan files and their status.
   product_track: layer_governance
   purpose: List all layer plan files in plans/layers/ and report their status, maturity,
     and completeness. Read-only audit skill.
-  required_handoff_fields: []
+  required_handoff_fields:
+  - output_format
   skill_id: inventory-permanent-layer-plans
   spec_qname_required: false
   status: active
@@ -1864,13 +2022,18 @@ skills:
   idempotency: read_only
   implementation_paths:
   - plans/layers/
-  mandatory_validations: []
+  mandatory_validations:
+  - unlogged_work_report_produced
+  - no_product_source_mutation
   notes: Created TC-LP-023 (2026-06-26). Layer governance maintenance skill. Read-only
     audit — finds git changes not referenced in any layer work log.
   product_track: layer_governance
   purpose: Find git changes that are NOT referenced in any permanent layer plan's
-    section 34 (Work Log). Identifies work done outside the governed layer control plane.
-  required_handoff_fields: []
+    section 34 (Work Log). Identifies work done outside the governed layer control
+    plane.
+  required_handoff_fields:
+  - layer_id
+  - scan_scope
   skill_id: detect-unlogged-work
   spec_qname_required: false
   status: active
@@ -1880,13 +2043,16 @@ skills:
   idempotency: read_only
   implementation_paths:
   - plans/layers/
-  mandatory_validations: []
+  mandatory_validations:
+  - stale_state_report_produced
+  - no_product_source_mutation
   notes: Created TC-LP-023 (2026-06-26). Layer governance maintenance skill. Read-only
     audit — finds layer plans whose section 9 predates source changes.
   product_track: layer_governance
   purpose: Find permanent layer plan files whose section 9 (Current Implementation)
     does not reflect recent changes to the codebase.
-  required_handoff_fields: []
+  required_handoff_fields:
+  - layer_id
   skill_id: detect-stale-layer-state
   spec_qname_required: false
   status: active
@@ -1923,13 +2089,17 @@ skills:
   implementation_paths:
   - plans/layers/index.yaml
   - plans/layers/task-register.yaml
-  mandatory_validations: []
+  mandatory_validations:
+  - next_task_selected
+  - no_product_source_mutation
   notes: Created TC-LP-023 (2026-06-26). Layer governance maintenance skill. Used
     by autonomous supervisor for work selection from the layer control plane.
   product_track: layer_governance
   purpose: Read plans/layers/index.yaml and task-register.yaml to return the next
     ready, dependency-valid layer task for execution.
-  required_handoff_fields: []
+  required_handoff_fields:
+  - layer_id
+  - current_state
   skill_id: select-next-layer-task
   spec_qname_required: false
   status: active
@@ -1939,13 +2109,16 @@ skills:
   idempotency: read_only
   implementation_paths:
   - plans/layers/
-  mandatory_validations: []
+  mandatory_validations:
+  - plan_validation_report_produced
+  - no_product_source_mutation
   notes: Created TC-LP-023 (2026-06-26). Layer governance maintenance skill. Read-only
     audit — checks all layer plan files for required 39-section completeness.
   product_track: layer_governance
   purpose: Validate all permanent layer plan files for structural completeness. Each
     plan must have required metadata block and key sections.
-  required_handoff_fields: []
+  required_handoff_fields:
+  - layer_id
   skill_id: validate-permanent-layer-plans
   spec_qname_required: false
   status: active
@@ -1956,13 +2129,16 @@ skills:
   implementation_paths:
   - plans/layers/task-register.yaml
   - plans/layers/
-  mandatory_validations: []
+  mandatory_validations:
+  - task_register_consistent
+  - no_product_source_mutation
   notes: Created TC-LP-023 (2026-06-26). Layer governance maintenance skill. Read-only
     audit — verifies task-register.yaml consistency with layer plan section 29 entries.
   product_track: layer_governance
   purpose: Verify that plans/layers/task-register.yaml is consistent with the section
     29 (Active Taskcards) sections in all permanent layer plan files.
-  required_handoff_fields: []
+  required_handoff_fields:
+  - layer_id
   skill_id: reconcile-layer-task-register
   spec_qname_required: false
   status: active
@@ -1971,12 +2147,15 @@ skills:
   command_file: .claude/commands/capability-status.md
   idempotency: read_only
   implementation_paths: []
-  mandatory_validations: []
-  notes: Created CROSS-AGENT-PARITY-001 (2026-06-27). Read-only — reads compiled
-    capability registry and parity report; prints summary.
+  mandatory_validations:
+  - capability_status_report_produced
+  - no_product_source_mutation
+  notes: Created CROSS-AGENT-PARITY-001 (2026-06-27). Read-only — reads compiled capability
+    registry and parity report; prints summary.
   product_track: layer_governance
   purpose: Read compiled capability registry and parity report; print summary (read-only).
-  required_handoff_fields: []
+  required_handoff_fields:
+  - capability_id
   skill_id: capability-status
   spec_qname_required: false
   status: active
@@ -1993,7 +2172,8 @@ skills:
   product_track: layer_governance
   purpose: Run full capability sync (inventory + validate + generate + update CLAUDE.md/AGENTS.md
     + drift check).
-  required_handoff_fields: []
+  required_handoff_fields:
+  - dry_run
   skill_id: sync-capabilities
   spec_qname_required: false
   status: active
@@ -2003,13 +2183,17 @@ skills:
   idempotency: read_only
   implementation_paths:
   - tools/capability_sync/validate_parity.py
-  mandatory_validations: []
+  mandatory_validations:
+  - parity_report_produced
+  - no_product_source_mutation
   notes: Created CROSS-AGENT-PARITY-001 (2026-06-27). Validate parity between compiled
     capability registry and source registries (P1/P2 checks).
   product_track: layer_governance
   purpose: Validate parity between compiled capability registry and source registries
     (P1/P2 checks).
-  required_handoff_fields: []
+  required_handoff_fields:
+  - capability_id
+  - target_language
   skill_id: validate-capability-parity
   spec_qname_required: false
   status: active
@@ -2025,15 +2209,16 @@ skills:
   - readme_sync_validate
   - readme_sync_drift_check
   mission_id: README-GOV-001
-  notes: Created by README-GOV-001. Preservation-first generated-block sync for
-    per-format README files; maintained content is preserved.
+  notes: Created by README-GOV-001. Preservation-first generated-block sync for per-format
+    README files; maintained content is preserved.
   output_paths:
   - src/python/*/README.md
   - src/net/*/README.md
   product_track: layer_governance
-  purpose: Synchronize generated metadata blocks in all per-format READMEs while
-    preserving maintained content.
-  required_handoff_fields: []
+  purpose: Synchronize generated metadata blocks in all per-format READMEs while preserving
+    maintained content.
+  required_handoff_fields:
+  - dry_run
   skill_id: sync-readmes
   status: active
   test_paths:
@@ -2053,7 +2238,8 @@ skills:
   product_track: layer_governance
   purpose: Detect root README drift against canonical sources and regenerate system
     status summary block.
-  required_handoff_fields: []
+  required_handoff_fields:
+  - output_path
   skill_id: generate-root-status
   status: active
   test_paths: []
@@ -2073,7 +2259,9 @@ skills:
   product_track: governance
   purpose: Run the certification dashboard to regenerate portfolio certification matrix
     across all 20 Python FOSS formats.
-  required_handoff_fields: []
+  required_handoff_fields:
+  - format_id
+  - output_path
   skill_id: certification-dashboard
   status: active
   test_paths:
@@ -2086,13 +2274,17 @@ skills:
   idempotency: deterministic
   implementation_paths:
   - tools/certification/inventory_extractor.py
-  mandatory_validations: []
+  mandatory_validations:
+  - api_contract_extracted
+  - no_product_source_mutation
   output_paths:
   - reports/certification/{fmt}/api-contract.json
   product_track: governance
   purpose: Extract API contracts (exports, functions, classes) for one or more formats
     and write per-format api-contract.json evidence files.
-  required_handoff_fields: []
+  required_handoff_fields:
+  - format_id
+  - output_path
   skill_id: certification-inventory-extractor
   status: active
   test_paths:
@@ -2104,13 +2296,17 @@ skills:
   idempotency: deterministic
   implementation_paths:
   - tools/certification/stub_detector.py
-  mandatory_validations: []
+  mandatory_validations:
+  - stub_detection_report_produced
+  - no_product_source_mutation
   output_paths:
   - reports/certification/{fmt}/stub-report.json
   product_track: governance
   purpose: Detect material stub functions (pass-only, raise NotImplementedError, etc.)
     in source files and write a stub-report.json evidence file.
-  required_handoff_fields: []
+  required_handoff_fields:
+  - format_id
+  - test_path
   skill_id: certification-stub-detector
   status: active
   test_paths:
@@ -2122,13 +2318,17 @@ skills:
   idempotency: deterministic
   implementation_paths:
   - tools/certification/exception_coverage_checker.py
-  mandatory_validations: []
+  mandatory_validations:
+  - exception_coverage_checked
+  - no_product_source_mutation
   output_paths:
   - reports/certification/{fmt}/exception-coverage.json
   product_track: governance
   purpose: Check that each exception raised in source is exercised in tests and write
     an exception-coverage.json evidence file.
-  required_handoff_fields: []
+  required_handoff_fields:
+  - format_id
+  - test_path
   skill_id: certification-exception-checker
   status: active
   test_paths:
@@ -2140,13 +2340,17 @@ skills:
   idempotency: deterministic
   implementation_paths:
   - tools/certification/assertion_quality_scorer.py
-  mandatory_validations: []
+  mandatory_validations:
+  - assertion_quality_scored
+  - no_product_source_mutation
   output_paths:
   - reports/certification/{fmt}/assertion-quality.json
   product_track: governance
   purpose: Score the quality of assertions in Python test files and write an assertion-quality.json
     evidence file. Exits 1 when weak assertions are found.
-  required_handoff_fields: []
+  required_handoff_fields:
+  - format_id
+  - test_path
   skill_id: certification-assertion-scorer
   status: active
   test_paths:
@@ -2158,13 +2362,17 @@ skills:
   idempotency: deterministic
   implementation_paths:
   - tools/certification/dotnet_assertion_scorer.py
-  mandatory_validations: []
+  mandatory_validations:
+  - dotnet_assertion_quality_scored
+  - no_product_source_mutation
   output_paths:
   - reports/certification/{fmt}/dotnet-assertion-quality.json
   product_track: governance
-  purpose: Score the quality of assertions in .NET (C#) test files and write a
-    dotnet-assertion-quality.json evidence file.
-  required_handoff_fields: []
+  purpose: Score the quality of assertions in .NET (C#) test files and write a dotnet-assertion-quality.json
+    evidence file.
+  required_handoff_fields:
+  - format_id
+  - test_path
   skill_id: certification-dotnet-assertion-scorer
   status: active
   test_paths: []
@@ -2175,12 +2383,16 @@ skills:
   idempotency: non_deterministic
   implementation_paths:
   - tools/certification/generate_exception_tests.py
-  mandatory_validations: []
+  mandatory_validations:
+  - exception_tests_generated
+  - focused_tests_pass
   output_paths: []
   product_track: governance
-  purpose: "Generate missing exception-coverage test stubs for a format. WARNING:\
-    \ Mutates test files in place \u2014 use with caution."
-  required_handoff_fields: []
+  purpose: 'Generate missing exception-coverage test stubs for a format. WARNING:
+    Mutates test files in place — use with caution.'
+  required_handoff_fields:
+  - format_id
+  - test_path
   skill_id: certification-generate-exception-tests
   status: active
   test_paths: []
@@ -2191,12 +2403,16 @@ skills:
   idempotency: non_deterministic
   implementation_paths:
   - tools/certification/fix_weak_assertions.py
-  mandatory_validations: []
+  mandatory_validations:
+  - weak_assertions_fixed
+  - focused_tests_pass
   output_paths: []
   product_track: governance
-  purpose: "Strengthen weak assertions in Python test files for a format. WARNING:\
-    \ Mutates test files in place \u2014 use with caution."
-  required_handoff_fields: []
+  purpose: 'Strengthen weak assertions in Python test files for a format. WARNING:
+    Mutates test files in place — use with caution.'
+  required_handoff_fields:
+  - format_id
+  - test_path
   skill_id: certification-fix-weak-assertions
   status: active
   test_paths: []
@@ -2207,12 +2423,16 @@ skills:
   idempotency: non_deterministic
   implementation_paths:
   - tools/certification/generate_security_tests.py
-  mandatory_validations: []
+  mandatory_validations:
+  - security_tests_generated
+  - focused_tests_pass
   output_paths: []
   product_track: governance
-  purpose: "Generate security test stubs (path traversal, malformed input, etc.) for\
-    \ a format. WARNING: Mutates test files in place \u2014 use with caution."
-  required_handoff_fields: []
+  purpose: 'Generate security test stubs (path traversal, malformed input, etc.) for
+    a format. WARNING: Mutates test files in place — use with caution.'
+  required_handoff_fields:
+  - format_id
+  - test_path
   skill_id: certification-generate-security-tests
   status: active
   test_paths: []
@@ -2242,7 +2462,9 @@ skills:
   idempotency: read_only
   implementation_paths:
   - tools/supervisor/dom_baseline_scanner.py
-  mandatory_validations: []
+  mandatory_validations:
+  - dom_inventory_produced
+  - no_product_source_mutation
   output_paths:
   - reports/dual-lane-verification/
   product_track: governance
@@ -2261,7 +2483,9 @@ skills:
   idempotency: read_only
   implementation_paths:
   - tools/supervisor/dom_contract_checker.py
-  mandatory_validations: []
+  mandatory_validations:
+  - dom_contract_verified
+  - no_product_source_mutation
   output_paths: []
   product_track: governance
   purpose: Check whether a format meets the DOM contract requirements for a specific
@@ -2287,12 +2511,17 @@ skills:
   purpose: Query the operational control index for gaps, sprints, failures, search,
     format dashboards, chain traversal, and staleness detection. Read-only overlay
     on existing JSON/YAML/JSONL source files.
-  required_handoff_fields: []
+  required_handoff_fields:
+  - query
+  - query_type
   skill_id: query-control-index
   status: active
   test_paths:
   - tests/supervisor/test_control_index_db.py
   - tests/supervisor/test_control_index_sync.py
+  mandatory_validations:
+  - control_index_available
+  - query_results_produced
 - command: /validate-playbook
   command_file: .claude/commands/validate-playbook.md
   idempotency: read_only
@@ -2301,8 +2530,8 @@ skills:
   mandatory_validations:
   - no_file_writes
   - exit_code_0_pass_1_fail_2_error
-  notes: 'Registered FF-PLAYBOOK-SYSTEM-001 (2026-07-01). READ-ONLY schema validator.
-    S-F2F-02 CLOSED (2026-05-08). PASS does NOT approve gates. Evidence aid only.'
+  notes: Registered FF-PLAYBOOK-SYSTEM-001 (2026-07-01). READ-ONLY schema validator.
+    S-F2F-02 CLOSED (2026-05-08). PASS does NOT approve gates. Evidence aid only.
   product_track: playbook_governance
   purpose: Validate YAML acquisition playbook or review queue against its JSON Schema.
     Read-only, no file writes, no apply mode. PASS is not gate approval.
@@ -2322,9 +2551,9 @@ skills:
   - no_file_writes_in_dry_run
   - replay_does_not_satisfy_dec034
   - replay_does_not_approve_gates
-  notes: 'Registered FF-PLAYBOOK-SYSTEM-001 (2026-07-01). S-F2F-03 COMPLETE (2026-05-09).
+  notes: Registered FF-PLAYBOOK-SYSTEM-001 (2026-07-01). S-F2F-03 COMPLETE (2026-05-09).
     Authorized for dry-run, validate, explain, export-review-queue modes ONLY. Apply
-    mode NOT implemented. Replay does not approve gates or satisfy DEC-034.'
+    mode NOT implemented. Replay does not approve gates or satisfy DEC-034.
   product_track: playbook_governance
   purpose: 'Dry-run replay of YAML acquisition playbook. Modes: validate, dry-run,
     explain, export-review-queue. Informational only. Does not approve gates.'
@@ -2342,8 +2571,8 @@ skills:
   - tools/playbook/export_review_queue.py
   mandatory_validations:
   - output_written_to_specified_path_only
-  notes: 'Registered FF-PLAYBOOK-SYSTEM-001 (2026-07-01). S-F2F-03 COMPLETE (2026-05-09).
-    Read-only transformation. Review queue cannot approve gates.'
+  notes: Registered FF-PLAYBOOK-SYSTEM-001 (2026-07-01). S-F2F-03 COMPLETE (2026-05-09).
+    Read-only transformation. Review queue cannot approve gates.
   product_track: playbook_governance
   purpose: Export review queue YAML from dry-run replay report. Read-only. Writes
     output only to --output path.
@@ -2361,8 +2590,8 @@ skills:
   - tools/playbook/diff_playbook_outputs.py
   mandatory_validations:
   - no_file_writes_unless_output_specified
-  notes: 'Registered FF-PLAYBOOK-SYSTEM-001 (2026-07-01). S-F2F-03 COMPLETE (2026-05-09).
-    Read-only diff of two dry-run replay reports. Informational only.'
+  notes: Registered FF-PLAYBOOK-SYSTEM-001 (2026-07-01). S-F2F-03 COMPLETE (2026-05-09).
+    Read-only diff of two dry-run replay reports. Informational only.
   product_track: playbook_governance
   purpose: Compare two dry-run replay reports. Read-only, no file writes unless --output
     specified. Diff output is informational only.
@@ -2374,7 +2603,7 @@ skills:
   test_paths:
   - tests/playbook/test_diff_playbook_outputs.py
 - command: /format-feature-expansion
-  command_file: playbooks/format-factory/format-feature-expansion.md
+  command_file: .claude/commands/format-feature-expansion.md
   idempotency: create_or_update
   implementation_paths:
   - src/python/<format>/<codec>.py
@@ -2385,8 +2614,8 @@ skills:
   - min_7_tests_per_function
   - no_new_external_imports
   - init_all_export_updated
-  notes: 'Registered FF-PLAYBOOK-SYSTEM-001 (2026-07-01). Sprint Task Template (NOT
-    an acquisition playbook). Proven from R119-R122 sprints.'
+  notes: Registered FF-PLAYBOOK-SYSTEM-001 (2026-07-01). Sprint Task Template (NOT
+    an acquisition playbook). Proven from R119-R122 sprints.
   product_track: foss_python
   purpose: Add a new export, transform, or accessor function to existing Python FOSS
     codec. Generates bounded taskcards via tools/playbook/generate_playbook_taskcards.py.
@@ -2403,7 +2632,7 @@ skills:
   test_paths:
   - tests/playbook/test_task_generation.py
 - command: /new-format-kickstart
-  command_file: playbooks/format-factory/new-format-kickstart-template.md
+  command_file: .claude/commands/new-format-kickstart.md
   idempotency: create_or_update
   implementation_paths:
   - src/python/<format>/
@@ -2413,11 +2642,12 @@ skills:
   - min_7_tests
   - no_new_external_imports
   - probe_never_raises
-  notes: 'Registered FF-PLAYBOOK-SYSTEM-001 (2026-07-01). Sprint Task Template (NOT
-    an acquisition playbook). Proven from NDJSON, FODG, TSV acquisitions.'
+  notes: Registered FF-PLAYBOOK-SYSTEM-001 (2026-07-01). Sprint Task Template (NOT
+    an acquisition playbook). Proven from NDJSON, FODG, TSV acquisitions.
   product_track: foss_python
   purpose: Start a brand-new Python FOSS format codec from scratch. Produces minimum
-    slice probe, load, write, tests. Uses canonical contract in playbook_contract front-matter.
+    slice probe, load, write, tests. Uses canonical contract in playbook_contract
+    front-matter.
   required_handoff_fields:
   - format_name
   - file_extensions
@@ -2429,7 +2659,7 @@ skills:
   test_paths:
   - tests/playbook/test_task_generation.py
 - command: /product-source-task
-  command_file: playbooks/format-factory/product-source-task-template.md
+  command_file: .claude/commands/product-source-task.md
   idempotency: create_or_update
   implementation_paths:
   - src/python/<format>/<codec>.py
@@ -2440,8 +2670,8 @@ skills:
   - min_9_tests_per_function
   - no_new_external_imports
   - init_all_export_updated
-  notes: 'Registered FF-PLAYBOOK-SYSTEM-001 (2026-07-01). Sprint Task Template (NOT
-    an acquisition playbook). General template for any bounded source change.'
+  notes: Registered FF-PLAYBOOK-SYSTEM-001 (2026-07-01). Sprint Task Template (NOT
+    an acquisition playbook). General template for any bounded source change.
   product_track: foss_python
   purpose: Execute single bounded product source change to existing Python FOSS codec.
     General template; format-feature-expansion specializes for export/transform.
@@ -2466,12 +2696,12 @@ skills:
   - zero_broken_active_references
   - idempotency_second_pass_zero_changes
   notes: Created DOCS-REORG-001 (2026-07-01). Physically relocates docs/ root files
-    into topical subfolders with full reference repair, historical preservation,
-    compatibility stubs, and governance healing.
+    into topical subfolders with full reference repair, historical preservation, compatibility
+    stubs, and governance healing.
   product_track: layer_governance
   purpose: Inventory, classify, and physically migrate docs/ root files to topical
-    subfolders. Updates all active references across YAML/Markdown/Python/JSON.
-    Creates compatibility stubs for high-ref files. Proves idempotency.
+    subfolders. Updates all active references across YAML/Markdown/Python/JSON. Creates
+    compatibility stubs for high-ref files. Proves idempotency.
   required_handoff_fields:
   - mission_id
   - destination_subfolders

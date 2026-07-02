@@ -37,3 +37,30 @@ Total: 27 layers | 5 ACTIVE | 18 IN_PROGRESS | 4 NOT_ASSESSED
 
 - This skill is read-only — no writes occur
 - If a plan file is missing a metadata block, flag it as MISSING_METADATA
+
+## Required Inputs
+
+- `output_format` — output format: `yaml`, `json`, or `markdown`
+
+## Allowed Paths
+
+- `plans/layers/`
+- `reports/` — evidence output (write)
+
+## Forbidden Paths
+
+- `src/net/**` — no product source mutation
+- `src/python/**` — no product source mutation
+- `plans/strategic/**` — strategic plans are read-only
+- `.supervisor/skill-registry.yaml` — skill registry is read-only here
+
+## Stop Conditions
+
+- Stop if the layer plan inventory file cannot be written
+- Stop if the execution would modify any file under src/
+
+## Output Format
+
+- YAML or JSON inventory file at the configured output path
+- Summary counts: total scanned, found, flagged
+- Per-item entries with classification and evidence

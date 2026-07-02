@@ -73,3 +73,20 @@ Complete when:
 - `reports/gate<N>/<format_id>-gate<N>-readiness-packet.md` exists
 - All criteria evaluated (not UNKNOWN)
 - Blocking items listed if NOT_READY
+
+## Allowed Paths
+
+- `registry/ — format registry (read-only unless updating registry)`
+- `reports/ — acquisition reports (write)`
+- `plans/ — acquisition plans (read/write)`
+
+## Forbidden Paths
+
+- `src/net/**` — no product source mutation during acquisition
+- `src/python/**` — no product source mutation during acquisition
+- `plans/strategic/**` — strategic plans are read-only
+
+## Stop Conditions
+
+- Stop if all gate criteria cannot be evaluated
+- Stop if the approval would be self-signed by the same agent

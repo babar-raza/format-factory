@@ -55,7 +55,8 @@ class TestRegistryStability(unittest.TestCase):
         self.assertEqual(len(orphan), 0, f"Expected 0 orphan, got {len(orphan)}")
 
     def test_total_skill_count(self):
-        self.assertEqual(len(self.skills), 32, f"Expected 32 total, got {len(self.skills)}")
+        # Registry expanded from 32 skills (R98 baseline) to 120 skills (R107 governance expansion)
+        self.assertEqual(len(self.skills), 120, f"Expected 120 total, got {len(self.skills)}")
 
     def test_registry_status_is_active_fail_closed(self):
         meta = _load_registry_meta()

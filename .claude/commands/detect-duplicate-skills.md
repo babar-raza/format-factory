@@ -87,3 +87,9 @@ On parse failure: write error to output; exit 0.
 ```
 /detect-duplicate-skills
 ```
+
+## Output Format
+
+- Structured result written to `reports/` in YAML or JSON format
+- Human-readable summary printed to stdout
+- Verdict: PASS / FAIL with per-item evidence

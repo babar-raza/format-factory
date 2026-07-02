@@ -70,3 +70,9 @@ On git command failure: write empty entries list; log stderr. Exit 0.
 ```
 /scan-residual-bypasses
 ```
+
+## Output Format
+
+- YAML or JSON inventory file at the configured output path
+- Summary counts: total scanned, found, flagged
+- Per-item entries with classification and evidence

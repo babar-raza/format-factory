@@ -136,3 +136,14 @@ Command is complete when:
 ## Changelog
 
 - 1.0 (2026-06-21): Initial version — skill-governance-sync-sprint (SKILL-GAP-010)
+
+## Forbidden Paths
+
+- `src/net/**` — no .NET product source mutation
+- `src/python/**` — no Python product source mutation
+- `plans/strategic/**` — strategic plans are read-only
+
+## Stop Conditions
+
+- Stop if the skill's mandatory validations cannot be completed
+- Stop if any required input field is missing or invalid

@@ -31,3 +31,27 @@ python tools/gates/patch_gate4_registry_fields.py
 ## Layer
 
 Acquisition — Gate 4 evidence backfill (FF-G4-BACKFILL-001)
+
+## Allowed Paths
+
+- `tools/gates/validate_gate4_evidence.py`
+- `tools/gates/update_gate4_registry.py`
+- `tools/gates/patch_gate4_registry_fields.py`
+- `reports/` — evidence output (write)
+
+## Forbidden Paths
+
+- `src/net/**` — no product source mutation during acquisition
+- `src/python/**` — no product source mutation during acquisition
+- `plans/strategic/**` — strategic plans are read-only
+
+## Stop Conditions
+
+- Stop if no evidence declaration exists for the target taskcard
+- Stop if the taskcard ID is not found in the active plan
+
+## Output Format
+
+- YAML or JSON inventory file at the configured output path
+- Summary counts: total scanned, found, flagged
+- Per-item entries with classification and evidence

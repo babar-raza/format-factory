@@ -37,3 +37,32 @@ layer decisions. Their durable content belongs in permanent layer files.
 - `temporary_plan_exists`: source file must exist
 - `no_product_source_changes`: this skill must not modify `src/python/` or `src/net/`
 - `durable_content_migrated`: at least one permanent layer file must be updated
+
+## Required Inputs
+
+- `temporary_plan_path` — value for `temporary_plan_path`
+- `target_layer_ids` — value for `target_layer_ids`
+
+## Allowed Paths
+
+- `plans/layers/`
+- `plans/.claude/`
+- `reports/` — evidence output (write)
+
+## Forbidden Paths
+
+- `src/net/**` — no product source mutation
+- `src/python/**` — no product source mutation
+- `plans/strategic/**` — strategic plans are read-only
+- `.supervisor/skill-registry.yaml` — skill registry is read-only here
+
+## Stop Conditions
+
+- Stop if the skill's mandatory validations cannot be completed
+- Stop if any required input field is missing or invalid
+
+## Output Format
+
+- Layer task register updated with the result of this operation
+- Work log entry appended to the permanent layer plan
+- Structured verdict: PASS / FAIL with supporting evidence

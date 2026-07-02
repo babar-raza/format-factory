@@ -79,3 +79,29 @@ present. Use `/ingest-spec-sal` to add facts for formats with zero spec_facts.
 3. Wire in the format dispatch block (lines ~1000+ of execute_oracle.py)
 4. Add `authorized_fact_refs` pointing to FACT-IDs from sal-facts-latest.json
 5. Run this skill to verify ALL_PASS or PARTIAL_PASS
+
+## Required Inputs
+
+- `format_id` — format identifier from the format registry
+
+## Allowed Paths
+
+- `tools/oracle/execute_oracle.py`
+- `oracle/formats/`
+- `reports/` — evidence output (write)
+
+## Forbidden Paths
+
+- `src/**` — no product source mutation during oracle execution
+- `plans/strategic/**` — strategic plans are read-only
+
+## Stop Conditions
+
+- Stop if the skill's mandatory validations cannot be completed
+- Stop if any required input field is missing or invalid
+
+## Output Format
+
+- Structured result written to `reports/` in YAML or JSON format
+- Human-readable summary printed to stdout
+- Verdict: PASS / FAIL with per-item evidence

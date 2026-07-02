@@ -41,3 +41,36 @@ If §36 is missing or stale (no entry for this session), write it first.
 - `task_was_active`: task_id must be in §29 before closure
 - `evidence_provided`: at least one evidence_path must be supplied
 - `register_updated`: task-register.yaml must show status=CLOSED after update
+
+## Required Inputs
+
+- `layer_id` — layer identifier from the permanent layer plan
+- `permanent_plan_path` — path to the permanent layer plan file
+- `task_id` — task identifier from the layer task register
+- `closure_verdict` — verdict for task closure: PASS, FAIL, or BLOCKED
+- `evidence_paths` — list of evidence file paths supporting this action
+
+## Allowed Paths
+
+- `plans/layers/`
+- `plans/layers/task-register.yaml`
+- `reports/` — evidence output (write)
+
+## Forbidden Paths
+
+- `src/net/**` — no product source mutation
+- `src/python/**` — no product source mutation
+- `plans/strategic/**` — strategic plans are read-only
+- `.supervisor/skill-registry.yaml` — skill registry is read-only here
+
+## Stop Conditions
+
+- Stop if the target task is not currently in ACTIVE state
+- Stop if no evidence paths are included in the closure
+- Stop if the task register cannot be updated
+
+## Output Format
+
+- Summary of items synced, added, removed, or unchanged
+- Report file at `reports/` confirming final state
+- Exit code 0 on success; non-zero with error message on failure
