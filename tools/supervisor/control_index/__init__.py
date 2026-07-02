@@ -10,7 +10,7 @@ Location: .local/supervisor/control-index.db (gitignored)
 from pathlib import Path
 
 DEFAULT_DB_PATH = Path(".local/supervisor/control-index.db")
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 2
 
 
 class ControlIndex:

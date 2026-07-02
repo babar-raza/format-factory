@@ -67,6 +67,29 @@ def _update_lane_counters(declaration, ledger_path):
     update_lane_counters(declaration, ledger_path)
 
 
+def _extract_declared_paths(declaration_path: Path) -> list[str]:
+    """Extract repo-relative file paths from an evidence-declaration.yaml.
+
+    Sources: evidence_paths in planned_work_items + changed_files.
+    Skips .local/ paths (state-only, not working-tree sources).
+    TC-CONC-008
+    """
+    try:
+        import yaml
+        data = yaml.safe_load(declaration_path.read_text(encoding="utf-8"))
+    except Exception:
+        return []
+    paths: set[str] = set()
+    for item in (data.get("planned_work_items") or []):
+        for p in (item.get("evidence_paths") or []):
+            if isinstance(p, str) and not p.startswith(".local"):
+                paths.add(p.lstrip("./"))
+    for p in (data.get("changed_files") or []):
+        if isinstance(p, str) and not p.startswith(".local"):
+            paths.add(p.lstrip("./"))
+    return list(paths)
+
+
 def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None) -> dict:
     """Run a complete autonomous supervisor cycle.
 
@@ -444,6 +467,10 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
     _logger.info("Declaration validated", extra={"sprint_id": run_id})
     print(f"  VALID: run_id={run_id}, sprint_id={sprint_id}")
 
+    # TC-CONC-008: Path ownership guard state (initialized here, claimed after Step 1b)
+    _claims_mgr = None
+    _worker_id = f"autonomous_cycle_{run_id}"
+
     # Step 1a (TC-PB-008): Best-effort playbook selection hook.
     # Advisory only — NEVER blocks sprint execution. All failures log and continue.
     print("=== STEP 1a: PLAYBOOK SELECTION (advisory) ===")
@@ -610,6 +637,34 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
               f"Auto-repairs: {_evidence_repair_count}")
     except Exception as _ev_err:
         print(f"  WARNING: Evidence pre-check skipped: {_ev_err}")
+
+    # TC-CONC-008: Path ownership guard — acquire write claims before mutating files
+    print("\n=== STEP 1c-CONC: PATH OWNERSHIP GUARD (advisory) ===")
+    try:
+        _db_path_cycle = repo_root / ".local" / "supervisor" / "control-index.db"
+        _declared_paths = _extract_declared_paths(declaration_path)
+        if _declared_paths:
+            from concurrency.worker_claim import WorkerClaims  # type: ignore[import]
+            from concurrency.errors import PathOwnershipConflict  # type: ignore[import]
+            _claims_mgr = WorkerClaims(db_path=_db_path_cycle)
+            _claims_mgr.claim(
+                worker_id=_worker_id,
+                task_id=sprint_id,
+                paths=_declared_paths,
+                mission_id="format-factory-main",
+                lock_id="unknown",
+                mode="WRITE",
+            )
+            print(f"  Path ownership claimed: {len(_declared_paths)} paths for worker {_worker_id}")
+        else:
+            print("  No declared paths to claim.")
+    except Exception as _poc_err:
+        if "PathOwnershipConflict" in type(_poc_err).__name__:
+            print(f"  WARNING: Path ownership conflict detected (advisory): {_poc_err}")
+            # Advisory mode — log but do not block
+        else:
+            print(f"  WARNING: Path ownership check skipped: {_poc_err}")
+        _claims_mgr = None
 
     # Step 2: Inspect declared evidence
     print("\n=== STEP 2: INSPECT DECLARED EVIDENCE ===")
@@ -2434,6 +2489,15 @@ def main() -> int:
     if manifest.get("stop_reason"):
         print(f"Stop Reason: {manifest['stop_reason']}")
     print("=" * 60)
+
+    # TC-CONC-008: Release path ownership claims (best-effort)
+    if _claims_mgr is not None:
+        try:
+            released = _claims_mgr.release_all(_worker_id)
+            if released:
+                print(f"  [PathOwnership] Released {released} path claim(s) for {_worker_id}")
+        except Exception:
+            pass
 
     return exit_code
 

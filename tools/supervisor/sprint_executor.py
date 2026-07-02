@@ -114,6 +114,22 @@ def _sha256(path: Path) -> str:
     return h.hexdigest()
 
 
+def _db_path() -> Path:
+    """Return absolute path to control-index.db."""
+    return _REPO / ".local" / "supervisor" / "control-index.db"
+
+
+def _get_session_id() -> str:
+    """Return current session identity."""
+    try:
+        sys.path.insert(0, str(_HERE))
+        from continuation_identity import get_or_create_session_identity  # type: ignore[import]
+        return get_or_create_session_identity(_REPO)["session_id"]
+    except Exception:
+        import socket
+        return f"{socket.gethostname()}-{os.getpid()}"
+
+
 def _load_continuation_signal(repo_root: Path) -> dict | None:
     p = repo_root / ".local" / "supervisor" / "continuation-signal.json"
     if not p.exists():
@@ -388,10 +404,45 @@ def cmd_run_loop(repo_root: Path, *, max_cycles: int = 12, dry_run: bool = False
     CLAUDE.md Supreme Directive: max_cycles is NOT a hard stop —
     when reached, log it and continue (governed rollover, matching autonomous_cycle.py behaviour).
     """
+    # ── MISSION LOCK: acquire before any work begins (TC-CONC-007) ────────
+    MISSION_ID = "format-factory-main"
+    _lock_cm = None
+    try:
+        from concurrency.mission_lock import MissionLock  # type: ignore[import]
+        from concurrency.errors import MissionLockConflict  # type: ignore[import]
+        try:
+            _branch = _git(["rev-parse", "--abbrev-ref", "HEAD"])
+        except Exception:
+            _branch = "unknown"
+        _session_id = _get_session_id()
+        _ml = MissionLock(db_path=_db_path())
+        _lock_cm = _ml.locked(
+            mission_id=MISSION_ID,
+            controller_type="headless",
+            session_id=_session_id,
+            branch=_branch,
+        )
+        _lock_cm.__enter__()
+    except Exception as _lock_err:
+        if "MissionLockConflict" in type(_lock_err).__name__:
+            import sys as _sys
+            print(
+                f"\nBLOCKED: Mission '{MISSION_ID}' is locked by another controller.\n"
+                f"Cannot start headless run-loop while another controller is active.\n"
+                f"Run 'python tools/supervisor/sprint_executor.py status' for details.",
+                file=_sys.stderr,
+            )
+            return 1
+        # Non-lock errors (import fail, etc.) — log and continue (best-effort)
+        print(f"[MissionLock] Warning: lock not acquired ({_lock_err}). Proceeding without lock.")
+        _lock_cm = None
+    # ──────────────────────────────────────────────────────────────────────
+
     cycle = 0
     autonomous_cycle = repo_root / "tools" / "supervisor" / "autonomous_cycle.py"
 
-    while True:
+    try:
+      while True:
         cycle += 1
         print(f"\n{'='*60}")
         print(f"AUTONOMOUS LOOP — Cycle {cycle}")
@@ -476,7 +527,28 @@ def cmd_run_loop(repo_root: Path, *, max_cycles: int = 12, dry_run: bool = False
         else:
             print("\nNOTE: No declaration path from run-sprint. Closeout skipped.")
 
+        # ── PRE-SPRINT CHECKPOINT (TC-CONC-007) ──────────────────────────
+        sprint_ckpt_id = f"autonomous-loop-{now.strftime('%Y%m%d-%H%M%S')}"
+        try:
+            from concurrency.checkpoint import CheckpointManager  # type: ignore[import]
+            _ckpt = CheckpointManager(db_path=_db_path(), repo_root=repo_root)
+            _cid = _ckpt.create(
+                task_id=sprint_ckpt_id,
+                worker_id="sprint_executor_headless",
+                description="pre-sprint working-tree snapshot",
+            )
+            print(f"[Checkpoint] Working-tree state saved: {_cid}")
+        except Exception as _ckpt_err:
+            print(f"[Checkpoint] Warning: checkpoint creation failed (non-blocking): {_ckpt_err}")
+        # ─────────────────────────────────────────────────────────────────
+
         print(f"\nCycle {cycle} complete.")
+    finally:
+        if _lock_cm is not None:
+            try:
+                _lock_cm.__exit__(None, None, None)
+            except Exception:
+                pass
 
     # Unreachable — loop exits via return statements above
     return 0

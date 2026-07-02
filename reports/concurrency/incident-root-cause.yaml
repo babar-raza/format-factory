@@ -1,0 +1,90 @@
+---
+# Concurrency Incident Root Cause Report
+# Mission: CONC-HARDENING-2026-07-02
+# Format Factory — Autonomous Execution Hardening
+
+concurrency_incident:
+  incident_id: CONC-INC-2026-07-02-R1227
+  recorded_at: "2026-07-02T00:00:00+00:00"
+  repository: format-factory
+  branch: main
+
+  affected_task: R1227
+  affected_paths:
+    - src/python/ndjson/models.py
+
+  lost_change_description: >
+    18-line addition of three properties to NdjsonDocument class:
+    is_small (True if record_count <= 10),
+    is_large (True if record_count > 1000),
+    min_keys (minimum key count across dict records, 0 if none).
+
+  interactive_actor: "VSCode /autonomous-loop interactive session (Claude Code)"
+  headless_actor: "sprint_executor.py run-loop (background subprocess)"
+  overlap_window: "Both processes active simultaneously on the main working tree"
+
+  active_mechanisms:
+    - name: "One-Mechanism Lock"
+      location: "CLAUDE.md — documentation only"
+      enforcement: "NONE — no machine enforcement"
+      bypassed_by: "Any process that reads the prompt; no runtime check exists"
+
+    - name: "autonomous_orchestrator.py orchestrator.lock"
+      location: ".local/supervisor/orchestrator.lock"
+      enforcement: "PID-based file lock (autonomous_orchestrator.py only)"
+      bypassed_by: >
+        sprint_executor.py cmd_run_loop() does not import or check
+        autonomous_orchestrator.py or orchestrator.lock.
+        Zero code dependency between them.
+
+  first_failed_control_boundary: >
+    sprint_executor.py cmd_run_loop() (line 379, tools/supervisor/sprint_executor.py):
+    The function has NO lock acquisition before entering its while True loop.
+    It does not import autonomous_orchestrator, does not check orchestrator.lock,
+    and has no concurrency guard of any kind. As a result, any number of
+    sprint_executor run-loop instances can start simultaneously on the same
+    working tree with no detection or rejection.
+
+  second_failed_control_boundary: >
+    No checkpoint of uncommitted working-tree diffs was created before
+    the headless loop performed git/file operations that affected the
+    working tree. When the interactive session had R1227 changes uncommitted,
+    the headless loop's git operations overwrote or discarded those changes
+    with no recovery path available.
+
+  destructive_action: >
+    The specific git command that overwrote the uncommitted R1227 patch is
+    NOT KNOWN (no audit log exists). Candidates include: git stash, git checkout,
+    git restore, or a combination triggered by the autonomous loop's pre-sprint
+    operations. The absence of an audit trail is itself a control gap.
+
+  recovery_path: "Manual reapplication of the 18-line patch by the interactive session"
+  recovery_commit: "41ff66b1feaeb993060fbfc0f7f4cb9e1d7e0c3f"
+  recovery_verification: "git show HEAD:src/python/ndjson/models.py | grep is_small"
+
+  evidence_refs:
+    - path: reports/machinery-assurance/gap-ledger.yaml
+      entry: GAP-MA-006
+      description: "Documented concurrent background process violation"
+    - path: reports/machinery-assurance/final-report.md
+      description: "Machinery assurance mission report citing One-Mechanism Lock violation"
+
+  systemic_causes:
+    - cause: "No machine-enforced exclusion between concurrent controller types"
+      layer: "Runtime coordination"
+      remedy: "SQLite-backed mission lock with PID + heartbeat liveness check"
+
+    - cause: "No audit trail of git operations performed by autonomous agents"
+      layer: "Observability"
+      remedy: "Pre-operation checkpoint (git diff to patch file) before any risky git op"
+
+    - cause: "One-Mechanism Lock exists only as text in CLAUDE.md"
+      layer: "Governance"
+      remedy: "Machine enforcement at sprint_executor.py cmd_run_loop() startup"
+
+    - cause: "No path-ownership registry to detect concurrent file mutation attempts"
+      layer: "Coordination"
+      remedy: "SQLite worker_claims table with BEGIN EXCLUSIVE acquisition"
+
+  hardening_plan: plans/.claude/purrfect-weaving-squid.md
+  mission_id: CONC-HARDENING-2026-07-02

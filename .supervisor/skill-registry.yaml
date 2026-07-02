@@ -311,7 +311,21 @@ skills:
   - check_skill_coverage_before_product_work
   - no_direct_src_edit_without_skill
   notes: Infrastructure actuator. Must call /check-skill-coverage before any sprint
-    that touches src/. Added to registry 2026-06-21 (SKILL-GAP-001).
+    that touches src/. Added to registry 2026-06-21 (SKILL-GAP-001). TC-CONC-007b
+    adds mission lock preflight.
+  preflight:
+    mission_lock_check: |
+      PREFLIGHT — MISSION LOCK (mandatory, run before any sprint work):
+      1. Check for an active mission lock:
+         python tools/supervisor/sprint_executor.py status
+         Look for "mission_lock": {"status": "ACTIVE", ...} in the output.
+      2. If an ACTIVE lock exists and controller_type is "headless":
+         Print: "BLOCKED: Headless run-loop holds mission lock. Stop it first."
+         STOP. Do not proceed.
+      3. If no active lock or the active lock belongs to an interactive session:
+         proceed with sprint work.
+      Note: Machine enforcement exists in sprint_executor.py run-loop.
+      Interactive sessions use this advisory preflight (TC-CONC-007b).
   product_track: infrastructure
   purpose: 'Execute the autonomous sprint loop: check continuation → skill coverage
     → execute sprint → closeout → repeat.'

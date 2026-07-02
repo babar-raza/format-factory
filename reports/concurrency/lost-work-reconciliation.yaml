@@ -1,0 +1,45 @@
+---
+# Lost-Work Reconciliation Report
+# Mission: CONC-HARDENING-2026-07-02
+
+lost_work_reconciliation:
+  mission_id: CONC-HARDENING-2026-07-02
+  generated_at: "2026-07-02T00:00:00+00:00"
+
+  r1227_status:
+    task: R1227
+    description: "NDJSON size classification properties (is_small, is_large, min_keys)"
+    originally_lost: true
+    recovered: true
+    recovery_method: "Manual reapplication by interactive session"
+    recovery_commit: "41ff66b1"
+    commit_message_excerpt: "feat(foss): R1227 NDJSON size classification properties + machinery assurance sprint"
+
+  head_verification:
+    verified_at_head: true
+    verification_command: "git show HEAD:src/python/ndjson/models.py | grep -c 'is_small\\|is_large\\|min_keys'"
+    expected_count: 3
+    actual_count: 3
+    method_properties_present:
+      - is_small
+      - is_large
+      - min_keys
+    test_file: "tests/python/ndjson/test_r1227_ndjson_size_classification_properties.py"
+    test_count: 21
+    test_status: PASS
+
+  installed_package_verification:
+    package: ndjson
+    venv_path: ".venv/Lib/site-packages/ndjson/models.py"
+    synced: true
+    verification_note: "Site-packages synced as part of R1227 sprint (GAP-MA-001 documented)"
+
+  other_lost_or_orphaned_work: []
+
+  counters:
+    UNRECONCILED_LOST_OR_ORPHANED_WORK: 0
+
+  conclusion: >
+    All work lost in the R1227 incident has been recovered and is present at HEAD.
+    No additional orphaned, uncommitted, or lost work was identified.
+    The UNRECONCILED_LOST_OR_ORPHANED_WORK counter is 0.

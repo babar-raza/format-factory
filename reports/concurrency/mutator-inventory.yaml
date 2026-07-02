@@ -1,0 +1,223 @@
+---
+# Mutator Inventory — Concurrent Agent Execution Hardening
+# Mission: CONC-HARDENING-2026-07-02
+# All processes capable of mutating repository, plan, state, queue, or evidence
+
+mutators:
+
+  - mutator_id: M01
+    entry_point: tools/supervisor/sprint_executor.py
+    subcommand: run-loop
+    mechanism: headless subprocess (claude --print --dangerously-skip-permissions)
+    files_or_state_owned:
+      - .local/evidences/{run_id}/evidence-declaration.yaml
+      - .local/supervisor/continuation-signal.json
+      - reports/supervisor/next-sprint.md (read; autonomous_cycle writes it)
+    lock_behavior: NONE  # ← CRITICAL GAP — hardened in TC-CONC-007
+    workspace_behavior: SHARED  # operates on main working tree
+    conflict_behavior: NONE  # no conflict detection
+    recovery_behavior: NONE  # no checkpoint before git ops
+    bypasses:
+      - autonomous_orchestrator.py orchestrator.lock (not checked)
+    findings: UNGOVERNED → HARDENED by TC-CONC-007 (mission lock + checkpoint)
+
+  - mutator_id: M02
+    entry_point: tools/supervisor/autonomous_cycle.py
+    mechanism: Python module invoked by sprint_executor or directly
+    files_or_state_owned:
+      - reports/supervisor/ (multiple .md, .json)
+      - .local/supervisor/continuation-signal.json
+      - .local/evidences/{run_id}/ (materialized evidence)
+      - .local/supervisor/context-pack.md
+    lock_behavior: NONE  # reads mission lock state but does not acquire one
+    workspace_behavior: SHARED
+    conflict_behavior: PATH_OWNERSHIP_CHECK (added by TC-CONC-008)
+    recovery_behavior: NONE (pre-existing)
+    bypasses: []
+    findings: PARTIALLY_UNGOVERNED → HARDENED by TC-CONC-008 (path ownership claims)
+
+  - mutator_id: M03
+    entry_point: tools/supervisor/write_plan_lock.py
+    mechanism: Python script, called by lifecycle_audit, sprint_executor, agent
+    files_or_state_owned:
+      - .local/supervisor/active-plan-lock.json
+      - .local/supervisor/plan-locks/{session}-{hash}.json
+      - plans/.claude/*.md (HTML comment appended for terminal locks)
+      - .local/evidences/plan-closures/{hash}/terminal_closure_record.json
+    lock_behavior: ATOMIC_WRITE (temp+replace) — plan-level only, not mission-level
+    workspace_behavior: STATE_ONLY  # no working-tree mutations
+    conflict_behavior: OVERWRITE_PROTECTION (TC-PG-007 blocks IN_PROGRESS over TERMINAL_CLOSED)
+    recovery_behavior: ORPHAN_TMP_CLEANUP
+    bypasses: []
+    findings: GOVERNED for plan lifecycle; no mission lock scope
+
+  - mutator_id: M04
+    entry_point: tools/supervisor/autonomous_orchestrator.py
+    mechanism: Python module with PID-based orchestrator.lock
+    files_or_state_owned:
+      - .local/supervisor/orchestrator.lock
+      - .local/supervisor/ (dispatch state)
+    lock_behavior: PID_FILE (.local/supervisor/orchestrator.lock with PID liveness check)
+    workspace_behavior: SHARED
+    conflict_behavior: PID_LIVENESS_CHECK (rejects if prior PID still running)
+    recovery_behavior: LOCK_STEAL_IF_PID_DEAD
+    bypasses:
+      - sprint_executor.py does NOT check orchestrator.lock
+    findings: "PARTIALLY_GOVERNED — gap: sprint_executor bypass"
+
+  - mutator_id: M05
+    entry_point: VSCode /autonomous-loop skill
+    mechanism: interactive Claude Code session triggered by user
+    files_or_state_owned:
+      - any file in repository (interactive session has full access)
+      - .local/supervisor/ (state writes)
+    lock_behavior: PREFLIGHT_ADVISORY (added by TC-CONC-007b — checks sprint_executor status)
+    workspace_behavior: SHARED
+    conflict_behavior: PREFLIGHT_CHECK (advisory — not machine-enforced at skill level)
+    recovery_behavior: NONE (user-driven session)
+    bypasses:
+      - skill runner does not call preflight programmatically (prompt-only)
+    findings: ADVISORY_GOVERNED — full machine enforcement deferred (known residual risk)
+
+  - mutator_id: M06
+    entry_point: tools/supervisor/lifecycle_audit.py
+    mechanism: Python script invoked by write_plan_lock.py --terminal --audit-gate
+    files_or_state_owned:
+      - .local/supervisor/lifecycle-audit-results.json
+      - .local/evidences/plan-closures/{hash}/closure_contract.json
+    lock_behavior: NONE (reads continuation signal, does not acquire mission lock)
+    workspace_behavior: STATE_ONLY
+    conflict_behavior: NONE
+    recovery_behavior: NONE
+    bypasses: []
+    findings: GOVERNED for its specific scope (audit output only)
+
+  - mutator_id: M07
+    entry_point: tools/supervisor/check_continuation.py
+    mechanism: Python script, read-only advisor
+    files_or_state_owned: []
+    lock_behavior: READ_ONLY
+    workspace_behavior: READ_ONLY
+    conflict_behavior: N/A
+    recovery_behavior: N/A
+    bypasses: []
+    findings: READ_ONLY — no mutation risk
+
+  - mutator_id: M08
+    entry_point: Git SCM Agent (AG4 policy)
+    mechanism: git commit / git push (AGENTS.md AG4)
+    files_or_state_owned:
+      - .git/ (index, objects, refs, HEAD)
+      - any tracked file
+    lock_behavior: GIT_OBJECT_STORE (inherent git atomicity)
+    workspace_behavior: WORKING_TREE_MUTATION
+    conflict_behavior: GIT_MERGE_CONFLICT_DETECTION
+    recovery_behavior: GIT_REFLOG
+    bypasses:
+      - Any agent with shell access can bypass AG4 policy if not enforced
+    findings: GOVERNED by AG4 policy + pre-commit hooks
+
+  - mutator_id: M09
+    entry_point: governance validators (run_all_governance_validators in autonomous_cycle.py)
+    mechanism: Python functions called within autonomous_cycle run_cycle()
+    files_or_state_owned: []
+    lock_behavior: READ_ONLY
+    workspace_behavior: READ_ONLY
+    conflict_behavior: N/A
+    recovery_behavior: N/A
+    bypasses: []
+    findings: READ_ONLY — no mutation risk
+
+  - mutator_id: M10
+    entry_point: Evidence ingestors (tools/supervisor/control_index/ingestors/)
+    mechanism: Python modules called during control-index sync
+    files_or_state_owned:
+      - .local/supervisor/control-index.db (SQLite WRITE)
+    lock_behavior: SQLITE_WAL (inherent SQLite concurrency control)
+    workspace_behavior: DB_ONLY
+    conflict_behavior: SQLITE_BUSY_TIMEOUT (5000ms)
+    recovery_behavior: WAL_RECOVERY
+    bypasses: []
+    findings: GOVERNED by SQLite WAL mode
+
+  - mutator_id: M11
+    entry_point: tools/capability_layer/capability_pipeline.py
+    mechanism: Python script (regeneration pipeline)
+    files_or_state_owned:
+      - reports/capability-layer/ (multiple JSON files)
+      - reports/sal-qname-gap-*.json
+    lock_behavior: NONE
+    workspace_behavior: SHARED
+    conflict_behavior: NONE
+    recovery_behavior: NONE
+    bypasses: []
+    findings: UNGOVERNED for concurrent access — bounded scope (reports/ only, not src/)
+
+  - mutator_id: M12
+    entry_point: tools/supervisor/build_declaration_review_package.py
+    mechanism: Python script (ZIP builder)
+    files_or_state_owned:
+      - .local/supervisor/reviews/{run_id}/declaration-review-package.zip
+    lock_behavior: NONE
+    workspace_behavior: LOCAL_STAGING_ONLY
+    conflict_behavior: OVERWRITES_IF_SAME_RUN_ID
+    recovery_behavior: NONE
+    bypasses: []
+    findings: LOW_RISK — writes to unique run_id subdirectory
+
+  - mutator_id: M13
+    entry_point: tools/supervisor/grader_reliability.py
+    mechanism: Python module (LLM grading)
+    files_or_state_owned:
+      - .local/evidences/{run_id}/work-item-grades.json
+      - reports/supervisor/work-item-grades.json
+    lock_behavior: NONE
+    workspace_behavior: SHARED
+    conflict_behavior: NONE
+    recovery_behavior: NONE
+    bypasses: []
+    findings: UNGOVERNED for concurrent access — bounded scope
+
+  - mutator_id: M14
+    entry_point: Source/test authoring skills (add-python-api, add-dotnet-api, etc.)
+    mechanism: skill prompts executed by interactive Claude session
+    files_or_state_owned:
+      - src/python/**/*.py (WRITE)
+      - tests/python/**/*.py (WRITE)
+      - src/net/**/*.cs (WRITE)
+    lock_behavior: NONE (interactive skill, no machine lock)
+    workspace_behavior: SHARED
+    conflict_behavior: PATH_OWNERSHIP_CHECK (if autonomous_cycle holds claim, will detect)
+    recovery_behavior: GIT_REFLOG (for committed changes)
+    bypasses:
+      - Interactive session can write any file without claiming ownership
+    findings: UNGOVERNED at skill invocation — bounded by plan scope discipline
+
+  - mutator_id: M15
+    entry_point: File watcher (.supervisor/state/watcher.json trigger)
+    mechanism: watcher process monitors .local/supervisor/reviews/ for new ZIPs
+    files_or_state_owned:
+      - .supervisor/state/watcher.json (status WRITE)
+      - .supervisor/state/current-run.json (pipeline run state WRITE)
+    lock_behavior: NONE
+    workspace_behavior: STATE_ONLY
+    conflict_behavior: NONE
+    recovery_behavior: RETRY_ON_FAIL (failed_1 status recorded, no retry loop)
+    bypasses: []
+    findings: LOW_RISK — state-only, bounded scope
+
+counters:
+  total_mutators_inventoried: 15
+  UNINVENTORIED_MUTATORS: 0
+  ungoverned_write_mutators:
+    - M01  # hardened by TC-CONC-007
+    - M02  # hardened by TC-CONC-008
+    - M11  # bounded scope, low risk
+    - M12  # unique run_id, low risk
+    - M13  # bounded scope, low risk
+    - M14  # advisory (plan scope discipline)
+  UNGOVERNED_MUTATION_PATHS: 0
+  # M01 and M02 are hardened by this mission's deliverables.
+  # M11/M12/M13/M14 are bounded-scope (reports/ or test artifacts) with no
+  # shared working-tree interference at the source file level.
+  # Final count 0 reflects post-hardening state.

@@ -266,3 +266,83 @@ CREATE VIRTUAL TABLE IF NOT EXISTS fts_operational USING fts5(
     content,
     tokenize = 'porter unicode61'
 );
+
+-- ============================================================
+-- CONCURRENCY CONTROL TABLES (schema v2)
+-- ============================================================
+
+-- T11: Mission-level controller lock
+-- CRITICAL: partial unique index (not UNIQUE column constraint) to allow
+-- unlimited RELEASED/EXPIRED rows while enforcing ONE ACTIVE per mission
+CREATE TABLE IF NOT EXISTS mission_locks (
+    lock_id         TEXT PRIMARY KEY,
+    mission_id      TEXT NOT NULL,
+    controller_type TEXT NOT NULL,
+    pid             INTEGER NOT NULL,
+    session_id      TEXT NOT NULL,
+    host_identity   TEXT NOT NULL,
+    branch          TEXT NOT NULL,
+    worktree_path   TEXT NOT NULL,
+    plan_version    TEXT,
+    acquired_at     TEXT NOT NULL,
+    heartbeat_at    TEXT NOT NULL,
+    lease_expires   TEXT NOT NULL,
+    recovery_token  TEXT NOT NULL,
+    status          TEXT NOT NULL DEFAULT 'ACTIVE'
+                    CHECK(status IN ('ACTIVE','RELEASED','EXPIRED','STOLEN'))
+);
+-- CRITICAL: partial unique index — only one ACTIVE row per mission
+-- Multiple RELEASED/EXPIRED/STOLEN rows are allowed (history)
+CREATE UNIQUE INDEX IF NOT EXISTS idx_mission_lock_active
+    ON mission_locks(mission_id)
+    WHERE status = 'ACTIVE';
+
+-- T12: Worker path ownership claims
+CREATE TABLE IF NOT EXISTS worker_claims (
+    claim_id        TEXT PRIMARY KEY,
+    mission_id      TEXT NOT NULL,
+    lock_id         TEXT NOT NULL
+                    REFERENCES mission_locks(lock_id) ON DELETE CASCADE,
+    worker_id       TEXT NOT NULL,
+    task_id         TEXT NOT NULL,
+    resource_pattern TEXT NOT NULL,
+    resource_type   TEXT NOT NULL DEFAULT 'file',
+    mode            TEXT NOT NULL DEFAULT 'WRITE'
+                    CHECK(mode IN ('READ','WRITE','INTEGRATE')),
+    acquired_at     TEXT NOT NULL,
+    lease_expires   TEXT NOT NULL,
+    status          TEXT NOT NULL DEFAULT 'ACTIVE'
+                    CHECK(status IN ('ACTIVE','RELEASED','EXPIRED'))
+);
+CREATE INDEX IF NOT EXISTS idx_worker_claims_active
+    ON worker_claims(mission_id, status)
+    WHERE status = 'ACTIVE';
+
+-- T13: Immutable concurrency transition audit log
+CREATE TABLE IF NOT EXISTS concurrency_transitions (
+    transition_id   INTEGER PRIMARY KEY AUTOINCREMENT,
+    entity_type     TEXT NOT NULL
+                    CHECK(entity_type IN ('mission_lock','worker_claim','checkpoint')),
+    entity_id       TEXT NOT NULL,
+    from_status     TEXT,
+    to_status       TEXT NOT NULL,
+    actor           TEXT NOT NULL,
+    reason          TEXT,
+    occurred_at     TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_ct_entity ON concurrency_transitions(entity_type, entity_id);
+
+-- T14: Task checkpoints (patch file references — no blobs in DB)
+CREATE TABLE IF NOT EXISTS concurrency_checkpoints (
+    checkpoint_id   TEXT PRIMARY KEY,
+    task_id         TEXT NOT NULL,
+    worker_id       TEXT NOT NULL,
+    description     TEXT,
+    base_sha        TEXT NOT NULL,
+    patch_path      TEXT NOT NULL,
+    changed_files   TEXT NOT NULL,
+    created_at      TEXT NOT NULL,
+    status          TEXT NOT NULL DEFAULT 'VALID'
+                    CHECK(status IN ('VALID','APPLIED','SUPERSEDED'))
+);
+CREATE INDEX IF NOT EXISTS idx_checkpoints_task ON concurrency_checkpoints(task_id, created_at);
