@@ -5698,3 +5698,36 @@ docs/python-foss/ (14), docs/code-quality/ (7), docs/product-factory/ (6)
 | Net improvement | **435 failures eliminated** |
 
 **Final Verdict:** PRE_EXISTING_TEST_FAILURES_FIXED_435_OF_448_RESOLVED
+
+
+## §102 — sharded-waddling-gadget: Reconcile agile-rolling-marshmallow Stale Fields Post-TC-DL2-021 (TERMINAL_CLOSED 2026-07-02)
+
+**Mission:** Correct stale metadata in `plans/.claude/agile-rolling-marshmallow.md` (DUAL-LANE-PHASE2-001) that contradicted the implemented system state after TC-DL2-021 (lane counter replay protection) was closed.
+
+**Plan:** `plans/.claude/sharded-waddling-gadget.md` (TERMINAL_CLOSED)
+**Commit:** `401a79f7`
+
+### Work Completed
+
+| Task | Change | Target File |
+|------|--------|-------------|
+| P1 | `counter_replay_safety_proven: false` → `true` | agile-rolling-marshmallow.md:1307 |
+| P2 | TC-DL2-019 status: `CLOSED_WITH_KNOWN_DEFECT` → `CLOSED` | agile-rolling-marshmallow.md:1187 |
+| P3 | TC-DL2-019 defect note: "deferred to TC-DL2-021" → "resolved by TC-DL2-021 (2026-06-29)" | agile-rolling-marshmallow.md:1190 |
+| P4a | Test count in Resolved Work: `84/84` → `76/76` | agile-rolling-marshmallow.md:1522 |
+| P4b | Test count in Remaining Blockers: `84/84` → `76/76` | agile-rolling-marshmallow.md:1603 |
+| P5 | Gate Contract: stale pre-conditions → resolved state | agile-rolling-marshmallow.md:1547-1551 |
+| P6 | Change log: added reconciliation entry | agile-rolling-marshmallow.md:1505 |
+
+### Verification
+
+- Status count: `{'CLOSED': 57}` — all 57 taskcards CLOSED (TC-DL2-019 promoted from CLOSED_WITH_KNOWN_DEFECT)
+- `counter_replay_safety_proven: true` confirmed at line 1307
+- No stale operational "84/84" counts remain (historical archive records left intact)
+- `76/76` test count matches measured live test run from prior session
+
+### Context
+
+TC-DL2-021 implemented `last_applied_sprint_id` replay guard in `update_lane_counters` and was closed in the prior session. The plan's terminal lock was already `TERMINAL_CLOSED`. These were metadata-only corrections; no code, tests, or infrastructure changed.
+
+**Final Verdict:** PLAN_METADATA_RECONCILED_TERMINAL_CLOSED
