@@ -1,0 +1,40 @@
+scan_id: V87-SCAN-2026-07-02
+validator: V87_validate_dotnet_constant_return_public_api
+date: 2026-07-02
+scope: src/net/**/*.cs
+pattern: "=> (0|false|true|string.Empty|\"\");"
+
+summary:
+  total_violations: 97
+  files_with_violations: 2
+  clean_products: [csv, html, markdown, ndjson, netpbm, tsv, txt, zst]
+
+findings:
+  - file: src/net/fods/FodsDocumentLegacyCounters.cs
+    product: FODS
+    violation_count: 57
+    incident: GI-FODS-NET-001
+    status: REMEDIATION_IN_PROGRESS
+    disposition: PENDING_REMOVAL (Phase 3f)
+    notes: >
+      All Category D methods — constant-zero public APIs with no ODF spec basis.
+      Tracked as governed pending-removal in GI-FODS-NET-001.
+      Will be deleted in TC-GI001-L3F-002 after test disposal (TC-GI001-L3F-001).
+
+  - file: src/net/fodt/FodtDocumentExtendedApis.cs
+    product: FODT
+    violation_count: 94
+    incident: GI-FODT-NET-001
+    status: NEW_INCIDENT
+    disposition: INVESTIGATION_REQUIRED
+    notes: >
+      94 constant-return public APIs found (int methods returning 0, string returning
+      string.Empty). These are labeled "Stub — returns 0" in XML doc comments.
+      Same anti-pattern as FODS Category D. Most are "Count" methods for ODF features
+      (GetFrameCount, GetIndexCount, GetMacroCount, etc.) that have no document-model
+      backing. A small number may be computable from ODF XML directly.
+      Opening GI-FODT-NET-001 per the plan (Phase 6b) with same lane structure.
+
+new_incidents_opened:
+  - id: GI-FODT-NET-001
+    file: reports/gov-incidents/GI-FODT-NET-001.yaml

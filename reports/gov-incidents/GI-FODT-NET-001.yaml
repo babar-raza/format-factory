@@ -1,0 +1,73 @@
+incident_id: GI-FODT-NET-001
+product: FODT
+language: dotnet
+severity: MEDIUM
+status: OPEN
+detected_by: V87-SCAN-2026-07-02
+detection_date: 2026-07-02
+origin_plan: buzzing-wiggling-whistle (TC-GI001-L6B-001)
+
+incident_file: src/net/fodt/FodtDocumentExtendedApis.cs
+file_committed: true
+file_loc: 2944
+
+# Violations summary
+violation_type: constant_zero_public_api
+violation_count: 94
+first_violation_line: 1144
+last_violation_line: 1449
+
+# Sample violations (lines 1144-1449 of FodtDocumentExtendedApis.cs)
+sample_violations:
+  - "public int CrossReferenceCount => 0;"
+  - "public int GetChangeCount() => 0;"
+  - "public int IndexMarkCount => 0;"
+  - "public int TextFrameCount => 0;"
+  - "public int GetFormFieldCount() => 0;"
+  - "public int GetMacroCount() => 0;"
+  - "public string GetTrackedChangeSummary() => string.Empty;"
+  - "public string GetSectionContent(string name) => string.Empty;"
+  - "public string GetSectionStyle(string name) => string.Empty;"
+
+# Computable candidates (may be backed by real ODF scanning)
+potentially_computable:
+  - method: GetCellCount
+    odf_path: "count(//table:table-cell)"
+    notes: FODT can contain embedded tables with table:table-cell elements
+  - method: GetColumnCount
+    odf_path: "count(//table:table-column)"
+  - method: GetRowCount
+    odf_path: "count(//table:table-row)"
+  - method: GetHeaderCount
+    odf_path: "count(//text:h)"
+  - method: GetFooterCount
+    odf_path: "count(//text:footer)"
+  - method: GetNoteCount
+    odf_path: "count(//text:note)"
+  - method: GetLineBreakCount
+    odf_path: "count(//text:line-break)"
+  - method: GetSpanCount
+    odf_path: "count(//text:span)"
+
+# Comparison to GI-FODS-NET-001
+comparison:
+  fods_category_d_count: 67
+  fodt_constant_zero_count: 94
+  pattern_identical: true
+  difference: FODT violations are in a single committed file (no MissingMethods pattern)
+              FODT does not have the same category B / detached-dictionary problem
+
+# Recommended remediation
+remediation_plan_template: buzzing-wiggling-whistle.md (Phase 3f + Lane 4d pattern)
+recommended_actions:
+  1: Classify all 94 methods (computable vs truly-zero vs property-alias)
+  2: Delete methods with no ODF spec basis (~80 estimated)
+  3: Implement computable replacements for ~8 methods where ODF xpath is feasible
+  4: Delete or rewrite corresponding test files
+  5: Update registry/source-structure-baseline.json (FodtDocumentExtendedApis.cs is at 2944 LOC cap)
+
+gate_impact:
+  fodt_customer_ready: PENDING_BABAR_REVIEW
+  removing_fake_apis_effect: POSITIVE (improves api_coverage metric, honest API surface)
+
+next_action: Open formal remediation plan (deferred to post-GI-FODS-NET-001 completion)

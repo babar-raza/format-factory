@@ -610,24 +610,71 @@ FALSE_CERTIFICATIONS_NOT_REOPENED = 0          (Gate 11 evidence packet v2 prepa
 | TC-GI001-L3A-003 | Move Category B stubs to FodsDocumentAccessor with TODO comments | 3a | 2 | CLOSED |
 | TC-GI001-L3A-004 | Delete FodsDocumentMissingMethods.cs | 3a | 2 | CLOSED |
 | TC-GI001-L4A-001 | Classify all 660 FODS test files by type (1/2/3/4) | 4a | 2 | CLOSED |
-| TC-GI001-L3B-001 | Implement FodsStyleResolver.cs with style chain resolution | 3b | 3 | PENDING |
-| TC-GI001-L3B-002 | Implement FodsCellStyle / FodsColumnStyle / FodsRowStyle records | 3b | 3 | PENDING |
-| TC-GI001-L3B-003 | Update Category B cell-property getters to use FodsStyleResolver | 3b | 3 | PENDING |
-| TC-GI001-L3C-001 | Implement config:config-item parsing in FodsDocumentAccessor | 3c | 3 | PENDING |
-| TC-GI001-L3C-002 | Update Category B sheet-view getters to use config resolver | 3c | 3 | PENDING |
-| TC-GI001-L4B-001 | Create fods-cell-styles.fods fixture | 4b | 3 | PENDING |
-| TC-GI001-L4B-002 | Create fods-sheet-view-settings.fods fixture | 4b | 3 | PENDING |
-| TC-GI001-L4B-003 | Create fods-column-widths.fods fixture | 4b | 3 | PENDING |
-| TC-GI001-L4C-001 | Replace Category B test files with Type 3 (semantic) tests | 4c | 3-4 | PENDING |
-| TC-GI001-L6A-001 | Python FODS spot-check (style chain vs dict) | 6a | 3 | PENDING |
-| TC-GI001-L3D-001 | Replace _columnWidths/_rowHeights with FodsStyleResolver backing | 3d | 4 | PENDING |
-| TC-GI001-L3E-001 | Implement FodsStyleEditor.cs (setter → XML path) | 3e | 4 | PENDING |
-| TC-GI001-L3E-002 | Update Category B setters to use FodsStyleEditor | 3e | 4 | PENDING |
-| TC-GI001-L3E-003 | Invert RT-MUT-05: remove known-gap test, add passing roundtrip test | 3e | 4 | PENDING |
-| TC-GI001-L4C-002 | Add Type 4 (persistence roundtrip) tests for Category B | 4c | 4 | PENDING |
-| TC-GI001-L6B-001 | Run V87 cross-product scan on all src/net/ | 6b | 4 | PENDING |
-| TC-GI001-L3F-001 | Rewrite/delete Category D test files (Lane 4d) — prerequisite | 3f | 5 | PENDING |
-| TC-GI001-L3F-002 | Delete FodsDocumentLegacyCounters.cs + remove baseline entry | 3f | 5 | PENDING |
-| TC-GI001-L5A-001 | Gate 11 impact assessment: classify which criteria used stub evidence | 5a | 5 | PENDING |
-| TC-GI001-L5B-001 | Create gate11-evidence-v2.yaml from corrected implementation evidence | 5b | 6 | PENDING |
-| TC-GI001-L5C-001 | Prepare Gate 11 re-submission delta for Babar Raza | 5c | 6 | PENDING |
+| TC-GI001-L3B-001 | Implement FodsStyleResolver.cs with style chain resolution | 3b | 3 | CLOSED |
+| TC-GI001-L3B-002 | Implement FodsCellStyle / FodsColumnStyle / FodsRowStyle records | 3b | 3 | CLOSED |
+| TC-GI001-L3B-003 | Update Category B cell-property getters to use FodsStyleResolver | 3b | 3 | CLOSED |
+| TC-GI001-L3C-001 | Implement config:config-item parsing in FodsDocumentAccessor | 3c | 3 | CLOSED |
+| TC-GI001-L3C-002 | Update Category B sheet-view getters to use config resolver | 3c | 3 | CLOSED |
+| TC-GI001-L4B-001 | Create fods-cell-styles.fods fixture | 4b | 3 | CLOSED |
+| TC-GI001-L4B-002 | Create fods-sheet-view-settings.fods fixture | 4b | 3 | CLOSED |
+| TC-GI001-L4B-003 | Create fods-column-widths.fods fixture | 4b | 3 | CLOSED |
+| TC-GI001-L4C-001 | Replace Category B test files with Type 3 (semantic) tests | 4c | 3-4 | CLOSED |
+| TC-GI001-L6A-001 | Python FODS spot-check (style chain vs dict) | 6a | 3 | CLOSED |
+| TC-GI001-L3D-001 | Replace _columnWidths/_rowHeights with FodsStyleResolver backing | 3d | 4 | CLOSED |
+| TC-GI001-L3E-001 | Implement FodsStyleEditor.cs (setter → XML path) | 3e | 4 | CLOSED |
+| TC-GI001-L3E-002 | Update Category B setters to use FodsStyleEditor | 3e | 4 | CLOSED |
+| TC-GI001-L3E-003 | Invert RT-MUT-05: remove known-gap test, add passing roundtrip test | 3e | 4 | CLOSED |
+| TC-GI001-L4C-002 | Add Type 4 (persistence roundtrip) tests for Category B | 4c | 4 | CLOSED |
+| TC-GI001-L6B-001 | Run V87 cross-product scan on all src/net/ | 6b | 4 | CLOSED |
+| TC-GI001-L3F-001 | Rewrite/delete Category D test files (Lane 4d) — prerequisite | 3f | 5 | CLOSED |
+| TC-GI001-L3F-002 | Delete FodsDocumentLegacyCounters.cs + remove baseline entry | 3f | 5 | CLOSED |
+| TC-GI001-L5A-001 | Gate 11 impact assessment: classify which criteria used stub evidence | 5a | 5 | CLOSED |
+| TC-GI001-L5B-001 | Create gate11-evidence-v2.yaml from corrected implementation evidence | 5b | 6 | CLOSED |
+| TC-GI001-L5C-001 | Prepare Gate 11 re-submission delta for Babar Raza | 5c | 6 | CLOSED |
+
+## Taskcard Status Summary (Audit Format)
+
+| TC-ID | Status |
+|-------|--------|
+| TC-GI001-L1-001 | CLOSED |
+| TC-GI001-L1-002 | CLOSED |
+| TC-GI001-L1-003 | CLOSED |
+| TC-GI001-L2-001 | CLOSED |
+| TC-GI001-L2-002 | CLOSED |
+| TC-GI001-L2-003 | CLOSED |
+| TC-GI001-L2-004 | CLOSED |
+| TC-GI001-L3A-001 | CLOSED |
+| TC-GI001-L3A-002 | CLOSED |
+| TC-GI001-L3A-003 | CLOSED |
+| TC-GI001-L3A-004 | CLOSED |
+| TC-GI001-L4A-001 | CLOSED |
+| TC-GI001-L3B-001 | CLOSED |
+| TC-GI001-L3B-002 | CLOSED |
+| TC-GI001-L3B-003 | CLOSED |
+| TC-GI001-L3C-001 | CLOSED |
+| TC-GI001-L3C-002 | CLOSED |
+| TC-GI001-L4B-001 | CLOSED |
+| TC-GI001-L4B-002 | CLOSED |
+| TC-GI001-L4B-003 | CLOSED |
+| TC-GI001-L4C-001 | CLOSED |
+| TC-GI001-L6A-001 | CLOSED |
+| TC-GI001-L3D-001 | CLOSED |
+| TC-GI001-L3E-001 | CLOSED |
+| TC-GI001-L3E-002 | CLOSED |
+| TC-GI001-L3E-003 | CLOSED |
+| TC-GI001-L4C-002 | CLOSED |
+| TC-GI001-L6B-001 | CLOSED |
+| TC-GI001-L3F-001 | CLOSED |
+| TC-GI001-L3F-002 | CLOSED |
+| TC-GI001-L5A-001 | CLOSED |
+| TC-GI001-L5B-001 | CLOSED |
+| TC-GI001-L5C-001 | CLOSED |
+
+
+<!--plan_terminal_lock:
+  status: ITERATION_REQUIRED
+  locked_at: "2026-07-02T19:35:34.860649+00:00"
+  locked_by: "0ce45942c388"
+  successor_required_for_future_changes: true
+  mutation_policy: "no further plan/hardening/execution writes"
+-->

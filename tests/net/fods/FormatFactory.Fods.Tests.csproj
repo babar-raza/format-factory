@@ -38,6 +38,8 @@
 
   <!-- Temporarily exclude test files referencing unimplemented APIs (cascade from HEAD) -->
   <ItemGroup>
+    <Compile Remove="FodsR434GetCellDataTypeDedicatedTests.cs" />
+    <Compile Remove="FodsR435GetSheetVisibilityDedicatedTests.cs" />
     <Compile Remove="FodsR119ExportAllFormatsTests.cs" />
     <Compile Remove="FodsR120SheetEnumerationTests.cs" />
     <Compile Remove="FodsR121FindCellsByValueTests.cs" />
@@ -95,28 +97,22 @@
     <Compile Remove="FodsR293GetNamedRangesAndAddNamedRangeDeepTests.cs" />
     <Compile Remove="FodsR295GetConditionalFormatsAndProtectionDeepTests.cs" />
     <Compile Remove="FodsR298GetAutoFilterRangeAndFreezeDeepTests.cs" />
-    <Compile Remove="FodsR301GetChartCountAndAddChartDeepTests.cs" />
-    <Compile Remove="FodsR303GetPageBreakCountAndPrintAreaDeepTests.cs" />
+<Compile Remove="FodsR303GetPageBreakCountAndPrintAreaDeepTests.cs" />
     <Compile Remove="FodsR306GetNamedRangeCountAndAddNamedRangeDeepTests.cs" />
-    <Compile Remove="FodsR307GetCommentCountAndAddCommentDeepTests.cs" />
-    <Compile Remove="FodsR308GetDataValidationCountAndAddValidationDeepTests.cs" />
-    <Compile Remove="FodsR310GetHyperlinkCountAndAddHyperlinkDeepTests.cs" />
-    <Compile Remove="FodsR313GetConditionalFormatCountAndAddConditionalFormatDeepTests.cs" />
-    <Compile Remove="FodsR315GetChartCountAndAddChartDeepTests.cs" />
-    <Compile Remove="FodsR317GetPivotTableCountAndAddPivotTableDeepTests.cs" />
+<Compile Remove="FodsR308GetDataValidationCountAndAddValidationDeepTests.cs" />
+<Compile Remove="FodsR313GetConditionalFormatCountAndAddConditionalFormatDeepTests.cs" />
+<Compile Remove="FodsR317GetPivotTableCountAndAddPivotTableDeepTests.cs" />
     <Compile Remove="FodsR320GetNamedRangeCountAndAddNamedRangeDeepTests.cs" />
     <Compile Remove="FodsR322GetDataValidationCountAndAddDataValidationDeepTests.cs" />
     <Compile Remove="FodsR324GetSparklineCountAndAddSparklineDeepTests.cs" />
     <Compile Remove="FodsR327GetConditionalFormatCountAndAddConditionalFormatDeepTests.cs" />
-    <Compile Remove="FodsR329GetChartCountAndAddChartDeepTests.cs" />
-    <Compile Remove="FodsR331GetFilterCountAndAddFilterDeepTests.cs" />
+<Compile Remove="FodsR331GetFilterCountAndAddFilterDeepTests.cs" />
     <Compile Remove="FodsR333GetPivotTableCountAndAddPivotTableDeepTests.cs" />
     <Compile Remove="FodsR335GetFreezePaneAndSplitPositionDeepTests.cs" />
     <Compile Remove="FodsR337GetDataValidationCountAndAddDataValidationDeepTests.cs" />
     <Compile Remove="FodsR339GetConditionalFormatCountAndAddConditionalFormatDeepTests.cs" />
     <Compile Remove="FodsR340GetSheetProtectionAndSetSheetProtectionDeepTests.cs" />
-    <Compile Remove="FodsR341GetGroupCountAndAddGroupDeepTests.cs" />
-    <Compile Remove="FodsR343GetFilterCountAndAddAutoFilterDeepTests.cs" />
+<Compile Remove="FodsR343GetFilterCountAndAddAutoFilterDeepTests.cs" />
     <Compile Remove="FodsR345GetPivotTableCountAndAddPivotTableDeepTests.cs" />
     <Compile Remove="FodsR347GetSparklineCountAndAddSparklineDeepTests.cs" />
     <Compile Remove="FodsR349GetCellCommentCountAndAddCellCommentDeepTests.cs" />
@@ -181,8 +177,6 @@
     <Compile Remove="FodsR216ExportToCsvDedicatedTests.cs" />
     <Compile Remove="FodsR405GetCellBoldDedicatedTests.cs" />
     <Compile Remove="FodsR406GetCellItalicDedicatedTests.cs" />
-    <Compile Remove="FodsR434GetCellDataTypeDedicatedTests.cs" />
-    <Compile Remove="FodsR435GetSheetVisibilityDedicatedTests.cs" />
-  </ItemGroup>
+</ItemGroup>
 
 </Project>

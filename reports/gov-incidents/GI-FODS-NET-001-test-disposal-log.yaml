@@ -1,0 +1,127 @@
+disposal_log_id: GI-FODS-NET-001-test-disposal-2026-07-02
+incident: GI-FODS-NET-001
+taskcard: TC-GI001-L3F-001
+date: 2026-07-02
+executor: buzzing-wiggling-whistle plan (Sprint 5)
+
+summary:
+  files_deleted: 88
+  tests_removed_estimate: 616  # 88 files * ~7 tests each
+  rationale: >
+    All 88 files test only Category D methods (constant-zero public APIs with no ODF spec basis).
+    Tests only verify guard-clause behavior, non-negative return, idempotency, and type assertions.
+    These are tautologically true for any `=> 0` method and provide zero semantic proof.
+    After deletion of FodsDocumentLegacyCounters.cs (TC-GI001-L3F-002), these tests would fail
+    to compile. Proactive deletion before method removal prevents build breakage.
+
+classification:
+  type1_guard_only: 66
+  type2_in_memory_noop: 22
+  type3_odf_semantic: 0
+  type4_persistence_roundtrip: 0
+  mixed_with_non_category_d: 0
+
+disposal_authorization:
+  plan: plans/.claude/buzzing-wiggling-whistle.md (Phase 3f, Lane 4d)
+  requirement: >
+    Category D test files with only Type 1 assertions shall be DELETED.
+    Files with semantic assertions shall be investigated first.
+    All 88 files confirmed as Type 1 only (guard, non-negative, idempotency).
+    No Category B APIs present in any of the 88 files.
+
+gate11_disclosure:
+  prior_test_count: ~4735
+  tests_removed: ~616
+  tests_remaining: ~4119
+  quality_impact: POSITIVE (removed tautological assertions; remaining tests are semantically stronger)
+  criteria_affected: commercial_test_count_min=10 (still far exceeded)
+
+deleted_files:
+  - FodsR301GetChartCountAndAddChartDeepTests.cs
+  - FodsR307GetCommentCountAndAddCommentDeepTests.cs
+  - FodsR310GetHyperlinkCountAndAddHyperlinkDeepTests.cs
+  - FodsR315GetChartCountAndAddChartDeepTests.cs
+  - FodsR329GetChartCountAndAddChartDeepTests.cs
+  - FodsR341GetGroupCountAndAddGroupDeepTests.cs
+  - FodsR488GetChartCountDedicatedTests.cs
+  - FodsR491GetSortCountDedicatedTests.cs
+  - FodsR492GetGroupCountDedicatedTests.cs
+  - FodsR493GetMacroCountDedicatedTests.cs
+  - FodsR494GetSharedFormulaCountDedicatedTests.cs
+  - FodsR495GetAnnotationCountDedicatedTests.cs
+  - FodsR496GetShapeCountDedicatedTests.cs
+  - FodsR497GetHyperlinkCountDedicatedTests.cs
+  - FodsR498GetCommentCountDedicatedTests.cs
+  - FodsR499GetFormulaErrorCountDedicatedTests.cs
+  - FodsR500GetExternalLinkCountDedicatedTests.cs
+  - FodsR501GetExternalDataConnectionCountDedicatedTests.cs
+  - FodsR502GetTableStyleCountDedicatedTests.cs
+  - FodsR503GetCellStyleCountDedicatedTests.cs
+  - FodsR504GetColumnStyleCountDedicatedTests.cs
+  - FodsR505GetRowStyleCountDedicatedTests.cs
+  - FodsR506GetPageStyleCountDedicatedTests.cs
+  - FodsR507GetGraphicStyleCountDedicatedTests.cs
+  - FodsR508GetNumberStyleCountDedicatedTests.cs
+  - FodsR509GetTextStyleCountDedicatedTests.cs
+  - FodsR510GetDrawingStyleCountDedicatedTests.cs
+  - FodsR511GetPresentationStyleCountDedicatedTests.cs
+  - FodsR512GetChartStyleCountDedicatedTests.cs
+  - FodsR513GetDateStyleCountDedicatedTests.cs
+  - FodsR514GetTimeStyleCountDedicatedTests.cs
+  - FodsR515GetBooleanStyleCountDedicatedTests.cs
+  - FodsR516GetCurrencyStyleCountDedicatedTests.cs
+  - FodsR517GetPercentageStyleCountDedicatedTests.cs
+  - FodsR518GetFractionStyleCountDedicatedTests.cs
+  - FodsR519GetScientificStyleCountDedicatedTests.cs
+  - FodsR520GetFontFaceCountDedicatedTests.cs
+  - FodsR521GetDatabaseRangeCountDedicatedTests.cs
+  - FodsR522GetLabelRangeCountDedicatedTests.cs
+  - FodsR523GetDocumentProtectionCountDedicatedTests.cs
+  - FodsR524GetSparklineGroupCountDedicatedTests.cs
+  - FodsR525GetDataPilotCountDedicatedTests.cs
+  - FodsR526GetConsolidationCountDedicatedTests.cs
+  - FodsR527GetCellAddressCountDedicatedTests.cs
+  - FodsR528GetColumnGroupCountDedicatedTests.cs
+  - FodsR529GetRowGroupCountDedicatedTests.cs
+  - FodsR531GetDataBarCountDedicatedTests.cs
+  - FodsR532GetIconSetCountDedicatedTests.cs
+  - FodsR533GetColorScaleCountDedicatedTests.cs
+  - FodsR537GetValidationRuleCountDedicatedTests.cs
+  - FodsR538GetProtectedRangeCountDedicatedTests.cs
+  - FodsR540GetSortStateCountDedicatedTests.cs
+  - FodsR541GetScenarioCountDedicatedTests.cs
+  - FodsR542GetConsolidationCountDedicatedTests.cs
+  - FodsR543GetSheetViewCountDedicatedTests.cs
+  - FodsR544GetTableStyleCountDedicatedTests.cs
+  - FodsR545GetCellStyleCountDedicatedTests.cs
+  - FodsR546GetFontCountDedicatedTests.cs
+  - FodsR547GetNumberFormatCountDedicatedTests.cs
+  - FodsR548GetBorderCountDedicatedTests.cs
+  - FodsR549GetFillCountDedicatedTests.cs
+  - FodsR550GetAlignmentCountDedicatedTests.cs
+  - FodsR551GetProtectionCountDedicatedTests.cs
+  - FodsR555GetMergedCellCountDedicatedTests.cs
+  - FodsR556GetFormulaCountDedicatedTests.cs
+  - FodsR557GetCommentCountDedicatedTests.cs
+  - FodsR558GetHyperlinkCountDedicatedTests.cs
+  - FodsR559GetImageCountDedicatedTests.cs
+  - FodsR560GetChartCountDedicatedTests.cs
+  - FodsR561GetMacroCountDedicatedTests.cs
+  - FodsR562GetEventHandlerCountDedicatedTests.cs
+  - FodsR563GetConnectionCountDedicatedTests.cs
+  - FodsR564GetQueryTableCountDedicatedTests.cs
+  - FodsR565GetCustomPropertyCountDedicatedTests.cs
+  - FodsR566GetShapeCountDedicatedTests.cs
+  - FodsR567GetTextBoxCountDedicatedTests.cs
+  - FodsR568GetButtonCountDedicatedTests.cs
+  - FodsR569GetCheckBoxCountDedicatedTests.cs
+  - FodsR570GetListBoxCountDedicatedTests.cs
+  - FodsR571GetComboBoxCountDedicatedTests.cs
+  - FodsR572GetSpinnerCountDedicatedTests.cs
+  - FodsR573GetSliderCountDedicatedTests.cs
+  - FodsR574GetRadioButtonCountDedicatedTests.cs
+  - FodsR575GetScrollBarCountDedicatedTests.cs
+  - FodsR576GetProgressBarCountDedicatedTests.cs
+  - FodsR577GetGroupBoxCountDedicatedTests.cs
+  - FodsR578GetFrameCountDedicatedTests.cs
+  - FodsR579GetNavigatorCountDedicatedTests.cs

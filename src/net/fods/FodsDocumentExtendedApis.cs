@@ -949,7 +949,7 @@ public sealed partial class FodsDocument
 
     private readonly Dictionary<(string Sheet, int Row, int Col), string> _cellFontColors = new();
 
-    /// <summary>R350: Set the font color of the specified cell (CSS color string or hex).</summary>
+    /// <summary>R350: Set the font color of the specified cell. GI-FODS-NET-001 Phase 3e: writes to ODF XML.</summary>
     public void SetCellFontColor(string sheetName, int row, int col, string color)
     {
         if (string.IsNullOrWhiteSpace(sheetName))
@@ -957,7 +957,11 @@ public sealed partial class FodsDocument
         if (row < 0) throw new ArgumentOutOfRangeException(nameof(row));
         if (col < 0) throw new ArgumentOutOfRangeException(nameof(col));
         _ = GetSheetByName(sheetName) ?? throw new ArgumentException($"No sheet named '{sheetName}'.", nameof(sheetName));
-        _cellFontColors[(sheetName, row, col)] = color ?? string.Empty;
+        color ??= string.Empty;
+        _cellFontColors[(sheetName, row, col)] = color;
+        var cellEl = GetCellElementDirect(sheetName, row, col);
+        if (cellEl is not null && !string.IsNullOrEmpty(color))
+            FodsStyleEditor.SetCellFontColor(_doc, cellEl, color);
     }
 
     /// <summary>R351: Get the font color of the specified cell via ODF style chain.

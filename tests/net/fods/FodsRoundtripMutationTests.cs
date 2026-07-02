@@ -99,27 +99,26 @@ public class FodsRoundtripMutationTests
     }
 
     // -----------------------------------------------------------------
-    // RT-MUT-05: SetCellFontColor roundtrip
-    // Known limitation: font color is in-memory only, not serialized to XML.
-    // This test documents the gap — SetCellFontColor does NOT survive roundtrip.
+    // RT-MUT-05-HEALED: SetCellFontColor roundtrip
+    // GI-FODS-NET-001 Phase 3e: FodsStyleEditor now writes style to ODF XML,
+    // so font color survives save→reload roundtrip.
     // -----------------------------------------------------------------
     [Fact]
-    public void Roundtrip_SetCellFontColor_DoesNotPersist_KnownGap()
+    public void RT_MUT_05_HEALED_SetCellFontColor_Roundtrips()
     {
         var doc = FodsDocument.CreateNew();
         doc.AddSheet("Sheet1");
+        // Cell must exist before style can be written to ODF XML
+        doc.SetCellValue("Sheet1", 0, 0, "test");
         doc.SetCellFontColor("Sheet1", 0, 0, "#FF0000");
 
         // Verify in-memory mutation works
         Assert.Equal("#FF0000", doc.GetCellFontColor("Sheet1", 0, 0));
 
-        // Roundtrip loses the font color (known gap — style not serialized to ODF XML)
+        // Roundtrip MUST preserve the font color (GI-FODS-NET-001 Phase 3e healed)
         string xml = doc.ToFodsXml();
         var reloaded = FodsDocument.LoadFromXml(xml);
-
-        string? color = reloaded.GetCellFontColor("Sheet1", 0, 0);
-        Assert.True(string.IsNullOrEmpty(color),
-            "Font color is expected to be lost after roundtrip (known serialization gap)");
+        Assert.Equal("#FF0000", reloaded.GetCellFontColor("Sheet1", 0, 0));
     }
 
     // -----------------------------------------------------------------
