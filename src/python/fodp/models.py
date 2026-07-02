@@ -91,6 +91,23 @@ class FodpDocument:
             return 0.0
         return self.total_shape_count / self.page_count
 
+    # Shape-based content analysis properties (FACT-FODP-001)
+
+    @property
+    def has_shapes(self) -> bool:
+        """True if the presentation contains at least one shape across all slides."""
+        return self.total_shape_count > 0
+
+    @property
+    def is_shape_heavy(self) -> bool:
+        """True if the average number of shapes per slide exceeds 5."""
+        return self.avg_shapes_per_slide > 5
+
+    @property
+    def is_single_slide_with_shapes(self) -> bool:
+        """True if the presentation has exactly one slide and at least one shape."""
+        return self.page_count == 1 and self.total_shape_count > 0
+
     def to_dict(self) -> dict[str, Any]:
         """Return document summary as a dict."""
         return {

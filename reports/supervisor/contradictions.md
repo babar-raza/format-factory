@@ -1,8 +1,14 @@
 # Contradiction Detection Report
-Sprint ID: ff-heal-qname-20260701-181500
-Timestamp: 2026-07-01T23:59:09.371407
-Overall: CLEAN
-Autonomous continue: True
-Critical: 0 | Warning: 0
+Sprint ID: gap-ledger-reconcile-20260702
+Timestamp: 2026-07-02T12:27:07.096483
+Overall: CRITICAL_CONTRADICTIONS
+Autonomous continue: False
+Critical: 1 | Warning: 0
 
-No contradictions detected.
+## Contradictions
+
+### [CRITICAL] 1. Tests failed: 6 failures detected in evidence bundle
+Detail: fail_count=6; all tests must pass per Format Factory policy
+
+## CRITICAL: Autonomous loop stopped.
+CRITICAL contradictions require human review before continuing.

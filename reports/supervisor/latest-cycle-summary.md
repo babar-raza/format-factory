@@ -1,11 +1,11 @@
 # Latest Supervisor Cycle Summary
-Run: r558-pgm-ppm-geometry-20260702
-Sprint: r558-pgm-ppm-geometry
-Timestamp: 2026-07-02T01:48:53.588232
-Verdict: ACCEPTED
-Autonomous Continue: true_with_rework
-Accepted: 3
+Run: r1224-fodp-shape-props-20260702
+Sprint: r1224-fodp-shape-props-20260702
+Timestamp: 2026-07-02T12:49:52.308190
+Verdict: ACCEPTED_WITH_REWORK
+Autonomous Continue: False
+Accepted: 1
 Rework: 1
 Overclaimed: 0
-Review: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\r558-pgm-ppm-geometry-20260702\supervisor-review.md
-Next Prompt: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\r558-pgm-ppm-geometry-20260702\combined-next-worker-prompt.md
+Review: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\r1224-fodp-shape-props-20260702\supervisor-review.md
+Next Prompt: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\r1224-fodp-shape-props-20260702\combined-next-worker-prompt.md

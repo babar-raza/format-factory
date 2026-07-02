@@ -1,16 +1,14 @@
 # Work Item Grades
-Sprint: r558-pgm-ppm-geometry
-Generated: 2026-07-02T01:48:53.588232
-Global Status: ACCEPTED
+Sprint: r1224-fodp-shape-props-20260702
+Generated: 2026-07-02T12:49:52.308190
+Global Status: ACCEPTED_WITH_REWORK
 
 | Item ID | Grade | Rework Required |
 |---------|-------|-----------------|
-| UNBLOCK-PGM-PPM-PDL | ACCEPTED_WITH_LIMITATIONS |  |
-| R558-FOSS-PGM-GEOMETRY-PROPS | ACCEPTED_VERIFIED |  |
-| R558-FOSS-PPM-GEOMETRY-PROPS | ACCEPTED_VERIFIED |  |
+| WI-R1224-FODP-SHAPE-001 | ACCEPTED_WITH_LIMITATIONS |  |
 
 ## Summary
-- Accepted: 3
+- Accepted: 1
 - Rework: 1
 - Overclaimed: 0
-- Autonomous Continue: true_with_rework
+- Autonomous Continue: False

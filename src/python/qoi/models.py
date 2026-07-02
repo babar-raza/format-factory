@@ -93,6 +93,23 @@ class QoiDocument:
         """True if height is greater than width."""
         return self.height > self.width
 
+    # Image size classification properties (FACT-QOI-001)
+
+    @property
+    def is_tiny(self) -> bool:
+        """True if pixel_count is less than 1024 (smaller than 32x32)."""
+        return self.pixel_count < 1024
+
+    @property
+    def is_large_image(self) -> bool:
+        """True if pixel_count exceeds 4,000,000 (4 megapixels or more)."""
+        return self.pixel_count > 4_000_000
+
+    @property
+    def megapixels(self) -> float:
+        """Total pixel count expressed in megapixels (pixel_count / 1_000_000)."""
+        return self.pixel_count / 1_000_000
+
     # Additional channel and colorspace properties (FACT-QOI-001)
 
     @property

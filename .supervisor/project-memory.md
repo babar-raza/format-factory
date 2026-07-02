@@ -16133,3 +16133,29 @@ Contract: C:\Users\prora\OneDrive\Documents\
 - bundle_validation_pass: True
 - test_delta: -383
 - test_delta_from: 588
+
+## Entry: cert-integration-healing
+- timestamp: 2026-07-02T12:25:08.609042
+- verdict: ACCEPTED
+- test_count: 9
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\cert-integration-healing-20260702\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 69
+- bundle_validation_pass: True
+- test_delta: -196
+- test_delta_from: 205
+
+## Entry: gap-ledger-reconcile-20260702
+- timestamp: 2026-07-02T12:27:07.619599
+- verdict: ACCEPTED_WITH_WARNINGS
+- test_count: 6357
+- fail_count: 6
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\gap-ledger-reconcile-20260702\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 64
+- bundle_validation_pass: True
+- test_delta: +6348
+- test_delta_from: 9

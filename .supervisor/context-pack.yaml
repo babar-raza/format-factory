@@ -1,24 +1,23 @@
 schema_version: '1.0'
-generated_at: '2026-07-01T18:13:08.855011'
+generated_at: '2026-07-02T12:51:37.126837'
 repo_root: C:\Users\prora\OneDrive\Documents\GitHub\format-factory
 git:
-  head: e3886da3
+  head: 8431e35f
   status:
-    modified_count: 293
-    untracked_count: 108
+    modified_count: 38
+    untracked_count: 25
     staged_count: 1
-    total_changed: 402
+    total_changed: 64
     clean: false
 supervisor_mode: 4
 latest_sprint:
-  sprint_id: ff-sprint-s427-dotnet-deepening-20260701
-  run_id: unknown
+  sprint_id: r1224-fodp-shape-props-20260702
+  run_id: R1224
   autonomous_continue: false
-  iteration: 15
+  iteration: 3
   max_iterations: 12
   hard_stops:
   - critical_rework_blocks_continuation
-  - max_iterations_reached
   rework_items:
   - GOV_BLOCK:validate_readme_freshness
 poc_matrix:
@@ -39,8 +38,8 @@ poc_matrix:
       commercial_ready: false
   foss_python_products: {}
 skill_registry:
-  total_skills: 103
-  active_skills: 100
+  total_skills: 120
+  active_skills: 117
   skill_ids:
   - add-dogfood-export
   - add-dotnet-api
@@ -50,6 +49,7 @@ skill_registry:
   - add-python-object-model-feature
   - add-roundtrip-test
   - add-same-format-writer-feature
+  - backfill-gate4-prototype-evidence
   - autonomous-loop
   - backfill-task-skill-ownership
   - build-capability-routes
@@ -138,15 +138,31 @@ skill_registry:
   - sync-readmes
   - generate-root-status
   - certification-dashboard
+  - certification-inventory-extractor
+  - certification-stub-detector
+  - certification-exception-checker
+  - certification-assertion-scorer
+  - certification-dotnet-assertion-scorer
+  - certification-generate-exception-tests
+  - certification-fix-weak-assertions
+  - certification-generate-security-tests
   - select-deepening-lane
   - inventory-format-dom
   - check-dom-contract
   - query-control-index
+  - validate-playbook
+  - replay-acquisition-playbook
+  - export-review-queue
+  - diff-playbook-outputs
+  - format-feature-expansion
+  - new-format-kickstart
+  - product-source-task
+  - documentation-structure-migration
   source_edits_require_handoff: true
   ledger_required: true
 product_code_ledger:
-  total_entries: 2113
-  governed_changes: 899
+  total_entries: 2435
+  governed_changes: 901
   backfilled: 4
   ledger_path: reports\r90\product-code-change-ledger.json
 mcp_status:

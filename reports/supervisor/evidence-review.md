@@ -1,17 +1,17 @@
 # Evidence Review — Supervisor
-Sprint ID: ff-heal-qname-20260701-181500
-Timestamp: 2026-07-01T23:59:09.228330
-Verdict: ACCEPTED
-Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\ff-heal-qname-20260701-181500\declaration-review-package.zip
+Sprint ID: gap-ledger-reconcile-20260702
+Timestamp: 2026-07-02T12:27:06.963584
+Verdict: ACCEPTED_WITH_WARNINGS
+Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\gap-ledger-reconcile-20260702\declaration-review-package.zip
 
 ## Facts
-- Tests: 7 passed, 0 failed, 0 skipped
+- Tests: 6357 passed, 6 failed, 24 skipped
 - Git HEAD: see-declaration
-- Bundle entries: 55
+- Bundle entries: 64
 - PENDING markers: 0
 
 ## Gate States
 (none extracted)
 
 ## Limitation Notes
-- No cycle-manifest found in declaration-review package
+None

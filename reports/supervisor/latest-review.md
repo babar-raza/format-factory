@@ -1,17 +1,15 @@
-# Supervisor Review: r558-pgm-ppm-geometry-20260702
-Sprint: r558-pgm-ppm-geometry
-Timestamp: 2026-07-02T01:49:42.399451
-Overall Verdict: ACCEPTED
-Autonomous Continue: True
+# Supervisor Review: r1224-fodp-shape-props-20260702
+Sprint: r1224-fodp-shape-props-20260702
+Timestamp: 2026-07-02T12:50:22.886802
+Overall Verdict: ACCEPTED_WITH_REWORK
+Autonomous Continue: False
 
 ## Summary
-- Accepted: 3
+- Accepted: 1
 - Rework: 0
 - Rejected: 0
 - Overclaimed: 0
 - Critical Rework: 0
 
 ## Item Grades
-- **UNBLOCK-PGM-PPM-PDL** (Unblock PGM and PPM in product-deepening-ledger (domain models exist)): ACCEPTED_WITH_LIMITATIONS
-- **R558-FOSS-PGM-GEOMETRY-PROPS** (FOSS-NETPBM: Add geometry properties to PgmDocument (aspect_ratio, is_square, is_landscape, is_portrait)): ACCEPTED_VERIFIED
-- **R558-FOSS-PPM-GEOMETRY-PROPS** (FOSS-NETPBM: Add geometry properties to PpmDocument (aspect_ratio, is_square, is_landscape, is_portrait)): ACCEPTED_VERIFIED
+- **WI-R1224-FODP-SHAPE-001** (Add has_shapes, is_shape_heavy, is_single_slide_with_shapes to FodpDocument): ACCEPTED_WITH_LIMITATIONS
