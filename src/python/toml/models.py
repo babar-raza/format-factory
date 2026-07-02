@@ -112,6 +112,23 @@ class TomlDocument:
         """True if the document has nested tables or arrays."""
         return self.has_nested_tables or self.has_arrays
 
+    # Document classification properties (FACT-TOML-001)
+
+    @property
+    def has_only_scalars(self) -> bool:
+        """True if all top-level values are scalars (no nested tables, no arrays)."""
+        return self.has_scalars and self.is_flat and not self.has_arrays
+
+    @property
+    def is_mixed(self) -> bool:
+        """True if the document has both scalar keys and at least one nested table or array."""
+        return self.has_scalars and self.is_nested
+
+    @property
+    def array_count(self) -> int:
+        """Number of top-level keys whose value is an array (list)."""
+        return sum(1 for v in self._doc().values() if isinstance(v, list))
+
     def to_dict(self) -> dict[str, Any]:
         """Return the underlying neutral model dict."""
         return dict(self._data)
