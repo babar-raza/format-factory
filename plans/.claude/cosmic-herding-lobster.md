@@ -263,6 +263,18 @@ A second application of this plan against the already-updated README must produc
 
 ---
 
+## Taskcard Status
+
+| TC-ID | Status | Description |
+|---|---|---|
+| TC-README-001 | CLOSED | Read and inventory existing README.md |
+| TC-README-002 | CLOSED | Investigate repository (products, registries, supervisor) |
+| TC-README-003 | CLOSED | Verify all major claims against registry truth |
+| TC-README-004 | CLOSED | Apply 8 surgical corrections to README.md |
+| TC-README-005 | CLOSED | Build evidence bundle with all required artifacts |
+| TC-README-006 | CLOSED | Confirm idempotency (ROOT_README_IDEMPOTENT) |
+| TC-README-007 | CLOSED | Commit README changes and plan file to repository |
+
 ## Completion Gate Checklist
 
 - [x] Existing README read completely (466 lines)
@@ -289,3 +301,12 @@ A second application of this plan against the already-updated README must produc
 **Closed by:** cosmic-herding-lobster convergence closure 2026-07-02
 **Plan lock:** written via write_plan_lock.py --terminal
 **Commit:** see close-task verification below
+
+
+<!--plan_terminal_lock:
+  status: TERMINAL_CLOSED
+  locked_at: "2026-07-02T12:27:27.148119+00:00"
+  locked_by: "cd6ed0f7aef8"
+  successor_required_for_future_changes: true
+  mutation_policy: "no further plan/hardening/execution writes"
+-->
