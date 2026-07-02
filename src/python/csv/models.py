@@ -115,6 +115,23 @@ class CsvDocument:
         """True if the document has more than one column."""
         return self.column_count > 1
 
+    # Additional tabular analysis properties (FACT-CSV-001)
+
+    @property
+    def has_data(self) -> bool:
+        """True if the document has at least one row and at least one column."""
+        return self.row_count > 0 and self.column_count > 0
+
+    @property
+    def is_square(self) -> bool:
+        """True if the number of rows equals the number of columns."""
+        return self.row_count == self.column_count and self.row_count > 0
+
+    @property
+    def total_cell_count(self) -> int:
+        """Total number of cells (row_count * column_count)."""
+        return self.row_count * self.column_count
+
     def to_dict(self) -> dict[str, Any]:
         """Return the underlying neutral model dict."""
         return dict(self._data)

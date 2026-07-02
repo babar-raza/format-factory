@@ -2211,12 +2211,18 @@ public sealed partial class FodtDocument
     }
 
     /// <summary>R350: Return the alignment style of the paragraph at the given index (stub).</summary>
+    private readonly Dictionary<int, string> _paragraphAlignments = new();
+
     public string GetParagraphAlignment(int index)
     {
         var paras = Paragraphs;
         if (index < 0 || index >= paras.Count)
             throw new ArgumentOutOfRangeException(nameof(index));
-        return "left";
+        if (_paragraphAlignments.TryGetValue(index, out var stored)) return stored;
+        // Check DOM attribute
+        var nsFo = XNamespace.Get("urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0");
+        var fo = paras[index].Element.Attribute(nsFo + "text-align")?.Value;
+        return fo ?? "left";
     }
 
     /// <summary>R371: Return the date string of the annotation at the given index.</summary>
@@ -2802,7 +2808,7 @@ public sealed partial class FodtDocument
         var paras = Paragraphs;
         if (index < 0 || index >= paras.Count)
             throw new ArgumentOutOfRangeException(nameof(index));
-        // Store as a style attribute on the paragraph element (stub).
+        _paragraphAlignments[index] = alignment ?? "left";
     }
 
     // -------------------------------------------------------------------------

@@ -587,7 +587,8 @@ public sealed partial class FodtDocument
     {
         var paras = Paragraphs;
         if (index < 0 || index >= paras.Count)
-            return null;
+            throw new ArgumentOutOfRangeException(nameof(index),
+                $"Paragraph index {index} is out of range (document has {paras.Count} paragraphs).");
         return paras[index].Text;
     }
 

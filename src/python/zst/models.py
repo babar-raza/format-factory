@@ -110,6 +110,23 @@ class ZstDocument:
         """True if the compressed size is >= 1 MB (1,048,576 bytes)."""
         return self.compressed_size >= 1_048_576
 
+    # Additional size analysis properties (FACT-ZST-001)
+
+    @property
+    def is_heavily_compressed(self) -> bool:
+        """True if the compression ratio is >= 5.0 (very high compression)."""
+        return self.compression_ratio >= 5.0
+
+    @property
+    def decompressed_size_mb(self) -> float:
+        """Decompressed content size in megabytes."""
+        return self.decompressed_size / 1_048_576.0
+
+    @property
+    def is_tiny(self) -> bool:
+        """True if the compressed size is less than 1 KB (1,024 bytes)."""
+        return self.compressed_size < 1_024
+
     def to_dict(self) -> dict[str, Any]:
         """Return frame metrics as a dict."""
         return {
