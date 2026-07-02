@@ -4,7 +4,7 @@
 **Authority level:** Single Operational Authority
 **Project:** format-factory
 **Version:** 6.0
-**Last updated:** 2026-07-03 (v6.5: FODS .NET xUnit test suite fixed 46→0 failures — 4714 pass, 0 fail; GI-FODS-NET-001 Sprint 3 groundwork committed — FodsStyleResolver.cs + fixtures + test taxonomy; §103 added)
+**Last updated:** 2026-07-03 (v6.6: GI-FODS-NET-001 TERMINAL_CLOSED — Category D purge (67 methods, 574 tests), Category B ODF-grounded, FodsStyleEditor.cs, 14 RT4 roundtrip tests, Gate 11 evidence v2, GI-FODT-NET-001 opened; §104 added)
 **Last verified:** 2026-06-24
 
 **Current phase:** Multi-format POC — 11 targets (3 commercial .NET, 8 FOSS Python). Gate 11 G11-G sub-gate approved by Babar Raza 2026-06-05 (FODS, FODT, Netpbm). Registry gate_11.status: commercial_readiness_in_progress; g11g_status: APPROVED_BY_BABAR_RAZA_2026_06_05 (G11-G sub-gate approved). commercial_product_ready: false (all entries). Full Gate 11 requires Babar Raza final commercial authorization.
@@ -5783,3 +5783,49 @@ Phase 3b/4b infrastructure for the governance incident remediation plan (buzzing
 - reports/gov-incidents/GI-FODS-NET-001-test-taxonomy.json: 654 test file classification
 
 **Final Verdict:** FODS_NET_XUNIT_SUITE_ZERO_FAILURES — 4714 tests pass, 0 fail
+
+## §104 — GI-FODS-NET-001 TERMINAL_CLOSED — Category D Purge + Category B ODF-Grounded (2026-07-03)
+
+**Mission:** Fully remediate governance incident GI-FODS-NET-001 per plan `buzzing-wiggling-whistle.md` (33 taskcards). Eliminate 67 constant-zero public APIs and their synthetic test suites; implement 25 Category B ODF-backed property getters/setters; establish governance validators V87/V88/V89.
+
+**Commit:** 9bf2fe21
+
+### Remediation Summary
+
+| Phase | Action | Result |
+|-------|--------|--------|
+| Lane 3f — Category D removal | Deleted FodsDocumentLegacyCounters.cs (67 `=> 0` methods) | DONE |
+| Lane 4d — Test disposal | Deleted 88 Category D test files (574 tautological assertions) | DONE |
+| Lane 3e — FodsStyleEditor.cs | Setter path writing ODF XML in office:automatic-styles | DONE |
+| Lane 4c — RT4 roundtrip tests | 14 persistence roundtrip tests (FodsGI001CategoryBRoundtripTests.cs) | 14/14 PASS |
+| Lane 5a — Gate 11 impact | All 7 criteria PASS or IMPROVED post-remediation | DONE |
+| Lane 5b — Gate 11 evidence v2 | acquisition-packs/fods/gate11-evidence-v2.yaml | DONE |
+| Lane 5c — Resubmission delta | acquisition-packs/fods/gate11-resubmission-delta-2026-07-02.md | DONE |
+| Lane 6b — V87 cross-product scan | Scanned all src/net/**/*.cs — found GI-FODT-NET-001 (94 FODT violations) | DONE |
+
+### Test Delta
+
+| Metric | Before | After |
+|--------|--------|-------|
+| Total tests | 4735 | 4161 |
+| Removed (tautological) | — | 574 |
+| PASS | 4735 | 4161 |
+| FAIL | 0 | 0 |
+
+### Governance Artifacts Created
+
+- `reports/gov-incidents/V87-scan-results-2026-07-02.yaml` — V87 cross-product scan
+- `reports/gov-incidents/GI-FODT-NET-001.yaml` — New incident: 94 FODT violations (OPEN, deferred)
+- `reports/gov-incidents/GI-FODS-NET-001-test-disposal-log.yaml` — 88-file deletion log
+- `reports/gov-incidents/GI-FODS-NET-001-gate11-impact-assessment.yaml` — per-criterion analysis
+- `acquisition-packs/fods/gate11-evidence-v2.yaml` — corrected Gate 11 evidence package
+- `acquisition-packs/fods/gate11-resubmission-delta-2026-07-02.md` — honest delta for Babar Raza
+
+### Lifecycle Audit Result
+
+- `lifecycle_audit.py` verdict: AUDIT_PASS
+- Plan lock: TERMINAL_CLOSED
+- Taskcards parsed: 33/33 CLOSED
+- Completion gate counters: all zero
+
+**Final Verdict:** GI_FODS_NET_001_TERMINAL_CLOSED — 4161/4161 tests pass, 33/33 taskcards closed, all governance artifacts committed
