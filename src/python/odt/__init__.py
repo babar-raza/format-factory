@@ -10,6 +10,9 @@ from .text_document import *  # noqa: F401, F403
 from .exceptions import *  # noqa: F401, F403
 from .odt_writer import write_odt, odt_from_text, odt_from_model  # noqa: F401
 from .models import OdtModelDocument  # noqa: F401
+from .odt_workflow import odt_installed_workflow  # noqa: F401
+from .odt_paragraph_iterator import odt_iter_paragraphs  # noqa: F401
+from .odt_heading_iterator import odt_iter_headings  # noqa: F401
 
 import sys as _sys
 import types as _types

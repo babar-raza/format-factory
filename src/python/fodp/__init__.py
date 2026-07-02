@@ -20,6 +20,8 @@ from .fodp_codec import (
 )
 from .presentation_document import *  # noqa: F401, F403
 from .models import FodpDocument  # noqa: F401
+from .fodp_workflow import fodp_installed_workflow  # noqa: F401
+from .fodp_slide_iterator import fodp_iter_slides  # noqa: F401
 
 __all__ = [
     "FodpError",
@@ -76,6 +78,8 @@ __all__ = [
     "fodp_shape_variance",
     "fodp_shortest_slide_index",
     "fodp_slide_count",
+    "fodp_installed_workflow",
+    "fodp_iter_slides",
     "fodp_slide_count_is_one",
     "fodp_slide_shape_counts",
     "fodp_slide_text_density",
