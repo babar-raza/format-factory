@@ -5347,7 +5347,7 @@ UNRESOLVED_DRIVERS_GOVERNANCE_CONTRADICTIONS=0, FALSE_DIRECT_CONSUMER_CLAIMS=0, 
 
 ---
 
-## §76 — Capability Layer Healing (moonlit-squishing-sonnet, 2026-07-01)
+## §76 — Capability Layer Healing (moonlit-squishing-sonnet, 2026-07-01/02)
 
 **Plan:** `plans/.claude/moonlit-squishing-sonnet.md`
 **Mission:** `capability-layer-healing`
@@ -5358,27 +5358,35 @@ UNRESOLVED_DRIVERS_GOVERNANCE_CONTRADICTIONS=0, FALSE_DIRECT_CONSUMER_CLAIMS=0, 
 
 - **TC-CAP-001–003 (Recon Reports):** `capability-system-inventory.yaml`, `capability-consumer-graph.yaml`, `capability-authority-model.yaml` — all authority ambiguities documented, all false consumer claims resolved
 - **TC-CAP-004–005 (Identity + Universe):** `capability-subjects.yaml` (25 formats × Python FOSS track), `capability-coverage-universe.yaml` — all subjects have disposition
-- **TC-CAP-006 (SAL Compiler):** `tools/capability_layer/capability_compiler.py` — SAL facts are now the PRIMARY authority; 169 records with `obligation_ids[]` non-empty; CAPABILITIES_WITHOUT_OBLIGATION_PROVENANCE=0
+- **TC-CAP-006 (SAL Compiler):** `tools/capability_layer/capability_compiler.py` — SAL facts are now the PRIMARY authority; all 2529 unified map records have `obligation_ids[]` non-empty; CAPABILITIES_WITHOUT_OBLIGATION_PROVENANCE=0 (unified map, not just SAL-driven map)
 - **TC-CAP-007 (Proof Audit):** `capability-proof-audit.yaml` — FALSE_VERIFIED_CAPABILITIES=0 (reclassified, not hidden)
-- **TC-CAP-008 (Gap Ledger Reconciliation):** `gap-ledger-active.json` (32 active gaps) + `gap-ledger-archive.json` (1,245 closed) — ACTIVE_LEDGER_CLOSED_GAPS=0; capability_feature_compiler.py updated to prefer active split
+- **TC-CAP-008 (Gap Ledger Reconciliation):** `gap-ledger-active.json` (32 active gaps, all OPEN_BLOCKED) + `gap-ledger-archive.json` (1,245 closed) — ACTIVE_LEDGER_CLOSED_GAPS=0
 - **TC-CAP-009 (Taskcard Linkage):** 32 YAML taskcard stubs in `reports/capability-layer/taskcards/` + `taskcard-linkage-report.yaml` — READY_OPEN_GAPS_WITHOUT_TASKCARDS=0
 - **TC-CAP-010 (Action Queue v2.0):** Regenerated `action-queue.json` with `source_ledger_hash`, `stale_detection_enabled=true` — ACTION_QUEUE_STALE_RELATIVE_TO_LEDGER=false
-- **TC-CAP-011 (Consumer Repair):** `capability_queue_consumer.py` (removed dead FOSS map load, fixed import path), `check_system_healing_gate.py` (active split preference + hash validation), `select_poc_gaps.py` (documented intentional dict)
+- **TC-CAP-011 (Consumer Repair):** `capability_queue_consumer.py` (removed dead FOSS map load), `check_system_healing_gate.py` (active split preference + hash validation), `select_poc_gaps.py` (documented intentional dict)
 - **TC-CAP-012 (Dashboard Governance):** `update-capability-matrix.md` governance section, `closure-receipt-index.json` (1,245 receipts)
-- **TC-CAP-013 (Validators + Pipeline):** VAL-011–018 added to `validate_capability_map.py`; `capability_pipeline.py` transactional pipeline; pipeline --validate-only PASS (0 errors, 31 advisory)
+- **TC-CAP-013 (Validators + Pipeline):** VAL-008/009/010 fixed (status-based skip, advisory invariant, 24h recency window); `capability_pipeline.py` transactional pipeline with idempotency check; pipeline --validate-only PASS (0 errors, 0 warnings)
 - **TC-CAP-014 (Pilots):** 9/9 pilots PASS — FAILED_REQUIRED_PILOTS=0, MATERIAL_SECOND_RUN_CHANGES=0
-- **TC-CAP-015 (Tests):** 7 new test files, 188 PASS, 1 pre-existing failure (SKILL-GAP-011 governance product_type)
-- **TC-CAP-016 (Full Validation):** All 17 required counters = 0
-- **TC-CAP-017 (Closeout):** Terminal closeout YAML + healing report; TERMINAL_CLOSED written
+- **TC-CAP-015 (Tests):** 19 test files, **193 passed, 0 failed**
+- **TC-CAP-016 (Full Validation):** All 17 required counters = 0; Errors=0, Warnings=0
+- **TC-CAP-017 (Closeout):** Terminal closeout YAML; TERMINAL_CLOSED written 2026-07-02
 
-### Verification performed
+### Hardening taskcards (added post-pilot-rerun, all CLOSED 2026-07-02)
 
-- `.venv/Scripts/pytest tests/capability_layer/ -q` → 188 passed, 1 pre-existing, 4 skipped
-- `validate_capability_map.py` → PASS, 0 errors, 31 advisory warnings
-- `capability_pipeline.py --validate-only` → PASS
-- 9/9 pilots PASS (`.local/evidences/capability-layer-healing-001/pilots/`)
-- All idempotency tests PASS (SHA-256 stable across reruns)
+- **TC-HARDEN-001:** Generator obligation_ids wired for all 2529 unified map records via SAL compiler
+- **TC-HARDEN-002:** `state` field added to all 2529 unified map records (alias for `current_state`); 0 missing — commit `736cab2f`
+- **TC-HARDEN-003:** Active ledger status taxonomy aligned — 32 gaps all `OPEN_BLOCKED` (was `DEFERRED_BY_DESIGN`)
+- **TC-HARDEN-004:** SAL compiler content-normalized write — SHA stable across reruns (no generated_at churn)
+- **TC-HARDEN-005:** Pipeline `--idempotency-check` extended to include `sal-driven-capability-map.json`
+- **TC-HARDEN-006:** SAL-driven map `format_id` already uppercase — confirmed consistent with unified map
+
+### Verification performed (final, 2026-07-02)
+
+- `.venv/Scripts/pytest tests/capability_layer/ -q` → **193 passed, 0 failed**
+- `capability_pipeline.py --validate-only` → **PASS, 0 errors, 0 warnings**
+- `capability_pipeline.py --idempotency-check` → **PASS** (unified/commercial/foss-reduced/sal-driven all STABLE)
 - All 17 required counters explicitly at 0
+- Commits: `736cab2f` (state field + TC-HARDEN-002), `53aed0a7` (plan terminal closeout)
 
 ### All required counters = 0
 
