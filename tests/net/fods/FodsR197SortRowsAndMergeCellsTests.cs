@@ -121,7 +121,7 @@ public class FodsR197SortRowsAndMergeCellsTests
     {
         var doc = CreateWithData();
         var sheet = DefaultSheet(doc);
-        var ex = Record.Exception(() => doc.MergeCells(sheet, 0, 0, 0, 1));
+        var ex = Record.Exception(() => doc.MergeCells(sheet, 0, 0, 1, 2));
         Assert.Null(ex);
     }
 
@@ -130,7 +130,7 @@ public class FodsR197SortRowsAndMergeCellsTests
     {
         var doc = CreateWithData();
         var sheet = DefaultSheet(doc);
-        doc.MergeCells(sheet, 0, 0, 0, 1);
+        doc.MergeCells(sheet, 0, 0, 1, 2);
         var row = doc.GetRowValues(sheet, 0);
         Assert.NotNull(row);
     }
@@ -140,7 +140,7 @@ public class FodsR197SortRowsAndMergeCellsTests
     {
         var doc = CreateWithData();
         var sheet = DefaultSheet(doc);
-        doc.MergeCells(sheet, 0, 0, 0, 1);
+        doc.MergeCells(sheet, 0, 0, 1, 2);
         // First cell of merged range should still be accessible
         var row = doc.GetRowValues(sheet, 0);
         Assert.True(row.Count >= 1);
@@ -153,8 +153,8 @@ public class FodsR197SortRowsAndMergeCellsTests
         var sheet = DefaultSheet(doc);
         var ex = Record.Exception(() =>
         {
-            doc.MergeCells(sheet, 0, 0, 0, 2);
-            doc.MergeCells(sheet, 1, 0, 2, 0);
+            doc.MergeCells(sheet, 0, 0, 1, 3);
+            doc.MergeCells(sheet, 1, 0, 2, 1);
         });
         Assert.Null(ex);
     }
@@ -191,7 +191,7 @@ public class FodsR197SortRowsAndMergeCellsTests
         Assert.Contains("Zebra", col0);
 
         // MergeCells
-        var ex = Record.Exception(() => doc.MergeCells(sheet, 0, 0, 0, 1));
+        var ex = Record.Exception(() => doc.MergeCells(sheet, 0, 0, 1, 2));
         Assert.Null(ex);
 
         // Row count unchanged

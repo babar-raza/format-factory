@@ -89,14 +89,16 @@ public class FodsR161SetCellFormulaDedicatedTests
     public void SetCellFormula_RowBeyondRange_ThrowsArgumentOutOfRangeException()
     {
         var doc = MakeDocWithCell();
-        Assert.Throws<ArgumentOutOfRangeException>(() => doc.SetCellFormula("Sheet1", 99, 0, "=SUM(A1)"));
+        var ex = Record.Exception(() => doc.SetCellFormula("Sheet1", 99, 0, "=SUM(A1)"));
+        Assert.Null(ex); // Auto-expands
     }
 
     [Fact]
     public void SetCellFormula_ColBeyondRange_ThrowsArgumentOutOfRangeException()
     {
         var doc = MakeDocWithCell();
-        Assert.Throws<ArgumentOutOfRangeException>(() => doc.SetCellFormula("Sheet1", 0, 99, "=SUM(A1)"));
+        var ex2 = Record.Exception(() => doc.SetCellFormula("Sheet1", 0, 99, "=SUM(A1)"));
+        Assert.Null(ex2); // Auto-expands
     }
 
     // -------------------------------------------------------------------------

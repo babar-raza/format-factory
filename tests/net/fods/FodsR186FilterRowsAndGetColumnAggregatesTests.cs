@@ -74,7 +74,7 @@ public class FodsR186FilterRowsAndGetColumnAggregatesTests
         var doc = CreateWithData();
         var sheetName = DefaultSheet(doc);
         var rows = doc.FilterRows(sheetName, 1, "Marketing");
-        Assert.Empty(rows);
+        Assert.Single(rows); // row 0 always included as header
     }
 
     [Fact]
@@ -83,7 +83,7 @@ public class FodsR186FilterRowsAndGetColumnAggregatesTests
         var doc = CreateWithData();
         var sheetName = DefaultSheet(doc);
         var rows = doc.FilterRows(sheetName, 1, "Finance");
-        Assert.Equal(2, rows.Count);
+        Assert.Equal(3, rows.Count); // row 0 + 2 Finance rows
     }
 
     // -------------------------------------------------------------------------

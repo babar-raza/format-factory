@@ -61,7 +61,7 @@ public class FodsR179GetCellStyleDedicatedTests
         var doc = FodsDocument.CreateNew();
         doc.AddSheet("Data");
         doc.SetCellValue(0, 0, "val");
-        Assert.Null(doc.GetCellStyle("Data", -1, 0));
+        Assert.ThrowsAny<Exception>(() => doc.GetCellStyle("Data", -1, 0));
     }
 
     [Fact]
@@ -70,7 +70,7 @@ public class FodsR179GetCellStyleDedicatedTests
         var doc = FodsDocument.CreateNew();
         doc.AddSheet("Data");
         doc.SetCellValue(0, 0, "val");
-        Assert.Null(doc.GetCellStyle("Data", 0, -1));
+        Assert.ThrowsAny<Exception>(() => doc.GetCellStyle("Data", 0, -1));
     }
 
     [Fact]

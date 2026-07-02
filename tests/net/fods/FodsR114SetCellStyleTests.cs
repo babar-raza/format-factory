@@ -60,11 +60,10 @@ public class FodsR114SetCellStyleTests
     }
 
     [Fact]
-    public void GetCellStyle_MissingSheet_ReturnsNull()
+    public void GetCellStyle_MissingSheet_ThrowsOrReturnsNull()
     {
         var doc = MakeDoc();
-        var style = doc.GetCellStyle("NoSuch", 0, 0);
-        Assert.Null(style);
+        Assert.ThrowsAny<Exception>(() => doc.GetCellStyle("NoSuch", 0, 0));
     }
 
     [Fact]

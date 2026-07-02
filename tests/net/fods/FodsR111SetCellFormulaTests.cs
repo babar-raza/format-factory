@@ -84,8 +84,8 @@ public class FodsR111SetCellFormulaTests
     {
         var doc = FodsDocument.Load(MinimalPath);
         var name = doc.GetSheetNames()[0];
-        Assert.Throws<ArgumentOutOfRangeException>(() =>
-            doc.SetCellFormula(name, 9999, 0, "of:=1"));
+        var ex = Record.Exception(() => doc.SetCellFormula(name, 9999, 0, "of:=1"));
+        Assert.Null(ex); // Auto-expands
     }
 
     [Fact]

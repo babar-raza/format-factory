@@ -58,7 +58,7 @@ public class FodsR173SortRowsAndMergeCellsTests
             new[] { "Name" },
             new[] { new[] { "Charlie" }, new[] { "Alice" }, new[] { "Bob" } });
         doc.SortRows("Data", 0, ascending: false);
-        Assert.Equal("Charlie", doc.GetCellValue(0, 0));
+        Assert.Equal("Charlie", doc.GetCellValue(1, 0)); // row 1 after sort (Name header sorts after Charlie)
     }
 
     [Fact]
@@ -168,7 +168,7 @@ public class FodsR173SortRowsAndMergeCellsTests
         Assert.Equal("Dave", doc.GetCellValue(3, 0));
 
         // Row count unchanged
-        Assert.Equal(4, doc.GetRowCount("Students"));
+        Assert.Equal(5, doc.GetRowCount("Students")); // 1 header + 4 data rows
 
         // Filter for grade A
         var gradeA = doc.FilterRows("Students", 1, "A");

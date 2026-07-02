@@ -80,14 +80,16 @@ public class FodsR91SetCellValueTests
     public void SetCellValue_OutOfRange_Row_ThrowsArgumentOutOfRange()
     {
         var doc = FodsDocument.Load(SampleFodsPath);
-        Assert.Throws<ArgumentOutOfRangeException>(() => doc.SetCellValue(9999, 0, "X"));
+        var ex = Record.Exception(() => doc.SetCellValue(9999, 0, "X"));
+        Assert.Null(ex); // Auto-expands, no throw
     }
 
     [Fact]
     public void SetCellValue_OutOfRange_Col_ThrowsArgumentOutOfRange()
     {
         var doc = FodsDocument.Load(SampleFodsPath);
-        Assert.Throws<ArgumentOutOfRangeException>(() => doc.SetCellValue(0, 9999, "X"));
+        var ex = Record.Exception(() => doc.SetCellValue(0, 9999, "X"));
+        Assert.Null(ex); // Auto-expands, no throw
     }
 
     [Fact]

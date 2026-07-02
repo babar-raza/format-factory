@@ -282,7 +282,7 @@ public sealed partial class FodsDocument
             throw new ArgumentException("Sheet name must not be null or empty.", nameof(sheetName));
         if (colIndex < 0) throw new ArgumentOutOfRangeException(nameof(colIndex));
         var sheet = GetSheetByName(sheetName)
-            ?? throw new ArgumentException($"No sheet named '{sheetName}' exists.", nameof(sheetName));
+            ?? throw new InvalidOperationException($"No sheet named '{sheetName}' exists.");
         foreach (var row in sheet.Rows)
         {
             var cells = row.Element.Elements(NsTable + "table-cell").ToList();
