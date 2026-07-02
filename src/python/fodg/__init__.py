@@ -16,6 +16,8 @@ from .fodg_codec import *  # noqa: F401, F403
 # are included in __all__ and part of the public API.
 from .drawing_document import *  # noqa: F401, F403
 from .models import FodgDocument  # noqa: F401
+from .fodg_workflow import fodg_installed_workflow  # noqa: F401
+from .fodg_page_iterator import fodg_iter_pages  # noqa: F401
 
 # Compute public API: all non-private names loaded so far
 import sys as _sys

@@ -606,3 +606,46 @@ def fodp_shape_count_variance(source: "str | bytes | Path") -> float:
         return 0.0
     mean = sum(counts) / len(counts)
     return sum((c - mean) ** 2 for c in counts) / len(counts)
+
+
+# ---------------------------------------------------------------------------
+# Analytics functions for deepening tests (TC-F-012)
+# ---------------------------------------------------------------------------
+
+def fodp_min_shape_count(source: "str | bytes | Path") -> int:
+    """Return minimum shape count across all slides. 0 if no slides."""
+    from .fodp_codec import load as _load
+    doc = _load(source)
+    pages = doc.get("pages", [])
+    if not pages:
+        return 0
+    return min(p.get("shape_count", 0) for p in pages)
+
+
+def fodp_note_count(source: "str | bytes | Path") -> int:
+    """Return count of slides that have a non-empty title (used as note proxy). 0 if none."""
+    from .fodp_codec import load as _load
+    doc = _load(source)
+    pages = doc.get("pages", [])
+    return sum(1 for p in pages if p.get("title", "").strip())
+
+
+def fodp_text_to_shape_ratio(source: "str | bytes | Path") -> float:
+    """Return ratio of notes text length to total shape count. 0.0 if no shapes."""
+    from .fodp_codec import load as _load
+    doc = _load(source)
+    pages = doc.get("pages", [])
+    notes = fodp_notes_text(source)
+    total_notes = sum(len(n) for n in notes)
+    total_shapes = sum(p.get("shape_count", 0) for p in pages)
+    if total_shapes == 0:
+        return 0.0
+    return float(total_notes) / total_shapes
+
+
+def fodp_slide_count_squared(source: "str | bytes | Path") -> int:
+    """Return the number of slides squared."""
+    from .fodp_codec import load as _load
+    doc = _load(source)
+    n = len(doc.get("pages", []))
+    return n * n

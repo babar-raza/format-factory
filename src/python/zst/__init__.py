@@ -76,9 +76,16 @@ __all__ = [
     "has_skippable_frames",
     "get_skippable_frame_count",
     "extract_skippable_frames",
+    # Compression summary and workflow helpers
+    "get_compression_summary",
+    "zst_installed_workflow",
+    "zst_inspect_frame",
 ]
 
 from .models import ZstDocument  # noqa: F401
+from .zst_codec import get_compression_summary  # noqa: F401
+from .zst_workflow import zst_installed_workflow  # noqa: F401
+from .zst_frame_inspector import zst_inspect_frame  # noqa: F401
 
 __version__ = "0.1.0.dev0"
 __track__ = "python-foss"

@@ -767,3 +767,147 @@ def gnumeric_cell_to_row_ratio(file_path: "str | bytes | Path") -> float:
         return 0.0
     return gnumeric_total_cell_count(file_path) / rows
 
+
+
+# ---------------------------------------------------------------------------
+# Analytics functions for deepening tests (TC-F-012)
+# ---------------------------------------------------------------------------
+
+def gnumeric_string_ratio(file_path: "str | bytes | Path") -> float:
+    """Return ratio of non-numeric cells to all non-empty cells. 0.0 if no cells."""
+    model = load(file_path)
+    total = 0
+    strings = 0
+    for sheet in model.get("sheets", []):
+        for val in sheet.get("cell_grid", {}).values():
+            if val is not None and str(val).strip():
+                total += 1
+                try:
+                    float(str(val))
+                except (ValueError, TypeError):
+                    strings += 1
+    if total == 0:
+        return 0.0
+    return float(strings) / total
+
+
+def gnumeric_nonempty_row_count(file_path: "str | bytes | Path") -> int:
+    """Return count of rows with at least one non-empty cell in sheet 0."""
+    model = load(file_path)
+    sheets = model.get("sheets", [])
+    if not sheets:
+        return 0
+    grid = sheets[0].get("cell_grid", {})
+    nonempty_rows = set()
+    for (row, col), val in grid.items():
+        if val is not None and str(val).strip():
+            nonempty_rows.add(row)
+    return len(nonempty_rows)
+
+
+def gnumeric_numeric_range(file_path: "str | bytes | Path") -> float:
+    """Return max - min of all numeric cell values. 0.0 if fewer than 2 numeric values."""
+    model = load(file_path)
+    nums = []
+    for sheet in model.get("sheets", []):
+        for val in sheet.get("cell_grid", {}).values():
+            if val is not None:
+                try:
+                    nums.append(float(str(val)))
+                except (ValueError, TypeError):
+                    pass
+    if len(nums) < 2:
+        return 0.0
+    return float(max(nums) - min(nums))
+
+
+def gnumeric_distinct_string_count(file_path: "str | bytes | Path") -> int:
+    """Return count of distinct non-empty non-numeric string cell values."""
+    model = load(file_path)
+    strings = set()
+    for sheet in model.get("sheets", []):
+        for val in sheet.get("cell_grid", {}).values():
+            if val is not None and str(val).strip():
+                s = str(val).strip()
+                try:
+                    float(s)
+                except (ValueError, TypeError):
+                    strings.add(s)
+    return len(strings)
+
+
+def gnumeric_row_col_ratio(file_path: "str | bytes | Path") -> float:
+    """Return ratio of row count to column count in sheet 0. 0.0 if no columns."""
+    model = load(file_path)
+    sheets = model.get("sheets", [])
+    if not sheets:
+        return 0.0
+    grid = sheets[0].get("cell_grid", {})
+    if not grid:
+        return 0.0
+    rows = set(k[0] for k in grid)
+    cols = set(k[1] for k in grid)
+    if not cols:
+        return 0.0
+    return float(len(rows)) / len(cols)
+
+
+def gnumeric_numeric_to_string_ratio(file_path: "str | bytes | Path") -> float:
+    """Return ratio of numeric cells to string cells. 0.0 if no string cells.
+
+    Uses isinstance check since GNUMERIC codec returns all values as Python str.
+    """
+    model = load(file_path)
+    numeric = 0
+    string_count = 0
+    for sheet in model.get("sheets", []):
+        for val in sheet.get("cell_grid", {}).values():
+            if val is not None and str(val).strip():
+                if isinstance(val, (int, float)):
+                    numeric += 1
+                else:
+                    string_count += 1
+    if string_count == 0:
+        return 0.0
+    return float(numeric) / string_count
+
+
+def gnumeric_max_string_cell_length(file_path: "str | bytes | Path") -> int:
+    """Return length of the longest non-numeric string cell value. 0 if none."""
+    model = load(file_path)
+    max_len = 0
+    for sheet in model.get("sheets", []):
+        for val in sheet.get("cell_grid", {}).values():
+            if val is not None:
+                s = str(val).strip()
+                if s:
+                    try:
+                        float(s)
+                    except (ValueError, TypeError):
+                        if len(s) > max_len:
+                            max_len = len(s)
+    return max_len
+
+
+def gnumeric_row_density_avg(file_path: "str | bytes | Path") -> float:
+    """Return average ratio of non-empty cells per row to column count. 0.0 if no data."""
+    model = load(file_path)
+    sheets = model.get("sheets", [])
+    if not sheets:
+        return 0.0
+    grid = sheets[0].get("cell_grid", {})
+    if not grid:
+        return 0.0
+    cols = set(k[1] for k in grid)
+    col_count = len(cols)
+    if col_count == 0:
+        return 0.0
+    row_counts: dict = {}
+    for (row, col), val in grid.items():
+        if val is not None and str(val).strip():
+            row_counts[row] = row_counts.get(row, 0) + 1
+    all_rows = set(k[0] for k in grid)
+    if not all_rows:
+        return 0.0
+    densities = [float(row_counts.get(r, 0)) / col_count for r in all_rows]
+    return sum(densities) / len(densities)

@@ -2,13 +2,13 @@
 
 TC-CERT-R2-002 certification hardening.
 """
+import csv as _stdlib_csv  # import before sys.path manipulation to get stdlib version
 import sys
 import tempfile
 from pathlib import Path
 
 _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO / "src" / "python" / "csv"))
-sys.path.insert(0, str(_REPO / "src" / "python"))
 
 import pytest
 from hypothesis import given, settings, HealthCheck
@@ -36,11 +36,10 @@ rows_st = st.lists(
 
 def _make_csv_file(rows: list[list[str]]) -> Path:
     """Build a CSV file from rows, properly quoting fields."""
-    import csv as stdlib_csv
     import io
 
     buf = io.StringIO()
-    writer = stdlib_csv.writer(buf)
+    writer = _stdlib_csv.writer(buf)
     for row in rows:
         writer.writerow(row)
     tmp = Path(tempfile.mktemp(suffix=".csv"))

@@ -784,3 +784,68 @@ def tsv_nonempty_cell_ratio(file_path: "str | Path") -> float:
         if cell is not None and str(cell).strip()
     )
     return nonempty / total
+
+
+def tsv_header_length_avg(file_path: "str | Path") -> float:
+    """Return average character length of header field strings. 0.0 if no headers."""
+    doc = parse_tsv_strict(file_path)
+    headers = doc.get("headers") or []
+    if not headers:
+        return 0.0
+    return float(sum(len(str(h)) for h in headers)) / len(headers)
+
+
+def tsv_data_completeness(file_path: "str | Path") -> float:
+    """Return ratio of non-empty cells to total cells. 0.0 if no cells."""
+    doc = parse_tsv_strict(file_path)
+    rows = doc.get("rows", [])
+    total = sum(len(row) for row in rows)
+    if total == 0:
+        return 0.0
+    nonempty = sum(
+        1 for row in rows for cell in row
+        if cell is not None and str(cell).strip()
+    )
+    return float(nonempty) / total
+
+
+def tsv_empty_field_count(file_path: "str | Path") -> int:
+    """Return count of empty (blank) cells in data rows."""
+    doc = parse_tsv_strict(file_path)
+    return sum(
+        1 for row in doc.get("rows", []) for cell in row
+        if cell is None or not str(cell).strip()
+    )
+
+
+def tsv_distinct_field_count(file_path: "str | Path") -> int:
+    """Return count of distinct non-empty cell values in data rows."""
+    doc = parse_tsv_strict(file_path)
+    values = set()
+    for row in doc.get("rows", []):
+        for cell in row:
+            if cell is not None and str(cell).strip():
+                values.add(str(cell).strip())
+    return len(values)
+
+
+def tsv_column_text_sum(file_path: "str | Path") -> int:
+    """Return total character count of all cell values in data rows."""
+    doc = parse_tsv_strict(file_path)
+    return sum(len(str(cell)) for row in doc.get("rows", []) for cell in row if cell is not None)
+
+
+def tsv_row_density_avg(file_path: "str | Path") -> float:
+    """Return average ratio of non-empty cells to row width across all data rows. 0.0 if no rows."""
+    doc = parse_tsv_strict(file_path)
+    rows = doc.get("rows", [])
+    if not rows:
+        return 0.0
+    densities = []
+    for row in rows:
+        if not row:
+            densities.append(0.0)
+        else:
+            nonempty = sum(1 for cell in row if cell is not None and str(cell).strip())
+            densities.append(float(nonempty) / len(row))
+    return sum(densities) / len(densities)

@@ -717,3 +717,57 @@ def qoi_is_wide(file_path: str | Path) -> bool:
     """Return True if image width is more than twice its height."""
     img = parse_qoi_strict(file_path)
     return img.width > 2 * img.height
+
+
+# ---------------------------------------------------------------------------
+# Analytics functions for deepening tests (TC-F-012)
+# ---------------------------------------------------------------------------
+
+def qoi_red_channel_avg(file_path: "str | Path") -> float:
+    """Return average value of the red (R) channel across all pixels. 0.0 if no pixels."""
+    img = parse_qoi_strict(file_path)
+    if not img.pixels:
+        return 0.0
+    return float(sum(p[0] for p in img.pixels)) / len(img.pixels)
+
+
+def qoi_alpha_pixel_count(file_path: "str | Path") -> int:
+    """Return count of pixels with alpha channel < 255 (semi-transparent)."""
+    img = parse_qoi_strict(file_path)
+    if not img.pixels or len(img.pixels[0]) < 4:
+        return 0
+    return sum(1 for p in img.pixels if p[3] < 255)
+
+
+def qoi_green_channel_avg(file_path: "str | Path") -> float:
+    """Return average value of the green (G) channel across all pixels. 0.0 if no pixels."""
+    img = parse_qoi_strict(file_path)
+    if not img.pixels:
+        return 0.0
+    return float(sum(p[1] for p in img.pixels)) / len(img.pixels)
+
+
+def qoi_blue_channel_avg(file_path: "str | Path") -> float:
+    """Return average value of the blue (B) channel across all pixels. 0.0 if no pixels."""
+    img = parse_qoi_strict(file_path)
+    if not img.pixels:
+        return 0.0
+    return float(sum(p[2] for p in img.pixels)) / len(img.pixels)
+
+
+def qoi_opaque_pixel_count(file_path: "str | Path") -> int:
+    """Return count of pixels with alpha channel == 255 (fully opaque)."""
+    img = parse_qoi_strict(file_path)
+    if not img.pixels:
+        return 0
+    if len(img.pixels[0]) < 4:
+        return len(img.pixels)
+    return sum(1 for p in img.pixels if p[3] == 255)
+
+
+def qoi_pixel_brightness_sum(file_path: "str | Path") -> int:
+    """Return sum of per-pixel brightness ((R+G+B)//3) across all pixels."""
+    img = parse_qoi_strict(file_path)
+    if not img.pixels:
+        return 0
+    return sum((p[0] + p[1] + p[2]) // 3 for p in img.pixels)

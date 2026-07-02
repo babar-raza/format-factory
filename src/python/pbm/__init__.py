@@ -11,6 +11,8 @@ from .pbm_to_pgm import *  # noqa: F401, F403
 from .pbm_to_ppm import *  # noqa: F401, F403
 from .exceptions import *  # noqa: F401, F403
 from .models import PbmDocument  # noqa: F401
+from .pbm_workflow import pbm_installed_workflow  # noqa: F401
+from .pbm_raster_iterator import pbm_iter_rasters  # noqa: F401
 
 import sys as _sys
 import types as _types

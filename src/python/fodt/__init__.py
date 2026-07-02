@@ -17,6 +17,8 @@ from .models import *  # noqa: F401, F403
 from .exporters import fodt_to_txt, fodt_to_markdown, fodt_to_html  # noqa: F401
 from .exceptions import *  # noqa: F401, F403
 from .constants import *  # noqa: F401, F403
+from .fodt_workflow import fodt_installed_workflow  # noqa: F401
+from .fodt_paragraph_iterator import fodt_iter_paragraphs  # noqa: F401
 
 import sys as _sys
 import types as _types

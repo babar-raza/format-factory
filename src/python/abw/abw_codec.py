@@ -626,6 +626,31 @@ def export_to_plain_text(model: dict) -> str:
     return "\n\n".join(paragraphs)
 
 
+# ---------------------------------------------------------------------------
+# Installed workflow proof (consistent with toml_installed_workflow pattern)
+# ---------------------------------------------------------------------------
+
+def abw_installed_workflow(source: "str | bytes | Path") -> dict:
+    """ABW installed-workflow proof: load source and return format metadata.
+
+    Named variant with explicit abw_ prefix for API naming consistency
+    across the Format Factory FOSS track.
+
+    Args:
+        source: ABW file path, bytes, or XML string.
+
+    Returns:
+        dict with keys: format, loaded, paragraph_count, section_count.
+    """
+    model = load(source)
+    return {
+        "format": "abw",
+        "loaded": True,
+        "paragraph_count": model.get("paragraph_count", 0),
+        "section_count": model.get("section_count", 0),
+    }
+
+
 # Domain module re-exports
 try:
     from .word_document import *  # noqa: F401, F403

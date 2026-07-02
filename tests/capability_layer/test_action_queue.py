@@ -81,9 +81,14 @@ def test_required_counters(queue_data):
     assert counters.get("ACTION_QUEUE_STALE_RELATIVE_TO_LEDGER") is False
 
 
-def test_root_advisory_only_is_false(queue_data):
-    # Root-level advisory_only=False is required by check_system_healing_gate.py Lane 2
-    assert queue_data.get("advisory_only") is False
+def test_root_advisory_only_reflects_machine_executability(queue_data):
+    # advisory_only == not any(machine_executable) — generator invariant (TC-PROD-007)
+    actions = queue_data.get("actions", [])
+    any_machine_exec = any(a.get("machine_executable") for a in actions)
+    expected = not any_machine_exec
+    assert queue_data.get("advisory_only") == expected, (
+        f"advisory_only should be {expected} when any_machine_executable={any_machine_exec}"
+    )
 
 
 def test_all_actions_have_required_skill(queue_data):

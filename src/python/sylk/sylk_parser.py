@@ -733,7 +733,8 @@ def find_rows_by_value(file_path: "str | Path", value: "Any") -> "list[int]":
 
 
 # ---------------------------------------------------------------------------
-# Analytics in sylk_analytics.py (TC-HEAL-FORMATS-BATCH1)
+# Analytics functions moved to sylk_analytics.py (TC-HEAL-FORMATS-BATCH1)
+# ---------------------------------------------------------------------------
 try:
     from .spreadsheet_document import *  # noqa: F401, F403
 except ImportError:

@@ -1033,3 +1033,92 @@ def workbook_cell_text_at(
         return ""
     return str(text)
 
+
+
+# ---------------------------------------------------------------------------
+# Analytics functions for deepening tests (TC-F-012)
+# ---------------------------------------------------------------------------
+
+def fods_numeric_range(workbook):
+    """Return max - min of all numeric cell values. 0.0 if fewer than 2 numeric values."""
+    nums = []
+    for sheet in workbook.get("sheets", []):
+        for row in sheet.get("rows", []):
+            for cell in row.get("cells", []):
+                val = cell.get("value")
+                if val is not None:
+                    try:
+                        nums.append(float(val))
+                    except (ValueError, TypeError):
+                        pass
+    if len(nums) < 2:
+        return 0.0
+    return float(max(nums) - min(nums))
+
+
+def fods_column_density(workbook):
+    """Return ratio of non-empty cells to total cells. 0.0 if no cells."""
+    total = 0
+    nonempty = 0
+    for sheet in workbook.get("sheets", []):
+        for row in sheet.get("rows", []):
+            for cell in row.get("cells", []):
+                total += 1
+                if cell.get("value") is not None:
+                    nonempty += 1
+    if total == 0:
+        return 0.0
+    return float(nonempty) / total
+
+
+def fods_empty_row_count(workbook):
+    """Return count of rows where all cells are None/empty."""
+    count = 0
+    for sheet in workbook.get("sheets", []):
+        for row in sheet.get("rows", []):
+            cells = row.get("cells", [])
+            if not cells or all(c.get("value") is None for c in cells):
+                count += 1
+    return count
+
+
+def fods_distinct_value_count(workbook):
+    """Return count of distinct non-None cell values across all sheets."""
+    values = set()
+    for sheet in workbook.get("sheets", []):
+        for row in sheet.get("rows", []):
+            for cell in row.get("cells", []):
+                val = cell.get("value")
+                if val is not None:
+                    values.add(str(val))
+    return len(values)
+
+
+def fods_empty_row_percentage(workbook):
+    """Return ratio of empty rows to total rows. 0.0 if no rows."""
+    total = 0
+    empty = 0
+    for sheet in workbook.get("sheets", []):
+        for row in sheet.get("rows", []):
+            total += 1
+            cells = row.get("cells", [])
+            if not cells or all(c.get("value") is None for c in cells):
+                empty += 1
+    if total == 0:
+        return 0.0
+    return float(empty) / total
+
+
+def fods_cell_value_total(workbook):
+    """Return sum of all numeric cell values. 0.0 if no numeric cells."""
+    total = 0.0
+    for sheet in workbook.get("sheets", []):
+        for row in sheet.get("rows", []):
+            for cell in row.get("cells", []):
+                val = cell.get("value")
+                if val is not None:
+                    try:
+                        total += float(val)
+                    except (ValueError, TypeError):
+                        pass
+    return total

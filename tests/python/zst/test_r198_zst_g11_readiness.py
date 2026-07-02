@@ -56,6 +56,11 @@ class TestZstApiCompleteness:
             "zst_byte_range", "zst_is_single_byte",
             # Domain model class (ZstDocument — added R118 sprint)
             "ZstDocument",
+            # Skippable frame support (FACT-ZST-002, FACT-ZST-004)
+            "is_skippable_frame", "has_skippable_frames",
+            "get_skippable_frame_count", "extract_skippable_frames",
+            # Compression summary and workflow helpers
+            "get_compression_summary", "zst_installed_workflow", "zst_inspect_frame",
         }
         actual = set(zst.__all__)
         assert expected == actual, f"API mismatch. Missing: {expected - actual}. Extra: {actual - expected}"

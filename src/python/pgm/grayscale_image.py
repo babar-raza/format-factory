@@ -9,9 +9,15 @@ spec_fact_ref = "FACT-PGM-001"
 namespace_uri = "urn:netpbm:portable-graymap"
 
 from pathlib import Path
+from typing import Any
 
 from .pgm_parser import (
     parse_pgm_strict,
+    image_pixel_stats,
+    pixel_count,
+    average_gray,
+    min_max_gray,
+    get_dimensions,
 )
 
 
@@ -600,3 +606,52 @@ def pgm_pixel_value_range(file_path: str | Path) -> int:
         return 0
     return max(img.pixels) - min(img.pixels)
 
+
+
+# ---------------------------------------------------------------------------
+# Analytics functions for deepening tests (TC-F-012)
+# ---------------------------------------------------------------------------
+
+def pgm_pixel_range(file_path: "str | Path") -> int:
+    """Return max - min pixel value. 0 if no pixels or all same."""
+    img = parse_pgm_strict(file_path)
+    if not img.pixels:
+        return 0
+    return max(img.pixels) - min(img.pixels)
+
+
+def pgm_shadow_pixel_count(file_path: "str | Path") -> int:
+    """Return count of pixels with value < 64 (dark/shadow pixels)."""
+    img = parse_pgm_strict(file_path)
+    return sum(1 for p in img.pixels if p < 64)
+
+
+def pgm_pixel_median(file_path: "str | Path") -> float:
+    """Return the median pixel value. 0 if no pixels."""
+    img = parse_pgm_strict(file_path)
+    if not img.pixels:
+        return 0
+    s = sorted(img.pixels)
+    n = len(s)
+    if n % 2 == 1:
+        return s[n // 2]
+    return (s[n // 2 - 1] + s[n // 2]) / 2.0
+
+
+def pgm_edge_pixel_mean(file_path: "str | Path") -> float:
+    """Return mean of edge pixels (first/last row + first/last column). 0.0 if too small."""
+    img = parse_pgm_strict(file_path)
+    if not img.pixels or img.width < 1 or img.height < 1:
+        return 0.0
+    w, h = img.width, img.height
+    edge = set()
+    for c in range(w):
+        edge.add(c)
+        edge.add((h - 1) * w + c)
+    for r in range(h):
+        edge.add(r * w)
+        edge.add(r * w + w - 1)
+    vals = [img.pixels[i] for i in edge if 0 <= i < len(img.pixels)]
+    if not vals:
+        return 0.0
+    return float(sum(vals)) / len(vals)

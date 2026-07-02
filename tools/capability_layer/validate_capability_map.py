@@ -319,22 +319,37 @@ def _check_val009_action_queue_advisory(action_path: Path, result: ValidationRes
 
 
 def _check_val010_evidence_includes_capability(result: ValidationResult) -> None:
-    """VAL-010 (advisory): Evidence declaration should include capability-layer artifacts."""
+    """VAL-010 (advisory): A capability declaration should exist within the last 24 hours.
+
+    Checks declarations modified within _LOOKBACK_HOURS so that background product
+    sprints (which run continuously and create non-capability declarations) do not
+    invalidate a recently-written capability declaration.
+    """
+    import time as _time
+    _LOOKBACK_HOURS = 24
     evidence_dir = REPO_ROOT / ".local" / "evidences"
     if not evidence_dir.exists():
         result.warn("VAL-010: .local/evidences/ directory not found — no active declaration")
         return
-    # Find most recently modified declaration (by mtime, not filename sort)
     declarations = list(evidence_dir.glob("*/evidence-declaration.yaml"))
     if not declarations:
         result.warn("VAL-010: No evidence-declaration.yaml files found in .local/evidences/")
         return
-    latest = max(declarations, key=lambda p: p.stat().st_mtime)
-    content = latest.read_text(encoding="utf-8")
-    if "capability" not in content.lower():
+    cutoff = _time.time() - _LOOKBACK_HOURS * 3600
+    recent = [p for p in declarations if p.stat().st_mtime >= cutoff]
+    capability_decl = None
+    for decl in sorted(recent, key=lambda p: p.stat().st_mtime, reverse=True):
+        try:
+            if "capability" in decl.read_text(encoding="utf-8", errors="replace").lower():
+                capability_decl = decl
+                break
+        except OSError:
+            continue
+    if capability_decl is None:
         result.warn(
-            f"VAL-010: Latest declaration {latest} does not mention 'capability' — "
-            "ensure capability-layer artifacts are declared"
+            f"VAL-010: No capability declaration found in the last {_LOOKBACK_HOURS}h "
+            f"({len(recent)} declarations checked) — ensure capability-layer artifacts "
+            "are declared in a recent evidence declaration"
         )
     else:
         result.ok()

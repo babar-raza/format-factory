@@ -894,3 +894,108 @@ def ods_row_cell_variance(file_path: "str | Path", sheet_index: int = 0) -> floa
         return 0.0
     mean = sum(counts) / len(counts)
     return sum((c - mean) ** 2 for c in counts) / len(counts)
+
+
+# ---------------------------------------------------------------------------
+# Analytics functions for deepening tests (TC-F-012)
+# ---------------------------------------------------------------------------
+
+def ods_string_cell_ratio(file_path: "str | Path") -> float:
+    """Return ratio of string cells to all non-empty cells. 0.0 if no non-empty cells."""
+    doc = parse_ods_strict(file_path)
+    total = 0
+    strings = 0
+    for sheet in doc.sheets:
+        for row in sheet.rows:
+            for cell in row.cells:
+                if cell.value is not None and str(cell.value).strip():
+                    total += 1
+                    if cell.value_type in ("string", "text") or (
+                        cell.value_type not in ("float", "integer", "boolean", "date", "time")
+                    ):
+                        try:
+                            float(str(cell.value))
+                        except (ValueError, TypeError):
+                            strings += 1
+    if total == 0:
+        return 0.0
+    return float(strings) / total
+
+
+def ods_widest_column_index(file_path: "str | Path") -> int:
+    """Return index of the column with the most non-empty cells across all sheets. -1 if no cells."""
+    doc = parse_ods_strict(file_path)
+    col_counts: dict = {}
+    for sheet in doc.sheets:
+        for row in sheet.rows:
+            for idx, cell in enumerate(row.cells):
+                if cell.value is not None and str(cell.value).strip():
+                    col_counts[idx] = col_counts.get(idx, 0) + 1
+    if not col_counts:
+        return -1
+    return max(col_counts, key=col_counts.get)
+
+
+def ods_numeric_cell_ratio(file_path: "str | Path") -> float:
+    """Return ratio of numeric cells to all non-empty cells. 0.0 if no non-empty cells."""
+    doc = parse_ods_strict(file_path)
+    total = 0
+    numeric = 0
+    for sheet in doc.sheets:
+        for row in sheet.rows:
+            for cell in row.cells:
+                if cell.value is not None and str(cell.value).strip():
+                    total += 1
+                    try:
+                        float(str(cell.value))
+                        numeric += 1
+                    except (ValueError, TypeError):
+                        pass
+    if total == 0:
+        return 0.0
+    return float(numeric) / total
+
+
+def ods_column_fill_rate(file_path: "str | Path") -> float:
+    """Return average ratio of non-empty cells per column to row count. 0.0 if no data."""
+    doc = parse_ods_strict(file_path)
+    col_nonempty: dict = {}
+    total_rows = 0
+    for sheet in doc.sheets:
+        total_rows += len(sheet.rows)
+        for row in sheet.rows:
+            for idx, cell in enumerate(row.cells):
+                if cell.value is not None and str(cell.value).strip():
+                    col_nonempty[idx] = col_nonempty.get(idx, 0) + 1
+    if not col_nonempty or total_rows == 0:
+        return 0.0
+    fill_rates = [float(v) / total_rows for v in col_nonempty.values()]
+    return sum(fill_rates) / len(fill_rates)
+
+
+def ods_value_type_count(file_path: "str | Path") -> int:
+    """Return count of distinct value_types found across all cells."""
+    doc = parse_ods_strict(file_path)
+    types = set()
+    for sheet in doc.sheets:
+        for row in sheet.rows:
+            for cell in row.cells:
+                if cell.value_type is not None:
+                    types.add(cell.value_type)
+    return len(types)
+
+
+def ods_nonempty_cell_percentage(file_path: "str | Path") -> float:
+    """Return ratio of non-empty cells to total cells. 0.0 if no cells."""
+    doc = parse_ods_strict(file_path)
+    total = 0
+    nonempty = 0
+    for sheet in doc.sheets:
+        for row in sheet.rows:
+            for cell in row.cells:
+                total += 1
+                if cell.value is not None and str(cell.value).strip():
+                    nonempty += 1
+    if total == 0:
+        return 0.0
+    return float(nonempty) / total

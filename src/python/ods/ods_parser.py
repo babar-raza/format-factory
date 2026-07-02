@@ -781,7 +781,10 @@ def sum_row(
                 pass
     return total
 
-# Analytics in spreadsheet_document.py (spec-owned domain module)
+
+# ---------------------------------------------------------------------------
+# Analytics functions in spreadsheet_document.py (spec-owned domain module)
+# ---------------------------------------------------------------------------
 try:
     from .spreadsheet_document import *  # noqa: F401, F403
 except ImportError:

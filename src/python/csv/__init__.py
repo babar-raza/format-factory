@@ -12,6 +12,7 @@ from .tabular_document import *  # noqa: F401, F403
 from .csv_analytics import *  # noqa: F401, F403
 from .exceptions import *  # noqa: F401, F403
 from .models import CsvDocument  # noqa: F401
+from .csv_workflow import csv_installed_workflow  # noqa: F401
 
 import sys as _sys
 import types as _types

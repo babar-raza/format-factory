@@ -9,6 +9,9 @@ from .exceptions import *  # noqa: F401, F403
 from .sylk_parser import *  # noqa: F401, F403
 from .spreadsheet_document import *  # noqa: F401, F403
 from .models import SylkModelDocument, SylkDoc  # noqa: F401
+from .sylk_workflow import sylk_installed_workflow  # noqa: F401
+from .sylk_cell_iterator import sylk_iter_cells  # noqa: F401
+from .sylk_row_iterator import sylk_iter_rows  # noqa: F401
 
 import sys as _sys
 import types as _types

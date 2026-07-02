@@ -558,6 +558,32 @@ def _check_size(path: Path) -> None:
 
 
 # ---------------------------------------------------------------------------
+# Installed workflow proof (consistent with toml_installed_workflow pattern)
+# ---------------------------------------------------------------------------
+
+def ndjson_installed_workflow(source: "Any") -> dict:
+    """NDJSON installed-workflow proof: load source and return format metadata.
+
+    Named variant with explicit ndjson_ prefix for API naming consistency
+    across the Format Factory FOSS track.
+
+    Args:
+        source: NDJSON file path or bytes.
+
+    Returns:
+        dict with keys: format, loaded, record_count, field_count.
+    """
+    records = load_ndjson(source)
+    field_names = get_field_names(source)
+    return {
+        "format": "ndjson",
+        "loaded": True,
+        "record_count": len(records),
+        "field_count": len(field_names),
+    }
+
+
+# ---------------------------------------------------------------------------
 # Analytics functions moved to ndjson_analytics.py (TC-HEAL-FORMATS-BATCH1)
 # ---------------------------------------------------------------------------
 try:

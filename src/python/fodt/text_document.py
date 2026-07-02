@@ -11,6 +11,8 @@ spec_fact_ref = "FACT-FODT-001"
 namespace_uri = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
 
 import os
+import string
+from typing import Any
 
 
 def fodt_paragraph_count(file_path: "str | os.PathLike[str]") -> int:
@@ -988,3 +990,22 @@ def fodt_text_block_ratio(file_path):
     text_types = {"paragraph", "heading"}
     text_count = sum(1 for b in blocks if b.get("type") in text_types)
     return text_count / len(blocks)
+
+
+def fodt_word_count_total(file_path: "str | os.PathLike[str]") -> int:
+    """Return total word count across all text blocks in a FODT file."""
+    from .parser import parse_fodt_strict
+    import re as _re
+    doc = parse_fodt_strict(file_path)
+    total = 0
+    for block in doc.get("blocks", []):
+        text = block.get("text", "")
+        total += len(_re.findall(r"\b\w+\b", text))
+    return total
+
+
+def fodt_paragraph_count_total(file_path: "str | os.PathLike[str]") -> int:
+    """Return total count of paragraph blocks in a FODT file."""
+    from .parser import parse_fodt_strict
+    doc = parse_fodt_strict(file_path)
+    return sum(1 for b in doc.get("blocks", []) if b.get("type") == "paragraph")

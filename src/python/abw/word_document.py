@@ -1024,3 +1024,28 @@ def abw_nonempty_para_ratio(file_path: "str | bytes | Path") -> float:
 def abw_numeric_word_count(file_path: "str | bytes | Path") -> int:
     """Return count of words that consist entirely of digits."""
     return sum(1 for w in _all_words(file_path) if w.isdigit())
+
+
+def abw_avg_paragraph_word_count(file_path: "str | bytes | Path") -> float:
+    """Return average number of words per paragraph. Same as abw_avg_paragraph_words."""
+    return abw_avg_paragraph_words(file_path)
+
+
+def abw_longest_word_length(file_path: "str | bytes | Path") -> int:
+    """Return length of the longest word across all paragraphs. 0 if no words."""
+    max_len = 0
+    for word in _all_words(file_path):
+        if len(word) > max_len:
+            max_len = len(word)
+    return max_len
+
+
+def abw_total_sentence_count(file_path: "str | bytes | Path") -> int:
+    """Return total count of sentences (split on . ! ?) across all paragraphs."""
+    model = load(file_path)
+    count = 0
+    for para in model.get("paragraphs", []):
+        text = para.get("text", "") if isinstance(para, dict) else str(para)
+        sentences = re.split(r'[.!?]+', text.strip())
+        count += sum(1 for s in sentences if s.strip())
+    return count

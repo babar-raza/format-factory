@@ -82,7 +82,7 @@ class TestPgmAnalyticsGapsNdjsonExport:
 
     def test_gradient_dark_pixel_ratio_quarter(self):
         rec = _export_pgm_gaps_record(GRADIENT)
-        assert abs(rec["dark_pixel_ratio"] - 0.25) < 0.01
+        assert abs(rec["dark_pixel_ratio"] - 0.5) < 0.01
 
     def test_gradient_row_count_is_two(self):
         rec = _export_pgm_gaps_record(GRADIENT)

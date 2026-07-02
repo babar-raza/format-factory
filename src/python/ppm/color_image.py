@@ -9,10 +9,14 @@ spec_fact_ref = "FACT-PPM-001"
 namespace_uri = "urn:netpbm:portable-pixmap"
 
 from pathlib import Path
+from typing import Any
 
 from .ppm_parser import (
     PpmError,
     parse_ppm_strict,
+    get_dimensions,
+    pixel_count,
+    brightness,
 )
 
 
@@ -585,3 +589,35 @@ def ppm_max_pixel_brightness(file_path: str | Path) -> float:
         return 0.0
     return max((p[0] + p[1] + p[2]) / 3.0 for p in img.pixels)
 
+
+
+# ---------------------------------------------------------------------------
+# Analytics functions for deepening tests (TC-F-012)
+# ---------------------------------------------------------------------------
+
+def ppm_max_channel_value(file_path: "str | Path") -> int:
+    """Return max value across all channels (R, G, B) in all pixels. 0 if no pixels."""
+    img = parse_ppm_strict(file_path)
+    if not img.pixels:
+        return 0
+    return max(max(p[0], p[1], p[2]) for p in img.pixels)
+
+
+def ppm_min_channel_value(file_path: "str | Path") -> int:
+    """Return min value across all channels (R, G, B) in all pixels. 0 if no pixels."""
+    img = parse_ppm_strict(file_path)
+    if not img.pixels:
+        return 0
+    return min(min(p[0], p[1], p[2]) for p in img.pixels)
+
+
+def ppm_pixel_value_sum(file_path: "str | Path") -> int:
+    """Return sum of all channel values (R+G+B) across all pixels."""
+    img = parse_ppm_strict(file_path)
+    return sum(p[0] + p[1] + p[2] for p in img.pixels)
+
+
+def ppm_channel_contrast_sum(file_path: "str | Path") -> int:
+    """Return sum of |R-G| + |G-B| + |R-B| for each pixel across all pixels."""
+    img = parse_ppm_strict(file_path)
+    return sum(abs(p[0] - p[1]) + abs(p[1] - p[2]) + abs(p[0] - p[2]) for p in img.pixels)

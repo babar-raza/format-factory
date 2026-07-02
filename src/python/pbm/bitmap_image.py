@@ -9,12 +9,15 @@ spec_fact_ref = "FACT-PBM-001"
 namespace_uri = "urn:netpbm:portable-bitmap"
 
 from pathlib import Path
+from typing import Any
 
 from .pbm_parser import (
     PbmError,
     parse_pbm_strict,
     black_pixel_ratio,
     image_pixel_stats,
+    pixel_count,
+    get_dimensions,
 )
 
 
@@ -517,3 +520,61 @@ def pbm_center_black_ratio(file_path: "str | Path") -> float:
         return 0.0
     return black / total
 
+
+
+# ---------------------------------------------------------------------------
+# Analytics functions for deepening tests (TC-F-012)
+# ---------------------------------------------------------------------------
+
+def pbm_corner_pixel_sum(file_path: "str | Path") -> int:
+    """Return sum of the 4 corner pixel values (0=white, 1=black). 0 if image too small."""
+    img = parse_pbm_strict(file_path)
+    if img.width < 1 or img.height < 1 or not img.pixels:
+        return 0
+    w, h = img.width, img.height
+    indices = []
+    if h > 0 and w > 0:
+        indices = [0, w - 1, (h - 1) * w, (h - 1) * w + w - 1]
+    return sum(img.pixels[i] for i in indices if 0 <= i < len(img.pixels))
+
+
+def pbm_checkerboard_score(file_path: "str | Path") -> float:
+    """Return fraction of pixels matching a checkerboard pattern (pixel == (row+col)%2). 0.0 if no pixels."""
+    img = parse_pbm_strict(file_path)
+    if not img.pixels:
+        return 0.0
+    matches = 0
+    for idx, px in enumerate(img.pixels):
+        row = idx // img.width
+        col = idx % img.width
+        if px == (row + col) % 2:
+            matches += 1
+    return float(matches) / len(img.pixels)
+
+
+def pbm_column_transition_count(file_path: "str | Path") -> int:
+    """Return total count of adjacent vertical pixel transitions across all columns."""
+    img = parse_pbm_strict(file_path)
+    if img.width < 1 or img.height < 2 or not img.pixels:
+        return 0
+    count = 0
+    for col in range(img.width):
+        for row in range(img.height - 1):
+            if img.pixels[row * img.width + col] != img.pixels[(row + 1) * img.width + col]:
+                count += 1
+    return count
+
+
+def pbm_center_black_count(file_path: "str | Path") -> int:
+    """Return count of black pixels in the center 50% area. 0 if image too small."""
+    img = parse_pbm_strict(file_path)
+    if img.width < 4 or img.height < 4 or not img.pixels:
+        return 0
+    r1, r2 = img.height // 4, 3 * img.height // 4
+    c1, c2 = img.width // 4, 3 * img.width // 4
+    count = 0
+    for r in range(r1, r2):
+        for c in range(c1, c2):
+            if img.pixels[r * img.width + c] == 1:
+                count += 1
+    return count

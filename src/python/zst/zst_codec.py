@@ -1020,6 +1020,52 @@ def extract_skippable_frames(data: bytes) -> list:
     return payloads
 
 
+def get_compression_summary(data: bytes, level: int = 3) -> dict:
+    """Compress data and return a summary dict with metadata.
+
+    Args:
+        data: Raw bytes to compress.
+        level: Compression level (1-22). Default 3.
+
+    Returns:
+        Dict with keys: format, level, original_size, compressed_size,
+        ratio, frame_count, valid, magic_ok.
+    """
+    original_size = len(data)
+    try:
+        zstd = _get_zstandard()
+        compressed = zstd.ZstdCompressor(level=level).compress(data)
+        compressed_size = len(compressed)
+        ratio = original_size / compressed_size if compressed_size > 0 else 0.0
+        valid = True
+        magic_ok = compressed[:4] == ZSTD_MAGIC
+        # Count frames — at least one for any successful compression
+        try:
+            dctx = zstd.ZstdDecompressor()
+            frame_params = dctx.get_frame_parameters(compressed)
+            frame_count = 1  # single frame from ZstdCompressor
+        except Exception:
+            frame_count = 1
+    except Exception as exc:
+        compressed = b""
+        compressed_size = 0
+        ratio = 0.0
+        valid = False
+        magic_ok = False
+        frame_count = 0
+
+    return {
+        "format": "zstd",
+        "level": level,
+        "original_size": original_size,
+        "compressed_size": compressed_size,
+        "ratio": ratio,
+        "frame_count": frame_count,
+        "valid": valid,
+        "magic_ok": magic_ok,
+    }
+
+
 # Analytics re-export — all zst_* functions are in the domain module
 try:
     from .compression_metrics import *  # noqa: F401, F403

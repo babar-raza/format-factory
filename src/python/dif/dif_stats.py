@@ -216,3 +216,59 @@ def dif_total_numeric_count(dif_doc: dict[str, Any]) -> int:
             if cell_type in ("numeric", "number") or isinstance(val, (int, float)):
                 count += 1
     return count
+
+
+# ---------------------------------------------------------------------------
+# File-path analytics functions for deepening tests (TC-F-012)
+# ---------------------------------------------------------------------------
+from pathlib import Path as _Path
+
+
+def dif_max_row_width(file_path: "str | _Path") -> int:
+    """Return the maximum number of cells in any row. 0 if no rows."""
+    from .dif_parser import parse_dif_strict as _parse
+    doc = _parse(file_path)
+    if not doc.rows:
+        return 0
+    return max(len(row) for row in doc.rows)
+
+
+def dif_empty_cell_ratio(file_path: "str | _Path") -> float:
+    """Return ratio of cells with None/empty value to total cells. 0.0 if no cells."""
+    from .dif_parser import parse_dif_strict as _parse
+    doc = _parse(file_path)
+    total = sum(len(row) for row in doc.rows)
+    if total == 0:
+        return 0.0
+    empty = sum(
+        1 for row in doc.rows for cell in row
+        if cell.value is None or (isinstance(cell.value, str) and not cell.value.strip())
+    )
+    return float(empty) / total
+
+
+def dif_string_cell_total_length(file_path: "str | _Path") -> int:
+    """Return total character length of all string-type cell values."""
+    from .dif_parser import parse_dif_strict as _parse
+    doc = _parse(file_path)
+    total = 0
+    for row in doc.rows:
+        for cell in row:
+            if cell.value_type == 'string' and cell.value is not None:
+                total += len(str(cell.value))
+    return total
+
+
+def dif_numeric_value_total(file_path: "str | _Path") -> float:
+    """Return sum of all numeric cell values. 0.0 if no numeric cells."""
+    from .dif_parser import parse_dif_strict as _parse
+    doc = _parse(file_path)
+    total = 0.0
+    for row in doc.rows:
+        for cell in row:
+            if cell.value_type == 'numeric' and cell.value is not None:
+                try:
+                    total += float(cell.value)
+                except (ValueError, TypeError):
+                    pass
+    return total

@@ -12,6 +12,9 @@ from .ods_writer import *  # noqa: F401, F403
 from .ods_csv_exporter import *  # noqa: F401, F403
 from .spreadsheet_document import *  # noqa: F401, F403
 from .models import OdsModelDocument  # noqa: F401
+from .ods_workflow import ods_installed_workflow  # noqa: F401
+from .ods_sheet_iterator import ods_iter_sheets  # noqa: F401
+from .ods_row_iterator import ods_iter_rows  # noqa: F401
 
 import sys as _sys
 import types as _types

@@ -9,6 +9,9 @@ from .exceptions import *  # noqa: F401, F403
 from .tsv_parser import *  # noqa: F401, F403
 from .tabular_document import *  # noqa: F401, F403
 from .models import TsvDocument  # noqa: F401
+from .tsv_workflow import tsv_installed_workflow  # noqa: F401
+from .tsv_row_iterator import tsv_iter_records  # noqa: F401
+from .tsv_field_iterator import tsv_iter_fields  # noqa: F401
 
 import sys as _sys
 import types as _types

@@ -375,8 +375,41 @@ def count_empty_cells(file_path: "str | Path", col_name: str) -> int:
 
 
 
+def csv_row_count(file_path: "str | Path") -> int:
+    """Return number of data rows in a CSV file (excluding header)."""
+    model = parse_csv_strict(file_path)
+    return len(model.get("rows", []))
+
+
+def csv_numeric_range(file_path: "str | Path") -> float:
+    """Return max - min of all numeric cell values. 0.0 if fewer than 2 numeric values."""
+    model = parse_csv_strict(file_path)
+    rows = model.get("rows", [])
+    nums = []
+    for row in rows:
+        for val in row:
+            s = val.strip()
+            if s:
+                try:
+                    nums.append(float(s))
+                except (ValueError, TypeError):
+                    pass
+    if len(nums) < 2:
+        return 0.0
+    return float(max(nums) - min(nums))
+
+
+def csv_has_only_one_row(file_path: "str | Path") -> bool:
+    """Return True if the CSV has exactly one data row (excluding header)."""
+    model = parse_csv_strict(file_path)
+    return len(model.get("rows", [])) == 1
+
+
 # Analytics functions are in tabular_document.py to keep this file within policy limits.
 try:
     from .tabular_document import *  # noqa: F401, F403
 except ImportError:
-    pass
+    try:
+        from tabular_document import *  # noqa: F401, F403 — fallback for direct-module import
+    except ImportError:
+        pass

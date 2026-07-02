@@ -2400,8 +2400,7 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
 
     # TC-PSG-006: PROJECT_STATUS.md freshness check (advisory, non-blocking).
     # If any status-relevant sources changed in this sprint, validate the structure.
-    print("
-=== STEP 8c: PROJECT_STATUS FRESHNESS CHECK ===")
+    print("\n=== STEP 8c: PROJECT_STATUS FRESHNESS CHECK ===")
     try:
         import subprocess as _subprocess
         _validate_result = _subprocess.run(

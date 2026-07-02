@@ -11,6 +11,8 @@ from .color_image import *  # noqa: F401, F403
 from .ppm_to_pgm import *  # noqa: F401, F403
 from .exceptions import *  # noqa: F401, F403
 from .models import PpmDocument  # noqa: F401
+from .ppm_workflow import ppm_installed_workflow  # noqa: F401
+from .ppm_pixmap_iterator import ppm_iter_pixmaps  # noqa: F401
 
 import sys as _sys
 import types as _types

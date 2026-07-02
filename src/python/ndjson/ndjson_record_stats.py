@@ -582,3 +582,49 @@ def batch_update(source: "Any", field: str, value: "Any") -> "list[Any]":
             result.append(rec)
     return result
 
+
+
+# ---------------------------------------------------------------------------
+# Analytics functions for deepening tests (TC-F-012)
+# ---------------------------------------------------------------------------
+
+def ndjson_max_key_depth(source) -> int:
+    """Return max nesting depth of keys in records. 1 for flat records, 0 if no records."""
+    records = source if isinstance(source, list) else load_ndjson(source)
+    if not records:
+        return 0
+
+    def _depth(obj, current=0):
+        if isinstance(obj, dict):
+            if not obj:
+                return current
+            return max(_depth(v, current + 1) for v in obj.values())
+        if isinstance(obj, list):
+            if not obj:
+                return current
+            return max(_depth(v, current) for v in obj)
+        return current
+
+    return max(_depth(r, 0) for r in records if isinstance(r, dict))
+
+
+def ndjson_field_value_mean(source) -> float:
+    """Return mean of all numeric values found in all records. 0.0 if none."""
+    records = source if isinstance(source, list) else load_ndjson(source)
+    nums = []
+
+    def _collect(obj):
+        if isinstance(obj, dict):
+            for v in obj.values():
+                _collect(v)
+        elif isinstance(obj, (int, float)) and not isinstance(obj, bool):
+            nums.append(float(obj))
+        elif isinstance(obj, list):
+            for v in obj:
+                _collect(v)
+
+    for r in records:
+        _collect(r)
+    if not nums:
+        return 0.0
+    return sum(nums) / len(nums)

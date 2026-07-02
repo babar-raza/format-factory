@@ -11,6 +11,9 @@ from .abw_word_stats import *  # noqa: F401, F403
 from .word_document import *  # noqa: F401, F403
 from .exceptions import *  # noqa: F401, F403
 from .models import AbwDocument  # noqa: F401
+from .abw_workflow import abw_installed_workflow  # noqa: F401
+from .abw_paragraph_iterator import abw_iter_paragraphs  # noqa: F401
+from .abw_section_iterator import abw_iter_sections  # noqa: F401
 
 import sys as _sys
 import types as _types

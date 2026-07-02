@@ -9,9 +9,25 @@ spec_fact_ref = "FACT-SYLK-001"
 namespace_uri = "urn:sylk:symbolic-link"
 
 from pathlib import Path
+from typing import Any
 
 from .sylk_parser import (
+    parse_sylk,
     parse_sylk_strict,
+    get_row_count,
+    get_column_count,
+    get_cell_count,
+    get_all_values,
+    count_nonempty_cells,
+    get_cell_value,
+    get_row_values,
+    get_column_values,
+    sum_column,
+    min_column_value,
+    max_column_value,
+    average_column,
+    count_distinct_values,
+    find_rows_by_value,
 )
 
 
@@ -839,3 +855,57 @@ def sylk_avg_row_density(file_path: "str | Path") -> float:
     from collections import Counter as _Counter
     row_counts = _Counter(c.row for c in doc.cells)
     return sum(row_counts.values()) / len(row_counts)
+
+
+# ---------------------------------------------------------------------------
+# Analytics functions for deepening tests (TC-F-012)
+# ---------------------------------------------------------------------------
+
+def sylk_column_fill_rate(file_path: "str | Path") -> float:
+    """Return ratio of non-empty cells to (max_col * max_row) space. 0.0 if empty."""
+    doc = parse_sylk_strict(file_path)
+    if not doc.cells:
+        return 0.0
+    max_row = max(c.row for c in doc.cells)
+    max_col = max(c.col for c in doc.cells)
+    capacity = max_row * max_col
+    if capacity == 0:
+        return 0.0
+    nonempty = sum(1 for c in doc.cells if c.value is not None and str(c.value).strip())
+    return float(nonempty) / capacity
+
+
+def sylk_distinct_string_count(file_path: "str | Path") -> int:
+    """Return count of distinct non-empty string values in the document."""
+    doc = parse_sylk_strict(file_path)
+    strings = set()
+    for cell in doc.cells:
+        if cell.value is not None:
+            s = str(cell.value).strip()
+            if s:
+                try:
+                    float(s)
+                except (ValueError, TypeError):
+                    strings.add(s)
+    return len(strings)
+
+
+def sylk_cell_text_length_sum(file_path: "str | Path") -> int:
+    """Return total character length of all cell string values."""
+    doc = parse_sylk_strict(file_path)
+    return sum(len(str(c.value)) for c in doc.cells if c.value is not None)
+
+
+def sylk_numeric_value_sum(file_path: "str | Path") -> float:
+    """Return sum of all numeric cell values. 0.0 if no numeric cells."""
+    doc = parse_sylk_strict(file_path)
+    total = 0.0
+    for cell in doc.cells:
+        if isinstance(cell.value, (int, float)):
+            total += float(cell.value)
+        elif cell.value is not None:
+            try:
+                total += float(str(cell.value))
+            except (ValueError, TypeError):
+                pass
+    return total

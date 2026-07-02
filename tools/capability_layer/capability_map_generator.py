@@ -1453,10 +1453,18 @@ def generate(
                         g["closed_by_engine"] = prev["closed_by_engine"]
                     if "closure_evidence" in prev:
                         g["closure_evidence"] = prev["closure_evidence"]
-            # Re-append supplemental gaps (manually added, not generated from poc-targets.yaml)
+            # Re-append historical gaps (closed/deferred) and manually-added supplemental gaps.
+            # ONLY gaps with closed/deferred statuses are preserved — open gaps that fell out of the
+            # generated set are stale and should NOT re-accumulate (monotonic accumulation bug fix).
+            _PRESERVE_STATUSES = frozenset({
+                "closed", "CLOSED", "DEFERRED", "DEFERRED_BY_DESIGN",
+                "CLOSED_VERIFIED", "CLOSED_BY", "SUPERSEDED", "WONT_FIX",
+            })
             for old_gap in old.get("gaps", []):
                 if old_gap["gap_id"] not in generated_ids:
-                    gaps.append(old_gap)
+                    if (old_gap.get("status") in _PRESERVE_STATUSES
+                            or old_gap.get("supplemental") is True):
+                        gaps.append(old_gap)
         except (json.JSONDecodeError, KeyError):
             pass  # If old file is corrupt, start fresh
     gap_ledger = {
