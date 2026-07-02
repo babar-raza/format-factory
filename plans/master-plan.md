@@ -4,7 +4,7 @@
 **Authority level:** Single Operational Authority
 **Project:** format-factory
 **Version:** 6.0
-**Last updated:** 2026-07-01 (v6.4: CERT-INTEGRATION-HEALING-20260628 lively-drifting-starfish CLOSED — TC-CERT-I-018/019/020 resolved: test_tool_pipeline.py 9/9 pass (was 4 ERRORs+1 FAIL), exit code contracts consistent, 9/9 certification-* skills registered; 20/20 CERTIFIED; 468+163=631 tests pass)
+**Last updated:** 2026-07-03 (v6.5: FODS .NET xUnit test suite fixed 46→0 failures — 4714 pass, 0 fail; GI-FODS-NET-001 Sprint 3 groundwork committed — FodsStyleResolver.cs + fixtures + test taxonomy; §103 added)
 **Last verified:** 2026-06-24
 
 **Current phase:** Multi-format POC — 11 targets (3 commercial .NET, 8 FOSS Python). Gate 11 G11-G sub-gate approved by Babar Raza 2026-06-05 (FODS, FODT, Netpbm). Registry gate_11.status: commercial_readiness_in_progress; g11g_status: APPROVED_BY_BABAR_RAZA_2026_06_05 (G11-G sub-gate approved). commercial_product_ready: false (all entries). Full Gate 11 requires Babar Raza final commercial authorization.
