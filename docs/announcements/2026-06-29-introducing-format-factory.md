@@ -22,9 +22,9 @@ The Specification Authority Layer extracts canonical facts from the specificatio
 
 Each format passes through an eleven-gate acquisition pipeline covering legal review, specification analysis, prototype development, security testing, and oracle verification before it reaches production status.
 
-Development itself is performed through a growing collection of specialized skills coordinated by an autonomous supervisor. Product work and machinery improvements follow separate but connected execution pipelines: one continuously hardens the factory, while the other applies those capabilities to individual products. Over 840 sprint cycles have been completed through this pipeline, each producing evidence, gap analysis, and a backlog for the next iteration. Ninety-two governance validators enforce quality rules automatically on every sprint, covering schema compliance, security policy, source structure limits, and specification traceability.
+Development itself is performed through a growing collection of specialized skills coordinated by an autonomous supervisor. Product work and machinery improvements follow separate but connected execution pipelines: one continuously hardens the factory, while the other applies those capabilities to individual products. 840 sprint cycles have been completed through this pipeline, each producing evidence, gap analysis, and a backlog for the next iteration. 101 governance validators enforce quality rules automatically on every sprint, covering schema compliance, security policy, source structure limits, and specification traceability.
 
-Importantly, AI assists only the development process. All shipped library code is pure, deterministic, and contains no LLM calls at runtime.
+Importantly, the development pipeline is agent-orchestrated: sprint planning, code generation, test writing, governance validation, and gap analysis are performed by AI agents coordinated through the supervisor pipeline. Human oversight applies at defined gates — primarily commercial release authorization. All shipped library code is pure and deterministic, containing no LLM calls or AI runtime dependencies.
 
 ## Current Progress
 

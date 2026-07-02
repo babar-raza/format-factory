@@ -1,0 +1,370 @@
+# Per-Product Capability Matrix
+# Gate 11 criterion C13 evidence — parity matrix for commercial .NET products
+# Generated: 2026-07-02
+# Source: docs/api/fods.md, docs/api/fodt.md
+# Referenced by: docs/publication/gate11-submission-fods.md (C13)
+#                docs/publication/gate11-submission-fodt.md (C13)
+
+schema_version: "1.0"
+generated: "2026-07-02"
+products:
+  - product_id: fods
+    product_name: "FormatFactory.Fods"
+    nuget_package: "FormatFactory.Fods"
+    version: "0.1.0-tier0"
+    spec: "OASIS ODF 1.3"
+    spec_qname: "office:document"
+    capabilities:
+      # --- Core I/O ---
+      - capability_id: FODS-CAP-001
+        description: "Parse FODS file into workbook model"
+        api_method: "parse_fods"
+        spec_qname: "office:document"
+        category: core_io
+        status: VERIFIED
+
+      - capability_id: FODS-CAP-002
+        description: "Parse FODS with strict structural validation"
+        api_method: "parse_fods_strict"
+        spec_qname: "office:document"
+        category: core_io
+        status: VERIFIED
+
+      - capability_id: FODS-CAP-003
+        description: "Write workbook model to FODS file"
+        api_method: "write_fods"
+        spec_qname: "office:document"
+        category: core_io
+        status: VERIFIED
+
+      - capability_id: FODS-CAP-004
+        description: "Serialize workbook to ODF XML string"
+        api_method: "workbook_to_xml"
+        spec_qname: "office:document"
+        category: core_io
+        status: VERIFIED
+
+      # --- Cell Access ---
+      - capability_id: FODS-CAP-005
+        description: "Get cell value by sheet name and row/col index"
+        api_method: "workbook_get_cell_value"
+        spec_qname: "table:table-cell"
+        category: cell_access
+        status: VERIFIED
+
+      - capability_id: FODS-CAP-006
+        description: "Set cell value with optional ODF value type"
+        api_method: "workbook_set_cell_value"
+        spec_qname: "table:table-cell"
+        category: cell_access
+        status: VERIFIED
+
+      - capability_id: FODS-CAP-007
+        description: "Get display text of a cell"
+        api_method: "workbook_cell_text_at"
+        spec_qname: "table:table-cell"
+        category: cell_access
+        status: VERIFIED
+
+      - capability_id: FODS-CAP-008
+        description: "Find all non-empty cells across sheets"
+        api_method: "workbook_find_cells"
+        spec_qname: "table:table-cell"
+        category: cell_access
+        status: VERIFIED
+
+      - capability_id: FODS-CAP-009
+        description: "Count cells matching a filter criterion"
+        api_method: "workbook_count_matching_cells"
+        spec_qname: "table:table-cell"
+        category: cell_access
+        status: VERIFIED
+
+      # --- Sheet Operations ---
+      - capability_id: FODS-CAP-010
+        description: "Find sheet by name"
+        api_method: "find_sheet_by_name"
+        spec_qname: "table:table"
+        category: sheet_operations
+        status: VERIFIED
+
+      - capability_id: FODS-CAP-011
+        description: "Add new sheet at optional position"
+        api_method: "workbook_add_sheet"
+        spec_qname: "table:table"
+        category: sheet_operations
+        status: VERIFIED
+
+      - capability_id: FODS-CAP-012
+        description: "Rename existing sheet"
+        api_method: "workbook_rename_sheet"
+        spec_qname: "table:table"
+        category: sheet_operations
+        status: VERIFIED
+
+      - capability_id: FODS-CAP-013
+        description: "Remove sheet by name"
+        api_method: "workbook_remove_sheet"
+        spec_qname: "table:table"
+        category: sheet_operations
+        status: VERIFIED
+
+      # --- Export ---
+      - capability_id: FODS-CAP-014
+        description: "Export workbook sheet to CSV string"
+        api_method: "workbook_to_csv"
+        spec_qname: "office:spreadsheet"
+        category: export
+        status: VERIFIED
+
+      - capability_id: FODS-CAP-015
+        description: "Export workbook to HTML table string"
+        api_method: "workbook_to_html"
+        spec_qname: "office:spreadsheet"
+        category: export
+        status: VERIFIED
+
+      # --- Analytics ---
+      - capability_id: FODS-CAP-016
+        description: "Get sheet count"
+        api_method: "fods_sheet_count"
+        spec_qname: "office:spreadsheet"
+        category: analytics
+        status: VERIFIED
+
+      - capability_id: FODS-CAP-017
+        description: "Get total cell count across all sheets"
+        api_method: "fods_total_cell_count"
+        spec_qname: "office:spreadsheet"
+        category: analytics
+        status: VERIFIED
+
+      - capability_id: FODS-CAP-018
+        description: "Get empty cell count"
+        api_method: "fods_empty_cell_count"
+        spec_qname: "office:spreadsheet"
+        category: analytics
+        status: VERIFIED
+
+      - capability_id: FODS-CAP-019
+        description: "Check if workbook contains formula cells"
+        api_method: "fods_has_formulas"
+        spec_qname: "table:table-cell"
+        category: analytics
+        status: VERIFIED
+
+      - capability_id: FODS-CAP-020
+        description: "Get list of sheet names in document order"
+        api_method: "fods_sheet_names"
+        spec_qname: "table:table"
+        category: analytics
+        status: VERIFIED
+
+      - capability_id: FODS-CAP-021
+        description: "Get aggregate workbook statistics"
+        api_method: "workbook_stats"
+        spec_qname: "office:spreadsheet"
+        category: analytics
+        status: VERIFIED
+
+      - capability_id: FODS-CAP-022
+        description: "Get total data row count across sheets"
+        api_method: "workbook_row_count"
+        spec_qname: "table:table-row"
+        category: analytics
+        status: VERIFIED
+
+      - capability_id: FODS-CAP-023
+        description: "Get maximum column count across sheets"
+        api_method: "workbook_column_count"
+        spec_qname: "table:table-column"
+        category: analytics
+        status: VERIFIED
+
+  - product_id: fodt
+    product_name: "FormatFactory.Fodt"
+    nuget_package: "FormatFactory.Fodt"
+    version: "0.1.0-tier0"
+    spec: "OASIS ODF 1.3"
+    spec_qname: "office:document"
+    capabilities:
+      # --- Core I/O ---
+      - capability_id: FODT-CAP-001
+        description: "Parse FODT file into document model"
+        api_method: "parse_fodt"
+        spec_qname: "office:document"
+        category: core_io
+        status: VERIFIED
+
+      - capability_id: FODT-CAP-002
+        description: "Parse FODT with strict structural validation"
+        api_method: "parse_fodt_strict"
+        spec_qname: "office:document"
+        category: core_io
+        status: VERIFIED
+
+      - capability_id: FODT-CAP-003
+        description: "Write document model to FODT file"
+        api_method: "write_fodt"
+        spec_qname: "office:document"
+        category: core_io
+        status: VERIFIED
+
+      - capability_id: FODT-CAP-004
+        description: "Serialize document to ODF XML string"
+        api_method: "document_to_xml"
+        spec_qname: "office:document"
+        category: core_io
+        status: VERIFIED
+
+      # --- Text Content ---
+      - capability_id: FODT-CAP-005
+        description: "Get all text content as single string"
+        api_method: "document_text_content"
+        spec_qname: "text:p"
+        category: text_access
+        status: VERIFIED
+
+      - capability_id: FODT-CAP-006
+        description: "Get paragraph count including headings"
+        api_method: "document_paragraph_count"
+        spec_qname: "text:p"
+        category: text_access
+        status: VERIFIED
+
+      - capability_id: FODT-CAP-007
+        description: "Get estimated word count"
+        api_method: "document_word_count"
+        spec_qname: "text:p"
+        category: text_access
+        status: VERIFIED
+
+      - capability_id: FODT-CAP-008
+        description: "Get text of paragraph by index"
+        api_method: "document_get_paragraph_text"
+        spec_qname: "text:p"
+        category: text_access
+        status: VERIFIED
+
+      - capability_id: FODT-CAP-009
+        description: "Set text of paragraph by index"
+        api_method: "document_set_paragraph_text"
+        spec_qname: "text:p"
+        category: text_access
+        status: VERIFIED
+
+      - capability_id: FODT-CAP-010
+        description: "Get style name of paragraph at index"
+        api_method: "document_get_paragraph_style_name"
+        spec_qname: "text:p"
+        category: text_access
+        status: VERIFIED
+
+      - capability_id: FODT-CAP-011
+        description: "Get plain text for paragraph range"
+        api_method: "document_get_plain_text_range"
+        spec_qname: "text:p"
+        category: text_access
+        status: VERIFIED
+
+      - capability_id: FODT-CAP-012
+        description: "Get text between two paragraph indices"
+        api_method: "document_get_text_between_paragraphs"
+        spec_qname: "text:p"
+        category: text_access
+        status: VERIFIED
+
+      # --- Paragraph Operations ---
+      - capability_id: FODT-CAP-013
+        description: "Append paragraph at end of document"
+        api_method: "document_append_paragraph"
+        spec_qname: "text:p"
+        category: paragraph_operations
+        status: VERIFIED
+
+      - capability_id: FODT-CAP-014
+        description: "Remove paragraph at given index"
+        api_method: "document_remove_paragraph"
+        spec_qname: "text:p"
+        category: paragraph_operations
+        status: VERIFIED
+
+      - capability_id: FODT-CAP-015
+        description: "Remove all paragraphs from document"
+        api_method: "document_remove_all_paragraphs"
+        spec_qname: "text:p"
+        category: paragraph_operations
+        status: VERIFIED
+
+      # --- Heading Operations ---
+      - capability_id: FODT-CAP-016
+        description: "Get heading outline with level and text"
+        api_method: "document_heading_outline"
+        spec_qname: "text:h"
+        category: heading_operations
+        status: VERIFIED
+
+      - capability_id: FODT-CAP-017
+        description: "Get heading count"
+        api_method: "document_get_heading_count"
+        spec_qname: "text:h"
+        category: heading_operations
+        status: VERIFIED
+
+      - capability_id: FODT-CAP-018
+        description: "Get list of heading text strings"
+        api_method: "document_get_heading_texts"
+        spec_qname: "text:h"
+        category: heading_operations
+        status: VERIFIED
+
+      - capability_id: FODT-CAP-019
+        description: "Get heading level distribution dict"
+        api_method: "document_heading_level_distribution"
+        spec_qname: "text:h"
+        category: heading_operations
+        status: VERIFIED
+
+      - capability_id: FODT-CAP-020
+        description: "Insert heading at specified position"
+        api_method: "insert_heading"
+        spec_qname: "text:h"
+        category: heading_operations
+        status: VERIFIED
+
+      - capability_id: FODT-CAP-021
+        description: "Remove heading paragraph at given index"
+        api_method: "remove_heading"
+        spec_qname: "text:h"
+        category: heading_operations
+        status: VERIFIED
+
+      # --- Export ---
+      - capability_id: FODT-CAP-022
+        description: "Export document to plain text string"
+        api_method: "document_to_text"
+        spec_qname: "office:text"
+        category: export
+        status: VERIFIED
+
+      # --- Statistics ---
+      - capability_id: FODT-CAP-023
+        description: "Get aggregate document statistics"
+        api_method: "document_stats"
+        spec_qname: "office:document"
+        category: statistics
+        status: VERIFIED
+
+      - capability_id: FODT-CAP-024
+        description: "Get total character count"
+        api_method: "document_get_char_count"
+        spec_qname: "text:p"
+        category: statistics
+        status: VERIFIED
+
+      - capability_id: FODT-CAP-025
+        description: "Get readability metrics (Flesch-Kincaid estimate)"
+        api_method: "document_reading_level"
+        spec_qname: "text:p"
+        category: statistics
+        status: VERIFIED
